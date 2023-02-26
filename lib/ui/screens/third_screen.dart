@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/second_screen/card_terminal.dart';
-
-class SecondScreen extends StatelessWidget {
-  const SecondScreen({super.key});
+class ThirdScreen extends StatelessWidget {
+  const ThirdScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,11 +10,7 @@ class SecondScreen extends StatelessWidget {
       child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           physics: const BouncingScrollPhysics(),
-          children: const <Widget>[
-            SizedBox(height: 36),
-            CardTerminal(),
-            SizedBox(height: 36),
-          ]),
+          children: const <Widget>[SizedBox(height: 36), Text('Contacts')]),
     );
   }
 }

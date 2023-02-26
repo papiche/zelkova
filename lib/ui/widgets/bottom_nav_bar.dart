@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ionicons/ionicons.dart';
 
 import '../../cubit/bottom_nav_cubit.dart';
 
@@ -36,12 +35,24 @@ class BottomNavBar extends StatelessWidget {
           unselectedItemColor: Theme.of(context).textTheme.bodySmall!.color,
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: const Icon(Ionicons.home_outline),
+              icon: const Icon(Icons.credit_card),
               label: tr('bottom_nav_first'),
             ),
             BottomNavigationBarItem(
-              icon: const Icon(Ionicons.information_circle_outline),
+              icon: const Icon(Icons.payments),
               label: tr('bottom_nav_second'),
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.contacts),
+              label: tr('bottom_nav_trd'),
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.savings),
+              label: tr('bottom_nav_frd'),
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.info),
+              label: tr('bottom_nav_fifth'),
             ),
           ],
         );

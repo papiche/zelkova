@@ -35,6 +35,10 @@ dependencies:
   url_launcher: ^6.1.7
   ionicons: ^0.2.2
   hive_flutter: ^1.1.0
+  ed25519_edwards: ^0.2.1
+  material_design_icons_flutter: ^6.0.7096
+  flutter_svg: ^2.0.2
+  flutter_dotenv: ^5.0.2
 
 dev_dependencies:
   flutter_test:
@@ -50,10 +54,13 @@ flutter:
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
-  uses-material-design: false
+  uses-material-design: true
 
   assets:
     - assets/translations/
+    - assets/img/gbrevedot.svg
+    - assets/.env.development
+    - assets/.env.production
 
   fonts:
     - family: Nunito
@@ -66,6 +73,9 @@ flutter:
           weight: 400
         - asset: assets/fonts/Nunito-Light.ttf
           weight: 300
+    - family: SourceCodePro
+      fonts:
+        - asset: assets/fonts/SourceCodePro-Regular.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

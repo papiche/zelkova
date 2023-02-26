@@ -1,38 +1,40 @@
 {
-  "app_name": "Flutter Production Boilerplate",
-
-  "bottom_nav_first": "Home",
-  "bottom_nav_second": "Info",
-
+  "app_name": "MondaMono",
+  "credit_card_title": "Pay with Ğ1",
+  "g1_wallet": "Ğ1 Wallet",
+  "close": "CLOSE",
+  "bottom_nav_first": "Pay",
+  "bottom_nav_second": "Receive",
+  "bottom_nav_trd": "Contacts",
+  "bottom_nav_frd": "Balance",
+  "bottom_nav_fifth": "Info",
+  "title_first": "Send Ĝ1",
+  "g1_amount": "Amount to send",
+  "g1_amount_hint": "Amount to send in Ĝ1",
+  "g1_form_pay_send": "Send",
+  "search_user": "Search user or key",
+  "g1_form_pay_desc": "Description",
+  "g1_form_pay_hint": "Enter a description (optional)",
+  "code_card_title": "Code repository",
   "localization_title": "Localization",
   "localization_content": "Simplified translations with the Easy Translations package.",
-
   "linting_title": "Linting",
   "linting_content": "Stricter linting rules with flutter lints recommended by the Dart team.",
-
   "storage_title": "Storage",
   "storage_content": "Blazing fast key-value database written in pure Dart with Hive.",
-
   "dark_mode_title": "Dark Mode",
   "dark_mode_content": "Smooth transition to dark mode by using the inbuilt theming engine.",
-
   "state_title": "State",
   "state_content": "Powerful state management using Cubit & BLOC.",
-
   "display_title": "Display",
   "display_content": "Support for high refresh rate displays with the flutter displaymode package.",
-
   "language_switch_title": "Use german",
-
-  "github_card_title": "GitHub repository",
   "website_card_title": "Website",
   "twitter_card_title": "Twitter",
   "instagram_card_title": "Instagram",
   "donate_card_title": "Donate",
-
   "author_divider_title": "Author",
   "packages_divider_title": "Packages",
-
   "flutter_bloc": "Flutter bloc",
   "bloc": "Bloc",
   "hydrated_bloc": "Hydrated bloc",

@@ -5,14 +5,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
-import 'package:hive/hive.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'config/theme.dart';
 import 'cubit/theme_cubit.dart';
 import 'ui/screens/skeleton_screen.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+
 /// Try using const constructors as much as possible!
 
 void main() async {
@@ -22,7 +23,12 @@ void main() async {
 
   if (!kIsWeb && Platform.isAndroid) {
     await FlutterDisplayMode.setHighRefreshRate();
-   }
+  }
+
+  await dotenv.load(
+      fileName: kReleaseMode
+          ? 'assets/env.production.txt'
+          : 'assets/.env.development');
 
   if (kIsWeb) {
     await Hive.initFlutter();
@@ -31,8 +37,8 @@ void main() async {
   } else {
     final Directory tmpDir = await getTemporaryDirectory();
     Hive.init(tmpDir.toString());
-    HydratedBloc.storage = await HydratedStorage.build(
-        storageDirectory: tmpDir);
+    HydratedBloc.storage =
+        await HydratedStorage.build(storageDirectory: tmpDir);
   }
 
   runApp(

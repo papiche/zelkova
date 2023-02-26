@@ -39,6 +39,11 @@ dependencies:
   material_design_icons_flutter: ^6.0.7096
   flutter_svg: ^2.0.2
   flutter_dotenv: ^5.0.2
+  http: ^0.13.5
+  easy_logger: ^0.0.2
+  qr_flutter: ^4.0.0
+  simple_barcode_scanner: ^0.0.8
+  introduction_screen: ^3.1.6
 
 dev_dependencies:
   flutter_test:
@@ -61,6 +66,11 @@ flutter:
     - assets/img/gbrevedot.svg
     - assets/.env.development
     - assets/.env.production
+    - assets/img/undraw_intro_1.png
+    - assets/img/undraw_intro_2.png
+    - assets/img/undraw_intro_3.png
+    - assets/img/undraw_intro_4.png
+    - assets/img/undraw_intro_5.png
 
   fonts:
     - family: Nunito

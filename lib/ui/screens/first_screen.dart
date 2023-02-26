@@ -27,7 +27,7 @@ class FirstScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            const PayContactSearchBar(),
+            const PayContactSearchWidget(),
             const SizedBox(height: 10),
             const PayForm(),
           ]),

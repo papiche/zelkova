@@ -12,7 +12,8 @@ class PayForm extends StatefulWidget {
 
 class _PayFormState extends State<PayForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _controller = TextEditingController();
+  final TextEditingController _amountController = TextEditingController();
+  final TextEditingController _descController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +22,10 @@ class _PayFormState extends State<PayForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          G1PayAmountField(controller: _controller),
+          G1PayAmountField(controller: _amountController),
           const SizedBox(height: 10.0),
           TextField(
-            controller: _controller,
+            controller: _descController,
             decoration: InputDecoration(
               labelText: tr('g1_form_pay_desc'),
               hintText: tr('g1_form_pay_hint'),

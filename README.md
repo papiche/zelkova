@@ -141,6 +141,14 @@ following code:
 |------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
 | ![Home Dark](./assets/img/home_dark.png "The info page with a light theme.") | ![Info Dark](./assets/img/info_dark.png "The info page with a dark theme.") |
 
+
+## Credits
+
+- G1 logo
+- undraw intro images: https://undraw.co/license 
+
+Thanks!
+
 ## License
 
 MIT

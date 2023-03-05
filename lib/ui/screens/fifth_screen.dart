@@ -24,7 +24,7 @@ class FifthScreen extends StatelessWidget {
             LinkCard(
                 title: 'code_card_title',
                 icon: Icons.code_rounded,
-                url: Uri.parse('https://git.duniter.org/public')),
+                url: Uri.parse('https://git.duniter.org/vjrj/ginkgo')),
             if (false) const TextDivider(text: 'author_divider_title'),
             if (false)
               GridView.count(

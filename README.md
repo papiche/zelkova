@@ -18,6 +18,10 @@
 *   View transaction history
 *   View G1 balance and currency conversion rate
 
+## Demo
+
+[https://g1demo.comunes.net/](https://g1demo.comunes.net/)
+
 ## Installation
 
 This repository requires [Flutter](https://flutter.dev/docs/get-started/install) to be installed and
@@ -26,7 +30,7 @@ present in your development environment.
 Clone the project and enter the project folder.
 
 ```sh
-git clone GITURL.git
+git clone https://git.duniter.org/vjrj/ginkgo.git
 cd ginkgo
 ```
 
@@ -82,7 +86,7 @@ To add translations, add it to `assets/translations` and enable it in `main.dart
 
 | Wallet                                                                         | Terminal card                                                                    |
 |--------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
-| ![Home Light](./assets/img/home_light.png "A walled in form of credit card") | ![Terminal card](./assets/img/terminal.png "A terminal card metaphor") |
+| ![Card](./assets/img/card.png "A walled in form of credit card") | ![Terminal card](./assets/img/terminal.png "A terminal card metaphor") |
 
 ## Credits
 

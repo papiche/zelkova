@@ -73,6 +73,7 @@ void main() async {
       supportedLocales: const <Locale>[
         Locale('en'),
         Locale('es'),
+        Locale('fr'),
       ],
       fallbackLocale: const Locale('en'),
       useFallbackTranslations: true,

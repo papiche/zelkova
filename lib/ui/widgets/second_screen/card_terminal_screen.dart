@@ -7,9 +7,9 @@ import '../../../shared_prefs.dart';
 import 'card_terminal_status.dart';
 
 class CardTerminalScreen extends StatelessWidget {
-  const CardTerminalScreen({super.key, required this.text});
+  const CardTerminalScreen({super.key, required this.amount});
 
-  final String text;
+  final String amount;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,7 @@ class CardTerminalScreen extends StatelessWidget {
                           child: CardTerminalStatus(online: true)),
                       Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Text(text,
+                          child: Text(amount,
                               textAlign: TextAlign.right,
                               style: TextStyle(
                                 fontFamily: 'LCDMono',
@@ -74,7 +74,7 @@ class CardTerminalScreen extends StatelessWidget {
             Expanded(
                 child: Column(children: <Widget>[
               QrImage(
-                data: _getQrUi(SharedPreferencesHelper().getPubKey(), text),
+                data: _getQrUi(SharedPreferencesHelper().getPubKey(), amount),
                 size: 160.0,
               )
             ])),
@@ -106,7 +106,9 @@ class CardTerminalScreen extends StatelessWidget {
                         ),
                         decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: tr('show-qr-to-client'),
+                          hintText: amount.isNotEmpty
+                              ? tr('show-qr-to-client-amount')
+                              : tr('show-qr-to-client'),
                           hintStyle: const TextStyle(
                             fontFamily: 'Roboto Mono',
                             color: Colors.grey,

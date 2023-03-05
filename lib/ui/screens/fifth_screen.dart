@@ -20,7 +20,8 @@ class FifthScreen extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           children: <Widget>[
             const Header(text: 'bottom_nav_fifth'),
-            InfoCard(title: duniterNet, icon: Icons.hub, translate: false),
+            InfoCard(
+                title: 'connected-to', subtitle: duniterNet, icon: Icons.hub),
             LinkCard(
                 title: 'code_card_title',
                 icon: Icons.code_rounded,

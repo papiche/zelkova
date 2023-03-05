@@ -32,8 +32,8 @@ class DuniterNodeManager {
   final int _retryCount = 3;
   Map<String, int> _nodeErrors = <String, int>{};
   Timer? _resetErrorsTimer;
-  String? _fastestNode;
-  late Duration? _fastestLatency;
+  String _fastestNode = 'https://g1.duniter.org';
+  late Duration _fastestLatency = const Duration(minutes: 1);
 
   Future<dynamic> makeRequest(String endpoint) async {
     Response response;

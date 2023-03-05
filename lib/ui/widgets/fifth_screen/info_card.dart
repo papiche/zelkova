@@ -6,10 +6,12 @@ class InfoCard extends StatelessWidget {
   const InfoCard(
       {super.key,
       required this.title,
+      this.subtitle = '',
       required this.icon,
       this.translate = true});
 
   final String title;
+  final String subtitle;
   final IconData icon;
   final bool translate;
 
@@ -32,6 +34,7 @@ class InfoCard extends StatelessWidget {
           child: ListTile(
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(12))),
+            subtitle: subtitle.isNotEmpty ? Text(subtitle) : null,
             title: Row(
               children: <Widget>[
                 Icon(icon, color: Theme.of(context).colorScheme.primary),

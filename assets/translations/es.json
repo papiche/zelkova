@@ -40,5 +40,6 @@
   "card-validity": "Validez",
   "card-validity-tooltip": "Tenga en cuenta que este monedero solo es accesible mientras utiliza este navegador y este dispositivo específico. Si borra o restablece el navegador, perderá el acceso a este monedero y los fondos almacenados en el.",
   "demo-title": "Esto es una demostración",
-  "demo-desc": "Por favor, no utilice esto aún para transacciones reales."
+  "demo-desc": "Por favor, no utilice esto aún para transacciones reales.",
+  "connected-to": "Estamos conectados al nodo:"
 }

@@ -40,5 +40,6 @@
   "card-validity": "Validité",
   "card-validity-tooltip": "Veuillez noter que ce portefeuille n'est accessible que lors de l'utilisation de ce navigateur et de cet appareil spécifiques. Si vous supprimez ou réinitialisez le navigateur, vous perdrez l'accès à ce portefeuille et aux fonds qu'il contient.",
   "demo-title": "Ceci est une démonstration",
-  "demo-desc": "Veuillez vous abstenir d'utiliser ceci avec de vraies transactions pour le moment."
+  "demo-desc": "Veuillez vous abstenir d'utiliser ceci avec de vraies transactions pour le moment.",
+  "connected-to": "Nous sommes connectés au nœud:"
 }

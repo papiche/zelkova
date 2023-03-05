@@ -75,6 +75,7 @@ void main() async {
     // bandwidth
     DuniterNodeManager().loadNodes();
   });
+  DuniterNodeManager().init();
 
   runApp(
     EasyLocalization(

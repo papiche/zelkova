@@ -40,5 +40,6 @@
   "card-validity": "Validity",
   "card-validity-tooltip": "Please note that this wallet is only accessible while using this specific browser and device. If you delete or reset the browser, you will lose access to this wallet and the funds stored in it.",
   "demo-title": "This is a demo",
-  "demo-desc": "Please refrain from using this with real transactions for now."
+  "demo-desc": "Please refrain from using this with real transactions for now.",
+  "connected-to": "We are connected to node:"
 }

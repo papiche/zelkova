@@ -54,7 +54,7 @@ This repository makes use of the following pub packages:
 
 | Package                                                             | Version | Usage                                                |
 |---------------------------------------------------------------------|---------|------------------------------------------------------|
-| [Durt](https://pub.dev/packages/durt)                               | ^1.0.6  | Duniter crypto lib                                   |
+| [Durt](https://pub.dev/packages/durt)                               | ^0.1.6  | Duniter crypto lib                                   |
 | [Bloc](https://pub.dev/packages/bloc)                               | ^8.1.0  | State management                                     |
 | [Flutter Bloc](https://pub.dev/packages/flutter_bloc)               | ^8.1.1  | State management                                     |
 | [Hydrated Bloc](https://pub.dev/packages/hydrated_bloc)             | ^9.0.0  | Persists Bloc state with Hive                        |

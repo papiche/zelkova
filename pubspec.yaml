@@ -74,7 +74,7 @@ flutter:
     - assets/img/gbrevedot_alt.svg
     - assets/img/gbrevedot_alt.png
     - assets/.env.development
-    - assets/.env.production
+    - assets/env.production.txt
     - assets/img/undraw_intro_1.png
     - assets/img/undraw_intro_2.png
     - assets/img/undraw_intro_3.png

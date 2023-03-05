@@ -49,7 +49,7 @@ class _CardTerminalState extends State<CardTerminal> {
       ),
       child: Container(
         width: 320.0,
-        height: 1000,
+        height: 800,
         padding: const EdgeInsets.all(10.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16.0),

@@ -9,9 +9,7 @@ class SecondScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: Theme.of(context).colorScheme.background,
-      child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          physics: const BouncingScrollPhysics(),
+      child: Column(
           children: const <Widget>[SizedBox(height: 36), CardTerminal()]),
     );
   }

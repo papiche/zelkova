@@ -1,19 +1,14 @@
 import 'dart:convert';
-import 'dart:io' show Platform;
 import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:durt/durt.dart';
 
 Random createRandom() {
-  if (Platform.isIOS || Platform.isAndroid) {
-    try {
-      return Random.secure();
-    } catch (e) {
-      return Random();
-    }
-  } else {
+  try {
     return Random.secure();
+  } catch (e) {
+    return Random();
   }
 }
 

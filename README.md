@@ -82,8 +82,6 @@ To add translations, add it to `assets/translations` and enable it in `main.dart
 
 ## Screenshots
 
-#### Light Theme
-
 | Wallet                                                                         | Terminal card                                                                    |
 |--------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
 | ![Card](./assets/img/card.png "A walled in form of credit card") | ![Terminal card](./assets/img/terminal.png "A terminal card metaphor") |

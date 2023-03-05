@@ -25,7 +25,7 @@ class _FirstScreenState extends State<FirstScreen> {
         Flushbar<void>(
           message: tr('demo-title'),
           title: tr('demo-desc'),
-          duration: const Duration(seconds: 4),
+          duration: const Duration(seconds: 3),
           flushbarPosition: FlushbarPosition.TOP,
           onStatusChanged: (FlushbarStatus? status) {
             if (status == FlushbarStatus.DISMISSED) {

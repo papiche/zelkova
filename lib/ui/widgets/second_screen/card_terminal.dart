@@ -65,7 +65,7 @@ class _CardTerminalState extends State<CardTerminal> {
         child: Column(
             //crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              CardTerminalScreen(text: _currentValue),
+              CardTerminalScreen(amount: _currentValue),
               const SizedBox(height: 8.0),
               Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -139,8 +139,12 @@ class _CardTerminalState extends State<CardTerminal> {
 }
 
 Future<void> vibrateIfPossible() async {
-  final bool? hasVibrator = await Vibration.hasVibrator();
-  if (hasVibrator ?? false) {
-    Vibration.vibrate(duration: 1000);
+  try {
+    final bool? hasVibrator = await Vibration.hasVibrator();
+    if (hasVibrator ?? false) {
+      Vibration.vibrate(duration: 1000);
+    }
+  } catch (e) {
+    // ok we tryied...
   }
 }

@@ -7,20 +7,10 @@ import 'package:durt/durt.dart';
 
 Random createRandom() {
   if (Platform.isIOS || Platform.isAndroid) {
-    final String osVersion = Platform.operatingSystemVersion;
-
-    final int currentYear = DateTime.now().year;
-    final int osYear = int.parse(osVersion.split('.')[0]);
-    final bool isOldDevice = currentYear - osYear >= 5;
-
-    if (isOldDevice) {
+    try {
+      return Random.secure();
+    } catch (e) {
       return Random();
-    } else {
-      try {
-        return Random.secure();
-      } catch (e) {
-        return Random();
-      }
     }
   } else {
     return Random.secure();

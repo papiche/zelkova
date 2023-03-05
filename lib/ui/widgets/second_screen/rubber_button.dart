@@ -35,7 +35,7 @@ class RubberButton extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontFamily: 'Roboto Mono',
-                    fontSize: 34,
+                    fontSize: 32,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ))

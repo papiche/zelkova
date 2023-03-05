@@ -1,21 +1,55 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:vibration/vibration.dart';
 
-import 'card_terminal_button.dart';
+import 'card_terminal_screen.dart';
+import 'rubber_button.dart';
 
-class CardTerminal extends StatelessWidget {
+class CardTerminal extends StatefulWidget {
   const CardTerminal({super.key});
 
   @override
+  State<CardTerminal> createState() => _CardTerminalState();
+}
+
+class _CardTerminalState extends State<CardTerminal> {
+  String _currentValue = '';
+  final List<String> _numbers = <String>[
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    'DEC',
+    '0',
+    '#',
+  ];
+  final int _cancelIndex = 12;
+  final int _backspaceIndex = 13;
+  final int _submitIndex = 14;
+
+  late String _decimalSep;
+
+  @override
   Widget build(BuildContext context) {
-    return Card(
+    _decimalSep = NumberFormat.decimalPattern(context.locale.toString())
+        .symbols
+        .DECIMAL_SEP;
+    _numbers[9] = _decimalSep;
+    return Expanded(
+        child: Center(
+            child: Card(
       elevation: 8.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0),
       ),
       child: Container(
         width: 320.0,
-        // height: 200.0,
+        height: 1000,
         padding: const EdgeInsets.all(10.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16.0),
@@ -29,70 +63,84 @@ class CardTerminal extends StatelessWidget {
           ),
         ),
         child: Column(
-          //crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Card(
-                elevation: 8.0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16.0),
-                ),
-                child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Container(
-                        // padding: const EdgeInsets.all(20.0),
-                        color: Colors.white,
-                        width: double.infinity,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Image.network(
-                            'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/QR_Code_Example.svg/368px-QR_Code_Example.svg.png?20111025115625',
-                            width: 200,
-                            height: 200,
-                          ),
-                        )))),
-            const SizedBox(height: 8.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(
-                'Muestra este código QR a tus clientes para recibir pagos',
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.8),
-                  fontSize: 18.0,
-                ),
-              ),
-            ),
-            Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: GridView.count(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 8,
-                    mainAxisSpacing: 8,
-                    childAspectRatio: 1.75 / 1,
-                    padding: EdgeInsets.zero,
-                    children: <Widget>[
-                      CardTerminalButton(text: '1'),
-                      CardTerminalButton(text: '2'),
-                      CardTerminalButton(text: '3'),
-                      CardTerminalButton(text: '4'),
-                      CardTerminalButton(text: '5'),
-                      CardTerminalButton(text: '6'),
-                      CardTerminalButton(text: '7'),
-                      CardTerminalButton(text: '8'),
-                      CardTerminalButton(text: '9'),
-                      CardTerminalButton(
-                          text:
-                              '*${NumberFormat.decimalPattern(context.locale.toString()).symbols.DECIMAL_SEP}'),
-                      CardTerminalButton(text: '0'),
-                      CardTerminalButton(text: '#'),
-                      CardTerminalButton(bgColor: const Color(0xFFCD303D)),
-                      CardTerminalButton(bgColor: const Color(0xFFF7E378)),
-                      CardTerminalButton(bgColor: const Color(0xFF36B649)),
-                    ])),
-          ],
-        ),
+            //crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              CardTerminalScreen(text: _currentValue),
+              const SizedBox(height: 8.0),
+              Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: GridView.count(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8,
+                      childAspectRatio: 1.75 / 1,
+                      padding: EdgeInsets.zero,
+                      children: <Widget>[
+                        for (int i = 0; i < _numbers.length + 3; i++)
+                          _buildKeyboardButton(i)
+                      ]))
+            ]),
       ),
-    );
+    )));
+  }
+
+  Widget _buildKeyboardButton(int index) {
+    if (index == _backspaceIndex) {
+      return RubberButton(
+          // Yellow, remove
+          bgColor: const Color(0xFFF7E378),
+          icon: Icons.backspace,
+          onPressed: () {
+            setState(() {
+              _currentValue = _currentValue.isNotEmpty
+                  ? _currentValue.substring(0, _currentValue.length - 1)
+                  : '';
+              vibrateIfPossible();
+            });
+          });
+    } else if (index == _submitIndex) {
+      return RubberButton(
+          // Green, send
+          bgColor: const Color(0xFF36B649),
+          icon: Icons.subdirectory_arrow_left,
+          onPressed: () {
+            vibrateIfPossible();
+          });
+    } else if (index == _cancelIndex) {
+      return RubberButton(
+          // Red, cancel
+          bgColor: const Color(0xFFCD303D),
+          icon: Icons.cancel,
+          onPressed: () {
+            setState(() {
+              _currentValue = '';
+              vibrateIfPossible();
+            });
+          });
+    } else
+      return RubberButton(
+          label: _numbers[index],
+          onPressed: () {
+            if (_numbers[index] == '#') {
+              return;
+            }
+            if (_numbers[index] == _decimalSep &&
+                _currentValue.contains(_decimalSep)) {
+              return;
+            }
+            setState(() {
+              _currentValue += _numbers[index];
+              vibrateIfPossible();
+            });
+          });
+  }
+}
+
+Future<void> vibrateIfPossible() async {
+  final bool? hasVibrator = await Vibration.hasVibrator();
+  if (hasVibrator ?? false) {
+    Vibration.vibrate(duration: 1000);
   }
 }

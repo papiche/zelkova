@@ -31,7 +31,8 @@ class _PayContactSearchWidgetState extends State<PayContactSearchWidget> {
       ),
       label: const Icon(Icons.qr_code_scanner),
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.blue,
+        minimumSize: const Size(double.infinity, 60.0),
+        backgroundColor: Theme.of(context).colorScheme.primary,
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(6.0),
@@ -39,16 +40,4 @@ class _PayContactSearchWidgetState extends State<PayContactSearchWidget> {
       ),
     );
   }
-} /*
-              Expanded(
-                child: ListView.builder(
-                  itemCount: 20,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                      title: Text('Resultado $index'),
-                    );
-                  },
-                ),
-              ),
-
-    */
+}

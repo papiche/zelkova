@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_logger/easy_logger.dart';
 import 'package:flutter/foundation.dart';
@@ -11,14 +12,16 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:responsive_framework/responsive_wrapper.dart';
 
 import 'config/theme.dart';
 import 'cubit/theme_cubit.dart';
+import 'shared_prefs.dart';
 import 'ui/screens/skeleton_screen.dart';
 
 // logs
 final EasyLogger logger = EasyLogger(
-  name: tr('app_name'),
+  name: 'ginkgo',
   defaultLevel: LevelMessages.debug,
   enableBuildModes: <BuildMode>[
     BuildMode.debug,
@@ -42,6 +45,11 @@ void main() async {
     await FlutterDisplayMode.setHighRefreshRate();
   }
 
+  final SharedPreferencesHelper shared = SharedPreferencesHelper();
+  await shared.init();
+  await shared.getWallet();
+  assert(shared.getPubKey() != null);
+
   // .env
   await dotenv.load(
       fileName: kReleaseMode
@@ -64,7 +72,7 @@ void main() async {
       path: 'assets/translations',
       supportedLocales: const <Locale>[
         Locale('en'),
-        Locale('de'),
+        Locale('es'),
       ],
       fallbackLocale: const Locale('en'),
       useFallbackTranslations: true,
@@ -85,9 +93,9 @@ class _AppIntro extends State<AppIntro> {
       GlobalKey<IntroductionScreenState>();
 
   void _onIntroEnd(BuildContext context) {
-    // Navegar a la pantalla de inicio de la aplicación después de que se complete la introducción
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const SkeletonScreen()),
+      MaterialPageRoute<void>(
+          builder: (BuildContext _) => const SkeletonScreen()),
     );
   }
 
@@ -98,18 +106,17 @@ class _AppIntro extends State<AppIntro> {
       pages: <PageViewModel>[
         for (int i = 1; i <= 5; i++)
           createPageViewModel('intro_${i}_title', 'intro_${i}_description',
-              'assets/img/undraw_intro_$i.png')
+              'assets/img/undraw_intro_$i.png'),
       ],
       onDone: () => _onIntroEnd(context),
       showSkipButton: true,
       skipOrBackFlex: 0,
+      onSkip: () => _onIntroEnd(context),
       nextFlex: 0,
-      // FIXME
-      skip: const Text('Saltar'),
+      skip: Text(tr('skip')),
       next: const Icon(Icons.arrow_forward),
-      // FIXME
-      done:
-          const Text('Empezar', style: TextStyle(fontWeight: FontWeight.w600)),
+      done: Text(tr('start'),
+          style: const TextStyle(fontWeight: FontWeight.w600)),
       dotsDecorator: const DotsDecorator(
         size: Size(10.0, 10.0),
         color: Color(0xFFBDBDBD),
@@ -137,8 +144,15 @@ PageViewModel createPageViewModel(
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final bool _skip = false;
 
   @override
   Widget build(BuildContext context) {
@@ -146,9 +160,10 @@ class MyApp extends StatelessWidget {
       create: (BuildContext context) => ThemeCubit(),
       child: BlocBuilder<ThemeCubit, ThemeModeState>(
         builder: (BuildContext context, ThemeModeState state) {
-          return MaterialApp(
+          return ConnectivityAppWrapper(
+              app: MaterialApp(
             /// Localization is not available for the title.
-            title: 'Flutter Production Boilerplate',
+            title: 'Ğinkgo',
 
             /// Theme stuff
             theme: lightTheme,
@@ -160,8 +175,29 @@ class MyApp extends StatelessWidget {
             supportedLocales: context.supportedLocales,
             locale: context.locale,
             debugShowCheckedModeBanner: false,
-            home: const MediaQuery(data: MediaQueryData(), child: AppIntro()),
-          );
+            home: MediaQuery(
+              data: const MediaQueryData(),
+              child: _skip ? const SkeletonScreen() : const AppIntro(),
+            ),
+            builder: (BuildContext buildContext, Widget? widget) {
+              return ResponsiveWrapper.builder(
+                ConnectivityWidgetWrapper(
+                  message: tr('offline'),
+                  height: 20,
+                  child: widget!,
+                ),
+                maxWidth: 480,
+                minWidth: 480,
+                // defaultScale: true,
+                breakpoints: <ResponsiveBreakpoint>[
+                  // const ResponsiveBreakpoint.resize(200, name: MOBILE),
+                  const ResponsiveBreakpoint.resize(480, name: TABLET),
+                  const ResponsiveBreakpoint.resize(480, name: DESKTOP),
+                ],
+                background: Container(color: const Color(0xFFF5F5F5)),
+              );
+            },
+          ));
         },
       ),
     );

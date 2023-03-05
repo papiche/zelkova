@@ -1,5 +1,5 @@
-name: flutter_production_boilerplate
-description: A new Flutter project containing bloc, hive & easy localization.
+name: Ğinkgo
+description: A Ğinkgo light wallet
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -44,6 +44,16 @@ dependencies:
   qr_flutter: ^4.0.0
   simple_barcode_scanner: ^0.0.8
   introduction_screen: ^3.1.6
+  connectivity_wrapper: ^1.1.1
+  responsive_framework: ^0.2.0
+  durt: ^0.1.6
+  flutter_signature_pad: ^3.0.1
+  crypto: ^3.0.2
+  pointycastle: ^3.6.2
+  flutter_neumorphic: ^3.2.0
+  shared_preferences: ^2.0.18
+  another_flushbar: ^1.12.29
+  vibration: ^1.7.6
 
 dev_dependencies:
   flutter_test:
@@ -64,6 +74,9 @@ flutter:
   assets:
     - assets/translations/
     - assets/img/gbrevedot.svg
+    - assets/img/gbrevedot.png
+    - assets/img/gbrevedot_alt.svg
+    - assets/img/gbrevedot_alt.png
     - assets/.env.development
     - assets/.env.production
     - assets/img/undraw_intro_1.png
@@ -71,6 +84,7 @@ flutter:
     - assets/img/undraw_intro_3.png
     - assets/img/undraw_intro_4.png
     - assets/img/undraw_intro_5.png
+    - assets/img/chip.svg
 
   fonts:
     - family: Nunito

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="512"
+   height="512"
+   viewBox="-0.72 -0.72 1.44 1.44"
+   version="1.1"
+   id="svg7"
+   sodipodi:docname="gbrevedot_alt.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs11" />
+  <sodipodi:namedview
+     id="namedview9"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="true"
+     showgrid="false"
+     inkscape:zoom="1.4042969"
+     inkscape:cx="256.35605"
+     inkscape:cy="256"
+     inkscape:window-width="3440"
+     inkscape:window-height="1370"
+     inkscape:window-x="0"
+     inkscape:window-y="33"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg7" />
+  <path
+     id="g"
+     d="M 0.176775,0.176775 A 0.25,0.25 0 1 1 0.2165,-0.125 L 0.433025,-0.25 A 0.5,0.5 0 1 0 0.35355,0.35355 l 0.0884,0.0884 V 0.0884 H 0.0884 Z"
+     fill="#000000"
+     style="stroke-width:0.25;fill:#cccccc" />
+  <path
+     id="breve"
+     d="m -0.09916917,-0.70930232 -0.09916917,0.0760952 a 0.25000001,0.25000001 0 0 0 0.39667658,7.69e-6 l -0.09917292,-0.076104 a 0.125,0.125 0 0 1 -0.19833449,1.11e-6 z"
+     fill="#000000"
+     style="stroke-width:0.125;fill:#cccccc" />
+  <circle
+     cx="0"
+     cy="0.625"
+     r="0.088399999"
+     fill="#000000"
+     id="circle4"
+     style="stroke-width:0.25;fill:#cccccc" />
+</svg>

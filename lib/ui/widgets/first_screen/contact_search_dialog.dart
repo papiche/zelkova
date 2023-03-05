@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 import '../../../config/config.dart';
-import '../../../main.dart';
 import 'circular_icon.dart';
 
 class SearchDialog extends StatefulWidget {
@@ -32,13 +31,13 @@ class _SearchDialogState extends State<SearchDialog> {
       _isLoading = true;
     });
     final String url = '$duniterLookupUrl$_searchTerm';
-    logger(url);
+    debugPrint(url);
     final http.Response response = await http.get(Uri.parse(url));
 
     setState(() {
       _results = (const JsonDecoder().convert(response.body)
           as Map<String, dynamic>)['results'] as List<dynamic>;
-      logger(_results.toString());
+      debugPrint(_results.toString());
       _isLoading = false;
     });
   }
@@ -53,9 +52,9 @@ class _SearchDialogState extends State<SearchDialog> {
           IconButton(
               icon: const Icon(Icons.qr_code_scanner),
               onPressed: () async {
-                final res = await Navigator.push(
+                final String? res = await Navigator.push(
                     context,
-                    MaterialPageRoute(
+                    MaterialPageRoute<String>(
                       builder: (BuildContext context) =>
                           const SimpleBarcodeScannerPage(),
                     ));
@@ -117,6 +116,9 @@ class _SearchDialogState extends State<SearchDialog> {
                                   as List<dynamic>)[0]
                               as Map<String, dynamic>)['uid'] as String),
                       tileColor: index.isEven ? Colors.grey[200] : Colors.white,
+                      onTap: () {
+                        Navigator.pop(context, _results[index]);
+                      },
                       leading: FutureBuilder<String>(
                         future: getAvatar((_results[index]
                             as Map<String, dynamic>)['pubkey'] as String),
@@ -149,13 +151,11 @@ class _SearchDialogState extends State<SearchDialog> {
                           color: isFavorite ? Colors.red.shade400 : null,
                         ),
                         onPressed: () {
-                          // Aquí puedes agregar la lógica para marcar o desmarcar como favorito
                           setState(() {
                             isFavorite = !isFavorite;
                           });
                         },
                       ),
-                      onTap: () {},
                     );
                   },
                 ),

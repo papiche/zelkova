@@ -146,6 +146,7 @@ following code:
 
 - G1 logo
 - undraw intro images: https://undraw.co/license 
+- Chipcard https://commons.wikimedia.org/wiki/File:Chipcard.svg under the Creative Commons Attribution-Share Alike 3.0 Unported license.
 
 Thanks!
 

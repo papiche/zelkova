@@ -1,23 +1,58 @@
-// ignore_for_file: unused_local_variable
+import 'dart:convert';
+import 'dart:io' show Platform;
+import 'dart:math';
+import 'dart:typed_data';
 
-import 'package:ed25519_edwards/ed25519_edwards.dart' as ed;
-import 'package:ed25519_edwards/ed25519_edwards.dart';
+import 'package:durt/durt.dart';
 
-void generate() {
-// Generar un nuevo par de claves Ed25519
-  final KeyPair keyPair = ed.generateKey();
+Random createRandom() {
+  if (Platform.isIOS || Platform.isAndroid) {
+    final String osVersion = Platform.operatingSystemVersion;
 
-// Obtener la clave pública y privada como cadenas de bytes
-  final PublicKey publicKeyBytes = keyPair.publicKey;
-  final PrivateKey privateKeyBytes = keyPair.privateKey;
+    final int currentYear = DateTime.now().year;
+    final int osYear = int.parse(osVersion.split('.')[0]);
+    final bool isOldDevice = currentYear - osYear >= 5;
 
-  final String publicKeyHex = publicKeyBytes.bytes
-      .map((int b) => b.toRadixString(16).padLeft(2, '0'))
-      .join();
-  final String privateKeyHex = privateKeyBytes.bytes
-      .map((int b) => b.toRadixString(16).padLeft(2, '0'))
-      .join();
+    if (isOldDevice) {
+      return Random();
+    } else {
+      try {
+        return Random.secure();
+      } catch (e) {
+        return Random();
+      }
+    }
+  } else {
+    return Random.secure();
+  }
+}
 
-  /* print("Clave pública: $publicKeyHex");
-  print("Clave privada: $privateKeyHex"); */
+Uint8List generateUintSeed() {
+  final Random random = createRandom();
+  return Uint8List.fromList(List<int>.generate(32, (_) => random.nextInt(256)));
+}
+
+String seedToString(Uint8List seed) {
+  final Uint8List seedsBytes = Uint8List.fromList(seed);
+  final String encoded = json.encode(seedsBytes.toList());
+  return encoded;
+}
+
+CesiumWallet generateCesiumWallet(Uint8List seed) {
+  return CesiumWallet.fromSeed(seed);
+}
+
+Uint8List seedFromString(String sString) {
+  final List<dynamic> list = json.decode(sString) as List<dynamic>;
+  final Uint8List bytes =
+      Uint8List.fromList(list.map((dynamic e) => e as int).toList());
+  return bytes;
+}
+
+String generateSalt(int length) {
+  final Random random = createRandom();
+  const String charset =
+      '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  return List<String>.generate(
+      length, (int index) => charset[random.nextInt(charset.length)]).join();
 }

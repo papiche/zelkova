@@ -1,21 +1,22 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
+import '../g1/duniter_node_manager.dart';
+
 String get duniterNet {
-  return dotenv.get('NET');
+  return DuniterNodeManager().fastestNode;
 }
 
 String get duniterLookupUrl {
-  return '${duniterNet}wot/lookup/';
+  return '${duniterNet}/wot/lookup/';
 }
 
 String get duniterNetworkPeers {
-  return '${duniterNet}network/peers';
+  return '${duniterNet}/network/peers';
 }
 
 String duniterAccountAvatar(String publickey) {
-  return '${duniterNet}node/peers/$publickey/avatar';
+  return '${duniterNet}/node/peers/$publickey/avatar';
 }
 
 Future<String> getAvatar(String publicKey) async {

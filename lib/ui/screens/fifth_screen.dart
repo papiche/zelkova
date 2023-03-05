@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
-import '../../config/config.dart';
+import '../../config/api.dart';
 import '../widgets/fifth_screen/grid_item.dart';
 import '../widgets/fifth_screen/info_card.dart';
 import '../widgets/fifth_screen/link_card.dart';
@@ -20,7 +20,7 @@ class FifthScreen extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           children: <Widget>[
             const Header(text: 'bottom_nav_fifth'),
-            InfoCard(title: duniterNet, icon: Icons.hub),
+            InfoCard(title: duniterNet, icon: Icons.hub, translate: false),
             LinkCard(
                 title: 'code_card_title',
                 icon: Icons.code_rounded,

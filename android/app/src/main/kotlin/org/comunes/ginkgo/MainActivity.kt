@@ -1,4 +1,4 @@
-package dev.feichtinger.flutterproductionboilerplate.flutter_production_boilerplate
+package org.comunes.ginkgo
 
 import io.flutter.embedding.android.FlutterActivity
 

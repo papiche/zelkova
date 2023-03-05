@@ -1,7 +1,9 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../../g1/duniter_node_manager.dart';
 import '../widgets/first_screen/credit_card.dart';
 import '../widgets/first_screen/pay_contact_search_bar.dart';
 import '../widgets/header.dart';
@@ -19,9 +21,9 @@ class _FirstScreenState extends State<FirstScreen> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // ignore: always_specify_types
-      if (_showFlushbar)
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      DuniterNodeManager().init();
+      if (_showFlushbar && kReleaseMode) {
         Flushbar<void>(
           message: tr('demo-title'),
           title: tr('demo-desc'),
@@ -37,6 +39,7 @@ class _FirstScreenState extends State<FirstScreen> {
             }
           },
         ).show(context);
+      }
     });
     return Material(
       color: Theme.of(context).colorScheme.background,

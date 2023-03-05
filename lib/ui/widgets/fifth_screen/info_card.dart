@@ -3,10 +3,15 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class InfoCard extends StatelessWidget {
-  const InfoCard({super.key, required this.title, required this.icon});
+  const InfoCard(
+      {super.key,
+      required this.title,
+      required this.icon,
+      this.translate = true});
 
   final String title;
   final IconData icon;
+  final bool translate;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +37,7 @@ class InfoCard extends StatelessWidget {
                 Icon(icon, color: Theme.of(context).colorScheme.primary),
                 const SizedBox(width: 16),
                 Text(
-                  tr(title),
+                  translate ? tr(title) : title,
                   style: Theme.of(context)
                       .textTheme
                       .titleMedium!

@@ -1,19 +1,33 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
 import '../main.dart';
 
 class DuniterNodeManager {
-  DuniterNodeManager() {
-    _loadNodes();
+  factory DuniterNodeManager() {
+    return _instance;
+  }
+
+  DuniterNodeManager._internal() {
     _startResetErrorsTimer();
   }
 
-  final String _peerListUrl = 'https://nodes.duniter.org/network/peers';
-  List<String> _nodes = <String>[];
+  void init() {
+    loadNodes();
+  }
+
+  String get fastestNode {
+    return _fastestNode!;
+  }
+
+  static final DuniterNodeManager _instance = DuniterNodeManager._internal();
+
+  final String _peerListUrl = 'https://g1.duniter.org/network/peers';
+  final List<String> _nodes = <String>[];
   int _currentNodeIndex = 0;
   final int _retryCount = 3;
   Map<String, int> _nodeErrors = <String, int>{};
@@ -42,22 +56,55 @@ class DuniterNodeManager {
     throw Exception('No nodes available');
   }
 
-  Future<void> _loadNodes() async {
+  Future<void> loadNodes() async {
     try {
       final Response response = await http.get(Uri.parse(_peerListUrl));
       if (response.statusCode == 200) {
-        final List<dynamic> peerList =
-            jsonDecode(response.body) as List<dynamic>;
-        _nodes = peerList
+        final Map<String, dynamic> peerList =
+            jsonDecode(response.body) as Map<String, dynamic>;
+        final List<dynamic> peers = (peerList['peers'] as List<dynamic>)
             .where((dynamic peer) =>
                 (peer as Map<String, dynamic>)['currency'] == 'g1')
-            .map((dynamic peer) =>
-                'http://${(peer as Map<String, dynamic>)['host']}:${peer['port']}/')
+            .where((dynamic peer) =>
+                (peer as Map<String, dynamic>)['version'] == 10)
+            .where((dynamic peer) =>
+                (peer as Map<String, dynamic>)['status'] == 'UP')
             .toList();
+        for (final dynamic peer in peers) {
+          if (peer['endpoints'] != null) {
+            final List<String> endpoints =
+                List<String>.from(peer['endpoints'] as List<dynamic>);
+            for (int j = 0; j < endpoints.length; j++) {
+              if (endpoints[j].startsWith('BMAS')) {
+                String endpoint = endpoints[j].replaceAll('BMAS ', '');
+                if (endpoint.contains(' ')) {
+                  endpoint = endpoint.substring(0, endpoint.indexOf(' '));
+                }
+                endpoint = 'https://${endpoint.replaceAll(':443', '')}';
+                _nodes.add(endpoint);
+
+                final Duration latency = await _pingNode(endpoint);
+
+                if (_fastestNode == null || latency < _fastestLatency!) {
+                  _fastestNode = endpoint;
+                  _fastestLatency = latency;
+                  if (!kReleaseMode) {
+                    logger('Current faster node $_fastestNode');
+                  }
+                }
+              }
+            }
+          }
+        }
         _resetNodeErrors(null);
+      }
+      logger('Loaded ${_nodes.length} duniter nodes');
+      if (!kReleaseMode) {
+        logger(_nodes);
       }
     } catch (e) {
       logger('Error: $e');
+      rethrow;
     }
   }
 
@@ -95,19 +142,7 @@ class DuniterNodeManager {
     _cancelResetErrorsTimer();
   }
 
-  Future<String?> getFastestNode() async {
-    for (final String node in _nodes) {
-      final Duration latency = await pingNode(node);
-
-      if (_fastestNode == null || latency < _fastestLatency!) {
-        _fastestNode = node;
-        _fastestLatency = latency;
-      }
-    }
-    return _fastestNode;
-  }
-
-  Future<Duration> pingNode(String node) async {
+  Future<Duration> _pingNode(String node) async {
     try {
       final Stopwatch stopwatch = Stopwatch()..start();
       await http.get(Uri.parse('$node/network/peers/self/ping'));

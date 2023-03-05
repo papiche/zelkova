@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
+import 'package:cron/cron.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_logger/easy_logger.dart';
 import 'package:flutter/foundation.dart';
@@ -16,6 +17,7 @@ import 'package:responsive_framework/responsive_wrapper.dart';
 
 import 'config/theme.dart';
 import 'cubit/theme_cubit.dart';
+import 'g1/duniter_node_manager.dart';
 import 'shared_prefs.dart';
 import 'ui/screens/skeleton_screen.dart';
 
@@ -66,6 +68,13 @@ void main() async {
     HydratedBloc.storage =
         await HydratedStorage.build(storageDirectory: tmpDir);
   }
+
+  final Cron cron = Cron();
+  cron.schedule(Schedule.parse('*/45 * * * *'), () async {
+    // Every 45m check for faster node (maybe it something costly in terms of
+    // bandwidth
+    DuniterNodeManager().loadNodes();
+  });
 
   runApp(
     EasyLocalization(
@@ -153,7 +162,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final bool _skip = false;
+  final bool _skipIntro = !kReleaseMode;
 
   @override
   Widget build(BuildContext context) {
@@ -178,7 +187,7 @@ class _MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             home: MediaQuery(
               data: const MediaQueryData(),
-              child: _skip ? const SkeletonScreen() : const AppIntro(),
+              child: _skipIntro ? const SkeletonScreen() : const AppIntro(),
             ),
             builder: (BuildContext buildContext, Widget? widget) {
               return ResponsiveWrapper.builder(

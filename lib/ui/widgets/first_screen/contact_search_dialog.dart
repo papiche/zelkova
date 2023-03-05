@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
-import '../../../config/config.dart';
+import '../../../config/api.dart';
 import 'circular_icon.dart';
 
 class SearchDialog extends StatefulWidget {

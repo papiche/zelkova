@@ -29,9 +29,11 @@ class _FirstScreenState extends State<FirstScreen> {
           flushbarPosition: FlushbarPosition.TOP,
           onStatusChanged: (FlushbarStatus? status) {
             if (status == FlushbarStatus.DISMISSED) {
-              setState(() {
-                _showFlushbar = false;
-              });
+              if (mounted) {
+                setState(() {
+                  _showFlushbar = false;
+                });
+              }
             }
           },
         ).show(context);

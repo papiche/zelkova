@@ -82,9 +82,7 @@ class DuniterNodeManager {
                 }
                 endpoint = 'https://${endpoint.replaceAll(':443', '')}';
                 _nodes.add(endpoint);
-
                 final Duration latency = await _pingNode(endpoint);
-
                 if (_fastestNode == null || latency < _fastestLatency!) {
                   _fastestNode = endpoint;
                   _fastestLatency = latency;
@@ -99,9 +97,6 @@ class DuniterNodeManager {
         _resetNodeErrors(null);
       }
       logger('Loaded ${_nodes.length} duniter nodes');
-      if (!kReleaseMode) {
-        logger(_nodes);
-      }
     } catch (e) {
       logger('Error: $e');
       rethrow;
@@ -149,7 +144,9 @@ class DuniterNodeManager {
       stopwatch.stop();
       return stopwatch.elapsed;
     } catch (e) {
-      // Handle exception when node is unavailable
+      // Handle exception when node is unavailable etc
+      logger('Node $node does not respond to ping $e');
+      _incrementNodeErrors(node);
       return const Duration(days: 20);
     }
   }

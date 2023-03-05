@@ -1,6 +1,6 @@
 # Ğ1nkgo
 
-Ğ1nkgo is a lightweight Ĝ1 wallet for Duniter v1 written in Flutter. The app allows users to manage their Ĝ1 currency on their mobile device using just a browser.
+Ğ1nkgo (aka Ginkgo) is a lightweight Ĝ1 wallet for Duniter v1 written in Flutter. The app allows users to manage their Ĝ1 currency on their mobile device using just a browser.
 
 ## Features
 

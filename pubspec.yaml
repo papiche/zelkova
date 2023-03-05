@@ -1,4 +1,4 @@
-name: Ginkgo
+name: ginkgo
 description: A Ğinkgo light wallet
 
 # The following line prevents the package from being accidentally published to
@@ -35,7 +35,6 @@ dependencies:
   url_launcher: ^6.1.7
   ionicons: ^0.2.2
   hive_flutter: ^1.1.0
-  ed25519_edwards: ^0.2.1
   material_design_icons_flutter: ^6.0.7096
   flutter_svg: ^2.0.2
   flutter_dotenv: ^5.0.2
@@ -47,9 +46,6 @@ dependencies:
   connectivity_wrapper: ^1.1.1
   responsive_framework: ^0.2.0
   durt: ^0.1.6
-  flutter_signature_pad: ^3.0.1
-  crypto: ^3.0.2
-  pointycastle: ^3.6.2
   flutter_neumorphic: ^3.2.0
   shared_preferences: ^2.0.18
   another_flushbar: ^1.12.29

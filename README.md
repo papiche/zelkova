@@ -1,6 +1,6 @@
-# Ğinkgo
+# Ğ1nkgo
 
-Ğinkgo is a lightweight G1 wallet for Duniter v1 written in Flutter. The app allows users to manage their G1 currency on their mobile device using just a browser.
+Ğ1nkgo is a lightweight Ĝ1 wallet for Duniter v1 written in Flutter. The app allows users to manage their Ĝ1 currency on their mobile device using just a browser.
 
 ## Features
 
@@ -14,9 +14,9 @@
 
 ## Work in progress
 
-*   Send and receive G1 transactions
+*   Send and receive Ĝ1 transactions
 *   View transaction history
-*   View G1 balance and currency conversion rate
+*   View Ĝ1 balance and currency conversion rate
 
 ## Demo
 
@@ -88,7 +88,7 @@ To add translations, add it to `assets/translations` and enable it in `main.dart
 
 ## Credits
 
-- G1 logo from duniter.org
+- Ĝ1 logo from duniter.org used in the card
 - undraw intro images: https://undraw.co/license 
 - Chipcard https://commons.wikimedia.org/wiki/File:Chipcard.svg under the Creative Commons Attribution-Share Alike 3.0 Unported license.
 

@@ -6,6 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_logger/easy_logger.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -16,6 +17,7 @@ import 'package:responsive_framework/responsive_wrapper.dart';
 
 import 'app_block_observer.dart';
 import 'config/theme.dart';
+import 'data/models/payment_cubit.dart';
 import 'g1/node_bloc.dart';
 import 'shared_prefs.dart';
 import 'ui/screens/skeleton_screen.dart';
@@ -176,42 +178,50 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ConnectivityAppWrapper(
-        app: MaterialApp(
-      /// Localization is not available for the title.
-      title: 'Ğ1nkgo',
-      theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
-      darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
-
-      /// Theme stuff
-
-      /// Localization stuff
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
-      debugShowCheckedModeBanner: false,
-      home: MediaQuery(
-        data: const MediaQueryData(),
-        child: _skipIntro ? const SkeletonScreen() : const AppIntro(),
-      ),
-      builder: (BuildContext buildContext, Widget? widget) {
-        return ResponsiveWrapper.builder(
-          ConnectivityWidgetWrapper(
-            message: tr('offline'),
-            height: 20,
-            child: widget!,
+    return MultiBlocProvider(
+        providers: <BlocProvider>[
+          BlocProvider<PaymentCubit>(
+            create: (BuildContext context) => PaymentCubit(),
           ),
-          maxWidth: 480,
-          minWidth: 480,
-          // defaultScale: true,
-          breakpoints: <ResponsiveBreakpoint>[
-            // const ResponsiveBreakpoint.resize(200, name: MOBILE),
-            const ResponsiveBreakpoint.resize(480, name: TABLET),
-            const ResponsiveBreakpoint.resize(480, name: DESKTOP),
-          ],
-          background: Container(color: const Color(0xFFF5F5F5)),
-        );
-      },
-    ));
+          // Add other BlocProviders here if needed
+        ],
+        child: ConnectivityAppWrapper(
+            app: MaterialApp(
+          /// Localization is not available for the title.
+          title: 'Ğ1nkgo',
+          theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
+          darkTheme:
+              ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
+
+          /// Theme stuff
+
+          /// Localization stuff
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
+          debugShowCheckedModeBanner: false,
+          home: MediaQuery(
+            data: const MediaQueryData(),
+            child: _skipIntro ? const SkeletonScreen() : const AppIntro(),
+          ),
+          builder: (BuildContext buildContext, Widget? widget) {
+            return ResponsiveWrapper.builder(
+              ConnectivityWidgetWrapper(
+                message: tr('offline'),
+                height: 20,
+                child: widget!,
+              ),
+              maxWidth: 480,
+              minWidth: 480,
+              // defaultScale: true,
+              breakpoints: <ResponsiveBreakpoint>[
+                // const ResponsiveBreakpoint.resize(200, name: MOBILE),
+                const ResponsiveBreakpoint.resize(480, name: TABLET),
+                const ResponsiveBreakpoint.resize(480, name: DESKTOP),
+              ],
+              background: Container(color: const Color(0xFFF5F5F5)),
+            );
+          },
+        )));
   }
 }

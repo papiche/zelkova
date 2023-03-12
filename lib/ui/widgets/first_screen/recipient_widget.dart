@@ -10,46 +10,44 @@ class RecipientWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<PaymentCubit>(
-        create: (BuildContext context) => PaymentCubit(),
-        child: BlocBuilder<PaymentCubit, PaymentState>(
-            builder: (BuildContext context, PaymentState state) => Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        avatar(state.avatar != null, state.avatar),
-                        const SizedBox(width: 16.0),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                state.nick,
-                                style: const TextStyle(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                state.publicKey,
-                                style: const TextStyle(
-                                  fontSize: 16.0,
-                                ),
-                              ),
-                            ],
+    return BlocBuilder<PaymentCubit, PaymentState>(
+        builder: (BuildContext context, PaymentState state) => Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    avatar(state.avatar != null, state.avatar),
+                    const SizedBox(width: 16.0),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            state.nick,
+                            style: const TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.cancel),
-                          onPressed: () {
-                            context.read<PaymentCubit>().clearRecipient();
-                          },
-                        ),
-                      ],
+                          Text(
+                            state.publicKey,
+                            style: const TextStyle(
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                )));
+                    IconButton(
+                      icon: const Icon(Icons.cancel),
+                      onPressed: () {
+                        context.read<PaymentCubit>().clearRecipient();
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ));
   }
 }

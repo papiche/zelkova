@@ -27,6 +27,7 @@ class SkeletonScreen extends StatelessWidget {
         create: (BuildContext context) => BottomNavCubit(),
         child: Scaffold(
           extendBodyBehindAppBar: true,
+          resizeToAvoidBottomInset: true,
           appBar: const AppBarGone(),
 
           /// When switching between tabs this will fade the old

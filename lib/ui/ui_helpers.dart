@@ -49,3 +49,13 @@ Widget avatar(bool hasAvatar, Uint8List? rawAvatar,
       : CircularIcon(
           iconData: Icons.person, backgroundColor: color, iconColor: bgColor);
 }
+
+String humanizeFromToPubKey(String publicAddress, String address) {
+  if (address == publicAddress) {
+    return tr('your_wallet');
+  } else {
+    return humanizePubKey(address);
+  }
+}
+
+String humanizePubKey(String address) => '\u{1F511}${address.substring(0, 8)}';

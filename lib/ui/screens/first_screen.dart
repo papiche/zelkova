@@ -14,6 +14,8 @@ class FirstScreen extends StatefulWidget {
 }
 
 class _FirstScreenState extends State<FirstScreen> {
+  final ScrollController _controller = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -21,26 +23,29 @@ class _FirstScreenState extends State<FirstScreen> {
           .showSnackBar(SnackBar(content: Text(tr('demo-desc'))));
     });
     return Material(
-      color: Theme.of(context).colorScheme.background,
-      child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          physics: const BouncingScrollPhysics(),
-          children: <Widget>[
-            const Header(text: 'credit_card_title'),
-            CreditCard(),
-            const SizedBox(height: 8),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Divider(
-                color:
-                    Theme.of(context).colorScheme.onBackground.withOpacity(.4),
+        color: Theme.of(context).colorScheme.background,
+        child: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            physics: const AlwaysScrollableScrollPhysics(),
+            controller: _controller,
+            shrinkWrap: true,
+            children: <Widget>[
+              const Header(text: 'credit_card_title'),
+              CreditCard(),
+              const SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Divider(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onBackground
+                      .withOpacity(.4),
+                ),
               ),
-            ),
-            const SizedBox(height: 10),
-            const PayContactSearchWidget(),
-            const SizedBox(height: 10),
-            const PayForm(),
-          ]),
-    );
+              const SizedBox(height: 10),
+              const PayContactSearchWidget(),
+              const SizedBox(height: 10),
+              const PayForm()
+            ]));
   }
 }

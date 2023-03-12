@@ -31,7 +31,7 @@ class RecipientWidget extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            state.publicKey,
+                            humanizePubKey(state.publicKey),
                             style: const TextStyle(
                               fontSize: 16.0,
                             ),

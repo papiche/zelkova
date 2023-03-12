@@ -15,10 +15,11 @@ import 'package:introduction_screen/introduction_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 
-import 'app_block_observer.dart';
+import 'app_bloc_observer.dart';
 import 'config/theme.dart';
 import 'data/models/payment_cubit.dart';
-import 'g1/node_bloc.dart';
+import 'g1/api.dart';
+import 'g1/node_list_cubit.dart';
 import 'shared_prefs.dart';
 import 'ui/screens/skeleton_screen.dart';
 
@@ -70,23 +71,11 @@ void main() async {
     HydratedBloc.storage =
         await HydratedStorage.build(storageDirectory: tmpDir);
   }
-  final NodeBloc nodeBloc = NodeBloc();
 
-  if (nodeBloc.nodeList.length < 10) {
-    // Load nodes from /network/peers
-    nodeBloc.loadNodes();
-  } else {
-    // Try to start with the persisted
+  // Reset hive during developing
+  if (!kReleaseMode) {
+    await HydratedBloc.storage.clear();
   }
-  logger(
-      'Starting with ${nodeBloc.nodeList.length} duniter nodes and ${nodeBloc.cPlusNodeList.length} c+ nodes');
-
-  final Cron cron = Cron();
-  cron.schedule(Schedule.parse('*/45 * * * *'), () async {
-    // Every 45m check for faster node (maybe it something costly in terms of
-    // bandwidth
-    nodeBloc.loadNodes();
-  });
 
   runApp(
     EasyLocalization(
@@ -179,10 +168,11 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-        providers: <BlocProvider>[
+        providers: <BlocProvider<dynamic>>[
           BlocProvider<PaymentCubit>(
-            create: (BuildContext context) => PaymentCubit(),
-          ),
+              create: (BuildContext context) => PaymentCubit()),
+          BlocProvider<NodeListCubit>(
+              create: (BuildContext context) => NodeListCubit()),
           // Add other BlocProviders here if needed
         ],
         child: ConnectivityAppWrapper(
@@ -205,6 +195,29 @@ class _MyAppState extends State<MyApp> {
             child: _skipIntro ? const SkeletonScreen() : const AppIntro(),
           ),
           builder: (BuildContext buildContext, Widget? widget) {
+            final NodeListCubit nodeCubit =
+                BlocProvider.of<NodeListCubit>(buildContext);
+            final int nDuniterNodes = nodeCubit.duniterNodes.length;
+            final int nCesiumPlusNodes = nodeCubit.cesiumPlusNodes.length;
+            if (nDuniterNodes < 10) {
+              // Load nodes from /network/peers
+              fetchDuniterNodes(nodeCubit);
+            } else {
+              // Try to start with the persisted
+            }
+            logger(
+                'Starting with $nDuniterNodes duniter nodes and $nCesiumPlusNodes c+ nodes');
+
+            final Cron cron = Cron();
+            cron.schedule(Schedule.parse('*/45 * * * *'), () async {
+              // Every 45m check for faster node (maybe it something costly in terms of
+              // bandwidth
+              // nodeCubit.fetchDuniterNodes();
+            });
+            cron.schedule(Schedule.parse('*/90 * * * *'), () async {
+              // nodeCubit.cleanDuniterErrorStats();
+            });
+
             return ResponsiveWrapper.builder(
               ConnectivityWidgetWrapper(
                 message: tr('offline'),

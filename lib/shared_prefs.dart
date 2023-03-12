@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:durt/durt.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'g1/keys_helper.dart';
+import 'g1/g1_helper.dart';
 import 'main.dart';
 
 class SharedPreferencesHelper {

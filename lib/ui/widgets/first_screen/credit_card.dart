@@ -10,12 +10,32 @@ class CreditCard extends StatelessWidget {
   CreditCard({super.key});
 
   final String publicKey = SharedPreferencesHelper().getPubKey();
+  final TextStyle cardTextStyle = TextStyle(
+    fontFamily: 'SourceCodePro',
+    // decoration: TextDecoration.underline,
+    color: Colors.white,
+    fontSize: 22.0,
+    fontWeight: FontWeight.bold,
+    shadows: <Shadow>[
+      Shadow(
+        blurRadius: 1,
+        color: Colors.black.withOpacity(0.7),
+        offset: const Offset(0, 2),
+      ),
+      Shadow(
+        blurRadius: 1,
+        color: Colors.white.withOpacity(0.5),
+        offset: const Offset(0, -1),
+      ),
+    ],
+  );
 
   @override
   Widget build(BuildContext context) {
     const double cardRadius = 10.0;
     const double cardPadding = 26.0;
 
+    final String pubKey = SharedPreferencesHelper().getPubKey();
     return Card(
         elevation: 8.0,
         shape: RoundedRectangleBorder(
@@ -73,34 +93,21 @@ class CreditCard extends StatelessWidget {
                             'assets/img/chip.svg',
                           ))),
                   const SizedBox(height: 8.0),
-                  GestureDetector(
-                    onTap: () => showTooltip(context, '', tr('keys-tooltip')),
-                    child: Padding(
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: cardPadding),
-                        child: Text(
-                          '**** **** ${SharedPreferencesHelper().getPubKey().substring(0, 4)} ${SharedPreferencesHelper().getPubKey().substring(4, 8)}',
-                          style: TextStyle(
-                            fontFamily: 'SourceCodePro',
-                            // decoration: TextDecoration.underline,
-                            color: Colors.white,
-                            fontSize: 22.0,
-                            fontWeight: FontWeight.bold,
-                            shadows: <Shadow>[
-                              Shadow(
-                                blurRadius: 1,
-                                color: Colors.black.withOpacity(0.7),
-                                offset: const Offset(0, 2),
-                              ),
-                              Shadow(
-                                blurRadius: 1,
-                                color: Colors.white.withOpacity(0.5),
-                                offset: const Offset(0, -1),
-                              ),
-                            ],
-                          ),
-                        )),
-                  ),
+                  Padding(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: cardPadding),
+                      child: Row(children: <Widget>[
+                        GestureDetector(
+                            onTap: () =>
+                                showTooltip(context, '', tr('keys-tooltip')),
+                            child: Text('**** **** ', style: cardTextStyle)),
+                        GestureDetector(
+                            onTap: () => copyPublicKeyToClipboard(context),
+                            child: Text(
+                              '${pubKey.substring(0, 4)} ${pubKey.substring(4, 8)}',
+                              style: cardTextStyle,
+                            ))
+                      ])),
                   const SizedBox(height: 12.0),
                   Padding(
                     padding:
@@ -128,8 +135,10 @@ class CreditCard extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return Dialog(
-          child: Container(
-            padding: const EdgeInsets.all(16.0),
+            child: Container(
+          padding: const EdgeInsets.all(16.0),
+          child: GestureDetector(
+            onTap: () => copyPublicKeyToClipboard(context),
             child: QrImage(
               data: publicKey,
               size: MediaQuery.of(context).size.width * 0.8,
@@ -137,7 +146,7 @@ class CreditCard extends StatelessWidget {
               foregroundColor: Colors.orange,
             ),
           ),
-        );
+        ));
       },
     );
   }

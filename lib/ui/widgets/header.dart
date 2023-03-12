@@ -9,13 +9,13 @@ class Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 2, right: 2, top: 48, bottom: 24),
+      padding: const EdgeInsets.only(left: 2, right: 2, top: 38, bottom: 14),
       child: Text(
         tr(text),
         textAlign: TextAlign.start,
         style: Theme.of(context)
             .textTheme
-            .headlineMedium!
+            .headlineSmall!
             .apply(fontWeightDelta: 2),
       ),
     );

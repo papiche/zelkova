@@ -1,12 +1,17 @@
 # Ğ1nkgo
 
-Ğ1nkgo (aka Ginkgo) is a lightweight Ĝ1 wallet for Duniter v1 written in Flutter. The app allows users to manage their Ĝ1 currency on their mobile device using just a browser.
+![Ğ1nkgo logo](./assets/img/logo.png "Ğ1nkgo logo") 
+
+Ğ1nkgo (aka Ginkgo) is a lightweight Ğ1 wallet for Duniter v1 written in Flutter. The app allows
+users to manage their Ğ1 currency on their mobile device using just a browser.
 
 ## Features
 
 * Introduction for beginners
-* Generation of Cesium wallet and persistence (if you refresh the page, it should display the same wallet address).
-* A point-of-sale device that generates a QR code for the public address and other QR codes with amounts (which lightweight wallets will understand).
+* Generation of Cesium wallet and persistence (if you refresh the page, it should display the same
+  wallet address).
+* A point-of-sale device that generates a QR code for the public address and other QR codes with
+  amounts (which lightweight wallets will understand).
 * Internationalization (i18n)
 * Some contextual help (for example, by tapping on "Validity").
 * Connectivity detection (to retry transactions)
@@ -14,9 +19,10 @@
 
 ## Work in progress
 
-*   Send and receive Ĝ1 transactions
-*   View transaction history
-*   View Ĝ1 balance and currency conversion rate
+* Automatic selection of nodes
+* Send and receive Ğ1 transactions
+* View transaction history
+* View Ğ1 balance and currency conversion rate
 
 ## Demo
 
@@ -33,8 +39,6 @@ Clone the project and enter the project folder.
 git clone https://git.duniter.org/vjrj/ginkgo.git
 cd ginkgo
 ```
-
-You can remove the screenshots located in [assets/img/](./assets/img).
 
 Get the dependencies.
 
@@ -69,7 +73,8 @@ This repository makes use of the following pub packages:
 
 #### Easy Localization
 
-To add translations, add it to `assets/translations` and enable it in `main.dart`. Also go to [ios/Runner/Info.plist](./ios/Runner/Info.plist) and update the following code:
+To add translations, add it to `assets/translations` and enable it in `main.dart`. Also go
+to [ios/Runner/Info.plist](./ios/Runner/Info.plist) and update the following code:
 
 ```
 <key>CFBundleLocalizations</key>
@@ -78,6 +83,7 @@ To add translations, add it to `assets/translations` and enable it in `main.dart
   <string>es</string>
 </array>
 ```
+
 ``
 
 ## Screenshots
@@ -88,9 +94,10 @@ To add translations, add it to `assets/translations` and enable it in `main.dart
 
 ## Credits
 
-- Ĝ1 logo from duniter.org used in the card
-- undraw intro images: https://undraw.co/license 
-- Chipcard https://commons.wikimedia.org/wiki/File:Chipcard.svg under the Creative Commons Attribution-Share Alike 3.0 Unported license.
+- Ğ1 logo from duniter.org used in the card
+- undraw intro images: https://undraw.co/license
+- Chipcard https://commons.wikimedia.org/wiki/File:Chipcard.svg under the Creative Commons
+  Attribution-Share Alike 3.0 Unported license.
 
 Thanks!
 

@@ -6,7 +6,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_logger/easy_logger.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -15,9 +14,9 @@ import 'package:introduction_screen/introduction_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 
+import 'app_block_observer.dart';
 import 'config/theme.dart';
-import 'cubit/theme_cubit.dart';
-import 'g1/duniter_node_manager.dart';
+import 'g1/node_bloc.dart';
 import 'shared_prefs.dart';
 import 'ui/screens/skeleton_screen.dart';
 
@@ -42,6 +41,7 @@ void main() async {
   /// Initialize packages
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  Bloc.observer = AppBlocObserver();
 
   if (!kIsWeb && Platform.isAndroid) {
     await FlutterDisplayMode.setHighRefreshRate();
@@ -68,14 +68,23 @@ void main() async {
     HydratedBloc.storage =
         await HydratedStorage.build(storageDirectory: tmpDir);
   }
+  final NodeBloc nodeBloc = NodeBloc();
+
+  if (nodeBloc.nodeList.length < 10) {
+    // Load nodes from /network/peers
+    nodeBloc.loadNodes();
+  } else {
+    // Try to start with the persisted
+  }
+  logger(
+      'Starting with ${nodeBloc.nodeList.length} duniter nodes and ${nodeBloc.cPlusNodeList.length} c+ nodes');
 
   final Cron cron = Cron();
   cron.schedule(Schedule.parse('*/45 * * * *'), () async {
     // Every 45m check for faster node (maybe it something costly in terms of
     // bandwidth
-    DuniterNodeManager().loadNodes();
+    nodeBloc.loadNodes();
   });
-  DuniterNodeManager().init();
 
   runApp(
     EasyLocalization(
@@ -167,50 +176,42 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ThemeCubit>(
-      create: (BuildContext context) => ThemeCubit(),
-      child: BlocBuilder<ThemeCubit, ThemeModeState>(
-        builder: (BuildContext context, ThemeModeState state) {
-          return ConnectivityAppWrapper(
-              app: MaterialApp(
-            /// Localization is not available for the title.
-            title: 'Ğinkgo',
+    return ConnectivityAppWrapper(
+        app: MaterialApp(
+      /// Localization is not available for the title.
+      title: 'Ğ1nkgo',
+      theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
+      darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
 
-            /// Theme stuff
-            theme: lightTheme,
-            darkTheme: darkTheme,
-            themeMode: state.themeMode,
+      /// Theme stuff
 
-            /// Localization stuff
-            localizationsDelegates: context.localizationDelegates,
-            supportedLocales: context.supportedLocales,
-            locale: context.locale,
-            debugShowCheckedModeBanner: false,
-            home: MediaQuery(
-              data: const MediaQueryData(),
-              child: _skipIntro ? const SkeletonScreen() : const AppIntro(),
-            ),
-            builder: (BuildContext buildContext, Widget? widget) {
-              return ResponsiveWrapper.builder(
-                ConnectivityWidgetWrapper(
-                  message: tr('offline'),
-                  height: 20,
-                  child: widget!,
-                ),
-                maxWidth: 480,
-                minWidth: 480,
-                // defaultScale: true,
-                breakpoints: <ResponsiveBreakpoint>[
-                  // const ResponsiveBreakpoint.resize(200, name: MOBILE),
-                  const ResponsiveBreakpoint.resize(480, name: TABLET),
-                  const ResponsiveBreakpoint.resize(480, name: DESKTOP),
-                ],
-                background: Container(color: const Color(0xFFF5F5F5)),
-              );
-            },
-          ));
-        },
+      /// Localization stuff
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
+      debugShowCheckedModeBanner: false,
+      home: MediaQuery(
+        data: const MediaQueryData(),
+        child: _skipIntro ? const SkeletonScreen() : const AppIntro(),
       ),
-    );
+      builder: (BuildContext buildContext, Widget? widget) {
+        return ResponsiveWrapper.builder(
+          ConnectivityWidgetWrapper(
+            message: tr('offline'),
+            height: 20,
+            child: widget!,
+          ),
+          maxWidth: 480,
+          minWidth: 480,
+          // defaultScale: true,
+          breakpoints: <ResponsiveBreakpoint>[
+            // const ResponsiveBreakpoint.resize(200, name: MOBILE),
+            const ResponsiveBreakpoint.resize(480, name: TABLET),
+            const ResponsiveBreakpoint.resize(480, name: DESKTOP),
+          ],
+          background: Container(color: const Color(0xFFF5F5F5)),
+        );
+      },
+    ));
   }
 }

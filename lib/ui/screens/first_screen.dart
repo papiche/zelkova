@@ -1,10 +1,8 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/first_screen/credit_card.dart';
-import '../widgets/first_screen/pay_contact_search_bar.dart';
+import '../widgets/first_screen/pay_contact_search_widget.dart';
 import '../widgets/header.dart';
 import 'pay_form.dart';
 
@@ -16,28 +14,11 @@ class FirstScreen extends StatefulWidget {
 }
 
 class _FirstScreenState extends State<FirstScreen> {
-  bool _showFlushbar = true;
-
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (_showFlushbar && kReleaseMode) {
-        Flushbar<void>(
-          message: tr('demo-title'),
-          title: tr('demo-desc'),
-          duration: const Duration(seconds: 3),
-          flushbarPosition: FlushbarPosition.TOP,
-          onStatusChanged: (FlushbarStatus? status) {
-            if (status == FlushbarStatus.DISMISSED) {
-              if (mounted) {
-                setState(() {
-                  _showFlushbar = false;
-                });
-              }
-            }
-          },
-        ).show(context);
-      }
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(tr('demo-desc'))));
     });
     return Material(
       color: Theme.of(context).colorScheme.background,

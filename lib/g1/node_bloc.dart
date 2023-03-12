@@ -120,19 +120,21 @@ class NodeBloc extends HydratedBloc<NodeEvent, NodeState> {
             for (int j = 0; j < endpoints.length; j++) {
               if (endpoints[j].startsWith('BMAS')) {
                 final String endpointUnParsed = endpoints[j];
-                final String endpoint = parseHost(endpointUnParsed);
-                final Duration latency = await _pingNode(endpoint);
-                if (fastestNode == null || latency < fastestLatency) {
-                  fastestNode = endpoint;
-                  fastestLatency = latency;
-                  if (!kReleaseMode) {
-                    logger('Node bloc: Current faster node $fastestNode');
+                final String? endpoint = parseHost(endpointUnParsed);
+                if (endpoint != null) {
+                  final Duration latency = await _pingNode(endpoint);
+                  if (fastestNode == null || latency < fastestLatency) {
+                    fastestNode = endpoint;
+                    fastestLatency = latency;
+                    if (!kReleaseMode) {
+                      logger('Node bloc: Current faster node $fastestNode');
+                    }
                   }
+                  final Node node =
+                      Node(url: endpoint, latency: latency.inSeconds);
+                  add(InsertNode(node: node));
+                  nodes.insert(0, node);
                 }
-                final Node node =
-                    Node(url: endpoint, latency: latency.inSeconds);
-                add(InsertNode(node: node));
-                nodes.insert(0, node);
               }
             }
           }

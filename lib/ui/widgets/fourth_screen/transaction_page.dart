@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -53,8 +54,10 @@ class _TransactionsAndBalanceWidgetState
               _balanceAmount = currentBal;
             })); */
 
-    final String txData = await getTxHistory(
-        cubit, '6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH');
+    final String txData = !kReleaseMode
+        ? await getTxHistory(
+            cubit, '6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH')
+        : await getTxHistory(cubit, SharedPreferencesHelper().getPubKey());
     final TransactionsAndBalance result = transactionParser(txData);
     /*  .then((String txData) {
     final TransactionsAndBalance result = transactionParser(txData);

@@ -7,7 +7,27 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
   NodeListCubit() : super(NodeListState());
 
   void addDuniterNode(Node node) {
-    emit(state.copyWith(duniterNodes: <Node>[...state.duniterNodes, node]));
+    final Node? nFound = _find(node);
+    if (nFound == null) {
+      // Does not exists, so add it
+      emit(state.copyWith(duniterNodes: <Node>[...state.duniterNodes, node]));
+    } else {
+      // it exists
+      updateDuniterNode(node);
+    }
+  }
+
+  Node? _find(Node node) =>
+      state.duniterNodes.firstWhere((Node n) => n.url == node.url);
+
+  void insertDuniterNode(Node node) {
+    final Node? nFound = _find(node);
+    if (nFound == null) {
+      emit(state.copyWith(duniterNodes: <Node>[node, ...state.duniterNodes]));
+    } else {
+      // it exists
+      updateDuniterNode(node);
+    }
   }
 
   void updateDuniterNode(Node updatedNode) {
@@ -20,10 +40,6 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
   void setDuniterNodes(List<Node> nodes) {
     emit(state.copyWith(
         duniterNodes: nodes, lastFetchNodesTime: DateTime.now()));
-  }
-
-  void insertDuniterNode(Node node) {
-    emit(state.copyWith(duniterNodes: <Node>[node, ...state.duniterNodes]));
   }
 
   void cleanDuniterErrorStats() {

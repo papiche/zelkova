@@ -17,9 +17,11 @@ import 'package:responsive_framework/responsive_wrapper.dart';
 
 import 'app_bloc_observer.dart';
 import 'config/theme.dart';
+import 'data/models/app_cubit.dart';
+import 'data/models/app_state.dart';
+import 'data/models/node_list_cubit.dart';
 import 'data/models/payment_cubit.dart';
 import 'g1/api.dart';
-import 'g1/node_list_cubit.dart';
 import 'shared_prefs.dart';
 import 'ui/screens/skeleton_screen.dart';
 
@@ -74,7 +76,7 @@ void main() async {
 
   // Reset hive during developing
   if (!kReleaseMode) {
-    await HydratedBloc.storage.clear();
+    // await HydratedBloc.storage.clear();
   }
 
   runApp(
@@ -87,7 +89,14 @@ void main() async {
       ],
       fallbackLocale: const Locale('en'),
       useFallbackTranslations: true,
-      child: const MyApp(),
+      child: MultiBlocProvider(providers: <BlocProvider<dynamic>>[
+        BlocProvider<AppCubit>(create: (BuildContext context) => AppCubit()),
+        BlocProvider<PaymentCubit>(
+            create: (BuildContext context) => PaymentCubit()),
+        BlocProvider<NodeListCubit>(
+            create: (BuildContext context) => NodeListCubit()),
+        // Add other BlocProviders here if needed
+      ], child: const MyApp()),
     ),
   );
 }
@@ -104,6 +113,7 @@ class _AppIntro extends State<AppIntro> {
       GlobalKey<IntroductionScreenState>();
 
   void _onIntroEnd(BuildContext context) {
+    BlocProvider.of<AppCubit>(context).introViewed();
     Navigator.of(context).pushReplacement(
       MaterialPageRoute<void>(
           builder: (BuildContext _) => const SkeletonScreen()),
@@ -112,32 +122,36 @@ class _AppIntro extends State<AppIntro> {
 
   @override
   Widget build(BuildContext context) {
-    return IntroductionScreen(
-      key: introKey,
-      pages: <PageViewModel>[
-        for (int i = 1; i <= 5; i++)
-          createPageViewModel('intro_${i}_title', 'intro_${i}_description',
-              'assets/img/undraw_intro_$i.png'),
-      ],
-      onDone: () => _onIntroEnd(context),
-      showSkipButton: true,
-      skipOrBackFlex: 0,
-      onSkip: () => _onIntroEnd(context),
-      nextFlex: 0,
-      skip: Text(tr('skip')),
-      next: const Icon(Icons.arrow_forward),
-      done: Text(tr('start'),
-          style: const TextStyle(fontWeight: FontWeight.w600)),
-      dotsDecorator: const DotsDecorator(
-        size: Size(10.0, 10.0),
-        color: Color(0xFFBDBDBD),
-        activeColor: Colors.blueAccent,
-        activeSize: Size(22.0, 10.0),
-        activeShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(25.0)),
-        ),
-      ),
-    );
+    return BlocBuilder<AppCubit, AppState>(
+        builder: (BuildContext buildContext, AppState state) =>
+            IntroductionScreen(
+              key: introKey,
+              pages: <PageViewModel>[
+                for (int i = 1; i <= 5; i++)
+                  createPageViewModel(
+                      'intro_${i}_title',
+                      'intro_${i}_description',
+                      'assets/img/undraw_intro_$i.png'),
+              ],
+              onDone: () => _onIntroEnd(buildContext),
+              showSkipButton: true,
+              skipOrBackFlex: 0,
+              onSkip: () => _onIntroEnd(buildContext),
+              nextFlex: 0,
+              skip: Text(tr('skip')),
+              next: const Icon(Icons.arrow_forward),
+              done: Text(tr('start'),
+                  style: const TextStyle(fontWeight: FontWeight.w600)),
+              dotsDecorator: const DotsDecorator(
+                size: Size(10.0, 10.0),
+                color: Color(0xFFBDBDBD),
+                activeColor: Colors.blueAccent,
+                activeSize: Size(22.0, 10.0),
+                activeShape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                ),
+              ),
+            ));
   }
 }
 
@@ -163,78 +177,67 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final bool _skipIntro = !kReleaseMode;
-
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-        providers: <BlocProvider<dynamic>>[
-          BlocProvider<PaymentCubit>(
-              create: (BuildContext context) => PaymentCubit()),
-          BlocProvider<NodeListCubit>(
-              create: (BuildContext context) => NodeListCubit()),
-          // Add other BlocProviders here if needed
-        ],
-        child: ConnectivityAppWrapper(
-            app: MaterialApp(
-          /// Localization is not available for the title.
-          title: 'Ğ1nkgo',
-          theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
-          darkTheme:
-              ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
+    return ConnectivityAppWrapper(
+        app: MaterialApp(
+      /// Localization is not available for the title.
+      title: 'Ğ1nkgo',
+      theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
+      darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
 
-          /// Theme stuff
+      /// Theme stuff
 
-          /// Localization stuff
-          localizationsDelegates: context.localizationDelegates,
-          supportedLocales: context.supportedLocales,
-          locale: context.locale,
-          debugShowCheckedModeBanner: false,
-          home: MediaQuery(
-            data: const MediaQueryData(),
-            child: _skipIntro ? const SkeletonScreen() : const AppIntro(),
+      /// Localization stuff
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
+      debugShowCheckedModeBanner: false,
+      home: MediaQuery(
+        data: const MediaQueryData(),
+        child: BlocProvider.of<AppCubit>(context).isIntroViewed
+            ? const SkeletonScreen()
+            : const AppIntro(),
+      ),
+      builder: (BuildContext buildContext, Widget? widget) {
+        final NodeListCubit nodeListCubit =
+            BlocProvider.of<NodeListCubit>(buildContext);
+        final int nDuniterNodes = nodeListCubit.duniterNodes.length;
+        final int nCesiumPlusNodes = nodeListCubit.cesiumPlusNodes.length;
+
+        // Load nodes from /network/peers
+        fetchDuniterNodes(nodeListCubit);
+
+        logger(
+            'Starting with $nDuniterNodes duniter nodes and $nCesiumPlusNodes c+ nodes');
+
+        final Cron cron = Cron();
+        cron.schedule(Schedule.parse('*/45 * * * *'), () async {
+          // Every 45m check for faster node (maybe it something costly in terms of
+          // bandwidth
+          fetchDuniterNodes(nodeListCubit);
+        });
+        cron.schedule(Schedule.parse('*/90 * * * *'), () async {
+          nodeListCubit.cleanDuniterErrorStats();
+        });
+
+        return ResponsiveWrapper.builder(
+          ConnectivityWidgetWrapper(
+            message: tr('offline'),
+            height: 20,
+            child: widget!,
           ),
-          builder: (BuildContext buildContext, Widget? widget) {
-            final NodeListCubit nodeCubit =
-                BlocProvider.of<NodeListCubit>(buildContext);
-            final int nDuniterNodes = nodeCubit.duniterNodes.length;
-            final int nCesiumPlusNodes = nodeCubit.cesiumPlusNodes.length;
-            if (nDuniterNodes < 10) {
-              // Load nodes from /network/peers
-              fetchDuniterNodes(nodeCubit);
-            } else {
-              // Try to start with the persisted
-            }
-            logger(
-                'Starting with $nDuniterNodes duniter nodes and $nCesiumPlusNodes c+ nodes');
-
-            final Cron cron = Cron();
-            cron.schedule(Schedule.parse('*/45 * * * *'), () async {
-              // Every 45m check for faster node (maybe it something costly in terms of
-              // bandwidth
-              // nodeCubit.fetchDuniterNodes();
-            });
-            cron.schedule(Schedule.parse('*/90 * * * *'), () async {
-              // nodeCubit.cleanDuniterErrorStats();
-            });
-
-            return ResponsiveWrapper.builder(
-              ConnectivityWidgetWrapper(
-                message: tr('offline'),
-                height: 20,
-                child: widget!,
-              ),
-              maxWidth: 480,
-              minWidth: 480,
-              // defaultScale: true,
-              breakpoints: <ResponsiveBreakpoint>[
-                // const ResponsiveBreakpoint.resize(200, name: MOBILE),
-                const ResponsiveBreakpoint.resize(480, name: TABLET),
-                const ResponsiveBreakpoint.resize(480, name: DESKTOP),
-              ],
-              background: Container(color: const Color(0xFFF5F5F5)),
-            );
-          },
-        )));
+          maxWidth: 480,
+          minWidth: 480,
+          // defaultScale: true,
+          breakpoints: <ResponsiveBreakpoint>[
+            // const ResponsiveBreakpoint.resize(200, name: MOBILE),
+            const ResponsiveBreakpoint.resize(480, name: TABLET),
+            const ResponsiveBreakpoint.resize(480, name: DESKTOP),
+          ],
+          background: Container(color: const Color(0xFFF5F5F5)),
+        );
+      },
+    ));
   }
 }

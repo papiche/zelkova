@@ -4,7 +4,7 @@ import 'node.dart';
 import 'node_list_state.dart';
 
 class NodeListCubit extends HydratedCubit<NodeListState> {
-  NodeListCubit() : super(const NodeListState());
+  NodeListCubit() : super(NodeListState());
 
   void addDuniterNode(Node node) {
     emit(state.copyWith(duniterNodes: <Node>[...state.duniterNodes, node]));
@@ -18,7 +18,8 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
   }
 
   void setDuniterNodes(List<Node> nodes) {
-    emit(state.copyWith(duniterNodes: nodes));
+    emit(state.copyWith(
+        duniterNodes: nodes, lastFetchNodesTime: DateTime.now()));
   }
 
   void insertDuniterNode(Node node) {
@@ -40,6 +41,8 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
   List<Node> get duniterNodes => state.duniterNodes;
 
   List<Node> get cesiumPlusNodes => state.cesiumPlusNodes;
+
+  DateTime get lastFetchNodesTime => state.lastFetchNodesTime;
 
   @override
   NodeListState? fromJson(Map<String, dynamic> json) =>

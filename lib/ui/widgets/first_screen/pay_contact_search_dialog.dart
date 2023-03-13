@@ -7,10 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
+import '../../../data/models/node_list_cubit.dart';
+import '../../../data/models/node_list_state.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../g1/api.dart';
-import '../../../g1/node_list_cubit.dart';
-import '../../../g1/node_list_state.dart';
 import '../../ui_helpers.dart';
 import '../loading_box.dart';
 
@@ -34,14 +34,22 @@ class _SearchDialogState extends State<SearchDialog> {
     });
 
     final Response response = await searchUser(cubit, _searchTerm);
-    setState(() {
-      _results = (const JsonDecoder().convert(response.body)
-          as Map<String, dynamic>)['results'] as List<dynamic>;
-      // debugPrint(_results.toString());
-      // FIXME (vjrj) search in the blockchain and if it's a key, just
-      // put the key as a result
-      _isLoading = false;
-    });
+    if (response.statusCode == 404) {
+      setState(() {
+        _results = <dynamic>[];
+        _isLoading = false;
+        // FIXME (vjrj): give some feedback;
+      });
+    } else {
+      setState(() {
+        _results = (const JsonDecoder().convert(response.body)
+            as Map<String, dynamic>)['results'] as List<dynamic>;
+        // debugPrint(_results.toString());
+        // FIXME (vjrj) search in the blockchain and if it's a key, just
+        // put the key as a result
+        _isLoading = false;
+      });
+    }
   }
 
   @override

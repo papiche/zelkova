@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../data/models/node_list_cubit.dart';
+import '../../data/models/node_list_state.dart';
 import '../../g1/export_import.dart';
-import '../../g1/node_list_cubit.dart';
-import '../../g1/node_list_state.dart';
 import '../ui_helpers.dart';
 import '../widgets/fifth_screen/grid_item.dart';
 import '../widgets/fifth_screen/info_card.dart';

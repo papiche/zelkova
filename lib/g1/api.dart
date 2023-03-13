@@ -5,10 +5,10 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
+import '../data/models/node.dart';
+import '../data/models/node_list_cubit.dart';
 import '../main.dart';
 import 'g1_helper.dart';
-import 'node.dart';
-import 'node_list_cubit.dart';
 
 // Tx history
 // https://g1.duniter.org/tx/history/FadJvhddHL7qbRd3WcRPrWEJJwABQa3oZvmCBhotc7Kg
@@ -37,8 +37,9 @@ Future<Response> getPeers(NodeListCubit nodeListCubit) async {
 
 Future<Response> searchUser(
     NodeListCubit nodeListCubit, String searchTerm) async {
-  final Response response =
-      await requestWithRetry(nodeListCubit, '/wot/lookup/$searchTerm');
+  final Response response = await requestWithRetry(
+      nodeListCubit, '/wot/lookup/$searchTerm',
+      retryWith404: false);
   return response;
 }
 
@@ -87,8 +88,15 @@ Future<Uint8List> getAvatar(NodeListCubit nodeListCubit, String pubKey) async {
 }
 
 Future<void> fetchDuniterNodes(NodeListCubit cubit) async {
-  final List<Node> nodes = await fetchNodesFromApi(cubit);
-  cubit.setDuniterNodes(nodes);
+  if (DateTime.now()
+          .difference(cubit.lastFetchNodesTime)
+          .compareTo(const Duration(minutes: 45)) >
+      0) {
+    final List<Node> nodes = await fetchNodesFromApi(cubit);
+    cubit.setDuniterNodes(nodes);
+  } else {
+    logger('Skipoing to fetch nodes as we already did it less than 45min ago');
+  }
 }
 
 Future<List<Node>> fetchNodesFromApi(NodeListCubit cubit) async {
@@ -137,7 +145,8 @@ Future<List<Node>> fetchNodesFromApi(NodeListCubit cubit) async {
         }
       }
     }
-    logger('Node bloc: Loaded ${lNodes.length} duniter nodes');
+    logger(
+        'Fetched ${lNodes.length} duniter nodes ordered by latency (first: ${lNodes.first.url})');
   } catch (e) {
     logger('Error: $e');
     rethrow;
@@ -161,17 +170,19 @@ Future<Duration> _pingNode(String node) async {
 }
 
 Future<http.Response> requestWithRetry(NodeListCubit cubit, String path,
-    {bool dontRecord = false}) async {
-  return _requestWithRetry(cubit, cubit.duniterNodes, path, dontRecord);
+    {bool dontRecord = false, bool retryWith404 = true}) async {
+  return _requestWithRetry(
+      cubit, cubit.duniterNodes, path, dontRecord, retryWith404);
 }
 
-Future<http.Response> requestCPlusWithRetry(
-    NodeListCubit cubit, String path) async {
-  return _requestWithRetry(cubit, cubit.cesiumPlusNodes, path, true);
+Future<http.Response> requestCPlusWithRetry(NodeListCubit cubit, String path,
+    {bool retryWith404 = true}) async {
+  return _requestWithRetry(
+      cubit, cubit.cesiumPlusNodes, path, true, retryWith404);
 }
 
-Future<http.Response> _requestWithRetry(
-    NodeListCubit cubit, List<Node> nodes, String path, bool dontRecord) async {
+Future<http.Response> _requestWithRetry(NodeListCubit cubit, List<Node> nodes,
+    String path, bool dontRecord, bool retryWith404) async {
   for (int i = 0; i < nodes.length; i++) {
     final Node node = nodes[i];
     if (node.errors >= 3) {
@@ -190,6 +201,13 @@ Future<http.Response> _requestWithRetry(
           cubit.updateDuniterNode(node.copyWith(latency: newLatency));
         }
         return response;
+      } else if (response.statusCode == 404) {
+        logger('404 on fetchurl');
+        if (retryWith404) {
+          continue;
+        } else {
+          return response;
+        }
       }
     } catch (e) {
       if (!dontRecord) {

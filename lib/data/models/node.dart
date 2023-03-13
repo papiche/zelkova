@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../data/models/isJsonSerializable.dart';
+import 'isJsonSerializable.dart';
 
 part 'node.g.dart';
 
@@ -44,7 +44,6 @@ class Node extends Equatable implements IsJsonSerializable<Node> {
 
   @override
   List<Object?> get props => <dynamic>[url, latency, errors];
-
 }
 
 const List<Node> defaultDuniterNodes = <Node>[

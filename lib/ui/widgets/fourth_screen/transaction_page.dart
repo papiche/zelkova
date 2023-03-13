@@ -2,9 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../data/models/node_list_cubit.dart';
+import '../../../data/models/node_list_state.dart';
 import '../../../g1/api.dart';
-import '../../../g1/node_list_cubit.dart';
-import '../../../g1/node_list_state.dart';
 import '../../../g1/transaction.dart';
 import '../../../g1/transaction_parser.dart';
 import '../../../shared_prefs.dart';

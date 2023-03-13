@@ -88,14 +88,18 @@ Future<Uint8List> getAvatar(NodeListCubit nodeListCubit, String pubKey) async {
 }
 
 Future<void> fetchDuniterNodes(NodeListCubit cubit) async {
+  const int minutesToWait = 45;
   if (DateTime.now()
           .difference(cubit.lastFetchNodesTime)
-          .compareTo(const Duration(minutes: 45)) >
+          .compareTo(const Duration(minutes: minutesToWait)) >
       0) {
+    logger(
+        'Fetching nodes as we did it more than ${minutesToWait}min ago: ${cubit.lastFetchNodesTime.toIso8601String()}');
     final List<Node> nodes = await fetchNodesFromApi(cubit);
     cubit.setDuniterNodes(nodes);
   } else {
-    logger('Skipoing to fetch nodes as we already did it less than 45min ago');
+    logger(
+        'Skipping to fetch nodes as we already did it less than ${minutesToWait}min ago');
   }
 }
 
@@ -202,7 +206,7 @@ Future<http.Response> _requestWithRetry(NodeListCubit cubit, List<Node> nodes,
         }
         return response;
       } else if (response.statusCode == 404) {
-        logger('404 on fetchurl');
+        logger('404 on fetch $url');
         if (retryWith404) {
           continue;
         } else {

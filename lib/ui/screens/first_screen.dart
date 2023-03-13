@@ -1,6 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../data/models/app_cubit.dart';
+import '../../data/models/app_state.dart';
 import '../widgets/first_screen/credit_card.dart';
 import '../widgets/first_screen/pay_contact_search_widget.dart';
 import '../widgets/header.dart';
@@ -18,34 +21,49 @@ class _FirstScreenState extends State<FirstScreen> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(tr('demo-desc'))));
-    });
-    return Material(
-        color: Theme.of(context).colorScheme.background,
-        child: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            physics: const AlwaysScrollableScrollPhysics(),
-            controller: _controller,
-            shrinkWrap: true,
-            children: <Widget>[
-              const Header(text: 'credit_card_title'),
-              CreditCard(),
-              const SizedBox(height: 8),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Divider(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onBackground
-                      .withOpacity(.4),
-                ),
+    return BlocBuilder<AppCubit, AppState>(
+        builder: (BuildContext context, AppState state) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (!BlocProvider.of<AppCubit>(context).isWarningViewed) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(tr('demo-desc')),
+              action: SnackBarAction(
+                label: 'OK',
+                onPressed: () {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  BlocProvider.of<AppCubit>(context).warningViewed();
+                },
               ),
-              const SizedBox(height: 10),
-              const PayContactSearchWidget(),
-              const SizedBox(height: 10),
-              const PayForm()
-            ]));
+            ),
+          );
+        }
+      });
+      return Material(
+          color: Theme.of(context).colorScheme.background,
+          child: ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              physics: const AlwaysScrollableScrollPhysics(),
+              controller: _controller,
+              shrinkWrap: true,
+              children: <Widget>[
+                const Header(text: 'credit_card_title'),
+                CreditCard(),
+                const SizedBox(height: 8),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Divider(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onBackground
+                        .withOpacity(.4),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const PayContactSearchWidget(),
+                const SizedBox(height: 10),
+                const PayForm()
+              ]));
+    });
   }
 }

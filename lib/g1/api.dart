@@ -8,8 +8,7 @@ import 'package:http/http.dart';
 
 import '../data/models/contact.dart';
 import '../data/models/node.dart';
-import '../data/models/node_list_cubit.dart';
-import '../data/models/node_list_state.dart';
+import '../data/models/node_manager.dart';
 import '../main.dart';
 import 'g1_helper.dart';
 
@@ -17,10 +16,9 @@ import 'g1_helper.dart';
 // https://g1.duniter.org/tx/history/FadJvhddHL7qbRd3WcRPrWEJJwABQa3oZvmCBhotc7Kg
 // https://g1.duniter.org/tx/history/6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH
 
-Future<String> getTxHistory(
-    NodeListCubit nodeListCubit, String publicKey) async {
+Future<String> getTxHistory(String publicKey) async {
   final Response response =
-      await requestWithRetry(nodeListCubit, '/tx/history/$publicKey');
+      await requestWithRetry(NodeType.duniter, '/tx/history/$publicKey');
   if (response.statusCode == 200) {
     return response.body;
   } else {
@@ -28,9 +26,10 @@ Future<String> getTxHistory(
   }
 }
 
-Future<Response> getPeers(NodeListCubit nodeListCubit) async {
-  final Response response =
-      await requestWithRetry(nodeListCubit, '/network/peers', dontRecord: true);
+Future<Response> getPeers() async {
+  final Response response = await requestWithRetry(
+      NodeType.duniter, '/network/peers',
+      dontRecord: true);
   if (response.statusCode == 200) {
     return response;
   } else {
@@ -38,9 +37,8 @@ Future<Response> getPeers(NodeListCubit nodeListCubit) async {
   }
 }
 
-Future<Response> searchUser(
-    NodeListCubit nodeListCubit, String searchTerm) async {
-  final Response response = await requestCPlusWithRetry(nodeListCubit,
+Future<Response> searchUser(String searchTerm) async {
+  final Response response = await requestCPlusWithRetry(
       '/user/profile/_search?q=title:*$searchTerm* OR _id:$searchTerm* OR _id:$searchTerm',
       retryWith404: false);
   return response;
@@ -56,27 +54,28 @@ Not found sample:
 "found": false
 }
  */
-Future<Contact> getWot(NodeListCubit nodeListCubit, Contact contact) async {
-  final Response response = await requestCPlusWithRetry(
-      nodeListCubit, '/wot/lookup/${contact.pubkey}');
+Future<Contact> getWot(Contact contact) async {
+  final Response response =
+      await requestCPlusWithRetry('/wot/lookup/${contact.pubkey}');
   if (response.statusCode == HttpStatus.ok) {
     final Map<String, dynamic> data =
         json.decode(response.body) as Map<String, dynamic>;
-    final Map<String, dynamic> results =
-        data['results'] as Map<String, dynamic>;
-    final List<dynamic> uids = results['uids'] as List<dynamic>;
-    if (uids.isNotEmpty) {
-      return contact.copyWith(nick: uids[0]!['uid'] as String);
+    final List<dynamic> results = data['results'] as List<dynamic>;
+    if (results.isNotEmpty) {
+      final List<dynamic> uids =
+          (results[0] as Map<String, dynamic>)['uids'] as List<dynamic>;
+      if (uids.isNotEmpty) {
+        return contact.copyWith(nick: uids[0]!['uid'] as String);
+      }
     }
   }
   return contact;
 }
 
 @Deprecated('use getProfile')
-Future<String> _getDataImageFromKey(
-    NodeListCubit nodeListCubit, String publicKey) async {
+Future<String> _getDataImageFromKey(String publicKey) async {
   final Response response =
-      await requestCPlusWithRetry(nodeListCubit, '/user/profile/$publicKey');
+      await requestCPlusWithRetry('/user/profile/$publicKey');
   if (response.statusCode == HttpStatus.ok) {
     final Map<String, dynamic> data =
         json.decode(response.body) as Map<String, dynamic>;
@@ -98,51 +97,69 @@ Uint8List imageFromBase64String(String base64String) {
       base64Decode(base64String.substring(base64String.indexOf(',') + 1)));
 }
 
-Future<Uint8List> _getAvata2r(
-    NodeListCubit nodeListCubit, String pubKey) async {
-  final String dataImage = await _getDataImageFromKey(nodeListCubit, pubKey);
+Future<Uint8List> _getAvata2r(String pubKey) async {
+  final String dataImage = await _getDataImageFromKey(pubKey);
   return imageFromBase64String(dataImage);
 }
 
-Future<void> fetchDuniterNodes(NodeListState state, NodeListCubit cubit,
-    {bool force = false}) async {
-  const int minutesToWait = 45;
+Future<void> fetchDuniterNodes({bool force = false}) async {
+  final int minutesToWait = NodeManager.minutesToWait;
+  const NodeType type = NodeType.duniter;
   if (force ||
       /* DateTime.now()
-              .difference(state.lastFetchNodesTime)
-              .compareTo(const Duration(minutes: minutesToWait)) >
+              .difference(NodeManager().lastDuniterFetchNodesTime)
+              .compareTo(Duration(minutes: minutesToWait)) >
           0 || */
-      duniterNodesWorking(state) < NodeListCubit.maxNodes) {
+      duniterNodesWorking() < NodeManager.maxNodes) {
     if (force) {
-      cubit.setDuniterNodes(defaultDuniterNodes);
+      NodeManager().updateNodes(type, defaultDuniterNodes);
       logger('Fetching nodes forced');
     } else {
       logger(
-          'Fetching nodes as we did it more than ${minutesToWait}min ago: ${state.lastFetchNodesTime.toIso8601String()} and we have only ${duniterNodesWorking(state)}');
+          'Fetching nodes as we did it more than ${minutesToWait}min ago: ${NodeManager().lastDuniterFetchNodesTime.toIso8601String()} and we have only ${duniterNodesWorking()}');
     }
-    final List<Node> nodes = await fetchNodesFromApi(cubit);
-    cubit.setDuniterNodes(nodes);
+    final List<Node> nodes = await _fetchDuniterNodesFromPeers();
+    NodeManager().updateNodes(type, nodes);
   } else {
     logger(
-        'Skipping to fetch nodes as we already did it less than ${minutesToWait}min ago and we have ${duniterNodesWorking(state)}');
+        'Skipping to fetch nodes as we already did it less than ${minutesToWait}min ago and we have ${duniterNodesWorking()}');
     if (!kReleaseMode) {
       // developer.log(StackTrace.current.toString());
     }
   }
 }
 
-int duniterNodesWorking(NodeListState state) => state.duniterNodes
-    .where((n) => n.errors < NodeListCubit.maxNodeErrors)
+Future<void> fetchCesiumPlusNodes({bool force = false}) async {
+  const NodeType type = NodeType.cesiumPlus;
+  if (force) {
+    NodeManager().updateNodes(type, defaultCesiumPlusNodes);
+    logger('Fetching cesium nodes forced');
+  } else {
+    logger('Fetching cesium plus nodes, we have ${cesiumPlusNodesWorking()}');
+  }
+  final List<Node> nodes = await _fetchCesiumPlusNodes();
+  NodeManager().updateNodes(type, nodes);
+}
+
+int duniterNodesWorking() => NodeManager()
+    .nodeList(NodeType.duniter)
+    .where((n) => n.errors < NodeManager.maxNodeErrors)
     .toList()
     .length;
 
-Future<List<Node>> fetchNodesFromApi(NodeListCubit cubit) async {
+int cesiumPlusNodesWorking() => NodeManager()
+    .nodeList(NodeType.cesiumPlus)
+    .where((n) => n.errors < NodeManager.maxNodeErrors)
+    .toList()
+    .length;
+
+Future<List<Node>> _fetchDuniterNodesFromPeers() async {
   final List<Node> lNodes = <Node>[];
   // To compare with something...
   String fastestNode = 'https://g1.duniter.org';
   late Duration fastestLatency = const Duration(minutes: 1);
   try {
-    final Response response = await getPeers(cubit);
+    final Response response = await getPeers();
     if (response.statusCode == 200) {
       final Map<String, dynamic> peerList =
           jsonDecode(response.body) as Map<String, dynamic>;
@@ -178,11 +195,11 @@ Future<List<Node>> fetchNodesFromApi(NodeListCubit cubit) async {
                     if (!kReleaseMode) {
                       logger('Node bloc: Current faster node $fastestNode');
                     }
-                    cubit.insertDuniterNode(node);
+                    NodeManager().insertNode(NodeType.duniter, node);
                     lNodes.insert(0, node);
                   } else {
                     // Not the faster
-                    cubit.addDuniterNode(node);
+                    NodeManager().addNode(NodeType.duniter, node);
                     lNodes.add(node);
                   }
                 } catch (e) {
@@ -191,7 +208,7 @@ Future<List<Node>> fetchNodesFromApi(NodeListCubit cubit) async {
               }
             }
           }
-          if (lNodes.length >= NodeListCubit.maxNodes) {
+          if (lNodes.length >= NodeManager.maxNodes) {
             logger('We have enought nodes for now');
             break;
           }
@@ -201,7 +218,51 @@ Future<List<Node>> fetchNodesFromApi(NodeListCubit cubit) async {
     logger(
         'Fetched ${lNodes.length} duniter nodes ordered by latency (first: ${lNodes.first.url})');
   } catch (e) {
-    logger('General error in fetch nodes: $e');
+    logger('General error in fetch duniter nodes: $e');
+    // rethrow;
+  }
+  lNodes.sort((Node a, Node b) => a.latency.compareTo(b.latency));
+  logger('First node in list ${lNodes.first.url}');
+  return lNodes;
+}
+
+Future<List<Node>> _fetchCesiumPlusNodes() async {
+  final List<Node> lNodes = <Node>[];
+  String? fastestNode;
+  late Duration fastestLatency = const Duration(minutes: 1);
+  try {
+    const NodeType type = NodeType.cesiumPlus;
+    final List<Node> currentNodes = NodeManager().nodeList(type);
+    currentNodes.shuffle();
+    for (final Node node in currentNodes) {
+      final String endpoint = node.url;
+
+      try {
+        final Duration latency = await _pingNode(endpoint);
+        logger('Evaluating node: $endpoint, latency ${latency.inMicroseconds}');
+        final Node node = Node(url: endpoint, latency: latency.inMicroseconds);
+        if (fastestNode == null || latency < fastestLatency) {
+          fastestNode = endpoint;
+          fastestLatency = latency;
+          if (!kReleaseMode) {
+            logger('Node bloc: Current faster node $fastestNode');
+          }
+          NodeManager().insertNode(type, node);
+          lNodes.insert(0, node);
+        } else {
+          // Not the faster
+          NodeManager().addNode(type, node);
+          lNodes.add(node);
+        }
+      } catch (e) {
+        logger('Error fetching $endpoint, error: $e');
+      }
+    }
+
+    logger(
+        'Fetched ${lNodes.length} cesium plus nodes ordered by latency (first: ${lNodes.first.url})');
+  } catch (e) {
+    logger('General error in fetch cplus nodes: $e');
     // rethrow;
   }
   lNodes.sort((Node a, Node b) => a.latency.compareTo(b.latency));
@@ -225,23 +286,22 @@ Future<Duration> _pingNode(String node) async {
   }
 }
 
-Future<http.Response> requestWithRetry(NodeListCubit cubit, String path,
+Future<http.Response> requestWithRetry(NodeType type, String path,
     {bool dontRecord = false, bool retryWith404 = true}) async {
-  return _requestWithRetry(
-      cubit, cubit.duniterNodes, path, dontRecord, retryWith404);
+  return _requestWithRetry(type, path, dontRecord, retryWith404);
 }
 
-Future<http.Response> requestCPlusWithRetry(NodeListCubit cubit, String path,
+Future<http.Response> requestCPlusWithRetry(String path,
     {bool retryWith404 = true}) async {
-  return _requestWithRetry(
-      cubit, cubit.cesiumPlusNodes, path, true, retryWith404);
+  return _requestWithRetry(NodeType.cesiumPlus, path, true, retryWith404);
 }
 
-Future<http.Response> _requestWithRetry(NodeListCubit cubit, List<Node> nodes,
-    String path, bool dontRecord, bool retryWith404) async {
+Future<http.Response> _requestWithRetry(
+    NodeType type, String path, bool dontRecord, bool retryWith404) async {
+  final List<Node> nodes = NodeManager().nodeList(type);
   for (int i = 0; i < nodes.length; i++) {
     final Node node = nodes[i];
-    if (node.errors >= NodeListCubit.maxNodeErrors) {
+    if (node.errors >= NodeManager.maxNodeErrors) {
       // Too much errors skip
       continue;
     }
@@ -255,27 +315,28 @@ Future<http.Response> _requestWithRetry(NodeListCubit cubit, List<Node> nodes,
       final int newLatency = endTime - startTime;
       if (response.statusCode == 200) {
         if (!dontRecord) {
-          cubit.updateDuniterNode(node.copyWith(latency: newLatency));
+          NodeManager().updateNode(type, node.copyWith(latency: newLatency));
         }
         return response;
       } else if (response.statusCode == 404) {
         logger('404 on fetch $url');
         if (retryWith404) {
           // Retry with other nodes
-          cubit.updateDuniterNode(node.copyWith(errors: node.errors + 1));
+          NodeManager()
+              .updateNode(type, node.copyWith(errors: node.errors + 1));
           continue;
         } else {
           return response;
         }
       } else {
         logger('${response.statusCode} error on $url');
-        cubit.updateDuniterNode(node.copyWith(errors: node.errors + 1));
+        NodeManager().updateNode(type, node.copyWith(errors: node.errors + 1));
       }
     } catch (e) {
       logger('Error trying ${node.url} $e');
       if (!dontRecord) {
         logger('Increasing node errors of ${node.url} (${node.errors})');
-        cubit.updateDuniterNode(node.copyWith(errors: node.errors + 1));
+        NodeManager().updateNode(type, node.copyWith(errors: node.errors + 1));
       }
       continue;
     }

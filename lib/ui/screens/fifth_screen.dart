@@ -7,6 +7,7 @@ import '../../data/models/node_list_cubit.dart';
 import '../../data/models/node_list_state.dart';
 import '../../g1/api.dart';
 import '../../g1/export_import.dart';
+import '../../main.dart';
 import '../ui_helpers.dart';
 import '../widgets/bottom_widget.dart';
 import '../widgets/fifth_screen/grid_item.dart';
@@ -21,9 +22,8 @@ class FifthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NodeListCubit, NodeListState>(
-        builder: (BuildContext context, NodeListState state) {
-      final NodeListCubit nodeListCubit = context.read<NodeListCubit>();
-      final List<Node> duniterNodes = nodeListCubit.duniterNodes;
+        builder: (BuildContext nodeContext, NodeListState state) {
+      final List<Node> duniterNodes = state.duniterNodes;
       return Material(
         color: Theme.of(context).colorScheme.background,
         child: ListView(
@@ -33,7 +33,9 @@ class FifthScreen extends StatelessWidget {
               const Header(text: 'bottom_nav_fifth'),
               GestureDetector(
                   onLongPress: () {
-                    fetchDuniterNodes(state, nodeListCubit, force: true);
+                    logger('On long press');
+                    fetchDuniterNodes(force: true);
+                    fetchCesiumPlusNodes(force: true);
                   },
                   child: InfoCard(
                       title: 'connected_to',

@@ -42,9 +42,8 @@ class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
     logger('Loading transactions');
     const bool debugging = true;
     final String txData = debugging
-        ? await getTxHistory(
-            cubit, '6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH')
-        : await getTxHistory(cubit, SharedPreferencesHelper().getPubKey());
+        ? await getTxHistory('6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH')
+        : await getTxHistory(SharedPreferencesHelper().getPubKey());
     final TransactionsAndBalanceState state = transactionParser(txData);
     emit(state.copyWith(
         transactions: state.transactions,

@@ -14,14 +14,20 @@ NodeListState _$NodeListStateFromJson(Map<String, dynamic> json) =>
       cesiumPlusNodes: (json['cesiumPlusNodes'] as List<dynamic>?)
           ?.map((e) => Node.fromJson(e as Map<String, dynamic>))
           .toList(),
-      lastFetchNodesTime: json['lastFetchNodesTime'] == null
+      lastFetchDuniterNodesTime: json['lastFetchDuniterNodesTime'] == null
           ? null
-          : DateTime.parse(json['lastFetchNodesTime'] as String),
+          : DateTime.parse(json['lastFetchDuniterNodesTime'] as String),
+      lastFetchCPlusNodesTime: json['lastFetchCPlusNodesTime'] == null
+          ? null
+          : DateTime.parse(json['lastFetchCPlusNodesTime'] as String),
     );
 
 Map<String, dynamic> _$NodeListStateToJson(NodeListState instance) =>
     <String, dynamic>{
       'duniterNodes': instance.duniterNodes,
       'cesiumPlusNodes': instance.cesiumPlusNodes,
-      'lastFetchNodesTime': instance.lastFetchNodesTime.toIso8601String(),
+      'lastFetchDuniterNodesTime':
+          instance.lastFetchDuniterNodesTime.toIso8601String(),
+      'lastFetchCPlusNodesTime':
+          instance.lastFetchCPlusNodesTime.toIso8601String(),
     };

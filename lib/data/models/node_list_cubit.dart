@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import 'node.dart';
@@ -6,9 +5,6 @@ import 'node_list_state.dart';
 
 class NodeListCubit extends HydratedCubit<NodeListState> {
   NodeListCubit() : super(NodeListState());
-
-  static int maxNodes = kReleaseMode ? 20 : 5;
-  static int maxNodeErrors = 3;
 
   void addDuniterNode(Node node) {
     if (!_find(node)) {
@@ -39,15 +35,19 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
   }
 
   void setDuniterNodes(List<Node> nodes) {
-    emit(state.copyWith(
-        duniterNodes: nodes, lastFetchNodesTime: DateTime.now()));
+    emit(state.copyWith(duniterNodes: nodes));
   }
 
-  void cleanDuniterErrorStats() {
-    emit(state.copyWith(
-        duniterNodes: duniterNodes
-            .map((Node node) => node.copyWith(errors: 0))
-            .toList()));
+  void setDuniterFetchTime(DateTime time) {
+    emit(state.copyWith(lastFetchDuniterNodesTime: time));
+  }
+
+  void setCesiumPluFetchTime(DateTime time) {
+    emit(state.copyWith(lastFetchCPlusNodesTime: time));
+  }
+
+  void setCesiumPlusNodes(List<Node> nodes) {
+    emit(state.copyWith(cesiumPlusNodes: nodes));
   }
 
   void addCesiumPlusNode(Node node) {
@@ -59,7 +59,9 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
 
   List<Node> get cesiumPlusNodes => state.cesiumPlusNodes;
 
-  DateTime get lastFetchNodesTime => state.lastFetchNodesTime;
+  DateTime get lastFetchDuniterNodesTime => state.lastFetchDuniterNodesTime;
+
+  DateTime get lastFetchCPlusNodesTime => state.lastFetchCPlusNodesTime;
 
   @override
   NodeListState? fromJson(Map<String, dynamic> json) =>

@@ -12,32 +12,43 @@ class NodeListState extends Equatable {
   NodeListState(
       {List<Node>? duniterNodes,
       List<Node>? cesiumPlusNodes,
-      DateTime? lastFetchNodesTime})
+      DateTime? lastFetchDuniterNodesTime,
+      DateTime? lastFetchCPlusNodesTime})
       : duniterNodes = duniterNodes ?? defaultDuniterNodes,
         cesiumPlusNodes = cesiumPlusNodes ?? defaultCesiumPlusNodes,
-        lastFetchNodesTime = lastFetchNodesTime ?? DateTime(1970);
+        lastFetchDuniterNodesTime = lastFetchDuniterNodesTime ?? DateTime(1970),
+        lastFetchCPlusNodesTime = lastFetchCPlusNodesTime ?? DateTime(1970);
 
   factory NodeListState.fromJson(Map<String, dynamic> json) =>
       _$NodeListStateFromJson(json);
 
   final List<Node> duniterNodes;
   final List<Node> cesiumPlusNodes;
-  final DateTime lastFetchNodesTime;
+  final DateTime lastFetchDuniterNodesTime;
+  final DateTime lastFetchCPlusNodesTime;
 
   NodeListState copyWith(
       {List<Node>? duniterNodes,
       List<Node>? cesiumPlusNodes,
-      DateTime? lastFetchNodesTime}) {
+      DateTime? lastFetchDuniterNodesTime,
+      DateTime? lastFetchCPlusNodesTime}) {
     return NodeListState(
       duniterNodes: duniterNodes ?? this.duniterNodes,
       cesiumPlusNodes: cesiumPlusNodes ?? this.cesiumPlusNodes,
-      lastFetchNodesTime: lastFetchNodesTime ?? lastFetchNodesTime,
+      lastFetchDuniterNodesTime:
+          lastFetchDuniterNodesTime ?? lastFetchDuniterNodesTime,
+      lastFetchCPlusNodesTime:
+          lastFetchDuniterNodesTime ?? lastFetchCPlusNodesTime,
     );
   }
 
   @override
-  List<Object?> get props =>
-      <Object>[duniterNodes, cesiumPlusNodes, lastFetchNodesTime];
+  List<Object?> get props => <Object>[
+        duniterNodes,
+        cesiumPlusNodes,
+        lastFetchDuniterNodesTime,
+        lastFetchCPlusNodesTime
+      ];
 
   Map<String, dynamic> toJson() => _$NodeListStateToJson(this);
 }

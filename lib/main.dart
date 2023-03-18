@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
-import 'package:cron/cron.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_logger/easy_logger.dart';
 import 'package:flutter/foundation.dart';
@@ -12,6 +11,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:once/once.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:responsive_framework/utils/scroll_behavior.dart';
@@ -25,6 +25,7 @@ import 'data/models/app_state.dart';
 import 'data/models/contact_cubit.dart';
 import 'data/models/node_list_cubit.dart';
 import 'data/models/node_list_state.dart';
+import 'data/models/node_manager.dart';
 import 'data/models/payment_cubit.dart';
 import 'data/models/transaction_cubit.dart';
 import 'g1/api.dart';
@@ -77,16 +78,16 @@ void main() async {
     final Directory tmpDir = await getTemporaryDirectory();
     Hive.init(tmpDir.toString());
     HydratedBloc.storage =
-    await HydratedStorage.build(storageDirectory: tmpDir);
+        await HydratedStorage.build(storageDirectory: tmpDir);
   }
 
   // Reset hive during developing
   if (!kReleaseMode) {
+    // Once.clearAll();
     // await HydratedBloc.storage.clear();
   }
 
-  void appRunner() =>
-      runApp(
+  void appRunner() => runApp(
         EasyLocalization(
           path: 'assets/translations',
           supportedLocales: const <Locale>[
@@ -115,7 +116,9 @@ void main() async {
       );
 
   if (!kReleaseMode) {
-    await SentryFlutter.init((SentryFlutterOptions options,) {
+    await SentryFlutter.init((
+      SentryFlutterOptions options,
+    ) {
       options.dsn = "${dotenv.env['SENTRY_DSN']}";
       // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
       // We recommend adjusting this value in production.
@@ -135,7 +138,7 @@ class AppIntro extends StatefulWidget {
 
 class _AppIntro extends State<AppIntro> {
   final GlobalKey<IntroductionScreenState> introKey =
-  GlobalKey<IntroductionScreenState>();
+      GlobalKey<IntroductionScreenState>();
 
   void _onIntroEnd(BuildContext context) {
     context.read<AppCubit>().introViewed();
@@ -180,8 +183,8 @@ class _AppIntro extends State<AppIntro> {
   }
 }
 
-PageViewModel createPageViewModel(String title, String body,
-    String imageAsset) {
+PageViewModel createPageViewModel(
+    String title, String body, String imageAsset) {
   return PageViewModel(
     title: tr(title),
     body: tr(body),
@@ -202,76 +205,71 @@ class GinkgoApp extends StatefulWidget {
 }
 
 class _GinkgoAppState extends State<GinkgoApp> {
+  Future<void> _loadNodes(NodeListCubit cubit) async {
+    // Load nodes from /network/peers
+    NodeManager().loadFromCubit(cubit);
+    final int nDuniterNodes = NodeManager().nodeList(NodeType.duniter).length;
+    final int nCesiumPlusNodes =
+        NodeManager().nodeList(NodeType.cesiumPlus).length;
+    logger(
+        'Starting with $nDuniterNodes duniter nodes and $nCesiumPlusNodes c+ nodes');
+    await fetchDuniterNodes();
+    await fetchCesiumPlusNodes();
+    logger(
+        'Continue with $nDuniterNodes duniter nodes and $nCesiumPlusNodes c+ nodes');
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ConnectivityAppWrapper(
-        app: MaterialApp(
+    return BlocBuilder<NodeListCubit, NodeListState>(
+        builder: (BuildContext nodeContext, NodeListState state) {
+      Once.runHourly('load_nodes',
+          callback: () => _loadNodes(nodeContext.read<NodeListCubit>()),
+          fallback: () {
+            logger('Finished once load nodes');
+          });
 
-          /// Localization is not available for the title.
-            title: 'Ğ1nkgo',
-            theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
-            darkTheme:
-            ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
+      Once.runCustom('clear_errors', callback: () {
+        NodeManager().cleanErrorStats();
+      }, duration: const Duration(minutes: 90));
+      return ConnectivityAppWrapper(
+          app: MaterialApp(
+        /// Localization is not available for the title.
+        title: 'Ğ1nkgo',
+        theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
+        darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
 
-            /// Theme stuff
+        /// Theme stuff
 
-            /// Localization stuff
-            localizationsDelegates: context.localizationDelegates,
-            supportedLocales: context.supportedLocales,
-            locale: context.locale,
-            debugShowCheckedModeBanner: false,
-            home: context
-                .read<AppCubit>()
-                .isIntroViewed
-                ? const SkeletonScreen()
-                : const AppIntro(),
-            builder: (BuildContext buildContext, Widget? widget) {
-              return BlocBuilder<NodeListCubit, NodeListState>(
-                builder: (BuildContext nodeListContext,
-                    NodeListState nodeListState) {
-                  final int nDuniterNodes = nodeListState.duniterNodes.length;
-                  final int nCesiumPlusNodes =
-                      nodeListState.cesiumPlusNodes.length;
-
-                  final NodeListCubit nodeListCubit =
-                  nodeListContext.read<NodeListCubit>();
-                  // Load nodes from /network/peers
-                  fetchDuniterNodes(nodeListState, nodeListCubit);
-
-                  logger(
-                      'Starting with $nDuniterNodes duniter nodes and $nCesiumPlusNodes c+ nodes');
-
-
-                  final Cron cron = Cron();
-                  cron.schedule(Schedule.parse('*/45 * * * *'), () async {
-                    // Every 45m check for faster node (maybe it something costly in terms of
-                    // bandwidth
-                    fetchDuniterNodes(nodeListState, nodeListCubit);
-                  });
-                  cron.schedule(Schedule.parse('*/90 * * * *'), () async {
-                    nodeListCubit.cleanDuniterErrorStats();
-                  });
-
-                  return ResponsiveWrapper.builder(
-                    BouncingScrollWrapper.builder(
-                        context,
-                        ConnectivityWidgetWrapper(
-                          message: tr('offline'),
-                          height: 20,
-                          child: widget!,
-                        )),
-                    maxWidth: 480,
-                    minWidth: 480,
-                    // defaultScale: true,
-                    breakpoints: <ResponsiveBreakpoint>[
-                      // const ResponsiveBreakpoint.resize(200, name: MOBILE),
-                      const ResponsiveBreakpoint.resize(480, name: TABLET),
-                      const ResponsiveBreakpoint.resize(480, name: DESKTOP),
-                    ],
-                    background: Container(color: const Color(0xFFF5F5F5)),
-                  );
-                },
-              );
-            }));
+        /// Localization stuff
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
+        debugShowCheckedModeBanner: false,
+        home: context.read<AppCubit>().isIntroViewed
+            ? const SkeletonScreen()
+            : const AppIntro(),
+        builder: (BuildContext buildContext, Widget? widget) {
+          return ResponsiveWrapper.builder(
+            BouncingScrollWrapper.builder(
+                context,
+                ConnectivityWidgetWrapper(
+                  message: tr('offline'),
+                  height: 20,
+                  child: widget!,
+                )),
+            maxWidth: 480,
+            minWidth: 480,
+            // defaultScale: true,
+            breakpoints: <ResponsiveBreakpoint>[
+              // const ResponsiveBreakpoint.resize(200, name: MOBILE),
+              const ResponsiveBreakpoint.resize(480, name: TABLET),
+              const ResponsiveBreakpoint.resize(480, name: DESKTOP),
+            ],
+            background: Container(color: const Color(0xFFF5F5F5)),
+          );
+        },
+      ));
+    });
   }
 }

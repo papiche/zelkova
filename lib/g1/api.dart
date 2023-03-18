@@ -37,7 +37,7 @@ Future<Response> getPeers() async {
   }
 }
 
-Future<Response> searchUser(String searchTerm) async {
+Future<Response> searchCPlusUser(String searchTerm) async {
   final Response response = await requestCPlusWithRetry(
       '/user/profile/_search?q=title:*$searchTerm* OR _id:$searchTerm* OR _id:$searchTerm',
       retryWith404: false);
@@ -54,6 +54,30 @@ Not found sample:
 "found": false
 }
  */
+Future<List<Contact>> searchWot(String searchTerm) async {
+  final Response response = await requestDuniterWithRetry(
+      '/wot/lookup/${searchTerm}',
+      retryWith404: false);
+  // Will be better to analyze the 404 response (to detect faulty node)
+  final List<Contact> contacts = <Contact>[];
+  if (response.statusCode == HttpStatus.ok) {
+    final Map<String, dynamic> data =
+        json.decode(response.body) as Map<String, dynamic>;
+    final List<dynamic> results = data['results'] as List<dynamic>;
+    // logger('Returning wot results ${results.length}');
+    if (results.isNotEmpty) {
+      for (final dynamic result in results) {
+        final Map<String, dynamic> resultMap = result as Map<String, dynamic>;
+        final String pubKey = resultMap['pubkey'] as String;
+        final String nick = resultMap['uids'][0]['uid']! as String;
+        contacts.add(Contact(nick: nick, pubkey: pubKey));
+      }
+    }
+  }
+  logger('Returning wot contact ${contacts.length}');
+  return contacts;
+}
+
 Future<Contact> getWot(Contact contact) async {
   final Response response = await requestDuniterWithRetry(
       '/wot/lookup/${contact.pubkey}',
@@ -318,17 +342,20 @@ Future<http.Response> _requestWithRetry(
   for (int i = 0; i < nodes.length; i++) {
     final Node node = nodes[i];
     if (node.errors >= NodeManager.maxNodeErrors) {
-      // Too much errors skip
+      logger('Too much errors skip ${node.url}');
       continue;
     }
     try {
       final Uri url = Uri.parse('${node.url}$path');
-      logger('Fetching $url');
+      logger('Fetching $url (${type.name})');
       final int startTime = DateTime.now().millisecondsSinceEpoch;
       final Response response =
           await http.get(url).timeout(const Duration(seconds: 10));
       final int endTime = DateTime.now().millisecondsSinceEpoch;
       final int newLatency = endTime - startTime;
+      if (!kReleaseMode) {
+        logger('response.statusCode: ${response.statusCode}');
+      }
       if (response.statusCode == 200) {
         if (!dontRecord) {
           NodeManager().updateNode(type, node.copyWith(latency: newLatency));
@@ -337,11 +364,14 @@ Future<http.Response> _requestWithRetry(
       } else if (response.statusCode == 404) {
         logger('404 on fetch $url');
         if (retryWith404) {
-          // Retry with other nodes
+          logger('${node.url} gave 404, retrying with other');
           NodeManager()
               .updateNode(type, node.copyWith(errors: node.errors + 1));
           continue;
         } else {
+          if (!kReleaseMode) {
+            logger('Returning not 200 or 400 response');
+          }
           return response;
         }
       } else {

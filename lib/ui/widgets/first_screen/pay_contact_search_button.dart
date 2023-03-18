@@ -4,17 +4,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/payment_state.dart';
-import 'pay_contact_search_dialog.dart';
+import 'pay_contact_search_page.dart';
 import 'recipient_widget.dart';
 
-class PayContactSearchWidget extends StatefulWidget {
-  const PayContactSearchWidget({super.key});
+class PayContactSearchButton extends StatefulWidget {
+  const PayContactSearchButton({super.key});
 
   @override
-  State<PayContactSearchWidget> createState() => _PayContactSearchWidgetState();
+  State<PayContactSearchButton> createState() => _PayContactSearchButtonState();
 }
 
-class _PayContactSearchWidgetState extends State<PayContactSearchWidget> {
+class _PayContactSearchButtonState extends State<PayContactSearchButton> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PaymentCubit, PaymentState>(
@@ -25,7 +25,7 @@ class _PayContactSearchWidgetState extends State<PayContactSearchWidget> {
             showDialog(
               context: context,
               builder: (BuildContext context) {
-                return const SearchDialog();
+                return const PayContactSearchPage();
               },
             );
           },

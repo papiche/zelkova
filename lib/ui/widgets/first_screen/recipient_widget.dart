@@ -23,14 +23,18 @@ class RecipientWidget extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(
-                            state.nick ?? '',
-                            style: const TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
+                          if (state.nick != null)
+                            Text(
+                              state.nick!,
+                              style: const TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          humanizePubKeyAsWidget(state.publicKey),
+                          Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                  0, state.nick != null ? 0 : 12, 0, 0),
+                              child: humanizePubKeyAsWidget(state.publicKey)),
                         ],
                       ),
                     ),

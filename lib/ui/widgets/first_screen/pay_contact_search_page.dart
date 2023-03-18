@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
@@ -22,14 +22,14 @@ import '../../ui_helpers.dart';
 import '../loading_box.dart';
 import '../third_screen/contacts_page.dart';
 
-class SearchDialog extends StatefulWidget {
-  const SearchDialog({super.key});
+class PayContactSearchPage extends StatefulWidget {
+  const PayContactSearchPage({super.key});
 
   @override
-  State<SearchDialog> createState() => _SearchDialogState();
+  State<PayContactSearchPage> createState() => _PayContactSearchPageState();
 }
 
-class _SearchDialogState extends State<SearchDialog> {
+class _PayContactSearchPageState extends State<PayContactSearchPage> {
   final TextEditingController _searchController = TextEditingController();
   String _searchTerm = '';
 
@@ -41,28 +41,34 @@ class _SearchDialogState extends State<SearchDialog> {
       _isLoading = true;
     });
 
-    final Response response = await searchUser(_searchTerm);
-    if (response.statusCode == 404) {
-      _results = <Contact>[];
-      if (validateKey(_searchTerm)) {
-        // looks like a plain pub key
-        final Contact contact = Contact(pubkey: _searchTerm);
-        _results.add(contact);
-      }
+    final Response cPlusResponse = await searchCPlusUser(_searchTerm);
+    if (cPlusResponse.statusCode == 404) {
       setState(() {
-        _isLoading = false;
+        _results = <Contact>[];
       });
     } else {
-      _results = (((const JsonDecoder().convert(response.body)
-                  as Map<String, dynamic>)['hits']
-              as Map<String, dynamic>)['hits'] as List<dynamic>)
-          .map((dynamic e) {
-        final Contact c = _contactFromResult(e as Map<String, dynamic>);
-        logger('Contact retrieved in search $c');
-        return c;
-      }).toList();
-      logger('Found: ${_results.length}');
+      _results = await searchWot(_searchTerm);
+      // FIXME(vjrj) ... no avatars in wot!
       setState(() {
+        // Add cplus users
+        final List<dynamic> hits = ((const JsonDecoder()
+                .convert(cPlusResponse.body) as Map<String, dynamic>)['hits']
+            as Map<String, dynamic>)['hits'] as List<dynamic>;
+        for (final dynamic hit in hits) {
+          final Contact c = _contactFromResult(hit as Map<String, dynamic>);
+          logger('Contact retrieved in search $c');
+          _results.add(c);
+        }
+        logger('Found: ${_results.length}');
+        _isLoading = false;
+      });
+    }
+    if (_results.isEmpty && validateKey(_searchTerm)) {
+      // looks like a plain pub key
+      setState(() {
+        _isLoading = true;
+        final Contact contact = Contact(pubkey: _searchTerm);
+        _results.add(contact);
         _isLoading = false;
       });
     }
@@ -152,17 +158,14 @@ class _SearchDialogState extends State<SearchDialog> {
                     itemCount: _results.length,
                     itemBuilder: (BuildContext context, int index) {
                       final Contact contact = _results[index];
-                      // FIMXE final String nick = _getNick(currentIndex);
-                      final String nick = contact.name ?? contact.pubkey;
-                      final String pubKey = contact.pubkey;
                       return FutureBuilder<Contact>(
                           future: getWot(contact),
                           builder: (BuildContext context,
                               AsyncSnapshot<Contact> snapshot) {
                             Widget widget;
                             if (snapshot.hasData) {
-                              widget = _buildItem(
-                                  snapshot.data!, nick, index, context, pubKey);
+                              widget =
+                                  _buildItem(snapshot.data!, index, context);
                             } else if (snapshot.hasError) {
                               widget = Padding(
                                 padding: const EdgeInsets.only(top: 16),
@@ -170,8 +173,7 @@ class _SearchDialogState extends State<SearchDialog> {
                               );
                             } else {
                               // Contact without wot
-                              widget = _buildItem(
-                                  contact, nick, index, context, pubKey);
+                              widget = _buildItem(contact, index, context);
                             }
                             return widget;
                           });
@@ -183,24 +185,28 @@ class _SearchDialogState extends State<SearchDialog> {
     );
   }
 
-  Widget _buildItem(Contact contact, String nick, int index,
-      BuildContext context, String pubKey) {
-    logger('Contact retrieved ${contact}');
+  Widget _buildItem(Contact contact, int index, BuildContext context) {
+    logger('Contact retrieved $contact');
+    final String pubKey = contact.pubkey;
+    final String title = contact.nick ?? contact.name ?? humanizePubKey(pubKey);
+    final Widget? subtitle = (contact.nick != null || contact.name != null)
+        ? Text(humanizePubKey(pubKey))
+        : null;
     final bool hasAvatar = contact.avatar != null;
     return ListTile(
-      title: Text(nick),
+      title: Text(title),
+      subtitle: subtitle,
       tileColor: tileColor(index),
       onTap: () {
-        context
-            .read<PaymentCubit>()
-            .selectUser(pubKey, nick, hasAvatar ? contact.avatar : null);
+        context.read<PaymentCubit>().selectUser(pubKey,
+            contact.nick ?? contact.name, hasAvatar ? contact.avatar : null);
         Navigator.pop(context);
       },
       leading: avatar(
         hasAvatar,
         hasAvatar ? contact.avatar : null,
-        bgColor: tileColor(index, true),
-        color: tileColor(index),
+        bgColor: tileColor(index),
+        color: tileColor(index, true),
       ),
       trailing: BlocBuilder<ContactsCubit, ContactsState>(
           builder: (BuildContext context, ContactsState state) {
@@ -231,10 +237,13 @@ class _SearchDialogState extends State<SearchDialog> {
   Contact _contactFromResult(Map<String, dynamic> record) {
     final Map<String, dynamic> source =
         record['_source'] as Map<String, dynamic>;
-    final Map<String, dynamic> avatar =
-        source['avatar'] as Map<String, dynamic>;
-    final Uint8List avatarBase64 = imageFromBase64String(
-        'data:${avatar['_content_type']};base64,${avatar['_content']}');
+    Uint8List? avatarBase64;
+    if (source['avatar'] != null) {
+      final Map<String, dynamic> avatar =
+          source['avatar'] as Map<String, dynamic>;
+      avatarBase64 = imageFromBase64String(
+          'data:${avatar['_content_type']};base64,${avatar['_content']}');
+    }
     return Contact(
         pubkey: record['_id'] as String,
         name: source['title'] as String,

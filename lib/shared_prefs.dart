@@ -51,9 +51,9 @@ class SharedPreferencesHelper {
 
   String getPubKey() {
     // At this point should exists
-    final String? pubkey = _prefs.getString(_pubKey);
-    logger('Public key $pubkey!');
-    return pubkey!;
+    final String? pubKey = _prefs.getString(_pubKey);
+    logger('Public key: $pubKey');
+    return pubKey!;
   }
 
   String? _getString(String key) {

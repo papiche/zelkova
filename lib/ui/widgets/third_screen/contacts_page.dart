@@ -132,10 +132,12 @@ class _ContactsPageState extends State<ContactsPage> {
                       child: ListTile(
                         title: contact.nick != null
                             ? Text(contact.nick!)
-                            : humanizePubKeyAsWidget(contact.pubkey),
-                        subtitle: contact.nick == null
-                            ? null
-                            : humanizePubKeyAsWidget(contact.pubkey),
+                            : contact.name != null
+                                ? Text(contact.name!)
+                                : humanizePubKeyAsWidget(contact.pubkey),
+                        subtitle: contact.nick != null || contact.name != null
+                            ? humanizePubKeyAsWidget(contact.pubkey)
+                            : null,
                         leading: avatar(
                           contact.avatar != null,
                           contact.avatar,

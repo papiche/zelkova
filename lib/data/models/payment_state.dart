@@ -56,6 +56,11 @@ class PaymentState extends Equatable {
   );
 
   @override
+  String toString() {
+    return '$publicKey ${amount ?? ""}';
+  }
+
+  @override
   List<Object?> get props =>
       <dynamic>[publicKey, nick, avatar, description, amount, isSent];
 }

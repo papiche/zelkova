@@ -1,6 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../data/models/payment_cubit.dart';
+import '../../data/models/payment_state.dart';
 import 'g1_textfield.dart';
 
 class PayForm extends StatefulWidget {
@@ -17,36 +20,40 @@ class _PayFormState extends State<PayForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          G1PayAmountField(controller: _amountController),
-          const SizedBox(height: 10.0),
-          TextField(
-            controller: _descController,
-            decoration: InputDecoration(
-              labelText: tr('g1_form_pay_desc'),
-              hintText: tr('g1_form_pay_hint'),
-              border: const OutlineInputBorder(),
+    return BlocBuilder<PaymentCubit, PaymentState>(
+        builder: (BuildContext context, PaymentState state) {
+      _amountController.text = state.amount != null ? '${state.amount}' : '';
+      return Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            G1PayAmountField(controller: _amountController),
+            const SizedBox(height: 10.0),
+            TextField(
+              controller: _descController,
+              decoration: InputDecoration(
+                labelText: tr('g1_form_pay_desc'),
+                hintText: tr('g1_form_pay_hint'),
+                border: const OutlineInputBorder(),
+              ),
+              maxLines: null,
             ),
-            maxLines: null,
-          ),
-          const SizedBox(height: 10.0),
-          ElevatedButton(
-            onPressed:
-                null /* () {
+            const SizedBox(height: 10.0),
+            ElevatedButton(
+              onPressed:
+                  null /* () {
               if (_formKey.currentState != null &&
                   _formKey.currentState!.validate()) {
                 // Enviar formulario
               }
             }, */
-            ,
-            child: Text(tr('g1_form_pay_send')),
-          ),
-        ],
-      ),
-    );
+              ,
+              child: Text(tr('g1_form_pay_send')),
+            ),
+          ],
+        ),
+      );
+    });
   }
 }

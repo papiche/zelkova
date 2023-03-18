@@ -20,12 +20,10 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
     emit(newState);
   }
 
-  void selectUser(String publicKey, String? nick, Uint8List? avatar) {
+  void selectUser(String publicKey, String? nick, Uint8List? avatar,
+      [double? amount]) {
     final PaymentState newState = PaymentState(
-      publicKey: publicKey,
-      nick: nick,
-      avatar: avatar,
-    );
+        publicKey: publicKey, nick: nick, avatar: avatar, amount: amount);
     emit(newState);
   }
 

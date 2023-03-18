@@ -56,7 +56,7 @@ Not found sample:
  */
 Future<List<Contact>> searchWot(String searchTerm) async {
   final Response response = await requestDuniterWithRetry(
-      '/wot/lookup/${searchTerm}',
+      '/wot/lookup/$searchTerm',
       retryWith404: false);
   // Will be better to analyze the 404 response (to detect faulty node)
   final List<Contact> contacts = <Contact>[];

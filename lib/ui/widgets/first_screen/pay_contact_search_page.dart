@@ -12,7 +12,6 @@ import '../../../cubit/bottom_nav_cubit.dart';
 import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
 import '../../../data/models/contact_state.dart';
-import '../../../data/models/node_list_cubit.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/payment_state.dart';
 import '../../../g1/api.dart';
@@ -36,7 +35,7 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
   List<Contact> _results = <Contact>[];
   bool _isLoading = false;
 
-  Future<void> _search(NodeListCubit cubit) async {
+  Future<void> _search() async {
     setState(() {
       _isLoading = true;
     });
@@ -64,7 +63,7 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
       });
     }
     if (_results.isEmpty && validateKey(_searchTerm)) {
-      // looks like a plain pub key
+      logger('$_searchTerm looks like a plain pub key');
       setState(() {
         _isLoading = true;
         final Contact contact = Contact(pubkey: _searchTerm);
@@ -76,7 +75,6 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    final NodeListCubit nodeListCubit = context.read<NodeListCubit>();
     final PaymentCubit paymentCubit = context.read<PaymentCubit>();
     final BottomNavCubit nav = context.read<BottomNavCubit>();
     return Scaffold(
@@ -100,19 +98,27 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
                 if (scannedKey is String &&
                     scannedKey != null &&
                     scannedKey != '-1') {
-                  PaymentState? pay = parseScannedUri(scannedKey);
-                  await _search(nodeListCubit);
+                  final PaymentState? pay = parseScannedUri(scannedKey);
+                  if (pay != null) {
+                    logger('Scanned $pay');
+                    _searchTerm = pay.publicKey;
+                    await _search();
+                  }
+                  logger('QR result length ${_results.length}');
                   if (_results.length == 1 && pay != null) {
                     final Contact contact = _results[0];
-                    pay = pay.copyWith(
-                        nick: contact.name, avatar: contact.avatar);
-                  }
-                  if (pay!.amount != null) {
+                    paymentCubit.selectUser(
+                        contact.pubkey,
+                        contact.nick ?? contact.name,
+                        contact.avatar,
+                        pay.amount);
+                  } else if (pay!.amount != null) {
                     paymentCubit.selectKeyAmount(pay.publicKey, pay.amount!);
                   } else {
                     paymentCubit.selectKey(pay.publicKey);
                   }
-                  nav.updateIndex(0);
+
+                  Navigator.pop(context);
                 }
               }),
           IconButton(
@@ -135,7 +141,7 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.search),
                   onPressed: () {
-                    _search(nodeListCubit);
+                    _search();
                   },
                 ),
               ),
@@ -145,7 +151,7 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
                 });
               },
               onSubmitted: (_) {
-                _search(nodeListCubit);
+                _search();
               },
             ),
             if (_isLoading)
@@ -230,8 +236,6 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
             });
       }),
     );
-
-    return widget;
   }
 
   Contact _contactFromResult(Map<String, dynamic> record) {

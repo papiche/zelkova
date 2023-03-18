@@ -55,8 +55,10 @@ Not found sample:
 }
  */
 Future<Contact> getWot(Contact contact) async {
-  final Response response =
-      await requestCPlusWithRetry('/wot/lookup/${contact.pubkey}');
+  final Response response = await requestDuniterWithRetry(
+      '/wot/lookup/${contact.pubkey}',
+      retryWith404: false);
+  // Will be better to analyze the 404 response (to detect faulty node)
   if (response.statusCode == HttpStatus.ok) {
     final Map<String, dynamic> data =
         json.decode(response.body) as Map<String, dynamic>;
@@ -289,6 +291,11 @@ Future<Duration> _pingNode(String node) async {
 Future<http.Response> requestWithRetry(NodeType type, String path,
     {bool dontRecord = false, bool retryWith404 = true}) async {
   return _requestWithRetry(type, path, dontRecord, retryWith404);
+}
+
+Future<http.Response> requestDuniterWithRetry(String path,
+    {bool retryWith404 = true}) async {
+  return _requestWithRetry(NodeType.duniter, path, true, retryWith404);
 }
 
 Future<http.Response> requestCPlusWithRetry(String path,

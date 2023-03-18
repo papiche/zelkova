@@ -118,7 +118,7 @@ Future<void> fetchDuniterNodes({bool force = false}) async {
       logger('Fetching nodes forced');
     } else {
       logger(
-          'Fetching nodes as we did it more than ${minutesToWait}min ago: ${NodeManager().lastDuniterFetchNodesTime.toIso8601String()} and we have only ${duniterNodesWorking()}');
+          'Fetching nodes as we did it more than ${minutesToWait}min ago and we have only ${duniterNodesWorking()}');
     }
     final List<Node> nodes = await _fetchDuniterNodesFromPeers();
     NodeManager().updateNodes(type, nodes);
@@ -310,6 +310,11 @@ Future<http.Response> requestCPlusWithRetry(String path,
 Future<http.Response> _requestWithRetry(
     NodeType type, String path, bool dontRecord, bool retryWith404) async {
   final List<Node> nodes = NodeManager().nodeList(type);
+  if (nodes.isEmpty) {
+    nodes.addAll(type == NodeType.duniter
+        ? defaultDuniterNodes
+        : defaultCesiumPlusNodes);
+  }
   for (int i = 0; i < nodes.length; i++) {
     final Node node = nodes[i];
     if (node.errors >= NodeManager.maxNodeErrors) {

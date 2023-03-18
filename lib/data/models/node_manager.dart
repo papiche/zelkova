@@ -23,13 +23,9 @@ class NodeManager {
 
   final List<Node> duniterNodes = <Node>[];
   final List<Node> cesiumPlusNodes = <Node>[];
-  DateTime lastDuniterFetchNodesTime = DateTime.now();
-  DateTime lastCPlusFetchNodesTime = DateTime.now();
 
   void loadFromCubit(NodeListCubit cubit) {
-    NodeManagerObserver.instance.setCubit(cubit);
-    lastDuniterFetchNodesTime = cubit.lastFetchDuniterNodesTime;
-    lastCPlusFetchNodesTime = cubit.lastFetchCPlusNodesTime;
+    NodeManagerObserver.instance.cubit = cubit;
     duniterNodes.clear();
     cesiumPlusNodes.clear();
     duniterNodes.addAll(cubit.duniterNodes);
@@ -47,16 +43,6 @@ class NodeManager {
 
   List<Node> _getList(NodeType type) =>
       type == NodeType.duniter ? duniterNodes : cesiumPlusNodes;
-
-  void updateLastFetchNodesTime(DateTime time) {
-    lastDuniterFetchNodesTime = time;
-    notifyObserver();
-  }
-
-  void updateLastCPlusFetchNodesTime(DateTime time) {
-    lastCPlusFetchNodesTime = time;
-    notifyObserver();
-  }
 
   void addNode(NodeType type, Node node) {
     final List<Node> nodes = _getList(type);
@@ -97,7 +83,7 @@ class NodeManager {
 
   void _updateList(List<Node> list, Node updatedNode) {
     final int index =
-    list.indexWhere((Node node) => node.url == updatedNode.url);
+        list.indexWhere((Node node) => node.url == updatedNode.url);
     if (index != -1) {
       list.replaceRange(index, index + 1, <Node>[updatedNode]);
     }
@@ -108,7 +94,7 @@ class NodeManager {
     for (final NodeType type in NodeType.values) {
       final List<Node> nodes = _getList(type);
       final List<Node> newList =
-      nodes.map((Node node) => node.copyWith(errors: 0)).toList();
+          nodes.map((Node node) => node.copyWith(errors: 0)).toList();
       nodes.clear();
       nodes.addAll(newList);
     }
@@ -125,17 +111,10 @@ class NodeManagerObserver {
 
   static final NodeManagerObserver instance = NodeManagerObserver._internal();
 
-  late NodeListCubit _cubit;
-
-  void setCubit(NodeListCubit cubit) {
-    _cubit = cubit;
-  }
+  late NodeListCubit cubit;
 
   void update(NodeManager nodeManager) {
-    _cubit.setDuniterNodes(nodeManager.duniterNodes);
-    _cubit.setCesiumPlusNodes(nodeManager.cesiumPlusNodes);
-    _cubit.setDuniterFetchTime(nodeManager.lastDuniterFetchNodesTime);
-    _cubit.setCesiumPluFetchTime(nodeManager.lastCPlusFetchNodesTime);
+    cubit.setDuniterNodes(nodeManager.duniterNodes);
+    cubit.setCesiumPlusNodes(nodeManager.cesiumPlusNodes);
   }
-
 }

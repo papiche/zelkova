@@ -9,23 +9,15 @@ part 'node_list_state.g.dart';
 @immutable
 @JsonSerializable()
 class NodeListState extends Equatable {
-  NodeListState(
-      {List<Node>? duniterNodes,
-      List<Node>? cesiumPlusNodes,
-      DateTime? lastFetchDuniterNodesTime,
-      DateTime? lastFetchCPlusNodesTime})
+  NodeListState({List<Node>? duniterNodes, List<Node>? cesiumPlusNodes})
       : duniterNodes = duniterNodes ?? defaultDuniterNodes,
-        cesiumPlusNodes = cesiumPlusNodes ?? defaultCesiumPlusNodes,
-        lastFetchDuniterNodesTime = lastFetchDuniterNodesTime ?? DateTime(1970),
-        lastFetchCPlusNodesTime = lastFetchCPlusNodesTime ?? DateTime(1970);
+        cesiumPlusNodes = cesiumPlusNodes ?? defaultCesiumPlusNodes;
 
   factory NodeListState.fromJson(Map<String, dynamic> json) =>
       _$NodeListStateFromJson(json);
 
   final List<Node> duniterNodes;
   final List<Node> cesiumPlusNodes;
-  final DateTime lastFetchDuniterNodesTime;
-  final DateTime lastFetchCPlusNodesTime;
 
   NodeListState copyWith(
       {List<Node>? duniterNodes,
@@ -35,20 +27,11 @@ class NodeListState extends Equatable {
     return NodeListState(
       duniterNodes: duniterNodes ?? this.duniterNodes,
       cesiumPlusNodes: cesiumPlusNodes ?? this.cesiumPlusNodes,
-      lastFetchDuniterNodesTime:
-          lastFetchDuniterNodesTime ?? lastFetchDuniterNodesTime,
-      lastFetchCPlusNodesTime:
-          lastFetchDuniterNodesTime ?? lastFetchCPlusNodesTime,
     );
   }
 
   @override
-  List<Object?> get props => <Object>[
-        duniterNodes,
-        cesiumPlusNodes,
-        lastFetchDuniterNodesTime,
-        lastFetchCPlusNodesTime
-      ];
+  List<Object?> get props => <Object>[duniterNodes, cesiumPlusNodes];
 
   Map<String, dynamic> toJson() => _$NodeListStateToJson(this);
 }

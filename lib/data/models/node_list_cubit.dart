@@ -38,14 +38,6 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
     emit(state.copyWith(duniterNodes: nodes));
   }
 
-  void setDuniterFetchTime(DateTime time) {
-    emit(state.copyWith(lastFetchDuniterNodesTime: time));
-  }
-
-  void setCesiumPluFetchTime(DateTime time) {
-    emit(state.copyWith(lastFetchCPlusNodesTime: time));
-  }
-
   void setCesiumPlusNodes(List<Node> nodes) {
     emit(state.copyWith(cesiumPlusNodes: nodes));
   }
@@ -58,10 +50,6 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
   List<Node> get duniterNodes => state.duniterNodes;
 
   List<Node> get cesiumPlusNodes => state.cesiumPlusNodes;
-
-  DateTime get lastFetchDuniterNodesTime => state.lastFetchDuniterNodesTime;
-
-  DateTime get lastFetchCPlusNodesTime => state.lastFetchCPlusNodesTime;
 
   @override
   NodeListState? fromJson(Map<String, dynamic> json) =>

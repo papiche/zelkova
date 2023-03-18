@@ -221,16 +221,20 @@ class _GinkgoAppState extends State<GinkgoApp> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    NodeManager().loadFromCubit(context.read<NodeListCubit>());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<NodeListCubit, NodeListState>(
         builder: (BuildContext nodeContext, NodeListState state) {
-      NodeManager().loadFromCubit(nodeContext.read<NodeListCubit>());
       Once.runHourly('load_nodes',
           callback: () => _loadNodes(),
           fallback: () {
             _printNodeStatus(prefix: 'After once hourly having');
           });
-
       Once.runCustom('clear_errors', callback: () {
         NodeManager().cleanErrorStats();
       }, duration: const Duration(minutes: 90));

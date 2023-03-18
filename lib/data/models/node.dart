@@ -1,7 +1,8 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'isJsonSerializable.dart';
+import 'is_json_serializable.dart';
 
 part 'node.g.dart';
 
@@ -46,7 +47,13 @@ class Node extends Equatable implements IsJsonSerializable<Node> {
   List<Object?> get props => <dynamic>[url, latency, errors];
 }
 
-const List<Node> defaultDuniterNodes = <Node>[
+List<Node> readDotNodeConfig(String entry) =>
+    dotenv.env[entry]!.split(' ').map((String url) => Node(url: url)).toList();
+
+List<Node> defaultDuniterNodes = readDotNodeConfig('DUNITER_NODES');
+List<Node> defaultCesiumPlusNodes = readDotNodeConfig('CESIUM_PLUS_NODES');
+
+const List<Node> defaultDuniterNodesRemove = <Node>[
   Node(url: 'https://g1.duniter.fr'),
   Node(url: 'https://g1.le-sou.org'),
   Node(url: 'https://g1.cgeek.fr'),
@@ -56,7 +63,7 @@ const List<Node> defaultDuniterNodes = <Node>[
   Node(url: 'https://g1.cgeek.fr')
 ];
 
-const List<Node> defaultCesiumPlusNodes = <Node>[
+const List<Node> defaultCesiumPlusNodesRemove = <Node>[
   Node(url: 'https://g1.data.e-is.pro'),
   Node(url: 'https://g1.data.presler.fr'),
   Node(url: 'https://g1.data.le-sou.org'),

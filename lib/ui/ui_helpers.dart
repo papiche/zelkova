@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:clipboard/clipboard.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 import '../shared_prefs.dart';
 import 'widgets/first_screen/circular_icon.dart';
@@ -30,7 +31,7 @@ void showTooltip(BuildContext context, String title, String message) {
 void copyPublicKeyToClipboard(BuildContext context) {
   FlutterClipboard.copy(SharedPreferencesHelper().getPubKey()).then(
       (dynamic value) => ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('key-copied-to-clipboard'))));
+          SnackBar(content: Text(tr('key_copied_to_clipboard')))));
 }
 
 const Color defAvatarBgColor = Colors.grey;
@@ -58,4 +59,17 @@ String humanizeFromToPubKey(String publicAddress, String address) {
   }
 }
 
-String humanizePubKey(String address) => '\u{1F511}${address.substring(0, 8)}';
+String humanizePubKey(String address) => '\u{1F511} ${address.substring(0, 8)}';
+
+Widget humanizePubKeyAsWidget(String pubKey) => Text(
+      humanizePubKey(pubKey),
+      style: const TextStyle(
+        fontSize: 16.0,
+      ),
+    );
+
+Color tileColor(int index, [bool inverse = false]) =>
+    (inverse ? index.isOdd : index.isEven) ? Colors.grey[200]! : Colors.white;
+
+String? humanizeTime(DateTime time, String locale) =>
+    timeago.format(time, locale: locale, clock: DateTime.now());

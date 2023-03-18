@@ -14,13 +14,19 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
+import 'package:responsive_framework/utils/scroll_behavior.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'app_bloc_observer.dart';
 import 'config/theme.dart';
+import 'cubit/bottom_nav_cubit.dart';
 import 'data/models/app_cubit.dart';
 import 'data/models/app_state.dart';
+import 'data/models/contact_cubit.dart';
 import 'data/models/node_list_cubit.dart';
+import 'data/models/node_list_state.dart';
 import 'data/models/payment_cubit.dart';
+import 'data/models/transaction_cubit.dart';
 import 'g1/api.dart';
 import 'shared_prefs.dart';
 import 'ui/screens/skeleton_screen.dart';
@@ -71,7 +77,7 @@ void main() async {
     final Directory tmpDir = await getTemporaryDirectory();
     Hive.init(tmpDir.toString());
     HydratedBloc.storage =
-        await HydratedStorage.build(storageDirectory: tmpDir);
+    await HydratedStorage.build(storageDirectory: tmpDir);
   }
 
   // Reset hive during developing
@@ -79,26 +85,45 @@ void main() async {
     // await HydratedBloc.storage.clear();
   }
 
-  runApp(
-    EasyLocalization(
-      path: 'assets/translations',
-      supportedLocales: const <Locale>[
-        Locale('en'),
-        Locale('es'),
-        Locale('fr'),
-      ],
-      fallbackLocale: const Locale('en'),
-      useFallbackTranslations: true,
-      child: MultiBlocProvider(providers: <BlocProvider<dynamic>>[
-        BlocProvider<AppCubit>(create: (BuildContext context) => AppCubit()),
-        BlocProvider<PaymentCubit>(
-            create: (BuildContext context) => PaymentCubit()),
-        BlocProvider<NodeListCubit>(
-            create: (BuildContext context) => NodeListCubit()),
-        // Add other BlocProviders here if needed
-      ], child: const MyApp()),
-    ),
-  );
+  void appRunner() =>
+      runApp(
+        EasyLocalization(
+          path: 'assets/translations',
+          supportedLocales: const <Locale>[
+            Locale('en'),
+            Locale('es'),
+            Locale('fr'),
+          ],
+          fallbackLocale: const Locale('en'),
+          useFallbackTranslations: true,
+          child: MultiBlocProvider(providers: <BlocProvider<dynamic>>[
+            BlocProvider<BottomNavCubit>(
+                create: (BuildContext context) => BottomNavCubit()),
+            BlocProvider<AppCubit>(
+                create: (BuildContext context) => AppCubit()),
+            BlocProvider<PaymentCubit>(
+                create: (BuildContext context) => PaymentCubit()),
+            BlocProvider<NodeListCubit>(
+                create: (BuildContext context) => NodeListCubit()),
+            BlocProvider<ContactsCubit>(
+                create: (BuildContext context) => ContactsCubit()),
+            BlocProvider<TransactionsCubit>(
+                create: (BuildContext context) => TransactionsCubit())
+            // Add other BlocProviders here if needed
+          ], child: const GinkgoApp()),
+        ),
+      );
+
+  if (!kReleaseMode) {
+    await SentryFlutter.init((SentryFlutterOptions options,) {
+      options.dsn = "${dotenv.env['SENTRY_DSN']}";
+      // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+      // We recommend adjusting this value in production.
+      // options.tracesSampleRate = 1.0;
+    }, appRunner: appRunner);
+  } else {
+    appRunner();
+  }
 }
 
 class AppIntro extends StatefulWidget {
@@ -110,10 +135,10 @@ class AppIntro extends StatefulWidget {
 
 class _AppIntro extends State<AppIntro> {
   final GlobalKey<IntroductionScreenState> introKey =
-      GlobalKey<IntroductionScreenState>();
+  GlobalKey<IntroductionScreenState>();
 
   void _onIntroEnd(BuildContext context) {
-    BlocProvider.of<AppCubit>(context).introViewed();
+    context.read<AppCubit>().introViewed();
     Navigator.of(context).pushReplacement(
       MaterialPageRoute<void>(
           builder: (BuildContext _) => const SkeletonScreen()),
@@ -155,8 +180,8 @@ class _AppIntro extends State<AppIntro> {
   }
 }
 
-PageViewModel createPageViewModel(
-    String title, String body, String imageAsset) {
+PageViewModel createPageViewModel(String title, String body,
+    String imageAsset) {
   return PageViewModel(
     title: tr(title),
     body: tr(body),
@@ -169,75 +194,84 @@ PageViewModel createPageViewModel(
   );
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class GinkgoApp extends StatefulWidget {
+  const GinkgoApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<GinkgoApp> createState() => _GinkgoAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _GinkgoAppState extends State<GinkgoApp> {
   @override
   Widget build(BuildContext context) {
     return ConnectivityAppWrapper(
         app: MaterialApp(
-      /// Localization is not available for the title.
-      title: 'Ğ1nkgo',
-      theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
-      darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
 
-      /// Theme stuff
+          /// Localization is not available for the title.
+            title: 'Ğ1nkgo',
+            theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
+            darkTheme:
+            ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
 
-      /// Localization stuff
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
-      debugShowCheckedModeBanner: false,
-      home: MediaQuery(
-        data: const MediaQueryData(),
-        child: BlocProvider.of<AppCubit>(context).isIntroViewed
-            ? const SkeletonScreen()
-            : const AppIntro(),
-      ),
-      builder: (BuildContext buildContext, Widget? widget) {
-        final NodeListCubit nodeListCubit =
-            BlocProvider.of<NodeListCubit>(buildContext);
-        final int nDuniterNodes = nodeListCubit.duniterNodes.length;
-        final int nCesiumPlusNodes = nodeListCubit.cesiumPlusNodes.length;
+            /// Theme stuff
 
-        // Load nodes from /network/peers
-        fetchDuniterNodes(nodeListCubit);
+            /// Localization stuff
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            debugShowCheckedModeBanner: false,
+            home: context
+                .read<AppCubit>()
+                .isIntroViewed
+                ? const SkeletonScreen()
+                : const AppIntro(),
+            builder: (BuildContext buildContext, Widget? widget) {
+              return BlocBuilder<NodeListCubit, NodeListState>(
+                builder: (BuildContext nodeListContext,
+                    NodeListState nodeListState) {
+                  final int nDuniterNodes = nodeListState.duniterNodes.length;
+                  final int nCesiumPlusNodes =
+                      nodeListState.cesiumPlusNodes.length;
 
-        logger(
-            'Starting with $nDuniterNodes duniter nodes and $nCesiumPlusNodes c+ nodes');
+                  final NodeListCubit nodeListCubit =
+                  nodeListContext.read<NodeListCubit>();
+                  // Load nodes from /network/peers
+                  fetchDuniterNodes(nodeListState, nodeListCubit);
 
-        final Cron cron = Cron();
-        cron.schedule(Schedule.parse('*/45 * * * *'), () async {
-          // Every 45m check for faster node (maybe it something costly in terms of
-          // bandwidth
-          fetchDuniterNodes(nodeListCubit);
-        });
-        cron.schedule(Schedule.parse('*/90 * * * *'), () async {
-          nodeListCubit.cleanDuniterErrorStats();
-        });
+                  logger(
+                      'Starting with $nDuniterNodes duniter nodes and $nCesiumPlusNodes c+ nodes');
 
-        return ResponsiveWrapper.builder(
-          ConnectivityWidgetWrapper(
-            message: tr('offline'),
-            height: 20,
-            child: widget!,
-          ),
-          maxWidth: 480,
-          minWidth: 480,
-          // defaultScale: true,
-          breakpoints: <ResponsiveBreakpoint>[
-            // const ResponsiveBreakpoint.resize(200, name: MOBILE),
-            const ResponsiveBreakpoint.resize(480, name: TABLET),
-            const ResponsiveBreakpoint.resize(480, name: DESKTOP),
-          ],
-          background: Container(color: const Color(0xFFF5F5F5)),
-        );
-      },
-    ));
+
+                  final Cron cron = Cron();
+                  cron.schedule(Schedule.parse('*/45 * * * *'), () async {
+                    // Every 45m check for faster node (maybe it something costly in terms of
+                    // bandwidth
+                    fetchDuniterNodes(nodeListState, nodeListCubit);
+                  });
+                  cron.schedule(Schedule.parse('*/90 * * * *'), () async {
+                    nodeListCubit.cleanDuniterErrorStats();
+                  });
+
+                  return ResponsiveWrapper.builder(
+                    BouncingScrollWrapper.builder(
+                        context,
+                        ConnectivityWidgetWrapper(
+                          message: tr('offline'),
+                          height: 20,
+                          child: widget!,
+                        )),
+                    maxWidth: 480,
+                    minWidth: 480,
+                    // defaultScale: true,
+                    breakpoints: <ResponsiveBreakpoint>[
+                      // const ResponsiveBreakpoint.resize(200, name: MOBILE),
+                      const ResponsiveBreakpoint.resize(480, name: TABLET),
+                      const ResponsiveBreakpoint.resize(480, name: DESKTOP),
+                    ],
+                    background: Container(color: const Color(0xFFF5F5F5)),
+                  );
+                },
+              );
+            }));
   }
 }

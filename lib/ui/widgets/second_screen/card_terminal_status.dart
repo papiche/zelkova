@@ -17,7 +17,7 @@ class CardTerminalStatus extends StatelessWidget {
             color: online ? Colors.green : Colors.red,
           ),
           const SizedBox(width: 8),
-          Text(online ? tr('online-terminal') : tr('offline-terminal'),
+          Text(online ? tr('online_terminal') : tr('offline_terminal'),
               style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,

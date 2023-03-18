@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -53,12 +54,12 @@ class CreditCard extends StatelessWidget {
                     spreadRadius: 1.0,
                   )
                 ],
-                gradient: const LinearGradient(
+                gradient: LinearGradient(
                   begin: Alignment.bottomLeft,
                   end: Alignment.topRight,
                   colors: <Color>[
-                    Color(0xFF05112B),
-                    Color(0xFF085476),
+                    Color(int.parse("${dotenv.env['CARD_COLOR_LEFT']}")),
+                    Color(int.parse("${dotenv.env['CARD_COLOR_RIGHT']}")),
                   ],
                 ),
               ),
@@ -73,7 +74,7 @@ class CreditCard extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(cardPadding),
                     child: Text(
-                      tr('g1_wallet'),
+                      dotenv.env['CARD_COLOR_TEXT'] ?? tr('g1_wallet'),
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 24.0,
@@ -99,7 +100,7 @@ class CreditCard extends StatelessWidget {
                       child: Row(children: <Widget>[
                         GestureDetector(
                             onTap: () =>
-                                showTooltip(context, '', tr('keys-tooltip')),
+                                showTooltip(context, '', tr('keys_tooltip')),
                             child: Text('**** **** ', style: cardTextStyle)),
                         GestureDetector(
                             onTap: () => copyPublicKeyToClipboard(context),
@@ -114,9 +115,9 @@ class CreditCard extends StatelessWidget {
                         const EdgeInsets.symmetric(horizontal: cardPadding),
                     child: GestureDetector(
                       onTap: () =>
-                          showTooltip(context, '', tr('card-validity-tooltip')),
+                          showTooltip(context, '', tr('card_validity_tooltip')),
                       child: Text(
-                        tr('card-validity'),
+                        tr('card_validity'),
                         style: TextStyle(
                           decoration: TextDecoration.underline,
                           color: Colors.white.withOpacity(0.8),
@@ -135,18 +136,22 @@ class CreditCard extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return Dialog(
-            child: Container(
-          padding: const EdgeInsets.all(16.0),
-          child: GestureDetector(
-            onTap: () => copyPublicKeyToClipboard(context),
-            child: QrImage(
-              data: publicKey,
-              size: MediaQuery.of(context).size.width * 0.8,
-              gapless: false,
-              foregroundColor: Colors.orange,
-            ),
-          ),
-        ));
+            child: SizedBox(
+                height: MediaQuery.of(context).size.width,
+                child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: GestureDetector(
+                      onTap: () => copyPublicKeyToClipboard(context),
+                      child: Column(children: <Widget>[
+                        Text(tr('show_qr_to_client')),
+                        QrImage(
+                          data: publicKey,
+                          size: MediaQuery.of(context).size.width * 0.8,
+                          gapless: false,
+                          foregroundColor: Colors.orange,
+                        ),
+                      ]),
+                    ))));
       },
     );
   }

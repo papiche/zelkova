@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'isJsonSerializable.dart';
+import 'is_json_serializable.dart';
 
 part 'app_state.g.dart';
 

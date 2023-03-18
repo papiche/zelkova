@@ -14,7 +14,6 @@ users to manage their Ğ1 currency on their mobile device using just a browser.
   amounts (which lightweight wallets will understand).
 * Internationalization (i18n)
 * Some contextual help (for example, by tapping on "Validity").
-* Connectivity detection (to retry transactions)
 * QR code reader
 
 ## Work in progress
@@ -23,6 +22,7 @@ users to manage their Ğ1 currency on their mobile device using just a browser.
 * Send and receive Ğ1 transactions
 * View transaction history
 * View Ğ1 balance and currency conversion rate
+* Connectivity detection (to retry transactions, and other net operations)
 
 ## Demo
 

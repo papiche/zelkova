@@ -1,13 +1,13 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/g1/transaction.dart';
+import 'package:ginkgo/data/models/transaction.dart';
 import 'package:ginkgo/g1/transaction_parser.dart';
 
 void main() {
   test('Test parsing', () async {
     TestWidgetsFlutterBinding.ensureInitialized();
     final String txData = await rootBundle.loadString('assets/tx.json');
-    final TransactionsAndBalance result = transactionParser(txData);
+    final TransactionsAndBalanceState result = transactionParser(txData);
     expect(result.balance, equals(6700));
     for (final Transaction tx in result.transactions) {
       expect(tx.from != tx.to, equals(true));

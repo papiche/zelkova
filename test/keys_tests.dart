@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:durt/durt.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:ginkgo/data/models/payment_state.dart';
 import 'package:ginkgo/g1/g1_helper.dart';
 
 void main() {
@@ -20,6 +21,8 @@ void main() {
   });
 
   test('parse different networks/peers BMAS', () {
+    expect(
+        parseHost('BMAS g1.texu.es 7443'), equals('https://g1.texu.es:7443'));
     expect(parseHost('BMAS g1.duniter.org 443'),
         equals('https://g1.duniter.org:443'));
     expect(parseHost('BMAS g1.leprette.fr 443 /bma'),
@@ -30,7 +33,30 @@ void main() {
         parseHost(
             'BMAS monnaie-libre.ortie.org/bma/ 192.168.1.35 2a01:cb0d:5c2:fa00:21e:68ff:feab:389a 443'),
         equals('https://monnaie-libre.ortie.org:443/bma'));
-    expect(
-        parseHost('BMAS g1.texu.es 7443'), equals('https://g1.texu.es:7443'));
+  });
+
+  test('validate pub keys', () {
+    expect(validateKey('FRYyk57Pi456EJRu9vqVfSHLgmUfx4Qc3goS62a7dUSm'),
+        equals(true));
+
+    expect(validateKey('BrgsSYK3xUzDyztGBHmxq69gfNxBfe2UKpxG21oZUBr5'),
+        equals(true));
+  });
+
+  test('validate qr uris', () {
+    const String publicKey = 'FRYyk57Pi456EJRu9vqVfSHLgmUfx4Qc3goS62a7dUSm';
+    final String uriA = getQrUri(publicKey, '10');
+    final PaymentState? payA = parseScannedUri(uriA);
+    expect(payA!.amount, equals(10));
+    expect(payA.publicKey, equals(publicKey));
+
+    final String uriB = getQrUri(publicKey);
+    final PaymentState? payB = parseScannedUri(uriB);
+    expect(payB!.amount, equals(0));
+    expect(payB.publicKey, equals(publicKey));
+
+    final PaymentState? payC = parseScannedUri(publicKey);
+    expect(payC!.amount, equals(0));
+    expect(payC.publicKey, equals(publicKey));
   });
 }

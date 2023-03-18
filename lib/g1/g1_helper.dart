@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:durt/durt.dart';
 
+import '../data/models/payment_state.dart';
 import '../main.dart';
 
 Random createRandom() {
@@ -54,9 +55,12 @@ String? parseHost(String endpointUnParsed) {
         RegExp(r'^\/[a-zA-Z0-9\-\/]+$').hasMatch(lastPart) ? lastPart : '';
 
     final String nextToLast = parts[parts.length - 1];
-    final String port = lastPart == ''
-        ? (RegExp(r'^\/[0-9]$').hasMatch(lastPart) ? lastPart : '443')
-        : RegExp(r'^\/[0-9]$').hasMatch(nextToLast)
+    /* print(lastPart);
+    print(path);
+    print(nextToLast); */
+    final String port = path == ''
+        ? (RegExp(r'^[0-9]+$').hasMatch(lastPart) ? lastPart : '443')
+        : RegExp(r'^[0-9]+$').hasMatch(nextToLast)
             ? nextToLast
             : '443';
     final List<String> hostSplited = parts[1].split('/');
@@ -83,4 +87,49 @@ String? parseHost(String endpointUnParsed) {
     logger('Cannot parse endpoint $endpointUnParsed');
     return null;
   }
+}
+
+bool validateKey(String pubKey) {
+  return RegExp(
+          r'^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}$')
+      .hasMatch(pubKey);
+}
+
+String getQrUri(String destinationPublicKey, [String amountString = '0']) {
+  final double amount = double.tryParse(amountString) ?? 0.0;
+
+  String uri;
+  if (amount > 0) {
+    // there is something like this in other clients?
+    uri = 'duniter:key/$destinationPublicKey?amount=$amount';
+  } else {
+    uri = destinationPublicKey;
+  }
+  return uri;
+}
+
+PaymentState? parseScannedUri(String qr) {
+  final RegExp regexKeyAmount = RegExp(r'duniter:key/(\w+)\?amount=([\d.]+)');
+  final RegExpMatch? matchKeyAmount = regexKeyAmount.firstMatch(qr);
+
+  if (matchKeyAmount != null) {
+    final String publicKey = matchKeyAmount.group(1)!;
+    final double amount = double.parse(matchKeyAmount.group(2)!);
+    return PaymentState(publicKey: publicKey, amount: amount);
+  }
+
+  // Match no amount
+  final RegExp regexKey = RegExp(r'duniter:key/(\w+)');
+  final RegExpMatch? matchKey = regexKey.firstMatch(qr);
+  if (matchKey != null) {
+    final String publicKey = matchKey.group(1)!;
+    return PaymentState(publicKey: publicKey);
+  }
+
+  // Match key only
+  if (validateKey(qr)) {
+    return PaymentState(publicKey: qr);
+  }
+
+  return null;
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/third_screen/contacts_page.dart';
+
 class ThirdScreen extends StatelessWidget {
   const ThirdScreen({super.key});
 
@@ -7,10 +9,7 @@ class ThirdScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: Theme.of(context).colorScheme.background,
-      child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          physics: const BouncingScrollPhysics(),
-          children: const <Widget>[SizedBox(height: 36), Text('Contacts')]),
+      child: const ContactsPage(),
     );
   }
 }

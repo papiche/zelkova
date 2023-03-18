@@ -23,25 +23,23 @@ class SkeletonScreen extends StatelessWidget {
       FifthScreen(),
     ];
 
-    return BlocProvider<BottomNavCubit>(
-        create: (BuildContext context) => BottomNavCubit(),
-        child: Scaffold(
-          extendBodyBehindAppBar: true,
-          resizeToAvoidBottomInset: true,
-          appBar: const AppBarGone(),
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      resizeToAvoidBottomInset: true,
+      appBar: const AppBarGone(),
 
-          /// When switching between tabs this will fade the old
-          /// layout out and the new layout in.
-          body: BlocBuilder<BottomNavCubit, int>(
-            builder: (BuildContext context, int state) {
-              return AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
-                  child: pageNavigation.elementAt(state));
-            },
-          ),
+      /// When switching between tabs this will fade the old
+      /// layout out and the new layout in.
+      body: BlocBuilder<BottomNavCubit, int>(
+        builder: (BuildContext context, int state) {
+          return AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              child: pageNavigation.elementAt(state));
+        },
+      ),
 
-          bottomNavigationBar: const BottomNavBar(),
-          backgroundColor: Theme.of(context).colorScheme.background,
-        ));
+      bottomNavigationBar: const BottomNavBar(),
+      backgroundColor: Theme.of(context).colorScheme.background,
+    );
   }
 }

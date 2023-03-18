@@ -55,6 +55,10 @@ dependencies:
   universal_html: ^2.0.9
   fl_chart: ^0.61.0
   json_annotation: ^4.8.0
+  flutter_slidable: ^2.0.0
+  sentry_flutter: ^6.22.0
+  copy_with_extension: ^5.0.2
+  timeago: ^3.3.0
 
 dev_dependencies:
   flutter_test:
@@ -62,6 +66,7 @@ dev_dependencies:
   flutter_lints: ^2.0.1
   build_runner: ^2.3.3
   json_serializable: ^6.6.1
+  copy_with_extension_gen: any
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

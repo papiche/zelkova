@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
+import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs.dart';
 import 'card_terminal_status.dart';
 
@@ -74,7 +75,7 @@ class CardTerminalScreen extends StatelessWidget {
             Expanded(
                 child: Column(children: <Widget>[
               QrImage(
-                data: _getQrUi(SharedPreferencesHelper().getPubKey(), amount),
+                data: getQrUri(SharedPreferencesHelper().getPubKey(), amount),
                 size: 160.0,
               )
             ])),
@@ -107,8 +108,8 @@ class CardTerminalScreen extends StatelessWidget {
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: amount.isNotEmpty
-                              ? tr('show-qr-to-client-amount')
-                              : tr('show-qr-to-client'),
+                              ? tr('show_qr_to_client_amount')
+                              : tr('show_qr_to_client'),
                           hintStyle: const TextStyle(
                             fontFamily: 'Roboto Mono',
                             color: Colors.grey,
@@ -125,18 +126,5 @@ class CardTerminalScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String _getQrUi(String destinationPublicKey, String amountString) {
-    final double amount = double.tryParse(amountString) ?? 0.0;
-
-    String uri;
-    if (amount > 0) {
-      // there is something like this in other clients?
-      uri = 'duniter:key/$destinationPublicKey?amount=$amount';
-    } else {
-      uri = destinationPublicKey;
-    }
-    return uri;
   }
 }

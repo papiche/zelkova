@@ -9,13 +9,11 @@ part of 'node_list_state.dart';
 NodeListState _$NodeListStateFromJson(Map<String, dynamic> json) =>
     NodeListState(
       duniterNodes: (json['duniterNodes'] as List<dynamic>?)
-              ?.map((e) => Node.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          defaultDuniterNodes,
+          ?.map((e) => Node.fromJson(e as Map<String, dynamic>))
+          .toList(),
       cesiumPlusNodes: (json['cesiumPlusNodes'] as List<dynamic>?)
-              ?.map((e) => Node.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          defaultCesiumPlusNodes,
+          ?.map((e) => Node.fromJson(e as Map<String, dynamic>))
+          .toList(),
       lastFetchNodesTime: json['lastFetchNodesTime'] == null
           ? null
           : DateTime.parse(json['lastFetchNodesTime'] as String),

@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'transaction.dart';
+import '../data/models/transaction.dart';
 
-TransactionsAndBalance transactionParser(String txData) {
+TransactionsAndBalanceState transactionParser(String txData) {
   final RegExp exp = RegExp(r'\((.*?)\)');
 
   final Map<String, dynamic> parsedTxData =
@@ -14,7 +14,7 @@ TransactionsAndBalance transactionParser(String txData) {
   final List<Transaction> tx = <Transaction>[];
   for (final dynamic receivedRaw in listReceived) {
     final Map<String, dynamic> received = receivedRaw as Map<String, dynamic>;
-    final int time = received['blockstampTime'] as int;
+    final int timestamp = received['blockstampTime'] as int;
     final String comment = received['comment'] as String;
     final List<dynamic> outputs = received['outputs'] as List<dynamic>;
     final int amount = int.parse((outputs[0] as String).split(':')[0]);
@@ -28,12 +28,21 @@ TransactionsAndBalance transactionParser(String txData) {
       // Send
       balance = balance -= amount;
     }
-    tx.add(Transaction(
-        from: address2!,
-        to: address1!,
-        amount: pubKey == address2 ? -amount : amount,
-        comment: comment,
-        time: DateTime.fromMillisecondsSinceEpoch(time)));
+    final DateTime txDate =
+        DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+    /* if (!kReleaseMode) {
+      logger('Timestamp: $timestamp');
+      logger('Fecha: $txDate');
+    } */
+    tx.insert(
+        0,
+        Transaction(
+            from: address2!,
+            to: address1!,
+            amount: pubKey == address2 ? -amount : amount,
+            comment: comment,
+            time: txDate));
   }
-  return TransactionsAndBalance(transactions: tx, balance: balance);
+  return TransactionsAndBalanceState(
+      transactions: tx, balance: balance, lastChecked: DateTime.now());
 }

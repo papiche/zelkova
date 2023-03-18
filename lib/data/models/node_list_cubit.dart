@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import 'node.dart';
@@ -6,9 +7,11 @@ import 'node_list_state.dart';
 class NodeListCubit extends HydratedCubit<NodeListState> {
   NodeListCubit() : super(NodeListState());
 
+  static int maxNodes = kReleaseMode ? 20 : 5;
+  static int maxNodeErrors = 3;
+
   void addDuniterNode(Node node) {
-    final Node? nFound = _find(node);
-    if (nFound == null) {
+    if (!_find(node)) {
       // Does not exists, so add it
       emit(state.copyWith(duniterNodes: <Node>[...state.duniterNodes, node]));
     } else {
@@ -17,12 +20,10 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
     }
   }
 
-  Node? _find(Node node) =>
-      state.duniterNodes.firstWhere((Node n) => n.url == node.url);
+  bool _find(Node node) => state.duniterNodes.contains(node);
 
   void insertDuniterNode(Node node) {
-    final Node? nFound = _find(node);
-    if (nFound == null) {
+    if (!_find(node)) {
       emit(state.copyWith(duniterNodes: <Node>[node, ...state.duniterNodes]));
     } else {
       // it exists

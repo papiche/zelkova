@@ -9,6 +9,7 @@ convert leaf.png -resize 256x256 \
 convert leaf.png -resize 256x256 favicon.png
 
 cp favicon.png ../../web/
+cp favicon.ico ../../web/
 
 for i in 192 512; do convert leaf.png -resize $ix$i ../../web/icons/Icon-$i.png; done
 for i in 192 512; do convert leaf.png -resize $ix$i ../../web/icons/Icon-maskable-$i.png; done

@@ -10,10 +10,12 @@ part 'node_list_state.g.dart';
 @JsonSerializable()
 class NodeListState extends Equatable {
   NodeListState(
-      {this.duniterNodes = defaultDuniterNodes,
-      this.cesiumPlusNodes = defaultCesiumPlusNodes,
+      {List<Node>? duniterNodes,
+      List<Node>? cesiumPlusNodes,
       DateTime? lastFetchNodesTime})
-      : lastFetchNodesTime = lastFetchNodesTime ?? DateTime(1970);
+      : duniterNodes = duniterNodes ?? defaultDuniterNodes,
+        cesiumPlusNodes = cesiumPlusNodes ?? defaultCesiumPlusNodes,
+        lastFetchNodesTime = lastFetchNodesTime ?? DateTime(1970);
 
   factory NodeListState.fromJson(Map<String, dynamic> json) =>
       _$NodeListStateFromJson(json);

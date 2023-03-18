@@ -26,6 +26,4 @@ class AppCubit extends HydratedCubit<AppState> {
   Map<String, dynamic> toJson(AppState state) {
     return state.toJson();
   }
-  
 }
-

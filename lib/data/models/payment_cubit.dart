@@ -20,8 +20,8 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
     emit(newState);
   }
 
-  void selectUser(String publicKey, String nick, Uint8List avatar) {
-    final PaymentState newState = state.copyWith(
+  void selectUser(String publicKey, String? nick, Uint8List? avatar) {
+    final PaymentState newState = PaymentState(
       publicKey: publicKey,
       nick: nick,
       avatar: avatar,
@@ -29,10 +29,17 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
     emit(newState);
   }
 
+  void selectKeyAmount(String publicKey, double amount) {
+    final PaymentState newState =
+        PaymentState(publicKey: publicKey, amount: amount);
+    emit(newState);
+  }
+
   void selectKey(String publicKey) {
-    final PaymentState newState = state.copyWith(
-      publicKey: publicKey,
-    );
+    final PaymentState newState = PaymentState(
+        publicKey: publicKey,
+        amount: state.amount,
+        description: state.description);
     emit(newState);
   }
 

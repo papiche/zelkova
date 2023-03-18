@@ -7,11 +7,13 @@ class InfoCard extends StatelessWidget {
       {super.key,
       required this.title,
       this.subtitle = '',
+      this.trailing = '',
       required this.icon,
       this.translate = true});
 
   final String title;
   final String subtitle;
+  final String trailing;
   final IconData icon;
   final bool translate;
 
@@ -35,6 +37,7 @@ class InfoCard extends StatelessWidget {
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(12))),
             subtitle: subtitle.isNotEmpty ? Text(subtitle) : null,
+            trailing: trailing.isNotEmpty ? Text(trailing) : null,
             title: Row(
               children: <Widget>[
                 Icon(icon, color: Theme.of(context).colorScheme.primary),

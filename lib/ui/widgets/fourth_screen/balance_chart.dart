@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-import '../../../g1/transaction.dart';
+import '../../../data/models/transaction.dart';
 
 class BalanceChart extends StatefulWidget {
   const BalanceChart({super.key, required this.transactions});

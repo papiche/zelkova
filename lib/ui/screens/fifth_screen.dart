@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/models/node.dart';
 import '../../data/models/node_list_cubit.dart';
 import '../../data/models/node_list_state.dart';
+import '../../data/models/node_manager.dart';
 import '../../g1/api.dart';
 import '../../g1/export_import.dart';
 import '../../main.dart';
@@ -23,7 +24,6 @@ class FifthScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<NodeListCubit, NodeListState>(
         builder: (BuildContext nodeContext, NodeListState state) {
-      final List<Node> duniterNodes = state.duniterNodes;
       return Material(
         color: Theme.of(context).colorScheme.background,
         child: ListView(
@@ -31,24 +31,6 @@ class FifthScreen extends StatelessWidget {
             physics: const BouncingScrollPhysics(),
             children: <Widget>[
               const Header(text: 'bottom_nav_fifth'),
-              GestureDetector(
-                  onLongPress: () {
-                    logger('On long press');
-                    fetchDuniterNodes(force: true);
-                    fetchCesiumPlusNodes(force: true);
-                  },
-                  child: InfoCard(
-                      title: 'connected_to',
-                      subtitle: duniterNodes.first.url.replaceFirst(':443', ''),
-                      trailing: tr('current_nodes_length',
-                          namedArgs: <String, String>{
-                            'nodes': duniterNodes.length.toString()
-                          }),
-                      icon: Icons.hub)),
-              LinkCard(
-                  title: 'code_card_title',
-                  icon: Icons.code_rounded,
-                  url: Uri.parse('https://git.duniter.org/vjrj/ginkgo')),
               const TextDivider(text: 'key_tools_title'),
               GridView.count(
                   physics: const NeverScrollableScrollPhysics(),
@@ -82,9 +64,42 @@ class FifthScreen extends StatelessWidget {
                       onTap: () => copyPublicKeyToClipboard(context),
                     )
                   ]),
+              const TextDivider(text: 'technical_info_title'),
+              _buildNodeInfo(NodeType.duniter, state.duniterNodes, context),
+              _buildNodeInfo(
+                  NodeType.cesiumPlus, state.cesiumPlusNodes, context),
+              LinkCard(
+                  title: 'code_card_title',
+                  icon: Icons.code_rounded,
+                  url: Uri.parse('https://git.duniter.org/vjrj/ginkgo')),
               const BottomWidget()
             ]),
       );
     });
+  }
+
+  GestureDetector _buildNodeInfo(
+      NodeType type, List<Node> nodes, BuildContext context) {
+    return GestureDetector(
+        onTap: () => showTooltip(context, '', tr('long_press_to_refresh')),
+        onLongPress: () {
+          logger('On long press');
+          if (type == NodeType.duniter) {
+            fetchDuniterNodes(force: true);
+          } else {
+            fetchCesiumPlusNodes(force: true);
+          }
+        },
+        child: InfoCard(
+            title: tr('using_nodes', namedArgs: <String, String>{
+              'type': type.name,
+              'nodes': nodes.length.toString()
+            }),
+            translate: false,
+            subtitle: nodes.isNotEmpty
+                ? tr('using_nodes_first',
+                    namedArgs: <String, String>{'node': nodes.first.url})
+                : '',
+            icon: Icons.hub));
   }
 }

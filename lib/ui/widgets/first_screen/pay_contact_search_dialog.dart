@@ -44,9 +44,8 @@ class _SearchDialogState extends State<SearchDialog> {
     final Response response = await searchUser(_searchTerm);
     if (response.statusCode == 404) {
       _results = <Contact>[];
-      _isLoading = false;
       if (validateKey(_searchTerm)) {
-        // looks like a plain key
+        // looks like a plain pub key
         final Contact contact = Contact(pubkey: _searchTerm);
         _results.add(contact);
       }
@@ -62,6 +61,7 @@ class _SearchDialogState extends State<SearchDialog> {
         logger('Contact retrieved in search $c');
         return c;
       }).toList();
+      logger('Found: ${_results.length}');
       setState(() {
         _isLoading = false;
       });

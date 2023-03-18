@@ -205,28 +205,30 @@ class GinkgoApp extends StatefulWidget {
 }
 
 class _GinkgoAppState extends State<GinkgoApp> {
-  Future<void> _loadNodes(NodeListCubit cubit) async {
-    // Load nodes from /network/peers
-    NodeManager().loadFromCubit(cubit);
+  Future<void> _loadNodes() async {
+    _printNodeStatus();
+    await fetchDuniterNodes();
+    await fetchCesiumPlusNodes();
+    _printNodeStatus(prefix: 'Continuing');
+  }
+
+  void _printNodeStatus({String prefix = 'Starting'}) {
     final int nDuniterNodes = NodeManager().nodeList(NodeType.duniter).length;
     final int nCesiumPlusNodes =
         NodeManager().nodeList(NodeType.cesiumPlus).length;
     logger(
-        'Starting with $nDuniterNodes duniter nodes and $nCesiumPlusNodes c+ nodes');
-    await fetchDuniterNodes();
-    await fetchCesiumPlusNodes();
-    logger(
-        'Continue with $nDuniterNodes duniter nodes and $nCesiumPlusNodes c+ nodes');
+        '$prefix with $nDuniterNodes duniter nodes and $nCesiumPlusNodes c+ nodes');
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NodeListCubit, NodeListState>(
         builder: (BuildContext nodeContext, NodeListState state) {
+      NodeManager().loadFromCubit(nodeContext.read<NodeListCubit>());
       Once.runHourly('load_nodes',
-          callback: () => _loadNodes(nodeContext.read<NodeListCubit>()),
+          callback: () => _loadNodes(),
           fallback: () {
-            logger('Finished once load nodes');
+            _printNodeStatus(prefix: 'After once hourly having');
           });
 
       Once.runCustom('clear_errors', callback: () {

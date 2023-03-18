@@ -159,6 +159,7 @@ Future<List<Node>> _fetchDuniterNodesFromPeers() async {
   final List<Node> lNodes = <Node>[];
   // To compare with something...
   String fastestNode = 'https://g1.duniter.org';
+  const NodeType type = NodeType.duniter;
   late Duration fastestLatency = const Duration(minutes: 1);
   try {
     final Response response = await getPeers();
@@ -186,7 +187,7 @@ Future<List<Node>> _fetchDuniterNodesFromPeers() async {
               final String? endpoint = parseHost(endpointUnParsed);
               if (endpoint != null) {
                 try {
-                  final Duration latency = await _pingNode(endpoint);
+                  final Duration latency = await _pingNode(endpoint, type);
                   logger(
                       'Evaluating node: $endpoint, latency ${latency.inMicroseconds}');
                   final Node node =
@@ -197,11 +198,11 @@ Future<List<Node>> _fetchDuniterNodesFromPeers() async {
                     if (!kReleaseMode) {
                       logger('Node bloc: Current faster node $fastestNode');
                     }
-                    NodeManager().insertNode(NodeType.duniter, node);
+                    NodeManager().insertNode(type, node);
                     lNodes.insert(0, node);
                   } else {
                     // Not the faster
-                    NodeManager().addNode(NodeType.duniter, node);
+                    NodeManager().addNode(type, node);
                     lNodes.add(node);
                   }
                 } catch (e) {
@@ -211,7 +212,7 @@ Future<List<Node>> _fetchDuniterNodesFromPeers() async {
             }
           }
           if (lNodes.length >= NodeManager.maxNodes) {
-            logger('We have enought nodes for now');
+            logger('We have enough nodes for now');
             break;
           }
         }
@@ -219,8 +220,9 @@ Future<List<Node>> _fetchDuniterNodesFromPeers() async {
     }
     logger(
         'Fetched ${lNodes.length} duniter nodes ordered by latency (first: ${lNodes.first.url})');
-  } catch (e) {
+  } catch (e, stacktrace) {
     logger('General error in fetch duniter nodes: $e');
+    logger(stacktrace);
     // rethrow;
   }
   lNodes.sort((Node a, Node b) => a.latency.compareTo(b.latency));
@@ -234,13 +236,13 @@ Future<List<Node>> _fetchCesiumPlusNodes() async {
   late Duration fastestLatency = const Duration(minutes: 1);
   try {
     const NodeType type = NodeType.cesiumPlus;
-    final List<Node> currentNodes = NodeManager().nodeList(type);
+    final List<Node> currentNodes = <Node>[...NodeManager().nodeList(type)];
     currentNodes.shuffle();
     for (final Node node in currentNodes) {
       final String endpoint = node.url;
 
       try {
-        final Duration latency = await _pingNode(endpoint);
+        final Duration latency = await _pingNode(endpoint, type);
         logger('Evaluating node: $endpoint, latency ${latency.inMicroseconds}');
         final Node node = Node(url: endpoint, latency: latency.inMicroseconds);
         if (fastestNode == null || latency < fastestLatency) {
@@ -263,20 +265,22 @@ Future<List<Node>> _fetchCesiumPlusNodes() async {
 
     logger(
         'Fetched ${lNodes.length} cesium plus nodes ordered by latency (first: ${lNodes.first.url})');
-  } catch (e) {
+  } catch (e, stacktrace) {
     logger('General error in fetch cplus nodes: $e');
-    // rethrow;
+    logger(stacktrace);
   }
   lNodes.sort((Node a, Node b) => a.latency.compareTo(b.latency));
   logger('First node in list ${lNodes.first.url}');
   return lNodes;
 }
 
-Future<Duration> _pingNode(String node) async {
+Future<Duration> _pingNode(String node, NodeType type) async {
   try {
     final Stopwatch stopwatch = Stopwatch()..start();
     await http
-        .get(Uri.parse('$node/network/peers/self/ping'))
+        .get(Uri.parse(type == NodeType.duniter
+            ? '$node/network/peers/self/ping'
+            : '$node/node/summary'))
         // Decrease http timeout during ping
         .timeout(const Duration(seconds: 10));
     stopwatch.stop();

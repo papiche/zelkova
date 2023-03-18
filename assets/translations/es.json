@@ -40,7 +40,6 @@
   "card_validity": "Validez",
   "card_validity_tooltip": "Tenga en cuenta que este monedero solo es accesible mientras utiliza este navegador y este dispositivo específico. Si borra o restablece el navegador, perderá el acceso a este monedero y los fondos almacenados en el.",
   "demo_desc": "Por favor, no utilice esto aún para transacciones reales.",
-  "connected_to": "Estamos conectados al nodo:",
   "export_key": "Exporta tu monedero",
   "import_key": "Importa tu monedero",
   "copy_your_key": "Copia tu clave pública",
@@ -60,5 +59,9 @@
   "no_transactions": "No tiene todavía ninguna transacción",
   "qr-scanner-title": "Escanea el QR de alguien",
   "copy_contact_key": "Copiar",
-  "nothing_found": "No se ha encontrado nada"
+  "nothing_found": "No se ha encontrado nada",
+  "using_nodes": "Usando {nodes} nodos de {type}",
+  "using_nodes_first": "El más rápido: {node}",
+  "long_press_to_refresh": "Mantén presionado para refrescar",
+  "technical_info_title": "Info técnica"
 }

@@ -8,7 +8,7 @@
   "bottom_nav_trd": "Contacts",
   "bottom_nav_frd": "Solde",
   "bottom_nav_fifth": "Info",
-  "send_g1: "Envoyer des Ğ1",
+  "send_g1: "Envoyer" des Ğ1",
   "g1_amount": "Montant à envoyer",
   "g1_amount_hint": "Montant à envoyer en Ğ1",
   "g1_form_pay_send": "Envoyer",
@@ -40,7 +40,6 @@
   "card_validity": "Validité",
   "card_validity_tooltip": "Veuillez noter que ce portefeuille n'est accessible que lors de l'utilisation de ce navigateur et de cet appareil spécifiques. Si vous supprimez ou réinitialisez le navigateur, vous perdrez l'accès à ce portefeuille et aux fonds qu'il contient.",
   "demo_desc": "Veuillez vous abstenir d'utiliser ceci avec de vraies transactions pour le moment.",
-  "connected_to": "Nous sommes connectés au nœud:",
   "export_key": "Exporter votre portefeuille",
   "import_key": "Importer votre portefeuille",
   "copy_your_key": "Copier votre clé publique",
@@ -53,5 +52,5 @@
   "delete_contact": "Supprimer le contact",
   "search_contacts": "Rechercher des contacts",
   "no_contacts": "Vous n'avez pas encore de contacts",
-   "data_load_error": "Erreur de chargement des données"
+  "data_load_error": "Erreur de chargement des données"
 }

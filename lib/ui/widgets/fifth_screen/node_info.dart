@@ -45,7 +45,7 @@ class NodeInfoCard extends StatelessWidget {
                   ? tr('using_nodes_first',
                       namedArgs: <String, String>{'node': nodes.first.url})
                   : '',
-              icon: Icons.hub));
+              icon: type == NodeType.duniter ? Icons.hub : Icons.diversity_2));
     });
   }
 }

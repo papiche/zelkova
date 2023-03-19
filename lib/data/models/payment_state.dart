@@ -52,7 +52,6 @@ class PaymentState extends Equatable {
   static PaymentState emptyPayment = const PaymentState(
     publicKey: '',
     nick: '',
-    amount: 0,
   );
 
   @override

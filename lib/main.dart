@@ -218,6 +218,9 @@ class _GinkgoAppState extends State<GinkgoApp> {
         NodeManager().nodeList(NodeType.cesiumPlus).length;
     logger(
         '$prefix with $nDuniterNodes duniter nodes and $nCesiumPlusNodes c+ nodes');
+    if (!kReleaseMode) {
+      logger('${NodeManager().nodeList(NodeType.cesiumPlus)}');
+    }
   }
 
   @override

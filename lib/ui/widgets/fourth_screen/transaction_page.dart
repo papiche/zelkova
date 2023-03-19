@@ -30,7 +30,6 @@ class _TransactionsAndBalanceWidgetState
   late NodeListCubit nodeListCubit;
   late TransactionsCubit transCubit;
   bool isLoading = false;
-  bool debugging = false;
 
   @override
   void initState() {
@@ -64,7 +63,7 @@ class _TransactionsAndBalanceWidgetState
 
   @override
   Widget build(BuildContext context) {
-    final String myPubKey = debugging
+    final String myPubKey = !txDebugging
         ? SharedPreferencesHelper().getPubKey()
         : '6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH';
     return BlocBuilder<TransactionsCubit, TransactionsAndBalanceState>(builder:

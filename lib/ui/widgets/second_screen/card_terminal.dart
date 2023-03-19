@@ -36,60 +36,61 @@ class _CardTerminalState extends State<CardTerminal> {
 
   @override
   Widget build(BuildContext context) {
-    _decimalSep = NumberFormat.decimalPattern(context.locale.toString())
+    _decimalSep = NumberFormat
+        .decimalPattern(context.locale.toString())
         .symbols
         .DECIMAL_SEP;
     _numbers[9] = _decimalSep;
     return Expanded(
         child: Center(
             child: Card(
-      elevation: 8.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0),
-      ),
-      child: Container(
-        width: 320.0,
-        height: 700,
-        padding: const EdgeInsets.all(10.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16.0),
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: <Color>[
-              Colors.grey[800]!,
-              Colors.grey[500]!,
-            ],
-          ),
-        ),
-        child: Column(
-            //crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              CardTerminalScreen(amount: _currentValue),
-              const SizedBox(height: 8.0),
-              Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: GridView.count(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 8,
-                      mainAxisSpacing: 8,
-                      childAspectRatio: 1.75 / 1,
-                      padding: EdgeInsets.zero,
-                      children: <Widget>[
-                        for (int i = 0; i < _numbers.length + 3; i++)
-                          _buildKeyboardButton(i)
-                      ]))
-            ]),
-      ),
-    )));
+              elevation: 8.0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16.0),
+              ),
+              child: Container(
+                width: 320.0,
+                height: 700,
+                padding: const EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16.0),
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: <Color>[
+                      Colors.grey[800]!,
+                      Colors.grey[500]!,
+                    ],
+                  ),
+                ),
+                child: ListView(
+                  //crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      CardTerminalScreen(amount: _currentValue),
+                      const SizedBox(height: 8.0),
+                      Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                          child: GridView.count(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              crossAxisCount: 3,
+                              crossAxisSpacing: 8,
+                              mainAxisSpacing: 8,
+                              childAspectRatio: 1.75 / 1,
+                              padding: EdgeInsets.zero,
+                              children: <Widget>[
+                                for (int i = 0; i < _numbers.length + 3; i++)
+                                  _buildKeyboardButton(i)
+                              ]))
+                    ]),
+              ),
+            )));
   }
 
   Widget _buildKeyboardButton(int index) {
     if (index == _backspaceIndex) {
       return RubberButton(
-          // Yellow, remove
+        // Yellow, remove
           bgColor: const Color(0xFFF7E378),
           icon: Icons.backspace,
           onPressed: () {
@@ -102,7 +103,7 @@ class _CardTerminalState extends State<CardTerminal> {
           });
     } else if (index == _submitIndex) {
       return RubberButton(
-          // Green, send
+        // Green, send
           bgColor: const Color(0xFF36B649),
           icon: Icons.subdirectory_arrow_left,
           onPressed: () {
@@ -110,7 +111,7 @@ class _CardTerminalState extends State<CardTerminal> {
           });
     } else if (index == _cancelIndex) {
       return RubberButton(
-          // Red, cancel
+        // Red, cancel
           bgColor: const Color(0xFFCD303D),
           icon: Icons.cancel,
           onPressed: () {

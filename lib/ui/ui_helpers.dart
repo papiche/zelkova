@@ -73,3 +73,5 @@ Color tileColor(int index, [bool inverse = false]) =>
 
 String? humanizeTime(DateTime time, String locale) =>
     timeago.format(time, locale: locale, clock: DateTime.now());
+
+bool txDebugging = false;

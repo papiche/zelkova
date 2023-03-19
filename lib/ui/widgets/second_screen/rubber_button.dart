@@ -33,9 +33,11 @@ class RubberButton extends StatelessWidget {
           child: label != null
               ? Text(label!.toUpperCase(),
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Roboto Mono',
-                    fontSize: 32,
+                    fontSize: MediaQuery.of(context).size.width > 300
+                        ? 30
+                        : MediaQuery.of(context).size.width * 0.08,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ))

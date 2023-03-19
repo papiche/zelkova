@@ -8,7 +8,6 @@ import 'package:http/http.dart';
 import 'package:simple_barcode_scanner/enum.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
-import '../../../cubit/bottom_nav_cubit.dart';
 import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
 import '../../../data/models/contact_state.dart';
@@ -76,7 +75,6 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
   @override
   Widget build(BuildContext context) {
     final PaymentCubit paymentCubit = context.read<PaymentCubit>();
-    final BottomNavCubit nav = context.read<BottomNavCubit>();
     return Scaffold(
       appBar: AppBar(
         title: Text(tr('search_user_title')),
@@ -209,8 +207,7 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
         Navigator.pop(context);
       },
       leading: avatar(
-        hasAvatar,
-        hasAvatar ? contact.avatar : null,
+        contact.avatar,
         bgColor: tileColor(index),
         color: tileColor(index, true),
       ),

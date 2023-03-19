@@ -17,7 +17,7 @@ class RecipientWidget extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    avatar(state.avatar != null, state.avatar),
+                    avatar(state.avatar),
                     const SizedBox(width: 16.0),
                     Expanded(
                       child: Column(

@@ -139,7 +139,6 @@ class _ContactsPageState extends State<ContactsPage> {
                             ? humanizePubKeyAsWidget(contact.pubkey)
                             : null,
                         leading: avatar(
-                          contact.avatar != null,
                           contact.avatar,
                           bgColor: tileColor(index),
                           color: tileColor(index, true),

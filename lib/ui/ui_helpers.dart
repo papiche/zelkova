@@ -37,14 +37,14 @@ void copyPublicKeyToClipboard(BuildContext context) {
 const Color defAvatarBgColor = Colors.grey;
 const Color defAvatarColor = Colors.white;
 
-Widget avatar(bool hasAvatar, Uint8List? rawAvatar,
+Widget avatar(Uint8List? rawAvatar,
     {Color color = defAvatarColor, Color bgColor = defAvatarBgColor}) {
-  return hasAvatar
+  return rawAvatar != null && rawAvatar.isNotEmpty
       ? CircleAvatar(
           radius: 24,
           child: ClipOval(
               child: Image.memory(
-            rawAvatar!,
+            rawAvatar,
             fit: BoxFit.cover,
           )))
       : CircularIcon(

@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:html';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pattern_lock/pattern_lock.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_html/html.dart' as html;
+import 'package:universal_html/html.dart';
 
+import '../../../g1/g1_helper.dart';
 import 'pattern_util.dart';
 
 class ExportDialog extends StatefulWidget {
@@ -93,23 +93,12 @@ class _ExportDialogState extends State<ExportDialog> {
             <String, dynamic>{},
             (Map<String, dynamic> map, String key) =>
                 <String, dynamic>{...map, key: prefs.get(key)}));
-    final Uint8List plainText = Uint8List.fromList(utf8.encode(jsonString));
-
-    final encrypt.Key key = encrypt.Key.fromUtf8(password.padRight(32));
-    final encrypt.IV iv = encrypt.IV.fromLength(16);
-    final encrypt.Encrypter encrypter = encrypt.Encrypter(encrypt.AES(key));
-
-    final encrypt.Encrypted encrypted =
-        encrypter.encryptBytes(plainText, iv: iv);
-
-    final Map<String, String> jsonData = <String, String>{
-      'key': base64Encode(encrypted.bytes)
-    };
-
+    final Map<String, String> jsonData =
+        encryptJsonForExport(jsonString, password);
     final String fileJson = jsonEncode(jsonData);
     final List<int> bytes = utf8.encode(fileJson);
 
-    final Blob blob = html.Blob([bytes]);
+    final Blob blob = html.Blob(<dynamic>[bytes]);
     final String url = html.Url.createObjectUrlFromBlob(blob);
 
     final AnchorElement anchor = html.AnchorElement(href: url);
@@ -120,9 +109,9 @@ class _ExportDialogState extends State<ExportDialog> {
       return;
     }
     context.replaceSnackbar(
-      content: const Text(
-        "HURRA",
-        style: TextStyle(color: Colors.red),
+      content: Text(
+        tr('wallet_exported'),
+        style: const TextStyle(color: Colors.red),
       ),
     );
   }

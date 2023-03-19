@@ -155,6 +155,8 @@ Future<void> fetchDuniterNodes({bool force = false}) async {
   }
 }
 
+// https://github.com/duniter/cesium/blob/467ec68114be650cd1b306754c3142fc4020164c/www/js/config.js#L96
+// https://g1.data.le-sou.org/g1/peer/_search?pretty
 Future<void> fetchCesiumPlusNodes({bool force = false}) async {
   const NodeType type = NodeType.cesiumPlus;
   if (force) {
@@ -304,7 +306,8 @@ Future<Duration> _pingNode(String node, NodeType type) async {
     await http
         .get(Uri.parse(type == NodeType.duniter
             ? '$node/network/peers/self/ping'
-            : '$node/node/summary'))
+            // see: http://g1.data.e-is.pro/network/peering
+            : '$node/network/peering'))
         // Decrease http timeout during ping
         .timeout(const Duration(seconds: 10));
     stopwatch.stop();

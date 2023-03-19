@@ -1,13 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pattern_lock/pattern_lock.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_html/html.dart' as html;
 
+import '../../../g1/g1_helper.dart';
 import '../../../main.dart';
+import '../../../shared_prefs.dart';
+import '../custom_error_widget.dart';
+import '../loading_box.dart';
 import 'pattern_util.dart';
 
 class ImportDialog extends StatelessWidget {
@@ -17,43 +21,55 @@ class ImportDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<dynamic>(
+    return FutureBuilder<String>(
         future: _importWallet(),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            final List<int>? pattern =
-                ModalRoute.of(context)!.settings.arguments as List<int>?;
+        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          if (snapshot.hasData) {
+            final String keyEncString = snapshot.data!;
+            final Map<String, dynamic> keyJson =
+                jsonDecode(keyEncString) as Map<String, dynamic>;
+            final String keyEncrypted = keyJson['key'] as String;
+            // final Uint8List keyBase64 = base64Decode(keyEncrypted);
+
             return Scaffold(
               key: scaffoldKey,
               appBar: AppBar(
-                title: const Text('Check Pattern'),
+                title: Text(tr('intro_pattern_to_import')),
               ),
               body: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  const Flexible(
+                  Flexible(
                     child: Text(
-                      'Draw Your pattern',
-                      style: TextStyle(fontSize: 26),
+                      tr('draw your_pattern'),
+                      style: const TextStyle(fontSize: 26),
                     ),
                   ),
                   Flexible(
                     child: PatternLock(
                       selectedColor: Colors.red,
                       pointRadius: 8,
-                      showInput: true,
-                      dimension: 3,
-                      relativePadding: 0.7,
-                      selectThreshold: 25,
                       fillPoints: true,
-                      onInputComplete: (List<int> input) {
-                        if (listEquals<int>(input, pattern)) {
-                          Navigator.of(context).pop(true);
-                        } else {
+                      onInputComplete: (List<int> pattern) {
+                        try {
+                          // try to decrypt
+                          final Map<String, dynamic> keys =
+                              decryptJsonForImport(
+                                  keyEncrypted, pattern.join());
+                          SharedPreferencesHelper().setKeys(
+                              keys['pub'] as String, keys['seed'] as String);
                           context.replaceSnackbar(
-                            content: const Text(
-                              'WRONG',
-                              style: TextStyle(color: Colors.red),
+                            content: Text(
+                              tr('wallet_imported'),
+                              style: const TextStyle(color: Colors.red),
+                            ),
+                          );
+                          Navigator.of(context).pop(true);
+                        } catch (e) {
+                          context.replaceSnackbar(
+                            content: Text(
+                              tr('wrong_pattern'),
+                              style: const TextStyle(color: Colors.red),
                             ),
                           );
                         }
@@ -63,9 +79,10 @@ class ImportDialog extends StatelessWidget {
                 ],
               ),
             );
+          } else if (snapshot.hasError) {
+            return CustomErrorWidget(snapshot.error);
           } else {
-            // Los datos todavía se están cargando, muestra un indicador de carga
-            return Container();
+            return const LoadingBox();
           }
         });
   }
@@ -80,14 +97,14 @@ class ImportDialog extends StatelessWidget {
 
     input.onChange.listen((html.Event event) async {
       if (input.files != null && input.files!.isEmpty) {
-        completer.complete();
+        completer.complete('');
         return;
       }
 
       final html.File file = input.files!.first;
       final html.FileReader reader = html.FileReader();
 
-      // Leer el archivo seleccionado como texto
+      // Read as text
       reader.readAsText(file);
       await reader.onLoadEnd.first;
 
@@ -96,10 +113,7 @@ class ImportDialog extends StatelessWidget {
         if (!kReleaseMode) {
           logger(jsonString);
         }
-        final dynamic jsonMap = jsonDecode(jsonString);
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
         completer.complete(jsonString);
-        // TODO(vjrj): jsonMap.forEach((key, value) => prefs.set(key, value));
       } catch (e) {
         logger('Error importing wallet $e');
       }

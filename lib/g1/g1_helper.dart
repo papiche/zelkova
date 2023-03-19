@@ -3,9 +3,10 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:durt/durt.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:encrypt/encrypt.dart';
 
 import '../data/models/payment_state.dart';
-import '../main.dart';
 
 Random createRandom() {
   try {
@@ -84,7 +85,8 @@ String? parseHost(String endpointUnParsed) {
     final String endpoint = '$protocol://$host:$port$path'.trim();
     return endpoint;
   } catch (e) {
-    logger('Cannot parse endpoint $endpointUnParsed');
+    // Don't do this here or tests will fail
+    // logger('Cannot parse endpoint $endpointUnParsed');
     return null;
   }
 }
@@ -132,4 +134,25 @@ PaymentState? parseScannedUri(String qr) {
   }
 
   return null;
+}
+
+final IV _iv = encrypt.IV.fromLength(16);
+
+Map<String, String> encryptJsonForExport(String jsonString, String password) {
+  final Uint8List plainText = Uint8List.fromList(utf8.encode(jsonString));
+  final encrypt.Encrypted encrypted = encrypt.Encrypter(
+          encrypt.AES(encrypt.Key.fromUtf8(password.padRight(32))))
+      .encryptBytes(plainText, iv: _iv);
+  final Map<String, String> jsonData = <String, String>{
+    'key': base64Encode(encrypted.bytes)
+  };
+  return jsonData;
+}
+
+Map<String, dynamic> decryptJsonForImport(
+    String keyEncrypted, String password) {
+  final String decrypted = encrypt.Encrypter(
+          encrypt.AES(encrypt.Key.fromUtf8(password.padRight(32))))
+      .decrypt64(keyEncrypted, iv: _iv);
+  return jsonDecode(decrypted) as Map<String, dynamic>;
 }

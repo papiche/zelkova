@@ -68,5 +68,11 @@
   "at_least_3": "Se requieren al menos 3 puntos",
   "intro_some_pattern_to_export": "Patrón para importar/exportar su monedero",
   "confirm_pattern": "Confirmar patrón",
-  "draw_pattern": "Dibujar patrón"
+  "draw_pattern": "Dibujar patrón",
+  "draw_your_pattern": "Dibujar tu patrón",
+  "expert_mode": "Mode experto",
+  "intro_pattern_to_import": "Patrón que usaste para exportar tu monedero",
+  "wrong_pattern": "Patrón incorrecto",
+  "wallet_exported": "Monedero exportado correctamente",
+  "wallet_imported": "Monedero importado correctamente"
 }

@@ -68,5 +68,12 @@
   "at_least_3": "At least 3 points required",
   "intro_some_pattern_to_export": "Pattern to import/export your wallet",
   "confirm_pattern": "Confirm pattern",
-  "draw_pattern": "Draw pattern"
+  "draw_pattern": "Draw pattern",
+  "draw_your_pattern": "Draw your pattern",
+  "expert_mode": "Expert mode",
+  "intro_pattern_to_import": "Pattern you used to export your wallet",
+  "wrong_pattern": "Wrong pattern",
+  "wallet_exported": "Walled exported correctly",
+  "reloading_nodes": "Reloading {type} nodes",
+  "wallet_imported": "Walled imported correctly"
 }

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:durt/durt.dart';
@@ -52,11 +53,35 @@ void main() {
 
     final String uriB = getQrUri(publicKey);
     final PaymentState? payB = parseScannedUri(uriB);
-    expect(payB!.amount, equals(0));
+    expect(payB!.amount, equals(null));
     expect(payB.publicKey, equals(publicKey));
 
     final PaymentState? payC = parseScannedUri(publicKey);
-    expect(payC!.amount, equals(0));
+    expect(payC!.amount, equals(null));
     expect(payC.publicKey, equals(publicKey));
+  });
+
+  test('encrypt/decrypt of keys', () {
+    const String pass = '1234';
+    const String wrongPass = '1235';
+    final Map<String, String> sample = <String, String>{
+      'public': 'some public',
+      'private': 'some private'
+    };
+    final Map<String, String> encSample =
+        encryptJsonForExport(jsonEncode(sample), pass);
+    final String encJson = encSample['key']!;
+    expect(encJson.isNotEmpty, equals(true));
+
+    final Map<String, dynamic> decrypted = decryptJsonForImport(encJson, pass);
+    expect(decrypted['public'], equals('some public'));
+    expect(decrypted['private'], equals('some private'));
+
+    try {
+      // test wrong pass
+      decryptJsonForImport(encJson, wrongPass);
+    } catch (e) {
+      expect(e, isArgumentError);
+    }
   });
 }

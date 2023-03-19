@@ -17,6 +17,7 @@ import '../../../g1/api.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../main.dart';
 import '../../ui_helpers.dart';
+import '../custom_error_widget.dart';
 import '../loading_box.dart';
 import '../third_screen/contacts_page.dart';
 
@@ -173,10 +174,7 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
                               widget =
                                   _buildItem(snapshot.data!, index, context);
                             } else if (snapshot.hasError) {
-                              widget = Padding(
-                                padding: const EdgeInsets.only(top: 16),
-                                child: Text('Error: ${snapshot.error}'),
-                              );
+                              widget = CustomErrorWidget(snapshot.error);
                             } else {
                               // Contact without wot
                               widget = _buildItem(contact, index, context);

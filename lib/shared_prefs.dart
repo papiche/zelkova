@@ -59,4 +59,9 @@ class SharedPreferencesHelper {
   String? _getString(String key) {
     return _prefs.getString(key);
   }
+
+  Future<void> setKeys(String pubKey, String seed) async {
+    await _saveString(_seedKey, seed);
+    await _saveString(_pubKey, pubKey);
+  }
 }

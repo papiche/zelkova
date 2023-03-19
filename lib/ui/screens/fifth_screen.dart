@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -81,7 +82,7 @@ class FifthScreen extends StatelessWidget {
                               Uri.parse('https://git.duniter.org/vjrj/ginkgo')),
                     const BottomWidget(),
                     SwitchListTile(
-                      title: const Text('Expert mode'),
+                      title: Text(tr('expert_mode')),
                       value: state.expertMode,
                       onChanged: (bool value) =>
                           context.read<AppCubit>().setExpertMode(value),

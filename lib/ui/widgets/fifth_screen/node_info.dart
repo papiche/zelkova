@@ -34,6 +34,10 @@ class NodeInfoCard extends StatelessWidget {
             } else {
               fetchCesiumPlusNodes(force: true);
             }
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(tr('reloading_nodes',
+                  namedArgs: <String, String>{'type': type.name})),
+            ));
           },
           child: InfoCard(
               title: tr('using_nodes', namedArgs: <String, String>{

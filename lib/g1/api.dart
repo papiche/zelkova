@@ -1,8 +1,8 @@
 import 'dart:convert';
-
 // import 'dart:developer' as developer;
 import 'dart:io';
 
+import 'package:durt/durt.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -12,6 +12,7 @@ import '../data/models/node.dart';
 import '../data/models/node_manager.dart';
 import '../data/models/node_type.dart';
 import '../main.dart';
+import '../shared_prefs.dart';
 import 'g1_helper.dart';
 
 // Tx history
@@ -191,6 +192,11 @@ int nodesWorking(NodeType type) => NodeManager()
     .where((Node n) => n.errors < NodeManager.maxNodeErrors)
     .toList()
     .length;
+
+List<Node> nodesWorkingList(NodeType type) => NodeManager()
+    .nodeList(type)
+    .where((Node n) => n.errors < NodeManager.maxNodeErrors)
+    .toList();
 
 Future<List<Node>> _fetchDuniterNodesFromPeers() async {
   final List<Node> lNodes = <Node>[];
@@ -414,4 +420,22 @@ Future<http.Response> _requestWithRetry(
   }
   throw Exception(
       'Cannot make the request to any of the ${nodes.length} nodes');
+}
+
+Future<String> pay(
+    {required String to, required double amount, String? comment}) async {
+  final List<Node> nodes = nodesWorkingList(NodeType.gva);
+  // reorder list to use others
+  if (nodes.isNotEmpty) {
+    nodes.shuffle();
+    final Gva gva = Gva(node: nodes.first.url);
+    final CesiumWallet wallet = await SharedPreferencesHelper().getWallet();
+    final String response = await gva.pay(
+        recipient: to,
+        amount: amount,
+        comment: comment ?? '',
+        cesiumSeed: wallet.seed);
+    return response;
+  }
+  return 'Sorry: I cannot find a working node to send the transaction';
 }

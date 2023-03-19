@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../g1/g1_helper.dart';
 import 'model_utils.dart';
 
 part 'payment_state.g.dart';
@@ -13,7 +14,7 @@ class PaymentState extends Equatable {
     required this.publicKey,
     this.nick,
     this.avatar,
-    this.description = '',
+    this.comment = '',
     this.amount,
     this.isSent = false,
   });
@@ -21,11 +22,14 @@ class PaymentState extends Equatable {
   factory PaymentState.fromJson(Map<String, dynamic> json) =>
       _$PaymentStateFromJson(json);
 
+  bool canBeSent() =>
+      !isSent && validateKey(publicKey) && amount != null && amount! > 0;
+
   final String publicKey;
   final String? nick;
   @JsonKey(fromJson: uIntFromList, toJson: uIntToList)
   final Uint8List? avatar;
-  final String description;
+  final String comment;
   final double? amount;
   final bool isSent;
 
@@ -43,7 +47,7 @@ class PaymentState extends Equatable {
       publicKey: publicKey ?? this.publicKey,
       nick: nick ?? this.nick,
       avatar: avatar ?? this.avatar,
-      description: description ?? this.description,
+      comment: description ?? this.comment,
       amount: amount ?? this.amount,
       isSent: isSent ?? this.isSent,
     );
@@ -61,5 +65,5 @@ class PaymentState extends Equatable {
 
   @override
   List<Object?> get props =>
-      <dynamic>[publicKey, nick, avatar, description, amount, isSent];
+      <dynamic>[publicKey, nick, avatar, comment, amount, isSent];
 }

@@ -10,7 +10,7 @@ PaymentState _$PaymentStateFromJson(Map<String, dynamic> json) => PaymentState(
       publicKey: json['publicKey'] as String,
       nick: json['nick'] as String?,
       avatar: uIntFromList(json['avatar'] as List<int>),
-      description: json['description'] as String? ?? '',
+      comment: json['comment'] as String? ?? '',
       amount: (json['amount'] as num?)?.toDouble(),
       isSent: json['isSent'] as bool? ?? false,
     );
@@ -20,7 +20,7 @@ Map<String, dynamic> _$PaymentStateToJson(PaymentState instance) =>
       'publicKey': instance.publicKey,
       'nick': instance.nick,
       'avatar': uIntToList(instance.avatar),
-      'description': instance.description,
+      'comment': instance.comment,
       'amount': instance.amount,
       'isSent': instance.isSent,
     };

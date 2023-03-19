@@ -35,9 +35,7 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
 
   void selectKey(String publicKey) {
     final PaymentState newState = PaymentState(
-        publicKey: publicKey,
-        amount: state.amount,
-        description: state.description);
+        publicKey: publicKey, amount: state.amount, comment: state.comment);
     emit(newState);
   }
 
@@ -50,5 +48,9 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
 
   void clearRecipient() {
     emit(PaymentState.emptyPayment);
+  }
+
+  void selectAmount(double amount) {
+    emit(state.copyWith(amount: amount));
   }
 }

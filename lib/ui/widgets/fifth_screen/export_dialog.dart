@@ -10,6 +10,8 @@ import 'package:universal_html/html.dart' as html;
 import 'package:universal_html/html.dart';
 
 import '../../../g1/g1_helper.dart';
+import '../../../shared_prefs.dart';
+import '../../ui_helpers.dart';
 import 'pattern_util.dart';
 
 class ExportDialog extends StatefulWidget {
@@ -87,6 +89,7 @@ class _ExportDialogState extends State<ExportDialog> {
 
   Future<void> _export(String password, BuildContext context) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+
     final String jsonString = jsonEncode(prefs
         .getKeys()
         .fold<Map<String, dynamic>>(
@@ -102,7 +105,8 @@ class _ExportDialogState extends State<ExportDialog> {
     final String url = html.Url.createObjectUrlFromBlob(blob);
 
     final AnchorElement anchor = html.AnchorElement(href: url);
-    anchor.download = 'ginkgo-wallet.json';
+    anchor.download =
+        'ginkgo-wallet-${simplifyPubKey(SharedPreferencesHelper().getPubKey())}.json';
     anchor.click();
 
     if (!mounted) {

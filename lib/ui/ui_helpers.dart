@@ -59,7 +59,9 @@ String humanizeFromToPubKey(String publicAddress, String address) {
   }
 }
 
-String humanizePubKey(String address) => '\u{1F511} ${address.substring(0, 8)}';
+String humanizePubKey(String address) => '\u{1F511} ${simplifyPubKey(address)}';
+
+String simplifyPubKey(String address) => address.substring(0, 8);
 
 Widget humanizePubKeyAsWidget(String pubKey) => Text(
       humanizePubKey(pubKey),
@@ -74,4 +76,6 @@ Color tileColor(int index, [bool inverse = false]) =>
 String? humanizeTime(DateTime time, String locale) =>
     timeago.format(time, locale: locale, clock: DateTime.now());
 
-bool txDebugging = false;
+const bool txDebugging = false;
+
+const int smallScreenWidth = 350;

@@ -36,7 +36,7 @@ class CreditCard extends StatelessWidget {
   Widget build(BuildContext context) {
     const double cardRadius = 10.0;
     final double cardPadding =
-        MediaQuery.of(context).size.width > 300 ? 26.0 : 16.0;
+        MediaQuery.of(context).size.width > smallScreenWidth ? 26.0 : 16.0;
 
     final String pubKey = SharedPreferencesHelper().getPubKey();
     return Card(
@@ -71,73 +71,80 @@ class CreditCard extends StatelessWidget {
                     child: Opacity(
                         opacity: 0.1,
                         child: Image.asset('assets/img/gbrevedot_alt.png'))),
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
-                    Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(cardPadding),
-                    child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(
-                          dotenv.env['CARD_COLOR_TEXT'] ?? tr('g1_wallet'),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: MediaQuery.of(context).size.width * 0.07,
-                            fontWeight: FontWeight.bold,
+                Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.all(cardPadding),
+                        child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              dotenv.env['CARD_COLOR_TEXT'] ?? tr('g1_wallet'),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize:
+                                    MediaQuery.of(context).size.width * 0.07,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )),
+                      ),
+                      if (MediaQuery.of(context).size.width > smallScreenWidth)
+                        const SizedBox(height: 8.0),
+                      Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: cardPadding),
+                          child: GestureDetector(
+                              onTap: () {
+                                _showQrDialog(context);
+                              },
+                              child: SvgPicture.asset(
+                                width: MediaQuery.of(context).size.width <
+                                        smallScreenWidth
+                                    ? 25
+                                    : 40,
+                                'assets/img/chip.svg',
+                              ))),
+                      const SizedBox(height: 8.0),
+                      Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: cardPadding),
+                          child: Row(children: <Widget>[
+                            GestureDetector(
+                                onTap: () => showTooltip(
+                                    context, '', tr('keys_tooltip')),
+                                child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text('**** **** ',
+                                        style: cardTextStyle(context)))),
+                            GestureDetector(
+                                onTap: () => copyPublicKeyToClipboard(context),
+                                child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      '${pubKey.substring(0, 4)} ${pubKey.substring(4, 8)}',
+                                      style: cardTextStyle(context),
+                                    )))
+                          ])),
+                      if (MediaQuery.of(context).size.width > smallScreenWidth)
+                        const SizedBox(height: 12.0),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: cardPadding),
+                        child: GestureDetector(
+                          onTap: () => showTooltip(
+                              context, '', tr('card_validity_tooltip')),
+                          child: Text(
+                            tr('card_validity'),
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              color: Colors.white.withOpacity(0.8),
+                              fontSize: 14.0,
+                            ),
                           ),
-                        )),
-                  ),
-                  if (MediaQuery.of(context).size.width > 300)
-                    const SizedBox(height: 8.0),
-                  Padding(
-                      padding: EdgeInsets.symmetric(horizontal: cardPadding),
-                      child: GestureDetector(
-                          onTap: () {
-                            _showQrDialog(context);
-                          },
-                          child: SvgPicture.asset(
-                            width: MediaQuery.of(context).size.width < 300
-                                ? 25
-                                : 40,
-                            'assets/img/chip.svg',
-                          ))),
-                  const SizedBox(height: 8.0),
-                  Padding(
-                      padding: EdgeInsets.symmetric(horizontal: cardPadding),
-                      child: Row(children: <Widget>[
-                        GestureDetector(
-                            onTap: () =>
-                                showTooltip(context, '', tr('keys_tooltip')),
-                            child: FittedBox(
-                                fit: BoxFit.scaleDown,
-                                child: Text('**** **** ',
-                                    style: cardTextStyle(context)))),
-                        GestureDetector(
-                            onTap: () => copyPublicKeyToClipboard(context),
-                            child: FittedBox(
-                                fit: BoxFit.scaleDown,
-                                child: Text(
-                                  '${pubKey.substring(0, 4)} ${pubKey.substring(4, 8)}',
-                                  style: cardTextStyle(context),
-                                )))
-                      ])),
-                  if (MediaQuery.of(context).size.width > 300)
-                    const SizedBox(height: 12.0),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: cardPadding),
-                    child: GestureDetector(
-                      onTap: () =>
-                          showTooltip(context, '', tr('card_validity_tooltip')),
-                      child: Text(
-                        tr('card_validity'),
-                        style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          color: Colors.white.withOpacity(0.8),
-                          fontSize: 14.0,
                         ),
                       ),
-                    ),
-                  )
-                ]),
+                      const SizedBox(height: 18.0),
+                    ]),
               ]),
             )));
   }

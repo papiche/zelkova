@@ -1,12 +1,13 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
+import '../../ui_helpers.dart';
+
 class RubberButton extends StatelessWidget {
-  RubberButton(
-      {super.key,
-      this.label,
-      this.icon,
-      required this.onPressed,
-      Color? bgColor})
+  RubberButton({super.key,
+    this.label,
+    this.icon,
+    required this.onPressed,
+    Color? bgColor})
       : bgColor = bgColor ?? Colors.grey[350]!;
 
   final String? label;
@@ -32,15 +33,22 @@ class RubberButton extends StatelessWidget {
       child: Center(
           child: label != null
               ? Text(label!.toUpperCase(),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'Roboto Mono',
-                    fontSize: MediaQuery.of(context).size.width > 300
-                        ? 30
-                        : MediaQuery.of(context).size.width * 0.08,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ))
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Roboto Mono',
+                fontSize:
+                MediaQuery
+                    .of(context)
+                    .size
+                    .width > smallScreenWidth
+                    ? 30
+                    : MediaQuery
+                    .of(context)
+                    .size
+                    .width * 0.08,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ))
               : Icon(icon)),
     );
   }

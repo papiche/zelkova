@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -191,20 +192,23 @@ class _TransactionsAndBalanceWidgetState
                                 padding: EdgeInsets.symmetric(horizontal: 16),
                                 child: Header(
                                   text: 'balance',
-                                  topPadding: 0,
+                                  // topPadding: 0,
                                 )),
                             Padding(
                               padding:
-                                  const EdgeInsets.symmetric(vertical: 20.0),
+                                  const EdgeInsets.symmetric(vertical: 10.0),
                               child: Center(
                                   child: Text(
                                 '${(balance / 100).toStringAsFixed(2)} Ğ1',
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 36.0,
+                                    color: balance == 0
+                                        ? Colors.lightBlue
+                                        : Colors.lightBlue,
                                     fontWeight: FontWeight.bold),
                               )),
                             ),
-                            TransactionChart()
+                            if (!kReleaseMode) TransactionChart()
                             /*BalanceChart(
                                     transactions: .transactions),*/
                           ],

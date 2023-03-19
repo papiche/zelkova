@@ -61,7 +61,12 @@
   "copy_contact_key": "Copiar",
   "nothing_found": "No se ha encontrado nada",
   "using_nodes": "Usando {nodes} nodos de {type}",
-  "using_nodes_first": "El más rápido: {node}",
-  "long_press_to_refresh": "Mantén presionado para refrescar",
-  "technical_info_title": "Info técnica"
+  "using_nodes_first": "Más rápido: {node}",
+  "long_press_to_refresh": "Mantén pulsado para actualizar",
+  "technical_info_title": "Información técnica",
+  "pattern_do_not_match": "Los patrones no coinciden",
+  "at_least_3": "Se requieren al menos 3 puntos",
+  "intro_some_pattern_to_export": "Patrón para importar/exportar su monedero",
+  "confirm_pattern": "Confirmar patrón",
+  "draw_pattern": "Dibujar patrón"
 }

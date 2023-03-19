@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../../data/models/node_manager.dart';
-import '../../g1/export_import.dart';
 import '../ui_helpers.dart';
 import '../widgets/bottom_widget.dart';
+import '../widgets/fifth_screen/export_dialog.dart';
 import '../widgets/fifth_screen/grid_item.dart';
+import '../widgets/fifth_screen/import_dialog.dart';
 import '../widgets/fifth_screen/link_card.dart';
 import '../widgets/fifth_screen/node_info.dart';
 import '../widgets/fifth_screen/text_divider.dart';
@@ -39,7 +40,7 @@ class FifthScreen extends StatelessWidget {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return const ExportImportPage();
+                            return const ExportDialog();
                           },
                         );
                       }),
@@ -47,7 +48,12 @@ class FifthScreen extends StatelessWidget {
                       title: 'import_key',
                       icon: Icons.upload,
                       onTap: () {
-                        const ExportImportPage();
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return ImportDialog();
+                          },
+                        );
                       }),
                   GridItem(
                     title: 'copy_your_key',

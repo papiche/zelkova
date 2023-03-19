@@ -59,6 +59,7 @@ dependencies:
   copy_with_extension: ^5.0.2
   timeago: ^3.3.0
   once: ^1.5.1
+  pattern_lock: ^2.0.0
 
 dev_dependencies:
   flutter_test:

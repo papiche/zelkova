@@ -52,5 +52,15 @@
   "delete_contact": "Supprimer le contact",
   "search_contacts": "Rechercher des contacts",
   "no_contacts": "Vous n'avez pas encore de contacts",
-  "data_load_error": "Erreur de chargement des données"
+  "data_load_error": "Erreur de chargement des données",
+  "nothing_found": "Rien trouvé",
+  "using_nodes": "Utilisation de {nodes} nœuds de type {type}",
+  "using_nodes_first": "Plus rapide : {node}",
+  "long_press_to_refresh": "Appuyez longuement pour rafraîchir",
+  "technical_info_title": "Informations techniques",
+  "pattern_do_not_match": "Les modèles ne correspondent pas",
+  "at_least_3": "Au moins 3 points sont requis",
+  "intro_some_pattern_to_export": "Motif pour importer/exporter votre portefeuille",
+  "confirm_pattern": "Confirmer le motif",
+  "draw_pattern": "Dessiner le motif"
 }

@@ -63,5 +63,10 @@
   "using_nodes": "Using {nodes} nodes of {type}",
   "using_nodes_first": "Faster: {node}",
   "long_press_to_refresh": "Long press to refresh",
-  "technical_info_title": "Technical info"
+  "technical_info_title": "Technical info",
+  "pattern_do_not_match": "Patterns do not match",
+  "at_least_3": "At least 3 points required",
+  "intro_some_pattern_to_export": "Pattern to import/export your wallet",
+  "confirm_pattern": "Confirm pattern",
+  "draw_pattern": "Draw pattern"
 }

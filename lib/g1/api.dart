@@ -427,10 +427,14 @@ Future<String> pay(
   final List<Node> nodes = nodesWorkingList(NodeType.gva);
   // reorder list to use others
   if (nodes.isNotEmpty) {
-    nodes.shuffle();
+    // nodes.shuffle();
+    // no hay Retry?
     try {
-      final Gva gva = Gva(node: nodes.first.url);
+      final String node = nodes.first.url;
+      final Gva gva = Gva(node: node);
       final CesiumWallet wallet = await SharedPreferencesHelper().getWallet();
+      print(
+          'Trying to send $amount to $to with comment ${comment ?? ''} and $node');
       final String response = await gva.pay(
           recipient: to,
           amount: amount,

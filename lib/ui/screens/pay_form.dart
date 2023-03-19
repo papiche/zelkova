@@ -35,6 +35,11 @@ class _PayFormState extends State<PayForm> {
             const SizedBox(height: 10.0),
             TextField(
               controller: _commentController,
+              onChanged: (String? value) {
+                if (value != null) {
+                  context.read<PaymentCubit>().setDescription(value);
+                }
+              },
               decoration: InputDecoration(
                 labelText: tr('g1_form_pay_desc'),
                 hintText: tr('g1_form_pay_hint'),

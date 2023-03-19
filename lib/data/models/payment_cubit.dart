@@ -53,4 +53,8 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
   void selectAmount(double amount) {
     emit(state.copyWith(amount: amount));
   }
+
+  void setDescription(String description) {
+    emit(state.copyWith(description: description));
+  }
 }

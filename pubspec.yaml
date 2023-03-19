@@ -94,6 +94,8 @@ flutter:
     - assets/img/undraw_intro_5.png
     - assets/img/chip.svg
     - assets/img/logo.png
+    - assets/img/logo-duniter.png
+    - assets/img/logo-cesium.png
     - assets/tx.json
 
   fonts:

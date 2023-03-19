@@ -79,3 +79,9 @@ String? humanizeTime(DateTime time, String locale) =>
 const bool txDebugging = false;
 
 const int smallScreenWidth = 350;
+
+bool bigScreen(BuildContext context) =>
+    MediaQuery.of(context).size.width > smallScreenWidth;
+
+bool smallScreen(BuildContext context) =>
+    MediaQuery.of(context).size.width < smallScreenWidth;

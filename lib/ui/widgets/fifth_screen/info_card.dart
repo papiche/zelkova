@@ -38,18 +38,15 @@ class InfoCard extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(12))),
             subtitle: subtitle.isNotEmpty ? Text(subtitle) : null,
             trailing: trailing.isNotEmpty ? Text(trailing) : null,
-            title: Row(
-              children: <Widget>[
-                Icon(icon, color: Theme.of(context).colorScheme.primary),
-                const SizedBox(width: 16),
-                Text(
-                  translate ? tr(title) : title,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium!
-                      .apply(fontWeightDelta: 2),
-                ),
-              ],
+            leading: Icon(icon, color: Theme.of(context).colorScheme.primary),
+            minLeadingWidth: 10,
+            dense: true,
+            title: Text(
+              translate ? tr(title) : title,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium!
+                  .apply(fontWeightDelta: 2),
             ),
           )),
     );

@@ -20,8 +20,7 @@ class CardTerminalScreen extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Container(
         width: double.infinity,
-        height:
-            MediaQuery.of(context).size.width < smallScreenWidth ? 220 : 250,
+        height: smallScreen(context) ? 200 : 250,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           gradient: const LinearGradient(
@@ -78,9 +77,7 @@ class CardTerminalScreen extends StatelessWidget {
                 child: Column(children: <Widget>[
               QrImage(
                 data: getQrUri(SharedPreferencesHelper().getPubKey(), amount),
-                size: MediaQuery.of(context).size.width < smallScreenWidth
-                    ? 120.0
-                    : 160.0,
+                size: smallScreen(context) ? 110.0 : 160.0,
               )
             ])),
             Container(
@@ -114,10 +111,10 @@ class CardTerminalScreen extends StatelessWidget {
                           hintText: amount.isNotEmpty
                               ? tr('show_qr_to_client_amount')
                               : tr('show_qr_to_client'),
-                          hintStyle: const TextStyle(
+                          hintStyle: TextStyle(
                             fontFamily: 'Roboto Mono',
                             color: Colors.grey,
-                            fontSize: 14,
+                            fontSize: smallScreen(context) ? 11 : 14,
                           ),
                         ),
                       ),

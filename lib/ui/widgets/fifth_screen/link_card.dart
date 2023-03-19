@@ -24,18 +24,14 @@ class LinkCard extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(12))),
         trailing: Icon(Icons.open_in_new,
             color: Theme.of(context).textTheme.titleMedium!.color),
-        title: Row(
-          children: <Widget>[
-            Icon(icon, color: Theme.of(context).colorScheme.primary),
-            const SizedBox(width: 16),
-            Text(
-              tr(title),
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium!
-                  .apply(fontWeightDelta: 2),
-            ),
-          ],
+        leading: Icon(icon, color: Theme.of(context).colorScheme.primary),
+        minLeadingWidth: 10,
+        title: Text(
+          tr(title),
+          style: Theme.of(context)
+              .textTheme
+              .titleMedium!
+              .apply(fontWeightDelta: 2),
         ),
       ),
     );

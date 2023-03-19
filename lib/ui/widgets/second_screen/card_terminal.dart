@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
 
+import '../../ui_helpers.dart';
 import 'card_terminal_screen.dart';
 import 'rubber_button.dart';
 
@@ -62,26 +63,24 @@ class _CardTerminalState extends State<CardTerminal> {
               ],
             ),
           ),
-          child: Column(
-              //crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                CardTerminalScreen(amount: _currentValue),
-                const SizedBox(height: 8.0),
-                Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    child: GridView.count(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 8,
-                        mainAxisSpacing: 8,
-                        childAspectRatio: 1.75 / 1,
-                        padding: EdgeInsets.zero,
-                        children: <Widget>[
-                          for (int i = 0; i < _numbers.length + 3; i++)
-                            _buildKeyboardButton(i)
-                        ]))
-              ]),
+          child: Column(children: <Widget>[
+            CardTerminalScreen(amount: _currentValue),
+            SizedBox(height: bigScreen(context) ? 8.0 : 2.0),
+            Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: GridView.count(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
+                    childAspectRatio: bigScreen(context) ? 1.75 : 2.75,
+                    padding: EdgeInsets.zero,
+                    children: <Widget>[
+                      for (int i = 0; i < _numbers.length + 3; i++)
+                        _buildKeyboardButton(i)
+                    ]))
+          ]),
         ),
       )
     ]));

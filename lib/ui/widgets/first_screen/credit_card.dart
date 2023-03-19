@@ -35,8 +35,8 @@ class CreditCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double cardRadius = 10.0;
-    final double cardPadding =
-        MediaQuery.of(context).size.width > smallScreenWidth ? 26.0 : 16.0;
+    final bool bigDevice = bigScreen(context);
+    final double cardPadding = bigDevice ? 26.0 : 16.0;
 
     final String pubKey = SharedPreferencesHelper().getPubKey();
     return Card(
@@ -89,8 +89,7 @@ class CreditCard extends StatelessWidget {
                               ),
                             )),
                       ),
-                      if (MediaQuery.of(context).size.width > smallScreenWidth)
-                        const SizedBox(height: 8.0),
+                      if (bigDevice) const SizedBox(height: 8.0),
                       Padding(
                           padding:
                               EdgeInsets.symmetric(horizontal: cardPadding),
@@ -126,23 +125,24 @@ class CreditCard extends StatelessWidget {
                                       style: cardTextStyle(context),
                                     )))
                           ])),
-                      if (MediaQuery.of(context).size.width > smallScreenWidth)
-                        const SizedBox(height: 12.0),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: cardPadding),
-                        child: GestureDetector(
-                          onTap: () => showTooltip(
-                              context, '', tr('card_validity_tooltip')),
-                          child: Text(
-                            tr('card_validity'),
-                            style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              color: Colors.white.withOpacity(0.8),
-                              fontSize: 14.0,
+                      if (bigDevice) const SizedBox(height: 12.0),
+                      if (bigDevice)
+                        Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: cardPadding),
+                          child: GestureDetector(
+                            onTap: () => showTooltip(
+                                context, '', tr('card_validity_tooltip')),
+                            child: Text(
+                              tr('card_validity'),
+                              style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                color: Colors.white.withOpacity(0.8),
+                                fontSize: 14.0,
+                              ),
                             ),
                           ),
                         ),
-                      ),
                       const SizedBox(height: 18.0),
                     ]),
               ]),

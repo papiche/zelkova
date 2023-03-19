@@ -271,9 +271,9 @@ class _GinkgoAppState extends State<GinkgoApp> {
             minWidth: 480,
             // defaultScale: true,
             breakpoints: <ResponsiveBreakpoint>[
-              // const ResponsiveBreakpoint.resize(200, name: MOBILE),
+              const ResponsiveBreakpoint.resize(200, name: MOBILE),
               const ResponsiveBreakpoint.resize(480, name: TABLET),
-              const ResponsiveBreakpoint.resize(480, name: DESKTOP),
+              const ResponsiveBreakpoint.resize(1000, name: DESKTOP),
             ],
             background: Container(color: const Color(0xFFF5F5F5)),
           );

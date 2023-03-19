@@ -57,7 +57,7 @@ class _PayFormState extends State<PayForm> {
                         // Cannot show a tooltip if the widget is not now visible
                         return;
                       }
-                      showTooltip(context, '', response);
+                      showTooltip(context, '', tr(response));
                     },
               child: Text(tr('g1_form_pay_send')),
             ),

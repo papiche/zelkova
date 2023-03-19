@@ -60,7 +60,8 @@ class NodeManager {
     }
   }
 
-  bool _find(List<Node> nodes, Node node) => nodes.contains(node);
+  bool _find(List<Node> nodes, Node node) =>
+      nodes.where((Node n) => n.url == node.url).isNotEmpty;
 
   void insertNode(NodeType type, Node node) {
     final List<Node> nodes = _getList(type);

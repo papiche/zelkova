@@ -9,8 +9,8 @@ class SecondScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: Theme.of(context).colorScheme.background,
-      child: Column(
-          children: const <Widget>[SizedBox(height: 36), CardTerminal()]),
+      child:
+          Column(children: const <Widget>[SizedBox(height: 2), CardTerminal()]),
     );
   }
 }

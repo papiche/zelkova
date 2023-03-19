@@ -41,8 +41,7 @@ class _CardTerminalState extends State<CardTerminal> {
         .DECIMAL_SEP;
     _numbers[9] = _decimalSep;
     return Expanded(
-        child: Center(
-            child: ListView(children: <Widget>[
+        child: ListView(children: <Widget>[
       Card(
         elevation: 8.0,
         shape: RoundedRectangleBorder(
@@ -50,7 +49,7 @@ class _CardTerminalState extends State<CardTerminal> {
         ),
         child: Container(
           width: 320.0,
-          height: 700,
+          //height: 700,
           padding: const EdgeInsets.all(10.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16.0),
@@ -85,7 +84,7 @@ class _CardTerminalState extends State<CardTerminal> {
               ]),
         ),
       )
-    ])));
+    ]));
   }
 
   Widget _buildKeyboardButton(int index) {

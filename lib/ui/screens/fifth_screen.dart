@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
-import '../../data/models/node_manager.dart';
+import '../../data/models/node_type.dart';
 import '../ui_helpers.dart';
 import '../widgets/bottom_widget.dart';
 import '../widgets/fifth_screen/export_dialog.dart';
@@ -74,6 +74,8 @@ class FifthScreen extends StatelessWidget {
                       const NodeInfoCard(type: NodeType.duniter),
                     if (state.expertMode)
                       const NodeInfoCard(type: NodeType.cesiumPlus),
+                    if (state.expertMode)
+                      const NodeInfoCard(type: NodeType.gva),
                     if (state.expertMode)
                       LinkCard(
                           title: 'code_card_title',

@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 // import 'dart:developer' as developer;
 import 'dart:io';
 
@@ -9,6 +10,7 @@ import 'package:http/http.dart';
 import '../data/models/contact.dart';
 import '../data/models/node.dart';
 import '../data/models/node_manager.dart';
+import '../data/models/node_type.dart';
 import '../main.dart';
 import 'g1_helper.dart';
 
@@ -139,19 +141,19 @@ Future<void> fetchDuniterNodes({bool force = false}) async {
               .difference(NodeManager().lastDuniterFetchNodesTime)
               .compareTo(Duration(minutes: minutesToWait)) >
           0 || */
-      duniterNodesWorking() < NodeManager.maxNodes) {
+      nodesWorking(type) < NodeManager.maxNodes) {
     if (force) {
       NodeManager().updateNodes(type, defaultDuniterNodes);
       logger('Fetching nodes forced');
     } else {
       logger(
-          'Fetching nodes as we did it more than ${minutesToWait}min ago and we have only ${duniterNodesWorking()}');
+          'Fetching nodes as we did it more than ${minutesToWait}min ago and we have only ${nodesWorking(type)}');
     }
     final List<Node> nodes = await _fetchDuniterNodesFromPeers();
     NodeManager().updateNodes(type, nodes);
   } else {
     logger(
-        'Skipping to fetch nodes as we already did it less than ${minutesToWait}min ago and we have ${duniterNodesWorking()}');
+        'Skipping to fetch nodes as we already did it less than ${minutesToWait}min ago and we have ${nodesWorking(type)}');
     if (!kReleaseMode) {
       // developer.log(StackTrace.current.toString());
     }
@@ -166,20 +168,26 @@ Future<void> fetchCesiumPlusNodes({bool force = false}) async {
     NodeManager().updateNodes(type, defaultCesiumPlusNodes);
     logger('Fetching cesium nodes forced');
   } else {
-    logger('Fetching cesium plus nodes, we have ${cesiumPlusNodesWorking()}');
+    logger('Fetching cesium plus nodes, we have ${nodesWorking(type)}');
   }
-  final List<Node> nodes = await _fetchCesiumPlusNodes();
+  final List<Node> nodes = await _fetchNodes(NodeType.cesiumPlus);
   NodeManager().updateNodes(type, nodes);
 }
 
-int duniterNodesWorking() => NodeManager()
-    .nodeList(NodeType.duniter)
-    .where((Node n) => n.errors < NodeManager.maxNodeErrors)
-    .toList()
-    .length;
+Future<void> fetchGvaNodes({bool force = false}) async {
+  const NodeType type = NodeType.gva;
+  if (force) {
+    NodeManager().updateNodes(type, defaultGvaNodes);
+    logger('Fetching ${type.name} nodes forced');
+  } else {
+    logger('Fetching ${type.name} nodes, we have ${nodesWorking(type)}');
+  }
+  final List<Node> nodes = await _fetchNodes(NodeType.gva);
+  NodeManager().updateNodes(type, nodes);
+}
 
-int cesiumPlusNodesWorking() => NodeManager()
-    .nodeList(NodeType.cesiumPlus)
+int nodesWorking(NodeType type) => NodeManager()
+    .nodeList(type)
     .where((Node n) => n.errors < NodeManager.maxNodeErrors)
     .toList()
     .length;
@@ -259,12 +267,11 @@ Future<List<Node>> _fetchDuniterNodesFromPeers() async {
   return lNodes;
 }
 
-Future<List<Node>> _fetchCesiumPlusNodes() async {
+Future<List<Node>> _fetchNodes(NodeType type) async {
   final List<Node> lNodes = <Node>[];
   String? fastestNode;
   late Duration fastestLatency = const Duration(minutes: 1);
   try {
-    const NodeType type = NodeType.cesiumPlus;
     final List<Node> currentNodes = <Node>[...NodeManager().nodeList(type)];
     currentNodes.shuffle();
     for (final Node node in currentNodes) {
@@ -278,7 +285,7 @@ Future<List<Node>> _fetchCesiumPlusNodes() async {
           fastestNode = endpoint;
           fastestLatency = latency;
           if (!kReleaseMode) {
-            logger('Node bloc: Current faster node $fastestNode');
+            logger('Node $type: Current faster node $fastestNode');
           }
           NodeManager().insertNode(type, node);
           lNodes.insert(0, node);
@@ -293,9 +300,9 @@ Future<List<Node>> _fetchCesiumPlusNodes() async {
     }
 
     logger(
-        'Fetched ${lNodes.length} cesium plus nodes ordered by latency (first: ${lNodes.first.url})');
+        'Fetched ${lNodes.length} ${type.name} nodes ordered by latency (first: ${lNodes.first.url})');
   } catch (e, stacktrace) {
-    logger('General error in fetch cplus nodes: $e');
+    logger('General error in fetch ${type.name}: $e');
     logger(stacktrace);
   }
   lNodes.sort((Node a, Node b) => a.latency.compareTo(b.latency));
@@ -309,8 +316,13 @@ Future<Duration> _pingNode(String node, NodeType type) async {
     await http
         .get(Uri.parse(type == NodeType.duniter
             ? '$node/network/peers/self/ping'
-            // see: http://g1.data.e-is.pro/network/peering
-            : '$node/network/peering'))
+            : type == NodeType.cesiumPlus
+                ?
+                // see: http://g1.data.e-is.pro/network/peering
+                '$node/network/peering'
+                :
+                // gva (just the url)
+                node))
         // Decrease http timeout during ping
         .timeout(const Duration(seconds: 10));
     stopwatch.stop();
@@ -337,13 +349,20 @@ Future<http.Response> requestCPlusWithRetry(String path,
   return _requestWithRetry(NodeType.cesiumPlus, path, true, retryWith404);
 }
 
+Future<http.Response> requestGvaWithRetry(String path,
+    {bool retryWith404 = true}) async {
+  return _requestWithRetry(NodeType.gva, path, true, retryWith404);
+}
+
 Future<http.Response> _requestWithRetry(
     NodeType type, String path, bool dontRecord, bool retryWith404) async {
   final List<Node> nodes = NodeManager().nodeList(type);
   if (nodes.isEmpty) {
     nodes.addAll(type == NodeType.duniter
         ? defaultDuniterNodes
-        : defaultCesiumPlusNodes);
+        : type == NodeType.cesiumPlus
+            ? defaultCesiumPlusNodes
+            : defaultGvaNodes);
   }
   for (int i = 0; i < nodes.length; i++) {
     final Node node = nodes[i];

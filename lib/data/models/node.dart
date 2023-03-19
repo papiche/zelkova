@@ -52,20 +52,4 @@ List<Node> readDotNodeConfig(String entry) =>
 
 List<Node> defaultDuniterNodes = readDotNodeConfig('DUNITER_NODES');
 List<Node> defaultCesiumPlusNodes = readDotNodeConfig('CESIUM_PLUS_NODES');
-
-const List<Node> defaultDuniterNodesRemove = <Node>[
-  Node(url: 'https://g1.duniter.fr'),
-  Node(url: 'https://g1.le-sou.org'),
-  Node(url: 'https://g1.cgeek.fr'),
-  Node(url: 'https://g1.monnaielibreoccitanie.org'),
-  Node(url: 'https://g1.duniter.fr'),
-  Node(url: 'https://g1.le-sou.org'),
-  Node(url: 'https://g1.cgeek.fr')
-];
-
-const List<Node> defaultCesiumPlusNodesRemove = <Node>[
-  Node(url: 'https://g1.data.e-is.pro'),
-  Node(url: 'https://g1.data.presler.fr'),
-  Node(url: 'https://g1.data.le-sou.org'),
-  Node(url: 'https://g1.data.mithril.re')
-];
+List<Node> defaultGvaNodes = readDotNodeConfig('GVA_NODES');

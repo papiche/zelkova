@@ -51,6 +51,8 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
 
   List<Node> get cesiumPlusNodes => state.cesiumPlusNodes;
 
+  List<Node> get gvaNodes => state.gvaNodes;
+
   @override
   NodeListState? fromJson(Map<String, dynamic> json) =>
       NodeListState.fromJson(json);

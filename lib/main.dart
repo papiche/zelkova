@@ -26,6 +26,7 @@ import 'data/models/contact_cubit.dart';
 import 'data/models/node_list_cubit.dart';
 import 'data/models/node_list_state.dart';
 import 'data/models/node_manager.dart';
+import 'data/models/node_type.dart';
 import 'data/models/payment_cubit.dart';
 import 'data/models/transaction_cubit.dart';
 import 'g1/api.dart';
@@ -209,6 +210,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
     _printNodeStatus();
     await fetchDuniterNodes();
     await fetchCesiumPlusNodes();
+    await fetchGvaNodes();
     _printNodeStatus(prefix: 'Continuing');
   }
 
@@ -216,8 +218,9 @@ class _GinkgoAppState extends State<GinkgoApp> {
     final int nDuniterNodes = NodeManager().nodeList(NodeType.duniter).length;
     final int nCesiumPlusNodes =
         NodeManager().nodeList(NodeType.cesiumPlus).length;
+    final int nGvaNodes = NodeManager().nodeList(NodeType.gva).length;
     logger(
-        '$prefix with $nDuniterNodes duniter nodes and $nCesiumPlusNodes c+ nodes');
+        '$prefix with $nDuniterNodes duniter nodes, $nCesiumPlusNodes c+ nodes, and $nGvaNodes gva nodes');
     if (!kReleaseMode) {
       logger('${NodeManager().nodeList(NodeType.cesiumPlus)}');
     }

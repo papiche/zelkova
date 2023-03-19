@@ -9,9 +9,11 @@ part of 'app_state.dart';
 AppState _$AppStateFromJson(Map<String, dynamic> json) => AppState(
       introViewed: json['introViewed'] as bool? ?? false,
       warningViewed: json['warningViewed'] as bool? ?? false,
+      expertMode: json['expertMode'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$AppStateToJson(AppState instance) => <String, dynamic>{
       'introViewed': instance.introViewed,
       'warningViewed': instance.warningViewed,
+      'expertMode': instance.expertMode,
     };

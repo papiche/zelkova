@@ -1,3 +1,4 @@
+import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -8,30 +9,25 @@ part 'node_list_state.g.dart';
 
 @immutable
 @JsonSerializable()
+@CopyWith()
 class NodeListState extends Equatable {
-  NodeListState({List<Node>? duniterNodes, List<Node>? cesiumPlusNodes})
+  NodeListState(
+      {List<Node>? duniterNodes,
+      List<Node>? cesiumPlusNodes,
+      List<Node>? gvaNodes})
       : duniterNodes = duniterNodes ?? defaultDuniterNodes,
-        cesiumPlusNodes = cesiumPlusNodes ?? defaultCesiumPlusNodes;
+        cesiumPlusNodes = cesiumPlusNodes ?? defaultCesiumPlusNodes,
+        gvaNodes = gvaNodes ?? defaultGvaNodes;
 
   factory NodeListState.fromJson(Map<String, dynamic> json) =>
       _$NodeListStateFromJson(json);
 
   final List<Node> duniterNodes;
   final List<Node> cesiumPlusNodes;
-
-  NodeListState copyWith(
-      {List<Node>? duniterNodes,
-      List<Node>? cesiumPlusNodes,
-      DateTime? lastFetchDuniterNodesTime,
-      DateTime? lastFetchCPlusNodesTime}) {
-    return NodeListState(
-      duniterNodes: duniterNodes ?? this.duniterNodes,
-      cesiumPlusNodes: cesiumPlusNodes ?? this.cesiumPlusNodes,
-    );
-  }
+  final List<Node> gvaNodes;
 
   @override
-  List<Object?> get props => <Object>[duniterNodes, cesiumPlusNodes];
+  List<Object?> get props => <Object>[duniterNodes, cesiumPlusNodes, gvaNodes];
 
   Map<String, dynamic> toJson() => _$NodeListStateToJson(this);
 }

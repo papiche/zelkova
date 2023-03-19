@@ -2,11 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import 'node.dart';
 import 'node_list_cubit.dart';
-
-enum NodeType {
-  duniter,
-  cesiumPlus,
-}
+import 'node_type.dart';
 
 class NodeManager {
   factory NodeManager() {
@@ -23,13 +19,16 @@ class NodeManager {
 
   final List<Node> duniterNodes = <Node>[];
   final List<Node> cesiumPlusNodes = <Node>[];
+  final List<Node> gvaNodes = <Node>[];
 
   void loadFromCubit(NodeListCubit cubit) {
     NodeManagerObserver.instance.cubit = cubit;
     duniterNodes.clear();
     cesiumPlusNodes.clear();
+    gvaNodes.clear();
     duniterNodes.addAll(cubit.duniterNodes);
     cesiumPlusNodes.addAll(cubit.cesiumPlusNodes);
+    gvaNodes.addAll(cubit.gvaNodes);
   }
 
   void updateNodes(NodeType type, List<Node> newNodes) {
@@ -41,8 +40,11 @@ class NodeManager {
 
   List<Node> nodeList(NodeType type) => _getList(type);
 
-  List<Node> _getList(NodeType type) =>
-      type == NodeType.duniter ? duniterNodes : cesiumPlusNodes;
+  List<Node> _getList(NodeType type) => type == NodeType.duniter
+      ? duniterNodes
+      : type == NodeType.cesiumPlus
+          ? cesiumPlusNodes
+          : gvaNodes;
 
   void addNode(NodeType type, Node node) {
     final List<Node> nodes = _getList(type);

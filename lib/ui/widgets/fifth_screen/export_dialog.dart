@@ -116,7 +116,9 @@ class _ExportDialogState extends State<ExportDialog> {
     anchor.download = 'ginkgo-wallet.json';
     anchor.click();
 
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
     context.replaceSnackbar(
       content: const Text(
         "HURRA",

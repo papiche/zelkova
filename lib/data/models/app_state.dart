@@ -10,6 +10,7 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
   const AppState({
     this.introViewed = false,
     this.warningViewed = false,
+    this.expertMode = false,
   });
 
   factory AppState.fromJson(Map<String, dynamic> json) =>
@@ -17,16 +18,17 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
 
   final bool introViewed;
   final bool warningViewed;
+  final bool expertMode;
 
   AppState copyWith({
     bool? introViewed,
     bool? warningViewed,
-    DateTime? lastFetchTime,
+    bool? expertMode,
   }) {
     return AppState(
-      introViewed: introViewed ?? this.introViewed,
-      warningViewed: warningViewed ?? this.warningViewed,
-    );
+        introViewed: introViewed ?? this.introViewed,
+        warningViewed: warningViewed ?? this.warningViewed,
+        expertMode: expertMode ?? this.expertMode);
   }
 
   @override
@@ -36,5 +38,5 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
   Map<String, dynamic> toJson() => _$AppStateToJson(this);
 
   @override
-  List<Object?> get props => <Object>[introViewed, warningViewed];
+  List<Object?> get props => <Object>[introViewed, warningViewed, expertMode];
 }

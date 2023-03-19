@@ -9,9 +9,12 @@ class AppCubit extends HydratedCubit<AppState> {
 
   bool get isWarningViewed => state.warningViewed;
 
+  bool get isExpertMode => state.expertMode;
+
   void introViewed() {
     emit(state.copyWith(introViewed: true));
   }
+
 
   void warningViewed() {
     emit(state.copyWith(warningViewed: true));
@@ -25,5 +28,9 @@ class AppCubit extends HydratedCubit<AppState> {
   @override
   Map<String, dynamic> toJson(AppState state) {
     return state.toJson();
+  }
+
+  void setExpertMode(bool value) {
+    emit(state.copyWith(expertMode: value));
   }
 }

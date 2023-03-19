@@ -115,7 +115,9 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
                   } else {
                     paymentCubit.selectKey(pay.publicKey);
                   }
-
+                  if (!mounted) {
+                    return;
+                  }
                   Navigator.pop(context);
                 }
               }),

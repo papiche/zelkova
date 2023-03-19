@@ -93,7 +93,9 @@ class ImportDialog extends StatelessWidget {
 
       try {
         final String jsonString = reader.result as String;
-        logger(jsonString);
+        if (!kReleaseMode) {
+          logger(jsonString);
+        }
         final dynamic jsonMap = jsonDecode(jsonString);
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         completer.complete(jsonString);

@@ -69,6 +69,7 @@ Future<List<Contact>> searchWot(String searchTerm) async {
       for (final dynamic result in results) {
         final Map<String, dynamic> resultMap = result as Map<String, dynamic>;
         final String pubKey = resultMap['pubkey'] as String;
+        // ignore: avoid_dynamic_calls
         final String nick = resultMap['uids'][0]['uid']! as String;
         contacts.add(Contact(nick: nick, pubkey: pubKey));
       }
@@ -91,6 +92,7 @@ Future<Contact> getWot(Contact contact) async {
       final List<dynamic> uids =
           (results[0] as Map<String, dynamic>)['uids'] as List<dynamic>;
       if (uids.isNotEmpty) {
+        // ignore: avoid_dynamic_calls
         return contact.copyWith(nick: uids[0]!['uid'] as String);
       }
     }
@@ -123,7 +125,8 @@ Uint8List imageFromBase64String(String base64String) {
       base64Decode(base64String.substring(base64String.indexOf(',') + 1)));
 }
 
-Future<Uint8List> _getAvata2r(String pubKey) async {
+@Deprecated('use getProfile')
+Future<Uint8List> getAvatar(String pubKey) async {
   final String dataImage = await _getDataImageFromKey(pubKey);
   return imageFromBase64String(dataImage);
 }
@@ -171,13 +174,13 @@ Future<void> fetchCesiumPlusNodes({bool force = false}) async {
 
 int duniterNodesWorking() => NodeManager()
     .nodeList(NodeType.duniter)
-    .where((n) => n.errors < NodeManager.maxNodeErrors)
+    .where((Node n) => n.errors < NodeManager.maxNodeErrors)
     .toList()
     .length;
 
 int cesiumPlusNodesWorking() => NodeManager()
     .nodeList(NodeType.cesiumPlus)
-    .where((n) => n.errors < NodeManager.maxNodeErrors)
+    .where((Node n) => n.errors < NodeManager.maxNodeErrors)
     .toList()
     .length;
 

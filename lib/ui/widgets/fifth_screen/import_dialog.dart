@@ -109,8 +109,8 @@ class ImportDialog extends StatelessWidget {
       await reader.onLoadEnd.first;
 
       try {
-        final String jsonString = reader.result as String;
-        if (!kReleaseMode) {
+        final String? jsonString = reader.result as String?;
+        if (jsonString != null && !kReleaseMode) {
           logger(jsonString);
         }
         completer.complete(jsonString);

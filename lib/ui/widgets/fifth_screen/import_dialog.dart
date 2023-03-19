@@ -41,7 +41,7 @@ class ImportDialog extends StatelessWidget {
                 children: <Widget>[
                   Flexible(
                     child: Text(
-                      tr('draw your_pattern'),
+                      tr('draw_your_pattern'),
                       style: const TextStyle(fontSize: 26),
                     ),
                   ),
@@ -61,7 +61,7 @@ class ImportDialog extends StatelessWidget {
                           context.replaceSnackbar(
                             content: Text(
                               tr('wallet_imported'),
-                              style: const TextStyle(color: Colors.red),
+                              style: const TextStyle(color: Colors.blue),
                             ),
                           );
                           Navigator.of(context).pop(true);

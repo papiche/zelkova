@@ -4,6 +4,7 @@ import '../../../g1/api.dart';
 import '../../../g1/transaction_parser.dart';
 import '../../main.dart';
 import '../../shared_prefs.dart';
+import '../../ui/ui_helpers.dart';
 import 'node_list_cubit.dart';
 import 'transaction.dart';
 
@@ -40,8 +41,7 @@ class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
               _balanceAmount = currentBal;
             })); */
     logger('Loading transactions');
-    const bool debugging = true;
-    final String txData = debugging
+    final String txData = txDebugging
         ? await getTxHistory('6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH')
         : await getTxHistory(SharedPreferencesHelper().getPubKey());
     final TransactionsAndBalanceState state = transactionParser(txData);

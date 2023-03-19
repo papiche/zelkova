@@ -74,7 +74,7 @@ class _CardTerminalState extends State<CardTerminal> {
                     crossAxisCount: 3,
                     crossAxisSpacing: 8,
                     mainAxisSpacing: 8,
-                    childAspectRatio: bigScreen(context) ? 1.75 : 2.75,
+                    childAspectRatio: bigScreen(context) ? 1.75 : 2.25,
                     padding: EdgeInsets.zero,
                     children: <Widget>[
                       for (int i = 0; i < _numbers.length + 3; i++)

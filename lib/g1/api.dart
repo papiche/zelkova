@@ -21,7 +21,7 @@ import 'g1_helper.dart';
 
 Future<String> getTxHistory(String publicKey) async {
   final Response response =
-  await requestWithRetry(NodeType.duniter, '/tx/history/$publicKey');
+      await requestWithRetry(NodeType.duniter, '/tx/history/$publicKey');
   if (response.statusCode == 200) {
     return response.body;
   } else {
@@ -65,7 +65,7 @@ Future<List<Contact>> searchWot(String searchTerm) async {
   final List<Contact> contacts = <Contact>[];
   if (response.statusCode == HttpStatus.ok) {
     final Map<String, dynamic> data =
-    json.decode(response.body) as Map<String, dynamic>;
+        json.decode(response.body) as Map<String, dynamic>;
     final List<dynamic> results = data['results'] as List<dynamic>;
     // logger('Returning wot results ${results.length}');
     if (results.isNotEmpty) {
@@ -89,11 +89,11 @@ Future<Contact> getWot(Contact contact) async {
   // Will be better to analyze the 404 response (to detect faulty node)
   if (response.statusCode == HttpStatus.ok) {
     final Map<String, dynamic> data =
-    json.decode(response.body) as Map<String, dynamic>;
+        json.decode(response.body) as Map<String, dynamic>;
     final List<dynamic> results = data['results'] as List<dynamic>;
     if (results.isNotEmpty) {
       final List<dynamic> uids =
-      (results[0] as Map<String, dynamic>)['uids'] as List<dynamic>;
+          (results[0] as Map<String, dynamic>)['uids'] as List<dynamic>;
       if (uids.isNotEmpty) {
         // ignore: avoid_dynamic_calls
         return contact.copyWith(nick: uids[0]!['uid'] as String);
@@ -106,14 +106,14 @@ Future<Contact> getWot(Contact contact) async {
 @Deprecated('use getProfile')
 Future<String> _getDataImageFromKey(String publicKey) async {
   final Response response =
-  await requestCPlusWithRetry('/user/profile/$publicKey');
+      await requestCPlusWithRetry('/user/profile/$publicKey');
   if (response.statusCode == HttpStatus.ok) {
     final Map<String, dynamic> data =
-    json.decode(response.body) as Map<String, dynamic>;
+        json.decode(response.body) as Map<String, dynamic>;
     final Map<String, dynamic> source = data['_source'] as Map<String, dynamic>;
     if (source.containsKey('avatar')) {
       final Map<String, dynamic> avatarData =
-      source['avatar'] as Map<String, dynamic>;
+          source['avatar'] as Map<String, dynamic>;
       if (avatarData.containsKey('_content')) {
         final String content = avatarData['_content'] as String;
         return 'data:image/png;base64,$content';
@@ -148,15 +148,13 @@ Future<void> fetchDuniterNodes({bool force = false}) async {
       logger('Fetching nodes forced');
     } else {
       logger(
-          'Fetching nodes as we did it more than ${minutesToWait}min ago and we have only ${nodesWorking(
-              type)}');
+          'Fetching nodes as we did it more than ${minutesToWait}min ago and we have only ${nodesWorking(type)}');
     }
     final List<Node> nodes = await _fetchDuniterNodesFromPeers();
     NodeManager().updateNodes(type, nodes);
   } else {
     logger(
-        'Skipping to fetch nodes as we already did it less than ${minutesToWait}min ago and we have ${nodesWorking(
-            type)}');
+        'Skipping to fetch nodes as we already did it less than ${minutesToWait}min ago and we have ${nodesWorking(type)}');
     if (!kReleaseMode) {
       // developer.log(StackTrace.current.toString());
     }
@@ -189,18 +187,16 @@ Future<void> fetchGvaNodes({bool force = false}) async {
   NodeManager().updateNodes(type, nodes);
 }
 
-int nodesWorking(NodeType type) =>
-    NodeManager()
-        .nodeList(type)
-        .where((Node n) => n.errors < NodeManager.maxNodeErrors)
-        .toList()
-        .length;
+int nodesWorking(NodeType type) => NodeManager()
+    .nodeList(type)
+    .where((Node n) => n.errors < NodeManager.maxNodeErrors)
+    .toList()
+    .length;
 
-List<Node> nodesWorkingList(NodeType type) =>
-    NodeManager()
-        .nodeList(type)
-        .where((Node n) => n.errors < NodeManager.maxNodeErrors)
-        .toList();
+List<Node> nodesWorkingList(NodeType type) => NodeManager()
+    .nodeList(type)
+    .where((Node n) => n.errors < NodeManager.maxNodeErrors)
+    .toList();
 
 Future<List<Node>> _fetchDuniterNodesFromPeers() async {
   final List<Node> lNodes = <Node>[];
@@ -212,14 +208,14 @@ Future<List<Node>> _fetchDuniterNodesFromPeers() async {
     final Response response = await getPeers();
     if (response.statusCode == 200) {
       final Map<String, dynamic> peerList =
-      jsonDecode(response.body) as Map<String, dynamic>;
+          jsonDecode(response.body) as Map<String, dynamic>;
       final List<dynamic> peers = (peerList['peers'] as List<dynamic>)
           .where((dynamic peer) =>
-      (peer as Map<String, dynamic>)['currency'] == 'g1')
+              (peer as Map<String, dynamic>)['currency'] == 'g1')
           .where(
               (dynamic peer) => (peer as Map<String, dynamic>)['version'] == 10)
           .where((dynamic peer) =>
-      (peer as Map<String, dynamic>)['status'] == 'UP')
+              (peer as Map<String, dynamic>)['status'] == 'UP')
           .toList();
       // reorder peer list
       peers.shuffle();
@@ -227,7 +223,7 @@ Future<List<Node>> _fetchDuniterNodesFromPeers() async {
         final Map<String, dynamic> peer = peerR as Map<String, dynamic>;
         if (peer['endpoints'] != null) {
           final List<String> endpoints =
-          List<String>.from(peer['endpoints'] as List<dynamic>);
+              List<String>.from(peer['endpoints'] as List<dynamic>);
           for (int j = 0; j < endpoints.length; j++) {
             if (endpoints[j].startsWith('BMAS')) {
               final String endpointUnParsed = endpoints[j];
@@ -236,10 +232,9 @@ Future<List<Node>> _fetchDuniterNodesFromPeers() async {
                 try {
                   final Duration latency = await _pingNode(endpoint, type);
                   logger(
-                      'Evaluating node: $endpoint, latency ${latency
-                          .inMicroseconds}');
+                      'Evaluating node: $endpoint, latency ${latency.inMicroseconds}');
                   final Node node =
-                  Node(url: endpoint, latency: latency.inMicroseconds);
+                      Node(url: endpoint, latency: latency.inMicroseconds);
                   if (fastestNode == null || latency < fastestLatency) {
                     fastestNode = endpoint;
                     fastestLatency = latency;
@@ -267,9 +262,7 @@ Future<List<Node>> _fetchDuniterNodesFromPeers() async {
       }
     }
     logger(
-        'Fetched ${lNodes
-            .length} duniter nodes ordered by latency (first: ${lNodes.first
-            .url})');
+        'Fetched ${lNodes.length} duniter nodes ordered by latency (first: ${lNodes.first.url})');
   } catch (e, stacktrace) {
     logger('General error in fetch duniter nodes: $e');
     logger(stacktrace);
@@ -313,8 +306,7 @@ Future<List<Node>> _fetchNodes(NodeType type) async {
     }
 
     logger(
-        'Fetched ${lNodes.length} ${type
-            .name} nodes ordered by latency (first: ${lNodes.first.url})');
+        'Fetched ${lNodes.length} ${type.name} nodes ordered by latency (first: ${lNodes.first.url})');
   } catch (e, stacktrace) {
     logger('General error in fetch ${type.name}: $e');
     logger(stacktrace);
@@ -326,19 +318,18 @@ Future<List<Node>> _fetchNodes(NodeType type) async {
 
 Future<Duration> _pingNode(String node, NodeType type) async {
   try {
-    final Stopwatch stopwatch = Stopwatch()
-      ..start();
+    final Stopwatch stopwatch = Stopwatch()..start();
     await http
         .get(Uri.parse(type == NodeType.duniter
-        ? '$node/network/peers/self/ping'
-        : type == NodeType.cesiumPlus
-        ?
-    // see: http://g1.data.e-is.pro/network/peering
-    '$node/network/peering'
-        :
-    // gva (just the url)
-    node))
-    // Decrease http timeout during ping
+            ? '$node/network/peers/self/ping'
+            : type == NodeType.cesiumPlus
+                ?
+                // see: http://g1.data.e-is.pro/network/peering
+                '$node/network/peering'
+                :
+                // gva (just the url)
+                node))
+        // Decrease http timeout during ping
         .timeout(const Duration(seconds: 10));
     stopwatch.stop();
     return stopwatch.elapsed;
@@ -369,15 +360,15 @@ Future<http.Response> requestGvaWithRetry(String path,
   return _requestWithRetry(NodeType.gva, path, true, retryWith404);
 }
 
-Future<http.Response> _requestWithRetry(NodeType type, String path,
-    bool dontRecord, bool retryWith404) async {
+Future<http.Response> _requestWithRetry(
+    NodeType type, String path, bool dontRecord, bool retryWith404) async {
   final List<Node> nodes = NodeManager().nodeList(type);
   if (nodes.isEmpty) {
     nodes.addAll(type == NodeType.duniter
         ? defaultDuniterNodes
         : type == NodeType.cesiumPlus
-        ? defaultCesiumPlusNodes
-        : defaultGvaNodes);
+            ? defaultCesiumPlusNodes
+            : defaultGvaNodes);
   }
   for (int i = 0; i < nodes.length; i++) {
     final Node node = nodes[i];
@@ -388,14 +379,10 @@ Future<http.Response> _requestWithRetry(NodeType type, String path,
     try {
       final Uri url = Uri.parse('${node.url}$path');
       logger('Fetching $url (${type.name})');
-      final int startTime = DateTime
-          .now()
-          .millisecondsSinceEpoch;
+      final int startTime = DateTime.now().millisecondsSinceEpoch;
       final Response response =
-      await http.get(url).timeout(const Duration(seconds: 10));
-      final int endTime = DateTime
-          .now()
-          .millisecondsSinceEpoch;
+          await http.get(url).timeout(const Duration(seconds: 10));
+      final int endTime = DateTime.now().millisecondsSinceEpoch;
       final int newLatency = endTime - startTime;
       if (!kReleaseMode) {
         logger('response.statusCode: ${response.statusCode}');
@@ -454,7 +441,7 @@ Future<String> pay(
       // move logger outside main
       print(e);
       print(stacktrace);
-      return 'Oops something didn\'t work as expected';
+      return "Oops! the payment failed. Something didn't work as expected";
     }
   }
   return 'Sorry: I cannot find a working node to send the transaction';

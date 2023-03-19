@@ -28,7 +28,7 @@ users to manage their Ğ1 currency on their mobile device using just a browser.
 
 [https://g1demo.comunes.net/](https://g1demo.comunes.net/)
 
-## Installation
+## Prerequisites
 
 This repository requires [Flutter](https://flutter.dev/docs/get-started/install) to be installed and
 present in your development environment.
@@ -46,7 +46,18 @@ Get the dependencies.
 flutter pub get
 ```
 
-Run the app via command line or through your development environment. (optional)
+## Build & deploy
+
+Something like this should work:
+```
+flutter test 
+flutter build web --release 
+rsync --progress=info2 --delete -aH build/web/ youruser@yourserver:/var/www/ginkgo/
+```
+
+## Development 
+
+Run the app via command line or through your development environment.
 
 ```sh
 flutter run lib/main.dart

@@ -425,10 +425,10 @@ Future<http.Response> _requestWithRetry(
 Future<String> pay(
     {required String to, required double amount, String? comment}) async {
   final List<Node> nodes = nodesWorkingList(NodeType.gva);
-  // reorder list to use others
   if (nodes.isNotEmpty) {
+    // reorder list to use others
     // nodes.shuffle();
-    // no hay Retry?
+    // TODO(vjrj) implement some retry if some error arises?
     try {
       final String node = nodes.first.url;
       final Gva gva = Gva(node: node);

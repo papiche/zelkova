@@ -116,7 +116,8 @@ void main() async {
         ),
       );
 
-  if (!kReleaseMode) {
+  if (kReleaseMode) {
+    // Only use sentry in production
     await SentryFlutter.init((
       SentryFlutterOptions options,
     ) {

@@ -15,14 +15,17 @@ users to manage their Ğ1 currency on their mobile device using just a browser.
 * Internationalization (i18n)
 * Some contextual help (for example, by tapping on "Validity").
 * QR code reader
+* Contact management
+* Import/export of your wallet
+* Transactions history page and Balance
+* Automatic discover and selection of nodes
+* Customizable via [env file](https://git.duniter.org/vjrj/ginkgo/-/blob/master/assets/env.production.txt)
 
 ## Work in progress
 
-* Automatic selection of nodes
-* Send and receive Ğ1 transactions
-* View transaction history
-* View Ğ1 balance and currency conversion rate
+* Send Ğ1 transactions
 * Connectivity detection (to retry transactions, and other net operations)
+* Search improvements
 
 ## Demo
 

@@ -49,10 +49,10 @@ class _PayFormState extends State<PayForm> {
             ),
             const SizedBox(height: 10.0),
             ElevatedButton(
-              onPressed: !state.canBeSent() &&
-                      state.amount != null &&
-                      _weHaveBalance(context, state.amount!)
-                  ? () {}
+              onPressed: !state.canBeSent() ||
+                      state.amount == null ||
+                      !_weHaveBalance(context, state.amount!)
+                  ? null
                   : () async {
                       final String response = await pay(
                           to: state.publicKey,
@@ -64,8 +64,28 @@ class _PayFormState extends State<PayForm> {
                       }
                       showTooltip(context, '', tr(response));
                     },
-              child: Text(tr('g1_form_pay_send')),
-            ),
+              style: ElevatedButton.styleFrom(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                foregroundColor: Colors.white,
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                textStyle: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.send),
+                  const SizedBox(width: 10),
+                  Text(tr('g1_form_pay_send')),
+                ],
+              ),
+            )
           ],
         ),
       );

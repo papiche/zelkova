@@ -1,6 +1,6 @@
 {
   "app_name": "Ğinkgo",
-  "credit_card_title": "Pagar con Ğ1",
+  "credit_card_title": "Pagar con Junas",
   "g1_wallet": "Monedero Ğ1",
   "close": "CERRAR",
   "bottom_nav_first": "Pagar",
@@ -39,7 +39,7 @@
   "keys_tooltip": "Las claves públicas y privadas en Ğ1 y Duniter son como un sistema de cerradura y llave, donde la clave pública actúa como la cerradura que puede ser abierta por cualquiera que tenga la clave privada correspondiente, proporcionando una forma segura de autenticar y verificar transacciones.",
   "card_validity": "Validez",
   "card_validity_tooltip": "Tenga en cuenta que este monedero solo es accesible mientras utiliza este navegador y este dispositivo específico. Si borra o restablece el navegador, perderá el acceso a este monedero y los fondos almacenados en el.",
-  "demo_desc": "Por favor, no utilice esto aún para transacciones reales.",
+  "demo_desc": "Monedero en desarrollo: por favor, úsalo con cautela",
   "export_key": "Exporta tu monedero",
   "import_key": "Importa tu monedero",
   "copy_your_key": "Copia tu clave pública",
@@ -74,5 +74,18 @@
   "intro_pattern_to_import": "Patrón que usaste para exportar tu monedero",
   "wrong_pattern": "Patrón incorrecto",
   "wallet_exported": "Monedero exportado correctamente",
-  "wallet_imported": "Monedero importado correctamente"
+  "wallet_imported": "Monedero importado correctamente",
+  "cancel": "CANCELAR",
+  "yes_import": "ESTOY SEGURO, IMPÓRTALO",
+  "import_config_title": "¿Estás seguro/a?",
+  "import_config_desc": "Esto sobreescribirá tu monedero actual por el importado",
+  "import_config_desc_danger": "Esto sobreescribirá tu monedero actual (que tiene fondos!) por el importado, y puede ocasionar la perdida de esos fondos",
+  "enter_a_valid_number": "Ingrese un número válido",
+  "enter_a_positive_number": "Ingrese un número mayor a cero",
+  "payment_successful": "¡Pago enviado!",
+  "please_confirm_sent": "¿Estás seguro/a?",
+  "please_confirm_sent_desc": "Por favor confirma que quieres enviar {amount} Ğ1 a {to}",
+  "yes_sent": "SÍ, ENVÍALO",
+  "receive_g1": "Recibe Junas",
+  "insufficient balance": "Upps, balance insuficiente para hacer este pago"
 }

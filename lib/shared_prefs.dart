@@ -1,10 +1,12 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:durt/durt.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'data/models/cesium_card.dart';
 import 'g1/g1_helper.dart';
-import 'main.dart';
+import 'ui/logger.dart';
 
 class SharedPreferencesHelper {
   factory SharedPreferencesHelper() {
@@ -17,6 +19,8 @@ class SharedPreferencesHelper {
     });
   }
 
+  List<CesiumCard> cesiumCards = <CesiumCard>[];
+
   static final SharedPreferencesHelper _instance =
       SharedPreferencesHelper._internal();
 
@@ -27,9 +31,35 @@ class SharedPreferencesHelper {
 
   Future<void> init() async {
     _prefs = await SharedPreferences.getInstance();
+
+    final String? json = _prefs.getString('cesiumCards');
+    if (json != null) {
+      final List<dynamic> list = jsonDecode(json) as List<dynamic>;
+      cesiumCards = list
+          .map((dynamic e) => CesiumCard.fromJson(e as Map<String, dynamic>))
+          .toList();
+    }
   }
 
-  // I'll only use shared prefs for the duniter seed
+  void addCesiumCard(CesiumCard cesiumCard) {
+    cesiumCards.add(cesiumCard);
+    saveCesiumCards();
+  }
+
+  void removeCesiumCard(int index) {
+    cesiumCards.removeAt(index);
+    saveCesiumCards();
+  }
+
+  Future<void> saveCesiumCards() async {
+    final String json =
+        jsonEncode(cesiumCards.map((CesiumCard e) => e.toJson()).toList());
+    await _prefs.setString('cesiumCards', json);
+  }
+
+/* WIP part */
+
+// I'll only use shared prefs for the duniter seed
   Future<void> _saveString(String key, String value) async {
     await _prefs.setString(key, value);
   }

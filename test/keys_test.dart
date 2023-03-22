@@ -36,6 +36,11 @@ void main() {
         equals('https://monnaie-libre.ortie.org:443/bma'));
   });
 
+  test('parse different networks/peers GVA S', () {
+    expect(parseHost('GVA S duniter.master.aya.autissier.net 443 gva'),
+        equals('https://duniter.master.aya.autissier.net:443/gva'));
+  });
+
   test('validate pub keys', () {
     expect(validateKey('FRYyk57Pi456EJRu9vqVfSHLgmUfx4Qc3goS62a7dUSm'),
         equals(true));

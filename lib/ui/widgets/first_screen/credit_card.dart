@@ -89,7 +89,6 @@ class CreditCard extends StatelessWidget {
                               ),
                             )),
                       ),
-                      if (bigDevice) const SizedBox(height: 8.0),
                       Padding(
                           padding:
                               EdgeInsets.symmetric(horizontal: cardPadding),
@@ -104,7 +103,7 @@ class CreditCard extends StatelessWidget {
                                     : 40,
                                 'assets/img/chip.svg',
                               ))),
-                      const SizedBox(height: 8.0),
+                      const SizedBox(height: 6.0),
                       Padding(
                           padding:
                               EdgeInsets.symmetric(horizontal: cardPadding),
@@ -125,7 +124,7 @@ class CreditCard extends StatelessWidget {
                                       style: cardTextStyle(context),
                                     )))
                           ])),
-                      if (bigDevice) const SizedBox(height: 12.0),
+                      if (bigDevice) const SizedBox(height: 6.0),
                       if (bigDevice)
                         Padding(
                           padding:
@@ -166,7 +165,7 @@ class CreditCard extends StatelessWidget {
                           data: publicKey,
                           size: MediaQuery.of(context).size.width * 0.8,
                           gapless: false,
-                          foregroundColor: Colors.orange,
+                          foregroundColor: Colors.brown,
                         ),
                       ]),
                     ))));

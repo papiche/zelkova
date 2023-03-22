@@ -11,7 +11,6 @@ import '../../../data/models/contact_state.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../ui_helpers.dart';
 import '../bottom_widget.dart';
-import '../header.dart';
 
 class ContactsPage extends StatefulWidget {
   const ContactsPage({super.key});
@@ -47,7 +46,6 @@ class _ContactsPageState extends State<ContactsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Header(text: 'bottom_nav_trd'),
               TextField(
                 controller: _searchController,
                 decoration: InputDecoration(

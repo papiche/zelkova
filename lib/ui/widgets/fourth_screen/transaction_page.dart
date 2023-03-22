@@ -78,13 +78,13 @@ class _TransactionsAndBalanceWidgetState
         return Stack(children: <Widget>[
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
               Widget>[
-            Container(
+            /* Container(
                 color: Theme.of(context).colorScheme.surfaceVariant,
                 height: 90,
                 width: double.infinity,
                 child: const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: Header(text: 'transactions'))),
+                    child: Header(text: 'transactions'))), */
             Expanded(
               child: Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),

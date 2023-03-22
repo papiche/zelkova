@@ -4,19 +4,26 @@ import 'dart:convert';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pattern_lock/pattern_lock.dart';
 import 'package:universal_html/html.dart' as html;
 
+import '../../../data/models/transaction_cubit.dart';
 import '../../../g1/g1_helper.dart';
-import '../../../main.dart';
 import '../../../shared_prefs.dart';
+import '../../logger.dart';
 import '../custom_error_widget.dart';
 import '../loading_box.dart';
 import 'pattern_util.dart';
 
-class ImportDialog extends StatelessWidget {
-  ImportDialog({super.key});
+class ImportDialog extends StatefulWidget {
+  const ImportDialog({super.key});
 
+  @override
+  State<ImportDialog> createState() => _ImportDialogState();
+}
+
+class _ImportDialogState extends State<ImportDialog> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -34,36 +41,47 @@ class ImportDialog extends StatelessWidget {
             return Scaffold(
               key: scaffoldKey,
               appBar: AppBar(
-                title: Text(tr('intro_pattern_to_import')),
+                title: Text(tr('draw_your_pattern')),
               ),
               body: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Flexible(
-                    child: Text(
-                      tr('draw_your_pattern'),
-                      style: const TextStyle(fontSize: 26),
-                    ),
+                    child: Padding(
+                        padding: const EdgeInsets.only(left: 30),
+                        child: Text(
+                          tr('intro_pattern_to_import'),
+                          style: const TextStyle(fontSize: 26),
+                        )),
                   ),
                   Flexible(
                     child: PatternLock(
                       selectedColor: Colors.red,
                       pointRadius: 8,
                       fillPoints: true,
-                      onInputComplete: (List<int> pattern) {
+                      onInputComplete: (List<int> pattern) async {
                         try {
                           // try to decrypt
                           final Map<String, dynamic> keys =
                               decryptJsonForImport(
                                   keyEncrypted, pattern.join());
-                          SharedPreferencesHelper().setKeys(
-                              keys['pub'] as String, keys['seed'] as String);
-                          context.replaceSnackbar(
-                            content: Text(
-                              tr('wallet_imported'),
-                              style: const TextStyle(color: Colors.blue),
-                            ),
-                          );
+                          final bool? confirm = await confirmImport(context);
+                          if (confirm != null && confirm) {
+                            SharedPreferencesHelper().setKeys(
+                                keys['pub'] as String, keys['seed'] as String);
+                            if (!mounted) {
+                              return;
+                            }
+                            context.replaceSnackbar(
+                              content: Text(
+                                tr('wallet_imported'),
+                                style: const TextStyle(color: Colors.blue),
+                              ),
+                            );
+                          }
+                          if (!mounted) {
+                            return;
+                          }
                           Navigator.of(context).pop(true);
                         } catch (e) {
                           context.replaceSnackbar(
@@ -119,5 +137,29 @@ class ImportDialog extends StatelessWidget {
       }
     });
     return completer.future;
+  }
+
+  Future<bool?> confirmImport(BuildContext context) async {
+    final bool hasBalance = context.read<TransactionsCubit>().balance > 0;
+    return showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(tr('import_config_title')),
+          content: Text(tr(
+              hasBalance ? 'import_config_desc_danger' : 'import_config_desc')),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(tr('cancel')),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(tr('yes_import')),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

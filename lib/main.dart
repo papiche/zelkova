@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:easy_logger/easy_logger.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,24 +30,8 @@ import 'data/models/payment_cubit.dart';
 import 'data/models/transaction_cubit.dart';
 import 'g1/api.dart';
 import 'shared_prefs.dart';
+import 'ui/logger.dart';
 import 'ui/screens/skeleton_screen.dart';
-
-// logs
-final EasyLogger logger = EasyLogger(
-  name: 'ginkgo',
-  defaultLevel: LevelMessages.debug,
-  enableBuildModes: <BuildMode>[
-    BuildMode.debug,
-    BuildMode.profile,
-    BuildMode.release
-  ],
-  enableLevels: <LevelMessages>[
-    LevelMessages.debug,
-    LevelMessages.info,
-    LevelMessages.error,
-    LevelMessages.warning
-  ],
-);
 
 void main() async {
   /// Initialize packages
@@ -209,9 +192,9 @@ class GinkgoApp extends StatefulWidget {
 class _GinkgoAppState extends State<GinkgoApp> {
   Future<void> _loadNodes() async {
     _printNodeStatus();
-    await fetchDuniterNodes();
+    await fetchDuniterNodes(NodeType.duniter);
     await fetchCesiumPlusNodes();
-    await fetchGvaNodes();
+    await fetchDuniterNodes(NodeType.gva);
     _printNodeStatus(prefix: 'Continuing');
   }
 

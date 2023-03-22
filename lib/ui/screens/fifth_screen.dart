@@ -7,13 +7,13 @@ import '../../data/models/app_state.dart';
 import '../../data/models/node_type.dart';
 import '../ui_helpers.dart';
 import '../widgets/bottom_widget.dart';
+import '../widgets/card_drawer.dart';
 import '../widgets/fifth_screen/export_dialog.dart';
 import '../widgets/fifth_screen/grid_item.dart';
 import '../widgets/fifth_screen/import_dialog.dart';
 import '../widgets/fifth_screen/link_card.dart';
 import '../widgets/fifth_screen/node_info.dart';
 import '../widgets/fifth_screen/text_divider.dart';
-import '../widgets/header.dart';
 
 class FifthScreen extends StatelessWidget {
   const FifthScreen({super.key});
@@ -21,13 +21,13 @@ class FifthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppState>(
-        builder: (BuildContext context, AppState state) => Material(
-              color: Theme.of(context).colorScheme.background,
-              child: ListView(
+        builder: (BuildContext context, AppState state) => Scaffold(
+              appBar: AppBar(title: Text(tr('bottom_nav_fifth'))),
+              drawer: const CardDrawer(),
+              body: ListView(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   physics: const BouncingScrollPhysics(),
                   children: <Widget>[
-                    const Header(text: 'bottom_nav_fifth'),
                     const TextDivider(text: 'key_tools_title'),
                     GridView.count(
                         physics: const NeverScrollableScrollPhysics(),
@@ -58,7 +58,7 @@ class FifthScreen extends StatelessWidget {
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return ImportDialog();
+                                      return const ImportDialog();
                                     },
                                   );
                                 }),

@@ -12,7 +12,8 @@ PaymentState _$PaymentStateFromJson(Map<String, dynamic> json) => PaymentState(
       avatar: uIntFromList(json['avatar'] as List<int>),
       comment: json['comment'] as String? ?? '',
       amount: (json['amount'] as num?)?.toDouble(),
-      isSent: json['isSent'] as bool? ?? false,
+      status: $enumDecodeNullable(_$PaymentStatusEnumMap, json['status']) ??
+          PaymentStatus.notSent,
     );
 
 Map<String, dynamic> _$PaymentStateToJson(PaymentState instance) =>
@@ -22,5 +23,11 @@ Map<String, dynamic> _$PaymentStateToJson(PaymentState instance) =>
       'avatar': uIntToList(instance.avatar),
       'comment': instance.comment,
       'amount': instance.amount,
-      'isSent': instance.isSent,
+      'status': _$PaymentStatusEnumMap[instance.status]!,
     };
+
+const _$PaymentStatusEnumMap = {
+  PaymentStatus.notSent: 'notSent',
+  PaymentStatus.sending: 'sending',
+  PaymentStatus.isSent: 'isSent',
+};

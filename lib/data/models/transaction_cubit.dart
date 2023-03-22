@@ -2,8 +2,8 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import '../../../g1/api.dart';
 import '../../../g1/transaction_parser.dart';
-import '../../main.dart';
 import '../../shared_prefs.dart';
+import '../../ui/logger.dart';
 import '../../ui/ui_helpers.dart';
 import 'node_list_cubit.dart';
 import 'transaction.dart';

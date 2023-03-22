@@ -21,14 +21,13 @@ class TransactionChartState extends State<TransactionChart> {
   int touchedGroupIndex = -1;
 
   String _selectedButton = 'DAY';
-  final List<String> _buttonValues = ['DAY', 'WEEK', 'MONTH', 'YEAR'];
 
   List<BarChartGroupData> _getChartData(String buttonValue) {
     return <BarChartGroupData>[];
   }
 
   Widget _buildButton(String buttonValue) {
-    final isSelected = _selectedButton == buttonValue;
+    final bool isSelected = _selectedButton == buttonValue;
     return ElevatedButton(
       onPressed: () {
         setState(() {
@@ -36,12 +35,12 @@ class TransactionChartState extends State<TransactionChart> {
           showingBarGroups = _getChartData(buttonValue);
         });
       },
-      child: Text(buttonValue),
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(
           isSelected ? Colors.blue : Colors.grey,
         ),
       ),
+      child: Text(buttonValue),
     );
   }
 
@@ -71,6 +70,7 @@ class TransactionChartState extends State<TransactionChart> {
     showingBarGroups = rawBarGroups;
   }
 
+  @override
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 1,
@@ -246,7 +246,6 @@ class TransactionChartState extends State<TransactionChart> {
     );
   }
 
-  @override
   Widget buildButtons(BuildContext context) {
     return AspectRatio(
         aspectRatio: 1,
@@ -260,14 +259,14 @@ class TransactionChartState extends State<TransactionChart> {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: <Widget>[
                       ElevatedButton(
                         onPressed: () {
                           setState(() {
                             // Cambiar la lógica aquí para actualizar el gráfico para mostrar datos diarios
                           });
                         },
-                        child: Text('Dia'),
+                        child: const Text('Dia'),
                       ),
                       const SizedBox(width: 16),
                       ElevatedButton(
@@ -276,7 +275,7 @@ class TransactionChartState extends State<TransactionChart> {
                             // Cambiar la lógica aquí para actualizar el gráfico para mostrar datos semanales
                           });
                         },
-                        child: Text('Semana'),
+                        child: const Text('Semana'),
                       ),
                       const SizedBox(width: 16),
                       ElevatedButton(
@@ -285,7 +284,7 @@ class TransactionChartState extends State<TransactionChart> {
                             // Cambiar la lógica aquí para actualizar el gráfico para mostrar datos mensuales
                           });
                         },
-                        child: Text('Mes'),
+                        child: const Text('Mes'),
                       ),
                       const SizedBox(width: 16),
                       ElevatedButton(
@@ -294,7 +293,7 @@ class TransactionChartState extends State<TransactionChart> {
                             // Cambiar la lógica aquí para actualizar el gráfico para mostrar datos anuales
                           });
                         },
-                        child: Text('Año'),
+                        child: const Text('Año'),
                       ),
                     ],
                   ),
@@ -303,7 +302,7 @@ class TransactionChartState extends State<TransactionChart> {
                       children: <Widget>[
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
+                          children: <Widget>[
                             _buildButton('Day'),
                             _buildButton('Week'),
                             _buildButton('Month'),
@@ -317,9 +316,12 @@ class TransactionChartState extends State<TransactionChart> {
                             barTouchData: BarTouchData(
                               touchTooltipData: BarTouchTooltipData(
                                 tooltipBgColor: Colors.grey,
-                                getTooltipItem: (a, b, c, d) => null,
+                                getTooltipItem: (BarChartGroupData a, int b,
+                                        BarChartRodData c, int d) =>
+                                    null,
                               ),
-                              touchCallback: (FlTouchEvent event, response) {
+                              touchCallback: (FlTouchEvent event,
+                                  BarTouchResponse? response) {
                                 // ...
                               },
                             ),

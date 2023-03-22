@@ -18,20 +18,21 @@ class PayForm extends StatefulWidget {
 
 class _PayFormState extends State<PayForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _amountController = TextEditingController();
   final TextEditingController _commentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PaymentCubit, PaymentState>(
         builder: (BuildContext context, PaymentState state) {
-      _amountController.text = state.amount != null ? '${state.amount}' : '';
+      if (state.comment != null && _commentController.text != state.comment) {
+        _commentController.text = state.comment;
+      }
       return Form(
         key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            G1PayAmountField(controller: _amountController),
+            const G1PayAmountField(),
             const SizedBox(height: 10.0),
             TextField(
               controller: _commentController,
@@ -54,15 +55,34 @@ class _PayFormState extends State<PayForm> {
                       !_weHaveBalance(context, state.amount!)
                   ? null
                   : () async {
-                      final String response = await pay(
-                          to: state.publicKey,
-                          comment: state.comment,
-                          amount: state.amount!);
+                      // We disable the number, anyway
+                      context.read<PaymentCubit>().sending();
+                      final bool? confirmed = await _confirmSend(
+                          context,
+                          state.amount!.toString(),
+                          humanizePubKey(state.publicKey));
                       if (!mounted) {
-                        // Cannot show a tooltip if the widget is not now visible
                         return;
                       }
-                      showTooltip(context, '', tr(response));
+                      if (confirmed == null || !confirmed) {
+                        context.read<PaymentCubit>().sentFailed();
+                      } else {
+                        final String response = await pay(
+                            to: state.publicKey,
+                            comment: state.comment,
+                            amount: state.amount!);
+                        if (!mounted) {
+                          // Cannot show a tooltip if the widget is not now visible
+                          return;
+                        }
+                        if (response == 'success') {
+                          context.read<PaymentCubit>().sent();
+                          showTooltip(context, '', tr('payment_successful'));
+                        } else {
+                          context.read<PaymentCubit>().sentFailed();
+                          showTooltip(context, '', tr(response));
+                        }
+                      }
                     },
               style: ElevatedButton.styleFrom(
                 padding:
@@ -79,7 +99,7 @@ class _PayFormState extends State<PayForm> {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                children: <Widget>[
                   const Icon(Icons.send),
                   const SizedBox(width: 10),
                   Text(tr('g1_form_pay_send')),
@@ -93,5 +113,29 @@ class _PayFormState extends State<PayForm> {
   }
 
   bool _weHaveBalance(BuildContext context, double amount) =>
-      context.read<TransactionsCubit>().balance > amount;
+      context.read<TransactionsCubit>().balance >= amount * 100;
+
+  Future<bool?> _confirmSend(
+      BuildContext context, String amount, String to) async {
+    return showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(tr('please_confirm_sent')),
+          content: Text(tr('please_confirm_sent_desc',
+              namedArgs: <String, String>{'amount': amount, 'to': to})),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(tr('cancel')),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(tr('yes_sent')),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

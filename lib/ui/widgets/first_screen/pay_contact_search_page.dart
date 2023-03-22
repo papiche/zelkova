@@ -15,7 +15,7 @@ import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/payment_state.dart';
 import '../../../g1/api.dart';
 import '../../../g1/g1_helper.dart';
-import '../../../main.dart';
+import '../../logger.dart';
 import '../../ui_helpers.dart';
 import '../custom_error_widget.dart';
 import '../loading_box.dart';

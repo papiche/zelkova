@@ -47,6 +47,7 @@ String generateSalt(int length) {
 }
 
 String? parseHost(String endpointUnParsed) {
+  endpointUnParsed = endpointUnParsed.replaceFirst('GVA S', 'GVA_S');
   try {
     final List<String> parts = endpointUnParsed.split(' ');
     // FIXME (vjrj): figure out if exists a way to detect http or https
@@ -77,11 +78,9 @@ String? parseHost(String endpointUnParsed) {
                 : ''
             : path)
         : path;
-    //final bool hasIp =
-    //  RegExp(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}').hasMatch(parts[2]);
-//  final String port = hasIp ? parts[3] : parts[2];
-    //final int pathIndex = hasIp ? 4 : 3;
-    //final String path = parts.length > pathIndex ? parts[pathIndex] : '';
+    if (endpointUnParsed.endsWith('gva')) {
+      path = '/gva';
+    }
     final String endpoint = '$protocol://$host:$port$path'.trim();
     return endpoint;
   } catch (e) {

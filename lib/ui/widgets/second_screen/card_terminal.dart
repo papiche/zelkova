@@ -43,46 +43,49 @@ class _CardTerminalState extends State<CardTerminal> {
     _numbers[9] = _decimalSep;
     return Expanded(
         child: ListView(children: <Widget>[
-      Card(
-        elevation: 8.0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16.0),
-        ),
-        child: Container(
-          width: 320.0,
-          //height: 700,
-          padding: const EdgeInsets.all(10.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16.0),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: <Color>[
-                Colors.grey[800]!,
-                Colors.grey[500]!,
-              ],
+      Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: bigScreen(context) ? 50.0 : 10.0),
+          child: Card(
+            elevation: 8.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16.0),
             ),
-          ),
-          child: Column(children: <Widget>[
-            CardTerminalScreen(amount: _currentValue),
-            SizedBox(height: bigScreen(context) ? 8.0 : 2.0),
-            Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: GridView.count(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 8,
-                    mainAxisSpacing: 8,
-                    childAspectRatio: bigScreen(context) ? 1.75 : 2.25,
-                    padding: EdgeInsets.zero,
-                    children: <Widget>[
-                      for (int i = 0; i < _numbers.length + 3; i++)
-                        _buildKeyboardButton(i)
-                    ]))
-          ]),
-        ),
-      )
+            child: Container(
+              width: 320.0,
+              //height: 700,
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16.0),
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: <Color>[
+                    Colors.grey[800]!,
+                    Colors.grey[500]!,
+                  ],
+                ),
+              ),
+              child: Column(children: <Widget>[
+                CardTerminalScreen(amount: _currentValue),
+                SizedBox(height: bigScreen(context) ? 8.0 : 2.0),
+                Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: GridView.count(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 8,
+                        mainAxisSpacing: 8,
+                        childAspectRatio: bigScreen(context) ? 1.75 : 2.25,
+                        padding: EdgeInsets.zero,
+                        children: <Widget>[
+                          for (int i = 0; i < _numbers.length + 3; i++)
+                            _buildKeyboardButton(i)
+                        ]))
+              ]),
+            ),
+          ))
     ]));
   }
 

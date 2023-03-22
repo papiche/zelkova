@@ -39,7 +39,7 @@
   "keys_tooltip": "Public and private keys in Ğ1 and Duniter are like a lock and key system, where the public key acts as the lock that can be opened by anyone with the corresponding private key, providing a secure way to authenticate and verify transactions",
   "card_validity": "Validity",
   "card_validity_tooltip": "Please note that this wallet is only accessible while using this specific browser and device. If you delete or reset the browser, you will lose access to this wallet and the funds stored in it.",
-  "demo_desc": "Please refrain from using this with real transactions for now.",
+  "demo_desc": "Wallet under development: please use with caution",
   "export_key": "Export your wallet",
   "import_key": "Import your wallet",
   "copy_your_key": "Copy your public key",
@@ -75,5 +75,18 @@
   "wrong_pattern": "Wrong pattern",
   "wallet_exported": "Walled exported correctly",
   "reloading_nodes": "Reloading {type} nodes",
-  "wallet_imported": "Walled imported correctly"
+  "wallet_imported": "Walled imported correctly",
+  "cancel": "CANCEL",
+  "yes_import": "I'M SURE, IMPORT IT",
+  "import_config_title": "Are you sure?",
+  "import_config_desc": "This will overwrite your current wallet with the imported",
+  "import_config_desc_danger": "This will overwrite your current wallet (that has funds!) with the imported, and may cause you to lost that funds",
+  "enter_a_valid_number": "Enter a valid number",
+  "enter_a_positive_number": "Enter a positive number",
+  "payment_successful": "Payment send!",
+  "please_confirm_sent": "Are you sure?",
+  "please_confirm_sent_desc": "Please confirm that you wish to send {amount} Ğ1 to {to}",
+  "yes_sent": "YES, SEND IT",
+  "receive_g1": "Receive Ğ1",
+  "insufficient balance": "Oops, insufficient balance to pay this"
 }

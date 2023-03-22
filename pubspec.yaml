@@ -44,7 +44,9 @@ dependencies:
   introduction_screen: ^3.1.6
   connectivity_wrapper: ^1.1.1
   responsive_framework: ^0.2.0
-  durt: ^0.1.6
+  #durt: ^0.1.6
+  durt: 
+    path: ../durt
   flutter_neumorphic: ^3.2.0
   shared_preferences: ^2.0.18
   another_flushbar: ^1.12.29

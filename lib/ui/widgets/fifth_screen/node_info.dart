@@ -7,7 +7,7 @@ import '../../../data/models/node_list_cubit.dart';
 import '../../../data/models/node_list_state.dart';
 import '../../../data/models/node_type.dart';
 import '../../../g1/api.dart';
-import '../../../main.dart';
+import '../../logger.dart';
 import '../fifth_screen/info_card.dart';
 
 class NodeInfoCard extends StatelessWidget {
@@ -33,12 +33,12 @@ class NodeInfoCard extends StatelessWidget {
           onLongPress: () {
             logger('On long press');
             if (type == NodeType.duniter) {
-              fetchDuniterNodes(force: true);
+              fetchDuniterNodes(type, force: true);
             }
             if (type == NodeType.cesiumPlus) {
               fetchCesiumPlusNodes(force: true);
             } else {
-              fetchGvaNodes(force: true);
+              fetchDuniterNodes(type, force: true);
             }
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(tr('reloading_nodes',

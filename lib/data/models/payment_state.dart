@@ -8,6 +8,8 @@ import 'model_utils.dart';
 
 part 'payment_state.g.dart';
 
+enum PaymentStatus { notSent, sending, isSent }
+
 @JsonSerializable()
 class PaymentState extends Equatable {
   const PaymentState({
@@ -16,14 +18,17 @@ class PaymentState extends Equatable {
     this.avatar,
     this.comment = '',
     this.amount,
-    this.isSent = false,
+    this.status = PaymentStatus.notSent,
   });
 
   factory PaymentState.fromJson(Map<String, dynamic> json) =>
       _$PaymentStateFromJson(json);
 
   bool canBeSent() =>
-      !isSent && validateKey(publicKey) && amount != null && amount! > 0;
+      status == PaymentStatus.notSent &&
+      validateKey(publicKey) &&
+      amount != null &&
+      amount! > 0;
 
   final String publicKey;
   final String? nick;
@@ -31,7 +36,7 @@ class PaymentState extends Equatable {
   final Uint8List? avatar;
   final String comment;
   final double? amount;
-  final bool isSent;
+  final PaymentStatus status;
 
   Map<String, dynamic> toJson() => _$PaymentStateToJson(this);
 
@@ -39,17 +44,17 @@ class PaymentState extends Equatable {
     String? publicKey,
     String? nick,
     Uint8List? avatar,
-    String? description,
+    String? comment,
     double? amount,
-    bool? isSent,
+    PaymentStatus? status,
   }) {
     return PaymentState(
       publicKey: publicKey ?? this.publicKey,
       nick: nick ?? this.nick,
       avatar: avatar ?? this.avatar,
-      comment: description ?? this.comment,
+      comment: comment ?? this.comment,
       amount: amount ?? this.amount,
-      isSent: isSent ?? this.isSent,
+      status: status ?? this.status,
     );
   }
 
@@ -65,5 +70,5 @@ class PaymentState extends Equatable {
 
   @override
   List<Object?> get props =>
-      <dynamic>[publicKey, nick, avatar, comment, amount, isSent];
+      <dynamic>[publicKey, nick, avatar, comment, amount, status];
 }

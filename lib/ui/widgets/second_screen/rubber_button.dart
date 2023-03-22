@@ -20,7 +20,7 @@ class RubberButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return NeumorphicButton(
       onPressed: onPressed,
-      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 0),
+      padding: const EdgeInsets.symmetric(horizontal: 18),
       style: NeumorphicStyle(
         border: NeumorphicBorder(color: Colors.grey[750], width: 4),
         color: bgColor,

@@ -292,10 +292,9 @@ packages:
   durt:
     dependency: "direct main"
     description:
-      name: durt
-      sha256: "1e1c494bd7cd8b372b89e5bc03c07f6e96aad5ef7d2159cfa28da3c181269678"
-      url: "https://pub.dev"
-    source: hosted
+      path: "../durt"
+      relative: true
+    source: path
     version: "0.1.6"
   easy_localization:
     dependency: "direct main"

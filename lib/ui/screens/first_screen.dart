@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/models/app_cubit.dart';
+import '../../data/models/payment_cubit.dart';
+import '../../data/models/payment_state.dart';
 import '../widgets/bottom_widget.dart';
+import '../widgets/card_drawer.dart';
 import '../widgets/first_screen/credit_card.dart';
 import '../widgets/first_screen/pay_contact_search_button.dart';
-import '../widgets/header.dart';
 import 'pay_form.dart';
 
 class FirstScreen extends StatefulWidget {
@@ -17,8 +19,6 @@ class FirstScreen extends StatefulWidget {
 }
 
 class _FirstScreenState extends State<FirstScreen> {
-  // final ScrollController _controller = ScrollController();
-
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -37,31 +37,77 @@ class _FirstScreenState extends State<FirstScreen> {
         );
       }
     });
-    return Material(
-        color: Theme.of(context).colorScheme.background,
-        child: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            //physics: const AlwaysScrollableScrollPhysics(),
-            //controller: _controller,
-            // shrinkWrap: true,
-            children: <Widget>[
-              const Header(text: 'credit_card_title'),
-              CreditCard(),
-              const SizedBox(height: 8),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Divider(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onBackground
-                      .withOpacity(.4),
+    return BlocBuilder<PaymentCubit, PaymentState>(
+        builder: (BuildContext context, PaymentState state) =>
+            Stack(children: <Widget>[
+              Scaffold(
+                  appBar: AppBar(title: Text(tr('credit_card_title'))),
+                  drawer: const CardDrawer(),
+                  body: ListView(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      //physics: const AlwaysScrollableScrollPhysics(),
+                      //controller: _controller,
+                      // shrinkWrap: true,
+                      children: <Widget>[
+                        CreditCard(),
+                        const SizedBox(height: 8),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: Divider(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onBackground
+                                .withOpacity(.4),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        const PayContactSearchButton(),
+                        const SizedBox(height: 10),
+                        const PayForm(),
+                        const BottomWidget()
+                      ])),
+              Visibility(
+                visible: state.status == PaymentStatus.sending,
+                child: Container(
+                  color: Colors.black.withOpacity(0.5),
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              const PayContactSearchButton(),
-              const SizedBox(height: 10),
-              const PayForm(),
-              const BottomWidget()
+              )
             ]));
   }
 }
+/*
+Scaffold(
+  appBar: AppBar(
+    leading: IconButton(
+      icon: Icon(Icons.menu),
+      onPressed: () => Scaffold.of(context).openDrawer(),
+    ),
+    title: Text('My App'),
+  ),
+  drawerEnableOpenDragGesture: true,
+  drawer: CustomDrawer(),
+  body: // ...
+);
+
+class Screen1 extends StatelessWidget {
+  const Screen1({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Screen 1')),
+      drawer: CustomDrawer(),
+      body: Center(
+        child: ElevatedButton(
+          child: Text('Open Drawer'),
+          onPressed: () {
+            Scaffold.of(context).openDrawer();
+          },
+        ),
+      ),
+    );
+  }
+} */

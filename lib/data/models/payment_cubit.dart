@@ -10,12 +10,12 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
   void updatePayment({
     String? description,
     double? amount,
-    bool? isSent,
+    PaymentStatus? status,
   }) {
     final PaymentState newState = state.copyWith(
-      description: description,
+      comment: description,
       amount: amount,
-      isSent: isSent,
+      status: status,
     );
     emit(newState);
   }
@@ -31,6 +31,18 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
     final PaymentState newState =
         PaymentState(publicKey: publicKey, amount: amount);
     emit(newState);
+  }
+
+  void sent() {
+    emit(state.copyWith(status: PaymentStatus.isSent));
+  }
+
+  void sentFailed() {
+    emit(state.copyWith(status: PaymentStatus.notSent));
+  }
+
+  void sending() {
+    emit(state.copyWith(status: PaymentStatus.sending));
   }
 
   void selectKey(String publicKey) {
@@ -50,11 +62,17 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
     emit(PaymentState.emptyPayment);
   }
 
-  void selectAmount(double amount) {
-    emit(state.copyWith(amount: amount));
+  void selectAmount(double? amount) {
+    // As ignores null amounts
+    final PaymentState newState = PaymentState(
+        publicKey: state.publicKey,
+        nick: state.nick,
+        avatar: state.avatar,
+        amount: amount);
+    emit(newState);
   }
 
   void setDescription(String description) {
-    emit(state.copyWith(description: description));
+    emit(state.copyWith(comment: description));
   }
 }

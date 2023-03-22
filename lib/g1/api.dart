@@ -11,8 +11,8 @@ import '../data/models/contact.dart';
 import '../data/models/node.dart';
 import '../data/models/node_manager.dart';
 import '../data/models/node_type.dart';
-import '../main.dart';
 import '../shared_prefs.dart';
+import '../ui/logger.dart';
 import 'g1_helper.dart';
 
 // Tx history
@@ -134,27 +134,18 @@ Future<Uint8List> getAvatar(String pubKey) async {
   return imageFromBase64String(dataImage);
 }
 
-Future<void> fetchDuniterNodes({bool force = false}) async {
-  final int minutesToWait = NodeManager.minutesToWait;
-  const NodeType type = NodeType.duniter;
-  if (force ||
-      /* DateTime.now()
-              .difference(NodeManager().lastDuniterFetchNodesTime)
-              .compareTo(Duration(minutes: minutesToWait)) >
-          0 || */
-      nodesWorking(type) < NodeManager.maxNodes) {
+Future<void> fetchDuniterNodes(NodeType type, {bool force = false}) async {
+  if (force || nodesWorking(type) < NodeManager.maxNodes) {
     if (force) {
       NodeManager().updateNodes(type, defaultDuniterNodes);
       logger('Fetching nodes forced');
     } else {
-      logger(
-          'Fetching nodes as we did it more than ${minutesToWait}min ago and we have only ${nodesWorking(type)}');
+      logger('Fetching ${type.name} nodes, we have ${nodesWorking(type)}');
     }
-    final List<Node> nodes = await _fetchDuniterNodesFromPeers();
+    final List<Node> nodes = await _fetchDuniterNodesFromPeers(type);
     NodeManager().updateNodes(type, nodes);
   } else {
-    logger(
-        'Skipping to fetch nodes as we already did it less than ${minutesToWait}min ago and we have ${nodesWorking(type)}');
+    logger('Skipping to fetch nodes as we have ${nodesWorking(type)}');
     if (!kReleaseMode) {
       // developer.log(StackTrace.current.toString());
     }
@@ -175,18 +166,6 @@ Future<void> fetchCesiumPlusNodes({bool force = false}) async {
   NodeManager().updateNodes(type, nodes);
 }
 
-Future<void> fetchGvaNodes({bool force = false}) async {
-  const NodeType type = NodeType.gva;
-  if (force) {
-    NodeManager().updateNodes(type, defaultGvaNodes);
-    logger('Fetching ${type.name} nodes forced');
-  } else {
-    logger('Fetching ${type.name} nodes, we have ${nodesWorking(type)}');
-  }
-  final List<Node> nodes = await _fetchNodes(NodeType.gva);
-  NodeManager().updateNodes(type, nodes);
-}
-
 int nodesWorking(NodeType type) => NodeManager()
     .nodeList(type)
     .where((Node n) => n.errors < NodeManager.maxNodeErrors)
@@ -198,11 +177,11 @@ List<Node> nodesWorkingList(NodeType type) => NodeManager()
     .where((Node n) => n.errors < NodeManager.maxNodeErrors)
     .toList();
 
-Future<List<Node>> _fetchDuniterNodesFromPeers() async {
+Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type) async {
   final List<Node> lNodes = <Node>[];
+  final String apyType = (type == NodeType.duniter) ? 'BMAS' : 'GVA S';
   // To compare with something...
-  String fastestNode = 'https://g1.duniter.org';
-  const NodeType type = NodeType.duniter;
+  String? fastestNode;
   late Duration fastestLatency = const Duration(minutes: 1);
   try {
     final Response response = await getPeers();
@@ -225,10 +204,12 @@ Future<List<Node>> _fetchDuniterNodesFromPeers() async {
           final List<String> endpoints =
               List<String>.from(peer['endpoints'] as List<dynamic>);
           for (int j = 0; j < endpoints.length; j++) {
-            if (endpoints[j].startsWith('BMAS')) {
+            if (endpoints[j].startsWith(apyType)) {
               final String endpointUnParsed = endpoints[j];
               final String? endpoint = parseHost(endpointUnParsed);
-              if (endpoint != null) {
+              if (endpoint != null &&
+                  !endpoint.contains('test') &&
+                  !endpoint.contains('localhost')) {
                 try {
                   final Duration latency = await _pingNode(endpoint, type);
                   logger(
@@ -255,16 +236,16 @@ Future<List<Node>> _fetchDuniterNodesFromPeers() async {
             }
           }
           if (lNodes.length >= NodeManager.maxNodes) {
-            logger('We have enough nodes for now');
+            logger('We have enough ${type.name} nodes for now');
             break;
           }
         }
       }
     }
     logger(
-        'Fetched ${lNodes.length} duniter nodes ordered by latency (first: ${lNodes.first.url})');
+        'Fetched ${lNodes.length} ${type.name} nodes ordered by latency (first: ${lNodes.first.url})');
   } catch (e, stacktrace) {
-    logger('General error in fetch duniter nodes: $e');
+    logger('General error in fetch ${type.name} nodes: $e');
     logger(stacktrace);
     // rethrow;
   }
@@ -427,24 +408,31 @@ Future<String> pay(
   final List<Node> nodes = nodesWorkingList(NodeType.gva);
   if (nodes.isNotEmpty) {
     // reorder list to use others
-    // nodes.shuffle();
-    // TODO(vjrj) implement some retry if some error arises?
+    nodes.shuffle();
+
     try {
-      final String node = nodes.first.url;
+      // Reference of working proxy 'https://g1demo.comunes.net/proxy/g1v1.p2p.legal/gva/';
+      final String node =
+          'https://g1demo.comunes.net/proxy/${nodes.first.url.replaceFirst('https://', '').replaceFirst('http://', '')}/';
       final Gva gva = Gva(node: node);
+
+      logger('Trying $node to get balance');
       final CesiumWallet wallet = await SharedPreferencesHelper().getWallet();
-      print(
-          'Trying to send $amount to $to with comment ${comment ?? ''} and $node');
+      logger('Current balance ${await gva.balance(wallet.pubkey)}');
+      // logger('Current balance ${await gva.balance(wallet.pubkey)}');
+      logger(
+          'Trying $node to send $amount to $to with comment ${comment ?? ''}');
       final String response = await gva.pay(
           recipient: to,
           amount: amount,
           comment: comment ?? '',
           cesiumSeed: wallet.seed);
+      logger('GVA replied with "$response"');
       return response;
     } catch (e, stacktrace) {
       // move logger outside main
-      print(e);
-      print(stacktrace);
+      logger(e);
+      logger(stacktrace);
       return "Oops! the payment failed. Something didn't work as expected";
     }
   }

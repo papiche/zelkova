@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../widgets/card_drawer.dart';
 import '../widgets/fourth_screen/transaction_page.dart';
 
 class FourthScreen extends StatelessWidget {
@@ -7,8 +9,9 @@ class FourthScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-        color: Theme.of(context).colorScheme.background,
-        child: const TransactionsAndBalanceWidget());
+    return Scaffold(
+        appBar: AppBar(title: Text(tr('transactions'))),
+        drawer: const CardDrawer(),
+        body: const TransactionsAndBalanceWidget());
   }
 }

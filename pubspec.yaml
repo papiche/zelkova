@@ -55,7 +55,7 @@ dependencies:
   fl_chart: ^0.61.0
   json_annotation: ^4.8.0
   flutter_slidable: ^2.0.0
-  sentry_flutter: ^6.22.0
+  sentry_flutter: ^7.2.0
   copy_with_extension: ^5.0.2
   timeago: ^3.3.0
   once: ^1.5.1
@@ -68,6 +68,10 @@ dev_dependencies:
   build_runner: ^2.3.3
   json_serializable: ^6.6.1
   copy_with_extension_gen: any
+
+# source: https://stackoverflow.com/a/75332857/8301867
+dependency_overrides:
+  web_socket_channel: 2.2.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

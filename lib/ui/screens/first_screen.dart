@@ -22,9 +22,7 @@ class _FirstScreenState extends State<FirstScreen> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (!context
-          .read<AppCubit>()
-          .isWarningViewed) {
+      if (!context.read<AppCubit>().isWarningViewed) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(tr('demo_desc')),
@@ -40,10 +38,7 @@ class _FirstScreenState extends State<FirstScreen> {
       }
     });
     return Material(
-        color: Theme
-            .of(context)
-            .colorScheme
-            .background,
+        color: Theme.of(context).colorScheme.background,
         child: ListView(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             //physics: const AlwaysScrollableScrollPhysics(),
@@ -56,8 +51,7 @@ class _FirstScreenState extends State<FirstScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Divider(
-                  color: Theme
-                      .of(context)
+                  color: Theme.of(context)
                       .colorScheme
                       .onBackground
                       .withOpacity(.4),

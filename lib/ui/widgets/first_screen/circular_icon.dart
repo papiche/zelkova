@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CircularIcon extends StatelessWidget {
-
-  const CircularIcon({super.key,
+  const CircularIcon({
+    super.key,
     required this.iconData,
     this.size = 48,
     this.backgroundColor = Colors.grey,

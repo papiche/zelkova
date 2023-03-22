@@ -15,7 +15,6 @@ class AppCubit extends HydratedCubit<AppState> {
     emit(state.copyWith(introViewed: true));
   }
 
-
   void warningViewed() {
     emit(state.copyWith(warningViewed: true));
   }

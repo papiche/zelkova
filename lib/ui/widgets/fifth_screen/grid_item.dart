@@ -4,12 +4,13 @@ import 'package:url_launcher/url_launcher.dart';
 
 class GridItem extends StatelessWidget {
   /// Named parameters are preferred, they make the code easier to understand.
-  const GridItem({super.key,
-    required this.title,
-    required this.icon,
-    this.url,
-    this.onTap,
-    this.subtitle});
+  const GridItem(
+      {super.key,
+      required this.title,
+      required this.icon,
+      this.url,
+      this.onTap,
+      this.subtitle});
 
   final String title;
   final IconData icon;
@@ -21,14 +22,8 @@ class GridItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 2,
-      shadowColor: Theme
-          .of(context)
-          .colorScheme
-          .shadow,
-      color: Theme
-          .of(context)
-          .colorScheme
-          .surface,
+      shadowColor: Theme.of(context).colorScheme.shadow,
+      color: Theme.of(context).colorScheme.surface,
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(12))),
       child: ListTile(
@@ -44,16 +39,12 @@ class GridItem extends StatelessWidget {
         title: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Icon(icon, color: Theme
-                .of(context)
-                .colorScheme
-                .primary),
+            Icon(icon, color: Theme.of(context).colorScheme.primary),
             Text(
               tr(title),
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
-              style: Theme
-                  .of(context)
+              style: Theme.of(context)
                   .textTheme
                   .titleMedium!
                   .apply(fontWeightDelta: 2, fontSizeDelta: -2),
@@ -63,10 +54,7 @@ class GridItem extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 6),
                 child: Text(
                   subtitle!,
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .bodySmall,
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
               )
             else
@@ -78,8 +66,7 @@ class GridItem extends StatelessWidget {
   }
 
   /// Example: Use the url_launcher package to open the browser
-  Future<bool> _launchUrl() async =>
-      await canLaunchUrl(url!)
-          ? await launchUrl(url!)
-          : throw Exception('Could not launch $url');
+  Future<bool> _launchUrl() async => await canLaunchUrl(url!)
+      ? await launchUrl(url!)
+      : throw Exception('Could not launch $url');
 }

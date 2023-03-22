@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:pattern_lock/pattern_lock.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_html/html.dart' as html;
-import 'package:universal_html/html.dart';
 
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs.dart';
@@ -101,10 +100,10 @@ class _ExportDialogState extends State<ExportDialog> {
     final String fileJson = jsonEncode(jsonData);
     final List<int> bytes = utf8.encode(fileJson);
 
-    final Blob blob = html.Blob(<dynamic>[bytes]);
+    final html.Blob blob = html.Blob(<dynamic>[bytes]);
     final String url = html.Url.createObjectUrlFromBlob(blob);
 
-    final AnchorElement anchor = html.AnchorElement(href: url);
+    final html.AnchorElement anchor = html.AnchorElement(href: url);
     anchor.download =
         'ginkgo-wallet-${simplifyPubKey(SharedPreferencesHelper().getPubKey())}.json';
     anchor.click();

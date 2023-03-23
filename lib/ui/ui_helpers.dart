@@ -70,8 +70,14 @@ Widget humanizePubKeyAsWidget(String pubKey) => Text(
       ),
     );
 
-Color tileColor(int index, [bool inverse = false]) =>
-    (inverse ? index.isOdd : index.isEven) ? Colors.grey[200]! : Colors.white;
+Color tileColor(int index, BuildContext context, [bool inverse = false]) {
+  final ColorScheme colorScheme = Theme.of(context).colorScheme;
+  final Color selectedColor = colorScheme.primary.withOpacity(0.1);
+  final Color unselectedColor = colorScheme.surface;
+  return (inverse ? index.isOdd : index.isEven)
+      ? selectedColor
+      : unselectedColor;
+}
 
 String? humanizeTime(DateTime time, String locale) =>
     timeago.format(time, locale: locale, clock: DateTime.now());
@@ -85,3 +91,7 @@ bool bigScreen(BuildContext context) =>
 
 bool smallScreen(BuildContext context) =>
     MediaQuery.of(context).size.width <= smallScreenWidth;
+
+String formatAmount(double amount) => amount.toStringAsFixed(2);
+
+String formatKAmount(double amount) => formatAmount(amount / 100);

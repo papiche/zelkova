@@ -138,10 +138,10 @@ class _ContactsPageState extends State<ContactsPage> {
                             : null,
                         leading: avatar(
                           contact.avatar,
-                          bgColor: tileColor(index),
-                          color: tileColor(index, true),
+                          bgColor: tileColor(index, context),
+                          color: tileColor(index, context, true),
                         ),
-                        tileColor: tileColor(index),
+                        tileColor: tileColor(index, context),
                       ),
                     );
                   },

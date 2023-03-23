@@ -78,6 +78,7 @@ void main() async {
             Locale('en'),
             Locale('es'),
             Locale('fr'),
+            Locale('ca'),
           ],
           fallbackLocale: const Locale('en'),
           useFallbackTranslations: true,
@@ -144,7 +145,8 @@ class _AppIntro extends State<AppIntro> {
                   createPageViewModel(
                       'intro_${i}_title',
                       'intro_${i}_description',
-                      'assets/img/undraw_intro_$i.png'),
+                      'assets/img/undraw_intro_$i.png',
+                      context),
               ],
               onDone: () => _onIntroEnd(buildContext),
               showSkipButton: true,
@@ -169,15 +171,26 @@ class _AppIntro extends State<AppIntro> {
 }
 
 PageViewModel createPageViewModel(
-    String title, String body, String imageAsset) {
+    String title, String body, String imageAsset, BuildContext context) {
+  final ColorScheme colorScheme = Theme.of(context).colorScheme;
+  final TextStyle titleStyle = TextStyle(
+    color: colorScheme.primary,
+    fontWeight: FontWeight.bold,
+    fontSize: 24.0,
+  );
+  final TextStyle bodyStyle = TextStyle(
+    color: colorScheme.onSurface,
+    fontSize: 18.0,
+  );
+
   return PageViewModel(
     title: tr(title),
     body: tr(body),
     image: Image.asset(imageAsset),
-    decoration: const PageDecoration(
-      pageColor: Colors.white,
-      bodyTextStyle: TextStyle(fontSize: 18),
-      titleTextStyle: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    decoration: PageDecoration(
+      titleTextStyle: titleStyle,
+      bodyTextStyle: bodyStyle,
+      pageColor: colorScheme.background,
     ),
   );
 }

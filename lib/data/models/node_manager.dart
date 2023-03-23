@@ -119,5 +119,6 @@ class NodeManagerObserver {
   void update(NodeManager nodeManager) {
     cubit.setDuniterNodes(nodeManager.duniterNodes);
     cubit.setCesiumPlusNodes(nodeManager.cesiumPlusNodes);
+    cubit.setGvaNodes(nodeManager.gvaNodes);
   }
 }

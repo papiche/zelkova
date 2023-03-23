@@ -158,17 +158,25 @@ class CreditCard extends StatelessWidget {
                 child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: GestureDetector(
-                      onTap: () => copyPublicKeyToClipboard(context),
-                      child: Column(children: <Widget>[
-                        Text(tr('show_qr_to_client')),
-                        QrImage(
-                          data: publicKey,
-                          size: MediaQuery.of(context).size.width * 0.8,
-                          gapless: false,
-                          foregroundColor: Colors.brown,
-                        ),
-                      ]),
-                    ))));
+                        onTap: () => copyPublicKeyToClipboard(context),
+                        child: Container(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.grey[900]
+                              : Colors.grey[100],
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(children: <Widget>[
+                            Text(tr('show_qr_to_client')),
+                            QrImage(
+                              data: publicKey,
+                              size: MediaQuery.of(context).size.width * 0.8,
+                              gapless: false,
+                              foregroundColor: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                          ]),
+                        )))));
       },
     );
   }

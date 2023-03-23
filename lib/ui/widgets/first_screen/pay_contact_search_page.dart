@@ -200,7 +200,7 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
     return ListTile(
       title: Text(title),
       subtitle: subtitle,
-      tileColor: tileColor(index),
+      tileColor: tileColor(index, context),
       onTap: () {
         context.read<PaymentCubit>().selectUser(pubKey,
             contact.nick ?? contact.name, hasAvatar ? contact.avatar : null);
@@ -208,8 +208,8 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
       },
       leading: avatar(
         contact.avatar,
-        bgColor: tileColor(index),
-        color: tileColor(index, true),
+        bgColor: tileColor(index, context),
+        color: tileColor(index, context, true),
       ),
       trailing: BlocBuilder<ContactsCubit, ContactsState>(
           builder: (BuildContext context, ContactsState state) {

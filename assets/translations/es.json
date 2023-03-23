@@ -56,7 +56,7 @@
   "data_load_error": "Error al cargar los datos",
   "add_contact": "Añadir contacto",
   "contact_added": "Contacto añadido",
-  "no_transactions": "No tiene todavía ninguna transacción",
+  "no_transactions": "Este monedero no tiene saldo. Empieza por ejemplo a ofrecer tus servicios en mercados Ğ1 para recibir tus primeros ingresos",
   "qr-scanner-title": "Escanea el QR de alguien",
   "copy_contact_key": "Copiar",
   "nothing_found": "No se ha encontrado nada",
@@ -87,5 +87,6 @@
   "please_confirm_sent_desc": "Por favor confirma que quieres enviar {amount} Ğ1 a {to}",
   "yes_sent": "SÍ, ENVÍALO",
   "receive_g1": "Recibe Junas",
-  "insufficient balance": "Upps, balance insuficiente para hacer este pago"
+  "insufficient balance": "Upps, balance insuficiente para hacer este pago",
+  "language_switch_title": "Selecciona tu idioma"
 }

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/models/payment_cubit.dart';
@@ -36,9 +37,12 @@ class _PayFormState extends State<PayForm> {
             const SizedBox(height: 10.0),
             TextField(
               controller: _commentController,
+              inputFormatters: <TextInputFormatter>[
+                Iso88591TextInputFormatter()
+              ],
               onChanged: (String? value) {
                 if (value != null) {
-                  context.read<PaymentCubit>().setDescription(value);
+                  context.read<PaymentCubit>().setComment(value);
                 }
               },
               decoration: InputDecoration(
@@ -137,5 +141,20 @@ class _PayFormState extends State<PayForm> {
         );
       },
     );
+  }
+}
+
+class Iso88591TextInputFormatter extends TextInputFormatter {
+  static final RegExp _iso88591RegExp = RegExp('^[\u0000-\u00FF]*\$');
+  static final RegExp _englishRegExp = RegExp('^[\u0000-\u007F]*\$');
+
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    if (_englishRegExp.hasMatch(newValue.text)) {
+      return newValue;
+    } else {
+      return oldValue;
+    }
   }
 }

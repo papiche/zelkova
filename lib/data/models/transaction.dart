@@ -30,7 +30,7 @@ class Transaction extends Equatable {
   @JsonKey(fromJson: uIntFromList, toJson: uIntToList)
   final Uint8List? toAvatar;
   final String? toNick;
-  final int amount;
+  final double amount;
   @JsonKey(fromJson: uIntFromList, toJson: uIntToList)
   final Uint8List? fromAvatar;
   final String? fromNick;
@@ -65,7 +65,7 @@ class TransactionsAndBalanceState extends Equatable {
   factory TransactionsAndBalanceState.fromJson(Map<String, dynamic> json) =>
       _$TransactionsAndBalanceStateFromJson(json);
   final List<Transaction> transactions;
-  final int balance;
+  final double balance;
   final DateTime lastChecked;
 
   Map<String, dynamic> toJson() => _$TransactionsAndBalanceStateToJson(this);

@@ -11,7 +11,7 @@ abstract class _$TransactionCWProxy {
 
   Transaction to(String to);
 
-  Transaction amount(int amount);
+  Transaction amount(double amount);
 
   Transaction comment(String comment);
 
@@ -34,7 +34,7 @@ abstract class _$TransactionCWProxy {
   Transaction call({
     String? from,
     String? to,
-    int? amount,
+    double? amount,
     String? comment,
     DateTime? time,
     Uint8List? toAvatar,
@@ -57,7 +57,7 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
   Transaction to(String to) => this(to: to);
 
   @override
-  Transaction amount(int amount) => this(amount: amount);
+  Transaction amount(double amount) => this(amount: amount);
 
   @override
   Transaction comment(String comment) => this(comment: comment);
@@ -108,7 +108,7 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
       amount: amount == const $CopyWithPlaceholder() || amount == null
           ? _value.amount
           // ignore: cast_nullable_to_non_nullable
-          : amount as int,
+          : amount as double,
       comment: comment == const $CopyWithPlaceholder() || comment == null
           ? _value.comment
           // ignore: cast_nullable_to_non_nullable
@@ -146,7 +146,7 @@ extension $TransactionCopyWith on Transaction {
 abstract class _$TransactionsAndBalanceStateCWProxy {
   TransactionsAndBalanceState transactions(List<Transaction> transactions);
 
-  TransactionsAndBalanceState balance(int balance);
+  TransactionsAndBalanceState balance(double balance);
 
   TransactionsAndBalanceState lastChecked(DateTime lastChecked);
 
@@ -158,7 +158,7 @@ abstract class _$TransactionsAndBalanceStateCWProxy {
   /// ````
   TransactionsAndBalanceState call({
     List<Transaction>? transactions,
-    int? balance,
+    double? balance,
     DateTime? lastChecked,
   });
 }
@@ -175,7 +175,7 @@ class _$TransactionsAndBalanceStateCWProxyImpl
       this(transactions: transactions);
 
   @override
-  TransactionsAndBalanceState balance(int balance) => this(balance: balance);
+  TransactionsAndBalanceState balance(double balance) => this(balance: balance);
 
   @override
   TransactionsAndBalanceState lastChecked(DateTime lastChecked) =>
@@ -203,7 +203,7 @@ class _$TransactionsAndBalanceStateCWProxyImpl
       balance: balance == const $CopyWithPlaceholder() || balance == null
           ? _value.balance
           // ignore: cast_nullable_to_non_nullable
-          : balance as int,
+          : balance as double,
       lastChecked:
           lastChecked == const $CopyWithPlaceholder() || lastChecked == null
               ? _value.lastChecked
@@ -227,7 +227,7 @@ extension $TransactionsAndBalanceStateCopyWith on TransactionsAndBalanceState {
 Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(
       from: json['from'] as String,
       to: json['to'] as String,
-      amount: json['amount'] as int,
+      amount: (json['amount'] as num).toDouble(),
       comment: json['comment'] as String,
       time: DateTime.parse(json['time'] as String),
       toAvatar: uIntFromList(json['toAvatar'] as List<int>),
@@ -255,7 +255,7 @@ TransactionsAndBalanceState _$TransactionsAndBalanceStateFromJson(
       transactions: (json['transactions'] as List<dynamic>)
           .map((e) => Transaction.fromJson(e as Map<String, dynamic>))
           .toList(),
-      balance: json['balance'] as int,
+      balance: (json['balance'] as num).toDouble(),
       lastChecked: DateTime.parse(json['lastChecked'] as String),
     );
 

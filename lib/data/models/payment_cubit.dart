@@ -29,7 +29,7 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
 
   void selectKeyAmount(String publicKey, double amount) {
     final PaymentState newState =
-        PaymentState(publicKey: publicKey, amount: amount);
+    PaymentState(publicKey: publicKey, amount: amount);
     emit(newState);
   }
 
@@ -72,7 +72,7 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
     emit(newState);
   }
 
-  void setDescription(String description) {
-    emit(state.copyWith(comment: description));
+  void setComment(String comment) {
+    emit(state.copyWith(comment: comment));
   }
 }

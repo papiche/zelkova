@@ -19,28 +19,19 @@ class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
     final TransactionsAndBalanceState currentState = state;
     final List<Transaction> newTransactions =
         List<Transaction>.of(currentState.transactions)..add(transaction);
-    final int newBalance = currentState.balance + transaction.amount;
+    final double newBalance = currentState.balance + transaction.amount;
     emit(currentState.copyWith(
         transactions: newTransactions, balance: newBalance));
   }
 
-  void updateTransactions(List<Transaction> newTransactions, int newBalance) {
+  void updateTransactions(
+      List<Transaction> newTransactions, double newBalance) {
     emit(state.copyWith(transactions: newTransactions, balance: newBalance));
   }
 
   Future<void> fetchTransactions(NodeListCubit cubit) async {
-    // Future<TransactionsAndBalance> _loadTransactions(NodeListCubit cubit) async {
-    // carga de datos asíncrona
-    // ...
-    // disabled, as we have to change the nodes
-    // https://g1.asycn.io/gva
-    // https://duniter.pini.fr/gva
-    /* Gva(node: 'https://g1.asycn.io/gva')
-        .balance(SharedPreferencesHelper().getPubKey())
-        .then((double currentBal) => setState(() {
-              _balanceAmount = currentBal;
-            })); */
     logger('Loading transactions');
+    logger('GVA balance: ${gvaBalance()}');
     final String txData = txDebugging
         ? await getTxHistory('6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH')
         : await getTxHistory(SharedPreferencesHelper().getPubKey());
@@ -61,7 +52,7 @@ class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
 
   List<Transaction> get transactions => state.transactions;
 
-  int get balance => state.balance;
+  double get balance => state.balance;
 
   DateTime get lastChecked => state.lastChecked;
 }

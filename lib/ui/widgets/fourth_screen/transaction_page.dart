@@ -11,6 +11,7 @@ import '../../../data/models/transaction.dart';
 import '../../../data/models/transaction_cubit.dart';
 import '../../../shared_prefs.dart';
 import '../../ui_helpers.dart';
+import '../card_drawer.dart';
 import '../header.dart';
 import '../loading_box.dart';
 import '../third_screen/contacts_page.dart';
@@ -28,6 +29,9 @@ class _TransactionsAndBalanceWidgetState
     extends State<TransactionsAndBalanceWidget>
     with SingleTickerProviderStateMixin {
   final ScrollController _transScrollController = ScrollController();
+  final DraggableScrollableController _draggableScrollableController =
+      DraggableScrollableController();
+
   late NodeListCubit nodeListCubit;
   late TransactionsCubit transCubit;
   bool isLoading = false;
@@ -52,14 +56,18 @@ class _TransactionsAndBalanceWidgetState
     if (_transScrollController.position.pixels ==
             _transScrollController.position.maxScrollExtent ||
         _transScrollController.offset == 0) {
-      setState(() {
-        isLoading = true;
-      });
-      await transCubit.fetchTransactions(nodeListCubit);
-      setState(() {
-        isLoading = false;
-      });
+      await _refreshTransactions();
     }
+  }
+
+  Future<void> _refreshTransactions() async {
+    setState(() {
+      isLoading = true;
+    });
+    await transCubit.fetchTransactions(nodeListCubit);
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -73,148 +81,181 @@ class _TransactionsAndBalanceWidgetState
       // TODO(vjrj): Only fetch last transactions and used persisted ones
       final ContactsCubit contactsCubit = context.read<ContactsCubit>();
       final List<Transaction> transactions = transBalanceState.transactions;
-      final int balance = transBalanceState.balance;
+      final double balance = transBalanceState.balance;
       if (!isLoading) {
-        return Stack(children: <Widget>[
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
-              Widget>[
-            /* Container(
+        return Scaffold(
+            appBar: AppBar(
+              title: Text(tr('transactions')),
+              actions: <Widget>[
+                IconButton(
+                  icon: const Icon(Icons.refresh),
+                  onPressed: () {
+                    _refreshTransactions();
+                  },
+                ),
+                if (!kReleaseMode)
+                  IconButton(
+                    onPressed: () {
+                      if (_draggableScrollableController.size != null) {
+                        _draggableScrollableController.animateTo(
+                          100,
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeInOut,
+                        );
+                      }
+                    },
+                    icon: const Icon(Icons.savings),
+                  ),
+              ],
+            ),
+            drawer: const CardDrawer(),
+            body: Stack(children: <Widget>[
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
+                  Widget>[
+                /* Container(
                 color: Theme.of(context).colorScheme.surfaceVariant,
                 height: 90,
                 width: double.infinity,
                 child: const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16),
                     child: Header(text: 'transactions'))), */
-            Expanded(
-              child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
-                  child: transactions.isEmpty
-                      ? Column(children: const <Widget>[
-                          NoElements(text: 'no_transactions')
-                        ])
-                      : ListView.builder(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          controller: _transScrollController,
-                          itemCount: transactions.length,
-                          // Size of elements
-                          // itemExtent: 100,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Slidable(
-                                // Specify a key if the Slidable is dismissible.
-                                key: const ValueKey<int>(0),
-                                // The end action pane is the one at the right or the bottom side.
-                                endActionPane: ActionPane(
-                                  motion: const ScrollMotion(),
-                                  children: <SlidableAction>[
-                                    SlidableAction(
-                                      onPressed: (BuildContext c) {
-                                        _addContact(transactions, index,
-                                            myPubKey, contactsCubit);
-                                        // FIXME i18n
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content: Text(tr('contact_added')),
-                                          ),
-                                        );
-                                      },
-                                      backgroundColor:
-                                          Theme.of(context).primaryColor,
-                                      foregroundColor: Colors.white,
-                                      icon: Icons.contacts,
-                                      label: tr('add_contact'),
+                Expanded(
+                  child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
+                      child: transactions.isEmpty
+                          ? Column(children: const <Widget>[
+                              NoElements(text: 'no_transactions')
+                            ])
+                          : ListView.builder(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              controller: _transScrollController,
+                              itemCount: transactions.length,
+                              // Size of elements
+                              // itemExtent: 100,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Slidable(
+                                    // Specify a key if the Slidable is dismissible.
+                                    key: const ValueKey<int>(0),
+                                    // The end action pane is the one at the right or the bottom side.
+                                    endActionPane: ActionPane(
+                                      motion: const ScrollMotion(),
+                                      children: <SlidableAction>[
+                                        SlidableAction(
+                                          onPressed: (BuildContext c) {
+                                            _addContact(transactions, index,
+                                                myPubKey, contactsCubit);
+                                            // FIXME i18n
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content:
+                                                    Text(tr('contact_added')),
+                                              ),
+                                            );
+                                          },
+                                          backgroundColor:
+                                              Theme.of(context).primaryColor,
+                                          foregroundColor: Colors.white,
+                                          icon: Icons.contacts,
+                                          label: tr('add_contact'),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                                child: ListTile(
-                                  title: Text(tr('transaction_from_to',
-                                      namedArgs: <String, String>{
-                                        'from': humanizeFromToPubKey(
-                                            myPubKey, transactions[index].from),
-                                        'to': humanizeFromToPubKey(
-                                            myPubKey, transactions[index].to)
-                                      })),
-                                  subtitle: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        if (transactions[index]
-                                            .comment
-                                            .isNotEmpty)
-                                          Text(
-                                            transactions[index].comment,
-                                            style: const TextStyle(
-                                              fontStyle: FontStyle.italic,
-                                            ),
-                                          ),
-                                        Text(humanizeTime(
-                                            transactions[index].time,
-                                            context.locale.toString())!)
-                                      ]),
-                                  tileColor: tileColor(index),
-                                  trailing: Text(
-                                      '${transactions[index].amount < 0 ? "" : "+"}${(transactions[index].amount / 100).toStringAsFixed(2)} Ğ1',
-                                      style: TextStyle(
-                                          color: transactions[index].amount < 0
-                                              ? Colors.red
-                                              : Colors.blue)),
-                                ));
-                          },
-                        )),
-            )
-          ]),
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: DraggableScrollableSheet(
-                  initialChildSize: 0.12,
-                  minChildSize: 0.12,
-                  maxChildSize: 0.9,
-                  builder: (BuildContext context,
-                          ScrollController scrollController) =>
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.inversePrimary,
-                          border: Border.all(
+                                    child: ListTile(
+                                      title: Text(tr('transaction_from_to',
+                                          namedArgs: <String, String>{
+                                            'from': humanizeFromToPubKey(
+                                                myPubKey,
+                                                transactions[index].from),
+                                            'to': humanizeFromToPubKey(myPubKey,
+                                                transactions[index].to)
+                                          })),
+                                      subtitle: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            if (transactions[index]
+                                                .comment
+                                                .isNotEmpty)
+                                              Text(
+                                                transactions[index].comment,
+                                                style: const TextStyle(
+                                                  fontStyle: FontStyle.italic,
+                                                ),
+                                              ),
+                                            Text(humanizeTime(
+                                                transactions[index].time,
+                                                context.locale.toString())!)
+                                          ]),
+                                      tileColor: tileColor(index, context),
+                                      trailing: Text(
+                                          '${transactions[index].amount < 0 ? "" : "+"}${(transactions[index].amount / 100).toStringAsFixed(2)} Ğ1',
+                                          style: TextStyle(
+                                              color:
+                                                  transactions[index].amount < 0
+                                                      ? Colors.red
+                                                      : Colors.blue)),
+                                    ));
+                              },
+                            )),
+                )
+              ]),
+              Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: DraggableScrollableSheet(
+                      controller: _draggableScrollableController,
+                      initialChildSize: 0.12,
+                      minChildSize: 0.12,
+                      maxChildSize: 0.9,
+                      builder: (BuildContext context,
+                              ScrollController scrollController) =>
+                          Container(
+                            decoration: BoxDecoration(
                               color:
                                   Theme.of(context).colorScheme.inversePrimary,
-                              width: 3),
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(8),
-                            topRight: Radius.circular(8),
-                          ),
-                        ),
-                        child: Scrollbar(
-                            child: ListView(
-                          controller: scrollController,
-                          children: <Widget>[
-                            const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 16),
-                                child: Header(
-                                  text: 'balance',
-                                  // topPadding: 0,
-                                )),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 10.0),
-                              child: Center(
-                                  child: Text(
-                                '${(balance / 100).toStringAsFixed(2)} Ğ1',
-                                style: TextStyle(
-                                    fontSize: 36.0,
-                                    color: balance == 0
-                                        ? Colors.lightBlue
-                                        : Colors.lightBlue,
-                                    fontWeight: FontWeight.bold),
-                              )),
+                              border: Border.all(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .inversePrimary,
+                                  width: 3),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(8),
+                                topRight: Radius.circular(8),
+                              ),
                             ),
-                            if (!kReleaseMode) TransactionChart()
-                            /*BalanceChart(
+                            child: Scrollbar(
+                                child: ListView(
+                              controller: scrollController,
+                              children: <Widget>[
+                                const Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 16),
+                                    child: Header(
+                                      text: 'balance',
+                                      // topPadding: 0,
+                                    )),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10.0),
+                                  child: Center(
+                                      child: Text(
+                                    '${formatKAmount(balance)} Ğ1',
+                                    style: TextStyle(
+                                        fontSize: 36.0,
+                                        color: balance == 0
+                                            ? Colors.lightBlue
+                                            : Colors.lightBlue,
+                                        fontWeight: FontWeight.bold),
+                                  )),
+                                ),
+                                if (!kReleaseMode) TransactionChart()
+                                /*BalanceChart(
                                     transactions: .transactions),*/
-                          ],
-                        )),
-                      )))
-        ]);
+                              ],
+                            )),
+                          )))
+            ]));
       } else {
         return const LoadingScreen();
       }

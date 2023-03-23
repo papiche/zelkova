@@ -75,7 +75,7 @@ class _ImportDialogState extends State<ImportDialog> {
                             context.replaceSnackbar(
                               content: Text(
                                 tr('wallet_imported'),
-                                style: const TextStyle(color: Colors.blue),
+                                style: const TextStyle(color: Colors.white),
                               ),
                             );
                           }

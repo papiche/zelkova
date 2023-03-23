@@ -405,17 +405,11 @@ Future<http.Response> _requestWithRetry(
 
 Future<String> pay(
     {required String to, required double amount, String? comment}) async {
-  final List<Node> nodes = nodesWorkingList(NodeType.gva);
-  if (nodes.isNotEmpty) {
-    // reorder list to use others
-    nodes.shuffle();
-
+  final String output = getGvaNode();
+  if (Uri.tryParse(output) != null) {
+    final String node = output;
     try {
-      // Reference of working proxy 'https://g1demo.comunes.net/proxy/g1v1.p2p.legal/gva/';
-      final String node =
-          'https://g1demo.comunes.net/proxy/${nodes.first.url.replaceFirst('https://', '').replaceFirst('http://', '')}/';
       final Gva gva = Gva(node: node);
-
       logger('Trying $node to get balance');
       final CesiumWallet wallet = await SharedPreferencesHelper().getWallet();
       logger('Current balance ${await gva.balance(wallet.pubkey)}');
@@ -430,11 +424,45 @@ Future<String> pay(
       logger('GVA replied with "$response"');
       return response;
     } catch (e, stacktrace) {
-      // move logger outside main
       logger(e);
       logger(stacktrace);
       return "Oops! the payment failed. Something didn't work as expected";
     }
   }
-  return 'Sorry: I cannot find a working node to send the transaction';
+  return output;
+}
+
+String getGvaNode() {
+  final List<Node> nodes = nodesWorkingList(NodeType.gva);
+  if (nodes.isNotEmpty) {
+// reorder list to use others
+    nodes.shuffle();
+// Reference of working proxy 'https://g1demo.comunes.net/proxy/g1v1.p2p.legal/gva/';
+    final String node =
+        'https://g1demo.comunes.net/proxy/${nodes.first.url.replaceFirst('https://', '').replaceFirst('http://', '')}/';
+    return node;
+  } else {
+    return 'Sorry: I cannot find a working node to send the transaction';
+  }
+}
+
+Future<double> gvaBalance() async {
+  final String output = getGvaNode();
+  if (Uri.tryParse(output) != null) {
+    final String node = output;
+    try {
+      final Gva gva = Gva(node: node);
+      logger('Trying $node to get balance');
+      final CesiumWallet wallet = await SharedPreferencesHelper().getWallet();
+      final double balance = await gva.balance(wallet.pubkey);
+      logger('Current balance $balance');
+      return balance;
+    } catch (e, stacktrace) {
+      // move logger outside main
+      logger(e);
+      logger(stacktrace);
+      throw Exception('Oops! failed to obtain balance');
+    }
+  }
+  throw Exception('Sorry: I cannot find a working node to get your balance');
 }

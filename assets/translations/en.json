@@ -56,7 +56,7 @@
   "data_load_error": "Error loading data",
   "add_contact": "Add contact",
   "contact_added": "Contact added",
-  "no_transactions": "You don't have any transaction yet",
+  "no_transactions": "This wallet has no balance. Start by offering your services in Ğ1 markets, for example, to receive your first income.",
   "qr-scanner-title": "Scan the QR of someone",
   "copy_contact_key": "Copy",
   "nothing_found": "Nothing found",
@@ -88,5 +88,6 @@
   "please_confirm_sent_desc": "Please confirm that you wish to send {amount} Ğ1 to {to}",
   "yes_sent": "YES, SEND IT",
   "receive_g1": "Receive Ğ1",
-  "insufficient balance": "Oops, insufficient balance to pay this"
+  "insufficient balance": "Oops, insufficient balance to pay this",
+  "language_switch_title": "Select your language"
 }

@@ -28,6 +28,38 @@ class FifthScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   physics: const BouncingScrollPhysics(),
                   children: <Widget>[
+                    const SizedBox(height: 10),
+                    DropdownButtonFormField<Locale>(
+                      value: context.locale,
+                      decoration: InputDecoration(
+                        labelText: tr('language_switch_title'),
+                        icon: const Icon(Icons.language),
+                        border: const OutlineInputBorder(),
+                      ),
+                      onChanged: (Locale? newLocale) {
+                        context.setLocale(newLocale!);
+                      },
+                      items: const <DropdownMenuItem<Locale>>[
+                        DropdownMenuItem<Locale>(
+                          value: Locale('ca'),
+                          child: Text('Català'),
+                        ),
+                        DropdownMenuItem<Locale>(
+                          value: Locale('en'),
+                          child: Text('English'),
+                        ),
+                        DropdownMenuItem<Locale>(
+                          value: Locale('es'),
+                          child: Text('Español'),
+                        ),
+                        DropdownMenuItem<Locale>(
+                          value: Locale('fr'),
+                          child: Text('Français'),
+                        ),
+
+                        // Add more DropdownMenuItem for more languages
+                      ],
+                    ),
                     const TextDivider(text: 'key_tools_title'),
                     GridView.count(
                         physics: const NeverScrollableScrollPhysics(),

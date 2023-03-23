@@ -10,14 +10,14 @@ TransactionsAndBalanceState transactionParser(String txData) {
   final String pubKey = parsedTxData['pubkey'] as String;
   final List<dynamic> listReceived = (parsedTxData['history']
       as Map<String, dynamic>)['received'] as List<dynamic>;
-  int balance = 0;
+  double balance = 0;
   final List<Transaction> tx = <Transaction>[];
   for (final dynamic receivedRaw in listReceived) {
     final Map<String, dynamic> received = receivedRaw as Map<String, dynamic>;
     final int timestamp = received['blockstampTime'] as int;
     final String comment = received['comment'] as String;
     final List<dynamic> outputs = received['outputs'] as List<dynamic>;
-    final int amount = int.parse((outputs[0] as String).split(':')[0]);
+    final double amount = double.parse((outputs[0] as String).split(':')[0]);
     final String? address1 = exp.firstMatch(outputs[0] as String)!.group(1);
     final String? address2 = exp.firstMatch(outputs[1] as String)!.group(1);
     if (pubKey == address1) {

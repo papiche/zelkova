@@ -250,7 +250,7 @@ Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(
 
 Map<String, dynamic> _$TransactionToJson(Transaction instance) =>
     <String, dynamic>{
-      'type': _$TransactionTypeEnumMap[instance.type],
+      'type': _$TransactionTypeEnumMap[instance.type]!,
       'from': instance.from,
       'to': instance.to,
       'amount': instance.amount,
@@ -262,8 +262,7 @@ Map<String, dynamic> _$TransactionToJson(Transaction instance) =>
       'fromNick': instance.fromNick,
     };
 
-const Map<TransactionType, String> _$TransactionTypeEnumMap =
-    <TransactionType, String>{
+const _$TransactionTypeEnumMap = {
   TransactionType.sending: 'sending',
   TransactionType.received: 'received',
   TransactionType.receiving: 'receiving',

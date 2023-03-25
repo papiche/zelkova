@@ -13,6 +13,7 @@ import '../data/models/node_manager.dart';
 import '../data/models/node_type.dart';
 import '../shared_prefs.dart';
 import '../ui/logger.dart';
+import '../ui/ui_helpers.dart';
 import 'g1_helper.dart';
 
 // Tx history
@@ -45,6 +46,30 @@ Future<Response> searchCPlusUser(String searchTerm) async {
       '/user/profile/_search?q=title:*$searchTerm* OR _id:$searchTerm* OR _id:$searchTerm',
       retryWith404: false);
   return response;
+}
+
+Future<Contact> getProfile(String pubKey) async {
+  try {
+    final Response cPlusResponse = await requestCPlusWithRetry(
+        '/user/profile/$pubKey',
+        retryWith404: false);
+    final Map<String, dynamic> result =
+        const JsonDecoder().convert(cPlusResponse.body) as Map<String, dynamic>;
+    if (result['found'] == false) {
+      return Contact(pubkey: pubKey);
+    }
+
+    final String? nick = await gvaNick(pubKey);
+    final Map<String, dynamic> profile =
+        const JsonDecoder().convert(cPlusResponse.body) as Map<String, dynamic>;
+
+    final Contact c = contactFromResultSearch(profile);
+    logger('Contact retrieved in search $c');
+    return c.copyWith(nick: nick);
+  } catch (e) {
+    logger('Error in getProfile $e');
+    return Contact(pubkey: pubKey);
+  }
 }
 
 /*
@@ -431,14 +456,15 @@ Future<String> pay(
   return output;
 }
 
-String getGvaNode() {
+String getGvaNode([bool useProxy = false]) {
   final List<Node> nodes = nodesWorkingList(NodeType.gva);
   if (nodes.isNotEmpty) {
     // reorder list to use others
     nodes.shuffle();
     // Reference of working proxy 'https://g1demo.comunes.net/proxy/g1v1.p2p.legal/gva/';
-    final String node =
-        'https://g1demo.comunes.net/proxy/${nodes.first.url.replaceFirst('https://', '').replaceFirst('http://', '')}/';
+    final String node = useProxy
+        ? 'https://g1demo.comunes.net/proxy/${nodes.first.url.replaceFirst('https://', '').replaceFirst('http://', '')}/'
+        : nodes.first.url;
     return node;
   } else {
     return 'Sorry: I cannot find a working node to send the transaction';
@@ -446,6 +472,21 @@ String getGvaNode() {
 }
 
 Future<Map<String, dynamic>?> gvaHistoryAndBalance(String pubKey) async {
+  return gvaFunctionWrapper<Map<String, dynamic>>(
+      pubKey, (Gva gva) => gva.history(pubKey));
+}
+
+Future<double?> gvaBalance(String pubKey) async {
+  return gvaFunctionWrapper<double>(pubKey, (Gva gva) => gva.balance(pubKey));
+}
+
+Future<String?> gvaNick(String pubKey) async {
+  return gvaFunctionWrapper<String>(
+      pubKey, (Gva gva) => gva.getUsername(pubKey));
+}
+
+Future<T?> gvaFunctionWrapper<T>(
+    String pubKey, Future<T?> Function(Gva) specificFunction) async {
   final List<Node> nodes = NodeManager().nodeList(NodeType.gva);
   if (nodes.isEmpty) {
     nodes.addAll(defaultGvaNodes);
@@ -461,7 +502,7 @@ Future<Map<String, dynamic>?> gvaHistoryAndBalance(String pubKey) async {
       if (Uri.tryParse(output) != null) {
         final String node = output;
         final Gva gva = Gva(node: node);
-        final Map<String, dynamic>? result = await gva.history(pubKey);
+        final T? result = await specificFunction(gva);
         return result;
       }
     } catch (e) {

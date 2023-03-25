@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
 
+import '../../logger.dart';
 import '../../ui_helpers.dart';
 import 'card_terminal_screen.dart';
 import 'rubber_button.dart';
@@ -27,7 +28,7 @@ class _CardTerminalState extends State<CardTerminal> {
     '9',
     'DEC',
     '0',
-    '#',
+    '+',
   ];
   final int _cancelIndex = 12;
   final int _backspaceIndex = 13;
@@ -107,9 +108,13 @@ class _CardTerminalState extends State<CardTerminal> {
       return RubberButton(
           // Green, send
           bgColor: const Color(0xFF36B649),
-          icon: Icons.subdirectory_arrow_left,
+          // icon: Icons.subdirectory_arrow_left,
+          label: '=',
           onPressed: () {
-            vibrateIfPossible();
+            setState(() {
+              _currentValue =
+                  calculate(_currentValue, _decimalSep, context).toString();
+            });
           });
     } else if (index == _cancelIndex) {
       return RubberButton(
@@ -126,9 +131,9 @@ class _CardTerminalState extends State<CardTerminal> {
       return RubberButton(
           label: _numbers[index],
           onPressed: () {
-            if (_numbers[index] == '#') {
+            /* if (_numbers[index] == '+') {
               return;
-            }
+            } */
             if (_numbers[index] == _decimalSep &&
                 _currentValue.contains(_decimalSep)) {
               return;
@@ -138,6 +143,34 @@ class _CardTerminalState extends State<CardTerminal> {
               vibrateIfPossible();
             });
           });
+  }
+
+  double calculate(
+      String textInTerminal, String decimalSep, BuildContext context) {
+    String operation = textInTerminal;
+    double sum = 0.0;
+    operation = operation.replaceAll(
+        decimalSep, '.'); // change decimal separator to a dot
+    final NumberFormat numberFormat =
+        NumberFormat.decimalPattern(context.locale.toString());
+    final RegExp regex =
+        RegExp(r'[\d.]+'); // regular expression to find numbers
+    final Iterable<Match> matches =
+        regex.allMatches(operation); // find all numbers in the input
+    for (final Match? match in matches) {
+      try {
+        if (match != null) {
+          final String? g1 = match.group(0);
+          if (g1 != null) {
+            sum += numberFormat.parse(g1); // add the number to the sum
+          }
+        }
+      } catch (e) {
+        // could not convert the number to a double value, ignore it
+      }
+    }
+    logger(numberFormat.format(sum)); // print the formatted sum
+    return sum;
   }
 }
 

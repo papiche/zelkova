@@ -75,11 +75,15 @@ class CardTerminalScreen extends StatelessWidget {
                     ])),
             Expanded(
                 child: Column(children: <Widget>[
-              QrImage(
-                data: getQrUri(SharedPreferencesHelper().getPubKey(), amount),
-                size: smallScreen(context) ? 120.0 : 160.0,
-              )
-            ])),
+                  if (!amount.contains('+'))
+                    QrImage(
+                        data: getQrUri(
+                            SharedPreferencesHelper().getPubKey(), amount),
+                        size:
+                        smallScreen(context) ? 100.0 : 140.0
+                      //: (smallScreen(context) ? 120.0 : 160.0),
+                    )
+                ])),
             Container(
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -101,6 +105,7 @@ class CardTerminalScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: TextField(
+                        maxLines: amount.isNotEmpty ? 2 : 2,
                         style: const TextStyle(
                           fontFamily: 'Roboto Mono',
                           color: Colors.white,

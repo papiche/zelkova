@@ -1,0 +1,70 @@
+{
+  "data": {
+    "balance": {
+      "amount": 3,
+      "base": 0
+    },
+    "currentUd": {
+      "amount": 68,
+      "base": 0
+    },
+    "txsHistoryBc": {
+      "both": {
+        "edges": [
+          {
+            "direction": "SENT",
+            "node": {
+              "comment": "",
+              "currency": "g1",
+              "issuers": [
+                "6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH"
+              ],
+              "outputs": [
+                "1200:0:SIG(EDB7chzCBdtUCnqFZquVeto4a65FjeRkPrqcV8NwVbTx)",
+                "8800:0:SIG(6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH)"
+              ],
+              "writtenTime": 1676720148
+            }
+          },
+          {
+            "direction": "RECEIVED",
+            "node": {
+              "comment": "Bienvenido Vicente :-)",
+              "currency": "g1",
+              "issuers": [
+                "A1Fc1VoCLKHyPYmXimYECSmjmsceqwRSZcTBXfgG9JaB"
+              ],
+              "outputs": [
+                "10000:0:SIG(6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH)",
+                "510:0:SIG(A1Fc1VoCLKHyPYmXimYECSmjmsceqwRSZcTBXfgG9JaB)"
+              ],
+              "writtenTime": 1674899170
+            }
+          }
+        ],
+        "pageInfo": {
+          "endCursor": "596813:A1C8830A779045C8D8D5D3BC439179666779D5020B7B1D3096C2B3C8B3733420",
+          "hasNextPage": false,
+          "hasPreviousPage": false,
+          "startCursor": "612232:A5E4B1575ADF60A8E26BFB474AA91888D53566CFA4C1390E84C523BF7A258D09"
+        }
+      }
+    },
+    "txsHistoryMp": {
+      "receiving": [
+        {
+          "comment": "Testing transactions",
+          "currency": "g1",
+          "issuers": [
+            "BrgsSYK3xUzDyztGBHmxq69gfNxBfe2UKpxG21oZUBr5"
+          ],
+          "outputs": [
+            "100:0:SIG(6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH)",
+            "327:0:SIG(BrgsSYK3xUzDyztGBHmxq69gfNxBfe2UKpxG21oZUBr5)"
+          ]
+        }
+      ],
+      "sending": []
+    }
+  }
+}

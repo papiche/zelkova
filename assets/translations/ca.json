@@ -35,7 +35,7 @@
   "online_terminal": "Connectat",
   "offline_terminal": "Desconnectat",
   "show_qr_to_client": "Mostra la meva clau pública",
-  "show_qr_to_client_amount": "Mostra el meu QR amb aquesta quantitat",
+  "show_qr_to_client_amount": "Mostra aquest codi QR amb aquesta quantitat a una altra cartera Ğ1nkgo",
   "keys_tooltip": "Les claus públiques i privades en Ğ1 i Duniter són com un sistema de pany i clau, on la clau pública fa de pany que pot obrir qualsevol que tingui la clau privada corresponent, oferint una manera  segura d'autenticar i verificar transaccions.",
   "card_validity": "Validesa",
   "card_validity_tooltip": "Tingues en compte que aquest moneder només és accessible mentre usis aquest navegador i aquest dispositiu específic. Si esborres o reinstal·les el navegador, perdràs l'accès a aquest moneder i els fons emmagatzemats en ell.",

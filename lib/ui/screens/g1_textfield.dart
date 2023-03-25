@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../data/models/payment_cubit.dart';
 import '../../data/models/payment_state.dart';
+import '../ui_helpers.dart';
 
 class G1PayAmountField extends StatefulWidget {
   const G1PayAmountField({super.key});
@@ -20,9 +21,15 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
   @override
   Widget build(BuildContext context) => BlocBuilder<PaymentCubit, PaymentState>(
           builder: (BuildContext context, PaymentState state) {
-        if (state.amount != null &&
-            _controller.text != state.amount.toString()) {
-          _controller.text = '${state.amount}';
+        final NumberFormat format =
+            NumberFormat.decimalPattern(context.locale.toString());
+        if (state.amount != null) {
+          final String amountFormatted = localizeNumber(context, state.amount!);
+          if (_controller.text != amountFormatted) {
+            _controller.text = amountFormatted;
+            _controller.selection = TextSelection.fromPosition(
+                TextPosition(offset: _controller.text.length));
+          }
         }
         return Form(
             key: _formKey,
@@ -38,13 +45,10 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
               onEditingComplete: () {},
               onChanged: (String? value) {
                 final bool? validate = _formKey.currentState?.validate();
-                if (validate != null &&
-                    validate &&
-                    value != null &&
-                    double.tryParse(value) != null) {
+                if (validate != null && validate) {
                   context
                       .read<PaymentCubit>()
-                      .selectAmount(value.isEmpty ? null : double.parse(value));
+                      .selectAmount(format.parse(value!).toDouble());
                 }
               },
               decoration: InputDecoration(
@@ -66,15 +70,18 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
       });
 
   String? validateDecimal(String? value) {
+    final NumberFormat format =
+        NumberFormat.decimalPattern(context.locale.toString());
     if (value == null || value.isEmpty) {
-      return tr('g1_amount_hint');
+      return null;
     }
-    final num? n = num.tryParse(value);
-    if (n == null) {
+    try {
+      final num n = format.parse(value);
+      if (n <= 0) {
+        return tr('enter_a_positive_number');
+      }
+    } catch (e) {
       return tr('enter_a_valid_number');
-    }
-    if (n <= 0) {
-      return tr('enter_a_positive_number');
     }
     return null;
   }

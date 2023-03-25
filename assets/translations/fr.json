@@ -35,7 +35,7 @@
   "online_terminal": "En ligne",
   "offline_terminal": "Hors ligne",
   "show_qr_to_client": "Montrez votre clé publique à votre client",
-  "show_qr_to_client_amount": "Montrez votre QR avec ce montant",
+  "show_qr_to_client_amount": "Affichez ce code QR avec cette quantité sur un autre portefeuille Ğ1nkgo",
   "keys_tooltip": "Les clés publiques et privées en Ğ1 et Duniter fonctionnent comme un système de verrou et de clé, où la clé publique agit comme le verrou qui peut être ouvert par n'importe qui ayant la clé privée correspondante, offrant ainsi un moyen sécurisé d'authentifier et de vérifier les transactions",
   "card_validity": "Validité",
   "card_validity_tooltip": "Veuillez noter que ce portefeuille n'est accessible que lors de l'utilisation de ce navigateur et de cet appareil spécifiques. Si vous supprimez ou réinitialisez le navigateur, vous perdrez l'accès à ce portefeuille et aux fonds qu'il contient.",

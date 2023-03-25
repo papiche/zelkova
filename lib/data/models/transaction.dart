@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'model_utils.dart';
+import 'transaction_type.dart';
 
 part 'transaction.g.dart';
 
@@ -12,6 +13,7 @@ part 'transaction.g.dart';
 @CopyWith()
 class Transaction extends Equatable {
   const Transaction({
+    required this.type,
     required this.from,
     required this.to,
     required this.amount,
@@ -25,22 +27,25 @@ class Transaction extends Equatable {
 
   factory Transaction.fromJson(Map<String, dynamic> json) =>
       _$TransactionFromJson(json);
+
+  final TransactionType type;
   final String from;
   final String to;
+  final double amount;
+  final String comment;
+  final DateTime time;
   @JsonKey(fromJson: uIntFromList, toJson: uIntToList)
   final Uint8List? toAvatar;
   final String? toNick;
-  final double amount;
   @JsonKey(fromJson: uIntFromList, toJson: uIntToList)
   final Uint8List? fromAvatar;
   final String? fromNick;
-  final String comment;
-  final DateTime time;
 
   Map<String, dynamic> toJson() => _$TransactionToJson(this);
 
   @override
   List<Object?> get props => <dynamic>[
+        type,
         from,
         to,
         amount,

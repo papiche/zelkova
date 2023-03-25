@@ -7,6 +7,8 @@ part of 'transaction.dart';
 // **************************************************************************
 
 abstract class _$TransactionCWProxy {
+  Transaction type(TransactionType type);
+
   Transaction from(String from);
 
   Transaction to(String to);
@@ -32,6 +34,7 @@ abstract class _$TransactionCWProxy {
   /// Transaction(...).copyWith(id: 12, name: "My name")
   /// ````
   Transaction call({
+    TransactionType? type,
     String? from,
     String? to,
     double? amount,
@@ -49,6 +52,9 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
   const _$TransactionCWProxyImpl(this._value);
 
   final Transaction _value;
+
+  @override
+  Transaction type(TransactionType type) => this(type: type);
 
   @override
   Transaction from(String from) => this(from: from);
@@ -86,6 +92,7 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
   /// Transaction(...).copyWith(id: 12, name: "My name")
   /// ````
   Transaction call({
+    Object? type = const $CopyWithPlaceholder(),
     Object? from = const $CopyWithPlaceholder(),
     Object? to = const $CopyWithPlaceholder(),
     Object? amount = const $CopyWithPlaceholder(),
@@ -97,6 +104,10 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
     Object? fromNick = const $CopyWithPlaceholder(),
   }) {
     return Transaction(
+      type: type == const $CopyWithPlaceholder() || type == null
+          ? _value.type
+          // ignore: cast_nullable_to_non_nullable
+          : type as TransactionType,
       from: from == const $CopyWithPlaceholder() || from == null
           ? _value.from
           // ignore: cast_nullable_to_non_nullable
@@ -225,6 +236,7 @@ extension $TransactionsAndBalanceStateCopyWith on TransactionsAndBalanceState {
 // **************************************************************************
 
 Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(
+      type: $enumDecode(_$TransactionTypeEnumMap, json['type']),
       from: json['from'] as String,
       to: json['to'] as String,
       amount: (json['amount'] as num).toDouble(),
@@ -238,16 +250,26 @@ Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(
 
 Map<String, dynamic> _$TransactionToJson(Transaction instance) =>
     <String, dynamic>{
+      'type': _$TransactionTypeEnumMap[instance.type],
       'from': instance.from,
       'to': instance.to,
-      'toAvatar': uIntToList(instance.toAvatar),
-      'toNick': instance.toNick,
       'amount': instance.amount,
-      'fromAvatar': uIntToList(instance.fromAvatar),
-      'fromNick': instance.fromNick,
       'comment': instance.comment,
       'time': instance.time.toIso8601String(),
+      'toAvatar': uIntToList(instance.toAvatar),
+      'toNick': instance.toNick,
+      'fromAvatar': uIntToList(instance.fromAvatar),
+      'fromNick': instance.fromNick,
     };
+
+const Map<TransactionType, String> _$TransactionTypeEnumMap =
+    <TransactionType, String>{
+  TransactionType.sending: 'sending',
+  TransactionType.received: 'received',
+  TransactionType.receiving: 'receiving',
+  TransactionType.sent: 'sent',
+  TransactionType.pending: 'pending',
+};
 
 TransactionsAndBalanceState _$TransactionsAndBalanceStateFromJson(
         Map<String, dynamic> json) =>

@@ -58,6 +58,7 @@ Not found sample:
 }
  */
 Future<List<Contact>> searchWot(String searchTerm) async {
+  // USE gva.getUsername
   final Response response = await requestDuniterWithRetry(
       '/wot/lookup/$searchTerm',
       retryWith404: false);
@@ -416,6 +417,7 @@ Future<String> pay(
       // logger('Current balance ${await gva.balance(wallet.pubkey)}');
       logger(
           'Trying $node to send $amount to $to with comment ${comment ?? ''}');
+
       final String response = await gva.pay(
           recipient: to,
           amount: amount,
@@ -435,9 +437,9 @@ Future<String> pay(
 String getGvaNode() {
   final List<Node> nodes = nodesWorkingList(NodeType.gva);
   if (nodes.isNotEmpty) {
-// reorder list to use others
+    // reorder list to use others
     nodes.shuffle();
-// Reference of working proxy 'https://g1demo.comunes.net/proxy/g1v1.p2p.legal/gva/';
+    // Reference of working proxy 'https://g1demo.comunes.net/proxy/g1v1.p2p.legal/gva/';
     final String node =
         'https://g1demo.comunes.net/proxy/${nodes.first.url.replaceFirst('https://', '').replaceFirst('http://', '')}/';
     return node;
@@ -453,10 +455,27 @@ Future<double> gvaBalance() async {
     try {
       final Gva gva = Gva(node: node);
       logger('Trying $node to get balance');
-      final CesiumWallet wallet = await SharedPreferencesHelper().getWallet();
-      final double balance = await gva.balance(wallet.pubkey);
+      final String pubKey = SharedPreferencesHelper().getPubKey();
+      final double balance = await gva.balance(pubKey);
       logger('Current balance $balance');
       return balance;
+    } catch (e, stacktrace) {
+      // move logger outside main
+      logger(e);
+      logger(stacktrace);
+      throw Exception('Oops! failed to obtain balance');
+    }
+  }
+  throw Exception('Sorry: I cannot find a working node to get your balance');
+}
+
+Gva gva() {
+  final String output = getGvaNode();
+  if (Uri.tryParse(output) != null) {
+    final String node = output;
+    try {
+      final Gva gva = Gva(node: node);
+      return gva;
     } catch (e, stacktrace) {
       // move logger outside main
       logger(e);

@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/models/contact.dart';
-import '../../../data/models/contact_cubit.dart';
 import '../../../data/models/node_list_cubit.dart';
 import '../../../data/models/transaction.dart';
 import '../../../data/models/transaction_cubit.dart';
 import '../../../shared_prefs.dart';
+import '../../contacts_cache.dart';
+import '../../logger.dart';
 import '../../ui_helpers.dart';
 import 'transaction_chart.dart';
 import 'transaction_item.dart';
@@ -48,10 +49,7 @@ class _TransactionsAndBalanceWidgetState
   }
 
   Future<void> _scrollListener() async {
-    if (/* _transScrollController.position.pixels ==
-             _transScrollController.position.maxScrollExtent || */
-        _transScrollController.offset == 0) {
-      // await _refreshTransactions();
+    if (_transScrollController.offset == 0) {
       _refreshIndicatorKey.currentState?.show();
     }
   }
@@ -66,11 +64,17 @@ class _TransactionsAndBalanceWidgetState
   @override
   Widget build(BuildContext context) {
     final String myPubKey = SharedPreferencesHelper().getPubKey();
+    if (!kReleaseMode) {
+      ContactsCache()
+          .getContact('6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH');
+      ContactsCache()
+          .getContact('A1Fc1VoCLKHyPYmXimYECSmjmsceqwRSZcTBXfgG9JaB');
+      ContactsCache()
+          .getContact('6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH');
+      ContactsCache().getContact(myPubKey).then((Contact c) => logger(c));
+    }
     return BlocBuilder<TransactionsCubit, TransactionsAndBalanceState>(builder:
         (BuildContext context, TransactionsAndBalanceState transBalanceState) {
-      // Fetch transactions
-      // TODO(vjrj): Only fetch last transactions and used persisted ones
-      final ContactsCubit contactsCubit = context.read<ContactsCubit>();
       final List<Transaction> transactions = transBalanceState.transactions;
       final double balance = transBalanceState.balance;
       return BackdropScaffold(
@@ -172,9 +176,9 @@ class _TransactionsAndBalanceWidgetState
                               // itemExtent: 100,
                               itemBuilder: (BuildContext context, int index) {
                                 return TransactionListItem(
+                                  pubKey: myPubKey,
                                   index: index,
                                   transaction: transactions[index],
-                                  avatar: avatar(null),
                                 );
                                 /*
                                    Slidable(
@@ -250,17 +254,5 @@ class _TransactionsAndBalanceWidgetState
                 ]),
           ));
     });
-  }
-
-  void _addContact(List<Transaction> transactions, int index, String myPubKey,
-      ContactsCubit contactsCubit) {
-    final Transaction tx = transactions[index];
-    final String fromPubKey = tx.from;
-    final String toPubKey = tx.to;
-    final bool useFrom = fromPubKey != myPubKey;
-    contactsCubit.addContact(Contact(
-        pubkey: useFrom ? fromPubKey : toPubKey,
-        nick: useFrom ? tx.fromNick : tx.toNick,
-        avatar: useFrom ? tx.fromAvatar : tx.toAvatar));
   }
 }

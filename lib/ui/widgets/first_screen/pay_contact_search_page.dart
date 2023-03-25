@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
@@ -54,7 +53,8 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
                 .convert(cPlusResponse.body) as Map<String, dynamic>)['hits']
             as Map<String, dynamic>)['hits'] as List<dynamic>;
         for (final dynamic hit in hits) {
-          final Contact c = _contactFromResult(hit as Map<String, dynamic>);
+          final Contact c =
+              contactFromResultSearch(hit as Map<String, dynamic>);
           logger('Contact retrieved in search $c');
           _results.add(c);
         }
@@ -233,21 +233,5 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
             });
       }),
     );
-  }
-
-  Contact _contactFromResult(Map<String, dynamic> record) {
-    final Map<String, dynamic> source =
-        record['_source'] as Map<String, dynamic>;
-    Uint8List? avatarBase64;
-    if (source['avatar'] != null) {
-      final Map<String, dynamic> avatar =
-          source['avatar'] as Map<String, dynamic>;
-      avatarBase64 = imageFromBase64String(
-          'data:${avatar['_content_type']};base64,${avatar['_content']}');
-    }
-    return Contact(
-        pubkey: record['_id'] as String,
-        name: source['title'] as String,
-        avatar: avatarBase64);
   }
 }

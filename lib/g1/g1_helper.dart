@@ -60,7 +60,7 @@ String? parseHost(String endpointUnParsed) {
     /* print(lastPart);
     print(path);
     print(nextToLast); */
-    final String port = path == ''
+    String port = path == ''
         ? (RegExp(r'^[0-9]+$').hasMatch(lastPart) ? lastPart : '443')
         : RegExp(r'^[0-9]+$').hasMatch(nextToLast)
             ? nextToLast
@@ -81,7 +81,12 @@ String? parseHost(String endpointUnParsed) {
     if (endpointUnParsed.endsWith('gva')) {
       path = '/gva';
     }
-    final String endpoint = '$protocol://$host:$port$path'.trim();
+    if (port == '443') {
+      port = '';
+    } else {
+      port = ':$port';
+    }
+    final String endpoint = '$protocol://$host$port$path'.trim();
     return endpoint;
   } catch (e) {
     // Don't do this here or tests will fail

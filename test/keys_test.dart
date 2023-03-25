@@ -24,21 +24,21 @@ void main() {
   test('parse different networks/peers BMAS', () {
     expect(
         parseHost('BMAS g1.texu.es 7443'), equals('https://g1.texu.es:7443'));
-    expect(parseHost('BMAS g1.duniter.org 443'),
-        equals('https://g1.duniter.org:443'));
+    expect(
+        parseHost('BMAS g1.duniter.org 443'), equals('https://g1.duniter.org'));
     expect(parseHost('BMAS g1.leprette.fr 443 /bma'),
-        equals('https://g1.leprette.fr:443/bma'));
+        equals('https://g1.leprette.fr/bma'));
     expect(parseHost('BMAS g1-vijitatman.es 212.227.41.252 443'),
-        equals('https://g1-vijitatman.es:443'));
+        equals('https://g1-vijitatman.es'));
     expect(
         parseHost(
             'BMAS monnaie-libre.ortie.org/bma/ 192.168.1.35 2a01:cb0d:5c2:fa00:21e:68ff:feab:389a 443'),
-        equals('https://monnaie-libre.ortie.org:443/bma'));
+        equals('https://monnaie-libre.ortie.org/bma'));
   });
 
   test('parse different networks/peers GVA S', () {
     expect(parseHost('GVA S duniter.master.aya.autissier.net 443 gva'),
-        equals('https://duniter.master.aya.autissier.net:443/gva'));
+        equals('https://duniter.master.aya.autissier.net/gva'));
   });
 
   test('validate pub keys', () {

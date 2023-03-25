@@ -5,7 +5,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import '../data/models/contact.dart';
 import '../data/models/transaction_type.dart';
+import '../g1/api.dart';
 import '../shared_prefs.dart';
 import 'widgets/first_screen/circular_icon.dart';
 
@@ -116,4 +118,32 @@ bool isOutgoing(TransactionType type) {
 
 bool isIncoming(TransactionType type) {
   return type == TransactionType.receiving || type == TransactionType.received;
+}
+
+Contact contactFromResultSearch(Map<String, dynamic> record) {
+  final Map<String, dynamic> source = record['_source'] as Map<String, dynamic>;
+  final Uint8List? avatarBase64 = _getAvatarFromResults(source);
+  return Contact(
+      pubkey: record['_id'] as String,
+      name: source['title'] as String,
+      avatar: avatarBase64);
+}
+
+Contact contactFromUserProfile(Map<String, dynamic> source) {
+  final Uint8List? avatarBase64 = _getAvatarFromResults(source);
+  return Contact(
+      pubkey: source['issuer'] as String,
+      name: source['title'] as String,
+      avatar: avatarBase64);
+}
+
+Uint8List? _getAvatarFromResults(Map<String, dynamic> source) {
+  Uint8List? avatarBase64;
+  if (source['avatar'] != null) {
+    final Map<String, dynamic> avatar =
+        source['avatar'] as Map<String, dynamic>;
+    avatarBase64 = imageFromBase64String(
+        'data:${avatar['_content_type']};base64,${avatar['_content']}');
+  }
+  return avatarBase64;
 }

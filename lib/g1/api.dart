@@ -456,7 +456,7 @@ Future<String> pay(
   return output;
 }
 
-String getGvaNode([bool useProxy = false]) {
+String getGvaNode([bool useProxy = true]) {
   final List<Node> nodes = nodesWorkingList(NodeType.gva);
   if (nodes.isNotEmpty) {
     // reorder list to use others

@@ -11,7 +11,6 @@ import '../../../data/models/transaction.dart';
 import '../../../data/models/transaction_cubit.dart';
 import '../../../shared_prefs.dart';
 import '../../ui_helpers.dart';
-import '../loading_box.dart';
 import 'transaction_chart.dart';
 import 'transaction_item.dart';
 
@@ -52,19 +51,17 @@ class _TransactionsAndBalanceWidgetState
     if (/* _transScrollController.position.pixels ==
              _transScrollController.position.maxScrollExtent || */
         _transScrollController.offset == 0) {
-      await _refreshTransactions();
+      // await _refreshTransactions();
+      _refreshIndicatorKey.currentState?.show();
     }
   }
 
   Future<void> _refreshTransactions() async {
-    setState(() {
-      isLoading = true;
-    });
-    await transCubit.fetchTransactions(nodeListCubit);
-    setState(() {
-      isLoading = false;
-    });
+    return transCubit.fetchTransactions(nodeListCubit);
   }
+
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -76,67 +73,70 @@ class _TransactionsAndBalanceWidgetState
       final ContactsCubit contactsCubit = context.read<ContactsCubit>();
       final List<Transaction> transactions = transBalanceState.transactions;
       final double balance = transBalanceState.balance;
-      if (!isLoading) {
-        return BackdropScaffold(
-            appBar: BackdropAppBar(
-              backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-              title: Text(tr('balance')),
-              actions: <Widget>[
-                IconButton(
-                  icon: const Icon(Icons.refresh),
-                  onPressed: () {
-                    _refreshTransactions();
-                  },
-                ),
-                const BackdropToggleButton(
-                    // The default
-                    // icon: AnimatedIcons.close_menu,
-                    )
-              ],
-            ),
-            backLayer: Center(
-                child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.inversePrimary,
-                border: Border.all(
-                    color: Theme.of(context).colorScheme.inversePrimary,
-                    width: 3),
-                /* borderRadius: const BorderRadius.only(
+      return BackdropScaffold(
+          appBar: BackdropAppBar(
+            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+            title: Text(tr('balance')),
+            actions: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.refresh),
+                onPressed: () {
+                  _refreshIndicatorKey.currentState?.show();
+                  // _refreshTransactions();
+                },
+              ),
+              const BackdropToggleButton(
+                  // The default
+                  // icon: AnimatedIcons.close_menu,
+                  )
+            ],
+          ),
+          backLayer: Center(
+              child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.inversePrimary,
+              border: Border.all(
+                  color: Theme.of(context).colorScheme.inversePrimary,
+                  width: 3),
+              /* borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(8),
               topRight: Radius.circular(8),
             ), */
-              ),
-              child: Scrollbar(
-                  child: ListView(
-                //   controller: scrollController,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: Center(
-                        child: Text(
-                      formatKAmount(context, balance),
-                      style: TextStyle(
-                          fontSize: 36.0,
-                          color: balance == 0
-                              ? Colors.lightBlue
-                              : Colors.lightBlue,
-                          fontWeight: FontWeight.bold),
-                    )),
-                  ),
-                  if (!kReleaseMode) TransactionChart()
-                  /*BalanceChart(
-                                    transactions: .transactions),*/
-                ],
-              )),
-            )),
-            subHeader: BackdropSubHeader(
-              title: Text(tr('transactions')),
             ),
-            frontLayer: Center(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    /* Container(
+            child: Scrollbar(
+                child: ListView(
+              //   controller: scrollController,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: Center(
+                      child: Text(
+                    formatKAmount(context, balance),
+                    style: TextStyle(
+                        fontSize: 36.0,
+                        color:
+                            balance == 0 ? Colors.lightBlue : Colors.lightBlue,
+                        fontWeight: FontWeight.bold),
+                  )),
+                ),
+                if (!kReleaseMode) TransactionChart()
+                /*BalanceChart(
+                                    transactions: .transactions),*/
+              ],
+            )),
+          )),
+          subHeader: BackdropSubHeader(
+            title: Text(tr('transactions')),
+            divider: Divider(
+              color: Theme.of(context).colorScheme.surfaceVariant,
+              height: 0,
+            ),
+          ),
+          frontLayer: Center(
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  /* Container(
                       /* color: Theme
                       .of(context)
                       .colorScheme
@@ -146,31 +146,37 @@ class _TransactionsAndBalanceWidgetState
                       child: const Padding(
                           padding: EdgeInsets.symmetric(horizontal: 16),
                           child: Header(text: 'transactions'))), */
-                    Expanded(
+                  Expanded(
                       child: Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
-                          child: transactions.isEmpty
-                              ? Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20),
-                                  child: Center(
-                                      child: Text(tr('no_transactions'))))
-                              : ListView.builder(
-                                  physics:
-                                      const AlwaysScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  controller: _transScrollController,
-                                  itemCount: transactions.length,
-                                  // Size of elements
-                                  // itemExtent: 100,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return TransactionListItem(
-                                      index: index,
-                                      transaction: transactions[index],
-                                      avatar: avatar(null),
-                                    );
-                                    /*
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
+                    child: transactions.isEmpty
+                        ? Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Center(child: Text(tr('no_transactions'))))
+                        : RefreshIndicator(
+                            key: _refreshIndicatorKey,
+                            color: Colors.white,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            strokeWidth: 4.0,
+                            onRefresh: () async {
+                              return _refreshTransactions();
+                            },
+                            // Pull from top to show refresh indicator.
+                            child: ListView.builder(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              controller: _transScrollController,
+                              itemCount: transactions.length,
+                              // Size of elements
+                              // itemExtent: 100,
+                              itemBuilder: (BuildContext context, int index) {
+                                return TransactionListItem(
+                                  index: index,
+                                  transaction: transactions[index],
+                                  avatar: avatar(null),
+                                );
+                                /*
                                    Slidable(
 
                                       // Specify a key if the Slidable is dismissible.
@@ -238,14 +244,11 @@ class _TransactionsAndBalanceWidgetState
                                                         : Colors.blue)),
                                       ));
                                       */
-                                  },
-                                )),
-                    )
-                  ]),
-            ));
-      } else {
-        return const LoadingScreen();
-      }
+                              },
+                            )),
+                  ))
+                ]),
+          ));
     });
   }
 

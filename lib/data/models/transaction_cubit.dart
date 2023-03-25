@@ -31,7 +31,7 @@ class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
   Future<void> fetchTransactions(NodeListCubit cubit) async {
     logger('Loading transactions');
     final Map<String, dynamic>? txData =
-        await gva().history(SharedPreferencesHelper().getPubKey());
+        await gvaHistoryAndBalance(SharedPreferencesHelper().getPubKey());
     if (txData == null) {
       logger('Failed to get transactions');
       return;

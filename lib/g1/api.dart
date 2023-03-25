@@ -411,10 +411,7 @@ Future<String> pay(
     final String node = output;
     try {
       final Gva gva = Gva(node: node);
-      logger('Trying $node to get balance');
       final CesiumWallet wallet = await SharedPreferencesHelper().getWallet();
-      logger('Current balance ${await gva.balance(wallet.pubkey)}');
-      // logger('Current balance ${await gva.balance(wallet.pubkey)}');
       logger(
           'Trying $node to send $amount to $to with comment ${comment ?? ''}');
 
@@ -448,40 +445,33 @@ String getGvaNode() {
   }
 }
 
-Future<double> gvaBalance() async {
-  final String output = getGvaNode();
-  if (Uri.tryParse(output) != null) {
-    final String node = output;
+Future<Map<String, dynamic>?> gvaHistoryAndBalance(String pubKey) async {
+  final List<Node> nodes = NodeManager().nodeList(NodeType.gva);
+  if (nodes.isEmpty) {
+    nodes.addAll(defaultGvaNodes);
+  }
+  for (int i = 0; i < nodes.length; i++) {
+    final Node node = nodes[i];
+    if (node.errors >= NodeManager.maxNodeErrors) {
+      logger('Too much errors skip ${node.url}');
+      continue;
+    }
     try {
-      final Gva gva = Gva(node: node);
-      logger('Trying $node to get balance');
-      final String pubKey = SharedPreferencesHelper().getPubKey();
-      final double balance = await gva.balance(pubKey);
-      logger('Current balance $balance');
-      return balance;
-    } catch (e, stacktrace) {
-      // move logger outside main
-      logger(e);
-      logger(stacktrace);
-      throw Exception('Oops! failed to obtain balance');
+      final String output = getGvaNode();
+      if (Uri.tryParse(output) != null) {
+        final String node = output;
+        final Gva gva = Gva(node: node);
+        final Map<String, dynamic>? result = await gva.history(pubKey);
+        return result;
+      }
+    } catch (e) {
+      logger('Error trying ${node.url} $e');
+      logger('Increasing node errors of ${node.url} (${node.errors})');
+      NodeManager()
+          .updateNode(NodeType.gva, node.copyWith(errors: node.errors + 1));
+      continue;
     }
   }
-  throw Exception('Sorry: I cannot find a working node to get your balance');
-}
-
-Gva gva() {
-  final String output = getGvaNode();
-  if (Uri.tryParse(output) != null) {
-    final String node = output;
-    try {
-      final Gva gva = Gva(node: node);
-      return gva;
-    } catch (e, stacktrace) {
-      // move logger outside main
-      logger(e);
-      logger(stacktrace);
-      throw Exception('Oops! failed to obtain balance');
-    }
-  }
-  throw Exception('Sorry: I cannot find a working node to get your balance');
+  throw Exception(
+      'Sorry: I cannot find a working node to get your transactions');
 }

@@ -6,8 +6,18 @@ import 'contact_state.dart';
 class ContactsCubit extends HydratedCubit<ContactsState> {
   ContactsCubit() : super(const ContactsState());
 
+  Contact? _find(Contact contact) {
+    try {
+      return state.contacts
+          .firstWhere((Contact c) => c.pubkey == contact.pubkey);
+    } catch (e) {
+      return null;
+    }
+  }
+
   void addContact(Contact contact) {
-    if (!state.contacts.contains(contact)) {
+    final Contact? nFound = _find(contact);
+    if (nFound == null) {
       emit(state.copyWith(contacts: <Contact>[...state.contacts, contact]));
     }
   }

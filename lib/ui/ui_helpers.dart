@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import '../data/models/transaction_type.dart';
 import '../shared_prefs.dart';
 import 'widgets/first_screen/circular_icon.dart';
 
@@ -92,6 +93,27 @@ bool bigScreen(BuildContext context) =>
 bool smallScreen(BuildContext context) =>
     MediaQuery.of(context).size.width <= smallScreenWidth;
 
-String formatAmount(double amount) => amount.toStringAsFixed(2);
+String formatAmount(BuildContext context, double amount) {
+  final NumberFormat currencyFormatter = NumberFormat.currency(
+    symbol: 'Ğ1',
+    locale: Localizations.localeOf(context).toString(),
+    decimalDigits: 2,
+  );
+  return currencyFormatter.format(amount);
+}
 
-String formatKAmount(double amount) => formatAmount(amount / 100);
+String formatKAmount(BuildContext context, double amount) =>
+    formatAmount(context, amount / 100);
+
+String getAppVersion() => '0.0.8';
+
+String localizeNumber(BuildContext context, double amount) =>
+    NumberFormat.decimalPattern(context.locale.toString()).format(amount);
+
+bool isOutgoing(TransactionType type) {
+  return type == TransactionType.sending || type == TransactionType.sent;
+}
+
+bool isIncoming(TransactionType type) {
+  return type == TransactionType.receiving || type == TransactionType.received;
+}

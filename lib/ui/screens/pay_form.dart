@@ -25,102 +25,108 @@ class _PayFormState extends State<PayForm> {
   Widget build(BuildContext context) {
     return BlocBuilder<PaymentCubit, PaymentState>(
         builder: (BuildContext context, PaymentState state) {
-      if (state.comment != null && _commentController.text != state.comment) {
-        _commentController.text = state.comment;
-      }
-      return Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            const G1PayAmountField(),
-            const SizedBox(height: 10.0),
-            TextField(
-              controller: _commentController,
-              inputFormatters: <TextInputFormatter>[
-                Iso88591TextInputFormatter()
-              ],
-              onChanged: (String? value) {
-                if (value != null) {
-                  context.read<PaymentCubit>().setComment(value);
-                }
-              },
-              decoration: InputDecoration(
-                labelText: tr('g1_form_pay_desc'),
-                hintText: tr('g1_form_pay_hint'),
-                border: const OutlineInputBorder(),
-              ),
-              maxLines: null,
-            ),
-            const SizedBox(height: 10.0),
-            ElevatedButton(
-              onPressed: !state.canBeSent() ||
+          if (state.comment != null &&
+              _commentController.text != state.comment) {
+            _commentController.text = state.comment;
+          }
+          return Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                const G1PayAmountField(),
+                const SizedBox(height: 10.0),
+                TextField(
+                  controller: _commentController,
+                  inputFormatters: <TextInputFormatter>[
+                    Iso88591TextInputFormatter()
+                  ],
+                  onChanged: (String? value) {
+                    if (value != null) {
+                      context.read<PaymentCubit>().setComment(value);
+                    }
+                  },
+                  decoration: InputDecoration(
+                    labelText: tr('g1_form_pay_desc'),
+                    hintText: tr('g1_form_pay_hint'),
+                    border: const OutlineInputBorder(),
+                  ),
+                  maxLines: null,
+                ),
+                const SizedBox(height: 10.0),
+                ElevatedButton(
+                  onPressed: !state.canBeSent() ||
                       state.amount == null ||
                       !_weHaveBalance(context, state.amount!)
-                  ? null
-                  : () async {
-                      // We disable the number, anyway
-                      context.read<PaymentCubit>().sending();
-                      final bool? confirmed = await _confirmSend(
-                          context,
-                          state.amount!.toString(),
-                          humanizePubKey(state.publicKey));
+                      ? null
+                      : () async {
+                    // We disable the number, anyway
+                    context.read<PaymentCubit>().sending();
+                    final bool? confirmed = await _confirmSend(
+                        context,
+                        state.amount!.toString(),
+                        humanizePubKey(state.publicKey));
+                    if (!mounted) {
+                      return;
+                    }
+                    if (confirmed == null || !confirmed) {
+                      context.read<PaymentCubit>().sentFailed();
+                    } else {
+                      final String response = await pay(
+                          to: state.publicKey,
+                          comment: state.comment,
+                          amount: state.amount!);
                       if (!mounted) {
+                        // Cannot show a tooltip if the widget is not now visible
                         return;
                       }
-                      if (confirmed == null || !confirmed) {
-                        context.read<PaymentCubit>().sentFailed();
+                      if (response == 'success') {
+                        context.read<PaymentCubit>().sent();
+                        showTooltip(context, '', tr('payment_successful'));
                       } else {
-                        final String response = await pay(
-                            to: state.publicKey,
-                            comment: state.comment,
-                            amount: state.amount!);
-                        if (!mounted) {
-                          // Cannot show a tooltip if the widget is not now visible
-                          return;
-                        }
-                        if (response == 'success') {
-                          context.read<PaymentCubit>().sent();
-                          showTooltip(context, '', tr('payment_successful'));
-                        } else {
-                          context.read<PaymentCubit>().sentFailed();
-                          showTooltip(context, '', tr(response));
-                        }
+                        context.read<PaymentCubit>().sentFailed();
+                        showTooltip(context, '', tr(response));
                       }
-                    },
-              style: ElevatedButton.styleFrom(
-                padding:
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                ),
-                foregroundColor: Colors.white,
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                textStyle: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const Icon(Icons.send),
-                  const SizedBox(width: 10),
-                  Text(tr('g1_form_pay_send')),
-                ],
-              ),
-            )
-          ],
-        ),
-      );
-    });
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    foregroundColor: Colors.white,
+                    backgroundColor: Theme
+                        .of(context)
+                        .colorScheme
+                        .primary,
+                    textStyle: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const Icon(Icons.send),
+                      const SizedBox(width: 10),
+                      Text(tr('g1_form_pay_send')),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          );
+        });
   }
 
   bool _weHaveBalance(BuildContext context, double amount) =>
-      context.read<TransactionsCubit>().balance >= amount * 100;
+      context
+          .read<TransactionsCubit>()
+          .balance >= amount * 100;
 
-  Future<bool?> _confirmSend(
-      BuildContext context, String amount, String to) async {
+  Future<bool?> _confirmSend(BuildContext context, String amount,
+      String to) async {
     return showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
@@ -145,12 +151,12 @@ class _PayFormState extends State<PayForm> {
 }
 
 class Iso88591TextInputFormatter extends TextInputFormatter {
-  static final RegExp _iso88591RegExp = RegExp('^[\u0000-\u00FF]*\$');
+  // static final RegExp _iso88591RegExp = RegExp('^[\u0000-\u00FF]*\$');
   static final RegExp _englishRegExp = RegExp('^[\u0000-\u007F]*\$');
 
   @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue,
+      TextEditingValue newValue) {
     if (_englishRegExp.hasMatch(newValue.text)) {
       return newValue;
     } else {

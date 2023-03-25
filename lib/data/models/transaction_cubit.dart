@@ -4,7 +4,6 @@ import '../../../g1/api.dart';
 import '../../../g1/transaction_parser.dart';
 import '../../shared_prefs.dart';
 import '../../ui/logger.dart';
-import '../../ui/ui_helpers.dart';
 import 'node_list_cubit.dart';
 import 'transaction.dart';
 
@@ -31,11 +30,13 @@ class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
 
   Future<void> fetchTransactions(NodeListCubit cubit) async {
     logger('Loading transactions');
-    logger('GVA balance: ${gvaBalance()}');
-    final String txData = txDebugging
-        ? await getTxHistory('6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH')
-        : await getTxHistory(SharedPreferencesHelper().getPubKey());
-    final TransactionsAndBalanceState state = transactionParser(txData);
+    final Map<String, dynamic>? txData =
+        await gva().history(SharedPreferencesHelper().getPubKey());
+    if (txData == null) {
+      logger('Failed to get transactions');
+      return;
+    }
+    final TransactionsAndBalanceState state = transactionsGvaParser(txData);
     emit(state.copyWith(
         transactions: state.transactions,
         balance: state.balance,

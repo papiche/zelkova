@@ -32,6 +32,7 @@ import 'g1/api.dart';
 import 'shared_prefs.dart';
 import 'ui/logger.dart';
 import 'ui/screens/skeleton_screen.dart';
+import 'ui/ui_helpers.dart';
 
 void main() async {
   /// Initialize packages
@@ -100,11 +101,18 @@ void main() async {
         ),
       );
 
+  final String version = getAppVersion();
   if (kReleaseMode) {
     // Only use sentry in production
     await SentryFlutter.init((
       SentryFlutterOptions options,
     ) {
+      options.release = version;
+      options.environment = 'production';
+      options.beforeSend = (SentryEvent event, {dynamic hint}) {
+        return event;
+      };
+
       options.dsn = "${dotenv.env['SENTRY_DSN']}";
       // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
       // We recommend adjusting this value in production.
@@ -126,8 +134,8 @@ class _AppIntro extends State<AppIntro> {
   final GlobalKey<IntroductionScreenState> introKey =
       GlobalKey<IntroductionScreenState>();
 
-  void _onIntroEnd(BuildContext context) {
-    context.read<AppCubit>().introViewed();
+  void _onIntroEnd(BuildContext context, AppCubit cubit) {
+    cubit.introViewed();
     Navigator.of(context).pushReplacement(
       MaterialPageRoute<void>(
           builder: (BuildContext _) => const SkeletonScreen()),
@@ -137,36 +145,35 @@ class _AppIntro extends State<AppIntro> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppState>(
-        builder: (BuildContext buildContext, AppState state) =>
-            IntroductionScreen(
-              key: introKey,
-              pages: <PageViewModel>[
-                for (int i = 1; i <= 5; i++)
-                  createPageViewModel(
-                      'intro_${i}_title',
-                      'intro_${i}_description',
-                      'assets/img/undraw_intro_$i.png',
-                      context),
-              ],
-              onDone: () => _onIntroEnd(buildContext),
-              showSkipButton: true,
-              skipOrBackFlex: 0,
-              onSkip: () => _onIntroEnd(buildContext),
-              nextFlex: 0,
-              skip: Text(tr('skip')),
-              next: const Icon(Icons.arrow_forward),
-              done: Text(tr('start'),
-                  style: const TextStyle(fontWeight: FontWeight.w600)),
-              dotsDecorator: const DotsDecorator(
-                size: Size(10.0, 10.0),
-                color: Color(0xFFBDBDBD),
-                activeColor: Colors.blueAccent,
-                activeSize: Size(22.0, 10.0),
-                activeShape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(25.0)),
-                ),
-              ),
-            ));
+        builder: (BuildContext buildContext, AppState state) {
+      final AppCubit cubit = context.read<AppCubit>();
+      return IntroductionScreen(
+        key: introKey,
+        pages: <PageViewModel>[
+          for (int i = 1; i <= 5; i++)
+            createPageViewModel('intro_${i}_title', 'intro_${i}_description',
+                'assets/img/undraw_intro_$i.png', context),
+        ],
+        onDone: () => _onIntroEnd(buildContext, cubit),
+        showSkipButton: true,
+        skipOrBackFlex: 0,
+        onSkip: () => _onIntroEnd(buildContext, cubit),
+        nextFlex: 0,
+        skip: Text(tr('skip')),
+        next: const Icon(Icons.arrow_forward),
+        done: Text(tr('start'),
+            style: const TextStyle(fontWeight: FontWeight.w600)),
+        dotsDecorator: const DotsDecorator(
+          size: Size(10.0, 10.0),
+          color: Color(0xFFBDBDBD),
+          activeColor: Colors.blueAccent,
+          activeSize: Size(22.0, 10.0),
+          activeShape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(25.0)),
+          ),
+        ),
+      );
+    });
   }
 }
 

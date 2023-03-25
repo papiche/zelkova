@@ -1,8 +1,8 @@
+import 'package:backdrop/backdrop.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
@@ -11,11 +11,9 @@ import '../../../data/models/transaction.dart';
 import '../../../data/models/transaction_cubit.dart';
 import '../../../shared_prefs.dart';
 import '../../ui_helpers.dart';
-import '../card_drawer.dart';
-import '../header.dart';
 import '../loading_box.dart';
-import '../third_screen/contacts_page.dart';
 import 'transaction_chart.dart';
+import 'transaction_item.dart';
 
 class TransactionsAndBalanceWidget extends StatefulWidget {
   const TransactionsAndBalanceWidget({super.key});
@@ -29,8 +27,6 @@ class _TransactionsAndBalanceWidgetState
     extends State<TransactionsAndBalanceWidget>
     with SingleTickerProviderStateMixin {
   final ScrollController _transScrollController = ScrollController();
-  final DraggableScrollableController _draggableScrollableController =
-      DraggableScrollableController();
 
   late NodeListCubit nodeListCubit;
   late TransactionsCubit transCubit;
@@ -53,8 +49,8 @@ class _TransactionsAndBalanceWidgetState
   }
 
   Future<void> _scrollListener() async {
-    if (_transScrollController.position.pixels ==
-            _transScrollController.position.maxScrollExtent ||
+    if (/* _transScrollController.position.pixels ==
+             _transScrollController.position.maxScrollExtent || */
         _transScrollController.offset == 0) {
       await _refreshTransactions();
     }
@@ -72,9 +68,7 @@ class _TransactionsAndBalanceWidgetState
 
   @override
   Widget build(BuildContext context) {
-    final String myPubKey = !txDebugging
-        ? SharedPreferencesHelper().getPubKey()
-        : '6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH';
+    final String myPubKey = SharedPreferencesHelper().getPubKey();
     return BlocBuilder<TransactionsCubit, TransactionsAndBalanceState>(builder:
         (BuildContext context, TransactionsAndBalanceState transBalanceState) {
       // Fetch transactions
@@ -83,9 +77,10 @@ class _TransactionsAndBalanceWidgetState
       final List<Transaction> transactions = transBalanceState.transactions;
       final double balance = transBalanceState.balance;
       if (!isLoading) {
-        return Scaffold(
-            appBar: AppBar(
-              title: Text(tr('transactions')),
+        return BackdropScaffold(
+            appBar: BackdropAppBar(
+              backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+              title: Text(tr('balance')),
               actions: <Widget>[
                 IconButton(
                   icon: const Icon(Icons.refresh),
@@ -93,169 +88,161 @@ class _TransactionsAndBalanceWidgetState
                     _refreshTransactions();
                   },
                 ),
-                if (!kReleaseMode)
-                  IconButton(
-                    onPressed: () {
-                      if (_draggableScrollableController.size != null) {
-                        _draggableScrollableController.animateTo(
-                          100,
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.easeInOut,
-                        );
-                      }
-                    },
-                    icon: const Icon(Icons.savings),
-                  ),
+                const BackdropToggleButton(
+                    // The default
+                    // icon: AnimatedIcons.close_menu,
+                    )
               ],
             ),
-            drawer: const CardDrawer(),
-            body: Stack(children: <Widget>[
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
-                  Widget>[
-                /* Container(
-                color: Theme.of(context).colorScheme.surfaceVariant,
-                height: 90,
-                width: double.infinity,
-                child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: Header(text: 'transactions'))), */
-                Expanded(
-                  child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
-                      child: transactions.isEmpty
-                          ? Column(children: const <Widget>[
-                              NoElements(text: 'no_transactions')
-                            ])
-                          : ListView.builder(
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              controller: _transScrollController,
-                              itemCount: transactions.length,
-                              // Size of elements
-                              // itemExtent: 100,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Slidable(
-                                    // Specify a key if the Slidable is dismissible.
-                                    key: const ValueKey<int>(0),
-                                    // The end action pane is the one at the right or the bottom side.
-                                    endActionPane: ActionPane(
-                                      motion: const ScrollMotion(),
-                                      children: <SlidableAction>[
-                                        SlidableAction(
-                                          onPressed: (BuildContext c) {
-                                            _addContact(transactions, index,
-                                                myPubKey, contactsCubit);
-                                            // FIXME i18n
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              SnackBar(
-                                                content:
-                                                    Text(tr('contact_added')),
-                                              ),
-                                            );
-                                          },
-                                          backgroundColor:
-                                              Theme.of(context).primaryColor,
-                                          foregroundColor: Colors.white,
-                                          icon: Icons.contacts,
-                                          label: tr('add_contact'),
-                                        ),
-                                      ],
-                                    ),
-                                    child: ListTile(
-                                      title: Text(tr('transaction_from_to',
-                                          namedArgs: <String, String>{
-                                            'from': humanizeFromToPubKey(
-                                                myPubKey,
-                                                transactions[index].from),
-                                            'to': humanizeFromToPubKey(myPubKey,
-                                                transactions[index].to)
-                                          })),
-                                      subtitle: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            if (transactions[index]
-                                                .comment
-                                                .isNotEmpty)
-                                              Text(
-                                                transactions[index].comment,
-                                                style: const TextStyle(
-                                                  fontStyle: FontStyle.italic,
-                                                ),
-                                              ),
-                                            Text(humanizeTime(
-                                                transactions[index].time,
-                                                context.locale.toString())!)
-                                          ]),
-                                      tileColor: tileColor(index, context),
-                                      trailing: Text(
-                                          '${transactions[index].amount < 0 ? "" : "+"}${(transactions[index].amount / 100).toStringAsFixed(2)} Ğ1',
-                                          style: TextStyle(
-                                              color:
-                                                  transactions[index].amount < 0
-                                                      ? Colors.red
-                                                      : Colors.blue)),
-                                    ));
-                              },
-                            )),
-                )
-              ]),
-              Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: DraggableScrollableSheet(
-                      controller: _draggableScrollableController,
-                      initialChildSize: 0.12,
-                      minChildSize: 0.12,
-                      maxChildSize: 0.9,
-                      builder: (BuildContext context,
-                              ScrollController scrollController) =>
-                          Container(
-                            decoration: BoxDecoration(
-                              color:
-                                  Theme.of(context).colorScheme.inversePrimary,
-                              border: Border.all(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .inversePrimary,
-                                  width: 3),
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(8),
-                                topRight: Radius.circular(8),
-                              ),
-                            ),
-                            child: Scrollbar(
-                                child: ListView(
-                              controller: scrollController,
-                              children: <Widget>[
-                                const Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 16),
-                                    child: Header(
-                                      text: 'balance',
-                                      // topPadding: 0,
-                                    )),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 10.0),
-                                  child: Center(
-                                      child: Text(
-                                    '${formatKAmount(balance)} Ğ1',
-                                    style: TextStyle(
-                                        fontSize: 36.0,
-                                        color: balance == 0
-                                            ? Colors.lightBlue
-                                            : Colors.lightBlue,
-                                        fontWeight: FontWeight.bold),
-                                  )),
-                                ),
-                                if (!kReleaseMode) TransactionChart()
-                                /*BalanceChart(
+            backLayer: Center(
+                child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.inversePrimary,
+                border: Border.all(
+                    color: Theme.of(context).colorScheme.inversePrimary,
+                    width: 3),
+                /* borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(8),
+              topRight: Radius.circular(8),
+            ), */
+              ),
+              child: Scrollbar(
+                  child: ListView(
+                //   controller: scrollController,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: Center(
+                        child: Text(
+                      formatKAmount(context, balance),
+                      style: TextStyle(
+                          fontSize: 36.0,
+                          color: balance == 0
+                              ? Colors.lightBlue
+                              : Colors.lightBlue,
+                          fontWeight: FontWeight.bold),
+                    )),
+                  ),
+                  if (!kReleaseMode) TransactionChart()
+                  /*BalanceChart(
                                     transactions: .transactions),*/
-                              ],
-                            )),
-                          )))
-            ]));
+                ],
+              )),
+            )),
+            subHeader: BackdropSubHeader(
+              title: Text(tr('transactions')),
+            ),
+            frontLayer: Center(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    /* Container(
+                      /* color: Theme
+                      .of(context)
+                      .colorScheme
+                      .surfaceVariant, */
+                      height: 70,
+                      width: double.infinity,
+                      child: const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16),
+                          child: Header(text: 'transactions'))), */
+                    Expanded(
+                      child: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
+                          child: transactions.isEmpty
+                              ? Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  child: Center(
+                                      child: Text(tr('no_transactions'))))
+                              : ListView.builder(
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  controller: _transScrollController,
+                                  itemCount: transactions.length,
+                                  // Size of elements
+                                  // itemExtent: 100,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return TransactionListItem(
+                                      index: index,
+                                      transaction: transactions[index],
+                                      avatar: avatar(null),
+                                    );
+                                    /*
+                                   Slidable(
+
+                                      // Specify a key if the Slidable is dismissible.
+                                      key: const ValueKey<int>(0),
+                                      // The end action pane is the one at the right or the bottom side.
+                                      endActionPane: ActionPane(
+                                        motion: const ScrollMotion(),
+                                        children: <SlidableAction>[
+                                          SlidableAction(
+                                            onPressed: (BuildContext c) {
+                                              _addContact(transactions, index,
+                                                  myPubKey, contactsCubit);
+                                              // FIXME i18n
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content:
+                                                      Text(tr('contact_added')),
+                                                ),
+                                              );
+                                            },
+                                            backgroundColor:
+                                                Theme.of(context).primaryColor,
+                                            foregroundColor: Colors.white,
+                                            icon: Icons.contacts,
+                                            label: tr('add_contact'),
+                                          ),
+                                        ],
+                                      ),
+                                      child: ListTile(
+                                        title: Text(tr('transaction_from_to',
+                                            namedArgs: <String, String>{
+                                              'from': humanizeFromToPubKey(
+                                                  myPubKey,
+                                                  transactions[index].from),
+                                              'to': humanizeFromToPubKey(
+                                                  myPubKey,
+                                                  transactions[index].to)
+                                            })),
+                                        subtitle: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              if (transactions[index]
+                                                  .comment
+                                                  .isNotEmpty)
+                                                Text(
+                                                  transactions[index].comment,
+                                                  style: const TextStyle(
+                                                    fontStyle: FontStyle.italic,
+                                                  ),
+                                                ),
+                                              Text(humanizeTime(
+                                                  transactions[index].time,
+                                                  context.locale.toString())!)
+                                            ]),
+                                        tileColor: tileColor(index, context),
+                                        trailing: Text(
+                                            '${transactions[index].amount < 0 ? "" : "+"}${(transactions[index].amount / 100).toStringAsFixed(2)} Ğ1',
+                                            style: TextStyle(
+                                                color:
+                                                    transactions[index].amount <
+                                                            0
+                                                        ? Colors.red
+                                                        : Colors.blue)),
+                                      ));
+                                      */
+                                  },
+                                )),
+                    )
+                  ]),
+            ));
       } else {
         return const LoadingScreen();
       }

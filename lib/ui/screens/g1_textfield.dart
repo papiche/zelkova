@@ -21,8 +21,6 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
   @override
   Widget build(BuildContext context) => BlocBuilder<PaymentCubit, PaymentState>(
           builder: (BuildContext context, PaymentState state) {
-        final NumberFormat format =
-            NumberFormat.decimalPattern(context.locale.toString());
         if (state.amount != null) {
           final String amountFormatted = localizeNumber(context, state.amount!);
           if (_controller.text != amountFormatted) {
@@ -45,10 +43,13 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
               onEditingComplete: () {},
               onChanged: (String? value) {
                 final bool? validate = _formKey.currentState?.validate();
-                if (validate != null && validate) {
-                  context
-                      .read<PaymentCubit>()
-                      .selectAmount(format.parse(value!).toDouble());
+                if (validate != null &&
+                    value != null &&
+                    value.isNotEmpty &&
+                    validate) {
+                  context.read<PaymentCubit>().selectAmount(
+                      parseToDoubleLocalized(
+                          context.locale.toLanguageTag(), value));
                 }
               },
               decoration: InputDecoration(

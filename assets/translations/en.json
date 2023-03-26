@@ -94,5 +94,6 @@
   "transaction_sending": "Sending",
   "transaction_receiving": "Receiving",
   "transaction_sent": "Sent",
-  "transaction_received": "Received"
+  "transaction_received": "Received",
+  "valid_comment": "The comment cannot have accents or commas"
 }

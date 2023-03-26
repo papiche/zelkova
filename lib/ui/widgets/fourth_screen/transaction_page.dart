@@ -33,6 +33,7 @@ class _TransactionsAndBalanceWidgetState
   void initState() {
     super.initState();
     _transScrollController.addListener(_scrollListener);
+// Remove in the future
     transCubit = context.read<TransactionsCubit>();
     nodeListCubit = context.read<NodeListCubit>();
     transCubit.fetchTransactions(nodeListCubit);
@@ -56,7 +57,7 @@ class _TransactionsAndBalanceWidgetState
   }
 
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      GlobalKey<RefreshIndicatorState>();
+  GlobalKey<RefreshIndicatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +68,10 @@ class _TransactionsAndBalanceWidgetState
       final double balance = transBalanceState.balance;
       return BackdropScaffold(
           appBar: BackdropAppBar(
-            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+            backgroundColor: Theme
+                .of(context)
+                .colorScheme
+                .inversePrimary,
             title: Text(tr('balance')),
             actions: <Widget>[
               IconButton(
@@ -78,49 +82,59 @@ class _TransactionsAndBalanceWidgetState
                 },
               ),
               const BackdropToggleButton(
-                  // The default
-                  // icon: AnimatedIcons.close_menu,
-                  )
+                // The default
+                // icon: AnimatedIcons.close_menu,
+              )
             ],
           ),
           backLayer: Center(
               child: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.inversePrimary,
-              border: Border.all(
-                  color: Theme.of(context).colorScheme.inversePrimary,
-                  width: 3),
-              /* borderRadius: const BorderRadius.only(
+                decoration: BoxDecoration(
+                  color: Theme
+                      .of(context)
+                      .colorScheme
+                      .inversePrimary,
+                  border: Border.all(
+                      color: Theme
+                          .of(context)
+                          .colorScheme
+                          .inversePrimary,
+                      width: 3),
+                  /* borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(8),
               topRight: Radius.circular(8),
             ), */
-            ),
-            child: Scrollbar(
-                child: ListView(
-              //   controller: scrollController,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: Center(
-                      child: Text(
-                    formatKAmount(context, balance),
-                    style: TextStyle(
-                        fontSize: 36.0,
-                        color:
-                            balance == 0 ? Colors.lightBlue : Colors.lightBlue,
-                        fontWeight: FontWeight.bold),
-                  )),
                 ),
-                if (!kReleaseMode) TransactionChart()
-                /*BalanceChart(
+                child: Scrollbar(
+                    child: ListView(
+                      //   controller: scrollController,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10.0),
+                          child: Center(
+                              child: Text(
+                                formatKAmount(context, balance),
+                                style: TextStyle(
+                                    fontSize: 36.0,
+                                    color:
+                                    balance == 0 ? Colors.lightBlue : Colors
+                                        .lightBlue,
+                                    fontWeight: FontWeight.bold),
+                              )),
+                        ),
+                        if (!kReleaseMode) TransactionChart()
+                        /*BalanceChart(
                                     transactions: .transactions),*/
-              ],
-            )),
-          )),
+                      ],
+                    )),
+              )),
           subHeader: BackdropSubHeader(
             title: Text(tr('transactions')),
             divider: Divider(
-              color: Theme.of(context).colorScheme.surfaceVariant,
+              color: Theme
+                  .of(context)
+                  .colorScheme
+                  .surfaceVariant,
               height: 0,
             ),
           ),
@@ -140,16 +154,19 @@ class _TransactionsAndBalanceWidgetState
                           child: Header(text: 'transactions'))), */
                   Expanded(
                       child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
-                    child: transactions.isEmpty
-                        ? Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
+                        child: transactions.isEmpty
+                            ? Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: Center(child: Text(tr('no_transactions'))))
-                        : RefreshIndicator(
+                            : RefreshIndicator(
                             key: _refreshIndicatorKey,
                             color: Colors.white,
                             backgroundColor:
-                                Theme.of(context).colorScheme.primary,
+                            Theme
+                                .of(context)
+                                .colorScheme
+                                .primary,
                             strokeWidth: 4.0,
                             onRefresh: () async {
                               return _refreshTransactions();
@@ -238,7 +255,7 @@ class _TransactionsAndBalanceWidgetState
                                       */
                               },
                             )),
-                  ))
+                      ))
                 ]),
           ));
     });

@@ -215,6 +215,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
     await fetchDuniterNodes(NodeType.duniter);
     await fetchCesiumPlusNodes();
     await fetchDuniterNodes(NodeType.gva);
+
     _printNodeStatus(prefix: 'Continuing');
   }
 
@@ -248,6 +249,10 @@ class _GinkgoAppState extends State<GinkgoApp> {
       Once.runCustom('clear_errors', callback: () {
         NodeManager().cleanErrorStats();
       }, duration: const Duration(minutes: 90));
+      Once.runCustom('fetch_transactions', callback: () {
+        fetchTransactions(context);
+      }, duration: const Duration(minutes: 10));
+      fetchTransactions(context);
       return ConnectivityAppWrapper(
           app: MaterialApp(
         /// Localization is not available for the title.

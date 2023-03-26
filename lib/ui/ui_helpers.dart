@@ -3,10 +3,12 @@ import 'dart:typed_data';
 import 'package:clipboard/clipboard.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../data/models/contact.dart';
-import '../data/models/transaction_type.dart';
+import '../data/models/node_list_cubit.dart';
+import '../data/models/transaction_cubit.dart';
 import '../g1/api.dart';
 import '../shared_prefs.dart';
 import 'widgets/first_screen/circular_icon.dart';
@@ -41,10 +43,12 @@ const Color defAvatarBgColor = Colors.grey;
 const Color defAvatarColor = Colors.white;
 
 Widget avatar(Uint8List? rawAvatar,
-    {Color color = defAvatarColor, Color bgColor = defAvatarBgColor}) {
+    {Color color = defAvatarColor,
+    Color bgColor = defAvatarBgColor,
+    double avatarSize = 24}) {
   return rawAvatar != null && rawAvatar.isNotEmpty
       ? CircleAvatar(
-          radius: 24,
+          radius: avatarSize,
           child: ClipOval(
               child: Image.memory(
             rawAvatar,
@@ -59,6 +63,24 @@ String humanizeFromToPubKey(String publicAddress, String address) {
     return tr('your_wallet');
   } else {
     return humanizePubKey(address);
+  }
+}
+
+String humanizeContact(String publicAddress, Contact contact) {
+  final bool hasName = contact.name?.isNotEmpty ?? false;
+  final bool hasNick = contact.nick?.isNotEmpty ?? false;
+
+  if (contact.pubKey == publicAddress) {
+    return tr('your_wallet');
+  } else {
+    if (hasName && hasNick)
+      return '${contact.name} (${contact.nick})';
+    else if (hasNick)
+      return contact.nick!;
+    else if (hasName)
+      return contact.name!;
+    else
+      return humanizePubKey(contact.pubKey);
   }
 }
 
@@ -82,8 +104,9 @@ Color tileColor(int index, BuildContext context, [bool inverse = false]) {
       : unselectedColor;
 }
 
+// https://github.com/andresaraujo/timeago.dart/pull/142#issuecomment-859661123
 String? humanizeTime(DateTime time, String locale) =>
-    timeago.format(time, locale: locale, clock: DateTime.now());
+    timeago.format(time.toUtc(), locale: locale, clock: DateTime.now().toUtc());
 
 const bool txDebugging = false;
 
@@ -107,18 +130,13 @@ String formatAmount(BuildContext context, double amount) {
 String formatKAmount(BuildContext context, double amount) =>
     formatAmount(context, amount / 100);
 
+double parseToDoubleLocalized(String locale, String double) =>
+    NumberFormat.decimalPattern(locale).parse(double).toDouble();
+
 String getAppVersion() => '0.0.8';
 
 String localizeNumber(BuildContext context, double amount) =>
     NumberFormat.decimalPattern(context.locale.toString()).format(amount);
-
-bool isOutgoing(TransactionType type) {
-  return type == TransactionType.sending || type == TransactionType.sent;
-}
-
-bool isIncoming(TransactionType type) {
-  return type == TransactionType.receiving || type == TransactionType.received;
-}
 
 Contact contactFromResultSearch(Map<String, dynamic> record) {
   final Map<String, dynamic> source = record['_source'] as Map<String, dynamic>;
@@ -146,4 +164,14 @@ Uint8List? _getAvatarFromResults(Map<String, dynamic> source) {
         'data:${avatar['_content_type']};base64,${avatar['_content']}');
   }
   return avatarBase64;
+}
+
+final RegExp basicEnglishCharsRegExp =
+    RegExp(r'^[ A-Za-z0-9\s.;:!?()\-_;!@&<>%]*$');
+// RegExp(r'^[a-zA-Z0-9-_:/;*\[\]()?!^\\+=@&~#{}|\<>%.]*$');
+
+void fetchTransactions(BuildContext context) {
+  final TransactionsCubit transCubit = context.read<TransactionsCubit>();
+  final NodeListCubit nodeListCubit = context.read<NodeListCubit>();
+  transCubit.fetchTransactions(nodeListCubit);
 }

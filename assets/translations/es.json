@@ -93,5 +93,6 @@
   "transaction_sending": "Enviando",
   "transaction_receiving": "Recibiendo",
   "transaction_sent": "Enviado",
-  "transaction_received": "Recibido"
+  "transaction_received": "Recibido",
+  "valid_comment": "El comentario no puede tener tildes o comas"
 }

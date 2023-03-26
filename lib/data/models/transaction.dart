@@ -41,6 +41,12 @@ class Transaction extends Equatable {
   final Uint8List? fromAvatar;
   final String? fromNick;
 
+  bool get isOutgoing =>
+      type == TransactionType.sending || type == TransactionType.sent;
+
+  bool get isIncoming =>
+      type == TransactionType.receiving || type == TransactionType.received;
+
   Map<String, dynamic> toJson() => _$TransactionToJson(this);
 
   @override

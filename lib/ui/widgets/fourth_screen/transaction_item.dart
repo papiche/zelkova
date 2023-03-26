@@ -26,33 +26,31 @@ class TransactionListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      BlocBuilder<TransactionsCubit,
-          TransactionsAndBalanceState>(
+      BlocBuilder<TransactionsCubit, TransactionsAndBalanceState>(
           builder: (BuildContext context,
-              TransactionsAndBalanceState transBalanceState) =>
-              FutureBuilder<Contact>(
+                  TransactionsAndBalanceState transBalanceState) =>
+              FutureBuilder<List<Contact>>(
                   future: _fetchContact(pubKey, transaction),
                   builder: (BuildContext context,
-                      AsyncSnapshot<Contact> snapshot) {
+                      AsyncSnapshot<List<Contact>> snapshot) {
                     if (snapshot.hasData) {
                       return _buildTransactionItem(context, snapshot.data!);
                     } else if (snapshot.hasError) {
                       return Text('Error ${snapshot.error}');
                     } else {
-                      return _buildTransactionItem(context, Contact(
-                          pubKey: isIncoming(transaction.type) ? transaction
-                              .from : transaction.to));
+                      return _buildTransactionItem(context, <Contact>[
+                        Contact(pubKey: transaction.from),
+                        Contact(pubKey: transaction.to)
+                      ]);
                     }
                   }));
 
-  Slidable _buildTransactionItem(BuildContext context,
-      Contact contact) {
+  Slidable _buildTransactionItem(BuildContext context, List<Contact> contacts) {
     IconData? icon;
     Color? iconColor;
     String statusText;
     final String amountS =
-        '${transaction.amount < 0 ? "" : "+"}${formatKAmount(
-        context, transaction.amount)}';
+        '${transaction.amount < 0 ? "" : "+"}${formatKAmount(context, transaction.amount)}';
     statusText = tr('transaction_${transaction.type.name}');
     switch (transaction.type) {
       case TransactionType.pending:
@@ -73,10 +71,10 @@ class TransactionListItem extends StatelessWidget {
         break;
     }
     final String myPubKey = SharedPreferencesHelper().getPubKey();
-    final ContactsCubit contactsCubit =
-    context.read<ContactsCubit>();
+
+    final ContactsCubit contactsCubit = context.read<ContactsCubit>();
     return Slidable(
-      // Specify a key if the Slidable is dismissible.
+        // Specify a key if the Slidable is dismissible.
         key: const ValueKey<int>(0),
         // The end action pane is the one at the right or the bottom side.
         endActionPane: ActionPane(
@@ -84,16 +82,15 @@ class TransactionListItem extends StatelessWidget {
           children: <SlidableAction>[
             SlidableAction(
               onPressed: (BuildContext c) {
-                contactsCubit.addContact(contact);
+                contactsCubit.addContact(
+                    transaction.isIncoming ? contacts[0] : contacts[1]);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(tr('contact_added')),
                   ),
                 );
               },
-              backgroundColor: Theme
-                  .of(context)
-                  .primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
               foregroundColor: Colors.white,
               icon: Icons.contacts,
               label: tr('add_contact'),
@@ -103,14 +100,13 @@ class TransactionListItem extends StatelessWidget {
         child: ListTile(
           leading: (icon != null)
               ? Icon(
-            icon,
-            color: iconColor,
-          )
+                  icon,
+                  color: iconColor,
+                )
               : null,
           tileColor: tileColor(index, context),
           title: Row(
             children: <Widget>[
-              // if (avatar != null) avatar,
               const SizedBox(width: 8.0),
               Expanded(
                 child: Column(
@@ -145,11 +141,9 @@ class TransactionListItem extends StatelessWidget {
                             child: Text(
                               tr('transaction_from_to',
                                   namedArgs: <String, String>{
-                                    'from': humanizeFromToPubKey(
-                                        myPubKey,
-                                        transaction.from),
-                                    'to': humanizeFromToPubKey(
-                                        myPubKey, transaction.to)
+                                    'from':
+                                        humanizeContact(myPubKey, contacts[0]),
+                                    'to': humanizeContact(myPubKey, contacts[1])
                                   }),
                               style: const TextStyle(
                                 fontSize: 14.0,
@@ -181,18 +175,15 @@ class TransactionListItem extends StatelessWidget {
                 amountS,
                 style: TextStyle(
                   // fontWeight: FontWeight.bold,
-                  color: transaction.type ==
-                      TransactionType.received ||
-                      transaction.type ==
-                          TransactionType.receiving
+                  color: transaction.type == TransactionType.received ||
+                          transaction.type == TransactionType.receiving
                       ? Colors.blue
                       : Colors.red,
                 ),
               ),
               const SizedBox(height: 4.0),
               Text(
-                humanizeTime(
-                    transaction.time, context.locale.toString())!,
+                humanizeTime(transaction.time, context.locale.toString())!,
                 style: const TextStyle(
                   fontSize: 12.0,
                   color: Colors.grey,
@@ -203,12 +194,15 @@ class TransactionListItem extends StatelessWidget {
         ));
   }
 
-  Future<Contact> _fetchContact(String pubKey, Transaction transaction) async {
-    // return Contact(pubKey: pubKey);
+  Future<List<Contact>> _fetchContact(
+      String pubKey, Transaction transaction) async {
+    final Contact myContact = await ContactsCache().getContact(pubKey);
     if (pubKey == transaction.from) {
-      return ContactsCache().getContact(transaction.to);
+      final Contact to = await ContactsCache().getContact(transaction.to);
+      return <Contact>[myContact, to];
     } else {
-      return ContactsCache().getContact(transaction.from);
+      final Contact from = await ContactsCache().getContact(transaction.from);
+      return <Contact>[from, myContact];
     }
   }
 }

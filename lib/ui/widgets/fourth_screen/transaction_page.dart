@@ -4,13 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/models/contact.dart';
 import '../../../data/models/node_list_cubit.dart';
 import '../../../data/models/transaction.dart';
 import '../../../data/models/transaction_cubit.dart';
 import '../../../shared_prefs.dart';
-import '../../contacts_cache.dart';
-import '../../logger.dart';
 import '../../ui_helpers.dart';
 import 'transaction_chart.dart';
 import 'transaction_item.dart';
@@ -64,15 +61,6 @@ class _TransactionsAndBalanceWidgetState
   @override
   Widget build(BuildContext context) {
     final String myPubKey = SharedPreferencesHelper().getPubKey();
-    if (!kReleaseMode) {
-      ContactsCache()
-          .getContact('6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH');
-      ContactsCache()
-          .getContact('A1Fc1VoCLKHyPYmXimYECSmjmsceqwRSZcTBXfgG9JaB');
-      ContactsCache()
-          .getContact('6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH');
-      ContactsCache().getContact(myPubKey).then((Contact c) => logger(c));
-    }
     return BlocBuilder<TransactionsCubit, TransactionsAndBalanceState>(builder:
         (BuildContext context, TransactionsAndBalanceState transBalanceState) {
       final List<Transaction> transactions = transBalanceState.transactions;

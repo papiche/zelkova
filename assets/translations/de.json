@@ -1,1 +1,24 @@
-{}
+{
+    "credit_card_title": "Mit Ğ1 bezahlen",
+    "g1_wallet": "Ğ1-Geldbeutel",
+    "close": "SCHLIESSEN",
+    "bottom_nav_first": "Bezahlen",
+    "bottom_nav_second": "Empfangen",
+    "bottom_nav_trd": "Kontakte",
+    "bottom_nav_frd": "Saldo",
+    "bottom_nav_fifth": "Info",
+    "g1_form_pay_send": "Überweisen",
+    "search_user": "Suche (nach Benutzer oder öffentlicher Schlüssel)",
+    "search_user_btn": "Benutzer suchen",
+    "g1_form_pay_desc": "Bemerkung",
+    "code_card_title": "Code-Verzeichnis",
+    "intro_1_title": "Willkommen bei unserem Ğ1-Geldbeutel!",
+    "app_name": "Ğinkgo",
+    "send_g1": "Ğ1 überweisen",
+    "g1_amount": "Zu überweisender Betrag",
+    "g1_amount_hint": "Zu überweisender Betrag in Ğ1",
+    "search_user_title": "Empfänger",
+    "g1_form_pay_hint": "Eine Bemerkung anfügen (fakultativ)",
+    "intro_1_description": "Mit diesem Geldbeutel („Wallet“) können Sie einfach und sicher die freie Währung Ğ1 („June“) aufbewahren, überweisen und empfangen.",
+    "intro_2_title": "Eine digitale freie Währung, von Menschen für Menschen gemacht"
+}

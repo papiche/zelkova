@@ -36,20 +36,21 @@ void main() {
       expect(tx.from != tx.to, equals(true));
     }
     expect(
-        txs.first.to, equals('EDB7chzCBdtUCnqFZquVeto4a65FjeRkPrqcV8NwVbTx'));
+        txs.first.from, equals('BrgsSYK3xUzDyztGBHmxq69gfNxBfe2UKpxG21oZUBr5'));
     expect(
-        txs.first.from, equals('6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH'));
-    expect(txs.first.amount, equals(-1200));
-    expect(txs.first.type, equals(TransactionType.sent));
+        txs.first.to, equals('6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH'));
+    expect(txs.first.type, equals(TransactionType.receiving));
+    expect(txs.first.amount, equals(100));
+    expect(txs[1].to, equals('EDB7chzCBdtUCnqFZquVeto4a65FjeRkPrqcV8NwVbTx'));
+    expect(txs[1].from, equals('6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH'));
+    expect(txs[1].amount, equals(-1200));
+    expect(txs[1].type, equals(TransactionType.sent));
+
     expect(
-        txs.last.from, equals('BrgsSYK3xUzDyztGBHmxq69gfNxBfe2UKpxG21oZUBr5'));
+        txs.last.from, equals('A1Fc1VoCLKHyPYmXimYECSmjmsceqwRSZcTBXfgG9JaB'));
     expect(txs.last.to, equals('6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH'));
-    expect(txs.last.type, equals(TransactionType.receiving));
-    expect(txs.last.amount, equals(100));
-    expect(txs[1].from, equals('A1Fc1VoCLKHyPYmXimYECSmjmsceqwRSZcTBXfgG9JaB'));
-    expect(txs[1].to, equals('6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH'));
-    expect(txs[1].type, equals(TransactionType.received));
-    expect(txs[1].amount, equals(10000));
+    expect(txs.last.type, equals(TransactionType.received));
+    expect(txs.last.amount, equals(10000));
 
     const String emptyTx = '''
     {

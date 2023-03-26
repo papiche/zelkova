@@ -9,7 +9,7 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
   Contact? _find(Contact contact) {
     try {
       return state.contacts
-          .firstWhere((Contact c) => c.pubkey == contact.pubkey);
+          .firstWhere((Contact c) => c.pubKey == contact.pubKey);
     } catch (e) {
       return null;
     }
@@ -24,10 +24,10 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
 
   void removeContact(Contact contact) {
     final List<Contact> contactsTruncated = state.contacts
-        .where((Contact c) => c.pubkey != contact.pubkey)
+        .where((Contact c) => c.pubKey != contact.pubKey)
         .toList();
     final List<Contact> filteredContactsTruncated = state.filteredContacts
-        .where((Contact c) => c.pubkey != contact.pubkey)
+        .where((Contact c) => c.pubKey != contact.pubKey)
         .toList();
     emit(state.copyWith(
         contacts: contactsTruncated,
@@ -36,7 +36,7 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
 
   void updateContact(Contact contact) {
     final List<Contact> contacts = state.contacts.map((Contact c) {
-      if (c.pubkey == contact.pubkey) {
+      if (c.pubKey == contact.pubKey) {
         return contact;
       }
       return c;
@@ -50,7 +50,7 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
 
   void filterContacts(String query) {
     final List<Contact> contacts = state.contacts.where((Contact c) {
-      if (c.pubkey.contains(query)) {
+      if (c.pubKey.contains(query)) {
         return true;
       }
       if (c.nick != null && c.nick!.contains(query)) {
@@ -91,5 +91,5 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
   String get id => 'contacts';
 
   bool isContact(String pubKey) =>
-      state.contacts.any((Contact c) => c.pubkey == pubKey);
+      state.contacts.any((Contact c) => c.pubKey == pubKey);
 }

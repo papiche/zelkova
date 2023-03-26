@@ -9,7 +9,7 @@ part of 'contact.dart';
 abstract class _$ContactCWProxy {
   Contact nick(String? nick);
 
-  Contact pubkey(String pubkey);
+  Contact pubKey(String pubKey);
 
   Contact avatar(Uint8List? avatar);
 
@@ -25,7 +25,7 @@ abstract class _$ContactCWProxy {
   /// ````
   Contact call({
     String? nick,
-    String? pubkey,
+    String? pubKey,
     Uint8List? avatar,
     String? notes,
     String? name,
@@ -42,7 +42,7 @@ class _$ContactCWProxyImpl implements _$ContactCWProxy {
   Contact nick(String? nick) => this(nick: nick);
 
   @override
-  Contact pubkey(String pubkey) => this(pubkey: pubkey);
+  Contact pubKey(String pubKey) => this(pubKey: pubKey);
 
   @override
   Contact avatar(Uint8List? avatar) => this(avatar: avatar);
@@ -63,7 +63,7 @@ class _$ContactCWProxyImpl implements _$ContactCWProxy {
   /// ````
   Contact call({
     Object? nick = const $CopyWithPlaceholder(),
-    Object? pubkey = const $CopyWithPlaceholder(),
+    Object? pubKey = const $CopyWithPlaceholder(),
     Object? avatar = const $CopyWithPlaceholder(),
     Object? notes = const $CopyWithPlaceholder(),
     Object? name = const $CopyWithPlaceholder(),
@@ -73,10 +73,10 @@ class _$ContactCWProxyImpl implements _$ContactCWProxy {
           ? _value.nick
           // ignore: cast_nullable_to_non_nullable
           : nick as String?,
-      pubkey: pubkey == const $CopyWithPlaceholder() || pubkey == null
-          ? _value.pubkey
+      pubKey: pubKey == const $CopyWithPlaceholder() || pubKey == null
+          ? _value.pubKey
           // ignore: cast_nullable_to_non_nullable
-          : pubkey as String,
+          : pubKey as String,
       avatar: avatar == const $CopyWithPlaceholder()
           ? _value.avatar
           // ignore: cast_nullable_to_non_nullable
@@ -105,16 +105,16 @@ extension $ContactCopyWith on Contact {
 
 Contact _$ContactFromJson(Map<String, dynamic> json) => Contact(
       nick: json['nick'] as String?,
-      pubkey: json['pubkey'] as String,
-      avatar: Contact._fromList(json['avatar'] as List<int>),
+      pubKey: json['pubKey'] as String,
+      avatar: uIntFromList(json['avatar']),
       notes: json['notes'] as String?,
       name: json['name'] as String?,
     );
 
 Map<String, dynamic> _$ContactToJson(Contact instance) => <String, dynamic>{
       'nick': instance.nick,
-      'pubkey': instance.pubkey,
-      'avatar': Contact._toList(instance.avatar),
+      'pubKey': instance.pubKey,
+      'avatar': uIntToList(instance.avatar),
       'notes': instance.notes,
       'name': instance.name,
     };

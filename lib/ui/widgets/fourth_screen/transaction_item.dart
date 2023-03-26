@@ -194,7 +194,7 @@ class TransactionListItem extends StatelessWidget {
               }));
 
   Future<Contact> _fetchContact(String pubKey, Transaction transaction) async {
-    return Contact(pubkey: pubKey);
+    return Contact(pubKey: pubKey);
     if (pubKey == transaction.from) {
       return ContactsCache().getContact(transaction.to);
     } else {

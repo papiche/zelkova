@@ -104,7 +104,7 @@ class _ContactsPageState extends State<ContactsPage> {
                         children: <SlidableAction>[
                           SlidableAction(
                             onPressed: (BuildContext c) {
-                              FlutterClipboard.copy(contact.pubkey).then(
+                              FlutterClipboard.copy(contact.pubKey).then(
                                   (dynamic value) => ScaffoldMessenger.of(
                                           context)
                                       .showSnackBar(SnackBar(
@@ -132,9 +132,9 @@ class _ContactsPageState extends State<ContactsPage> {
                             ? Text(contact.nick!)
                             : contact.name != null
                                 ? Text(contact.name!)
-                                : humanizePubKeyAsWidget(contact.pubkey),
+                                : humanizePubKeyAsWidget(contact.pubKey),
                         subtitle: contact.nick != null || contact.name != null
-                            ? humanizePubKeyAsWidget(contact.pubkey)
+                            ? humanizePubKeyAsWidget(contact.pubKey)
                             : null,
                         leading: avatar(
                           contact.avatar,
@@ -155,7 +155,7 @@ class _ContactsPageState extends State<ContactsPage> {
   void onSent(BuildContext c, Contact contact) {
     c
         .read<PaymentCubit>()
-        .selectUser(contact.pubkey, contact.nick, contact.avatar);
+        .selectUser(contact.pubKey, contact.nick, contact.avatar);
     c.read<BottomNavCubit>().updateIndex(0);
   }
 }

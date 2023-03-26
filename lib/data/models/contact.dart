@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'is_json_serializable.dart';
+import 'model_utils.dart';
 
 part 'contact.g.dart';
 
@@ -13,7 +14,7 @@ part 'contact.g.dart';
 class Contact extends Equatable implements IsJsonSerializable<Contact> {
   const Contact({
     this.nick,
-    required this.pubkey,
+    required this.pubKey,
     this.avatar,
     this.notes,
     this.name,
@@ -23,14 +24,14 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
       _$ContactFromJson(json);
 
   final String? nick;
-  final String pubkey;
-  @JsonKey(fromJson: _fromList, toJson: _toList)
+  final String pubKey;
+  @JsonKey(fromJson: uIntFromList, toJson: uIntToList)
   final Uint8List? avatar;
   final String? notes;
   final String? name;
 
   @override
-  List<Object?> get props => <dynamic>[nick, pubkey, avatar, notes, name];
+  List<Object?> get props => <dynamic>[nick, pubKey, avatar, notes, name];
 
   @override
   Map<String, dynamic> toJson() => _$ContactToJson(this);
@@ -38,13 +39,8 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
   @override
   Contact fromJson(Map<String, dynamic> json) => Contact.fromJson(json);
 
-  static Uint8List _fromList(List<int> list) => Uint8List.fromList(list);
-
-  static List<int> _toList(Uint8List? uint8List) =>
-      uint8List != null ? uint8List.toList() : <int>[];
-
   @override
   String toString() {
-    return 'Contact $pubkey, hasAvatar: ${avatar != null}, nick: $nick, name: $name';
+    return 'Contact $pubKey, hasAvatar: ${avatar != null}, nick: $nick, name: $name';
   }
 }

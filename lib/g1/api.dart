@@ -56,7 +56,7 @@ Future<Contact> getProfile(String pubKey) async {
     final Map<String, dynamic> result =
         const JsonDecoder().convert(cPlusResponse.body) as Map<String, dynamic>;
     if (result['found'] == false) {
-      return Contact(pubkey: pubKey);
+      return Contact(pubKey: pubKey);
     }
 
     final String? nick = await gvaNick(pubKey);
@@ -68,7 +68,7 @@ Future<Contact> getProfile(String pubKey) async {
     return c.copyWith(nick: nick);
   } catch (e) {
     logger('Error in getProfile $e');
-    return Contact(pubkey: pubKey);
+    return Contact(pubKey: pubKey);
   }
 }
 
@@ -100,7 +100,7 @@ Future<List<Contact>> searchWot(String searchTerm) async {
         final String pubKey = resultMap['pubkey'] as String;
         // ignore: avoid_dynamic_calls
         final String nick = resultMap['uids'][0]['uid']! as String;
-        contacts.add(Contact(nick: nick, pubkey: pubKey));
+        contacts.add(Contact(nick: nick, pubKey: pubKey));
       }
     }
   }
@@ -110,7 +110,7 @@ Future<List<Contact>> searchWot(String searchTerm) async {
 
 Future<Contact> getWot(Contact contact) async {
   final Response response = await requestDuniterWithRetry(
-      '/wot/lookup/${contact.pubkey}',
+      '/wot/lookup/${contact.pubKey}',
       retryWith404: false);
   // Will be better to analyze the 404 response (to detect faulty node)
   if (response.statusCode == HttpStatus.ok) {

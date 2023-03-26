@@ -124,7 +124,7 @@ Contact contactFromResultSearch(Map<String, dynamic> record) {
   final Map<String, dynamic> source = record['_source'] as Map<String, dynamic>;
   final Uint8List? avatarBase64 = _getAvatarFromResults(source);
   return Contact(
-      pubkey: record['_id'] as String,
+      pubKey: record['_id'] as String,
       name: source['title'] as String,
       avatar: avatarBase64);
 }
@@ -132,7 +132,7 @@ Contact contactFromResultSearch(Map<String, dynamic> record) {
 Contact contactFromUserProfile(Map<String, dynamic> source) {
   final Uint8List? avatarBase64 = _getAvatarFromResults(source);
   return Contact(
-      pubkey: source['issuer'] as String,
+      pubKey: source['issuer'] as String,
       name: source['title'] as String,
       avatar: avatarBase64);
 }

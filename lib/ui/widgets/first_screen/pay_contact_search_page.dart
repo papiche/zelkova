@@ -66,7 +66,7 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
       logger('$_searchTerm looks like a plain pub key');
       setState(() {
         _isLoading = true;
-        final Contact contact = Contact(pubkey: _searchTerm);
+        final Contact contact = Contact(pubKey: _searchTerm);
         _results.add(contact);
         _isLoading = false;
       });
@@ -107,7 +107,7 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
                   if (_results.length == 1 && pay != null) {
                     final Contact contact = _results[0];
                     paymentCubit.selectUser(
-                        contact.pubkey,
+                        contact.pubKey,
                         contact.nick ?? contact.name,
                         contact.avatar,
                         pay.amount);
@@ -191,7 +191,7 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
 
   Widget _buildItem(Contact contact, int index, BuildContext context) {
     logger('Contact retrieved $contact');
-    final String pubKey = contact.pubkey;
+    final String pubKey = contact.pubKey;
     final String title = contact.nick ?? contact.name ?? humanizePubKey(pubKey);
     final Widget? subtitle = (contact.nick != null || contact.name != null)
         ? Text(humanizePubKey(pubKey))
@@ -226,7 +226,7 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
                   contactsCubit.addContact(contact);
                 } else {
                   contactsCubit.removeContact(Contact(
-                    pubkey: pubKey,
+                    pubKey: pubKey,
                   ));
                 }
               });

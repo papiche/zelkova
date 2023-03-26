@@ -9,7 +9,7 @@ part of 'payment_state.dart';
 PaymentState _$PaymentStateFromJson(Map<String, dynamic> json) => PaymentState(
       publicKey: json['publicKey'] as String,
       nick: json['nick'] as String?,
-      avatar: uIntFromList(json['avatar'] as List<int>),
+      avatar: uIntFromList(json['avatar']),
       comment: json['comment'] as String? ?? '',
       amount: (json['amount'] as num?)?.toDouble(),
       status: $enumDecodeNullable(_$PaymentStatusEnumMap, json['status']) ??

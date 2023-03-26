@@ -242,9 +242,9 @@ Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(
       amount: (json['amount'] as num).toDouble(),
       comment: json['comment'] as String,
       time: DateTime.parse(json['time'] as String),
-      toAvatar: uIntFromList(json['toAvatar'] as List<int>),
+      toAvatar: uIntFromList(json['toAvatar']),
       toNick: json['toNick'] as String?,
-      fromAvatar: uIntFromList(json['fromAvatar'] as List<int>),
+      fromAvatar: uIntFromList(json['fromAvatar']),
       fromNick: json['fromNick'] as String?,
     );
 

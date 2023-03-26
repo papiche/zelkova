@@ -82,12 +82,12 @@ TransactionsAndBalanceState transactionsGvaParser(Map<String, dynamic> txData) {
   for (final dynamic receiveRaw in receiving) {
     final Transaction tx = _txGvaParse(
         receiveRaw as Map<String, dynamic>, TransactionType.receiving);
-    txs.add(tx);
+    txs.insert(0, tx);
   }
   for (final dynamic sendingRaw in sending) {
     final Transaction tx = _txGvaParse(
         sendingRaw as Map<String, dynamic>, TransactionType.sending);
-    txs.add(tx);
+    txs.insert(0, tx);
   }
   return TransactionsAndBalanceState(
       transactions: txs, balance: amount, lastChecked: DateTime.now());

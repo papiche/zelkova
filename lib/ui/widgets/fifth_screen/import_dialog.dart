@@ -12,6 +12,7 @@ import '../../../data/models/transaction_cubit.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs.dart';
 import '../../logger.dart';
+import '../../ui_helpers.dart';
 import '../custom_error_widget.dart';
 import '../loading_box.dart';
 import 'pattern_util.dart';
@@ -78,6 +79,8 @@ class _ImportDialogState extends State<ImportDialog> {
                                 style: const TextStyle(color: Colors.white),
                               ),
                             );
+                            // ok, fetch the transactions & balance
+                            fetchTransactions(context);
                           }
                           if (!mounted) {
                             return;

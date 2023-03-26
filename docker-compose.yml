@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  g1nkgo:
+    image: g1nkgo:latest
+    container_name: g1nkgo
+    restart: always
+    hostname: g1nkgo
+    ports:
+      - "1801:80"
+      - "14431:443"
+    volumes:
+      - ~/.ginkgo/nginx-conf:/etc/nginx/:rw
+      - ./assets:/usr/share/nginx/html/assets:rw
+
+    environment:
+      # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+      # Useful for having logs with local time
+      TZ: "Europe/Copenhagen"
+    command: /bin/bash -c "/usr/local/bin/startup.sh && nginx -g 'daemon off;'"
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: g1nkgo-watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    # Additional watchtower args
+    # commmand:

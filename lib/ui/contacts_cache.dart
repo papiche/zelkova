@@ -17,11 +17,13 @@ class ContactsCache {
   ContactsCache._internal();
 
   static ContactsCache? _instance;
-  final Map<String, List<Completer<Contact>>> _pendingRequests = {};
+  final Map<String, List<Completer<Contact>>> _pendingRequests =
+      <String, List<Completer<Contact>>>{};
 
   Future<Contact> getContact(String pubKey) async {
-    final String cacheKey = 'avatar-$pubKey';
-    const Duration duration = Duration(days: 3);
+    final String cacheKey = 'contact-$pubKey';
+    const Duration duration =
+        kReleaseMode ? Duration(days: 3) : Duration(minutes: 5);
 
     try {
       final String? cachedValue = window.localStorage[cacheKey];
@@ -35,7 +37,7 @@ class ContactsCache {
           final Contact contact =
               Contact.fromJson(decodedValue['data'] as Map<String, dynamic>);
           if (!kReleaseMode) {
-            logger('Returning cached contact $contact');
+            // logger('Returning cached contact $contact');
           }
           return contact;
         }
@@ -61,7 +63,7 @@ class ContactsCache {
       });
       window.localStorage[cacheKey] = encodedValue;
       if (!kReleaseMode) {
-        logger('Returning non cached contact $contact');
+        //  logger('Returning non cached contact $contact');
       }
       // Send to listeners
       for (final Completer<Contact> completer in _pendingRequests[pubKey]!) {

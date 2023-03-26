@@ -12,18 +12,18 @@ users to manage their Ğ1 currency on their mobile device using just a browser.
   wallet address).
 * A point-of-sale device that generates a QR code for the public address and other QR codes with
   amounts (which lightweight wallets will understand).
+* Send Ğ1 transactions
+* Transactions history page and Balance with persistence to load last transactions on boot
+* Contact management and cache (to avoid too much API petitions)
 * Internationalization (i18n)
-* Some contextual help (for example, by tapping on "Validity").
 * QR code reader
-* Contact management
 * Import/export of your wallet
-* Transactions history page and Balance
-* Automatic discover and selection of nodes
+* Automatic discover and selection of nodes, error recovery & retry
 * Customizable via [env file](https://git.duniter.org/vjrj/ginkgo/-/blob/master/assets/env.production.txt)
+* Some contextual help (for example, by tapping on "Validity").
 
 ## Work in progress
 
-* Send Ğ1 transactions
 * Connectivity detection (to retry transactions, and other net operations)
 * Search improvements
 
@@ -31,7 +31,15 @@ users to manage their Ğ1 currency on their mobile device using just a browser.
 
 [https://g1demo.comunes.net/](https://g1demo.comunes.net/)
 
-## Prerequisites
+## Translations
+
+First of all, you can contribute translating Ğ1nkgo to your language:
+
+[https://weblate.duniter.org/settings/g1nkgo/g1nkgo/](https://weblate.duniter.org/settings/g1nkgo/g1nkgo/)
+
+## Dev contributions
+
+### Prerequisites
 
 This repository requires [Flutter](https://flutter.dev/docs/get-started/install) to be installed and
 present in your development environment.
@@ -49,7 +57,7 @@ Get the dependencies.
 flutter pub get
 ```
 
-## Build & deploy
+### Build & deploy
 
 Something like this should work:
 ```
@@ -58,7 +66,7 @@ flutter build web --release
 rsync --progress=info2 --delete -aH build/web/ youruser@yourserver:/var/www/ginkgo/
 ```
 
-## Development 
+### Run dev environment
 
 Run the app via command line or through your development environment.
 
@@ -66,7 +74,15 @@ Run the app via command line or through your development environment.
 flutter run lib/main.dart
 ```
 
-## Pub packages
+In order to do gva operations, you should disable cors in the flutter run config:
+
+```
+--web-browser-flag "--disable-web-security"
+```
+
+![cors disable](./assets/img/cors.png "CORS disabled")
+
+### Pub packages used
 
 This repository makes use of the following pub packages:
 
@@ -85,7 +101,7 @@ This repository makes use of the following pub packages:
 | [Url Launcher](https://pub.dev/packages/url_launcher)               | ^6.1.7  | Open urls in Browser                                 |
 | [Ionicons](https://pub.dev/packages/ionicons)                       | ^0.2.2  | Modern icon library                                  |
 
-#### Easy Localization
+### Easy Localization
 
 To add translations, add it to `assets/translations` and enable it in `main.dart`. Also go
 to [ios/Runner/Info.plist](./ios/Runner/Info.plist) and update the following code:
@@ -93,8 +109,10 @@ to [ios/Runner/Info.plist](./ios/Runner/Info.plist) and update the following cod
 ```
 <key>CFBundleLocalizations</key>
 <array>
-	<string>en</string>
+  <string>en</string>
   <string>es</string>
+  <string>fr</string>
+  <string>ca</string>
 </array>
 ```
 

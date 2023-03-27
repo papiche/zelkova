@@ -133,7 +133,7 @@ String formatKAmount(BuildContext context, double amount) =>
 double parseToDoubleLocalized(String locale, String double) =>
     NumberFormat.decimalPattern(locale).parse(double).toDouble();
 
-String getAppVersion() => '0.0.10';
+String getAppVersion() => '0.0.11';
 
 String localizeNumber(BuildContext context, double amount) =>
     NumberFormat.decimalPattern(context.locale.toString()).format(amount);

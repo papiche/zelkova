@@ -1,10 +1,8 @@
-import 'dart:typed_data';
-
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../g1/g1_helper.dart';
-import 'model_utils.dart';
+import 'contact.dart';
 
 part 'payment_state.g.dart';
 
@@ -13,9 +11,7 @@ enum PaymentStatus { notSent, sending, isSent }
 @JsonSerializable()
 class PaymentState extends Equatable {
   const PaymentState({
-    required this.publicKey,
-    this.nick,
-    this.avatar,
+    this.contact,
     this.comment = '',
     this.amount,
     this.status = PaymentStatus.notSent,
@@ -26,14 +22,11 @@ class PaymentState extends Equatable {
 
   bool canBeSent() =>
       status == PaymentStatus.notSent &&
-      validateKey(publicKey) &&
+      (contact != null && validateKey(contact!.pubKey)) &&
       amount != null &&
       amount! > 0;
 
-  final String publicKey;
-  final String? nick;
-  @JsonKey(fromJson: uIntFromList, toJson: uIntToList)
-  final Uint8List? avatar;
+  final Contact? contact;
   final String comment;
   final double? amount;
   final PaymentStatus status;
@@ -41,34 +34,26 @@ class PaymentState extends Equatable {
   Map<String, dynamic> toJson() => _$PaymentStateToJson(this);
 
   PaymentState copyWith({
-    String? publicKey,
-    String? nick,
-    Uint8List? avatar,
+    Contact? contact,
     String? comment,
     double? amount,
     PaymentStatus? status,
   }) {
     return PaymentState(
-      publicKey: publicKey ?? this.publicKey,
-      nick: nick ?? this.nick,
-      avatar: avatar ?? this.avatar,
+      contact: contact ?? this.contact,
       comment: comment ?? this.comment,
       amount: amount ?? this.amount,
       status: status ?? this.status,
     );
   }
 
-  static PaymentState emptyPayment = const PaymentState(
-    publicKey: '',
-    nick: '',
-  );
+  static PaymentState emptyPayment = const PaymentState();
 
   @override
   String toString() {
-    return '$publicKey ${amount ?? ""}';
+    return '$contact.pubKey ${amount ?? ""}';
   }
 
   @override
-  List<Object?> get props =>
-      <dynamic>[publicKey, nick, avatar, comment, amount, status];
+  List<Object?> get props => <dynamic>[contact, comment, amount, status];
 }

@@ -6,6 +6,7 @@ import 'package:durt/durt.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:encrypt/encrypt.dart';
 
+import '../data/models/contact.dart';
 import '../data/models/payment_state.dart';
 
 Random createRandom() {
@@ -121,7 +122,7 @@ PaymentState? parseScannedUri(String qr) {
   if (matchKeyAmount != null) {
     final String publicKey = matchKeyAmount.group(1)!;
     final double amount = double.parse(matchKeyAmount.group(2)!);
-    return PaymentState(publicKey: publicKey, amount: amount);
+    return PaymentState(contact: Contact(pubKey: publicKey), amount: amount);
   }
 
   // Match no amount
@@ -129,12 +130,12 @@ PaymentState? parseScannedUri(String qr) {
   final RegExpMatch? matchKey = regexKey.firstMatch(qr);
   if (matchKey != null) {
     final String publicKey = matchKey.group(1)!;
-    return PaymentState(publicKey: publicKey);
+    return PaymentState(contact: Contact(pubKey: publicKey));
   }
 
   // Match key only
   if (validateKey(qr)) {
-    return PaymentState(publicKey: qr);
+    return PaymentState(contact: Contact(pubKey: qr));
   }
 
   return null;

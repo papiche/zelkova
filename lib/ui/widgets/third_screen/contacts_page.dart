@@ -38,7 +38,6 @@ class _ContactsPageState extends State<ContactsPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final ContactsCubit cubit = context.read<ContactsCubit>();
     return BlocBuilder<ContactsCubit, ContactsState>(
         builder: (BuildContext context, ContactsState state) {
       return Padding(
@@ -127,22 +126,7 @@ class _ContactsPageState extends State<ContactsPage> {
                           ),
                         ],
                       ),
-                      child: ListTile(
-                        title: contact.nick != null
-                            ? Text(contact.nick!)
-                            : contact.name != null
-                                ? Text(contact.name!)
-                                : humanizePubKeyAsWidget(contact.pubKey),
-                        subtitle: contact.nick != null || contact.name != null
-                            ? humanizePubKeyAsWidget(contact.pubKey)
-                            : null,
-                        leading: avatar(
-                          contact.avatar,
-                          bgColor: tileColor(index, context),
-                          color: tileColor(index, context, true),
-                        ),
-                        tileColor: tileColor(index, context),
-                      ),
+                      child: contactToListItem(contact, index, context),
                     );
                   },
                 )),
@@ -153,9 +137,7 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   void onSent(BuildContext c, Contact contact) {
-    c
-        .read<PaymentCubit>()
-        .selectUser(contact.pubKey, contact.nick, contact.avatar);
+    c.read<PaymentCubit>().selectUser(contact);
     c.read<BottomNavCubit>().updateIndex(0);
   }
 }

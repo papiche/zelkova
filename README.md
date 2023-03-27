@@ -37,6 +37,11 @@ First of all, you can contribute translating Ğ1nkgo to your language:
 
 [https://weblate.duniter.org/settings/g1nkgo/g1nkgo/](https://weblate.duniter.org/settings/g1nkgo/g1nkgo/)
 
+## Docker
+
+mkdir -p ~/.ginkgo/nginx-conf
+mkdir -p ~/.ginkgo/www 
+
 ## Dev contributions
 
 ### Prerequisites

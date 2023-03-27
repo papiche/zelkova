@@ -4,6 +4,7 @@ import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../ui/ui_helpers.dart';
 import 'is_json_serializable.dart';
 import 'model_utils.dart';
 
@@ -23,6 +24,16 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
   factory Contact.fromJson(Map<String, dynamic> json) =>
       _$ContactFromJson(json);
 
+  Contact merge(Contact c) {
+    return Contact(
+      nick: c.nick ?? nick,
+      pubKey: c.pubKey,
+      avatar: c.avatar ?? avatar,
+      notes: c.notes ?? notes,
+      name: c.name ?? name,
+    );
+  }
+
   final String? nick;
   final String pubKey;
   @JsonKey(fromJson: uIntFromList, toJson: uIntToList)
@@ -32,6 +43,8 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
 
   @override
   List<Object?> get props => <dynamic>[nick, pubKey, avatar, notes, name];
+
+  bool get hasAvatar => avatar != null;
 
   @override
   Map<String, dynamic> toJson() => _$ContactToJson(this);
@@ -43,4 +56,11 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
   String toString() {
     return 'Contact $pubKey, hasAvatar: ${avatar != null}, nick: $nick, name: $name';
   }
+
+  String get title => name != null && nick != null
+      ? '$name ($nick)'
+      : nick ?? name ?? humanizePubKey(pubKey);
+
+  String? get subtitle =>
+      (nick != null || name != null) ? humanizePubKey(pubKey) : null;
 }

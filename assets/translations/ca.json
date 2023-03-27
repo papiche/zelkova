@@ -61,7 +61,6 @@
   "nothing_found": "No s'ha trobat res",
   "using_nodes": "Usant {nodes} nodes de {type}",
   "using_nodes_first": "El més ràpid: {node}",
-  "long_press_to_refresh": "Prem sostingudament per actualitzar",
   "technical_info_title": "Informació tècnica",
   "pattern_do_not_match": "Els patrons no coincideixen",
   "at_least_3": "Com a mínim calen 3 punts",

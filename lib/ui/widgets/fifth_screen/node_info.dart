@@ -25,11 +25,14 @@ class NodeInfoCard extends StatelessWidget {
               ? state.cesiumPlusNodes
               : state.gvaNodes;
       return GestureDetector(
-          onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(tr('long_press_to_refresh')),
-                ),
+          onTap: () {
+            context.read<NodeListCubit>().shuffle(type);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(tr('long_press_to_refresh')),
               ),
+            );
+          },
           onLongPress: () {
             logger('On long press');
             if (type == NodeType.duniter) {

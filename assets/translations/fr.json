@@ -56,7 +56,6 @@
   "nothing_found": "Rien trouvé",
   "using_nodes": "Utilisation de {nodes} nœuds de type {type}",
   "using_nodes_first": "Plus rapide : {node}",
-  "long_press_to_refresh": "Appuyez longuement pour rafraîchir",
   "technical_info_title": "Informations techniques",
   "pattern_do_not_match": "Les modèles ne correspondent pas",
   "at_least_3": "Au moins 3 points sont requis",

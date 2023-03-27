@@ -41,7 +41,7 @@ class _PayFormState extends State<PayForm> {
             TextFormField(
               controller: _commentController,
               onChanged: (String? value) {
-                final bool? validate = _commentValidate();
+                final bool validate = _commentValidate();
                 if (validate != null &&
                     value != null &&
                     value.isNotEmpty &&
@@ -72,10 +72,11 @@ class _PayFormState extends State<PayForm> {
                   : () async {
                       // We disable the number, anyway
                       context.read<PaymentCubit>().sending();
+                      final String contactPubKey = state.contact!.pubKey;
                       final bool? confirmed = await _confirmSend(
                           context,
                           state.amount!.toString(),
-                          humanizePubKey(state.publicKey));
+                          humanizePubKey(contactPubKey));
                       if (!mounted) {
                         return;
                       }
@@ -83,7 +84,7 @@ class _PayFormState extends State<PayForm> {
                         context.read<PaymentCubit>().sentFailed();
                       } else {
                         final String response = await pay(
-                            to: state.publicKey,
+                            to: contactPubKey,
                             comment: state.comment,
                             amount: state.amount!);
                         if (!mounted) {

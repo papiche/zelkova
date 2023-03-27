@@ -62,7 +62,7 @@
   "nothing_found": "No se ha encontrado nada",
   "using_nodes": "Usando {nodes} nodos de {type}",
   "using_nodes_first": "Más rápido: {node}",
-  "long_press_to_refresh": "Mantén pulsado para actualizar",
+  "long_press_to_refresh": "Reordenando la lista actual de nodos. Manten pulsado para refrescar la lista",
   "technical_info_title": "Información técnica",
   "pattern_do_not_match": "Los patrones no coinciden",
   "at_least_3": "Se requieren al menos 3 puntos",
@@ -94,5 +94,6 @@
   "transaction_receiving": "Recibiendo",
   "transaction_sent": "Enviado",
   "transaction_received": "Recibido",
-  "valid_comment": "El comentario no puede tener tildes o comas"
+  "valid_comment": "El comentario no puede tener tildes o comas",
+  "search_limitation": "La búsqueda debe tener al menos 3 caracteres"
 }

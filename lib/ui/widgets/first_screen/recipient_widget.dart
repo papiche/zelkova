@@ -17,24 +17,29 @@ class RecipientWidget extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    avatar(state.avatar),
+                    avatar(state.contact!.avatar),
                     const SizedBox(width: 16.0),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          if (state.nick != null)
+                          if (state.contact!.title != null)
                             Text(
-                              state.nick!,
+                              state.contact!.title,
                               style: const TextStyle(
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(
-                                  0, state.nick != null ? 0 : 12, 0, 0),
-                              child: humanizePubKeyAsWidget(state.publicKey)),
+                          if (state.contact!.subtitle != null)
+                            Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 2, 0, 0),
+                                child: Text(
+                                  state.contact!.subtitle!,
+                                  style: const TextStyle(
+                                    fontSize: 16.0,
+                                  ),
+                                )),
                         ],
                       ),
                     ),

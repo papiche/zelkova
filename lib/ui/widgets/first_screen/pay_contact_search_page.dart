@@ -237,16 +237,16 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
               color: isFavorite ? Colors.red.shade400 : null,
             ),
             onPressed: () {
-              setState(() {
-                if (!isFavorite) {
-                  contactsCubit.addContact(contact);
-                } else {
-                  contactsCubit.removeContact(Contact(
-                    pubKey: contact.pubKey,
-                  ));
-                }
-              });
+              // setState(() {
+              if (!isFavorite) {
+                contactsCubit.addContact(contact);
+              } else {
+                contactsCubit.removeContact(Contact(
+                  pubKey: contact.pubKey,
+                ));
+              }
             });
+        // });
       }),
     );
   }

@@ -62,7 +62,7 @@
   "nothing_found": "Nothing found",
   "using_nodes": "Using {nodes} nodes of {type}",
   "using_nodes_first": "Faster: {node}",
-  "long_press_to_refresh": "Long press to refresh",
+  "long_press_to_refresh": "Reordering the current list of nodes. Tap an hold to refresh the list.",
   "technical_info_title": "Technical info",
   "pattern_do_not_match": "Patterns do not match",
   "at_least_3": "At least 3 points required",
@@ -95,5 +95,6 @@
   "transaction_receiving": "Receiving",
   "transaction_sent": "Sent",
   "transaction_received": "Received",
-  "valid_comment": "The comment cannot have accents or commas"
+  "valid_comment": "The comment cannot have accents or commas",
+  "search_limitation": "The search term must have at least 3 characters"
 }

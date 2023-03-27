@@ -35,4 +35,49 @@ void main() {
     expect(contactFromWithAvatar.avatar!.toList(),
         equals(<int>[68, 174, 66, 96, 130]));
   });
+
+  group('Contact merge test', () {
+    test('Merge properties', () {
+      const Contact contact1 = Contact(nick: 'nick1', pubKey: 'pubKey');
+
+      final Contact contact2 = Contact(
+        pubKey: 'pubKey',
+        avatar: Uint8List.fromList(<int>[1, 2, 3]),
+        name: 'name2',
+        notes: 'notes2',
+      );
+
+      final List<Contact> merged = <Contact>[
+        contact1.merge(contact2),
+        contact2.merge(contact1),
+      ];
+      for (final Contact mergedContact in merged) {
+        expect(mergedContact.nick, 'nick1');
+        expect(mergedContact.pubKey, 'pubKey');
+        expect(mergedContact.avatar, Uint8List.fromList(<int>[1, 2, 3]));
+        expect(mergedContact.notes, 'notes2');
+        expect(mergedContact.name, 'name2');
+      }
+    });
+
+    test('Merge with empty contact', () {
+      final Contact contact1 = Contact(
+        nick: 'nick1',
+        pubKey: 'pubKey1',
+        avatar: Uint8List.fromList(<int>[1, 2, 3]),
+        notes: 'notes1',
+        name: 'name1',
+      );
+
+      const Contact contact2 = Contact(pubKey: 'pubKey1');
+
+      final Contact mergedContact = contact1.merge(contact2);
+
+      expect(mergedContact.nick, 'nick1');
+      expect(mergedContact.pubKey, 'pubKey1');
+      expect(mergedContact.avatar, Uint8List.fromList(<int>[1, 2, 3]));
+      expect(mergedContact.notes, 'notes1');
+      expect(mergedContact.name, 'name1');
+    });
+  });
 }

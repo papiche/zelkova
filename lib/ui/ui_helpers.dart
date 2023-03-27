@@ -87,14 +87,14 @@ String humanizeContact(String publicAddress, Contact contact) {
 String humanizePubKey(String address) => '\u{1F511} ${simplifyPubKey(address)}';
 
 String simplifyPubKey(String address) => address.substring(0, 8);
-
+/*
 Widget humanizePubKeyAsWidget(String pubKey) => Text(
       humanizePubKey(pubKey),
       style: const TextStyle(
         fontSize: 16.0,
       ),
     );
-
+*/
 Color tileColor(int index, BuildContext context, [bool inverse = false]) {
   final ColorScheme colorScheme = Theme.of(context).colorScheme;
   final Color selectedColor = colorScheme.primary.withOpacity(0.1);
@@ -133,7 +133,7 @@ String formatKAmount(BuildContext context, double amount) =>
 double parseToDoubleLocalized(String locale, String double) =>
     NumberFormat.decimalPattern(locale).parse(double).toDouble();
 
-String getAppVersion() => '0.0.9';
+String getAppVersion() => '0.0.10';
 
 String localizeNumber(BuildContext context, double amount) =>
     NumberFormat.decimalPattern(context.locale.toString()).format(amount);
@@ -147,13 +147,14 @@ Contact contactFromResultSearch(Map<String, dynamic> record) {
       avatar: avatarBase64);
 }
 
+/*
 Contact contactFromUserProfile(Map<String, dynamic> source) {
   final Uint8List? avatarBase64 = _getAvatarFromResults(source);
   return Contact(
       pubKey: source['issuer'] as String,
       name: source['title'] as String,
       avatar: avatarBase64);
-}
+} */
 
 Uint8List? _getAvatarFromResults(Map<String, dynamic> source) {
   Uint8List? avatarBase64;
@@ -174,4 +175,22 @@ void fetchTransactions(BuildContext context) {
   final TransactionsCubit transCubit = context.read<TransactionsCubit>();
   final NodeListCubit nodeListCubit = context.read<NodeListCubit>();
   transCubit.fetchTransactions(nodeListCubit);
+}
+
+ListTile contactToListItem(Contact contact, int index, BuildContext context,
+    [VoidCallback? onTap, Widget? trailing]) {
+  final String title = contact.title;
+  final Widget? subtitle =
+      contact.subtitle != null ? Text(contact.subtitle!) : null;
+  return ListTile(
+      title: Text(title),
+      subtitle: subtitle,
+      tileColor: tileColor(index, context),
+      onTap: onTap,
+      leading: avatar(
+        contact.avatar,
+        bgColor: tileColor(index, context),
+        color: tileColor(index, context, true),
+      ),
+      trailing: trailing);
 }

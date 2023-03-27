@@ -1,7 +1,6 @@
-import 'dart:typed_data';
-
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
+import 'contact.dart';
 import 'payment_state.dart';
 
 class PaymentCubit extends HydratedCubit<PaymentState> {
@@ -20,16 +19,15 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
     emit(newState);
   }
 
-  void selectUser(String publicKey, String? nick, Uint8List? avatar,
-      [double? amount]) {
-    final PaymentState newState = PaymentState(
-        publicKey: publicKey, nick: nick, avatar: avatar, amount: amount);
+  void selectUser(Contact contact, [double? amount]) {
+    final PaymentState newState =
+        PaymentState(contact: contact, amount: amount);
     emit(newState);
   }
 
-  void selectKeyAmount(String publicKey, double amount) {
+  void selectKeyAmount(Contact contact, double amount) {
     final PaymentState newState =
-        PaymentState(publicKey: publicKey, amount: amount);
+        PaymentState(contact: contact, amount: amount);
     emit(newState);
   }
 
@@ -45,9 +43,9 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
     emit(state.copyWith(status: PaymentStatus.sending));
   }
 
-  void selectKey(String publicKey) {
+  void selectKey(Contact? contact) {
     final PaymentState newState = PaymentState(
-        publicKey: publicKey, amount: state.amount, comment: state.comment);
+        contact: contact, amount: state.amount, comment: state.comment);
     emit(newState);
   }
 
@@ -65,22 +63,14 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
   void selectAmount(double? amount) {
     // As copyWith ignores null amounts
     final PaymentState newState = PaymentState(
-        publicKey: state.publicKey,
-        nick: state.nick,
-        comment: state.comment,
-        avatar: state.avatar,
-        amount: amount);
+        contact: state.contact, comment: state.comment, amount: amount);
     emit(newState);
   }
 
   void setComment(String comment) {
     // As copyWith ignores null amounts
     final PaymentState newState = PaymentState(
-        publicKey: state.publicKey,
-        amount: state.amount,
-        comment: comment,
-        avatar: state.avatar,
-        nick: state.nick);
+        contact: state.contact, amount: state.amount, comment: comment);
     emit(newState);
   }
 }

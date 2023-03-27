@@ -54,16 +54,16 @@ void main() {
     final String uriA = getQrUri(publicKey, '10');
     final PaymentState? payA = parseScannedUri(uriA);
     expect(payA!.amount, equals(10));
-    expect(payA.publicKey, equals(publicKey));
+    expect(payA.contact!.pubKey, equals(publicKey));
 
     final String uriB = getQrUri(publicKey);
     final PaymentState? payB = parseScannedUri(uriB);
     expect(payB!.amount, equals(null));
-    expect(payB.publicKey, equals(publicKey));
+    expect(payB.contact!.pubKey, equals(publicKey));
 
     final PaymentState? payC = parseScannedUri(publicKey);
     expect(payC!.amount, equals(null));
-    expect(payC.publicKey, equals(publicKey));
+    expect(payC.contact!.pubKey, equals(publicKey));
   });
 
   test('encrypt/decrypt of keys', () {

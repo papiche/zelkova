@@ -14,6 +14,7 @@ import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/payment_state.dart';
 import '../../../g1/api.dart';
 import '../../../g1/g1_helper.dart';
+import '../../contacts_cache.dart';
 import '../../logger.dart';
 import '../../ui_helpers.dart';
 import '../custom_error_widget.dart';
@@ -35,18 +36,24 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
   bool _isLoading = false;
 
   Future<void> _search() async {
+    if (_searchTerm.length < 3) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(tr('search_limitation'))),
+      );
+      return;
+    }
+
     setState(() {
       _isLoading = true;
     });
 
     final Response cPlusResponse = await searchCPlusUser(_searchTerm);
-    if (cPlusResponse.statusCode == 404) {
-      setState(() {
-        _results = <Contact>[];
-      });
-    } else {
-      _results = await searchWot(_searchTerm);
-      // FIXME(vjrj) ... no avatars in wot!
+
+    setState(() {
+      _results = <Contact>[];
+    });
+
+    if (cPlusResponse.statusCode != 404) {
       setState(() {
         // Add cplus users
         final List<dynamic> hits = ((const JsonDecoder()
@@ -55,21 +62,51 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
         for (final dynamic hit in hits) {
           final Contact c =
               contactFromResultSearch(hit as Map<String, dynamic>);
-          logger('Contact retrieved in search $c');
-          _results.add(c);
+          logger('Contact retrieved in c+ search $c');
+          ContactsCache().addContact(c);
+          _addIfNotPresent(c);
         }
         logger('Found: ${_results.length}');
-        _isLoading = false;
       });
     }
+
+    final List<Contact> wotResults = await searchWot(_searchTerm);
+    // ignore: prefer_foreach
+    for (final Contact c in wotResults) {
+      ContactsCache().addContact(c);
+      _addIfNotPresent(c);
+      // retrieve extra results with c+ profile
+      for (final Contact wotC in wotResults) {
+        final Contact cachedWotProfile =
+            await ContactsCache().getContact(wotC.pubKey);
+        if (cachedWotProfile.name == null) {
+          // Users without c+ profile
+          final Contact cPlusProfile =
+              await getProfile(cachedWotProfile.pubKey, true);
+          ContactsCache().addContact(cPlusProfile);
+        }
+      }
+    }
+
     if (_results.isEmpty && validateKey(_searchTerm)) {
       logger('$_searchTerm looks like a plain pub key');
       setState(() {
-        _isLoading = true;
         final Contact contact = Contact(pubKey: _searchTerm);
         _results.add(contact);
-        _isLoading = false;
       });
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  void _addIfNotPresent(Contact contact) {
+    if (_results
+        .where((Contact c) => c.pubKey == contact.pubKey)
+        .toList()
+        .isEmpty) {
+      _results.add(contact);
     }
   }
 
@@ -100,21 +137,17 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
                   final PaymentState? pay = parseScannedUri(scannedKey);
                   if (pay != null) {
                     logger('Scanned $pay');
-                    _searchTerm = pay.publicKey;
+                    _searchTerm = pay.contact!.pubKey;
                     await _search();
                   }
                   logger('QR result length ${_results.length}');
                   if (_results.length == 1 && pay != null) {
                     final Contact contact = _results[0];
-                    paymentCubit.selectUser(
-                        contact.pubKey,
-                        contact.nick ?? contact.name,
-                        contact.avatar,
-                        pay.amount);
+                    paymentCubit.selectUser(contact, pay.amount);
                   } else if (pay!.amount != null) {
-                    paymentCubit.selectKeyAmount(pay.publicKey, pay.amount!);
+                    paymentCubit.selectKeyAmount(pay.contact!, pay.amount!);
                   } else {
-                    paymentCubit.selectKey(pay.publicKey);
+                    paymentCubit.selectKey(pay.contact);
                   }
                   if (!mounted) {
                     return;
@@ -141,15 +174,11 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
                 labelText: tr('search_user'),
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.search),
-                  onPressed: () {
-                    _search();
-                  },
+                  onPressed: () => _searchTerm.length < 3 ? null : _search(),
                 ),
               ),
               onChanged: (String value) {
-                setState(() {
-                  _searchTerm = value;
-                });
+                _searchTerm = value;
               },
               onSubmitted: (_) {
                 _search();
@@ -166,7 +195,7 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
                     itemBuilder: (BuildContext context, int index) {
                       final Contact contact = _results[index];
                       return FutureBuilder<Contact>(
-                          future: getWot(contact),
+                          future: ContactsCache().getContact(contact.pubKey),
                           builder: (BuildContext context,
                               AsyncSnapshot<Contact> snapshot) {
                             Widget widget;
@@ -190,31 +219,18 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
   }
 
   Widget _buildItem(Contact contact, int index, BuildContext context) {
-    logger('Contact retrieved $contact');
-    final String pubKey = contact.pubKey;
-    final String title = contact.nick ?? contact.name ?? humanizePubKey(pubKey);
-    final Widget? subtitle = (contact.nick != null || contact.name != null)
-        ? Text(humanizePubKey(pubKey))
-        : null;
-    final bool hasAvatar = contact.avatar != null;
-    return ListTile(
-      title: Text(title),
-      subtitle: subtitle,
-      tileColor: tileColor(index, context),
-      onTap: () {
-        context.read<PaymentCubit>().selectUser(pubKey,
-            contact.nick ?? contact.name, hasAvatar ? contact.avatar : null);
+    return contactToListItem(
+      contact,
+      index,
+      context,
+      () {
+        context.read<PaymentCubit>().selectUser(contact);
         Navigator.pop(context);
       },
-      leading: avatar(
-        contact.avatar,
-        bgColor: tileColor(index, context),
-        color: tileColor(index, context, true),
-      ),
-      trailing: BlocBuilder<ContactsCubit, ContactsState>(
+      BlocBuilder<ContactsCubit, ContactsState>(
           builder: (BuildContext context, ContactsState state) {
         final ContactsCubit contactsCubit = context.read<ContactsCubit>();
-        final bool isFavorite = contactsCubit.isContact(pubKey);
+        final bool isFavorite = contactsCubit.isContact(contact.pubKey);
         return IconButton(
             icon: Icon(
               isFavorite ? Icons.favorite : Icons.favorite_border,
@@ -226,7 +242,7 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
                   contactsCubit.addContact(contact);
                 } else {
                   contactsCubit.removeContact(Contact(
-                    pubKey: pubKey,
+                    pubKey: contact.pubKey,
                   ));
                 }
               });

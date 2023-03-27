@@ -61,5 +61,6 @@
     "some_key_copied_to_clipboard": "Jouw openbare sleutel is naar het klembord gekopieerd",
     "no_transactions": "Deze portemonnee heeft geen saldo. Begin met het aanbieden van uw diensten in Ğ1 markten, bijvoorbeeld, om uw eerste inkomen te ontvangen.",
     "copy_contact_key": "kopiëren",
-    "nothing_found": "Niets gevonden"
+    "nothing_found": "Niets gevonden",
+    "long_press_to_refresh": "Lang indrukken om te vernieuwen"
 }

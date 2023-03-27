@@ -78,11 +78,11 @@ class _TransactionsAndBalanceWidgetState
                   // _refreshTransactions();
                 },
               ),
-              // BackdropToggleButton()
-              IconButton(
+              const BackdropToggleButton()
+              /* IconButton(
                 icon: const Icon(Icons.savings),
                 onPressed: () => Backdrop.of(context).animationController,
-              )
+              ) */
             ],
           ),
           backLayer: Center(

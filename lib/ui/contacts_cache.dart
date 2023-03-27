@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:html';
 
 import 'package:flutter/foundation.dart';
+import 'package:hive/hive.dart';
 
 import '../data/models/contact.dart';
 import '../g1/api.dart';
@@ -16,18 +16,32 @@ class ContactsCache {
 
   ContactsCache._internal();
 
+  Box<dynamic>? _box;
+
+  Future<void> init() async {
+    _box = await Hive.openBox(_boxName);
+  }
+
+  Future<void> dispose() async {
+    await _box?.close();
+  }
+
   static ContactsCache? _instance;
   final Map<String, List<Completer<Contact>>> _pendingRequests =
       <String, List<Completer<Contact>>>{};
   static Duration duration =
       kReleaseMode ? const Duration(days: 3) : const Duration(hours: 5);
 
-  Future<Contact> getContact(String pubKey) async {
-    final String cacheKey = _key(pubKey);
+  final String _boxName = 'contacts_cache';
 
+  Box<dynamic> _openBox() {
+    return _box!;
+  }
+
+  Future<Contact> getContact(String pubKey) async {
     Contact? cachedContact;
     try {
-      cachedContact = _retrieveContact(pubKey);
+      cachedContact = await _retrieveContact(pubKey);
     } catch (e) {
       logger('Error while retrieving contact from cache: $e, $pubKey');
     }
@@ -53,12 +67,7 @@ class ContactsCache {
     _pendingRequests[pubKey] = <Completer<Contact>>[completer];
     try {
       cachedContact = await getProfile(pubKey);
-
-      final String encodedValue = json.encode(<String, dynamic>{
-        'timestamp': DateTime.now().toIso8601String(),
-        'data': cachedContact.toJson(),
-      });
-      window.localStorage[cacheKey] = encodedValue;
+      storeContact(cachedContact);
       if (!kReleaseMode) {
         //  logger('Returning non cached contact $contact');
       }
@@ -80,11 +89,9 @@ class ContactsCache {
     }
   }
 
-  String _key(String pubKey) => 'contact-$pubKey';
-
-  void addContact(Contact contact) {
+  Future<void> addContact(Contact contact) async {
     // Get the cached version of the contact, if it exists
-    Contact? cachedContact = _retrieveContact(contact.pubKey);
+    Contact? cachedContact = await _retrieveContact(contact.pubKey);
 
     // Merge the new contact with the cached contact
     if (cachedContact != null) {
@@ -96,31 +103,35 @@ class ContactsCache {
     }
 
     // Cache the merged contact
-    final String encodedValue = json.encode(<String, dynamic>{
-      'timestamp': DateTime.now().toIso8601String(),
-      'data': cachedContact.toJson(),
-    });
-    window.localStorage[_key(contact.pubKey)] = encodedValue;
+    // Cache the merged contact
+    await storeContact(cachedContact);
+
     // logger('Added contact $cachedContact to cache');
   }
 
-  Contact? _retrieveContact(String pubKey) {
-    final String? cachedValue = window.localStorage[_key(pubKey)];
-    if (cachedValue != null) {
-      final Map<String, dynamic> decodedValue =
-          json.decode(cachedValue) as Map<String, dynamic>;
+  Future<void> storeContact(Contact contact) async {
+    final Box<dynamic> box = _openBox();
+    await box.put(contact.pubKey, <String, dynamic>{
+      'timestamp': DateTime.now().toIso8601String(),
+      'data': json.encode(contact.toJson()),
+    });
+  }
+
+  Future<Contact?> _retrieveContact(String pubKey) async {
+    final Box<dynamic> box = _openBox();
+    final dynamic record = box.get(pubKey);
+
+    if (record != null) {
+      final Map<String, dynamic> typedRecord =
+          Map<String, dynamic>.from(record as Map);
       final DateTime timestamp =
-          DateTime.parse(decodedValue['timestamp'] as String);
+          DateTime.parse(typedRecord['timestamp'] as String);
       final bool before = DateTime.now().isBefore(timestamp.add(duration));
       if (before) {
-        final Contact contact =
-            Contact.fromJson(decodedValue['data'] as Map<String, dynamic>);
-        if (!kReleaseMode) {
-          logger('Returning cached contact $contact');
-        }
+        final Contact contact = Contact.fromJson(
+            json.decode(typedRecord['data'] as String) as Map<String, dynamic>);
         return contact;
       }
-      // logger('Cached contact $pubKey is expired');
     }
     return null;
   }

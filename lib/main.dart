@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:ginkgo/ui/contacts_cache.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:introduction_screen/introduction_screen.dart';
@@ -234,7 +235,14 @@ class _GinkgoAppState extends State<GinkgoApp> {
   @override
   void initState() {
     super.initState();
+    ContactsCache().init();
     NodeManager().loadFromCubit(context.read<NodeListCubit>());
+  }
+
+  @override
+  void dispose() {
+    ContactsCache().dispose();
+    super.dispose();
   }
 
   @override

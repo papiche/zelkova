@@ -6,31 +6,12 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../shared_prefs.dart';
 import '../../ui_helpers.dart';
+import 'card_text_style.dart';
 
 class CreditCard extends StatelessWidget {
   CreditCard({super.key});
 
   final String publicKey = SharedPreferencesHelper().getPubKey();
-
-  TextStyle cardTextStyle(BuildContext context) => TextStyle(
-        fontFamily: 'SourceCodePro',
-        // decoration: TextDecoration.underline,
-        color: Colors.white,
-        fontSize: MediaQuery.of(context).size.width * 0.06,
-        fontWeight: FontWeight.bold,
-        shadows: <Shadow>[
-          Shadow(
-            blurRadius: 1,
-            color: Colors.black.withOpacity(0.7),
-            offset: const Offset(0, 2),
-          ),
-          Shadow(
-            blurRadius: 1,
-            color: Colors.white.withOpacity(0.5),
-            offset: const Offset(0, -1),
-          ),
-        ],
-      );
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +61,7 @@ class CreditCard extends StatelessWidget {
                         child: FittedBox(
                             fit: BoxFit.scaleDown,
                             child: Text(
-                              dotenv.env['CARD_COLOR_TEXT'] ?? tr('g1_wallet'),
+                              dotenv.env['CARD_TEXT'] ?? tr('g1_wallet'),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize:

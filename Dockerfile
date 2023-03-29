@@ -7,7 +7,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
         rm -rf /var/lib/apt/lists/* && \
         apt-get clean
 
-ARG GINKGO_WEB_VERSION=0.0.9
+ARG GINKGO_WEB_VERSION=0.0.12
 ARG GINKGO_WEB_VERSION_PATH=176d988bc6e5c3756973cef2038c7d6c
 
 RUN curl -L https://git.duniter.org/vjrj/ginkgo/uploads/${GINKGO_WEB_VERSION_PATH}/ginkgo-web-${GINKGO_WEB_VERSION}.tgz | tar xfz - -C /usr/share/nginx/html/ --strip-components=2
@@ -27,12 +27,11 @@ COPY assets/img/ /usr/share/nginx/html/assets/img/
 # Copy the default nginx configuration and g1nkgo conf to restore in empty volumes
 RUN cp -a /etc/nginx/ /etc/nginx-default/
 
-# Copy startup.sh (copy previous assets if people mount empty volumes)
-COPY startup.sh /usr/local/bin/startup.sh
-RUN chmod +x /usr/local/bin/startup.sh
-
 # Exponer los puertos de nginx
 EXPOSE 80
 EXPOSE 443
 
-CMD ["nginx", "-g", "daemon off;"]
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

@@ -8,7 +8,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
         apt-get clean
 
 ARG GINKGO_WEB_VERSION=0.0.12
-ARG GINKGO_WEB_VERSION_PATH=176d988bc6e5c3756973cef2038c7d6c
+ARG GINKGO_WEB_VERSION_PATH=666387ed25544cad529b8737d35a71a1
 
 RUN curl -L https://git.duniter.org/vjrj/ginkgo/uploads/${GINKGO_WEB_VERSION_PATH}/ginkgo-web-${GINKGO_WEB_VERSION}.tgz | tar xfz - -C /usr/share/nginx/html/ --strip-components=2
 
@@ -22,6 +22,10 @@ COPY proxy-gva.conf /etc/nginx/snippets/proxy-gva.conf
 
 # Configuration of g1nkgo
 COPY assets/env.production.txt /usr/share/nginx/html/assets/env.production.txt
+# In fact this is where flutter looks for it (it seems like a bug)
+RUN mkdir -p /usr/share/nginx/html/assets/assets/
+COPY assets/env.production.txt /usr/share/nginx/html/assets/assets/env.production.txt
+
 COPY assets/img/ /usr/share/nginx/html/assets/img/
 
 # Copy the default nginx configuration and g1nkgo conf to restore in empty volumes

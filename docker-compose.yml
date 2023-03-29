@@ -50,7 +50,10 @@ services:
     entrypoint: /bin/sh -c "while ! getent hosts g1nkgo_host > /dev/null 2>&1; do echo 'Waiting for g1nkgo_host...'; sleep 1; done && G1NKGO_IP=`getent hosts g1nkgo_host | awk '{ print $$1 }'` && export DUNITER_GVA_WHITELIST=$$G1NKGO_IP,$${DUNITER_GVA_WHITELIST:-127.0.0.1,::1} && echo $$DUNITER_GVA_WHITELIST && exec /docker-entrypoint.sh"
 
   g1nkgo:
-    image: g1nkgo:latest
+    # image: g1nkgo:latest
+    image: comunes/g1nkgo:latest
+    build:
+      context: .
     container_name: g1nkgo
     restart: always
     hostname: g1nkgo
@@ -59,7 +62,7 @@ services:
       - "14431:443"
     volumes:
       - ~/.ginkgo/nginx-conf:/etc/nginx/:rw
-      - ./assets:/usr/share/nginx/html/assets:rw
+      # - ./assets:/usr/share/nginx/html/assets:rw
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
     networks:

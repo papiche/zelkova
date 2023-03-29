@@ -68,8 +68,14 @@ class _ImportDialogState extends State<ImportDialog> {
                                   keyEncrypted, pattern.join());
                           final bool? confirm = await confirmImport(context);
                           if (confirm != null && confirm) {
-                            SharedPreferencesHelper().setKeys(
-                                keys['pub'] as String, keys['seed'] as String);
+                            /* SharedPreferencesHelper().addCesiumCard(
+                                SharedPreferencesHelper().buildCesiumCard(
+                                    pubKey: keys['pub'] as String,
+                                    seed: keys['seed'] as String));*/
+                            SharedPreferencesHelper().setDefaultWallet(
+                                SharedPreferencesHelper().buildCesiumCard(
+                                    pubKey: keys['pub'] as String,
+                                    seed: keys['seed'] as String));
                             if (!mounted) {
                               return;
                             }

@@ -123,7 +123,7 @@ class ContactsCache {
 
     if (record != null) {
       final Map<String, dynamic> typedRecord =
-          Map<String, dynamic>.from(record as Map);
+          Map<String, dynamic>.from(record as Map<String, dynamic>);
       final DateTime timestamp =
           DateTime.parse(typedRecord['timestamp'] as String);
       final bool before = DateTime.now().isBefore(timestamp.add(duration));

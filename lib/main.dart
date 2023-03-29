@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:ginkgo/ui/contacts_cache.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:introduction_screen/introduction_screen.dart';
@@ -31,6 +30,7 @@ import 'data/models/payment_cubit.dart';
 import 'data/models/transaction_cubit.dart';
 import 'g1/api.dart';
 import 'shared_prefs.dart';
+import 'ui/contacts_cache.dart';
 import 'ui/logger.dart';
 import 'ui/screens/skeleton_screen.dart';
 import 'ui/ui_helpers.dart';
@@ -45,16 +45,16 @@ void main() async {
     await FlutterDisplayMode.setHighRefreshRate();
   }
 
-  final SharedPreferencesHelper shared = SharedPreferencesHelper();
-  await shared.init();
-  await shared.getWallet();
-  assert(shared.getPubKey() != null);
-
   // .env
   await dotenv.load(
       fileName: kReleaseMode
           ? 'assets/env.production.txt'
           : 'assets/.env.development');
+
+  final SharedPreferencesHelper shared = SharedPreferencesHelper();
+  await shared.init();
+  await shared.getWallet();
+  assert(shared.getPubKey() != null);
 
   if (kIsWeb) {
     await Hive.initFlutter();
@@ -81,6 +81,8 @@ void main() async {
             Locale('es'),
             Locale('fr'),
             Locale('ca'),
+            Locale('de'),
+            Locale('nl'),
           ],
           fallbackLocale: const Locale('en'),
           useFallbackTranslations: true,

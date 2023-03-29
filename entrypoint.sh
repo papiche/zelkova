@@ -4,7 +4,7 @@ if [ -z "$(ls -A /etc/nginx)" ]; then
     cp -a /etc/nginx-default/* /etc/nginx/
 fi
 
-CONFIG_FILE="/usr/share/nginx/html/assets/env.production.txt"
+CONFIG_FILE="/usr/share/nginx/html/assets/assets/env.production.txt"
 
 VARIABLES=(
   "SENTRY_DSN"
@@ -26,4 +26,7 @@ for VAR_NAME in "${VARIABLES[@]}"; do
   fi
 done
 
+# Tyr to mimic nginx entrypoint
+# https://github.com/nginxinc/docker-nginx/blob/master/Dockerfile-debian.template
+/docker-entrypoint.sh
 exec nginx -g "daemon off;"

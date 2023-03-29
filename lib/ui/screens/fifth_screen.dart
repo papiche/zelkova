@@ -45,6 +45,10 @@ class FifthScreen extends StatelessWidget {
                           child: Text('Català'),
                         ),
                         DropdownMenuItem<Locale>(
+                          value: Locale('de'),
+                          child: Text('Deutsch'),
+                        ),
+                        DropdownMenuItem<Locale>(
                           value: Locale('en'),
                           child: Text('English'),
                         ),
@@ -55,6 +59,10 @@ class FifthScreen extends StatelessWidget {
                         DropdownMenuItem<Locale>(
                           value: Locale('fr'),
                           child: Text('Français'),
+                        ),
+                        DropdownMenuItem<Locale>(
+                          value: Locale('nl'),
+                          child: Text('Nederlands'),
                         ),
 
                         // Add more DropdownMenuItem for more languages

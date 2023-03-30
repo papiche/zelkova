@@ -86,5 +86,15 @@
     "no_transactions": "Diese Brieftasche hat noch kein Saldo. Beginnen Sie, z.B. Dienstleistungen bei Ğ1-Märkten anzubieten, um Ihr erstes Einkommen zu erarbeiten.",
     "copy_contact_key": "Kopieren",
     "nothing_found": "Nichts gefunden",
-    "technical_info_title": "Technische Informationen"
+    "technical_info_title": "Technische Informationen",
+    "intro_3_title": "Die freie Währung Ğ1 funktioniert über das Duniter-Netzwerk",
+    "intro_4_title": "Los geht's!",
+    "intro_5_title": "Danach …",
+    "intro_5_description": "Von hier aus können Sie sowohl Dienstleistungen und Produkte anbieten und Bezahlungen in der Ğ1-Währung empfangen, als auch die Ğ1-Währung zum Kauf von Gütern benutzen.",
+    "card_validity_tooltip": "Bitte beachten Sie, dass diese Brieftasche nur mit diesem bestimmten Browser und Gerät zugänglich ist. Wenn Sie den Browser löschen oder zurücksetzen, werden Sie den Zugriff auf Ihre Brieftasche und den dort gespeicherten Beträgen verlieren.",
+    "intro_2_description": "Die Ğ1 ist unabhängig von jeglichen Regierungen oder Gesellschaften, ist ökologisch (durch niedrigen Energieverbrauch), ist transparent und gerecht allen Beteiligten gegenüber.",
+    "intro_3_description": "Duniter ist ein dezentralisiertes Kryptowährungsnetzwerk, das die Leute ermöglicht, ihre eigene Ğ1 Währung zu schaffen.",
+    "intro_4_description": "Wir helfen Ihnen, eine Ğ1-Brieftasche zu eröffnen, damit Sie Ihre Ğ1-Währung einfach und sicher auf Ihrem Gerät speichern und anderen ohne Zwischenwege überweisen können.",
+    "keys_tooltip": "Öffentliche und private Schlüssel sind in der Ğ1 und in Duniter wie ein Schlüssel-Schloss-System. Dabei schließt der öffentliche Schlüssel ab, und nur der passende private Schlüssel kann öffnen. Das ist eine sichere Weise, Transaktionen zu authentifizieren und zu überprüfen.",
+    "long_press_to_refresh": "Neues Anordnen der gegenwärtigen Knoten-Liste. Tippen und halten, um die Liste zu aktualisieren."
 }

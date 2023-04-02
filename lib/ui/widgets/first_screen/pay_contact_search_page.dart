@@ -223,11 +223,11 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
       contact,
       index,
       context,
-      () {
+      onTap: () {
         context.read<PaymentCubit>().selectUser(contact);
         Navigator.pop(context);
       },
-      BlocBuilder<ContactsCubit, ContactsState>(
+      trailing: BlocBuilder<ContactsCubit, ContactsState>(
           builder: (BuildContext context, ContactsState state) {
         final ContactsCubit contactsCubit = context.read<ContactsCubit>();
         final bool isFavorite = contactsCubit.isContact(contact.pubKey);

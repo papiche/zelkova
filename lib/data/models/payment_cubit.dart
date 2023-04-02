@@ -35,6 +35,10 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
     emit(state.copyWith(status: PaymentStatus.isSent));
   }
 
+  void notSent() {
+    emit(state.copyWith(status: PaymentStatus.notSent));
+  }
+
   void sentFailed() {
     emit(state.copyWith(status: PaymentStatus.notSent));
   }

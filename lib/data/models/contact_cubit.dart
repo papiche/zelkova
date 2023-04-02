@@ -41,7 +41,13 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
       }
       return c;
     }).toList();
-    emit(state.copyWith(contacts: contacts));
+    final List<Contact> fcontacts = state.filteredContacts.map((Contact c) {
+      if (c.pubKey == contact.pubKey) {
+        return contact;
+      }
+      return c;
+    }).toList();
+    emit(state.copyWith(contacts: contacts, filteredContacts: fcontacts));
   }
 
   void resetFilter() {

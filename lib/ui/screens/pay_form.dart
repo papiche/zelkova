@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,16 +41,19 @@ class _PayFormState extends State<PayForm> {
             const G1PayAmountField(),
             const SizedBox(height: 10.0),
             TextFormField(
-              inputFormatters: [NoNewLineTextInputFormatter()],
+              inputFormatters: <TextInputFormatter>[
+                NoNewLineTextInputFormatter()
+              ],
               controller: _commentController,
               onChanged: (String? value) {
-                final bool validate = _commentValidate();
+                /* final bool validate = _commentValidate();
                 if (validate != null &&
                     value != null &&
                     value.isNotEmpty &&
                     validate) {
-                  context.read<PaymentCubit>().setComment(value);
-                }
+
+                } */
+                context.read<PaymentCubit>().setComment(value ?? '');
               },
               decoration: InputDecoration(
                 labelText: tr('g1_form_pay_desc'),
@@ -65,10 +69,10 @@ class _PayFormState extends State<PayForm> {
             ),
             const SizedBox(height: 10.0),
             ElevatedButton(
-              onPressed: !state.canBeSent() ||
-                      _commentValidate() == false ||
+              onPressed: (!state.canBeSent() ||
                       state.amount == null ||
-                      !_weHaveBalance(context, state.amount!)
+                      !_commentValidate() ||
+                      !_weHaveBalance(context, state.amount!))
                   ? null
                   : () async {
                       // We disable the number, anyway
@@ -76,7 +80,7 @@ class _PayFormState extends State<PayForm> {
                       final String contactPubKey = state.contact!.pubKey;
                       final bool? confirmed = await _confirmSend(
                           context,
-                          state.amount!.toString(),
+                          state.amount.toString(),
                           humanizePubKey(contactPubKey));
                       if (!mounted) {
                         return;
@@ -119,7 +123,10 @@ class _PayFormState extends State<PayForm> {
                 children: <Widget>[
                   const Icon(Icons.send),
                   const SizedBox(width: 10),
-                  Text(tr('g1_form_pay_send')),
+                  Text(tr('g1_form_pay_send') +
+                      (!kReleaseMode
+                          ? ' ${state.amount} ${state.comment}'
+                          : '')),
                 ],
               ),
             )

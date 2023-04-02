@@ -73,6 +73,7 @@ class FifthScreen extends StatelessWidget {
                     const TextDivider(text: 'faq_title'),
                     const FAQ(),
                     const TextDivider(text: 'key_tools_title'),
+                    const SizedBox(height: 20),
                     GridView.count(
                         physics: const NeverScrollableScrollPhysics(),
                         crossAxisCount: 2,
@@ -82,30 +83,6 @@ class FifthScreen extends StatelessWidget {
                         shrinkWrap: true,
                         padding: EdgeInsets.zero,
                         children: <GridItem>[
-                          if (state.expertMode)
-                            GridItem(
-                                title: 'export_key',
-                                icon: Icons.download,
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return const ExportDialog();
-                                    },
-                                  );
-                                }),
-                          if (state.expertMode)
-                            GridItem(
-                                title: 'import_key',
-                                icon: Icons.upload,
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return const ImportDialog();
-                                    },
-                                  );
-                                }),
                           if (showShare())
                             GridItem(
                                 title: 'share_your_key',
@@ -116,7 +93,29 @@ class FifthScreen extends StatelessWidget {
                             title: 'copy_your_key',
                             icon: Icons.copy,
                             onTap: () => copyPublicKeyToClipboard(context),
-                          )
+                          ),
+                          GridItem(
+                              title: 'export_key',
+                              icon: Icons.download,
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return const ExportDialog();
+                                  },
+                                );
+                              }),
+                          GridItem(
+                              title: 'import_key',
+                              icon: Icons.upload,
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return const ImportDialog();
+                                  },
+                                );
+                              }),
                         ]),
                     if (state.expertMode)
                       const TextDivider(text: 'technical_info_title'),

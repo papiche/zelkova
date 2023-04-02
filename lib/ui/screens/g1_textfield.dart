@@ -50,6 +50,9 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
                   context.read<PaymentCubit>().selectAmount(
                       parseToDoubleLocalized(
                           context.locale.toLanguageTag(), value));
+                } else {
+                  context.read<PaymentCubit>().selectAmount(
+                      value == null ? null : double.tryParse(value));
                 }
               },
               decoration: InputDecoration(

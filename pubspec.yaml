@@ -166,7 +166,8 @@ sentry:
   url: https://sentry.comunes.org
   #wait_for_processing: false
   #log_level: error # possible values: trace, debug, info, warn, error
-  #release: ...
+  log_level: info # possible values: trace, debug, info, warn, error
+  # release:  default: name@version from pubspec
   #web_build_path: ...
-  #commits: auto
+  commits: auto
   #ignore_missing: true

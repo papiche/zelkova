@@ -83,11 +83,12 @@
   "enter_a_valid_number": "Ingrese un número válido",
   "enter_a_positive_number": "Ingrese un número mayor a cero",
   "payment_successful": "¡Pago enviado!",
+  "payment_successful_desc": "La transacción se hará efectiva en unos minutos",
   "please_confirm_sent": "¿Estás seguro/a?",
   "please_confirm_sent_desc": "Por favor confirma que quieres enviar {amount} Ğ1 a {to}",
   "yes_sent": "SÍ, ENVÍALO",
   "receive_g1": "Recibe Junas",
-  "insufficient balance": "Upps, saldo insuficiente para hacer este pago",
+  "insufficient balance": "saldo insuficiente para hacer este pago",
   "language_switch_title": "Selecciona tu idioma",
   "transaction_pending": "Pendiente",
   "transaction_sending": "Enviando",
@@ -116,5 +117,7 @@
   "form_contact_notes": "Notas",
   "long_press_to_edit": "Mantén pulsado para editar",
   "form_contact_pub_key": "Clave pública",
-  "reloading_nodes": "Refrescando nodos del tipo {type}"
+  "reloading_nodes": "Refrescando nodos del tipo {type}",
+  "payment_error": "Error en el pago",
+  "payment_error_desc": "¡Vaya! el pago falló. Más detalles: {error}"
 }

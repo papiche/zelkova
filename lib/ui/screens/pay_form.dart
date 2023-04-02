@@ -1,8 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../data/models/node_list_cubit.dart';
+import '../../data/models/node_type.dart';
 import '../../data/models/payment_cubit.dart';
 import '../../data/models/payment_state.dart';
 import '../../data/models/transaction_cubit.dart';
@@ -40,16 +43,19 @@ class _PayFormState extends State<PayForm> {
             const G1PayAmountField(),
             const SizedBox(height: 10.0),
             TextFormField(
-              inputFormatters: [NoNewLineTextInputFormatter()],
+              inputFormatters: <TextInputFormatter>[
+                NoNewLineTextInputFormatter()
+              ],
               controller: _commentController,
               onChanged: (String? value) {
-                final bool validate = _commentValidate();
+                /* final bool validate = _commentValidate();
                 if (validate != null &&
                     value != null &&
                     value.isNotEmpty &&
                     validate) {
-                  context.read<PaymentCubit>().setComment(value);
-                }
+
+                } */
+                context.read<PaymentCubit>().setComment(value ?? '');
               },
               decoration: InputDecoration(
                 labelText: tr('g1_form_pay_desc'),
@@ -65,10 +71,10 @@ class _PayFormState extends State<PayForm> {
             ),
             const SizedBox(height: 10.0),
             ElevatedButton(
-              onPressed: !state.canBeSent() ||
-                      _commentValidate() == false ||
+              onPressed: (!state.canBeSent() ||
                       state.amount == null ||
-                      !_weHaveBalance(context, state.amount!)
+                      !_commentValidate() ||
+                      !_weHaveBalance(context, state.amount!))
                   ? null
                   : () async {
                       // We disable the number, anyway
@@ -76,7 +82,7 @@ class _PayFormState extends State<PayForm> {
                       final String contactPubKey = state.contact!.pubKey;
                       final bool? confirmed = await _confirmSend(
                           context,
-                          state.amount!.toString(),
+                          state.amount.toString(),
                           humanizePubKey(contactPubKey));
                       if (!mounted) {
                         return;
@@ -94,10 +100,21 @@ class _PayFormState extends State<PayForm> {
                         }
                         if (response == 'success') {
                           context.read<PaymentCubit>().sent();
-                          showTooltip(context, '', tr('payment_successful'));
+                          showTooltip(context, tr('payment_successful'),
+                              tr('payment_successful_desc'));
                         } else {
+                          showTooltip(
+                              context,
+                              tr('payment_error'),
+                              tr('payment_error_desc',
+                                  namedArgs: <String, String>{
+                                    // We try to translate the error, like "insufficient balance"
+                                    'error': tr(response)
+                                  }));
                           context.read<PaymentCubit>().sentFailed();
-                          showTooltip(context, '', tr(response));
+                          // Shuffle the nodes so we can retry with other
+                          context.read<NodeListCubit>().shuffle(NodeType.gva);
+                          // FIXME - retry manually with other node
                         }
                       }
                     },
@@ -119,7 +136,10 @@ class _PayFormState extends State<PayForm> {
                 children: <Widget>[
                   const Icon(Icons.send),
                   const SizedBox(width: 10),
-                  Text(tr('g1_form_pay_send')),
+                  Text(tr('g1_form_pay_send') +
+                      (!kReleaseMode
+                          ? ' ${state.amount} ${state.comment}'
+                          : '')),
                 ],
               ),
             )

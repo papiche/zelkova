@@ -1,13 +1,16 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
 import '../../data/models/node_type.dart';
+import '../../shared_prefs.dart';
 import '../ui_helpers.dart';
 import '../widgets/bottom_widget.dart';
 import '../widgets/card_drawer.dart';
+import '../widgets/faq.dart';
 import '../widgets/fifth_screen/export_dialog.dart';
 import '../widgets/fifth_screen/grid_item.dart';
 import '../widgets/fifth_screen/import_dialog.dart';
@@ -64,10 +67,11 @@ class FifthScreen extends StatelessWidget {
                           value: Locale('nl'),
                           child: Text('Nederlands'),
                         ),
-
                         // Add more DropdownMenuItem for more languages
                       ],
                     ),
+                    const TextDivider(text: 'faq_title'),
+                    const FAQ(),
                     const TextDivider(text: 'key_tools_title'),
                     GridView.count(
                         physics: const NeverScrollableScrollPhysics(),
@@ -102,6 +106,12 @@ class FifthScreen extends StatelessWidget {
                                     },
                                   );
                                 }),
+                          if (showShare())
+                            GridItem(
+                                title: 'share_your_key',
+                                icon: Icons.share,
+                                onTap: () => Share.share(
+                                    SharedPreferencesHelper().getPubKey())),
                           GridItem(
                             title: 'copy_your_key',
                             icon: Icons.copy,

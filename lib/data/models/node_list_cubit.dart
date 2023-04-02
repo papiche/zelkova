@@ -7,19 +7,53 @@ import 'node_type.dart';
 class NodeListCubit extends HydratedCubit<NodeListState> {
   NodeListCubit() : super(NodeListState());
 
-  void shuffle(NodeType type) {
+  void shuffle(NodeType type, bool withPenalty) {
     switch (type) {
       case NodeType.duniter:
-        emit(state.copyWith(duniterNodes: shuffleFirstN(state.duniterNodes)));
+        if (withPenalty) {
+          emit(state.copyWith(
+              duniterNodes: shuffleFirstNWithPenalty(state.duniterNodes)));
+        } else {
+          emit(state.copyWith(duniterNodes: shuffleFirstN(state.duniterNodes)));
+        }
         break;
       case NodeType.cesiumPlus:
-        emit(state.copyWith(
-            cesiumPlusNodes: shuffleFirstN(state.cesiumPlusNodes)));
+        if (withPenalty) {
+          emit(state.copyWith(
+              cesiumPlusNodes: shuffleFirstNWithPenalty(
+                  state.cesiumPlusNodes)));
+        } else {
+          emit(state.copyWith(
+              cesiumPlusNodes: shuffleFirstN(state.cesiumPlusNodes)));
+        }
         break;
       case NodeType.gva:
-        emit(state.copyWith(gvaNodes: shuffleFirstN(state.gvaNodes)));
+        if (withPenalty) {
+          emit(state.copyWith(
+              gvaNodes: shuffleFirstNWithPenalty(state.gvaNodes)));
+        } else {
+          emit(state.copyWith(gvaNodes: shuffleFirstN(state.gvaNodes)));
+        }
         break;
     }
+  }
+
+  // shuffle first n nodes, keeping the first node last
+  List<Node> shuffleFirstNWithPenalty(List<Node> list, [int n = 5]) {
+    if (list.length <= n) {
+      final Node firstElement = list.removeAt(0);
+      list.shuffle();
+      list.add(firstElement);
+    } else {
+      final List<Node> subList = list.sublist(0, n);
+      final Node firstElement = subList.removeAt(0);
+      subList.shuffle();
+      subList.add(firstElement);
+      for (int i = 0; i < n; i++) {
+        list[i] = subList[i];
+      }
+    }
+    return list;
   }
 
   // shuffle fist n nodes

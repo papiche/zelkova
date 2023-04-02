@@ -119,5 +119,6 @@
   "long_press_to_edit": "Tap and hold to edit",
   "form_contact_pub_key": "Public key",
   "payment_error": "Payment error",
-  "payment_error_desc": "Oops! the payment failed. More details: {error}"
+  "payment_error_desc": "Oops! the payment failed. More details: {error}",
+  "payment_error_retry": "Oops! the payment failed. Please retry in some minutes."
 }

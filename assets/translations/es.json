@@ -119,5 +119,6 @@
   "form_contact_pub_key": "Clave pública",
   "reloading_nodes": "Refrescando nodos del tipo {type}",
   "payment_error": "Error en el pago",
-  "payment_error_desc": "¡Vaya! el pago falló. Más detalles: {error}"
+  "payment_error_desc": "¡Vaya! el pago falló. Más detalles: {error}",
+  "payment_error_retry": "¡Vaya! el pago falló. Inténtalo de nuevo en unos minutos"
 }

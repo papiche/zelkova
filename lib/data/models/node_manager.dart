@@ -12,7 +12,7 @@ class NodeManager {
   NodeManager._internal();
 
   static int maxNodes = kReleaseMode ? 20 : 10;
-  static int maxNodeErrors = 3;
+  static int maxNodeErrors = 4;
   static int minutesToWait = 45;
 
   static final NodeManager _singleton = NodeManager._internal();

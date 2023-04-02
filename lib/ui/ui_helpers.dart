@@ -1,7 +1,6 @@
-import 'dart:typed_data';
-
 import 'package:clipboard/clipboard.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -120,7 +119,8 @@ bool smallScreen(BuildContext context) =>
 
 String formatAmount(BuildContext context, double amount) {
   final NumberFormat currencyFormatter = NumberFormat.currency(
-    symbol: 'Ğ1',
+    // in English $10 is G110 ... confusing
+    symbol: 'Ğ1 ',
     locale: Localizations.localeOf(context).toString(),
     decimalDigits: 2,
   );
@@ -132,8 +132,6 @@ String formatKAmount(BuildContext context, double amount) =>
 
 double parseToDoubleLocalized(String locale, String double) =>
     NumberFormat.decimalPattern(locale).parse(double).toDouble();
-
-String getAppVersion() => '0.0.12';
 
 String localizeNumber(BuildContext context, double amount) =>
     NumberFormat.decimalPattern(context.locale.toString()).format(amount);
@@ -178,7 +176,7 @@ void fetchTransactions(BuildContext context) {
 }
 
 ListTile contactToListItem(Contact contact, int index, BuildContext context,
-    [VoidCallback? onTap, Widget? trailing]) {
+    {VoidCallback? onTap, VoidCallback? onLongPress, Widget? trailing}) {
   final String title = contact.title;
   final Widget? subtitle =
       contact.subtitle != null ? Text(contact.subtitle!) : null;
@@ -187,6 +185,7 @@ ListTile contactToListItem(Contact contact, int index, BuildContext context,
       subtitle: subtitle,
       tileColor: tileColor(index, context),
       onTap: onTap,
+      onLongPress: onLongPress,
       leading: avatar(
         contact.avatar,
         bgColor: tileColor(index, context),
@@ -194,3 +193,9 @@ ListTile contactToListItem(Contact contact, int index, BuildContext context,
       ),
       trailing: trailing);
 }
+
+bool showShare() => onlyInDevelopment();
+
+bool onlyInDevelopment() => !onlyInProduction();
+
+bool onlyInProduction() => kReleaseMode;

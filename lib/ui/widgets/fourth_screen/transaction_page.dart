@@ -78,11 +78,20 @@ class _TransactionsAndBalanceWidgetState
                   // _refreshTransactions();
                 },
               ),
-              const BackdropToggleButton()
-              /* IconButton(
-                icon: const Icon(Icons.savings),
-                onPressed: () => Backdrop.of(context).animationController,
-              ) */
+              // const BackdropToggleButton(),
+              LayoutBuilder(
+                  builder: (BuildContext lContext,
+                          BoxConstraints constraints) =>
+                      IconButton(
+                          icon: const Icon(Icons.savings),
+                          onPressed: () {
+                            if (Backdrop.of(lContext).isBackLayerConcealed) {
+                              Backdrop.of(lContext).revealBackLayer();
+                            } else {
+                              Backdrop.of(lContext).concealBackLayer();
+                            }
+                          })),
+              const SizedBox(width: 10),
             ],
           ),
           backLayer: Center(

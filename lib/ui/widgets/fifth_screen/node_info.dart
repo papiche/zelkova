@@ -26,7 +26,7 @@ class NodeInfoCard extends StatelessWidget {
               : state.gvaNodes;
       return GestureDetector(
           onTap: () {
-            context.read<NodeListCubit>().shuffle(type);
+            context.read<NodeListCubit>().shuffle(type, true);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(tr('long_press_to_refresh')),

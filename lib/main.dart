@@ -11,6 +11,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:once/once.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:responsive_framework/utils/scroll_behavior.dart';
@@ -39,7 +40,6 @@ void main() async {
   /// Initialize packages
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-  Bloc.observer = AppBlocObserver();
 
   if (!kIsWeb && Platform.isAndroid) {
     await FlutterDisplayMode.setHighRefreshRate();
@@ -57,7 +57,8 @@ void main() async {
   assert(shared.getPubKey() != null);
 
   if (kIsWeb) {
-    await Hive.initFlutter();
+    // It seems is redundant
+    // await Hive.initFlutter();
     HydratedBloc.storage = await HydratedStorage.build(
         storageDirectory: HydratedStorage.webStorageDirectory);
   } else {
@@ -66,6 +67,8 @@ void main() async {
     HydratedBloc.storage =
         await HydratedStorage.build(storageDirectory: tmpDir);
   }
+
+  Bloc.observer = AppBlocObserver();
 
   // Reset hive during developing
   if (!kReleaseMode) {
@@ -98,13 +101,17 @@ void main() async {
             BlocProvider<ContactsCubit>(
                 create: (BuildContext context) => ContactsCubit()),
             BlocProvider<TransactionsCubit>(
-                create: (BuildContext context) => TransactionsCubit())
+                create: (BuildContext context) => TransactionsCubit()),
             // Add other BlocProviders here if needed
           ], child: const GinkgoApp()),
         ),
       );
 
-  final String version = getAppVersion();
+  final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+  final String version = packageInfo.version;
+  logger('G1nkgo version: $version');
+
   if (kReleaseMode) {
     // Only use sentry in production
     await SentryFlutter.init((

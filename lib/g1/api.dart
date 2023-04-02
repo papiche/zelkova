@@ -462,10 +462,15 @@ Future<String> pay(
           raiseException: true);
       logger('GVA replied with "$response"');
       return response;
+    } on GraphQLException catch (e) {
+      final List<String> eCause = e.cause.split('message: ');
+      return eCause.isNotEmpty
+          ? eCause[eCause.length > 1 ? 1 : 0].split(',')[0]
+          : 'Transaction failed for unknown reason';
     } catch (e, stacktrace) {
       logger(e);
       logger(stacktrace);
-      return "Oops! the payment failed. Something didn't work as expected ($e)";
+      return "Something didn't work as expected ($e)";
     }
   }
   return output;

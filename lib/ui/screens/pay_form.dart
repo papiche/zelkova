@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../data/models/node_list_cubit.dart';
+import '../../data/models/node_type.dart';
 import '../../data/models/payment_cubit.dart';
 import '../../data/models/payment_state.dart';
 import '../../data/models/transaction_cubit.dart';
@@ -98,10 +100,21 @@ class _PayFormState extends State<PayForm> {
                         }
                         if (response == 'success') {
                           context.read<PaymentCubit>().sent();
-                          showTooltip(context, '', tr('payment_successful'));
+                          showTooltip(context, tr('payment_successful'),
+                              tr('payment_successful_desc'));
                         } else {
+                          showTooltip(
+                              context,
+                              tr('payment_error'),
+                              tr('payment_error_desc',
+                                  namedArgs: <String, String>{
+                                    // We try to translate the error, like "insufficient balance"
+                                    'error': tr(response)
+                                  }));
                           context.read<PaymentCubit>().sentFailed();
-                          showTooltip(context, '', tr(response));
+                          // Shuffle the nodes so we can retry with other
+                          context.read<NodeListCubit>().shuffle(NodeType.gva);
+                          // FIXME - retry manually with other node
                         }
                       }
                     },

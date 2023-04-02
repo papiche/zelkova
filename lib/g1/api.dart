@@ -1,11 +1,11 @@
 import 'dart:convert';
-// import 'dart:developer' as developer;
 import 'dart:io';
 
 import 'package:durt/durt.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:universal_html/html.dart' show window;
 
 import '../data/models/contact.dart';
 import '../data/models/node.dart';
@@ -469,10 +469,12 @@ String getGvaNode([bool useProxy = true]) {
   final List<Node> nodes = nodesWorkingList(NodeType.gva);
   if (nodes.isNotEmpty) {
     // reorder list to use others
+
     nodes.shuffle();
     // Reference of working proxy 'https://g1demo.comunes.net/proxy/g1v1.p2p.legal/gva/';
     final String node = useProxy
-        ? 'https://g1demo.comunes.net/proxy/${nodes.first.url.replaceFirst('https://', '').replaceFirst('http://', '')}/'
+        // ? 'https://g1demo.comunes.net/proxy/${nodes.first.url.replaceFirst('https://', '').replaceFirst('http://', '')}/'
+        ? '${window.location.protocol}//${window.location.hostname}/proxy/${nodes.first.url.replaceFirst('https://', '').replaceFirst('http://', '')}/'
         : nodes.first.url;
     return node;
   } else {

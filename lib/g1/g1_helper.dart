@@ -98,7 +98,7 @@ String? parseHost(String endpointUnParsed) {
 
 bool validateKey(String pubKey) {
   return RegExp(
-          r'^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{44}$')
+          r'^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{43,44}$')
       .hasMatch(pubKey);
 }
 

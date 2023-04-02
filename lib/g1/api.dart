@@ -333,20 +333,26 @@ Future<List<Node>> _fetchNodes(NodeType type) async {
 }
 
 Future<Duration> _pingNode(String node, NodeType type) async {
+  const Duration timeout = Duration(seconds: 10);
   try {
     final Stopwatch stopwatch = Stopwatch()..start();
-    await http
-        .get(Uri.parse(type == NodeType.duniter
-            ? '$node/network/peers/self/ping'
-            : type == NodeType.cesiumPlus
-                ?
-                // see: http://g1.data.e-is.pro/network/peering
-                '$node/network/peering'
-                :
-                // gva (just the url)
-                node))
-        // Decrease http timeout during ping
-        .timeout(const Duration(seconds: 10));
+    if (type == NodeType.duniter || type == NodeType.cesiumPlus) {
+      await http
+          .get(Uri.parse(type == NodeType.duniter
+              ? '$node/network/peers/self/ping'
+              : type == NodeType.cesiumPlus
+                  ?
+                  // see: http://g1.data.e-is.pro/network/peering
+                  '$node/network/peering'
+                  // gva, test for playground
+                  : '$node/playground'))
+          // Decrease http timeout during ping
+          .timeout(timeout);
+    } else {
+      // Test GVA with a query
+      final Gva gva = Gva(node: proxyfyNode(node));
+      await gva.balance('').timeout(timeout);
+    }
     stopwatch.stop();
     return stopwatch.elapsed;
   } catch (e) {
@@ -465,21 +471,24 @@ Future<String> pay(
   return output;
 }
 
-String getGvaNode([bool useProxy = true]) {
+String getGvaNode() {
   final List<Node> nodes = nodesWorkingList(NodeType.gva);
   if (nodes.isNotEmpty) {
     // reorder list to use others
-
     nodes.shuffle();
     // Reference of working proxy 'https://g1demo.comunes.net/proxy/g1v1.p2p.legal/gva/';
-    final String node = useProxy
-        // ? 'https://g1demo.comunes.net/proxy/${nodes.first.url.replaceFirst('https://', '').replaceFirst('http://', '')}/'
-        ? '${window.location.protocol}//${window.location.hostname}/proxy/${nodes.first.url.replaceFirst('https://', '').replaceFirst('http://', '')}/'
-        : nodes.first.url;
-    return node;
+    return proxyfyNode(nodes.first.url);
   } else {
+    // FIXME
     return 'Sorry: I cannot find a working node to send the transaction';
   }
+}
+
+String proxyfyNode(String nodeUrl) {
+  final String url = inProduction()
+      ? '${window.location.protocol}//${window.location.hostname}/proxy/${nodeUrl.replaceFirst('https://', '').replaceFirst('http://', '')}/'
+      : nodeUrl;
+  return url;
 }
 
 Future<Map<String, dynamic>?> gvaHistoryAndBalance(String pubKey) async {

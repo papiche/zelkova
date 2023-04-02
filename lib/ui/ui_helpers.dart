@@ -196,6 +196,10 @@ ListTile contactToListItem(Contact contact, int index, BuildContext context,
 
 bool showShare() => onlyInDevelopment();
 
-bool onlyInDevelopment() => !onlyInProduction();
+bool onlyInDevelopment() => !inProduction();
+
+bool inDevelopment() => !inProduction();
 
 bool onlyInProduction() => kReleaseMode;
+
+bool inProduction() => onlyInProduction();

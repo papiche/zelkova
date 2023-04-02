@@ -53,3 +53,12 @@ List<Node> readDotNodeConfig(String entry) =>
 List<Node> defaultDuniterNodes = readDotNodeConfig('DUNITER_NODES');
 List<Node> defaultCesiumPlusNodes = readDotNodeConfig('CESIUM_PLUS_NODES');
 List<Node> defaultGvaNodes = readDotNodeConfig('GVA_NODES');
+
+// We test local duniter node in dev mode
+/* List<Node> defaultGvaNodes = kReleaseMode
+    ? readDotNodeConfig('GVA_NODES')
+    : <Node>[const Node(url: 'http://localhost:30901/gva/')]
+  ..addAll(readDotNodeConfig('GVA_NODES'));
+// List<Node> defaultGvaNodes = readDotNodeConfig('GVA_NODES');
+ : <Node>[const Node(url: 'http://localhost:30901/gva/')]
+  ..addAll(readDotNodeConfig('GVA_NODES')); */

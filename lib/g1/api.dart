@@ -444,7 +444,10 @@ Future<http.Response> _requestWithRetry(
 }
 
 Future<String> pay(
-    {required String to, required double amount, String? comment}) async {
+    {required String to,
+    required double amount,
+    String? comment,
+    bool? useMempool}) async {
   final String output = getGvaNode();
   if (Uri.tryParse(output) != null) {
     final String node = output;
@@ -459,6 +462,7 @@ Future<String> pay(
           amount: amount,
           comment: comment ?? '',
           cesiumSeed: wallet.seed,
+          useMempool: useMempool ?? false,
           raiseException: true);
       logger('GVA replied with "$response"');
       return response;

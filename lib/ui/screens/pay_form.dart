@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/models/payment_cubit.dart';
@@ -39,6 +40,7 @@ class _PayFormState extends State<PayForm> {
             const G1PayAmountField(),
             const SizedBox(height: 10.0),
             TextFormField(
+              inputFormatters: [NoNewLineTextInputFormatter()],
               controller: _commentController,
               onChanged: (String? value) {
                 final bool validate = _commentValidate();
@@ -60,7 +62,6 @@ class _PayFormState extends State<PayForm> {
                 }
                 return null;
               },
-              maxLines: null,
             ),
             const SizedBox(height: 10.0),
             ElevatedButton(
@@ -158,6 +159,21 @@ class _PayFormState extends State<PayForm> {
           ],
         );
       },
+    );
+  }
+}
+
+class NoNewLineTextInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    final String newText = newValue.text.replaceAll('\n', '');
+    return TextEditingValue(
+      text: newText,
+      selection: newValue.selection.copyWith(
+        baseOffset: newText.length,
+        extentOffset: newText.length,
+      ),
     );
   }
 }

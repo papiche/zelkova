@@ -29,7 +29,14 @@ users to manage their Ğ1 currency on their mobile device using just a browser.
 
 ## Demo
 
+This is a demo used for testing a development, please use a production server for stability:
+
 [https://g1demo.comunes.net/](https://g1demo.comunes.net/)
+
+## Ğ1nkgo in production
+
+- [https://g1nkgo.comunes.org](https://g1nkgo.comunes.org)
+- (...)
 
 ## Translations
 

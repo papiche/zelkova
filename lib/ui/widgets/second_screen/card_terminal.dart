@@ -181,6 +181,6 @@ Future<void> vibrateIfPossible() async {
       Vibration.vibrate(duration: 1000);
     }
   } catch (e) {
-    // ok we tryied...
+    // ok we tried...
   }
 }

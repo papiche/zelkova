@@ -115,7 +115,7 @@
   "form_contact_name": "Nombre",
   "form_contact_name_validation": "Por favor, ingresa un nombre",
   "form_contact_notes": "Notas",
-  "long_press_to_edit": "Mantén pulsado para editar",
+  "long_press_to_edit": "Desliza para seleccionar este contacto. Mantén pulsado para editar",
   "form_contact_pub_key": "Clave pública",
   "reloading_nodes": "Refrescando nodos del tipo {type}",
   "payment_error": "Error en el pago",

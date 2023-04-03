@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pattern_lock/pattern_lock.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '../../../data/models/transaction_cubit.dart';
@@ -92,13 +93,15 @@ class _ImportDialogState extends State<ImportDialog> {
                             return;
                           }
                           Navigator.of(context).pop(true);
-                        } catch (e) {
+                        } catch (e, stacktrace) {
                           context.replaceSnackbar(
                             content: Text(
                               tr('wrong_pattern'),
                               style: const TextStyle(color: Colors.red),
                             ),
                           );
+                          await Sentry.captureException(e,
+                              stackTrace: stacktrace);
                         }
                       },
                     ),
@@ -141,8 +144,9 @@ class _ImportDialogState extends State<ImportDialog> {
           logger(jsonString);
         }
         completer.complete(jsonString);
-      } catch (e) {
+      } catch (e, stacktrace) {
         logger('Error importing wallet $e');
+        await Sentry.captureException(e, stackTrace: stacktrace);
       }
     });
     return completer.future;

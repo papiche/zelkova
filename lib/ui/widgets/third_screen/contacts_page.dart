@@ -57,6 +57,7 @@ class _ContactsPageState extends State<ContactsPage> {
                   _contactsCubit.filterContacts(query);
                 },
               ),
+              const SizedBox(height: 20),
               if (state.filteredContacts.isEmpty)
                 const NoElements(text: 'no_contacts')
               else
@@ -67,7 +68,7 @@ class _ContactsPageState extends State<ContactsPage> {
                     final Contact contact = state.filteredContacts[index];
                     return Slidable(
                         // Specify a key if the Slidable is dismissible.
-                        key: const ValueKey<int>(0),
+                        key: ValueKey<int>(index),
 
                         // The start action pane is the one at the left or the top side.
                         startActionPane: ActionPane(

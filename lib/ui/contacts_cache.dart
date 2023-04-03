@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../data/models/contact.dart';
 import '../g1/api.dart';
@@ -42,7 +43,8 @@ class ContactsCache {
     Contact? cachedContact;
     try {
       cachedContact = await _retrieveContact(pubKey);
-    } catch (e) {
+    } catch (e, stackTrace) {
+      await Sentry.captureException(e, stackTrace: stackTrace);
       logger('Error while retrieving contact from cache: $e, $pubKey');
     }
 
@@ -78,13 +80,13 @@ class ContactsCache {
       _pendingRequests.remove(pubKey);
 
       return cachedContact;
-    } catch (e) {
+    } catch (e, stackTrace) {
       // Send error to listeners
       for (final Completer<Contact> completer in _pendingRequests[pubKey]!) {
         completer.completeError(e);
       }
       _pendingRequests.remove(pubKey);
-
+      await Sentry.captureException(e, stackTrace: stackTrace);
       rethrow;
     }
   }
@@ -123,7 +125,7 @@ class ContactsCache {
 
     if (record != null) {
       final Map<String, dynamic> typedRecord =
-          Map<String, dynamic>.from(record as Map<String, dynamic>);
+          Map<String, dynamic>.from(record as Map<dynamic, dynamic>);
       final DateTime timestamp =
           DateTime.parse(typedRecord['timestamp'] as String);
       final bool before = DateTime.now().isBefore(timestamp.add(duration));

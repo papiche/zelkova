@@ -75,7 +75,7 @@ class TransactionListItem extends StatelessWidget {
     final ContactsCubit contactsCubit = context.read<ContactsCubit>();
     return Slidable(
         // Specify a key if the Slidable is dismissible.
-        key: const ValueKey<int>(0),
+        key: ValueKey<int>(index),
         // The end action pane is the one at the right or the bottom side.
         endActionPane: ActionPane(
           motion: const ScrollMotion(),

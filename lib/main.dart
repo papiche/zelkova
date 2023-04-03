@@ -11,11 +11,11 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:once/once.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:responsive_framework/utils/scroll_behavior.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:sentry_logging/sentry_logging.dart';
 
 import 'app_bloc_observer.dart';
 import 'config/theme.dart';
@@ -107,21 +107,37 @@ void main() async {
         ),
       );
 
-  final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-
-  final String version = packageInfo.version;
-  logger('G1nkgo version: $version');
-
   if (kReleaseMode) {
     // Only use sentry in production
     await SentryFlutter.init((
       SentryFlutterOptions options,
     ) {
-      options.release = version;
-      options.environment = 'production';
-      options.beforeSend = (SentryEvent event, {dynamic hint}) {
-        return event;
-      };
+      options.tracesSampleRate = 1.0;
+      options.reportPackages = false;
+      // options.addInAppInclude('sentry_flutter_example');
+      options.considerInAppFramesByDefault = false;
+      // options.attachThreads = true;
+      // options.enableWindowMetricBreadcrumbs = true;
+      options.addIntegration(LoggingIntegration());
+      options.sendDefaultPii = true;
+      options.reportSilentFlutterErrors = true;
+      // options.attachScreenshot = true;
+      // options.screenshotQuality = SentryScreenshotQuality.low;
+      // This fails:
+      // options.attachViewHierarchy = true;
+      // We can enable Sentry debug logging during development. This is likely
+      // going to log too much for your app, but can be useful when figuring out
+      // configuration issues, e.g. finding out why your events are not uploaded.
+      options.debug = false;
+
+      options.maxRequestBodySize = MaxRequestBodySize.always;
+      options.maxResponseBodySize = MaxResponseBodySize.always;
+
+      // options.release = version;
+      // options.environment = 'production';
+      // options.beforeSend = (SentryEvent event, {dynamic hint}) {
+      //  return event;
+      //};
 
       options.dsn = "${dotenv.env['SENTRY_DSN']}";
       // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.

@@ -182,7 +182,7 @@ ListTile contactToListItem(Contact contact, int index, BuildContext context,
       contact.subtitle != null ? Text(contact.subtitle!) : null;
   return ListTile(
       title: Text(title),
-      subtitle: subtitle,
+      subtitle: subtitle ?? Container(),
       tileColor: tileColor(index, context),
       onTap: onTap,
       onLongPress: onLongPress,
@@ -203,3 +203,5 @@ bool inDevelopment() => !inProduction();
 bool onlyInProduction() => kReleaseMode;
 
 bool inProduction() => onlyInProduction();
+
+String assets(String str) => (kIsWeb && kReleaseMode) ? 'assets/$str' : str;

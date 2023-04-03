@@ -2,9 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../../data/models/cesium_card.dart';
 import '../../shared_prefs.dart';
+import '../ui_helpers.dart';
 
 class CardDrawer extends StatelessWidget {
   const CardDrawer({super.key});
@@ -12,8 +14,8 @@ class CardDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<CesiumCard> cards = SharedPreferencesHelper().cesiumCards;
-    const ImageIcon g1nkgoIcon = ImageIcon(
-      AssetImage('img/favicon.png'),
+    final ImageIcon g1nkgoIcon = ImageIcon(
+      AssetImage(assets('img/favicon.png')),
       size: 24,
     );
     return FutureBuilder<PackageInfo>(
@@ -29,11 +31,14 @@ class CardDrawer extends StatelessWidget {
                   ), */
                   child: Column(
                     children: <Widget>[
-                      Image.asset(
-                        'assets/img/logo.png',
-                        fit: BoxFit.scaleDown,
-                        height: 80.0,
-                      ),
+                      GestureDetector(
+                          onTap: () => tryCatch(),
+                          onLongPress: () => tryCatch(),
+                          child: Image.asset(
+                            'assets/img/logo.png',
+                            fit: BoxFit.scaleDown,
+                            height: 80.0,
+                          )),
                       // const SizedBox(height: 20.0),
                       /* Text(tr('app_name'),
                           style: const TextStyle(
@@ -56,6 +61,7 @@ class CardDrawer extends StatelessWidget {
                       ),
                     ),
                   ),
+                if (kReleaseMode) Expanded(child: Container()),
                 if (!kReleaseMode)
                   Expanded(
                     child: Container(
@@ -84,8 +90,7 @@ class CardDrawer extends StatelessWidget {
                 AboutListTile(
                     icon: g1nkgoIcon,
                     applicationName: tr('app_name'),
-                    applicationVersion:
-                        'Version: ${snapshot.data!.version} build: ${snapshot.data!.buildNumber}',
+                    applicationVersion: 'Version: ${snapshot.data!.version}',
                     applicationIcon: g1nkgoIcon,
                     applicationLegalese:
                         '© 2023-${DateTime.now().year} Comunes Association, under AGPLv3',
@@ -100,5 +105,13 @@ class CardDrawer extends StatelessWidget {
         }
       },
     );
+  }
+}
+
+Future<void> tryCatch() async {
+  try {
+    throw StateError('Testing sentry with try catch');
+  } catch (error, stackTrace) {
+    await Sentry.captureException(error, stackTrace: stackTrace);
   }
 }

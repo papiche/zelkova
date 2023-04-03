@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:durt/durt.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:encrypt/encrypt.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../data/models/contact.dart';
 import '../data/models/payment_state.dart';
@@ -89,7 +90,8 @@ String? parseHost(String endpointUnParsed) {
     }
     final String endpoint = '$protocol://$host$port$path'.trim();
     return endpoint;
-  } catch (e) {
+  } catch (e, stacktrace) {
+    Sentry.captureException(e, stackTrace: stacktrace);
     // Don't do this here or tests will fail
     // logger('Cannot parse endpoint $endpointUnParsed');
     return null;

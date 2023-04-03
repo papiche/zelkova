@@ -5,6 +5,7 @@ import 'package:durt/durt.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:universal_html/html.dart' show window;
 
 import '../data/models/contact.dart';
@@ -280,6 +281,7 @@ Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type) async {
     logger(
         'Fetched ${lNodes.length} ${type.name} nodes ordered by latency (first: ${lNodes.first.url})');
   } catch (e, stacktrace) {
+    await Sentry.captureException(e, stackTrace: stacktrace);
     logger('General error in fetch ${type.name} nodes: $e');
     logger(stacktrace);
     // rethrow;
@@ -324,6 +326,7 @@ Future<List<Node>> _fetchNodes(NodeType type) async {
     logger(
         'Fetched ${lNodes.length} ${type.name} nodes ordered by latency (first: ${lNodes.first.url})');
   } catch (e, stacktrace) {
+    await Sentry.captureException(e, stackTrace: stacktrace);
     logger('General error in fetch ${type.name}: $e');
     logger(stacktrace);
   }
@@ -472,6 +475,7 @@ Future<String> pay(
           ? eCause[eCause.length > 1 ? 1 : 0].split(',')[0]
           : 'Transaction failed for unknown reason';
     } catch (e, stacktrace) {
+      await Sentry.captureException(e, stackTrace: stacktrace);
       logger(e);
       logger(stacktrace);
       return "Something didn't work as expected ($e)";
@@ -534,7 +538,8 @@ Future<T?> gvaFunctionWrapper<T>(
         final T? result = await specificFunction(gva);
         return result;
       }
-    } catch (e) {
+    } catch (e, stacktrace) {
+      await Sentry.captureException(e, stackTrace: stacktrace);
       logger('Error trying ${node.url} $e');
       logger('Increasing node errors of ${node.url} (${node.errors})');
       NodeManager()

@@ -116,7 +116,7 @@
   "form_contact_name": "Name",
   "form_contact_name_validation": "Please enter a name",
   "form_contact_notes": "Notes",
-  "long_press_to_edit": "Tap and hold to edit",
+  "long_press_to_edit": "Slide to select this contact. Tap and hold to edit",
   "form_contact_pub_key": "Public key",
   "payment_error": "Payment error",
   "payment_error_desc": "Oops! the payment failed. More details: {error}",

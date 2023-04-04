@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../data/models/contact.dart';
@@ -20,7 +22,13 @@ class ContactsCache {
   Box<dynamic>? _box;
 
   Future<void> init() async {
-    _box = await Hive.openBox(_boxName);
+    if (kIsWeb) {
+      _box = await Hive.openBox(_boxName);
+    } else {
+      final Directory appDocDir = await getApplicationDocumentsDirectory();
+      final String appDocPath = appDocDir.path;
+      _box = await Hive.openBox(_boxName, path: appDocPath);
+    }
   }
 
   Future<void> dispose() async {
@@ -90,6 +98,8 @@ class ContactsCache {
       rethrow;
     }
   }
+
+  Future<void> saveContact(Contact contact) async => addContact(contact);
 
   Future<void> addContact(Contact contact) async {
     // Get the cached version of the contact, if it exists

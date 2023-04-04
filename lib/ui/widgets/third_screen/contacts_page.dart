@@ -10,6 +10,7 @@ import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
 import '../../../data/models/contact_state.dart';
 import '../../../data/models/payment_cubit.dart';
+import '../../contacts_cache.dart';
 import '../../ui_helpers.dart';
 import '../bottom_widget.dart';
 import 'contact_form.dart';
@@ -149,6 +150,7 @@ class _ContactsPageState extends State<ContactsPage> {
                                   contact: contact,
                                   onSave: (Contact c) {
                                     _contactsCubit.updateContact(c);
+                                    ContactsCache().saveContact(c);
                                   });
                             },
                           );

@@ -38,7 +38,7 @@
   "show_qr_to_client_amount": "Display this QR code with that amount to another Ğ1nkgo wallet",
   "keys_tooltip": "Public and private keys in Ğ1 and Duniter are like a lock and key system, where the public key acts as the lock that can be opened by anyone with the corresponding private key, providing a secure way to authenticate and verify transactions",
   "card_validity": "Validity",
-  "card_validity_tooltip": "Please note that this wallet is only accessible while using this specific browser and device. If you delete or reset the browser, you will lose access to this wallet and the funds stored in it.",
+  "card_validity_tooltip": "Please note that this wallet is only accessible while using this specific browser or app and device. If you delete or reset the browser or app, you will lose access to this wallet and the funds stored in it.",
   "demo_desc": "Wallet under development: please use with caution",
   "export_key": "Export your wallet",
   "import_key": "Import your wallet",
@@ -104,7 +104,7 @@
   "faq_1_title": "Can I import my Cesium account?",
   "faq_1_desc": "No, for security reasons we do not allow importing Cesium accounts. This is a pocket wallet that relies on the basic security of your mobile device, and you can use it to transfer funds or receive payments quickly for daily use. In addition, it is not designed to have Cesium membership functionality.",
   "faq_2_title": "Is this wallet secure?",
-  "faq_2_desc": "It is as secure as carrying a wallet or purse in your pocket. In other words, you use a regular bank card by taking it out of your pocket and entering a four-digit password. With this Ğ1 wallet, it's pretty much the same thing. You take out your phone, unlock it typically with a four-digit PIN, and then you can operate this wallet. Therefore, you should be just as cautious as you are with your physical wallets and purses. If you delete this browser or lose your mobile device, you may lose your funds and not be able to recover them (unless you have an exported backup copy of your wallet).",
+  "faq_2_desc": "It is as secure as carrying a wallet or purse in your pocket. In other words, you use a regular bank card by taking it out of your pocket and entering a four-digit password. With this Ğ1 wallet, it's pretty much the same thing. You take out your phone, unlock it typically with a four-digit PIN, and then you can operate this wallet. Therefore, you should be just as cautious as you are with your physical wallets and purses. If you delete this browser or app or lose your mobile device, you may lose your funds and not be able to recover them (unless you have an exported backup copy of your wallet).",
   "faq_3_title": "Why can't I add a password to the wallet?",
   "faq_3_desc": "First, adding nuclear suitcase-level security to a wallet of this type is a hassle. Second, people lose their passwords and funds all the time, which we wanted to avoid. Finally, although we could add something simpler like a PIN password or a pattern, people might repeat their mobile or credit card passwords, which could be disastrous. We believe it is safer this way.",
   "faq_4_title": "Why use something as literal as a credit card and a card reader?",
@@ -120,5 +120,9 @@
   "form_contact_pub_key": "Public key",
   "payment_error": "Payment error",
   "payment_error_desc": "Oops! the payment failed. More details: {error}",
-  "payment_error_retry": "Oops! the payment failed. Please retry in some minutes."
+  "payment_error_retry": "Oops! the payment failed. Please retry in some minutes.",
+  "error_installing_desktop": "Error installing Ğ1nkgo in your Desktop: (error: {error})",
+  "install_desktop": "Install Ğ1nkgo in Desktop",
+  "import_failed": "Wallet import failed",
+  "select_file_to_import": "Select the wallet backup"
 }

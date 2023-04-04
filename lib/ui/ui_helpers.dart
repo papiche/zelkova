@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:clipboard/clipboard.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../data/models/contact.dart';
@@ -194,14 +197,24 @@ ListTile contactToListItem(Contact contact, int index, BuildContext context,
       trailing: trailing);
 }
 
-bool showShare() => onlyInDevelopment();
+bool showShare() => onlyInDevelopment;
 
-bool onlyInDevelopment() => !inProduction();
+bool get onlyInDevelopment => !inProduction;
 
-bool inDevelopment() => !inProduction();
+bool get inDevelopment => !inProduction;
 
-bool onlyInProduction() => kReleaseMode;
+bool get onlyInProduction => kReleaseMode;
 
-bool inProduction() => onlyInProduction();
+bool get inProduction => onlyInProduction;
 
 String assets(String str) => (kIsWeb && kReleaseMode) ? 'assets/$str' : str;
+
+Future<Directory?> getAppSpecificExternalFilesDirectory(
+    [bool ext = false]) async {
+  if (ext) {
+    final Directory? appSpecificExternalFilesDir =
+        await getExternalStorageDirectory();
+    return appSpecificExternalFilesDir;
+  }
+  return getExternalStorageDirectory();
+}

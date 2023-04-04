@@ -1,15 +1,20 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:file_saver/file_saver.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:pattern_lock/pattern_lock.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs.dart';
+import '../../logger.dart';
 import '../../ui_helpers.dart';
 import 'pattern_util.dart';
 
@@ -100,13 +105,11 @@ class _ExportDialogState extends State<ExportDialog> {
     final String fileJson = jsonEncode(jsonData);
     final List<int> bytes = utf8.encode(fileJson);
 
-    final html.Blob blob = html.Blob(<dynamic>[bytes]);
-    final String url = html.Url.createObjectUrlFromBlob(blob);
-
-    final html.AnchorElement anchor = html.AnchorElement(href: url);
-    anchor.download =
-        'ginkgo-wallet-${simplifyPubKey(SharedPreferencesHelper().getPubKey())}.json';
-    anchor.click();
+    if (kIsWeb) {
+      webDownload(bytes);
+    } else {
+      saveFile(bytes);
+    }
 
     if (!mounted) {
       return;
@@ -117,5 +120,53 @@ class _ExportDialogState extends State<ExportDialog> {
         style: const TextStyle(color: Colors.red),
       ),
     );
+  }
+
+  void webDownload(List<int> bytes) {
+    final html.Blob blob = html.Blob(<dynamic>[bytes]);
+    final String url = html.Url.createObjectUrlFromBlob(blob);
+
+    final html.AnchorElement anchor = html.AnchorElement(href: url);
+    anchor.download =
+        'ginkgo-wallet-${simplifyPubKey(SharedPreferencesHelper().getPubKey())}.json';
+    anchor.click();
+  }
+
+  Future<void> saveFile(List<int> bytes) async {
+    try {
+      final Directory? externalDirectory =
+          await getAppSpecificExternalFilesDirectory(); // ensureDownloadsDirectoryExists();
+      if (externalDirectory == null) {
+        logger('Downloads directory not found');
+        return;
+      }
+      final String fileName = walletFileName();
+      final File file = File(join(externalDirectory.path, fileName));
+      await file.writeAsBytes(bytes);
+
+      logger('File saved at: ${file.path}');
+    } catch (e, stacktrace) {
+      logger('Error saving wallet file $e');
+      await Sentry.captureException(e, stackTrace: stacktrace);
+    }
+  }
+
+  Future<void> saveFileApp(List<int> bytesList) async {
+    final Uint8List bytes = Uint8List.fromList(bytesList);
+
+    final String fileName = walletFileName();
+
+    await FileSaver.instance.saveFile(
+      name: fileName,
+      bytes: bytes,
+      // 'application/json',
+      mimeType: MimeType.json,
+    );
+  }
+
+  String walletFileName() {
+    final String fileName =
+        'ginkgo-wallet-${simplifyPubKey(SharedPreferencesHelper().getPubKey())}.json';
+    return fileName;
   }
 }

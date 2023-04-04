@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +13,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:once/once.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pwa_install/pwa_install.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:responsive_framework/utils/scroll_behavior.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -37,6 +39,8 @@ import 'ui/screens/skeleton_screen.dart';
 import 'ui/ui_helpers.dart';
 
 void main() async {
+  Bloc.observer = AppBlocObserver();
+
   /// Initialize packages
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
@@ -56,9 +60,9 @@ void main() async {
   await shared.getWallet();
   assert(shared.getPubKey() != null);
 
+  await Hive.initFlutter();
+
   if (kIsWeb) {
-    // It seems is redundant
-    // await Hive.initFlutter();
     HydratedBloc.storage = await HydratedStorage.build(
         storageDirectory: HydratedStorage.webStorageDirectory);
   } else {
@@ -68,13 +72,15 @@ void main() async {
         await HydratedStorage.build(storageDirectory: tmpDir);
   }
 
-  Bloc.observer = AppBlocObserver();
-
   // Reset hive during developing
   if (!kReleaseMode) {
     // Once.clearAll();
     // await HydratedBloc.storage.clear();
   }
+
+  PWAInstall().setup(installCallback: () {
+    logger('APP INSTALLED!');
+  });
 
   void appRunner() => runApp(
         EasyLocalization(
@@ -287,43 +293,52 @@ class _GinkgoAppState extends State<GinkgoApp> {
       }, duration: const Duration(minutes: 10));
       fetchTransactions(context);
       return ConnectivityAppWrapper(
-          app: MaterialApp(
-        /// Localization is not available for the title.
-        title: 'Ğ1nkgo',
-        theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
-        darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
+          app: FilesystemPickerDefaultOptions(
+              fileTileSelectMode: FileTileSelectMode.wholeTile,
+              theme: FilesystemPickerTheme(
+                topBar: FilesystemPickerTopBarThemeData(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              child: MaterialApp(
+                /// Localization is not available for the title.
+                title: 'Ğ1nkgo',
+                theme: ThemeData(
+                    useMaterial3: true, colorScheme: lightColorScheme),
+                darkTheme:
+                    ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
 
-        /// Theme stuff
+                /// Theme stuff
 
-        /// Localization stuff
-        localizationsDelegates: context.localizationDelegates,
-        supportedLocales: context.supportedLocales,
-        locale: context.locale,
-        debugShowCheckedModeBanner: false,
-        home: context.read<AppCubit>().isIntroViewed
-            ? const SkeletonScreen()
-            : const AppIntro(),
-        builder: (BuildContext buildContext, Widget? widget) {
-          return ResponsiveWrapper.builder(
-            BouncingScrollWrapper.builder(
-                context,
-                ConnectivityWidgetWrapper(
-                  message: tr('offline'),
-                  height: 20,
-                  child: widget!,
-                )),
-            maxWidth: 480,
-            minWidth: 480,
-            // defaultScale: true,
-            breakpoints: <ResponsiveBreakpoint>[
-              const ResponsiveBreakpoint.resize(200, name: MOBILE),
-              const ResponsiveBreakpoint.resize(480, name: TABLET),
-              const ResponsiveBreakpoint.resize(1000, name: DESKTOP),
-            ],
-            background: Container(color: const Color(0xFFF5F5F5)),
-          );
-        },
-      ));
+                /// Localization stuff
+                localizationsDelegates: context.localizationDelegates,
+                supportedLocales: context.supportedLocales,
+                locale: context.locale,
+                debugShowCheckedModeBanner: false,
+                home: context.read<AppCubit>().isIntroViewed
+                    ? const SkeletonScreen()
+                    : const AppIntro(),
+                builder: (BuildContext buildContext, Widget? widget) {
+                  return ResponsiveWrapper.builder(
+                    BouncingScrollWrapper.builder(
+                        context,
+                        ConnectivityWidgetWrapper(
+                          message: tr('offline'),
+                          height: 20,
+                          child: widget!,
+                        )),
+                    maxWidth: 480,
+                    minWidth: 480,
+                    // defaultScale: true,
+                    breakpoints: <ResponsiveBreakpoint>[
+                      const ResponsiveBreakpoint.resize(200, name: MOBILE),
+                      const ResponsiveBreakpoint.resize(480, name: TABLET),
+                      const ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+                    ],
+                    background: Container(color: const Color(0xFFF5F5F5)),
+                  );
+                },
+              )));
     });
   }
 }

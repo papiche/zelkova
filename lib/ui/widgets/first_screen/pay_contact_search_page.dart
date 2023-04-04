@@ -46,12 +46,16 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
     setState(() {
       _isLoading = true;
     });
-
-    final Response cPlusResponse = await searchCPlusUser(_searchTerm);
+    final ContactsCubit contactsCubit = context.read<ContactsCubit>();
 
     setState(() {
-      _results = <Contact>[];
+      _results = contactsCubit.search(_searchTerm);
+      if (inDevelopment) {
+        logger('Found: ${_results.length} in contacts');
+      }
     });
+
+    final Response cPlusResponse = await searchCPlusUser(_searchTerm);
 
     if (cPlusResponse.statusCode != 404) {
       setState(() {
@@ -185,7 +189,7 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
               },
             ),
             if (_isLoading)
-              const LoadingBox()
+              const LoadingBox(simple: false)
             else if (_searchTerm.isNotEmpty && _results.isEmpty && _isLoading)
               const NoElements(text: 'nothing_found')
             else

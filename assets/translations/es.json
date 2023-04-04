@@ -120,5 +120,9 @@
   "reloading_nodes": "Refrescando nodos del tipo {type}",
   "payment_error": "Error en el pago",
   "payment_error_desc": "¡Vaya! el pago falló. Más detalles: {error}",
-  "payment_error_retry": "¡Vaya! el pago falló. Inténtalo de nuevo en unos minutos"
+  "payment_error_retry": "¡Vaya! el pago falló. Inténtalo de nuevo en unos minutos",
+  "error_installing_desktop": "Error al instalar Ğ1nkgo en Desktop (error: {error})",
+  "install_desktop": "Instalar Ğ1nkgo en tu Desktop",
+  "import_failed": "Error al importar monedero",
+  "select_file_to_import": "Selecciona el monedero guadado"
 }

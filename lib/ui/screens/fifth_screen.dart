@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pwa_install/pwa_install.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../data/models/app_cubit.dart';
@@ -24,7 +25,8 @@ class FifthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppState>(
-        builder: (BuildContext context, AppState state) => Scaffold(
+        builder: (BuildContext context, AppState state) =>
+            Scaffold(
               appBar: AppBar(title: Text(tr('bottom_nav_fifth'))),
               drawer: const CardDrawer(),
               body: ListView(
@@ -87,13 +89,35 @@ class FifthScreen extends StatelessWidget {
                             GridItem(
                                 title: 'share_your_key',
                                 icon: Icons.share,
-                                onTap: () => Share.share(
-                                    SharedPreferencesHelper().getPubKey())),
+                                onTap: () =>
+                                    Share.share(
+                                        SharedPreferencesHelper().getPubKey())),
                           GridItem(
                             title: 'copy_your_key',
                             icon: Icons.copy,
                             onTap: () => copyPublicKeyToClipboard(context),
                           ),
+                          if (PWAInstall().installPromptEnabled)
+                            GridItem(
+                              title: 'install_desktop',
+                              icon: Icons.install_desktop,
+                              onTap: () {
+                                try {
+                                  PWAInstall().promptInstall_();
+                                } catch (e) {
+                                  final String error = e.toString();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(tr(
+                                          'error_installing_desktop',
+                                          namedArgs: <String, String>{
+                                            'error': error
+                                          })),
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
                           GridItem(
                               title: 'export_key',
                               icon: Icons.download,
@@ -116,6 +140,7 @@ class FifthScreen extends StatelessWidget {
                                   },
                                 );
                               }),
+
                         ]),
                     if (state.expertMode)
                       const TextDivider(text: 'technical_info_title'),
@@ -130,7 +155,7 @@ class FifthScreen extends StatelessWidget {
                           title: 'code_card_title',
                           icon: Icons.code_rounded,
                           url:
-                              Uri.parse('https://git.duniter.org/vjrj/ginkgo')),
+                          Uri.parse('https://git.duniter.org/vjrj/ginkgo')),
                     const BottomWidget(),
                     SwitchListTile(
                       title: Text(tr('expert_mode')),

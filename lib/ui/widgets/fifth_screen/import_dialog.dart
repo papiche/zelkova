@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +17,6 @@ import '../../../shared_prefs.dart';
 import '../../logger.dart';
 import '../../ui_helpers.dart';
 import '../custom_error_widget.dart';
-import '../loading_box.dart';
 import 'pattern_util.dart';
 
 class ImportDialog extends StatefulWidget {
@@ -31,9 +32,11 @@ class _ImportDialogState extends State<ImportDialog> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<String>(
-        future: _importWallet(),
+        future: kIsWeb ? _importWalletWeb() : _importWallet(context),
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasData &&
+              snapshot.data != null &&
+              snapshot.data!.isNotEmpty) {
             final String keyEncString = snapshot.data!;
             final Map<String, dynamic> keyJson =
                 jsonDecode(keyEncString) as Map<String, dynamic>;
@@ -112,12 +115,65 @@ class _ImportDialogState extends State<ImportDialog> {
           } else if (snapshot.hasError) {
             return CustomErrorWidget(snapshot.error);
           } else {
-            return const LoadingBox();
+            return CustomErrorWidget(tr('import_failed'));
           }
         });
   }
 
-  Future<String> _importWallet() async {
+  Future<String> _importWallet(BuildContext context) async {
+    try {
+      // Use file_picker to pick a file
+
+      /* final bool hasPermission = await requestStoragePermission(context);
+
+      if (hasPermission == null || !hasPermission) {
+        logger('No permission to access storage');
+        return '';
+      }*/
+
+      final Directory? appDocDir = await getAppSpecificExternalFilesDirectory();
+      if (appDocDir == null) {
+        return '';
+      }
+      logger('appDocDir: ${appDocDir.path}');
+
+      if (!mounted) {
+        return '';
+      }
+
+      final String? filePath = await FilesystemPicker.openDialog(
+        title: tr('select_file_to_import'),
+        context: context,
+        rootDirectory: appDocDir,
+        fsType: FilesystemType.file,
+        allowedExtensions: <String>['.json'],
+        // requestPermission: () async => _requestStoragePermission(context),
+        fileTileSelectMode: FileTileSelectMode.wholeTile,
+      );
+
+      if (filePath == null || filePath.isEmpty) {
+        return '';
+      }
+
+      final File file = File(filePath);
+      final String jsonString = await file.readAsString();
+
+      // Log the content if not in release mode
+      if (!kReleaseMode) {
+        logger(jsonString);
+      }
+
+      return jsonString;
+    } catch (e, stacktrace) {
+      logger('Error importing wallet $e');
+      await Sentry.captureException(e, stackTrace: stacktrace);
+      // Handle the exception using Sentry or any other error reporting tool
+      // await Sentry.captureException(e, stackTrace: stacktrace);
+      return '';
+    }
+  }
+
+  Future<String> _importWalletWeb() async {
     final Completer<String> completer = Completer<String>();
     final html.InputElement input = html.InputElement()..type = 'file';
 
@@ -147,6 +203,7 @@ class _ImportDialogState extends State<ImportDialog> {
       } catch (e, stacktrace) {
         logger('Error importing wallet $e');
         await Sentry.captureException(e, stackTrace: stacktrace);
+        completer.complete('');
       }
     });
     return completer.future;

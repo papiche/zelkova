@@ -43,9 +43,15 @@ Future<Response> getPeers() async {
 }
 
 Future<Response> searchCPlusUser(String searchTerm) async {
-  final Response response = await requestCPlusWithRetry(
-      '/user/profile/_search?q=title:$searchTerm OR issuer:$searchTerm',
-      retryWith404: false);
+  final String searchTermLower = searchTerm.toLowerCase();
+  final String searchTermCapitalized =
+      searchTermLower[0].toUpperCase() + searchTermLower.substring(1);
+
+  final String query =
+      '/user/profile/_search?q=title:$searchTermLower OR issuer:$searchTerm OR title:$searchTermCapitalized OR title:$searchTerm';
+
+  final Response response =
+      await requestCPlusWithRetry(query, retryWith404: false);
   return response;
 }
 
@@ -498,7 +504,7 @@ String getGvaNode() {
 }
 
 String proxyfyNode(String nodeUrl) {
-  final String url = inProduction()
+  final String url = inProduction && kIsWeb
       ? '${window.location.protocol}//${window.location.hostname}/proxy/${nodeUrl.replaceFirst('https://', '').replaceFirst('http://', '')}/'
       : nodeUrl;
   return url;

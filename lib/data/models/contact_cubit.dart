@@ -55,23 +55,40 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
   }
 
   void filterContacts(String query) {
+    final List<Contact> contacts = search(query);
+    emit(state.copyWith(filteredContacts: contacts));
+  }
+
+  List<Contact> search(String query) {
+    final String queryLower = query.toLowerCase();
+    final String queryUpper =
+        queryLower[0].toUpperCase() + queryLower.substring(1);
     final List<Contact> contacts = state.contacts.where((Contact c) {
       if (c.pubKey.contains(query)) {
         return true;
       }
-      if (c.nick != null && c.nick!.contains(query)) {
+      if (c.nick != null &&
+          containsLowerOrUpper(c.nick!, query, queryLower, queryUpper)) {
         return true;
       }
-      if (c.name != null && c.name!.contains(query)) {
+      if (c.name != null &&
+          containsLowerOrUpper(c.name!, query, queryLower, queryUpper)) {
         return true;
       }
-      if (c.notes != null && c.notes!.contains(query)) {
+      if (c.notes != null &&
+          containsLowerOrUpper(c.notes!, query, queryLower, queryUpper)) {
         return true;
       }
       return false;
     }).toList();
-    emit(state.copyWith(filteredContacts: contacts));
+    return contacts;
   }
+
+  bool containsLowerOrUpper(String text, String query, String queryLower,
+      String queryUpper) =>
+      text.contains(query) ||
+          text.contains(queryLower) ||
+          text.contains(queryUpper);
 
   List<Contact> get contacts => state.contacts;
 
@@ -79,17 +96,22 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
 
   @override
   ContactsState fromJson(Map<String, dynamic> json) {
-    final List<dynamic> contactsJson = json['contacts'] as List<dynamic>;
-    final List<Contact> contacts = contactsJson
-        .map((dynamic c) => Contact.fromJson(c as Map<String, dynamic>))
-        .toList();
-    return ContactsState(contacts: contacts);
+    final dynamic cJson = json['contacts'];
+    if (cJson == null) {
+      return const ContactsState();
+    } else {
+      final List<dynamic> contactsJson = cJson as List<dynamic>;
+      final List<Contact> contacts = contactsJson
+          .map((dynamic c) => Contact.fromJson(c as Map<String, dynamic>))
+          .toList();
+      return ContactsState(contacts: contacts);
+    }
   }
 
   @override
   Map<String, dynamic> toJson(ContactsState state) {
     final List<Map<String, dynamic>> contactsJson =
-        state.contacts.map((Contact c) => c.toJson()).toList();
+    state.contacts.map((Contact c) => c.toJson()).toList();
     return <String, dynamic>{'contacts': contactsJson};
   }
 

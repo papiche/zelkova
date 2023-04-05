@@ -124,5 +124,6 @@
   "error_installing_desktop": "Error installing Ğ1nkgo in your Desktop: (error: {error})",
   "install_desktop": "Install Ğ1nkgo in Desktop",
   "import_failed": "Wallet import failed",
-  "select_file_to_import": "Select the wallet backup"
+  "select_file_to_import": "Select the wallet backup",
+  "You can't send money to yourself.": "You can't send money to yourself."
 }

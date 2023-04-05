@@ -31,11 +31,11 @@
   "no_internet": "Sin conexión a internet",
   "skip": "Omitir",
   "start": "Comenzar",
-  "offline": "¡Está desconectad@!",
+  "offline": "¡Estás desconectad@!",
   "online_terminal": "En línea",
   "offline_terminal": "Fuera de línea",
-  "show_qr_to_client": "Muestre su clave pública a su clientæ",
-  "show_qr_to_client_amount": "Muestre este QR con esa cantidad a otro monedero Ğ1nkgo",
+  "show_qr_to_client": "Muestra su clave pública a su clientæ",
+  "show_qr_to_client_amount": "Muestra este QR con esa cantidad a otro monedero Ğ1nkgo",
   "keys_tooltip": "Las claves públicas y privadas en Ğ1 y Duniter son como un sistema de cerradura y llave, donde la clave pública actúa como la cerradura que puede ser abierta por cualquiera que tenga la clave privada correspondiente, proporcionando una forma segura de autenticar y verificar transacciones",
   "card_validity": "Validez",
   "card_validity_tooltip": "Tenga en cuenta que este monedero solo es accesible mientras utiliza este navegador y este dispositivo específico. Si borra o restablece el navegador, perderá el acceso a este monedero y los fondos almacenados en el.",
@@ -124,5 +124,6 @@
   "error_installing_desktop": "Error al instalar Ğ1nkgo en Desktop (error: {error})",
   "install_desktop": "Instalar Ğ1nkgo en tu Desktop",
   "import_failed": "Error al importar monedero",
-  "select_file_to_import": "Selecciona el monedero guadado"
+  "select_file_to_import": "Selecciona el monedero guadado",
+  "You can't send money to yourself.": "No puedes enviarte dinero a ti mismo/a."
 }

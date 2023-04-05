@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
@@ -22,13 +23,18 @@ class ContactsCache {
   Box<dynamic>? _box;
 
   Future<void> init() async {
-    if (kIsWeb) {
-      _box = await Hive.openBox(_boxName);
-    } else {
-      final Directory appDocDir = await getApplicationDocumentsDirectory();
-      final String appDocPath = appDocDir.path;
-      _box = await Hive.openBox(_boxName, path: appDocPath);
+    try {
+      if (kIsWeb) {
+        _box = await Hive.openBox(_boxName);
+      } else {
+        final Directory appDocDir = await getApplicationDocumentsDirectory();
+        final String appDocPath = appDocDir.path;
+        _box = await Hive.openBox(_boxName, path: appDocPath);
+      }
+    } catch (e) {
+      logger('Error opening Hive: $e');
     }
+    _box ??= _MemoryFallbackBox<Contact>();
   }
 
   Future<void> dispose() async {
@@ -37,9 +43,9 @@ class ContactsCache {
 
   static ContactsCache? _instance;
   final Map<String, List<Completer<Contact>>> _pendingRequests =
-      <String, List<Completer<Contact>>>{};
+  <String, List<Completer<Contact>>>{};
   static Duration duration =
-      kReleaseMode ? const Duration(days: 3) : const Duration(hours: 5);
+  kReleaseMode ? const Duration(days: 3) : const Duration(hours: 5);
 
   final String _boxName = 'contacts_cache';
 
@@ -135,9 +141,9 @@ class ContactsCache {
 
     if (record != null) {
       final Map<String, dynamic> typedRecord =
-          Map<String, dynamic>.from(record as Map<dynamic, dynamic>);
+      Map<String, dynamic>.from(record as Map<dynamic, dynamic>);
       final DateTime timestamp =
-          DateTime.parse(typedRecord['timestamp'] as String);
+      DateTime.parse(typedRecord['timestamp'] as String);
       final bool before = DateTime.now().isBefore(timestamp.add(duration));
       if (before) {
         final Contact contact = Contact.fromJson(
@@ -147,4 +153,148 @@ class ContactsCache {
     }
     return null;
   }
+}
+
+class _MemoryFallbackBox<E> extends Box<E> {
+  final Map<String, dynamic> _storage = HashMap<String, dynamic>();
+
+  @override
+  String get name => '_memory_fallback_box';
+
+  @override
+  bool get isOpen => true;
+
+  @override
+  String? get path => null;
+
+  @override
+  bool get lazy => false;
+
+  @override
+  Iterable<dynamic> get keys => _storage.keys;
+
+  @override
+  int get length => _storage.length;
+
+  @override
+  bool get isEmpty => _storage.isEmpty;
+
+  @override
+  bool get isNotEmpty => _storage.isNotEmpty;
+
+  @override
+  dynamic keyAt(int index) {
+    return _storage.keys.elementAt(index);
+  }
+
+  @override
+  Stream<BoxEvent> watch({dynamic key}) {
+    throw UnimplementedError('watch() is not supported in _MemoryFallbackBox');
+  }
+
+  @override
+  bool containsKey(dynamic key) {
+    return _storage.containsKey(key);
+  }
+
+  @override
+  Future<void> put(dynamic key, E value) async {
+    _storage[key as String] = value;
+  }
+
+  @override
+  Future<void> putAt(int index, E value) async {
+    _storage[_storage.keys.elementAt(index)] = value;
+  }
+
+  @override
+  Future<void> putAll(Map<dynamic, E> entries) async {
+    _storage.addAll(entries as Map<String, dynamic>);
+  }
+
+  @override
+  Future<int> add(E value) async {
+    throw UnimplementedError('add() is not supported in _MemoryFallbackBox');
+  }
+
+  @override
+  Future<Iterable<int>> addAll(Iterable<E> values) async {
+    throw UnimplementedError('addAll() is not supported in _MemoryFallbackBox');
+  }
+
+  @override
+  Future<void> delete(dynamic key) async {
+    _storage.remove(key);
+  }
+
+  @override
+  Future<void> deleteAt(int index) async {
+    _storage.remove(_storage.keys.elementAt(index));
+  }
+
+  @override
+  Future<void> deleteAll(Iterable<dynamic> keys) async {
+    // ignore: prefer_foreach
+    for (final dynamic key in keys) {
+      _storage.remove(key);
+    }
+  }
+
+  @override
+  Future<void> compact() async {}
+
+  @override
+  Future<int> clear() async {
+    final int count = _storage.length;
+    _storage.clear();
+    return count;
+  }
+
+  @override
+  Future<void> close() async {}
+
+  @override
+  Future<void> deleteFromDisk() async {}
+
+  @override
+  Future<void> flush() async {}
+
+  @override
+  E? get(dynamic key, {E? defaultValue}) {
+    return _storage.containsKey(key) ? _storage[key] as E : defaultValue;
+  }
+
+  @override
+  E? getAt(int index) {
+    return _storage.values.elementAt(index) as E?;
+  }
+
+  @override
+  Map<dynamic, E> toMap() {
+    return Map<dynamic, E>.from(_storage);
+  }
+
+  @override
+  Iterable<E> get values => _storage.values.cast<E>();
+
+  @override
+  Iterable<E> valuesBetween({dynamic startKey, dynamic endKey}) {
+    if (startKey == null && endKey == null) {
+      return values;
+    }
+
+    final int startIndex = startKey != null ? _storage.keys.toList().indexOf(
+        startKey as String) : 0;
+    final int endIndex = endKey != null ? _storage.keys.toList().indexOf(
+        endKey as String) : _storage.length - 1;
+
+    if (startIndex < 0 || endIndex < 0) {
+      throw ArgumentError('Start key or end key not found in the box.');
+    }
+
+    return _storage.values.skip(startIndex)
+        .take(endIndex - startIndex + 1)
+        .cast<E>();
+  }
+
 }

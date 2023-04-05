@@ -148,10 +148,11 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
                   if (_results.length == 1 && pay != null) {
                     final Contact contact = _results[0];
                     paymentCubit.selectUser(contact, pay.amount);
-                  } else if (pay!.amount != null) {
-                    paymentCubit.selectKeyAmount(pay.contact!, pay.amount!);
-                  } else {
-                    paymentCubit.selectKey(pay.contact);
+                    if (pay.amount != null) {
+                      paymentCubit.selectKeyAmount(contact, pay.amount!);
+                    } else {
+                      paymentCubit.selectKey(contact);
+                    }
                   }
                   if (!mounted) {
                     return;

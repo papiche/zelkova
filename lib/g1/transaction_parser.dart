@@ -33,7 +33,7 @@ TransactionsAndBalanceState transactionParser(String txData) {
       balance = balance -= amount;
     }
     final DateTime txDate =
-        DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+        DateTime.fromMillisecondsSinceEpoch(timestamp * 1000, isUtc: true);
     /* if (!kReleaseMode) {
       logger('Timestamp: $timestamp');
       logger('Fecha: $txDate');

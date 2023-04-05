@@ -197,7 +197,7 @@ ListTile contactToListItem(Contact contact, int index, BuildContext context,
       trailing: trailing);
 }
 
-bool showShare() => onlyInDevelopment;
+bool showShare() => onlyInDevelopment || !kIsWeb;
 
 bool get onlyInDevelopment => !inProduction;
 
@@ -207,7 +207,10 @@ bool get onlyInProduction => kReleaseMode;
 
 bool get inProduction => onlyInProduction;
 
-String assets(String str) => (kIsWeb && kReleaseMode) ? 'assets/$str' : str;
+String assets(String str) =>
+    (kIsWeb && kReleaseMode) || (!kIsWeb && Platform.isAndroid)
+        ? 'assets/$str'
+        : str;
 
 Future<Directory?> getAppSpecificExternalFilesDirectory(
     [bool ext = false]) async {

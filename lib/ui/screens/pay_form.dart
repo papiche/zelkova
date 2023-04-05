@@ -1,3 +1,4 @@
+import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,20 @@ class _PayFormState extends State<PayForm> {
       if (state.comment != null && _commentController.text != state.comment) {
         _commentController.text = state.comment;
       }
+      final ButtonStyle payBtnStyle = ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        foregroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        textStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+      );
+      final Widget payBtnText = Text(tr('g1_form_pay_send') +
+          (!kReleaseMode ? ' ${state.amount} ${state.comment}' : ''));
       return Form(
         key: _formKey,
         child: Column(
@@ -70,49 +85,45 @@ class _PayFormState extends State<PayForm> {
               },
             ),
             const SizedBox(height: 10.0),
-            ElevatedButton(
-              onPressed: (!state.canBeSent() ||
-                      state.amount == null ||
-                      !_commentValidate() ||
-                      !_weHaveBalance(context, state.amount!))
-                  ? null
-                  : () async {
-                      try {
-                        await payWithRetry(context, state, false);
-                      } on RetryException {
-                        // Here the transactions can be lost, so we must implement some manual retry use
-                        await payWithRetry(context, state, true);
-                      }
-                    },
-              style: ElevatedButton.styleFrom(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
+            ConnectivityWidgetWrapper(
+                stacked: false,
+                offlineWidget: ElevatedButton(
+                  onPressed: null,
+                  style: payBtnStyle,
+                  child: _buildBtn(Text(tr('offline'))),
                 ),
-                foregroundColor: Colors.white,
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                textStyle: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const Icon(Icons.send),
-                  const SizedBox(width: 10),
-                  Text(tr('g1_form_pay_send') +
-                      (!kReleaseMode
-                          ? ' ${state.amount} ${state.comment}'
-                          : '')),
-                ],
-              ),
-            )
+                child: ElevatedButton(
+                  onPressed: (!state.canBeSent() ||
+                          state.amount == null ||
+                          !_commentValidate() ||
+                          !_weHaveBalance(context, state.amount!))
+                      ? null
+                      : () async {
+                          try {
+                            await payWithRetry(context, state, false);
+                          } on RetryException {
+                            // Here the transactions can be lost, so we must implement some manual retry use
+                            await payWithRetry(context, state, true);
+                          }
+                        },
+                  style: payBtnStyle,
+                  child: _buildBtn(payBtnText),
+                ))
           ],
         ),
       );
     });
+  }
+
+  Row _buildBtn(Widget payBtnText) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        const Icon(Icons.send),
+        const SizedBox(width: 10),
+        payBtnText,
+      ],
+    );
   }
 
   bool _commentValidate() {

@@ -221,3 +221,10 @@ Future<Directory?> getAppSpecificExternalFilesDirectory(
   }
   return getExternalStorageDirectory();
 }
+
+ImageIcon get g1nkgoIcon => ImageIcon(
+      AssetImage(ginkgoIconLocation),
+      size: 24,
+    );
+
+String get ginkgoIconLocation => assets('img/favicon.png');

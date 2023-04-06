@@ -10,7 +10,7 @@ import '../widgets/bottom_widget.dart';
 import '../widgets/card_drawer.dart';
 import '../widgets/first_screen/credit_card.dart';
 import '../widgets/first_screen/pay_contact_search_button.dart';
-import 'pay_form.dart';
+import '../widgets/first_screen/pay_form.dart';
 
 class FirstScreen extends StatefulWidget {
   const FirstScreen({super.key});

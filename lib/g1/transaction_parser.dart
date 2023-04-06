@@ -89,8 +89,26 @@ TransactionsAndBalanceState transactionsGvaParser(Map<String, dynamic> txData) {
         sendingRaw as Map<String, dynamic>, TransactionType.sending);
     txs.insert(0, tx);
   }
+  DateTime? lastSent;
+  DateTime? lastReceived;
+  for (final Transaction tx in txs) {
+    if (tx.type == TransactionType.received && lastReceived == null) {
+      lastReceived = tx.time;
+    }
+    if (tx.type == TransactionType.sent && lastSent == null) {
+      lastSent = tx.time;
+    }
+    if (lastSent != null && lastReceived != null) {
+      break;
+    }
+  }
+
   return TransactionsAndBalanceState(
-      transactions: txs, balance: amount, lastChecked: DateTime.now());
+      transactions: txs,
+      balance: amount,
+      lastChecked: DateTime.now(),
+      lastReceived: lastReceived,
+      lastSent: lastSent);
 }
 
 Transaction _transactionGvaParser(Map<String, dynamic> edge) {

@@ -71,6 +71,7 @@ dependencies:
   filesystem_picker: ^3.1.0
   path: ^1.8.2
   path_provider: ^2.0.14
+  awesome_notifications: ^0.7.4+1
 
 dev_dependencies:
   flutter_test:

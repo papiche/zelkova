@@ -32,6 +32,7 @@ import 'data/models/node_type.dart';
 import 'data/models/payment_cubit.dart';
 import 'data/models/transaction_cubit.dart';
 import 'g1/api.dart';
+import 'notification_controller.dart';
 import 'shared_prefs.dart';
 import 'ui/contacts_cache.dart';
 import 'ui/logger.dart';
@@ -40,6 +41,7 @@ import 'ui/ui_helpers.dart';
 
 void main() async {
   Bloc.observer = AppBlocObserver();
+  await NotificationController.initializeLocalNotifications();
 
   /// Initialize packages
   WidgetsFlutterBinding.ensureInitialized();
@@ -237,6 +239,10 @@ PageViewModel createPageViewModel(
 class GinkgoApp extends StatefulWidget {
   const GinkgoApp({super.key});
 
+  // The navigator key is necessary to navigate using static methods
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
+
   @override
   State<GinkgoApp> createState() => _GinkgoAppState();
 }
@@ -268,6 +274,8 @@ class _GinkgoAppState extends State<GinkgoApp> {
     super.initState();
     ContactsCache().init();
     NodeManager().loadFromCubit(context.read<NodeListCubit>());
+    // Only after at least the action method is set, the notification events are delivered
+    NotificationController.startListeningNotificationEvents();
   }
 
   @override
@@ -307,6 +315,8 @@ class _GinkgoAppState extends State<GinkgoApp> {
                     useMaterial3: true, colorScheme: lightColorScheme),
                 darkTheme:
                     ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
+
+                navigatorKey: GinkgoApp.navigatorKey,
 
                 /// Theme stuff
 

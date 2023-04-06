@@ -2,6 +2,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import '../../../g1/api.dart';
 import '../../../g1/transaction_parser.dart';
+import '../../notification_controller.dart';
 import '../../shared_prefs.dart';
 import '../../ui/logger.dart';
 import 'node_list_cubit.dart';
@@ -41,6 +42,16 @@ class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
         transactions: state.transactions,
         balance: state.balance,
         lastChecked: state.lastChecked));
+    final DateTime? lastReceived = state.lastReceived;
+    final DateTime lastReceivedNotification =
+        state.lastReceivedNotif ?? DateTime(1970);
+    // final DateTime? lastSent = transBalanceState.lastSent;
+    if (lastReceived != null &&
+        lastReceivedNotification.compareTo(lastReceived) == 1) {
+      // Notify
+      NotificationController.createNewNotification(
+          lastReceived.millisecondsSinceEpoch.toString());
+    }
   }
 
   @override

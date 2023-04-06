@@ -161,6 +161,12 @@ abstract class _$TransactionsAndBalanceStateCWProxy {
 
   TransactionsAndBalanceState lastChecked(DateTime lastChecked);
 
+  TransactionsAndBalanceState lastSent(DateTime? lastSent);
+
+  TransactionsAndBalanceState lastReceived(DateTime? lastReceived);
+
+  TransactionsAndBalanceState lastReceivedNotif(DateTime? lastReceivedNotif);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `TransactionsAndBalanceState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -171,6 +177,9 @@ abstract class _$TransactionsAndBalanceStateCWProxy {
     List<Transaction>? transactions,
     double? balance,
     DateTime? lastChecked,
+    DateTime? lastSent,
+    DateTime? lastReceived,
+    DateTime? lastReceivedNotif,
   });
 }
 
@@ -193,6 +202,18 @@ class _$TransactionsAndBalanceStateCWProxyImpl
       this(lastChecked: lastChecked);
 
   @override
+  TransactionsAndBalanceState lastSent(DateTime? lastSent) =>
+      this(lastSent: lastSent);
+
+  @override
+  TransactionsAndBalanceState lastReceived(DateTime? lastReceived) =>
+      this(lastReceived: lastReceived);
+
+  @override
+  TransactionsAndBalanceState lastReceivedNotif(DateTime? lastReceivedNotif) =>
+      this(lastReceivedNotif: lastReceivedNotif);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `TransactionsAndBalanceState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -204,6 +225,9 @@ class _$TransactionsAndBalanceStateCWProxyImpl
     Object? transactions = const $CopyWithPlaceholder(),
     Object? balance = const $CopyWithPlaceholder(),
     Object? lastChecked = const $CopyWithPlaceholder(),
+    Object? lastSent = const $CopyWithPlaceholder(),
+    Object? lastReceived = const $CopyWithPlaceholder(),
+    Object? lastReceivedNotif = const $CopyWithPlaceholder(),
   }) {
     return TransactionsAndBalanceState(
       transactions:
@@ -220,6 +244,18 @@ class _$TransactionsAndBalanceStateCWProxyImpl
               ? _value.lastChecked
               // ignore: cast_nullable_to_non_nullable
               : lastChecked as DateTime,
+      lastSent: lastSent == const $CopyWithPlaceholder()
+          ? _value.lastSent
+          // ignore: cast_nullable_to_non_nullable
+          : lastSent as DateTime?,
+      lastReceived: lastReceived == const $CopyWithPlaceholder()
+          ? _value.lastReceived
+          // ignore: cast_nullable_to_non_nullable
+          : lastReceived as DateTime?,
+      lastReceivedNotif: lastReceivedNotif == const $CopyWithPlaceholder()
+          ? _value.lastReceivedNotif
+          // ignore: cast_nullable_to_non_nullable
+          : lastReceivedNotif as DateTime?,
     );
   }
 }
@@ -278,6 +314,15 @@ TransactionsAndBalanceState _$TransactionsAndBalanceStateFromJson(
           .toList(),
       balance: (json['balance'] as num).toDouble(),
       lastChecked: DateTime.parse(json['lastChecked'] as String),
+      lastSent: json['lastSent'] == null
+          ? null
+          : DateTime.parse(json['lastSent'] as String),
+      lastReceived: json['lastReceived'] == null
+          ? null
+          : DateTime.parse(json['lastReceived'] as String),
+      lastReceivedNotif: json['lastReceivedNotif'] == null
+          ? null
+          : DateTime.parse(json['lastReceivedNotif'] as String),
     );
 
 Map<String, dynamic> _$TransactionsAndBalanceStateToJson(
@@ -286,4 +331,7 @@ Map<String, dynamic> _$TransactionsAndBalanceStateToJson(
       'transactions': instance.transactions,
       'balance': instance.balance,
       'lastChecked': instance.lastChecked.toIso8601String(),
+      'lastSent': instance.lastSent?.toIso8601String(),
+      'lastReceived': instance.lastReceived?.toIso8601String(),
+      'lastReceivedNotif': instance.lastReceivedNotif?.toIso8601String(),
     };

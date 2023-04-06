@@ -125,5 +125,11 @@
   "install_desktop": "Install Ğ1nkgo in Desktop",
   "import_failed": "Wallet import failed",
   "select_file_to_import": "Select the wallet backup",
-  "You can't send money to yourself.": "You can't send money to yourself."
+  "You can't send money to yourself.": "You can't send money to yourself.",
+  "request_notifications_perms": "Get Notified with new payments",
+  "allow_notifications_desc": "Allow Ğ1nkgo to notify you with new payments",
+  "allow_notifications_btn": "ALLOW",
+  "deny_notifications_btn": "DENY",
+  "notification_new_payment_title": "New payment",
+  "notification_new_payment_desc": "You have received a new Ğ1 payment"
 }

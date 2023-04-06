@@ -138,7 +138,7 @@ to [ios/Runner/Info.plist](./ios/Runner/Info.plist) and update the following cod
 
 ## Credits
 
-- Ğ1 logo from duniter.org used in the card
+- Ğ1 logos from duniter.org
 - undraw intro images: https://undraw.co/license
 - Chipcard https://commons.wikimedia.org/wiki/File:Chipcard.svg under the Creative Commons
   Attribution-Share Alike 3.0 Unported license.

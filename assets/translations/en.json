@@ -131,5 +131,6 @@
   "allow_notifications_btn": "ALLOW",
   "deny_notifications_btn": "DENY",
   "notification_new_payment_title": "New payment",
-  "notification_new_payment_desc": "You have received a new Ğ1 payment"
+  "notification_open": "OPEN",
+  "notification_new_payment_desc": "You have received a {amount} payment"
 }

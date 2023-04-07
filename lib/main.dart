@@ -298,7 +298,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
       }, duration: const Duration(minutes: 90));
       Once.runCustom('fetch_transactions', callback: () {
         fetchTransactions(context);
-      }, duration: const Duration(minutes: 10));
+      }, duration: const Duration(minutes: kReleaseMode ? 10 : 2));
       fetchTransactions(context);
       return ConnectivityAppWrapper(
           app: FilesystemPickerDefaultOptions(
@@ -329,6 +329,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
                     ? const SkeletonScreen()
                     : const AppIntro(),
                 builder: (BuildContext buildContext, Widget? widget) {
+                  NotificationController.locale = context.locale;
                   return ResponsiveWrapper.builder(
                     BouncingScrollWrapper.builder(
                         context,

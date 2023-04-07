@@ -163,6 +163,8 @@ abstract class _$TransactionsAndBalanceStateCWProxy {
 
   TransactionsAndBalanceState lastSent(DateTime? lastSent);
 
+  TransactionsAndBalanceState lastReceivedAmount(double? lastReceivedAmount);
+
   TransactionsAndBalanceState lastReceived(DateTime? lastReceived);
 
   TransactionsAndBalanceState lastReceivedNotif(DateTime? lastReceivedNotif);
@@ -178,6 +180,7 @@ abstract class _$TransactionsAndBalanceStateCWProxy {
     double? balance,
     DateTime? lastChecked,
     DateTime? lastSent,
+    double? lastReceivedAmount,
     DateTime? lastReceived,
     DateTime? lastReceivedNotif,
   });
@@ -206,6 +209,10 @@ class _$TransactionsAndBalanceStateCWProxyImpl
       this(lastSent: lastSent);
 
   @override
+  TransactionsAndBalanceState lastReceivedAmount(double? lastReceivedAmount) =>
+      this(lastReceivedAmount: lastReceivedAmount);
+
+  @override
   TransactionsAndBalanceState lastReceived(DateTime? lastReceived) =>
       this(lastReceived: lastReceived);
 
@@ -226,6 +233,7 @@ class _$TransactionsAndBalanceStateCWProxyImpl
     Object? balance = const $CopyWithPlaceholder(),
     Object? lastChecked = const $CopyWithPlaceholder(),
     Object? lastSent = const $CopyWithPlaceholder(),
+    Object? lastReceivedAmount = const $CopyWithPlaceholder(),
     Object? lastReceived = const $CopyWithPlaceholder(),
     Object? lastReceivedNotif = const $CopyWithPlaceholder(),
   }) {
@@ -248,6 +256,10 @@ class _$TransactionsAndBalanceStateCWProxyImpl
           ? _value.lastSent
           // ignore: cast_nullable_to_non_nullable
           : lastSent as DateTime?,
+      lastReceivedAmount: lastReceivedAmount == const $CopyWithPlaceholder()
+          ? _value.lastReceivedAmount
+          // ignore: cast_nullable_to_non_nullable
+          : lastReceivedAmount as double?,
       lastReceived: lastReceived == const $CopyWithPlaceholder()
           ? _value.lastReceived
           // ignore: cast_nullable_to_non_nullable
@@ -317,6 +329,7 @@ TransactionsAndBalanceState _$TransactionsAndBalanceStateFromJson(
       lastSent: json['lastSent'] == null
           ? null
           : DateTime.parse(json['lastSent'] as String),
+      lastReceivedAmount: (json['lastReceivedAmount'] as num?)?.toDouble(),
       lastReceived: json['lastReceived'] == null
           ? null
           : DateTime.parse(json['lastReceived'] as String),
@@ -332,6 +345,7 @@ Map<String, dynamic> _$TransactionsAndBalanceStateToJson(
       'balance': instance.balance,
       'lastChecked': instance.lastChecked.toIso8601String(),
       'lastSent': instance.lastSent?.toIso8601String(),
+      'lastReceivedAmount': instance.lastReceivedAmount,
       'lastReceived': instance.lastReceived?.toIso8601String(),
       'lastReceivedNotif': instance.lastReceivedNotif?.toIso8601String(),
     };

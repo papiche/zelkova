@@ -91,9 +91,11 @@ TransactionsAndBalanceState transactionsGvaParser(Map<String, dynamic> txData) {
   }
   DateTime? lastSent;
   DateTime? lastReceived;
+  double? lastReceivedAmount;
   for (final Transaction tx in txs) {
     if (tx.type == TransactionType.received && lastReceived == null) {
       lastReceived = tx.time;
+      lastReceivedAmount = tx.amount;
     }
     if (tx.type == TransactionType.sent && lastSent == null) {
       lastSent = tx.time;
@@ -108,6 +110,7 @@ TransactionsAndBalanceState transactionsGvaParser(Map<String, dynamic> txData) {
       balance: amount,
       lastChecked: DateTime.now(),
       lastReceived: lastReceived,
+      lastReceivedAmount: lastReceivedAmount,
       lastSent: lastSent);
 }
 

@@ -1,9 +1,12 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'config/theme.dart';
 import 'main.dart';
 import 'ui/logger.dart';
+import 'ui/ui_helpers.dart';
 
 // ignore: avoid_classes_with_only_static_members
 ///  *********************************************
@@ -12,6 +15,7 @@ import 'ui/logger.dart';
 ///
 class NotificationController {
   static ReceivedAction? initialAction;
+  static Locale locale = const Locale('en', 'UK');
 
   ///  *********************************************
   ///     INITIALIZATIONS
@@ -30,8 +34,8 @@ class NotificationController {
               groupAlertBehavior: GroupAlertBehavior.Children,
               importance: NotificationImportance.High,
               defaultPrivacy: NotificationPrivacy.Private,
-              defaultColor: const Color(0xFF526600),
-              ledColor: const Color(0xFF526600))
+              defaultColor: lightColorScheme.primary,
+              ledColor: lightColorScheme.primary)
         ],
         debug: true);
 
@@ -91,7 +95,7 @@ class NotificationController {
                   children: <Widget>[
                     Expanded(
                       child: Image.asset(
-                        'assets/animated-bell.gif',
+                        'assets/img/animated-bell.gif',
                         height: MediaQuery.of(context).size.height * 0.3,
                         fit: BoxFit.fitWidth,
                       ),
@@ -115,17 +119,16 @@ class NotificationController {
                         ?.copyWith(color: Colors.red),
                   )),
               TextButton(
-                  onPressed: () async {
-                    userAuthorized = true;
-                    Navigator.of(ctx).pop();
-                  },
-                  child: Text(
-                    tr('allow_notifications_btn'),
+                onPressed: () async {
+                  userAuthorized = true;
+                  Navigator.of(ctx).pop();
+                },
+                child: Text(tr('allow_notifications_btn'),
                     style: Theme.of(context)
                         .textTheme
                         .titleLarge
-                        ?.copyWith(color: Colors.deepPurple),
-                  )),
+                        ?.copyWith(color: lightColorScheme.primary)),
+              ),
             ],
           );
         });
@@ -137,41 +140,62 @@ class NotificationController {
   ///     NOTIFICATION CREATION METHODS
   ///  *********************************************
   ///
-  static Future<void> createNewNotification(String id) async {
-    bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
-    if (!isAllowed) {
-      isAllowed = await displayNotificationRationale();
-    }
-    if (!isAllowed) {
-      return;
-    }
+  static Future<void> createNewNotification(String id,
+      {required double amount}) async {
+    final String title = tr('notification_new_payment_title');
+    final String desc = tr('notification_new_payment_desc',
+        namedArgs: <String, String>{
+          'amount': formatAmountWithLocale(locale.languageCode, amount)
+        });
+    if (kIsWeb) {
+      // dart:html cannot be used in Android
+      /* if (html.Notification.permission != 'granted') {
+        await html.Notification.requestPermission();
+      }
+      if (html.Notification.permission == 'granted') {
+        final html.Notification notification = html.Notification(
+          title, body: desc,
+          // icon:
+        );
+        // html.Notification.show();
+      } */
+    } else {
+      bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
+      if (!isAllowed) {
+        isAllowed = await displayNotificationRationale();
+      }
+      if (!isAllowed) {
+        return;
+      }
 
-    await AwesomeNotifications().createNotification(
-        content: NotificationContent(
-            id: -1,
-            // -1 is replaced by a random number
-            channelKey: 'alerts',
-            title: tr('notification_new_payment_title'),
-            body: tr('notification_new_payment_desc'),
-            bigPicture:
-                'https://storage.googleapis.com/cms-storage-bucket/d406c736e7c4c57f5f61.png',
-            largeIcon: 'https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59cd1cf16282.png',
-            //'asset://assets/images/balloons-in-sky.jpg',
-            notificationLayout: NotificationLayout.BigPicture,
-            payload: <String, String>{'notificationId': id}),
-        actionButtons: <NotificationActionButton>[
-          NotificationActionButton(key: 'REDIRECT', label: 'Redirect'),
-          /* NotificationActionButton(
+      await AwesomeNotifications().createNotification(
+          content: NotificationContent(
+              id: -1,
+              // -1 is replaced by a random number
+              channelKey: 'alerts',
+              title: title,
+              body: desc,
+              largeIcon:
+                  'https://git.duniter.org/vjrj/ginkgo/-/raw/master/assets/img/coin.png',
+              bigPicture: 'https://git.duniter.org/vjrj/ginkgo/-/raw/master/assets/img/gbrevedot_color.svg',
+              //'asset://assets/images/balloons-in-sky.jpg',
+              notificationLayout: NotificationLayout.BigPicture,
+              payload: <String, String>{'notificationId': id}),
+          actionButtons: <NotificationActionButton>[
+            NotificationActionButton(
+                key: 'notification_open', label: tr('notification_open')),
+            /* NotificationActionButton(
               key: 'REPLY',
               label: 'Reply Message',
               requireInputText: true,
               actionType: ActionType.SilentAction), */
-          NotificationActionButton(
+            /* NotificationActionButton(
               key: 'DISMISS',
               label: 'Dismiss',
               actionType: ActionType.DismissAction,
-              isDangerousOption: true)
-        ]);
+              isDangerousOption: true) */
+          ]);
+    }
   }
 
   static Future<void> scheduleNewNotification() async {

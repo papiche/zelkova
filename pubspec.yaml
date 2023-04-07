@@ -116,6 +116,7 @@ flutter:
     - assets/img/logo-cesium.png
     - assets/tx.json
     - assets/gva-tx.json
+    - assets/img/animated-bell.gif
 
   fonts:
     - family: Nunito

@@ -7,6 +7,7 @@ import 'package:share_plus/share_plus.dart';
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
 import '../../data/models/node_type.dart';
+import '../../notification_controller.dart';
 import '../../shared_prefs.dart';
 import '../ui_helpers.dart';
 import '../widgets/bottom_widget.dart';
@@ -25,8 +26,7 @@ class FifthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppState>(
-        builder: (BuildContext context, AppState state) =>
-            Scaffold(
+        builder: (BuildContext context, AppState state) => Scaffold(
               appBar: AppBar(title: Text(tr('bottom_nav_fifth'))),
               drawer: const CardDrawer(),
               body: ListView(
@@ -43,6 +43,7 @@ class FifthScreen extends StatelessWidget {
                       ),
                       onChanged: (Locale? newLocale) {
                         context.setLocale(newLocale!);
+                        NotificationController.locale = newLocale;
                       },
                       items: const <DropdownMenuItem<Locale>>[
                         DropdownMenuItem<Locale>(
@@ -89,9 +90,8 @@ class FifthScreen extends StatelessWidget {
                             GridItem(
                                 title: 'share_your_key',
                                 icon: Icons.share,
-                                onTap: () =>
-                                    Share.share(
-                                        SharedPreferencesHelper().getPubKey())),
+                                onTap: () => Share.share(
+                                    SharedPreferencesHelper().getPubKey())),
                           GridItem(
                             title: 'copy_your_key',
                             icon: Icons.copy,
@@ -140,7 +140,6 @@ class FifthScreen extends StatelessWidget {
                                   },
                                 );
                               }),
-
                         ]),
                     if (state.expertMode)
                       const TextDivider(text: 'technical_info_title'),
@@ -155,7 +154,7 @@ class FifthScreen extends StatelessWidget {
                           title: 'code_card_title',
                           icon: Icons.code_rounded,
                           url:
-                          Uri.parse('https://git.duniter.org/vjrj/ginkgo')),
+                              Uri.parse('https://git.duniter.org/vjrj/ginkgo')),
                     const BottomWidget(),
                     SwitchListTile(
                       title: Text(tr('expert_mode')),

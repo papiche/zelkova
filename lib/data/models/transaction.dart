@@ -72,6 +72,7 @@ class TransactionsAndBalanceState extends Equatable {
       required this.balance,
       required this.lastChecked,
       this.lastSent,
+      this.lastReceivedAmount,
       this.lastReceived,
       this.lastReceivedNotif});
 
@@ -81,6 +82,7 @@ class TransactionsAndBalanceState extends Equatable {
   final double balance;
   final DateTime lastChecked;
   final DateTime? lastSent;
+  final double? lastReceivedAmount;
   final DateTime? lastReceived;
   final DateTime? lastReceivedNotif;
 
@@ -92,6 +94,7 @@ class TransactionsAndBalanceState extends Equatable {
         balance,
         lastChecked,
         lastSent,
+        lastReceivedAmount,
         lastReceived,
         lastReceivedNotif
       ];

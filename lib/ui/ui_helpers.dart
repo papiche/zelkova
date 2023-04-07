@@ -121,10 +121,15 @@ bool smallScreen(BuildContext context) =>
     MediaQuery.of(context).size.width <= smallScreenWidth;
 
 String formatAmount(BuildContext context, double amount) {
+  return formatAmountWithLocale(
+      Localizations.localeOf(context).toString(), amount);
+}
+
+String formatAmountWithLocale(String locale, double amount) {
   final NumberFormat currencyFormatter = NumberFormat.currency(
     // in English $10 is G110 ... confusing
     symbol: 'Ğ1 ',
-    locale: Localizations.localeOf(context).toString(),
+    locale: locale,
     decimalDigits: 2,
   );
   return currencyFormatter.format(amount);

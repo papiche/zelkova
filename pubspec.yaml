@@ -72,6 +72,7 @@ dependencies:
   path: ^1.8.2
   path_provider: ^2.0.14
   awesome_notifications: ^0.7.4+1
+  cron: ^0.5.1
 
 dev_dependencies:
   flutter_test:

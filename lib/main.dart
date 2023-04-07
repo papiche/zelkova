@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
+import 'package:cron/cron.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -276,6 +277,22 @@ class _GinkgoAppState extends State<GinkgoApp> {
     NodeManager().loadFromCubit(context.read<NodeListCubit>());
     // Only after at least the action method is set, the notification events are delivered
     NotificationController.startListeningNotificationEvents();
+    final Cron cron = Cron();
+    cron.schedule(Schedule.parse(kReleaseMode ? '*/10 * * * *' : '*/2 * * * *'),
+        () async {
+      logger('---------- fetchTransactions via cron');
+      fetchTransactions(context);
+    });
+    Once.runHourly('load_nodes', callback: () {
+      logger('load nodes via once');
+      _loadNodes();
+    }, fallback: () {
+      _printNodeStatus(prefix: 'After once hourly having');
+    });
+    Once.runDaily('clear_errors', callback: () {
+      logger('clearErrors via once');
+      NodeManager().cleanErrorStats();
+    });
   }
 
   @override
@@ -288,21 +305,6 @@ class _GinkgoAppState extends State<GinkgoApp> {
   Widget build(BuildContext context) {
     return BlocBuilder<NodeListCubit, NodeListState>(
         builder: (BuildContext nodeContext, NodeListState state) {
-      Once.runHourly('load_nodes',
-          callback: () => _loadNodes(),
-          fallback: () {
-            _printNodeStatus(prefix: 'After once hourly having');
-          });
-      Once.runCustom('clear_errors', callback: () {
-        NodeManager().cleanErrorStats();
-      }, duration: const Duration(minutes: 90));
-      Once.runCustom('fetch_transactions', callback: () {
-        logger('---------- fetchTransactions via once');
-        fetchTransactions(context);
-      }, fallback: () {
-        logger('fetch_transactions fallback, already called');
-      }, duration: const Duration(minutes: kReleaseMode ? 10 : 2));
-      // Not necessary with previous one ?? fetchTransactions(context);
       return ConnectivityAppWrapper(
           app: FilesystemPickerDefaultOptions(
               fileTileSelectMode: FileTileSelectMode.wholeTile,

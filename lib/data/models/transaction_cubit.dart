@@ -4,9 +4,12 @@ import '../../../g1/api.dart';
 import '../../../g1/transaction_parser.dart';
 import '../../notification_controller.dart';
 import '../../shared_prefs.dart';
+import '../../ui/contacts_cache.dart';
 import '../../ui/logger.dart';
+import 'contact.dart';
 import 'node_list_cubit.dart';
 import 'transaction.dart';
+import 'transaction_type.dart';
 
 class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
   TransactionsCubit()
@@ -30,30 +33,45 @@ class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
   }
 
   Future<void> fetchTransactions(NodeListCubit cubit) async {
-    logger('Loading transactions');
+    logger('Loading transactions --------------------');
     final Map<String, dynamic>? txData =
         await gvaHistoryAndBalance(SharedPreferencesHelper().getPubKey());
     if (txData == null) {
       logger('Failed to get transactions');
       return;
     }
-    final TransactionsAndBalanceState state = transactionsGvaParser(txData);
-    emit(state.copyWith(
-        transactions: state.transactions,
-        balance: state.balance,
-        lastChecked: state.lastChecked));
-    final DateTime? lastReceived = state.lastReceived;
+    final TransactionsAndBalanceState newState =
+        transactionsGvaParser(txData, state);
+    // Notify
     final DateTime lastReceivedNotification =
-        state.lastReceivedNotif ?? DateTime(1970);
-    final double? lastReceivedAmount = state.lastReceivedAmount;
-    // final DateTime? lastSent = transBalanceState.lastSent;
-    if (lastReceived != null &&
-        lastReceived.compareTo(lastReceivedNotification) == 1) {
-      // Notify
-      emit(state.copyWith(lastReceivedNotif: lastReceived));
-      NotificationController.createNewNotification(
-          lastReceived.millisecondsSinceEpoch.toString(),
-          amount: lastReceivedAmount! / 100);
+        newState.lastReceivedNotification ?? DateTime.now();
+    final DateTime lastSentNotification =
+        newState.lastSentNotification ?? DateTime.now();
+    // Notify
+/*      logger(
+          'Last received: ${lastReceived.toIso8601String()}, last received notification: ${lastReceivedNotification.toIso8601String()}, compared ${lastReceived.compareTo(lastReceivedNotification)}');*/
+    emit(newState);
+    for (final Transaction tx in newState.transactions.reversed) {
+      if (tx.type == TransactionType.received &&
+          lastReceivedNotification.compareTo(tx.time) == -1) {
+        // Future
+        final Contact from = await ContactsCache().getContact(tx.from);
+        NotificationController.createNewNotification(
+            tx.time.millisecondsSinceEpoch.toString(),
+            amount: tx.amount / 100,
+            from: from.title);
+        emit(newState.copyWith(lastReceivedNotification: tx.time));
+      }
+      if (tx.type == TransactionType.sent &&
+          lastSentNotification.compareTo(tx.time) == -1) {
+        // Future
+        final Contact to = await ContactsCache().getContact(tx.from);
+        NotificationController.createNewNotification(
+            tx.time.millisecondsSinceEpoch.toString(),
+            amount: tx.amount / 100,
+            to: to.title);
+        emit(newState.copyWith(lastSentNotification: tx.time));
+      }
     }
   }
 

@@ -141,12 +141,19 @@ class NotificationController {
   ///  *********************************************
   ///
   static Future<void> createNewNotification(String id,
-      {required double amount}) async {
-    final String title = tr('notification_new_payment_title');
-    final String desc = tr('notification_new_payment_desc',
-        namedArgs: <String, String>{
-          'amount': formatAmountWithLocale(locale.languageCode, amount)
-        });
+      {required double amount, String? to, String? from}) async {
+    final String title = from != null
+        ? tr('notification_new_payment_title')
+        : tr('notification_new_sent_title');
+    final String desc = from != null
+        ? tr('notification_new_payment_desc', namedArgs: <String, String>{
+            'amount': formatAmountWithLocale(locale.languageCode, amount),
+            'from': from,
+          })
+        : tr('notification_new_sent_desc', namedArgs: <String, String>{
+            'amount': formatAmountWithLocale(locale.languageCode, amount),
+            'to': to!,
+          });
     if (kIsWeb) {
       // dart:html cannot be used in Android
       /* if (html.Notification.permission != 'granted') {

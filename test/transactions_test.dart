@@ -7,6 +7,11 @@ import 'package:ginkgo/data/models/transaction_type.dart';
 import 'package:ginkgo/g1/transaction_parser.dart';
 
 void main() {
+  final TransactionsAndBalanceState emptyState = TransactionsAndBalanceState(
+      transactions: const <Transaction>[],
+      balance: 0,
+      lastChecked: DateTime(1970));
+
   test('Test parsing', () async {
     TestWidgetsFlutterBinding.ensureInitialized();
     final String txData = await rootBundle.loadString('assets/tx.json');
@@ -29,7 +34,8 @@ void main() {
     final String txData = await rootBundle.loadString('assets/gva-tx.json');
     final TransactionsAndBalanceState result = transactionsGvaParser(
         (jsonDecode(txData) as Map<String, dynamic>)['data']
-            as Map<String, dynamic>);
+            as Map<String, dynamic>,
+        emptyState);
     expect(result.balance, equals(3));
     final List<Transaction> txs = result.transactions;
     for (final Transaction tx in txs) {
@@ -79,7 +85,8 @@ void main() {
 }''';
     final TransactionsAndBalanceState emptyResult = transactionsGvaParser(
         (jsonDecode(emptyTx) as Map<String, dynamic>)['data']
-            as Map<String, dynamic>);
+            as Map<String, dynamic>,
+        emptyState);
     expect(emptyResult.balance, equals(0));
     final List<Transaction> emptyTxs = emptyResult.transactions;
     expect(emptyTxs.length, equals(0));

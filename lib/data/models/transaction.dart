@@ -71,20 +71,16 @@ class TransactionsAndBalanceState extends Equatable {
       {required this.transactions,
       required this.balance,
       required this.lastChecked,
-      this.lastSent,
-      this.lastReceivedAmount,
-      this.lastReceived,
-      this.lastReceivedNotif});
+      this.lastSentNotification,
+      this.lastReceivedNotification});
 
   factory TransactionsAndBalanceState.fromJson(Map<String, dynamic> json) =>
       _$TransactionsAndBalanceStateFromJson(json);
   final List<Transaction> transactions;
   final double balance;
   final DateTime lastChecked;
-  final DateTime? lastSent;
-  final double? lastReceivedAmount;
-  final DateTime? lastReceived;
-  final DateTime? lastReceivedNotif;
+  final DateTime? lastSentNotification;
+  final DateTime? lastReceivedNotification;
 
   Map<String, dynamic> toJson() => _$TransactionsAndBalanceStateToJson(this);
 
@@ -93,9 +89,7 @@ class TransactionsAndBalanceState extends Equatable {
         transactions,
         balance,
         lastChecked,
-        lastSent,
-        lastReceivedAmount,
-        lastReceived,
-        lastReceivedNotif
+        lastSentNotification,
+        lastReceivedNotification
       ];
 }

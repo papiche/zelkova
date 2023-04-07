@@ -161,13 +161,11 @@ abstract class _$TransactionsAndBalanceStateCWProxy {
 
   TransactionsAndBalanceState lastChecked(DateTime lastChecked);
 
-  TransactionsAndBalanceState lastSent(DateTime? lastSent);
+  TransactionsAndBalanceState lastSentNotification(
+      DateTime? lastSentNotification);
 
-  TransactionsAndBalanceState lastReceivedAmount(double? lastReceivedAmount);
-
-  TransactionsAndBalanceState lastReceived(DateTime? lastReceived);
-
-  TransactionsAndBalanceState lastReceivedNotif(DateTime? lastReceivedNotif);
+  TransactionsAndBalanceState lastReceivedNotification(
+      DateTime? lastReceivedNotification);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `TransactionsAndBalanceState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -179,10 +177,8 @@ abstract class _$TransactionsAndBalanceStateCWProxy {
     List<Transaction>? transactions,
     double? balance,
     DateTime? lastChecked,
-    DateTime? lastSent,
-    double? lastReceivedAmount,
-    DateTime? lastReceived,
-    DateTime? lastReceivedNotif,
+    DateTime? lastSentNotification,
+    DateTime? lastReceivedNotification,
   });
 }
 
@@ -205,20 +201,14 @@ class _$TransactionsAndBalanceStateCWProxyImpl
       this(lastChecked: lastChecked);
 
   @override
-  TransactionsAndBalanceState lastSent(DateTime? lastSent) =>
-      this(lastSent: lastSent);
+  TransactionsAndBalanceState lastSentNotification(
+          DateTime? lastSentNotification) =>
+      this(lastSentNotification: lastSentNotification);
 
   @override
-  TransactionsAndBalanceState lastReceivedAmount(double? lastReceivedAmount) =>
-      this(lastReceivedAmount: lastReceivedAmount);
-
-  @override
-  TransactionsAndBalanceState lastReceived(DateTime? lastReceived) =>
-      this(lastReceived: lastReceived);
-
-  @override
-  TransactionsAndBalanceState lastReceivedNotif(DateTime? lastReceivedNotif) =>
-      this(lastReceivedNotif: lastReceivedNotif);
+  TransactionsAndBalanceState lastReceivedNotification(
+          DateTime? lastReceivedNotification) =>
+      this(lastReceivedNotification: lastReceivedNotification);
 
   @override
 
@@ -232,10 +222,8 @@ class _$TransactionsAndBalanceStateCWProxyImpl
     Object? transactions = const $CopyWithPlaceholder(),
     Object? balance = const $CopyWithPlaceholder(),
     Object? lastChecked = const $CopyWithPlaceholder(),
-    Object? lastSent = const $CopyWithPlaceholder(),
-    Object? lastReceivedAmount = const $CopyWithPlaceholder(),
-    Object? lastReceived = const $CopyWithPlaceholder(),
-    Object? lastReceivedNotif = const $CopyWithPlaceholder(),
+    Object? lastSentNotification = const $CopyWithPlaceholder(),
+    Object? lastReceivedNotification = const $CopyWithPlaceholder(),
   }) {
     return TransactionsAndBalanceState(
       transactions:
@@ -252,22 +240,15 @@ class _$TransactionsAndBalanceStateCWProxyImpl
               ? _value.lastChecked
               // ignore: cast_nullable_to_non_nullable
               : lastChecked as DateTime,
-      lastSent: lastSent == const $CopyWithPlaceholder()
-          ? _value.lastSent
+      lastSentNotification: lastSentNotification == const $CopyWithPlaceholder()
+          ? _value.lastSentNotification
           // ignore: cast_nullable_to_non_nullable
-          : lastSent as DateTime?,
-      lastReceivedAmount: lastReceivedAmount == const $CopyWithPlaceholder()
-          ? _value.lastReceivedAmount
-          // ignore: cast_nullable_to_non_nullable
-          : lastReceivedAmount as double?,
-      lastReceived: lastReceived == const $CopyWithPlaceholder()
-          ? _value.lastReceived
-          // ignore: cast_nullable_to_non_nullable
-          : lastReceived as DateTime?,
-      lastReceivedNotif: lastReceivedNotif == const $CopyWithPlaceholder()
-          ? _value.lastReceivedNotif
-          // ignore: cast_nullable_to_non_nullable
-          : lastReceivedNotif as DateTime?,
+          : lastSentNotification as DateTime?,
+      lastReceivedNotification:
+          lastReceivedNotification == const $CopyWithPlaceholder()
+              ? _value.lastReceivedNotification
+              // ignore: cast_nullable_to_non_nullable
+              : lastReceivedNotification as DateTime?,
     );
   }
 }
@@ -326,16 +307,12 @@ TransactionsAndBalanceState _$TransactionsAndBalanceStateFromJson(
           .toList(),
       balance: (json['balance'] as num).toDouble(),
       lastChecked: DateTime.parse(json['lastChecked'] as String),
-      lastSent: json['lastSent'] == null
+      lastSentNotification: json['lastSentNotification'] == null
           ? null
-          : DateTime.parse(json['lastSent'] as String),
-      lastReceivedAmount: (json['lastReceivedAmount'] as num?)?.toDouble(),
-      lastReceived: json['lastReceived'] == null
+          : DateTime.parse(json['lastSentNotification'] as String),
+      lastReceivedNotification: json['lastReceivedNotification'] == null
           ? null
-          : DateTime.parse(json['lastReceived'] as String),
-      lastReceivedNotif: json['lastReceivedNotif'] == null
-          ? null
-          : DateTime.parse(json['lastReceivedNotif'] as String),
+          : DateTime.parse(json['lastReceivedNotification'] as String),
     );
 
 Map<String, dynamic> _$TransactionsAndBalanceStateToJson(
@@ -344,8 +321,7 @@ Map<String, dynamic> _$TransactionsAndBalanceStateToJson(
       'transactions': instance.transactions,
       'balance': instance.balance,
       'lastChecked': instance.lastChecked.toIso8601String(),
-      'lastSent': instance.lastSent?.toIso8601String(),
-      'lastReceivedAmount': instance.lastReceivedAmount,
-      'lastReceived': instance.lastReceived?.toIso8601String(),
-      'lastReceivedNotif': instance.lastReceivedNotif?.toIso8601String(),
+      'lastSentNotification': instance.lastSentNotification?.toIso8601String(),
+      'lastReceivedNotification':
+          instance.lastReceivedNotification?.toIso8601String(),
     };

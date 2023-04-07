@@ -298,8 +298,10 @@ class _GinkgoAppState extends State<GinkgoApp> {
       }, duration: const Duration(minutes: 90));
       Once.runCustom('fetch_transactions', callback: () {
         fetchTransactions(context);
+      }, fallback: () {
+        logger('fetch_transactions fallback, already called');
       }, duration: const Duration(minutes: kReleaseMode ? 10 : 2));
-      fetchTransactions(context);
+      // Not necessary with previous one ?? fetchTransactions(context);
       return ConnectivityAppWrapper(
           app: FilesystemPickerDefaultOptions(
               fileTileSelectMode: FileTileSelectMode.wholeTile,

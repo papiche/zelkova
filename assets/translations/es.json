@@ -130,7 +130,9 @@
   "allow_notifications_desc": "Permitir a Ğ1nkgo notificarte de nuevos pagos",
   "allow_notifications_btn": "PERMITIR",
   "deny_notifications_btn": "DENEGAR",
-  "notification_new_payment_title": "Nuevo pago",
-  "notification_new_payment_desc": "Has recibido un nuevo pago de {amount}",
-  "notification_open": "ABRIR"
+  "notification_open": "ABRIR",
+  "notification_new_payment_title": "Nuevo pago recibido",
+  "notification_new_payment_desc": "Has recibido un nuevo pago de {amount} de {from}",
+  "notification_new_sent_title": "Nuevo pago enviado",
+  "notification_new_sent_desc": "Has enviado un nuevo pago de {amount} a {to}"
 }

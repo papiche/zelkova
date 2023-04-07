@@ -48,7 +48,7 @@ class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
     final double? lastReceivedAmount = state.lastReceivedAmount;
     // final DateTime? lastSent = transBalanceState.lastSent;
     if (lastReceived != null &&
-        lastReceivedNotification.compareTo(lastReceived) == 1) {
+        lastReceived.compareTo(lastReceivedNotification) == 1) {
       // Notify
       emit(state.copyWith(lastReceivedNotif: lastReceived));
       NotificationController.createNewNotification(

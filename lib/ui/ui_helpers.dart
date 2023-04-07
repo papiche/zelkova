@@ -36,6 +36,11 @@ void showTooltip(BuildContext context, String title, String message) {
 }
 
 void copyPublicKeyToClipboard(BuildContext context) {
+  /* final DataWriterItem item = DataWriterItem();
+  item.add(Formats.plainText(SharedPreferencesHelper().getPubKey()));
+  ClipboardWriter.instance.write(<DataWriterItem>[item]).then((dynamic value) =>
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(tr('key_copied_to_clipboard'))))); */
   FlutterClipboard.copy(SharedPreferencesHelper().getPubKey()).then(
       (dynamic value) => ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(tr('key_copied_to_clipboard')))));

@@ -297,6 +297,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
         NodeManager().cleanErrorStats();
       }, duration: const Duration(minutes: 90));
       Once.runCustom('fetch_transactions', callback: () {
+        logger('---------- fetchTransactions via once');
         fetchTransactions(context);
       }, fallback: () {
         logger('fetch_transactions fallback, already called');

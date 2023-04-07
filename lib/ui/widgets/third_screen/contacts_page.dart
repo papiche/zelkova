@@ -88,6 +88,16 @@ class _ContactsPageState extends State<ContactsPage> {
                               icon: Icons.delete,
                               label: tr('delete_contact'),
                             ),
+                            if (showShare())
+                              SlidableAction(
+                                onPressed: (BuildContext c) =>
+                                    Share.share(contact.pubKey),
+                                backgroundColor:
+                                    Theme.of(context).secondaryHeaderColor,
+                                foregroundColor: Theme.of(context).primaryColor,
+                                icon: Icons.share,
+                                label: tr('share_this_key'),
+                              ),
                             /*  SlidableAction(
                             onPressed: (BuildContext c) {},
                             backgroundColor: const Color(0xFF21B7CA),
@@ -120,16 +130,6 @@ class _ContactsPageState extends State<ContactsPage> {
                               icon: Icons.copy,
                               label: tr('copy_contact_key'),
                             ),
-                            if (showShare())
-                              SlidableAction(
-                                onPressed: (BuildContext c) =>
-                                    Share.share(contact.pubKey),
-                                backgroundColor:
-                                    Theme.of(context).secondaryHeaderColor,
-                                foregroundColor: Theme.of(context).primaryColor,
-                                icon: Icons.share,
-                                label: tr('share_this_key'),
-                              ),
                             SlidableAction(
                               onPressed: (BuildContext c) {
                                 onSent(c, contact);

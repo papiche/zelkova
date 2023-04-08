@@ -67,20 +67,29 @@ class Transaction extends Equatable {
 @JsonSerializable()
 @CopyWith()
 class TransactionsAndBalanceState extends Equatable {
-  const TransactionsAndBalanceState({
-    required this.transactions,
-    required this.balance,
-    required this.lastChecked,
-  });
+  const TransactionsAndBalanceState(
+      {required this.transactions,
+      required this.balance,
+      required this.lastChecked,
+      this.lastSentNotification,
+      this.lastReceivedNotification});
 
   factory TransactionsAndBalanceState.fromJson(Map<String, dynamic> json) =>
       _$TransactionsAndBalanceStateFromJson(json);
   final List<Transaction> transactions;
   final double balance;
   final DateTime lastChecked;
+  final DateTime? lastSentNotification;
+  final DateTime? lastReceivedNotification;
 
   Map<String, dynamic> toJson() => _$TransactionsAndBalanceStateToJson(this);
 
   @override
-  List<Object?> get props => <dynamic>[transactions, balance, lastChecked];
+  List<Object?> get props => <dynamic>[
+        transactions,
+        balance,
+        lastChecked,
+        lastSentNotification,
+        lastReceivedNotification
+      ];
 }

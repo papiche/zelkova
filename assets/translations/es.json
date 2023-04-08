@@ -125,5 +125,14 @@
   "install_desktop": "Instalar Ğ1nkgo en tu Desktop",
   "import_failed": "Error al importar monedero",
   "select_file_to_import": "Selecciona el monedero guadado",
-  "You can't send money to yourself.": "No puedes enviarte dinero a ti mismo/a."
+  "You can't send money to yourself.": "No puedes enviarte dinero a ti mismo/a.",
+  "request_notifications_perms": "Reciba notificaciones con nuevos pagos",
+  "allow_notifications_desc": "Permitir a Ğ1nkgo notificarte de nuevos pagos",
+  "allow_notifications_btn": "PERMITIR",
+  "deny_notifications_btn": "DENEGAR",
+  "notification_open": "ABRIR",
+  "notification_new_payment_title": "Nuevo pago recibido",
+  "notification_new_payment_desc": "Has recibido un nuevo pago de {amount} de {from}",
+  "notification_new_sent_title": "Nuevo pago enviado",
+  "notification_new_sent_desc": "Has enviado un nuevo pago de {amount} a {to}"
 }

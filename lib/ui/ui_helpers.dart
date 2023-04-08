@@ -36,6 +36,11 @@ void showTooltip(BuildContext context, String title, String message) {
 }
 
 void copyPublicKeyToClipboard(BuildContext context) {
+  /* final DataWriterItem item = DataWriterItem();
+  item.add(Formats.plainText(SharedPreferencesHelper().getPubKey()));
+  ClipboardWriter.instance.write(<DataWriterItem>[item]).then((dynamic value) =>
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(tr('key_copied_to_clipboard'))))); */
   FlutterClipboard.copy(SharedPreferencesHelper().getPubKey()).then(
       (dynamic value) => ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(tr('key_copied_to_clipboard')))));
@@ -121,10 +126,15 @@ bool smallScreen(BuildContext context) =>
     MediaQuery.of(context).size.width <= smallScreenWidth;
 
 String formatAmount(BuildContext context, double amount) {
+  return formatAmountWithLocale(
+      Localizations.localeOf(context).toString(), amount);
+}
+
+String formatAmountWithLocale(String locale, double amount) {
   final NumberFormat currencyFormatter = NumberFormat.currency(
     // in English $10 is G110 ... confusing
     symbol: 'Ğ1 ',
-    locale: Localizations.localeOf(context).toString(),
+    locale: locale,
     decimalDigits: 2,
   );
   return currencyFormatter.format(amount);
@@ -221,3 +231,10 @@ Future<Directory?> getAppSpecificExternalFilesDirectory(
   }
   return getExternalStorageDirectory();
 }
+
+ImageIcon get g1nkgoIcon => ImageIcon(
+      AssetImage(ginkgoIconLocation),
+      size: 24,
+    );
+
+String get ginkgoIconLocation => assets('img/favicon.png');

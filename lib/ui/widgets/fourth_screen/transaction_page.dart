@@ -83,6 +83,7 @@ class _TransactionsAndBalanceWidgetState
                   builder: (BuildContext lContext,
                           BoxConstraints constraints) =>
                       IconButton(
+                          // icon: const Icon(Icons.account_balance_wallet),
                           icon: const Icon(Icons.savings),
                           onPressed: () {
                             if (Backdrop.of(lContext).isBackLayerConcealed) {

@@ -14,10 +14,7 @@ class CardDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<CesiumCard> cards = SharedPreferencesHelper().cesiumCards;
-    final ImageIcon g1nkgoIcon = ImageIcon(
-      AssetImage(assets('img/favicon.png')),
-      size: 24,
-    );
+
     return FutureBuilder<PackageInfo>(
       future: PackageInfo.fromPlatform(),
       builder: (BuildContext context, AsyncSnapshot<PackageInfo> snapshot) {

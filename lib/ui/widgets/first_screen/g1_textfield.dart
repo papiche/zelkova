@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../data/models/payment_cubit.dart';
-import '../../data/models/payment_state.dart';
-import '../ui_helpers.dart';
+import '../../../data/models/payment_cubit.dart';
+import '../../../data/models/payment_state.dart';
+import '../../ui_helpers.dart';
 
 class G1PayAmountField extends StatefulWidget {
   const G1PayAmountField({super.key});

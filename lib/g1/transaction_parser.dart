@@ -52,7 +52,8 @@ TransactionsAndBalanceState transactionParser(String txData) {
       transactions: tx, balance: balance, lastChecked: DateTime.now());
 }
 
-TransactionsAndBalanceState transactionsGvaParser(Map<String, dynamic> txData) {
+TransactionsAndBalanceState transactionsGvaParser(
+    Map<String, dynamic> txData, TransactionsAndBalanceState state) {
   // Balance
   final dynamic rawBalance = txData['balance'];
   final double? amount;
@@ -89,7 +90,8 @@ TransactionsAndBalanceState transactionsGvaParser(Map<String, dynamic> txData) {
         sendingRaw as Map<String, dynamic>, TransactionType.sending);
     txs.insert(0, tx);
   }
-  return TransactionsAndBalanceState(
+
+  return state.copyWith(
       transactions: txs, balance: amount, lastChecked: DateTime.now());
 }
 

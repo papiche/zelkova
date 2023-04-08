@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
+import 'package:cron/cron.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -32,6 +33,7 @@ import 'data/models/node_type.dart';
 import 'data/models/payment_cubit.dart';
 import 'data/models/transaction_cubit.dart';
 import 'g1/api.dart';
+import 'notification_controller.dart';
 import 'shared_prefs.dart';
 import 'ui/contacts_cache.dart';
 import 'ui/logger.dart';
@@ -40,6 +42,7 @@ import 'ui/ui_helpers.dart';
 
 void main() async {
   Bloc.observer = AppBlocObserver();
+  await NotificationController.initializeLocalNotifications();
 
   /// Initialize packages
   WidgetsFlutterBinding.ensureInitialized();
@@ -237,6 +240,10 @@ PageViewModel createPageViewModel(
 class GinkgoApp extends StatefulWidget {
   const GinkgoApp({super.key});
 
+  // The navigator key is necessary to navigate using static methods
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
+
   @override
   State<GinkgoApp> createState() => _GinkgoAppState();
 }
@@ -268,6 +275,24 @@ class _GinkgoAppState extends State<GinkgoApp> {
     super.initState();
     ContactsCache().init();
     NodeManager().loadFromCubit(context.read<NodeListCubit>());
+    // Only after at least the action method is set, the notification events are delivered
+    NotificationController.startListeningNotificationEvents();
+    final Cron cron = Cron();
+    cron.schedule(Schedule.parse(kReleaseMode ? '*/10 * * * *' : '*/2 * * * *'),
+        () async {
+      logger('---------- fetchTransactions via cron');
+      fetchTransactions(context);
+    });
+    Once.runHourly('load_nodes', callback: () {
+      logger('load nodes via once');
+      _loadNodes();
+    }, fallback: () {
+      _printNodeStatus(prefix: 'After once hourly having');
+    });
+    Once.runDaily('clear_errors', callback: () {
+      logger('clearErrors via once');
+      NodeManager().cleanErrorStats();
+    });
   }
 
   @override
@@ -280,18 +305,6 @@ class _GinkgoAppState extends State<GinkgoApp> {
   Widget build(BuildContext context) {
     return BlocBuilder<NodeListCubit, NodeListState>(
         builder: (BuildContext nodeContext, NodeListState state) {
-      Once.runHourly('load_nodes',
-          callback: () => _loadNodes(),
-          fallback: () {
-            _printNodeStatus(prefix: 'After once hourly having');
-          });
-      Once.runCustom('clear_errors', callback: () {
-        NodeManager().cleanErrorStats();
-      }, duration: const Duration(minutes: 90));
-      Once.runCustom('fetch_transactions', callback: () {
-        fetchTransactions(context);
-      }, duration: const Duration(minutes: 10));
-      fetchTransactions(context);
       return ConnectivityAppWrapper(
           app: FilesystemPickerDefaultOptions(
               fileTileSelectMode: FileTileSelectMode.wholeTile,
@@ -308,6 +321,8 @@ class _GinkgoAppState extends State<GinkgoApp> {
                 darkTheme:
                     ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
 
+                navigatorKey: GinkgoApp.navigatorKey,
+
                 /// Theme stuff
 
                 /// Localization stuff
@@ -319,6 +334,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
                     ? const SkeletonScreen()
                     : const AppIntro(),
                 builder: (BuildContext buildContext, Widget? widget) {
+                  NotificationController.locale = context.locale;
                   return ResponsiveWrapper.builder(
                     BouncingScrollWrapper.builder(
                         context,

@@ -89,12 +89,13 @@ void main() async {
         EasyLocalization(
           path: 'assets/translations',
           supportedLocales: const <Locale>[
+            Locale('ca'),
+            Locale('de'),
             Locale('en'),
             Locale('es'),
             Locale('fr'),
-            Locale('ca'),
-            Locale('de'),
             Locale('nl'),
+            Locale('pt'),
           ],
           fallbackLocale: const Locale('en'),
           useFallbackTranslations: true,

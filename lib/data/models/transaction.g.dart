@@ -321,7 +321,7 @@ Map<String, dynamic> _$TransactionsAndBalanceStateToJson(
       'transactions': instance.transactions,
       'balance': instance.balance,
       'lastChecked': instance.lastChecked.toIso8601String(),
-      'lastSentNotification': instance.lastSentNotification?.toIso8601String(),
+      'lastSentNotification': instance.lastSentNotification.toIso8601String(),
       'lastReceivedNotification':
-          instance.lastReceivedNotification?.toIso8601String(),
+          instance.lastReceivedNotification.toIso8601String(),
     };

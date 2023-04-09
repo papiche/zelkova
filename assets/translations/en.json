@@ -134,5 +134,7 @@
   "notification_new_payment_title": "New payment received",
   "notification_new_payment_desc": "You have received a {amount} payment from {from}",
   "notification_new_sent_title": "New payment sent",
-  "notification_new_sent_desc": "You have sent a {amount} to {to}"
+  "notification_new_sent_desc": "You have sent a {amount} to {to}",
+  "contact_already_exists": "Contact already exists",
+  "wrong_public_key": "Wrong public key"
 }

@@ -33,10 +33,10 @@ import 'data/models/node_type.dart';
 import 'data/models/payment_cubit.dart';
 import 'data/models/transaction_cubit.dart';
 import 'g1/api.dart';
-import 'notification_controller.dart';
 import 'shared_prefs.dart';
 import 'ui/contacts_cache.dart';
 import 'ui/logger.dart';
+import 'ui/notification_controller.dart';
 import 'ui/screens/skeleton_screen.dart';
 import 'ui/ui_helpers.dart';
 

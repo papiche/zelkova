@@ -134,5 +134,7 @@
   "notification_new_payment_title": "Nuevo pago recibido",
   "notification_new_payment_desc": "Has recibido un nuevo pago de {amount} de {from}",
   "notification_new_sent_title": "Nuevo pago enviado",
-  "notification_new_sent_desc": "Has enviado un nuevo pago de {amount} a {to}"
+  "notification_new_sent_desc": "Has enviado un nuevo pago de {amount} a {to}",
+  "contact_already_exists": "Contacto ya existente",
+  "wrong_public_key": "Clave pública incorrecta"
 }

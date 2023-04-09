@@ -93,7 +93,8 @@ String humanizeContact(String publicAddress, Contact contact) {
 
 String humanizePubKey(String address) => '\u{1F511} ${simplifyPubKey(address)}';
 
-String simplifyPubKey(String address) => address.substring(0, 8);
+String simplifyPubKey(String address) =>
+    address.length <= 8 ? 'WRONG ADDRESS' : address.substring(0, 8);
 /*
 Widget humanizePubKeyAsWidget(String pubKey) => Text(
       humanizePubKey(pubKey),

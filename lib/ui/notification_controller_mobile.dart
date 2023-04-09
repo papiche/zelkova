@@ -3,10 +3,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'config/theme.dart';
-import 'main.dart';
-import 'ui/logger.dart';
-import 'ui/ui_helpers.dart';
+import '../config/theme.dart';
+import '../main.dart';
+import 'logger.dart';
+import 'ui_helpers.dart';
 
 // ignore: avoid_classes_with_only_static_members
 ///  *********************************************

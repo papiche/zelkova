@@ -26,9 +26,6 @@ class _PayFormState extends State<PayForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _commentController = TextEditingController();
 
-//  static final RegExp _englishRegExp = RegExp('^[\u0000-\u007F]*\$');
-  // static final RegExp _englishRegExp = RegExp(r'^[a-zA-Z0-9\s.,;:!?()\-]*$');
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PaymentCubit, PaymentState>(
@@ -127,9 +124,12 @@ class _PayFormState extends State<PayForm> {
   }
 
   bool _commentValidate() {
-    final bool? val = _formKey.currentState?.validate();
+    final String currentComment = _commentController.value.text;
+    final bool val = (currentComment != null &&
+            basicEnglishCharsRegExp.hasMatch(currentComment)) ||
+        currentComment.isEmpty;
     logger('Validating comment: $val');
-    return val ?? false;
+    return val;
   }
 
   bool _weHaveBalance(BuildContext context, double amount) =>

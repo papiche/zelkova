@@ -40,6 +40,8 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
             FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))
           ], */
               validator: validateDecimal,
+              // Disallow autocomplete
+              autofillHints: const <String>[],
               onEditingComplete: () {},
               onChanged: (String? value) {
                 final bool? validate = _formKey.currentState?.validate();

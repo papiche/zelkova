@@ -360,7 +360,9 @@ Future<Duration> _pingNode(String node, NodeType type) async {
     } else {
       // Test GVA with a query
       final Gva gva = Gva(node: proxyfyNode(node));
-      await gva.balance('').timeout(timeout);
+      await gva
+          .balance('EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG')
+          .timeout(timeout);
     }
     stopwatch.stop();
     return stopwatch.elapsed;

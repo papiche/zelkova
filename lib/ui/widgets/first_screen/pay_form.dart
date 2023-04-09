@@ -25,6 +25,14 @@ class PayForm extends StatefulWidget {
 class _PayFormState extends State<PayForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _commentController = TextEditingController();
+  final ValueNotifier<String> _feedbackNotifier = ValueNotifier<String>('');
+
+  @override
+  void dispose() {
+    _commentController.dispose();
+    _feedbackNotifier.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +40,9 @@ class _PayFormState extends State<PayForm> {
         builder: (BuildContext context, PaymentState state) {
       if (state.comment != null && _commentController.text != state.comment) {
         _commentController.text = state.comment;
+      }
+      if (state.amount == null || state.amount == 0) {
+        _feedbackNotifier.value = '';
       }
       final ButtonStyle payBtnStyle = ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
@@ -60,13 +71,6 @@ class _PayFormState extends State<PayForm> {
               ],
               controller: _commentController,
               onChanged: (String? value) {
-                /* final bool validate = _commentValidate();
-                if (validate != null &&
-                    value != null &&
-                    value.isNotEmpty &&
-                    validate) {
-
-                } */
                 context.read<PaymentCubit>().setComment(value ?? '');
               },
               decoration: InputDecoration(
@@ -80,6 +84,8 @@ class _PayFormState extends State<PayForm> {
                 }
                 return null;
               },
+              // Disallow autocomplete
+              autofillHints: const <String>[],
             ),
             const SizedBox(height: 10.0),
             ConnectivityWidgetWrapper(
@@ -105,7 +111,28 @@ class _PayFormState extends State<PayForm> {
                         },
                   style: payBtnStyle,
                   child: _buildBtn(payBtnText),
-                ))
+                )),
+            const SizedBox(height: 8),
+            ValueListenableBuilder<String>(
+              valueListenable: _feedbackNotifier,
+              builder: (BuildContext context, String value, Widget? child) {
+                if (value.isNotEmpty) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const Icon(Icons.error_outline, color: Colors.red),
+                      const SizedBox(width: 4),
+                      Text(
+                        capitalize(value),
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                    ],
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              },
+            ),
           ],
         ),
       );
@@ -132,8 +159,21 @@ class _PayFormState extends State<PayForm> {
     return val;
   }
 
-  bool _weHaveBalance(BuildContext context, double amount) =>
-      context.read<TransactionsCubit>().balance >= amount * 100;
+  bool _weHaveBalance(BuildContext context, double amount) {
+    final double balance = getBalance(context);
+    logger('We have $balance, need $amount');
+    final bool weHave = balance >= amount * 100;
+
+    if (!weHave) {
+      _feedbackNotifier.value = tr('insufficient balance');
+    } else {
+      _feedbackNotifier.value = '';
+    }
+    return weHave;
+  }
+
+  double getBalance(BuildContext context) =>
+      context.read<TransactionsCubit>().balance;
 
   Future<bool?> _confirmSend(
       BuildContext context, String amount, String to) async {

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import '../data/models/transaction.dart';
+import '../data/models/transaction_balance_state.dart';
 import '../data/models/transaction_type.dart';
 
 final RegExp exp = RegExp(r'\((.*?)\)');

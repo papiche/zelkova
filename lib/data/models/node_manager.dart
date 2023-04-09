@@ -11,7 +11,7 @@ class NodeManager {
 
   NodeManager._internal();
 
-  static int maxNodes = kReleaseMode ? 20 : 10;
+  static int maxNodes = kReleaseMode ? 30 : 20;
   static int maxNodeErrors = 3;
   static int minutesToWait = 45;
 

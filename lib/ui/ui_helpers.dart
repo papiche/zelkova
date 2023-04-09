@@ -239,3 +239,5 @@ ImageIcon get g1nkgoIcon => ImageIcon(
     );
 
 String get ginkgoIconLocation => assets('img/favicon.png');
+
+String capitalize(String s) => s[0].toUpperCase() + s.substring(1);

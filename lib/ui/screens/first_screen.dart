@@ -40,28 +40,30 @@ class _FirstScreenState extends State<FirstScreen> {
               ),
             );
           }
+          // FIXME
           if (kIsWeb) {
             final Browser? browser = Browser.detectOrNull();
-            if (browser == null ||
-                (browser.browserAgent != BrowserAgent.Chrome ||
-                    browser.browserAgent != BrowserAgent.Firefox)) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(tr('browser_warning')),
-                  action: SnackBarAction(
-                    label: 'OK',
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                      context.read<AppCubit>().warningBrowserViewed();
-                    },
+            if (!state.warningBrowserViewed) {
+              if (browser == null ||
+                  (browser.browserAgent != BrowserAgent.Chrome &&
+                      browser.browserAgent != BrowserAgent.Firefox)) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(tr('browser_warning')),
+                    action: SnackBarAction(
+                      label: 'OK',
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                        context.read<AppCubit>().warningBrowserViewed();
+                      },
+                    ),
                   ),
-                ),
-              );
+                );
+              }
             }
           }
         });
 
-        // FIXME
         context.read<PaymentCubit>().notSent();
         return BlocBuilder<PaymentCubit, PaymentState>(
             builder: (BuildContext context, PaymentState state) =>

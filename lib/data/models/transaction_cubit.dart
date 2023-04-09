@@ -9,6 +9,7 @@ import '../../ui/notification_controller.dart';
 import 'contact.dart';
 import 'node_list_cubit.dart';
 import 'transaction.dart';
+import 'transaction_balance_state.dart';
 import 'transaction_type.dart';
 
 class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
@@ -43,29 +44,33 @@ class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
     final TransactionsAndBalanceState newState =
         transactionsGvaParser(txData, state);
     // Notify
-/*      logger(
-          'Last received: ${lastReceived.toIso8601String()}, last received notification: ${lastReceivedNotification.toIso8601String()}, compared ${lastReceived.compareTo(lastReceivedNotification)}');*/
+    //logger(
+    //  'Last received: ${lastReceived.toIso8601String()}, last received notification: ${lastReceivedNotification.toIso8601String()}, compared ${lastReceived.compareTo(lastReceivedNotification)}');
+    logger(
+        'Last received notification: ${newState.latestReceivedNotification.toIso8601String()})}');
+    logger(
+        'Last sent notification: ${newState.latestSentNotification.toIso8601String()})}');
     emit(newState);
     for (final Transaction tx in newState.transactions.reversed) {
       if (tx.type == TransactionType.received &&
-          newState.lastReceivedNotification.compareTo(tx.time) == -1) {
+          newState.latestReceivedNotification.isBefore(tx.time)) {
         // Future
         final Contact from = await ContactsCache().getContact(tx.from);
         NotificationController.createNewNotification(
             tx.time.millisecondsSinceEpoch.toString(),
             amount: tx.amount / 100,
             from: from.title);
-        emit(newState.copyWith(lastReceivedNotification: tx.time));
+        emit(newState.copyWith(latestReceivedNotification: tx.time));
       }
       if (tx.type == TransactionType.sent &&
-          newState.lastSentNotification.compareTo(tx.time) == -1) {
+          newState.latestSentNotification.isBefore(tx.time)) {
         // Future
         final Contact to = await ContactsCache().getContact(tx.from);
         NotificationController.createNewNotification(
             tx.time.millisecondsSinceEpoch.toString(),
             amount: -tx.amount / 100,
             to: to.title);
-        emit(newState.copyWith(lastSentNotification: tx.time));
+        emit(newState.copyWith(latestSentNotification: tx.time));
       }
     }
   }

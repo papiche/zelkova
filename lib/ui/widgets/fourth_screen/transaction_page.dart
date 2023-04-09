@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/models/node_list_cubit.dart';
 import '../../../data/models/transaction.dart';
+import '../../../data/models/transaction_balance_state.dart';
 import '../../../data/models/transaction_cubit.dart';
 import '../../../shared_prefs.dart';
 import '../../ui_helpers.dart';

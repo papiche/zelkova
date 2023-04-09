@@ -6,6 +6,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
 import '../../../data/models/transaction.dart';
+import '../../../data/models/transaction_balance_state.dart';
 import '../../../data/models/transaction_cubit.dart';
 import '../../../data/models/transaction_type.dart';
 import '../../../shared_prefs.dart';

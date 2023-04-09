@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ginkgo/data/models/transaction.dart';
+import 'package:ginkgo/data/models/transaction_balance_state.dart';
 import 'package:ginkgo/data/models/transaction_type.dart';
 import 'package:ginkgo/g1/transaction_parser.dart';
 

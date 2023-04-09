@@ -2,10 +2,10 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import '../../../g1/api.dart';
 import '../../../g1/transaction_parser.dart';
-import '../../notification_controller.dart';
 import '../../shared_prefs.dart';
 import '../../ui/contacts_cache.dart';
 import '../../ui/logger.dart';
+import '../../ui/notification_controller.dart';
 import 'contact.dart';
 import 'node_list_cubit.dart';
 import 'transaction.dart';

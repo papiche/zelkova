@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:web_browser_detect/web_browser_detect.dart';
 
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
@@ -38,7 +40,28 @@ class _FirstScreenState extends State<FirstScreen> {
               ),
             );
           }
+          if (kIsWeb) {
+            final Browser? browser = Browser.detectOrNull();
+            if (browser == null ||
+                (browser.browserAgent != BrowserAgent.Chrome ||
+                    browser.browserAgent != BrowserAgent.Firefox)) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(tr('browser_warning')),
+                  action: SnackBarAction(
+                    label: 'OK',
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      context.read<AppCubit>().warningBrowserViewed();
+                    },
+                  ),
+                ),
+              );
+            }
+          }
         });
+
+        // FIXME
         context.read<PaymentCubit>().notSent();
         return BlocBuilder<PaymentCubit, PaymentState>(
             builder: (BuildContext context, PaymentState state) =>

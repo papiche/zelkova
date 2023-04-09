@@ -136,5 +136,6 @@
   "notification_new_sent_title": "Nuevo pago enviado",
   "notification_new_sent_desc": "Has enviado un nuevo pago de {amount} a {to}",
   "contact_already_exists": "Contacto ya existente",
-  "wrong_public_key": "Clave pública incorrecta"
+  "wrong_public_key": "Clave pública incorrecta",
+  "browser_warning": "Estas usando un navegador que no hemos testeado. Por favor, usa Chrome, Firefox o Brave."
 }

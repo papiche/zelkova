@@ -545,8 +545,8 @@ Future<T?> gvaFunctionWrapper<T>(
         return result;
       }
     } catch (e) {
-      await Sentry.captureMessage(
-          'Error trying to use gva node ${node.url} $e');
+      // await Sentry.captureMessage(
+      //     'Error trying to use gva node ${node.url} $e');
       logger('Error trying ${node.url} $e');
       logger('Increasing node errors of ${node.url} (${node.errors})');
       NodeManager()

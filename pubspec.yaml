@@ -74,6 +74,7 @@ dependencies:
   cron: ^0.5.1
   barcode_scan2: ^4.2.4
   jsqr: ^0.1.4
+  web_browser_detect: ^2.0.3
 
 dev_dependencies:
   flutter_test:

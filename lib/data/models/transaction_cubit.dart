@@ -43,17 +43,12 @@ class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
     final TransactionsAndBalanceState newState =
         transactionsGvaParser(txData, state);
     // Notify
-    final DateTime lastReceivedNotification =
-        newState.lastReceivedNotification ?? DateTime.now();
-    final DateTime lastSentNotification =
-        newState.lastSentNotification ?? DateTime.now();
-    // Notify
 /*      logger(
           'Last received: ${lastReceived.toIso8601String()}, last received notification: ${lastReceivedNotification.toIso8601String()}, compared ${lastReceived.compareTo(lastReceivedNotification)}');*/
     emit(newState);
     for (final Transaction tx in newState.transactions.reversed) {
       if (tx.type == TransactionType.received &&
-          lastReceivedNotification.compareTo(tx.time) == -1) {
+          newState.lastReceivedNotification.compareTo(tx.time) == -1) {
         // Future
         final Contact from = await ContactsCache().getContact(tx.from);
         NotificationController.createNewNotification(
@@ -63,7 +58,7 @@ class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
         emit(newState.copyWith(lastReceivedNotification: tx.time));
       }
       if (tx.type == TransactionType.sent &&
-          lastSentNotification.compareTo(tx.time) == -1) {
+          newState.lastSentNotification.compareTo(tx.time) == -1) {
         // Future
         final Contact to = await ContactsCache().getContact(tx.from);
         NotificationController.createNewNotification(

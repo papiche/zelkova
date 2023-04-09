@@ -4,8 +4,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
-import 'package:simple_barcode_scanner/enum.dart';
-import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
@@ -16,6 +14,7 @@ import '../../../g1/api.dart';
 import '../../../g1/g1_helper.dart';
 import '../../contacts_cache.dart';
 import '../../logger.dart';
+import '../../qr_manager.dart';
 import '../../ui_helpers.dart';
 import '../custom_error_widget.dart';
 import '../loading_box.dart';
@@ -126,7 +125,8 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
           IconButton(
               icon: const Icon(Icons.qr_code_scanner),
               onPressed: () async {
-                final String? scannedKey = await Navigator.push(
+                final String? scannedKey = await QrManager.qrScan(context);
+                /* final String? scannedKey = await Navigator.push(
                     context,
                     MaterialPageRoute<String>(
                       builder: (BuildContext context) =>
@@ -134,7 +134,7 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
                               scanType: ScanType.qr,
                               appBarTitle: tr('qr-scanner-title'),
                               cancelButtonText: tr('close')),
-                    ));
+                    )); */
                 if (scannedKey is String &&
                     scannedKey != null &&
                     scannedKey != '-1') {

@@ -39,7 +39,6 @@ dependencies:
   http: ^0.13.5
   easy_logger: ^0.0.2
   qr_flutter: ^4.0.0
-  simple_barcode_scanner: ^0.0.8
   introduction_screen: ^3.1.6
   connectivity_wrapper: ^1.1.1
   responsive_framework: ^0.2.0
@@ -73,6 +72,8 @@ dependencies:
   path_provider: ^2.0.14
   awesome_notifications: ^0.7.4+1
   cron: ^0.5.1
+  barcode_scan2: ^4.2.4
+  jsqr: ^0.1.4
 
 dev_dependencies:
   flutter_test:

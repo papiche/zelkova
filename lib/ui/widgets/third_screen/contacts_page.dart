@@ -98,16 +98,8 @@ class _ContactsPageState extends State<ContactsPage> {
                                 icon: Icons.share,
                                 label: tr('share_this_key'),
                               ),
-                            /*  SlidableAction(
-                            onPressed: (BuildContext c) {},
-                            backgroundColor: const Color(0xFF21B7CA),
-                            foregroundColor: Colors.white,
-                            icon: Icons.share,
-                            label: tr('share_contact'),
-                          ),*/
                           ],
                         ),
-
                         // The end action pane is the one at the right or the bottom side.
                         endActionPane: ActionPane(
                           motion: const ScrollMotion(),

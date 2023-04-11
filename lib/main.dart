@@ -94,6 +94,7 @@ void main() async {
             Locale('en'),
             Locale('es'),
             Locale('fr'),
+            Locale('gl'),
             Locale('nl'),
             Locale('pt'),
           ],

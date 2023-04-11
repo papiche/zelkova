@@ -19,6 +19,9 @@ class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
             balance: 0,
             lastChecked: DateTime.now()));
 
+  @override
+  String get storagePrefix => 'TransactionsCubit';
+
   void addTransaction(Transaction transaction) {
     final TransactionsAndBalanceState currentState = state;
     final List<Transaction> newTransactions =

@@ -3,6 +3,9 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 class BottomNavCubit extends HydratedCubit<int> {
   BottomNavCubit() : super(0);
 
+  @override
+  String get storagePrefix => 'BottomNavCubit';
+
   void updateIndex(int index) => emit(index);
 
   void getFirstScreen() => emit(0);

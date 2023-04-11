@@ -5,6 +5,9 @@ import 'app_state.dart';
 class AppCubit extends HydratedCubit<AppState> {
   AppCubit() : super(const AppState());
 
+  @override
+  String get storagePrefix => 'AppCubit';
+
   bool get isIntroViewed => state.introViewed;
 
   bool get isWarningViewed => state.warningViewed;

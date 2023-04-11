@@ -6,6 +6,9 @@ import 'contact_state.dart';
 class ContactsCubit extends HydratedCubit<ContactsState> {
   ContactsCubit() : super(const ContactsState());
 
+  @override
+  String get storagePrefix => 'ContactsCubit';
+
   Contact? _find(Contact contact) {
     try {
       return state.contacts

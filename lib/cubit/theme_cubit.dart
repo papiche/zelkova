@@ -7,6 +7,9 @@ part 'theme_state.dart';
 class ThemeCubit extends HydratedCubit<ThemeModeState> {
   ThemeCubit() : super(const ThemeModeState());
 
+  @override
+  String get storagePrefix => 'ThemeCubit';
+
   void getTheme(ThemeModeState state) {
     emit(state);
   }

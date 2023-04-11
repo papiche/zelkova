@@ -7,6 +7,9 @@ import 'node_type.dart';
 class NodeListCubit extends HydratedCubit<NodeListState> {
   NodeListCubit() : super(NodeListState());
 
+  @override
+  String get storagePrefix => 'NodeListCubit';
+
   void shuffle(NodeType type, bool withPenalty) {
     switch (type) {
       case NodeType.duniter:

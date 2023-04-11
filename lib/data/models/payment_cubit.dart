@@ -6,6 +6,9 @@ import 'payment_state.dart';
 class PaymentCubit extends HydratedCubit<PaymentState> {
   PaymentCubit() : super(PaymentState.emptyPayment);
 
+  @override
+  String get storagePrefix => 'PaymentCubit';
+
   void updatePayment({
     String? description,
     double? amount,

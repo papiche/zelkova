@@ -29,7 +29,7 @@
   "intro_2_description": "Ğ1 não depende de nenhum governo ou empresa e é eco-amigo (por ser de baixo consumo de energia), transparente, e justo para todos.",
   "intro_4_description": "Ajudá-lo-emos a criar uma carteira Ğ1 para que possa guardar fácil e de forma segura a sua moeda Ğ1 no seu dispositivo e enviá-la a outros sem intermediários.",
   "keys_tooltip": "As chaves públicas e privadas em Ğ1 e Duniter são como um sistema de cadeado e chave, onde a chave pública funciona como o cadeado que pode ser aberta por qualquer pessoa com a chave privada correspondente, proporcionando uma forma segura de autenticar e verificar transacções",
-  "card_validity_tooltip": "Por favor note que esta carteira só é acessível durante a utilização deste navegador e dispositivo específicos. Se apagar ou reiniciar o navegador, perderá o acesso a esta carteira e aos fundos nela guardados.",
+  "card_validity_tooltip": "Por favor note que esta carteira só está acessível durante a utilização deste navegador e dispositivo específicos. Se apagar ou reiniciar o navegador, perderá o acesso a esta carteira e aos fundos nela guardados.",
   "intro_some_pattern_to_export": "Padrão para importar/exportar a sua carteira",
   "reloading_nodes": "Recarregamento de {type} nós",
   "import_config_desc": "Isto irá sobrescrever a sua carteira actual com a carteira importada",
@@ -120,5 +120,14 @@
   "enter_a_valid_number": "Introduzir um número válido",
   "enter_a_positive_number": "Introduza um número positivo",
   "payment_successful": "Pagamento enviado!",
-  "please_confirm_sent": "Tem certeza?"
+  "please_confirm_sent": "Tem certeza?",
+  "You can't send money to yourself.": "Não podes enviar dinheiro para si mesmo.",
+  "allow_notifications_btn": "PERMITIR",
+  "allow_notifications_desc": "Permitir Ğ1nkgo para notificá-lo com novos pagamentos",
+  "error_installing_desktop": "Erro ao instalar Ğ1nkgo no seu PC: (erro: {error})",
+  "install_desktop": "Instalar Ğ1nkgo no PC",
+  "import_failed": "Falha na importação da Carteira",
+  "contact_already_exists": "Contacto já existe",
+  "wrong_public_key": "Chave pública errada",
+  "browser_warning": "Está a usar um browser que não testamos. Por favor, use o Chrome, Firefox ou Brave."
 }

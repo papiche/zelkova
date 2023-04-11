@@ -253,11 +253,14 @@ Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type) async {
                   !endpoint.contains('test') &&
                   !endpoint.contains('localhost')) {
                 try {
-                  final Duration latency = await _pingNode(endpoint, type);
+                  final NodeCheck nodeCheck = await _pingNode(endpoint, type);
+                  final Duration latency = nodeCheck.latency;
                   logger(
-                      'Evaluating node: $endpoint, latency ${latency.inMicroseconds}');
-                  final Node node =
-                      Node(url: endpoint, latency: latency.inMicroseconds);
+                      'Evaluating node: $endpoint, latency ${latency.inMicroseconds} currentBlock: ${nodeCheck.currentBlock}');
+                  final Node node = Node(
+                      url: endpoint,
+                      latency: latency.inMicroseconds,
+                      currentBlock: nodeCheck.currentBlock);
                   if (fastestNode == null || latency < fastestLatency) {
                     fastestNode = endpoint;
                     fastestLatency = latency;
@@ -308,9 +311,13 @@ Future<List<Node>> _fetchNodes(NodeType type) async {
       final String endpoint = node.url;
 
       try {
-        final Duration latency = await _pingNode(endpoint, type);
+        final NodeCheck nodeCheck = await _pingNode(endpoint, type);
+        final Duration latency = nodeCheck.latency;
         logger('Evaluating node: $endpoint, latency ${latency.inMicroseconds}');
-        final Node node = Node(url: endpoint, latency: latency.inMicroseconds);
+        final Node node = Node(
+            url: endpoint,
+            latency: latency.inMicroseconds,
+            currentBlock: nodeCheck.currentBlock);
         if (fastestNode == null || latency < fastestLatency) {
           fastestNode = endpoint;
           fastestLatency = latency;
@@ -341,8 +348,9 @@ Future<List<Node>> _fetchNodes(NodeType type) async {
   return lNodes;
 }
 
-Future<Duration> _pingNode(String node, NodeType type) async {
+Future<NodeCheck> _pingNode(String node, NodeType type) async {
   const Duration timeout = Duration(seconds: 10);
+  int currentBlock = 0;
   try {
     final Stopwatch stopwatch = Stopwatch()..start();
     if (type == NodeType.duniter || type == NodeType.cesiumPlus) {
@@ -360,16 +368,15 @@ Future<Duration> _pingNode(String node, NodeType type) async {
     } else {
       // Test GVA with a query
       final Gva gva = Gva(node: proxyfyNode(node));
-      await gva
-          .balance('EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG')
-          .timeout(timeout);
+      currentBlock = await gva.getCurrentBlock().timeout(timeout);
+//      NodeManager().updateNode(type, node.copyWith(latency: newLatency));
     }
     stopwatch.stop();
-    return stopwatch.elapsed;
+    return NodeCheck(latency: stopwatch.elapsed, currentBlock: currentBlock);
   } catch (e) {
     // Handle exception when node is unavailable etc
     logger('Node $node does not respond to ping $e');
-    return const Duration(days: 2);
+    return NodeCheck(latency: const Duration(days: 2), currentBlock: 0);
   }
 }
 
@@ -528,9 +535,16 @@ Future<String?> gvaNick(String pubKey) async {
 
 Future<T?> gvaFunctionWrapper<T>(
     String pubKey, Future<T?> Function(Gva) specificFunction) async {
-  final List<Node> nodes = NodeManager()
+  final List<Node> fnodes = NodeManager()
       .nodeList(NodeType.gva)
       .where((Node node) => node.errors <= NodeManager.maxNodeErrors)
+      .toList();
+  final int maxCurrentBlock = fnodes.fold(
+      0,
+      (int max, Node node) =>
+          node.currentBlock > max ? node.currentBlock : max);
+  final List<Node> nodes = fnodes
+      .where((Node node) => node.currentBlock == maxCurrentBlock)
       .toList();
   if (nodes.isEmpty) {
     nodes.addAll(defaultGvaNodes);
@@ -556,6 +570,12 @@ Future<T?> gvaFunctionWrapper<T>(
       continue;
     }
   }
-  throw Exception(
-      'Sorry: I cannot find a working node to get your transactions');
+  throw Exception('Sorry: I cannot find a working gva node');
+}
+
+class NodeCheck {
+  NodeCheck({required this.latency, required this.currentBlock});
+
+  final Duration latency;
+  final int currentBlock;
 }

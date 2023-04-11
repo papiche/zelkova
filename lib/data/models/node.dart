@@ -8,33 +8,31 @@ part 'node.g.dart';
 
 @JsonSerializable()
 class Node extends Equatable implements IsJsonSerializable<Node> {
-  const Node({
-    required this.url,
-    this.latency = 99999,
-    this.errors = 0,
-  });
+  const Node(
+      {required this.url,
+      this.latency = 99999,
+      this.errors = 0,
+      this.currentBlock = 0});
 
   factory Node.fromJson(Map<String, dynamic> json) => _$NodeFromJson(json);
 
   final String url;
   final int latency;
   final int errors;
+  final int currentBlock;
 
-  Node copyWith({
-    String? url,
-    int? latency,
-    int? errors,
-  }) {
+  Node copyWith({String? url, int? latency, int? errors, int? currentBlock}) {
     return Node(
       url: url ?? this.url,
       latency: latency ?? this.latency,
       errors: errors ?? this.errors,
+      currentBlock: currentBlock ?? this.currentBlock,
     );
   }
 
   @override
   String toString() {
-    return 'node url: $url latency: $latency errors: $errors';
+    return 'node url: $url latency: $latency errors: $errors currentBlock: $currentBlock';
   }
 
   @override
@@ -44,7 +42,7 @@ class Node extends Equatable implements IsJsonSerializable<Node> {
   Node fromJson(Map<String, dynamic> json) => Node.fromJson(json);
 
   @override
-  List<Object?> get props => <dynamic>[url, latency, errors];
+  List<Object?> get props => <dynamic>[url, latency, errors, currentBlock];
 }
 
 List<Node> readDotNodeConfig(String entry) =>

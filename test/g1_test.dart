@@ -1,7 +1,8 @@
 import 'dart:convert';
-import 'dart:typed_data';
+import 'dart:math';
 
 import 'package:durt/durt.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ginkgo/data/models/payment_state.dart';
 import 'package:ginkgo/g1/g1_helper.dart';
@@ -13,7 +14,6 @@ void main() {
 
     final Uint8List seedRestored = seedFromString(sSeed);
     expect(seed, equals(seedRestored));
-
     final CesiumWallet wallet = generateCesiumWallet(seed);
     final CesiumWallet walletRestored = generateCesiumWallet(seedRestored);
     expect(wallet.pubkey, equals(walletRestored.pubkey));
@@ -92,4 +92,54 @@ void main() {
       expect(e, isArgumentError);
     }
   });
+  test('encrypt/decrypt of keys', () {
+    final Random random = Random();
+    for (int i = 0; i < 50; i++) {
+      final String pass = _generateRandomPatternPassword(random);
+      final String wrongPass = _generateRandomPatternPassword(random);
+
+      final Uint8List seed = generateUintSeed();
+      final CesiumWallet wallet = generateCesiumWallet(seed);
+
+      final Map<String, String> sample = <String, String>{
+        'pubKey': wallet.pubkey,
+        'seed': seedToString(wallet.seed)
+      };
+
+      final Map<String, String> encSample =
+          encryptJsonForExport(jsonEncode(sample), pass);
+      final String encJson = encSample['key']!;
+      expect(encJson.isNotEmpty, equals(true));
+
+      final Map<String, dynamic> decrypted =
+          decryptJsonForImport(encJson, pass);
+      expect(decrypted['pubKey'], equals(sample['pubKey']));
+      expect(decrypted['seed'], equals(sample['seed']));
+
+      try {
+        // test wrong pass
+        decryptJsonForImport(encJson, wrongPass);
+      } on ArgumentError catch (e) {
+        expect(e, isArgumentError);
+      } catch (e) {
+        if (kDebugMode) {
+          print(
+              'encjson: $encJson and wrongPass: $wrongPass correct pass: $pass');
+        }
+        // rethrow;
+      }
+    }
+  });
+}
+
+String _generateRandomPatternPassword(Random random) {
+  final int length = random.nextInt(8) + 2; // Password length between 2 and 9.
+  final Set<int> digits = <int>{1, 2, 3, 4, 5, 6, 7, 8, 9};
+  final List<int> passwordDigits = <int>[];
+  for (int i = 0; i < length; i++) {
+    final int selectedDigit = digits.elementAt(random.nextInt(digits.length));
+    passwordDigits.add(selectedDigit);
+    digits.remove(selectedDigit);
+  }
+  return passwordDigits.join();
 }

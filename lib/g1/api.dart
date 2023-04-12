@@ -176,7 +176,8 @@ Future<Uint8List> getAvatar(String pubKey) async {
   return imageFromBase64String(dataImage);
 }
 
-Future<void> fetchDuniterNodes(NodeType type, {bool force = false}) async {
+Future<void> fetchDuniterNodes({bool force = false}) async {
+  const NodeType type = NodeType.duniter;
   if (force || nodesWorking(type) < NodeManager.maxNodes) {
     if (force) {
       NodeManager().updateNodes(type, defaultDuniterNodes);
@@ -205,6 +206,18 @@ Future<void> fetchCesiumPlusNodes({bool force = false}) async {
     logger('Fetching cesium plus nodes, we have ${nodesWorking(type)}');
   }
   final List<Node> nodes = await _fetchNodes(NodeType.cesiumPlus);
+  NodeManager().updateNodes(type, nodes);
+}
+
+Future<void> fetchGvaNodes({bool force = false}) async {
+  const NodeType type = NodeType.gva;
+  if (force) {
+    NodeManager().updateNodes(type, defaultGvaNodes);
+    logger('Fetching gva nodes forced');
+  } else {
+    logger('Fetching gva nodes, we have ${nodesWorking(type)}');
+  }
+  final List<Node> nodes = await _fetchDuniterNodesFromPeers(type);
   NodeManager().updateNodes(type, nodes);
 }
 
@@ -309,7 +322,6 @@ Future<List<Node>> _fetchNodes(NodeType type) async {
     currentNodes.shuffle();
     for (final Node node in currentNodes) {
       final String endpoint = node.url;
-
       try {
         final NodeCheck nodeCheck = await _pingNode(endpoint, type);
         final Duration latency = nodeCheck.latency;
@@ -466,14 +478,15 @@ Future<String> pay(
     required double amount,
     String? comment,
     bool? useMempool}) async {
-  final String output = getGvaNode();
-  if (Uri.tryParse(output) != null) {
-    final String node = output;
+  try {
+    final SelectedGvaNode selected = getGvaNode();
+
+    final String nodeUrl = selected.url;
     try {
-      final Gva gva = Gva(node: node);
+      final Gva gva = Gva(node: nodeUrl);
       final CesiumWallet wallet = await SharedPreferencesHelper().getWallet();
       logger(
-          'Trying $node to send $amount to $to with comment ${comment ?? ''}');
+          'Trying $nodeUrl to send $amount to $to with comment ${comment ?? ''}');
 
       final String response = await gva.pay(
           recipient: to,
@@ -495,21 +508,30 @@ Future<String> pay(
       logger(stacktrace);
       return "Something didn't work as expected ($e)";
     }
+  } catch (e) {
+    return "Something didn't work as expected ($e)";
   }
-  return output;
 }
 
-String getGvaNode() {
-  final List<Node> nodes = nodesWorkingList(NodeType.gva);
+SelectedGvaNode getGvaNode() {
+  final List<Node> nodes = _getBestGvaNodes();
   if (nodes.isNotEmpty) {
     // reorder list to use others
     nodes.shuffle();
     // Reference of working proxy 'https://g1demo.comunes.net/proxy/g1v1.p2p.legal/gva/';
-    return proxyfyNode(nodes.first.url);
+    final Node node = nodes.first;
+    return SelectedGvaNode(url: proxyfyNode(node.url), node: node);
   } else {
-    // FIXME
-    return 'Sorry: I cannot find a working node to send the transaction';
+    throw Exception(
+        'Sorry: I cannot find a working node to send the transaction');
   }
+}
+
+class SelectedGvaNode {
+  SelectedGvaNode({required this.url, required this.node});
+
+  final String url;
+  final Node node;
 }
 
 String proxyfyNode(String nodeUrl) {
@@ -535,31 +557,14 @@ Future<String?> gvaNick(String pubKey) async {
 
 Future<T?> gvaFunctionWrapper<T>(
     String pubKey, Future<T?> Function(Gva) specificFunction) async {
-  final List<Node> fnodes = NodeManager()
-      .nodeList(NodeType.gva)
-      .where((Node node) => node.errors <= NodeManager.maxNodeErrors)
-      .toList();
-  final int maxCurrentBlock = fnodes.fold(
-      0,
-      (int max, Node node) =>
-          node.currentBlock > max ? node.currentBlock : max);
-  final List<Node> nodes = fnodes
-      .where((Node node) => node.currentBlock == maxCurrentBlock)
-      .toList();
-  if (nodes.isEmpty) {
-    nodes.addAll(defaultGvaNodes);
-  }
+  final List<Node> nodes = _getBestGvaNodes();
   for (int i = 0; i < nodes.length; i++) {
     final Node node = nodes[i];
-
     try {
-      final String output = getGvaNode();
-      if (Uri.tryParse(output) != null) {
-        final String node = output;
-        final Gva gva = Gva(node: node);
-        final T? result = await specificFunction(gva);
-        return result;
-      }
+      final Gva gva = Gva(node: proxyfyNode(node.url));
+      logger('Trying use gva ${node.url}');
+      final T? result = await specificFunction(gva);
+      return result;
     } catch (e) {
       // await Sentry.captureMessage(
       //     'Error trying to use gva node ${node.url} $e');
@@ -571,6 +576,26 @@ Future<T?> gvaFunctionWrapper<T>(
     }
   }
   throw Exception('Sorry: I cannot find a working gva node');
+}
+
+List<Node> _getBestGvaNodes() {
+  final List<Node> fnodes = NodeManager()
+      .nodeList(NodeType.gva)
+      .where((Node node) => node.errors <= NodeManager.maxNodeErrors)
+      .toList();
+  final int maxCurrentBlock = fnodes.fold(
+      0,
+      (int max, Node node) =>
+          node.currentBlock > max ? node.currentBlock : max);
+  final List<Node> nodes = fnodes
+      .where((Node node) => node.currentBlock == maxCurrentBlock)
+      .toList();
+  nodes.sort((Node a, Node b) => a.latency.compareTo(b.latency));
+  if (nodes.isEmpty) {
+    // Fallback
+    nodes.addAll(defaultGvaNodes);
+  }
+  return nodes;
 }
 
 class NodeCheck {

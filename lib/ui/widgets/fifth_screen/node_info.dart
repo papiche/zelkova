@@ -36,12 +36,13 @@ class NodeInfoCard extends StatelessWidget {
           onLongPress: () {
             logger('On long press');
             if (type == NodeType.duniter) {
-              fetchDuniterNodes(type, force: true);
-            }
-            if (type == NodeType.cesiumPlus) {
-              fetchCesiumPlusNodes(force: true);
+              fetchDuniterNodes(force: true);
             } else {
-              fetchDuniterNodes(type, force: true);
+              if (type == NodeType.cesiumPlus) {
+                fetchCesiumPlusNodes(force: true);
+              } else {
+                fetchGvaNodes();
+              }
             }
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(tr('reloading_nodes',

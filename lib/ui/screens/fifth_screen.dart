@@ -20,6 +20,7 @@ import '../widgets/fifth_screen/import_dialog.dart';
 import '../widgets/fifth_screen/link_card.dart';
 import '../widgets/fifth_screen/node_info.dart';
 import '../widgets/fifth_screen/text_divider.dart';
+import 'debug_nodes_screen.dart';
 
 class FifthScreen extends StatelessWidget {
   const FifthScreen({super.key});
@@ -175,6 +176,21 @@ class FifthScreen extends StatelessWidget {
                       const NodeInfoCard(type: NodeType.cesiumPlus),
                     if (state.expertMode)
                       const NodeInfoCard(type: NodeType.gva),
+                    if (state
+                        .expertMode) // context.read<AppState>().expertMode)
+                      ListTile(
+                        leading: const Icon(Icons.hub),
+                        title: Text(tr('nodes_tech_info')),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute<VoidCallback>(
+                                builder: (BuildContext context) =>
+                                    const DebugNodesScreen()),
+                          );
+                        },
+                      ),
+                    if (state.expertMode) const TextDivider(text: 'info_links'),
                     if (state.expertMode)
                       LinkCard(
                           title: 'code_card_title',

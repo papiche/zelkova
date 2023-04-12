@@ -256,9 +256,9 @@ class GinkgoApp extends StatefulWidget {
 class _GinkgoAppState extends State<GinkgoApp> {
   Future<void> _loadNodes() async {
     _printNodeStatus();
-    await fetchDuniterNodes(NodeType.duniter);
+    await fetchDuniterNodes();
     await fetchCesiumPlusNodes();
-    await fetchDuniterNodes(NodeType.gva);
+    await fetchGvaNodes();
 
     _printNodeStatus(prefix: 'Continuing');
   }
@@ -272,6 +272,9 @@ class _GinkgoAppState extends State<GinkgoApp> {
         '$prefix with $nDuniterNodes duniter nodes, $nCesiumPlusNodes c+ nodes, and $nGvaNodes gva nodes');
     if (!kReleaseMode) {
       logger('${NodeManager().nodeList(NodeType.cesiumPlus)}');
+    }
+    if (!kReleaseMode) {
+      logger('${NodeManager().nodeList(NodeType.gva)}');
     }
   }
 
@@ -289,7 +292,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
       fetchTransactions(context);
     });
     Once.runHourly('load_nodes', callback: () {
-      logger('load nodes via once');
+      logger('Load nodes via once');
       _loadNodes();
     }, fallback: () {
       _printNodeStatus(prefix: 'After once hourly having');

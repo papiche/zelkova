@@ -138,5 +138,7 @@
   "contact_already_exists": "Contacto ya existente",
   "wrong_public_key": "Clave pública incorrecta",
   "browser_warning": "Estas usando un navegador que no hemos testeado. Por favor, usa Chrome, Firefox o Brave.",
-  "code_translate": "Ayúdanos a traducir Ğ1nkgo"
+  "code_translate": "Ayúdanos a traducir Ğ1nkgo",
+  "nodes_tech_info": "Lista de Nodos",
+  "info_links": "Enlaces"
 }

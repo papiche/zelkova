@@ -137,5 +137,6 @@
   "notification_new_sent_desc": "You have sent a {amount} to {to}",
   "contact_already_exists": "Contact already exists",
   "wrong_public_key": "Wrong public key",
-  "browser_warning": "You are using a browser we didn't test. Please use Chrome, Firefox or Brave."
+  "browser_warning": "You are using a browser we didn't test. Please use Chrome, Firefox or Brave.",
+  "code_translate": "Help us to translate Ğ1nkgo"
 }

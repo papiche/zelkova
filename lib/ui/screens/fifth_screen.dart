@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pwa_install/pwa_install.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../cubit/theme_cubit.dart';
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
 import '../../data/models/node_type.dart';
@@ -27,7 +28,24 @@ class FifthScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppState>(
         builder: (BuildContext context, AppState state) => Scaffold(
-              appBar: AppBar(title: Text(tr('bottom_nav_fifth'))),
+              appBar: AppBar(
+                title: Text(tr('bottom_nav_fifth')),
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(context.watch<ThemeCubit>().isDark()
+                        ? Icons.wb_sunny
+                        : Icons.nights_stay),
+                    onPressed: () {
+                      BlocProvider.of<ThemeCubit>(context).getTheme(
+                          ThemeModeState(
+                              themeMode: context.read<ThemeCubit>().isDark()
+                                  ? ThemeMode.light
+                                  : ThemeMode.dark));
+                    },
+                  ),
+                  const SizedBox(width: 10),
+                ],
+              ),
               drawer: const CardDrawer(),
               body: ListView(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -163,6 +181,12 @@ class FifthScreen extends StatelessWidget {
                           icon: Icons.code_rounded,
                           url:
                               Uri.parse('https://git.duniter.org/vjrj/ginkgo')),
+                    if (state.expertMode)
+                      LinkCard(
+                          title: 'code_translate',
+                          icon: Icons.translate,
+                          url: Uri.parse(
+                              'https://weblate.duniter.org/projects/g1nkgo/g1nkgo/')),
                     const BottomWidget(),
                     SwitchListTile(
                       title: Text(tr('expert_mode')),

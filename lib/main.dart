@@ -23,6 +23,7 @@ import 'package:sentry_logging/sentry_logging.dart';
 import 'app_bloc_observer.dart';
 import 'config/theme.dart';
 import 'cubit/bottom_nav_cubit.dart';
+import 'cubit/theme_cubit.dart';
 import 'data/models/app_cubit.dart';
 import 'data/models/app_state.dart';
 import 'data/models/contact_cubit.dart';
@@ -113,6 +114,8 @@ void main() async {
                 create: (BuildContext context) => ContactsCubit()),
             BlocProvider<TransactionsCubit>(
                 create: (BuildContext context) => TransactionsCubit()),
+            BlocProvider<ThemeCubit>(
+                create: (BuildContext context) => ThemeCubit()),
             // Add other BlocProviders here if needed
           ], child: const GinkgoApp()),
         ),
@@ -326,6 +329,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
                 navigatorKey: GinkgoApp.navigatorKey,
 
                 /// Theme stuff
+                themeMode: context.watch<ThemeCubit>().state.themeMode,
 
                 /// Localization stuff
                 localizationsDelegates: context.localizationDelegates,

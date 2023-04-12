@@ -1,10 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 class BottomNavCubit extends HydratedCubit<int> {
   BottomNavCubit() : super(0);
 
   @override
-  String get storagePrefix => 'BottomNavCubit';
+  String get storagePrefix => kIsWeb ? 'BottomNavCubit' : super.storagePrefix;
 
   void updateIndex(int index) => emit(index);
 

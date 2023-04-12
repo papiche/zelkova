@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
@@ -8,11 +9,13 @@ class ThemeCubit extends HydratedCubit<ThemeModeState> {
   ThemeCubit() : super(const ThemeModeState());
 
   @override
-  String get storagePrefix => 'ThemeCubit';
+  String get storagePrefix => kIsWeb ? 'ThemeCubit' : super.storagePrefix;
 
   void getTheme(ThemeModeState state) {
     emit(state);
   }
+
+  bool isDark() => state.themeMode == ThemeMode.dark;
 
   @override
   ThemeModeState? fromJson(Map<String, dynamic> json) {

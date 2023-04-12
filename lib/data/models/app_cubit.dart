@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import 'app_state.dart';
@@ -6,7 +7,7 @@ class AppCubit extends HydratedCubit<AppState> {
   AppCubit() : super(const AppState());
 
   @override
-  String get storagePrefix => 'AppCubit';
+  String get storagePrefix => kIsWeb ? 'AppCubit' : super.storagePrefix;
 
   bool get isIntroViewed => state.introViewed;
 

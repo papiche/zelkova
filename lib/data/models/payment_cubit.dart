@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import 'contact.dart';
@@ -7,7 +8,7 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
   PaymentCubit() : super(PaymentState.emptyPayment);
 
   @override
-  String get storagePrefix => 'PaymentCubit';
+  String get storagePrefix => kIsWeb ? 'PaymentCubit' : super.storagePrefix;
 
   void updatePayment({
     String? description,

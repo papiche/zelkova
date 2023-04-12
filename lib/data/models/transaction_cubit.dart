@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import '../../../g1/api.dart';
@@ -20,7 +21,8 @@ class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
             lastChecked: DateTime.now()));
 
   @override
-  String get storagePrefix => 'TransactionsCubit';
+  String get storagePrefix =>
+      kIsWeb ? 'TransactionsCubit' : super.storagePrefix;
 
   void addTransaction(Transaction transaction) {
     final TransactionsAndBalanceState currentState = state;

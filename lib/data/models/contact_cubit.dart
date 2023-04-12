@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import 'contact.dart';
@@ -7,7 +8,7 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
   ContactsCubit() : super(const ContactsState());
 
   @override
-  String get storagePrefix => 'ContactsCubit';
+  String get storagePrefix => kIsWeb ? 'ContactsCubit' : super.storagePrefix;
 
   Contact? _find(Contact contact) {
     try {
@@ -90,11 +91,11 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
     return contacts;
   }
 
-  bool containsLowerOrUpper(
-          String text, String query, String queryLower, String queryUpper) =>
+  bool containsLowerOrUpper(String text, String query, String queryLower,
+      String queryUpper) =>
       text.contains(query) ||
-      text.contains(queryLower) ||
-      text.contains(queryUpper);
+          text.contains(queryLower) ||
+          text.contains(queryUpper);
 
   List<Contact> get contacts => state.contacts;
 
@@ -117,7 +118,7 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
   @override
   Map<String, dynamic> toJson(ContactsState state) {
     final List<Map<String, dynamic>> contactsJson =
-        state.contacts.map((Contact c) => c.toJson()).toList();
+    state.contacts.map((Contact c) => c.toJson()).toList();
     return <String, dynamic>{'contacts': contactsJson};
   }
 

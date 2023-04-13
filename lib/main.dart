@@ -42,7 +42,6 @@ import 'ui/screens/skeleton_screen.dart';
 import 'ui/ui_helpers.dart';
 
 void main() async {
-  Bloc.observer = AppBlocObserver();
   await NotificationController.initializeLocalNotifications();
 
   /// Initialize packages
@@ -85,6 +84,8 @@ void main() async {
   PWAInstall().setup(installCallback: () {
     logger('APP INSTALLED!');
   });
+
+  Bloc.observer = AppBlocObserver();
 
   void appRunner() => runApp(
         EasyLocalization(

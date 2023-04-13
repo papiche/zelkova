@@ -64,6 +64,10 @@ class FifthScreen extends StatelessWidget {
                       },
                       items: const <DropdownMenuItem<Locale>>[
                         DropdownMenuItem<Locale>(
+                          value: Locale('ast'),
+                          child: Text('Asturianu'),
+                        ),
+                        DropdownMenuItem<Locale>(
                           value: Locale('ca'),
                           child: Text('Català'),
                         ),

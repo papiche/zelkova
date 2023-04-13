@@ -91,6 +91,7 @@ void main() async {
         EasyLocalization(
           path: 'assets/translations',
           supportedLocales: const <Locale>[
+            Locale('ast'),
             Locale('ca'),
             Locale('de'),
             Locale('en'),

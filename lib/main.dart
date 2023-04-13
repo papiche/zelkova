@@ -91,7 +91,11 @@ void main() async {
         EasyLocalization(
           path: 'assets/translations',
           supportedLocales: const <Locale>[
-            Locale('ast'),
+            // Asturian is not supported in flutter
+            // More info: https://docs.flutter.dev/development/accessibility-and-localization/internationalization#adding-support-for-a-new-language
+            // Meantime we use this workaround:
+            // https://github.com/aissat/easy_localization/issues/220#issuecomment-846035493
+            Locale('es', 'AST'),
             Locale('ca'),
             Locale('de'),
             Locale('en'),

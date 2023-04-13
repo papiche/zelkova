@@ -137,5 +137,8 @@
   "payment_error": "Erro no pago",
   "payment_error_desc": "Vaia! fallou o pago. Máis detalles: {error}",
   "payment_error_retry": "Vaia! fallou o pago. Téntao de novo nuns minutos.",
-  "faq_4_desc": "Sobre todo, porque queriamos facer que o uso da Xuna fose sinxelo para as persoas novas, e que logo, co uso, fóra máis fácil o uso de programas máis avanzados como Cesium."
+  "faq_4_desc": "Sobre todo, porque queriamos facer que o uso da Xuna fose sinxelo para as persoas novas, e que logo, co uso, fóra máis fácil o uso de programas máis avanzados como Cesium.",
+  "info_links": "Ligazóns",
+  "code_translate": "Axúdanos a traducir Ğ1nkgo",
+  "nodes_tech_info": "Lista de nodos"
 }

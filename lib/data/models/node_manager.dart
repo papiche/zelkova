@@ -104,6 +104,12 @@ class NodeManager {
     notifyObserver();
   }
 
+  bool get loading => NodeManagerObserver.instance.cubit.isLoading;
+
+  set loading(bool isLoading) {
+    NodeManagerObserver.instance.setLoading(isLoading);
+  }
+
   void notifyObserver() {
     NodeManagerObserver.instance.update(this);
   }
@@ -115,6 +121,10 @@ class NodeManagerObserver {
   static final NodeManagerObserver instance = NodeManagerObserver._internal();
 
   late NodeListCubit cubit;
+
+  void setLoading(bool isLoading) {
+    cubit.setLoading(isLoading);
+  }
 
   void update(NodeManager nodeManager) {
     cubit.setDuniterNodes(nodeManager.duniterNodes);

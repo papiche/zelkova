@@ -13,6 +13,8 @@ abstract class _$NodeListStateCWProxy {
 
   NodeListState gvaNodes(List<Node>? gvaNodes);
 
+  NodeListState isLoading(bool? isLoading);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `NodeListState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -23,6 +25,7 @@ abstract class _$NodeListStateCWProxy {
     List<Node>? duniterNodes,
     List<Node>? cesiumPlusNodes,
     List<Node>? gvaNodes,
+    bool? isLoading,
   });
 }
 
@@ -44,6 +47,9 @@ class _$NodeListStateCWProxyImpl implements _$NodeListStateCWProxy {
   NodeListState gvaNodes(List<Node>? gvaNodes) => this(gvaNodes: gvaNodes);
 
   @override
+  NodeListState isLoading(bool? isLoading) => this(isLoading: isLoading);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `NodeListState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -55,6 +61,7 @@ class _$NodeListStateCWProxyImpl implements _$NodeListStateCWProxy {
     Object? duniterNodes = const $CopyWithPlaceholder(),
     Object? cesiumPlusNodes = const $CopyWithPlaceholder(),
     Object? gvaNodes = const $CopyWithPlaceholder(),
+    Object? isLoading = const $CopyWithPlaceholder(),
   }) {
     return NodeListState(
       duniterNodes: duniterNodes == const $CopyWithPlaceholder()
@@ -69,6 +76,10 @@ class _$NodeListStateCWProxyImpl implements _$NodeListStateCWProxy {
           ? _value.gvaNodes
           // ignore: cast_nullable_to_non_nullable
           : gvaNodes as List<Node>?,
+      isLoading: isLoading == const $CopyWithPlaceholder()
+          ? _value.isLoading
+          // ignore: cast_nullable_to_non_nullable
+          : isLoading as bool?,
     );
   }
 }
@@ -94,6 +105,7 @@ NodeListState _$NodeListStateFromJson(Map<String, dynamic> json) =>
       gvaNodes: (json['gvaNodes'] as List<dynamic>?)
           ?.map((e) => Node.fromJson(e as Map<String, dynamic>))
           .toList(),
+      isLoading: json['isLoading'] as bool?,
     );
 
 Map<String, dynamic> _$NodeListStateToJson(NodeListState instance) =>
@@ -101,4 +113,5 @@ Map<String, dynamic> _$NodeListStateToJson(NodeListState instance) =>
       'duniterNodes': instance.duniterNodes,
       'cesiumPlusNodes': instance.cesiumPlusNodes,
       'gvaNodes': instance.gvaNodes,
+      'isLoading': instance.isLoading,
     };

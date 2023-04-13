@@ -10,6 +10,12 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
   @override
   String get storagePrefix => 'NodeListCubit';
 
+  bool get isLoading => state.isLoading;
+
+  void setLoading(bool isLoading) {
+    emit(state.copyWith(isLoading: isLoading));
+  }
+
   void shuffle(NodeType type, bool withPenalty) {
     switch (type) {
       case NodeType.duniter:
@@ -23,8 +29,8 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
       case NodeType.cesiumPlus:
         if (withPenalty) {
           emit(state.copyWith(
-              cesiumPlusNodes: shuffleFirstNWithPenalty(
-                  state.cesiumPlusNodes)));
+              cesiumPlusNodes:
+                  shuffleFirstNWithPenalty(state.cesiumPlusNodes)));
         } else {
           emit(state.copyWith(
               cesiumPlusNodes: shuffleFirstN(state.cesiumPlusNodes)));

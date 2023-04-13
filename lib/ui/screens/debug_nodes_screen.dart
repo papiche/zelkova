@@ -6,6 +6,8 @@ import '../../data/models/node.dart';
 import '../../data/models/node_list_cubit.dart';
 import '../../data/models/node_list_state.dart';
 import '../../data/models/node_type.dart';
+import '../../g1/api.dart';
+import '../ui_helpers.dart';
 import '../widgets/debug_nodes/debug_node_list.dart';
 
 class DebugNodesScreen extends StatelessWidget {
@@ -19,55 +21,78 @@ class DebugNodesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NodeListCubit, NodeListState>(
-        builder: (BuildContext nodeContext, NodeListState state) {
-      final List<Node> duniterNodes =
-          filterAndSortNodesByType(state.duniterNodes, NodeType.duniter);
-      final List<Node> cesiumPlusNodes =
-          filterAndSortNodesByType(state.cesiumPlusNodes, NodeType.cesiumPlus);
-      final List<Node> gvaNodes =
-          filterAndSortNodesByType(state.gvaNodes, NodeType.gva);
-      return Scaffold(
-          appBar: AppBar(title: Text(tr('nodes_tech_info'))),
-          body: Container(
-              constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.9),
-              child: Scrollbar(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child:
-                            Text('GVA Nodes', style: TextStyle(fontSize: 24)),
-                      ),
-                      DebugNodeList(
-                          nodes: gvaNodes,
-                          type: NodeType.gva,
-                          currentBlock: gvaNodes[0].currentBlock),
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text('Duniter Nodes',
-                            style: TextStyle(fontSize: 24)),
-                      ),
-                      DebugNodeList(
-                          nodes: duniterNodes,
-                          type: NodeType.duniter,
-                          currentBlock: duniterNodes[0].currentBlock),
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text('Cesium+ Nodes',
-                            style: TextStyle(fontSize: 24)),
-                      ),
-                      DebugNodeList(
-                          nodes: cesiumPlusNodes,
-                          type: NodeType.cesiumPlus,
-                          currentBlock: cesiumPlusNodes[0].currentBlock),
-                    ],
-                  ),
+    final NodeListState state = context.watch<NodeListCubit>().state;
+    final List<Node> duniterNodes =
+        filterAndSortNodesByType(state.duniterNodes, NodeType.duniter);
+    final List<Node> cesiumPlusNodes =
+        filterAndSortNodesByType(state.cesiumPlusNodes, NodeType.cesiumPlus);
+    final List<Node> gvaNodes =
+        filterAndSortNodesByType(state.gvaNodes, NodeType.gva);
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(tr('nodes_tech_info')),
+          bottom: state.isLoading
+              ? const PreferredSize(
+                  preferredSize: Size.fromHeight(4.0),
+                  child: LinearProgressIndicator(),
+                )
+              : null,
+        ),
+        body: Container(
+            constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height * 0.9),
+            child: Scrollbar(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const DebugNodeHeader(type: NodeType.gva),
+                    DebugNodeList(
+                        nodes: gvaNodes,
+                        type: NodeType.gva,
+                        currentBlock: gvaNodes[0].currentBlock),
+                    const DebugNodeHeader(type: NodeType.duniter),
+                    DebugNodeList(
+                        nodes: duniterNodes,
+                        type: NodeType.duniter,
+                        currentBlock: duniterNodes[0].currentBlock),
+                    const DebugNodeHeader(type: NodeType.cesiumPlus),
+                    DebugNodeList(
+                        nodes: cesiumPlusNodes,
+                        type: NodeType.cesiumPlus,
+                        currentBlock: cesiumPlusNodes[0].currentBlock),
+                  ],
                 ),
-              )));
-    });
+              ),
+            )));
+  }
+}
+
+class DebugNodeHeader extends StatelessWidget {
+  const DebugNodeHeader({super.key, required this.type});
+
+  final NodeType type;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text('${capitalize(type.name)} Nodes',
+                style: const TextStyle(fontSize: 20)),
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: () {
+                fetchNodes(type);
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(tr('reloading_nodes',
+                      namedArgs: <String, String>{'type': type.name})),
+                ));
+              },
+            ),
+          ],
+        ));
   }
 }

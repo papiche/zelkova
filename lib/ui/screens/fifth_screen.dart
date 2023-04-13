@@ -7,7 +7,6 @@ import 'package:share_plus/share_plus.dart';
 import '../../cubit/theme_cubit.dart';
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
-import '../../data/models/node_type.dart';
 import '../../shared_prefs.dart';
 import '../notification_controller.dart';
 import '../ui_helpers.dart';
@@ -20,7 +19,6 @@ import '../widgets/fifth_screen/import_dialog.dart';
 import '../widgets/fifth_screen/link_card.dart';
 import '../widgets/fifth_screen/node_info.dart';
 import '../widgets/fifth_screen/text_divider.dart';
-import 'debug_nodes_screen.dart';
 
 class FifthScreen extends StatelessWidget {
   const FifthScreen({super.key});
@@ -170,26 +168,7 @@ class FifthScreen extends StatelessWidget {
                         ]),
                     if (state.expertMode)
                       const TextDivider(text: 'technical_info_title'),
-                    if (state.expertMode)
-                      const NodeInfoCard(type: NodeType.duniter),
-                    if (state.expertMode)
-                      const NodeInfoCard(type: NodeType.cesiumPlus),
-                    if (state.expertMode)
-                      const NodeInfoCard(type: NodeType.gva),
-                    if (state
-                        .expertMode) // context.read<AppState>().expertMode)
-                      ListTile(
-                        leading: const Icon(Icons.hub),
-                        title: Text(tr('nodes_tech_info')),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute<VoidCallback>(
-                                builder: (BuildContext context) =>
-                                    const DebugNodesScreen()),
-                          );
-                        },
-                      ),
+                    if (state.expertMode) const NodeInfoCard(),
                     if (state.expertMode) const TextDivider(text: 'info_links'),
                     if (state.expertMode)
                       LinkCard(

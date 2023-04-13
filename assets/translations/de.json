@@ -41,8 +41,6 @@
     "add_contact": "Kontakt hinzufügen",
     "contact_added": "Kontakt hinzugefügt",
     "qr-scanner-title": "Scannen Sie den QR von jemanden",
-    "using_nodes": "Es werden {nodes} Knoten von {type} genutzt",
-    "using_nodes_first": "Schnellster: {node}",
     "at_least_3": "Mindestens 3 Punkte sind erforderlich",
     "intro_some_pattern_to_export": "Muster für den Import/Export Ihrer Brieftasche",
     "confirm_pattern": "Muster bestätigen",
@@ -95,6 +93,5 @@
     "intro_2_description": "Die Ğ1 ist unabhängig von jeglichen Regierungen oder Gesellschaften, ist ökologisch (durch niedrigen Energieverbrauch), ist transparent und gerecht allen Beteiligten gegenüber.",
     "intro_3_description": "Duniter ist ein dezentralisiertes Kryptowährungsnetzwerk, das die Leute ermöglicht, ihre eigene Ğ1 Währung zu schaffen.",
     "intro_4_description": "Wir helfen Ihnen, eine Ğ1-Brieftasche zu eröffnen, damit Sie Ihre Ğ1-Währung einfach und sicher auf Ihrem Gerät speichern und anderen ohne Zwischenwege überweisen können.",
-    "keys_tooltip": "Öffentliche und private Schlüssel sind in der Ğ1 und in Duniter wie ein Schlüssel-Schloss-System. Dabei schließt der öffentliche Schlüssel ab, und nur der passende private Schlüssel kann öffnen. Das ist eine sichere Weise, Transaktionen zu authentifizieren und zu überprüfen.",
-    "long_press_to_refresh": "Neues Anordnen der gegenwärtigen Knoten-Liste. Tippen und halten, um die Liste zu aktualisieren."
+    "keys_tooltip": "Öffentliche und private Schlüssel sind in der Ğ1 und in Duniter wie ein Schlüssel-Schloss-System. Dabei schließt der öffentliche Schlüssel ab, und nur der passende private Schlüssel kann öffnen. Das ist eine sichere Weise, Transaktionen zu authentifizieren und zu überprüfen."
 }

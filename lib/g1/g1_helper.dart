@@ -163,3 +163,5 @@ Map<String, dynamic> decryptJsonForImport(
       .decrypt64(keyEncrypted, iv: _iv);
   return jsonDecode(decrypted) as Map<String, dynamic>;
 }
+
+const Duration wrongNodeDuration = Duration(days: 2);

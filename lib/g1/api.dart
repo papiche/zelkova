@@ -178,6 +178,7 @@ Future<Uint8List> getAvatar(String pubKey) async {
 
 Future<void> fetchDuniterNodes({bool force = false}) async {
   const NodeType type = NodeType.duniter;
+  NodeManager().loading = true;
   if (force || nodesWorking(type) < NodeManager.maxNodes) {
     if (force) {
       NodeManager().updateNodes(type, defaultDuniterNodes);
@@ -193,11 +194,25 @@ Future<void> fetchDuniterNodes({bool force = false}) async {
       // developer.log(StackTrace.current.toString());
     }
   }
+  NodeManager().loading = false;
+}
+
+Future<void> fetchNodes(NodeType type) async {
+  if (type == NodeType.duniter) {
+    fetchDuniterNodes(force: true);
+  } else {
+    if (type == NodeType.cesiumPlus) {
+      fetchCesiumPlusNodes(force: true);
+    } else {
+      fetchGvaNodes(force: true);
+    }
+  }
 }
 
 // https://github.com/duniter/cesium/blob/467ec68114be650cd1b306754c3142fc4020164c/www/js/config.js#L96
 // https://g1.data.le-sou.org/g1/peer/_search?pretty
 Future<void> fetchCesiumPlusNodes({bool force = false}) async {
+  NodeManager().loading = true;
   const NodeType type = NodeType.cesiumPlus;
   if (force) {
     NodeManager().updateNodes(type, defaultCesiumPlusNodes);
@@ -207,9 +222,11 @@ Future<void> fetchCesiumPlusNodes({bool force = false}) async {
   }
   final List<Node> nodes = await _fetchNodes(NodeType.cesiumPlus);
   NodeManager().updateNodes(type, nodes);
+  NodeManager().loading = false;
 }
 
 Future<void> fetchGvaNodes({bool force = false}) async {
+  NodeManager().loading = true;
   const NodeType type = NodeType.gva;
   if (force) {
     NodeManager().updateNodes(type, defaultGvaNodes);
@@ -219,6 +236,7 @@ Future<void> fetchGvaNodes({bool force = false}) async {
   }
   final List<Node> nodes = await _fetchDuniterNodesFromPeers(type);
   NodeManager().updateNodes(type, nodes);
+  NodeManager().loading = false;
 }
 
 int nodesWorking(NodeType type) => NodeManager()
@@ -361,34 +379,49 @@ Future<List<Node>> _fetchNodes(NodeType type) async {
 }
 
 Future<NodeCheck> _pingNode(String node, NodeType type) async {
+  // Decrease timout during ping
   const Duration timeout = Duration(seconds: 10);
   int currentBlock = 0;
+  Duration latency;
   try {
     final Stopwatch stopwatch = Stopwatch()..start();
-    if (type == NodeType.duniter || type == NodeType.cesiumPlus) {
+    if (type == NodeType.duniter) {
+      final Response response = await http
+          .get(Uri.parse('$node/blockchain/current'))
+          .timeout(timeout);
+      stopwatch.stop();
+      latency = stopwatch.elapsed;
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> json =
+            jsonDecode(response.body) as Map<String, dynamic>;
+        currentBlock = json['number'] as int;
+      } else {
+        latency = wrongNodeDuration;
+      }
+    } else if (type == NodeType.cesiumPlus) {
+      // see: http://g1.data.e-is.pro/network/peering
       await http
-          .get(Uri.parse(type == NodeType.duniter
-              ? '$node/network/peers/self/ping'
-              : type == NodeType.cesiumPlus
-                  ?
-                  // see: http://g1.data.e-is.pro/network/peering
-                  '$node/network/peering'
-                  // gva, test for playground
-                  : '$node/playground'))
+          .get(Uri.parse('$node/network/peering'))
           // Decrease http timeout during ping
           .timeout(timeout);
+      stopwatch.stop();
+      latency = stopwatch.elapsed;
     } else {
       // Test GVA with a query
       final Gva gva = Gva(node: proxyfyNode(node));
       currentBlock = await gva.getCurrentBlock().timeout(timeout);
 //      NodeManager().updateNode(type, node.copyWith(latency: newLatency));
+      stopwatch.stop();
+      final double balance = await gva
+          .balance('EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG')
+          .timeout(timeout);
+      latency = balance >= 0 ? stopwatch.elapsed : wrongNodeDuration;
     }
-    stopwatch.stop();
-    return NodeCheck(latency: stopwatch.elapsed, currentBlock: currentBlock);
+    return NodeCheck(latency: latency, currentBlock: currentBlock);
   } catch (e) {
     // Handle exception when node is unavailable etc
     logger('Node $node does not respond to ping $e');
-    return NodeCheck(latency: const Duration(days: 2), currentBlock: 0);
+    return NodeCheck(latency: wrongNodeDuration, currentBlock: 0);
   }
 }
 
@@ -595,6 +628,7 @@ List<Node> _getBestGvaNodes() {
     // Fallback
     nodes.addAll(defaultGvaNodes);
   }
+  nodes.shuffle();
   return nodes;
 }
 

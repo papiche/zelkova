@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../data/models/node.dart';
 import '../../../data/models/node_type.dart';
+import '../../../g1/g1_helper.dart';
 
 class DebugNodeList extends StatelessWidget {
   const DebugNodeList(
@@ -16,22 +17,31 @@ class DebugNodeList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      //physics: const AlwaysScrollableScrollPhysics(),
-      itemCount: nodes.length,
-      itemBuilder: (BuildContext context, int index) {
+    return Column(
+        children: List<Widget>.generate(
+      nodes.length,
+      (int index) {
         final Node node = nodes[index];
-        return ListTile(
-          dense: true,
-          title: Text(node.url),
-          subtitle: Text(
-              '${type != NodeType.cesiumPlus ? 'Current block: ${node.currentBlock}, ' : ''}errors: ${node.errors}, latency (ms): ${node.latency}'),
-          leading: node.currentBlock == currentBlock
-              ? const Icon(Icons.check_circle, color: Colors.green)
-              : const Icon(Icons.run_circle, color: Colors.grey),
-        );
+        final int wrongNode = wrongNodeDuration.inMicroseconds;
+        return Theme(
+            data: Theme.of(context).copyWith(
+              visualDensity: VisualDensity.compact,
+            ),
+            child: ListTile(
+              dense: true,
+              title: Text(node.url),
+              subtitle: node.latency < wrongNode
+                  ? Text(
+                      '${type != NodeType.cesiumPlus ? 'Current block: ${node.currentBlock}, ' : ''}errors: ${node.errors}, latency (ms): ${node.latency}')
+                  : null,
+              leading:
+                  node.currentBlock == currentBlock && node.latency < wrongNode
+                      ? const Icon(Icons.check_circle, color: Colors.green)
+                      : node.latency < wrongNode
+                          ? const Icon(Icons.run_circle, color: Colors.grey)
+                          : const Icon(Icons.power_off, color: Colors.grey),
+            ));
       },
-    );
+    ));
   }
 }

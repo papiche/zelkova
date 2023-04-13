@@ -14,10 +14,12 @@ class NodeListState extends Equatable {
   NodeListState(
       {List<Node>? duniterNodes,
       List<Node>? cesiumPlusNodes,
-      List<Node>? gvaNodes})
+      List<Node>? gvaNodes,
+      bool? isLoading})
       : duniterNodes = duniterNodes ?? defaultDuniterNodes,
         cesiumPlusNodes = cesiumPlusNodes ?? defaultCesiumPlusNodes,
-        gvaNodes = gvaNodes ?? defaultGvaNodes;
+        gvaNodes = gvaNodes ?? defaultGvaNodes,
+        isLoading = isLoading ?? false;
 
   factory NodeListState.fromJson(Map<String, dynamic> json) =>
       _$NodeListStateFromJson(json);
@@ -25,9 +27,11 @@ class NodeListState extends Equatable {
   final List<Node> duniterNodes;
   final List<Node> cesiumPlusNodes;
   final List<Node> gvaNodes;
+  final bool isLoading;
 
   @override
-  List<Object?> get props => <Object>[duniterNodes, cesiumPlusNodes, gvaNodes];
+  List<Object?> get props =>
+      <Object>[duniterNodes, cesiumPlusNodes, gvaNodes, isLoading];
 
   Map<String, dynamic> toJson() => _$NodeListStateToJson(this);
 }

@@ -61,7 +61,10 @@ class CreditCard extends StatelessWidget {
                         child: FittedBox(
                             fit: BoxFit.scaleDown,
                             child: Text(
-                              dotenv.env['CARD_TEXT'] ?? tr('g1_wallet'),
+                              dotenv.env['CARD_TEXT'] != null &&
+                                      dotenv.env['CARD_TEXT'] != 'Ğ1 Wallet'
+                                  ? dotenv.env['CARD_TEXT']!
+                                  : tr('g1_wallet'),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize:

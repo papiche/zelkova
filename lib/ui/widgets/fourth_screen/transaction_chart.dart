@@ -1,12 +1,16 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
+import '../../../data/models/transaction.dart';
+
 class TransactionChart extends StatefulWidget {
-  TransactionChart({super.key});
+  const TransactionChart({super.key, required this.transactions});
 
   final Color leftBarColor = Colors.yellow;
   final Color rightBarColor = Colors.red;
   final Color avgColor = Colors.orange;
+
+  final List<Transaction> transactions;
 
   @override
   State<StatefulWidget> createState() => TransactionChartState();
@@ -23,7 +27,60 @@ class TransactionChartState extends State<TransactionChart> {
   String _selectedButton = 'DAY';
 
   List<BarChartGroupData> _getChartData(String buttonValue) {
-    return <BarChartGroupData>[];
+    final Map<DateTime, List<Transaction>> groupedTransactions =
+        <DateTime, List<Transaction>>{};
+
+    for (final Transaction transaction in widget.transactions) {
+      DateTime key;
+      if (buttonValue == 'DAY') {
+        key = DateTime(transaction.time.year, transaction.time.month,
+            transaction.time.day);
+      } else if (buttonValue == 'WEEK') {
+        key = DateTime(transaction.time.year, transaction.time.month,
+            transaction.time.day - transaction.time.weekday + 1);
+      } else if (buttonValue == 'MONTH') {
+        key = DateTime(transaction.time.year, transaction.time.month);
+      } else if (buttonValue == 'YEAR') {
+        key = DateTime(transaction.time.year);
+      } else {
+        throw ArgumentError('Invalid buttonValue: $buttonValue');
+      }
+
+      if (!groupedTransactions.containsKey(key)) {
+        groupedTransactions[key] = <Transaction>[];
+      }
+      groupedTransactions[key]!.add(transaction);
+    }
+
+    final Map<DateTime, double> totals = <DateTime, double>{};
+    for (final DateTime key in groupedTransactions.keys) {
+      double total = 0;
+      for (final Transaction transaction in groupedTransactions[key]!) {
+        total += transaction.amount;
+      }
+      totals[key] = total;
+    }
+
+    final List<BarChartGroupData> chartData = <BarChartGroupData>[];
+    final List<DateTime> sortedKeys = groupedTransactions.keys.toList()..sort();
+    for (int i = 0; i < sortedKeys.length; i++) {
+      final DateTime key = sortedKeys[i];
+      final double total = totals[key]!;
+      chartData.add(
+        BarChartGroupData(
+          x: i,
+          barRods: <BarChartRodData>[
+            BarChartRodData(
+              toY: total,
+              color: widget.leftBarColor,
+              width: width,
+            ),
+          ],
+        ),
+      );
+    }
+
+    return chartData;
   }
 
   Widget _buildButton(String buttonValue) {
@@ -47,26 +104,9 @@ class TransactionChartState extends State<TransactionChart> {
   @override
   void initState() {
     super.initState();
-    final BarChartGroupData barGroup1 = makeGroupData(0, 5, 12);
-    final BarChartGroupData barGroup2 = makeGroupData(1, 16, 12);
-    final BarChartGroupData barGroup3 = makeGroupData(2, 18, 5);
-    final BarChartGroupData barGroup4 = makeGroupData(3, 20, 16);
-    final BarChartGroupData barGroup5 = makeGroupData(4, 17, 6);
-    final BarChartGroupData barGroup6 = makeGroupData(5, 19, 1.5);
-    final BarChartGroupData barGroup7 = makeGroupData(6, 10, 1.5);
 
-    final List<BarChartGroupData> items = <BarChartGroupData>[
-      barGroup1,
-      barGroup2,
-      barGroup3,
-      barGroup4,
-      barGroup5,
-      barGroup6,
-      barGroup7,
-    ];
-
-    rawBarGroups = items;
-
+    // En lugar de datos simulados, utilizamos las transacciones de verdad para generar los datos del gráfico.
+    rawBarGroups = _getChartData(_selectedButton);
     showingBarGroups = rawBarGroups;
   }
 
@@ -210,6 +250,10 @@ class TransactionChartState extends State<TransactionChart> {
       'St',
       'Su'
     ];
+
+    if (value < 0 || value >= titles.length) {
+      return Container();
+    }
 
     final Widget text = Text(
       titles[value.toInt()],

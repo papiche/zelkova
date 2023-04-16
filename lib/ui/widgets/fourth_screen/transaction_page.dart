@@ -124,9 +124,7 @@ class _TransactionsAndBalanceWidgetState
                         fontWeight: FontWeight.bold),
                   )),
                 ),
-                if (!kReleaseMode) TransactionChart()
-                /*BalanceChart(
-                                    transactions: .transactions),*/
+                if (!kReleaseMode) TransactionChart(transactions: transactions)
               ],
             )),
           )),

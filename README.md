@@ -144,7 +144,7 @@ to [ios/Runner/Info.plist](./ios/Runner/Info.plist) and update the following cod
 - ca: calbasi
 - de: FW
 - fr: vincentux, poka
-- gl translation: Vijitâtman
+- gl: Vijitâtman
 - nl: Maria Rosa Costa i Alandi
 - pt: Carlos Neto
 

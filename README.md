@@ -138,6 +138,20 @@ to [ios/Runner/Info.plist](./ios/Runner/Info.plist) and update the following cod
 
 ## Credits
 
+### Translations
+
+- ast: dixebral
+- ca: calbasi
+- de: FW
+- fr: vincentux, poka
+- gl translation: Vijitâtman
+- nl: Maria Rosa Costa i Alandi
+- pt: Carlos Neto
+
+Thanks!
+
+### Others
+
 - Ğ1 logos from duniter.org
 - undraw intro images: https://undraw.co/license
 - Chipcard https://commons.wikimedia.org/wiki/File:Chipcard.svg under the Creative Commons

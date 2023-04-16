@@ -39,7 +39,7 @@
   "keys_tooltip": "Les clés publiques et privées en Ğ1 et Duniter fonctionnent comme un système de verrou et de clé, où la clé publique agit comme le verrou qui peut être ouvert par n'importe qui ayant la clé privée correspondante, offrant ainsi un moyen sécurisé d'authentifier et de vérifier les transactions",
   "card_validity": "Validité",
   "card_validity_tooltip": "Veuillez noter que ce portefeuille n'est accessible que lors de l'utilisation de ce navigateur et de cet appareil spécifiques. Si vous supprimez ou réinitialisez le navigateur, vous perdrez l'accès à ce portefeuille et aux fonds qu'il contient.",
-  "demo_desc": "Veuillez vous abstenir d'utiliser ceci avec de vraies transactions pour le moment",
+  "demo_desc": "Portefeuille en cours de développement : à utiliser avec prudence",
   "export_key": "Exporter votre portefeuille",
   "import_key": "Importer votre portefeuille",
   "copy_your_key": "Copier votre clé publique",

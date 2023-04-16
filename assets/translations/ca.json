@@ -134,5 +134,8 @@
   "notification_new_payment_title": "S'ha rebut un nou pagament",
   "contact_already_exists": "Aquest contacte ja hi és",
   "wrong_public_key": "Clau pública incorrecta",
-  "browser_warning": "Estàs usant un navegador que encara no hem provat. Si us plau usa Chrome, Firefox o Brave."
+  "browser_warning": "Estàs usant un navegador que encara no hem provat. Si us plau usa Chrome, Firefox o Brave.",
+  "code_translate": "Ajuda'ns a traduir Ğ1nkgo",
+  "nodes_tech_info": "Llistat de nodes",
+  "info_links": "Enllaços"
 }

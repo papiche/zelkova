@@ -34,7 +34,7 @@ class _TransactionsAndBalanceWidgetState
   void initState() {
     super.initState();
     _transScrollController.addListener(_scrollListener);
-// Remove in the future
+    // Remove in the future
     transCubit = context.read<TransactionsCubit>();
     nodeListCubit = context.read<NodeListCubit>();
     transCubit.fetchTransactions(nodeListCubit);

@@ -57,13 +57,9 @@ TransactionsAndBalanceState transactionsGvaParser(
     Map<String, dynamic> txData, TransactionsAndBalanceState state) {
   // Balance
   final dynamic rawBalance = txData['balance'];
-  final double? amount;
-  if (rawBalance != null) {
-    final Map<String, dynamic> balance = rawBalance as Map<String, dynamic>;
-    amount = (balance['amount'] as int) / 1.0;
-  } else {
-    amount = 0;
-  }
+  final double amount = rawBalance != null
+      ? ((rawBalance as Map<String, dynamic>)['amount'] as int) / 1.0
+      : 0;
   // Transactions
   final Map<String, dynamic> txsHistoryBc =
       txData['txsHistoryBc'] as Map<String, dynamic>;

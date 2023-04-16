@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:tuple/tuple.dart';
 import 'package:universal_html/html.dart' show window;
 
 import '../data/models/contact.dart';
@@ -496,8 +497,7 @@ Future<http.Response> _requestWithRetry(
     } catch (e) {
       logger('Error trying ${node.url} $e');
       if (!dontRecord) {
-        logger('Increasing node errors of ${node.url} (${node.errors})');
-        NodeManager().updateNode(type, node.copyWith(errors: node.errors + 1));
+        increaseNodeErrors(type, node);
       }
       continue;
     }
@@ -574,37 +574,36 @@ String proxyfyNode(String nodeUrl) {
   return url;
 }
 
-Future<Map<String, dynamic>?> gvaHistoryAndBalance(String pubKey) async {
+Future<Tuple2<Map<String, dynamic>?, Node>> gvaHistoryAndBalance(
+    String pubKey) async {
   return gvaFunctionWrapper<Map<String, dynamic>>(
       pubKey, (Gva gva) => gva.history(pubKey));
 }
 
-Future<double?> gvaBalance(String pubKey) async {
+Future<Tuple2<double?, Node>> gvaBalance(String pubKey) async {
   return gvaFunctionWrapper<double>(pubKey, (Gva gva) => gva.balance(pubKey));
 }
 
-Future<String?> gvaNick(String pubKey) async {
+Future<Tuple2<String?, Node>> gvaNick(String pubKey) async {
   return gvaFunctionWrapper<String>(
       pubKey, (Gva gva) => gva.getUsername(pubKey));
 }
 
-Future<T?> gvaFunctionWrapper<T>(
+Future<Tuple2<T?, Node>> gvaFunctionWrapper<T>(
     String pubKey, Future<T?> Function(Gva) specificFunction) async {
   final List<Node> nodes = _getBestGvaNodes();
   for (int i = 0; i < nodes.length; i++) {
     final Node node = nodes[i];
     try {
       final Gva gva = Gva(node: proxyfyNode(node.url));
-      logger('Trying use gva ${node.url}');
+      logger('Trying to use gva ${node.url}');
       final T? result = await specificFunction(gva);
-      return result;
+      return Tuple2<T?, Node>(result, node);
     } catch (e) {
       // await Sentry.captureMessage(
       //     'Error trying to use gva node ${node.url} $e');
       logger('Error trying ${node.url} $e');
-      logger('Increasing node errors of ${node.url} (${node.errors})');
-      NodeManager()
-          .updateNode(NodeType.gva, node.copyWith(errors: node.errors + 1));
+      increaseNodeErrors(NodeType.gva, node);
       continue;
     }
   }
@@ -637,4 +636,9 @@ class NodeCheck {
 
   final Duration latency;
   final int currentBlock;
+}
+
+void increaseNodeErrors(NodeType type, Node node) {
+  logger('Increasing node errors of ${node.url} (${node.errors})');
+  NodeManager().updateNode(type, node.copyWith(errors: node.errors + 1));
 }

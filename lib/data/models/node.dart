@@ -42,7 +42,7 @@ class Node extends Equatable implements IsJsonSerializable<Node> {
   Node fromJson(Map<String, dynamic> json) => Node.fromJson(json);
 
   @override
-  List<Object?> get props => <dynamic>[url, latency, errors, currentBlock];
+  List<Object?> get props => <dynamic>[url];
 }
 
 List<Node> readDotNodeConfig(String entry) =>

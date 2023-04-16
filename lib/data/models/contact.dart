@@ -42,7 +42,7 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
   final String? name;
 
   @override
-  List<Object?> get props => <dynamic>[nick, pubKey, avatar, notes, name];
+  List<Object?> get props => <dynamic>[pubKey];
 
   bool get hasAvatar => avatar != null;
 

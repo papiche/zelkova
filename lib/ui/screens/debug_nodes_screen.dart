@@ -82,17 +82,21 @@ class DebugNodeHeader extends StatelessWidget {
           children: <Widget>[
             Text('${capitalize(type.name)} Nodes',
                 style: const TextStyle(fontSize: 20)),
-            IconButton(
-              icon: const Icon(Icons.refresh),
-              onPressed: () {
-                fetchNodes(type);
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text(tr('reloading_nodes',
-                      namedArgs: <String, String>{'type': type.name})),
-                ));
-              },
-            ),
+            GestureDetector(
+              onLongPress: () => _fetchNodes(context, true),
+              child: IconButton(
+                  icon: const Icon(Icons.refresh),
+                  onPressed: () => _fetchNodes(context, false)),
+            )
           ],
         ));
+  }
+
+  void _fetchNodes(BuildContext context, bool force) {
+    fetchNodes(type, force);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(tr('reloading_nodes',
+          namedArgs: <String, String>{'type': type.name})),
+    ));
   }
 }

@@ -198,14 +198,14 @@ Future<void> fetchDuniterNodes({bool force = false}) async {
   NodeManager().loading = false;
 }
 
-Future<void> fetchNodes(NodeType type) async {
+Future<void> fetchNodes(NodeType type, bool force) async {
   if (type == NodeType.duniter) {
-    fetchDuniterNodes(force: true);
+    fetchDuniterNodes(force: force);
   } else {
     if (type == NodeType.cesiumPlus) {
-      fetchCesiumPlusNodes(force: true);
+      fetchCesiumPlusNodes(force: force);
     } else {
-      fetchGvaNodes(force: true);
+      fetchGvaNodes(force: force);
     }
   }
 }

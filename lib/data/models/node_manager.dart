@@ -31,11 +31,30 @@ class NodeManager {
     gvaNodes.addAll(cubit.gvaNodes);
   }
 
-  void updateNodes(NodeType type, List<Node> newNodes) {
+  void updateNodes(NodeType type, List<Node> newNodes, {bool notify = true}) {
     final List<Node> nodes = _getList(type);
+
+    final Map<String, int> existingNodesMap = <String, int>{
+      for (Node node in nodes) node.url: node.errors
+    };
+
     nodes.clear();
-    nodes.addAll(newNodes);
-    notifyObserver();
+
+    final Set<Node> uniqueNodes = <Node>{};
+
+    for (final Node newNode in newNodes) {
+      Node updatedNode = newNode;
+      if (existingNodesMap.containsKey(newNode.url)) {
+        updatedNode = newNode.copyWith(errors: existingNodesMap[newNode.url]);
+      }
+      uniqueNodes.add(updatedNode);
+    }
+
+    nodes.addAll(uniqueNodes);
+
+    if (notify) {
+      notifyObserver();
+    }
   }
 
   List<Node> nodeList(NodeType type) => _getList(type);
@@ -88,7 +107,10 @@ class NodeManager {
     final int index =
         list.indexWhere((Node node) => node.url == updatedNode.url);
     if (index != -1) {
-      list.replaceRange(index, index + 1, <Node>[updatedNode]);
+      // Maintain errors of the update node
+      final Node updateNodeWithErrors =
+          updatedNode.copyWith(errors: list[index].errors);
+      list.replaceRange(index, index + 1, <Node>[updateNodeWithErrors]);
     }
     notifyObserver();
   }

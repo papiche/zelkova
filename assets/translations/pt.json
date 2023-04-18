@@ -134,5 +134,8 @@
   "notification_new_payment_desc": "Recebeu o pagamento de {amount} de {from}",
   "notification_new_payment_title": "Novo pagamento recebido",
   "notification_new_sent_desc": "Enviou {amount} para {to}",
-  "notification_new_sent_title": "Novo pagamento enviado"
+  "notification_new_sent_title": "Novo pagamento enviado",
+  "code_translate": "Ayúdanos a traducir Ğ1nkgo",
+  "info_links": "Links",
+  "nodes_tech_info": "Lista do Nó"
 }

@@ -58,29 +58,27 @@ class CardTerminalScreen extends StatelessWidget {
                           child: CardTerminalStatus(online: true)),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Flexible(
-                          child: Text(
-                            amount,
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                              fontFamily: 'LCDMono',
-                              color: Colors.white,
-                              fontSize: amount.length < 5
-                                  ? 28
-                                  : amount.length < 10
-                                      ? 20
-                                      : amount.length < 15
-                                          ? 14
-                                          : 12,
-                              shadows: <Shadow>[
-                                Shadow(
-                                  offset: const Offset(1, 1),
-                                  blurRadius: 3,
-                                  color: Colors.black.withOpacity(0.4),
-                                ),
-                              ],
-                              //softWrap: true, // Agrega esta línea para permitir que el texto se envuelva a la siguiente línea
-                            ),
+                        child: Text(
+                          amount,
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontFamily: 'LCDMono',
+                            color: Colors.white,
+                            fontSize: amount.length < 5
+                                ? 28
+                                : amount.length < 10
+                                    ? 20
+                                    : amount.length < 15
+                                        ? 14
+                                        : 12,
+                            shadows: <Shadow>[
+                              Shadow(
+                                offset: const Offset(1, 1),
+                                blurRadius: 3,
+                                color: Colors.black.withOpacity(0.4),
+                              ),
+                            ],
+                            //softWrap: true, // Agrega esta línea para permitir que el texto se envuelva a la siguiente línea
                           ),
                         ),
                       ),

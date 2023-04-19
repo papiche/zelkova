@@ -9,6 +9,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../data/models/contact.dart';
 import '../data/models/payment_state.dart';
+import '../ui/ui_helpers.dart';
 
 Random createRandom() {
   try {
@@ -104,15 +105,21 @@ bool validateKey(String pubKey) {
       .hasMatch(pubKey);
 }
 
-String getQrUri(String destinationPublicKey, [String amountString = '0']) {
-  final double amount = double.tryParse(amountString) ?? 0.0;
+String getQrUri(
+    {required String pubKey, String locale = 'en', String amount = '0'}) {
+  double amountD;
+  try {
+    amountD = parseToDoubleLocalized(locale: locale, number: amount);
+  } catch (e) {
+    amountD = 0;
+  }
 
   String uri;
-  if (amount > 0) {
+  if (amountD > 0) {
     // there is something like this in other clients?
-    uri = 'duniter:key/$destinationPublicKey?amount=$amount';
+    uri = 'duniter:key/$pubKey?amount=$amountD';
   } else {
-    uri = destinationPublicKey;
+    uri = pubKey;
   }
   return uri;
 }

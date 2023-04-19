@@ -1,8 +1,6 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
 
-import '../../logger.dart';
 import '../../ui_helpers.dart';
 import 'card_terminal_screen.dart';
 import 'rubber_button.dart';
@@ -38,9 +36,7 @@ class _CardTerminalState extends State<CardTerminal> {
 
   @override
   Widget build(BuildContext context) {
-    _decimalSep = NumberFormat.decimalPattern(context.locale.toString())
-        .symbols
-        .DECIMAL_SEP;
+    _decimalSep = decimalSep(context);
     _numbers[9] = _decimalSep;
     return Expanded(
         child: ListView(children: <Widget>[
@@ -97,11 +93,11 @@ class _CardTerminalState extends State<CardTerminal> {
           bgColor: const Color(0xFFF7E378),
           icon: Icons.backspace,
           onPressed: () {
+            vibrateIfPossible();
             setState(() {
               _currentValue = _currentValue.isNotEmpty
                   ? _currentValue.substring(0, _currentValue.length - 1)
                   : '';
-              vibrateIfPossible();
             });
           });
     } else if (index == _submitIndex) {
@@ -111,9 +107,11 @@ class _CardTerminalState extends State<CardTerminal> {
           // icon: Icons.subdirectory_arrow_left,
           label: '=',
           onPressed: () {
+            vibrateIfPossible();
             setState(() {
-              _currentValue =
-                  calculate(_currentValue, _decimalSep, context).toString();
+              _currentValue = calculate(
+                      textInTerminal: _currentValue, decimalSep: _decimalSep)
+                  .toString();
             });
           });
     } else if (index == _cancelIndex) {
@@ -122,15 +120,16 @@ class _CardTerminalState extends State<CardTerminal> {
           bgColor: const Color(0xFFCD303D),
           icon: Icons.cancel,
           onPressed: () {
+            vibrateIfPossible();
             setState(() {
               _currentValue = '';
-              vibrateIfPossible();
             });
           });
     } else
       return RubberButton(
           label: _numbers[index],
           onPressed: () {
+            vibrateIfPossible();
             /* if (_numbers[index] == '+') {
               return;
             } */
@@ -140,37 +139,11 @@ class _CardTerminalState extends State<CardTerminal> {
             }
             setState(() {
               _currentValue += _numbers[index];
-              vibrateIfPossible();
+              if (_currentValue == _decimalSep) {
+                _currentValue = '0$_currentValue';
+              }
             });
           });
-  }
-
-  double calculate(
-      String textInTerminal, String decimalSep, BuildContext context) {
-    String operation = textInTerminal;
-    double sum = 0.0;
-    operation = operation.replaceAll(
-        decimalSep, '.'); // change decimal separator to a dot
-    final NumberFormat numberFormat =
-        NumberFormat.decimalPattern(context.locale.toString());
-    final RegExp regex =
-        RegExp(r'[\d.]+'); // regular expression to find numbers
-    final Iterable<Match> matches =
-        regex.allMatches(operation); // find all numbers in the input
-    for (final Match? match in matches) {
-      try {
-        if (match != null) {
-          final String? g1 = match.group(0);
-          if (g1 != null) {
-            sum += numberFormat.parse(g1); // add the number to the sum
-          }
-        }
-      } catch (e) {
-        // could not convert the number to a double value, ignore it
-      }
-    }
-    logger(numberFormat.format(sum)); // print the formatted sum
-    return sum;
   }
 }
 
@@ -178,7 +151,7 @@ Future<void> vibrateIfPossible() async {
   try {
     final bool? hasVibrator = await Vibration.hasVibrator();
     if (hasVibrator ?? false) {
-      Vibration.vibrate(duration: 1000);
+      Vibration.vibrate(duration: 100);
     }
   } catch (e) {
     // ok we tried...

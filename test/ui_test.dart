@@ -4,7 +4,8 @@ import 'package:ginkgo/ui/ui_helpers.dart';
 void main() {
   test('localizedParseToDouble parses a localized double string correctly', () {
     const String doubleString = '1.234,56';
-    final double parsedDouble = parseToDoubleLocalized('es', doubleString);
+    final double parsedDouble =
+        parseToDoubleLocalized(locale: 'es', number: doubleString);
     expect(parsedDouble, equals(1234.56));
   });
 

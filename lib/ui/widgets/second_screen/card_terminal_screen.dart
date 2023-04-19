@@ -20,7 +20,7 @@ class CardTerminalScreen extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Container(
         width: double.infinity,
-        height: smallScreen(context) ? 210 : 250,
+        height: smallScreen(context) ? 212 : 252,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           gradient: const LinearGradient(
@@ -57,33 +57,46 @@ class CardTerminalScreen extends StatelessWidget {
                           offlineWidget: CardTerminalStatus(online: false),
                           child: CardTerminalStatus(online: true)),
                       Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Text(amount,
-                              textAlign: TextAlign.right,
-                              style: TextStyle(
-                                fontFamily: 'LCDMono',
-                                color: Colors.white,
-                                fontSize: 28,
-                                shadows: <Shadow>[
-                                  Shadow(
-                                    offset: const Offset(1, 1),
-                                    blurRadius: 3,
-                                    color: Colors.black.withOpacity(0.4),
-                                  ),
-                                ],
-                              )))
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Flexible(
+                          child: Text(
+                            amount,
+                            textAlign: TextAlign.right,
+                            style: TextStyle(
+                              fontFamily: 'LCDMono',
+                              color: Colors.white,
+                              fontSize: amount.length < 5
+                                  ? 28
+                                  : amount.length < 10
+                                      ? 20
+                                      : amount.length < 15
+                                          ? 14
+                                          : 12,
+                              shadows: <Shadow>[
+                                Shadow(
+                                  offset: const Offset(1, 1),
+                                  blurRadius: 3,
+                                  color: Colors.black.withOpacity(0.4),
+                                ),
+                              ],
+                              //softWrap: true, // Agrega esta línea para permitir que el texto se envuelva a la siguiente línea
+                            ),
+                          ),
+                        ),
+                      ),
                     ])),
             Expanded(
                 child: Column(children: <Widget>[
-                  if (!amount.contains('+'))
-                    QrImage(
-                        data: getQrUri(
-                            SharedPreferencesHelper().getPubKey(), amount),
-                        size:
-                        smallScreen(context) ? 100.0 : 140.0
-                      //: (smallScreen(context) ? 120.0 : 160.0),
+              if (!amount.contains('+'))
+                QrImage(
+                    data: getQrUri(
+                        pubKey: SharedPreferencesHelper().getPubKey(),
+                        locale: context.locale.toLanguageTag(),
+                        amount: amount),
+                    size: smallScreen(context) ? 100.0 : 140.0
+                    //: (smallScreen(context) ? 120.0 : 160.0),
                     )
-                ])),
+            ])),
             Container(
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -103,27 +116,24 @@ class CardTerminalScreen extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: TextField(
-                        maxLines: amount.isNotEmpty ? 2 : 2,
-                        style: const TextStyle(
-                          fontFamily: 'Roboto Mono',
-                          color: Colors.white,
-                          fontSize: 14,
-                        ),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: amount.isNotEmpty
-                              ? tr('show_qr_to_client_amount')
-                              : tr('show_qr_to_client'),
-                          hintStyle: TextStyle(
-                            fontFamily: 'Roboto Mono',
-                            color: Colors.grey,
-                            fontSize: smallScreen(context) ? 11 : 14,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        child: Text.rich(
+                          TextSpan(
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: amount.isNotEmpty
+                                    ? tr('show_qr_to_client_amount')
+                                    : tr('show_qr_to_client'),
+                                style: TextStyle(
+                                  fontFamily: 'Roboto Mono',
+                                  color: Colors.grey,
+                                  fontSize: smallScreen(context) ? 11 : 14,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ),
-                    ),
+                        )),
                   )
                 ],
               ),

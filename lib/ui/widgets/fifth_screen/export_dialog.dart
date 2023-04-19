@@ -49,7 +49,8 @@ class _ExportDialogState extends State<ExportDialog> {
           ),
           Flexible(
             child: PatternLock(
-              selectedColor: Colors.amber,
+              selectedColor: selectedPatternLock(context),
+              notSelectedColor: notSelectedPatternLock(context),
               pointRadius: 12,
               onInputComplete: (List<int> input) {
                 if (input.length < 3) {

@@ -61,7 +61,8 @@ class _ImportDialogState extends State<ImportDialog> {
                   ),
                   Flexible(
                     child: PatternLock(
-                      selectedColor: Colors.red,
+                      selectedColor: selectedPatternLock(context),
+                      notSelectedColor: notSelectedPatternLock(context),
                       pointRadius: 8,
                       fillPoints: true,
                       onInputComplete: (List<int> pattern) async {

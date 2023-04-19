@@ -93,20 +93,20 @@ class CreditCard extends StatelessWidget {
                               EdgeInsets.symmetric(horizontal: cardPadding),
                           child: Row(children: <Widget>[
                             GestureDetector(
-                                onTap: () => showTooltip(
-                                    context, '', tr('keys_tooltip')),
-                                child: FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Text('**** **** ',
-                                        style: cardTextStyle(context)))),
-                            GestureDetector(
                                 onTap: () => copyPublicKeyToClipboard(context),
                                 child: FittedBox(
                                     fit: BoxFit.scaleDown,
                                     child: Text(
                                       '${pubKey.substring(0, 4)} ${pubKey.substring(4, 8)}',
                                       style: cardTextStyle(context),
-                                    )))
+                                    ))),
+                            GestureDetector(
+                                onTap: () => showTooltip(
+                                    context, '', tr('keys_tooltip')),
+                                child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(' **** ****',
+                                        style: cardTextStyle(context)))),
                           ])),
                       if (bigDevice) const SizedBox(height: 6.0),
                       if (bigDevice)

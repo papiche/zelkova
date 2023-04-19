@@ -17,10 +17,12 @@ class G1PayAmountField extends StatefulWidget {
 class _G1PayAmountFieldState extends State<G1PayAmountField> {
   final TextEditingController _controller = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  late String sep;
 
   @override
   Widget build(BuildContext context) => BlocBuilder<PaymentCubit, PaymentState>(
           builder: (BuildContext context, PaymentState state) {
+        sep = decimalSep(context);
         if (state.amount != null) {
           final String amountFormatted = localizeNumber(context, state.amount!);
           if (_controller.text != amountFormatted) {
@@ -36,9 +38,6 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
               keyboardType: const TextInputType.numberWithOptions(
                 decimal: true,
               ),
-              /* inputFormatters: <TextInputFormatter>[
-            FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))
-          ], */
               validator: validateDecimal,
               // Disallow autocomplete
               autofillHints: const <String>[],
@@ -51,7 +50,8 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
                     validate) {
                   context.read<PaymentCubit>().selectAmount(
                       parseToDoubleLocalized(
-                          context.locale.toLanguageTag(), value));
+                          locale: context.locale.toLanguageTag(),
+                          number: value));
                 } else {
                   context.read<PaymentCubit>().selectAmount(
                       value == null ? null : double.tryParse(value));
@@ -76,14 +76,20 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
       });
 
   String? validateDecimal(String? value) {
+    if (_controller.text.startsWith(sep)) {
+      _controller.text = '0${_controller.text}';
+      _controller.selection = TextSelection.fromPosition(
+          TextPosition(offset: _controller.text.length));
+      value = _controller.text;
+    }
     final NumberFormat format =
         NumberFormat.decimalPattern(context.locale.toString());
-    if (value == null || value.isEmpty) {
+    if (value == null || value.isEmpty || value.startsWith(sep)) {
       return null;
     }
     try {
       final num n = format.parse(value);
-      if (n <= 0) {
+      if (n < 0) {
         return tr('enter_a_positive_number');
       }
     } catch (e) {

@@ -47,20 +47,23 @@ class DebugNodesScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     const DebugNodeHeader(type: NodeType.gva),
-                    DebugNodeList(
-                        nodes: gvaNodes,
-                        type: NodeType.gva,
-                        currentBlock: gvaNodes[0].currentBlock),
+                    if (gvaNodes.isNotEmpty)
+                      DebugNodeList(
+                          nodes: gvaNodes,
+                          type: NodeType.gva,
+                          currentBlock: gvaNodes[0].currentBlock),
                     const DebugNodeHeader(type: NodeType.duniter),
-                    DebugNodeList(
-                        nodes: duniterNodes,
-                        type: NodeType.duniter,
-                        currentBlock: duniterNodes[0].currentBlock),
+                    if (duniterNodes.isNotEmpty)
+                      DebugNodeList(
+                          nodes: duniterNodes,
+                          type: NodeType.duniter,
+                          currentBlock: duniterNodes[0].currentBlock),
                     const DebugNodeHeader(type: NodeType.cesiumPlus),
-                    DebugNodeList(
-                        nodes: cesiumPlusNodes,
-                        type: NodeType.cesiumPlus,
-                        currentBlock: cesiumPlusNodes[0].currentBlock),
+                    if (cesiumPlusNodes.isNotEmpty)
+                      DebugNodeList(
+                          nodes: cesiumPlusNodes,
+                          type: NodeType.cesiumPlus,
+                          currentBlock: cesiumPlusNodes[0].currentBlock),
                   ],
                 ),
               ),

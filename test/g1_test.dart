@@ -39,6 +39,8 @@ void main() {
   test('parse different networks/peers GVA S', () {
     expect(parseHost('GVA S duniter.master.aya.autissier.net 443 gva'),
         equals('https://duniter.master.aya.autissier.net/gva'));
+    expect(parseHost('GVA S g1-test-dev.pini.fr 443 gva'),
+        equals('https://g1-test-dev.pini.fr/gva'));
   });
 
   test('validate pub keys', () {
@@ -54,12 +56,12 @@ void main() {
 
   test('validate qr uris', () {
     const String publicKey = 'FRYyk57Pi456EJRu9vqVfSHLgmUfx4Qc3goS62a7dUSm';
-    final String uriA = getQrUri(publicKey, '10');
+    final String uriA = getQrUri(pubKey: publicKey, amount: '10');
     final PaymentState? payA = parseScannedUri(uriA);
     expect(payA!.amount, equals(10));
     expect(payA.contact!.pubKey, equals(publicKey));
 
-    final String uriB = getQrUri(publicKey);
+    final String uriB = getQrUri(pubKey: publicKey);
     final PaymentState? payB = parseScannedUri(uriB);
     expect(payB!.amount, equals(null));
     expect(payB.contact!.pubKey, equals(publicKey));
@@ -67,6 +69,17 @@ void main() {
     final PaymentState? payC = parseScannedUri(publicKey);
     expect(payC!.amount, equals(null));
     expect(payC.contact!.pubKey, equals(publicKey));
+
+    final String uriD = getQrUri(pubKey: publicKey, amount: '10.10');
+    final PaymentState? payD = parseScannedUri(uriD);
+    expect(payD!.amount, equals(10.10));
+    expect(payD.contact!.pubKey, equals(publicKey));
+
+    final String uriE =
+        getQrUri(pubKey: publicKey, amount: '10,10', locale: 'es');
+    final PaymentState? payE = parseScannedUri(uriE);
+    expect(payE!.amount, equals(10.10));
+    expect(payE.contact!.pubKey, equals(publicKey));
   });
 
   test('encrypt/decrypt of keys', () {

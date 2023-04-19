@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jsqr/scanner.dart';
@@ -15,20 +16,29 @@ class QrManager {
   }
 
   static Future<String?> _webQrScan(BuildContext context) async {
+    const Scanner sc = Scanner();
+    final double height = MediaQuery.of(context).size.height - 20;
+    final double width = MediaQuery.of(context).size.width - 20;
+    Scanner.vidDiv.style.cssText =
+        'max-width: ${width}px; max-height: ${height}px; overflow: hidden;';
+
     final String? result = await showDialog(
         context: context,
         builder: (BuildContext context) {
-          // final double height = MediaQuery.of(context).size.height;
-          final double width = MediaQuery.of(context).size.width;
           return AlertDialog(
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(tr('cancel')),
+              ),
+            ],
             insetPadding: const EdgeInsets.all(5),
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10.0))),
             title: const Text('Scan QR Code'),
-            content: SizedBox(
-                // height: height - 20,
-                width: width - 6,
-                child: const Scanner()),
+            content: SizedBox(height: height, width: width, child: sc),
           );
         });
     return result;

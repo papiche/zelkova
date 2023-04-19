@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:durt/durt.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -21,6 +22,10 @@ import 'g1_helper.dart';
 // Tx history
 // https://g1.duniter.org/tx/history/FadJvhddHL7qbRd3WcRPrWEJJwABQa3oZvmCBhotc7Kg
 // https://g1.duniter.org/tx/history/6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH
+
+// use g1-test or g1 for production (fallback to g1)
+final String currencyDotEnv = "${dotenv.env['CURRENCY']}";
+final String currency = currencyDotEnv.isEmpty ? 'g1' : currencyDotEnv;
 
 Future<String> getTxHistory(String publicKey) async {
   final Response response =
@@ -264,7 +269,7 @@ Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type) async {
           jsonDecode(response.body) as Map<String, dynamic>;
       final List<dynamic> peers = (peerList['peers'] as List<dynamic>)
           .where((dynamic peer) =>
-              (peer as Map<String, dynamic>)['currency'] == 'g1')
+              (peer as Map<String, dynamic>)['currency'] == currency)
           .where(
               (dynamic peer) => (peer as Map<String, dynamic>)['version'] == 10)
           .where((dynamic peer) =>
@@ -282,7 +287,7 @@ Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type) async {
               final String endpointUnParsed = endpoints[j];
               final String? endpoint = parseHost(endpointUnParsed);
               if (endpoint != null &&
-                  !endpoint.contains('test') &&
+                  //  !endpoint.contains('test') &&
                   !endpoint.contains('localhost')) {
                 try {
                   final NodeCheck nodeCheck = await _pingNode(endpoint, type);
@@ -320,7 +325,7 @@ Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type) async {
       }
     }
     logger(
-        'Fetched ${lNodes.length} ${type.name} nodes ordered by latency (first: ${lNodes.first.url})');
+        'Fetched ${lNodes.length} ${type.name} nodes ordered by latency ${lNodes.isNotEmpty ? '(first: ${lNodes.first.url})' : '(zero nodes)'}');
   } catch (e, stacktrace) {
     await Sentry.captureException(e, stackTrace: stacktrace);
     logger('General error in fetch ${type.name} nodes: $e');
@@ -328,7 +333,11 @@ Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type) async {
     // rethrow;
   }
   lNodes.sort((Node a, Node b) => a.latency.compareTo(b.latency));
-  logger('First node in list ${lNodes.first.url}');
+  if (lNodes.isNotEmpty) {
+    logger('First node in list ${lNodes.first.url}');
+  } else {
+    logger('No nodes in list');
+  }
   return lNodes;
 }
 
@@ -380,7 +389,7 @@ Future<List<Node>> _fetchNodes(NodeType type) async {
 }
 
 Future<NodeCheck> _pingNode(String node, NodeType type) async {
-  // Decrease timout during ping
+  // Decrease timeout during ping
   const Duration timeout = Duration(seconds: 10);
   int currentBlock = 0;
   Duration latency;
@@ -414,10 +423,12 @@ Future<NodeCheck> _pingNode(String node, NodeType type) async {
 //      NodeManager().updateNode(type, node.copyWith(latency: newLatency));
       stopwatch.stop();
       final double balance = await gva
-          .balance('EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG')
+          .balance('78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8')
           .timeout(timeout);
       latency = balance >= 0 ? stopwatch.elapsed : wrongNodeDuration;
     }
+    logger(
+        'Ping tested in node $node ($type), latency ${latency.inMicroseconds}, current block $currentBlock');
     return NodeCheck(latency: latency, currentBlock: currentBlock);
   } catch (e) {
     // Handle exception when node is unavailable etc

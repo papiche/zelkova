@@ -105,18 +105,28 @@ class NotificationController {
             'amount': formatAmountWithLocale(locale.languageCode, amount),
             'to': to!,
           });
-    if (html.Notification.permission != 'granted') {
-      await html.Notification.requestPermission();
-    }
+    try {
+      if (html.Notification.permission != 'granted') {
+        await html.Notification.requestPermission();
+      }
 
-    if (html.Notification.permission == 'granted') {
-      final html.Notification notification = html.Notification(title,
-          body: desc,
-          icon:
-              'https://git.duniter.org/vjrj/ginkgo/-/raw/master/web/icons/favicon-32x32.png');
-      notification.onClick.listen((html.Event event) {
-        // context.read<BottomNavCubit>().updateIndex(0);
-      });
+      if (html.Notification.permission == 'granted') {
+        final html.Notification notification =
+            html.Notification(title, body: desc, icon: ginkgoNetIcon);
+        notification.onClick.listen((html.Event event) {
+          // context.read<BottomNavCubit>().updateIndex(0);
+        });
+      }
+    } catch (e ) {
+      // Try this way
+      // After: Error: Failed to construct 'Notification': Illegal constructor. Use ServiceWorkerRegistration.showNotification() instead.
+      if (html.ServiceWorkerRegistration != null) {
+        final html.ServiceWorkerRegistration swReg = await html.window.navigator.serviceWorker!.ready;
+        await swReg
+            .showNotification(title, <String, String>{'body': desc, 'icon': ginkgoNetIcon});
+      }
     }
   }
+
+
 }

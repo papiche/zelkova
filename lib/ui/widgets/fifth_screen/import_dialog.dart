@@ -73,14 +73,35 @@ class _ImportDialogState extends State<ImportDialog> {
                                   keyEncrypted, pattern.join());
                           final bool? confirm = await confirmImport(context);
                           if (confirm != null && confirm) {
-                            /* SharedPreferencesHelper().addCesiumCard(
-                                SharedPreferencesHelper().buildCesiumCard(
-                                    pubKey: keys['pub'] as String,
-                                    seed: keys['seed'] as String));*/
-                            SharedPreferencesHelper().setDefaultWallet(
-                                SharedPreferencesHelper().buildCesiumCard(
-                                    pubKey: keys['pub'] as String,
-                                    seed: keys['seed'] as String));
+                            try {
+                              final dynamic cesiumCards = keys['cesiumCards'];
+                              if (cesiumCards != null) {
+                                final List<dynamic> cesiumCardList =
+                                    jsonDecode(cesiumCards as String)
+                                        as List<dynamic>;
+                                // ignore: avoid_function_literals_in_foreach_calls
+                                cesiumCardList.forEach((dynamic cesiumCard) {
+                                  importWalletToSharedPrefs(
+                                      cesiumCard as Map<String, dynamic>);
+                                });
+                              } else {
+                                importWalletToSharedPrefs(keys);
+                              }
+                            } catch (e, stacktrace) {
+                              logger('Error importing wallet: $e');
+                              if (!mounted) {
+                                return;
+                              }
+                              context.replaceSnackbar(
+                                content: Text(
+                                  tr('error_importing_wallet'),
+                                  style: const TextStyle(color: Colors.red),
+                                ),
+                              );
+                              await Sentry.captureException(e,
+                                  stackTrace: stacktrace);
+                              return;
+                            }
                             if (!mounted) {
                               return;
                             }
@@ -119,6 +140,20 @@ class _ImportDialogState extends State<ImportDialog> {
             return CustomErrorWidget(tr('import_failed'));
           }
         });
+  }
+
+  void importWalletToSharedPrefs(Map<String, dynamic> cesiumCard) {
+    final dynamic pub = cesiumCard['pub'];
+    SharedPreferencesHelper().setDefaultWallet(SharedPreferencesHelper()
+        .buildCesiumCard(
+            pubKey:
+                pub != null ? pub as String : cesiumCard['pubKey'] as String,
+            seed: cesiumCard['seed'] as String));
+    /* In the future, with multicards, use this instead
+     SharedPreferencesHelper().addCesiumCard(SharedPreferencesHelper()
+        .buildCesiumCard(
+        pubKey: cesiumCard['pub'] as String,
+        seed: cesiumCard['seed'] as String)); */
   }
 
   Future<String> _importWallet(BuildContext context) async {

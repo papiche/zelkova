@@ -18,6 +18,7 @@ import '../shared_prefs.dart';
 import '../ui/logger.dart';
 import '../ui/ui_helpers.dart';
 import 'g1_helper.dart';
+import 'no_nodes_exception.dart';
 
 // Tx history
 // https://g1.duniter.org/tx/history/FadJvhddHL7qbRd3WcRPrWEJJwABQa3oZvmCBhotc7Kg
@@ -182,7 +183,30 @@ Future<Uint8List> getAvatar(String pubKey) async {
   return imageFromBase64String(dataImage);
 }
 
-Future<void> fetchDuniterNodes({bool force = false}) async {
+Future<void> fetchNodes(NodeType type, bool force) async {
+  try {
+    if (type == NodeType.duniter) {
+      _fetchDuniterNodes(force: force);
+    } else {
+      if (type == NodeType.cesiumPlus) {
+        _fetchCesiumPlusNodes(force: force);
+      } else {
+        _fetchGvaNodes(force: force);
+      }
+    }
+  } on NoNodesException catch (e, stacktrace) {
+    logger(e.cause);
+    await Sentry.captureException(e, stackTrace: stacktrace);
+    NodeManager().loading = false;
+    rethrow;
+  } catch (e, stacktrace) {
+    logger('Error in fetchNodes $e');
+    await Sentry.captureException(e, stackTrace: stacktrace);
+    NodeManager().loading = false;
+  }
+}
+
+Future<void> _fetchDuniterNodes({bool force = false}) async {
   const NodeType type = NodeType.duniter;
   NodeManager().loading = true;
   if (force || nodesWorking(type) < NodeManager.maxNodes) {
@@ -203,21 +227,9 @@ Future<void> fetchDuniterNodes({bool force = false}) async {
   NodeManager().loading = false;
 }
 
-Future<void> fetchNodes(NodeType type, bool force) async {
-  if (type == NodeType.duniter) {
-    fetchDuniterNodes(force: force);
-  } else {
-    if (type == NodeType.cesiumPlus) {
-      fetchCesiumPlusNodes(force: force);
-    } else {
-      fetchGvaNodes(force: force);
-    }
-  }
-}
-
 // https://github.com/duniter/cesium/blob/467ec68114be650cd1b306754c3142fc4020164c/www/js/config.js#L96
 // https://g1.data.le-sou.org/g1/peer/_search?pretty
-Future<void> fetchCesiumPlusNodes({bool force = false}) async {
+Future<void> _fetchCesiumPlusNodes({bool force = false}) async {
   NodeManager().loading = true;
   const NodeType type = NodeType.cesiumPlus;
   if (force) {
@@ -231,7 +243,7 @@ Future<void> fetchCesiumPlusNodes({bool force = false}) async {
   NodeManager().loading = false;
 }
 
-Future<void> fetchGvaNodes({bool force = false}) async {
+Future<void> _fetchGvaNodes({bool force = false}) async {
   NodeManager().loading = true;
   const NodeType type = NodeType.gva;
   if (force) {
@@ -470,50 +482,57 @@ Future<http.Response> _requestWithRetry(
             ? defaultCesiumPlusNodes
             : defaultGvaNodes);
   }
-  for (int i = 0; i < nodes.length; i++) {
-    final Node node = nodes[i];
-    try {
-      final Uri url = Uri.parse('${node.url}$path');
-      logger('Fetching $url (${type.name})');
-      final int startTime = DateTime.now().millisecondsSinceEpoch;
-      final Response response =
-          await http.get(url).timeout(const Duration(seconds: 10));
-      final int endTime = DateTime.now().millisecondsSinceEpoch;
-      final int newLatency = endTime - startTime;
-      if (!kReleaseMode) {
-        logger('response.statusCode: ${response.statusCode}');
-      }
-      if (response.statusCode == 200) {
-        if (!dontRecord) {
-          NodeManager().updateNode(type, node.copyWith(latency: newLatency));
+  for (final int timeout in <int>[10, 25]) {
+    for (int i = 0; i < nodes.length; i++) {
+      final Node node = nodes[i];
+      try {
+        final Uri url = Uri.parse('${node.url}$path');
+        logger('Fetching $url (${type.name})');
+        final int startTime = DateTime.now().millisecondsSinceEpoch;
+        final Response response =
+            await http.get(url).timeout(Duration(seconds: timeout));
+        final int endTime = DateTime.now().millisecondsSinceEpoch;
+        final int newLatency = endTime - startTime;
+        if (!kReleaseMode) {
+          logger('response.statusCode: ${response.statusCode}');
         }
-        return response;
-      } else if (response.statusCode == 404) {
-        logger('404 on fetch $url');
-        if (retryWith404) {
-          logger('${node.url} gave 404, retrying with other');
-          NodeManager()
-              .updateNode(type, node.copyWith(errors: node.errors + 1));
-          continue;
-        } else {
-          if (!kReleaseMode) {
-            logger('Returning not 200 or 400 response');
+        if (response.statusCode == 200) {
+          if (!dontRecord) {
+            NodeManager().updateNode(type, node.copyWith(latency: newLatency));
           }
           return response;
+        } else if (response.statusCode == 404) {
+          logger('404 on fetch $url');
+          if (retryWith404) {
+            logger('${node.url} gave 404, retrying with other');
+            NodeManager()
+                .updateNode(type, node.copyWith(errors: node.errors + 1));
+            continue;
+          } else {
+            if (!kReleaseMode) {
+              logger('Returning not 200 or 400 response');
+            }
+            return response;
+          }
+        } else {
+          /* await Sentry.captureMessage(
+              'Error trying to use node ${node.url} ($type) ${response.statusCode}'); */
+          logger('${response.statusCode} error on $url');
+          NodeManager()
+              .updateNode(type, node.copyWith(errors: node.errors + 1));
         }
-      } else {
-        logger('${response.statusCode} error on $url');
-        NodeManager().updateNode(type, node.copyWith(errors: node.errors + 1));
+      } catch (e) {
+        /* await Sentry.captureMessage(
+            'Error trying to use node ${node.url} ($type) $e'); */
+        logger('Error trying ${node.url} $e');
+        if (!dontRecord) {
+          increaseNodeErrors(type, node);
+        }
+        continue;
       }
-    } catch (e) {
-      logger('Error trying ${node.url} $e');
-      if (!dontRecord) {
-        increaseNodeErrors(type, node);
-      }
-      continue;
     }
   }
-  throw Exception(
+  throw NoNodesException(
       'Cannot make the request to any of the ${nodes.length} nodes');
 }
 

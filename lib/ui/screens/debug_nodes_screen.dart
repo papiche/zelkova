@@ -7,6 +7,7 @@ import '../../data/models/node_list_cubit.dart';
 import '../../data/models/node_list_state.dart';
 import '../../data/models/node_type.dart';
 import '../../g1/api.dart';
+import '../../g1/no_nodes_exception.dart';
 import '../ui_helpers.dart';
 import '../widgets/debug_nodes/debug_node_list.dart';
 
@@ -96,10 +97,17 @@ class DebugNodeHeader extends StatelessWidget {
   }
 
   void _fetchNodes(BuildContext context, bool force) {
-    fetchNodes(type, force);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(tr('reloading_nodes',
-          namedArgs: <String, String>{'type': type.name})),
-    ));
+    try {
+      fetchNodes(type, force);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(tr('reloading_nodes',
+            namedArgs: <String, String>{'type': type.name})),
+      ));
+    } on NoNodesException {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(tr('no_nodes_found',
+            namedArgs: <String, String>{'type': type.name})),
+      ));
+    }
   }
 }

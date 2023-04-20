@@ -137,5 +137,7 @@
   "browser_warning": "You are using a browser we didn't test. Please use Chrome, Firefox or Brave.",
   "code_translate": "Help us to translate Ğ1nkgo",
   "nodes_tech_info": "Node List",
-  "info_links": "Links"
+  "info_links": "Links",
+  "error_importing_wallet": "Error importing wallet",
+  "no_nodes_found": "We couldn't communicate with any node. Please try again later."
 }

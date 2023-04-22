@@ -75,6 +75,8 @@ void main() async {
         await HydratedStorage.build(storageDirectory: tmpDir);
   }
 
+  ContactsCache().init();
+
   // Reset hive during developing
   if (!kReleaseMode) {
     // Once.clearAll();
@@ -286,12 +288,11 @@ class _GinkgoAppState extends State<GinkgoApp> {
   @override
   void initState() {
     super.initState();
-    ContactsCache().init();
     NodeManager().loadFromCubit(context.read<NodeListCubit>());
     // Only after at least the action method is set, the notification events are delivered
     NotificationController.startListeningNotificationEvents();
     final Cron cron = Cron();
-    cron.schedule(Schedule.parse(kReleaseMode ? '*/10 * * * *' : '*/2 * * * *'),
+    cron.schedule(Schedule.parse(kReleaseMode ? '*/10 * * * *' : '*/5 * * * *'),
         () async {
       logger('---------- fetchTransactions via cron');
       fetchTransactions(context);

@@ -53,7 +53,7 @@ class ContactsCache {
     return _box!;
   }
 
-  Future<Contact> getContact(String pubKey) async {
+  Future<Contact> getContact(String pubKey, [bool debug = false]) async {
     Contact? cachedContact;
     try {
       cachedContact = await _retrieveContact(pubKey);
@@ -63,12 +63,12 @@ class ContactsCache {
     }
 
     if (cachedContact != null) {
-      if (!kReleaseMode) {
+      if (!kReleaseMode && debug) {
         logger('Returning cached contact $cachedContact');
       }
       return cachedContact;
     } else {
-      if (!kReleaseMode) {
+      if (!kReleaseMode && debug) {
         logger('Contact $pubKey not cached');
       }
     }
@@ -84,8 +84,8 @@ class ContactsCache {
     try {
       cachedContact = await getProfile(pubKey);
       storeContact(cachedContact);
-      if (!kReleaseMode) {
-        //  logger('Returning non cached contact $contact');
+      if (!kReleaseMode && debug) {
+        logger('Returning non cached contact $cachedContact');
       }
       // Send to listeners
       for (final Completer<Contact> completer in _pendingRequests[pubKey]!) {

@@ -9,11 +9,13 @@ part 'transaction_balance_state.g.dart';
 @JsonSerializable()
 @CopyWith()
 class TransactionsAndBalanceState extends Equatable {
-  TransactionsAndBalanceState({required this.transactions,
-    required this.balance,
-    required this.lastChecked,
-    DateTime? latestSentNotification,
-    DateTime? latestReceivedNotification})
+  TransactionsAndBalanceState(
+      {required this.transactions,
+      required this.balance,
+      required this.lastChecked,
+      DateTime? latestSentNotification,
+      DateTime? latestReceivedNotification,
+      this.endCursor})
       : latestSentNotification = latestSentNotification ?? DateTime.now(),
         latestReceivedNotification =
             latestReceivedNotification ?? DateTime.now();
@@ -26,16 +28,17 @@ class TransactionsAndBalanceState extends Equatable {
   final DateTime lastChecked;
   final DateTime latestSentNotification;
   final DateTime latestReceivedNotification;
+  final String? endCursor;
 
   Map<String, dynamic> toJson() => _$TransactionsAndBalanceStateToJson(this);
 
   @override
-  List<Object?> get props =>
-      <dynamic>[
+  List<Object?> get props => <dynamic>[
         transactions,
         balance,
         lastChecked,
         latestSentNotification,
-        latestReceivedNotification
+        latestReceivedNotification,
+        endCursor
       ];
 }

@@ -19,6 +19,8 @@ abstract class _$TransactionsAndBalanceStateCWProxy {
   TransactionsAndBalanceState latestReceivedNotification(
       DateTime? latestReceivedNotification);
 
+  TransactionsAndBalanceState endCursor(String? endCursor);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `TransactionsAndBalanceState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -31,6 +33,7 @@ abstract class _$TransactionsAndBalanceStateCWProxy {
     DateTime? lastChecked,
     DateTime? latestSentNotification,
     DateTime? latestReceivedNotification,
+    String? endCursor,
   });
 }
 
@@ -63,6 +66,10 @@ class _$TransactionsAndBalanceStateCWProxyImpl
       this(latestReceivedNotification: latestReceivedNotification);
 
   @override
+  TransactionsAndBalanceState endCursor(String? endCursor) =>
+      this(endCursor: endCursor);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `TransactionsAndBalanceState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -76,6 +83,7 @@ class _$TransactionsAndBalanceStateCWProxyImpl
     Object? lastChecked = const $CopyWithPlaceholder(),
     Object? latestSentNotification = const $CopyWithPlaceholder(),
     Object? latestReceivedNotification = const $CopyWithPlaceholder(),
+    Object? endCursor = const $CopyWithPlaceholder(),
   }) {
     return TransactionsAndBalanceState(
       transactions:
@@ -102,6 +110,10 @@ class _$TransactionsAndBalanceStateCWProxyImpl
               ? _value.latestReceivedNotification
               // ignore: cast_nullable_to_non_nullable
               : latestReceivedNotification as DateTime?,
+      endCursor: endCursor == const $CopyWithPlaceholder()
+          ? _value.endCursor
+          // ignore: cast_nullable_to_non_nullable
+          : endCursor as String?,
     );
   }
 }
@@ -131,6 +143,7 @@ TransactionsAndBalanceState _$TransactionsAndBalanceStateFromJson(
       latestReceivedNotification: json['latestReceivedNotification'] == null
           ? null
           : DateTime.parse(json['latestReceivedNotification'] as String),
+      endCursor: json['endCursor'] as String?,
     );
 
 Map<String, dynamic> _$TransactionsAndBalanceStateToJson(
@@ -143,4 +156,5 @@ Map<String, dynamic> _$TransactionsAndBalanceStateToJson(
           instance.latestSentNotification.toIso8601String(),
       'latestReceivedNotification':
           instance.latestReceivedNotification.toIso8601String(),
+      'endCursor': instance.endCursor,
     };

@@ -27,6 +27,7 @@ class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
   String get storagePrefix =>
       kIsWeb ? 'TransactionsCubit' : super.storagePrefix;
 
+/*
   void addTransaction(Transaction transaction) {
     final TransactionsAndBalanceState currentState = state;
     final List<Transaction> newTransactions =
@@ -39,17 +40,19 @@ class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
   void updateTransactions(
       List<Transaction> newTransactions, double newBalance) {
     emit(state.copyWith(transactions: newTransactions, balance: newBalance));
-  }
+  }*/
 
-  Future<void> fetchTransactions(NodeListCubit cubit, {int retries = 5}) async {
+  Future<List<Transaction>> fetchTransactions(NodeListCubit cubit,
+      {int retries = 5, int? pageSize, String? cursor}) async {
     Tuple2<Map<String, dynamic>?, Node> txDataResult;
     bool success = false;
 
     for (int attempt = 0; attempt < retries; attempt++) {
-      txDataResult =
-          await gvaHistoryAndBalance(SharedPreferencesHelper().getPubKey());
+      txDataResult = await gvaHistoryAndBalance(
+          SharedPreferencesHelper().getPubKey(), pageSize, cursor);
       final Node node = txDataResult.item2;
-      logger('Loading transactions using $node --------------------');
+      logger(
+          'Loading transactions using $node (pageSize: $pageSize, cursor: $cursor) --------------------');
 
       if (txDataResult.item1 == null) {
         logger(
@@ -61,7 +64,7 @@ class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
 
       final Map<String, dynamic> txData = txDataResult.item1!;
       final TransactionsAndBalanceState newState =
-          transactionsGvaParser(txData, state);
+          await transactionsGvaParser(txData, state);
 
       if (newState.balance < 0) {
         logger('Warning: Negative balance in node ${txDataResult.item2}');
@@ -74,6 +77,7 @@ class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
           'Last received notification: ${newState.latestReceivedNotification.toIso8601String()})}');
       logger(
           'Last sent notification: ${newState.latestSentNotification.toIso8601String()})}');
+
       emit(newState);
       for (final Transaction tx in newState.transactions.reversed) {
         if (tx.type == TransactionType.received &&
@@ -97,11 +101,13 @@ class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
           emit(newState.copyWith(latestSentNotification: tx.time));
         }
       }
+      return newState.transactions;
     }
     if (!success) {
-      logger('Failed to get transactions after $retries attempts');
-      return;
+      throw Exception('Failed to get transactions after $retries attempts');
     }
+    // This should not be executed
+    return <Transaction>[];
   }
 
   @override

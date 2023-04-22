@@ -139,5 +139,7 @@
   "nodes_tech_info": "Lista de Nodos",
   "info_links": "Enlaces",
   "error_importing_wallet": "Error importando monedero",
-  "no_nodes_found": "No hemos podido comunicarnos con ningún nodo. Por favor, inténtalo de nuevo más tarde."
+  "no_nodes_found": "No hemos podido comunicarnos con ningún nodo. Por favor, inténtalo de nuevo más tarde.",
+  "fetch_tx_error": "Algo ha ido mal al obtener tus transacciones",
+  "retry": "REINTENTAR"
 }

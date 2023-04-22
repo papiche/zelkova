@@ -139,5 +139,7 @@
   "nodes_tech_info": "Node List",
   "info_links": "Links",
   "error_importing_wallet": "Error importing wallet",
-  "no_nodes_found": "We couldn't communicate with any node. Please try again later."
+  "no_nodes_found": "We couldn't communicate with any node. Please try again later.",
+  "fetch_tx_error": "Something went wrong while fetching your transactions.",
+  "retry": "RETRY"
 }

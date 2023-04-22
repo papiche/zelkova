@@ -19,6 +19,10 @@ abstract class _$TransactionCWProxy {
 
   Transaction time(DateTime time);
 
+  Transaction fromC(Contact fromC);
+
+  Transaction toC(Contact toC);
+
   Transaction toAvatar(Uint8List? toAvatar);
 
   Transaction toNick(String? toNick);
@@ -40,6 +44,8 @@ abstract class _$TransactionCWProxy {
     double? amount,
     String? comment,
     DateTime? time,
+    Contact? fromC,
+    Contact? toC,
     Uint8List? toAvatar,
     String? toNick,
     Uint8List? fromAvatar,
@@ -72,6 +78,12 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
   Transaction time(DateTime time) => this(time: time);
 
   @override
+  Transaction fromC(Contact fromC) => this(fromC: fromC);
+
+  @override
+  Transaction toC(Contact toC) => this(toC: toC);
+
+  @override
   Transaction toAvatar(Uint8List? toAvatar) => this(toAvatar: toAvatar);
 
   @override
@@ -98,6 +110,8 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
     Object? amount = const $CopyWithPlaceholder(),
     Object? comment = const $CopyWithPlaceholder(),
     Object? time = const $CopyWithPlaceholder(),
+    Object? fromC = const $CopyWithPlaceholder(),
+    Object? toC = const $CopyWithPlaceholder(),
     Object? toAvatar = const $CopyWithPlaceholder(),
     Object? toNick = const $CopyWithPlaceholder(),
     Object? fromAvatar = const $CopyWithPlaceholder(),
@@ -128,6 +142,14 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
           ? _value.time
           // ignore: cast_nullable_to_non_nullable
           : time as DateTime,
+      fromC: fromC == const $CopyWithPlaceholder() || fromC == null
+          ? _value.fromC
+          // ignore: cast_nullable_to_non_nullable
+          : fromC as Contact,
+      toC: toC == const $CopyWithPlaceholder() || toC == null
+          ? _value.toC
+          // ignore: cast_nullable_to_non_nullable
+          : toC as Contact,
       toAvatar: toAvatar == const $CopyWithPlaceholder()
           ? _value.toAvatar
           // ignore: cast_nullable_to_non_nullable
@@ -165,6 +187,8 @@ Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(
       amount: (json['amount'] as num).toDouble(),
       comment: json['comment'] as String,
       time: DateTime.parse(json['time'] as String),
+      fromC: Contact.fromJson(json['fromC'] as Map<String, dynamic>),
+      toC: Contact.fromJson(json['toC'] as Map<String, dynamic>),
       toAvatar: uIntFromList(json['toAvatar']),
       toNick: json['toNick'] as String?,
       fromAvatar: uIntFromList(json['fromAvatar']),
@@ -176,6 +200,8 @@ Map<String, dynamic> _$TransactionToJson(Transaction instance) =>
       'type': _$TransactionTypeEnumMap[instance.type]!,
       'from': instance.from,
       'to': instance.to,
+      'fromC': instance.fromC,
+      'toC': instance.toC,
       'amount': instance.amount,
       'comment': instance.comment,
       'time': instance.time.toIso8601String(),

@@ -16,7 +16,7 @@ void main() {
   test('Test parsing', () async {
     TestWidgetsFlutterBinding.ensureInitialized();
     final String txData = await rootBundle.loadString('assets/tx.json');
-    final TransactionsAndBalanceState result = transactionParser(txData);
+    final TransactionsAndBalanceState result = await transactionParser(txData);
     expect(result.balance, equals(6700));
     final List<Transaction> txs = result.transactions;
     for (final Transaction tx in txs) {
@@ -33,7 +33,7 @@ void main() {
   test('Test gva history parsing', () async {
     TestWidgetsFlutterBinding.ensureInitialized();
     final String txData = await rootBundle.loadString('assets/gva-tx.json');
-    final TransactionsAndBalanceState result = transactionsGvaParser(
+    final TransactionsAndBalanceState result = await transactionsGvaParser(
         (jsonDecode(txData) as Map<String, dynamic>)['data']
             as Map<String, dynamic>,
         emptyState);
@@ -84,7 +84,7 @@ void main() {
     }
   }
 }''';
-    final TransactionsAndBalanceState emptyResult = transactionsGvaParser(
+    final TransactionsAndBalanceState emptyResult = await transactionsGvaParser(
         (jsonDecode(emptyTx) as Map<String, dynamic>)['data']
             as Map<String, dynamic>,
         emptyState);

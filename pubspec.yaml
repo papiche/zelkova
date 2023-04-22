@@ -76,6 +76,8 @@ dependencies:
   jsqr: ^0.1.4
   web_browser_detect: ^2.0.3
   tuple: ^2.0.1
+  infinite_scroll_pagination: ^3.2.0
+  easy_debounce: ^2.0.3
 
 dev_dependencies:
   flutter_test:

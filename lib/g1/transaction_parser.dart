@@ -1,12 +1,14 @@
 import 'dart:convert';
 
+import '../data/models/contact.dart';
 import '../data/models/transaction.dart';
 import '../data/models/transaction_balance_state.dart';
 import '../data/models/transaction_type.dart';
+import '../ui/contacts_cache.dart';
 
 final RegExp exp = RegExp(r'\((.*?)\)');
 
-TransactionsAndBalanceState transactionParser(String txData) {
+Future<TransactionsAndBalanceState> transactionParser(String txData) async {
   final Map<String, dynamic> parsedTxData =
       json.decode(txData) as Map<String, dynamic>;
   final String pubKey = parsedTxData['pubkey'] as String;
@@ -39,12 +41,17 @@ TransactionsAndBalanceState transactionParser(String txData) {
       logger('Timestamp: $timestamp');
       logger('Fecha: $txDate');
     } */
+    final Contact fromC = await ContactsCache().getContact(address2!);
+    final Contact toC = await ContactsCache().getContact(address1!);
+
     tx.insert(
         0,
         Transaction(
             type: type,
-            from: address2!,
-            to: address1!,
+            from: address2,
+            fromC: fromC,
+            to: address1,
+            toC: toC,
             amount: pubKey == address2 ? -amount : amount,
             comment: comment,
             time: txDate));
@@ -53,8 +60,8 @@ TransactionsAndBalanceState transactionParser(String txData) {
       transactions: tx, balance: balance, lastChecked: DateTime.now());
 }
 
-TransactionsAndBalanceState transactionsGvaParser(
-    Map<String, dynamic> txData, TransactionsAndBalanceState state) {
+Future<TransactionsAndBalanceState> transactionsGvaParser(
+    Map<String, dynamic> txData, TransactionsAndBalanceState state) async {
   // Balance
   final dynamic rawBalance = txData['balance'];
   final double amount = rawBalance != null
@@ -69,30 +76,34 @@ TransactionsAndBalanceState transactionsGvaParser(
   final Map<String, dynamic> both =
       txsHistoryBc['both'] as Map<String, dynamic>;
   final List<dynamic> edges = both['edges'] as List<dynamic>;
+  final Map<String, dynamic> pageInfo =
+      both['pageInfo'] as Map<String, dynamic>;
   final List<Transaction> txs = <Transaction>[];
   for (final dynamic edgeRaw in edges) {
     final Transaction tx =
-        _transactionGvaParser(edgeRaw as Map<String, dynamic>);
+        await _transactionGvaParser(edgeRaw as Map<String, dynamic>);
     txs.add(tx);
   }
   final List<dynamic> receiving = txsHistoryMp['receiving'] as List<dynamic>;
   final List<dynamic> sending = txsHistoryMp['sending'] as List<dynamic>;
   for (final dynamic receiveRaw in receiving) {
-    final Transaction tx = _txGvaParse(
+    final Transaction tx = await _txGvaParse(
         receiveRaw as Map<String, dynamic>, TransactionType.receiving);
     txs.insert(0, tx);
   }
   for (final dynamic sendingRaw in sending) {
-    final Transaction tx = _txGvaParse(
+    final Transaction tx = await _txGvaParse(
         sendingRaw as Map<String, dynamic>, TransactionType.sending);
     txs.insert(0, tx);
   }
-
   return state.copyWith(
-      transactions: txs, balance: amount, lastChecked: DateTime.now());
+      transactions: txs,
+      balance: amount,
+      lastChecked: DateTime.now(),
+      endCursor: pageInfo['endCursor'] as String?);
 }
 
-Transaction _transactionGvaParser(Map<String, dynamic> edge) {
+Future<Transaction> _transactionGvaParser(Map<String, dynamic> edge) {
   final Map<String, dynamic> parsedTxData = edge;
   // Direction
   final String direction = parsedTxData['direction'] as String;
@@ -103,7 +114,8 @@ Transaction _transactionGvaParser(Map<String, dynamic> edge) {
   return _txGvaParse(tx, type);
 }
 
-Transaction _txGvaParse(Map<String, dynamic> tx, TransactionType type) {
+Future<Transaction> _txGvaParse(
+    Map<String, dynamic> tx, TransactionType type) async {
   final List<dynamic> issuers = tx['issuers'] as List<dynamic>;
   final List<dynamic> outputs = tx['outputs'] as List<dynamic>;
   final String from = issuers[0] as String;
@@ -121,11 +133,14 @@ Transaction _txGvaParse(Map<String, dynamic> tx, TransactionType type) {
   }
   // Comment
   final String comment = tx['comment'] as String;
-
+  final Contact fromC = await ContactsCache().getContact(from);
+  final Contact toC = await ContactsCache().getContact(to!);
   return Transaction(
     type: type,
     from: from,
-    to: to!,
+    fromC: fromC,
+    to: to,
+    toC: toC,
     amount: amount,
     comment: comment,
     time: time,

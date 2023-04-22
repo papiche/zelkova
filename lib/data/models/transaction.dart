@@ -4,6 +4,7 @@ import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'contact.dart';
 import 'model_utils.dart';
 import 'transaction_type.dart';
 
@@ -19,6 +20,8 @@ class Transaction extends Equatable {
     required this.amount,
     required this.comment,
     required this.time,
+    required this.fromC,
+    required this.toC,
     this.toAvatar,
     this.toNick,
     this.fromAvatar,
@@ -31,6 +34,8 @@ class Transaction extends Equatable {
   final TransactionType type;
   final String from;
   final String to;
+  final Contact fromC;
+  final Contact toC;
   final double amount;
   final String comment;
   final DateTime time;

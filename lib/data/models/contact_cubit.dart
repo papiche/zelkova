@@ -67,6 +67,9 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
   }
 
   List<Contact> search(String query) {
+    if (query.isEmpty) {
+      return state.contacts;
+    }
     final String queryLower = query.toLowerCase();
     final String queryUpper =
         queryLower[0].toUpperCase() + queryLower.substring(1);
@@ -91,11 +94,11 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
     return contacts;
   }
 
-  bool containsLowerOrUpper(String text, String query, String queryLower,
-      String queryUpper) =>
+  bool containsLowerOrUpper(
+          String text, String query, String queryLower, String queryUpper) =>
       text.contains(query) ||
-          text.contains(queryLower) ||
-          text.contains(queryUpper);
+      text.contains(queryLower) ||
+      text.contains(queryUpper);
 
   List<Contact> get contacts => state.contacts;
 
@@ -118,7 +121,7 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
   @override
   Map<String, dynamic> toJson(ContactsState state) {
     final List<Map<String, dynamic>> contactsJson =
-    state.contacts.map((Contact c) => c.toJson()).toList();
+        state.contacts.map((Contact c) => c.toJson()).toList();
     return <String, dynamic>{'contacts': contactsJson};
   }
 

@@ -5,6 +5,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs.dart';
+import '../../tutorial_keys.dart';
 import '../../ui_helpers.dart';
 import 'card_terminal_status.dart';
 
@@ -16,6 +17,7 @@ class CardTerminalScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      key: receiveQrKey,
       elevation: 8,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Container(

@@ -12,6 +12,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:lehttp_overrides/lehttp_overrides.dart';
 import 'package:once/once.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pwa_install/pwa_install.dart';
@@ -43,6 +44,11 @@ import 'ui/ui_helpers.dart';
 
 void main() async {
   await NotificationController.initializeLocalNotifications();
+
+  // To resolve Let's Encrypt SSL certificate problems with Android 7.1.1 and below
+  if (Platform.isAndroid) {
+    HttpOverrides.global = LEHttpOverrides();
+  }
 
   /// Initialize packages
   WidgetsFlutterBinding.ensureInitialized();

@@ -12,6 +12,7 @@ import '../../../data/models/payment_state.dart';
 import '../../../data/models/transaction_cubit.dart';
 import '../../../g1/api.dart';
 import '../../logger.dart';
+import '../../tutorial_keys.dart';
 import '../../ui_helpers.dart';
 import 'g1_textfield.dart';
 
@@ -63,7 +64,7 @@ class _PayFormState extends State<PayForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            const G1PayAmountField(),
+            G1PayAmountField(key: payAmountKey),
             const SizedBox(height: 10.0),
             TextFormField(
               inputFormatters: <TextInputFormatter>[
@@ -96,6 +97,7 @@ class _PayFormState extends State<PayForm> {
                   child: _buildBtn(Text(tr('offline'))),
                 ),
                 child: ElevatedButton(
+                  key: paySentKey,
                   onPressed: (!state.canBeSent() ||
                           state.amount == null ||
                           !_commentValidate() ||

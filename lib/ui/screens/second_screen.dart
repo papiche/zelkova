@@ -1,16 +1,37 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../cubit/bottom_nav_cubit.dart';
+import '../tutorial.dart';
+import '../tutorial_keys.dart';
 import '../widgets/card_drawer.dart';
 import '../widgets/second_screen/card_terminal.dart';
+import '../widgets/second_screen/second_tutorial.dart';
 
-class SecondScreen extends StatelessWidget {
+class SecondScreen extends StatefulWidget {
   const SecondScreen({super.key});
+
+  @override
+  State<SecondScreen> createState() => _SecondScreenState();
+}
+
+class _SecondScreenState extends State<SecondScreen> {
+  late Tutorial tutorial;
+
+  @override
+  void initState() {
+    tutorial = SecondTutorial(context);
+    if (context.read<BottomNavCubit>().state == 1) {
+      Future<void>.delayed(Duration.zero, () => tutorial.showTutorial());
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(tr('receive_g1'))),
+      appBar: AppBar(key: receiveMainKey, title: Text(tr('receive_g1'))),
       drawer: const CardDrawer(),
       body:
           Column(children: const <Widget>[SizedBox(height: 2), CardTerminal()]),

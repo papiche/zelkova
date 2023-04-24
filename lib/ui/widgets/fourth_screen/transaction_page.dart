@@ -12,6 +12,7 @@ import '../../../data/models/transaction_balance_state.dart';
 import '../../../data/models/transaction_cubit.dart';
 import '../../../shared_prefs.dart';
 import '../../logger.dart';
+import '../../tutorial_keys.dart';
 import '../../ui_helpers.dart';
 import 'transaction_chart.dart';
 import 'transaction_item.dart';
@@ -35,7 +36,7 @@ class _TransactionsAndBalanceWidgetState
   static const int _pageSize = 20;
 
   final PagingController<String?, Transaction> _pagingController =
-  PagingController<String?, Transaction>(firstPageKey: null);
+      PagingController<String?, Transaction>(firstPageKey: null);
 
   @override
   void initState() {
@@ -44,10 +45,10 @@ class _TransactionsAndBalanceWidgetState
     nodeListCubit = context.read<NodeListCubit>();
     _pagingController.addPageRequestListener((String? cursor) {
       EasyThrottle.throttle('my-throttler-$cursor', const Duration(seconds: 1),
-              () => _fetchPage(cursor),
+          () => _fetchPage(cursor),
           onAfter:
               () {} // <-- Optional callback, called after the duration has passed
-      );
+          );
     });
     _pagingController.addStatusListener((PagingStatus status) {
       if (status == PagingStatus.subsequentPageError) {
@@ -56,6 +57,7 @@ class _TransactionsAndBalanceWidgetState
             content: Text(tr('fetch_tx_error')),
             action: SnackBarAction(
               label: tr('retry'),
+              textColor: Theme.of(context).primaryColor,
               onPressed: () => _pagingController.retryLastFailedRequest(),
             ),
           ),
@@ -70,7 +72,8 @@ class _TransactionsAndBalanceWidgetState
     try {
       final List<Transaction> newItems = await transCubit.fetchTransactions(
           nodeListCubit,
-          cursor: cursor, pageSize: _pageSize);
+          cursor: cursor,
+          pageSize: _pageSize);
 
       final bool isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
@@ -100,33 +103,29 @@ class _TransactionsAndBalanceWidgetState
       final double balance = transBalanceState.balance;
       return BackdropScaffold(
           appBar: BackdropAppBar(
-            backgroundColor: Theme
-                .of(context)
-                .colorScheme
-                .inversePrimary,
+            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
             title: Text(tr('balance')),
             actions: <Widget>[
               IconButton(
+                  key: txRefreshKey,
                   icon: const Icon(Icons.refresh),
-                  onPressed: () =>
-                      EasyThrottle.throttle(
-                          'my-throttler-refresh',
-                          const Duration(seconds: 1),
-                              () => _pagingController.refresh(),
-                          onAfter:
-                              () {} // <-- Optional callback, called after the duration has passed
+                  onPressed: () => EasyThrottle.throttle(
+                      'my-throttler-refresh',
+                      const Duration(seconds: 1),
+                      () => _pagingController.refresh(),
+                      onAfter:
+                          () {} // <-- Optional callback, called after the duration has passed
                       )),
               // const BackdropToggleButton(),
               LayoutBuilder(
                   builder: (BuildContext lContext,
-                      BoxConstraints constraints) =>
+                          BoxConstraints constraints) =>
                       IconButton(
-                        // icon: const Icon(Icons.account_balance_wallet),
+                          key: txBalanceKey,
+                          // icon: const Icon(Icons.account_balance_wallet),
                           icon: const Icon(Icons.savings),
                           onPressed: () {
-                            if (Backdrop
-                                .of(lContext)
-                                .isBackLayerConcealed) {
+                            if (Backdrop.of(lContext).isBackLayerConcealed) {
                               Backdrop.of(lContext).revealBackLayer();
                             } else {
                               Backdrop.of(lContext).concealBackLayer();
@@ -137,64 +136,50 @@ class _TransactionsAndBalanceWidgetState
           ),
           backLayer: Center(
               child: Container(
-                decoration: BoxDecoration(
-                  color: Theme
-                      .of(context)
-                      .colorScheme
-                      .inversePrimary,
-                  border: Border.all(
-                      color: Theme
-                          .of(context)
-                          .colorScheme
-                          .inversePrimary,
-                      width: 3),
-                  /* borderRadius: const BorderRadius.only(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.inversePrimary,
+              border: Border.all(
+                  color: Theme.of(context).colorScheme.inversePrimary,
+                  width: 3),
+              /* borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(8),
               topRight: Radius.circular(8),
             ), */
+            ),
+            child: Scrollbar(
+                child: ListView(
+              //   controller: scrollController,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: Center(
+                      child: Text(
+                    formatKAmount(context, balance),
+                    style: TextStyle(
+                        fontSize: 36.0,
+                        color:
+                            balance == 0 ? Colors.lightBlue : Colors.lightBlue,
+                        fontWeight: FontWeight.bold),
+                  )),
                 ),
-                child: Scrollbar(
-                    child: ListView(
-                      //   controller: scrollController,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10.0),
-                          child: Center(
-                              child: Text(
-                                formatKAmount(context, balance),
-                                style: TextStyle(
-                                    fontSize: 36.0,
-                                    color:
-                                    balance == 0 ? Colors.lightBlue : Colors
-                                        .lightBlue,
-                                    fontWeight: FontWeight.bold),
-                              )),
-                        ),
-                        if (!kReleaseMode) TransactionChart(
-                            transactions: transactions)
-                      ],
-                    )),
-              )),
+                if (!kReleaseMode) TransactionChart(transactions: transactions)
+              ],
+            )),
+          )),
           subHeader: BackdropSubHeader(
+            key: txMainKey,
             title: Text(tr('transactions')),
             divider: Divider(
-              color: Theme
-                  .of(context)
-                  .colorScheme
-                  .surfaceVariant,
+              color: Theme.of(context).colorScheme.surfaceVariant,
               height: 0,
             ),
           ),
           frontLayer: RefreshIndicator(
             color: Colors.white,
-            backgroundColor: Theme
-                .of(context)
-                .colorScheme
-                .primary,
+            backgroundColor: Theme.of(context).colorScheme.primary,
             strokeWidth: 4.0,
-            onRefresh: () =>
-            Future<void>.sync(
-                  () => _pagingController.refresh(),
+            onRefresh: () => Future<void>.sync(
+              () => _pagingController.refresh(),
             ),
             child: CustomScrollView(
                 shrinkWrap: true,
@@ -216,11 +201,10 @@ class _TransactionsAndBalanceWidgetState
                               transaction: tx,
                             );
                           },
-                          noItemsFoundIndicatorBuilder: (_) =>
-                              Padding(
-                                  padding:
+                          noItemsFoundIndicatorBuilder: (_) => Padding(
+                              padding:
                                   const EdgeInsets.symmetric(horizontal: 20),
-                                  child:
+                              child:
                                   Center(child: Text(tr('no_transactions'))))))
 
                   /*

@@ -156,6 +156,7 @@ Thanks!
 - undraw intro images: https://undraw.co/license
 - Chipcard https://commons.wikimedia.org/wiki/File:Chipcard.svg under the Creative Commons
   Attribution-Share Alike 3.0 Unported license.
+- [POS svg from wikimedia](https://commons.wikimedia.org/wiki/File:Card_Terminal_POS_Flat_Icon_Vector.svg) CC-BY-SA 4.0
 
 Thanks!
 

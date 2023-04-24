@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../shared_prefs.dart';
+import '../../tutorial_keys.dart';
 import '../../ui_helpers.dart';
 import 'card_text_style.dart';
 
@@ -95,6 +96,7 @@ class CreditCard extends StatelessWidget {
                             GestureDetector(
                                 onTap: () => copyPublicKeyToClipboard(context),
                                 child: FittedBox(
+                                    key: creditCardPubKey,
                                     fit: BoxFit.scaleDown,
                                     child: Text(
                                       '${pubKey.substring(0, 4)} ${pubKey.substring(4, 8)}',

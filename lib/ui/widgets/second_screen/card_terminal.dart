@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
 
+import '../../tutorial_keys.dart';
 import '../../ui_helpers.dart';
 import 'card_terminal_screen.dart';
 import 'rubber_button.dart';
@@ -69,6 +70,7 @@ class _CardTerminalState extends State<CardTerminal> {
                 Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                     child: GridView.count(
+                        key: receiveAmountKey,
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         crossAxisCount: 3,
@@ -127,6 +129,7 @@ class _CardTerminalState extends State<CardTerminal> {
           });
     } else
       return RubberButton(
+          key: index == 11 ? receiveSumKey : null,
           label: _numbers[index],
           onPressed: () {
             vibrateIfPossible();

@@ -7,12 +7,13 @@ part 'app_state.g.dart';
 
 @JsonSerializable()
 class AppState extends Equatable implements IsJsonSerializable<AppState> {
-  const AppState({
-    this.introViewed = false,
-    this.warningViewed = false,
-    this.warningBrowserViewed = false,
-    this.expertMode = false,
-  });
+  AppState(
+      {this.introViewed = false,
+      this.warningViewed = false,
+      this.warningBrowserViewed = false,
+      this.expertMode = false,
+      Map<String, bool>? tutorials})
+      : tutorials = tutorials ?? <String, bool>{};
 
   factory AppState.fromJson(Map<String, dynamic> json) =>
       _$AppStateFromJson(json);
@@ -21,19 +22,20 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
   final bool warningViewed;
   final bool warningBrowserViewed;
   final bool expertMode;
+  final Map<String, bool> tutorials;
 
-  AppState copyWith({
-    bool? introViewed,
-    bool? warningViewed,
-    bool? warningBrowserViewed,
-    bool? expertMode,
-    String? locale,
-  }) {
+  AppState copyWith(
+      {bool? introViewed,
+      bool? warningViewed,
+      bool? warningBrowserViewed,
+      bool? expertMode,
+      Map<String, bool>? tutorials}) {
     return AppState(
         introViewed: introViewed ?? this.introViewed,
         warningViewed: warningViewed ?? this.warningViewed,
         warningBrowserViewed: warningBrowserViewed ?? this.warningBrowserViewed,
-        expertMode: expertMode ?? this.expertMode);
+        expertMode: expertMode ?? this.expertMode,
+        tutorials: tutorials ?? this.tutorials);
   }
 
   @override
@@ -43,6 +45,11 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
   Map<String, dynamic> toJson() => _$AppStateToJson(this);
 
   @override
-  List<Object?> get props =>
-      <Object>[introViewed, warningViewed, expertMode, warningBrowserViewed];
+  List<Object?> get props => <Object>[
+        introViewed,
+        warningViewed,
+        expertMode,
+        warningBrowserViewed,
+        tutorials
+      ];
 }

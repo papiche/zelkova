@@ -4,30 +4,51 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pwa_install/pwa_install.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../cubit/bottom_nav_cubit.dart';
 import '../../cubit/theme_cubit.dart';
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
 import '../../shared_prefs.dart';
 import '../notification_controller.dart';
+import '../tutorial.dart';
+import '../tutorial_keys.dart';
 import '../ui_helpers.dart';
 import '../widgets/bottom_widget.dart';
 import '../widgets/card_drawer.dart';
 import '../widgets/faq.dart';
 import '../widgets/fifth_screen/export_dialog.dart';
+import '../widgets/fifth_screen/fifth_tutorial.dart';
 import '../widgets/fifth_screen/grid_item.dart';
 import '../widgets/fifth_screen/import_dialog.dart';
 import '../widgets/fifth_screen/link_card.dart';
 import '../widgets/fifth_screen/node_info.dart';
 import '../widgets/fifth_screen/text_divider.dart';
 
-class FifthScreen extends StatelessWidget {
+class FifthScreen extends StatefulWidget {
   const FifthScreen({super.key});
+
+  @override
+  State<FifthScreen> createState() => _FifthScreenState();
+}
+
+class _FifthScreenState extends State<FifthScreen> {
+  late Tutorial tutorial;
+
+  @override
+  void initState() {
+    tutorial = FifthTutorial(context);
+    if (context.read<BottomNavCubit>().state == 4) {
+      Future<void>.delayed(Duration.zero, () => tutorial.showTutorial());
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppState>(
         builder: (BuildContext context, AppState state) => Scaffold(
               appBar: AppBar(
+                key: infoMainKey,
                 title: Text(tr('bottom_nav_fifth')),
                 actions: <Widget>[
                   IconButton(
@@ -102,8 +123,6 @@ class FifthScreen extends StatelessWidget {
                         // Add more DropdownMenuItem for more languages
                       ],
                     ),
-                    const TextDivider(text: 'faq_title'),
-                    const FAQ(),
                     const TextDivider(text: 'key_tools_title'),
                     const SizedBox(height: 20),
                     GridView.count(
@@ -148,6 +167,7 @@ class FifthScreen extends StatelessWidget {
                               },
                             ),
                           GridItem(
+                              key: exportMainKey,
                               title: 'export_key',
                               icon: Icons.download,
                               onTap: () {
@@ -170,6 +190,8 @@ class FifthScreen extends StatelessWidget {
                                 );
                               }),
                         ]),
+                    const TextDivider(text: 'faq_title'),
+                    const FAQ(),
                     if (state.expertMode)
                       const TextDivider(text: 'technical_info_title'),
                     if (state.expertMode) const NodeInfoCard(),

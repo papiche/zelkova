@@ -4,13 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:web_browser_detect/web_browser_detect.dart';
 
+import '../../cubit/bottom_nav_cubit.dart';
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
 import '../../data/models/payment_cubit.dart';
 import '../../data/models/payment_state.dart';
+import '../tutorial.dart';
+import '../tutorial_keys.dart';
 import '../widgets/bottom_widget.dart';
 import '../widgets/card_drawer.dart';
 import '../widgets/first_screen/credit_card.dart';
+import '../widgets/first_screen/first_tutorial.dart';
 import '../widgets/first_screen/pay_contact_search_button.dart';
 import '../widgets/first_screen/pay_form.dart';
 
@@ -22,6 +26,17 @@ class FirstScreen extends StatefulWidget {
 }
 
 class _FirstScreenState extends State<FirstScreen> {
+  late Tutorial tutorial;
+
+  @override
+  void initState() {
+    tutorial = FirstTutorial(context);
+    if (context.read<BottomNavCubit>().state == 0) {
+      Future<void>.delayed(Duration.zero, () => tutorial.showTutorial());
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) => BlocBuilder<AppCubit, AppState>(
           builder: (BuildContext context, AppState state) {
@@ -40,7 +55,6 @@ class _FirstScreenState extends State<FirstScreen> {
               ),
             );
           }
-          // FIXME
           if (kIsWeb) {
             final Browser? browser = Browser.detectOrNull();
             if (!state.warningBrowserViewed) {
@@ -77,7 +91,7 @@ class _FirstScreenState extends State<FirstScreen> {
                           //controller: _controller,
                           // shrinkWrap: true,
                           children: <Widget>[
-                            CreditCard(),
+                            CreditCard(key: creditCardKey),
                             const SizedBox(height: 8),
                             Padding(
                               padding:
@@ -90,7 +104,7 @@ class _FirstScreenState extends State<FirstScreen> {
                               ),
                             ),
                             const SizedBox(height: 10),
-                            const PayContactSearchButton(),
+                            PayContactSearchButton(key: paySearchUserKey),
                             const SizedBox(height: 10),
                             const PayForm(),
                             const BottomWidget()

@@ -9,6 +9,7 @@ import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
 import '../../data/models/payment_cubit.dart';
 import '../../data/models/payment_state.dart';
+import '../../data/models/transaction_cubit.dart';
 import '../tutorial.dart';
 import '../tutorial_keys.dart';
 import '../widgets/bottom_widget.dart';
@@ -32,7 +33,8 @@ class _FirstScreenState extends State<FirstScreen> {
   void initState() {
     tutorial = FirstTutorial(context);
     super.initState();
-    if (context.read<BottomNavCubit>().state == 0) {
+    if (context.read<BottomNavCubit>().state == 0 &&
+        context.read<TransactionsCubit>().balance == 0) {
       Future<void>.delayed(Duration.zero, () => tutorial.showTutorial());
     }
   }

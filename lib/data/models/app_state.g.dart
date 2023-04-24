@@ -11,6 +11,9 @@ AppState _$AppStateFromJson(Map<String, dynamic> json) => AppState(
       warningViewed: json['warningViewed'] as bool? ?? false,
       warningBrowserViewed: json['warningBrowserViewed'] as bool? ?? false,
       expertMode: json['expertMode'] as bool? ?? false,
+      tutorials: (json['tutorials'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as bool),
+      ),
     );
 
 Map<String, dynamic> _$AppStateToJson(AppState instance) => <String, dynamic>{
@@ -18,4 +21,5 @@ Map<String, dynamic> _$AppStateToJson(AppState instance) => <String, dynamic>{
       'warningViewed': instance.warningViewed,
       'warningBrowserViewed': instance.warningBrowserViewed,
       'expertMode': instance.expertMode,
+      'tutorials': instance.tutorials,
     };

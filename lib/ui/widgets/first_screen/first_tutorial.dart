@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
@@ -13,14 +14,13 @@ class FirstTutorial extends Tutorial {
   List<TargetFocus> createTargets() {
     final List<TargetFocus> targets = <TargetFocus>[];
     targets.add(TutorialTarget(
-      identify: 'creditCardKey',
+      identify: !kIsWeb ? 'creditCardKey' : 'creditCardKey_web',
       keyTarget: creditCardKey,
       shape: ShapeLightFocus.RRect,
     ));
     targets.add(TutorialTarget(
         identify: 'creditCardPubKey',
         keyTarget: creditCardPubKey,
-        shape: ShapeLightFocus.RRect,
         align: ContentAlign.right));
     targets.add(TutorialTarget(
         identify: 'paySearchUserKey',
@@ -32,11 +32,11 @@ class FirstTutorial extends Tutorial {
         keyTarget: payAmountKey,
         align: ContentAlign.top,
         shape: ShapeLightFocus.RRect));
-   /* targets.add(TutorialTarget(
+    targets.add(TutorialTarget(
         identify: 'paySentKey',
         keyTarget: paySentKey,
         align: ContentAlign.top,
-        shape: ShapeLightFocus.RRect));*/
+        shape: ShapeLightFocus.RRect));
     return targets;
   }
 }

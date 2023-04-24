@@ -3,11 +3,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../cubit/bottom_nav_cubit.dart';
+import '../tutorial_keys.dart';
 
-class BottomNavBar extends StatelessWidget {
+class BottomNavBar extends StatefulWidget {
   /// It is okay not to use a const constructor here.
   /// Using const breaks updating of selected BottomNavigationBarItem.
   const BottomNavBar({super.key});
+
+  @override
+  State<BottomNavBar> createState() => _BottomNavBarState();
+}
+
+class _BottomNavBarState extends State<BottomNavBar> {
+  /* late Tutorial sndTutorial;*
+  late Tutorial trdTutorial;
+  late Tutorial fifthTutorial; */
+
+  @override
+  void initState() {
+    /* if (context.read<BottomNavCubit>().state == 1) {
+      sndTutorial = SecondTutorial(context);
+      Future<void>.delayed(Duration.zero, () => sndTutorial.showTutorial());
+    }
+    if (context.read<BottomNavCubit>().state == 2) {
+      trdTutorial = ThirdTutorial(context);
+      Future<void>.delayed(Duration.zero, () => trdTutorial.showTutorial());
+    }
+    if (context.read<BottomNavCubit>().state == 4) {
+      fifthTutorial = FifthTutorial(context);
+      Future<void>.delayed(Duration.zero, () => fifthTutorial.showTutorial());
+    } */
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +66,11 @@ class BottomNavBar extends StatelessWidget {
               label: tr('bottom_nav_first'),
             ),
             BottomNavigationBarItem(
-              icon: const Icon(Icons.payments),
+              icon: Icon(key: receiveMainKey, Icons.payments),
               label: tr('bottom_nav_second'),
             ),
             BottomNavigationBarItem(
-              icon: const Icon(Icons.contacts),
+              icon: Icon(key: contactsMainKey, Icons.contacts),
               label: tr('bottom_nav_trd'),
             ),
             BottomNavigationBarItem(

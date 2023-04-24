@@ -31,10 +31,10 @@ class _FirstScreenState extends State<FirstScreen> {
   @override
   void initState() {
     tutorial = FirstTutorial(context);
+    super.initState();
     if (context.read<BottomNavCubit>().state == 0) {
       Future<void>.delayed(Duration.zero, () => tutorial.showTutorial());
     }
-    super.initState();
   }
 
   @override

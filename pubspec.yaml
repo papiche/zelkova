@@ -126,7 +126,7 @@ flutter:
     - assets/tx.json
     - assets/gva-tx.json
     - assets/img/animated-bell.gif
-    - assets/img/pos.svg
+    - assets/img/pos.png
 
   fonts:
     - family: Nunito

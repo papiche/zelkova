@@ -12,11 +12,8 @@ class FifthTutorial extends Tutorial {
   @override
   List<TargetFocus> createTargets() {
     final List<TargetFocus> targets = <TargetFocus>[];
-    targets.add(TutorialTarget(
-      identify: 'infoMainKey',
-      keyTarget: infoMainKey,
-      shape: ShapeLightFocus.RRect,
-    ));
+    targets
+        .add(TutorialTarget(identify: 'infoMainKey', keyTarget: infoMainKey));
     targets.add(TutorialTarget(
         identify: 'exportMainKey',
         keyTarget: exportMainKey,

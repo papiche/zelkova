@@ -43,7 +43,7 @@ class _CardTerminalState extends State<CardTerminal> {
         child: ListView(children: <Widget>[
       Padding(
           padding: EdgeInsets.symmetric(
-              horizontal: bigScreen(context) ? 50.0 : 10.0),
+              horizontal: bigScreen(context) ? 50.0 : 50.0),
           child: Card(
             elevation: 8.0,
             shape: RoundedRectangleBorder(

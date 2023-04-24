@@ -22,7 +22,7 @@ class CardTerminalScreen extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Container(
         width: double.infinity,
-        height: smallScreen(context) ? 212 : 252,
+        height: smallScreen(context) ? 200 : 252,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           gradient: const LinearGradient(
@@ -88,14 +88,14 @@ class CardTerminalScreen extends StatelessWidget {
             Expanded(
                 child: Column(children: <Widget>[
               if (!amount.contains('+'))
-                QrImage(
-                    data: getQrUri(
-                        pubKey: SharedPreferencesHelper().getPubKey(),
-                        locale: context.locale.toLanguageTag(),
-                        amount: amount),
-                    size: smallScreen(context) ? 100.0 : 140.0
-                    //: (smallScreen(context) ? 120.0 : 160.0),
-                    )
+                Expanded(
+                    child: QrImage(
+                  data: getQrUri(
+                      pubKey: SharedPreferencesHelper().getPubKey(),
+                      locale: context.locale.toLanguageTag(),
+                      amount: amount),
+                  //   size: smallScreen(context) ? 95.0 : 140.0)
+                ))
             ])),
             Container(
               decoration: const BoxDecoration(
@@ -117,7 +117,7 @@ class CardTerminalScreen extends StatelessWidget {
                   Expanded(
                     child: Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 5),
+                            horizontal: 10, vertical: 6),
                         child: Text.rich(
                           TextSpan(
                             children: <TextSpan>[
@@ -128,7 +128,7 @@ class CardTerminalScreen extends StatelessWidget {
                                 style: TextStyle(
                                   fontFamily: 'Roboto Mono',
                                   color: Colors.grey,
-                                  fontSize: smallScreen(context) ? 11 : 14,
+                                  fontSize: smallScreen(context) ? 12 : 14,
                                 ),
                               ),
                             ],

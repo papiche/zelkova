@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../cubit/bottom_nav_cubit.dart';
 import '../tutorial.dart';
-import '../tutorial_keys.dart';
 import '../widgets/card_drawer.dart';
 import '../widgets/second_screen/card_terminal.dart';
 import '../widgets/second_screen/second_tutorial.dart';
@@ -31,7 +30,7 @@ class _SecondScreenState extends State<SecondScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(key: receiveMainKey, title: Text(tr('receive_g1'))),
+      appBar: AppBar(title: Text(tr('receive_g1'))),
       drawer: const CardDrawer(),
       body:
           Column(children: const <Widget>[SizedBox(height: 2), CardTerminal()]),

@@ -27,7 +27,9 @@ class _ThirdScreenState extends State<ThirdScreen> {
   @override
   void initState() {
     tutorial = ThirdTutorial(context);
-    if (context.read<BottomNavCubit>().state == 2) {
+    if (context
+        .read<BottomNavCubit>()
+        .state == 2) {
       Future<void>.delayed(Duration.zero, () => tutorial.showTutorial());
     }
     super.initState();
@@ -36,48 +38,45 @@ class _ThirdScreenState extends State<ThirdScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          key: contactsMainKey,
-          title: Text(tr('bottom_nav_trd')),
-          actions: <Widget>[
-            IconButton(
-                key: contactsQrKey,
-                icon: const Icon(Icons.qr_code),
-                onPressed: () async {
-                  final String? pubKey = await QrManager.qrScan(context);
-                  if (pubKey != null && validateKey(pubKey)) {
-                    final Contact contact =
-                        await ContactsCache().getContact(pubKey);
-                    if (!mounted) {
-                      return;
-                    }
-                    if (!context.read<ContactsCubit>().isContact(pubKey)) {
-                      context.read<ContactsCubit>().addContact(contact);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(tr('contact_added')),
-                        ),
-                      );
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(tr('contact_already_exists')),
-                        ),
-                      );
-                    }
-                  } else {
-                    if (!mounted) {
-                      return;
-                    }
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(tr('wrong_public_key')),
-                      ),
-                    );
-                  }
-                }),
-            const SizedBox(width: 5),
-          ]),
+      appBar: AppBar(title: Text(tr('bottom_nav_trd')), actions: <Widget>[
+        IconButton(
+            key: contactsQrKey,
+            icon: const Icon(Icons.qr_code),
+            onPressed: () async {
+              final String? pubKey = await QrManager.qrScan(context);
+              if (pubKey != null && validateKey(pubKey)) {
+                final Contact contact =
+                await ContactsCache().getContact(pubKey);
+                if (!mounted) {
+                  return;
+                }
+                if (!context.read<ContactsCubit>().isContact(pubKey)) {
+                  context.read<ContactsCubit>().addContact(contact);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(tr('contact_added')),
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(tr('contact_already_exists')),
+                    ),
+                  );
+                }
+              } else {
+                if (!mounted) {
+                  return;
+                }
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(tr('wrong_public_key')),
+                  ),
+                );
+              }
+            }),
+        const SizedBox(width: 5),
+      ]),
       drawer: const CardDrawer(),
       body: const ContactsPage(),
     );

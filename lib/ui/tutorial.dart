@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
@@ -14,6 +15,7 @@ abstract class Tutorial {
       targets: createTargets(),
       // colorShadow: Colors.red,
       textSkip: tr('skip').toUpperCase(),
+      // hideSkip: true,
       // paddingFocus: 10,
       // opacityShadow: 0.8,
       onFinish: () {
@@ -36,7 +38,8 @@ abstract class Tutorial {
   List<TargetFocus> createTargets();
 
   void showTutorial() {
-    if (!context.read<AppCubit>().wasTutorialShown(tutorialId)) {
+    if (!kReleaseMode ||
+        !context.read<AppCubit>().wasTutorialShown(tutorialId)) {
       _tutorial.show(context: context);
     }
   }

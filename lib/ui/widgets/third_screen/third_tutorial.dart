@@ -15,9 +15,9 @@ class ThirdTutorial extends Tutorial {
     targets.add(TutorialTarget(
         identify: 'contactsMainKey',
         keyTarget: contactsMainKey,
-        shape: ShapeLightFocus.RRect));
-    targets.add(
-        TutorialTarget(identify: 'contactsQrKey', keyTarget: contactsQrKey));
+        align: ContentAlign.top));
+    targets.add(TutorialTarget(
+        identify: 'contactsQrKey', title: false, keyTarget: contactsQrKey));
     return targets;
   }
 }

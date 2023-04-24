@@ -4,6 +4,7 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import '../../tutorial.dart';
 import '../../tutorial_keys.dart';
 import '../../tutorial_target.dart';
+import 'pos_widget.dart';
 
 class SecondTutorial extends Tutorial {
   SecondTutorial(BuildContext context)
@@ -13,10 +14,10 @@ class SecondTutorial extends Tutorial {
   List<TargetFocus> createTargets() {
     final List<TargetFocus> targets = <TargetFocus>[];
     targets.add(TutorialTarget(
-      identify: 'receiveMainKey',
-      keyTarget: receiveMainKey,
-      shape: ShapeLightFocus.RRect,
-    ));
+        identify: 'receiveMainKey',
+        keyTarget: receiveMainKey,
+        align: ContentAlign.top,
+        extraWidget: POSWidget(context: context)));
     targets.add(TutorialTarget(
         identify: 'receiveQrKey',
         keyTarget: receiveQrKey,

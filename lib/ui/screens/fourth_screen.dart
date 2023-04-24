@@ -18,11 +18,11 @@ class _FourthScreenState extends State<FourthScreen> {
 
   @override
   void initState() {
-    tutorial = FourthTutorial(context);
+    super.initState();
     if (context.read<BottomNavCubit>().state == 3) {
+      tutorial = FourthTutorial(context);
       Future<void>.delayed(Duration.zero, () => tutorial.showTutorial());
     }
-    super.initState();
   }
 
   @override

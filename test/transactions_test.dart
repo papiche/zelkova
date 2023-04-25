@@ -6,12 +6,26 @@ import 'package:ginkgo/data/models/transaction.dart';
 import 'package:ginkgo/data/models/transaction_balance_state.dart';
 import 'package:ginkgo/data/models/transaction_type.dart';
 import 'package:ginkgo/g1/transaction_parser.dart';
+import 'package:ginkgo/ui/contacts_cache.dart';
 
 void main() {
   final TransactionsAndBalanceState emptyState = TransactionsAndBalanceState(
       transactions: const <Transaction>[],
       balance: 0,
       lastChecked: DateTime(1970));
+
+  setUpAll(() {
+    ContactsCache().init();
+  });
+
+  test('test put', () async {
+    final MemoryFallbackBox<String> fallbackBox = MemoryFallbackBox<String>();
+
+    await fallbackBox.put('key', 'value');
+    final String? value = fallbackBox.get('key');
+
+    expect(value, 'value');
+  });
 
   test('Test parsing', () async {
     TestWidgetsFlutterBinding.ensureInitialized();

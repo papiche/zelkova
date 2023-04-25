@@ -34,7 +34,7 @@ class ContactsCache {
     } catch (e) {
       logger('Error opening Hive: $e');
     }
-    _box ??= _MemoryFallbackBox<Contact>();
+    _box ??= MemoryFallbackBox<Map<String, dynamic>>();
   }
 
   Future<void> dispose() async {
@@ -43,9 +43,9 @@ class ContactsCache {
 
   static ContactsCache? _instance;
   final Map<String, List<Completer<Contact>>> _pendingRequests =
-  <String, List<Completer<Contact>>>{};
+      <String, List<Completer<Contact>>>{};
   static Duration duration =
-  kReleaseMode ? const Duration(days: 3) : const Duration(hours: 5);
+      kReleaseMode ? const Duration(days: 3) : const Duration(hours: 5);
 
   final String _boxName = 'contacts_cache';
 
@@ -141,9 +141,9 @@ class ContactsCache {
 
     if (record != null) {
       final Map<String, dynamic> typedRecord =
-      Map<String, dynamic>.from(record as Map<dynamic, dynamic>);
+          Map<String, dynamic>.from(record as Map<dynamic, dynamic>);
       final DateTime timestamp =
-      DateTime.parse(typedRecord['timestamp'] as String);
+          DateTime.parse(typedRecord['timestamp'] as String);
       final bool before = DateTime.now().isBefore(timestamp.add(duration));
       if (before) {
         final Contact contact = Contact.fromJson(
@@ -155,7 +155,7 @@ class ContactsCache {
   }
 }
 
-class _MemoryFallbackBox<E> extends Box<E> {
+class MemoryFallbackBox<E> extends Box<E> {
   final Map<String, dynamic> _storage = HashMap<String, dynamic>();
 
   @override
@@ -198,17 +198,17 @@ class _MemoryFallbackBox<E> extends Box<E> {
   }
 
   @override
-  Future<void> put(dynamic key, E value) async {
+  Future<void> put(dynamic key, dynamic value) async {
     _storage[key as String] = value;
   }
 
   @override
-  Future<void> putAt(int index, E value) async {
+  Future<void> putAt(int index, dynamic value) async {
     _storage[_storage.keys.elementAt(index)] = value;
   }
 
   @override
-  Future<void> putAll(Map<dynamic, E> entries) async {
+  Future<void> putAll(Map<dynamic, dynamic> entries) async {
     _storage.addAll(entries as Map<String, dynamic>);
   }
 
@@ -283,18 +283,20 @@ class _MemoryFallbackBox<E> extends Box<E> {
       return values;
     }
 
-    final int startIndex = startKey != null ? _storage.keys.toList().indexOf(
-        startKey as String) : 0;
-    final int endIndex = endKey != null ? _storage.keys.toList().indexOf(
-        endKey as String) : _storage.length - 1;
+    final int startIndex = startKey != null
+        ? _storage.keys.toList().indexOf(startKey as String)
+        : 0;
+    final int endIndex = endKey != null
+        ? _storage.keys.toList().indexOf(endKey as String)
+        : _storage.length - 1;
 
     if (startIndex < 0 || endIndex < 0) {
       throw ArgumentError('Start key or end key not found in the box.');
     }
 
-    return _storage.values.skip(startIndex)
+    return _storage.values
+        .skip(startIndex)
         .take(endIndex - startIndex + 1)
         .cast<E>();
   }
-
 }

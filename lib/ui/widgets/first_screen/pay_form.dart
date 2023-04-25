@@ -25,6 +25,8 @@ class PayForm extends StatefulWidget {
 
 class _PayFormState extends State<PayForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormFieldState<String>> _formCommentKey =
+      GlobalKey<FormFieldState<String>>();
   final TextEditingController _commentController = TextEditingController();
   final ValueNotifier<String> _feedbackNotifier = ValueNotifier<String>('');
 
@@ -42,6 +44,7 @@ class _PayFormState extends State<PayForm> {
       if (state.comment != null && _commentController.text != state.comment) {
         _commentController.text = state.comment;
       }
+
       if (state.amount == null || state.amount == 0) {
         _feedbackNotifier.value = '';
       }
@@ -67,6 +70,7 @@ class _PayFormState extends State<PayForm> {
             G1PayAmountField(key: payAmountKey),
             const SizedBox(height: 10.0),
             TextFormField(
+              key: _formCommentKey,
               inputFormatters: <TextInputFormatter>[
                 NoNewLineTextInputFormatter()
               ],
@@ -158,6 +162,9 @@ class _PayFormState extends State<PayForm> {
             basicEnglishCharsRegExp.hasMatch(currentComment)) ||
         currentComment.isEmpty;
     logger('Validating comment: $val');
+    if (_formKey.currentState != null) {
+      _formKey.currentState!.validate();
+    }
     return val;
   }
 

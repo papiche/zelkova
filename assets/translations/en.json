@@ -165,13 +165,13 @@
   "contactsMainKey_desc": "In this section you can save your most frequent contacts and scan QR codes from other people.",
   "contactsQrKey_desc": "Here you can scan QR codes from other people to add them to your contacts.",
   "txMainKey_title": "Transactions",
-  "txMainKey_desc": "Here you can see the history of your transactions. If your wallet is empty, to start using Ğ1, you can offer your services on markets or web platforms such as Girala, Gchange, among others. If you already have Ğ1, you can transfer them to this Ğ1nkgo wallet and start using it.",
+  "txMainKey_desc": "Here you can see the history of your transactions. If your wallet is empty, to start using Ğ1, you can offer your services on markets or web platforms such as gchange.fr, girala.net, among others. If you already have Ğ1, you can transfer them to this Ğ1nkgo wallet and start using it.",
   "txBalanceKey_title": "Balance",
   "txBalanceKey_desc": "On this screen you can see the current balance of your Ğ1nkgo wallet.",
   "txRefreshKey_title": "Refresh",
   "txRefreshKey_desc": "If you are waiting for a payment, you can press this button to refresh the screen. However, this wallet will also do it periodically for you and send you notifications of new payments.",
   "infoMainKey_title": "More Information",
-  "infoMainKey_desc": "Here you will find more information about your wallet.",
+  "infoMainKey_desc": "Here you will find more information about your wallet and other options.",
   "exportMainKey_title": "Exporting the Wallet",
   "exportMainKey_desc": "It is important that you make a backup of your wallet as soon as possible and keep it safe, so that you can import it into another browser or the app, or restore your wallet in case you lose your device. To do this, press this 'Export' button, which will allow you to download a file with all the information from your wallet. This way, you can import your wallet into another browser or device and have access to your funds at all times."
 }

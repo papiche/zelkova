@@ -165,13 +165,13 @@
   "contactsMainKey_desc": "En esta sección puedes guardar tus contactos más frecuentes y escanear códigos QR de otras personas.",
   "contactsQrKey_desc": "Aquí puedes escanear el QR de otras personas para añadirlas a tus contactos.",
   "txMainKey_title": "Transacciones",
-  "txMainKey_desc": "Aquí podrás ver el historial de tus transacciones. Si tu monedero está vacío, para empezar a usar Junas, puedes ofrecer tus servicios en mercados o plataformas webs como Girala, Gchange, entre otros. Si ya tienes Junas, puedes transferirlos a este monedero Ğ1nkgo y empezar a usarlo.",
+  "txMainKey_desc": "Aquí podrás ver el historial de tus transacciones. Si tu monedero está vacío, para empezar a usar Junas, puedes ofrecer tus servicios en mercados o plataformas webs como gchange.es, girala.net entre otros. Si ya tienes Junas, puedes transferirlos a este monedero Ğ1nkgo y empezar a usarlo.",
   "txBalanceKey_title": "Balance",
   "txBalanceKey_desc": "En esta pantalla podrás ver el balance actual de tu monedero Ğ1nkgo.",
   "txRefreshKey_title": "Actualización",
   "txRefreshKey_desc": "Si estás esperando un pago, puedes presionar este botón para refrescar la pantalla. Sin embargo, este monedero también lo hará periódicamente por ti y te enviará notificaciones de nuevos pagos.",
   "infoMainKey_title": "Más información",
-  "infoMainKey_desc": "Aquí encontrarás más información acerca de tu monedero.",
+  "infoMainKey_desc": "Aquí encontrarás más información acerca de tu monedero y otras opciones.",
   "exportMainKey_title": "Exportación del Monedero",
   "exportMainKey_desc": "Es importante que realices un backup de tu monedero cuanto antes y ponerlo a buen recaudo, para poder importarlo en otro navegador o en la App, o en cualquier caso restaurar tu monedero en caso de perder tu dispositivo. Para hacerlo, presiona este botón de 'Exportar', que te permitirá descargar un archivo con toda la información de tu monedero. De esta forma, podrás importar tu monedero en otro navegador o dispositivo y tener acceso a tus fondos en todo momento."
 }

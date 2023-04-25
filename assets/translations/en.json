@@ -173,5 +173,5 @@
   "infoMainKey_title": "More Information",
   "infoMainKey_desc": "Here you will find more information about your wallet and other options.",
   "exportMainKey_title": "Exporting the Wallet",
-  "exportMainKey_desc": "It is important that you make a backup of your wallet as soon as possible and keep it safe, so that you can import it into another browser or the app, or restore your wallet in case you lose your device. To do this, press this 'Export' button, which will allow you to download a file with all the information from your wallet. This way, you can import your wallet into another browser or device and have access to your funds at all times."
+  "exportMainKey_desc": "It is important that you make a backup of your wallet as soon as possible and keep it safe, so that you can import it into another browser or the app, or restore your wallet in case you lose your device."
 }

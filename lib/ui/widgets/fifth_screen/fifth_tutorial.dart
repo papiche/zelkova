@@ -17,7 +17,7 @@ class FifthTutorial extends Tutorial {
     targets.add(TutorialTarget(
         identify: 'exportMainKey',
         keyTarget: exportMainKey,
-        align: ContentAlign.top,
+        align: ContentAlign.right,
         shape: ShapeLightFocus.RRect));
     return targets;
   }

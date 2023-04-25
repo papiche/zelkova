@@ -173,5 +173,5 @@
   "infoMainKey_title": "Más información",
   "infoMainKey_desc": "Aquí encontrarás más información acerca de tu monedero y otras opciones.",
   "exportMainKey_title": "Exportación del Monedero",
-  "exportMainKey_desc": "Es importante que realices un backup de tu monedero cuanto antes y ponerlo a buen recaudo, para poder importarlo en otro navegador o en la App, o en cualquier caso restaurar tu monedero en caso de perder tu dispositivo. Para hacerlo, presiona este botón de 'Exportar', que te permitirá descargar un archivo con toda la información de tu monedero. De esta forma, podrás importar tu monedero en otro navegador o dispositivo y tener acceso a tus fondos en todo momento."
+  "exportMainKey_desc": "Es importante que realices un backup de tu monedero cuanto antes y ponerlo a buen recaudo, para poder importarlo en otro navegador o en la App, o en cualquier caso restaurar tu monedero en caso de perder tu dispositivo."
 }

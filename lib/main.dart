@@ -46,7 +46,7 @@ void main() async {
   await NotificationController.initializeLocalNotifications();
 
   // To resolve Let's Encrypt SSL certificate problems with Android 7.1.1 and below
-  if (Platform.isAndroid) {
+  if (!kIsWeb && Platform.isAndroid) {
     HttpOverrides.global = LEHttpOverrides();
   }
 

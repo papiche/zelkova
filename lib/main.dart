@@ -1,8 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 
-import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:cron/cron.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:feedback/feedback.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ import 'app_bloc_observer.dart';
 import 'config/theme.dart';
 import 'cubit/bottom_nav_cubit.dart';
 import 'cubit/theme_cubit.dart';
+import 'custom_feedback_localization.dart';
 import 'data/models/app_cubit.dart';
 import 'data/models/app_state.dart';
 import 'data/models/contact_cubit.dart';
@@ -60,9 +62,7 @@ void main() async {
 
   // .env
   await dotenv.load(
-      fileName: kReleaseMode
-          ? 'assets/env.production.txt'
-          : 'assets/.env.development');
+      fileName: kReleaseMode ? 'env.production.txt' : '.env.development');
 
   final SharedPreferencesHelper shared = SharedPreferencesHelper();
   await shared.init();
@@ -97,7 +97,7 @@ void main() async {
 
   void appRunner() => runApp(
         EasyLocalization(
-          path: 'assets/translations',
+          path: 'translations',
           supportedLocales: const <Locale>[
             // Asturian is not supported in flutter
             // More info: https://docs.flutter.dev/development/accessibility-and-localization/internationalization#adding-support-for-a-new-language
@@ -325,14 +325,16 @@ class _GinkgoAppState extends State<GinkgoApp> {
   Widget build(BuildContext context) {
     return BlocBuilder<NodeListCubit, NodeListState>(
         builder: (BuildContext nodeContext, NodeListState state) {
-      return ConnectivityAppWrapper(
-          app: FilesystemPickerDefaultOptions(
-              fileTileSelectMode: FileTileSelectMode.wholeTile,
-              theme: FilesystemPickerTheme(
-                topBar: FilesystemPickerTopBarThemeData(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                ),
-              ),
+      return FilesystemPickerDefaultOptions(
+          fileTileSelectMode: FileTileSelectMode.wholeTile,
+          theme: FilesystemPickerTheme(
+            topBar: FilesystemPickerTopBarThemeData(
+              backgroundColor: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+          child: BetterFeedback(
+              localizationsDelegates: context.localizationDelegates
+                ..add(CustomFeedbackLocalizationsDelegate()),
               child: MaterialApp(
                 /// Localization is not available for the title.
                 title: 'Ğ1nkgo',
@@ -358,12 +360,9 @@ class _GinkgoAppState extends State<GinkgoApp> {
                   NotificationController.locale = context.locale;
                   return ResponsiveWrapper.builder(
                     BouncingScrollWrapper.builder(
-                        context,
-                        ConnectivityWidgetWrapper(
-                          message: tr('offline'),
-                          height: 20,
-                          child: widget!,
-                        )),
+                      context,
+                      widget!,
+                    ),
                     maxWidth: 480,
                     minWidth: 480,
                     // defaultScale: true,

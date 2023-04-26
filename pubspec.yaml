@@ -40,11 +40,12 @@ dependencies:
   easy_logger: ^0.0.2
   qr_flutter: ^4.0.0
   introduction_screen: ^3.1.6
-  connectivity_wrapper: ^1.1.1
   responsive_framework: ^0.2.0
   #durt: ^0.1.6
   durt:
-    path: ../durt
+    # path: ../durt
+    git:
+      url: https://git.duniter.org/vjrj/durt.git
   flutter_neumorphic: ^3.2.0
   shared_preferences: ^2.0.18
   another_flushbar: ^1.12.29
@@ -80,6 +81,9 @@ dependencies:
   easy_debounce: ^2.0.3
   tutorial_coach_mark: ^1.2.8
   lehttp_overrides: ^1.0.2
+  feedback: ^2.6.0
+  feedback_sentry: ^2.4.0
+  feedback_gitlab: ^2.2.0
 
 dev_dependencies:
   flutter_test:

@@ -20,12 +20,9 @@ users to manage their Ğ1 currency on their mobile device using just a browser.
 * Import/export of your wallet
 * Automatic discover and selection of nodes, error recovery & retry
 * Customizable via [env file](https://git.duniter.org/vjrj/ginkgo/-/blob/master/assets/env.production.txt)
+* Inline tutorials
+* Pagination of transactions
 * Some contextual help (for example, by tapping on "Validity").
-
-## Work in progress
-
-* Connectivity detection (to retry transactions, and other net operations)
-* Search improvements
 
 ## Demo
 

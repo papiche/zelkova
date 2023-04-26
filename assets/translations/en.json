@@ -39,7 +39,6 @@
   "keys_tooltip": "Public and private keys in Ğ1 and Duniter are like a lock and key system, where the public key acts as the lock that can be opened by anyone with the corresponding private key, providing a secure way to authenticate and verify transactions",
   "card_validity": "Validity",
   "card_validity_tooltip": "Please note that this wallet is only accessible while using this specific browser or app and device. If you delete or reset the browser or app, you will lose access to this wallet and the funds stored in it.",
-  "demo_desc": "Wallet under development: please use with caution",
   "export_key": "Export your wallet",
   "import_key": "Import your wallet",
   "copy_your_key": "Copy your public key",
@@ -147,7 +146,7 @@
   "creditCardKey_web_title": "Wallet Created!",
   "creditCardKey_web_desc": "Congratulations! You have successfully created your Ğ1 wallet. It is important to note that this wallet is stored only in your browser. Therefore, if you close the browser and open it again, make sure that the same wallet appears. If not, you may be using an unsupported browser. Remember that we also have an app. Soon we will show you how to make a backup of your wallet, in case your device has any issues.",
   "creditCardPubKey_title": "Wallet Public Address",
-  "creditCardPubKey_desc": "On this screen you will find the abbreviated public address of your wallet. You can copy it by tapping on it to share it with others.",
+  "creditCardPubKey_desc": "This is the public address of your wallet (although this is the abbreviated version). You can copy it by tapping on it to share it with others.",
   "paySearchUserKey_title": "Making Payments with Ğ1",
   "paySearchUserKey_desc": "From this section you can make payments in Ğ1. You can search for users on the network or scan QR codes to make your payments.",
   "payAmountKey_title": "Enter Payment Amount",
@@ -173,5 +172,10 @@
   "infoMainKey_title": "More Information",
   "infoMainKey_desc": "Here you will find more information about your wallet and other options.",
   "exportMainKey_title": "Exporting the Wallet",
-  "exportMainKey_desc": "It is important that you make a backup of your wallet as soon as possible and keep it safe, so that you can import it into another browser or the app, or restore your wallet in case you lose your device."
+  "exportMainKey_desc": "It is important that you make a backup of your wallet as soon as possible and keep it safe, so that you can import it into another browser or the app, or restore your wallet in case you lose your device.",
+  "feedback": "¿Issues? Give us more info",
+  "feedback_submit": "SUBMIT",
+  "feedback_whats_wrong": "Describe your issue:",
+  "feedback_draw": "Draw",
+  "feedback_navigate": "Navigate"
 }

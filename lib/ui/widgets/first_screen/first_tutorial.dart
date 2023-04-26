@@ -32,11 +32,11 @@ class FirstTutorial extends Tutorial {
         keyTarget: payAmountKey,
         align: ContentAlign.top,
         shape: ShapeLightFocus.RRect));
-    targets.add(TutorialTarget(
-        identify: 'paySentKey',
-        keyTarget: paySentKey,
-        align: ContentAlign.top,
-        shape: ShapeLightFocus.RRect));
+    /*      targets.add(TutorialTarget(
+          identify: 'paySentKey',
+          keyTarget: paySentKey,
+          align: ContentAlign.top,
+          shape: ShapeLightFocus.RRect)); */
     return targets;
   }
 }

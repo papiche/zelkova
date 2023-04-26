@@ -94,7 +94,7 @@ class CreditCard extends StatelessWidget {
                               EdgeInsets.symmetric(horizontal: cardPadding),
                           child: Row(children: <Widget>[
                             GestureDetector(
-                                onTap: () => copyPublicKeyToClipboard(context),
+                                onTap: () => _showQrDialog(context),
                                 child: FittedBox(
                                     key: creditCardPubKey,
                                     fit: BoxFit.scaleDown,

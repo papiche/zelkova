@@ -1,4 +1,5 @@
-import 'package:connectivity_wrapper/connectivity_wrapper.dart';
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -93,31 +94,24 @@ class _PayFormState extends State<PayForm> {
               autofillHints: const <String>[],
             ),
             const SizedBox(height: 10.0),
-            ConnectivityWidgetWrapper(
-                stacked: false,
-                offlineWidget: ElevatedButton(
-                  onPressed: null,
-                  style: payBtnStyle,
-                  child: _buildBtn(Text(tr('offline'))),
-                ),
-                child: ElevatedButton(
-                  key: paySentKey,
-                  onPressed: (!state.canBeSent() ||
-                          state.amount == null ||
-                          !_commentValidate() ||
-                          !_weHaveBalance(context, state.amount!))
-                      ? null
-                      : () async {
-                          try {
-                            await payWithRetry(context, state, false);
-                          } on RetryException {
-                            // Here the transactions can be lost, so we must implement some manual retry use
-                            await payWithRetry(context, state, true);
-                          }
-                        },
-                  style: payBtnStyle,
-                  child: _buildBtn(payBtnText),
-                )),
+            ElevatedButton(
+              key: paySentKey,
+              onPressed: (!state.canBeSent() ||
+                      state.amount == null ||
+                      !_commentValidate() ||
+                      !_weHaveBalance(context, state.amount!))
+                  ? null
+                  : () async {
+                      try {
+                        await payWithRetry(context, state, false);
+                      } on RetryException {
+                        // Here the transactions can be lost, so we must implement some manual retry use
+                        await payWithRetry(context, state, true);
+                      }
+                    },
+              style: payBtnStyle,
+              child: _buildBtn(payBtnText),
+            ),
             const SizedBox(height: 8),
             ValueListenableBuilder<String>(
               valueListenable: _feedbackNotifier,
@@ -267,13 +261,13 @@ class NoNewLineTextInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
+    final int cursorPosition = newValue.selection.baseOffset;
     final String newText = newValue.text.replaceAll('\n', '');
+    final TextSelection newSelection =
+        TextSelection.collapsed(offset: cursorPosition);
     return TextEditingValue(
       text: newText,
-      selection: newValue.selection.copyWith(
-        baseOffset: newText.length,
-        extentOffset: newText.length,
-      ),
+      selection: newSelection,
     );
   }
 }

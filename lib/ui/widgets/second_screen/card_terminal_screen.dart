@@ -1,4 +1,3 @@
-import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -7,7 +6,6 @@ import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs.dart';
 import '../../tutorial_keys.dart';
 import '../../ui_helpers.dart';
-import 'card_terminal_status.dart';
 
 class CardTerminalScreen extends StatelessWidget {
   const CardTerminalScreen({super.key, required this.amount});
@@ -55,9 +53,11 @@ class CardTerminalScreen extends StatelessWidget {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      const ConnectivityWidgetWrapper(
-                          offlineWidget: CardTerminalStatus(online: false),
-                          child: CardTerminalStatus(online: true)),
+                      /* if (_connectionStatus ==
+                          InternetConnectionStatus.connected)
+                        const CardTerminalStatus(online: true)
+                      else
+                        const CardTerminalStatus(online: false), */
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Text(
@@ -69,10 +69,10 @@ class CardTerminalScreen extends StatelessWidget {
                             fontSize: amount.length < 5
                                 ? 28
                                 : amount.length < 10
-                                    ? 20
-                                    : amount.length < 15
-                                        ? 14
-                                        : 12,
+                                ? 20
+                                : amount.length < 15
+                                ? 14
+                                : 12,
                             shadows: <Shadow>[
                               Shadow(
                                 offset: const Offset(1, 1),
@@ -87,16 +87,16 @@ class CardTerminalScreen extends StatelessWidget {
                     ])),
             Expanded(
                 child: Column(children: <Widget>[
-              if (!amount.contains('+'))
-                Expanded(
-                    child: QrImage(
-                  data: getQrUri(
-                      pubKey: SharedPreferencesHelper().getPubKey(),
-                      locale: context.locale.toLanguageTag(),
-                      amount: amount),
-                  //   size: smallScreen(context) ? 95.0 : 140.0)
-                ))
-            ])),
+                  if (!amount.contains('+'))
+                    Expanded(
+                        child: QrImage(
+                          data: getQrUri(
+                              pubKey: SharedPreferencesHelper().getPubKey(),
+                              locale: context.locale.toLanguageTag(),
+                              amount: amount),
+                          //   size: smallScreen(context) ? 95.0 : 140.0)
+                        ))
+                ])),
             Container(
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(

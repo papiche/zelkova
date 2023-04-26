@@ -43,7 +43,7 @@ class _FirstScreenState extends State<FirstScreen> {
   Widget build(BuildContext context) => BlocBuilder<AppCubit, AppState>(
           builder: (BuildContext context, AppState state) {
         WidgetsBinding.instance.addPostFrameCallback((_) async {
-          if (!state.warningViewed) {
+          /* if (!state.warningViewed) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(tr('demo_desc')),
@@ -56,7 +56,7 @@ class _FirstScreenState extends State<FirstScreen> {
                 ),
               ),
             );
-          }
+          } */
           if (kIsWeb) {
             final Browser? browser = Browser.detectOrNull();
             if (!state.warningBrowserViewed) {

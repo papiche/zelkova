@@ -62,7 +62,9 @@ void main() async {
 
   // .env
   await dotenv.load(
-      fileName: kReleaseMode ? 'env.production.txt' : '.env.development');
+      fileName: kReleaseMode
+          ? 'assets/env.production.txt'
+          : 'assets/.env.development');
 
   final SharedPreferencesHelper shared = SharedPreferencesHelper();
   await shared.init();
@@ -97,7 +99,7 @@ void main() async {
 
   void appRunner() => runApp(
         EasyLocalization(
-          path: 'translations',
+          path: 'assets/translations',
           supportedLocales: const <Locale>[
             // Asturian is not supported in flutter
             // More info: https://docs.flutter.dev/development/accessibility-and-localization/internationalization#adding-support-for-a-new-language

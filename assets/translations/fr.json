@@ -35,7 +35,7 @@
   "online_terminal": "En ligne",
   "offline_terminal": "Hors ligne",
   "show_qr_to_client": "Montrez votre clé publique à votre client",
-  "show_qr_to_client_amount": "Affichez ce code QR avec cette quantité sur un autre portefeuille Ğ1nkgo",
+  "show_qr_to_client_amount": "Affichez ce code QR avec ce montant sur une autre appli",
   "keys_tooltip": "Les clés publiques et privées en Ğ1 et Duniter fonctionnent comme un système de verrou et de clé, où la clé publique agit comme le verrou qui peut être ouvert par n'importe qui ayant la clé privée correspondante, offrant ainsi un moyen sécurisé d'authentifier et de vérifier les transactions",
   "card_validity": "Validité",
   "card_validity_tooltip": "Veuillez noter que ce portefeuille n'est accessible que lors de l'utilisation de ce navigateur et de cet appareil spécifiques. Si vous supprimez ou réinitialisez le navigateur, vous perdrez l'accès à ce portefeuille et aux fonds qu'il contient.",
@@ -128,5 +128,15 @@
   "faq_2_desc": "Il est aussi sûr que de garder un portefeuille ou un sac à main dans sa poche. En d'autres termes, vous utilisez une carte bancaire ordinaire en la sortant de votre poche et en entrant un mot de passe à quatre chiffres. Avec ce portefeuille Ğ1, c'est à peu près la même chose. Vous sortez votre téléphone, vous le déverrouillez généralement à l'aide d'un code PIN à quatre chiffres et vous pouvez ensuite utiliser ce portefeuille. Vous devez donc être aussi prudent que vous l'êtes avec vos portefeuilles et sacs à main physiques. Si vous supprimez ce navigateur ou cette application ou si vous perdez votre appareil mobile, vous risquez de perdre vos fonds et de ne pas pouvoir les récupérer (sauf si vous disposez d'une copie de sauvegarde exportée de votre portefeuille).",
   "import_failed": "L'importation du portefeuille a échoué",
   "code_translate": "Aidez-nous à traduire Ğ1nkgo",
-  "nodes_tech_info": "Liste des nœuds"
+  "nodes_tech_info": "Liste des nœuds",
+  "enter_a_valid_number": "Saisissez un nombre valide",
+  "enter_a_positive_number": "Saisissez un nombre positif",
+  "creditCardKey_desc": "Félicitations ! Vous avez créé avec succès votre portefeuille Ğ1. Veuillez noter que tout est stocké sur cet appareil, alors assurez-vous de ne pas supprimer cette application pour éviter de perdre votre portefeuille. Nous vous montrerons bientôt comment faire une sauvegarde de votre portefeuille, au cas où votre appareil aurait des problèmes et que vous auriez besoin d'accéder à votre portefeuille.",
+  "creditCardKey_web_desc": "Félicitations ! Vous avez créé avec succès votre portefeuille Ğ1. Notez que ce portefeuille n'est stocké que dans votre navigateur. Par conséquent, si vous fermez le navigateur et l'ouvrez à nouveau, assurez-vous que le même portefeuille apparaît. Si ce n'est pas le cas, il se peut que vous utilisiez un navigateur non pris en charge. N'oubliez pas que nous disposons également d'une application. Nous vous montrerons bientôt comment faire une sauvegarde de votre portefeuille, au cas où votre appareil aurait des problèmes.",
+  "install_desktop": "Installer Ğinkgo sur votre bureau",
+  "notification_new_payment_desc": "Vous avez reçu un paiement de {amount} de la part de {from}",
+  "yes_sent": "OUI, ENVOYER",
+  "creditCardKey_title": "Portefeuille créé !",
+  "creditCardKey_web_title": "Portefeuille créé !",
+  "receive_g1": "Recevoir des Ğ1"
 }

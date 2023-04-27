@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:feedback_gitlab/feedback_gitlab.dart';
-import 'package:feedback_sentry/feedback_sentry.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -92,17 +91,16 @@ class CardDrawer extends StatelessWidget {
                   title: Text(tr('feedback')),
                   onTap: () {
                     Navigator.pop(context);
-                    final String gitLabToken = "${dotenv.env['GITLAB_TOKEN']}";
-                    if (gitLabToken.isNotEmpty) {
-                      BetterFeedback.of(context).showAndUploadToGitLab(
-                          projectId: '663',
-                          apiToken: gitLabToken,
-                          gitlabUrl: 'git.duniter.org');
-                    }
-                    BetterFeedback.of(context).showAndUploadToSentry(
+                    final String gitLabToken = dotenv.get('GITLAB_TOKEN',
+                        fallback: 'FKb9GMueV4-hyDEWjfAf');
+                    BetterFeedback.of(context).showAndUploadToGitLab(
+                        projectId: '663',
+                        apiToken: gitLabToken,
+                        gitlabUrl: 'git.duniter.org');
+                    /* BetterFeedback.of(context).showAndUploadToSentry(
                       // name: 'Foo Bar',
                       // email: 'foo_bar@example.com',
-                    );
+                    ); */
                   },
                 ),
                 AboutListTile(
@@ -111,12 +109,7 @@ class CardDrawer extends StatelessWidget {
                     applicationVersion: 'Version: ${snapshot.data!.version}',
                     applicationIcon: g1nkgoIcon,
                     applicationLegalese:
-                    '© ${DateTime
-                        .now()
-                        .year
-                        .toString() == '2023' ? '2023' : '2023-${DateTime
-                        .now()
-                        .year}'} Comunes Association, under AGPLv3',
+                        '© ${DateTime.now().year.toString() == '2023' ? '2023' : '2023-${DateTime.now().year}'} Comunes Association, under AGPLv3',
                     aboutBoxChildren: const <Widget>[
                       SizedBox(height: 10.0),
                     ]),

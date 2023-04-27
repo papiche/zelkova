@@ -117,7 +117,7 @@ String getQrUri(
   String uri;
   if (amountD > 0) {
     // there is something like this in other clients?
-    uri = 'duniter:key/$pubKey?amount=$amountD';
+    uri = 'june://$pubKey?amount=$amountD';
   } else {
     uri = pubKey;
   }
@@ -125,20 +125,36 @@ String getQrUri(
 }
 
 PaymentState? parseScannedUri(String qr) {
-  final RegExp regexKeyAmount = RegExp(r'duniter:key/(\w+)\?amount=([\d.]+)');
+  final RegExp regexKeyCommentAmount = RegExp(
+      r'(duniter\:key|june\:\/)/(\w+)\?(comment=([^&]+))&amount=([\d.]+)');
+  final RegExpMatch? matchKeyCommentAmount =
+      regexKeyCommentAmount.firstMatch(qr);
+
+  if (matchKeyCommentAmount != null) {
+    final String publicKey = matchKeyCommentAmount.group(2)!;
+    final String? comment = matchKeyCommentAmount.group(4);
+    final double amount = double.parse(matchKeyCommentAmount.group(5)!);
+    return PaymentState(
+        contact: Contact(pubKey: publicKey),
+        amount: amount,
+        comment: comment ?? '');
+  }
+
+  final RegExp regexKeyAmount =
+      RegExp(r'(duniter\:key|june\:\/)/(\w+)\?amount=([\d.]+)');
   final RegExpMatch? matchKeyAmount = regexKeyAmount.firstMatch(qr);
 
   if (matchKeyAmount != null) {
-    final String publicKey = matchKeyAmount.group(1)!;
-    final double amount = double.parse(matchKeyAmount.group(2)!);
+    final String publicKey = matchKeyAmount.group(2)!;
+    final double amount = double.parse(matchKeyAmount.group(3)!);
     return PaymentState(contact: Contact(pubKey: publicKey), amount: amount);
   }
 
   // Match no amount
-  final RegExp regexKey = RegExp(r'duniter:key/(\w+)');
+  final RegExp regexKey = RegExp(r'(duniter\:key|june\:\/)/(\w+)');
   final RegExpMatch? matchKey = regexKey.firstMatch(qr);
   if (matchKey != null) {
-    final String publicKey = matchKey.group(1)!;
+    final String publicKey = matchKey.group(2)!;
     return PaymentState(contact: Contact(pubKey: publicKey));
   }
 

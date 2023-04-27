@@ -153,6 +153,9 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
                     } else {
                       paymentCubit.selectKey(contact);
                     }
+                    if (pay.comment != null) {
+                      paymentCubit.setComment(pay.comment!);
+                    }
                   }
                   if (!mounted) {
                     return;

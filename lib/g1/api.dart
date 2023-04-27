@@ -30,7 +30,7 @@ final String currency = currencyDotEnv.isEmpty ? 'g1' : currencyDotEnv;
 
 Future<String> getTxHistory(String publicKey) async {
   final Response response =
-  await requestWithRetry(NodeType.duniter, '/tx/history/$publicKey');
+      await requestWithRetry(NodeType.duniter, '/tx/history/$publicKey');
   if (response.statusCode == 200) {
     return response.body;
   } else {
@@ -58,7 +58,7 @@ Future<Response> searchCPlusUser(String searchTerm) async {
       '/user/profile/_search?q=title:$searchTermLower OR issuer:$searchTerm OR title:$searchTermCapitalized OR title:$searchTerm';
 
   final Response response =
-  await requestCPlusWithRetry(query, retryWith404: false);
+      await requestCPlusWithRetry(query, retryWith404: false);
   return response;
 }
 
@@ -69,12 +69,12 @@ Future<Contact> getProfile(String pubKey,
         '/user/profile/$pubKey',
         retryWith404: false);
     final Map<String, dynamic> result =
-    const JsonDecoder().convert(cPlusResponse.body) as Map<String, dynamic>;
+        const JsonDecoder().convert(cPlusResponse.body) as Map<String, dynamic>;
     if (result['found'] == false) {
       return Contact(pubKey: pubKey);
     }
     final Map<String, dynamic> profile =
-    const JsonDecoder().convert(cPlusResponse.body) as Map<String, dynamic>;
+        const JsonDecoder().convert(cPlusResponse.body) as Map<String, dynamic>;
     final Contact c = contactFromResultSearch(profile);
     if (!onlyCPlusProfile) {
       // This penalize the gva rate limit
@@ -111,7 +111,7 @@ Future<List<Contact>> searchWot(String searchTerm) async {
   final List<Contact> contacts = <Contact>[];
   if (response.statusCode == HttpStatus.ok) {
     final Map<String, dynamic> data =
-    json.decode(response.body) as Map<String, dynamic>;
+        json.decode(response.body) as Map<String, dynamic>;
     final List<dynamic> results = data['results'] as List<dynamic>;
     // logger('Returning wot results ${results.length}');
     if (results.isNotEmpty) {
@@ -138,11 +138,11 @@ Future<Contact> getWot(Contact contact) async {
   // Will be better to analyze the 404 response (to detect faulty node)
   if (response.statusCode == HttpStatus.ok) {
     final Map<String, dynamic> data =
-    json.decode(response.body) as Map<String, dynamic>;
+        json.decode(response.body) as Map<String, dynamic>;
     final List<dynamic> results = data['results'] as List<dynamic>;
     if (results.isNotEmpty) {
       final List<dynamic> uids =
-      (results[0] as Map<String, dynamic>)['uids'] as List<dynamic>;
+          (results[0] as Map<String, dynamic>)['uids'] as List<dynamic>;
       if (uids.isNotEmpty) {
         // ignore: avoid_dynamic_calls
         return contact.copyWith(nick: uids[0]!['uid'] as String);
@@ -155,14 +155,14 @@ Future<Contact> getWot(Contact contact) async {
 @Deprecated('use getProfile')
 Future<String> _getDataImageFromKey(String publicKey) async {
   final Response response =
-  await requestCPlusWithRetry('/user/profile/$publicKey');
+      await requestCPlusWithRetry('/user/profile/$publicKey');
   if (response.statusCode == HttpStatus.ok) {
     final Map<String, dynamic> data =
-    json.decode(response.body) as Map<String, dynamic>;
+        json.decode(response.body) as Map<String, dynamic>;
     final Map<String, dynamic> source = data['_source'] as Map<String, dynamic>;
     if (source.containsKey('avatar')) {
       final Map<String, dynamic> avatarData =
-      source['avatar'] as Map<String, dynamic>;
+          source['avatar'] as Map<String, dynamic>;
       if (avatarData.containsKey('_content')) {
         final String content = avatarData['_content'] as String;
         return 'data:image/png;base64,$content';
@@ -257,18 +257,16 @@ Future<void> _fetchGvaNodes({bool force = false}) async {
   NodeManager().loading = false;
 }
 
-int nodesWorking(NodeType type) =>
-    NodeManager()
-        .nodeList(type)
-        .where((Node n) => n.errors < NodeManager.maxNodeErrors)
-        .toList()
-        .length;
+int nodesWorking(NodeType type) => NodeManager()
+    .nodeList(type)
+    .where((Node n) => n.errors < NodeManager.maxNodeErrors)
+    .toList()
+    .length;
 
-List<Node> nodesWorkingList(NodeType type) =>
-    NodeManager()
-        .nodeList(type)
-        .where((Node n) => n.errors < NodeManager.maxNodeErrors)
-        .toList();
+List<Node> nodesWorkingList(NodeType type) => NodeManager()
+    .nodeList(type)
+    .where((Node n) => n.errors < NodeManager.maxNodeErrors)
+    .toList();
 
 Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type) async {
   final List<Node> lNodes = <Node>[];
@@ -280,14 +278,14 @@ Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type) async {
     final Response response = await getPeers();
     if (response.statusCode == 200) {
       final Map<String, dynamic> peerList =
-      jsonDecode(response.body) as Map<String, dynamic>;
+          jsonDecode(response.body) as Map<String, dynamic>;
       final List<dynamic> peers = (peerList['peers'] as List<dynamic>)
           .where((dynamic peer) =>
-      (peer as Map<String, dynamic>)['currency'] == currency)
+              (peer as Map<String, dynamic>)['currency'] == currency)
           .where(
               (dynamic peer) => (peer as Map<String, dynamic>)['version'] == 10)
           .where((dynamic peer) =>
-      (peer as Map<String, dynamic>)['status'] == 'UP')
+              (peer as Map<String, dynamic>)['status'] == 'UP')
           .toList();
       // reorder peer list
       peers.shuffle();
@@ -295,7 +293,7 @@ Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type) async {
         final Map<String, dynamic> peer = peerR as Map<String, dynamic>;
         if (peer['endpoints'] != null) {
           final List<String> endpoints =
-          List<String>.from(peer['endpoints'] as List<dynamic>);
+              List<String>.from(peer['endpoints'] as List<dynamic>);
           for (int j = 0; j < endpoints.length; j++) {
             if (endpoints[j].startsWith(apyType)) {
               final String endpointUnParsed = endpoints[j];
@@ -307,9 +305,7 @@ Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type) async {
                   final NodeCheck nodeCheck = await _pingNode(endpoint, type);
                   final Duration latency = nodeCheck.latency;
                   logger(
-                      'Evaluating node: $endpoint, latency ${latency
-                          .inMicroseconds} currentBlock: ${nodeCheck
-                          .currentBlock}');
+                      'Evaluating node: $endpoint, latency ${latency.inMicroseconds} currentBlock: ${nodeCheck.currentBlock}');
                   final Node node = Node(
                       url: endpoint,
                       latency: latency.inMicroseconds,
@@ -333,7 +329,8 @@ Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type) async {
               }
             }
           }
-          if (lNodes.length >= NodeManager.maxNodes) {
+          if (kReleaseMode && lNodes.length >= NodeManager.maxNodes) {
+            // In production dont' get too much nodes
             logger('We have enough ${type.name} nodes for now');
             break;
           }
@@ -341,8 +338,7 @@ Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type) async {
       }
     }
     logger(
-        'Fetched ${lNodes.length} ${type.name} nodes ordered by latency ${lNodes
-            .isNotEmpty ? '(first: ${lNodes.first.url})' : '(zero nodes)'}');
+        'Fetched ${lNodes.length} ${type.name} nodes ordered by latency ${lNodes.isNotEmpty ? '(first: ${lNodes.first.url})' : '(zero nodes)'}');
   } catch (e, stacktrace) {
     await Sentry.captureException(e, stackTrace: stacktrace);
     logger('General error in fetch ${type.name} nodes: $e');
@@ -394,8 +390,7 @@ Future<List<Node>> _fetchNodes(NodeType type) async {
     }
 
     logger(
-        'Fetched ${lNodes.length} ${type
-            .name} nodes ordered by latency (first: ${lNodes.first.url})');
+        'Fetched ${lNodes.length} ${type.name} nodes ordered by latency (first: ${lNodes.first.url})');
   } catch (e, stacktrace) {
     await Sentry.captureException(e, stackTrace: stacktrace);
     logger('General error in fetch ${type.name}: $e');
@@ -412,8 +407,7 @@ Future<NodeCheck> _pingNode(String node, NodeType type) async {
   int currentBlock = 0;
   Duration latency;
   try {
-    final Stopwatch stopwatch = Stopwatch()
-      ..start();
+    final Stopwatch stopwatch = Stopwatch()..start();
     if (type == NodeType.duniter) {
       final Response response = await http
           .get(Uri.parse('$node/blockchain/current'))
@@ -422,7 +416,7 @@ Future<NodeCheck> _pingNode(String node, NodeType type) async {
       latency = stopwatch.elapsed;
       if (response.statusCode == 200) {
         final Map<String, dynamic> json =
-        jsonDecode(response.body) as Map<String, dynamic>;
+            jsonDecode(response.body) as Map<String, dynamic>;
         currentBlock = json['number'] as int;
       } else {
         latency = wrongNodeDuration;
@@ -431,7 +425,7 @@ Future<NodeCheck> _pingNode(String node, NodeType type) async {
       // see: http://g1.data.e-is.pro/network/peering
       await http
           .get(Uri.parse('$node/network/peering'))
-      // Decrease http timeout during ping
+          // Decrease http timeout during ping
           .timeout(timeout);
       stopwatch.stop();
       latency = stopwatch.elapsed;
@@ -447,8 +441,7 @@ Future<NodeCheck> _pingNode(String node, NodeType type) async {
       latency = balance >= 0 ? stopwatch.elapsed : wrongNodeDuration;
     }
     logger(
-        'Ping tested in node $node ($type), latency ${latency
-            .inMicroseconds}, current block $currentBlock');
+        'Ping tested in node $node ($type), latency ${latency.inMicroseconds}, current block $currentBlock');
     return NodeCheck(latency: latency, currentBlock: currentBlock);
   } catch (e) {
     // Handle exception when node is unavailable etc
@@ -477,8 +470,8 @@ Future<http.Response> requestGvaWithRetry(String path,
   return _requestWithRetry(NodeType.gva, path, true, retryWith404);
 }
 
-Future<http.Response> _requestWithRetry(NodeType type, String path,
-    bool dontRecord, bool retryWith404) async {
+Future<http.Response> _requestWithRetry(
+    NodeType type, String path, bool dontRecord, bool retryWith404) async {
   final List<Node> nodes = NodeManager()
       .nodeList(type)
       .where((Node node) => node.errors <= NodeManager.maxNodeErrors)
@@ -487,8 +480,8 @@ Future<http.Response> _requestWithRetry(NodeType type, String path,
     nodes.addAll(type == NodeType.duniter
         ? defaultDuniterNodes
         : type == NodeType.cesiumPlus
-        ? defaultCesiumPlusNodes
-        : defaultGvaNodes);
+            ? defaultCesiumPlusNodes
+            : defaultGvaNodes);
   }
   for (final int timeout in <int>[10]) {
     // only one timeout for now
@@ -497,14 +490,10 @@ Future<http.Response> _requestWithRetry(NodeType type, String path,
       try {
         final Uri url = Uri.parse('${node.url}$path');
         logger('Fetching $url (${type.name})');
-        final int startTime = DateTime
-            .now()
-            .millisecondsSinceEpoch;
+        final int startTime = DateTime.now().millisecondsSinceEpoch;
         final Response response =
-        await http.get(url).timeout(Duration(seconds: timeout));
-        final int endTime = DateTime
-            .now()
-            .millisecondsSinceEpoch;
+            await http.get(url).timeout(Duration(seconds: timeout));
+        final int endTime = DateTime.now().millisecondsSinceEpoch;
         final int newLatency = endTime - startTime;
         if (!kReleaseMode) {
           logger('response.statusCode: ${response.statusCode}');
@@ -549,10 +538,11 @@ Future<http.Response> _requestWithRetry(NodeType type, String path,
       'Cannot make the request to any of the ${nodes.length} nodes');
 }
 
-Future<String> pay({required String to,
-  required double amount,
-  String? comment,
-  bool? useMempool}) async {
+Future<String> pay(
+    {required String to,
+    required double amount,
+    String? comment,
+    bool? useMempool}) async {
   try {
     final SelectedGvaNode selected = getGvaNode();
 
@@ -561,8 +551,7 @@ Future<String> pay({required String to,
       final Gva gva = Gva(node: nodeUrl);
       final CesiumWallet wallet = await SharedPreferencesHelper().getWallet();
       logger(
-          'Trying $nodeUrl to send $amount to $to with comment ${comment ??
-              ''}');
+          'Trying $nodeUrl to send $amount to $to with comment ${comment ?? ''}');
 
       final String response = await gva.pay(
           recipient: to,
@@ -612,9 +601,7 @@ class SelectedGvaNode {
 
 String proxyfyNode(String nodeUrl) {
   final String url = inProduction && kIsWeb
-      ? '${window.location.protocol}//${window.location
-      .hostname}/proxy/${nodeUrl.replaceFirst('https://', '').replaceFirst(
-      'http://', '')}/'
+      ? '${window.location.protocol}//${window.location.hostname}/proxy/${nodeUrl.replaceFirst('https://', '').replaceFirst('http://', '')}/'
       : nodeUrl;
   return url;
 }
@@ -635,8 +622,8 @@ Future<Tuple2<String?, Node>> gvaNick(String pubKey) async {
       pubKey, (Gva gva) => gva.getUsername(pubKey));
 }
 
-Future<Tuple2<T?, Node>> gvaFunctionWrapper<T>(String pubKey,
-    Future<T?> Function(Gva) specificFunction) async {
+Future<Tuple2<T?, Node>> gvaFunctionWrapper<T>(
+    String pubKey, Future<T?> Function(Gva) specificFunction) async {
   final List<Node> nodes = _getBestGvaNodes();
   for (int i = 0; i < nodes.length; i++) {
     final Node node = nodes[i];
@@ -667,8 +654,8 @@ List<Node> _getBestGvaNodes() {
       .toList();
   final int maxCurrentBlock = fnodes.fold(
       0,
-          (int max, Node node) =>
-      node.currentBlock > max ? node.currentBlock : max);
+      (int max, Node node) =>
+          node.currentBlock > max ? node.currentBlock : max);
   final List<Node> nodes = fnodes
       .where((Node node) => node.currentBlock == maxCurrentBlock)
       .toList();

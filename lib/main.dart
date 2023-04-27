@@ -83,8 +83,6 @@ void main() async {
         await HydratedStorage.build(storageDirectory: tmpDir);
   }
 
-  ContactsCache().init();
-
   // Reset hive during developing
   if (!kReleaseMode) {
     // Once.clearAll();

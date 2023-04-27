@@ -15,7 +15,7 @@ void main() {
       lastChecked: DateTime(1970));
 
   setUpAll(() {
-    ContactsCache().init();
+    // ContactsCache().init();
   });
 
   test('test put', () async {

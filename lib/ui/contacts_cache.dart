@@ -22,7 +22,7 @@ class ContactsCache {
 
   Box<dynamic>? _box;
 
-  Future<void> init() async {
+  Future<void> _init() async {
     try {
       if (kIsWeb) {
         _box = await Hive.openBox(_boxName);
@@ -49,7 +49,10 @@ class ContactsCache {
 
   final String _boxName = 'contacts_cache';
 
-  Box<dynamic> _openBox() {
+  Future<Box<dynamic>> _openBox() async {
+    if (_box == null) {
+     await _init();
+    }
     return _box!;
   }
 
@@ -128,7 +131,7 @@ class ContactsCache {
   }
 
   Future<void> storeContact(Contact contact) async {
-    final Box<dynamic> box = _openBox();
+    final Box<dynamic> box = await _openBox();
     await box.put(contact.pubKey, <String, dynamic>{
       'timestamp': DateTime.now().toIso8601String(),
       'data': json.encode(contact.toJson()),
@@ -136,7 +139,7 @@ class ContactsCache {
   }
 
   Future<Contact?> _retrieveContact(String pubKey) async {
-    final Box<dynamic> box = _openBox();
+    final Box<dynamic> box = await _openBox();
     final dynamic record = box.get(pubKey);
 
     if (record != null) {

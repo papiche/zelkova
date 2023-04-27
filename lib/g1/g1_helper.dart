@@ -92,9 +92,8 @@ String? parseHost(String endpointUnParsed) {
     final String endpoint = '$protocol://$host$port$path'.trim();
     return endpoint;
   } catch (e, stacktrace) {
+    Sentry.captureMessage("Error $e trying to parse '$endpointUnParsed'");
     Sentry.captureException(e, stackTrace: stacktrace);
-    // Don't do this here or tests will fail
-    // logger('Cannot parse endpoint $endpointUnParsed');
     return null;
   }
 }

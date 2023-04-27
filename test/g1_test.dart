@@ -90,7 +90,7 @@ void main() {
         'june://$publicKey?comment=GCHANGE:AYDI9JPOVIL9ZVG-PNCU&amount=100';
     final PaymentState? payJ = parseScannedUri(uriJ);
     expect(payJ!.comment, equals('GCHANGE:AYDI9JPOVIL9ZVG-PNCU'));
-    expect(payJ!.amount, equals(100));
+    expect(payJ.amount, equals(100));
     expect(payJ.contact!.pubKey, equals(publicKey));
   });
 

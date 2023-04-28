@@ -103,7 +103,7 @@
   "faq_0_title": "Comment puis-je commencer à utiliser la Ğ1 et ce portefeuille ?",
   "faq_1_title": "Puis-je importer mon compte Cesium ?",
   "faq_3_title": "Pourquoi ne puis-je pas ajouter un mot de passe au portefeuille ?",
-  "select_file_to_import": "Sélectionner la sauvegarde du portefeuille",
+  "select_file_to_import": "Sélectionner le portefeuille sauvegardé",
   "info_links": "Liens",
   "insufficient balance": "solde insuffisant pour payer cette somme",
   "search_limitation": "Le terme de recherche doit comporter au moins 3 caractères",
@@ -138,5 +138,7 @@
   "yes_sent": "OUI, ENVOYER",
   "creditCardKey_title": "Portefeuille créé !",
   "creditCardKey_web_title": "Portefeuille créé !",
-  "receive_g1": "Recevoir des Ğ1"
+  "receive_g1": "Recevoir des Ğ1",
+  "error_installing_desktop": "Erreur d'installation de Ğ1nkgo sur votre appareil : (error: {error})",
+  "notification_new_sent_desc": "Vous avez envoyé {amount} à {to}"
 }

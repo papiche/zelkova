@@ -149,6 +149,11 @@
   "creditCardPubKey_desc": "Il s'agit de l'adresse publique de votre portefeuille (bien qu'il s'agisse de la version abrégée). Vous pouvez la copier en tapant dessus pour la partager avec d'autres personnes.",
   "paySearchUserKey_title": "Effectuer des paiements en Ğ1",
   "retry": "RESSAYEZ",
-  "paySearchUserKey_desc": "Cette section vous permet d'effectuer des paiements en Ğ1. Vous pouvez rechercher des utilisateurs sur le réseau ou scanner des QR codes pour effectuer vos paiements.",
-  "payAmountKey_desc": "Dans ce champ, vous devez indiquer le montant que vous voulez payer en Ğ1."
+  "paySearchUserKey_desc": "Cette fonction vous permet d'effectuer des paiements en Ğ1. Vous pouvez rechercher des utilisateurs sur le réseau ou scanner des QR codes pour effectuer vos paiements.",
+  "payAmountKey_desc": "Dans ce champ, vous devez indiquer le montant que vous voulez payer en Ğ1.",
+  "payAmountKey_title": "Saisir le montant du paiement",
+  "paySentKey_title": "Envoyer des Ğ1",
+  "receiveMainKey_title": "Recevoir des Ğ1",
+  "paySentKey_desc": "Une fois que vous avez indiqué le montant du paiement, il vous suffit d'appuyer sur le bouton \"Envoyer\" pour effectuer le paiement. Il est important de noter que ce portefeuille n'a pas de mot de passe, il fonctionne donc comme un portefeuille de poche pour des transactions rapides avec de petits montants.",
+  "receiveMainKey_desc": "Ce système fonctionne de la même manière que les appareils de point de vente dans les magasins, mais au lieu de payer par carte de crédit, nous utilisons des codes QR. Ici, vous pouvez générer des codes QR que d'autres personnes pourront scanner et qui vous permettront d'effectuer des paiements."
 }

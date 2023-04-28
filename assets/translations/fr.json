@@ -155,5 +155,7 @@
   "paySentKey_title": "Envoyer des Ğ1",
   "receiveMainKey_title": "Recevoir des Ğ1",
   "paySentKey_desc": "Une fois que vous avez indiqué le montant du paiement, il vous suffit d'appuyer sur le bouton \"Envoyer\" pour effectuer le paiement. Il est important de noter que ce portefeuille n'a pas de mot de passe, il fonctionne donc comme un portefeuille de poche pour des transactions rapides avec de petits montants.",
-  "receiveMainKey_desc": "Ce système fonctionne de la même manière que les appareils de point de vente dans les magasins, mais au lieu de payer par carte de crédit, nous utilisons des codes QR. Ici, vous pouvez générer des codes QR que d'autres personnes pourront scanner et qui vous permettront d'effectuer des paiements."
+  "receiveMainKey_desc": "Ce système fonctionne de la même manière que les appareils de point de vente dans les magasins, mais au lieu de payer par carte de crédit, nous utilisons des codes QR. Ici, vous pouvez générer des codes QR que d'autres personnes pourront scanner et qui vous permettront d'effectuer des paiements.",
+  "receiveAmountKey_desc": "Si vous souhaitez vendre un produit ou un service, vous pouvez générer un QR code avec votre clé publique et le montant à facturer en Ğ1.",
+  "receiveQrKey_desc": "Sur cet écran, vous trouverez votre propre QR code que vous pourrez partager avec d'autres personnes pour recevoir des paiements en Ğ1."
 }

@@ -144,8 +144,9 @@
   "notification_open": "OUVRIR",
   "error_importing_wallet": "Erreur lors de l'importation du portefeuille",
   "no_nodes_found": "Nous n'avons pu communiquer avec aucun nœud. Veuillez réessayer plus tard.",
-  "fetch_tx_error": "Un problème s'est produit lors de l'extraction de vos transactions.",
+  "fetch_tx_error": "Un problème s'est produit lors de la recherche de vos transactions.",
   "creditCardPubKey_title": "Adresse publique du portefeuille",
   "creditCardPubKey_desc": "Il s'agit de l'adresse publique de votre portefeuille (bien qu'il s'agisse de la version abrégée). Vous pouvez la copier en tapant dessus pour la partager avec d'autres personnes.",
-  "paySearchUserKey_title": "Effectuer des paiements en Ğ1"
+  "paySearchUserKey_title": "Effectuer des paiements en Ğ1",
+  "retry": "RESSAYEZ"
 }

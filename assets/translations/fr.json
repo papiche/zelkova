@@ -148,5 +148,7 @@
   "creditCardPubKey_title": "Adresse publique du portefeuille",
   "creditCardPubKey_desc": "Il s'agit de l'adresse publique de votre portefeuille (bien qu'il s'agisse de la version abrégée). Vous pouvez la copier en tapant dessus pour la partager avec d'autres personnes.",
   "paySearchUserKey_title": "Effectuer des paiements en Ğ1",
-  "retry": "RESSAYEZ"
+  "retry": "RESSAYEZ",
+  "paySearchUserKey_desc": "Cette section vous permet d'effectuer des paiements en Ğ1. Vous pouvez rechercher des utilisateurs sur le réseau ou scanner des QR codes pour effectuer vos paiements.",
+  "payAmountKey_desc": "Dans ce champ, vous devez indiquer le montant que vous voulez payer en Ğ1."
 }

@@ -152,7 +152,7 @@
   "paySearchUserKey_desc": "Desde esta sección puedes hacer pagos en Junas. Puedes buscar usuarios/as en la red o escanear códigos QR para hacer tus pagos.",
   "payAmountKey_title": "Indicar cantidad a pagar",
   "payAmountKey_desc": "En este campo deberás indicar la cantidad que deseas pagar en Junas.",
-  "paySentKey_title": "Recibiendo Junas",
+  "paySentKey_title": "Enviando Junas",
   "paySentKey_desc": "Una vez indicada la cantidad, solo necesitas presionar el botón 'Enviar' para realizar el pago. Es importante tener en cuenta que este monedero no tiene contraseña, así que es como un monedero de bolsillo para operar rápidamente con pequeñas cantidades.",
   "receiveMainKey_title": "Recibiendo Junas",
   "receiveMainKey_desc": "Esto funciona de manera similar a los datáfonos que se usan en las tiendas para cobrar, pero en lugar de pagos con tarjeta de crédito, usamos códigos QR. Aquí puedes generar códigos QR para que otras personas los escaneen y te hagan pagos.",

@@ -56,5 +56,6 @@
   "You can't send money to yourself.": "Ezin duzu zure buruari dirua bidali.",
   "request_notifications_perms": "Jaso jakinarazpenak ordainketa berriekin",
   "allow_notifications_btn": "ONARTU",
-  "deny_notifications_btn": "ERREFUSATU"
+  "deny_notifications_btn": "ERREFUSATU",
+  "app_name": "Ğinkgo"
 }

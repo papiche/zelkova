@@ -156,7 +156,7 @@
   "paySearchUserKey_desc": "Des d'aquesta secció pots fer pagaments amb Geunes. Pots buscar usuaris a la xarxa o escanejar codis QR per fer els teus pagaments.",
   "payAmountKey_title": "Posi la quantitat a pagar",
   "payAmountKey_desc": "En aquest camp hauries de posar la quantitat en Geunes que vols pagar.",
-  "paySentKey_title": "Rebent Geunes",
+  "paySentKey_title": "Enviant Geunes",
   "paySentKey_desc": "Un cop hagis posat l'import del pagament, només has de prémer el botó 'Enviar' per pagar. Tingueu present que aquest moneder no té contrasenya, o sigui que és com un moneder de butxaca per operar àgilment amb quantitats petites.",
   "receiveMainKey_title": "Rebent Geunes",
   "receiveMainKey_desc": "Això funciona de manera semblant als datàfons que s'usen per cobrar a les botigues, però en comptes de fer pagaments amb targeta de crèdit, usem codis QR. Aquí pots generar codis QR perquè altres persones els escanegin i et facin pagaments.",

@@ -140,8 +140,10 @@ to [ios/Runner/Info.plist](./ios/Runner/Info.plist) and update the following cod
 - ast: dixebral
 - ca: calbasi
 - de: FW
-- fr: vincentux, poka
+- eu: Anna Ayala Alcalá
+- fr: vincentux, poka, Hugo and Maaltir
 - gl: Vijitâtman
+- it: Anna Ayala Alcalá
 - nl: Maria Rosa Costa i Alandi
 - pt: Carlos Neto
 

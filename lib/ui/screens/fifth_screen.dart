@@ -105,6 +105,10 @@ class _FifthScreenState extends State<FifthScreen> {
                           child: Text('Español'),
                         ),
                         DropdownMenuItem<Locale>(
+                          value: Locale('eu'),
+                          child: Text('Euskara'),
+                        ),
+                        DropdownMenuItem<Locale>(
                           value: Locale('fr'),
                           child: Text('Français'),
                         ),
@@ -115,6 +119,10 @@ class _FifthScreenState extends State<FifthScreen> {
                         DropdownMenuItem<Locale>(
                           value: Locale('nl'),
                           child: Text('Nederlands'),
+                        ),
+                        DropdownMenuItem<Locale>(
+                          value: Locale('it'),
+                          child: Text('Italiano'),
                         ),
                         DropdownMenuItem<Locale>(
                           value: Locale('pt'),

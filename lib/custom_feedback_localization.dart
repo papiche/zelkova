@@ -22,14 +22,16 @@ class CustomFeedbackLocalizationsDelegate
   @override
   // ignore: overridden_fields
   final Map<Locale, FeedbackLocalizations> supportedLocales =
-      <Locale, FeedbackLocalizations>{
+  <Locale, FeedbackLocalizations>{
     const Locale('es', 'AST'): CustomFeedbackLocalizations(),
     const Locale('ca'): CustomFeedbackLocalizations(),
     const Locale('de'): CustomFeedbackLocalizations(),
     const Locale('en'): CustomFeedbackLocalizations(),
     const Locale('es'): CustomFeedbackLocalizations(),
+    const Locale('eu'): CustomFeedbackLocalizations(),
     const Locale('fr'): CustomFeedbackLocalizations(),
     const Locale('gl'): CustomFeedbackLocalizations(),
+    const Locale('it'): CustomFeedbackLocalizations(),
     const Locale('nl'): CustomFeedbackLocalizations(),
     const Locale('pt'): CustomFeedbackLocalizations(),
   };

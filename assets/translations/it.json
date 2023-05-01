@@ -1,7 +1,7 @@
 {
   "faq_1_title": "Posso importare il mio account Cesium?",
   "install_desktop": "Installa Ğ1nkgo sul desktop",
-  "notification_new_payment_desc": "Hai ricevuto un  pagamento di {amount}  da {from}",
+  "notification_new_payment_desc": "Hai ricevuto un pagamento di {amount} da {from}",
   "notification_new_sent_title": "Nuovo pagamento inviato",
   "notification_new_sent_desc": "Hai inviato un pagamento di {amount} a {to}",
   "enter_a_positive_number": "Inserisci un numero positivo",
@@ -15,7 +15,7 @@
   "enter_a_valid_number": "Inserisci un numero valido",
   "import_config_desc": "Questo sovrascriverà il tuo attuale portafoglio con quello importato",
   "import_config_desc_danger": "Questo sovrascriverà il tuo portafoglio attuale (che ha dei soldi!) con quello importato e potrebbe farti perdere quei fondi",
-  "intro_1_title": "Benvenuti sul nostro portafoglio G1",
+  "intro_1_title": "Benvenuti sul nostro portafoglio G1!",
   "payment_successful": "Pagamento inviato!",
   "payment_successful_desc": "La transazione sarà eseguita tra pochi minuti.",
   "please_confirm_sent": "Sei sicuro?",
@@ -176,5 +176,6 @@
   "receiveSumKey_desc": "Puoi anche generare un codice QR con l'importo totale di un acquisto sommando i prezzi degli articoli che stai vendendo.",
   "contactsMainKey_title": "Contatti",
   "contactsMainKey_desc": "In questa sezione puoi salvare i tuoi contatti più frequenti e scattare i codici QR di altre persone.",
-  "contactsQrKey_desc": "Qui puoi scattare i codici QR di altre persone per aggiungerli ai tuoi contatti."
+  "contactsQrKey_desc": "Qui puoi scattare i codici QR di altre persone per aggiungerli ai tuoi contatti.",
+  "txBalanceKey_desc": "In questa schermata puoi vedere il saldo attuale del tuo portafoglio Ğ1nkgo."
 }

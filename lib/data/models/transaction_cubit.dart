@@ -93,7 +93,7 @@ class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
         if (tx.type == TransactionType.sent &&
             newState.latestSentNotification.isBefore(tx.time)) {
           // Future
-          final Contact to = await ContactsCache().getContact(tx.from);
+          final Contact to = await ContactsCache().getContact(tx.to);
           NotificationController.createNewNotification(
               tx.time.millisecondsSinceEpoch.toString(),
               amount: -tx.amount / 100,

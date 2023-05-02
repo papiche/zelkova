@@ -15,6 +15,7 @@ import '../../../g1/api.dart';
 import '../../logger.dart';
 import '../../tutorial_keys.dart';
 import '../../ui_helpers.dart';
+import '../connectivity_widget_wrapper_wrapper.dart';
 import 'g1_textfield.dart';
 
 class PayForm extends StatefulWidget {
@@ -94,24 +95,31 @@ class _PayFormState extends State<PayForm> {
               autofillHints: const <String>[],
             ),
             const SizedBox(height: 10.0),
-            ElevatedButton(
-              key: paySentKey,
-              onPressed: (!state.canBeSent() ||
-                      state.amount == null ||
-                      !_commentValidate() ||
-                      !_weHaveBalance(context, state.amount!))
-                  ? null
-                  : () async {
-                      try {
-                        await payWithRetry(context, state, false);
-                      } on RetryException {
-                        // Here the transactions can be lost, so we must implement some manual retry use
-                        await payWithRetry(context, state, true);
-                      }
-                    },
-              style: payBtnStyle,
-              child: _buildBtn(payBtnText),
-            ),
+            ConnectivityWidgetWrapperWrapper(
+                stacked: false,
+                offlineWidget: ElevatedButton(
+                  onPressed: null,
+                  style: payBtnStyle,
+                  child: _buildBtn(Text(tr('offline'))),
+                ),
+                child: ElevatedButton(
+                  key: paySentKey,
+                  onPressed: (!state.canBeSent() ||
+                          state.amount == null ||
+                          !_commentValidate() ||
+                          !_weHaveBalance(context, state.amount!))
+                      ? null
+                      : () async {
+                          try {
+                            await payWithRetry(context, state, false);
+                          } on RetryException {
+                            // Here the transactions can be lost, so we must implement some manual retry use
+                            await payWithRetry(context, state, true);
+                          }
+                        },
+                  style: payBtnStyle,
+                  child: _buildBtn(payBtnText),
+                )),
             const SizedBox(height: 8),
             ValueListenableBuilder<String>(
               valueListenable: _feedbackNotifier,

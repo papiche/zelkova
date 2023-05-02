@@ -178,5 +178,7 @@
   "feedback_submit": "ENVIAR",
   "feedback_whats_wrong": "Describe tu problema:",
   "feedback_draw": "Dibuja",
-  "feedback_navigate": "Navegar"
+  "feedback_navigate": "Navegar",
+  "bug_report": "Reportar un error",
+  "slidable_tutorial": "Desliza para más acciones"
 }

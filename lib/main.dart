@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:cron/cron.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:feedback/feedback.dart';
@@ -43,6 +44,7 @@ import 'ui/logger.dart';
 import 'ui/notification_controller.dart';
 import 'ui/screens/skeleton_screen.dart';
 import 'ui/ui_helpers.dart';
+import 'ui/widgets/connectivity_widget_wrapper_wrapper.dart';
 
 void main() async {
   await NotificationController.initializeLocalNotifications();
@@ -327,56 +329,61 @@ class _GinkgoAppState extends State<GinkgoApp> {
   Widget build(BuildContext context) {
     return BlocBuilder<NodeListCubit, NodeListState>(
         builder: (BuildContext nodeContext, NodeListState state) {
-      return FilesystemPickerDefaultOptions(
-          fileTileSelectMode: FileTileSelectMode.wholeTile,
-          theme: FilesystemPickerTheme(
-            topBar: FilesystemPickerTopBarThemeData(
-              backgroundColor: Theme.of(context).colorScheme.primary,
-            ),
-          ),
-          child: BetterFeedback(
-              localizationsDelegates: context.localizationDelegates
-                ..add(CustomFeedbackLocalizationsDelegate()),
-              child: MaterialApp(
-                /// Localization is not available for the title.
-                title: 'Ğ1nkgo',
-                theme: ThemeData(
-                    useMaterial3: true, colorScheme: lightColorScheme),
-                darkTheme:
-                    ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
+      return ConnectivityAppWrapper(
+          app: FilesystemPickerDefaultOptions(
+              fileTileSelectMode: FileTileSelectMode.wholeTile,
+              theme: FilesystemPickerTheme(
+                topBar: FilesystemPickerTopBarThemeData(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              child: BetterFeedback(
+                  localizationsDelegates: context.localizationDelegates
+                    ..add(CustomFeedbackLocalizationsDelegate()),
+                  child: MaterialApp(
+                    /// Localization is not available for the title.
+                    title: 'Ğ1nkgo',
+                    theme: ThemeData(
+                        useMaterial3: true, colorScheme: lightColorScheme),
+                    darkTheme: ThemeData(
+                        useMaterial3: true, colorScheme: darkColorScheme),
 
-                navigatorKey: GinkgoApp.navigatorKey,
+                    navigatorKey: GinkgoApp.navigatorKey,
 
-                /// Theme stuff
-                themeMode: context.watch<ThemeCubit>().state.themeMode,
+                    /// Theme stuff
+                    themeMode: context.watch<ThemeCubit>().state.themeMode,
 
-                /// Localization stuff
-                localizationsDelegates: context.localizationDelegates,
-                supportedLocales: context.supportedLocales,
-                locale: context.locale,
-                debugShowCheckedModeBanner: false,
-                home: context.read<AppCubit>().isIntroViewed
-                    ? const SkeletonScreen()
-                    : const AppIntro(),
-                builder: (BuildContext buildContext, Widget? widget) {
-                  NotificationController.locale = context.locale;
-                  return ResponsiveWrapper.builder(
-                    BouncingScrollWrapper.builder(
-                      context,
-                      widget!,
-                    ),
-                    maxWidth: 480,
-                    minWidth: 480,
-                    // defaultScale: true,
-                    breakpoints: <ResponsiveBreakpoint>[
-                      const ResponsiveBreakpoint.resize(200, name: MOBILE),
-                      const ResponsiveBreakpoint.resize(480, name: TABLET),
-                      const ResponsiveBreakpoint.resize(1000, name: DESKTOP),
-                    ],
-                    background: Container(color: const Color(0xFFF5F5F5)),
-                  );
-                },
-              )));
+                    /// Localization stuff
+                    localizationsDelegates: context.localizationDelegates,
+                    supportedLocales: context.supportedLocales,
+                    locale: context.locale,
+                    debugShowCheckedModeBanner: false,
+                    home: context.read<AppCubit>().isIntroViewed
+                        ? const SkeletonScreen()
+                        : const AppIntro(),
+                    builder: (BuildContext buildContext, Widget? widget) {
+                      NotificationController.locale = context.locale;
+                      return ResponsiveWrapper.builder(
+                        BouncingScrollWrapper.builder(
+                            context,
+                            ConnectivityWidgetWrapperWrapper(
+                              message: tr('offline'),
+                              height: 20,
+                              child: widget!,
+                            )),
+                        maxWidth: 480,
+                        minWidth: 480,
+                        // defaultScale: true,
+                        breakpoints: <ResponsiveBreakpoint>[
+                          const ResponsiveBreakpoint.resize(200, name: MOBILE),
+                          const ResponsiveBreakpoint.resize(480, name: TABLET),
+                          const ResponsiveBreakpoint.resize(1000,
+                              name: DESKTOP),
+                        ],
+                        background: Container(color: const Color(0xFFF5F5F5)),
+                      );
+                    },
+                  ))));
     });
   }
 }

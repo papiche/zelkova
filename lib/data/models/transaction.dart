@@ -15,16 +15,16 @@ class Transaction extends Equatable {
     required this.amount,
     required this.comment,
     required this.time,
-    required this.fromC,
-    required this.toC,
+    required this.from,
+    required this.to,
   });
 
   factory Transaction.fromJson(Map<String, dynamic> json) =>
       _$TransactionFromJson(json);
 
   final TransactionType type;
-  final Contact fromC;
-  final Contact toC;
+  final Contact from;
+  final Contact to;
   final double amount;
   final String comment;
   final DateTime time;
@@ -38,5 +38,5 @@ class Transaction extends Equatable {
   Map<String, dynamic> toJson() => _$TransactionToJson(this);
 
   @override
-  List<Object?> get props => <dynamic>[type, fromC, toC, amount, comment, time];
+  List<Object?> get props => <dynamic>[type, from, to, amount, comment, time];
 }

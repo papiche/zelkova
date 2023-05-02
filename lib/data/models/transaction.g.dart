@@ -15,9 +15,9 @@ abstract class _$TransactionCWProxy {
 
   Transaction time(DateTime time);
 
-  Transaction fromC(Contact fromC);
+  Transaction from(Contact from);
 
-  Transaction toC(Contact toC);
+  Transaction to(Contact to);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Transaction(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -30,8 +30,8 @@ abstract class _$TransactionCWProxy {
     double? amount,
     String? comment,
     DateTime? time,
-    Contact? fromC,
-    Contact? toC,
+    Contact? from,
+    Contact? to,
   });
 }
 
@@ -54,10 +54,10 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
   Transaction time(DateTime time) => this(time: time);
 
   @override
-  Transaction fromC(Contact fromC) => this(fromC: fromC);
+  Transaction from(Contact from) => this(from: from);
 
   @override
-  Transaction toC(Contact toC) => this(toC: toC);
+  Transaction to(Contact to) => this(to: to);
 
   @override
 
@@ -72,8 +72,8 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
     Object? amount = const $CopyWithPlaceholder(),
     Object? comment = const $CopyWithPlaceholder(),
     Object? time = const $CopyWithPlaceholder(),
-    Object? fromC = const $CopyWithPlaceholder(),
-    Object? toC = const $CopyWithPlaceholder(),
+    Object? from = const $CopyWithPlaceholder(),
+    Object? to = const $CopyWithPlaceholder(),
   }) {
     return Transaction(
       type: type == const $CopyWithPlaceholder() || type == null
@@ -92,14 +92,14 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
           ? _value.time
           // ignore: cast_nullable_to_non_nullable
           : time as DateTime,
-      fromC: fromC == const $CopyWithPlaceholder() || fromC == null
-          ? _value.fromC
+      from: from == const $CopyWithPlaceholder() || from == null
+          ? _value.from
           // ignore: cast_nullable_to_non_nullable
-          : fromC as Contact,
-      toC: toC == const $CopyWithPlaceholder() || toC == null
-          ? _value.toC
+          : from as Contact,
+      to: to == const $CopyWithPlaceholder() || to == null
+          ? _value.to
           // ignore: cast_nullable_to_non_nullable
-          : toC as Contact,
+          : to as Contact,
     );
   }
 }
@@ -119,15 +119,15 @@ Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(
       amount: (json['amount'] as num).toDouble(),
       comment: json['comment'] as String,
       time: DateTime.parse(json['time'] as String),
-      fromC: Contact.fromJson(json['fromC'] as Map<String, dynamic>),
-      toC: Contact.fromJson(json['toC'] as Map<String, dynamic>),
+      from: Contact.fromJson(json['from'] as Map<String, dynamic>),
+      to: Contact.fromJson(json['to'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$TransactionToJson(Transaction instance) =>
     <String, dynamic>{
       'type': _$TransactionTypeEnumMap[instance.type]!,
-      'fromC': instance.fromC,
-      'toC': instance.toC,
+      'from': instance.from,
+      'to': instance.to,
       'amount': instance.amount,
       'comment': instance.comment,
       'time': instance.time.toIso8601String(),

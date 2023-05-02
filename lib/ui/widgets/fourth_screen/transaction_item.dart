@@ -73,9 +73,8 @@ class TransactionListItem extends StatelessWidget {
           children: <SlidableAction>[
             SlidableAction(
               onPressed: (BuildContext c) {
-                final Contact newContact = transaction.isIncoming
-                    ? transaction.fromC
-                    : transaction.toC;
+                final Contact newContact =
+                    transaction.isIncoming ? transaction.from : transaction.to;
                 contactsCubit.addContact(newContact);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
@@ -143,13 +142,12 @@ class TransactionListItem extends StatelessWidget {
                 ), */
                           WidgetSpan(
                             child: Text(
-                              tr('transaction_from_to',
-                                  namedArgs: <String, String>{
-                                    'from': humanizeContact(
-                                        myPubKey, transaction.fromC),
-                                    'to': humanizeContact(
-                                        myPubKey, transaction.toC)
-                                  }),
+                              tr('transaction_from_to', namedArgs: <String,
+                                  String>{
+                                'from':
+                                    humanizeContact(myPubKey, transaction.from),
+                                'to': humanizeContact(myPubKey, transaction.to)
+                              }),
                               style: const TextStyle(
                                 fontSize: 14.0,
                                 // fontWeight: FontWeight.bold,

@@ -25,17 +25,17 @@ import 'package:sentry_logging/sentry_logging.dart';
 
 import 'app_bloc_observer.dart';
 import 'config/theme.dart';
-import 'cubit/bottom_nav_cubit.dart';
-import 'cubit/theme_cubit.dart';
 import 'custom_feedback_localization.dart';
 import 'data/models/app_cubit.dart';
 import 'data/models/app_state.dart';
+import 'data/models/bottom_nav_cubit.dart';
 import 'data/models/contact_cubit.dart';
 import 'data/models/node_list_cubit.dart';
 import 'data/models/node_list_state.dart';
 import 'data/models/node_manager.dart';
 import 'data/models/node_type.dart';
 import 'data/models/payment_cubit.dart';
+import 'data/models/theme_cubit.dart';
 import 'data/models/transaction_cubit.dart';
 import 'g1/api.dart';
 import 'shared_prefs.dart';
@@ -316,6 +316,10 @@ class _GinkgoAppState extends State<GinkgoApp> {
     Once.runDaily('clear_errors', callback: () {
       logger('clearErrors via once');
       NodeManager().cleanErrorStats();
+    });
+    Once.runDaily('clear_cache', callback: () {
+      logger('clear cache via once');
+      ContactsCache().clear();
     });
   }
 

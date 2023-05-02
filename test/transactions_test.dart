@@ -34,13 +34,13 @@ void main() {
     expect(result.balance, equals(6700));
     final List<Transaction> txs = result.transactions;
     for (final Transaction tx in txs) {
-      expect(tx.fromC != tx.toC, equals(true));
+      expect(tx.from != tx.to, equals(true));
     }
     expect(
-        txs.first.toC.pubKey == '9Bcx5JV3swCQBEeH3PcuNcBVperLscWtN78hjFVx1yzG',
+        txs.first.to.pubKey == '9Bcx5JV3swCQBEeH3PcuNcBVperLscWtN78hjFVx1yzG',
         equals(true));
     expect(
-        txs.first.fromC.pubKey !=
+        txs.first.from.pubKey !=
             '9Bcx5JV3swCQBEeH3PcuNcBVperLscWtN78hjFVx1yzG',
         equals(true));
     expect(txs[txs.length - 2].amount < 0, equals(true));
@@ -52,29 +52,29 @@ void main() {
     final String txData = await rootBundle.loadString('assets/gva-tx.json');
     final TransactionsAndBalanceState result = await transactionsGvaParser(
         (jsonDecode(txData) as Map<String, dynamic>)['data']
-            as Map<String, dynamic>,
+        as Map<String, dynamic>,
         emptyState);
     expect(result.balance, equals(3));
     final List<Transaction> txs = result.transactions;
     for (final Transaction tx in txs) {
-      expect(tx.fromC != tx.toC, equals(true));
+      expect(tx.from != tx.to, equals(true));
     }
-    expect(txs.first.fromC.pubKey,
+    expect(txs.first.from.pubKey,
         equals('BrgsSYK3xUzDyztGBHmxq69gfNxBfe2UKpxG21oZUBr5'));
-    expect(txs.first.toC.pubKey,
+    expect(txs.first.to.pubKey,
         equals('6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH'));
     expect(txs.first.type, equals(TransactionType.receiving));
     expect(txs.first.amount, equals(100));
-    expect(txs[1].toC.pubKey,
+    expect(txs[1].to.pubKey,
         equals('EDB7chzCBdtUCnqFZquVeto4a65FjeRkPrqcV8NwVbTx'));
-    expect(txs[1].fromC.pubKey,
+    expect(txs[1].from.pubKey,
         equals('6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH'));
     expect(txs[1].amount, equals(-1200));
     expect(txs[1].type, equals(TransactionType.sent));
 
-    expect(txs.last.fromC.pubKey,
+    expect(txs.last.from.pubKey,
         equals('A1Fc1VoCLKHyPYmXimYECSmjmsceqwRSZcTBXfgG9JaB'));
-    expect(txs.last.toC.pubKey,
+    expect(txs.last.to.pubKey,
         equals('6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH'));
     expect(txs.last.type, equals(TransactionType.received));
     expect(txs.last.amount, equals(10000));
@@ -106,7 +106,7 @@ void main() {
 }''';
     final TransactionsAndBalanceState emptyResult = await transactionsGvaParser(
         (jsonDecode(emptyTx) as Map<String, dynamic>)['data']
-            as Map<String, dynamic>,
+        as Map<String, dynamic>,
         emptyState);
     expect(emptyResult.balance, equals(0));
     final List<Transaction> emptyTxs = emptyResult.transactions;

@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:web_browser_detect/web_browser_detect.dart';
 
-import '../../cubit/bottom_nav_cubit.dart';
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
+import '../../data/models/bottom_nav_cubit.dart';
 import '../../data/models/payment_cubit.dart';
 import '../../data/models/payment_state.dart';
 import '../../data/models/transaction_cubit.dart';

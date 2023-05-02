@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:backdrop/backdrop.dart';
 import 'package:easy_debounce/easy_throttle.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -10,8 +12,8 @@ import '../../../data/models/node_list_cubit.dart';
 import '../../../data/models/transaction.dart';
 import '../../../data/models/transaction_balance_state.dart';
 import '../../../data/models/transaction_cubit.dart';
+import '../../../data/models/transactions_bloc.dart';
 import '../../../shared_prefs.dart';
-import '../../logger.dart';
 import '../../tutorial_keys.dart';
 import '../../ui_helpers.dart';
 import 'transaction_chart.dart';
@@ -29,11 +31,11 @@ class _TransactionsAndBalanceWidgetState
     extends State<TransactionsAndBalanceWidget>
     with SingleTickerProviderStateMixin {
   final ScrollController _transScrollController = ScrollController();
-
+  final TransactionsBloc _bloc = TransactionsBloc();
+  late StreamSubscription<TransactionsState> _blocListingStateSubscription;
   late NodeListCubit nodeListCubit;
   late TransactionsCubit transCubit;
   bool isLoading = false;
-  static const int _pageSize = 20;
 
   final PagingController<String?, Transaction> _pagingController =
       PagingController<String?, Transaction>(firstPageKey: null);
@@ -43,13 +45,31 @@ class _TransactionsAndBalanceWidgetState
     // Remove in the future
     transCubit = context.read<TransactionsCubit>();
     nodeListCubit = context.read<NodeListCubit>();
+    _bloc.init(transCubit, nodeListCubit);
+    _pagingController.addPageRequestListener((String? cursor) {
+      _bloc.onPageRequestSink.add(cursor);
+    });
+    // We could've used StreamBuilder, but that would unnecessarily recreate
+    // the entire [PagedSliverGrid] every time the state changes.
+    // Instead, handling the subscription ourselves and updating only the
+    // _pagingController is more efficient.
+    _blocListingStateSubscription =
+        _bloc.onNewListingState.listen((TransactionsState listingState) {
+      _pagingController.value = PagingState<String?, Transaction>(
+        nextPageKey: listingState.nextPageKey,
+        error: listingState.error,
+        itemList: listingState.itemList,
+      );
+    });
+
+    /*
     _pagingController.addPageRequestListener((String? cursor) {
       EasyThrottle.throttle('my-throttler-$cursor', const Duration(seconds: 1),
           () => _fetchPage(cursor),
           onAfter:
               () {} // <-- Optional callback, called after the duration has passed
           );
-    });
+    }); */
     _pagingController.addStatusListener((PagingStatus status) {
       if (status == PagingStatus.subsequentPageError) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -67,7 +87,7 @@ class _TransactionsAndBalanceWidgetState
     super.initState();
   }
 
-  Future<void> _fetchPage(String? cursor) async {
+/*  Future<void> _fetchPage(String? cursor) async {
     logger('Fetching from transaction page with cursor $cursor');
     try {
       final List<Transaction> newItems = await transCubit.fetchTransactions(
@@ -85,12 +105,13 @@ class _TransactionsAndBalanceWidgetState
     } catch (error) {
       _pagingController.error = error;
     }
-  }
+  }*/
 
   @override
   void dispose() {
     _transScrollController.dispose();
     _pagingController.dispose();
+    _blocListingStateSubscription.cancel();
     super.dispose();
   }
 

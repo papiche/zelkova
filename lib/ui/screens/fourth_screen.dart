@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../cubit/bottom_nav_cubit.dart';
+import '../../data/models/bottom_nav_cubit.dart';
 import '../tutorial.dart';
 import '../widgets/fourth_screen/fourth_tutorial.dart';
 import '../widgets/fourth_screen/transaction_page.dart';

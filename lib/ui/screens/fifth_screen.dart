@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pwa_install/pwa_install.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../cubit/bottom_nav_cubit.dart';
-import '../../cubit/theme_cubit.dart';
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
+import '../../data/models/bottom_nav_cubit.dart';
+import '../../data/models/theme_cubit.dart';
 import '../../shared_prefs.dart';
 import '../notification_controller.dart';
 import '../tutorial.dart';

@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../cubit/bottom_nav_cubit.dart';
+import '../../data/models/bottom_nav_cubit.dart';
 import '../tutorial.dart';
 import '../widgets/card_drawer.dart';
 import '../widgets/second_screen/card_terminal.dart';

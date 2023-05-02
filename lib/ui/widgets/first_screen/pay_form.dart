@@ -62,8 +62,8 @@ class _PayFormState extends State<PayForm> {
           fontSize: 16,
         ),
       );
-      final Widget payBtnText = Text(tr('g1_form_pay_send') +
-          (!kReleaseMode ? ' ${state.amount} ${state.comment}' : ''));
+      final Widget payBtnText = Text(
+          tr('g1_form_pay_send') + (!kReleaseMode ? ' ${state.status}' : ''));
       return Form(
         key: _formKey,
         child: Column(

@@ -9,10 +9,6 @@ part of 'transaction.dart';
 abstract class _$TransactionCWProxy {
   Transaction type(TransactionType type);
 
-  Transaction from(String from);
-
-  Transaction to(String to);
-
   Transaction amount(double amount);
 
   Transaction comment(String comment);
@@ -23,14 +19,6 @@ abstract class _$TransactionCWProxy {
 
   Transaction toC(Contact toC);
 
-  Transaction toAvatar(Uint8List? toAvatar);
-
-  Transaction toNick(String? toNick);
-
-  Transaction fromAvatar(Uint8List? fromAvatar);
-
-  Transaction fromNick(String? fromNick);
-
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Transaction(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -39,17 +27,11 @@ abstract class _$TransactionCWProxy {
   /// ````
   Transaction call({
     TransactionType? type,
-    String? from,
-    String? to,
     double? amount,
     String? comment,
     DateTime? time,
     Contact? fromC,
     Contact? toC,
-    Uint8List? toAvatar,
-    String? toNick,
-    Uint8List? fromAvatar,
-    String? fromNick,
   });
 }
 
@@ -61,12 +43,6 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
 
   @override
   Transaction type(TransactionType type) => this(type: type);
-
-  @override
-  Transaction from(String from) => this(from: from);
-
-  @override
-  Transaction to(String to) => this(to: to);
 
   @override
   Transaction amount(double amount) => this(amount: amount);
@@ -84,18 +60,6 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
   Transaction toC(Contact toC) => this(toC: toC);
 
   @override
-  Transaction toAvatar(Uint8List? toAvatar) => this(toAvatar: toAvatar);
-
-  @override
-  Transaction toNick(String? toNick) => this(toNick: toNick);
-
-  @override
-  Transaction fromAvatar(Uint8List? fromAvatar) => this(fromAvatar: fromAvatar);
-
-  @override
-  Transaction fromNick(String? fromNick) => this(fromNick: fromNick);
-
-  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Transaction(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -105,31 +69,17 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
   /// ````
   Transaction call({
     Object? type = const $CopyWithPlaceholder(),
-    Object? from = const $CopyWithPlaceholder(),
-    Object? to = const $CopyWithPlaceholder(),
     Object? amount = const $CopyWithPlaceholder(),
     Object? comment = const $CopyWithPlaceholder(),
     Object? time = const $CopyWithPlaceholder(),
     Object? fromC = const $CopyWithPlaceholder(),
     Object? toC = const $CopyWithPlaceholder(),
-    Object? toAvatar = const $CopyWithPlaceholder(),
-    Object? toNick = const $CopyWithPlaceholder(),
-    Object? fromAvatar = const $CopyWithPlaceholder(),
-    Object? fromNick = const $CopyWithPlaceholder(),
   }) {
     return Transaction(
       type: type == const $CopyWithPlaceholder() || type == null
           ? _value.type
           // ignore: cast_nullable_to_non_nullable
           : type as TransactionType,
-      from: from == const $CopyWithPlaceholder() || from == null
-          ? _value.from
-          // ignore: cast_nullable_to_non_nullable
-          : from as String,
-      to: to == const $CopyWithPlaceholder() || to == null
-          ? _value.to
-          // ignore: cast_nullable_to_non_nullable
-          : to as String,
       amount: amount == const $CopyWithPlaceholder() || amount == null
           ? _value.amount
           // ignore: cast_nullable_to_non_nullable
@@ -150,22 +100,6 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
           ? _value.toC
           // ignore: cast_nullable_to_non_nullable
           : toC as Contact,
-      toAvatar: toAvatar == const $CopyWithPlaceholder()
-          ? _value.toAvatar
-          // ignore: cast_nullable_to_non_nullable
-          : toAvatar as Uint8List?,
-      toNick: toNick == const $CopyWithPlaceholder()
-          ? _value.toNick
-          // ignore: cast_nullable_to_non_nullable
-          : toNick as String?,
-      fromAvatar: fromAvatar == const $CopyWithPlaceholder()
-          ? _value.fromAvatar
-          // ignore: cast_nullable_to_non_nullable
-          : fromAvatar as Uint8List?,
-      fromNick: fromNick == const $CopyWithPlaceholder()
-          ? _value.fromNick
-          // ignore: cast_nullable_to_non_nullable
-          : fromNick as String?,
     );
   }
 }
@@ -182,33 +116,21 @@ extension $TransactionCopyWith on Transaction {
 
 Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(
       type: $enumDecode(_$TransactionTypeEnumMap, json['type']),
-      from: json['from'] as String,
-      to: json['to'] as String,
       amount: (json['amount'] as num).toDouble(),
       comment: json['comment'] as String,
       time: DateTime.parse(json['time'] as String),
       fromC: Contact.fromJson(json['fromC'] as Map<String, dynamic>),
       toC: Contact.fromJson(json['toC'] as Map<String, dynamic>),
-      toAvatar: uIntFromList(json['toAvatar']),
-      toNick: json['toNick'] as String?,
-      fromAvatar: uIntFromList(json['fromAvatar']),
-      fromNick: json['fromNick'] as String?,
     );
 
 Map<String, dynamic> _$TransactionToJson(Transaction instance) =>
     <String, dynamic>{
       'type': _$TransactionTypeEnumMap[instance.type]!,
-      'from': instance.from,
-      'to': instance.to,
       'fromC': instance.fromC,
       'toC': instance.toC,
       'amount': instance.amount,
       'comment': instance.comment,
       'time': instance.time.toIso8601String(),
-      'toAvatar': uIntToList(instance.toAvatar),
-      'toNick': instance.toNick,
-      'fromAvatar': uIntToList(instance.fromAvatar),
-      'fromNick': instance.fromNick,
     };
 
 const _$TransactionTypeEnumMap = {

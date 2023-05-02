@@ -5,7 +5,6 @@ import 'package:tuple/tuple.dart';
 import '../../../g1/api.dart';
 import '../../../g1/transaction_parser.dart';
 import '../../shared_prefs.dart';
-import '../../ui/contacts_cache.dart';
 import '../../ui/logger.dart';
 import '../../ui/notification_controller.dart';
 import 'contact.dart';
@@ -83,7 +82,7 @@ class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
         if (tx.type == TransactionType.received &&
             newState.latestReceivedNotification.isBefore(tx.time)) {
           // Future
-          final Contact from = await ContactsCache().getContact(tx.from);
+          final Contact from = tx.fromC;
           NotificationController.createNewNotification(
               tx.time.millisecondsSinceEpoch.toString(),
               amount: tx.amount / 100,
@@ -93,7 +92,7 @@ class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
         if (tx.type == TransactionType.sent &&
             newState.latestSentNotification.isBefore(tx.time)) {
           // Future
-          final Contact to = await ContactsCache().getContact(tx.to);
+          final Contact to = tx.toC;
           NotificationController.createNewNotification(
               tx.time.millisecondsSinceEpoch.toString(),
               amount: -tx.amount / 100,

@@ -48,9 +48,7 @@ Future<TransactionsAndBalanceState> transactionParser(String txData) async {
         0,
         Transaction(
             type: type,
-            from: address2,
             fromC: fromC,
-            to: address1,
             toC: toC,
             amount: pubKey == address2 ? -amount : amount,
             comment: comment,
@@ -137,9 +135,7 @@ Future<Transaction> _txGvaParse(
   final Contact toC = await ContactsCache().getContact(to!);
   return Transaction(
     type: type,
-    from: from,
     fromC: fromC,
-    to: to,
     toC: toC,
     amount: amount,
     comment: comment,

@@ -130,8 +130,8 @@ class _ContactsPageState extends State<ContactsPage> {
                           ),
                         ],
                       ),
-                      child: contactToListItem(contact, index, context,
-                          onLongPress: () {
+                      child: SlidableContactTile(contact,
+                          index: index, context: context, onLongPress: () {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {

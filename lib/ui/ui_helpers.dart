@@ -5,9 +5,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import '../data/models/app_cubit.dart';
 import '../data/models/contact.dart';
 import '../data/models/node_list_cubit.dart';
 import '../data/models/transaction_cubit.dart';
@@ -188,6 +190,80 @@ void fetchTransactions(BuildContext context) {
   final TransactionsCubit transCubit = context.read<TransactionsCubit>();
   final NodeListCubit nodeListCubit = context.read<NodeListCubit>();
   transCubit.fetchTransactions(nodeListCubit);
+}
+
+class SlidableContactTile extends StatefulWidget {
+  const SlidableContactTile(this.contact,
+      {super.key,
+      required this.index,
+      required this.context,
+      this.onTap,
+      this.onLongPress,
+      this.trailing});
+
+  @override
+  State<SlidableContactTile> createState() => _SlidableContactTile();
+
+  final Contact contact;
+  final int index;
+  final BuildContext context;
+  final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
+  final Widget? trailing;
+}
+
+class _SlidableContactTile extends State<SlidableContactTile> {
+  @override
+  void initState() {
+    super.initState();
+    _start();
+  }
+
+  // Based in https://github.com/letsar/flutter_slidable/issues/288
+  Future<void> _start() async {
+    if (widget.index == 0 &&
+        !context.read<AppCubit>().wasTutorialShown(tutorialId)) {
+      await Future<void>.delayed(const Duration(seconds: 1));
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(tr('slidable_tutorial')),
+          action: SnackBarAction(
+            label: 'OK',
+            onPressed: () {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              context.read<AppCubit>().onFinishTutorial(tutorialId);
+              // context.read<AppCubit>().warningViewed();
+            },
+          ),
+        ),
+      );
+      final SlidableController? slidable = Slidable.of(context);
+
+      slidable?.openEndActionPane(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.decelerate,
+      );
+
+      Future<void>.delayed(const Duration(seconds: 1), () {
+        slidable?.close(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.bounceInOut,
+        );
+      });
+    }
+  }
+
+  static String tutorialId = 'slidable_tutorial';
+
+  @override
+  Widget build(_) =>
+      contactToListItem(widget.contact, widget.index, widget.context,
+          onTap: widget.onTap,
+          onLongPress: widget.onLongPress,
+          trailing: widget.trailing);
 }
 
 ListTile contactToListItem(Contact contact, int index, BuildContext context,

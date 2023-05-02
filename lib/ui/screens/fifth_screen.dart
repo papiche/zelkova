@@ -203,19 +203,24 @@ class _FifthScreenState extends State<FifthScreen> {
                     if (state.expertMode)
                       const TextDivider(text: 'technical_info_title'),
                     if (state.expertMode) const NodeInfoCard(),
-                    if (state.expertMode) const TextDivider(text: 'info_links'),
+                    const TextDivider(text: 'info_links'),
                     if (state.expertMode)
                       LinkCard(
                           title: 'code_card_title',
                           icon: Icons.code_rounded,
                           url:
                               Uri.parse('https://git.duniter.org/vjrj/ginkgo')),
+                    LinkCard(
+                        title: 'code_translate',
+                        icon: Icons.translate,
+                        url: Uri.parse(
+                            'https://weblate.duniter.org/projects/g1nkgo/g1nkgo/')),
                     if (state.expertMode)
                       LinkCard(
-                          title: 'code_translate',
-                          icon: Icons.translate,
+                          title: 'bug_report',
+                          icon: Icons.bug_report,
                           url: Uri.parse(
-                              'https://weblate.duniter.org/projects/g1nkgo/g1nkgo/')),
+                              'https://git.duniter.org/vjrj/ginkgo/-/issues')),
                     const BottomWidget(),
                     SwitchListTile(
                       title: Text(tr('expert_mode')),

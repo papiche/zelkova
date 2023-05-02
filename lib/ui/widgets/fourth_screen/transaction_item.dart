@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
+import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
 import '../../../data/models/transaction.dart';
 import '../../../data/models/transaction_balance_state.dart';
 import '../../../data/models/transaction_cubit.dart';
 import '../../../data/models/transaction_type.dart';
 import '../../../shared_prefs.dart';
+import '../../contacts_cache.dart';
 import '../../ui_helpers.dart';
+import '../third_screen/contact_form.dart';
 
 class TransactionListItem extends StatelessWidget {
   const TransactionListItem({
@@ -70,13 +73,25 @@ class TransactionListItem extends StatelessWidget {
           children: <SlidableAction>[
             SlidableAction(
               onPressed: (BuildContext c) {
-                contactsCubit.addContact(transaction.isIncoming
+                final Contact newContact = transaction.isIncoming
                     ? transaction.fromC
-                    : transaction.toC);
+                    : transaction.toC;
+                contactsCubit.addContact(newContact);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(tr('contact_added')),
                   ),
+                );
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return ContactEditDialog(
+                        contact: newContact,
+                        onSave: (Contact c) {
+                          context.read<ContactsCubit>().updateContact(c);
+                          ContactsCache().saveContact(c);
+                        });
+                  },
                 );
               },
               backgroundColor: Theme.of(context).primaryColor,

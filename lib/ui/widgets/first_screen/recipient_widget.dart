@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../data/models/contact_cubit.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/payment_state.dart';
 import '../../ui_helpers.dart';
+import 'contact_fav_icon.dart';
 
 class RecipientWidget extends StatelessWidget {
   const RecipientWidget({super.key});
@@ -43,6 +45,9 @@ class RecipientWidget extends StatelessWidget {
                         ],
                       ),
                     ),
+                    ContactFavIcon(
+                        contact: state.contact!,
+                        contactsCubit: context.watch<ContactsCubit>()),
                     IconButton(
                       icon: const Icon(Icons.cancel),
                       onPressed: () {

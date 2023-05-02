@@ -19,6 +19,7 @@ import '../../ui_helpers.dart';
 import '../custom_error_widget.dart';
 import '../loading_box.dart';
 import '../third_screen/contacts_page.dart';
+import 'contact_fav_icon.dart';
 
 class PayContactSearchPage extends StatefulWidget {
   const PayContactSearchPage({super.key});
@@ -237,24 +238,8 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
       },
       trailing: BlocBuilder<ContactsCubit, ContactsState>(
           builder: (BuildContext context, ContactsState state) {
-        final ContactsCubit contactsCubit = context.read<ContactsCubit>();
-        final bool isFavorite = contactsCubit.isContact(contact.pubKey);
-        return IconButton(
-            icon: Icon(
-              isFavorite ? Icons.favorite : Icons.favorite_border,
-              color: isFavorite ? Colors.red.shade400 : null,
-            ),
-            onPressed: () {
-              // setState(() {
-              if (!isFavorite) {
-                contactsCubit.addContact(contact);
-              } else {
-                contactsCubit.removeContact(Contact(
-                  pubKey: contact.pubKey,
-                ));
-              }
-            });
-        // });
+        return ContactFavIcon(
+            contact: contact, contactsCubit: context.read<ContactsCubit>());
       }),
     );
   }

@@ -171,5 +171,11 @@
   "key_copied_to_clipboard": "Zure gako publikoa arbelean kopiatu da",
   "some_key_copied_to_clipboard": "Gako publikoa arbelean kopiatu da",
   "nothing_found": "Ez da ezer aurkitu",
-  "wrong_pattern": "Eredu okerra"
+  "wrong_pattern": "Eredu okerra",
+  "close": "ITXI",
+  "intro_5_description": "Hemendik, zure zerbitzuak eta produktuak eskain ditzakezu eta ordainketa Ğ1 monetan jaso dezakezu, baita Ğ1 moneta erabili ondasunak erosteko.",
+  "g1_wallet": "Ğ1 zorroa",
+  "bottom_nav_first": "Ordaindu",
+  "bottom_nav_second": "Jaso",
+  "bottom_nav_trd": "Kontaktuak"
 }

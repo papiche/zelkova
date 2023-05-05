@@ -75,6 +75,18 @@ void main() async {
 
   await Hive.initFlutter();
 
+  // Reset hive old keys
+  if (kIsWeb) {
+    final Box<dynamic> box = await Hive.openBox('hydrated_box',
+        path: HydratedStorage.webStorageDirectory.path);
+    final List<dynamic> keysToDelete =
+        box.keys.where((dynamic key) => '$key'.startsWith('minified')).toList();
+    box.deleteAll(keysToDelete);
+    // This should we done after init
+    // await HydratedBloc.storage.clear();
+    box.close();
+  }
+
   if (kIsWeb) {
     HydratedBloc.storage = await HydratedStorage.build(
         storageDirectory: HydratedStorage.webStorageDirectory);
@@ -83,12 +95,6 @@ void main() async {
     Hive.init(tmpDir.toString());
     HydratedBloc.storage =
         await HydratedStorage.build(storageDirectory: tmpDir);
-  }
-
-  // Reset hive during developing
-  if (!kReleaseMode) {
-    // Once.clearAll();
-    // await HydratedBloc.storage.clear();
   }
 
   PWAInstall().setup(installCallback: () {
@@ -320,6 +326,10 @@ class _GinkgoAppState extends State<GinkgoApp> {
     Once.runDaily('clear_cache', callback: () {
       logger('clear cache via once');
       ContactsCache().clear();
+    });
+    Once.runOnce('resize_avatars', callback: () {
+      logger('resize avatar via once');
+      context.read<ContactsCubit>().resizeAvatars();
     });
   }
 

@@ -75,7 +75,7 @@ Future<Contact> getProfile(String pubKey,
     }
     final Map<String, dynamic> profile =
         const JsonDecoder().convert(cPlusResponse.body) as Map<String, dynamic>;
-    final Contact c = contactFromResultSearch(profile);
+    final Contact c = await contactFromResultSearch(profile);
     if (!onlyCPlusProfile) {
       // This penalize the gva rate limit
       // final String? nick = await gvaNick(pubKey);

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:backdrop/backdrop.dart';
 import 'package:easy_debounce/easy_throttle.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -16,7 +15,6 @@ import '../../../data/models/transactions_bloc.dart';
 import '../../../shared_prefs.dart';
 import '../../tutorial_keys.dart';
 import '../../ui_helpers.dart';
-import 'transaction_chart.dart';
 import 'transaction_item.dart';
 
 class TransactionsAndBalanceWidget extends StatefulWidget {
@@ -35,7 +33,6 @@ class _TransactionsAndBalanceWidgetState
   late StreamSubscription<TransactionsState> _blocListingStateSubscription;
   late NodeListCubit nodeListCubit;
   late TransactionsCubit transCubit;
-  bool isLoading = false;
 
   final PagingController<String?, Transaction> _pagingController =
       PagingController<String?, Transaction>(firstPageKey: null);
@@ -120,7 +117,7 @@ class _TransactionsAndBalanceWidgetState
     final String myPubKey = SharedPreferencesHelper().getPubKey();
     return BlocBuilder<TransactionsCubit, TransactionsAndBalanceState>(builder:
         (BuildContext context, TransactionsAndBalanceState transBalanceState) {
-      final List<Transaction> transactions = transBalanceState.transactions;
+      // final List<Transaction> transactions = transBalanceState.transactions;
       final double balance = transBalanceState.balance;
       return BackdropScaffold(
           appBar: BackdropAppBar(
@@ -183,7 +180,7 @@ class _TransactionsAndBalanceWidgetState
                         fontWeight: FontWeight.bold),
                   )),
                 ),
-                if (!kReleaseMode) TransactionChart(transactions: transactions)
+                // if (!kReleaseMode) TransactionChart(transactions: transactions)
               ],
             )),
           )),

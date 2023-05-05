@@ -58,14 +58,14 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
     final Response cPlusResponse = await searchCPlusUser(_searchTerm);
 
     if (cPlusResponse.statusCode != 404) {
-      setState(() {
+      setState(() async {
         // Add cplus users
         final List<dynamic> hits = ((const JsonDecoder()
                 .convert(cPlusResponse.body) as Map<String, dynamic>)['hits']
             as Map<String, dynamic>)['hits'] as List<dynamic>;
         for (final dynamic hit in hits) {
           final Contact c =
-              contactFromResultSearch(hit as Map<String, dynamic>);
+              await contactFromResultSearch(hit as Map<String, dynamic>);
           logger('Contact retrieved in c+ search $c');
           ContactsCache().addContact(c);
           _addIfNotPresent(c);

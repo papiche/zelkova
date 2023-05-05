@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:clipboard/clipboard.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fast_image_resizer/fast_image_resizer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,11 +51,12 @@ void copyPublicKeyToClipboard(BuildContext context) {
 
 const Color defAvatarBgColor = Colors.grey;
 const Color defAvatarColor = Colors.white;
+const double defAvatarSize = 24;
 
 Widget avatar(Uint8List? rawAvatar,
     {Color color = defAvatarColor,
     Color bgColor = defAvatarBgColor,
-    double avatarSize = 24}) {
+    double avatarSize = defAvatarSize}) {
   return rawAvatar != null && rawAvatar.isNotEmpty
       ? CircleAvatar(
           radius: avatarSize,
@@ -153,25 +155,16 @@ double parseToDoubleLocalized(
 String localizeNumber(BuildContext context, double amount) =>
     NumberFormat.decimalPattern(context.locale.toString()).format(amount);
 
-Contact contactFromResultSearch(Map<String, dynamic> record) {
+Future<Contact> contactFromResultSearch(Map<String, dynamic> record) async {
   final Map<String, dynamic> source = record['_source'] as Map<String, dynamic>;
-  final Uint8List? avatarBase64 = _getAvatarFromResults(source);
+  final Uint8List? avatarBase64 = await _getAvatarFromResults(source);
   return Contact(
       pubKey: record['_id'] as String,
       name: source['title'] as String,
       avatar: avatarBase64);
 }
 
-/*
-Contact contactFromUserProfile(Map<String, dynamic> source) {
-  final Uint8List? avatarBase64 = _getAvatarFromResults(source);
-  return Contact(
-      pubKey: source['issuer'] as String,
-      name: source['title'] as String,
-      avatar: avatarBase64);
-} */
-
-Uint8List? _getAvatarFromResults(Map<String, dynamic> source) {
+Future<Uint8List?> _getAvatarFromResults(Map<String, dynamic> source) async {
   Uint8List? avatarBase64;
   if (source['avatar'] != null) {
     final Map<String, dynamic> avatar =
@@ -179,7 +172,18 @@ Uint8List? _getAvatarFromResults(Map<String, dynamic> source) {
     avatarBase64 = imageFromBase64String(
         'data:${avatar['_content_type']};base64,${avatar['_content']}');
   }
-  return avatarBase64;
+  if (avatarBase64 != null && avatarBase64.isNotEmpty) {
+    final Uint8List? avatarBase64resized = await resizeAvatar(avatarBase64);
+    return avatarBase64resized;
+  } else {
+    return null;
+  }
+}
+
+Future<Uint8List?> resizeAvatar(Uint8List avatarBase64) async {
+  final ByteData? bytes =
+      await resizeImage(avatarBase64, height: defAvatarSize.toInt() * 2);
+  return bytes != null ? Uint8List.view(bytes.buffer) : null;
 }
 
 final RegExp basicEnglishCharsRegExp =

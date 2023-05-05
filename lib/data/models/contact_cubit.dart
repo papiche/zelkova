@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
+import '../../ui/ui_helpers.dart';
 import 'contact.dart';
 import 'contact_state.dart';
 
@@ -39,6 +40,29 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
     emit(state.copyWith(
         contacts: contactsTruncated,
         filteredContacts: filteredContactsTruncated));
+  }
+
+  Future<List<Contact>> _resizeAvatars(List<Contact> list) async {
+    final List<Contact> newList = <Contact>[];
+    for (final Contact c in list) {
+      if (c.avatar != null) {
+        final Contact newC = c.copyWith(avatar: await resizeAvatar(c.avatar!));
+        newList.add(newC);
+      } else {
+        newList.add(c);
+      }
+    }
+    return newList;
+  }
+
+  Future<void> resizeAvatars() async {
+    final List<Contact> contactsCompressed =
+        await _resizeAvatars(state.contacts);
+    final List<Contact> filteredContactsCompressed =
+        await _resizeAvatars(state.filteredContacts);
+    emit(state.copyWith(
+        contacts: contactsCompressed,
+        filteredContacts: filteredContactsCompressed));
   }
 
   void updateContact(Contact contact) {

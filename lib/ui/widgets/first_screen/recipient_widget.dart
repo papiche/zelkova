@@ -14,7 +14,8 @@ class RecipientWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final PaymentCubit paymentCubit = BlocProvider.of<PaymentCubit>(context);
     final ContactsCubit contactsCubit = BlocProvider.of<ContactsCubit>(context);
-    return Padding(
+    return Card(
+        child: Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,6 +62,6 @@ class RecipientWidget extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ));
   }
 }

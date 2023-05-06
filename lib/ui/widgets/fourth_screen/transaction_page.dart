@@ -224,47 +224,6 @@ class _TransactionsAndBalanceWidgetState
                                   const EdgeInsets.symmetric(horizontal: 20),
                               child:
                                   Center(child: Text(tr('no_transactions'))))))
-
-                  /*
-
-          Center(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
-                    Widget>[
-              Expanded(
-                  child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
-                      child: transactions.isEmpty
-                          ? Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: Center(child: Text(tr('no_transactions'))))
-                          : RefreshIndicator(
-                              key: _refreshIndicatorKey,
-                              color: Colors.white,
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.primary,
-                              strokeWidth: 4.0,
-                              onRefresh: () async {
-                                return _refreshTransactions();
-                              },
-                              // Pull from top to show refresh indicator.
-                              child: PagedListView<String?, Transaction>(
-                                  pagingController: _pagingController,
-                                  builderDelegate:
-                                      PagedChildBuilderDelegate<Transaction>(
-                                    animateTransitions: true,
-                                    noMoreItemsIndicatorBuilder: (_) =>
-                                        const Text('No more transactions'),
-                                    itemBuilder: (BuildContext context,
-                                        Transaction tx, int index) {
-                                      return TransactionListItem(
-                                        pubKey: myPubKey,
-                                        index: index,
-                                        transaction: tx,
-                                      );
-                                    },
-                                  ))))) */
                 ]),
           ));
     });

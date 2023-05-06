@@ -60,8 +60,8 @@ class _ImportDialogState extends State<ImportDialog> {
                   ),
                   Flexible(
                     child: PatternLock(
-                      selectedColor: selectedPatternLock(context),
-                      notSelectedColor: notSelectedPatternLock(context),
+                      selectedColor: selectedPatternLock(),
+                      notSelectedColor: notSelectedPatternLock(),
                       pointRadius: 8,
                       fillPoints: true,
                       onInputComplete: (List<int> pattern) async {
@@ -118,6 +118,7 @@ class _ImportDialogState extends State<ImportDialog> {
                           }
                           Navigator.of(context).pop(true);
                         } catch (e, stacktrace) {
+                          Navigator.of(context).pop(true);
                           context.replaceSnackbar(
                             content: Text(
                               tr('wrong_pattern'),

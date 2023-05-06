@@ -351,54 +351,53 @@ class _GinkgoAppState extends State<GinkgoApp> {
                   backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
               ),
-              child: BetterFeedback(
-                  localizationsDelegates: context.localizationDelegates
-                    ..add(CustomFeedbackLocalizationsDelegate()),
-                  child: MaterialApp(
-                    /// Localization is not available for the title.
-                    title: 'Ğ1nkgo',
-                    theme: ThemeData(
-                        useMaterial3: true, colorScheme: lightColorScheme),
-                    darkTheme: ThemeData(
-                        useMaterial3: true, colorScheme: darkColorScheme),
+              child: MaterialApp(
+                /// Localization is not available for the title.
+                title: 'Ğ1nkgo',
+                theme: ThemeData(
+                    useMaterial3: true, colorScheme: lightColorScheme),
+                darkTheme:
+                    ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
 
-                    navigatorKey: GinkgoApp.navigatorKey,
-                    scaffoldMessengerKey: globalMessengerKey,
+                navigatorKey: GinkgoApp.navigatorKey,
+                scaffoldMessengerKey: globalMessengerKey,
 
-                    /// Theme stuff
-                    themeMode: context.watch<ThemeCubit>().state.themeMode,
+                /// Theme stuff
+                themeMode: context.watch<ThemeCubit>().state.themeMode,
 
-                    /// Localization stuff
-                    localizationsDelegates: context.localizationDelegates,
-                    supportedLocales: context.supportedLocales,
-                    locale: context.locale,
-                    debugShowCheckedModeBanner: false,
-                    home: context.read<AppCubit>().isIntroViewed
-                        ? const SkeletonScreen()
-                        : const AppIntro(),
-                    builder: (BuildContext buildContext, Widget? widget) {
-                      NotificationController.locale = context.locale;
-                      return ResponsiveWrapper.builder(
-                        BouncingScrollWrapper.builder(
-                            context,
-                            ConnectivityWidgetWrapperWrapper(
-                              message: tr('offline'),
-                              height: 20,
-                              child: widget!,
-                            )),
-                        maxWidth: 480,
-                        minWidth: 480,
-                        // defaultScale: true,
-                        breakpoints: <ResponsiveBreakpoint>[
-                          const ResponsiveBreakpoint.resize(200, name: MOBILE),
-                          const ResponsiveBreakpoint.resize(480, name: TABLET),
-                          const ResponsiveBreakpoint.resize(1000,
-                              name: DESKTOP),
-                        ],
-                        background: Container(color: const Color(0xFFF5F5F5)),
-                      );
-                    },
-                  ))));
+                /// Localization stuff
+                localizationsDelegates: context.localizationDelegates,
+                supportedLocales: context.supportedLocales,
+                locale: context.locale,
+                debugShowCheckedModeBanner: false,
+                home: context.read<AppCubit>().isIntroViewed
+                    ? BetterFeedback(
+                        localizationsDelegates: context.localizationDelegates
+                          ..add(CustomFeedbackLocalizationsDelegate()),
+                        child: const SkeletonScreen())
+                    : const AppIntro(),
+                builder: (BuildContext buildContext, Widget? widget) {
+                  NotificationController.locale = context.locale;
+                  return ResponsiveWrapper.builder(
+                    BouncingScrollWrapper.builder(
+                        context,
+                        ConnectivityWidgetWrapperWrapper(
+                          message: tr('offline'),
+                          height: 20,
+                          child: widget!,
+                        )),
+                    maxWidth: 480,
+                    minWidth: 480,
+                    // defaultScale: true,
+                    breakpoints: <ResponsiveBreakpoint>[
+                      const ResponsiveBreakpoint.resize(200, name: MOBILE),
+                      const ResponsiveBreakpoint.resize(480, name: TABLET),
+                      const ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+                    ],
+                    background: Container(color: const Color(0xFFF5F5F5)),
+                  );
+                },
+              )));
     });
   }
 }

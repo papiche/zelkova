@@ -49,8 +49,8 @@ class _ExportDialogState extends State<ExportDialog> {
           ),
           Flexible(
             child: PatternLock(
-              selectedColor: selectedPatternLock(context),
-              notSelectedColor: notSelectedPatternLock(context),
+              selectedColor: selectedPatternLock(),
+              notSelectedColor: notSelectedPatternLock(),
               pointRadius: 12,
               onInputComplete: (List<int> input) {
                 if (input.length < 3) {
@@ -69,7 +69,7 @@ class _ExportDialogState extends State<ExportDialog> {
                   } else {
                     context.replaceSnackbar(
                       content: Text(
-                        tr('patterns_do_not_match'),
+                        tr('pattern_do_not_match'),
                         style: const TextStyle(color: Colors.red),
                       ),
                     );

@@ -353,9 +353,9 @@ String decimalSep(BuildContext context) {
       .DECIMAL_SEP;
 }
 
-Color selectedPatternLock(BuildContext context) => Colors.red;
+Color selectedPatternLock() => Colors.red;
 
-Color notSelectedPatternLock(BuildContext context) => Colors.amber;
+Color notSelectedPatternLock() => Colors.amber;
 
 String ginkgoNetIcon =
     'https://git.duniter.org/vjrj/ginkgo/-/raw/master/web/icons/favicon-32x32.png';

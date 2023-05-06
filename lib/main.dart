@@ -363,6 +363,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
                         useMaterial3: true, colorScheme: darkColorScheme),
 
                     navigatorKey: GinkgoApp.navigatorKey,
+                    scaffoldMessengerKey: globalMessengerKey,
 
                     /// Theme stuff
                     themeMode: context.watch<ThemeCubit>().state.themeMode,

@@ -30,9 +30,9 @@ class _ImportDialogState extends State<ImportDialog> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext c) {
     return FutureBuilder<String>(
-        future: kIsWeb ? _importWalletWeb() : _importWallet(context),
+        future: kIsWeb ? _importWalletWeb(c) : _importWallet(c),
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           if (snapshot.hasData &&
               snapshot.data != null &&
@@ -42,7 +42,6 @@ class _ImportDialogState extends State<ImportDialog> {
                 jsonDecode(keyEncString) as Map<String, dynamic>;
             final String keyEncrypted = keyJson['key'] as String;
             // final Uint8List keyBase64 = base64Decode(keyEncrypted);
-
             return Scaffold(
               key: scaffoldKey,
               appBar: AppBar(
@@ -87,12 +86,23 @@ class _ImportDialogState extends State<ImportDialog> {
                               } else {
                                 importWalletToSharedPrefs(keys);
                               }
+                              if (!mounted) {
+                                return;
+                              }
+                              c.replaceSnackbar(
+                                content: Text(
+                                  tr('wallet_imported'),
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                              );
+                              // ok, fetch the transactions & balance
+                              // fetchTransactions(context);
                             } catch (e, stacktrace) {
                               logger('Error importing wallet: $e');
                               if (!mounted) {
                                 return;
                               }
-                              context.replaceSnackbar(
+                              c.replaceSnackbar(
                                 content: Text(
                                   tr('error_importing_wallet'),
                                   style: const TextStyle(color: Colors.red),
@@ -102,17 +112,6 @@ class _ImportDialogState extends State<ImportDialog> {
                                   stackTrace: stacktrace);
                               return;
                             }
-                            if (!mounted) {
-                              return;
-                            }
-                            context.replaceSnackbar(
-                              content: Text(
-                                tr('wallet_imported'),
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                            );
-                            // ok, fetch the transactions & balance
-                            fetchTransactions(context);
                           }
                           if (!mounted) {
                             return;
@@ -209,7 +208,7 @@ class _ImportDialogState extends State<ImportDialog> {
     }
   }
 
-  Future<String> _importWalletWeb() async {
+  Future<String> _importWalletWeb(BuildContext context) async {
     final Completer<String> completer = Completer<String>();
     final html.InputElement input = html.InputElement()..type = 'file';
 

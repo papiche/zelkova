@@ -1,14 +1,16 @@
 import 'dart:convert';
 
 import '../data/models/contact.dart';
+import '../data/models/pending_transaction.dart';
 import '../data/models/transaction.dart';
-import '../data/models/transaction_balance_state.dart';
+import '../data/models/transaction_state.dart';
 import '../data/models/transaction_type.dart';
 import '../ui/contacts_cache.dart';
 
 final RegExp exp = RegExp(r'\((.*?)\)');
 
-Future<TransactionsAndBalanceState> transactionParser(String txData) async {
+Future<TransactionState> transactionParser(
+    String txData, List<PendingTransaction> pendingTransactions) async {
   final Map<String, dynamic> parsedTxData =
       json.decode(txData) as Map<String, dynamic>;
   final String pubKey = parsedTxData['pubkey'] as String;
@@ -54,12 +56,15 @@ Future<TransactionsAndBalanceState> transactionParser(String txData) async {
             comment: comment,
             time: txDate));
   }
-  return TransactionsAndBalanceState(
-      transactions: tx, balance: balance, lastChecked: DateTime.now());
+  return TransactionState(
+      transactions: tx,
+      pendingTransactions: pendingTransactions,
+      balance: balance,
+      lastChecked: DateTime.now());
 }
 
-Future<TransactionsAndBalanceState> transactionsGvaParser(
-    Map<String, dynamic> txData, TransactionsAndBalanceState state) async {
+Future<TransactionState> transactionsGvaParser(
+    Map<String, dynamic> txData, TransactionState state) async {
   // Balance
   final dynamic rawBalance = txData['balance'];
   final double amount = rawBalance != null

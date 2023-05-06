@@ -2,15 +2,17 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:ginkgo/data/models/pending_transaction.dart';
 import 'package:ginkgo/data/models/transaction.dart';
-import 'package:ginkgo/data/models/transaction_balance_state.dart';
+import 'package:ginkgo/data/models/transaction_state.dart';
 import 'package:ginkgo/data/models/transaction_type.dart';
 import 'package:ginkgo/g1/transaction_parser.dart';
 import 'package:ginkgo/ui/contacts_cache.dart';
 
 void main() {
-  final TransactionsAndBalanceState emptyState = TransactionsAndBalanceState(
+  final TransactionState emptyState = TransactionState(
       transactions: const <Transaction>[],
+      pendingTransactions: const <PendingTransaction>[],
       balance: 0,
       lastChecked: DateTime(1970));
 
@@ -30,7 +32,8 @@ void main() {
   test('Test parsing', () async {
     TestWidgetsFlutterBinding.ensureInitialized();
     final String txData = await rootBundle.loadString('assets/tx.json');
-    final TransactionsAndBalanceState result = await transactionParser(txData);
+    final TransactionState result =
+        await transactionParser(txData, <PendingTransaction>[]);
     expect(result.balance, equals(6700));
     final List<Transaction> txs = result.transactions;
     for (final Transaction tx in txs) {
@@ -40,8 +43,7 @@ void main() {
         txs.first.to.pubKey == '9Bcx5JV3swCQBEeH3PcuNcBVperLscWtN78hjFVx1yzG',
         equals(true));
     expect(
-        txs.first.from.pubKey !=
-            '9Bcx5JV3swCQBEeH3PcuNcBVperLscWtN78hjFVx1yzG',
+        txs.first.from.pubKey != '9Bcx5JV3swCQBEeH3PcuNcBVperLscWtN78hjFVx1yzG',
         equals(true));
     expect(txs[txs.length - 2].amount < 0, equals(true));
     expect(txs.last.amount > 0, equals(true));
@@ -50,9 +52,9 @@ void main() {
   test('Test gva history parsing', () async {
     TestWidgetsFlutterBinding.ensureInitialized();
     final String txData = await rootBundle.loadString('assets/gva-tx.json');
-    final TransactionsAndBalanceState result = await transactionsGvaParser(
+    final TransactionState result = await transactionsGvaParser(
         (jsonDecode(txData) as Map<String, dynamic>)['data']
-        as Map<String, dynamic>,
+            as Map<String, dynamic>,
         emptyState);
     expect(result.balance, equals(3));
     final List<Transaction> txs = result.transactions;
@@ -104,9 +106,9 @@ void main() {
     }
   }
 }''';
-    final TransactionsAndBalanceState emptyResult = await transactionsGvaParser(
+    final TransactionState emptyResult = await transactionsGvaParser(
         (jsonDecode(emptyTx) as Map<String, dynamic>)['data']
-        as Map<String, dynamic>,
+            as Map<String, dynamic>,
         emptyState);
     expect(emptyResult.balance, equals(0));
     final List<Transaction> emptyTxs = emptyResult.transactions;

@@ -11,35 +11,38 @@ import 'contact.dart';
 import 'node.dart';
 import 'node_list_cubit.dart';
 import 'node_type.dart';
+import 'pending_transaction.dart';
 import 'transaction.dart';
-import 'transaction_balance_state.dart';
+import 'transaction_state.dart';
 import 'transaction_type.dart';
 
-class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
-  TransactionsCubit()
-      : super(TransactionsAndBalanceState(
-            transactions: const <Transaction>[],
-            balance: 0,
-            lastChecked: DateTime.now()));
+class TransactionCubit extends HydratedCubit<TransactionState> {
+  TransactionCubit()
+      : super(TransactionState(
+      transactions: const <Transaction>[],
+      pendingTransactions: const <PendingTransaction>[],
+      balance: 0,
+      lastChecked: DateTime.now()));
 
   @override
   String get storagePrefix =>
       kIsWeb ? 'TransactionsCubit' : super.storagePrefix;
 
-/*
-  void addTransaction(Transaction transaction) {
-    final TransactionsAndBalanceState currentState = state;
-    final List<Transaction> newTransactions =
-        List<Transaction>.of(currentState.transactions)..add(transaction);
-    final double newBalance = currentState.balance + transaction.amount;
-    emit(currentState.copyWith(
-        transactions: newTransactions, balance: newBalance));
+  void addPendingTransaction(PendingTransaction pendingTransaction) {
+    final TransactionState currentState = state;
+    final List<PendingTransaction> newPendingTransactions =
+    List<PendingTransaction>.of(currentState.pendingTransactions)
+      ..add(pendingTransaction);
+    emit(currentState.copyWith(pendingTransactions: newPendingTransactions));
   }
 
-  void updateTransactions(
-      List<Transaction> newTransactions, double newBalance) {
-    emit(state.copyWith(transactions: newTransactions, balance: newBalance));
-  }*/
+  void removePendingTransaction(PendingTransaction pendingTransaction) {
+    final TransactionState currentState = state;
+    final List<PendingTransaction> newPendingTransactions =
+    List<PendingTransaction>.of(currentState.pendingTransactions)
+      ..remove(pendingTransaction);
+    emit(currentState.copyWith(pendingTransactions: newPendingTransactions));
+  }
 
   Future<List<Transaction>> fetchTransactions(NodeListCubit cubit,
       {int retries = 5, int? pageSize, String? cursor}) async {
@@ -62,8 +65,8 @@ class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
       }
 
       final Map<String, dynamic> txData = txDataResult.item1!;
-      final TransactionsAndBalanceState newState =
-          await transactionsGvaParser(txData, state);
+      final TransactionState newState =
+      await transactionsGvaParser(txData, state);
 
       if (newState.balance < 0) {
         logger('Warning: Negative balance in node ${txDataResult.item2}');
@@ -73,9 +76,11 @@ class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
       success = true;
 
       logger(
-          'Last received notification: ${newState.latestReceivedNotification.toIso8601String()})}');
+          'Last received notification: ${newState.latestReceivedNotification
+              .toIso8601String()})}');
       logger(
-          'Last sent notification: ${newState.latestSentNotification.toIso8601String()})}');
+          'Last sent notification: ${newState.latestSentNotification
+              .toIso8601String()})}');
 
       emit(newState);
       for (final Transaction tx in newState.transactions.reversed) {
@@ -110,12 +115,11 @@ class TransactionsCubit extends HydratedCubit<TransactionsAndBalanceState> {
   }
 
   @override
-  TransactionsAndBalanceState fromJson(Map<String, dynamic> json) =>
-      TransactionsAndBalanceState.fromJson(json);
+  TransactionState fromJson(Map<String, dynamic> json) =>
+      TransactionState.fromJson(json);
 
   @override
-  Map<String, dynamic> toJson(TransactionsAndBalanceState state) =>
-      state.toJson();
+  Map<String, dynamic> toJson(TransactionState state) => state.toJson();
 
   List<Transaction> get transactions => state.transactions;
 

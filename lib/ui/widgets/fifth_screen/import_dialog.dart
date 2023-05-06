@@ -246,7 +246,7 @@ class _ImportDialogState extends State<ImportDialog> {
   }
 
   Future<bool?> confirmImport(BuildContext context) async {
-    final bool hasBalance = context.read<TransactionsCubit>().balance > 0;
+    final bool hasBalance = context.read<TransactionCubit>().balance > 0;
     return showDialog<bool>(
       context: context,
       builder: (BuildContext context) {

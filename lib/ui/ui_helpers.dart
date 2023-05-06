@@ -191,7 +191,7 @@ final RegExp basicEnglishCharsRegExp =
 // RegExp(r'^[a-zA-Z0-9-_:/;*\[\]()?!^\\+=@&~#{}|\<>%.]*$');
 
 void fetchTransactions(BuildContext context) {
-  final TransactionsCubit transCubit = context.read<TransactionsCubit>();
+  final TransactionCubit transCubit = context.read<TransactionCubit>();
   final NodeListCubit nodeListCubit = context.read<NodeListCubit>();
   transCubit.fetchTransactions(nodeListCubit);
 }

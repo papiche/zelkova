@@ -9,8 +9,8 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../../data/models/node_list_cubit.dart';
 import '../../../data/models/transaction.dart';
-import '../../../data/models/transaction_balance_state.dart';
 import '../../../data/models/transaction_cubit.dart';
+import '../../../data/models/transaction_state.dart';
 import '../../../data/models/transactions_bloc.dart';
 import '../../../shared_prefs.dart';
 import '../../tutorial_keys.dart';
@@ -32,7 +32,7 @@ class _TransactionsAndBalanceWidgetState
   final TransactionsBloc _bloc = TransactionsBloc();
   late StreamSubscription<TransactionsState> _blocListingStateSubscription;
   late NodeListCubit nodeListCubit;
-  late TransactionsCubit transCubit;
+  late TransactionCubit transCubit;
 
   final PagingController<String?, Transaction> _pagingController =
       PagingController<String?, Transaction>(firstPageKey: null);
@@ -40,7 +40,7 @@ class _TransactionsAndBalanceWidgetState
   @override
   void initState() {
     // Remove in the future
-    transCubit = context.read<TransactionsCubit>();
+    transCubit = context.read<TransactionCubit>();
     nodeListCubit = context.read<NodeListCubit>();
     _bloc.init(transCubit, nodeListCubit);
     _pagingController.addPageRequestListener((String? cursor) {
@@ -115,8 +115,8 @@ class _TransactionsAndBalanceWidgetState
   @override
   Widget build(BuildContext context) {
     final String myPubKey = SharedPreferencesHelper().getPubKey();
-    return BlocBuilder<TransactionsCubit, TransactionsAndBalanceState>(builder:
-        (BuildContext context, TransactionsAndBalanceState transBalanceState) {
+    return BlocBuilder<TransactionCubit, TransactionState>(
+        builder: (BuildContext context, TransactionState transBalanceState) {
       // final List<Transaction> transactions = transBalanceState.transactions;
       final double balance = transBalanceState.balance;
       return BackdropScaffold(

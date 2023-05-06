@@ -1,34 +1,37 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'transaction_balance_state.dart';
+part of 'transaction_state.dart';
 
 // **************************************************************************
 // CopyWithGenerator
 // **************************************************************************
 
-abstract class _$TransactionsAndBalanceStateCWProxy {
-  TransactionsAndBalanceState transactions(List<Transaction> transactions);
+abstract class _$TransactionStateCWProxy {
+  TransactionState transactions(List<Transaction> transactions);
 
-  TransactionsAndBalanceState balance(double balance);
+  TransactionState pendingTransactions(
+      List<PendingTransaction> pendingTransactions);
 
-  TransactionsAndBalanceState lastChecked(DateTime lastChecked);
+  TransactionState balance(double balance);
 
-  TransactionsAndBalanceState latestSentNotification(
-      DateTime? latestSentNotification);
+  TransactionState lastChecked(DateTime lastChecked);
 
-  TransactionsAndBalanceState latestReceivedNotification(
+  TransactionState latestSentNotification(DateTime? latestSentNotification);
+
+  TransactionState latestReceivedNotification(
       DateTime? latestReceivedNotification);
 
-  TransactionsAndBalanceState endCursor(String? endCursor);
+  TransactionState endCursor(String? endCursor);
 
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `TransactionsAndBalanceState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `TransactionState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
   /// ```dart
-  /// TransactionsAndBalanceState(...).copyWith(id: 12, name: "My name")
+  /// TransactionState(...).copyWith(id: 12, name: "My name")
   /// ````
-  TransactionsAndBalanceState call({
+  TransactionState call({
     List<Transaction>? transactions,
+    List<PendingTransaction>? pendingTransactions,
     double? balance,
     DateTime? lastChecked,
     DateTime? latestSentNotification,
@@ -37,60 +40,69 @@ abstract class _$TransactionsAndBalanceStateCWProxy {
   });
 }
 
-/// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfTransactionsAndBalanceState.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfTransactionsAndBalanceState.copyWith.fieldName(...)`
-class _$TransactionsAndBalanceStateCWProxyImpl
-    implements _$TransactionsAndBalanceStateCWProxy {
-  const _$TransactionsAndBalanceStateCWProxyImpl(this._value);
+/// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfTransactionState.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfTransactionState.copyWith.fieldName(...)`
+class _$TransactionStateCWProxyImpl implements _$TransactionStateCWProxy {
+  const _$TransactionStateCWProxyImpl(this._value);
 
-  final TransactionsAndBalanceState _value;
+  final TransactionState _value;
 
   @override
-  TransactionsAndBalanceState transactions(List<Transaction> transactions) =>
+  TransactionState transactions(List<Transaction> transactions) =>
       this(transactions: transactions);
 
   @override
-  TransactionsAndBalanceState balance(double balance) => this(balance: balance);
+  TransactionState pendingTransactions(
+          List<PendingTransaction> pendingTransactions) =>
+      this(pendingTransactions: pendingTransactions);
 
   @override
-  TransactionsAndBalanceState lastChecked(DateTime lastChecked) =>
+  TransactionState balance(double balance) => this(balance: balance);
+
+  @override
+  TransactionState lastChecked(DateTime lastChecked) =>
       this(lastChecked: lastChecked);
 
   @override
-  TransactionsAndBalanceState latestSentNotification(
-          DateTime? latestSentNotification) =>
+  TransactionState latestSentNotification(DateTime? latestSentNotification) =>
       this(latestSentNotification: latestSentNotification);
 
   @override
-  TransactionsAndBalanceState latestReceivedNotification(
+  TransactionState latestReceivedNotification(
           DateTime? latestReceivedNotification) =>
       this(latestReceivedNotification: latestReceivedNotification);
 
   @override
-  TransactionsAndBalanceState endCursor(String? endCursor) =>
-      this(endCursor: endCursor);
+  TransactionState endCursor(String? endCursor) => this(endCursor: endCursor);
 
   @override
 
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `TransactionsAndBalanceState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `TransactionState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
   /// ```dart
-  /// TransactionsAndBalanceState(...).copyWith(id: 12, name: "My name")
+  /// TransactionState(...).copyWith(id: 12, name: "My name")
   /// ````
-  TransactionsAndBalanceState call({
+  TransactionState call({
     Object? transactions = const $CopyWithPlaceholder(),
+    Object? pendingTransactions = const $CopyWithPlaceholder(),
     Object? balance = const $CopyWithPlaceholder(),
     Object? lastChecked = const $CopyWithPlaceholder(),
     Object? latestSentNotification = const $CopyWithPlaceholder(),
     Object? latestReceivedNotification = const $CopyWithPlaceholder(),
     Object? endCursor = const $CopyWithPlaceholder(),
   }) {
-    return TransactionsAndBalanceState(
+    return TransactionState(
       transactions:
           transactions == const $CopyWithPlaceholder() || transactions == null
               ? _value.transactions
               // ignore: cast_nullable_to_non_nullable
               : transactions as List<Transaction>,
+      pendingTransactions:
+          pendingTransactions == const $CopyWithPlaceholder() ||
+                  pendingTransactions == null
+              ? _value.pendingTransactions
+              // ignore: cast_nullable_to_non_nullable
+              : pendingTransactions as List<PendingTransaction>,
       balance: balance == const $CopyWithPlaceholder() || balance == null
           ? _value.balance
           // ignore: cast_nullable_to_non_nullable
@@ -118,22 +130,23 @@ class _$TransactionsAndBalanceStateCWProxyImpl
   }
 }
 
-extension $TransactionsAndBalanceStateCopyWith on TransactionsAndBalanceState {
-  /// Returns a callable class that can be used as follows: `instanceOfTransactionsAndBalanceState.copyWith(...)` or like so:`instanceOfTransactionsAndBalanceState.copyWith.fieldName(...)`.
+extension $TransactionStateCopyWith on TransactionState {
+  /// Returns a callable class that can be used as follows: `instanceOfTransactionState.copyWith(...)` or like so:`instanceOfTransactionState.copyWith.fieldName(...)`.
   // ignore: library_private_types_in_public_api
-  _$TransactionsAndBalanceStateCWProxy get copyWith =>
-      _$TransactionsAndBalanceStateCWProxyImpl(this);
+  _$TransactionStateCWProxy get copyWith => _$TransactionStateCWProxyImpl(this);
 }
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-TransactionsAndBalanceState _$TransactionsAndBalanceStateFromJson(
-        Map<String, dynamic> json) =>
-    TransactionsAndBalanceState(
+TransactionState _$TransactionStateFromJson(Map<String, dynamic> json) =>
+    TransactionState(
       transactions: (json['transactions'] as List<dynamic>)
           .map((e) => Transaction.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      pendingTransactions: (json['pendingTransactions'] as List<dynamic>)
+          .map((e) => PendingTransaction.fromJson(e as Map<String, dynamic>))
           .toList(),
       balance: (json['balance'] as num).toDouble(),
       lastChecked: DateTime.parse(json['lastChecked'] as String),
@@ -146,10 +159,10 @@ TransactionsAndBalanceState _$TransactionsAndBalanceStateFromJson(
       endCursor: json['endCursor'] as String?,
     );
 
-Map<String, dynamic> _$TransactionsAndBalanceStateToJson(
-        TransactionsAndBalanceState instance) =>
+Map<String, dynamic> _$TransactionStateToJson(TransactionState instance) =>
     <String, dynamic>{
       'transactions': instance.transactions,
+      'pendingTransactions': instance.pendingTransactions,
       'balance': instance.balance,
       'lastChecked': instance.lastChecked.toIso8601String(),
       'latestSentNotification':

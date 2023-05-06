@@ -22,14 +22,14 @@ class TransactionsBloc {
   }
 
   late NodeListCubit nodeListCubit;
-  late TransactionsCubit transCubit;
+  late TransactionCubit transCubit;
 
   static const int _pageSize = 20;
 
   final CompositeSubscription _subscriptions = CompositeSubscription();
 
   final BehaviorSubject<TransactionsState> _onNewListingStateController =
-  BehaviorSubject<TransactionsState>.seeded(
+      BehaviorSubject<TransactionsState>.seeded(
     TransactionsState(),
   );
 
@@ -41,7 +41,7 @@ class TransactionsBloc {
   Sink<String?> get onPageRequestSink => _onPageRequest.sink;
 
   final BehaviorSubject<String?> _onSearchInputChangedSubject =
-  BehaviorSubject<String?>.seeded(null);
+      BehaviorSubject<String?>.seeded(null);
 
   Sink<String?> get onSearchInputChangedSink =>
       _onSearchInputChangedSubject.sink;
@@ -53,7 +53,7 @@ class TransactionsBloc {
     yield* _fetchCharacterSummaryList(null);
   }
 
-  void init(TransactionsCubit transCubit, NodeListCubit nodeListCubit) {
+  void init(TransactionCubit transCubit, NodeListCubit nodeListCubit) {
     this.transCubit = transCubit;
     this.nodeListCubit = nodeListCubit;
   }
@@ -74,8 +74,8 @@ class TransactionsBloc {
           pageSize: _pageSize);
 
       final bool isLastPage = newItems.length < _pageSize;
-      final String? nextPageKey = isLastPage ? null : transCubit.state
-          .endCursor;
+      final String? nextPageKey =
+          isLastPage ? null : transCubit.state.endCursor;
 
       yield TransactionsState(
         // error: null,

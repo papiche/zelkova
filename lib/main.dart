@@ -136,8 +136,8 @@ void main() async {
                 create: (BuildContext context) => NodeListCubit()),
             BlocProvider<ContactsCubit>(
                 create: (BuildContext context) => ContactsCubit()),
-            BlocProvider<TransactionsCubit>(
-                create: (BuildContext context) => TransactionsCubit()),
+            BlocProvider<TransactionCubit>(
+                create: (BuildContext context) => TransactionCubit()),
             BlocProvider<ThemeCubit>(
                 create: (BuildContext context) => ThemeCubit()),
             // Add other BlocProviders here if needed

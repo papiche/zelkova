@@ -184,7 +184,7 @@ class _PayFormState extends State<PayForm> {
   }
 
   double getBalance(BuildContext context) =>
-      context.read<TransactionsCubit>().balance;
+      context.read<TransactionCubit>().balance;
 
   Future<bool?> _confirmSend(
       BuildContext context, String amount, String to) async {
@@ -234,6 +234,9 @@ class _PayFormState extends State<PayForm> {
         context.read<PaymentCubit>().sent();
         showTooltip(
             context, tr('payment_successful'), tr('payment_successful_desc'));
+        // ADD here the transaction to the pending list
+        // context.read<PaymentCubit>().addPendingTransaction(
+        //   state.amount!, contactPubKey, state.comment);
       } else {
         /* this retry didn't work
         if (!useMempool) {

@@ -33,17 +33,22 @@ class _FirstScreenState extends State<FirstScreen> {
   void initState() {
     tutorial = FirstTutorial(context);
     super.initState();
-    if (context.read<BottomNavCubit>().state == 0 &&
-        context.read<TransactionsCubit>().balance == 0) {
+    if (context
+        .read<BottomNavCubit>()
+        .state == 0 &&
+        context
+            .read<TransactionCubit>()
+            .balance == 0) {
       Future<void>.delayed(Duration.zero, () => tutorial.showTutorial());
     }
   }
 
   @override
-  Widget build(BuildContext context) => BlocBuilder<AppCubit, AppState>(
+  Widget build(BuildContext context) =>
+      BlocBuilder<AppCubit, AppState>(
           builder: (BuildContext context, AppState state) {
-        WidgetsBinding.instance.addPostFrameCallback((_) async {
-          /* if (!state.warningViewed) {
+            WidgetsBinding.instance.addPostFrameCallback((_) async {
+              /* if (!state.warningViewed) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(tr('demo_desc')),
@@ -57,69 +62,71 @@ class _FirstScreenState extends State<FirstScreen> {
               ),
             );
           } */
-          if (kIsWeb) {
-            final Browser? browser = Browser.detectOrNull();
-            if (!state.warningBrowserViewed) {
-              if (browser == null ||
-                  (browser.browserAgent != BrowserAgent.Chrome &&
-                      browser.browserAgent != BrowserAgent.Firefox)) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(tr('browser_warning')),
-                    action: SnackBarAction(
-                      label: 'OK',
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                        context.read<AppCubit>().warningBrowserViewed();
-                      },
-                    ),
-                  ),
-                );
-              }
-            }
-          }
-        });
-
-        context.read<PaymentCubit>().notSent();
-        return BlocBuilder<PaymentCubit, PaymentState>(
-            builder: (BuildContext context, PaymentState state) =>
-                Stack(children: <Widget>[
-                  Scaffold(
-                      appBar: AppBar(title: Text(tr('credit_card_title'))),
-                      drawer: const CardDrawer(),
-                      body: ListView(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          //physics: const AlwaysScrollableScrollPhysics(),
-                          //controller: _controller,
-                          // shrinkWrap: true,
-                          children: <Widget>[
-                            CreditCard(key: creditCardKey),
-                            const SizedBox(height: 8),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 24),
-                              child: Divider(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onBackground
-                                    .withOpacity(.4),
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            PayContactSearchButton(key: paySearchUserKey),
-                            const SizedBox(height: 10),
-                            const PayForm(),
-                            const BottomWidget()
-                          ])),
-                  Visibility(
-                    visible: state.status == PaymentStatus.sending,
-                    child: Container(
-                      color: Colors.black.withOpacity(0.5),
-                      child: const Center(
-                        child: CircularProgressIndicator(),
+              if (kIsWeb) {
+                final Browser? browser = Browser.detectOrNull();
+                if (!state.warningBrowserViewed) {
+                  if (browser == null ||
+                      (browser.browserAgent != BrowserAgent.Chrome &&
+                          browser.browserAgent != BrowserAgent.Firefox)) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(tr('browser_warning')),
+                        action: SnackBarAction(
+                          label: 'OK',
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                            context.read<AppCubit>().warningBrowserViewed();
+                          },
+                        ),
                       ),
-                    ),
-                  )
-                ]));
-      });
+                    );
+                  }
+                }
+              }
+            });
+
+            context.read<PaymentCubit>().notSent();
+            return BlocBuilder<PaymentCubit, PaymentState>(
+                builder: (BuildContext context, PaymentState state) =>
+                    Stack(children: <Widget>[
+                      Scaffold(
+                          appBar: AppBar(title: Text(tr('credit_card_title'))),
+                          drawer: const CardDrawer(),
+                          body: ListView(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16),
+                              //physics: const AlwaysScrollableScrollPhysics(),
+                              //controller: _controller,
+                              // shrinkWrap: true,
+                              children: <Widget>[
+                                CreditCard(key: creditCardKey),
+                                const SizedBox(height: 8),
+                                Padding(
+                                  padding:
+                                  const EdgeInsets.symmetric(horizontal: 24),
+                                  child: Divider(
+                                    color: Theme
+                                        .of(context)
+                                        .colorScheme
+                                        .onBackground
+                                        .withOpacity(.4),
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                PayContactSearchButton(key: paySearchUserKey),
+                                const SizedBox(height: 10),
+                                const PayForm(),
+                                const BottomWidget()
+                              ])),
+                      Visibility(
+                        visible: state.status == PaymentStatus.sending,
+                        child: Container(
+                          color: Colors.black.withOpacity(0.5),
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                      )
+                    ]));
+          });
 }

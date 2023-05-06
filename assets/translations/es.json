@@ -180,5 +180,8 @@
   "feedback_draw": "Dibuja",
   "feedback_navigate": "Navegar",
   "bug_report": "Reportar un error",
-  "slidable_tutorial": "Desliza para más acciones"
+  "slidable_tutorial": "Desliza para más acciones",
+  "retry_payment": "Reintentar pago",
+  "cancel_payment": "Cancelar pago",
+  "payment_canceled": "Pago cancelado aunque no podemos asegurar que no se haya hecho ejecutado ya"
 }

@@ -30,7 +30,9 @@ class Transaction extends Equatable {
   final DateTime time;
 
   bool get isOutgoing =>
-      type == TransactionType.sending || type == TransactionType.sent;
+      type == TransactionType.sending ||
+      type == TransactionType.sent ||
+      type == TransactionType.pending;
 
   bool get isIncoming =>
       type == TransactionType.receiving || type == TransactionType.received;

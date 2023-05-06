@@ -6,10 +6,6 @@ import '../../../data/models/transaction.dart';
 class TransactionChart extends StatefulWidget {
   const TransactionChart({super.key, required this.transactions});
 
-  final Color leftBarColor = Colors.yellow;
-  final Color rightBarColor = Colors.red;
-  final Color avgColor = Colors.orange;
-
   final List<Transaction> transactions;
 
   @override
@@ -18,6 +14,10 @@ class TransactionChart extends StatefulWidget {
 
 class TransactionChartState extends State<TransactionChart> {
   final double width = 7;
+
+  static const Color leftBarColor = Colors.yellow;
+  static const Color rightBarColor = Colors.red;
+  static const Color avgColor = Colors.orange;
 
   late List<BarChartGroupData> rawBarGroups;
   late List<BarChartGroupData> showingBarGroups;
@@ -72,7 +72,7 @@ class TransactionChartState extends State<TransactionChart> {
           barRods: <BarChartRodData>[
             BarChartRodData(
               toY: total,
-              color: widget.leftBarColor,
+              color: leftBarColor,
               width: width,
             ),
           ],
@@ -168,8 +168,7 @@ class TransactionChartState extends State<TransactionChart> {
                             barRods: showingBarGroups[touchedGroupIndex]
                                 .barRods
                                 .map((BarChartRodData rod) {
-                              return rod.copyWith(
-                                  toY: avg, color: widget.avgColor);
+                              return rod.copyWith(toY: avg, color: avgColor);
                             }).toList(),
                           );
                         }
@@ -278,12 +277,12 @@ class TransactionChartState extends State<TransactionChart> {
       barRods: <BarChartRodData>[
         BarChartRodData(
           toY: y1,
-          color: widget.leftBarColor,
+          color: leftBarColor,
           width: width,
         ),
         BarChartRodData(
           toY: y2,
-          color: widget.rightBarColor,
+          color: rightBarColor,
           width: width,
         ),
       ],

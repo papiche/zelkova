@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import '../data/models/contact.dart';
-import '../data/models/pending_transaction.dart';
 import '../data/models/transaction.dart';
 import '../data/models/transaction_state.dart';
 import '../data/models/transaction_type.dart';
@@ -10,7 +9,7 @@ import '../ui/contacts_cache.dart';
 final RegExp exp = RegExp(r'\((.*?)\)');
 
 Future<TransactionState> transactionParser(
-    String txData, List<PendingTransaction> pendingTransactions) async {
+    String txData, List<Transaction> pendingTransactions) async {
   final Map<String, dynamic> parsedTxData =
       json.decode(txData) as Map<String, dynamic>;
   final String pubKey = parsedTxData['pubkey'] as String;

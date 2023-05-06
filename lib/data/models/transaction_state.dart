@@ -2,7 +2,6 @@ import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'pending_transaction.dart';
 import 'transaction.dart';
 
 part 'transaction_state.g.dart';
@@ -26,7 +25,7 @@ class TransactionState extends Equatable {
       _$TransactionStateFromJson(json);
 
   final List<Transaction> transactions;
-  final List<PendingTransaction> pendingTransactions;
+  final List<Transaction> pendingTransactions;
   final double balance;
   final DateTime lastChecked;
   final DateTime latestSentNotification;

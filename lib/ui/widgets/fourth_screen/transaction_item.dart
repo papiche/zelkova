@@ -11,6 +11,7 @@ import '../../../data/models/transaction_state.dart';
 import '../../../data/models/transaction_type.dart';
 import '../../../shared_prefs.dart';
 import '../../contacts_cache.dart';
+import '../../pay_helper.dart';
 import '../../ui_helpers.dart';
 import '../third_screen/contact_form.dart';
 
@@ -39,12 +40,13 @@ class TransactionListItem extends StatelessWidget {
     IconData? icon;
     Color? iconColor;
     String statusText;
+    final bool isPending = transaction.type == TransactionType.pending;
     final String amountS =
-        '${transaction.amount < 0 ? "" : "+"}${formatKAmount(context, transaction.amount)}';
+        '${transaction.amount < 0 ? "" : "+"}${formatKAmount(context, isPending ? transaction.amount * 100 : transaction.amount)}';
     statusText = tr('transaction_${transaction.type.name}');
     switch (transaction.type) {
       case TransactionType.pending:
-        icon = Icons.timelapse;
+        icon = Icons.schedule;
         iconColor = Colors.grey;
         break;
       case TransactionType.sending:
@@ -63,40 +65,75 @@ class TransactionListItem extends StatelessWidget {
     final String myPubKey = SharedPreferencesHelper().getPubKey();
 
     final ContactsCubit contactsCubit = context.read<ContactsCubit>();
+
     return Slidable(
         // Specify a key if the Slidable is dismissible.
         key: ValueKey<int>(index),
         // The end action pane is the one at the right or the bottom side.
+        startActionPane:
+            ActionPane(motion: const ScrollMotion(), children: <SlidableAction>[
+          if (isPending)
+            SlidableAction(
+              onPressed: (BuildContext c) {
+                context
+                    .read<TransactionCubit>()
+                    .removePendingTransaction(transaction);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(tr('payment_canceled')),
+                    duration: const Duration(seconds: 3),
+                  ),
+                );
+              },
+              backgroundColor: deleteColor,
+              foregroundColor: Colors.white,
+              icon: Icons.delete,
+              label: tr('cancel_payment'),
+            ),
+        ]),
         endActionPane: ActionPane(
           motion: const ScrollMotion(),
           children: <SlidableAction>[
-            SlidableAction(
-              onPressed: (BuildContext c) {
-                final Contact newContact =
-                    transaction.isIncoming ? transaction.from : transaction.to;
-                contactsCubit.addContact(newContact);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(tr('contact_added')),
-                  ),
-                );
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return ContactEditDialog(
-                        contact: newContact,
-                        onSave: (Contact c) {
-                          context.read<ContactsCubit>().updateContact(c);
-                          ContactsCache().saveContact(c);
-                        });
-                  },
-                );
-              },
-              backgroundColor: Theme.of(context).primaryColor,
-              foregroundColor: Colors.white,
-              icon: Icons.contacts,
-              label: tr('add_contact'),
-            ),
+            if (isPending)
+              SlidableAction(
+                onPressed: (BuildContext c) async {
+                  await payWithRetry(context, transaction.to,
+                      transaction.amount, transaction.comment, false);
+                },
+                backgroundColor: Theme.of(context).primaryColorDark,
+                foregroundColor: Colors.white,
+                icon: Icons.replay,
+                label: tr('retry_payment'),
+              ),
+            if (transaction.type != TransactionType.pending)
+              SlidableAction(
+                onPressed: (BuildContext c) {
+                  final Contact newContact = transaction.isIncoming
+                      ? transaction.from
+                      : transaction.to;
+                  contactsCubit.addContact(newContact);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(tr('contact_added')),
+                    ),
+                  );
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return ContactEditDialog(
+                          contact: newContact,
+                          onSave: (Contact c) {
+                            context.read<ContactsCubit>().updateContact(c);
+                            ContactsCache().saveContact(c);
+                          });
+                    },
+                  );
+                },
+                backgroundColor: Theme.of(context).primaryColor,
+                foregroundColor: Colors.white,
+                icon: Icons.contacts,
+                label: tr('add_contact'),
+              ),
           ],
         ),
         child: ListTile(
@@ -125,20 +162,6 @@ class TransactionListItem extends StatelessWidget {
                     Text.rich(
                       TextSpan(
                         children: <InlineSpan>[
-                          /* TextSpan(
-                  text: isIncoming(transaction.type)
-                      ? 'Recibido de '
-                      : 'Pago a ',
-                  style: const TextStyle(
-                    fontSize: 14.0,
-                    // fontWeight: FontWeight.bold,
-                  ),
-                ), */
-                          /* WidgetSpan(
-                  child: avatar != null
-                      ? const SizedBox(width: 8.0)
-                      : const SizedBox.shrink(),
-                ), */
                           WidgetSpan(
                             child: Text(
                               tr('transaction_from_to', namedArgs: <String,

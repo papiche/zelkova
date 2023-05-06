@@ -81,7 +81,7 @@ class _ContactsPageState extends State<ContactsPage> {
                                   .read<ContactsCubit>()
                                   .removeContact(contact);
                             },
-                            backgroundColor: const Color(0xFFFE4A49),
+                            backgroundColor: deleteColor,
                             foregroundColor: Colors.white,
                             icon: Icons.delete,
                             label: tr('delete_contact'),

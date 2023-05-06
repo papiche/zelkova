@@ -179,5 +179,8 @@
   "feedback_draw": "Draw",
   "feedback_navigate": "Navigate",
   "bug_report": "Bug Report",
-  "slidable_tutorial": "Swipe for more actions"
+  "slidable_tutorial": "Swipe for more actions",
+  "retry_payment": "Retry Payment",
+  "cancel_payment": "Cancle Payment",
+  "payment_canceled": "Payment canceled although we cannot ensure that it has not already been executed"
 }

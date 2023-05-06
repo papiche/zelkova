@@ -9,8 +9,7 @@ part of 'transaction_state.dart';
 abstract class _$TransactionStateCWProxy {
   TransactionState transactions(List<Transaction> transactions);
 
-  TransactionState pendingTransactions(
-      List<PendingTransaction> pendingTransactions);
+  TransactionState pendingTransactions(List<Transaction> pendingTransactions);
 
   TransactionState balance(double balance);
 
@@ -31,7 +30,7 @@ abstract class _$TransactionStateCWProxy {
   /// ````
   TransactionState call({
     List<Transaction>? transactions,
-    List<PendingTransaction>? pendingTransactions,
+    List<Transaction>? pendingTransactions,
     double? balance,
     DateTime? lastChecked,
     DateTime? latestSentNotification,
@@ -51,8 +50,7 @@ class _$TransactionStateCWProxyImpl implements _$TransactionStateCWProxy {
       this(transactions: transactions);
 
   @override
-  TransactionState pendingTransactions(
-          List<PendingTransaction> pendingTransactions) =>
+  TransactionState pendingTransactions(List<Transaction> pendingTransactions) =>
       this(pendingTransactions: pendingTransactions);
 
   @override
@@ -102,7 +100,7 @@ class _$TransactionStateCWProxyImpl implements _$TransactionStateCWProxy {
                   pendingTransactions == null
               ? _value.pendingTransactions
               // ignore: cast_nullable_to_non_nullable
-              : pendingTransactions as List<PendingTransaction>,
+              : pendingTransactions as List<Transaction>,
       balance: balance == const $CopyWithPlaceholder() || balance == null
           ? _value.balance
           // ignore: cast_nullable_to_non_nullable
@@ -146,7 +144,7 @@ TransactionState _$TransactionStateFromJson(Map<String, dynamic> json) =>
           .map((e) => Transaction.fromJson(e as Map<String, dynamic>))
           .toList(),
       pendingTransactions: (json['pendingTransactions'] as List<dynamic>)
-          .map((e) => PendingTransaction.fromJson(e as Map<String, dynamic>))
+          .map((e) => Transaction.fromJson(e as Map<String, dynamic>))
           .toList(),
       balance: (json['balance'] as num).toDouble(),
       lastChecked: DateTime.parse(json['lastChecked'] as String),

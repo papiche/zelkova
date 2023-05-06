@@ -37,6 +37,11 @@ class _TransactionsAndBalanceWidgetState
   final PagingController<String?, Transaction> _pagingController =
       PagingController<String?, Transaction>(firstPageKey: null);
 
+  final PagingController<int, Transaction> _pendingController =
+      PagingController<int, Transaction>(firstPageKey: 0);
+
+  final int _pendingPageSize = 30;
+
   @override
   void initState() {
     // Remove in the future
@@ -46,6 +51,10 @@ class _TransactionsAndBalanceWidgetState
     _pagingController.addPageRequestListener((String? cursor) {
       _bloc.onPageRequestSink.add(cursor);
     });
+    _pendingController.addPageRequestListener((int cursor) {
+      _fetchPending(cursor);
+    });
+
     // We could've used StreamBuilder, but that would unnecessarily recreate
     // the entire [PagedSliverGrid] every time the state changes.
     // Instead, handling the subscription ourselves and updating only the
@@ -108,6 +117,7 @@ class _TransactionsAndBalanceWidgetState
   void dispose() {
     _transScrollController.dispose();
     _pagingController.dispose();
+    _pendingController.dispose();
     _blocListingStateSubscription.cancel();
     super.dispose();
   }
@@ -159,14 +169,9 @@ class _TransactionsAndBalanceWidgetState
               border: Border.all(
                   color: Theme.of(context).colorScheme.inversePrimary,
                   width: 3),
-              /* borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(8),
-              topRight: Radius.circular(8),
-            ), */
             ),
             child: Scrollbar(
                 child: ListView(
-              //   controller: scrollController,
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -196,14 +201,28 @@ class _TransactionsAndBalanceWidgetState
             color: Colors.white,
             backgroundColor: Theme.of(context).colorScheme.primary,
             strokeWidth: 4.0,
-            onRefresh: () => Future<void>.sync(
-              () => _pagingController.refresh(),
-            ),
+            onRefresh: () => Future<void>.sync(() {
+              _pagingController.refresh();
+              _pendingController.refresh();
+            }),
             child: CustomScrollView(
                 shrinkWrap: true,
                 // scrollDirection: Axis.vertical,
                 slivers: <Widget>[
                   // Some widget before all,
+                  PagedSliverList<int, Transaction>(
+                    shrinkWrapFirstPageIndicators: true,
+                    pagingController: _pendingController,
+                    builderDelegate: PagedChildBuilderDelegate<Transaction>(
+                        itemBuilder:
+                            (BuildContext context, Transaction tx, int index) =>
+                                TransactionListItem(
+                                  pubKey: myPubKey,
+                                  index: index,
+                                  transaction: tx,
+                                ),
+                        noItemsFoundIndicatorBuilder: (_) => Container()),
+                  ),
                   PagedSliverList<String?, Transaction>(
                       pagingController: _pagingController,
                       // separatorBuilder: (BuildContext context, int index) =>
@@ -215,7 +234,10 @@ class _TransactionsAndBalanceWidgetState
                               int index) {
                             return TransactionListItem(
                               pubKey: myPubKey,
-                              index: index,
+                              index: index +
+                                  (_pendingController.itemList != null
+                                      ? _pendingController.itemList!.length
+                                      : 0),
                               transaction: tx,
                             );
                           },
@@ -227,5 +249,25 @@ class _TransactionsAndBalanceWidgetState
                 ]),
           ));
     });
+  }
+
+  Future<void> _fetchPending(int pageKey) async {
+    try {
+      final bool shouldPaginate =
+          transCubit.state.pendingTransactions.length > _pendingPageSize;
+      final List<Transaction> newItems = shouldPaginate
+          ? transCubit.state.pendingTransactions
+              .sublist(pageKey, _pendingPageSize)
+          : transCubit.state.pendingTransactions;
+      final bool isLastPage = newItems.length < _pendingPageSize;
+      if (isLastPage) {
+        _pendingController.appendLastPage(newItems);
+      } else {
+        final int nextPageKey = pageKey + newItems.length;
+        _pendingController.appendPage(newItems, nextPageKey);
+      }
+    } catch (error) {
+      _pendingController.error = error;
+    }
   }
 }

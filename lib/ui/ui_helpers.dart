@@ -99,14 +99,7 @@ String humanizePubKey(String address) => '\u{1F511} ${simplifyPubKey(address)}';
 
 String simplifyPubKey(String address) =>
     address.length <= 8 ? 'WRONG ADDRESS' : address.substring(0, 8);
-/*
-Widget humanizePubKeyAsWidget(String pubKey) => Text(
-      humanizePubKey(pubKey),
-      style: const TextStyle(
-        fontSize: 16.0,
-      ),
-    );
-*/
+
 Color tileColor(int index, BuildContext context, [bool inverse = false]) {
   final ColorScheme colorScheme = Theme.of(context).colorScheme;
   final Color selectedColor = colorScheme.primary.withOpacity(0.1);
@@ -362,3 +355,5 @@ String ginkgoNetIcon =
 
 final GlobalKey<ScaffoldMessengerState> globalMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
+
+const Color deleteColor = Color(0xFFFE4A49);

@@ -11,7 +11,6 @@ import 'contact.dart';
 import 'node.dart';
 import 'node_list_cubit.dart';
 import 'node_type.dart';
-import 'pending_transaction.dart';
 import 'transaction.dart';
 import 'transaction_state.dart';
 import 'transaction_type.dart';
@@ -19,28 +18,28 @@ import 'transaction_type.dart';
 class TransactionCubit extends HydratedCubit<TransactionState> {
   TransactionCubit()
       : super(TransactionState(
-      transactions: const <Transaction>[],
-      pendingTransactions: const <PendingTransaction>[],
-      balance: 0,
-      lastChecked: DateTime.now()));
+            transactions: const <Transaction>[],
+            pendingTransactions: const <Transaction>[],
+            balance: 0,
+            lastChecked: DateTime.now()));
 
   @override
   String get storagePrefix =>
       kIsWeb ? 'TransactionsCubit' : super.storagePrefix;
 
-  void addPendingTransaction(PendingTransaction pendingTransaction) {
+  void addPendingTransaction(Transaction pendingTransaction) {
     final TransactionState currentState = state;
-    final List<PendingTransaction> newPendingTransactions =
-    List<PendingTransaction>.of(currentState.pendingTransactions)
-      ..add(pendingTransaction);
+    final List<Transaction> newPendingTransactions =
+        List<Transaction>.of(currentState.pendingTransactions)
+          ..add(pendingTransaction);
     emit(currentState.copyWith(pendingTransactions: newPendingTransactions));
   }
 
-  void removePendingTransaction(PendingTransaction pendingTransaction) {
+  void removePendingTransaction(Transaction pendingTransaction) {
     final TransactionState currentState = state;
-    final List<PendingTransaction> newPendingTransactions =
-    List<PendingTransaction>.of(currentState.pendingTransactions)
-      ..remove(pendingTransaction);
+    final List<Transaction> newPendingTransactions =
+        List<Transaction>.of(currentState.pendingTransactions)
+          ..remove(pendingTransaction);
     emit(currentState.copyWith(pendingTransactions: newPendingTransactions));
   }
 
@@ -66,7 +65,7 @@ class TransactionCubit extends HydratedCubit<TransactionState> {
 
       final Map<String, dynamic> txData = txDataResult.item1!;
       final TransactionState newState =
-      await transactionsGvaParser(txData, state);
+          await transactionsGvaParser(txData, state);
 
       if (newState.balance < 0) {
         logger('Warning: Negative balance in node ${txDataResult.item2}');
@@ -76,11 +75,9 @@ class TransactionCubit extends HydratedCubit<TransactionState> {
       success = true;
 
       logger(
-          'Last received notification: ${newState.latestReceivedNotification
-              .toIso8601String()})}');
+          'Last received notification: ${newState.latestReceivedNotification.toIso8601String()})}');
       logger(
-          'Last sent notification: ${newState.latestSentNotification
-              .toIso8601String()})}');
+          'Last sent notification: ${newState.latestSentNotification.toIso8601String()})}');
 
       emit(newState);
       for (final Transaction tx in newState.transactions.reversed) {

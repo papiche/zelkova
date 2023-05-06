@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ginkgo/data/models/pending_transaction.dart';
 import 'package:ginkgo/data/models/transaction.dart';
 import 'package:ginkgo/data/models/transaction_state.dart';
 import 'package:ginkgo/data/models/transaction_type.dart';
@@ -12,7 +11,7 @@ import 'package:ginkgo/ui/contacts_cache.dart';
 void main() {
   final TransactionState emptyState = TransactionState(
       transactions: const <Transaction>[],
-      pendingTransactions: const <PendingTransaction>[],
+      pendingTransactions: const <Transaction>[],
       balance: 0,
       lastChecked: DateTime(1970));
 
@@ -33,7 +32,7 @@ void main() {
     TestWidgetsFlutterBinding.ensureInitialized();
     final String txData = await rootBundle.loadString('assets/tx.json');
     final TransactionState result =
-        await transactionParser(txData, <PendingTransaction>[]);
+        await transactionParser(txData, <Transaction>[]);
     expect(result.balance, equals(6700));
     final List<Transaction> txs = result.transactions;
     for (final Transaction tx in txs) {

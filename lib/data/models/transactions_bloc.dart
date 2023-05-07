@@ -11,7 +11,7 @@ part 'transactions_state.dart';
 class TransactionsBloc {
   TransactionsBloc() {
     _onPageRequest.stream
-        .flatMap(_fetchCharacterSummaryList)
+        .flatMap(_fetchTransactionsList)
         .listen(_onNewListingStateController.add)
         .addTo(_subscriptions);
 
@@ -50,7 +50,7 @@ class TransactionsBloc {
 
   Stream<TransactionsState> _resetSearch() async* {
     yield TransactionsState();
-    yield* _fetchCharacterSummaryList(null);
+    yield* _fetchTransactionsList(null);
   }
 
   void init(TransactionCubit transCubit, NodeListCubit nodeListCubit) {
@@ -58,7 +58,7 @@ class TransactionsBloc {
     this.nodeListCubit = nodeListCubit;
   }
 
-  Stream<TransactionsState> _fetchCharacterSummaryList(String? pageKey) async* {
+  Stream<TransactionsState> _fetchTransactionsList(String? pageKey) async* {
     final TransactionsState lastListingState =
         _onNewListingStateController.value;
     try {
@@ -68,22 +68,24 @@ class TransactionsBloc {
         searchTerm: _searchInputValue,
       );
 */
-      final List<Transaction> newItems = await transCubit.fetchTransactions(
+      final List<Transaction> fetchedItems = await transCubit.fetchTransactions(
           nodeListCubit,
           cursor: pageKey,
           pageSize: _pageSize);
 
-      final bool isLastPage = newItems.length < _pageSize;
+      final bool isLastPage = fetchedItems.length < _pageSize;
       final String? nextPageKey =
           isLastPage ? null : transCubit.state.endCursor;
 
       yield TransactionsState(
         // error: null,
         nextPageKey: nextPageKey,
-        itemList: <Transaction>[
-          ...lastListingState.itemList ?? <Transaction>[],
-          ...newItems
-        ],
+        itemList: pageKey == null
+            ? fetchedItems
+            : <Transaction>[
+                ...lastListingState.itemList ?? <Transaction>[],
+                ...fetchedItems
+              ],
       );
     } catch (e) {
       yield TransactionsState(

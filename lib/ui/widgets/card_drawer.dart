@@ -8,6 +8,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../../data/models/cesium_card.dart';
 import '../../shared_prefs.dart';
+import '../screens/sandbox.dart';
 import '../ui_helpers.dart';
 
 class CardDrawer extends StatelessWidget {
@@ -85,6 +86,19 @@ class CardDrawer extends StatelessWidget {
                         },
                       ),
                     ),
+                  ),
+                if (inDevelopment)
+                  ListTile(
+                    leading: const Icon(Icons.build),
+                    title: const Text('Sandbox'),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const Sandbox();
+                        },
+                      );
+                    },
                   ),
                 ListTile(
                   leading: const Icon(Icons.feedback),

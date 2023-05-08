@@ -139,4 +139,5 @@ const _$TransactionTypeEnumMap = {
   TransactionType.receiving: 'receiving',
   TransactionType.sent: 'sent',
   TransactionType.pending: 'pending',
+  TransactionType.missing: 'missing',
 };

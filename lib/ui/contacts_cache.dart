@@ -38,6 +38,12 @@ class ContactsCache {
     _box ??= MemoryFallbackBox<Map<String, dynamic>>();
   }
 
+  Future<void> addContacts(List<Contact> contacts) async {
+    for (final Contact contact in contacts) {
+      await storeContact(contact);
+    }
+  }
+
   Future<void> dispose() async {
     await _box?.close();
   }
@@ -48,9 +54,9 @@ class ContactsCache {
 
   static ContactsCache? _instance;
   final Map<String, List<Completer<Contact>>> _pendingRequests =
-  <String, List<Completer<Contact>>>{};
+      <String, List<Completer<Contact>>>{};
   static Duration duration =
-  kReleaseMode ? const Duration(days: 3) : const Duration(hours: 5);
+      kReleaseMode ? const Duration(days: 3) : const Duration(hours: 5);
 
   final String _boxName = 'contacts_cache';
 
@@ -149,9 +155,9 @@ class ContactsCache {
 
     if (record != null) {
       final Map<String, dynamic> typedRecord =
-      Map<String, dynamic>.from(record as Map<dynamic, dynamic>);
+          Map<String, dynamic>.from(record as Map<dynamic, dynamic>);
       final DateTime timestamp =
-      DateTime.parse(typedRecord['timestamp'] as String);
+          DateTime.parse(typedRecord['timestamp'] as String);
       final bool before = DateTime.now().isBefore(timestamp.add(duration));
       if (before) {
         final Contact contact = Contact.fromJson(

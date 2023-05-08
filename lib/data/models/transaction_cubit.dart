@@ -4,9 +4,11 @@ import 'package:tuple/tuple.dart';
 
 import '../../../g1/api.dart';
 import '../../../g1/transaction_parser.dart';
+import '../../g1/g1_helper.dart';
 import '../../shared_prefs.dart';
 import '../../ui/logger.dart';
 import '../../ui/notification_controller.dart';
+import '../../ui/ui_helpers.dart';
 import 'contact.dart';
 import 'node.dart';
 import 'node_list_cubit.dart';
@@ -49,8 +51,8 @@ class TransactionCubit extends HydratedCubit<TransactionState> {
     bool success = false;
 
     for (int attempt = 0; attempt < retries; attempt++) {
-      txDataResult = await gvaHistoryAndBalance(
-          SharedPreferencesHelper().getPubKey(), pageSize, cursor);
+      final String myPubKey = SharedPreferencesHelper().getPubKey();
+      txDataResult = await gvaHistoryAndBalance(myPubKey, pageSize, cursor);
       final Node node = txDataResult.item2;
       logger(
           'Loading transactions using $node (pageSize: $pageSize, cursor: $cursor) --------------------');
@@ -64,8 +66,7 @@ class TransactionCubit extends HydratedCubit<TransactionState> {
       }
 
       final Map<String, dynamic> txData = txDataResult.item1!;
-      final TransactionState newState =
-          await transactionsGvaParser(txData, state);
+      TransactionState newState = await transactionsGvaParser(txData, state);
 
       if (newState.balance < 0) {
         logger('Warning: Negative balance in node ${txDataResult.item2}');
@@ -78,6 +79,72 @@ class TransactionCubit extends HydratedCubit<TransactionState> {
           'Last received notification: ${newState.latestReceivedNotification.toIso8601String()})}');
       logger(
           'Last sent notification: ${newState.latestSentNotification.toIso8601String()})}');
+
+      // Check pending transactions
+      if (cursor == null && state.pendingTransactions.isNotEmpty) {
+        // First page, so let's check pending transactions
+
+        final List<Transaction> newPendingTransactions = <Transaction>[];
+        final List<Transaction> newTransactions = <Transaction>[];
+
+        for (final Transaction pend in state.pendingTransactions) {
+          bool pendFound = false;
+          for (final Transaction t in newState.transactions) {
+            if (t.to.pubKey == pend.to.pubKey &&
+                t.comment == pend.comment &&
+                t.amount == pend.amount &&
+                (t.type == TransactionType.sending ||
+                    t.type == TransactionType.sent) &&
+                areDatesClose(t.time, pend.time, const Duration(minutes: 90))) {
+              // Found a match
+              pendFound = true;
+              if (t.type == TransactionType.sent) {
+                loggerDev(
+                    '@@@@@ Found a sent match for pending transaction ${pend.toStringSmall(myPubKey)}');
+                newTransactions.add(t);
+                // and remove it from pending
+              } else {
+                if (t.type == TransactionType.sending) {
+                  loggerDev(
+                      '@@@@@ Found a sending match for pending transaction ${pend.toStringSmall(myPubKey)}');
+                  newPendingTransactions
+                      .add(pend.copyWith(type: TransactionType.pending));
+                } else {
+                  loggerDev(
+                      '@@@@@ WARNING: Found a ${t.type} match for pending transaction ${pend.toStringSmall(myPubKey)}');
+                }
+              }
+            } else {
+              // No match, keep it
+              /* loggerDev(
+                  '@@@@@ Not found a sending/sent match for pending transaction comparing with $t <-> ${pend.toStringSmall(myPubKey)}'); */
+              newTransactions.add(t);
+            }
+          }
+          if (!pendFound) {
+            // Not found, keep it
+            if (areDatesClose(
+                DateTime.now(), pend.time, const Duration(minutes: 60))) {
+              // Old pending transaction, warn user
+              loggerDev(
+                  '@@@@@ Warn user: Not found an old pending transaction comparing with ${pend.toStringSmall(myPubKey)}');
+              newPendingTransactions.add(pend);
+            } else {
+              loggerDev(
+                  '@@@@@ Not found an old pending transaction comparing with ${pend.toStringSmall(myPubKey)}');
+              newPendingTransactions
+                  .add(pend.copyWith(type: TransactionType.missing));
+            }
+          }
+        }
+        newState = newState.copyWith(
+            transactions: newTransactions,
+            pendingTransactions: newPendingTransactions);
+      }
+
+      if (inDevelopment) {
+        clear();
+      }
 
       emit(newState);
       for (final Transaction tx in newState.transactions.reversed) {
@@ -123,4 +190,21 @@ class TransactionCubit extends HydratedCubit<TransactionState> {
   double get balance => state.balance;
 
   DateTime get lastChecked => state.lastChecked;
+
+  void addUpdatePendingTransaction(Transaction tx) {
+    final TransactionState currentState = state;
+    final List<Transaction> newPendingTransactions = <Transaction>[];
+    for (final Transaction t in state.pendingTransactions) {
+      if (tx.from == t.from &&
+          tx.to == t.to &&
+          tx.amount == t.amount &&
+          tx.comment == t.comment) {
+        newPendingTransactions.add(
+            t.copyWith(time: DateTime.now(), type: TransactionType.pending));
+      } else {
+        newPendingTransactions.add(t);
+      }
+    }
+    emit(currentState.copyWith(pendingTransactions: newPendingTransactions));
+  }
 }

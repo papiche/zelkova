@@ -19,14 +19,14 @@ import 'ui_helpers.dart';
 
 Future<void> payWithRetry(BuildContext context, Contact to, double amount,
     String comment, bool useMempool,
-    [bool addPending = false]) async {
+    [bool isRetry = false]) async {
   logger('Trying to pay state with useMempool: $useMempool');
   final TransactionCubit txCubit = context.read<TransactionCubit>();
   final PaymentCubit paymentCubit = context.read<PaymentCubit>();
   paymentCubit.sending();
   final String contactPubKey = to.pubKey;
   final bool? confirmed = await _confirmSend(
-      context, amount.toString(), humanizePubKey(contactPubKey));
+      context, amount.toString(), humanizePubKey(contactPubKey), isRetry);
   final Contact fromContact =
       await ContactsCache().getContact(SharedPreferencesHelper().getPubKey());
 
@@ -43,15 +43,19 @@ Future<void> payWithRetry(BuildContext context, Contact to, double amount,
       showTooltip(
           context, tr('payment_successful'), tr('payment_successful_desc'));
 
-      // Add here the transaction to the pending list (so we can check it the tx is confirmed)
-      if (inDevelopment && addPending) {
-        txCubit.addPendingTransaction(Transaction(
-            type: TransactionType.pending,
-            from: fromContact,
-            to: to,
-            amount: amount,
-            comment: comment,
-            time: DateTime.now()));
+      final Transaction tx = Transaction(
+          type: TransactionType.pending,
+          from: fromContact,
+          to: to,
+          amount: -amount * 100,
+          comment: comment,
+          time: DateTime.now());
+      if (!isRetry) {
+        // Add here the transaction to the pending list (so we can check it the tx is confirmed)
+        txCubit.addPendingTransaction(tx);
+      } else {
+        // Update the tx with an update time and type
+        txCubit.addUpdatePendingTransaction(tx);
       }
     } else {
       /* this retry didn't work
@@ -85,13 +89,16 @@ double getBalance(BuildContext context) =>
     context.read<TransactionCubit>().balance;
 
 Future<bool?> _confirmSend(
-    BuildContext context, String amount, String to) async {
+    BuildContext context, String amount, String to, bool isRetry) async {
   return showDialog<bool>(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text(tr('please_confirm_sent')),
-        content: Text(tr('please_confirm_sent_desc',
+        content: Text(tr(
+            isRetry
+                ? 'please_confirm_retry_sent_desc'
+                : 'please_confirm_sent_desc',
             namedArgs: <String, String>{'amount': amount, 'to': to})),
         actions: <Widget>[
           TextButton(

@@ -326,6 +326,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
     Once.runDaily('clear_cache', callback: () {
       logger('clear cache via once');
       ContactsCache().clear();
+      ContactsCache().addContacts(context.read<ContactsCubit>().state.contacts);
     });
     Once.runOnce('resize_avatars', callback: () {
       logger('resize avatar via once');

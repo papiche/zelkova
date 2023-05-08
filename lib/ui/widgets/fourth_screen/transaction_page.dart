@@ -233,13 +233,13 @@ class _TransactionsAndBalanceWidgetState
                           itemBuilder: (BuildContext context, Transaction tx,
                               int index) {
                             return TransactionListItem(
-                              pubKey: myPubKey,
-                              index: index +
-                                  (_pendingController.itemList != null
-                                      ? _pendingController.itemList!.length
-                                      : 0),
-                              transaction: tx,
-                            );
+                                pubKey: myPubKey,
+                                index: index +
+                                    (_pendingController.itemList != null
+                                        ? _pendingController.itemList!.length
+                                        : 0),
+                                transaction: tx,
+                                onCancel: () => _pendingController.refresh());
                           },
                           noItemsFoundIndicatorBuilder: (_) => Padding(
                               padding:

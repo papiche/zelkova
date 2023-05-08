@@ -1,6 +1,8 @@
 // logs
 import 'package:easy_logger/easy_logger.dart';
 
+import 'ui_helpers.dart';
+
 final EasyLogger logger = EasyLogger(
   name: 'ginkgo',
   defaultLevel: LevelMessages.debug,
@@ -16,3 +18,9 @@ final EasyLogger logger = EasyLogger(
     LevelMessages.warning
   ],
 );
+
+void loggerDev(String message) {
+  if (inDevelopment) {
+    logger(message);
+  }
+}

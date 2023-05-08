@@ -2,6 +2,7 @@ import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../ui/ui_helpers.dart';
 import 'contact.dart';
 import 'transaction_type.dart';
 
@@ -38,6 +39,9 @@ class Transaction extends Equatable {
       type == TransactionType.receiving || type == TransactionType.received;
 
   Map<String, dynamic> toJson() => _$TransactionToJson(this);
+
+  String toStringSmall(String pubKey) =>
+      'Transaction { type: ${type.name}, from: ${from.toStringSmall(pubKey)}, to: ${to.toStringSmall(pubKey)}, amount: $amount, comment: $comment, time: ${humanizeTime(time, 'en')} }';
 
   @override
   List<Object?> get props => <dynamic>[type, from, to, amount, comment, time];

@@ -16,16 +16,18 @@ import '../../ui_helpers.dart';
 import '../third_screen/contact_form.dart';
 
 class TransactionListItem extends StatelessWidget {
-  const TransactionListItem({
-    super.key,
-    required this.pubKey,
-    required this.transaction,
-    required this.index,
-  });
+  const TransactionListItem(
+      {super.key,
+      required this.pubKey,
+      required this.transaction,
+      required this.index,
+      this.onCancel});
 
   final String pubKey;
   final Transaction transaction;
   final int index;
+
+  final VoidCallback? onCancel;
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +42,9 @@ class TransactionListItem extends StatelessWidget {
     IconData? icon;
     Color? iconColor;
     String statusText;
-    final bool isPending = transaction.type == TransactionType.pending;
+
     final String amountS =
-        '${transaction.amount < 0 ? "" : "+"}${formatKAmount(context, isPending ? transaction.amount * 100 : transaction.amount)}';
+        '${transaction.amount < 0 ? "" : "+"}${formatKAmount(context, transaction.amount)}';
     statusText = tr('transaction_${transaction.type.name}');
     switch (transaction.type) {
       case TransactionType.pending:
@@ -56,6 +58,10 @@ class TransactionListItem extends StatelessWidget {
       case TransactionType.receiving:
         icon = Icons.flight_land;
         iconColor = Colors.grey;
+        break;
+      case TransactionType.missing:
+        icon = Icons.warning_amber_rounded;
+        iconColor = Colors.red;
         break;
       case TransactionType.sent:
         break;
@@ -72,12 +78,13 @@ class TransactionListItem extends StatelessWidget {
         // The end action pane is the one at the right or the bottom side.
         startActionPane:
             ActionPane(motion: const ScrollMotion(), children: <SlidableAction>[
-          if (isPending)
+          if (isPending(transaction.type))
             SlidableAction(
               onPressed: (BuildContext c) {
                 context
                     .read<TransactionCubit>()
                     .removePendingTransaction(transaction);
+                onCancel!();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(tr('payment_canceled')),
@@ -94,11 +101,11 @@ class TransactionListItem extends StatelessWidget {
         endActionPane: ActionPane(
           motion: const ScrollMotion(),
           children: <SlidableAction>[
-            if (isPending)
+            if (isPending(transaction.type))
               SlidableAction(
                 onPressed: (BuildContext c) async {
                   await payWithRetry(context, transaction.to,
-                      transaction.amount, transaction.comment, false);
+                      transaction.amount, transaction.comment, true);
                 },
                 backgroundColor: Theme.of(context).primaryColorDark,
                 foregroundColor: Colors.white,
@@ -138,10 +145,12 @@ class TransactionListItem extends StatelessWidget {
         ),
         child: ListTile(
           leading: (icon != null)
-              ? Icon(
-                  icon,
-                  color: iconColor,
-                )
+              ? Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 16, 0, 16),
+                  child: Icon(
+                    icon,
+                    color: iconColor,
+                  ))
               : null,
           tileColor: tileColor(index, context),
           title: Row(

@@ -13,6 +13,7 @@ import '../../../data/models/transaction_cubit.dart';
 import '../../../data/models/transaction_type.dart';
 import '../../../g1/api.dart';
 import '../../../shared_prefs.dart';
+import '../data/models/bottom_nav_cubit.dart';
 import 'contacts_cache.dart';
 import 'logger.dart';
 import 'ui_helpers.dart';
@@ -35,6 +36,13 @@ Future<void> payWithRetry(BuildContext context, Contact to, double amount,
   } else {
     final String response =
         await pay(to: contactPubKey, comment: comment, amount: amount);
+    final Transaction tx = Transaction(
+        type: TransactionType.pending,
+        from: fromContact,
+        to: to,
+        amount: -amount * 100,
+        comment: comment,
+        time: DateTime.now());
     if (response == 'success') {
       paymentCubit.sent();
       if (!context.mounted) {
@@ -43,18 +51,11 @@ Future<void> payWithRetry(BuildContext context, Contact to, double amount,
       showTooltip(
           context, tr('payment_successful'), tr('payment_successful_desc'));
 
-      final Transaction tx = Transaction(
-          type: TransactionType.pending,
-          from: fromContact,
-          to: to,
-          amount: -amount * 100,
-          comment: comment,
-          time: DateTime.now());
       if (!isRetry) {
         // Add here the transaction to the pending list (so we can check it the tx is confirmed)
         txCubit.addPendingTransaction(tx);
       } else {
-        // Update the tx with an update time and type
+        // Update the previously failed tx with an update time and type pending
         txCubit.addUpdatePendingTransaction(tx);
       }
     } else {
@@ -75,6 +76,9 @@ Future<void> payWithRetry(BuildContext context, Contact to, double amount,
                   // We try to translate the error, like "insufficient balance"
                   'error': tr(response)
                 }));
+      txCubit
+          .insertPendingTransaction(tx.copyWith(type: TransactionType.failed));
+      context.read<BottomNavCubit>().updateIndex(3);
     }
   }
 }
@@ -121,3 +125,5 @@ void showPayError(BuildContext context, String desc) {
   // Shuffle the nodes so we can retry with other
   context.read<NodeListCubit>().shuffle(NodeType.gva, true);
 }
+
+const Duration paymentTimeRange = Duration(minutes: 60);

@@ -1,4 +1,4 @@
-enum TransactionType { sending, received, receiving, sent, pending, missing }
+enum TransactionType { sending, received, receiving, sent, pending, failed }
 
 bool isProcessing(TransactionType type) =>
     type == TransactionType.sending ||
@@ -6,4 +6,4 @@ bool isProcessing(TransactionType type) =>
     type == TransactionType.pending;
 
 bool isPending(TransactionType type) =>
-    type == TransactionType.pending || type == TransactionType.missing;
+    type == TransactionType.pending || type == TransactionType.failed;

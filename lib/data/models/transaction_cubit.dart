@@ -1,4 +1,7 @@
+import 'dart:collection';
+
 import 'package:flutter/foundation.dart';
+import 'package:ginkgo/data/models/transactions_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:tuple/tuple.dart';
 
@@ -8,6 +11,7 @@ import '../../g1/g1_helper.dart';
 import '../../shared_prefs.dart';
 import '../../ui/logger.dart';
 import '../../ui/notification_controller.dart';
+import '../../ui/pay_helper.dart';
 import '../../ui/ui_helpers.dart';
 import 'contact.dart';
 import 'node.dart';
@@ -20,10 +24,10 @@ import 'transaction_type.dart';
 class TransactionCubit extends HydratedCubit<TransactionState> {
   TransactionCubit()
       : super(TransactionState(
-            transactions: const <Transaction>[],
-            pendingTransactions: const <Transaction>[],
-            balance: 0,
-            lastChecked: DateTime.now()));
+      transactions: const <Transaction>[],
+      pendingTransactions: const <Transaction>[],
+      balance: 0,
+      lastChecked: DateTime.now()));
 
   @override
   String get storagePrefix =>
@@ -32,16 +36,16 @@ class TransactionCubit extends HydratedCubit<TransactionState> {
   void addPendingTransaction(Transaction pendingTransaction) {
     final TransactionState currentState = state;
     final List<Transaction> newPendingTransactions =
-        List<Transaction>.of(currentState.pendingTransactions)
-          ..add(pendingTransaction);
+    List<Transaction>.of(currentState.pendingTransactions)
+      ..add(pendingTransaction);
     emit(currentState.copyWith(pendingTransactions: newPendingTransactions));
   }
 
   void removePendingTransaction(Transaction pendingTransaction) {
     final TransactionState currentState = state;
     final List<Transaction> newPendingTransactions =
-        List<Transaction>.of(currentState.pendingTransactions)
-          ..remove(pendingTransaction);
+    List<Transaction>.of(currentState.pendingTransactions)
+      ..remove(pendingTransaction);
     emit(currentState.copyWith(pendingTransactions: newPendingTransactions));
   }
 
@@ -76,70 +80,109 @@ class TransactionCubit extends HydratedCubit<TransactionState> {
       success = true;
 
       logger(
-          'Last received notification: ${newState.latestReceivedNotification.toIso8601String()})}');
+          'Last received notification: ${newState.latestReceivedNotification
+              .toIso8601String()})}');
       logger(
-          'Last sent notification: ${newState.latestSentNotification.toIso8601String()})}');
+          'Last sent notification: ${newState.latestSentNotification
+              .toIso8601String()})}');
 
       // Check pending transactions
-      if (cursor == null && state.pendingTransactions.isNotEmpty) {
+      if (cursor == null) {
         // First page, so let's check pending transactions
-
-        final List<Transaction> newPendingTransactions = <Transaction>[];
+        final LinkedHashSet<Transaction> newPendingTransactions =
+        LinkedHashSet<Transaction>();
         final List<Transaction> newTransactions = <Transaction>[];
 
-        for (final Transaction pend in state.pendingTransactions) {
-          bool pendFound = false;
-          for (final Transaction t in newState.transactions) {
-            if (t.to.pubKey == pend.to.pubKey &&
-                t.comment == pend.comment &&
-                t.amount == pend.amount &&
-                (t.type == TransactionType.sending ||
-                    t.type == TransactionType.sent) &&
-                areDatesClose(t.time, pend.time, const Duration(minutes: 90))) {
-              // Found a match
-              pendFound = true;
-              if (t.type == TransactionType.sent) {
-                loggerDev(
-                    '@@@@@ Found a sent match for pending transaction ${pend.toStringSmall(myPubKey)}');
-                newTransactions.add(t);
-                // and remove it from pending
-              } else {
-                if (t.type == TransactionType.sending) {
-                  loggerDev(
-                      '@@@@@ Found a sending match for pending transaction ${pend.toStringSmall(myPubKey)}');
-                  newPendingTransactions
-                      .add(pend.copyWith(type: TransactionType.pending));
-                } else {
-                  loggerDev(
-                      '@@@@@ WARNING: Found a ${t.type} match for pending transaction ${pend.toStringSmall(myPubKey)}');
-                }
-              }
-            } else {
-              // No match, keep it
-              /* loggerDev(
-                  '@@@@@ Not found a sending/sent match for pending transaction comparing with $t <-> ${pend.toStringSmall(myPubKey)}'); */
-              newTransactions.add(t);
-            }
-          }
-          if (!pendFound) {
-            // Not found, keep it
-            if (areDatesClose(
-                DateTime.now(), pend.time, const Duration(minutes: 60))) {
-              // Old pending transaction, warn user
+        // Index transactions by key
+        final Map<String, Transaction> txMap = <String, Transaction>{};
+        final Map<String, Transaction> pendingMap = <String, Transaction>{};
+
+        //  or maybe it doesn't merit the effort
+        for (final Transaction t in newState.transactions) {
+          txMap[getTxKey(t)] = t;
+        }
+        // Get a range of tx in 1h
+        TransactionsBloc().lastTx().forEach((Transaction t) {
+          txMap[getTxKey(t)] = t;
+        });
+        for (final Transaction t in newState.pendingTransactions) {
+          pendingMap[getTxKey(t)] = t;
+        }
+
+        // Adjust pending transactions
+        for (final Transaction pend in newState.pendingTransactions) {
+          if (txMap[getTxKey(pend)] != null) {
+            // Found a match
+            // VER SI SENT o que
+            final Transaction t = txMap[getTxKey(pend)]!;
+            if (t.type == TransactionType.sent) {
               loggerDev(
-                  '@@@@@ Warn user: Not found an old pending transaction comparing with ${pend.toStringSmall(myPubKey)}');
+                  '@@@@@ Found a sent match for pending transaction ${pend
+                      .toStringSmall(myPubKey)}');
+              // Add later the tx, but don't add the pending
+            } else {
+              if (t.type == TransactionType.sending) {
+                loggerDev(
+                    '@@@@@ Found a sending match for pending transaction ${pend
+                        .toStringSmall(myPubKey)}');
+                // Re-add as pending
+                // The tx will not be add as sending (as some nodes will show it and others will not,
+                // we use better the pending)
+                newPendingTransactions.add(pend);
+              } else {
+                loggerDev(
+                    '@@@@@ WARNING: Found a ${t
+                        .type} match for pending transaction ${pend
+                        .toStringSmall(myPubKey)}');
+              }
+            }
+          } else {
+            // Not found a match
+            if (areDatesClose(
+                DateTime.now(), pend.time, paymentTimeRange)) {
+              loggerDev(
+                  '@@@@@ Not found yet pending transaction ${pend.toStringSmall(
+                      myPubKey)}');
               newPendingTransactions.add(pend);
             } else {
+              // Old pending transaction, warn user
               loggerDev(
-                  '@@@@@ Not found an old pending transaction comparing with ${pend.toStringSmall(myPubKey)}');
+                  '@@@@@ Warn user: Not found an old pending transaction ${pend
+                      .toStringSmall(myPubKey)}');
+              // Add it but with missing type
               newPendingTransactions
-                  .add(pend.copyWith(type: TransactionType.missing));
+                  .add(pend.copyWith(type: TransactionType.failed));
             }
           }
         }
+
+        for (final Transaction tx in newState.transactions) {
+          if (pendingMap[getTxKey(tx)] != null &&
+              (tx.type == TransactionType.sending ||
+                  tx.type == TransactionType.sent)) {
+            // Found a match
+            if (tx.type == TransactionType.sent) {
+              // Ok add it, but not as pending
+              newTransactions.add(tx);
+            } else {
+              // It's sending so should be added before as pending
+            }
+          } else {
+            // Does not match
+            if (tx.type == TransactionType.sending) {
+              // Not found, maybe we are in other client, so add as pending
+              newPendingTransactions
+                  .add(tx.copyWith(type: TransactionType.pending));
+            } else {
+              // the rest
+              newTransactions.add(tx);
+            }
+          }
+        }
+
         newState = newState.copyWith(
             transactions: newTransactions,
-            pendingTransactions: newPendingTransactions);
+            pendingTransactions: newPendingTransactions.toList());
       }
 
       if (inDevelopment) {
@@ -178,6 +221,8 @@ class TransactionCubit extends HydratedCubit<TransactionState> {
     return <Transaction>[];
   }
 
+  String getTxKey(Transaction t) => '${t.to.pubKey}-${t.comment}-${t.amount}';
+
   @override
   TransactionState fromJson(Map<String, dynamic> json) =>
       TransactionState.fromJson(json);
@@ -205,6 +250,13 @@ class TransactionCubit extends HydratedCubit<TransactionState> {
         newPendingTransactions.add(t);
       }
     }
+    emit(currentState.copyWith(pendingTransactions: newPendingTransactions));
+  }
+
+  void insertPendingTransaction(Transaction tx) {
+    final TransactionState currentState = state;
+    final List<Transaction> newPendingTransactions = state.pendingTransactions;
+    newPendingTransactions.insert(0, tx);
     emit(currentState.copyWith(pendingTransactions: newPendingTransactions));
   }
 }

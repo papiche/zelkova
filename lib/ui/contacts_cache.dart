@@ -40,7 +40,7 @@ class ContactsCache {
 
   Future<void> addContacts(List<Contact> contacts) async {
     for (final Contact contact in contacts) {
-      await storeContact(contact);
+      await addContact(contact);
     }
   }
 
@@ -97,7 +97,7 @@ class ContactsCache {
     _pendingRequests[pubKey] = <Completer<Contact>>[completer];
     try {
       cachedContact = await getProfile(pubKey);
-      storeContact(cachedContact);
+      _storeContact(cachedContact);
       if (!kReleaseMode && debug) {
         logger('Returning non cached contact $cachedContact');
       }
@@ -136,12 +136,12 @@ class ContactsCache {
 
     // Cache the merged contact
     // Cache the merged contact
-    await storeContact(cachedContact);
+    await _storeContact(cachedContact);
 
     // logger('Added contact $cachedContact to cache');
   }
 
-  Future<void> storeContact(Contact contact) async {
+  Future<void> _storeContact(Contact contact) async {
     final Box<dynamic> box = await _openBox();
     await box.put(contact.pubKey, <String, dynamic>{
       'timestamp': DateTime.now().toIso8601String(),

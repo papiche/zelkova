@@ -93,7 +93,7 @@
   "transaction_receiving": "Recibiendo",
   "transaction_sent": "Enviado",
   "transaction_received": "Recibido",
-  "transaction_missing": "Pago fallido",
+  "transaction_fallido": "Pago fallido",
   "valid_comment": "El comentario no puede tener tildes o comas",
   "search_limitation": "La búsqueda debe tener al menos 3 caracteres",
   "faq_title": "Preguntas frecuentes",

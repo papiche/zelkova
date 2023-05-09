@@ -35,7 +35,7 @@
   "online_terminal": "Online",
   "offline_terminal": "Offline",
   "show_qr_to_client": "Show your public key to your client",
-  "show_qr_to_client_amount": "Display this QR code with that amount to your clientG",
+  "show_qr_to_client_amount": "Display this QR code with that amount to your client",
   "keys_tooltip": "Public and private keys in Ğ1 and Duniter are like a lock and key system, where the public key acts as the lock that can be opened by anyone with the corresponding private key, providing a secure way to authenticate and verify transactions",
   "card_validity": "Validity",
   "card_validity_tooltip": "Please note that this wallet is only accessible while using this specific browser or app and device. If you delete or reset the browser or app, you will lose access to this wallet and the funds stored in it.",

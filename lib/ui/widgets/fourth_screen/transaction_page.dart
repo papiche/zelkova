@@ -258,10 +258,6 @@ class _TransactionsAndBalanceWidgetState
     });
   }
 
-  Future<void> _delayedRefresh() {
-    return Future<void>.delayed(const Duration(seconds: 1), () => _refresh());
-  }
-
   Future<void> _refresh() {
     return Future<void>.sync(() {
       _pagingController.refresh();

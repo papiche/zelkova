@@ -225,8 +225,9 @@ class TransactionListItem extends StatelessWidget {
                   ),
                   const SizedBox(height: 4.0),
                   Tooltip(
-                      message:
-                          DateFormat.yMd().add_Hm().format(transaction.time),
+                      message: DateFormat.yMd(context.locale.languageCode)
+                          .add_Hm()
+                          .format(transaction.time),
                       child: Text(
                         humanizeTime(
                             transaction.time, context.locale.toString())!,

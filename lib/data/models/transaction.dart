@@ -43,6 +43,8 @@ bool get isProcessing =>
     type == TransactionType.receiving ||
     type == TransactionType.pending; */
 
+  bool get isFailed => type == TransactionType.failed;
+
   bool get isPending =>
       type == TransactionType.pending || type == TransactionType.failed;
 

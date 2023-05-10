@@ -145,7 +145,11 @@ class TransactionListItem extends StatelessWidget {
           ],
         ),
         child: GestureDetector(
-            onLongPress: () => _retryFailed(context, transaction),
+            onLongPress: () {
+              if (transaction.isFailed) {
+                _retryFailed(context, transaction);
+              }
+            },
             child: ListTile(
               leading: (icon != null)
                   ? Padding(
@@ -220,13 +224,17 @@ class TransactionListItem extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 4.0),
-                  Text(
-                    humanizeTime(transaction.time, context.locale.toString())!,
-                    style: const TextStyle(
-                      fontSize: 12.0,
-                      color: Colors.grey,
-                    ),
-                  ),
+                  Tooltip(
+                      message:
+                          DateFormat.yMd().add_Hm().format(transaction.time),
+                      child: Text(
+                        humanizeTime(
+                            transaction.time, context.locale.toString())!,
+                        style: const TextStyle(
+                          fontSize: 12.0,
+                          color: Colors.grey,
+                        ),
+                      )),
                 ],
               ),
             )));

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
-import 'package:cron/cron.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:feedback/feedback.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';

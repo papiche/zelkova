@@ -11,14 +11,14 @@ part 'transaction.g.dart';
 @JsonSerializable()
 @CopyWith()
 class Transaction extends Equatable {
-  const Transaction({
-    required this.type,
-    required this.amount,
-    required this.comment,
-    required this.time,
-    required this.from,
-    required this.to,
-  });
+  const Transaction(
+      {required this.type,
+      required this.amount,
+      required this.comment,
+      required this.time,
+      required this.from,
+      required this.to,
+      this.debugInfo});
 
   factory Transaction.fromJson(Map<String, dynamic> json) =>
       _$TransactionFromJson(json);
@@ -29,11 +29,22 @@ class Transaction extends Equatable {
   final double amount;
   final String comment;
   final DateTime time;
+  final String? debugInfo;
 
+/*
   bool get isOutgoing =>
       type == TransactionType.sending ||
       type == TransactionType.sent ||
       type == TransactionType.pending;
+
+
+bool get isProcessing =>
+    type == TransactionType.sending ||
+    type == TransactionType.receiving ||
+    type == TransactionType.pending; */
+
+  bool get isPending =>
+      type == TransactionType.pending || type == TransactionType.failed;
 
   bool get isIncoming =>
       type == TransactionType.receiving || type == TransactionType.received;
@@ -41,8 +52,9 @@ class Transaction extends Equatable {
   Map<String, dynamic> toJson() => _$TransactionToJson(this);
 
   String toStringSmall(String pubKey) =>
-      'Transaction { type: ${type.name}, from: ${from.toStringSmall(pubKey)}, to: ${to.toStringSmall(pubKey)}, amount: $amount, comment: $comment, time: ${humanizeTime(time, 'en')} }';
+      "Transaction { type: ${type.name}, from: ${from.toStringSmall(pubKey)}, to: ${to.toStringSmall(pubKey)}, amount: $amount, comment: $comment, time: ${humanizeTime(time, 'en')}, debugInfo: '$debugInfo' }";
 
   @override
-  List<Object?> get props => <dynamic>[type, from, to, amount, comment, time];
+  List<Object?> get props =>
+      <dynamic>[type, from, to, amount, comment, time, debugInfo];
 }

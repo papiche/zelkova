@@ -1,7 +1,6 @@
 import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
-import 'package:ginkgo/data/models/transactions_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:tuple/tuple.dart';
 
@@ -20,14 +19,15 @@ import 'node_type.dart';
 import 'transaction.dart';
 import 'transaction_state.dart';
 import 'transaction_type.dart';
+import 'transactions_bloc.dart';
 
 class TransactionCubit extends HydratedCubit<TransactionState> {
   TransactionCubit()
       : super(TransactionState(
-      transactions: const <Transaction>[],
-      pendingTransactions: const <Transaction>[],
-      balance: 0,
-      lastChecked: DateTime.now()));
+            transactions: const <Transaction>[],
+            pendingTransactions: const <Transaction>[],
+            balance: 0,
+            lastChecked: DateTime.now()));
 
   @override
   String get storagePrefix =>
@@ -36,16 +36,16 @@ class TransactionCubit extends HydratedCubit<TransactionState> {
   void addPendingTransaction(Transaction pendingTransaction) {
     final TransactionState currentState = state;
     final List<Transaction> newPendingTransactions =
-    List<Transaction>.of(currentState.pendingTransactions)
-      ..add(pendingTransaction);
+        List<Transaction>.of(currentState.pendingTransactions)
+          ..add(pendingTransaction);
     emit(currentState.copyWith(pendingTransactions: newPendingTransactions));
   }
 
   void removePendingTransaction(Transaction pendingTransaction) {
     final TransactionState currentState = state;
     final List<Transaction> newPendingTransactions =
-    List<Transaction>.of(currentState.pendingTransactions)
-      ..remove(pendingTransaction);
+        List<Transaction>.of(currentState.pendingTransactions)
+          ..remove(pendingTransaction);
     emit(currentState.copyWith(pendingTransactions: newPendingTransactions));
   }
 
@@ -80,17 +80,15 @@ class TransactionCubit extends HydratedCubit<TransactionState> {
       success = true;
 
       logger(
-          'Last received notification: ${newState.latestReceivedNotification
-              .toIso8601String()})}');
+          'Last received notification: ${newState.latestReceivedNotification.toIso8601String()})}');
       logger(
-          'Last sent notification: ${newState.latestSentNotification
-              .toIso8601String()})}');
+          'Last sent notification: ${newState.latestSentNotification.toIso8601String()})}');
 
       // Check pending transactions
       if (cursor == null) {
         // First page, so let's check pending transactions
         final LinkedHashSet<Transaction> newPendingTransactions =
-        LinkedHashSet<Transaction>();
+            LinkedHashSet<Transaction>();
         final List<Transaction> newTransactions = <Transaction>[];
 
         // Index transactions by key
@@ -117,38 +115,34 @@ class TransactionCubit extends HydratedCubit<TransactionState> {
             final Transaction t = txMap[getTxKey(pend)]!;
             if (t.type == TransactionType.sent) {
               loggerDev(
-                  '@@@@@ Found a sent match for pending transaction ${pend
-                      .toStringSmall(myPubKey)}');
+                  '@@@@@ Found a sent match for pending transaction ${pend.toStringSmall(myPubKey)}');
               // Add later the tx, but don't add the pending
             } else {
               if (t.type == TransactionType.sending) {
                 loggerDev(
-                    '@@@@@ Found a sending match for pending transaction ${pend
-                        .toStringSmall(myPubKey)}');
+                    '@@@@@ Found a sending match for pending transaction ${pend.toStringSmall(myPubKey)}');
                 // Re-add as pending
                 // The tx will not be add as sending (as some nodes will show it and others will not,
                 // we use better the pending)
-                newPendingTransactions.add(pend);
+                // FIXME: if this is old, probably is stuck, so maybe we should cancel->retry
+                newPendingTransactions.add(pend.copyWith(
+                    debugInfo:
+                        pend.debugInfo ?? 'Node where see it: ${node.url}'));
               } else {
                 loggerDev(
-                    '@@@@@ WARNING: Found a ${t
-                        .type} match for pending transaction ${pend
-                        .toStringSmall(myPubKey)}');
+                    '@@@@@ WARNING: Found a ${t.type} match for pending transaction ${pend.toStringSmall(myPubKey)}');
               }
             }
           } else {
             // Not found a match
-            if (areDatesClose(
-                DateTime.now(), pend.time, paymentTimeRange)) {
+            if (areDatesClose(DateTime.now(), pend.time, paymentTimeRange)) {
               loggerDev(
-                  '@@@@@ Not found yet pending transaction ${pend.toStringSmall(
-                      myPubKey)}');
+                  '@@@@@ Not found yet pending transaction ${pend.toStringSmall(myPubKey)}');
               newPendingTransactions.add(pend);
             } else {
               // Old pending transaction, warn user
               loggerDev(
-                  '@@@@@ Warn user: Not found an old pending transaction ${pend
-                      .toStringSmall(myPubKey)}');
+                  '@@@@@ Warn user: Not found an old pending transaction ${pend.toStringSmall(myPubKey)}');
               // Add it but with missing type
               newPendingTransactions
                   .add(pend.copyWith(type: TransactionType.failed));
@@ -236,7 +230,7 @@ class TransactionCubit extends HydratedCubit<TransactionState> {
 
   DateTime get lastChecked => state.lastChecked;
 
-  void addUpdatePendingTransaction(Transaction tx) {
+  void updatePendingTransaction(Transaction tx) {
     final TransactionState currentState = state;
     final List<Transaction> newPendingTransactions = <Transaction>[];
     for (final Transaction t in state.pendingTransactions) {
@@ -244,8 +238,8 @@ class TransactionCubit extends HydratedCubit<TransactionState> {
           tx.to == t.to &&
           tx.amount == t.amount &&
           tx.comment == t.comment) {
-        newPendingTransactions.add(
-            t.copyWith(time: DateTime.now(), type: TransactionType.pending));
+        newPendingTransactions
+            .add(t.copyWith(time: DateTime.now(), type: tx.type));
       } else {
         newPendingTransactions.add(t);
       }

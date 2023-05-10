@@ -307,12 +307,6 @@ class _GinkgoAppState extends State<GinkgoApp> {
     NodeManager().loadFromCubit(context.read<NodeListCubit>());
     // Only after at least the action method is set, the notification events are delivered
     NotificationController.startListeningNotificationEvents();
-    final Cron cron = Cron();
-    cron.schedule(Schedule.parse(kReleaseMode ? '*/10 * * * *' : '*/5 * * * *'),
-        () async {
-      logger('---------- fetchTransactions via cron');
-      fetchTransactions(context);
-    });
     Once.runHourly('load_nodes', callback: () {
       logger('Load nodes via once');
       _loadNodes(context);

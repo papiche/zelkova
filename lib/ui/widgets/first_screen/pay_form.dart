@@ -106,12 +106,19 @@ class _PayFormState extends State<PayForm> {
                       ? null
                       : () async {
                           try {
-                            await payWithRetry(context, state.contact!,
-                                state.amount!, state.comment, false);
+                            await payWithRetry(
+                                context: context,
+                                to: state.contact!,
+                                amount: state.amount!,
+                                comment: state.comment);
                           } on RetryException {
                             // Here the transactions can be lost, so we must implement some manual retry use
-                            await payWithRetry(context, state.contact!,
-                                state.amount!, state.comment, true);
+                            await payWithRetry(
+                                context: context,
+                                to: state.contact!,
+                                amount: state.amount!,
+                                comment: state.comment,
+                                useMempool: true);
                           }
                         },
                   style: payBtnStyle,

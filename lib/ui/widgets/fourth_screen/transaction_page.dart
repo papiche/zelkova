@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:backdrop/backdrop.dart';
+import 'package:cron/cron.dart';
 import 'package:easy_debounce/easy_throttle.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -13,6 +15,7 @@ import '../../../data/models/transaction_cubit.dart';
 import '../../../data/models/transaction_state.dart';
 import '../../../data/models/transactions_bloc.dart';
 import '../../../shared_prefs.dart';
+import '../../logger.dart';
 import '../../tutorial_keys.dart';
 import '../../ui_helpers.dart';
 import 'transaction_item.dart';
@@ -41,6 +44,7 @@ class _TransactionsAndBalanceWidgetState
       PagingController<int, Transaction>(firstPageKey: 0);
 
   final int _pendingPageSize = 30;
+  final Cron cron = Cron();
 
   @override
   void initState() {
@@ -51,10 +55,6 @@ class _TransactionsAndBalanceWidgetState
     _pagingController.addPageRequestListener((String? cursor) {
       _bloc.onPageRequestSink.add(cursor);
     });
-    _pendingController.addPageRequestListener((int cursor) {
-      _fetchPending(cursor);
-    });
-
     // We could've used StreamBuilder, but that would unnecessarily recreate
     // the entire [PagedSliverGrid] every time the state changes.
     // Instead, handling the subscription ourselves and updating only the
@@ -90,6 +90,15 @@ class _TransactionsAndBalanceWidgetState
         );
       }
     });
+    _pendingController.addPageRequestListener((int cursor) {
+      _fetchPending(cursor);
+    });
+
+    cron.schedule(Schedule.parse(kReleaseMode ? '*/10 * * * *' : '*/5 * * * *'),
+        () async {
+      logger('---------- fetchTransactions via cron');
+      _refresh();
+    });
     super.initState();
   }
 
@@ -119,6 +128,7 @@ class _TransactionsAndBalanceWidgetState
     _pagingController.dispose();
     _pendingController.dispose();
     _blocListingStateSubscription.cancel();
+    cron.close();
     super.dispose();
   }
 
@@ -137,10 +147,8 @@ class _TransactionsAndBalanceWidgetState
               IconButton(
                   key: txRefreshKey,
                   icon: const Icon(Icons.refresh),
-                  onPressed: () => EasyThrottle.throttle(
-                      'my-throttler-refresh',
-                      const Duration(seconds: 1),
-                      () => _pagingController.refresh(),
+                  onPressed: () => EasyThrottle.throttle('my-throttler-refresh',
+                      const Duration(seconds: 1), () => _refresh(),
                       onAfter:
                           () {} // <-- Optional callback, called after the duration has passed
                       )),
@@ -201,10 +209,7 @@ class _TransactionsAndBalanceWidgetState
             color: Colors.white,
             backgroundColor: Theme.of(context).colorScheme.primary,
             strokeWidth: 4.0,
-            onRefresh: () => Future<void>.sync(() {
-              _pagingController.refresh();
-              _pendingController.refresh();
-            }),
+            onRefresh: () => _refresh(),
             child: CustomScrollView(
                 shrinkWrap: true,
                 // scrollDirection: Axis.vertical,
@@ -214,13 +219,16 @@ class _TransactionsAndBalanceWidgetState
                     shrinkWrapFirstPageIndicators: true,
                     pagingController: _pendingController,
                     builderDelegate: PagedChildBuilderDelegate<Transaction>(
+                        animateTransitions: true,
+                        transitionDuration: const Duration(milliseconds: 500),
                         itemBuilder:
                             (BuildContext context, Transaction tx, int index) =>
                                 TransactionListItem(
-                                  pubKey: myPubKey,
-                                  index: index,
-                                  transaction: tx,
-                                ),
+                                    pubKey: myPubKey,
+                                    index: index,
+                                    transaction: tx,
+                                    afterRetry: () => _refresh(),
+                                    afterCancel: () => _refresh()),
                         noItemsFoundIndicatorBuilder: (_) => Container()),
                   ),
                   PagedSliverList<String?, Transaction>(
@@ -238,8 +246,7 @@ class _TransactionsAndBalanceWidgetState
                                     (_pendingController.itemList != null
                                         ? _pendingController.itemList!.length
                                         : 0),
-                                transaction: tx,
-                                onCancel: () => _pendingController.refresh());
+                                transaction: tx);
                           },
                           noItemsFoundIndicatorBuilder: (_) => Padding(
                               padding:
@@ -248,6 +255,17 @@ class _TransactionsAndBalanceWidgetState
                                   Center(child: Text(tr('no_transactions'))))))
                 ]),
           ));
+    });
+  }
+
+  Future<void> _delayedRefresh() {
+    return Future<void>.delayed(const Duration(seconds: 1), () => _refresh());
+  }
+
+  Future<void> _refresh() {
+    return Future<void>.sync(() {
+      _pagingController.refresh();
+      _pendingController.refresh();
     });
   }
 

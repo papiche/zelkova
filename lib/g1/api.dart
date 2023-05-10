@@ -538,7 +538,7 @@ Future<http.Response> _requestWithRetry(
       'Cannot make the request to any of the ${nodes.length} nodes');
 }
 
-Future<String> pay(
+Future<PayResult> pay(
     {required String to,
     required double amount,
     String? comment,
@@ -561,20 +561,23 @@ Future<String> pay(
           useMempool: useMempool ?? false,
           raiseException: true);
       logger('GVA replied with "$response"');
-      return response;
+      return PayResult(message: response, node: selected);
     } on GraphQLException catch (e) {
       final List<String> eCause = e.cause.split('message: ');
-      return eCause.isNotEmpty
-          ? eCause[eCause.length > 1 ? 1 : 0].split(',')[0]
-          : 'Transaction failed for unknown reason';
+      return PayResult(
+          node: selected,
+          message: eCause.isNotEmpty
+              ? eCause[eCause.length > 1 ? 1 : 0].split(',')[0]
+              : 'Transaction failed for unknown reason');
     } catch (e, stacktrace) {
       await Sentry.captureException(e, stackTrace: stacktrace);
       logger(e);
       logger(stacktrace);
-      return "Something didn't work as expected ($e)";
+      return PayResult(
+          node: selected, message: "Something didn't work as expected ($e)");
     }
   } catch (e) {
-    return "Something didn't work as expected ($e)";
+    return PayResult(message: "Something didn't work as expected ($e)");
   }
 }
 
@@ -597,6 +600,13 @@ class SelectedGvaNode {
 
   final String url;
   final Node node;
+}
+
+class PayResult {
+  PayResult({required this.message, this.node});
+
+  final SelectedGvaNode? node;
+  final String message;
 }
 
 String proxyfyNode(String nodeUrl) {

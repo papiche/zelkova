@@ -18,23 +18,26 @@ import 'contacts_cache.dart';
 import 'logger.dart';
 import 'ui_helpers.dart';
 
-Future<void> payWithRetry(BuildContext context, Contact to, double amount,
-    String comment, bool useMempool,
-    [bool isRetry = false]) async {
+Future<void> payWithRetry(
+    {required BuildContext context,
+    required Contact to,
+    required double amount,
+    required String comment,
+    bool isRetry = false,
+    bool useMempool = false}) async {
   logger('Trying to pay state with useMempool: $useMempool');
   final TransactionCubit txCubit = context.read<TransactionCubit>();
   final PaymentCubit paymentCubit = context.read<PaymentCubit>();
   paymentCubit.sending();
+  final String fromPubKey = SharedPreferencesHelper().getPubKey();
   final String contactPubKey = to.pubKey;
   final bool? confirmed = await _confirmSend(
-      context, amount.toString(), humanizePubKey(contactPubKey), isRetry);
-  final Contact fromContact =
-      await ContactsCache().getContact(SharedPreferencesHelper().getPubKey());
-
+      context, amount.toString(), humanizeContact(fromPubKey, to), isRetry);
+  final Contact fromContact = await ContactsCache().getContact(fromPubKey);
   if (confirmed == null || !confirmed) {
     paymentCubit.sentFailed();
   } else {
-    final String response =
+    final PayResult result =
         await pay(to: contactPubKey, comment: comment, amount: amount);
     final Transaction tx = Transaction(
         type: TransactionType.pending,
@@ -42,8 +45,10 @@ Future<void> payWithRetry(BuildContext context, Contact to, double amount,
         to: to,
         amount: -amount * 100,
         comment: comment,
+        debugInfo:
+            'Node used: ${result.node != null ? result.node!.url : 'unknown'}',
         time: DateTime.now());
-    if (response == 'success') {
+    if (result.message == 'success') {
       paymentCubit.sent();
       if (!context.mounted) {
         return;
@@ -56,7 +61,7 @@ Future<void> payWithRetry(BuildContext context, Contact to, double amount,
         txCubit.addPendingTransaction(tx);
       } else {
         // Update the previously failed tx with an update time and type pending
-        txCubit.addUpdatePendingTransaction(tx);
+        txCubit.updatePendingTransaction(tx);
       }
     } else {
       /* this retry didn't work
@@ -66,19 +71,25 @@ Future<void> payWithRetry(BuildContext context, Contact to, double amount,
       if (!context.mounted) {
         return;
       }
-      final bool failedWithBalance =
-          response == 'insufficient balance' && weHaveBalance(context, amount);
+      final bool failedWithBalance = result.message == 'insufficient balance' &&
+          weHaveBalance(context, amount);
       showPayError(
           context,
           failedWithBalance
               ? tr('payment_error_retry')
               : tr('payment_error_desc', namedArgs: <String, String>{
                   // We try to translate the error, like "insufficient balance"
-                  'error': tr(response)
+                  'error': tr(result.message)
                 }));
-      txCubit
-          .insertPendingTransaction(tx.copyWith(type: TransactionType.failed));
-      context.read<BottomNavCubit>().updateIndex(3);
+      if (!isRetry) {
+        txCubit.insertPendingTransaction(
+            tx.copyWith(type: TransactionType.failed));
+        context.read<BottomNavCubit>().updateIndex(3);
+      } else {
+        // Update the previously failed tx with an update time and type pending
+        txCubit.updatePendingTransaction(
+            tx.copyWith(type: TransactionType.failed));
+      }
     }
   }
 }

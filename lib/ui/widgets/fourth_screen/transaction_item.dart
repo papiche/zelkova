@@ -16,17 +16,20 @@ import '../../ui_helpers.dart';
 import '../third_screen/contact_form.dart';
 
 class TransactionListItem extends StatelessWidget {
-  const TransactionListItem({super.key,
-    required this.pubKey,
-    required this.transaction,
-    required this.index,
-    this.onCancel});
+  const TransactionListItem(
+      {super.key,
+      required this.pubKey,
+      required this.transaction,
+      required this.index,
+      this.afterCancel,
+      this.afterRetry});
 
   final String pubKey;
   final Transaction transaction;
   final int index;
 
-  final VoidCallback? onCancel;
+  final VoidCallback? afterCancel;
+  final VoidCallback? afterRetry;
 
   @override
   Widget build(BuildContext context) {
@@ -36,15 +39,14 @@ class TransactionListItem extends StatelessWidget {
             _buildTransactionItem(context, transaction));
   }
 
-  Slidable _buildTransactionItem(BuildContext context,
-      Transaction transaction) {
+  Slidable _buildTransactionItem(
+      BuildContext context, Transaction transaction) {
     IconData? icon;
     Color? iconColor;
     String statusText;
 
     final String amountS =
-        '${transaction.amount < 0 ? "" : "+"}${formatKAmount(
-        context, transaction.amount)}';
+        '${transaction.amount < 0 ? "" : "+"}${formatKAmount(context, transaction.amount)}';
     statusText = tr('transaction_${transaction.type.name}');
     switch (transaction.type) {
       case TransactionType.pending:
@@ -73,24 +75,24 @@ class TransactionListItem extends StatelessWidget {
     final ContactsCubit contactsCubit = context.read<ContactsCubit>();
 
     return Slidable(
-      // Specify a key if the Slidable is dismissible.
+        // Specify a key if the Slidable is dismissible.
         key: ValueKey<int>(index),
         // The end action pane is the one at the right or the bottom side.
         startActionPane:
-        ActionPane(motion: const ScrollMotion(), children: <SlidableAction>[
-          if (isPending(transaction.type))
+            ActionPane(motion: const ScrollMotion(), children: <SlidableAction>[
+          if (transaction.isPending)
             SlidableAction(
               onPressed: (BuildContext c) {
                 context
                     .read<TransactionCubit>()
                     .removePendingTransaction(transaction);
-                onCancel!();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(tr('payment_canceled')),
                     duration: const Duration(seconds: 3),
                   ),
                 );
+                afterCancel!();
               },
               backgroundColor: deleteColor,
               foregroundColor: Colors.white,
@@ -104,12 +106,9 @@ class TransactionListItem extends StatelessWidget {
             if (transaction.type == TransactionType.failed)
               SlidableAction(
                 onPressed: (BuildContext c) async {
-                  await payWithRetry(context, transaction.to,
-                      transaction.amount, transaction.comment, true);
+                  await _retryFailed(context, transaction);
                 },
-                backgroundColor: Theme
-                    .of(context)
-                    .primaryColorDark,
+                backgroundColor: Theme.of(context).primaryColorDark,
                 foregroundColor: Colors.white,
                 icon: Icons.replay,
                 label: tr('retry_payment'),
@@ -138,97 +137,109 @@ class TransactionListItem extends StatelessWidget {
                     },
                   );
                 },
-                backgroundColor: Theme
-                    .of(context)
-                    .primaryColor,
+                backgroundColor: Theme.of(context).primaryColor,
                 foregroundColor: Colors.white,
                 icon: Icons.contacts,
                 label: tr('add_contact'),
               ),
           ],
         ),
-        child: ListTile(
-          leading: (icon != null)
-              ? Padding(
-              padding: const EdgeInsets.fromLTRB(10, 16, 0, 16),
-              child: Icon(
-                icon,
-                color: iconColor,
-              ))
-              : null,
-          tileColor: tileColor(index, context),
-          title: Row(
-            children: <Widget>[
-              const SizedBox(width: 8.0),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      statusText,
-                      style: const TextStyle(
-                        fontSize: 12.0,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    const SizedBox(height: 4.0),
-                    Text.rich(
-                      TextSpan(
-                        children: <InlineSpan>[
-                          WidgetSpan(
-                            child: Text(
-                              tr('transaction_from_to', namedArgs: <String,
-                                  String>{
-                                'from':
-                                humanizeContact(myPubKey, transaction.from),
-                                'to': humanizeContact(myPubKey, transaction.to)
-                              }),
-                              style: const TextStyle(
-                                fontSize: 14.0,
-                                // fontWeight: FontWeight.bold,
-                              ),
-                            ),
+        child: GestureDetector(
+            onLongPress: () => _retryFailed(context, transaction),
+            child: ListTile(
+              leading: (icon != null)
+                  ? Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 16, 0, 16),
+                      child: Icon(
+                        icon,
+                        color: iconColor,
+                      ))
+                  : null,
+              tileColor: tileColor(index, context),
+              title: Row(
+                children: <Widget>[
+                  const SizedBox(width: 8.0),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          statusText,
+                          style: const TextStyle(
+                            fontSize: 12.0,
+                            color: Colors.grey,
                           ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(height: 4.0),
+                        Text.rich(
+                          TextSpan(
+                            children: <InlineSpan>[
+                              WidgetSpan(
+                                child: Text(
+                                  tr('transaction_from_to',
+                                      namedArgs: <String, String>{
+                                        'from': humanizeContact(
+                                            myPubKey, transaction.from),
+                                        'to': humanizeContact(
+                                            myPubKey, transaction.to)
+                                      }),
+                                  style: const TextStyle(
+                                    fontSize: 14.0,
+                                    // fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
-          subtitle: Padding(
-            padding: const EdgeInsets.fromLTRB(8, 0, 0, 10),
-            child: Text(transaction.comment,
-                style: const TextStyle(
-                  fontStyle: FontStyle.italic,
-                  color: Colors.grey,
-                )),
-          ),
-          trailing: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              Text(
-                amountS,
-                style: TextStyle(
-                  // fontWeight: FontWeight.bold,
-                  color: transaction.type == TransactionType.received ||
-                      transaction.type == TransactionType.receiving
-                      ? Colors.blue
-                      : Colors.red,
-                ),
+              subtitle: Padding(
+                padding: const EdgeInsets.fromLTRB(8, 0, 0, 10),
+                child: Text(transaction.comment,
+                    style: const TextStyle(
+                      fontStyle: FontStyle.italic,
+                      color: Colors.grey,
+                    )),
               ),
-              const SizedBox(height: 4.0),
-              Text(
-                humanizeTime(transaction.time, context.locale.toString())!,
-                style: const TextStyle(
-                  fontSize: 12.0,
-                  color: Colors.grey,
-                ),
+              trailing: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  Text(
+                    amountS,
+                    style: TextStyle(
+                      // fontWeight: FontWeight.bold,
+                      color: transaction.type == TransactionType.received ||
+                              transaction.type == TransactionType.receiving
+                          ? Colors.blue
+                          : Colors.red,
+                    ),
+                  ),
+                  const SizedBox(height: 4.0),
+                  Text(
+                    humanizeTime(transaction.time, context.locale.toString())!,
+                    style: const TextStyle(
+                      fontSize: 12.0,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ));
+            )));
+  }
+
+  Future<void> _retryFailed(
+      BuildContext context, Transaction transaction) async {
+    await payWithRetry(
+        context: context,
+        to: transaction.to,
+        amount: transaction.amount / -100,
+        comment: transaction.comment,
+        isRetry: true);
+    afterRetry!();
   }
 }

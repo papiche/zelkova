@@ -19,6 +19,8 @@ abstract class _$TransactionCWProxy {
 
   Transaction to(Contact to);
 
+  Transaction debugInfo(String? debugInfo);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Transaction(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -32,6 +34,7 @@ abstract class _$TransactionCWProxy {
     DateTime? time,
     Contact? from,
     Contact? to,
+    String? debugInfo,
   });
 }
 
@@ -60,6 +63,9 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
   Transaction to(Contact to) => this(to: to);
 
   @override
+  Transaction debugInfo(String? debugInfo) => this(debugInfo: debugInfo);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Transaction(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -74,6 +80,7 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
     Object? time = const $CopyWithPlaceholder(),
     Object? from = const $CopyWithPlaceholder(),
     Object? to = const $CopyWithPlaceholder(),
+    Object? debugInfo = const $CopyWithPlaceholder(),
   }) {
     return Transaction(
       type: type == const $CopyWithPlaceholder() || type == null
@@ -100,6 +107,10 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
           ? _value.to
           // ignore: cast_nullable_to_non_nullable
           : to as Contact,
+      debugInfo: debugInfo == const $CopyWithPlaceholder()
+          ? _value.debugInfo
+          // ignore: cast_nullable_to_non_nullable
+          : debugInfo as String?,
     );
   }
 }
@@ -121,6 +132,7 @@ Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(
       time: DateTime.parse(json['time'] as String),
       from: Contact.fromJson(json['from'] as Map<String, dynamic>),
       to: Contact.fromJson(json['to'] as Map<String, dynamic>),
+      debugInfo: json['debugInfo'] as String?,
     );
 
 Map<String, dynamic> _$TransactionToJson(Transaction instance) =>
@@ -131,6 +143,7 @@ Map<String, dynamic> _$TransactionToJson(Transaction instance) =>
       'amount': instance.amount,
       'comment': instance.comment,
       'time': instance.time.toIso8601String(),
+      'debugInfo': instance.debugInfo,
     };
 
 const _$TransactionTypeEnumMap = {

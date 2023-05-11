@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ginkgo/data/models/contact.dart';
+import 'package:ginkgo/ui/contacts_cache.dart';
 
 void main() {
   final Contact c = Contact(
@@ -12,6 +13,10 @@ void main() {
     notes: 'Some notes',
     name: 'Alice Smith',
   );
+
+  setUpAll(() {
+    ContactsCache().addContacts(<Contact>[c]);
+  });
 
   test('Serializing and deserializing Contact', () {
     final Map<String, dynamic> contactJson = c.toJson();
@@ -70,8 +75,10 @@ void main() {
       );
 
       const Contact contact2 = Contact(pubKey: 'pubKey1');
+      const Contact contact3 = Contact(pubKey: 'pubKey1');
 
-      final Contact mergedContact = contact1.merge(contact2);
+      final Contact mergedContact1st = contact1.merge(contact2);
+      final Contact mergedContact = mergedContact1st.merge(contact3);
 
       expect(mergedContact.nick, 'nick1');
       expect(mergedContact.pubKey, 'pubKey1');
@@ -79,5 +86,20 @@ void main() {
       expect(mergedContact.notes, 'notes1');
       expect(mergedContact.name, 'name1');
     });
+  });
+
+  test('Merge with empty contact in Contact cache', () async {
+    const Contact c2 = Contact(
+      pubKey: 'abcd1234',
+    );
+
+    ContactsCache().addContact(c2);
+    final Contact mergedContact = await ContactsCache().getContact('abcd1234');
+
+    expect(mergedContact.nick, 'Alice');
+    expect(mergedContact.pubKey, 'abcd1234');
+    expect(mergedContact.avatar, Uint8List.fromList(<int>[1, 2, 3]));
+    expect(mergedContact.notes, 'Some notes');
+    expect(mergedContact.name, 'Alice Smith');
   });
 }

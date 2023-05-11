@@ -55,8 +55,6 @@ class ContactsCache {
   static ContactsCache? _instance;
   final Map<String, List<Completer<Contact>>> _pendingRequests =
       <String, List<Completer<Contact>>>{};
-  static Duration duration =
-      kReleaseMode ? const Duration(days: 3) : const Duration(hours: 5);
 
   final String _boxName = 'contacts_cache';
 
@@ -67,7 +65,7 @@ class ContactsCache {
     return _box!;
   }
 
-  Future<Contact> getContact(String pubKey, [bool debug = false]) async {
+  Future<Contact> getContact(String pubKey, [bool debug = true]) async {
     Contact? cachedContact;
     try {
       cachedContact = await _retrieveContact(pubKey);
@@ -156,14 +154,11 @@ class ContactsCache {
     if (record != null) {
       final Map<String, dynamic> typedRecord =
           Map<String, dynamic>.from(record as Map<dynamic, dynamic>);
-      final DateTime timestamp =
-          DateTime.parse(typedRecord['timestamp'] as String);
-      final bool before = DateTime.now().isBefore(timestamp.add(duration));
-      if (before) {
-        final Contact contact = Contact.fromJson(
-            json.decode(typedRecord['data'] as String) as Map<String, dynamic>);
-        return contact;
-      }
+      // final DateTime timestamp =
+      // DateTime.parse(typedRecord['timestamp'] as String);
+      final Contact contact = Contact.fromJson(
+          json.decode(typedRecord['data'] as String) as Map<String, dynamic>);
+      return contact;
     }
     return null;
   }

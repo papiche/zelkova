@@ -10,7 +10,6 @@ import '../../logger.dart';
 import '../../pay_helper.dart';
 import '../../tutorial_keys.dart';
 import '../../ui_helpers.dart';
-import '../connectivity_widget_wrapper_wrapper.dart';
 import 'g1_textfield.dart';
 
 class PayForm extends StatefulWidget {
@@ -23,7 +22,7 @@ class PayForm extends StatefulWidget {
 class _PayFormState extends State<PayForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<FormFieldState<String>> _formCommentKey =
-      GlobalKey<FormFieldState<String>>();
+  GlobalKey<FormFieldState<String>>();
   final TextEditingController _commentController = TextEditingController();
   final ValueNotifier<String> _feedbackNotifier = ValueNotifier<String>('');
 
@@ -38,134 +37,143 @@ class _PayFormState extends State<PayForm> {
   Widget build(BuildContext context) {
     return BlocBuilder<PaymentCubit, PaymentState>(
         builder: (BuildContext context, PaymentState state) {
-      if (state.comment != null && _commentController.text != state.comment) {
-        _commentController.text = state.comment;
-      }
+          if (state.comment != null &&
+              _commentController.text != state.comment) {
+            _commentController.text = state.comment;
+          }
 
-      if (state.amount == null || state.amount == 0) {
-        _feedbackNotifier.value = '';
-      }
-      final ButtonStyle payBtnStyle = ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        foregroundColor: Colors.white,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        textStyle: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 16,
-        ),
-      );
-      final Widget payBtnText = Text(tr(
-          'g1_form_pay_send')); // + (!kReleaseMode ? ' ${state.status}' : ''));
-      return Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            G1PayAmountField(key: payAmountKey),
-            const SizedBox(height: 10.0),
-            TextFormField(
-              key: _formCommentKey,
-              inputFormatters: <TextInputFormatter>[
-                NoNewLineTextInputFormatter()
-              ],
-              controller: _commentController,
-              onChanged: (String? value) {
-                context.read<PaymentCubit>().setComment(value ?? '');
-              },
-              decoration: InputDecoration(
-                labelText: tr('g1_form_pay_desc'),
-                hintText: tr('g1_form_pay_hint'),
-                border: const OutlineInputBorder(),
-              ),
-              validator: (String? value) {
-                if (value != null && !basicEnglishCharsRegExp.hasMatch(value)) {
-                  return tr('valid_comment');
-                }
-                return null;
-              },
-              // Disallow autocomplete
-              autofillHints: const <String>[],
-            ),
-            const SizedBox(height: 10.0),
-            ConnectivityWidgetWrapperWrapper(
-                stacked: false,
-                offlineWidget: ElevatedButton(
-                  onPressed: null,
-                  style: payBtnStyle,
-                  child: _buildBtn(Text(tr('offline'))),
-                ),
-                child: ElevatedButton(
-                  key: paySentKey,
-                  onPressed: (!state.canBeSent() ||
-                          state.amount == null ||
-                          !_commentValidate() ||
-                          !_weHaveBalance(context, state.amount!))
-                      ? null
-                      : () async {
-                          try {
-                            await payWithRetry(
-                                context: context,
-                                to: state.contact!,
-                                amount: state.amount!,
-                                comment: state.comment);
-                          } on RetryException {
-                            // Here the transactions can be lost, so we must implement some manual retry use
-                            await payWithRetry(
-                                context: context,
-                                to: state.contact!,
-                                amount: state.amount!,
-                                comment: state.comment,
-                                useMempool: true);
-                          }
+          if (state.amount == null || state.amount == 0) {
+            _feedbackNotifier.value = '';
+          }
+          final bool sentDisabled = _onPressed(state, context) == null;
+          final Color sentColor =
+          sentDisabled ? Colors.grey : Theme
+              .of(context)
+              .primaryColor;
+          return Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                const SizedBox(height: 10.0),
+                G1PayAmountField(key: payAmountKey),
+                const SizedBox(height: 10.0),
+                Row(children: <Widget>[
+                  Expanded(
+                      child: TextFormField(
+                        key: _formCommentKey,
+                        inputFormatters: <TextInputFormatter>[
+                          NoNewLineTextInputFormatter()
+                        ],
+                        controller: _commentController,
+                        onChanged: (String? value) {
+                          context.read<PaymentCubit>().setComment(value ?? '');
                         },
-                  style: payBtnStyle,
-                  child: _buildBtn(payBtnText),
-                )),
-            const SizedBox(height: 8),
-            ValueListenableBuilder<String>(
-              valueListenable: _feedbackNotifier,
-              builder: (BuildContext context, String value, Widget? child) {
-                if (value.isNotEmpty) {
-                  return Row(
+                        decoration: InputDecoration(
+                          labelText: tr('g1_form_pay_desc'),
+                          hintText: tr('g1_form_pay_hint'),
+                          border: const OutlineInputBorder(),
+                        ),
+                        validator: (String? value) {
+                          if (value != null &&
+                              !basicEnglishCharsRegExp.hasMatch(value)) {
+                            return tr('valid_comment');
+                          }
+                          return null;
+                        },
+                        // Disallow autocomplete
+                        autofillHints: const <String>[],
+                      )),
+                  const SizedBox(width: 5.0),
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      const Icon(Icons.error_outline, color: Colors.red),
-                      const SizedBox(width: 4),
+                      Material(
+                        color: Colors.transparent,
+                        child: IgnorePointer(
+                          ignoring: sentDisabled,
+                          child: IconTheme(
+                            data: const IconThemeData(size: 40.0),
+                            child: IconButton(
+                              key: paySentKey,
+                              tooltip: tr('g1_form_pay_send'),
+                              icon: Icon(
+                                Icons.send,
+                                color: sentColor,
+                              ),
+                              onPressed: _onPressed(state, context),
+                              splashRadius: 20,
+                              splashColor: Colors.white.withOpacity(0.5),
+                              highlightColor: Colors.transparent,
+                            ),
+                          ),
+                        ),
+                      ),
                       Text(
-                        capitalize(value),
-                        style: const TextStyle(color: Colors.red),
+                        tr('g1_form_pay_send'),
+                        style: TextStyle(fontSize: 12, color: sentColor),
                       ),
                     ],
-                  );
-                } else {
-                  return const SizedBox.shrink();
-                }
-              },
+                  ),
+
+                ]),
+                const SizedBox(height: 10.0),
+                ValueListenableBuilder<String>(
+                  valueListenable: _feedbackNotifier,
+                  builder: (BuildContext context, String value, Widget? child) {
+                    if (value.isNotEmpty) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          const Icon(Icons.error_outline, color: Colors.red),
+                          const SizedBox(width: 4),
+                          Text(
+                            capitalize(value),
+                            style: const TextStyle(color: Colors.red),
+                          ),
+                        ],
+                      );
+                    } else {
+                      return const SizedBox.shrink();
+                    }
+                  },
+                ),
+              ],
             ),
-          ],
-        ),
-      );
-    });
+          );
+        });
   }
 
-  Row _buildBtn(Widget payBtnText) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        const Icon(Icons.send),
-        const SizedBox(width: 10),
-        payBtnText,
-      ],
-    );
+  Future<void> Function()? _onPressed(PaymentState state,
+      BuildContext context) {
+    return (!state.canBeSent() ||
+        state.amount == null ||
+        !_commentValidate() ||
+        !_weHaveBalance(context, state.amount!))
+        ? null
+        : () async {
+      try {
+        await payWithRetry(
+            context: context,
+            to: state.contact!,
+            amount: state.amount!,
+            comment: state.comment);
+      } on RetryException {
+        // Here the transactions can be lost, so we must implement some manual retry use
+        await payWithRetry(
+            context: context,
+            to: state.contact!,
+            amount: state.amount!,
+            comment: state.comment,
+            useMempool: true);
+      }
+    };
   }
 
   bool _commentValidate() {
     final String currentComment = _commentController.value.text;
     final bool val = (currentComment != null &&
-            basicEnglishCharsRegExp.hasMatch(currentComment)) ||
+        basicEnglishCharsRegExp.hasMatch(currentComment)) ||
         currentComment.isEmpty;
     logger('Validating comment: $val');
     if (_formKey.currentState != null) {
@@ -188,7 +196,9 @@ class _PayFormState extends State<PayForm> {
   }
 
   double getBalance(BuildContext context) =>
-      context.read<TransactionCubit>().balance;
+      context
+          .read<TransactionCubit>()
+          .balance;
 }
 
 class RetryException implements Exception {
@@ -197,12 +207,12 @@ class RetryException implements Exception {
 
 class NoNewLineTextInputFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue,
+      TextEditingValue newValue) {
     final int cursorPosition = newValue.selection.baseOffset;
     final String newText = newValue.text.replaceAll('\n', '');
     final TextSelection newSelection =
-        TextSelection.collapsed(offset: cursorPosition);
+    TextSelection.collapsed(offset: cursorPosition);
     return TextEditingValue(
       text: newText,
       selection: newSelection,

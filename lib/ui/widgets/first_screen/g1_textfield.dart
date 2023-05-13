@@ -1,10 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
+import '../../../data/models/app_cubit.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/payment_state.dart';
+import '../../logger.dart';
 import '../../ui_helpers.dart';
 
 class G1PayAmountField extends StatefulWidget {
@@ -31,48 +33,64 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
                 TextPosition(offset: _controller.text.length));
           }
         }
+        final bool expertMode = context.read<AppCubit>().isExpertMode;
         return Form(
             key: _formKey,
             child: TextFormField(
-              controller: _controller,
-              keyboardType: const TextInputType.numberWithOptions(
-                decimal: true,
-              ),
-              validator: validateDecimal,
-              // Disallow autocomplete
-              autofillHints: const <String>[],
-              onEditingComplete: () {},
-              onChanged: (String? value) {
-                final bool? validate = _formKey.currentState?.validate();
-                if (validate != null &&
-                    value != null &&
-                    value.isNotEmpty &&
-                    validate) {
-                  context.read<PaymentCubit>().selectAmount(
-                      parseToDoubleLocalized(
-                          locale: context.locale.toLanguageTag(),
-                          number: value));
-                } else {
-                  context.read<PaymentCubit>().selectAmount(
-                      value == null ? null : double.tryParse(value));
-                }
-              },
-              decoration: InputDecoration(
-                labelText: tr('g1_amount'),
-                hintText: tr('g1_amount_hint'),
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: SvgPicture.asset(
-                    colorFilter: ColorFilter.mode(
-                        Colors.purple.shade600, BlendMode.srcIn),
-                    'assets/img/gbrevedot.svg',
-                    width: 20.0,
-                    height: 20.0,
-                  ),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
                 ),
-                border: const OutlineInputBorder(),
-              ),
-            ));
+                validator: validateDecimal,
+                // Disallow autocomplete
+                autofillHints: const <String>[],
+                onEditingComplete: () {},
+                onChanged: (String? value) {
+                  final bool? validate = _formKey.currentState?.validate();
+                  if (validate != null &&
+                      value != null &&
+                      value.isNotEmpty &&
+                      validate) {
+                    context.read<PaymentCubit>().selectAmount(
+                        parseToDoubleLocalized(
+                            locale: context.locale.toLanguageTag(),
+                            number: value));
+                  } else {
+                    context.read<PaymentCubit>().selectAmount(
+                        value == null ? null : double.tryParse(value));
+                  }
+                },
+                decoration: InputDecoration(
+                    labelText: tr('g1_amount'),
+                    hintText: tr('g1_amount_hint'),
+                    contentPadding: const EdgeInsets.fromLTRB(16, 0, 10, 0),
+                    border: const OutlineInputBorder(),
+                    suffix: Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: ToggleSwitch(
+                        minWidth: 40.0,
+                        // animate: true,
+                        radiusStyle: true,
+                        // initialLabelIndex: 0,
+                        cornerRadius: 20.0,
+                        activeFgColor: Colors.white,
+                        inactiveBgColor: Colors.grey[400],
+                        inactiveFgColor: Colors.white,
+                        totalSwitches: expertMode ? 2 : 1,
+                        labels: expertMode && inDevelopment
+                            ? const <String>['Ğ1', 'DU']
+                            : const <String>['Ğ1'],
+                        iconSize: 30.0,
+                        borderWidth: 2.0,
+                        // borderColor: [Colors.blueGrey],
+                        activeBgColors: <List<Color>>[
+                          <Color>[Theme.of(context).primaryColor],
+                          <Color>[Theme.of(context).primaryColor],
+                        ],
+                        onToggle: (int? index) {
+                          logger('switched to: $index');
+                        },
+                      ),
+                    ))));
       });
 
   String? validateDecimal(String? value) {

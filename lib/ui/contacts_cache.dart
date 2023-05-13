@@ -65,7 +65,7 @@ class ContactsCache {
     return _box!;
   }
 
-  Future<Contact> getContact(String pubKey, [bool debug = true]) async {
+  Future<Contact> getContact(String pubKey, [bool debug = false]) async {
     Contact? cachedContact;
     try {
       cachedContact = await _retrieveContact(pubKey);

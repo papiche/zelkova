@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
+import '../../g1/currency.dart';
 import 'app_state.dart';
 
 class AppCubit extends HydratedCubit<AppState> {
@@ -16,6 +17,8 @@ class AppCubit extends HydratedCubit<AppState> {
   bool get isWarningBrowserViewed => state.warningBrowserViewed;
 
   bool get isExpertMode => state.expertMode;
+
+  Currency get currency => state.currency;
 
   void introViewed() {
     emit(state.copyWith(introViewed: true));
@@ -50,5 +53,10 @@ class AppCubit extends HydratedCubit<AppState> {
 
   bool wasTutorialShown(String tutorialId) {
     return state.tutorials[tutorialId] ?? false;
+  }
+
+  void switchCurrency() {
+    emit(state.copyWith(
+        currency: state.currency == Currency.G1 ? Currency.DU : Currency.G1));
   }
 }

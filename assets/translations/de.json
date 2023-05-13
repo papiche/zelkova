@@ -16,7 +16,7 @@
     "app_name": "Ğinkgo",
     "send_g1": "Ğ1 überweisen",
     "g1_amount": "Zu überweisender Betrag",
-    "g1_amount_hint": "Zu überweisender Betrag in Ğ1",
+    "g1_amount_hint": "Zu überweisender Betrag in {currency}",
     "search_user_title": "Empfänger",
     "g1_form_pay_hint": "Eine Bemerkung anfügen (fakultativ)",
     "intro_1_description": "Mit dieser Brieftasche („Wallet“) können Sie einfach und sicher die freie Währung Ğ1 („June“) aufbewahren, überweisen und empfangen.",

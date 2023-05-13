@@ -1,5 +1,5 @@
 {
-  "g1_amount_hint": "Cantidade a enviar en Ğ1",
+  "g1_amount_hint": "Cantidade a enviar en {currency}",
   "bottom_nav_trd": "Contactos",
   "bottom_nav_frd": "Saldo",
   "bottom_nav_fifth": "Información",

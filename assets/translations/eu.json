@@ -144,7 +144,7 @@
   "bottom_nav_fifth": "Argibidea",
   "send_g1": "Ğ1 bidali",
   "g1_amount": "Bidaltzeko kopurua",
-  "g1_amount_hint": "Bidaltzeko Ğ1-ren kopurua",
+  "g1_amount_hint": "Bidaltzeko {currency}-ren kopurua",
   "g1_form_pay_send": "Bidali",
   "search_user_title": "Erabiltzaileak ordaintzeko",
   "search_user": "Bilatu (erabiltzaile edo gako publikoa)",

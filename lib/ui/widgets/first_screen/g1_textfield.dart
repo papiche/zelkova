@@ -6,7 +6,7 @@ import 'package:toggle_switch/toggle_switch.dart';
 import '../../../data/models/app_cubit.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/payment_state.dart';
-import '../../logger.dart';
+import '../../../g1/currency.dart';
 import '../../ui_helpers.dart';
 
 class G1PayAmountField extends StatefulWidget {
@@ -34,6 +34,9 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
           }
         }
         final bool expertMode = context.read<AppCubit>().isExpertMode;
+        final bool enableCurrencies = expertMode && inDevelopment;
+        final Currency currentCurrency =
+            enableCurrencies ? context.watch<AppCubit>().currency : Currency.G1;
         return Form(
             key: _formKey,
             child: TextFormField(
@@ -61,8 +64,10 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
                 },
                 decoration: InputDecoration(
                     labelText: tr('g1_amount'),
-                    hintText: tr('g1_amount_hint'),
-                    contentPadding: const EdgeInsets.fromLTRB(16, 0, 10, 0),
+                    hintText: 'g1_amount_hint'.tr(namedArgs: <String, String>{
+                      'currency': currentCurrency.name()
+                    }),
+                    contentPadding: const EdgeInsets.fromLTRB(16, 0, 10, 10),
                     border: const OutlineInputBorder(),
                     suffix: Padding(
                       padding: const EdgeInsets.only(bottom: 20),
@@ -70,24 +75,28 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
                         minWidth: 40.0,
                         // animate: true,
                         radiusStyle: true,
-                        // initialLabelIndex: 0,
+                        initialLabelIndex: enableCurrencies
+                            ? currentCurrency == Currency.G1
+                                ? 0
+                                : 1
+                            : 0,
                         cornerRadius: 20.0,
-                        activeFgColor: Colors.white,
+                        activeFgColor: Colors.black,
                         inactiveBgColor: Colors.grey[400],
                         inactiveFgColor: Colors.white,
-                        totalSwitches: expertMode ? 2 : 1,
-                        labels: expertMode && inDevelopment
+                        totalSwitches: enableCurrencies ? 2 : 1,
+                        labels: enableCurrencies
                             ? const <String>['Ğ1', 'DU']
                             : const <String>['Ğ1'],
                         iconSize: 30.0,
-                        borderWidth: 2.0,
-                        // borderColor: [Colors.blueGrey],
-                        activeBgColors: <List<Color>>[
-                          <Color>[Theme.of(context).primaryColor],
-                          <Color>[Theme.of(context).primaryColor],
+                        borderWidth: 1.0,
+                        borderColor: const <Color>[Colors.grey],
+                        activeBgColors: const <List<Color>>[
+                          <Color>[Color(0xFFFFD949)],
+                          <Color>[Color(0xFFFFD949)],
                         ],
                         onToggle: (int? index) {
-                          logger('switched to: $index');
+                          context.read<AppCubit>().switchCurrency();
                         },
                       ),
                     ))));

@@ -10,7 +10,7 @@
   "bottom_nav_fifth": "Información",
   "send_g1": "Enviar Ğ1",
   "g1_amount": "Monto a enviar",
-  "g1_amount_hint": "Monto a enviar en Ğ1",
+  "g1_amount_hint": "Monto a enviar en {currency}",
   "g1_form_pay_send": "Enviar",
   "search_user_title": "Usuario a pagar",
   "search_user": "Buscar (usuari@ o clave pública)",

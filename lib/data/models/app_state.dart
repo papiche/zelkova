@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../g1/currency.dart';
 import 'is_json_serializable.dart';
 
 part 'app_state.g.dart';
@@ -12,8 +13,10 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
       this.warningViewed = false,
       this.warningBrowserViewed = false,
       this.expertMode = false,
+      Currency? currency,
       Map<String, bool>? tutorials})
-      : tutorials = tutorials ?? <String, bool>{};
+      : tutorials = tutorials ?? <String, bool>{},
+        currency = currency ?? Currency.G1;
 
   factory AppState.fromJson(Map<String, dynamic> json) =>
       _$AppStateFromJson(json);
@@ -22,6 +25,7 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
   final bool warningViewed;
   final bool warningBrowserViewed;
   final bool expertMode;
+  final Currency currency;
   final Map<String, bool> tutorials;
 
   AppState copyWith(
@@ -29,12 +33,14 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
       bool? warningViewed,
       bool? warningBrowserViewed,
       bool? expertMode,
+      Currency? currency,
       Map<String, bool>? tutorials}) {
     return AppState(
         introViewed: introViewed ?? this.introViewed,
         warningViewed: warningViewed ?? this.warningViewed,
         warningBrowserViewed: warningBrowserViewed ?? this.warningBrowserViewed,
         expertMode: expertMode ?? this.expertMode,
+        currency: currency ?? this.currency,
         tutorials: tutorials ?? this.tutorials);
   }
 
@@ -50,6 +56,7 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
         warningViewed,
         expertMode,
         warningBrowserViewed,
+        currency,
         tutorials
       ];
 }

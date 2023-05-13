@@ -108,7 +108,7 @@
   "bottom_nav_second": "Ricevi",
   "send_g1": "Invia Ğ1",
   "g1_amount": "Importo da inviare",
-  "g1_amount_hint": "Quantità di Ğ1 da inviare",
+  "g1_amount_hint": "Quantità di {currency} da inviare",
   "g1_form_pay_send": "Invia",
   "search_user_title": "Utente da pagare",
   "search_user": "Cerca (utente o chiave pubblica)",

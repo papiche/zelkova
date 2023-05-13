@@ -54,7 +54,7 @@
   "bottom_nav_frd": "Balanço",
   "send_g1": "Enviar Ğ1",
   "g1_amount": "Montante a enviar",
-  "g1_amount_hint": "Montante a enviar em Ğ1",
+  "g1_amount_hint": "Montante a enviar em {currency}",
   "g1_form_pay_send": "Enviar",
   "search_user_title": "Utilizador a pagar",
   "search_user": "Pesquisa (utilizador ou chave pública)",

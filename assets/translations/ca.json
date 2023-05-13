@@ -10,7 +10,7 @@
   "bottom_nav_fifth": "Informació",
   "send_g1": "Envia Ğ1",
   "g1_amount": "Quantitat a enviar",
-  "g1_amount_hint": "Quantitat a enviar en Ğ1",
+  "g1_amount_hint": "Quantitat a enviar en {currency}",
   "g1_form_pay_send": "Envia",
   "search_user_title": "Usuari a pagar",
   "search_user": "Buscar (usuari o clau pública)",

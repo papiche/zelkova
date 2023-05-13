@@ -21,6 +21,6 @@
   "search_user": "Güetar (usuario o llave pública)",
   "intro_1_description": "Con esta cartera, tú podrás guardar, mandar, y recibir moneda Ğ1 (conocía como 'june').",
   "intro_2_title": "Una moneda dixital libre creada pa la gente y por la xente",
-  "g1_amount_hint": "Cantidad a mandai en Ğ1",
+  "g1_amount_hint": "Cantidad a mandai en {currency}",
   "intro_2_description": "Ğ1 nun depende de nengun gobierno o corporación y ye eco-responsable( baxu consumu de enerxía), transparente y buena con too."
 }

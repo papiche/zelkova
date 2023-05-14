@@ -122,7 +122,7 @@
   "reloading_nodes": "Rechargement {type} des nœuds",
   "yes_import": "J'EN SUIS SÛR, IMPORTEZ-LE",
   "wallet_imported": "Portefeuille importé correctement",
-  "please_confirm_sent_desc": "Veuillez confirmer que vous souhaitez envoyer {amount} Ğ1 à {to}",
+  "please_confirm_sent_desc": "Veuillez confirmer que vous souhaitez envoyer {amount} {currency} à {to}",
   "import_config_desc_danger": "Cela écrasera votre portefeuille actuel (qui contient des fonds !) avec le portefeuille importé, et vous risquez de perdre ces fonds",
   "faq_1_desc": "Non, pour des raisons de sécurité, nous ne permettons pas l'importation de comptes Cesium. Il s'agit d'un portefeuille de poche qui s'appuie sur la sécurité de base de votre appareil mobile et que vous pouvez utiliser pour transférer des fonds ou recevoir des paiements rapidement dans le cadre d'une utilisation quotidienne. En outre, il n'est pas conçu pour offrir des fonctionnalités d'adhésion de Cesium.",
   "faq_2_desc": "Il est aussi sûr que de garder un portefeuille ou un sac à main dans sa poche. En d'autres termes, vous utilisez une carte bancaire ordinaire en la sortant de votre poche et en entrant un mot de passe à quatre chiffres. Avec ce portefeuille Ğ1, c'est à peu près la même chose. Vous sortez votre téléphone, vous le déverrouillez généralement à l'aide d'un code PIN à quatre chiffres et vous pouvez ensuite utiliser ce portefeuille. Vous devez donc être aussi prudent que vous l'êtes avec vos portefeuilles et sacs à main physiques. Si vous supprimez ce navigateur ou cette application ou si vous perdez votre appareil mobile, vous risquez de perdre vos fonds et de ne pas pouvoir les récupérer (sauf si vous disposez d'une copie de sauvegarde exportée de votre portefeuille).",

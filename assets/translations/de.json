@@ -60,7 +60,7 @@
     "enter_a_positive_number": "Geben Sie eine positive Zahl an",
     "payment_successful": "Bezahlung getätigt!",
     "please_confirm_sent": "Sind Sie sich sicher?",
-    "please_confirm_sent_desc": "Bitte bestätigen Sie, dass Sie {amount} Ğ1 an {to} überwiesen wollen",
+    "please_confirm_sent_desc": "Bitte bestätigen Sie, dass Sie {amount} {currency} an {to} überwiesen wollen",
     "yes_sent": "JA, BITTE ÜBERWEISEN",
     "receive_g1": "Ğ1 empfangen",
     "insufficient balance": "Hoppla, der Saldo ist nicht ausreichend, um das zu bezahlen",

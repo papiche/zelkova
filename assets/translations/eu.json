@@ -9,7 +9,7 @@
   "notification_open": "IREKI",
   "notification_new_payment_title": "Ordainketa berria jaso da",
   "payment_successful": "Ordainketa bidalita!",
-  "please_confirm_sent_desc": "Baiezta ezazu {amount} Ğ1 {to}-ri bidali nahi duzula",
+  "please_confirm_sent_desc": "Baiezta ezazu {amount} {currency} {to}-ri bidali nahi duzula",
   "faq_2_desc": "Poltsikoan zorro bat edo poltsa bat eramatea bezain segurua da. Beste era batera esanda, ohiko banku-txartel bat erabiltzen duzu poltsikotik atera eta lau digituko pasahitza sartuz. Ğ1 zorro honekin, ia gauza bera da. Telefonoa ateratzen duzu, normalean lau digituko PIN batekin desblokeatuko duzu eta, ondoren, zorro hau erabil dezakezu. Hori dela eta, zure zorro eta polts fisikoekin bezain zuhur ibili beharko zenuke. Arakatzaile edo aplikazio hau ezabatzen baduzu edo zure gailu mugikorra galtzen baduzu, baliteke funtsak galtzea eta ezin izango dituzu berreskuratu (zure zorroaren babeskopia esportatutako kopia bat ez baduzu behintzat).",
   "faq_4_title": "Zergatik erabili kreditu-txartel bat eta txartel irakurgailu bat bezain literala?",
   "error_installing_desktop": "Errore bat gertatu da Ğ1nkgo zure mahaigainean instalatzean: (error: {error})",

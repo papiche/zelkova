@@ -13,7 +13,9 @@ import '../../../data/models/transaction_cubit.dart';
 import '../../../data/models/transaction_type.dart';
 import '../../../g1/api.dart';
 import '../../../shared_prefs.dart';
+import '../data/models/app_cubit.dart';
 import '../data/models/bottom_nav_cubit.dart';
+import '../g1/currency.dart';
 import 'contacts_cache.dart';
 import 'logger.dart';
 import 'ui_helpers.dart';
@@ -24,15 +26,18 @@ Future<void> payWithRetry(
     required double amount,
     required String comment,
     bool isRetry = false,
-    bool useMempool = false}) async {
+    bool useMempool = false,
+    required bool isG1,
+    required double currentUd}) async {
   logger('Trying to pay state with useMempool: $useMempool');
   final TransactionCubit txCubit = context.read<TransactionCubit>();
   final PaymentCubit paymentCubit = context.read<PaymentCubit>();
+  final AppCubit appCubit = context.read<AppCubit>();
   paymentCubit.sending();
   final String fromPubKey = SharedPreferencesHelper().getPubKey();
   final String contactPubKey = to.pubKey;
-  final bool? confirmed = await _confirmSend(
-      context, amount.toString(), humanizeContact(fromPubKey, to), isRetry);
+  final bool? confirmed = await _confirmSend(context, amount.toString(),
+      humanizeContact(fromPubKey, to), isRetry, appCubit.currency);
   final Contact fromContact = await ContactsCache().getContact(fromPubKey);
   if (confirmed == null || !confirmed) {
     paymentCubit.sentFailed();
@@ -103,8 +108,8 @@ bool weHaveBalance(BuildContext context, double amount) {
 double getBalance(BuildContext context) =>
     context.read<TransactionCubit>().balance;
 
-Future<bool?> _confirmSend(
-    BuildContext context, String amount, String to, bool isRetry) async {
+Future<bool?> _confirmSend(BuildContext context, String amount, String to,
+    bool isRetry, Currency currency) async {
   return showDialog<bool>(
     context: context,
     builder: (BuildContext context) {
@@ -114,7 +119,11 @@ Future<bool?> _confirmSend(
             isRetry
                 ? 'please_confirm_retry_sent_desc'
                 : 'please_confirm_sent_desc',
-            namedArgs: <String, String>{'amount': amount, 'to': to})),
+            namedArgs: <String, String>{
+              'amount': amount,
+              'to': to,
+              'currency': currency.name()
+            })),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),

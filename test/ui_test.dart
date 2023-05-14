@@ -28,4 +28,52 @@ void main() {
           reason: 'Failed $text');
     }
   });
+
+  test('Valid decimal number - en_US', () {
+    final String? result =
+        validateDecimal(sep: '.', locale: 'en_US', amount: '123.45');
+    expect(result, null);
+  });
+
+  test('Valid decimal number - es_ES', () {
+    final String? result =
+        validateDecimal(sep: ',', locale: 'es_ES', amount: '123,45');
+    expect(result, null);
+  });
+
+  test('Empty amount - en_US', () {
+    final String? result =
+        validateDecimal(sep: '.', locale: 'en_US', amount: '');
+    expect(result, null);
+  });
+
+  test('Amount starts with separator - es_ES', () {
+    final String? result =
+        validateDecimal(sep: ',', locale: 'es_ES', amount: ',45');
+    expect(result, null);
+  });
+
+  test('Negative number - en_US', () {
+    final String? result =
+        validateDecimal(sep: '.', locale: 'en_US', amount: '-123.45');
+    expect(result, 'enter_a_positive_number');
+  });
+
+  test('Invalid number - es_ES', () {
+    final String? result =
+        validateDecimal(sep: ',', locale: 'es_ES', amount: '12a,45');
+    expect(result, 'enter_a_valid_number');
+  });
+
+  test('Invalid number - es_ES', () {
+    final String? result =
+        validateDecimal(sep: ',', locale: 'es_ES', amount: '0.45');
+    expect(result, 'enter_a_valid_number');
+  });
+
+  test('Invalid number - en', () {
+    final String? result =
+        validateDecimal(sep: '.', locale: 'en', amount: '0,45');
+    expect(result, 'enter_a_valid_number');
+  });
 }

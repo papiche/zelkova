@@ -20,11 +20,13 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
   final TextEditingController _controller = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late String sep;
+  late String locale;
 
   @override
   Widget build(BuildContext context) => BlocBuilder<PaymentCubit, PaymentState>(
           builder: (BuildContext context, PaymentState state) {
         sep = decimalSep(context);
+        locale = currentLocale(context);
         if (state.amount != null) {
           final String amountFormatted = localizeNumber(context, state.amount!);
           if (_controller.text != amountFormatted) {
@@ -43,7 +45,7 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
                 ),
-                validator: validateDecimal,
+                validator: validateDecimalAndFixInitialSep,
                 // Disallow autocomplete
                 autofillHints: const <String>[],
                 onEditingComplete: () {},
@@ -102,26 +104,13 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
                     ))));
       });
 
-  String? validateDecimal(String? value) {
+  String? validateDecimalAndFixInitialSep(String? value) {
     if (_controller.text.startsWith(sep)) {
       _controller.text = '0${_controller.text}';
       _controller.selection = TextSelection.fromPosition(
           TextPosition(offset: _controller.text.length));
       value = _controller.text;
     }
-    final NumberFormat format =
-        NumberFormat.decimalPattern(context.locale.toString());
-    if (value == null || value.isEmpty || value.startsWith(sep)) {
-      return null;
-    }
-    try {
-      final num n = format.parse(value);
-      if (n < 0) {
-        return tr('enter_a_positive_number');
-      }
-    } catch (e) {
-      return tr('enter_a_valid_number');
-    }
-    return null;
+    return validateDecimal(sep: sep, locale: locale, amount: value);
   }
 }

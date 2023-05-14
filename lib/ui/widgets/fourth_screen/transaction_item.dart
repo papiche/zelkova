@@ -250,12 +250,11 @@ class TransactionListItem extends StatelessWidget {
                   )),
                   const SizedBox(height: 4.0),
                   Tooltip(
-                      message: DateFormat.yMd(context.locale.languageCode)
+                      message: DateFormat.yMd(currentLocale(context))
                           .add_Hm()
                           .format(transaction.time),
                       child: Text(
-                        humanizeTime(
-                            transaction.time, context.locale.toString())!,
+                        humanizeTime(transaction.time, currentLocale(context))!,
                         style: const TextStyle(
                           fontSize: 12.0,
                           color: Colors.grey,
@@ -273,6 +272,8 @@ class TransactionListItem extends StatelessWidget {
         to: transaction.to,
         amount: transaction.amount / -100,
         comment: transaction.comment,
+        isG1: isG1,
+        currentUd: currentUd,
         isRetry: true);
     afterRetry!();
   }

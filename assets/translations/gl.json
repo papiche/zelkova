@@ -73,7 +73,7 @@
   "payment_successful": "Pago enviado!",
   "payment_successful_desc": "A transacción farase efectiva nuns minutos.",
   "please_confirm_sent": "Estas seguro?",
-  "please_confirm_sent_desc": "Por favor confirma que queres enviar {amount} Ğ1 a {to}",
+  "please_confirm_sent_desc": "Por favor confirma que queres enviar {amount} {currency} a {to}",
   "receive_g1": "Recibe Xunas",
   "insufficient balance": "Saldo insuficiente para facer este pago",
   "language_switch_title": "Selecciona a túa lingua",

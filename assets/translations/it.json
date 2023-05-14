@@ -19,7 +19,7 @@
   "payment_successful": "Pagamento inviato!",
   "payment_successful_desc": "La transazione sarà eseguita tra pochi minuti.",
   "please_confirm_sent": "Sei sicuro?",
-  "please_confirm_sent_desc": "Conferma che vuoi inviare {amount} Ğ1 a {to}",
+  "please_confirm_sent_desc": "Conferma che vuoi inviare {amount} {currency} a {to}",
   "yes_sent": "SÍ, INVIA",
   "receive_g1": "Ricevi Ğ1",
   "insufficient balance": "Saldo insufficiente per pagare",

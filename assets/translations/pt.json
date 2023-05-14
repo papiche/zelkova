@@ -34,7 +34,7 @@
   "reloading_nodes": "Recarregamento de {type} nós",
   "import_config_desc": "Isto irá sobrescrever a sua carteira actual com a carteira importada",
   "payment_successful_desc": "A transacção será efectiva dentro de poucos minutos.",
-  "please_confirm_sent_desc": "Por favor confirme que deseja enviar {amount} Ğ1 para {to}",
+  "please_confirm_sent_desc": "Por favor confirme que deseja enviar {amount} {currency} para {to}",
   "transaction_received": "Recebido",
   "valid_comment": "O comentário não pode ter acentos ou vírgulas",
   "faq_0_desc": "Comece por oferecer os seus serviços nos mercados Ğ1, de modo a receber o seu primeiro rendimento. Se já tem Ğ1 numa conta Cesium, pode transferir alguns para esta carteira e utilizá-la para enviar e receber facilmente a moeda Ğ1.",

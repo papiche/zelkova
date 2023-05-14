@@ -93,7 +93,7 @@
   "wallet_imported": "Portemonnee correct geïmporteerd",
   "import_config_desc": "Hierdoor wordt je huidige portemonnee overschreven met de geïmporteerde",
   "enter_a_positive_number": "Vul een positief getal in",
-  "please_confirm_sent_desc": "Bevestig alsjeblieft dat je {amount} Ğ1 naar {to} toe wilt sturen",
+  "please_confirm_sent_desc": "Bevestig alsjeblieft dat je {amount} {currency} naar {to} toe wilt sturen",
   "error_installing_desktop": "Fout bij het installeren van Ğ1nkgo op je desktop: (fout: {error})",
   "install_desktop": "Installeer Ğ1nkgo op je desktop",
   "import_failed": "Importeren van portemonnee mislukt",

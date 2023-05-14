@@ -136,9 +136,6 @@ String formatAmount(
       useSymbol: useSymbol);
 }
 
-String currentLocale(BuildContext context) =>
-    Localizations.localeOf(context).toString();
-
 String formatAmountWithLocale(
     {required String locale,
     required double amount,
@@ -152,7 +149,6 @@ String formatAmountWithLocale(
 NumberFormat currentNumberFormat(
     {required bool useSymbol, required bool isG1, required String locale}) {
   final NumberFormat currencyFormatter = NumberFormat.currency(
-    // in English $10 is G110 ... confusing
     symbol: useSymbol ? currentCurrency(isG1) : '',
     locale: locale,
     decimalDigits: isG1 ? 2 : 4,
@@ -176,16 +172,19 @@ String formatKAmount(
         required bool useSymbol}) =>
     formatAmount(
         context: context,
-        amount: isG1 ? amount / 100 : ((amount / 100) / currentUd),
+        amount: convertAmount(isG1, amount, currentUd),
         isG1: isG1,
         useSymbol: useSymbol);
+
+double convertAmount(bool isG1, double amount, double currentUd) =>
+    isG1 ? amount / 100 : ((amount / 100) / currentUd);
 
 double parseToDoubleLocalized(
         {required String locale, required String number}) =>
     NumberFormat.decimalPattern(locale).parse(number).toDouble();
 
 String localizeNumber(BuildContext context, double amount) =>
-    NumberFormat.decimalPattern(context.locale.toString()).format(amount);
+    NumberFormat.decimalPattern(currentLocale(context)).format(amount);
 
 Future<Contact> contactFromResultSearch(Map<String, dynamic> record) async {
   final Map<String, dynamic> source = record['_source'] as Map<String, dynamic>;
@@ -220,7 +219,6 @@ Future<Uint8List?> resizeAvatar(Uint8List avatarBase64) async {
 
 final RegExp basicEnglishCharsRegExp =
     RegExp(r'^[ A-Za-z0-9\s.;:!?()\-_;!@&<>%]*$');
-// RegExp(r'^[a-zA-Z0-9-_:/;*\[\]()?!^\\+=@&~#{}|\<>%.]*$');
 
 void fetchTransactions(BuildContext context) {
   final AppCubit appCubit = context.read<AppCubit>();
@@ -381,7 +379,7 @@ double calculate({required String textInTerminal, required String decimalSep}) {
 }
 
 String decimalSep(BuildContext context) {
-  return NumberFormat.decimalPattern(context.locale.toString())
+  return NumberFormat.decimalPattern(currentLocale(context))
       .symbols
       .DECIMAL_SEP;
 }
@@ -407,4 +405,27 @@ bool isSymbolPlacementBefore(String pattern) {
   } else {
     return false;
   }
+}
+
+String currentLocale(BuildContext context) => context.locale.languageCode;
+
+String? validateDecimal(
+    {required String sep, required String locale, required String? amount}) {
+  final NumberFormat format = NumberFormat.decimalPattern(locale);
+  if (amount == null || amount.isEmpty || amount.startsWith(sep)) {
+    return null;
+  }
+  try {
+    final num n = format.parse(amount);
+    if (n < 0) {
+      return tr('enter_a_positive_number');
+    }
+    final String formattedAmount = format.format(n);
+    if (formattedAmount != amount) {
+      return tr('enter_a_valid_number');
+    }
+  } catch (e) {
+    return tr('enter_a_valid_number');
+  }
+  return null;
 }

@@ -80,7 +80,7 @@
   "enter_a_positive_number": "Posa un número més gran que 0",
   "payment_successful": "Pagament enviat!",
   "please_confirm_sent": "Estàs segur?",
-  "please_confirm_sent_desc": "Siusplau confirma que vols enviar {amount} Ğ1 a {to}",
+  "please_confirm_sent_desc": "Siusplau confirma que vols enviar {amount} {currency} a {to}",
   "yes_sent": "SÍ, ENVÍA-LES",
   "receive_g1": "Rebre Geunes",
   "insufficient balance": "No tens prou quartos per fer aquest pagament",

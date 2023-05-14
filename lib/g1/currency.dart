@@ -6,7 +6,7 @@ extension CurrencyExtension on Currency {
       case Currency.G1:
         return 'Ğ1';
       case Currency.DU:
-        return 'DUğ1';
+        return 'DU';
     }
   }
 }

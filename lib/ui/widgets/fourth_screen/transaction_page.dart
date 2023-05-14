@@ -48,6 +48,7 @@ class _TransactionsAndBalanceWidgetState
 
   final int _pendingPageSize = 30;
   final Cron cron = Cron();
+  static const double balanceFontSize = 36.0;
 
   @override
   void initState() {
@@ -141,10 +142,17 @@ class _TransactionsAndBalanceWidgetState
     final String myPubKey = SharedPreferencesHelper().getPubKey();
     final bool isG1 = appCubit.currency == Currency.G1;
     final double currentUd = appCubit.currentUd;
+    final String currentSymbol = currentCurrencyTrimmed(isG1);
+    final NumberFormat currentNumber = currentNumberFormat(
+        useSymbol: true, isG1: isG1, locale: currentLocale(context));
+    final bool isCurrencyBefore =
+        isSymbolPlacementBefore(currentNumber.symbols.CURRENCY_PATTERN);
+
     return BlocBuilder<TransactionCubit, TransactionState>(
         builder: (BuildContext context, TransactionState transBalanceState) {
       // final List<Transaction> transactions = transBalanceState.transactions;
       final double balance = transBalanceState.balance;
+
       return BackdropScaffold(
           appBar: BackdropAppBar(
             backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -190,14 +198,30 @@ class _TransactionsAndBalanceWidgetState
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: Center(
-                      child: Text(
-                    formatKAmount(context, balance, isG1, currentUd),
-                    style: TextStyle(
-                        fontSize: 36.0,
-                        color:
-                            balance == 0 ? Colors.lightBlue : Colors.lightBlue,
-                        fontWeight: FontWeight.bold),
-                  )),
+                      child: Text.rich(TextSpan(
+                    children: <InlineSpan>[
+                      if (isCurrencyBefore)
+                        currencyBalanceWidget(isG1, currentSymbol),
+                      if (isCurrencyBefore) separatorSpan(),
+                      TextSpan(
+                        text: formatKAmount(
+                            context: context,
+                            amount: balance,
+                            isG1: isG1,
+                            currentUd: currentUd,
+                            useSymbol: false),
+                        style: TextStyle(
+                            fontSize: balanceFontSize,
+                            color: balance == 0
+                                ? Colors.lightBlue
+                                : Colors.lightBlue,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      if (!isCurrencyBefore) separatorSpan(),
+                      if (!isCurrencyBefore)
+                        currencyBalanceWidget(isG1, currentSymbol),
+                    ],
+                  ))),
                 ),
                 // if (!kReleaseMode) TransactionChart(transactions: transactions)
               ],
@@ -234,7 +258,9 @@ class _TransactionsAndBalanceWidgetState
                               index: index,
                               transaction: tx,
                               isG1: isG1,
+                              currentSymbol: currentSymbol,
                               currentUd: currentUd,
+                              isCurrencyBefore: isCurrencyBefore,
                               afterRetry: () => _refresh(),
                               afterCancel: () => _refresh());
                         },
@@ -253,6 +279,8 @@ class _TransactionsAndBalanceWidgetState
                                 pubKey: myPubKey,
                                 currentUd: currentUd,
                                 isG1: isG1,
+                                isCurrencyBefore: isCurrencyBefore,
+                                currentSymbol: currentSymbol,
                                 index: index +
                                     (_pendingController.itemList != null
                                         ? _pendingController.itemList!.length
@@ -267,6 +295,38 @@ class _TransactionsAndBalanceWidgetState
                 ]),
           ));
     });
+  }
+
+  InlineSpan separatorSpan() {
+    return const WidgetSpan(
+      child: SizedBox(width: 7),
+    );
+  }
+
+  InlineSpan currencyBalanceWidget(bool isG1, String currentSymbol) {
+    return TextSpan(children: <InlineSpan>[
+      TextSpan(
+        text: currentSymbol,
+        style: const TextStyle(
+          fontSize: balanceFontSize,
+          fontWeight: FontWeight.w500,
+          color: Colors.deepPurple,
+        ),
+      ),
+      if (!isG1)
+        WidgetSpan(
+            child: Transform.translate(
+                offset: const Offset(2, 16),
+                child: const Text(
+                  'Ğ1',
+                  style: TextStyle(
+                    fontSize: balanceFontSize - 10,
+                    fontWeight: FontWeight.w500,
+                    // fontFeatures: <FontFeature>[FontFeature.subscripts()],
+                    color: Colors.deepPurple,
+                  ),
+                )))
+    ]);
   }
 
   Future<void> _refresh() {

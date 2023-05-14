@@ -101,11 +101,19 @@ class NotificationController {
         : tr('notification_new_sent_title');
     final String desc = from != null
         ? tr('notification_new_payment_desc', namedArgs: <String, String>{
-            'amount': formatAmountWithLocale(locale.languageCode, amount, isG1),
+            'amount': formatAmountWithLocale(
+                locale: locale.languageCode,
+                amount: amount,
+                isG1: isG1,
+                useSymbol: true),
             'from': from,
           })
         : tr('notification_new_sent_desc', namedArgs: <String, String>{
-            'amount': formatAmountWithLocale(locale.languageCode, amount, isG1),
+            'amount': formatAmountWithLocale(
+                locale: locale.languageCode,
+                amount: amount,
+                isG1: isG1,
+                useSymbol: true),
             'to': to!,
           });
     try {

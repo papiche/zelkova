@@ -124,25 +124,61 @@ bool bigScreen(BuildContext context) =>
 bool smallScreen(BuildContext context) =>
     MediaQuery.of(context).size.width <= smallScreenWidth;
 
-String formatAmount(BuildContext context, double amount, bool isG1) {
+String formatAmount(
+    {required BuildContext context,
+    required double amount,
+    required bool isG1,
+    required bool useSymbol}) {
   return formatAmountWithLocale(
-      Localizations.localeOf(context).toString(), amount, isG1);
+      locale: currentLocale(context),
+      amount: amount,
+      isG1: isG1,
+      useSymbol: useSymbol);
 }
 
-String formatAmountWithLocale(String locale, double amount, bool isG1) {
-  final NumberFormat currencyFormatter = NumberFormat.currency(
-    // in English $10 is G110 ... confusing
-    symbol: isG1 ? '${Currency.G1.name()} ' : '${Currency.DU.name()} ',
-    locale: locale,
-    decimalDigits: isG1 ? 2 : 4,
-  );
+String currentLocale(BuildContext context) =>
+    Localizations.localeOf(context).toString();
+
+String formatAmountWithLocale(
+    {required String locale,
+    required double amount,
+    required bool isG1,
+    required bool useSymbol}) {
+  final NumberFormat currencyFormatter =
+      currentNumberFormat(isG1: isG1, locale: locale, useSymbol: useSymbol);
   return currencyFormatter.format(amount);
 }
 
+NumberFormat currentNumberFormat(
+    {required bool useSymbol, required bool isG1, required String locale}) {
+  final NumberFormat currencyFormatter = NumberFormat.currency(
+    // in English $10 is G110 ... confusing
+    symbol: useSymbol ? currentCurrency(isG1) : '',
+    locale: locale,
+    decimalDigits: isG1 ? 2 : 4,
+  );
+  return currencyFormatter;
+}
+
+String currentCurrency(bool isG1) {
+  return isG1 ? '${Currency.G1.name()} ' : '${Currency.DU.name()} ';
+}
+
+String currentCurrencyTrimmed(bool isG1) {
+  return currentCurrency(isG1).trim();
+}
+
 String formatKAmount(
-        BuildContext context, double amount, bool isG1, double currentUd) =>
+        {required BuildContext context,
+        required double amount,
+        required bool isG1,
+        required double currentUd,
+        required bool useSymbol}) =>
     formatAmount(
-        context, isG1 ? amount / 100 : ((amount / 100) / currentUd), isG1);
+        context: context,
+        amount: isG1 ? amount / 100 : ((amount / 100) / currentUd),
+        isG1: isG1,
+        useSymbol: useSymbol);
 
 double parseToDoubleLocalized(
         {required String locale, required String number}) =>
@@ -361,3 +397,14 @@ final GlobalKey<ScaffoldMessengerState> globalMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
 
 const Color deleteColor = Color(0xFFFE4A49);
+
+bool isSymbolPlacementBefore(String pattern) {
+  final int symbolIndex = pattern.indexOf('\u00A4');
+  final int numberIndex = pattern.indexOf('#');
+
+  if (symbolIndex < numberIndex) {
+    return true;
+  } else {
+    return false;
+  }
+}

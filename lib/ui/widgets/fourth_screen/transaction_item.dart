@@ -23,6 +23,8 @@ class TransactionListItem extends StatelessWidget {
       required this.index,
       required this.isG1,
       required this.currentUd,
+      required this.currentSymbol,
+      required this.isCurrencyBefore,
       this.afterCancel,
       this.afterRetry});
 
@@ -31,6 +33,8 @@ class TransactionListItem extends StatelessWidget {
   final int index;
   final bool isG1;
   final double currentUd;
+  final String currentSymbol;
+  final bool isCurrencyBefore;
 
   final VoidCallback? afterCancel;
   final VoidCallback? afterRetry;
@@ -49,10 +53,15 @@ class TransactionListItem extends StatelessWidget {
     Color? iconColor;
     String statusText;
 
-    final amountWithSymbol =
-        formatKAmount(context, transaction.amount, isG1, currentUd);
+    final String amountWithSymbol = formatKAmount(
+        context: context,
+        amount: transaction.amount,
+        isG1: isG1,
+        currentUd: currentUd,
+        useSymbol: false);
+
     final String amountS =
-        '${transaction.amount < 0 ? "" : "+"}${amountWithSymbol}';
+        '${transaction.amount < 0 ? "" : "+"}$amountWithSymbol';
     statusText = tr('transaction_${transaction.type.name}');
     switch (transaction.type) {
       case TransactionType.pending:
@@ -219,16 +228,26 @@ class TransactionListItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  Text(
-                    amountS,
-                    style: TextStyle(
-                      // fontWeight: FontWeight.bold,
-                      color: transaction.type == TransactionType.received ||
-                              transaction.type == TransactionType.receiving
-                          ? Colors.blue
-                          : Colors.red,
-                    ),
-                  ),
+                  Text.rich(TextSpan(
+                    children: <InlineSpan>[
+                      if (isCurrencyBefore)
+                        currencyBalanceWidget(isG1, currentSymbol),
+                      if (isCurrencyBefore) separatorSpan(),
+                      TextSpan(
+                        text: amountS,
+                        style: TextStyle(
+                          // fontWeight: FontWeight.bold,
+                          color: transaction.type == TransactionType.received ||
+                                  transaction.type == TransactionType.receiving
+                              ? Colors.blue
+                              : Colors.red,
+                        ),
+                      ),
+                      if (!isCurrencyBefore) separatorSpan(),
+                      if (!isCurrencyBefore)
+                        currencyBalanceWidget(isG1, currentSymbol),
+                    ],
+                  )),
                   const SizedBox(height: 4.0),
                   Tooltip(
                       message: DateFormat.yMd(context.locale.languageCode)
@@ -257,4 +276,34 @@ class TransactionListItem extends StatelessWidget {
         isRetry: true);
     afterRetry!();
   }
+}
+
+WidgetSpan separatorSpan() {
+  return const WidgetSpan(
+    child: SizedBox(width: 3),
+  );
+}
+
+InlineSpan currencyBalanceWidget(bool isG1, String currentSymbol) {
+  return TextSpan(children: <InlineSpan>[
+    TextSpan(
+      text: currentSymbol,
+      style: const TextStyle(
+        color: Colors.black54,
+      ),
+    ),
+    if (!isG1)
+      WidgetSpan(
+          child: Transform.translate(
+              offset: const Offset(1, 4),
+              child: const Text(
+                'Ğ1',
+                style: TextStyle(
+                  fontSize: 12,
+                  // fontWeight: FontWeight.w500,
+                  // fontFeatures: <FontFeature>[FontFeature.subscripts()],
+                  color: Colors.black54,
+                ),
+              )))
+  ]);
 }

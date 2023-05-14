@@ -6,12 +6,14 @@ import 'package:tuple/tuple.dart';
 
 import '../../../g1/api.dart';
 import '../../../g1/transaction_parser.dart';
+import '../../g1/currency.dart';
 import '../../g1/g1_helper.dart';
 import '../../shared_prefs.dart';
 import '../../ui/logger.dart';
 import '../../ui/notification_controller.dart';
 import '../../ui/pay_helper.dart';
 import '../../ui/ui_helpers.dart';
+import 'app_cubit.dart';
 import 'contact.dart';
 import 'node.dart';
 import 'node_list_cubit.dart';
@@ -49,10 +51,12 @@ class TransactionCubit extends HydratedCubit<TransactionState> {
     emit(currentState.copyWith(pendingTransactions: newPendingTransactions));
   }
 
-  Future<List<Transaction>> fetchTransactions(NodeListCubit cubit,
+  Future<List<Transaction>> fetchTransactions(
+      NodeListCubit cubit, AppCubit appCubit,
       {int retries = 5, int? pageSize, String? cursor}) async {
     Tuple2<Map<String, dynamic>?, Node> txDataResult;
     bool success = false;
+    final bool isG1 = appCubit.currency == Currency.G1;
 
     for (int attempt = 0; attempt < retries; attempt++) {
       final String myPubKey = SharedPreferencesHelper().getPubKey();
@@ -78,6 +82,10 @@ class TransactionCubit extends HydratedCubit<TransactionState> {
         continue;
       }
       success = true;
+
+      if (newState.currentUd != null) {
+        appCubit.setUd(newState.currentUd!);
+      }
 
       logger(
           'Last received notification: ${newState.latestReceivedNotification.toIso8601String()})}');
@@ -192,7 +200,8 @@ class TransactionCubit extends HydratedCubit<TransactionState> {
           NotificationController.createNewNotification(
               tx.time.millisecondsSinceEpoch.toString(),
               amount: tx.amount / 100,
-              from: from.title);
+              from: from.title,
+              isG1: isG1);
           emit(newState.copyWith(latestReceivedNotification: tx.time));
         }
         if (tx.type == TransactionType.sent &&
@@ -202,7 +211,8 @@ class TransactionCubit extends HydratedCubit<TransactionState> {
           NotificationController.createNewNotification(
               tx.time.millisecondsSinceEpoch.toString(),
               amount: -tx.amount / 100,
-              to: to.title);
+              to: to.title,
+              isG1: isG1);
           emit(newState.copyWith(latestSentNotification: tx.time));
         }
       }

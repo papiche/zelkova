@@ -13,6 +13,8 @@ abstract class _$TransactionStateCWProxy {
 
   TransactionState balance(double balance);
 
+  TransactionState currentUd(double? currentUd);
+
   TransactionState lastChecked(DateTime lastChecked);
 
   TransactionState latestSentNotification(DateTime? latestSentNotification);
@@ -32,6 +34,7 @@ abstract class _$TransactionStateCWProxy {
     List<Transaction>? transactions,
     List<Transaction>? pendingTransactions,
     double? balance,
+    double? currentUd,
     DateTime? lastChecked,
     DateTime? latestSentNotification,
     DateTime? latestReceivedNotification,
@@ -55,6 +58,9 @@ class _$TransactionStateCWProxyImpl implements _$TransactionStateCWProxy {
 
   @override
   TransactionState balance(double balance) => this(balance: balance);
+
+  @override
+  TransactionState currentUd(double? currentUd) => this(currentUd: currentUd);
 
   @override
   TransactionState lastChecked(DateTime lastChecked) =>
@@ -84,6 +90,7 @@ class _$TransactionStateCWProxyImpl implements _$TransactionStateCWProxy {
     Object? transactions = const $CopyWithPlaceholder(),
     Object? pendingTransactions = const $CopyWithPlaceholder(),
     Object? balance = const $CopyWithPlaceholder(),
+    Object? currentUd = const $CopyWithPlaceholder(),
     Object? lastChecked = const $CopyWithPlaceholder(),
     Object? latestSentNotification = const $CopyWithPlaceholder(),
     Object? latestReceivedNotification = const $CopyWithPlaceholder(),
@@ -105,6 +112,10 @@ class _$TransactionStateCWProxyImpl implements _$TransactionStateCWProxy {
           ? _value.balance
           // ignore: cast_nullable_to_non_nullable
           : balance as double,
+      currentUd: currentUd == const $CopyWithPlaceholder()
+          ? _value.currentUd
+          // ignore: cast_nullable_to_non_nullable
+          : currentUd as double?,
       lastChecked:
           lastChecked == const $CopyWithPlaceholder() || lastChecked == null
               ? _value.lastChecked
@@ -147,6 +158,7 @@ TransactionState _$TransactionStateFromJson(Map<String, dynamic> json) =>
           .map((e) => Transaction.fromJson(e as Map<String, dynamic>))
           .toList(),
       balance: (json['balance'] as num).toDouble(),
+      currentUd: (json['currentUd'] as num?)?.toDouble(),
       lastChecked: DateTime.parse(json['lastChecked'] as String),
       latestSentNotification: json['latestSentNotification'] == null
           ? null
@@ -162,6 +174,7 @@ Map<String, dynamic> _$TransactionStateToJson(TransactionState instance) =>
       'transactions': instance.transactions,
       'pendingTransactions': instance.pendingTransactions,
       'balance': instance.balance,
+      'currentUd': instance.currentUd,
       'lastChecked': instance.lastChecked.toIso8601String(),
       'latestSentNotification':
           instance.latestSentNotification.toIso8601String(),

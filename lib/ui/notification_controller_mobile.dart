@@ -141,17 +141,20 @@ class NotificationController {
   ///  *********************************************
   ///
   static Future<void> createNewNotification(String id,
-      {required double amount, String? to, String? from}) async {
+      {required double amount,
+      String? to,
+      String? from,
+      required bool isG1}) async {
     final String title = from != null
         ? tr('notification_new_payment_title')
         : tr('notification_new_sent_title');
     final String desc = from != null
         ? tr('notification_new_payment_desc', namedArgs: <String, String>{
-            'amount': formatAmountWithLocale(locale.languageCode, amount),
+            'amount': formatAmountWithLocale(locale.languageCode, amount, isG1),
             'from': from,
           })
         : tr('notification_new_sent_desc', namedArgs: <String, String>{
-            'amount': formatAmountWithLocale(locale.languageCode, amount),
+            'amount': formatAmountWithLocale(locale.languageCode, amount, isG1),
             'to': to!,
           });
     if (kIsWeb) {

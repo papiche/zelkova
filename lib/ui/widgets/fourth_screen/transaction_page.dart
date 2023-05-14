@@ -9,11 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
+import '../../../data/models/app_cubit.dart';
 import '../../../data/models/node_list_cubit.dart';
 import '../../../data/models/transaction.dart';
 import '../../../data/models/transaction_cubit.dart';
 import '../../../data/models/transaction_state.dart';
 import '../../../data/models/transactions_bloc.dart';
+import '../../../g1/currency.dart';
 import '../../../shared_prefs.dart';
 import '../../logger.dart';
 import '../../tutorial_keys.dart';
@@ -34,6 +36,7 @@ class _TransactionsAndBalanceWidgetState
   final ScrollController _transScrollController = ScrollController();
   final TransactionsBloc _bloc = TransactionsBloc();
   late StreamSubscription<TransactionsState> _blocListingStateSubscription;
+  late AppCubit appCubit;
   late NodeListCubit nodeListCubit;
   late TransactionCubit transCubit;
 
@@ -49,9 +52,10 @@ class _TransactionsAndBalanceWidgetState
   @override
   void initState() {
     // Remove in the future
+    appCubit = context.read<AppCubit>();
     transCubit = context.read<TransactionCubit>();
     nodeListCubit = context.read<NodeListCubit>();
-    _bloc.init(transCubit, nodeListCubit);
+    _bloc.init(transCubit, nodeListCubit, appCubit);
     _pagingController.addPageRequestListener((String? cursor) {
       _bloc.onPageRequestSink.add(cursor);
     });
@@ -135,6 +139,8 @@ class _TransactionsAndBalanceWidgetState
   @override
   Widget build(BuildContext context) {
     final String myPubKey = SharedPreferencesHelper().getPubKey();
+    final bool isG1 = appCubit.currency == Currency.G1;
+    final double currentUd = appCubit.currentUd;
     return BlocBuilder<TransactionCubit, TransactionState>(
         builder: (BuildContext context, TransactionState transBalanceState) {
       // final List<Transaction> transactions = transBalanceState.transactions;
@@ -185,7 +191,7 @@ class _TransactionsAndBalanceWidgetState
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: Center(
                       child: Text(
-                    formatKAmount(context, balance),
+                    formatKAmount(context, balance, isG1, currentUd),
                     style: TextStyle(
                         fontSize: 36.0,
                         color:
@@ -222,13 +228,16 @@ class _TransactionsAndBalanceWidgetState
                         animateTransitions: true,
                         transitionDuration: const Duration(milliseconds: 500),
                         itemBuilder:
-                            (BuildContext context, Transaction tx, int index) =>
-                                TransactionListItem(
-                                    pubKey: myPubKey,
-                                    index: index,
-                                    transaction: tx,
-                                    afterRetry: () => _refresh(),
-                                    afterCancel: () => _refresh()),
+                            (BuildContext context, Transaction tx, int index) {
+                          return TransactionListItem(
+                              pubKey: myPubKey,
+                              index: index,
+                              transaction: tx,
+                              isG1: isG1,
+                              currentUd: currentUd,
+                              afterRetry: () => _refresh(),
+                              afterCancel: () => _refresh());
+                        },
                         noItemsFoundIndicatorBuilder: (_) => Container()),
                   ),
                   PagedSliverList<String?, Transaction>(
@@ -242,6 +251,8 @@ class _TransactionsAndBalanceWidgetState
                               int index) {
                             return TransactionListItem(
                                 pubKey: myPubKey,
+                                currentUd: currentUd,
+                                isG1: isG1,
                                 index: index +
                                     (_pendingController.itemList != null
                                         ? _pendingController.itemList!.length

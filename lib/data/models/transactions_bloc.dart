@@ -4,6 +4,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../g1/g1_helper.dart';
 import '../../ui/pay_helper.dart';
+import 'app_cubit.dart';
 import 'node_list_cubit.dart';
 import 'transaction.dart';
 import 'transaction_cubit.dart';
@@ -23,6 +24,7 @@ class TransactionsBloc {
         .addTo(_subscriptions);
   }
 
+  late AppCubit appCubit;
   late NodeListCubit nodeListCubit;
   late TransactionCubit transCubit;
 
@@ -31,7 +33,7 @@ class TransactionsBloc {
   final CompositeSubscription _subscriptions = CompositeSubscription();
 
   final BehaviorSubject<TransactionsState> _onNewListingStateController =
-      BehaviorSubject<TransactionsState>.seeded(
+  BehaviorSubject<TransactionsState>.seeded(
     TransactionsState(),
   );
 
@@ -43,7 +45,7 @@ class TransactionsBloc {
   Sink<String?> get onPageRequestSink => _onPageRequest.sink;
 
   final BehaviorSubject<String?> _onSearchInputChangedSubject =
-      BehaviorSubject<String?>.seeded(null);
+  BehaviorSubject<String?>.seeded(null);
 
   Sink<String?> get onSearchInputChangedSink =>
       _onSearchInputChangedSubject.sink;
@@ -52,7 +54,7 @@ class TransactionsBloc {
     if (_onNewListingStateController.value.itemList != null) {
       return _onNewListingStateController.value.itemList!
           .where((Transaction tx) =>
-              areDatesClose(DateTime.now(), tx.time, paymentTimeRange))
+          areDatesClose(DateTime.now(), tx.time, paymentTimeRange))
           .toList();
     } else {
       return <Transaction>[];
@@ -66,7 +68,9 @@ class TransactionsBloc {
     yield* _fetchTransactionsList(null);
   }
 
-  void init(TransactionCubit transCubit, NodeListCubit nodeListCubit) {
+  void init(TransactionCubit transCubit, NodeListCubit nodeListCubit,
+      AppCubit appCubit) {
+    this.appCubit = appCubit;
     this.transCubit = transCubit;
     this.nodeListCubit = nodeListCubit;
   }
@@ -82,13 +86,13 @@ class TransactionsBloc {
       );
 */
       final List<Transaction> fetchedItems = await transCubit.fetchTransactions(
-          nodeListCubit,
+          nodeListCubit, appCubit,
           cursor: pageKey,
           pageSize: _pageSize);
 
       final bool isLastPage = fetchedItems.length < _pageSize;
       final String? nextPageKey =
-          isLastPage ? null : transCubit.state.endCursor;
+      isLastPage ? null : transCubit.state.endCursor;
 
       yield TransactionsState(
         // error: null,
@@ -96,9 +100,9 @@ class TransactionsBloc {
         itemList: pageKey == null
             ? fetchedItems
             : <Transaction>[
-                ...lastListingState.itemList ?? <Transaction>[],
-                ...fetchedItems
-              ],
+          ...lastListingState.itemList ?? <Transaction>[],
+          ...fetchedItems
+        ],
       );
     } catch (e) {
       yield TransactionsState(

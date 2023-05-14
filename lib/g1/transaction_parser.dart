@@ -69,6 +69,11 @@ Future<TransactionState> transactionsGvaParser(
   final double amount = rawBalance != null
       ? ((rawBalance as Map<String, dynamic>)['amount'] as int) / 1.0
       : 0;
+  final dynamic rawCurrentUd = txData['currentUd'];
+  final double? currentUd = rawCurrentUd != null
+      ? ((rawCurrentUd as Map<String, dynamic>)['amount'] as int) / 100.0
+      : null;
+
   // Transactions
   final Map<String, dynamic> txsHistoryBc =
       txData['txsHistoryBc'] as Map<String, dynamic>;
@@ -101,6 +106,7 @@ Future<TransactionState> transactionsGvaParser(
   return state.copyWith(
       transactions: txs,
       balance: amount,
+      currentUd: currentUd,
       lastChecked: DateTime.now(),
       endCursor: pageInfo['endCursor'] as String?);
 }

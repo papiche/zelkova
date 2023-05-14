@@ -13,6 +13,7 @@ class TransactionState extends Equatable {
       {required this.transactions,
       required this.pendingTransactions,
       required this.balance,
+      this.currentUd,
       required this.lastChecked,
       DateTime? latestSentNotification,
       DateTime? latestReceivedNotification,
@@ -27,6 +28,7 @@ class TransactionState extends Equatable {
   final List<Transaction> transactions;
   final List<Transaction> pendingTransactions;
   final double balance;
+  final double? currentUd;
   final DateTime lastChecked;
   final DateTime latestSentNotification;
   final DateTime latestReceivedNotification;
@@ -39,6 +41,7 @@ class TransactionState extends Equatable {
         transactions,
         pendingTransactions,
         balance,
+        currentUd,
         lastChecked,
         latestSentNotification,
         latestReceivedNotification,

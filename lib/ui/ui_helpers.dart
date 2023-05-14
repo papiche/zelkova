@@ -15,6 +15,7 @@ import '../data/models/contact.dart';
 import '../data/models/node_list_cubit.dart';
 import '../data/models/transaction_cubit.dart';
 import '../g1/api.dart';
+import '../g1/currency.dart';
 import '../shared_prefs.dart';
 import 'widgets/first_screen/circular_icon.dart';
 
@@ -123,23 +124,25 @@ bool bigScreen(BuildContext context) =>
 bool smallScreen(BuildContext context) =>
     MediaQuery.of(context).size.width <= smallScreenWidth;
 
-String formatAmount(BuildContext context, double amount) {
+String formatAmount(BuildContext context, double amount, bool isG1) {
   return formatAmountWithLocale(
-      Localizations.localeOf(context).toString(), amount);
+      Localizations.localeOf(context).toString(), amount, isG1);
 }
 
-String formatAmountWithLocale(String locale, double amount) {
+String formatAmountWithLocale(String locale, double amount, bool isG1) {
   final NumberFormat currencyFormatter = NumberFormat.currency(
     // in English $10 is G110 ... confusing
-    symbol: 'Ğ1 ',
+    symbol: isG1 ? '${Currency.G1.name()} ' : '${Currency.DU.name()} ',
     locale: locale,
-    decimalDigits: 2,
+    decimalDigits: isG1 ? 2 : 4,
   );
   return currencyFormatter.format(amount);
 }
 
-String formatKAmount(BuildContext context, double amount) =>
-    formatAmount(context, amount / 100);
+String formatKAmount(
+        BuildContext context, double amount, bool isG1, double currentUd) =>
+    formatAmount(
+        context, isG1 ? amount / 100 : ((amount / 100) / currentUd), isG1);
 
 double parseToDoubleLocalized(
         {required String locale, required String number}) =>
@@ -184,9 +187,10 @@ final RegExp basicEnglishCharsRegExp =
 // RegExp(r'^[a-zA-Z0-9-_:/;*\[\]()?!^\\+=@&~#{}|\<>%.]*$');
 
 void fetchTransactions(BuildContext context) {
+  final AppCubit appCubit = context.read<AppCubit>();
   final TransactionCubit transCubit = context.read<TransactionCubit>();
   final NodeListCubit nodeListCubit = context.read<NodeListCubit>();
-  transCubit.fetchTransactions(nodeListCubit);
+  transCubit.fetchTransactions(nodeListCubit, appCubit);
 }
 
 class SlidableContactTile extends StatefulWidget {

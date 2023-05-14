@@ -21,12 +21,16 @@ class TransactionListItem extends StatelessWidget {
       required this.pubKey,
       required this.transaction,
       required this.index,
+      required this.isG1,
+      required this.currentUd,
       this.afterCancel,
       this.afterRetry});
 
   final String pubKey;
   final Transaction transaction;
   final int index;
+  final bool isG1;
+  final double currentUd;
 
   final VoidCallback? afterCancel;
   final VoidCallback? afterRetry;
@@ -45,8 +49,10 @@ class TransactionListItem extends StatelessWidget {
     Color? iconColor;
     String statusText;
 
+    final amountWithSymbol =
+        formatKAmount(context, transaction.amount, isG1, currentUd);
     final String amountS =
-        '${transaction.amount < 0 ? "" : "+"}${formatKAmount(context, transaction.amount)}';
+        '${transaction.amount < 0 ? "" : "+"}${amountWithSymbol}';
     statusText = tr('transaction_${transaction.type.name}');
     switch (transaction.type) {
       case TransactionType.pending:

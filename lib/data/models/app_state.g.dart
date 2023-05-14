@@ -12,6 +12,7 @@ AppState _$AppStateFromJson(Map<String, dynamic> json) => AppState(
       warningBrowserViewed: json['warningBrowserViewed'] as bool? ?? false,
       expertMode: json['expertMode'] as bool? ?? false,
       currency: $enumDecodeNullable(_$CurrencyEnumMap, json['currency']),
+      currentUd: (json['currentUd'] as num?)?.toDouble(),
       tutorials: (json['tutorials'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, e as bool),
       ),
@@ -23,6 +24,7 @@ Map<String, dynamic> _$AppStateToJson(AppState instance) => <String, dynamic>{
       'warningBrowserViewed': instance.warningBrowserViewed,
       'expertMode': instance.expertMode,
       'currency': _$CurrencyEnumMap[instance.currency]!,
+      'currentUd': instance.currentUd,
       'tutorials': instance.tutorials,
     };
 

@@ -267,10 +267,11 @@ class TransactionListItem extends StatelessWidget {
 
   Future<void> _retryFailed(
       BuildContext context, Transaction transaction) async {
+    final double amount = transaction.amount / -100;
     await payWithRetry(
         context: context,
         to: transaction.to,
-        amount: transaction.amount / -100,
+        amount: isG1 ? amount : amount / currentUd,
         comment: transaction.comment,
         isG1: isG1,
         currentUd: currentUd,

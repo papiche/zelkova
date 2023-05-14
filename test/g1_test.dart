@@ -155,6 +155,11 @@ void main() {
       }
     }
   });
+
+  test('toG1 converse', () {
+    expect(toG1(1, true, 0), equals(1));
+    expect(toG1(1, false, 1024), equals(1024));
+  });
 }
 
 String _generateRandomPatternPassword(Random random) {

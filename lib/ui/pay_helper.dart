@@ -16,6 +16,7 @@ import '../../../shared_prefs.dart';
 import '../data/models/app_cubit.dart';
 import '../data/models/bottom_nav_cubit.dart';
 import '../g1/currency.dart';
+import '../g1/g1_helper.dart';
 import 'contacts_cache.dart';
 import 'logger.dart';
 import 'ui_helpers.dart';
@@ -39,16 +40,17 @@ Future<void> payWithRetry(
   final bool? confirmed = await _confirmSend(context, amount.toString(),
       humanizeContact(fromPubKey, to), isRetry, appCubit.currency);
   final Contact fromContact = await ContactsCache().getContact(fromPubKey);
+  final double convertedAmount = toG1(amount, isG1, currentUd);
   if (confirmed == null || !confirmed) {
     paymentCubit.sentFailed();
   } else {
     final PayResult result =
-        await pay(to: contactPubKey, comment: comment, amount: amount);
+        await pay(to: contactPubKey, comment: comment, amount: convertedAmount);
     final Transaction tx = Transaction(
         type: TransactionType.pending,
         from: fromContact,
         to: to,
-        amount: -amount * 100,
+        amount: -convertedAmount * 100,
         comment: comment,
         debugInfo:
             'Node used: ${result.node != null ? result.node!.url : 'unknown'}',

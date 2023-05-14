@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
+import '../../ui/ui_helpers.dart';
 import 'contact.dart';
 import 'payment_state.dart';
 
@@ -25,13 +26,13 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
 
   void selectUser(Contact contact, [double? amount]) {
     final PaymentState newState =
-        PaymentState(contact: contact, amount: amount);
+    PaymentState(contact: contact, amount: amount);
     emit(newState);
   }
 
   void selectKeyAmount(Contact contact, double amount) {
     final PaymentState newState =
-        PaymentState(contact: contact, amount: amount);
+    PaymentState(contact: contact, amount: amount);
     emit(newState);
   }
 
@@ -81,5 +82,14 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
     final PaymentState newState = PaymentState(
         contact: state.contact, amount: state.amount, comment: comment);
     emit(newState);
+  }
+
+  void reset() {
+    if (inDevelopment) {
+      emit(PaymentState.emptyPayment.copyWith(contact: state.contact));
+    }
+    else {
+      emit(PaymentState.emptyPayment);
+    }
   }
 }

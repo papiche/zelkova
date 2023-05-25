@@ -195,3 +195,10 @@ bool areDatesClose(DateTime date1, DateTime date2, Duration threshold) {
 double toG1(double amount, bool isG1, double currentUd) {
   return isG1 ? amount : amount * currentUd;
 }
+
+int toCG1(double amount) => (amount.toPrecision(2) * 100).toInt();
+
+// From durt
+extension Ex on double {
+  double toPrecision(int n) => double.parse(toStringAsFixed(n));
+}

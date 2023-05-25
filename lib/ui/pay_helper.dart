@@ -50,7 +50,7 @@ Future<void> payWithRetry(
         type: TransactionType.pending,
         from: fromContact,
         to: to,
-        amount: -convertedAmount * 100,
+        amount: -toCG1(convertedAmount).toDouble(),
         comment: comment,
         debugInfo:
             'Node used: ${result.node != null ? result.node!.url : 'unknown'}',
@@ -103,7 +103,7 @@ Future<void> payWithRetry(
 
 bool weHaveBalance(BuildContext context, double amount) {
   final double balance = getBalance(context);
-  final bool weHave = balance >= amount * 100;
+  final bool weHave = balance >= toCG1(amount);
   return weHave;
 }
 

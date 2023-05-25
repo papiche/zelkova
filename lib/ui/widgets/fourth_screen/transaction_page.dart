@@ -204,7 +204,7 @@ class _TransactionsAndBalanceWidgetState
                         currencyBalanceWidget(isG1, currentSymbol),
                       if (isCurrencyBefore) separatorSpan(),
                       TextSpan(
-                        text: formatKAmount(
+                        text: formatKAmountInView(
                             context: context,
                             amount: balance,
                             isG1: isG1,

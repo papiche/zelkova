@@ -53,7 +53,7 @@ class TransactionListItem extends StatelessWidget {
     Color? iconColor;
     String statusText;
 
-    final String amountWithSymbol = formatKAmount(
+    final String amountWithSymbol = formatKAmountInView(
         context: context,
         amount: transaction.amount,
         isG1: isG1,

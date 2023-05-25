@@ -124,7 +124,7 @@ bool bigScreen(BuildContext context) =>
 bool smallScreen(BuildContext context) =>
     MediaQuery.of(context).size.width <= smallScreenWidth;
 
-String formatAmount(
+String _formatAmount(
     {required BuildContext context,
     required double amount,
     required bool isG1,
@@ -151,7 +151,7 @@ NumberFormat currentNumberFormat(
   final NumberFormat currencyFormatter = NumberFormat.currency(
     symbol: useSymbol ? currentCurrency(isG1) : '',
     locale: locale,
-    decimalDigits: isG1 ? 2 : 4,
+    decimalDigits: isG1 ? 2 : 3,
   );
   return currencyFormatter;
 }
@@ -164,13 +164,13 @@ String currentCurrencyTrimmed(bool isG1) {
   return currentCurrency(isG1).trim();
 }
 
-String formatKAmount(
+String formatKAmountInView(
         {required BuildContext context,
         required double amount,
         required bool isG1,
         required double currentUd,
         required bool useSymbol}) =>
-    formatAmount(
+    _formatAmount(
         context: context,
         amount: convertAmount(isG1, amount, currentUd),
         isG1: isG1,

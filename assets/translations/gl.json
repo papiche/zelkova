@@ -178,5 +178,12 @@
   "feedback_submit": "ENVIAR",
   "feedback_whats_wrong": "Dinos cal é o teu problema:",
   "feedback_draw": "Debuxa",
-  "feedback_navigate": "Navegar"
+  "feedback_navigate": "Navegar",
+  "bug_report": "Informe de erro",
+  "slidable_tutorial": "Desliza para máis accións",
+  "please_confirm_retry_sent_desc": "Confirma que desexas de novo tentar enviar {cantidade} Ğ1 a {to}",
+  "transaction_failed": "Pago errado",
+  "retry_payment": "Fai o pago de novo",
+  "cancel_payment": "Cancelar o pago",
+  "payment_canceled": "Pago cancelado aínda que non podemos asegurar que xa se realizou"
 }

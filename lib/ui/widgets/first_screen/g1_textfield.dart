@@ -36,7 +36,7 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
           }
         }
         final bool expertMode = context.read<AppCubit>().isExpertMode;
-        final bool enableCurrencies = expertMode && inDevelopment;
+        final bool enableCurrencies = expertMode;
         final Currency currentCurrency =
             enableCurrencies ? context.watch<AppCubit>().currency : Currency.G1;
         return Form(

@@ -11,6 +11,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../../data/models/app_cubit.dart';
 import '../../../data/models/node_list_cubit.dart';
+import '../../../data/models/theme_cubit.dart';
 import '../../../data/models/transaction.dart';
 import '../../../data/models/transaction_cubit.dart';
 import '../../../data/models/transaction_state.dart';
@@ -201,7 +202,7 @@ class _TransactionsAndBalanceWidgetState
                       child: Text.rich(TextSpan(
                     children: <InlineSpan>[
                       if (isCurrencyBefore)
-                        currencyBalanceWidget(isG1, currentSymbol),
+                        currencyBalanceWidget(context, isG1, currentSymbol),
                       if (isCurrencyBefore) separatorSpan(),
                       TextSpan(
                         text: formatKAmountInView(
@@ -212,14 +213,14 @@ class _TransactionsAndBalanceWidgetState
                             useSymbol: false),
                         style: TextStyle(
                             fontSize: balanceFontSize,
-                            color: balance == 0
-                                ? Colors.lightBlue
-                                : Colors.lightBlue,
+                            color: context.read<ThemeCubit>().isDark()
+                                ? Colors.white
+                                : positiveAmountColor,
                             fontWeight: FontWeight.bold),
                       ),
                       if (!isCurrencyBefore) separatorSpan(),
                       if (!isCurrencyBefore)
-                        currencyBalanceWidget(isG1, currentSymbol),
+                        currencyBalanceWidget(context, isG1, currentSymbol),
                     ],
                   ))),
                 ),
@@ -303,27 +304,29 @@ class _TransactionsAndBalanceWidgetState
     );
   }
 
-  InlineSpan currencyBalanceWidget(bool isG1, String currentSymbol) {
+  InlineSpan currencyBalanceWidget(
+      BuildContext context, bool isG1, String currentSymbol) {
+    final Color currencyColor = Theme.of(context).colorScheme.secondary;
     return TextSpan(children: <InlineSpan>[
       TextSpan(
         text: currentSymbol,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: balanceFontSize,
           fontWeight: FontWeight.w500,
-          color: Colors.deepPurple,
+          color: currencyColor,
         ),
       ),
       if (!isG1)
         WidgetSpan(
             child: Transform.translate(
                 offset: const Offset(2, 16),
-                child: const Text(
+                child: Text(
                   'Ğ1',
                   style: TextStyle(
                     fontSize: balanceFontSize - 10,
                     fontWeight: FontWeight.w500,
                     // fontFeatures: <FontFeature>[FontFeature.subscripts()],
-                    color: Colors.deepPurple,
+                    color: currencyColor,
                   ),
                 )))
     ]);

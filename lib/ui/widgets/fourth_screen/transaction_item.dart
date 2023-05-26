@@ -38,6 +38,7 @@ class TransactionListItem extends StatelessWidget {
 
   final VoidCallback? afterCancel;
   final VoidCallback? afterRetry;
+  static const Color grey = Colors.grey;
 
   @override
   Widget build(BuildContext context) {
@@ -63,18 +64,19 @@ class TransactionListItem extends StatelessWidget {
     final String amountS =
         '${transaction.amount < 0 ? "" : "+"}$amountWithSymbol';
     statusText = tr('transaction_${transaction.type.name}');
+
     switch (transaction.type) {
       case TransactionType.pending:
         icon = Icons.schedule;
-        iconColor = Colors.grey;
+        iconColor = grey;
         break;
       case TransactionType.sending:
         icon = Icons.flight_takeoff;
-        iconColor = Colors.grey;
+        iconColor = grey;
         break;
       case TransactionType.receiving:
         icon = Icons.flight_land;
-        iconColor = Colors.grey;
+        iconColor = grey;
         break;
       case TransactionType.failed:
         icon = Icons.warning_amber_rounded;
@@ -186,7 +188,7 @@ class TransactionListItem extends StatelessWidget {
                           statusText,
                           style: const TextStyle(
                             fontSize: 12.0,
-                            color: Colors.grey,
+                            color: grey,
                           ),
                         ),
                         const SizedBox(height: 4.0),
@@ -221,7 +223,7 @@ class TransactionListItem extends StatelessWidget {
                 child: Text(transaction.comment,
                     style: const TextStyle(
                       fontStyle: FontStyle.italic,
-                      color: Colors.grey,
+                      color: grey,
                     )),
               ),
               trailing: Column(
@@ -239,8 +241,8 @@ class TransactionListItem extends StatelessWidget {
                           // fontWeight: FontWeight.bold,
                           color: transaction.type == TransactionType.received ||
                                   transaction.type == TransactionType.receiving
-                              ? Colors.blue
-                              : Colors.red,
+                              ? positiveAmountColor
+                              : negativeAmountColor,
                         ),
                       ),
                       if (!isCurrencyBefore) separatorSpan(),
@@ -257,7 +259,7 @@ class TransactionListItem extends StatelessWidget {
                         humanizeTime(transaction.time, currentLocale(context))!,
                         style: const TextStyle(
                           fontSize: 12.0,
-                          color: Colors.grey,
+                          color: grey,
                         ),
                       )),
                 ],
@@ -278,34 +280,34 @@ class TransactionListItem extends StatelessWidget {
         isRetry: true);
     afterRetry!();
   }
-}
 
-WidgetSpan separatorSpan() {
-  return const WidgetSpan(
-    child: SizedBox(width: 3),
-  );
-}
-
-InlineSpan currencyBalanceWidget(bool isG1, String currentSymbol) {
-  return TextSpan(children: <InlineSpan>[
-    TextSpan(
-      text: currentSymbol,
-      style: const TextStyle(
-        color: Colors.black54,
+  InlineSpan currencyBalanceWidget(bool isG1, String currentSymbol) {
+    return TextSpan(children: <InlineSpan>[
+      TextSpan(
+        text: currentSymbol,
+        style: const TextStyle(
+          color: grey,
+        ),
       ),
-    ),
-    if (!isG1)
-      WidgetSpan(
-          child: Transform.translate(
-              offset: const Offset(1, 4),
-              child: const Text(
-                'Ğ1',
-                style: TextStyle(
-                  fontSize: 12,
-                  // fontWeight: FontWeight.w500,
-                  // fontFeatures: <FontFeature>[FontFeature.subscripts()],
-                  color: Colors.black54,
-                ),
-              )))
-  ]);
+      if (!isG1)
+        WidgetSpan(
+            child: Transform.translate(
+                offset: const Offset(1, 4),
+                child: const Text(
+                  'Ğ1',
+                  style: TextStyle(
+                    fontSize: 12,
+                    // fontWeight: FontWeight.w500,
+                    // fontFeatures: <FontFeature>[FontFeature.subscripts()],
+                    color: grey,
+                  ),
+                )))
+    ]);
+  }
+
+  WidgetSpan separatorSpan() {
+    return const WidgetSpan(
+      child: SizedBox(width: 3),
+    );
+  }
 }

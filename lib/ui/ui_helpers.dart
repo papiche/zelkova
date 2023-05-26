@@ -395,6 +395,8 @@ final GlobalKey<ScaffoldMessengerState> globalMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
 
 const Color deleteColor = Color(0xFFFE4A49);
+const Color positiveAmountColor = Colors.blue;
+const Color negativeAmountColor = Colors.red;
 
 bool isSymbolPlacementBefore(String pattern) {
   final int symbolIndex = pattern.indexOf('\u00A4');

@@ -79,8 +79,12 @@ class _FirstScreenState extends State<FirstScreen> {
             }
           }
         });
-
-        context.read<PaymentCubit>().reset();
+        final PaymentStatus paymentStatus =
+            context.read<PaymentCubit>().state.status;
+        if (paymentStatus == PaymentStatus.sending ||
+            paymentStatus == PaymentStatus.isSent) {
+          context.read<PaymentCubit>().reset();
+        }
         return BlocBuilder<PaymentCubit, PaymentState>(
             builder: (BuildContext context, PaymentState state) =>
                 Stack(children: <Widget>[

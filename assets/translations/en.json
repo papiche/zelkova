@@ -184,5 +184,6 @@
   "slidable_tutorial": "Swipe for more actions",
   "retry_payment": "Retry Payment",
   "cancel_payment": "Cancel Payment",
-  "payment_canceled": "Payment canceled although we cannot ensure that it has not already been executed"
+  "payment_canceled": "Payment canceled although we cannot ensure that it has not already been executed",
+  "pay_again": "Pay Again"
 }

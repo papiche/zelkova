@@ -186,5 +186,6 @@
   "retry_payment": "Reintentar pago",
   "cancel_payment": "Cancelar pago",
   "payment_canceled": "Pago cancelado aunque no podemos asegurar que no se haya hecho ejecutado ya",
-  "transaction_failed": "Pago fallido"
+  "transaction_failed": "Pago fallido",
+  "pay_again": "Paga de nuevo"
 }

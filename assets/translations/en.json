@@ -185,5 +185,6 @@
   "retry_payment": "Retry Payment",
   "cancel_payment": "Cancel Payment",
   "payment_canceled": "Payment canceled although we cannot ensure that it has not already been executed",
-  "pay_again": "Pay Again"
+  "pay_again": "Pay Again",
+  "telegram_group": "Telegram Group"
 }

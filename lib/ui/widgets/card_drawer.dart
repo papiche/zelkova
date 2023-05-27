@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../data/models/cesium_card.dart';
 import '../../shared_prefs.dart';
@@ -100,6 +101,21 @@ class CardDrawer extends StatelessWidget {
                       );
                     },
                   ),
+                ListTile(
+                  leading: const Icon(Icons.telegram_outlined),
+                  title: Text(tr('telegram_group')),
+                  onTap: () async {
+                    if (context.locale == const Locale('es') ||
+                        context.locale == const Locale('ca') ||
+                        context.locale == const Locale('gl') ||
+                        context.locale == const Locale('eu') ||
+                        context.locale == const Locale('ast')) {
+                      await launchUrl(Uri.parse('https://t.me/g1nkgoES'));
+                    } else {
+                      await launchUrl(Uri.parse('https://t.me/g1nkgoEN'));
+                    }
+                  },
+                ),
                 ListTile(
                   leading: const Icon(Icons.feedback),
                   title: Text(tr('feedback')),

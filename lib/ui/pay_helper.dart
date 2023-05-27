@@ -31,6 +31,7 @@ Future<void> payWithRetry(
     required bool isG1,
     required double currentUd}) async {
   logger('Trying to pay state with useMempool: $useMempool');
+  assert(amount > 0);
   final TransactionCubit txCubit = context.read<TransactionCubit>();
   final PaymentCubit paymentCubit = context.read<PaymentCubit>();
   final AppCubit appCubit = context.read<AppCubit>();
@@ -38,7 +39,7 @@ Future<void> payWithRetry(
   final String fromPubKey = SharedPreferencesHelper().getPubKey();
   final String contactPubKey = to.pubKey;
   final bool? confirmed = await _confirmSend(context, amount.toString(),
-      humanizeContact(fromPubKey, to), isRetry, appCubit.currency);
+      humanizeContact(fromPubKey, to, true), isRetry, appCubit.currency);
   final Contact fromContact = await ContactsCache().getContact(fromPubKey);
   final double convertedAmount = toG1(amount, isG1, currentUd);
   if (confirmed == null || !confirmed) {
@@ -75,6 +76,7 @@ Future<void> payWithRetry(
         if (!useMempool) {
           throw RetryException();
         } */
+      paymentCubit.pendingPayment();
       if (!context.mounted) {
         return;
       }

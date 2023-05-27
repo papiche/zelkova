@@ -78,21 +78,14 @@ String humanizeFromToPubKey(String publicAddress, String address) {
   }
 }
 
-String humanizeContact(String publicAddress, Contact contact) {
-  final bool hasName = contact.name?.isNotEmpty ?? false;
-  final bool hasNick = contact.nick?.isNotEmpty ?? false;
-
+String humanizeContact(String publicAddress, Contact contact,
+    [bool addKey = false]) {
   if (contact.pubKey == publicAddress) {
     return tr('your_wallet');
   } else {
-    if (hasName && hasNick)
-      return '${contact.name} (${contact.nick})';
-    else if (hasNick)
-      return contact.nick!;
-    else if (hasName)
-      return contact.name!;
-    else
-      return humanizePubKey(contact.pubKey);
+    return addKey
+        ? '${contact.title} (${humanizePubKey(contact.pubKey)})'
+        : contact.title;
   }
 }
 

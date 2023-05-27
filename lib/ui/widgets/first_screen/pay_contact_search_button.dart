@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/payment_state.dart';
 import 'pay_contact_search_page.dart';
-import 'recipient_widget.dart';
+import 'pay_recipient_widget.dart';
 
 class PayContactSearchButton extends StatefulWidget {
   const PayContactSearchButton({super.key});
@@ -49,7 +49,7 @@ class _PayContactSearchButtonState extends State<PayContactSearchButton> {
           ),
         );
       } else {
-        return const RecipientWidget();
+        return const PayRecipientWidget();
       }
     });
   }

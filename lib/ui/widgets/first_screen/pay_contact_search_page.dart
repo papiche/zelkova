@@ -60,11 +60,11 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
     if (cPlusResponse.statusCode != 404) {
       // Add cplus users
       final List<dynamic> hits = ((const JsonDecoder()
-          .convert(cPlusResponse.body) as Map<String, dynamic>)['hits']
-      as Map<String, dynamic>)['hits'] as List<dynamic>;
+              .convert(cPlusResponse.body) as Map<String, dynamic>)['hits']
+          as Map<String, dynamic>)['hits'] as List<dynamic>;
       for (final dynamic hit in hits) {
         final Contact c =
-        await contactFromResultSearch(hit as Map<String, dynamic>);
+            await contactFromResultSearch(hit as Map<String, dynamic>);
         logger('Contact retrieved in c+ search $c');
         ContactsCache().addContact(c);
         setState(() {
@@ -82,11 +82,11 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
       // retrieve extra results with c+ profile
       for (final Contact wotC in wotResults) {
         final Contact cachedWotProfile =
-        await ContactsCache().getContact(wotC.pubKey);
+            await ContactsCache().getContact(wotC.pubKey);
         if (cachedWotProfile.name == null) {
           // Users without c+ profile
           final Contact cPlusProfile =
-          await getProfile(cachedWotProfile.pubKey, true);
+              await getProfile(cachedWotProfile.pubKey, true);
           ContactsCache().addContact(cPlusProfile);
         }
       }
@@ -120,25 +120,13 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(tr('search_user_title')),
-        backgroundColor: Theme
-            .of(context)
-            .colorScheme
-            .primary,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
         actions: <Widget>[
           IconButton(
               icon: const Icon(Icons.qr_code_scanner),
               onPressed: () async {
                 final String? scannedKey = await QrManager.qrScan(context);
-                /* final String? scannedKey = await Navigator.push(
-                    context,
-                    MaterialPageRoute<String>(
-                      builder: (BuildContext context) =>
-                          SimpleBarcodeScannerPage(
-                              scanType: ScanType.qr,
-                              appBarTitle: tr('qr-scanner-title'),
-                              cancelButtonText: tr('close')),
-                    )); */
                 if (scannedKey is String &&
                     scannedKey != null &&
                     scannedKey != '-1') {
@@ -151,11 +139,12 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
                   logger('QR result length ${_results.length}');
                   if (_results.length == 1 && pay != null) {
                     final Contact contact = _results[0];
-                    paymentCubit.selectUser(contact, pay.amount);
+                    final double? currentAmount = paymentCubit.state.amount;
+                    paymentCubit.selectUser(contact);
                     if (pay.amount != null) {
-                      paymentCubit.selectKeyAmount(contact, pay.amount!);
+                      paymentCubit.selectKeyAmount(contact, pay.amount);
                     } else {
-                      paymentCubit.selectKey(contact);
+                      paymentCubit.selectKeyAmount(contact, currentAmount);
                     }
                     if (pay.comment != null) {
                       paymentCubit.setComment(pay.comment);
@@ -198,33 +187,32 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
             ),
             if (_isLoading)
               const LoadingBox(simple: false)
+            else if (_searchTerm.isNotEmpty && _results.isEmpty && _isLoading)
+              const NoElements(text: 'nothing_found')
             else
-              if (_searchTerm.isNotEmpty && _results.isEmpty && _isLoading)
-                const NoElements(text: 'nothing_found')
-              else
-                Expanded(
-                  child: ListView.builder(
-                      itemCount: _results.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final Contact contact = _results[index];
-                        return FutureBuilder<Contact>(
-                            future: ContactsCache().getContact(contact.pubKey),
-                            builder: (BuildContext context,
-                                AsyncSnapshot<Contact> snapshot) {
-                              Widget widget;
-                              if (snapshot.hasData) {
-                                widget =
-                                    _buildItem(snapshot.data!, index, context);
-                              } else if (snapshot.hasError) {
-                                widget = CustomErrorWidget(snapshot.error);
-                              } else {
-                                // Contact without wot
-                                widget = _buildItem(contact, index, context);
-                              }
-                              return widget;
-                            });
-                      }),
-                )
+              Expanded(
+                child: ListView.builder(
+                    itemCount: _results.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final Contact contact = _results[index];
+                      return FutureBuilder<Contact>(
+                          future: ContactsCache().getContact(contact.pubKey),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<Contact> snapshot) {
+                            Widget widget;
+                            if (snapshot.hasData) {
+                              widget =
+                                  _buildItem(snapshot.data!, index, context);
+                            } else if (snapshot.hasError) {
+                              widget = CustomErrorWidget(snapshot.error);
+                            } else {
+                              // Contact without wot
+                              widget = _buildItem(contact, index, context);
+                            }
+                            return widget;
+                          });
+                    }),
+              )
           ],
         ),
       ),
@@ -242,9 +230,9 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
       },
       trailing: BlocBuilder<ContactsCubit, ContactsState>(
           builder: (BuildContext context, ContactsState state) {
-            return ContactFavIcon(
-                contact: contact, contactsCubit: context.read<ContactsCubit>());
-          }),
+        return ContactFavIcon(
+            contact: contact, contactsCubit: context.read<ContactsCubit>());
+      }),
     );
   }
 }

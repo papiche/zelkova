@@ -24,21 +24,28 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
     emit(newState);
   }
 
-  void selectUser(Contact contact, [double? amount]) {
+  void selectUser(Contact contact) {
+    emit(state.copyWith(contact: contact));
+  }
+
+  void selectKeyAmount(Contact contact, double? amount) {
     final PaymentState newState =
-    PaymentState(contact: contact, amount: amount);
+        PaymentState(contact: contact, amount: amount);
     emit(newState);
   }
 
-  void selectKeyAmount(Contact contact, double amount) {
+  void clearRecipient() {
     final PaymentState newState =
-    PaymentState(contact: contact, amount: amount);
+        PaymentState(comment: state.comment, amount: state.amount);
     emit(newState);
+  }
+
+  void pendingPayment() {
+    emit(PaymentState.emptyPayment);
   }
 
   void sent() {
-    const PaymentState newState = PaymentState();
-    emit(newState);
+    emit(PaymentState.emptyPayment);
   }
 
   void notSent() {
@@ -66,10 +73,6 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
   @override
   Map<String, dynamic>? toJson(PaymentState state) => state.toJson();
 
-  void clearRecipient() {
-    emit(PaymentState.emptyPayment);
-  }
-
   void selectAmount(double? amount) {
     // As copyWith ignores null amounts
     final PaymentState newState = PaymentState(
@@ -87,8 +90,7 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
   void reset() {
     if (inDevelopment) {
       emit(PaymentState.emptyPayment.copyWith(contact: state.contact));
-    }
-    else {
+    } else {
       emit(PaymentState.emptyPayment);
     }
   }

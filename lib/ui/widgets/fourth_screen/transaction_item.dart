@@ -9,6 +9,7 @@ import '../../../data/models/transaction.dart';
 import '../../../data/models/transaction_cubit.dart';
 import '../../../data/models/transaction_state.dart';
 import '../../../data/models/transaction_type.dart';
+import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs.dart';
 import '../../contacts_cache.dart';
 import '../../pay_helper.dart';
@@ -116,6 +117,16 @@ class TransactionListItem extends StatelessWidget {
               icon: Icons.delete,
               label: tr('cancel_payment'),
             ),
+          if (transaction.type == TransactionType.sent)
+            SlidableAction(
+              onPressed: (BuildContext c) async {
+                await _payAgain(context, transaction, false);
+              },
+              backgroundColor: Theme.of(context).primaryColorDark,
+              foregroundColor: Colors.white,
+              icon: Icons.replay,
+              label: tr('pay_again'),
+            ),
         ]),
         endActionPane: ActionPane(
           motion: const ScrollMotion(),
@@ -123,7 +134,7 @@ class TransactionListItem extends StatelessWidget {
             if (transaction.type == TransactionType.failed)
               SlidableAction(
                 onPressed: (BuildContext c) async {
-                  await _retryFailed(context, transaction);
+                  await _payAgain(context, transaction, true);
                 },
                 backgroundColor: Theme.of(context).primaryColorDark,
                 foregroundColor: Colors.white,
@@ -164,7 +175,7 @@ class TransactionListItem extends StatelessWidget {
         child: GestureDetector(
             onLongPress: () {
               if (transaction.isFailed) {
-                _retryFailed(context, transaction);
+                _payAgain(context, transaction, true);
               }
             },
             child: ListTile(
@@ -267,18 +278,21 @@ class TransactionListItem extends StatelessWidget {
             )));
   }
 
-  Future<void> _retryFailed(
-      BuildContext context, Transaction transaction) async {
-    final double amount = transaction.amount / -100;
+  Future<void> _payAgain(
+      BuildContext context, Transaction transaction, bool isRetry) async {
+    final double amount = transaction.amount.abs(); // positive
     await payWithRetry(
         context: context,
         to: transaction.to,
-        amount: isG1 ? amount : amount / currentUd,
+        amount:
+            isG1 ? amount / 100 : ((amount / currentUd) / 100).toPrecision(3),
         comment: transaction.comment,
         isG1: isG1,
         currentUd: currentUd,
-        isRetry: true);
-    afterRetry!();
+        isRetry: isRetry);
+    if (afterRetry != null) {
+      afterRetry!();
+    }
   }
 
   InlineSpan currencyBalanceWidget(bool isG1, String currentSymbol) {

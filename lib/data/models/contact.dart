@@ -12,8 +12,7 @@ part 'contact.g.dart';
 
 @JsonSerializable()
 @CopyWith()
-class Contact extends Equatable
-    implements IsJsonSerializable<Contact> {
+class Contact extends Equatable implements IsJsonSerializable<Contact> {
   const Contact({
     this.nick,
     required this.pubKey,
@@ -43,8 +42,7 @@ class Contact extends Equatable
   final String? name;
 
   @override
-  List<Object?> get props =>
-      <dynamic>[
+  List<Object?> get props => <dynamic>[
         pubKey,
         nick,
         pubKey,
@@ -63,18 +61,18 @@ class Contact extends Equatable
 
   @override
   String toString() {
-    return 'Contact $pubKey, hasAvatar: ${avatar !=
-        null}, nick: $nick, name: $name';
+    return 'Contact $pubKey, hasAvatar: ${avatar != null}, nick: $nick, name: $name';
   }
 
   String toStringSmall(String pubKey) {
     return humanizeContact(pubKey, this);
   }
 
-  String get title =>
-      name != null && nick != null
+  String get title => name != null && nick != null
+      ? name != nick
           ? '$name ($nick)'
-          : nick ?? name ?? humanizePubKey(pubKey);
+          : name! // avoid "nick (nick)" users
+      : nick ?? name ?? humanizePubKey(pubKey);
 
   String? get subtitle =>
       (nick != null || name != null) ? humanizePubKey(pubKey) : null;

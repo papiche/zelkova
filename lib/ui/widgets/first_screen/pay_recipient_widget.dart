@@ -15,7 +15,7 @@ class PayRecipientWidget extends StatelessWidget {
     final PaymentCubit paymentCubit = BlocProvider.of<PaymentCubit>(context);
     final ContactsCubit contactsCubit = BlocProvider.of<ContactsCubit>(context);
     return Card(
-        elevation: 8,
+        elevation: 4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),

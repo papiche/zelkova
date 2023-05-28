@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/models/app_cubit.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/payment_state.dart';
+import '../../../data/models/theme_cubit.dart';
 import '../../../data/models/transaction_cubit.dart';
 import '../../../g1/currency.dart';
 import '../../logger.dart';
@@ -51,8 +52,11 @@ class _PayFormState extends State<PayForm> {
 
       final bool sentDisabled =
           _onPressed(state, context, currency, currentUd) == null;
-      final Color sentColor =
-          sentDisabled ? Colors.grey : Theme.of(context).primaryColor;
+      final Color sentColor = sentDisabled
+          ? Theme.of(context).disabledColor
+          : context.read<ThemeCubit>().isDark()
+              ? const Color(0xFFB8D166)
+              : Theme.of(context).primaryColor;
       return Form(
         key: _formKey,
         child: Column(

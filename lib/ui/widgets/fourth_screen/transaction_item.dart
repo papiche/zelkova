@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
+import '../../../data/models/bottom_nav_cubit.dart';
 import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
+import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/transaction.dart';
 import '../../../data/models/transaction_cubit.dart';
 import '../../../data/models/transaction_state.dart';
@@ -120,7 +122,10 @@ class TransactionListItem extends StatelessWidget {
           if (transaction.type == TransactionType.sent)
             SlidableAction(
               onPressed: (BuildContext c) async {
-                await _payAgain(context, transaction, false);
+                context.read<PaymentCubit>().selectUser(
+                      transaction.to,
+                    );
+                context.read<BottomNavCubit>().updateIndex(0);
               },
               backgroundColor: Theme.of(context).primaryColorDark,
               foregroundColor: Colors.white,

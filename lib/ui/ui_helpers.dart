@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:url_launcher/url_launcher.dart';
 
 import '../data/models/app_cubit.dart';
 import '../data/models/contact.dart';
@@ -118,15 +119,12 @@ bool smallScreen(BuildContext context) =>
     MediaQuery.of(context).size.width <= smallScreenWidth;
 
 String _formatAmount(
-    {required BuildContext context,
+    {required String locale,
     required double amount,
     required bool isG1,
     required bool useSymbol}) {
   return formatAmountWithLocale(
-      locale: currentLocale(context),
-      amount: amount,
-      isG1: isG1,
-      useSymbol: useSymbol);
+      locale: locale, amount: amount, isG1: isG1, useSymbol: useSymbol);
 }
 
 String formatAmountWithLocale(
@@ -164,7 +162,19 @@ String formatKAmountInView(
         required double currentUd,
         required bool useSymbol}) =>
     _formatAmount(
-        context: context,
+        locale: currentLocale(context),
+        amount: convertAmount(isG1, amount, currentUd),
+        isG1: isG1,
+        useSymbol: useSymbol);
+
+String formatKAmountInViewWithLocale(
+        {required String locale,
+        required double amount,
+        required bool isG1,
+        required double currentUd,
+        required bool useSymbol}) =>
+    _formatAmount(
+        locale: locale,
         amount: convertAmount(isG1, amount, currentUd),
         isG1: isG1,
         useSymbol: useSymbol);
@@ -423,4 +433,11 @@ String? validateDecimal(
     return tr('enter_a_valid_number');
   }
   return null;
+}
+
+Future<bool> openUrl(String url) async {
+  final Uri uri = Uri.parse(url);
+  return await canLaunchUrl(uri)
+      ? await launchUrl(uri, mode: LaunchMode.externalNonBrowserApplication)
+      : throw Exception('Could not launch $url');
 }

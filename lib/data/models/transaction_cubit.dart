@@ -199,7 +199,8 @@ class TransactionCubit extends HydratedCubit<TransactionState> {
           final Contact from = tx.from;
           NotificationController.createNewNotification(
               tx.time.millisecondsSinceEpoch.toString(),
-              amount: tx.amount / 100,
+              amount: tx.amount,
+              currentUd: appCubit.currentUd,
               from: from.title,
               isG1: isG1);
           emit(newState.copyWith(latestReceivedNotification: tx.time));
@@ -210,7 +211,8 @@ class TransactionCubit extends HydratedCubit<TransactionState> {
           final Contact to = tx.to;
           NotificationController.createNewNotification(
               tx.time.millisecondsSinceEpoch.toString(),
-              amount: -tx.amount / 100,
+              amount: -tx.amount,
+              currentUd: appCubit.currentUd,
               to: to.title,
               isG1: isG1);
           emit(newState.copyWith(latestSentNotification: tx.time));

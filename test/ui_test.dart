@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:ginkgo/data/models/contact.dart';
 import 'package:ginkgo/ui/ui_helpers.dart';
 
 void main() {
@@ -75,5 +76,92 @@ void main() {
     final String? result =
         validateDecimal(sep: '.', locale: 'en', amount: '0,45');
     expect(result, 'enter_a_valid_number');
+  });
+  group('humanizeContact', () {
+    test('Should return "your_wallet" if pubKey matches publicAddress', () {
+      const String publicAddress = 'your_public_address';
+      const Contact contact = Contact(pubKey: 'your_public_address');
+      final String result = humanizeContact(publicAddress, contact);
+      expect(result, 'your_wallet');
+    });
+
+    test('Should return contact title if pubKey does not match publicAddress',
+        () {
+      const String publicAddress = 'your_public_address';
+      const Contact contact =
+          Contact(pubKey: 'other_public_address', name: 'John Doe');
+      final String result = humanizeContact(publicAddress, contact);
+      expect(result, 'John Doe');
+    });
+
+    test('Should return contact title with pubKey if addKey is true', () {
+      const String publicAddress = 'your_public_address';
+      const Contact contact =
+          Contact(pubKey: 'other_public_address', name: 'John Doe');
+      final String result = humanizeContact(publicAddress, contact, true);
+      expect(result, 'John Doe (🔑 other_pu)');
+    });
+
+    test(
+        'Should return pubKey if addKey is true but title is the same as pubKey',
+        () {
+      const String publicAddress = 'other_public_address';
+      const Contact contact = Contact(pubKey: 'your_public_address');
+      final String result = humanizeContact(publicAddress, contact, true);
+      expect(result, '🔑 your_pub');
+    });
+  });
+
+  group('Contact', () {
+    test('Should return correct title when name and nick are both provided',
+        () {
+      const Contact contact =
+          Contact(pubKey: 'your_public_address', name: 'John', nick: 'JD');
+      final String result = contact.title;
+      expect(result, 'John (JD)');
+    });
+
+    test('Should return name when name and nick are the same', () {
+      const Contact contact =
+          Contact(pubKey: 'your_public_address', name: 'John', nick: 'John');
+      final String result = contact.title;
+      expect(result, 'John');
+    });
+
+    test('Should return name when name is provided and nick is null', () {
+      const Contact contact =
+          Contact(pubKey: 'your_public_address', name: 'John');
+      final String result = contact.title;
+      expect(result, 'John');
+    });
+
+    test('Should return nick when nick is provided and name is null', () {
+      const Contact contact =
+          Contact(pubKey: 'your_public_address', nick: 'JD');
+      final String result = contact.title;
+      expect(result, 'JD');
+    });
+
+    test(
+        'Should return humanized pubKey when neither name nor nick is provided',
+        () {
+      const Contact contact = Contact(pubKey: 'your_public_address');
+      final String result = contact.title;
+      expect(result, '🔑 your_pub');
+    });
+
+    test('Should return subtitle when nick or name is provided', () {
+      const Contact contact =
+          Contact(pubKey: 'your_public_address', nick: 'JD');
+      final String? result = contact.subtitle;
+      expect(result, '🔑 your_pub');
+    });
+
+    test('Should return null subtitle when neither nick nor name is provided',
+        () {
+      const Contact contact = Contact(pubKey: 'your_public_address');
+      final String? result = contact.subtitle;
+      expect(result, isNull);
+    });
   });
 }

@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:crypto/crypto.dart';
 import 'package:durt/durt.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:encrypt/encrypt.dart';
+import 'package:fast_base58/fast_base58.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../data/models/contact.dart';
@@ -98,10 +100,53 @@ String? parseHost(String endpointUnParsed) {
   }
 }
 
-bool validateKey(String pubKey) {
+bool validateKeyOld(String pubKey) {
   return RegExp(
           r'^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{43,44}$')
       .hasMatch(pubKey);
+}
+
+bool validateKey(String pubKey) {
+  final RegExp regex = RegExp(
+    r'^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{43,44}(:([123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{3}))?$',
+  );
+
+  if (!regex.hasMatch(pubKey)) {
+    return false;
+  }
+
+  final List<String> parts = pubKey.split(':');
+  final String publicKeyPart = parts[0];
+
+  if (parts.length == 2) {
+    final String checksumPart = parts[1];
+
+    if (pkChecksum(publicKeyPart) != checksumPart) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+String pkChecksum(String pubkey) {
+  List<int> signpkInt8;
+
+  // Remove leading '1'
+  if (pubkey.length == 44 && pubkey.startsWith('1')) {
+    signpkInt8 = Base58Decode(pubkey.substring(1));
+  } else {
+    signpkInt8 = Base58Decode(pubkey);
+  }
+
+  // Double SHA256 hash
+  final Digest firstHash = sha256.convert(signpkInt8);
+  final Digest secondHash = sha256.convert(firstHash.bytes);
+
+  // Base58 encode and take the first 3 characters
+  final String checksum = Base58Encode(secondHash.bytes).substring(0, 3);
+
+  return checksum;
 }
 
 String getQrUri(

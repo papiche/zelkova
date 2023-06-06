@@ -160,6 +160,33 @@ void main() {
     expect(toG1(1, true, 0), equals(1));
     expect(toG1(1, false, 1024), equals(1024));
   });
+
+  test('Valid checksum', () {
+    const String publicKey = '6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH';
+    final String checksum = pkChecksum(publicKey);
+    expect(checksum, 'HCT');
+  });
+
+  test('Invalid checksum', () {
+    const String publicKey = '6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH';
+    const String invalidChecksum = '123';
+    final String checksum = pkChecksum(publicKey);
+    expect(checksum, isNot(invalidChecksum));
+  });
+
+  final List<List<String>> testData = <List<String>>[
+    <String>['BrgsSYK3xUzDyztGBHmxq69gfNxBfe2UKpxG21oZUBr5', 'Anr'],
+    <String>['6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH', 'HCT'],
+    <String>['78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8', '4VT'],
+    <String>['ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY', '9bG'],
+    <String>['EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG', 'BJH'],
+  ];
+
+  for (final List<String?> data in testData) {
+    test('Checksum of ${data[0]}', () {
+      expect(pkChecksum(data[0]!), equals(data[1]));
+    });
+  }
 }
 
 String _generateRandomPatternPassword(Random random) {

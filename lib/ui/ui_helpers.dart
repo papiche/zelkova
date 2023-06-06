@@ -84,9 +84,13 @@ String humanizeContact(String publicAddress, Contact contact,
   if (contact.pubKey == publicAddress) {
     return tr('your_wallet');
   } else {
-    return addKey
-        ? '${contact.title} (${humanizePubKey(contact.pubKey)})'
-        : contact.title;
+    final String pubKey = humanizePubKey(contact.pubKey);
+    final bool titleNotTheSameAsPubKey = contact.title != pubKey;
+    return addKey && titleNotTheSameAsPubKey
+        ? '${contact.title} ($pubKey)'
+        : titleNotTheSameAsPubKey
+            ? contact.title
+            : pubKey;
   }
 }
 

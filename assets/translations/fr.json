@@ -185,5 +185,7 @@
   "transaction_failed": "Le paiement a échoué",
   "retry_payment": "Réessayer le paiement",
   "cancel_payment": "Annuler le paiement",
-  "payment_canceled": "Paiement annulé sans que nous puissions nous assurer qu'il n'a pas déjà été exécuté"
+  "payment_canceled": "Paiement annulé sans que nous puissions nous assurer qu'il n'a pas déjà été exécuté",
+  "telegram_group": "Groupe Telegram",
+  "pay_again": "Payer à nouveau"
 }

@@ -223,11 +223,14 @@ class _FifthScreenState extends State<FifthScreen> {
                               'https://git.duniter.org/vjrj/ginkgo/-/issues')),
                     const BottomWidget(),
                     SwitchListTile(
-                      title: Text(tr('expert_mode')),
-                      value: state.expertMode,
-                      onChanged: (bool value) =>
-                          context.read<AppCubit>().setExpertMode(value),
-                    ),
+                        title: Text(tr('expert_mode')),
+                        value: state.expertMode,
+                        onChanged: (bool expert) {
+                          context.read<AppCubit>().setExpertMode(expert);
+                          if (!expert) {
+                            context.read<AppCubit>().setG1Currency();
+                          }
+                        }),
                     const BottomWidget()
                   ]),
             ));

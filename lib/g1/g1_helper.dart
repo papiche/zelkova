@@ -247,3 +247,5 @@ int toCG1(double amount) => (amount.toPrecision(2) * 100).toInt();
 extension Ex on double {
   double toPrecision(int n) => double.parse(toStringAsFixed(n));
 }
+
+String extractPublicKey(String key) => key.split(':')[0];

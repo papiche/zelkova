@@ -88,10 +88,11 @@ class _TransactionsAndBalanceWidgetState
           SnackBar(
             content: Text(tr('fetch_tx_error')),
             action: SnackBarAction(
-              label: tr('retry'),
-              textColor: Theme.of(context).primaryColor,
-              onPressed: () => _pagingController.retryLastFailedRequest(),
-            ),
+                label: tr('retry'),
+                textColor: Theme.of(context).primaryColor,
+                onPressed: () =>
+                    _refresh() //  _pagingController.retryLastFailedRequest(),
+                ),
           ),
         );
       }

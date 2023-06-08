@@ -62,8 +62,9 @@ Future<Response> searchCPlusUser(String searchTerm) async {
   return response;
 }
 
-Future<Contact> getProfile(String pubKey,
+Future<Contact> getProfile(String pubKeyRaw,
     [bool onlyCPlusProfile = false]) async {
+  final String pubKey = extractPublicKey(pubKeyRaw);
   try {
     final Response cPlusResponse = await requestCPlusWithRetry(
         '/user/profile/$pubKey',
@@ -103,7 +104,11 @@ Not found sample:
 "found": false
 }
  */
-Future<List<Contact>> searchWot(String searchTerm) async {
+Future<List<Contact>> searchWot(String searchTermRaw) async {
+  // If pubkey, remove checksum
+  final String searchTerm = validateKey(searchTermRaw)
+      ? extractPublicKey(searchTermRaw)
+      : searchTermRaw;
   final Response response = await requestDuniterWithRetry(
       '/wot/lookup/$searchTerm',
       retryWith404: false);
@@ -554,7 +559,7 @@ Future<PayResult> pay(
           'Trying $nodeUrl to send $amount to $to with comment ${comment ?? ''}');
 
       final String response = await gva.pay(
-          recipient: to,
+          recipient: extractPublicKey(to),
           amount: amount,
           comment: comment ?? '',
           cesiumSeed: wallet.seed,
@@ -616,20 +621,24 @@ String proxyfyNode(String nodeUrl) {
   return url;
 }
 
-Future<Tuple2<Map<String, dynamic>?, Node>> gvaHistoryAndBalance(String pubKey,
-    [int? pageSize, String? cursor]) async {
+Future<Tuple2<Map<String, dynamic>?, Node>> gvaHistoryAndBalance(
+    String pubKeyRaw,
+    [int? pageSize,
+    String? cursor]) async {
   logger('Get tx history (page size: $pageSize: cursor $cursor)');
+  final String pubKey = extractPublicKey(pubKeyRaw);
   return gvaFunctionWrapper<Map<String, dynamic>>(
       pubKey, (Gva gva) => gva.history(pubKey, pageSize, cursor));
 }
 
 Future<Tuple2<double?, Node>> gvaBalance(String pubKey) async {
-  return gvaFunctionWrapper<double>(pubKey, (Gva gva) => gva.balance(pubKey));
+  return gvaFunctionWrapper<double>(
+      extractPublicKey(pubKey), (Gva gva) => gva.balance(pubKey));
 }
 
 Future<Tuple2<String?, Node>> gvaNick(String pubKey) async {
   return gvaFunctionWrapper<String>(
-      pubKey, (Gva gva) => gva.getUsername(pubKey));
+      pubKey, (Gva gva) => gva.getUsername(extractPublicKey(pubKey)));
 }
 
 Future<Tuple2<T?, Node>> gvaFunctionWrapper<T>(

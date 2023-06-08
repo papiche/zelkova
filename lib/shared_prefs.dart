@@ -108,7 +108,9 @@ class SharedPreferencesHelper {
   // Get the public key from the specified index (default to first wallet)
   String getPubKey({int index = 0}) {
     final CesiumCard card = cesiumCards[index];
-    return card.pubKey;
+    final String pubKey = card.pubKey;
+    final String checksum = pkChecksum(pubKey);
+    return '$pubKey:$checksum';
   }
 
   List<CesiumCard> get cards => cesiumCards;

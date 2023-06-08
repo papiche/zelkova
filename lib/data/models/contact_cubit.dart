@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
+import '../../g1/g1_helper.dart';
 import '../../ui/ui_helpers.dart';
 import 'contact.dart';
 import 'contact_state.dart';
@@ -66,14 +67,17 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
   }
 
   void updateContact(Contact contact) {
+    final String pubKey = extractPublicKey(contact.pubKey);
     final List<Contact> contacts = state.contacts.map((Contact c) {
-      if (c.pubKey == contact.pubKey) {
+      if (c.pubKey == contact.pubKey ||
+          c.pubKey == extractPublicKey(contact.pubKey)) {
         return contact;
       }
       return c;
     }).toList();
     final List<Contact> fcontacts = state.filteredContacts.map((Contact c) {
-      if (c.pubKey == contact.pubKey) {
+      if (c.pubKey == contact.pubKey ||
+          c.pubKey == extractPublicKey(contact.pubKey)) {
         return contact;
       }
       return c;
@@ -99,6 +103,9 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
         queryLower[0].toUpperCase() + queryLower.substring(1);
     final List<Contact> contacts = state.contacts.where((Contact c) {
       if (c.pubKey.contains(query)) {
+        return true;
+      }
+      if (c.pubKey.contains(extractPublicKey(query))) {
         return true;
       }
       if (c.nick != null &&

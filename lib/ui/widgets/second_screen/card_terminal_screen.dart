@@ -16,6 +16,10 @@ class CardTerminalScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String duniterUri = getQrUri(
+        pubKey: SharedPreferencesHelper().getPubKey(),
+        locale: context.locale.toLanguageTag(),
+        amount: amount);
     return Card(
       key: receiveQrKey,
       elevation: 8,
@@ -90,11 +94,9 @@ class CardTerminalScreen extends StatelessWidget {
                 child: Column(children: <Widget>[
               if (!amount.contains('+'))
                 Expanded(
-                    child: QrImage(
-                  data: getQrUri(
-                      pubKey: SharedPreferencesHelper().getPubKey(),
-                      locale: context.locale.toLanguageTag(),
-                      amount: amount),
+                    child: GestureDetector(
+                  onTap: () => copyPublicKeyToClipboard(context, duniterUri),
+                  child: QrImage(data: duniterUri),
                   //   size: smallScreen(context) ? 95.0 : 140.0)
                 ))
             ])),

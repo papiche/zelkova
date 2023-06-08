@@ -16,7 +16,7 @@ import '../../../shared_prefs.dart';
 import '../../contacts_cache.dart';
 import '../../pay_helper.dart';
 import '../../ui_helpers.dart';
-import '../third_screen/contact_form.dart';
+import '../third_screen/contact_edit_dialog.dart';
 
 class TransactionListItem extends StatelessWidget {
   const TransactionListItem(

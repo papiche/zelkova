@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -40,10 +41,11 @@ void showTooltip(BuildContext context, String title, String message) {
   );
 }
 
-void copyPublicKeyToClipboard(BuildContext context, [String? uri]) {
+void copyPublicKeyToClipboard(BuildContext context,
+    [String? uri, String? feedbackText]) {
   FlutterClipboard.copy(uri ?? SharedPreferencesHelper().getPubKey()).then(
-      (dynamic value) => ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(tr('key_copied_to_clipboard')))));
+      (dynamic value) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(tr(feedbackText ?? 'key_copied_to_clipboard')))));
 }
 
 const Color defAvatarBgColor = Colors.grey;
@@ -439,4 +441,76 @@ Future<bool> openUrl(String url) async {
   return await canLaunchUrl(uri)
       ? await launchUrl(uri, mode: LaunchMode.externalNonBrowserApplication)
       : throw Exception('Could not launch $url');
+}
+
+void showQrDialog({
+  required BuildContext context,
+  required String publicKey,
+  bool noTitle = false,
+  String? feedbackText,
+}) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              SizedBox(
+                height: MediaQuery.of(context).size.width * 0.8,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: GestureDetector(
+                    onTap: () => copyPublicKeyToClipboard(
+                        context, publicKey, feedbackText),
+                    child: Container(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.grey[900]
+                          : Colors.grey[100],
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: <Widget>[
+                          if (!noTitle) Text(tr('show_qr_to_client')),
+                          if (!noTitle) const SizedBox(height: 10),
+                          Expanded(
+                              child: QrImage(
+                            data: publicKey,
+                            size: MediaQuery.of(context).size.width * 0.8,
+                            gapless: false,
+                            foregroundColor:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.white
+                                    : Colors.black,
+                          )),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: TextFormField(
+                  maxLines: 2,
+                  initialValue: publicKey,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                      icon: const Icon(Icons.content_copy),
+                      onPressed: () {
+                        copyPublicKeyToClipboard(
+                            context, publicKey, feedbackText);
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }

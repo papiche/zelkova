@@ -1,4 +1,3 @@
-import 'package:clipboard/clipboard.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,7 +11,7 @@ import '../../../data/models/payment_cubit.dart';
 import '../../contacts_cache.dart';
 import '../../ui_helpers.dart';
 import '../bottom_widget.dart';
-import 'contact_form.dart';
+import 'contact_edit_dialog.dart';
 
 class ContactsPage extends StatefulWidget {
   const ContactsPage({super.key});
@@ -107,12 +106,11 @@ class _ContactsPageState extends State<ContactsPage> {
                         children: <SlidableAction>[
                           SlidableAction(
                             onPressed: (BuildContext c) {
-                              FlutterClipboard.copy(contact.pubKey).then(
-                                  (dynamic value) => ScaffoldMessenger.of(
-                                          context)
-                                      .showSnackBar(SnackBar(
-                                          content: Text(tr(
-                                              'some_key_copied_to_clipboard')))));
+                              showQrDialog(
+                                  context: context,
+                                  publicKey: contact.pubKey,
+                                  noTitle: true,
+                                  feedbackText: 'some_key_copied_to_clipboard');
                             },
                             backgroundColor: Theme.of(context).primaryColorDark,
                             foregroundColor: Colors.white,

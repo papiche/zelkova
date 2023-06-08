@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../shared_prefs.dart';
 import '../../tutorial_keys.dart';
@@ -79,7 +78,8 @@ class CreditCard extends StatelessWidget {
                               EdgeInsets.symmetric(horizontal: cardPadding),
                           child: GestureDetector(
                               onTap: () {
-                                _showQrDialog(context);
+                                showQrDialog(
+                                    context: context, publicKey: pubKey);
                               },
                               child: SvgPicture.asset(
                                 width: MediaQuery.of(context).size.width <
@@ -94,7 +94,8 @@ class CreditCard extends StatelessWidget {
                               EdgeInsets.symmetric(horizontal: cardPadding),
                           child: Row(children: <Widget>[
                             GestureDetector(
-                                onTap: () => _showQrDialog(context),
+                                onTap: () => showQrDialog(
+                                    context: context, publicKey: pubKey),
                                 child: FittedBox(
                                     key: creditCardPubKey,
                                     fit: BoxFit.scaleDown,
@@ -132,69 +133,5 @@ class CreditCard extends StatelessWidget {
                     ]),
               ]),
             )));
-  }
-
-  void _showQrDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                SizedBox(
-                  height: MediaQuery.of(context).size.width,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: GestureDetector(
-                      onTap: () => copyPublicKeyToClipboard(context),
-                      child: Container(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.grey[900]
-                            : Colors.grey[100],
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          children: <Widget>[
-                            Text(tr('show_qr_to_client')),
-                            Expanded(
-                                child: QrImage(
-                              data: publicKey,
-                              size: MediaQuery.of(context).size.width * 0.8,
-                              gapless: false,
-                              foregroundColor: Theme.of(context).brightness ==
-                                      Brightness.dark
-                                  ? Colors.white
-                                  : Colors.black,
-                            )),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: TextFormField(
-                    maxLines: 2,
-                    initialValue: publicKey,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        icon: const Icon(Icons.content_copy),
-                        onPressed: () {
-                          copyPublicKeyToClipboard(context);
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-              ],
-            ),
-          ),
-        );
-      },
-    );
   }
 }

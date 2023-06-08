@@ -67,7 +67,6 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
   }
 
   void updateContact(Contact contact) {
-    final String pubKey = extractPublicKey(contact.pubKey);
     final List<Contact> contacts = state.contacts.map((Contact c) {
       if (c.pubKey == contact.pubKey ||
           c.pubKey == extractPublicKey(contact.pubKey)) {

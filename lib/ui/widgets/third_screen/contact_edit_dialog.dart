@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../data/models/contact.dart';
 import '../../ui_helpers.dart';
@@ -41,6 +42,10 @@ class _ContactEditDialogState extends State<ContactEditDialog> {
               ),
               enabled: false,
             ),
+            Expanded(child: QrImage(
+              data: _updatedContact.pubKey,
+
+            )),
             TextFormField(
               initialValue: _updatedContact.name,
               decoration: const InputDecoration(labelText: 'Name'),

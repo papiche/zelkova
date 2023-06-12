@@ -376,8 +376,41 @@ class _GinkgoAppState extends State<GinkgoApp> {
                     BouncingScrollWrapper.builder(
                         context,
                         ConnectivityWidgetWrapperWrapper(
-                          message: tr('offline'),
-                          height: 20,
+                          //message: tr('offline'),
+                          //height: 18,
+
+                          offlineWidget: /* Container(
+                                color: Colors.transparent,
+                                child: Center(
+                                  child: */
+                              Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              const Icon(
+                                Icons.cloud_off,
+                                size: 48,
+                                color: Colors.grey,
+                              ),
+                              const SizedBox(height: 6),
+                              Container(
+                                  padding: const EdgeInsets.all(5.0),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.grey,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                  ),
+                                  child: Text(
+                                    tr('offline'),
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      decoration: TextDecoration.none,
+                                      fontSize: 14,
+                                    ),
+                                  )),
+                              const SizedBox(height: 70),
+                            ],
+                          ),
+
                           child: widget!,
                         )),
                     maxWidth: 480,

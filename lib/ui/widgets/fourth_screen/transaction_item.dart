@@ -51,8 +51,7 @@ class TransactionListItem extends StatelessWidget {
             _buildTransactionItem(context, transaction));
   }
 
-  Slidable _buildTransactionItem(
-      BuildContext context, Transaction transaction) {
+  Widget _buildTransactionItem(BuildContext context, Transaction transaction) {
     IconData? icon;
     Color? iconColor;
     String statusText;
@@ -66,9 +65,15 @@ class TransactionListItem extends StatelessWidget {
 
     final String amountS =
         '${transaction.amount < 0 ? "" : "+"}$amountWithSymbol';
-    statusText = tr('transaction_${transaction.type.name}');
+    statusText = transaction.type != TransactionType.waitingNetwork
+        ? tr('transaction_${transaction.type.name}')
+        : tr('transaction_waiting_network');
 
     switch (transaction.type) {
+      case TransactionType.waitingNetwork:
+        icon = Icons.schedule_send;
+        iconColor = grey;
+        break;
       case TransactionType.pending:
         icon = Icons.schedule;
         iconColor = grey;
@@ -136,6 +141,16 @@ class TransactionListItem extends StatelessWidget {
         endActionPane: ActionPane(
           motion: const ScrollMotion(),
           children: <SlidableAction>[
+            if (transaction.type == TransactionType.waitingNetwork)
+              SlidableAction(
+                onPressed: (BuildContext c) async {
+                  await _payAgain(context, transaction, true);
+                },
+                backgroundColor: Theme.of(context).primaryColorDark,
+                foregroundColor: Colors.white,
+                icon: Icons.replay,
+                label: tr('retry_payment'),
+              ),
             if (transaction.type == TransactionType.failed)
               SlidableAction(
                 onPressed: (BuildContext c) async {

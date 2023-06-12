@@ -94,6 +94,7 @@
   "transaction_sent": "Sent",
   "transaction_received": "Received",
   "transaction_failed": "Payment failed",
+  "transaction_waiting_network": "Retry with Internet",
   "valid_comment": "The comment cannot have accents or commas",
   "search_limitation": "The search term must have at least 3 characters",
   "faq_title": "Frequently Asked Questions",
@@ -186,5 +187,8 @@
   "cancel_payment": "Cancel Payment",
   "payment_canceled": "Payment canceled although we cannot ensure that it has not already been executed",
   "pay_again": "Pay Again",
-  "telegram_group": "Telegram Group"
+  "telegram_group": "Telegram Group",
+  "payment_waiting_internet_title": "No Internet",
+  "payment_waiting_internet_desc": "We'll retry your payment when internet is back",
+  "payment_waiting_internet_desc_beta": "Retry your payment when internet is back"
 }

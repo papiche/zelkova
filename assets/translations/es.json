@@ -94,6 +94,7 @@
   "transaction_sent": "Enviado",
   "transaction_received": "Recibido",
   "transaction_fallido": "Pago fallido",
+  "transaction_waiting_network": "Reintenta con Internet",
   "valid_comment": "El comentario no puede tener tildes o comas",
   "search_limitation": "La búsqueda debe tener al menos 3 caracteres",
   "faq_title": "Preguntas frecuentes",
@@ -188,5 +189,8 @@
   "payment_canceled": "Pago cancelado aunque no podemos asegurar que no se haya hecho ejecutado ya",
   "transaction_failed": "Pago fallido",
   "pay_again": "Paga de nuevo",
-  "telegram_group": "Grupo de Telegram"
+  "telegram_group": "Grupo de Telegram",
+  "payment_waiting_internet_title": "Sin Internet",
+  "payment_waiting_internet_desc": "Reintentaremos el pago cuando vuelvas a tener conexión",
+  "payment_waiting_internet_desc_beta": "Reintenta el pago cuando vuelvas a tener conexión"
 }

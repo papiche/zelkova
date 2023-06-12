@@ -117,6 +117,9 @@ class TransactionCubit extends HydratedCubit<TransactionState> {
 
         // Adjust pending transactions
         for (final Transaction pend in newState.pendingTransactions) {
+          if (pend.type == TransactionType.waitingNetwork) {
+            continue;
+          }
           if (txMap[getTxKey(pend)] != null) {
             // Found a match
             // VER SI SENT o que

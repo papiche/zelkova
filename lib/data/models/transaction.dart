@@ -31,22 +31,12 @@ class Transaction extends Equatable {
   final DateTime time;
   final String? debugInfo;
 
-/*
-  bool get isOutgoing =>
-      type == TransactionType.sending ||
-      type == TransactionType.sent ||
-      type == TransactionType.pending;
-
-
-bool get isProcessing =>
-    type == TransactionType.sending ||
-    type == TransactionType.receiving ||
-    type == TransactionType.pending; */
-
   bool get isFailed => type == TransactionType.failed;
 
   bool get isPending =>
-      type == TransactionType.pending || type == TransactionType.failed;
+      type == TransactionType.pending ||
+      type == TransactionType.failed ||
+      type == TransactionType.waitingNetwork;
 
   bool get isIncoming =>
       type == TransactionType.receiving || type == TransactionType.received;

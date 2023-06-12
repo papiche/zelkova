@@ -1,1 +1,9 @@
-enum TransactionType { sending, received, receiving, sent, pending, failed }
+enum TransactionType {
+  sending,
+  received,
+  receiving,
+  sent,
+  pending,
+  failed,
+  waitingNetwork
+}

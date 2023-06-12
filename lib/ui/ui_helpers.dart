@@ -514,3 +514,5 @@ void showQrDialog({
     },
   );
 }
+
+bool get isIOS => !kIsWeb && Platform.isIOS;

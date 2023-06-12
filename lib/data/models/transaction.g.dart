@@ -153,4 +153,5 @@ const _$TransactionTypeEnumMap = {
   TransactionType.sent: 'sent',
   TransactionType.pending: 'pending',
   TransactionType.failed: 'failed',
+  TransactionType.waitingNetwork: 'waitingNetwork',
 };

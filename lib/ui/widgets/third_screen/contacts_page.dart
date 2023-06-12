@@ -100,9 +100,9 @@ class _ContactsPageState extends State<ContactsPage> {
                       // The end action pane is the one at the right or the bottom side.
                       endActionPane: ActionPane(
                         motion: const ScrollMotion(),
-                        dismissible: DismissiblePane(onDismissed: () {
+                        /* dismissible: DismissiblePane(onDismissed: () {
                           onSent(context, contact);
-                        }),
+                        }), */
                         children: <SlidableAction>[
                           SlidableAction(
                             onPressed: (BuildContext c) {

@@ -35,7 +35,7 @@
   "online_terminal": "Connectat",
   "offline_terminal": "Desconnectat",
   "show_qr_to_client": "Mostra la meva clau pública",
-  "show_qr_to_client_amount": "Mostri aquest codi QR amb aquesta quantitat a seu client",
+  "show_qr_to_client_amount": "Mostreu aquest codi QR amb aquesta quantitat al vostre client",
   "keys_tooltip": "Les claus públiques i privades en Ğ1 i Duniter són com un sistema de pany i clau, on la clau pública fa de pany que pot obrir qualsevol que tingui la clau privada corresponent, oferint una manera segura d'autenticar i verificar transaccions",
   "card_validity": "Validesa",
   "card_validity_tooltip": "Tingues en compte que aquest moneder només és accessible mentre usis aquest navegador o app i aquest dispositiu específic. Si esborres o reinstal·les el navegador o app, perdràs l'accés a aquest moneder i els fons emmagatzemats en ell.",
@@ -178,5 +178,14 @@
   "feedback_submit": "ENVIAR",
   "feedback_whats_wrong": "Descriu-nos el teu problema:",
   "feedback_draw": "Dibuixi-ho",
-  "feedback_navigate": "Navega"
+  "feedback_navigate": "Navega",
+  "payment_canceled": "El pagament ha sigut cancel·lat, però no podem assegurar que no s'hagués executat",
+  "pay_again": "Torna a pagar",
+  "telegram_group": "Grup de Telegram",
+  "bug_report": "Avisa d'un error",
+  "slidable_tutorial": "Llisca per més accions",
+  "please_confirm_retry_sent_desc": "Si us plau, confirmeu que voleu reintentar l'enviament de {amount} {currency} a {to}",
+  "transaction_failed": "Pagament fallit",
+  "retry_payment": "Tornar a fer el pagament",
+  "cancel_payment": "Cancel·lar el pagament"
 }

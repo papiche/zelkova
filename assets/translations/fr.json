@@ -187,5 +187,9 @@
   "cancel_payment": "Annuler le paiement",
   "payment_canceled": "Paiement annulé sans que nous puissions nous assurer qu'il n'a pas déjà été exécuté",
   "telegram_group": "Groupe Telegram",
-  "pay_again": "Payer à nouveau"
+  "pay_again": "Payer à nouveau",
+  "transaction_waiting_network": "Réessayez avec Internet",
+  "payment_waiting_internet_title": "Pas de connexion Internet",
+  "payment_waiting_internet_desc": "Nous réessayerons votre paiement lorsque l'internet sera rétabli",
+  "payment_waiting_internet_desc_beta": "Réessayez votre paiement lorsque la connexion internet sera rétablie"
 }

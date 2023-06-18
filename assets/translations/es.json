@@ -186,7 +186,7 @@
   "slidable_tutorial": "Desliza para más acciones",
   "retry_payment": "Reintentar pago",
   "cancel_payment": "Cancelar pago",
-  "payment_canceled": "Pago cancelado aunque no podemos asegurar que no se haya hecho ejecutado ya",
+  "payment_canceled": "Pago cancelado aunque no podemos asegurar que no se haya ejecutado ya",
   "transaction_failed": "Pago fallido",
   "pay_again": "Paga de nuevo",
   "telegram_group": "Grupo de Telegram",

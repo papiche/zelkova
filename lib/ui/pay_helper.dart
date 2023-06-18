@@ -41,8 +41,6 @@ Future<void> payWithRetry(
   paymentCubit.sending();
   final String fromPubKey = SharedPreferencesHelper().getPubKey();
   final String contactPubKey = to.pubKey;
-  final bool isConnected = await ConnectivityWidgetWrapperWrapper.isConnected;
-  logger('isConnected: $isConnected');
   final bool? confirmed = await _confirmSend(context, amount.toString(),
       humanizeContact(fromPubKey, to, true), isRetry, appCubit.currency);
   final Contact fromContact = await ContactsCache().getContact(fromPubKey);
@@ -58,6 +56,8 @@ Future<void> payWithRetry(
         amount: -toCG1(convertedAmount).toDouble(),
         comment: comment,
         time: DateTime.now());
+    final bool isConnected = await ConnectivityWidgetWrapperWrapper.isConnected;
+    logger('isConnected: $isConnected');
     if (isConnected != null && !isConnected && !isRetry) {
       paymentCubit.sent();
       if (!context.mounted) {

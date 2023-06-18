@@ -84,7 +84,7 @@ services:
       # that are available with the less latency
       # SENTRY_DSN no tiene valor predeterminado, por lo que no se incluye aquí.
       - DUNITER_NODES=${DUNITER_NODES:-https://g1.duniter.fr https://g1.le-sou.org https://g1.cgeek.fr https://g1.monnaielibreoccitanie.org https://g1.duniter.fr https://g1.le-sou.org https://g1.cgeek.fr}
-      - CESIUM_PLUS_NODES=${CESIUM_PLUS_NODES:-https://g1.data.le-sou.org https://g1.data.e-is.pro https://g1.data.presler.fr https://g1.data.mithril.re}
+      - CESIUM_PLUS_NODES=${CESIUM_PLUS_NODES:-https://g1.data.le-sou.org https://g1.data.e-is.pro https://g1.data.presles.fr https://g1.data.mithril.re}
       - GVA_NODES=${GVA_NODES:-https://g1v1.p2p.legal:443/gva https://g1.asycn.io:443/gva https://duniter.pini.fr:443/gva https://duniter.cuates.net:443/gva}
 
   watchtower:

@@ -16,6 +16,7 @@ import '../../contacts_cache.dart';
 import '../../logger.dart';
 import '../../qr_manager.dart';
 import '../../ui_helpers.dart';
+import '../connectivity_widget_wrapper_wrapper.dart';
 import '../custom_error_widget.dart';
 import '../loading_box.dart';
 import '../third_screen/contacts_page.dart';
@@ -43,6 +44,7 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
       return;
     }
 
+    final bool isConnected = await ConnectivityWidgetWrapperWrapper.isConnected;
     setState(() {
       _isLoading = true;
     });
@@ -55,39 +57,43 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
       }
     });
 
-    final Response cPlusResponse = await searchCPlusUser(_searchTerm);
+    if (isConnected) {
+      final Response cPlusResponse = await searchCPlusUser(_searchTerm);
 
-    if (cPlusResponse.statusCode != 404) {
-      // Add cplus users
-      final List<dynamic> hits = ((const JsonDecoder()
-              .convert(cPlusResponse.body) as Map<String, dynamic>)['hits']
-          as Map<String, dynamic>)['hits'] as List<dynamic>;
-      for (final dynamic hit in hits) {
-        final Contact c =
-            await contactFromResultSearch(hit as Map<String, dynamic>);
-        logger('Contact retrieved in c+ search $c');
-        ContactsCache().addContact(c);
-        setState(() {
-          _addIfNotPresent(c);
-        });
+      if (cPlusResponse.statusCode != 404) {
+        // Add cplus users
+        final List<dynamic> hits = ((const JsonDecoder()
+                .convert(cPlusResponse.body) as Map<String, dynamic>)['hits']
+            as Map<String, dynamic>)['hits'] as List<dynamic>;
+        for (final dynamic hit in hits) {
+          final Contact c =
+              await contactFromResultSearch(hit as Map<String, dynamic>);
+          logger('Contact retrieved in c+ search $c');
+          ContactsCache().addContact(c);
+          setState(() {
+            _addIfNotPresent(c);
+          });
+        }
+        logger('Found: ${_results.length}');
       }
-      logger('Found: ${_results.length}');
     }
 
-    final List<Contact> wotResults = await searchWot(_searchTerm);
-    // ignore: prefer_foreach
-    for (final Contact c in wotResults) {
-      ContactsCache().addContact(c);
-      _addIfNotPresent(c);
-      // retrieve extra results with c+ profile
-      for (final Contact wotC in wotResults) {
-        final Contact cachedWotProfile =
-            await ContactsCache().getContact(wotC.pubKey);
-        if (cachedWotProfile.name == null) {
-          // Users without c+ profile
-          final Contact cPlusProfile =
-              await getProfile(cachedWotProfile.pubKey, true);
-          ContactsCache().addContact(cPlusProfile);
+    if (isConnected) {
+      final List<Contact> wotResults = await searchWot(_searchTerm);
+      // ignore: prefer_foreach
+      for (final Contact c in wotResults) {
+        ContactsCache().addContact(c);
+        _addIfNotPresent(c);
+        // retrieve extra results with c+ profile
+        for (final Contact wotC in wotResults) {
+          final Contact cachedWotProfile =
+              await ContactsCache().getContact(wotC.pubKey);
+          if (cachedWotProfile.name == null) {
+            // Users without c+ profile
+            final Contact cPlusProfile =
+                await getProfile(cachedWotProfile.pubKey, true);
+            ContactsCache().addContact(cPlusProfile);
+          }
         }
       }
     }

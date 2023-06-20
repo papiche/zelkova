@@ -127,7 +127,7 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
       appBar: AppBar(
         title: Text(tr('search_user_title')),
         backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Colors.white,
+        foregroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: <Widget>[
           IconButton(
               icon: const Icon(Icons.qr_code_scanner),
@@ -177,7 +177,7 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
               controller: _searchController,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Colors.white,
+                //fillColor: Colors.white,
                 labelText: tr('search_user'),
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.search),

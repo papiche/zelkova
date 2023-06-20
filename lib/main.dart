@@ -407,7 +407,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
                                       fontSize: 14,
                                     ),
                                   )),
-                              const SizedBox(height: 150),
+                              const SizedBox(height: 110),
                             ],
                           ),
 

@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/models/app_cubit.dart';
@@ -69,12 +68,10 @@ class _PayFormState extends State<PayForm> {
               Expanded(
                   child: TextFormField(
                 key: _formCommentKey,
-                inputFormatters: <TextInputFormatter>[
-                  NoNewLineTextInputFormatter()
-                ],
                 controller: _commentController,
                 onChanged: (String? value) {
-                  context.read<PaymentCubit>().setComment(value ?? '');
+                  final String newText = (value ?? '').replaceAll('\n', '');
+                  context.read<PaymentCubit>().setComment(newText);
                 },
                 decoration: InputDecoration(
                   labelText: tr('g1_form_pay_desc'),
@@ -225,19 +222,4 @@ class _PayFormState extends State<PayForm> {
 
 class RetryException implements Exception {
   RetryException();
-}
-
-class NoNewLineTextInputFormatter extends TextInputFormatter {
-  @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
-    final int cursorPosition = newValue.selection.baseOffset;
-    final String newText = newValue.text.replaceAll('\n', '');
-    final TextSelection newSelection =
-        TextSelection.collapsed(offset: cursorPosition);
-    return TextEditingValue(
-      text: newText,
-      selection: newSelection,
-    );
-  }
 }

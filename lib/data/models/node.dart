@@ -45,12 +45,22 @@ class Node extends Equatable implements IsJsonSerializable<Node> {
   List<Object?> get props => <dynamic>[url];
 }
 
-List<Node> readDotNodeConfig(String entry) =>
-    dotenv.env[entry]!.split(' ').map((String url) => Node(url: url)).toList();
+List<Node> _splitList(String list) =>
+    list.split(' ').map((String url) => Node(url: url)).toList();
 
-List<Node> defaultDuniterNodes = readDotNodeConfig('DUNITER_NODES');
-List<Node> defaultCesiumPlusNodes = readDotNodeConfig('CESIUM_PLUS_NODES');
-List<Node> defaultGvaNodes = readDotNodeConfig('GVA_NODES');
+List<Node> _readDotNodeConfig(String entry) => _splitList(dotenv.env[entry]!);
+
+List<Node> defaultDuniterNodes = _readDotNodeConfig('DUNITER_NODES');
+List<Node> defaultCesiumPlusNodes = <Node>{
+  ..._readDotNodeConfig('CESIUM_PLUS_NODES'),
+  ..._splitList(
+      'https://g1.data.brussels.ovh https://g1.data.e-is.pro https://g1.data.mithril.re https://g1.data.pini.fr https://g1.data.presles.fr')
+}.toList();
+List<Node> defaultGvaNodes = <Node>{
+  ..._readDotNodeConfig('GVA_NODES'),
+  ..._splitList(
+      'https://g1.cuates.net/gva https://g1.madeirawonders.com/gva https://g1.brussels.ovh/gva https://g1.geragc.es/gva https://gva.seeds4c.org/gva')
+}.toList();
 
 // We test local duniter node in dev mode
 /* List<Node> defaultGvaNodes = kReleaseMode

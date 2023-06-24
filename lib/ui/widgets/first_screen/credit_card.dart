@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../../shared_prefs.dart';
 import '../../tutorial_keys.dart';
 import '../../ui_helpers.dart';
+import 'card_name_editable.dart';
 import 'card_text_style.dart';
 
 class CreditCard extends StatelessWidget {
@@ -20,6 +21,7 @@ class CreditCard extends StatelessWidget {
     final double cardPadding = bigDevice ? 26.0 : 16.0;
 
     final String pubKey = SharedPreferencesHelper().getPubKey();
+
     return Card(
         elevation: 8.0,
         shape: RoundedRectangleBorder(
@@ -76,18 +78,22 @@ class CreditCard extends StatelessWidget {
                       Padding(
                           padding:
                               EdgeInsets.symmetric(horizontal: cardPadding),
-                          child: GestureDetector(
-                              onTap: () {
-                                showQrDialog(
-                                    context: context, publicKey: pubKey);
-                              },
-                              child: SvgPicture.asset(
-                                width: MediaQuery.of(context).size.width <
-                                        smallScreenWidth
-                                    ? 25
-                                    : 40,
-                                'assets/img/chip.svg',
-                              ))),
+                          child: Row(children: <Widget>[
+                            GestureDetector(
+                                onTap: () {
+                                  showQrDialog(
+                                      context: context, publicKey: pubKey);
+                                },
+                                child: SvgPicture.asset(
+                                  width: MediaQuery.of(context).size.width <
+                                          smallScreenWidth
+                                      ? 25
+                                      : 40,
+                                  'assets/img/chip.svg',
+                                )),
+                            const SizedBox(width: 10.0),
+                            const Expanded(child: CardNameEditable())
+                          ])),
                       const SizedBox(height: 6.0),
                       Padding(
                           padding:

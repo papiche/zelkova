@@ -1,5 +1,8 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
+import '../../shared_prefs.dart';
+import '../widgets/first_screen/card_name_editable.dart';
+
 class Sandbox extends StatefulWidget {
   const Sandbox({super.key});
 
@@ -14,6 +17,6 @@ class _SandboxState extends State<Sandbox> {
         appBar: AppBar(
           title: const Text('Sandbox'),
         ),
-        body: const Placeholder());
+        body: const CardNameEditable());
   }
 }

@@ -516,3 +516,5 @@ void showQrDialog({
 }
 
 bool get isIOS => !kIsWeb && Platform.isIOS;
+
+const String userNameSuffix = ' (Ğ1nkgo)';

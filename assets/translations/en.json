@@ -190,5 +190,6 @@
   "telegram_group": "Telegram Group",
   "payment_waiting_internet_title": "No Internet",
   "payment_waiting_internet_desc": "We'll retry your payment when internet is back",
-  "payment_waiting_internet_desc_beta": "Retry your payment when internet is back"
+  "payment_waiting_internet_desc_beta": "Retry your payment when internet is back",
+  "your_name_here": "Name this card"
 }

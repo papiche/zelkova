@@ -113,6 +113,17 @@ class SharedPreferencesHelper {
     return '$pubKey:$checksum';
   }
 
+  String getName({int index = 0}) {
+    final CesiumCard card = cesiumCards[index];
+    return card.name;
+  }
+
+  void setName({int index = 0, required String name}) {
+    final CesiumCard card = cesiumCards[index];
+    cesiumCards[index] = card.copyWith(name: name);
+    saveCesiumCards();
+  }
+
   List<CesiumCard> get cards => cesiumCards;
 
   static const String _currentWalletIndexKey = 'current_wallet_index';

@@ -48,6 +48,15 @@ void copyPublicKeyToClipboard(BuildContext context,
           content: Text(tr(feedbackText ?? 'key_copied_to_clipboard')))));
 }
 
+void copyToClipboard(
+    {required BuildContext context,
+    required String uri,
+    required String feedbackText}) {
+  FlutterClipboard.copy(uri).then((dynamic value) =>
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(tr(feedbackText)))));
+}
+
 const Color defAvatarBgColor = Colors.grey;
 const Color defAvatarColor = Colors.white;
 const double defAvatarSize = 24;
@@ -517,4 +526,4 @@ void showQrDialog({
 
 bool get isIOS => !kIsWeb && Platform.isIOS;
 
-const String userNameSuffix = ' (Ğ1nkgo)';
+const String userNameSuffix = ' ❥';

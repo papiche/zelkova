@@ -277,7 +277,7 @@ class GinkgoApp extends StatefulWidget {
 }
 
 class _GinkgoAppState extends State<GinkgoApp> {
-  Future<void> _loadNodes(BuildContext context) async {
+  Future<void> _loadNodes() async {
     _printNodeStatus();
     for (final NodeType nodeType in NodeType.values) {
       await fetchNodes(nodeType, false);
@@ -306,9 +306,13 @@ class _GinkgoAppState extends State<GinkgoApp> {
     NodeManager().loadFromCubit(context.read<NodeListCubit>());
     // Only after at least the action method is set, the notification events are delivered
     NotificationController.startListeningNotificationEvents();
-    Once.runHourly('load_nodes', callback: () {
-      logger('Load nodes via once');
-      _loadNodes(context);
+    Once.runHourly('load_nodes', callback: () async {
+      final bool isConnected =
+          await ConnectivityWidgetWrapperWrapper.isConnected;
+      if (isConnected) {
+        logger('Load nodes via once');
+        _loadNodes();
+      }
     }, fallback: () {
       _printNodeStatus(prefix: 'After once hourly having');
     });

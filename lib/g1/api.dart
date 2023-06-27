@@ -736,30 +736,26 @@ Future<void> createOrUpdateCesiumPlusUser(String name) async {
     'version': 2,
     'issuer': pubKey,
     'title': name + userNameSuffix,
+    'geoPoint': null,
     'time': DateTime.now().millisecondsSinceEpoch ~/
         1000, // current time in seconds
     'tags': <String>[],
   };
 
-  final String userProfileJson = jsonEncode(userProfile);
-  final String signature = wallet.sign(userProfileJson);
-  userProfile['hash'] = calculateHash(userProfileJson);
-  userProfile['signature'] = signature;
+  signAndHash(userProfile, wallet);
 
   // Convert the user profile data into a JSON string again, now including hash and signature
   final String userProfileJsonWithHashAndSignature = jsonEncode(userProfile);
 
-  // Prepare the request headers
-  final Map<String, String> headers = <String, String>{
-    'Content-Type': 'application/json',
-  };
-
   if (userName != null) {
-    // User exists, update the user profile
+    logger('User exists, update the user profile');
     final http.Response updateResponse = await _requestWithRetry(
-        NodeType.cesiumPlus, '/user/profile/_update', false, true,
+        NodeType.cesiumPlus,
+        '/user/profile/$pubKey/_update?pubkey=$pubKey',
+        false,
+        true,
         httpType: HttpType.post,
-        headers: headers,
+        headers: _defCPlusHeaders(),
         body: userProfileJsonWithHashAndSignature);
     if (updateResponse.statusCode == 200) {
       logger('User profile updated successfully.');
@@ -769,11 +765,11 @@ Future<void> createOrUpdateCesiumPlusUser(String name) async {
       logger('Response body: ${updateResponse.body}');
     }
   } else if (userName == null) {
-    // User does not exist, create a new user profile
+    logger('User does not exist, create a new user profile');
     final http.Response createResponse = await _requestWithRetry(
         NodeType.cesiumPlus, '/user/profile', false, false,
         httpType: HttpType.post,
-        headers: headers,
+        headers: _defCPlusHeaders(),
         body: userProfileJsonWithHashAndSignature);
 
     if (createResponse.statusCode == 200) {
@@ -783,6 +779,21 @@ Future<void> createOrUpdateCesiumPlusUser(String name) async {
           'Failed to create user profile. Status code: ${createResponse.statusCode}');
     }
   }
+}
+
+Map<String, String> _defCPlusHeaders() {
+  return <String, String>{
+    'Accept': 'application/json, text/plain, */*',
+    'Content-Type': 'application/json;charset=UTF-8',
+  };
+}
+
+void signAndHash(Map<String, dynamic> userProfile, CesiumWallet wallet) {
+  final String userProfileJson = jsonEncode(userProfile);
+  final String hash = calculateHash(userProfileJson);
+  final String signature = wallet.sign(hash);
+  userProfile['hash'] = hash;
+  userProfile['signature'] = signature;
 }
 
 Future<String?> getCesiumPlusUser(String pubKey) async {
@@ -803,14 +814,13 @@ Future<bool> deleteCesiumPlusUser() async {
         1000, // current time in seconds
   };
 
-  final String userProfileJson = jsonEncode(userProfile);
-  final String signature = wallet.sign(userProfileJson);
-  userProfile['hash'] = calculateHash(userProfileJson);
-  userProfile['signature'] = signature;
+  signAndHash(userProfile, wallet);
 
   final http.Response delResponse = await _requestWithRetry(
-      NodeType.cesiumPlus, '/user/profile/_delete', false, false,
-      httpType: HttpType.post);
+      NodeType.cesiumPlus, '/history/delete', false, false,
+      httpType: HttpType.post,
+      headers: _defCPlusHeaders(),
+      body: jsonEncode(userProfile));
   return delResponse.statusCode == 200;
 }
 

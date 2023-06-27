@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../data/models/node.dart';
 import '../../../data/models/node_type.dart';
 import '../../../g1/g1_helper.dart';
+import '../../ui_helpers.dart';
 
 class DebugNodeList extends StatelessWidget {
   const DebugNodeList(
@@ -27,20 +28,25 @@ class DebugNodeList extends StatelessWidget {
             data: Theme.of(context).copyWith(
               visualDensity: VisualDensity.compact,
             ),
-            child: ListTile(
-              dense: true,
-              title: Text(node.url),
-              subtitle: node.latency < wrongNode
-                  ? Text(
-                      '${type != NodeType.cesiumPlus ? 'Current block: ${node.currentBlock}, ' : ''}errors: ${node.errors}, latency (ms): ${node.latency}')
-                  : null,
-              leading:
-                  node.currentBlock == currentBlock && node.latency < wrongNode
+            child: GestureDetector(
+                onTap: () => copyToClipboard(
+                    context: context,
+                    uri: node.url,
+                    feedbackText: 'copied_to_clipboard'),
+                child: ListTile(
+                  dense: true,
+                  title: Text(node.url),
+                  subtitle: node.latency < wrongNode
+                      ? Text(
+                          '${type != NodeType.cesiumPlus ? 'Current block: ${node.currentBlock}, ' : ''}errors: ${node.errors}, latency (ms): ${node.latency}')
+                      : null,
+                  leading: node.currentBlock == currentBlock &&
+                          node.latency < wrongNode
                       ? const Icon(Icons.check_circle, color: Colors.green)
                       : node.latency < wrongNode
                           ? const Icon(Icons.run_circle, color: Colors.grey)
                           : const Icon(Icons.power_off, color: Colors.grey),
-            ));
+                )));
       },
     ));
   }

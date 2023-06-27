@@ -191,5 +191,10 @@
   "payment_waiting_internet_title": "No Internet",
   "payment_waiting_internet_desc": "We'll retry your payment when internet is back",
   "payment_waiting_internet_desc_beta": "Retry your payment when internet is back",
-  "your_name_here": "Name this card"
+  "your_name_here": "Name this card",
+  "copied_to_clipboard": "Copied to clipboard",
+  "share_export_title": "Share your wallet",
+  "share_export_desc": "Your wallet has been exported locally. Would you like to additionally share it with yourself via email/chat/etc. for safekeeping",
+  "share_export_subject": "My Ğ1nkgo Wallet",
+  "share_export_button": "SHARE"
 }

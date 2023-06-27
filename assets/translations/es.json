@@ -193,5 +193,10 @@
   "payment_waiting_internet_title": "Sin Internet",
   "payment_waiting_internet_desc": "Reintentaremos el pago cuando vuelvas a tener conexión",
   "payment_waiting_internet_desc_beta": "Reintenta el pago cuando vuelvas a tener conexión",
-  "your_name_here": "Da un nombre a esta tarjeta"
+  "your_name_here": "Da un nombre a esta tarjeta",
+  "copied_to_clipboard": "Copiado al portapapeles",
+  "share_export_title": "Comporte tu monedero",
+  "share_export_desc": "Tu monedero ha sido exportado localmente. ¿Te gustaría compartirlo adicionalmente contigo mismo vía email/chat/etc. para su resguardo?",
+  "share_export_subject": "Mi monedero Ğ1nkgo",
+  "share_export_button": "COMPARTIR"
 }

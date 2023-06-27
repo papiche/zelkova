@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:pattern_lock/pattern_lock.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_html/html.dart' as html;
 
@@ -120,6 +121,41 @@ class _ExportDialogState extends State<ExportDialog> {
         tr('wallet_exported'),
         style: const TextStyle(color: Colors.red),
       ),
+    );
+    confirmAndShare(context, fileJson);
+  }
+
+  void confirmAndShare(BuildContext context, String fileJson) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(tr('share_export_title')),
+          content: Text(tr('share_export_desc')),
+          actions: <Widget>[
+            TextButton(
+              child: Text(tr('cancel')),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text(tr('share_export_button')),
+              onPressed: () {
+                if (kIsWeb) {
+                  /* final String url =
+          'mailto:?subject=${Uri.encodeComponent('My wallet')}&body=${Uri.encodeComponent(fileJson)}';
+      html.window.open(url, '_blank'); */
+                  Share.share(fileJson, subject: tr('share_export_subject'));
+                } else {
+                  Share.share(fileJson, subject: tr('share_export_subject'));
+                }
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 

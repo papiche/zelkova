@@ -185,6 +185,9 @@ void main() {
   for (final List<String?> data in testData) {
     test('Checksum of ${data[0]}', () {
       expect(pkChecksum(data[0]!), equals(data[1]));
+      expect(getFullPubKey('${data[0]!}:${data[1]!}'),
+          equals('${data[0]!}:${data[1]!}'));
+      expect(getFullPubKey(data[0]!), equals('${data[0]!}:${data[1]!}'));
     });
   }
 }

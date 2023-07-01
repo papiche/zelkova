@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../data/models/contact.dart';
+import '../../../g1/g1_helper.dart';
 import '../../ui_helpers.dart';
 
 class ContactEditDialog extends StatefulWidget {
@@ -35,17 +35,27 @@ class _ContactEditDialogState extends State<ContactEditDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            TextFormField(
-              initialValue: humanizePubKey(_updatedContact.pubKey),
-              decoration: InputDecoration(
-                labelText: tr('form_contact_pub_key'),
+            Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+              Flexible(
+                  child: TextFormField(
+                // maxLines: 2,
+                initialValue: humanizePubKey(_updatedContact.pubKey),
+                decoration: InputDecoration(
+                  labelText: tr('form_contact_pub_key'),
+                ),
+                enabled: false,
+              )),
+              GestureDetector(
+                onTap: () {
+                  showQrDialog(
+                      context: context,
+                      publicKey: getFullPubKey(_updatedContact.pubKey),
+                      noTitle: true,
+                      feedbackText: 'some_key_copied_to_clipboard');
+                },
+                child: const Icon(Icons.qr_code, size: 50),
               ),
-              enabled: false,
-            ),
-            Expanded(child: QrImage(
-              data: _updatedContact.pubKey,
-
-            )),
+            ]),
             TextFormField(
               initialValue: _updatedContact.name,
               decoration: const InputDecoration(labelText: 'Name'),

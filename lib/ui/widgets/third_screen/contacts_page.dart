@@ -8,6 +8,7 @@ import '../../../data/models/bottom_nav_cubit.dart';
 import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
 import '../../../data/models/payment_cubit.dart';
+import '../../../g1/g1_helper.dart';
 import '../../contacts_cache.dart';
 import '../../ui_helpers.dart';
 import '../bottom_widget.dart';
@@ -108,7 +109,7 @@ class _ContactsPageState extends State<ContactsPage> {
                             onPressed: (BuildContext c) {
                               showQrDialog(
                                   context: context,
-                                  publicKey: contact.pubKey,
+                                  publicKey: getFullPubKey(contact.pubKey),
                                   noTitle: true,
                                   feedbackText: 'some_key_copied_to_clipboard');
                             },

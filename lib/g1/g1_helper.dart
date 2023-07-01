@@ -129,6 +129,14 @@ bool validateKey(String pubKey) {
   return true;
 }
 
+String getFullPubKey(String pubKey) {
+  if (pubKey.contains(':')) {
+    return pubKey;
+  } else {
+    return '$pubKey:${pkChecksum(pubKey)}';
+  }
+}
+
 String pkChecksum(String pubkey) {
   List<int> signpkInt8;
 

@@ -14,7 +14,7 @@
   "faq_4_title": "Zergatik erabili kreditu-txartel bat eta txartel irakurgailu bat bezain literala?",
   "error_installing_desktop": "Errore bat gertatu da Ğ1nkgo zure mahaigainean instalatzean: (error: {error})",
   "allow_notifications_desc": "Eman Ğ1nkgo-ri ordainketa berrien berri emateko baimena",
-  "notification_new_payment_desc": "{from}-ren  {amount} ordainketa  jaso duzu",
+  "notification_new_payment_desc": "{from}-ren {amount} ordainketa jaso duzu",
   "notification_new_sent_title": "Ordainketa berria bidali da",
   "notification_new_sent_desc": "{amount} -ko ordainketa {to}-ri bidali diozu",
   "contact_already_exists": "Kontaktua badago lehendik",

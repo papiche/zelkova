@@ -139,7 +139,7 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
                   final PaymentState? pay = parseScannedUri(scannedKey);
                   if (pay != null) {
                     logger('Scanned $pay');
-                    _searchTerm = pay.contact!.pubKey;
+                    _searchTerm = extractPublicKey(pay.contact!.pubKey);
                     await _search();
                   }
                   logger('QR result length ${_results.length}');

@@ -51,7 +51,7 @@ class PaymentState extends Equatable {
 
   @override
   String toString() {
-    return '$contact.pubKey ${amount ?? ""}';
+    return 'pubKey: $contact.pubKey amount: ${amount ?? ""} status: $status';
   }
 
   @override

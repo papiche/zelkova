@@ -55,43 +55,49 @@ void main() {
   });
 
   test('validate qr uris', () {
-    const String publicKey = 'FRYyk57Pi456EJRu9vqVfSHLgmUfx4Qc3goS62a7dUSm';
-    final String uriA = getQrUri(pubKey: publicKey, amount: '10');
-    final PaymentState? payA = parseScannedUri(uriA);
-    expect(payA!.amount, equals(10), reason: 'amount should be 10 in $uriA');
-    expect(payA.contact!.pubKey, equals(publicKey));
+    const String baseKey = 'FRYyk57Pi456EJRu9vqVfSHLgmUfx4Qc3goS62a7dUSm';
+    final String publicKeyWithChecksum = getFullPubKey(baseKey);
 
-    final String uriB = getQrUri(pubKey: publicKey);
-    final PaymentState? payB = parseScannedUri(uriB);
-    expect(payB!.amount, equals(null));
-    expect(payB.contact!.pubKey, equals(publicKey));
+    final List<String> keys = [baseKey, publicKeyWithChecksum];
 
-    final PaymentState? payC = parseScannedUri(publicKey);
-    expect(payC!.amount, equals(null));
-    expect(payC.contact!.pubKey, equals(publicKey));
+    for (final String publicKey in keys) {
+      final String uriA = getQrUri(pubKey: publicKey, amount: '10');
+      final PaymentState? payA = parseScannedUri(uriA);
+      expect(payA!.amount, equals(10), reason: 'amount should be 10 in $uriA');
+      expect(payA.contact!.pubKey, equals(publicKey));
 
-    final String uriD = getQrUri(pubKey: publicKey, amount: '10.10');
-    final PaymentState? payD = parseScannedUri(uriD);
-    expect(payD!.amount, equals(10.10));
-    expect(payD.contact!.pubKey, equals(publicKey));
+      final String uriB = getQrUri(pubKey: publicKey);
+      final PaymentState? payB = parseScannedUri(uriB);
+      expect(payB!.amount, equals(null));
+      expect(payB.contact!.pubKey, equals(publicKey));
 
-    final String uriE =
-        getQrUri(pubKey: publicKey, amount: '10,10', locale: 'es');
-    final PaymentState? payE = parseScannedUri(uriE);
-    expect(payE!.amount, equals(10.10));
-    expect(payE.contact!.pubKey, equals(publicKey));
+      final PaymentState? payC = parseScannedUri(publicKey);
+      expect(payC!.amount, equals(null));
+      expect(payC.contact!.pubKey, equals(publicKey));
 
-    const String uriF = 'june://$publicKey?amount=100';
-    final PaymentState? payF = parseScannedUri(uriF);
-    expect(payF!.amount, equals(100));
-    expect(payF.contact!.pubKey, equals(publicKey));
+      final String uriD = getQrUri(pubKey: publicKey, amount: '10.10');
+      final PaymentState? payD = parseScannedUri(uriD);
+      expect(payD!.amount, equals(10.10));
+      expect(payD.contact!.pubKey, equals(publicKey));
 
-    const String uriJ =
-        'june://$publicKey?comment=GCHANGE:AYDI9JPOVIL9ZVG-PNCU&amount=100';
-    final PaymentState? payJ = parseScannedUri(uriJ);
-    expect(payJ!.comment, equals('GCHANGE:AYDI9JPOVIL9ZVG-PNCU'));
-    expect(payJ.amount, equals(100));
-    expect(payJ.contact!.pubKey, equals(publicKey));
+      final String uriE =
+          getQrUri(pubKey: publicKey, amount: '10,10', locale: 'es');
+      final PaymentState? payE = parseScannedUri(uriE);
+      expect(payE!.amount, equals(10.10));
+      expect(payE.contact!.pubKey, equals(publicKey));
+
+      final String uriF = 'june://$publicKey?amount=100';
+      final PaymentState? payF = parseScannedUri(uriF);
+      expect(payF!.amount, equals(100));
+      expect(payF.contact!.pubKey, equals(publicKey));
+
+      final String uriJ =
+          'june://$publicKey?comment=GCHANGE:AYDI9JPOVIL9ZVG-PNCU&amount=100';
+      final PaymentState? payJ = parseScannedUri(uriJ);
+      expect(payJ!.comment, equals('GCHANGE:AYDI9JPOVIL9ZVG-PNCU'));
+      expect(payJ.amount, equals(100));
+      expect(payJ.contact!.pubKey, equals(publicKey));
+    }
   });
 
   test('encrypt/decrypt of keys', () {

@@ -42,12 +42,17 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
         newValue != null &&
         newValue.isNotEmpty &&
         validate) {
-      context.read<PaymentCubit>().selectAmount(parseToDoubleLocalized(
-          locale: context.locale.toLanguageTag(), number: newValue));
+      final double newAmount = parseToDoubleLocalized(
+          locale: context.locale.toLanguageTag(), number: newValue);
+      if (newAmount != context.read<PaymentCubit>().state.amount) {
+        context.read<PaymentCubit>().selectAmount(newAmount);
+      }
     } else {
-      context
-          .read<PaymentCubit>()
-          .selectAmount(newValue == null ? null : double.tryParse(newValue));
+      final double? newAmount =
+          newValue == null ? null : double.tryParse(newValue);
+      if (newAmount != context.read<PaymentCubit>().state.amount) {
+        context.read<PaymentCubit>().selectAmount(newAmount);
+      }
     }
   }
 
@@ -76,9 +81,7 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
           key: _formKey,
           child: TextFormField(
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            initialValue: state.amount == null
-                ? ''
-                : localizeNumber(context, state.amount!),
+            controller: _controller,
             validator: validateDecimalAndFixInitialSep,
             autofillHints: const <String>[],
             onEditingComplete: () {},

@@ -198,5 +198,6 @@
   "share_export_title": "Comporte tu monedero",
   "share_export_desc": "Tu monedero ha sido exportado localmente. ¿Te gustaría compartirlo adicionalmente contigo mismo vía email/chat/etc. para su resguardo?",
   "share_export_subject": "Mi monedero Ğ1nkgo",
-  "share_export_button": "COMPARTIR"
+  "share_export_button": "COMPARTIR",
+  "pay_with_nfc_tooltip": "Para recibir un pago, simplemente acerca este dispositivo al otro monedero con NFC activado"
 }

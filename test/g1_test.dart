@@ -58,7 +58,7 @@ void main() {
     const String baseKey = 'FRYyk57Pi456EJRu9vqVfSHLgmUfx4Qc3goS62a7dUSm';
     final String publicKeyWithChecksum = getFullPubKey(baseKey);
 
-    final List<String> keys = [baseKey, publicKeyWithChecksum];
+    final List<String> keys = <String>[baseKey, publicKeyWithChecksum];
 
     for (final String publicKey in keys) {
       final String uriA = getQrUri(pubKey: publicKey, amount: '10');

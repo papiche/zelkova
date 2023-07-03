@@ -195,5 +195,8 @@
   "copied_to_clipboard": "Copié dans le presse-papier",
   "share_export_title": "Partager votre portefeuille",
   "share_export_desc": "Votre portefeuille a été exporté localement. Souhaitez-vous le partager avec vous-même par e-mail/chat/etc. pour le conserver en toute sécurité ?",
-  "your_name_here": "Donnez un nom à cette carte"
+  "your_name_here": "Donnez un nom à cette carte",
+  "share_export_subject": "Mon portefeuille Ğ1nkgo",
+  "share_export_button": "PARTAGER",
+  "pay_with_nfc_tooltip": "Pour recevoir un paiement, il suffit d'approcher cet appareil de l'autre portefeuille dont la NFC est activée."
 }

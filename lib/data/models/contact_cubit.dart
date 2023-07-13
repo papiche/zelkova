@@ -93,7 +93,8 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
     emit(state.copyWith(filteredContacts: contacts));
   }
 
-  List<Contact> search(String query) {
+  List<Contact> search(String initialQuery) {
+    final String query = normalizeQuery(initialQuery);
     if (query.isEmpty) {
       return state.contacts;
     }

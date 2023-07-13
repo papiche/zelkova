@@ -50,7 +50,8 @@ Future<Response> getPeers() async {
   }
 }
 
-Future<Response> searchCPlusUser(String searchTerm) async {
+Future<Response> searchCPlusUser(String initialSearchTerm) async {
+  final String searchTerm = normalizeQuery(initialSearchTerm);
   final String searchTermLower = searchTerm.toLowerCase();
   final String searchTermCapitalized =
       searchTermLower[0].toUpperCase() + searchTermLower.substring(1);
@@ -105,11 +106,8 @@ Not found sample:
 "found": false
 }
  */
-Future<List<Contact>> searchWot(String searchTermRaw) async {
-  // If pubkey, remove checksum
-  final String searchTerm = validateKey(searchTermRaw)
-      ? extractPublicKey(searchTermRaw)
-      : searchTermRaw;
+Future<List<Contact>> searchWot(String initialSearchTerm) async {
+  final String searchTerm = normalizeQuery(initialSearchTerm);
   final Response response = await requestDuniterWithRetry(
       '/wot/lookup/$searchTerm',
       retryWith404: false);

@@ -4,6 +4,7 @@ import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'package:ndef/ndef.dart' as ndef;
 import 'package:ndef/record.dart';
 import 'package:ndef/record/uri.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'logger.dart';
 
@@ -23,6 +24,8 @@ Future<void> writeNfcUrl(String url) async {
   if ((ndefAvailable == null || ndefWritable == null) &&
           (ndefAvailable != null && !ndefAvailable) ||
       (ndefWritable != null && !ndefWritable)) {
+    await Sentry.captureMessage(
+        'Tag does not have NDEF capability or is not writable');
     logger('Tag does not have NDEF capability or is not writable');
     return;
   }
@@ -35,6 +38,7 @@ Future<void> writeNfcUrl(String url) async {
     // iOS only: show an alert message
     await FlutterNfcKit.finish(iosAlertMessage: 'Success');
   } catch (e) {
+    // await Sentry.captureMessage('Error while writing to tag: $e');
     logger('Error while writing to tag: $e');
     await FlutterNfcKit.finish(iosErrorMessage: 'Failed');
   }
@@ -48,9 +52,12 @@ Future<String?> readNfcUrl() async {
     final List<NDEFRecord> records = await FlutterNfcKit.readNDEFRecords();
     for (final NDEFRecord record in records) {
       if (record is UriRecord) {
-        return record.uri.toString();
+        // record.uri.toString() contains the URL but does not respect upper/lower case
+        return record.iriString;
       }
     }
+  } else {
+    // await Sentry.captureMessage('NFT no available');
   }
   return null;
 }

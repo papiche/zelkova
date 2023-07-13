@@ -6,9 +6,11 @@ import '../../nfc_helper.dart';
 import '../../ui_helpers.dart';
 
 class CardTerminalStatus extends StatelessWidget {
-  const CardTerminalStatus({super.key, required this.online});
+  const CardTerminalStatus(
+      {super.key, required this.online, required this.uri});
 
   final bool online;
+  final String uri;
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +32,17 @@ class CardTerminalStatus extends StatelessWidget {
                     )),
                 if (nft || inDevelopment)
                   Tooltip(
-                      message: tr(''),
-                      child: Icon(
-                        Icons.nfc,
-                        color: nft ? Colors.green : Colors.red,
-                      )),
+                      message: tr('pay_with_nfc_tooltip'),
+                      child: GestureDetector(
+                          onTap: () {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text(tr('pay_with_nfc_tooltip'))));
+                            writeNfcUrl(uri);
+                          },
+                          child: Icon(
+                            Icons.nfc,
+                            color: nft ? Colors.green : Colors.red,
+                          ))),
               ],
             ),
           );

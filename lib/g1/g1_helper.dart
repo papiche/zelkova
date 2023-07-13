@@ -257,3 +257,12 @@ extension Ex on double {
 }
 
 String extractPublicKey(String key) => key.split(':')[0];
+
+String normalizeQuery(String initialQuery) {
+  String query = initialQuery;
+  if (validateKey(query)) {
+    // Is a pubKey
+    query = extractPublicKey(initialQuery);
+  }
+  return query;
+}

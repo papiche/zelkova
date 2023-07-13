@@ -25,7 +25,9 @@ import '../third_screen/contacts_page.dart';
 import 'contact_fav_icon.dart';
 
 class PayContactSearchPage extends StatefulWidget {
-  const PayContactSearchPage({super.key});
+  const PayContactSearchPage({super.key, this.uri});
+
+  final String? uri;
 
   @override
   State<PayContactSearchPage> createState() => _PayContactSearchPageState();
@@ -65,11 +67,11 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
       if (cPlusResponse.statusCode != 404) {
         // Add cplus users
         final List<dynamic> hits = ((const JsonDecoder()
-            .convert(cPlusResponse.body) as Map<String, dynamic>)['hits']
-        as Map<String, dynamic>)['hits'] as List<dynamic>;
+                .convert(cPlusResponse.body) as Map<String, dynamic>)['hits']
+            as Map<String, dynamic>)['hits'] as List<dynamic>;
         for (final dynamic hit in hits) {
           final Contact c =
-          await contactFromResultSearch(hit as Map<String, dynamic>);
+              await contactFromResultSearch(hit as Map<String, dynamic>);
           logger('Contact retrieved in c+ search $c');
           ContactsCache().addContact(c);
           setState(() {
@@ -89,11 +91,11 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
         // retrieve extra results with c+ profile
         for (final Contact wotC in wotResults) {
           final Contact cachedWotProfile =
-          await ContactsCache().getContact(wotC.pubKey);
+              await ContactsCache().getContact(wotC.pubKey);
           if (cachedWotProfile.name == null) {
             // Users without c+ profile
             final Contact cPlusProfile =
-            await getProfile(cachedWotProfile.pubKey, true);
+                await getProfile(cachedWotProfile.pubKey, true);
             ContactsCache().addContact(cPlusProfile);
           }
         }
@@ -134,29 +136,30 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
           return Scaffold(
             appBar: AppBar(
               title: Text(tr('search_user_title')),
-              backgroundColor: Theme
-                  .of(context)
-                  .colorScheme
-                  .primary,
-              foregroundColor: Theme
-                  .of(context)
-                  .colorScheme
-                  .inversePrimary,
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              foregroundColor: Theme.of(context).colorScheme.inversePrimary,
               actions: <Widget>[
-                if (nft) IconButton(
-                  icon: const Icon(Icons.nfc),
-                  onPressed: () async {
-                    final String? nfcUrl = await readNfcUrl();
-                    if (nfcUrl is String && nfcUrl != null && nfcUrl != '-1') {
-                      await _onKeyScanned(nfcUrl, paymentCubit);
-                    }
-                  },
-                ),
+                if (nft)
+                  IconButton(
+                    icon: const Icon(Icons.nfc),
+                    onPressed: () async {
+                      final String? nfcUrl = await readNfcUrl();
+                      if (nfcUrl is String &&
+                          nfcUrl != null &&
+                          nfcUrl != '-1') {
+                        await _onKeyScanned(nfcUrl, paymentCubit);
+                        if (!mounted) {
+                          return;
+                        }
+                        Navigator.pop(context);
+                      }
+                    },
+                  ),
                 IconButton(
                     icon: const Icon(Icons.qr_code_scanner),
                     onPressed: () async {
-                      final String? scannedKey = await QrManager.qrScan(
-                          context);
+                      final String? scannedKey =
+                          await QrManager.qrScan(context);
                       if (scannedKey is String &&
                           scannedKey != null &&
                           scannedKey != '-1') {
@@ -187,9 +190,7 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
                       suffixIcon: IconButton(
                         icon: const Icon(Icons.search),
                         onPressed: () =>
-                        _searchTerm.length < 3
-                            ? null
-                            : _search(),
+                            _searchTerm.length < 3 ? null : _search(),
                       ),
                     ),
                     onChanged: (String value) {
@@ -201,38 +202,36 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
                   ),
                   if (_isLoading)
                     const LoadingBox(simple: false)
+                  else if (_searchTerm.isNotEmpty &&
+                      _results.isEmpty &&
+                      _isLoading)
+                    const NoElements(text: 'nothing_found')
                   else
-                    if (_searchTerm.isNotEmpty && _results.isEmpty &&
-                        _isLoading)
-                      const NoElements(text: 'nothing_found')
-                    else
-                      Expanded(
-                        child: ListView.builder(
-                            itemCount: _results.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              final Contact contact = _results[index];
-                              return FutureBuilder<Contact>(
-                                  future: ContactsCache().getContact(
-                                      contact.pubKey),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<Contact> snapshot) {
-                                    Widget widget;
-                                    if (snapshot.hasData) {
-                                      widget =
-                                          _buildItem(
-                                              snapshot.data!, index, context);
-                                    } else if (snapshot.hasError) {
-                                      widget =
-                                          CustomErrorWidget(snapshot.error);
-                                    } else {
-                                      // Contact without wot
-                                      widget =
-                                          _buildItem(contact, index, context);
-                                    }
-                                    return widget;
-                                  });
-                            }),
-                      )
+                    Expanded(
+                      child: ListView.builder(
+                          itemCount: _results.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final Contact contact = _results[index];
+                            return FutureBuilder<Contact>(
+                                future:
+                                    ContactsCache().getContact(contact.pubKey),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<Contact> snapshot) {
+                                  Widget widget;
+                                  if (snapshot.hasData) {
+                                    widget = _buildItem(
+                                        snapshot.data!, index, context);
+                                  } else if (snapshot.hasError) {
+                                    widget = CustomErrorWidget(snapshot.error);
+                                  } else {
+                                    // Contact without wot
+                                    widget =
+                                        _buildItem(contact, index, context);
+                                  }
+                                  return widget;
+                                });
+                          }),
+                    )
                 ],
               ),
             ),
@@ -240,8 +239,8 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
         });
   }
 
-  Future<void> _onKeyScanned(String scannedKey,
-      PaymentCubit paymentCubit) async {
+  Future<void> _onKeyScanned(
+      String scannedKey, PaymentCubit paymentCubit) async {
     final PaymentState? pay = parseScannedUri(scannedKey);
     if (pay != null) {
       logger('Scanned $pay');
@@ -264,6 +263,22 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
     }
   }
 
+  @override
+  void initState() {
+    super.initState();
+    _handleUri(widget.uri);
+  }
+
+  Future<void> _handleUri(String? uri) async {
+    if (uri != null) {
+      final PaymentCubit paymentCubit = context.read<PaymentCubit>();
+      await _onKeyScanned(uri, paymentCubit);
+      if (mounted) {
+        Navigator.pop(context);
+      }
+    }
+  }
+
   Widget _buildItem(Contact contact, int index, BuildContext context) {
     return contactToListItem(
       contact,
@@ -275,9 +290,9 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
       },
       trailing: BlocBuilder<ContactsCubit, ContactsState>(
           builder: (BuildContext context, ContactsState state) {
-            return ContactFavIcon(
-                contact: contact, contactsCubit: context.read<ContactsCubit>());
-          }),
+        return ContactFavIcon(
+            contact: contact, contactsCubit: context.read<ContactsCubit>());
+      }),
     );
   }
 }

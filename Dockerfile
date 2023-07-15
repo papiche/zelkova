@@ -7,8 +7,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
         rm -rf /var/lib/apt/lists/* && \
         apt-get clean
 
-ARG GINKGO_WEB_VERSION=0.2.2
-ARG GINKGO_WEB_VERSION_PATH=b275b2ee82315e81cf74088c8021b79e
+ARG GINKGO_WEB_VERSION=0.2.3
+ARG GINKGO_WEB_VERSION_PATH=a1b70d766b4329530e3c2620e35f6dee
 
 RUN curl -L https://git.duniter.org/vjrj/ginkgo/uploads/${GINKGO_WEB_VERSION_PATH}/ginkgo-web-${GINKGO_WEB_VERSION}.tgz | tar xfz - -C /usr/share/nginx/html/ --strip-components=2
 

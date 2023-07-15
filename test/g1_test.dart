@@ -97,6 +97,30 @@ void main() {
       expect(payJ!.comment, equals('GCHANGE:AYDI9JPOVIL9ZVG-PNCU'));
       expect(payJ.amount, equals(100));
       expect(payJ.contact!.pubKey, equals(publicKey));
+
+      const String uriK =
+          'june://DsEx1pS33vzYZg4MroyBV9hCw98j1gtHEhwiZ5tK7ech?amount=10&comment=This Is my comment';
+      final PaymentState? payK = parseScannedUri(uriK);
+      expect(payK!.comment, equals('This Is my comment'));
+      expect(payK.amount, equals(10));
+      expect(payK.contact!.pubKey,
+          equals('DsEx1pS33vzYZg4MroyBV9hCw98j1gtHEhwiZ5tK7ech'));
+
+      const String uriL =
+          'june://DsEx1pS33vzYZg4MroyBV9hCw98j1gtHEhwiZ5tK7ech?comment=This Is my comment&amount=10';
+      final PaymentState? payL = parseScannedUri(uriL);
+      expect(payL!.comment, equals('This Is my comment'));
+      expect(payL.amount, equals(10));
+      expect(payL.contact!.pubKey,
+          equals('DsEx1pS33vzYZg4MroyBV9hCw98j1gtHEhwiZ5tK7ech'));
+
+      const String uriM =
+          'june://DsEx1pS33vzYZg4MroyBV9hCw98j1gtHEhwiZ5tK7ech?comment=Mi comentario&amount=10,0';
+      final PaymentState? payM = parseScannedUri(uriM);
+      expect(payM!.comment, equals('Mi comentario'));
+      expect(payM.amount, equals(10));
+      expect(payM.contact!.pubKey,
+          equals('DsEx1pS33vzYZg4MroyBV9hCw98j1gtHEhwiZ5tK7ech'));
     }
   });
 

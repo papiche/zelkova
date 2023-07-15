@@ -38,7 +38,7 @@ class DebugNodeList extends StatelessWidget {
                   title: Text(node.url),
                   subtitle: node.latency < wrongNode
                       ? Text(
-                          '${type != NodeType.cesiumPlus ? 'Current block: ${node.currentBlock}, ' : ''}errors: ${node.errors}, latency (ms): ${node.latency}')
+                          '${type != NodeType.cesiumPlus ? 'Current block: ${node.currentBlock}, ' : 'Current docs: ${node.currentBlock}, '}errors: ${node.errors}, latency (ms): ${node.latency}')
                       : null,
                   leading: node.currentBlock == currentBlock &&
                           node.latency < wrongNode

@@ -427,10 +427,25 @@ Future<NodeCheck> _pingNode(String node, NodeType type) async {
       }
     } else if (type == NodeType.cesiumPlus) {
       // see: http://g1.data.e-is.pro/network/peering
-      await http
-          .get(Uri.parse('$node/network/peering'))
+      final Response response = await http
+          .get(Uri.parse('$node/node/stats'))
           // Decrease http timeout during ping
           .timeout(timeout);
+      if (response.statusCode == 200) {
+        try {
+          final Map<String, dynamic> json =
+              jsonDecode(response.body.replaceAll('"cluster"{', '"cluster": {'))
+                  as Map<String, dynamic>;
+          currentBlock = ((((json['stats'] as Map<String, dynamic>)['cluster']
+                      as Map<String, dynamic>)['indices']
+                  as Map<String, dynamic>)['docs']
+              as Map<String, dynamic>)['count'] as int;
+        } catch (e) {
+          loggerDev('Cannot parse node/stats $e');
+        }
+      } else {
+        latency = wrongNodeDuration;
+      }
       stopwatch.stop();
       latency = stopwatch.elapsed;
     } else {

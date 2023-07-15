@@ -46,7 +46,7 @@ import 'ui/notification_controller.dart';
 import 'ui/screens/skeleton_screen.dart';
 import 'ui/ui_helpers.dart';
 import 'ui/widgets/connectivity_widget_wrapper_wrapper.dart';
-import 'ui/widgets/first_screen/pay_contact_search_page.dart';
+import 'ui/widgets/first_screen/contact_search_page.dart';
 
 void main() async {
   await NotificationController.initializeLocalNotifications();
@@ -82,7 +82,7 @@ void main() async {
     final Box<dynamic> box = await Hive.openBox('hydrated_box',
         path: HydratedStorage.webStorageDirectory.path);
     final List<dynamic> keysToDelete =
-    box.keys.where((dynamic key) => '$key'.startsWith('minified')).toList();
+        box.keys.where((dynamic key) => '$key'.startsWith('minified')).toList();
     box.deleteAll(keysToDelete);
     // This should we done after init
     // await HydratedBloc.storage.clear();
@@ -96,7 +96,7 @@ void main() async {
     final Directory tmpDir = await getTemporaryDirectory();
     Hive.init(tmpDir.toString());
     HydratedBloc.storage =
-    await HydratedStorage.build(storageDirectory: tmpDir);
+        await HydratedStorage.build(storageDirectory: tmpDir);
   }
 
   PWAInstall().setup(installCallback: () {
@@ -105,8 +105,7 @@ void main() async {
 
   Bloc.observer = AppBlocObserver();
 
-  void appRunner() =>
-      runApp(
+  void appRunner() => runApp(
         EasyLocalization(
           path: 'assets/translations',
           supportedLocales: const <Locale>[
@@ -150,7 +149,9 @@ void main() async {
 
   if (kReleaseMode) {
     // Only use sentry in production
-    await SentryFlutter.init((SentryFlutterOptions options,) {
+    await SentryFlutter.init((
+      SentryFlutterOptions options,
+    ) {
       options.tracesSampleRate = 1.0;
       options.reportPackages = false;
       // options.addInAppInclude('sentry_flutter_example');
@@ -197,7 +198,7 @@ class AppIntro extends StatefulWidget {
 
 class _AppIntro extends State<AppIntro> {
   final GlobalKey<IntroductionScreenState> introKey =
-  GlobalKey<IntroductionScreenState>();
+      GlobalKey<IntroductionScreenState>();
 
   void _onIntroEnd(BuildContext context, AppCubit cubit) {
     cubit.introViewed();
@@ -211,43 +212,40 @@ class _AppIntro extends State<AppIntro> {
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppState>(
         builder: (BuildContext buildContext, AppState state) {
-          final AppCubit cubit = context.read<AppCubit>();
-          return IntroductionScreen(
-            key: introKey,
-            pages: <PageViewModel>[
-              for (int i = 1; i <= 5; i++)
-                createPageViewModel(
-                    'intro_${i}_title', 'intro_${i}_description',
-                    'assets/img/undraw_intro_$i.png', context),
-            ],
-            onDone: () => _onIntroEnd(buildContext, cubit),
-            showSkipButton: true,
-            skipOrBackFlex: 0,
-            onSkip: () => _onIntroEnd(buildContext, cubit),
-            nextFlex: 0,
-            skip: Text(tr('skip')),
-            next: const Icon(Icons.arrow_forward),
-            done: Text(tr('start'),
-                style: const TextStyle(fontWeight: FontWeight.w600)),
-            dotsDecorator: const DotsDecorator(
-              size: Size(10.0, 10.0),
-              color: Color(0xFFBDBDBD),
-              activeColor: Colors.blueAccent,
-              activeSize: Size(22.0, 10.0),
-              activeShape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(25.0)),
-              ),
-            ),
-          );
-        });
+      final AppCubit cubit = context.read<AppCubit>();
+      return IntroductionScreen(
+        key: introKey,
+        pages: <PageViewModel>[
+          for (int i = 1; i <= 5; i++)
+            createPageViewModel('intro_${i}_title', 'intro_${i}_description',
+                'assets/img/undraw_intro_$i.png', context),
+        ],
+        onDone: () => _onIntroEnd(buildContext, cubit),
+        showSkipButton: true,
+        skipOrBackFlex: 0,
+        onSkip: () => _onIntroEnd(buildContext, cubit),
+        nextFlex: 0,
+        skip: Text(tr('skip')),
+        next: const Icon(Icons.arrow_forward),
+        done: Text(tr('start'),
+            style: const TextStyle(fontWeight: FontWeight.w600)),
+        dotsDecorator: const DotsDecorator(
+          size: Size(10.0, 10.0),
+          color: Color(0xFFBDBDBD),
+          activeColor: Colors.blueAccent,
+          activeSize: Size(22.0, 10.0),
+          activeShape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(25.0)),
+          ),
+        ),
+      );
+    });
   }
 }
 
-PageViewModel createPageViewModel(String title, String body, String imageAsset,
-    BuildContext context) {
-  final ColorScheme colorScheme = Theme
-      .of(context)
-      .colorScheme;
+PageViewModel createPageViewModel(
+    String title, String body, String imageAsset, BuildContext context) {
+  final ColorScheme colorScheme = Theme.of(context).colorScheme;
   final TextStyle titleStyle = TextStyle(
     color: colorScheme.primary,
     fontWeight: FontWeight.bold,
@@ -275,7 +273,7 @@ class GinkgoApp extends StatefulWidget {
 
   // The navigator key is necessary to navigate using static methods
   static final GlobalKey<NavigatorState> navigatorKey =
-  GlobalKey<NavigatorState>();
+      GlobalKey<NavigatorState>();
 
   @override
   State<GinkgoApp> createState() => _GinkgoAppState();
@@ -291,16 +289,10 @@ class _GinkgoAppState extends State<GinkgoApp> {
   }
 
   void _printNodeStatus({String prefix = 'Starting'}) {
-    final int nDuniterNodes = NodeManager()
-        .nodeList(NodeType.duniter)
-        .length;
+    final int nDuniterNodes = NodeManager().nodeList(NodeType.duniter).length;
     final int nCesiumPlusNodes =
-        NodeManager()
-            .nodeList(NodeType.cesiumPlus)
-            .length;
-    final int nGvaNodes = NodeManager()
-        .nodeList(NodeType.gva)
-        .length;
+        NodeManager().nodeList(NodeType.cesiumPlus).length;
+    final int nGvaNodes = NodeManager().nodeList(NodeType.gva).length;
     logger(
         '$prefix with $nDuniterNodes duniter nodes, $nCesiumPlusNodes c+ nodes, and $nGvaNodes gva nodes');
     if (!kReleaseMode) {
@@ -320,7 +312,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
     NotificationController.startListeningNotificationEvents();
     Once.runHourly('load_nodes', callback: () async {
       final bool isConnected =
-      await ConnectivityWidgetWrapperWrapper.isConnected;
+          await ConnectivityWidgetWrapperWrapper.isConnected;
       if (isConnected) {
         logger('Load nodes via once');
         _loadNodes();
@@ -335,10 +327,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
     Once.runDaily('clear_cache', callback: () {
       logger('clear cache via once');
       ContactsCache().clear();
-      ContactsCache().addContacts(context
-          .read<ContactsCubit>()
-          .state
-          .contacts);
+      ContactsCache().addContacts(context.read<ContactsCubit>().state.contacts);
     });
     Once.runOnce('resize_avatars', callback: () {
       logger('resize avatar via once');
@@ -366,8 +355,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return
-                PayContactSearchPage(uri: link);
+              return ContactSearchPage(uri: link);
             },
           );
         }
@@ -391,104 +379,94 @@ class _GinkgoAppState extends State<GinkgoApp> {
   Widget build(BuildContext context) {
     return BlocBuilder<NodeListCubit, NodeListState>(
         builder: (BuildContext nodeContext, NodeListState state) {
-          return ConnectivityAppWrapper(
-              app: FilesystemPickerDefaultOptions(
-                  fileTileSelectMode: FileTileSelectMode.wholeTile,
-                  theme: FilesystemPickerTheme(
-                    topBar: FilesystemPickerTopBarThemeData(
-                      backgroundColor: Theme
-                          .of(context)
-                          .colorScheme
-                          .primary,
-                    ),
-                  ),
-                  child: MaterialApp(
-
-                    /// Localization is not available for the title.
-                    title: 'Ğ1nkgo',
-                    theme: ThemeData(
-                        useMaterial3: true, colorScheme: lightColorScheme),
-                    darkTheme:
+      return ConnectivityAppWrapper(
+          app: FilesystemPickerDefaultOptions(
+              fileTileSelectMode: FileTileSelectMode.wholeTile,
+              theme: FilesystemPickerTheme(
+                topBar: FilesystemPickerTopBarThemeData(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              child: MaterialApp(
+                /// Localization is not available for the title.
+                title: 'Ğ1nkgo',
+                theme: ThemeData(
+                    useMaterial3: true, colorScheme: lightColorScheme),
+                darkTheme:
                     ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
 
-                    navigatorKey: GinkgoApp.navigatorKey,
-                    scaffoldMessengerKey: globalMessengerKey,
+                navigatorKey: GinkgoApp.navigatorKey,
+                scaffoldMessengerKey: globalMessengerKey,
 
-                    /// Theme stuff
-                    themeMode: context
-                        .watch<ThemeCubit>()
-                        .state
-                        .themeMode,
+                /// Theme stuff
+                themeMode: context.watch<ThemeCubit>().state.themeMode,
 
-                    /// Localization stuff
-                    localizationsDelegates: context.localizationDelegates,
-                    supportedLocales: context.supportedLocales,
-                    locale: context.locale,
-                    debugShowCheckedModeBanner: false,
-                    home: context
-                        .read<AppCubit>()
-                        .isIntroViewed
-                        ? BetterFeedback(
+                /// Localization stuff
+                localizationsDelegates: context.localizationDelegates,
+                supportedLocales: context.supportedLocales,
+                locale: context.locale,
+                debugShowCheckedModeBanner: false,
+                home: context.read<AppCubit>().isIntroViewed
+                    ? BetterFeedback(
                         localizationsDelegates: context.localizationDelegates
                           ..add(CustomFeedbackLocalizationsDelegate()),
                         child: const SkeletonScreen())
-                        : const AppIntro(),
-                    builder: (BuildContext buildContext, Widget? widget) {
-                      NotificationController.locale = context.locale;
-                      return ResponsiveWrapper.builder(
-                        BouncingScrollWrapper.builder(
-                            context,
-                            ConnectivityWidgetWrapperWrapper(
-                              //message: tr('offline'),
-                              //height: 18,
+                    : const AppIntro(),
+                builder: (BuildContext buildContext, Widget? widget) {
+                  NotificationController.locale = context.locale;
+                  return ResponsiveWrapper.builder(
+                    BouncingScrollWrapper.builder(
+                        context,
+                        ConnectivityWidgetWrapperWrapper(
+                          //message: tr('offline'),
+                          //height: 18,
 
-                              offlineWidget: /* Container(
+                          offlineWidget: /* Container(
                                 color: Colors.transparent,
                                 child: Center(
                                   child: */
                               Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  const Icon(
-                                    Icons.cloud_off,
-                                    size: 48,
-                                    color: Colors.grey,
-                                  ),
-                                  const SizedBox(height: 6),
-                                  Container(
-                                      padding: const EdgeInsets.all(5.0),
-                                      decoration: const BoxDecoration(
-                                        color: Colors.grey,
-                                        borderRadius:
-                                        BorderRadius.all(Radius.circular(10.0)),
-                                      ),
-                                      child: Text(
-                                        tr('offline'),
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          decoration: TextDecoration.none,
-                                          fontSize: 14,
-                                        ),
-                                      )),
-                                  const SizedBox(height: 110),
-                                ],
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              const Icon(
+                                Icons.cloud_off,
+                                size: 48,
+                                color: Colors.grey,
                               ),
+                              const SizedBox(height: 6),
+                              Container(
+                                  padding: const EdgeInsets.all(5.0),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.grey,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                  ),
+                                  child: Text(
+                                    tr('offline'),
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      decoration: TextDecoration.none,
+                                      fontSize: 14,
+                                    ),
+                                  )),
+                              const SizedBox(height: 110),
+                            ],
+                          ),
 
-                              child: widget!,
-                            )),
-                        maxWidth: 480,
-                        minWidth: 480,
-                        // defaultScale: true,
-                        breakpoints: <ResponsiveBreakpoint>[
-                          const ResponsiveBreakpoint.resize(200, name: MOBILE),
-                          const ResponsiveBreakpoint.resize(480, name: TABLET),
-                          const ResponsiveBreakpoint.resize(
-                              1000, name: DESKTOP),
-                        ],
-                        background: Container(color: const Color(0xFFF5F5F5)),
-                      );
-                    },
-                  )));
-        });
+                          child: widget!,
+                        )),
+                    maxWidth: 480,
+                    minWidth: 480,
+                    // defaultScale: true,
+                    breakpoints: <ResponsiveBreakpoint>[
+                      const ResponsiveBreakpoint.resize(200, name: MOBILE),
+                      const ResponsiveBreakpoint.resize(480, name: TABLET),
+                      const ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+                    ],
+                    background: Container(color: const Color(0xFFF5F5F5)),
+                  );
+                },
+              )));
+    });
   }
 }

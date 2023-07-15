@@ -13,6 +13,7 @@
   "g1_amount_hint": "Amount to send in {currency}",
   "g1_form_pay_send": "Send",
   "search_user_title": "User to pay",
+  "search_user_title_in_contacts": "Search for users",
   "search_user": "Search (user or public key)",
   "search_user_btn": "Search user",
   "g1_form_pay_desc": "Comment",

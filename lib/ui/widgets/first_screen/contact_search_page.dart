@@ -24,16 +24,17 @@ import '../loading_box.dart';
 import '../third_screen/contacts_page.dart';
 import 'contact_fav_icon.dart';
 
-class PayContactSearchPage extends StatefulWidget {
-  const PayContactSearchPage({super.key, this.uri});
+class ContactSearchPage extends StatefulWidget {
+  const ContactSearchPage({super.key, this.uri, this.forPayment = true});
 
   final String? uri;
+  final bool forPayment;
 
   @override
-  State<PayContactSearchPage> createState() => _PayContactSearchPageState();
+  State<ContactSearchPage> createState() => _ContactSearchPageState();
 }
 
-class _PayContactSearchPageState extends State<PayContactSearchPage> {
+class _ContactSearchPageState extends State<ContactSearchPage> {
   final TextEditingController _searchController = TextEditingController();
   String _searchTerm = '';
 
@@ -135,7 +136,9 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
           final PaymentCubit paymentCubit = context.read<PaymentCubit>();
           return Scaffold(
             appBar: AppBar(
-              title: Text(tr('search_user_title')),
+              title: Text(widget.forPayment
+                  ? tr('search_user_title')
+                  : tr('search_user_title_in_contacts')),
               backgroundColor: Theme.of(context).colorScheme.primary,
               foregroundColor: Theme.of(context).colorScheme.inversePrimary,
               actions: <Widget>[
@@ -241,6 +244,9 @@ class _PayContactSearchPageState extends State<PayContactSearchPage> {
 
   Future<void> _onKeyScanned(
       String scannedKey, PaymentCubit paymentCubit) async {
+    if (!widget.forPayment) {
+      return;
+    }
     final PaymentState? pay = parseScannedUri(scannedKey);
     if (pay != null) {
       logger('Scanned $pay');

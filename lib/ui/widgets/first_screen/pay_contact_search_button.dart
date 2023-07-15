@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/payment_state.dart';
-import 'pay_contact_search_page.dart';
+import 'contact_search_page.dart';
 import 'pay_recipient_widget.dart';
 
 class PayContactSearchButton extends StatefulWidget {
@@ -25,7 +25,7 @@ class _PayContactSearchButtonState extends State<PayContactSearchButton> {
             showDialog(
               context: context,
               builder: (BuildContext context) {
-                return const PayContactSearchPage();
+                return const ContactSearchPage();
               },
             );
           },

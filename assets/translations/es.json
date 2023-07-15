@@ -158,7 +158,7 @@
   "paySearchUserKey_desc": "Desde esta sección puedes hacer pagos en Junas. Puedes buscar usuarios/as en la red o escanear códigos QR para hacer tus pagos.",
   "payAmountKey_title": "Indicar cantidad a pagar",
   "payAmountKey_desc": "En este campo deberás indicar la cantidad que deseas pagar en Junas.",
-  "paySentKey_title": "Enviando Junas",
+  "paySentKey_title": "Envía Junas",
   "paySentKey_desc": "Una vez indicada la cantidad, solo necesitas presionar el botón 'Enviar' para realizar el pago. Es importante tener en cuenta que este monedero no tiene contraseña, así que es como un monedero de bolsillo para operar rápidamente con pequeñas cantidades.",
   "receiveMainKey_title": "Recibiendo Junas",
   "receiveMainKey_desc": "Esto funciona de manera similar a los datáfonos que se usan en las tiendas para cobrar, pero en lugar de pagos con tarjeta de crédito, usamos códigos QR. Aquí puedes generar códigos QR para que otras personas los escaneen y te hagan pagos.",
@@ -180,7 +180,7 @@
   "infoMainKey_desc": "Aquí encontrarás más información acerca de tu monedero y otras opciones.",
   "exportMainKey_title": "Exportación del Monedero",
   "exportMainKey_desc": "Es importante que realices un backup de tu monedero cuanto antes y ponerlo a buen recaudo, para poder importarlo en otro navegador o en la App, o en cualquier caso restaurar tu monedero en caso de perder tu dispositivo.",
-  "feedback": "¿Problemas? Danos más info",
+  "feedback": "¿Problemas? ¡Danos más info!",
   "feedback_submit": "ENVIAR",
   "feedback_whats_wrong": "Describe tu problema:",
   "feedback_draw": "Dibuja",
@@ -202,5 +202,5 @@
   "share_export_desc": "Tu monedero ha sido exportado localmente. ¿Te gustaría compartirlo adicionalmente contigo mismo vía email/chat/etc. para su resguardo?",
   "share_export_subject": "Mi monedero Ğ1nkgo",
   "share_export_button": "COMPARTIR",
-  "pay_with_nfc_tooltip": "Para recibir un pago, simplemente acerca este dispositivo al otro monedero con NFC activado"
+  "pay_with_nfc_tooltip": "Para recibir un pago, simplemente acerca este dispositivo al otro monedero con NFC activado."
 }

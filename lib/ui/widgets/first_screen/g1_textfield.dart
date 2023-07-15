@@ -70,6 +70,12 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
             _controller.selection = TextSelection.fromPosition(
                 TextPosition(offset: _controller.text.length));
           }
+        } else {
+          if (state.status == PaymentStatus.isSent) {
+            _controller.text = '';
+            // This set status to not sent
+            context.read<PaymentCubit>().selectAmount(null);
+          }
         }
 
         final bool expertMode = context.read<AppCubit>().isExpertMode;

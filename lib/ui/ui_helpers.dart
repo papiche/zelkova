@@ -483,15 +483,23 @@ void showQrDialog({
                           if (!noTitle) Text(tr('show_qr_to_client')),
                           if (!noTitle) const SizedBox(height: 10),
                           Expanded(
-                              child: QrImage(
-                            data: publicKey,
-                            size: MediaQuery.of(context).size.width * 0.8,
-                            gapless: false,
-                            foregroundColor:
-                                Theme.of(context).brightness == Brightness.dark
-                                    ? Colors.white
-                                    : Colors.black,
-                          )),
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                QrImage(
+                                  data: publicKey,
+                                  //roundEdges: true,
+                                  // image: const AssetImage(
+                                  //   'assets/img/gbrevedot_color.png'),
+                                  size: MediaQuery.of(context).size.width * 0.5,
+                                  gapless: false,
+                                  foregroundColor:
+                                      Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? Colors.white
+                                          : Colors.black,
+                                )
+                              ])),
                         ],
                       ),
                     ),

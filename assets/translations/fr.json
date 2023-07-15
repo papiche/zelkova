@@ -191,5 +191,12 @@
   "transaction_waiting_network": "Réessayez avec Internet",
   "payment_waiting_internet_title": "Pas de connexion Internet",
   "payment_waiting_internet_desc": "Nous réessayerons votre paiement lorsque l'internet sera rétabli",
-  "payment_waiting_internet_desc_beta": "Réessayez votre paiement lorsque la connexion internet sera rétablie"
+  "payment_waiting_internet_desc_beta": "Réessayez votre paiement lorsque la connexion internet sera rétablie",
+  "copied_to_clipboard": "Copié dans le presse-papier",
+  "share_export_title": "Partager votre portefeuille",
+  "share_export_desc": "Votre portefeuille a été exporté localement. Souhaitez-vous le partager avec vous-même par e-mail/chat/etc. pour le conserver en toute sécurité ?",
+  "your_name_here": "Nommez cette carte",
+  "share_export_subject": "Mon portefeuille Ğ1nkgo",
+  "share_export_button": "PARTAGER",
+  "pay_with_nfc_tooltip": "Pour recevoir un paiement, il suffit d'approcher cet appareil de l'autre portefeuille dont la NFC est activée."
 }

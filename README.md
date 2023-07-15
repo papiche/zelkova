@@ -39,7 +39,7 @@ This is a demo used for testing a development, please use a production server fo
 
 First of all, you can contribute translating Ğ1nkgo to your language:
 
-[https://weblate.duniter.org/settings/g1nkgo/g1nkgo/](https://weblate.duniter.org/settings/g1nkgo/g1nkgo/)
+[https://weblate.duniter.org/projects/g1nkgo/g1nkgo/](https://weblate.duniter.org/projects/g1nkgo/g1nkgo/)
 
 ## Docker
 

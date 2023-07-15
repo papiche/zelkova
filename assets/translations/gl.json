@@ -164,7 +164,7 @@
   "payAmountKey_desc": "Neste campo debe poñela cantidade que desexa pagar en Ğ1.",
   "paySentKey_desc": "Unha vez que poñas a cantidade a pagar, só debes premer o botón 'Enviar' para realizar o pago. É importante sinalar que esta billeteira non ten contrasinal, polo que funciona como unha billeteira de peto para transaccións rápidas con cantidades pequenas.",
   "receiveMainKey_title": "Recibindo Xunas",
-  "paySentKey_title": "Enviando Ğ1",
+  "paySentKey_title": "Enviar Ğ1",
   "contactsQrKey_desc": "Aquí podes escanear o QR doutras persoas para engadilas aos teus contactos.",
   "txMainKey_title": "Transaccións",
   "txMainKey_desc": "Aquí podes ver o historial das túas transaccións. Se a túa billeteira está baleira, para comezar a usala Ğ1, podes ofrecer os teus servizos en mercados ou plataformas web como gchange.fr, girala.net, entre outras. Se xa tes Xunas, pode transferilas a esta billeteira Ğ1nkgo e comezar a usala.",
@@ -174,7 +174,7 @@
   "infoMainKey_title": "Mais información",
   "infoMainKey_desc": "Aquí atoparás mais información da tua billeteira e outras opcións.",
   "exportMainKey_title": "Exportando o Moedeiro",
-  "feedback": "¿Problemas? Dános máis info",
+  "feedback": "¿Tes problemas? Dános máis info!",
   "feedback_submit": "ENVIAR",
   "feedback_whats_wrong": "Dinos cal é o teu problema:",
   "feedback_draw": "Debuxa",
@@ -191,5 +191,12 @@
   "transaction_waiting_network": "Tentao de novo con Internet",
   "payment_waiting_internet_desc": "Tentaremos o pago de novo cando teñas conexión",
   "payment_waiting_internet_title": "Sen Internet",
-  "payment_waiting_internet_desc_beta": "Tenta o pago cando esteas en liña de novo"
+  "payment_waiting_internet_desc_beta": "Tenta o pago cando esteas en liña de novo",
+  "your_name_here": "Nomea esta tarxeta",
+  "copied_to_clipboard": "Copiar ao portapapeis",
+  "share_export_title": "Comparte a túa carteira",
+  "share_export_subject": "A miña carteira Ğ1nkgo",
+  "share_export_button": "PARTILLAR",
+  "share_export_desc": "A túa carteira exportouse localmente. ¿Queres compartila contigo mesmo por mail/chat/etc. para súa custodia?",
+  "pay_with_nfc_tooltip": "Para recibir un pago, só tes que manter este dispositivo preto da outra carteira compatible con NFC."
 }

@@ -11,6 +11,7 @@ import '../qr_manager.dart';
 import '../tutorial.dart';
 import '../tutorial_keys.dart';
 import '../widgets/card_drawer.dart';
+import '../widgets/third_screen/contact_form_dialog.dart';
 import '../widgets/third_screen/contacts_page.dart';
 import '../widgets/third_screen/third_tutorial.dart';
 
@@ -36,47 +37,75 @@ class _ThirdScreenState extends State<ThirdScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(tr('bottom_nav_trd')), actions: <Widget>[
-        IconButton(
-            key: contactsQrKey,
-            icon: const Icon(Icons.qr_code),
-            onPressed: () async {
-              final String? pubKey = await QrManager.qrScan(context);
-              if (pubKey != null && validateKey(pubKey)) {
-                final Contact contact =
-                    await ContactsCache().getContact(pubKey);
-                if (!mounted) {
-                  return;
-                }
-                if (!context.read<ContactsCubit>().isContact(pubKey)) {
-                  context.read<ContactsCubit>().addContact(contact);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(tr('contact_added')),
-                    ),
-                  );
+        appBar: AppBar(title: Text(tr('bottom_nav_trd')), actions: <Widget>[
+          IconButton(
+              key: contactsQrKey,
+              icon: const Icon(Icons.qr_code),
+              onPressed: () async {
+                final String? pubKey = await QrManager.qrScan(context);
+                if (pubKey != null && validateKey(pubKey)) {
+                  final Contact contact =
+                      await ContactsCache().getContact(pubKey);
+                  if (!mounted) {
+                    return;
+                  }
+                  if (!context.read<ContactsCubit>().isContact(pubKey)) {
+                    context.read<ContactsCubit>().addContact(contact);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(tr('contact_added')),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(tr('contact_already_exists')),
+                      ),
+                    );
+                  }
                 } else {
+                  if (!mounted) {
+                    return;
+                  }
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text(tr('contact_already_exists')),
+                      content: Text(tr('wrong_public_key')),
                     ),
                   );
                 }
-              } else {
-                if (!mounted) {
-                  return;
-                }
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(tr('wrong_public_key')),
-                  ),
-                );
-              }
-            }),
-        const SizedBox(width: 5),
-      ]),
-      drawer: const CardDrawer(),
-      body: const ContactsPage(),
-    );
+              }),
+          const SizedBox(width: 5),
+        ]),
+        drawer: const CardDrawer(),
+        body: const ContactsPage(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return ContactFormDialog(
+                      contact: const Contact(
+                        name: '',
+                        pubKey: '',
+                      ),
+                      isNew: true,
+                      onSave: (Contact c) {
+                        context.read<ContactsCubit>().addContact(c);
+                        ContactsCache().saveContact(c);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(tr('contact_added')),
+                          ),
+                        );
+                      });
+                });
+          },
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(50.0),
+            ),
+          ),
+          child: const Icon(Icons.add),
+        ));
   }
 }

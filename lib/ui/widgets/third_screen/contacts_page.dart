@@ -12,7 +12,7 @@ import '../../../g1/g1_helper.dart';
 import '../../contacts_cache.dart';
 import '../../ui_helpers.dart';
 import '../bottom_widget.dart';
-import 'contact_edit_dialog.dart';
+import 'contact_form_dialog.dart';
 
 class ContactsPage extends StatefulWidget {
   const ContactsPage({super.key});
@@ -134,7 +134,7 @@ class _ContactsPageState extends State<ContactsPage> {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return ContactEditDialog(
+                            return ContactFormDialog(
                                 contact: contact,
                                 onSave: (Contact c) {
                                   context

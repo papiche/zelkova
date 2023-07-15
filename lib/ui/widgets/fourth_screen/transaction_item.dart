@@ -16,7 +16,7 @@ import '../../../shared_prefs.dart';
 import '../../contacts_cache.dart';
 import '../../pay_helper.dart';
 import '../../ui_helpers.dart';
-import '../third_screen/contact_edit_dialog.dart';
+import '../third_screen/contact_form_dialog.dart';
 
 class TransactionListItem extends StatelessWidget {
   const TransactionListItem(
@@ -176,7 +176,7 @@ class TransactionListItem extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return ContactEditDialog(
+                      return ContactFormDialog(
                           contact: newContact,
                           onSave: (Contact c) {
                             context.read<ContactsCubit>().updateContact(c);

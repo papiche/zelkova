@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
 import '../../contacts_cache.dart';
-import '../third_screen/contact_edit_dialog.dart';
+import '../third_screen/contact_form_dialog.dart';
 
 class ContactFavIcon extends StatelessWidget {
   const ContactFavIcon({
@@ -37,7 +37,7 @@ class ContactFavIcon extends StatelessWidget {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return ContactEditDialog(
+                  return ContactFormDialog(
                       contact: contact,
                       onSave: (Contact c) {
                         context.read<ContactsCubit>().updateContact(c);

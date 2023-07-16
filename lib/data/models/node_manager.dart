@@ -135,6 +135,15 @@ class NodeManager {
   void notifyObserver() {
     NodeManagerObserver.instance.update(this);
   }
+
+  int nodesWorking(NodeType type) => nodeList(type)
+      .where((Node n) => n.errors < NodeManager.maxNodeErrors)
+      .toList()
+      .length;
+
+  List<Node> nodesWorkingList(NodeType type) => nodeList(type)
+      .where((Node n) => n.errors < NodeManager.maxNodeErrors)
+      .toList();
 }
 
 class NodeManagerObserver {

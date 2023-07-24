@@ -33,7 +33,7 @@ class _SecondScreenState extends State<SecondScreen> {
       appBar: AppBar(title: Text(tr('receive_g1'))),
       drawer: const CardDrawer(),
       body:
-          Column(children: const <Widget>[SizedBox(height: 2), CardTerminal()]),
+          const Column(children: <Widget>[SizedBox(height: 2), CardTerminal()]),
     );
   }
 }

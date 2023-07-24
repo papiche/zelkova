@@ -35,7 +35,7 @@ class NodeManager {
     final List<Node> nodes = _getList(type);
 
     final Map<String, int> existingNodesMap = <String, int>{
-      for (Node node in nodes) node.url: node.errors
+      for (final Node node in nodes) node.url: node.errors
     };
 
     nodes.clear();

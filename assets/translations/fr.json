@@ -45,7 +45,7 @@
   "copy_your_key": "Copier votre clé publique",
   "key_copied_to_clipboard": "Votre clé publique a été copiée dans le presse-papiers",
   "key_tools_title": "Clés et outils",
-  "transactions": "Transactions",
+  "transactions": "Opérations",
   "balance": "Solde",
   "transaction_from_to": "De {from} à {to}",
   "your_wallet": "votre portefeuille",
@@ -164,7 +164,7 @@
   "contactsMainKey_title": "Contacts",
   "contactsMainKey_desc": "Dans cette rubrique, vous pouvez enregistrer vos contacts les plus fréquents et scanner les codes QR d'autres personnes.",
   "contactsQrKey_desc": "Ici, vous pouvez scanner les codes QR d'autres personnes pour les ajouter à vos contacts.",
-  "txMainKey_title": "Transactions",
+  "txMainKey_title": "Opérations",
   "txBalanceKey_title": "Solde",
   "txRefreshKey_title": "Actualiser",
   "receiveAmountKey_title": "QR avec montants",
@@ -174,7 +174,7 @@
   "exportMainKey_title": "Export du portefeuille",
   "exportMainKey_desc": "Il est important que vous fassiez une sauvegarde de votre portefeuille dès que possible et que vous la conserviez en lieu sûr, afin de pouvoir l'importer dans un autre navigateur ou dans l'application, ou de restaurer votre portefeuille en cas de perte de votre appareil.",
   "txBalanceKey_desc": "Sûr cet écran, vous pouvez voir le solde actuel de votre portefeuille Ğ1nkgo.",
-  "feedback": "Des problèmes ? Donnez-nous plus d'informations",
+  "feedback": "Des problèmes ? Donnez-nous plus d'informations !",
   "feedback_submit": "SOUMETTRE",
   "feedback_whats_wrong": "Décrivez votre problème :",
   "feedback_draw": "Dessinez",
@@ -198,5 +198,8 @@
   "your_name_here": "Nommez cette carte",
   "share_export_subject": "Mon portefeuille Ğ1nkgo",
   "share_export_button": "PARTAGER",
-  "pay_with_nfc_tooltip": "Pour recevoir un paiement, il suffit d'approcher cet appareil de l'autre portefeuille dont la NFC est activée."
+  "pay_with_nfc_tooltip": "Pour recevoir un paiement, il suffit d'approcher cet appareil de l'autre portefeuille dont la NFC est activée.",
+  "search_user_title_in_contacts": "Chercher des utilisateurs",
+  "form_contact_title_add": "Ajouter un contact",
+  "form_contact_name_validation_pub_key": "Veuillez saisir une clé publique valide"
 }

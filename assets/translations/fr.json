@@ -174,7 +174,7 @@
   "exportMainKey_title": "Export du portefeuille",
   "exportMainKey_desc": "Il est important que vous fassiez une sauvegarde de votre portefeuille dès que possible et que vous la conserviez en lieu sûr, afin de pouvoir l'importer dans un autre navigateur ou dans l'application, ou de restaurer votre portefeuille en cas de perte de votre appareil.",
   "txBalanceKey_desc": "Sûr cet écran, vous pouvez voir le solde actuel de votre portefeuille Ğ1nkgo.",
-  "feedback": "Des problèmes ? Donnez-nous plus d'informations",
+  "feedback": "Des problèmes ? Donnez-nous plus d'informations !",
   "feedback_submit": "SOUMETTRE",
   "feedback_whats_wrong": "Décrivez votre problème :",
   "feedback_draw": "Dessinez",
@@ -198,5 +198,8 @@
   "your_name_here": "Nommez cette carte",
   "share_export_subject": "Mon portefeuille Ğ1nkgo",
   "share_export_button": "PARTAGER",
-  "pay_with_nfc_tooltip": "Pour recevoir un paiement, il suffit d'approcher cet appareil de l'autre portefeuille dont la NFC est activée."
+  "pay_with_nfc_tooltip": "Pour recevoir un paiement, il suffit d'approcher cet appareil de l'autre portefeuille dont la NFC est activée.",
+  "search_user_title_in_contacts": "Chercher des utilisateurs",
+  "form_contact_title_add": "Ajouter un contact",
+  "form_contact_name_validation_pub_key": "Veuillez saisir une clé publique valide"
 }

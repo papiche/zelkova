@@ -53,6 +53,21 @@ mkdir -p ~/.ginkgo/www
 This repository requires [Flutter](https://flutter.dev/docs/get-started/install) to be installed and
 present in your development environment.
 
+Project runs in Dart >=2.17.1 <3.0.0, so [higest admisible Flutter version is 3.7.12](https://docs.flutter.dev/release/archive).
+
+```sh
+flutter downgrade 3.7.12
+```
+
+__If the above command fails__ and you installed Flutter using Snap, you can try [the following](https://stackoverflow.com/questions/66545480/flutter-downgrade-error-there-is-no-previously-recorded-version-for-channel):
+```sh
+cd ~/snap/flutter/common/flutter
+git checkout 3.7.12
+flutter doctor
+cd -
+```
+You will see a warning about _unknown channel_. You can ignore it.
+
 Clone the project and enter the project folder.
 
 ```sh

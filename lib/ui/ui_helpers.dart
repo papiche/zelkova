@@ -486,18 +486,27 @@ void showQrDialog({
                               child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
-                                QrImage(
+                                QrImageView(
+                                  // version: QrVersions.auto,
                                   data: publicKey,
-                                  //roundEdges: true,
-                                  // image: const AssetImage(
-                                  //   'assets/img/gbrevedot_color.png'),
                                   size: MediaQuery.of(context).size.width * 0.5,
-                                  gapless: false,
-                                  foregroundColor:
-                                      Theme.of(context).brightness ==
+                                  // gapless: false,
+                                  /* embeddedImage: const AssetImage(
+                                    'assets/img/gbrevedot_color.png',
+                                  ),
+                                  embeddedImageStyle:
+                                      const QrEmbeddedImageStyle(
+                                    size: Size(80, 80),
+                                  ), */
+                                  eyeStyle: QrEyeStyle(
+                                      eyeShape: QrEyeShape.square,
+                                      color: Theme.of(context).primaryColor),
+                                  dataModuleStyle: QrDataModuleStyle(
+                                      dataModuleShape: QrDataModuleShape.square,
+                                      color: Theme.of(context).brightness ==
                                               Brightness.dark
                                           ? Colors.white
-                                          : Colors.black,
+                                          : Colors.black),
                                 )
                               ])),
                         ],

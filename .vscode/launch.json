@@ -1,16 +1,76 @@
 {
-  "version": "0.2.0",
-  "configurations": [
-    {
-        "name": "Flutter",
-        "request": "launch",
-        "type": "dart",
-        "args": [
-            "--web-hostname",
-            "127.0.0.1",
-            "--web-port",
-            "8181"
-        ]
-    }
-  ]
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Flutter",
+            "request": "launch",
+            "type": "dart",
+            "args": ["--web-hostname", "127.0.0.1", "--web-port", "8181"]
+        },
+        {
+            "name": "Flutter (Linux)",
+            "program": "lib/main.dart",
+            "deviceId": "linux",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "Flutter (macOS)",
+            "program": "lib/main.dart",
+            "deviceId": "macos",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "Flutter (Windows)",
+            "program": "lib/main.dart",
+            "deviceId": "windows",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "Flutter (Chrome)",
+            "request": "launch",
+            "deviceId": "chrome",
+            "type": "dart",
+            "args": ["--web-renderer", "html", "--web-hostname", "127.0.0.1", "--web-port", "8181"]
+        },
+
+        {
+            "name": "Flutter (Edge)",
+            "request": "launch",
+            "type": "dart",
+            "args": ["--web-renderer", "html", "--web-hostname", "127.0.0.1", "--web-port", "8181"]
+        },
+        {
+            "name": "Flutter (Firefox)",
+            "request": "launch",
+            "type": "dart",
+            "args": ["--web-renderer", "html", "--web-hostname", "127.0.0.1", "--web-port", "8181"]
+        },
+        {
+            "name": "Flutter (Safari)",
+            "request": "launch",
+            "type": "dart",
+            "args": ["--web-renderer", "html", "--web-hostname", "127.0.0.1", "--web-port", "8181"]
+        },
+        {
+            "name": "Flutter (Opera)",
+            "request": "launch",
+            "type": "dart",
+            "args": ["--web-renderer", "html", "--web-hostname", "127.0.0.1", "--web-port", "8181"]
+        },
+        {
+            "name": "Flutter (Vivaldi)",
+            "request": "launch",
+            "type": "dart",
+            "args": ["--web-renderer", "html", "--web-hostname", "127.0.0.1", "--web-port", "8181"]
+        },
+        {
+            "name": "Flutter (Internet Explorer)",
+            "request": "launch",
+            "type": "dart",
+            "args": ["--web-renderer", "html", "--web-hostname", "127.0.0.1", "--web-port", "8181"]
+        }
+    ]
 }

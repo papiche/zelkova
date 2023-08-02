@@ -20,7 +20,9 @@ import '../custom_error_widget.dart';
 import 'pattern_util.dart';
 
 class ImportDialog extends StatefulWidget {
-  const ImportDialog({super.key});
+  const ImportDialog({super.key, this.wallet});
+
+  final String? wallet;
 
   @override
   State<ImportDialog> createState() => _ImportDialogState();
@@ -32,7 +34,9 @@ class _ImportDialogState extends State<ImportDialog> {
   @override
   Widget build(BuildContext c) {
     return FutureBuilder<String>(
-        future: kIsWeb ? _importWalletWeb(c) : _importWallet(c),
+        future: widget.wallet == null
+            ? (kIsWeb ? _importWalletWeb(c) : _importWallet(c))
+            : Future<String>.value(widget.wallet),
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           if (snapshot.hasData &&
               snapshot.data != null &&

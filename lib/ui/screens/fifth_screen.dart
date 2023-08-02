@@ -19,6 +19,7 @@ import '../widgets/faq.dart';
 import '../widgets/fifth_screen/export_dialog.dart';
 import '../widgets/fifth_screen/fifth_tutorial.dart';
 import '../widgets/fifth_screen/grid_item.dart';
+import '../widgets/fifth_screen/import_clipboard_dialog.dart';
 import '../widgets/fifth_screen/import_dialog.dart';
 import '../widgets/fifth_screen/link_card.dart';
 import '../widgets/fifth_screen/node_info.dart';
@@ -190,12 +191,7 @@ class _FifthScreenState extends State<FifthScreen> {
                               title: 'import_key',
                               icon: Icons.upload,
                               onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return const ImportDialog();
-                                  },
-                                );
+                                _showSelectImportMethodDialog();
                               }),
                         ]),
                     const TextDivider(text: 'faq_title'),
@@ -234,5 +230,54 @@ class _FifthScreenState extends State<FifthScreen> {
                     const BottomWidget()
                   ]),
             ));
+  }
+
+  Future<void> _showSelectImportMethodDialog() async {
+    final String? method = await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => const SelectImportMethodDialog(),
+    );
+    if (method != null) {
+      if (!mounted) {
+        return;
+      }
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          if (method == 'file') {
+            return const ImportDialog();
+          } else {
+            // if (method == 'clipboard') {
+            return ImportClipboardDialog(onImport: (String wallet) {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return ImportDialog(wallet: wallet);
+                  });
+            });
+          }
+        },
+      );
+    }
+  }
+}
+
+class SelectImportMethodDialog extends StatelessWidget {
+  const SelectImportMethodDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(tr('select_import_method')),
+      content: Text(tr('select_import_method_desc')),
+      actions: <Widget>[
+        TextButton(
+            child: Text(tr('file_import')),
+            onPressed: () => Navigator.of(context).pop('file')),
+        TextButton(
+            child: Text(tr('clipboard_import')),
+            onPressed: () => Navigator.of(context).pop('clipboard')),
+      ],
+    );
   }
 }

@@ -7,7 +7,7 @@
   "bottom_nav_second": "Recibir",
   "bottom_nav_trd": "Contactos",
   "bottom_nav_frd": "Saldo",
-  "bottom_nav_fifth": "Información",
+  "bottom_nav_fifth": "Info",
   "send_g1": "Enviar Ğ1",
   "g1_amount": "Monto a enviar",
   "g1_amount_hint": "Monto a enviar en {currency}",
@@ -202,5 +202,14 @@
   "share_export_desc": "Tu monedero ha sido exportado localmente. ¿Te gustaría compartirlo adicionalmente contigo mismo vía email/chat/etc. para su resguardo?",
   "share_export_subject": "Mi monedero Ğ1nkgo",
   "share_export_button": "COMPARTIR",
-  "pay_with_nfc_tooltip": "Para recibir un pago, simplemente acerca este dispositivo al otro monedero con NFC activado."
+  "pay_with_nfc_tooltip": "Para recibir un pago, simplemente acerca este dispositivo al otro monedero con NFC activado.",
+  "import_wallet_from_clipboard": "Importar monedero desde el portapapeles",
+  "import_wallet_from_clipboard_desc": "Por favor, pega aquí el textod del backup previo de tu monedero",
+  "paste_here": "Pega aquí tu monedero",
+  "paste": "PEGAR",
+  "import": "IMPORTAR",
+  "select_import_method": "Selecciona el método de importación",
+  "select_import_method_desc": "Por favor, selecciona el método de importación de tu monedero",
+  "file_import": "Importar desde archivo",
+  "clipboard_import": "Importar desde portapapeles"
 }

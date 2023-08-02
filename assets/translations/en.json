@@ -200,5 +200,14 @@
   "share_export_desc": "Your wallet has been exported locally. Would you like to additionally share it with yourself via email/chat/etc. for safekeeping?",
   "share_export_subject": "My Ğ1nkgo Wallet",
   "share_export_button": "SHARE",
-  "pay_with_nfc_tooltip": "To receive a payment, simply bring this device close to the other wallet with NFC activated."
+  "pay_with_nfc_tooltip": "To receive a payment, simply bring this device close to the other wallet with NFC activated.",
+  "import_wallet_from_clipboard": "Import Wallet from Clipboard",
+  "import_wallet_from_clipboard_desc": "Please paste a previously exported wallet text to import it",
+  "paste_here": "Paste here your wallet",
+  "paste": "PASTE",
+  "import": "IMPORT",
+  "select_import_method": "Select Import Method",
+  "select_import_method_desc": "Please choose where to import the text from",
+  "file_import": "Import from File",
+  "clipboard_import": "Import from Clipboard"
 }

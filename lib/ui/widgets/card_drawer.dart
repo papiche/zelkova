@@ -104,12 +104,16 @@ class CardDrawer extends StatelessWidget {
                   leading: const Icon(Icons.telegram_outlined),
                   title: Text(tr('telegram_group')),
                   onTap: () async {
-                    if (context.locale == const Locale('es') ||
-                        context.locale == const Locale('ca') ||
-                        context.locale == const Locale('gl') ||
-                        context.locale == const Locale('eu') ||
-                        context.locale == const Locale('ast')) {
+                    final Locale locale = context.locale;
+                    if (locale == const Locale('es') ||
+                        locale == const Locale('ca') ||
+                        locale == const Locale('gl') ||
+                        locale == const Locale('eu') ||
+                        locale == const Locale('ast')) {
                       await openUrl('https://t.me/g1nkgoES');
+                    }
+                    if (locale == const Locale('fr')) {
+                      await openUrl('https://t.me/g1nkgoFR');
                     } else {
                       await openUrl('https://t.me/g1nkgoEN');
                     }

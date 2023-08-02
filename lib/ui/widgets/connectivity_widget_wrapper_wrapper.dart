@@ -1,8 +1,9 @@
 import 'dart:io';
 
+import 'package:check_vpn_connection/check_vpn_connection.dart';
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 import '../ui_helpers.dart';
 
@@ -20,14 +21,14 @@ class ConnectivityWidgetWrapperWrapper extends ConnectivityWidgetWrapper {
         ? <AddressCheckOptions>[]
         : List<AddressCheckOptions>.unmodifiable(
             <AddressCheckOptions>[
-              AddressCheckOptions(
+              /* AddressCheckOptions(
                 hostname: 'duniter.org',
                 port: 443,
               ),
               AddressCheckOptions(
                 hostname: 'moneda-libre.org',
                 port: 443,
-              ),
+              ), */
               // Cloudflare
               AddressCheckOptions(
                 address: InternetAddress(
@@ -88,9 +89,33 @@ class ConnectivityWidgetWrapperWrapper extends ConnectivityWidgetWrapper {
           );
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<bool>(
+        future: CheckVpnConnection.isVpnActive(),
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          if (snapshot.hasData && snapshot.data != null) {
+            final bool isVpnActive = snapshot.data!;
+            if (isVpnActive) {
+              return child;
+            } else {
+              return super.build(context);
+            }
+          } else {
+            return super.build(context);
+          }
+        });
+  }
+
   // This package does not work in IOS so we just return true
   // Also does not detect well in web production mode
-  static Future<bool> get isConnected => kIsWeb || isIOS
-      ? Future<bool>.value(true)
-      : ConnectivityWrapper.instance.isConnected;
+  static Future<bool> get isConnected async {
+    final bool vpn = await CheckVpnConnection.isVpnActive();
+    if (vpn) {
+      return true;
+    }
+    return kIsWeb || isIOS
+        ? Future<bool>.value(true)
+        : ConnectivityWrapper.instance.isConnected;
+  }
 }

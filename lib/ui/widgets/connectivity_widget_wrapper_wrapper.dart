@@ -91,27 +91,28 @@ class ConnectivityWidgetWrapperWrapper extends ConnectivityWidgetWrapper {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<bool>(
-        future: CheckVpnConnection.isVpnActive(),
-        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-          if (snapshot.hasData && snapshot.data != null) {
-            final bool isVpnActive = snapshot.data!;
-            if (isVpnActive) {
-              return child;
-            } else {
-              return super.build(context);
-            }
-          } else {
-            return super.build(context);
-          }
-        });
+    return kIsWeb
+        ? super.build(context)
+        : FutureBuilder<bool>(
+            future: CheckVpnConnection.isVpnActive(),
+            builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+              if (snapshot.hasData && snapshot.data != null) {
+                final bool isVpnActive = snapshot.data!;
+                if (isVpnActive) {
+                  return child;
+                } else {
+                  return super.build(context);
+                }
+              } else {
+                return super.build(context);
+              }
+            });
   }
 
   // This package does not work in IOS so we just return true
   // Also does not detect well in web production mode
   static Future<bool> get isConnected async {
-    final bool vpn = await CheckVpnConnection.isVpnActive();
-    if (vpn) {
+    if (!kIsWeb && await CheckVpnConnection.isVpnActive()) {
       return true;
     }
     return kIsWeb || isIOS

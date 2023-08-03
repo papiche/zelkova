@@ -43,7 +43,6 @@ class GridItem extends StatelessWidget {
             Text(
               tr(title),
               textAlign: TextAlign.center,
-              overflow: TextOverflow.ellipsis,
               style: Theme.of(context)
                   .textTheme
                   .titleMedium!

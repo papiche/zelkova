@@ -211,5 +211,11 @@
   "select_import_method": "Selecciona el método de importación",
   "select_import_method_desc": "Por favor, selecciona el método de importación de tu monedero",
   "file_import": "Importar desde archivo",
-  "clipboard_import": "Importar desde portapapeles"
+  "clipboard_import": "Importar desde portapapeles",
+  "export": "EXPORTAR",
+  "clipboard_export": "Exportar al portapapeles",
+  "select_export_method": "Selecciona el método de exportación",
+  "select_export_method_desc": "Por favor, selecciona el método de exportación de tu monedero",
+  "file_export": "Exportar a archivo",
+  "clipboard_export": "Exportar al portapapeles"
 }

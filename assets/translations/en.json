@@ -207,7 +207,12 @@
   "paste": "PASTE",
   "import": "IMPORT",
   "select_import_method": "Select Import Method",
-  "select_import_method_desc": "Please choose where to import the text from",
+  "select_import_method_desc": "Please choose where to import the wallet from",
   "file_import": "Import from File",
-  "clipboard_import": "Import from Clipboard"
+  "export": "EXPORT",
+  "clipboard_export": "Export to Clipboard",
+  "select_export_method": "Select Export Method",
+  "select_export_method_desc": "Please choose where to export the wallet",
+  "file_export": "Export to File",
+  "clipboard_export": "Export to Clipboard"
 }

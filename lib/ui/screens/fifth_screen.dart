@@ -9,7 +9,6 @@ import '../../data/models/app_state.dart';
 import '../../data/models/bottom_nav_cubit.dart';
 import '../../data/models/theme_cubit.dart';
 import '../../shared_prefs.dart';
-import '../notification_controller.dart';
 import '../tutorial.dart';
 import '../tutorial_keys.dart';
 import '../ui_helpers.dart';
@@ -82,7 +81,7 @@ class _FifthScreenState extends State<FifthScreen> {
                       ),
                       onChanged: (Locale? newLocale) {
                         context.setLocale(newLocale!);
-                        NotificationController.locale = newLocale;
+                        // NotificationController.locale = newLocale;
                       },
                       items: const <DropdownMenuItem<Locale>>[
                         DropdownMenuItem<Locale>(
@@ -180,12 +179,7 @@ class _FifthScreenState extends State<FifthScreen> {
                               title: 'export_key',
                               icon: Icons.download,
                               onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return const ExportDialog();
-                                  },
-                                );
+                                _showSelectExportMethodDialog();
                               }),
                           GridItem(
                               title: 'import_key',
@@ -260,6 +254,24 @@ class _FifthScreenState extends State<FifthScreen> {
       );
     }
   }
+
+  Future<void> _showSelectExportMethodDialog() async {
+    final ExportType? method = await showDialog<ExportType>(
+      context: context,
+      builder: (BuildContext context) => const SelectExportMethodDialog(),
+    );
+    if (method != null) {
+      if (!mounted) {
+        return;
+      }
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return ExportDialog(type: method);
+        },
+      );
+    }
+  }
 }
 
 class SelectImportMethodDialog extends StatelessWidget {
@@ -269,14 +281,42 @@ class SelectImportMethodDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(tr('select_import_method')),
-      content: Text(tr('select_import_method_desc')),
+      // content: Text(tr('select_import_method_desc')),
       actions: <Widget>[
-        TextButton(
-            child: Text(tr('file_import')),
+        TextButton.icon(
+            icon: const Icon(Icons.file_present),
+            label: Text(tr('file_import')),
             onPressed: () => Navigator.of(context).pop('file')),
-        TextButton(
-            child: Text(tr('clipboard_import')),
+        TextButton.icon(
+            icon: const Icon(Icons.content_paste),
+            label: Text(tr('clipboard_import')),
             onPressed: () => Navigator.of(context).pop('clipboard')),
+      ],
+    );
+  }
+}
+
+class SelectExportMethodDialog extends StatelessWidget {
+  const SelectExportMethodDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(tr('select_export_method')),
+      // content: Text(tr('select_export_method_desc')),
+      actions: <Widget>[
+        TextButton.icon(
+            icon: const Icon(Icons.file_present),
+            label: Text(tr('file_export')),
+            onPressed: () => Navigator.of(context).pop(ExportType.file)),
+        TextButton.icon(
+            icon: const Icon(Icons.content_paste),
+            label: Text(tr('clipboard_export')),
+            onPressed: () => Navigator.of(context).pop(ExportType.clipboard)),
+        TextButton.icon(
+            icon: const Icon(Icons.share),
+            label: Text(tr('share_export')),
+            onPressed: () => Navigator.of(context).pop(ExportType.share)),
       ],
     );
   }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:clipboard/clipboard.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/foundation.dart';
@@ -19,8 +20,12 @@ import '../../logger.dart';
 import '../../ui_helpers.dart';
 import 'pattern_util.dart';
 
+enum ExportType { clipboard, file, share }
+
 class ExportDialog extends StatefulWidget {
-  const ExportDialog({super.key});
+  const ExportDialog({super.key, required this.type});
+
+  final ExportType type;
 
   @override
   State<ExportDialog> createState() => _ExportDialogState();
@@ -66,7 +71,7 @@ class _ExportDialogState extends State<ExportDialog> {
                 if (isConfirm) {
                   if (listEquals<int>(input, pattern)) {
                     Navigator.of(context).pop();
-                    _export(pattern!.join(), context);
+                    _export(pattern!.join(), context, widget.type);
                   } else {
                     context.replaceSnackbar(
                       content: Text(
@@ -93,70 +98,67 @@ class _ExportDialogState extends State<ExportDialog> {
     );
   }
 
-  Future<void> _export(String password, BuildContext context) async {
+  Future<void> _export(String password, BuildContext context,
+      ExportType type) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-
     final String jsonString = jsonEncode(prefs
         .getKeys()
         .fold<Map<String, dynamic>>(
-            <String, dynamic>{},
+        <String, dynamic>{},
             (Map<String, dynamic> map, String key) =>
-                <String, dynamic>{...map, key: prefs.get(key)}));
+        <String, dynamic>{...map, key: prefs.get(key)}));
     final Map<String, String> jsonData =
-        encryptJsonForExport(jsonString, password);
+    encryptJsonForExport(jsonString, password);
     final String fileJson = jsonEncode(jsonData);
     final List<int> bytes = utf8.encode(fileJson);
 
-    if (kIsWeb) {
-      webDownload(bytes);
-    } else {
-      saveFile(bytes);
+    switch (type) {
+      case ExportType.clipboard:
+        FlutterClipboard.copy(fileJson)
+            .then((dynamic value) =>
+            context.replaceSnackbar(
+              content: Text(
+                tr('wallet_copied'),
+                style: const TextStyle(color: Colors.red),
+              ),
+            ));
+        break;
+      case ExportType.file:
+        if (kIsWeb) {
+          webDownload(bytes);
+        } else {
+          saveFile(bytes);
+        }
+        if (!mounted) {
+          return;
+        }
+        context.replaceSnackbar(
+          content: Text(
+            tr('wallet_exported'),
+            style: const TextStyle(color: Colors.red),
+          ),
+        );
+        break;
+      case ExportType.share:
+        if (!mounted) {
+          return;
+        }
+        shareExport(context, fileJson);
+        break;
     }
-
-    if (!mounted) {
-      return;
-    }
-    context.replaceSnackbar(
-      content: Text(
-        tr('wallet_exported'),
-        style: const TextStyle(color: Colors.red),
-      ),
-    );
-    confirmAndShare(context, fileJson);
   }
 
-  void confirmAndShare(BuildContext context, String fileJson) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(tr('share_export_title')),
-          content: Text(tr('share_export_desc')),
-          actions: <Widget>[
-            TextButton(
-              child: Text(tr('cancel')),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Text(tr('share_export_button')),
-              onPressed: () {
-                if (kIsWeb) {
-                  /* final String url =
-          'mailto:?subject=${Uri.encodeComponent('My wallet')}&body=${Uri.encodeComponent(fileJson)}';
-      html.window.open(url, '_blank'); */
-                  Share.share(fileJson, subject: tr('share_export_subject'));
-                } else {
-                  Share.share(fileJson, subject: tr('share_export_subject'));
-                }
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+  Future<void> shareExport(BuildContext context, String fileJson) {
+    if (kIsWeb) {
+      final Uri uri = Uri.parse(html.window.location.href);
+      final String fileJsonUrlComponent = Uri.encodeComponent(fileJson);
+      final Uri finalUri = uri.replace(path: '/import/$fileJsonUrlComponent');
+      // TODO Allow to import this link
+      return Share.share(inDevelopment ? finalUri.toString() : fileJson,
+          subject: tr('share_export_subject'));
+    } else {
+      return Share.share(fileJson, subject: tr('share_export_subject'));
+    }
   }
 
   void webDownload(List<int> bytes) {
@@ -165,14 +167,15 @@ class _ExportDialogState extends State<ExportDialog> {
 
     final html.AnchorElement anchor = html.AnchorElement(href: url);
     anchor.download =
-        'ginkgo-wallet-${simplifyPubKey(SharedPreferencesHelper().getPubKey())}.json';
+    'ginkgo-wallet-${simplifyPubKey(
+        SharedPreferencesHelper().getPubKey())}.json';
     anchor.click();
   }
 
   Future<void> saveFile(List<int> bytes) async {
     try {
       final Directory? externalDirectory =
-          await getAppSpecificExternalFilesDirectory(); // ensureDownloadsDirectoryExists();
+      await getAppSpecificExternalFilesDirectory(); // ensureDownloadsDirectoryExists();
       if (externalDirectory == null) {
         logger('Downloads directory not found');
         return;
@@ -203,7 +206,8 @@ class _ExportDialogState extends State<ExportDialog> {
 
   String walletFileName() {
     final String fileName =
-        'ginkgo-wallet-${simplifyPubKey(SharedPreferencesHelper().getPubKey())}.json';
+        'ginkgo-wallet-${simplifyPubKey(
+        SharedPreferencesHelper().getPubKey())}.json';
     return fileName;
   }
 }

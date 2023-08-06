@@ -12,7 +12,6 @@ import '../../shared_prefs.dart';
 import '../../ui/logger.dart';
 import '../../ui/notification_controller.dart';
 import '../../ui/pay_helper.dart';
-import '../../ui/ui_helpers.dart';
 import 'app_cubit.dart';
 import 'contact.dart';
 import 'node.dart';
@@ -118,6 +117,7 @@ class TransactionCubit extends HydratedCubit<TransactionState> {
         // Adjust pending transactions
         for (final Transaction pend in newState.pendingTransactions) {
           if (pend.type == TransactionType.waitingNetwork) {
+            newPendingTransactions.add(pend);
             continue;
           }
           if (txMap[getTxKey(pend)] != null) {
@@ -188,10 +188,6 @@ class TransactionCubit extends HydratedCubit<TransactionState> {
         newState = newState.copyWith(
             transactions: newTransactions,
             pendingTransactions: newPendingTransactions.toList());
-      }
-
-      if (inDevelopment) {
-        clear();
       }
 
       emit(newState);

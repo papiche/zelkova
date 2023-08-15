@@ -198,5 +198,7 @@
   "share_export_subject": "A miña carteira Ğ1nkgo",
   "share_export_button": "PARTILLAR",
   "share_export_desc": "A túa carteira exportouse localmente. ¿Queres compartila contigo mesmo por mail/chat/etc. para súa custodia?",
-  "pay_with_nfc_tooltip": "Para recibir un pago, só tes que manter este dispositivo preto da outra carteira compatible con NFC."
+  "pay_with_nfc_tooltip": "Para recibir un pago, só tes que manter este dispositivo preto da outra carteira compatible con NFC.",
+  "qr_invalid_payment": "Información de pagamento inválida no QR",
+  "cant_find_qr_contact": "Non se pode atopar o contacto proporcionado polo QR"
 }

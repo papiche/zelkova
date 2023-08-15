@@ -217,7 +217,7 @@
   "wallet_copied": "Walled copied to clipboard",
   "link_export": "Export to Link",
   "share_export_subject": "Ğ1nkgo Wallet Export",
-  "qr_invalid_payment": "QR invalid payment information",
+  "qr_invalid_payment": "Invalid QR Code: Incorrect payment info",
   "cant_find_qr_contact": "Can't find QR provided contact",
   "qr_scanner_cancel": "CANCEL",
   "qr_scanner_flash_on": "FLASH ON",

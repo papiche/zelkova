@@ -220,6 +220,8 @@
   "wallet_copied": "Monedero copiado al portapapeles",
   "link_export": "Exportar vía enlace",
   "share_export_subject": "Ğ1nkgo Wallet Export",
+  "qr_invalid_payment": "Código QR inválido: Información de pago incorrecta",
+  "cant_find_qr_contact": "No puedo encontrar el contacto del QR proporcionado",
   "qr_scanner_cancel": "CANCELAR",
   "qr_scanner_flash_on": "FLASH ON",
   "qr_scanner_flash_off": "FLASH OFF",

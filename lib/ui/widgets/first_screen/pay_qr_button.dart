@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -75,6 +76,9 @@ class _PayQrButtonState extends State<PayQrButton> {
       if (pay.comment != null) {
         paymentCubit.setComment(pay.comment);
       }
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(tr('qr_invalid_payment'))));
     }
   }
 }

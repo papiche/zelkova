@@ -37,7 +37,7 @@ class QrManager {
             insetPadding: const EdgeInsets.all(5),
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10.0))),
-            title: const Text('Scan QR Code'),
+            title: Text(tr('qr_scanner_title')),
             content: SizedBox(height: height, width: width, child: sc),
           );
         });

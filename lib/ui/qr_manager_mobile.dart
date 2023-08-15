@@ -1,5 +1,6 @@
 // Import only for Android
 import 'package:barcode_scan2/barcode_scan2.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -17,11 +18,11 @@ class QrManager {
 
   static Future<String?> _mobileQrScan() async {
     final ScanResult result = await BarcodeScanner.scan(
-      options: const ScanOptions(
+      options: ScanOptions(
         strings: <String, String>{
-          'cancel': 'CANCEL',
-          'flash_on': 'FLASH ON',
-          'flash_off': 'FLASH OFF',
+          'cancel': tr('qr_scanner_cancel'),
+          'flash_on': tr('qr_scanner_flash_on'),
+          'flash_off': tr('qr_scanner_flash_off'),
         },
         restrictFormat: <BarcodeFormat>[BarcodeFormat.qr],
         // useCamera: -1,

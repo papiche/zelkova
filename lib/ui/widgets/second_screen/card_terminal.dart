@@ -111,9 +111,13 @@ class _CardTerminalState extends State<CardTerminal> {
           onPressed: () {
             vibrateIfPossible();
             setState(() {
-              _currentValue = calculate(
-                      textInTerminal: _currentValue, decimalSep: _decimalSep)
-                  .toString();
+              _currentValue = formatAmountWithLocale(
+                amount: calculate(
+                    textInTerminal: _currentValue, decimalSep: _decimalSep),
+                isG1: true,
+                locale: currentLocale(context),
+                useSymbol: false,
+              );
             });
           });
     } else if (index == _cancelIndex) {

@@ -7,6 +7,7 @@ import 'package:share_plus/share_plus.dart';
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
 import '../../data/models/theme_cubit.dart';
+import '../../g1/currency.dart';
 import '../../shared_prefs.dart';
 import '../tutorial.dart';
 import '../tutorial_keys.dart';
@@ -190,12 +191,33 @@ class _FifthScreenState extends State<FifthScreen> {
                                 _showSelectImportMethodDialog();
                               }),
                         ]),
-                    const TextDivider(text: 'faq_title'),
-                    const FAQ(),
+                    SwitchListTile(
+                        title: Text(tr('expert_mode')),
+                        value: state.expertMode,
+                        onChanged: (bool expert) {
+                          context.read<AppCubit>().setExpertMode(expert);
+                        }),
+                    if (state.expertMode)
+                      SwitchListTile(
+                          title: Text(tr('display_amounts_du')),
+                          value: state.currency == Currency.DU,
+                          onChanged: (bool useDU) {
+                            if (!useDU) {
+                              context.read<AppCubit>().setG1Currency();
+                            } else {
+                              context.read<AppCubit>().setDUCurrency();
+                            }
+                          }),
                     if (state.expertMode)
                       const TextDivider(text: 'technical_info_title'),
                     if (state.expertMode) const NodeInfoCard(),
                     const TextDivider(text: 'info_links'),
+                    if (state.expertMode)
+                      LinkCard(
+                          title: 'bug_report',
+                          icon: Icons.bug_report,
+                          url: Uri.parse(
+                              'https://git.duniter.org/vjrj/ginkgo/-/issues')),
                     if (state.expertMode)
                       LinkCard(
                           title: 'code_card_title',
@@ -207,22 +229,8 @@ class _FifthScreenState extends State<FifthScreen> {
                         icon: Icons.translate,
                         url: Uri.parse(
                             'https://weblate.duniter.org/projects/g1nkgo/g1nkgo/')),
-                    if (state.expertMode)
-                      LinkCard(
-                          title: 'bug_report',
-                          icon: Icons.bug_report,
-                          url: Uri.parse(
-                              'https://git.duniter.org/vjrj/ginkgo/-/issues')),
-                    const BottomWidget(),
-                    SwitchListTile(
-                        title: Text(tr('expert_mode')),
-                        value: state.expertMode,
-                        onChanged: (bool expert) {
-                          context.read<AppCubit>().setExpertMode(expert);
-                          if (!expert) {
-                            context.read<AppCubit>().setG1Currency();
-                          }
-                        }),
+                    const TextDivider(text: 'faq_title'),
+                    const FAQ(),
                     const BottomWidget()
                   ]),
             ));

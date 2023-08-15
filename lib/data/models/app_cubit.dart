@@ -61,9 +61,8 @@ class AppCubit extends HydratedCubit<AppState> {
     emit(state.copyWith(currency: Currency.G1));
   }
 
-  void switchCurrency() {
-    emit(state.copyWith(
-        currency: state.currency == Currency.G1 ? Currency.DU : Currency.G1));
+  void setDUCurrency() {
+    emit(state.copyWith(currency: Currency.DU));
   }
 
   void setUd(double currentUd) {

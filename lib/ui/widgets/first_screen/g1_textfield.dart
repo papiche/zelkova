@@ -77,11 +77,7 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
             context.read<PaymentCubit>().selectAmount(null);
           }
         }
-
-        final bool expertMode = context.read<AppCubit>().isExpertMode;
-        final bool enableCurrencies = expertMode;
-        final Currency currentCurrency =
-            enableCurrencies ? context.watch<AppCubit>().currency : Currency.G1;
+        final Currency currentCurrency = context.watch<AppCubit>().currency;
 
         return Form(
           key: _formKey,
@@ -117,19 +113,15 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
                 child: ToggleSwitch(
                   minWidth: 40.0,
                   radiusStyle: true,
-                  initialLabelIndex: enableCurrencies
-                      ? currentCurrency == Currency.G1
-                          ? 0
-                          : 1
-                      : 0,
+                  initialLabelIndex: 0,
                   cornerRadius: 20.0,
                   activeFgColor: Colors.black,
                   inactiveBgColor: Colors.grey[400],
                   inactiveFgColor: Colors.white,
-                  totalSwitches: enableCurrencies ? 2 : 1,
-                  labels: enableCurrencies
-                      ? const <String>['Ğ1', 'DU']
-                      : const <String>['Ğ1'],
+                  totalSwitches: 1,
+                  labels: <String>[
+                    if (currentCurrency == Currency.G1) 'Ğ1' else 'DU'
+                  ],
                   iconSize: 30.0,
                   borderWidth: 1.0,
                   borderColor: const <Color>[Colors.grey],
@@ -138,7 +130,7 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
                     <Color>[Color(0xFFFFD949)],
                   ],
                   onToggle: (int? index) {
-                    context.read<AppCubit>().switchCurrency();
+                    // context.read<AppCubit>().switchCurrency();
                   },
                 ),
               ),

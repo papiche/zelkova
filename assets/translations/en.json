@@ -222,5 +222,6 @@
   "qr_scanner_cancel": "CANCEL",
   "qr_scanner_flash_on": "FLASH ON",
   "qr_scanner_flash_off": "FLASH OFF",
-  "qr_scanner_title": "Scan QR Code"
+  "qr_scanner_title": "Scan QR Code",
+  "display_amounts_du": "Display amounts in DU"
 }

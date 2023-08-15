@@ -42,6 +42,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
   bool _isLoading = false;
 
   Future<void> _search() async {
+    final ContactsCubit contactsCubit = context.read<ContactsCubit>();
     if (_searchTerm.length < 3) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(tr('search_limitation'))),
@@ -53,7 +54,6 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
     setState(() {
       _isLoading = true;
     });
-    final ContactsCubit contactsCubit = context.read<ContactsCubit>();
 
     setState(() {
       _results = contactsCubit.search(_searchTerm);

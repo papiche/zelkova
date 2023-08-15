@@ -5,6 +5,7 @@ import '../../../g1/api.dart';
 import '../../../shared_prefs.dart';
 import '../../logger.dart';
 import '../../ui_helpers.dart';
+import '../connectivity_widget_wrapper_wrapper.dart';
 import 'card_text_style.dart';
 
 class CardNameEditable extends StatefulWidget {
@@ -26,29 +27,36 @@ class _CardNameEditableState extends State<CardNameEditable> {
 
   @override
   void initState() {
-    currentText = defValue;
+    final String localUsername = SharedPreferencesHelper().getName();
+    currentText = localUsername.isEmpty ? defValue : localUsername;
     super.initState();
   }
 
   Future<String> _initValue() async {
     final String localUsername = SharedPreferencesHelper().getName();
-
-    try {
-      String? name = await getCesiumPlusUser(pubKey);
-      logger(
-          'currentText: $currentText, localUsername: $localUsername, _previousValue: $_previousValue, retrieved_name: $name');
-      if (name != null) {
-        name = name.replaceAll(userNameSuffix, '');
-        _controller.text = name;
-        currentText = name;
-        SharedPreferencesHelper().setName(name: name);
-      } else {
-        _controller.text = '';
-        currentText = defValue;
-        SharedPreferencesHelper().setName(name: '');
+    final bool isConnected = await ConnectivityWidgetWrapperWrapper.isConnected;
+    if (isConnected) {
+      try {
+        String? name = await getCesiumPlusUser(pubKey);
+        logger(
+            'currentText: $currentText, localUsername: $localUsername, _previousValue: $_previousValue, retrieved_name: $name');
+        if (name != null) {
+          name = name.replaceAll(userNameSuffix, '');
+          _controller.text = name;
+          currentText = name;
+          SharedPreferencesHelper().setName(name: name);
+        } else {
+          _controller.text = '';
+          currentText = defValue;
+          SharedPreferencesHelper().setName(name: '');
+        }
+      } catch (e) {
+        logger(e);
+        _controller.text = localUsername;
+        currentText = localUsername;
       }
-    } catch (e) {
-      logger(e);
+    } else {
+      // not connected, same an on exception
       _controller.text = localUsername;
       currentText = localUsername;
     }

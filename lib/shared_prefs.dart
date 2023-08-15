@@ -2,8 +2,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:durt/durt.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'data/models/cesium_card.dart';
@@ -64,10 +62,7 @@ class SharedPreferencesHelper {
 
   CesiumCard buildCesiumCard({required String seed, required String pubKey}) {
     return CesiumCard(
-        seed: seed,
-        pubKey: pubKey,
-        theme: CreditCardThemes.theme1,
-        name: dotenv.env['CARD_TEXT'] ?? tr('g1_wallet'));
+        seed: seed, pubKey: pubKey, theme: CreditCardThemes.theme1, name: '');
   }
 
   void addCesiumCard(CesiumCard cesiumCard) {

@@ -252,6 +252,10 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
       logger('Scanned $pay');
       _searchTerm = extractPublicKey(pay.contact!.pubKey);
       await _search();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(tr('qr_invalid_payment')))
+      );
     }
     logger('QR result length ${_results.length}');
     if (_results.length == 1 && pay != null) {
@@ -266,6 +270,10 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
       if (pay.comment != null) {
         paymentCubit.setComment(pay.comment);
       }
+    } else if (_results.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(tr('cant_find_qr_contact')))
+      );
     }
   }
 

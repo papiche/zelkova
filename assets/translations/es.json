@@ -149,9 +149,13 @@
   "fetch_tx_error": "Algo ha ido mal al obtener tus transacciones.",
   "retry": "REINTENTAR",
   "creditCardKey_title": "¡Monedero creado!",
-  "creditCardKey_desc": "¡Felicidades! Has creado tu monedero Ğ1 con éxito. Ten en cuenta que todo se almacena en este dispositivo, así que asegúrate de no borrar esta aplicación para no perder tu monedero. En breve te enseñaremos cómo hacer un backup del monedero, por si tu dispositivo sufre algún problema.",
+  "creditCardKey_desc": "¡Felicidades! Has creado tu monedero Ğ1 con éxito. Ten en cuenta que todo se almacena en este dispositivo, así que asegúrate de no borrar esta aplicación para no perder tu monedero. En la sección de Información puedes hacer un backup del monedero, por si tu dispositivo sufre algún problema.",
   "creditCardKey_web_title": "¡Monedero creado!",
-  "creditCardKey_web_desc": "¡Felicidades! Has creado tu monedero Ğ1 con éxito. Es importante que sepas que este monedero está almacenado sólo en tu navegador. Por eso, si cierras el navegador y lo abres de nuevo, asegúrate de que te sale el mismo monedero. Si no es así, puede que estés usando un navegador no soportado. Recuerda que también tenemos una app. En breve te enseñaremos cómo hacer un backup del monedero, por si tu dispositivo sufre algún problema, puedas acceder a tu monedero sin problemas.",
+  "creditCardKey_web_desc": "¡Felicidades! Has creado tu monedero Ğ1 con éxito. Es importante que sepas que este monedero está almacenado sólo en tu navegador. Por eso, si cierras el navegador y lo abres de nuevo, asegúrate de que te sale el mismo monedero. Si no es así, puede que estés usando un navegador no soportado. Recuerda que también tenemos una app. En la sección de Información puedes hacer un backup del monedero, por si tu dispositivo sufre algún problema, puedas acceder a tu monedero sin problemas.",
+  "creditCardKey_button_title": "¡Este es tu monedero!",
+  "creditCardKey_button_desc": "Ten en cuenta que todo se almacena en este dispositivo, así que asegúrate de no borrar esta aplicación para no perder tu monedero. En la sección de Información puedes hacer un backup del monedero, por si tu dispositivo sufre algún problema.",
+  "creditCardKey_button_web_title": "¡Este es tu monedero!",
+  "creditCardKey_button_web_desc": "Es importante que sepas que este monedero está almacenado sólo en tu navegador. Por eso, si cierras el navegador y lo abres de nuevo, asegúrate de que te sale el mismo monedero. Si no es así, puede que estés usando un navegador no soportado. Recuerda que también tenemos una app. En la sección de Información puedes hacer un backup del monedero, por si tu dispositivo sufre algún problema, puedas acceder a tu monedero sin problemas.",
   "creditCardPubKey_title": "Dirección Pública del Monedero",
   "creditCardPubKey_desc": "Esta es la dirección pública abreviada de tu monedero (aunque esta es la versión abreviada). Puedes copiarla pulsando sobre ella para compartirla con otras personas.",
   "paySearchUserKey_title": "Pagos con Junas",
@@ -215,5 +219,9 @@
   "share_export": "Exportar vía email/chat/etc.",
   "wallet_copied": "Monedero copiado al portapapeles",
   "link_export": "Exportar vía enlace",
-  "share_export_subject": "Ğ1nkgo Wallet Export"
+  "share_export_subject": "Ğ1nkgo Wallet Export",
+  "qr_scanner_cancel": "CANCELAR",
+  "qr_scanner_flash_on": "FLASH ON",
+  "qr_scanner_flash_off": "FLASH OFF",
+  "qr_scanner_title": "Escanea un QR Code"
 }

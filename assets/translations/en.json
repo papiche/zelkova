@@ -148,9 +148,13 @@
   "fetch_tx_error": "Something went wrong while fetching your transactions.",
   "retry": "RETRY",
   "creditCardKey_title": "Wallet Created!",
-  "creditCardKey_desc": "Congratulations! You have successfully created your Ğ1 wallet. Please note that everything is stored on this device, so make sure not to delete this application to avoid losing your wallet. Soon we will show you how to make a backup of your wallet, in case your device has any issues and you need to access your wallet.",
+  "creditCardKey_desc": "Congratulations! You have successfully created your Ğ1 wallet. Please note that everything is stored on this device, so make sure not to delete this application to avoid losing your wallet. In the info section you can make a backup of your wallet, in case your device has any issues and you need to access your wallet.",
   "creditCardKey_web_title": "Wallet Created!",
-  "creditCardKey_web_desc": "Congratulations! You have successfully created your Ğ1 wallet. It is important to note that this wallet is stored only in your browser. Therefore, if you close the browser and open it again, make sure that the same wallet appears. If not, you may be using an unsupported browser. Remember that we also have an app. Soon we will show you how to make a backup of your wallet, in case your device has any issues.",
+  "creditCardKey_web_desc": "Congratulations! You have successfully created your Ğ1 wallet. It is important to note that this wallet is stored only in your browser. Therefore, if you close the browser and open it again, make sure that the same wallet appears. If not, you may be using an unsupported browser. Remember that we also have an app. In the info section you can make a backup of your wallet, in case your device has any issues.",
+  "creditCardKey_button_title": "This is your Wallet!",
+  "creditCardKey_button_desc": "Please note that everything is stored on this device, so make sure not to delete this application to avoid losing your wallet. In the info section you can make a backup of your wallet, in case your device has any issues and you need to access your wallet.",
+  "creditCardKey_button_web_title": "This is your Wallet!",
+  "creditCardKey_button_web_desc": "It is important to note that this wallet is stored only in your browser. Therefore, if you close the browser and open it again, make sure that the same wallet appears. If not, you may be using an unsupported browser. Remember that we also have an app. In the info section you can make a backup of your wallet, in case your device has any issues.",
   "creditCardPubKey_title": "Wallet Public Address",
   "creditCardPubKey_desc": "This is the public address of your wallet (although this is the abbreviated version). You can copy it by tapping on it to share it with others.",
   "paySearchUserKey_title": "Making Payments with Ğ1",
@@ -212,5 +216,9 @@
   "share_export": "Share via email/chat/etc.",
   "wallet_copied": "Walled copied to clipboard",
   "link_export": "Export to Link",
-  "share_export_subject": "Ğ1nkgo Wallet Export"
+  "share_export_subject": "Ğ1nkgo Wallet Export",
+  "qr_scanner_cancel": "CANCEL",
+  "qr_scanner_flash_on": "FLASH ON",
+  "qr_scanner_flash_off": "FLASH OFF",
+  "qr_scanner_title": "Scan QR Code"
 }

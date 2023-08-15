@@ -18,6 +18,7 @@ import '../widgets/first_screen/credit_card.dart';
 import '../widgets/first_screen/first_tutorial.dart';
 import '../widgets/first_screen/pay_contact_search_button.dart';
 import '../widgets/first_screen/pay_form.dart';
+import '../widgets/first_screen/pay_qr_button.dart';
 
 class FirstScreen extends StatefulWidget {
   const FirstScreen({super.key});
@@ -31,7 +32,8 @@ class _FirstScreenState extends State<FirstScreen> {
 
   @override
   void initState() {
-    tutorial = FirstTutorial(context);
+    tutorial = FirstTutorial(
+        context, !context.read<AppCubit>().wasTutorialShown('first_screen'));
     super.initState();
     if (context.read<BottomNavCubit>().state == 0 &&
         context.read<TransactionCubit>().balance == 0) {
@@ -89,7 +91,17 @@ class _FirstScreenState extends State<FirstScreen> {
             builder: (BuildContext context, PaymentState state) =>
                 Stack(children: <Widget>[
                   Scaffold(
-                      appBar: AppBar(title: Text(tr('credit_card_title'))),
+                      appBar: AppBar(
+                        title: Text(tr('credit_card_title')),
+                        actions: <Widget>[
+                          IconButton(
+                            icon: const Icon(Icons.info_outline),
+                            onPressed: () {
+                              tutorial.showTutorial(showAlways: true);
+                            },
+                          ),
+                        ],
+                      ),
                       drawer: const CardDrawer(),
                       body: ListView(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -110,7 +122,13 @@ class _FirstScreenState extends State<FirstScreen> {
                               ),
                             ),
                             const SizedBox(height: 10),
-                            PayContactSearchButton(key: paySearchUserKey),
+                            Row(children: <Widget>[
+                              Flexible(
+                                  child: PayContactSearchButton(
+                                      key: paySearchUserKey)),
+                              const SizedBox(width: 10),
+                              const PayQrButton()
+                            ]),
                             const SizedBox(height: 10),
                             const PayForm(),
                             const BottomWidget()

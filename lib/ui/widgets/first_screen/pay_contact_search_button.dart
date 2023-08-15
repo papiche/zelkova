@@ -29,14 +29,8 @@ class _PayContactSearchButtonState extends State<PayContactSearchButton> {
               },
             );
           },
-          icon: Row(
-            children: <Widget>[
-              const Icon(Icons.search, color: Colors.white),
-              const SizedBox(width: 8.0),
-              Text(tr('search_user_btn')),
-            ],
-          ),
-          label: const Icon(Icons.qr_code_scanner),
+          icon: const Icon(Icons.search, color: Colors.white),
+          label: Text(tr('search_user_btn')),
           style: ElevatedButton.styleFrom(
             minimumSize: const Size(double.infinity, 60.0),
             foregroundColor: Colors.white,

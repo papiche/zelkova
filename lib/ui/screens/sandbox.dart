@@ -1,7 +1,5 @@
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
-import '../widgets/first_screen/credit_card.dart';
-
 class Sandbox extends StatefulWidget {
   const Sandbox({super.key});
 
@@ -37,7 +35,7 @@ class _SandboxState extends State<Sandbox> {
                       child: AnimatedOpacity(
                         opacity: 1 - percent,
                         duration: const Duration(milliseconds: 200),
-                        child: CreditCard(),
+                        child: const Text('Test'), // CreditCard(),
                       ),
                     ),
                   ),

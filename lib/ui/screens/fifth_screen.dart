@@ -6,7 +6,6 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
-import '../../data/models/bottom_nav_cubit.dart';
 import '../../data/models/theme_cubit.dart';
 import '../../shared_prefs.dart';
 import '../tutorial.dart';
@@ -37,9 +36,6 @@ class _FifthScreenState extends State<FifthScreen> {
   @override
   void initState() {
     tutorial = FifthTutorial(context);
-    if (context.read<BottomNavCubit>().state == 4) {
-      Future<void>.delayed(Duration.zero, () => tutorial.showTutorial());
-    }
     super.initState();
   }
 
@@ -61,6 +57,12 @@ class _FifthScreenState extends State<FifthScreen> {
                               themeMode: context.read<ThemeCubit>().isDark()
                                   ? ThemeMode.light
                                   : ThemeMode.dark));
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.info_outline),
+                    onPressed: () {
+                      tutorial.showTutorial(showAlways: true);
                     },
                   ),
                   const SizedBox(width: 10),

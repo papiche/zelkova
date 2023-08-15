@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/models/bottom_nav_cubit.dart';
 import '../../data/models/contact.dart';
 import '../../data/models/contact_cubit.dart';
 import '../../g1/g1_helper.dart';
@@ -29,9 +28,6 @@ class _ThirdScreenState extends State<ThirdScreen> {
   @override
   void initState() {
     tutorial = ThirdTutorial(context);
-    if (context.read<BottomNavCubit>().state == 2) {
-      Future<void>.delayed(Duration.zero, () => tutorial.showTutorial());
-    }
     super.initState();
   }
 
@@ -56,7 +52,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
                 final String? pubKey = await QrManager.qrScan(context);
                 if (pubKey != null && validateKey(pubKey)) {
                   final Contact contact =
-                      await ContactsCache().getContact(pubKey);
+                  await ContactsCache().getContact(pubKey);
                   if (!mounted) {
                     return;
                   }
@@ -85,6 +81,12 @@ class _ThirdScreenState extends State<ThirdScreen> {
                   );
                 }
               }),
+          IconButton(
+            icon: const Icon(Icons.info_outline),
+            onPressed: () {
+              tutorial.showTutorial(showAlways: true);
+            },
+          ),
           const SizedBox(width: 5),
         ]),
         drawer: const CardDrawer(),

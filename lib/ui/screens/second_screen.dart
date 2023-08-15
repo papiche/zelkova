@@ -1,8 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/models/bottom_nav_cubit.dart';
 import '../tutorial.dart';
 import '../widgets/card_drawer.dart';
 import '../widgets/second_screen/card_terminal.dart';
@@ -21,16 +19,23 @@ class _SecondScreenState extends State<SecondScreen> {
   @override
   void initState() {
     tutorial = SecondTutorial(context);
-    if (context.read<BottomNavCubit>().state == 1) {
-      Future<void>.delayed(Duration.zero, () => tutorial.showTutorial());
-    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(tr('receive_g1'))),
+      appBar: AppBar(
+        title: Text(tr('receive_g1')),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.info_outline),
+            onPressed: () {
+              tutorial.showTutorial(showAlways: true);
+            },
+          ),
+        ],
+      ),
       drawer: const CardDrawer(),
       body:
           const Column(children: <Widget>[SizedBox(height: 2), CardTerminal()]),

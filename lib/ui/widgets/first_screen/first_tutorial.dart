@@ -7,14 +7,21 @@ import '../../tutorial_keys.dart';
 import '../../tutorial_target.dart';
 
 class FirstTutorial extends Tutorial {
-  FirstTutorial(BuildContext context)
+  FirstTutorial(BuildContext context, this.onPress)
       : super(tutorialId: 'first_screen', context: context);
+  final bool onPress;
 
   @override
   List<TargetFocus> createTargets() {
     final List<TargetFocus> targets = <TargetFocus>[];
     targets.add(TutorialTarget(
-      identify: !kIsWeb ? 'creditCardKey' : 'creditCardKey_web',
+      identify: onPress
+          ? !kIsWeb
+              ? 'creditCardKey_button'
+              : 'creditCardKey_button_web'
+          : !kIsWeb
+              ? 'creditCardKey'
+              : 'creditCardKey_web',
       keyTarget: creditCardKey,
       shape: ShapeLightFocus.RRect,
     ));

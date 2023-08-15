@@ -19,8 +19,10 @@ import '../../../data/models/transactions_bloc.dart';
 import '../../../g1/currency.dart';
 import '../../../shared_prefs.dart';
 import '../../logger.dart';
+import '../../tutorial.dart';
 import '../../tutorial_keys.dart';
 import '../../ui_helpers.dart';
+import 'fourth_tutorial.dart';
 import 'transaction_item.dart';
 
 class TransactionsAndBalanceWidget extends StatefulWidget {
@@ -50,6 +52,7 @@ class _TransactionsAndBalanceWidgetState
   final int _pendingPageSize = 30;
   final Cron cron = Cron();
   static const double balanceFontSize = 36.0;
+  late Tutorial tutorial;
 
   @override
   void initState() {
@@ -106,6 +109,7 @@ class _TransactionsAndBalanceWidgetState
       logger('---------- fetchTransactions via cron');
       _refresh();
     });
+    tutorial = FourthTutorial(context);
     super.initState();
   }
 
@@ -183,6 +187,12 @@ class _TransactionsAndBalanceWidgetState
                               Backdrop.of(lContext).concealBackLayer();
                             }
                           })),
+              IconButton(
+                icon: const Icon(Icons.info_outline),
+                onPressed: () {
+                  tutorial.showTutorial(showAlways: true);
+                },
+              ),
               const SizedBox(width: 10),
             ],
           ),

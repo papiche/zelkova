@@ -34,11 +34,10 @@ abstract class Tutorial {
   late TutorialCoachMark _tutorial;
   final BuildContext context;
   final String tutorialId;
-  bool showAlways = false;
 
   List<TargetFocus> createTargets();
 
-  void showTutorial() {
+  void showTutorial({bool showAlways = false}) {
     if ((inDevelopment && showAlways) ||
         !context.read<AppCubit>().wasTutorialShown(tutorialId)) {
       _tutorial.show(context: context);

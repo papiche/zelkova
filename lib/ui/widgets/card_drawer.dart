@@ -24,7 +24,9 @@ class CardDrawer extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<PackageInfo> snapshot) {
         if (snapshot.hasData) {
           return Drawer(
-            child: Column(
+            child: ListView(
+              // Important: Remove any padding from the ListView.
+              padding: EdgeInsets.zero,
               children: <Widget>[
                 DrawerHeader(
                   /* decoration: BoxDecoration(
@@ -50,9 +52,9 @@ class CardDrawer extends StatelessWidget {
                   ),
                 ),
                 if (!kReleaseMode)
-                  const SizedBox(
-                    height: 200,
-                    child: Center(
+                  SizedBox(
+                    height: (cards.length * 70) + 50,
+                    child: const Center(
                       child: CardStack(),
                     ),
                   ),

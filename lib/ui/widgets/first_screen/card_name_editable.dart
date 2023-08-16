@@ -80,6 +80,7 @@ class _CardNameEditableState extends State<CardNameEditable> {
     return FutureBuilder<String>(
         future: _initValue(),
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          const Color black = Colors.black87;
           return _isEditingText
               ? SizedBox(
                   width: 150.0,
@@ -87,6 +88,7 @@ class _CardNameEditableState extends State<CardNameEditable> {
                       height: 40.0,
                       child: TextField(
                         // focusNode: myFocusNode,
+                        style: const TextStyle(color: black),
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(
                               vertical: 5.0, horizontal: 7.0),
@@ -112,7 +114,8 @@ class _CardNameEditableState extends State<CardNameEditable> {
                                       },
                                       child: const Padding(
                                         padding: EdgeInsets.only(right: 8.0),
-                                        child: Icon(Icons.cancel_outlined),
+                                        child: Icon(Icons.cancel_outlined,
+                                            color: black),
                                       ),
                                     ),
                                     GestureDetector(
@@ -121,13 +124,13 @@ class _CardNameEditableState extends State<CardNameEditable> {
                                       },
                                       child: const Padding(
                                         padding: EdgeInsets.only(right: 8.0),
-                                        child: Icon(Icons.check),
+                                        child: Icon(Icons.check, color: black),
                                       ),
                                     ),
                                   ],
                                 ),
                         ),
-                        cursorColor: Colors.black,
+                        cursorColor: black,
                         onSubmitted: _updateValue,
                         enabled: !_isSubmitting,
                         /* onChanged: (String value) {
@@ -144,42 +147,11 @@ class _CardNameEditableState extends State<CardNameEditable> {
                       )))
               : Tooltip(
                   message: tr('your_name_here'),
-                  child: InkWell(
-                    child: RichText(
-                      // softWrap: true,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      text: TextSpan(
-                        style: DefaultTextStyle.of(context).style,
-                        children: <TextSpan>[
-                          if (currentText == defValue)
-                            TextSpan(
-                                text: currentText.toUpperCase(),
-                                style: const TextStyle(
-                                    fontFamily: 'SourceCodePro',
-                                    color: Colors.grey)),
-                          if (currentText.isNotEmpty && currentText != defValue)
-                            TextSpan(
-                                text: currentText,
-                                style: cardTextStyle(context, 15)),
-                          /*  TextSpan(
-              text: ' Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-              style: cardTextStyle(context, 15),
-            ), */
-                          if (currentText.isNotEmpty && currentText != defValue)
-                            TextSpan(
-                              text: userNameSuffix,
-                              style: cardTextStyle(context, 12),
-                            ),
-                        ],
-                      ),
-                    ),
-                    onTap: () {
-                      setState(() {
-                        _isEditingText = true;
-                      });
-                    },
-                  ));
+                  child: CardNameText(
+                      currentText: currentText,
+                      onTap: () => setState(() {
+                            _isEditingText = true;
+                          })));
         });
   }
 
@@ -248,5 +220,46 @@ class _CardNameEditableState extends State<CardNameEditable> {
       return false;
     }
     return true;
+  }
+}
+
+class CardNameText extends StatelessWidget {
+  CardNameText({super.key, required this.currentText, required this.onTap});
+
+  final String currentText;
+
+  // Dup above
+  final String defValue = tr('your_name_here');
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      child: RichText(
+        // softWrap: true,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+        text: TextSpan(
+          style: DefaultTextStyle.of(context).style,
+          children: <TextSpan>[
+            if (currentText == defValue)
+              TextSpan(
+                  text: currentText.toUpperCase(),
+                  style: const TextStyle(
+                      fontFamily: 'SourceCodePro', color: Colors.grey)),
+            if (currentText.isNotEmpty && currentText != defValue)
+              TextSpan(
+                  text: currentText,
+                  style: cardTextStyle(context, fontSize: 15)),
+            if (currentText.isNotEmpty && currentText != defValue)
+              TextSpan(
+                text: userNameSuffix,
+                style: cardTextStyle(context, fontSize: 12),
+              ),
+          ],
+        ),
+      ),
+      onTap: () => onTap(),
+    );
   }
 }

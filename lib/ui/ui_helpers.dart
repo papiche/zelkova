@@ -474,9 +474,8 @@ void showQrDialog({
                     onTap: () => copyPublicKeyToClipboard(
                         context, publicKey, feedbackText),
                     child: Container(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.grey[900]
-                          : Colors.grey[100],
+                      color:
+                          isDark(context) ? Colors.grey[900] : Colors.grey[100],
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         children: <Widget>[
@@ -500,11 +499,12 @@ void showQrDialog({
                                   ), */
                                   eyeStyle: QrEyeStyle(
                                       eyeShape: QrEyeShape.square,
-                                      color: Theme.of(context).primaryColor),
+                                      color: isDark(context)
+                                          ? Theme.of(context).hintColor
+                                          : Theme.of(context).primaryColor),
                                   dataModuleStyle: QrDataModuleStyle(
                                       dataModuleShape: QrDataModuleShape.square,
-                                      color: Theme.of(context).brightness ==
-                                              Brightness.dark
+                                      color: isDark(context)
                                           ? Colors.white
                                           : Colors.black),
                                 )
@@ -540,6 +540,9 @@ void showQrDialog({
     },
   );
 }
+
+bool isDark(BuildContext context) =>
+    Theme.of(context).brightness == Brightness.dark;
 
 bool get isIOS => !kIsWeb && Platform.isIOS;
 

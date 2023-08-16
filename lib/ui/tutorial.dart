@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '../data/models/app_cubit.dart';
-import 'ui_helpers.dart';
 
 abstract class Tutorial {
   Tutorial({
@@ -38,8 +37,7 @@ abstract class Tutorial {
   List<TargetFocus> createTargets();
 
   void showTutorial({bool showAlways = false}) {
-    if ((inDevelopment && showAlways) ||
-        !context.read<AppCubit>().wasTutorialShown(tutorialId)) {
+    if (showAlways || !context.read<AppCubit>().wasTutorialShown(tutorialId)) {
       _tutorial.show(context: context);
     }
   }

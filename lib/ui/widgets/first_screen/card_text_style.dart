@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 TextStyle cardTextStyle(BuildContext context,
-    [double? fontSize, Color? color = Colors.white]) {
+    {double? fontSize, Color? color = Colors.white}) {
   return TextStyle(
     fontFamily: 'SourceCodePro',
     // decoration: TextDecoration.underline,

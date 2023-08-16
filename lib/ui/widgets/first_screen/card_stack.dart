@@ -29,13 +29,30 @@ class _CardStackState extends State<CardStack> {
           ),
         ),
         Positioned(
-          right: 30,
-          bottom: -13,
-          child: FloatingActionButton(
-            onPressed: () {},
-            child: const Icon(Icons.add),
-          ),
-        )
+            right: 30,
+            bottom: -15,
+            child: Container(
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: Colors.black45,
+                    spreadRadius: 10,
+                    blurRadius: 10,
+                    offset: Offset(0, 6),
+                  ),
+                ],
+              ),
+              child: FloatingActionButton(
+                // elevation: 20,
+                /* shape: RoundedRectangleBorder(
+                  side: const BorderSide(color: Colors.grey, width: 1.0),
+                  borderRadius: BorderRadius.circular(20),
+                ), */
+                onPressed: () {},
+                child: const Icon(Icons.add),
+              ),
+            ))
       ],
     );
   }

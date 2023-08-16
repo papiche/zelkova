@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:feedback_gitlab/feedback_gitlab.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -51,14 +50,14 @@ class CardDrawer extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (!kReleaseMode)
+                if (inDevelopment)
                   SizedBox(
                     height: (cards.length * 70) + 50,
                     child: const Center(
                       child: CardStack(),
                     ),
                   ),
-                Expanded(child: Container()),
+                // Expanded(child: Container()),
                 /* if (!kReleaseMode)
                   Expanded(
                     child: Container(

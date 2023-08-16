@@ -33,7 +33,7 @@ class _FirstScreenState extends State<FirstScreen> {
   @override
   void initState() {
     tutorial = FirstTutorial(
-        context, !context.read<AppCubit>().wasTutorialShown('first_screen'));
+        context, context.read<AppCubit>().wasTutorialShown('first_screen'));
     super.initState();
     if (context.read<BottomNavCubit>().state == 0 &&
         context.read<TransactionCubit>().balance == 0) {

@@ -10,6 +10,7 @@ import '../../data/models/cesium_card.dart';
 import '../../shared_prefs.dart';
 import '../screens/sandbox.dart';
 import '../ui_helpers.dart';
+import 'first_screen/card_stack.dart';
 
 class CardDrawer extends StatelessWidget {
   const CardDrawer({super.key});
@@ -52,17 +53,11 @@ class CardDrawer extends StatelessWidget {
                   const SizedBox(
                     height: 200,
                     child: Center(
-                      child: Text(
-                        'Cards',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      child: CardStack(),
                     ),
                   ),
-                if (kReleaseMode) Expanded(child: Container()),
-                if (!kReleaseMode)
+                Expanded(child: Container()),
+                /* if (!kReleaseMode)
                   Expanded(
                     child: Container(
                       decoration: const BoxDecoration(
@@ -86,7 +81,7 @@ class CardDrawer extends StatelessWidget {
                         },
                       ),
                     ),
-                  ),
+                  ), */
                 if (inDevelopment)
                   ListTile(
                     leading: const Icon(Icons.build),

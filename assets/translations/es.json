@@ -227,5 +227,6 @@
   "qr_scanner_flash_off": "FLASH OFF",
   "qr_scanner_title": "Escanea un QR Code",
   "display_amounts_du": "Mostrar importes en DU",
-  "wallet_already_imported": "Monedero ya importado"
+  "wallet_already_imported": "Monedero ya importado",
+  "card_theme_select": "Selecciona un tema para tu tarjeta"
 }

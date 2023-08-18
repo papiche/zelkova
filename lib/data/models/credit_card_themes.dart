@@ -1,5 +1,4 @@
-import 'dart:ui';
-
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'is_json_serializable.dart';
@@ -7,46 +6,53 @@ import 'is_json_serializable.dart';
 part 'credit_card_themes.g.dart';
 
 class CreditCardThemes {
-  static const CreditCardTheme theme1 = CreditCardTheme(
-    Color(0xFF1A237E),
-    Color(0xFFFFBA00),
-  );
+  static const CreditCardTheme theme1 =
+      CreditCardTheme(Color(0xFF05112B), Color(0xFF085476));
   static const CreditCardTheme theme2 = CreditCardTheme(
-    Color(0xFFEC1C24),
-    Color(0xFFFF5F00),
+    Colors.blueGrey,
+    Colors.pink,
   );
   static const CreditCardTheme theme3 = CreditCardTheme(
-    Color(0xFF0077B5),
     Color(0xFF00A9E0),
+    Color(0xFF0077B5),
   );
   static const CreditCardTheme theme4 = CreditCardTheme(
-    Color(0xFF8C1D40),
     Color(0xFFFDB813),
+    Color(0xFF8C1D40),
   );
   static const CreditCardTheme theme5 = CreditCardTheme(
-    Color(0xFF117AC9),
-    Color(0xFFEE7203),
+    Colors.blueGrey,
+    Colors.deepPurple,
   );
-  static const CreditCardTheme theme6 = CreditCardTheme(
-    Color(0xFF00529B),
-    Color(0xFF00AEEF),
-  );
+  static const CreditCardTheme theme6 =
+      CreditCardTheme(Colors.lightGreen, Colors.green);
   static const CreditCardTheme theme7 = CreditCardTheme(
-    Color(0xFFE41422),
-    Color(0xFF1C5D8D),
+    Colors.black54,
+    Colors.black,
   );
   static const CreditCardTheme theme8 = CreditCardTheme(
+    Colors.blueGrey,
     Color(0xFF004678),
-    Color(0xFFB5C8E5),
   );
   static const CreditCardTheme theme9 = CreditCardTheme(
     Color(0xFFCE002D),
     Color(0xFF673F1E),
   );
-  static const CreditCardTheme theme10 = CreditCardTheme(
-    Color(0xFFDD5600),
-    Color(0xFFC6A700),
-  );
+  static const CreditCardTheme theme10 =
+      CreditCardTheme(Color(0xFF598040), Color(0xFF225500));
+
+  static const List<CreditCardTheme> themes = <CreditCardTheme>[
+    CreditCardThemes.theme1,
+    CreditCardThemes.theme2,
+    CreditCardThemes.theme3,
+    CreditCardThemes.theme4,
+    CreditCardThemes.theme5,
+    CreditCardThemes.theme6,
+    CreditCardThemes.theme7,
+    CreditCardThemes.theme8,
+    CreditCardThemes.theme9,
+    CreditCardThemes.theme10,
+  ];
 }
 
 @JsonSerializable()

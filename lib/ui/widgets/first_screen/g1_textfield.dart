@@ -113,7 +113,7 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
                 child: ToggleSwitch(
                   minWidth: 40.0,
                   radiusStyle: true,
-                  initialLabelIndex: 0,
+                  // initialLabelIndex: 0,
                   cornerRadius: 20.0,
                   activeFgColor: Colors.black,
                   inactiveBgColor: Colors.grey[400],

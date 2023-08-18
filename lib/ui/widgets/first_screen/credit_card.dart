@@ -28,7 +28,7 @@ class CreditCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(cardRadius),
         ),
         child: AspectRatio(
-            aspectRatio: 1.58, // Credit cart aspect ratio
+            aspectRatio: cardAspectRatio, // Credit cart aspect ratio
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(cardRadius),

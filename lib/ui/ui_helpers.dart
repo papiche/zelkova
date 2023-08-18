@@ -547,3 +547,5 @@ bool isDark(BuildContext context) =>
 bool get isIOS => !kIsWeb && Platform.isIOS;
 
 const String userNameSuffix = ' ❥';
+
+const double cardAspectRatio = 1.58;

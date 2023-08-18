@@ -224,5 +224,6 @@
   "qr_scanner_flash_off": "FLASH OFF",
   "qr_scanner_title": "Scan QR Code",
   "display_amounts_du": "Display amounts in DU",
-  "wallet_already_imported": "Wallet already imported"
+  "wallet_already_imported": "Wallet already imported",
+  "card_theme_select": "Select a theme for your card"
 }

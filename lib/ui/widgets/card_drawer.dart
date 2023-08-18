@@ -6,7 +6,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../../data/models/cesium_card.dart';
-import '../../shared_prefs.dart';
+import '../../shared_prefs_helper.dart';
 import '../screens/sandbox.dart';
 import '../ui_helpers.dart';
 import 'first_screen/card_stack.dart';

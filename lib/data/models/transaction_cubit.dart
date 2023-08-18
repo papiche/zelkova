@@ -8,7 +8,7 @@ import '../../../g1/api.dart';
 import '../../../g1/transaction_parser.dart';
 import '../../g1/currency.dart';
 import '../../g1/g1_helper.dart';
-import '../../shared_prefs.dart';
+import '../../shared_prefs_helper.dart';
 import '../../ui/logger.dart';
 import '../../ui/notification_controller.dart';
 import '../../ui/pay_helper.dart';

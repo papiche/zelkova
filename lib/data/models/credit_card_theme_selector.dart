@@ -5,9 +5,10 @@ import 'cesium_card.dart';
 import 'credit_card_themes.dart';
 
 class CardThemeSelector extends StatelessWidget {
-  const CardThemeSelector({super.key, required this.card});
+  const CardThemeSelector({super.key, required this.card, required this.onTap});
 
   final CesiumCard card;
+  final Function(CreditCardTheme) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +19,12 @@ class CardThemeSelector extends StatelessWidget {
       ),
       itemCount: CreditCardThemes.themes.length,
       itemBuilder: (BuildContext context, int index) {
-        final CreditCardTheme themeData = CreditCardThemes.themes[index];
+        final CreditCardTheme theme = CreditCardThemes.themes[index];
         return GestureDetector(
-          onTap: () {},
+          onTap: () {
+            onTap(theme);
+            Navigator.pop(context);
+          },
           child: Center(
             child: CreditCardThemeItem(themeIndex: index),
           ),

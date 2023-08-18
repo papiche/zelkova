@@ -39,7 +39,7 @@ import 'data/models/theme_cubit.dart';
 import 'data/models/transaction_cubit.dart';
 import 'g1/api.dart';
 import 'g1/g1_helper.dart';
-import 'shared_prefs.dart';
+import 'shared_prefs_helper.dart';
 import 'ui/contacts_cache.dart';
 import 'ui/logger.dart';
 import 'ui/notification_controller.dart';

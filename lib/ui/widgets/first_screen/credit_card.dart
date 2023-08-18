@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../shared_prefs.dart';
+import '../../../shared_prefs_helper.dart';
 import '../../tutorial_keys.dart';
 import '../../ui_helpers.dart';
 import 'card_name_editable.dart';
@@ -43,8 +43,8 @@ class CreditCard extends StatelessWidget {
                   begin: Alignment.bottomLeft,
                   end: Alignment.topRight,
                   colors: <Color>[
-                    Color(int.parse("${dotenv.env['CARD_COLOR_LEFT']}")),
-                    Color(int.parse("${dotenv.env['CARD_COLOR_RIGHT']}")),
+                    SharedPreferencesHelper().getTheme().primaryColor,
+                    SharedPreferencesHelper().getTheme().secondaryColor
                   ],
                 ),
               ),

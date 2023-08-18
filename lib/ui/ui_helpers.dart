@@ -18,7 +18,7 @@ import '../data/models/node_list_cubit.dart';
 import '../data/models/transaction_cubit.dart';
 import '../g1/api.dart';
 import '../g1/currency.dart';
-import '../shared_prefs.dart';
+import '../shared_prefs_helper.dart';
 import 'widgets/first_screen/circular_icon.dart';
 
 void showTooltip(BuildContext context, String title, String message) {

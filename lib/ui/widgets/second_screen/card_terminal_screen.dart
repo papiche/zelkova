@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../g1/g1_helper.dart';
-import '../../../shared_prefs.dart';
+import '../../../shared_prefs_helper.dart';
 import '../../tutorial_keys.dart';
 import '../../ui_helpers.dart';
 import '../connectivity_widget_wrapper_wrapper.dart';

@@ -1,11 +1,10 @@
-import 'dart:math';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/models/cesium_card.dart';
 import '../../../data/models/credit_card_theme_selector.dart';
 import '../../../data/models/credit_card_themes.dart';
+import '../../../shared_prefs_helper.dart';
 import '../../ui_helpers.dart';
 import 'card_name_editable.dart';
 import 'card_text_style.dart';
@@ -24,7 +23,11 @@ class CreditCardMini extends StatelessWidget {
         return AlertDialog(
           title: Text(tr('card_theme_select')),
           content: SizedBox(
-              width: double.maxFinite, child: CardThemeSelector(card: card)),
+              width: double.maxFinite,
+              child: CardThemeSelector(
+                  card: card,
+                  onTap: (CreditCardTheme theme) =>
+                      SharedPreferencesHelper().setTheme(theme: theme))),
         );
       },
     );
@@ -35,7 +38,6 @@ class CreditCardMini extends StatelessWidget {
     const double cardRadius = 10.0;
     final bool bigDevice = bigScreen(context);
     final double cardInternalElPadding = bigDevice ? 5 : 6.0;
-    final int themeIndex = Random().nextInt(10);
     return Padding(
         padding: const EdgeInsets.all(10),
         child: Card(
@@ -59,10 +61,8 @@ class CreditCardMini extends StatelessWidget {
                         begin: Alignment.bottomLeft,
                         end: Alignment.topRight,
                         colors: <Color>[
-                          CreditCardThemes.themes[themeIndex].primaryColor,
-                          CreditCardThemes.themes[themeIndex].secondaryColor,
-                          // card.theme.primaryColor,
-                          // card.theme.secondaryColor,
+                          card.theme.primaryColor,
+                          card.theme.secondaryColor
                         ],
                       ),
                     ),

@@ -11,7 +11,7 @@ import '../../data/models/credit_card_themes.dart';
 import '../../data/models/theme_cubit.dart';
 import '../../g1/currency.dart';
 import '../../g1/g1_helper.dart';
-import '../../shared_prefs.dart';
+import '../../shared_prefs_helper.dart';
 import '../tutorial.dart';
 import '../tutorial_keys.dart';
 import '../ui_helpers.dart';

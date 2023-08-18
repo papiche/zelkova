@@ -13,7 +13,7 @@ import 'package:universal_html/html.dart' as html;
 
 import '../../../data/models/transaction_cubit.dart';
 import '../../../g1/g1_helper.dart';
-import '../../../shared_prefs.dart';
+import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
 import '../../ui_helpers.dart';
 import '../custom_error_widget.dart';

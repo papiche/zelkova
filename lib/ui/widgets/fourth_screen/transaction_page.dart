@@ -17,7 +17,7 @@ import '../../../data/models/transaction_cubit.dart';
 import '../../../data/models/transaction_state.dart';
 import '../../../data/models/transactions_bloc.dart';
 import '../../../g1/currency.dart';
-import '../../../shared_prefs.dart';
+import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
 import '../../tutorial.dart';
 import '../../tutorial_keys.dart';

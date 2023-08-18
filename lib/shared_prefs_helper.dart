@@ -85,9 +85,9 @@ class SharedPreferencesHelper {
   }
 
   // Get the wallet from the specified index (default to first wallet)
-  Future<CesiumWallet> getWallet({int index = 0}) async {
-    if (cesiumCards.isNotEmpty && index < cesiumCards.length) {
-      final CesiumCard card = cesiumCards[index];
+  Future<CesiumWallet> getWallet() async {
+    if (cesiumCards.isNotEmpty) {
+      final CesiumCard card = cesiumCards[getCurrentWalletIndex()];
       return CesiumWallet.fromSeed(seedFromString(card.seed));
     } else {
       // Generate a new wallet if no wallets exist
@@ -101,8 +101,8 @@ class SharedPreferencesHelper {
   }
 
   // Get the public key from the specified index (default to first wallet)
-  String getPubKey({int index = 0}) {
-    final CesiumCard card = cesiumCards[index];
+  String getPubKey() {
+    final CesiumCard card = cesiumCards[getCurrentWalletIndex()];
     final String pubKey = card.pubKey;
     final String checksum = pkChecksum(pubKey);
     return '$pubKey:$checksum';
@@ -113,9 +113,20 @@ class SharedPreferencesHelper {
     return card.name;
   }
 
-  void setName({int index = 0, required String name}) {
-    final CesiumCard card = cesiumCards[index];
-    cesiumCards[index] = card.copyWith(name: name);
+  CreditCardTheme getTheme() {
+    final CesiumCard card = cesiumCards[getCurrentWalletIndex()];
+    return card.theme;
+  }
+
+  void setName({required String name}) {
+    final CesiumCard card = cesiumCards[getCurrentWalletIndex()];
+    cesiumCards[getCurrentWalletIndex()] = card.copyWith(name: name);
+    saveCesiumCards();
+  }
+
+  void setTheme({required CreditCardTheme theme}) {
+    final CesiumCard card = cesiumCards[getCurrentWalletIndex()];
+    cesiumCards[getCurrentWalletIndex()] = card.copyWith(theme: theme);
     saveCesiumCards();
   }
 
@@ -136,18 +147,10 @@ class SharedPreferencesHelper {
   // Select the current wallet and save its index in shared preferences
   Future<void> selectCurrentWallet(int index) async {
     if (index < cesiumCards.length) {
-      final CesiumCard card = cesiumCards[index];
       await setCurrentWalletIndex(index);
-      logger('Selected wallet: ${card.pubKey}');
     } else {
       logger('Invalid wallet index: $index');
     }
-  }
-
-  // Get the currently selected wallet
-  Future<CesiumWallet> getCurrentWallet() async {
-    final int index = getCurrentWalletIndex();
-    return getWallet(index: index);
   }
 
   @Deprecated('We should remove this in the future when multi-card is enabled')

@@ -15,7 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '../../../g1/g1_helper.dart';
-import '../../../shared_prefs.dart';
+import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
 import '../../ui_helpers.dart';
 import 'pattern_util.dart';
@@ -98,30 +98,29 @@ class _ExportDialogState extends State<ExportDialog> {
     );
   }
 
-  Future<void> _export(String password, BuildContext context,
-      ExportType type) async {
+  Future<void> _export(
+      String password, BuildContext context, ExportType type) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String jsonString = jsonEncode(prefs
         .getKeys()
         .fold<Map<String, dynamic>>(
-        <String, dynamic>{},
+            <String, dynamic>{},
             (Map<String, dynamic> map, String key) =>
-        <String, dynamic>{...map, key: prefs.get(key)}));
+                <String, dynamic>{...map, key: prefs.get(key)}));
     final Map<String, String> jsonData =
-    encryptJsonForExport(jsonString, password);
+        encryptJsonForExport(jsonString, password);
     final String fileJson = jsonEncode(jsonData);
     final List<int> bytes = utf8.encode(fileJson);
 
     switch (type) {
       case ExportType.clipboard:
         FlutterClipboard.copy(fileJson)
-            .then((dynamic value) =>
-            context.replaceSnackbar(
-              content: Text(
-                tr('wallet_copied'),
-                style: const TextStyle(color: Colors.red),
-              ),
-            ));
+            .then((dynamic value) => context.replaceSnackbar(
+                  content: Text(
+                    tr('wallet_copied'),
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                ));
         break;
       case ExportType.file:
         if (kIsWeb) {
@@ -167,15 +166,14 @@ class _ExportDialogState extends State<ExportDialog> {
 
     final html.AnchorElement anchor = html.AnchorElement(href: url);
     anchor.download =
-    'ginkgo-wallet-${simplifyPubKey(
-        SharedPreferencesHelper().getPubKey())}.json';
+        'ginkgo-wallet-${simplifyPubKey(SharedPreferencesHelper().getPubKey())}.json';
     anchor.click();
   }
 
   Future<void> saveFile(List<int> bytes) async {
     try {
       final Directory? externalDirectory =
-      await getAppSpecificExternalFilesDirectory(); // ensureDownloadsDirectoryExists();
+          await getAppSpecificExternalFilesDirectory(); // ensureDownloadsDirectoryExists();
       if (externalDirectory == null) {
         logger('Downloads directory not found');
         return;
@@ -206,8 +204,7 @@ class _ExportDialogState extends State<ExportDialog> {
 
   String walletFileName() {
     final String fileName =
-        'ginkgo-wallet-${simplifyPubKey(
-        SharedPreferencesHelper().getPubKey())}.json';
+        'ginkgo-wallet-${simplifyPubKey(SharedPreferencesHelper().getPubKey())}.json';
     return fileName;
   }
 }

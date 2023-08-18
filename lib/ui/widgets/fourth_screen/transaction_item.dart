@@ -12,23 +12,24 @@ import '../../../data/models/transaction_cubit.dart';
 import '../../../data/models/transaction_state.dart';
 import '../../../data/models/transaction_type.dart';
 import '../../../g1/g1_helper.dart';
-import '../../../shared_prefs.dart';
+import '../../../shared_prefs_helper.dart';
 import '../../contacts_cache.dart';
 import '../../pay_helper.dart';
 import '../../ui_helpers.dart';
 import '../third_screen/contact_form_dialog.dart';
 
 class TransactionListItem extends StatelessWidget {
-  const TransactionListItem({super.key,
-    required this.pubKey,
-    required this.transaction,
-    required this.index,
-    required this.isG1,
-    required this.currentUd,
-    required this.currentSymbol,
-    required this.isCurrencyBefore,
-    this.afterCancel,
-    this.afterRetry});
+  const TransactionListItem(
+      {super.key,
+      required this.pubKey,
+      required this.transaction,
+      required this.index,
+      required this.isG1,
+      required this.currentUd,
+      required this.currentSymbol,
+      required this.isCurrencyBefore,
+      this.afterCancel,
+      this.afterRetry});
 
   final String pubKey;
   final Transaction transaction;
@@ -101,11 +102,11 @@ class TransactionListItem extends StatelessWidget {
     const double txFontSize = 14.0;
 
     return Slidable(
-      // Specify a key if the Slidable is dismissible.
+        // Specify a key if the Slidable is dismissible.
         key: ValueKey<int>(index),
         // The end action pane is the one at the right or the bottom side.
         startActionPane:
-        ActionPane(motion: const ScrollMotion(), children: <SlidableAction>[
+            ActionPane(motion: const ScrollMotion(), children: <SlidableAction>[
           if (transaction.isPending)
             SlidableAction(
               onPressed: (BuildContext c) {
@@ -129,13 +130,11 @@ class TransactionListItem extends StatelessWidget {
             SlidableAction(
               onPressed: (BuildContext c) async {
                 context.read<PaymentCubit>().selectUser(
-                  transaction.to,
-                );
+                      transaction.to,
+                    );
                 context.read<BottomNavCubit>().updateIndex(0);
               },
-              backgroundColor: Theme
-                  .of(context)
-                  .primaryColorDark,
+              backgroundColor: Theme.of(context).primaryColorDark,
               foregroundColor: Colors.white,
               icon: Icons.replay,
               label: tr('pay_again'),
@@ -149,9 +148,7 @@ class TransactionListItem extends StatelessWidget {
                 onPressed: (BuildContext c) async {
                   await _payAgain(context, transaction, true);
                 },
-                backgroundColor: Theme
-                    .of(context)
-                    .primaryColorDark,
+                backgroundColor: Theme.of(context).primaryColorDark,
                 foregroundColor: Colors.white,
                 icon: Icons.replay,
                 label: tr('retry_payment'),
@@ -161,9 +158,7 @@ class TransactionListItem extends StatelessWidget {
                 onPressed: (BuildContext c) async {
                   await _payAgain(context, transaction, true);
                 },
-                backgroundColor: Theme
-                    .of(context)
-                    .primaryColorDark,
+                backgroundColor: Theme.of(context).primaryColorDark,
                 foregroundColor: Colors.white,
                 icon: Icons.replay,
                 label: tr('retry_payment'),
@@ -192,9 +187,7 @@ class TransactionListItem extends StatelessWidget {
                     },
                   );
                 },
-                backgroundColor: Theme
-                    .of(context)
-                    .primaryColor,
+                backgroundColor: Theme.of(context).primaryColor,
                 foregroundColor: Colors.white,
                 icon: Icons.contacts,
                 label: tr('add_contact'),
@@ -210,11 +203,11 @@ class TransactionListItem extends StatelessWidget {
             child: ListTile(
               leading: (icon != null)
                   ? Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 16, 0, 16),
-                  child: Icon(
-                    icon,
-                    color: iconColor,
-                  ))
+                      padding: const EdgeInsets.fromLTRB(10, 16, 0, 16),
+                      child: Icon(
+                        icon,
+                        color: iconColor,
+                      ))
                   : null,
               tileColor: tileColor(index, context),
               title: Row(
@@ -281,7 +274,7 @@ class TransactionListItem extends StatelessWidget {
                           // fontWeight: FontWeight.bold,
                           fontSize: txFontSize,
                           color: transaction.type == TransactionType.received ||
-                              transaction.type == TransactionType.receiving
+                                  transaction.type == TransactionType.receiving
                               ? positiveAmountColor
                               : negativeAmountColor,
                         ),
@@ -308,14 +301,14 @@ class TransactionListItem extends StatelessWidget {
             )));
   }
 
-  Future<void> _payAgain(BuildContext context, Transaction transaction,
-      bool isRetry) async {
+  Future<void> _payAgain(
+      BuildContext context, Transaction transaction, bool isRetry) async {
     final double amount = transaction.amount.abs(); // positive
     await payWithRetry(
         context: context,
         to: transaction.to,
         amount:
-        isG1 ? amount / 100 : ((amount / currentUd) / 100).toPrecision(3),
+            isG1 ? amount / 100 : ((amount / currentUd) / 100).toPrecision(3),
         comment: transaction.comment,
         isG1: isG1,
         currentUd: currentUd,
@@ -325,8 +318,8 @@ class TransactionListItem extends StatelessWidget {
     }
   }
 
-  InlineSpan currencyBalanceWidget(bool isG1, String currentSymbol,
-      double txFontSize) {
+  InlineSpan currencyBalanceWidget(
+      bool isG1, String currentSymbol, double txFontSize) {
     return TextSpan(children: <InlineSpan>[
       TextSpan(
         text: currentSymbol,

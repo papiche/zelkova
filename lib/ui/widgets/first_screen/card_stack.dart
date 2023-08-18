@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../shared_prefs.dart';
+import '../../../shared_prefs_helper.dart';
 import 'credit_card_mini.dart';
 
 class CardStack extends StatefulWidget {
@@ -26,9 +26,13 @@ class _CardStackState extends State<CardStack> {
               top: 50.0 * index,
               child: SizedBox(
                   height: 200,
-                  child: CreditCardMini(
-                      card: SharedPreferencesHelper().cards[index],
-                      settingsVisible: index == walletSize - 1)),
+                  child: GestureDetector(
+                      onTap: () {
+                        SharedPreferencesHelper().setCurrentWalletIndex(index);
+                      },
+                      child: CreditCardMini(
+                          card: SharedPreferencesHelper().cards[index],
+                          settingsVisible: index == walletSize - 1))),
             );
           },
         ),

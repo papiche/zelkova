@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:ginkgo/ui/pay_helper.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:introduction_screen/introduction_screen.dart';
@@ -46,7 +47,6 @@ import 'ui/notification_controller.dart';
 import 'ui/screens/skeleton_screen.dart';
 import 'ui/ui_helpers.dart';
 import 'ui/widgets/connectivity_widget_wrapper_wrapper.dart';
-import 'ui/widgets/first_screen/contact_search_page.dart';
 
 void main() async {
   await NotificationController.initializeLocalNotifications();
@@ -352,12 +352,11 @@ class _GinkgoAppState extends State<GinkgoApp> {
       if (link != null) {
         logger('got link: $link');
         if (parseScannedUri(link) != null) {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return ContactSearchPage(uri: link);
-            },
-          );
+          await onKeyScanned(context, link);
+          if (!mounted) {
+            return;
+          }
+          context.read<BottomNavCubit>().updateIndex(0);
         }
       }
     }, onError: (Object err) {

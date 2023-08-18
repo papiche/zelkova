@@ -1,12 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/models/contact.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/payment_state.dart';
-import '../../../g1/g1_helper.dart';
-import '../../logger.dart';
+import '../../pay_helper.dart';
 import '../../qr_manager.dart';
 
 class PayQrButton extends StatefulWidget {
@@ -19,7 +16,6 @@ class PayQrButton extends StatefulWidget {
 class _PayQrButtonState extends State<PayQrButton> {
   @override
   Widget build(BuildContext context) {
-    final PaymentCubit paymentCubit = context.read<PaymentCubit>();
     return BlocBuilder<PaymentCubit, PaymentState>(
         builder: (BuildContext context, PaymentState state) {
       if (state.contact == null || state.contact!.pubKey.isEmpty) {
@@ -29,7 +25,10 @@ class _PayQrButtonState extends State<PayQrButton> {
             if (scannedKey is String &&
                 scannedKey != null &&
                 scannedKey != '-1') {
-              await _onKeyScanned(scannedKey, paymentCubit);
+              if (!mounted) {
+                return;
+              }
+              await onKeyScanned(context, scannedKey);
               if (!mounted) {
                 return;
               }
@@ -57,28 +56,5 @@ class _PayQrButtonState extends State<PayQrButton> {
         return const Text('');
       }
     });
-  }
-
-  Future<void> _onKeyScanned(
-      String scannedKey, PaymentCubit paymentCubit) async {
-    final PaymentState? pay = parseScannedUri(scannedKey);
-    if (pay != null) {
-      logger('Scanned $pay');
-      final String result = extractPublicKey(pay.contact!.pubKey);
-      final Contact contact = Contact(pubKey: result);
-      final double? currentAmount = paymentCubit.state.amount;
-      paymentCubit.selectUser(contact);
-      if (pay.amount != null) {
-        paymentCubit.selectKeyAmount(contact, pay.amount);
-      } else {
-        paymentCubit.selectKeyAmount(contact, currentAmount);
-      }
-      if (pay.comment != null) {
-        paymentCubit.setComment(pay.comment);
-      }
-    } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(tr('qr_invalid_payment'))));
-    }
   }
 }

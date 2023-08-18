@@ -15,6 +15,7 @@ import '../../../g1/api.dart';
 import '../../../shared_prefs.dart';
 import '../data/models/app_cubit.dart';
 import '../data/models/bottom_nav_cubit.dart';
+import '../data/models/payment_state.dart';
 import '../g1/currency.dart';
 import '../g1/g1_helper.dart';
 import 'contacts_cache.dart';
@@ -174,3 +175,26 @@ void showPayError(BuildContext context, String desc) {
 }
 
 const Duration paymentTimeRange = Duration(minutes: 60);
+
+Future<void> onKeyScanned(BuildContext context, String scannedKey) async {
+  final PaymentState? pay = parseScannedUri(scannedKey);
+  final PaymentCubit paymentCubit = context.read<PaymentCubit>();
+  if (pay != null) {
+    logger('Scanned $pay');
+    final String result = extractPublicKey(pay.contact!.pubKey);
+    final Contact contact = Contact(pubKey: result);
+    final double? currentAmount = paymentCubit.state.amount;
+    paymentCubit.selectUser(contact);
+    if (pay.amount != null) {
+      paymentCubit.selectKeyAmount(contact, pay.amount);
+    } else {
+      paymentCubit.selectKeyAmount(contact, currentAmount);
+    }
+    if (pay.comment != null) {
+      paymentCubit.setComment(pay.comment);
+    }
+  } else {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(tr('qr_invalid_payment'))));
+  }
+}

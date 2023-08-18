@@ -155,4 +155,13 @@ class SharedPreferencesHelper {
     cesiumCards[0] = defCesiumCard;
     saveCesiumCards();
   }
+
+  bool has(String wallet) {
+    for (final CesiumCard card in cesiumCards) {
+      if (card.pubKey == wallet) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

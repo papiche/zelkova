@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import '../../../shared_prefs.dart';
+import '../../../data/models/cesium_card.dart';
+import '../../../data/models/credit_card_themes.dart';
 import '../../ui_helpers.dart';
 import 'card_name_editable.dart';
 import 'card_text_style.dart';
 
 class CreditCardMini extends StatelessWidget {
-  const CreditCardMini({super.key, required this.pubKey});
+  const CreditCardMini({super.key, required this.card});
 
-  final String pubKey;
+  final CesiumCard card;
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +39,10 @@ class CreditCardMini extends StatelessWidget {
                         begin: Alignment.bottomLeft,
                         end: Alignment.topRight,
                         colors: <Color>[
-                          Color(int.parse("${dotenv.env['CARD_COLOR_LEFT']}")),
-                          Color(int.parse("${dotenv.env['CARD_COLOR_RIGHT']}")),
+                          CreditCardThemes.theme3.primaryColor,
+                          CreditCardThemes.theme3.secondaryColor,
+                          // card.theme.primaryColor,
+                          // card.theme.secondaryColor,
                         ],
                       ),
                     ),
@@ -58,18 +60,18 @@ class CreditCardMini extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             // mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: cardInternalElPadding,
-                                      vertical: cardInternalElPadding),
-                                  child: Row(children: <Widget>[
-                                    Expanded(
-                                        child: CardNameText(
-                                      currentText:
-                                          SharedPreferencesHelper().getName(),
-                                      onTap: () {},
-                                    )),
-                                  ])),
+                              if (card.name.isNotEmpty)
+                                Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: cardInternalElPadding,
+                                        vertical: cardInternalElPadding),
+                                    child: Row(children: <Widget>[
+                                      Expanded(
+                                          child: CardNameText(
+                                        currentText: card.name,
+                                        onTap: () {},
+                                      )),
+                                    ])),
                               Padding(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: cardInternalElPadding,
@@ -78,11 +80,11 @@ class CreditCardMini extends StatelessWidget {
                                     GestureDetector(
                                         onTap: () => showQrDialog(
                                             context: context,
-                                            publicKey: pubKey),
+                                            publicKey: card.pubKey),
                                         child: FittedBox(
                                             fit: BoxFit.scaleDown,
                                             child: Text(
-                                              '${pubKey.substring(0, 4)} ${pubKey.substring(4, 8)}',
+                                              '${card.pubKey.substring(0, 4)} ${card.pubKey.substring(4, 8)}',
                                               style: cardTextStyle(context,
                                                   fontSize: 16),
                                             ))),

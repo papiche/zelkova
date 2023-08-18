@@ -19,13 +19,13 @@ class _CardStackState extends State<CardStack> {
       alignment: Alignment.center,
       children: <Widget>[
         ...List<Widget>.generate(
-          1,
+          SharedPreferencesHelper().cesiumCards.length,
           (int index) => Positioned(
             top: 50.0 * index,
             child: SizedBox(
                 height: 200,
                 child: CreditCardMini(
-                    pubKey: SharedPreferencesHelper().getPubKey())),
+                    card: SharedPreferencesHelper().cards[index])),
           ),
         ),
         Positioned(

@@ -6,8 +6,11 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
+import '../../data/models/cesium_card.dart';
+import '../../data/models/credit_card_themes.dart';
 import '../../data/models/theme_cubit.dart';
 import '../../g1/currency.dart';
+import '../../g1/g1_helper.dart';
 import '../../shared_prefs.dart';
 import '../tutorial.dart';
 import '../tutorial_keys.dart';
@@ -253,11 +256,25 @@ class _FifthScreenState extends State<FifthScreen> {
           } else {
             // if (method == 'clipboard') {
             return ImportClipboardDialog(onImport: (String wallet) {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return ImportDialog(wallet: wallet);
-                  });
+              if (validateKey(wallet)) {
+                // It's a pubkey, let's think is a cesium wallet
+                if (!SharedPreferencesHelper().has(wallet)) {
+                  SharedPreferencesHelper().addCesiumCard(CesiumCard(
+                      name: '',
+                      theme: CreditCardThemes.theme2,
+                      pubKey: extractPublicKey(wallet),
+                      seed: CesiumCard.unknown));
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(tr('wallet_already_imported'))));
+                }
+              } else {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return ImportDialog(wallet: wallet);
+                    });
+              }
             });
           }
         },

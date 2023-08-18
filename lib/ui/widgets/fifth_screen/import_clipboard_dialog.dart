@@ -34,7 +34,7 @@ class _ImportClipboardDialogState extends State<ImportClipboardDialog> {
           Text(tr('import_wallet_from_clipboard_desc')),
           TextField(
             controller: _textController,
-            maxLines: 5,
+            maxLines: 3,
             decoration: InputDecoration(hintText: tr('paste_here')),
           ),
           const SizedBox(height: 10),

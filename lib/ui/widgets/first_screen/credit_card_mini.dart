@@ -10,17 +10,12 @@ import '../../ui_helpers.dart';
 import 'card_name_editable.dart';
 import 'card_text_style.dart';
 
-class CreditCardMini extends StatefulWidget {
-  const CreditCardMini({super.key, required this.card});
+class CreditCardMini extends StatelessWidget {
+  const CreditCardMini(
+      {super.key, required this.card, required this.settingsVisible});
 
   final CesiumCard card;
-
-  @override
-  State<CreditCardMini> createState() => _CreditCardMiniState();
-}
-
-class _CreditCardMiniState extends State<CreditCardMini> {
-  bool _showSettingsIcon = false;
+  final bool settingsVisible;
 
   void _showThemeSelector(BuildContext context) {
     showDialog(
@@ -29,8 +24,7 @@ class _CreditCardMiniState extends State<CreditCardMini> {
         return AlertDialog(
           title: Text(tr('card_theme_select')),
           content: SizedBox(
-              width: double.maxFinite,
-              child: CardThemeSelector(card: widget.card)),
+              width: double.maxFinite, child: CardThemeSelector(card: card)),
         );
       },
     );
@@ -79,7 +73,7 @@ class _CreditCardMiniState extends State<CreditCardMini> {
                           top: -10,
                           right: -10,
                           child: Visibility(
-                            visible: true,
+                            visible: settingsVisible,
                             child: FloatingActionButton(
                               backgroundColor: Colors.transparent,
                               elevation: 0,
@@ -100,7 +94,7 @@ class _CreditCardMiniState extends State<CreditCardMini> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             // mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              if (widget.card.name.isNotEmpty)
+                              if (card.name.isNotEmpty)
                                 Padding(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: cardInternalElPadding,
@@ -108,7 +102,7 @@ class _CreditCardMiniState extends State<CreditCardMini> {
                                     child: Row(children: <Widget>[
                                       Expanded(
                                           child: CardNameText(
-                                              currentText: widget.card.name,
+                                              currentText: card.name,
                                               onTap: () {})),
                                     ])),
                               Padding(
@@ -119,11 +113,11 @@ class _CreditCardMiniState extends State<CreditCardMini> {
                                     GestureDetector(
                                         onTap: () => showQrDialog(
                                             context: context,
-                                            publicKey: widget.card.pubKey),
+                                            publicKey: card.pubKey),
                                         child: FittedBox(
                                             fit: BoxFit.scaleDown,
                                             child: Text(
-                                              '$themeIndex ${widget.card.pubKey.substring(0, 4)} ${widget.card.pubKey.substring(4, 8)}',
+                                              '${card.pubKey.substring(0, 4)} ${card.pubKey.substring(4, 8)}',
                                               style: cardTextStyle(context,
                                                   fontSize: 16),
                                             ))),

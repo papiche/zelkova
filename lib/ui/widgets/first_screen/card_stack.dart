@@ -20,13 +20,17 @@ class _CardStackState extends State<CardStack> {
       children: <Widget>[
         ...List<Widget>.generate(
           SharedPreferencesHelper().cesiumCards.length,
-          (int index) => Positioned(
-            top: 50.0 * index,
-            child: SizedBox(
-                height: 200,
-                child: CreditCardMini(
-                    card: SharedPreferencesHelper().cards[index])),
-          ),
+          (int index) {
+            final int walletSize = SharedPreferencesHelper().cesiumCards.length;
+            return Positioned(
+              top: 50.0 * index,
+              child: SizedBox(
+                  height: 200,
+                  child: CreditCardMini(
+                      card: SharedPreferencesHelper().cards[index],
+                      settingsVisible: index == walletSize - 1)),
+            );
+          },
         ),
         Positioned(
             right: 30,

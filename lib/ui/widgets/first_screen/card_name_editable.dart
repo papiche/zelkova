@@ -79,6 +79,8 @@ class _CardNameEditableState extends State<CardNameEditable> {
 
   @override
   Widget build(BuildContext context) {
+    /*   return Consumer<SharedPreferencesHelper>(builder: (BuildContext context,
+        SharedPreferencesHelper prefsHelper, Widget? child) { */
     return FutureBuilder<String>(
         future: _initValue(),
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {

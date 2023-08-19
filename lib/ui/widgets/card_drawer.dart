@@ -57,32 +57,6 @@ class CardDrawer extends StatelessWidget {
                       child: CardStack(),
                     ),
                   ),
-                // Expanded(child: Container()),
-                /* if (!kReleaseMode)
-                  Expanded(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                        ),
-                      ),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: cards.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final CesiumCard card = cards[index];
-                          return InkWell(
-                            onTap: () {
-                              SharedPreferencesHelper()
-                                  .selectCurrentWallet(index);
-                              Navigator.pop(context);
-                            },
-                            child: Text(card.pubKey),
-                          );
-                        },
-                      ),
-                    ),
-                  ), */
                 if (inDevelopment)
                   ListTile(
                     leading: const Icon(Icons.build),

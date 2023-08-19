@@ -11,12 +11,15 @@ import 'package:pattern_lock/pattern_lock.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:universal_html/html.dart' as html;
 
+import '../../../data/models/cesium_card.dart';
+import '../../../data/models/credit_card_themes.dart';
 import '../../../data/models/transaction_cubit.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
 import '../../ui_helpers.dart';
 import '../custom_error_widget.dart';
+import 'import_clipboard_dialog.dart';
 import 'pattern_util.dart';
 
 class ImportDialog extends StatefulWidget {
@@ -270,6 +273,71 @@ class _ImportDialogState extends State<ImportDialog> {
           ],
         );
       },
+    );
+  }
+}
+
+Future<void> showSelectImportMethodDialog(BuildContext context) async {
+  final String? method = await showDialog<String>(
+    context: context,
+    builder: (BuildContext context) => const SelectImportMethodDialog(),
+  );
+  if (method != null) {
+    if (!context.mounted) {
+      return;
+    }
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        if (method == 'file') {
+          return const ImportDialog();
+        } else {
+          // if (method == 'clipboard') {
+          return ImportClipboardDialog(onImport: (String wallet) {
+            if (validateKey(wallet)) {
+              // It's a pubkey, let's think is a cesium wallet
+              if (!SharedPreferencesHelper().has(wallet)) {
+                SharedPreferencesHelper().addCesiumCard(CesiumCard(
+                    name: '',
+                    theme: CreditCardThemes.theme2,
+                    pubKey: extractPublicKey(wallet),
+                    seed: CesiumCard.unknown));
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(tr('wallet_already_imported'))));
+              }
+            } else {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return ImportDialog(wallet: wallet);
+                  });
+            }
+          });
+        }
+      },
+    );
+  }
+}
+
+class SelectImportMethodDialog extends StatelessWidget {
+  const SelectImportMethodDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(tr('select_import_method')),
+      // content: Text(tr('select_import_method_desc')),
+      actions: <Widget>[
+        TextButton.icon(
+            icon: const Icon(Icons.file_present),
+            label: Text(tr('file_import')),
+            onPressed: () => Navigator.of(context).pop('file')),
+        TextButton.icon(
+            icon: const Icon(Icons.content_paste),
+            label: Text(tr('clipboard_import')),
+            onPressed: () => Navigator.of(context).pop('clipboard')),
+      ],
     );
   }
 }

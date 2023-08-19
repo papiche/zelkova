@@ -45,10 +45,7 @@ class CreditCardMini extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.all(10),
         child: GestureDetector(
-            onTap: () {
-              SharedPreferencesHelper().selectCurrentWallet(card);
-              Navigator.pop(context);
-            },
+            onTap: () => onCardTap(context),
             child: Card(
                 elevation: 8.0,
                 shape: RoundedRectangleBorder(
@@ -122,38 +119,49 @@ class CreditCardMini extends StatelessWidget {
                                       width: 100,
                                       height: 100),
                                 )),
-                            Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                // mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  if (card.name.isNotEmpty)
-                                    Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: cardInternalElPadding,
-                                            vertical: cardInternalElPadding),
-                                        child: Row(children: <Widget>[
-                                          Expanded(
-                                              child: CardNameText(
-                                                  currentText: card.name,
-                                                  onTap: () {})),
-                                        ])),
-                                  Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: cardInternalElPadding,
-                                          vertical: cardInternalElPadding),
-                                      child: Row(children: <Widget>[
-                                        FittedBox(
-                                            fit: BoxFit.scaleDown,
-                                            child: Text(
-                                              '${card.pubKey.substring(0, 4)} ${card.pubKey.substring(4, 8)}',
-                                              style: cardTextStyle(context,
-                                                  fontSize: 16),
-                                            )),
-                                      ])),
-                                  if (bigDevice) const SizedBox(height: 6.0),
-                                  const SizedBox(height: 8.0),
-                                ]),
+                            GestureDetector(
+                                onTap: () => onCardTap(context),
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    // mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      if (card.name.isNotEmpty)
+                                        Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal:
+                                                    cardInternalElPadding,
+                                                vertical:
+                                                    cardInternalElPadding),
+                                            child: Row(children: <Widget>[
+                                              Expanded(
+                                                  child: CardNameText(
+                                                      currentText: card.name,
+                                                      onTap: () {})),
+                                            ])),
+                                      Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: cardInternalElPadding,
+                                              vertical: cardInternalElPadding),
+                                          child: Row(children: <Widget>[
+                                            FittedBox(
+                                                fit: BoxFit.scaleDown,
+                                                child: Text(
+                                                  '${card.pubKey.substring(0, 4)} ${card.pubKey.substring(4, 8)}',
+                                                  style: cardTextStyle(context,
+                                                      fontSize: 16),
+                                                )),
+                                          ])),
+                                      if (bigDevice)
+                                        const SizedBox(height: 6.0),
+                                      const SizedBox(height: 8.0),
+                                    ])),
                           ]),
                         ))))));
+  }
+
+  void onCardTap(BuildContext context) {
+    SharedPreferencesHelper().selectCurrentWallet(card);
+    Navigator.pop(context);
   }
 }

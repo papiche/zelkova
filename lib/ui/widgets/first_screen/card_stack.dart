@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../data/models/cesium_card.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
+import '../fifth_screen/import_dialog.dart';
 import 'credit_card_mini.dart';
 
 class CardStack extends StatefulWidget {
@@ -21,9 +22,9 @@ class _CardStackState extends State<CardStack> {
     return Consumer<SharedPreferencesHelper>(builder: (BuildContext context,
         SharedPreferencesHelper prefsHelper, Widget? child) {
       final List<CesiumCard> cards =
-          List<CesiumCard>.from(SharedPreferencesHelper().cesiumCards);
+      List<CesiumCard>.from(SharedPreferencesHelper().cesiumCards);
       final int currentIndex =
-          SharedPreferencesHelper().getCurrentWalletIndex();
+      SharedPreferencesHelper().getCurrentWalletIndex();
       logger('Current wallet index is $currentIndex of ${cards.length}');
       final CesiumCard currentItem = cards.removeAt(currentIndex);
       cards.add(currentItem);
@@ -33,7 +34,7 @@ class _CardStackState extends State<CardStack> {
         children: <Widget>[
           ...List<Widget>.generate(
             walletsSize,
-            (int index) {
+                (int index) {
               return Positioned(
                 top: 50.0 * index,
                 child: SizedBox(
@@ -66,7 +67,10 @@ class _CardStackState extends State<CardStack> {
                   side: const BorderSide(color: Colors.grey, width: 1.0),
                   borderRadius: BorderRadius.circular(20),
                 ), */
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context);
+                    showSelectImportMethodDialog(context);
+                  },
                   child: const Icon(Icons.add),
                 ),
               ))

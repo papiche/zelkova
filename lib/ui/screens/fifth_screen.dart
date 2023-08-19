@@ -7,11 +7,8 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
-import '../../data/models/cesium_card.dart';
-import '../../data/models/credit_card_themes.dart';
 import '../../data/models/theme_cubit.dart';
 import '../../g1/currency.dart';
-import '../../g1/g1_helper.dart';
 import '../../shared_prefs_helper.dart';
 import '../tutorial.dart';
 import '../tutorial_keys.dart';
@@ -22,7 +19,6 @@ import '../widgets/faq.dart';
 import '../widgets/fifth_screen/export_dialog.dart';
 import '../widgets/fifth_screen/fifth_tutorial.dart';
 import '../widgets/fifth_screen/grid_item.dart';
-import '../widgets/fifth_screen/import_clipboard_dialog.dart';
 import '../widgets/fifth_screen/import_dialog.dart';
 import '../widgets/fifth_screen/link_card.dart';
 import '../widgets/fifth_screen/node_info.dart';
@@ -193,9 +189,8 @@ class _FifthScreenState extends State<FifthScreen> {
                             GridItem(
                                 title: 'import_key',
                                 icon: Icons.upload,
-                                onTap: () {
-                                  _showSelectImportMethodDialog();
-                                }),
+                                onTap: () =>
+                                    showSelectImportMethodDialog(context)),
                           ]),
                       SwitchListTile(
                           title: Text(tr('expert_mode')),
@@ -243,49 +238,6 @@ class _FifthScreenState extends State<FifthScreen> {
     });
   }
 
-  Future<void> _showSelectImportMethodDialog() async {
-    final String? method = await showDialog<String>(
-      context: context,
-      builder: (BuildContext context) => const SelectImportMethodDialog(),
-    );
-    if (method != null) {
-      if (!mounted) {
-        return;
-      }
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          if (method == 'file') {
-            return const ImportDialog();
-          } else {
-            // if (method == 'clipboard') {
-            return ImportClipboardDialog(onImport: (String wallet) {
-              if (validateKey(wallet)) {
-                // It's a pubkey, let's think is a cesium wallet
-                if (!SharedPreferencesHelper().has(wallet)) {
-                  SharedPreferencesHelper().addCesiumCard(CesiumCard(
-                      name: '',
-                      theme: CreditCardThemes.theme2,
-                      pubKey: extractPublicKey(wallet),
-                      seed: CesiumCard.unknown));
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(tr('wallet_already_imported'))));
-                }
-              } else {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return ImportDialog(wallet: wallet);
-                    });
-              }
-            });
-          }
-        },
-      );
-    }
-  }
-
   Future<void> _showSelectExportMethodDialog() async {
     final ExportType? method = await showDialog<ExportType>(
       context: context,
@@ -302,28 +254,6 @@ class _FifthScreenState extends State<FifthScreen> {
         },
       );
     }
-  }
-}
-
-class SelectImportMethodDialog extends StatelessWidget {
-  const SelectImportMethodDialog({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(tr('select_import_method')),
-      // content: Text(tr('select_import_method_desc')),
-      actions: <Widget>[
-        TextButton.icon(
-            icon: const Icon(Icons.file_present),
-            label: Text(tr('file_import')),
-            onPressed: () => Navigator.of(context).pop('file')),
-        TextButton.icon(
-            icon: const Icon(Icons.content_paste),
-            label: Text(tr('clipboard_import')),
-            onPressed: () => Navigator.of(context).pop('clipboard')),
-      ],
-    );
   }
 }
 

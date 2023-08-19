@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:durt/durt.dart';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'data/models/cesium_card.dart';
@@ -9,7 +9,7 @@ import 'data/models/credit_card_themes.dart';
 import 'g1/g1_helper.dart';
 import 'ui/logger.dart';
 
-class SharedPreferencesHelper {
+class SharedPreferencesHelper with ChangeNotifier {
   factory SharedPreferencesHelper() {
     return _instance;
   }
@@ -72,6 +72,7 @@ class SharedPreferencesHelper {
 
   void removeCesiumCard(int index) {
     // Don't allow the last card to be removed
+    logger('Removing card at index $index');
     if (cesiumCards.length > 1) {
       cesiumCards.removeAt(index);
       saveCesiumCards();
@@ -82,6 +83,7 @@ class SharedPreferencesHelper {
     final String json =
         jsonEncode(cesiumCards.map((CesiumCard e) => e.toJson()).toList());
     await _prefs.setString('cesiumCards', json);
+    notifyListeners();
   }
 
   // Get the wallet from the specified index (default to first wallet)
@@ -142,10 +144,17 @@ class SharedPreferencesHelper {
   // Set the current wallet index in shared preferences
   Future<void> setCurrentWalletIndex(int index) async {
     await _prefs.setInt(_currentWalletIndexKey, index);
+    notifyListeners();
+  }
+
+  Future<void> selectCurrentWallet(CesiumCard card) async {
+    final int index = cards.indexOf(card);
+    await _prefs.setInt(_currentWalletIndexKey, index);
+    notifyListeners();
   }
 
   // Select the current wallet and save its index in shared preferences
-  Future<void> selectCurrentWallet(int index) async {
+  Future<void> selectCurrentWalletIndex(int index) async {
     if (index < cesiumCards.length) {
       await setCurrentWalletIndex(index);
     } else {

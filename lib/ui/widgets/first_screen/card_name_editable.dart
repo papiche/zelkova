@@ -40,15 +40,17 @@ class _CardNameEditableState extends State<CardNameEditable> {
         String? name = await getCesiumPlusUser(pubKey);
         logger(
             'currentText: $currentText, localUsername: $localUsername, _previousValue: $_previousValue, retrieved_name: $name');
-        if (name != null) {
-          name = name.replaceAll(userNameSuffix, '');
-          _controller.text = name;
-          currentText = name;
-          SharedPreferencesHelper().setName(name: name);
-        } else {
-          _controller.text = '';
-          currentText = defValue;
-          SharedPreferencesHelper().setName(name: '');
+        if (localUsername != name) {
+          if (name != null) {
+            name = name.replaceAll(userNameSuffix, '');
+            _controller.text = name;
+            currentText = name;
+            SharedPreferencesHelper().setName(name: name);
+          } else {
+            _controller.text = '';
+            currentText = defValue;
+            SharedPreferencesHelper().setName(name: '');
+          }
         }
       } catch (e) {
         logger(e);

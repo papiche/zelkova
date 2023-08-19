@@ -16,6 +16,7 @@ import 'package:introduction_screen/introduction_screen.dart';
 import 'package:lehttp_overrides/lehttp_overrides.dart';
 import 'package:once/once.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:pwa_install/pwa_install.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:responsive_framework/utils/scroll_behavior.dart';
@@ -72,7 +73,9 @@ void main() async {
 
   final SharedPreferencesHelper shared = SharedPreferencesHelper();
   await shared.init();
-  await shared.getWallet();
+  if (shared.cesiumCards.isEmpty) {
+    await shared.getWallet();
+  }
   assert(shared.getPubKey() != null);
 
   await Hive.initFlutter();
@@ -105,8 +108,9 @@ void main() async {
 
   Bloc.observer = AppBlocObserver();
 
-  void appRunner() => runApp(
-        EasyLocalization(
+  void appRunner() => runApp(ChangeNotifierProvider<SharedPreferencesHelper>(
+        create: (BuildContext context) => SharedPreferencesHelper(),
+        child: EasyLocalization(
           path: 'assets/translations',
           supportedLocales: const <Locale>[
             // Asturian is not supported in flutter
@@ -145,7 +149,7 @@ void main() async {
             // Add other BlocProviders here if needed
           ], child: const GinkgoApp()),
         ),
-      );
+      ));
 
   if (kReleaseMode) {
     // Only use sentry in production

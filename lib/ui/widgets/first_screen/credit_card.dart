@@ -13,6 +13,7 @@ class CreditCard extends StatelessWidget {
   CreditCard({super.key});
 
   final String publicKey = SharedPreferencesHelper().getPubKey();
+  final String cardName = SharedPreferencesHelper().getName();
 
   @override
   Widget build(BuildContext context) {

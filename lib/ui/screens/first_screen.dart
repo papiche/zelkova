@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:web_browser_detect/web_browser_detect.dart';
 
 import '../../data/models/app_cubit.dart';
@@ -10,6 +11,7 @@ import '../../data/models/bottom_nav_cubit.dart';
 import '../../data/models/payment_cubit.dart';
 import '../../data/models/payment_state.dart';
 import '../../data/models/transaction_cubit.dart';
+import '../../shared_prefs_helper.dart';
 import '../tutorial.dart';
 import '../tutorial_keys.dart';
 import '../widgets/bottom_widget.dart';
@@ -87,61 +89,64 @@ class _FirstScreenState extends State<FirstScreen> {
             paymentStatus == PaymentStatus.isSent) {
           context.read<PaymentCubit>().reset();
         }
-        return BlocBuilder<PaymentCubit, PaymentState>(
-            builder: (BuildContext context, PaymentState state) =>
-                Stack(children: <Widget>[
-                  Scaffold(
-                      appBar: AppBar(
-                        title: Text(tr('credit_card_title')),
-                        actions: <Widget>[
-                          IconButton(
-                            icon: const Icon(Icons.info_outline),
-                            onPressed: () {
-                              tutorial.showTutorial(showAlways: true);
-                            },
-                          ),
-                        ],
-                      ),
-                      drawer: const CardDrawer(),
-                      body: ListView(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          //physics: const AlwaysScrollableScrollPhysics(),
-                          //controller: _controller,
-                          // shrinkWrap: true,
-                          children: <Widget>[
-                            CreditCard(key: creditCardKey),
-                            const SizedBox(height: 8),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 24),
-                              child: Divider(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onBackground
-                                    .withOpacity(.4),
-                              ),
+        return Consumer<SharedPreferencesHelper>(builder: (BuildContext context,
+            SharedPreferencesHelper prefsHelper, Widget? child) {
+          return BlocBuilder<PaymentCubit, PaymentState>(
+              builder: (BuildContext context, PaymentState state) =>
+                  Stack(children: <Widget>[
+                    Scaffold(
+                        appBar: AppBar(
+                          title: Text(tr('credit_card_title')),
+                          actions: <Widget>[
+                            IconButton(
+                              icon: const Icon(Icons.info_outline),
+                              onPressed: () {
+                                tutorial.showTutorial(showAlways: true);
+                              },
                             ),
-                            const SizedBox(height: 10),
-                            Row(children: <Widget>[
-                              Flexible(
-                                  child: PayContactSearchButton(
-                                      key: paySearchUserKey)),
-                              const SizedBox(width: 10),
-                              const PayQrButton()
-                            ]),
-                            const SizedBox(height: 10),
-                            const PayForm(),
-                            const BottomWidget()
-                          ])),
-                  Visibility(
-                    visible: state.status == PaymentStatus.sending,
-                    child: Container(
-                      color: Colors.black.withOpacity(0.5),
-                      child: const Center(
-                        child: CircularProgressIndicator(),
+                          ],
+                        ),
+                        drawer: const CardDrawer(),
+                        body: ListView(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            //physics: const AlwaysScrollableScrollPhysics(),
+                            //controller: _controller,
+                            // shrinkWrap: true,
+                            children: <Widget>[
+                              CreditCard(key: creditCardKey),
+                              const SizedBox(height: 8),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 24),
+                                child: Divider(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground
+                                      .withOpacity(.4),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Row(children: <Widget>[
+                                Flexible(
+                                    child: PayContactSearchButton(
+                                        key: paySearchUserKey)),
+                                const SizedBox(width: 10),
+                                const PayQrButton()
+                              ]),
+                              const SizedBox(height: 10),
+                              const PayForm(),
+                              const BottomWidget()
+                            ])),
+                    Visibility(
+                      visible: state.status == PaymentStatus.sending,
+                      child: Container(
+                        color: Colors.black.withOpacity(0.5),
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
                       ),
-                    ),
-                  )
-                ]));
+                    )
+                  ]));
+        });
       });
 }

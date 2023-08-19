@@ -11,10 +11,14 @@ import 'card_text_style.dart';
 
 class CreditCardMini extends StatelessWidget {
   const CreditCardMini(
-      {super.key, required this.card, required this.settingsVisible});
+      {super.key,
+      required this.card,
+      required this.cardIndex,
+      required this.settingsVisible});
 
   final CesiumCard card;
   final bool settingsVisible;
+  final int cardIndex;
 
   void _showThemeSelector(BuildContext context) {
     showDialog(
@@ -40,92 +44,116 @@ class CreditCardMini extends StatelessWidget {
     final double cardInternalElPadding = bigDevice ? 5 : 6.0;
     return Padding(
         padding: const EdgeInsets.all(10),
-        child: Card(
-            elevation: 8.0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(cardRadius),
-            ),
-            child: AspectRatio(
-                aspectRatio: cardAspectRatio, // Credit cart aspect ratio
-                child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(cardRadius),
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          color: Colors.grey[400]!,
-                          blurRadius: 3.0,
-                          spreadRadius: 1.0,
-                        )
-                      ],
-                      gradient: LinearGradient(
-                        begin: Alignment.bottomLeft,
-                        end: Alignment.topRight,
-                        colors: <Color>[
-                          card.theme.primaryColor,
-                          card.theme.secondaryColor
-                        ],
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Stack(children: <Widget>[
-                        Positioned(
-                          top: -10,
-                          right: -10,
-                          child: Visibility(
-                            visible: settingsVisible,
-                            child: FloatingActionButton(
-                              backgroundColor: Colors.transparent,
-                              elevation: 0,
-                              onPressed: () => _showThemeSelector(context),
-                              child: const Icon(Icons.settings,
-                                  color: Colors.white),
-                            ),
+        child: GestureDetector(
+            onTap: () {
+              SharedPreferencesHelper().selectCurrentWallet(card);
+              Navigator.pop(context);
+            },
+            child: Card(
+                elevation: 8.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(cardRadius),
+                ),
+                child: AspectRatio(
+                    aspectRatio: cardAspectRatio, // Credit cart aspect ratio
+                    child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(cardRadius),
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(
+                              color: Colors.grey[400]!,
+                              blurRadius: 3.0,
+                              spreadRadius: 1.0,
+                            )
+                          ],
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomLeft,
+                            end: Alignment.topRight,
+                            colors: <Color>[
+                              card.theme.primaryColor,
+                              card.theme.secondaryColor
+                            ],
                           ),
                         ),
-                        Padding(
-                            padding: const EdgeInsets.fromLTRB(120, 10, 0, 0),
-                            child: Opacity(
-                              opacity: 0.2,
-                              child: Image.asset('assets/img/gbrevedot_alt.png',
-                                  width: 100, height: 100),
-                            )),
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            // mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              if (card.name.isNotEmpty)
-                                Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: cardInternalElPadding,
-                                        vertical: cardInternalElPadding),
-                                    child: Row(children: <Widget>[
-                                      Expanded(
-                                          child: CardNameText(
-                                              currentText: card.name,
-                                              onTap: () {})),
-                                    ])),
-                              Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: cardInternalElPadding,
-                                      vertical: cardInternalElPadding),
-                                  child: Row(children: <Widget>[
-                                    GestureDetector(
-                                        onTap: () => showQrDialog(
-                                            context: context,
-                                            publicKey: card.pubKey),
-                                        child: FittedBox(
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Stack(children: <Widget>[
+                            if (inDevelopment)
+                              Positioned(
+                                top: 30,
+                                right: -10,
+                                child: Visibility(
+                                  visible: settingsVisible,
+                                  child: FloatingActionButton(
+                                    backgroundColor: Colors.transparent,
+                                    elevation: 0,
+                                    onPressed: () {
+                                      SharedPreferencesHelper()
+                                          .selectCurrentWalletIndex(0);
+                                      SharedPreferencesHelper()
+                                          .removeCesiumCard(cardIndex);
+                                    },
+                                    child: const Icon(Icons.delete,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            Positioned(
+                              top: -10,
+                              right: -10,
+                              child: Visibility(
+                                visible: settingsVisible,
+                                child: FloatingActionButton(
+                                  backgroundColor: Colors.transparent,
+                                  elevation: 0,
+                                  onPressed: () => _showThemeSelector(context),
+                                  child: const Icon(Icons.settings,
+                                      color: Colors.white),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(120, 10, 0, 0),
+                                child: Opacity(
+                                  opacity: 0.2,
+                                  child: Image.asset(
+                                      'assets/img/gbrevedot_alt.png',
+                                      width: 100,
+                                      height: 100),
+                                )),
+                            Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                // mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  if (card.name.isNotEmpty)
+                                    Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: cardInternalElPadding,
+                                            vertical: cardInternalElPadding),
+                                        child: Row(children: <Widget>[
+                                          Expanded(
+                                              child: CardNameText(
+                                                  currentText: card.name,
+                                                  onTap: () {})),
+                                        ])),
+                                  Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: cardInternalElPadding,
+                                          vertical: cardInternalElPadding),
+                                      child: Row(children: <Widget>[
+                                        FittedBox(
                                             fit: BoxFit.scaleDown,
                                             child: Text(
                                               '${card.pubKey.substring(0, 4)} ${card.pubKey.substring(4, 8)}',
                                               style: cardTextStyle(context,
                                                   fontSize: 16),
-                                            ))),
-                                  ])),
-                              if (bigDevice) const SizedBox(height: 6.0),
-                              const SizedBox(height: 8.0),
-                            ]),
-                      ]),
-                    )))));
+                                            )),
+                                      ])),
+                                  if (bigDevice) const SizedBox(height: 6.0),
+                                  const SizedBox(height: 8.0),
+                                ]),
+                          ]),
+                        ))))));
   }
 }

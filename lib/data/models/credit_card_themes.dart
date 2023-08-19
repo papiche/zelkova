@@ -25,7 +25,7 @@ class CreditCardThemes {
     Colors.deepPurple,
   );
   static const CreditCardTheme theme6 =
-      CreditCardTheme(Colors.lightGreen, Colors.green);
+      CreditCardTheme(Colors.blue, Colors.green);
   static const CreditCardTheme theme7 = CreditCardTheme(
     Colors.black54,
     Colors.black,

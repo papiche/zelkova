@@ -47,11 +47,11 @@ class _CardNameEditableState extends State<CardNameEditable> {
             name = name.replaceAll(userNameSuffix, '');
             _controller.text = name;
             currentText = name;
-            // SharedPreferencesHelper().setName(name: name);
+            SharedPreferencesHelper().setName(name: name, notify: false);
           } else {
             _controller.text = '';
             currentText = widget.defValue;
-            // SharedPreferencesHelper().setName(name: '');
+            SharedPreferencesHelper().setName(name: '', notify: false);
           }
         }
       } catch (e) {

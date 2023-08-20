@@ -16,10 +16,8 @@ import '../ui_helpers.dart';
 import 'form_error_widget.dart';
 
 class CesiumAddDialog extends StatefulWidget {
-  const CesiumAddDialog(
-      {super.key, required this.cardName, required this.publicKey});
+  const CesiumAddDialog({super.key, required this.publicKey});
 
-  final String cardName;
   final String publicKey;
 
   @override
@@ -41,17 +39,20 @@ class _CesiumAddDialogState extends State<CesiumAddDialog> {
       builder: (BuildContext context, AsyncSnapshot<Contact> snapshot) {
         if (snapshot.hasData) {
           return showDialog(
-              context, humanizeContact(widget.publicKey, snapshot.data!));
+            context,
+            snapshot.data!,
+          );
         }
-        return showDialog(context, humanizePubKey(widget.publicKey));
+        return showDialog(context, Contact(pubKey: widget.publicKey));
       },
     );
   }
 
-  AlertDialog showDialog(BuildContext context, String name) {
+  AlertDialog showDialog(BuildContext context, Contact contact) {
     return AlertDialog(
-      title: Text(tr('cesium_auth_dialog_title',
-          namedArgs: <String, String>{'key': name})),
+      title: Text(tr('cesium_auth_dialog_title', namedArgs: <String, String>{
+        'key': humanizeContact(widget.publicKey, contact)
+      })),
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
@@ -126,7 +127,7 @@ class _CesiumAddDialogState extends State<CesiumAddDialog> {
                     _feedbackNotifier.value = tr('incorrect_passwords');
                   } else {
                     final CesiumCard card = CesiumCard(
-                        name: widget.cardName,
+                        name: contact.name ?? '',
                         pubKey: extractPublicKey(widget.publicKey),
                         seed: '',
                         theme: CreditCardThemes.themes[Random().nextInt(10)]);

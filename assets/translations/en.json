@@ -208,6 +208,8 @@
   "select_import_method": "Select Import Method",
   "file_import": "Import from File",
   "export": "EXPORT",
+  "clipboard_import": "Import from Clipboard",
+  "clipboard_import_pubkey": "Import from public key",
   "clipboard_export": "Export to Clipboard",
   "select_export_method": "Select Export Method",
   "file_export": "Export to File",

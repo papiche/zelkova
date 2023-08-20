@@ -210,6 +210,7 @@
   "select_import_method": "Selecciona el método de importación",
   "file_import": "Importar desde archivo",
   "clipboard_import": "Importar desde portapapeles",
+  "clipboard_import_pubkey": "Importar desde clave pública",
   "export": "EXPORTAR",
   "clipboard_export": "Exportar al portapapeles",
   "select_export_method": "Selecciona el método de exportación",

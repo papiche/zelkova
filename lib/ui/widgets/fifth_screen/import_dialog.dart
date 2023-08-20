@@ -45,7 +45,7 @@ class _ImportDialogState extends State<ImportDialog> {
               snapshot.data!.isNotEmpty) {
             final String keyEncString = snapshot.data!;
             final Map<String, dynamic> keyJson =
-                jsonDecode(keyEncString) as Map<String, dynamic>;
+            jsonDecode(keyEncString) as Map<String, dynamic>;
             final String keyEncrypted = keyJson['key'] as String;
             // final Uint8List keyBase64 = base64Decode(keyEncrypted);
             return Scaffold(
@@ -74,16 +74,16 @@ class _ImportDialogState extends State<ImportDialog> {
                         try {
                           // try to decrypt
                           final Map<String, dynamic> keys =
-                              decryptJsonForImport(
-                                  keyEncrypted, pattern.join());
+                          decryptJsonForImport(
+                              keyEncrypted, pattern.join());
                           final bool? confirm = await confirmImport(context);
                           if (confirm != null && confirm) {
                             try {
                               final dynamic cesiumCards = keys['cesiumCards'];
                               if (cesiumCards != null) {
                                 final List<dynamic> cesiumCardList =
-                                    jsonDecode(cesiumCards as String)
-                                        as List<dynamic>;
+                                jsonDecode(cesiumCards as String)
+                                as List<dynamic>;
                                 // ignore: avoid_function_literals_in_foreach_calls
                                 cesiumCardList.forEach((dynamic cesiumCard) {
                                   importWalletToSharedPrefs(
@@ -152,9 +152,9 @@ class _ImportDialogState extends State<ImportDialog> {
     final dynamic pub = cesiumCard['pub'];
     SharedPreferencesHelper().addCesiumCard(SharedPreferencesHelper()
         .buildCesiumCard(
-            pubKey:
-                pub != null ? pub as String : cesiumCard['pubKey'] as String,
-            seed: cesiumCard['seed'] as String));
+        pubKey:
+        pub != null ? pub as String : cesiumCard['pubKey'] as String,
+        seed: cesiumCard['seed'] as String));
   }
 
   Future<String> _importWallet(BuildContext context) async {
@@ -212,7 +212,8 @@ class _ImportDialogState extends State<ImportDialog> {
 
   Future<String> _importWalletWeb(BuildContext context) async {
     final Completer<String> completer = Completer<String>();
-    final html.InputElement input = html.InputElement()..type = 'file';
+    final html.InputElement input = html.InputElement()
+      ..type = 'file';
 
     input.multiple = false;
     input.accept = '.json'; // limit file types
@@ -247,7 +248,9 @@ class _ImportDialogState extends State<ImportDialog> {
   }
 
   Future<bool?> confirmImport(BuildContext context) async {
-    final bool hasBalance = context.read<TransactionCubit>().balance > 0;
+    final bool hasBalance = context
+        .read<TransactionCubit>()
+        .balance > 0;
     return showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
@@ -311,14 +314,13 @@ Future<void> showSelectImportMethodDialog(BuildContext context) async {
   }
 }
 
-Future<bool?> showImportCesiumWalletDialog(
-    BuildContext context, String wallet) {
+Future<bool?> showImportCesiumWalletDialog(BuildContext context,
+    String wallet) {
   return showDialog<bool>(
     context: context,
     barrierDismissible: false,
     builder: (BuildContext dialogContext) {
-      return CesiumAddDialog(
-          cardName: humanizePubKey(wallet), publicKey: wallet);
+      return CesiumAddDialog(publicKey: wallet);
     },
   );
 }
@@ -339,6 +341,10 @@ class SelectImportMethodDialog extends StatelessWidget {
         TextButton.icon(
             icon: const Icon(Icons.content_paste),
             label: Text(tr('clipboard_import')),
+            onPressed: () => Navigator.of(context).pop('clipboard')),
+        TextButton.icon(
+            icon: const Icon(Icons.key),
+            label: Text(tr('clipboard_import_pubkey')),
             onPressed: () => Navigator.of(context).pop('clipboard')),
       ],
     );

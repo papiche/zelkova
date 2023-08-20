@@ -81,11 +81,13 @@ class SharedPreferencesHelper with ChangeNotifier {
     }
   }
 
-  Future<void> saveCesiumCards() async {
+  Future<void> saveCesiumCards([bool notify = true]) async {
     final String json =
         jsonEncode(cesiumCards.map((CesiumCard e) => e.toJson()).toList());
     await _prefs.setString('cesiumCards', json);
-    notifyListeners();
+    if (notify) {
+      notifyListeners();
+    }
   }
 
   // Get the wallet from the specified index (default to first wallet)
@@ -126,10 +128,10 @@ class SharedPreferencesHelper with ChangeNotifier {
     return card.theme;
   }
 
-  void setName({required String name}) {
+  void setName({required String name, bool notify = true}) {
     final CesiumCard card = cesiumCards[getCurrentWalletIndex()];
     cesiumCards[getCurrentWalletIndex()] = card.copyWith(name: name);
-    saveCesiumCards();
+    saveCesiumCards(notify);
   }
 
   void setTheme({required CreditCardTheme theme}) {

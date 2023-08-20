@@ -9,7 +9,9 @@ import '../connectivity_widget_wrapper_wrapper.dart';
 import 'card_text_style.dart';
 
 class CardNameEditable extends StatefulWidget {
-  const CardNameEditable({super.key});
+  const CardNameEditable({super.key, required this.defValue});
+
+  final String defValue;
 
   @override
   State<CardNameEditable> createState() => _CardNameEditableState();
@@ -19,16 +21,17 @@ class _CardNameEditableState extends State<CardNameEditable> {
   bool _isEditingText = false;
   final TextEditingController _controller = TextEditingController();
   late String currentText;
-  final String defValue = tr('your_name_here');
 
   final String pubKey = SharedPreferencesHelper().getPubKey();
+  final bool isG1nkgoCard = SharedPreferencesHelper().isG1nkgoCard();
+
   String _previousValue = '';
   bool _isSubmitting = false;
 
   @override
   void initState() {
     final String localUsername = SharedPreferencesHelper().getName();
-    currentText = localUsername.isEmpty ? defValue : localUsername;
+    currentText = localUsername.isEmpty ? widget.defValue : localUsername;
     super.initState();
   }
 
@@ -48,7 +51,7 @@ class _CardNameEditableState extends State<CardNameEditable> {
             SharedPreferencesHelper().setName(name: name);
           } else {
             _controller.text = '';
-            currentText = defValue;
+            currentText = widget.defValue;
             SharedPreferencesHelper().setName(name: '');
           }
         }
@@ -85,78 +88,82 @@ class _CardNameEditableState extends State<CardNameEditable> {
         future: _initValue(),
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           const Color black = Colors.black87;
+
           return _isEditingText
               ? SizedBox(
-                  width: 150.0,
-                  child: SizedBox(
-                      height: 40.0,
-                      child: TextField(
-                        // focusNode: myFocusNode,
-                        style: const TextStyle(color: black),
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 5.0, horizontal: 7.0),
-                          filled: true,
-                          fillColor: Colors.white,
-                          enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
+              width: 150.0,
+              child: SizedBox(
+                  height: 40.0,
+                  child: TextField(
+                    // focusNode: myFocusNode,
+                    style: const TextStyle(color: black),
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 5.0, horizontal: 7.0),
+                      filled: true,
+                      fillColor: Colors.white,
+                      enabledBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey),
+                      ),
+                      focusedBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(width: 2.0),
+                      ),
+                      suffix: const Text('$userNameSuffix  '),
+                      suffixIcon: _isSubmitting
+                          ? const RefreshProgressIndicator()
+                          : Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _isEditingText = false;
+                              });
+                            },
+                            child: const Padding(
+                              padding: EdgeInsets.only(right: 8.0),
+                              child: Icon(Icons.cancel_outlined,
+                                  color: black),
+                            ),
                           ),
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(width: 2.0),
+                          GestureDetector(
+                            onTap: () {
+                              _updateValue(_controller.text);
+                            },
+                            child: const Padding(
+                              padding: EdgeInsets.only(right: 8.0),
+                              child: Icon(Icons.check, color: black),
+                            ),
                           ),
-                          suffix: const Text('$userNameSuffix  '),
-                          suffixIcon: _isSubmitting
-                              ? const RefreshProgressIndicator()
-                              : Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          _isEditingText = false;
-                                        });
-                                      },
-                                      child: const Padding(
-                                        padding: EdgeInsets.only(right: 8.0),
-                                        child: Icon(Icons.cancel_outlined,
-                                            color: black),
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        _updateValue(_controller.text);
-                                      },
-                                      child: const Padding(
-                                        padding: EdgeInsets.only(right: 8.0),
-                                        child: Icon(Icons.check, color: black),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                        ),
-                        cursorColor: black,
-                        onSubmitted: _updateValue,
-                        enabled: !_isSubmitting,
-                        /* onChanged: (String value) {
+                        ],
+                      ),
+                    ),
+                    cursorColor: black,
+                    onSubmitted: _updateValue,
+                    enabled: !_isSubmitting,
+                    /* onChanged: (String value) {
                           if (value.isEmpty) {
                             _deleteValue();
                           }
                         }, */
-                        /*onSubmitted: (String newValue) {
+                    /*onSubmitted: (String newValue) {
                     updateName(newValue);
                   }, */
-                        // maxLength: 15,
-                        autofocus: true,
-                        controller: _controller,
-                      )))
+                    // maxLength: 15,
+                    autofocus: true,
+                    controller: _controller,
+                  )))
               : Tooltip(
-                  message: tr('your_name_here'),
-                  child: CardNameText(
-                      currentText: currentText,
-                      isGinkgoCard: SharedPreferencesHelper().isG1nkgoCard(),
-                      onTap: () => setState(() {
-                            _isEditingText = true;
-                          })));
+              message: widget.defValue,
+              child: CardNameText(
+                  currentText: currentText,
+                  isGinkgoCard: isG1nkgoCard,
+                  onTap: () =>
+                  isG1nkgoCard
+                      ? setState(() {
+                    _isEditingText = true;
+                  })
+                      : null));
         });
   }
 
@@ -178,13 +185,14 @@ class _CardNameEditableState extends State<CardNameEditable> {
       } else {
         setState(() {
           _controller.text = _previousValue;
-          currentText = _previousValue.isEmpty ? defValue : _previousValue;
+          currentText =
+          _previousValue.isEmpty ? widget.defValue : _previousValue;
         });
       }
     } catch (e) {
       setState(() {
         _controller.text = _previousValue;
-        currentText = _previousValue.isEmpty ? defValue : _previousValue;
+        currentText = _previousValue.isEmpty ? widget.defValue : _previousValue;
       });
     }
     setState(() {
@@ -204,12 +212,12 @@ class _CardNameEditableState extends State<CardNameEditable> {
       SharedPreferencesHelper().setName(name: '');
       setState(() {
         _controller.text = '';
-        currentText = defValue;
+        currentText = widget.defValue;
       });
     } catch (e) {
       setState(() {
         _controller.text = _previousValue;
-        currentText = _previousValue.isEmpty ? defValue : _previousValue;
+        currentText = _previousValue.isEmpty ? widget.defValue : _previousValue;
       });
     }
     setState(() {
@@ -229,28 +237,29 @@ class _CardNameEditableState extends State<CardNameEditable> {
 }
 
 class CardNameText extends StatelessWidget {
-  CardNameText(
-      {super.key,
-      required this.currentText,
-      required this.onTap,
-      required this.isGinkgoCard});
+  const CardNameText({super.key,
+    required this.currentText,
+    required this.onTap,
+    required this.isGinkgoCard});
 
   final String currentText;
   final bool isGinkgoCard;
 
-  // Dup above
-  final String defValue = tr('your_name_here');
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
+    // Dup above
+    final String defValue = isGinkgoCard ? tr('your_name_here') : '';
     return InkWell(
       child: RichText(
         // softWrap: true,
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
         text: TextSpan(
-          style: DefaultTextStyle.of(context).style,
+          style: DefaultTextStyle
+              .of(context)
+              .style,
           children: <TextSpan>[
             if (currentText == defValue)
               TextSpan(

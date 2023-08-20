@@ -93,7 +93,12 @@ class CreditCard extends StatelessWidget {
                                   'assets/img/chip.svg',
                                 )),
                             const SizedBox(width: 10.0),
-                            const Expanded(child: CardNameEditable())
+                            Expanded(
+                                child: CardNameEditable(
+                              defValue: SharedPreferencesHelper().isG1nkgoCard()
+                                  ? tr('your_name_here')
+                                  : '',
+                            )),
                           ])),
                       const SizedBox(height: 6.0),
                       Padding(

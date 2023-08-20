@@ -17,14 +17,10 @@ import 'form_error_widget.dart';
 
 class CesiumAddDialog extends StatefulWidget {
   const CesiumAddDialog(
-      {super.key,
-      required this.cardName,
-      required this.publicKey,
-      required this.onAccept});
+      {super.key, required this.cardName, required this.publicKey});
 
   final String cardName;
   final String publicKey;
-  final VoidCallback onAccept;
 
   @override
   State<CesiumAddDialog> createState() => _CesiumAddDialogState();
@@ -107,7 +103,7 @@ class _CesiumAddDialogState extends State<CesiumAddDialog> {
         TextButton(
           child: Text(tr('cancel')),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(false);
           },
         ),
         TextButton(
@@ -134,12 +130,15 @@ class _CesiumAddDialogState extends State<CesiumAddDialog> {
                         pubKey: extractPublicKey(widget.publicKey),
                         seed: '',
                         theme: CreditCardThemes.themes[Random().nextInt(10)]);
-                    SharedPreferencesHelper().addCesiumCard(card);
+                    if (!SharedPreferencesHelper()
+                        .has(extractPublicKey(widget.publicKey))) {
+                      SharedPreferencesHelper().addCesiumCard(card);
+                    }
                     SharedPreferencesHelper().addCesiumVolatileCard(wallet);
                     SharedPreferencesHelper().selectCurrentWallet(card);
                     context.read<BottomNavCubit>().updateIndex(0);
                     _feedbackNotifier.value = '';
-                    Navigator.of(context).pop();
+                    Navigator.of(context).pop(true);
                   }
                 },
           child: _isProcessing

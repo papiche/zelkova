@@ -8,10 +8,12 @@ import '../../../data/models/payment_state.dart';
 import '../../../data/models/theme_cubit.dart';
 import '../../../data/models/transaction_cubit.dart';
 import '../../../g1/currency.dart';
+import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
 import '../../pay_helper.dart';
 import '../../tutorial_keys.dart';
 import '../../ui_helpers.dart';
+import '../fifth_screen/import_dialog.dart';
 import '../form_error_widget.dart';
 import 'g1_textfield.dart';
 
@@ -37,7 +39,7 @@ class _PayFormState extends State<PayForm> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext cp) {
     return BlocBuilder<PaymentCubit, PaymentState>(
         builder: (BuildContext context, PaymentState state) {
       final AppCubit appCubit = context.watch<AppCubit>();
@@ -106,8 +108,28 @@ class _PayFormState extends State<PayForm> {
                             Icons.send,
                             color: sentColor,
                           ),
-                          onPressed:
-                              _onPressed(state, context, currency, currentUd),
+                          onPressed: () async {
+                            bool hasPass = false;
+                            if (!SharedPreferencesHelper().isG1nkgoCard() &&
+                                !SharedPreferencesHelper().hasVolatile()) {
+                              hasPass = await showImportCesiumWalletDialog(
+                                      context,
+                                      SharedPreferencesHelper().getPubKey()) ??
+                                  false;
+                            } else {
+                              hasPass = true;
+                            }
+                            if (hasPass) {
+                              if (mounted) {
+                                final Future<void> Function()? func =
+                                    _onPressed(
+                                        state, context, currency, currentUd);
+                                if (func != null) {
+                                  func();
+                                }
+                              }
+                            }
+                          },
                           splashRadius: 20,
                           splashColor: Colors.white.withOpacity(0.5),
                           highlightColor: Colors.transparent,
@@ -199,7 +221,7 @@ class _PayFormState extends State<PayForm> {
   }
 
   double getBalance(BuildContext context) =>
-      context.watch<TransactionCubit>().balance;
+      context.read<TransactionCubit>().balance;
 }
 
 class RetryException implements Exception {

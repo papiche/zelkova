@@ -168,21 +168,25 @@ class SharedPreferencesHelper with ChangeNotifier {
     }
   }
 
-  bool has(String wallet) {
+  bool has(String pubKey) {
     for (final CesiumCard card in cesiumCards) {
-      if (card.pubKey == wallet) {
+      if (card.pubKey == extractPublicKey(pubKey) || card.pubKey == pubKey) {
         return true;
       }
     }
     return false;
   }
 
+  bool hasVolatile() {
+    return cesiumVolatileCards.containsKey(extractPublicKey(getPubKey()));
+  }
+
   void addCesiumVolatileCard(CesiumWallet cesiumWallet) {
     cesiumVolatileCards[cesiumWallet.pubkey] = cesiumWallet;
   }
 
-  bool isG1nkgoCard([CesiumCard? ocard]) {
-    final CesiumCard card = ocard ?? cesiumCards[getCurrentWalletIndex()];
+  bool isG1nkgoCard([CesiumCard? otherCard]) {
+    final CesiumCard card = otherCard ?? cesiumCards[getCurrentWalletIndex()];
     return card.seed.isNotEmpty;
   }
 }

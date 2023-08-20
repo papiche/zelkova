@@ -154,9 +154,14 @@ class SharedPreferencesHelper with ChangeNotifier {
   }
 
   Future<void> selectCurrentWallet(CesiumCard card) async {
+    // TODO this should be a find with pubkey
     final int index = cards.indexOf(card);
-    await _prefs.setInt(_currentWalletIndexKey, index);
-    notifyListeners();
+    if (index >= 0) {
+      await _prefs.setInt(_currentWalletIndexKey, index);
+      notifyListeners();
+    } else {
+      throw Exception('Invalid wallet index: $index');
+    }
   }
 
   // Select the current wallet and save its index in shared preferences

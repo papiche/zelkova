@@ -133,9 +133,9 @@ class _CesiumAddDialogState extends State<CesiumAddDialog> {
                     if (!SharedPreferencesHelper()
                         .has(extractPublicKey(widget.publicKey))) {
                       SharedPreferencesHelper().addCesiumCard(card);
+                      SharedPreferencesHelper().selectCurrentWallet(card);
                     }
                     SharedPreferencesHelper().addCesiumVolatileCard(wallet);
-                    SharedPreferencesHelper().selectCurrentWallet(card);
                     context.read<BottomNavCubit>().updateIndex(0);
                     _feedbackNotifier.value = '';
                     Navigator.of(context).pop(true);

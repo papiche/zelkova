@@ -179,13 +179,14 @@ class _FifthScreenState extends State<FifthScreen> {
                                   }
                                 },
                               ),
-                            GridItem(
-                                key: exportMainKey,
-                                title: 'export_key',
-                                icon: Icons.download,
-                                onTap: () {
-                                  _showSelectExportMethodDialog();
-                                }),
+                            if (SharedPreferencesHelper().isG1nkgoCard())
+                              GridItem(
+                                  key: exportMainKey,
+                                  title: 'export_key',
+                                  icon: Icons.download,
+                                  onTap: () {
+                                    _showSelectExportMethodDialog();
+                                  }),
                             GridItem(
                                 title: 'import_key',
                                 icon: Icons.upload,

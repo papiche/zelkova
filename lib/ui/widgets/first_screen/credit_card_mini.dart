@@ -5,6 +5,7 @@ import '../../../data/models/cesium_card.dart';
 import '../../../data/models/credit_card_theme_selector.dart';
 import '../../../data/models/credit_card_themes.dart';
 import '../../../shared_prefs_helper.dart';
+import '../../logger.dart';
 import '../../ui_helpers.dart';
 import 'card_name_editable.dart';
 import 'card_text_style.dart';
@@ -90,6 +91,7 @@ class CreditCardMini extends StatelessWidget {
                                             .selectCurrentWalletIndex(0);
                                         SharedPreferencesHelper()
                                             .removeCesiumCard(cardIndex);
+                                        Navigator.pop(context);
                                       },
                                       child: const Icon(Icons.delete,
                                           color: Colors.white),
@@ -120,53 +122,47 @@ class CreditCardMini extends StatelessWidget {
                                       width: 100,
                                       height: 100),
                                 )),
-                            GestureDetector(
-                                onTap: () => onCardTap(context),
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    // mainAxisAlignment: MainAxisAlignment.start,
-                                    children: <Widget>[
-                                      if (card.name.isNotEmpty)
-                                        Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal:
-                                                    cardInternalElPadding,
-                                                vertical:
-                                                    cardInternalElPadding),
-                                            child: Row(children: <Widget>[
-                                              Expanded(
-                                                child: CardNameText(
-                                                    currentText: card.name,
-                                                    onTap: () {},
-                                                    isGinkgoCard:
-                                                        SharedPreferencesHelper()
-                                                            .isG1nkgoCard(
-                                                                card)),
-                                              ),
-                                            ])),
-                                      Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: cardInternalElPadding,
-                                              vertical: cardInternalElPadding),
-                                          child: Row(children: <Widget>[
-                                            FittedBox(
-                                                fit: BoxFit.scaleDown,
-                                                child: Text(
-                                                  '${card.pubKey.substring(0, 4)} ${card.pubKey.substring(4, 8)}',
-                                                  style: cardTextStyle(context,
-                                                      fontSize: 16),
-                                                )),
-                                          ])),
-                                      if (bigDevice)
-                                        const SizedBox(height: 6.0),
-                                      const SizedBox(height: 8.0),
-                                    ])),
+                            Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                // mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  if (card.name.isNotEmpty)
+                                    Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: cardInternalElPadding,
+                                            vertical: cardInternalElPadding),
+                                        child: Row(children: <Widget>[
+                                          Expanded(
+                                            child: CardNameText(
+                                                currentText: card.name,
+                                                onTap: null,
+                                                isGinkgoCard:
+                                                    SharedPreferencesHelper()
+                                                        .isG1nkgoCard(card)),
+                                          ),
+                                        ])),
+                                  Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: cardInternalElPadding,
+                                          vertical: cardInternalElPadding),
+                                      child: Row(children: <Widget>[
+                                        FittedBox(
+                                            fit: BoxFit.scaleDown,
+                                            child: Text(
+                                              '${card.pubKey.substring(0, 4)} ${card.pubKey.substring(4, 8)}',
+                                              style: cardTextStyle(context,
+                                                  fontSize: 16),
+                                            )),
+                                      ])),
+                                  if (bigDevice) const SizedBox(height: 6.0),
+                                  const SizedBox(height: 8.0),
+                                ]),
                           ]),
                         ))))));
   }
 
   void onCardTap(BuildContext context) {
+    logger('Card ${card.name} was tapped!');
     SharedPreferencesHelper().selectCurrentWallet(card);
     Navigator.pop(context);
   }

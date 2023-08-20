@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../g1/api.dart';
 import '../../../shared_prefs_helper.dart';
@@ -32,8 +33,11 @@ class _CardNameEditableState extends State<CardNameEditable> {
   void initState() {
     final String localUsername = SharedPreferencesHelper().getName();
     currentText = localUsername.isEmpty ? widget.defValue : localUsername;
+    initialValue = _initValue();
     super.initState();
   }
+
+  late Future<String> initialValue;
 
   Future<String> _initValue() async {
     final String localUsername = SharedPreferencesHelper().getName();
@@ -82,89 +86,89 @@ class _CardNameEditableState extends State<CardNameEditable> {
 
   @override
   Widget build(BuildContext context) {
-    /*   return Consumer<SharedPreferencesHelper>(builder: (BuildContext context,
-        SharedPreferencesHelper prefsHelper, Widget? child) { */
-    return FutureBuilder<String>(
-        future: _initValue(),
-        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-          const Color black = Colors.black87;
-
-          return _isEditingText
-              ? SizedBox(
-              width: 150.0,
-              child: SizedBox(
-                  height: 40.0,
-                  child: TextField(
-                    // focusNode: myFocusNode,
-                    style: const TextStyle(color: black),
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 5.0, horizontal: 7.0),
-                      filled: true,
-                      fillColor: Colors.white,
-                      enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey),
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(width: 2.0),
-                      ),
-                      suffix: const Text('$userNameSuffix  '),
-                      suffixIcon: _isSubmitting
-                          ? const RefreshProgressIndicator()
-                          : Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _isEditingText = false;
-                              });
-                            },
-                            child: const Padding(
-                              padding: EdgeInsets.only(right: 8.0),
-                              child: Icon(Icons.cancel_outlined,
-                                  color: black),
+    return Consumer<SharedPreferencesHelper>(builder: (BuildContext context,
+        SharedPreferencesHelper prefsHelper, Widget? child) {
+      return FutureBuilder<String>(
+          future: initialValue,
+          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+            const Color black = Colors.black87;
+            return _isEditingText
+                ? SizedBox(
+                width: 150.0,
+                child: SizedBox(
+                    height: 40.0,
+                    child: TextField(
+                      // focusNode: myFocusNode,
+                      style: const TextStyle(color: black),
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 5.0, horizontal: 7.0),
+                        filled: true,
+                        fillColor: Colors.white,
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey),
+                        ),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(width: 2.0),
+                        ),
+                        suffix: const Text('$userNameSuffix  '),
+                        suffixIcon: _isSubmitting
+                            ? const RefreshProgressIndicator()
+                            : Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _isEditingText = false;
+                                });
+                              },
+                              child: const Padding(
+                                padding: EdgeInsets.only(right: 8.0),
+                                child: Icon(Icons.cancel_outlined,
+                                    color: black),
+                              ),
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              _updateValue(_controller.text);
-                            },
-                            child: const Padding(
-                              padding: EdgeInsets.only(right: 8.0),
-                              child: Icon(Icons.check, color: black),
+                            GestureDetector(
+                              onTap: () {
+                                _updateValue(_controller.text);
+                              },
+                              child: const Padding(
+                                padding: EdgeInsets.only(right: 8.0),
+                                child: Icon(Icons.check, color: black),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    cursorColor: black,
-                    onSubmitted: _updateValue,
-                    enabled: !_isSubmitting,
-                    /* onChanged: (String value) {
+                      cursorColor: black,
+                      onSubmitted: _updateValue,
+                      enabled: !_isSubmitting,
+                      /* onChanged: (String value) {
                           if (value.isEmpty) {
                             _deleteValue();
                           }
                         }, */
-                    /*onSubmitted: (String newValue) {
+                      /*onSubmitted: (String newValue) {
                     updateName(newValue);
                   }, */
-                    // maxLength: 15,
-                    autofocus: true,
-                    controller: _controller,
-                  )))
-              : Tooltip(
-              message: widget.defValue,
-              child: CardNameText(
-                  currentText: currentText,
-                  isGinkgoCard: isG1nkgoCard,
-                  onTap: () =>
-                  isG1nkgoCard
-                      ? setState(() {
-                    _isEditingText = true;
-                  })
-                      : null));
-        });
+                      // maxLength: 15,
+                      autofocus: true,
+                      controller: _controller,
+                    )))
+                : Tooltip(
+                message: widget.defValue,
+                child: CardNameText(
+                    currentText: currentText,
+                    isGinkgoCard: isG1nkgoCard,
+                    onTap: () =>
+                    isG1nkgoCard
+                        ? setState(() {
+                      _isEditingText = true;
+                    })
+                        : null));
+          });
+    });
   }
 
   Future<void> _updateValue(String newValue) async {
@@ -245,13 +249,14 @@ class CardNameText extends StatelessWidget {
   final String currentText;
   final bool isGinkgoCard;
 
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     // Dup above
     final String defValue = isGinkgoCard ? tr('your_name_here') : '';
     return InkWell(
+      onTap: onTap,
       child: RichText(
         // softWrap: true,
         maxLines: 2,
@@ -280,7 +285,6 @@ class CardNameText extends StatelessWidget {
           ],
         ),
       ),
-      onTap: () => onTap(),
     );
   }
 }

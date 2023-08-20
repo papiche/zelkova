@@ -204,8 +204,7 @@
   "copied_to_clipboard": "Copiado al portapapeles",
   "pay_with_nfc_tooltip": "Para recibir un pago, simplemente acerca este dispositivo al otro monedero con NFC activado.",
   "import_wallet_from_clipboard": "Importar monedero desde el portapapeles",
-  "import_wallet_from_clipboard_desc": "Por favor, pega aquí el textod del backup previo de tu monedero",
-  "paste_here": "Pega aquí tu monedero",
+  "import_wallet_from_clipboard_desc": "Pega aquí el texto del backup previo de tu monedero Ğ1nkgo o una clave pública de otro tipo de monederos (como cesium)",
   "paste": "PEGAR",
   "import": "IMPORTAR",
   "select_import_method": "Selecciona el método de importación",
@@ -228,5 +227,10 @@
   "qr_scanner_title": "Escanea un QR Code",
   "display_amounts_du": "Mostrar importes en DU",
   "wallet_already_imported": "Monedero ya importado",
-  "card_theme_select": "Selecciona un tema para tu tarjeta"
+  "card_theme_select": "Selecciona un tema para tu tarjeta",
+  "cesium_auth_dialog_title": "Ingrese la credenciales de {key}",
+  "cesium_secret_phrase": "Frase secreta",
+  "cesium_password": "Contraseña",
+  "accept": "ACEPTAR",
+  "incorrect_passwords": "Incorrect passwords"
 }

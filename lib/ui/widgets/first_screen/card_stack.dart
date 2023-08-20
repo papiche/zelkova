@@ -22,9 +22,9 @@ class _CardStackState extends State<CardStack> {
     return Consumer<SharedPreferencesHelper>(builder: (BuildContext context,
         SharedPreferencesHelper prefsHelper, Widget? child) {
       final List<CesiumCard> cards =
-      List<CesiumCard>.from(SharedPreferencesHelper().cesiumCards);
+          List<CesiumCard>.from(SharedPreferencesHelper().cesiumCards);
       final int currentIndex =
-      SharedPreferencesHelper().getCurrentWalletIndex();
+          SharedPreferencesHelper().getCurrentWalletIndex();
       logger('Current wallet index is $currentIndex of ${cards.length}');
       final CesiumCard currentItem = cards.removeAt(currentIndex);
       cards.add(currentItem);
@@ -34,7 +34,7 @@ class _CardStackState extends State<CardStack> {
         children: <Widget>[
           ...List<Widget>.generate(
             walletsSize,
-                (int index) {
+            (int index) {
               return Positioned(
                 top: 50.0 * index,
                 child: SizedBox(
@@ -68,7 +68,7 @@ class _CardStackState extends State<CardStack> {
                   borderRadius: BorderRadius.circular(20),
                 ), */
                   onPressed: () {
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
                     showSelectImportMethodDialog(context);
                   },
                   child: const Icon(Icons.add),

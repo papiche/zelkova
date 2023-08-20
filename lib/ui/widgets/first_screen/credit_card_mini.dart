@@ -76,25 +76,26 @@ class CreditCardMini extends StatelessWidget {
                           padding: const EdgeInsets.all(10),
                           child: Stack(children: <Widget>[
                             if (inDevelopment)
-                              Positioned(
-                                top: 30,
-                                right: -10,
-                                child: Visibility(
-                                  visible: settingsVisible,
-                                  child: FloatingActionButton(
-                                    backgroundColor: Colors.transparent,
-                                    elevation: 0,
-                                    onPressed: () {
-                                      SharedPreferencesHelper()
-                                          .selectCurrentWalletIndex(0);
-                                      SharedPreferencesHelper()
-                                          .removeCesiumCard(cardIndex);
-                                    },
-                                    child: const Icon(Icons.delete,
-                                        color: Colors.white),
+                              if (!SharedPreferencesHelper().isG1nkgoCard())
+                                Positioned(
+                                  top: 30,
+                                  right: -10,
+                                  child: Visibility(
+                                    visible: settingsVisible,
+                                    child: FloatingActionButton(
+                                      backgroundColor: Colors.transparent,
+                                      elevation: 0,
+                                      onPressed: () {
+                                        SharedPreferencesHelper()
+                                            .selectCurrentWalletIndex(0);
+                                        SharedPreferencesHelper()
+                                            .removeCesiumCard(cardIndex);
+                                      },
+                                      child: const Icon(Icons.delete,
+                                          color: Colors.white),
+                                    ),
                                   ),
                                 ),
-                              ),
                             Positioned(
                               top: -10,
                               right: -10,
@@ -135,9 +136,14 @@ class CreditCardMini extends StatelessWidget {
                                                     cardInternalElPadding),
                                             child: Row(children: <Widget>[
                                               Expanded(
-                                                  child: CardNameText(
-                                                      currentText: card.name,
-                                                      onTap: () {})),
+                                                child: CardNameText(
+                                                    currentText: card.name,
+                                                    onTap: () {},
+                                                    isGinkgoCard:
+                                                        SharedPreferencesHelper()
+                                                            .isG1nkgoCard(
+                                                                card)),
+                                              ),
                                             ])),
                                       Padding(
                                           padding: EdgeInsets.symmetric(

@@ -100,12 +100,6 @@ String? parseHost(String endpointUnParsed) {
   }
 }
 
-bool validateKeyOld(String pubKey) {
-  return RegExp(
-          r'^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{43,44}$')
-      .hasMatch(pubKey);
-}
-
 bool validateKey(String pubKey) {
   final RegExp regex = RegExp(
     r'^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{43,44}(:([123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{3}))?$',

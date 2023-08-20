@@ -8,17 +8,15 @@ part 'cesium_card.g.dart';
 
 @JsonSerializable()
 @CopyWith()
-class CesiumCard
-    implements IsJsonSerializable<CesiumCard> {
-  CesiumCard({required this.seed,
-    required this.pubKey,
-    required this.name,
-    required this.theme});
+class CesiumCard implements IsJsonSerializable<CesiumCard> {
+  CesiumCard(
+      {required this.seed,
+      required this.pubKey,
+      required this.name,
+      required this.theme});
 
   factory CesiumCard.fromJson(Map<String, dynamic> json) =>
       _$CesiumCardFromJson(json);
-
-  static const String unknown = 'unknown';
 
   final String pubKey;
   final String seed;

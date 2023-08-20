@@ -202,8 +202,7 @@
   "copied_to_clipboard": "Copied to clipboard",
   "pay_with_nfc_tooltip": "To receive a payment, simply bring this device close to the other wallet with NFC activated.",
   "import_wallet_from_clipboard": "Import Wallet from Clipboard",
-  "import_wallet_from_clipboard_desc": "Please paste a previously exported wallet text to import it",
-  "paste_here": "Paste here your wallet",
+  "import_wallet_from_clipboard_desc": "Paste a previously exported Ğ1nkgo wallet text or a public key of other type of wallets (like cesium)",
   "paste": "PASTE",
   "import": "IMPORT",
   "select_import_method": "Select Import Method",
@@ -225,5 +224,10 @@
   "qr_scanner_title": "Scan QR Code",
   "display_amounts_du": "Display amounts in DU",
   "wallet_already_imported": "Wallet already imported",
-  "card_theme_select": "Select a theme for your card"
+  "card_theme_select": "Select a theme for your card",
+  "cesium_auth_dialog_title": "Enter your credentials para {key}",
+  "cesium_secret_phrase": "Secret phrase",
+  "cesium_password": "Password",
+  "accept": "ACCEPT",
+  "incorrect_passwords": "Incorrect passwords"
 }

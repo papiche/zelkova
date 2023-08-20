@@ -31,11 +31,11 @@ class _ImportClipboardDialogState extends State<ImportClipboardDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text(tr('import_wallet_from_clipboard_desc')),
           TextField(
             controller: _textController,
             maxLines: 3,
-            decoration: InputDecoration(hintText: tr('paste_here')),
+            decoration: InputDecoration(
+                hintText: tr('import_wallet_from_clipboard_desc')),
           ),
           const SizedBox(height: 10),
           TextButton(

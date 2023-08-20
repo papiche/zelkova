@@ -22,6 +22,8 @@ class SharedPreferencesHelper with ChangeNotifier {
 
   List<CesiumCard> cesiumCards = <CesiumCard>[];
 
+  Map<String, CesiumWallet> cesiumVolatileCards = <String, CesiumWallet>{};
+
   static final SharedPreferencesHelper _instance =
       SharedPreferencesHelper._internal();
 
@@ -54,8 +56,8 @@ class SharedPreferencesHelper with ChangeNotifier {
       final CesiumCard card = buildCesiumCard(seed: seed, pubKey: pubKey);
       addCesiumCard(card);
       // Let's do this later
-      // await _prefs.remove(_seedKey);
-      // await _prefs.remove(_pubKey);
+      await _prefs.remove(_seedKey);
+      await _prefs.remove(_pubKey);
       setCurrentWalletIndex(0);
     }
   }
@@ -90,7 +92,11 @@ class SharedPreferencesHelper with ChangeNotifier {
   Future<CesiumWallet> getWallet() async {
     if (cesiumCards.isNotEmpty) {
       final CesiumCard card = cesiumCards[getCurrentWalletIndex()];
-      return CesiumWallet.fromSeed(seedFromString(card.seed));
+      if (isG1nkgoCard()) {
+        return CesiumWallet.fromSeed(seedFromString(card.seed));
+      } else {
+        return cesiumVolatileCards[extractPublicKey(card.pubKey)]!;
+      }
     } else {
       // Generate a new wallet if no wallets exist
       final Uint8List uS = generateUintSeed();
@@ -106,7 +112,7 @@ class SharedPreferencesHelper with ChangeNotifier {
   String getPubKey() {
     final CesiumCard card = cesiumCards[getCurrentWalletIndex()];
     final String pubKey = card.pubKey;
-    final String checksum = pkChecksum(pubKey);
+    final String checksum = pkChecksum(extractPublicKey(pubKey));
     return '$pubKey:$checksum';
   }
 
@@ -158,14 +164,8 @@ class SharedPreferencesHelper with ChangeNotifier {
     if (index < cesiumCards.length) {
       await setCurrentWalletIndex(index);
     } else {
-      logger('Invalid wallet index: $index');
+      throw Exception('Invalid wallet index: $index');
     }
-  }
-
-  @Deprecated('We should remove this in the future when multi-card is enabled')
-  void setDefaultWallet(CesiumCard defCesiumCard) {
-    cesiumCards[0] = defCesiumCard;
-    saveCesiumCards();
   }
 
   bool has(String wallet) {
@@ -175,5 +175,14 @@ class SharedPreferencesHelper with ChangeNotifier {
       }
     }
     return false;
+  }
+
+  void addCesiumVolatileCard(CesiumWallet cesiumWallet) {
+    cesiumVolatileCards[cesiumWallet.pubkey] = cesiumWallet;
+  }
+
+  bool isG1nkgoCard([CesiumCard? ocard]) {
+    final CesiumCard card = ocard ?? cesiumCards[getCurrentWalletIndex()];
+    return card.seed.isNotEmpty;
   }
 }

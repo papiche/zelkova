@@ -12,6 +12,7 @@ import '../../logger.dart';
 import '../../pay_helper.dart';
 import '../../tutorial_keys.dart';
 import '../../ui_helpers.dart';
+import '../form_error_widget.dart';
 import 'g1_textfield.dart';
 
 class PayForm extends StatefulWidget {
@@ -121,27 +122,7 @@ class _PayFormState extends State<PayForm> {
                 ],
               ),
             ]),
-            const SizedBox(height: 10.0),
-            ValueListenableBuilder<String>(
-              valueListenable: _feedbackNotifier,
-              builder: (BuildContext context, String value, Widget? child) {
-                if (value.isNotEmpty) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      const Icon(Icons.error_outline, color: Colors.red),
-                      const SizedBox(width: 4),
-                      Text(
-                        capitalize(value),
-                        style: const TextStyle(color: Colors.red),
-                      ),
-                    ],
-                  );
-                } else {
-                  return const SizedBox.shrink();
-                }
-              },
-            ),
+            FormErrorWidget(feedbackNotifier: _feedbackNotifier),
           ],
         ),
       );
@@ -156,6 +137,7 @@ class _PayFormState extends State<PayForm> {
     final bool nullAmount = state.amount == null;
     loggerDev(
         'notCanBeSent: $notCanBeSent, notValidComment: $notValidComment, nullAmount: $nullAmount');
+
     return (notCanBeSent ||
             nullAmount ||
             notValidComment ||

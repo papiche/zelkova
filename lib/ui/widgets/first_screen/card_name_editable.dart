@@ -153,6 +153,7 @@ class _CardNameEditableState extends State<CardNameEditable> {
                   message: tr('your_name_here'),
                   child: CardNameText(
                       currentText: currentText,
+                      isGinkgoCard: SharedPreferencesHelper().isG1nkgoCard(),
                       onTap: () => setState(() {
                             _isEditingText = true;
                           })));
@@ -228,9 +229,14 @@ class _CardNameEditableState extends State<CardNameEditable> {
 }
 
 class CardNameText extends StatelessWidget {
-  CardNameText({super.key, required this.currentText, required this.onTap});
+  CardNameText(
+      {super.key,
+      required this.currentText,
+      required this.onTap,
+      required this.isGinkgoCard});
 
   final String currentText;
+  final bool isGinkgoCard;
 
   // Dup above
   final String defValue = tr('your_name_here');
@@ -255,7 +261,9 @@ class CardNameText extends StatelessWidget {
               TextSpan(
                   text: currentText,
                   style: cardTextStyle(context, fontSize: 15)),
-            if (currentText.isNotEmpty && currentText != defValue)
+            if (currentText.isNotEmpty &&
+                currentText != defValue &&
+                isGinkgoCard)
               TextSpan(
                 text: userNameSuffix,
                 style: cardTextStyle(context, fontSize: 12),

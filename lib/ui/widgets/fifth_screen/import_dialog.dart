@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
@@ -18,6 +19,7 @@ import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
 import '../../ui_helpers.dart';
+import '../cesium_auth_dialog.dart';
 import '../custom_error_widget.dart';
 import 'import_clipboard_dialog.dart';
 import 'pattern_util.dart';
@@ -46,7 +48,7 @@ class _ImportDialogState extends State<ImportDialog> {
               snapshot.data!.isNotEmpty) {
             final String keyEncString = snapshot.data!;
             final Map<String, dynamic> keyJson =
-                jsonDecode(keyEncString) as Map<String, dynamic>;
+            jsonDecode(keyEncString) as Map<String, dynamic>;
             final String keyEncrypted = keyJson['key'] as String;
             // final Uint8List keyBase64 = base64Decode(keyEncrypted);
             return Scaffold(
@@ -75,16 +77,16 @@ class _ImportDialogState extends State<ImportDialog> {
                         try {
                           // try to decrypt
                           final Map<String, dynamic> keys =
-                              decryptJsonForImport(
-                                  keyEncrypted, pattern.join());
+                          decryptJsonForImport(
+                              keyEncrypted, pattern.join());
                           final bool? confirm = await confirmImport(context);
                           if (confirm != null && confirm) {
                             try {
                               final dynamic cesiumCards = keys['cesiumCards'];
                               if (cesiumCards != null) {
                                 final List<dynamic> cesiumCardList =
-                                    jsonDecode(cesiumCards as String)
-                                        as List<dynamic>;
+                                jsonDecode(cesiumCards as String)
+                                as List<dynamic>;
                                 // ignore: avoid_function_literals_in_foreach_calls
                                 cesiumCardList.forEach((dynamic cesiumCard) {
                                   importWalletToSharedPrefs(
@@ -151,16 +153,11 @@ class _ImportDialogState extends State<ImportDialog> {
 
   void importWalletToSharedPrefs(Map<String, dynamic> cesiumCard) {
     final dynamic pub = cesiumCard['pub'];
-    SharedPreferencesHelper().setDefaultWallet(SharedPreferencesHelper()
+    SharedPreferencesHelper().addCesiumCard(SharedPreferencesHelper()
         .buildCesiumCard(
-            pubKey:
-                pub != null ? pub as String : cesiumCard['pubKey'] as String,
-            seed: cesiumCard['seed'] as String));
-    /* In the future, with multicards, use this instead
-     SharedPreferencesHelper().addCesiumCard(SharedPreferencesHelper()
-        .buildCesiumCard(
-        pubKey: cesiumCard['pub'] as String,
-        seed: cesiumCard['seed'] as String)); */
+        pubKey:
+        pub != null ? pub as String : cesiumCard['pubKey'] as String,
+        seed: cesiumCard['seed'] as String));
   }
 
   Future<String> _importWallet(BuildContext context) async {
@@ -218,7 +215,8 @@ class _ImportDialogState extends State<ImportDialog> {
 
   Future<String> _importWalletWeb(BuildContext context) async {
     final Completer<String> completer = Completer<String>();
-    final html.InputElement input = html.InputElement()..type = 'file';
+    final html.InputElement input = html.InputElement()
+      ..type = 'file';
 
     input.multiple = false;
     input.accept = '.json'; // limit file types
@@ -253,7 +251,9 @@ class _ImportDialogState extends State<ImportDialog> {
   }
 
   Future<bool?> confirmImport(BuildContext context) async {
-    final bool hasBalance = context.read<TransactionCubit>().balance > 0;
+    final bool hasBalance = context
+        .read<TransactionCubit>()
+        .balance > 0;
     return showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
@@ -296,12 +296,9 @@ Future<void> showSelectImportMethodDialog(BuildContext context) async {
           return ImportClipboardDialog(onImport: (String wallet) {
             if (validateKey(wallet)) {
               // It's a pubkey, let's think is a cesium wallet
+
               if (!SharedPreferencesHelper().has(wallet)) {
-                SharedPreferencesHelper().addCesiumCard(CesiumCard(
-                    name: '',
-                    theme: CreditCardThemes.theme2,
-                    pubKey: extractPublicKey(wallet),
-                    seed: CesiumCard.unknown));
+                showImportCesiumWalletDialog(context, wallet);
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(tr('wallet_already_imported'))));
@@ -318,6 +315,27 @@ Future<void> showSelectImportMethodDialog(BuildContext context) async {
       },
     );
   }
+}
+
+void showImportCesiumWalletDialog(BuildContext context, String wallet) {
+  showDialog<void>(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext dialogContext) {
+      return CesiumAddDialog(
+        onAccept: () {
+          SharedPreferencesHelper().addCesiumCard(CesiumCard(
+              name: '',
+              theme:
+              CreditCardThemes.themes[Random().nextInt(10)],
+              pubKey: extractPublicKey(wallet),
+              seed: ''));
+        },
+        cardName: humanizePubKey(wallet),
+        publicKey: wallet,
+      );
+    },
+  );
 }
 
 class SelectImportMethodDialog extends StatelessWidget {

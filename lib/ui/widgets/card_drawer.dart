@@ -50,13 +50,12 @@ class CardDrawer extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (inDevelopment)
-                  SizedBox(
-                    height: (cards.length * 70) + 50,
-                    child: const Center(
-                      child: CardStack(),
-                    ),
+                SizedBox(
+                  height: (cards.length * 70) + 50,
+                  child: const Center(
+                    child: CardStack(),
                   ),
+                ),
                 if (inDevelopment)
                   ListTile(
                     leading: const Icon(Icons.build),

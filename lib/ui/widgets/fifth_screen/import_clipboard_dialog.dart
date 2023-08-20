@@ -33,7 +33,7 @@ class _ImportClipboardDialogState extends State<ImportClipboardDialog> {
         children: <Widget>[
           TextField(
             controller: _textController,
-            maxLines: 3,
+            maxLines: 4,
             decoration: InputDecoration(
                 hintText: tr('import_wallet_from_clipboard_desc')),
           ),

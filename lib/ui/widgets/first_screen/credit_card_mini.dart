@@ -45,120 +45,124 @@ class CreditCardMini extends StatelessWidget {
     final double cardInternalElPadding = bigDevice ? 5 : 6.0;
     return Padding(
         padding: const EdgeInsets.all(10),
-        child: GestureDetector(
-            onTap: () => onCardTap(context),
-            child: Card(
-                elevation: 8.0,
-                shape: RoundedRectangleBorder(
+        child: settingsVisible
+            ? _buildCard(cardRadius, context, cardInternalElPadding, bigDevice)
+            : GestureDetector(
+                onTap: () => onCardTap(context),
+                child: _buildCard(
+                    cardRadius, context, cardInternalElPadding, bigDevice)));
+  }
+
+  Card _buildCard(double cardRadius, BuildContext context,
+      double cardInternalElPadding, bool bigDevice) {
+    return Card(
+        elevation: 8.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(cardRadius),
+        ),
+        child: AspectRatio(
+            aspectRatio: cardAspectRatio,
+            // Credit cart aspect ratio
+            child: Container(
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(cardRadius),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                      color: Colors.grey[400]!,
+                      blurRadius: 3.0,
+                      spreadRadius: 1.0,
+                    )
+                  ],
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    colors: <Color>[
+                      card.theme.primaryColor,
+                      card.theme.secondaryColor
+                    ],
+                  ),
                 ),
-                child: AspectRatio(
-                    aspectRatio: cardAspectRatio, // Credit cart aspect ratio
-                    child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(cardRadius),
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                              color: Colors.grey[400]!,
-                              blurRadius: 3.0,
-                              spreadRadius: 1.0,
-                            )
-                          ],
-                          gradient: LinearGradient(
-                            begin: Alignment.bottomLeft,
-                            end: Alignment.topRight,
-                            colors: <Color>[
-                              card.theme.primaryColor,
-                              card.theme.secondaryColor
-                            ],
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Stack(children: <Widget>[
+                    if (inDevelopment)
+                      if (!SharedPreferencesHelper().isG1nkgoCard())
+                        Positioned(
+                          top: 60,
+                          right: 0,
+                          child: Visibility(
+                            visible: settingsVisible,
+                            child: FloatingActionButton(
+                              backgroundColor: Colors.transparent,
+                              elevation: 1,
+                              onPressed: () {
+                                SharedPreferencesHelper()
+                                    .selectCurrentWalletIndex(0);
+                                SharedPreferencesHelper()
+                                    .removeCesiumCard(cardIndex);
+                                Navigator.pop(context);
+                              },
+                              child:
+                                  const Icon(Icons.delete, color: Colors.white),
+                            ),
                           ),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Stack(children: <Widget>[
-                            if (inDevelopment)
-                              if (!SharedPreferencesHelper().isG1nkgoCard())
-                                Positioned(
-                                  top: 30,
-                                  right: -10,
-                                  child: Visibility(
-                                    visible: settingsVisible,
-                                    child: FloatingActionButton(
-                                      backgroundColor: Colors.transparent,
-                                      elevation: 0,
-                                      onPressed: () {
-                                        SharedPreferencesHelper()
-                                            .selectCurrentWalletIndex(0);
-                                        SharedPreferencesHelper()
-                                            .removeCesiumCard(cardIndex);
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Icon(Icons.delete,
-                                          color: Colors.white),
-                                    ),
-                                  ),
-                                ),
-                            Positioned(
-                              top: -10,
-                              right: -10,
-                              child: Visibility(
-                                visible: settingsVisible,
-                                child: FloatingActionButton(
-                                  backgroundColor: Colors.transparent,
-                                  elevation: 0,
-                                  onPressed: () => _showThemeSelector(context),
-                                  child: const Icon(Icons.settings,
-                                      color: Colors.white),
-                                ),
-                              ),
-                            ),
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: Visibility(
+                        visible: settingsVisible,
+                        child: FloatingActionButton(
+                          backgroundColor: Colors.transparent,
+                          elevation: 1,
+                          onPressed: () => _showThemeSelector(context),
+                          child:
+                              const Icon(Icons.settings, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.fromLTRB(120, 10, 0, 0),
+                        child: Opacity(
+                          opacity: 0.2,
+                          child: Image.asset('assets/img/gbrevedot_alt.png',
+                              width: 100, height: 100),
+                        )),
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          if (card.name.isNotEmpty)
                             Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(120, 10, 0, 0),
-                                child: Opacity(
-                                  opacity: 0.2,
-                                  child: Image.asset(
-                                      'assets/img/gbrevedot_alt.png',
-                                      width: 100,
-                                      height: 100),
-                                )),
-                            Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                // mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  if (card.name.isNotEmpty)
-                                    Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: cardInternalElPadding,
-                                            vertical: cardInternalElPadding),
-                                        child: Row(children: <Widget>[
-                                          Expanded(
-                                            child: CardNameText(
-                                                currentText: card.name,
-                                                onTap: null,
-                                                isGinkgoCard:
-                                                    SharedPreferencesHelper()
-                                                        .isG1nkgoCard(card)),
-                                          ),
-                                        ])),
-                                  Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: cardInternalElPadding,
-                                          vertical: cardInternalElPadding),
-                                      child: Row(children: <Widget>[
-                                        FittedBox(
-                                            fit: BoxFit.scaleDown,
-                                            child: Text(
-                                              '${card.pubKey.substring(0, 4)} ${card.pubKey.substring(4, 8)}',
-                                              style: cardTextStyle(context,
-                                                  fontSize: 16),
-                                            )),
-                                      ])),
-                                  if (bigDevice) const SizedBox(height: 6.0),
-                                  const SizedBox(height: 8.0),
-                                ]),
-                          ]),
-                        ))))));
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: cardInternalElPadding,
+                                    vertical: cardInternalElPadding),
+                                child: Row(children: <Widget>[
+                                  Expanded(
+                                    child: CardNameText(
+                                        currentText: card.name,
+                                        onTap: null,
+                                        isGinkgoCard: SharedPreferencesHelper()
+                                            .isG1nkgoCard(card)),
+                                  ),
+                                ])),
+                          Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: cardInternalElPadding,
+                                  vertical: cardInternalElPadding),
+                              child: Row(children: <Widget>[
+                                FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      '${card.pubKey.substring(0, 4)} ${card.pubKey.substring(4, 8)}',
+                                      style:
+                                          cardTextStyle(context, fontSize: 16),
+                                    )),
+                              ])),
+                          if (bigDevice) const SizedBox(height: 6.0),
+                          const SizedBox(height: 8.0),
+                        ]),
+                  ]),
+                ))));
   }
 
   void onCardTap(BuildContext context) {

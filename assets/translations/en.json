@@ -227,7 +227,7 @@
   "display_amounts_du": "Display amounts in DU",
   "wallet_already_imported": "Wallet already imported",
   "card_theme_select": "Select a theme for your card",
-  "cesium_auth_dialog_title": "Enter your credentials para {key}",
+  "cesium_auth_dialog_title": "Enter your credentials for {key}",
   "cesium_secret_phrase": "Secret phrase",
   "cesium_password": "Password",
   "accept": "ACCEPT",

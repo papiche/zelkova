@@ -256,7 +256,9 @@ Future<void> _fetchGvaNodes({bool force = false}) async {
   NodeManager().loading = false;
 }
 
-Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type) async {
+Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type,
+    {bool debug = false}) async {
+  logger('Fetching ${type.name} nodes from peers');
   final List<Node> lNodes = <Node>[];
   final String apyType = (type == NodeType.duniter) ? 'BMAS' : 'GVA S';
   // To compare with something...
@@ -292,7 +294,7 @@ Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type) async {
                 try {
                   final NodeCheck nodeCheck = await _pingNode(endpoint, type);
                   final Duration latency = nodeCheck.latency;
-                  logger(
+                  loggerD(debug,
                       'Evaluating node: $endpoint, latency ${latency.inMicroseconds} currentBlock: ${nodeCheck.currentBlock}');
                   final Node node = Node(
                       url: endpoint,
@@ -302,7 +304,8 @@ Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type) async {
                     fastestNode = endpoint;
                     fastestLatency = latency;
                     if (!kReleaseMode) {
-                      logger('Node bloc: Current faster node $fastestNode');
+                      loggerD(
+                          debug, 'Node bloc: Current faster node $fastestNode');
                     }
                     NodeManager().insertNode(type, node);
                     lNodes.insert(0, node);
@@ -319,7 +322,7 @@ Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type) async {
           }
           if (kReleaseMode && lNodes.length >= NodeManager.maxNodes) {
             // In production dont' get too much nodes
-            logger('We have enough ${type.name} nodes for now');
+            loggerD(debug, 'We have enough ${type.name} nodes for now');
             break;
           }
         }
@@ -340,6 +343,12 @@ Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type) async {
     logger('No nodes in list');
   }
   return lNodes;
+}
+
+void loggerD(bool debug, String message) {
+  if (debug) {
+    logger(message);
+  }
 }
 
 Future<List<Node>> _fetchNodes(NodeType type) async {

@@ -73,14 +73,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.5-dev.3"
-  backdrop:
-    dependency: "direct main"
-    description:
-      name: backdrop
-      sha256: "8d1de2db4aca3821bad670c092e3a050bf15aa1dd05ded4d14fdf0a0ae5da9dc"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.9.0"
   barcode_scan2:
     dependency: "direct main"
     description:
@@ -374,7 +366,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: c08320e8336bdcb3e9cdc2ae5e8b418be5cd9e87
+      resolved-ref: c1fb263a8d03c470590b6b234413b221767fdb9d
       url: "https://git.duniter.org/vjrj/durt.git"
     source: git
     version: "0.1.6"
@@ -1660,6 +1652,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  we_slide:
+    dependency: "direct main"
+    description:
+      name: we_slide
+      sha256: b1baea1c5be157f69dc5260cdb63ce80927e0f17ff6dbf4ef8d4b162ae3efcf8
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.4.0"
   web_browser_detect:
     dependency: "direct main"
     description:

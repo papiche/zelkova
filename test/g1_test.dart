@@ -121,6 +121,22 @@ void main() {
       expect(payM.amount, equals(10));
       expect(payM.contact!.pubKey,
           equals('DsEx1pS33vzYZg4MroyBV9hCw98j1gtHEhwiZ5tK7ech'));
+
+      const String uriN =
+          'june://DsEx1pS33vzYZg4MroyBV9hCw98j1gtHEhwiZ5tK7ech?comment=This Is my comment';
+      final PaymentState? payN = parseScannedUri(uriN);
+      expect(payN!.amount == null, equals(true));
+      expect(payN.comment, equals('This Is my comment'));
+      expect(payN.contact!.pubKey,
+          equals('DsEx1pS33vzYZg4MroyBV9hCw98j1gtHEhwiZ5tK7ech'));
+
+      const String uriO =
+          'june://DsEx1pS33vzYZg4MroyBV9hCw98j1gtHEhwiZ5tK7ech:XXX?comment=This Is my comment';
+      final PaymentState? payO = parseScannedUri(uriO);
+      expect(payO!.amount == null, equals(true));
+      expect(payO.comment, equals('This Is my comment'));
+      expect(payO.contact!.pubKey,
+          equals('DsEx1pS33vzYZg4MroyBV9hCw98j1gtHEhwiZ5tK7ech:XXX'));
     }
   });
 

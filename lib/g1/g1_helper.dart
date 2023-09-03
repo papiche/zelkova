@@ -175,6 +175,8 @@ PaymentState? parseScannedUri(String qr) {
       r'(duniter\:key|june\:\/)/(\w+(:\w{3})?)\?(comment=([^&]+))&amount=([\d.,]+)');
   final RegExp regexKeyAmountComment = RegExp(
       r'(duniter\:key|june\:\/)/(\w+(:\w{3})?)\?(amount=([\d.,]+))&comment=([^&]+)');
+  final RegExp regexKeyComment =
+      RegExp(r'(duniter\:key|june\:\/)/(\w+(:\w{3})?)\?comment=([^&]+)');
   final RegExp regexKeyAmount =
       RegExp(r'(duniter\:key|june\:\/)/(\w+(:\w{3})?)\?amount=([\d.,]+)');
   final RegExp regexKey = RegExp(r'(duniter\:key|june\:\/)/(\w+(:\w{3})?)');
@@ -184,6 +186,8 @@ PaymentState? parseScannedUri(String qr) {
 
   final RegExpMatch? matchKeyAmountComment =
       regexKeyAmountComment.firstMatch(qr);
+
+  final RegExpMatch? matchKeyComment = regexKeyComment.firstMatch(qr);
 
   if (matchKeyCommentAmount != null && matchKeyAmountComment == null) {
     final String publicKey = matchKeyCommentAmount.group(2)!;
@@ -207,6 +211,13 @@ PaymentState? parseScannedUri(String qr) {
         contact: Contact(pubKey: publicKey),
         amount: amount,
         comment: comment ?? '');
+  }
+
+  if (matchKeyComment != null) {
+    final String publicKey = matchKeyComment.group(2)!;
+    final String? comment = matchKeyComment.group(4);
+    return PaymentState(
+        contact: Contact(pubKey: publicKey), comment: comment ?? '');
   }
 
   final RegExpMatch? matchKeyAmount = regexKeyAmount.firstMatch(qr);

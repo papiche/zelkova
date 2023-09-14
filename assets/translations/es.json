@@ -215,11 +215,10 @@
   "clipboard_export": "Exportar al portapapeles",
   "select_export_method": "Selecciona el método de exportación",
   "file_export": "Exportar a un archivo",
-  "clipboard_export": "Exportar al portapapeles",
   "share_export": "Exportar vía email/chat/etc.",
   "wallet_copied": "Monedero copiado al portapapeles",
   "link_export": "Exportar vía enlace",
-  "share_export_subject": "Ğ1nkgo Wallet Export",
+  "share_export_subject": "Exportar Monedero Ğ1nkgo",
   "qr_invalid_payment": "Código QR inválido: Información de pago incorrecta",
   "cant_find_qr_contact": "No puedo encontrar el contacto del QR proporcionado",
   "qr_scanner_cancel": "CANCELAR",
@@ -233,5 +232,5 @@
   "cesium_secret_phrase": "Frase secreta",
   "cesium_password": "Contraseña",
   "accept": "ACEPTAR",
-  "incorrect_passwords": "Incorrect passwords"
+  "incorrect_passwords": "Contraseñas incorrectas"
 }

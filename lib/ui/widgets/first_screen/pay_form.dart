@@ -176,7 +176,9 @@ class _PayFormState extends State<PayForm> {
                   comment: state.comment);
             } on RetryException {
               // Here the transactions can be lost, so we must implement some manual retry use
-
+              if (!mounted) {
+                return;
+              }
               await payWithRetry(
                   context: context,
                   to: state.contact!,

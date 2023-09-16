@@ -124,6 +124,9 @@ class _ImportDialogState extends State<ImportDialog> {
                           }
                           Navigator.of(context).pop(true);
                         } catch (e, stacktrace) {
+                          if (!mounted) {
+                            return;
+                          }
                           Navigator.of(context).pop(true);
                           context.replaceSnackbar(
                             content: Text(

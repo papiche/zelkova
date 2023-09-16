@@ -170,7 +170,8 @@ String getQrUri(
   return uri;
 }
 
-PaymentState? parseScannedUri(String qr) {
+PaymentState? parseScannedUri(String qrOrig) {
+  final String qr = Uri.decodeFull(qrOrig);
   final RegExp regexKeyCommentAmount = RegExp(
       r'(duniter\:key|june\:\/)/(\w+(:\w{3})?)\?(comment=([^&]+))&amount=([\d.,]+)');
   final RegExp regexKeyAmountComment = RegExp(
@@ -198,7 +199,7 @@ PaymentState? parseScannedUri(String qr) {
     return PaymentState(
         contact: Contact(pubKey: publicKey),
         amount: amount,
-        comment: comment ?? '');
+        comment: cleanComment(comment));
   }
 
   if (matchKeyAmountComment != null) {
@@ -210,14 +211,14 @@ PaymentState? parseScannedUri(String qr) {
     return PaymentState(
         contact: Contact(pubKey: publicKey),
         amount: amount,
-        comment: comment ?? '');
+        comment: cleanComment(comment));
   }
 
   if (matchKeyComment != null) {
     final String publicKey = matchKeyComment.group(2)!;
     final String? comment = matchKeyComment.group(4);
     return PaymentState(
-        contact: Contact(pubKey: publicKey), comment: comment ?? '');
+        contact: Contact(pubKey: publicKey), comment: cleanComment(comment));
   }
 
   final RegExpMatch? matchKeyAmount = regexKeyAmount.firstMatch(qr);

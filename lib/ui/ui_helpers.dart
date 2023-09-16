@@ -86,9 +86,9 @@ String humanizeFromToPubKey(String publicAddress, String address) {
 }
 
 String humanizeContact(String publicAddress, Contact contact,
-    [bool addKey = false]) {
+    [bool addKey = false, String Function(String s) trf = tr]) {
   if (contact.pubKey == publicAddress) {
-    return tr('your_wallet');
+    return trf('your_wallet');
   } else {
     final String pubKey = humanizePubKey(contact.pubKey);
     final bool titleNotTheSameAsPubKey = contact.title != pubKey;
@@ -232,6 +232,15 @@ Future<Uint8List?> resizeAvatar(Uint8List avatarBase64) async {
 
 final RegExp basicEnglishCharsRegExp =
     RegExp(r'^[ A-Za-z0-9\s.;:!?()\-_;!@&<>%]*$');
+final RegExp basicEnglishCharsRegExpNegative =
+    RegExp(r'[^ A-Za-z0-9\s.;:!?()\-_;!@&<>%]');
+
+String cleanComment(String? comment) {
+  return comment == null
+      ? ''
+      : comment.replaceAllMapped(
+          basicEnglishCharsRegExpNegative, (Match match) => ' ');
+}
 
 void fetchTransactions(BuildContext context) {
   final AppCubit appCubit = context.read<AppCubit>();
@@ -425,7 +434,10 @@ bool isSymbolPlacementBefore(String pattern) {
 String currentLocale(BuildContext context) => context.locale.languageCode;
 
 String? validateDecimal(
-    {required String sep, required String locale, required String? amount}) {
+    {required String sep,
+    required String locale,
+    required String? amount,
+    required String Function(String s) tr}) {
   final NumberFormat format = NumberFormat.decimalPattern(locale);
   if (amount == null || amount.isEmpty || amount.startsWith(sep)) {
     return null;
@@ -436,6 +448,10 @@ String? validateDecimal(
       return tr('enter_a_positive_number');
     }
     final String formattedAmount = format.format(n);
+    if (amount.contains(sep) && amount.endsWith('0')) {
+      // remove trailing zeros in 0.10 == 0.1
+      amount = amount.replaceAll(RegExp(r'0*$'), '');
+    }
     if (formattedAmount != amount) {
       return tr('enter_a_valid_number');
     }

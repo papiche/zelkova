@@ -148,6 +148,7 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
           TextPosition(offset: _controller.text.length));
       value = _controller.text;
     }
-    return validateDecimal(sep: sep, locale: locale, amount: value);
+    return validateDecimal(
+        sep: sep, locale: locale, amount: value, tr: (String s) => tr(s));
   }
 }

@@ -10,6 +10,15 @@ void main() {
     expect(parsedDouble, equals(1234.56));
   });
 
+  test(
+      'localizedParseToDouble parses a localized double zero ended string correctly',
+      () {
+    const String doubleString = '1.234,50';
+    final double parsedDouble =
+        parseToDoubleLocalized(locale: 'es', number: doubleString);
+    expect(parsedDouble, equals(1234.5));
+  });
+
   test('valid and invalid comments', () {
     const List<String> invalidText = <String>['á', '`e', 'ç', 'ñ', ','];
     const List<String> validText = <String>[
@@ -29,59 +38,72 @@ void main() {
           reason: 'Failed $text');
     }
   });
+  String tr(String s) => s;
 
   test('Valid decimal number - en_US', () {
     final String? result =
-        validateDecimal(sep: '.', locale: 'en_US', amount: '123.45');
+        validateDecimal(sep: '.', locale: 'en_US', amount: '123.45', tr: tr);
     expect(result, null);
   });
 
   test('Valid decimal number - es_ES', () {
     final String? result =
-        validateDecimal(sep: ',', locale: 'es_ES', amount: '123,45');
+        validateDecimal(sep: ',', locale: 'es_ES', amount: '123,45', tr: tr);
     expect(result, null);
   });
 
   test('Empty amount - en_US', () {
     final String? result =
-        validateDecimal(sep: '.', locale: 'en_US', amount: '');
+        validateDecimal(sep: '.', locale: 'en_US', amount: '', tr: tr);
     expect(result, null);
   });
 
   test('Amount starts with separator - es_ES', () {
     final String? result =
-        validateDecimal(sep: ',', locale: 'es_ES', amount: ',45');
+        validateDecimal(sep: ',', locale: 'es_ES', amount: ',45', tr: tr);
+    expect(result, null);
+  });
+
+  test('Amount starts with separator - es_ES', () {
+    final String? result =
+        validateDecimal(sep: ',', locale: 'es_ES', amount: ',45', tr: tr);
+    expect(result, null);
+  });
+
+  test('Amount decimal ends with zero - es_ES', () {
+    final String? result =
+        validateDecimal(sep: ',', locale: 'es_ES', amount: '2,40', tr: tr);
     expect(result, null);
   });
 
   test('Negative number - en_US', () {
     final String? result =
-        validateDecimal(sep: '.', locale: 'en_US', amount: '-123.45');
+        validateDecimal(sep: '.', locale: 'en_US', amount: '-123.45', tr: tr);
     expect(result, 'enter_a_positive_number');
   });
 
   test('Invalid number - es_ES', () {
     final String? result =
-        validateDecimal(sep: ',', locale: 'es_ES', amount: '12a,45');
+        validateDecimal(sep: ',', locale: 'es_ES', amount: '12a,45', tr: tr);
     expect(result, 'enter_a_valid_number');
   });
 
   test('Invalid number - es_ES', () {
     final String? result =
-        validateDecimal(sep: ',', locale: 'es_ES', amount: '0.45');
+        validateDecimal(sep: ',', locale: 'es_ES', amount: '0.45', tr: tr);
     expect(result, 'enter_a_valid_number');
   });
 
   test('Invalid number - en', () {
     final String? result =
-        validateDecimal(sep: '.', locale: 'en', amount: '0,45');
+        validateDecimal(sep: '.', locale: 'en', amount: '0,45', tr: tr);
     expect(result, 'enter_a_valid_number');
   });
   group('humanizeContact', () {
     test('Should return "your_wallet" if pubKey matches publicAddress', () {
       const String publicAddress = 'your_public_address';
       const Contact contact = Contact(pubKey: 'your_public_address');
-      final String result = humanizeContact(publicAddress, contact);
+      final String result = humanizeContact(publicAddress, contact, false, tr);
       expect(result, 'your_wallet');
     });
 

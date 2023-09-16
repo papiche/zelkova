@@ -52,8 +52,7 @@ class _PayQrButtonState extends State<PayQrButton> {
           ),
         );
       } else {
-        // TODO put here other thing
-        return const Text('');
+        return Container();
       }
     });
   }

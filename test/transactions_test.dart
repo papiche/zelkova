@@ -9,12 +9,6 @@ import 'package:ginkgo/g1/transaction_parser.dart';
 import 'package:ginkgo/ui/contacts_cache.dart';
 
 void main() {
-  final TransactionState emptyState = TransactionState(
-      transactions: const <Transaction>[],
-      pendingTransactions: const <Transaction>[],
-      balance: 0,
-      lastChecked: DateTime(1970));
-
   setUpAll(() {
     // ContactsCache().init();
   });
@@ -54,7 +48,7 @@ void main() {
     final TransactionState result = await transactionsGvaParser(
         (jsonDecode(txData) as Map<String, dynamic>)['data']
             as Map<String, dynamic>,
-        emptyState);
+        TransactionState.emptyState);
     expect(result.balance, equals(3));
     final List<Transaction> txs = result.transactions;
     for (final Transaction tx in txs) {
@@ -108,7 +102,7 @@ void main() {
     final TransactionState emptyResult = await transactionsGvaParser(
         (jsonDecode(emptyTx) as Map<String, dynamic>)['data']
             as Map<String, dynamic>,
-        emptyState);
+        TransactionState.emptyState);
     expect(emptyResult.balance, equals(0));
     final List<Transaction> emptyTxs = emptyResult.transactions;
     expect(emptyTxs.length, equals(0));

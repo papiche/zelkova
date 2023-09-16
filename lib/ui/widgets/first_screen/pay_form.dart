@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/models/app_cubit.dart';
+import '../../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/payment_state.dart';
 import '../../../data/models/theme_cubit.dart';
-import '../../../data/models/transaction_cubit.dart';
 import '../../../g1/currency.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
@@ -223,7 +223,7 @@ class _PayFormState extends State<PayForm> {
   }
 
   double getBalance(BuildContext context) =>
-      context.read<TransactionCubit>().balance;
+      context.read<MultiWalletTransactionCubit>().balance;
 }
 
 class RetryException implements Exception {

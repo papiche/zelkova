@@ -11,7 +11,7 @@ import 'package:pattern_lock/pattern_lock.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:universal_html/html.dart' as html;
 
-import '../../../data/models/transaction_cubit.dart';
+import '../../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
@@ -250,7 +250,8 @@ class _ImportDialogState extends State<ImportDialog> {
   }
 
   Future<bool?> confirmImport(BuildContext context) async {
-    final bool hasBalance = context.read<TransactionCubit>().balance > 0;
+    final bool hasBalance =
+        context.read<MultiWalletTransactionCubit>().balance > 0;
     return showDialog<bool>(
       context: context,
       builder: (BuildContext context) {

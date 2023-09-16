@@ -6,10 +6,10 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import '../../../data/models/bottom_nav_cubit.dart';
 import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
+import '../../../data/models/multi_wallet_transaction_cubit.dart';
+import '../../../data/models/multi_wallet_transaction_state.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/transaction.dart';
-import '../../../data/models/transaction_cubit.dart';
-import '../../../data/models/transaction_state.dart';
 import '../../../data/models/transaction_type.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
@@ -46,8 +46,10 @@ class TransactionListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // logger('TransactionListItem build');
-    return BlocBuilder<TransactionCubit, TransactionState>(
-        builder: (BuildContext context, TransactionState transBalanceState) =>
+    return BlocBuilder<MultiWalletTransactionCubit,
+            MultiWalletTransactionState>(
+        builder: (BuildContext context,
+                MultiWalletTransactionState transBalanceState) =>
             _buildTransactionItem(context, transaction));
   }
 
@@ -111,7 +113,7 @@ class TransactionListItem extends StatelessWidget {
             SlidableAction(
               onPressed: (BuildContext c) {
                 context
-                    .read<TransactionCubit>()
+                    .read<MultiWalletTransactionCubit>()
                     .removePendingTransaction(transaction);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(

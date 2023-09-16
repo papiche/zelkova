@@ -4,16 +4,17 @@ import 'package:flutter/foundation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:tuple/tuple.dart';
 
-import '../../../g1/api.dart';
-import '../../../g1/transaction_parser.dart';
+import '../../g1/api.dart';
 import '../../g1/currency.dart';
 import '../../g1/g1_helper.dart';
+import '../../g1/transaction_parser.dart';
 import '../../shared_prefs_helper.dart';
 import '../../ui/logger.dart';
 import '../../ui/notification_controller.dart';
 import '../../ui/pay_helper.dart';
 import 'app_cubit.dart';
 import 'contact.dart';
+import 'multi_wallet_transaction_state.dart';
 import 'node.dart';
 import 'node_list_cubit.dart';
 import 'node_type.dart';
@@ -22,44 +23,116 @@ import 'transaction_state.dart';
 import 'transaction_type.dart';
 import 'transactions_bloc.dart';
 
-class TransactionCubitRemove extends HydratedCubit<TransactionState> {
-  TransactionCubitRemove()
-      : super(TransactionState(
-            transactions: const <Transaction>[],
-            pendingTransactions: const <Transaction>[],
-            balance: 0,
-            lastChecked: DateTime.now()));
+class MultiWalletTransactionCubit
+    extends HydratedCubit<MultiWalletTransactionState> {
+  MultiWalletTransactionCubit()
+      : super(const MultiWalletTransactionState(<String, TransactionState>{}));
 
   @override
   String get storagePrefix =>
-      kIsWeb ? 'TransactionsCubit' : super.storagePrefix;
+      kIsWeb ? 'MultiWalletTransactionsCubit' : super.storagePrefix;
 
-  @Deprecated('Use MultiWalletTransactionCubit instead.')
-  void addPendingTransaction(Transaction pendingTransaction) {
-    final TransactionState currentState = state;
+  @override
+  MultiWalletTransactionState fromJson(Map<String, dynamic> json) =>
+      MultiWalletTransactionState.fromJson(json);
+
+  @override
+  Map<String, dynamic> toJson(MultiWalletTransactionState state) =>
+      state.toJson();
+
+  void addPendingTransaction(Transaction pendingTransaction, {String? key}) {
+    key = _defKey(key);
+    final TransactionState currentState = _getStateOfWallet(key);
     final List<Transaction> newPendingTransactions =
         List<Transaction>.of(currentState.pendingTransactions)
           ..add(pendingTransaction);
-    emit(currentState.copyWith(pendingTransactions: newPendingTransactions));
+    final TransactionState newState =
+        currentState.copyWith(pendingTransactions: newPendingTransactions);
+    _emitState(key, newState);
   }
 
-  void removePendingTransaction(Transaction pendingTransaction) {
-    final TransactionState currentState = state;
+  void _emitState(String key, TransactionState newState) {
+    final Map<String, TransactionState> newStates =
+        Map<String, TransactionState>.of(state.map)..[key] = newState;
+    emit(MultiWalletTransactionState(newStates));
+  }
+
+  String _defKey(String? key) {
+    key = key ?? SharedPreferencesHelper().getPubKey();
+    return key;
+  }
+
+  TransactionState _getStateOfWallet(String key) {
+    final TransactionState currentState =
+        state.map[key] ?? TransactionState.emptyState;
+    return currentState;
+  }
+
+  void removePendingTransaction(Transaction pendingTransaction, {String? key}) {
+    key = _defKey(key);
+    final TransactionState currentState = _getStateOfWallet(key);
     final List<Transaction> newPendingTransactions =
         List<Transaction>.of(currentState.pendingTransactions)
           ..remove(pendingTransaction);
-    emit(currentState.copyWith(pendingTransactions: newPendingTransactions));
+    final TransactionState newState =
+        currentState.copyWith(pendingTransactions: newPendingTransactions);
+    _emitState(key, newState);
   }
+
+  void updatePendingTransaction(Transaction tx, {String? key}) {
+    key = _defKey(key);
+    final TransactionState currentState = _getStateOfWallet(key);
+    final List<Transaction> newPendingTransactions = <Transaction>[];
+    for (final Transaction t in currentState.pendingTransactions) {
+      if (tx.from == t.from &&
+          tx.to == t.to &&
+          tx.amount == t.amount &&
+          tx.comment == t.comment) {
+        newPendingTransactions
+            .add(t.copyWith(time: DateTime.now(), type: tx.type));
+      } else {
+        newPendingTransactions.add(t);
+      }
+    }
+    final TransactionState newState =
+        currentState.copyWith(pendingTransactions: newPendingTransactions);
+    _emitState(key, newState);
+  }
+
+  void insertPendingTransaction(Transaction tx, {String? key}) {
+    key = _defKey(key);
+    final TransactionState currentState = _getStateOfWallet(key);
+    final List<Transaction> newPendingTransactions =
+        currentState.pendingTransactions;
+    newPendingTransactions.insert(0, tx);
+    final TransactionState newState =
+        currentState.copyWith(pendingTransactions: newPendingTransactions);
+    _emitState(key, newState);
+  }
+
+  List<Transaction> get transactions => currentWalletState().transactions;
+
+  TransactionState currentWalletState() => _getStateOfWallet(_defKey(null));
+
+  double get balance => currentWalletState().balance;
+
+  DateTime get lastChecked => currentWalletState().lastChecked;
+
+  String _getTxKey(Transaction t) => '${t.to.pubKey}-${t.comment}-${t.amount}';
 
   Future<List<Transaction>> fetchTransactions(
       NodeListCubit cubit, AppCubit appCubit,
-      {int retries = 5, int? pageSize, String? cursor}) async {
+      {int retries = 5,
+      int? pageSize,
+      String? cursor,
+      String? myPubKey}) async {
+    myPubKey = _defKey(myPubKey);
+    final TransactionState currentState = _getStateOfWallet(myPubKey);
     Tuple2<Map<String, dynamic>?, Node> txDataResult;
     bool success = false;
     final bool isG1 = appCubit.currency == Currency.G1;
 
     for (int attempt = 0; attempt < retries; attempt++) {
-      final String myPubKey = SharedPreferencesHelper().getPubKey();
       txDataResult = await gvaHistoryAndBalance(myPubKey, pageSize, cursor);
       final Node node = txDataResult.item2;
       logger(
@@ -74,7 +147,8 @@ class TransactionCubitRemove extends HydratedCubit<TransactionState> {
       }
 
       final Map<String, dynamic> txData = txDataResult.item1!;
-      TransactionState newState = await transactionsGvaParser(txData, state);
+      TransactionState newState =
+          await transactionsGvaParser(txData, currentState);
 
       if (newState.balance < 0) {
         logger('Warning: Negative balance in node ${txDataResult.item2}');
@@ -190,8 +264,8 @@ class TransactionCubitRemove extends HydratedCubit<TransactionState> {
             transactions: newTransactions,
             pendingTransactions: newPendingTransactions.toList());
       }
+      _emitState(myPubKey, newState);
 
-      emit(newState);
       for (final Transaction tx in newState.transactions.reversed) {
         if (tx.type == TransactionType.received &&
             newState.latestReceivedNotification.isBefore(tx.time)) {
@@ -203,7 +277,9 @@ class TransactionCubitRemove extends HydratedCubit<TransactionState> {
               currentUd: appCubit.currentUd,
               from: from.title,
               isG1: isG1);
-          emit(newState.copyWith(latestReceivedNotification: tx.time));
+          final TransactionState notifState =
+              newState.copyWith(latestReceivedNotification: tx.time);
+          _emitState(myPubKey, notifState);
         }
         if (tx.type == TransactionType.sent &&
             newState.latestSentNotification.isBefore(tx.time)) {
@@ -215,7 +291,9 @@ class TransactionCubitRemove extends HydratedCubit<TransactionState> {
               currentUd: appCubit.currentUd,
               to: to.title,
               isG1: isG1);
-          emit(newState.copyWith(latestSentNotification: tx.time));
+          final TransactionState notifState =
+              newState.copyWith(latestSentNotification: tx.time);
+          _emitState(myPubKey, notifState);
         }
       }
       return newState.transactions;
@@ -225,44 +303,5 @@ class TransactionCubitRemove extends HydratedCubit<TransactionState> {
     }
     // This should not be executed
     return <Transaction>[];
-  }
-
-  String _getTxKey(Transaction t) => '${t.to.pubKey}-${t.comment}-${t.amount}';
-
-  @override
-  TransactionState fromJson(Map<String, dynamic> json) =>
-      TransactionState.fromJson(json);
-
-  @override
-  Map<String, dynamic> toJson(TransactionState state) => state.toJson();
-
-  List<Transaction> get transactions => state.transactions;
-
-  double get balance => state.balance;
-
-  DateTime get lastChecked => state.lastChecked;
-
-  void updatePendingTransaction(Transaction tx) {
-    final TransactionState currentState = state;
-    final List<Transaction> newPendingTransactions = <Transaction>[];
-    for (final Transaction t in state.pendingTransactions) {
-      if (tx.from == t.from &&
-          tx.to == t.to &&
-          tx.amount == t.amount &&
-          tx.comment == t.comment) {
-        newPendingTransactions
-            .add(t.copyWith(time: DateTime.now(), type: tx.type));
-      } else {
-        newPendingTransactions.add(t);
-      }
-    }
-    emit(currentState.copyWith(pendingTransactions: newPendingTransactions));
-  }
-
-  void insertPendingTransaction(Transaction tx) {
-    final TransactionState currentState = state;
-    final List<Transaction> newPendingTransactions = state.pendingTransactions;
-    newPendingTransactions.insert(0, tx);
-    emit(currentState.copyWith(pendingTransactions: newPendingTransactions));
   }
 }

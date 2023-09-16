@@ -14,8 +14,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../data/models/app_cubit.dart';
 import '../data/models/contact.dart';
+import '../data/models/multi_wallet_transaction_cubit.dart';
 import '../data/models/node_list_cubit.dart';
-import '../data/models/transaction_cubit.dart';
 import '../g1/api.dart';
 import '../g1/currency.dart';
 import '../shared_prefs_helper.dart';
@@ -244,7 +244,8 @@ String cleanComment(String? comment) {
 
 void fetchTransactions(BuildContext context) {
   final AppCubit appCubit = context.read<AppCubit>();
-  final TransactionCubit transCubit = context.read<TransactionCubit>();
+  final MultiWalletTransactionCubit transCubit =
+      context.read<MultiWalletTransactionCubit>();
   final NodeListCubit nodeListCubit = context.read<NodeListCubit>();
   transCubit.fetchTransactions(nodeListCubit, appCubit);
 }

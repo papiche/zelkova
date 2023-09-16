@@ -31,6 +31,7 @@ import 'data/models/app_cubit.dart';
 import 'data/models/app_state.dart';
 import 'data/models/bottom_nav_cubit.dart';
 import 'data/models/contact_cubit.dart';
+import 'data/models/multi_wallet_transaction_cubit.dart';
 import 'data/models/node_list_cubit.dart';
 import 'data/models/node_list_state.dart';
 import 'data/models/node_manager.dart';
@@ -142,8 +143,12 @@ void main() async {
                 create: (BuildContext context) => NodeListCubit()),
             BlocProvider<ContactsCubit>(
                 create: (BuildContext context) => ContactsCubit()),
-            BlocProvider<TransactionCubit>(
-                create: (BuildContext context) => TransactionCubit()),
+            // TODO: Remove when clean the state of this
+            BlocProvider<TransactionCubitRemove>(
+                create: (BuildContext context) => TransactionCubitRemove()),
+            BlocProvider<MultiWalletTransactionCubit>(
+                create: (BuildContext context) =>
+                    MultiWalletTransactionCubit()),
             BlocProvider<ThemeCubit>(
                 create: (BuildContext context) => ThemeCubit()),
             // Add other BlocProviders here if needed
@@ -314,6 +319,8 @@ class _GinkgoAppState extends State<GinkgoApp> {
     NodeManager().loadFromCubit(context.read<NodeListCubit>());
     // Only after at least the action method is set, the notification events are delivered
     NotificationController.startListeningNotificationEvents();
+    // Wipe Old Transactions Cubit
+    context.read<TransactionCubitRemove>().close();
     Once.runHourly('load_nodes', callback: () async {
       final bool isConnected =
           await ConnectivityWidgetWrapperWrapper.isConnected;

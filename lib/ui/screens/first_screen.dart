@@ -8,9 +8,9 @@ import 'package:web_browser_detect/web_browser_detect.dart';
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
 import '../../data/models/bottom_nav_cubit.dart';
+import '../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../data/models/payment_cubit.dart';
 import '../../data/models/payment_state.dart';
-import '../../data/models/transaction_cubit.dart';
 import '../../shared_prefs_helper.dart';
 import '../tutorial.dart';
 import '../tutorial_keys.dart';
@@ -38,7 +38,7 @@ class _FirstScreenState extends State<FirstScreen> {
         context, context.read<AppCubit>().wasTutorialShown('first_screen'));
     super.initState();
     if (context.read<BottomNavCubit>().state == 0 &&
-        context.read<TransactionCubit>().balance == 0) {
+        context.read<MultiWalletTransactionCubit>().balance == 0) {
       Future<void>.delayed(Duration.zero, () => tutorial.showTutorial());
     }
   }

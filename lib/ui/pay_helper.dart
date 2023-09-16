@@ -9,12 +9,12 @@ import '../../../data/models/node_list_cubit.dart';
 import '../../../data/models/node_type.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/transaction.dart';
-import '../../../data/models/transaction_cubit.dart';
 import '../../../data/models/transaction_type.dart';
 import '../../../g1/api.dart';
 import '../../../shared_prefs_helper.dart';
 import '../data/models/app_cubit.dart';
 import '../data/models/bottom_nav_cubit.dart';
+import '../data/models/multi_wallet_transaction_cubit.dart';
 import '../data/models/payment_state.dart';
 import '../g1/currency.dart';
 import '../g1/g1_helper.dart';
@@ -36,7 +36,8 @@ Future<void> payWithRetry(
 
   assert(amount > 0);
 
-  final TransactionCubit txCubit = context.read<TransactionCubit>();
+  final MultiWalletTransactionCubit txCubit =
+      context.read<MultiWalletTransactionCubit>();
   final PaymentCubit paymentCubit = context.read<PaymentCubit>();
   final AppCubit appCubit = context.read<AppCubit>();
   paymentCubit.sending();
@@ -134,7 +135,7 @@ bool weHaveBalance(BuildContext context, double amount) {
 }
 
 double getBalance(BuildContext context) =>
-    context.read<TransactionCubit>().balance;
+    context.read<MultiWalletTransactionCubit>().balance;
 
 Future<bool?> _confirmSend(BuildContext context, String amount, String to,
     bool isRetry, Currency currency) async {

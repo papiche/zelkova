@@ -25,6 +25,12 @@ class TransactionState extends Equatable {
   factory TransactionState.fromJson(Map<String, dynamic> json) =>
       _$TransactionStateFromJson(json);
 
+  static final TransactionState emptyState = TransactionState(
+      transactions: const <Transaction>[],
+      pendingTransactions: const <Transaction>[],
+      balance: 0,
+      lastChecked: DateTime.now());
+
   final List<Transaction> transactions;
   final List<Transaction> pendingTransactions;
   final double balance;

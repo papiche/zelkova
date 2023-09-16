@@ -7,9 +7,9 @@ import '../../ui/logger.dart';
 import '../../ui/pay_helper.dart';
 import '../../ui/widgets/connectivity_widget_wrapper_wrapper.dart';
 import 'app_cubit.dart';
+import 'multi_wallet_transaction_cubit.dart';
 import 'node_list_cubit.dart';
 import 'transaction.dart';
-import 'transaction_cubit.dart';
 
 part 'transactions_state.dart';
 
@@ -28,7 +28,7 @@ class TransactionsBloc {
 
   late AppCubit appCubit;
   late NodeListCubit nodeListCubit;
-  late TransactionCubit transCubit;
+  late MultiWalletTransactionCubit transCubit;
 
   static const int _pageSize = 20;
 
@@ -70,7 +70,7 @@ class TransactionsBloc {
     yield* _fetchTransactionsList(null);
   }
 
-  void init(TransactionCubit transCubit, NodeListCubit nodeListCubit,
+  void init(MultiWalletTransactionCubit transCubit, NodeListCubit nodeListCubit,
       AppCubit appCubit) {
     this.appCubit = appCubit;
     this.transCubit = transCubit;
@@ -104,7 +104,7 @@ class TransactionsBloc {
 
         final bool isLastPage = fetchedItems.length < _pageSize;
         final String? nextPageKey =
-            isLastPage ? null : transCubit.state.endCursor;
+            isLastPage ? null : transCubit.currentWalletState().endCursor;
 
         yield TransactionsState(
           // error: null,

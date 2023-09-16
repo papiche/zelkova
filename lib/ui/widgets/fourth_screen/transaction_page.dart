@@ -10,11 +10,11 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:we_slide/we_slide.dart';
 
 import '../../../data/models/app_cubit.dart';
+import '../../../data/models/multi_wallet_transaction_cubit.dart';
+import '../../../data/models/multi_wallet_transaction_state.dart';
 import '../../../data/models/node_list_cubit.dart';
 import '../../../data/models/theme_cubit.dart';
 import '../../../data/models/transaction.dart';
-import '../../../data/models/transaction_cubit.dart';
-import '../../../data/models/transaction_state.dart';
 import '../../../data/models/transactions_bloc.dart';
 import '../../../g1/currency.dart';
 import '../../../shared_prefs_helper.dart';
@@ -42,7 +42,7 @@ class _TransactionsAndBalanceWidgetState
   late StreamSubscription<TransactionsState> _blocListingStateSubscription;
   late AppCubit appCubit;
   late NodeListCubit nodeListCubit;
-  late TransactionCubit transCubit;
+  late MultiWalletTransactionCubit transCubit;
 
   final PagingController<String?, Transaction> _pagingController =
       PagingController<String?, Transaction>(firstPageKey: null);
@@ -60,7 +60,7 @@ class _TransactionsAndBalanceWidgetState
   void initState() {
     // Remove in the future
     appCubit = context.read<AppCubit>();
-    transCubit = context.read<TransactionCubit>();
+    transCubit = context.read<MultiWalletTransactionCubit>();
     nodeListCubit = context.read<NodeListCubit>();
     _bloc.init(transCubit, nodeListCubit, appCubit);
     _pagingController.addPageRequestListener((String? cursor) {
@@ -165,11 +165,14 @@ class _TransactionsAndBalanceWidgetState
         useSymbol: true, isG1: isG1, locale: currentLocale(context));
     final bool isCurrencyBefore =
         isSymbolPlacementBefore(currentNumber.symbols.CURRENCY_PATTERN);
-    return BlocBuilder<TransactionCubit, TransactionState>(
-        builder: (BuildContext context, TransactionState transBalanceState) {
+    return BlocBuilder<MultiWalletTransactionCubit,
+            MultiWalletTransactionState>(
+        builder: (BuildContext context,
+            MultiWalletTransactionState transBalanceState) {
       // final List<Transaction> transactions = transBalanceState.transactions;
-      final double balance = transBalanceState.balance;
       final String myPubKey = SharedPreferencesHelper().getPubKey();
+      final double balance = getBalance(context);
+
       return Scaffold(
         drawer: const CardDrawer(),
         onDrawerChanged: (bool isOpened) {
@@ -401,11 +404,14 @@ class _TransactionsAndBalanceWidgetState
   Future<void> _fetchPending(int pageKey) async {
     try {
       final bool shouldPaginate =
-          transCubit.state.pendingTransactions.length > _pendingPageSize;
+          transCubit.currentWalletState().pendingTransactions.length >
+              _pendingPageSize;
       final List<Transaction> newItems = shouldPaginate
-          ? transCubit.state.pendingTransactions
+          ? transCubit
+              .currentWalletState()
+              .pendingTransactions
               .sublist(pageKey, _pendingPageSize)
-          : transCubit.state.pendingTransactions;
+          : transCubit.currentWalletState().pendingTransactions;
       final bool isLastPage = newItems.length < _pendingPageSize;
       if (isLastPage) {
         _pendingController.appendLastPage(newItems);
@@ -417,4 +423,7 @@ class _TransactionsAndBalanceWidgetState
       _pendingController.error = error;
     }
   }
+
+  double getBalance(BuildContext context) =>
+      context.read<MultiWalletTransactionCubit>().balance;
 }

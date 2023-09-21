@@ -143,7 +143,7 @@ void main() async {
                 create: (BuildContext context) => NodeListCubit()),
             BlocProvider<ContactsCubit>(
                 create: (BuildContext context) => ContactsCubit()),
-            // TODO: Remove when clean the state of this
+            // TODO(vjrj): Remove when clean the state of this
             BlocProvider<TransactionCubitRemove>(
                 create: (BuildContext context) => TransactionCubitRemove()),
             BlocProvider<MultiWalletTransactionCubit>(

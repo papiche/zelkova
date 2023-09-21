@@ -152,7 +152,7 @@ class _ExportDialogState extends State<ExportDialog> {
       final Uri uri = Uri.parse(html.window.location.href);
       final String fileJsonUrlComponent = Uri.encodeComponent(fileJson);
       final Uri finalUri = uri.replace(path: '/import/$fileJsonUrlComponent');
-      // TODO Allow to import this link
+      // TODO(vjrj): Allow to import this link
       return Share.share(inDevelopment ? finalUri.toString() : fileJson,
           subject: tr('share_export_subject'));
     } else {

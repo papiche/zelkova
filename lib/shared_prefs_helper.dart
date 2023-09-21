@@ -156,7 +156,7 @@ class SharedPreferencesHelper with ChangeNotifier {
   }
 
   Future<void> selectCurrentWallet(CesiumCard card) async {
-    // TODO this should be a find with pubkey
+    // TODO(vjrj): this should be a find with pubkey
     final int index = cards.indexOf(card);
     if (index >= 0) {
       await _prefs.setInt(_currentWalletIndexKey, index);

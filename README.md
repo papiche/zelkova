@@ -66,18 +66,58 @@ Get the dependencies.
 flutter pub get
 ```
 
-### Build & deploy
-
-#### Launch all the tests
+### Launch all the tests
 
 ```sh
 flutter test
 ```
 
-#### Build for web (release version)
+### Build & deploy
+
+#### Build for web
+
+Use first this command to enable web support:
 
 ```sh
-flutter build web --release --no-tree-shake-icons
+flutter config --enable-web
+```
+
+Then, build the app:
+
+```sh
+flutter build web --no-tree-shake-icons
+```
+
+NB: Add `--release` for a production build.
+
+If you are using a web browser different from Chrome, you should first find your browser's executable (example for Brave):
+
+```sh
+which brave-browser
+```
+
+Then, you should add the executable path to the environment variable `CHROME_EXECUTABLE` by typing the following command:
+
+```sh
+export CHROME_EXECUTABLE=/usr/bin/brave-browser
+```
+
+NB: This is a temporary solution that will be reset when you close your terminal. If you want to make it permanent, you should add this variable to your `.bashrc` or `.zshrc` file:
+
+```sh
+nano ~/.bashrc
+```
+
+Then, add the following line at the end of the file:
+
+```sh
+export CHROME_EXECUTABLE=/usr/bin/brave-browser
+```
+
+Finally, reload your terminal:
+
+```sh
+source ~/.bashrc
 ```
 
 #### Build and deploy to your server
@@ -88,10 +128,18 @@ rsync --progress=info2 --delete -aH build/web/ youruser@yourserver:/var/www/gink
 
 ### Run dev environment
 
-Run the app via command line or through your development environment.
+Run the app via command line or through your development environment. It will run the default built version.
 
 ```sh
 flutter run
+```
+
+NB: If there are more than one built version, there will be a prompt asking for the version you want to use (for example, web or desktop)
+
+If you want to directly run a specific version (for example, the web version), use:
+
+```sh
+flutter run -d "chrome"
 ```
 
 In order to do gva operations, you should disable cors in the flutter run config:
@@ -137,6 +185,14 @@ to [ios/Runner/Info.plist](./ios/Runner/Info.plist) and update the following cod
 ```
 
 ``
+
+## Troubleshooting
+
+1. If you cannot build the app, try to run `flutter clean` and then `flutter pub get`.
+2. If it still doesn't work, try to delete the `build` folder and run `flutter pub get` again.
+3. At least, you can try to run `flutter pub upgrade` to upgrade all the dependencies.
+4. And in last resort, you can try to delete the `pubspec.lock` file and run `flutter pub get` again.
+5. Finally, there is a troubleshooting command in flutter: `flutter doctor -v`.
 
 ## Screenshots
 

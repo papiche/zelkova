@@ -176,13 +176,8 @@ class TransactionChartState extends State<TransactionChart> {
                     },
                   ),
                   titlesData: FlTitlesData(
-                    show: true,
-                    rightTitles: AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
-                    ),
-                    topTitles: AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
-                    ),
+                    rightTitles: const AxisTitles(),
+                    topTitles: const AxisTitles(),
                     bottomTitles: AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
@@ -203,7 +198,7 @@ class TransactionChartState extends State<TransactionChart> {
                     show: false,
                   ),
                   barGroups: showingBarGroups,
-                  gridData: FlGridData(show: false),
+                  gridData: const FlGridData(show: false),
                 ),
               ),
             ),
@@ -369,13 +364,8 @@ class TransactionChartState extends State<TransactionChart> {
                               },
                             ),
                             titlesData: FlTitlesData(
-                              show: true,
-                              rightTitles: AxisTitles(
-                                sideTitles: SideTitles(showTitles: false),
-                              ),
-                              topTitles: AxisTitles(
-                                sideTitles: SideTitles(showTitles: false),
-                              ),
+                              rightTitles: const AxisTitles(),
+                              topTitles: const AxisTitles(),
                               bottomTitles: AxisTitles(
                                 sideTitles: SideTitles(
                                   showTitles: true,
@@ -396,7 +386,7 @@ class TransactionChartState extends State<TransactionChart> {
                               show: false,
                             ),
                             barGroups: showingBarGroups,
-                            gridData: FlGridData(show: false),
+                            gridData: const FlGridData(show: false),
                           ),
                         ),
                         const SizedBox(height: 12),

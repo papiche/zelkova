@@ -113,7 +113,7 @@ class _TransactionsAndBalanceWidgetState
       try {
         _refresh();
       } catch (e) {
-        // TODO this should be done in main because if not this is disposed
+        // TODO(vjrj): this should be done in main because if not this is disposed
         logger('Failed via _refresh, lets try a basic fetchTransactions');
         transCubit.fetchTransactions(nodeListCubit, appCubit);
       }

@@ -208,7 +208,7 @@ to [ios/Runner/Info.plist](./ios/Runner/Info.plist) and update the following cod
 -   ca: calbasi
 -   de: FW
 -   eu: Anna Ayala Alcalá
--   fr: vincentux, poka, Hugo and Maaltir
+-   fr: flodef, Hugo, Maaltir, poka and vincentux
 -   gl: Vijitâtman
 -   it: Anna Ayala Alcalá
 -   nl: Maria Rosa Costa i Alandi

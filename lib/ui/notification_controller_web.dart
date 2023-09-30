@@ -94,14 +94,14 @@ class NotificationController {
       {required double amount,
       String? to,
       String? from,
-      String? description = '',
+      String? comment = '',
       required double currentUd,
       required bool isG1}) async {
     final String title = buildTxNotifTitle(from);
     final String desc = buildTxNotifDescription(
       from: from,
       to: to,
-      comment: description,
+      comment: comment,
       localeLanguageCode: locale.languageCode,
       amount: amount,
       isG1: isG1,

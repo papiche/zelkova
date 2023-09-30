@@ -176,7 +176,7 @@ supportedLocales: const <Locale>[
 ],
 ```
 
-Go to [ios/Runner/Info.plist](./ios/Runner/Info.plist) and update the following code:
+Go to [ios/Runner/Info.plist](./ios/Runner/Info.plist) and update the following code adding the language:
 
 ```
 

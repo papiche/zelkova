@@ -10,7 +10,7 @@
   "bottom_nav_fifth": "Informo",
   "send_g1": "Sendi Ğ1",
   "g1_amount": "Sumo por sendi",
-  "g1_amount_hint": "Sumo por sendi en {valuto}",
+  "g1_amount_hint": "Sumo por sendi en {currency}",
   "g1_form_pay_send": "Sendi",
   "search_user_title": "Uzanto por pagi",
   "search_user_title_in_contacts": "Serĉi uzantojn",

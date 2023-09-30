@@ -735,7 +735,7 @@ Future<void> createOrUpdateCesiumPlusUser(String name) async {
   final Map<String, dynamic> userProfile = <String, dynamic>{
     'version': 2,
     'issuer': pubKey,
-    'title': name + userNameSuffix,
+    'title': name + g1nkgoUserNameSuffix,
     'geoPoint': null,
     'time': DateTime.now().millisecondsSinceEpoch ~/
         1000, // current time in seconds

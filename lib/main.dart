@@ -363,9 +363,9 @@ class _GinkgoAppState extends State<GinkgoApp> {
             () async {
       logger('---------- fetchTransactions via cron');
       // Disabled to check the back development
-      if (!inDevelopment) {
-        fetchTransactions(context);
-      }
+      // if (!inDevelopment) {
+      fetchTransactions(context);
+      // }
     });
 
     if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {

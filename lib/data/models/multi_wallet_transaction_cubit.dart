@@ -168,37 +168,47 @@ class MultiWalletTransactionCubit
           _checkPendingTx(cursor, newParsedState, pubKey, node);
       _emitState(pubKey, newState);
 
-      for (final Transaction tx in newState.transactions.reversed) {
+      TransactionState currentModifiedState = newState;
+
+      for (final Transaction tx in currentModifiedState.transactions.reversed) {
+        bool stateModified = false;
+
         if (tx.type == TransactionType.received &&
-            newState.latestReceivedNotification.isBefore(tx.time)) {
+            currentModifiedState.latestReceivedNotification.isBefore(tx.time)) {
           // Future
           final Contact from = tx.from;
-          NotificationController.createNewNotification(
+          NotificationController.notifyTransaction(
               tx.time.millisecondsSinceEpoch.toString(),
               amount: tx.amount,
               currentUd: appCubit.currentUd,
               from: from.title,
               isG1: isG1);
-          final TransactionState notifState =
-              newState.copyWith(latestReceivedNotification: tx.time);
-          _emitState(pubKey, notifState);
+          currentModifiedState = currentModifiedState.copyWith(
+              latestReceivedNotification: tx.time);
+          stateModified = true;
         }
+
         if (tx.type == TransactionType.sent &&
-            newState.latestSentNotification.isBefore(tx.time)) {
+            currentModifiedState.latestSentNotification.isBefore(tx.time)) {
           // Future
           final Contact to = tx.to;
-          NotificationController.createNewNotification(
+          NotificationController.notifyTransaction(
               tx.time.millisecondsSinceEpoch.toString(),
               amount: -tx.amount,
               currentUd: appCubit.currentUd,
               to: to.title,
               isG1: isG1);
-          final TransactionState notifState =
-              newState.copyWith(latestSentNotification: tx.time);
-          _emitState(pubKey, notifState);
+          currentModifiedState =
+              currentModifiedState.copyWith(latestSentNotification: tx.time);
+          stateModified = true;
+        }
+
+        if (stateModified) {
+          _emitState(pubKey, currentModifiedState);
         }
       }
-      return newState.transactions;
+
+      return currentModifiedState.transactions;
     }
     if (!success) {
       throw Exception('Failed to get transactions after $retries attempts');

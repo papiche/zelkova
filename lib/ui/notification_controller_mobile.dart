@@ -140,7 +140,7 @@ class NotificationController {
   ///     NOTIFICATION CREATION METHODS
   ///  *********************************************
   ///
-  static Future<void> createNewNotification(String id,
+  static Future<void> notifyTransaction(String id,
       {required double amount,
       String? to,
       String? from,
@@ -168,18 +168,13 @@ class NotificationController {
                 useSymbol: true),
             'to': to!,
           });
+    await notify(title: title, desc: desc, id: id);
+  }
+
+  static Future<void> notify(
+      {required String title, required String desc, required String id}) async {
     if (kIsWeb) {
       // dart:html cannot be used in Android
-      /* if (html.Notification.permission != 'granted') {
-        await html.Notification.requestPermission();
-      }
-      if (html.Notification.permission == 'granted') {
-        final html.Notification notification = html.Notification(
-          title, body: desc,
-          // icon:
-        );
-        // html.Notification.show();
-      } */
     } else {
       bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
       if (!isAllowed) {
@@ -205,18 +200,9 @@ class NotificationController {
           actionButtons: <NotificationActionButton>[
             NotificationActionButton(
                 key: 'notification_open', label: tr('notification_open')),
-            /* NotificationActionButton(
-              key: 'REPLY',
-              label: 'Reply Message',
-              requireInputText: true,
-              actionType: ActionType.SilentAction), */
-            /* NotificationActionButton(
-              key: 'DISMISS',
-              label: 'Dismiss',
-              actionType: ActionType.DismissAction,
-              isDangerousOption: true) */
           ]);
     }
+    return;
   }
 
   static Future<void> scheduleNewNotification() async {

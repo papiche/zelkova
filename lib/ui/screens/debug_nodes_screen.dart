@@ -90,7 +90,8 @@ class DebugNodeHeader extends StatelessWidget {
               onLongPress: () => _fetchNodes(context, true),
               child: IconButton(
                   icon: const Icon(Icons.refresh),
-                  onPressed: () => _fetchNodes(context, false)),
+                  // Force in all cases
+                  onPressed: () => _fetchNodes(context, true)),
             )
           ],
         ));

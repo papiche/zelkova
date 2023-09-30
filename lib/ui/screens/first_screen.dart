@@ -113,7 +113,11 @@ class _FirstScreenState extends State<FirstScreen> {
                             //controller: _controller,
                             // shrinkWrap: true,
                             children: <Widget>[
-                              CreditCard(key: creditCardKey),
+                              CreditCard(
+                                  key: creditCardKey,
+                                  publicKey: prefsHelper.getPubKey(),
+                                  cardName: prefsHelper.getName(),
+                                  isG1nkgoCard: prefsHelper.isG1nkgoCard()),
                               const SizedBox(height: 8),
                               Padding(
                                 padding:

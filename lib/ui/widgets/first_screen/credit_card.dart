@@ -11,18 +11,21 @@ import 'card_name_editable.dart';
 import 'card_text_style.dart';
 
 class CreditCard extends StatelessWidget {
-  CreditCard({super.key});
+  const CreditCard(
+      {super.key,
+      required this.publicKey,
+      required this.cardName,
+      required this.isG1nkgoCard});
 
-  final String publicKey = SharedPreferencesHelper().getPubKey();
-  final String cardName = SharedPreferencesHelper().getName();
+  final String publicKey;
+  final String cardName;
+  final bool isG1nkgoCard;
 
   @override
   Widget build(BuildContext context) {
     const double cardRadius = 10.0;
     final bool bigDevice = bigScreen(context);
     final double cardPadding = bigDevice ? 26.0 : 16.0;
-
-    final String pubKey = SharedPreferencesHelper().getPubKey();
 
     return Card(
         elevation: 8.0,
@@ -84,7 +87,7 @@ class CreditCard extends StatelessWidget {
                             GestureDetector(
                                 onTap: () {
                                   showQrDialog(
-                                      context: context, publicKey: pubKey);
+                                      context: context, publicKey: publicKey);
                                 },
                                 child: SvgPicture.asset(
                                   width: MediaQuery.of(context).size.width <
@@ -96,9 +99,11 @@ class CreditCard extends StatelessWidget {
                             const SizedBox(width: 10.0),
                             Expanded(
                                 child: CardNameEditable(
-                              defValue: SharedPreferencesHelper().isG1nkgoCard()
-                                  ? tr('your_name_here')
-                                  : '',
+                              publicKey: publicKey,
+                              cardName: cardName,
+                              isG1nkgoCard: isG1nkgoCard,
+                              defValue:
+                                  isG1nkgoCard ? tr('your_name_here') : '',
                             )),
                           ])),
                       const SizedBox(height: 6.0),
@@ -108,12 +113,13 @@ class CreditCard extends StatelessWidget {
                           child: Row(children: <Widget>[
                             GestureDetector(
                                 onTap: () => showQrDialog(
-                                    context: context, publicKey: pubKey),
+                                    context: context, publicKey: publicKey),
                                 child: FittedBox(
                                     key: creditCardPubKey,
                                     fit: BoxFit.scaleDown,
                                     child: Text(
-                                      simplifyPubKey(extractPublicKey(pubKey)),
+                                      simplifyPubKey(
+                                          extractPublicKey(publicKey)),
                                       style: cardTextStyle(context),
                                     ))),
                             GestureDetector(

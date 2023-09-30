@@ -168,7 +168,7 @@ class CreditCardMini extends StatelessWidget {
   }
 
   void onCardTap(BuildContext context) {
-    logger('Card ${card.name} was tapped!');
+    logger("Card ${card.pubKey} '${card.name}' was tapped!");
     SharedPreferencesHelper().selectCurrentWallet(card);
     Navigator.pop(context);
   }

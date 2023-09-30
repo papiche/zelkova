@@ -105,10 +105,15 @@ class _FifthScreenState extends State<FifthScreen> {
                             value: Locale('en'),
                             child: Text('English'),
                           ),
+                          /*
+                          // Esperanto is not yet supported well,
+                          // commented while is better tested
+                          // We can use this, but still there is some localization issue
+                          https://github.com/deakjahn/l10n_esperanto/pull/6/files
                           DropdownMenuItem<Locale>(
                             value: Locale('eo'),
                             child: Text('Esperanto'),
-                          ),
+                          ), */
                           DropdownMenuItem<Locale>(
                             value: Locale('es'),
                             child: Text('Español'),

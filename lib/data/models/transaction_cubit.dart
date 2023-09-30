@@ -197,7 +197,7 @@ class TransactionCubitRemove extends HydratedCubit<TransactionState> {
             newState.latestReceivedNotification.isBefore(tx.time)) {
           // Future
           final Contact from = tx.from;
-          NotificationController.createNewNotification(
+          NotificationController.notifyTransaction(
               tx.time.millisecondsSinceEpoch.toString(),
               amount: tx.amount,
               currentUd: appCubit.currentUd,
@@ -209,7 +209,7 @@ class TransactionCubitRemove extends HydratedCubit<TransactionState> {
             newState.latestSentNotification.isBefore(tx.time)) {
           // Future
           final Contact to = tx.to;
-          NotificationController.createNewNotification(
+          NotificationController.notifyTransaction(
               tx.time.millisecondsSinceEpoch.toString(),
               amount: -tx.amount,
               currentUd: appCubit.currentUd,

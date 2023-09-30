@@ -90,10 +90,11 @@ class NotificationController {
   ///     NOTIFICATION CREATION METHODS
   ///  *********************************************
   ///
-  static Future<void> createNewNotification(String id,
+  static Future<void> notifyTransaction(String id,
       {required double amount,
       String? to,
       String? from,
+      String? description = '',
       required double currentUd,
       required bool isG1}) async {
     // FIXME: DUP CODE!!
@@ -101,24 +102,29 @@ class NotificationController {
         ? tr('notification_new_payment_title')
         : tr('notification_new_sent_title');
     final String desc = from != null
-        ? tr('notification_new_payment_desc', namedArgs: <String, String>{
-            'amount': formatKAmountInViewWithLocale(
-                locale: locale.languageCode,
-                amount: amount,
-                isG1: isG1,
-                currentUd: currentUd,
-                useSymbol: true),
-            'from': from,
-          })
-        : tr('notification_new_sent_desc', namedArgs: <String, String>{
-            'amount': formatKAmountInViewWithLocale(
-                locale: locale.languageCode,
-                amount: amount,
-                isG1: isG1,
-                currentUd: currentUd,
-                useSymbol: true),
-            'to': to!,
-          });
+        ? '${tr('notification_new_payment_desc', namedArgs: <String, String>{
+                'amount': formatKAmountInViewWithLocale(
+                    locale: locale.languageCode,
+                    amount: amount,
+                    isG1: isG1,
+                    currentUd: currentUd,
+                    useSymbol: true),
+                'from': from,
+              })} ($description)'
+        : '${tr('notification_new_sent_desc', namedArgs: <String, String>{
+                'amount': formatKAmountInViewWithLocale(
+                    locale: locale.languageCode,
+                    amount: amount,
+                    isG1: isG1,
+                    currentUd: currentUd,
+                    useSymbol: true),
+                'to': to!
+              })} ($description)';
+    await notify(title: title, desc: desc, id: '');
+  }
+
+  static Future<void> notify(
+      {required String title, required String desc, required String id}) async {
     try {
       if (html.Notification.permission != 'granted') {
         await html.Notification.requestPermission();

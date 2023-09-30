@@ -144,30 +144,31 @@ class NotificationController {
       {required double amount,
       String? to,
       String? from,
+      String? description = '',
       required bool isG1,
       required double currentUd}) async {
     final String title = from != null
         ? tr('notification_new_payment_title')
         : tr('notification_new_sent_title');
     final String desc = from != null
-        ? tr('notification_new_payment_desc', namedArgs: <String, String>{
-            'amount': formatKAmountInViewWithLocale(
-                locale: locale.languageCode,
-                amount: amount,
-                isG1: isG1,
-                currentUd: currentUd,
-                useSymbol: true),
-            'from': from,
-          })
-        : tr('notification_new_sent_desc', namedArgs: <String, String>{
-            'amount': formatKAmountInViewWithLocale(
-                locale: locale.languageCode,
-                amount: amount,
-                isG1: isG1,
-                currentUd: currentUd,
-                useSymbol: true),
-            'to': to!,
-          });
+        ? '${tr('notification_new_payment_desc', namedArgs: <String, String>{
+                'amount': formatKAmountInViewWithLocale(
+                    locale: locale.languageCode,
+                    amount: amount,
+                    isG1: isG1,
+                    currentUd: currentUd,
+                    useSymbol: true),
+                'from': from,
+              })} ($description)'
+        : '${tr('notification_new_sent_desc', namedArgs: <String, String>{
+                'amount': formatKAmountInViewWithLocale(
+                    locale: locale.languageCode,
+                    amount: amount,
+                    isG1: isG1,
+                    currentUd: currentUd,
+                    useSymbol: true),
+                'to': to!,
+              })} ($description)';
     await notify(title: title, desc: desc, id: id);
   }
 

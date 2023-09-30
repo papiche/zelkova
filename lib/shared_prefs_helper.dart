@@ -118,8 +118,8 @@ class SharedPreferencesHelper with ChangeNotifier {
     return '$pubKey:$checksum';
   }
 
-  String getName({int index = 0}) {
-    final CesiumCard card = cesiumCards[index];
+  String getName() {
+    final CesiumCard card = cesiumCards[getCurrentWalletIndex()];
     return card.name;
   }
 

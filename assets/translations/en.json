@@ -195,6 +195,7 @@
   "payment_waiting_internet_desc": "We'll retry your payment when internet is back",
   "payment_waiting_internet_desc_beta": "Retry your payment when internet is back",
   "your_name_here": "Name this card",
+  "card_name_changed": "Your card name has been updated. Please note that this name is public and allows others to find you",
   "copied_to_clipboard": "Copied to clipboard",
   "pay_with_nfc_tooltip": "To receive a payment, simply bring this device close to the other wallet with NFC activated.",
   "import_wallet_from_clipboard": "Import Wallet from Clipboard",

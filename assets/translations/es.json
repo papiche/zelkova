@@ -232,5 +232,6 @@
   "cesium_secret_phrase": "Frase secreta",
   "cesium_password": "Contraseña",
   "accept": "ACEPTAR",
-  "incorrect_passwords": "Contraseñas incorrectas"
+  "incorrect_passwords": "Contraseñas incorrectas",
+  "card_name_changed": "El nombre de tu tarjeta ha sido actualizado. Recuerda que este nombre es público y permite a otr@s encontrarte"
 }

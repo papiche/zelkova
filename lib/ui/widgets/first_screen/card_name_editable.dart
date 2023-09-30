@@ -34,6 +34,7 @@ class _CardNameEditableState extends State<CardNameEditable> {
   }
 
   Future<String> _initValue() async {
+    loggerDev('Building CardNameEditable');
     final String localUsername = SharedPreferencesHelper().getName();
     final bool isConnected = await ConnectivityWidgetWrapperWrapper.isConnected;
     if (isConnected) {
@@ -87,81 +88,91 @@ class _CardNameEditableState extends State<CardNameEditable> {
           future: _initValue(),
           builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
             const Color black = Colors.black87;
-            return _isEditingText
-                ? SizedBox(
-                    width: 150.0,
-                    child: SizedBox(
-                        height: 40.0,
-                        child: TextField(
-                          // focusNode: myFocusNode,
-                          style: const TextStyle(color: black),
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 5.0, horizontal: 7.0),
-                            filled: true,
-                            fillColor: Colors.white,
-                            enabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey),
-                            ),
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(width: 2.0),
-                            ),
-                            suffix: const Text('$g1nkgoUserNameSuffix  '),
-                            suffixIcon: _isSubmitting
-                                ? const RefreshProgressIndicator()
-                                : Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            _isEditingText = false;
-                                          });
-                                        },
-                                        child: const Padding(
-                                          padding: EdgeInsets.only(right: 8.0),
-                                          child: Icon(Icons.cancel_outlined,
-                                              color: black),
+            if (snapshot.hasData) {
+              return _isEditingText
+                  ? SizedBox(
+                      width: 150.0,
+                      child: SizedBox(
+                          height: 40.0,
+                          child: TextField(
+                            // focusNode: myFocusNode,
+                            style: const TextStyle(color: black),
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 5.0, horizontal: 7.0),
+                              filled: true,
+                              fillColor: Colors.white,
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey),
+                              ),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(width: 2.0),
+                              ),
+                              suffix: const Text('$g1nkgoUserNameSuffix  '),
+                              suffixIcon: _isSubmitting
+                                  ? const RefreshProgressIndicator()
+                                  : Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              _isEditingText = false;
+                                            });
+                                          },
+                                          child: const Padding(
+                                            padding:
+                                                EdgeInsets.only(right: 8.0),
+                                            child: Icon(Icons.cancel_outlined,
+                                                color: black),
+                                          ),
                                         ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          _updateValue(_controller.text);
-                                        },
-                                        child: const Padding(
-                                          padding: EdgeInsets.only(right: 8.0),
-                                          child:
-                                              Icon(Icons.check, color: black),
+                                        GestureDetector(
+                                          onTap: () {
+                                            _updateValue(_controller.text);
+                                          },
+                                          child: const Padding(
+                                            padding:
+                                                EdgeInsets.only(right: 8.0),
+                                            child:
+                                                Icon(Icons.check, color: black),
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                          ),
-                          cursorColor: black,
-                          onSubmitted: _updateValue,
-                          enabled: !_isSubmitting,
-                          /* onChanged: (String value) {
+                                      ],
+                                    ),
+                            ),
+                            cursorColor: black,
+                            onSubmitted: _updateValue,
+                            enabled: !_isSubmitting,
+                            /* onChanged: (String value) {
                           if (value.isEmpty) {
                             _deleteValue();
                           }
                         }, */
-                          /*onSubmitted: (String newValue) {
+                            /*onSubmitted: (String newValue) {
                     updateName(newValue);
                   }, */
-                          // maxLength: 15,
-                          autofocus: true,
-                          controller: _controller,
-                        )))
-                : Tooltip(
-                    message: widget.defValue,
-                    child: CardNameText(
-                        currentText: currentText,
-                        isGinkgoCard: SharedPreferencesHelper().isG1nkgoCard(),
-                        onTap: () => SharedPreferencesHelper().isG1nkgoCard()
-                            ? setState(() {
-                                _isEditingText = true;
-                              })
-                            : null));
+                            // maxLength: 15,
+                            autofocus: true,
+                            controller: _controller,
+                          )))
+                  : Tooltip(
+                      message: widget.defValue,
+                      child: CardNameText(
+                          currentText: currentText,
+                          isGinkgoCard:
+                              SharedPreferencesHelper().isG1nkgoCard(),
+                          onTap: () => SharedPreferencesHelper().isG1nkgoCard()
+                              ? setState(() {
+                                  _isEditingText = true;
+                                })
+                              : null));
+            } else {
+              return CardNameText(
+                  currentText: currentText,
+                  isGinkgoCard: SharedPreferencesHelper().isG1nkgoCard(),
+                  onTap: () {});
+            }
           });
     });
   }

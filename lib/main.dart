@@ -185,16 +185,18 @@ void workManagerCallbackDispatcher() {
   Workmanager()
       .executeTask((String task, Map<String, dynamic>? inputData) async {
     try {
+      loggerDev(
+          '---------- Start fetchTransactionsTask Workmanager background task');
       switch (task) {
         case fetchWalletsTransactionsTask:
-          logger(
-              '---------- fetchTransactionsTask Workmanager background task');
           await NotificationController.initializeLocalNotifications();
           fetchTransactionsFromBackground(true);
           break;
         case Workmanager.iOSBackgroundTask:
           break;
       }
+      loggerDev(
+          '---------- End fetchTransactionsTask Workmanager background task');
     } catch (err, stacktrace) {
       logger(err.toString());
       await Sentry.captureException(err, stackTrace: stacktrace);
@@ -360,7 +362,10 @@ class _GinkgoAppState extends State<GinkgoApp> {
         .schedule(Schedule.parse(kReleaseMode ? '*/10 * * * *' : '*/5 * * * *'),
             () async {
       logger('---------- fetchTransactions via cron');
-      fetchTransactions(context);
+      // Disabled to check the back development
+      if (!inDevelopment) {
+        fetchTransactions(context);
+      }
     });
 
     if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {

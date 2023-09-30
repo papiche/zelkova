@@ -113,7 +113,6 @@ class _TransactionsAndBalanceWidgetState
       try {
         _refresh();
       } catch (e) {
-        // TODO(vjrj): this should be done in main because if not this is disposed
         logger('Failed via _refresh, lets try a basic fetchTransactions');
         transCubit.fetchTransactions(nodeListCubit, appCubit);
       }
@@ -121,26 +120,6 @@ class _TransactionsAndBalanceWidgetState
     tutorial = FourthTutorial(context);
     super.initState();
   }
-
-/*  Future<void> _fetchPage(String? cursor) async {
-    logger('Fetching from transaction page with cursor $cursor');
-    try {
-      final List<Transaction> newItems = await transCubit.fetchTransactions(
-          nodeListCubit,
-          cursor: cursor,
-          pageSize: _pageSize);
-
-      final bool isLastPage = newItems.length < _pageSize;
-      if (isLastPage) {
-        _pagingController.appendLastPage(newItems);
-      } else {
-        final String? nextCursor = transCubit.state.endCursor;
-        _pagingController.appendPage(newItems, nextCursor);
-      }
-    } catch (error) {
-      _pagingController.error = error;
-    }
-  }*/
 
   @override
   void dispose() {

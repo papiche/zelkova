@@ -260,39 +260,46 @@ void initGetItAll() {
 }
 
 Future<void> fetchTransactionsFromBackground([bool init = true]) async {
-  if (init) {
-    await hydratedInit();
-    if (SharedPreferencesHelper().cards.isEmpty) {
-      await SharedPreferencesHelper().init();
-    }
-    try {
-      initGetItAll();
-      await NotificationController.initializeLocalNotifications();
-    } catch (e) {
-      // We should try to do this better
-      if (inDevelopment) {
-        NotificationController.notify(
-            title: 'Background process failed',
-            desc: e.toString(),
-            id: DateTime.now().toIso8601String());
+  try {
+    if (init) {
+      await hydratedInit();
+      if (SharedPreferencesHelper().cards.isEmpty) {
+        await SharedPreferencesHelper().init();
+      }
+      try {
+        initGetItAll();
+        await NotificationController.initializeLocalNotifications();
+      } catch (e) {
+        // We should try to do this better
+        loggerDev(e.toString());
+        if (inDevelopment) {
+          NotificationController.notify(
+              title: 'Background process failed',
+              desc: e.toString(),
+              id: DateTime.now().toIso8601String());
+        }
       }
     }
-  }
-  loggerDev('Initialized background context');
-  final GetIt getIt = GetIt.instance;
-  final AppCubit appCubit = getIt.get<AppCubit>();
-  final MultiWalletTransactionCubit transCubit =
-      getIt.get<MultiWalletTransactionCubit>();
-  final NodeListCubit nodeListCubit = getIt.get<NodeListCubit>();
-  for (final CesiumCard card in SharedPreferencesHelper().cards) {
-    loggerDev('Fetching transactions for ${card.pubKey} in background');
-    transCubit.fetchTransactions(nodeListCubit, appCubit, pubKey: card.pubKey);
-  }
-  if (inDevelopment) {
-    NotificationController.notify(
-        title: 'Background process ended correctly',
-        desc: '',
-        id: DateTime.now().toIso8601String());
+    loggerDev('Initialized background context');
+    final GetIt getIt = GetIt.instance;
+    final AppCubit appCubit = getIt.get<AppCubit>();
+    final MultiWalletTransactionCubit transCubit =
+        getIt.get<MultiWalletTransactionCubit>();
+    final NodeListCubit nodeListCubit = getIt.get<NodeListCubit>();
+    for (final CesiumCard card in SharedPreferencesHelper().cards) {
+      loggerDev('Fetching transactions for ${card.pubKey} in background');
+      transCubit.fetchTransactions(nodeListCubit, appCubit,
+          pubKey: card.pubKey);
+    }
+    if (inDevelopment) {
+      NotificationController.notify(
+          title: 'Background process ended correctly',
+          desc: '',
+          id: DateTime.now().toIso8601String());
+    }
+  } catch (e) {
+    // We should try to do this better
+    loggerDev(e.toString());
   }
 }
 

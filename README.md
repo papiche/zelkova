@@ -1,28 +1,34 @@
 # Ğ1nkgo
 
-![Ğ1nkgo logo](./assets/img/logo.png "Ğ1nkgo logo")
+![Ğ1nkgo logo](./assets/img/logo.png 'Ğ1nkgo logo')
 
 Ğ1nkgo (aka Ginkgo) is a lightweight Ğ1 wallet for Duniter v1 written in Flutter. The app allows
 users to manage their Ğ1 currency on their mobile device using just a browser.
 
 ## Features
 
--   Introduction for beginners
--   Generation of Cesium wallet and persistence (if you refresh the page, it should display the same
-    wallet address).
--   A point-of-sale device that generates a QR code for the public address and other QR codes with
-    amounts (which lightweight wallets will understand).
--   Send Ğ1 transactions
--   Transactions history page and Balance with persistence to load last transactions on boot
--   Contact management and cache (to avoid too much API petitions)
--   Internationalization (i18n)
--   QR code reader
--   Import/export of your wallet
--   Automatic discover and selection of nodes, error recovery & retry
--   Customizable via [env file](https://git.duniter.org/vjrj/ginkgo/-/blob/master/assets/env.production.txt)
--   Inline tutorials
--   Pagination of transactions
--   Some contextual help (for example, by tapping on "Validity").
+- Introduction for beginners
+- Generation of Cesium wallet and persistence (if you refresh the page, it should display the same
+  wallet address).
+- A point-of-sale device that generates a QR code for the public address and other QR codes with
+  amounts (which lightweight wallets will understand).
+- Send Ğ1 transactions
+- Transactions history page and Balance with persistence to load last transactions on boot
+- Contact management and cache (to avoid too much API petitions)
+- Internationalization (i18n)
+- QR code reader
+- Import/export of your wallet
+- Automatic discover and selection of nodes, error recovery & retry
+- Customizable via [env file](https://git.duniter.org/vjrj/ginkgo/-/blob/master/assets/env.production.txt)
+- Inline tutorials
+- Pagination of transactions
+- Some contextual help (for example, by tapping on "Validity").
+
+## Screenshots
+
+| Wallet                                                           | Terminal card                                                          |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| ![Card](./assets/img/card.png 'A walled in form of credit card') | ![Terminal card](./assets/img/terminal.png 'A terminal card metaphor') |
 
 ## Demo
 
@@ -32,8 +38,8 @@ This is a demo used for testing a development, please use a production server fo
 
 ## Ğ1nkgo in production
 
--   [https://g1nkgo.comunes.org](https://g1nkgo.comunes.org)
--   (...)
+- [https://g1nkgo.comunes.org](https://g1nkgo.comunes.org)
+- (...)
 
 ## Translations
 
@@ -148,7 +154,80 @@ In order to do gva operations, you should disable cors in the flutter run config
 --web-browser-flag "--disable-web-security"
 ```
 
-![cors disable](./assets/img/cors.png "CORS disabled")
+![cors disable](./assets/img/cors.png 'CORS disabled')
+
+### Easy Localization
+
+To add translations, add a .json translation file in the [assets/translations](./assets/translations)
+folder, by prefixing the file with the language code (for example, `en.json` for English).
+The file should be in the format:
+
+```json
+{
+  "key": "value"
+}
+```
+
+Then, add the language in the [main.dart](./lib/main.dart) file:
+
+```dart
+supportedLocales: const <Locale>[
+    Locale('en', ''),
+],
+```
+
+Go to [ios/Runner/Info.plist](./ios/Runner/Info.plist) and update the following code:
+
+```
+
+<key>CFBundleLocalizations</key>
+<array>
+    <string>en</string>
+</array>
+
+```
+
+Finally, add the language to the User Interface in the [screen](./lib/fifth_screen.dart) file:
+
+```dart
+DropdownMenuItem<Locale>(
+  value: Locale('en'),
+  child: Text('English'),
+),
+```
+
+## Troubleshooting
+
+1. If you cannot build the app, try to run `flutter clean` and then `flutter pub get`.
+2. If it still doesn't work, try to delete the `build` folder and run `flutter pub get` again.
+3. At least, you can try to run `flutter pub upgrade` to upgrade all the dependencies.
+4. And in last resort, you can try to delete the `pubspec.lock` file and run `flutter pub get` again.
+5. Finally, there is a troubleshooting command in flutter: `flutter doctor -v`.
+
+## Credits
+
+### Translations
+
+- ast: dixebral
+- ca: calbasi
+- de: FW
+- eo: flodef
+- eu: Anna Ayala Alcalá
+- fr: flodef, Hugo, Maaltir, poka and vincentux
+- gl: Vijitâtman
+- it: Anna Ayala Alcalá
+- nl: Maria Rosa Costa i Alandi
+- pt: Carlos Neto
+
+Thanks!
+
+### Others
+
+- Ğ1 logos from duniter.org
+- undraw intro images: https://undraw.co/license
+- Chipcard https://commons.wikimedia.org/wiki/File:Chipcard.svg under the Creative Commons
+  Attribution-Share Alike 3.0 Unported license.
+- [POS svg from wikimedia](https://commons.wikimedia.org/wiki/File:Card_Terminal_POS_Flat_Icon_Vector.svg) CC-BY-SA 4.0
 
 ### Pub packages used
 
@@ -169,63 +248,12 @@ This repository makes use of the following pub packages:
 | [Url Launcher](https://pub.dev/packages/url_launcher)               | ^6.1.7  | Open urls in Browser                                  |
 | [Ionicons](https://pub.dev/packages/ionicons)                       | ^0.2.2  | Modern icon library                                   |
 
-### Easy Localization
-
-To add translations, add it to `assets/translations` and enable it in `main.dart`. Also go
-to [ios/Runner/Info.plist](./ios/Runner/Info.plist) and update the following code:
-
-```
-<key>CFBundleLocalizations</key>
-<array>
-  <string>en</string>
-  <string>es</string>
-  <string>fr</string>
-  <string>ca</string>
-</array>
-```
-
-``
-
-## Troubleshooting
-
-1. If you cannot build the app, try to run `flutter clean` and then `flutter pub get`.
-2. If it still doesn't work, try to delete the `build` folder and run `flutter pub get` again.
-3. At least, you can try to run `flutter pub upgrade` to upgrade all the dependencies.
-4. And in last resort, you can try to delete the `pubspec.lock` file and run `flutter pub get` again.
-5. Finally, there is a troubleshooting command in flutter: `flutter doctor -v`.
-
-## Screenshots
-
-| Wallet                                                           | Terminal card                                                          |
-| ---------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| ![Card](./assets/img/card.png "A walled in form of credit card") | ![Terminal card](./assets/img/terminal.png "A terminal card metaphor") |
-
-## Credits
-
-### Translations
-
--   ast: dixebral
--   ca: calbasi
--   de: FW
--   eu: Anna Ayala Alcalá
--   fr: flodef, Hugo, Maaltir, poka and vincentux
--   gl: Vijitâtman
--   it: Anna Ayala Alcalá
--   nl: Maria Rosa Costa i Alandi
--   pt: Carlos Neto
-
-Thanks!
-
-### Others
-
--   Ğ1 logos from duniter.org
--   undraw intro images: https://undraw.co/license
--   Chipcard https://commons.wikimedia.org/wiki/File:Chipcard.svg under the Creative Commons
-    Attribution-Share Alike 3.0 Unported license.
--   [POS svg from wikimedia](https://commons.wikimedia.org/wiki/File:Card_Terminal_POS_Flat_Icon_Vector.svg) CC-BY-SA 4.0
-
 Thanks!
 
 ## License
 
 GNU AGPL v3 (see LICENSE)
+
+```
+
+```

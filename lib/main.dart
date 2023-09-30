@@ -190,7 +190,7 @@ void workManagerCallbackDispatcher() {
       switch (task) {
         case fetchWalletsTransactionsTask:
           await NotificationController.initializeLocalNotifications();
-          fetchTransactionsFromBackground(true);
+          fetchTransactionsFromBackground();
           break;
         case Workmanager.iOSBackgroundTask:
           break;

@@ -6,7 +6,6 @@ import '../../../data/models/app_cubit.dart';
 import '../../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/payment_state.dart';
-import '../../../data/models/theme_cubit.dart';
 import '../../../g1/currency.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
@@ -56,7 +55,7 @@ class _PayFormState extends State<PayForm> {
           _onPressed(state, context, currency, currentUd) == null;
       final Color sentColor = sentDisabled
           ? Theme.of(context).disabledColor
-          : context.read<ThemeCubit>().isDark()
+          : isDark(context)
               ? const Color(0xFFB8D166)
               : Theme.of(context).primaryColor;
       return Form(

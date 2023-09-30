@@ -45,6 +45,7 @@
     <array>
     	<string>ast</string>
     	<string>en</string>
+		<string>eo</string>
     	<string>es</string>
     	<string>eu</string>
     	<string>fr</string>

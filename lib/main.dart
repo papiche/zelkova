@@ -122,6 +122,7 @@ void main() async {
             Locale('ca'),
             Locale('de'),
             Locale('en'),
+            Locale('eo'),
             Locale('es'),
             Locale('eu'),
             Locale('fr'),

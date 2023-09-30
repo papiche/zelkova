@@ -97,29 +97,17 @@ class NotificationController {
       String? description = '',
       required double currentUd,
       required bool isG1}) async {
-    // FIXME: DUP CODE!!
-    final String title = from != null
-        ? tr('notification_new_payment_title')
-        : tr('notification_new_sent_title');
-    final String desc = from != null
-        ? '${tr('notification_new_payment_desc', namedArgs: <String, String>{
-                'amount': formatKAmountInViewWithLocale(
-                    locale: locale.languageCode,
-                    amount: amount,
-                    isG1: isG1,
-                    currentUd: currentUd,
-                    useSymbol: true),
-                'from': from,
-              })} ($description)'
-        : '${tr('notification_new_sent_desc', namedArgs: <String, String>{
-                'amount': formatKAmountInViewWithLocale(
-                    locale: locale.languageCode,
-                    amount: amount,
-                    isG1: isG1,
-                    currentUd: currentUd,
-                    useSymbol: true),
-                'to': to!
-              })} ($description)';
+    final String title = buildTxNotifTitle(from);
+    final String desc = buildTxNotifDescription(
+      from: from,
+      to: to,
+      comment: description,
+      localeLanguageCode: locale.languageCode,
+      amount: amount,
+      isG1: isG1,
+      currentUd: currentUd,
+    );
+
     await notify(title: title, desc: desc, id: '');
   }
 

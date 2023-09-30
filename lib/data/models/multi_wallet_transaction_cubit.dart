@@ -158,17 +158,17 @@ class MultiWalletTransactionCubit
         appCubit.setUd(newParsedState.currentUd!);
       }
 
-      logger(
-          'Last received notification: ${newParsedState.latestReceivedNotification.toIso8601String()})}');
-      logger(
-          'Last sent notification: ${newParsedState.latestSentNotification.toIso8601String()})}');
-
       // Check pending transactions
       final TransactionState newState =
           _checkPendingTx(cursor, newParsedState, pubKey, node);
       _emitState(pubKey, newState);
 
       TransactionState currentModifiedState = newState;
+
+      logger(
+          'Last received notification: ${currentModifiedState.latestReceivedNotification.toIso8601String()})}');
+      logger(
+          'Last sent notification: ${currentModifiedState.latestSentNotification.toIso8601String()})}');
 
       for (final Transaction tx in currentModifiedState.transactions.reversed) {
         bool stateModified = false;
@@ -181,6 +181,7 @@ class MultiWalletTransactionCubit
               tx.time.millisecondsSinceEpoch.toString(),
               amount: tx.amount,
               currentUd: appCubit.currentUd,
+              comment: tx.comment,
               from: from.title,
               isG1: isG1);
           currentModifiedState = currentModifiedState.copyWith(
@@ -196,6 +197,7 @@ class MultiWalletTransactionCubit
               tx.time.millisecondsSinceEpoch.toString(),
               amount: -tx.amount,
               currentUd: appCubit.currentUd,
+              comment: tx.comment,
               to: to.title,
               isG1: isG1);
           currentModifiedState =

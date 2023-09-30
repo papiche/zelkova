@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../tutorial_keys.dart';
 import '../../ui_helpers.dart';
@@ -112,7 +113,7 @@ class CreditCard extends StatelessWidget {
                                     key: creditCardPubKey,
                                     fit: BoxFit.scaleDown,
                                     child: Text(
-                                      '${pubKey.substring(0, 4)} ${pubKey.substring(4, 8)}',
+                                      simplifyPubKey(extractPublicKey(pubKey)),
                                       style: cardTextStyle(context),
                                     ))),
                             GestureDetector(

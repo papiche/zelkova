@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../data/models/cesium_card.dart';
 import '../../../data/models/credit_card_theme_selector.dart';
 import '../../../data/models/credit_card_themes.dart';
+import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
 import '../../ui_helpers.dart';
@@ -153,7 +154,8 @@ class CreditCardMini extends StatelessWidget {
                                 FittedBox(
                                     fit: BoxFit.scaleDown,
                                     child: Text(
-                                      '${card.pubKey.substring(0, 4)} ${card.pubKey.substring(4, 8)}',
+                                      simplifyPubKey(
+                                          extractPublicKey(card.pubKey)),
                                       style:
                                           cardTextStyle(context, fontSize: 16),
                                     )),

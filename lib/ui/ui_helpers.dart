@@ -23,6 +23,7 @@ import '../data/models/node_list_cubit.dart';
 import '../g1/api.dart';
 import '../g1/currency.dart';
 import '../shared_prefs_helper.dart';
+import 'notification_controller.dart';
 import 'widgets/first_screen/circular_icon.dart';
 
 void showTooltip(BuildContext context, String title, String message) {
@@ -106,8 +107,9 @@ String humanizeContact(String publicAddress, Contact contact,
 
 String humanizePubKey(String address) => '\u{1F511} ${simplifyPubKey(address)}';
 
-String simplifyPubKey(String address) =>
-    address.length <= 8 ? 'WRONG ADDRESS' : address.substring(0, 8);
+String simplifyPubKey(String address) => address.length <= 8
+    ? 'WRONG ADDRESS'
+    : '${address.substring(0, 4)}…${address.substring(address.length - 4)}';
 
 Color tileColor(int index, BuildContext context, [bool inverse = false]) {
   final ColorScheme colorScheme = Theme.of(context).colorScheme;
@@ -264,8 +266,15 @@ Future<void> fetchTransactionsFromBackground([bool init = false]) async {
     }
     try {
       initGetItAll();
+      await NotificationController.initializeLocalNotifications();
     } catch (e) {
       // We should try to do this better
+      if (inDevelopment) {
+        NotificationController.notify(
+            title: 'Background process failed',
+            desc: e.toString(),
+            id: DateTime.now().toIso8601String());
+      }
     }
   }
   final GetIt getIt = GetIt.instance;
@@ -275,6 +284,12 @@ Future<void> fetchTransactionsFromBackground([bool init = false]) async {
   final NodeListCubit nodeListCubit = getIt.get<NodeListCubit>();
   for (final CesiumCard card in SharedPreferencesHelper().cards) {
     transCubit.fetchTransactions(nodeListCubit, appCubit, pubKey: card.pubKey);
+  }
+  if (inDevelopment) {
+    NotificationController.notify(
+        title: 'Background process ended correctly',
+        desc: '',
+        id: DateTime.now().toIso8601String());
   }
 }
 
@@ -601,8 +616,8 @@ bool isDark(BuildContext context) =>
 
 bool get isIOS => !kIsWeb && Platform.isIOS;
 
-const String userNameSuffix = ' ❥';
-
+const String g1nkgoUserNameSuffix = ' ❥';
+const String protectedUserNameSuffix = ' 🔒';
 const double cardAspectRatio = 1.58;
 
 Future<void> hydratedInit() async {

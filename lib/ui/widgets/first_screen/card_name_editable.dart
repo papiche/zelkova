@@ -44,7 +44,7 @@ class _CardNameEditableState extends State<CardNameEditable> {
             'currentText: $currentText, localUsername: $localUsername, _previousValue: $_previousValue, retrieved_name: $name');
         if (localUsername != name) {
           if (name != null) {
-            name = name.replaceAll(userNameSuffix, '');
+            name = name.replaceAll(g1nkgoUserNameSuffix, '');
             _controller.text = name;
             currentText = name;
             SharedPreferencesHelper().setName(name: name, notify: false);
@@ -106,7 +106,7 @@ class _CardNameEditableState extends State<CardNameEditable> {
                             focusedBorder: const OutlineInputBorder(
                               borderSide: BorderSide(width: 2.0),
                             ),
-                            suffix: const Text('$userNameSuffix  '),
+                            suffix: const Text('$g1nkgoUserNameSuffix  '),
                             suffixIcon: _isSubmitting
                                 ? const RefreshProgressIndicator()
                                 : Row(
@@ -177,6 +177,14 @@ class _CardNameEditableState extends State<CardNameEditable> {
       });
       if (_validate(newValue)) {
         await createOrUpdateCesiumPlusUser(newValue);
+        if (!context.mounted) {
+          return;
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(tr('card_name_changed')),
+          ),
+        );
         setState(() {
           _previousValue = newValue;
           currentText = newValue;
@@ -269,11 +277,11 @@ class CardNameText extends StatelessWidget {
               TextSpan(
                   text: currentText,
                   style: cardTextStyle(context, fontSize: 15)),
-            if (currentText.isNotEmpty &&
-                currentText != defValue &&
-                isGinkgoCard)
+            if (currentText.isNotEmpty && currentText != defValue)
               TextSpan(
-                text: userNameSuffix,
+                text: isGinkgoCard
+                    ? g1nkgoUserNameSuffix
+                    : protectedUserNameSuffix,
                 style: cardTextStyle(context, fontSize: 12),
               ),
           ],

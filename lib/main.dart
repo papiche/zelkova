@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
+import 'package:cron/cron.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:feedback/feedback.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
@@ -10,12 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:lehttp_overrides/lehttp_overrides.dart';
 import 'package:once/once.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:pwa_install/pwa_install.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
@@ -23,6 +21,7 @@ import 'package:responsive_framework/utils/scroll_behavior.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sentry_logging/sentry_logging.dart';
 import 'package:uni_links/uni_links.dart';
+import 'package:workmanager/workmanager.dart';
 
 import 'app_bloc_observer.dart';
 import 'config/theme.dart';
@@ -49,6 +48,9 @@ import 'ui/pay_helper.dart';
 import 'ui/screens/skeleton_screen.dart';
 import 'ui/ui_helpers.dart';
 import 'ui/widgets/connectivity_widget_wrapper_wrapper.dart';
+
+const String fetchWalletsTransactionsTask =
+    'org.comunes.ginkgo.fetchWalletsTransactionsTask';
 
 void main() async {
   await NotificationController.initializeLocalNotifications();
@@ -79,29 +81,7 @@ void main() async {
   }
   assert(shared.getPubKey() != null);
 
-  await Hive.initFlutter();
-
-  // Reset hive old keys
-  if (kIsWeb) {
-    final Box<dynamic> box = await Hive.openBox('hydrated_box',
-        path: HydratedStorage.webStorageDirectory.path);
-    final List<dynamic> keysToDelete =
-        box.keys.where((dynamic key) => '$key'.startsWith('minified')).toList();
-    box.deleteAll(keysToDelete);
-    // This should we done after init
-    // await HydratedBloc.storage.clear();
-    box.close();
-  }
-
-  if (kIsWeb) {
-    HydratedBloc.storage = await HydratedStorage.build(
-        storageDirectory: HydratedStorage.webStorageDirectory);
-  } else {
-    final Directory tmpDir = await getTemporaryDirectory();
-    Hive.init(tmpDir.toString());
-    HydratedBloc.storage =
-        await HydratedStorage.build(storageDirectory: tmpDir);
-  }
+  await hydratedInit();
 
   PWAInstall().setup(installCallback: () {
     logger('APP INSTALLED!');
@@ -199,6 +179,30 @@ void main() async {
   }
 }
 
+@pragma(
+    'vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
+void workManagerCallbackDispatcher() {
+  Workmanager()
+      .executeTask((String task, Map<String, dynamic>? inputData) async {
+    try {
+      switch (task) {
+        case fetchWalletsTransactionsTask:
+          logger(
+              '---------- fetchTransactionsTask Workmanager background task');
+          await NotificationController.initializeLocalNotifications();
+          fetchTransactionsFromBackground(true);
+          break;
+        case Workmanager.iOSBackgroundTask:
+          break;
+      }
+    } catch (err, stacktrace) {
+      logger(err.toString());
+      await Sentry.captureException(err, stackTrace: stacktrace);
+    }
+    return Future<bool>.value(true);
+  });
+}
+
 class AppIntro extends StatefulWidget {
   const AppIntro({super.key});
 
@@ -290,6 +294,8 @@ class GinkgoApp extends StatefulWidget {
 }
 
 class _GinkgoAppState extends State<GinkgoApp> {
+  late ScheduledTask fetchTxsCronTask;
+
   Future<void> _loadNodes() async {
     _printNodeStatus();
     for (final NodeType nodeType in NodeType.values) {
@@ -316,7 +322,9 @@ class _GinkgoAppState extends State<GinkgoApp> {
   @override
   void initState() {
     super.initState();
-    _initDeepLinkListener();
+    if (!kIsWeb) {
+      _initDeepLinkListener();
+    }
     NodeManager().loadFromCubit(context.read<NodeListCubit>());
     // Only after at least the action method is set, the notification events are delivered
     NotificationController.startListeningNotificationEvents();
@@ -345,12 +353,36 @@ class _GinkgoAppState extends State<GinkgoApp> {
       logger('resize avatar via once');
       context.read<ContactsCubit>().resizeAvatars();
     });
+
+    initGetItAll();
+
+    fetchTxsCronTask = Cron()
+        .schedule(Schedule.parse(kReleaseMode ? '*/10 * * * *' : '*/5 * * * *'),
+            () async {
+      logger('---------- fetchTransactions via cron');
+      fetchTransactions(context);
+    });
+
+    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+      Workmanager().initialize(
+          workManagerCallbackDispatcher); // The top level function, aka callbackDispatcher
+      /* , isInDebugMode:
+              true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+          ); */
+      Workmanager().registerPeriodicTask(
+        fetchWalletsTransactionsTask,
+        fetchWalletsTransactionsTask,
+        frequency: const Duration(minutes: 15),
+      );
+    }
   }
 
   @override
   void dispose() {
     ContactsCache().dispose();
     _disposeDeepLinkListener();
+    fetchTxsCronTask.cancel();
+    Workmanager().cancelAll();
     super.dispose();
   }
 

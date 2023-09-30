@@ -7,12 +7,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:get_it/get_it.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
 
 import '../data/models/app_cubit.dart';
+import '../data/models/cesium_card.dart';
 import '../data/models/contact.dart';
 import '../data/models/multi_wallet_transaction_cubit.dart';
 import '../data/models/node_list_cubit.dart';
@@ -242,12 +246,46 @@ String cleanComment(String? comment) {
           basicEnglishCharsRegExpNegative, (Match match) => ' ');
 }
 
-void fetchTransactions(BuildContext context) {
+void initGetItAll() {
+  final GetIt getIt = GetIt.instance;
+  if (!getIt.isRegistered<MultiWalletTransactionCubit>()) {
+    getIt.registerSingleton<MultiWalletTransactionCubit>(
+        MultiWalletTransactionCubit());
+    getIt.registerSingleton<AppCubit>(AppCubit());
+    getIt.registerSingleton<NodeListCubit>(NodeListCubit());
+  }
+}
+
+Future<void> fetchTransactionsFromBackground([bool init = false]) async {
+  if (init) {
+    await hydratedInit();
+    if (SharedPreferencesHelper().cards.isEmpty) {
+      await SharedPreferencesHelper().init();
+    }
+    try {
+      initGetItAll();
+    } catch (e) {
+      // We should try to do this better
+    }
+  }
+  final GetIt getIt = GetIt.instance;
+  final AppCubit appCubit = getIt.get<AppCubit>();
+  final MultiWalletTransactionCubit transCubit =
+      getIt.get<MultiWalletTransactionCubit>();
+  final NodeListCubit nodeListCubit = getIt.get<NodeListCubit>();
+  for (final CesiumCard card in SharedPreferencesHelper().cards) {
+    transCubit.fetchTransactions(nodeListCubit, appCubit, pubKey: card.pubKey);
+  }
+}
+
+Future<void> fetchTransactions(BuildContext context) async {
   final AppCubit appCubit = context.read<AppCubit>();
   final MultiWalletTransactionCubit transCubit =
       context.read<MultiWalletTransactionCubit>();
   final NodeListCubit nodeListCubit = context.read<NodeListCubit>();
-  transCubit.fetchTransactions(nodeListCubit, appCubit);
+  for (final CesiumCard card in SharedPreferencesHelper().cards) {
+    transCubit.fetchTransactions(nodeListCubit, appCubit, pubKey: card.pubKey);
+  }
 }
 
 class SlidableContactTile extends StatefulWidget {
@@ -566,3 +604,29 @@ bool get isIOS => !kIsWeb && Platform.isIOS;
 const String userNameSuffix = ' ❥';
 
 const double cardAspectRatio = 1.58;
+
+Future<void> hydratedInit() async {
+  await Hive.initFlutter();
+
+  // Reset hive old keys
+  if (kIsWeb) {
+    final Box<dynamic> box = await Hive.openBox('hydrated_box',
+        path: HydratedStorage.webStorageDirectory.path);
+    final List<dynamic> keysToDelete =
+        box.keys.where((dynamic key) => '$key'.startsWith('minified')).toList();
+    box.deleteAll(keysToDelete);
+    // This should we done after init
+    // await HydratedBloc.storage.clear();
+    box.close();
+  }
+
+  if (kIsWeb) {
+    HydratedBloc.storage = await HydratedStorage.build(
+        storageDirectory: HydratedStorage.webStorageDirectory);
+  } else {
+    final Directory tmpDir = await getTemporaryDirectory();
+    Hive.init(tmpDir.toString());
+    HydratedBloc.storage =
+        await HydratedStorage.build(storageDirectory: tmpDir);
+  }
+}

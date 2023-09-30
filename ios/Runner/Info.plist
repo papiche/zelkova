@@ -67,5 +67,13 @@
   <true/>
   <key>NSCameraUsageDescription</key>
   <string>Camera permission is required for barcode scanning.</string>
+  <key>UIBackgroundModes</key>
+  <array>
+  	<string>processing</string>
+  </array>
+  <key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>org.comunes.ginkgo.fetchWalletsTransactionsTask</string>
+  </array>
 </dict>
 </plist>

@@ -6,12 +6,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pattern_lock/pattern_lock.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:universal_html/html.dart' as html;
 
-import '../../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
@@ -47,7 +45,6 @@ class _ImportDialogState extends State<ImportDialog> {
             final Map<String, dynamic> keyJson =
                 jsonDecode(keyEncString) as Map<String, dynamic>;
             final String keyEncrypted = keyJson['key'] as String;
-            // final Uint8List keyBase64 = base64Decode(keyEncrypted);
             return Scaffold(
               key: scaffoldKey,
               appBar: AppBar(
@@ -76,54 +73,53 @@ class _ImportDialogState extends State<ImportDialog> {
                           final Map<String, dynamic> keys =
                               decryptJsonForImport(
                                   keyEncrypted, pattern.join());
-                          final bool? confirm = await confirmImport(context);
-                          if (confirm != null && confirm) {
-                            try {
-                              final dynamic cesiumCards = keys['cesiumCards'];
-                              if (cesiumCards != null) {
-                                final List<dynamic> cesiumCardList =
-                                    jsonDecode(cesiumCards as String)
-                                        as List<dynamic>;
-                                // ignore: avoid_function_literals_in_foreach_calls
-                                cesiumCardList.forEach((dynamic cesiumCard) {
-                                  importWalletToSharedPrefs(
-                                      cesiumCard as Map<String, dynamic>);
-                                });
-                              } else {
-                                importWalletToSharedPrefs(keys);
-                              }
-                              if (!mounted) {
-                                return;
-                              }
-                              c.replaceSnackbar(
-                                content: Text(
-                                  tr('wallet_imported'),
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                              );
-                              // ok, fetch the transactions & balance
-                              // fetchTransactions(context);
-                            } catch (e, stacktrace) {
-                              logger('Error importing wallet: $e');
-                              if (!mounted) {
-                                return;
-                              }
-                              c.replaceSnackbar(
-                                content: Text(
-                                  tr('error_importing_wallet'),
-                                  style: const TextStyle(color: Colors.red),
-                                ),
-                              );
-                              await Sentry.captureException(e,
-                                  stackTrace: stacktrace);
+                          try {
+                            final dynamic cesiumCards = keys['cesiumCards'];
+                            if (cesiumCards != null) {
+                              final List<dynamic> cesiumCardList =
+                                  jsonDecode(cesiumCards as String)
+                                      as List<dynamic>;
+                              // ignore: avoid_function_literals_in_foreach_calls
+                              cesiumCardList.forEach((dynamic cesiumCard) {
+                                importWalletToSharedPrefs(
+                                    cesiumCard as Map<String, dynamic>);
+                              });
+                            } else {
+                              importWalletToSharedPrefs(keys);
+                            }
+                            if (!mounted) {
                               return;
                             }
+                            c.replaceSnackbar(
+                              content: Text(
+                                tr('wallet_imported'),
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            );
+                            // ok, fetch the transactions & balance
+                            // fetchTransactions(context);
+                          } catch (e, stacktrace) {
+                            logger('Error importing wallet: $e');
+                            if (!mounted) {
+                              return;
+                            }
+                            c.replaceSnackbar(
+                              content: Text(
+                                tr('error_importing_wallet'),
+                                style: const TextStyle(color: Colors.red),
+                              ),
+                            );
+                            await Sentry.captureException(e,
+                                stackTrace: stacktrace);
+                            return;
                           }
+
                           if (!mounted) {
                             return;
                           }
                           Navigator.of(context).pop(true);
                         } catch (e, stacktrace) {
+                          logger(e.toString());
                           if (!mounted) {
                             return;
                           }
@@ -247,31 +243,6 @@ class _ImportDialogState extends State<ImportDialog> {
       }
     });
     return completer.future;
-  }
-
-  Future<bool?> confirmImport(BuildContext context) async {
-    final bool hasBalance =
-        context.read<MultiWalletTransactionCubit>().balance > 0;
-    return showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(tr('import_config_title')),
-          content: Text(tr(
-              hasBalance ? 'import_config_desc_danger' : 'import_config_desc')),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text(tr('cancel')),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: Text(tr('yes_import')),
-            ),
-          ],
-        );
-      },
-    );
   }
 }
 

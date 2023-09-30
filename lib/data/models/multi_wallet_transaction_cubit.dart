@@ -122,18 +122,15 @@ class MultiWalletTransactionCubit
 
   Future<List<Transaction>> fetchTransactions(
       NodeListCubit cubit, AppCubit appCubit,
-      {int retries = 5,
-      int? pageSize,
-      String? cursor,
-      String? myPubKey}) async {
-    myPubKey = _defKey(myPubKey);
-    final TransactionState currentState = _getStateOfWallet(myPubKey);
+      {int retries = 5, int? pageSize, String? cursor, String? pubKey}) async {
+    pubKey = _defKey(pubKey);
+    final TransactionState currentState = _getStateOfWallet(pubKey);
     Tuple2<Map<String, dynamic>?, Node> txDataResult;
     bool success = false;
     final bool isG1 = appCubit.currency == Currency.G1;
 
     for (int attempt = 0; attempt < retries; attempt++) {
-      txDataResult = await gvaHistoryAndBalance(myPubKey, pageSize, cursor);
+      txDataResult = await gvaHistoryAndBalance(pubKey, pageSize, cursor);
       final Node node = txDataResult.item2;
       logger(
           'Loading transactions using $node (pageSize: $pageSize, cursor: $cursor) --------------------');
@@ -168,8 +165,8 @@ class MultiWalletTransactionCubit
 
       // Check pending transactions
       final TransactionState newState =
-          _checkPendingTx(cursor, newParsedState, myPubKey, node);
-      _emitState(myPubKey, newState);
+          _checkPendingTx(cursor, newParsedState, pubKey, node);
+      _emitState(pubKey, newState);
 
       for (final Transaction tx in newState.transactions.reversed) {
         if (tx.type == TransactionType.received &&
@@ -184,7 +181,7 @@ class MultiWalletTransactionCubit
               isG1: isG1);
           final TransactionState notifState =
               newState.copyWith(latestReceivedNotification: tx.time);
-          _emitState(myPubKey, notifState);
+          _emitState(pubKey, notifState);
         }
         if (tx.type == TransactionType.sent &&
             newState.latestSentNotification.isBefore(tx.time)) {
@@ -198,7 +195,7 @@ class MultiWalletTransactionCubit
               isG1: isG1);
           final TransactionState notifState =
               newState.copyWith(latestSentNotification: tx.time);
-          _emitState(myPubKey, notifState);
+          _emitState(pubKey, notifState);
         }
       }
       return newState.transactions;

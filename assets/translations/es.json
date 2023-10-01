@@ -204,7 +204,7 @@
   "copied_to_clipboard": "Copiado al portapapeles",
   "pay_with_nfc_tooltip": "Para recibir un pago, simplemente acerca este dispositivo al otro monedero con NFC activado.",
   "import_wallet_from_clipboard": "Importar monedero desde el portapapeles",
-  "import_wallet_from_clipboard_desc": "Pega aquí el texto del backup previo de tu monedero Ğ1nkgo o una clave pública de otro tipo de monederos (como cesium)",
+  "import_wallet_from_clipboard_desc": "Pega aquí el texto del backup previo de tu monedero Ğ1nkgo o una clave pública de otro tipo de monederos (como Cesium)",
   "paste": "PEGAR",
   "import": "IMPORTAR",
   "select_import_method": "Selecciona el método de importación",

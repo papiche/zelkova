@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:l10n_esperanto/l10n_esperanto.dart';
 import 'package:lehttp_overrides/lehttp_overrides.dart';
 import 'package:once/once.dart';
 import 'package:provider/provider.dart';
@@ -20,12 +21,14 @@ import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:responsive_framework/utils/scroll_behavior.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sentry_logging/sentry_logging.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:uni_links/uni_links.dart';
 import 'package:workmanager/workmanager.dart';
 
 import 'app_bloc_observer.dart';
 import 'config/theme.dart';
 import 'custom_feedback_localization.dart';
+import 'data/eo_timeago_support.dart';
 import 'data/models/app_cubit.dart';
 import 'data/models/app_state.dart';
 import 'data/models/bottom_nav_cubit.dart';
@@ -88,6 +91,9 @@ void main() async {
   });
 
   Bloc.observer = AppBlocObserver();
+
+  timeago.setLocaleMessages('eo', EoMessages());
+  timeago.setLocaleMessages('eo_short', EoShortMessages());
 
   void appRunner() => runApp(ChangeNotifierProvider<SharedPreferencesHelper>(
         create: (BuildContext context) => SharedPreferencesHelper(),
@@ -450,7 +456,11 @@ class _GinkgoAppState extends State<GinkgoApp> {
                 themeMode: context.watch<ThemeCubit>().state.themeMode,
 
                 /// Localization stuff
-                localizationsDelegates: context.localizationDelegates,
+                localizationsDelegates: context.localizationDelegates
+                  ..addAll(<LocalizationsDelegate<dynamic>>[
+                    MaterialLocalizationsEo.delegate,
+                    CupertinoLocalizationsEo.delegate
+                  ]),
                 supportedLocales: context.supportedLocales,
                 locale: context.locale,
                 debugShowCheckedModeBanner: false,

@@ -911,6 +911,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.4"
+  l10n_esperanto:
+    dependency: "direct main"
+    description:
+      name: l10n_esperanto
+      sha256: "05a7aa7e8026c63aa25e476f556e3098e43bf1ab1e6987730d3bd301680df52b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.6"
   lehttp_overrides:
     dependency: "direct main"
     description:

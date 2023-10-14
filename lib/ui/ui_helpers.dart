@@ -158,7 +158,7 @@ NumberFormat currentNumberFormat(
     {required bool useSymbol, required bool isG1, required String locale}) {
   final NumberFormat currencyFormatter = NumberFormat.currency(
     symbol: useSymbol ? currentCurrency(isG1) : '',
-    locale: locale,
+    locale: eo(locale),
     decimalDigits: isG1 ? 2 : 3,
   );
   return currencyFormatter;
@@ -199,12 +199,19 @@ String formatKAmountInViewWithLocale(
 double convertAmount(bool isG1, double amount, double currentUd) =>
     isG1 ? amount / 100 : ((amount / 100) / currentUd);
 
+// NumberFormat does not work with esperanto nowadays, so we use
+// this fallback
+// https://en.wikipedia.org/wiki/Decimal_separator
+// The three most spoken international auxiliary languages, Ido, Esperanto, and
+// Interlingua, all use the comma as the decimal separator.
+String eo(String locale) => locale == 'eo' ? 'es' : locale;
+
 double parseToDoubleLocalized(
         {required String locale, required String number}) =>
-    NumberFormat.decimalPattern(locale).parse(number).toDouble();
+    NumberFormat.decimalPattern(eo(locale)).parse(number).toDouble();
 
 String localizeNumber(BuildContext context, double amount) =>
-    NumberFormat.decimalPattern(currentLocale(context)).format(amount);
+    NumberFormat.decimalPattern(eo(currentLocale(context))).format(amount);
 
 Future<Contact> contactFromResultSearch(Map<String, dynamic> record) async {
   final Map<String, dynamic> source = record['_source'] as Map<String, dynamic>;
@@ -465,7 +472,7 @@ double calculate({required String textInTerminal, required String decimalSep}) {
 }
 
 String decimalSep(BuildContext context) {
-  return NumberFormat.decimalPattern(currentLocale(context))
+  return NumberFormat.decimalPattern(eo(currentLocale(context)))
       .symbols
       .DECIMAL_SEP;
 }
@@ -502,7 +509,7 @@ String? validateDecimal(
     required String locale,
     required String? amount,
     required String Function(String s) tr}) {
-  final NumberFormat format = NumberFormat.decimalPattern(locale);
+  final NumberFormat format = NumberFormat.decimalPattern(eo(locale));
   if (amount == null || amount.isEmpty || amount.startsWith(sep)) {
     return null;
   }

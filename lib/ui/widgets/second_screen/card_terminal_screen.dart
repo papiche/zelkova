@@ -101,7 +101,9 @@ class CardTerminalScreen extends StatelessWidget {
                 Expanded(
                     child: GestureDetector(
                   onTap: () => copyPublicKeyToClipboard(context, duniterUri),
-                  child: QrImageView(data: duniterUri),
+                  // Re-add sha in the future, as people still uses old Cesium
+                  // Issue #69
+                  child: QrImageView(data: duniterUriNoSha),
                   //   size: smallScreen(context) ? 95.0 : 140.0)
                 ))
             ])),

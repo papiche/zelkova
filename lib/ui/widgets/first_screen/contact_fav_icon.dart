@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
+import '../../../data/models/payment_cubit.dart';
 import '../../contacts_cache.dart';
 import '../third_screen/contact_form_dialog.dart';
 
@@ -12,10 +13,12 @@ class ContactFavIcon extends StatelessWidget {
     super.key,
     required this.contact,
     required this.contactsCubit,
+    this.paymentCubit,
   });
 
   final ContactsCubit contactsCubit;
   final Contact contact;
+  final PaymentCubit? paymentCubit;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +44,9 @@ class ContactFavIcon extends StatelessWidget {
                       contact: contact,
                       onSave: (Contact c) {
                         context.read<ContactsCubit>().updateContact(c);
+                        if (paymentCubit != null) {
+                          paymentCubit!.selectUser(c);
+                        }
                         ContactsCache().saveContact(c);
                       });
                 },

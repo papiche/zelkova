@@ -179,7 +179,7 @@
   "txBalanceKey_title": "Bilanz",
   "txBalanceKey_desc": "In diesem Dialogfeld können Sie den aktuellen Kontostand Ihrer Ğ1nkgo-Brieftasche sehen.",
   "txRefreshKey_title": "Aktualisieren",
-  "payment_error_desc": "Ups! die Zahlung ist fehlgeschlagen. Mehr Details: {Error}",
+  "payment_error_desc": "Ups! die Zahlung ist fehlgeschlagen. Mehr Details: {error}",
   "exportMainKey_title": "Exportieren der Brieftasche",
   "feedback": "Haben Sie Probleme? Informieren Sie uns!",
   "payment_waiting_internet_title": "Kein Internet",

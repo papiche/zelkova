@@ -86,28 +86,27 @@ class CreditCardMini extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: Stack(children: <Widget>[
-                    if (inDevelopment)
-                      if (!SharedPreferencesHelper().isG1nkgoCard())
-                        Positioned(
-                          top: 60,
-                          right: 0,
-                          child: Visibility(
-                            visible: settingsVisible,
-                            child: FloatingActionButton(
-                              backgroundColor: Colors.transparent,
-                              elevation: 1,
-                              onPressed: () {
-                                SharedPreferencesHelper()
-                                    .selectCurrentWalletIndex(0);
-                                SharedPreferencesHelper()
-                                    .removeCesiumCard(cardIndex);
-                                Navigator.pop(context);
-                              },
-                              child:
-                                  const Icon(Icons.delete, color: Colors.white),
-                            ),
+                    if (!SharedPreferencesHelper().isG1nkgoCard())
+                      Positioned(
+                        top: 60,
+                        right: 0,
+                        child: Visibility(
+                          visible: settingsVisible,
+                          child: FloatingActionButton(
+                            backgroundColor: Colors.transparent,
+                            elevation: 1,
+                            onPressed: () {
+                              SharedPreferencesHelper()
+                                  .selectCurrentWalletIndex(0);
+                              SharedPreferencesHelper()
+                                  .removeCesiumCard(cardIndex);
+                              Navigator.pop(context);
+                            },
+                            child:
+                                const Icon(Icons.delete, color: Colors.white),
                           ),
                         ),
+                      ),
                     Positioned(
                       top: 0,
                       right: 0,

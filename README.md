@@ -210,7 +210,7 @@ DropdownMenuItem<Locale>(
 
 - ast: dixebral
 - ca: calbasi
-- de: FW
+- de: Andreas La Peral and FW
 - eo: flodef
 - eu: Anna Ayala Alcalá
 - fr: flodef, Hugo, Maaltir, poka and vincentux

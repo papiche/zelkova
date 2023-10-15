@@ -101,79 +101,65 @@ class CardDrawer extends StatelessWidget {
                     Navigator.pop(context);
                     final String gitLabToken = dotenv.get('GITLAB_TOKEN',
                         fallback: 'xjxXTv3ZRzKsc4SPTN4s');
-
-                    final FeedbackController betterFeedback =
-                        BetterFeedback.of(context);
-                    final MyCustomHttpClient httpClient =
-                        MyCustomHttpClient(http.Client());
-
-                    void listener() {
-                      if (!betterFeedback.isVisible &&
-                          httpClient.responseDataNotifier.value != null) {
-                        final Map<String, dynamic>? issueData =
-                            httpClient.responseDataNotifier.value;
-                        final String? issueUrl =
-                            issueData?['web_url'] as String?;
-                        if (issueUrl != null) {
-                          showDialog(
-                            context: GinkgoApp.navigatorKey.currentContext!,
-                            builder: (BuildContext dialogContext) {
-                              return AlertDialog(
-                                title: Text(tr('issueCreatedTitle')),
-                                content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    Text(tr('issueCreatedSuccessfully')),
-                                    if (issueUrl != null)
-                                      TextButton(
-                                        onPressed: () {
-                                          openUrl(issueUrl);
-                                        },
-                                        child: Text(tr('viewIssue')),
-                                      ),
-                                  ],
+                    final MyCustomHttpClient client =
+                        MyCustomHttpClient(http.Client(), (String? issueUrl,
+                            Map<String, dynamic> issueData, bool isSuccess) {
+                      if (isSuccess) {
+                        showDialog(
+                          context: GinkgoApp.navigatorKey.currentContext!,
+                          builder: (BuildContext dialogContext) {
+                            return AlertDialog(
+                              title: Text(tr('issueCreatedTitle')),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Text(tr('issueCreatedSuccessfully')),
+                                  if (issueUrl != null)
+                                    TextButton(
+                                      onPressed: () {
+                                        openUrl(issueUrl);
+                                      },
+                                      child: Text(tr('viewIssue')),
+                                    ),
+                                ],
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(dialogContext).pop();
+                                  },
+                                  child: Text(tr('close')),
                                 ),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(dialogContext).pop();
-                                    },
-                                    child: Text(tr('close')),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        } else {
-                          showDialog(
-                            context: GinkgoApp.navigatorKey.currentContext!,
-                            builder: (BuildContext dialogContext) {
-                              return AlertDialog(
-                                title: Text(tr('issueCreationErrorTitle')),
-                                content: Text(tr('issueCreationErrorMessage')),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(dialogContext).pop();
-                                    },
-                                    child: Text(tr('close')),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        }
+                              ],
+                            );
+                          },
+                        );
+                      } else {
+                        showDialog(
+                          context: GinkgoApp.navigatorKey.currentContext!,
+                          builder: (BuildContext dialogContext) {
+                            return AlertDialog(
+                              title: Text(tr('issueCreationErrorTitle')),
+                              content: Text(tr('issueCreationErrorMessage')),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(dialogContext).pop();
+                                  },
+                                  child: Text(tr('close')),
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       }
-                    }
-
-                    betterFeedback.addListener(listener);
-                    // TODO remove this
+                    });
 
                     BetterFeedback.of(context).showAndUploadToGitLab(
                         projectId: '663',
                         apiToken: gitLabToken,
                         gitlabUrl: 'git.duniter.org',
-                        client: httpClient);
+                        client: client);
                     /* BetterFeedback.of(context).showAndUploadToSentry(
                       // name: 'Foo Bar',
                       // email: 'foo_bar@example.com',
@@ -210,12 +196,10 @@ Future<void> tryCatch() async {
 }
 
 class MyCustomHttpClient extends http.BaseClient {
-  MyCustomHttpClient(this._inner);
+  MyCustomHttpClient(this._inner, this.onIssueCreated);
 
   final http.Client _inner;
-
-  final ValueNotifier<Map<String, dynamic>?> responseDataNotifier =
-      ValueNotifier<Map<String, dynamic>?>(null);
+  final IssueCreatedCallback onIssueCreated;
 
   @override
   Future<http.StreamedResponse> send(http.BaseRequest request) async {
@@ -224,13 +208,17 @@ class MyCustomHttpClient extends http.BaseClient {
     if (request.url.path.contains('/api/v4/projects/') &&
         request.url.path.contains('/issues')) {
       final String responseBody = await response.stream.bytesToString();
+
       final Map<String, dynamic> issueData =
           json.decode(responseBody) as Map<String, dynamic>;
+      final String? issueUrl = issueData['web_url'] as String?;
 
-      responseDataNotifier.value = issueData;
+      onIssueCreated(issueUrl, issueData,
+          response.statusCode == 200 || response.statusCode == 201);
 
       final Stream<List<int>> newStream =
           Stream<List<int>>.value(utf8.encode(responseBody));
+
       return http.StreamedResponse(newStream, response.statusCode,
           contentLength: response.contentLength,
           request: response.request,

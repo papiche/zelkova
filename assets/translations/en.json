@@ -229,8 +229,8 @@
   "accept": "ACCEPT",
   "incorrect_passwords": "Incorrect passwords",
   "issueCreatedTitle": "Issue Created",
-  "issueCreatedSuccessfully": "The issue has been successfully created.",
+  "issueCreatedSuccessfully": "An issue has been created with your feedback. Bookmark the issue link to track its progress. Thanks!",
   "viewIssue": "View Issue",
-  "issueCreationErrorTitle": "Error Creating Issue",
-  "issueCreationErrorMessage": "There was an error trying to create the issue."
+  "issueCreationErrorTitle": "Error Creating an Issue",
+  "issueCreationErrorMessage": "There was an error trying to create an issue with your feedback."
 }

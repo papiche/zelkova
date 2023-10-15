@@ -29,6 +29,8 @@ import 'app_bloc_observer.dart';
 import 'config/theme.dart';
 import 'custom_feedback_localization.dart';
 import 'data/eo_timeago_support.dart';
+import 'data/eu_timeago_support.dart';
+import 'data/gl_timeago_support.dart';
 import 'data/models/app_cubit.dart';
 import 'data/models/app_state.dart';
 import 'data/models/bottom_nav_cubit.dart';
@@ -94,6 +96,22 @@ void main() async {
 
   timeago.setLocaleMessages('eo', EoMessages());
   timeago.setLocaleMessages('eo_short', EoShortMessages());
+  timeago.setLocaleMessages('eu', EuMessages());
+  timeago.setLocaleMessages('eu_short', EuShortMessages());
+  timeago.setLocaleMessages('de', timeago.DeMessages());
+  timeago.setLocaleMessages('de_short', timeago.DeShortMessages());
+  timeago.setLocaleMessages('fr', timeago.FrMessages());
+  timeago.setLocaleMessages('fr_short', timeago.FrShortMessages());
+  timeago.setLocaleMessages('ca', timeago.CaMessages());
+  timeago.setLocaleMessages('ca_short', timeago.CaShortMessages());
+  timeago.setLocaleMessages('nl', timeago.NlMessages());
+  timeago.setLocaleMessages('nl_short', timeago.NlShortMessages());
+  timeago.setLocaleMessages('it', timeago.ItMessages());
+  timeago.setLocaleMessages('it_short', timeago.ItShortMessages());
+  timeago.setLocaleMessages('pt', timeago.PtBrMessages());
+  timeago.setLocaleMessages('pt_short', timeago.PtBrShortMessages());
+  timeago.setLocaleMessages('gl', GlMessages());
+  timeago.setLocaleMessages('gl_short', GlShortMessages());
 
   void appRunner() => runApp(ChangeNotifierProvider<SharedPreferencesHelper>(
         create: (BuildContext context) => SharedPreferencesHelper(),

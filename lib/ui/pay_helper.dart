@@ -183,7 +183,8 @@ Future<void> onKeyScanned(BuildContext context, String scannedKey) async {
   if (pay != null) {
     logger('Scanned $pay');
     final String result = extractPublicKey(pay.contact!.pubKey);
-    final Contact contact = Contact(pubKey: result);
+
+    final Contact contact = await ContactsCache().getContact(result);
     final double? currentAmount = paymentCubit.state.amount;
     paymentCubit.selectUser(contact);
     if (pay.amount != null) {

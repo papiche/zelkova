@@ -15,8 +15,6 @@ class PayRecipientWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PaymentCubit, PaymentState>(
         builder: (BuildContext context, PaymentState state) {
-      final ContactsCubit contactsCubit =
-          BlocProvider.of<ContactsCubit>(context);
       return Card(
           elevation: 4,
           shape: RoundedRectangleBorder(

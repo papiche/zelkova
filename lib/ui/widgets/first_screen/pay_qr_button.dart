@@ -29,10 +29,6 @@ class _PayQrButtonState extends State<PayQrButton> {
                 return;
               }
               await onKeyScanned(context, scannedKey);
-              if (!mounted) {
-                return;
-              }
-              //Navigator.pop(context);
             }
           },
           icon: const Row(children: <Widget>[

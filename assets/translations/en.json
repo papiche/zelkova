@@ -227,5 +227,10 @@
   "cesium_secret_phrase": "Secret phrase",
   "cesium_password": "Password",
   "accept": "ACCEPT",
-  "incorrect_passwords": "Incorrect passwords"
+  "incorrect_passwords": "Incorrect passwords",
+  "issueCreatedTitle": "Issue Created",
+  "issueCreatedSuccessfully": "The issue has been successfully created.",
+  "viewIssue": "View Issue",
+  "issueCreationErrorTitle": "Error Creating Issue",
+  "issueCreationErrorMessage": "There was an error trying to create the issue."
 }

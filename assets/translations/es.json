@@ -233,5 +233,10 @@
   "cesium_password": "Contraseña",
   "accept": "ACEPTAR",
   "incorrect_passwords": "Contraseñas incorrectas",
-  "card_name_changed": "El nombre de tu tarjeta ha sido actualizado. Recuerda que este nombre es público y permite a otr@s encontrarte"
+  "card_name_changed": "El nombre de tu tarjeta ha sido actualizado. Recuerda que este nombre es público y permite a otr@s encontrarte",
+  "issueCreatedTitle": "Issue Creada",
+  "issueCreatedSuccessfully": "La issue ha sido creada exitosamente.",
+  "viewIssue": "Ver Issue",
+  "issueCreationErrorTitle": "Error al Crear Issue",
+  "issueCreationErrorMessage": "Ocurrió un error al intentar crear la issue."
 }

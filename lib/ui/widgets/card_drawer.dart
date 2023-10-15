@@ -1,15 +1,22 @@
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:feedback_gitlab/feedback_gitlab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../../data/models/cesium_card.dart';
+import '../../main.dart';
 import '../../shared_prefs_helper.dart';
 import '../screens/sandbox.dart';
 import '../ui_helpers.dart';
 import 'first_screen/card_stack.dart';
+
+typedef IssueCreatedCallback = void Function(
+    String? issueUrl, Map<String, dynamic> issueData, bool isSuccess);
 
 class CardDrawer extends StatelessWidget {
   const CardDrawer({super.key});
@@ -17,7 +24,6 @@ class CardDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<CesiumCard> cards = SharedPreferencesHelper().cesiumCards;
-
     return FutureBuilder<PackageInfo>(
       future: PackageInfo.fromPlatform(),
       builder: (BuildContext context, AsyncSnapshot<PackageInfo> snapshot) {
@@ -94,11 +100,80 @@ class CardDrawer extends StatelessWidget {
                   onTap: () {
                     Navigator.pop(context);
                     final String gitLabToken = dotenv.get('GITLAB_TOKEN',
-                        fallback: 'FKb9GMueV4-hyDEWjfAf');
+                        fallback: 'xjxXTv3ZRzKsc4SPTN4s');
+
+                    final FeedbackController betterFeedback =
+                        BetterFeedback.of(context);
+                    final MyCustomHttpClient httpClient =
+                        MyCustomHttpClient(http.Client());
+
+                    void listener() {
+                      if (!betterFeedback.isVisible &&
+                          httpClient.responseDataNotifier.value != null) {
+                        final Map<String, dynamic>? issueData =
+                            httpClient.responseDataNotifier.value;
+                        final String? issueUrl =
+                            issueData?['web_url'] as String?;
+                        if (issueUrl != null) {
+                          showDialog(
+                            context: GinkgoApp.navigatorKey.currentContext!,
+                            builder: (BuildContext dialogContext) {
+                              return AlertDialog(
+                                title: Text(tr('issueCreatedTitle')),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Text(tr('issueCreatedSuccessfully')),
+                                    if (issueUrl != null)
+                                      TextButton(
+                                        onPressed: () {
+                                          openUrl(issueUrl);
+                                        },
+                                        child: Text(tr('viewIssue')),
+                                      ),
+                                  ],
+                                ),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(dialogContext).pop();
+                                    },
+                                    child: Text(tr('close')),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else {
+                          showDialog(
+                            context: GinkgoApp.navigatorKey.currentContext!,
+                            builder: (BuildContext dialogContext) {
+                              return AlertDialog(
+                                title: Text(tr('issueCreationErrorTitle')),
+                                content: Text(tr('issueCreationErrorMessage')),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(dialogContext).pop();
+                                    },
+                                    child: Text(tr('close')),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                      }
+                    }
+
+                    betterFeedback.addListener(listener);
+                    // TODO remove this
+
                     BetterFeedback.of(context).showAndUploadToGitLab(
                         projectId: '663',
                         apiToken: gitLabToken,
-                        gitlabUrl: 'git.duniter.org');
+                        gitlabUrl: 'git.duniter.org',
+                        client: httpClient);
                     /* BetterFeedback.of(context).showAndUploadToSentry(
                       // name: 'Foo Bar',
                       // email: 'foo_bar@example.com',
@@ -131,5 +206,40 @@ Future<void> tryCatch() async {
     throw StateError('Testing sentry with try catch');
   } catch (error, stackTrace) {
     await Sentry.captureException(error, stackTrace: stackTrace);
+  }
+}
+
+class MyCustomHttpClient extends http.BaseClient {
+  MyCustomHttpClient(this._inner);
+
+  final http.Client _inner;
+
+  final ValueNotifier<Map<String, dynamic>?> responseDataNotifier =
+      ValueNotifier<Map<String, dynamic>?>(null);
+
+  @override
+  Future<http.StreamedResponse> send(http.BaseRequest request) async {
+    final http.StreamedResponse response = await _inner.send(request);
+
+    if (request.url.path.contains('/api/v4/projects/') &&
+        request.url.path.contains('/issues')) {
+      final String responseBody = await response.stream.bytesToString();
+      final Map<String, dynamic> issueData =
+          json.decode(responseBody) as Map<String, dynamic>;
+
+      responseDataNotifier.value = issueData;
+
+      final Stream<List<int>> newStream =
+          Stream<List<int>>.value(utf8.encode(responseBody));
+      return http.StreamedResponse(newStream, response.statusCode,
+          contentLength: response.contentLength,
+          request: response.request,
+          headers: response.headers,
+          isRedirect: response.isRedirect,
+          persistentConnection: response.persistentConnection,
+          reasonPhrase: response.reasonPhrase);
+    }
+
+    return response;
   }
 }

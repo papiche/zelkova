@@ -231,5 +231,11 @@
   "cesium_password": "Mot de passe",
   "accept": "ACCEPTER",
   "incorrect_passwords": "Mots de passe incorrects",
-  "some_key_copied_to_clipboard": "La clé publique a été copiée dans le presse-papiers"
+  "some_key_copied_to_clipboard": "La clé publique a été copiée dans le presse-papiers",
+  "viewIssue": "Voir le ticket",
+  "issueCreationErrorTitle": "Erreur à la création du ticket",
+  "issueCreationErrorMessage": "Une erreur s'est produite en essayant de créer un ticket avec vos commentaires.",
+  "issueCreatedTitle": "Ticket créé",
+  "issueCreatedSuccessfully": "Un ticket a été créé avec vos commentaires. Ajoutez le lien du ticket à vos favoris pour suivre sa progression. Merci !",
+  "card_name_changed": "Le nom de votre carte a été mis à jour. Veuillez noter que ce nom est public et permet aux autres de vous trouver"
 }

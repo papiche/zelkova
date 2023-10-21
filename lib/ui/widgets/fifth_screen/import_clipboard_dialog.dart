@@ -2,6 +2,8 @@ import 'package:clipboard/clipboard.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../generic_qr_button.dart';
+
 class ImportClipboardDialog extends StatefulWidget {
   const ImportClipboardDialog({super.key, required this.onImport});
 
@@ -45,13 +47,23 @@ class _ImportClipboardDialogState extends State<ImportClipboardDialog> {
         ],
       ),
       actions: <Widget>[
-        TextButton(
-          child: Text(tr('import')),
-          onPressed: () {
-            Navigator.of(context).pop(_textController.text);
-            widget.onImport(_textController.text);
-          },
-        ),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              GenericQrButton(
+                onKeyScanned: (String key) {
+                  Navigator.of(context).pop(key);
+                  widget.onImport(key);
+                },
+              ),
+              TextButton(
+                child: Text(tr('import')),
+                onPressed: () {
+                  Navigator.of(context).pop(_textController.text);
+                  widget.onImport(_textController.text);
+                },
+              ),
+            ])
       ],
     );
   }

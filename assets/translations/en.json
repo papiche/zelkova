@@ -232,5 +232,8 @@
   "issueCreatedSuccessfully": "An issue has been created with your feedback. Bookmark the issue link to track its progress. Thanks!",
   "viewIssue": "View Issue",
   "issueCreationErrorTitle": "Error Creating an Issue",
-  "issueCreationErrorMessage": "There was an error trying to create an issue with your feedback."
+  "issueCreationErrorMessage": "There was an error trying to create an issue with your feedback.",
+  "contacts_sort_by_date": "Sort by date",
+  "contacts_sort_by_name": "Sort by name",
+  "payment_error_no_pass": "Incorrect passwords"
 }

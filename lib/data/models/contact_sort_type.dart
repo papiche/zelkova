@@ -1,0 +1,1 @@
+enum ContactsSortType { date, alpha }

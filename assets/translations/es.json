@@ -238,5 +238,8 @@
   "issueCreatedSuccessfully": "Una incidencia ha sido creada con tu problema. Guarda el enlace de la incidencia para seguir su progreso. ¡Gracias!",
   "viewIssue": "Ver la incidencia",
   "issueCreationErrorTitle": "Error al crear la incidencia",
-  "issueCreationErrorMessage": "Ocurrió un error al intentar crear una incidencia con el problema que describes."
+  "issueCreationErrorMessage": "Ocurrió un error al intentar crear una incidencia con el problema que describes.",
+  "contacts_sort_by_date": "Ordenar por fecha",
+  "contacts_sort_by_name": "Ordenar por nombre",
+  "payment_error_no_pass": "Contraseñas incorrectas"
 }

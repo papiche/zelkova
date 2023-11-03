@@ -4,6 +4,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import '../../g1/g1_helper.dart';
 import '../../ui/ui_helpers.dart';
 import 'contact.dart';
+import 'contact_sort_type.dart';
 import 'contact_state.dart';
 
 class ContactsCubit extends HydratedCubit<ContactsState> {
@@ -24,9 +25,21 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
   void addContact(Contact contact) {
     final Contact? nFound = _find(contact);
     if (nFound == null) {
+      final List<Contact> updatedContacts = List<Contact>.from(state.contacts)
+        ..add(contact);
+
+      List<Contact> updatedFilteredContacts;
+      if (state.order == ContactsSortType.alpha) {
+        updatedFilteredContacts = List<Contact>.from(state.filteredContacts)
+          ..add(contact);
+        sortContactList(updatedFilteredContacts);
+      } else {
+        updatedFilteredContacts = updatedContacts;
+      }
+
       emit(state.copyWith(
-        contacts: <Contact>[...state.contacts, contact],
-        filteredContacts: <Contact>[...state.filteredContacts, contact],
+        contacts: updatedContacts,
+        filteredContacts: updatedFilteredContacts,
       ));
     }
   }
@@ -91,6 +104,24 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
   void filterContacts(String query) {
     final List<Contact> contacts = search(query);
     emit(state.copyWith(filteredContacts: contacts));
+  }
+
+  ContactsSortType get order => state.order;
+
+  void sortContacts(ContactsSortType sortOrder) {
+    List<Contact> sortedContacts = List<Contact>.from(state.contacts);
+
+    if (sortOrder == ContactsSortType.alpha) {
+      sortContactList(sortedContacts);
+    } else if (sortOrder == ContactsSortType.date) {
+      sortedContacts = List<Contact>.from(state.contacts);
+    }
+
+    emit(state.copyWith(filteredContacts: sortedContacts, order: sortOrder));
+  }
+
+  void sortContactList(List<Contact> sortedContacts) {
+    sortedContacts.sort((Contact a, Contact b) => a.title.compareTo(b.title));
   }
 
   List<Contact> search(String initialQuery) {

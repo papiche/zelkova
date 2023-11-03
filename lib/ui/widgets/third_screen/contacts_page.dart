@@ -7,6 +7,7 @@ import 'package:share_plus/share_plus.dart';
 import '../../../data/models/bottom_nav_cubit.dart';
 import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
+import '../../../data/models/contact_sort_type.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../g1/g1_helper.dart';
 import '../../contacts_cache.dart';
@@ -44,16 +45,64 @@ class _ContactsPageState extends State<ContactsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: tr('search_contacts'),
-                border: const OutlineInputBorder(),
-              ),
-              onChanged: (String query) {
-                context.read<ContactsCubit>().filterContacts(query);
-              },
-            ),
+            Container(
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.background),
+                child: Row(children: <Widget>[
+                  Expanded(
+                      child: TextField(
+                          controller: _searchController,
+                          decoration: InputDecoration(
+                            hintText: tr('search_contacts'),
+                            border: const OutlineInputBorder(),
+                          ),
+                          onChanged: (String query) {
+                            context.read<ContactsCubit>().filterContacts(query);
+                          })),
+                  PopupMenuButton<ContactsSortType>(
+                    icon: const Icon(Icons.sort),
+                    onSelected: (ContactsSortType result) {
+                      context.read<ContactsCubit>().sortContacts(result);
+                    },
+                    itemBuilder: (BuildContext context) {
+                      final ContactsSortType currentOrder =
+                          context.read<ContactsCubit>().state.order;
+
+                      return <PopupMenuEntry<ContactsSortType>>[
+                        PopupMenuItem<ContactsSortType>(
+                          value: ContactsSortType.date,
+                          child: ListTile(
+                            leading: Icon(
+                              Icons.date_range,
+                              color: currentOrder == ContactsSortType.date
+                                  ? Colors.blue
+                                  : null,
+                            ),
+                            title: Text(tr('contacts_sort_by_date')),
+                            trailing: currentOrder == ContactsSortType.date
+                                ? const Icon(Icons.check)
+                                : null,
+                          ),
+                        ),
+                        PopupMenuItem<ContactsSortType>(
+                          value: ContactsSortType.alpha,
+                          child: ListTile(
+                            leading: Icon(
+                              Icons.sort_by_alpha,
+                              color: currentOrder == ContactsSortType.alpha
+                                  ? Colors.blue
+                                  : null,
+                            ),
+                            title: Text(tr('contacts_sort_by_name')),
+                            trailing: currentOrder == ContactsSortType.alpha
+                                ? const Icon(Icons.check)
+                                : null,
+                          ),
+                        ),
+                      ];
+                    },
+                  )
+                ])),
             const SizedBox(height: 20),
             if (cubit.state.filteredContacts.isEmpty)
               const NoElements(text: 'no_contacts')
@@ -66,7 +115,6 @@ class _ContactsPageState extends State<ContactsPage> {
                   return Slidable(
                       // Specify a key if the Slidable is dismissible.
                       key: ValueKey<int>(index),
-
                       // The start action pane is the one at the left or the top side.
                       startActionPane: ActionPane(
                         // A motion is a widget used to control how the pane animates.

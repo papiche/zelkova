@@ -16,9 +16,11 @@ import '../ui_helpers.dart';
 import 'form_error_widget.dart';
 
 class CesiumAddDialog extends StatefulWidget {
-  const CesiumAddDialog({super.key, required this.publicKey});
+  const CesiumAddDialog(
+      {super.key, required this.publicKey, required this.returnTo});
 
   final String publicKey;
+  final int returnTo;
 
   @override
   State<CesiumAddDialog> createState() => _CesiumAddDialogState();
@@ -137,7 +139,12 @@ class _CesiumAddDialogState extends State<CesiumAddDialog> {
                       SharedPreferencesHelper().selectCurrentWallet(card);
                     }
                     SharedPreferencesHelper().addCesiumVolatileCard(wallet);
-                    context.read<BottomNavCubit>().updateIndex(0);
+                    if (context.read<BottomNavCubit>().currentIndex !=
+                        widget.returnTo) {
+                      context
+                          .read<BottomNavCubit>()
+                          .updateIndex(widget.returnTo);
+                    }
                     _feedbackNotifier.value = '';
                     Navigator.of(context).pop(true);
                   }

@@ -9,6 +9,8 @@ class BottomNavCubit extends HydratedCubit<int> {
 
   void updateIndex(int index) => emit(index);
 
+  int get currentIndex => state;
+
   void getFirstScreen() => emit(0);
 
   void getSecondScreen() => emit(1);

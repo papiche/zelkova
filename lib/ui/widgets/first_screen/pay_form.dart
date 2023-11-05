@@ -7,12 +7,10 @@ import '../../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/payment_state.dart';
 import '../../../g1/currency.dart';
-import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
 import '../../pay_helper.dart';
 import '../../tutorial_keys.dart';
 import '../../ui_helpers.dart';
-import '../fifth_screen/import_dialog.dart';
 import '../form_error_widget.dart';
 import 'g1_textfield.dart';
 
@@ -108,24 +106,11 @@ class _PayFormState extends State<PayForm> {
                             color: sentColor,
                           ),
                           onPressed: () async {
-                            bool hasPass = false;
-                            if (!SharedPreferencesHelper().isG1nkgoCard() &&
-                                !SharedPreferencesHelper().hasVolatile()) {
-                              hasPass = await showImportCesiumWalletDialog(
-                                      context,
-                                      SharedPreferencesHelper().getPubKey()) ??
-                                  false;
-                            } else {
-                              hasPass = true;
-                            }
-                            if (hasPass) {
-                              if (mounted) {
-                                final Future<void> Function()? func =
-                                    _onPressed(
-                                        state, context, currency, currentUd);
-                                if (func != null) {
-                                  func();
-                                }
+                            if (mounted) {
+                              final Future<void> Function()? func = _onPressed(
+                                  state, context, currency, currentUd);
+                              if (func != null) {
+                                func();
                               }
                             }
                           },

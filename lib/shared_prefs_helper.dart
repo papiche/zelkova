@@ -97,6 +97,7 @@ class SharedPreferencesHelper with ChangeNotifier {
       if (isG1nkgoCard()) {
         return CesiumWallet.fromSeed(seedFromString(card.seed));
       } else {
+        // This should have the wallet loaded
         return cesiumVolatileCards[extractPublicKey(card.pubKey)]!;
       }
     } else {

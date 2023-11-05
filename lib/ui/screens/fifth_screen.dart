@@ -195,7 +195,7 @@ class _FifthScreenState extends State<FifthScreen> {
                                 title: 'import_key',
                                 icon: Icons.upload,
                                 onTap: () =>
-                                    showSelectImportMethodDialog(context)),
+                                    showSelectImportMethodDialog(context, 0)),
                           ]),
                       SwitchListTile(
                           title: Text(tr('expert_mode')),

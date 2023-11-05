@@ -246,7 +246,8 @@ class _ImportDialogState extends State<ImportDialog> {
   }
 }
 
-Future<void> showSelectImportMethodDialog(BuildContext context) async {
+Future<void> showSelectImportMethodDialog(
+    BuildContext context, int returnTo) async {
   final String? method = await showDialog<String>(
     context: context,
     builder: (BuildContext context) => const SelectImportMethodDialog(),
@@ -266,7 +267,7 @@ Future<void> showSelectImportMethodDialog(BuildContext context) async {
             if (validateKey(wallet)) {
               // It's a pubkey, let's think is a cesium wallet
               if (!SharedPreferencesHelper().has(wallet)) {
-                showImportCesiumWalletDialog(context, wallet);
+                showImportCesiumWalletDialog(context, wallet, returnTo);
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(tr('wallet_already_imported'))));
@@ -286,12 +287,12 @@ Future<void> showSelectImportMethodDialog(BuildContext context) async {
 }
 
 Future<bool?> showImportCesiumWalletDialog(
-    BuildContext context, String wallet) {
+    BuildContext context, String wallet, int returnTo) {
   return showDialog<bool>(
     context: context,
     barrierDismissible: false,
     builder: (BuildContext dialogContext) {
-      return CesiumAddDialog(publicKey: wallet);
+      return CesiumAddDialog(publicKey: wallet, returnTo: returnTo);
     },
   );
 }

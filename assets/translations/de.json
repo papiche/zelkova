@@ -93,7 +93,7 @@
   "intro_2_description": "Die Ğ1 ist unabhängig von jeglichen Regierungen oder Gesellschaften, ist ökologisch (durch niedrigen Energieverbrauch), ist transparent und gerecht allen Beteiligten gegenüber.",
   "intro_3_description": "Duniter ist ein dezentralisiertes Kryptowährungsnetzwerk, das die Leute ermöglicht, ihre eigene Ğ1 Währung zu schaffen.",
   "intro_4_description": "Wir helfen Ihnen, eine Ğ1-Brieftasche zu eröffnen, damit Sie Ihre Ğ1-Währung einfach und sicher auf Ihrem Gerät speichern und anderen ohne Zwischenwege überweisen können.",
-  "keys_tooltip": "Öffentliche und private Schlüssel sind in Ğ1 und in Duniter wie ein Schlüssel-Schloss-System. Dabei schließt der öffentliche Schlüssel ab, und nur der dazu passende private Schlüssel kann öffnen. Das ist eine sichere Weise, Transaktionen zu authentifizieren und zu überprüfen.",
+  "keys_tooltip": "Öffentliche und private Schlüssel sind in Ğ1 und in Duniter wie ein Schlüssel-Schloss-System. Dabei schliesst der öffentliche Schlüssel ab, und nur der dazu passende private Schlüssel kann öffnen. Das ist eine sichere Weise, Transaktionen zu authentifizieren und zu überprüfen.",
   "creditCardKey_button_desc": "Bitte beachten Sie, dass alles auf diesem Gerät gespeichert wird. Stellen Sie also sicher, dass Sie diese Anwendung nicht löschen, um den Verlust Ihrer Brieftasche zu vermeiden. Im Info-Bereich können Sie eine Sicherungskopie Ihrer Brieftasche erstellen, falls Ihr Gerät Probleme hat und Sie auf Ihre Brieftasche zugreifen müssen.",
   "info_links": "Links",
   "creditCardKey_button_title": "Dies ist Ihr Brieftasche!",
@@ -232,5 +232,10 @@
   "form_contact_name_validation_pub_key": "Bitte geben Sie einen gültigen öffentlichen Schlüssel ein",
   "contactsQrKey_desc": "Hier können Sie QR-Codes von anderen Personen scannen, um sie zu Ihren Kontakten hinzuzufügen.",
   "receiveMainKey_desc": "Dies funktioniert ähnlich wie die Verkaufsautomaten in den Geschäften, aber anstelle von Kreditkartenzahlungen verwenden wir QR-Codes. Hier können Sie QR-Codes generieren, die andere scannen können, um Zahlungen an Sie zu leisten.",
-  "txMainKey_desc": "Hier können Sie den Verlauf Ihrer Transaktionen einsehen. Wenn Ihre Brieftasche leer ist, um Ğ1 zu verwenden, können Sie Ihre Dienste auf Märkten oder Web-Plattformen wie gchange.fr, girala.net, unter anderem, anbieten. Wenn Sie bereits über Ğ1 verfügen, können Sie sie auf diese Ğ1nkgo-Brieftasche übertragen und mit ihrer Nutzung beginnen."
+  "txMainKey_desc": "Hier können Sie den Verlauf Ihrer Transaktionen einsehen. Wenn Ihre Brieftasche leer ist, um Ğ1 zu verwenden, können Sie Ihre Dienste auf Märkten oder Web-Plattformen wie gchange.fr, girala.net, unter anderem, anbieten. Wenn Sie bereits über Ğ1 verfügen, können Sie sie auf diese Ğ1nkgo-Brieftasche übertragen und mit ihrer Nutzung beginnen.",
+  "viewIssue": "Ausgabe anzeigen",
+  "issueCreationErrorTitle": "Fehler beim Erstellen einer Ausgabe",
+  "issueCreatedTitle": "Ausgabe erstellt",
+  "issueCreatedSuccessfully": "Es wurde eine Ausgabe mit Ihrem Feedback erstellt. Setzen Sie ein Lesezeichen für den Link zum Thema, um den Fortschritt zu verfolgen. Danke!",
+  "issueCreationErrorMessage": "Beim Versuch, ein Thema mit Ihrem Feedback zu erstellen, ist ein Fehler aufgetreten."
 }

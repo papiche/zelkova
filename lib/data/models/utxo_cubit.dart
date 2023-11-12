@@ -57,64 +57,55 @@ class UtxoCubit extends HydratedCubit<UtxoState> {
     }
   }
 
-  List<Utxo>? consume(double amount) {
-    final List<Utxo> selectedUtxos = <Utxo>[];
-    double coveredAmount = 0;
-    final Map<String, Utxo> updatedConsumedUtxos = <String, Utxo>{};
-
+  List<Utxo> consume(double amount) {
     if (state is UtxoLoaded) {
       final UtxoLoaded currentState = state as UtxoLoaded;
 
-      for (final Utxo utxo in currentState.utxos) {
-        if (coveredAmount >= amount) {
+      final List<Utxo> selectedUtxos = <Utxo>[];
+      double total = 0.0;
+
+      final List<Utxo> sortedUtxos = List<Utxo>.from(currentState.utxos)
+        ..sort((Utxo a, Utxo b) => b.amount.compareTo(a.amount));
+
+      for (final Utxo utxo in sortedUtxos) {
+        if (total >= amount) {
           break;
         }
-
-        double availableAmount = utxo.amount;
-        if (currentState.consumedUtxos.containsKey(utxo.txHash)) {
-          availableAmount = currentState.consumedUtxos[utxo.txHash]!.amount;
-          if (availableAmount == 0) {
-            // It's totally consumed, so skip it (but keep the record)
-            updatedConsumedUtxos[utxo.txHash] = utxo;
-            continue;
-          }
-        }
-
-        final double consumeAmount =
-            (amount - coveredAmount).clamp(0, availableAmount);
-        coveredAmount += consumeAmount;
-
-        // Update consumed UTXOs
-        final Utxo updatedUtxo =
-            currentState.consumedUtxos.containsKey(utxo.txHash)
-                ? currentState.consumedUtxos[utxo.txHash]!
-                    .copyWith(amount: availableAmount - consumeAmount)
-                : utxo.copyWith(amount: utxo.amount - consumeAmount);
-        updatedConsumedUtxos[utxo.txHash] = updatedUtxo;
-
-        if (consumeAmount > 0)
-          selectedUtxos.add(utxo.copyWith(amount: consumeAmount));
+        selectedUtxos.add(utxo);
+        total += utxo.amount;
       }
 
-      if (coveredAmount < amount) {
+      if (total < amount) {
         emit(UtxosError('Insufficient UTXOs to cover the requested amount'));
-        return null;
+        return <Utxo>[];
       }
 
-      emit(currentState.copyWith(
-        consumedUtxos: updatedConsumedUtxos,
-      ));
+      final List<Utxo> updatedUtxos = currentState.utxos
+          .where((Utxo utxo) => !selectedUtxos.contains(utxo))
+          .toList();
+
+      emit(currentState.copyWith(utxos: updatedUtxos));
       return selectedUtxos;
     } else {
       emit(UtxosError('Wrong utxo state'));
-      return null;
+      return <Utxo>[];
     }
   }
 
   void resetConsumedUtxos() {
     if (state is UtxoLoaded) {
-      // Emit a new state with an empty map for consumed UTXOs
       emit((state as UtxoLoaded).copyWith(consumedUtxos: <String, Utxo>{}));
+    } else {
+      emit(UtxosError('Wrong utxo state'));
+    }
+  }
+
+  void addUtxos(List<Utxo> newUtxos) {
+    if (state is UtxoLoaded) {
+      final UtxoLoaded currentState = state as UtxoLoaded;
+      final List<Utxo> updatedUtxos = List<Utxo>.from(currentState.utxos)
+        ..addAll(newUtxos);
+      emit(currentState.copyWith(utxos: updatedUtxos));
     } else {
       emit(UtxosError('Wrong utxo state'));
     }

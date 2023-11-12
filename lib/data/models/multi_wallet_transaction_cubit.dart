@@ -22,6 +22,7 @@ import 'transaction.dart';
 import 'transaction_state.dart';
 import 'transaction_type.dart';
 import 'transactions_bloc.dart';
+import 'utxo_cubit.dart';
 
 class MultiWalletTransactionCubit
     extends HydratedCubit<MultiWalletTransactionState> {
@@ -121,7 +122,7 @@ class MultiWalletTransactionCubit
   String _getTxKey(Transaction t) => '${t.to.pubKey}-${t.comment}-${t.amount}';
 
   Future<List<Transaction>> fetchTransactions(
-      NodeListCubit cubit, AppCubit appCubit,
+      NodeListCubit cubit, UtxoCubit utxoCubit, AppCubit appCubit,
       {int retries = 5, int? pageSize, String? cursor, String? pubKey}) async {
     pubKey = _defKey(pubKey);
     final TransactionState currentState = _getStateOfWallet(pubKey);

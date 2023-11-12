@@ -20,6 +20,7 @@ import '../data/models/cesium_card.dart';
 import '../data/models/contact.dart';
 import '../data/models/multi_wallet_transaction_cubit.dart';
 import '../data/models/node_list_cubit.dart';
+import '../data/models/utxo_cubit.dart';
 import '../g1/api.dart';
 import '../g1/currency.dart';
 import '../shared_prefs_helper.dart';
@@ -263,6 +264,7 @@ void initGetItAll() {
         MultiWalletTransactionCubit());
     getIt.registerSingleton<AppCubit>(AppCubit());
     getIt.registerSingleton<NodeListCubit>(NodeListCubit());
+    getIt.registerSingleton<UtxoCubit>(UtxoCubit());
   }
 }
 
@@ -290,12 +292,13 @@ Future<void> fetchTransactionsFromBackground([bool init = true]) async {
     loggerDev('Initialized background context');
     final GetIt getIt = GetIt.instance;
     final AppCubit appCubit = getIt.get<AppCubit>();
+    final UtxoCubit utxoCubit = getIt.get<UtxoCubit>();
     final MultiWalletTransactionCubit transCubit =
         getIt.get<MultiWalletTransactionCubit>();
     final NodeListCubit nodeListCubit = getIt.get<NodeListCubit>();
     for (final CesiumCard card in SharedPreferencesHelper().cards) {
       loggerDev('Fetching transactions for ${card.pubKey} in background');
-      transCubit.fetchTransactions(nodeListCubit, appCubit,
+      transCubit.fetchTransactions(nodeListCubit, utxoCubit, appCubit,
           pubKey: card.pubKey);
     }
     if (inDevelopment) {
@@ -315,8 +318,10 @@ Future<void> fetchTransactions(BuildContext context) async {
   final MultiWalletTransactionCubit transCubit =
       context.read<MultiWalletTransactionCubit>();
   final NodeListCubit nodeListCubit = context.read<NodeListCubit>();
+  final UtxoCubit utxoCubit = context.read<UtxoCubit>();
   for (final CesiumCard card in SharedPreferencesHelper().cards) {
-    transCubit.fetchTransactions(nodeListCubit, appCubit, pubKey: card.pubKey);
+    transCubit.fetchTransactions(nodeListCubit, utxoCubit, appCubit,
+        pubKey: card.pubKey);
   }
 }
 

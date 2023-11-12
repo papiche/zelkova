@@ -662,6 +662,18 @@ Future<Tuple2<String?, Node>> gvaNick(String pubKey) async {
       pubKey, (Gva gva) => gva.getUsername(extractPublicKey(pubKey)));
 }
 
+Future<Tuple2<Map<String, dynamic>?, Node>> gvaFetchUtxosOfScript(
+    {required String pubKeyRaw,
+    int pageSize = 100,
+    String? cursor,
+    int? amount}) {
+  final String pubKey = extractPublicKey(pubKeyRaw);
+  return gvaFunctionWrapper<Map<String, dynamic>>(
+      pubKey,
+      (Gva gva) => gva.fetchUtxosOfScript(
+          script: pubKey, pageSize: pageSize, amount: amount, cursor: cursor));
+}
+
 Future<Tuple2<T?, Node>> gvaFunctionWrapper<T>(
     String pubKey, Future<T?> Function(Gva) specificFunction) async {
   final List<Node> nodes = _getBestGvaNodes();

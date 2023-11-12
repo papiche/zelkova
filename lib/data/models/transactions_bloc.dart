@@ -10,6 +10,7 @@ import 'app_cubit.dart';
 import 'multi_wallet_transaction_cubit.dart';
 import 'node_list_cubit.dart';
 import 'transaction.dart';
+import 'utxo_cubit.dart';
 
 part 'transactions_state.dart';
 
@@ -29,6 +30,7 @@ class TransactionsBloc {
   late AppCubit appCubit;
   late NodeListCubit nodeListCubit;
   late MultiWalletTransactionCubit transCubit;
+  late UtxoCubit utxoCubit;
 
   static const int _pageSize = 20;
 
@@ -71,10 +73,11 @@ class TransactionsBloc {
   }
 
   void init(MultiWalletTransactionCubit transCubit, NodeListCubit nodeListCubit,
-      AppCubit appCubit) {
+      AppCubit appCubit, UtxoCubit utxoCubit) {
     this.appCubit = appCubit;
     this.transCubit = transCubit;
     this.nodeListCubit = nodeListCubit;
+    this.utxoCubit = utxoCubit;
   }
 
   Stream<TransactionsState> _fetchTransactionsList(String? pageKey) async* {
@@ -98,8 +101,8 @@ class TransactionsBloc {
           itemList: transCubit.transactions,
         );
       } else {
-        final List<Transaction> fetchedItems =
-            await transCubit.fetchTransactions(nodeListCubit, appCubit,
+        final List<Transaction> fetchedItems = await transCubit
+            .fetchTransactions(nodeListCubit, utxoCubit, appCubit,
                 cursor: pageKey, pageSize: _pageSize);
 
         final bool isLastPage = fetchedItems.length < _pageSize;

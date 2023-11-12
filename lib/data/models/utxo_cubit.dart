@@ -101,15 +101,22 @@ class UtxoCubit extends HydratedCubit<UtxoState> {
         return null;
       }
 
-      // Emit a new state
       emit(currentState.copyWith(
         consumedUtxos: updatedConsumedUtxos,
-        // Update other fields if necessary
       ));
       return selectedUtxos;
     } else {
       emit(UtxosError('Wrong utxo state'));
       return null;
+    }
+  }
+
+  void resetConsumedUtxos() {
+    if (state is UtxoLoaded) {
+      // Emit a new state with an empty map for consumed UTXOs
+      emit((state as UtxoLoaded).copyWith(consumedUtxos: <String, Utxo>{}));
+    } else {
+      emit(UtxosError('Wrong utxo state'));
     }
   }
 }

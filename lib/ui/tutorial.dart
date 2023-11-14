@@ -25,7 +25,7 @@ abstract class Tutorial {
           (TargetFocus target, TapDownDetails tapDetails) {},
       onClickOverlay: (TargetFocus target) {},
       onSkip: () {
-        context.read<AppCubit>().onFinishTutorial(tutorialId);
+        return context.read<AppCubit>().onFinishTutorial(tutorialId);
       },
     );
   }

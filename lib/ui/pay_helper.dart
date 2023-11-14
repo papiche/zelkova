@@ -88,7 +88,10 @@ Future<void> payWithRetry(
           return;
         } else {
           final PayResult result = await pay(
-              to: contactPubKey, comment: comment, amount: convertedAmount);
+              to: contactPubKey,
+              comment: comment,
+              amount: convertedAmount,
+              useMempool: true);
           final Transaction pending = tx.copyWith(
               debugInfo:
                   'Node used: ${result.node != null ? result.node!.url : 'unknown'}');

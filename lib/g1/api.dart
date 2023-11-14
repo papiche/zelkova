@@ -568,7 +568,7 @@ Future<PayResult> pay(
     {required String to,
     required double amount,
     String? comment,
-    bool? useMempool}) async {
+    bool useMempool = false}) async {
   try {
     final SelectedGvaNode selected = getGvaNode();
 
@@ -584,7 +584,7 @@ Future<PayResult> pay(
           amount: amount,
           comment: comment ?? '',
           cesiumSeed: wallet.seed,
-          useMempool: useMempool ?? false,
+          useMempool: useMempool,
           raiseException: true);
       logger('GVA replied with "$response"');
       return PayResult(message: response, node: selected);

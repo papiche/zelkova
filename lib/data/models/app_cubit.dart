@@ -48,9 +48,10 @@ class AppCubit extends HydratedCubit<AppState> {
     emit(state.copyWith(expertMode: value));
   }
 
-  void onFinishTutorial(String tutorialId) {
+  bool onFinishTutorial(String tutorialId) {
     state.tutorials[tutorialId] = true;
     emit(state.copyWith(tutorials: state.tutorials));
+    return true;
   }
 
   bool wasTutorialShown(String tutorialId) {

@@ -3,7 +3,7 @@ description: A Ğinkgo light wallet
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
-publish_to: "none" # Remove this line if you wish to publish to pub.dev
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -18,7 +18,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.2
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -39,11 +39,11 @@ dependencies:
   qr_flutter: ^4.0.0
   introduction_screen: ^3.1.6
   responsive_framework: ^0.2.0
-  #durt: ^0.1.6
-  durt:
-    path: ../durt
-      #git:
-    #   url: https://git.duniter.org/vjrj/durt.git
+  durt: ^0.1.7
+  # durt:
+  #   # path: ../durt
+  #   git:
+  #     url: https://git.duniter.org/clients/durt
   flutter_neumorphic:
     git:
       url: https://github.com/den0206/Flutter-Neumorphic.git

@@ -221,7 +221,7 @@
   "qr_scanner_flash_off": "FLASH OFF",
   "qr_scanner_title": "Scan QR Code",
   "display_amounts_du": "Display amounts in DU",
-  "wallet_already_imported": "Wallet already imported",
+  "wallet_already_imported": "Wallet/s already imported",
   "card_theme_select": "Select a theme for your card",
   "cesium_auth_dialog_title": "Enter your credentials for {key}",
   "cesium_secret_phrase": "Secret phrase",
@@ -235,5 +235,9 @@
   "issueCreationErrorMessage": "There was an error trying to create an issue with your feedback.",
   "contacts_sort_by_date": "Sort by date",
   "contacts_sort_by_name": "Sort by name",
-  "payment_error_no_pass": "Incorrect passwords"
+  "payment_error_no_pass": "Incorrect passwords",
+  "wallets_imported": "{number} wallet/s imported",
+  "please_confirm_delete": "Are you sure?",
+  "please_confirm_delete_desc": "Are you sure you want to delete this wallet?",
+  "please_confirm_delete_desc_g1nkgo": "Are you sure you want to delete this wallet? If you do it and you don't have a backup, you will lose access to it and the funds stored in it."
 }

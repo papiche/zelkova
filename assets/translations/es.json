@@ -226,7 +226,7 @@
   "qr_scanner_flash_off": "FLASH OFF",
   "qr_scanner_title": "Escanea un QR Code",
   "display_amounts_du": "Mostrar importes en DU",
-  "wallet_already_imported": "Monedero ya importado",
+  "wallet_already_imported": "Monedero/s ya importado/s",
   "card_theme_select": "Selecciona un tema para tu tarjeta",
   "cesium_auth_dialog_title": "Ingrese la credenciales de {key}",
   "cesium_secret_phrase": "Frase secreta",
@@ -241,5 +241,9 @@
   "issueCreationErrorMessage": "Ocurrió un error al intentar crear una incidencia con el problema que describes.",
   "contacts_sort_by_date": "Ordenar por fecha",
   "contacts_sort_by_name": "Ordenar por nombre",
-  "payment_error_no_pass": "Contraseñas incorrectas"
+  "payment_error_no_pass": "Contraseñas incorrectas",
+  "wallets_imported": "{number} monedero/s importados",
+  "please_confirm_delete": "¿Estás seguro/a?",
+  "please_confirm_delete_desc": "¿Estás seguro/a de que quieres borrar este monedero?",
+  "please_confirm_delete_desc_g1nkgo": "¿Estás seguro/a de que quieres borrar este monedero? Si lo haces y no tienes un backup, perderás el acceso a este monedero y los fondos almacenados en él."
 }

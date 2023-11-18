@@ -86,27 +86,51 @@ class CreditCardMini extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: Stack(children: <Widget>[
-                    if (!SharedPreferencesHelper().isG1nkgoCard())
-                      Positioned(
-                        top: 60,
-                        right: 0,
-                        child: Visibility(
-                          visible: settingsVisible,
-                          child: FloatingActionButton(
-                            backgroundColor: Colors.transparent,
-                            elevation: 1,
-                            onPressed: () {
-                              SharedPreferencesHelper()
-                                  .selectCurrentWalletIndex(0);
-                              SharedPreferencesHelper()
-                                  .removeCesiumCard(cardIndex);
-                              Navigator.pop(context);
-                            },
-                            child:
-                                const Icon(Icons.delete, color: Colors.white),
-                          ),
+                    // if (!SharedPreferencesHelper().isG1nkgoCard())
+                    Positioned(
+                      top: 60,
+                      right: 0,
+                      child: Visibility(
+                        visible: settingsVisible,
+                        child: FloatingActionButton(
+                          backgroundColor: Colors.transparent,
+                          elevation: 1,
+                          onPressed: () {
+                            showDialog<bool>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text(tr('please_confirm_delete')),
+                                    content: Text(tr(SharedPreferencesHelper()
+                                            .isG1nkgoCard()
+                                        ? 'please_confirm_delete_desc_g1nkgo'
+                                        : 'please_confirm_delete_desc')),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(false),
+                                        child: Text(tr('cancel')),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          if (SharedPreferencesHelper()
+                                              .isG1nkgoCard()) {}
+                                          SharedPreferencesHelper()
+                                              .selectCurrentWalletIndex(0);
+                                          SharedPreferencesHelper()
+                                              .removeCesiumCard(cardIndex);
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text(tr('accept')),
+                                      ),
+                                    ],
+                                  );
+                                });
+                          },
+                          child: const Icon(Icons.delete, color: Colors.white),
                         ),
                       ),
+                    ),
                     Positioned(
                       top: 0,
                       right: 0,

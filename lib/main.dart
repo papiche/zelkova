@@ -43,7 +43,6 @@ import 'data/models/node_type.dart';
 import 'data/models/payment_cubit.dart';
 import 'data/models/theme_cubit.dart';
 import 'data/models/transaction_cubit_remove.dart';
-import 'data/models/utxo_cubit.dart';
 import 'g1/api.dart';
 import 'g1/g1_helper.dart';
 import 'shared_prefs_helper.dart';
@@ -149,8 +148,8 @@ void main() async {
                 create: (BuildContext context) => NodeListCubit()),
             BlocProvider<ContactsCubit>(
                 create: (BuildContext context) => ContactsCubit()),
-            BlocProvider<UtxoCubit>(
-                create: (BuildContext context) => UtxoCubit()),
+            /* BlocProvider<UtxoCubit>(
+                create: (BuildContext context) => UtxoCubit()), */
             // TODO(vjrj): Remove when clean the state of this after upgrades
             BlocProvider<TransactionCubitRemove>(
                 create: (BuildContext context) => TransactionCubitRemove()),

@@ -77,7 +77,7 @@ class TransactionListItem extends StatelessWidget {
         iconColor = grey;
         break;
       case TransactionType.pending:
-        icon = Icons.schedule;
+        icon = Icons.flight_takeoff;
         iconColor = grey;
         break;
       case TransactionType.sending:

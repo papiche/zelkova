@@ -610,10 +610,11 @@ Future<PayResult> pay(
 SelectedGvaNode getGvaNode() {
   final List<Node> nodes = _getBestGvaNodes();
   if (nodes.isNotEmpty) {
-    // reorder list to use others
-    nodes.shuffle();
-    // Reference of working proxy 'https://g1demo.comunes.net/proxy/g1v1.p2p.legal/gva/';
-    final Node node = nodes.first;
+    final Node? currentGvaNode = NodeManager().getCurrentGvaNode();
+    final Node node = currentGvaNode ?? nodes.first;
+    if (currentGvaNode == null) {
+      NodeManager().setCurrentGvaNode(node);
+    }
     return SelectedGvaNode(url: proxyfyNode(node.url), node: node);
   } else {
     throw Exception(
@@ -677,6 +678,14 @@ Future<Tuple2<Map<String, dynamic>?, Node>> gvaFetchUtxosOfScript(
 Future<Tuple2<T?, Node>> gvaFunctionWrapper<T>(
     String pubKey, Future<T?> Function(Gva) specificFunction) async {
   final List<Node> nodes = _getBestGvaNodes();
+
+  // Try first the current GVA node
+  final Node? currentGvaNode = NodeManager().getCurrentGvaNode();
+  if (currentGvaNode != null) {
+    nodes.remove(currentGvaNode);
+    nodes.insert(0, currentGvaNode);
+  }
+
   for (int i = 0; i < nodes.length; i++) {
     final Node node = nodes[i];
     try {
@@ -705,17 +714,21 @@ List<Node> _getBestGvaNodes() {
       0,
       (int max, Node node) =>
           node.currentBlock > max ? node.currentBlock : max);
-  final List<Node> nodes = fnodes
+  final List<Node> nodesAtMaxBlock = fnodes
       .where((Node node) => node.currentBlock == maxCurrentBlock)
       .toList();
-  nodes.sort((Node a, Node b) => a.latency.compareTo(b.latency));
-  if (nodes.isEmpty) {
-    // Fallback
-    nodes.addAll(defaultGvaNodes);
+  nodesAtMaxBlock.sort((Node a, Node b) {
+    final int errorComparison = a.errors.compareTo(b.errors);
+    if (errorComparison != 0) {
+      return errorComparison;
+    } else {
+      return a.latency.compareTo(b.latency);
+    }
+  });
+  if (nodesAtMaxBlock.isEmpty) {
+    nodesAtMaxBlock.addAll(defaultGvaNodes);
   }
-  // Don't shuffle for now
-  // nodes.shuffle();
-  return nodes;
+  return nodesAtMaxBlock;
 }
 
 class NodeCheck {
@@ -726,8 +739,7 @@ class NodeCheck {
 }
 
 void increaseNodeErrors(NodeType type, Node node) {
-  logger('Increasing node errors of ${node.url} (${node.errors})');
-  NodeManager().updateNode(type, node.copyWith(errors: node.errors + 1));
+  NodeManager().increaseNodeErrors(type, node);
 }
 
 // http://doc.e-is.pro/cesium-plus-pod/REST_API.html#userprofile

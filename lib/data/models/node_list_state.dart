@@ -15,6 +15,7 @@ class NodeListState extends Equatable {
       {List<Node>? duniterNodes,
       List<Node>? cesiumPlusNodes,
       List<Node>? gvaNodes,
+      this.currentGvaNode,
       bool? isLoading})
       : duniterNodes = duniterNodes ?? defaultDuniterNodes,
         cesiumPlusNodes = cesiumPlusNodes ?? defaultCesiumPlusNodes,
@@ -28,6 +29,7 @@ class NodeListState extends Equatable {
   final List<Node> cesiumPlusNodes;
   final List<Node> gvaNodes;
   final bool isLoading;
+  final Node? currentGvaNode;
 
   @override
   List<Object?> get props =>

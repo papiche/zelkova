@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/models/contact.dart';
-import '../../../data/models/node_list_cubit.dart';
 import '../../../data/models/node_type.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/transaction.dart';
@@ -15,6 +14,8 @@ import '../../../shared_prefs_helper.dart';
 import '../data/models/app_cubit.dart';
 import '../data/models/bottom_nav_cubit.dart';
 import '../data/models/multi_wallet_transaction_cubit.dart';
+import '../data/models/node.dart';
+import '../data/models/node_manager.dart';
 import '../data/models/payment_state.dart';
 import '../g1/currency.dart';
 import '../g1/g1_helper.dart';
@@ -112,10 +113,6 @@ Future<void> payWithRetry(
               txCubit.updatePendingTransaction(pending);
             }
           } else {
-            /* this retry didn't work
-        if (!useMempool) {
-          throw RetryException();
-        } */
             paymentCubit.pendingPayment();
             if (!context.mounted) {
               return;
@@ -130,7 +127,8 @@ Future<void> payWithRetry(
                     : tr('payment_error_desc', namedArgs: <String, String>{
                         // We try to translate the error, like "insufficient balance"
                         'error': tr(result.message)
-                      }));
+                      }),
+                result.node!.node);
             if (!isRetry) {
               txCubit.insertPendingTransaction(
                   pending.copyWith(type: TransactionType.failed));
@@ -191,11 +189,12 @@ Future<bool?> _confirmSend(BuildContext context, String amount, String to,
   );
 }
 
-void showPayError(BuildContext context, String desc) {
+void showPayError(BuildContext context, String desc, [Node? node]) {
   showTooltip(context, tr('payment_error'), desc);
   context.read<PaymentCubit>().sentFailed();
-  // Shuffle the nodes so we can retry with other
-  context.read<NodeListCubit>().shuffle(NodeType.gva, true);
+  if (node != null) {
+    NodeManager().increaseNodeErrors(NodeType.gva, node);
+  }
 }
 
 const Duration paymentTimeRange = Duration(minutes: 60);

@@ -22,7 +22,6 @@ import 'transaction.dart';
 import 'transaction_state.dart';
 import 'transaction_type.dart';
 import 'transactions_bloc.dart';
-import 'utxo_cubit.dart';
 
 class MultiWalletTransactionCubit
     extends HydratedCubit<MultiWalletTransactionState> {
@@ -122,7 +121,7 @@ class MultiWalletTransactionCubit
   String _getTxKey(Transaction t) => '${t.to.pubKey}-${t.comment}-${t.amount}';
 
   Future<List<Transaction>> fetchTransactions(
-      NodeListCubit cubit, UtxoCubit utxoCubit, AppCubit appCubit,
+      NodeListCubit cubit, AppCubit appCubit,
       {int retries = 5, int? pageSize, String? cursor, String? pubKey}) async {
     pubKey = _defKey(pubKey);
     final TransactionState currentState = _getStateOfWallet(pubKey);
@@ -165,6 +164,8 @@ class MultiWalletTransactionCubit
       _emitState(pubKey, newState);
 
       TransactionState currentModifiedState = newState;
+
+      resetCurrentGvaNode(newState, cubit);
 
       logger(
           'Last received notification: ${currentModifiedState.latestReceivedNotification.toIso8601String()})}');
@@ -218,6 +219,32 @@ class MultiWalletTransactionCubit
     }
     // This should not be executed
     return <Transaction>[];
+  }
+
+  void resetCurrentGvaNode(TransactionState newState, NodeListCubit cubit) {
+    final List<Transaction> pendingTransactions = newState.pendingTransactions;
+
+    bool shouldResetGvaNode = pendingTransactions.isEmpty ||
+        pendingTransactions
+            .every((Transaction transaction) => transaction.isFailed);
+
+    if (!shouldResetGvaNode) {
+      final Transaction? oldestPendingTransaction = pendingTransactions
+              .isNotEmpty
+          ? pendingTransactions.reduce(
+              (Transaction a, Transaction b) => a.time.isBefore(b.time) ? a : b)
+          : null;
+
+      if (oldestPendingTransaction != null &&
+          oldestPendingTransaction.time
+              .isBefore(DateTime.now().subtract(const Duration(hours: 1)))) {
+        shouldResetGvaNode = true;
+      }
+    }
+
+    if (shouldResetGvaNode) {
+      cubit.resetCurrentGvaNode();
+    }
   }
 
   TransactionState _checkPendingTx(

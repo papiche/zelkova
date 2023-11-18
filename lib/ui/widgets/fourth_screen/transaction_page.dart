@@ -16,7 +16,6 @@ import '../../../data/models/node_list_cubit.dart';
 import '../../../data/models/theme_cubit.dart';
 import '../../../data/models/transaction.dart';
 import '../../../data/models/transactions_bloc.dart';
-import '../../../data/models/utxo_cubit.dart';
 import '../../../g1/currency.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
@@ -44,7 +43,6 @@ class _TransactionsAndBalanceWidgetState
   late AppCubit appCubit;
   late NodeListCubit nodeListCubit;
   late MultiWalletTransactionCubit transCubit;
-  late UtxoCubit utxoCubit;
 
   final PagingController<String?, Transaction> _pagingController =
       PagingController<String?, Transaction>(firstPageKey: null);
@@ -64,8 +62,7 @@ class _TransactionsAndBalanceWidgetState
     appCubit = context.read<AppCubit>();
     transCubit = context.read<MultiWalletTransactionCubit>();
     nodeListCubit = context.read<NodeListCubit>();
-    utxoCubit = context.read<UtxoCubit>();
-    _bloc.init(transCubit, nodeListCubit, appCubit, utxoCubit);
+    _bloc.init(transCubit, nodeListCubit, appCubit);
     _pagingController.addPageRequestListener((String? cursor) {
       _bloc.onPageRequestSink.add(cursor);
     });
@@ -117,7 +114,7 @@ class _TransactionsAndBalanceWidgetState
         _refresh();
       } catch (e) {
         logger('Failed via _refresh, lets try a basic fetchTransactions');
-        transCubit.fetchTransactions(nodeListCubit, utxoCubit, appCubit);
+        transCubit.fetchTransactions(nodeListCubit, appCubit);
       }
     });
     tutorial = FourthTutorial(context);

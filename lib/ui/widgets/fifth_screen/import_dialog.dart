@@ -80,10 +80,30 @@ class _ImportDialogState extends State<ImportDialog> {
                                   jsonDecode(cesiumCards as String)
                                       as List<dynamic>;
                               // ignore: avoid_function_literals_in_foreach_calls
-                              cesiumCardList.forEach((dynamic cesiumCard) {
-                                importWalletToSharedPrefs(
+                              int imported = 0;
+                              for (final dynamic cesiumCard in cesiumCardList) {
+                                final bool result = importWalletToSharedPrefs(
                                     cesiumCard as Map<String, dynamic>);
-                              });
+                                if (result) {
+                                  imported += 1;
+                                }
+                              }
+                              c.replaceSnackbar(
+                                content: Text(
+                                  imported == 0
+                                      ? tr('wallet_already_imported')
+                                      : tr('wallets_imported',
+                                          namedArgs: <String, String>{
+                                              'number': imported.toString()
+                                            }),
+                                  style: TextStyle(
+                                      color: imported == 0
+                                          ? Colors.red
+                                          : Colors.white),
+                                ),
+                              );
+                              Navigator.of(context).pop(true);
+                              return;
                             } else {
                               importWalletToSharedPrefs(keys);
                             }
@@ -147,13 +167,17 @@ class _ImportDialogState extends State<ImportDialog> {
         });
   }
 
-  void importWalletToSharedPrefs(Map<String, dynamic> cesiumCard) {
+  bool importWalletToSharedPrefs(Map<String, dynamic> cesiumCard) {
     final dynamic pub = cesiumCard['pub'];
-    SharedPreferencesHelper().addCesiumCard(SharedPreferencesHelper()
-        .buildCesiumCard(
-            pubKey:
-                pub != null ? pub as String : cesiumCard['pubKey'] as String,
-            seed: cesiumCard['seed'] as String));
+    final String pubKey =
+        pub != null ? pub as String : cesiumCard['pubKey'] as String;
+    if (!SharedPreferencesHelper().has(pubKey)) {
+      SharedPreferencesHelper().addCesiumCard(SharedPreferencesHelper()
+          .buildCesiumCard(pubKey: pubKey, seed: cesiumCard['seed'] as String));
+      return true;
+    } else {
+      return false;
+    }
   }
 
   Future<String> _importWallet(BuildContext context) async {

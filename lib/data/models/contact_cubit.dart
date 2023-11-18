@@ -108,6 +108,10 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
 
   ContactsSortType get order => state.order;
 
+  void sortContactsAsStored() {
+    sortContacts(order);
+  }
+
   void sortContacts(ContactsSortType sortOrder) {
     List<Contact> sortedContacts = List<Contact>.from(state.contacts);
 

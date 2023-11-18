@@ -40,6 +40,7 @@ class _ContactsPageState extends State<ContactsPage> {
   @override
   Widget build(BuildContext context) {
     final ContactsCubit cubit = context.watch<ContactsCubit>();
+    context.read<ContactsCubit>().sortContactsAsStored();
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(

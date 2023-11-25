@@ -239,5 +239,8 @@
   "issueCreationErrorMessage": "Une erreur s'est produite en essayant de créer un ticket avec vos commentaires.",
   "issueCreatedTitle": "Ticket créé",
   "issueCreatedSuccessfully": "Un ticket a été créé avec vos commentaires. Ajoutez le lien du ticket à vos favoris pour suivre sa progression. Merci !",
-  "card_name_changed": "Le nom de votre carte a été mis à jour. Veuillez noter que ce nom est public et permet aux autres de vous trouver"
+  "card_name_changed": "Le nom de votre carte a été mis à jour. Veuillez noter que ce nom est public et permet aux autres de vous trouver",
+  "contacts_sort_by_name": "Tri par nom",
+  "payment_error_no_pass": "Mots de passe incorrects",
+  "contacts_sort_by_date": "Tri par date"
 }

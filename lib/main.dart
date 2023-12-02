@@ -8,6 +8,7 @@ import 'package:feedback/feedback.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -113,56 +114,60 @@ void main() async {
   timeago.setLocaleMessages('gl', GlMessages());
   timeago.setLocaleMessages('gl_short', GlShortMessages());
 
-  void appRunner() => runApp(ChangeNotifierProvider<SharedPreferencesHelper>(
-        create: (BuildContext context) => SharedPreferencesHelper(),
-        child: EasyLocalization(
-          path: 'assets/translations',
-          supportedLocales: const <Locale>[
-            // Asturian is not supported in flutter
-            // More info: https://docs.flutter.dev/development/accessibility-and-localization/internationalization#adding-support-for-a-new-language
-            // Meantime we use this workaround:
-            // https://github.com/aissat/easy_localization/issues/220#issuecomment-846035493
-            Locale('es', 'AST'),
-            Locale('ca'),
-            Locale('de'),
-            Locale('en'),
-            Locale('eo'),
-            Locale('es'),
-            Locale('eu'),
-            Locale('fr'),
-            Locale('gl'),
-            Locale('it'),
-            Locale('nl'),
-            Locale('pt'),
-          ],
-          fallbackLocale: const Locale('en'),
-          useFallbackTranslations: true,
-          child: MultiBlocProvider(providers: <BlocProvider<dynamic>>[
-            BlocProvider<BottomNavCubit>(
-                create: (BuildContext context) => BottomNavCubit()),
-            BlocProvider<AppCubit>(
-                create: (BuildContext context) => AppCubit()),
-            BlocProvider<PaymentCubit>(
-                create: (BuildContext context) => PaymentCubit()),
-            BlocProvider<NodeListCubit>(
-                create: (BuildContext context) => NodeListCubit()),
-            BlocProvider<ContactsCubit>(
-                create: (BuildContext context) => ContactsCubit()),
-            /* BlocProvider<UtxoCubit>(
+  void appRunner() => SystemChrome.setPreferredOrientations(<DeviceOrientation>[
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown
+      ]).then((_) {
+        runApp(ChangeNotifierProvider<SharedPreferencesHelper>(
+          create: (BuildContext context) => SharedPreferencesHelper(),
+          child: EasyLocalization(
+            path: 'assets/translations',
+            supportedLocales: const <Locale>[
+              // Asturian is not supported in flutter
+              // More info: https://docs.flutter.dev/development/accessibility-and-localization/internationalization#adding-support-for-a-new-language
+              // Meantime we use this workaround:
+              // https://github.com/aissat/easy_localization/issues/220#issuecomment-846035493
+              Locale('es', 'AST'),
+              Locale('ca'),
+              Locale('de'),
+              Locale('en'),
+              Locale('eo'),
+              Locale('es'),
+              Locale('eu'),
+              Locale('fr'),
+              Locale('gl'),
+              Locale('it'),
+              Locale('nl'),
+              Locale('pt'),
+            ],
+            fallbackLocale: const Locale('en'),
+            useFallbackTranslations: true,
+            child: MultiBlocProvider(providers: <BlocProvider<dynamic>>[
+              BlocProvider<BottomNavCubit>(
+                  create: (BuildContext context) => BottomNavCubit()),
+              BlocProvider<AppCubit>(
+                  create: (BuildContext context) => AppCubit()),
+              BlocProvider<PaymentCubit>(
+                  create: (BuildContext context) => PaymentCubit()),
+              BlocProvider<NodeListCubit>(
+                  create: (BuildContext context) => NodeListCubit()),
+              BlocProvider<ContactsCubit>(
+                  create: (BuildContext context) => ContactsCubit()),
+              /* BlocProvider<UtxoCubit>(
                 create: (BuildContext context) => UtxoCubit()), */
-            // TODO(vjrj): Remove when clean the state of this after upgrades
-            BlocProvider<TransactionCubitRemove>(
-                create: (BuildContext context) => TransactionCubitRemove()),
-            BlocProvider<MultiWalletTransactionCubit>(
-                create: (BuildContext context) =>
-                    MultiWalletTransactionCubit()),
-            BlocProvider<ThemeCubit>(
-                create: (BuildContext context) => ThemeCubit()),
-            // Add other BlocProviders here if needed
-          ], child: const GinkgoApp()),
-        ),
-      ));
-
+              // TODO(vjrj): Remove when clean the state of this after upgrades
+              BlocProvider<TransactionCubitRemove>(
+                  create: (BuildContext context) => TransactionCubitRemove()),
+              BlocProvider<MultiWalletTransactionCubit>(
+                  create: (BuildContext context) =>
+                      MultiWalletTransactionCubit()),
+              BlocProvider<ThemeCubit>(
+                  create: (BuildContext context) => ThemeCubit()),
+              // Add other BlocProviders here if needed
+            ], child: const GinkgoApp()),
+          ),
+        ));
+      });
   if (kReleaseMode) {
     // Only use sentry in production
     await SentryFlutter.init((

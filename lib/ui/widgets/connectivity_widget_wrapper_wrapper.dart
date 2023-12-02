@@ -65,6 +65,7 @@ class ConnectivityWidgetWrapperWrapper extends ConnectivityWidgetWrapper {
                 ),
               ),
               // Quad9 IPv6
+              /*  Disabled for faster check
               AddressCheckOptions(
                 address: InternetAddress(
                   '2620:fe::fe',
@@ -84,7 +85,7 @@ class ConnectivityWidgetWrapperWrapper extends ConnectivityWidgetWrapper {
                   '2001:1608:10:25::1c04:b12f',
                   type: InternetAddressType.IPv6,
                 ),
-              ),
+              ),*/
             ],
           );
   }

@@ -123,7 +123,7 @@ class CreditCard extends StatelessWidget {
                                       style: cardTextStyle(context),
                                     ))),
                             GestureDetector(
-                                onTap: () => showTooltip(
+                                onTap: () => showAlertDialog(
                                     context, '', tr('keys_tooltip')),
                                 child: FittedBox(
                                     fit: BoxFit.scaleDown,
@@ -136,7 +136,7 @@ class CreditCard extends StatelessWidget {
                           padding:
                               EdgeInsets.symmetric(horizontal: cardPadding),
                           child: GestureDetector(
-                            onTap: () => showTooltip(
+                            onTap: () => showAlertDialog(
                                 context, '', tr('card_validity_tooltip')),
                             child: Text(
                               tr('card_validity'),

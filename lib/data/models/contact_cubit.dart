@@ -113,12 +113,15 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
   }
 
   void sortContacts(ContactsSortType sortOrder) {
-    List<Contact> sortedContacts = List<Contact>.from(state.contacts);
+    List<Contact> sortedContacts = List<Contact>.from(state.filteredContacts);
 
     if (sortOrder == ContactsSortType.alpha) {
       sortContactList(sortedContacts);
     } else if (sortOrder == ContactsSortType.date) {
-      sortedContacts = List<Contact>.from(state.contacts);
+      sortedContacts = List<Contact>.from(state.contacts).where((Contact c) {
+        return state.filteredContacts
+            .any((Contact fc) => fc.pubKey == c.pubKey);
+      }).toList();
     }
 
     emit(state.copyWith(filteredContacts: sortedContacts, order: sortOrder));

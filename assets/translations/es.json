@@ -14,7 +14,8 @@
   "g1_form_pay_send": "Enviar",
   "search_user_title": "Usuari@ a pagar",
   "search_user_title_in_contacts": "Busca usuari@",
-  "search_user": "Buscar (usuari@ o clave pública)",
+  "search_user": "Buscar usuari@ o clave",
+  "search_user_hint": "Escribe un nombre o clave o pega una lista de claves",
   "search_user_btn": "Buscar usuari@",
   "g1_form_pay_desc": "Comentario",
   "g1_form_pay_hint": "Introduzca un comentario (opcional)",
@@ -245,5 +246,8 @@
   "wallets_imported": "{number} monedero/s importados",
   "please_confirm_delete": "¿Estás seguro/a?",
   "please_confirm_delete_desc": "¿Estás seguro/a de que quieres borrar este monedero?",
-  "please_confirm_delete_desc_g1nkgo": "¿Estás seguro/a de que quieres borrar este monedero? Si lo haces y no tienes un backup, perderás el acceso a este monedero y los fondos almacenados en él."
+  "please_confirm_delete_desc_g1nkgo": "¿Estás seguro/a de que quieres borrar este monedero? Si lo haces y no tienes un backup, perderás el acceso a este monedero y los fondos almacenados en él.",
+  "please_confirm_sent_multi_desc": "¿Estás seguro/a de que quieres pagar {amount} {currency} a todos/as?",
+  "multi_pay_results": "Resultados de los pagos",
+  "multi_pay_results_desc": "{success} pagos exitosos, {fail} fallidos"
 }

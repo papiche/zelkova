@@ -103,7 +103,8 @@ void main() {
     test('Should return "your_wallet" if pubKey matches publicAddress', () {
       const String publicAddress = 'your_public_address';
       const Contact contact = Contact(pubKey: 'your_public_address');
-      final String result = humanizeContact(publicAddress, contact, false, tr);
+      final String result =
+          humanizeContact(publicAddress, contact, false, false, tr);
       expect(result, 'your_wallet');
     });
 

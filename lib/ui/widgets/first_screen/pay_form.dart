@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/models/app_cubit.dart';
+import '../../../data/models/bottom_nav_cubit.dart';
+import '../../../data/models/contact.dart';
 import '../../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/payment_state.dart';
@@ -27,11 +31,14 @@ class _PayFormState extends State<PayForm> {
       GlobalKey<FormFieldState<String>>();
   final TextEditingController _commentController = TextEditingController();
   final ValueNotifier<String> _feedbackNotifier = ValueNotifier<String>('');
+  final StreamController<String> paymentResultsStreamController =
+      StreamController<String>.broadcast();
 
   @override
   void dispose() {
     _commentController.dispose();
     _feedbackNotifier.dispose();
+    paymentResultsStreamController.close();
     super.dispose();
   }
 
@@ -48,7 +55,6 @@ class _PayFormState extends State<PayForm> {
       if (state.amount == null || state.amount == 0) {
         _feedbackNotifier.value = '';
       }
-
       final bool sentDisabled =
           _onPressed(state, context, currency, currentUd) == null;
       final Color sentColor = sentDisabled
@@ -143,36 +149,91 @@ class _PayFormState extends State<PayForm> {
     final bool nullAmount = state.amount == null;
     loggerDev(
         'notCanBeSent: $notCanBeSent, notValidComment: $notValidComment, nullAmount: $nullAmount');
+    if (notCanBeSent ||
+        nullAmount ||
+        notValidComment ||
+        notBalance(context, state, currency, currentUd)) {
+      return null;
+    } else if (state.isMultiple()) {
+      // Multiple payments
+      return () async {
+        final bool? confirmed = await showDialog<bool>(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(tr('please_confirm_sent')),
+              content: Text(tr('please_confirm_sent_multi_desc',
+                  namedArgs: <String, String>{
+                    'amount': state.amount.toString(),
+                    'currency': currency.name()
+                  })),
+              actions: <Widget>[
+                TextButton(
+                  child: Text(tr('cancel')),
+                  onPressed: () => Navigator.of(context).pop(false),
+                ),
+                TextButton(
+                  child: Text(tr('accept')),
+                  onPressed: () => Navigator.of(context).pop(true),
+                ),
+              ],
+            );
+          },
+        );
 
-    return (notCanBeSent ||
-            nullAmount ||
-            notValidComment ||
-            notBalance(context, state, currency, currentUd))
-        ? null
-        : () async {
-            try {
-              await payWithRetry(
-                  context: context,
-                  to: state.contact!,
-                  amount: state.amount!,
-                  isG1: isG1,
-                  currentUd: currentUd,
-                  comment: state.comment);
-            } on RetryException {
-              // Here the transactions can be lost, so we must implement some manual retry use
-              if (!mounted) {
-                return;
-              }
-              await payWithRetry(
-                  context: context,
-                  to: state.contact!,
-                  amount: state.amount!,
-                  isG1: isG1,
-                  currentUd: currentUd,
-                  comment: state.comment,
-                  useMempool: true);
+        if (confirmed != null && confirmed) {
+          int validPayments = 0;
+          int invalidPayments = 0;
+
+          paymentResultsStreamController.stream.listen((String paymentResult) {
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context);
             }
-          };
+            showAlertDialog(context, tr('multi_pay_results'), paymentResult);
+          });
+          for (final Contact contact in state.contacts) {
+            if (!mounted) {
+              return;
+            }
+            final bool result = await payWithRetry(
+              context: context,
+              to: contact,
+              amount: state.amount!,
+              isG1: isG1,
+              currentUd: currentUd,
+              isMultiPayment: true,
+              comment: state.comment,
+            );
+            if (result) {
+              validPayments++;
+            } else {
+              invalidPayments++;
+            }
+            paymentResultsStreamController.add(tr('multi_pay_results_desc',
+                namedArgs: <String, String>{
+                  'success': validPayments.toString(),
+                  'fail': invalidPayments.toString()
+                }));
+            // await Future<void>.delayed(const Duration(milliseconds: 200));
+          }
+          if (!mounted) {
+            return;
+          }
+          context.read<BottomNavCubit>().updateIndex(3);
+        }
+      };
+    } else {
+      // Single payment
+      return () async {
+        await payWithRetry(
+            context: context,
+            to: state.contacts[0],
+            amount: state.amount!,
+            isG1: isG1,
+            currentUd: currentUd,
+            comment: state.comment);
+      };
+    }
   }
 
   bool notBalance(BuildContext context, PaymentState state, Currency currency,

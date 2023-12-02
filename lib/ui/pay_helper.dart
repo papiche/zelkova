@@ -25,13 +25,14 @@ import 'ui_helpers.dart';
 import 'widgets/connectivity_widget_wrapper_wrapper.dart';
 import 'widgets/fifth_screen/import_dialog.dart';
 
-Future<void> payWithRetry(
+Future<bool> payWithRetry(
     {required BuildContext context,
     required Contact to,
     required double amount,
     required String comment,
     bool isRetry = false,
     bool useMempool = false,
+    bool isMultiPayment = false,
     required bool isG1,
     required double currentUd}) async {
   logger('Trying to pay state with useMempool: $useMempool');
@@ -57,8 +58,13 @@ Future<void> payWithRetry(
       paymentCubit.sending();
       final String fromPubKey = SharedPreferencesHelper().getPubKey();
       final String contactPubKey = to.pubKey;
-      final bool? confirmed = await _confirmSend(context, amount.toString(),
-          humanizeContact(fromPubKey, to, true), isRetry, appCubit.currency);
+      bool? confirmed;
+      if (!isMultiPayment) {
+        confirmed = await _confirmSend(context, amount.toString(),
+            humanizeContact(fromPubKey, to, true), isRetry, appCubit.currency);
+      } else {
+        confirmed = true;
+      }
       final Contact fromContact = await ContactsCache().getContact(fromPubKey);
       final double convertedAmount = toG1(amount, isG1, currentUd);
 
@@ -78,21 +84,26 @@ Future<void> payWithRetry(
         if (isConnected != null && !isConnected && !isRetry) {
           paymentCubit.sent();
           if (!context.mounted) {
-            return;
+            return true;
           }
-          showTooltip(context, tr('payment_waiting_internet_title'),
-              tr('payment_waiting_internet_desc_beta'));
+          if (!isMultiPayment) {
+            showAlertDialog(context, tr('payment_waiting_internet_title'),
+                tr('payment_waiting_internet_desc_beta'));
+          }
           final Transaction pending =
               tx.copyWith(type: TransactionType.waitingNetwork);
           txCubit.addPendingTransaction(pending);
-          context.read<BottomNavCubit>().updateIndex(3);
-          return;
+          if (!isMultiPayment) {
+            context.read<BottomNavCubit>().updateIndex(3);
+          }
+          return true;
         } else {
           final PayResult result = await pay(
               to: contactPubKey,
               comment: comment,
               amount: convertedAmount,
               useMempool: true);
+
           final Transaction pending = tx.copyWith(
               debugInfo:
                   'Node used: ${result.node != null ? result.node!.url : 'unknown'}');
@@ -100,10 +111,12 @@ Future<void> payWithRetry(
             paymentCubit.sent();
             // ignore: use_build_context_synchronously
             if (!context.mounted) {
-              return;
+              return true;
             }
-            showTooltip(context, tr('payment_successful'),
-                tr('payment_successful_desc'));
+            if (!isMultiPayment) {
+              showAlertDialog(context, tr('payment_successful'),
+                  tr('payment_successful_desc'));
+            }
 
             if (!isRetry) {
               // Add here the transaction to the pending list (so we can check it the tx is confirmed)
@@ -112,23 +125,26 @@ Future<void> payWithRetry(
               // Update the previously failed tx with an update time and type pending
               txCubit.updatePendingTransaction(pending);
             }
+            return true;
           } else {
             paymentCubit.pendingPayment();
             if (!context.mounted) {
-              return;
+              return false;
             }
             final bool failedWithBalance =
                 result.message == 'insufficient balance' &&
                     weHaveBalance(context, amount);
             showPayError(
-                context,
-                failedWithBalance
+                context: context,
+                desc: failedWithBalance
                     ? tr('payment_error_retry')
                     : tr('payment_error_desc', namedArgs: <String, String>{
                         // We try to translate the error, like "insufficient balance"
                         'error': tr(result.message)
                       }),
-                result.node!.node);
+                isMultiPayment: isMultiPayment,
+                increaseErrors: failedWithBalance,
+                node: result.node!.node);
             if (!isRetry) {
               txCubit.insertPendingTransaction(
                   pending.copyWith(type: TransactionType.failed));
@@ -138,15 +154,22 @@ Future<void> payWithRetry(
               txCubit.updatePendingTransaction(
                   pending.copyWith(type: TransactionType.failed));
             }
+            return false;
           }
         }
       }
     }
   } else {
     if (context.mounted) {
-      showPayError(context, tr('payment_error_no_pass'));
+      showPayError(
+          context: context,
+          desc: tr('payment_error_no_pass'),
+          isMultiPayment: isMultiPayment,
+          increaseErrors: false);
     }
+    return false;
   }
+  return true;
 }
 
 bool weHaveBalance(BuildContext context, double amount) {
@@ -189,10 +212,17 @@ Future<bool?> _confirmSend(BuildContext context, String amount, String to,
   );
 }
 
-void showPayError(BuildContext context, String desc, [Node? node]) {
-  showTooltip(context, tr('payment_error'), desc);
+void showPayError(
+    {required BuildContext context,
+    required String desc,
+    required bool isMultiPayment,
+    required bool increaseErrors,
+    Node? node}) {
+  if (!isMultiPayment) {
+    showAlertDialog(context, tr('payment_error'), desc);
+  }
   context.read<PaymentCubit>().sentFailed();
-  if (node != null) {
+  if (node != null && increaseErrors) {
     NodeManager().increaseNodeErrors(NodeType.gva, node);
   }
 }
@@ -204,7 +234,7 @@ Future<void> onKeyScanned(BuildContext context, String scannedKey) async {
   final PaymentCubit paymentCubit = context.read<PaymentCubit>();
   if (pay != null) {
     logger('Scanned $pay');
-    final String result = extractPublicKey(pay.contact!.pubKey);
+    final String result = extractPublicKey(pay.contacts[0].pubKey);
 
     final Contact contact = await ContactsCache().getContact(result);
     final double? currentAmount = paymentCubit.state.amount;

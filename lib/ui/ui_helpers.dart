@@ -22,13 +22,15 @@ import '../data/models/multi_wallet_transaction_cubit.dart';
 import '../data/models/node_list_cubit.dart';
 import '../g1/api.dart';
 import '../g1/currency.dart';
+import '../g1/g1_helper.dart';
 import '../shared_prefs_helper.dart';
 import 'logger.dart';
 import 'notification_controller.dart';
 import 'widgets/first_screen/circular_icon.dart';
 
-void showTooltip(BuildContext context, String title, String message) {
-  showDialog(
+Future<dynamic> showAlertDialog(
+    BuildContext context, String title, String message) {
+  return showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
@@ -92,21 +94,31 @@ String humanizeFromToPubKey(String publicAddress, String address) {
 }
 
 String humanizeContact(String publicAddress, Contact contact,
-    [bool addKey = false, String Function(String s) trf = tr]) {
+    [bool addKey = false,
+    bool minimal = false,
+    String Function(String s) trf = tr]) {
   if (contact.pubKey == publicAddress) {
     return trf('your_wallet');
   } else {
     final String pubKey = humanizePubKey(contact.pubKey);
+    final String pubKeyMin = humanizePubKey(contact.pubKey, minimal);
     final bool titleNotTheSameAsPubKey = contact.title != pubKey;
     return addKey && titleNotTheSameAsPubKey
-        ? '${contact.title} ($pubKey)'
+        ? minimal
+            ? '${contact.title} $pubKeyMin'
+            : '${contact.title} ($pubKey)'
         : titleNotTheSameAsPubKey
             ? contact.title
             : pubKey;
   }
 }
 
-String humanizePubKey(String address) => '\u{1F511} ${simplifyPubKey(address)}';
+String humanizePubKey(String rawAddress, [bool minimal = false]) {
+  final String address = extractPublicKey(rawAddress);
+  return minimal
+      ? '\u{1F511} ${simplifyPubKey(address).substring(0, 4)}'
+      : '\u{1F511} ${simplifyPubKey(address)}';
+}
 
 String simplifyPubKey(String address) => address.length <= 8
     ? 'WRONG ADDRESS'
@@ -394,7 +406,7 @@ class _SlidableContactTile extends State<SlidableContactTile> {
           trailing: widget.trailing);
 }
 
-ListTile contactToListItem(Contact contact, int index, BuildContext context,
+Widget contactToListItem(Contact contact, int index, BuildContext context,
     {VoidCallback? onTap, VoidCallback? onLongPress, Widget? trailing}) {
   final String title = contact.title;
   final Widget? subtitle =

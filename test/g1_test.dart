@@ -4,8 +4,10 @@ import 'dart:math';
 import 'package:durt/durt.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:ginkgo/data/models/contact.dart';
 import 'package:ginkgo/data/models/payment_state.dart';
 import 'package:ginkgo/g1/g1_helper.dart';
+import 'package:ginkgo/ui/logger.dart';
 
 void main() {
   test('Test serialization and deserialization of UInt8List seeds', () {
@@ -65,27 +67,27 @@ void main() {
         final PaymentState? payA = parseScannedUri(uriA);
         expect(payA!.amount, equals(10),
             reason: 'amount should be 10 in $uriA');
-        expect(payA.contact!.pubKey, equals(publicKey));
+        expect(payA.contacts[0].pubKey, equals(publicKey));
       });
 
       test('validate qr uri without amount', () {
         final String uriB = getQrUri(pubKey: publicKey);
         final PaymentState? payB = parseScannedUri(uriB);
         expect(payB!.amount, equals(null));
-        expect(payB.contact!.pubKey, equals(publicKey));
+        expect(payB.contacts[0].pubKey, equals(publicKey));
       });
 
       test('validate qr scanned', () {
         final PaymentState? payC = parseScannedUri(publicKey);
         expect(payC!.amount, equals(null));
-        expect(payC.contact!.pubKey, equals(publicKey));
+        expect(payC.contacts[0].pubKey, equals(publicKey));
       });
 
       test('validate qr uri with decimal amount', () {
         final String uriD = getQrUri(pubKey: publicKey, amount: '10.10');
         final PaymentState? payD = parseScannedUri(uriD);
         expect(payD!.amount, equals(10.10));
-        expect(payD.contact!.pubKey, equals(publicKey));
+        expect(payD.contacts[0].pubKey, equals(publicKey));
       });
 
       test('validate qr uri with localized decimal amount', () {
@@ -93,14 +95,14 @@ void main() {
             getQrUri(pubKey: publicKey, amount: '10,10', locale: 'es');
         final PaymentState? payE = parseScannedUri(uriE);
         expect(payE!.amount, equals(10.10));
-        expect(payE.contact!.pubKey, equals(publicKey));
+        expect(payE.contacts[0].pubKey, equals(publicKey));
       });
 
       test('validate custom june uri with amount', () {
         final String uriF = 'june://$publicKey?amount=100';
         final PaymentState? payF = parseScannedUri(uriF);
         expect(payF!.amount, equals(100));
-        expect(payF.contact!.pubKey, equals(publicKey));
+        expect(payF.contacts[0].pubKey, equals(publicKey));
       });
 
       test('validate june uri with comment and amount', () {
@@ -109,7 +111,7 @@ void main() {
         final PaymentState? payJ = parseScannedUri(uriJ);
         expect(payJ!.comment, equals('GCHANGE:AYDI9JPOVIL9ZVG-PNCU'));
         expect(payJ.amount, equals(100));
-        expect(payJ.contact!.pubKey, equals(publicKey));
+        expect(payJ.contacts[0].pubKey, equals(publicKey));
       });
 
       test('validate june uri with amount and comment', () {
@@ -118,7 +120,7 @@ void main() {
         final PaymentState? payK = parseScannedUri(uriK);
         expect(payK!.comment, equals('This Is my comment'));
         expect(payK.amount, equals(10));
-        expect(payK.contact!.pubKey, equals(publicKey));
+        expect(payK.contacts[0].pubKey, equals(publicKey));
       });
 
       test('validate june uri with reordered comment and amount', () {
@@ -127,7 +129,7 @@ void main() {
         final PaymentState? payL = parseScannedUri(uriL);
         expect(payL!.comment, equals('This Is my comment'));
         expect(payL.amount, equals(10));
-        expect(payL.contact!.pubKey, equals(publicKey));
+        expect(payL.contacts[0].pubKey, equals(publicKey));
       });
 
       test('validate june uri with localized amount and comment', () {
@@ -136,7 +138,7 @@ void main() {
         final PaymentState? payM = parseScannedUri(uriM);
         expect(payM!.comment, equals('Mi comentario'));
         expect(payM.amount, equals(10));
-        expect(payM.contact!.pubKey, equals(publicKey));
+        expect(payM.contacts[0].pubKey, equals(publicKey));
       });
 
       test('validate june uri with comment only', () {
@@ -144,7 +146,7 @@ void main() {
         final PaymentState? payN = parseScannedUri(uriN);
         expect(payN!.amount == null, equals(true));
         expect(payN.comment, equals('This Is my comment'));
-        expect(payN.contact!.pubKey, equals(publicKey));
+        expect(payN.contacts[0].pubKey, equals(publicKey));
       });
 
       test('validate june uri with encoded uri', () {
@@ -153,7 +155,7 @@ void main() {
         final PaymentState? payN = parseScannedUri(uriN);
         expect(payN!.amount == null, equals(true));
         expect(payN.comment, equals('This Is my comment'));
-        expect(payN.contact!.pubKey, equals(publicKey));
+        expect(payN.contacts[0].pubKey, equals(publicKey));
       });
 
       test('Replace incorrect comment characters', () {
@@ -162,7 +164,7 @@ void main() {
         final PaymentState? payN = parseScannedUri(uriN);
         expect(payN!.amount == null, equals(true));
         expect(payN.comment, equals('This Is my comment !%     '));
-        expect(payN.contact!.pubKey, equals(publicKey));
+        expect(payN.contacts[0].pubKey, equals(publicKey));
       });
     });
   }
@@ -263,6 +265,130 @@ void main() {
       expect(getFullPubKey(data[0]!), equals('${data[0]!}:${data[1]!}'));
     });
   }
+  group('Multiple parse of keys', () {
+    test('Parsing from a spreadsheet', () async {
+      const String spreadsheetText =
+          'Key1: EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG:BJH\nKey2: ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY';
+
+      final List<Contact> result = parseMultipleKeys(spreadsheetText);
+      expect(result, <Contact>[
+        const Contact(
+            pubKey: 'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG:BJH'),
+        const Contact(pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY')
+      ]);
+    });
+
+    test('Extraction from an email or telegram text', () {
+      const String emailText =
+          'Hello, here are the keys: EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG, ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:9bG. Thanks!';
+      final List<Contact> result = parseMultipleKeys(emailText);
+      expect(result, <Contact>[
+        const Contact(pubKey: 'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG'),
+        const Contact(
+            pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:9bG')
+      ]);
+    });
+
+    test('Extraction from a list separated by semicolons', () {
+      const String listText =
+          'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG; ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:BJH; 78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT';
+      final List<Contact> result = parseMultipleKeys(listText);
+      expect(result, <Contact>[
+        const Contact(pubKey: 'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG'),
+        const Contact(
+            pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:BJH'),
+        const Contact(
+            pubKey: '78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT')
+      ]);
+    });
+
+    test('Extraction from a list separated by spaces', () {
+      const String listText =
+          'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG      ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:BJH       78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT';
+      final List<Contact> result = parseMultipleKeys(listText);
+      expect(result, <Contact>[
+        const Contact(pubKey: 'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG'),
+        const Contact(
+            pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:BJH'),
+        const Contact(
+            pubKey: '78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT')
+      ]);
+    });
+
+    test('Extraction from a long multiline list', () {
+      const String listText = '''
+          8JBM2M9QV6SjFEp3Uh2HRmVpnRDc3dMntwQcjstBZNuX:5n3
+      Ej392BiCtChxxXQM48MwZ2pYnL3dgSmZU86YyBFMeLkA:A3y
+      8HPc6FefhzrihNZAA9vNQKRKKHETjD1HSeN6M872cf9E:Ccv
+      GTk7bY9BFXPjvSzAMErg5njjw3LCUkxR37jmx6iUJ6a3:9vZ
+      AFv1D5xA7FCdHCTA1bqfQ3PWvwEM16Gw67QJ37obGnsv:2nq
+      GXwUZgSub7t1SYuANjefe7T1rmxBpLw7mNA2efVGjBrq:8cm
+      GAmZUfTZE4woHvc9vJMsnPWSPgRsXw8Kendvt7ce3foY:HgD
+      AjyGGAxzTP89vKf59VS5pyXVM6RCreVpk4EYaDUARQLn:DPX
+      7b6JByc8HSKtZxbKape5ZSkXRwNy6ZKApisryevmrZMe:8YL
+      HmBhbso1v5V3iwvey7VpuuAHFFLKuHW9UFMCLN5Xj4a2:28K
+      AxTvKn6LwicCHPcKCjH6iuv9ue6ie5rjyJuLjc8uRjdy:9NB
+      AwtndDuAYWM3Ud7JzgyLvVixkmjsmwipiq9w7vcgULaa:Y5J
+      8noJ9tppsvTAVmEUQ2jfYFxx8J7nvMmKrjMWUT8VE8k5:3s6
+      6xZZcjN5xacHNYPFuhKSb615ZszMjExbpJahwCjhWmnk:4pB
+      B7evv57KqKUgpei2CU4UcPW8wDnTUEEEuanUGxE4BjFo:2gM
+      HWbwUExEBmYtvW7KkUaacEs6d4Rs2EESgjz6QYF2x3SB:AmC
+      DkKyByr6ctR469AsPogToYxWF7CW4XLdqbKRRyAZvGV1:6DW
+      5oPBgGtNB6LAUV18b28rbuXa36mJYLFtwjf29L1yxus9:GRC
+      3BZNPG8BeEnQrssH69KuqSkifjV7AA2g8m2DfYynfD5V:CNx
+      8LPPfQvbQoMMBMtz2ukZhUWLijq8YbTrCn4QZzy1SVjy:BX8
+      4T8CWT4X1dp28urHowHEt4YzRsgvrpdevAbsJbMuqzmU:6wS
+      5CvpNKRjpL6ywK4yLomYYryB1B4dceR8YcADzN6WvHkf:BHL
+      6BMDEGNB5tzkMmj34h2NsAZN1tzmLM1ZU8M8p4TuSj5Z:hwK      
+      cDkGNDXpZBSsSzYWraB3VeYpqswXDcUMnQCYFxddfXC:B5F
+      3fDryMzjSAx9mskjK21VJMWj5AQNnbrmkBWyXwzbd9Ja:AgQ
+      51dUkT4Jv8RhQJJEvMVYbpYQJpBFNbDTvwpxZqPaPjj1:2Xw
+      3ov8FnPX7dSBCGnhASRSTshp5Q2vGDwDAyatzfg27XyL:8qA
+      oV2ymKGEzA6VuZ7f3crkvNuCGg4XcktRTaSY1iaXgLe:8Tw
+      CYbCqMHnyzwbYSLnWi1RVjyZv69DhL9TxqEq39nbeKB4:AeV
+      3L6JKkpeRGj8QcvEnpBfydtfXXEQxTsu22nEifmvgEqT:5i4
+      C9ZdFLk8TohnEyPjsb6fQEXevfRhziMtyHRrK9Z7z3uB:Cb9
+      C4toysKKjN7isftoNZprxwPyvj9TR8vANf7z4b7TDKYS:8C8
+      4he8PiQqnwwRkCHgpiYrN5HL6GWihY15PLUXmnbov45Y:2uc
+      9GvC1LA548f5bs4wP6uFLAmKGfYc8KoUX63mzcUCY8kA:2mh
+      FktChvTDsxC48zM79RzTpPY17aYezBURYyv7V84RYe4N:HEJ
+      2h51fLtrS49ZvUgjfw8BkJJELsS9bvczSCncV9b61uBw:z4n
+      9xKMPFbjEhHrgLK2Lzsxw2jvMiFvbiJ6dy1f1swTbw4R:7ir
+      CYVY4642eXPNKMeFS1Ht1iAfKLJpu6Pg9b8HiQccv5iY:Gdv
+      9GFgJDtZFiJEJzcxtN5EJkBRb4C1tdXifd9tYCSNEYq9:Gs2
+      8wERYn5fWSnC4v7ahYyso7fJzDHv5nDa6SvfPQKLn8or:3A7
+      BzoRjAExZ6beiMa6DeW8k2JaFEeuaiDZJEfoNk1sddaw
+      2oPRopkCe8PMzCCVUcuabFMidQbnenkP94WHMaQejPcK
+      3Jn5pFnP7XJwEefRD3pAS8ayRFbnKEaAdoEKJhPo5d3E:CDe
+      mmYkG293mHQfjFa71wkBhnZ84vtgBsQUeJpbcQwsGcL:DKL
+      J6n3SDGmtbDwsCznSwcDN7AtME2Ycc1HQtwAtCpEFNpT:Bnt
+      66uRwVKV9SV29tzeLTnURqweBVGcyBkM4pYexXHLwT4R:2A8
+      6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH:HCT
+      CNuN2k2NrrX11u182pdX7Hxg6QVEzvKqn9Jq6vykt8Gs:Dxi
+      Civz7VLoKakWW9iRk5QtbbziGQYHK8Xqv5FXu9tDbPq:F7v
+      3akw6wCdsrauLgnMFQuJ2BoC7waB1ao3xovh7NRZLU1Y:Dn5
+      7tH5qeBxsS15UMAf8Jh3FsGmpPkUJqBUBLwDgXyK3UTo:HVL
+      CZAnpHKEFiqsUUqP3eMMeZkhKkhd1rEyQP2bdtJoLqTT:8yx''';
+      final List<Contact> results = parseMultipleKeys(listText);
+      expect(results.length, 52);
+      final Map<Contact, int> contactCounts = <Contact, int>{};
+      for (final Contact contact in results) {
+        if (!contactCounts.containsKey(contact)) {
+          contactCounts[contact] = 1;
+        } else {
+          contactCounts[contact] = contactCounts[contact]! + 1;
+        }
+      }
+
+      final List<Contact> duplicates = contactCounts.entries
+          .where((MapEntry<Contact, int> entry) => entry.value > 1)
+          .map((MapEntry<Contact, int> entry) => entry.key)
+          .toList();
+
+      logger('Duplicated: $duplicates');
+      expect(Set<Contact>.from(results).length, 52);
+    });
+  });
 }
 
 String _generateRandomPatternPassword(Random random) {

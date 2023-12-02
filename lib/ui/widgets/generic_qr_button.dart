@@ -14,7 +14,7 @@ class GenericQrButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PaymentCubit, PaymentState>(
         builder: (BuildContext context, PaymentState state) {
-      if (state.contact == null || state.contact!.pubKey.isEmpty) {
+      if (state.contacts.isEmpty || state.contacts[0].pubKey.isEmpty) {
         return ElevatedButton.icon(
           onPressed: () async {
             final String? scannedKey = await QrManager.qrScan(context);

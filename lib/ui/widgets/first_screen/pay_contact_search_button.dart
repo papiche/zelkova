@@ -19,7 +19,7 @@ class _PayContactSearchButtonState extends State<PayContactSearchButton> {
   Widget build(BuildContext context) {
     return BlocBuilder<PaymentCubit, PaymentState>(
         builder: (BuildContext context, PaymentState state) {
-      if (state.contact == null || state.contact!.pubKey.isEmpty) {
+      if (state.contacts.isEmpty || state.contacts[0].pubKey.isEmpty) {
         return ElevatedButton.icon(
           onPressed: () {
             showDialog(

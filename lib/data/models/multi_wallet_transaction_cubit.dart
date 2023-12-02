@@ -158,6 +158,9 @@ class MultiWalletTransactionCubit
         appCubit.setUd(newParsedState.currentUd!);
       }
 
+      // Trying to fix the issue of pending not removed
+      // Hangs? _emitState(pubKey, newParsedState);
+
       // Check pending transactions
       final TransactionState newState =
           _checkPendingTx(cursor, newParsedState, pubKey, node);

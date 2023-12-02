@@ -14,7 +14,9 @@
   "g1_form_pay_send": "Send",
   "search_user_title": "User to pay",
   "search_user_title_in_contacts": "Search for users",
-  "search_user": "Search (user or public key)",
+  "search_user": "Search user or key",
+  "search_user_hint": "Type a name or key or paste a list of keys",
+  "search_multiuser_hint": "Long press if you want to pay several users at once",
   "search_user_btn": "Search user",
   "g1_form_pay_desc": "Comment",
   "g1_form_pay_hint": "Enter a comment (optional)",
@@ -239,5 +241,8 @@
   "wallets_imported": "{number} wallet/s imported",
   "please_confirm_delete": "Are you sure?",
   "please_confirm_delete_desc": "Are you sure you want to delete this wallet?",
-  "please_confirm_delete_desc_g1nkgo": "Are you sure you want to delete this wallet? If you do it and you don't have a backup, you will lose access to it and the funds stored in it."
+  "please_confirm_delete_desc_g1nkgo": "Are you sure you want to delete this wallet? If you do it and you don't have a backup, you will lose access to it and the funds stored in it.",
+  "please_confirm_sent_multi_desc": "Are you sure you want to pay {amount} {currency} to all?",
+  "multi_pay_results": "Payments results",
+  "multi_pay_results_desc": "{success} success, {fail} failed"
 }

@@ -11,6 +11,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../data/models/contact.dart';
 import '../data/models/payment_state.dart';
+import '../ui/logger.dart';
 import '../ui/ui_helpers.dart';
 
 Random createRandom() {
@@ -98,6 +99,18 @@ String? parseHost(String endpointUnParsed) {
     Sentry.captureException(e, stackTrace: stacktrace);
     return null;
   }
+}
+
+bool validateKeys(List<Contact> contacts) {
+  if (contacts.isEmpty) {
+    return false;
+  }
+  for (final Contact contact in contacts) {
+    if (!validateKey(contact.pubKey)) {
+      return false;
+    }
+  }
+  return true;
 }
 
 bool validateKey(String pubKey) {
@@ -197,7 +210,7 @@ PaymentState? parseScannedUri(String qrOrig) {
         locale: 'en',
         number: matchKeyCommentAmount.group(6)!.replaceAll(',', '.'));
     return PaymentState(
-        contact: Contact(pubKey: publicKey),
+        contacts: <Contact>[Contact(pubKey: publicKey)],
         amount: amount,
         comment: cleanComment(comment));
   }
@@ -209,7 +222,7 @@ PaymentState? parseScannedUri(String qrOrig) {
         locale: 'en',
         number: matchKeyAmountComment.group(5)!.replaceAll(',', '.'));
     return PaymentState(
-        contact: Contact(pubKey: publicKey),
+        contacts: <Contact>[Contact(pubKey: publicKey)],
         amount: amount,
         comment: cleanComment(comment));
   }
@@ -218,7 +231,8 @@ PaymentState? parseScannedUri(String qrOrig) {
     final String publicKey = matchKeyComment.group(2)!;
     final String? comment = matchKeyComment.group(4);
     return PaymentState(
-        contact: Contact(pubKey: publicKey), comment: cleanComment(comment));
+        contacts: <Contact>[Contact(pubKey: publicKey)],
+        comment: cleanComment(comment));
   }
 
   final RegExpMatch? matchKeyAmount = regexKeyAmount.firstMatch(qr);
@@ -226,18 +240,19 @@ PaymentState? parseScannedUri(String qrOrig) {
   if (matchKeyAmount != null) {
     final String publicKey = matchKeyAmount.group(2)!;
     final double amount = double.parse(matchKeyAmount.group(4)!);
-    return PaymentState(contact: Contact(pubKey: publicKey), amount: amount);
+    return PaymentState(
+        contacts: <Contact>[Contact(pubKey: publicKey)], amount: amount);
   }
 
   final RegExpMatch? matchKey = regexKey.firstMatch(qr);
   if (matchKey != null) {
     final String publicKey = matchKey.group(2)!;
-    return PaymentState(contact: Contact(pubKey: publicKey));
+    return PaymentState(contacts: <Contact>[Contact(pubKey: publicKey)]);
   }
 
   // Match key only
   if (validateKey(qr)) {
-    return PaymentState(contact: Contact(pubKey: qr));
+    return PaymentState(contacts: <Contact>[Contact(pubKey: qr)]);
   }
 
   return null;
@@ -290,4 +305,21 @@ String normalizeQuery(String initialQuery) {
     query = extractPublicKey(initialQuery);
   }
   return query;
+}
+
+final RegExp regex = RegExp(
+  r'[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{43,44}(:([123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{3}))?',
+);
+
+List<Contact> parseMultipleKeys(String inputText) {
+  final List<Contact> contacts = <Contact>[];
+  final Iterable<RegExpMatch> allMatches = regex.allMatches(inputText);
+  loggerDev('matches: ${allMatches.length}');
+  for (final RegExpMatch match in allMatches) {
+    final String? publicKey = match.group(0);
+    if (publicKey != null) {
+      contacts.add(Contact(pubKey: publicKey));
+    }
+  }
+  return contacts;
 }

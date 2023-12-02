@@ -25,12 +25,16 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
   }
 
   void selectUser(Contact contact) {
-    emit(state.copyWith(contact: contact));
+    emit(state.copyWith(contacts: <Contact>[contact]));
+  }
+
+  void selectUsers(List<Contact> contacts) {
+    emit(state.copyWith(contacts: contacts));
   }
 
   void selectKeyAmount(Contact contact, double? amount) {
     final PaymentState newState =
-        PaymentState(contact: contact, amount: amount);
+        PaymentState(contacts: <Contact>[contact], amount: amount);
     emit(newState);
   }
 
@@ -60,9 +64,11 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
     emit(state.copyWith(status: PaymentStatus.sending));
   }
 
-  void selectKey(Contact? contact) {
+  void selectKey(Contact contact) {
     final PaymentState newState = PaymentState(
-        contact: contact, amount: state.amount, comment: state.comment);
+        contacts: List<Contact>.from(state.contacts)..add(contact),
+        amount: state.amount,
+        comment: state.comment);
     emit(newState);
   }
 
@@ -76,20 +82,20 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
   void selectAmount(double? amount) {
     // As copyWith ignores null amounts
     final PaymentState newState = PaymentState(
-        contact: state.contact, comment: state.comment, amount: amount);
+        contacts: state.contacts, comment: state.comment, amount: amount);
     emit(newState);
   }
 
   void setComment(String comment) {
     // As copyWith ignores null amounts
     final PaymentState newState = PaymentState(
-        contact: state.contact, amount: state.amount, comment: comment);
+        contacts: state.contacts, amount: state.amount, comment: comment);
     emit(newState);
   }
 
   void reset() {
     if (inDevelopment) {
-      emit(PaymentState.emptyPayment.copyWith(contact: state.contact));
+      emit(PaymentState.emptyPayment.copyWith(contacts: state.contacts));
     } else {
       emit(PaymentState.emptyPayment);
     }

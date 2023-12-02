@@ -19,7 +19,7 @@ import '../../ui_helpers.dart';
 import '../third_screen/contact_form_dialog.dart';
 
 class TransactionListItem extends StatelessWidget {
-  const TransactionListItem(
+  TransactionListItem(
       {super.key,
       required this.pubKey,
       required this.transaction,
@@ -31,6 +31,7 @@ class TransactionListItem extends StatelessWidget {
       this.afterCancel,
       this.afterRetry});
 
+  final GlobalKey _menuKey = GlobalKey();
   final String pubKey;
   final Transaction transaction;
   final int index;
@@ -78,7 +79,7 @@ class TransactionListItem extends StatelessWidget {
         break;
       case TransactionType.pending:
         icon = Icons.flight_takeoff;
-        iconColor = grey;
+        iconColor = Colors.grey[400];
         break;
       case TransactionType.sending:
         icon = Icons.flight_takeoff;
@@ -112,15 +113,7 @@ class TransactionListItem extends StatelessWidget {
           if (transaction.isPending)
             SlidableAction(
               onPressed: (BuildContext c) {
-                context
-                    .read<MultiWalletTransactionCubit>()
-                    .removePendingTransaction(transaction);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(tr('payment_canceled')),
-                    duration: const Duration(seconds: 3),
-                  ),
-                );
+                _cancel(context, transaction);
                 afterCancel!();
               },
               backgroundColor: deleteColor,
@@ -131,10 +124,7 @@ class TransactionListItem extends StatelessWidget {
           if (transaction.type == TransactionType.sent)
             SlidableAction(
               onPressed: (BuildContext c) async {
-                context.read<PaymentCubit>().selectUser(
-                      transaction.to,
-                    );
-                context.read<BottomNavCubit>().updateIndex(0);
+                _selectUserToPay(context, transaction);
               },
               backgroundColor: Theme.of(context).primaryColorDark,
               foregroundColor: Colors.white,
@@ -168,26 +158,7 @@ class TransactionListItem extends StatelessWidget {
             if (transaction.type != TransactionType.pending)
               SlidableAction(
                 onPressed: (BuildContext c) {
-                  final Contact newContact = transaction.isIncoming
-                      ? transaction.from
-                      : transaction.to;
-                  contactsCubit.addContact(newContact);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(tr('contact_added')),
-                    ),
-                  );
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return ContactFormDialog(
-                          contact: newContact,
-                          onSave: (Contact c) {
-                            context.read<ContactsCubit>().updateContact(c);
-                            ContactsCache().saveContact(c);
-                          });
-                    },
-                  );
+                  _addContact(transaction, contactsCubit, context);
                 },
                 backgroundColor: Theme.of(context).primaryColor,
                 foregroundColor: Colors.white,
@@ -197,10 +168,12 @@ class TransactionListItem extends StatelessWidget {
           ],
         ),
         child: GestureDetector(
+            key: _menuKey,
             onLongPress: () {
-              if (transaction.isFailed) {
+              /* if (transaction.isFailed) {
                 _payAgain(context, transaction, true);
-              }
+              } */
+              _showPopupMenu(context, transaction);
             },
             child: ListTile(
               leading: (icon != null)
@@ -303,6 +276,48 @@ class TransactionListItem extends StatelessWidget {
             )));
   }
 
+  void _addContact(Transaction transaction, ContactsCubit contactsCubit,
+      BuildContext context) {
+    final Contact newContact =
+        transaction.isIncoming ? transaction.from : transaction.to;
+    contactsCubit.addContact(newContact);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(tr('contact_added')),
+      ),
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ContactFormDialog(
+            contact: newContact,
+            onSave: (Contact c) {
+              context.read<ContactsCubit>().updateContact(c);
+              ContactsCache().saveContact(c);
+            });
+      },
+    );
+  }
+
+  void _selectUserToPay(BuildContext context, Transaction transaction) {
+    context.read<PaymentCubit>().selectUser(
+          transaction.to,
+        );
+    context.read<BottomNavCubit>().updateIndex(0);
+  }
+
+  void _cancel(BuildContext context, Transaction transaction) {
+    context
+        .read<MultiWalletTransactionCubit>()
+        .removePendingTransaction(transaction);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(tr('payment_canceled')),
+        duration: const Duration(seconds: 3),
+      ),
+    );
+  }
+
   Future<void> _payAgain(
       BuildContext context, Transaction transaction, bool isRetry) async {
     final double amount = transaction.amount.abs(); // positive
@@ -350,5 +365,78 @@ class TransactionListItem extends StatelessWidget {
     return const WidgetSpan(
       child: SizedBox(width: 3),
     );
+  }
+
+  void _showPopupMenu(BuildContext context, Transaction transaction) {
+    final RenderBox renderBox =
+        _menuKey.currentContext!.findRenderObject() as RenderBox;
+    final Offset position = renderBox.localToGlobal(Offset.zero);
+    final double height = renderBox.size.height;
+
+    showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(
+        position.dx,
+        position.dy + height,
+        position.dx,
+        position.dy,
+      ),
+      items: _getMenuItems(context, transaction),
+    );
+  }
+
+  List<PopupMenuEntry<dynamic>> _getMenuItems(
+      BuildContext context, Transaction transaction) {
+    final List<PopupMenuEntry<dynamic>> menuItems = <PopupMenuEntry<dynamic>>[];
+
+    if (transaction.isPending) {
+      menuItems.add(PopupMenuItem<dynamic>(
+        child: ListTile(
+          leading: const Icon(Icons.delete),
+          title: Text(tr('cancel_payment')),
+          onTap: () {
+            _cancel(context, transaction);
+          },
+        ),
+      ));
+    }
+
+    if (transaction.type == TransactionType.sent) {
+      menuItems.add(PopupMenuItem<dynamic>(
+        child: ListTile(
+          leading: const Icon(Icons.replay),
+          title: Text(tr('pay_again')),
+          onTap: () {
+            _payAgain(context, transaction, false);
+          },
+        ),
+      ));
+    }
+
+    if (transaction.type == TransactionType.waitingNetwork) {
+      menuItems.add(PopupMenuItem<dynamic>(
+        child: ListTile(
+          leading: const Icon(Icons.replay),
+          title: Text(tr('retry_payment')),
+          onTap: () {
+            _payAgain(context, transaction, true);
+          },
+        ),
+      ));
+    }
+
+    if (transaction.type != TransactionType.pending) {
+      menuItems.add(PopupMenuItem<dynamic>(
+        child: ListTile(
+          leading: const Icon(Icons.contacts),
+          title: Text(tr('add_contact')),
+          onTap: () {
+            _addContact(transaction, context.read<ContactsCubit>(), context);
+          },
+        ),
+      ));
+    }
+
+    return menuItems;
   }
 }

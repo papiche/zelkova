@@ -281,6 +281,7 @@ class _TransactionsAndBalanceWidgetState
       double currentUd,
       bool isCurrencyBefore) {
     return RefreshIndicator(
+      displacement: 120.0,
       color: Colors.white,
       backgroundColor: Theme.of(context).colorScheme.primary,
       strokeWidth: 4.0,

@@ -565,10 +565,7 @@ Future<http.Response> _requestWithRetry(
 }
 
 Future<PayResult> pay(
-    {required String to,
-    required double amount,
-    String? comment,
-    bool useMempool = false}) async {
+    {required String to, required double amount, String? comment}) async {
   try {
     final SelectedGvaNode selected = getGvaNode();
 
@@ -584,7 +581,7 @@ Future<PayResult> pay(
           amount: amount,
           comment: comment ?? '',
           cesiumSeed: wallet.seed,
-          useMempool: useMempool,
+          useMempool: true,
           raiseException: true);
       logger('GVA replied with "$response"');
       return PayResult(message: response, node: selected);

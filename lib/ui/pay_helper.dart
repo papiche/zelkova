@@ -31,12 +31,9 @@ Future<bool> payWithRetry(
     required double amount,
     required String comment,
     bool isRetry = false,
-    bool useMempool = false,
     bool isMultiPayment = false,
     required bool isG1,
     required double currentUd}) async {
-  logger('Trying to pay state with useMempool: $useMempool');
-
   assert(amount > 0);
   bool hasPass = false;
   if (!SharedPreferencesHelper().isG1nkgoCard() &&
@@ -99,10 +96,7 @@ Future<bool> payWithRetry(
           return true;
         } else {
           final PayResult result = await pay(
-              to: contactPubKey,
-              comment: comment,
-              amount: convertedAmount,
-              useMempool: true);
+              to: contactPubKey, comment: comment, amount: convertedAmount);
 
           final Transaction pending = tx.copyWith(
               debugInfo:

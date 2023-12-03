@@ -46,7 +46,6 @@ class TransactionListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // logger('TransactionListItem build');
     return BlocBuilder<MultiWalletTransactionCubit,
             MultiWalletTransactionState>(
         builder: (BuildContext context,
@@ -65,7 +64,6 @@ class TransactionListItem extends StatelessWidget {
         isG1: isG1,
         currentUd: currentUd,
         useSymbol: false);
-
     final String amountS =
         '${transaction.amount < 0 ? "" : "+"}$amountWithSymbol';
     statusText = transaction.type != TransactionType.waitingNetwork
@@ -106,6 +104,7 @@ class TransactionListItem extends StatelessWidget {
 
     return Slidable(
         // Specify a key if the Slidable is dismissible.
+
         key: ValueKey<int>(index),
         // The end action pane is the one at the right or the bottom side.
         startActionPane:
@@ -184,6 +183,7 @@ class TransactionListItem extends StatelessWidget {
                         color: iconColor,
                       ))
                   : null,
+              // FIXME: this does not work
               tileColor: tileColor(index, context),
               title: Row(
                 children: <Widget>[
@@ -369,7 +369,7 @@ class TransactionListItem extends StatelessWidget {
 
   void _showPopupMenu(BuildContext context, Transaction transaction) {
     final RenderBox renderBox =
-        _menuKey.currentContext!.findRenderObject() as RenderBox;
+        _menuKey.currentContext!.findRenderObject()! as RenderBox;
     final Offset position = renderBox.localToGlobal(Offset.zero);
     final double height = renderBox.size.height;
 

@@ -20,6 +20,7 @@ import '../data/models/cesium_card.dart';
 import '../data/models/contact.dart';
 import '../data/models/multi_wallet_transaction_cubit.dart';
 import '../data/models/node_list_cubit.dart';
+import '../data/models/utxo_cubit.dart';
 import '../g1/api.dart';
 import '../g1/currency.dart';
 import '../g1/g1_helper.dart';
@@ -90,6 +91,31 @@ String humanizeFromToPubKey(String publicAddress, String address) {
     return tr('your_wallet');
   } else {
     return humanizePubKey(address);
+  }
+}
+
+String humanizeContacts(
+    {required String fromAddress, required List<Contact> contacts}) {
+  final Iterable<Contact> contactsWithoutCashBack = contacts.where(
+      (Contact c) =>
+          extractPublicKey(c.pubKey) != extractPublicKey(fromAddress));
+  if (contacts.length > 3) {
+    return '${contactsWithoutCashBack.take(3).map((Contact contact) => humanizeContact('', contact)).join(', ')}...';
+  } else if (contacts.length > 1) {
+    final String lastContact =
+        humanizeContact('', contactsWithoutCashBack.last);
+    final String otherContacts = contactsWithoutCashBack
+        .take(contactsWithoutCashBack.length - 1)
+        .map((Contact contact) => humanizeContact('', contact))
+        .join(', ');
+    return tr('others_and_someone', namedArgs: <String, String>{
+      'others': otherContacts,
+      'someone': lastContact,
+    });
+  } else {
+    return contactsWithoutCashBack
+        .map((Contact contact) => humanizeContact('', contact))
+        .join(', ');
   }
 }
 
@@ -275,6 +301,7 @@ void initGetItAll() {
         MultiWalletTransactionCubit());
     getIt.registerSingleton<AppCubit>(AppCubit());
     getIt.registerSingleton<NodeListCubit>(NodeListCubit());
+    getIt.registerSingleton<UtxoCubit>(UtxoCubit());
   }
 }
 
@@ -302,12 +329,13 @@ Future<void> fetchTransactionsFromBackground([bool init = true]) async {
     loggerDev('Initialized background context');
     final GetIt getIt = GetIt.instance;
     final AppCubit appCubit = getIt.get<AppCubit>();
+    final UtxoCubit utxoCubit = getIt.get<UtxoCubit>();
     final MultiWalletTransactionCubit transCubit =
         getIt.get<MultiWalletTransactionCubit>();
     final NodeListCubit nodeListCubit = getIt.get<NodeListCubit>();
     for (final CesiumCard card in SharedPreferencesHelper().cards) {
       loggerDev('Fetching transactions for ${card.pubKey} in background');
-      transCubit.fetchTransactions(nodeListCubit, appCubit,
+      transCubit.fetchTransactions(nodeListCubit, utxoCubit, appCubit,
           pubKey: card.pubKey);
     }
     if (inDevelopment) {
@@ -327,8 +355,10 @@ Future<void> fetchTransactions(BuildContext context) async {
   final MultiWalletTransactionCubit transCubit =
       context.read<MultiWalletTransactionCubit>();
   final NodeListCubit nodeListCubit = context.read<NodeListCubit>();
+  final UtxoCubit utxoCubit = context.read<UtxoCubit>();
   for (final CesiumCard card in SharedPreferencesHelper().cards) {
-    transCubit.fetchTransactions(nodeListCubit, appCubit, pubKey: card.pubKey);
+    transCubit.fetchTransactions(nodeListCubit, utxoCubit, appCubit,
+        pubKey: card.pubKey);
   }
 }
 

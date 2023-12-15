@@ -46,11 +46,23 @@ class TransactionListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MultiWalletTransactionCubit,
-            MultiWalletTransactionState>(
-        builder: (BuildContext context,
-                MultiWalletTransactionState transBalanceState) =>
-            _buildTransactionItem(context, transaction));
+    return FutureBuilder<Transaction>(
+      future: _enrichTransaction(transaction),
+      builder: (BuildContext context, AsyncSnapshot<Transaction> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return _buildTransactionItem(context, transaction);
+        } else if (snapshot.hasError) {
+          return _buildTransactionItem(context, transaction);
+        } else {
+          final Transaction transaction = snapshot.data!;
+          return BlocBuilder<MultiWalletTransactionCubit,
+                  MultiWalletTransactionState>(
+              builder: (BuildContext context,
+                      MultiWalletTransactionState transBalanceState) =>
+                  _buildTransactionItem(context, transaction));
+        }
+      },
+    );
   }
 
   Widget _buildTransactionItem(BuildContext context, Transaction transaction) {
@@ -113,7 +125,6 @@ class TransactionListItem extends StatelessWidget {
             SlidableAction(
               onPressed: (BuildContext c) {
                 _cancel(context, transaction);
-                afterCancel!();
               },
               backgroundColor: deleteColor,
               foregroundColor: Colors.white,
@@ -154,7 +165,8 @@ class TransactionListItem extends StatelessWidget {
                 icon: Icons.replay,
                 label: tr('retry_payment'),
               ),
-            if (transaction.type != TransactionType.pending)
+            if (transaction.type != TransactionType.pending &&
+                !transaction.isToMultiple)
               SlidableAction(
                 onPressed: (BuildContext c) {
                   _addContact(transaction, contactsCubit, context);
@@ -207,10 +219,13 @@ class TransactionListItem extends StatelessWidget {
                                 child: Text(
                                   tr('transaction_from_to',
                                       namedArgs: <String, String>{
-                                        'from': humanizeContact(
-                                            myPubKey, transaction.from),
-                                        'to': humanizeContact(
-                                            myPubKey, transaction.to)
+                                        'from':
+                                            '${humanizeContact(myPubKey, transaction.from)} 🫴 ',
+                                        'to': transaction.isToMultiple
+                                            ? humanizeContacts(myPubKey,
+                                                transaction.recipients)
+                                            : humanizeContact(
+                                                myPubKey, transaction.to)
                                       }),
                                   style: const TextStyle(
                                     fontSize: txFontSize,
@@ -316,6 +331,7 @@ class TransactionListItem extends StatelessWidget {
         duration: const Duration(seconds: 3),
       ),
     );
+    afterCancel!();
   }
 
   Future<void> _payAgain(
@@ -323,7 +339,7 @@ class TransactionListItem extends StatelessWidget {
     final double amount = transaction.amount.abs(); // positive
     await payWithRetry(
         context: context,
-        to: transaction.to,
+        recipients: transaction.recipients,
         amount:
             isG1 ? amount / 100 : ((amount / currentUd) / 100).toPrecision(3),
         comment: transaction.comment,
@@ -396,6 +412,7 @@ class TransactionListItem extends StatelessWidget {
           title: Text(tr('cancel_payment')),
           onTap: () {
             _cancel(context, transaction);
+            Navigator.pop(context);
           },
         ),
       ));
@@ -408,6 +425,7 @@ class TransactionListItem extends StatelessWidget {
           title: Text(tr('pay_again')),
           onTap: () {
             _payAgain(context, transaction, false);
+            Navigator.pop(context);
           },
         ),
       ));
@@ -420,23 +438,40 @@ class TransactionListItem extends StatelessWidget {
           title: Text(tr('retry_payment')),
           onTap: () {
             _payAgain(context, transaction, true);
+            Navigator.pop(context);
           },
         ),
       ));
     }
 
-    if (transaction.type != TransactionType.pending) {
+    if (transaction.type != TransactionType.pending &&
+        !transaction.isToMultiple) {
       menuItems.add(PopupMenuItem<dynamic>(
         child: ListTile(
           leading: const Icon(Icons.contacts),
           title: Text(tr('add_contact')),
           onTap: () {
             _addContact(transaction, context.read<ContactsCubit>(), context);
+            Navigator.pop(context);
           },
         ),
       ));
     }
 
     return menuItems;
+  }
+
+  Future<Transaction> _enrichTransaction(Transaction tx) async {
+    final Contact fromContact =
+        await ContactsCache().getContact(tx.from.pubKey);
+    final Contact toContact = await ContactsCache().getContact(tx.to.pubKey);
+    final List<Contact> recipients = <Contact>[];
+    for (final Contact recipient in tx.recipients) {
+      final Contact recipientNew =
+          await ContactsCache().getContact(recipient.pubKey);
+      recipients.add(recipientNew);
+    }
+    return transaction.copyWith(
+        from: fromContact, to: toContact, recipients: recipients);
   }
 }

@@ -116,9 +116,9 @@ class CreditCardMini extends StatelessWidget {
                                           if (SharedPreferencesHelper()
                                               .isG1nkgoCard()) {}
                                           SharedPreferencesHelper()
-                                              .selectCurrentWalletIndex(0);
+                                              .removeCesiumCard();
                                           SharedPreferencesHelper()
-                                              .removeCesiumCard(cardIndex);
+                                              .selectCurrentWalletIndex(0);
                                           Navigator.pop(context);
                                         },
                                         child: Text(tr('accept')),

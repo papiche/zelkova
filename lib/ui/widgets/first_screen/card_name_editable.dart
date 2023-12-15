@@ -177,12 +177,18 @@ class _CardNameEditableState extends State<CardNameEditable> {
         overflow: TextOverflow.ellipsis,
         text: TextSpan(
           style: DefaultTextStyle.of(context).style,
-          children: <TextSpan>[
+          children: <InlineSpan>[
             if (currentText == widget.defValue)
               TextSpan(
                 text: currentText.toUpperCase(),
                 style: const TextStyle(
                     fontFamily: 'SourceCodePro', color: Colors.grey),
+              ),
+            if (currentText == widget.defValue)
+              const WidgetSpan(
+                child: Padding(
+                    padding: EdgeInsets.fromLTRB(2, 0, 0, 0),
+                    child: Icon(Icons.edit, size: 14.0, color: Colors.white)),
               ),
             if (currentText.isNotEmpty && currentText != widget.defValue)
               TextSpan(

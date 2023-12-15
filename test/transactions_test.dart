@@ -48,7 +48,8 @@ void main() {
     final TransactionState result = await transactionsGvaParser(
         (jsonDecode(txData) as Map<String, dynamic>)['data']
             as Map<String, dynamic>,
-        TransactionState.emptyState);
+        TransactionState.emptyState,
+        '6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH');
     expect(result.balance, equals(3));
     final List<Transaction> txs = result.transactions;
     for (final Transaction tx in txs) {
@@ -102,7 +103,8 @@ void main() {
     final TransactionState emptyResult = await transactionsGvaParser(
         (jsonDecode(emptyTx) as Map<String, dynamic>)['data']
             as Map<String, dynamic>,
-        TransactionState.emptyState);
+        TransactionState.emptyState,
+        '6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH');
     expect(emptyResult.balance, equals(0));
     final List<Transaction> emptyTxs = emptyResult.transactions;
     expect(emptyTxs.length, equals(0));

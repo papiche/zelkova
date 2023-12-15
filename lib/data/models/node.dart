@@ -50,7 +50,12 @@ List<Node> _splitList(String list) =>
 
 List<Node> _readDotNodeConfig(String entry) => _splitList(dotenv.env[entry]!);
 
-List<Node> defaultDuniterNodes = _readDotNodeConfig('DUNITER_NODES');
+List<Node> defaultDuniterNodes = <Node>{
+  ..._readDotNodeConfig('DUNITER_NODES'),
+  ..._splitList(
+      'duniter.pini.fr duniter.g1.pfouque.xyz fania.g1server.net g1.brussels.ovh g1.cgeek.fr g1.computhings.be g1.cuates.net g1.geragc.es g1.madeirawonders.com g1.rendall.fr g1.trentesaux.fr gibraleon.g1server.net vit.fdn.org')
+}.toList();
+
 List<Node> defaultCesiumPlusNodes = <Node>{
   ..._readDotNodeConfig('CESIUM_PLUS_NODES'),
   ..._splitList(

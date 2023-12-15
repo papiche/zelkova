@@ -242,7 +242,9 @@
   "please_confirm_delete": "Are you sure?",
   "please_confirm_delete_desc": "Are you sure you want to delete this wallet?",
   "please_confirm_delete_desc_g1nkgo": "Are you sure you want to delete this wallet? If you do it and you don't have a backup, you will lose access to it and the funds stored in it.",
-  "please_confirm_sent_multi_desc": "Are you sure you want to pay {amount} {currency} to all?",
+  "please_confirm_sent_multi_desc": "Are you sure you want to pay {amount} {currency} to {people} people?",
   "multi_pay_results": "Payments results",
-  "multi_pay_results_desc": "{success} success, {fail} failed"
+  "multi_pay_results_desc": "{success} success, {fail} failed",
+  "You can't send money to yourself.": "You can't send money to yourself.",
+  "others_and_someone": "{others} and {someone}"
 }

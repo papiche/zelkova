@@ -40,9 +40,14 @@ class NodeManager {
       for (final Node node in nodes) node.url: node.errors
     };
 
+    /*   final List<Node> workingNodes = nodes.where((Node node) {
+      return node.errors == 0;
+    }).toList(); */
     nodes.clear();
 
     final Set<Node> uniqueNodes = <Node>{};
+
+//    uniqueNodes.addAll(workingNodes);
 
     for (final Node newNode in newNodes) {
       Node updatedNode = newNode;

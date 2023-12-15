@@ -72,8 +72,9 @@ class SharedPreferencesHelper with ChangeNotifier {
     saveCesiumCards();
   }
 
-  void removeCesiumCard(int index) {
+  void removeCesiumCard() {
     // Don't allow the last card to be removed
+    final int index = getCurrentWalletIndex();
     logger('Removing card at index $index');
     if (cesiumCards.length > 1) {
       cesiumCards.removeAt(index);

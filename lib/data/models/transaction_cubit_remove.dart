@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use_from_same_package
+
 import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
@@ -74,7 +76,8 @@ class TransactionCubitRemove extends HydratedCubit<TransactionState> {
       }
 
       final Map<String, dynamic> txData = txDataResult.item1!;
-      TransactionState newState = await transactionsGvaParser(txData, state);
+      TransactionState newState =
+          await transactionsGvaParser(txData, state, myPubKey);
 
       if (newState.balance < 0) {
         logger('Warning: Negative balance in node ${txDataResult.item2}');

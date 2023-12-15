@@ -19,6 +19,10 @@ abstract class _$TransactionCWProxy {
 
   Transaction to(Contact to);
 
+  Transaction recipients(List<Contact>? recipients);
+
+  Transaction recipientsAmounts(List<double>? recipientsAmounts);
+
   Transaction debugInfo(String? debugInfo);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Transaction(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
@@ -34,6 +38,8 @@ abstract class _$TransactionCWProxy {
     DateTime? time,
     Contact? from,
     Contact? to,
+    List<Contact>? recipients,
+    List<double>? recipientsAmounts,
     String? debugInfo,
   });
 }
@@ -63,6 +69,14 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
   Transaction to(Contact to) => this(to: to);
 
   @override
+  Transaction recipients(List<Contact>? recipients) =>
+      this(recipients: recipients);
+
+  @override
+  Transaction recipientsAmounts(List<double>? recipientsAmounts) =>
+      this(recipientsAmounts: recipientsAmounts);
+
+  @override
   Transaction debugInfo(String? debugInfo) => this(debugInfo: debugInfo);
 
   @override
@@ -80,6 +94,8 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
     Object? time = const $CopyWithPlaceholder(),
     Object? from = const $CopyWithPlaceholder(),
     Object? to = const $CopyWithPlaceholder(),
+    Object? recipients = const $CopyWithPlaceholder(),
+    Object? recipientsAmounts = const $CopyWithPlaceholder(),
     Object? debugInfo = const $CopyWithPlaceholder(),
   }) {
     return Transaction(
@@ -107,6 +123,14 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
           ? _value.to
           // ignore: cast_nullable_to_non_nullable
           : to as Contact,
+      recipients: recipients == const $CopyWithPlaceholder()
+          ? _value.recipients
+          // ignore: cast_nullable_to_non_nullable
+          : recipients as List<Contact>?,
+      recipientsAmounts: recipientsAmounts == const $CopyWithPlaceholder()
+          ? _value.recipientsAmounts
+          // ignore: cast_nullable_to_non_nullable
+          : recipientsAmounts as List<double>?,
       debugInfo: debugInfo == const $CopyWithPlaceholder()
           ? _value.debugInfo
           // ignore: cast_nullable_to_non_nullable
@@ -132,6 +156,12 @@ Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(
       time: DateTime.parse(json['time'] as String),
       from: Contact.fromJson(json['from'] as Map<String, dynamic>),
       to: Contact.fromJson(json['to'] as Map<String, dynamic>),
+      recipients: (json['recipients'] as List<dynamic>?)
+          ?.map((e) => Contact.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      recipientsAmounts: (json['recipientsAmounts'] as List<dynamic>?)
+          ?.map((e) => (e as num).toDouble())
+          .toList(),
       debugInfo: json['debugInfo'] as String?,
     );
 
@@ -144,6 +174,8 @@ Map<String, dynamic> _$TransactionToJson(Transaction instance) =>
       'comment': instance.comment,
       'time': instance.time.toIso8601String(),
       'debugInfo': instance.debugInfo,
+      'recipients': instance.recipients,
+      'recipientsAmounts': instance.recipientsAmounts,
     };
 
 const _$TransactionTypeEnumMap = {

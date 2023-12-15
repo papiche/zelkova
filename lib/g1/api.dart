@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:crypto/crypto.dart';
 import 'package:durt/durt.dart';
@@ -15,6 +16,7 @@ import '../data/models/contact.dart';
 import '../data/models/node.dart';
 import '../data/models/node_manager.dart';
 import '../data/models/node_type.dart';
+import '../data/models/utxo.dart';
 import '../shared_prefs_helper.dart';
 import '../ui/logger.dart';
 import '../ui/ui_helpers.dart';
@@ -31,7 +33,8 @@ final String currency = currencyDotEnv.isEmpty ? 'g1' : currencyDotEnv;
 
 Future<String> getTxHistory(String publicKey) async {
   final Response response =
-      await requestWithRetry(NodeType.duniter, '/tx/history/$publicKey');
+      (await requestWithRetry(NodeType.duniter, '/tx/history/$publicKey'))
+          .item2;
   if (response.statusCode == 200) {
     return response.body;
   } else {
@@ -40,9 +43,10 @@ Future<String> getTxHistory(String publicKey) async {
 }
 
 Future<Response> getPeers() async {
-  final Response response = await requestWithRetry(
-      NodeType.duniter, '/network/peers',
-      dontRecord: true);
+  final Response response = (await requestWithRetry(
+          NodeType.duniter, '/network/peers',
+          dontRecord: true))
+      .item2;
   if (response.statusCode == 200) {
     return response;
   } else {
@@ -60,7 +64,7 @@ Future<Response> searchCPlusUser(String initialSearchTerm) async {
       '/user/profile/_search?q=title:$searchTermLower OR issuer:$searchTerm OR title:$searchTermCapitalized OR title:$searchTerm';
 
   final Response response =
-      await requestCPlusWithRetry(query, retryWith404: false);
+      (await requestCPlusWithRetry(query, retryWith404: false)).item2;
   return response;
 }
 
@@ -68,9 +72,10 @@ Future<Contact> getProfile(String pubKeyRaw,
     [bool onlyCPlusProfile = false]) async {
   final String pubKey = extractPublicKey(pubKeyRaw);
   try {
-    final Response cPlusResponse = await requestCPlusWithRetry(
-        '/user/profile/$pubKey',
-        retryWith404: false);
+    final Response cPlusResponse = (await requestCPlusWithRetry(
+            '/user/profile/$pubKey',
+            retryWith404: false))
+        .item2;
     final Map<String, dynamic> result =
         const JsonDecoder().convert(cPlusResponse.body) as Map<String, dynamic>;
     if (result['found'] == false) {
@@ -108,9 +113,10 @@ Not found sample:
  */
 Future<List<Contact>> searchWot(String initialSearchTerm) async {
   final String searchTerm = normalizeQuery(initialSearchTerm);
-  final Response response = await requestDuniterWithRetry(
-      '/wot/lookup/$searchTerm',
-      retryWith404: false);
+  final Response response = (await requestDuniterWithRetry(
+          '/wot/lookup/$searchTerm',
+          retryWith404: false))
+      .item2;
   // Will be better to analyze the 404 response (to detect faulty node)
   final List<Contact> contacts = <Contact>[];
   if (response.statusCode == HttpStatus.ok) {
@@ -136,9 +142,10 @@ Future<List<Contact>> searchWot(String initialSearchTerm) async {
 }
 
 Future<Contact> getWot(Contact contact) async {
-  final Response response = await requestDuniterWithRetry(
-      '/wot/lookup/${contact.pubKey}',
-      retryWith404: false);
+  final Response response = (await requestDuniterWithRetry(
+          '/wot/lookup/${contact.pubKey}',
+          retryWith404: false))
+      .item2;
   // Will be better to analyze the 404 response (to detect faulty node)
   if (response.statusCode == HttpStatus.ok) {
     final Map<String, dynamic> data =
@@ -159,7 +166,7 @@ Future<Contact> getWot(Contact contact) async {
 @Deprecated('use getProfile')
 Future<String> _getDataImageFromKey(String publicKey) async {
   final Response response =
-      await requestCPlusWithRetry('/user/profile/$publicKey');
+      (await requestCPlusWithRetry('/user/profile/$publicKey')).item2;
   if (response.statusCode == HttpStatus.ok) {
     final Map<String, dynamic> data =
         json.decode(response.body) as Map<String, dynamic>;
@@ -214,12 +221,13 @@ Future<void> _fetchDuniterNodes({bool force = false}) async {
   const NodeType type = NodeType.duniter;
   NodeManager().loading = true;
   final bool forceOrFewNodes =
-      force || NodeManager().nodesWorking(type) < NodeManager.maxNodes;
+      force || (NodeManager().nodesWorking(type) < NodeManager.maxNodes);
   if (forceOrFewNodes) {
+    defaultDuniterNodes.shuffle();
     NodeManager().updateNodes(type, defaultDuniterNodes);
   }
   logger(
-      'Fetching ${type.name} nodes, we have ${NodeManager().nodesWorking(type)}');
+      'Fetching (forced: $force) ${type.name} nodes, we have ${NodeManager().nodesWorking(type)}');
   final List<Node> nodes = await _fetchDuniterNodesFromPeers(type);
   NodeManager().updateNodes(type, nodes);
   NodeManager().loading = false;
@@ -462,22 +470,22 @@ Future<NodeCheck> _pingNode(String node, NodeType type) async {
   }
 }
 
-Future<http.Response> requestWithRetry(NodeType type, String path,
+Future<Tuple2<Node, http.Response>> requestWithRetry(NodeType type, String path,
     {bool dontRecord = false, bool retryWith404 = true}) async {
   return _requestWithRetry(type, path, dontRecord, retryWith404);
 }
 
-Future<http.Response> requestDuniterWithRetry(String path,
+Future<Tuple2<Node, http.Response>> requestDuniterWithRetry(String path,
     {bool retryWith404 = true}) async {
   return _requestWithRetry(NodeType.duniter, path, true, retryWith404);
 }
 
-Future<http.Response> requestCPlusWithRetry(String path,
+Future<Tuple2<Node, http.Response>> requestCPlusWithRetry(String path,
     {bool retryWith404 = true}) async {
   return _requestWithRetry(NodeType.cesiumPlus, path, true, retryWith404);
 }
 
-Future<http.Response> requestGvaWithRetry(String path,
+Future<Tuple2<Node, http.Response>> requestGvaWithRetry(String path,
     {bool retryWith404 = true,
     HttpType httpType = HttpType.get,
     Map<String, String>? headers,
@@ -489,7 +497,7 @@ Future<http.Response> requestGvaWithRetry(String path,
 
 enum HttpType { get, post, delete }
 
-Future<http.Response> _requestWithRetry(
+Future<Tuple2<Node, http.Response>> _requestWithRetry(
     NodeType type, String path, bool dontRecord, bool retryWith404,
     {HttpType httpType = HttpType.get,
     Map<String, String>? headers,
@@ -528,7 +536,7 @@ Future<http.Response> _requestWithRetry(
           if (!dontRecord) {
             NodeManager().updateNode(type, node.copyWith(latency: newLatency));
           }
-          return response;
+          return Tuple2<Node, Response>(node, response);
         } else if (response.statusCode == 404) {
           logger('404 on fetch $url');
           if (retryWith404) {
@@ -540,7 +548,7 @@ Future<http.Response> _requestWithRetry(
             if (!kReleaseMode) {
               logger('Returning not 200 or 400 response');
             }
-            return response;
+            return Tuple2<Node, Response>(node, response);
           }
         } else {
           /* await Sentry.captureMessage(
@@ -564,31 +572,44 @@ Future<http.Response> _requestWithRetry(
       'Cannot make the request to any of the ${nodes.length} nodes');
 }
 
-Future<PayResult> pay(
-    {required String to, required double amount, String? comment}) async {
+Future<PayResult> payWithGVA(
+    {required List<String> to, required double amount, String? comment}) async {
   try {
-    final SelectedGvaNode selected = getGvaNode();
+    final Tuple2<String, Node> selected = getGvaNode();
 
-    final String nodeUrl = selected.url;
+    final String nodeUrl = selected.item1;
     try {
       final Gva gva = Gva(node: nodeUrl);
       final CesiumWallet wallet = await SharedPreferencesHelper().getWallet();
       logger(
           'Trying $nodeUrl to send $amount to $to with comment ${comment ?? ''}');
-
-      final String response = await gva.pay(
-          recipient: extractPublicKey(to),
-          amount: amount,
-          comment: comment ?? '',
-          cesiumSeed: wallet.seed,
-          useMempool: true,
-          raiseException: true);
+      String response;
+      if (to.length == 1) {
+        response = await gva.pay(
+            recipient: extractPublicKey(to[0]),
+            amount: amount,
+            comment: comment ?? '',
+            cesiumSeed: wallet.seed,
+            useMempool: true,
+            raiseException: true);
+      } else {
+        response = await gva.complexPay(
+            recipients: to
+                .map((String recipient) => extractPublicKey(recipient))
+                .toList(),
+            amounts: List<double>.filled(to.length, amount),
+            totalAmount: amount * to.length,
+            comment: comment ?? '',
+            cesiumSeed: wallet.seed,
+            useMempool: true,
+            raiseException: true);
+      }
       logger('GVA replied with "$response"');
-      return PayResult(message: response, node: selected);
+      return PayResult(message: response, node: selected.item2);
     } on GraphQLException catch (e) {
       final List<String> eCause = e.cause.split('message: ');
       return PayResult(
-          node: selected,
+          node: selected.item2,
           message: eCause.isNotEmpty
               ? eCause[eCause.length > 1 ? 1 : 0].split(',')[0]
               : 'Transaction failed for unknown reason');
@@ -597,14 +618,15 @@ Future<PayResult> pay(
       logger(e);
       logger(stacktrace);
       return PayResult(
-          node: selected, message: "Something didn't work as expected ($e)");
+          node: selected.item2,
+          message: "Something didn't work as expected ($e)");
     }
   } catch (e) {
     return PayResult(message: "Something didn't work as expected ($e)");
   }
 }
 
-SelectedGvaNode getGvaNode() {
+Tuple2<String, Node> getGvaNode() {
   final List<Node> nodes = _getBestGvaNodes();
   if (nodes.isNotEmpty) {
     final Node? currentGvaNode = NodeManager().getCurrentGvaNode();
@@ -612,24 +634,17 @@ SelectedGvaNode getGvaNode() {
     if (currentGvaNode == null) {
       NodeManager().setCurrentGvaNode(node);
     }
-    return SelectedGvaNode(url: proxyfyNode(node.url), node: node);
+    return Tuple2<String, Node>(proxyfyNode(node.url), node);
   } else {
     throw Exception(
         'Sorry: I cannot find a working node to send the transaction');
   }
 }
 
-class SelectedGvaNode {
-  SelectedGvaNode({required this.url, required this.node});
-
-  final String url;
-  final Node node;
-}
-
 class PayResult {
   PayResult({required this.message, this.node});
 
-  final SelectedGvaNode? node;
+  final Node? node;
   final String message;
 }
 
@@ -647,33 +662,25 @@ Future<Tuple2<Map<String, dynamic>?, Node>> gvaHistoryAndBalance(
   logger('Get tx history (page size: $pageSize: cursor $cursor)');
   final String pubKey = extractPublicKey(pubKeyRaw);
   return gvaFunctionWrapper<Map<String, dynamic>>(
-      pubKey, (Gva gva) => gva.history(pubKey, pageSize, cursor));
+      (Gva gva) => gva.history(pubKey, pageSize, cursor));
 }
 
 Future<Tuple2<double?, Node>> gvaBalance(String pubKey) async {
-  return gvaFunctionWrapper<double>(
-      extractPublicKey(pubKey), (Gva gva) => gva.balance(pubKey));
+  return gvaFunctionWrapper<double>((Gva gva) => gva.balance(pubKey));
 }
 
 Future<Tuple2<String?, Node>> gvaNick(String pubKey) async {
   return gvaFunctionWrapper<String>(
-      pubKey, (Gva gva) => gva.getUsername(extractPublicKey(pubKey)));
+      (Gva gva) => gva.getUsername(extractPublicKey(pubKey)));
 }
 
-Future<Tuple2<Map<String, dynamic>?, Node>> gvaFetchUtxosOfScript(
-    {required String pubKeyRaw,
-    int pageSize = 100,
-    String? cursor,
-    int? amount}) {
-  final String pubKey = extractPublicKey(pubKeyRaw);
+Future<Tuple2<Map<String, dynamic>?, Node>> getCurrentBlockGVA() async {
   return gvaFunctionWrapper<Map<String, dynamic>>(
-      pubKey,
-      (Gva gva) => gva.fetchUtxosOfScript(
-          script: pubKey, pageSize: pageSize, amount: amount, cursor: cursor));
+      (Gva gva) => gva.getCurrentBlockExtended());
 }
 
 Future<Tuple2<T?, Node>> gvaFunctionWrapper<T>(
-    String pubKey, Future<T?> Function(Gva) specificFunction) async {
+    Future<T?> Function(Gva) specificFunction) async {
   final List<Node> nodes = _getBestGvaNodes();
 
   // Try first the current GVA node
@@ -763,21 +770,22 @@ Future<void> createOrUpdateCesiumPlusUser(String name) async {
     'tags': <String>[],
   };
 
-  signAndHash(userProfile, wallet);
+  hashAndSign(userProfile, wallet);
 
   // Convert the user profile data into a JSON string again, now including hash and signature
   final String userProfileJsonWithHashAndSignature = jsonEncode(userProfile);
 
   if (userName != null) {
     logger('User exists, update the user profile');
-    final http.Response updateResponse = await _requestWithRetry(
-        NodeType.cesiumPlus,
-        '/user/profile/$pubKey/_update?pubkey=$pubKey',
-        false,
-        true,
-        httpType: HttpType.post,
-        headers: _defCPlusHeaders(),
-        body: userProfileJsonWithHashAndSignature);
+    final http.Response updateResponse = (await _requestWithRetry(
+            NodeType.cesiumPlus,
+            '/user/profile/$pubKey/_update?pubkey=$pubKey',
+            false,
+            true,
+            httpType: HttpType.post,
+            headers: _defCPlusHeaders(),
+            body: userProfileJsonWithHashAndSignature))
+        .item2;
     if (updateResponse.statusCode == 200) {
       logger('User profile updated successfully.');
     } else {
@@ -787,11 +795,12 @@ Future<void> createOrUpdateCesiumPlusUser(String name) async {
     }
   } else if (userName == null) {
     logger('User does not exist, create a new user profile');
-    final http.Response createResponse = await _requestWithRetry(
-        NodeType.cesiumPlus, '/user/profile', false, false,
-        httpType: HttpType.post,
-        headers: _defCPlusHeaders(),
-        body: userProfileJsonWithHashAndSignature);
+    final http.Response createResponse = (await _requestWithRetry(
+            NodeType.cesiumPlus, '/user/profile', false, false,
+            httpType: HttpType.post,
+            headers: _defCPlusHeaders(),
+            body: userProfileJsonWithHashAndSignature))
+        .item2;
 
     if (createResponse.statusCode == 200) {
       logger('User profile created successfully.');
@@ -809,12 +818,12 @@ Map<String, String> _defCPlusHeaders() {
   };
 }
 
-void signAndHash(Map<String, dynamic> userProfile, CesiumWallet wallet) {
-  final String userProfileJson = jsonEncode(userProfile);
-  final String hash = calculateHash(userProfileJson);
+void hashAndSign(Map<String, dynamic> data, CesiumWallet wallet) {
+  final String dataJson = jsonEncode(data);
+  final String hash = calculateHash(dataJson);
   final String signature = wallet.sign(hash);
-  userProfile['hash'] = hash;
-  userProfile['signature'] = signature;
+  data['hash'] = hash;
+  data['signature'] = signature;
 }
 
 Future<String?> getCesiumPlusUser(String pubKey) async {
@@ -835,13 +844,14 @@ Future<bool> deleteCesiumPlusUser() async {
         1000, // current time in seconds
   };
 
-  signAndHash(userProfile, wallet);
+  hashAndSign(userProfile, wallet);
 
-  final http.Response delResponse = await _requestWithRetry(
-      NodeType.cesiumPlus, '/history/delete', false, false,
-      httpType: HttpType.post,
-      headers: _defCPlusHeaders(),
-      body: jsonEncode(userProfile));
+  final http.Response delResponse = (await _requestWithRetry(
+          NodeType.cesiumPlus, '/history/delete', false, false,
+          httpType: HttpType.post,
+          headers: _defCPlusHeaders(),
+          body: jsonEncode(userProfile)))
+      .item2;
   return delResponse.statusCode == 200;
 }
 
@@ -849,4 +859,137 @@ String calculateHash(String input) {
   final List<int> bytes = utf8.encode(input); // data being hashed
   final Digest digest = sha256.convert(bytes);
   return digest.toString().toUpperCase();
+}
+
+Future<Tuple2<Map<String, dynamic>?, Node>> gvaFetchUtxosOfScript(
+    {required String pubKeyRaw,
+    int pageSize = 100,
+    String? cursor,
+    int? amount}) {
+  final String pubKey = extractPublicKey(pubKeyRaw);
+  return gvaFunctionWrapper<Map<String, dynamic>>((Gva gva) =>
+      gva.fetchUtxosOfScript(
+          script: pubKey, pageSize: pageSize, amount: amount, cursor: cursor));
+}
+
+Future<PayResult> payWithBMA({
+  required CesiumWallet wallet,
+  required List<Utxo> utxos,
+  required String destPub,
+  required double amount,
+  required String blockNumber,
+  required String blockHash,
+  String? comment,
+}) async {
+  try {
+    final String issuer = wallet.pubkey;
+    // Change back address == issuer
+    final String restPub = issuer;
+
+    final List<List<Utxo>> utxoSlices = sliceUtxos(utxos);
+    Response? finalResponse;
+    Node? node;
+    for (final List<Utxo> utxoSlice in utxoSlices) {
+      final Map<String, Object> transaction = <String, Object>{
+        'Version': 10,
+        'Currency': currency,
+        'Blockstamp': '$blockNumber-$blockHash',
+        'Locktime': 0,
+        'Issuers': <String>[issuer],
+        'Comment': comment ?? ''
+      };
+
+      // Inputs
+      final List<String> inputs = <String>[];
+      for (final Utxo utxo in utxoSlice) {
+        // if D (DU) : AMOUNT:BASE:D:PUBLIC_KEY:BLOCK_ID
+        // if T (TX) : AMOUNT:BASE:T:T_HASH:T_INDEX
+        inputs.add(
+            '${utxo.amount}:${utxo.base}:T:${utxo.txHash}:${utxo.outputIndex}');
+      }
+      transaction['Inputs'] = inputs;
+      // Unlocks
+      final List<String> unlocks = <String>[];
+      for (int i = 0; i < utxos.length; i++) {
+        // INPUT_INDEX:UNLOCK_CONDITION
+        unlocks.add('$i:SIG(0)');
+      }
+      transaction['Unlocks'] = unlocks;
+
+      final List<String> outputs = <String>[];
+
+      // AMOUNT:BASE:CONDITIONS
+      double rest = amount;
+      final int maxBase =
+          utxos.fold(0, (int prev, Utxo utxo) => max(prev, utxo.base));
+      final double inputsAmount =
+          utxos.fold(0, (double prev, Utxo utxo) => prev + utxo.amount);
+      int outputBase = maxBase;
+      int outputOffset = 0;
+      final List<Map<String, dynamic>> newSources = <Map<String, dynamic>>[];
+
+      if (destPub != issuer) {
+        while (rest > 0) {
+          double outputAmount = truncBase(rest, outputBase);
+          rest -= outputAmount;
+          if (outputAmount > 0) {
+            outputAmount = outputBase == 0
+                ? outputAmount
+                : outputAmount / pow(10, outputBase);
+            outputs.add('$outputAmount:$outputBase:SIG($destPub)');
+            outputOffset++;
+          }
+          outputBase--;
+        }
+        rest = inputsAmount - amount;
+        outputBase = maxBase;
+      }
+
+      while (rest > 0) {
+        double outputAmount = truncBase(rest, outputBase);
+        rest -= outputAmount;
+        if (outputAmount > 0) {
+          outputAmount = outputBase == 0
+              ? outputAmount
+              : outputAmount / pow(10, outputBase);
+          outputs.add('$outputAmount:$outputBase:SIG($restPub)');
+          if (issuer == restPub) {
+            newSources.add(<String, dynamic>{
+              'type': 'T',
+              'noffset': outputOffset,
+              'amount': outputAmount,
+              'base': outputBase,
+              'conditions': 'SIG($restPub)',
+              'consumed': false,
+            });
+          }
+          outputOffset++;
+        }
+        outputBase--;
+      }
+      transaction['Outputs'] = outputs;
+
+      hashAndSign(transaction, wallet);
+      final String transactionJson = jsonEncode(transaction);
+
+      // final List<int> bytes = utf8.encode(transactionJson);
+      logger(transactionJson);
+
+      final Tuple2<Node, http.Response> response = await _requestWithRetry(
+          NodeType.duniter, '/tx/processTesting', false, false,
+          httpType: HttpType.post,
+          // headers: ??
+          body: transactionJson);
+      finalResponse = response.item2;
+      node = response.item1;
+      if (response.item2.statusCode != 200) {
+        return PayResult(
+            node: response.item1,
+            message: "Something didn't work as expected ($e)");
+      }
+    }
+    return PayResult(message: finalResponse!.body, node: node);
+  } catch (e) {
+    return PayResult(message: "Something didn't work as expected ($e)");
+  }
 }

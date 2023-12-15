@@ -17,19 +17,27 @@ class Transaction extends Equatable {
       required this.comment,
       required this.time,
       required this.from,
-      required this.to,
-      this.debugInfo});
+      @Deprecated('Use recipients instead') required this.to,
+      // Old tx does not store outputs so let it be null
+      List<Contact>? recipients,
+      List<double>? recipientsAmounts,
+      this.debugInfo})
+      : recipients = recipients ?? const <Contact>[],
+        recipientsAmounts = recipientsAmounts ?? const <double>[];
 
   factory Transaction.fromJson(Map<String, dynamic> json) =>
       _$TransactionFromJson(json);
 
   final TransactionType type;
   final Contact from;
+  @Deprecated('Use recipients instead')
   final Contact to;
   final double amount;
   final String comment;
   final DateTime time;
   final String? debugInfo;
+  final List<Contact> recipients;
+  final List<double> recipientsAmounts;
 
   bool get isFailed => type == TransactionType.failed;
 
@@ -41,12 +49,23 @@ class Transaction extends Equatable {
   bool get isIncoming =>
       type == TransactionType.receiving || type == TransactionType.received;
 
+  bool get isToMultiple => recipients.length > 2;
+
   Map<String, dynamic> toJson() => _$TransactionToJson(this);
 
   String toStringSmall(String pubKey) =>
       "Transaction { type: ${type.name}, from: ${from.toStringSmall(pubKey)}, to: ${to.toStringSmall(pubKey)}, amount: $amount, comment: $comment, time: ${humanizeTime(time, 'en')}, debugInfo: '$debugInfo' }";
 
   @override
-  List<Object?> get props =>
-      <dynamic>[type, from, to, amount, comment, time, debugInfo];
+  List<Object?> get props => <dynamic>[
+        type,
+        from,
+        to,
+        amount,
+        comment,
+        time,
+        debugInfo,
+        recipients,
+        recipientsAmounts
+      ];
 }

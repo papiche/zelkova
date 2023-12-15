@@ -4,7 +4,7 @@ import '../data/models/contact.dart';
 import '../data/models/transaction.dart';
 import '../data/models/transaction_state.dart';
 import '../data/models/transaction_type.dart';
-import '../ui/contacts_cache.dart';
+import 'g1_helper.dart';
 
 final RegExp exp = RegExp(r'\((.*?)\)');
 
@@ -42,8 +42,8 @@ Future<TransactionState> transactionParser(
       logger('Timestamp: $timestamp');
       logger('Fecha: $txDate');
     } */
-    final Contact fromC = await ContactsCache().getContact(address2!);
-    final Contact toC = await ContactsCache().getContact(address1!);
+    final Contact fromC = Contact(pubKey: address2!);
+    final Contact toC = Contact(pubKey: address1!);
 
     tx.insert(
         0,
@@ -62,8 +62,9 @@ Future<TransactionState> transactionParser(
       lastChecked: DateTime.now());
 }
 
-Future<TransactionState> transactionsGvaParser(
-    Map<String, dynamic> txData, TransactionState state) async {
+Future<TransactionState> transactionsGvaParser(Map<String, dynamic> txData,
+    TransactionState state, String myPubKeyRaw) async {
+  final String myPubKey = extractPublicKey(myPubKeyRaw);
   // Balance
   final dynamic rawBalance = txData['balance'];
   final double amount = rawBalance != null
@@ -88,21 +89,29 @@ Future<TransactionState> transactionsGvaParser(
   final List<Transaction> txs = <Transaction>[];
   for (final dynamic edgeRaw in edges) {
     final Transaction tx =
-        await _transactionGvaParser(edgeRaw as Map<String, dynamic>);
-    txs.add(tx);
+        await _transactionGvaParser(edgeRaw as Map<String, dynamic>, myPubKey);
+    if (tx.from.pubKey == myPubKey &&
+        tx.to.pubKey == myPubKey &&
+        tx.recipients.length == 1) {
+      // This is a return cash back to me
+      continue;
+    } else {
+      txs.add(tx);
+    }
   }
   final List<dynamic> receiving = txsHistoryMp['receiving'] as List<dynamic>;
   final List<dynamic> sending = txsHistoryMp['sending'] as List<dynamic>;
   for (final dynamic receiveRaw in receiving) {
-    final Transaction tx = await _txGvaParse(
-        receiveRaw as Map<String, dynamic>, TransactionType.receiving);
+    final Transaction tx = await _txGvaParse(receiveRaw as Map<String, dynamic>,
+        myPubKey, TransactionType.receiving);
     txs.insert(0, tx);
   }
   for (final dynamic sendingRaw in sending) {
     final Transaction tx = await _txGvaParse(
-        sendingRaw as Map<String, dynamic>, TransactionType.sending);
+        sendingRaw as Map<String, dynamic>, myPubKey, TransactionType.sending);
     txs.insert(0, tx);
   }
+
   return state.copyWith(
       transactions: txs,
       balance: amount,
@@ -111,7 +120,8 @@ Future<TransactionState> transactionsGvaParser(
       endCursor: pageInfo['endCursor'] as String?);
 }
 
-Future<Transaction> _transactionGvaParser(Map<String, dynamic> edge) {
+Future<Transaction> _transactionGvaParser(
+    Map<String, dynamic> edge, String myPubKey) {
   final Map<String, dynamic> parsedTxData = edge;
   // Direction
   final String direction = parsedTxData['direction'] as String;
@@ -119,34 +129,67 @@ Future<Transaction> _transactionGvaParser(Map<String, dynamic> edge) {
       direction == 'SENT' ? TransactionType.sent : TransactionType.received;
 
   final Map<String, dynamic> tx = parsedTxData['node'] as Map<String, dynamic>;
-  return _txGvaParse(tx, type);
+  return _txGvaParse(tx, myPubKey, type);
 }
 
 Future<Transaction> _txGvaParse(
-    Map<String, dynamic> tx, TransactionType type) async {
+    Map<String, dynamic> tx, String myPubKey, TransactionType type) async {
   final List<dynamic> issuers = tx['issuers'] as List<dynamic>;
   final List<dynamic> outputs = tx['outputs'] as List<dynamic>;
   final String from = issuers[0] as String;
-  final String? to = exp.firstMatch(outputs[0] as String)!.group(1);
+
+  final List<Contact> recipients = <Contact>[];
+  final List<double> recipientsAmounts = <double>[];
+  double amount = 0.0;
+  Contact? toC;
+  final bool isSent =
+      type == TransactionType.sent || type == TransactionType.sending;
+  for (final dynamic output in outputs) {
+    // Extract the recipient from each output
+    final String outputS = output as String;
+    final String? recipient = exp.firstMatch(outputS)!.group(1);
+    final Contact recipientContact = Contact(pubKey: recipient!);
+    recipients.add(recipientContact);
+
+    final double outputAmount = double.parse(outputS.split(':')[0]);
+    recipientsAmounts.add(amount);
+    if (isSent) {
+      if (recipient != myPubKey) {
+        // Is not the return cash back to me
+        amount += outputAmount;
+      }
+    } else {
+      if (recipient == myPubKey) {
+        amount = outputAmount;
+        toC = recipientContact;
+      }
+    }
+  }
+
+  if (isSent) {
+    // this only works in the case of a single recipient
+    toC = recipients.first;
+  }
 
   // Time
   final dynamic writtenTime = tx['writtenTime'];
   final DateTime time = writtenTime == null
       ? DateTime.now()
       : DateTime.fromMillisecondsSinceEpoch((writtenTime as int) * 1000);
-  // Amount
-  double amount = double.parse((outputs.first as String).split(':')[0]);
-  if (type == TransactionType.sent || type == TransactionType.sending) {
+
+  if (isSent) {
     amount = -amount;
   }
   // Comment
   final String comment = tx['comment'] as String;
-  final Contact fromC = await ContactsCache().getContact(from);
-  final Contact toC = await ContactsCache().getContact(to!);
+  final Contact fromC = Contact(pubKey: from);
+
   return Transaction(
     type: type,
     from: fromC,
-    to: toC,
+    to: toC!,
+    recipients: recipients,
+    recipientsAmounts: recipientsAmounts,
     amount: amount,
     comment: comment,
     time: time,

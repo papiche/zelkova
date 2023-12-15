@@ -222,8 +222,11 @@ class TransactionListItem extends StatelessWidget {
                                         'from':
                                             '${humanizeContact(myPubKey, transaction.from)} 🫴 ',
                                         'to': transaction.isToMultiple
-                                            ? humanizeContacts(myPubKey,
-                                                transaction.recipients)
+                                            ? humanizeContacts(
+                                                fromAddress:
+                                                    transaction.from.pubKey,
+                                                contacts:
+                                                    transaction.recipients)
                                             : humanizeContact(
                                                 myPubKey, transaction.to)
                                       }),

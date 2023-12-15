@@ -3,6 +3,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../g1/api.dart';
+import '../../ui/logger.dart';
 import 'node.dart';
 import 'utxo.dart';
 import 'utxo_state.dart';
@@ -15,7 +16,11 @@ class UtxoCubit extends HydratedCubit<UtxoState> {
 
   @override
   UtxoState? fromJson(Map<String, dynamic> json) {
-    return UtxoLoaded.fromJson(json);
+    try {
+      return UtxoLoaded.fromJson(json);
+    } catch (e) {
+      return UtxoInitial();
+    }
   }
 
   @override
@@ -34,6 +39,8 @@ class UtxoCubit extends HydratedCubit<UtxoState> {
                 pubKeyRaw: myPubKey,
                 cursor:
                     state is UtxoLoaded ? (state as UtxoLoaded).cursor : null);
+        loggerDev('utxoDataResult: $utxoDataResult');
+
         if (utxoDataResult.item1 != null) {
           final List<Utxo> utxos = <Utxo>[];
           double total = state is UtxoLoaded ? (state as UtxoLoaded).total : 0;
@@ -57,7 +64,7 @@ class UtxoCubit extends HydratedCubit<UtxoState> {
     }
   }
 
-  List<Utxo> consume(double amount) {
+  List<Utxo>? consume(double amount) {
     if (state is UtxoLoaded) {
       final UtxoLoaded currentState = state as UtxoLoaded;
 
@@ -76,8 +83,9 @@ class UtxoCubit extends HydratedCubit<UtxoState> {
       }
 
       if (total < amount) {
-        emit(UtxosError('Insufficient UTXOs to cover the requested amount'));
-        return <Utxo>[];
+        const String error = 'Insufficient UTXOs to cover the requested amount';
+        emit(UtxosError(error));
+        throw Exception(error);
       }
 
       final List<Utxo> updatedUtxos = currentState.utxos
@@ -87,8 +95,9 @@ class UtxoCubit extends HydratedCubit<UtxoState> {
       emit(currentState.copyWith(utxos: updatedUtxos));
       return selectedUtxos;
     } else {
-      emit(UtxosError('Wrong utxo state'));
-      return <Utxo>[];
+      const String error = 'Wrong utxo state';
+      emit(UtxosError(error));
+      throw Exception(error);
     }
   }
 

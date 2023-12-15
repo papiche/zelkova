@@ -12,6 +12,8 @@ import '../../shared_prefs_helper.dart';
 import '../../ui/logger.dart';
 import '../../ui/notification_controller.dart';
 import '../../ui/pay_helper.dart';
+import '../../ui/ui_helpers.dart';
+import '../../ui/widgets/connectivity_widget_wrapper_wrapper.dart';
 import 'app_cubit.dart';
 import 'contact.dart';
 import 'multi_wallet_transaction_state.dart';
@@ -22,6 +24,7 @@ import 'transaction.dart';
 import 'transaction_state.dart';
 import 'transaction_type.dart';
 import 'transactions_bloc.dart';
+import 'utxo_cubit.dart';
 
 class MultiWalletTransactionCubit
     extends HydratedCubit<MultiWalletTransactionState> {
@@ -51,7 +54,8 @@ class MultiWalletTransactionCubit
     _emitState(key, newState);
   }
 
-  void _emitState(String key, TransactionState newState) {
+  void _emitState(String keyRaw, TransactionState newState) {
+    final String key = extractPublicKey(keyRaw);
     final Map<String, TransactionState> newStates =
         Map<String, TransactionState>.of(state.map)..[key] = newState;
     emit(MultiWalletTransactionState(newStates));
@@ -62,7 +66,8 @@ class MultiWalletTransactionCubit
     return key;
   }
 
-  TransactionState _getStateOfWallet(String key) {
+  TransactionState _getStateOfWallet(String keyRaw) {
+    final String key = extractPublicKey(keyRaw);
     final TransactionState currentState =
         state.map[key] ?? TransactionState.emptyState;
     return currentState;
@@ -85,7 +90,7 @@ class MultiWalletTransactionCubit
     final List<Transaction> newPendingTransactions = <Transaction>[];
     for (final Transaction t in currentState.pendingTransactions) {
       if (tx.from == t.from &&
-          tx.to == t.to &&
+          tx.recipients == t.recipients &&
           tx.amount == t.amount &&
           tx.comment == t.comment) {
         newPendingTransactions
@@ -118,10 +123,12 @@ class MultiWalletTransactionCubit
 
   DateTime get lastChecked => currentWalletState().lastChecked;
 
-  String _getTxKey(Transaction t) => '${t.to.pubKey}-${t.comment}-${t.amount}';
+  String _getTxKey(Transaction t) => t.isToMultiple
+      ? '${t.recipients.map((Contact c) => c.pubKey).join('-')}-${t.comment}-${t.amount}'
+      : '${t.to.pubKey}-${t.comment}-${t.amount}';
 
   Future<List<Transaction>> fetchTransactions(
-      NodeListCubit cubit, AppCubit appCubit,
+      NodeListCubit cubit, UtxoCubit utxoCubit, AppCubit appCubit,
       {int retries = 5, int? pageSize, String? cursor, String? pubKey}) async {
     pubKey = _defKey(pubKey);
     final TransactionState currentState = _getStateOfWallet(pubKey);
@@ -145,7 +152,7 @@ class MultiWalletTransactionCubit
 
       final Map<String, dynamic> txData = txDataResult.item1!;
       final TransactionState newParsedState =
-          await transactionsGvaParser(txData, currentState);
+          await transactionsGvaParser(txData, currentState, pubKey);
 
       if (newParsedState.balance < 0) {
         logger('Warning: Negative balance in node ${txDataResult.item2}');
@@ -175,6 +182,8 @@ class MultiWalletTransactionCubit
       logger(
           'Last sent notification: ${currentModifiedState.latestSentNotification.toIso8601String()})}');
 
+      logger(
+          '>>>>>>>>>>>>>>>>>>> Transactions: ${currentModifiedState.transactions.length}, wallets ${state.map.length}');
       for (final Transaction tx in currentModifiedState.transactions.reversed) {
         bool stateModified = false;
 
@@ -197,13 +206,13 @@ class MultiWalletTransactionCubit
         if (tx.type == TransactionType.sent &&
             currentModifiedState.latestSentNotification.isBefore(tx.time)) {
           // Future
-          final Contact to = tx.to;
           NotificationController.notifyTransaction(
               tx.time.millisecondsSinceEpoch.toString(),
               amount: -tx.amount,
               currentUd: appCubit.currentUd,
               comment: tx.comment,
-              to: to.title,
+              to: humanizeContacts(
+                  fromAddress: tx.from.pubKey, contacts: tx.recipients),
               isG1: isG1);
           currentModifiedState =
               currentModifiedState.copyWith(latestSentNotification: tx.time);
@@ -351,5 +360,36 @@ class MultiWalletTransactionCubit
           pendingTransactions: newPendingTransactions.toList());
     }
     return newState;
+  }
+
+  Future<void> clearState() async {
+    final Set<String> keys = <String>{};
+    for (final String keyRaw in state.map.keys) {
+      final String key = extractPublicKey(keyRaw);
+      keys.add(key);
+    }
+
+    // remove old key:hash keys in state that wre duplicates
+    final MultiWalletTransactionState newState = state.copyWith();
+    final Set<String> mapKeys = Set<String>.from(state.map.keys);
+
+    for (final String key in mapKeys) {
+      if (!keys.contains(key)) {
+        newState.map.remove(key);
+      }
+    }
+
+    emit(newState);
+
+    // Clear tx if is connected and refresh
+    final bool isConnected = await ConnectivityWidgetWrapperWrapper.isConnected;
+    if (isConnected) {
+      for (final String key in state.map.keys) {
+        final TransactionState currentState = _getStateOfWallet(key);
+        final TransactionState newState =
+            currentState.copyWith(transactions: <Transaction>[]);
+        _emitState(key, newState);
+      }
+    }
   }
 }

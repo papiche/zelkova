@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/models/app_cubit.dart';
-import '../../../data/models/bottom_nav_cubit.dart';
-import '../../../data/models/contact.dart';
 import '../../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/payment_state.dart';
@@ -152,93 +150,24 @@ class _PayFormState extends State<PayForm> {
     if (notCanBeSent ||
         nullAmount ||
         notValidComment ||
-        notBalance(context, state, currency, currentUd)) {
+        notBalance(
+            context, state, currency, currentUd, state.contacts.length)) {
       return null;
-    } else if (state.isMultiple()) {
-      // Multiple payments
-      return () async {
-        final bool? confirmed = await showDialog<bool>(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text(tr('please_confirm_sent')),
-              content: Text(tr('please_confirm_sent_multi_desc',
-                  namedArgs: <String, String>{
-                    'amount': state.amount.toString(),
-                    'currency': currency.name()
-                  })),
-              actions: <Widget>[
-                TextButton(
-                  child: Text(tr('cancel')),
-                  onPressed: () => Navigator.of(context).pop(false),
-                ),
-                TextButton(
-                  child: Text(tr('accept')),
-                  onPressed: () => Navigator.of(context).pop(true),
-                ),
-              ],
-            );
-          },
-        );
-
-        if (confirmed != null && confirmed) {
-          int validPayments = 0;
-          int invalidPayments = 0;
-
-          paymentResultsStreamController.stream.listen((String paymentResult) {
-            if (Navigator.canPop(context)) {
-              Navigator.pop(context);
-            }
-            showAlertDialog(context, tr('multi_pay_results'), paymentResult);
-          });
-          for (final Contact contact in state.contacts) {
-            if (!mounted) {
-              return;
-            }
-            final bool result = await payWithRetry(
-              context: context,
-              to: contact,
-              amount: state.amount!,
-              isG1: isG1,
-              currentUd: currentUd,
-              isMultiPayment: true,
-              comment: state.comment,
-            );
-            if (result) {
-              validPayments++;
-            } else {
-              invalidPayments++;
-            }
-            paymentResultsStreamController.add(tr('multi_pay_results_desc',
-                namedArgs: <String, String>{
-                  'success': validPayments.toString(),
-                  'fail': invalidPayments.toString()
-                }));
-            // await Future<void>.delayed(const Duration(milliseconds: 200));
-          }
-          if (!mounted) {
-            return;
-          }
-          context.read<BottomNavCubit>().updateIndex(3);
-        }
-      };
-    } else {
-      // Single payment
+    } else
       return () async {
         await payWithRetry(
             context: context,
-            to: state.contacts[0],
+            recipients: state.contacts,
             amount: state.amount!,
             isG1: isG1,
             currentUd: currentUd,
             comment: state.comment);
       };
-    }
   }
 
   bool notBalance(BuildContext context, PaymentState state, Currency currency,
-          double currentUd) =>
-      !_weHaveBalance(context, state.amount!, currency, currentUd);
+          double currentUd, int recipients) =>
+      !_weHaveBalance(context, state.amount!, currency, currentUd, recipients);
 
   bool _commentValidate() {
     final String currentComment = _commentController.value.text;
@@ -253,11 +182,11 @@ class _PayFormState extends State<PayForm> {
   }
 
   bool _weHaveBalance(BuildContext context, double amount, Currency currency,
-      double currentUd) {
+      double currentUd, int recipients) {
     final double balance =
         convertAmount(currency == Currency.G1, getBalance(context), currentUd);
-    logger('We have $balance G1, need $amount');
-    final bool weHave = balance >= amount;
+    logger('We have $balance G1, need ${amount * recipients}');
+    final bool weHave = balance >= amount * recipients;
 
     if (!weHave) {
       _feedbackNotifier.value = tr('insufficient balance');

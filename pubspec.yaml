@@ -39,9 +39,9 @@ dependencies:
   qr_flutter: ^4.0.0
   introduction_screen: ^3.1.6
   responsive_framework: ^0.2.0
-  durt: ^0.1.7
-  #durt:
-   # path: ../durt
+  #durt: ^0.1.7
+  durt:
+    path: ../durt
    # git:
    #   url: https://git.duniter.org/clients/durt
   flutter_neumorphic:

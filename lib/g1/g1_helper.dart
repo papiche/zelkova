@@ -11,6 +11,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../data/models/contact.dart';
 import '../data/models/payment_state.dart';
+import '../data/models/utxo.dart';
 import '../ui/logger.dart';
 import '../ui/ui_helpers.dart';
 
@@ -322,4 +323,24 @@ List<Contact> parseMultipleKeys(String inputText) {
     }
   }
   return contacts;
+}
+
+List<List<Utxo>> sliceUtxos(List<Utxo> utxos, {int sliceSize = 40}) {
+  final List<List<Utxo>> slices = <List<Utxo>>[];
+
+  for (int i = 0; i < utxos.length; i += sliceSize) {
+    final int end =
+        (i + sliceSize < utxos.length) ? i + sliceSize : utxos.length;
+    slices.add(utxos.sublist(i, end));
+  }
+
+  return slices;
+}
+
+double truncBase(double amount, int base) {
+  final num p = pow(10, base);
+  if (amount < p) {
+    return 0;
+  }
+  return (amount / p).truncateToDouble() * p;
 }

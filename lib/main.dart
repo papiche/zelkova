@@ -44,6 +44,7 @@ import 'data/models/node_type.dart';
 import 'data/models/payment_cubit.dart';
 import 'data/models/theme_cubit.dart';
 import 'data/models/transaction_cubit_remove.dart';
+import 'data/models/utxo_cubit.dart';
 import 'g1/api.dart';
 import 'g1/g1_helper.dart';
 import 'shared_prefs_helper.dart';
@@ -153,8 +154,8 @@ void main() async {
                   create: (BuildContext context) => NodeListCubit()),
               BlocProvider<ContactsCubit>(
                   create: (BuildContext context) => ContactsCubit()),
-              /* BlocProvider<UtxoCubit>(
-                create: (BuildContext context) => UtxoCubit()), */
+              BlocProvider<UtxoCubit>(
+                  create: (BuildContext context) => UtxoCubit()),
               // TODO(vjrj): Remove when clean the state of this after upgrades
               BlocProvider<TransactionCubitRemove>(
                   create: (BuildContext context) => TransactionCubitRemove()),
@@ -362,6 +363,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
     // Only after at least the action method is set, the notification events are delivered
     NotificationController.startListeningNotificationEvents();
     // Wipe Old Transactions Cubit
+    context.read<TransactionCubitRemove>().clear();
     context.read<TransactionCubitRemove>().close();
     Once.runHourly('load_nodes', callback: () async {
       final bool isConnected =
@@ -385,6 +387,10 @@ class _GinkgoAppState extends State<GinkgoApp> {
     Once.runOnce('resize_avatars', callback: () {
       logger('resize avatar via once');
       context.read<ContactsCubit>().resizeAvatars();
+    });
+    Once.runDaily('clear_tx_cubit', callback: () {
+      logger('clear tx cubit via once');
+      context.read<MultiWalletTransactionCubit>().clearState();
     });
 
     initGetItAll();

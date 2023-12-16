@@ -49,7 +49,9 @@ class Transaction extends Equatable {
   bool get isIncoming =>
       type == TransactionType.receiving || type == TransactionType.received;
 
-  bool get isToMultiple => recipients.length > 2;
+  // Remove cash pay back address
+  bool get isToMultiple =>
+      recipients.where((Contact c) => from.pubKey == c.pubKey).length >= 2;
 
   Map<String, dynamic> toJson() => _$TransactionToJson(this);
 

@@ -313,11 +313,13 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         FloatingActionButton(
+          mini: true,
           onPressed: _selectAll,
           child: const Icon(Icons.checklist_rtl),
         ),
         const SizedBox(height: 10),
         FloatingActionButton(
+          mini: true,
           onPressed: _clearSelection,
           child: const Icon(Icons.delete),
         ),
@@ -327,6 +329,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
             alignment: Alignment.center,
             children: <Widget>[
               FloatingActionButton(
+                mini: true,
                 onPressed: _finishSelection,
                 child: const Icon(Icons.done),
               ),

@@ -123,9 +123,18 @@ class MultiWalletTransactionCubit
 
   DateTime get lastChecked => currentWalletState().lastChecked;
 
-  String _getTxKey(Transaction t) => t.isToMultiple
-      ? '${t.recipients.map((Contact c) => c.pubKey).join('-')}-${t.comment}-${t.amount}'
-      : '${t.to.pubKey}-${t.comment}-${t.amount}';
+  String _getTxKey(Transaction t) {
+    final String id = t.isToMultiple
+        ? '${t.recipients.map((Contact c) => extractPublicKey(c.pubKey)).join('-')}-${t.comment}-${t.amount}'
+        : '${extractPublicKey(t.to.pubKey)}-${t.comment}-${t.amount}';
+    /* if (t.type == TransactionType.pending ||
+        t.type == TransactionType.sending) {
+      loggerDev(t.toJson().toString());
+    }
+    loggerDev(
+        '###################### >>>> Key for tx ${t.toStringSmall(_defKey(null))}: $id'); */
+    return id;
+  }
 
   Future<List<Transaction>> fetchTransactions(
       NodeListCubit cubit, UtxoCubit utxoCubit, AppCubit appCubit,

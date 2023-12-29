@@ -606,14 +606,26 @@ Future<PayResult> payWithGVA(
       }
       logger('GVA replied with "$response"');
       return PayResult(message: response, node: selected.item2);
-    } on GraphQLException catch (e) {
-      final List<String> eCause = e.cause.split('message: ');
-      return PayResult(
-          node: selected.item2,
-          message: eCause.isNotEmpty
-              ? eCause[eCause.length > 1 ? 1 : 0].split(',')[0]
-              : 'Transaction failed for unknown reason');
     } catch (e, stacktrace) {
+      if (e is GraphQLException) {
+        final List<String> eCause = e.cause.split('message:');
+        final String eCauseWithoutTitle = eCause.isNotEmpty
+            ? eCause[eCause.length > 1 ? 1 : 0]
+            : 'Unknown error';
+        final String rawMessage = eCauseWithoutTitle.contains(',')
+            ? eCauseWithoutTitle.split(',')[0]
+            : eCauseWithoutTitle;
+        if (rawMessage.contains('nsufficient balance')) {
+          return PayResult(
+              node: selected.item2,
+              message: 'Insufficient balance in your wallet');
+        }
+        return PayResult(
+            node: selected.item2,
+            message: eCause.isNotEmpty
+                ? rawMessage
+                : 'Transaction failed for unknown reason');
+      }
       await Sentry.captureException(e, stackTrace: stacktrace);
       logger(e);
       logger(stacktrace);
@@ -622,7 +634,8 @@ Future<PayResult> payWithGVA(
           message: "Something didn't work as expected ($e)");
     }
   } catch (e) {
-    return PayResult(message: "Something didn't work as expected ($e)");
+    return PayResult(
+        message: "Something didn't work as expected retrieving the nodes ($e)");
   }
 }
 
@@ -631,9 +644,7 @@ Tuple2<String, Node> getGvaNode() {
   if (nodes.isNotEmpty) {
     final Node? currentGvaNode = NodeManager().getCurrentGvaNode();
     final Node node = currentGvaNode ?? nodes.first;
-    if (currentGvaNode == null) {
-      NodeManager().setCurrentGvaNode(node);
-    }
+    NodeManager().setCurrentGvaNode(node);
     return Tuple2<String, Node>(proxyfyNode(node.url), node);
   } else {
     throw Exception(

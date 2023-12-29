@@ -50,6 +50,8 @@
   "transactions": "Transaccións",
   "balance": "Saldo",
   "transaction_from_to": "Desde {from} a {to}",
+  "transaction_from": "Desde",
+  "transaction_to": "A",
   "your_wallet": "o teu monedeiro",
   "delete_contact": "Borralo contacto",
   "search_contacts": "Buscar contactos",

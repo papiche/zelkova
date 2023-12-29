@@ -147,6 +147,8 @@
   "transactions": "Transazioni",
   "balance": "Saldo",
   "transaction_from_to": "Da {From} per {to}",
+  "transaction_from": "Da",
+  "transaction_to": "Per",
   "your_wallet": "Il tuo portafoglio",
   "delete_contact": "Elimina contatto",
   "search_contacts": "Cerca contatti",

@@ -35,6 +35,8 @@
   "transactions": "Transaktionen",
   "balance": "Saldo",
   "transaction_from_to": "Von {from} an {to}",
+  "transaction_from": "Von",
+  "transaction_to": "An",
   "your_wallet": "Ihre Brieftasche",
   "search_contacts": "Kontakte durchsuchen",
   "data_load_error": "Fehler beim Laden der Daten",

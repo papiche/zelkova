@@ -49,6 +49,8 @@
   "transactions": "Transakcioj",
   "balance": "Saldo",
   "transaction_from_to": "De {from} al {to}",
+  "transaction_from": "De",
+  "transaction_to": "Al",
   "your_wallet": "via monujo",
   "delete_contact": "Forigi kontakton",
   "search_contacts": "Serĉi kontaktojn",

@@ -49,6 +49,8 @@
   "transactions": "Opérations",
   "balance": "Solde",
   "transaction_from_to": "De {from} à {to}",
+  "transaction_from": "De",
+  "transaction_to": "À",
   "your_wallet": "votre portefeuille",
   "delete_contact": "Supprimer le contact",
   "search_contacts": "Rechercher des contacts",

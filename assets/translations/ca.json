@@ -49,6 +49,8 @@
   "transactions": "Transaccions",
   "balance": "Balanç",
   "transaction_from_to": "De {from} a {to}",
+  "transaction_from": "De",
+  "transaction_to": "A",
   "your_wallet": "el teu moneder",
   "delete_contact": "Borra el contacte",
   "search_contacts": "Busca els contactes",

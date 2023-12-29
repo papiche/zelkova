@@ -36,6 +36,8 @@
   "transactions": "Transacties",
   "balance": "Saldo",
   "transaction_from_to": "Van {from} tot {to}",
+  "transaction_from": "Van",
+  "transaction_to": "Tot",
   "your_wallet": "Jouw portemonnee",
   "delete_contact": "Contact verwijderen",
   "search_contacts": "Contacten zoeken",

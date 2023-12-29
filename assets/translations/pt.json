@@ -109,6 +109,8 @@
   "intro_pattern_to_import": "Padrão que utilizou para exportar a sua carteira",
   "wrong_pattern": "Padrão errado",
   "transaction_from_to": "De {from} para {to}",
+  "transaction_from": "De",
+  "transaction_to": "Para",
   "wallet_imported": "Carteira importada correctamente",
   "cancel": "CANCELAR",
   "yes_import": "TENHO A CERTEZA, IMPORTE-O",

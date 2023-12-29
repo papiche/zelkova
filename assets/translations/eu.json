@@ -74,6 +74,8 @@
   "balance": "Balantzea",
   "transactions": "Transakzioak",
   "transaction_from_to": "{from}a/ek {to}-ari",
+  "transaction_from": "Nork",
+  "transaction_to": "Nori",
   "your_wallet": "zure diru-zorroa",
   "no_transactions": "Diru-zorro honek ez du orekarik. Hasi zure zerbitzuak eskaintzen Ğ1 merkatuetan, adibidez, zure lehen diru-sarrerak jasotzeko.",
   "qr-scanner-title": "Eskaneatu norbaiten QR",

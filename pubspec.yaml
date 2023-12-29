@@ -41,9 +41,9 @@ dependencies:
   responsive_framework: ^0.2.0
   #durt: ^0.1.7
   durt:
-    path: ../durt
-   # git:
-   #   url: https://git.duniter.org/clients/durt
+    # path: ../durt
+    git:
+      url: https://git.duniter.org/vjrj/durt
   flutter_neumorphic:
     git:
       url: https://github.com/den0206/Flutter-Neumorphic.git

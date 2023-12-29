@@ -4,6 +4,7 @@ import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../g1/g1_helper.dart';
 import '../../ui/ui_helpers.dart';
 import 'is_json_serializable.dart';
 import 'model_utils.dart';
@@ -76,4 +77,17 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
 
   String? get subtitle =>
       (nick != null || name != null) ? humanizePubKey(pubKey) : null;
+
+  Contact cloneWithoutAvatar() {
+    return Contact(
+      nick: nick,
+      pubKey: pubKey,
+      // avatar: null,
+      notes: notes,
+      name: name,
+    );
+  }
+
+  bool keyEqual(Contact other) =>
+      extractPublicKey(pubKey) == extractPublicKey(other.pubKey);
 }

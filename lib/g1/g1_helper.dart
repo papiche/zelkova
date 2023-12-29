@@ -11,6 +11,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../data/models/contact.dart';
 import '../data/models/payment_state.dart';
+import '../data/models/transaction.dart';
 import '../data/models/utxo.dart';
 import '../ui/logger.dart';
 import '../ui/ui_helpers.dart';
@@ -343,4 +344,29 @@ double truncBase(double amount, int base) {
     return 0;
   }
   return (amount / p).truncateToDouble() * p;
+}
+
+String genTxKey(Transaction t) {
+  final List<Contact> sortedRecipients = t.recipientsWithoutCashBack
+    ..sort((Contact a, Contact b) => a.pubKey.compareTo(b.pubKey));
+  final String toId =
+      '${sortedRecipients.map((Contact c) => extractPublicKey(c.pubKey)).join('-')}-${t.comment}-${t.amount}';
+  return 'from:${extractPublicKey(t.from.pubKey)}-to:$toId';
+}
+
+bool compareRecipientListsByKey(List<Contact> list1, List<Contact> list2) {
+  if (list1.length != list2.length) {
+    return false;
+  }
+
+  list1.sort((Contact a, Contact b) => a.pubKey.compareTo(b.pubKey));
+  list2.sort((Contact a, Contact b) => a.pubKey.compareTo(b.pubKey));
+
+  for (int i = 0; i < list1.length; i++) {
+    if (!list1[i].keyEqual(list2[i])) {
+      return false;
+    }
+  }
+
+  return true;
 }

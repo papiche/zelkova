@@ -6,6 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ginkgo/data/models/contact.dart';
 import 'package:ginkgo/data/models/payment_state.dart';
+import 'package:ginkgo/data/models/transaction.dart';
+import 'package:ginkgo/data/models/transaction_type.dart';
 import 'package:ginkgo/g1/g1_helper.dart';
 import 'package:ginkgo/ui/logger.dart';
 
@@ -388,6 +390,227 @@ void main() {
       logger('Duplicated: $duplicates');
       expect(Set<Contact>.from(results).length, 52);
     });
+  });
+
+  const Contact from = Contact(pubKey: 'from-publicKey');
+  const Contact to1 = Contact(pubKey: 'to-publicKey-1');
+  const Contact to2 = Contact(pubKey: 'to-publicKey-2');
+  const Contact to3 = Contact(pubKey: 'to-publicKey-3');
+  const Contact to4 = Contact(pubKey: 'to-publicKey-4');
+
+  test('genTxKey single recipient', () {
+    final Transaction transaction = Transaction(
+      to: to1,
+      amount: 10.0,
+      comment: 'Test transaction',
+      type: TransactionType.pending,
+      time: DateTime.now(),
+      from: from,
+    );
+
+    final String result = genTxKey(transaction);
+
+    expect(result,
+        equals('from:from-publicKey-to:to-publicKey-1-Test transaction-10.0'));
+  });
+
+  test('genTxKey multiple recipients', () {
+    final Transaction transaction = Transaction(
+      from: from,
+      to: to1,
+      type: TransactionType.sending,
+      time: DateTime.now(),
+      recipients: const <Contact>[to1, to2, to3, to4],
+      amount: 10.0,
+      comment: 'Test transaction',
+    );
+
+    final String result = genTxKey(transaction);
+
+    expect(
+        result,
+        equals(
+            'from:from-publicKey-to:to-publicKey-1-to-publicKey-2-to-publicKey-3-to-publicKey-4-Test transaction-10.0'));
+  });
+
+  test('genTxKey for sending and pending transactions', () {
+    //{"type":"sending","from":{"nick":null,"pubKey":"2AD8Eg55RKidFLcFBVy8NuSrNsPvwrDjPe2SLq8seMjf","avatar":[],"notes":null,"name":null},"to":{"nick":null,"pubKey":"2AD8Eg55RKidFLcFBVy8NuSrNsPvwrDjPe2SLq8seMjf","avatar":[],"notes":null,"name":null},"amount":-20.0,"comment":"m 6:11","time":"2023-12-23T06:13:16.773769","debugInfo":null,"recipients":[{"nick":null,"pubKey":"2AD8Eg55RKidFLcFBVy8NuSrNsPvwrDjPe2SLq8seMjf","avatar":[],"notes":null,"name":null},{"nick":null,"pubKey":"HQvpc5EVTGxjWBF7zsUQR9qgAba3Mn2vNivCLphLQVpS","avatar":[],"notes":null,"name":null},{"nick":null,"pubKey":"A23W3Z4NNxShFThCwHsru1pgzMJDMSf5GaJxb3A5ipih","avatar":[],"notes":null,"name":null}],"recipientsAmounts":[0.0,0.0,10.0]}
+    //{"type":"pending","from":{"nick":null,"pubKey":"2AD8Eg55RKidFLcFBVy8NuSrNsPvwrDjPe2SLq8seMjf","avatar":[],"notes":null,"name":null},"to":{"nick":null,"pubKey":"HQvpc5EVTGxjWBF7zsUQR9qgAba3Mn2vNivCLphLQVpS","avatar":[],"notes":null,"name":"vjrj chrome"},"amount":-20.0,"comment":"m 6:11","time":"2023-12-23T06:11:18.0652
+    const String sendingTransactionJson = '''
+{
+  "type": "sending",
+  "from": {
+    "nick": null,
+    "pubKey": "2AD8Eg55RKidFLcFBVy8NuSrNsPvwrDjPe2SLq8seMjf",
+    "avatar": [],
+    "notes": null,
+    "name": null
+  },
+  "to": {
+    "nick": null,
+    "pubKey": "2AD8Eg55RKidFLcFBVy8NuSrNsPvwrDjPe2SLq8seMjf",
+    "avatar": [],
+    "notes": null,
+    "name": null
+  },
+  "amount": -20.0,
+  "comment": "m 6:11",
+  "time": "2023-12-23T06:13:16.773769",
+  "debugInfo": null,
+  "recipients": [
+    {
+      "nick": null,
+      "pubKey": "2AD8Eg55RKidFLcFBVy8NuSrNsPvwrDjPe2SLq8seMjf",
+      "avatar": [],
+      "notes": null,
+      "name": null
+    },
+    {
+      "nick": null,
+      "pubKey": "HQvpc5EVTGxjWBF7zsUQR9qgAba3Mn2vNivCLphLQVpS",
+      "avatar": [],
+      "notes": null,
+      "name": null
+    },
+    {
+      "nick": null,
+      "pubKey": "A23W3Z4NNxShFThCwHsru1pgzMJDMSf5GaJxb3A5ipih",
+      "avatar": [],
+      "notes": null,
+      "name": null
+    }
+  ],
+  "recipientsAmounts": [0.0, 0.0, 10.0]
+}
+''';
+
+    const String pendingTransactionJson = '''
+{
+  "type": "pending",
+  "from": {
+    "nick": null,
+    "pubKey": "2AD8Eg55RKidFLcFBVy8NuSrNsPvwrDjPe2SLq8seMjf",
+    "avatar": [],
+    "notes": null,
+    "name": null
+  },
+  "to": {
+    "nick": null,
+    "pubKey": "HQvpc5EVTGxjWBF7zsUQR9qgAba3Mn2vNivCLphLQVpS",
+    "avatar": [],
+    "notes": null,
+    "name": "vjrj chrome"
+  },
+  "amount": -20.0,
+  "comment": "m 6:11",
+  "time": "2023-12-23T06:11:18.0652",
+  "recipients": [
+    {
+      "nick": null,
+      "pubKey": "2AD8Eg55RKidFLcFBVy8NuSrNsPvwrDjPe2SLq8seMjf",
+      "avatar": [],
+      "notes": null,
+      "name": null
+    },
+    {
+      "nick": null,
+      "pubKey": "HQvpc5EVTGxjWBF7zsUQR9qgAba3Mn2vNivCLphLQVpS",
+      "avatar": [],
+      "notes": null,
+      "name": null
+    },
+    {
+      "nick": null,
+      "pubKey": "A23W3Z4NNxShFThCwHsru1pgzMJDMSf5GaJxb3A5ipih",
+      "avatar": [],
+      "notes": null,
+      "name": null
+    }
+  ],
+  "recipientsAmounts": [0.0, 0.0, 10.0]
+}
+''';
+
+    final Map<String, dynamic> sendingTransactionMap =
+        jsonDecode(sendingTransactionJson) as Map<String, dynamic>;
+    final Transaction sendingTransaction =
+        Transaction.fromJson(sendingTransactionMap);
+
+    final Map<String, dynamic> pendingTransactionMap =
+        jsonDecode(pendingTransactionJson) as Map<String, dynamic>;
+    final Transaction pendingTransaction =
+        Transaction.fromJson(pendingTransactionMap);
+
+    final String sendingId = genTxKey(sendingTransaction);
+    final String pendingId = genTxKey(pendingTransaction);
+
+    expect(sendingId, equals(pendingId));
+  });
+
+  test('Transaction serialization includes recipients and recipientsAmounts',
+      () {
+    final Transaction transaction = Transaction(
+      type: TransactionType.sending,
+      from: const Contact(pubKey: 'from-publicKey'),
+      to: const Contact(pubKey: 'to-publicKey-1'),
+      recipients: const <Contact>[
+        Contact(pubKey: 'to-publicKey-1'),
+        Contact(pubKey: 'to-publicKey-2'),
+        Contact(pubKey: 'to-publicKey-3'),
+      ],
+      recipientsAmounts: const <double>[10.0, 20.0, 30.0],
+      amount: 60.0,
+      comment: 'Test transaction',
+      time: DateTime.now(),
+    );
+
+    final Map<String, dynamic> json = transaction.toJson();
+
+    expect(json['recipients'], isNotNull);
+    expect(json['recipientsAmounts'], isNotNull);
+
+    final List<Contact> recipientsJson =
+        List<Contact>.from(json['recipients'] as List<Contact>);
+    final List<double> recipientsAmountsJson =
+        List<double>.from(json['recipientsAmounts'] as List<double>);
+
+    expect(recipientsJson.length, equals(3));
+    expect(recipientsAmountsJson.length, equals(3));
+
+    expect(recipientsJson[0].pubKey, equals('to-publicKey-1'));
+    expect(recipientsJson[1].pubKey, equals('to-publicKey-2'));
+    expect(recipientsJson[2].pubKey, equals('to-publicKey-3'));
+
+    expect(recipientsAmountsJson[0], equals(10.0));
+    expect(recipientsAmountsJson[1], equals(20.0));
+    expect(recipientsAmountsJson[2], equals(30.0));
+  });
+
+  test(
+      'Copy of sending transaction to pending maintains recipients and recipientsAmounts',
+      () {
+    final Transaction sendingTransaction = Transaction(
+      type: TransactionType.sending,
+      from: const Contact(pubKey: 'from-publicKey'),
+      to: const Contact(pubKey: 'to-publicKey-1'),
+      recipients: const <Contact>[
+        Contact(pubKey: 'to-publicKey-1'),
+        Contact(pubKey: 'to-publicKey-2'),
+        Contact(pubKey: 'to-publicKey-3'),
+      ],
+      recipientsAmounts: const <double>[10.0, 20.0, 30.0],
+      amount: 60.0,
+      comment: 'Test transaction',
+      time: DateTime.now(),
+    );
+
+    final Transaction pendingTransaction =
+        sendingTransaction.copyWith(type: TransactionType.pending);
+
+    expect(
+        pendingTransaction.recipients, equals(sendingTransaction.recipients));
+    expect(pendingTransaction.recipientsAmounts,
+        equals(sendingTransaction.recipientsAmounts));
   });
 }
 

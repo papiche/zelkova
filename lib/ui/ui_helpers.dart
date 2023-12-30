@@ -95,26 +95,22 @@ String humanizeFromToPubKey(String publicAddress, String address) {
 }
 
 String humanizeContacts(
-    {required String fromAddress, required List<Contact> contacts}) {
-  final Iterable<Contact> contactsWithoutCashBack = contacts.where(
-      (Contact c) =>
-          extractPublicKey(c.pubKey) != extractPublicKey(fromAddress));
+    {required String publicAddress, required List<Contact> contacts}) {
   if (contacts.length > 3) {
-    return '${contactsWithoutCashBack.take(3).map((Contact contact) => humanizeContact('', contact)).join(', ')}...';
+    return '${contacts.take(3).map((Contact contact) => humanizeContact(publicAddress, contact)).join(', ')}...';
   } else if (contacts.length > 1) {
-    final String lastContact =
-        humanizeContact('', contactsWithoutCashBack.last);
-    final String otherContacts = contactsWithoutCashBack
-        .take(contactsWithoutCashBack.length - 1)
-        .map((Contact contact) => humanizeContact('', contact))
+    final String lastContact = humanizeContact(publicAddress, contacts.last);
+    final String otherContacts = contacts
+        .take(contacts.length - 1)
+        .map((Contact contact) => humanizeContact(publicAddress, contact))
         .join(', ');
     return tr('others_and_someone', namedArgs: <String, String>{
       'others': otherContacts,
       'someone': lastContact,
     });
   } else {
-    return contactsWithoutCashBack
-        .map((Contact contact) => humanizeContact('', contact))
+    return contacts
+        .map((Contact contact) => humanizeContact(publicAddress, contact))
         .join(', ');
   }
 }
@@ -123,7 +119,7 @@ String humanizeContact(String publicAddress, Contact contact,
     [bool addKey = false,
     bool minimal = false,
     String Function(String s) trf = tr]) {
-  if (contact.pubKey == publicAddress) {
+  if (extractPublicKey(contact.pubKey) == extractPublicKey(publicAddress)) {
     return trf('your_wallet');
   } else {
     final String pubKey = humanizePubKey(contact.pubKey);
@@ -329,13 +325,12 @@ Future<void> fetchTransactionsFromBackground([bool init = true]) async {
     loggerDev('Initialized background context');
     final GetIt getIt = GetIt.instance;
     final AppCubit appCubit = getIt.get<AppCubit>();
-    final UtxoCubit utxoCubit = getIt.get<UtxoCubit>();
     final MultiWalletTransactionCubit transCubit =
         getIt.get<MultiWalletTransactionCubit>();
     final NodeListCubit nodeListCubit = getIt.get<NodeListCubit>();
     for (final CesiumCard card in SharedPreferencesHelper().cards) {
       loggerDev('Fetching transactions for ${card.pubKey} in background');
-      transCubit.fetchTransactions(nodeListCubit, utxoCubit, appCubit,
+      transCubit.fetchTransactions(nodeListCubit, appCubit,
           pubKey: card.pubKey);
     }
     if (inDevelopment) {
@@ -355,10 +350,8 @@ Future<void> fetchTransactions(BuildContext context) async {
   final MultiWalletTransactionCubit transCubit =
       context.read<MultiWalletTransactionCubit>();
   final NodeListCubit nodeListCubit = context.read<NodeListCubit>();
-  final UtxoCubit utxoCubit = context.read<UtxoCubit>();
   for (final CesiumCard card in SharedPreferencesHelper().cards) {
-    transCubit.fetchTransactions(nodeListCubit, utxoCubit, appCubit,
-        pubKey: card.pubKey);
+    transCubit.fetchTransactions(nodeListCubit, appCubit, pubKey: card.pubKey);
   }
 }
 

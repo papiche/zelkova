@@ -14,6 +14,7 @@ import '../data/models/payment_state.dart';
 import '../data/models/transaction.dart';
 import '../data/models/utxo.dart';
 import '../ui/logger.dart';
+import '../ui/pay_helper.dart';
 import '../ui/ui_helpers.dart';
 
 Random createRandom() {
@@ -369,4 +370,11 @@ bool compareRecipientListsByKey(List<Contact> list1, List<Contact> list2) {
   }
 
   return true;
+}
+
+List<Transaction> lastTx(List<Transaction> origTxs) {
+  return origTxs
+      .where((Transaction tx) =>
+          areDatesClose(DateTime.now(), tx.time, paymentTimeRange))
+      .toList();
 }

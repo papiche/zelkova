@@ -22,7 +22,6 @@ import 'node_type.dart';
 import 'transaction.dart';
 import 'transaction_state.dart';
 import 'transaction_type.dart';
-import 'transactions_bloc.dart';
 
 class TransactionCubitRemove extends HydratedCubit<TransactionState> {
   TransactionCubitRemove()
@@ -111,9 +110,9 @@ class TransactionCubitRemove extends HydratedCubit<TransactionState> {
           txMap[_getTxKey(t)] = t;
         }
         // Get a range of tx in 1h
-        TransactionsBloc().lastTx().forEach((Transaction t) {
+        for (final Transaction t in newState.transactions) {
           txMap[_getTxKey(t)] = t;
-        });
+        }
         for (final Transaction t in newState.pendingTransactions) {
           pendingMap[_getTxKey(t)] = t;
         }

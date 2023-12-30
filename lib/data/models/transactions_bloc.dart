@@ -2,9 +2,7 @@ import 'dart:async';
 
 import 'package:rxdart/rxdart.dart';
 
-import '../../g1/g1_helper.dart';
 import '../../ui/logger.dart';
-import '../../ui/pay_helper.dart';
 import '../../ui/widgets/connectivity_widget_wrapper_wrapper.dart';
 import 'app_cubit.dart';
 import 'multi_wallet_transaction_cubit.dart';
@@ -53,18 +51,6 @@ class TransactionsBloc {
 
   Sink<String?> get onSearchInputChangedSink =>
       _onSearchInputChangedSubject.sink;
-
-  List<Transaction> lastTx({bool applyDateFilter = false}) {
-    if (_onNewListingStateController.value.itemList != null) {
-      return _onNewListingStateController.value.itemList!
-          .where((Transaction tx) =>
-              !applyDateFilter ||
-              areDatesClose(DateTime.now(), tx.time, paymentTimeRange))
-          .toList();
-    } else {
-      return <Transaction>[];
-    }
-  }
 
   // String? get _searchInputValue => _onSearchInputChangedSubject.value;
 

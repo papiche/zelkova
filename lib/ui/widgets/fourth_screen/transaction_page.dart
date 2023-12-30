@@ -117,7 +117,7 @@ class _TransactionsAndBalanceWidgetState
         _refresh();
       } catch (e) {
         logger('Failed via _refresh, lets try a basic fetchTransactions');
-        transCubit.fetchTransactions(nodeListCubit, utxoCubit, appCubit);
+        transCubit.fetchTransactions(nodeListCubit, appCubit);
       }
     });
     tutorial = FourthTutorial(context);
@@ -386,15 +386,11 @@ class _TransactionsAndBalanceWidgetState
 
   Future<void> _fetchPending(int pageKey) async {
     try {
-      final bool shouldPaginate =
-          transCubit.currentWalletState().pendingTransactions.length >
-              _pendingPageSize;
-      final List<Transaction> newItems = shouldPaginate
-          ? transCubit
-              .currentWalletState()
-              .pendingTransactions
-              .sublist(pageKey, _pendingPageSize)
-          : transCubit.currentWalletState().pendingTransactions;
+      final List<Transaction> pendTxs =
+          transCubit.currentWalletState().pendingTransactions;
+      final bool shouldPaginate = pendTxs.length > _pendingPageSize;
+      final List<Transaction> newItems =
+          shouldPaginate ? pendTxs.sublist(pageKey, _pendingPageSize) : pendTxs;
       final bool isLastPage = newItems.length < _pendingPageSize;
       if (isLastPage) {
         _pendingController.appendLastPage(newItems);

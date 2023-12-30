@@ -47,29 +47,45 @@ class TransactionListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Transaction>(
-      future: _enrichTransaction(transaction),
+      future: _enrichTransaction(context, transaction),
       builder: (BuildContext context, AsyncSnapshot<Transaction> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return _buildTransactionItem(context, transaction);
+          return _buildTransactionItem(
+              context: context,
+              origTransaction: transaction,
+              transaction: transaction);
         } else if (snapshot.hasError) {
-          return _buildTransactionItem(context, transaction);
+          return _buildTransactionItem(
+              context: context,
+              origTransaction: transaction,
+              transaction: transaction);
         } else {
-          final Transaction transaction = snapshot.data!;
+          final Transaction enrichedTx = snapshot.data!;
           return BlocBuilder<MultiWalletTransactionCubit,
                   MultiWalletTransactionState>(
               builder: (BuildContext context,
                       MultiWalletTransactionState transBalanceState) =>
-                  _buildTransactionItem(context, transaction));
+                  _buildTransactionItem(
+                      context: context,
+                      origTransaction: transaction,
+                      transaction: enrichedTx));
         }
       },
     );
   }
 
-  Widget _buildTransactionItem(BuildContext context, Transaction transaction) {
+  Widget _buildTransactionItem(
+      {required BuildContext context,
+      required Transaction origTransaction,
+      required Transaction transaction}) {
     IconData? icon;
     Color? iconColor;
     String statusText;
 
+    String debugText;
+    transaction.debugInfo == null
+        ? debugText = ''
+        : debugText = ' [DEBUG ${transaction.debugInfo!}]';
     final String amountWithSymbol = formatKAmountInView(
         context: context,
         amount: transaction.amount,
@@ -82,6 +98,11 @@ class TransactionListItem extends StatelessWidget {
         ? tr('transaction_${transaction.type.name}')
         : tr('transaction_waiting_network');
 
+    // Swap the text of pending by sending
+    statusText = transaction.type == TransactionType.pending
+        ? tr('transaction_sending')
+        : statusText;
+
     switch (transaction.type) {
       case TransactionType.waitingNetwork:
         icon = Icons.schedule_send;
@@ -89,7 +110,7 @@ class TransactionListItem extends StatelessWidget {
         break;
       case TransactionType.pending:
         icon = Icons.flight_takeoff;
-        iconColor = Colors.grey[400];
+        iconColor = Colors.grey;
         break;
       case TransactionType.sending:
         icon = Icons.flight_takeoff;
@@ -114,6 +135,9 @@ class TransactionListItem extends StatelessWidget {
 
     const double txFontSize = 14.0;
 
+    const FontWeight fromToWeight = FontWeight.w400;
+    const FontStyle fromToStyle = FontStyle.normal;
+    const Color fromToColor = Colors.orange;
     return Slidable(
         // Specify a key if the Slidable is dismissible.
 
@@ -124,7 +148,7 @@ class TransactionListItem extends StatelessWidget {
           if (transaction.isPending)
             SlidableAction(
               onPressed: (BuildContext c) {
-                _cancel(context, transaction);
+                _cancel(context, origTransaction);
               },
               backgroundColor: deleteColor,
               foregroundColor: Colors.white,
@@ -165,17 +189,15 @@ class TransactionListItem extends StatelessWidget {
                 icon: Icons.replay,
                 label: tr('retry_payment'),
               ),
-            if (transaction.type != TransactionType.pending &&
-                !transaction.isToMultiple)
-              SlidableAction(
-                onPressed: (BuildContext c) {
-                  _addContact(transaction, contactsCubit, context);
-                },
-                backgroundColor: Theme.of(context).primaryColor,
-                foregroundColor: Colors.white,
-                icon: Icons.contacts,
-                label: tr('add_contact'),
-              ),
+            SlidableAction(
+              onPressed: (BuildContext c) {
+                _addContact(transaction, contactsCubit, context);
+              },
+              backgroundColor: Theme.of(context).primaryColor,
+              foregroundColor: Colors.white,
+              icon: Icons.contacts,
+              label: tr('add_contact'),
+            ),
           ],
         ),
         child: GestureDetector(
@@ -184,120 +206,167 @@ class TransactionListItem extends StatelessWidget {
               /* if (transaction.isFailed) {
                 _payAgain(context, transaction, true);
               } */
-              _showPopupMenu(context, transaction);
+              _showPopupMenu(
+                  context: context,
+                  origTransaction: origTransaction,
+                  transaction: transaction);
             },
-            child: ListTile(
-              leading: (icon != null)
-                  ? Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 16, 0, 16),
-                      child: Icon(
-                        icon,
-                        color: iconColor,
-                      ))
-                  : null,
-              // FIXME: this does not work
-              tileColor: tileColor(index, context),
-              title: Row(
-                children: <Widget>[
-                  const SizedBox(width: 8.0),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          statusText,
-                          style: const TextStyle(
-                            fontSize: 12.0,
-                            color: grey,
-                          ),
-                        ),
-                        const SizedBox(height: 4.0),
-                        Text.rich(
-                          TextSpan(
-                            children: <InlineSpan>[
-                              WidgetSpan(
-                                child: Text(
-                                  tr('transaction_from_to',
-                                      namedArgs: <String, String>{
-                                        'from':
-                                            '${humanizeContact(myPubKey, transaction.from)} 🫴 ',
-                                        'to': transaction.isToMultiple
-                                            ? humanizeContacts(
-                                                fromAddress:
-                                                    transaction.from.pubKey,
-                                                contacts:
-                                                    transaction.recipients)
-                                            : humanizeContact(
-                                                myPubKey, transaction.to)
-                                      }),
-                                  style: const TextStyle(
-                                    fontSize: txFontSize,
-                                    // fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+            // https://stackoverflow.com/questions/75577429/flutter-why-is-my-listtile-color-being-overwritten-by-the-container-color
+            child: Material(
+                elevation: 3.0,
+                child: ListTile(
+                  leading: (icon != null)
+                      ? Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 16, 0, 16),
+                          child: Icon(
+                            icon,
+                            color: iconColor,
+                          ))
+                      : null,
+                  // tileColor: tileColor(index, context),
+                  title: Row(
+                    children: <Widget>[
+                      const SizedBox(width: 8.0),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              statusText,
+                              style: const TextStyle(
+                                fontSize: 12.0,
+                                color: grey,
                               ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              subtitle: Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 0, 10),
-                child: Text(transaction.comment,
-                    style: const TextStyle(
-                      fontStyle: FontStyle.italic,
-                      color: grey,
-                    )),
-              ),
-              trailing: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text.rich(TextSpan(
-                    children: <InlineSpan>[
-                      if (isCurrencyBefore)
-                        currencyBalanceWidget(isG1, currentSymbol, txFontSize),
-                      if (isCurrencyBefore) separatorSpan(),
-                      TextSpan(
-                        text: amountS,
-                        style: TextStyle(
-                          // fontWeight: FontWeight.bold,
-                          fontSize: txFontSize,
-                          color: transaction.type == TransactionType.received ||
-                                  transaction.type == TransactionType.receiving
-                              ? positiveAmountColor
-                              : negativeAmountColor,
+                            ),
+                            const SizedBox(height: 4.0),
+                            Text.rich(
+                              TextSpan(
+                                children: <InlineSpan>[
+                                  WidgetSpan(
+                                    child: Text(
+                                      tr('transaction_from'),
+                                      style: const TextStyle(
+                                        fontSize: txFontSize,
+                                        fontWeight: fromToWeight,
+                                        fontStyle: fromToStyle,
+                                        color: fromToColor,
+                                      ),
+                                    ),
+                                  ),
+                                  separator(),
+                                  WidgetSpan(
+                                    child: Text(
+                                      humanizeContact(
+                                          myPubKey, transaction.from),
+                                      style: const TextStyle(
+                                        fontSize: txFontSize,
+                                        // fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  separator(),
+                                  WidgetSpan(
+                                    child: Text(
+                                      tr('transaction_to').toLowerCase(),
+                                      style: const TextStyle(
+                                        fontSize: txFontSize,
+                                        fontWeight: fromToWeight,
+                                        fontStyle: fromToStyle,
+                                        color: fromToColor,
+                                      ),
+                                    ),
+                                  ),
+                                  separator(),
+                                  WidgetSpan(
+                                    child: Text(
+                                      humanizeContacts(
+                                          publicAddress: myPubKey,
+                                          contacts: transaction
+                                              .recipientsWithoutCashBack),
+                                      style: const TextStyle(
+                                        fontSize: txFontSize,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      if (!isCurrencyBefore) separatorSpan(),
-                      if (!isCurrencyBefore)
-                        currencyBalanceWidget(isG1, currentSymbol, txFontSize)
                     ],
-                  )),
-                  const SizedBox(height: 4.0),
-                  Tooltip(
-                      message: DateFormat.yMd(currentLocale(context))
-                          .add_Hm()
-                          .format(transaction.time),
-                      child: Text(
-                        humanizeTime(transaction.time, currentLocale(context))!,
-                        style: const TextStyle(
-                          fontSize: 12.0,
-                          color: grey,
+                  ),
+                  subtitle: transaction.comment == ''
+                      ? null
+                      : Padding(
+                          padding: const EdgeInsets.fromLTRB(8, 0, 0, 5),
+                          child: Text(
+                              inDevelopment
+                                  ? '${transaction.comment}$debugText'
+                                  : transaction.comment,
+                              style: const TextStyle(
+                                fontStyle: FontStyle.italic,
+                                color: grey,
+                              )),
                         ),
+                  trailing: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Text.rich(TextSpan(
+                        children: <InlineSpan>[
+                          if (isCurrencyBefore)
+                            currencyBalanceWidget(
+                                isG1, currentSymbol, txFontSize),
+                          if (isCurrencyBefore) separatorSpan(),
+                          TextSpan(
+                            text: amountS,
+                            style: TextStyle(
+                              // fontWeight: FontWeight.bold,
+                              fontSize: txFontSize,
+                              color: transaction.type ==
+                                          TransactionType.received ||
+                                      transaction.type ==
+                                          TransactionType.receiving
+                                  ? positiveAmountColor
+                                  : negativeAmountColor,
+                            ),
+                          ),
+                          if (!isCurrencyBefore) separatorSpan(),
+                          if (!isCurrencyBefore)
+                            currencyBalanceWidget(
+                                isG1, currentSymbol, txFontSize)
+                        ],
                       )),
-                ],
-              ),
-            )));
+                      const SizedBox(height: 4.0),
+                      Tooltip(
+                          message: DateFormat.yMd(currentLocale(context))
+                              .add_Hm()
+                              .format(transaction.time),
+                          child: Text(
+                            humanizeTime(
+                                transaction.time, currentLocale(context))!,
+                            style: const TextStyle(
+                              fontSize: 12.0,
+                              color: grey,
+                            ),
+                          )),
+                    ],
+                  ),
+                ))));
+  }
+
+  WidgetSpan separator() {
+    return const WidgetSpan(
+      child: SizedBox(width: 5.0),
+    );
   }
 
   void _addContact(Transaction transaction, ContactsCubit contactsCubit,
       BuildContext context) {
-    final Contact newContact =
-        transaction.isIncoming ? transaction.from : transaction.to;
+    final Contact newContact = transaction.isIncoming
+        ? transaction.from
+        : transaction.recipientsWithoutCashBack[0];
     contactsCubit.addContact(newContact);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -318,8 +387,8 @@ class TransactionListItem extends StatelessWidget {
   }
 
   void _selectUserToPay(BuildContext context, Transaction transaction) {
-    context.read<PaymentCubit>().selectUser(
-          transaction.to,
+    context.read<PaymentCubit>().selectUsers(
+          transaction.recipientsWithoutCashBack,
         );
     context.read<BottomNavCubit>().updateIndex(0);
   }
@@ -339,10 +408,11 @@ class TransactionListItem extends StatelessWidget {
 
   Future<void> _payAgain(
       BuildContext context, Transaction transaction, bool isRetry) async {
-    final double amount = transaction.amount.abs(); // positive
+    final double amount = transaction.amount.abs() / // positive
+        transaction.recipientsWithoutCashBack.length;
     await payWithRetry(
         context: context,
-        recipients: transaction.recipients,
+        recipients: transaction.recipientsWithoutCashBack,
         amount:
             isG1 ? amount / 100 : ((amount / currentUd) / 100).toPrecision(3),
         comment: transaction.comment,
@@ -386,7 +456,10 @@ class TransactionListItem extends StatelessWidget {
     );
   }
 
-  void _showPopupMenu(BuildContext context, Transaction transaction) {
+  void _showPopupMenu(
+      {required BuildContext context,
+      required Transaction origTransaction,
+      required Transaction transaction}) {
     final RenderBox renderBox =
         _menuKey.currentContext!.findRenderObject()! as RenderBox;
     final Offset position = renderBox.localToGlobal(Offset.zero);
@@ -400,12 +473,17 @@ class TransactionListItem extends StatelessWidget {
         position.dx,
         position.dy,
       ),
-      items: _getMenuItems(context, transaction),
+      items: _getMenuItems(
+          context: context,
+          origTransaction: origTransaction,
+          transaction: transaction),
     );
   }
 
   List<PopupMenuEntry<dynamic>> _getMenuItems(
-      BuildContext context, Transaction transaction) {
+      {required BuildContext context,
+      required Transaction origTransaction,
+      required Transaction transaction}) {
     final List<PopupMenuEntry<dynamic>> menuItems = <PopupMenuEntry<dynamic>>[];
 
     if (transaction.isPending) {
@@ -414,7 +492,7 @@ class TransactionListItem extends StatelessWidget {
           leading: const Icon(Icons.delete),
           title: Text(tr('cancel_payment')),
           onTap: () {
-            _cancel(context, transaction);
+            _cancel(context, origTransaction);
             Navigator.pop(context);
           },
         ),
@@ -447,34 +525,41 @@ class TransactionListItem extends StatelessWidget {
       ));
     }
 
-    if (transaction.type != TransactionType.pending &&
-        !transaction.isToMultiple) {
-      menuItems.add(PopupMenuItem<dynamic>(
-        child: ListTile(
-          leading: const Icon(Icons.contacts),
-          title: Text(tr('add_contact')),
-          onTap: () {
-            _addContact(transaction, context.read<ContactsCubit>(), context);
-            Navigator.pop(context);
-          },
-        ),
-      ));
-    }
+    menuItems.add(PopupMenuItem<dynamic>(
+      child: ListTile(
+        leading: const Icon(Icons.contacts),
+        title: Text(tr('add_contact')),
+        onTap: () {
+          _addContact(transaction, context.read<ContactsCubit>(), context);
+          Navigator.pop(context);
+        },
+      ),
+    ));
 
     return menuItems;
   }
 
-  Future<Transaction> _enrichTransaction(Transaction tx) async {
-    final Contact fromContact =
-        await ContactsCache().getContact(tx.from.pubKey);
-    final Contact toContact = await ContactsCache().getContact(tx.to.pubKey);
+  Future<Transaction> _enrichTransaction(
+      BuildContext context, Transaction tx) async {
+    final ContactsCubit contactsCubit = context.read<ContactsCubit>();
+    final String fromKey = tx.from.pubKey;
+    final Contact fromContact = await retrieveContact(contactsCubit, fromKey);
+    final Contact toContact =
+        // ignore: deprecated_member_use_from_same_package
+        await retrieveContact(contactsCubit, tx.to.pubKey);
     final List<Contact> recipients = <Contact>[];
     for (final Contact recipient in tx.recipients) {
       final Contact recipientNew =
-          await ContactsCache().getContact(recipient.pubKey);
+          await retrieveContact(contactsCubit, recipient.pubKey);
       recipients.add(recipientNew);
     }
     return transaction.copyWith(
         from: fromContact, to: toContact, recipients: recipients);
+  }
+
+  Future<Contact> retrieveContact(
+      ContactsCubit contactsCubit, String pubKey) async {
+    final Contact? cubitContact = contactsCubit.getContact(pubKey);
+    return cubitContact ?? await ContactsCache().getContact(pubKey);
   }
 }

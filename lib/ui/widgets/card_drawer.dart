@@ -9,6 +9,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../../data/models/cesium_card.dart';
+import '../../data/models/node_manager.dart';
 import '../../main.dart';
 import '../../shared_prefs_helper.dart';
 import '../screens/sandbox.dart';
@@ -56,6 +57,12 @@ class CardDrawer extends StatelessWidget {
                     ],
                   ),
                 ),
+                if (inDevelopment)
+                  ListTile(
+                      leading: const Text('Last gva node'),
+                      title: Text(NodeManager().getCurrentGvaNode() != null
+                          ? NodeManager().getCurrentGvaNode()!.url
+                          : 'None')),
                 SizedBox(
                   height: (cards.length * 70) + 50,
                   child: const Center(

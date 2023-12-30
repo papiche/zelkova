@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import '../../g1/g1_helper.dart';
+import '../../ui/contacts_cache.dart';
 import '../../ui/ui_helpers.dart';
 import 'contact.dart';
 import 'contact_sort_type.dart';
@@ -42,6 +43,7 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
         filteredContacts: updatedFilteredContacts,
       ));
     }
+    ContactsCache().addContact(contact);
   }
 
   void removeContact(Contact contact) {
@@ -94,6 +96,7 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
       }
       return c;
     }).toList();
+    ContactsCache().addContact(contact);
     emit(state.copyWith(contacts: contacts, filteredContacts: fcontacts));
   }
 
@@ -197,6 +200,11 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
   @override
   String get id => 'contacts';
 
-  bool isContact(String pubKey) =>
-      state.contacts.any((Contact c) => c.pubKey == pubKey);
+  bool isContact(String pubKey) => state.contacts.any(
+      (Contact c) => extractPublicKey(c.pubKey) == extractPublicKey(pubKey));
+
+  Contact? getContact(String pubKey) => isContact(pubKey)
+      ? state.contacts.firstWhere(
+          (Contact c) => extractPublicKey(c.pubKey) == extractPublicKey(pubKey))
+      : null;
 }

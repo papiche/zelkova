@@ -10,7 +10,7 @@ import 'package:ginkgo/ui/contacts_cache.dart';
 
 void main() {
   setUpAll(() {
-    // ContactsCache().init();
+    ContactsCache().init(true);
   });
 
   test('test put', () async {
@@ -30,10 +30,11 @@ void main() {
     expect(result.balance, equals(6700));
     final List<Transaction> txs = result.transactions;
     for (final Transaction tx in txs) {
-      expect(tx.from != tx.to, equals(true));
+      expect(tx.recipientsWithoutCashBack.contains(tx.from), equals(false));
     }
     expect(
-        txs.first.to.pubKey == '9Bcx5JV3swCQBEeH3PcuNcBVperLscWtN78hjFVx1yzG',
+        txs.first.recipients[0].pubKey ==
+            '9Bcx5JV3swCQBEeH3PcuNcBVperLscWtN78hjFVx1yzG',
         equals(true));
     expect(
         txs.first.from.pubKey != '9Bcx5JV3swCQBEeH3PcuNcBVperLscWtN78hjFVx1yzG',
@@ -53,15 +54,15 @@ void main() {
     expect(result.balance, equals(3));
     final List<Transaction> txs = result.transactions;
     for (final Transaction tx in txs) {
-      expect(tx.from != tx.to, equals(true));
+      expect(tx.recipientsWithoutCashBack.contains(tx.from), equals(false));
     }
     expect(txs.first.from.pubKey,
         equals('BrgsSYK3xUzDyztGBHmxq69gfNxBfe2UKpxG21oZUBr5'));
-    expect(txs.first.to.pubKey,
+    expect(txs.first.recipients[0].pubKey,
         equals('6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH'));
     expect(txs.first.type, equals(TransactionType.receiving));
     expect(txs.first.amount, equals(100));
-    expect(txs[1].to.pubKey,
+    expect(txs[1].recipients[0].pubKey,
         equals('EDB7chzCBdtUCnqFZquVeto4a65FjeRkPrqcV8NwVbTx'));
     expect(txs[1].from.pubKey,
         equals('6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH'));
@@ -70,7 +71,7 @@ void main() {
 
     expect(txs.last.from.pubKey,
         equals('A1Fc1VoCLKHyPYmXimYECSmjmsceqwRSZcTBXfgG9JaB'));
-    expect(txs.last.to.pubKey,
+    expect(txs.last.recipients[0].pubKey,
         equals('6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH'));
     expect(txs.last.type, equals(TransactionType.received));
     expect(txs.last.amount, equals(10000));

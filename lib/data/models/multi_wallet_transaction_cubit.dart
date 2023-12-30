@@ -290,8 +290,7 @@ class MultiWalletTransactionCubit
       }
       // Get a range of tx in 1h
 
-      // TransactionsBloc().lastTx().forEach((Transaction t) {
-      for (final Transaction t in newState.transactions) {
+      for (final Transaction t in lastTx(newState.transactions)) {
         txMap[genTxKey(t)] = t;
       }
       for (final Transaction t in newState.pendingTransactions) {

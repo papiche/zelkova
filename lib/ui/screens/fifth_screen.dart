@@ -21,7 +21,7 @@ import '../widgets/fifth_screen/fifth_tutorial.dart';
 import '../widgets/fifth_screen/grid_item.dart';
 import '../widgets/fifth_screen/import_dialog.dart';
 import '../widgets/fifth_screen/link_card.dart';
-import '../widgets/fifth_screen/node_info.dart';
+import '../widgets/fifth_screen/node_list_card.dart';
 import '../widgets/fifth_screen/text_divider.dart';
 
 class FifthScreen extends StatefulWidget {
@@ -216,7 +216,7 @@ class _FifthScreenState extends State<FifthScreen> {
                             }),
                       if (state.expertMode)
                         const TextDivider(text: 'technical_info_title'),
-                      if (state.expertMode) const NodeInfoCard(),
+                      if (state.expertMode) const NodeListCard(),
                       const TextDivider(text: 'info_links'),
                       if (state.expertMode)
                         LinkCard(

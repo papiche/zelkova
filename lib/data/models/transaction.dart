@@ -2,6 +2,7 @@ import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../g1/g1_helper.dart';
 import '../../ui/ui_helpers.dart';
 import 'contact.dart';
 import 'transaction_type.dart';
@@ -11,7 +12,7 @@ part 'transaction.g.dart';
 @JsonSerializable()
 @CopyWith()
 class Transaction extends Equatable {
-  const Transaction(
+  Transaction(
       {required this.type,
       required this.amount,
       required this.comment,
@@ -22,8 +23,8 @@ class Transaction extends Equatable {
       List<Contact>? recipients,
       List<double>? recipientsAmounts,
       this.debugInfo})
-      : recipients = recipients ?? const <Contact>[],
-        recipientsAmounts = recipientsAmounts ?? const <double>[];
+      : recipients = recipients ?? <Contact>[to],
+        recipientsAmounts = recipientsAmounts ?? <double>[amount];
 
   factory Transaction.fromJson(Map<String, dynamic> json) =>
       _$TransactionFromJson(json);
@@ -50,18 +51,24 @@ class Transaction extends Equatable {
       type == TransactionType.receiving || type == TransactionType.received;
 
   // Remove cash pay back address
-  bool get isToMultiple =>
-      recipients.where((Contact c) => from.pubKey != c.pubKey).length >= 2;
+  bool get isToMultiple => recipientsWithoutCashBack.length >= 2;
+
+  List<Contact> get recipientsWithoutCashBack => recipients
+      .where((Contact c) =>
+          extractPublicKey(from.pubKey) != extractPublicKey(c.pubKey))
+      .toList();
 
   Map<String, dynamic> toJson() => _$TransactionToJson(this);
 
   String toStringSmall(String pubKey) =>
+      // ignore: deprecated_member_use_from_same_package
       "Transaction { type: ${type.name}, from: ${from.toStringSmall(pubKey)}, to: ${to.toStringSmall(pubKey)}, amount: $amount, comment: $comment, time: ${humanizeTime(time, 'en')}, debugInfo: '$debugInfo' }";
 
   @override
   List<Object?> get props => <dynamic>[
         type,
         from,
+        // ignore: deprecated_member_use_from_same_package
         to,
         amount,
         comment,

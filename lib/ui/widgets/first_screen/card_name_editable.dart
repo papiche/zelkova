@@ -182,12 +182,21 @@ class _CardNameEditableState extends State<CardNameEditable> {
               TextSpan(
                 text: currentText.toUpperCase(),
                 style: const TextStyle(
-                    fontFamily: 'SourceCodePro', color: Colors.grey),
+                  fontFamily: 'SourceCodePro',
+                  color: Colors.grey,
+                  shadows: <Shadow>[
+                    Shadow(
+                      offset: Offset(1.0, 1.0),
+                      blurRadius: 3.0,
+                      color: Colors.black45,
+                    ),
+                  ],
+                ),
               ),
             if (currentText == widget.defValue)
               const WidgetSpan(
                 child: Padding(
-                    padding: EdgeInsets.fromLTRB(2, 0, 0, 0),
+                    padding: EdgeInsets.fromLTRB(3, 0, 0, 0),
                     child: Icon(Icons.edit, size: 14.0, color: Colors.white)),
               ),
             if (currentText.isNotEmpty && currentText != widget.defValue)

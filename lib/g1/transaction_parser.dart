@@ -4,6 +4,7 @@ import '../data/models/contact.dart';
 import '../data/models/transaction.dart';
 import '../data/models/transaction_state.dart';
 import '../data/models/transaction_type.dart';
+import '../ui/contacts_cache.dart';
 import 'g1_helper.dart';
 
 final RegExp exp = RegExp(r'\((.*?)\)');
@@ -42,8 +43,8 @@ Future<TransactionState> transactionParser(
       logger('Timestamp: $timestamp');
       logger('Fecha: $txDate');
     } */
-    final Contact fromC = Contact(pubKey: address2!);
-    final Contact toC = Contact(pubKey: address1!);
+    final Contact fromC = getContactCache(pubKey: address2!);
+    final Contact toC = getContactCache(pubKey: address1!);
 
     tx.insert(
         0,
@@ -60,6 +61,14 @@ Future<TransactionState> transactionParser(
       pendingTransactions: pendingTransactions,
       balance: balance,
       lastChecked: DateTime.now());
+}
+
+Contact getContactCache({required String pubKey}) {
+  final Contact contact =
+      ContactsCache().getCachedContact(pubKey, false, true) ??
+          Contact(pubKey: pubKey);
+  assert(contact.hasAvatar == false);
+  return contact;
 }
 
 Future<TransactionState> transactionsGvaParser(Map<String, dynamic> txData,
@@ -91,7 +100,7 @@ Future<TransactionState> transactionsGvaParser(Map<String, dynamic> txData,
     final Transaction tx =
         await _transactionGvaParser(edgeRaw as Map<String, dynamic>, myPubKey);
     if (tx.from.pubKey == myPubKey &&
-        tx.to.pubKey == myPubKey &&
+        tx.recipients[0].pubKey == myPubKey &&
         tx.recipients.length == 1) {
       // This is a return cash back to me
       continue;
@@ -148,7 +157,7 @@ Future<Transaction> _txGvaParse(
     // Extract the recipient from each output
     final String outputS = output as String;
     final String? recipient = exp.firstMatch(outputS)!.group(1);
-    final Contact recipientContact = Contact(pubKey: recipient!);
+    final Contact recipientContact = getContactCache(pubKey: recipient!);
     recipients.add(recipientContact);
 
     final double outputAmount = double.parse(outputS.split(':')[0]);
@@ -182,7 +191,7 @@ Future<Transaction> _txGvaParse(
   }
   // Comment
   final String comment = tx['comment'] as String;
-  final Contact fromC = Contact(pubKey: from);
+  final Contact fromC = getContactCache(pubKey: from);
 
   return Transaction(
     type: type,

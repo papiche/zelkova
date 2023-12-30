@@ -15,6 +15,7 @@ void main() {
   );
 
   setUpAll(() {
+    ContactsCache().init(true);
     ContactsCache().addContacts(<Contact>[c]);
   });
 

@@ -96,6 +96,7 @@ void main() async {
 
   Bloc.observer = AppBlocObserver();
 
+  await ContactsCache().init();
   timeago.setLocaleMessages('eo', EoMessages());
   timeago.setLocaleMessages('eo_short', EoShortMessages());
   timeago.setLocaleMessages('eu', EuMessages());
@@ -291,6 +292,13 @@ class _AppIntro extends State<AppIntro> {
   }
 }
 
+/*
+void printCubitStateSize(String cubitName, HydratedCubit cubit) {
+  final String jsonState = jsonEncode(cubit.state);
+  print('Size of $cubitName in bytes: ${jsonState.length}');
+}
+*/
+
 PageViewModel createPageViewModel(
     String title, String body, String imageAsset, BuildContext context) {
   final ColorScheme colorScheme = Theme.of(context).colorScheme;
@@ -382,7 +390,6 @@ class _GinkgoAppState extends State<GinkgoApp> {
     Once.runDaily('clear_cache', callback: () {
       logger('clear cache via once');
       ContactsCache().clear();
-      ContactsCache().addContacts(context.read<ContactsCubit>().state.contacts);
     });
     Once.runOnce('resize_avatars', callback: () {
       logger('resize avatar via once');
@@ -395,6 +402,8 @@ class _GinkgoAppState extends State<GinkgoApp> {
 
     initGetItAll();
 
+    ContactsCache().addContacts(context.read<ContactsCubit>().state.contacts);
+
     fetchTxsCronTask = Cron()
         .schedule(Schedule.parse(kReleaseMode ? '*/10 * * * *' : '*/5 * * * *'),
             () async {
@@ -404,6 +413,9 @@ class _GinkgoAppState extends State<GinkgoApp> {
       fetchTransactions(context);
       // }
     });
+
+    // Fetch transactions (and balance) here too on start
+    fetchTransactions(context);
 
     if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
       Workmanager().initialize(
@@ -417,6 +429,19 @@ class _GinkgoAppState extends State<GinkgoApp> {
         frequency: const Duration(minutes: 15),
       );
     }
+
+    /*  if (inDevelopment) {
+      printCubitStateSize(
+          'multiTxCubit', context.read<MultiWalletTransactionCubit>());
+      printCubitStateSize('TxCubit', context.read<TransactionCubitRemove>());
+      printCubitStateSize('nodeCubit', context.read<NodeListCubit>());
+      printCubitStateSize('paymentCubit', context.read<PaymentCubit>());
+      printCubitStateSize('AppCubit', context.read<AppCubit>());
+      printCubitStateSize('BottomNavCubit', context.read<BottomNavCubit>());
+      // printCubitStateSize('ContactsCubit', context.read<ContactsCubit>());
+      printCubitStateSize('ThemeCubit', context.read<ThemeCubit>());
+      printCubitStateSize('UtxoCubit', context.read<UtxoCubit>());
+    } */
   }
 
   @override

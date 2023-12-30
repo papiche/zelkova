@@ -142,26 +142,24 @@ Future<bool> payWithRetry(
               txCubit.addPendingTransaction(pending);
             } else {
               // Update the previously failed tx with an update time and type pending
-              txCubit.updatePendingTransaction(pending);
+              txCubit.updatePendingTransaction(
+                  pending.copyWith(type: TransactionType.pending));
             }
+            context.read<BottomNavCubit>().updateIndex(3);
             return true;
           } else {
             paymentCubit.pendingPayment();
             if (!context.mounted) {
               return false;
             }
-            final bool failedWithBalance =
-                result.message == 'insufficient balance' &&
-                    weHaveBalance(context, amount);
+            final bool failedWithoutBalance =
+                result.message == 'insufficient balance' ||
+                    result.message == 'Insufficient balance in your wallet';
             showPayError(
                 context: context,
-                desc: failedWithBalance
-                    ? tr('payment_error_retry')
-                    : tr('payment_error_desc', namedArgs: <String, String>{
-                        // We try to translate the error, like "insufficient balance"
-                        'error': tr(result.message)
-                      }),
-                increaseErrors: failedWithBalance,
+                desc: tr('payment_error_desc',
+                    namedArgs: <String, String>{'error': tr(result.message)}),
+                increaseErrors: !failedWithoutBalance,
                 node: result.node);
             if (!isRetry) {
               txCubit.insertPendingTransaction(

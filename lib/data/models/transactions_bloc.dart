@@ -54,10 +54,11 @@ class TransactionsBloc {
   Sink<String?> get onSearchInputChangedSink =>
       _onSearchInputChangedSubject.sink;
 
-  List<Transaction> lastTx() {
+  List<Transaction> lastTx({bool applyDateFilter = false}) {
     if (_onNewListingStateController.value.itemList != null) {
       return _onNewListingStateController.value.itemList!
           .where((Transaction tx) =>
+              !applyDateFilter ||
               areDatesClose(DateTime.now(), tx.time, paymentTimeRange))
           .toList();
     } else {
@@ -101,8 +102,8 @@ class TransactionsBloc {
           itemList: transCubit.transactions,
         );
       } else {
-        final List<Transaction> fetchedItems = await transCubit
-            .fetchTransactions(nodeListCubit, utxoCubit, appCubit,
+        final List<Transaction> fetchedItems =
+            await transCubit.fetchTransactions(nodeListCubit, appCubit,
                 cursor: pageKey, pageSize: _pageSize);
 
         final bool isLastPage = fetchedItems.length < _pageSize;

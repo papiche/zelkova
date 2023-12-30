@@ -380,9 +380,11 @@ packages:
   durt:
     dependency: "direct main"
     description:
-      path: "../durt"
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: "1f5e76854c024d6905328b5b5dfa713a6779894e"
+      url: "https://git.duniter.org/vjrj/durt"
+    source: git
     version: "0.1.7"
   easy_debounce:
     dependency: "direct main"

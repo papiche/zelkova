@@ -17,6 +17,7 @@ import '../../../data/models/theme_cubit.dart';
 import '../../../data/models/transaction.dart';
 import '../../../data/models/transactions_bloc.dart';
 import '../../../data/models/utxo_cubit.dart';
+import '../../../g1/api.dart';
 import '../../../g1/currency.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
@@ -386,6 +387,7 @@ class _TransactionsAndBalanceWidgetState
 
   Future<void> _fetchPending(int pageKey) async {
     try {
+      await fetchNodesIfNotReady();
       final List<Transaction> pendTxs =
           transCubit.currentWalletState().pendingTransactions;
       final bool shouldPaginate = pendTxs.length > _pendingPageSize;

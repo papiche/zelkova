@@ -414,8 +414,19 @@ class _GinkgoAppState extends State<GinkgoApp> {
       // }
     });
 
-    // Fetch transactions (and balance) here too on start
-    fetchTransactions(context);
+    if (inDevelopment) {
+      // Try to test auto-recover from empty node-list;
+      NodeManager().gvaNodes.clear();
+      NodeManager().duniterNodes.clear();
+    }
+
+    ConnectivityWidgetWrapperWrapper.isConnected.then((bool isConnected) {
+      if (isConnected) {
+        fetchNodesIfNotReady();
+        // Fetch transactions (and balance) here too on start
+        fetchTransactions(context);
+      }
+    });
 
     if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
       Workmanager().initialize(

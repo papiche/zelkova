@@ -194,6 +194,14 @@ Future<Uint8List> getAvatar(String pubKey) async {
   return imageFromBase64String(dataImage);
 }
 
+Future<void> fetchNodesIfNotReady() async {
+  for (final NodeType type in <NodeType>[NodeType.gva, NodeType.duniter]) {
+    if (NodeManager().nodesWorking(type) < 3) {
+      await fetchNodes(type, true);
+    }
+  }
+}
+
 Future<void> fetchNodes(NodeType type, bool force) async {
   try {
     if (type == NodeType.duniter) {

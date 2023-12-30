@@ -11,6 +11,7 @@ import '../../data/models/bottom_nav_cubit.dart';
 import '../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../data/models/payment_cubit.dart';
 import '../../data/models/payment_state.dart';
+import '../../g1/api.dart';
 import '../../shared_prefs_helper.dart';
 import '../tutorial.dart';
 import '../tutorial_keys.dart';
@@ -47,6 +48,7 @@ class _FirstScreenState extends State<FirstScreen> {
   Widget build(BuildContext context) => BlocBuilder<AppCubit, AppState>(
           builder: (BuildContext context, AppState state) {
         WidgetsBinding.instance.addPostFrameCallback((_) async {
+          fetchNodesIfNotReady();
           /* if (!state.warningViewed) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

@@ -23,8 +23,6 @@ import 'node_type.dart';
 import 'transaction.dart';
 import 'transaction_state.dart';
 import 'transaction_type.dart';
-import 'transactions_bloc.dart';
-import 'utxo_cubit.dart';
 
 class MultiWalletTransactionCubit
     extends HydratedCubit<MultiWalletTransactionState> {
@@ -85,17 +83,20 @@ class MultiWalletTransactionCubit
   }
 
   void updatePendingTransaction(Transaction tx, {String? key}) {
+    loggerDev('»»»»»» $tx Updating ');
     key = _defKey(key);
     final TransactionState currentState = _getStateOfWallet(key);
     final List<Transaction> newPendingTransactions = <Transaction>[];
     for (final Transaction t in currentState.pendingTransactions) {
-      if (tx.from == t.from &&
-          tx.recipients == t.recipients &&
+      if (tx.from.keyEqual(t.from) &&
+          compareRecipientListsByKey(
+              tx.recipientsWithoutCashBack, t.recipientsWithoutCashBack) &&
           tx.amount == t.amount &&
           tx.comment == t.comment) {
-        newPendingTransactions
-            .add(t.copyWith(time: DateTime.now(), type: tx.type));
+        loggerDev('»»»»»» $t match');
+        newPendingTransactions.add(tx.copyWith(time: DateTime.now()));
       } else {
+        loggerDev('»»»»»» $t do not match');
         newPendingTransactions.add(t);
       }
     }
@@ -123,22 +124,12 @@ class MultiWalletTransactionCubit
 
   DateTime get lastChecked => currentWalletState().lastChecked;
 
-  String _getTxKey(Transaction t) {
-    final String id = t.isToMultiple
-        ? '${t.recipients.map((Contact c) => extractPublicKey(c.pubKey)).join('-')}-${t.comment}-${t.amount}'
-        : '${extractPublicKey(t.to.pubKey)}-${t.comment}-${t.amount}';
-    /* if (t.type == TransactionType.pending ||
-        t.type == TransactionType.sending) {
-      loggerDev(t.toJson().toString());
-    }
-    loggerDev(
-        '###################### >>>> Key for tx ${t.toStringSmall(_defKey(null))}: $id'); */
-    return id;
-  }
-
   Future<List<Transaction>> fetchTransactions(
-      NodeListCubit cubit, UtxoCubit utxoCubit, AppCubit appCubit,
+      NodeListCubit cubit, AppCubit appCubit,
       {int retries = 5, int? pageSize, String? cursor, String? pubKey}) async {
+    final bool isCurrentWallet = pubKey != null &&
+        (extractPublicKey(pubKey) ==
+            extractPublicKey(SharedPreferencesHelper().getPubKey()));
     pubKey = _defKey(pubKey);
     final TransactionState currentState = _getStateOfWallet(pubKey);
     Tuple2<Map<String, dynamic>?, Node> txDataResult;
@@ -184,7 +175,10 @@ class MultiWalletTransactionCubit
 
       TransactionState currentModifiedState = newState;
 
-      resetCurrentGvaNode(newState, cubit);
+      if (isCurrentWallet) {
+        // We only reset if it's the current wallet
+        resetCurrentGvaNode(newState, cubit);
+      }
 
       logger(
           'Last received notification: ${currentModifiedState.latestReceivedNotification.toIso8601String()})}');
@@ -221,7 +215,8 @@ class MultiWalletTransactionCubit
               currentUd: appCubit.currentUd,
               comment: tx.comment,
               to: humanizeContacts(
-                  fromAddress: tx.from.pubKey, contacts: tx.recipients),
+                  publicAddress: tx.from.pubKey,
+                  contacts: tx.recipientsWithoutCashBack),
               isG1: isG1);
           currentModifiedState =
               currentModifiedState.copyWith(latestSentNotification: tx.time);
@@ -273,36 +268,55 @@ class MultiWalletTransactionCubit
     // Check pending transactions
     if (cursor == null) {
       // First page, so let's check pending transactions
-      final LinkedHashSet<Transaction> newPendingTransactions =
-          LinkedHashSet<Transaction>();
-      final List<Transaction> newTransactions = <Transaction>[];
+      // We maintain a local list of pending transactions, as we don't know
+      // when the transaction will be confirmed, and we don't want to lose a payment.
+      // - If we see it as sending we don't display the pending transaction
+      // - If we don't see the pending tx we show it as pending but if it's an
+      // old one we mark it as failed
+      // - If we see it as sent, we remove it from pending
 
-      // Index transactions by key
+      // With this two list we'll update the state
+      final List<Transaction> newTxs = <Transaction>[];
+      final LinkedHashSet<Transaction> newPendingTxs =
+          LinkedHashSet<Transaction>();
+
+      // Maps of transactions by key
       final Map<String, Transaction> txMap = <String, Transaction>{};
       final Map<String, Transaction> pendingMap = <String, Transaction>{};
 
       //  or maybe it doesn't merit the effort
       for (final Transaction t in newState.transactions) {
-        txMap[_getTxKey(t)] = t;
+        txMap[genTxKey(t)] = t;
       }
       // Get a range of tx in 1h
-      TransactionsBloc().lastTx().forEach((Transaction t) {
-        txMap[_getTxKey(t)] = t;
-      });
+
+      // TransactionsBloc().lastTx().forEach((Transaction t) {
+      for (final Transaction t in newState.transactions) {
+        txMap[genTxKey(t)] = t;
+      }
       for (final Transaction t in newState.pendingTransactions) {
-        pendingMap[_getTxKey(t)] = t;
+        pendingMap[genTxKey(t)] = t;
       }
 
-      // Adjust pending transactions
+      // Adjust pending transactions in state
+      // If waiting: re-add
+      // If sent: don't add
+      // If sending: add is with debug info
+      // If other type WARN and ignore
+      // If don't match:
+      //    - is old -> mark as failed
+      //    - is not old --> re-add
       for (final Transaction pend in newState.pendingTransactions) {
-        if (pend.type == TransactionType.waitingNetwork) {
-          newPendingTransactions.add(pend);
+        /* if (pend.type == TransactionType.waitingNetwork) {
+          // Pending for manual retry
+          newPendingTxs.add(pend);
           continue;
-        }
-        if (txMap[_getTxKey(pend)] != null) {
+        } */
+        final Transaction? matchTx = txMap[genTxKey(pend)];
+        if (matchTx != null) {
           // Found a match
-          // VER SI SENT o que
-          final Transaction t = txMap[_getTxKey(pend)]!;
+          // VER SI SENT or what
+          final Transaction t = matchTx;
           if (t.type == TransactionType.sent) {
             loggerDev(
                 '@@@@@ Found a sent match for pending transaction ${pend.toStringSmall(myPubKey)}');
@@ -315,7 +329,7 @@ class MultiWalletTransactionCubit
               // The tx will not be add as sending (as some nodes will show it and others will not,
               // we use better the pending)
               // FIXME: if this is old, probably is stuck, so maybe we should cancel->retry
-              newPendingTransactions.add(pend.copyWith(
+              newPendingTxs.add(pend.copyWith(
                   debugInfo:
                       pend.debugInfo ?? 'Node where see it: ${node.url}'));
             } else {
@@ -325,48 +339,61 @@ class MultiWalletTransactionCubit
           }
         } else {
           // Not found a match
-          if (areDatesClose(DateTime.now(), pend.time, paymentTimeRange)) {
+          if (pend.type == TransactionType.waitingNetwork ||
+              areDatesClose(DateTime.now(), pend.time, paymentTimeRange)) {
             loggerDev(
                 '@@@@@ Not found yet pending transaction ${pend.toStringSmall(myPubKey)}');
-            newPendingTransactions.add(pend);
+            newPendingTxs.add(pend);
           } else {
             // Old pending transaction, warn user
             loggerDev(
                 '@@@@@ Warn user: Not found an old pending transaction ${pend.toStringSmall(myPubKey)}');
             // Add it but with missing type
-            newPendingTransactions
-                .add(pend.copyWith(type: TransactionType.failed));
+            newPendingTxs.add(pend.copyWith(type: TransactionType.failed));
           }
         }
       }
 
+      // Now that we have the pending, lets see the node retrieved txs
       for (final Transaction tx in newState.transactions) {
-        if (pendingMap[_getTxKey(tx)] != null &&
+        if (pendingMap[genTxKey(tx)] != null &&
             (tx.type == TransactionType.sending ||
                 tx.type == TransactionType.sent)) {
           // Found a match
           if (tx.type == TransactionType.sent) {
             // Ok add it, but not as pending
-            newTransactions.add(tx);
+            newTxs.add(tx);
           } else {
             // It's sending so should be added before as pending
           }
         } else {
           // Does not match
           if (tx.type == TransactionType.sending) {
+            newTxs.add(
+                tx.copyWith(debugInfo: 'Sending tx not found in pending?'));
+            /*
             // Not found, maybe we are in other client, so add as pending
-            newPendingTransactions
-                .add(tx.copyWith(type: TransactionType.pending));
+            print(
+                // ignore: deprecated_member_use_from_same_package
+                '---------------------- Pending tx from ${tx.to.pubKey} not found with comment ${tx.comment} ${tx.recipients.length} recipients ${tx.recipients}');
+            print(genTxKey(tx));
+            print('Current pending tx:\n'
+                "${pendingMap.keys.join('\n')}");
+            //      newPendingTransactions
+            //        .add(tx.copyWith(type: TransactionType.pending));
+            print('In State');
+            print(newState.pendingTransactions
+                .map((Transaction t) => '${genTxKey(t)}-${t.recipients.length}')
+                .join('\n')); */
           } else {
             // the rest
-            newTransactions.add(tx);
+            newTxs.add(tx);
           }
         }
       }
 
       newState = newState.copyWith(
-          transactions: newTransactions,
-          pendingTransactions: newPendingTransactions.toList());
+          transactions: newTxs, pendingTransactions: newPendingTxs.toList());
     }
     return newState;
   }

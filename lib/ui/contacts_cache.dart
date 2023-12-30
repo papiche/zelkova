@@ -10,6 +10,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../data/models/contact.dart';
 import '../g1/api.dart';
+import '../g1/g1_helper.dart';
 import 'logger.dart';
 
 class ContactsCache {
@@ -20,22 +21,26 @@ class ContactsCache {
 
   ContactsCache._internal();
 
-  Box<dynamic>? _box;
+  Box<dynamic>? box;
 
-  Future<void> _init() async {
+  Future<void> init([bool test = false]) async {
+    if (test) {
+      box = MemoryFallbackBox<Map<String, dynamic>>();
+      return;
+    }
     try {
       if (kIsWeb) {
-        _box = await Hive.openBox(_boxName);
+        box = await Hive.openBox(_boxName);
       } else {
         final Directory appDocDir = await getApplicationDocumentsDirectory();
         final String appDocPath = appDocDir.path;
-        _box = await Hive.openBox(_boxName, path: appDocPath);
+        box = await Hive.openBox(_boxName, path: appDocPath);
       }
       // We clear the box on every startup to avoid issues with old data
     } catch (e) {
       logger('Error opening Hive: $e');
     }
-    _box ??= MemoryFallbackBox<Map<String, dynamic>>();
+    box ??= MemoryFallbackBox<Map<String, dynamic>>();
   }
 
   Future<void> addContacts(List<Contact> contacts) async {
@@ -45,11 +50,11 @@ class ContactsCache {
   }
 
   Future<void> dispose() async {
-    await _box?.close();
+    await box?.close();
   }
 
   Future<void> clear() async {
-    await _box?.clear();
+    await box?.clear();
   }
 
   static ContactsCache? _instance;
@@ -58,17 +63,17 @@ class ContactsCache {
 
   final String _boxName = 'contacts_cache';
 
-  Future<Box<dynamic>> _openBox() async {
-    if (_box == null) {
-      await _init();
-    }
-    return _box!;
+  Contact? getCachedContact(String pubKey,
+      [bool debug = false, bool withoutAvatar = false]) {
+    return withoutAvatar
+        ? _retrieveContact(pubKey)?.cloneWithoutAvatar()
+        : _retrieveContact(pubKey);
   }
 
   Future<Contact> getContact(String pubKey, [bool debug = false]) async {
     Contact? cachedContact;
     try {
-      cachedContact = await _retrieveContact(pubKey);
+      cachedContact = _retrieveContact(pubKey);
     } catch (e, stackTrace) {
       await Sentry.captureException(e, stackTrace: stackTrace);
       logger('Error while retrieving contact from cache: $e, $pubKey');
@@ -119,9 +124,11 @@ class ContactsCache {
 
   Future<void> saveContact(Contact contact) async => addContact(contact);
 
-  Future<void> addContact(Contact contact) async {
+  Future<void> addContact(Contact contactRaw) async {
     // Get the cached version of the contact, if it exists
-    Contact? cachedContact = await _retrieveContact(contact.pubKey);
+    final Contact contact =
+        contactRaw.copyWith(pubKey: extractPublicKey(contactRaw.pubKey));
+    Contact? cachedContact = _retrieveContact(contact.pubKey);
 
     // Merge the new contact with the cached contact
     if (cachedContact != null) {
@@ -140,16 +147,14 @@ class ContactsCache {
   }
 
   Future<void> _storeContact(Contact contact) async {
-    final Box<dynamic> box = await _openBox();
-    await box.put(contact.pubKey, <String, dynamic>{
+    await box!.put(contact.pubKey, <String, dynamic>{
       'timestamp': DateTime.now().toIso8601String(),
       'data': json.encode(contact.toJson()),
     });
   }
 
-  Future<Contact?> _retrieveContact(String pubKey) async {
-    final Box<dynamic> box = await _openBox();
-    final dynamic record = box.get(pubKey);
+  Contact? _retrieveContact(String pubKey) {
+    final dynamic record = box!.get(pubKey);
 
     if (record != null) {
       final Map<String, dynamic> typedRecord =

@@ -34,4 +34,33 @@ void main() {
       expect(updatedNodes[1].errors, 0);
     });
   });
+
+  group('NodeManager', () {
+    final NodeManager nm = NodeManager();
+
+    test('increaseNodeErrors should increase the error count of a node', () {
+      const Node node = Node(url: 'node a');
+
+      nm.addNode(NodeType.gva, node, notify: false);
+      nm.increaseNodeErrors(NodeType.gva, node, notify: false);
+
+      final Node updatedNode =
+          nm.nodeList(NodeType.gva).firstWhere((Node n) => n.url == node.url);
+
+      expect(updatedNode.errors, 1);
+    });
+
+    test('updateNode should update the node in the list', () {
+      const Node node = Node(url: 'node b');
+
+      nm.addNode(NodeType.gva, node, notify: false);
+      const Node updatedNode = Node(url: 'node b', errors: 2);
+      nm.updateNode(NodeType.gva, updatedNode, notify: false);
+
+      final Node retrievedNode =
+          nm.nodeList(NodeType.gva).firstWhere((Node n) => n.url == node.url);
+
+      expect(retrievedNode.errors, 2);
+    });
+  });
 }

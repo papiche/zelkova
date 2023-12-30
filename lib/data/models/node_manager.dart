@@ -21,7 +21,6 @@ class NodeManager {
   final List<Node> duniterNodes = <Node>[];
   final List<Node> cesiumPlusNodes = <Node>[];
   final List<Node> gvaNodes = <Node>[];
-  static Node? currentGvaNode;
 
   void loadFromCubit(NodeListCubit cubit) {
     NodeManagerObserver.instance.cubit = cubit;
@@ -72,19 +71,21 @@ class NodeManager {
           ? cesiumPlusNodes
           : gvaNodes;
 
-  void addNode(NodeType type, Node node) {
+  void addNode(NodeType type, Node node, {bool notify = true}) {
     final List<Node> nodes = _getList(type);
-    _addNode(nodes, node);
+    _addNode(nodes, node, notify: notify);
   }
 
-  void _addNode(List<Node> nodes, Node node) {
+  void _addNode(List<Node> nodes, Node node, {bool notify = true}) {
     if (!_find(nodes, node)) {
       // Does not exists, so add it
       nodes.add(node);
-      notifyObserver();
+      if (notify) {
+        notifyObserver();
+      }
     } else {
       // it exists
-      _updateList(nodes, node);
+      _updateList(nodes, node, notify: notify);
     }
   }
 
@@ -105,26 +106,25 @@ class NodeManager {
     }
   }
 
-  void updateNode(NodeType type, Node updatedNode) {
+  void updateNode(NodeType type, Node updatedNode, {bool notify = true}) {
     final List<Node> nodes = _getList(type);
-    _updateList(nodes, updatedNode);
+    _updateList(nodes, updatedNode, notify: notify);
   }
 
-  void _updateList(List<Node> list, Node updatedNode) {
+  void _updateList(List<Node> list, Node updatedNode, {bool notify = true}) {
     final int index =
         list.indexWhere((Node node) => node.url == updatedNode.url);
     if (index != -1) {
-      // Maintain errors of the update node
-      final Node updateNodeWithErrors =
-          updatedNode.copyWith(errors: list[index].errors);
-      list.replaceRange(index, index + 1, <Node>[updateNodeWithErrors]);
+      list.replaceRange(index, index + 1, <Node>[updatedNode]);
     }
-    notifyObserver();
+    if (notify) {
+      notifyObserver();
+    }
   }
 
-  void increaseNodeErrors(NodeType type, Node node) {
+  void increaseNodeErrors(NodeType type, Node node, {bool notify = true}) {
     logger('Increasing node errors of ${node.url} (${node.errors})');
-    updateNode(type, node.copyWith(errors: node.errors + 1));
+    updateNode(type, node.copyWith(errors: node.errors + 1), notify: notify);
   }
 
   void cleanErrorStats() {
@@ -158,11 +158,11 @@ class NodeManager {
       .toList();
 
   Node? getCurrentGvaNode() {
-    return NodeManagerObserver.instance.currentGvaNode();
+    return NodeManagerObserver.instance.currentGvaNode;
   }
 
   void setCurrentGvaNode(Node node) {
-    NodeManagerObserver.instance.cubit.setCurrentGvaNode(node);
+    NodeManagerObserver.instance.setCurrentGvaNode(node);
   }
 }
 
@@ -183,5 +183,7 @@ class NodeManagerObserver {
     cubit.setGvaNodes(nodeManager.gvaNodes);
   }
 
-  Node? currentGvaNode() => cubit.currentGvaNode;
+  void setCurrentGvaNode(Node node) => cubit.setCurrentGvaNode(node);
+
+  Node? get currentGvaNode => cubit.currentGvaNode;
 }

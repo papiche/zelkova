@@ -253,6 +253,6 @@
   "please_confirm_sent_multi_desc": "¿Estás seguro/a de que quieres pagar {amount} {currency} a {people} personas?",
   "multi_pay_results": "Resultados de los pagos",
   "multi_pay_results_desc": "{success} pagos exitosos, {fail} fallidos",
-  "You can't send money to yourself.": "No puedes enviarte dinero a ti mismo/a.",
-  "others_and_someone": "{others} y {someone}"
+  "others_and_someone": "{others} y {someone}",
+  "search_multiuser_hint": "Mantén pulsado si quieres pagar a varias personas a la vez"
 }

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512.0px"
+   height="512.0px"
+   viewBox="0 0 512.0 512.0"
+   version="1.1"
+   id="SVGRoot"
+   sodipodi:docname="logo-leaf.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   inkscape:export-filename="/home/vjrj/proyectos/dev/ginkgo/assets/img/logo-leaf-512.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1709"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="px"
+     showgrid="true"
+     inkscape:zoom="1.0527344"
+     inkscape:cx="256"
+     inkscape:cy="292.09647"
+     inkscape:window-width="1637"
+     inkscape:window-height="748"
+     inkscape:window-x="282"
+     inkscape:window-y="165"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid1772" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1704" />
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="path82264-3"
+       style="fill:#aad400;stroke:none;stroke-width:3.60888"
+       d="m 227.77566,76.211314 c -20.64789,19.049164 -6.76044,47.595196 -2.04331,59.325526 7.01139,17.05402 5.62825,34.6653 13.89506,51.26838 -16.19698,-12.47447 -18.60029,-38.12867 -28.71072,-55.23812 -10.11043,-17.10944 -32.94655,-33.720157 -53.38815,-31.14583 -33.81185,4.25809 -54.81628,38.02719 -72.777498,71.80377 -17.961179,33.77672 -19.051216,72.10095 -19.079517,122.24413 3.333583,20.91342 29.021593,20.20403 45.254735,17.60376 26.70795,-2.78284 53.35947,-7.8585 80.26287,-8.12316 25.57465,0.53734 54.98147,6.28262 69.19621,30.05537 18.94028,28.41996 23.63502,63.12783 27.52649,96.25743 -3.18204,17.11809 24.44637,27.33806 17.64369,4.57038 -0.52573,-41.35737 -31.24309,-77.08688 -26.3937,-118.9493 5.44008,-26.16391 29.75349,-42.11208 52.9026,-51.48161 25.87249,-14.03006 54.41558,-21.53502 82.43923,-29.71526 24.65986,-5.63861 39.68413,-33.49835 27.5238,-56.51381 C 433.2361,158.33886 420.89882,136.81447 392.83586,111.6414 364.7728,86.468353 275.06266,42.561181 227.77566,76.211314 Z"
+       sodipodi:nodetypes="ccczazcccccccccczc"
+       inkscape:export-filename="/home/vjrj/proyectos/dev/ginkgo/assets/img/logo-leaf-512.png"
+       inkscape:export-xdpi="70"
+       inkscape:export-ydpi="70" />
+  </g>
+</svg>

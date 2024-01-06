@@ -170,7 +170,7 @@ void main() async {
           ),
         ));
       });
-  if (kReleaseMode) {
+  if (inDevelopment) {
     // Only use sentry in production
     await SentryFlutter.init((
       SentryFlutterOptions options,

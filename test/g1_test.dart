@@ -252,6 +252,7 @@ void main() {
   });
 
   final List<List<String>> testData = <List<String>>[
+    <String>['EniaswqLCeWRJfz39VJRQwC6QDbAhkRHV9tn2fjhcrnc', '5i1'],
     <String>['BrgsSYK3xUzDyztGBHmxq69gfNxBfe2UKpxG21oZUBr5', 'Anr'],
     <String>['6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH', 'HCT'],
     <String>['78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8', '4VT'],
@@ -265,6 +266,13 @@ void main() {
       expect(getFullPubKey('${data[0]!}:${data[1]!}'),
           equals('${data[0]!}:${data[1]!}'));
       expect(getFullPubKey(data[0]!), equals('${data[0]!}:${data[1]!}'));
+    });
+
+    test('Parse scanned qr is not null', () {
+      final String pubKey = '${data[0]}:${data[1]}';
+      expect(validateKey(data[0]!), true);
+      expect(validateKey(pubKey), true);
+      expect(parseScannedUri(pubKey), isNotNull);
     });
   }
   group('Multiple parse of keys', () {
@@ -341,7 +349,7 @@ void main() {
       8LPPfQvbQoMMBMtz2ukZhUWLijq8YbTrCn4QZzy1SVjy:BX8
       4T8CWT4X1dp28urHowHEt4YzRsgvrpdevAbsJbMuqzmU:6wS
       5CvpNKRjpL6ywK4yLomYYryB1B4dceR8YcADzN6WvHkf:BHL
-      6BMDEGNB5tzkMmj34h2NsAZN1tzmLM1ZU8M8p4TuSj5Z:hwK      
+      6BMDEGNB5tzkMmj34h2NsAZN1tzmLM1ZU8M8p4TuSj5Z:hwK
       cDkGNDXpZBSsSzYWraB3VeYpqswXDcUMnQCYFxddfXC:B5F
       3fDryMzjSAx9mskjK21VJMWj5AQNnbrmkBWyXwzbd9Ja:AgQ
       51dUkT4Jv8RhQJJEvMVYbpYQJpBFNbDTvwpxZqPaPjj1:2Xw

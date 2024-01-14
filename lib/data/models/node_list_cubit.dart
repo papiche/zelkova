@@ -25,6 +25,10 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
     emit(state.copyWith(duniterNodes: nodes));
   }
 
+  void setDuniterIndexerNodes(List<Node> nodes) {
+    emit(state.copyWith(duniterIndexerNodes: nodes));
+  }
+
   void setCesiumPlusNodes(List<Node> nodes) {
     emit(state.copyWith(cesiumPlusNodes: nodes));
   }
@@ -33,11 +37,19 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
     emit(state.copyWith(gvaNodes: nodes));
   }
 
+  void setEndpointNodes(List<Node> nodes) {
+    emit(state.copyWith(endpointNodes: nodes));
+  }
+
   List<Node> get duniterNodes => state.duniterNodes;
 
   List<Node> get cesiumPlusNodes => state.cesiumPlusNodes;
 
   List<Node> get gvaNodes => state.gvaNodes;
+
+  List<Node> get endpointNodes => state.endpointNodes;
+
+  List<Node> get duniterIndexerNodes => state.duniterIndexerNodes;
 
   @override
   NodeListState? fromJson(Map<String, dynamic> json) =>
@@ -53,6 +65,8 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
         gvaNodes: state.gvaNodes,
         duniterNodes: state.duniterNodes,
         cesiumPlusNodes: state.cesiumPlusNodes,
+        endpointNodes: state.endpointNodes,
+        duniterIndexerNodes: state.duniterIndexerNodes,
         isLoading: state.isLoading));
   }
 }

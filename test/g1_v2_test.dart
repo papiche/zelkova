@@ -26,4 +26,20 @@ void main() {
       }
     });
   });
+
+  test('v1PubKeyToV2', () {
+    final List<List<String>> keyPairs = <List<String>>[
+      <String>[
+        '6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH',
+        '5DpRqhjEof2WMFoAYTAqqoQzyBH9zRRmAbBZGQm9uZSzNeY6'
+      ],
+    ];
+
+    for (final List<String> keyPair in keyPairs) {
+      final String v1Key = keyPair[0];
+      final String expectedV2Key = keyPair[1];
+      expect(addressFromV1Pubkey(v1Key), equals(expectedV2Key));
+      expect(isValidV2Address(expectedV2Key), true);
+    }
+  });
 }

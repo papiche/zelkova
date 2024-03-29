@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:l10n_esperanto/l10n_esperanto.dart';
 import 'package:lehttp_overrides/lehttp_overrides.dart';
@@ -45,6 +44,7 @@ import 'data/models/payment_cubit.dart';
 import 'data/models/theme_cubit.dart';
 import 'data/models/transaction_cubit_remove.dart';
 import 'data/models/utxo_cubit.dart';
+import 'env.dart';
 import 'g1/api.dart';
 import 'g1/g1_helper.dart';
 import 'shared_prefs_helper.dart';
@@ -74,12 +74,6 @@ void main() async {
   if (!kIsWeb && Platform.isAndroid) {
     await FlutterDisplayMode.setHighRefreshRate();
   }
-
-  // .env
-  await dotenv.load(
-      fileName: kReleaseMode
-          ? 'assets/env.production.txt'
-          : 'assets/.env.development');
 
   final SharedPreferencesHelper shared = SharedPreferencesHelper();
   await shared.init();
@@ -202,7 +196,7 @@ void main() async {
       //  return event;
       //};
 
-      options.dsn = "${dotenv.env['SENTRY_DSN']}";
+      options.dsn = Env.sentryDsn;
       // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
       // We recommend adjusting this value in production.
       // options.tracesSampleRate = 1.0;
@@ -416,6 +410,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
 
     if (inDevelopment) {
       // Try to test auto-recover from empty node-list;
+      NodeManager().endpointNodes.clear();
       NodeManager().gvaNodes.clear();
       NodeManager().duniterNodes.clear();
     }

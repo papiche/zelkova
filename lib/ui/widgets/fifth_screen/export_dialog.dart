@@ -128,7 +128,7 @@ class _ExportDialogState extends State<ExportDialog> {
         } else {
           saveFile(bytes);
         }
-        if (!mounted) {
+        if (!context.mounted) {
           return;
         }
         context.replaceSnackbar(
@@ -139,7 +139,7 @@ class _ExportDialogState extends State<ExportDialog> {
         );
         break;
       case ExportType.share:
-        if (!mounted) {
+        if (!context.mounted) {
           return;
         }
         shareExport(context, fileJson);

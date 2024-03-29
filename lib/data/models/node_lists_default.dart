@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import '../../env.dart';
 import 'node.dart';
+import 'node_type.dart';
 
 List<Node> _splitList(String list) =>
     list.split(' ').map((String url) => Node(url: url)).toList();
@@ -34,6 +35,21 @@ List<Node> defaultEndPointNodes = <Node>{
 List<Node> defaultDuniterIndexerNodes = <Node>{
   ..._readDotNodeConfig(Env.duniterIndexerNodes),
 }.toList();
+
+List<Node> defaultNodes(NodeType type) {
+  switch (type) {
+    case NodeType.duniter:
+      return defaultDuniterNodes;
+    case NodeType.cesiumPlus:
+      return defaultCesiumPlusNodes;
+    case NodeType.gva:
+      return defaultGvaNodes;
+    case NodeType.endpoint:
+      return defaultEndPointNodes;
+    case NodeType.duniterIndexer:
+      return defaultDuniterIndexerNodes;
+  }
+}
 
 // We test local duniter node in dev mode
 /* List<Node> defaultGvaNodes = kReleaseMode

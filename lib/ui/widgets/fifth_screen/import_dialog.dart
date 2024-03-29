@@ -120,7 +120,7 @@ class _ImportDialogState extends State<ImportDialog> {
                             // fetchTransactions(context);
                           } catch (e, stacktrace) {
                             logger('Error importing wallet: $e');
-                            if (!mounted) {
+                            if (!c.mounted) {
                               return;
                             }
                             c.replaceSnackbar(
@@ -134,13 +134,13 @@ class _ImportDialogState extends State<ImportDialog> {
                             return;
                           }
 
-                          if (!mounted) {
+                          if (!context.mounted) {
                             return;
                           }
                           Navigator.of(context).pop(true);
                         } catch (e, stacktrace) {
                           logger(e.toString());
-                          if (!mounted) {
+                          if (!context.mounted) {
                             return;
                           }
                           Navigator.of(context).pop(true);
@@ -197,7 +197,7 @@ class _ImportDialogState extends State<ImportDialog> {
       }
       logger('appDocDir: ${appDocDir.path}');
 
-      if (!mounted) {
+      if (!context.mounted) {
         return '';
       }
 

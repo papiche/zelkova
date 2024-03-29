@@ -4,19 +4,27 @@ import 'dart:math';
 
 import 'package:crypto/crypto.dart';
 import 'package:durt/durt.dart';
+import 'package:ferry/ferry.dart' as ferry;
 import 'package:flutter/foundation.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:polkadart/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:tuple/tuple.dart';
 import 'package:universal_html/html.dart' show window;
 
 import '../data/models/contact.dart';
 import '../data/models/node.dart';
+import '../data/models/node_lists_default.dart';
 import '../data/models/node_manager.dart';
 import '../data/models/node_type.dart';
 import '../data/models/utxo.dart';
+import '../env.dart';
+import '../graphql/__generated__/duniter-custom-queries.data.gql.dart';
+import '../graphql/__generated__/duniter-custom-queries.req.gql.dart';
+import '../graphql/__generated__/duniter-custom-queries.var.gql.dart';
+import '../graphql/__generated__/duniter-indexer.schema.gql.dart';
+import '../graphql/duniter_indexer_client.dart';
 import '../shared_prefs_helper.dart';
 import '../ui/logger.dart';
 import '../ui/ui_helpers.dart';
@@ -28,7 +36,7 @@ import 'no_nodes_exception.dart';
 // https://g1.duniter.org/tx/history/6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH
 
 // use g1-test or g1 for production (fallback to g1)
-final String currencyDotEnv = "${dotenv.env['CURRENCY']}";
+const String currencyDotEnv = Env.currency;
 final String currency = currencyDotEnv.isEmpty ? 'g1' : currencyDotEnv;
 
 Future<String> getTxHistory(String publicKey) async {
@@ -87,7 +95,7 @@ Future<Contact> getProfile(String pubKeyRaw,
     if (!onlyCPlusProfile) {
       // This penalize the gva rate limit
       // final String? nick = await gvaNick(pubKey);
-      final List<Contact> wotList = await searchWot(pubKey);
+      final List<Contact> wotList = await searchWotV2(pubKey);
       if (wotList.isNotEmpty) {
         final Contact c = wotList[0];
         c.copyWith(nick: c.nick);
@@ -111,7 +119,7 @@ Not found sample:
 "found": false
 }
  */
-Future<List<Contact>> searchWot(String initialSearchTerm) async {
+Future<List<Contact>> searchWotV1(String initialSearchTerm) async {
   final String searchTerm = normalizeQuery(initialSearchTerm);
   final Response response = (await requestDuniterWithRetry(
           '/wot/lookup/$searchTerm',
@@ -141,26 +149,32 @@ Future<List<Contact>> searchWot(String initialSearchTerm) async {
   return contacts;
 }
 
-Future<Contact> getWot(Contact contact) async {
-  final Response response = (await requestDuniterWithRetry(
-          '/wot/lookup/${contact.pubKey}',
-          retryWith404: false))
-      .item2;
-  // Will be better to analyze the 404 response (to detect faulty node)
-  if (response.statusCode == HttpStatus.ok) {
-    final Map<String, dynamic> data =
-        json.decode(response.body) as Map<String, dynamic>;
-    final List<dynamic> results = data['results'] as List<dynamic>;
-    if (results.isNotEmpty) {
-      final List<dynamic> uids =
-          (results[0] as Map<String, dynamic>)['uids'] as List<dynamic>;
-      if (uids.isNotEmpty) {
-        // ignore: avoid_dynamic_calls
-        return contact.copyWith(nick: uids[0]!['uid'] as String);
+Future<List<Contact>> searchWotV2(String namePattern) async {
+  final List<Contact> contacts = <Contact>[];
+  final GAccountsByNameOrPkReq req = GAccountsByNameOrPkReq(
+      (GAccountsByNameOrPkReqBuilder b) => b..vars.pattern = namePattern);
+  final ferry.Client client = await initDuniterIndexerClient(
+      _getBestNodes(NodeType.duniterIndexer).first.url);
+
+  final ferry
+      .OperationResponse<GAccountsByNameOrPkData, GAccountsByNameOrPkVars>
+      response = await client.request(req).first;
+
+  if (response.hasErrors) {
+    loggerDev('Error: ${response.linkException?.originalException}');
+  } else {
+    final GAccountsByNameOrPkData? accounts = response.data;
+    for (final GAccountsByNameOrPkData_account account in accounts!.account) {
+      final String? pubkey = account.identity?.account?.identity?.pubkey;
+      if (pubkey == null) {
+        loggerDev('ERROR: Pubkey is null');
+      } else {
+        contacts.add(Contact(
+            nick: account.identity?.account?.identity?.name, pubKey: pubkey));
       }
     }
   }
-  return contact;
+  return contacts;
 }
 
 @Deprecated('use getProfile')
@@ -195,7 +209,12 @@ Future<Uint8List> getAvatar(String pubKey) async {
 }
 
 Future<void> fetchNodesIfNotReady() async {
-  for (final NodeType type in <NodeType>[NodeType.gva, NodeType.duniter]) {
+  for (final NodeType type in <NodeType>[
+    NodeType.gva,
+    NodeType.duniter,
+    NodeType.endpoint,
+    NodeType.duniterIndexer
+  ]) {
     if (NodeManager().nodesWorking(type) < 3) {
       await fetchNodes(type, true);
     }
@@ -209,6 +228,12 @@ Future<void> fetchNodes(NodeType type, bool force) async {
     } else {
       if (type == NodeType.cesiumPlus) {
         _fetchCesiumPlusNodes(force: force);
+      }
+      if (type == NodeType.endpoint) {
+        _fetchEndPointNodes(force: force);
+      }
+      if (type == NodeType.duniterIndexer) {
+        _fetchDuniterIndexerNodes(force: force);
       } else {
         _fetchGvaNodes(force: force);
       }
@@ -268,6 +293,36 @@ Future<void> _fetchGvaNodes({bool force = false}) async {
     logger('Fetching gva nodes, we have ${NodeManager().nodesWorking(type)}');
   }
   final List<Node> nodes = await _fetchDuniterNodesFromPeers(type);
+  NodeManager().updateNodes(type, nodes);
+  NodeManager().loading = false;
+}
+
+Future<void> _fetchEndPointNodes({bool force = false}) async {
+  NodeManager().loading = true;
+  const NodeType type = NodeType.endpoint;
+  if (force) {
+    NodeManager().updateNodes(type, defaultEndPointNodes);
+    logger('Fetching endPoint nodes forced');
+  } else {
+    logger(
+        'Fetching endPoint nodes, we have ${NodeManager().nodesWorking(type)}');
+  }
+  final List<Node> nodes = await _fetchNodes(type);
+  NodeManager().updateNodes(type, nodes);
+  NodeManager().loading = false;
+}
+
+Future<void> _fetchDuniterIndexerNodes({bool force = false}) async {
+  NodeManager().loading = true;
+  const NodeType type = NodeType.duniterIndexer;
+  if (force) {
+    NodeManager().updateNodes(type, defaultDuniterIndexerNodes);
+    logger('Fetching duniter indexer nodes forced');
+  } else {
+    logger(
+        'Fetching duniter indexer nodes, we have ${NodeManager().nodesWorking(type)}');
+  }
+  final List<Node> nodes = await _fetchNodes(type);
   NodeManager().updateNodes(type, nodes);
   NodeManager().loading = false;
 }
@@ -457,6 +512,44 @@ Future<NodeCheck> _pingNode(String node, NodeType type) async {
       }
       stopwatch.stop();
       latency = stopwatch.elapsed;
+    } else if (type == NodeType.endpoint) {
+      try {
+        final Provider polkadot = Provider(Uri.parse(node));
+        // From:
+        // https://github.com/leonardocustodio/polkadart/blob/main/examples/bin/extrinsic_demo.dart
+        final RpcResponse<dynamic> block =
+            await polkadot.send('chain_getBlock', <dynamic>[]);
+        currentBlock = int.parse(
+            (((block.result as Map<String, dynamic>)['block']
+                    as Map<String, dynamic>)['header']
+                as Map<String, dynamic>)['number'] as String);
+        stopwatch.stop();
+        latency = stopwatch.elapsed;
+        await polkadot.disconnect();
+      } catch (e) {
+        loggerDev('Cannot parse node/stats $e');
+        latency = wrongNodeDuration;
+      }
+    } else if (type == NodeType.duniterIndexer) {
+      final ferry.Client client = await initDuniterIndexerClient(node);
+      final ferry.OperationResponse<GLastIndexedBlockNumberData,
+              GLastIndexedBlockNumberVars> response =
+          await client.request(GLastIndexedBlockNumberReq()).first;
+      if (response.hasErrors) {
+        latency = wrongNodeDuration;
+        loggerDev('HAS ERRORS');
+        loggerDev(response.linkException!.originalException);
+      } else {
+        final Gjsonb? lastIndexedBlockNumber =
+            response.data?.parameters_by_pk!.value;
+        loggerDev(lastIndexedBlockNumber?.value);
+        if (lastIndexedBlockNumber?.value is num) {
+          currentBlock = (lastIndexedBlockNumber!.value as num).toInt();
+          latency = stopwatch.elapsed;
+        } else {
+          latency = wrongNodeDuration;
+        }
+      }
     } else {
       // Test GVA with a query
       final Gva gva = Gva(node: proxyfyNode(node));
@@ -648,7 +741,7 @@ Future<PayResult> payWithGVA(
 }
 
 Tuple2<String, Node> getGvaNode() {
-  final List<Node> nodes = _getBestGvaNodes();
+  final List<Node> nodes = _getBestNodes(NodeType.gva);
   if (nodes.isNotEmpty) {
     final Node? currentGvaNode = NodeManager().getCurrentGvaNode();
     final Node node = currentGvaNode ?? nodes.first;
@@ -700,7 +793,7 @@ Future<Tuple2<Map<String, dynamic>?, Node>> getCurrentBlockGVA() async {
 
 Future<Tuple2<T?, Node>> gvaFunctionWrapper<T>(
     Future<T?> Function(Gva) specificFunction) async {
-  final List<Node> nodes = _getBestGvaNodes();
+  final List<Node> nodes = _getBestNodes(NodeType.gva);
 
   // Try first the current GVA node
   final Node? currentGvaNode = NodeManager().getCurrentGvaNode();
@@ -731,8 +824,8 @@ Future<Tuple2<T?, Node>> gvaFunctionWrapper<T>(
   throw Exception('Sorry: I cannot find a working gva node');
 }
 
-List<Node> _getBestGvaNodes() {
-  final List<Node> fnodes = NodeManager().nodesWorkingList(NodeType.gva);
+List<Node> _getBestNodes(NodeType type) {
+  final List<Node> fnodes = NodeManager().nodesWorkingList(type);
   final int maxCurrentBlock = fnodes.fold(
       0,
       (int max, Node node) =>
@@ -749,7 +842,7 @@ List<Node> _getBestGvaNodes() {
     }
   });
   if (nodesAtMaxBlock.isEmpty) {
-    nodesAtMaxBlock.addAll(defaultGvaNodes);
+    nodesAtMaxBlock.addAll(defaultNodes(type));
   }
   return nodesAtMaxBlock;
 }

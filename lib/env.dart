@@ -29,4 +29,6 @@ abstract class Env {
   // v2
   @EnviedField(varName: 'ENDPOINTS')
   static const String endPoints = _Env.endPoints;
+  @EnviedField(varName: 'DUNITER_INDEXER_NODES')
+  static const String duniterIndexerNodes = _Env.duniterIndexerNodes;
 }

@@ -19,8 +19,8 @@ final EasyLogger logger = EasyLogger(
   ],
 );
 
-void loggerDev(String message) {
-  if (inDevelopment) {
+void loggerDev(Object? message) {
+  if (inDevelopment && message != null) {
     logger(message);
   }
 }

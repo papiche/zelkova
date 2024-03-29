@@ -60,7 +60,7 @@ class NodeListPage extends StatelessWidget {
                     const DebugNodeHeader(type: NodeType.duniterIndexer),
                     if (duniterIndexerNodes.isNotEmpty)
                       NodeListWidget(
-                          nodes: duniterNodes,
+                          nodes: duniterIndexerNodes,
                           type: NodeType.duniterIndexer,
                           currentBlock: duniterIndexerNodes[0].currentBlock),
                     const DebugNodeHeader(type: NodeType.gva),

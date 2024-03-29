@@ -103,7 +103,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
     if (isConnected) {
       if (_searchTerm.length >= 8) {
         // Only search wot if it's a long key
-        final List<Contact> wotResults = await searchWot(_searchTerm);
+        final List<Contact> wotResults = await searchWotV2(_searchTerm);
         // ignore: prefer_foreach
         for (final Contact c in wotResults) {
           ContactsCache().addContact(c);
@@ -172,7 +172,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
                           nfcUrl != '-1') {
                         final bool back =
                             await _onKeyScanned(nfcUrl, paymentCubit);
-                        if (!mounted) {
+                        if (!context.mounted) {
                           return;
                         }
                         if (back) {
@@ -191,7 +191,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
                           scannedKey != '-1') {
                         final bool back =
                             await _onKeyScanned(scannedKey, paymentCubit);
-                        if (!mounted) {
+                        if (!context.mounted) {
                           return;
                         }
                         if (back) {

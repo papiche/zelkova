@@ -1,0 +1,38 @@
+
+query AccountsByPk ($address: String!) {
+  account_by_pk(pubkey: $address) {
+    identity {
+      name
+    }
+    pubkey
+  }
+}
+
+query SearchIdentity ($name: String!) {
+  search_identity(args: {name: $name}) {
+    pubkey
+    name
+  }
+}
+
+query LastIndexedBlockNumber {
+  parameters_by_pk(key: "last_indexed_block_number") {
+    value
+  }
+}
+
+# {
+# "pattern": "%ana%"
+# }
+query AccountsByNameOrPk($pattern: String!) {
+  account(order_by: {identity: {name: asc}}, where: {_or: [{identity: {name: {_ilike: $pattern}}}, {pubkey: {_ilike: $pattern}}]}) {
+    identity {
+      account {
+        identity {
+          name
+          pubkey
+        }
+      }
+    }
+  }
+}

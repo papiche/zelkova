@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_html/html.dart' as html;
 
-import '../config/theme.dart';
 import '../main.dart';
 import 'ui_helpers.dart';
 
@@ -74,11 +73,13 @@ class NotificationController {
                   userAuthorized = true;
                   Navigator.of(ctx).pop();
                 },
-                child: Text(tr('allow_notifications_btn'),
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge
-                        ?.copyWith(color: lightColorScheme.primary)),
+                child: Text(
+                  tr('allow_notifications_btn'),
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(color: const Color(0xff526600)),
+                ),
               ),
             ],
           );

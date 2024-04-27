@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:json_theme/json_theme.dart';
 import 'package:l10n_esperanto/l10n_esperanto.dart';
 import 'package:lehttp_overrides/lehttp_overrides.dart';
 import 'package:once/once.dart';
@@ -26,7 +28,6 @@ import 'package:uni_links/uni_links.dart';
 import 'package:workmanager/workmanager.dart';
 
 import 'app_bloc_observer.dart';
-import 'config/theme.dart';
 import 'custom_feedback_localization.dart';
 import 'data/eo_timeago_support.dart';
 import 'data/eu_timeago_support.dart';
@@ -61,6 +62,16 @@ const String fetchWalletsTransactionsTask =
 
 void main() async {
   await NotificationController.initializeLocalNotifications();
+
+  final String themeDarkStr =
+      await rootBundle.loadString('assets/appainter_theme_dark.json');
+  final dynamic themeDarkJson = jsonDecode(themeDarkStr);
+  final ThemeData themeDark = ThemeDecoder.decodeThemeData(themeDarkJson)!;
+
+  final String themeLightStr =
+      await rootBundle.loadString('assets/appainter_theme_light.json');
+  final dynamic themeLightJson = jsonDecode(themeLightStr);
+  final ThemeData themeLight = ThemeDecoder.decodeThemeData(themeLightJson)!;
 
   // To resolve Let's Encrypt SSL certificate problems with Android 7.1.1 and below
   if (!kIsWeb && Platform.isAndroid) {
@@ -115,54 +126,57 @@ void main() async {
         DeviceOrientation.portraitDown
       ]).then((_) {
         runApp(ChangeNotifierProvider<SharedPreferencesHelper>(
-          create: (BuildContext context) => SharedPreferencesHelper(),
-          child: EasyLocalization(
-            path: 'assets/translations',
-            supportedLocales: const <Locale>[
-              // Asturian is not supported in flutter
-              // More info: https://docs.flutter.dev/development/accessibility-and-localization/internationalization#adding-support-for-a-new-language
-              // Meantime we use this workaround:
-              // https://github.com/aissat/easy_localization/issues/220#issuecomment-846035493
-              Locale('es', 'AST'),
-              Locale('ca'),
-              Locale('de'),
-              Locale('en'),
-              Locale('eo'),
-              Locale('es'),
-              Locale('eu'),
-              Locale('fr'),
-              Locale('gl'),
-              Locale('it'),
-              Locale('nl'),
-              Locale('pt'),
-            ],
-            fallbackLocale: const Locale('en'),
-            useFallbackTranslations: true,
-            child: MultiBlocProvider(providers: <BlocProvider<dynamic>>[
-              BlocProvider<BottomNavCubit>(
-                  create: (BuildContext context) => BottomNavCubit()),
-              BlocProvider<AppCubit>(
-                  create: (BuildContext context) => AppCubit()),
-              BlocProvider<PaymentCubit>(
-                  create: (BuildContext context) => PaymentCubit()),
-              BlocProvider<NodeListCubit>(
-                  create: (BuildContext context) => NodeListCubit()),
-              BlocProvider<ContactsCubit>(
-                  create: (BuildContext context) => ContactsCubit()),
-              BlocProvider<UtxoCubit>(
-                  create: (BuildContext context) => UtxoCubit()),
-              // TODO(vjrj): Remove when clean the state of this after upgrades
-              BlocProvider<TransactionCubitRemove>(
-                  create: (BuildContext context) => TransactionCubitRemove()),
-              BlocProvider<MultiWalletTransactionCubit>(
-                  create: (BuildContext context) =>
-                      MultiWalletTransactionCubit()),
-              BlocProvider<ThemeCubit>(
-                  create: (BuildContext context) => ThemeCubit()),
-              // Add other BlocProviders here if needed
-            ], child: const GinkgoApp()),
-          ),
-        ));
+            create: (BuildContext context) => SharedPreferencesHelper(),
+            child: EasyLocalization(
+              path: 'assets/translations',
+              supportedLocales: const <Locale>[
+                // Asturian is not supported in flutter
+                // More info: https://docs.flutter.dev/development/accessibility-and-localization/internationalization#adding-support-for-a-new-language
+                // Meantime we use this workaround:
+                // https://github.com/aissat/easy_localization/issues/220#issuecomment-846035493
+                Locale('es', 'AST'),
+                Locale('ca'),
+                Locale('de'),
+                Locale('en'),
+                Locale('eo'),
+                Locale('es'),
+                Locale('eu'),
+                Locale('fr'),
+                Locale('gl'),
+                Locale('it'),
+                Locale('nl'),
+                Locale('pt'),
+              ],
+              fallbackLocale: const Locale('en'),
+              useFallbackTranslations: true,
+              child: MultiBlocProvider(
+                  providers: <BlocProvider<dynamic>>[
+                    BlocProvider<BottomNavCubit>(
+                        create: (BuildContext context) => BottomNavCubit()),
+                    BlocProvider<AppCubit>(
+                        create: (BuildContext context) => AppCubit()),
+                    BlocProvider<PaymentCubit>(
+                        create: (BuildContext context) => PaymentCubit()),
+                    BlocProvider<NodeListCubit>(
+                        create: (BuildContext context) => NodeListCubit()),
+                    BlocProvider<ContactsCubit>(
+                        create: (BuildContext context) => ContactsCubit()),
+                    BlocProvider<UtxoCubit>(
+                        create: (BuildContext context) => UtxoCubit()),
+                    // TODO(vjrj): Remove when clean the state of this after upgrades
+                    BlocProvider<TransactionCubitRemove>(
+                        create: (BuildContext context) =>
+                            TransactionCubitRemove()),
+                    BlocProvider<MultiWalletTransactionCubit>(
+                        create: (BuildContext context) =>
+                            MultiWalletTransactionCubit()),
+                    BlocProvider<ThemeCubit>(
+                        create: (BuildContext context) => ThemeCubit()),
+                    // Add other BlocProviders here if needed
+                  ],
+                  child:
+                      GinkgoApp(themeDark: themeDark, themeLight: themeLight)),
+            )));
       });
   if (inDevelopment) {
     // Only use sentry in production
@@ -319,11 +333,15 @@ PageViewModel createPageViewModel(
 }
 
 class GinkgoApp extends StatefulWidget {
-  const GinkgoApp({super.key});
+  const GinkgoApp(
+      {super.key, required this.themeLight, required this.themeDark});
 
   // The navigator key is necessary to navigate using static methods
   static final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey<NavigatorState>();
+
+  final ThemeData themeDark;
+  final ThemeData themeLight;
 
   @override
   State<GinkgoApp> createState() => _GinkgoAppState();
@@ -506,11 +524,8 @@ class _GinkgoAppState extends State<GinkgoApp> {
               child: MaterialApp(
                 /// Localization is not available for the title.
                 title: 'Ğ1nkgo',
-                theme: ThemeData(
-                    useMaterial3: true, colorScheme: lightColorScheme),
-                darkTheme:
-                    ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
-
+                theme: widget.themeLight,
+                darkTheme: widget.themeDark,
                 navigatorKey: GinkgoApp.navigatorKey,
                 scaffoldMessengerKey: globalMessengerKey,
 

@@ -1021,6 +1021,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  json_schema:
+    dependency: transitive
+    description:
+      name: json_schema
+      sha256: f1bcf81647c347f53281dca9c8ea3e2b7b4d0eee5b4d1e4cee3173a5c162f358
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.1.7"
   json_schema2:
     dependency: transitive
     description:
@@ -1037,6 +1045,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.7.1"
+  json_theme:
+    dependency: "direct main"
+    description:
+      name: json_theme
+      sha256: "40d524c455287ac019f5d1c370ddd76c5d61c6390b67de149ee0bdb33912c4a5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.0.0"
   jsqr:
     dependency: "direct main"
     description:
@@ -1469,6 +1485,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.1+11"
+  rfc_6901:
+    dependency: transitive
+    description:
+      name: rfc_6901
+      sha256: df1bbfa3d023009598f19636d6114c6ac1e0b7bb7bf6a260f0e6e6ce91416820
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
   ristretto255:
     dependency: transitive
     description:

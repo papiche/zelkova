@@ -3,7 +3,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../config/theme.dart';
 import '../main.dart';
 import 'logger.dart';
 import 'ui_helpers.dart';
@@ -34,8 +33,8 @@ class NotificationController {
               groupAlertBehavior: GroupAlertBehavior.Children,
               importance: NotificationImportance.High,
               defaultPrivacy: NotificationPrivacy.Private,
-              defaultColor: lightColorScheme.primary,
-              ledColor: lightColorScheme.primary)
+              defaultColor: const Color(0xff526600),
+              ledColor: Colors.white)
         ],
         debug: true);
 
@@ -127,7 +126,7 @@ class NotificationController {
                     style: Theme.of(context)
                         .textTheme
                         .titleLarge
-                        ?.copyWith(color: lightColorScheme.primary)),
+                        ?.copyWith(color: Theme.of(context).primaryColor)),
               ),
             ],
           );

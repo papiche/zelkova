@@ -2,7 +2,7 @@ import '__generated__/duniter-indexer.schema.gql.dart';
 
 final Gidentity_bool_expBuilder identityBoolExp = Gidentity_bool_exp(
     (Gidentity_bool_expBuilder b) => b.name..G_similar = '%Ana%').toBuilder();
-//kk
+
 final Gaccount_bool_exp accountBoolExp = Gaccount_bool_exp(
     (Gaccount_bool_expBuilder b) => b..identity = identityBoolExp);
 

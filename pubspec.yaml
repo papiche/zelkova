@@ -103,6 +103,7 @@ dependencies:
   polkadart_keyring: ^0.3.0
   ferry: ^0.11.3-dev.0+1
   gql_http_link: ^0.4.5
+  substrate_bip39: ^0.2.0
 
 dev_dependencies:
   flutter_test:

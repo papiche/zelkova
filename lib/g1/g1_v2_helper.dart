@@ -42,6 +42,13 @@ String addressFromV1Pubkey(String pubkey) {
   return address;
 }
 
+String v1pubkeyFromAddress(String address) {
+  final Keyring keyring = Keyring();
+  final Uint8List publicKeyBytes = keyring.decodeAddress(address);
+  final String publicKey = Base58Encode(publicKeyBytes);
+  return publicKey;
+}
+
 Keyring keyringFromV1Seed(Uint8List seed) {
   final Keyring keyring = Keyring();
   final KeyPair keypair = KeyPair.ed25519.fromSeed(seed);
@@ -79,9 +86,10 @@ class AuthData {
 
 Future<KeyPair> createPair(AuthData data, Keyring keyring) async {
   if (data.v1 != null) {
-    final Uint8List passwordU8a =
-        Uint8List.fromList(data.v1!.password.codeUnits);
-    final Uint8List saltU8a = Uint8List.fromList(data.v1!.salt.codeUnits);
+    final List<int> password = data.v1!.password.codeUnits;
+    final String salt = data.v1!.salt;
+    final Uint8List passwordU8a = Uint8List.fromList(password);
+    final Uint8List saltU8a = Uint8List.fromList(salt.codeUnits);
     final Scrypt scrypt = Scrypt()
       ..init(ScryptParameters(4096, 16, 1, 32, saltU8a));
     final Uint8List seedBytes = scrypt.process(passwordU8a);
@@ -98,11 +106,34 @@ Future<KeyPair> createPair(AuthData data, Keyring keyring) async {
   }
 }
 
+// From durt
 String mnemonicGenerate({String lang = 'english'}) {
+  final List<String> supportedLanguages = <String>[
+    'english',
+    'french',
+    'italian',
+    'spanish'
+  ];
+  if (!supportedLanguages.contains(lang)) {
+    throw ArgumentError('Unsupported language');
+  }
   final String mnemonic = generateMnemonic(lang: lang);
   return mnemonic;
 }
 
+// From:
+// https://polkadot.js.org/docs/keyring/start/create
+Future<KeyPair> addPair() async {
+  final String mnemonic = mnemonicGenerate();
+  final Keyring keyring = Keyring();
+  // create & add the pair to the keyring with the type
+  // TODOAdd some additional metadata as in polkadot-js
+
+  final KeyPair pair =
+      await keyring.fromUri(mnemonic, keyPairType: KeyPairType.sr25519);
+
+  return pair;
+}
 /*
 Future<Map<String, dynamic>> createAccount(
     AuthData data, Keyring keyring) async {

@@ -37,7 +37,7 @@ class CardTerminalScreen extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: <Color>[
-              Colors.blueGrey,
+              Colors.white54,
               Colors.white,
             ],
           ),
@@ -90,7 +90,6 @@ class CardTerminalScreen extends StatelessWidget {
                                 color: Colors.black.withOpacity(0.4),
                               ),
                             ],
-                            //softWrap: true, // Agrega esta línea para permitir que el texto se envuelva a la siguiente línea
                           ),
                         ),
                       ),

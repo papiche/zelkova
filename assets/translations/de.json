@@ -249,7 +249,9 @@
   "please_confirm_delete": "Sind Sie sicher?",
   "please_confirm_delete_desc": "Sind Sie sicher, dass Sie diese Brieftasche löschen wollen?",
   "please_confirm_delete_desc_g1nkgo": "Sind Sie sicher, dass Sie diese Brieftasche löschen wollen? Wenn Sie das tun und keine Sicherungskopie haben, verlieren Sie den Zugriff auf die Brieftasche und das darin gespeicherte Geld.",
-  "please_confirm_sent_multi_desc": "Sind Sie sicher, dass Sie {amount} {currency} an alle zahlen wollen?",
+  "please_confirm_sent_multi_desc": "Sind Sie sicher, dass Sie {amount} {currency} an {people} Leute zahlen wollen?",
   "multi_pay_results": "Ergebnisse der Zahlungen",
-  "multi_pay_results_desc": "{success} Erfolg, {fail} fehlgeschlagen"
+  "multi_pay_results_desc": "{success} Erfolg, {fail} fehlgeschlagen",
+  "Insufficient balance in your wallet": "Unzureichendes Guthaben in Ihrer Brieftasche",
+  "others_and_someone": "{others} und {someone}"
 }

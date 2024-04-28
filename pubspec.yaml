@@ -105,6 +105,8 @@ dependencies:
   gql_http_link: ^0.4.5
   substrate_bip39: ^0.2.0
   json_theme: ^6.0.0
+  pointycastle: ^3.9.0
+  bip39_multi_nullsafety: ^1.0.7
 
 dev_dependencies:
   flutter_test:

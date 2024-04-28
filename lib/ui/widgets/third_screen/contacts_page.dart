@@ -14,6 +14,7 @@ import '../../contacts_cache.dart';
 import '../../ui_helpers.dart';
 import '../bottom_widget.dart';
 import 'contact_form_dialog.dart';
+import 'contact_menu.dart';
 
 class ContactsPage extends StatefulWidget {
   const ContactsPage({super.key});
@@ -126,7 +127,7 @@ class _ContactsPageState extends State<ContactsPage> {
                       // A SlidableAction can have an icon and/or a label.
                       SlidableAction(
                         onPressed: (BuildContext c) {
-                          context.read<ContactsCubit>().removeContact(contact);
+                          onDelete(context, contact);
                         },
                         backgroundColor: deleteColor,
                         foregroundColor: Colors.white,
@@ -154,11 +155,7 @@ class _ContactsPageState extends State<ContactsPage> {
                     children: <SlidableAction>[
                       SlidableAction(
                         onPressed: (BuildContext c) {
-                          showQrDialog(
-                              context: context,
-                              publicKey: getFullPubKey(contact.pubKey),
-                              noTitle: true,
-                              feedbackText: 'some_key_copied_to_clipboard');
+                          showContactQr(context, contact);
                         },
                         backgroundColor: Theme.of(context).primaryColorDark,
                         foregroundColor: Colors.white,
@@ -195,12 +192,29 @@ class _ContactsPageState extends State<ContactsPage> {
                         content: Text(tr('long_press_to_edit')),
                       ),
                     );
-                  }));
+                  },
+                      trailing: ContactMenu(
+                          contact: contact,
+                          onSent: () => onSent(context, contact),
+                          onCopy: () => showContactQr(context, contact),
+                          onDelete: () => onDelete(context, contact))));
             },
           )),
         const BottomWidget()
       ],
     );
+  }
+
+  void onDelete(BuildContext context, Contact contact) {
+    context.read<ContactsCubit>().removeContact(contact);
+  }
+
+  void showContactQr(BuildContext context, Contact contact) {
+    showQrDialog(
+        context: context,
+        publicKey: getFullPubKey(contact.pubKey),
+        noTitle: true,
+        feedbackText: 'some_key_copied_to_clipboard');
   }
 
   void onSent(BuildContext c, Contact contact) {

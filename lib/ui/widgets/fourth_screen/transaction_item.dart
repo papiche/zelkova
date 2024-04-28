@@ -16,7 +16,9 @@ import '../../../shared_prefs_helper.dart';
 import '../../contacts_cache.dart';
 import '../../pay_helper.dart';
 import '../../ui_helpers.dart';
+import '../contacts_actions.dart';
 import '../third_screen/contact_form_dialog.dart';
+import '../third_screen/contact_menu.dart';
 
 class TransactionListItem extends StatelessWidget {
   TransactionListItem(
@@ -255,7 +257,17 @@ class TransactionListItem extends StatelessWidget {
                                   ),
                                   lineSeparator(),
                                   WidgetSpan(
-                                    child: Text(
+                                      child: ContactMenu(
+                                    contact: transaction.from,
+                                    onEdit: () => onEditContact(
+                                        context, transaction.from),
+                                    onSent: () => onSentContact(
+                                        context, transaction.from),
+                                    onCopy: () => onShowContactQr(
+                                        context, transaction.from),
+                                    onDelete: () => onDeleteContact(
+                                        context, transaction.from),
+                                    parent: Text(
                                       humanizeContact(
                                           myPubKey, transaction.from),
                                       style: const TextStyle(
@@ -263,7 +275,7 @@ class TransactionListItem extends StatelessWidget {
                                         // fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                  ),
+                                  )),
                                   lineSeparator(),
                                   WidgetSpan(
                                     child: Text(
@@ -278,6 +290,25 @@ class TransactionListItem extends StatelessWidget {
                                   ),
                                   lineSeparator(),
                                   WidgetSpan(
+                                      child: GestureDetector(
+                                    onTap: () {
+                                      if (!transaction.isToMultiple) {
+                                        final Contact to =
+                                            transaction.recipients[0];
+                                        ContactMenu(
+                                            contact: to,
+                                            onEdit: () =>
+                                                onEditContact(context, to),
+                                            onSent: () =>
+                                                onSentContact(context, to),
+                                            onCopy: () =>
+                                                onShowContactQr(context, to),
+                                            onDelete: () {
+                                              return onDeleteContact(
+                                                  context, to);
+                                            });
+                                      }
+                                    },
                                     child: Text(
                                       humanizeContacts(
                                           publicAddress: myPubKey,
@@ -287,7 +318,7 @@ class TransactionListItem extends StatelessWidget {
                                         fontSize: txFontSize,
                                       ),
                                     ),
-                                  ),
+                                  )),
                                 ],
                               ),
                             ),

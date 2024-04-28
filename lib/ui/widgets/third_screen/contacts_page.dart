@@ -4,16 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../../data/models/bottom_nav_cubit.dart';
 import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
 import '../../../data/models/contact_sort_type.dart';
-import '../../../data/models/payment_cubit.dart';
-import '../../../g1/g1_helper.dart';
-import '../../contacts_cache.dart';
 import '../../ui_helpers.dart';
 import '../bottom_widget.dart';
-import 'contact_form_dialog.dart';
+import '../contacts_actions.dart';
 import 'contact_menu.dart';
 
 class ContactsPage extends StatefulWidget {
@@ -127,7 +123,7 @@ class _ContactsPageState extends State<ContactsPage> {
                       // A SlidableAction can have an icon and/or a label.
                       SlidableAction(
                         onPressed: (BuildContext c) {
-                          onDelete(context, contact);
+                          onDeleteContact(context, contact);
                         },
                         backgroundColor: deleteColor,
                         foregroundColor: Colors.white,
@@ -155,7 +151,7 @@ class _ContactsPageState extends State<ContactsPage> {
                     children: <SlidableAction>[
                       SlidableAction(
                         onPressed: (BuildContext c) {
-                          showContactQr(context, contact);
+                          onShowContactQr(context, contact);
                         },
                         backgroundColor: Theme.of(context).primaryColorDark,
                         foregroundColor: Colors.white,
@@ -164,7 +160,7 @@ class _ContactsPageState extends State<ContactsPage> {
                       ),
                       SlidableAction(
                         onPressed: (BuildContext c) {
-                          onSent(c, contact);
+                          onSentContact(c, contact);
                         },
                         backgroundColor: Theme.of(context).primaryColor,
                         foregroundColor: Colors.white,
@@ -174,52 +170,27 @@ class _ContactsPageState extends State<ContactsPage> {
                     ],
                   ),
                   child: SlidableContactTile(contact,
-                      index: index, context: context, onLongPress: () {
-                    showDialog(
+                      index: index,
                       context: context,
-                      builder: (BuildContext context) {
-                        return ContactFormDialog(
-                            contact: contact,
-                            onSave: (Contact c) {
-                              context.read<ContactsCubit>().updateContact(c);
-                              ContactsCache().saveContact(c);
-                            });
+                      onLongPress: () => onEditContact(context, contact),
+                      onTap: () {
+/*                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(tr('long_press_to_edit')),
+                          ),
+                        ); */
                       },
-                    );
-                  }, onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(tr('long_press_to_edit')),
-                      ),
-                    );
-                  },
                       trailing: ContactMenu(
                           contact: contact,
-                          onSent: () => onSent(context, contact),
-                          onCopy: () => showContactQr(context, contact),
-                          onDelete: () => onDelete(context, contact))));
+                          onEdit: () => onEditContact(context, contact),
+                          onSent: () => onSentContact(context, contact),
+                          onCopy: () => onShowContactQr(context, contact),
+                          onDelete: () => onDeleteContact(context, contact))));
             },
           )),
         const BottomWidget()
       ],
     );
-  }
-
-  void onDelete(BuildContext context, Contact contact) {
-    context.read<ContactsCubit>().removeContact(contact);
-  }
-
-  void showContactQr(BuildContext context, Contact contact) {
-    showQrDialog(
-        context: context,
-        publicKey: getFullPubKey(contact.pubKey),
-        noTitle: true,
-        feedbackText: 'some_key_copied_to_clipboard');
-  }
-
-  void onSent(BuildContext c, Contact contact) {
-    c.read<PaymentCubit>().selectUser(contact);
-    c.read<BottomNavCubit>().updateIndex(0);
   }
 }
 

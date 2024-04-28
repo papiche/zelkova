@@ -107,6 +107,7 @@ dependencies:
   json_theme: ^6.0.0
   pointycastle: ^3.9.0
   bip39_multi_nullsafety: ^1.0.7
+  material_symbols_icons: ^4.2719.3
 
 dev_dependencies:
   flutter_test:

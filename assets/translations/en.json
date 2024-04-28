@@ -120,7 +120,6 @@
   "form_contact_name_validation_pub_key": "Please enter a valid public key",
   "form_contact_notes": "Notes",
   "form_contact_pub_key": "Public key",
-  "long_press_to_edit": "Slide to select this contact. Tap and hold to edit",
   "payment_error": "Payment error",
   "payment_error_desc": "Oops! the payment failed. More details: {error}",
   "payment_error_retry": "Oops! the payment failed. Please retry in some minutes.",
@@ -249,5 +248,6 @@
   "multi_pay_results": "Payments results",
   "multi_pay_results_desc": "{success} success, {fail} failed",
   "You can't send money to yourself.": "You can't send money to yourself.",
-  "others_and_someone": "{others} and {someone}"
+  "others_and_someone": "{others} and {someone}",
+  "account_info": "Account information"
 }

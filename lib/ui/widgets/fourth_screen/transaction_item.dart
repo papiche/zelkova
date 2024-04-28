@@ -253,7 +253,7 @@ class TransactionListItem extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  separator(),
+                                  lineSeparator(),
                                   WidgetSpan(
                                     child: Text(
                                       humanizeContact(
@@ -264,7 +264,7 @@ class TransactionListItem extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  separator(),
+                                  lineSeparator(),
                                   WidgetSpan(
                                     child: Text(
                                       tr('transaction_to').toLowerCase(),
@@ -276,7 +276,7 @@ class TransactionListItem extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  separator(),
+                                  lineSeparator(),
                                   WidgetSpan(
                                     child: Text(
                                       humanizeContacts(
@@ -299,7 +299,7 @@ class TransactionListItem extends StatelessWidget {
                   subtitle: transaction.comment == ''
                       ? null
                       : Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 0, 0, 5),
+                          padding: const EdgeInsets.fromLTRB(8, 6, 0, 5),
                           child: Text(
                               inDevelopment
                                   ? '${transaction.comment}$debugText'
@@ -356,7 +356,7 @@ class TransactionListItem extends StatelessWidget {
                 ))));
   }
 
-  WidgetSpan separator() {
+  WidgetSpan lineSeparator() {
     return const WidgetSpan(
       child: SizedBox(width: 5.0),
     );

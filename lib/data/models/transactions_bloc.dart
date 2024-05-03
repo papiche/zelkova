@@ -13,7 +13,7 @@ import 'utxo_cubit.dart';
 part 'transactions_state.dart';
 
 class TransactionsBloc {
-  TransactionsBloc() {
+  TransactionsBloc({this.isExternal = false, this.pubKey}) {
     _onPageRequest.stream
         .flatMap(_fetchTransactionsList)
         .listen(_onNewListingStateController.add)
@@ -24,6 +24,9 @@ class TransactionsBloc {
         .listen(_onNewListingStateController.add)
         .addTo(_subscriptions);
   }
+
+  final bool isExternal;
+  final String? pubKey;
 
   late AppCubit appCubit;
   late NodeListCubit nodeListCubit;
@@ -71,13 +74,6 @@ class TransactionsBloc {
     final TransactionsState lastListingState =
         _onNewListingStateController.value;
     try {
-      /*    final newItems = await RemoteApi.getCharacterList(
-        pageKey,
-        _pageSize,
-        searchTerm: _searchInputValue,
-      );
-*/
-
       final bool isConnected =
           await ConnectivityWidgetWrapperWrapper.isConnected;
       logger('isConnected: $isConnected');
@@ -85,16 +81,19 @@ class TransactionsBloc {
       if (!isConnected) {
         yield TransactionsState(
           nextPageKey: pageKey,
-          itemList: transCubit.transactions,
+          itemList: transCubit.transactions(pubKey),
         );
       } else {
         final List<Transaction> fetchedItems =
             await transCubit.fetchTransactions(nodeListCubit, appCubit,
-                cursor: pageKey, pageSize: _pageSize);
+                cursor: pageKey,
+                pageSize: _pageSize,
+                pubKey: pubKey,
+                isExternal: isExternal);
 
         final bool isLastPage = fetchedItems.length < _pageSize;
         final String? nextPageKey =
-            isLastPage ? null : transCubit.currentWalletState().endCursor;
+            isLastPage ? null : transCubit.currentWalletState(pubKey).endCursor;
 
         yield TransactionsState(
           // error: null,

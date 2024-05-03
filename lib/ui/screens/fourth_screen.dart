@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/fourth_screen/transaction_page.dart';
+import '../widgets/fourth_screen/transactions_and_balance_widget.dart';
 
 class FourthScreen extends StatefulWidget {
   const FourthScreen({super.key});

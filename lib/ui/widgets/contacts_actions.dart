@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -39,4 +40,25 @@ void onShowContactQr(BuildContext context, Contact contact) {
 void onSentContact(BuildContext c, Contact contact) {
   c.read<PaymentCubit>().selectUser(contact);
   c.read<BottomNavCubit>().updateIndex(0);
+}
+
+void addContact(
+    ContactsCubit contactsCubit, Contact newContact, BuildContext context) {
+  contactsCubit.addContact(newContact);
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(tr('contact_added')),
+    ),
+  );
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return ContactFormDialog(
+          contact: newContact,
+          onSave: (Contact c) {
+            context.read<ContactsCubit>().updateContact(c);
+            ContactsCache().saveContact(c);
+          });
+    },
+  );
 }

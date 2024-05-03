@@ -116,17 +116,23 @@ class MultiWalletTransactionCubit
     _emitState(key, newState);
   }
 
-  List<Transaction> get transactions => currentWalletState().transactions;
+  List<Transaction> transactions(String? pubKey) =>
+      currentWalletState(pubKey).transactions;
 
-  TransactionState currentWalletState() => _getStateOfWallet(_defKey(null));
+  TransactionState currentWalletState(String? pubKey) =>
+      _getStateOfWallet(_defKey(pubKey));
 
-  double get balance => currentWalletState().balance;
+  double balance([String? pubKey]) => currentWalletState(pubKey).balance;
 
-  DateTime get lastChecked => currentWalletState().lastChecked;
+  // DateTime get lastChecked => currentWalletState().lastChecked;
 
   Future<List<Transaction>> fetchTransactions(
       NodeListCubit cubit, AppCubit appCubit,
-      {int retries = 5, int? pageSize, String? cursor, String? pubKey}) async {
+      {int retries = 5,
+      int? pageSize,
+      String? cursor,
+      String? pubKey,
+      bool isExternal = false}) async {
     final bool isCurrentWallet = pubKey != null &&
         (extractPublicKey(pubKey) ==
             extractPublicKey(SharedPreferencesHelper().getPubKey()));
@@ -178,6 +184,11 @@ class MultiWalletTransactionCubit
       if (isCurrentWallet) {
         // We only reset if it's the current wallet
         resetCurrentGvaNode(newState, cubit);
+      }
+
+      // Is external, forget notifications
+      if (isExternal) {
+        return currentModifiedState.transactions;
       }
 
       logger(
@@ -425,6 +436,15 @@ class MultiWalletTransactionCubit
             currentState.copyWith(transactions: <Transaction>[]);
         _emitState(key, newState);
       }
+    }
+  }
+
+  // Clear state of a pubkey (used after visiting a contact page profile)
+  void removeStateForKey(String pubKey) {
+    if (state.map.containsKey(pubKey)) {
+      state.map.remove(pubKey);
+      emit(MultiWalletTransactionState(
+          Map<String, TransactionState>.of(state.map)));
     }
   }
 }

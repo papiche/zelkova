@@ -39,7 +39,7 @@ class _FirstScreenState extends State<FirstScreen> {
         context, context.read<AppCubit>().wasTutorialShown('first_screen'));
     super.initState();
     if (context.read<BottomNavCubit>().state == 0 &&
-        context.read<MultiWalletTransactionCubit>().balance == 0) {
+        context.read<MultiWalletTransactionCubit>().balance() == 0) {
       Future<void>.delayed(Duration.zero, () => tutorial.showTutorial());
     }
   }

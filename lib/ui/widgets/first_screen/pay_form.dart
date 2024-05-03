@@ -197,7 +197,7 @@ class _PayFormState extends State<PayForm> {
   }
 
   double getBalance(BuildContext context) =>
-      context.read<MultiWalletTransactionCubit>().balance;
+      context.read<MultiWalletTransactionCubit>().balance();
 }
 
 class RetryException implements Exception {

@@ -9,8 +9,8 @@ import '../../../data/models/contact_cubit.dart';
 import '../../../data/models/contact_sort_type.dart';
 import '../../ui_helpers.dart';
 import '../bottom_widget.dart';
+import '../contact_menu.dart';
 import '../contacts_actions.dart';
-import 'contact_menu.dart';
 
 class ContactsPage extends StatefulWidget {
   const ContactsPage({super.key});

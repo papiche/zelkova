@@ -77,7 +77,7 @@ Future<Response> searchCPlusUser(String initialSearchTerm) async {
 }
 
 Future<Contact> getProfile(String pubKeyRaw,
-    [bool onlyCPlusProfile = false]) async {
+    {bool onlyCPlusProfile = false, bool resize = true}) async {
   final String pubKey = extractPublicKey(pubKeyRaw);
   try {
     final Response cPlusResponse = (await requestCPlusWithRetry(
@@ -86,19 +86,22 @@ Future<Contact> getProfile(String pubKeyRaw,
         .item2;
     final Map<String, dynamic> result =
         const JsonDecoder().convert(cPlusResponse.body) as Map<String, dynamic>;
+    Contact c;
     if (result['found'] == false) {
-      return Contact(pubKey: pubKey);
+      c = Contact(pubKey: pubKey);
+    } else {
+      final Map<String, dynamic> profile = const JsonDecoder()
+          .convert(cPlusResponse.body) as Map<String, dynamic>;
+      c = await contactFromResultSearch(profile, resize: resize);
     }
-    final Map<String, dynamic> profile =
-        const JsonDecoder().convert(cPlusResponse.body) as Map<String, dynamic>;
-    final Contact c = await contactFromResultSearch(profile);
     if (!onlyCPlusProfile) {
       // This penalize the gva rate limit
       // final String? nick = await gvaNick(pubKey);
-      final List<Contact> wotList = await searchWotV2(pubKey);
+      final List<Contact> wotList = await searchWotV1(pubKey);
       if (wotList.isNotEmpty) {
-        final Contact c = wotList[0];
-        c.copyWith(nick: c.nick);
+        final Contact cWot = wotList[0];
+        c = c.merge(cWot);
+        // c.copyWith(nick: c.nick);
       }
     }
     logger('Contact retrieved in getProfile $c (c+ only $onlyCPlusProfile)');
@@ -513,21 +516,27 @@ Future<NodeCheck> _pingNode(String node, NodeType type) async {
       stopwatch.stop();
       latency = stopwatch.elapsed;
     } else if (type == NodeType.endpoint) {
-      try {
-        final Provider polkadot = Provider(Uri.parse(node));
-        // From:
-        // https://github.com/leonardocustodio/polkadart/blob/main/examples/bin/extrinsic_demo.dart
-        final RpcResponse<dynamic> block =
-            await polkadot.send('chain_getBlock', <dynamic>[]);
-        currentBlock = int.parse(
-            (((block.result as Map<String, dynamic>)['block']
-                    as Map<String, dynamic>)['header']
-                as Map<String, dynamic>)['number'] as String);
-        stopwatch.stop();
-        latency = stopwatch.elapsed;
-        await polkadot.disconnect();
-      } catch (e) {
-        loggerDev('Cannot parse node/stats $e');
+      if (!kIsWeb) {
+        try {
+          final Provider polkadot = Provider(Uri.parse(node));
+          // From:
+          // https://github.com/leonardocustodio/polkadart/blob/main/examples/bin/extrinsic_demo.dart
+          final RpcResponse<dynamic> block =
+              await polkadot.send('chain_getBlock', <dynamic>[]);
+          currentBlock = int.parse(
+              (((block.result as Map<String, dynamic>)['block']
+                      as Map<String, dynamic>)['header']
+                  as Map<String, dynamic>)['number'] as String);
+          stopwatch.stop();
+          latency = stopwatch.elapsed;
+          await polkadot.disconnect();
+        } catch (e) {
+          loggerDev('Cannot parse node/stats $e');
+          latency = wrongNodeDuration;
+        }
+      } else {
+        // Waiting for web support in polkadart:
+        // https://github.com/leonardocustodio/polkadart/issues/297
         latency = wrongNodeDuration;
       }
     } else if (type == NodeType.duniterIndexer) {
@@ -939,7 +948,7 @@ void hashAndSign(Map<String, dynamic> data, CesiumWallet wallet) {
 }
 
 Future<String?> getCesiumPlusUser(String pubKey) async {
-  final Contact c = await getProfile(pubKey, true);
+  final Contact c = await getProfile(pubKey, onlyCPlusProfile: true);
   return c.name;
 }
 

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/models/node.dart';
 import '../../data/models/node_list_cubit.dart';
 import '../../data/models/node_list_state.dart';
+import '../../data/models/node_lists_default.dart';
 import '../../data/models/node_type.dart';
 import '../../g1/api.dart';
 import '../../g1/no_nodes_exception.dart';
@@ -12,13 +13,15 @@ import '../ui_helpers.dart';
 import '../widgets/node_list/node_list_widget.dart';
 
 class NodeListPage extends StatelessWidget {
-  const NodeListPage({super.key});
+  NodeListPage({super.key});
 
   List<Node> filterAndSortNodesByType(List<Node> nodes, NodeType type) {
     nodes.sort(
         (Node a, Node b) => a.currentBlock.compareTo(b.currentBlock) * -1);
     return nodes;
   }
+
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -47,35 +50,47 @@ class NodeListPage extends StatelessWidget {
             constraints: BoxConstraints(
                 maxHeight: MediaQuery.of(context).size.height * 0.9),
             child: Scrollbar(
+              controller: _scrollController,
               child: SingleChildScrollView(
+                controller: _scrollController,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const DebugNodeHeader(type: NodeType.endpoint),
+                    NodeListHeader(
+                        type: NodeType.endpoint,
+                        nodesCount: endPointNodes.length),
                     if (endPointNodes.isNotEmpty)
                       NodeListWidget(
                           nodes: endPointNodes,
                           type: NodeType.endpoint,
                           currentBlock: endPointNodes[0].currentBlock),
-                    const DebugNodeHeader(type: NodeType.duniterIndexer),
+                    NodeListHeader(
+                        type: NodeType.duniterIndexer,
+                        nodesCount: defaultDuniterIndexerNodes.length),
                     if (duniterIndexerNodes.isNotEmpty)
                       NodeListWidget(
                           nodes: duniterIndexerNodes,
                           type: NodeType.duniterIndexer,
                           currentBlock: duniterIndexerNodes[0].currentBlock),
-                    const DebugNodeHeader(type: NodeType.gva),
+                    NodeListHeader(
+                        type: NodeType.gva, nodesCount: gvaNodes.length),
                     if (gvaNodes.isNotEmpty)
                       NodeListWidget(
                           nodes: gvaNodes,
                           type: NodeType.gva,
                           currentBlock: gvaNodes[0].currentBlock),
-                    const DebugNodeHeader(type: NodeType.duniter),
+                    NodeListHeader(
+                      type: NodeType.duniter,
+                      nodesCount: duniterNodes.length,
+                    ),
                     if (duniterNodes.isNotEmpty)
                       NodeListWidget(
                           nodes: duniterNodes,
                           type: NodeType.duniter,
                           currentBlock: duniterNodes[0].currentBlock),
-                    const DebugNodeHeader(type: NodeType.cesiumPlus),
+                    NodeListHeader(
+                        type: NodeType.cesiumPlus,
+                        nodesCount: cesiumPlusNodes.length),
                     if (cesiumPlusNodes.isNotEmpty)
                       NodeListWidget(
                           nodes: cesiumPlusNodes,
@@ -88,10 +103,12 @@ class NodeListPage extends StatelessWidget {
   }
 }
 
-class DebugNodeHeader extends StatelessWidget {
-  const DebugNodeHeader({super.key, required this.type});
+class NodeListHeader extends StatelessWidget {
+  const NodeListHeader(
+      {super.key, required this.type, required this.nodesCount});
 
   final NodeType type;
+  final int nodesCount;
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +117,7 @@ class DebugNodeHeader extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text('${capitalize(type.name)} Nodes',
+            Text('${capitalize(type.name)} Nodes ($nodesCount)',
                 style: const TextStyle(fontSize: 20)),
             GestureDetector(
               onLongPress: () => _fetchNodes(context, true),

@@ -27,8 +27,8 @@ class _ThirdScreenState extends State<ThirdScreen> {
 
   @override
   void initState() {
-    tutorial = ThirdTutorial(context);
     super.initState();
+    tutorial = ThirdTutorial(context);
   }
 
   @override

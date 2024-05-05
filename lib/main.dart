@@ -186,8 +186,8 @@ void main() async {
                       GinkgoApp(darkTheme: darkTheme, lightTheme: lightTheme)),
             )));
       });
-  if (inDevelopment) {
-    // Only use sentry in production
+  if (!kIsWeb && inDevelopment) {
+    // Only use sentry in development
     await SentryFlutter.init((
       SentryFlutterOptions options,
     ) {
@@ -266,11 +266,11 @@ class _AppIntro extends State<AppIntro> {
       GlobalKey<IntroductionScreenState>();
 
   void _onIntroEnd(BuildContext context, AppCubit cubit) {
-    cubit.introViewed();
     Navigator.of(context).pushReplacement(
       MaterialPageRoute<void>(
-          builder: (BuildContext _) => const SkeletonScreen()),
+          builder: (BuildContext _) => const FeedbackAndSkeletonScreen()),
     );
+    cubit.introViewed();
   }
 
   @override
@@ -551,10 +551,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
                 locale: context.locale,
                 debugShowCheckedModeBanner: false,
                 home: context.read<AppCubit>().isIntroViewed
-                    ? BetterFeedback(
-                        localizationsDelegates: context.localizationDelegates
-                          ..add(CustomFeedbackLocalizationsDelegate()),
-                        child: const SkeletonScreen())
+                    ? const FeedbackAndSkeletonScreen()
                     : const AppIntro(),
                 builder: (BuildContext buildContext, Widget? widget) {
                   NotificationController.locale = context.locale;
@@ -562,14 +559,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
                     BouncingScrollWrapper.builder(
                         context,
                         ConnectivityWidgetWrapperWrapper(
-                          //message: tr('offline'),
-                          //height: 18,
-
-                          offlineWidget: /* Container(
-                                color: Colors.transparent,
-                                child: Center(
-                                  child: */
-                              Column(
+                          offlineWidget: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
                               const Icon(
@@ -596,7 +586,6 @@ class _GinkgoAppState extends State<GinkgoApp> {
                               const SizedBox(height: 110),
                             ],
                           ),
-
                           child: widget!,
                         )),
                     maxWidth: 480,
@@ -612,5 +601,19 @@ class _GinkgoAppState extends State<GinkgoApp> {
                 },
               )));
     });
+  }
+}
+
+class FeedbackAndSkeletonScreen extends StatelessWidget {
+  const FeedbackAndSkeletonScreen({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BetterFeedback(
+        localizationsDelegates: context.localizationDelegates
+          ..add(CustomFeedbackLocalizationsDelegate()),
+        child: const SkeletonScreen());
   }
 }

@@ -113,8 +113,13 @@ class _ContactPageState extends State<ContactPage> {
                               ),
                             ]))),
                 const SizedBox(height: 10),
-                Text(contact.titleWithoutNick,
-                    style: Theme.of(context).textTheme.titleLarge),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(contact.titleWithoutNick,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: false,
+                      style: Theme.of(context).textTheme.titleLarge),
+                )
               ])),
             ),
             const SizedBox(height: 20),

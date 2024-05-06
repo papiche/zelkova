@@ -123,7 +123,7 @@
   "faq_0_desc": "Beginnen Sie damit, Ihre Dienste auf Ğ1-Märkten anzubieten, um so Ihr erstes Einkommen zu erhalten. Wenn Sie bereits Ğ1 auf einem Cesium-Konto haben, können Sie etwas davon auf dieses Wallet übertragen und es nutzen, um Ğ1-Währung einfach zu senden und zu empfangen.",
   "faq_0_title": "Wie kann ich Ğ1 und diese Brieftasche nutzen?",
   "faq_1_title": "Kann ich mein Cesium-Konto importieren?",
-  "faq_1_desc": "Nein, aus Sicherheitsgründen erlauben wir nicht den Import von Cesium-Konten. Dies ist eine Brieftasche für die Hosentasche, die sich auf die grundlegende Sicherheit Ihres mobilen Geräts verlässt, und Sie können sie verwenden, um Geld zu überweisen oder Zahlungen schnell für den täglichen Gebrauch zu erhalten. Darüber hinaus ist sie nicht für eine Cesium-Mitgliedschaft vorgesehen.",
+  "faq_1_desc": "Ja, Sie können ein Cessium-Konto xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx importieren und es wird bei jeder Nutzung nach Ihrem Passwort/Passphrase gefragt.",
   "faq_title": "FAQ",
   "please_confirm_retry_sent_desc": "Bitte bestätigen Sie, dass Sie erneut versuchen möchten, {amount} {currency} an {to} zu senden.",
   "faq_3_desc": "Erstens ist es mühsam, eine Brieftasche dieser Art mit nuklearer Sicherheitsausstattung zu versehen. Zweitens verlieren die Leute ständig ihre Passwörter und Guthaben, was wir vermeiden wollten. Schließlich könnten wir zwar etwas Einfacheres wie ein PIN-Passwort oder ein Muster hinzufügen, aber die Leute könnten ihre Handy- oder Kreditkartenpasswörter wiederholen, was katastrophale Folgen haben könnte. Wir glauben, dass es auf diese Weise sicherer ist.",
@@ -161,7 +161,7 @@
   "file_import": "Importieren aus Datei",
   "export": "EXPORTIEREN",
   "clipboard_import": "Importieren aus der Zwischenablage",
-  "clipboard_import_pubkey": "Importieren von öffentlichem Schlüssel",
+  "clipboard_import_pubkey": "Importieren von öffentlichem Schlüssel (Cesium, etc)",
   "paste": "EINFÜGEN",
   "import": "IMPORTIEREN",
   "clipboard_export": "Exportieren in die Zwischenablage",
@@ -253,5 +253,7 @@
   "multi_pay_results": "Ergebnisse der Zahlungen",
   "multi_pay_results_desc": "{success} Erfolg, {fail} fehlgeschlagen",
   "Insufficient balance in your wallet": "Unzureichendes Guthaben in Ihrer Brieftasche",
-  "others_and_someone": "{others} und {someone}"
+  "others_and_someone": "{others} und {someone}",
+  "search_user_hint_basic": "Geben Sie einen Namen oder einen Schlüssel ein",
+  "account_info": "Kontoinformation"
 }

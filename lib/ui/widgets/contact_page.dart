@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:text_scroll/text_scroll.dart';
 
 import '../../data/models/app_cubit.dart';
 import '../../data/models/contact.dart';
@@ -115,9 +116,7 @@ class _ContactPageState extends State<ContactPage> {
                 const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(contact.titleWithoutNick,
-                      overflow: TextOverflow.ellipsis,
-                      softWrap: false,
+                  child: TextScroll('${contact.titleWithoutNick}      ',
                       style: Theme.of(context).textTheme.titleLarge),
                 )
               ])),

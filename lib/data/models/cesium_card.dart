@@ -9,11 +9,13 @@ part 'cesium_card.g.dart';
 @JsonSerializable()
 @CopyWith()
 class CesiumCard implements IsJsonSerializable<CesiumCard> {
-  CesiumCard(
-      {required this.seed,
-      required this.pubKey,
-      required this.name,
-      required this.theme});
+  CesiumCard({
+    required this.seed,
+    required this.pubKey,
+    required this.name,
+    required this.theme,
+    this.isAstroID = false, // Nouveau champ
+  });
 
   factory CesiumCard.fromJson(Map<String, dynamic> json) =>
       _$CesiumCardFromJson(json);
@@ -22,6 +24,7 @@ class CesiumCard implements IsJsonSerializable<CesiumCard> {
   final String seed;
   final CreditCardTheme theme;
   final String name;
+  final bool isAstroID;
 
   @override
   Map<String, dynamic> toJson() => _$CesiumCardToJson(this);

@@ -22,6 +22,7 @@ import '../data/models/payment_state.dart';
 import '../data/models/utxo.dart';
 import '../data/models/utxo_cubit.dart';
 import '../g1/currency.dart';
+import '../g1/astroid_helper.dart';
 import '../g1/g1_helper.dart';
 import 'contacts_cache.dart';
 import 'logger.dart';
@@ -275,5 +276,53 @@ Future<void> onKeyScanned(BuildContext context, String scannedKey) async {
   } else {
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(tr('qr_invalid_payment'))));
+  }
+}
+
+Future<void> importAstroID(BuildContext context) async {
+  try {
+    // Scanner le QR code et extraire la valeur DISCO
+    final String? disco = await QrManager.qrScan(context);
+    if (disco == null) {
+      return;
+    }
+
+    // Demander à l'utilisateur de saisir le mot de passe unique ($UNIQID)
+    final String? password = await showTextInputDialog(
+      context: context,
+      title: 'Saisir le mot de passe',
+      hint: 'Mot de passe unique',
+    );
+    if (password == null || password.isEmpty) {
+      return;
+    }
+
+    // Déchiffrer l'AstroID
+    final Tuple2<String, String>? secrets =
+        await decryptAstroID(disco, password);
+    if (secrets == null) {
+      showAlertDialog(context, 'Erreur',
+          'Impossible de déchiffrer AstroID. Vérifiez le mot de passe.');
+      return;
+    }
+
+    // Initialiser un nouveau portefeuille CesiumWallet avec les secrets déchiffrés
+    final CesiumWallet wallet =
+        CesiumWallet.fromSecrets(secrets.item1, secrets.item2);
+
+    // Sauvegarder ce portefeuille
+    await SharedPreferencesHelper().saveWallet(wallet);
+
+    // Mettre à jour l'état de l'app
+    context.read<AppState>().setWallet(wallet);
+
+    // Rediriger vers l'écran principal
+    // ignore: use_build_context_synchronously
+    Navigator.of(context).pushReplacementNamed('/');
+  } catch (e, stacktrace) {
+    logger('Erreur importation AstroID: $e');
+    logger(stacktrace.toString());
+    showAlertDialog(context, 'Erreur',
+        'Une erreur est survenue lors de importation de AstroID.');
   }
 }

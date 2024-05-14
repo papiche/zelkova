@@ -15,6 +15,8 @@ abstract class _$CesiumCardCWProxy {
 
   CesiumCard theme(CreditCardTheme theme);
 
+  CesiumCard isAstroID(bool isAstroID);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `CesiumCard(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -26,6 +28,7 @@ abstract class _$CesiumCardCWProxy {
     String? pubKey,
     String? name,
     CreditCardTheme? theme,
+    bool? isAstroID,
   });
 }
 
@@ -48,6 +51,9 @@ class _$CesiumCardCWProxyImpl implements _$CesiumCardCWProxy {
   CesiumCard theme(CreditCardTheme theme) => this(theme: theme);
 
   @override
+  CesiumCard isAstroID(bool isAstroID) => this(isAstroID: isAstroID);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `CesiumCard(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -60,6 +66,7 @@ class _$CesiumCardCWProxyImpl implements _$CesiumCardCWProxy {
     Object? pubKey = const $CopyWithPlaceholder(),
     Object? name = const $CopyWithPlaceholder(),
     Object? theme = const $CopyWithPlaceholder(),
+    Object? isAstroID = const $CopyWithPlaceholder(),
   }) {
     return CesiumCard(
       seed: seed == const $CopyWithPlaceholder() || seed == null
@@ -78,6 +85,10 @@ class _$CesiumCardCWProxyImpl implements _$CesiumCardCWProxy {
           ? _value.theme
           // ignore: cast_nullable_to_non_nullable
           : theme as CreditCardTheme,
+      isAstroID: isAstroID == const $CopyWithPlaceholder() || isAstroID == null
+          ? _value.isAstroID
+          // ignore: cast_nullable_to_non_nullable
+          : isAstroID as bool,
     );
   }
 }
@@ -97,6 +108,7 @@ CesiumCard _$CesiumCardFromJson(Map<String, dynamic> json) => CesiumCard(
       pubKey: json['pubKey'] as String,
       name: json['name'] as String,
       theme: CreditCardTheme.fromJson(json['theme'] as Map<String, dynamic>),
+      isAstroID: json['isAstroID'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$CesiumCardToJson(CesiumCard instance) =>
@@ -105,4 +117,5 @@ Map<String, dynamic> _$CesiumCardToJson(CesiumCard instance) =>
       'seed': instance.seed,
       'theme': instance.theme,
       'name': instance.name,
+      'isAstroID': instance.isAstroID,
     };

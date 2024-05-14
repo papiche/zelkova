@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'data/models/cesium_card.dart';
 import 'data/models/credit_card_themes.dart';
+import 'g1/astroid_helper.dart';
 import 'g1/g1_helper.dart';
 import 'ui/logger.dart';
 
@@ -62,6 +63,27 @@ class SharedPreferencesHelper with ChangeNotifier {
     }
   }
 
+  Future<void> importAstroIDWallet(String disco, String password) async {
+    try {
+      final Tuple2<String, String>? secrets =
+          await decryptAstroID(disco, password);
+      if (secrets != null) {
+        final CesiumWallet wallet =
+            CesiumWallet.fromSecrets(secrets.item1, secrets.item2);
+        final CesiumCard card =
+            buildCesiumCard(seed: '', pubKey: wallet.pubkey);
+        addCesiumCard(card);
+        addCesiumVolatileCard(wallet);
+        await selectCurrentWallet(card);
+      } else {
+        throw Exception('Failed to decrypt AstroID');
+      }
+    } catch (e) {
+      logger('Error importing AstroID wallet: $e');
+      rethrow;
+    }
+  }
+
   CesiumCard buildCesiumCard({required String seed, required String pubKey}) {
     return CesiumCard(
         seed: seed, pubKey: pubKey, theme: CreditCardThemes.theme1, name: '');
@@ -98,8 +120,13 @@ class SharedPreferencesHelper with ChangeNotifier {
       if (isG1nkgoCard()) {
         return CesiumWallet.fromSeed(seedFromString(card.seed));
       } else {
-        // This should have the wallet loaded
-        return cesiumVolatileCards[extractPublicKey(card.pubKey)]!;
+        // Check if the wallet is in the volatile map
+        final String pubKey = extractPublicKey(card.pubKey);
+        if (cesiumVolatileCards.containsKey(pubKey)) {
+          return cesiumVolatileCards[pubKey]!;
+        } else {
+          throw Exception('Imported wallet not found');
+        }
       }
     } else {
       // Generate a new wallet if no wallets exist

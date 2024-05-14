@@ -24,8 +24,8 @@ class _SecondScreenState extends State<SecondScreen> {
 
   @override
   void initState() {
-    tutorial = SecondTutorial(context);
     super.initState();
+    tutorial = SecondTutorial(context);
   }
 
   Future<void> _scanAstroID() async {

@@ -16,9 +16,8 @@ import '../../../shared_prefs_helper.dart';
 import '../../contacts_cache.dart';
 import '../../pay_helper.dart';
 import '../../ui_helpers.dart';
+import '../contact_menu.dart';
 import '../contacts_actions.dart';
-import '../third_screen/contact_form_dialog.dart';
-import '../third_screen/contact_menu.dart';
 
 class TransactionListItem extends StatelessWidget {
   TransactionListItem(
@@ -30,6 +29,7 @@ class TransactionListItem extends StatelessWidget {
       required this.currentUd,
       required this.currentSymbol,
       required this.isCurrencyBefore,
+      required this.isExternalAccount,
       this.afterCancel,
       this.afterRetry});
 
@@ -41,6 +41,7 @@ class TransactionListItem extends StatelessWidget {
   final double currentUd;
   final String currentSymbol;
   final bool isCurrencyBefore;
+  final bool isExternalAccount;
 
   final VoidCallback? afterCancel;
   final VoidCallback? afterRetry;
@@ -134,12 +135,15 @@ class TransactionListItem extends StatelessWidget {
     final String myPubKey = SharedPreferencesHelper().getPubKey();
 
     final ContactsCubit contactsCubit = context.read<ContactsCubit>();
+    final Contact to = transaction.recipientsWithoutCashBack[0];
 
     const double txFontSize = 14.0;
 
     const FontWeight fromToWeight = FontWeight.w400;
     const FontStyle fromToStyle = FontStyle.normal;
-    const Color fromToColor = Colors.orange;
+    final Color fromToColor = Theme.of(context).hintColor;
+    final Color linkColor = Theme.of(context).colorScheme.primary;
+
     return Slidable(
         // Specify a key if the Slidable is dismissible.
 
@@ -157,7 +161,7 @@ class TransactionListItem extends StatelessWidget {
               icon: Icons.delete,
               label: tr('cancel_payment'),
             ),
-          if (transaction.type == TransactionType.sent)
+          if (transaction.type == TransactionType.sent && !isExternalAccount)
             SlidableAction(
               onPressed: (BuildContext c) async {
                 _selectUserToPay(context, transaction);
@@ -242,83 +246,76 @@ class TransactionListItem extends StatelessWidget {
                             ),
                             const SizedBox(height: 4.0),
                             Text.rich(
+                              softWrap: true,
                               TextSpan(
                                 children: <InlineSpan>[
-                                  WidgetSpan(
-                                    child: Text(
-                                      tr('transaction_from'),
-                                      style: const TextStyle(
-                                        fontSize: txFontSize,
-                                        fontWeight: fromToWeight,
-                                        fontStyle: fromToStyle,
-                                        color: fromToColor,
-                                      ),
+                                  TextSpan(
+                                    text: tr('transaction_from'),
+                                    style: TextStyle(
+                                      fontSize: txFontSize,
+                                      fontWeight: fromToWeight,
+                                      fontStyle: fromToStyle,
+                                      color: fromToColor,
                                     ),
                                   ),
                                   lineSeparator(),
                                   WidgetSpan(
+                                      alignment: PlaceholderAlignment.top,
                                       child: ContactMenu(
-                                    contact: transaction.from,
-                                    onEdit: () => onEditContact(
-                                        context, transaction.from),
-                                    onSent: () => onSentContact(
-                                        context, transaction.from),
-                                    onCopy: () => onShowContactQr(
-                                        context, transaction.from),
-                                    onDelete: () => onDeleteContact(
-                                        context, transaction.from),
-                                    parent: Text(
-                                      humanizeContact(
-                                          myPubKey, transaction.from),
-                                      style: const TextStyle(
-                                        fontSize: txFontSize,
-                                        // fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  )),
+                                        contact: transaction.from,
+                                        onEdit: () => onEditContact(
+                                            context, transaction.from),
+                                        onSent: () => onSentContact(
+                                            context, transaction.from),
+                                        onCopy: () => onShowContactQr(
+                                            context, transaction.from),
+                                        onDelete: () => onDeleteContact(
+                                            context, transaction.from),
+                                        parent: Text(
+                                          humanizeContact(
+                                              myPubKey, transaction.from),
+                                          style: TextStyle(
+                                              fontSize: txFontSize,
+                                              color: linkColor
+                                              // fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
+                                      )),
                                   lineSeparator(),
-                                  WidgetSpan(
-                                    child: Text(
-                                      tr('transaction_to').toLowerCase(),
-                                      style: const TextStyle(
-                                        fontSize: txFontSize,
-                                        fontWeight: fromToWeight,
-                                        fontStyle: fromToStyle,
-                                        color: fromToColor,
-                                      ),
+                                  TextSpan(
+                                    text: tr('transaction_to').toLowerCase(),
+                                    style: TextStyle(
+                                      fontSize: txFontSize,
+                                      fontWeight: fromToWeight,
+                                      fontStyle: fromToStyle,
+                                      color: fromToColor,
                                     ),
                                   ),
                                   lineSeparator(),
                                   WidgetSpan(
-                                      child: GestureDetector(
-                                    onTap: () {
-                                      if (!transaction.isToMultiple) {
-                                        final Contact to =
-                                            transaction.recipients[0];
-                                        ContactMenu(
-                                            contact: to,
-                                            onEdit: () =>
-                                                onEditContact(context, to),
-                                            onSent: () =>
-                                                onSentContact(context, to),
-                                            onCopy: () =>
-                                                onShowContactQr(context, to),
-                                            onDelete: () {
-                                              return onDeleteContact(
-                                                  context, to);
-                                            });
-                                      }
-                                    },
-                                    child: Text(
-                                      humanizeContacts(
-                                          publicAddress: myPubKey,
-                                          contacts: transaction
-                                              .recipientsWithoutCashBack),
-                                      style: const TextStyle(
-                                        fontSize: txFontSize,
-                                      ),
-                                    ),
-                                  )),
+                                      alignment: PlaceholderAlignment.top,
+                                      child: ContactMenu(
+                                        contact: to,
+                                        onEdit: () =>
+                                            onEditContact(context, to),
+                                        onSent: () =>
+                                            onSentContact(context, to),
+                                        onCopy: () =>
+                                            onShowContactQr(context, to),
+                                        onDelete: () {
+                                          return onDeleteContact(context, to);
+                                        },
+                                        disable: transaction.isToMultiple,
+                                        parent: Text(
+                                          humanizeContacts(
+                                              publicAddress: myPubKey,
+                                              contacts: transaction
+                                                  .recipientsWithoutCashBack),
+                                          style: TextStyle(
+                                              fontSize: txFontSize,
+                                              color: linkColor),
+                                        ),
+                                      ))
                                 ],
                               ),
                             ),
@@ -389,6 +386,7 @@ class TransactionListItem extends StatelessWidget {
 
   WidgetSpan lineSeparator() {
     return const WidgetSpan(
+      alignment: PlaceholderAlignment.top,
       child: SizedBox(width: 5.0),
     );
   }
@@ -398,23 +396,7 @@ class TransactionListItem extends StatelessWidget {
     final Contact newContact = transaction.isIncoming
         ? transaction.from
         : transaction.recipientsWithoutCashBack[0];
-    contactsCubit.addContact(newContact);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(tr('contact_added')),
-      ),
-    );
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return ContactFormDialog(
-            contact: newContact,
-            onSave: (Contact c) {
-              context.read<ContactsCubit>().updateContact(c);
-              ContactsCache().saveContact(c);
-            });
-      },
-    );
+    addContact(contactsCubit, newContact, context);
   }
 
   void _selectUserToPay(BuildContext context, Transaction transaction) {
@@ -483,6 +465,7 @@ class TransactionListItem extends StatelessWidget {
 
   WidgetSpan separatorSpan() {
     return const WidgetSpan(
+      alignment: PlaceholderAlignment.top,
       child: SizedBox(width: 3),
     );
   }

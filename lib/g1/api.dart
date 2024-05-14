@@ -50,11 +50,45 @@ Future<String> getTxHistory(String publicKey) async {
   }
 }
 
-Future<Response> getPeers() async {
-  final Response response = (await requestWithRetry(
-          NodeType.duniter, '/network/peers',
-          dontRecord: true))
-      .item2;
+Future<List<dynamic>> getPeers(NodeType type) async {
+  final List<Node> nodes = NodeManager().nodeList(type);
+  loggerDev('Fetching ${type.name} peers with peers ${nodes.length}');
+  List<dynamic> currentPeers = <dynamic>[];
+  for (final Node node in nodes) {
+    String nodeUrl = node.url;
+    nodeUrl = nodeUrl.replaceAll(RegExp(r'/gva$'), '');
+    nodeUrl = '$nodeUrl/network/peers';
+    loggerDev('Fetching $nodeUrl');
+    try {
+      final Response response = await http.get(Uri.parse(nodeUrl));
+      if (response.statusCode == 200) {
+        // Try decode
+        final Map<String, dynamic> peerList =
+            jsonDecode(response.body) as Map<String, dynamic>;
+        final List<dynamic> peers = (peerList['peers'] as List<dynamic>)
+            .where((dynamic peer) =>
+                (peer as Map<String, dynamic>)['currency'] == currency)
+            .where((dynamic peer) =>
+                (peer as Map<String, dynamic>)['version'] == 10)
+            .where((dynamic peer) =>
+                (peer as Map<String, dynamic>)['status'] == 'UP')
+            .toList();
+        if (currentPeers.length < peers.length) {
+          // sometimes getPeers returns a small list of nodes (somethmes even one)
+          currentPeers = peers;
+        }
+      }
+    } catch (e) {
+      loggerDev('Error retrieving $nodeUrl ($e)');
+      // Ignore
+    }
+  }
+  return currentPeers;
+}
+
+Future<Response> getPeersOld(NodeType type) async {
+  final Response response =
+      (await requestWithRetry(type, '/network/peers', dontRecord: true)).item2;
   if (response.statusCode == 200) {
     return response;
   } else {
@@ -77,7 +111,7 @@ Future<Response> searchCPlusUser(String initialSearchTerm) async {
 }
 
 Future<Contact> getProfile(String pubKeyRaw,
-    [bool onlyCPlusProfile = false]) async {
+    {bool onlyCPlusProfile = false, bool resize = true}) async {
   final String pubKey = extractPublicKey(pubKeyRaw);
   try {
     final Response cPlusResponse = (await requestCPlusWithRetry(
@@ -86,19 +120,22 @@ Future<Contact> getProfile(String pubKeyRaw,
         .item2;
     final Map<String, dynamic> result =
         const JsonDecoder().convert(cPlusResponse.body) as Map<String, dynamic>;
+    Contact c;
     if (result['found'] == false) {
-      return Contact(pubKey: pubKey);
+      c = Contact(pubKey: pubKey);
+    } else {
+      final Map<String, dynamic> profile = const JsonDecoder()
+          .convert(cPlusResponse.body) as Map<String, dynamic>;
+      c = await contactFromResultSearch(profile, resize: resize);
     }
-    final Map<String, dynamic> profile =
-        const JsonDecoder().convert(cPlusResponse.body) as Map<String, dynamic>;
-    final Contact c = await contactFromResultSearch(profile);
     if (!onlyCPlusProfile) {
       // This penalize the gva rate limit
       // final String? nick = await gvaNick(pubKey);
-      final List<Contact> wotList = await searchWotV2(pubKey);
+      final List<Contact> wotList = await searchWotV1(pubKey);
       if (wotList.isNotEmpty) {
-        final Contact c = wotList[0];
-        c.copyWith(nick: c.nick);
+        final Contact cWot = wotList[0];
+        c = c.merge(cWot);
+        // c.copyWith(nick: c.nick);
       }
     }
     logger('Contact retrieved in getProfile $c (c+ only $onlyCPlusProfile)');
@@ -266,6 +303,20 @@ Future<void> _fetchDuniterNodes({bool force = false}) async {
   NodeManager().loading = false;
 }
 
+Future<void> _fetchGvaNodes({bool force = false}) async {
+  NodeManager().loading = true;
+  const NodeType type = NodeType.gva;
+  if (force) {
+    NodeManager().updateNodes(type, defaultGvaNodes);
+    logger('Fetching gva nodes forced');
+  } else {
+    logger('Fetching gva nodes, we have ${NodeManager().nodesWorking(type)}');
+  }
+  final List<Node> nodes = await _fetchDuniterNodesFromPeers(type);
+  NodeManager().updateNodes(type, nodes);
+  NodeManager().loading = false;
+}
+
 // https://github.com/duniter/cesium/blob/467ec68114be650cd1b306754c3142fc4020164c/www/js/config.js#L96
 // https://g1.data.le-sou.org/g1/peer/_search?pretty
 Future<void> _fetchCesiumPlusNodes({bool force = false}) async {
@@ -279,20 +330,6 @@ Future<void> _fetchCesiumPlusNodes({bool force = false}) async {
   logger(
       'Fetching cesium plus nodes, we have ${NodeManager().nodesWorking(type)}');
   final List<Node> nodes = await _fetchNodes(NodeType.cesiumPlus);
-  NodeManager().updateNodes(type, nodes);
-  NodeManager().loading = false;
-}
-
-Future<void> _fetchGvaNodes({bool force = false}) async {
-  NodeManager().loading = true;
-  const NodeType type = NodeType.gva;
-  if (force) {
-    NodeManager().updateNodes(type, defaultGvaNodes);
-    logger('Fetching gva nodes forced');
-  } else {
-    logger('Fetching gva nodes, we have ${NodeManager().nodesWorking(type)}');
-  }
-  final List<Node> nodes = await _fetchDuniterNodesFromPeers(type);
   NodeManager().updateNodes(type, nodes);
   NodeManager().loading = false;
 }
@@ -336,66 +373,54 @@ Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type,
   String? fastestNode;
   late Duration fastestLatency = const Duration(minutes: 1);
   try {
-    final Response response = await getPeers();
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> peerList =
-          jsonDecode(response.body) as Map<String, dynamic>;
-      final List<dynamic> peers = (peerList['peers'] as List<dynamic>)
-          .where((dynamic peer) =>
-              (peer as Map<String, dynamic>)['currency'] == currency)
-          .where(
-              (dynamic peer) => (peer as Map<String, dynamic>)['version'] == 10)
-          .where((dynamic peer) =>
-              (peer as Map<String, dynamic>)['status'] == 'UP')
-          .toList();
-      // reorder peer list
-      peers.shuffle();
-      for (final dynamic peerR in peers) {
-        final Map<String, dynamic> peer = peerR as Map<String, dynamic>;
-        if (peer['endpoints'] != null) {
-          final List<String> endpoints =
-              List<String>.from(peer['endpoints'] as List<dynamic>);
-          for (int j = 0; j < endpoints.length; j++) {
-            if (endpoints[j].startsWith(apyType)) {
-              final String endpointUnParsed = endpoints[j];
-              final String? endpoint = parseHost(endpointUnParsed);
-              if (endpoint != null &&
-                  //  !endpoint.contains('test') &&
-                  !endpoint.contains('localhost')) {
-                try {
-                  final NodeCheck nodeCheck = await _pingNode(endpoint, type);
-                  final Duration latency = nodeCheck.latency;
-                  loggerD(debug,
-                      'Evaluating node: $endpoint, latency ${latency.inMicroseconds} currentBlock: ${nodeCheck.currentBlock}');
-                  final Node node = Node(
-                      url: endpoint,
-                      latency: latency.inMicroseconds,
-                      currentBlock: nodeCheck.currentBlock);
-                  if (fastestNode == null || latency < fastestLatency) {
-                    fastestNode = endpoint;
-                    fastestLatency = latency;
-                    if (!kReleaseMode) {
-                      loggerD(
-                          debug, 'Node bloc: Current faster node $fastestNode');
-                    }
-                    NodeManager().insertNode(type, node);
-                    lNodes.insert(0, node);
-                  } else {
-                    // Not the faster
-                    NodeManager().addNode(type, node);
-                    lNodes.add(node);
+    final List<dynamic> peers = await getPeers(type);
+    // reorder peer list
+    peers.shuffle();
+    for (final dynamic peerR in peers) {
+      final Map<String, dynamic> peer = peerR as Map<String, dynamic>;
+      if (peer['endpoints'] != null) {
+        final List<String> endpoints =
+            List<String>.from(peer['endpoints'] as List<dynamic>);
+        for (int j = 0; j < endpoints.length; j++) {
+          if (endpoints[j].startsWith(apyType)) {
+            final String endpointUnParsed = endpoints[j];
+            final String? endpoint = parseHost(endpointUnParsed);
+            if (endpoint != null &&
+                //  !endpoint.contains('test') &&
+                !endpoint.contains('localhost')) {
+              try {
+                final NodeCheck nodeCheck = await _pingNode(endpoint, type);
+                final Duration latency = nodeCheck.latency;
+                loggerD(debug,
+                    'Evaluating node: $endpoint, latency ${latency.inMicroseconds} currentBlock: ${nodeCheck.currentBlock}');
+                final Node node = Node(
+                    url: endpoint,
+                    latency: latency.inMicroseconds,
+                    currentBlock: nodeCheck.currentBlock);
+                if (fastestNode == null || latency < fastestLatency) {
+                  fastestNode = endpoint;
+                  fastestLatency = latency;
+                  if (!kReleaseMode) {
+                    loggerD(
+                        debug, 'Node bloc: Current faster node $fastestNode');
                   }
-                } catch (e) {
-                  logger('Error fetching $endpoint, error: $e');
+                  NodeManager().insertNode(type, node);
+                  lNodes.insert(0, node);
+                } else {
+                  // Not the faster
+                  NodeManager().addNode(type, node);
+                  lNodes.add(node);
                 }
+              } catch (e) {
+                logger('Error fetching $endpoint, error: $e');
               }
             }
           }
-          if (kReleaseMode && lNodes.length >= NodeManager.maxNodes) {
-            // In production dont' get too much nodes
-            loggerD(debug, 'We have enough ${type.name} nodes for now');
-            break;
-          }
+        }
+        if (kReleaseMode && lNodes.length >= NodeManager.maxNodes) {
+          // In production dont' get too much nodes
+          loggerD(debug, 'We have enough ${type.name} nodes for now');
+          break;
         }
       }
     }
@@ -513,21 +538,27 @@ Future<NodeCheck> _pingNode(String node, NodeType type) async {
       stopwatch.stop();
       latency = stopwatch.elapsed;
     } else if (type == NodeType.endpoint) {
-      try {
-        final Provider polkadot = Provider(Uri.parse(node));
-        // From:
-        // https://github.com/leonardocustodio/polkadart/blob/main/examples/bin/extrinsic_demo.dart
-        final RpcResponse<dynamic> block =
-            await polkadot.send('chain_getBlock', <dynamic>[]);
-        currentBlock = int.parse(
-            (((block.result as Map<String, dynamic>)['block']
-                    as Map<String, dynamic>)['header']
-                as Map<String, dynamic>)['number'] as String);
-        stopwatch.stop();
-        latency = stopwatch.elapsed;
-        await polkadot.disconnect();
-      } catch (e) {
-        loggerDev('Cannot parse node/stats $e');
+      if (!kIsWeb) {
+        try {
+          final Provider polkadot = Provider(Uri.parse(node));
+          // From:
+          // https://github.com/leonardocustodio/polkadart/blob/main/examples/bin/extrinsic_demo.dart
+          final RpcResponse<dynamic> block =
+              await polkadot.send('chain_getBlock', <dynamic>[]);
+          currentBlock = int.parse(
+              (((block.result as Map<String, dynamic>)['block']
+                      as Map<String, dynamic>)['header']
+                  as Map<String, dynamic>)['number'] as String);
+          stopwatch.stop();
+          latency = stopwatch.elapsed;
+          await polkadot.disconnect();
+        } catch (e) {
+          loggerDev('Cannot parse node/stats $e');
+          latency = wrongNodeDuration;
+        }
+      } else {
+        // Waiting for web support in polkadart:
+        // https://github.com/leonardocustodio/polkadart/issues/297
         latency = wrongNodeDuration;
       }
     } else if (type == NodeType.duniterIndexer) {
@@ -939,7 +970,7 @@ void hashAndSign(Map<String, dynamic> data, CesiumWallet wallet) {
 }
 
 Future<String?> getCesiumPlusUser(String pubKey) async {
-  final Contact c = await getProfile(pubKey, true);
+  final Contact c = await getProfile(pubKey, onlyCPlusProfile: true);
   return c.name;
 }
 

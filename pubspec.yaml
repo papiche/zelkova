@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.2.1-SNAPSHOT
+version: 1.2.2-SNAPSHOT
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -104,10 +104,10 @@ dependencies:
   ferry: ^0.11.3-dev.0+1
   gql_http_link: ^0.4.5
   substrate_bip39: ^0.2.0
-  json_theme: ^6.0.0
   pointycastle: ^3.9.0
   bip39_multi_nullsafety: ^1.0.7
   material_symbols_icons: ^4.2719.3
+  text_scroll: ^0.2.0
 
 dev_dependencies:
   flutter_test:
@@ -159,8 +159,6 @@ flutter:
     - assets/gva-tx.json
     - assets/img/animated-bell.gif
     - assets/img/pos.png
-    - assets/appainter_theme_dark.json
-    - assets/appainter_theme_light.json
 
   fonts:
     - family: Nunito

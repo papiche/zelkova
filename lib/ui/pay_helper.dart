@@ -195,7 +195,7 @@ bool weHaveBalance(BuildContext context, double amount) {
 }
 
 double getBalance(BuildContext context) =>
-    context.read<MultiWalletTransactionCubit>().balance;
+    context.read<MultiWalletTransactionCubit>().balance();
 
 Future<bool?> _confirmSend(
     BuildContext context,

@@ -37,7 +37,7 @@ class _CesiumAddDialogState extends State<CesiumAddDialog> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Contact>(
-      future: getProfile(widget.publicKey, true),
+      future: getProfile(widget.publicKey, onlyCPlusProfile: true),
       builder: (BuildContext context, AsyncSnapshot<Contact> snapshot) {
         if (snapshot.hasData) {
           return showDialog(

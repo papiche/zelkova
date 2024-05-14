@@ -19,7 +19,7 @@ class NodeListCard extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute<VoidCallback>(
-                  builder: (BuildContext context) => const NodeListPage()),
+                  builder: (BuildContext context) => NodeListPage()),
             );
           },
           child: InfoCard(

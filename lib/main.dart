@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
@@ -13,7 +12,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:json_theme/json_theme.dart';
 import 'package:l10n_esperanto/l10n_esperanto.dart';
 import 'package:lehttp_overrides/lehttp_overrides.dart';
 import 'package:once/once.dart';
@@ -63,15 +61,25 @@ const String fetchWalletsTransactionsTask =
 void main() async {
   await NotificationController.initializeLocalNotifications();
 
-  final String themeDarkStr =
-      await rootBundle.loadString('assets/appainter_theme_dark.json');
-  final dynamic themeDarkJson = jsonDecode(themeDarkStr);
-  final ThemeData themeDark = ThemeDecoder.decodeThemeData(themeDarkJson)!;
+  // const int seedColorOld = 0xff526600;
 
-  final String themeLightStr =
-      await rootBundle.loadString('assets/appainter_theme_light.json');
-  final dynamic themeLightJson = jsonDecode(themeLightStr);
-  final ThemeData themeLight = ThemeDecoder.decodeThemeData(themeLightJson)!;
+  const int seedColor = 0xff98FB98;
+  final int seedColorDark = Colors.lightGreen.value;
+  final ThemeData lightTheme = ThemeData.from(
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: const Color(seedColor),
+      // brightness: Brightness.light,
+    ),
+    useMaterial3: true,
+  );
+
+  final ThemeData darkTheme = ThemeData.from(
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: Color(seedColorDark),
+      brightness: Brightness.dark,
+    ),
+    useMaterial3: true,
+  );
 
   // To resolve Let's Encrypt SSL certificate problems with Android 7.1.1 and below
   if (!kIsWeb && Platform.isAndroid) {
@@ -175,11 +183,11 @@ void main() async {
                     // Add other BlocProviders here if needed
                   ],
                   child:
-                      GinkgoApp(themeDark: themeDark, themeLight: themeLight)),
+                      GinkgoApp(darkTheme: darkTheme, lightTheme: lightTheme)),
             )));
       });
-  if (inDevelopment) {
-    // Only use sentry in production
+  if (!kIsWeb && inDevelopment) {
+    // Only use sentry in development
     await SentryFlutter.init((
       SentryFlutterOptions options,
     ) {
@@ -258,11 +266,11 @@ class _AppIntro extends State<AppIntro> {
       GlobalKey<IntroductionScreenState>();
 
   void _onIntroEnd(BuildContext context, AppCubit cubit) {
-    cubit.introViewed();
     Navigator.of(context).pushReplacement(
       MaterialPageRoute<void>(
-          builder: (BuildContext _) => const SkeletonScreen()),
+          builder: (BuildContext _) => const FeedbackAndSkeletonScreen()),
     );
+    cubit.introViewed();
   }
 
   @override
@@ -334,14 +342,14 @@ PageViewModel createPageViewModel(
 
 class GinkgoApp extends StatefulWidget {
   const GinkgoApp(
-      {super.key, required this.themeLight, required this.themeDark});
+      {super.key, required this.lightTheme, required this.darkTheme});
 
   // The navigator key is necessary to navigate using static methods
   static final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey<NavigatorState>();
 
-  final ThemeData themeDark;
-  final ThemeData themeLight;
+  final ThemeData darkTheme;
+  final ThemeData lightTheme;
 
   @override
   State<GinkgoApp> createState() => _GinkgoAppState();
@@ -490,8 +498,9 @@ class _GinkgoAppState extends State<GinkgoApp> {
           await onKeyScanned(context, link);
           if (!mounted) {
             return;
+          } else {
+            context.read<BottomNavCubit>().updateIndex(0);
           }
-          context.read<BottomNavCubit>().updateIndex(0);
         }
       }
     }, onError: (Object err) {
@@ -524,8 +533,8 @@ class _GinkgoAppState extends State<GinkgoApp> {
               child: MaterialApp(
                 /// Localization is not available for the title.
                 title: 'Ğ1nkgo',
-                theme: widget.themeLight,
-                darkTheme: widget.themeDark,
+                theme: widget.lightTheme,
+                darkTheme: widget.darkTheme,
                 navigatorKey: GinkgoApp.navigatorKey,
                 scaffoldMessengerKey: globalMessengerKey,
 
@@ -542,10 +551,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
                 locale: context.locale,
                 debugShowCheckedModeBanner: false,
                 home: context.read<AppCubit>().isIntroViewed
-                    ? BetterFeedback(
-                        localizationsDelegates: context.localizationDelegates
-                          ..add(CustomFeedbackLocalizationsDelegate()),
-                        child: const SkeletonScreen())
+                    ? const FeedbackAndSkeletonScreen()
                     : const AppIntro(),
                 builder: (BuildContext buildContext, Widget? widget) {
                   NotificationController.locale = context.locale;
@@ -553,14 +559,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
                     BouncingScrollWrapper.builder(
                         context,
                         ConnectivityWidgetWrapperWrapper(
-                          //message: tr('offline'),
-                          //height: 18,
-
-                          offlineWidget: /* Container(
-                                color: Colors.transparent,
-                                child: Center(
-                                  child: */
-                              Column(
+                          offlineWidget: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
                               const Icon(
@@ -587,7 +586,6 @@ class _GinkgoAppState extends State<GinkgoApp> {
                               const SizedBox(height: 110),
                             ],
                           ),
-
                           child: widget!,
                         )),
                     maxWidth: 480,
@@ -603,5 +601,19 @@ class _GinkgoAppState extends State<GinkgoApp> {
                 },
               )));
     });
+  }
+}
+
+class FeedbackAndSkeletonScreen extends StatelessWidget {
+  const FeedbackAndSkeletonScreen({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BetterFeedback(
+        localizationsDelegates: context.localizationDelegates
+          ..add(CustomFeedbackLocalizationsDelegate()),
+        child: const SkeletonScreen());
   }
 }

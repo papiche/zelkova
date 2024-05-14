@@ -21,6 +21,8 @@ import '../../nfc_helper.dart';
 import '../../qr_manager.dart';
 import '../../ui_helpers.dart';
 import '../connectivity_widget_wrapper_wrapper.dart';
+import '../contact_menu.dart';
+import '../contacts_actions.dart';
 import '../custom_error_widget.dart';
 import '../loading_box.dart';
 import '../third_screen/contacts_page.dart';
@@ -88,8 +90,9 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
                 .convert(cPlusResponse.body) as Map<String, dynamic>)['hits']
             as Map<String, dynamic>)['hits'] as List<dynamic>;
         for (final dynamic hit in hits) {
-          final Contact c =
-              await contactFromResultSearch(hit as Map<String, dynamic>);
+          final Contact c = await contactFromResultSearch(
+            hit as Map<String, dynamic>,
+          );
           logger('Contact retrieved in c+ search $c');
           ContactsCache().addContact(c);
           setState(() {
@@ -103,7 +106,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
     if (isConnected) {
       if (_searchTerm.length >= 8) {
         // Only search wot if it's a long key
-        final List<Contact> wotResults = await searchWotV2(_searchTerm);
+        final List<Contact> wotResults = await searchWotV1(_searchTerm);
         // ignore: prefer_foreach
         for (final Contact c in wotResults) {
           ContactsCache().addContact(c);
@@ -114,8 +117,9 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
                 await ContactsCache().getContact(wotC.pubKey);
             if (cachedWotProfile.name == null) {
               // Users without c+ profile
-              final Contact cPlusProfile =
-                  await getProfile(cachedWotProfile.pubKey, true);
+              final Contact cPlusProfile = await getProfile(
+                  cachedWotProfile.pubKey,
+                  onlyCPlusProfile: true);
               ContactsCache().addContact(cPlusProfile);
             }
           }
@@ -154,9 +158,10 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
           final bool nft = hasNft(snapshot);
 
           final PaymentCubit paymentCubit = context.read<PaymentCubit>();
+          final bool forPayment = widget.forPayment;
           return Scaffold(
             appBar: AppBar(
-              title: Text(widget.forPayment
+              title: Text(forPayment
                   ? tr('search_user_title')
                   : tr('search_user_title_in_contacts')),
               backgroundColor: Theme.of(context).colorScheme.primary,
@@ -205,102 +210,104 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
                 )
               ],
             ),
-            body: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  TextField(
-                    controller: _searchController,
-                    focusNode: _searchFocusNode,
-                    decoration: InputDecoration(
-                      filled: true,
-                      labelText: tr('search_user'),
-                      helperText: _searchTerm.isEmpty
-                          ? tr('search_user_hint')
-                          : !_isMultiSelect && !_isLoading
-                              ? tr('search_multiuser_hint')
-                              : null,
-                      suffixIcon: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          IconButton(
-                            icon: const Icon(Icons.clear),
-                            onPressed: () {
-                              _searchController.clear();
-                              _searchTerm = '';
-                              _previousSearchTerm = '';
-                              setState(() {
-                                _isLoading = false;
-                                _results.clear();
-                              });
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.search),
-                            onPressed: () =>
-                                _searchTerm.length < 3 ? null : _search(),
-                          ),
-                        ],
-                      ),
-                    ),
-                    onSubmitted: (_) {
-                      _search();
-                    },
-                    onChanged: (String value) {
-                      if (value.length < _previousSearchTerm.length &&
-                          value.length < 3) {
-                        _previousSearchTerm = value;
-                        setState(() {
-                          _isLoading = false;
-                        });
-                        return;
-                      }
-                      _searchTerm = value;
-                      _previousSearchTerm = value;
-                      if (_searchTerm.length >= 3) {
-                        setState(() {
-                          _isLoading = true;
-                        });
-                        EasyDebounce.debounce('profile_search_debouncer',
-                            const Duration(milliseconds: 500), () => _search());
-                      }
-                    },
-                  ),
-                  if (_isLoading)
-                    const LoadingBox(simple: false)
-                  else if (_searchTerm.isNotEmpty &&
-                      _results.isEmpty &&
-                      _isLoading)
-                    const NoElements(text: 'nothing_found')
-                  else
-                    Expanded(
-                      child: ListView.builder(
-                          itemCount: _results.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            final Contact contact = _results[index];
-                            return FutureBuilder<Contact>(
-                                future: _getAndReplaceContact(contact),
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<Contact> snapshot) {
-                                  Widget widget;
-                                  if (snapshot.hasData) {
-                                    widget = _buildItem(
-                                        snapshot.data!, index, context);
-                                  } else if (snapshot.hasError) {
-                                    widget = CustomErrorWidget(snapshot.error);
-                                  } else {
-                                    // Contact without wot
-                                    widget =
-                                        _buildItem(contact, index, context);
-                                  }
-                                  return widget;
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: TextField(
+                      controller: _searchController,
+                      focusNode: _searchFocusNode,
+                      decoration: InputDecoration(
+                        filled: true,
+                        labelText: tr('search_user'),
+                        helperText: _searchTerm.isEmpty
+                            ? forPayment
+                                ? tr('search_user_hint')
+                                : tr('search_user_hint_basic')
+                            : !_isMultiSelect && !_isLoading && forPayment
+                                ? tr('search_multiuser_hint')
+                                : null,
+                        suffixIcon: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            IconButton(
+                              icon: const Icon(Icons.clear),
+                              onPressed: () {
+                                _searchController.clear();
+                                _searchTerm = '';
+                                _previousSearchTerm = '';
+                                setState(() {
+                                  _isLoading = false;
+                                  _results.clear();
                                 });
-                          }),
-                    )
-                ],
-              ),
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.search),
+                              onPressed: () =>
+                                  _searchTerm.length < 3 ? null : _search(),
+                            ),
+                          ],
+                        ),
+                      ),
+                      onSubmitted: (_) {
+                        _search();
+                      },
+                      onChanged: (String value) {
+                        if (value.length < _previousSearchTerm.length &&
+                            value.length < 3) {
+                          _previousSearchTerm = value;
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          return;
+                        }
+                        _searchTerm = value;
+                        _previousSearchTerm = value;
+                        if (_searchTerm.length >= 3) {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                          EasyDebounce.debounce(
+                              'profile_search_debouncer',
+                              const Duration(milliseconds: 500),
+                              () => _search());
+                        }
+                      },
+                    )),
+                if (_isLoading)
+                  const LoadingBox(simple: false)
+                else if (_searchTerm.isNotEmpty &&
+                    _results.isEmpty &&
+                    _isLoading)
+                  const NoElements(text: 'nothing_found')
+                else
+                  Expanded(
+                    child: ListView.builder(
+                        itemCount: _results.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final Contact contact = _results[index];
+                          return FutureBuilder<Contact>(
+                              future: _getAndReplaceContact(contact),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<Contact> snapshot) {
+                                Widget widget;
+                                if (snapshot.hasData) {
+                                  widget = _buildItem(
+                                      snapshot.data!, index, context);
+                                } else if (snapshot.hasError) {
+                                  widget = CustomErrorWidget(snapshot.error);
+                                } else {
+                                  // Contact without wot
+                                  widget = _buildItem(contact, index, context);
+                                }
+                                return widget;
+                              });
+                        }),
+                  )
+              ],
             ),
             floatingActionButton:
                 _isMultiSelect ? _buildFloatingActionButtons() : null,
@@ -494,9 +501,16 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
             },
             trailing: BlocBuilder<ContactsCubit, ContactsState>(
                 builder: (BuildContext context, ContactsState state) {
-              return ContactFavIcon(
-                  contact: contact,
-                  contactsCubit: context.read<ContactsCubit>());
+              return widget.forPayment
+                  ? ContactFavIcon(
+                      contact: contact,
+                      contactsCubit: context.read<ContactsCubit>())
+                  : ContactMenu(
+                      contact: contact,
+                      onEdit: () => onEditContact(context, contact),
+                      onSent: () => onSentContact(context, contact),
+                      onCopy: () => onShowContactQr(context, contact),
+                      onDelete: () => onDeleteContact(context, contact));
             }),
           );
   }

@@ -328,20 +328,32 @@ class SelectImportMethodDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(tr('select_import_method')),
-      // content: Text(tr('select_import_method_desc')),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            ListTile(
+              leading: const Icon(Icons.file_present),
+              title: Text(tr('file_import')),
+              onTap: () => Navigator.of(context).pop('file'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.content_paste),
+              title: Text(tr('clipboard_import')),
+              onTap: () => Navigator.of(context).pop('clipboard'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.key),
+              title: Text(tr('clipboard_import_pubkey')),
+              onTap: () => Navigator.of(context).pop('clipboard_pubkey'),
+            ),
+          ],
+        ),
+      ),
       actions: <Widget>[
-        TextButton.icon(
-            icon: const Icon(Icons.file_present),
-            label: Text(tr('file_import')),
-            onPressed: () => Navigator.of(context).pop('file')),
-        TextButton.icon(
-            icon: const Icon(Icons.content_paste),
-            label: Text(tr('clipboard_import')),
-            onPressed: () => Navigator.of(context).pop('clipboard')),
-        TextButton.icon(
-            icon: const Icon(Icons.key),
-            label: Text(tr('clipboard_import_pubkey')),
-            onPressed: () => Navigator.of(context).pop('clipboard')),
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(tr('cancel')),
+        ),
       ],
     );
   }

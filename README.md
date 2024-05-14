@@ -81,6 +81,10 @@ flutter test
 
 ### Build & deploy
 
+#### Prerequisites
+
+Create a `.env` configuration file (and `.env-dev` for development) in the root of the project. Use the `dot.env.sample` file as template.
+
 #### Build for web
 
 Use first this command to enable web support:

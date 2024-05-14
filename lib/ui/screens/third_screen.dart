@@ -52,8 +52,8 @@ class _ThirdScreenState extends State<ThirdScreen> {
                 final String? pubKey = await QrManager.qrScan(context);
                 if (pubKey != null && validateKey(pubKey)) {
                   final Contact contact =
-                  await ContactsCache().getContact(pubKey);
-                  if (!mounted) {
+                      await ContactsCache().getContact(pubKey);
+                  if (!context.mounted) {
                     return;
                   }
                   if (!context.read<ContactsCubit>().isContact(pubKey)) {
@@ -71,7 +71,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
                     );
                   }
                 } else {
-                  if (!mounted) {
+                  if (!context.mounted) {
                     return;
                   }
                   ScaffoldMessenger.of(context).showSnackBar(

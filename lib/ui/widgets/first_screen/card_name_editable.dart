@@ -254,7 +254,7 @@ class _CardNameEditableState extends State<CardNameEditable> {
         setState(() {
           currentText = newValue;
         });
-        if (!context.mounted) {
+        if (!mounted) {
           return;
         }
         ScaffoldMessenger.of(context).showSnackBar(

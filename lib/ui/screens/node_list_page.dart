@@ -23,6 +23,10 @@ class NodeListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final NodeListState state = context.watch<NodeListCubit>().state;
+    final List<Node> endPointNodes =
+        filterAndSortNodesByType(state.endpointNodes, NodeType.endpoint);
+    final List<Node> duniterIndexerNodes = filterAndSortNodesByType(
+        state.duniterIndexerNodes, NodeType.duniterIndexer);
     final List<Node> duniterNodes =
         filterAndSortNodesByType(state.duniterNodes, NodeType.duniter);
     final List<Node> cesiumPlusNodes =
@@ -47,6 +51,18 @@ class NodeListPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    const DebugNodeHeader(type: NodeType.endpoint),
+                    if (endPointNodes.isNotEmpty)
+                      NodeListWidget(
+                          nodes: endPointNodes,
+                          type: NodeType.endpoint,
+                          currentBlock: endPointNodes[0].currentBlock),
+                    const DebugNodeHeader(type: NodeType.duniterIndexer),
+                    if (duniterIndexerNodes.isNotEmpty)
+                      NodeListWidget(
+                          nodes: duniterIndexerNodes,
+                          type: NodeType.duniterIndexer,
+                          currentBlock: duniterIndexerNodes[0].currentBlock),
                     const DebugNodeHeader(type: NodeType.gva),
                     if (gvaNodes.isNotEmpty)
                       NodeListWidget(

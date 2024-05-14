@@ -122,7 +122,6 @@
   "form_contact_name_validation": "Por favor, ingresa un nombre",
   "form_contact_name_validation_pub_key": "Por favor, ingresa una clave pública valida",
   "form_contact_notes": "Notas",
-  "long_press_to_edit": "Desliza para seleccionar este contacto. Mantén pulsado para editar",
   "form_contact_pub_key": "Clave pública",
   "reloading_nodes": "Refrescando nodos del tipo {type}",
   "payment_error": "Error en el pago",
@@ -254,5 +253,6 @@
   "multi_pay_results": "Resultados de los pagos",
   "multi_pay_results_desc": "{success} pagos exitosos, {fail} fallidos",
   "others_and_someone": "{others} y {someone}",
-  "search_multiuser_hint": "Mantén pulsado si quieres pagar a varias personas a la vez"
+  "search_multiuser_hint": "Mantén pulsado si quieres pagar a varias personas a la vez",
+  "account_info": "Información de la cuenta"
 }

@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:feedback_gitlab/feedback_gitlab.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../../data/models/cesium_card.dart';
 import '../../data/models/node_manager.dart';
+import '../../env.dart';
 import '../../main.dart';
 import '../../shared_prefs_helper.dart';
 import '../screens/sandbox.dart';
@@ -106,8 +106,7 @@ class CardDrawer extends StatelessWidget {
                   title: Text(tr('feedback')),
                   onTap: () {
                     Navigator.pop(context);
-                    final String gitLabToken = dotenv.get('GITLAB_TOKEN',
-                        fallback: 'xjxXTv3ZRzKsc4SPTN4s');
+                    final String gitLabToken = Env.gitLabToken;
                     final MyCustomHttpClient client =
                         MyCustomHttpClient(http.Client(), (String? issueUrl,
                             Map<String, dynamic> issueData, bool isSuccess) {

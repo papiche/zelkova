@@ -1,1 +1,1 @@
-enum NodeType { duniter, cesiumPlus, gva }
+enum NodeType { duniter, cesiumPlus, gva, endpoint, duniterIndexer }

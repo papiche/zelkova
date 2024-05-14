@@ -33,7 +33,6 @@ dependencies:
   url_launcher: ^6.1.7
   hive_flutter: ^1.1.0
   flutter_svg: ^2.0.2
-  flutter_dotenv: ^5.0.2
   http: ^0.13.5
   easy_logger: ^0.0.2
   qr_flutter: ^4.0.0
@@ -41,9 +40,9 @@ dependencies:
   responsive_framework: ^0.2.0
   #durt: ^0.1.7
   durt:
-    # path: ../durt
-    git:
-      url: https://git.duniter.org/vjrj/durt
+    path: ../durt
+    #git:
+    #  url: https://git.duniter.org/vjrj/durt
   flutter_neumorphic:
     git:
       url: https://github.com/den0206/Flutter-Neumorphic.git
@@ -67,7 +66,7 @@ dependencies:
   sentry_logging: ^7.8.0
   pwa_install: ^0.0.5
   file_saver: ^0.2.1
-  filesystem_picker: ^3.1.0
+  filesystem_picker: ^4.1.0
   path: ^1.8.2
   path_provider: ^2.0.14
   awesome_notifications: ^0.7.5-dev.3
@@ -97,21 +96,34 @@ dependencies:
   we_slide: ^2.4.0
   workmanager: ^0.5.1
   get_it: ^7.6.4
-  l10n_esperanto: ^2.0.6
+  l10n_esperanto: ^2.0.9
   collection: ^1.17.2
+  envied: ^0.5.3
+  polkadart: ^0.1.0
+  polkadart_keyring: ^0.3.0
+  ferry: ^0.11.3-dev.0+1
+  gql_http_link: ^0.4.5
+  substrate_bip39: ^0.2.0
+  json_theme: ^6.0.0
+  pointycastle: ^3.9.0
+  bip39_multi_nullsafety: ^1.0.7
+  material_symbols_icons: ^4.2719.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.1
-  build_runner: ^2.3.3
+  build_runner: ^2.4.8
   json_serializable: ^6.6.1
   copy_with_extension_gen: any
+  envied_generator: ^0.5.3
+  ferry_generator: ^0.6.1
 
 # source: https://stackoverflow.com/a/75332857/8301867
 dependency_overrides:
-  web_socket_channel: 2.2.0
+  #web_socket_channel: 2.2.0
   intl: ^0.18.1
+  analyzer: ^6.4.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -147,6 +159,8 @@ flutter:
     - assets/gva-tx.json
     - assets/img/animated-bell.gif
     - assets/img/pos.png
+    - assets/appainter_theme_dark.json
+    - assets/appainter_theme_light.json
 
   fonts:
     - family: Nunito
@@ -208,3 +222,4 @@ sentry:
   #web_build_path: ...
   # commits: auto
   ignore_missing: true
+

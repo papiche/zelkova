@@ -13,6 +13,10 @@ abstract class _$NodeListStateCWProxy {
 
   NodeListState gvaNodes(List<Node>? gvaNodes);
 
+  NodeListState endpointNodes(List<Node>? endpointNodes);
+
+  NodeListState duniterIndexerNodes(List<Node>? duniterIndexerNodes);
+
   NodeListState currentGvaNode(Node? currentGvaNode);
 
   NodeListState isLoading(bool? isLoading);
@@ -27,6 +31,8 @@ abstract class _$NodeListStateCWProxy {
     List<Node>? duniterNodes,
     List<Node>? cesiumPlusNodes,
     List<Node>? gvaNodes,
+    List<Node>? endpointNodes,
+    List<Node>? duniterIndexerNodes,
     Node? currentGvaNode,
     bool? isLoading,
   });
@@ -50,6 +56,14 @@ class _$NodeListStateCWProxyImpl implements _$NodeListStateCWProxy {
   NodeListState gvaNodes(List<Node>? gvaNodes) => this(gvaNodes: gvaNodes);
 
   @override
+  NodeListState endpointNodes(List<Node>? endpointNodes) =>
+      this(endpointNodes: endpointNodes);
+
+  @override
+  NodeListState duniterIndexerNodes(List<Node>? duniterIndexerNodes) =>
+      this(duniterIndexerNodes: duniterIndexerNodes);
+
+  @override
   NodeListState currentGvaNode(Node? currentGvaNode) =>
       this(currentGvaNode: currentGvaNode);
 
@@ -68,6 +82,8 @@ class _$NodeListStateCWProxyImpl implements _$NodeListStateCWProxy {
     Object? duniterNodes = const $CopyWithPlaceholder(),
     Object? cesiumPlusNodes = const $CopyWithPlaceholder(),
     Object? gvaNodes = const $CopyWithPlaceholder(),
+    Object? endpointNodes = const $CopyWithPlaceholder(),
+    Object? duniterIndexerNodes = const $CopyWithPlaceholder(),
     Object? currentGvaNode = const $CopyWithPlaceholder(),
     Object? isLoading = const $CopyWithPlaceholder(),
   }) {
@@ -84,6 +100,14 @@ class _$NodeListStateCWProxyImpl implements _$NodeListStateCWProxy {
           ? _value.gvaNodes
           // ignore: cast_nullable_to_non_nullable
           : gvaNodes as List<Node>?,
+      endpointNodes: endpointNodes == const $CopyWithPlaceholder()
+          ? _value.endpointNodes
+          // ignore: cast_nullable_to_non_nullable
+          : endpointNodes as List<Node>?,
+      duniterIndexerNodes: duniterIndexerNodes == const $CopyWithPlaceholder()
+          ? _value.duniterIndexerNodes
+          // ignore: cast_nullable_to_non_nullable
+          : duniterIndexerNodes as List<Node>?,
       currentGvaNode: currentGvaNode == const $CopyWithPlaceholder()
           ? _value.currentGvaNode
           // ignore: cast_nullable_to_non_nullable
@@ -108,26 +132,27 @@ extension $NodeListStateCopyWith on NodeListState {
 
 NodeListState _$NodeListStateFromJson(Map<String, dynamic> json) =>
     NodeListState(
-      duniterNodes: (json['duniterNodes'] as List<dynamic>?)
-          ?.map((e) => Node.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      cesiumPlusNodes: (json['cesiumPlusNodes'] as List<dynamic>?)
-          ?.map((e) => Node.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      gvaNodes: (json['gvaNodes'] as List<dynamic>?)
-          ?.map((e) => Node.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      currentGvaNode: json['currentGvaNode'] == null
-          ? null
-          : Node.fromJson(json['currentGvaNode'] as Map<String, dynamic>),
+      duniterNodes: NodeListState._nodesFromJson(json['duniterNodes'] as List),
+      cesiumPlusNodes:
+          NodeListState._nodesFromJson(json['cesiumPlusNodes'] as List),
+      gvaNodes: NodeListState._nodesFromJson(json['gvaNodes'] as List),
+      endpointNodes:
+          NodeListState._nodesFromJson(json['endpointNodes'] as List),
+      duniterIndexerNodes:
+          NodeListState._nodesFromJson(json['duniterIndexerNodes'] as List),
+      currentGvaNode: NodeListState._nodeFromJson(
+          json['currentGvaNode'] as Map<String, dynamic>?),
       isLoading: json['isLoading'] as bool?,
     );
 
 Map<String, dynamic> _$NodeListStateToJson(NodeListState instance) =>
     <String, dynamic>{
-      'duniterNodes': instance.duniterNodes,
-      'cesiumPlusNodes': instance.cesiumPlusNodes,
-      'gvaNodes': instance.gvaNodes,
+      'duniterNodes': NodeListState._nodesToJson(instance.duniterNodes),
+      'cesiumPlusNodes': NodeListState._nodesToJson(instance.cesiumPlusNodes),
+      'gvaNodes': NodeListState._nodesToJson(instance.gvaNodes),
+      'endpointNodes': NodeListState._nodesToJson(instance.endpointNodes),
+      'duniterIndexerNodes':
+          NodeListState._nodesToJson(instance.duniterIndexerNodes),
       'isLoading': instance.isLoading,
-      'currentGvaNode': instance.currentGvaNode,
+      'currentGvaNode': NodeListState._nodeToJson(instance.currentGvaNode),
     };

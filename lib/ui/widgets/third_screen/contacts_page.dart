@@ -4,16 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../../data/models/bottom_nav_cubit.dart';
 import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
 import '../../../data/models/contact_sort_type.dart';
-import '../../../data/models/payment_cubit.dart';
-import '../../../g1/g1_helper.dart';
-import '../../contacts_cache.dart';
 import '../../ui_helpers.dart';
 import '../bottom_widget.dart';
-import 'contact_form_dialog.dart';
+import '../contacts_actions.dart';
+import 'contact_menu.dart';
 
 class ContactsPage extends StatefulWidget {
   const ContactsPage({super.key});
@@ -41,12 +38,12 @@ class _ContactsPageState extends State<ContactsPage> {
   Widget build(BuildContext context) {
     final ContactsCubit cubit = context.watch<ContactsCubit>();
     context.read<ContactsCubit>().sortContactsAsStored();
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Container(
                 decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.background),
                 child: Row(children: <Widget>[
@@ -103,113 +100,97 @@ class _ContactsPageState extends State<ContactsPage> {
                       ];
                     },
                   )
-                ])),
-            const SizedBox(height: 20),
-            if (cubit.state.filteredContacts.isEmpty)
-              const NoElements(text: 'no_contacts')
-            else
-              Expanded(
-                  child: ListView.builder(
-                itemCount: cubit.state.filteredContacts.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final Contact contact = cubit.state.filteredContacts[index];
-                  return Slidable(
-                      // Specify a key if the Slidable is dismissible.
-                      key: ValueKey<int>(index),
-                      // The start action pane is the one at the left or the top side.
-                      startActionPane: ActionPane(
-                        // A motion is a widget used to control how the pane animates.
-                        motion: const ScrollMotion(),
+                ]))),
+        const SizedBox(height: 20),
+        if (cubit.state.filteredContacts.isEmpty)
+          const NoElements(text: 'no_contacts')
+        else
+          Expanded(
+              child: ListView.builder(
+            itemCount: cubit.state.filteredContacts.length,
+            itemBuilder: (BuildContext context, int index) {
+              final Contact contact = cubit.state.filteredContacts[index];
+              return Slidable(
+                  // Specify a key if the Slidable is dismissible.
+                  key: ValueKey<int>(index),
+                  // The start action pane is the one at the left or the top side.
+                  startActionPane: ActionPane(
+                    // A motion is a widget used to control how the pane animates.
+                    motion: const ScrollMotion(),
 
-                        // All actions are defined in the children parameter.
-                        children: <SlidableAction>[
-                          // A SlidableAction can have an icon and/or a label.
-                          SlidableAction(
-                            onPressed: (BuildContext c) {
-                              context
-                                  .read<ContactsCubit>()
-                                  .removeContact(contact);
-                            },
-                            backgroundColor: deleteColor,
-                            foregroundColor: Colors.white,
-                            icon: Icons.delete,
-                            label: tr('delete_contact'),
-                          ),
-                          if (showShare())
-                            SlidableAction(
-                              onPressed: (BuildContext c) =>
-                                  Share.share(contact.pubKey),
-                              backgroundColor:
-                                  Theme.of(context).secondaryHeaderColor,
-                              foregroundColor: Theme.of(context).primaryColor,
-                              icon: Icons.share,
-                              label: tr('share_this_key'),
-                            ),
-                        ],
+                    // All actions are defined in the children parameter.
+                    children: <SlidableAction>[
+                      // A SlidableAction can have an icon and/or a label.
+                      SlidableAction(
+                        onPressed: (BuildContext c) {
+                          onDeleteContact(context, contact);
+                        },
+                        backgroundColor: deleteColor,
+                        foregroundColor: Colors.white,
+                        icon: Icons.delete,
+                        label: tr('delete_contact'),
                       ),
-                      // The end action pane is the one at the right or the bottom side.
-                      endActionPane: ActionPane(
-                        motion: const ScrollMotion(),
-                        /* dismissible: DismissiblePane(onDismissed: () {
+                      if (showShare())
+                        SlidableAction(
+                          onPressed: (BuildContext c) =>
+                              Share.share(contact.pubKey),
+                          backgroundColor:
+                              Theme.of(context).secondaryHeaderColor,
+                          foregroundColor: Theme.of(context).primaryColor,
+                          icon: Icons.share,
+                          label: tr('share_this_key'),
+                        ),
+                    ],
+                  ),
+                  // The end action pane is the one at the right or the bottom side.
+                  endActionPane: ActionPane(
+                    motion: const ScrollMotion(),
+                    /* dismissible: DismissiblePane(onDismissed: () {
                           onSent(context, contact);
                         }), */
-                        children: <SlidableAction>[
-                          SlidableAction(
-                            onPressed: (BuildContext c) {
-                              showQrDialog(
-                                  context: context,
-                                  publicKey: getFullPubKey(contact.pubKey),
-                                  noTitle: true,
-                                  feedbackText: 'some_key_copied_to_clipboard');
-                            },
-                            backgroundColor: Theme.of(context).primaryColorDark,
-                            foregroundColor: Colors.white,
-                            icon: Icons.copy,
-                            label: tr('copy_contact_key'),
-                          ),
-                          SlidableAction(
-                            onPressed: (BuildContext c) {
-                              onSent(c, contact);
-                            },
-                            backgroundColor: Theme.of(context).primaryColor,
-                            foregroundColor: Colors.white,
-                            icon: Icons.send,
-                            label: tr('send_g1'),
-                          ),
-                        ],
+                    children: <SlidableAction>[
+                      SlidableAction(
+                        onPressed: (BuildContext c) {
+                          onShowContactQr(context, contact);
+                        },
+                        backgroundColor: Theme.of(context).primaryColorDark,
+                        foregroundColor: Colors.white,
+                        icon: Icons.copy,
+                        label: tr('copy_contact_key'),
                       ),
-                      child: SlidableContactTile(contact,
-                          index: index, context: context, onLongPress: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return ContactFormDialog(
-                                contact: contact,
-                                onSave: (Contact c) {
-                                  context
-                                      .read<ContactsCubit>()
-                                      .updateContact(c);
-                                  ContactsCache().saveContact(c);
-                                });
-                          },
-                        );
-                      }, onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
+                      SlidableAction(
+                        onPressed: (BuildContext c) {
+                          onSentContact(c, contact);
+                        },
+                        backgroundColor: Theme.of(context).primaryColor,
+                        foregroundColor: Colors.white,
+                        icon: Icons.send,
+                        label: tr('send_g1'),
+                      ),
+                    ],
+                  ),
+                  child: SlidableContactTile(contact,
+                      index: index,
+                      context: context,
+                      onLongPress: () => onEditContact(context, contact),
+                      onTap: () {
+/*                        ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(tr('long_press_to_edit')),
                           ),
-                        );
-                      }));
-                },
-              )),
-            const BottomWidget()
-          ],
-        ));
-  }
-
-  void onSent(BuildContext c, Contact contact) {
-    c.read<PaymentCubit>().selectUser(contact);
-    c.read<BottomNavCubit>().updateIndex(0);
+                        ); */
+                      },
+                      trailing: ContactMenu(
+                          contact: contact,
+                          onEdit: () => onEditContact(context, contact),
+                          onSent: () => onSentContact(context, contact),
+                          onCopy: () => onShowContactQr(context, contact),
+                          onDelete: () => onDeleteContact(context, contact))));
+            },
+          )),
+        const BottomWidget()
+      ],
+    );
   }
 }
 

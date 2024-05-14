@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../g1/g1_helper.dart';
@@ -68,10 +67,7 @@ class CreditCard extends StatelessWidget {
                         child: FittedBox(
                             fit: BoxFit.scaleDown,
                             child: Text(
-                              dotenv.env['CARD_TEXT'] != null &&
-                                      dotenv.env['CARD_TEXT'] != 'Ğ1 Wallet'
-                                  ? dotenv.env['CARD_TEXT']!
-                                  : tr('g1_wallet'),
+                              tr('g1_wallet'),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize:

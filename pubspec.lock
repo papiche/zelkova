@@ -85,10 +85,10 @@ packages:
     dependency: transitive
     description:
       name: bip32_ed25519
-      sha256: "8c739df5d7a05ac2d08dd355062313d84f41244d05cf6cc953c9f0bca66b1fdf"
+      sha256: "292ef300ce24a140ce2814e593af6fc2fe20185ffded9a9bd99ce7c22abd7657"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.2"
+    version: "0.5.0"
   bip39_mnemonic:
     dependency: transitive
     description:
@@ -404,10 +404,11 @@ packages:
   durt:
     dependency: "direct main"
     description:
-      path: "../durt"
-      relative: true
-    source: path
-    version: "0.1.7"
+      name: durt
+      sha256: "29e4a1adaea1dfedff4d9237580b414ca5fe621a7a131b5fa129b9824365c938"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.8"
   easy_debounce:
     dependency: "direct main"
     description:
@@ -1281,10 +1282,10 @@ packages:
     dependency: transitive
     description:
       name: pinenacl
-      sha256: e5fb0bce1717b7f136f35ee98b5c02b3e6383211f8a77ca882fa7812232a07b9
+      sha256: "3a5503637587d635647c93ea9a8fecf48a420cc7deebe6f1fc85c2a5637ab327"
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.4"
+    version: "0.5.1"
   platform:
     dependency: transitive
     description:

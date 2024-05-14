@@ -1,7 +1,6 @@
 // lib/g1/astroid_helper.dart
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:tuple/tuple.dart';
-import '../g1/g1_helper.dart';
 
 Future<Tuple2<String, String>?> decryptAstroID(
     String disco, String password) async {

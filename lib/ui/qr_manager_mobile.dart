@@ -37,3 +37,42 @@ class QrManager {
     return result.rawContent;
   }
 }
+// lib/ui/ui_helpers.dart
+import 'package:flutter/material.dart';
+
+Future<String?> showTextInputDialog({
+  required BuildContext context,
+  required String title,
+  required String hint,
+}) async {
+  String? input;
+  await showDialog<String>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(title),
+        content: TextField(
+          onChanged: (String value) {
+            input = value;
+          },
+          decoration: InputDecoration(hintText: hint),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(input);
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      );
+    },
+  );
+  return input;
+}

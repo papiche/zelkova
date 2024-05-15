@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-
+import 'package:tuple/tuple.dart';
 import '../tutorial.dart';
 import '../widgets/card_drawer.dart';
 import '../widgets/second_screen/card_terminal.dart';

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:durt/durt.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tuple/tuple.dart';
 
 import 'data/models/cesium_card.dart';
 import 'data/models/credit_card_themes.dart';
@@ -68,8 +69,7 @@ class SharedPreferencesHelper with ChangeNotifier {
       final Tuple2<String, String>? secrets =
           await decryptAstroID(disco, password);
       if (secrets != null) {
-        final CesiumWallet wallet =
-            CesiumWallet.fromSecrets(secrets.item1, secrets.item2);
+        final CesiumWallet wallet = CesiumWallet(secrets.item1, secrets.item2);
         final CesiumCard card =
             buildCesiumCard(seed: '', pubKey: wallet.pubkey);
         addCesiumCard(card);

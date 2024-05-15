@@ -404,9 +404,16 @@ packages:
   durt:
     dependency: "direct main"
     description:
+<<<<<<< HEAD
       path: "../durt"
       relative: true
     source: path
+=======
+      name: durt
+      sha256: "29e4a1adaea1dfedff4d9237580b414ca5fe621a7a131b5fa129b9824365c938"
+      url: "https://pub.dev"
+    source: hosted
+>>>>>>> 84e05b9aa8f4188ec9d24643d9d17d37deb02e10
     version: "0.1.8"
   easy_debounce:
     dependency: "direct main"

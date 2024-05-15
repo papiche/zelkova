@@ -1,6 +1,17 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:durt/durt.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:tuple/tuple.dart';
+=======
+import 'package:ndef/ndef.dart';
+import '../../data/models/cesium_card.dart';
+import '../logger.dart';
+import 'package:tuple/tuple.dart';
+
+>>>>>>> 84e05b9aa8f4188ec9d24643d9d17d37deb02e10
 import '../tutorial.dart';
 import '../widgets/card_drawer.dart';
 import '../widgets/second_screen/card_terminal.dart';
@@ -8,7 +19,6 @@ import '../widgets/second_screen/second_tutorial.dart';
 import '../../g1/astroid_helper.dart';
 import '../../g1/api.dart';
 import '../../shared_prefs_helper.dart';
-import '../pay_helper.dart';
 import '../qr_manager_mobile.dart';
 import '../ui_helpers.dart';
 
@@ -36,11 +46,36 @@ class _SecondScreenState extends State<SecondScreen> {
         return;
       }
 
-      // Ask the user for the unique password
-      final String? password = await showTextInputDialog(
+      // Demander à l'utilisateur de saisir le mot de passe unique ($UNIQID)
+      final String? password = await showDialog<String>(
         context: context,
-        title: 'Enter Password',
-        hint: 'Unique Password',
+        builder: (BuildContext context) {
+          String passwordLocal = '';
+          return AlertDialog(
+            title: const Text('Saisir le mot de passe'),
+            content: TextField(
+              decoration:
+                  const InputDecoration(hintText: 'Mot de passe unique'),
+              onChanged: (String value) {
+                // Handle password input
+                passwordLocal = value;
+              },
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(null),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  // Handle password submission
+                  Navigator.of(context).pop(passwordLocal);
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
       );
       if (password == null || password.isEmpty) {
         return;
@@ -55,17 +90,25 @@ class _SecondScreenState extends State<SecondScreen> {
         return;
       }
 
-      // Initialize a new CesiumWallet with the decrypted secrets
-      final CesiumWallet astroIDWallet =
-          CesiumWallet.fromSecrets(secrets.item1, secrets.item2);
-
       // Get the currently loaded wallet
       final CesiumWallet currentWallet =
           await SharedPreferencesHelper().getWallet();
 
+      // Initialize a new CesiumWallet with the decrypted secrets
+      final CesiumWallet astroIDWallet =
+          CesiumWallet(secrets.item1, secrets.item2);
+
+      // Add the AstroID wallet to the storage
+      SharedPreferencesHelper().importAstroIDWallet(disco, password);
+      final CesiumCard card = SharedPreferencesHelper().buildCesiumCard(
+          seed: astroIDWallet.seed.toHexString(), pubKey: astroIDWallet.pubkey);
+
+      // Select the AstroID wallet as the current wallet
+      SharedPreferencesHelper().selectCurrentWallet(card);
+
       // Make a payment from the AstroID wallet to the current wallet
       final PayResult result = await payWithGVA(
-        to: [currentWallet.pubkey],
+        to: <String>[currentWallet.pubkey],
         amount: 100.0, // Specify the amount to transfer
         comment: 'Payment from AstroID',
       );
@@ -76,9 +119,6 @@ class _SecondScreenState extends State<SecondScreen> {
         showAlertDialog(
             context, 'Error', 'Payment from AstroID failed: ${result.message}');
       }
-
-      // Discard the AstroID wallet instance
-      astroIDWallet.dispose();
     } catch (e, stacktrace) {
       logger('Error during AstroID payment: $e');
       logger(stacktrace.toString());

@@ -1,9 +1,14 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 
 import 'package:durt/durt.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../data/models/cesium_card.dart';
+import 'package:ndef/utilities.dart';
+import 'qr_manager.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../../data/models/contact.dart';
@@ -132,7 +137,6 @@ Future<bool> payWithRetry(
                   'Node used: ${result != null && result.node != null ? result.node!.url : 'unknown'}');
           if (result.message == 'success') {
             paymentCubit.sent();
-            // ignore: use_build_context_synchronously
             if (!context.mounted) {
               return true;
             }
@@ -288,10 +292,34 @@ Future<void> importAstroID(BuildContext context) async {
     }
 
     // Demander à l'utilisateur de saisir le mot de passe unique ($UNIQID)
-    final String? password = await showTextInputDialog(
+    final String? password = await showDialog<String>(
       context: context,
-      title: 'Saisir le mot de passe',
-      hint: 'Mot de passe unique',
+      builder: (BuildContext context) {
+        String passwordLocal = '';
+        return AlertDialog(
+          title: const Text('Saisir le mot de passe'),
+          content: TextField(
+            decoration: const InputDecoration(hintText: 'Mot de passe unique'),
+            onChanged: (String value) {
+              // Handle password input
+              passwordLocal = value;
+            },
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(null),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Handle password submission
+                Navigator.of(context).pop(passwordLocal);
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
     );
     if (password == null || password.isEmpty) {
       return;
@@ -307,17 +335,17 @@ Future<void> importAstroID(BuildContext context) async {
     }
 
     // Initialiser un nouveau portefeuille CesiumWallet avec les secrets déchiffrés
-    final CesiumWallet wallet =
-        CesiumWallet.fromSecrets(secrets.item1, secrets.item2);
+    final CesiumWallet wallet = CesiumWallet(secrets.item1, secrets.item2);
 
-    // Sauvegarder ce portefeuille
-    await SharedPreferencesHelper().saveWallet(wallet);
+    // Add the AstroID wallet to the storage
+    SharedPreferencesHelper().importAstroIDWallet(disco, password);
+    final CesiumCard card = SharedPreferencesHelper().buildCesiumCard(
+        seed: wallet.seed.toHexString(), pubKey: wallet.pubkey);
 
-    // Mettre à jour l'état de l'app
-    context.read<AppState>().setWallet(wallet);
+    // Select the AstroID wallet as the current wallet
+    SharedPreferencesHelper().selectCurrentWallet(card);
 
     // Rediriger vers l'écran principal
-    // ignore: use_build_context_synchronously
     Navigator.of(context).pushReplacementNamed('/');
   } catch (e, stacktrace) {
     logger('Erreur importation AstroID: $e');

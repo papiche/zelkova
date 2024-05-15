@@ -39,7 +39,7 @@ class SkeletonScreen extends StatelessWidget {
       ),
 
       bottomNavigationBar: const BottomNavBar(),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
     );
   }
 }

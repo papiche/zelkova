@@ -6,9 +6,7 @@ import 'package:durt/durt.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../data/models/cesium_card.dart';
 import 'package:ndef/utilities.dart';
-import 'qr_manager.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../../data/models/contact.dart';
@@ -20,17 +18,19 @@ import '../../../g1/api.dart';
 import '../../../shared_prefs_helper.dart';
 import '../data/models/app_cubit.dart';
 import '../data/models/bottom_nav_cubit.dart';
+import '../data/models/cesium_card.dart';
 import '../data/models/multi_wallet_transaction_cubit.dart';
 import '../data/models/node.dart';
 import '../data/models/node_manager.dart';
 import '../data/models/payment_state.dart';
 import '../data/models/utxo.dart';
 import '../data/models/utxo_cubit.dart';
-import '../g1/currency.dart';
 import '../g1/astroid_helper.dart';
+import '../g1/currency.dart';
 import '../g1/g1_helper.dart';
 import 'contacts_cache.dart';
 import 'logger.dart';
+import 'qr_manager.dart';
 import 'ui_helpers.dart';
 import 'widgets/connectivity_widget_wrapper_wrapper.dart';
 import 'widgets/fifth_screen/import_dialog.dart';
@@ -307,7 +307,7 @@ Future<void> importAstroID(BuildContext context) async {
           ),
           actions: <Widget>[
             TextButton(
-              onPressed: () => Navigator.of(context).pop(null),
+              onPressed: () => Navigator.of(context).pop(),
               child: const Text('Cancel'),
             ),
             TextButton(

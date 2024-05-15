@@ -127,7 +127,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                 child: Divider(
                                   color: Theme.of(context)
                                       .colorScheme
-                                      .onBackground
+                                      .onSurface
                                       .withOpacity(.4),
                                 ),
                               ),

@@ -38,7 +38,6 @@ class QrManager {
   }
 }
 // lib/ui/ui_helpers.dart
-import 'package:flutter/material.dart';
 
 Future<String?> showTextInputDialog({
   required BuildContext context,

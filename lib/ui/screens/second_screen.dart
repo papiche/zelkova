@@ -3,24 +3,20 @@
 import 'package:durt/durt.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-import 'package:tuple/tuple.dart';
-=======
 import 'package:ndef/ndef.dart';
-import '../../data/models/cesium_card.dart';
-import '../logger.dart';
 import 'package:tuple/tuple.dart';
 
->>>>>>> 84e05b9aa8f4188ec9d24643d9d17d37deb02e10
+import '../../data/models/cesium_card.dart';
+import '../../g1/api.dart';
+import '../../g1/astroid_helper.dart';
+import '../../shared_prefs_helper.dart';
+import '../logger.dart';
+import '../qr_manager_mobile.dart';
 import '../tutorial.dart';
+import '../ui_helpers.dart';
 import '../widgets/card_drawer.dart';
 import '../widgets/second_screen/card_terminal.dart';
 import '../widgets/second_screen/second_tutorial.dart';
-import '../../g1/astroid_helper.dart';
-import '../../g1/api.dart';
-import '../../shared_prefs_helper.dart';
-import '../qr_manager_mobile.dart';
-import '../ui_helpers.dart';
 
 class SecondScreen extends StatefulWidget {
   const SecondScreen({super.key});
@@ -63,7 +59,7 @@ class _SecondScreenState extends State<SecondScreen> {
             ),
             actions: <Widget>[
               TextButton(
-                onPressed: () => Navigator.of(context).pop(null),
+                onPressed: () => Navigator.of(context).pop(),
                 child: const Text('Cancel'),
               ),
               TextButton(

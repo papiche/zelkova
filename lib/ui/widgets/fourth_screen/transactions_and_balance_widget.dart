@@ -241,7 +241,7 @@ class _TransactionsAndBalanceWidgetState
       panelMaxSize: panelMaxSize,
       // isDismissible: false,
       body: Container(
-        color: colorScheme.background,
+        color: colorScheme.surface,
         child: _transactionPanelBuilder(context, pubKey, isG1, currentSymbol,
             currentUd, isCurrencyBefore, balance),
       ),

@@ -335,7 +335,7 @@ PageViewModel createPageViewModel(
     decoration: PageDecoration(
       titleTextStyle: titleStyle,
       bodyTextStyle: bodyStyle,
-      pageColor: colorScheme.background,
+      pageColor: colorScheme.surface,
     ),
   );
 }

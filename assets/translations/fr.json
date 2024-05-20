@@ -14,7 +14,7 @@
   "g1_form_pay_send": "Envoyer",
   "search_user_title": "Utilisateur à payer",
   "search_user_title_in_contacts": "Chercher des utilisateurs",
-  "search_user": "Rechercher (utilisateur ou clé publique)",
+  "search_user": "Rechercher utilisateur ou clé",
   "search_user_btn": "Rechercher un utilisateur",
   "g1_form_pay_desc": "Description",
   "g1_form_pay_hint": "Entrez une description (facultatif)",
@@ -242,5 +242,9 @@
   "card_name_changed": "Le nom de votre carte a été mis à jour. Veuillez noter que ce nom est public et permet aux autres de vous trouver",
   "contacts_sort_by_name": "Tri par nom",
   "payment_error_no_pass": "Mots de passe incorrects",
-  "contacts_sort_by_date": "Tri par date"
+  "contacts_sort_by_date": "Tri par date",
+  "search_user_hint_basic": "Saisissez un nom ou une clé",
+  "Insufficient balance in your wallet": "Solde insuffisant dans votre portefeuille",
+  "search_multiuser_hint": "Appuyez longuement si vous souhaitez payer plusieurs utilisateurs à la fois",
+  "search_user_hint": "Saisissez un nom ou une clé ou collez une liste de clés"
 }

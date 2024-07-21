@@ -93,7 +93,7 @@ class TransactionChartState extends State<TransactionChart> {
         });
       },
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(
+        backgroundColor: WidgetStateProperty.all(
           isSelected ? Colors.blue : Colors.grey,
         ),
       ),

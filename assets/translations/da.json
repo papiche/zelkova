@@ -1,1 +1,18 @@
-{}
+{
+  "g1_wallet": "Ğ1 pung",
+  "close": "Lukke",
+  "bottom_nav_first": "Betale",
+  "bottom_nav_second": "Modtage",
+  "bottom_nav_trd": "Kontakter",
+  "bottom_nav_frd": "Saldo",
+  "bottom_nav_fifth": "Info",
+  "send_g1": "Send Ğ1",
+  "g1_amount": "Beløbet som skal sendes",
+  "g1_form_pay_send": "Send",
+  "search_user": "Søg efter bruger eller nøgle",
+  "app_name": "Ğinkgo",
+  "credit_card_title": "Betal med Ğ1",
+  "g1_amount_hint": "Beløb som skal sendes i {currency}",
+  "search_user_title": "Modtager",
+  "search_user_title_in_contacts": "Søge efter bruger"
+}

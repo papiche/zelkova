@@ -2,7 +2,6 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import 'node.dart';
 import 'node_list_state.dart';
-import 'node_type.dart';
 
 class NodeListCubit extends HydratedCubit<NodeListState> {
   NodeListCubit() : super(NodeListState());
@@ -80,5 +79,4 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
         duniterIndexerNodes: state.duniterIndexerNodes,
         isLoading: state.isLoading));
   }
-
 }

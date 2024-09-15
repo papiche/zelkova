@@ -540,10 +540,10 @@ Future<NodeCheck> _pingNode(String node, NodeType type) async {
     } else if (type == NodeType.endpoint) {
       if (!kIsWeb) {
         try {
-          final Provider polkadot = Provider(Uri.parse(node));
+          final Provider polkadot = Provider.fromUri(Uri.parse(node));
           // From:
           // https://github.com/leonardocustodio/polkadart/blob/main/examples/bin/extrinsic_demo.dart
-          final RpcResponse<dynamic> block =
+          final RpcResponse<dynamic, dynamic> block =
               await polkadot.send('chain_getBlock', <dynamic>[]);
           currentBlock = int.parse(
               (((block.result as Map<String, dynamic>)['block']
@@ -568,7 +568,7 @@ Future<NodeCheck> _pingNode(String node, NodeType type) async {
           await client.request(GLastIndexedBlockNumberReq()).first;
       if (response.hasErrors) {
         latency = wrongNodeDuration;
-        loggerDev('HAS ERRORS');
+        loggerDev('Node $node has errors');
         loggerDev(response.linkException!.originalException);
       } else {
         final Gjsonb? lastIndexedBlockNumber =

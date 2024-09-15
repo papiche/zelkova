@@ -6,10 +6,14 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pattern_lock/pattern_lock.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:universal_html/html.dart' as html;
 
+import '../../../data/models/contact.dart';
+import '../../../data/models/contact_cubit.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
@@ -45,6 +49,7 @@ class _ImportDialogState extends State<ImportDialog> {
             final Map<String, dynamic> keyJson =
                 jsonDecode(keyEncString) as Map<String, dynamic>;
             final String keyEncrypted = keyJson['key'] as String;
+            final String? contacts = keyJson['contacts'] as String?;
             return Scaffold(
               key: scaffoldKey,
               appBar: AppBar(
@@ -75,6 +80,7 @@ class _ImportDialogState extends State<ImportDialog> {
                                   keyEncrypted, pattern.join());
                           try {
                             final dynamic cesiumCards = keys['cesiumCards'];
+                            importContacts(contacts, context);
                             if (cesiumCards != null) {
                               final List<dynamic> cesiumCardList =
                                   jsonDecode(cesiumCards as String)
@@ -167,6 +173,36 @@ class _ImportDialogState extends State<ImportDialog> {
         });
   }
 
+  void importContacts(String? contacts, BuildContext context) {
+    if (contacts != null) {
+      final ContactsCubit contactsCubit = context.read<ContactsCubit>();
+      final List<Contact> existingContacts = contactsCubit.contacts;
+      final List<dynamic> contactsImported =
+          jsonDecode(contacts) as List<dynamic>;
+      if (contactsImported.isNotEmpty) {
+        if (existingContacts.isNotEmpty) {
+          for (final dynamic contactJson in contactsImported) {
+            final Contact contact =
+                Contact.fromJson(contactJson as Map<String, dynamic>);
+            if (!contactsCubit.isContact(contact.pubKey)) {
+              contactsCubit.addContact(contact);
+            } else {
+              final Contact storedContact =
+                  contactsCubit.getContact(contact.pubKey)!;
+              contactsCubit.updateContact(storedContact.merge(contact));
+            }
+          }
+        } else {
+          for (final dynamic contactJson in contactsImported) {
+            final Contact contact =
+                Contact.fromJson(contactJson as Map<String, dynamic>);
+            contactsCubit.addContact(contact);
+          }
+        }
+      }
+    }
+  }
+
   bool importWalletToSharedPrefs(Map<String, dynamic> cesiumCard) {
     final dynamic pub = cesiumCard['pub'];
     final String pubKey =
@@ -182,14 +218,11 @@ class _ImportDialogState extends State<ImportDialog> {
 
   Future<String> _importWallet(BuildContext context) async {
     try {
-      // Use file_picker to pick a file
-
-      /* final bool hasPermission = await requestStoragePermission(context);
-
-      if (hasPermission == null || !hasPermission) {
+      final bool hasPermission = await requestStoragePermission(context);
+      if (!hasPermission) {
         logger('No permission to access storage');
         return '';
-      }*/
+      }
 
       final Directory? appDocDir = await getAppSpecificExternalFilesDirectory();
       if (appDocDir == null) {
@@ -205,9 +238,10 @@ class _ImportDialogState extends State<ImportDialog> {
         title: tr('select_file_to_import'),
         context: context,
         rootDirectory: appDocDir,
-        fsType: FilesystemType.file,
+        showGoUp: true,
+        fsType: FilesystemType.all,
         allowedExtensions: <String>['.json'],
-        // requestPermission: () async => _requestStoragePermission(context),
+        requestPermission: () async => requestStoragePermission(context),
         fileTileSelectMode: FileTileSelectMode.wholeTile,
       );
 
@@ -356,5 +390,20 @@ class SelectImportMethodDialog extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+Future<bool> requestStoragePermission(BuildContext context) async {
+  final PermissionStatus status = await Permission.storage.request();
+  if (!context.mounted) {
+    return false;
+  }
+  if (status.isGranted) {
+    return true;
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(tr('storage_permission_request')),
+    ));
+    return false;
   }
 }

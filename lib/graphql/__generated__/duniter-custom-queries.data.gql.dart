@@ -15,7 +15,8 @@ abstract class GAccountsByPkData
     implements Built<GAccountsByPkData, GAccountsByPkDataBuilder> {
   GAccountsByPkData._();
 
-  factory GAccountsByPkData([Function(GAccountsByPkDataBuilder b) updates]) =
+  factory GAccountsByPkData(
+          [void Function(GAccountsByPkDataBuilder b) updates]) =
       _$GAccountsByPkData;
 
   static void _initializeBuilder(GAccountsByPkDataBuilder b) =>
@@ -46,7 +47,7 @@ abstract class GAccountsByPkData_account_by_pk
   GAccountsByPkData_account_by_pk._();
 
   factory GAccountsByPkData_account_by_pk(
-          [Function(GAccountsByPkData_account_by_pkBuilder b) updates]) =
+          [void Function(GAccountsByPkData_account_by_pkBuilder b) updates]) =
       _$GAccountsByPkData_account_by_pk;
 
   static void _initializeBuilder(GAccountsByPkData_account_by_pkBuilder b) =>
@@ -78,7 +79,7 @@ abstract class GAccountsByPkData_account_by_pk_identity
   GAccountsByPkData_account_by_pk_identity._();
 
   factory GAccountsByPkData_account_by_pk_identity(
-      [Function(GAccountsByPkData_account_by_pk_identityBuilder b)
+      [void Function(GAccountsByPkData_account_by_pk_identityBuilder b)
           updates]) = _$GAccountsByPkData_account_by_pk_identity;
 
   static void _initializeBuilder(
@@ -109,7 +110,8 @@ abstract class GSearchIdentityData
   GSearchIdentityData._();
 
   factory GSearchIdentityData(
-      [Function(GSearchIdentityDataBuilder b) updates]) = _$GSearchIdentityData;
+          [void Function(GSearchIdentityDataBuilder b) updates]) =
+      _$GSearchIdentityData;
 
   static void _initializeBuilder(GSearchIdentityDataBuilder b) =>
       b..G__typename = 'query_root';
@@ -139,8 +141,8 @@ abstract class GSearchIdentityData_search_identity
   GSearchIdentityData_search_identity._();
 
   factory GSearchIdentityData_search_identity(
-          [Function(GSearchIdentityData_search_identityBuilder b) updates]) =
-      _$GSearchIdentityData_search_identity;
+      [void Function(GSearchIdentityData_search_identityBuilder b)
+          updates]) = _$GSearchIdentityData_search_identity;
 
   static void _initializeBuilder(
           GSearchIdentityData_search_identityBuilder b) =>
@@ -172,7 +174,7 @@ abstract class GLastIndexedBlockNumberData
   GLastIndexedBlockNumberData._();
 
   factory GLastIndexedBlockNumberData(
-          [Function(GLastIndexedBlockNumberDataBuilder b) updates]) =
+          [void Function(GLastIndexedBlockNumberDataBuilder b) updates]) =
       _$GLastIndexedBlockNumberData;
 
   static void _initializeBuilder(GLastIndexedBlockNumberDataBuilder b) =>
@@ -203,7 +205,7 @@ abstract class GLastIndexedBlockNumberData_parameters_by_pk
   GLastIndexedBlockNumberData_parameters_by_pk._();
 
   factory GLastIndexedBlockNumberData_parameters_by_pk(
-      [Function(GLastIndexedBlockNumberData_parameters_by_pkBuilder b)
+      [void Function(GLastIndexedBlockNumberData_parameters_by_pkBuilder b)
           updates]) = _$GLastIndexedBlockNumberData_parameters_by_pk;
 
   static void _initializeBuilder(
@@ -234,7 +236,7 @@ abstract class GAccountsByNameOrPkData
   GAccountsByNameOrPkData._();
 
   factory GAccountsByNameOrPkData(
-          [Function(GAccountsByNameOrPkDataBuilder b) updates]) =
+          [void Function(GAccountsByNameOrPkDataBuilder b) updates]) =
       _$GAccountsByNameOrPkData;
 
   static void _initializeBuilder(GAccountsByNameOrPkDataBuilder b) =>
@@ -265,7 +267,7 @@ abstract class GAccountsByNameOrPkData_account
   GAccountsByNameOrPkData_account._();
 
   factory GAccountsByNameOrPkData_account(
-          [Function(GAccountsByNameOrPkData_accountBuilder b) updates]) =
+          [void Function(GAccountsByNameOrPkData_accountBuilder b) updates]) =
       _$GAccountsByNameOrPkData_account;
 
   static void _initializeBuilder(GAccountsByNameOrPkData_accountBuilder b) =>
@@ -296,7 +298,7 @@ abstract class GAccountsByNameOrPkData_account_identity
   GAccountsByNameOrPkData_account_identity._();
 
   factory GAccountsByNameOrPkData_account_identity(
-      [Function(GAccountsByNameOrPkData_account_identityBuilder b)
+      [void Function(GAccountsByNameOrPkData_account_identityBuilder b)
           updates]) = _$GAccountsByNameOrPkData_account_identity;
 
   static void _initializeBuilder(
@@ -329,7 +331,7 @@ abstract class GAccountsByNameOrPkData_account_identity_account
   GAccountsByNameOrPkData_account_identity_account._();
 
   factory GAccountsByNameOrPkData_account_identity_account(
-      [Function(GAccountsByNameOrPkData_account_identity_accountBuilder b)
+      [void Function(GAccountsByNameOrPkData_account_identity_accountBuilder b)
           updates]) = _$GAccountsByNameOrPkData_account_identity_account;
 
   static void _initializeBuilder(
@@ -363,7 +365,7 @@ abstract class GAccountsByNameOrPkData_account_identity_account_identity
   GAccountsByNameOrPkData_account_identity_account_identity._();
 
   factory GAccountsByNameOrPkData_account_identity_account_identity(
-      [Function(
+      [void Function(
               GAccountsByNameOrPkData_account_identity_account_identityBuilder
                   b)
           updates]) = _$GAccountsByNameOrPkData_account_identity_account_identity;

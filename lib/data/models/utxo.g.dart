@@ -120,8 +120,8 @@ extension $UtxoCopyWith on Utxo {
 Utxo _$UtxoFromJson(Map<String, dynamic> json) => Utxo(
       txHash: json['txHash'] as String,
       amount: (json['amount'] as num).toDouble(),
-      base: json['base'] as int,
-      outputIndex: json['outputIndex'] as int,
+      base: (json['base'] as num).toInt(),
+      outputIndex: (json['outputIndex'] as num).toInt(),
       writtenTime: (json['writtenTime'] as num).toDouble(),
       writtenBlock: (json['writtenBlock'] as num).toDouble(),
     );

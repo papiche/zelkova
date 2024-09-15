@@ -8,9 +8,9 @@ part of 'node.dart';
 
 Node _$NodeFromJson(Map<String, dynamic> json) => Node(
       url: json['url'] as String,
-      latency: json['latency'] as int? ?? 99999,
-      errors: json['errors'] as int? ?? 0,
-      currentBlock: json['currentBlock'] as int? ?? 0,
+      latency: (json['latency'] as num?)?.toInt() ?? 99999,
+      errors: (json['errors'] as num?)?.toInt() ?? 0,
+      currentBlock: (json['currentBlock'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$NodeToJson(Node instance) => <String, dynamic>{

@@ -22,7 +22,7 @@ abstract class GAccountsByPkReq
         _i1.OperationRequest<_i2.GAccountsByPkData, _i3.GAccountsByPkVars> {
   GAccountsByPkReq._();
 
-  factory GAccountsByPkReq([Function(GAccountsByPkReqBuilder b) updates]) =
+  factory GAccountsByPkReq([void Function(GAccountsByPkReqBuilder b) updates]) =
       _$GAccountsByPkReq;
 
   static void _initializeBuilder(GAccountsByPkReqBuilder b) => b
@@ -40,6 +40,7 @@ abstract class GAccountsByPkReq
   _i4.Request get execRequest => _i4.Request(
         operation: operation,
         variables: vars.toJson(),
+        context: context ?? const _i4.Context(),
       );
 
   @override
@@ -61,8 +62,22 @@ abstract class GAccountsByPkReq
   @override
   bool get executeOnListen;
   @override
+  @BuiltValueField(serialize: false)
+  _i4.Context? get context;
+  @override
   _i2.GAccountsByPkData? parseData(Map<String, dynamic> json) =>
       _i2.GAccountsByPkData.fromJson(json);
+
+  @override
+  Map<String, dynamic> varsToJson() => vars.toJson();
+
+  @override
+  Map<String, dynamic> dataToJson(_i2.GAccountsByPkData data) => data.toJson();
+
+  @override
+  _i1.OperationRequest<_i2.GAccountsByPkData, _i3.GAccountsByPkVars>
+      transformOperation(_i4.Operation Function(_i4.Operation) transform) =>
+          this.rebuild((b) => b..operation = transform(operation));
 
   static Serializer<GAccountsByPkReq> get serializer =>
       _$gAccountsByPkReqSerializer;
@@ -85,7 +100,8 @@ abstract class GSearchIdentityReq
         _i1.OperationRequest<_i2.GSearchIdentityData, _i3.GSearchIdentityVars> {
   GSearchIdentityReq._();
 
-  factory GSearchIdentityReq([Function(GSearchIdentityReqBuilder b) updates]) =
+  factory GSearchIdentityReq(
+          [void Function(GSearchIdentityReqBuilder b) updates]) =
       _$GSearchIdentityReq;
 
   static void _initializeBuilder(GSearchIdentityReqBuilder b) => b
@@ -103,6 +119,7 @@ abstract class GSearchIdentityReq
   _i4.Request get execRequest => _i4.Request(
         operation: operation,
         variables: vars.toJson(),
+        context: context ?? const _i4.Context(),
       );
 
   @override
@@ -124,8 +141,23 @@ abstract class GSearchIdentityReq
   @override
   bool get executeOnListen;
   @override
+  @BuiltValueField(serialize: false)
+  _i4.Context? get context;
+  @override
   _i2.GSearchIdentityData? parseData(Map<String, dynamic> json) =>
       _i2.GSearchIdentityData.fromJson(json);
+
+  @override
+  Map<String, dynamic> varsToJson() => vars.toJson();
+
+  @override
+  Map<String, dynamic> dataToJson(_i2.GSearchIdentityData data) =>
+      data.toJson();
+
+  @override
+  _i1.OperationRequest<_i2.GSearchIdentityData, _i3.GSearchIdentityVars>
+      transformOperation(_i4.Operation Function(_i4.Operation) transform) =>
+          this.rebuild((b) => b..operation = transform(operation));
 
   static Serializer<GSearchIdentityReq> get serializer =>
       _$gSearchIdentityReqSerializer;
@@ -150,7 +182,7 @@ abstract class GLastIndexedBlockNumberReq
   GLastIndexedBlockNumberReq._();
 
   factory GLastIndexedBlockNumberReq(
-          [Function(GLastIndexedBlockNumberReqBuilder b) updates]) =
+          [void Function(GLastIndexedBlockNumberReqBuilder b) updates]) =
       _$GLastIndexedBlockNumberReq;
 
   static void _initializeBuilder(GLastIndexedBlockNumberReqBuilder b) => b
@@ -168,6 +200,7 @@ abstract class GLastIndexedBlockNumberReq
   _i4.Request get execRequest => _i4.Request(
         operation: operation,
         variables: vars.toJson(),
+        context: context ?? const _i4.Context(),
       );
 
   @override
@@ -189,8 +222,24 @@ abstract class GLastIndexedBlockNumberReq
   @override
   bool get executeOnListen;
   @override
+  @BuiltValueField(serialize: false)
+  _i4.Context? get context;
+  @override
   _i2.GLastIndexedBlockNumberData? parseData(Map<String, dynamic> json) =>
       _i2.GLastIndexedBlockNumberData.fromJson(json);
+
+  @override
+  Map<String, dynamic> varsToJson() => vars.toJson();
+
+  @override
+  Map<String, dynamic> dataToJson(_i2.GLastIndexedBlockNumberData data) =>
+      data.toJson();
+
+  @override
+  _i1.OperationRequest<_i2.GLastIndexedBlockNumberData,
+      _i3.GLastIndexedBlockNumberVars> transformOperation(
+          _i4.Operation Function(_i4.Operation) transform) =>
+      this.rebuild((b) => b..operation = transform(operation));
 
   static Serializer<GLastIndexedBlockNumberReq> get serializer =>
       _$gLastIndexedBlockNumberReqSerializer;
@@ -215,7 +264,7 @@ abstract class GAccountsByNameOrPkReq
   GAccountsByNameOrPkReq._();
 
   factory GAccountsByNameOrPkReq(
-          [Function(GAccountsByNameOrPkReqBuilder b) updates]) =
+          [void Function(GAccountsByNameOrPkReqBuilder b) updates]) =
       _$GAccountsByNameOrPkReq;
 
   static void _initializeBuilder(GAccountsByNameOrPkReqBuilder b) => b
@@ -233,6 +282,7 @@ abstract class GAccountsByNameOrPkReq
   _i4.Request get execRequest => _i4.Request(
         operation: operation,
         variables: vars.toJson(),
+        context: context ?? const _i4.Context(),
       );
 
   @override
@@ -254,8 +304,23 @@ abstract class GAccountsByNameOrPkReq
   @override
   bool get executeOnListen;
   @override
+  @BuiltValueField(serialize: false)
+  _i4.Context? get context;
+  @override
   _i2.GAccountsByNameOrPkData? parseData(Map<String, dynamic> json) =>
       _i2.GAccountsByNameOrPkData.fromJson(json);
+
+  @override
+  Map<String, dynamic> varsToJson() => vars.toJson();
+
+  @override
+  Map<String, dynamic> dataToJson(_i2.GAccountsByNameOrPkData data) =>
+      data.toJson();
+
+  @override
+  _i1.OperationRequest<_i2.GAccountsByNameOrPkData, _i3.GAccountsByNameOrPkVars>
+      transformOperation(_i4.Operation Function(_i4.Operation) transform) =>
+          this.rebuild((b) => b..operation = transform(operation));
 
   static Serializer<GAccountsByNameOrPkReq> get serializer =>
       _$gAccountsByNameOrPkReqSerializer;

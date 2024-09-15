@@ -61,7 +61,7 @@ void main() {
     final Uint8List seed = wallet.seed;
     final Keyring keyring = Keyring();
     final KeyPair keypair =
-        await keyring.fromSeed(seed, keyPairType: KeyPairType.ed25519);
+        keyring.fromSeed(seed, keyPairType: KeyPairType.ed25519);
     expect(keypair.address, equals(v2Address));
   });
 

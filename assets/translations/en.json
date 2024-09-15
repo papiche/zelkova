@@ -45,6 +45,8 @@
   "card_validity_tooltip": "Please note that this wallet is only accessible while using this specific browser or app and device. If you delete or reset the browser or app, you will lose access to this wallet and the funds stored in it.",
   "export_key": "Export your wallet",
   "import_key": "Import your wallet",
+  "export_keys": "Export your wallets",
+  "import_keys": "Import your wallets",
   "copy_your_key": "Copy your public key",
   "key_copied_to_clipboard": "Your public key has been copied to the clipboard",
   "some_key_copied_to_clipboard": "The public key has been copied to the clipboard",
@@ -250,5 +252,6 @@
   "multi_pay_results_desc": "{success} success, {fail} failed",
   "You can't send money to yourself.": "You can't send money to yourself.",
   "others_and_someone": "{others} and {someone}",
-  "account_info": "Account information"
+  "account_info": "Account information",
+  "storage_permission_request": "Storage permission is required to export or import your wallet"
 }

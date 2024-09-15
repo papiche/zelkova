@@ -45,6 +45,8 @@
   "demo_desc": "Monedero en desarrollo: por favor, úsalo con cautela",
   "export_key": "Exporta tu monedero",
   "import_key": "Importa tu monedero",
+  "export_keys": "Exporta tus monederos",
+  "import_keys": "Importa tus monederos",
   "copy_your_key": "Copia tu clave pública",
   "key_copied_to_clipboard": "Tu clave pública se ha copiado al portapapeles",
   "some_key_copied_to_clipboard": "La clave pública se ha copiado al portapapeles",
@@ -255,5 +257,6 @@
   "multi_pay_results_desc": "{success} pagos exitosos, {fail} fallidos",
   "others_and_someone": "{others} y {someone}",
   "search_multiuser_hint": "Mantén pulsado si quieres pagar a varias personas a la vez",
-  "account_info": "Info de la cuenta"
+  "account_info": "Info de la cuenta",
+  "storage_permission_request": "Se necesitan permisos para exportar o importar tu monedero"
 }

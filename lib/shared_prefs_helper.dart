@@ -190,6 +190,10 @@ class SharedPreferencesHelper with ChangeNotifier {
     return cesiumVolatileCards.containsKey(extractPublicKey(getPubKey()));
   }
 
+  bool hasMultipleCards() {
+    return cesiumCards.length > 1;
+  }
+
   void addCesiumVolatileCard(CesiumWallet cesiumWallet) {
     cesiumVolatileCards[cesiumWallet.pubkey] = cesiumWallet;
   }

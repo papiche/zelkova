@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:tuple/tuple.dart';
 
@@ -50,6 +51,15 @@ class MultiWalletTransactionCubit
     final TransactionState newState =
         currentState.copyWith(pendingTransactions: newPendingTransactions);
     _emitState(key, newState);
+  }
+
+  @override
+  Future<void> close() {
+    return Future<void>.value();
+  }
+
+  Future<void> closeCubit() async {
+    await super.close();
   }
 
   void _emitState(String keyRaw, TransactionState newState) {
@@ -127,12 +137,13 @@ class MultiWalletTransactionCubit
   // DateTime get lastChecked => currentWalletState().lastChecked;
 
   Future<List<Transaction>> fetchTransactions(
-      NodeListCubit cubit, AppCubit appCubit,
       {int retries = 5,
       int? pageSize,
       String? cursor,
       String? pubKey,
       bool isExternal = false}) async {
+    final NodeListCubit nodeListCubit = GetIt.instance.get<NodeListCubit>();
+    final AppCubit appCubit = GetIt.instance.get<AppCubit>();
     final bool isCurrentWallet = pubKey != null &&
         (extractPublicKey(pubKey) ==
             extractPublicKey(SharedPreferencesHelper().getPubKey()));
@@ -183,7 +194,7 @@ class MultiWalletTransactionCubit
 
       if (isCurrentWallet) {
         // We only reset if it's the current wallet
-        resetCurrentGvaNode(newState, cubit);
+        resetCurrentGvaNode(newState, nodeListCubit);
       }
 
       // Is external, forget notifications

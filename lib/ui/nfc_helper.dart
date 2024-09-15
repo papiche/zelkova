@@ -3,7 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'package:ndef/ndef.dart' as ndef;
 import 'package:ndef/record.dart';
-import 'package:ndef/record/uri.dart';
+import 'package:ndef/records/well_known/uri.dart';
+
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'logger.dart';

@@ -17,8 +17,7 @@ import 'package:lehttp_overrides/lehttp_overrides.dart';
 import 'package:once/once.dart';
 import 'package:provider/provider.dart';
 import 'package:pwa_install/pwa_install.dart';
-import 'package:responsive_framework/responsive_wrapper.dart';
-import 'package:responsive_framework/utils/scroll_behavior.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sentry_logging/sentry_logging.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -165,8 +164,10 @@ void main() async {
                         create: (BuildContext context) => AppCubit()),
                     BlocProvider<PaymentCubit>(
                         create: (BuildContext context) => PaymentCubit()),
+
                     BlocProvider<NodeListCubit>(
                         create: (BuildContext context) => NodeListCubit()),
+
                     BlocProvider<ContactsCubit>(
                         create: (BuildContext context) => ContactsCubit()),
                     BlocProvider<UtxoCubit>(
@@ -335,7 +336,7 @@ PageViewModel createPageViewModel(
     decoration: PageDecoration(
       titleTextStyle: titleStyle,
       bodyTextStyle: bodyStyle,
-      pageColor: colorScheme.background,
+      pageColor: colorScheme.surface,
     ),
   );
 }
@@ -387,7 +388,6 @@ class _GinkgoAppState extends State<GinkgoApp> {
     if (!kIsWeb) {
       _initDeepLinkListener();
     }
-    NodeManager().loadFromCubit(context.read<NodeListCubit>());
     // Only after at least the action method is set, the notification events are delivered
     NotificationController.startListeningNotificationEvents();
     // Wipe Old Transactions Cubit
@@ -434,18 +434,13 @@ class _GinkgoAppState extends State<GinkgoApp> {
       // }
     });
 
-    if (inDevelopment) {
-      // Try to test auto-recover from empty node-list;
-      NodeManager().endpointNodes.clear();
-      NodeManager().gvaNodes.clear();
-      NodeManager().duniterNodes.clear();
-    }
-
     ConnectivityWidgetWrapperWrapper.isConnected.then((bool isConnected) {
       if (isConnected) {
         fetchNodesIfNotReady();
         // Fetch transactions (and balance) here too on start
-        fetchTransactions(context);
+        if (mounted) {
+          fetchTransactions(context);
+        }
       }
     });
 
@@ -481,11 +476,15 @@ class _GinkgoAppState extends State<GinkgoApp> {
     ContactsCache().dispose();
     _disposeDeepLinkListener();
     fetchTxsCronTask.cancel();
-    Workmanager().cancelAll();
+    if (!kIsWeb) {
+      Workmanager().cancelAll();
+    }
+    /* GetIt.instance<NodeListCubit>().closeCubit();
+    GetIt.instance<MultiWalletTransactionCubit>().closeCubit(); */
     super.dispose();
   }
 
-  late StreamSubscription<dynamic>? _sub;
+  StreamSubscription<dynamic>? _sub;
 
   Future<void> _initDeepLinkListener() async {
     _sub = linkStream.listen((String? link) async {
@@ -530,76 +529,72 @@ class _GinkgoAppState extends State<GinkgoApp> {
                   backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
               ),
-              child: MaterialApp(
-                /// Localization is not available for the title.
-                title: 'Ğ1nkgo',
-                theme: widget.lightTheme,
-                darkTheme: widget.darkTheme,
-                navigatorKey: GinkgoApp.navigatorKey,
-                scaffoldMessengerKey: globalMessengerKey,
+              child: BlocBuilder<ThemeCubit, ThemeModeState>(
+                  builder: (BuildContext context, ThemeModeState themeState) {
+                return MaterialApp(
+                  /// Localization is not available for the title.
+                  title: 'Ğ1nkgo',
+                  navigatorKey: GinkgoApp.navigatorKey,
+                  scaffoldMessengerKey: globalMessengerKey,
 
-                /// Theme stuff
-                themeMode: context.watch<ThemeCubit>().state.themeMode,
+                  /// Theme stuff
+                  theme: widget.lightTheme,
+                  highContrastTheme: widget.darkTheme,
+                  darkTheme: widget.darkTheme,
+                  themeMode: themeState.themeMode,
 
-                /// Localization stuff
-                localizationsDelegates: context.localizationDelegates
-                  ..addAll(<LocalizationsDelegate<dynamic>>[
-                    MaterialLocalizationsEo.delegate,
-                    CupertinoLocalizationsEo.delegate
-                  ]),
-                supportedLocales: context.supportedLocales,
-                locale: context.locale,
-                debugShowCheckedModeBanner: false,
-                home: context.read<AppCubit>().isIntroViewed
-                    ? const FeedbackAndSkeletonScreen()
-                    : const AppIntro(),
-                builder: (BuildContext buildContext, Widget? widget) {
-                  NotificationController.locale = context.locale;
-                  return ResponsiveWrapper.builder(
-                    BouncingScrollWrapper.builder(
-                        context,
-                        ConnectivityWidgetWrapperWrapper(
-                          offlineWidget: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              const Icon(
-                                Icons.cloud_off,
-                                size: 48,
-                                color: Colors.grey,
-                              ),
-                              const SizedBox(height: 6),
-                              Container(
-                                  padding: const EdgeInsets.all(5.0),
-                                  decoration: const BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10.0)),
-                                  ),
-                                  child: Text(
-                                    tr('offline'),
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      decoration: TextDecoration.none,
-                                      fontSize: 14,
-                                    ),
-                                  )),
-                              const SizedBox(height: 110),
-                            ],
+                  /// Localization stuff
+                  localizationsDelegates: context.localizationDelegates
+                    ..addAll(<LocalizationsDelegate<dynamic>>[
+                      MaterialLocalizationsEo.delegate,
+                      CupertinoLocalizationsEo.delegate
+                    ]),
+                  supportedLocales: context.supportedLocales,
+                  locale: context.locale,
+                  debugShowCheckedModeBanner: false,
+                  home: context.read<AppCubit>().isIntroViewed
+                      ? const FeedbackAndSkeletonScreen()
+                      : const AppIntro(),
+                  builder: (BuildContext buildContext, Widget? widget) {
+                    NotificationController.locale = context.locale;
+                    return ConnectivityWidgetWrapperWrapper(
+                      offlineWidget: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          const Icon(
+                            Icons.cloud_off,
+                            size: 48,
+                            color: Colors.grey,
                           ),
-                          child: widget!,
-                        )),
-                    maxWidth: 480,
-                    minWidth: 480,
-                    // defaultScale: true,
-                    breakpoints: <ResponsiveBreakpoint>[
-                      const ResponsiveBreakpoint.resize(200, name: MOBILE),
-                      const ResponsiveBreakpoint.resize(480, name: TABLET),
-                      const ResponsiveBreakpoint.resize(1000, name: DESKTOP),
-                    ],
-                    background: Container(color: const Color(0xFFF5F5F5)),
-                  );
-                },
-              )));
+                          const SizedBox(height: 6),
+                          Container(
+                              padding: const EdgeInsets.all(5.0),
+                              decoration: const BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0)),
+                              ),
+                              child: Text(
+                                tr('offline'),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  decoration: TextDecoration.none,
+                                  fontSize: 14,
+                                ),
+                              )),
+                          const SizedBox(height: 110),
+                        ],
+                      ),
+                      child: MaxWidthBox(
+                        maxWidth: 480,
+                        // background: Container(color: const Color(0xFFF5F5F5)),
+                        child: BouncingScrollWrapper.builder(context, widget!,
+                            dragWithMouse: true),
+                      ),
+                    );
+                  },
+                );
+              })));
     });
   }
 }

@@ -52,18 +52,25 @@ Future<dynamic> showAlertDialog(
 
 void copyPublicKeyToClipboard(BuildContext context,
     [String? uri, String? feedbackText]) {
-  FlutterClipboard.copy(uri ?? SharedPreferencesHelper().getPubKey()).then(
-      (dynamic value) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(tr(feedbackText ?? 'key_copied_to_clipboard')))));
+  FlutterClipboard.copy(uri ?? SharedPreferencesHelper().getPubKey())
+      .then((dynamic value) {
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(tr(feedbackText ?? 'key_copied_to_clipboard'))));
+    }
+  });
 }
 
 void copyToClipboard(
     {required BuildContext context,
     required String uri,
     required String feedbackText}) {
-  FlutterClipboard.copy(uri).then((dynamic value) =>
+  FlutterClipboard.copy(uri).then((dynamic value) {
+    if (context.mounted) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(tr(feedbackText)))));
+          .showSnackBar(SnackBar(content: Text(tr(feedbackText))));
+    }
+  });
 }
 
 const Color defAvatarBgColor = Colors.grey;
@@ -331,14 +338,11 @@ Future<void> fetchTransactionsFromBackground([bool init = true]) async {
     }
     loggerDev('Initialized background context');
     final GetIt getIt = GetIt.instance;
-    final AppCubit appCubit = getIt.get<AppCubit>();
     final MultiWalletTransactionCubit transCubit =
         getIt.get<MultiWalletTransactionCubit>();
-    final NodeListCubit nodeListCubit = getIt.get<NodeListCubit>();
     for (final CesiumCard card in SharedPreferencesHelper().cards) {
       loggerDev('Fetching transactions for ${card.pubKey} in background');
-      transCubit.fetchTransactions(nodeListCubit, appCubit,
-          pubKey: card.pubKey);
+      transCubit.fetchTransactions(pubKey: card.pubKey);
     }
     if (inDevelopment) {
       NotificationController.notify(
@@ -353,12 +357,10 @@ Future<void> fetchTransactionsFromBackground([bool init = true]) async {
 }
 
 Future<void> fetchTransactions(BuildContext context) async {
-  final AppCubit appCubit = context.read<AppCubit>();
   final MultiWalletTransactionCubit transCubit =
       context.read<MultiWalletTransactionCubit>();
-  final NodeListCubit nodeListCubit = context.read<NodeListCubit>();
   for (final CesiumCard card in SharedPreferencesHelper().cards) {
-    transCubit.fetchTransactions(nodeListCubit, appCubit, pubKey: card.pubKey);
+    transCubit.fetchTransactions(pubKey: card.pubKey);
   }
 }
 
@@ -467,19 +469,27 @@ bool get onlyInProduction => kReleaseMode;
 
 bool get inProduction => onlyInProduction;
 
-String assets(String str) =>
-    (kIsWeb && kReleaseMode) || (!kIsWeb && Platform.isAndroid)
-        ? 'assets/$str'
-        : str;
+String assets(String str) => (kIsWeb && kReleaseMode) ||
+        (!kIsWeb && Platform.isAndroid) ||
+        (!kIsWeb && Platform.isLinux)
+    ? 'assets/$str'
+    : str;
 
 Future<Directory?> getAppSpecificExternalFilesDirectory(
     [bool ext = false]) async {
-  if (ext) {
-    final Directory? appSpecificExternalFilesDir =
-        await getExternalStorageDirectory();
-    return appSpecificExternalFilesDir;
+  try {
+    if (ext) {
+      final Directory? appSpecificExternalFilesDir =
+          await getExternalStorageDirectory();
+      return appSpecificExternalFilesDir;
+    }
+    return getDownloadsDirectory();
+  } catch (e) {
+    loggerDev(e.toString());
+    return getApplicationDocumentsDirectory();
   }
-  return getExternalStorageDirectory();
+  // Before:
+  // return getExternalStorageDirectory();
 }
 
 ImageIcon get g1nkgoIcon => ImageIcon(

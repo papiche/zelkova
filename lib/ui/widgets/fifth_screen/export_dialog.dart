@@ -7,6 +7,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart';
 import 'package:pattern_lock/pattern_lock.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -14,10 +15,13 @@ import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_html/html.dart' as html;
 
+import '../../../data/models/contact.dart';
+import '../../../data/models/contact_cubit.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
 import '../../ui_helpers.dart';
+import 'import_dialog.dart';
 import 'pattern_util.dart';
 
 enum ExportType { clipboard, file, share }
@@ -100,33 +104,51 @@ class _ExportDialogState extends State<ExportDialog> {
 
   Future<void> _export(
       String password, BuildContext context, ExportType type) async {
+    final ContactsCubit cubit = context.read<ContactsCubit>();
+    context.read<ContactsCubit>().sortContactsAsStored();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String jsonString = jsonEncode(prefs
+    final Map<String, dynamic> prefsObj = prefs
         .getKeys()
         .fold<Map<String, dynamic>>(
             <String, dynamic>{},
             (Map<String, dynamic> map, String key) =>
-                <String, dynamic>{...map, key: prefs.get(key)}));
-    final Map<String, String> jsonData =
+                <String, dynamic>{...map, key: prefs.get(key)});
+    if (cubit.contacts.isNotEmpty) {
+      prefsObj['contacts'] = cubit.contacts.map((Contact c) {
+        // ignore: avoid_redundant_argument_values
+        final Contact c2 = c.copyWith(avatar: null);
+        return c2.toJson();
+      }).toList();
+    }
+    final String jsonString = jsonEncode(prefsObj);
+
+    final Map<String, dynamic> jsonData =
         encryptJsonForExport(jsonString, password);
+    loggerDev('Exporting: $jsonData and contacts: ${cubit.contacts.length}');
     final String fileJson = jsonEncode(jsonData);
     final List<int> bytes = utf8.encode(fileJson);
 
     switch (type) {
       case ExportType.clipboard:
-        FlutterClipboard.copy(fileJson)
-            .then((dynamic value) => context.replaceSnackbar(
-                  content: Text(
-                    tr('wallet_copied'),
-                    style: const TextStyle(color: Colors.red),
-                  ),
-                ));
+        FlutterClipboard.copy(fileJson).then((dynamic value) {
+          if (context.mounted) {
+            context.replaceSnackbar(
+              content: Text(
+                tr('wallet_copied'),
+                style: const TextStyle(color: Colors.red),
+              ),
+            );
+          }
+        });
         break;
       case ExportType.file:
         if (kIsWeb) {
           webDownload(bytes);
         } else {
-          saveFile(bytes);
+          if (!context.mounted) {
+            return;
+          }
+          saveFile(context, bytes);
         }
         if (!context.mounted) {
           return;
@@ -170,8 +192,13 @@ class _ExportDialogState extends State<ExportDialog> {
     anchor.click();
   }
 
-  Future<void> saveFile(List<int> bytes) async {
+  Future<void> saveFile(BuildContext context, List<int> bytes) async {
     try {
+      final bool hasPermission = await requestStoragePermission(context);
+      if (!hasPermission) {
+        logger('No permission to access storage');
+        return;
+      }
       final Directory? externalDirectory =
           await getAppSpecificExternalFilesDirectory(); // ensureDownloadsDirectoryExists();
       if (externalDirectory == null) {
@@ -203,8 +230,7 @@ class _ExportDialogState extends State<ExportDialog> {
   }
 
   String walletFileName() {
-    final String fileName =
-        'ginkgo-wallet-${simplifyPubKey(SharedPreferencesHelper().getPubKey())}.json';
+    const String fileName = 'ginkgo-export.json';
     return fileName;
   }
 }

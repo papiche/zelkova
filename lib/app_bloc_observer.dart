@@ -11,6 +11,14 @@ class AppBlocObserver extends BlocObserver {
   }
 
   @override
+  void onClose(BlocBase<dynamic> bloc) {
+    logger('============= onClose ============= ${bloc.runtimeType}');
+    // final StackTrace stackTrace = StackTrace.current;
+    // logger(stackTrace.toString());
+    super.onClose(bloc);
+  }
+
+  @override
   void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
     super.onChange(bloc, change);
     // Disabled

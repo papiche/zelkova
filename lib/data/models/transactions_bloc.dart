@@ -1,14 +1,12 @@
 import 'dart:async';
 
+import 'package:get_it/get_it.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../ui/logger.dart';
 import '../../ui/widgets/connectivity_widget_wrapper_wrapper.dart';
-import 'app_cubit.dart';
 import 'multi_wallet_transaction_cubit.dart';
-import 'node_list_cubit.dart';
 import 'transaction.dart';
-import 'utxo_cubit.dart';
 
 part 'transactions_state.dart';
 
@@ -27,11 +25,6 @@ class TransactionsBloc {
 
   final bool isExternal;
   final String? pubKey;
-
-  late AppCubit appCubit;
-  late NodeListCubit nodeListCubit;
-  late MultiWalletTransactionCubit transCubit;
-  late UtxoCubit utxoCubit;
 
   static const int _pageSize = 20;
 
@@ -62,14 +55,6 @@ class TransactionsBloc {
     yield* _fetchTransactionsList(null);
   }
 
-  void init(MultiWalletTransactionCubit transCubit, NodeListCubit nodeListCubit,
-      AppCubit appCubit, UtxoCubit utxoCubit) {
-    this.appCubit = appCubit;
-    this.transCubit = transCubit;
-    this.nodeListCubit = nodeListCubit;
-    this.utxoCubit = utxoCubit;
-  }
-
   Stream<TransactionsState> _fetchTransactionsList(String? pageKey) async* {
     final TransactionsState lastListingState =
         _onNewListingStateController.value;
@@ -77,6 +62,8 @@ class TransactionsBloc {
       final bool isConnected =
           await ConnectivityWidgetWrapperWrapper.isConnected;
       logger('isConnected: $isConnected');
+      final MultiWalletTransactionCubit transCubit =
+          GetIt.instance<MultiWalletTransactionCubit>();
 
       if (!isConnected) {
         yield TransactionsState(
@@ -85,7 +72,7 @@ class TransactionsBloc {
         );
       } else {
         final List<Transaction> fetchedItems =
-            await transCubit.fetchTransactions(nodeListCubit, appCubit,
+            await transCubit.fetchTransactions(
                 cursor: pageKey,
                 pageSize: _pageSize,
                 pubKey: pubKey,

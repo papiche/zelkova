@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../ui/logger.dart';
 import 'node.dart';
@@ -25,7 +26,6 @@ class NodeManager {
   final List<Node> duniterIndexerNodes = <Node>[];
 
   void loadFromCubit(NodeListCubit cubit) {
-    NodeManagerObserver.instance.cubit = cubit;
     duniterNodes.clear();
     cesiumPlusNodes.clear();
     gvaNodes.clear();
@@ -184,10 +184,12 @@ class NodeManagerObserver {
   late NodeListCubit cubit;
 
   void setLoading(bool isLoading) {
+    _setNodeListCubit();
     cubit.setLoading(isLoading);
   }
 
   void update(NodeManager nodeManager) {
+    _setNodeListCubit();
     cubit.setDuniterNodes(nodeManager.duniterNodes);
     cubit.setCesiumPlusNodes(nodeManager.cesiumPlusNodes);
     cubit.setGvaNodes(nodeManager.gvaNodes);
@@ -195,7 +197,17 @@ class NodeManagerObserver {
     cubit.setDuniterIndexerNodes(nodeManager.duniterIndexerNodes);
   }
 
-  void setCurrentGvaNode(Node node) => cubit.setCurrentGvaNode(node);
+  void _setNodeListCubit() {
+    cubit = GetIt.instance.get<NodeListCubit>();
+  }
 
-  Node? get currentGvaNode => cubit.currentGvaNode;
+  void setCurrentGvaNode(Node node) {
+    _setNodeListCubit();
+    cubit.setCurrentGvaNode(node);
+  }
+
+  Node? get currentGvaNode {
+    _setNodeListCubit();
+    return cubit.currentGvaNode;
+  }
 }

@@ -13,6 +13,16 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
 
   Node? get currentGvaNode => state.currentGvaNode;
 
+  @override
+  Future<void> close() {
+    // Prevent to close de node list cubit
+    return Future<void>.value();
+  }
+
+  Future<void> closeCubit() async {
+    await super.close();
+  }
+
   void setCurrentGvaNode(Node node) {
     emit(state.copyWith(currentGvaNode: node));
   }

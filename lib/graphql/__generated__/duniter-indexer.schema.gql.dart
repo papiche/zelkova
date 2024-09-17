@@ -6,7 +6,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:ginkgo/graphql/__generated__/serializers.gql.dart' as _i1;
-import 'package:gql_code_builder/src/serializers/default_scalar_serializer.dart'
+import 'package:gql_code_builder_serializers/gql_code_builder_serializers.dart'
     as _i2;
 
 part 'duniter-indexer.schema.gql.g.dart';
@@ -15,7 +15,8 @@ abstract class Gaccount_bool_exp
     implements Built<Gaccount_bool_exp, Gaccount_bool_expBuilder> {
   Gaccount_bool_exp._();
 
-  factory Gaccount_bool_exp([Function(Gaccount_bool_expBuilder b) updates]) =
+  factory Gaccount_bool_exp(
+          [void Function(Gaccount_bool_expBuilder b) updates]) =
       _$Gaccount_bool_exp;
 
   @BuiltValueField(wireName: '_and')
@@ -55,7 +56,8 @@ abstract class Gaccount_order_by
     implements Built<Gaccount_order_by, Gaccount_order_byBuilder> {
   Gaccount_order_by._();
 
-  factory Gaccount_order_by([Function(Gaccount_order_byBuilder b) updates]) =
+  factory Gaccount_order_by(
+          [void Function(Gaccount_order_byBuilder b) updates]) =
       _$Gaccount_order_by;
 
   Gblock_order_by? get block;
@@ -117,7 +119,7 @@ abstract class Gaccount_stream_cursor_input
   Gaccount_stream_cursor_input._();
 
   factory Gaccount_stream_cursor_input(
-          [Function(Gaccount_stream_cursor_inputBuilder b) updates]) =
+          [void Function(Gaccount_stream_cursor_inputBuilder b) updates]) =
       _$Gaccount_stream_cursor_input;
 
   Gaccount_stream_cursor_value_input get initial_value;
@@ -144,8 +146,8 @@ abstract class Gaccount_stream_cursor_value_input
   Gaccount_stream_cursor_value_input._();
 
   factory Gaccount_stream_cursor_value_input(
-          [Function(Gaccount_stream_cursor_value_inputBuilder b) updates]) =
-      _$Gaccount_stream_cursor_value_input;
+      [void Function(Gaccount_stream_cursor_value_inputBuilder b)
+          updates]) = _$Gaccount_stream_cursor_value_input;
 
   Gtimestamptz? get created_at;
   int? get created_on;
@@ -172,7 +174,7 @@ abstract class Gblock_bool_exp
     implements Built<Gblock_bool_exp, Gblock_bool_expBuilder> {
   Gblock_bool_exp._();
 
-  factory Gblock_bool_exp([Function(Gblock_bool_expBuilder b) updates]) =
+  factory Gblock_bool_exp([void Function(Gblock_bool_expBuilder b) updates]) =
       _$Gblock_bool_exp;
 
   @BuiltValueField(wireName: '_and')
@@ -204,7 +206,7 @@ abstract class Gblock_order_by
     implements Built<Gblock_order_by, Gblock_order_byBuilder> {
   Gblock_order_by._();
 
-  factory Gblock_order_by([Function(Gblock_order_byBuilder b) updates]) =
+  factory Gblock_order_by([void Function(Gblock_order_byBuilder b) updates]) =
       _$Gblock_order_by;
 
   Gorder_by? get created_at;
@@ -253,7 +255,7 @@ abstract class Gblock_stream_cursor_input
   Gblock_stream_cursor_input._();
 
   factory Gblock_stream_cursor_input(
-          [Function(Gblock_stream_cursor_inputBuilder b) updates]) =
+          [void Function(Gblock_stream_cursor_inputBuilder b) updates]) =
       _$Gblock_stream_cursor_input;
 
   Gblock_stream_cursor_value_input get initial_value;
@@ -280,7 +282,7 @@ abstract class Gblock_stream_cursor_value_input
   Gblock_stream_cursor_value_input._();
 
   factory Gblock_stream_cursor_value_input(
-          [Function(Gblock_stream_cursor_value_inputBuilder b) updates]) =
+          [void Function(Gblock_stream_cursor_value_inputBuilder b) updates]) =
       _$Gblock_stream_cursor_value_input;
 
   Gtimestamp? get created_at;
@@ -308,7 +310,7 @@ abstract class GBoolean_comparison_exp
   GBoolean_comparison_exp._();
 
   factory GBoolean_comparison_exp(
-          [Function(GBoolean_comparison_expBuilder b) updates]) =
+          [void Function(GBoolean_comparison_expBuilder b) updates]) =
       _$GBoolean_comparison_exp;
 
   @BuiltValueField(wireName: '_eq')
@@ -351,7 +353,7 @@ abstract class Gcertification_aggregate_bool_exp
   Gcertification_aggregate_bool_exp._();
 
   factory Gcertification_aggregate_bool_exp(
-          [Function(Gcertification_aggregate_bool_expBuilder b) updates]) =
+          [void Function(Gcertification_aggregate_bool_expBuilder b) updates]) =
       _$Gcertification_aggregate_bool_exp;
 
   Gcertification_aggregate_bool_exp_count? get count;
@@ -378,7 +380,7 @@ abstract class Gcertification_aggregate_bool_exp_count
   Gcertification_aggregate_bool_exp_count._();
 
   factory Gcertification_aggregate_bool_exp_count(
-      [Function(Gcertification_aggregate_bool_exp_countBuilder b)
+      [void Function(Gcertification_aggregate_bool_exp_countBuilder b)
           updates]) = _$Gcertification_aggregate_bool_exp_count;
 
   BuiltList<Gcertification_select_column>? get arguments;
@@ -408,7 +410,7 @@ abstract class Gcertification_aggregate_order_by
   Gcertification_aggregate_order_by._();
 
   factory Gcertification_aggregate_order_by(
-          [Function(Gcertification_aggregate_order_byBuilder b) updates]) =
+          [void Function(Gcertification_aggregate_order_byBuilder b) updates]) =
       _$Gcertification_aggregate_order_by;
 
   Gcertification_avg_order_by? get avg;
@@ -444,7 +446,7 @@ abstract class Gcertification_avg_order_by
   Gcertification_avg_order_by._();
 
   factory Gcertification_avg_order_by(
-          [Function(Gcertification_avg_order_byBuilder b) updates]) =
+          [void Function(Gcertification_avg_order_byBuilder b) updates]) =
       _$Gcertification_avg_order_by;
 
   Gorder_by? get created_on;
@@ -470,7 +472,7 @@ abstract class Gcertification_bool_exp
   Gcertification_bool_exp._();
 
   factory Gcertification_bool_exp(
-          [Function(Gcertification_bool_expBuilder b) updates]) =
+          [void Function(Gcertification_bool_expBuilder b) updates]) =
       _$Gcertification_bool_exp;
 
   @BuiltValueField(wireName: '_and')
@@ -507,7 +509,7 @@ abstract class Gcertification_max_order_by
   Gcertification_max_order_by._();
 
   factory Gcertification_max_order_by(
-          [Function(Gcertification_max_order_byBuilder b) updates]) =
+          [void Function(Gcertification_max_order_byBuilder b) updates]) =
       _$Gcertification_max_order_by;
 
   Gorder_by? get created_at;
@@ -535,7 +537,7 @@ abstract class Gcertification_min_order_by
   Gcertification_min_order_by._();
 
   factory Gcertification_min_order_by(
-          [Function(Gcertification_min_order_byBuilder b) updates]) =
+          [void Function(Gcertification_min_order_byBuilder b) updates]) =
       _$Gcertification_min_order_by;
 
   Gorder_by? get created_at;
@@ -562,7 +564,7 @@ abstract class Gcertification_order_by
   Gcertification_order_by._();
 
   factory Gcertification_order_by(
-          [Function(Gcertification_order_byBuilder b) updates]) =
+          [void Function(Gcertification_order_byBuilder b) updates]) =
       _$Gcertification_order_by;
 
   Gorder_by? get created_at;
@@ -619,7 +621,7 @@ abstract class Gcertification_stddev_order_by
   Gcertification_stddev_order_by._();
 
   factory Gcertification_stddev_order_by(
-          [Function(Gcertification_stddev_order_byBuilder b) updates]) =
+          [void Function(Gcertification_stddev_order_byBuilder b) updates]) =
       _$Gcertification_stddev_order_by;
 
   Gorder_by? get created_on;
@@ -647,8 +649,8 @@ abstract class Gcertification_stddev_pop_order_by
   Gcertification_stddev_pop_order_by._();
 
   factory Gcertification_stddev_pop_order_by(
-          [Function(Gcertification_stddev_pop_order_byBuilder b) updates]) =
-      _$Gcertification_stddev_pop_order_by;
+      [void Function(Gcertification_stddev_pop_order_byBuilder b)
+          updates]) = _$Gcertification_stddev_pop_order_by;
 
   Gorder_by? get created_on;
   Gorder_by? get issuer_index;
@@ -676,8 +678,8 @@ abstract class Gcertification_stddev_samp_order_by
   Gcertification_stddev_samp_order_by._();
 
   factory Gcertification_stddev_samp_order_by(
-          [Function(Gcertification_stddev_samp_order_byBuilder b) updates]) =
-      _$Gcertification_stddev_samp_order_by;
+      [void Function(Gcertification_stddev_samp_order_byBuilder b)
+          updates]) = _$Gcertification_stddev_samp_order_by;
 
   Gorder_by? get created_on;
   Gorder_by? get issuer_index;
@@ -705,8 +707,8 @@ abstract class Gcertification_stream_cursor_input
   Gcertification_stream_cursor_input._();
 
   factory Gcertification_stream_cursor_input(
-          [Function(Gcertification_stream_cursor_inputBuilder b) updates]) =
-      _$Gcertification_stream_cursor_input;
+      [void Function(Gcertification_stream_cursor_inputBuilder b)
+          updates]) = _$Gcertification_stream_cursor_input;
 
   Gcertification_stream_cursor_value_input get initial_value;
   Gcursor_ordering? get ordering;
@@ -733,7 +735,7 @@ abstract class Gcertification_stream_cursor_value_input
   Gcertification_stream_cursor_value_input._();
 
   factory Gcertification_stream_cursor_value_input(
-      [Function(Gcertification_stream_cursor_value_inputBuilder b)
+      [void Function(Gcertification_stream_cursor_value_inputBuilder b)
           updates]) = _$Gcertification_stream_cursor_value_input;
 
   Gtimestamptz? get created_at;
@@ -762,7 +764,7 @@ abstract class Gcertification_sum_order_by
   Gcertification_sum_order_by._();
 
   factory Gcertification_sum_order_by(
-          [Function(Gcertification_sum_order_byBuilder b) updates]) =
+          [void Function(Gcertification_sum_order_byBuilder b) updates]) =
       _$Gcertification_sum_order_by;
 
   Gorder_by? get created_on;
@@ -790,7 +792,7 @@ abstract class Gcertification_var_pop_order_by
   Gcertification_var_pop_order_by._();
 
   factory Gcertification_var_pop_order_by(
-          [Function(Gcertification_var_pop_order_byBuilder b) updates]) =
+          [void Function(Gcertification_var_pop_order_byBuilder b) updates]) =
       _$Gcertification_var_pop_order_by;
 
   Gorder_by? get created_on;
@@ -818,7 +820,7 @@ abstract class Gcertification_var_samp_order_by
   Gcertification_var_samp_order_by._();
 
   factory Gcertification_var_samp_order_by(
-          [Function(Gcertification_var_samp_order_byBuilder b) updates]) =
+          [void Function(Gcertification_var_samp_order_byBuilder b) updates]) =
       _$Gcertification_var_samp_order_by;
 
   Gorder_by? get created_on;
@@ -847,7 +849,7 @@ abstract class Gcertification_variance_order_by
   Gcertification_variance_order_by._();
 
   factory Gcertification_variance_order_by(
-          [Function(Gcertification_variance_order_byBuilder b) updates]) =
+          [void Function(Gcertification_variance_order_byBuilder b) updates]) =
       _$Gcertification_variance_order_by;
 
   Gorder_by? get created_on;
@@ -902,7 +904,7 @@ abstract class GFloat_comparison_exp
   GFloat_comparison_exp._();
 
   factory GFloat_comparison_exp(
-          [Function(GFloat_comparison_expBuilder b) updates]) =
+          [void Function(GFloat_comparison_expBuilder b) updates]) =
       _$GFloat_comparison_exp;
 
   @BuiltValueField(wireName: '_eq')
@@ -942,7 +944,8 @@ abstract class Gidentity_bool_exp
     implements Built<Gidentity_bool_exp, Gidentity_bool_expBuilder> {
   Gidentity_bool_exp._();
 
-  factory Gidentity_bool_exp([Function(Gidentity_bool_expBuilder b) updates]) =
+  factory Gidentity_bool_exp(
+          [void Function(Gidentity_bool_expBuilder b) updates]) =
       _$Gidentity_bool_exp;
 
   @BuiltValueField(wireName: '_and')
@@ -989,7 +992,8 @@ abstract class Gidentity_order_by
     implements Built<Gidentity_order_by, Gidentity_order_byBuilder> {
   Gidentity_order_by._();
 
-  factory Gidentity_order_by([Function(Gidentity_order_byBuilder b) updates]) =
+  factory Gidentity_order_by(
+          [void Function(Gidentity_order_byBuilder b) updates]) =
       _$Gidentity_order_by;
 
   Gaccount_order_by? get account;
@@ -1072,7 +1076,7 @@ abstract class Gidentity_stream_cursor_input
   Gidentity_stream_cursor_input._();
 
   factory Gidentity_stream_cursor_input(
-          [Function(Gidentity_stream_cursor_inputBuilder b) updates]) =
+          [void Function(Gidentity_stream_cursor_inputBuilder b) updates]) =
       _$Gidentity_stream_cursor_input;
 
   Gidentity_stream_cursor_value_input get initial_value;
@@ -1099,8 +1103,8 @@ abstract class Gidentity_stream_cursor_value_input
   Gidentity_stream_cursor_value_input._();
 
   factory Gidentity_stream_cursor_value_input(
-          [Function(Gidentity_stream_cursor_value_inputBuilder b) updates]) =
-      _$Gidentity_stream_cursor_value_input;
+      [void Function(Gidentity_stream_cursor_value_inputBuilder b)
+          updates]) = _$Gidentity_stream_cursor_value_input;
 
   Gtimestamptz? get confirmed_at;
   int? get confirmed_on;
@@ -1133,7 +1137,8 @@ abstract class GInt_comparison_exp
   GInt_comparison_exp._();
 
   factory GInt_comparison_exp(
-      [Function(GInt_comparison_expBuilder b) updates]) = _$GInt_comparison_exp;
+          [void Function(GInt_comparison_expBuilder b) updates]) =
+      _$GInt_comparison_exp;
 
   @BuiltValueField(wireName: '_eq')
   int? get G_eq;
@@ -1185,7 +1190,7 @@ abstract class Gjsonb_cast_exp
     implements Built<Gjsonb_cast_exp, Gjsonb_cast_expBuilder> {
   Gjsonb_cast_exp._();
 
-  factory Gjsonb_cast_exp([Function(Gjsonb_cast_expBuilder b) updates]) =
+  factory Gjsonb_cast_exp([void Function(Gjsonb_cast_expBuilder b) updates]) =
       _$Gjsonb_cast_exp;
 
   @BuiltValueField(wireName: 'String')
@@ -1210,7 +1215,7 @@ abstract class Gjsonb_comparison_exp
   Gjsonb_comparison_exp._();
 
   factory Gjsonb_comparison_exp(
-          [Function(Gjsonb_comparison_expBuilder b) updates]) =
+          [void Function(Gjsonb_comparison_expBuilder b) updates]) =
       _$Gjsonb_comparison_exp;
 
   @BuiltValueField(wireName: '_cast')
@@ -1285,7 +1290,7 @@ abstract class Gparameters_bool_exp
   Gparameters_bool_exp._();
 
   factory Gparameters_bool_exp(
-          [Function(Gparameters_bool_expBuilder b) updates]) =
+          [void Function(Gparameters_bool_expBuilder b) updates]) =
       _$Gparameters_bool_exp;
 
   @BuiltValueField(wireName: '_and')
@@ -1316,7 +1321,7 @@ abstract class Gparameters_order_by
   Gparameters_order_by._();
 
   factory Gparameters_order_by(
-          [Function(Gparameters_order_byBuilder b) updates]) =
+          [void Function(Gparameters_order_byBuilder b) updates]) =
       _$Gparameters_order_by;
 
   Gorder_by? get key;
@@ -1360,7 +1365,7 @@ abstract class Gparameters_stream_cursor_input
   Gparameters_stream_cursor_input._();
 
   factory Gparameters_stream_cursor_input(
-          [Function(Gparameters_stream_cursor_inputBuilder b) updates]) =
+          [void Function(Gparameters_stream_cursor_inputBuilder b) updates]) =
       _$Gparameters_stream_cursor_input;
 
   Gparameters_stream_cursor_value_input get initial_value;
@@ -1387,8 +1392,8 @@ abstract class Gparameters_stream_cursor_value_input
   Gparameters_stream_cursor_value_input._();
 
   factory Gparameters_stream_cursor_value_input(
-          [Function(Gparameters_stream_cursor_value_inputBuilder b) updates]) =
-      _$Gparameters_stream_cursor_value_input;
+      [void Function(Gparameters_stream_cursor_value_inputBuilder b)
+          updates]) = _$Gparameters_stream_cursor_value_input;
 
   String? get key;
   Gjsonb? get value;
@@ -1413,7 +1418,7 @@ abstract class Gsearch_identity_args
   Gsearch_identity_args._();
 
   factory Gsearch_identity_args(
-          [Function(Gsearch_identity_argsBuilder b) updates]) =
+          [void Function(Gsearch_identity_argsBuilder b) updates]) =
       _$Gsearch_identity_args;
 
   String? get name;
@@ -1436,7 +1441,7 @@ abstract class Gsmith_bool_exp
     implements Built<Gsmith_bool_exp, Gsmith_bool_expBuilder> {
   Gsmith_bool_exp._();
 
-  factory Gsmith_bool_exp([Function(Gsmith_bool_expBuilder b) updates]) =
+  factory Gsmith_bool_exp([void Function(Gsmith_bool_expBuilder b) updates]) =
       _$Gsmith_bool_exp;
 
   @BuiltValueField(wireName: '_and')
@@ -1473,7 +1478,7 @@ abstract class Gsmith_cert_aggregate_bool_exp
   Gsmith_cert_aggregate_bool_exp._();
 
   factory Gsmith_cert_aggregate_bool_exp(
-          [Function(Gsmith_cert_aggregate_bool_expBuilder b) updates]) =
+          [void Function(Gsmith_cert_aggregate_bool_expBuilder b) updates]) =
       _$Gsmith_cert_aggregate_bool_exp;
 
   Gsmith_cert_aggregate_bool_exp_count? get count;
@@ -1499,8 +1504,8 @@ abstract class Gsmith_cert_aggregate_bool_exp_count
   Gsmith_cert_aggregate_bool_exp_count._();
 
   factory Gsmith_cert_aggregate_bool_exp_count(
-          [Function(Gsmith_cert_aggregate_bool_exp_countBuilder b) updates]) =
-      _$Gsmith_cert_aggregate_bool_exp_count;
+      [void Function(Gsmith_cert_aggregate_bool_exp_countBuilder b)
+          updates]) = _$Gsmith_cert_aggregate_bool_exp_count;
 
   BuiltList<Gsmith_cert_select_column>? get arguments;
   bool? get distinct;
@@ -1529,7 +1534,7 @@ abstract class Gsmith_cert_aggregate_order_by
   Gsmith_cert_aggregate_order_by._();
 
   factory Gsmith_cert_aggregate_order_by(
-          [Function(Gsmith_cert_aggregate_order_byBuilder b) updates]) =
+          [void Function(Gsmith_cert_aggregate_order_byBuilder b) updates]) =
       _$Gsmith_cert_aggregate_order_by;
 
   Gsmith_cert_avg_order_by? get avg;
@@ -1564,7 +1569,7 @@ abstract class Gsmith_cert_avg_order_by
   Gsmith_cert_avg_order_by._();
 
   factory Gsmith_cert_avg_order_by(
-          [Function(Gsmith_cert_avg_order_byBuilder b) updates]) =
+          [void Function(Gsmith_cert_avg_order_byBuilder b) updates]) =
       _$Gsmith_cert_avg_order_by;
 
   Gorder_by? get created_on;
@@ -1590,7 +1595,7 @@ abstract class Gsmith_cert_bool_exp
   Gsmith_cert_bool_exp._();
 
   factory Gsmith_cert_bool_exp(
-          [Function(Gsmith_cert_bool_expBuilder b) updates]) =
+          [void Function(Gsmith_cert_bool_expBuilder b) updates]) =
       _$Gsmith_cert_bool_exp;
 
   @BuiltValueField(wireName: '_and')
@@ -1627,7 +1632,7 @@ abstract class Gsmith_cert_max_order_by
   Gsmith_cert_max_order_by._();
 
   factory Gsmith_cert_max_order_by(
-          [Function(Gsmith_cert_max_order_byBuilder b) updates]) =
+          [void Function(Gsmith_cert_max_order_byBuilder b) updates]) =
       _$Gsmith_cert_max_order_by;
 
   Gorder_by? get created_at;
@@ -1655,7 +1660,7 @@ abstract class Gsmith_cert_min_order_by
   Gsmith_cert_min_order_by._();
 
   factory Gsmith_cert_min_order_by(
-          [Function(Gsmith_cert_min_order_byBuilder b) updates]) =
+          [void Function(Gsmith_cert_min_order_byBuilder b) updates]) =
       _$Gsmith_cert_min_order_by;
 
   Gorder_by? get created_at;
@@ -1682,7 +1687,7 @@ abstract class Gsmith_cert_order_by
   Gsmith_cert_order_by._();
 
   factory Gsmith_cert_order_by(
-          [Function(Gsmith_cert_order_byBuilder b) updates]) =
+          [void Function(Gsmith_cert_order_byBuilder b) updates]) =
       _$Gsmith_cert_order_by;
 
   Gorder_by? get created_at;
@@ -1738,7 +1743,7 @@ abstract class Gsmith_cert_stddev_order_by
   Gsmith_cert_stddev_order_by._();
 
   factory Gsmith_cert_stddev_order_by(
-          [Function(Gsmith_cert_stddev_order_byBuilder b) updates]) =
+          [void Function(Gsmith_cert_stddev_order_byBuilder b) updates]) =
       _$Gsmith_cert_stddev_order_by;
 
   Gorder_by? get created_on;
@@ -1766,7 +1771,7 @@ abstract class Gsmith_cert_stddev_pop_order_by
   Gsmith_cert_stddev_pop_order_by._();
 
   factory Gsmith_cert_stddev_pop_order_by(
-          [Function(Gsmith_cert_stddev_pop_order_byBuilder b) updates]) =
+          [void Function(Gsmith_cert_stddev_pop_order_byBuilder b) updates]) =
       _$Gsmith_cert_stddev_pop_order_by;
 
   Gorder_by? get created_on;
@@ -1794,7 +1799,7 @@ abstract class Gsmith_cert_stddev_samp_order_by
   Gsmith_cert_stddev_samp_order_by._();
 
   factory Gsmith_cert_stddev_samp_order_by(
-          [Function(Gsmith_cert_stddev_samp_order_byBuilder b) updates]) =
+          [void Function(Gsmith_cert_stddev_samp_order_byBuilder b) updates]) =
       _$Gsmith_cert_stddev_samp_order_by;
 
   Gorder_by? get created_on;
@@ -1823,7 +1828,7 @@ abstract class Gsmith_cert_stream_cursor_input
   Gsmith_cert_stream_cursor_input._();
 
   factory Gsmith_cert_stream_cursor_input(
-          [Function(Gsmith_cert_stream_cursor_inputBuilder b) updates]) =
+          [void Function(Gsmith_cert_stream_cursor_inputBuilder b) updates]) =
       _$Gsmith_cert_stream_cursor_input;
 
   Gsmith_cert_stream_cursor_value_input get initial_value;
@@ -1850,8 +1855,8 @@ abstract class Gsmith_cert_stream_cursor_value_input
   Gsmith_cert_stream_cursor_value_input._();
 
   factory Gsmith_cert_stream_cursor_value_input(
-          [Function(Gsmith_cert_stream_cursor_value_inputBuilder b) updates]) =
-      _$Gsmith_cert_stream_cursor_value_input;
+      [void Function(Gsmith_cert_stream_cursor_value_inputBuilder b)
+          updates]) = _$Gsmith_cert_stream_cursor_value_input;
 
   Gtimestamptz? get created_at;
   int? get created_on;
@@ -1879,7 +1884,7 @@ abstract class Gsmith_cert_sum_order_by
   Gsmith_cert_sum_order_by._();
 
   factory Gsmith_cert_sum_order_by(
-          [Function(Gsmith_cert_sum_order_byBuilder b) updates]) =
+          [void Function(Gsmith_cert_sum_order_byBuilder b) updates]) =
       _$Gsmith_cert_sum_order_by;
 
   Gorder_by? get created_on;
@@ -1907,7 +1912,7 @@ abstract class Gsmith_cert_var_pop_order_by
   Gsmith_cert_var_pop_order_by._();
 
   factory Gsmith_cert_var_pop_order_by(
-          [Function(Gsmith_cert_var_pop_order_byBuilder b) updates]) =
+          [void Function(Gsmith_cert_var_pop_order_byBuilder b) updates]) =
       _$Gsmith_cert_var_pop_order_by;
 
   Gorder_by? get created_on;
@@ -1935,7 +1940,7 @@ abstract class Gsmith_cert_var_samp_order_by
   Gsmith_cert_var_samp_order_by._();
 
   factory Gsmith_cert_var_samp_order_by(
-          [Function(Gsmith_cert_var_samp_order_byBuilder b) updates]) =
+          [void Function(Gsmith_cert_var_samp_order_byBuilder b) updates]) =
       _$Gsmith_cert_var_samp_order_by;
 
   Gorder_by? get created_on;
@@ -1963,7 +1968,7 @@ abstract class Gsmith_cert_variance_order_by
   Gsmith_cert_variance_order_by._();
 
   factory Gsmith_cert_variance_order_by(
-          [Function(Gsmith_cert_variance_order_byBuilder b) updates]) =
+          [void Function(Gsmith_cert_variance_order_byBuilder b) updates]) =
       _$Gsmith_cert_variance_order_by;
 
   Gorder_by? get created_on;
@@ -1988,7 +1993,7 @@ abstract class Gsmith_order_by
     implements Built<Gsmith_order_by, Gsmith_order_byBuilder> {
   Gsmith_order_by._();
 
-  factory Gsmith_order_by([Function(Gsmith_order_byBuilder b) updates]) =
+  factory Gsmith_order_by([void Function(Gsmith_order_byBuilder b) updates]) =
       _$Gsmith_order_by;
 
   Gsmith_cert_aggregate_order_by? get cert_issued_aggregate;
@@ -2031,7 +2036,7 @@ abstract class Gsmith_stream_cursor_input
   Gsmith_stream_cursor_input._();
 
   factory Gsmith_stream_cursor_input(
-          [Function(Gsmith_stream_cursor_inputBuilder b) updates]) =
+          [void Function(Gsmith_stream_cursor_inputBuilder b) updates]) =
       _$Gsmith_stream_cursor_input;
 
   Gsmith_stream_cursor_value_input get initial_value;
@@ -2058,7 +2063,7 @@ abstract class Gsmith_stream_cursor_value_input
   Gsmith_stream_cursor_value_input._();
 
   factory Gsmith_stream_cursor_value_input(
-          [Function(Gsmith_stream_cursor_value_inputBuilder b) updates]) =
+          [void Function(Gsmith_stream_cursor_value_inputBuilder b) updates]) =
       _$Gsmith_stream_cursor_value_input;
 
   int? get idty_index;
@@ -2083,7 +2088,7 @@ abstract class GString_comparison_exp
   GString_comparison_exp._();
 
   factory GString_comparison_exp(
-          [Function(GString_comparison_expBuilder b) updates]) =
+          [void Function(GString_comparison_expBuilder b) updates]) =
       _$GString_comparison_exp;
 
   @BuiltValueField(wireName: '_eq')
@@ -2172,7 +2177,7 @@ abstract class Gtimestamp_comparison_exp
   Gtimestamp_comparison_exp._();
 
   factory Gtimestamp_comparison_exp(
-          [Function(Gtimestamp_comparison_expBuilder b) updates]) =
+          [void Function(Gtimestamp_comparison_expBuilder b) updates]) =
       _$Gtimestamp_comparison_exp;
 
   @BuiltValueField(wireName: '_eq')
@@ -2228,7 +2233,7 @@ abstract class Gtimestamptz_comparison_exp
   Gtimestamptz_comparison_exp._();
 
   factory Gtimestamptz_comparison_exp(
-          [Function(Gtimestamptz_comparison_expBuilder b) updates]) =
+          [void Function(Gtimestamptz_comparison_expBuilder b) updates]) =
       _$Gtimestamptz_comparison_exp;
 
   @BuiltValueField(wireName: '_eq')
@@ -2271,7 +2276,7 @@ abstract class Gtransaction_aggregate_bool_exp
   Gtransaction_aggregate_bool_exp._();
 
   factory Gtransaction_aggregate_bool_exp(
-          [Function(Gtransaction_aggregate_bool_expBuilder b) updates]) =
+          [void Function(Gtransaction_aggregate_bool_expBuilder b) updates]) =
       _$Gtransaction_aggregate_bool_exp;
 
   Gtransaction_aggregate_bool_exp_count? get count;
@@ -2297,8 +2302,8 @@ abstract class Gtransaction_aggregate_bool_exp_count
   Gtransaction_aggregate_bool_exp_count._();
 
   factory Gtransaction_aggregate_bool_exp_count(
-          [Function(Gtransaction_aggregate_bool_exp_countBuilder b) updates]) =
-      _$Gtransaction_aggregate_bool_exp_count;
+      [void Function(Gtransaction_aggregate_bool_exp_countBuilder b)
+          updates]) = _$Gtransaction_aggregate_bool_exp_count;
 
   BuiltList<Gtransaction_select_column>? get arguments;
   bool? get distinct;
@@ -2327,7 +2332,7 @@ abstract class Gtransaction_aggregate_order_by
   Gtransaction_aggregate_order_by._();
 
   factory Gtransaction_aggregate_order_by(
-          [Function(Gtransaction_aggregate_order_byBuilder b) updates]) =
+          [void Function(Gtransaction_aggregate_order_byBuilder b) updates]) =
       _$Gtransaction_aggregate_order_by;
 
   Gtransaction_avg_order_by? get avg;
@@ -2362,7 +2367,7 @@ abstract class Gtransaction_avg_order_by
   Gtransaction_avg_order_by._();
 
   factory Gtransaction_avg_order_by(
-          [Function(Gtransaction_avg_order_byBuilder b) updates]) =
+          [void Function(Gtransaction_avg_order_byBuilder b) updates]) =
       _$Gtransaction_avg_order_by;
 
   Gorder_by? get amount;
@@ -2388,7 +2393,7 @@ abstract class Gtransaction_bool_exp
   Gtransaction_bool_exp._();
 
   factory Gtransaction_bool_exp(
-          [Function(Gtransaction_bool_expBuilder b) updates]) =
+          [void Function(Gtransaction_bool_expBuilder b) updates]) =
       _$Gtransaction_bool_exp;
 
   @BuiltValueField(wireName: '_and')
@@ -2428,7 +2433,7 @@ abstract class Gtransaction_max_order_by
   Gtransaction_max_order_by._();
 
   factory Gtransaction_max_order_by(
-          [Function(Gtransaction_max_order_byBuilder b) updates]) =
+          [void Function(Gtransaction_max_order_byBuilder b) updates]) =
       _$Gtransaction_max_order_by;
 
   Gorder_by? get amount;
@@ -2459,7 +2464,7 @@ abstract class Gtransaction_min_order_by
   Gtransaction_min_order_by._();
 
   factory Gtransaction_min_order_by(
-          [Function(Gtransaction_min_order_byBuilder b) updates]) =
+          [void Function(Gtransaction_min_order_byBuilder b) updates]) =
       _$Gtransaction_min_order_by;
 
   Gorder_by? get amount;
@@ -2489,7 +2494,7 @@ abstract class Gtransaction_order_by
   Gtransaction_order_by._();
 
   factory Gtransaction_order_by(
-          [Function(Gtransaction_order_byBuilder b) updates]) =
+          [void Function(Gtransaction_order_byBuilder b) updates]) =
       _$Gtransaction_order_by;
 
   Gorder_by? get amount;
@@ -2557,7 +2562,7 @@ abstract class Gtransaction_stddev_order_by
   Gtransaction_stddev_order_by._();
 
   factory Gtransaction_stddev_order_by(
-          [Function(Gtransaction_stddev_order_byBuilder b) updates]) =
+          [void Function(Gtransaction_stddev_order_byBuilder b) updates]) =
       _$Gtransaction_stddev_order_by;
 
   Gorder_by? get amount;
@@ -2585,7 +2590,7 @@ abstract class Gtransaction_stddev_pop_order_by
   Gtransaction_stddev_pop_order_by._();
 
   factory Gtransaction_stddev_pop_order_by(
-          [Function(Gtransaction_stddev_pop_order_byBuilder b) updates]) =
+          [void Function(Gtransaction_stddev_pop_order_byBuilder b) updates]) =
       _$Gtransaction_stddev_pop_order_by;
 
   Gorder_by? get amount;
@@ -2614,7 +2619,7 @@ abstract class Gtransaction_stddev_samp_order_by
   Gtransaction_stddev_samp_order_by._();
 
   factory Gtransaction_stddev_samp_order_by(
-          [Function(Gtransaction_stddev_samp_order_byBuilder b) updates]) =
+          [void Function(Gtransaction_stddev_samp_order_byBuilder b) updates]) =
       _$Gtransaction_stddev_samp_order_by;
 
   Gorder_by? get amount;
@@ -2643,7 +2648,7 @@ abstract class Gtransaction_stream_cursor_input
   Gtransaction_stream_cursor_input._();
 
   factory Gtransaction_stream_cursor_input(
-          [Function(Gtransaction_stream_cursor_inputBuilder b) updates]) =
+          [void Function(Gtransaction_stream_cursor_inputBuilder b) updates]) =
       _$Gtransaction_stream_cursor_input;
 
   Gtransaction_stream_cursor_value_input get initial_value;
@@ -2671,8 +2676,8 @@ abstract class Gtransaction_stream_cursor_value_input
   Gtransaction_stream_cursor_value_input._();
 
   factory Gtransaction_stream_cursor_value_input(
-          [Function(Gtransaction_stream_cursor_value_inputBuilder b) updates]) =
-      _$Gtransaction_stream_cursor_value_input;
+      [void Function(Gtransaction_stream_cursor_value_inputBuilder b)
+          updates]) = _$Gtransaction_stream_cursor_value_input;
 
   double? get amount;
   String? get comment;
@@ -2703,7 +2708,7 @@ abstract class Gtransaction_sum_order_by
   Gtransaction_sum_order_by._();
 
   factory Gtransaction_sum_order_by(
-          [Function(Gtransaction_sum_order_byBuilder b) updates]) =
+          [void Function(Gtransaction_sum_order_byBuilder b) updates]) =
       _$Gtransaction_sum_order_by;
 
   Gorder_by? get amount;
@@ -2730,7 +2735,7 @@ abstract class Gtransaction_timeserie_args
   Gtransaction_timeserie_args._();
 
   factory Gtransaction_timeserie_args(
-          [Function(Gtransaction_timeserie_argsBuilder b) updates]) =
+          [void Function(Gtransaction_timeserie_argsBuilder b) updates]) =
       _$Gtransaction_timeserie_args;
 
   Gdate? get from;
@@ -2760,8 +2765,8 @@ abstract class Gtransaction_timeserie_tmp_bool_exp
   Gtransaction_timeserie_tmp_bool_exp._();
 
   factory Gtransaction_timeserie_tmp_bool_exp(
-          [Function(Gtransaction_timeserie_tmp_bool_expBuilder b) updates]) =
-      _$Gtransaction_timeserie_tmp_bool_exp;
+      [void Function(Gtransaction_timeserie_tmp_bool_expBuilder b)
+          updates]) = _$Gtransaction_timeserie_tmp_bool_exp;
 
   @BuiltValueField(wireName: '_and')
   BuiltList<Gtransaction_timeserie_tmp_bool_exp>? get G_and;
@@ -2794,8 +2799,8 @@ abstract class Gtransaction_timeserie_tmp_order_by
   Gtransaction_timeserie_tmp_order_by._();
 
   factory Gtransaction_timeserie_tmp_order_by(
-          [Function(Gtransaction_timeserie_tmp_order_byBuilder b) updates]) =
-      _$Gtransaction_timeserie_tmp_order_by;
+      [void Function(Gtransaction_timeserie_tmp_order_byBuilder b)
+          updates]) = _$Gtransaction_timeserie_tmp_order_by;
 
   Gorder_by? get amount;
   Gorder_by? get date;
@@ -2841,7 +2846,7 @@ abstract class Gtransaction_timeserie_tmp_stream_cursor_input
   Gtransaction_timeserie_tmp_stream_cursor_input._();
 
   factory Gtransaction_timeserie_tmp_stream_cursor_input(
-      [Function(Gtransaction_timeserie_tmp_stream_cursor_inputBuilder b)
+      [void Function(Gtransaction_timeserie_tmp_stream_cursor_inputBuilder b)
           updates]) = _$Gtransaction_timeserie_tmp_stream_cursor_input;
 
   Gtransaction_timeserie_tmp_stream_cursor_value_input get initial_value;
@@ -2869,7 +2874,8 @@ abstract class Gtransaction_timeserie_tmp_stream_cursor_value_input
   Gtransaction_timeserie_tmp_stream_cursor_value_input._();
 
   factory Gtransaction_timeserie_tmp_stream_cursor_value_input(
-      [Function(Gtransaction_timeserie_tmp_stream_cursor_value_inputBuilder b)
+      [void Function(
+              Gtransaction_timeserie_tmp_stream_cursor_value_inputBuilder b)
           updates]) = _$Gtransaction_timeserie_tmp_stream_cursor_value_input;
 
   double? get amount;
@@ -2898,7 +2904,7 @@ abstract class Gtransaction_var_pop_order_by
   Gtransaction_var_pop_order_by._();
 
   factory Gtransaction_var_pop_order_by(
-          [Function(Gtransaction_var_pop_order_byBuilder b) updates]) =
+          [void Function(Gtransaction_var_pop_order_byBuilder b) updates]) =
       _$Gtransaction_var_pop_order_by;
 
   Gorder_by? get amount;
@@ -2926,7 +2932,7 @@ abstract class Gtransaction_var_samp_order_by
   Gtransaction_var_samp_order_by._();
 
   factory Gtransaction_var_samp_order_by(
-          [Function(Gtransaction_var_samp_order_byBuilder b) updates]) =
+          [void Function(Gtransaction_var_samp_order_byBuilder b) updates]) =
       _$Gtransaction_var_samp_order_by;
 
   Gorder_by? get amount;
@@ -2954,7 +2960,7 @@ abstract class Gtransaction_variance_order_by
   Gtransaction_variance_order_by._();
 
   factory Gtransaction_variance_order_by(
-          [Function(Gtransaction_variance_order_byBuilder b) updates]) =
+          [void Function(Gtransaction_variance_order_byBuilder b) updates]) =
       _$Gtransaction_variance_order_by;
 
   Gorder_by? get amount;
@@ -2975,4 +2981,4 @@ abstract class Gtransaction_variance_order_by
       );
 }
 
-const possibleTypesMap = {};
+const Map<String, Set<String>> possibleTypesMap = {};

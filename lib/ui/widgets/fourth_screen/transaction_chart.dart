@@ -93,7 +93,7 @@ class TransactionChartState extends State<TransactionChart> {
         });
       },
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(
+        backgroundColor: WidgetStateProperty.all(
           isSelected ? Colors.blue : Colors.grey,
         ),
       ),
@@ -125,7 +125,7 @@ class TransactionChartState extends State<TransactionChart> {
                   maxY: 20,
                   barTouchData: BarTouchData(
                     touchTooltipData: BarTouchTooltipData(
-                      tooltipBgColor: Colors.grey,
+                      // tooltipBgColor: Colors.grey,
                       getTooltipItem: (BarChartGroupData a, int b,
                               BarChartRodData c, int d) =>
                           null,
@@ -353,7 +353,7 @@ class TransactionChartState extends State<TransactionChart> {
                             maxY: 20,
                             barTouchData: BarTouchData(
                               touchTooltipData: BarTouchTooltipData(
-                                tooltipBgColor: Colors.grey,
+                                // tooltipBgColor: Colors.grey,
                                 getTooltipItem: (BarChartGroupData a, int b,
                                         BarChartRodData c, int d) =>
                                     null,

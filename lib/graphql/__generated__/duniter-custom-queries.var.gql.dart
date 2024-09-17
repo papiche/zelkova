@@ -12,7 +12,8 @@ abstract class GAccountsByPkVars
     implements Built<GAccountsByPkVars, GAccountsByPkVarsBuilder> {
   GAccountsByPkVars._();
 
-  factory GAccountsByPkVars([Function(GAccountsByPkVarsBuilder b) updates]) =
+  factory GAccountsByPkVars(
+          [void Function(GAccountsByPkVarsBuilder b) updates]) =
       _$GAccountsByPkVars;
 
   String get address;
@@ -36,7 +37,8 @@ abstract class GSearchIdentityVars
   GSearchIdentityVars._();
 
   factory GSearchIdentityVars(
-      [Function(GSearchIdentityVarsBuilder b) updates]) = _$GSearchIdentityVars;
+          [void Function(GSearchIdentityVarsBuilder b) updates]) =
+      _$GSearchIdentityVars;
 
   String get name;
   static Serializer<GSearchIdentityVars> get serializer =>
@@ -60,7 +62,7 @@ abstract class GLastIndexedBlockNumberVars
   GLastIndexedBlockNumberVars._();
 
   factory GLastIndexedBlockNumberVars(
-          [Function(GLastIndexedBlockNumberVarsBuilder b) updates]) =
+          [void Function(GLastIndexedBlockNumberVarsBuilder b) updates]) =
       _$GLastIndexedBlockNumberVars;
 
   static Serializer<GLastIndexedBlockNumberVars> get serializer =>
@@ -83,7 +85,7 @@ abstract class GAccountsByNameOrPkVars
   GAccountsByNameOrPkVars._();
 
   factory GAccountsByNameOrPkVars(
-          [Function(GAccountsByNameOrPkVarsBuilder b) updates]) =
+          [void Function(GAccountsByNameOrPkVarsBuilder b) updates]) =
       _$GAccountsByNameOrPkVars;
 
   String get pattern;

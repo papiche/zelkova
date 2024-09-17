@@ -71,7 +71,6 @@ class _TransactionsAndBalanceWidgetState
     transCubit = context.read<MultiWalletTransactionCubit>();
     nodeListCubit = context.read<NodeListCubit>();
     utxoCubit = context.read<UtxoCubit>();
-    _bloc.init(transCubit, nodeListCubit, appCubit, utxoCubit);
     _pagingController.addPageRequestListener((String? cursor) {
       _bloc.onPageRequestSink.add(cursor);
     });
@@ -116,7 +115,7 @@ class _TransactionsAndBalanceWidgetState
         _refresh();
       } catch (e) {
         logger('Failed via _refresh, lets try a basic fetchTransactions');
-        transCubit.fetchTransactions(nodeListCubit, appCubit,
+        transCubit.fetchTransactions(
             isExternal: widget.isExternalAccount, pubKey: widget.pubKey);
       }
     });
@@ -241,7 +240,7 @@ class _TransactionsAndBalanceWidgetState
       panelMaxSize: panelMaxSize,
       // isDismissible: false,
       body: Container(
-        color: colorScheme.background,
+        color: colorScheme.surface,
         child: _transactionPanelBuilder(context, pubKey, isG1, currentSymbol,
             currentUd, isCurrencyBefore, balance),
       ),

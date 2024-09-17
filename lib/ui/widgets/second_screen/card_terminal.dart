@@ -1,6 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:vibration/vibration.dart';
 
+import '../../../g1/g1_helper.dart';
+import '../../../shared_prefs_helper.dart';
 import '../../tutorial_keys.dart';
 import '../../ui_helpers.dart';
 import 'card_terminal_screen.dart';
@@ -106,18 +110,25 @@ class _CardTerminalState extends State<CardTerminal> {
       return RubberButton(
           // Green, send
           bgColor: const Color(0xFF36B649),
-          // icon: Icons.subdirectory_arrow_left,
-          label: '=',
+          icon: _doingCalc() ? null : Icons.share,
+          label: _doingCalc() ? '=' : null,
           onPressed: () {
             vibrateIfPossible();
             setState(() {
-              _currentValue = formatAmountWithLocale(
-                amount: calculate(
-                    textInTerminal: _currentValue, decimalSep: _decimalSep),
-                isG1: true,
-                locale: currentLocale(context),
-                useSymbol: false,
-              );
+              if (_doingCalc()) {
+                _currentValue = formatAmountWithLocale(
+                  amount: calculate(
+                      textInTerminal: _currentValue, decimalSep: _decimalSep),
+                  isG1: true,
+                  locale: currentLocale(context),
+                  useSymbol: false,
+                );
+              } else {
+                Share.share(getQrUri(
+                    pubKey: SharedPreferencesHelper().getPubKey(),
+                    locale: context.locale.toLanguageTag(),
+                    amount: _currentValue));
+              }
             });
           });
     } else if (index == _cancelIndex) {
@@ -152,6 +163,8 @@ class _CardTerminalState extends State<CardTerminal> {
             });
           });
   }
+
+  bool _doingCalc() => _currentValue.contains('+');
 }
 
 Future<void> vibrateIfPossible() async {

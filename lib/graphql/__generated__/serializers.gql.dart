@@ -134,7 +134,7 @@ import 'package:ginkgo/graphql/__generated__/duniter-indexer.schema.gql.dart'
         Gtransaction_var_pop_order_by,
         Gtransaction_var_samp_order_by,
         Gtransaction_variance_order_by;
-import 'package:gql_code_builder/src/serializers/operation_serializer.dart'
+import 'package:gql_code_builder_serializers/gql_code_builder_serializers.dart'
     show OperationSerializer;
 
 part 'serializers.gql.g.dart';

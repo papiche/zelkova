@@ -44,8 +44,8 @@ class _ContactsPageState extends State<ContactsPage> {
         Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Container(
-                decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.background),
+                decoration:
+                    BoxDecoration(color: Theme.of(context).colorScheme.surface),
                 child: Row(children: <Widget>[
                   Expanded(
                       child: TextField(

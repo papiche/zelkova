@@ -23,7 +23,9 @@ class NotificationController {
   ///     NOTIFICATION EVENTS LISTENER
   ///  *********************************************
   ///  Notifications events are only delivered after call this method
-  static Future<void> startListeningNotificationEvents() async {}
+  static Future<void> startListeningNotificationEvents() async {
+    return;
+  }
 
   ///  *********************************************
   ///     REQUESTING NOTIFICATION PERMISSIONS

@@ -68,19 +68,21 @@ class _FirstScreenState extends State<FirstScreen> {
             if (!state.warningBrowserViewed) {
               if (browser == null ||
                   (browser.browserAgent != BrowserAgent.Chrome &&
-                      browser.browserAgent != BrowserAgent.Firefox)) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(tr('browser_warning')),
-                    action: SnackBarAction(
-                      label: 'OK',
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                        context.read<AppCubit>().warningBrowserViewed();
-                      },
-                    ),
+                      browser.browserAgent != BrowserAgent.Firefox) ||
+                  browser.browserAgent == BrowserAgent.Safari) {
+                // ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  behavior: SnackBarBehavior.floating,
+                  content: Text(tr('browser_warning')),
+                  duration: const Duration(days: 365),
+                  action: SnackBarAction(
+                    label: 'OK',
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      context.read<AppCubit>().warningBrowserViewed();
+                    },
                   ),
-                );
+                ));
               }
             }
           }

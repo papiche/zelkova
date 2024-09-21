@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:cron/cron.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:feedback/feedback.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +17,7 @@ import 'package:once/once.dart';
 import 'package:provider/provider.dart';
 import 'package:pwa_install/pwa_install.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sentry_logging/sentry_logging.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -25,7 +25,6 @@ import 'package:uni_links/uni_links.dart';
 import 'package:workmanager/workmanager.dart';
 
 import 'app_bloc_observer.dart';
-import 'custom_feedback_localization.dart';
 import 'data/eo_timeago_support.dart';
 import 'data/eu_timeago_support.dart';
 import 'data/gl_timeago_support.dart';
@@ -60,10 +59,9 @@ const String fetchWalletsTransactionsTask =
 void main() async {
   await NotificationController.initializeLocalNotifications();
 
-  // const int seedColorOld = 0xff526600;
-
   const int seedColor = 0xff98FB98;
   final int seedColorDark = Colors.lightGreen.value;
+
   final ThemeData lightTheme = ThemeData.from(
     colorScheme: ColorScheme.fromSeed(
       seedColor: const Color(seedColor),
@@ -587,7 +585,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
                       ),
                       child: MaxWidthBox(
                         maxWidth: 480,
-                        // background: Container(color: const Color(0xFFF5F5F5)),
+                        backgroundColor: const Color(0xFFF5F5F5),
                         child: BouncingScrollWrapper.builder(context, widget!,
                             dragWithMouse: true),
                       ),
@@ -606,9 +604,24 @@ class FeedbackAndSkeletonScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BetterFeedback(
+    /*
+    Commented as currectly there is an issue with the main theme
+     https://github.com/ueman/feedback/issues/317
+     return BetterFeedback(
+        theme: FeedbackThemeData(
+          background: Colors.grey,
+          feedbackSheetColor: Colors.grey[50]!,
+          drawColors: [
+            Colors.red,
+            Colors.green,
+            Colors.blue,
+            Colors.yellow,
+          ],
+        ),
         localizationsDelegates: context.localizationDelegates
           ..add(CustomFeedbackLocalizationsDelegate()),
         child: const SkeletonScreen());
+     */
+    return const SkeletonScreen();
   }
 }

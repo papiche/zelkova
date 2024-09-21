@@ -100,6 +100,10 @@ class _FifthScreenState extends State<FifthScreen> {
                       child: Text('Català'),
                     ),
                     DropdownMenuItem<Locale>(
+                      value: Locale('da'),
+                      child: Text('Dansk'),
+                    ),
+                    DropdownMenuItem<Locale>(
                       value: Locale('de'),
                       child: Text('Deutsch'),
                     ),

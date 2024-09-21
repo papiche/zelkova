@@ -141,6 +141,7 @@ void main() async {
                 // https://github.com/aissat/easy_localization/issues/220#issuecomment-846035493
                 Locale('es', 'AST'),
                 Locale('ca'),
+                Locale('da'),
                 Locale('de'),
                 Locale('en'),
                 Locale('eo'),
@@ -162,10 +163,8 @@ void main() async {
                         create: (BuildContext context) => AppCubit()),
                     BlocProvider<PaymentCubit>(
                         create: (BuildContext context) => PaymentCubit()),
-
                     BlocProvider<NodeListCubit>(
                         create: (BuildContext context) => NodeListCubit()),
-
                     BlocProvider<ContactsCubit>(
                         create: (BuildContext context) => ContactsCubit()),
                     BlocProvider<UtxoCubit>(

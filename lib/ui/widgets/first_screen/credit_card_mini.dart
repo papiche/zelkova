@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../data/models/bottom_nav_cubit.dart';
 import '../../../data/models/cesium_card.dart';
 import '../../../data/models/credit_card_theme_selector.dart';
 import '../../../data/models/credit_card_themes.dart';
@@ -193,6 +195,7 @@ class CreditCardMini extends StatelessWidget {
   void onCardTap(BuildContext context) {
     logger("Card ${card.pubKey} '${card.name}' was tapped!");
     SharedPreferencesHelper().selectCurrentWallet(card);
+    context.read<BottomNavCubit>().updateIndex(0);
     Navigator.pop(context);
   }
 }

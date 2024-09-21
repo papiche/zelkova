@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:feedback_gitlab/feedback_gitlab.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
@@ -9,8 +8,6 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../../data/models/cesium_card.dart';
 import '../../data/models/node_manager.dart';
-import '../../env.dart';
-import '../../main.dart';
 import '../../shared_prefs_helper.dart';
 import '../screens/sandbox.dart';
 import '../ui_helpers.dart';
@@ -101,6 +98,9 @@ class CardDrawer extends StatelessWidget {
                     }
                   },
                 ),
+                /*
+                Until this is solved, we comment the feedback functionality
+                https://github.com/ueman/feedback/issues/317
                 ListTile(
                   leading: const Icon(Icons.feedback),
                   title: Text(tr('feedback')),
@@ -166,12 +166,9 @@ class CardDrawer extends StatelessWidget {
                         apiToken: gitLabToken,
                         gitlabUrl: 'git.duniter.org',
                         client: client);
-                    /* BetterFeedback.of(context).showAndUploadToSentry(
-                      // name: 'Foo Bar',
-                      // email: 'foo_bar@example.com',
-                    ); */
                   },
                 ),
+                */
                 AboutListTile(
                     icon: g1nkgoIcon,
                     applicationName: tr('app_name'),

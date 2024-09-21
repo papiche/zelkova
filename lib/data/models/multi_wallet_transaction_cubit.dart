@@ -54,6 +54,7 @@ class MultiWalletTransactionCubit
   }
 
   @override
+  // ignore: must_call_super
   Future<void> close() {
     return Future<void>.value();
   }

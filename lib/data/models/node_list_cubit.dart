@@ -14,6 +14,7 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
   Node? get currentGvaNode => state.currentGvaNode;
 
   @override
+  // ignore: must_call_super
   Future<void> close() {
     // Prevent to close de node list cubit
     return Future<void>.value();

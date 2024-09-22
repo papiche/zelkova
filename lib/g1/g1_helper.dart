@@ -276,8 +276,8 @@ Map<String, String> encryptJsonForExport(String jsonString, String password) {
   return jsonData;
 }
 
-Map<String, dynamic> decryptJsonForImport(
-    String keyEncrypted, String password) {
+Map<String, dynamic> decryptJsonForImport(String keyEncrypted, String password,
+    [bool debug = false]) {
   // This fails if encrypt > 5.0.1
   // https://github.com/leocavalcante/encrypt/issues/314
   try {
@@ -287,8 +287,10 @@ Map<String, dynamic> decryptJsonForImport(
         encrypt.Encrypter(aes).decrypt64(keyEncrypted, iv: _iv);
     return jsonDecode(decrypted) as Map<String, dynamic>;
   } catch (e, stacktrace) {
-    logger('Decrypt error: $e');
-    logger(stacktrace);
+    if (debug) {
+      logger('Decrypt error: $e');
+      logger(stacktrace);
+    }
     rethrow;
   }
 }

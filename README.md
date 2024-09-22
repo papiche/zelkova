@@ -215,6 +215,7 @@ DropdownMenuItem<Locale>(
 
 - ast: dixebral
 - ca: calbasi
+- da: Gerhard Pischinger
 - de: Andreas Wahlen and FW
 - eo: flodef
 - eu: Anna Ayala Alcalá

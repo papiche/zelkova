@@ -638,8 +638,8 @@ void main() {
 
     // Then
     final dynamic cesiumCards = decryptedKeys['cesiumCards'];
-    final dynamic firstCard =
-        (jsonDecode(cesiumCards as String) as List<dynamic>)[0];
+    final Map<String, dynamic> firstCard = (jsonDecode(cesiumCards as String)
+        as List<dynamic>)[0] as Map<String, dynamic>;
     final String primaryKey = firstCard['pubKey'] as String;
     expect(primaryKey, equals(expectedPrimaryKey));
   });

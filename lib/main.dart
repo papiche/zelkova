@@ -21,7 +21,8 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sentry_logging/sentry_logging.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:uni_links/uni_links.dart';
+
+import 'package:uni_links3/uni_links.dart';
 import 'package:workmanager/workmanager.dart';
 
 import 'app_bloc_observer.dart';
@@ -484,27 +485,30 @@ class _GinkgoAppState extends State<GinkgoApp> {
   StreamSubscription<dynamic>? _sub;
 
   Future<void> _initDeepLinkListener() async {
-    _sub = linkStream.listen((String? link) async {
-      if (!mounted) {
-        return;
-      }
-      if (link != null) {
-        logger('got link: $link');
-        if (parseScannedUri(link) != null) {
-          await onKeyScanned(context, link);
-          if (!mounted) {
-            return;
-          } else {
-            context.read<BottomNavCubit>().updateIndex(0);
+    // TODO(vjrj): do the same for IOs
+    if (Platform.isAndroid || kIsWeb) {
+      _sub = linkStream.listen((String? link) async {
+        if (!mounted) {
+          return;
+        }
+        if (link != null) {
+          logger('got link: $link');
+          if (parseScannedUri(link) != null) {
+            await onKeyScanned(context, link);
+            if (!mounted) {
+              return;
+            } else {
+              context.read<BottomNavCubit>().updateIndex(0);
+            }
           }
         }
-      }
-    }, onError: (Object err) {
-      if (!mounted) {
-        return;
-      }
-      logger('got err: $err');
-    });
+      }, onError: (Object err) {
+        if (!mounted) {
+          return;
+        }
+        logger('got err: $err');
+      });
+    }
   }
 
   void _disposeDeepLinkListener() {

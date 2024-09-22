@@ -22,7 +22,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sentry_logging/sentry_logging.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-import 'package:uni_links3/uni_links.dart';
+import 'package:uni_links/uni_links.dart';
 import 'package:workmanager/workmanager.dart';
 
 import 'app_bloc_observer.dart';

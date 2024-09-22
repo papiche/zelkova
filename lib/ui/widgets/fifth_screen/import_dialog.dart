@@ -49,7 +49,8 @@ class _ImportDialogState extends State<ImportDialog> {
             final Map<String, dynamic> keyJson =
                 jsonDecode(keyEncString) as Map<String, dynamic>;
             final String keyEncrypted = keyJson['key'] as String;
-            final String? contacts = keyJson['contacts'] as String?;
+            final List<dynamic>? contacts =
+                keyJson['contacts'] as List<dynamic>?;
             return Scaffold(
               key: scaffoldKey,
               appBar: AppBar(
@@ -146,6 +147,7 @@ class _ImportDialogState extends State<ImportDialog> {
                           Navigator.of(context).pop(true);
                         } catch (e, stacktrace) {
                           logger(e.toString());
+                          logger(stacktrace);
                           if (!context.mounted) {
                             return;
                           }
@@ -173,15 +175,13 @@ class _ImportDialogState extends State<ImportDialog> {
         });
   }
 
-  void importContacts(String? contacts, BuildContext context) {
+  void importContacts(List<dynamic>? contacts, BuildContext context) {
     if (contacts != null) {
       final ContactsCubit contactsCubit = context.read<ContactsCubit>();
       final List<Contact> existingContacts = contactsCubit.contacts;
-      final List<dynamic> contactsImported =
-          jsonDecode(contacts) as List<dynamic>;
-      if (contactsImported.isNotEmpty) {
+      if (contacts.isNotEmpty) {
         if (existingContacts.isNotEmpty) {
-          for (final dynamic contactJson in contactsImported) {
+          for (final dynamic contactJson in contacts) {
             final Contact contact =
                 Contact.fromJson(contactJson as Map<String, dynamic>);
             if (!contactsCubit.isContact(contact.pubKey)) {
@@ -193,7 +193,7 @@ class _ImportDialogState extends State<ImportDialog> {
             }
           }
         } else {
-          for (final dynamic contactJson in contactsImported) {
+          for (final dynamic contactJson in contacts) {
             final Contact contact =
                 Contact.fromJson(contactJson as Map<String, dynamic>);
             contactsCubit.addContact(contact);
@@ -394,16 +394,20 @@ class SelectImportMethodDialog extends StatelessWidget {
 }
 
 Future<bool> requestStoragePermission(BuildContext context) async {
-  final PermissionStatus status = await Permission.storage.request();
-  if (!context.mounted) {
-    return false;
-  }
-  if (status.isGranted) {
-    return true;
+  if (!Platform.isLinux) {
+    final PermissionStatus status = await Permission.storage.request();
+    if (!context.mounted) {
+      return false;
+    }
+    if (status.isGranted) {
+      return true;
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(tr('storage_permission_request')),
+      ));
+      return false;
+    }
   } else {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(tr('storage_permission_request')),
-    ));
-    return false;
+    return true;
   }
 }

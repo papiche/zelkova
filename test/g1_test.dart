@@ -620,6 +620,29 @@ void main() {
     expect(pendingTransaction.recipientsAmounts,
         equals(sendingTransaction.recipientsAmounts));
   });
+
+  test('Import wallet and verify primary key', () async {
+    // Given
+    const String walletBackup =
+        '{"key":"rLkdXaEaz8hk0OGbb7TTMuh0d+aNrkW0fA1rlCR1lOvuURPy717ayCSvDviXE6J+LDRJ6FpbsG2SReDB6lcF8crS7DOyF5K4gx16RF4DlHaVxxZrwRnlVCxyBN9NstFlLglgAFnx/XmZJLSzZ7w/gG6ka9miXKECrPdUw93nPF3hPZhfXtcXzGo+6UKBtVtglEfjOXmgjDMTuYgbtJuHKvdAjoCDDNfpMmp6wV+C6zTglRRhHMh9+oubCmekwxrvAKA0lueC5M/CPL+puPH21/3wLHed8hF9N2F2EHmjSNGeK1r7ferN0SbwntWdNOfA/Jzhdxg7F+XNMeSNn7J4Py+jVwwx0Bs/wjw8DQI02cHSzBNOl+jP0ESs784ArMv2tL/sASAM5K0bXcc/zI89tOLI6A4+jnzOFNdGfjuPVU1AmNye79KCUDPXv6Qh4T6ZoiDgHtjFlT9n6/9RYLOFw86Lr0255ont8nnhm+MXkDhg38SscUMaU8I5CPglfWf+/bO0fDA2VQ0a/6wgpyWI02n3LzHgUEF6+l4akrHDn4ahm/pWaeS9DPIxw+WGMFYRPCph0tI5Bp0Alf6vy64ZGSP1VxrvbETvWQ3okWaOBOqm571h/CMVbre7CbKMqjFtFLiWbBJBmBNx1QSt5uGmGrWaJI29gHSW/MwU7YSvkCrIzoSJkr/7e2vDytkeG4Eq"}';
+    const String password = '678';
+    const String expectedPrimaryKey =
+        '6JgGvDDBu8XWL89BTvzHCfVmJWbSRfBNb1ZK4dQW6fNK';
+
+    // When
+    final Map<String, dynamic> keyJson =
+        jsonDecode(walletBackup) as Map<String, dynamic>;
+    final String keyEncrypted = keyJson['key'] as String;
+    final Map<String, dynamic> decryptedKeys =
+        decryptJsonForImport(keyEncrypted, password);
+
+    // Then
+    final dynamic cesiumCards = decryptedKeys['cesiumCards'];
+    final dynamic firstCard =
+        (jsonDecode(cesiumCards as String) as List<dynamic>)[0];
+    final String primaryKey = firstCard['pubKey'] as String;
+    expect(primaryKey, equals(expectedPrimaryKey));
+  });
 }
 
 String _generateRandomPatternPassword(Random random) {

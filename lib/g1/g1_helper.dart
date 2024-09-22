@@ -261,7 +261,9 @@ PaymentState? parseScannedUri(String qrOrig) {
   return null;
 }
 
-final IV _iv = encrypt.IV.fromLength(16);
+// https://github.com/leocavalcante/encrypt/issues/314#issuecomment-1729499372
+// final IV _iv = encrypt.IV.fromLength(16);
+final IV _iv = IV(Uint8List(16));
 
 Map<String, String> encryptJsonForExport(String jsonString, String password) {
   final Uint8List plainText = Uint8List.fromList(utf8.encode(jsonString));
@@ -276,10 +278,19 @@ Map<String, String> encryptJsonForExport(String jsonString, String password) {
 
 Map<String, dynamic> decryptJsonForImport(
     String keyEncrypted, String password) {
-  final String decrypted = encrypt.Encrypter(
-          encrypt.AES(encrypt.Key.fromUtf8(password.padRight(32))))
-      .decrypt64(keyEncrypted, iv: _iv);
-  return jsonDecode(decrypted) as Map<String, dynamic>;
+  // This fails if encrypt > 5.0.1
+  // https://github.com/leocavalcante/encrypt/issues/314
+  try {
+    final Key key = encrypt.Key.fromUtf8(password.padRight(32));
+    final AES aes = encrypt.AES(key);
+    final String decrypted =
+        encrypt.Encrypter(aes).decrypt64(keyEncrypted, iv: _iv);
+    return jsonDecode(decrypted) as Map<String, dynamic>;
+  } catch (e, stacktrace) {
+    logger('Decrypt error: $e');
+    logger(stacktrace);
+    rethrow;
+  }
 }
 
 const Duration wrongNodeDuration = Duration(days: 2);

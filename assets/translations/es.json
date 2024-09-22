@@ -126,6 +126,7 @@
   "form_contact_name_validation_pub_key": "Por favor, ingresa una clave pública valida",
   "form_contact_notes": "Notas",
   "form_contact_pub_key": "Clave pública",
+  "form_contact_address_v2": "Dirección",
   "reloading_nodes": "Refrescando nodos del tipo {type}",
   "payment_error": "Error en el pago",
   "payment_error_desc": "¡Vaya! el pago falló. Más detalles: {error}",

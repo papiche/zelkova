@@ -185,7 +185,8 @@ class QrListTile extends StatelessWidget {
                 label: Text('v2'),
                 child: Icon(Icons.qr_code),
               ),
-        title: Text(tr('form_contact_pub_key')),
+        title: Text(
+            !isV2 ? tr('form_contact_pub_key') : tr('form_contact_address_v2')),
         subtitle: Text(humanizePubKey(pubKey)),
       ),
     );

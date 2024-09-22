@@ -123,6 +123,7 @@
   "form_contact_name_validation_pub_key": "Please enter a valid public key",
   "form_contact_notes": "Notes",
   "form_contact_pub_key": "Public key",
+  "form_contact_address_v2": "Address",
   "payment_error": "Payment error",
   "payment_error_desc": "Oops! the payment failed. More details: {error}",
   "payment_error_retry": "Oops! the payment failed. Please retry in some minutes.",

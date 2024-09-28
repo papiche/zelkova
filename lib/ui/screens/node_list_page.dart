@@ -25,81 +25,83 @@ class NodeListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final NodeListState state = context.watch<NodeListCubit>().state;
-    final List<Node> endPointNodes =
-        filterAndSortNodesByType(state.endpointNodes, NodeType.endpoint);
-    final List<Node> duniterIndexerNodes = filterAndSortNodesByType(
-        state.duniterIndexerNodes, NodeType.duniterIndexer);
-    final List<Node> duniterNodes =
-        filterAndSortNodesByType(state.duniterNodes, NodeType.duniter);
-    final List<Node> cesiumPlusNodes =
-        filterAndSortNodesByType(state.cesiumPlusNodes, NodeType.cesiumPlus);
-    final List<Node> gvaNodes =
-        filterAndSortNodesByType(state.gvaNodes, NodeType.gva);
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(tr('nodes_tech_info')),
-          bottom: state.isLoading
-              ? const PreferredSize(
-                  preferredSize: Size.fromHeight(4.0),
-                  child: LinearProgressIndicator(),
-                )
-              : null,
-        ),
-        body: Container(
-            constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height * 0.9),
-            child: Scrollbar(
-              controller: _scrollController,
-              child: SingleChildScrollView(
+    return BlocBuilder<NodeListCubit, NodeListState>(
+        builder: (BuildContext context, NodeListState state) {
+      final List<Node> endPointNodes =
+          filterAndSortNodesByType(state.endpointNodes, NodeType.endpoint);
+      final List<Node> duniterIndexerNodes = filterAndSortNodesByType(
+          state.duniterIndexerNodes, NodeType.duniterIndexer);
+      final List<Node> duniterNodes =
+          filterAndSortNodesByType(state.duniterNodes, NodeType.duniter);
+      final List<Node> cesiumPlusNodes =
+          filterAndSortNodesByType(state.cesiumPlusNodes, NodeType.cesiumPlus);
+      final List<Node> gvaNodes =
+          filterAndSortNodesByType(state.gvaNodes, NodeType.gva);
+      return Scaffold(
+          appBar: AppBar(
+            title: Text(tr('nodes_tech_info')),
+            bottom: state.isLoading
+                ? const PreferredSize(
+                    preferredSize: Size.fromHeight(4.0),
+                    child: LinearProgressIndicator(),
+                  )
+                : null,
+          ),
+          body: Container(
+              constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.9),
+              child: Scrollbar(
                 controller: _scrollController,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    NodeListHeader(
-                        type: NodeType.endpoint,
-                        nodesCount: endPointNodes.length),
-                    if (endPointNodes.isNotEmpty)
-                      NodeListWidget(
-                          nodes: endPointNodes,
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      NodeListHeader(
                           type: NodeType.endpoint,
-                          currentBlock: endPointNodes[0].currentBlock),
-                    NodeListHeader(
-                        type: NodeType.duniterIndexer,
-                        nodesCount: defaultDuniterIndexerNodes.length),
-                    if (duniterIndexerNodes.isNotEmpty)
-                      NodeListWidget(
-                          nodes: duniterIndexerNodes,
+                          nodesCount: endPointNodes.length),
+                      if (endPointNodes.isNotEmpty)
+                        NodeListWidget(
+                            nodes: endPointNodes,
+                            type: NodeType.endpoint,
+                            currentBlock: endPointNodes[0].currentBlock),
+                      NodeListHeader(
                           type: NodeType.duniterIndexer,
-                          currentBlock: duniterIndexerNodes[0].currentBlock),
-                    NodeListHeader(
-                        type: NodeType.gva, nodesCount: gvaNodes.length),
-                    if (gvaNodes.isNotEmpty)
-                      NodeListWidget(
-                          nodes: gvaNodes,
-                          type: NodeType.gva,
-                          currentBlock: gvaNodes[0].currentBlock),
-                    NodeListHeader(
-                      type: NodeType.duniter,
-                      nodesCount: duniterNodes.length,
-                    ),
-                    if (duniterNodes.isNotEmpty)
-                      NodeListWidget(
-                          nodes: duniterNodes,
-                          type: NodeType.duniter,
-                          currentBlock: duniterNodes[0].currentBlock),
-                    NodeListHeader(
-                        type: NodeType.cesiumPlus,
-                        nodesCount: cesiumPlusNodes.length),
-                    if (cesiumPlusNodes.isNotEmpty)
-                      NodeListWidget(
-                          nodes: cesiumPlusNodes,
+                          nodesCount: defaultDuniterIndexerNodes.length),
+                      if (duniterIndexerNodes.isNotEmpty)
+                        NodeListWidget(
+                            nodes: duniterIndexerNodes,
+                            type: NodeType.duniterIndexer,
+                            currentBlock: duniterIndexerNodes[0].currentBlock),
+                      NodeListHeader(
+                          type: NodeType.gva, nodesCount: gvaNodes.length),
+                      if (gvaNodes.isNotEmpty)
+                        NodeListWidget(
+                            nodes: gvaNodes,
+                            type: NodeType.gva,
+                            currentBlock: gvaNodes[0].currentBlock),
+                      NodeListHeader(
+                        type: NodeType.duniter,
+                        nodesCount: duniterNodes.length,
+                      ),
+                      if (duniterNodes.isNotEmpty)
+                        NodeListWidget(
+                            nodes: duniterNodes,
+                            type: NodeType.duniter,
+                            currentBlock: duniterNodes[0].currentBlock),
+                      NodeListHeader(
                           type: NodeType.cesiumPlus,
-                          currentBlock: cesiumPlusNodes[0].currentBlock),
-                  ],
+                          nodesCount: cesiumPlusNodes.length),
+                      if (cesiumPlusNodes.isNotEmpty)
+                        NodeListWidget(
+                            nodes: cesiumPlusNodes,
+                            type: NodeType.cesiumPlus,
+                            currentBlock: cesiumPlusNodes[0].currentBlock),
+                    ],
+                  ),
                 ),
-              ),
-            )));
+              )));
+    });
   }
 }
 
@@ -120,17 +122,17 @@ class NodeListHeader extends StatelessWidget {
             Text('${capitalize(type.name)} Nodes ($nodesCount)',
                 style: const TextStyle(fontSize: 20)),
             GestureDetector(
-              onLongPress: () => _fetchNodes(context, true),
+              onLongPress: () => _fetchNodes(context, true, type),
               child: IconButton(
                   icon: const Icon(Icons.refresh),
                   // Force in all cases
-                  onPressed: () => _fetchNodes(context, true)),
+                  onPressed: () => _fetchNodes(context, true, type)),
             )
           ],
         ));
   }
 
-  void _fetchNodes(BuildContext context, bool force) {
+  void _fetchNodes(BuildContext context, bool force, NodeType type) {
     try {
       fetchNodes(type, force);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

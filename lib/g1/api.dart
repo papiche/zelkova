@@ -51,7 +51,8 @@ Future<String> getTxHistory(String publicKey) async {
 }
 
 Future<List<dynamic>> getPeers(NodeType type) async {
-  final List<Node> nodes = NodeManager().nodeList(type);
+  // Prevent concurrent modification
+  final List<Node> nodes = List<Node>.from(NodeManager().nodeList(type));
   loggerDev('Fetching ${type.name} peers with peers ${nodes.length}');
   List<dynamic> currentPeers = <dynamic>[];
   for (final Node node in nodes) {
@@ -260,20 +261,22 @@ Future<void> fetchNodesIfNotReady() async {
 
 Future<void> fetchNodes(NodeType type, bool force) async {
   try {
-    if (type == NodeType.duniter) {
-      _fetchDuniterNodes(force: force);
-    } else {
-      if (type == NodeType.cesiumPlus) {
-        _fetchCesiumPlusNodes(force: force);
-      }
-      if (type == NodeType.endpoint) {
-        _fetchEndPointNodes(force: force);
-      }
-      if (type == NodeType.duniterIndexer) {
-        _fetchDuniterIndexerNodes(force: force);
-      } else {
-        _fetchGvaNodes(force: force);
-      }
+    switch (type) {
+      case NodeType.duniter:
+        await _fetchDuniterNodes(force: force);
+        break;
+      case NodeType.gva:
+        await _fetchGvaNodes(force: force);
+        break;
+      case NodeType.cesiumPlus:
+        await _fetchCesiumPlusNodes(force: force);
+        break;
+      case NodeType.endpoint:
+        await _fetchEndPointNodes(force: force);
+        break;
+      case NodeType.duniterIndexer:
+        await _fetchDuniterIndexerNodes(force: force);
+        break;
     }
   } on NoNodesException catch (e, stacktrace) {
     logger(e.cause);

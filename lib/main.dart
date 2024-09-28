@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
+import 'package:get_it/get_it.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:l10n_esperanto/l10n_esperanto.dart';
 import 'package:lehttp_overrides/lehttp_overrides.dart';
@@ -22,7 +23,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sentry_logging/sentry_logging.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-import 'package:uni_links/uni_links.dart';
+import 'package:uni_links3/uni_links.dart';
 import 'package:workmanager/workmanager.dart';
 
 import 'app_bloc_observer.dart';
@@ -40,7 +41,7 @@ import 'data/models/node_manager.dart';
 import 'data/models/node_type.dart';
 import 'data/models/payment_cubit.dart';
 import 'data/models/theme_cubit.dart';
-import 'data/models/transaction_cubit_remove.dart';
+
 import 'data/models/utxo_cubit.dart';
 import 'env.dart';
 import 'g1/api.dart';
@@ -156,24 +157,23 @@ void main() async {
               ],
               fallbackLocale: const Locale('en'),
               useFallbackTranslations: true,
+              // https://stackoverflow.com/a/77799043
               child: MultiBlocProvider(
                   providers: <BlocProvider<dynamic>>[
                     BlocProvider<BottomNavCubit>(
                         create: (BuildContext context) => BottomNavCubit()),
                     BlocProvider<AppCubit>(
-                        create: (BuildContext context) => AppCubit()),
+                        create: (BuildContext context) =>
+                            GetIt.instance.get<AppCubit>()),
                     BlocProvider<PaymentCubit>(
                         create: (BuildContext context) => PaymentCubit()),
                     BlocProvider<NodeListCubit>(
-                        create: (BuildContext context) => NodeListCubit()),
+                        create: (BuildContext context) =>
+                            GetIt.instance.get<NodeListCubit>()),
                     BlocProvider<ContactsCubit>(
                         create: (BuildContext context) => ContactsCubit()),
                     BlocProvider<UtxoCubit>(
                         create: (BuildContext context) => UtxoCubit()),
-                    // TODO(vjrj): Remove when clean the state of this after upgrades
-                    BlocProvider<TransactionCubitRemove>(
-                        create: (BuildContext context) =>
-                            TransactionCubitRemove()),
                     BlocProvider<MultiWalletTransactionCubit>(
                         create: (BuildContext context) =>
                             MultiWalletTransactionCubit()),
@@ -388,9 +388,6 @@ class _GinkgoAppState extends State<GinkgoApp> {
     }
     // Only after at least the action method is set, the notification events are delivered
     NotificationController.startListeningNotificationEvents();
-    // Wipe Old Transactions Cubit
-    context.read<TransactionCubitRemove>().clear();
-    context.read<TransactionCubitRemove>().close();
     Once.runHourly('load_nodes', callback: () async {
       final bool isConnected =
           await ConnectivityWidgetWrapperWrapper.isConnected;

@@ -25,6 +25,7 @@ class NodeManager {
   final List<Node> endpointNodes = <Node>[];
   final List<Node> duniterIndexerNodes = <Node>[];
 
+  /*
   void loadFromCubit(NodeListCubit cubit) {
     duniterNodes.clear();
     cesiumPlusNodes.clear();
@@ -36,7 +37,7 @@ class NodeManager {
     gvaNodes.addAll(cubit.gvaNodes);
     endpointNodes.addAll(cubit.endpointNodes);
     duniterIndexerNodes.addAll(cubit.duniterIndexerNodes);
-  }
+  } */
 
   void updateNodes(NodeType type, List<Node> newNodes, {bool notify = true}) {
     final List<Node> nodes = _getList(type);
@@ -181,15 +182,13 @@ class NodeManagerObserver {
 
   static final NodeManagerObserver instance = NodeManagerObserver._internal();
 
-  late NodeListCubit cubit;
+  final NodeListCubit cubit = GetIt.instance.get<NodeListCubit>();
 
   void setLoading(bool isLoading) {
-    _setNodeListCubit();
     cubit.setLoading(isLoading);
   }
 
   void update(NodeManager nodeManager) {
-    _setNodeListCubit();
     cubit.setDuniterNodes(nodeManager.duniterNodes);
     cubit.setCesiumPlusNodes(nodeManager.cesiumPlusNodes);
     cubit.setGvaNodes(nodeManager.gvaNodes);
@@ -197,17 +196,11 @@ class NodeManagerObserver {
     cubit.setDuniterIndexerNodes(nodeManager.duniterIndexerNodes);
   }
 
-  void _setNodeListCubit() {
-    cubit = GetIt.instance.get<NodeListCubit>();
-  }
-
   void setCurrentGvaNode(Node node) {
-    _setNodeListCubit();
     cubit.setCurrentGvaNode(node);
   }
 
   Node? get currentGvaNode {
-    _setNodeListCubit();
     return cubit.currentGvaNode;
   }
 }

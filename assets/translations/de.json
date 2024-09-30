@@ -258,5 +258,6 @@
   "account_info": "Kontoinformation",
   "export_keys": "Brieftaschen exportieren",
   "import_keys": "Brieftaschen importieren",
-  "storage_permission_request": "Die Speicherberechtigung ist notwendig, um Ihre Brieftasche zu ex- oder importieren"
+  "storage_permission_request": "Die Speicherberechtigung ist notwendig, um Ihre Brieftasche zu ex- oder importieren",
+  "form_contact_address_v2": "Adresse"
 }

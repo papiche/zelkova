@@ -253,5 +253,6 @@
   "multi_pay_results_desc": "{success} success, {fail} failed",
   "others_and_someone": "{others} and {someone}",
   "account_info": "Account information",
-  "storage_permission_request": "Storage permission is required to export or import your wallet"
+  "storage_permission_request": "Storage permission is required to export or import your wallet",
+  "market_analysis": "Analyze your Market!"
 }

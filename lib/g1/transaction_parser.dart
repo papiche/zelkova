@@ -5,6 +5,7 @@ import '../data/models/transaction.dart';
 import '../data/models/transaction_state.dart';
 import '../data/models/transaction_type.dart';
 import '../ui/contacts_cache.dart';
+import '../ui/logger.dart';
 import 'g1_helper.dart';
 
 final RegExp exp = RegExp(r'\((.*?)\)');
@@ -121,6 +122,7 @@ Future<TransactionState> transactionsGvaParser(Map<String, dynamic> txData,
     txs.insert(0, tx);
   }
 
+  loggerDev('Balance $amount');
   return state.copyWith(
       transactions: txs,
       balance: amount,

@@ -31,6 +31,12 @@ class _ContactPageState extends State<ContactPage> {
   void initState() {
     super.initState();
     _txsCubit = context.read<MultiWalletTransactionCubit>();
+    _updateBalance();
+  }
+
+  Future<void> _updateBalance() async {
+    _txsCubit.fetchTransactions(pubKey: widget.contact.pubKey);
+    setState(() {});
   }
 
   @override
@@ -138,7 +144,8 @@ class _ContactPageState extends State<ContactPage> {
                   title: Text(contact.notes!),
                 ),
               ),
-            if (context.read<MultiWalletTransactionCubit>().balance(pubKey) > 0)
+            if (context.watch<MultiWalletTransactionCubit>().balance(pubKey) >
+                0)
               ListTile(
                   leading: const Icon(Icons.savings),
                   title: Row(children: <Widget>[

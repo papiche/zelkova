@@ -14,7 +14,7 @@ import 'package:get_it/get_it.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:l10n_esperanto/l10n_esperanto.dart';
 import 'package:lehttp_overrides/lehttp_overrides.dart';
-import 'package:once/once.dart';
+
 import 'package:provider/provider.dart';
 import 'package:pwa_install/pwa_install.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -356,6 +356,11 @@ class GinkgoApp extends StatefulWidget {
 
 class _GinkgoAppState extends State<GinkgoApp> {
   late ScheduledTask fetchTxsCronTask;
+  late ScheduledTask loadNodesCronTask;
+  late ScheduledTask clearErrorsCronTask;
+  late ScheduledTask clearCacheCronTask;
+  late ScheduledTask resizeAvatarsCronTask;
+  late ScheduledTask clearTxCubitCronTask;
 
   Future<void> _loadNodes() async {
     _printNodeStatus();
@@ -388,46 +393,11 @@ class _GinkgoAppState extends State<GinkgoApp> {
     }
     // Only after at least the action method is set, the notification events are delivered
     NotificationController.startListeningNotificationEvents();
-    Once.runHourly('load_nodes', callback: () async {
-      final bool isConnected =
-          await ConnectivityWidgetWrapperWrapper.isConnected;
-      if (isConnected) {
-        logger('Load nodes via once');
-        _loadNodes();
-      }
-    }, fallback: () {
-      _printNodeStatus(prefix: 'After once hourly having');
-    });
-    Once.runDaily('clear_errors', callback: () {
-      logger('clearErrors via once');
-      NodeManager().cleanErrorStats();
-    });
-    Once.runDaily('clear_cache', callback: () {
-      logger('clear cache via once');
-      ContactsCache().clear();
-    });
-    Once.runOnce('resize_avatars', callback: () {
-      logger('resize avatar via once');
-      context.read<ContactsCubit>().resizeAvatars();
-    });
-    Once.runDaily('clear_tx_cubit', callback: () {
-      logger('clear tx cubit via once');
-      context.read<MultiWalletTransactionCubit>().clearState();
-    });
-
     initGetItAll();
+    // Schedule tasks using Cron
+    initCronTask();
 
     ContactsCache().addContacts(context.read<ContactsCubit>().state.contacts);
-
-    fetchTxsCronTask = Cron()
-        .schedule(Schedule.parse(kReleaseMode ? '*/10 * * * *' : '*/5 * * * *'),
-            () async {
-      logger('---------- fetchTransactions via cron');
-      // Disabled to check the back development
-      // if (!inDevelopment) {
-      fetchTransactions(context);
-      // }
-    });
 
     ConnectivityWidgetWrapperWrapper.isConnected.then((bool isConnected) {
       if (isConnected) {
@@ -464,6 +434,50 @@ class _GinkgoAppState extends State<GinkgoApp> {
       printCubitStateSize('ThemeCubit', context.read<ThemeCubit>());
       printCubitStateSize('UtxoCubit', context.read<UtxoCubit>());
     } */
+  }
+
+  void initCronTask() {
+    // Schedule tasks using Cron
+    final Cron cron = Cron();
+
+    loadNodesCronTask = cron.schedule(Schedule.parse('0 * * * *'), () async {
+      final bool isConnected =
+          await ConnectivityWidgetWrapperWrapper.isConnected;
+      if (isConnected) {
+        logger('========== Load nodes via cron');
+        _loadNodes();
+      }
+    });
+
+    clearErrorsCronTask = cron.schedule(Schedule.parse('0 0 * * *'), () {
+      logger('clearErrors via cron');
+      NodeManager().cleanErrorStats();
+    });
+
+    clearCacheCronTask = cron.schedule(Schedule.parse('0 0 * * *'), () {
+      logger('clear cache via cron');
+      ContactsCache().clear();
+    });
+
+    resizeAvatarsCronTask = cron.schedule(Schedule.parse('0 0 * * *'), () {
+      logger('resize avatar via cron');
+      context.read<ContactsCubit>().resizeAvatars();
+    });
+
+    clearTxCubitCronTask = cron.schedule(Schedule.parse('0 0 * * *'), () {
+      logger('clear tx cubit via cron');
+      context.read<MultiWalletTransactionCubit>().clearState();
+    });
+
+    fetchTxsCronTask = cron
+        .schedule(Schedule.parse(kReleaseMode ? '*/10 * * * *' : '*/5 * * * *'),
+            () async {
+      logger('---------- fetchTransactions via cron');
+      // Disabled to check the back development
+      // if (!inDevelopment) {
+      fetchTransactions(context);
+      // }
+    });
   }
 
   @override

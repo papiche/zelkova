@@ -209,7 +209,7 @@ class MultiWalletTransactionCubit
           'Last sent notification: ${currentModifiedState.latestSentNotification.toIso8601String()})}');
 
       logger(
-          '>>>>>>>>>>>>>>>>>>> Transactions: ${currentModifiedState.transactions.length}, wallets ${state.map.length}');
+          '>>>>>>>>>>>>>>>>>>> Transactions: ${currentModifiedState.transactions.length}, balance: ${currentModifiedState.balance} wallets ${state.map.length}');
       for (final Transaction tx in currentModifiedState.transactions.reversed) {
         bool stateModified = false;
 

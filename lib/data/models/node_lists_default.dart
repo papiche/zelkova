@@ -23,7 +23,7 @@ List<Node> defaultCesiumPlusNodes = <Node>{
 List<Node> defaultGvaNodes = <Node>{
   ..._readDotNodeConfig(Env.gvaNodes),
   ..._splitList(
-      'https://g1.cuates.net/gva https://g1.madeirawonders.com/gva https://g1.brussels.ovh/gva https://g1.geragc.es/gva https://gva.seeds4c.org/gva')
+      'https://duniter-v1.comunes.net/gva https://g1.cuates.net/gva https://g1.madeirawonders.com/gva https://g1.brussels.ovh/gva https://g1.geragc.es/gva https://gva.seeds4c.org/gva')
 }.toList();
 
 List<Node> defaultEndPointNodes = <Node>{

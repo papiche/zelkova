@@ -132,6 +132,7 @@ void main() async {
         DeviceOrientation.portraitUp,
         DeviceOrientation.portraitDown
       ]).then((_) {
+        initGetItAll();
         runApp(ChangeNotifierProvider<SharedPreferencesHelper>(
             create: (BuildContext context) => SharedPreferencesHelper(),
             child: EasyLocalization(
@@ -393,7 +394,6 @@ class _GinkgoAppState extends State<GinkgoApp> {
     }
     // Only after at least the action method is set, the notification events are delivered
     NotificationController.startListeningNotificationEvents();
-    initGetItAll();
     // Schedule tasks using Cron
     initCronTask();
 

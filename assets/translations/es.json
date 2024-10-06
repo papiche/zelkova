@@ -260,5 +260,6 @@
   "search_multiuser_hint": "Mantén pulsado si quieres pagar a varias personas a la vez",
   "account_info": "Info de la cuenta",
   "storage_permission_request": "Se necesitan permisos para exportar o importar tu monedero",
-  "market_analysis": "Analyze your Market!"
+  "market_analysis": "Analyze your Market!",
+  "last_node": "Último nodo usado: "
 }

@@ -254,5 +254,6 @@
   "others_and_someone": "{others} and {someone}",
   "account_info": "Account information",
   "storage_permission_request": "Storage permission is required to export or import your wallet",
-  "market_analysis": "Analyze your Market!"
+  "market_analysis": "Analyze your Market!",
+  "last_node": "Last used node: "
 }

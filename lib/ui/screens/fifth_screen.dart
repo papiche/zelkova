@@ -1,12 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:provider/provider.dart';
 import 'package:pwa_install/pwa_install.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
+
+import '../../data/models/node_manager.dart';
 import '../../data/models/theme_cubit.dart';
 import '../../g1/currency.dart';
 import '../../shared_prefs_helper.dart';
@@ -221,6 +224,11 @@ class _FifthScreenState extends State<FifthScreen> {
                       }),
                 if (state.expertMode)
                   const TextDivider(text: 'technical_info_title'),
+                if (state.expertMode &&
+                    NodeManager().getCurrentGvaNode() != null)
+                  ListTile(
+                      title: Text(tr('last_node') +
+                          NodeManager().getCurrentGvaNode()!.url)),
                 if (state.expertMode) const NodeListCard(),
                 const TextDivider(text: 'info_links'),
                 if (state.expertMode)

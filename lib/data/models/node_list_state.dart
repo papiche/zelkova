@@ -45,12 +45,13 @@ class NodeListState extends Equatable {
   final Node? currentGvaNode;
 
   @override
-  List<Object?> get props => <Object>[
+  List<Object?> get props => <Object?>[
         duniterNodes,
         cesiumPlusNodes,
         gvaNodes,
         endpointNodes,
         duniterIndexerNodes,
+        currentGvaNode,
         isLoading
       ];
 

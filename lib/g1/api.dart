@@ -778,9 +778,15 @@ Tuple2<String, Node> getGvaNode() {
   final List<Node> nodes = _getBestNodes(NodeType.gva);
   if (nodes.isNotEmpty) {
     final Node? currentGvaNode = NodeManager().getCurrentGvaNode();
-    final Node node = currentGvaNode ?? nodes.first;
-    NodeManager().setCurrentGvaNode(node);
-    return Tuple2<String, Node>(proxyfyNode(node.url), node);
+    final bool currentIsInBest = nodes.contains(currentGvaNode);
+
+    final Node newNode =
+        currentIsInBest ? currentGvaNode ?? nodes.first : nodes.first;
+    loggerDev(
+        'New GVA node ${newNode.url} and currentGva ${currentGvaNode ?? const Node(url: "Node").url} is in best nodes: $currentIsInBest');
+    NodeManager().setCurrentGvaNode(newNode);
+    loggerDev('New GVA node ${newNode.url}');
+    return Tuple2<String, Node>(proxyfyNode(newNode.url), newNode);
   } else {
     throw Exception(
         'Sorry: I cannot find a working node to send the transaction');
@@ -832,8 +838,13 @@ Future<Tuple2<T?, Node>> gvaFunctionWrapper<T>(
   // Try first the current GVA node
   final Node? currentGvaNode = NodeManager().getCurrentGvaNode();
   if (currentGvaNode != null) {
-    nodes.remove(currentGvaNode);
-    nodes.insert(0, currentGvaNode);
+    // Try to put the current Node first
+    final bool currentBlockSynced = nodes.isNotEmpty &&
+        currentGvaNode.currentBlock >= nodes.first.currentBlock;
+    if (currentBlockSynced) {
+      nodes.remove(currentGvaNode);
+      nodes.insert(0, currentGvaNode);
+    }
   }
 
   for (int i = 0; i < nodes.length; i++) {

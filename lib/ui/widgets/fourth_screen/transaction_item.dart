@@ -33,7 +33,7 @@ class TransactionListItem extends StatelessWidget {
       this.afterCancel,
       this.afterRetry});
 
-  final GlobalKey _menuKey = GlobalKey();
+  final GlobalKey _menuKey = GlobalKey(debugLabel: 'txListItem-menu');
   final String pubKey;
   final Transaction transaction;
   final int index;

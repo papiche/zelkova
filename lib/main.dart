@@ -177,7 +177,7 @@ void main() async {
                         create: (BuildContext context) => UtxoCubit()),
                     BlocProvider<MultiWalletTransactionCubit>(
                         create: (BuildContext context) =>
-                            MultiWalletTransactionCubit()),
+                            GetIt.instance.get<MultiWalletTransactionCubit>()),
                     BlocProvider<ThemeCubit>(
                         create: (BuildContext context) => ThemeCubit()),
                     // Add other BlocProviders here if needed
@@ -263,7 +263,7 @@ class AppIntro extends StatefulWidget {
 
 class _AppIntro extends State<AppIntro> {
   final GlobalKey<IntroductionScreenState> introKey =
-      GlobalKey<IntroductionScreenState>();
+      GlobalKey<IntroductionScreenState>(debugLabel: 'intro');
 
   void _onIntroEnd(BuildContext context, AppCubit cubit) {
     Navigator.of(context).pushReplacement(
@@ -346,7 +346,7 @@ class GinkgoApp extends StatefulWidget {
 
   // The navigator key is necessary to navigate using static methods
   static final GlobalKey<NavigatorState> navigatorKey =
-      GlobalKey<NavigatorState>();
+      GlobalKey<NavigatorState>(debugLabel: 'main nav');
 
   final ThemeData darkTheme;
   final ThemeData lightTheme;

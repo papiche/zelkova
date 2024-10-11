@@ -41,7 +41,8 @@ class _ThirdScreenState extends State<ThirdScreen> {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return const ContactSearchPage(forPayment: false);
+                    return const ContactSearchPage(
+                        searchUse: SearchUse.contactSearch);
                   },
                 );
               }),

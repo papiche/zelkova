@@ -12,12 +12,10 @@ import 'package:we_slide/we_slide.dart';
 import '../../../data/models/app_cubit.dart';
 import '../../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../../data/models/multi_wallet_transaction_state.dart';
-import '../../../data/models/node_list_cubit.dart';
 import '../../../data/models/theme_cubit.dart';
 import '../../../data/models/transaction.dart';
 import '../../../data/models/transactions_bloc.dart';
 import '../../../data/models/utxo_cubit.dart';
-import '../../../g1/api.dart';
 import '../../../g1/currency.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
@@ -48,7 +46,6 @@ class _TransactionsAndBalanceWidgetState
 
   late StreamSubscription<TransactionsState> _blocListingStateSubscription;
   late AppCubit appCubit;
-  late NodeListCubit nodeListCubit;
   late MultiWalletTransactionCubit transCubit;
   late UtxoCubit utxoCubit;
 
@@ -69,7 +66,6 @@ class _TransactionsAndBalanceWidgetState
         isExternal: widget.isExternalAccount, pubKey: widget.pubKey);
     appCubit = context.read<AppCubit>();
     transCubit = context.read<MultiWalletTransactionCubit>();
-    nodeListCubit = context.read<NodeListCubit>();
     utxoCubit = context.read<UtxoCubit>();
     _pagingController.addPageRequestListener((String? cursor) {
       _bloc.onPageRequestSink.add(cursor);
@@ -110,7 +106,7 @@ class _TransactionsAndBalanceWidgetState
     scheduledTask = cron
         .schedule(Schedule.parse(kReleaseMode ? '*/10 * * * *' : '*/5 * * * *'),
             () async {
-      logger('---------- fetchTransactions via cron');
+      logger('---------- fetchTransactions via cron in txs_and_balance widget');
       try {
         _refresh();
       } catch (e) {
@@ -368,7 +364,6 @@ class _TransactionsAndBalanceWidgetState
       return;
     }
     try {
-      await fetchNodesIfNotReady();
       final List<Transaction> pendTxs =
           transCubit.currentWalletState(widget.pubKey).pendingTransactions;
       final bool shouldPaginate = pendTxs.length > _pendingPageSize;

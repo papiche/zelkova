@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../ui/widgets/first_screen/credit_card_theme_item.dart';
+import '../../ui/widgets/first_screen/credit_card_selector_item.dart';
 import 'cesium_card.dart';
 import 'credit_card_themes.dart';
 
@@ -26,7 +26,8 @@ class CardThemeSelector extends StatelessWidget {
             Navigator.pop(context);
           },
           child: Center(
-            child: CreditCardThemeItem(themeIndex: index),
+            child:
+                CreditCardSelectorItem(theme: CreditCardThemes.themes[index]),
           ),
         );
       },

@@ -9,10 +9,13 @@ import 'package:share_plus/share_plus.dart';
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
 
+import '../../data/models/cesium_card.dart';
+import '../../data/models/multi_wallet_selector.dart';
 import '../../data/models/node_manager.dart';
 import '../../data/models/theme_cubit.dart';
 import '../../g1/currency.dart';
 import '../../shared_prefs_helper.dart';
+import '../logger.dart';
 import '../tutorial.dart';
 import '../tutorial_keys.dart';
 import '../ui_helpers.dart';
@@ -36,6 +39,32 @@ class FifthScreen extends StatefulWidget {
 
 class _FifthScreenState extends State<FifthScreen> {
   late Tutorial tutorial;
+  List<CesiumCard> _selectedWallets = <CesiumCard>[];
+  bool _exportContacts = false;
+
+  Future<void> _showMultiWalletSelectorDialog(BuildContext context,
+      Function(List<CesiumCard>, bool) onSelectionChanged) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return MultiWalletSelectorDialog(
+          onSelectionChanged: onSelectionChanged,
+        );
+      },
+    );
+  }
+
+  Future<void> _openWalletSelector(BuildContext context) async {
+    _showMultiWalletSelectorDialog(context,
+        (List<CesiumCard> selectedCards, bool exportContacts) {
+      setState(() {
+        loggerDev('Selected wallets: ${selectedCards.length}');
+        _selectedWallets = selectedCards;
+        _exportContacts = exportContacts;
+      });
+      _showSelectExportMethodDialog();
+    });
+  }
 
   @override
   void initState() {
@@ -191,14 +220,15 @@ class _FifthScreenState extends State<FifthScreen> {
                             }
                           },
                         ),
-                      if (SharedPreferencesHelper().hasMultipleCards())
-                        GridItem(
-                            key: exportMainKey,
-                            title: 'export_key$pluralSuffix',
-                            icon: Icons.download,
-                            onTap: () {
-                              _showSelectExportMethodDialog();
-                            }),
+                      GridItem(
+                          key: exportMainKey,
+                          title: 'export_key$pluralSuffix',
+                          icon: Icons.download,
+                          onTap: () async {
+                            _openWalletSelector(context);
+
+                            // _showSelectExportMethodDialog();
+                          }),
                       GridItem(
                           title: 'import_key$pluralSuffix',
                           icon: Icons.upload,
@@ -268,7 +298,10 @@ class _FifthScreenState extends State<FifthScreen> {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return ExportDialog(type: method);
+          return ExportDialog(
+              type: method,
+              wallets: _selectedWallets,
+              exportContacts: _exportContacts);
         },
       );
     }

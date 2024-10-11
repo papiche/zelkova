@@ -8,7 +8,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pattern_lock/pattern_lock.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:universal_html/html.dart' as html;
 
@@ -33,7 +32,7 @@ class ImportDialog extends StatefulWidget {
 }
 
 class _ImportDialogState extends State<ImportDialog> {
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _importKey = GlobalKey<ScaffoldState>(debugLabel: 'importKey');
 
   @override
   Widget build(BuildContext c) {
@@ -49,10 +48,8 @@ class _ImportDialogState extends State<ImportDialog> {
             final Map<String, dynamic> keyJson =
                 jsonDecode(keyEncString) as Map<String, dynamic>;
             final String keyEncrypted = keyJson['key'] as String;
-            final List<dynamic>? contacts =
-                keyJson['contacts'] as List<dynamic>?;
             return Scaffold(
-              key: scaffoldKey,
+              key: _importKey,
               appBar: AppBar(
                 title: Text(tr('draw_your_pattern')),
               ),
@@ -81,6 +78,8 @@ class _ImportDialogState extends State<ImportDialog> {
                                   keyEncrypted, pattern.join());
                           try {
                             final dynamic cesiumCards = keys['cesiumCards'];
+                            final List<dynamic>? contacts =
+                                keys['contacts'] as List<dynamic>?;
                             importContacts(contacts, context);
                             if (cesiumCards != null) {
                               final List<dynamic> cesiumCardList =
@@ -98,7 +97,7 @@ class _ImportDialogState extends State<ImportDialog> {
                               c.replaceSnackbar(
                                 content: Text(
                                   imported == 0
-                                      ? tr('wallet_already_imported')
+                                      ? tr('no_wallets_imported')
                                       : tr('wallets_imported',
                                           namedArgs: <String, String>{
                                               'number': imported.toString()
@@ -224,11 +223,13 @@ class _ImportDialogState extends State<ImportDialog> {
         return '';
       }
 
-      final Directory? appDocDir = await getAppSpecificExternalFilesDirectory();
-      if (appDocDir == null) {
+      final Directory? directory = await getGinkgoDownloadDirectory();
+      if (directory == null) {
+        logger('App files directory not found');
         return '';
       }
-      logger('appDocDir: ${appDocDir.path}');
+
+      logger('appDocDir: ${directory.path}');
 
       if (!context.mounted) {
         return '';
@@ -237,7 +238,7 @@ class _ImportDialogState extends State<ImportDialog> {
       final String? filePath = await FilesystemPicker.openDialog(
         title: tr('select_file_to_import'),
         context: context,
-        rootDirectory: appDocDir,
+        rootDirectory: directory,
         showGoUp: true,
         fsType: FilesystemType.all,
         allowedExtensions: <String>['.json'],
@@ -323,7 +324,7 @@ Future<void> showSelectImportMethodDialog(
           // if (method == 'clipboard') {
           return ImportClipboardDialog(onImport: (String wallet) {
             if (validateKey(wallet)) {
-              // It's a pubkey, let's think is a cesium wallet
+              // It's a simple pubkey, let's think is a cesium wallet
               if (!SharedPreferencesHelper().has(wallet)) {
                 showImportCesiumWalletDialog(context, wallet, returnTo);
               } else {
@@ -390,24 +391,5 @@ class SelectImportMethodDialog extends StatelessWidget {
         ),
       ],
     );
-  }
-}
-
-Future<bool> requestStoragePermission(BuildContext context) async {
-  if (!Platform.isLinux) {
-    final PermissionStatus status = await Permission.storage.request();
-    if (!context.mounted) {
-      return false;
-    }
-    if (status.isGranted) {
-      return true;
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(tr('storage_permission_request')),
-      ));
-      return false;
-    }
-  } else {
-    return true;
   }
 }

@@ -12,24 +12,28 @@ import 'package:path/path.dart';
 import 'package:pattern_lock/pattern_lock.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_html/html.dart' as html;
 
+import '../../../data/models/cesium_card.dart';
 import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
 import '../../../g1/g1_helper.dart';
-import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
 import '../../ui_helpers.dart';
-import 'import_dialog.dart';
 import 'pattern_util.dart';
 
 enum ExportType { clipboard, file, share }
 
 class ExportDialog extends StatefulWidget {
-  const ExportDialog({super.key, required this.type});
+  const ExportDialog(
+      {super.key,
+      required this.type,
+      required this.wallets,
+      required this.exportContacts});
 
   final ExportType type;
+  final List<CesiumCard> wallets;
+  final bool exportContacts;
 
   @override
   State<ExportDialog> createState() => _ExportDialogState();
@@ -39,12 +43,13 @@ class _ExportDialogState extends State<ExportDialog> {
   bool isConfirm = false;
   List<int>? pattern;
 
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _exportKey =
+      GlobalKey<ScaffoldState>(debugLabel: 'exportKey');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
+      key: _exportKey,
       appBar: AppBar(
         title: Text(tr('intro_some_pattern_to_export')),
       ),
@@ -106,14 +111,13 @@ class _ExportDialogState extends State<ExportDialog> {
       String password, BuildContext context, ExportType type) async {
     final ContactsCubit cubit = context.read<ContactsCubit>();
     context.read<ContactsCubit>().sortContactsAsStored();
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final Map<String, dynamic> prefsObj = prefs
-        .getKeys()
-        .fold<Map<String, dynamic>>(
-            <String, dynamic>{},
-            (Map<String, dynamic> map, String key) =>
-                <String, dynamic>{...map, key: prefs.get(key)});
-    if (cubit.contacts.isNotEmpty) {
+    // Export only selected wallets, not all of them
+    final List<Map<String, dynamic>> selectedWallets =
+        widget.wallets.map((CesiumCard card) => card.toJson()).toList();
+    final Map<String, dynamic> prefsObj = <String, dynamic>{};
+    // Add only the selected wallets to prefsObj
+    prefsObj['cesiumCards'] = jsonEncode(selectedWallets);
+    if (widget.exportContacts && cubit.contacts.isNotEmpty) {
       prefsObj['contacts'] = cubit.contacts.map((Contact c) {
         // ignore: avoid_redundant_argument_values
         final Contact c2 = c.copyWith(avatar: null);
@@ -142,23 +146,27 @@ class _ExportDialogState extends State<ExportDialog> {
         });
         break;
       case ExportType.file:
+        bool result = false;
         if (kIsWeb) {
           webDownload(bytes);
+          result = true;
         } else {
           if (!context.mounted) {
             return;
           }
-          saveFile(context, bytes);
+          result = await saveFile(context, bytes);
         }
         if (!context.mounted) {
           return;
         }
-        context.replaceSnackbar(
-          content: Text(
-            tr('wallet_exported'),
-            style: const TextStyle(color: Colors.red),
-          ),
-        );
+        if (result) {
+          context.replaceSnackbar(
+            content: Text(
+              tr('wallet_exported'),
+              style: const TextStyle(color: Colors.red),
+            ),
+          );
+        }
         break;
       case ExportType.share:
         if (!context.mounted) {
@@ -187,39 +195,38 @@ class _ExportDialogState extends State<ExportDialog> {
     final String url = html.Url.createObjectUrlFromBlob(blob);
 
     final html.AnchorElement anchor = html.AnchorElement(href: url);
-    anchor.download =
-        'ginkgo-wallet-${simplifyPubKey(SharedPreferencesHelper().getPubKey())}.json';
+    anchor.download = getWalletFileName();
     anchor.click();
   }
 
-  Future<void> saveFile(BuildContext context, List<int> bytes) async {
+  Future<bool> saveFile(BuildContext context, List<int> bytes) async {
     try {
       final bool hasPermission = await requestStoragePermission(context);
       if (!hasPermission) {
-        logger('No permission to access storage');
-        return;
+        return false;
       }
-      final Directory? externalDirectory =
-          await getAppSpecificExternalFilesDirectory(); // ensureDownloadsDirectoryExists();
-      if (externalDirectory == null) {
-        logger('Downloads directory not found');
-        return;
-      }
-      final String fileName = walletFileName();
-      final File file = File(join(externalDirectory.path, fileName));
-      await file.writeAsBytes(bytes);
 
+      final Directory? directory = await getGinkgoDownloadDirectory();
+      if (directory == null) {
+        logger('App files directory not found');
+        return false;
+      }
+      final String fileName = getWalletFileName();
+      final File file = File(join(directory.path, fileName));
+      await file.writeAsBytes(bytes);
       logger('File saved at: ${file.path}');
+      return true;
     } catch (e, stacktrace) {
       logger('Error saving wallet file $e');
       await Sentry.captureException(e, stackTrace: stacktrace);
+      return false;
     }
   }
 
   Future<void> saveFileApp(List<int> bytesList) async {
     final Uint8List bytes = Uint8List.fromList(bytesList);
 
-    final String fileName = walletFileName();
+    final String fileName = getWalletFileName();
 
     await FileSaver.instance.saveFile(
       name: fileName,
@@ -229,8 +236,10 @@ class _ExportDialogState extends State<ExportDialog> {
     );
   }
 
-  String walletFileName() {
-    const String fileName = 'ginkgo-export.json';
-    return fileName;
+  String getWalletFileName() {
+    final DateTime now = DateTime.now();
+    final String formattedDate = DateFormat('yyyyMMddHHmm').format(now);
+    const String baseFileName = 'ginkgo-export';
+    return '$baseFileName-$formattedDate.json';
   }
 }

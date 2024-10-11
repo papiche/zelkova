@@ -7,11 +7,11 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../../data/models/cesium_card.dart';
-import '../../data/models/node_manager.dart';
 import '../../shared_prefs_helper.dart';
 import '../screens/sandbox.dart';
 import '../ui_helpers.dart';
 import 'first_screen/card_stack.dart';
+import 'market_analysis/market_data_picker.dart';
 
 typedef IssueCreatedCallback = void Function(
     String? issueUrl, Map<String, dynamic> issueData, bool isSuccess);
@@ -54,12 +54,6 @@ class CardDrawer extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (inDevelopment)
-                  ListTile(
-                      leading: const Text('Last gva node'),
-                      title: Text(NodeManager().getCurrentGvaNode() != null
-                          ? NodeManager().getCurrentGvaNode()!.url
-                          : 'None')),
                 SizedBox(
                   height: (cards.length * 70) + 50,
                   child: const Center(
@@ -75,6 +69,19 @@ class CardDrawer extends StatelessWidget {
                         context: context,
                         builder: (BuildContext context) {
                           return const Sandbox();
+                        },
+                      );
+                    },
+                  ),
+                if (inDevelopment)
+                  ListTile(
+                    leading: const Icon(Icons.analytics),
+                    title: Text(tr('market_analysis')),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const DatePickerExample();
                         },
                       );
                     },

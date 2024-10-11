@@ -5,7 +5,7 @@ import '../../../data/models/cesium_card.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
 import '../fifth_screen/import_dialog.dart';
-import 'credit_card_mini.dart';
+import 'drawer_credit_card.dart';
 
 class CardStack extends StatefulWidget {
   const CardStack({super.key});
@@ -39,7 +39,7 @@ class _CardStackState extends State<CardStack> {
                 top: 50.0 * index,
                 child: SizedBox(
                     height: 200,
-                    child: CreditCardMini(
+                    child: DrawerWalletCard(
                         card: cards[index],
                         cardIndex: index,
                         settingsVisible: index == walletsSize - 1)),

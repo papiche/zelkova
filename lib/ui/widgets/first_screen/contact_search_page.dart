@@ -29,10 +29,15 @@ import '../third_screen/contacts_page.dart';
 import 'contact_fav_icon.dart';
 
 class ContactSearchPage extends StatefulWidget {
-  const ContactSearchPage({super.key, this.uri, this.forPayment = true});
+  const ContactSearchPage(
+      {super.key,
+      this.uri,
+      required this.searchUse,
+      this.startInMultiSelect = false});
 
   final String? uri;
-  final bool forPayment;
+  final SearchUse searchUse;
+  final bool startInMultiSelect;
 
   @override
   State<ContactSearchPage> createState() => _ContactSearchPageState();
@@ -47,7 +52,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
   List<Contact> _results = <Contact>[];
   bool _isLoading = false;
   final Set<Contact> _selectedContacts = <Contact>{};
-  bool _isMultiSelect = false;
+  late bool _isMultiSelect;
 
   Future<void> _search() async {
     final ContactsCubit contactsCubit = context.read<ContactsCubit>();
@@ -156,14 +161,12 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
         builder:
             (BuildContext context, AsyncSnapshot<NFCAvailability> snapshot) {
           final bool nft = hasNft(snapshot);
-
+          final bool notForContactPage =
+              widget.searchUse != SearchUse.contactSearch;
           final PaymentCubit paymentCubit = context.read<PaymentCubit>();
-          final bool forPayment = widget.forPayment;
           return Scaffold(
             appBar: AppBar(
-              title: Text(forPayment
-                  ? tr('search_user_title')
-                  : tr('search_user_title_in_contacts')),
+              title: Text(tr(widget.searchUse.title())),
               backgroundColor: Theme.of(context).colorScheme.primary,
               foregroundColor: Theme.of(context).colorScheme.inversePrimary,
               actions: <Widget>[
@@ -222,10 +225,12 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
                         filled: true,
                         labelText: tr('search_user'),
                         helperText: _searchTerm.isEmpty
-                            ? forPayment
+                            ? notForContactPage
                                 ? tr('search_user_hint')
                                 : tr('search_user_hint_basic')
-                            : !_isMultiSelect && !_isLoading && forPayment
+                            : !_isMultiSelect &&
+                                    !_isLoading &&
+                                    notForContactPage
                                 ? tr('search_multiuser_hint')
                                 : null,
                         suffixIcon: Row(
@@ -389,7 +394,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
 
   Future<bool> _onKeyScanned(
       String scannedKey, PaymentCubit paymentCubit) async {
-    if (!widget.forPayment) {
+    if (widget.searchUse == SearchUse.contactSearch) {
       return false;
     }
     final PaymentState? pay = parseScannedUri(scannedKey);
@@ -445,6 +450,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
       _searchFocusNode.requestFocus();
     });
     _handleUri(widget.uri);
+    _isMultiSelect = widget.startInMultiSelect;
   }
 
   Future<void> _handleUri(String? uri) async {
@@ -501,16 +507,18 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
             },
             trailing: BlocBuilder<ContactsCubit, ContactsState>(
                 builder: (BuildContext context, ContactsState state) {
-              return widget.forPayment
+              return widget.searchUse == SearchUse.payment
                   ? ContactFavIcon(
                       contact: contact,
                       contactsCubit: context.read<ContactsCubit>())
-                  : ContactMenu(
-                      contact: contact,
-                      onEdit: () => onEditContact(context, contact),
-                      onSent: () => onSentContact(context, contact),
-                      onCopy: () => onShowContactQr(context, contact),
-                      onDelete: () => onDeleteContact(context, contact));
+                  : widget.searchUse == SearchUse.contactSearch
+                      ? ContactMenu(
+                          contact: contact,
+                          onEdit: () => onEditContact(context, contact),
+                          onSent: () => onSentContact(context, contact),
+                          onCopy: () => onShowContactQr(context, contact),
+                          onDelete: () => onDeleteContact(context, contact))
+                      : Container();
             }),
           );
   }
@@ -535,5 +543,22 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
     }
 
     return enrichedContact;
+  }
+}
+
+enum SearchUse {
+  payment,
+  contactSearch,
+  marketAnalysis;
+
+  String title() {
+    switch (this) {
+      case payment:
+        return 'search_user_title';
+      case contactSearch:
+        return 'search_user_title_in_contacts';
+      case marketAnalysis:
+        return 'search_user_title_in_analysis';
+    }
   }
 }

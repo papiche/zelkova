@@ -24,7 +24,7 @@ class PayForm extends StatefulWidget {
 }
 
 class _PayFormState extends State<PayForm> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>(debugLabel: 'PayForm');
   final GlobalKey<FormFieldState<String>> _formCommentKey =
       GlobalKey<FormFieldState<String>>();
   final TextEditingController _commentController = TextEditingController();

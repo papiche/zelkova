@@ -75,5 +75,10 @@
 	<array>
 		<string>org.comunes.ginkgo.fetchWalletsTransactionsTask</string>
   </array>
+  <!-- PermissionType.mediaLibrary -->
+  <key>NSAppleMusicUsageDescription</key>
+  <string>description</string>
+  <key>kTCCServiceMediaLibrary</key>
+  <string>description</string>
 </dict>
 </plist>

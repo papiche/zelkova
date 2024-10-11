@@ -17,6 +17,7 @@ import '../tutorial.dart';
 import '../tutorial_keys.dart';
 import '../widgets/bottom_widget.dart';
 import '../widgets/card_drawer.dart';
+import '../widgets/first_screen/contact_search_page.dart';
 import '../widgets/first_screen/credit_card.dart';
 import '../widgets/first_screen/first_tutorial.dart';
 import '../widgets/first_screen/pay_contact_search_button.dart';
@@ -137,7 +138,9 @@ class _FirstScreenState extends State<FirstScreen> {
                               Row(children: <Widget>[
                                 Flexible(
                                     child: PayContactSearchButton(
-                                        key: paySearchUserKey)),
+                                        key: paySearchUserKey,
+                                        searchUse: SearchUse.payment,
+                                        btnText: tr('search_user_btn'))),
                                 const SizedBox(width: 10),
                                 const PayQrButton()
                               ]),

@@ -22,7 +22,7 @@ class ContactFormDialog extends StatefulWidget {
 }
 
 class _ContactFormDialogState extends State<ContactFormDialog> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>(debugLabel: 'contctFormDialog');
   late Contact _updatedContact;
 
   @override

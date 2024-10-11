@@ -14,6 +14,7 @@
   "g1_form_pay_send": "Enviar",
   "search_user_title": "Usuari@ a pagar",
   "search_user_title_in_contacts": "Busca usuari@",
+  "search_user_title_in_analysis": "Busca usuari@",
   "search_user": "Buscar usuari@ o clave",
   "search_user_hint": "Escribe un nombre o clave o pega una lista de claves",
   "search_user_hint_basic": "Escribe un nombre o clave",
@@ -261,5 +262,10 @@
   "account_info": "Info de la cuenta",
   "storage_permission_request": "Se necesitan permisos para exportar o importar tu monedero",
   "market_analysis": "Analyze your Market!",
-  "last_node": "Último nodo usado: "
+  "last_node": "Último nodo usado: ",
+  "select_wallets_export": "Elije los monederos a exportar",
+  "select_all_wallets": "Elije todos",
+  "done": "HECHO",
+  "export_contacts": "Exportar contactos",
+  "no_wallets_imported": "No se han importado monederos"
 }

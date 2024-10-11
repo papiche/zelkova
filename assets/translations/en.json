@@ -14,6 +14,7 @@
   "g1_form_pay_send": "Send",
   "search_user_title": "User to pay",
   "search_user_title_in_contacts": "Search for users",
+  "search_user_title_in_analysis": "Search for users",
   "search_user": "Search user or key",
   "search_user_hint": "Type a name or key or paste a list of keys",
   "search_user_hint_basic": "Type a name or key",
@@ -255,5 +256,10 @@
   "account_info": "Account information",
   "storage_permission_request": "Storage permission is required to export or import your wallet",
   "market_analysis": "Analyze your Market!",
-  "last_node": "Last used node: "
+  "last_node": "Last used node: ",
+  "select_wallets_export": "Select Wallets to export",
+  "select_all_wallets": "Select all wallets",
+  "done": "DONE",
+  "export_contacts": "Export Contacts",
+  "no_wallets_imported": "No wallets imported"
 }

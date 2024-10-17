@@ -111,7 +111,7 @@
   "g1_amount_hint": "Quantità di {currency} da inviare",
   "g1_form_pay_send": "Invia",
   "search_user_title": "Utente da pagare",
-  "search_user": "Cerca (utente o chiave pubblica)",
+  "search_user": "Cercare utente o chiave pubblica",
   "search_user_btn": "Cerca utente",
   "g1_form_pay_desc": "Commenta",
   "g1_form_pay_hint": "Inserisci un commento (facoltativo)",

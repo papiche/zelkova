@@ -261,5 +261,11 @@
   "storage_permission_request": "Die Speicherberechtigung ist notwendig, um Ihre Brieftasche zu ex- oder importieren",
   "form_contact_address_v2": "Adresse",
   "market_analysis": "Analysieren Sie Ihren Markt!",
-  "last_node": "Letzter benutzter Serverknoten: "
+  "last_node": "Letzter benutzter Serverknoten: ",
+  "search_user_title_in_analysis": "Nach Benutzern suchen",
+  "select_wallets_export": "Brieftasche auswählen für den Export",
+  "select_all_wallets": "Alle Brieftaschen auswählen",
+  "done": "FERTIG",
+  "export_contacts": "Kontakte exportieren",
+  "no_wallets_imported": "Es wurden keine Brieftaschen importiert"
 }

@@ -12,7 +12,6 @@ import 'package:we_slide/we_slide.dart';
 import '../../../data/models/app_cubit.dart';
 import '../../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../../data/models/multi_wallet_transaction_state.dart';
-import '../../../data/models/theme_cubit.dart';
 import '../../../data/models/transaction.dart';
 import '../../../data/models/transactions_bloc.dart';
 import '../../../data/models/utxo_cubit.dart';
@@ -28,10 +27,20 @@ import 'transaction_item.dart';
 
 class TransactionsAndBalanceWidget extends StatefulWidget {
   const TransactionsAndBalanceWidget(
-      {super.key, this.isExternalAccount = false, this.pubKey});
+      {super.key,
+      this.isExternalAccount = false,
+      this.isScrollEnabled = true,
+      this.pubKey,
+      this.from,
+      this.to,
+      this.pageSize});
 
   final bool isExternalAccount;
   final String? pubKey;
+  final int? from;
+  final int? to;
+  final bool isScrollEnabled;
+  final int? pageSize;
 
   @override
   State<TransactionsAndBalanceWidget> createState() =>
@@ -298,6 +307,9 @@ class _TransactionsAndBalanceWidgetState
       child: CustomScrollView(
           shrinkWrap: true,
           // scrollDirection: Axis.vertical,
+          physics: widget.isScrollEnabled
+              ? const AlwaysScrollableScrollPhysics()
+              : const NeverScrollableScrollPhysics(),
           slivers: <Widget>[
             // Some widget before all,
             if (!widget.isExternalAccount)
@@ -408,66 +420,8 @@ class BalanceWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Center(
-          child: Text.rich(TextSpan(
-        children: <InlineSpan>[
-          if (isCurrencyBefore)
-            currencyBalanceWidget(
-                context, isG1, currentSymbol, balanceFontSize),
-          if (isCurrencyBefore) separatorSpan(),
-          TextSpan(
-            text: formatKAmountInView(
-                context: context,
-                amount: balance,
-                isG1: isG1,
-                currentUd: currentUd,
-                useSymbol: false),
-            style: TextStyle(
-                fontSize: balanceFontSize,
-                color: context.read<ThemeCubit>().isDark()
-                    ? Colors.white
-                    : positiveAmountColor,
-                fontWeight: small ? FontWeight.normal : FontWeight.bold),
-          ),
-          if (!isCurrencyBefore) separatorSpan(),
-          if (!isCurrencyBefore)
-            currencyBalanceWidget(
-                context, isG1, currentSymbol, balanceFontSize),
-        ],
-      ))),
+          child: Text.rich(humanizeAmount(isCurrencyBefore, context, isG1,
+              small, currentSymbol, balanceFontSize, balance, currentUd))),
     );
   }
-
-  InlineSpan currencyBalanceWidget(BuildContext context, bool isG1,
-      String currentSymbol, double balanceFontSize) {
-    final Color currencyColor = Theme.of(context).colorScheme.secondary;
-    return TextSpan(children: <InlineSpan>[
-      TextSpan(
-        text: currentSymbol,
-        style: TextStyle(
-          fontSize: balanceFontSize,
-          fontWeight: FontWeight.w500,
-          color: currencyColor,
-        ),
-      ),
-      if (!isG1)
-        WidgetSpan(
-            child: Transform.translate(
-                offset: const Offset(2, 16),
-                child: Text(
-                  'Ğ1',
-                  style: TextStyle(
-                    fontSize: balanceFontSize - 10,
-                    fontWeight: FontWeight.w500,
-                    // fontFeatures: <FontFeature>[FontFeature.subscripts()],
-                    color: currencyColor,
-                  ),
-                )))
-    ]);
-  }
-}
-
-InlineSpan separatorSpan() {
-  return const WidgetSpan(
-    child: SizedBox(width: 7),
-  );
 }

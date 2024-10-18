@@ -261,5 +261,21 @@
   "select_all_wallets": "Select all wallets",
   "done": "DONE",
   "export_contacts": "Export Contacts",
-  "no_wallets_imported": "No wallets imported"
+  "no_wallets_imported": "No wallets imported",
+  "too_many_attempts": "Too many attempts",
+  "transaction_summary": "Transaction Summary",
+  "total_received": "Total Received:",
+  "total_sent": "Total Sent:",
+  "other_contacts_involved": "Other Accounts Involved",
+  "invalid_date_range": "Invalid Date Range",
+  "date_range_exceed": "The date range cannot exceed {number} days.",
+  "ok": "OK",
+  "market_analysis_report": "Market Analysis Report",
+  "pdf_generated": "PDF generated",
+  "select_people_to_analyze": "Select people to analyze",
+  "select_date_range": "Select Date Range",
+  "dates": "Dates",
+  "analyze": "Analyze",
+  "total_received_sent": "Total Received and Sent",
+  "download_pdf": "Download PDF"
 }

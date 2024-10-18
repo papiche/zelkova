@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.2.2
+version: 1.2.2-2
 
 environment:
   sdk: ^3.5.2
@@ -38,9 +38,9 @@ dependencies:
   qr_flutter: ^4.0.0
   introduction_screen: ^3.1.6
   responsive_framework: ^1.5.1
-  durt: ^0.1.9
-  #durt:
-   # path: ../durt
+  #durt: ^0.1.9
+  durt:
+    path: ../durt
     #git:
     #  url: https://git.duniter.org/vjrj/durt
 #  flutter_neumorphic:
@@ -116,6 +116,8 @@ dependencies:
   permission_handler: ^11.3.1
   calendar_date_picker2: ^1.1.7
   device_info_plus: ^10.1.2
+  built_value: ^8.9.2
+  pdf: ^3.11.1
 
 dev_dependencies:
   flutter_test:
@@ -126,6 +128,7 @@ dev_dependencies:
   copy_with_extension_gen: any
   envied_generator: ^0.5.3
   ferry_generator: ^0.12.0
+  flutter_oss_licenses: ^3.0.2
 
 # source: https://stackoverflow.com/a/75332857/8301867
 dependency_overrides:

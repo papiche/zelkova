@@ -116,7 +116,8 @@ class ConnectivityWidgetWrapperWrapper extends ConnectivityWidgetWrapper {
     if (!kIsWeb && await CheckVpnConnection.isVpnActive()) {
       return true;
     }
-    return kIsWeb || isIOS
+    // Workaround for web, ios and linux
+    return kIsWeb || isIOS || Platform.isLinux
         ? Future<bool>.value(true)
         : ConnectivityWrapper.instance.isConnected;
   }

@@ -4,10 +4,11 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
+import 'package:built_value/json_object.dart' as _i2;
 import 'package:built_value/serializer.dart';
 import 'package:ginkgo/graphql/__generated__/serializers.gql.dart' as _i1;
 import 'package:gql_code_builder_serializers/gql_code_builder_serializers.dart'
-    as _i2;
+    as _i3;
 
 part 'duniter-indexer.schema.gql.g.dart';
 
@@ -286,7 +287,7 @@ abstract class Gblock_stream_cursor_value_input
       _$Gblock_stream_cursor_value_input;
 
   Gtimestamp? get created_at;
-  Gjsonb? get data;
+  _i2.JsonObject? get data;
   String? get hash;
   int? get number;
   static Serializer<Gblock_stream_cursor_value_input> get serializer =>
@@ -895,7 +896,7 @@ abstract class Gdate implements Built<Gdate, GdateBuilder> {
 
   String get value;
   @BuiltValueSerializer(custom: true)
-  static Serializer<Gdate> get serializer => _i2.DefaultScalarSerializer<Gdate>(
+  static Serializer<Gdate> get serializer => _i3.DefaultScalarSerializer<Gdate>(
       (Object serialized) => Gdate((serialized as String?)));
 }
 
@@ -1173,19 +1174,6 @@ abstract class GInt_comparison_exp
       );
 }
 
-abstract class Gjsonb implements Built<Gjsonb, GjsonbBuilder> {
-  Gjsonb._();
-
-  factory Gjsonb([String? value]) =>
-      _$Gjsonb((b) => value != null ? (b..value = value) : b);
-
-  String get value;
-  @BuiltValueSerializer(custom: true)
-  static Serializer<Gjsonb> get serializer =>
-      _i2.DefaultScalarSerializer<Gjsonb>(
-          (Object serialized) => Gjsonb((serialized as String?)));
-}
-
 abstract class Gjsonb_cast_exp
     implements Built<Gjsonb_cast_exp, Gjsonb_cast_expBuilder> {
   Gjsonb_cast_exp._();
@@ -1221,15 +1209,15 @@ abstract class Gjsonb_comparison_exp
   @BuiltValueField(wireName: '_cast')
   Gjsonb_cast_exp? get G_cast;
   @BuiltValueField(wireName: '_contained_in')
-  Gjsonb? get G_contained_in;
+  _i2.JsonObject? get G_contained_in;
   @BuiltValueField(wireName: '_contains')
-  Gjsonb? get G_contains;
+  _i2.JsonObject? get G_contains;
   @BuiltValueField(wireName: '_eq')
-  Gjsonb? get G_eq;
+  _i2.JsonObject? get G_eq;
   @BuiltValueField(wireName: '_gt')
-  Gjsonb? get G_gt;
+  _i2.JsonObject? get G_gt;
   @BuiltValueField(wireName: '_gte')
-  Gjsonb? get G_gte;
+  _i2.JsonObject? get G_gte;
   @BuiltValueField(wireName: '_has_key')
   String? get G_has_key;
   @BuiltValueField(wireName: '_has_keys_all')
@@ -1237,17 +1225,17 @@ abstract class Gjsonb_comparison_exp
   @BuiltValueField(wireName: '_has_keys_any')
   BuiltList<String>? get G_has_keys_any;
   @BuiltValueField(wireName: '_in')
-  BuiltList<Gjsonb>? get G_in;
+  BuiltList<_i2.JsonObject>? get G_in;
   @BuiltValueField(wireName: '_is_null')
   bool? get G_is_null;
   @BuiltValueField(wireName: '_lt')
-  Gjsonb? get G_lt;
+  _i2.JsonObject? get G_lt;
   @BuiltValueField(wireName: '_lte')
-  Gjsonb? get G_lte;
+  _i2.JsonObject? get G_lte;
   @BuiltValueField(wireName: '_neq')
-  Gjsonb? get G_neq;
+  _i2.JsonObject? get G_neq;
   @BuiltValueField(wireName: '_nin')
-  BuiltList<Gjsonb>? get G_nin;
+  BuiltList<_i2.JsonObject>? get G_nin;
   static Serializer<Gjsonb_comparison_exp> get serializer =>
       _$gjsonbComparisonExpSerializer;
 
@@ -1396,7 +1384,7 @@ abstract class Gparameters_stream_cursor_value_input
           updates]) = _$Gparameters_stream_cursor_value_input;
 
   String? get key;
-  Gjsonb? get value;
+  _i2.JsonObject? get value;
   static Serializer<Gparameters_stream_cursor_value_input> get serializer =>
       _$gparametersStreamCursorValueInputSerializer;
 
@@ -2154,7 +2142,7 @@ abstract class Gtime_period
   String get value;
   @BuiltValueSerializer(custom: true)
   static Serializer<Gtime_period> get serializer =>
-      _i2.DefaultScalarSerializer<Gtime_period>(
+      _i3.DefaultScalarSerializer<Gtime_period>(
           (Object serialized) => Gtime_period((serialized as String?)));
 }
 
@@ -2167,7 +2155,7 @@ abstract class Gtimestamp implements Built<Gtimestamp, GtimestampBuilder> {
   String get value;
   @BuiltValueSerializer(custom: true)
   static Serializer<Gtimestamp> get serializer =>
-      _i2.DefaultScalarSerializer<Gtimestamp>(
+      _i3.DefaultScalarSerializer<Gtimestamp>(
           (Object serialized) => Gtimestamp((serialized as String?)));
 }
 
@@ -2223,7 +2211,7 @@ abstract class Gtimestamptz
   String get value;
   @BuiltValueSerializer(custom: true)
   static Serializer<Gtimestamptz> get serializer =>
-      _i2.DefaultScalarSerializer<Gtimestamptz>(
+      _i3.DefaultScalarSerializer<Gtimestamptz>(
           (Object serialized) => Gtimestamptz((serialized as String?)));
 }
 

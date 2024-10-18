@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import '../../ui/logger.dart';
 import 'node.dart';
 import 'node_list_cubit.dart';
+import 'node_lists_default.dart';
 import 'node_type.dart';
 
 class NodeManager {
@@ -134,7 +135,7 @@ class NodeManager {
   }
 
   void increaseNodeErrors(NodeType type, Node node, {bool notify = true}) {
-    logger('Increasing node errors of ${node.url} (${node.errors})');
+    logger('Increasing node errors of ${node.url} to ${node.errors + 1}');
     updateNode(type, node.copyWith(errors: node.errors + 1), notify: notify);
   }
 
@@ -174,6 +175,29 @@ class NodeManager {
 
   void setCurrentGvaNode(Node node) {
     NodeManagerObserver.instance.setCurrentGvaNode(node);
+  }
+
+  List<Node> getBestNodes(NodeType type) {
+    final List<Node> fnodes = NodeManager().nodesWorkingList(type);
+    final int maxCurrentBlock = fnodes.fold(
+        0,
+        (int max, Node node) =>
+            node.currentBlock > max ? node.currentBlock : max);
+    final List<Node> nodesAtMaxBlock = fnodes
+        .where((Node node) => node.currentBlock == maxCurrentBlock)
+        .toList();
+    nodesAtMaxBlock.sort((Node a, Node b) {
+      final int errorComparison = a.errors.compareTo(b.errors);
+      if (errorComparison != 0) {
+        return errorComparison;
+      } else {
+        return a.latency.compareTo(b.latency);
+      }
+    });
+    if (nodesAtMaxBlock.isEmpty) {
+      nodesAtMaxBlock.addAll(defaultNodes(type));
+    }
+    return nodesAtMaxBlock;
   }
 }
 

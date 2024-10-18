@@ -425,7 +425,7 @@ class _$GLastIndexedBlockNumberData_parameters_by_pkSerializer
       result
         ..add('value')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.Gjsonb)));
+            specifiedType: const FullType(_i2.JsonObject)));
     }
     return result;
   }
@@ -447,8 +447,8 @@ class _$GLastIndexedBlockNumberData_parameters_by_pkSerializer
               specifiedType: const FullType(String))! as String;
           break;
         case 'value':
-          result.value.replace(serializers.deserialize(value,
-              specifiedType: const FullType(_i2.Gjsonb))! as _i2.Gjsonb);
+          result.value = serializers.deserialize(value,
+              specifiedType: const FullType(_i2.JsonObject)) as _i2.JsonObject?;
           break;
       }
     }
@@ -1499,7 +1499,7 @@ class _$GLastIndexedBlockNumberData_parameters_by_pk
   @override
   final String G__typename;
   @override
-  final _i2.Gjsonb? value;
+  final _i2.JsonObject? value;
 
   factory _$GLastIndexedBlockNumberData_parameters_by_pk(
           [void Function(GLastIndexedBlockNumberData_parameters_by_pkBuilder)?
@@ -1562,9 +1562,9 @@ class GLastIndexedBlockNumberData_parameters_by_pkBuilder
   String? get G__typename => _$this._G__typename;
   set G__typename(String? G__typename) => _$this._G__typename = G__typename;
 
-  _i2.GjsonbBuilder? _value;
-  _i2.GjsonbBuilder get value => _$this._value ??= new _i2.GjsonbBuilder();
-  set value(_i2.GjsonbBuilder? value) => _$this._value = value;
+  _i2.JsonObject? _value;
+  _i2.JsonObject? get value => _$this._value;
+  set value(_i2.JsonObject? value) => _$this._value = value;
 
   GLastIndexedBlockNumberData_parameters_by_pkBuilder() {
     GLastIndexedBlockNumberData_parameters_by_pk._initializeBuilder(this);
@@ -1574,7 +1574,7 @@ class GLastIndexedBlockNumberData_parameters_by_pkBuilder
     final $v = _$v;
     if ($v != null) {
       _G__typename = $v.G__typename;
-      _value = $v.value?.toBuilder();
+      _value = $v.value;
       _$v = null;
     }
     return this;
@@ -1597,28 +1597,11 @@ class GLastIndexedBlockNumberData_parameters_by_pkBuilder
   GLastIndexedBlockNumberData_parameters_by_pk build() => _build();
 
   _$GLastIndexedBlockNumberData_parameters_by_pk _build() {
-    _$GLastIndexedBlockNumberData_parameters_by_pk _$result;
-    try {
-      _$result = _$v ??
-          new _$GLastIndexedBlockNumberData_parameters_by_pk._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename,
-                  r'GLastIndexedBlockNumberData_parameters_by_pk',
-                  'G__typename'),
-              value: _value?.build());
-    } catch (_) {
-      late String _$failedField;
-      try {
-        _$failedField = 'value';
-        _value?.build();
-      } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            r'GLastIndexedBlockNumberData_parameters_by_pk',
-            _$failedField,
-            e.toString());
-      }
-      rethrow;
-    }
+    final _$result = _$v ??
+        new _$GLastIndexedBlockNumberData_parameters_by_pk._(
+            G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
+                r'GLastIndexedBlockNumberData_parameters_by_pk', 'G__typename'),
+            value: value);
     replace(_$result);
     return _$result;
   }

@@ -4,9 +4,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
+import 'package:built_value/json_object.dart' as _i2;
 import 'package:built_value/serializer.dart';
-import 'package:ginkgo/graphql/__generated__/duniter-indexer.schema.gql.dart'
-    as _i2;
 import 'package:ginkgo/graphql/__generated__/serializers.gql.dart' as _i1;
 
 part 'duniter-custom-queries.data.gql.g.dart';
@@ -214,7 +213,7 @@ abstract class GLastIndexedBlockNumberData_parameters_by_pk
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
-  _i2.Gjsonb? get value;
+  _i2.JsonObject? get value;
   static Serializer<GLastIndexedBlockNumberData_parameters_by_pk>
       get serializer => _$gLastIndexedBlockNumberDataParametersByPkSerializer;
 

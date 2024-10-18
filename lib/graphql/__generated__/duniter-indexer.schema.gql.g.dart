@@ -1456,7 +1456,7 @@ class _$Gblock_stream_cursor_value_inputSerializer
       result
         ..add('data')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(Gjsonb)));
+            specifiedType: const FullType(_i2.JsonObject)));
     }
     value = object.hash;
     if (value != null) {
@@ -1491,8 +1491,8 @@ class _$Gblock_stream_cursor_value_inputSerializer
               specifiedType: const FullType(Gtimestamp))! as Gtimestamp);
           break;
         case 'data':
-          result.data.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Gjsonb))! as Gjsonb);
+          result.data = serializers.deserialize(value,
+              specifiedType: const FullType(_i2.JsonObject)) as _i2.JsonObject?;
           break;
         case 'hash':
           result.hash = serializers.deserialize(value,
@@ -4273,35 +4273,35 @@ class _$Gjsonb_comparison_expSerializer
       result
         ..add('_contained_in')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(Gjsonb)));
+            specifiedType: const FullType(_i2.JsonObject)));
     }
     value = object.G_contains;
     if (value != null) {
       result
         ..add('_contains')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(Gjsonb)));
+            specifiedType: const FullType(_i2.JsonObject)));
     }
     value = object.G_eq;
     if (value != null) {
       result
         ..add('_eq')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(Gjsonb)));
+            specifiedType: const FullType(_i2.JsonObject)));
     }
     value = object.G_gt;
     if (value != null) {
       result
         ..add('_gt')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(Gjsonb)));
+            specifiedType: const FullType(_i2.JsonObject)));
     }
     value = object.G_gte;
     if (value != null) {
       result
         ..add('_gte')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(Gjsonb)));
+            specifiedType: const FullType(_i2.JsonObject)));
     }
     value = object.G_has_key;
     if (value != null) {
@@ -4331,8 +4331,8 @@ class _$Gjsonb_comparison_expSerializer
       result
         ..add('_in')
         ..add(serializers.serialize(value,
-            specifiedType:
-                const FullType(BuiltList, const [const FullType(Gjsonb)])));
+            specifiedType: const FullType(
+                BuiltList, const [const FullType(_i2.JsonObject)])));
     }
     value = object.G_is_null;
     if (value != null) {
@@ -4346,29 +4346,29 @@ class _$Gjsonb_comparison_expSerializer
       result
         ..add('_lt')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(Gjsonb)));
+            specifiedType: const FullType(_i2.JsonObject)));
     }
     value = object.G_lte;
     if (value != null) {
       result
         ..add('_lte')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(Gjsonb)));
+            specifiedType: const FullType(_i2.JsonObject)));
     }
     value = object.G_neq;
     if (value != null) {
       result
         ..add('_neq')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(Gjsonb)));
+            specifiedType: const FullType(_i2.JsonObject)));
     }
     value = object.G_nin;
     if (value != null) {
       result
         ..add('_nin')
         ..add(serializers.serialize(value,
-            specifiedType:
-                const FullType(BuiltList, const [const FullType(Gjsonb)])));
+            specifiedType: const FullType(
+                BuiltList, const [const FullType(_i2.JsonObject)])));
     }
     return result;
   }
@@ -4391,24 +4391,24 @@ class _$Gjsonb_comparison_expSerializer
               as Gjsonb_cast_exp);
           break;
         case '_contained_in':
-          result.G_contained_in.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Gjsonb))! as Gjsonb);
+          result.G_contained_in = serializers.deserialize(value,
+              specifiedType: const FullType(_i2.JsonObject)) as _i2.JsonObject?;
           break;
         case '_contains':
-          result.G_contains.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Gjsonb))! as Gjsonb);
+          result.G_contains = serializers.deserialize(value,
+              specifiedType: const FullType(_i2.JsonObject)) as _i2.JsonObject?;
           break;
         case '_eq':
-          result.G_eq.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Gjsonb))! as Gjsonb);
+          result.G_eq = serializers.deserialize(value,
+              specifiedType: const FullType(_i2.JsonObject)) as _i2.JsonObject?;
           break;
         case '_gt':
-          result.G_gt.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Gjsonb))! as Gjsonb);
+          result.G_gt = serializers.deserialize(value,
+              specifiedType: const FullType(_i2.JsonObject)) as _i2.JsonObject?;
           break;
         case '_gte':
-          result.G_gte.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Gjsonb))! as Gjsonb);
+          result.G_gte = serializers.deserialize(value,
+              specifiedType: const FullType(_i2.JsonObject)) as _i2.JsonObject?;
           break;
         case '_has_key':
           result.G_has_key = serializers.deserialize(value,
@@ -4429,7 +4429,7 @@ class _$Gjsonb_comparison_expSerializer
         case '_in':
           result.G_in.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
-                      BuiltList, const [const FullType(Gjsonb)]))!
+                      BuiltList, const [const FullType(_i2.JsonObject)]))!
               as BuiltList<Object?>);
           break;
         case '_is_null':
@@ -4437,21 +4437,21 @@ class _$Gjsonb_comparison_expSerializer
               specifiedType: const FullType(bool)) as bool?;
           break;
         case '_lt':
-          result.G_lt.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Gjsonb))! as Gjsonb);
+          result.G_lt = serializers.deserialize(value,
+              specifiedType: const FullType(_i2.JsonObject)) as _i2.JsonObject?;
           break;
         case '_lte':
-          result.G_lte.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Gjsonb))! as Gjsonb);
+          result.G_lte = serializers.deserialize(value,
+              specifiedType: const FullType(_i2.JsonObject)) as _i2.JsonObject?;
           break;
         case '_neq':
-          result.G_neq.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Gjsonb))! as Gjsonb);
+          result.G_neq = serializers.deserialize(value,
+              specifiedType: const FullType(_i2.JsonObject)) as _i2.JsonObject?;
           break;
         case '_nin':
           result.G_nin.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
-                      BuiltList, const [const FullType(Gjsonb)]))!
+                      BuiltList, const [const FullType(_i2.JsonObject)]))!
               as BuiltList<Object?>);
           break;
       }
@@ -4747,7 +4747,7 @@ class _$Gparameters_stream_cursor_value_inputSerializer
       result
         ..add('value')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(Gjsonb)));
+            specifiedType: const FullType(_i2.JsonObject)));
     }
     return result;
   }
@@ -4769,8 +4769,8 @@ class _$Gparameters_stream_cursor_value_inputSerializer
               specifiedType: const FullType(String)) as String?;
           break;
         case 'value':
-          result.value.replace(serializers.deserialize(value,
-              specifiedType: const FullType(Gjsonb))! as Gjsonb);
+          result.value = serializers.deserialize(value,
+              specifiedType: const FullType(_i2.JsonObject)) as _i2.JsonObject?;
           break;
       }
     }
@@ -10517,7 +10517,7 @@ class _$Gblock_stream_cursor_value_input
   @override
   final Gtimestamp? created_at;
   @override
-  final Gjsonb? data;
+  final _i2.JsonObject? data;
   @override
   final String? hash;
   @override
@@ -10584,9 +10584,9 @@ class Gblock_stream_cursor_value_inputBuilder
   set created_at(GtimestampBuilder? created_at) =>
       _$this._created_at = created_at;
 
-  GjsonbBuilder? _data;
-  GjsonbBuilder get data => _$this._data ??= new GjsonbBuilder();
-  set data(GjsonbBuilder? data) => _$this._data = data;
+  _i2.JsonObject? _data;
+  _i2.JsonObject? get data => _$this._data;
+  set data(_i2.JsonObject? data) => _$this._data = data;
 
   String? _hash;
   String? get hash => _$this._hash;
@@ -10602,7 +10602,7 @@ class Gblock_stream_cursor_value_inputBuilder
     final $v = _$v;
     if ($v != null) {
       _created_at = $v.created_at?.toBuilder();
-      _data = $v.data?.toBuilder();
+      _data = $v.data;
       _hash = $v.hash;
       _number = $v.number;
       _$v = null;
@@ -10630,7 +10630,7 @@ class Gblock_stream_cursor_value_inputBuilder
       _$result = _$v ??
           new _$Gblock_stream_cursor_value_input._(
               created_at: _created_at?.build(),
-              data: _data?.build(),
+              data: data,
               hash: hash,
               number: number);
     } catch (_) {
@@ -10638,8 +10638,6 @@ class Gblock_stream_cursor_value_inputBuilder
       try {
         _$failedField = 'created_at';
         _created_at?.build();
-        _$failedField = 'data';
-        _data?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'Gblock_stream_cursor_value_input', _$failedField, e.toString());
@@ -14806,87 +14804,6 @@ class GInt_comparison_expBuilder
   }
 }
 
-class _$Gjsonb extends Gjsonb {
-  @override
-  final String value;
-
-  factory _$Gjsonb([void Function(GjsonbBuilder)? updates]) =>
-      (new GjsonbBuilder()..update(updates))._build();
-
-  _$Gjsonb._({required this.value}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(value, r'Gjsonb', 'value');
-  }
-
-  @override
-  Gjsonb rebuild(void Function(GjsonbBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
-
-  @override
-  GjsonbBuilder toBuilder() => new GjsonbBuilder()..replace(this);
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(other, this)) return true;
-    return other is Gjsonb && value == other.value;
-  }
-
-  @override
-  int get hashCode {
-    var _$hash = 0;
-    _$hash = $jc(_$hash, value.hashCode);
-    _$hash = $jf(_$hash);
-    return _$hash;
-  }
-
-  @override
-  String toString() {
-    return (newBuiltValueToStringHelper(r'Gjsonb')..add('value', value))
-        .toString();
-  }
-}
-
-class GjsonbBuilder implements Builder<Gjsonb, GjsonbBuilder> {
-  _$Gjsonb? _$v;
-
-  String? _value;
-  String? get value => _$this._value;
-  set value(String? value) => _$this._value = value;
-
-  GjsonbBuilder();
-
-  GjsonbBuilder get _$this {
-    final $v = _$v;
-    if ($v != null) {
-      _value = $v.value;
-      _$v = null;
-    }
-    return this;
-  }
-
-  @override
-  void replace(Gjsonb other) {
-    ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$Gjsonb;
-  }
-
-  @override
-  void update(void Function(GjsonbBuilder)? updates) {
-    if (updates != null) updates(this);
-  }
-
-  @override
-  Gjsonb build() => _build();
-
-  _$Gjsonb _build() {
-    final _$result = _$v ??
-        new _$Gjsonb._(
-            value: BuiltValueNullFieldError.checkNotNull(
-                value, r'Gjsonb', 'value'));
-    replace(_$result);
-    return _$result;
-  }
-}
-
 class _$Gjsonb_cast_exp extends Gjsonb_cast_exp {
   @override
   final GString_comparison_exp? GString;
@@ -14985,15 +14902,15 @@ class _$Gjsonb_comparison_exp extends Gjsonb_comparison_exp {
   @override
   final Gjsonb_cast_exp? G_cast;
   @override
-  final Gjsonb? G_contained_in;
+  final _i2.JsonObject? G_contained_in;
   @override
-  final Gjsonb? G_contains;
+  final _i2.JsonObject? G_contains;
   @override
-  final Gjsonb? G_eq;
+  final _i2.JsonObject? G_eq;
   @override
-  final Gjsonb? G_gt;
+  final _i2.JsonObject? G_gt;
   @override
-  final Gjsonb? G_gte;
+  final _i2.JsonObject? G_gte;
   @override
   final String? G_has_key;
   @override
@@ -15001,17 +14918,17 @@ class _$Gjsonb_comparison_exp extends Gjsonb_comparison_exp {
   @override
   final BuiltList<String>? G_has_keys_any;
   @override
-  final BuiltList<Gjsonb>? G_in;
+  final BuiltList<_i2.JsonObject>? G_in;
   @override
   final bool? G_is_null;
   @override
-  final Gjsonb? G_lt;
+  final _i2.JsonObject? G_lt;
   @override
-  final Gjsonb? G_lte;
+  final _i2.JsonObject? G_lte;
   @override
-  final Gjsonb? G_neq;
+  final _i2.JsonObject? G_neq;
   @override
-  final BuiltList<Gjsonb>? G_nin;
+  final BuiltList<_i2.JsonObject>? G_nin;
 
   factory _$Gjsonb_comparison_exp(
           [void Function(Gjsonb_comparison_expBuilder)? updates]) =>
@@ -15118,27 +15035,26 @@ class Gjsonb_comparison_expBuilder
       _$this._G_cast ??= new Gjsonb_cast_expBuilder();
   set G_cast(Gjsonb_cast_expBuilder? G_cast) => _$this._G_cast = G_cast;
 
-  GjsonbBuilder? _G_contained_in;
-  GjsonbBuilder get G_contained_in =>
-      _$this._G_contained_in ??= new GjsonbBuilder();
-  set G_contained_in(GjsonbBuilder? G_contained_in) =>
+  _i2.JsonObject? _G_contained_in;
+  _i2.JsonObject? get G_contained_in => _$this._G_contained_in;
+  set G_contained_in(_i2.JsonObject? G_contained_in) =>
       _$this._G_contained_in = G_contained_in;
 
-  GjsonbBuilder? _G_contains;
-  GjsonbBuilder get G_contains => _$this._G_contains ??= new GjsonbBuilder();
-  set G_contains(GjsonbBuilder? G_contains) => _$this._G_contains = G_contains;
+  _i2.JsonObject? _G_contains;
+  _i2.JsonObject? get G_contains => _$this._G_contains;
+  set G_contains(_i2.JsonObject? G_contains) => _$this._G_contains = G_contains;
 
-  GjsonbBuilder? _G_eq;
-  GjsonbBuilder get G_eq => _$this._G_eq ??= new GjsonbBuilder();
-  set G_eq(GjsonbBuilder? G_eq) => _$this._G_eq = G_eq;
+  _i2.JsonObject? _G_eq;
+  _i2.JsonObject? get G_eq => _$this._G_eq;
+  set G_eq(_i2.JsonObject? G_eq) => _$this._G_eq = G_eq;
 
-  GjsonbBuilder? _G_gt;
-  GjsonbBuilder get G_gt => _$this._G_gt ??= new GjsonbBuilder();
-  set G_gt(GjsonbBuilder? G_gt) => _$this._G_gt = G_gt;
+  _i2.JsonObject? _G_gt;
+  _i2.JsonObject? get G_gt => _$this._G_gt;
+  set G_gt(_i2.JsonObject? G_gt) => _$this._G_gt = G_gt;
 
-  GjsonbBuilder? _G_gte;
-  GjsonbBuilder get G_gte => _$this._G_gte ??= new GjsonbBuilder();
-  set G_gte(GjsonbBuilder? G_gte) => _$this._G_gte = G_gte;
+  _i2.JsonObject? _G_gte;
+  _i2.JsonObject? get G_gte => _$this._G_gte;
+  set G_gte(_i2.JsonObject? G_gte) => _$this._G_gte = G_gte;
 
   String? _G_has_key;
   String? get G_has_key => _$this._G_has_key;
@@ -15156,29 +15072,31 @@ class Gjsonb_comparison_expBuilder
   set G_has_keys_any(ListBuilder<String>? G_has_keys_any) =>
       _$this._G_has_keys_any = G_has_keys_any;
 
-  ListBuilder<Gjsonb>? _G_in;
-  ListBuilder<Gjsonb> get G_in => _$this._G_in ??= new ListBuilder<Gjsonb>();
-  set G_in(ListBuilder<Gjsonb>? G_in) => _$this._G_in = G_in;
+  ListBuilder<_i2.JsonObject>? _G_in;
+  ListBuilder<_i2.JsonObject> get G_in =>
+      _$this._G_in ??= new ListBuilder<_i2.JsonObject>();
+  set G_in(ListBuilder<_i2.JsonObject>? G_in) => _$this._G_in = G_in;
 
   bool? _G_is_null;
   bool? get G_is_null => _$this._G_is_null;
   set G_is_null(bool? G_is_null) => _$this._G_is_null = G_is_null;
 
-  GjsonbBuilder? _G_lt;
-  GjsonbBuilder get G_lt => _$this._G_lt ??= new GjsonbBuilder();
-  set G_lt(GjsonbBuilder? G_lt) => _$this._G_lt = G_lt;
+  _i2.JsonObject? _G_lt;
+  _i2.JsonObject? get G_lt => _$this._G_lt;
+  set G_lt(_i2.JsonObject? G_lt) => _$this._G_lt = G_lt;
 
-  GjsonbBuilder? _G_lte;
-  GjsonbBuilder get G_lte => _$this._G_lte ??= new GjsonbBuilder();
-  set G_lte(GjsonbBuilder? G_lte) => _$this._G_lte = G_lte;
+  _i2.JsonObject? _G_lte;
+  _i2.JsonObject? get G_lte => _$this._G_lte;
+  set G_lte(_i2.JsonObject? G_lte) => _$this._G_lte = G_lte;
 
-  GjsonbBuilder? _G_neq;
-  GjsonbBuilder get G_neq => _$this._G_neq ??= new GjsonbBuilder();
-  set G_neq(GjsonbBuilder? G_neq) => _$this._G_neq = G_neq;
+  _i2.JsonObject? _G_neq;
+  _i2.JsonObject? get G_neq => _$this._G_neq;
+  set G_neq(_i2.JsonObject? G_neq) => _$this._G_neq = G_neq;
 
-  ListBuilder<Gjsonb>? _G_nin;
-  ListBuilder<Gjsonb> get G_nin => _$this._G_nin ??= new ListBuilder<Gjsonb>();
-  set G_nin(ListBuilder<Gjsonb>? G_nin) => _$this._G_nin = G_nin;
+  ListBuilder<_i2.JsonObject>? _G_nin;
+  ListBuilder<_i2.JsonObject> get G_nin =>
+      _$this._G_nin ??= new ListBuilder<_i2.JsonObject>();
+  set G_nin(ListBuilder<_i2.JsonObject>? G_nin) => _$this._G_nin = G_nin;
 
   Gjsonb_comparison_expBuilder();
 
@@ -15186,19 +15104,19 @@ class Gjsonb_comparison_expBuilder
     final $v = _$v;
     if ($v != null) {
       _G_cast = $v.G_cast?.toBuilder();
-      _G_contained_in = $v.G_contained_in?.toBuilder();
-      _G_contains = $v.G_contains?.toBuilder();
-      _G_eq = $v.G_eq?.toBuilder();
-      _G_gt = $v.G_gt?.toBuilder();
-      _G_gte = $v.G_gte?.toBuilder();
+      _G_contained_in = $v.G_contained_in;
+      _G_contains = $v.G_contains;
+      _G_eq = $v.G_eq;
+      _G_gt = $v.G_gt;
+      _G_gte = $v.G_gte;
       _G_has_key = $v.G_has_key;
       _G_has_keys_all = $v.G_has_keys_all?.toBuilder();
       _G_has_keys_any = $v.G_has_keys_any?.toBuilder();
       _G_in = $v.G_in?.toBuilder();
       _G_is_null = $v.G_is_null;
-      _G_lt = $v.G_lt?.toBuilder();
-      _G_lte = $v.G_lte?.toBuilder();
-      _G_neq = $v.G_neq?.toBuilder();
+      _G_lt = $v.G_lt;
+      _G_lte = $v.G_lte;
+      _G_neq = $v.G_neq;
       _G_nin = $v.G_nin?.toBuilder();
       _$v = null;
     }
@@ -15225,35 +15143,25 @@ class Gjsonb_comparison_expBuilder
       _$result = _$v ??
           new _$Gjsonb_comparison_exp._(
               G_cast: _G_cast?.build(),
-              G_contained_in: _G_contained_in?.build(),
-              G_contains: _G_contains?.build(),
-              G_eq: _G_eq?.build(),
-              G_gt: _G_gt?.build(),
-              G_gte: _G_gte?.build(),
+              G_contained_in: G_contained_in,
+              G_contains: G_contains,
+              G_eq: G_eq,
+              G_gt: G_gt,
+              G_gte: G_gte,
               G_has_key: G_has_key,
               G_has_keys_all: _G_has_keys_all?.build(),
               G_has_keys_any: _G_has_keys_any?.build(),
               G_in: _G_in?.build(),
               G_is_null: G_is_null,
-              G_lt: _G_lt?.build(),
-              G_lte: _G_lte?.build(),
-              G_neq: _G_neq?.build(),
+              G_lt: G_lt,
+              G_lte: G_lte,
+              G_neq: G_neq,
               G_nin: _G_nin?.build());
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'G_cast';
         _G_cast?.build();
-        _$failedField = 'G_contained_in';
-        _G_contained_in?.build();
-        _$failedField = 'G_contains';
-        _G_contains?.build();
-        _$failedField = 'G_eq';
-        _G_eq?.build();
-        _$failedField = 'G_gt';
-        _G_gt?.build();
-        _$failedField = 'G_gte';
-        _G_gte?.build();
 
         _$failedField = 'G_has_keys_all';
         _G_has_keys_all?.build();
@@ -15262,12 +15170,6 @@ class Gjsonb_comparison_expBuilder
         _$failedField = 'G_in';
         _G_in?.build();
 
-        _$failedField = 'G_lt';
-        _G_lt?.build();
-        _$failedField = 'G_lte';
-        _G_lte?.build();
-        _$failedField = 'G_neq';
-        _G_neq?.build();
         _$failedField = 'G_nin';
         _G_nin?.build();
       } catch (e) {
@@ -15654,7 +15556,7 @@ class _$Gparameters_stream_cursor_value_input
   @override
   final String? key;
   @override
-  final Gjsonb? value;
+  final _i2.JsonObject? value;
 
   factory _$Gparameters_stream_cursor_value_input(
           [void Function(Gparameters_stream_cursor_value_inputBuilder)?
@@ -15711,9 +15613,9 @@ class Gparameters_stream_cursor_value_inputBuilder
   String? get key => _$this._key;
   set key(String? key) => _$this._key = key;
 
-  GjsonbBuilder? _value;
-  GjsonbBuilder get value => _$this._value ??= new GjsonbBuilder();
-  set value(GjsonbBuilder? value) => _$this._value = value;
+  _i2.JsonObject? _value;
+  _i2.JsonObject? get value => _$this._value;
+  set value(_i2.JsonObject? value) => _$this._value = value;
 
   Gparameters_stream_cursor_value_inputBuilder();
 
@@ -15721,7 +15623,7 @@ class Gparameters_stream_cursor_value_inputBuilder
     final $v = _$v;
     if ($v != null) {
       _key = $v.key;
-      _value = $v.value?.toBuilder();
+      _value = $v.value;
       _$v = null;
     }
     return this;
@@ -15743,24 +15645,8 @@ class Gparameters_stream_cursor_value_inputBuilder
   Gparameters_stream_cursor_value_input build() => _build();
 
   _$Gparameters_stream_cursor_value_input _build() {
-    _$Gparameters_stream_cursor_value_input _$result;
-    try {
-      _$result = _$v ??
-          new _$Gparameters_stream_cursor_value_input._(
-              key: key, value: _value?.build());
-    } catch (_) {
-      late String _$failedField;
-      try {
-        _$failedField = 'value';
-        _value?.build();
-      } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            r'Gparameters_stream_cursor_value_input',
-            _$failedField,
-            e.toString());
-      }
-      rethrow;
-    }
+    final _$result = _$v ??
+        new _$Gparameters_stream_cursor_value_input._(key: key, value: value);
     replace(_$result);
     return _$result;
   }

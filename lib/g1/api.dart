@@ -2,12 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:built_value/json_object.dart';
 import 'package:crypto/crypto.dart';
 import 'package:durt/durt.dart';
 import 'package:ferry/ferry.dart' as ferry;
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:polkadart/polkadart.dart' show SystemApi, Health;
+/* import 'package:polkadart/polkadart.dart'
+    show SystemApi, ChainType, Health, PeerInfo, SyncState; */
 import 'package:polkadart/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:tuple/tuple.dart';
@@ -23,7 +27,6 @@ import '../env.dart';
 import '../graphql/__generated__/duniter-custom-queries.data.gql.dart';
 import '../graphql/__generated__/duniter-custom-queries.req.gql.dart';
 import '../graphql/__generated__/duniter-custom-queries.var.gql.dart';
-import '../graphql/__generated__/duniter-indexer.schema.gql.dart';
 import '../graphql/duniter_indexer_client.dart';
 import '../shared_prefs_helper.dart';
 import '../ui/logger.dart';
@@ -51,50 +54,84 @@ Future<String> getTxHistory(String publicKey) async {
 }
 
 Future<List<dynamic>> getPeers(NodeType type) async {
+  const Duration timeout = Duration(seconds: 10);
   // Prevent concurrent modification
   final List<Node> nodes = List<Node>.from(NodeManager().nodeList(type));
   loggerDev('Fetching ${type.name} peers with peers ${nodes.length}');
   List<dynamic> currentPeers = <dynamic>[];
   for (final Node node in nodes) {
-    String nodeUrl = node.url;
-    nodeUrl = nodeUrl.replaceAll(RegExp(r'/gva$'), '');
-    nodeUrl = '$nodeUrl/network/peers';
-    loggerDev('Fetching $nodeUrl');
-    try {
-      final Response response = await http.get(Uri.parse(nodeUrl));
-      if (response.statusCode == 200) {
-        // Try decode
-        final Map<String, dynamic> peerList =
-            jsonDecode(response.body) as Map<String, dynamic>;
-        final List<dynamic> peers = (peerList['peers'] as List<dynamic>)
-            .where((dynamic peer) =>
-                (peer as Map<String, dynamic>)['currency'] == currency)
-            .where((dynamic peer) =>
-                (peer as Map<String, dynamic>)['version'] == 10)
-            .where((dynamic peer) =>
-                (peer as Map<String, dynamic>)['status'] == 'UP')
-            .toList();
-        if (currentPeers.length < peers.length) {
-          // sometimes getPeers returns a small list of nodes (somethmes even one)
-          currentPeers = peers;
+    if (type == NodeType.duniter || type == NodeType.gva) {
+      String nodeUrl = node.url;
+      nodeUrl = nodeUrl.replaceAll(RegExp(r'/gva$'), '');
+      nodeUrl = '$nodeUrl/network/peers';
+      loggerDev('Fetching $nodeUrl');
+      try {
+        final Response response = await http.get(Uri.parse(nodeUrl));
+        if (response.statusCode == 200) {
+          // Try decode
+          final Map<String, dynamic> peerList =
+              jsonDecode(response.body) as Map<String, dynamic>;
+          final List<dynamic> peers = (peerList['peers'] as List<dynamic>)
+              .where((dynamic peer) =>
+                  (peer as Map<String, dynamic>)['currency'] == currency)
+              .where((dynamic peer) =>
+                  (peer as Map<String, dynamic>)['version'] == 10)
+              .where((dynamic peer) =>
+                  (peer as Map<String, dynamic>)['status'] == 'UP')
+              .toList();
+          if (currentPeers.length < peers.length) {
+            // sometimes getPeers returns a small list of nodes (somethmes even one)
+            currentPeers = peers;
+          }
         }
+      } catch (e) {
+        loggerDev('Error retrieving $nodeUrl ($e)');
+        // Ignore
       }
-    } catch (e) {
-      loggerDev('Error retrieving $nodeUrl ($e)');
-      // Ignore
+    } else if (type == NodeType.endpoint) {
+      try {
+        /*
+        final Provider polkadot = Provider.fromUri(Uri.parse(node.url));
+        final SystemApi<Provider, dynamic, dynamic> api =
+            SystemApi<Provider, dynamic, dynamic>(polkadot);
+
+        final List<PeerInfo<dynamic, dynamic>>? peers =
+            await api.peers().timeout(timeout);
+        for (final PeerInfo<dynamic, dynamic> peer in peers) {
+          print(peer);
+        }
+        final Health health = await api.health();
+        if (health.isSyncing) {
+          loggerDev('Node ${node.url} is syncing');
+          continue;
+        }
+        print('node ${node.url} has ${health.peers} peers');
+*/
+        final Provider polkadot = Provider.fromUri(Uri.parse(node.url));
+        final SystemApi<Provider, dynamic, dynamic> api =
+            SystemApi<Provider, dynamic, dynamic>(polkadot);
+        final Health health = await api.health();
+        if (!health.isSyncing) {
+          final RpcResponse<dynamic, dynamic>? response =
+              await queryPolkadotNode(
+                  nodeUri: node.url,
+                  queryMethod: 'system_peers',
+                  params: <dynamic>[],
+                  timeout: timeout);
+
+          if (response != null && response.error != null) {
+            // final SyncState syncState = SyncState.fromJson(result.result as Map<String, dynamic>);
+            loggerDev('result ${response.result}');
+          }
+        }
+      } catch (e, stacktrace) {
+        loggerDev('Error retrieving peers from ${node.url} ($e)');
+        loggerDev(stacktrace);
+        // Ignore
+      }
     }
   }
   return currentPeers;
-}
-
-Future<Response> getPeersOld(NodeType type) async {
-  final Response response =
-      (await requestWithRetry(type, '/network/peers', dontRecord: true)).item2;
-  if (response.statusCode == 200) {
-    return response;
-  } else {
-    throw Exception('Failed to load duniter node peers');
-  }
 }
 
 Future<Response> searchCPlusUser(String initialSearchTerm) async {
@@ -192,7 +229,7 @@ Future<List<Contact>> searchWotV2(String namePattern) async {
   final GAccountsByNameOrPkReq req = GAccountsByNameOrPkReq(
       (GAccountsByNameOrPkReqBuilder b) => b..vars.pattern = namePattern);
   final ferry.Client client = await initDuniterIndexerClient(
-      _getBestNodes(NodeType.duniterIndexer).first.url);
+      NodeManager().getBestNodes(NodeType.duniterIndexer).first.url);
 
   final ferry
       .OperationResponse<GAccountsByNameOrPkData, GAccountsByNameOrPkVars>
@@ -247,37 +284,45 @@ Future<Uint8List> getAvatar(String pubKey) async {
 }
 
 Future<void> fetchNodesIfNotReady() async {
+  final List<Future<void>> fetchFutures = <Future<void>>[];
+
   for (final NodeType type in <NodeType>[
     NodeType.gva,
     NodeType.duniter,
     NodeType.endpoint,
-    NodeType.duniterIndexer
+    NodeType.duniterIndexer,
+    NodeType.cesiumPlus
   ]) {
     if (NodeManager().nodesWorking(type) < 3) {
-      await fetchNodes(type, true);
+      fetchFutures.add(fetchNodes(type, true));
     }
   }
+  await Future.wait(fetchFutures);
 }
 
 Future<void> fetchNodes(NodeType type, bool force) async {
   try {
+    final List<Future<void>> fetchFutures = <Future<void>>[];
+
     switch (type) {
       case NodeType.duniter:
-        await _fetchDuniterNodes(force: force);
+        fetchFutures.add(_fetchDuniterNodes(force: force));
         break;
       case NodeType.gva:
-        await _fetchGvaNodes(force: force);
+        fetchFutures.add(_fetchGvaNodes(force: force));
         break;
       case NodeType.cesiumPlus:
-        await _fetchCesiumPlusNodes(force: force);
+        fetchFutures.add(_fetchCesiumPlusNodes(force: force));
         break;
       case NodeType.endpoint:
-        await _fetchEndPointNodes(force: force);
+        fetchFutures.add(_fetchEndPointNodes(force: force));
         break;
       case NodeType.duniterIndexer:
-        await _fetchDuniterIndexerNodes(force: force);
+        fetchFutures.add(_fetchDuniterIndexerNodes(force: force));
         break;
     }
+
+    await Future.wait(fetchFutures);
   } on NoNodesException catch (e, stacktrace) {
     logger(e.cause);
     await Sentry.captureException(e, stackTrace: stacktrace);
@@ -348,6 +393,8 @@ Future<void> _fetchEndPointNodes({bool force = false}) async {
         'Fetching endPoint nodes, we have ${NodeManager().nodesWorking(type)}');
   }
   final List<Node> nodes = await _fetchNodes(type);
+  // FIXME (this does not return urls)
+  // await getPeers(type);
   NodeManager().updateNodes(type, nodes);
   NodeManager().loading = false;
 }
@@ -370,6 +417,7 @@ Future<void> _fetchDuniterIndexerNodes({bool force = false}) async {
 Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type,
     {bool debug = false}) async {
   logger('Fetching ${type.name} nodes from peers');
+  // const Duration timeout = Duration(seconds: 10);
   final List<Node> lNodes = <Node>[];
   final String apyType = (type == NodeType.duniter) ? 'BMAS' : 'GVA S';
   // To compare with something...
@@ -484,9 +532,10 @@ Future<List<Node>> _fetchNodes(NodeType type) async {
         logger('Error fetching $endpoint, error: $e');
       }
     }
-
-    logger(
-        'Fetched ${lNodes.length} ${type.name} nodes ordered by latency (first: ${lNodes.first.url})');
+    if (lNodes.isNotEmpty) {
+      logger(
+          'Fetched ${lNodes.length} ${type.name} nodes ordered by latency (first: ${lNodes.first.url})');
+    }
   } catch (e, stacktrace) {
     await Sentry.captureException(e, stackTrace: stacktrace);
     logger('General error in fetch ${type.name}: $e');
@@ -533,7 +582,7 @@ Future<NodeCheck> _pingNode(String node, NodeType type) async {
                   as Map<String, dynamic>)['docs']
               as Map<String, dynamic>)['count'] as int;
         } catch (e) {
-          loggerDev('Cannot parse node/stats $e');
+          loggerDev('Cannot parse node/stats ${removeNewlines(e.toString())}');
         }
       } else {
         latency = wrongNodeDuration;
@@ -543,20 +592,31 @@ Future<NodeCheck> _pingNode(String node, NodeType type) async {
     } else if (type == NodeType.endpoint) {
       if (!kIsWeb) {
         try {
+          final RpcResponse<dynamic, dynamic>? response =
+              await queryPolkadotNode(
+                  nodeUri: node,
+                  queryMethod: 'chain_getBlock',
+                  params: <dynamic>[],
+                  timeout: timeout);
+/*
           final Provider polkadot = Provider.fromUri(Uri.parse(node));
           // From:
           // https://github.com/leonardocustodio/polkadart/blob/main/examples/bin/extrinsic_demo.dart
-          final RpcResponse<dynamic, dynamic> block =
-              await polkadot.send('chain_getBlock', <dynamic>[]);
-          currentBlock = int.parse(
-              (((block.result as Map<String, dynamic>)['block']
-                      as Map<String, dynamic>)['header']
-                  as Map<String, dynamic>)['number'] as String);
-          stopwatch.stop();
-          latency = stopwatch.elapsed;
-          await polkadot.disconnect();
+          final RpcResponse<dynamic, dynamic> block = await polkadot
+              .send('chain_getBlock', <dynamic>[]).timeout(timeout);*/
+          if (response != null) {
+            currentBlock = int.parse(
+                (((response.result as Map<String, dynamic>)['block']
+                        as Map<String, dynamic>)['header']
+                    as Map<String, dynamic>)['number'] as String);
+            stopwatch.stop();
+            latency = stopwatch.elapsed;
+          } else {
+            loggerDev('Cannot parse node/stats in node $node}');
+            latency = wrongNodeDuration;
+          }
         } catch (e) {
-          loggerDev('Cannot parse node/stats $e');
+          loggerDev('Cannot parse node/stats ${removeNewlines(e.toString())}');
           latency = wrongNodeDuration;
         }
       } else {
@@ -568,15 +628,18 @@ Future<NodeCheck> _pingNode(String node, NodeType type) async {
       final ferry.Client client = await initDuniterIndexerClient(node);
       final ferry.OperationResponse<GLastIndexedBlockNumberData,
               GLastIndexedBlockNumberVars> response =
-          await client.request(GLastIndexedBlockNumberReq()).first;
+          await client
+              .request(GLastIndexedBlockNumberReq())
+              .first
+              .timeout(timeout);
       if (response.hasErrors) {
         latency = wrongNodeDuration;
-        loggerDev('Node $node has errors');
-        loggerDev(response.linkException!.originalException);
+        loggerDev(
+            'Node $node has errors: ${removeNewlines(response.linkException!.originalException.toString())}');
       } else {
-        final Gjsonb? lastIndexedBlockNumber =
+        final JsonObject? lastIndexedBlockNumber =
             response.data?.parameters_by_pk!.value;
-        loggerDev(lastIndexedBlockNumber?.value);
+        // loggerDev(lastIndexedBlockNumber?.value);
         if (lastIndexedBlockNumber?.value is num) {
           currentBlock = (lastIndexedBlockNumber!.value as num).toInt();
           latency = stopwatch.elapsed;
@@ -600,7 +663,8 @@ Future<NodeCheck> _pingNode(String node, NodeType type) async {
     return NodeCheck(latency: latency, currentBlock: currentBlock);
   } catch (e) {
     // Handle exception when node is unavailable etc
-    logger('Node $node does not respond to ping $e');
+    logger(
+        'Node $node does not respond to ping: ${removeNewlines(e.toString())}');
     return NodeCheck(latency: wrongNodeDuration, currentBlock: 0);
   }
 }
@@ -775,7 +839,7 @@ Future<PayResult> payWithGVA(
 }
 
 Tuple2<String, Node> getGvaNode() {
-  final List<Node> nodes = _getBestNodes(NodeType.gva);
+  final List<Node> nodes = NodeManager().getBestNodes(NodeType.gva);
   if (nodes.isNotEmpty) {
     final Node? currentGvaNode = NodeManager().getCurrentGvaNode();
     final bool currentIsInBest = nodes.contains(currentGvaNode);
@@ -809,12 +873,15 @@ String proxyfyNode(String nodeUrl) {
 
 Future<Tuple2<Map<String, dynamic>?, Node>> gvaHistoryAndBalance(
     String pubKeyRaw,
-    [int? pageSize,
-    String? cursor]) async {
-  logger('Get tx history (page size: $pageSize: cursor $cursor)');
+    {int? pageSize,
+    int? from,
+    int? to,
+    String? cursor}) async {
+  logger(
+      'Get tx history (page size: $pageSize: cursor $cursor, from: $from, to: $to)');
   final String pubKey = extractPublicKey(pubKeyRaw);
-  return gvaFunctionWrapper<Map<String, dynamic>>(
-      (Gva gva) => gva.history(pubKey, pageSize, cursor));
+  return gvaFunctionWrapper<Map<String, dynamic>>((Gva gva) => gva
+      .history(pubKey, pageSize: pageSize, cursor: cursor, from: from, to: to));
 }
 
 Future<Tuple2<double?, Node>> gvaBalance(String pubKey) async {
@@ -833,7 +900,7 @@ Future<Tuple2<Map<String, dynamic>?, Node>> getCurrentBlockGVA() async {
 
 Future<Tuple2<T?, Node>> gvaFunctionWrapper<T>(
     Future<T?> Function(Gva) specificFunction) async {
-  final List<Node> nodes = _getBestNodes(NodeType.gva);
+  final List<Node> nodes = NodeManager().getBestNodes(NodeType.gva);
 
   // Try first the current GVA node
   final Node? currentGvaNode = NodeManager().getCurrentGvaNode();
@@ -867,29 +934,6 @@ Future<Tuple2<T?, Node>> gvaFunctionWrapper<T>(
     }
   }
   throw Exception('Sorry: I cannot find a working gva node');
-}
-
-List<Node> _getBestNodes(NodeType type) {
-  final List<Node> fnodes = NodeManager().nodesWorkingList(type);
-  final int maxCurrentBlock = fnodes.fold(
-      0,
-      (int max, Node node) =>
-          node.currentBlock > max ? node.currentBlock : max);
-  final List<Node> nodesAtMaxBlock = fnodes
-      .where((Node node) => node.currentBlock == maxCurrentBlock)
-      .toList();
-  nodesAtMaxBlock.sort((Node a, Node b) {
-    final int errorComparison = a.errors.compareTo(b.errors);
-    if (errorComparison != 0) {
-      return errorComparison;
-    } else {
-      return a.latency.compareTo(b.latency);
-    }
-  });
-  if (nodesAtMaxBlock.isEmpty) {
-    nodesAtMaxBlock.addAll(defaultNodes(type));
-  }
-  return nodesAtMaxBlock;
 }
 
 class NodeCheck {
@@ -1148,5 +1192,25 @@ Future<PayResult> payWithBMA({
     return PayResult(message: finalResponse!.body, node: node);
   } catch (e) {
     return PayResult(message: "Something didn't work as expected ($e)");
+  }
+}
+
+Future<RpcResponse<dynamic, dynamic>?> queryPolkadotNode({
+  required String nodeUri,
+  required String queryMethod,
+  required List<dynamic> params,
+  required Duration timeout,
+}) async {
+  try {
+    final Provider polkadot = Provider.fromUri(Uri.parse(nodeUri));
+    final RpcResponse<dynamic, dynamic> response =
+        await polkadot.send(queryMethod, params).timeout(timeout);
+    await polkadot.disconnect();
+
+    return response;
+  } catch (e) {
+    loggerDev(
+        'Error querying polkadot method $queryMethod node $nodeUri with error: ${removeNewlines(e.toString())}');
+    return null;
   }
 }

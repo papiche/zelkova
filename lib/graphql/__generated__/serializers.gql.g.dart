@@ -68,7 +68,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Gidentity_select_column.serializer)
       ..add(Gidentity_stream_cursor_input.serializer)
       ..add(Gidentity_stream_cursor_value_input.serializer)
-      ..add(Gjsonb.serializer)
       ..add(Gjsonb_cast_exp.serializer)
       ..add(Gjsonb_comparison_exp.serializer)
       ..add(Gorder_by.serializer)
@@ -239,11 +238,11 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(Gjsonb)]),
-          () => new ListBuilder<Gjsonb>())
+          const FullType(BuiltList, const [const FullType(JsonObject)]),
+          () => new ListBuilder<JsonObject>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(Gjsonb)]),
-          () => new ListBuilder<Gjsonb>())
+          const FullType(BuiltList, const [const FullType(JsonObject)]),
+          () => new ListBuilder<JsonObject>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(bool)]),
           () => new ListBuilder<bool>())

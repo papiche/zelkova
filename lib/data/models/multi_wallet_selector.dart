@@ -46,6 +46,8 @@ class _MultiWalletSelectorDialogState extends State<MultiWalletSelectorDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final double screenHeight = MediaQuery.of(context).size.height - 252;
+
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0),
@@ -61,7 +63,7 @@ class _MultiWalletSelectorDialogState extends State<MultiWalletSelectorDialog> {
             ),
           ),
           SizedBox(
-            height: 400,
+            height: screenHeight > 400 ? 400 : screenHeight,
             child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,

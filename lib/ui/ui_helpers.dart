@@ -22,6 +22,7 @@ import '../data/models/cesium_card.dart';
 import '../data/models/contact.dart';
 import '../data/models/multi_wallet_transaction_cubit.dart';
 import '../data/models/node_list_cubit.dart';
+import '../data/models/theme_cubit.dart';
 import '../data/models/utxo_cubit.dart';
 import '../g1/api.dart';
 import '../g1/currency.dart';
@@ -754,9 +755,8 @@ String buildTxNotifDescription({
 
 Future<bool> requestStoragePermission(BuildContext context) async {
   // TODO(vjrj): IOS https://pub.dev/packages/permission_handler#setup
-  if (!isAndroid()) {
+  if (!kIsWeb && !Platform.isLinux) {
     PermissionStatus status;
-
     if (Platform.isAndroid) {
       try {
         final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
@@ -825,3 +825,91 @@ bool isAndroid() => !kIsWeb && Platform.isAndroid;
 
 String truncateName(String name) =>
     name.length > 15 ? '${name.substring(0, 15)}…' : name;
+
+String removeNewlines(String input) {
+  return input.replaceAll('\n', ' ').replaceAll('\r', ' ');
+}
+
+WidgetSpan separatorSpan() {
+  return const WidgetSpan(
+    alignment: PlaceholderAlignment.top,
+    child: SizedBox(width: 3),
+  );
+}
+
+TextSpan humanizeAmount(
+    bool isCurrencyBefore,
+    BuildContext context,
+    bool isG1,
+    bool small,
+    String currentSymbol,
+    double balanceFontSize,
+    double balance,
+    double currentUd,
+    [Color? color]) {
+  return TextSpan(
+    children: <InlineSpan>[
+      if (isCurrencyBefore)
+        currencyBalanceWidget(context, isG1, currentSymbol, balanceFontSize),
+      if (isCurrencyBefore) separatorAmountSpan(small),
+      TextSpan(
+        text: formatKAmountInView(
+            context: context,
+            amount: balance,
+            isG1: isG1,
+            currentUd: currentUd,
+            useSymbol: false),
+        style: TextStyle(
+            fontSize: balanceFontSize,
+            color: color ??
+                (context.read<ThemeCubit>().isDark()
+                    ? Colors.white
+                    : positiveAmountColor),
+            fontWeight: small ? FontWeight.normal : FontWeight.bold),
+      ),
+      if (!isCurrencyBefore) separatorAmountSpan(small),
+      if (!isCurrencyBefore)
+        currencyBalanceWidget(context, isG1, currentSymbol, balanceFontSize),
+    ],
+  );
+}
+
+extension DateTimeExtension on DateTime {
+  DateTime startOfDay() {
+    return DateTime(year, month, day);
+  }
+}
+
+InlineSpan currencyBalanceWidget(BuildContext context, bool isG1,
+    String currentSymbol, double balanceFontSize) {
+  final Color currencyColor = Theme.of(context).colorScheme.secondary;
+  return TextSpan(children: <InlineSpan>[
+    TextSpan(
+      text: currentSymbol,
+      style: TextStyle(
+        fontSize: balanceFontSize,
+        fontWeight: FontWeight.w500,
+        color: currencyColor,
+      ),
+    ),
+    if (!isG1)
+      WidgetSpan(
+          child: Transform.translate(
+              offset: const Offset(2, 16),
+              child: Text(
+                'Ğ1',
+                style: TextStyle(
+                  fontSize: balanceFontSize - 10,
+                  fontWeight: FontWeight.w500,
+                  // fontFeatures: <FontFeature>[FontFeature.subscripts()],
+                  color: currencyColor,
+                ),
+              )))
+  ]);
+}
+
+InlineSpan separatorAmountSpan(bool small) {
+  return WidgetSpan(
+    child: SizedBox(width: small ? 2 : 7),
+  );
+}

@@ -73,7 +73,7 @@ class Transaction extends Equatable {
         amount,
         comment,
         time,
-        debugInfo,
+        // debugInfo,
         recipients,
         recipientsAmounts
       ];

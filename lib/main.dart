@@ -443,7 +443,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
     loadNodesCronTask = cron.schedule(Schedule.parse('0 * * * *'), () async {
       final bool isConnected =
           await ConnectivityWidgetWrapperWrapper.isConnected;
-      if (isConnected) {
+      if (!inDevelopment && isConnected) {
         logger('========== Load nodes via cron');
         _loadNodes();
       }

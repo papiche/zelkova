@@ -16,8 +16,15 @@ import 'market_analysis/market_data_picker.dart';
 typedef IssueCreatedCallback = void Function(
     String? issueUrl, Map<String, dynamic> issueData, bool isSuccess);
 
-class CardDrawer extends StatelessWidget {
+class CardDrawer extends StatefulWidget {
   const CardDrawer({super.key});
+
+  @override
+  State<CardDrawer> createState() => _CardDrawerState();
+}
+
+class _CardDrawerState extends State<CardDrawer> {
+  bool _isLogoLongPressed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +46,14 @@ class CardDrawer extends StatelessWidget {
                     children: <Widget>[
                       GestureDetector(
                           onTap: () => tryCatch(),
-                          onLongPress: () => tryCatch(),
+                          onLongPress: () {
+                            setState(() {
+                              _isLogoLongPressed = true;
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Bonus track!')),
+                              );
+                            });
+                          },
                           child: Image.asset(
                             'assets/img/logo.png',
                             fit: BoxFit.scaleDown,
@@ -73,7 +87,7 @@ class CardDrawer extends StatelessWidget {
                       );
                     },
                   ),
-                if (inDevelopment)
+                if (_isLogoLongPressed)
                   ListTile(
                     leading: const Icon(Icons.analytics),
                     title: Text(tr('market_analysis')),
@@ -81,7 +95,7 @@ class CardDrawer extends StatelessWidget {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return const DatePickerExample();
+                          return const MarketAnalysisPage();
                         },
                       );
                     },
@@ -97,8 +111,7 @@ class CardDrawer extends StatelessWidget {
                         locale == const Locale('eu') ||
                         locale == const Locale('ast')) {
                       await openUrl('https://t.me/g1nkgoES');
-                    }
-                    if (locale == const Locale('fr')) {
+                    } else if (locale == const Locale('fr')) {
                       await openUrl('https://t.me/g1nkgoFR');
                     } else {
                       await openUrl('https://t.me/g1nkgoEN');

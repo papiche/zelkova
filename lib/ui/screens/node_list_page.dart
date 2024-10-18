@@ -126,7 +126,7 @@ class NodeListHeader extends StatelessWidget {
               child: IconButton(
                   icon: const Icon(Icons.refresh),
                   // Force in all cases
-                  onPressed: () => _fetchNodes(context, true, type)),
+                  onPressed: () => _fetchNodes(context, false, type)),
             )
           ],
         ));

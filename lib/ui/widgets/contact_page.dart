@@ -62,7 +62,7 @@ class _ContactPageState extends State<ContactPage> {
 
   Scaffold _buildContactWidget(Contact contact, BuildContext context) {
     final String pubKey = contact.pubKey;
-    final String v2Address = addressFromV1Pubkey(pubKey);
+    final String v2Address = addressFromV1Pubkey(extractPublicKey(pubKey));
 
     return Scaffold(
       appBar: AppBar(
@@ -159,6 +159,7 @@ class _ContactPageState extends State<ContactPage> {
             ),
             TransactionsAndBalanceWidget(
               isExternalAccount: true,
+              // isScrollEnabled: true,
               pubKey: contact.pubKey,
             ),
           ],

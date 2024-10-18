@@ -40,7 +40,7 @@
   "some_key_copied_to_clipboard": "Den offentlige nøgle er blevet kopieret til udklipsholderen",
   "key_tools_title": "Nøgler og værktøjer",
   "transactions": "Transaktioner",
-  "transaction_from_to": "Fra {fra} til {til}",
+  "transaction_from_to": "Fra {from} til {to}",
   "delete_contact": "Slet kontakt",
   "search_contacts": "Søge kontakt",
   "no_contacts": "Du har endnu ingen kontakt",

@@ -11,7 +11,7 @@ import 'transaction.dart';
 part 'transactions_state.dart';
 
 class TransactionsBloc {
-  TransactionsBloc({this.isExternal = false, this.pubKey}) {
+  TransactionsBloc({this.isExternal = false, this.pubKey, this.pageSize = 20}) {
     _onPageRequest.stream
         .flatMap(_fetchTransactionsList)
         .listen(_onNewListingStateController.add)
@@ -25,8 +25,7 @@ class TransactionsBloc {
 
   final bool isExternal;
   final String? pubKey;
-
-  static const int _pageSize = 20;
+  final int pageSize;
 
   final CompositeSubscription _subscriptions = CompositeSubscription();
 
@@ -74,11 +73,11 @@ class TransactionsBloc {
         final List<Transaction> fetchedItems =
             await transCubit.fetchTransactions(
                 cursor: pageKey,
-                pageSize: _pageSize,
+                pageSize: pageSize,
                 pubKey: pubKey,
                 isExternal: isExternal);
 
-        final bool isLastPage = fetchedItems.length < _pageSize;
+        final bool isLastPage = fetchedItems.length < pageSize;
         final String? nextPageKey =
             isLastPage ? null : transCubit.currentWalletState(pubKey).endCursor;
 

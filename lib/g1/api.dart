@@ -9,7 +9,8 @@ import 'package:ferry/ferry.dart' as ferry;
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'package:polkadart/polkadart.dart' show SystemApi, Health;
+
+/*import 'package:polkadart/polkadart.dart' show SystemApi, Health; */
 /* import 'package:polkadart/polkadart.dart'
     show SystemApi, ChainType, Health, PeerInfo, SyncState; */
 import 'package:polkadart/provider.dart';
@@ -107,7 +108,7 @@ Future<List<dynamic>> getPeers(NodeType type) async {
         }
         print('node ${node.url} has ${health.peers} peers');
 */
-        final Provider polkadot = Provider.fromUri(Uri.parse(node.url));
+        /*     final Provider polkadot = Provider.fromUri(Uri.parse(node.url));
         final SystemApi<Provider, dynamic, dynamic> api =
             SystemApi<Provider, dynamic, dynamic>(polkadot);
         final Health health = await api.health();
@@ -123,7 +124,7 @@ Future<List<dynamic>> getPeers(NodeType type) async {
             // final SyncState syncState = SyncState.fromJson(result.result as Map<String, dynamic>);
             loggerDev('result ${response.result}');
           }
-        }
+        }*/
       } catch (e, stacktrace) {
         loggerDev('Error retrieving peers from ${node.url} ($e)');
         loggerDev(stacktrace);

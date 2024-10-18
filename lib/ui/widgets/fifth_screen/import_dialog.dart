@@ -32,7 +32,9 @@ class ImportDialog extends StatefulWidget {
 }
 
 class _ImportDialogState extends State<ImportDialog> {
-  final GlobalKey<ScaffoldState> _importKey = GlobalKey<ScaffoldState>(debugLabel: 'importKey');
+  final GlobalKey<ScaffoldState> _importKey =
+      GlobalKey<ScaffoldState>(debugLabel: 'importKey');
+  int _attempts = 0;
 
   @override
   Widget build(BuildContext c) {
@@ -71,6 +73,16 @@ class _ImportDialogState extends State<ImportDialog> {
                       pointRadius: 8,
                       fillPoints: true,
                       onInputComplete: (List<int> pattern) async {
+                        if (_attempts >= 2) {
+                          c.replaceSnackbar(
+                            content: Text(
+                              tr('too_many_attempts'),
+                              style: const TextStyle(color: Colors.red),
+                            ),
+                          );
+                          Navigator.of(context).pop(true);
+                          return;
+                        }
                         try {
                           // try to decrypt
                           final Map<String, dynamic> keys =
@@ -145,12 +157,12 @@ class _ImportDialogState extends State<ImportDialog> {
                           }
                           Navigator.of(context).pop(true);
                         } catch (e, stacktrace) {
+                          _attempts++;
                           logger(e.toString());
                           logger(stacktrace);
                           if (!context.mounted) {
                             return;
                           }
-                          Navigator.of(context).pop(true);
                           context.replaceSnackbar(
                             content: Text(
                               tr('wrong_pattern'),

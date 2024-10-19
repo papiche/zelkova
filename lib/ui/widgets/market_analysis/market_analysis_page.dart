@@ -17,7 +17,7 @@ import '../../ui_helpers.dart';
 import '../contact_page.dart';
 import '../first_screen/contact_search_page.dart';
 import '../first_screen/pay_contact_search_button.dart';
-import '../fourth_screen/simple_txs_panel.dart';
+import 'simple_txs_panel.dart';
 
 class MarketAnalysisPage extends StatefulWidget {
   const MarketAnalysisPage({super.key});
@@ -35,7 +35,9 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
   String _report = '';
   List<Widget> contactWidgets = <Widget>[];
   double totalReceivedAllContacts = 0.0;
+  int totalReceivedAllContactsNumber = 0;
   double totalSentAllContacts = 0.0;
+  int totalSentAllContactsNumber = 0;
   final bool _showDetails = true;
   int _processedContacts = 0;
 
@@ -203,6 +205,8 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
                                   contactWidgets.clear();
                                   totalReceivedAllContacts = 0.0;
                                   totalSentAllContacts = 0.0;
+                                  totalSentAllContactsNumber = 0;
+                                  totalReceivedAllContactsNumber = 0;
                                   _processedContacts = 0;
                                   _report = '';
                                 });
@@ -260,6 +264,8 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
                                                     collectOtherContacts,
                                                 onResult: (double totalReceived,
                                                     double totalSent,
+                                                    int totalReceivedNumber,
+                                                    int totalSentNumber,
                                                     Set<Contact> newContacts,
                                                     String markdown) {
                                                   setState(() {
@@ -267,6 +273,10 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
                                                         totalReceived;
                                                     totalSentAllContacts +=
                                                         totalSent;
+                                                    totalReceivedAllContactsNumber +=
+                                                        totalReceivedNumber;
+                                                    totalSentAllContactsNumber +=
+                                                        totalSentNumber;
                                                     _report += '\n$markdown';
                                                     _processedContacts++;
                                                     if (_processedContacts ==
@@ -339,10 +349,16 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
                                 child:
                                     Text.rich(TextSpan(children: <InlineSpan>[
                                   TextSpan(
-                                    text: '${tr('total_received')}: ',
+                                    text: tr('total_received',
+                                        namedArgs: <String, String>{
+                                          'number':
+                                              totalReceivedAllContactsNumber
+                                                  .toString()
+                                        }),
                                     style: const TextStyle(
                                         fontSize: 16, color: Colors.green),
                                   ),
+                                  separatorSpan(),
                                   humanizeAmount(
                                       isCurrencyBefore,
                                       context,
@@ -360,10 +376,15 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
                                 child:
                                     Text.rich(TextSpan(children: <InlineSpan>[
                                   TextSpan(
-                                    text: '${tr('total_sent')}: ',
+                                    text: tr('total_sent',
+                                        namedArgs: <String, String>{
+                                          'number': totalSentAllContactsNumber
+                                              .toString()
+                                        }),
                                     style: const TextStyle(
                                         fontSize: 16, color: Colors.red),
                                   ),
+                                  separatorSpan(),
                                   humanizeAmount(
                                       isCurrencyBefore,
                                       context,

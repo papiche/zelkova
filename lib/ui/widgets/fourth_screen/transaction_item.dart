@@ -30,6 +30,7 @@ class TransactionListItem extends StatelessWidget {
       required this.currentSymbol,
       required this.isCurrencyBefore,
       required this.isExternalAccount,
+      this.customPositiveAmountColor = positiveAmountColor,
       this.afterCancel,
       this.afterRetry});
 
@@ -42,6 +43,7 @@ class TransactionListItem extends StatelessWidget {
   final String currentSymbol;
   final bool isCurrencyBefore;
   final bool isExternalAccount;
+  final Color customPositiveAmountColor;
 
   final VoidCallback? afterCancel;
   final VoidCallback? afterRetry;
@@ -356,7 +358,7 @@ class TransactionListItem extends StatelessWidget {
                                           TransactionType.received ||
                                       transaction.type ==
                                           TransactionType.receiving
-                                  ? positiveAmountColor
+                                  ? customPositiveAmountColor
                                   : negativeAmountColor,
                             ),
                           ),

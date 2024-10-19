@@ -8,7 +8,7 @@ import '../../../data/models/transaction_state.dart';
 import '../../../g1/api.dart';
 import '../../../g1/transaction_parser.dart';
 import '../../ui_helpers.dart';
-import 'transaction_item.dart';
+import '../fourth_screen/transaction_item.dart';
 
 class SimpleTransactionsPanel extends StatefulWidget {
   const SimpleTransactionsPanel({
@@ -31,7 +31,7 @@ class SimpleTransactionsPanel extends StatefulWidget {
   final Contact contact;
   final int pageSize;
   final bool initiallyExpanded;
-  final Function(double, double, Set<Contact>, String) onResult;
+  final Function(double, double, int, int, Set<Contact>, String) onResult;
   final double currentUd;
   final bool isG1;
   final bool isCurrencyBefore;
@@ -47,6 +47,12 @@ class _SimpleTransactionsPanelState extends State<SimpleTransactionsPanel> {
   List<Transaction> transactions = <Transaction>[];
   bool hasMore = true;
   Set<Contact> otherContacts = <Contact>{};
+
+  double totalReceived = 0.0;
+
+  double totalSent = 0.0;
+  int totalReceivedNumber = 0;
+  int totalSentNumber = 0;
 
   @override
   void initState() {
@@ -81,12 +87,16 @@ class _SimpleTransactionsPanelState extends State<SimpleTransactionsPanel> {
   }
 
   void _collectAndReturnResults() {
-    final double totalReceived = transactions
-        .where((Transaction tx) => tx.amount > 0)
-        .fold(0.0, (double prev, Transaction tx) => prev + tx.amount);
-    final double totalSent = transactions
-        .where((Transaction tx) => tx.amount < 0)
-        .fold(0.0, (double prev, Transaction tx) => prev + tx.amount.abs());
+    final Iterable<Transaction> totalReceivedTxs =
+        transactions.where((Transaction tx) => tx.amount > 0);
+    totalReceived = totalReceivedTxs.fold(
+        0.0, (double prev, Transaction tx) => prev + tx.amount);
+    final Iterable<Transaction> totalSentTxs =
+        transactions.where((Transaction tx) => tx.amount < 0);
+    totalSent = totalSentTxs.fold(
+        0.0, (double prev, Transaction tx) => prev + tx.amount.abs());
+    totalReceivedNumber = totalReceivedTxs.length;
+    totalSentNumber = totalSentTxs.length;
 
     if (widget.collectOtherContacts) {
       for (final Transaction tx in transactions) {
@@ -98,7 +108,8 @@ class _SimpleTransactionsPanelState extends State<SimpleTransactionsPanel> {
 
     final String markdownSummary =
         _generateMarkdownSummary(totalReceived, totalSent);
-    widget.onResult(totalReceived, totalSent, otherContacts, markdownSummary);
+    widget.onResult(totalReceived, totalSent, totalSentNumber,
+        totalReceivedNumber, otherContacts, markdownSummary);
   }
 
   String _generateMarkdownSummary(double totalReceived, double totalSent) {
@@ -119,13 +130,6 @@ class _SimpleTransactionsPanelState extends State<SimpleTransactionsPanel> {
 
   @override
   Widget build(BuildContext context) {
-    final double totalReceived = transactions
-        .where((Transaction tx) => tx.amount > 0)
-        .fold(0.0, (double prev, Transaction tx) => prev + tx.amount);
-    final double totalSent = transactions
-        .where((Transaction tx) => tx.amount < 0)
-        .fold(0.0, (double prev, Transaction tx) => prev + tx.amount.abs());
-
     return ExpansionTile(
       title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,7 +138,9 @@ class _SimpleTransactionsPanelState extends State<SimpleTransactionsPanel> {
                 padding: const EdgeInsets.all(4.0),
                 child: Text.rich(TextSpan(children: <InlineSpan>[
                   TextSpan(
-                    text: tr('total_received'),
+                    text: tr('total_received', namedArgs: <String, String>{
+                      'number': totalReceivedNumber.toString()
+                    }),
                     style: const TextStyle(fontSize: 16, color: Colors.green),
                   ),
                   separatorSpan(),
@@ -153,7 +159,9 @@ class _SimpleTransactionsPanelState extends State<SimpleTransactionsPanel> {
                 padding: const EdgeInsets.all(4.0),
                 child: Text.rich(TextSpan(children: <InlineSpan>[
                   TextSpan(
-                    text: tr('total_sent'),
+                    text: tr('total_sent', namedArgs: <String, String>{
+                      'number': totalSentNumber.toString()
+                    }),
                     style: const TextStyle(fontSize: 16, color: Colors.red),
                   ),
                   separatorSpan(),
@@ -186,6 +194,7 @@ class _SimpleTransactionsPanelState extends State<SimpleTransactionsPanel> {
               isExternalAccount: true,
               index: index,
               transaction: tx,
+              customPositiveAmountColor: Colors.green,
             );
           },
         ),

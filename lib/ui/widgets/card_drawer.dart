@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
@@ -11,7 +12,7 @@ import '../../shared_prefs_helper.dart';
 import '../screens/sandbox.dart';
 import '../ui_helpers.dart';
 import 'first_screen/card_stack.dart';
-import 'market_analysis/market_data_picker.dart';
+import 'market_analysis/market_analysis_page.dart';
 
 typedef IssueCreatedCallback = void Function(
     String? issueUrl, Map<String, dynamic> issueData, bool isSuccess);
@@ -38,36 +39,31 @@ class _CardDrawerState extends State<CardDrawer> {
               // Important: Remove any padding from the ListView.
               padding: EdgeInsets.zero,
               children: <Widget>[
-                DrawerHeader(
-                  /* decoration: BoxDecoration(
+                GestureDetector(
+                    onTap: () => tryCatch(),
+                    onLongPress: () {
+                      bonusTrack(context);
+                    },
+                    child: DrawerHeader(
+                      /* decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
                   ), */
-                  child: Column(
-                    children: <Widget>[
-                      GestureDetector(
-                          onTap: () => tryCatch(),
-                          onLongPress: () {
-                            setState(() {
-                              _isLogoLongPressed = true;
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Bonus track!')),
-                              );
-                            });
-                          },
-                          child: Image.asset(
+                      child: Column(
+                        children: <Widget>[
+                          Image.asset(
                             'assets/img/logo.png',
                             fit: BoxFit.scaleDown,
                             height: 80.0,
-                          )),
-                      // const SizedBox(height: 20.0),
-                      /* Text(tr('app_name'),
+                          ),
+                          // const SizedBox(height: 20.0),
+                          /* Text(tr('app_name'),
                           style: const TextStyle(
                             fontSize: 24.0,
                             color: Colors.white,
                           )), */
-                    ],
-                  ),
-                ),
+                        ],
+                      ),
+                    )),
                 SizedBox(
                   height: (cards.length * 70) + 50,
                   child: const Center(
@@ -207,6 +203,18 @@ class _CardDrawerState extends State<CardDrawer> {
         }
       },
     );
+  }
+
+  void bonusTrack(BuildContext context) {
+    if (kIsWeb) {
+      return;
+    }
+    setState(() {
+      _isLogoLongPressed = true;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Bonus track!')),
+      );
+    });
   }
 }
 

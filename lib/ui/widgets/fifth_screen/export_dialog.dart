@@ -238,7 +238,7 @@ class _ExportDialogState extends State<ExportDialog> {
 
   String getWalletFileName() {
     final DateTime now = DateTime.now();
-    final String formattedDate = DateFormat('yyyyMMddHHmm').format(now);
+    final String formattedDate = todayS(now);
     const String baseFileName = 'ginkgo-export';
     return '$baseFileName-$formattedDate.json';
   }

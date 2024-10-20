@@ -33,7 +33,7 @@ class ImportDialog extends StatefulWidget {
 
 class _ImportDialogState extends State<ImportDialog> {
   final GlobalKey<ScaffoldState> _importKey =
-      GlobalKey<ScaffoldState>(debugLabel: 'importKey');
+  GlobalKey<ScaffoldState>(debugLabel: 'importKey');
   int _attempts = 0;
 
   @override
@@ -48,7 +48,7 @@ class _ImportDialogState extends State<ImportDialog> {
               snapshot.data!.isNotEmpty) {
             final String keyEncString = snapshot.data!;
             final Map<String, dynamic> keyJson =
-                jsonDecode(keyEncString) as Map<String, dynamic>;
+            jsonDecode(keyEncString) as Map<String, dynamic>;
             final String keyEncrypted = keyJson['key'] as String;
             return Scaffold(
               key: _importKey,
@@ -73,7 +73,7 @@ class _ImportDialogState extends State<ImportDialog> {
                       pointRadius: 8,
                       fillPoints: true,
                       onInputComplete: (List<int> pattern) async {
-                        if (_attempts >= 2) {
+                        if (_attempts >= 3) {
                           c.replaceSnackbar(
                             content: Text(
                               tr('too_many_attempts'),
@@ -86,17 +86,17 @@ class _ImportDialogState extends State<ImportDialog> {
                         try {
                           // try to decrypt
                           final Map<String, dynamic> keys =
-                              decryptJsonForImport(
-                                  keyEncrypted, pattern.join());
+                          decryptJsonForImport(
+                              keyEncrypted, pattern.join());
                           try {
                             final dynamic cesiumCards = keys['cesiumCards'];
                             final List<dynamic>? contacts =
-                                keys['contacts'] as List<dynamic>?;
+                            keys['contacts'] as List<dynamic>?;
                             importContacts(contacts, context);
                             if (cesiumCards != null) {
                               final List<dynamic> cesiumCardList =
-                                  jsonDecode(cesiumCards as String)
-                                      as List<dynamic>;
+                              jsonDecode(cesiumCards as String)
+                              as List<dynamic>;
                               // ignore: avoid_function_literals_in_foreach_calls
                               int imported = 0;
                               for (final dynamic cesiumCard in cesiumCardList) {
@@ -111,9 +111,9 @@ class _ImportDialogState extends State<ImportDialog> {
                                   imported == 0
                                       ? tr('no_wallets_imported')
                                       : tr('wallets_imported',
-                                          namedArgs: <String, String>{
-                                              'number': imported.toString()
-                                            }),
+                                      namedArgs: <String, String>{
+                                        'number': imported.toString()
+                                      }),
                                   style: TextStyle(
                                       color: imported == 0
                                           ? Colors.red
@@ -194,19 +194,19 @@ class _ImportDialogState extends State<ImportDialog> {
         if (existingContacts.isNotEmpty) {
           for (final dynamic contactJson in contacts) {
             final Contact contact =
-                Contact.fromJson(contactJson as Map<String, dynamic>);
+            Contact.fromJson(contactJson as Map<String, dynamic>);
             if (!contactsCubit.isContact(contact.pubKey)) {
               contactsCubit.addContact(contact);
             } else {
               final Contact storedContact =
-                  contactsCubit.getContact(contact.pubKey)!;
+              contactsCubit.getContact(contact.pubKey)!;
               contactsCubit.updateContact(storedContact.merge(contact));
             }
           }
         } else {
           for (final dynamic contactJson in contacts) {
             final Contact contact =
-                Contact.fromJson(contactJson as Map<String, dynamic>);
+            Contact.fromJson(contactJson as Map<String, dynamic>);
             contactsCubit.addContact(contact);
           }
         }
@@ -217,7 +217,7 @@ class _ImportDialogState extends State<ImportDialog> {
   bool importWalletToSharedPrefs(Map<String, dynamic> cesiumCard) {
     final dynamic pub = cesiumCard['pub'];
     final String pubKey =
-        pub != null ? pub as String : cesiumCard['pubKey'] as String;
+    pub != null ? pub as String : cesiumCard['pubKey'] as String;
     if (!SharedPreferencesHelper().has(pubKey)) {
       SharedPreferencesHelper().addCesiumCard(SharedPreferencesHelper()
           .buildCesiumCard(pubKey: pubKey, seed: cesiumCard['seed'] as String));
@@ -282,7 +282,8 @@ class _ImportDialogState extends State<ImportDialog> {
 
   Future<String> _importWalletWeb(BuildContext context) async {
     final Completer<String> completer = Completer<String>();
-    final html.InputElement input = html.InputElement()..type = 'file';
+    final html.InputElement input = html.InputElement()
+      ..type = 'file';
 
     input.multiple = false;
     input.accept = '.json'; // limit file types
@@ -317,8 +318,8 @@ class _ImportDialogState extends State<ImportDialog> {
   }
 }
 
-Future<void> showSelectImportMethodDialog(
-    BuildContext context, int returnTo) async {
+Future<void> showSelectImportMethodDialog(BuildContext context,
+    int returnTo) async {
   final String? method = await showDialog<String>(
     context: context,
     builder: (BuildContext context) => const SelectImportMethodDialog(),
@@ -357,8 +358,8 @@ Future<void> showSelectImportMethodDialog(
   }
 }
 
-Future<bool?> showImportCesiumWalletDialog(
-    BuildContext context, String wallet, int returnTo) {
+Future<bool?> showImportCesiumWalletDialog(BuildContext context, String wallet,
+    int returnTo) {
   return showDialog<bool>(
     context: context,
     barrierDismissible: false,

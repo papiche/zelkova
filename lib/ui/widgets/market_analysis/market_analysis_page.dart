@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -29,7 +31,6 @@ class MarketAnalysisPage extends StatefulWidget {
 class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
   List<DateTime?> _selectedDates = <DateTime?>[null, null];
   final int _maxDaysDifference = 365;
-
   bool _isAnalyzing = false;
   bool _analysisComplete = false;
   String _report = '';
@@ -40,6 +41,8 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
   int totalSentAllContactsNumber = 0;
   final bool _showDetails = true;
   int _processedContacts = 0;
+  Set<Contact> displayedContacts = <Contact>{};
+  final Set<Contact> allNewContacts = <Contact>{};
 
   Future<void> _openDatePicker() async {
     final List<DateTime?>? results = await showCalendarDatePicker2Dialog(
@@ -101,6 +104,11 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
   }
 
   late AppCubit appCubit;
+  late bool isG1;
+  late double currentUd;
+  late String currentSymbol;
+  late NumberFormat currentNumber;
+  late bool isCurrencyBefore;
 
   @override
   void initState() {
@@ -109,7 +117,14 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
   }
 
   Future<void> _generatePdfReport(BuildContext context) async {
-    final pw.Document pdf = pw.Document();
+    final pw.ThemeData myTheme = pw.ThemeData.withFont(
+      base: pw.Font.ttf(await rootBundle.load('assets/OpenSans-Regular.ttf')),
+      bold: pw.Font.ttf(await rootBundle.load('assets/OpenSans-Bold.ttf')),
+      italic: pw.Font.ttf(await rootBundle.load('assets/OpenSans-Italic.ttf')),
+      boldItalic:
+          pw.Font.ttf(await rootBundle.load('assets/OpenSans-BoldItalic.ttf')),
+    );
+    final pw.Document pdf = pw.Document(theme: myTheme);
 
     pdf.addPage(
       pw.Page(
@@ -128,11 +143,8 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
     );
 
     final Directory directory = await getApplicationDocumentsDirectory();
-    if (directory == null) {
-      debugPrint('App files directory not found');
-      return;
-    }
-    const String fileName = 'market_analysis_report.pdf';
+    final String fileName =
+        'market_analysis_report_${DateTime.now().millisecondsSinceEpoch}.pdf';
     final File file = File(join(directory.path, fileName));
     await file.writeAsBytes(await pdf.save());
     if (!context.mounted) {
@@ -145,12 +157,12 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isG1 = appCubit.currency == Currency.G1;
-    final double currentUd = appCubit.currentUd;
-    final String currentSymbol = currentCurrencyTrimmed(isG1);
-    final NumberFormat currentNumber = currentNumberFormat(
+    isG1 = appCubit.currency == Currency.G1;
+    currentUd = appCubit.currentUd;
+    currentSymbol = currentCurrencyTrimmed(isG1);
+    currentNumber = currentNumberFormat(
         useSymbol: true, isG1: isG1, locale: currentLocale(context));
-    final bool isCurrencyBefore =
+    isCurrencyBefore =
         isSymbolPlacementBefore(currentNumber.symbols.CURRENCY_PATTERN);
     return BlocBuilder<PaymentCubit, PaymentState>(
         builder: (BuildContext context, PaymentState state) {
@@ -163,10 +175,14 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
                   contactWidgets.clear();
                   totalReceivedAllContacts = 0.0;
                   totalSentAllContacts = 0.0;
+                  totalSentAllContactsNumber = 0;
+                  totalReceivedAllContactsNumber = 0;
                   _selectedDates = <DateTime?>[null, null];
                   _isAnalyzing = false;
                   _report = '';
                   _analysisComplete = false;
+                  displayedContacts.clear();
+                  allNewContacts.clear();
                 });
               },
             ),
@@ -209,114 +225,11 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
                                   totalReceivedAllContactsNumber = 0;
                                   _processedContacts = 0;
                                   _report = '';
+                                  displayedContacts.clear();
+                                  allNewContacts.clear();
                                 });
-
-                                void processContacts(List<Contact> contacts,
-                                    [bool collectOtherContacts = false]) {
-                                  for (final Contact contact in contacts) {
-                                    contactWidgets.add(
-                                      Card(
-                                        margin: const EdgeInsets.symmetric(
-                                            vertical: 10, horizontal: 15),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Row(children: <Widget>[
-                                                GestureDetector(
-                                                  onTap: () async {
-                                                    showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return ContactPage(
-                                                            contact: contact);
-                                                      },
-                                                    );
-                                                  },
-                                                  child: Text(
-                                                    contact.title,
-                                                    style: const TextStyle(
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                )
-                                              ]),
-                                              SimpleTransactionsPanel(
-                                                from: _selectedDates[0]!
-                                                        .millisecondsSinceEpoch ~/
-                                                    1000,
-                                                to: _selectedDates[1]!
-                                                        .millisecondsSinceEpoch ~/
-                                                    1000,
-                                                contact: contact,
-                                                pageSize: 40,
-                                                isCurrencyBefore:
-                                                    isCurrencyBefore,
-                                                isG1: isG1,
-                                                currentSymbol: currentSymbol,
-                                                currentUd: currentUd,
-                                                initiallyExpanded: _showDetails,
-                                                collectOtherContacts:
-                                                    collectOtherContacts,
-                                                onResult: (double totalReceived,
-                                                    double totalSent,
-                                                    int totalReceivedNumber,
-                                                    int totalSentNumber,
-                                                    Set<Contact> newContacts,
-                                                    String markdown) {
-                                                  setState(() {
-                                                    totalReceivedAllContacts +=
-                                                        totalReceived;
-                                                    totalSentAllContacts +=
-                                                        totalSent;
-                                                    totalReceivedAllContactsNumber +=
-                                                        totalReceivedNumber;
-                                                    totalSentAllContactsNumber +=
-                                                        totalSentNumber;
-                                                    _report += '\n$markdown';
-                                                    _processedContacts++;
-                                                    if (_processedContacts ==
-                                                        state.contacts.length) {
-                                                      _analysisComplete = true;
-                                                      contactWidgets.add(Card(
-                                                          margin: const EdgeInsets
-                                                              .symmetric(
-                                                              vertical: 10,
-                                                              horizontal: 15),
-                                                          child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(10),
-                                                              child: Text(
-                                                                  tr(
-                                                                      'other_contacts_involved'),
-                                                                  style: const TextStyle(
-                                                                      fontSize:
-                                                                          24)))));
-                                                    }
-
-                                                    if (newContacts
-                                                        .isNotEmpty) {
-                                                      processContacts(
-                                                          newContacts.toList());
-                                                    }
-                                                  });
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                }
-
-                                // Disabled right now
-                                processContacts(state.contacts, false);
+                                processContacts(state.contacts, true,
+                                    state.contacts.length);
                               }
                             : null,
                         style: ElevatedButton.styleFrom(
@@ -425,5 +338,88 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
             ),
           ));
     });
+  }
+
+  void processContacts(List<Contact> contacts, bool collectOtherContacts,
+      int initialContactLength) {
+    for (final Contact contact in contacts) {
+      if (displayedContacts.contains(contact)) {
+        continue;
+      }
+      contactWidgets.add(createAccountSummary(
+          context, contact, collectOtherContacts, initialContactLength));
+      displayedContacts.add(contact);
+    }
+  }
+
+  Card createAccountSummary(BuildContext context, Contact contact,
+      bool collectOtherContacts, int initialContactsLength) {
+    return Card(
+        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(children: <Widget>[
+                    GestureDetector(
+                      onTap: () async {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return ContactPage(contact: contact);
+                          },
+                        );
+                      },
+                      child: Text(
+                        contact.title,
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  ]),
+                  SimpleTransactionsPanel(
+                    key: ValueKey<String>('simple-txs-panel-${contact.pubKey}'),
+                    from: _selectedDates[0]!.millisecondsSinceEpoch ~/ 1000,
+                    to: _selectedDates[1]!.millisecondsSinceEpoch ~/ 1000,
+                    contact: contact,
+                    pageSize: 40,
+                    isCurrencyBefore: isCurrencyBefore,
+                    isG1: isG1,
+                    currentSymbol: currentSymbol,
+                    currentUd: currentUd,
+                    initiallyExpanded: _showDetails,
+                    collectOtherContacts: collectOtherContacts,
+                    onResult: (double totalReceived,
+                        double totalSent,
+                        int totalReceivedNumber,
+                        int totalSentNumber,
+                        Set<Contact> newContacts,
+                        String markdown) {
+                      setState(() {
+                        totalReceivedAllContacts += totalReceived;
+                        totalSentAllContacts += totalSent;
+                        totalReceivedAllContactsNumber += totalReceivedNumber;
+                        totalSentAllContactsNumber += totalSentNumber;
+                        _report += '\n$markdown';
+                        _processedContacts++;
+                        if (collectOtherContacts) {
+                          allNewContacts.addAll(newContacts);
+                        }
+                        if (collectOtherContacts &&
+                            _processedContacts == initialContactsLength) {
+                          if (allNewContacts.isNotEmpty) {
+                            contactWidgets.add(Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Text(tr('other_contacts_involved'),
+                                    style: const TextStyle(fontSize: 24))));
+                            processContacts(allNewContacts.toList(), false, 0);
+                          }
+                          _analysisComplete = true;
+                        }
+                      });
+                    },
+                  )
+                ])));
   }
 }

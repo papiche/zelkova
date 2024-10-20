@@ -25,6 +25,7 @@ class CardDrawer extends StatefulWidget {
 }
 
 class _CardDrawerState extends State<CardDrawer> {
+  // ignore: unused_field
   bool _isLogoLongPressed = false;
 
   @override
@@ -41,9 +42,7 @@ class _CardDrawerState extends State<CardDrawer> {
               children: <Widget>[
                 GestureDetector(
                     onTap: () => tryCatch(),
-                    onLongPress: () {
-                      bonusTrack(context);
-                    },
+                    onLongPress: () => tryCatch(),
                     child: DrawerHeader(
                       /* decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
@@ -83,19 +82,18 @@ class _CardDrawerState extends State<CardDrawer> {
                       );
                     },
                   ),
-                if (_isLogoLongPressed)
-                  ListTile(
-                    leading: const Icon(Icons.analytics),
-                    title: Text(tr('market_analysis')),
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return const MarketAnalysisPage();
-                        },
-                      );
-                    },
-                  ),
+                ListTile(
+                  leading: const Icon(Icons.analytics),
+                  title: Text(tr('market_analysis')),
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return const MarketAnalysisPage();
+                      },
+                    );
+                  },
+                ),
                 ListTile(
                   leading: const Icon(Icons.telegram_outlined),
                   title: Text(tr('telegram_group')),

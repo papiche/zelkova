@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:text_scroll/text_scroll.dart';
 
 import '../../../data/models/app_cubit.dart';
 import '../../../data/models/contact.dart';
@@ -40,7 +41,7 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
   int totalReceivedAllContactsNumber = 0;
   double totalSentAllContacts = 0.0;
   int totalSentAllContactsNumber = 0;
-  final bool _showDetails = true;
+  final bool _showDetails = false;
   int _processedContacts = 0;
   Set<Contact> displayedContacts = <Contact>{};
   final Set<Contact> allNewContacts = <Contact>{};
@@ -120,24 +121,34 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
   Future<void> _generatePdfReport(BuildContext context) async {
     loggerDev('Generating pdf');
     final pw.ThemeData myTheme = pw.ThemeData.withFont(
-      base: pw.Font.ttf(await rootBundle.load('assets/OpenSans-Regular.ttf')),
-      bold: pw.Font.ttf(await rootBundle.load('assets/OpenSans-Bold.ttf')),
-      italic: pw.Font.ttf(await rootBundle.load('assets/OpenSans-Italic.ttf')),
-      boldItalic:
-          pw.Font.ttf(await rootBundle.load('assets/OpenSans-BoldItalic.ttf')),
-    );
+        base: pw.Font.ttf(
+            await rootBundle.load('assets/assets/OpenSans-Regular.ttf')),
+        bold: pw.Font.ttf(await rootBundle.load('assets/OpenSans-Bold.ttf')),
+        italic:
+            pw.Font.ttf(await rootBundle.load('assets/OpenSans-Italic.ttf')),
+        boldItalic: pw.Font.ttf(
+            await rootBundle.load('assets/OpenSans-BoldItalic.ttf')),
+        fontFallback: <pw.Font>[
+          pw.Font.ttf(await rootBundle.load('assets/NotoEmoji-Regular.ttf')),
+          pw.Font.ttf(await rootBundle.load('assets/DejaVuSans.ttf')),
+        ]);
+
     final pw.Document pdf = pw.Document(theme: myTheme);
 
     pdf.addPage(
       pw.Page(
-        build: (pw.Context context) => pw.Column(
+        build: (pw.Context pwcontext) => pw.Column(
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           children: <pw.Widget>[
             pw.Text(tr('market_analysis_report'),
                 style: const pw.TextStyle(fontSize: 24)),
             pw.SizedBox(height: 20),
-            pw.Text('${tr('total_received')}: $totalReceivedAllContacts'),
-            pw.Text('${tr('total_sent')}: $totalSentAllContacts'),
+            pw.Text('${tr('total_received', namedArgs: <String, String>{
+                  'number': totalReceivedAllContactsNumber.toString()
+                })} ${humanizeAmountS(isCurrencyBefore, context, isG1, true, currentSymbol, 16, totalReceivedAllContacts, currentUd, Colors.green)}'),
+            pw.Text('${tr('total_sent', namedArgs: <String, String>{
+                  'number': totalSentAllContactsNumber.toString()
+                })} ${humanizeAmountS(isCurrencyBefore, context, isG1, true, currentSymbol, 16, totalSentAllContacts, currentUd, Colors.red)}'),
             if (_report.isNotEmpty) pw.Text(_report),
           ],
         ),
@@ -145,8 +156,9 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
     );
 
     final Directory directory = await getApplicationDocumentsDirectory();
-    final String fileName =
-        'market_analysis_report_${DateTime.now().millisecondsSinceEpoch}.pdf';
+    final String fileName = inDevelopment
+        ? 'market_analysis_report.pdf'
+        : 'market_analysis_report_$todayS.pdf';
     final File file = File(join(directory.path, fileName));
     await file.writeAsBytes(await pdf.save());
     if (!context.mounted) {
@@ -316,24 +328,26 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
                       ),
                     ),
                   if (_analysisComplete)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        const SizedBox(height: 10),
-                        Center(
-                          child: ElevatedButton.icon(
-                            onPressed: () async => _generatePdfReport(context),
-                            icon: const Icon(Icons.download),
-                            label: Text(tr('download_pdf')),
-                            style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 15),
+                    if (inDevelopment)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const SizedBox(height: 10),
+                          Center(
+                            child: ElevatedButton.icon(
+                              onPressed: () async =>
+                                  _generatePdfReport(context),
+                              icon: const Icon(Icons.download),
+                              label: Text(tr('download_pdf')),
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 15),
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 10),
-                      ],
-                    ),
+                          const SizedBox(height: 10),
+                        ],
+                      ),
                   ...contactWidgets,
                 ],
               ),
@@ -348,8 +362,10 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
       if (displayedContacts.any((Contact c) => c.keyEqual(contact))) {
         continue;
       }
-      contactWidgets.add(createAccountSummary(
-          context, contact, collectOtherContacts, initialContactLength));
+      setState(() {
+        contactWidgets.add(createAccountSummary(
+            context, contact, collectOtherContacts, initialContactLength));
+      });
       displayedContacts.add(contact);
     }
   }
@@ -365,21 +381,23 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
                 children: <Widget>[
                   Row(children: <Widget>[
                     GestureDetector(
-                      onTap: () async {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return ContactPage(contact: contact);
-                          },
-                        );
-                      },
-                      child: Text(
-                        contact.title,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                    )
+                        onTap: () async {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return ContactPage(contact: contact);
+                            },
+                          );
+                        },
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width *
+                              0.8, // Adjust the width as needed
+                          child: TextScroll(
+                            '${contact.title}      ',
+                            style: const TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        ))
                   ]),
                   SimpleTransactionsPanel(
                     key: ValueKey<String>('simple-txs-panel-${contact.pubKey}'),

@@ -43,10 +43,10 @@ dependencies:
     path: ../durt
     #git:
     #  url: https://git.duniter.org/vjrj/durt
-#  flutter_neumorphic:
-#    git:
-#      url: https://github.com/den0206/Flutter-Neumorphic.git
-#      ref: feature/remoce_accentcolor
+  #  flutter_neumorphic:
+  #    git:
+  #      url: https://github.com/den0206/Flutter-Neumorphic.git
+  #      ref: feature/remoce_accentcolor
   shared_preferences: ^2.0.18
   vibration: ^2.0.0
   clipboard: ^0.1.3
@@ -149,6 +149,12 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/DejaVuSans.ttf
+    - assets/NotoEmoji-Regular.ttf
+    - assets/OpenSans-Regular.ttf
+    - assets/OpenSans-Bold.ttf
+    - assets/OpenSans-Italic.ttf
+    - assets/OpenSans-BoldItalic.ttf
     - assets/translations/
     - assets/img/gbrevedot.svg
     - assets/img/gbrevedot.png

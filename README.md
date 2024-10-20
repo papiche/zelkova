@@ -234,6 +234,14 @@ Thanks!
 - Chipcard https://commons.wikimedia.org/wiki/File:Chipcard.svg under the Creative Commons
   Attribution-Share Alike 3.0 Unported license.
 - [POS svg from wikimedia](https://commons.wikimedia.org/wiki/File:Card_Terminal_POS_Flat_Icon_Vector.svg) CC-BY-SA 4.0
+- Open Sans: Copyright 2020 The Open Sans Project Authors (https://github.com/googlefonts/opensans) under the SIL Open Font License, Version 1.1.
+- NotoEmoji: Copyright 2013 Google LLC under the SIL Open Font License, Version 1.1.
+- Dejavu are (c) Bitstream  DejaVu changes are in public domain.
+
+-----------------------------------------------------------
+SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
+-----------------------------------------------------------
+
 
 ### Pub packages used
 

@@ -1,0 +1,16 @@
+CURRENCY=g1-test
+
+#SENTRY_DSN=https://306345cb87ee4e1cbbe9023fb4afc5fc@sentry.comunes.org/6
+
+# Card customization
+CARD_COLOR_LEFT="0xFFCE002D"
+CARD_COLOR_RIGHT="0xFF673F1E"
+# Empty for default
+CARD_TEXT=Wallet in Ğ1-Test
+
+# Nodes space-separated
+# The duniter nodes are only used at boot time, later it tries to calculate periodically the nodes
+# that are available with the less latency
+DUNITER_NODES=https://g1-test.duniter.org
+CESIUM_PLUS_NODES=https://g1.data.le-sou.org https://g1.data.e-is.pro https://g1.data.presles.fr https://g1.data.mithril.re
+GVA_NODES=https://g1-test-dev.pini.fr:443/gva

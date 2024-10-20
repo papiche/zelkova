@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
@@ -157,7 +159,9 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<NFCAvailability>(
-        future: FlutterNfcKit.nfcAvailability,
+        future: !kIsWeb && Platform.isLinux
+            ? Future<NFCAvailability>.value(NFCAvailability.not_supported)
+            : FlutterNfcKit.nfcAvailability,
         builder:
             (BuildContext context, AsyncSnapshot<NFCAvailability> snapshot) {
           final bool nft = hasNft(snapshot);

@@ -55,7 +55,7 @@ Future<String> getTxHistory(String publicKey) async {
 }
 
 Future<List<dynamic>> getPeers(NodeType type) async {
-  const Duration timeout = Duration(seconds: 10);
+  // const Duration timeout = Duration(seconds: 10);
   // Prevent concurrent modification
   final List<Node> nodes = List<Node>.from(NodeManager().nodeList(type));
   loggerDev('Fetching ${type.name} peers with peers ${nodes.length}');

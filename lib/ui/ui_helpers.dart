@@ -874,6 +874,38 @@ TextSpan humanizeAmount(
   );
 }
 
+String humanizeAmountS(
+    bool isCurrencyBefore,
+    BuildContext context,
+    bool isG1,
+    bool small,
+    String currentSymbol,
+    double balanceFontSize,
+    double balance,
+    double currentUd,
+    [Color? color]) {
+  final StringBuffer result = StringBuffer();
+  if (isCurrencyBefore) {
+    result.write(
+        currencyBalanceWidget(context, isG1, currentSymbol, balanceFontSize)
+            .toPlainText());
+    result.write(' ');
+  }
+  result.write(formatKAmountInView(
+      context: context,
+      amount: balance,
+      isG1: isG1,
+      currentUd: currentUd,
+      useSymbol: false));
+  if (!isCurrencyBefore) {
+    result.write(' ');
+    result.write(
+        currencyBalanceWidget(context, isG1, currentSymbol, balanceFontSize)
+            .toPlainText());
+  }
+  return result.toString();
+}
+
 extension DateTimeExtension on DateTime {
   DateTime startOfDay() {
     return DateTime(year, month, day);
@@ -913,3 +945,5 @@ InlineSpan separatorAmountSpan(bool small) {
     child: SizedBox(width: small ? 2 : 7),
   );
 }
+
+String todayS(DateTime now) => DateFormat('yyyyMMddHHmm').format(now);

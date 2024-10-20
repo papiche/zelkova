@@ -115,15 +115,26 @@ class _SimpleTransactionsPanelState extends State<SimpleTransactionsPanel> {
   String _generateMarkdownSummary(double totalReceived, double totalSent) {
     final StringBuffer markdownBuffer = StringBuffer();
     markdownBuffer.writeln("### ${tr('transaction_summary')}");
-    markdownBuffer.writeln("- ${tr('total_received')}: $totalReceived");
+    markdownBuffer.writeln(
+        "- ${tr('total_received', namedArgs: <String, String>{
+          'number': totalReceived.toString()
+        })} ${humanizeAmountS(widget.isCurrencyBefore, context, widget.isG1, true, widget.currentSymbol, 16, totalReceived, widget.currentUd, Colors.green)})");
+    markdownBuffer.writeln("- ${tr('total_sent', namedArgs: <String, String>{
+          'number': totalSent.toString()
+        })} ${humanizeAmountS(widget.isCurrencyBefore, context, widget.isG1, true, widget.currentSymbol, 16, totalSent, widget.currentUd, Colors.red)})");
+
     markdownBuffer.writeln("- ${tr('total_sent')}: $totalSent");
 
-    if (widget.collectOtherContacts && otherContacts.isNotEmpty) {
+    markdownBuffer.writeln("- ${tr('transactions')}:");
+    for (final Transaction tx in transactions) {
+      markdownBuffer.writeln('  - $tx');
+    }
+    /* if (widget.collectOtherContacts && otherContacts.isNotEmpty) {
       markdownBuffer.writeln("- ${tr('other_contacts_involved')}:");
       for (final Contact contact in otherContacts) {
         markdownBuffer.writeln("  - ${humanizeContact('', contact, true)}");
       }
-    }
+    } */
 
     return markdownBuffer.toString();
   }

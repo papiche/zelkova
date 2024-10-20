@@ -15,6 +15,7 @@ import '../../../data/models/contact.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/payment_state.dart';
 import '../../../g1/currency.dart';
+import '../../logger.dart';
 import '../../ui_helpers.dart';
 import '../contact_page.dart';
 import '../first_screen/contact_search_page.dart';
@@ -117,6 +118,7 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
   }
 
   Future<void> _generatePdfReport(BuildContext context) async {
+    loggerDev('Generating pdf');
     final pw.ThemeData myTheme = pw.ThemeData.withFont(
       base: pw.Font.ttf(await rootBundle.load('assets/OpenSans-Regular.ttf')),
       bold: pw.Font.ttf(await rootBundle.load('assets/OpenSans-Bold.ttf')),
@@ -320,7 +322,7 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
                         const SizedBox(height: 10),
                         Center(
                           child: ElevatedButton.icon(
-                            onPressed: () => _generatePdfReport(context),
+                            onPressed: () async => _generatePdfReport(context),
                             icon: const Icon(Icons.download),
                             label: Text(tr('download_pdf')),
                             style: ElevatedButton.styleFrom(
@@ -343,7 +345,7 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
   void processContacts(List<Contact> contacts, bool collectOtherContacts,
       int initialContactLength) {
     for (final Contact contact in contacts) {
-      if (displayedContacts.contains(contact)) {
+      if (displayedContacts.any((Contact c) => c.keyEqual(contact))) {
         continue;
       }
       contactWidgets.add(createAccountSummary(
@@ -373,6 +375,7 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
                       },
                       child: Text(
                         contact.title,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
@@ -404,6 +407,8 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
                         _report += '\n$markdown';
                         _processedContacts++;
                         if (collectOtherContacts) {
+                          newContacts.removeWhere((Contact contact) =>
+                              displayedContacts.contains(contact));
                           allNewContacts.addAll(newContacts);
                         }
                         if (collectOtherContacts &&

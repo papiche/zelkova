@@ -267,5 +267,21 @@
   "select_all_wallets": "Alle Brieftaschen auswählen",
   "done": "FERTIG",
   "export_contacts": "Kontakte exportieren",
-  "no_wallets_imported": "Es wurden keine Brieftaschen importiert"
+  "no_wallets_imported": "Es wurden keine Brieftaschen importiert",
+  "transaction_summary": "Transaktionen-Übersicht",
+  "total_sent": "Gesamt Verkäufe ({number}):",
+  "other_contacts_involved": "Andere involvierte Konten",
+  "invalid_date_range": "Ungültiger Datums-Zeitraum",
+  "ok": "OK",
+  "market_analysis_report": "Bericht der Marktanalyse",
+  "select_people_to_analyze": "Wähle ein Konto für die Analyse aus",
+  "select_date_range": "Wähle einen Datums-Zeitraum aus",
+  "analyze": "Analysieren",
+  "too_many_attempts": "Zu viele Versuche",
+  "total_received": "Gesamt Einkäufe ({number}):",
+  "date_range_exceed": "Der Datums-Zeitraum darf {number} Tage nicht überschreiten.",
+  "pdf_generated": "Generiertes PDF",
+  "dates": "Daten",
+  "total_received_sent": "Gesamt Ver- und Einkäufe",
+  "download_pdf": "PDF herunterladen"
 }

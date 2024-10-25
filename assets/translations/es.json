@@ -283,5 +283,8 @@
   "dates": "Fechas",
   "analyze": "Analizar",
   "total_received_sent": "Ventas y compras totales",
-  "download_pdf": "Descargar PDF"
+  "download_pdf": "Descargar PDF",
+  "contacts_show_more": "Mostrar más",
+  "contacts_show_less": "Mostrar menos",
+  "form_contact_pub_or_address": "Llave"
 }

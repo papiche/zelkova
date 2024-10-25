@@ -125,6 +125,7 @@
   "form_contact_notes": "Notes",
   "form_contact_pub_key": "Public key",
   "form_contact_address_v2": "Address",
+  "form_contact_pub_or_address": "Key",
   "payment_error": "Payment error",
   "payment_error_desc": "Oops! the payment failed. More details: {error}",
   "payment_error_retry": "Oops! the payment failed. Please retry in some minutes.",
@@ -277,5 +278,7 @@
   "dates": "Dates",
   "analyze": "Analyze",
   "total_received_sent": "Total sales and purchases",
-  "download_pdf": "Download PDF"
+  "download_pdf": "Download PDF",
+  "contacts_show_more": "Show more",
+  "contacts_show_less": "Show less"
 }

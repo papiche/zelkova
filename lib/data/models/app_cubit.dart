@@ -69,4 +69,10 @@ class AppCubit extends HydratedCubit<AppState> {
   void setUd(double currentUd) {
     emit(state.copyWith(currentUd: currentUd));
   }
+
+  void setV2Mode(bool v2mode) {
+    emit(state.copyWith(v2mode: v2mode));
+  }
+
+  bool isV2() => state.v2mode;
 }

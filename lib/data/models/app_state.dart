@@ -13,6 +13,7 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
       this.warningViewed = false,
       this.warningBrowserViewed = false,
       this.expertMode = false,
+      this.v2mode = false,
       Currency? currency,
       double? currentUd,
       Map<String, bool>? tutorials})
@@ -27,6 +28,7 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
   final bool warningViewed;
   final bool warningBrowserViewed;
   final bool expertMode;
+  final bool v2mode;
   final Currency currency;
   final double currentUd;
   final Map<String, bool> tutorials;
@@ -38,6 +40,7 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
       bool? expertMode,
       Currency? currency,
       double? currentUd,
+      bool? v2mode,
       Map<String, bool>? tutorials}) {
     return AppState(
         introViewed: introViewed ?? this.introViewed,
@@ -45,6 +48,7 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
         warningBrowserViewed: warningBrowserViewed ?? this.warningBrowserViewed,
         expertMode: expertMode ?? this.expertMode,
         currency: currency ?? this.currency,
+        v2mode: v2mode ?? this.v2mode,
         currentUd: currentUd ?? this.currentUd,
         tutorials: tutorials ?? this.tutorials);
   }
@@ -63,6 +67,7 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
         warningBrowserViewed,
         tutorials,
         currency,
-        currentUd
+        currentUd,
+        v2mode
       ];
 }

@@ -12,6 +12,12 @@ import 'package:ginkgo/g1/g1_helper.dart';
 import 'package:ginkgo/ui/logger.dart';
 
 void main() {
+  const String testPubKey = '7wnDh2FPdwNW8Dd5JyoJTbspuu8b9QJKps2xAYenefsu';
+  const String testPubKey1 = '7XtCpQSj8HRQxAD7rjZrMJ1knxBm6yx317R7sYzu3Hy6';
+  const String testPubKey2 = '2AD8Eg55RKidFLcFBVy8NuSrNsPvwrDjPe2SLq8seMjf';
+  const String testPubKey3 = 'A23W3Z4NNxShFThCwHsru1pgzMJDMSf5GaJxb3A5ipih';
+  const String testPubKey4 = '39a4E4555VNVyZKQgFC88h9eykEaSCFzyr22PncpGvA9:au1';
+
   test('Test serialization and deserialization of UInt8List seeds', () {
     final Uint8List seed = generateUintSeed();
     final String sSeed = seedToString(seed);
@@ -50,10 +56,12 @@ void main() {
   test('validate pub keys', () {
     expect(validateKey('FRYyk57Pi456EJRu9vqVfSHLgmUfx4Qc3goS62a7dUSm'),
         equals(true));
-
     expect(validateKey('BrgsSYK3xUzDyztGBHmxq69gfNxBfe2UKpxG21oZUBr5'),
         equals(true));
-
+    expect(validateKey('DU7b6JByc8HSKtZxbKape5ZSkXRwNy6ZKApisryevmrZ'),
+        equals(true));
+    expect(validateKey('DU7b6JByc8HSKtZxbKape5ZSkXRwNy6ZKApisryevmrZ:E14'),
+        equals(true));
     expect(validateKey('naU6XunXd1LSSfsHu3aNk8ZqgSosKQcvEQz8F2KaRAy'),
         equals(true));
   });
@@ -69,27 +77,27 @@ void main() {
         final PaymentState? payA = parseScannedUri(uriA);
         expect(payA!.amount, equals(10),
             reason: 'amount should be 10 in $uriA');
-        expect(payA.contacts[0].pubKey, equals(publicKey));
+        expect(payA.contacts[0].pubKey, equals(extractPublicKey(publicKey)));
       });
 
       test('validate qr uri without amount', () {
         final String uriB = getQrUri(pubKey: publicKey);
         final PaymentState? payB = parseScannedUri(uriB);
         expect(payB!.amount, equals(null));
-        expect(payB.contacts[0].pubKey, equals(publicKey));
+        expect(payB.contacts[0].pubKey, equals(extractPublicKey(publicKey)));
       });
 
       test('validate qr scanned', () {
         final PaymentState? payC = parseScannedUri(publicKey);
         expect(payC!.amount, equals(null));
-        expect(payC.contacts[0].pubKey, equals(publicKey));
+        expect(payC.contacts[0].pubKey, equals(extractPublicKey(publicKey)));
       });
 
       test('validate qr uri with decimal amount', () {
         final String uriD = getQrUri(pubKey: publicKey, amount: '10.10');
         final PaymentState? payD = parseScannedUri(uriD);
         expect(payD!.amount, equals(10.10));
-        expect(payD.contacts[0].pubKey, equals(publicKey));
+        expect(payD.contacts[0].pubKey, equals(extractPublicKey(publicKey)));
       });
 
       test('validate qr uri with localized decimal amount', () {
@@ -97,14 +105,14 @@ void main() {
             getQrUri(pubKey: publicKey, amount: '10,10', locale: 'es');
         final PaymentState? payE = parseScannedUri(uriE);
         expect(payE!.amount, equals(10.10));
-        expect(payE.contacts[0].pubKey, equals(publicKey));
+        expect(payE.contacts[0].pubKey, equals(extractPublicKey(publicKey)));
       });
 
       test('validate custom june uri with amount', () {
         final String uriF = 'june://$publicKey?amount=100';
         final PaymentState? payF = parseScannedUri(uriF);
         expect(payF!.amount, equals(100));
-        expect(payF.contacts[0].pubKey, equals(publicKey));
+        expect(payF.contacts[0].pubKey, equals(extractPublicKey(publicKey)));
       });
 
       test('validate june uri with comment and amount', () {
@@ -113,7 +121,7 @@ void main() {
         final PaymentState? payJ = parseScannedUri(uriJ);
         expect(payJ!.comment, equals('GCHANGE:AYDI9JPOVIL9ZVG-PNCU'));
         expect(payJ.amount, equals(100));
-        expect(payJ.contacts[0].pubKey, equals(publicKey));
+        expect(payJ.contacts[0].pubKey, equals(extractPublicKey(publicKey)));
       });
 
       test('validate june uri with amount and comment', () {
@@ -122,7 +130,7 @@ void main() {
         final PaymentState? payK = parseScannedUri(uriK);
         expect(payK!.comment, equals('This Is my comment'));
         expect(payK.amount, equals(10));
-        expect(payK.contacts[0].pubKey, equals(publicKey));
+        expect(payK.contacts[0].pubKey, equals(extractPublicKey(publicKey)));
       });
 
       test('validate june uri with reordered comment and amount', () {
@@ -131,7 +139,7 @@ void main() {
         final PaymentState? payL = parseScannedUri(uriL);
         expect(payL!.comment, equals('This Is my comment'));
         expect(payL.amount, equals(10));
-        expect(payL.contacts[0].pubKey, equals(publicKey));
+        expect(payL.contacts[0].pubKey, equals(extractPublicKey(publicKey)));
       });
 
       test('validate june uri with localized amount and comment', () {
@@ -140,7 +148,7 @@ void main() {
         final PaymentState? payM = parseScannedUri(uriM);
         expect(payM!.comment, equals('Mi comentario'));
         expect(payM.amount, equals(10));
-        expect(payM.contacts[0].pubKey, equals(publicKey));
+        expect(payM.contacts[0].pubKey, equals(extractPublicKey(publicKey)));
       });
 
       test('validate june uri with comment only', () {
@@ -148,7 +156,7 @@ void main() {
         final PaymentState? payN = parseScannedUri(uriN);
         expect(payN!.amount == null, equals(true));
         expect(payN.comment, equals('This Is my comment'));
-        expect(payN.contacts[0].pubKey, equals(publicKey));
+        expect(payN.contacts[0].pubKey, equals(extractPublicKey(publicKey)));
       });
 
       test('validate june uri with encoded uri', () {
@@ -157,7 +165,7 @@ void main() {
         final PaymentState? payN = parseScannedUri(uriN);
         expect(payN!.amount == null, equals(true));
         expect(payN.comment, equals('This Is my comment'));
-        expect(payN.contacts[0].pubKey, equals(publicKey));
+        expect(payN.contacts[0].pubKey, equals(extractPublicKey(publicKey)));
       });
 
       test('Replace incorrect comment characters', () {
@@ -166,7 +174,7 @@ void main() {
         final PaymentState? payN = parseScannedUri(uriN);
         expect(payN!.amount == null, equals(true));
         expect(payN.comment, equals('This Is my comment !%     '));
-        expect(payN.contacts[0].pubKey, equals(publicKey));
+        expect(payN.contacts[0].pubKey, equals(extractPublicKey(publicKey)));
       });
     });
   }
@@ -282,9 +290,8 @@ void main() {
 
       final List<Contact> result = parseMultipleKeys(spreadsheetText);
       expect(result, <Contact>[
-        const Contact(
-            pubKey: 'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG:BJH'),
-        const Contact(pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY')
+        Contact(pubKey: 'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG:BJH'),
+        Contact(pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY')
       ]);
     });
 
@@ -293,9 +300,8 @@ void main() {
           'Hello, here are the keys: EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG, ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:9bG. Thanks!';
       final List<Contact> result = parseMultipleKeys(emailText);
       expect(result, <Contact>[
-        const Contact(pubKey: 'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG'),
-        const Contact(
-            pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:9bG')
+        Contact(pubKey: 'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG'),
+        Contact(pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:9bG')
       ]);
     });
 
@@ -304,11 +310,9 @@ void main() {
           'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG; ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:BJH; 78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT';
       final List<Contact> result = parseMultipleKeys(listText);
       expect(result, <Contact>[
-        const Contact(pubKey: 'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG'),
-        const Contact(
-            pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:BJH'),
-        const Contact(
-            pubKey: '78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT')
+        Contact(pubKey: 'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG'),
+        Contact(pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:BJH'),
+        Contact(pubKey: '78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT')
       ]);
     });
 
@@ -317,11 +321,9 @@ void main() {
           'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG      ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:BJH       78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT';
       final List<Contact> result = parseMultipleKeys(listText);
       expect(result, <Contact>[
-        const Contact(pubKey: 'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG'),
-        const Contact(
-            pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:BJH'),
-        const Contact(
-            pubKey: '78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT')
+        Contact(pubKey: 'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG'),
+        Contact(pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:BJH'),
+        Contact(pubKey: '78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT')
       ]);
     });
 
@@ -400,11 +402,11 @@ void main() {
     });
   });
 
-  const Contact from = Contact(pubKey: 'from-publicKey');
-  const Contact to1 = Contact(pubKey: 'to-publicKey-1');
-  const Contact to2 = Contact(pubKey: 'to-publicKey-2');
-  const Contact to3 = Contact(pubKey: 'to-publicKey-3');
-  const Contact to4 = Contact(pubKey: 'to-publicKey-4');
+  final Contact from = Contact(pubKey: testPubKey);
+  final Contact to1 = Contact(pubKey: testPubKey1);
+  final Contact to2 = Contact(pubKey: testPubKey2);
+  final Contact to3 = Contact(pubKey: testPubKey3);
+  final Contact to4 = Contact(pubKey: testPubKey4);
 
   test('genTxKey single recipient', () {
     final Transaction transaction = Transaction(
@@ -418,8 +420,10 @@ void main() {
 
     final String result = genTxKey(transaction);
 
-    expect(result,
-        equals('from:from-publicKey-to:to-publicKey-1-Test transaction-10.0'));
+    expect(
+        result,
+        equals(
+            'from:7wnDh2FPdwNW8Dd5JyoJTbspuu8b9QJKps2xAYenefsu-to:7XtCpQSj8HRQxAD7rjZrMJ1knxBm6yx317R7sYzu3Hy6-Test transaction-10.0'));
   });
 
   test('genTxKey multiple recipients', () {
@@ -428,7 +432,7 @@ void main() {
       to: to1,
       type: TransactionType.sending,
       time: DateTime.now(),
-      recipients: const <Contact>[to1, to2, to3, to4],
+      recipients: <Contact>[to1, to2, to3, to4],
       amount: 10.0,
       comment: 'Test transaction',
     );
@@ -438,7 +442,7 @@ void main() {
     expect(
         result,
         equals(
-            'from:from-publicKey-to:to-publicKey-1-to-publicKey-2-to-publicKey-3-to-publicKey-4-Test transaction-10.0'));
+            'from:7wnDh2FPdwNW8Dd5JyoJTbspuu8b9QJKps2xAYenefsu-to:2AD8Eg55RKidFLcFBVy8NuSrNsPvwrDjPe2SLq8seMjf-39a4E4555VNVyZKQgFC88h9eykEaSCFzyr22PncpGvA9-7XtCpQSj8HRQxAD7rjZrMJ1knxBm6yx317R7sYzu3Hy6-A23W3Z4NNxShFThCwHsru1pgzMJDMSf5GaJxb3A5ipih-Test transaction-10.0'));
   });
 
   test('genTxKey for sending and pending transactions', () {
@@ -559,12 +563,12 @@ void main() {
       () {
     final Transaction transaction = Transaction(
       type: TransactionType.sending,
-      from: const Contact(pubKey: 'from-publicKey'),
-      to: const Contact(pubKey: 'to-publicKey-1'),
-      recipients: const <Contact>[
-        Contact(pubKey: 'to-publicKey-1'),
-        Contact(pubKey: 'to-publicKey-2'),
-        Contact(pubKey: 'to-publicKey-3'),
+      from: Contact(pubKey: testPubKey),
+      to: Contact(pubKey: testPubKey1),
+      recipients: <Contact>[
+        Contact(pubKey: testPubKey1),
+        Contact(pubKey: testPubKey2),
+        Contact(pubKey: testPubKey3),
       ],
       recipientsAmounts: const <double>[10.0, 20.0, 30.0],
       amount: 60.0,
@@ -585,9 +589,9 @@ void main() {
     expect(recipientsJson.length, equals(3));
     expect(recipientsAmountsJson.length, equals(3));
 
-    expect(recipientsJson[0].pubKey, equals('to-publicKey-1'));
-    expect(recipientsJson[1].pubKey, equals('to-publicKey-2'));
-    expect(recipientsJson[2].pubKey, equals('to-publicKey-3'));
+    expect(recipientsJson[0].pubKey, equals(testPubKey1));
+    expect(recipientsJson[1].pubKey, equals(testPubKey2));
+    expect(recipientsJson[2].pubKey, equals(testPubKey3));
 
     expect(recipientsAmountsJson[0], equals(10.0));
     expect(recipientsAmountsJson[1], equals(20.0));
@@ -599,12 +603,12 @@ void main() {
       () {
     final Transaction sendingTransaction = Transaction(
       type: TransactionType.sending,
-      from: const Contact(pubKey: 'from-publicKey'),
-      to: const Contact(pubKey: 'to-publicKey-1'),
-      recipients: const <Contact>[
-        Contact(pubKey: 'to-publicKey-1'),
-        Contact(pubKey: 'to-publicKey-2'),
-        Contact(pubKey: 'to-publicKey-3'),
+      from: Contact(pubKey: testPubKey),
+      to: Contact(pubKey: testPubKey1),
+      recipients: <Contact>[
+        Contact(pubKey: testPubKey1),
+        Contact(pubKey: testPubKey1),
+        Contact(pubKey: testPubKey1),
       ],
       recipientsAmounts: const <double>[10.0, 20.0, 30.0],
       amount: 60.0,

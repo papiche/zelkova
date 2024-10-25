@@ -4,6 +4,7 @@ import 'package:bip39_multi_nullsafety/src/wordlists/spanish.dart' as spanish;
 import 'package:durt/src/crypto/cesium_wallet.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ginkgo/g1/g1_v2_helper.dart';
+import 'package:ginkgo/g1/g1_v2_helper_multi.dart';
 import 'package:ginkgo/ui/logger.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 import 'package:substrate_bip39/substrate_bip39.dart';
@@ -30,6 +31,7 @@ void main() {
 
       for (final String address in invalidAddresses) {
         expect(isValidV2Address(address), isFalse);
+        expect(isValidV2AddressMulti(address), isFalse);
       }
     });
   });
@@ -38,7 +40,11 @@ void main() {
     final List<List<String>> keyPairs = <List<String>>[
       <String>[
         '6DrGg8cftpkgffv4Y4Lse9HSjgc8coEQor3yvMPHAnVH',
-        '5DpRqhjEof2WMFoAYTAqqoQzyBH9zRRmAbBZGQm9uZSzNeY6'
+        '5DpRqhjEof2WMFoAYTAqqoQzyBH9zRRmAbBZGQm9uZSzNeY6',
+      ],
+      <String>[
+        'DU7b6JByc8HSKtZxbKape5ZSkXRwNy6ZKApisryevmrZ',
+        '5GFbF9Umfsoy3CGkRvkpYVyxRATZATB6JuSGxnbgdEzWzw44',
       ],
     ];
 
@@ -46,9 +52,13 @@ void main() {
       final String v1pubkey = keyPair[0];
       final String expectedV2Address = keyPair[1];
       expect(addressFromV1Pubkey(v1pubkey), equals(expectedV2Address));
+      expect(addressFromV1PubkeyMulti(v1pubkey), equals(expectedV2Address));
       expect(isValidV2Address(expectedV2Address), true);
+      expect(isValidV2AddressMulti(expectedV2Address), true);
       expect(addressFromV1Pubkey(v1pubkey), equals(expectedV2Address));
+      expect(addressFromV1PubkeyMulti(v1pubkey), equals(expectedV2Address));
       expect(v1pubkeyFromAddress(expectedV2Address), equals(v1pubkey));
+      expect(v1pubkeyFromAddressMulti(expectedV2Address), equals(v1pubkey));
     }
   });
 
@@ -58,6 +68,8 @@ void main() {
     final CesiumWallet wallet = CesiumWallet(secret, password);
     final String v1PubKey = wallet.pubkey;
     final String v2Address = addressFromV1Pubkey(v1PubKey);
+    final String v2Address2 = addressFromV1PubkeyMulti(v1PubKey);
+    expect(v2Address2, equals(v2Address));
     final Uint8List seed = wallet.seed;
     final Keyring keyring = Keyring();
     final KeyPair keypair =
@@ -91,6 +103,10 @@ void main() {
     expect(v1pubkeyFromAddress(expectedV2DevAddressEd),
         equals(expectedV1PubKeyEd));
     expect(v1pubkeyFromAddress(expectedV2DevAddressSr),
+        equals(expectedV1PubKeySr));
+    expect(v1pubkeyFromAddressMulti(expectedV2DevAddressEd),
+        equals(expectedV1PubKeyEd));
+    expect(v1pubkeyFromAddressMulti(expectedV2DevAddressSr),
         equals(expectedV1PubKeySr));
 
     // No sr25519 seed support yet

@@ -146,6 +146,9 @@ class ContactsCubit extends HydratedCubit<ContactsState> {
       if (c.pubKey.contains(query)) {
         return true;
       }
+      if (c.address.contains(query)) {
+        return true;
+      }
       if (c.pubKey.contains(extractPublicKey(query))) {
         return true;
       }

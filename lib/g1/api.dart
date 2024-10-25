@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:built_value/json_object.dart';
 import 'package:crypto/crypto.dart';
 import 'package:durt/durt.dart';
 import 'package:ferry/ferry.dart' as ferry;
@@ -13,7 +12,8 @@ import 'package:http/http.dart';
 /*import 'package:polkadart/polkadart.dart' show SystemApi, Health; */
 /* import 'package:polkadart/polkadart.dart'
     show SystemApi, ChainType, Health, PeerInfo, SyncState; */
-import 'package:polkadart/provider.dart';
+/* import 'package:polkadart/provider.dart'; */
+import 'package:polkadot_dart/polkadot_dart.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:tuple/tuple.dart';
 import 'package:universal_html/html.dart' show window;
@@ -33,7 +33,11 @@ import '../shared_prefs_helper.dart';
 import '../ui/logger.dart';
 import '../ui/ui_helpers.dart';
 import 'g1_helper.dart';
+import 'g1_v2_helper_multi.dart';
 import 'no_nodes_exception.dart';
+import 'node_check_result.dart';
+import 'polkadot_provider.dart';
+import 'polkadot_substrate_service.dart';
 
 // Tx history
 // https://g1.duniter.org/tx/history/FadJvhddHL7qbRd3WcRPrWEJJwABQa3oZvmCBhotc7Kg
@@ -91,6 +95,16 @@ Future<List<dynamic>> getPeers(NodeType type) async {
       }
     } else if (type == NodeType.endpoint) {
       try {
+        /*   final PolkaDotProvider wsProvider =
+            PolkaDotProvider(Uri.parse('wss://rpc.polkadot.io'));
+        final MyWsSubstrateService wsService = MyWsSubstrateService(wsProvider);
+        final SubstrateRPC rpc = SubstrateRPC(wsService);
+        final SyncStateResponse syncState =
+            await rpc.request(const SubstrateRPCSystemSyncState());
+        syncState.currentBlock
+
+        print('Sync State: $syncState'); */
+
         /*
         final Provider polkadot = Provider.fromUri(Uri.parse(node.url));
         final SystemApi<Provider, dynamic, dynamic> api =
@@ -225,10 +239,15 @@ Future<List<Contact>> searchWotV1(String initialSearchTerm) async {
   return contacts;
 }
 
-Future<List<Contact>> searchWotV2(String namePattern) async {
+Future<List<Contact>> searchWotV2(String searchPatternRaw) async {
+  // if is a v1Key, search pubkey
+  final String searchPattern = validateKey(searchPatternRaw)
+      ? addressFromV1PubkeyMulti(searchPatternRaw)
+      : searchPatternRaw;
+  loggerDev("Searching indexer v2 with '$searchPattern'");
   final List<Contact> contacts = <Contact>[];
   final GAccountsByNameOrPkReq req = GAccountsByNameOrPkReq(
-      (GAccountsByNameOrPkReqBuilder b) => b..vars.pattern = namePattern);
+      (GAccountsByNameOrPkReqBuilder b) => b..vars.pattern = searchPattern);
   final ferry.Client client = await initDuniterIndexerClient(
       NodeManager().getBestNodes(NodeType.duniterIndexer).first.url);
 
@@ -240,13 +259,12 @@ Future<List<Contact>> searchWotV2(String namePattern) async {
     loggerDev('Error: ${response.linkException?.originalException}');
   } else {
     final GAccountsByNameOrPkData? accounts = response.data;
-    for (final GAccountsByNameOrPkData_account account in accounts!.account) {
-      final String? pubkey = account.identity?.account?.identity?.pubkey;
-      if (pubkey == null) {
+    for (final GAccountsByNameOrPkData_identity account in accounts!.identity) {
+      final String? address = account.accountId;
+      if (address == null) {
         loggerDev('ERROR: Pubkey is null');
       } else {
-        contacts.add(Contact(
-            nick: account.identity?.account?.identity?.name, pubKey: pubkey));
+        contacts.add(Contact.withAddress(nick: account.name, address: address));
       }
     }
   }
@@ -441,7 +459,8 @@ Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type,
                 //  !endpoint.contains('test') &&
                 !endpoint.contains('localhost')) {
               try {
-                final NodeCheck nodeCheck = await _pingNode(endpoint, type);
+                final NodeCheckResult nodeCheck =
+                    await _pingNode(endpoint, type);
                 final Duration latency = nodeCheck.latency;
                 loggerD(debug,
                     'Evaluating node: $endpoint, latency ${latency.inMicroseconds} currentBlock: ${nodeCheck.currentBlock}');
@@ -509,7 +528,8 @@ Future<List<Node>> _fetchNodes(NodeType type) async {
     for (final Node node in currentNodes) {
       final String endpoint = node.url;
       try {
-        final NodeCheck nodeCheck = await _pingNode(endpoint, type);
+        logger('Evaluating node: $endpoint');
+        final NodeCheckResult nodeCheck = await _pingNode(endpoint, type);
         final Duration latency = nodeCheck.latency;
         logger('Evaluating node: $endpoint, latency ${latency.inMicroseconds}');
         final Node node = Node(
@@ -547,127 +567,39 @@ Future<List<Node>> _fetchNodes(NodeType type) async {
   return lNodes;
 }
 
-Future<NodeCheck> _pingNode(String node, NodeType type) async {
-  // Decrease timeout during ping
+Future<NodeCheckResult> _pingNode(String node, NodeType type) async {
   const Duration timeout = Duration(seconds: 10);
-  int currentBlock = 0;
-  Duration latency;
+
+  final Map<NodeType,
+          Future<NodeCheckResult> Function(String node, Duration timeout)>
+      testFunctions = <NodeType,
+          Future<NodeCheckResult> Function(String node, Duration timeout)>{
+    NodeType.duniter: testDuniterV1Node,
+    NodeType.cesiumPlus: testCPlusV1Node,
+    NodeType.gva: testGVAV1Node,
+    NodeType.endpoint: testEndPointV2,
+    NodeType.duniterIndexer: testDuniterIndexerV2,
+  };
+
+  final Future<NodeCheckResult> Function(String node, Duration timeout)
+      testFunction = testFunctions[type] ?? testDuniterIndexerV2;
+
   try {
-    final Stopwatch stopwatch = Stopwatch()..start();
-    if (type == NodeType.duniter) {
-      final Response response = await http
-          .get(Uri.parse('$node/blockchain/current'))
-          .timeout(timeout);
-      stopwatch.stop();
-      latency = stopwatch.elapsed;
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> json =
-            jsonDecode(response.body) as Map<String, dynamic>;
-        currentBlock = json['number'] as int;
-      } else {
-        latency = wrongNodeDuration;
-      }
-    } else if (type == NodeType.cesiumPlus) {
-      // see: http://g1.data.e-is.pro/network/peering
-      final Response response = await http
-          .get(Uri.parse('$node/node/stats'))
-          // Decrease http timeout during ping
-          .timeout(timeout);
-      if (response.statusCode == 200) {
-        try {
-          final Map<String, dynamic> json =
-              jsonDecode(response.body.replaceAll('"cluster"{', '"cluster": {'))
-                  as Map<String, dynamic>;
-          currentBlock = ((((json['stats'] as Map<String, dynamic>)['cluster']
-                      as Map<String, dynamic>)['indices']
-                  as Map<String, dynamic>)['docs']
-              as Map<String, dynamic>)['count'] as int;
-        } catch (e) {
-          loggerDev('Cannot parse node/stats ${removeNewlines(e.toString())}');
-        }
-      } else {
-        latency = wrongNodeDuration;
-      }
-      stopwatch.stop();
-      latency = stopwatch.elapsed;
-    } else if (type == NodeType.endpoint) {
-      if (!kIsWeb) {
-        try {
-          final RpcResponse<dynamic, dynamic>? response =
-              await queryPolkadotNode(
-                  nodeUri: node,
-                  queryMethod: 'chain_getBlock',
-                  params: <dynamic>[],
-                  timeout: timeout);
-/*
-          final Provider polkadot = Provider.fromUri(Uri.parse(node));
-          // From:
-          // https://github.com/leonardocustodio/polkadart/blob/main/examples/bin/extrinsic_demo.dart
-          final RpcResponse<dynamic, dynamic> block = await polkadot
-              .send('chain_getBlock', <dynamic>[]).timeout(timeout);*/
-          if (response != null) {
-            currentBlock = int.parse(
-                (((response.result as Map<String, dynamic>)['block']
-                        as Map<String, dynamic>)['header']
-                    as Map<String, dynamic>)['number'] as String);
-            stopwatch.stop();
-            latency = stopwatch.elapsed;
-          } else {
-            loggerDev('Cannot parse node/stats in node $node}');
-            latency = wrongNodeDuration;
-          }
-        } catch (e) {
-          loggerDev('Cannot parse node/stats ${removeNewlines(e.toString())}');
-          latency = wrongNodeDuration;
-        }
-      } else {
-        // Waiting for web support in polkadart:
-        // https://github.com/leonardocustodio/polkadart/issues/297
-        latency = wrongNodeDuration;
-      }
-    } else if (type == NodeType.duniterIndexer) {
-      final ferry.Client client = await initDuniterIndexerClient(node);
-      final ferry.OperationResponse<GLastIndexedBlockNumberData,
-              GLastIndexedBlockNumberVars> response =
-          await client
-              .request(GLastIndexedBlockNumberReq())
-              .first
-              .timeout(timeout);
-      if (response.hasErrors) {
-        latency = wrongNodeDuration;
-        loggerDev(
-            'Node $node has errors: ${removeNewlines(response.linkException!.originalException.toString())}');
-      } else {
-        final JsonObject? lastIndexedBlockNumber =
-            response.data?.parameters_by_pk!.value;
-        // loggerDev(lastIndexedBlockNumber?.value);
-        if (lastIndexedBlockNumber?.value is num) {
-          currentBlock = (lastIndexedBlockNumber!.value as num).toInt();
-          latency = stopwatch.elapsed;
-        } else {
-          latency = wrongNodeDuration;
-        }
-      }
-    } else {
-      // Test GVA with a query
-      final Gva gva = Gva(node: proxyfyNode(node));
-      currentBlock = await gva.getCurrentBlock().timeout(timeout);
-//      NodeManager().updateNode(type, node.copyWith(latency: newLatency));
-      stopwatch.stop();
-      final double balance = await gva
-          .balance('78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8')
-          .timeout(timeout);
-      latency = balance >= 0 ? stopwatch.elapsed : wrongNodeDuration;
-    }
-    logger(
-        'Ping tested in node $node ($type), latency ${latency.inMicroseconds}, current block $currentBlock');
-    return NodeCheck(latency: latency, currentBlock: currentBlock);
+    final NodeCheckResult result = await testFunction(node, timeout);
+    _logNodePing(node, type, result.latency, result.currentBlock);
+    return NodeCheckResult(
+        latency: result.latency, currentBlock: result.currentBlock);
   } catch (e) {
-    // Handle exception when node is unavailable etc
     logger(
         'Node $node does not respond to ping: ${removeNewlines(e.toString())}');
-    return NodeCheck(latency: wrongNodeDuration, currentBlock: 0);
+    return NodeCheckResult(latency: wrongNodeDuration, currentBlock: 0);
   }
+}
+
+void _logNodePing(
+    String node, NodeType type, Duration latency, int currentBlock) {
+  logger(
+      'Ping tested in node $node ($type), latency ${latency.inMicroseconds}, current block $currentBlock');
 }
 
 Future<Tuple2<Node, http.Response>> requestWithRetry(NodeType type, String path,
@@ -937,13 +869,6 @@ Future<Tuple2<T?, Node>> gvaFunctionWrapper<T>(
   throw Exception('Sorry: I cannot find a working gva node');
 }
 
-class NodeCheck {
-  NodeCheck({required this.latency, required this.currentBlock});
-
-  final Duration latency;
-  final int currentBlock;
-}
-
 void increaseNodeErrors(NodeType type, Node node) {
   NodeManager().increaseNodeErrors(type, node);
 }
@@ -1196,22 +1121,101 @@ Future<PayResult> payWithBMA({
   }
 }
 
-Future<RpcResponse<dynamic, dynamic>?> queryPolkadotNode({
-  required String nodeUri,
-  required String queryMethod,
-  required List<dynamic> params,
-  required Duration timeout,
-}) async {
-  try {
-    final Provider polkadot = Provider.fromUri(Uri.parse(nodeUri));
-    final RpcResponse<dynamic, dynamic> response =
-        await polkadot.send(queryMethod, params).timeout(timeout);
-    await polkadot.disconnect();
+Future<NodeCheckResult> testDuniterIndexerV2(
+    String node, Duration timeout) async {
+  NodeCheckResult result;
 
-    return response;
-  } catch (e) {
+  final Stopwatch stopwatch = Stopwatch()..start();
+  final ferry.Client client = await initDuniterIndexerClient(node);
+  final ferry.OperationResponse<GLastBlockData, GLastBlockVars> response =
+      await client.request(GLastBlockReq()).first.timeout(timeout);
+  if (response.hasErrors) {
     loggerDev(
-        'Error querying polkadot method $queryMethod node $nodeUri with error: ${removeNewlines(e.toString())}');
-    return null;
+        'Node $node has errors: ${removeNewlines(response.linkException!.originalException.toString())}');
+    result = NodeCheckResult(currentBlock: 0, latency: wrongNodeDuration);
+  } else {
+    final int currentBlock = response.data?.block.first.height ?? 0;
+    result = NodeCheckResult(
+        currentBlock: currentBlock,
+        latency: currentBlock > 0 ? stopwatch.elapsed : wrongNodeDuration);
   }
+  return result;
+}
+
+Future<NodeCheckResult> testGVAV1Node(String node, Duration timeout) async {
+  final Stopwatch stopwatch = Stopwatch()..start();
+  // Test GVA with a query
+  final Gva gva = Gva(node: proxyfyNode(node));
+  final int currentBlock = await gva.getCurrentBlock().timeout(timeout);
+//      NodeManager().updateNode(type, node.copyWith(latency: newLatency));
+  stopwatch.stop();
+  final double balance = await gva
+      .balance('78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8')
+      .timeout(timeout);
+  final Duration latency = balance >= 0 ? stopwatch.elapsed : wrongNodeDuration;
+  final NodeCheckResult result =
+      NodeCheckResult(latency: latency, currentBlock: currentBlock);
+  return result;
+}
+
+Future<NodeCheckResult> testEndPointV2(String node, Duration timeout) async {
+  final Stopwatch stopwatch = Stopwatch()..start();
+  final PolkaDotProvider wsProvider = PolkaDotProvider(Uri.parse(node));
+  await wsProvider.connect();
+  final WsSubstrateService wsService = WsSubstrateService(wsProvider);
+  final SubstrateRPC rpc = SubstrateRPC(wsService);
+  final SyncStateResponse syncState =
+      await rpc.request(const SubstrateRPCSystemSyncState()).timeout(timeout);
+  await wsProvider.disconnect();
+  stopwatch.stop();
+  final NodeCheckResult nodeCheckResult = NodeCheckResult(
+      latency: stopwatch.elapsed, currentBlock: syncState.currentBlock);
+  return nodeCheckResult;
+}
+
+Future<NodeCheckResult> testCPlusV1Node(String node, Duration timeout) async {
+  int currentBlock = 0;
+  Duration latency;
+  final Stopwatch stopwatch = Stopwatch()..start();
+  // see: http://g1.data.e-is.pro/network/peering
+  final Response response = await http
+      .get(Uri.parse('$node/node/stats'))
+      // Decrease http timeout during ping
+      .timeout(timeout);
+  if (response.statusCode == 200) {
+    try {
+      final Map<String, dynamic> json =
+          jsonDecode(response.body.replaceAll('"cluster"{', '"cluster": {'))
+              as Map<String, dynamic>;
+      currentBlock = ((((json['stats'] as Map<String, dynamic>)['cluster']
+                  as Map<String, dynamic>)['indices']
+              as Map<String, dynamic>)['docs'] as Map<String, dynamic>)['count']
+          as int;
+    } catch (e) {
+      loggerDev('Cannot parse node/stats ${removeNewlines(e.toString())}');
+    }
+  } else {
+    latency = wrongNodeDuration;
+  }
+  stopwatch.stop();
+  latency = stopwatch.elapsed;
+  return NodeCheckResult(latency: latency, currentBlock: currentBlock);
+}
+
+Future<NodeCheckResult> testDuniterV1Node(String node, Duration timeout) async {
+  int currentBlock = 0;
+  Duration latency;
+  final Stopwatch stopwatch = Stopwatch()..start();
+  final Response response =
+      await http.get(Uri.parse('$node/blockchain/current')).timeout(timeout);
+  stopwatch.stop();
+  latency = stopwatch.elapsed;
+  if (response.statusCode == 200) {
+    final Map<String, dynamic> json =
+        jsonDecode(response.body) as Map<String, dynamic>;
+    currentBlock = json['number'] as int;
+  } else {
+    latency = wrongNodeDuration;
+  }
+  return NodeCheckResult(latency: latency, currentBlock: currentBlock);
 }

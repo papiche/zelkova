@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../data/models/contact.dart';
 import '../../../g1/g1_helper.dart';
+import '../../../g1/g1_v2_helper_multi.dart';
 import '../../ui_helpers.dart';
 
 class ContactFormDialog extends StatefulWidget {
@@ -22,7 +23,8 @@ class ContactFormDialog extends StatefulWidget {
 }
 
 class _ContactFormDialogState extends State<ContactFormDialog> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>(debugLabel: 'contctFormDialog');
+  final GlobalKey<FormState> _formKey =
+      GlobalKey<FormState>(debugLabel: 'contactFormDialog');
   late Contact _updatedContact;
 
   @override
@@ -63,6 +65,31 @@ class _ContactFormDialogState extends State<ContactFormDialog> {
                   child: const Icon(Icons.qr_code, size: 50),
                 ),
               ]),
+            if (!widget.isNew) const SizedBox(height: 5),
+            if (!widget.isNew)
+              Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                Flexible(
+                    child: TextFormField(
+                  // maxLines: 2,
+                  initialValue: humanizePubKey(_updatedContact.address),
+                  decoration: InputDecoration(
+                    labelText: tr('form_contact_address_v2'),
+                  ),
+                  enabled: false,
+                )),
+                GestureDetector(
+                    onTap: () {
+                      showQrDialog(
+                          context: context,
+                          publicKey: getFullPubKey(_updatedContact.address),
+                          noTitle: true,
+                          feedbackText: 'some_key_copied_to_clipboard');
+                    },
+                    child: const Badge(
+                      label: Text('v2'),
+                      child: Icon(Icons.qr_code, size: 50),
+                    )),
+              ]),
             if (widget.isNew)
               TextFormField(
                 validator: (String? value) {
@@ -72,12 +99,21 @@ class _ContactFormDialogState extends State<ContactFormDialog> {
                   return null;
                 },
                 decoration: InputDecoration(
-                  labelText: tr('form_contact_pub_key'),
+                  labelText: tr('form_contact_pub_or_address'),
                 ),
                 onChanged: (String? value) {
-                  _updatedContact = _updatedContact.copyWith(pubKey: value);
+                  if (value != null) {
+                    final bool isV2Address = isValidV2AddressMulti(value);
+                    final String pubKey =
+                        isV2Address ? v1pubkeyFromAddressMulti(value) : value;
+                    final String address =
+                        isV2Address ? value : addressFromV1PubkeyMulti(value);
+                    _updatedContact = _updatedContact.copyWith(
+                        pubKey: pubKey, address: address);
+                  }
                 },
               ),
+            if (!widget.isNew) const SizedBox(height: 5),
             TextFormField(
               initialValue: _updatedContact.name,
               decoration: InputDecoration(labelText: tr('form_contact_name')),

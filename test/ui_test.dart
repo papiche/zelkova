@@ -125,7 +125,7 @@ void main() {
       final Contact contact =
           Contact(pubKey: otherTestPubKey, name: 'John Doe');
       final String result = humanizeContact(publicAddress, contact, true);
-      expect(result, 'John Doe (🔑 7XtC…3Hy6)');
+      expect(result, 'John Doe (🗝 7XtC…3Hy6)');
     });
 
     test(
@@ -134,7 +134,7 @@ void main() {
       const String publicAddress = otherTestPubKey;
       final Contact contact = Contact(pubKey: testPubKey);
       final String result = humanizeContact(publicAddress, contact, true);
-      expect(result, '🔑 7wnD…efsu');
+      expect(result, '🗝 7wnD…efsu');
     });
   });
 
@@ -171,13 +171,13 @@ void main() {
         () {
       final Contact contact = Contact(pubKey: testPubKey);
       final String result = contact.title;
-      expect(result, '🔑 7wnD…efsu');
+      expect(result, '🗝 7wnD…efsu');
     });
 
     test('Should return subtitle when nick or name is provided', () {
       final Contact contact = Contact(pubKey: testPubKey, nick: 'JD');
       final String? result = contact.subtitle;
-      expect(result, '🔑 7wnD…efsu');
+      expect(result, '🗝 7wnD…efsu');
     });
 
     test('Should return null subtitle when neither nick nor name is provided',

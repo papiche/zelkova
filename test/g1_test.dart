@@ -307,22 +307,22 @@ void main() {
 
     test('Extraction from a list separated by semicolons', () {
       const String listText =
-          'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG; ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:BJH; 78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT';
+          'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG; ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:9bG; 78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT';
       final List<Contact> result = parseMultipleKeys(listText);
       expect(result, <Contact>[
         Contact(pubKey: 'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG'),
-        Contact(pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:BJH'),
+        Contact(pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:9bG'),
         Contact(pubKey: '78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT')
       ]);
     });
 
     test('Extraction from a list separated by spaces', () {
       const String listText =
-          'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG      ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:BJH       78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT';
+          'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG      ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:9bG       78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT';
       final List<Contact> result = parseMultipleKeys(listText);
       expect(result, <Contact>[
         Contact(pubKey: 'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG'),
-        Contact(pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:BJH'),
+        Contact(pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:9bG'),
         Contact(pubKey: '78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT')
       ]);
     });

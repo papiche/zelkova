@@ -333,8 +333,12 @@ List<Contact> parseMultipleKeys(String inputText) {
   loggerDev('matches: ${allMatches.length}');
   for (final RegExpMatch match in allMatches) {
     final String? publicKey = match.group(0);
-    if (publicKey != null) {
-      contacts.add(Contact(pubKey: publicKey));
+    if (publicKey != null && validateKey(publicKey)) {
+      try {
+        contacts.add(Contact(pubKey: publicKey));
+      } catch (e) {
+        loggerDev('Error adding v1 $publicKey $e');
+      }
     }
   }
   return contacts;

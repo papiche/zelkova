@@ -111,6 +111,7 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
   late String currentSymbol;
   late NumberFormat currentNumber;
   late bool isCurrencyBefore;
+  final Duration _delay = const Duration(milliseconds: 300);
 
   @override
   void initState() {
@@ -227,7 +228,9 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
                                   : '${tr('dates')}: ${DateFormat.yMMMd(currentLocale(context)).format(_selectedDates[0]!)} - ${DateFormat.yMMMd(currentLocale(context)).format(_selectedDates[1]!)}',
                             ),
                           ),
-                          if (!_isAnalyzing) const SizedBox(height: 20),
+                          const SizedBox(height: 20),
+                          if (_isAnalyzing && !_analysisComplete)
+                            const CircularProgressIndicator(),
                           if (!_isAnalyzing)
                             Center(
                               child: ElevatedButton(
@@ -366,8 +369,8 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
     });
   }
 
-  void processContacts(List<Contact> contacts, bool collectOtherContacts,
-      int initialContactLength) {
+  Future<void> processContacts(List<Contact> contacts,
+      bool collectOtherContacts, int initialContactLength) async {
     for (final Contact contact in contacts) {
       if (displayedContacts.any((Contact c) => c.keyEqual(contact))) {
         continue;
@@ -377,6 +380,8 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
             context, contact, collectOtherContacts, initialContactLength));
       });
       displayedContacts.add(contact);
+
+      await Future<void>.delayed(_delay);
     }
   }
 

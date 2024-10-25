@@ -152,8 +152,14 @@ bool isMe(Contact contact, String publicAddress) =>
 String humanizePubKey(String rawAddress, [bool minimal = false]) {
   final String address = extractPublicKey(rawAddress);
   return minimal
-      ? '\u{1F511} ${simplifyPubKey(address).substring(0, 4)}'
-      : '\u{1F511} ${simplifyPubKey(address)}';
+      ? '\u{1F5DD} ${simplifyPubKey(address).substring(0, 4)}'
+      : '\u{1F5DD} ${simplifyPubKey(address)}';
+}
+
+String humanizeAddress(String address, [bool minimal = false]) {
+  return minimal
+      ? ' \u{1F511} ${simplifyPubKey(address).substring(0, 4)}'
+      : ' \u{1F511} ${simplifyPubKey(address)}';
 }
 
 String simplifyPubKey(String address) => address.length <= 8
@@ -388,9 +394,12 @@ class SlidableContactTile extends StatefulWidget {
 }
 
 class _SlidableContactTile extends State<SlidableContactTile> {
+  late bool isV2;
+
   @override
   void initState() {
     super.initState();
+    isV2 = context.read<AppCubit>().isV2();
     // Disable for now
     //   _start();
   }
@@ -440,14 +449,22 @@ class _SlidableContactTile extends State<SlidableContactTile> {
       contactToListItem(widget.contact, widget.index, widget.context,
           onTap: widget.onTap,
           onLongPress: widget.onLongPress,
-          trailing: widget.trailing);
+          trailing: widget.trailing,
+          isV2: isV2);
 }
 
 Widget contactToListItem(Contact contact, int index, BuildContext context,
-    {VoidCallback? onTap, VoidCallback? onLongPress, Widget? trailing}) {
+    {VoidCallback? onTap,
+    VoidCallback? onLongPress,
+    Widget? trailing,
+    required bool isV2}) {
   final String title = contact.title;
-  final Widget? subtitle =
-      contact.subtitle != null ? Text(contact.subtitle!) : null;
+  final Widget? subtitle = contact.subtitle != null
+      ? Text(isV2
+          ? '${contact.subtitle!} ${contact.subtitleV2}'
+          : contact.subtitle!)
+      : null;
+
   return ListTile(
       title: Text(title),
       subtitle: subtitle ?? Container(),

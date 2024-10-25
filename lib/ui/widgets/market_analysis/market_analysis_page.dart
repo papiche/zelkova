@@ -180,179 +180,189 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
         isSymbolPlacementBefore(currentNumber.symbols.CURRENCY_PATTERN);
     return BlocBuilder<PaymentCubit, PaymentState>(
         builder: (BuildContext context, PaymentState state) {
-      return Scaffold(
-          appBar: AppBar(title: Text(tr('market_analysis')), actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.refresh),
-              onPressed: () {
-                setState(() {
-                  contactWidgets.clear();
-                  totalReceivedAllContacts = 0.0;
-                  totalSentAllContacts = 0.0;
-                  totalSentAllContactsNumber = 0;
-                  totalReceivedAllContactsNumber = 0;
-                  _selectedDates = <DateTime?>[null, null];
-                  _isAnalyzing = false;
-                  _report = '';
-                  _analysisComplete = false;
-                  displayedContacts.clear();
-                  allNewContacts.clear();
-                });
-              },
-            ),
-          ]),
-          body: SingleChildScrollView(
-            child: Center(
-              child: Column(
-                children: <Widget>[
-                  const SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: PayContactSearchButton(
-                        btnText: tr('select_people_to_analyze'),
-                        searchUse: SearchUse.marketAnalysis),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: _openDatePicker,
-                    child: Text(
-                      _selectedDates[0] == null
-                          ? tr('select_date_range')
-                          : '${tr('dates')}: ${DateFormat.yMMMd(currentLocale(context)).format(_selectedDates[0]!)} - ${DateFormat.yMMMd(currentLocale(context)).format(_selectedDates[1]!)}',
-                    ),
-                  ),
-                  if (!_isAnalyzing) const SizedBox(height: 20),
-                  if (!_isAnalyzing)
-                    Center(
-                      child: ElevatedButton(
-                        onPressed: (_isAnalyzing == false &&
-                                _selectedDates[0] != null &&
-                                _selectedDates[1] != null &&
-                                state.contacts.isNotEmpty)
-                            ? () {
-                                setState(() {
-                                  _isAnalyzing = true;
-                                  contactWidgets.clear();
-                                  totalReceivedAllContacts = 0.0;
-                                  totalSentAllContacts = 0.0;
-                                  totalSentAllContactsNumber = 0;
-                                  totalReceivedAllContactsNumber = 0;
-                                  _processedContacts = 0;
-                                  _report = '';
-                                  displayedContacts.clear();
-                                  allNewContacts.clear();
-                                });
-                                processContacts(state.contacts, true,
-                                    state.contacts.length);
-                              }
-                            : null,
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 50, vertical: 20),
+      return FutureBuilder<List<Contact>>(
+          future: enrichContacts(context, state.contacts),
+          builder: (BuildContext context,
+                  AsyncSnapshot<List<Contact>> snapshot) =>
+              Scaffold(
+                  appBar: AppBar(
+                      title: Text(tr('market_analysis')),
+                      actions: <Widget>[
+                        IconButton(
+                          icon: const Icon(Icons.refresh),
+                          onPressed: () {
+                            setState(() {
+                              contactWidgets.clear();
+                              totalReceivedAllContacts = 0.0;
+                              totalSentAllContacts = 0.0;
+                              totalSentAllContactsNumber = 0;
+                              totalReceivedAllContactsNumber = 0;
+                              _selectedDates = <DateTime?>[null, null];
+                              _isAnalyzing = false;
+                              _report = '';
+                              _analysisComplete = false;
+                              displayedContacts.clear();
+                              allNewContacts.clear();
+                            });
+                          },
                         ),
-                        child: Text(tr('analyze'),
-                            style: const TextStyle(fontSize: 24)),
-                      ),
-                    ),
-                  const SizedBox(height: 10),
-                  if (contactWidgets.isNotEmpty)
-                    Card(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 15),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              tr('total_received_sent'),
-                              style: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(height: 10),
-                            Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 4.0),
-                                child:
-                                    Text.rich(TextSpan(children: <InlineSpan>[
-                                  TextSpan(
-                                    text: tr('total_received',
-                                        namedArgs: <String, String>{
-                                          'number':
-                                              totalReceivedAllContactsNumber
-                                                  .toString()
-                                        }),
-                                    style: const TextStyle(
-                                        fontSize: 16, color: Colors.green),
-                                  ),
-                                  separatorSpan(),
-                                  humanizeAmount(
-                                      isCurrencyBefore,
-                                      context,
-                                      isG1,
-                                      true,
-                                      currentSymbol,
-                                      16,
-                                      totalReceivedAllContacts,
-                                      currentUd,
-                                      Colors.green)
-                                ]))),
-                            Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 4.0),
-                                child:
-                                    Text.rich(TextSpan(children: <InlineSpan>[
-                                  TextSpan(
-                                    text: tr('total_sent',
-                                        namedArgs: <String, String>{
-                                          'number': totalSentAllContactsNumber
-                                              .toString()
-                                        }),
-                                    style: const TextStyle(
-                                        fontSize: 16, color: Colors.red),
-                                  ),
-                                  separatorSpan(),
-                                  humanizeAmount(
-                                      isCurrencyBefore,
-                                      context,
-                                      isG1,
-                                      true,
-                                      currentSymbol,
-                                      16,
-                                      totalSentAllContacts,
-                                      currentUd,
-                                      Colors.red)
-                                ])))
-                          ],
-                        ),
-                      ),
-                    ),
-                  if (_analysisComplete)
-                    if (inDevelopment)
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      ]),
+                  body: SingleChildScrollView(
+                    child: Center(
+                      child: Column(
                         children: <Widget>[
-                          const SizedBox(height: 10),
-                          Center(
-                            child: ElevatedButton.icon(
-                              onPressed: () async =>
-                                  _generatePdfReport(context),
-                              icon: const Icon(Icons.download),
-                              label: Text(tr('download_pdf')),
-                              style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 15),
-                              ),
+                          const SizedBox(height: 20),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 30),
+                            child: PayContactSearchButton(
+                                btnText: tr('select_people_to_analyze'),
+                                searchUse: SearchUse.marketAnalysis),
+                          ),
+                          const SizedBox(height: 20),
+                          ElevatedButton(
+                            onPressed: _openDatePicker,
+                            child: Text(
+                              _selectedDates[0] == null
+                                  ? tr('select_date_range')
+                                  : '${tr('dates')}: ${DateFormat.yMMMd(currentLocale(context)).format(_selectedDates[0]!)} - ${DateFormat.yMMMd(currentLocale(context)).format(_selectedDates[1]!)}',
                             ),
                           ),
+                          if (!_isAnalyzing) const SizedBox(height: 20),
+                          if (!_isAnalyzing)
+                            Center(
+                              child: ElevatedButton(
+                                onPressed: (_isAnalyzing == false &&
+                                        _selectedDates[0] != null &&
+                                        _selectedDates[1] != null &&
+                                        snapshot.data != null)
+                                    ? () {
+                                        setState(() {
+                                          _isAnalyzing = true;
+                                          contactWidgets.clear();
+                                          totalReceivedAllContacts = 0.0;
+                                          totalSentAllContacts = 0.0;
+                                          totalSentAllContactsNumber = 0;
+                                          totalReceivedAllContactsNumber = 0;
+                                          _processedContacts = 0;
+                                          _report = '';
+                                          displayedContacts.clear();
+                                          allNewContacts.clear();
+                                        });
+                                        processContacts(snapshot.data!, true,
+                                            snapshot.data!.length);
+                                      }
+                                    : null,
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 50, vertical: 20),
+                                ),
+                                child: Text(tr('analyze'),
+                                    style: const TextStyle(fontSize: 24)),
+                              ),
+                            ),
                           const SizedBox(height: 10),
+                          if (contactWidgets.isNotEmpty)
+                            Card(
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 15),
+                              child: Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      tr('total_received_sent'),
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 4.0),
+                                        child: Text.rich(
+                                            TextSpan(children: <InlineSpan>[
+                                          TextSpan(
+                                            text: tr('total_received',
+                                                namedArgs: <String, String>{
+                                                  'number':
+                                                      totalReceivedAllContactsNumber
+                                                          .toString()
+                                                }),
+                                            style: const TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.green),
+                                          ),
+                                          separatorSpan(),
+                                          humanizeAmount(
+                                              isCurrencyBefore,
+                                              context,
+                                              isG1,
+                                              true,
+                                              currentSymbol,
+                                              16,
+                                              totalReceivedAllContacts,
+                                              currentUd,
+                                              Colors.green)
+                                        ]))),
+                                    Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 4.0),
+                                        child: Text.rich(
+                                            TextSpan(children: <InlineSpan>[
+                                          TextSpan(
+                                            text: tr('total_sent',
+                                                namedArgs: <String, String>{
+                                                  'number':
+                                                      totalSentAllContactsNumber
+                                                          .toString()
+                                                }),
+                                            style: const TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.red),
+                                          ),
+                                          separatorSpan(),
+                                          humanizeAmount(
+                                              isCurrencyBefore,
+                                              context,
+                                              isG1,
+                                              true,
+                                              currentSymbol,
+                                              16,
+                                              totalSentAllContacts,
+                                              currentUd,
+                                              Colors.red)
+                                        ])))
+                                  ],
+                                ),
+                              ),
+                            ),
+                          if (_analysisComplete)
+                            if (inDevelopment)
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  const SizedBox(height: 10),
+                                  Center(
+                                    child: ElevatedButton.icon(
+                                      onPressed: () async =>
+                                          _generatePdfReport(context),
+                                      icon: const Icon(Icons.download),
+                                      label: Text(tr('download_pdf')),
+                                      style: ElevatedButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 15),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                ],
+                              ),
+                          ...contactWidgets,
                         ],
                       ),
-                  ...contactWidgets,
-                ],
-              ),
-            ),
-          ));
+                    ),
+                  )));
     });
   }
 
@@ -416,7 +426,7 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
                         int totalReceivedNumber,
                         int totalSentNumber,
                         Set<Contact> newContacts,
-                        String markdown) {
+                        String markdown) async {
                       setState(() {
                         totalReceivedAllContacts += totalReceived;
                         totalSentAllContacts += totalSent;
@@ -424,11 +434,16 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
                         totalSentAllContactsNumber += totalSentNumber;
                         _report += '\n$markdown';
                         _processedContacts++;
-                        if (collectOtherContacts) {
-                          newContacts.removeWhere((Contact contact) =>
-                              displayedContacts.contains(contact));
-                          allNewContacts.addAll(newContacts);
-                        }
+                      });
+                      if (collectOtherContacts) {
+                        newContacts.removeWhere((Contact contact) =>
+                            displayedContacts.contains(contact));
+                        final List<Contact> enrichedContacts =
+                            await enrichContacts(context, newContacts.toList());
+                        allNewContacts.addAll(enrichedContacts);
+                      }
+
+                      setState(() {
                         if (collectOtherContacts &&
                             _processedContacts == initialContactsLength) {
                           if (allNewContacts.isNotEmpty) {

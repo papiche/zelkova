@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../g1/g1_helper.dart';
+import '../../g1/g1_v2_helper_multi.dart';
 import '../../ui/ui_helpers.dart';
 import 'is_json_serializable.dart';
 import 'model_utils.dart';
@@ -14,16 +15,71 @@ part 'contact.g.dart';
 @JsonSerializable()
 @CopyWith()
 class Contact extends Equatable implements IsJsonSerializable<Contact> {
-  const Contact({
+  Contact({
+    this.nick,
+    required String pubKey,
+    String? address,
+    this.avatar,
+    this.notes,
+    this.name,
+  })  :
+        // ensure that Contact does not have v1 checksums
+        pubKey = extractPublicKey(pubKey),
+        address = address ?? addressFromV1PubkeyMulti(extractPublicKey(pubKey));
+
+  factory Contact.fromJson(Map<String, dynamic> json) =>
+      _$ContactFromJson(json);
+
+  const Contact._({
     this.nick,
     required this.pubKey,
+    required this.address,
     this.avatar,
     this.notes,
     this.name,
   });
 
-  factory Contact.fromJson(Map<String, dynamic> json) =>
-      _$ContactFromJson(json);
+  factory Contact.withPubKey({
+    String? nick,
+    required String pubKey,
+    Uint8List? avatar,
+    String? notes,
+    String? name,
+  }) {
+    return Contact._(
+      nick: nick,
+      pubKey: extractPublicKey(pubKey),
+      address: addressFromV1PubkeyMulti(extractPublicKey(pubKey)),
+      avatar: avatar,
+      notes: notes,
+      name: name,
+    );
+  }
+
+  factory Contact.empty() {
+    return const Contact._(
+      name: '',
+      pubKey: '',
+      address: '',
+    );
+  }
+
+  factory Contact.withAddress({
+    String? nick,
+    required String address,
+    Uint8List? avatar,
+    String? notes,
+    String? name,
+  }) {
+    return Contact._(
+      nick: nick,
+      pubKey: v1pubkeyFromAddressMulti(address),
+      address: address,
+      avatar: avatar,
+      notes: notes,
+      name: name,
+    );
+  }
 
   Contact merge(Contact c) {
     return Contact(
@@ -37,20 +93,15 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
 
   final String? nick;
   final String pubKey;
+  final String address;
   @JsonKey(fromJson: uIntFromList, toJson: uIntToList)
   final Uint8List? avatar;
   final String? notes;
   final String? name;
 
   @override
-  List<Object?> get props => <dynamic>[
-        pubKey,
-        nick,
-        pubKey,
-        avatar,
-        notes,
-        name,
-      ];
+  List<Object?> get props =>
+      <dynamic>[pubKey, nick, pubKey, avatar, notes, name, address];
 
   bool get hasAvatar => avatar != null;
 
@@ -79,6 +130,9 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
 
   String? get subtitle =>
       (nick != null || name != null) ? humanizePubKey(pubKey) : null;
+
+  String? get subtitleV2 =>
+      (nick != null || name != null) ? humanizeAddress(address) : null;
 
   Contact cloneWithoutAvatar() {
     return Contact(

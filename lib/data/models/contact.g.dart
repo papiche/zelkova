@@ -11,6 +11,8 @@ abstract class _$ContactCWProxy {
 
   Contact pubKey(String pubKey);
 
+  Contact address(String? address);
+
   Contact avatar(Uint8List? avatar);
 
   Contact notes(String? notes);
@@ -26,6 +28,7 @@ abstract class _$ContactCWProxy {
   Contact call({
     String? nick,
     String? pubKey,
+    String? address,
     Uint8List? avatar,
     String? notes,
     String? name,
@@ -43,6 +46,9 @@ class _$ContactCWProxyImpl implements _$ContactCWProxy {
 
   @override
   Contact pubKey(String pubKey) => this(pubKey: pubKey);
+
+  @override
+  Contact address(String? address) => this(address: address);
 
   @override
   Contact avatar(Uint8List? avatar) => this(avatar: avatar);
@@ -64,6 +70,7 @@ class _$ContactCWProxyImpl implements _$ContactCWProxy {
   Contact call({
     Object? nick = const $CopyWithPlaceholder(),
     Object? pubKey = const $CopyWithPlaceholder(),
+    Object? address = const $CopyWithPlaceholder(),
     Object? avatar = const $CopyWithPlaceholder(),
     Object? notes = const $CopyWithPlaceholder(),
     Object? name = const $CopyWithPlaceholder(),
@@ -77,6 +84,10 @@ class _$ContactCWProxyImpl implements _$ContactCWProxy {
           ? _value.pubKey
           // ignore: cast_nullable_to_non_nullable
           : pubKey as String,
+      address: address == const $CopyWithPlaceholder()
+          ? _value.address
+          // ignore: cast_nullable_to_non_nullable
+          : address as String?,
       avatar: avatar == const $CopyWithPlaceholder()
           ? _value.avatar
           // ignore: cast_nullable_to_non_nullable
@@ -106,6 +117,7 @@ extension $ContactCopyWith on Contact {
 Contact _$ContactFromJson(Map<String, dynamic> json) => Contact(
       nick: json['nick'] as String?,
       pubKey: json['pubKey'] as String,
+      address: json['address'] as String?,
       avatar: uIntFromList(json['avatar']),
       notes: json['notes'] as String?,
       name: json['name'] as String?,
@@ -114,6 +126,7 @@ Contact _$ContactFromJson(Map<String, dynamic> json) => Contact(
 Map<String, dynamic> _$ContactToJson(Contact instance) => <String, dynamic>{
       'nick': instance.nick,
       'pubKey': instance.pubKey,
+      'address': instance.address,
       'avatar': uIntToList(instance.avatar),
       'notes': instance.notes,
       'name': instance.name,

@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -10,7 +9,6 @@ import '../../data/models/contact.dart';
 import '../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../g1/api.dart';
 import '../../g1/g1_helper.dart';
-import '../../g1/g1_v2_helper.dart';
 import '../ui_helpers.dart';
 import 'fourth_screen/transactions_and_balance_widget.dart';
 
@@ -62,7 +60,7 @@ class _ContactPageState extends State<ContactPage> {
 
   Scaffold _buildContactWidget(Contact contact, BuildContext context) {
     final String pubKey = contact.pubKey;
-    final String v2Address = addressFromV1Pubkey(extractPublicKey(pubKey));
+    final String v2Address = contact.address;
 
     return Scaffold(
       appBar: AppBar(
@@ -133,9 +131,9 @@ class _ContactPageState extends State<ContactPage> {
                 leading: const Icon(Symbols.editor_choice),
                 title: Text('@${contact.nick}'),
               ),
-            QrListTile(pubKey: pubKey, isV2: false),
-            if (context.read<AppCubit>().isExpertMode && !kIsWeb)
-              QrListTile(pubKey: v2Address, isV2: true),
+            QrListTile(pubKeyOrAddress: pubKey, isV2: false),
+            if (context.read<AppCubit>().isExpertMode)
+              QrListTile(pubKeyOrAddress: v2Address, isV2: true),
             if (contact.notes != null)
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -170,33 +168,36 @@ class _ContactPageState extends State<ContactPage> {
 }
 
 class QrListTile extends StatelessWidget {
-  const QrListTile({super.key, required this.pubKey, required this.isV2});
+  const QrListTile(
+      {super.key, required this.pubKeyOrAddress, required this.isV2});
 
-  final String pubKey;
+  final String pubKeyOrAddress;
   final bool isV2;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        showQrDialog(
-            context: context,
-            publicKey: getFullPubKey(pubKey),
-            noTitle: true,
-            feedbackText: 'some_key_copied_to_clipboard');
-      },
-      child: ListTile(
-        leading: const Icon(Icons.key),
-        trailing: !isV2
-            ? const Icon(Icons.qr_code)
-            : const Badge(
-                label: Text('v2'),
-                child: Icon(Icons.qr_code),
-              ),
-        title: Text(
-            !isV2 ? tr('form_contact_pub_key') : tr('form_contact_address_v2')),
-        subtitle: Text(humanizePubKey(pubKey)),
-      ),
-    );
+        onTap: () {
+          showQrDialog(
+              context: context,
+              publicKey:
+                  isV2 ? pubKeyOrAddress : getFullPubKey(pubKeyOrAddress),
+              noTitle: true,
+              feedbackText: 'some_key_copied_to_clipboard');
+        },
+        child: ListTile(
+            leading: const Icon(Icons.key),
+            trailing: !isV2
+                ? const Icon(Icons.qr_code)
+                : const Badge(
+                    label: Text('v2'),
+                    child: Icon(Icons.qr_code),
+                  ),
+            title: Text(!isV2
+                ? tr('form_contact_pub_key')
+                : tr('form_contact_address_v2')),
+            subtitle: Text(!isV2
+                ? humanizePubKey(pubKeyOrAddress)
+                : humanizeAddress(pubKeyOrAddress))));
   }
 }

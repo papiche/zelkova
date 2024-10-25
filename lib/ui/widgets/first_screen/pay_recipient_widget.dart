@@ -145,7 +145,9 @@ class _PayRecipientWidgetState extends State<PayRecipientWidget> {
       context: context,
       builder: (BuildContext context) {
         return ContactSearchPage(
-            startInMultiSelect: isMulti, searchUse: widget.searchUse);
+            startInMultiSelect: isMulti,
+            searchUse: widget.searchUse,
+            isEdit: true);
       },
     );
   }

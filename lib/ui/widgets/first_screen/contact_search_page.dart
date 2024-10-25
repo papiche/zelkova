@@ -36,11 +36,13 @@ class ContactSearchPage extends StatefulWidget {
       {super.key,
       this.uri,
       required this.searchUse,
-      this.startInMultiSelect = false});
+      this.startInMultiSelect = false,
+      this.isEdit = false});
 
   final String? uri;
   final SearchUse searchUse;
   final bool startInMultiSelect;
+  final bool isEdit;
 
   @override
   State<ContactSearchPage> createState() => _ContactSearchPageState();
@@ -51,9 +53,9 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
   final FocusNode _searchFocusNode = FocusNode();
   String _searchTerm = '';
   String _previousSearchTerm = '';
-  late bool isV2;
+  late bool _isV2;
 
-  List<Contact> _results = <Contact>[];
+  Set<Contact> _results = <Contact>{};
   bool _isLoading = false;
   final Set<Contact> _selectedContacts = <Contact>{};
   late bool _isMultiSelect;
@@ -73,7 +75,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
       _isLoading = true;
     });
 
-    final List<Contact> multiContacts = parseMultipleKeys(_searchTerm);
+    final Set<Contact> multiContacts = parseMultipleKeys(_searchTerm);
     if (multiContacts.length > 1) {
       setState(() {
         _isMultiSelect = true;
@@ -86,13 +88,13 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
     }
 
     setState(() {
-      _results = contactsCubit.search(_searchTerm);
+      _results = contactsCubit.search(_searchTerm).toSet();
       if (inDevelopment) {
         logger('Found: ${_results.length} in contacts');
       }
     });
 
-    if (isConnected && !isV2) {
+    if (isConnected && !_isV2) {
       final Response cPlusResponse = await searchCPlusUser(_searchTerm);
       if (cPlusResponse.statusCode != 404) {
         // Add cplus users
@@ -117,7 +119,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
       if (_searchTerm.length >= 3) {
         // Only search wot if it's a long key
 
-        final List<Contact> wotResults = isV2
+        final List<Contact> wotResults = _isV2
             ? await searchWotV2('.*$_searchTerm.*')
             : await searchWotV1(_searchTerm);
         // ignore: prefer_foreach
@@ -303,7 +305,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
                     child: ListView.builder(
                         itemCount: _results.length,
                         itemBuilder: (BuildContext context, int index) {
-                          final Contact contact = _results[index];
+                          final Contact contact = _results.toList()[index];
                           return FutureBuilder<Contact>(
                               future: _getAndReplaceContact(contact),
                               builder: (BuildContext context,
@@ -419,7 +421,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
     logger('QR result length ${_results.length}');
     bool back = false;
     if (_results.length == 1 && pay != null) {
-      final Contact contact = _results[0];
+      final Contact contact = _results.first;
       final double? currentAmount = paymentCubit.state.amount;
       // Allow multiselect, so I comment this
       // paymentCubit.selectUser(contact);
@@ -461,10 +463,12 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
     });
     _handleUri(widget.uri);
     _isMultiSelect = widget.startInMultiSelect;
+    _isV2 = context.read<AppCubit>().isV2();
     final PaymentCubit paymentCubit = context.read<PaymentCubit>();
-    _selectedContacts.addAll(paymentCubit.contacts);
-    _results.addAll(paymentCubit.contacts);
-    isV2 = context.read<AppCubit>().isV2();
+    if (widget.isEdit) {
+      _selectedContacts.addAll(paymentCubit.contacts);
+      _results.addAll(paymentCubit.contacts);
+    }
   }
 
   Future<void> _handleUri(String? uri) async {
@@ -543,10 +547,9 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
     final Contact enrichedContact =
         await ContactsCache().getContact(contact.pubKey);
 
-    final int resultIndex =
-        _results.indexWhere((Contact c) => c.pubKey == contact.pubKey);
-    if (resultIndex != -1) {
-      _results[resultIndex] = enrichedContact;
+    if (_results.contains(contact)) {
+      _results.remove(contact);
+      _results.add(enrichedContact);
     }
 
     final Contact? selectedContact = _selectedContacts

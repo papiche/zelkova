@@ -327,8 +327,8 @@ final RegExp regex = RegExp(
   r'[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{43,44}(:([123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{3}))?',
 );
 
-List<Contact> parseMultipleKeys(String inputText) {
-  final List<Contact> contacts = <Contact>[];
+Set<Contact> parseMultipleKeys(String inputText) {
+  final Set<Contact> contacts = <Contact>{};
   final Iterable<RegExpMatch> allMatches = regex.allMatches(inputText);
   loggerDev('matches: ${allMatches.length}');
   for (final RegExpMatch match in allMatches) {

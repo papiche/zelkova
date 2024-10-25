@@ -288,43 +288,43 @@ void main() {
       const String spreadsheetText =
           'Key1: EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG:BJH\nKey2: ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY';
 
-      final List<Contact> result = parseMultipleKeys(spreadsheetText);
-      expect(result, <Contact>[
+      final Set<Contact> result = parseMultipleKeys(spreadsheetText);
+      expect(result, <Contact>{
         Contact(pubKey: 'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG:BJH'),
         Contact(pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY')
-      ]);
+      });
     });
 
     test('Extraction from an email or telegram text', () {
       const String emailText =
           'Hello, here are the keys: EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG, ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:9bG. Thanks!';
-      final List<Contact> result = parseMultipleKeys(emailText);
-      expect(result, <Contact>[
+      final Set<Contact> result = parseMultipleKeys(emailText);
+      expect(result, <Contact>{
         Contact(pubKey: 'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG'),
         Contact(pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:9bG')
-      ]);
+      });
     });
 
     test('Extraction from a list separated by semicolons', () {
       const String listText =
           'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG; ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:9bG; 78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT';
-      final List<Contact> result = parseMultipleKeys(listText);
-      expect(result, <Contact>[
+      final Set<Contact> result = parseMultipleKeys(listText);
+      expect(result, <Contact>{
         Contact(pubKey: 'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG'),
         Contact(pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:9bG'),
         Contact(pubKey: '78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT')
-      ]);
+      });
     });
 
     test('Extraction from a list separated by spaces', () {
       const String listText =
           'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG      ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:9bG       78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT';
-      final List<Contact> result = parseMultipleKeys(listText);
-      expect(result, <Contact>[
+      final Set<Contact> result = parseMultipleKeys(listText);
+      expect(result, <Contact>{
         Contact(pubKey: 'EdWkzNABz7dPancFqW6JVLqv1wpGaQSxgWmMf1pmY7KG'),
         Contact(pubKey: 'ARErWXr3bhKYh8FqX9axMXxxRPXMuoZW4s73P1zBHUTY:9bG'),
         Contact(pubKey: '78ZwwgpgdH5uLZLbThUQH7LKwPgjMunYfLiCfUCySkM8:4VT')
-      ]);
+      });
     });
 
     test('Extraction from a long multiline list', () {
@@ -381,7 +381,7 @@ void main() {
       3akw6wCdsrauLgnMFQuJ2BoC7waB1ao3xovh7NRZLU1Y:Dn5
       7tH5qeBxsS15UMAf8Jh3FsGmpPkUJqBUBLwDgXyK3UTo:HVL
       CZAnpHKEFiqsUUqP3eMMeZkhKkhd1rEyQP2bdtJoLqTT:8yx''';
-      final List<Contact> results = parseMultipleKeys(listText);
+      final Set<Contact> results = parseMultipleKeys(listText);
       expect(results.length, 52);
       final Map<Contact, int> contactCounts = <Contact, int>{};
       for (final Contact contact in results) {

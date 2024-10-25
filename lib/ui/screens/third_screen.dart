@@ -98,10 +98,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
                 context: context,
                 builder: (BuildContext context) {
                   return ContactFormDialog(
-                      contact: const Contact(
-                        name: '',
-                        pubKey: '',
-                      ),
+                      contact: Contact.empty(),
                       isNew: true,
                       onSave: (Contact c) {
                         context.read<ContactsCubit>().addContact(c);

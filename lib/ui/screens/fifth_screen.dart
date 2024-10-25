@@ -253,6 +253,20 @@ class _FifthScreenState extends State<FifthScreen> {
                         }
                       }),
                 if (state.expertMode)
+                  SwitchListTile(
+                      title: const Text('Test v2'),
+                      value: state.v2mode,
+                      onChanged: (bool v2mode) {
+                        context.read<AppCubit>().setV2Mode(v2mode);
+                        if (v2mode) {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content:
+                                Text('v2 mode activated for testing/develop'),
+                          ));
+                        }
+                      }),
+                if (state.expertMode)
                   const TextDivider(text: 'technical_info_title'),
                 if (state.expertMode &&
                     NodeManager().getCurrentGvaNode() != null)

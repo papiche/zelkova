@@ -13,7 +13,6 @@ import '../../../data/models/transaction.dart';
 import '../../../data/models/transaction_type.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
-import '../../contacts_cache.dart';
 import '../../pay_helper.dart';
 import '../../ui_helpers.dart';
 import '../contact_menu.dart';
@@ -571,11 +570,5 @@ class TransactionListItem extends StatelessWidget {
     }
     return transaction.copyWith(
         from: fromContact, to: toContact, recipients: recipients);
-  }
-
-  Future<Contact> retrieveContact(
-      ContactsCubit contactsCubit, String pubKey) async {
-    final Contact? cubitContact = contactsCubit.getContact(pubKey);
-    return cubitContact ?? await ContactsCache().getContact(pubKey);
   }
 }

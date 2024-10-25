@@ -11,6 +11,8 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
   @override
   String get storagePrefix => kIsWeb ? 'PaymentCubit' : super.storagePrefix;
 
+  List<Contact> get contacts => state.contacts;
+
   void updatePayment({
     String? description,
     double? amount,

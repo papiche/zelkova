@@ -186,7 +186,9 @@ void main() async {
                       GinkgoApp(darkTheme: darkTheme, lightTheme: lightTheme)),
             )));
       });
-  if (!kIsWeb && inDevelopment) {
+  const bool enableSentry = false;
+  // ignore: dead_code
+  if (!kIsWeb && inDevelopment && enableSentry) {
     // Only use sentry in development
     await SentryFlutter.init((
       SentryFlutterOptions options,

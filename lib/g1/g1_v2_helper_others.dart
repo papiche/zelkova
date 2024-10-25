@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:durt/durt.dart';
 import 'package:fast_base58/fast_base58.dart';
 import 'package:pointycastle/export.dart';
+
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 
 // From:
@@ -179,5 +180,27 @@ String formatPubkey(String value) {
     return '?';
   }
   return '${value.substring(0, 4)}\u2026${value.substring(value.length - 4)}';
+}
+*/
+
+/*
+Future<RpcResponse<dynamic, dynamic>?> queryPolkadartNode({
+  required String nodeUri,
+  required String queryMethod,
+  required List<dynamic> params,
+  required Duration timeout,
+}) async {
+  try {
+    final Provider polkadot = Provider.fromUri(Uri.parse(nodeUri));
+    final RpcResponse<dynamic, dynamic> response =
+        await polkadot.send(queryMethod, params).timeout(timeout);
+    await polkadot.disconnect();
+
+    return response;
+  } catch (e) {
+    loggerDev(
+        'Error querying polkadot method $queryMethod node $nodeUri with error: ${removeNewlines(e.toString())}');
+    return null;
+  }
 }
 */

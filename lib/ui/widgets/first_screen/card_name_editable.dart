@@ -1,8 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../../../data/models/contact.dart';
 import '../../../g1/api.dart';
 import '../../../shared_prefs_helper.dart';
+import '../../contacts_cache.dart';
 import '../../logger.dart';
 import '../../ui_helpers.dart';
 import '../connectivity_widget_wrapper_wrapper.dart';
@@ -37,7 +39,7 @@ class _CardNameEditableState extends State<CardNameEditable> {
     _initValue();
   }
 
-  Future<void> _initValue() async {
+  void _initValue() {
     final String localUsername = widget.cardName;
     if (localUsername.isEmpty) {
       setState(() {
@@ -50,7 +52,6 @@ class _CardNameEditableState extends State<CardNameEditable> {
         _controller.text = currentText;
       });
     }
-    await _fetchAndSetUsername();
   }
 
   @override
@@ -75,7 +76,7 @@ class _CardNameEditableState extends State<CardNameEditable> {
     }
   }
 
-  Future<void> _fetchAndSetUsername() async {
+  Future<bool> _fetchAndSetUsername() async {
     final bool isConnected = await ConnectivityWidgetWrapperWrapper.isConnected;
     if (isConnected) {
       try {
@@ -98,6 +99,7 @@ class _CardNameEditableState extends State<CardNameEditable> {
         logger('Error: $e');
       }
     }
+    return true;
   }
 
   Widget _buildEditingField() {
@@ -222,16 +224,20 @@ class _CardNameEditableState extends State<CardNameEditable> {
   Widget build(BuildContext context) {
     loggerDev(
         "Building CardNameEditable for ${widget.publicKey} '${widget.cardName}'");
-    return GestureDetector(
-      onTap: () {
-        if (widget.isG1nkgoCard) {
-          setState(() {
-            _isEditingText = true;
-          });
-        }
-      },
-      child: _isEditingText ? _buildEditingField() : _buildDisplayField(),
-    );
+    return FutureBuilder<bool>(
+        future: _fetchAndSetUsername(),
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          return GestureDetector(
+            onTap: () {
+              if (widget.isG1nkgoCard) {
+                setState(() {
+                  _isEditingText = true;
+                });
+              }
+            },
+            child: _isEditingText ? _buildEditingField() : _buildDisplayField(),
+          );
+        });
   }
 
   @override

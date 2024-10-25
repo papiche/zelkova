@@ -20,6 +20,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../data/models/app_cubit.dart';
 import '../data/models/cesium_card.dart';
 import '../data/models/contact.dart';
+import '../data/models/contact_cubit.dart';
 import '../data/models/multi_wallet_transaction_cubit.dart';
 import '../data/models/node_list_cubit.dart';
 import '../data/models/theme_cubit.dart';
@@ -28,6 +29,7 @@ import '../g1/api.dart';
 import '../g1/currency.dart';
 import '../g1/g1_helper.dart';
 import '../shared_prefs_helper.dart';
+import 'contacts_cache.dart';
 import 'logger.dart';
 import 'notification_controller.dart';
 import 'widgets/first_screen/circular_icon.dart';
@@ -964,3 +966,21 @@ InlineSpan separatorAmountSpan(bool small) {
 }
 
 String todayS(DateTime now) => DateFormat('yyyyMMddHHmm').format(now);
+
+Future<Contact> retrieveContact(
+    ContactsCubit contactsCubit, String pubKey) async {
+  final Contact? cubitContact = contactsCubit.getContact(pubKey);
+  return cubitContact ?? await ContactsCache().getContact(pubKey);
+}
+
+Future<List<Contact>> enrichContacts(
+    BuildContext context, List<Contact> contacts) async {
+  final ContactsCubit contactsCubit = context.read<ContactsCubit>();
+  final Set<Contact> newContacts = <Contact>{};
+  for (final Contact contact in contacts) {
+    final Contact contactNew =
+        await retrieveContact(contactsCubit, contact.pubKey);
+    newContacts.add(contactNew);
+  }
+  return newContacts.toList();
+}

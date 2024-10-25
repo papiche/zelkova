@@ -9,7 +9,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../data/models/contact.dart';
-import '../data/models/contact_cubit.dart';
 import '../g1/api.dart';
 import '../g1/g1_helper.dart';
 import 'logger.dart';
@@ -314,10 +313,4 @@ class MemoryFallbackBox<E> extends Box<E> {
         .take(endIndex - startIndex + 1)
         .cast<E>();
   }
-}
-
-Future<Contact> retrieveContact(
-    ContactsCubit contactsCubit, String pubKey) async {
-  final Contact? cubitContact = contactsCubit.getContact(pubKey);
-  return cubitContact ?? await ContactsCache().getContact(pubKey);
 }

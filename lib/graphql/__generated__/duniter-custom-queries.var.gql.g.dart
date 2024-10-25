@@ -6,127 +6,12 @@ part of 'duniter-custom-queries.var.gql.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<GAccountsByPkVars> _$gAccountsByPkVarsSerializer =
-    new _$GAccountsByPkVarsSerializer();
-Serializer<GSearchIdentityVars> _$gSearchIdentityVarsSerializer =
-    new _$GSearchIdentityVarsSerializer();
-Serializer<GLastIndexedBlockNumberVars>
-    _$gLastIndexedBlockNumberVarsSerializer =
-    new _$GLastIndexedBlockNumberVarsSerializer();
 Serializer<GAccountsByNameOrPkVars> _$gAccountsByNameOrPkVarsSerializer =
     new _$GAccountsByNameOrPkVarsSerializer();
-
-class _$GAccountsByPkVarsSerializer
-    implements StructuredSerializer<GAccountsByPkVars> {
-  @override
-  final Iterable<Type> types = const [GAccountsByPkVars, _$GAccountsByPkVars];
-  @override
-  final String wireName = 'GAccountsByPkVars';
-
-  @override
-  Iterable<Object?> serialize(Serializers serializers, GAccountsByPkVars object,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object?>[
-      'address',
-      serializers.serialize(object.address,
-          specifiedType: const FullType(String)),
-    ];
-
-    return result;
-  }
-
-  @override
-  GAccountsByPkVars deserialize(
-      Serializers serializers, Iterable<Object?> serialized,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountsByPkVarsBuilder();
-
-    final iterator = serialized.iterator;
-    while (iterator.moveNext()) {
-      final key = iterator.current! as String;
-      iterator.moveNext();
-      final Object? value = iterator.current;
-      switch (key) {
-        case 'address':
-          result.address = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
-          break;
-      }
-    }
-
-    return result.build();
-  }
-}
-
-class _$GSearchIdentityVarsSerializer
-    implements StructuredSerializer<GSearchIdentityVars> {
-  @override
-  final Iterable<Type> types = const [
-    GSearchIdentityVars,
-    _$GSearchIdentityVars
-  ];
-  @override
-  final String wireName = 'GSearchIdentityVars';
-
-  @override
-  Iterable<Object?> serialize(
-      Serializers serializers, GSearchIdentityVars object,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object?>[
-      'name',
-      serializers.serialize(object.name, specifiedType: const FullType(String)),
-    ];
-
-    return result;
-  }
-
-  @override
-  GSearchIdentityVars deserialize(
-      Serializers serializers, Iterable<Object?> serialized,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = new GSearchIdentityVarsBuilder();
-
-    final iterator = serialized.iterator;
-    while (iterator.moveNext()) {
-      final key = iterator.current! as String;
-      iterator.moveNext();
-      final Object? value = iterator.current;
-      switch (key) {
-        case 'name':
-          result.name = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
-          break;
-      }
-    }
-
-    return result.build();
-  }
-}
-
-class _$GLastIndexedBlockNumberVarsSerializer
-    implements StructuredSerializer<GLastIndexedBlockNumberVars> {
-  @override
-  final Iterable<Type> types = const [
-    GLastIndexedBlockNumberVars,
-    _$GLastIndexedBlockNumberVars
-  ];
-  @override
-  final String wireName = 'GLastIndexedBlockNumberVars';
-
-  @override
-  Iterable<Object?> serialize(
-      Serializers serializers, GLastIndexedBlockNumberVars object,
-      {FullType specifiedType = FullType.unspecified}) {
-    return <Object?>[];
-  }
-
-  @override
-  GLastIndexedBlockNumberVars deserialize(
-      Serializers serializers, Iterable<Object?> serialized,
-      {FullType specifiedType = FullType.unspecified}) {
-    return new GLastIndexedBlockNumberVarsBuilder().build();
-  }
-}
+Serializer<GAccountByPkVars> _$gAccountByPkVarsSerializer =
+    new _$GAccountByPkVarsSerializer();
+Serializer<GLastBlockVars> _$gLastBlockVarsSerializer =
+    new _$GLastBlockVarsSerializer();
 
 class _$GAccountsByNameOrPkVarsSerializer
     implements StructuredSerializer<GAccountsByNameOrPkVars> {
@@ -142,12 +27,15 @@ class _$GAccountsByNameOrPkVarsSerializer
   Iterable<Object?> serialize(
       Serializers serializers, GAccountsByNameOrPkVars object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object?>[
-      'pattern',
-      serializers.serialize(object.pattern,
-          specifiedType: const FullType(String)),
-    ];
-
+    final result = <Object?>[];
+    Object? value;
+    value = object.pattern;
+    if (value != null) {
+      result
+        ..add('pattern')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -165,6 +53,47 @@ class _$GAccountsByNameOrPkVarsSerializer
       switch (key) {
         case 'pattern':
           result.pattern = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GAccountByPkVarsSerializer
+    implements StructuredSerializer<GAccountByPkVars> {
+  @override
+  final Iterable<Type> types = const [GAccountByPkVars, _$GAccountByPkVars];
+  @override
+  final String wireName = 'GAccountByPkVars';
+
+  @override
+  Iterable<Object?> serialize(Serializers serializers, GAccountByPkVars object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      'id',
+      serializers.serialize(object.id, specifiedType: const FullType(String)),
+    ];
+
+    return result;
+  }
+
+  @override
+  GAccountByPkVars deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GAccountByPkVarsBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'id':
+          result.id = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
           break;
       }
@@ -174,253 +103,36 @@ class _$GAccountsByNameOrPkVarsSerializer
   }
 }
 
-class _$GAccountsByPkVars extends GAccountsByPkVars {
+class _$GLastBlockVarsSerializer
+    implements StructuredSerializer<GLastBlockVars> {
   @override
-  final String address;
+  final Iterable<Type> types = const [GLastBlockVars, _$GLastBlockVars];
+  @override
+  final String wireName = 'GLastBlockVars';
 
-  factory _$GAccountsByPkVars(
-          [void Function(GAccountsByPkVarsBuilder)? updates]) =>
-      (new GAccountsByPkVarsBuilder()..update(updates))._build();
-
-  _$GAccountsByPkVars._({required this.address}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        address, r'GAccountsByPkVars', 'address');
+  @override
+  Iterable<Object?> serialize(Serializers serializers, GLastBlockVars object,
+      {FullType specifiedType = FullType.unspecified}) {
+    return <Object?>[];
   }
 
   @override
-  GAccountsByPkVars rebuild(void Function(GAccountsByPkVarsBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
-
-  @override
-  GAccountsByPkVarsBuilder toBuilder() =>
-      new GAccountsByPkVarsBuilder()..replace(this);
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(other, this)) return true;
-    return other is GAccountsByPkVars && address == other.address;
-  }
-
-  @override
-  int get hashCode {
-    var _$hash = 0;
-    _$hash = $jc(_$hash, address.hashCode);
-    _$hash = $jf(_$hash);
-    return _$hash;
-  }
-
-  @override
-  String toString() {
-    return (newBuiltValueToStringHelper(r'GAccountsByPkVars')
-          ..add('address', address))
-        .toString();
-  }
-}
-
-class GAccountsByPkVarsBuilder
-    implements Builder<GAccountsByPkVars, GAccountsByPkVarsBuilder> {
-  _$GAccountsByPkVars? _$v;
-
-  String? _address;
-  String? get address => _$this._address;
-  set address(String? address) => _$this._address = address;
-
-  GAccountsByPkVarsBuilder();
-
-  GAccountsByPkVarsBuilder get _$this {
-    final $v = _$v;
-    if ($v != null) {
-      _address = $v.address;
-      _$v = null;
-    }
-    return this;
-  }
-
-  @override
-  void replace(GAccountsByPkVars other) {
-    ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$GAccountsByPkVars;
-  }
-
-  @override
-  void update(void Function(GAccountsByPkVarsBuilder)? updates) {
-    if (updates != null) updates(this);
-  }
-
-  @override
-  GAccountsByPkVars build() => _build();
-
-  _$GAccountsByPkVars _build() {
-    final _$result = _$v ??
-        new _$GAccountsByPkVars._(
-            address: BuiltValueNullFieldError.checkNotNull(
-                address, r'GAccountsByPkVars', 'address'));
-    replace(_$result);
-    return _$result;
-  }
-}
-
-class _$GSearchIdentityVars extends GSearchIdentityVars {
-  @override
-  final String name;
-
-  factory _$GSearchIdentityVars(
-          [void Function(GSearchIdentityVarsBuilder)? updates]) =>
-      (new GSearchIdentityVarsBuilder()..update(updates))._build();
-
-  _$GSearchIdentityVars._({required this.name}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(name, r'GSearchIdentityVars', 'name');
-  }
-
-  @override
-  GSearchIdentityVars rebuild(
-          void Function(GSearchIdentityVarsBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
-
-  @override
-  GSearchIdentityVarsBuilder toBuilder() =>
-      new GSearchIdentityVarsBuilder()..replace(this);
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(other, this)) return true;
-    return other is GSearchIdentityVars && name == other.name;
-  }
-
-  @override
-  int get hashCode {
-    var _$hash = 0;
-    _$hash = $jc(_$hash, name.hashCode);
-    _$hash = $jf(_$hash);
-    return _$hash;
-  }
-
-  @override
-  String toString() {
-    return (newBuiltValueToStringHelper(r'GSearchIdentityVars')
-          ..add('name', name))
-        .toString();
-  }
-}
-
-class GSearchIdentityVarsBuilder
-    implements Builder<GSearchIdentityVars, GSearchIdentityVarsBuilder> {
-  _$GSearchIdentityVars? _$v;
-
-  String? _name;
-  String? get name => _$this._name;
-  set name(String? name) => _$this._name = name;
-
-  GSearchIdentityVarsBuilder();
-
-  GSearchIdentityVarsBuilder get _$this {
-    final $v = _$v;
-    if ($v != null) {
-      _name = $v.name;
-      _$v = null;
-    }
-    return this;
-  }
-
-  @override
-  void replace(GSearchIdentityVars other) {
-    ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$GSearchIdentityVars;
-  }
-
-  @override
-  void update(void Function(GSearchIdentityVarsBuilder)? updates) {
-    if (updates != null) updates(this);
-  }
-
-  @override
-  GSearchIdentityVars build() => _build();
-
-  _$GSearchIdentityVars _build() {
-    final _$result = _$v ??
-        new _$GSearchIdentityVars._(
-            name: BuiltValueNullFieldError.checkNotNull(
-                name, r'GSearchIdentityVars', 'name'));
-    replace(_$result);
-    return _$result;
-  }
-}
-
-class _$GLastIndexedBlockNumberVars extends GLastIndexedBlockNumberVars {
-  factory _$GLastIndexedBlockNumberVars(
-          [void Function(GLastIndexedBlockNumberVarsBuilder)? updates]) =>
-      (new GLastIndexedBlockNumberVarsBuilder()..update(updates))._build();
-
-  _$GLastIndexedBlockNumberVars._() : super._();
-
-  @override
-  GLastIndexedBlockNumberVars rebuild(
-          void Function(GLastIndexedBlockNumberVarsBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
-
-  @override
-  GLastIndexedBlockNumberVarsBuilder toBuilder() =>
-      new GLastIndexedBlockNumberVarsBuilder()..replace(this);
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(other, this)) return true;
-    return other is GLastIndexedBlockNumberVars;
-  }
-
-  @override
-  int get hashCode {
-    return 499942498;
-  }
-
-  @override
-  String toString() {
-    return newBuiltValueToStringHelper(r'GLastIndexedBlockNumberVars')
-        .toString();
-  }
-}
-
-class GLastIndexedBlockNumberVarsBuilder
-    implements
-        Builder<GLastIndexedBlockNumberVars,
-            GLastIndexedBlockNumberVarsBuilder> {
-  _$GLastIndexedBlockNumberVars? _$v;
-
-  GLastIndexedBlockNumberVarsBuilder();
-
-  @override
-  void replace(GLastIndexedBlockNumberVars other) {
-    ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$GLastIndexedBlockNumberVars;
-  }
-
-  @override
-  void update(void Function(GLastIndexedBlockNumberVarsBuilder)? updates) {
-    if (updates != null) updates(this);
-  }
-
-  @override
-  GLastIndexedBlockNumberVars build() => _build();
-
-  _$GLastIndexedBlockNumberVars _build() {
-    final _$result = _$v ?? new _$GLastIndexedBlockNumberVars._();
-    replace(_$result);
-    return _$result;
+  GLastBlockVars deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    return new GLastBlockVarsBuilder().build();
   }
 }
 
 class _$GAccountsByNameOrPkVars extends GAccountsByNameOrPkVars {
   @override
-  final String pattern;
+  final String? pattern;
 
   factory _$GAccountsByNameOrPkVars(
           [void Function(GAccountsByNameOrPkVarsBuilder)? updates]) =>
       (new GAccountsByNameOrPkVarsBuilder()..update(updates))._build();
 
-  _$GAccountsByNameOrPkVars._({required this.pattern}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        pattern, r'GAccountsByNameOrPkVars', 'pattern');
-  }
+  _$GAccountsByNameOrPkVars._({this.pattern}) : super._();
 
   @override
   GAccountsByNameOrPkVars rebuild(
@@ -488,10 +200,149 @@ class GAccountsByNameOrPkVarsBuilder
   GAccountsByNameOrPkVars build() => _build();
 
   _$GAccountsByNameOrPkVars _build() {
+    final _$result = _$v ?? new _$GAccountsByNameOrPkVars._(pattern: pattern);
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GAccountByPkVars extends GAccountByPkVars {
+  @override
+  final String id;
+
+  factory _$GAccountByPkVars(
+          [void Function(GAccountByPkVarsBuilder)? updates]) =>
+      (new GAccountByPkVarsBuilder()..update(updates))._build();
+
+  _$GAccountByPkVars._({required this.id}) : super._() {
+    BuiltValueNullFieldError.checkNotNull(id, r'GAccountByPkVars', 'id');
+  }
+
+  @override
+  GAccountByPkVars rebuild(void Function(GAccountByPkVarsBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GAccountByPkVarsBuilder toBuilder() =>
+      new GAccountByPkVarsBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GAccountByPkVars && id == other.id;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, id.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GAccountByPkVars')..add('id', id))
+        .toString();
+  }
+}
+
+class GAccountByPkVarsBuilder
+    implements Builder<GAccountByPkVars, GAccountByPkVarsBuilder> {
+  _$GAccountByPkVars? _$v;
+
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
+
+  GAccountByPkVarsBuilder();
+
+  GAccountByPkVarsBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GAccountByPkVars other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GAccountByPkVars;
+  }
+
+  @override
+  void update(void Function(GAccountByPkVarsBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GAccountByPkVars build() => _build();
+
+  _$GAccountByPkVars _build() {
     final _$result = _$v ??
-        new _$GAccountsByNameOrPkVars._(
-            pattern: BuiltValueNullFieldError.checkNotNull(
-                pattern, r'GAccountsByNameOrPkVars', 'pattern'));
+        new _$GAccountByPkVars._(
+            id: BuiltValueNullFieldError.checkNotNull(
+                id, r'GAccountByPkVars', 'id'));
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GLastBlockVars extends GLastBlockVars {
+  factory _$GLastBlockVars([void Function(GLastBlockVarsBuilder)? updates]) =>
+      (new GLastBlockVarsBuilder()..update(updates))._build();
+
+  _$GLastBlockVars._() : super._();
+
+  @override
+  GLastBlockVars rebuild(void Function(GLastBlockVarsBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GLastBlockVarsBuilder toBuilder() =>
+      new GLastBlockVarsBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GLastBlockVars;
+  }
+
+  @override
+  int get hashCode {
+    return 816187239;
+  }
+
+  @override
+  String toString() {
+    return newBuiltValueToStringHelper(r'GLastBlockVars').toString();
+  }
+}
+
+class GLastBlockVarsBuilder
+    implements Builder<GLastBlockVars, GLastBlockVarsBuilder> {
+  _$GLastBlockVars? _$v;
+
+  GLastBlockVarsBuilder();
+
+  @override
+  void replace(GLastBlockVars other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GLastBlockVars;
+  }
+
+  @override
+  void update(void Function(GLastBlockVarsBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GLastBlockVars build() => _build();
+
+  _$GLastBlockVars _build() {
+    final _$result = _$v ?? new _$GLastBlockVars._();
     replace(_$result);
     return _$result;
   }

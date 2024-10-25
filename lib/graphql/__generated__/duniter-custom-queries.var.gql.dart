@@ -8,78 +8,6 @@ import 'package:ginkgo/graphql/__generated__/serializers.gql.dart' as _i1;
 
 part 'duniter-custom-queries.var.gql.g.dart';
 
-abstract class GAccountsByPkVars
-    implements Built<GAccountsByPkVars, GAccountsByPkVarsBuilder> {
-  GAccountsByPkVars._();
-
-  factory GAccountsByPkVars(
-          [void Function(GAccountsByPkVarsBuilder b) updates]) =
-      _$GAccountsByPkVars;
-
-  String get address;
-  static Serializer<GAccountsByPkVars> get serializer =>
-      _$gAccountsByPkVarsSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkVars.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkVars? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkVars.serializer,
-        json,
-      );
-}
-
-abstract class GSearchIdentityVars
-    implements Built<GSearchIdentityVars, GSearchIdentityVarsBuilder> {
-  GSearchIdentityVars._();
-
-  factory GSearchIdentityVars(
-          [void Function(GSearchIdentityVarsBuilder b) updates]) =
-      _$GSearchIdentityVars;
-
-  String get name;
-  static Serializer<GSearchIdentityVars> get serializer =>
-      _$gSearchIdentityVarsSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSearchIdentityVars.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSearchIdentityVars? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSearchIdentityVars.serializer,
-        json,
-      );
-}
-
-abstract class GLastIndexedBlockNumberVars
-    implements
-        Built<GLastIndexedBlockNumberVars, GLastIndexedBlockNumberVarsBuilder> {
-  GLastIndexedBlockNumberVars._();
-
-  factory GLastIndexedBlockNumberVars(
-          [void Function(GLastIndexedBlockNumberVarsBuilder b) updates]) =
-      _$GLastIndexedBlockNumberVars;
-
-  static Serializer<GLastIndexedBlockNumberVars> get serializer =>
-      _$gLastIndexedBlockNumberVarsSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GLastIndexedBlockNumberVars.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GLastIndexedBlockNumberVars? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GLastIndexedBlockNumberVars.serializer,
-        json,
-      );
-}
-
 abstract class GAccountsByNameOrPkVars
     implements Built<GAccountsByNameOrPkVars, GAccountsByNameOrPkVarsBuilder> {
   GAccountsByNameOrPkVars._();
@@ -88,7 +16,7 @@ abstract class GAccountsByNameOrPkVars
           [void Function(GAccountsByNameOrPkVarsBuilder b) updates]) =
       _$GAccountsByNameOrPkVars;
 
-  String get pattern;
+  String? get pattern;
   static Serializer<GAccountsByNameOrPkVars> get serializer =>
       _$gAccountsByNameOrPkVarsSerializer;
 
@@ -100,6 +28,51 @@ abstract class GAccountsByNameOrPkVars
   static GAccountsByNameOrPkVars? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
         GAccountsByNameOrPkVars.serializer,
+        json,
+      );
+}
+
+abstract class GAccountByPkVars
+    implements Built<GAccountByPkVars, GAccountByPkVarsBuilder> {
+  GAccountByPkVars._();
+
+  factory GAccountByPkVars([void Function(GAccountByPkVarsBuilder b) updates]) =
+      _$GAccountByPkVars;
+
+  String get id;
+  static Serializer<GAccountByPkVars> get serializer =>
+      _$gAccountByPkVarsSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkVars.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkVars? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountByPkVars.serializer,
+        json,
+      );
+}
+
+abstract class GLastBlockVars
+    implements Built<GLastBlockVars, GLastBlockVarsBuilder> {
+  GLastBlockVars._();
+
+  factory GLastBlockVars([void Function(GLastBlockVarsBuilder b) updates]) =
+      _$GLastBlockVars;
+
+  static Serializer<GLastBlockVars> get serializer =>
+      _$gLastBlockVarsSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GLastBlockVars.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GLastBlockVars? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GLastBlockVars.serializer,
         json,
       );
 }

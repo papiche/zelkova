@@ -1,38 +1,69 @@
+#
+#query AccountsByPk ($address: String!) {
+#    account_by_pk(pubkey: $address) {
+#        identity {
+#            name
+#        }
+#        pubkey
+#    }
+#}
+#
+#query SearchIdentity ($name: String!) {
+#    search_identity(args: {name: $name}) {
+#        pubkey
+#        name
+#    }
+#}
+#
 
-query AccountsByPk ($address: String!) {
-  account_by_pk(pubkey: $address) {
-    identity {
-      name
-    }
-    pubkey
-  }
-}
-
-query SearchIdentity ($name: String!) {
-  search_identity(args: {name: $name}) {
-    pubkey
-    name
-  }
-}
-
-query LastIndexedBlockNumber {
-  parameters_by_pk(key: "last_indexed_block_number") {
-    value
-  }
-}
-
-# {
-# "pattern": "%ana%"
-# }
-query AccountsByNameOrPk($pattern: String!) {
-  account(order_by: {identity: {name: asc}}, where: {_or: [{identity: {name: {_ilike: $pattern}}}, {pubkey: {_ilike: $pattern}}]}) {
-    identity {
-      account {
-        identity {
-          name
-          pubkey
+query AccountsByNameOrPk($pattern: String) {
+    identity(
+        where: {
+            _or: [
+                { name: { _iregex: $pattern } }
+                { accountId: { _iregex: $pattern } }
+            ]
         }
-      }
+    ) {
+        isMember
+        name
+        accountId
+        status
+        createdOn
+        account {
+            isActive
+        }
+        index
     }
-  }
 }
+
+query AccountByPk ($id: String!)  {
+    accountByPk(id: $id) {
+        isActive
+    }
+}
+
+
+query LastBlock {
+    block(limit: 1, orderBy: {timestamp: DESC}) {
+        height
+    }
+}
+
+#
+## {
+## "pattern": "%ana%"
+## }
+#query AccountsByNameOrPk($pattern: String!) {
+#    account(order_by: {identity: {name: asc}}, where: {_or: [{identity: {name: {_ilike: $pattern}}}, {pubkey: {_ilike: $pattern}}]}) {
+#        identity {
+#            account {
+#                identity {
+#                    name
+#                    pubkey
+#                }
+#            }
+#        }
+#    }
+#}
+#

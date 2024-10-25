@@ -4,15 +4,15 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:gql/ast.dart' as _i1;
 
-const AccountsByPk = _i1.OperationDefinitionNode(
+const AccountsByNameOrPk = _i1.OperationDefinitionNode(
   type: _i1.OperationType.query,
-  name: _i1.NameNode(value: 'AccountsByPk'),
+  name: _i1.NameNode(value: 'AccountsByNameOrPk'),
   variableDefinitions: [
     _i1.VariableDefinitionNode(
-      variable: _i1.VariableNode(name: _i1.NameNode(value: 'address')),
+      variable: _i1.VariableNode(name: _i1.NameNode(value: 'pattern')),
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'String'),
-        isNonNull: true,
+        isNonNull: false,
       ),
       defaultValue: _i1.DefaultValueNode(value: null),
       directives: [],
@@ -21,68 +21,40 @@ const AccountsByPk = _i1.OperationDefinitionNode(
   directives: [],
   selectionSet: _i1.SelectionSetNode(selections: [
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'account_by_pk'),
+      name: _i1.NameNode(value: 'identity'),
       alias: null,
       arguments: [
         _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'pubkey'),
-          value: _i1.VariableNode(name: _i1.NameNode(value: 'address')),
-        )
-      ],
-      directives: [],
-      selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FieldNode(
-          name: _i1.NameNode(value: 'identity'),
-          alias: null,
-          arguments: [],
-          directives: [],
-          selectionSet: _i1.SelectionSetNode(selections: [
-            _i1.FieldNode(
-              name: _i1.NameNode(value: 'name'),
-              alias: null,
-              arguments: [],
-              directives: [],
-              selectionSet: null,
-            )
-          ]),
-        ),
-        _i1.FieldNode(
-          name: _i1.NameNode(value: 'pubkey'),
-          alias: null,
-          arguments: [],
-          directives: [],
-          selectionSet: null,
-        ),
-      ]),
-    )
-  ]),
-);
-const SearchIdentity = _i1.OperationDefinitionNode(
-  type: _i1.OperationType.query,
-  name: _i1.NameNode(value: 'SearchIdentity'),
-  variableDefinitions: [
-    _i1.VariableDefinitionNode(
-      variable: _i1.VariableNode(name: _i1.NameNode(value: 'name')),
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'String'),
-        isNonNull: true,
-      ),
-      defaultValue: _i1.DefaultValueNode(value: null),
-      directives: [],
-    )
-  ],
-  directives: [],
-  selectionSet: _i1.SelectionSetNode(selections: [
-    _i1.FieldNode(
-      name: _i1.NameNode(value: 'search_identity'),
-      alias: null,
-      arguments: [
-        _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'args'),
+          name: _i1.NameNode(value: 'where'),
           value: _i1.ObjectValueNode(fields: [
             _i1.ObjectFieldNode(
-              name: _i1.NameNode(value: 'name'),
-              value: _i1.VariableNode(name: _i1.NameNode(value: 'name')),
+              name: _i1.NameNode(value: '_or'),
+              value: _i1.ListValueNode(values: [
+                _i1.ObjectValueNode(fields: [
+                  _i1.ObjectFieldNode(
+                    name: _i1.NameNode(value: 'name'),
+                    value: _i1.ObjectValueNode(fields: [
+                      _i1.ObjectFieldNode(
+                        name: _i1.NameNode(value: '_iregex'),
+                        value: _i1.VariableNode(
+                            name: _i1.NameNode(value: 'pattern')),
+                      )
+                    ]),
+                  )
+                ]),
+                _i1.ObjectValueNode(fields: [
+                  _i1.ObjectFieldNode(
+                    name: _i1.NameNode(value: 'accountId'),
+                    value: _i1.ObjectValueNode(fields: [
+                      _i1.ObjectFieldNode(
+                        name: _i1.NameNode(value: '_iregex'),
+                        value: _i1.VariableNode(
+                            name: _i1.NameNode(value: 'pattern')),
+                      )
+                    ]),
+                  )
+                ]),
+              ]),
             )
           ]),
         )
@@ -90,7 +62,7 @@ const SearchIdentity = _i1.OperationDefinitionNode(
       directives: [],
       selectionSet: _i1.SelectionSetNode(selections: [
         _i1.FieldNode(
-          name: _i1.NameNode(value: 'pubkey'),
+          name: _i1.NameNode(value: 'isMember'),
           alias: null,
           arguments: [],
           directives: [],
@@ -103,47 +75,59 @@ const SearchIdentity = _i1.OperationDefinitionNode(
           directives: [],
           selectionSet: null,
         ),
-      ]),
-    )
-  ]),
-);
-const LastIndexedBlockNumber = _i1.OperationDefinitionNode(
-  type: _i1.OperationType.query,
-  name: _i1.NameNode(value: 'LastIndexedBlockNumber'),
-  variableDefinitions: [],
-  directives: [],
-  selectionSet: _i1.SelectionSetNode(selections: [
-    _i1.FieldNode(
-      name: _i1.NameNode(value: 'parameters_by_pk'),
-      alias: null,
-      arguments: [
-        _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'key'),
-          value: _i1.StringValueNode(
-            value: 'last_indexed_block_number',
-            isBlock: false,
-          ),
-        )
-      ],
-      directives: [],
-      selectionSet: _i1.SelectionSetNode(selections: [
         _i1.FieldNode(
-          name: _i1.NameNode(value: 'value'),
+          name: _i1.NameNode(value: 'accountId'),
           alias: null,
           arguments: [],
           directives: [],
           selectionSet: null,
-        )
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'status'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'createdOn'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'account'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: _i1.SelectionSetNode(selections: [
+            _i1.FieldNode(
+              name: _i1.NameNode(value: 'isActive'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null,
+            )
+          ]),
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'index'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        ),
       ]),
     )
   ]),
 );
-const AccountsByNameOrPk = _i1.OperationDefinitionNode(
+const AccountByPk = _i1.OperationDefinitionNode(
   type: _i1.OperationType.query,
-  name: _i1.NameNode(value: 'AccountsByNameOrPk'),
+  name: _i1.NameNode(value: 'AccountByPk'),
   variableDefinitions: [
     _i1.VariableDefinitionNode(
-      variable: _i1.VariableNode(name: _i1.NameNode(value: 'pattern')),
+      variable: _i1.VariableNode(name: _i1.NameNode(value: 'id')),
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'String'),
         isNonNull: true,
@@ -155,59 +139,47 @@ const AccountsByNameOrPk = _i1.OperationDefinitionNode(
   directives: [],
   selectionSet: _i1.SelectionSetNode(selections: [
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'account'),
+      name: _i1.NameNode(value: 'accountByPk'),
       alias: null,
       arguments: [
         _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'order_by'),
-          value: _i1.ObjectValueNode(fields: [
-            _i1.ObjectFieldNode(
-              name: _i1.NameNode(value: 'identity'),
-              value: _i1.ObjectValueNode(fields: [
-                _i1.ObjectFieldNode(
-                  name: _i1.NameNode(value: 'name'),
-                  value: _i1.EnumValueNode(name: _i1.NameNode(value: 'asc')),
-                )
-              ]),
-            )
-          ]),
+          name: _i1.NameNode(value: 'id'),
+          value: _i1.VariableNode(name: _i1.NameNode(value: 'id')),
+        )
+      ],
+      directives: [],
+      selectionSet: _i1.SelectionSetNode(selections: [
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'isActive'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        )
+      ]),
+    )
+  ]),
+);
+const LastBlock = _i1.OperationDefinitionNode(
+  type: _i1.OperationType.query,
+  name: _i1.NameNode(value: 'LastBlock'),
+  variableDefinitions: [],
+  directives: [],
+  selectionSet: _i1.SelectionSetNode(selections: [
+    _i1.FieldNode(
+      name: _i1.NameNode(value: 'block'),
+      alias: null,
+      arguments: [
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'limit'),
+          value: _i1.IntValueNode(value: '1'),
         ),
         _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'where'),
+          name: _i1.NameNode(value: 'orderBy'),
           value: _i1.ObjectValueNode(fields: [
             _i1.ObjectFieldNode(
-              name: _i1.NameNode(value: '_or'),
-              value: _i1.ListValueNode(values: [
-                _i1.ObjectValueNode(fields: [
-                  _i1.ObjectFieldNode(
-                    name: _i1.NameNode(value: 'identity'),
-                    value: _i1.ObjectValueNode(fields: [
-                      _i1.ObjectFieldNode(
-                        name: _i1.NameNode(value: 'name'),
-                        value: _i1.ObjectValueNode(fields: [
-                          _i1.ObjectFieldNode(
-                            name: _i1.NameNode(value: '_ilike'),
-                            value: _i1.VariableNode(
-                                name: _i1.NameNode(value: 'pattern')),
-                          )
-                        ]),
-                      )
-                    ]),
-                  )
-                ]),
-                _i1.ObjectValueNode(fields: [
-                  _i1.ObjectFieldNode(
-                    name: _i1.NameNode(value: 'pubkey'),
-                    value: _i1.ObjectValueNode(fields: [
-                      _i1.ObjectFieldNode(
-                        name: _i1.NameNode(value: '_ilike'),
-                        value: _i1.VariableNode(
-                            name: _i1.NameNode(value: 'pattern')),
-                      )
-                    ]),
-                  )
-                ]),
-              ]),
+              name: _i1.NameNode(value: 'timestamp'),
+              value: _i1.EnumValueNode(name: _i1.NameNode(value: 'DESC')),
             )
           ]),
         ),
@@ -215,50 +187,18 @@ const AccountsByNameOrPk = _i1.OperationDefinitionNode(
       directives: [],
       selectionSet: _i1.SelectionSetNode(selections: [
         _i1.FieldNode(
-          name: _i1.NameNode(value: 'identity'),
+          name: _i1.NameNode(value: 'height'),
           alias: null,
           arguments: [],
           directives: [],
-          selectionSet: _i1.SelectionSetNode(selections: [
-            _i1.FieldNode(
-              name: _i1.NameNode(value: 'account'),
-              alias: null,
-              arguments: [],
-              directives: [],
-              selectionSet: _i1.SelectionSetNode(selections: [
-                _i1.FieldNode(
-                  name: _i1.NameNode(value: 'identity'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: _i1.SelectionSetNode(selections: [
-                    _i1.FieldNode(
-                      name: _i1.NameNode(value: 'name'),
-                      alias: null,
-                      arguments: [],
-                      directives: [],
-                      selectionSet: null,
-                    ),
-                    _i1.FieldNode(
-                      name: _i1.NameNode(value: 'pubkey'),
-                      alias: null,
-                      arguments: [],
-                      directives: [],
-                      selectionSet: null,
-                    ),
-                  ]),
-                )
-              ]),
-            )
-          ]),
+          selectionSet: null,
         )
       ]),
     )
   ]),
 );
 const document = _i1.DocumentNode(definitions: [
-  AccountsByPk,
-  SearchIdentity,
-  LastIndexedBlockNumber,
   AccountsByNameOrPk,
+  AccountByPk,
+  LastBlock,
 ]);

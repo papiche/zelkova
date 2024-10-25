@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'package:http/http.dart';
 
+import '../../../data/models/app_cubit.dart';
 import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
 import '../../../data/models/contact_state.dart';
@@ -50,6 +51,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
   final FocusNode _searchFocusNode = FocusNode();
   String _searchTerm = '';
   String _previousSearchTerm = '';
+  late bool isV2;
 
   List<Contact> _results = <Contact>[];
   bool _isLoading = false;
@@ -58,6 +60,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
 
   Future<void> _search() async {
     final ContactsCubit contactsCubit = context.read<ContactsCubit>();
+
     if (_searchTerm.length < 3) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(tr('search_limitation'))),
@@ -89,7 +92,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
       }
     });
 
-    if (isConnected) {
+    if (isConnected && !isV2) {
       final Response cPlusResponse = await searchCPlusUser(_searchTerm);
       if (cPlusResponse.statusCode != 404) {
         // Add cplus users
@@ -111,9 +114,12 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
     }
 
     if (isConnected) {
-      if (_searchTerm.length >= 8) {
+      if (_searchTerm.length >= 3) {
         // Only search wot if it's a long key
-        final List<Contact> wotResults = await searchWotV1(_searchTerm);
+
+        final List<Contact> wotResults = isV2
+            ? await searchWotV2('.*$_searchTerm.*')
+            : await searchWotV1(_searchTerm);
         // ignore: prefer_foreach
         for (final Contact c in wotResults) {
           ContactsCache().addContact(c);
@@ -455,6 +461,10 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
     });
     _handleUri(widget.uri);
     _isMultiSelect = widget.startInMultiSelect;
+    final PaymentCubit paymentCubit = context.read<PaymentCubit>();
+    _selectedContacts.addAll(paymentCubit.contacts);
+    _results.addAll(paymentCubit.contacts);
+    isV2 = context.read<AppCubit>().isV2();
   }
 
   Future<void> _handleUri(String? uri) async {
@@ -474,6 +484,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
         contact.subtitle != null ? Text(contact.subtitle!) : null;
     final List<String> ids =
         _selectedContacts.map((Contact c) => c.pubKey).toList();
+    final bool isV2 = context.read<AppCubit>().isV2();
     return _isMultiSelect
         ? CheckboxListTile(
             title: Text(contact.title),
@@ -499,6 +510,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
             contact,
             index,
             context,
+            isV2: isV2,
             onLongPress: () {
               setState(() {
                 _isMultiSelect = true;

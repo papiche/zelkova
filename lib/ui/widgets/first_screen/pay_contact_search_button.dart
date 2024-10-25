@@ -55,7 +55,7 @@ class _PayContactSearchButtonState extends State<PayContactSearchButton> {
           ),
         );
       } else {
-        return const PayRecipientWidget();
+        return PayRecipientWidget(searchUse: widget.searchUse);
       }
     });
   }

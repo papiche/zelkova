@@ -5,11 +5,12 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:ginkgo/graphql/__generated__/duniter-indexer.schema.gql.dart'
+import 'package:ginkgo/data/models/graphql/__generated__/duniter-indexer.schema.gql.dart'
     as _i2;
-import 'package:ginkgo/graphql/__generated__/serializers.gql.dart' as _i1;
+import 'package:ginkgo/data/models/graphql/__generated__/serializers.gql.dart'
+    as _i1;
 
-part 'duniter-custom-queries.data.gql.g.dart';
+part 'duniter-queries.data.gql.g.dart';
 
 abstract class GAccountsByNameOrPkData
     implements Built<GAccountsByNameOrPkData, GAccountsByNameOrPkDataBuilder> {

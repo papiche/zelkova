@@ -8,7 +8,6 @@ import '../../data/models/app_cubit.dart';
 import '../../data/models/contact.dart';
 import '../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../g1/api.dart';
-import '../../g1/g1_helper.dart';
 import '../ui_helpers.dart';
 import 'fourth_screen/transactions_and_balance_widget.dart';
 
@@ -180,8 +179,8 @@ class QrListTile extends StatelessWidget {
         onTap: () {
           showQrDialog(
               context: context,
-              publicKey:
-                  isV2 ? pubKeyOrAddress : getFullPubKey(pubKeyOrAddress),
+              pubKeyOrAddress: pubKeyOrAddress,
+              isV2: isV2,
               noTitle: true,
               feedbackText: 'some_key_copied_to_clipboard');
         },

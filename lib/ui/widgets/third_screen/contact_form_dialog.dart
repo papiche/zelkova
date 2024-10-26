@@ -58,7 +58,8 @@ class _ContactFormDialogState extends State<ContactFormDialog> {
                   onTap: () {
                     showQrDialog(
                         context: context,
-                        publicKey: getFullPubKey(_updatedContact.pubKey),
+                        pubKeyOrAddress: _updatedContact.pubKey,
+                        isV2: false,
                         noTitle: true,
                         feedbackText: 'some_key_copied_to_clipboard');
                   },
@@ -81,7 +82,8 @@ class _ContactFormDialogState extends State<ContactFormDialog> {
                     onTap: () {
                       showQrDialog(
                           context: context,
-                          publicKey: getFullPubKey(_updatedContact.address),
+                          isV2: true,
+                          pubKeyOrAddress: _updatedContact.address,
                           noTitle: true,
                           feedbackText: 'some_key_copied_to_clipboard');
                     },

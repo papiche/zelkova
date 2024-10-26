@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'duniter-custom-queries.data.gql.dart';
+part of 'duniter-queries.data.gql.dart';
 
 // **************************************************************************
 // BuiltValueGenerator

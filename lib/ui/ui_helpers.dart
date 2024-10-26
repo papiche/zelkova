@@ -616,10 +616,12 @@ Future<bool> openUrl(String url) async {
 
 void showQrDialog({
   required BuildContext context,
-  required String publicKey,
+  required String pubKeyOrAddress,
+  required bool isV2,
   bool noTitle = false,
   String? feedbackText,
 }) {
+  final String key = isV2 ? pubKeyOrAddress : getFullPubKey(pubKeyOrAddress);
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -633,8 +635,8 @@ void showQrDialog({
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: GestureDetector(
-                    onTap: () => copyPublicKeyToClipboard(
-                        context, publicKey, feedbackText),
+                    onTap: () =>
+                        copyPublicKeyToClipboard(context, key, feedbackText),
                     child: Container(
                       color:
                           isDark(context) ? Colors.grey[900] : Colors.grey[100],
@@ -649,7 +651,7 @@ void showQrDialog({
                                   children: <Widget>[
                                 QrImageView(
                                   // version: QrVersions.auto,
-                                  data: publicKey,
+                                  data: key,
                                   size: MediaQuery.of(context).size.width * 0.5,
                                   // gapless: false,
                                   /* embeddedImage: const AssetImage(
@@ -681,14 +683,13 @@ void showQrDialog({
                 padding: const EdgeInsets.all(12.0),
                 child: TextFormField(
                   maxLines: 2,
-                  initialValue: publicKey,
+                  initialValue: key,
                   readOnly: true,
                   decoration: InputDecoration(
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.content_copy),
                       onPressed: () {
-                        copyPublicKeyToClipboard(
-                            context, publicKey, feedbackText);
+                        copyPublicKeyToClipboard(context, key, feedbackText);
                       },
                     ),
                   ),

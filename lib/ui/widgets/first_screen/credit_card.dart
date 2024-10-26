@@ -10,10 +10,11 @@ import 'card_name_editable.dart';
 import 'card_text_style.dart';
 
 class CreditCard extends StatelessWidget {
-  const CreditCard({super.key,
-    required this.publicKey,
-    required this.cardName,
-    required this.isG1nkgoCard});
+  const CreditCard(
+      {super.key,
+      required this.publicKey,
+      required this.cardName,
+      required this.isG1nkgoCard});
 
   final String publicKey;
   final String cardName;
@@ -46,12 +47,8 @@ class CreditCard extends StatelessWidget {
                   begin: Alignment.bottomLeft,
                   end: Alignment.topRight,
                   colors: <Color>[
-                    SharedPreferencesHelper()
-                        .getTheme()
-                        .primaryColor,
-                    SharedPreferencesHelper()
-                        .getTheme()
-                        .secondaryColor
+                    SharedPreferencesHelper().getTheme().primaryColor,
+                    SharedPreferencesHelper().getTheme().secondaryColor
                   ],
                 ),
               ),
@@ -74,29 +71,25 @@ class CreditCard extends StatelessWidget {
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize:
-                                MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width * 0.07,
+                                    MediaQuery.of(context).size.width * 0.07,
                                 fontWeight: FontWeight.bold,
                               ),
                             )),
                       ),
                       Padding(
                           padding:
-                          EdgeInsets.symmetric(horizontal: cardPadding),
+                              EdgeInsets.symmetric(horizontal: cardPadding),
                           child: Row(children: <Widget>[
                             GestureDetector(
                                 onTap: () {
                                   showQrDialog(
-                                      context: context, publicKey: publicKey);
+                                      context: context,
+                                      isV2: false,
+                                      pubKeyOrAddress: publicKey);
                                 },
                                 child: SvgPicture.asset(
-                                  width: MediaQuery
-                                      .of(context)
-                                      .size
-                                      .width <
-                                      smallScreenWidth
+                                  width: MediaQuery.of(context).size.width <
+                                          smallScreenWidth
                                       ? 25
                                       : 40,
                                   'assets/img/chip.svg',
@@ -104,23 +97,24 @@ class CreditCard extends StatelessWidget {
                             const SizedBox(width: 10.0),
                             Expanded(
                                 child: CardNameEditable(
-                                  key: Key(publicKey),
-                                  publicKey: publicKey,
-                                  cardName: cardName,
-                                  isG1nkgoCard: isG1nkgoCard,
-                                  defValue:
+                              key: Key(publicKey),
+                              publicKey: publicKey,
+                              cardName: cardName,
+                              isG1nkgoCard: isG1nkgoCard,
+                              defValue:
                                   isG1nkgoCard ? tr('your_name_here') : '',
-                                )),
+                            )),
                           ])),
                       const SizedBox(height: 6.0),
                       Padding(
                           padding:
-                          EdgeInsets.symmetric(horizontal: cardPadding),
+                              EdgeInsets.symmetric(horizontal: cardPadding),
                           child: Row(children: <Widget>[
                             GestureDetector(
-                                onTap: () =>
-                                    showQrDialog(
-                                        context: context, publicKey: publicKey),
+                                onTap: () => showQrDialog(
+                                    context: context,
+                                    isV2: false,
+                                    pubKeyOrAddress: publicKey),
                                 child: FittedBox(
                                     key: creditCardPubKey,
                                     fit: BoxFit.scaleDown,
@@ -130,9 +124,8 @@ class CreditCard extends StatelessWidget {
                                       style: cardTextStyle(context),
                                     ))),
                             GestureDetector(
-                                onTap: () =>
-                                    showAlertDialog(
-                                        context, '', tr('keys_tooltip')),
+                                onTap: () => showAlertDialog(
+                                    context, '', tr('keys_tooltip')),
                                 child: FittedBox(
                                     fit: BoxFit.scaleDown,
                                     child: Text(' **** ****',
@@ -142,11 +135,10 @@ class CreditCard extends StatelessWidget {
                       if (bigDevice)
                         Padding(
                           padding:
-                          EdgeInsets.symmetric(horizontal: cardPadding),
+                              EdgeInsets.symmetric(horizontal: cardPadding),
                           child: GestureDetector(
-                            onTap: () =>
-                                showAlertDialog(
-                                    context, '', tr('card_validity_tooltip')),
+                            onTap: () => showAlertDialog(
+                                context, '', tr('card_validity_tooltip')),
                             child: Text(
                               tr('card_validity'),
                               style: TextStyle(

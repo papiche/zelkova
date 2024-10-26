@@ -6,7 +6,6 @@ import '../../data/models/bottom_nav_cubit.dart';
 import '../../data/models/contact.dart';
 import '../../data/models/contact_cubit.dart';
 import '../../data/models/payment_cubit.dart';
-import '../../g1/g1_helper.dart';
 import '../contacts_cache.dart';
 import '../ui_helpers.dart';
 import 'third_screen/contact_form_dialog.dart';
@@ -32,7 +31,8 @@ void onDeleteContact(BuildContext context, Contact contact) {
 void onShowContactQr(BuildContext context, Contact contact) {
   showQrDialog(
       context: context,
-      publicKey: getFullPubKey(contact.pubKey),
+      isV2: false,
+      pubKeyOrAddress: contact.pubKey,
       noTitle: true,
       feedbackText: 'some_key_copied_to_clipboard');
 }

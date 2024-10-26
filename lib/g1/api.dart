@@ -8,7 +8,6 @@ import 'package:ferry/ferry.dart' as ferry;
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-
 /*import 'package:polkadart/polkadart.dart' show SystemApi, Health; */
 /* import 'package:polkadart/polkadart.dart'
     show SystemApi, ChainType, Health, PeerInfo, SyncState; */
@@ -19,16 +18,16 @@ import 'package:tuple/tuple.dart';
 import 'package:universal_html/html.dart' show window;
 
 import '../data/models/contact.dart';
+import '../data/models/graphql/__generated__/duniter-queries.data.gql.dart';
+import '../data/models/graphql/__generated__/duniter-queries.req.gql.dart';
+import '../data/models/graphql/__generated__/duniter-queries.var.gql.dart';
+import '../data/models/graphql/duniter_indexer_client.dart';
 import '../data/models/node.dart';
 import '../data/models/node_lists_default.dart';
 import '../data/models/node_manager.dart';
 import '../data/models/node_type.dart';
 import '../data/models/utxo.dart';
 import '../env.dart';
-import '../graphql/__generated__/duniter-custom-queries.data.gql.dart';
-import '../graphql/__generated__/duniter-custom-queries.req.gql.dart';
-import '../graphql/__generated__/duniter-custom-queries.var.gql.dart';
-import '../graphql/duniter_indexer_client.dart';
 import '../shared_prefs_helper.dart';
 import '../ui/logger.dart';
 import '../ui/ui_helpers.dart';

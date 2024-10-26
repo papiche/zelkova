@@ -1,0 +1,23 @@
+targets:
+  $default:
+    builders:
+      ferry_generator|graphql_builder:
+        enabled: true
+        options:
+          schema: ginkgo|lib/data/models/graphql/duniter-indexer.graphql
+          type_overrides:
+            jsonb:
+              name: JsonObject
+              import: "package:built_value/json_object.dart"
+      ferry_generator|serializer_builder:
+        enabled: true
+        options:
+          schema: ginkgo|lib/data/models/graphql/duniter-indexer.graphql
+          type_overrides:
+            jsonb:
+              name: JsonObject
+              import: "package:built_value/json_object.dart"
+          custom_serializers:
+            - import: "package:built_value/src/json_object_serializer.dart"
+              name: JsonObjectSerializer
+

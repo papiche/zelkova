@@ -8,20 +8,7 @@ import 'package:built_value/src/json_object_serializer.dart'
     show JsonObjectSerializer;
 import 'package:built_value/standard_json_plugin.dart' show StandardJsonPlugin;
 import 'package:ferry_exec/ferry_exec.dart';
-import 'package:ginkgo/graphql/__generated__/duniter-custom-queries.data.gql.dart'
-    show
-        GAccountByPkData,
-        GAccountByPkData_accountByPk,
-        GAccountsByNameOrPkData,
-        GAccountsByNameOrPkData_identity,
-        GAccountsByNameOrPkData_identity_account,
-        GLastBlockData,
-        GLastBlockData_block;
-import 'package:ginkgo/graphql/__generated__/duniter-custom-queries.req.gql.dart'
-    show GAccountByPkReq, GAccountsByNameOrPkReq, GLastBlockReq;
-import 'package:ginkgo/graphql/__generated__/duniter-custom-queries.var.gql.dart'
-    show GAccountByPkVars, GAccountsByNameOrPkVars, GLastBlockVars;
-import 'package:ginkgo/graphql/__generated__/duniter-indexer.schema.gql.dart'
+import 'package:ginkgo/data/models/graphql/__generated__/duniter-indexer.schema.gql.dart'
     show
         GAccountAggregateBoolExp,
         GAccountAggregateOrderBy,
@@ -343,6 +330,19 @@ import 'package:ginkgo/graphql/__generated__/duniter-indexer.schema.gql.dart'
         Gtimestamptz,
         GtransferAggregateBoolExpCount,
         GtxCommentAggregateBoolExpCount;
+import 'package:ginkgo/data/models/graphql/__generated__/duniter-queries.data.gql.dart'
+    show
+        GAccountByPkData,
+        GAccountByPkData_accountByPk,
+        GAccountsByNameOrPkData,
+        GAccountsByNameOrPkData_identity,
+        GAccountsByNameOrPkData_identity_account,
+        GLastBlockData,
+        GLastBlockData_block;
+import 'package:ginkgo/data/models/graphql/__generated__/duniter-queries.req.gql.dart'
+    show GAccountByPkReq, GAccountsByNameOrPkReq, GLastBlockReq;
+import 'package:ginkgo/data/models/graphql/__generated__/duniter-queries.var.gql.dart'
+    show GAccountByPkVars, GAccountsByNameOrPkVars, GLastBlockVars;
 import 'package:gql_code_builder_serializers/gql_code_builder_serializers.dart'
     show OperationSerializer;
 

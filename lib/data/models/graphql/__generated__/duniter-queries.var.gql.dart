@@ -4,9 +4,10 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:ginkgo/graphql/__generated__/serializers.gql.dart' as _i1;
+import 'package:ginkgo/data/models/graphql/__generated__/serializers.gql.dart'
+    as _i1;
 
-part 'duniter-custom-queries.var.gql.g.dart';
+part 'duniter-queries.var.gql.g.dart';
 
 abstract class GAccountsByNameOrPkVars
     implements Built<GAccountsByNameOrPkVars, GAccountsByNameOrPkVarsBuilder> {

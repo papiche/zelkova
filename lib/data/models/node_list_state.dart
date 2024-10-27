@@ -18,6 +18,8 @@ class NodeListState extends Equatable {
       List<Node>? gvaNodes,
       List<Node>? endpointNodes,
       List<Node>? duniterIndexerNodes,
+      List<Node>? duniterDataNodes,
+      List<Node>? ipfsGateways,
       this.currentGvaNode,
       bool? isLoading})
       : duniterNodes = duniterNodes ?? defaultDuniterNodes,
@@ -25,6 +27,8 @@ class NodeListState extends Equatable {
         gvaNodes = gvaNodes ?? defaultGvaNodes,
         endpointNodes = endpointNodes ?? defaultEndPointNodes,
         duniterIndexerNodes = duniterIndexerNodes ?? defaultDuniterIndexerNodes,
+        duniterDataNodes = duniterDataNodes ?? defaultDatapodEndpointNodes,
+        ipfsGateways = ipfsGateways ?? defaultIpfsGateways,
         isLoading = isLoading ?? false;
 
   factory NodeListState.fromJson(Map<String, dynamic> json) =>
@@ -40,6 +44,10 @@ class NodeListState extends Equatable {
   final List<Node> endpointNodes;
   @JsonKey(fromJson: _nodesFromJson, toJson: _nodesToJson)
   final List<Node> duniterIndexerNodes;
+  @JsonKey(fromJson: _nodesFromJson, toJson: _nodesToJson)
+  final List<Node> duniterDataNodes;
+  @JsonKey(fromJson: _nodesFromJson, toJson: _nodesToJson)
+  final List<Node> ipfsGateways;
   final bool isLoading;
   @JsonKey(fromJson: _nodeFromJson, toJson: _nodeToJson)
   final Node? currentGvaNode;
@@ -51,6 +59,8 @@ class NodeListState extends Equatable {
         gvaNodes,
         endpointNodes,
         duniterIndexerNodes,
+        duniterDataNodes,
+        ipfsGateways,
         currentGvaNode,
         isLoading
       ];

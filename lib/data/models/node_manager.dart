@@ -25,6 +25,8 @@ class NodeManager {
   final List<Node> gvaNodes = <Node>[];
   final List<Node> endpointNodes = <Node>[];
   final List<Node> duniterIndexerNodes = <Node>[];
+  final List<Node> duniterDataNodes = <Node>[];
+  final List<Node> ipfsGateways = <Node>[];
 
   /*
   void loadFromCubit(NodeListCubit cubit) {
@@ -81,7 +83,11 @@ class NodeManager {
               ? endpointNodes
               : type == NodeType.duniterIndexer
                   ? duniterIndexerNodes
-                  : gvaNodes;
+                  : type == NodeType.datapodEndpoint
+                      ? duniterDataNodes
+                      : type == NodeType.ipfsGateway
+                          ? ipfsGateways
+                          : gvaNodes;
 
   void addNode(NodeType type, Node node, {bool notify = true}) {
     final List<Node> nodes = _getList(type);
@@ -218,6 +224,8 @@ class NodeManagerObserver {
     cubit.setGvaNodes(nodeManager.gvaNodes);
     cubit.setEndpointNodes(nodeManager.endpointNodes);
     cubit.setDuniterIndexerNodes(nodeManager.duniterIndexerNodes);
+    cubit.setDuniterDataNodes(nodeManager.duniterDataNodes);
+    cubit.setIpfsGateways(nodeManager.ipfsGateways);
   }
 
   void setCurrentGvaNode(Node node) {

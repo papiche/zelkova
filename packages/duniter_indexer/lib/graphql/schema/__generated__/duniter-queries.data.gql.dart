@@ -5,9 +5,9 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:ginkgo/data/models/duniter-indexer/__generated__/duniter-indexer.schema.gql.dart'
+import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer.schema.schema.gql.dart'
     as _i2;
-import 'package:ginkgo/data/models/duniter-indexer/__generated__/serializers.gql.dart'
+import 'package:duniter_indexer/graphql/schema/__generated__/serializers.gql.dart'
     as _i1;
 
 part 'duniter-queries.data.gql.g.dart';

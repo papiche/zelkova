@@ -3,6 +3,14 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:crypto/crypto.dart';
+import 'package:duniter_datapod/duniter_datapod_client.dart';
+import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-queries.data.gql.dart';
+import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-queries.req.gql.dart';
+import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-queries.var.gql.dart';
+import 'package:duniter_indexer/duniter_indexer_client.dart';
+import 'package:duniter_indexer/graphql/schema/__generated__/duniter-queries.data.gql.dart';
+import 'package:duniter_indexer/graphql/schema/__generated__/duniter-queries.req.gql.dart';
+import 'package:duniter_indexer/graphql/schema/__generated__/duniter-queries.var.gql.dart';
 import 'package:durt/durt.dart';
 import 'package:ferry/ferry.dart' as ferry;
 import 'package:flutter/foundation.dart';
@@ -18,10 +26,6 @@ import 'package:tuple/tuple.dart';
 import 'package:universal_html/html.dart' show window;
 
 import '../data/models/contact.dart';
-import '../data/models/duniter-indexer/__generated__/duniter-queries.data.gql.dart';
-import '../data/models/duniter-indexer/__generated__/duniter-queries.req.gql.dart';
-import '../data/models/duniter-indexer/__generated__/duniter-queries.var.gql.dart';
-import '../data/models/duniter-indexer/duniter_indexer_client.dart';
 import '../data/models/node.dart';
 import '../data/models/node_lists_default.dart';
 import '../data/models/node_manager.dart';
@@ -336,7 +340,15 @@ Future<void> fetchNodes(NodeType type, bool force) async {
         fetchFutures.add(_fetchEndPointNodes(force: force));
         break;
       case NodeType.duniterIndexer:
-        fetchFutures.add(_fetchDuniterIndexerNodes(force: force));
+        fetchFutures
+            .add(_fetchV2Nodes(type: NodeType.duniterIndexer, force: force));
+        break;
+      case NodeType.datapodEndpoint:
+        fetchFutures
+            .add(_fetchV2Nodes(type: NodeType.datapodEndpoint, force: force));
+        break;
+      case NodeType.ipfsGateway:
+        fetchFutures.add(_fetchIpfsGateways(force: force));
         break;
     }
 
@@ -417,15 +429,25 @@ Future<void> _fetchEndPointNodes({bool force = false}) async {
   NodeManager().loading = false;
 }
 
-Future<void> _fetchDuniterIndexerNodes({bool force = false}) async {
+Future<void> _fetchV2Nodes({required NodeType type, bool force = false}) async {
   NodeManager().loading = true;
-  const NodeType type = NodeType.duniterIndexer;
   if (force) {
-    NodeManager().updateNodes(type, defaultDuniterIndexerNodes);
-    logger('Fetching duniter indexer nodes forced');
+    NodeManager().updateNodes(type, defaultNodes(type));
+    logger('Fetching $type nodes forced');
   } else {
-    logger(
-        'Fetching duniter indexer nodes, we have ${NodeManager().nodesWorking(type)}');
+    logger('Fetching $type nodes, we have ${NodeManager().nodesWorking(type)}');
+  }
+  final List<Node> nodes = await _fetchNodes(type);
+  NodeManager().updateNodes(type, nodes);
+  NodeManager().loading = false;
+}
+
+Future<void> _fetchIpfsGateways({required bool force}) async {
+  NodeManager().loading = true;
+  const NodeType type = NodeType.ipfsGateway;
+  if (force) {
+    NodeManager().updateNodes(type, defaultNodes(type));
+    logger('Fetching $type nodes forced');
   }
   final List<Node> nodes = await _fetchNodes(type);
   NodeManager().updateNodes(type, nodes);
@@ -1134,6 +1156,29 @@ Future<NodeCheckResult> testDuniterIndexerV2(
     result = NodeCheckResult(currentBlock: 0, latency: wrongNodeDuration);
   } else {
     final int currentBlock = response.data?.block.first.height ?? 0;
+    result = NodeCheckResult(
+        currentBlock: currentBlock,
+        latency: currentBlock > 0 ? stopwatch.elapsed : wrongNodeDuration);
+  }
+  return result;
+}
+
+Future<NodeCheckResult> testDuniterDatapodV2(
+    String node, Duration timeout) async {
+  NodeCheckResult result;
+
+  final Stopwatch stopwatch = Stopwatch()..start();
+  final ferry.Client client = await initDuniterDatapodClient(node);
+
+  final ferry.OperationResponse<GGetProfileCountData, GGetProfileCountVars>
+      response =
+      await client.request(GGetProfileCountReq()).first.timeout(timeout);
+  if (response.hasErrors) {
+    loggerDev(
+        'Node $node has errors: ${removeNewlines(response.linkException!.originalException.toString())}');
+    result = NodeCheckResult(currentBlock: 0, latency: wrongNodeDuration);
+  } else {
+    final int currentBlock = response.data?.hashCode ?? 0;
     result = NodeCheckResult(
         currentBlock: currentBlock,
         latency: currentBlock > 0 ? stopwatch.elapsed : wrongNodeDuration);

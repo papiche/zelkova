@@ -1,0 +1,24 @@
+query GetProfileByAddress($pubkey: String!) {
+    profiles(where: { pubkey: { _eq: $pubkey } }) {
+        avatar
+        pubkey
+        description
+        title
+        city
+        data_cid
+        geoloc
+        index_request_cid
+        pubkey
+        socials
+        time
+        title
+    }
+}
+
+query GetProfileCount {
+    profiles_aggregate {
+        aggregate {
+            count
+        }
+    }
+}

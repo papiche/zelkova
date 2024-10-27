@@ -37,6 +37,10 @@ class NodeListPage extends StatelessWidget {
           filterAndSortNodesByType(state.cesiumPlusNodes, NodeType.cesiumPlus);
       final List<Node> gvaNodes =
           filterAndSortNodesByType(state.gvaNodes, NodeType.gva);
+      final List<Node> duniterDataNodes = filterAndSortNodesByType(
+          state.duniterDataNodes, NodeType.datapodEndpoint);
+      final List<Node> ipfsGateways =
+          filterAndSortNodesByType(state.ipfsGateways, NodeType.ipfsGateway);
       return Scaffold(
           appBar: AppBar(
             title: Text(tr('nodes_tech_info')),
@@ -73,6 +77,16 @@ class NodeListPage extends StatelessWidget {
                             nodes: duniterIndexerNodes,
                             type: NodeType.duniterIndexer,
                             currentBlock: duniterIndexerNodes[0].currentBlock),
+                      if (duniterDataNodes.isNotEmpty)
+                        NodeListWidget(
+                            nodes: duniterDataNodes,
+                            type: NodeType.datapodEndpoint,
+                            currentBlock: duniterDataNodes[0].currentBlock),
+                      if (ipfsGateways.isNotEmpty)
+                        NodeListWidget(
+                            nodes: ipfsGateways,
+                            type: NodeType.ipfsGateway,
+                            currentBlock: ipfsGateways[0].currentBlock),
                       NodeListHeader(
                           type: NodeType.gva, nodesCount: gvaNodes.length),
                       if (gvaNodes.isNotEmpty)

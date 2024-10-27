@@ -6,12 +6,12 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/json_object.dart' as _i3;
 import 'package:built_value/serializer.dart';
-import 'package:ginkgo/data/models/duniter-indexer/__generated__/serializers.gql.dart'
+import 'package:duniter_indexer/graphql/schema/__generated__/serializers.gql.dart'
     as _i1;
 import 'package:gql_code_builder_serializers/gql_code_builder_serializers.dart'
     as _i2;
 
-part 'duniter-indexer.schema.gql.g.dart';
+part 'duniter-indexer.schema.schema.gql.g.dart';
 
 abstract class GAccountAggregateBoolExp
     implements

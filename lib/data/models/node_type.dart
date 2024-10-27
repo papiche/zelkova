@@ -1,1 +1,9 @@
-enum NodeType { duniter, cesiumPlus, gva, endpoint, duniterIndexer }
+enum NodeType {
+  duniter,
+  cesiumPlus,
+  gva,
+  endpoint,
+  duniterIndexer,
+  datapodEndpoint,
+  ipfsGateway
+}

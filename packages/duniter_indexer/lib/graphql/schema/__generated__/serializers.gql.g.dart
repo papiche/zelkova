@@ -152,7 +152,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GExtrinsicVarPopOrderBy.serializer)
       ..add(GExtrinsicVarSampOrderBy.serializer)
       ..add(GExtrinsicVarianceOrderBy.serializer)
-      ..add(GGeolocInput.serializer)
       ..add(GIdentityAggregateBoolExp.serializer)
       ..add(GIdentityAggregateOrderBy.serializer)
       ..add(GIdentityAvgOrderBy.serializer)
@@ -259,10 +258,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GSmithStatusEnumComparisonExp.serializer)
       ..add(GSmithStreamCursorInput.serializer)
       ..add(GSmithStreamCursorValueInput.serializer)
-      ..add(GSocialInput.serializer)
       ..add(GStringArrayComparisonExp.serializer)
       ..add(GStringComparisonExp.serializer)
-      ..add(GString_comparison_exp.serializer)
       ..add(GTimestamptzComparisonExp.serializer)
       ..add(GTransferAggregateBoolExp.serializer)
       ..add(GTransferAggregateOrderBy.serializer)
@@ -341,7 +338,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GcertAggregateBoolExpCount.serializer)
       ..add(GcertEventAggregateBoolExpCount.serializer)
       ..add(GchangeOwnerKeyAggregateBoolExpCount.serializer)
-      ..add(Gcursor_ordering.serializer)
       ..add(GeventAggregateBoolExpCount.serializer)
       ..add(GextrinsicAggregateBoolExpBool_and.serializer)
       ..add(GextrinsicAggregateBoolExpBool_or.serializer)
@@ -351,22 +347,10 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GidentityAggregateBoolExpBool_or.serializer)
       ..add(GidentityAggregateBoolExpCount.serializer)
       ..add(Gidentity_scalar.serializer)
-      ..add(Gjsonb_cast_exp.serializer)
-      ..add(Gjsonb_comparison_exp.serializer)
       ..add(GmembershipEventAggregateBoolExpCount.serializer)
       ..add(Gnumeric.serializer)
-      ..add(Gorder_by.serializer)
-      ..add(Gpoint.serializer)
-      ..add(Gpoint_comparison_exp.serializer)
-      ..add(Gprofiles_bool_exp.serializer)
-      ..add(Gprofiles_order_by.serializer)
-      ..add(Gprofiles_select_column.serializer)
-      ..add(Gprofiles_stream_cursor_input.serializer)
-      ..add(Gprofiles_stream_cursor_value_input.serializer)
       ..add(GsmithCertAggregateBoolExpCount.serializer)
       ..add(GsmithEventAggregateBoolExpCount.serializer)
-      ..add(Gtimestamp.serializer)
-      ..add(Gtimestamp_comparison_exp.serializer)
       ..add(Gtimestamptz.serializer)
       ..add(GtransferAggregateBoolExpCount.serializer)
       ..add(GtxCommentAggregateBoolExpCount.serializer)
@@ -622,24 +606,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(Gnumeric)]),
           () => new ListBuilder<Gnumeric>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(Gpoint)]),
-          () => new ListBuilder<Gpoint>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(Gpoint)]),
-          () => new ListBuilder<Gpoint>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(Gprofiles_bool_exp)]),
-          () => new ListBuilder<Gprofiles_bool_exp>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(Gprofiles_bool_exp)]),
-          () => new ListBuilder<Gprofiles_bool_exp>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(Gtimestamp)]),
-          () => new ListBuilder<Gtimestamp>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(Gtimestamp)]),
-          () => new ListBuilder<Gtimestamp>())
-      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Gtimestamptz)]),
           () => new ListBuilder<Gtimestamptz>())
       ..addBuilderFactory(
@@ -654,24 +620,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(String)]),
-          () => new ListBuilder<String>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(String)]),
-          () => new ListBuilder<String>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(String)]),
-          () => new ListBuilder<String>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(String)]),
-          () => new ListBuilder<String>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(JsonObject)]),
-          () => new ListBuilder<JsonObject>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(JsonObject)]),
-          () => new ListBuilder<JsonObject>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>())

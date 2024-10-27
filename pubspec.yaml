@@ -121,6 +121,10 @@ dependencies:
   polkadot_dart: ^1.3.0
   web_socket_channel: ^3.0.1
   ss58: ^1.1.3
+  duniter_indexer:
+    path: ./packages/duniter_indexer
+  duniter_datapod:
+    path: ./packages/duniter_datapod
 
 dev_dependencies:
   flutter_test:

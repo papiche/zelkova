@@ -36,6 +36,14 @@ List<Node> defaultDuniterIndexerNodes = <Node>{
   ..._readDotNodeConfig(Env.duniterIndexerNodes),
 }.toList();
 
+List<Node> defaultDatapodEndpointNodes = <Node>{
+  ..._readDotNodeConfig(Env.datapodEndpoints),
+}.toList();
+
+List<Node> defaultIpfsGateways = <Node>{
+  ..._readDotNodeConfig(Env.ipfsGateways),
+}.toList();
+
 List<Node> defaultNodes(NodeType type) {
   switch (type) {
     case NodeType.duniter:
@@ -48,6 +56,10 @@ List<Node> defaultNodes(NodeType type) {
       return defaultEndPointNodes;
     case NodeType.duniterIndexer:
       return defaultDuniterIndexerNodes;
+    case NodeType.datapodEndpoint:
+      return defaultDatapodEndpointNodes;
+    case NodeType.ipfsGateway:
+      return defaultIpfsGateways;
   }
 }
 

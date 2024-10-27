@@ -7,26 +7,7 @@ import 'package:built_value/serializer.dart';
 import 'package:built_value/src/json_object_serializer.dart'
     show JsonObjectSerializer;
 import 'package:built_value/standard_json_plugin.dart' show StandardJsonPlugin;
-import 'package:ferry_exec/ferry_exec.dart';
-import 'package:ginkgo/data/models/duniter-datapod/__generated__/duniter-datapod.schema.gql.dart'
-    show
-        GGeolocInput,
-        GSocialInput,
-        GString_comparison_exp,
-        Gcursor_ordering,
-        Gjsonb_cast_exp,
-        Gjsonb_comparison_exp,
-        Gorder_by,
-        Gpoint,
-        Gpoint_comparison_exp,
-        Gprofiles_bool_exp,
-        Gprofiles_order_by,
-        Gprofiles_select_column,
-        Gprofiles_stream_cursor_input,
-        Gprofiles_stream_cursor_value_input,
-        Gtimestamp,
-        Gtimestamp_comparison_exp;
-import 'package:ginkgo/data/models/duniter-indexer/__generated__/duniter-indexer.schema.gql.dart'
+import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer.schema.schema.gql.dart'
     show
         GAccountAggregateBoolExp,
         GAccountAggregateOrderBy,
@@ -348,7 +329,7 @@ import 'package:ginkgo/data/models/duniter-indexer/__generated__/duniter-indexer
         Gtimestamptz,
         GtransferAggregateBoolExpCount,
         GtxCommentAggregateBoolExpCount;
-import 'package:ginkgo/data/models/duniter-indexer/__generated__/duniter-queries.data.gql.dart'
+import 'package:duniter_indexer/graphql/schema/__generated__/duniter-queries.data.gql.dart'
     show
         GAccountByPkData,
         GAccountByPkData_accountByPk,
@@ -357,10 +338,11 @@ import 'package:ginkgo/data/models/duniter-indexer/__generated__/duniter-queries
         GAccountsByNameOrPkData_identity_account,
         GLastBlockData,
         GLastBlockData_block;
-import 'package:ginkgo/data/models/duniter-indexer/__generated__/duniter-queries.req.gql.dart'
+import 'package:duniter_indexer/graphql/schema/__generated__/duniter-queries.req.gql.dart'
     show GAccountByPkReq, GAccountsByNameOrPkReq, GLastBlockReq;
-import 'package:ginkgo/data/models/duniter-indexer/__generated__/duniter-queries.var.gql.dart'
+import 'package:duniter_indexer/graphql/schema/__generated__/duniter-queries.var.gql.dart'
     show GAccountByPkVars, GAccountsByNameOrPkVars, GLastBlockVars;
+import 'package:ferry_exec/ferry_exec.dart';
 import 'package:gql_code_builder_serializers/gql_code_builder_serializers.dart'
     show OperationSerializer;
 
@@ -505,7 +487,6 @@ final SerializersBuilder _serializersBuilder = _$serializers.toBuilder()
   GExtrinsicVarPopOrderBy,
   GExtrinsicVarSampOrderBy,
   GExtrinsicVarianceOrderBy,
-  GGeolocInput,
   GIdentityAggregateBoolExp,
   GIdentityAggregateOrderBy,
   GIdentityAvgOrderBy,
@@ -609,10 +590,8 @@ final SerializersBuilder _serializersBuilder = _$serializers.toBuilder()
   GSmithStatusEnumComparisonExp,
   GSmithStreamCursorInput,
   GSmithStreamCursorValueInput,
-  GSocialInput,
   GStringArrayComparisonExp,
   GStringComparisonExp,
-  GString_comparison_exp,
   GTimestamptzComparisonExp,
   GTransferAggregateBoolExp,
   GTransferAggregateOrderBy,
@@ -691,7 +670,6 @@ final SerializersBuilder _serializersBuilder = _$serializers.toBuilder()
   GcertAggregateBoolExpCount,
   GcertEventAggregateBoolExpCount,
   GchangeOwnerKeyAggregateBoolExpCount,
-  Gcursor_ordering,
   GeventAggregateBoolExpCount,
   GextrinsicAggregateBoolExpBool_and,
   GextrinsicAggregateBoolExpBool_or,
@@ -701,22 +679,10 @@ final SerializersBuilder _serializersBuilder = _$serializers.toBuilder()
   GidentityAggregateBoolExpBool_or,
   GidentityAggregateBoolExpCount,
   Gidentity_scalar,
-  Gjsonb_cast_exp,
-  Gjsonb_comparison_exp,
   GmembershipEventAggregateBoolExpCount,
   Gnumeric,
-  Gorder_by,
-  Gpoint,
-  Gpoint_comparison_exp,
-  Gprofiles_bool_exp,
-  Gprofiles_order_by,
-  Gprofiles_select_column,
-  Gprofiles_stream_cursor_input,
-  Gprofiles_stream_cursor_value_input,
   GsmithCertAggregateBoolExpCount,
   GsmithEventAggregateBoolExpCount,
-  Gtimestamp,
-  Gtimestamp_comparison_exp,
   Gtimestamptz,
   GtransferAggregateBoolExpCount,
   GtxCommentAggregateBoolExpCount,

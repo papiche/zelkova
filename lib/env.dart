@@ -31,4 +31,8 @@ abstract class Env {
   static const String endPoints = _Env.endPoints;
   @EnviedField(varName: 'DUNITER_INDEXER_NODES')
   static const String duniterIndexerNodes = _Env.duniterIndexerNodes;
+  @EnviedField(varName: 'DATAPOD_ENDPOINTS')
+  static const String datapodEndpoints = _Env.datapodEndpoints;
+  @EnviedField(varName: 'IPFS_GATEWAYS')
+  static const String ipfsGateways = _Env.ipfsGateways;
 }

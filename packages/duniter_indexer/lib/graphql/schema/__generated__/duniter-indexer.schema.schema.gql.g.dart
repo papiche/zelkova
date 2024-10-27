@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'duniter-indexer.schema.gql.dart';
+part of 'duniter-indexer.schema.schema.gql.dart';
 
 // **************************************************************************
 // BuiltValueGenerator

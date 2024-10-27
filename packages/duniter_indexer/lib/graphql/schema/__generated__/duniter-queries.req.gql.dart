@@ -4,15 +4,15 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:ferry_exec/ferry_exec.dart' as _i1;
-import 'package:ginkgo/data/models/duniter-indexer/__generated__/duniter-queries.ast.gql.dart'
+import 'package:duniter_indexer/graphql/schema/__generated__/duniter-queries.ast.gql.dart'
     as _i5;
-import 'package:ginkgo/data/models/duniter-indexer/__generated__/duniter-queries.data.gql.dart'
+import 'package:duniter_indexer/graphql/schema/__generated__/duniter-queries.data.gql.dart'
     as _i2;
-import 'package:ginkgo/data/models/duniter-indexer/__generated__/duniter-queries.var.gql.dart'
+import 'package:duniter_indexer/graphql/schema/__generated__/duniter-queries.var.gql.dart'
     as _i3;
-import 'package:ginkgo/data/models/duniter-indexer/__generated__/serializers.gql.dart'
+import 'package:duniter_indexer/graphql/schema/__generated__/serializers.gql.dart'
     as _i6;
+import 'package:ferry_exec/ferry_exec.dart' as _i1;
 import 'package:gql_exec/gql_exec.dart' as _i4;
 
 part 'duniter-queries.req.gql.g.dart';

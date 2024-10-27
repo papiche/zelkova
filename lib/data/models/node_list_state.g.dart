@@ -17,6 +17,10 @@ abstract class _$NodeListStateCWProxy {
 
   NodeListState duniterIndexerNodes(List<Node>? duniterIndexerNodes);
 
+  NodeListState duniterDataNodes(List<Node>? duniterDataNodes);
+
+  NodeListState ipfsGateways(List<Node>? ipfsGateways);
+
   NodeListState currentGvaNode(Node? currentGvaNode);
 
   NodeListState isLoading(bool? isLoading);
@@ -33,6 +37,8 @@ abstract class _$NodeListStateCWProxy {
     List<Node>? gvaNodes,
     List<Node>? endpointNodes,
     List<Node>? duniterIndexerNodes,
+    List<Node>? duniterDataNodes,
+    List<Node>? ipfsGateways,
     Node? currentGvaNode,
     bool? isLoading,
   });
@@ -64,6 +70,14 @@ class _$NodeListStateCWProxyImpl implements _$NodeListStateCWProxy {
       this(duniterIndexerNodes: duniterIndexerNodes);
 
   @override
+  NodeListState duniterDataNodes(List<Node>? duniterDataNodes) =>
+      this(duniterDataNodes: duniterDataNodes);
+
+  @override
+  NodeListState ipfsGateways(List<Node>? ipfsGateways) =>
+      this(ipfsGateways: ipfsGateways);
+
+  @override
   NodeListState currentGvaNode(Node? currentGvaNode) =>
       this(currentGvaNode: currentGvaNode);
 
@@ -84,6 +98,8 @@ class _$NodeListStateCWProxyImpl implements _$NodeListStateCWProxy {
     Object? gvaNodes = const $CopyWithPlaceholder(),
     Object? endpointNodes = const $CopyWithPlaceholder(),
     Object? duniterIndexerNodes = const $CopyWithPlaceholder(),
+    Object? duniterDataNodes = const $CopyWithPlaceholder(),
+    Object? ipfsGateways = const $CopyWithPlaceholder(),
     Object? currentGvaNode = const $CopyWithPlaceholder(),
     Object? isLoading = const $CopyWithPlaceholder(),
   }) {
@@ -108,6 +124,14 @@ class _$NodeListStateCWProxyImpl implements _$NodeListStateCWProxy {
           ? _value.duniterIndexerNodes
           // ignore: cast_nullable_to_non_nullable
           : duniterIndexerNodes as List<Node>?,
+      duniterDataNodes: duniterDataNodes == const $CopyWithPlaceholder()
+          ? _value.duniterDataNodes
+          // ignore: cast_nullable_to_non_nullable
+          : duniterDataNodes as List<Node>?,
+      ipfsGateways: ipfsGateways == const $CopyWithPlaceholder()
+          ? _value.ipfsGateways
+          // ignore: cast_nullable_to_non_nullable
+          : ipfsGateways as List<Node>?,
       currentGvaNode: currentGvaNode == const $CopyWithPlaceholder()
           ? _value.currentGvaNode
           // ignore: cast_nullable_to_non_nullable
@@ -140,6 +164,9 @@ NodeListState _$NodeListStateFromJson(Map<String, dynamic> json) =>
           NodeListState._nodesFromJson(json['endpointNodes'] as List),
       duniterIndexerNodes:
           NodeListState._nodesFromJson(json['duniterIndexerNodes'] as List),
+      duniterDataNodes:
+          NodeListState._nodesFromJson(json['duniterDataNodes'] as List),
+      ipfsGateways: NodeListState._nodesFromJson(json['ipfsGateways'] as List),
       currentGvaNode: NodeListState._nodeFromJson(
           json['currentGvaNode'] as Map<String, dynamic>?),
       isLoading: json['isLoading'] as bool?,
@@ -153,6 +180,8 @@ Map<String, dynamic> _$NodeListStateToJson(NodeListState instance) =>
       'endpointNodes': NodeListState._nodesToJson(instance.endpointNodes),
       'duniterIndexerNodes':
           NodeListState._nodesToJson(instance.duniterIndexerNodes),
+      'duniterDataNodes': NodeListState._nodesToJson(instance.duniterDataNodes),
+      'ipfsGateways': NodeListState._nodesToJson(instance.ipfsGateways),
       'isLoading': instance.isLoading,
       'currentGvaNode': NodeListState._nodeToJson(instance.currentGvaNode),
     };

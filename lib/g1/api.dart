@@ -313,7 +313,9 @@ Future<void> fetchNodesIfNotReady() async {
     NodeType.duniter,
     NodeType.endpoint,
     NodeType.duniterIndexer,
-    NodeType.cesiumPlus
+    NodeType.cesiumPlus,
+    NodeType.datapodEndpoint,
+    NodeType.ipfsGateway
   ]) {
     if (NodeManager().nodesWorking(type) < 3) {
       fetchFutures.add(fetchNodes(type, true));
@@ -600,6 +602,8 @@ Future<NodeCheckResult> _pingNode(String node, NodeType type) async {
     NodeType.gva: testGVAV1Node,
     NodeType.endpoint: testEndPointV2,
     NodeType.duniterIndexer: testDuniterIndexerV2,
+    NodeType.datapodEndpoint: testDuniterDatapodV2,
+    NodeType.ipfsGateway: testIpfsGateway
   };
 
   final Future<NodeCheckResult> Function(String node, Duration timeout)
@@ -1178,11 +1182,23 @@ Future<NodeCheckResult> testDuniterDatapodV2(
         'Node $node has errors: ${removeNewlines(response.linkException!.originalException.toString())}');
     result = NodeCheckResult(currentBlock: 0, latency: wrongNodeDuration);
   } else {
-    final int currentBlock = response.data?.hashCode ?? 0;
+    final int currentBlock =
+        response.data?.profiles_aggregate?.aggregate?.count ?? 0;
     result = NodeCheckResult(
         currentBlock: currentBlock,
         latency: currentBlock > 0 ? stopwatch.elapsed : wrongNodeDuration);
   }
+  return result;
+}
+
+Future<NodeCheckResult> testIpfsGateway(String node, Duration timeout) async {
+  final Stopwatch stopwatch = Stopwatch()..start();
+  final Response response = await http.get(Uri.parse(node)).timeout(timeout);
+  stopwatch.stop();
+  final Duration latency = stopwatch.elapsed;
+  final int currentBlock = response.statusCode;
+  final NodeCheckResult result =
+      NodeCheckResult(latency: latency, currentBlock: currentBlock);
   return result;
 }
 

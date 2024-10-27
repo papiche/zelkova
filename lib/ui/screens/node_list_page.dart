@@ -77,11 +77,17 @@ class NodeListPage extends StatelessWidget {
                             nodes: duniterIndexerNodes,
                             type: NodeType.duniterIndexer,
                             currentBlock: duniterIndexerNodes[0].currentBlock),
+                      NodeListHeader(
+                          type: NodeType.datapodEndpoint,
+                          nodesCount: defaultDatapodEndpointNodes.length),
                       if (duniterDataNodes.isNotEmpty)
                         NodeListWidget(
                             nodes: duniterDataNodes,
                             type: NodeType.datapodEndpoint,
                             currentBlock: duniterDataNodes[0].currentBlock),
+                      NodeListHeader(
+                          type: NodeType.ipfsGateway,
+                          nodesCount: defaultIpfsGateways.length),
                       if (ipfsGateways.isNotEmpty)
                         NodeListWidget(
                             nodes: ipfsGateways,

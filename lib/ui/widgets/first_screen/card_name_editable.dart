@@ -30,11 +30,13 @@ class _CardNameEditableState extends State<CardNameEditable> {
   bool _isSubmitting = false;
   final TextEditingController _controller = TextEditingController();
   late String currentText;
+  Future<bool>? _usernameFetchFuture;
 
   @override
   void initState() {
     super.initState();
     _initValue();
+    _usernameFetchFuture = _fetchAndSetUsername();
   }
 
   void _initValue() {
@@ -69,8 +71,6 @@ class _CardNameEditableState extends State<CardNameEditable> {
           _controller.text = currentText;
         });
       }
-      // Optionally
-      // _fetchAndSetUsername();
     }
   }
 
@@ -204,7 +204,6 @@ class _CardNameEditableState extends State<CardNameEditable> {
                 text: currentText,
                 style: cardTextStyle(context, fontSize: 15),
               ),
-            // Suffix
             if (currentText.isNotEmpty && currentText != widget.defValue)
               TextSpan(
                 text: widget.isG1nkgoCard
@@ -223,7 +222,7 @@ class _CardNameEditableState extends State<CardNameEditable> {
     loggerDev(
         "Building CardNameEditable for ${widget.publicKey} '${widget.cardName}'");
     return FutureBuilder<bool>(
-        future: _fetchAndSetUsername(),
+        future: _usernameFetchFuture,
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           return GestureDetector(
             onTap: () {
@@ -301,52 +300,5 @@ class _CardNameEditableState extends State<CardNameEditable> {
       return false;
     }
     return true;
-  }
-}
-
-class CardNameText extends StatelessWidget {
-  const CardNameText(
-      {super.key,
-      required this.currentText,
-      required this.onTap,
-      required this.isGinkgoCard});
-
-  final String currentText;
-  final bool isGinkgoCard;
-
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final String defValue = isGinkgoCard ? tr('your_name_here') : '';
-    return InkWell(
-      onTap: onTap,
-      child: RichText(
-        // softWrap: true,
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-        text: TextSpan(
-          style: DefaultTextStyle.of(context).style,
-          children: <TextSpan>[
-            if (currentText == defValue)
-              TextSpan(
-                  text: currentText.toUpperCase(),
-                  style: const TextStyle(
-                      fontFamily: 'SourceCodePro', color: Colors.grey)),
-            if (currentText.isNotEmpty && currentText != defValue)
-              TextSpan(
-                  text: currentText,
-                  style: cardTextStyle(context, fontSize: 15)),
-            if (currentText.isNotEmpty && currentText != defValue)
-              TextSpan(
-                text: isGinkgoCard
-                    ? g1nkgoUserNameSuffix
-                    : protectedUserNameSuffix,
-                style: cardTextStyle(context, fontSize: 12),
-              ),
-          ],
-        ),
-      ),
-    );
   }
 }

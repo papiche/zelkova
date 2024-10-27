@@ -10,7 +10,7 @@ import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
 import '../../ui_helpers.dart';
-import 'card_name_editable.dart';
+import 'card_name_text.dart';
 import 'card_text_style.dart';
 
 class DrawerWalletCard extends StatelessWidget {

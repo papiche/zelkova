@@ -5,13 +5,13 @@
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:ferry_exec/ferry_exec.dart' as _i1;
-import 'package:ginkgo/data/models/graphql/__generated__/duniter-queries.ast.gql.dart'
+import 'package:ginkgo/data/models/duniter-indexer/__generated__/duniter-queries.ast.gql.dart'
     as _i5;
-import 'package:ginkgo/data/models/graphql/__generated__/duniter-queries.data.gql.dart'
+import 'package:ginkgo/data/models/duniter-indexer/__generated__/duniter-queries.data.gql.dart'
     as _i2;
-import 'package:ginkgo/data/models/graphql/__generated__/duniter-queries.var.gql.dart'
+import 'package:ginkgo/data/models/duniter-indexer/__generated__/duniter-queries.var.gql.dart'
     as _i3;
-import 'package:ginkgo/data/models/graphql/__generated__/serializers.gql.dart'
+import 'package:ginkgo/data/models/duniter-indexer/__generated__/serializers.gql.dart'
     as _i6;
 import 'package:gql_exec/gql_exec.dart' as _i4;
 

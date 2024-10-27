@@ -18,10 +18,10 @@ import 'package:tuple/tuple.dart';
 import 'package:universal_html/html.dart' show window;
 
 import '../data/models/contact.dart';
-import '../data/models/graphql/__generated__/duniter-queries.data.gql.dart';
-import '../data/models/graphql/__generated__/duniter-queries.req.gql.dart';
-import '../data/models/graphql/__generated__/duniter-queries.var.gql.dart';
-import '../data/models/graphql/duniter_indexer_client.dart';
+import '../data/models/duniter-indexer/__generated__/duniter-queries.data.gql.dart';
+import '../data/models/duniter-indexer/__generated__/duniter-queries.req.gql.dart';
+import '../data/models/duniter-indexer/__generated__/duniter-queries.var.gql.dart';
+import '../data/models/duniter-indexer/duniter_indexer_client.dart';
 import '../data/models/node.dart';
 import '../data/models/node_lists_default.dart';
 import '../data/models/node_manager.dart';

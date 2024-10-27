@@ -4,7 +4,7 @@ targets:
       ferry_generator|graphql_builder:
         enabled: true
         options:
-          schema: ginkgo|lib/data/models/graphql/duniter-indexer.graphql
+          schema: ginkgo|lib/data/models/duniter-indexer/duniter-indexer.graphql
           type_overrides:
             jsonb:
               name: JsonObject
@@ -12,7 +12,7 @@ targets:
       ferry_generator|serializer_builder:
         enabled: true
         options:
-          schema: ginkgo|lib/data/models/graphql/duniter-indexer.graphql
+          schema: ginkgo|lib/data/models/duniter-indexer/duniter-indexer.graphql
           type_overrides:
             jsonb:
               name: JsonObject

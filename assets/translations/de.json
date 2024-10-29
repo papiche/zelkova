@@ -283,5 +283,8 @@
   "pdf_generated": "Generiertes PDF",
   "dates": "Daten",
   "total_received_sent": "Gesamt Ver- und Einkäufe",
-  "download_pdf": "PDF herunterladen"
+  "download_pdf": "PDF herunterladen",
+  "form_contact_pub_or_address": "Schlüssel",
+  "contacts_show_less": "Weniger anzeigen",
+  "contacts_show_more": "Mehr anzeigen"
 }

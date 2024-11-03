@@ -12,6 +12,7 @@ import 'package:ferry/ferry.dart' as ferry;
 import 'package:ferry_hive_store/ferry_hive_store.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:tuple/tuple.dart';
 
 import '../data/models/contact.dart';
 import '../data/models/node.dart';
@@ -305,3 +306,33 @@ Future<List<Contact>> searchProfilesV2({
   }
   return contacts;
 }
+
+/*
+Future<Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalanceV2(
+  String pubKeyRaw, {
+  int? pageSize = 10,
+  int? from,
+  int? to,
+  String? cursor,
+}) async {
+  for (final Node node in NodeManager().getBestNodes(NodeType.duniterIndexer)) {
+    final ferry.Client client =
+        await initDuniterIndexerClient(node.url, GetIt.instance<HiveStore>());
+
+    final request = GGetHistoryAndBalanceReq((b) => b
+      ..vars.accountId = pubKeyRaw
+      ..vars.limit = pageSize
+      ..vars.offset = cursor != null ? int.parse(cursor) : 0);
+
+    final response = await client.request(request).first;
+
+    if (response.hasErrors) {
+      throw Exception('Error fetching data: ${response.graphqlErrors}');
+    }
+
+    final data = response.data?.toJson();
+
+    return Tuple2(data, node);
+  }
+}
+*/

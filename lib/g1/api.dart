@@ -786,7 +786,7 @@ String proxyfyNode(String nodeUrl) {
   return url;
 }
 
-Future<Tuple2<Map<String, dynamic>?, Node>> gvaHistoryAndBalance(
+Future<Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalanceV1(
     String pubKeyRaw,
     {int? pageSize,
     int? from,

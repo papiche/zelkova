@@ -155,7 +155,7 @@ class MultiWalletTransactionCubit
     final bool isG1 = appCubit.currency == Currency.G1;
 
     for (int attempt = 0; attempt < retries; attempt++) {
-      txDataResult = await gvaHistoryAndBalance(pubKey,
+      txDataResult = await getHistoryAndBalanceV1(pubKey,
           pageSize: pageSize, cursor: cursor);
       final Node node = txDataResult.item2;
       logger(

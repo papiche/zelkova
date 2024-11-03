@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
+
 import '../../../data/models/contact.dart';
 import '../../../data/models/node.dart';
 import '../../../data/models/transaction.dart';
@@ -62,7 +63,7 @@ class _SimpleTransactionsPanelState extends State<SimpleTransactionsPanel> {
 
   Future<void> _fetchTransactions() async {
     final Tuple2<Map<String, dynamic>?, Node> txDataResult =
-        await gvaHistoryAndBalance(widget.contact.pubKey,
+        await getHistoryAndBalanceV1(widget.contact.pubKey,
             pageSize: widget.pageSize, from: widget.from, to: widget.to);
 
     if (txDataResult.item1 == null) {

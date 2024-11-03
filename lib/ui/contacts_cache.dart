@@ -124,6 +124,12 @@ class ContactsCache {
 
   Future<void> saveContact(Contact contact) async => addContact(contact);
 
+  Future<void> addAllContacts(List<Contact> contacts) async {
+    for (final Contact contact in contacts) {
+      await addContact(contact);
+    }
+  }
+
   Future<void> addContact(Contact contactRaw) async {
     // Get the cached version of the contact, if it exists
     final Contact contact =

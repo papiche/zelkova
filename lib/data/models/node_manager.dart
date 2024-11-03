@@ -203,6 +203,7 @@ class NodeManager {
     if (nodesAtMaxBlock.isEmpty) {
       nodesAtMaxBlock.addAll(defaultNodes(type));
     }
+    loggerDev('Best nodes: ${nodesAtMaxBlock.length}');
     return nodesAtMaxBlock;
   }
 }

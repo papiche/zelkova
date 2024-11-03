@@ -78,7 +78,7 @@ class _CardNameEditableState extends State<CardNameEditable> {
     final bool isConnected = await ConnectivityWidgetWrapperWrapper.isConnected;
     if (isConnected) {
       try {
-        String? name = await getCesiumPlusUser(widget.publicKey);
+        String? name = await getProfileUserName(widget.publicKey);
         if (name != null && name.isNotEmpty) {
           name = name.replaceAll(g1nkgoUserNameSuffix, '');
           setState(() {

@@ -866,7 +866,7 @@ Future<void> createOrUpdateCesiumPlusUser(String name) async {
   final String pubKey = wallet.pubkey;
 
   // Check if the user exists
-  final String? userName = await getProfileUserNameV1(pubKey);
+  final String? userName = await getProfileUserName(pubKey);
 
   // Prepare the user profile data
   final Map<String, dynamic> userProfile = <String, dynamic>{
@@ -935,7 +935,7 @@ void hashAndSign(Map<String, dynamic> data, CesiumWallet wallet) {
   data['signature'] = signature;
 }
 
-Future<String?> getProfileUserNameV1(String pubKey) async {
+Future<String?> getProfileUserName(String pubKey) async {
   final Contact c = await getProfile(pubKey, onlyCPlusProfile: true);
   return c.name;
 }

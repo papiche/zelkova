@@ -10,7 +10,7 @@ import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer.sch
 import 'package:duniter_indexer/graphql/schema/__generated__/serializers.gql.dart'
     as _i1;
 
-part 'duniter-queries.data.gql.g.dart';
+part 'duniter-indexer-queries.data.gql.g.dart';
 
 abstract class GAccountsByNameOrPkData
     implements Built<GAccountsByNameOrPkData, GAccountsByNameOrPkDataBuilder> {
@@ -108,6 +108,105 @@ abstract class GAccountsByNameOrPkData_identity_account
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
         GAccountsByNameOrPkData_identity_account.serializer,
+        json,
+      );
+}
+
+abstract class GAccountsByNameData
+    implements Built<GAccountsByNameData, GAccountsByNameDataBuilder> {
+  GAccountsByNameData._();
+
+  factory GAccountsByNameData(
+          [void Function(GAccountsByNameDataBuilder b) updates]) =
+      _$GAccountsByNameData;
+
+  static void _initializeBuilder(GAccountsByNameDataBuilder b) =>
+      b..G__typename = 'query_root';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  BuiltList<GAccountsByNameData_identity> get identity;
+  static Serializer<GAccountsByNameData> get serializer =>
+      _$gAccountsByNameDataSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByNameData.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByNameData? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountsByNameData.serializer,
+        json,
+      );
+}
+
+abstract class GAccountsByNameData_identity
+    implements
+        Built<GAccountsByNameData_identity,
+            GAccountsByNameData_identityBuilder> {
+  GAccountsByNameData_identity._();
+
+  factory GAccountsByNameData_identity(
+          [void Function(GAccountsByNameData_identityBuilder b) updates]) =
+      _$GAccountsByNameData_identity;
+
+  static void _initializeBuilder(GAccountsByNameData_identityBuilder b) =>
+      b..G__typename = 'Identity';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  bool get isMember;
+  String get name;
+  String? get accountId;
+  _i2.GIdentityStatusEnum? get status;
+  int get createdOn;
+  GAccountsByNameData_identity_account? get account;
+  int get index;
+  static Serializer<GAccountsByNameData_identity> get serializer =>
+      _$gAccountsByNameDataIdentitySerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByNameData_identity.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByNameData_identity? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountsByNameData_identity.serializer,
+        json,
+      );
+}
+
+abstract class GAccountsByNameData_identity_account
+    implements
+        Built<GAccountsByNameData_identity_account,
+            GAccountsByNameData_identity_accountBuilder> {
+  GAccountsByNameData_identity_account._();
+
+  factory GAccountsByNameData_identity_account(
+      [void Function(GAccountsByNameData_identity_accountBuilder b)
+          updates]) = _$GAccountsByNameData_identity_account;
+
+  static void _initializeBuilder(
+          GAccountsByNameData_identity_accountBuilder b) =>
+      b..G__typename = 'Account';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  bool get isActive;
+  static Serializer<GAccountsByNameData_identity_account> get serializer =>
+      _$gAccountsByNameDataIdentityAccountSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByNameData_identity_account.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByNameData_identity_account? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountsByNameData_identity_account.serializer,
         json,
       );
 }

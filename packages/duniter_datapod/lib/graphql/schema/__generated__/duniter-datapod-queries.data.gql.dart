@@ -84,6 +84,77 @@ abstract class GGetProfileByAddressData_profiles
       );
 }
 
+abstract class GGetProfilesByAddressData
+    implements
+        Built<GGetProfilesByAddressData, GGetProfilesByAddressDataBuilder> {
+  GGetProfilesByAddressData._();
+
+  factory GGetProfilesByAddressData(
+          [void Function(GGetProfilesByAddressDataBuilder b) updates]) =
+      _$GGetProfilesByAddressData;
+
+  static void _initializeBuilder(GGetProfilesByAddressDataBuilder b) =>
+      b..G__typename = 'query_root';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  BuiltList<GGetProfilesByAddressData_profiles> get profiles;
+  static Serializer<GGetProfilesByAddressData> get serializer =>
+      _$gGetProfilesByAddressDataSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GGetProfilesByAddressData.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GGetProfilesByAddressData? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GGetProfilesByAddressData.serializer,
+        json,
+      );
+}
+
+abstract class GGetProfilesByAddressData_profiles
+    implements
+        Built<GGetProfilesByAddressData_profiles,
+            GGetProfilesByAddressData_profilesBuilder> {
+  GGetProfilesByAddressData_profiles._();
+
+  factory GGetProfilesByAddressData_profiles(
+      [void Function(GGetProfilesByAddressData_profilesBuilder b)
+          updates]) = _$GGetProfilesByAddressData_profiles;
+
+  static void _initializeBuilder(GGetProfilesByAddressData_profilesBuilder b) =>
+      b..G__typename = 'profiles';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  String? get avatar;
+  String get pubkey;
+  String? get description;
+  String? get title;
+  String? get city;
+  String? get data_cid;
+  _i2.Gpoint? get geoloc;
+  String get index_request_cid;
+  _i3.JsonObject? get socials;
+  _i2.Gtimestamp get time;
+  static Serializer<GGetProfilesByAddressData_profiles> get serializer =>
+      _$gGetProfilesByAddressDataProfilesSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GGetProfilesByAddressData_profiles.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GGetProfilesByAddressData_profiles? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GGetProfilesByAddressData_profiles.serializer,
+        json,
+      );
+}
+
 abstract class GGetProfileCountData
     implements Built<GGetProfileCountData, GGetProfileCountDataBuilder> {
   GGetProfileCountData._();
@@ -176,6 +247,146 @@ abstract class GGetProfileCountData_profiles_aggregate_aggregate
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
         GGetProfileCountData_profiles_aggregate_aggregate.serializer,
+        json,
+      );
+}
+
+abstract class GSearchProfileByTermData
+    implements
+        Built<GSearchProfileByTermData, GSearchProfileByTermDataBuilder> {
+  GSearchProfileByTermData._();
+
+  factory GSearchProfileByTermData(
+          [void Function(GSearchProfileByTermDataBuilder b) updates]) =
+      _$GSearchProfileByTermData;
+
+  static void _initializeBuilder(GSearchProfileByTermDataBuilder b) =>
+      b..G__typename = 'query_root';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  BuiltList<GSearchProfileByTermData_profiles> get profiles;
+  static Serializer<GSearchProfileByTermData> get serializer =>
+      _$gSearchProfileByTermDataSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GSearchProfileByTermData.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GSearchProfileByTermData? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GSearchProfileByTermData.serializer,
+        json,
+      );
+}
+
+abstract class GSearchProfileByTermData_profiles
+    implements
+        Built<GSearchProfileByTermData_profiles,
+            GSearchProfileByTermData_profilesBuilder> {
+  GSearchProfileByTermData_profiles._();
+
+  factory GSearchProfileByTermData_profiles(
+          [void Function(GSearchProfileByTermData_profilesBuilder b) updates]) =
+      _$GSearchProfileByTermData_profiles;
+
+  static void _initializeBuilder(GSearchProfileByTermData_profilesBuilder b) =>
+      b..G__typename = 'profiles';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  String? get avatar;
+  String get pubkey;
+  String? get description;
+  String? get title;
+  String? get city;
+  String? get data_cid;
+  _i2.Gpoint? get geoloc;
+  String get index_request_cid;
+  _i3.JsonObject? get socials;
+  _i2.Gtimestamp get time;
+  static Serializer<GSearchProfileByTermData_profiles> get serializer =>
+      _$gSearchProfileByTermDataProfilesSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GSearchProfileByTermData_profiles.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GSearchProfileByTermData_profiles? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GSearchProfileByTermData_profiles.serializer,
+        json,
+      );
+}
+
+abstract class GSearchProfilesData
+    implements Built<GSearchProfilesData, GSearchProfilesDataBuilder> {
+  GSearchProfilesData._();
+
+  factory GSearchProfilesData(
+          [void Function(GSearchProfilesDataBuilder b) updates]) =
+      _$GSearchProfilesData;
+
+  static void _initializeBuilder(GSearchProfilesDataBuilder b) =>
+      b..G__typename = 'query_root';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  BuiltList<GSearchProfilesData_profiles> get profiles;
+  static Serializer<GSearchProfilesData> get serializer =>
+      _$gSearchProfilesDataSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GSearchProfilesData.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GSearchProfilesData? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GSearchProfilesData.serializer,
+        json,
+      );
+}
+
+abstract class GSearchProfilesData_profiles
+    implements
+        Built<GSearchProfilesData_profiles,
+            GSearchProfilesData_profilesBuilder> {
+  GSearchProfilesData_profiles._();
+
+  factory GSearchProfilesData_profiles(
+          [void Function(GSearchProfilesData_profilesBuilder b) updates]) =
+      _$GSearchProfilesData_profiles;
+
+  static void _initializeBuilder(GSearchProfilesData_profilesBuilder b) =>
+      b..G__typename = 'profiles';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  String? get avatar;
+  String get pubkey;
+  String? get description;
+  String? get title;
+  String? get city;
+  String? get data_cid;
+  _i2.Gpoint? get geoloc;
+  String get index_request_cid;
+  _i3.JsonObject? get socials;
+  _i2.Gtimestamp get time;
+  static Serializer<GSearchProfilesData_profiles> get serializer =>
+      _$gSearchProfilesDataProfilesSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GSearchProfilesData_profiles.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GSearchProfilesData_profiles? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GSearchProfilesData_profiles.serializer,
         json,
       );
 }

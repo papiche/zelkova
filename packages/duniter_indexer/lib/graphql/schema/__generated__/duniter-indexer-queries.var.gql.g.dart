@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'duniter-queries.var.gql.dart';
+part of 'duniter-indexer-queries.var.gql.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
@@ -8,6 +8,8 @@ part of 'duniter-queries.var.gql.dart';
 
 Serializer<GAccountsByNameOrPkVars> _$gAccountsByNameOrPkVarsSerializer =
     new _$GAccountsByNameOrPkVarsSerializer();
+Serializer<GAccountsByNameVars> _$gAccountsByNameVarsSerializer =
+    new _$GAccountsByNameVarsSerializer();
 Serializer<GAccountByPkVars> _$gAccountByPkVarsSerializer =
     new _$GAccountByPkVarsSerializer();
 Serializer<GLastBlockVars> _$gLastBlockVarsSerializer =
@@ -44,6 +46,55 @@ class _$GAccountsByNameOrPkVarsSerializer
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new GAccountsByNameOrPkVarsBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'pattern':
+          result.pattern = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GAccountsByNameVarsSerializer
+    implements StructuredSerializer<GAccountsByNameVars> {
+  @override
+  final Iterable<Type> types = const [
+    GAccountsByNameVars,
+    _$GAccountsByNameVars
+  ];
+  @override
+  final String wireName = 'GAccountsByNameVars';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GAccountsByNameVars object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.pattern;
+    if (value != null) {
+      result
+        ..add('pattern')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    return result;
+  }
+
+  @override
+  GAccountsByNameVars deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GAccountsByNameVarsBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -201,6 +252,87 @@ class GAccountsByNameOrPkVarsBuilder
 
   _$GAccountsByNameOrPkVars _build() {
     final _$result = _$v ?? new _$GAccountsByNameOrPkVars._(pattern: pattern);
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GAccountsByNameVars extends GAccountsByNameVars {
+  @override
+  final String? pattern;
+
+  factory _$GAccountsByNameVars(
+          [void Function(GAccountsByNameVarsBuilder)? updates]) =>
+      (new GAccountsByNameVarsBuilder()..update(updates))._build();
+
+  _$GAccountsByNameVars._({this.pattern}) : super._();
+
+  @override
+  GAccountsByNameVars rebuild(
+          void Function(GAccountsByNameVarsBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GAccountsByNameVarsBuilder toBuilder() =>
+      new GAccountsByNameVarsBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GAccountsByNameVars && pattern == other.pattern;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, pattern.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GAccountsByNameVars')
+          ..add('pattern', pattern))
+        .toString();
+  }
+}
+
+class GAccountsByNameVarsBuilder
+    implements Builder<GAccountsByNameVars, GAccountsByNameVarsBuilder> {
+  _$GAccountsByNameVars? _$v;
+
+  String? _pattern;
+  String? get pattern => _$this._pattern;
+  set pattern(String? pattern) => _$this._pattern = pattern;
+
+  GAccountsByNameVarsBuilder();
+
+  GAccountsByNameVarsBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _pattern = $v.pattern;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GAccountsByNameVars other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GAccountsByNameVars;
+  }
+
+  @override
+  void update(void Function(GAccountsByNameVarsBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GAccountsByNameVars build() => _build();
+
+  _$GAccountsByNameVars _build() {
+    final _$result = _$v ?? new _$GAccountsByNameVars._(pattern: pattern);
     replace(_$result);
     return _$result;
   }

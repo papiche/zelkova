@@ -7,6 +7,30 @@ import 'package:built_value/serializer.dart';
 import 'package:built_value/src/json_object_serializer.dart'
     show JsonObjectSerializer;
 import 'package:built_value/standard_json_plugin.dart' show StandardJsonPlugin;
+import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.data.gql.dart'
+    show
+        GAccountByPkData,
+        GAccountByPkData_accountByPk,
+        GAccountsByNameData,
+        GAccountsByNameData_identity,
+        GAccountsByNameData_identity_account,
+        GAccountsByNameOrPkData,
+        GAccountsByNameOrPkData_identity,
+        GAccountsByNameOrPkData_identity_account,
+        GLastBlockData,
+        GLastBlockData_block;
+import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.req.gql.dart'
+    show
+        GAccountByPkReq,
+        GAccountsByNameOrPkReq,
+        GAccountsByNameReq,
+        GLastBlockReq;
+import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.var.gql.dart'
+    show
+        GAccountByPkVars,
+        GAccountsByNameOrPkVars,
+        GAccountsByNameVars,
+        GLastBlockVars;
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer.schema.schema.gql.dart'
     show
         GAccountAggregateBoolExp,
@@ -329,19 +353,6 @@ import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer.sch
         Gtimestamptz,
         GtransferAggregateBoolExpCount,
         GtxCommentAggregateBoolExpCount;
-import 'package:duniter_indexer/graphql/schema/__generated__/duniter-queries.data.gql.dart'
-    show
-        GAccountByPkData,
-        GAccountByPkData_accountByPk,
-        GAccountsByNameOrPkData,
-        GAccountsByNameOrPkData_identity,
-        GAccountsByNameOrPkData_identity_account,
-        GLastBlockData,
-        GLastBlockData_block;
-import 'package:duniter_indexer/graphql/schema/__generated__/duniter-queries.req.gql.dart'
-    show GAccountByPkReq, GAccountsByNameOrPkReq, GLastBlockReq;
-import 'package:duniter_indexer/graphql/schema/__generated__/duniter-queries.var.gql.dart'
-    show GAccountByPkVars, GAccountsByNameOrPkVars, GLastBlockVars;
 import 'package:ferry_exec/ferry_exec.dart';
 import 'package:gql_code_builder_serializers/gql_code_builder_serializers.dart'
     show OperationSerializer;
@@ -368,11 +379,16 @@ final SerializersBuilder _serializersBuilder = _$serializers.toBuilder()
   GAccountSelectColumnAccountAggregateBoolExpBool_orArgumentsColumns,
   GAccountStreamCursorInput,
   GAccountStreamCursorValueInput,
+  GAccountsByNameData,
+  GAccountsByNameData_identity,
+  GAccountsByNameData_identity_account,
   GAccountsByNameOrPkData,
   GAccountsByNameOrPkData_identity,
   GAccountsByNameOrPkData_identity_account,
   GAccountsByNameOrPkReq,
   GAccountsByNameOrPkVars,
+  GAccountsByNameReq,
+  GAccountsByNameVars,
   GBlockBoolExp,
   GBlockOrderBy,
   GBlockSelectColumn,

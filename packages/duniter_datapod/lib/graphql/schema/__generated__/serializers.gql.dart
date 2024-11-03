@@ -13,11 +13,27 @@ import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-que
         GGetProfileByAddressData_profiles,
         GGetProfileCountData,
         GGetProfileCountData_profiles_aggregate,
-        GGetProfileCountData_profiles_aggregate_aggregate;
+        GGetProfileCountData_profiles_aggregate_aggregate,
+        GGetProfilesByAddressData,
+        GGetProfilesByAddressData_profiles,
+        GSearchProfileByTermData,
+        GSearchProfileByTermData_profiles,
+        GSearchProfilesData,
+        GSearchProfilesData_profiles;
 import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-queries.req.gql.dart'
-    show GGetProfileByAddressReq, GGetProfileCountReq;
+    show
+        GGetProfileByAddressReq,
+        GGetProfileCountReq,
+        GGetProfilesByAddressReq,
+        GSearchProfileByTermReq,
+        GSearchProfilesReq;
 import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-queries.var.gql.dart'
-    show GGetProfileByAddressVars, GGetProfileCountVars;
+    show
+        GGetProfileByAddressVars,
+        GGetProfileCountVars,
+        GGetProfilesByAddressVars,
+        GSearchProfileByTermVars,
+        GSearchProfilesVars;
 import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod.schema.schema.gql.dart'
     show
         GGeolocInput,
@@ -57,6 +73,18 @@ final SerializersBuilder _serializersBuilder = _$serializers.toBuilder()
   GGetProfileCountData_profiles_aggregate_aggregate,
   GGetProfileCountReq,
   GGetProfileCountVars,
+  GGetProfilesByAddressData,
+  GGetProfilesByAddressData_profiles,
+  GGetProfilesByAddressReq,
+  GGetProfilesByAddressVars,
+  GSearchProfileByTermData,
+  GSearchProfileByTermData_profiles,
+  GSearchProfileByTermReq,
+  GSearchProfileByTermVars,
+  GSearchProfilesData,
+  GSearchProfilesData_profiles,
+  GSearchProfilesReq,
+  GSearchProfilesVars,
   GSocialInput,
   GString_comparison_exp,
   Gcursor_ordering,

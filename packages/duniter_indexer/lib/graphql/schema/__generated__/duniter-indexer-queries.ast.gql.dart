@@ -122,6 +122,104 @@ const AccountsByNameOrPk = _i1.OperationDefinitionNode(
     )
   ]),
 );
+const AccountsByName = _i1.OperationDefinitionNode(
+  type: _i1.OperationType.query,
+  name: _i1.NameNode(value: 'AccountsByName'),
+  variableDefinitions: [
+    _i1.VariableDefinitionNode(
+      variable: _i1.VariableNode(name: _i1.NameNode(value: 'pattern')),
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'String'),
+        isNonNull: false,
+      ),
+      defaultValue: _i1.DefaultValueNode(value: null),
+      directives: [],
+    )
+  ],
+  directives: [],
+  selectionSet: _i1.SelectionSetNode(selections: [
+    _i1.FieldNode(
+      name: _i1.NameNode(value: 'identity'),
+      alias: null,
+      arguments: [
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'where'),
+          value: _i1.ObjectValueNode(fields: [
+            _i1.ObjectFieldNode(
+              name: _i1.NameNode(value: 'name'),
+              value: _i1.ObjectValueNode(fields: [
+                _i1.ObjectFieldNode(
+                  name: _i1.NameNode(value: '_iregex'),
+                  value: _i1.VariableNode(name: _i1.NameNode(value: 'pattern')),
+                )
+              ]),
+            )
+          ]),
+        )
+      ],
+      directives: [],
+      selectionSet: _i1.SelectionSetNode(selections: [
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'isMember'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'name'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'accountId'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'status'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'createdOn'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'account'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: _i1.SelectionSetNode(selections: [
+            _i1.FieldNode(
+              name: _i1.NameNode(value: 'isActive'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null,
+            )
+          ]),
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'index'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        ),
+      ]),
+    )
+  ]),
+);
 const AccountByPk = _i1.OperationDefinitionNode(
   type: _i1.OperationType.query,
   name: _i1.NameNode(value: 'AccountByPk'),
@@ -199,6 +297,7 @@ const LastBlock = _i1.OperationDefinitionNode(
 );
 const document = _i1.DocumentNode(definitions: [
   AccountsByNameOrPk,
+  AccountsByName,
   AccountByPk,
   LastBlock,
 ]);

@@ -4,18 +4,18 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:duniter_indexer/graphql/schema/__generated__/duniter-queries.ast.gql.dart'
+import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.ast.gql.dart'
     as _i5;
-import 'package:duniter_indexer/graphql/schema/__generated__/duniter-queries.data.gql.dart'
+import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.data.gql.dart'
     as _i2;
-import 'package:duniter_indexer/graphql/schema/__generated__/duniter-queries.var.gql.dart'
+import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.var.gql.dart'
     as _i3;
 import 'package:duniter_indexer/graphql/schema/__generated__/serializers.gql.dart'
     as _i6;
 import 'package:ferry_exec/ferry_exec.dart' as _i1;
 import 'package:gql_exec/gql_exec.dart' as _i4;
 
-part 'duniter-queries.req.gql.g.dart';
+part 'duniter-indexer-queries.req.gql.g.dart';
 
 abstract class GAccountsByNameOrPkReq
     implements
@@ -94,6 +94,86 @@ abstract class GAccountsByNameOrPkReq
   static GAccountsByNameOrPkReq? fromJson(Map<String, dynamic> json) =>
       _i6.serializers.deserializeWith(
         GAccountsByNameOrPkReq.serializer,
+        json,
+      );
+}
+
+abstract class GAccountsByNameReq
+    implements
+        Built<GAccountsByNameReq, GAccountsByNameReqBuilder>,
+        _i1.OperationRequest<_i2.GAccountsByNameData, _i3.GAccountsByNameVars> {
+  GAccountsByNameReq._();
+
+  factory GAccountsByNameReq(
+          [void Function(GAccountsByNameReqBuilder b) updates]) =
+      _$GAccountsByNameReq;
+
+  static void _initializeBuilder(GAccountsByNameReqBuilder b) => b
+    ..operation = _i4.Operation(
+      document: _i5.document,
+      operationName: 'AccountsByName',
+    )
+    ..executeOnListen = true;
+
+  @override
+  _i3.GAccountsByNameVars get vars;
+  @override
+  _i4.Operation get operation;
+  @override
+  _i4.Request get execRequest => _i4.Request(
+        operation: operation,
+        variables: vars.toJson(),
+        context: context ?? const _i4.Context(),
+      );
+
+  @override
+  String? get requestId;
+  @override
+  @BuiltValueField(serialize: false)
+  _i2.GAccountsByNameData? Function(
+    _i2.GAccountsByNameData?,
+    _i2.GAccountsByNameData?,
+  )? get updateResult;
+  @override
+  _i2.GAccountsByNameData? get optimisticResponse;
+  @override
+  String? get updateCacheHandlerKey;
+  @override
+  Map<String, dynamic>? get updateCacheHandlerContext;
+  @override
+  _i1.FetchPolicy? get fetchPolicy;
+  @override
+  bool get executeOnListen;
+  @override
+  @BuiltValueField(serialize: false)
+  _i4.Context? get context;
+  @override
+  _i2.GAccountsByNameData? parseData(Map<String, dynamic> json) =>
+      _i2.GAccountsByNameData.fromJson(json);
+
+  @override
+  Map<String, dynamic> varsToJson() => vars.toJson();
+
+  @override
+  Map<String, dynamic> dataToJson(_i2.GAccountsByNameData data) =>
+      data.toJson();
+
+  @override
+  _i1.OperationRequest<_i2.GAccountsByNameData, _i3.GAccountsByNameVars>
+      transformOperation(_i4.Operation Function(_i4.Operation) transform) =>
+          this.rebuild((b) => b..operation = transform(operation));
+
+  static Serializer<GAccountsByNameReq> get serializer =>
+      _$gAccountsByNameReqSerializer;
+
+  Map<String, dynamic> toJson() => (_i6.serializers.serializeWith(
+        GAccountsByNameReq.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByNameReq? fromJson(Map<String, dynamic> json) =>
+      _i6.serializers.deserializeWith(
+        GAccountsByNameReq.serializer,
         json,
       );
 }

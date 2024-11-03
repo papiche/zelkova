@@ -18,6 +18,18 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GGetProfileCountData_profiles_aggregate_aggregate.serializer)
       ..add(GGetProfileCountReq.serializer)
       ..add(GGetProfileCountVars.serializer)
+      ..add(GGetProfilesByAddressData.serializer)
+      ..add(GGetProfilesByAddressData_profiles.serializer)
+      ..add(GGetProfilesByAddressReq.serializer)
+      ..add(GGetProfilesByAddressVars.serializer)
+      ..add(GSearchProfileByTermData.serializer)
+      ..add(GSearchProfileByTermData_profiles.serializer)
+      ..add(GSearchProfileByTermReq.serializer)
+      ..add(GSearchProfileByTermVars.serializer)
+      ..add(GSearchProfilesData.serializer)
+      ..add(GSearchProfilesData_profiles.serializer)
+      ..add(GSearchProfilesReq.serializer)
+      ..add(GSearchProfilesVars.serializer)
       ..add(GSocialInput.serializer)
       ..add(GString_comparison_exp.serializer)
       ..add(Gcursor_ordering.serializer)
@@ -38,6 +50,18 @@ Serializers _$serializers = (new Serializers().toBuilder()
               const [const FullType(GGetProfileByAddressData_profiles)]),
           () => new ListBuilder<GGetProfileByAddressData_profiles>())
       ..addBuilderFactory(
+          const FullType(BuiltList,
+              const [const FullType(GGetProfilesByAddressData_profiles)]),
+          () => new ListBuilder<GGetProfilesByAddressData_profiles>())
+      ..addBuilderFactory(
+          const FullType(BuiltList,
+              const [const FullType(GSearchProfileByTermData_profiles)]),
+          () => new ListBuilder<GSearchProfileByTermData_profiles>())
+      ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(GSearchProfilesData_profiles)]),
+          () => new ListBuilder<GSearchProfilesData_profiles>())
+      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Gpoint)]),
           () => new ListBuilder<Gpoint>())
       ..addBuilderFactory(
@@ -55,6 +79,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Gtimestamp)]),
           () => new ListBuilder<Gtimestamp>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(String)]),
+          () => new ListBuilder<String>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>())

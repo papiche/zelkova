@@ -7,7 +7,7 @@ import 'package:built_value/serializer.dart';
 import 'package:duniter_indexer/graphql/schema/__generated__/serializers.gql.dart'
     as _i1;
 
-part 'duniter-queries.var.gql.g.dart';
+part 'duniter-indexer-queries.var.gql.g.dart';
 
 abstract class GAccountsByNameOrPkVars
     implements Built<GAccountsByNameOrPkVars, GAccountsByNameOrPkVarsBuilder> {
@@ -29,6 +29,30 @@ abstract class GAccountsByNameOrPkVars
   static GAccountsByNameOrPkVars? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
         GAccountsByNameOrPkVars.serializer,
+        json,
+      );
+}
+
+abstract class GAccountsByNameVars
+    implements Built<GAccountsByNameVars, GAccountsByNameVarsBuilder> {
+  GAccountsByNameVars._();
+
+  factory GAccountsByNameVars(
+          [void Function(GAccountsByNameVarsBuilder b) updates]) =
+      _$GAccountsByNameVars;
+
+  String? get pattern;
+  static Serializer<GAccountsByNameVars> get serializer =>
+      _$gAccountsByNameVarsSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByNameVars.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByNameVars? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountsByNameVars.serializer,
         json,
       );
 }

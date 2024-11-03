@@ -25,11 +25,16 @@ Serializers _$serializers = (new Serializers().toBuilder()
           .serializer)
       ..add(GAccountStreamCursorInput.serializer)
       ..add(GAccountStreamCursorValueInput.serializer)
+      ..add(GAccountsByNameData.serializer)
+      ..add(GAccountsByNameData_identity.serializer)
+      ..add(GAccountsByNameData_identity_account.serializer)
       ..add(GAccountsByNameOrPkData.serializer)
       ..add(GAccountsByNameOrPkData_identity.serializer)
       ..add(GAccountsByNameOrPkData_identity_account.serializer)
       ..add(GAccountsByNameOrPkReq.serializer)
       ..add(GAccountsByNameOrPkVars.serializer)
+      ..add(GAccountsByNameReq.serializer)
+      ..add(GAccountsByNameVars.serializer)
       ..add(GBlockBoolExp.serializer)
       ..add(GBlockOrderBy.serializer)
       ..add(GBlockSelectColumn.serializer)
@@ -364,6 +369,10 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(
               BuiltList, const [const FullType(GAccountSelectColumn)]),
           () => new ListBuilder<GAccountSelectColumn>())
+      ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(GAccountsByNameData_identity)]),
+          () => new ListBuilder<GAccountsByNameData_identity>())
       ..addBuilderFactory(
           const FullType(BuiltList,
               const [const FullType(GAccountsByNameOrPkData_identity)]),

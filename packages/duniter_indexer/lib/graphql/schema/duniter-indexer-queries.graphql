@@ -37,6 +37,24 @@ query AccountsByNameOrPk($pattern: String) {
     }
 }
 
+query AccountsByName($pattern: String) {
+    identity(
+        where:
+        { name: { _iregex: $pattern } }
+    ) {
+        isMember
+        name
+        accountId
+        status
+        createdOn
+        account {
+            isActive
+        }
+        index
+    }
+}
+
+
 query AccountByPk ($id: String!)  {
     accountByPk(id: $id) {
         isActive

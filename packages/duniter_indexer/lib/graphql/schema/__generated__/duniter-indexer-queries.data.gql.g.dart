@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'duniter-queries.data.gql.dart';
+part of 'duniter-indexer-queries.data.gql.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
@@ -14,6 +14,14 @@ Serializer<GAccountsByNameOrPkData_identity>
 Serializer<GAccountsByNameOrPkData_identity_account>
     _$gAccountsByNameOrPkDataIdentityAccountSerializer =
     new _$GAccountsByNameOrPkData_identity_accountSerializer();
+Serializer<GAccountsByNameData> _$gAccountsByNameDataSerializer =
+    new _$GAccountsByNameDataSerializer();
+Serializer<GAccountsByNameData_identity>
+    _$gAccountsByNameDataIdentitySerializer =
+    new _$GAccountsByNameData_identitySerializer();
+Serializer<GAccountsByNameData_identity_account>
+    _$gAccountsByNameDataIdentityAccountSerializer =
+    new _$GAccountsByNameData_identity_accountSerializer();
 Serializer<GAccountByPkData> _$gAccountByPkDataSerializer =
     new _$GAccountByPkDataSerializer();
 Serializer<GAccountByPkData_accountByPk>
@@ -220,6 +228,224 @@ class _$GAccountsByNameOrPkData_identity_accountSerializer
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new GAccountsByNameOrPkData_identity_accountBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case '__typename':
+          result.G__typename = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+        case 'isActive':
+          result.isActive = serializers.deserialize(value,
+              specifiedType: const FullType(bool))! as bool;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GAccountsByNameDataSerializer
+    implements StructuredSerializer<GAccountsByNameData> {
+  @override
+  final Iterable<Type> types = const [
+    GAccountsByNameData,
+    _$GAccountsByNameData
+  ];
+  @override
+  final String wireName = 'GAccountsByNameData';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GAccountsByNameData object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      '__typename',
+      serializers.serialize(object.G__typename,
+          specifiedType: const FullType(String)),
+      'identity',
+      serializers.serialize(object.identity,
+          specifiedType: const FullType(
+              BuiltList, const [const FullType(GAccountsByNameData_identity)])),
+    ];
+
+    return result;
+  }
+
+  @override
+  GAccountsByNameData deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GAccountsByNameDataBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case '__typename':
+          result.G__typename = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+        case 'identity':
+          result.identity.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltList, const [
+                const FullType(GAccountsByNameData_identity)
+              ]))! as BuiltList<Object?>);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GAccountsByNameData_identitySerializer
+    implements StructuredSerializer<GAccountsByNameData_identity> {
+  @override
+  final Iterable<Type> types = const [
+    GAccountsByNameData_identity,
+    _$GAccountsByNameData_identity
+  ];
+  @override
+  final String wireName = 'GAccountsByNameData_identity';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GAccountsByNameData_identity object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      '__typename',
+      serializers.serialize(object.G__typename,
+          specifiedType: const FullType(String)),
+      'isMember',
+      serializers.serialize(object.isMember,
+          specifiedType: const FullType(bool)),
+      'name',
+      serializers.serialize(object.name, specifiedType: const FullType(String)),
+      'createdOn',
+      serializers.serialize(object.createdOn,
+          specifiedType: const FullType(int)),
+      'index',
+      serializers.serialize(object.index, specifiedType: const FullType(int)),
+    ];
+    Object? value;
+    value = object.accountId;
+    if (value != null) {
+      result
+        ..add('accountId')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.status;
+    if (value != null) {
+      result
+        ..add('status')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
+    }
+    value = object.account;
+    if (value != null) {
+      result
+        ..add('account')
+        ..add(serializers.serialize(value,
+            specifiedType:
+                const FullType(GAccountsByNameData_identity_account)));
+    }
+    return result;
+  }
+
+  @override
+  GAccountsByNameData_identity deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GAccountsByNameData_identityBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case '__typename':
+          result.G__typename = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+        case 'isMember':
+          result.isMember = serializers.deserialize(value,
+              specifiedType: const FullType(bool))! as bool;
+          break;
+        case 'name':
+          result.name = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+        case 'accountId':
+          result.accountId = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'status':
+          result.status = serializers.deserialize(value,
+                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
+              as _i2.GIdentityStatusEnum?;
+          break;
+        case 'createdOn':
+          result.createdOn = serializers.deserialize(value,
+              specifiedType: const FullType(int))! as int;
+          break;
+        case 'account':
+          result.account.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(GAccountsByNameData_identity_account))!
+              as GAccountsByNameData_identity_account);
+          break;
+        case 'index':
+          result.index = serializers.deserialize(value,
+              specifiedType: const FullType(int))! as int;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GAccountsByNameData_identity_accountSerializer
+    implements StructuredSerializer<GAccountsByNameData_identity_account> {
+  @override
+  final Iterable<Type> types = const [
+    GAccountsByNameData_identity_account,
+    _$GAccountsByNameData_identity_account
+  ];
+  @override
+  final String wireName = 'GAccountsByNameData_identity_account';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GAccountsByNameData_identity_account object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      '__typename',
+      serializers.serialize(object.G__typename,
+          specifiedType: const FullType(String)),
+      'isActive',
+      serializers.serialize(object.isActive,
+          specifiedType: const FullType(bool)),
+    ];
+
+    return result;
+  }
+
+  @override
+  GAccountsByNameData_identity_account deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GAccountsByNameData_identity_accountBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -889,6 +1115,442 @@ class GAccountsByNameOrPkData_identity_accountBuilder
                 r'GAccountsByNameOrPkData_identity_account', 'G__typename'),
             isActive: BuiltValueNullFieldError.checkNotNull(isActive,
                 r'GAccountsByNameOrPkData_identity_account', 'isActive'));
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GAccountsByNameData extends GAccountsByNameData {
+  @override
+  final String G__typename;
+  @override
+  final BuiltList<GAccountsByNameData_identity> identity;
+
+  factory _$GAccountsByNameData(
+          [void Function(GAccountsByNameDataBuilder)? updates]) =>
+      (new GAccountsByNameDataBuilder()..update(updates))._build();
+
+  _$GAccountsByNameData._({required this.G__typename, required this.identity})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(
+        G__typename, r'GAccountsByNameData', 'G__typename');
+    BuiltValueNullFieldError.checkNotNull(
+        identity, r'GAccountsByNameData', 'identity');
+  }
+
+  @override
+  GAccountsByNameData rebuild(
+          void Function(GAccountsByNameDataBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GAccountsByNameDataBuilder toBuilder() =>
+      new GAccountsByNameDataBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GAccountsByNameData &&
+        G__typename == other.G__typename &&
+        identity == other.identity;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, G__typename.hashCode);
+    _$hash = $jc(_$hash, identity.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GAccountsByNameData')
+          ..add('G__typename', G__typename)
+          ..add('identity', identity))
+        .toString();
+  }
+}
+
+class GAccountsByNameDataBuilder
+    implements Builder<GAccountsByNameData, GAccountsByNameDataBuilder> {
+  _$GAccountsByNameData? _$v;
+
+  String? _G__typename;
+  String? get G__typename => _$this._G__typename;
+  set G__typename(String? G__typename) => _$this._G__typename = G__typename;
+
+  ListBuilder<GAccountsByNameData_identity>? _identity;
+  ListBuilder<GAccountsByNameData_identity> get identity =>
+      _$this._identity ??= new ListBuilder<GAccountsByNameData_identity>();
+  set identity(ListBuilder<GAccountsByNameData_identity>? identity) =>
+      _$this._identity = identity;
+
+  GAccountsByNameDataBuilder() {
+    GAccountsByNameData._initializeBuilder(this);
+  }
+
+  GAccountsByNameDataBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _G__typename = $v.G__typename;
+      _identity = $v.identity.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GAccountsByNameData other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GAccountsByNameData;
+  }
+
+  @override
+  void update(void Function(GAccountsByNameDataBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GAccountsByNameData build() => _build();
+
+  _$GAccountsByNameData _build() {
+    _$GAccountsByNameData _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountsByNameData._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename, r'GAccountsByNameData', 'G__typename'),
+              identity: identity.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'identity';
+        identity.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountsByNameData', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GAccountsByNameData_identity extends GAccountsByNameData_identity {
+  @override
+  final String G__typename;
+  @override
+  final bool isMember;
+  @override
+  final String name;
+  @override
+  final String? accountId;
+  @override
+  final _i2.GIdentityStatusEnum? status;
+  @override
+  final int createdOn;
+  @override
+  final GAccountsByNameData_identity_account? account;
+  @override
+  final int index;
+
+  factory _$GAccountsByNameData_identity(
+          [void Function(GAccountsByNameData_identityBuilder)? updates]) =>
+      (new GAccountsByNameData_identityBuilder()..update(updates))._build();
+
+  _$GAccountsByNameData_identity._(
+      {required this.G__typename,
+      required this.isMember,
+      required this.name,
+      this.accountId,
+      this.status,
+      required this.createdOn,
+      this.account,
+      required this.index})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(
+        G__typename, r'GAccountsByNameData_identity', 'G__typename');
+    BuiltValueNullFieldError.checkNotNull(
+        isMember, r'GAccountsByNameData_identity', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        name, r'GAccountsByNameData_identity', 'name');
+    BuiltValueNullFieldError.checkNotNull(
+        createdOn, r'GAccountsByNameData_identity', 'createdOn');
+    BuiltValueNullFieldError.checkNotNull(
+        index, r'GAccountsByNameData_identity', 'index');
+  }
+
+  @override
+  GAccountsByNameData_identity rebuild(
+          void Function(GAccountsByNameData_identityBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GAccountsByNameData_identityBuilder toBuilder() =>
+      new GAccountsByNameData_identityBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GAccountsByNameData_identity &&
+        G__typename == other.G__typename &&
+        isMember == other.isMember &&
+        name == other.name &&
+        accountId == other.accountId &&
+        status == other.status &&
+        createdOn == other.createdOn &&
+        account == other.account &&
+        index == other.index;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, G__typename.hashCode);
+    _$hash = $jc(_$hash, isMember.hashCode);
+    _$hash = $jc(_$hash, name.hashCode);
+    _$hash = $jc(_$hash, accountId.hashCode);
+    _$hash = $jc(_$hash, status.hashCode);
+    _$hash = $jc(_$hash, createdOn.hashCode);
+    _$hash = $jc(_$hash, account.hashCode);
+    _$hash = $jc(_$hash, index.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GAccountsByNameData_identity')
+          ..add('G__typename', G__typename)
+          ..add('isMember', isMember)
+          ..add('name', name)
+          ..add('accountId', accountId)
+          ..add('status', status)
+          ..add('createdOn', createdOn)
+          ..add('account', account)
+          ..add('index', index))
+        .toString();
+  }
+}
+
+class GAccountsByNameData_identityBuilder
+    implements
+        Builder<GAccountsByNameData_identity,
+            GAccountsByNameData_identityBuilder> {
+  _$GAccountsByNameData_identity? _$v;
+
+  String? _G__typename;
+  String? get G__typename => _$this._G__typename;
+  set G__typename(String? G__typename) => _$this._G__typename = G__typename;
+
+  bool? _isMember;
+  bool? get isMember => _$this._isMember;
+  set isMember(bool? isMember) => _$this._isMember = isMember;
+
+  String? _name;
+  String? get name => _$this._name;
+  set name(String? name) => _$this._name = name;
+
+  String? _accountId;
+  String? get accountId => _$this._accountId;
+  set accountId(String? accountId) => _$this._accountId = accountId;
+
+  _i2.GIdentityStatusEnum? _status;
+  _i2.GIdentityStatusEnum? get status => _$this._status;
+  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+
+  int? _createdOn;
+  int? get createdOn => _$this._createdOn;
+  set createdOn(int? createdOn) => _$this._createdOn = createdOn;
+
+  GAccountsByNameData_identity_accountBuilder? _account;
+  GAccountsByNameData_identity_accountBuilder get account =>
+      _$this._account ??= new GAccountsByNameData_identity_accountBuilder();
+  set account(GAccountsByNameData_identity_accountBuilder? account) =>
+      _$this._account = account;
+
+  int? _index;
+  int? get index => _$this._index;
+  set index(int? index) => _$this._index = index;
+
+  GAccountsByNameData_identityBuilder() {
+    GAccountsByNameData_identity._initializeBuilder(this);
+  }
+
+  GAccountsByNameData_identityBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _G__typename = $v.G__typename;
+      _isMember = $v.isMember;
+      _name = $v.name;
+      _accountId = $v.accountId;
+      _status = $v.status;
+      _createdOn = $v.createdOn;
+      _account = $v.account?.toBuilder();
+      _index = $v.index;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GAccountsByNameData_identity other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GAccountsByNameData_identity;
+  }
+
+  @override
+  void update(void Function(GAccountsByNameData_identityBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GAccountsByNameData_identity build() => _build();
+
+  _$GAccountsByNameData_identity _build() {
+    _$GAccountsByNameData_identity _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountsByNameData_identity._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename, r'GAccountsByNameData_identity', 'G__typename'),
+              isMember: BuiltValueNullFieldError.checkNotNull(
+                  isMember, r'GAccountsByNameData_identity', 'isMember'),
+              name: BuiltValueNullFieldError.checkNotNull(
+                  name, r'GAccountsByNameData_identity', 'name'),
+              accountId: accountId,
+              status: status,
+              createdOn: BuiltValueNullFieldError.checkNotNull(
+                  createdOn, r'GAccountsByNameData_identity', 'createdOn'),
+              account: _account?.build(),
+              index: BuiltValueNullFieldError.checkNotNull(
+                  index, r'GAccountsByNameData_identity', 'index'));
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'account';
+        _account?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountsByNameData_identity', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GAccountsByNameData_identity_account
+    extends GAccountsByNameData_identity_account {
+  @override
+  final String G__typename;
+  @override
+  final bool isActive;
+
+  factory _$GAccountsByNameData_identity_account(
+          [void Function(GAccountsByNameData_identity_accountBuilder)?
+              updates]) =>
+      (new GAccountsByNameData_identity_accountBuilder()..update(updates))
+          ._build();
+
+  _$GAccountsByNameData_identity_account._(
+      {required this.G__typename, required this.isActive})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(
+        G__typename, r'GAccountsByNameData_identity_account', 'G__typename');
+    BuiltValueNullFieldError.checkNotNull(
+        isActive, r'GAccountsByNameData_identity_account', 'isActive');
+  }
+
+  @override
+  GAccountsByNameData_identity_account rebuild(
+          void Function(GAccountsByNameData_identity_accountBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GAccountsByNameData_identity_accountBuilder toBuilder() =>
+      new GAccountsByNameData_identity_accountBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GAccountsByNameData_identity_account &&
+        G__typename == other.G__typename &&
+        isActive == other.isActive;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, G__typename.hashCode);
+    _$hash = $jc(_$hash, isActive.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GAccountsByNameData_identity_account')
+          ..add('G__typename', G__typename)
+          ..add('isActive', isActive))
+        .toString();
+  }
+}
+
+class GAccountsByNameData_identity_accountBuilder
+    implements
+        Builder<GAccountsByNameData_identity_account,
+            GAccountsByNameData_identity_accountBuilder> {
+  _$GAccountsByNameData_identity_account? _$v;
+
+  String? _G__typename;
+  String? get G__typename => _$this._G__typename;
+  set G__typename(String? G__typename) => _$this._G__typename = G__typename;
+
+  bool? _isActive;
+  bool? get isActive => _$this._isActive;
+  set isActive(bool? isActive) => _$this._isActive = isActive;
+
+  GAccountsByNameData_identity_accountBuilder() {
+    GAccountsByNameData_identity_account._initializeBuilder(this);
+  }
+
+  GAccountsByNameData_identity_accountBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _G__typename = $v.G__typename;
+      _isActive = $v.isActive;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GAccountsByNameData_identity_account other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GAccountsByNameData_identity_account;
+  }
+
+  @override
+  void update(
+      void Function(GAccountsByNameData_identity_accountBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GAccountsByNameData_identity_account build() => _build();
+
+  _$GAccountsByNameData_identity_account _build() {
+    final _$result = _$v ??
+        new _$GAccountsByNameData_identity_account._(
+            G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
+                r'GAccountsByNameData_identity_account', 'G__typename'),
+            isActive: BuiltValueNullFieldError.checkNotNull(
+                isActive, r'GAccountsByNameData_identity_account', 'isActive'));
     replace(_$result);
     return _$result;
   }

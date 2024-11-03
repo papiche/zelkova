@@ -8,7 +8,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
@@ -22,16 +21,13 @@ import '../data/models/cesium_card.dart';
 import '../data/models/contact.dart';
 import '../data/models/contact_cubit.dart';
 import '../data/models/multi_wallet_transaction_cubit.dart';
-import '../data/models/node_list_cubit.dart';
 import '../data/models/theme_cubit.dart';
-import '../data/models/utxo_cubit.dart';
 import '../g1/api.dart';
 import '../g1/currency.dart';
 import '../g1/g1_helper.dart';
 import '../shared_prefs_helper.dart';
 import 'contacts_cache.dart';
 import 'logger.dart';
-import 'notification_controller.dart';
 import 'widgets/first_screen/circular_icon.dart';
 
 Future<dynamic> showAlertDialog(
@@ -288,11 +284,20 @@ Future<Uint8List?> _getAvatarFromResults(
     avatarBase64 = imageFromBase64String(
         'data:${avatar['_content_type']};base64,${avatar['_content']}');
   }
-  if (avatarBase64 != null && avatarBase64.isNotEmpty) {
-    final Uint8List? avatarBase64resized =
-        resize ? await resizeAvatar(avatarBase64) : avatarBase64;
-    return avatarBase64resized;
-  } else {
+  return checkAndResizeAvatar(avatarBase64, resize);
+}
+
+Future<Uint8List?> checkAndResizeAvatar(
+    Uint8List? avatarBase64, bool resize) async {
+  try {
+    if (avatarBase64 != null && avatarBase64.isNotEmpty) {
+      final Uint8List? avatarBase64resized =
+          resize ? await resizeAvatar(avatarBase64) : avatarBase64;
+      return avatarBase64resized;
+    } else {
+      return null;
+    }
+  } catch (e) {
     return null;
   }
 }
@@ -313,58 +318,6 @@ String cleanComment(String? comment) {
       ? ''
       : comment.replaceAllMapped(
           basicEnglishCharsRegExpNegative, (Match match) => ' ');
-}
-
-void initGetItAll() {
-  final GetIt getIt = GetIt.instance;
-  if (!getIt.isRegistered<MultiWalletTransactionCubit>()) {
-    getIt.registerSingleton<MultiWalletTransactionCubit>(
-        MultiWalletTransactionCubit());
-    getIt.registerSingleton<AppCubit>(AppCubit());
-    getIt.registerSingleton<NodeListCubit>(NodeListCubit());
-    getIt.registerSingleton<UtxoCubit>(UtxoCubit());
-  }
-}
-
-Future<void> fetchTransactionsFromBackground([bool init = true]) async {
-  try {
-    if (init) {
-      await hydratedInit();
-      if (SharedPreferencesHelper().cards.isEmpty) {
-        await SharedPreferencesHelper().init();
-      }
-      try {
-        initGetItAll();
-        await NotificationController.initializeLocalNotifications();
-      } catch (e) {
-        // We should try to do this better
-        loggerDev(e.toString());
-        if (inDevelopment) {
-          NotificationController.notify(
-              title: 'Background process failed',
-              desc: e.toString(),
-              id: DateTime.now().toIso8601String());
-        }
-      }
-    }
-    loggerDev('Initialized background context');
-    final GetIt getIt = GetIt.instance;
-    final MultiWalletTransactionCubit transCubit =
-        getIt.get<MultiWalletTransactionCubit>();
-    for (final CesiumCard card in SharedPreferencesHelper().cards) {
-      loggerDev('Fetching transactions for ${card.pubKey} in background');
-      transCubit.fetchTransactions(pubKey: card.pubKey);
-    }
-    if (inDevelopment) {
-      NotificationController.notify(
-          title: 'Background process ended correctly',
-          desc: '',
-          id: DateTime.now().toIso8601String());
-    }
-  } catch (e) {
-    // We should try to do this better
-    loggerDev(e.toString());
-  }
 }
 
 Future<void> fetchTransactions(BuildContext context) async {

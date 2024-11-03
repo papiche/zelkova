@@ -14,25 +14,24 @@ import 'package:get_it/get_it.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:l10n_esperanto/l10n_esperanto.dart';
 import 'package:lehttp_overrides/lehttp_overrides.dart';
-
 import 'package:provider/provider.dart';
 import 'package:pwa_install/pwa_install.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sentry_logging/sentry_logging.dart';
 import 'package:timeago/timeago.dart' as timeago;
-
 import 'package:uni_links3/uni_links.dart';
 import 'package:workmanager/workmanager.dart';
 
 import 'app_bloc_observer.dart';
+import 'custom_banner.dart';
 import 'data/eo_timeago_support.dart';
 import 'data/eu_timeago_support.dart';
 import 'data/gl_timeago_support.dart';
 import 'data/models/app_cubit.dart';
 import 'data/models/app_state.dart';
 import 'data/models/bottom_nav_cubit.dart';
+import 'data/models/cesium_card.dart';
 import 'data/models/contact_cubit.dart';
 import 'data/models/multi_wallet_transaction_cubit.dart';
 import 'data/models/node_list_cubit.dart';
@@ -41,11 +40,11 @@ import 'data/models/node_manager.dart';
 import 'data/models/node_type.dart';
 import 'data/models/payment_cubit.dart';
 import 'data/models/theme_cubit.dart';
-
 import 'data/models/utxo_cubit.dart';
 import 'env.dart';
 import 'g1/api.dart';
 import 'g1/g1_helper.dart';
+import 'g1/service_manager.dart';
 import 'shared_prefs_helper.dart';
 import 'ui/contacts_cache.dart';
 import 'ui/logger.dart';
@@ -133,6 +132,7 @@ void main() async {
         DeviceOrientation.portraitDown
       ]).then((_) {
         initGetItAll();
+
         runApp(ChangeNotifierProvider<SharedPreferencesHelper>(
             create: (BuildContext context) => SharedPreferencesHelper(),
             child: EasyLocalization(
@@ -599,17 +599,26 @@ class _GinkgoAppState extends State<GinkgoApp> {
                           const SizedBox(height: 110),
                         ],
                       ),
-                      child: MaxWidthBox(
-                        maxWidth: 480,
-                        backgroundColor: const Color(0xFFF5F5F5),
-                        child: BouncingScrollWrapper.builder(context, widget!,
-                            dragWithMouse: true),
-                      ),
+                      child: context.watch<AppCubit>().isV2()
+                          ? CustomBanner(
+                              message: 'V2',
+                              color: Colors.green,
+                              child: _buildMaterialAppChild(context, widget))
+                          : _buildMaterialAppChild(context, widget),
                     );
                   },
                 );
               })));
     });
+  }
+
+  MaxWidthBox _buildMaterialAppChild(BuildContext context, Widget? widget) {
+    return MaxWidthBox(
+      maxWidth: 480,
+      backgroundColor: const Color(0xFFF5F5F5),
+      child:
+          BouncingScrollWrapper.builder(context, widget!, dragWithMouse: true),
+    );
   }
 }
 
@@ -638,6 +647,62 @@ class FeedbackAndSkeletonScreen extends StatelessWidget {
           ..add(CustomFeedbackLocalizationsDelegate()),
         child: const SkeletonScreen());
      */
+
     return const SkeletonScreen();
+  }
+}
+
+void initGetItAll() {
+  final GetIt getIt = GetIt.instance;
+  if (!getIt.isRegistered<MultiWalletTransactionCubit>()) {
+    getIt.registerSingleton<MultiWalletTransactionCubit>(
+        MultiWalletTransactionCubit());
+    final AppCubit appCubit = AppCubit();
+    getIt.registerSingleton<AppCubit>(appCubit);
+    getIt.registerSingleton<NodeListCubit>(NodeListCubit());
+    getIt.registerSingleton<UtxoCubit>(UtxoCubit());
+    getIt.registerSingleton<ServiceManager>(
+        ServiceManager(initialIsV2: appCubit.isV2()));
+  }
+}
+
+Future<void> fetchTransactionsFromBackground([bool init = true]) async {
+  try {
+    if (init) {
+      await hydratedInit();
+      if (SharedPreferencesHelper().cards.isEmpty) {
+        await SharedPreferencesHelper().init();
+      }
+      try {
+        initGetItAll();
+        await NotificationController.initializeLocalNotifications();
+      } catch (e) {
+        // We should try to do this better
+        loggerDev(e.toString());
+        if (inDevelopment) {
+          NotificationController.notify(
+              title: 'Background process failed',
+              desc: e.toString(),
+              id: DateTime.now().toIso8601String());
+        }
+      }
+    }
+    loggerDev('Initialized background context');
+    final GetIt getIt = GetIt.instance;
+    final MultiWalletTransactionCubit transCubit =
+        getIt.get<MultiWalletTransactionCubit>();
+    for (final CesiumCard card in SharedPreferencesHelper().cards) {
+      loggerDev('Fetching transactions for ${card.pubKey} in background');
+      transCubit.fetchTransactions(pubKey: card.pubKey);
+    }
+    if (inDevelopment) {
+      NotificationController.notify(
+          title: 'Background process ended correctly',
+          desc: '',
+          id: DateTime.now().toIso8601String());
+    }
+  } catch (e) {
+    // We should try to do this better
+    loggerDev(e.toString());
   }
 }

@@ -1,19 +1,19 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:pwa_install/pwa_install.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
-
 import '../../data/models/cesium_card.dart';
 import '../../data/models/multi_wallet_selector.dart';
 import '../../data/models/node_manager.dart';
 import '../../data/models/theme_cubit.dart';
 import '../../g1/currency.dart';
+import '../../g1/service_manager.dart';
 import '../../shared_prefs_helper.dart';
 import '../logger.dart';
 import '../tutorial.dart';
@@ -258,6 +258,7 @@ class _FifthScreenState extends State<FifthScreen> {
                       value: state.v2mode,
                       onChanged: (bool v2mode) {
                         context.read<AppCubit>().setV2Mode(v2mode);
+                        GetIt.instance<ServiceManager>().updateService(v2mode);
                         if (v2mode) {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(const SnackBar(

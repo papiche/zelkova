@@ -101,3 +101,30 @@ abstract class GLastBlockVars
         json,
       );
 }
+
+abstract class GGetHistoryAndBalanceVars
+    implements
+        Built<GGetHistoryAndBalanceVars, GGetHistoryAndBalanceVarsBuilder> {
+  GGetHistoryAndBalanceVars._();
+
+  factory GGetHistoryAndBalanceVars(
+          [void Function(GGetHistoryAndBalanceVarsBuilder b) updates]) =
+      _$GGetHistoryAndBalanceVars;
+
+  String get accountId;
+  int? get limit;
+  int? get offset;
+  static Serializer<GGetHistoryAndBalanceVars> get serializer =>
+      _$gGetHistoryAndBalanceVarsSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GGetHistoryAndBalanceVars.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GGetHistoryAndBalanceVars? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GGetHistoryAndBalanceVars.serializer,
+        json,
+      );
+}

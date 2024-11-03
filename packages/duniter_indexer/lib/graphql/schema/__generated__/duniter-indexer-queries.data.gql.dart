@@ -326,3 +326,361 @@ abstract class GLastBlockData_block
         json,
       );
 }
+
+abstract class GGetHistoryAndBalanceData
+    implements
+        Built<GGetHistoryAndBalanceData, GGetHistoryAndBalanceDataBuilder> {
+  GGetHistoryAndBalanceData._();
+
+  factory GGetHistoryAndBalanceData(
+          [void Function(GGetHistoryAndBalanceDataBuilder b) updates]) =
+      _$GGetHistoryAndBalanceData;
+
+  static void _initializeBuilder(GGetHistoryAndBalanceDataBuilder b) =>
+      b..G__typename = 'query_root';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  BuiltList<GGetHistoryAndBalanceData_account> get account;
+  static Serializer<GGetHistoryAndBalanceData> get serializer =>
+      _$gGetHistoryAndBalanceDataSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GGetHistoryAndBalanceData.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GGetHistoryAndBalanceData? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GGetHistoryAndBalanceData.serializer,
+        json,
+      );
+}
+
+abstract class GGetHistoryAndBalanceData_account
+    implements
+        Built<GGetHistoryAndBalanceData_account,
+            GGetHistoryAndBalanceData_accountBuilder> {
+  GGetHistoryAndBalanceData_account._();
+
+  factory GGetHistoryAndBalanceData_account(
+          [void Function(GGetHistoryAndBalanceData_accountBuilder b) updates]) =
+      _$GGetHistoryAndBalanceData_account;
+
+  static void _initializeBuilder(GGetHistoryAndBalanceData_accountBuilder b) =>
+      b..G__typename = 'Account';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  String get id;
+  BuiltList<GGetHistoryAndBalanceData_account_transfersIssued>
+      get transfersIssued;
+  BuiltList<GGetHistoryAndBalanceData_account_transfersReceived>
+      get transfersReceived;
+  static Serializer<GGetHistoryAndBalanceData_account> get serializer =>
+      _$gGetHistoryAndBalanceDataAccountSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GGetHistoryAndBalanceData_account.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GGetHistoryAndBalanceData_account? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GGetHistoryAndBalanceData_account.serializer,
+        json,
+      );
+}
+
+abstract class GGetHistoryAndBalanceData_account_transfersIssued
+    implements
+        Built<GGetHistoryAndBalanceData_account_transfersIssued,
+            GGetHistoryAndBalanceData_account_transfersIssuedBuilder> {
+  GGetHistoryAndBalanceData_account_transfersIssued._();
+
+  factory GGetHistoryAndBalanceData_account_transfersIssued(
+      [void Function(GGetHistoryAndBalanceData_account_transfersIssuedBuilder b)
+          updates]) = _$GGetHistoryAndBalanceData_account_transfersIssued;
+
+  static void _initializeBuilder(
+          GGetHistoryAndBalanceData_account_transfersIssuedBuilder b) =>
+      b..G__typename = 'Transfer';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  int get blockNumber;
+  _i2.Gtimestamptz get timestamp;
+  _i2.Gnumeric get amount;
+  GGetHistoryAndBalanceData_account_transfersIssued_to? get to;
+  GGetHistoryAndBalanceData_account_transfersIssued_from? get from;
+  GGetHistoryAndBalanceData_account_transfersIssued_comment? get comment;
+  static Serializer<GGetHistoryAndBalanceData_account_transfersIssued>
+      get serializer =>
+          _$gGetHistoryAndBalanceDataAccountTransfersIssuedSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GGetHistoryAndBalanceData_account_transfersIssued.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GGetHistoryAndBalanceData_account_transfersIssued? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GGetHistoryAndBalanceData_account_transfersIssued.serializer,
+        json,
+      );
+}
+
+abstract class GGetHistoryAndBalanceData_account_transfersIssued_to
+    implements
+        Built<GGetHistoryAndBalanceData_account_transfersIssued_to,
+            GGetHistoryAndBalanceData_account_transfersIssued_toBuilder> {
+  GGetHistoryAndBalanceData_account_transfersIssued_to._();
+
+  factory GGetHistoryAndBalanceData_account_transfersIssued_to(
+      [void Function(
+              GGetHistoryAndBalanceData_account_transfersIssued_toBuilder b)
+          updates]) = _$GGetHistoryAndBalanceData_account_transfersIssued_to;
+
+  static void _initializeBuilder(
+          GGetHistoryAndBalanceData_account_transfersIssued_toBuilder b) =>
+      b..G__typename = 'Account';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  String get id;
+  static Serializer<GGetHistoryAndBalanceData_account_transfersIssued_to>
+      get serializer =>
+          _$gGetHistoryAndBalanceDataAccountTransfersIssuedToSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GGetHistoryAndBalanceData_account_transfersIssued_to.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GGetHistoryAndBalanceData_account_transfersIssued_to? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GGetHistoryAndBalanceData_account_transfersIssued_to.serializer,
+        json,
+      );
+}
+
+abstract class GGetHistoryAndBalanceData_account_transfersIssued_from
+    implements
+        Built<GGetHistoryAndBalanceData_account_transfersIssued_from,
+            GGetHistoryAndBalanceData_account_transfersIssued_fromBuilder> {
+  GGetHistoryAndBalanceData_account_transfersIssued_from._();
+
+  factory GGetHistoryAndBalanceData_account_transfersIssued_from(
+      [void Function(
+              GGetHistoryAndBalanceData_account_transfersIssued_fromBuilder b)
+          updates]) = _$GGetHistoryAndBalanceData_account_transfersIssued_from;
+
+  static void _initializeBuilder(
+          GGetHistoryAndBalanceData_account_transfersIssued_fromBuilder b) =>
+      b..G__typename = 'Account';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  String get id;
+  static Serializer<GGetHistoryAndBalanceData_account_transfersIssued_from>
+      get serializer =>
+          _$gGetHistoryAndBalanceDataAccountTransfersIssuedFromSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GGetHistoryAndBalanceData_account_transfersIssued_from.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GGetHistoryAndBalanceData_account_transfersIssued_from? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GGetHistoryAndBalanceData_account_transfersIssued_from.serializer,
+        json,
+      );
+}
+
+abstract class GGetHistoryAndBalanceData_account_transfersIssued_comment
+    implements
+        Built<GGetHistoryAndBalanceData_account_transfersIssued_comment,
+            GGetHistoryAndBalanceData_account_transfersIssued_commentBuilder> {
+  GGetHistoryAndBalanceData_account_transfersIssued_comment._();
+
+  factory GGetHistoryAndBalanceData_account_transfersIssued_comment(
+      [void Function(
+              GGetHistoryAndBalanceData_account_transfersIssued_commentBuilder
+                  b)
+          updates]) = _$GGetHistoryAndBalanceData_account_transfersIssued_comment;
+
+  static void _initializeBuilder(
+          GGetHistoryAndBalanceData_account_transfersIssued_commentBuilder b) =>
+      b..G__typename = 'TxComment';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  String get remark;
+  static Serializer<GGetHistoryAndBalanceData_account_transfersIssued_comment>
+      get serializer =>
+          _$gGetHistoryAndBalanceDataAccountTransfersIssuedCommentSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GGetHistoryAndBalanceData_account_transfersIssued_comment.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GGetHistoryAndBalanceData_account_transfersIssued_comment? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GGetHistoryAndBalanceData_account_transfersIssued_comment.serializer,
+        json,
+      );
+}
+
+abstract class GGetHistoryAndBalanceData_account_transfersReceived
+    implements
+        Built<GGetHistoryAndBalanceData_account_transfersReceived,
+            GGetHistoryAndBalanceData_account_transfersReceivedBuilder> {
+  GGetHistoryAndBalanceData_account_transfersReceived._();
+
+  factory GGetHistoryAndBalanceData_account_transfersReceived(
+      [void Function(
+              GGetHistoryAndBalanceData_account_transfersReceivedBuilder b)
+          updates]) = _$GGetHistoryAndBalanceData_account_transfersReceived;
+
+  static void _initializeBuilder(
+          GGetHistoryAndBalanceData_account_transfersReceivedBuilder b) =>
+      b..G__typename = 'Transfer';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  int get blockNumber;
+  _i2.Gtimestamptz get timestamp;
+  _i2.Gnumeric get amount;
+  GGetHistoryAndBalanceData_account_transfersReceived_from? get from;
+  GGetHistoryAndBalanceData_account_transfersReceived_to? get to;
+  GGetHistoryAndBalanceData_account_transfersReceived_comment? get comment;
+  static Serializer<GGetHistoryAndBalanceData_account_transfersReceived>
+      get serializer =>
+          _$gGetHistoryAndBalanceDataAccountTransfersReceivedSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GGetHistoryAndBalanceData_account_transfersReceived.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GGetHistoryAndBalanceData_account_transfersReceived? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GGetHistoryAndBalanceData_account_transfersReceived.serializer,
+        json,
+      );
+}
+
+abstract class GGetHistoryAndBalanceData_account_transfersReceived_from
+    implements
+        Built<GGetHistoryAndBalanceData_account_transfersReceived_from,
+            GGetHistoryAndBalanceData_account_transfersReceived_fromBuilder> {
+  GGetHistoryAndBalanceData_account_transfersReceived_from._();
+
+  factory GGetHistoryAndBalanceData_account_transfersReceived_from(
+      [void Function(
+              GGetHistoryAndBalanceData_account_transfersReceived_fromBuilder b)
+          updates]) = _$GGetHistoryAndBalanceData_account_transfersReceived_from;
+
+  static void _initializeBuilder(
+          GGetHistoryAndBalanceData_account_transfersReceived_fromBuilder b) =>
+      b..G__typename = 'Account';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  String get id;
+  static Serializer<GGetHistoryAndBalanceData_account_transfersReceived_from>
+      get serializer =>
+          _$gGetHistoryAndBalanceDataAccountTransfersReceivedFromSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GGetHistoryAndBalanceData_account_transfersReceived_from.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GGetHistoryAndBalanceData_account_transfersReceived_from? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GGetHistoryAndBalanceData_account_transfersReceived_from.serializer,
+        json,
+      );
+}
+
+abstract class GGetHistoryAndBalanceData_account_transfersReceived_to
+    implements
+        Built<GGetHistoryAndBalanceData_account_transfersReceived_to,
+            GGetHistoryAndBalanceData_account_transfersReceived_toBuilder> {
+  GGetHistoryAndBalanceData_account_transfersReceived_to._();
+
+  factory GGetHistoryAndBalanceData_account_transfersReceived_to(
+      [void Function(
+              GGetHistoryAndBalanceData_account_transfersReceived_toBuilder b)
+          updates]) = _$GGetHistoryAndBalanceData_account_transfersReceived_to;
+
+  static void _initializeBuilder(
+          GGetHistoryAndBalanceData_account_transfersReceived_toBuilder b) =>
+      b..G__typename = 'Account';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  String get id;
+  static Serializer<GGetHistoryAndBalanceData_account_transfersReceived_to>
+      get serializer =>
+          _$gGetHistoryAndBalanceDataAccountTransfersReceivedToSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GGetHistoryAndBalanceData_account_transfersReceived_to.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GGetHistoryAndBalanceData_account_transfersReceived_to? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GGetHistoryAndBalanceData_account_transfersReceived_to.serializer,
+        json,
+      );
+}
+
+abstract class GGetHistoryAndBalanceData_account_transfersReceived_comment
+    implements
+        Built<GGetHistoryAndBalanceData_account_transfersReceived_comment,
+            GGetHistoryAndBalanceData_account_transfersReceived_commentBuilder> {
+  GGetHistoryAndBalanceData_account_transfersReceived_comment._();
+
+  factory GGetHistoryAndBalanceData_account_transfersReceived_comment(
+      [void Function(
+              GGetHistoryAndBalanceData_account_transfersReceived_commentBuilder
+                  b)
+          updates]) = _$GGetHistoryAndBalanceData_account_transfersReceived_comment;
+
+  static void _initializeBuilder(
+          GGetHistoryAndBalanceData_account_transfersReceived_commentBuilder
+              b) =>
+      b..G__typename = 'TxComment';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  String get remark;
+  static Serializer<GGetHistoryAndBalanceData_account_transfersReceived_comment>
+      get serializer =>
+          _$gGetHistoryAndBalanceDataAccountTransfersReceivedCommentSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GGetHistoryAndBalanceData_account_transfersReceived_comment.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GGetHistoryAndBalanceData_account_transfersReceived_comment? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GGetHistoryAndBalanceData_account_transfersReceived_comment.serializer,
+        json,
+      );
+}

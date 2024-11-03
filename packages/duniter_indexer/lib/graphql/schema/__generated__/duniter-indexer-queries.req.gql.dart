@@ -332,3 +332,85 @@ abstract class GLastBlockReq
         json,
       );
 }
+
+abstract class GGetHistoryAndBalanceReq
+    implements
+        Built<GGetHistoryAndBalanceReq, GGetHistoryAndBalanceReqBuilder>,
+        _i1.OperationRequest<_i2.GGetHistoryAndBalanceData,
+            _i3.GGetHistoryAndBalanceVars> {
+  GGetHistoryAndBalanceReq._();
+
+  factory GGetHistoryAndBalanceReq(
+          [void Function(GGetHistoryAndBalanceReqBuilder b) updates]) =
+      _$GGetHistoryAndBalanceReq;
+
+  static void _initializeBuilder(GGetHistoryAndBalanceReqBuilder b) => b
+    ..operation = _i4.Operation(
+      document: _i5.document,
+      operationName: 'GetHistoryAndBalance',
+    )
+    ..executeOnListen = true;
+
+  @override
+  _i3.GGetHistoryAndBalanceVars get vars;
+  @override
+  _i4.Operation get operation;
+  @override
+  _i4.Request get execRequest => _i4.Request(
+        operation: operation,
+        variables: vars.toJson(),
+        context: context ?? const _i4.Context(),
+      );
+
+  @override
+  String? get requestId;
+  @override
+  @BuiltValueField(serialize: false)
+  _i2.GGetHistoryAndBalanceData? Function(
+    _i2.GGetHistoryAndBalanceData?,
+    _i2.GGetHistoryAndBalanceData?,
+  )? get updateResult;
+  @override
+  _i2.GGetHistoryAndBalanceData? get optimisticResponse;
+  @override
+  String? get updateCacheHandlerKey;
+  @override
+  Map<String, dynamic>? get updateCacheHandlerContext;
+  @override
+  _i1.FetchPolicy? get fetchPolicy;
+  @override
+  bool get executeOnListen;
+  @override
+  @BuiltValueField(serialize: false)
+  _i4.Context? get context;
+  @override
+  _i2.GGetHistoryAndBalanceData? parseData(Map<String, dynamic> json) =>
+      _i2.GGetHistoryAndBalanceData.fromJson(json);
+
+  @override
+  Map<String, dynamic> varsToJson() => vars.toJson();
+
+  @override
+  Map<String, dynamic> dataToJson(_i2.GGetHistoryAndBalanceData data) =>
+      data.toJson();
+
+  @override
+  _i1.OperationRequest<_i2.GGetHistoryAndBalanceData,
+      _i3.GGetHistoryAndBalanceVars> transformOperation(
+          _i4.Operation Function(_i4.Operation) transform) =>
+      this.rebuild((b) => b..operation = transform(operation));
+
+  static Serializer<GGetHistoryAndBalanceReq> get serializer =>
+      _$gGetHistoryAndBalanceReqSerializer;
+
+  Map<String, dynamic> toJson() => (_i6.serializers.serializeWith(
+        GGetHistoryAndBalanceReq.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GGetHistoryAndBalanceReq? fromJson(Map<String, dynamic> json) =>
+      _i6.serializers.deserializeWith(
+        GGetHistoryAndBalanceReq.serializer,
+        json,
+      );
+}

@@ -17,6 +17,16 @@ import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-que
         GAccountsByNameOrPkData,
         GAccountsByNameOrPkData_identity,
         GAccountsByNameOrPkData_identity_account,
+        GGetHistoryAndBalanceData,
+        GGetHistoryAndBalanceData_account,
+        GGetHistoryAndBalanceData_account_transfersIssued,
+        GGetHistoryAndBalanceData_account_transfersIssued_comment,
+        GGetHistoryAndBalanceData_account_transfersIssued_from,
+        GGetHistoryAndBalanceData_account_transfersIssued_to,
+        GGetHistoryAndBalanceData_account_transfersReceived,
+        GGetHistoryAndBalanceData_account_transfersReceived_comment,
+        GGetHistoryAndBalanceData_account_transfersReceived_from,
+        GGetHistoryAndBalanceData_account_transfersReceived_to,
         GLastBlockData,
         GLastBlockData_block;
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.req.gql.dart'
@@ -24,12 +34,14 @@ import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-que
         GAccountByPkReq,
         GAccountsByNameOrPkReq,
         GAccountsByNameReq,
+        GGetHistoryAndBalanceReq,
         GLastBlockReq;
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.var.gql.dart'
     show
         GAccountByPkVars,
         GAccountsByNameOrPkVars,
         GAccountsByNameVars,
+        GGetHistoryAndBalanceVars,
         GLastBlockVars;
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer.schema.schema.gql.dart'
     show
@@ -503,6 +515,18 @@ final SerializersBuilder _serializersBuilder = _$serializers.toBuilder()
   GExtrinsicVarPopOrderBy,
   GExtrinsicVarSampOrderBy,
   GExtrinsicVarianceOrderBy,
+  GGetHistoryAndBalanceData,
+  GGetHistoryAndBalanceData_account,
+  GGetHistoryAndBalanceData_account_transfersIssued,
+  GGetHistoryAndBalanceData_account_transfersIssued_comment,
+  GGetHistoryAndBalanceData_account_transfersIssued_from,
+  GGetHistoryAndBalanceData_account_transfersIssued_to,
+  GGetHistoryAndBalanceData_account_transfersReceived,
+  GGetHistoryAndBalanceData_account_transfersReceived_comment,
+  GGetHistoryAndBalanceData_account_transfersReceived_from,
+  GGetHistoryAndBalanceData_account_transfersReceived_to,
+  GGetHistoryAndBalanceReq,
+  GGetHistoryAndBalanceVars,
   GIdentityAggregateBoolExp,
   GIdentityAggregateOrderBy,
   GIdentityAvgOrderBy,

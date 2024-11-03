@@ -31,6 +31,35 @@ Serializer<GLastBlockData> _$gLastBlockDataSerializer =
     new _$GLastBlockDataSerializer();
 Serializer<GLastBlockData_block> _$gLastBlockDataBlockSerializer =
     new _$GLastBlockData_blockSerializer();
+Serializer<GGetHistoryAndBalanceData> _$gGetHistoryAndBalanceDataSerializer =
+    new _$GGetHistoryAndBalanceDataSerializer();
+Serializer<GGetHistoryAndBalanceData_account>
+    _$gGetHistoryAndBalanceDataAccountSerializer =
+    new _$GGetHistoryAndBalanceData_accountSerializer();
+Serializer<GGetHistoryAndBalanceData_account_transfersIssued>
+    _$gGetHistoryAndBalanceDataAccountTransfersIssuedSerializer =
+    new _$GGetHistoryAndBalanceData_account_transfersIssuedSerializer();
+Serializer<GGetHistoryAndBalanceData_account_transfersIssued_to>
+    _$gGetHistoryAndBalanceDataAccountTransfersIssuedToSerializer =
+    new _$GGetHistoryAndBalanceData_account_transfersIssued_toSerializer();
+Serializer<GGetHistoryAndBalanceData_account_transfersIssued_from>
+    _$gGetHistoryAndBalanceDataAccountTransfersIssuedFromSerializer =
+    new _$GGetHistoryAndBalanceData_account_transfersIssued_fromSerializer();
+Serializer<GGetHistoryAndBalanceData_account_transfersIssued_comment>
+    _$gGetHistoryAndBalanceDataAccountTransfersIssuedCommentSerializer =
+    new _$GGetHistoryAndBalanceData_account_transfersIssued_commentSerializer();
+Serializer<GGetHistoryAndBalanceData_account_transfersReceived>
+    _$gGetHistoryAndBalanceDataAccountTransfersReceivedSerializer =
+    new _$GGetHistoryAndBalanceData_account_transfersReceivedSerializer();
+Serializer<GGetHistoryAndBalanceData_account_transfersReceived_from>
+    _$gGetHistoryAndBalanceDataAccountTransfersReceivedFromSerializer =
+    new _$GGetHistoryAndBalanceData_account_transfersReceived_fromSerializer();
+Serializer<GGetHistoryAndBalanceData_account_transfersReceived_to>
+    _$gGetHistoryAndBalanceDataAccountTransfersReceivedToSerializer =
+    new _$GGetHistoryAndBalanceData_account_transfersReceived_toSerializer();
+Serializer<GGetHistoryAndBalanceData_account_transfersReceived_comment>
+    _$gGetHistoryAndBalanceDataAccountTransfersReceivedCommentSerializer =
+    new _$GGetHistoryAndBalanceData_account_transfersReceived_commentSerializer();
 
 class _$GAccountsByNameOrPkDataSerializer
     implements StructuredSerializer<GAccountsByNameOrPkData> {
@@ -671,6 +700,702 @@ class _$GLastBlockData_blockSerializer
         case 'height':
           result.height = serializers.deserialize(value,
               specifiedType: const FullType(int))! as int;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GGetHistoryAndBalanceDataSerializer
+    implements StructuredSerializer<GGetHistoryAndBalanceData> {
+  @override
+  final Iterable<Type> types = const [
+    GGetHistoryAndBalanceData,
+    _$GGetHistoryAndBalanceData
+  ];
+  @override
+  final String wireName = 'GGetHistoryAndBalanceData';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GGetHistoryAndBalanceData object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      '__typename',
+      serializers.serialize(object.G__typename,
+          specifiedType: const FullType(String)),
+      'account',
+      serializers.serialize(object.account,
+          specifiedType: const FullType(BuiltList,
+              const [const FullType(GGetHistoryAndBalanceData_account)])),
+    ];
+
+    return result;
+  }
+
+  @override
+  GGetHistoryAndBalanceData deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GGetHistoryAndBalanceDataBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case '__typename':
+          result.G__typename = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+        case 'account':
+          result.account.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltList, const [
+                const FullType(GGetHistoryAndBalanceData_account)
+              ]))! as BuiltList<Object?>);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GGetHistoryAndBalanceData_accountSerializer
+    implements StructuredSerializer<GGetHistoryAndBalanceData_account> {
+  @override
+  final Iterable<Type> types = const [
+    GGetHistoryAndBalanceData_account,
+    _$GGetHistoryAndBalanceData_account
+  ];
+  @override
+  final String wireName = 'GGetHistoryAndBalanceData_account';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GGetHistoryAndBalanceData_account object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      '__typename',
+      serializers.serialize(object.G__typename,
+          specifiedType: const FullType(String)),
+      'id',
+      serializers.serialize(object.id, specifiedType: const FullType(String)),
+      'transfersIssued',
+      serializers.serialize(object.transfersIssued,
+          specifiedType: const FullType(BuiltList, const [
+            const FullType(GGetHistoryAndBalanceData_account_transfersIssued)
+          ])),
+      'transfersReceived',
+      serializers.serialize(object.transfersReceived,
+          specifiedType: const FullType(BuiltList, const [
+            const FullType(GGetHistoryAndBalanceData_account_transfersReceived)
+          ])),
+    ];
+
+    return result;
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GGetHistoryAndBalanceData_accountBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case '__typename':
+          result.G__typename = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+        case 'id':
+          result.id = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+        case 'transfersIssued':
+          result.transfersIssued.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltList, const [
+                const FullType(
+                    GGetHistoryAndBalanceData_account_transfersIssued)
+              ]))! as BuiltList<Object?>);
+          break;
+        case 'transfersReceived':
+          result.transfersReceived.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltList, const [
+                const FullType(
+                    GGetHistoryAndBalanceData_account_transfersReceived)
+              ]))! as BuiltList<Object?>);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GGetHistoryAndBalanceData_account_transfersIssuedSerializer
+    implements
+        StructuredSerializer<
+            GGetHistoryAndBalanceData_account_transfersIssued> {
+  @override
+  final Iterable<Type> types = const [
+    GGetHistoryAndBalanceData_account_transfersIssued,
+    _$GGetHistoryAndBalanceData_account_transfersIssued
+  ];
+  @override
+  final String wireName = 'GGetHistoryAndBalanceData_account_transfersIssued';
+
+  @override
+  Iterable<Object?> serialize(Serializers serializers,
+      GGetHistoryAndBalanceData_account_transfersIssued object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      '__typename',
+      serializers.serialize(object.G__typename,
+          specifiedType: const FullType(String)),
+      'blockNumber',
+      serializers.serialize(object.blockNumber,
+          specifiedType: const FullType(int)),
+      'timestamp',
+      serializers.serialize(object.timestamp,
+          specifiedType: const FullType(_i2.Gtimestamptz)),
+      'amount',
+      serializers.serialize(object.amount,
+          specifiedType: const FullType(_i2.Gnumeric)),
+    ];
+    Object? value;
+    value = object.to;
+    if (value != null) {
+      result
+        ..add('to')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(
+                GGetHistoryAndBalanceData_account_transfersIssued_to)));
+    }
+    value = object.from;
+    if (value != null) {
+      result
+        ..add('from')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(
+                GGetHistoryAndBalanceData_account_transfersIssued_from)));
+    }
+    value = object.comment;
+    if (value != null) {
+      result
+        ..add('comment')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(
+                GGetHistoryAndBalanceData_account_transfersIssued_comment)));
+    }
+    return result;
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersIssued deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result =
+        new GGetHistoryAndBalanceData_account_transfersIssuedBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case '__typename':
+          result.G__typename = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+        case 'blockNumber':
+          result.blockNumber = serializers.deserialize(value,
+              specifiedType: const FullType(int))! as int;
+          break;
+        case 'timestamp':
+          result.timestamp.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(_i2.Gtimestamptz))!
+              as _i2.Gtimestamptz);
+          break;
+        case 'amount':
+          result.amount.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.Gnumeric))! as _i2.Gnumeric);
+          break;
+        case 'to':
+          result.to.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      GGetHistoryAndBalanceData_account_transfersIssued_to))!
+              as GGetHistoryAndBalanceData_account_transfersIssued_to);
+          break;
+        case 'from':
+          result.from.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      GGetHistoryAndBalanceData_account_transfersIssued_from))!
+              as GGetHistoryAndBalanceData_account_transfersIssued_from);
+          break;
+        case 'comment':
+          result.comment.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      GGetHistoryAndBalanceData_account_transfersIssued_comment))!
+              as GGetHistoryAndBalanceData_account_transfersIssued_comment);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GGetHistoryAndBalanceData_account_transfersIssued_toSerializer
+    implements
+        StructuredSerializer<
+            GGetHistoryAndBalanceData_account_transfersIssued_to> {
+  @override
+  final Iterable<Type> types = const [
+    GGetHistoryAndBalanceData_account_transfersIssued_to,
+    _$GGetHistoryAndBalanceData_account_transfersIssued_to
+  ];
+  @override
+  final String wireName =
+      'GGetHistoryAndBalanceData_account_transfersIssued_to';
+
+  @override
+  Iterable<Object?> serialize(Serializers serializers,
+      GGetHistoryAndBalanceData_account_transfersIssued_to object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      '__typename',
+      serializers.serialize(object.G__typename,
+          specifiedType: const FullType(String)),
+      'id',
+      serializers.serialize(object.id, specifiedType: const FullType(String)),
+    ];
+
+    return result;
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersIssued_to deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result =
+        new GGetHistoryAndBalanceData_account_transfersIssued_toBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case '__typename':
+          result.G__typename = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+        case 'id':
+          result.id = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GGetHistoryAndBalanceData_account_transfersIssued_fromSerializer
+    implements
+        StructuredSerializer<
+            GGetHistoryAndBalanceData_account_transfersIssued_from> {
+  @override
+  final Iterable<Type> types = const [
+    GGetHistoryAndBalanceData_account_transfersIssued_from,
+    _$GGetHistoryAndBalanceData_account_transfersIssued_from
+  ];
+  @override
+  final String wireName =
+      'GGetHistoryAndBalanceData_account_transfersIssued_from';
+
+  @override
+  Iterable<Object?> serialize(Serializers serializers,
+      GGetHistoryAndBalanceData_account_transfersIssued_from object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      '__typename',
+      serializers.serialize(object.G__typename,
+          specifiedType: const FullType(String)),
+      'id',
+      serializers.serialize(object.id, specifiedType: const FullType(String)),
+    ];
+
+    return result;
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersIssued_from deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result =
+        new GGetHistoryAndBalanceData_account_transfersIssued_fromBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case '__typename':
+          result.G__typename = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+        case 'id':
+          result.id = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GGetHistoryAndBalanceData_account_transfersIssued_commentSerializer
+    implements
+        StructuredSerializer<
+            GGetHistoryAndBalanceData_account_transfersIssued_comment> {
+  @override
+  final Iterable<Type> types = const [
+    GGetHistoryAndBalanceData_account_transfersIssued_comment,
+    _$GGetHistoryAndBalanceData_account_transfersIssued_comment
+  ];
+  @override
+  final String wireName =
+      'GGetHistoryAndBalanceData_account_transfersIssued_comment';
+
+  @override
+  Iterable<Object?> serialize(Serializers serializers,
+      GGetHistoryAndBalanceData_account_transfersIssued_comment object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      '__typename',
+      serializers.serialize(object.G__typename,
+          specifiedType: const FullType(String)),
+      'remark',
+      serializers.serialize(object.remark,
+          specifiedType: const FullType(String)),
+    ];
+
+    return result;
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersIssued_comment deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result =
+        new GGetHistoryAndBalanceData_account_transfersIssued_commentBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case '__typename':
+          result.G__typename = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+        case 'remark':
+          result.remark = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GGetHistoryAndBalanceData_account_transfersReceivedSerializer
+    implements
+        StructuredSerializer<
+            GGetHistoryAndBalanceData_account_transfersReceived> {
+  @override
+  final Iterable<Type> types = const [
+    GGetHistoryAndBalanceData_account_transfersReceived,
+    _$GGetHistoryAndBalanceData_account_transfersReceived
+  ];
+  @override
+  final String wireName = 'GGetHistoryAndBalanceData_account_transfersReceived';
+
+  @override
+  Iterable<Object?> serialize(Serializers serializers,
+      GGetHistoryAndBalanceData_account_transfersReceived object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      '__typename',
+      serializers.serialize(object.G__typename,
+          specifiedType: const FullType(String)),
+      'blockNumber',
+      serializers.serialize(object.blockNumber,
+          specifiedType: const FullType(int)),
+      'timestamp',
+      serializers.serialize(object.timestamp,
+          specifiedType: const FullType(_i2.Gtimestamptz)),
+      'amount',
+      serializers.serialize(object.amount,
+          specifiedType: const FullType(_i2.Gnumeric)),
+    ];
+    Object? value;
+    value = object.from;
+    if (value != null) {
+      result
+        ..add('from')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(
+                GGetHistoryAndBalanceData_account_transfersReceived_from)));
+    }
+    value = object.to;
+    if (value != null) {
+      result
+        ..add('to')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(
+                GGetHistoryAndBalanceData_account_transfersReceived_to)));
+    }
+    value = object.comment;
+    if (value != null) {
+      result
+        ..add('comment')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(
+                GGetHistoryAndBalanceData_account_transfersReceived_comment)));
+    }
+    return result;
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersReceived deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result =
+        new GGetHistoryAndBalanceData_account_transfersReceivedBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case '__typename':
+          result.G__typename = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+        case 'blockNumber':
+          result.blockNumber = serializers.deserialize(value,
+              specifiedType: const FullType(int))! as int;
+          break;
+        case 'timestamp':
+          result.timestamp.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(_i2.Gtimestamptz))!
+              as _i2.Gtimestamptz);
+          break;
+        case 'amount':
+          result.amount.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.Gnumeric))! as _i2.Gnumeric);
+          break;
+        case 'from':
+          result.from.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      GGetHistoryAndBalanceData_account_transfersReceived_from))!
+              as GGetHistoryAndBalanceData_account_transfersReceived_from);
+          break;
+        case 'to':
+          result.to.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      GGetHistoryAndBalanceData_account_transfersReceived_to))!
+              as GGetHistoryAndBalanceData_account_transfersReceived_to);
+          break;
+        case 'comment':
+          result.comment.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      GGetHistoryAndBalanceData_account_transfersReceived_comment))!
+              as GGetHistoryAndBalanceData_account_transfersReceived_comment);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GGetHistoryAndBalanceData_account_transfersReceived_fromSerializer
+    implements
+        StructuredSerializer<
+            GGetHistoryAndBalanceData_account_transfersReceived_from> {
+  @override
+  final Iterable<Type> types = const [
+    GGetHistoryAndBalanceData_account_transfersReceived_from,
+    _$GGetHistoryAndBalanceData_account_transfersReceived_from
+  ];
+  @override
+  final String wireName =
+      'GGetHistoryAndBalanceData_account_transfersReceived_from';
+
+  @override
+  Iterable<Object?> serialize(Serializers serializers,
+      GGetHistoryAndBalanceData_account_transfersReceived_from object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      '__typename',
+      serializers.serialize(object.G__typename,
+          specifiedType: const FullType(String)),
+      'id',
+      serializers.serialize(object.id, specifiedType: const FullType(String)),
+    ];
+
+    return result;
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersReceived_from deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result =
+        new GGetHistoryAndBalanceData_account_transfersReceived_fromBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case '__typename':
+          result.G__typename = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+        case 'id':
+          result.id = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GGetHistoryAndBalanceData_account_transfersReceived_toSerializer
+    implements
+        StructuredSerializer<
+            GGetHistoryAndBalanceData_account_transfersReceived_to> {
+  @override
+  final Iterable<Type> types = const [
+    GGetHistoryAndBalanceData_account_transfersReceived_to,
+    _$GGetHistoryAndBalanceData_account_transfersReceived_to
+  ];
+  @override
+  final String wireName =
+      'GGetHistoryAndBalanceData_account_transfersReceived_to';
+
+  @override
+  Iterable<Object?> serialize(Serializers serializers,
+      GGetHistoryAndBalanceData_account_transfersReceived_to object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      '__typename',
+      serializers.serialize(object.G__typename,
+          specifiedType: const FullType(String)),
+      'id',
+      serializers.serialize(object.id, specifiedType: const FullType(String)),
+    ];
+
+    return result;
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersReceived_to deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result =
+        new GGetHistoryAndBalanceData_account_transfersReceived_toBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case '__typename':
+          result.G__typename = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+        case 'id':
+          result.id = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GGetHistoryAndBalanceData_account_transfersReceived_commentSerializer
+    implements
+        StructuredSerializer<
+            GGetHistoryAndBalanceData_account_transfersReceived_comment> {
+  @override
+  final Iterable<Type> types = const [
+    GGetHistoryAndBalanceData_account_transfersReceived_comment,
+    _$GGetHistoryAndBalanceData_account_transfersReceived_comment
+  ];
+  @override
+  final String wireName =
+      'GGetHistoryAndBalanceData_account_transfersReceived_comment';
+
+  @override
+  Iterable<Object?> serialize(Serializers serializers,
+      GGetHistoryAndBalanceData_account_transfersReceived_comment object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      '__typename',
+      serializers.serialize(object.G__typename,
+          specifiedType: const FullType(String)),
+      'remark',
+      serializers.serialize(object.remark,
+          specifiedType: const FullType(String)),
+    ];
+
+    return result;
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersReceived_comment deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result =
+        new GGetHistoryAndBalanceData_account_transfersReceived_commentBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case '__typename':
+          result.G__typename = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+        case 'remark':
+          result.remark = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
           break;
       }
     }
@@ -1995,6 +2720,1519 @@ class GLastBlockData_blockBuilder
                 G__typename, r'GLastBlockData_block', 'G__typename'),
             height: BuiltValueNullFieldError.checkNotNull(
                 height, r'GLastBlockData_block', 'height'));
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GGetHistoryAndBalanceData extends GGetHistoryAndBalanceData {
+  @override
+  final String G__typename;
+  @override
+  final BuiltList<GGetHistoryAndBalanceData_account> account;
+
+  factory _$GGetHistoryAndBalanceData(
+          [void Function(GGetHistoryAndBalanceDataBuilder)? updates]) =>
+      (new GGetHistoryAndBalanceDataBuilder()..update(updates))._build();
+
+  _$GGetHistoryAndBalanceData._(
+      {required this.G__typename, required this.account})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(
+        G__typename, r'GGetHistoryAndBalanceData', 'G__typename');
+    BuiltValueNullFieldError.checkNotNull(
+        account, r'GGetHistoryAndBalanceData', 'account');
+  }
+
+  @override
+  GGetHistoryAndBalanceData rebuild(
+          void Function(GGetHistoryAndBalanceDataBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GGetHistoryAndBalanceDataBuilder toBuilder() =>
+      new GGetHistoryAndBalanceDataBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GGetHistoryAndBalanceData &&
+        G__typename == other.G__typename &&
+        account == other.account;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, G__typename.hashCode);
+    _$hash = $jc(_$hash, account.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GGetHistoryAndBalanceData')
+          ..add('G__typename', G__typename)
+          ..add('account', account))
+        .toString();
+  }
+}
+
+class GGetHistoryAndBalanceDataBuilder
+    implements
+        Builder<GGetHistoryAndBalanceData, GGetHistoryAndBalanceDataBuilder> {
+  _$GGetHistoryAndBalanceData? _$v;
+
+  String? _G__typename;
+  String? get G__typename => _$this._G__typename;
+  set G__typename(String? G__typename) => _$this._G__typename = G__typename;
+
+  ListBuilder<GGetHistoryAndBalanceData_account>? _account;
+  ListBuilder<GGetHistoryAndBalanceData_account> get account =>
+      _$this._account ??= new ListBuilder<GGetHistoryAndBalanceData_account>();
+  set account(ListBuilder<GGetHistoryAndBalanceData_account>? account) =>
+      _$this._account = account;
+
+  GGetHistoryAndBalanceDataBuilder() {
+    GGetHistoryAndBalanceData._initializeBuilder(this);
+  }
+
+  GGetHistoryAndBalanceDataBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _G__typename = $v.G__typename;
+      _account = $v.account.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GGetHistoryAndBalanceData other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GGetHistoryAndBalanceData;
+  }
+
+  @override
+  void update(void Function(GGetHistoryAndBalanceDataBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GGetHistoryAndBalanceData build() => _build();
+
+  _$GGetHistoryAndBalanceData _build() {
+    _$GGetHistoryAndBalanceData _$result;
+    try {
+      _$result = _$v ??
+          new _$GGetHistoryAndBalanceData._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename, r'GGetHistoryAndBalanceData', 'G__typename'),
+              account: account.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'account';
+        account.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GGetHistoryAndBalanceData', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GGetHistoryAndBalanceData_account
+    extends GGetHistoryAndBalanceData_account {
+  @override
+  final String G__typename;
+  @override
+  final String id;
+  @override
+  final BuiltList<GGetHistoryAndBalanceData_account_transfersIssued>
+      transfersIssued;
+  @override
+  final BuiltList<GGetHistoryAndBalanceData_account_transfersReceived>
+      transfersReceived;
+
+  factory _$GGetHistoryAndBalanceData_account(
+          [void Function(GGetHistoryAndBalanceData_accountBuilder)? updates]) =>
+      (new GGetHistoryAndBalanceData_accountBuilder()..update(updates))
+          ._build();
+
+  _$GGetHistoryAndBalanceData_account._(
+      {required this.G__typename,
+      required this.id,
+      required this.transfersIssued,
+      required this.transfersReceived})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(
+        G__typename, r'GGetHistoryAndBalanceData_account', 'G__typename');
+    BuiltValueNullFieldError.checkNotNull(
+        id, r'GGetHistoryAndBalanceData_account', 'id');
+    BuiltValueNullFieldError.checkNotNull(transfersIssued,
+        r'GGetHistoryAndBalanceData_account', 'transfersIssued');
+    BuiltValueNullFieldError.checkNotNull(transfersReceived,
+        r'GGetHistoryAndBalanceData_account', 'transfersReceived');
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account rebuild(
+          void Function(GGetHistoryAndBalanceData_accountBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GGetHistoryAndBalanceData_accountBuilder toBuilder() =>
+      new GGetHistoryAndBalanceData_accountBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GGetHistoryAndBalanceData_account &&
+        G__typename == other.G__typename &&
+        id == other.id &&
+        transfersIssued == other.transfersIssued &&
+        transfersReceived == other.transfersReceived;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, G__typename.hashCode);
+    _$hash = $jc(_$hash, id.hashCode);
+    _$hash = $jc(_$hash, transfersIssued.hashCode);
+    _$hash = $jc(_$hash, transfersReceived.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GGetHistoryAndBalanceData_account')
+          ..add('G__typename', G__typename)
+          ..add('id', id)
+          ..add('transfersIssued', transfersIssued)
+          ..add('transfersReceived', transfersReceived))
+        .toString();
+  }
+}
+
+class GGetHistoryAndBalanceData_accountBuilder
+    implements
+        Builder<GGetHistoryAndBalanceData_account,
+            GGetHistoryAndBalanceData_accountBuilder> {
+  _$GGetHistoryAndBalanceData_account? _$v;
+
+  String? _G__typename;
+  String? get G__typename => _$this._G__typename;
+  set G__typename(String? G__typename) => _$this._G__typename = G__typename;
+
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
+
+  ListBuilder<GGetHistoryAndBalanceData_account_transfersIssued>?
+      _transfersIssued;
+  ListBuilder<GGetHistoryAndBalanceData_account_transfersIssued>
+      get transfersIssued => _$this._transfersIssued ??=
+          new ListBuilder<GGetHistoryAndBalanceData_account_transfersIssued>();
+  set transfersIssued(
+          ListBuilder<GGetHistoryAndBalanceData_account_transfersIssued>?
+              transfersIssued) =>
+      _$this._transfersIssued = transfersIssued;
+
+  ListBuilder<GGetHistoryAndBalanceData_account_transfersReceived>?
+      _transfersReceived;
+  ListBuilder<GGetHistoryAndBalanceData_account_transfersReceived>
+      get transfersReceived => _$this._transfersReceived ??= new ListBuilder<
+          GGetHistoryAndBalanceData_account_transfersReceived>();
+  set transfersReceived(
+          ListBuilder<GGetHistoryAndBalanceData_account_transfersReceived>?
+              transfersReceived) =>
+      _$this._transfersReceived = transfersReceived;
+
+  GGetHistoryAndBalanceData_accountBuilder() {
+    GGetHistoryAndBalanceData_account._initializeBuilder(this);
+  }
+
+  GGetHistoryAndBalanceData_accountBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _G__typename = $v.G__typename;
+      _id = $v.id;
+      _transfersIssued = $v.transfersIssued.toBuilder();
+      _transfersReceived = $v.transfersReceived.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GGetHistoryAndBalanceData_account other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GGetHistoryAndBalanceData_account;
+  }
+
+  @override
+  void update(
+      void Function(GGetHistoryAndBalanceData_accountBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account build() => _build();
+
+  _$GGetHistoryAndBalanceData_account _build() {
+    _$GGetHistoryAndBalanceData_account _$result;
+    try {
+      _$result = _$v ??
+          new _$GGetHistoryAndBalanceData_account._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
+                  r'GGetHistoryAndBalanceData_account', 'G__typename'),
+              id: BuiltValueNullFieldError.checkNotNull(
+                  id, r'GGetHistoryAndBalanceData_account', 'id'),
+              transfersIssued: transfersIssued.build(),
+              transfersReceived: transfersReceived.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'transfersIssued';
+        transfersIssued.build();
+        _$failedField = 'transfersReceived';
+        transfersReceived.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GGetHistoryAndBalanceData_account', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GGetHistoryAndBalanceData_account_transfersIssued
+    extends GGetHistoryAndBalanceData_account_transfersIssued {
+  @override
+  final String G__typename;
+  @override
+  final int blockNumber;
+  @override
+  final _i2.Gtimestamptz timestamp;
+  @override
+  final _i2.Gnumeric amount;
+  @override
+  final GGetHistoryAndBalanceData_account_transfersIssued_to? to;
+  @override
+  final GGetHistoryAndBalanceData_account_transfersIssued_from? from;
+  @override
+  final GGetHistoryAndBalanceData_account_transfersIssued_comment? comment;
+
+  factory _$GGetHistoryAndBalanceData_account_transfersIssued(
+          [void Function(
+                  GGetHistoryAndBalanceData_account_transfersIssuedBuilder)?
+              updates]) =>
+      (new GGetHistoryAndBalanceData_account_transfersIssuedBuilder()
+            ..update(updates))
+          ._build();
+
+  _$GGetHistoryAndBalanceData_account_transfersIssued._(
+      {required this.G__typename,
+      required this.blockNumber,
+      required this.timestamp,
+      required this.amount,
+      this.to,
+      this.from,
+      this.comment})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(G__typename,
+        r'GGetHistoryAndBalanceData_account_transfersIssued', 'G__typename');
+    BuiltValueNullFieldError.checkNotNull(blockNumber,
+        r'GGetHistoryAndBalanceData_account_transfersIssued', 'blockNumber');
+    BuiltValueNullFieldError.checkNotNull(timestamp,
+        r'GGetHistoryAndBalanceData_account_transfersIssued', 'timestamp');
+    BuiltValueNullFieldError.checkNotNull(
+        amount, r'GGetHistoryAndBalanceData_account_transfersIssued', 'amount');
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersIssued rebuild(
+          void Function(
+                  GGetHistoryAndBalanceData_account_transfersIssuedBuilder)
+              updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersIssuedBuilder toBuilder() =>
+      new GGetHistoryAndBalanceData_account_transfersIssuedBuilder()
+        ..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GGetHistoryAndBalanceData_account_transfersIssued &&
+        G__typename == other.G__typename &&
+        blockNumber == other.blockNumber &&
+        timestamp == other.timestamp &&
+        amount == other.amount &&
+        to == other.to &&
+        from == other.from &&
+        comment == other.comment;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, G__typename.hashCode);
+    _$hash = $jc(_$hash, blockNumber.hashCode);
+    _$hash = $jc(_$hash, timestamp.hashCode);
+    _$hash = $jc(_$hash, amount.hashCode);
+    _$hash = $jc(_$hash, to.hashCode);
+    _$hash = $jc(_$hash, from.hashCode);
+    _$hash = $jc(_$hash, comment.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(
+            r'GGetHistoryAndBalanceData_account_transfersIssued')
+          ..add('G__typename', G__typename)
+          ..add('blockNumber', blockNumber)
+          ..add('timestamp', timestamp)
+          ..add('amount', amount)
+          ..add('to', to)
+          ..add('from', from)
+          ..add('comment', comment))
+        .toString();
+  }
+}
+
+class GGetHistoryAndBalanceData_account_transfersIssuedBuilder
+    implements
+        Builder<GGetHistoryAndBalanceData_account_transfersIssued,
+            GGetHistoryAndBalanceData_account_transfersIssuedBuilder> {
+  _$GGetHistoryAndBalanceData_account_transfersIssued? _$v;
+
+  String? _G__typename;
+  String? get G__typename => _$this._G__typename;
+  set G__typename(String? G__typename) => _$this._G__typename = G__typename;
+
+  int? _blockNumber;
+  int? get blockNumber => _$this._blockNumber;
+  set blockNumber(int? blockNumber) => _$this._blockNumber = blockNumber;
+
+  _i2.GtimestamptzBuilder? _timestamp;
+  _i2.GtimestamptzBuilder get timestamp =>
+      _$this._timestamp ??= new _i2.GtimestamptzBuilder();
+  set timestamp(_i2.GtimestamptzBuilder? timestamp) =>
+      _$this._timestamp = timestamp;
+
+  _i2.GnumericBuilder? _amount;
+  _i2.GnumericBuilder get amount =>
+      _$this._amount ??= new _i2.GnumericBuilder();
+  set amount(_i2.GnumericBuilder? amount) => _$this._amount = amount;
+
+  GGetHistoryAndBalanceData_account_transfersIssued_toBuilder? _to;
+  GGetHistoryAndBalanceData_account_transfersIssued_toBuilder get to =>
+      _$this._to ??=
+          new GGetHistoryAndBalanceData_account_transfersIssued_toBuilder();
+  set to(GGetHistoryAndBalanceData_account_transfersIssued_toBuilder? to) =>
+      _$this._to = to;
+
+  GGetHistoryAndBalanceData_account_transfersIssued_fromBuilder? _from;
+  GGetHistoryAndBalanceData_account_transfersIssued_fromBuilder get from =>
+      _$this._from ??=
+          new GGetHistoryAndBalanceData_account_transfersIssued_fromBuilder();
+  set from(
+          GGetHistoryAndBalanceData_account_transfersIssued_fromBuilder?
+              from) =>
+      _$this._from = from;
+
+  GGetHistoryAndBalanceData_account_transfersIssued_commentBuilder? _comment;
+  GGetHistoryAndBalanceData_account_transfersIssued_commentBuilder
+      get comment => _$this._comment ??=
+          new GGetHistoryAndBalanceData_account_transfersIssued_commentBuilder();
+  set comment(
+          GGetHistoryAndBalanceData_account_transfersIssued_commentBuilder?
+              comment) =>
+      _$this._comment = comment;
+
+  GGetHistoryAndBalanceData_account_transfersIssuedBuilder() {
+    GGetHistoryAndBalanceData_account_transfersIssued._initializeBuilder(this);
+  }
+
+  GGetHistoryAndBalanceData_account_transfersIssuedBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _G__typename = $v.G__typename;
+      _blockNumber = $v.blockNumber;
+      _timestamp = $v.timestamp.toBuilder();
+      _amount = $v.amount.toBuilder();
+      _to = $v.to?.toBuilder();
+      _from = $v.from?.toBuilder();
+      _comment = $v.comment?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GGetHistoryAndBalanceData_account_transfersIssued other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GGetHistoryAndBalanceData_account_transfersIssued;
+  }
+
+  @override
+  void update(
+      void Function(GGetHistoryAndBalanceData_account_transfersIssuedBuilder)?
+          updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersIssued build() => _build();
+
+  _$GGetHistoryAndBalanceData_account_transfersIssued _build() {
+    _$GGetHistoryAndBalanceData_account_transfersIssued _$result;
+    try {
+      _$result = _$v ??
+          new _$GGetHistoryAndBalanceData_account_transfersIssued._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename,
+                  r'GGetHistoryAndBalanceData_account_transfersIssued',
+                  'G__typename'),
+              blockNumber: BuiltValueNullFieldError.checkNotNull(
+                  blockNumber,
+                  r'GGetHistoryAndBalanceData_account_transfersIssued',
+                  'blockNumber'),
+              timestamp: timestamp.build(),
+              amount: amount.build(),
+              to: _to?.build(),
+              from: _from?.build(),
+              comment: _comment?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'timestamp';
+        timestamp.build();
+        _$failedField = 'amount';
+        amount.build();
+        _$failedField = 'to';
+        _to?.build();
+        _$failedField = 'from';
+        _from?.build();
+        _$failedField = 'comment';
+        _comment?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GGetHistoryAndBalanceData_account_transfersIssued',
+            _$failedField,
+            e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GGetHistoryAndBalanceData_account_transfersIssued_to
+    extends GGetHistoryAndBalanceData_account_transfersIssued_to {
+  @override
+  final String G__typename;
+  @override
+  final String id;
+
+  factory _$GGetHistoryAndBalanceData_account_transfersIssued_to(
+          [void Function(
+                  GGetHistoryAndBalanceData_account_transfersIssued_toBuilder)?
+              updates]) =>
+      (new GGetHistoryAndBalanceData_account_transfersIssued_toBuilder()
+            ..update(updates))
+          ._build();
+
+  _$GGetHistoryAndBalanceData_account_transfersIssued_to._(
+      {required this.G__typename, required this.id})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(G__typename,
+        r'GGetHistoryAndBalanceData_account_transfersIssued_to', 'G__typename');
+    BuiltValueNullFieldError.checkNotNull(
+        id, r'GGetHistoryAndBalanceData_account_transfersIssued_to', 'id');
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersIssued_to rebuild(
+          void Function(
+                  GGetHistoryAndBalanceData_account_transfersIssued_toBuilder)
+              updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersIssued_toBuilder toBuilder() =>
+      new GGetHistoryAndBalanceData_account_transfersIssued_toBuilder()
+        ..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GGetHistoryAndBalanceData_account_transfersIssued_to &&
+        G__typename == other.G__typename &&
+        id == other.id;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, G__typename.hashCode);
+    _$hash = $jc(_$hash, id.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(
+            r'GGetHistoryAndBalanceData_account_transfersIssued_to')
+          ..add('G__typename', G__typename)
+          ..add('id', id))
+        .toString();
+  }
+}
+
+class GGetHistoryAndBalanceData_account_transfersIssued_toBuilder
+    implements
+        Builder<GGetHistoryAndBalanceData_account_transfersIssued_to,
+            GGetHistoryAndBalanceData_account_transfersIssued_toBuilder> {
+  _$GGetHistoryAndBalanceData_account_transfersIssued_to? _$v;
+
+  String? _G__typename;
+  String? get G__typename => _$this._G__typename;
+  set G__typename(String? G__typename) => _$this._G__typename = G__typename;
+
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
+
+  GGetHistoryAndBalanceData_account_transfersIssued_toBuilder() {
+    GGetHistoryAndBalanceData_account_transfersIssued_to._initializeBuilder(
+        this);
+  }
+
+  GGetHistoryAndBalanceData_account_transfersIssued_toBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _G__typename = $v.G__typename;
+      _id = $v.id;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GGetHistoryAndBalanceData_account_transfersIssued_to other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GGetHistoryAndBalanceData_account_transfersIssued_to;
+  }
+
+  @override
+  void update(
+      void Function(
+              GGetHistoryAndBalanceData_account_transfersIssued_toBuilder)?
+          updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersIssued_to build() => _build();
+
+  _$GGetHistoryAndBalanceData_account_transfersIssued_to _build() {
+    final _$result = _$v ??
+        new _$GGetHistoryAndBalanceData_account_transfersIssued_to._(
+            G__typename: BuiltValueNullFieldError.checkNotNull(
+                G__typename,
+                r'GGetHistoryAndBalanceData_account_transfersIssued_to',
+                'G__typename'),
+            id: BuiltValueNullFieldError.checkNotNull(id,
+                r'GGetHistoryAndBalanceData_account_transfersIssued_to', 'id'));
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GGetHistoryAndBalanceData_account_transfersIssued_from
+    extends GGetHistoryAndBalanceData_account_transfersIssued_from {
+  @override
+  final String G__typename;
+  @override
+  final String id;
+
+  factory _$GGetHistoryAndBalanceData_account_transfersIssued_from(
+          [void Function(
+                  GGetHistoryAndBalanceData_account_transfersIssued_fromBuilder)?
+              updates]) =>
+      (new GGetHistoryAndBalanceData_account_transfersIssued_fromBuilder()
+            ..update(updates))
+          ._build();
+
+  _$GGetHistoryAndBalanceData_account_transfersIssued_from._(
+      {required this.G__typename, required this.id})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(
+        G__typename,
+        r'GGetHistoryAndBalanceData_account_transfersIssued_from',
+        'G__typename');
+    BuiltValueNullFieldError.checkNotNull(
+        id, r'GGetHistoryAndBalanceData_account_transfersIssued_from', 'id');
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersIssued_from rebuild(
+          void Function(
+                  GGetHistoryAndBalanceData_account_transfersIssued_fromBuilder)
+              updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersIssued_fromBuilder toBuilder() =>
+      new GGetHistoryAndBalanceData_account_transfersIssued_fromBuilder()
+        ..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GGetHistoryAndBalanceData_account_transfersIssued_from &&
+        G__typename == other.G__typename &&
+        id == other.id;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, G__typename.hashCode);
+    _$hash = $jc(_$hash, id.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(
+            r'GGetHistoryAndBalanceData_account_transfersIssued_from')
+          ..add('G__typename', G__typename)
+          ..add('id', id))
+        .toString();
+  }
+}
+
+class GGetHistoryAndBalanceData_account_transfersIssued_fromBuilder
+    implements
+        Builder<GGetHistoryAndBalanceData_account_transfersIssued_from,
+            GGetHistoryAndBalanceData_account_transfersIssued_fromBuilder> {
+  _$GGetHistoryAndBalanceData_account_transfersIssued_from? _$v;
+
+  String? _G__typename;
+  String? get G__typename => _$this._G__typename;
+  set G__typename(String? G__typename) => _$this._G__typename = G__typename;
+
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
+
+  GGetHistoryAndBalanceData_account_transfersIssued_fromBuilder() {
+    GGetHistoryAndBalanceData_account_transfersIssued_from._initializeBuilder(
+        this);
+  }
+
+  GGetHistoryAndBalanceData_account_transfersIssued_fromBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _G__typename = $v.G__typename;
+      _id = $v.id;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GGetHistoryAndBalanceData_account_transfersIssued_from other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GGetHistoryAndBalanceData_account_transfersIssued_from;
+  }
+
+  @override
+  void update(
+      void Function(
+              GGetHistoryAndBalanceData_account_transfersIssued_fromBuilder)?
+          updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersIssued_from build() => _build();
+
+  _$GGetHistoryAndBalanceData_account_transfersIssued_from _build() {
+    final _$result = _$v ??
+        new _$GGetHistoryAndBalanceData_account_transfersIssued_from._(
+            G__typename: BuiltValueNullFieldError.checkNotNull(
+                G__typename,
+                r'GGetHistoryAndBalanceData_account_transfersIssued_from',
+                'G__typename'),
+            id: BuiltValueNullFieldError.checkNotNull(
+                id,
+                r'GGetHistoryAndBalanceData_account_transfersIssued_from',
+                'id'));
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GGetHistoryAndBalanceData_account_transfersIssued_comment
+    extends GGetHistoryAndBalanceData_account_transfersIssued_comment {
+  @override
+  final String G__typename;
+  @override
+  final String remark;
+
+  factory _$GGetHistoryAndBalanceData_account_transfersIssued_comment(
+          [void Function(
+                  GGetHistoryAndBalanceData_account_transfersIssued_commentBuilder)?
+              updates]) =>
+      (new GGetHistoryAndBalanceData_account_transfersIssued_commentBuilder()
+            ..update(updates))
+          ._build();
+
+  _$GGetHistoryAndBalanceData_account_transfersIssued_comment._(
+      {required this.G__typename, required this.remark})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(
+        G__typename,
+        r'GGetHistoryAndBalanceData_account_transfersIssued_comment',
+        'G__typename');
+    BuiltValueNullFieldError.checkNotNull(remark,
+        r'GGetHistoryAndBalanceData_account_transfersIssued_comment', 'remark');
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersIssued_comment rebuild(
+          void Function(
+                  GGetHistoryAndBalanceData_account_transfersIssued_commentBuilder)
+              updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersIssued_commentBuilder
+      toBuilder() =>
+          new GGetHistoryAndBalanceData_account_transfersIssued_commentBuilder()
+            ..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GGetHistoryAndBalanceData_account_transfersIssued_comment &&
+        G__typename == other.G__typename &&
+        remark == other.remark;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, G__typename.hashCode);
+    _$hash = $jc(_$hash, remark.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(
+            r'GGetHistoryAndBalanceData_account_transfersIssued_comment')
+          ..add('G__typename', G__typename)
+          ..add('remark', remark))
+        .toString();
+  }
+}
+
+class GGetHistoryAndBalanceData_account_transfersIssued_commentBuilder
+    implements
+        Builder<GGetHistoryAndBalanceData_account_transfersIssued_comment,
+            GGetHistoryAndBalanceData_account_transfersIssued_commentBuilder> {
+  _$GGetHistoryAndBalanceData_account_transfersIssued_comment? _$v;
+
+  String? _G__typename;
+  String? get G__typename => _$this._G__typename;
+  set G__typename(String? G__typename) => _$this._G__typename = G__typename;
+
+  String? _remark;
+  String? get remark => _$this._remark;
+  set remark(String? remark) => _$this._remark = remark;
+
+  GGetHistoryAndBalanceData_account_transfersIssued_commentBuilder() {
+    GGetHistoryAndBalanceData_account_transfersIssued_comment
+        ._initializeBuilder(this);
+  }
+
+  GGetHistoryAndBalanceData_account_transfersIssued_commentBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _G__typename = $v.G__typename;
+      _remark = $v.remark;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(
+      GGetHistoryAndBalanceData_account_transfersIssued_comment other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GGetHistoryAndBalanceData_account_transfersIssued_comment;
+  }
+
+  @override
+  void update(
+      void Function(
+              GGetHistoryAndBalanceData_account_transfersIssued_commentBuilder)?
+          updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersIssued_comment build() => _build();
+
+  _$GGetHistoryAndBalanceData_account_transfersIssued_comment _build() {
+    final _$result = _$v ??
+        new _$GGetHistoryAndBalanceData_account_transfersIssued_comment._(
+            G__typename: BuiltValueNullFieldError.checkNotNull(
+                G__typename,
+                r'GGetHistoryAndBalanceData_account_transfersIssued_comment',
+                'G__typename'),
+            remark: BuiltValueNullFieldError.checkNotNull(
+                remark,
+                r'GGetHistoryAndBalanceData_account_transfersIssued_comment',
+                'remark'));
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GGetHistoryAndBalanceData_account_transfersReceived
+    extends GGetHistoryAndBalanceData_account_transfersReceived {
+  @override
+  final String G__typename;
+  @override
+  final int blockNumber;
+  @override
+  final _i2.Gtimestamptz timestamp;
+  @override
+  final _i2.Gnumeric amount;
+  @override
+  final GGetHistoryAndBalanceData_account_transfersReceived_from? from;
+  @override
+  final GGetHistoryAndBalanceData_account_transfersReceived_to? to;
+  @override
+  final GGetHistoryAndBalanceData_account_transfersReceived_comment? comment;
+
+  factory _$GGetHistoryAndBalanceData_account_transfersReceived(
+          [void Function(
+                  GGetHistoryAndBalanceData_account_transfersReceivedBuilder)?
+              updates]) =>
+      (new GGetHistoryAndBalanceData_account_transfersReceivedBuilder()
+            ..update(updates))
+          ._build();
+
+  _$GGetHistoryAndBalanceData_account_transfersReceived._(
+      {required this.G__typename,
+      required this.blockNumber,
+      required this.timestamp,
+      required this.amount,
+      this.from,
+      this.to,
+      this.comment})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(G__typename,
+        r'GGetHistoryAndBalanceData_account_transfersReceived', 'G__typename');
+    BuiltValueNullFieldError.checkNotNull(blockNumber,
+        r'GGetHistoryAndBalanceData_account_transfersReceived', 'blockNumber');
+    BuiltValueNullFieldError.checkNotNull(timestamp,
+        r'GGetHistoryAndBalanceData_account_transfersReceived', 'timestamp');
+    BuiltValueNullFieldError.checkNotNull(amount,
+        r'GGetHistoryAndBalanceData_account_transfersReceived', 'amount');
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersReceived rebuild(
+          void Function(
+                  GGetHistoryAndBalanceData_account_transfersReceivedBuilder)
+              updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersReceivedBuilder toBuilder() =>
+      new GGetHistoryAndBalanceData_account_transfersReceivedBuilder()
+        ..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GGetHistoryAndBalanceData_account_transfersReceived &&
+        G__typename == other.G__typename &&
+        blockNumber == other.blockNumber &&
+        timestamp == other.timestamp &&
+        amount == other.amount &&
+        from == other.from &&
+        to == other.to &&
+        comment == other.comment;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, G__typename.hashCode);
+    _$hash = $jc(_$hash, blockNumber.hashCode);
+    _$hash = $jc(_$hash, timestamp.hashCode);
+    _$hash = $jc(_$hash, amount.hashCode);
+    _$hash = $jc(_$hash, from.hashCode);
+    _$hash = $jc(_$hash, to.hashCode);
+    _$hash = $jc(_$hash, comment.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(
+            r'GGetHistoryAndBalanceData_account_transfersReceived')
+          ..add('G__typename', G__typename)
+          ..add('blockNumber', blockNumber)
+          ..add('timestamp', timestamp)
+          ..add('amount', amount)
+          ..add('from', from)
+          ..add('to', to)
+          ..add('comment', comment))
+        .toString();
+  }
+}
+
+class GGetHistoryAndBalanceData_account_transfersReceivedBuilder
+    implements
+        Builder<GGetHistoryAndBalanceData_account_transfersReceived,
+            GGetHistoryAndBalanceData_account_transfersReceivedBuilder> {
+  _$GGetHistoryAndBalanceData_account_transfersReceived? _$v;
+
+  String? _G__typename;
+  String? get G__typename => _$this._G__typename;
+  set G__typename(String? G__typename) => _$this._G__typename = G__typename;
+
+  int? _blockNumber;
+  int? get blockNumber => _$this._blockNumber;
+  set blockNumber(int? blockNumber) => _$this._blockNumber = blockNumber;
+
+  _i2.GtimestamptzBuilder? _timestamp;
+  _i2.GtimestamptzBuilder get timestamp =>
+      _$this._timestamp ??= new _i2.GtimestamptzBuilder();
+  set timestamp(_i2.GtimestamptzBuilder? timestamp) =>
+      _$this._timestamp = timestamp;
+
+  _i2.GnumericBuilder? _amount;
+  _i2.GnumericBuilder get amount =>
+      _$this._amount ??= new _i2.GnumericBuilder();
+  set amount(_i2.GnumericBuilder? amount) => _$this._amount = amount;
+
+  GGetHistoryAndBalanceData_account_transfersReceived_fromBuilder? _from;
+  GGetHistoryAndBalanceData_account_transfersReceived_fromBuilder get from =>
+      _$this._from ??=
+          new GGetHistoryAndBalanceData_account_transfersReceived_fromBuilder();
+  set from(
+          GGetHistoryAndBalanceData_account_transfersReceived_fromBuilder?
+              from) =>
+      _$this._from = from;
+
+  GGetHistoryAndBalanceData_account_transfersReceived_toBuilder? _to;
+  GGetHistoryAndBalanceData_account_transfersReceived_toBuilder get to =>
+      _$this._to ??=
+          new GGetHistoryAndBalanceData_account_transfersReceived_toBuilder();
+  set to(GGetHistoryAndBalanceData_account_transfersReceived_toBuilder? to) =>
+      _$this._to = to;
+
+  GGetHistoryAndBalanceData_account_transfersReceived_commentBuilder? _comment;
+  GGetHistoryAndBalanceData_account_transfersReceived_commentBuilder
+      get comment => _$this._comment ??=
+          new GGetHistoryAndBalanceData_account_transfersReceived_commentBuilder();
+  set comment(
+          GGetHistoryAndBalanceData_account_transfersReceived_commentBuilder?
+              comment) =>
+      _$this._comment = comment;
+
+  GGetHistoryAndBalanceData_account_transfersReceivedBuilder() {
+    GGetHistoryAndBalanceData_account_transfersReceived._initializeBuilder(
+        this);
+  }
+
+  GGetHistoryAndBalanceData_account_transfersReceivedBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _G__typename = $v.G__typename;
+      _blockNumber = $v.blockNumber;
+      _timestamp = $v.timestamp.toBuilder();
+      _amount = $v.amount.toBuilder();
+      _from = $v.from?.toBuilder();
+      _to = $v.to?.toBuilder();
+      _comment = $v.comment?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GGetHistoryAndBalanceData_account_transfersReceived other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GGetHistoryAndBalanceData_account_transfersReceived;
+  }
+
+  @override
+  void update(
+      void Function(GGetHistoryAndBalanceData_account_transfersReceivedBuilder)?
+          updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersReceived build() => _build();
+
+  _$GGetHistoryAndBalanceData_account_transfersReceived _build() {
+    _$GGetHistoryAndBalanceData_account_transfersReceived _$result;
+    try {
+      _$result = _$v ??
+          new _$GGetHistoryAndBalanceData_account_transfersReceived._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename,
+                  r'GGetHistoryAndBalanceData_account_transfersReceived',
+                  'G__typename'),
+              blockNumber: BuiltValueNullFieldError.checkNotNull(
+                  blockNumber,
+                  r'GGetHistoryAndBalanceData_account_transfersReceived',
+                  'blockNumber'),
+              timestamp: timestamp.build(),
+              amount: amount.build(),
+              from: _from?.build(),
+              to: _to?.build(),
+              comment: _comment?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'timestamp';
+        timestamp.build();
+        _$failedField = 'amount';
+        amount.build();
+        _$failedField = 'from';
+        _from?.build();
+        _$failedField = 'to';
+        _to?.build();
+        _$failedField = 'comment';
+        _comment?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GGetHistoryAndBalanceData_account_transfersReceived',
+            _$failedField,
+            e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GGetHistoryAndBalanceData_account_transfersReceived_from
+    extends GGetHistoryAndBalanceData_account_transfersReceived_from {
+  @override
+  final String G__typename;
+  @override
+  final String id;
+
+  factory _$GGetHistoryAndBalanceData_account_transfersReceived_from(
+          [void Function(
+                  GGetHistoryAndBalanceData_account_transfersReceived_fromBuilder)?
+              updates]) =>
+      (new GGetHistoryAndBalanceData_account_transfersReceived_fromBuilder()
+            ..update(updates))
+          ._build();
+
+  _$GGetHistoryAndBalanceData_account_transfersReceived_from._(
+      {required this.G__typename, required this.id})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(
+        G__typename,
+        r'GGetHistoryAndBalanceData_account_transfersReceived_from',
+        'G__typename');
+    BuiltValueNullFieldError.checkNotNull(
+        id, r'GGetHistoryAndBalanceData_account_transfersReceived_from', 'id');
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersReceived_from rebuild(
+          void Function(
+                  GGetHistoryAndBalanceData_account_transfersReceived_fromBuilder)
+              updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersReceived_fromBuilder toBuilder() =>
+      new GGetHistoryAndBalanceData_account_transfersReceived_fromBuilder()
+        ..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GGetHistoryAndBalanceData_account_transfersReceived_from &&
+        G__typename == other.G__typename &&
+        id == other.id;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, G__typename.hashCode);
+    _$hash = $jc(_$hash, id.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(
+            r'GGetHistoryAndBalanceData_account_transfersReceived_from')
+          ..add('G__typename', G__typename)
+          ..add('id', id))
+        .toString();
+  }
+}
+
+class GGetHistoryAndBalanceData_account_transfersReceived_fromBuilder
+    implements
+        Builder<GGetHistoryAndBalanceData_account_transfersReceived_from,
+            GGetHistoryAndBalanceData_account_transfersReceived_fromBuilder> {
+  _$GGetHistoryAndBalanceData_account_transfersReceived_from? _$v;
+
+  String? _G__typename;
+  String? get G__typename => _$this._G__typename;
+  set G__typename(String? G__typename) => _$this._G__typename = G__typename;
+
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
+
+  GGetHistoryAndBalanceData_account_transfersReceived_fromBuilder() {
+    GGetHistoryAndBalanceData_account_transfersReceived_from._initializeBuilder(
+        this);
+  }
+
+  GGetHistoryAndBalanceData_account_transfersReceived_fromBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _G__typename = $v.G__typename;
+      _id = $v.id;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GGetHistoryAndBalanceData_account_transfersReceived_from other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GGetHistoryAndBalanceData_account_transfersReceived_from;
+  }
+
+  @override
+  void update(
+      void Function(
+              GGetHistoryAndBalanceData_account_transfersReceived_fromBuilder)?
+          updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersReceived_from build() => _build();
+
+  _$GGetHistoryAndBalanceData_account_transfersReceived_from _build() {
+    final _$result = _$v ??
+        new _$GGetHistoryAndBalanceData_account_transfersReceived_from._(
+            G__typename: BuiltValueNullFieldError.checkNotNull(
+                G__typename,
+                r'GGetHistoryAndBalanceData_account_transfersReceived_from',
+                'G__typename'),
+            id: BuiltValueNullFieldError.checkNotNull(
+                id,
+                r'GGetHistoryAndBalanceData_account_transfersReceived_from',
+                'id'));
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GGetHistoryAndBalanceData_account_transfersReceived_to
+    extends GGetHistoryAndBalanceData_account_transfersReceived_to {
+  @override
+  final String G__typename;
+  @override
+  final String id;
+
+  factory _$GGetHistoryAndBalanceData_account_transfersReceived_to(
+          [void Function(
+                  GGetHistoryAndBalanceData_account_transfersReceived_toBuilder)?
+              updates]) =>
+      (new GGetHistoryAndBalanceData_account_transfersReceived_toBuilder()
+            ..update(updates))
+          ._build();
+
+  _$GGetHistoryAndBalanceData_account_transfersReceived_to._(
+      {required this.G__typename, required this.id})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(
+        G__typename,
+        r'GGetHistoryAndBalanceData_account_transfersReceived_to',
+        'G__typename');
+    BuiltValueNullFieldError.checkNotNull(
+        id, r'GGetHistoryAndBalanceData_account_transfersReceived_to', 'id');
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersReceived_to rebuild(
+          void Function(
+                  GGetHistoryAndBalanceData_account_transfersReceived_toBuilder)
+              updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersReceived_toBuilder toBuilder() =>
+      new GGetHistoryAndBalanceData_account_transfersReceived_toBuilder()
+        ..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GGetHistoryAndBalanceData_account_transfersReceived_to &&
+        G__typename == other.G__typename &&
+        id == other.id;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, G__typename.hashCode);
+    _$hash = $jc(_$hash, id.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(
+            r'GGetHistoryAndBalanceData_account_transfersReceived_to')
+          ..add('G__typename', G__typename)
+          ..add('id', id))
+        .toString();
+  }
+}
+
+class GGetHistoryAndBalanceData_account_transfersReceived_toBuilder
+    implements
+        Builder<GGetHistoryAndBalanceData_account_transfersReceived_to,
+            GGetHistoryAndBalanceData_account_transfersReceived_toBuilder> {
+  _$GGetHistoryAndBalanceData_account_transfersReceived_to? _$v;
+
+  String? _G__typename;
+  String? get G__typename => _$this._G__typename;
+  set G__typename(String? G__typename) => _$this._G__typename = G__typename;
+
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
+
+  GGetHistoryAndBalanceData_account_transfersReceived_toBuilder() {
+    GGetHistoryAndBalanceData_account_transfersReceived_to._initializeBuilder(
+        this);
+  }
+
+  GGetHistoryAndBalanceData_account_transfersReceived_toBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _G__typename = $v.G__typename;
+      _id = $v.id;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GGetHistoryAndBalanceData_account_transfersReceived_to other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GGetHistoryAndBalanceData_account_transfersReceived_to;
+  }
+
+  @override
+  void update(
+      void Function(
+              GGetHistoryAndBalanceData_account_transfersReceived_toBuilder)?
+          updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersReceived_to build() => _build();
+
+  _$GGetHistoryAndBalanceData_account_transfersReceived_to _build() {
+    final _$result = _$v ??
+        new _$GGetHistoryAndBalanceData_account_transfersReceived_to._(
+            G__typename: BuiltValueNullFieldError.checkNotNull(
+                G__typename,
+                r'GGetHistoryAndBalanceData_account_transfersReceived_to',
+                'G__typename'),
+            id: BuiltValueNullFieldError.checkNotNull(
+                id,
+                r'GGetHistoryAndBalanceData_account_transfersReceived_to',
+                'id'));
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GGetHistoryAndBalanceData_account_transfersReceived_comment
+    extends GGetHistoryAndBalanceData_account_transfersReceived_comment {
+  @override
+  final String G__typename;
+  @override
+  final String remark;
+
+  factory _$GGetHistoryAndBalanceData_account_transfersReceived_comment(
+          [void Function(
+                  GGetHistoryAndBalanceData_account_transfersReceived_commentBuilder)?
+              updates]) =>
+      (new GGetHistoryAndBalanceData_account_transfersReceived_commentBuilder()
+            ..update(updates))
+          ._build();
+
+  _$GGetHistoryAndBalanceData_account_transfersReceived_comment._(
+      {required this.G__typename, required this.remark})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(
+        G__typename,
+        r'GGetHistoryAndBalanceData_account_transfersReceived_comment',
+        'G__typename');
+    BuiltValueNullFieldError.checkNotNull(
+        remark,
+        r'GGetHistoryAndBalanceData_account_transfersReceived_comment',
+        'remark');
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersReceived_comment rebuild(
+          void Function(
+                  GGetHistoryAndBalanceData_account_transfersReceived_commentBuilder)
+              updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersReceived_commentBuilder
+      toBuilder() =>
+          new GGetHistoryAndBalanceData_account_transfersReceived_commentBuilder()
+            ..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other
+            is GGetHistoryAndBalanceData_account_transfersReceived_comment &&
+        G__typename == other.G__typename &&
+        remark == other.remark;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, G__typename.hashCode);
+    _$hash = $jc(_$hash, remark.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(
+            r'GGetHistoryAndBalanceData_account_transfersReceived_comment')
+          ..add('G__typename', G__typename)
+          ..add('remark', remark))
+        .toString();
+  }
+}
+
+class GGetHistoryAndBalanceData_account_transfersReceived_commentBuilder
+    implements
+        Builder<GGetHistoryAndBalanceData_account_transfersReceived_comment,
+            GGetHistoryAndBalanceData_account_transfersReceived_commentBuilder> {
+  _$GGetHistoryAndBalanceData_account_transfersReceived_comment? _$v;
+
+  String? _G__typename;
+  String? get G__typename => _$this._G__typename;
+  set G__typename(String? G__typename) => _$this._G__typename = G__typename;
+
+  String? _remark;
+  String? get remark => _$this._remark;
+  set remark(String? remark) => _$this._remark = remark;
+
+  GGetHistoryAndBalanceData_account_transfersReceived_commentBuilder() {
+    GGetHistoryAndBalanceData_account_transfersReceived_comment
+        ._initializeBuilder(this);
+  }
+
+  GGetHistoryAndBalanceData_account_transfersReceived_commentBuilder
+      get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _G__typename = $v.G__typename;
+      _remark = $v.remark;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(
+      GGetHistoryAndBalanceData_account_transfersReceived_comment other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v =
+        other as _$GGetHistoryAndBalanceData_account_transfersReceived_comment;
+  }
+
+  @override
+  void update(
+      void Function(
+              GGetHistoryAndBalanceData_account_transfersReceived_commentBuilder)?
+          updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GGetHistoryAndBalanceData_account_transfersReceived_comment build() =>
+      _build();
+
+  _$GGetHistoryAndBalanceData_account_transfersReceived_comment _build() {
+    final _$result = _$v ??
+        new _$GGetHistoryAndBalanceData_account_transfersReceived_comment._(
+            G__typename: BuiltValueNullFieldError.checkNotNull(
+                G__typename,
+                r'GGetHistoryAndBalanceData_account_transfersReceived_comment',
+                'G__typename'),
+            remark: BuiltValueNullFieldError.checkNotNull(
+                remark,
+                r'GGetHistoryAndBalanceData_account_transfersReceived_comment',
+                'remark'));
     replace(_$result);
     return _$result;
   }

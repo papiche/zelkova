@@ -157,6 +157,20 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GExtrinsicVarPopOrderBy.serializer)
       ..add(GExtrinsicVarSampOrderBy.serializer)
       ..add(GExtrinsicVarianceOrderBy.serializer)
+      ..add(GGetHistoryAndBalanceData.serializer)
+      ..add(GGetHistoryAndBalanceData_account.serializer)
+      ..add(GGetHistoryAndBalanceData_account_transfersIssued.serializer)
+      ..add(
+          GGetHistoryAndBalanceData_account_transfersIssued_comment.serializer)
+      ..add(GGetHistoryAndBalanceData_account_transfersIssued_from.serializer)
+      ..add(GGetHistoryAndBalanceData_account_transfersIssued_to.serializer)
+      ..add(GGetHistoryAndBalanceData_account_transfersReceived.serializer)
+      ..add(GGetHistoryAndBalanceData_account_transfersReceived_comment
+          .serializer)
+      ..add(GGetHistoryAndBalanceData_account_transfersReceived_from.serializer)
+      ..add(GGetHistoryAndBalanceData_account_transfersReceived_to.serializer)
+      ..add(GGetHistoryAndBalanceReq.serializer)
+      ..add(GGetHistoryAndBalanceVars.serializer)
       ..add(GIdentityAggregateBoolExp.serializer)
       ..add(GIdentityAggregateOrderBy.serializer)
       ..add(GIdentityAvgOrderBy.serializer)
@@ -460,6 +474,22 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(
               BuiltList, const [const FullType(GExtrinsicSelectColumn)]),
           () => new ListBuilder<GExtrinsicSelectColumn>())
+      ..addBuilderFactory(
+          const FullType(BuiltList,
+              const [const FullType(GGetHistoryAndBalanceData_account)]),
+          () => new ListBuilder<GGetHistoryAndBalanceData_account>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [
+            const FullType(GGetHistoryAndBalanceData_account_transfersIssued)
+          ]),
+          () => new ListBuilder<
+              GGetHistoryAndBalanceData_account_transfersIssued>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [
+            const FullType(GGetHistoryAndBalanceData_account_transfersReceived)
+          ]),
+          () => new ListBuilder<
+              GGetHistoryAndBalanceData_account_transfersReceived>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(GIdentityBoolExp)]),
           () => new ListBuilder<GIdentityBoolExp>())

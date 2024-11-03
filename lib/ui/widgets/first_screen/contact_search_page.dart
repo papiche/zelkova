@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
@@ -8,7 +7,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
-import 'package:http/http.dart';
 
 import '../../../data/models/app_cubit.dart';
 import '../../../data/models/contact.dart';
@@ -53,17 +51,18 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
   final FocusNode _searchFocusNode = FocusNode();
   String _searchTerm = '';
   String _previousSearchTerm = '';
-  late bool _isV2;
 
   Set<Contact> _results = <Contact>{};
   bool _isLoading = false;
   final Set<Contact> _selectedContacts = <Contact>{};
   late bool _isMultiSelect;
+  final int minSearchLength = 4;
+  late bool _isV2;
 
   Future<void> _search() async {
     final ContactsCubit contactsCubit = context.read<ContactsCubit>();
 
-    if (_searchTerm.length < 3) {
+    if (_searchTerm.length < minSearchLength) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(tr('search_limitation'))),
       );
@@ -94,48 +93,45 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
       }
     });
 
-    if (isConnected && !_isV2) {
-      final Response cPlusResponse = await searchCPlusUser(_searchTerm);
-      if (cPlusResponse.statusCode != 404) {
-        // Add cplus users
-        final List<dynamic> hits = ((const JsonDecoder()
-                .convert(cPlusResponse.body) as Map<String, dynamic>)['hits']
-            as Map<String, dynamic>)['hits'] as List<dynamic>;
-        for (final dynamic hit in hits) {
-          final Contact c = await contactFromResultSearch(
-            hit as Map<String, dynamic>,
-          );
-          logger('Contact retrieved in c+ search $c');
-          ContactsCache().addContact(c);
-          setState(() {
-            _addIfNotPresent(c);
-          });
-        }
-        logger('Found: ${_results.length}');
+    if (isConnected) {
+      final List<Contact> searchResult = await searchProfiles(_searchTerm);
+      // ignore: prefer_foreach
+      for (final Contact c in searchResult) {
+        _addIfNotPresent(c);
       }
+
+      logger('Found: ${_results.length}');
     }
 
     if (isConnected) {
-      if (_searchTerm.length >= 3) {
+      if (_searchTerm.length >= minSearchLength) {
         // Only search wot if it's a long key
 
-        final List<Contact> wotResults = _isV2
-            ? await searchWotV2('.*$_searchTerm.*')
-            : await searchWotV1(_searchTerm);
+        final List<Contact> wotResults = await searchWot(_searchTerm);
         // ignore: prefer_foreach
-        for (final Contact c in wotResults) {
-          ContactsCache().addContact(c);
-          _addIfNotPresent(c);
-          // retrieve extra results with c+ profile
-          for (final Contact wotC in wotResults) {
-            final Contact cachedWotProfile =
-                await ContactsCache().getContact(wotC.pubKey);
-            if (cachedWotProfile.name == null) {
-              // Users without c+ profile
-              final Contact cPlusProfile = await getProfile(
-                  cachedWotProfile.pubKey,
-                  onlyCPlusProfile: true);
-              ContactsCache().addContact(cPlusProfile);
+
+        if (_isV2) {
+          // search trying to be more optimized
+          ContactsCache().addAllContacts(wotResults);
+          final List<Contact> contactsWithProfiles = await getProfiles(
+              wotResults.map((Contact c) => c.pubKey).toList());
+          // addContacts also do a merge
+          ContactsCache().addAllContacts(contactsWithProfiles);
+        } else {
+          for (final Contact c in wotResults) {
+            ContactsCache().addContact(c);
+            _addIfNotPresent(c);
+            // retrieve extra results with c+ profile
+            for (final Contact wotC in wotResults) {
+              final Contact cachedWotProfile =
+                  await ContactsCache().getContact(wotC.pubKey);
+              if (cachedWotProfile.name == null) {
+                // Users without c+ profile
+                final Contact cPlusProfile = await getProfile(
+                    cachedWotProfile.pubKey,
+                    onlyCPlusProfile: true);
+                ContactsCache().addContact(cPlusProfile);
+              }
             }
           }
         }
@@ -166,6 +162,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    _isV2 = context.watch<AppCubit>().isV2();
     return FutureBuilder<NFCAvailability>(
         future: !kIsWeb && Platform.isLinux
             ? Future<NFCAvailability>.value(NFCAvailability.not_supported)
@@ -264,7 +261,9 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
                             IconButton(
                               icon: const Icon(Icons.search),
                               onPressed: () =>
-                                  _searchTerm.length < 3 ? null : _search(),
+                                  _searchTerm.length < minSearchLength
+                                      ? null
+                                      : _search(),
                             ),
                           ],
                         ),
@@ -274,7 +273,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
                       },
                       onChanged: (String value) {
                         if (value.length < _previousSearchTerm.length &&
-                            value.length < 3) {
+                            value.length < minSearchLength) {
                           _previousSearchTerm = value;
                           setState(() {
                             _isLoading = false;
@@ -283,7 +282,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
                         }
                         _searchTerm = value;
                         _previousSearchTerm = value;
-                        if (_searchTerm.length >= 3) {
+                        if (_searchTerm.length >= minSearchLength) {
                           setState(() {
                             _isLoading = true;
                           });
@@ -463,7 +462,6 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
     });
     _handleUri(widget.uri);
     _isMultiSelect = widget.startInMultiSelect;
-    _isV2 = context.read<AppCubit>().isV2();
     final PaymentCubit paymentCubit = context.read<PaymentCubit>();
     if (widget.isEdit) {
       _selectedContacts.addAll(paymentCubit.contacts);
@@ -488,7 +486,6 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
         contact.subtitle != null ? Text(contact.subtitle!) : null;
     final List<String> ids =
         _selectedContacts.map((Contact c) => c.pubKey).toList();
-    final bool isV2 = context.read<AppCubit>().isV2();
     return _isMultiSelect
         ? CheckboxListTile(
             title: Text(contact.title),
@@ -514,7 +511,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
             contact,
             index,
             context,
-            isV2: isV2,
+            isV2: _isV2,
             onLongPress: () {
               setState(() {
                 _isMultiSelect = true;

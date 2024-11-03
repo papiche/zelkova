@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:fast_base58/fast_base58.dart';
-
 import 'package:polkadot_dart/polkadot_dart.dart';
 import 'package:ss58/ss58.dart';
 

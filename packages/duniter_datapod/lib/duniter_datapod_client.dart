@@ -1,9 +1,10 @@
 import 'package:ferry/ferry.dart';
 import 'package:gql_http_link/gql_http_link.dart';
 
-Future<Client> initDuniterDatapodClient(String endpoint, [Store? store]) async {
-  final Cache cache =
-      Cache(store: store); // , possibleTypes: possibleTypesMap);
+import 'graphql/schema/__generated__/duniter-datapod.schema.schema.gql.dart';
+
+Future<Client> initDuniterDatapodClient(String endpoint, Store store) async {
+  final Cache cache = Cache(store: store, possibleTypes: possibleTypesMap);
 
   final HttpLink link = HttpLink(endpoint);
 

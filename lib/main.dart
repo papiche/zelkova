@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:cron/cron.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ferry_hive_store/ferry_hive_store.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive/hive.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:l10n_esperanto/l10n_esperanto.dart';
 import 'package:lehttp_overrides/lehttp_overrides.dart';
@@ -127,12 +129,12 @@ void main() async {
   timeago.setLocaleMessages('gl', GlMessages());
   timeago.setLocaleMessages('gl_short', GlShortMessages());
 
+  await initGetItAll();
+
   void appRunner() => SystemChrome.setPreferredOrientations(<DeviceOrientation>[
         DeviceOrientation.portraitUp,
         DeviceOrientation.portraitDown
       ]).then((_) {
-        initGetItAll();
-
         runApp(ChangeNotifierProvider<SharedPreferencesHelper>(
             create: (BuildContext context) => SharedPreferencesHelper(),
             child: EasyLocalization(
@@ -652,7 +654,7 @@ class FeedbackAndSkeletonScreen extends StatelessWidget {
   }
 }
 
-void initGetItAll() {
+Future<void> initGetItAll() async {
   final GetIt getIt = GetIt.instance;
   if (!getIt.isRegistered<MultiWalletTransactionCubit>()) {
     getIt.registerSingleton<MultiWalletTransactionCubit>(
@@ -663,6 +665,10 @@ void initGetItAll() {
     getIt.registerSingleton<UtxoCubit>(UtxoCubit());
     getIt.registerSingleton<ServiceManager>(
         ServiceManager(initialIsV2: appCubit.isV2()));
+    // Ferry cache
+    final Box<dynamic> box = await Hive.openBox('ferry-graphql-cache');
+    final HiveStore store = HiveStore(box);
+    getIt.registerSingleton<HiveStore>(store);
   }
 }
 
@@ -674,7 +680,7 @@ Future<void> fetchTransactionsFromBackground([bool init = true]) async {
         await SharedPreferencesHelper().init();
       }
       try {
-        initGetItAll();
+        await initGetItAll();
         await NotificationController.initializeLocalNotifications();
       } catch (e) {
         // We should try to do this better

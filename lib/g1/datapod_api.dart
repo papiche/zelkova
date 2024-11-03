@@ -9,6 +9,8 @@ import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-que
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.req.gql.dart';
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.var.gql.dart';
 import 'package:ferry/ferry.dart' as ferry;
+import 'package:ferry_hive_store/ferry_hive_store.dart';
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
 import '../data/models/contact.dart';
@@ -97,7 +99,8 @@ Future<List<Contact>> searchWotV2(String searchPatternRaw) async {
         loggerDev('Searching wot by name');
         final GAccountsByNameReq req = GAccountsByNameReq(
             (GAccountsByNameReqBuilder b) => b..vars.pattern = searchPattern);
-        final ferry.Client client = await initDuniterIndexerClient(node.url);
+        final ferry.Client client = await initDuniterIndexerClient(
+            node.url, GetIt.instance<HiveStore>());
 
         final ferry.OperationResponse<GAccountsByNameData, GAccountsByNameVars>
             response = await client.request(req).first;
@@ -121,7 +124,8 @@ Future<List<Contact>> searchWotV2(String searchPatternRaw) async {
         final GAccountsByNameOrPkReq req = GAccountsByNameOrPkReq(
             (GAccountsByNameOrPkReqBuilder b) =>
                 b..vars.pattern = searchPattern);
-        final ferry.Client client = await initDuniterIndexerClient(node.url);
+        final ferry.Client client = await initDuniterIndexerClient(
+            node.url, GetIt.instance<HiveStore>());
 
         final ferry
             .OperationResponse<GAccountsByNameOrPkData, GAccountsByNameOrPkVars>
@@ -156,7 +160,8 @@ Future<GGetProfileByAddressData_profiles?> _searchProfileByPKV2(
       in NodeManager().getBestNodes(NodeType.datapodEndpoint)) {
     loggerDev('Searching profile in node ${node.url} with address $pubkey');
     try {
-      final ferry.Client client = await initDuniterDatapodClient(node.url);
+      final ferry.Client client =
+          await initDuniterDatapodClient(node.url, GetIt.instance<HiveStore>());
 
       final GGetProfileByAddressReq request = GGetProfileByAddressReq(
           (GGetProfileByAddressReqBuilder b) => b..vars.pubkey = pubkey);
@@ -213,7 +218,8 @@ Future<List<Contact>> getProfilesV2({required List<String> pubKeys}) async {
   for (final Node node
       in NodeManager().getBestNodes(NodeType.datapodEndpoint)) {
     try {
-      final ferry.Client client = await initDuniterDatapodClient(node.url);
+      final ferry.Client client =
+          await initDuniterDatapodClient(node.url, GetIt.instance<HiveStore>());
       final GGetProfilesByAddressReq request = GGetProfilesByAddressReq(
         (GGetProfilesByAddressReqBuilder b) => b..vars.pubkeys.addAll(pubKeys),
       );
@@ -274,7 +280,8 @@ Future<List<Contact>> searchProfilesV2({
       in NodeManager().getBestNodes(NodeType.datapodEndpoint)) {
     loggerDev('Searching profiles in node ${node.url} with term $searchTerm');
     try {
-      final ferry.Client client = await initDuniterDatapodClient(node.url);
+      final ferry.Client client =
+          await initDuniterDatapodClient(node.url, GetIt.instance<HiveStore>());
       final GSearchProfilesReq request =
           GSearchProfilesReq((GSearchProfilesReqBuilder b) => b
             ..vars.searchTermLower = searchTermLower

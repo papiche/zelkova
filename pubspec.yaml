@@ -125,6 +125,7 @@ dependencies:
     path: ./packages/duniter_indexer
   duniter_datapod:
     path: ./packages/duniter_datapod
+  ferry_hive_store: ^0.5.2
 
 dev_dependencies:
   flutter_test:

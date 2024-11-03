@@ -13,6 +13,7 @@ import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-que
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.var.gql.dart';
 import 'package:durt/durt.dart';
 import 'package:ferry/ferry.dart' as ferry;
+import 'package:ferry_hive_store/ferry_hive_store.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
@@ -1108,7 +1109,8 @@ Future<NodeCheckResult> testDuniterIndexerV2(
   NodeCheckResult result;
 
   final Stopwatch stopwatch = Stopwatch()..start();
-  final ferry.Client client = await initDuniterIndexerClient(node);
+  final ferry.Client client =
+      await initDuniterIndexerClient(node, GetIt.instance<HiveStore>());
   final ferry.OperationResponse<GLastBlockData, GLastBlockVars> response =
       await client.request(GLastBlockReq()).first.timeout(timeout);
   if (response.hasErrors) {
@@ -1129,7 +1131,8 @@ Future<NodeCheckResult> testDuniterDatapodV2(
   NodeCheckResult result;
 
   final Stopwatch stopwatch = Stopwatch()..start();
-  final ferry.Client client = await initDuniterDatapodClient(node);
+  final ferry.Client client =
+      await initDuniterDatapodClient(node, GetIt.instance<HiveStore>());
 
   final ferry.OperationResponse<GGetProfileCountData, GGetProfileCountVars>
       response =

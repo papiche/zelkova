@@ -8,12 +8,13 @@ import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-que
 import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-queries.req.gql.dart';
 import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-queries.var.gql.dart';
 import 'package:duniter_indexer/duniter_indexer_client.dart';
-import 'package:duniter_indexer/graphql/schema/__generated__/duniter-queries.data.gql.dart';
-import 'package:duniter_indexer/graphql/schema/__generated__/duniter-queries.req.gql.dart';
-import 'package:duniter_indexer/graphql/schema/__generated__/duniter-queries.var.gql.dart';
+import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.data.gql.dart';
+import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.req.gql.dart';
+import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.var.gql.dart';
 import 'package:durt/durt.dart';
 import 'package:ferry/ferry.dart' as ferry;
 import 'package:flutter/foundation.dart';
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 /*import 'package:polkadart/polkadart.dart' show SystemApi, Health; */
@@ -33,14 +34,15 @@ import '../data/models/node_type.dart';
 import '../data/models/utxo.dart';
 import '../env.dart';
 import '../shared_prefs_helper.dart';
+import '../ui/contacts_cache.dart';
 import '../ui/logger.dart';
 import '../ui/ui_helpers.dart';
 import 'g1_helper.dart';
-import 'g1_v2_helper_multi.dart';
 import 'no_nodes_exception.dart';
 import 'node_check_result.dart';
 import 'polkadot_provider.dart';
 import 'polkadot_substrate_service.dart';
+import 'service_manager.dart';
 
 // Tx history
 // https://g1.duniter.org/tx/history/FadJvhddHL7qbRd3WcRPrWEJJwABQa3oZvmCBhotc7Kg
@@ -152,21 +154,34 @@ Future<List<dynamic>> getPeers(NodeType type) async {
   return currentPeers;
 }
 
-Future<Response> searchCPlusUser(String initialSearchTerm) async {
-  final String searchTerm = normalizeQuery(initialSearchTerm);
-  final String searchTermLower = searchTerm.toLowerCase();
-  final String searchTermCapitalized =
-      searchTermLower[0].toUpperCase() + searchTermLower.substring(1);
-
+Future<List<Contact>> searchProfilesV1(
+    {required String searchTermLower,
+    required String searchTerm,
+    required String searchTermCapitalized}) async {
   final String query =
       '/user/profile/_search?q=title:$searchTermLower OR issuer:$searchTerm OR title:$searchTermCapitalized OR title:$searchTerm';
 
   final Response response =
       (await requestCPlusWithRetry(query, retryWith404: false)).item2;
-  return response;
+  final List<Contact> searchResult = <Contact>[];
+  if (response.statusCode != 404) {
+    // Add cplus users
+    final List<dynamic> hits = ((const JsonDecoder().convert(response.body)
+            as Map<String, dynamic>)['hits'] as Map<String, dynamic>)['hits']
+        as List<dynamic>;
+    for (final dynamic hit in hits) {
+      final Contact c = await contactFromResultSearch(
+        hit as Map<String, dynamic>,
+      );
+      logger('Contact retrieved in c+ search $c');
+      ContactsCache().addContact(c);
+      searchResult.add(c);
+    }
+  }
+  return searchResult;
 }
 
-Future<Contact> getProfile(String pubKeyRaw,
+Future<Contact> getProfileV1(String pubKeyRaw,
     {bool onlyCPlusProfile = false, bool resize = true}) async {
   final String pubKey = extractPublicKey(pubKeyRaw);
   try {
@@ -242,67 +257,9 @@ Future<List<Contact>> searchWotV1(String initialSearchTerm) async {
   return contacts;
 }
 
-Future<List<Contact>> searchWotV2(String searchPatternRaw) async {
-  // if is a v1Key, search pubkey
-  final String searchPattern = validateKey(searchPatternRaw)
-      ? addressFromV1PubkeyMulti(searchPatternRaw)
-      : searchPatternRaw;
-  loggerDev("Searching indexer v2 with '$searchPattern'");
-  final List<Contact> contacts = <Contact>[];
-  final GAccountsByNameOrPkReq req = GAccountsByNameOrPkReq(
-      (GAccountsByNameOrPkReqBuilder b) => b..vars.pattern = searchPattern);
-  final ferry.Client client = await initDuniterIndexerClient(
-      NodeManager().getBestNodes(NodeType.duniterIndexer).first.url);
-
-  final ferry
-      .OperationResponse<GAccountsByNameOrPkData, GAccountsByNameOrPkVars>
-      response = await client.request(req).first;
-
-  if (response.hasErrors) {
-    loggerDev('Error: ${response.linkException?.originalException}');
-  } else {
-    final GAccountsByNameOrPkData? accounts = response.data;
-    for (final GAccountsByNameOrPkData_identity account in accounts!.identity) {
-      final String? address = account.accountId;
-      if (address == null) {
-        loggerDev('ERROR: Pubkey is null');
-      } else {
-        contacts.add(Contact.withAddress(nick: account.name, address: address));
-      }
-    }
-  }
-  return contacts;
-}
-
-@Deprecated('use getProfile')
-Future<String> _getDataImageFromKey(String publicKey) async {
-  final Response response =
-      (await requestCPlusWithRetry('/user/profile/$publicKey')).item2;
-  if (response.statusCode == HttpStatus.ok) {
-    final Map<String, dynamic> data =
-        json.decode(response.body) as Map<String, dynamic>;
-    final Map<String, dynamic> source = data['_source'] as Map<String, dynamic>;
-    if (source.containsKey('avatar')) {
-      final Map<String, dynamic> avatarData =
-          source['avatar'] as Map<String, dynamic>;
-      if (avatarData.containsKey('_content')) {
-        final String content = avatarData['_content'] as String;
-        return 'data:image/png;base64,$content';
-      }
-    }
-  }
-  throw Exception('Failed to load avatar');
-}
-
 Uint8List imageFromBase64String(String base64String) {
   return Uint8List.fromList(
       base64Decode(base64String.substring(base64String.indexOf(',') + 1)));
-}
-
-@Deprecated('use getProfile')
-Future<Uint8List> getAvatar(String pubKey) async {
-  final String dataImage = await _getDataImageFromKey(pubKey);
-  return imageFromBase64String(dataImage);
 }
 
 Future<void> fetchNodesIfNotReady() async {
@@ -909,7 +866,7 @@ Future<void> createOrUpdateCesiumPlusUser(String name) async {
   final String pubKey = wallet.pubkey;
 
   // Check if the user exists
-  final String? userName = await getCesiumPlusUser(pubKey);
+  final String? userName = await getProfileUserNameV1(pubKey);
 
   // Prepare the user profile data
   final Map<String, dynamic> userProfile = <String, dynamic>{
@@ -978,7 +935,7 @@ void hashAndSign(Map<String, dynamic> data, CesiumWallet wallet) {
   data['signature'] = signature;
 }
 
-Future<String?> getCesiumPlusUser(String pubKey) async {
+Future<String?> getProfileUserNameV1(String pubKey) async {
   final Contact c = await getProfile(pubKey, onlyCPlusProfile: true);
   return c.name;
 }
@@ -1183,7 +1140,7 @@ Future<NodeCheckResult> testDuniterDatapodV2(
     result = NodeCheckResult(currentBlock: 0, latency: wrongNodeDuration);
   } else {
     final int currentBlock =
-        response.data?.profiles_aggregate?.aggregate?.count ?? 0;
+        response.data?.profiles_aggregate.aggregate?.count ?? 0;
     result = NodeCheckResult(
         currentBlock: currentBlock,
         latency: currentBlock > 0 ? stopwatch.elapsed : wrongNodeDuration);
@@ -1278,4 +1235,34 @@ Future<NodeCheckResult> testDuniterV1Node(String node, Duration timeout) async {
     latency = wrongNodeDuration;
   }
   return NodeCheckResult(latency: latency, currentBlock: currentBlock);
+}
+
+Future<Contact> getProfile(String pubKeyRaw,
+    {bool onlyCPlusProfile = false, bool resize = true}) async {
+  return GetIt.instance<ServiceManager>().profileService.getProfile(
+        pubKeyRaw,
+        onlyCPlusProfile: onlyCPlusProfile,
+        resize: resize,
+      );
+}
+
+Future<List<Contact>> searchWot(String searchPattern) async {
+  return GetIt.instance<ServiceManager>()
+      .profileService
+      .searchWot(searchPattern);
+}
+
+Future<List<Contact>> searchProfiles(String initialSearchTerm) async {
+  final String searchTerm = normalizeQuery(initialSearchTerm);
+  final String searchTermLower = searchTerm.toLowerCase();
+  final String searchTermCapitalized =
+      searchTermLower[0].toUpperCase() + searchTermLower.substring(1);
+  return GetIt.instance<ServiceManager>().profileService.searchProfiles(
+      searchTermLower: searchTermLower,
+      searchTerm: searchTerm,
+      searchTermCapitalized: searchTermCapitalized);
+}
+
+Future<List<Contact>> getProfiles(List<String> pubKeys) async {
+  return GetIt.instance<ServiceManager>().profileService.getProfiles(pubKeys);
 }

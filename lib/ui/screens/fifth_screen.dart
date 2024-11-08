@@ -4,12 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:pwa_install/pwa_install.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
 import '../../data/models/cesium_card.dart';
-import '../../data/models/multi_wallet_selector.dart';
 import '../../data/models/node_manager.dart';
 import '../../data/models/theme_cubit.dart';
 import '../../g1/currency.dart';
@@ -27,8 +27,10 @@ import '../widgets/fifth_screen/fifth_tutorial.dart';
 import '../widgets/fifth_screen/grid_item.dart';
 import '../widgets/fifth_screen/import_dialog.dart';
 import '../widgets/fifth_screen/link_card.dart';
+import '../widgets/fifth_screen/multi_wallet_selector.dart';
 import '../widgets/fifth_screen/node_list_card.dart';
 import '../widgets/fifth_screen/text_divider.dart';
+import 'select_export_method_dialog.dart';
 
 class FifthScreen extends StatefulWidget {
   const FifthScreen({super.key});
@@ -106,83 +108,85 @@ class _FifthScreenState extends State<FifthScreen> {
             ],
           ),
           drawer: const CardDrawer(),
-          body: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              physics: const BouncingScrollPhysics(),
-              children: <Widget>[
-                const SizedBox(height: 10),
-                DropdownButtonFormField<Locale>(
-                  value: context.locale,
-                  decoration: InputDecoration(
-                    labelText: tr('language_switch_title'),
-                    icon: const Icon(Icons.language),
-                    border: const OutlineInputBorder(),
+          body: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              final bool isLargeScreen =
+                  ResponsiveBreakpoints.of(context).largerThan(MOBILE);
+              return ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                physics: const BouncingScrollPhysics(),
+                children: <Widget>[
+                  const SizedBox(height: 10),
+                  DropdownButtonFormField<Locale>(
+                    value: context.locale,
+                    decoration: InputDecoration(
+                      labelText: tr('language_switch_title'),
+                      icon: const Icon(Icons.language),
+                      border: const OutlineInputBorder(),
+                    ),
+                    onChanged: (Locale? newLocale) {
+                      context.setLocale(newLocale!);
+                    },
+                    items: const <DropdownMenuItem<Locale>>[
+                      DropdownMenuItem<Locale>(
+                        value: Locale('es', 'AST'),
+                        child: Text('Asturianu'),
+                      ),
+                      DropdownMenuItem<Locale>(
+                        value: Locale('ca'),
+                        child: Text('Català'),
+                      ),
+                      DropdownMenuItem<Locale>(
+                        value: Locale('da'),
+                        child: Text('Dansk'),
+                      ),
+                      DropdownMenuItem<Locale>(
+                        value: Locale('de'),
+                        child: Text('Deutsch'),
+                      ),
+                      DropdownMenuItem<Locale>(
+                        value: Locale('en'),
+                        child: Text('English'),
+                      ),
+                      DropdownMenuItem<Locale>(
+                        value: Locale('eo'),
+                        child: Text('Esperanto'),
+                      ),
+                      DropdownMenuItem<Locale>(
+                        value: Locale('es'),
+                        child: Text('Español'),
+                      ),
+                      DropdownMenuItem<Locale>(
+                        value: Locale('eu'),
+                        child: Text('Euskara'),
+                      ),
+                      DropdownMenuItem<Locale>(
+                        value: Locale('fr'),
+                        child: Text('Français'),
+                      ),
+                      DropdownMenuItem<Locale>(
+                        value: Locale('gl'),
+                        child: Text('Galego'),
+                      ),
+                      DropdownMenuItem<Locale>(
+                        value: Locale('nl'),
+                        child: Text('Nederlands'),
+                      ),
+                      DropdownMenuItem<Locale>(
+                        value: Locale('it'),
+                        child: Text('Italiano'),
+                      ),
+                      DropdownMenuItem<Locale>(
+                        value: Locale('pt'),
+                        child: Text('Português'),
+                      ),
+                    ],
                   ),
-                  onChanged: (Locale? newLocale) {
-                    context.setLocale(newLocale!);
-                    // NotificationController.locale = newLocale;
-                  },
-                  items: const <DropdownMenuItem<Locale>>[
-                    DropdownMenuItem<Locale>(
-                      value: Locale('es', 'AST'),
-                      child: Text('Asturianu'),
-                    ),
-                    DropdownMenuItem<Locale>(
-                      value: Locale('ca'),
-                      child: Text('Català'),
-                    ),
-                    DropdownMenuItem<Locale>(
-                      value: Locale('da'),
-                      child: Text('Dansk'),
-                    ),
-                    DropdownMenuItem<Locale>(
-                      value: Locale('de'),
-                      child: Text('Deutsch'),
-                    ),
-                    DropdownMenuItem<Locale>(
-                      value: Locale('en'),
-                      child: Text('English'),
-                    ),
-                    DropdownMenuItem<Locale>(
-                      value: Locale('eo'),
-                      child: Text('Esperanto'),
-                    ),
-                    DropdownMenuItem<Locale>(
-                      value: Locale('es'),
-                      child: Text('Español'),
-                    ),
-                    DropdownMenuItem<Locale>(
-                      value: Locale('eu'),
-                      child: Text('Euskara'),
-                    ),
-                    DropdownMenuItem<Locale>(
-                      value: Locale('fr'),
-                      child: Text('Français'),
-                    ),
-                    DropdownMenuItem<Locale>(
-                      value: Locale('gl'),
-                      child: Text('Galego'),
-                    ),
-                    DropdownMenuItem<Locale>(
-                      value: Locale('nl'),
-                      child: Text('Nederlands'),
-                    ),
-                    DropdownMenuItem<Locale>(
-                      value: Locale('it'),
-                      child: Text('Italiano'),
-                    ),
-                    DropdownMenuItem<Locale>(
-                      value: Locale('pt'),
-                      child: Text('Português'),
-                    ),
-                    // Add more DropdownMenuItem for more languages
-                  ],
-                ),
-                const TextDivider(text: 'key_tools_title'),
-                const SizedBox(height: 20),
-                GridView.count(
+                  const TextDivider(text: 'key_tools_title'),
+                  const SizedBox(height: 20),
+                  GridView.count(
                     physics: const NeverScrollableScrollPhysics(),
-                    crossAxisCount: 2,
+                    crossAxisCount: isLargeScreen ? 4 : 2,
                     childAspectRatio: 2 / 1.15,
                     crossAxisSpacing: 8,
                     mainAxisSpacing: 8,
@@ -226,76 +230,79 @@ class _FifthScreenState extends State<FifthScreen> {
                           icon: Icons.download,
                           onTap: () async {
                             _openWalletSelector(context);
-
-                            // _showSelectExportMethodDialog();
                           }),
                       GridItem(
                           title: 'import_key$pluralSuffix',
                           icon: Icons.upload,
                           onTap: () =>
                               showSelectImportMethodDialog(context, 0)),
-                    ]),
-                SwitchListTile(
-                    title: Text(tr('expert_mode')),
-                    value: state.expertMode,
-                    onChanged: (bool expert) {
-                      context.read<AppCubit>().setExpertMode(expert);
-                    }),
-                if (state.expertMode)
+                    ],
+                  ),
                   SwitchListTile(
-                      title: Text(tr('display_amounts_du')),
-                      value: state.currency == Currency.DU,
-                      onChanged: (bool useDU) {
-                        if (!useDU) {
-                          context.read<AppCubit>().setG1Currency();
-                        } else {
-                          context.read<AppCubit>().setDUCurrency();
-                        }
+                      title: Text(tr('expert_mode')),
+                      value: state.expertMode,
+                      onChanged: (bool expert) {
+                        context.read<AppCubit>().setExpertMode(expert);
                       }),
-                if (state.expertMode)
-                  SwitchListTile(
-                      title: const Text('Test v2'),
-                      value: state.v2mode,
-                      onChanged: (bool v2mode) {
-                        context.read<AppCubit>().setV2Mode(v2mode);
-                        GetIt.instance<ServiceManager>().updateService(v2mode);
-                        if (v2mode) {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(const SnackBar(
-                            content:
-                                Text('v2 mode activated for testing/develop'),
-                          ));
-                        }
-                      }),
-                if (state.expertMode)
-                  const TextDivider(text: 'technical_info_title'),
-                if (state.expertMode &&
-                    NodeManager().getCurrentGvaNode() != null)
-                  ListTile(
-                      title: Text(tr('last_node') +
-                          NodeManager().getCurrentGvaNode()!.url)),
-                if (state.expertMode) const NodeListCard(),
-                const TextDivider(text: 'info_links'),
-                if (state.expertMode)
+                  if (state.expertMode)
+                    SwitchListTile(
+                        title: Text(tr('display_amounts_du')),
+                        value: state.currency == Currency.DU,
+                        onChanged: (bool useDU) {
+                          if (!useDU) {
+                            context.read<AppCubit>().setG1Currency();
+                          } else {
+                            context.read<AppCubit>().setDUCurrency();
+                          }
+                        }),
+                  if (state.expertMode)
+                    SwitchListTile(
+                        title: const Text('Test v2'),
+                        value: state.v2mode,
+                        onChanged: (bool v2mode) {
+                          context.read<AppCubit>().setV2Mode(v2mode);
+                          GetIt.instance<ServiceManager>()
+                              .updateService(v2mode);
+                          if (v2mode) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content:
+                                  Text('v2 mode activated for testing/develop'),
+                            ));
+                          }
+                        }),
+                  if (state.expertMode)
+                    const TextDivider(text: 'technical_info_title'),
+                  if (state.expertMode &&
+                      NodeManager().getCurrentGvaNode() != null)
+                    ListTile(
+                        title: Text(tr('last_node') +
+                            NodeManager().getCurrentGvaNode()!.url)),
+                  if (state.expertMode) const NodeListCard(),
+                  const TextDivider(text: 'info_links'),
+                  if (state.expertMode)
+                    LinkCard(
+                        title: 'bug_report',
+                        icon: Icons.bug_report,
+                        url: Uri.parse(
+                            'https://git.duniter.org/vjrj/ginkgo/-/issues')),
+                  if (state.expertMode)
+                    LinkCard(
+                        title: 'code_card_title',
+                        icon: Icons.code_rounded,
+                        url: Uri.parse('https://git.duniter.org/vjrj/ginkgo')),
                   LinkCard(
-                      title: 'bug_report',
-                      icon: Icons.bug_report,
+                      title: 'code_translate',
+                      icon: Icons.translate,
                       url: Uri.parse(
-                          'https://git.duniter.org/vjrj/ginkgo/-/issues')),
-                if (state.expertMode)
-                  LinkCard(
-                      title: 'code_card_title',
-                      icon: Icons.code_rounded,
-                      url: Uri.parse('https://git.duniter.org/vjrj/ginkgo')),
-                LinkCard(
-                    title: 'code_translate',
-                    icon: Icons.translate,
-                    url: Uri.parse(
-                        'https://weblate.duniter.org/projects/g1nkgo/g1nkgo/')),
-                const TextDivider(text: 'faq_title'),
-                const FAQ(),
-                const BottomWidget()
-              ]),
+                          'https://weblate.duniter.org/projects/g1nkgo/g1nkgo/')),
+                  const TextDivider(text: 'faq_title'),
+                  const FAQ(),
+                  const BottomWidget()
+                ],
+              );
+            },
+          ),
         );
       });
     });
@@ -320,31 +327,5 @@ class _FifthScreenState extends State<FifthScreen> {
         },
       );
     }
-  }
-}
-
-class SelectExportMethodDialog extends StatelessWidget {
-  const SelectExportMethodDialog({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(tr('select_export_method')),
-      // content: Text(tr('select_export_method_desc')),
-      actions: <Widget>[
-        TextButton.icon(
-            icon: const Icon(Icons.file_present),
-            label: Text(tr('file_export')),
-            onPressed: () => Navigator.of(context).pop(ExportType.file)),
-        TextButton.icon(
-            icon: const Icon(Icons.content_paste),
-            label: Text(tr('clipboard_export')),
-            onPressed: () => Navigator.of(context).pop(ExportType.clipboard)),
-        TextButton.icon(
-            icon: const Icon(Icons.share),
-            label: Text(tr('share_export')),
-            onPressed: () => Navigator.of(context).pop(ExportType.share)),
-      ],
-    );
   }
 }

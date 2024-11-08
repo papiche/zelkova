@@ -1,9 +1,11 @@
 import 'dart:typed_data';
 
+import 'package:built_value/json_object.dart';
 import 'package:duniter_datapod/duniter_datapod_client.dart';
 import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-queries.data.gql.dart';
 import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-queries.req.gql.dart';
 import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-queries.var.gql.dart';
+import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod.schema.schema.gql.dart';
 import 'package:duniter_indexer/duniter_indexer_client.dart';
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.data.gql.dart';
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.req.gql.dart';
@@ -12,9 +14,9 @@ import 'package:ferry/ferry.dart' as ferry;
 import 'package:ferry_hive_store/ferry_hive_store.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
-import 'package:tuple/tuple.dart';
 
 import '../data/models/contact.dart';
+import '../data/models/lat_lng_parse.dart';
 import '../data/models/node.dart';
 import '../data/models/node_manager.dart';
 import '../data/models/node_type.dart';
@@ -74,14 +76,35 @@ Future<Contact> createContactFromProfile(
   dynamic profile, {
   bool resizeAvatar = true,
 }) async {
-  final Uint8List? avatar = await fetchAndResizeAvatar(
+  /* final Uint8List? avatar = await fetchAndResizeAvatar(
       (profile as dynamic).avatar as String?,
-      resize: resizeAvatar);
+      resize: resizeAvatar); */
 
+  List<Map<String, String>>? socials;
+
+  final ListJsonObject? socialsJson =
+      (profile as dynamic).socials as ListJsonObject?;
+  if (socialsJson != null) {
+    socials = socialsJson.asList
+        .map((Object? item) => (item! as Map<dynamic, dynamic>).map(
+              (dynamic key, dynamic value) =>
+                  MapEntry<String, String>(key.toString(), value.toString()),
+            ))
+        .toList();
+  }
+  final Gtimestamp? timeRaw = (profile as dynamic).time as Gtimestamp?;
+  final Gpoint? geoLocRaw = (profile as dynamic).geoloc as Gpoint?;
   return Contact.withAddress(
     name: (profile as dynamic).title as String,
     address: (profile as dynamic).pubkey as String,
-    avatar: avatar,
+    avatarCid: (profile as dynamic).avatar as String?,
+    description: (profile as dynamic).description as String?,
+    dataCid: (profile as dynamic).data_cid as String?,
+    geoLoc: geoLocRaw != null ? LatLngParsing.parse(geoLocRaw.value) : null,
+    indexRequestCid: (profile as dynamic).index_request_cid as String?,
+    socials: socials,
+    time: timeRaw != null ? DateTime.tryParse(timeRaw.value) : null,
+    city: (profile as dynamic).city as String?,
   );
 }
 
@@ -151,7 +174,10 @@ Future<List<Contact>> searchWotV2(String searchPatternRaw) async {
     } catch (e) {
       loggerDev('Error searching wot: $e');
     }
+    loggerDev('Contacts found in wot search ${contacts.length}');
+    return contacts;
   }
+  loggerDev('Contacts not found in wot search');
   return contacts;
 }
 
@@ -177,6 +203,7 @@ Future<GGetProfileByAddressData_profiles?> _searchProfileByPKV2(
         loggerDev('No profile found for pubkey $pubkey in node ${node.url}');
         continue;
       }
+      loggerDev('Profile found for pubkey $pubkey in node ${node.url}');
       return response.data?.profiles.first;
     } catch (e) {
       logger(
@@ -211,6 +238,7 @@ Future<Contact> getProfileV2(String pubKey,
 }
 
 Future<List<Contact>> getProfilesV2({required List<String> pubKeys}) async {
+  loggerDev('Fetching profiles v2 for pubkeys $pubKeys');
   final List<Contact> contacts = <Contact>[];
   if (pubKeys.isEmpty) {
     return contacts;
@@ -242,8 +270,10 @@ Future<List<Contact>> getProfilesV2({required List<String> pubKeys}) async {
     } catch (e) {
       logger('Error fetching profiles in node ${node.url}: $e');
     }
+    loggerDev('Contacts retrieved in getProfiles ${contacts.length}');
+    return contacts;
   }
-
+  loggerDev('Contacts not found in getProfiles');
   return contacts;
 }
 
@@ -303,7 +333,10 @@ Future<List<Contact>> searchProfilesV2({
     } catch (e) {
       logger('Error fetching profiles in node ${node.url}: $e');
     }
+    loggerDev('Contacts found in searchProfiles ${contacts.length}');
+    return contacts;
   }
+  loggerDev('Contacts not found in searchProfilesV2');
   return contacts;
 }
 

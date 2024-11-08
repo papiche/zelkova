@@ -186,7 +186,8 @@ Future<Transaction> _txGvaParse(
   final dynamic writtenTime = tx['writtenTime'];
   final DateTime time = writtenTime == null
       ? DateTime.now()
-      : DateTime.fromMillisecondsSinceEpoch((writtenTime as int) * 1000);
+      : DateTime.fromMillisecondsSinceEpoch((writtenTime as int) * 1000,
+          isUtc: true);
 
   if (isSent) {
     amount = -amount;

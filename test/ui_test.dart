@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ginkgo/data/models/contact.dart';
 import 'package:ginkgo/ui/ui_helpers.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
   const String testPubKey = '7wnDh2FPdwNW8Dd5JyoJTbspuu8b9QJKps2xAYenefsu';
@@ -185,6 +186,32 @@ void main() {
       final Contact contact = Contact(pubKey: testPubKey);
       final String? result = contact.subtitle;
       expect(result, isNull);
+    });
+
+    test('Correct time representation', () async {
+      expect(
+          humanizeTime(
+              DateTime.fromMillisecondsSinceEpoch(1731098308 * 1000,
+                  isUtc: true),
+              'es',
+              DateTime.parse('2024-11-08T20:38:28Z').toLocal()),
+          'hace un momento');
+      expect(
+          humanizeTime(
+              DateTime.fromMillisecondsSinceEpoch(1731098308 * 1000,
+                  isUtc: true),
+              'es',
+              DateTime.parse('2024-11-08T20:40:00Z').toLocal()),
+          'hace 2 minutos');
+      await initializeDateFormatting('es', null); // Inicializa el locale 'en'
+
+      expect(
+          humanizeTimeFull(
+            utcDateTime: DateTime.fromMillisecondsSinceEpoch(1731098308 * 1000,
+                isUtc: true),
+            locale: 'es',
+          ),
+          '8/11/2024 21:38');
     });
   });
 }

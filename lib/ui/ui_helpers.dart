@@ -10,9 +10,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -21,6 +23,7 @@ import '../data/models/cesium_card.dart';
 import '../data/models/contact.dart';
 import '../data/models/contact_cubit.dart';
 import '../data/models/multi_wallet_transaction_cubit.dart';
+import '../data/models/node_manager.dart';
 import '../data/models/theme_cubit.dart';
 import '../g1/api.dart';
 import '../g1/currency.dart';
@@ -79,16 +82,26 @@ const Color defAvatarColor = Colors.white;
 const double defAvatarStoreSize = 44;
 const double defAvatarUiSize = 24;
 
-Widget avatar(Uint8List? rawAvatar,
+Widget avatar(Contact c,
     {Color color = defAvatarColor,
     Color bgColor = defAvatarBgColor,
     double avatarSize = defAvatarUiSize}) {
-  return rawAvatar != null && rawAvatar.isNotEmpty
+  if (c.avatarCid != null) {
+    return CircleAvatar(
+      radius: avatarSize,
+      child: ClipOval(
+          child: Image.network(
+        NodeManager().ipfsUrl(c.avatarCid!),
+        fit: BoxFit.cover,
+      )),
+    );
+  }
+  return c.avatar != null && c.avatar!.isNotEmpty
       ? CircleAvatar(
           radius: avatarSize,
           child: ClipOval(
               child: Image.memory(
-            rawAvatar,
+            c.avatar!,
             fit: BoxFit.cover,
           )))
       : CircularIcon(
@@ -173,9 +186,16 @@ Color tileColor(int index, BuildContext context, [bool inverse = false]) {
       : unselectedColor;
 }
 
-// https://github.com/andresaraujo/timeago.dart/pull/142#issuecomment-859661123
-String? humanizeTime(DateTime time, String locale) =>
-    timeago.format(time.toUtc(), locale: locale, clock: DateTime.now().toUtc());
+String? humanizeTime(DateTime time, String locale, [DateTime? now]) {
+  final DateTime localTime = time.isUtc ? time.toLocal() : time;
+  return timeago.format(localTime,
+      locale: locale, clock: now ?? DateTime.now());
+}
+
+String humanizeTimeFull(
+    {required String locale, required DateTime utcDateTime}) {
+  return DateFormat.yMd(locale).add_Hm().format(utcDateTime.toLocal());
+}
 
 const bool txDebugging = false;
 
@@ -272,6 +292,21 @@ Future<Contact> contactFromResultSearch(Map<String, dynamic> record,
   return Contact(
       pubKey: record['_id'] as String,
       name: source['title'] as String,
+      description: source['description'] as String?,
+      city: source['city'] as String?,
+      geoLoc: source['geoPoint'] is Map<String, dynamic>
+          ? LatLng(
+              (source['geoPoint'] as Map<String, dynamic>)['lat'] as double,
+              (source['geoPoint'] as Map<String, dynamic>)['lon'] as double,
+            )
+          : null,
+      socials: (source['socials'] as List<dynamic>?)
+          ?.map((dynamic social) =>
+              Map<String, String>.from(social as Map<String, dynamic>))
+          .toList(),
+      time: source['time'] != null
+          ? DateTime.fromMillisecondsSinceEpoch((source['time'] as int) * 1000)
+          : null,
       avatar: avatarBase64);
 }
 
@@ -427,7 +462,7 @@ Widget contactToListItem(Contact contact, int index, BuildContext context,
       onTap: onTap,
       onLongPress: onLongPress,
       leading: avatar(
-        contact.avatar,
+        contact,
         bgColor: tileColor(index, context),
         color: tileColor(index, context, true),
       ),
@@ -579,77 +614,86 @@ void showQrDialog({
     context: context,
     builder: (BuildContext context) {
       return Dialog(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              SizedBox(
-                height: MediaQuery.of(context).size.width * 0.8,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: GestureDetector(
-                    onTap: () =>
-                        copyPublicKeyToClipboard(context, key, feedbackText),
-                    child: Container(
-                      color:
-                          isDark(context) ? Colors.grey[900] : Colors.grey[100],
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        children: <Widget>[
-                          if (!noTitle) Text(tr('show_qr_to_client')),
-                          if (!noTitle) const SizedBox(height: 10),
-                          Expanded(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: ResponsiveBreakpoints.of(context).largerThan(MOBILE)
+                ? 400.0
+                : double.infinity,
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                SizedBox(
+                  height: MediaQuery.of(context).size.width *
+                      (ResponsiveBreakpoints.of(context).largerThan(MOBILE)
+                          ? 0.4
+                          : 0.8),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: GestureDetector(
+                      onTap: () =>
+                          copyPublicKeyToClipboard(context, key, feedbackText),
+                      child: Container(
+                        color: isDark(context)
+                            ? Colors.grey[900]
+                            : Colors.grey[100],
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          children: <Widget>[
+                            if (!noTitle) Text(tr('show_qr_to_client')),
+                            if (!noTitle) const SizedBox(height: 10),
+                            Expanded(
                               child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                QrImageView(
-                                  // version: QrVersions.auto,
-                                  data: key,
-                                  size: MediaQuery.of(context).size.width * 0.5,
-                                  // gapless: false,
-                                  /* embeddedImage: const AssetImage(
-                                    'assets/img/gbrevedot_color.png',
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  QrImageView(
+                                    data: key,
+                                    size: MediaQuery.of(context).size.width *
+                                        (ResponsiveBreakpoints.of(context)
+                                                .largerThan(MOBILE)
+                                            ? 0.3
+                                            : 0.5),
+                                    eyeStyle: QrEyeStyle(
+                                        eyeShape: QrEyeShape.square,
+                                        color: isDark(context)
+                                            ? Theme.of(context).hintColor
+                                            : Theme.of(context).primaryColor),
+                                    dataModuleStyle: QrDataModuleStyle(
+                                        dataModuleShape:
+                                            QrDataModuleShape.square,
+                                        color: isDark(context)
+                                            ? Colors.white
+                                            : Colors.black),
                                   ),
-                                  embeddedImageStyle:
-                                      const QrEmbeddedImageStyle(
-                                    size: Size(80, 80),
-                                  ), */
-                                  eyeStyle: QrEyeStyle(
-                                      eyeShape: QrEyeShape.square,
-                                      color: isDark(context)
-                                          ? Theme.of(context).hintColor
-                                          : Theme.of(context).primaryColor),
-                                  dataModuleStyle: QrDataModuleStyle(
-                                      dataModuleShape: QrDataModuleShape.square,
-                                      color: isDark(context)
-                                          ? Colors.white
-                                          : Colors.black),
-                                )
-                              ])),
-                        ],
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: TextFormField(
-                  maxLines: 2,
-                  initialValue: key,
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.content_copy),
-                      onPressed: () {
-                        copyPublicKeyToClipboard(context, key, feedbackText);
-                      },
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: TextFormField(
+                    maxLines: 2,
+                    initialValue: key,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.content_copy),
+                        onPressed: () {
+                          copyPublicKeyToClipboard(context, key, feedbackText);
+                        },
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 20),
-            ],
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
       );
@@ -887,7 +931,7 @@ extension DateTimeExtension on DateTime {
 
 InlineSpan currencyBalanceWidget(BuildContext context, bool isG1,
     String currentSymbol, double balanceFontSize) {
-  final Color currencyColor = Theme.of(context).colorScheme.secondary;
+  const Color currencyColor = Colors.grey;
   return TextSpan(children: <InlineSpan>[
     TextSpan(
       text: currentSymbol,
@@ -915,7 +959,7 @@ InlineSpan currencyBalanceWidget(BuildContext context, bool isG1,
 
 InlineSpan separatorAmountSpan(bool small) {
   return WidgetSpan(
-    child: SizedBox(width: small ? 2 : 7),
+    child: SizedBox(width: small ? 4 : 7),
   );
 }
 
@@ -937,4 +981,10 @@ Future<List<Contact>> enrichContacts(
     newContacts.add(contactNew);
   }
   return newContacts.toList();
+}
+
+double calcWidthWithResponsive(BuildContext context) {
+  return ResponsiveBreakpoints.of(context).largerThan(MOBILE)
+      ? MediaQuery.of(context).size.width / 2
+      : MediaQuery.of(context).size.width;
 }

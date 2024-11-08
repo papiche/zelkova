@@ -26,6 +26,20 @@ class _ContactFormDialogState extends State<ContactFormDialog> {
   final GlobalKey<FormState> _formKey =
       GlobalKey<FormState>(debugLabel: 'contactFormDialog');
   late Contact _updatedContact;
+  final TextStyle keyStyle = const TextStyle(color: Colors.black45);
+  final InputDecoration keyDecoration = const InputDecoration(
+    enabledBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: Colors.grey), // width: 1.0),
+    ),
+    disabledBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: Colors.grey), // , width: 1.0),
+    ),
+    labelStyle: TextStyle(
+      color: Colors.black87,
+    ),
+    // filled: true,
+    // fillColor: Colors.transparent,
+  );
 
   @override
   void initState() {
@@ -49,7 +63,8 @@ class _ContactFormDialogState extends State<ContactFormDialog> {
                     child: TextFormField(
                   // maxLines: 2,
                   initialValue: humanizePubKey(_updatedContact.pubKey),
-                  decoration: InputDecoration(
+                  style: keyStyle,
+                  decoration: keyDecoration.copyWith(
                     labelText: tr('form_contact_pub_key'),
                   ),
                   enabled: false,
@@ -73,9 +88,10 @@ class _ContactFormDialogState extends State<ContactFormDialog> {
                     child: TextFormField(
                   // maxLines: 2,
                   initialValue: humanizePubKey(_updatedContact.address),
-                  decoration: InputDecoration(
+                  decoration: keyDecoration.copyWith(
                     labelText: tr('form_contact_address_v2'),
                   ),
+                  style: keyStyle,
                   enabled: false,
                 )),
                 GestureDetector(

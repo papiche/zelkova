@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
+import '../../ui_helpers.dart';
+
 TextStyle cardTextStyle(BuildContext context,
     {double? fontSize, Color? color = Colors.white}) {
+  final double width = calcWidthWithResponsive(context);
   return TextStyle(
     fontFamily: 'SourceCodePro',
     // decoration: TextDecoration.underline,
     color: color,
-    fontSize: fontSize ?? MediaQuery.of(context).size.width * 0.06,
+    fontSize: fontSize ?? width * 0.06,
     fontWeight: FontWeight.bold,
     shadows: <Shadow>[
       Shadow(

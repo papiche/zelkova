@@ -26,6 +26,7 @@ class CreditCard extends StatelessWidget {
     final bool bigDevice = bigScreen(context);
     final double cardPadding = bigDevice ? 26.0 : 16.0;
 
+    final double width = calcWidthWithResponsive(context);
     return Card(
         elevation: 8.0,
         shape: RoundedRectangleBorder(
@@ -70,8 +71,7 @@ class CreditCard extends StatelessWidget {
                               tr('g1_wallet'),
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize:
-                                    MediaQuery.of(context).size.width * 0.07,
+                                fontSize: width * 0.07,
                                 fontWeight: FontWeight.bold,
                               ),
                             )),
@@ -88,10 +88,7 @@ class CreditCard extends StatelessWidget {
                                       pubKeyOrAddress: publicKey);
                                 },
                                 child: SvgPicture.asset(
-                                  width: MediaQuery.of(context).size.width <
-                                          smallScreenWidth
-                                      ? 25
-                                      : 40,
+                                  width: width < smallScreenWidth ? 25 : 40,
                                   'assets/img/chip.svg',
                                 )),
                             const SizedBox(width: 10.0),

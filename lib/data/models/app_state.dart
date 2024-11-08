@@ -13,18 +13,21 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
       this.warningViewed = false,
       this.warningBrowserViewed = false,
       this.expertMode = false,
+      bool? walletCreatedViewed,
       this.v2mode = false,
       Currency? currency,
       double? currentUd,
       Map<String, bool>? tutorials})
       : tutorials = tutorials ?? <String, bool>{},
         currency = currency ?? Currency.G1,
+        walletCreatedViewed = walletCreatedViewed ?? introViewed,
         currentUd = currentUd ?? 10.68; // as 14/05/2023
 
   factory AppState.fromJson(Map<String, dynamic> json) =>
       _$AppStateFromJson(json);
 
   final bool introViewed;
+  final bool walletCreatedViewed;
   final bool warningViewed;
   final bool warningBrowserViewed;
   final bool expertMode;
@@ -40,6 +43,7 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
       bool? expertMode,
       Currency? currency,
       double? currentUd,
+      bool? walletCreatedViewed,
       bool? v2mode,
       Map<String, bool>? tutorials}) {
     return AppState(
@@ -48,6 +52,7 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
         warningBrowserViewed: warningBrowserViewed ?? this.warningBrowserViewed,
         expertMode: expertMode ?? this.expertMode,
         currency: currency ?? this.currency,
+        walletCreatedViewed: walletCreatedViewed ?? this.walletCreatedViewed,
         v2mode: v2mode ?? this.v2mode,
         currentUd: currentUd ?? this.currentUd,
         tutorials: tutorials ?? this.tutorials);
@@ -65,6 +70,7 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
         warningViewed,
         expertMode,
         warningBrowserViewed,
+        walletCreatedViewed,
         tutorials,
         currency,
         currentUd,

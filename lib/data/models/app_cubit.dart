@@ -12,6 +12,8 @@ class AppCubit extends HydratedCubit<AppState> {
 
   bool get isIntroViewed => state.introViewed;
 
+  bool get isWalletCreatedViewed => state.walletCreatedViewed;
+
   bool get isWarningViewed => state.warningViewed;
 
   bool get isWarningBrowserViewed => state.warningBrowserViewed;
@@ -24,6 +26,10 @@ class AppCubit extends HydratedCubit<AppState> {
 
   void introViewed() {
     emit(state.copyWith(introViewed: true));
+  }
+
+  void walletCreatedViewed() {
+    emit(state.copyWith(walletCreatedViewed: true));
   }
 
   void warningViewed() {

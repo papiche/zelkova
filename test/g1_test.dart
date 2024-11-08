@@ -64,6 +64,10 @@ void main() {
         equals(true));
     expect(validateKey('naU6XunXd1LSSfsHu3aNk8ZqgSosKQcvEQz8F2KaRAy'),
         equals(true));
+    expect(validateKey('13hFX4M9GAVAdZnTQh1BSgAZBxoUkCfdBDkzvoMK8n1d'),
+        equals(true));
+    expect(validateKey('13hFX4M9GAVAdZnTQh1BSgAZBxoUkCfdBDkzvoMK8n1d:FCY'),
+        equals(true));
   });
 
   const String baseKey = 'FRYyk57Pi456EJRu9vqVfSHLgmUfx4Qc3goS62a7dUSm';

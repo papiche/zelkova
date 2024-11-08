@@ -286,5 +286,10 @@
   "download_pdf": "Descargar PDF",
   "contacts_show_more": "Mostrar más",
   "contacts_show_less": "Mostrar menos",
-  "form_contact_pub_or_address": "Llave"
+  "form_contact_pub_or_address": "Llave",
+  "contact_about_me": "Perfil",
+  "contact_address": "Dirección",
+  "contact_socials": "Redes sociales y web",
+  "no_transactions_simple": "Este monedero no tiene saldo",
+  "info": "Info"
 }

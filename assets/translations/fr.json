@@ -259,7 +259,7 @@
   "search_user_title_in_analysis": "Recherche d'utilisateurs",
   "storage_permission_request": "L'autorisation de stockage est requise pour exporter ou importer votre portefeuille",
   "select_wallets_export": "Sélectionner les portefeuilles à exporter",
-  "select_all_wallets": "Sélectionner les portefeuilles",
+  "select_all_wallets": "Choisir tout",
   "done": "FAIT",
   "export_contacts": "Exporter des contacts",
   "no_wallets_imported": "Pas de portefeuilles importés",

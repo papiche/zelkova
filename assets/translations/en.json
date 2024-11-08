@@ -65,6 +65,7 @@
   "add_contact": "Add contact",
   "contact_added": "Contact added",
   "no_transactions": "This wallet has no balance. Start for example by offering your services in Ğ1 markets in order to receive your first income.",
+  "no_transactions_simple": "This wallet has no balance",
   "qr-scanner-title": "Scan the QR of someone",
   "copy_contact_key": "Copy",
   "nothing_found": "Nothing found",
@@ -280,5 +281,9 @@
   "total_received_sent": "Total sales and purchases",
   "download_pdf": "Download PDF",
   "contacts_show_more": "Show more",
-  "contacts_show_less": "Show less"
+  "contacts_show_less": "Show less",
+  "contact_about_me": "Profile",
+  "contact_address": "Physical address",
+  "contact_socials": "Social Media and Websites",
+  "info": "Info"
 }

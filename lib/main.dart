@@ -128,6 +128,8 @@ void main() async {
   timeago.setLocaleMessages('pt_short', timeago.PtBrShortMessages());
   timeago.setLocaleMessages('gl', GlMessages());
   timeago.setLocaleMessages('gl_short', GlShortMessages());
+  timeago.setLocaleMessages('da', timeago.DaMessages());
+  timeago.setLocaleMessages('da_short', timeago.DaShortMessages());
 
   await initGetItAll();
 
@@ -270,11 +272,16 @@ class _AppIntro extends State<AppIntro> {
       GlobalKey<IntroductionScreenState>(debugLabel: 'intro');
 
   void _onIntroEnd(BuildContext context, AppCubit cubit) {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute<void>(
-          builder: (BuildContext _) => const FeedbackAndSkeletonScreen()),
-    );
-    cubit.introViewed();
+    Future<void>.delayed(const Duration(milliseconds: 100), () {
+      if (!context.mounted) {
+        return;
+      }
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute<void>(
+            builder: (BuildContext _) => const FeedbackAndSkeletonScreen()),
+      );
+      cubit.introViewed();
+    });
   }
 
   @override
@@ -547,76 +554,83 @@ class _GinkgoAppState extends State<GinkgoApp> {
               ),
               child: BlocBuilder<ThemeCubit, ThemeModeState>(
                   builder: (BuildContext context, ThemeModeState themeState) {
-                return MaterialApp(
-                  /// Localization is not available for the title.
-                  title: 'Ğ1nkgo',
-                  navigatorKey: GinkgoApp.navigatorKey,
-                  scaffoldMessengerKey: globalMessengerKey,
+                return ResponsiveBreakpoints.builder(
+                    breakpoints: <Breakpoint>[
+                      const Breakpoint(start: 0, end: 450, name: MOBILE),
+                      const Breakpoint(start: 451, end: 800, name: TABLET),
+                      const Breakpoint(start: 801, end: 1920, name: DESKTOP),
+                      const Breakpoint(
+                          start: 1921, end: double.infinity, name: '4K'),
+                    ],
+                    child: MaterialApp(
+                      /// Localization is not available for the title.
+                      title: 'Ğ1nkgo',
+                      navigatorKey: GinkgoApp.navigatorKey,
+                      scaffoldMessengerKey: globalMessengerKey,
 
-                  /// Theme stuff
-                  theme: widget.lightTheme,
-                  highContrastTheme: widget.darkTheme,
-                  darkTheme: widget.darkTheme,
-                  themeMode: themeState.themeMode,
+                      /// Theme stuff
+                      theme: widget.lightTheme,
+                      highContrastTheme: widget.darkTheme,
+                      darkTheme: widget.darkTheme,
+                      themeMode: themeState.themeMode,
 
-                  /// Localization stuff
-                  localizationsDelegates: context.localizationDelegates
-                    ..addAll(<LocalizationsDelegate<dynamic>>[
-                      MaterialLocalizationsEo.delegate,
-                      CupertinoLocalizationsEo.delegate
-                    ]),
-                  supportedLocales: context.supportedLocales,
-                  locale: context.locale,
-                  debugShowCheckedModeBanner: false,
-                  home: context.read<AppCubit>().isIntroViewed
-                      ? const FeedbackAndSkeletonScreen()
-                      : const AppIntro(),
-                  builder: (BuildContext buildContext, Widget? widget) {
-                    NotificationController.locale = context.locale;
-                    return ConnectivityWidgetWrapperWrapper(
-                      offlineWidget: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          const Icon(
-                            Icons.cloud_off,
-                            size: 48,
-                            color: Colors.grey,
-                          ),
-                          const SizedBox(height: 6),
-                          Container(
-                              padding: const EdgeInsets.all(5.0),
-                              decoration: const BoxDecoration(
+                      /// Localization stuff
+                      localizationsDelegates: context.localizationDelegates
+                        ..addAll(<LocalizationsDelegate<dynamic>>[
+                          MaterialLocalizationsEo.delegate,
+                          CupertinoLocalizationsEo.delegate
+                        ]),
+                      supportedLocales: context.supportedLocales,
+                      locale: context.locale,
+                      debugShowCheckedModeBanner: false,
+                      home: const AppStart(),
+                      builder: (BuildContext c, Widget? widget) {
+                        NotificationController.locale = c.locale;
+                        return ConnectivityWidgetWrapperWrapper(
+                          offlineWidget: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              const Icon(
+                                Icons.cloud_off,
+                                size: 48,
                                 color: Colors.grey,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0)),
                               ),
-                              child: Text(
-                                tr('offline'),
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  decoration: TextDecoration.none,
-                                  fontSize: 14,
-                                ),
-                              )),
-                          const SizedBox(height: 110),
-                        ],
-                      ),
-                      child: context.watch<AppCubit>().isV2()
-                          ? CustomBanner(
-                              message: 'V2',
-                              color: Colors.green,
-                              child: _buildMaterialAppChild(context, widget))
-                          : _buildMaterialAppChild(context, widget),
-                    );
-                  },
-                );
+                              const SizedBox(height: 6),
+                              Container(
+                                  padding: const EdgeInsets.all(5.0),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.grey,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                  ),
+                                  child: Text(
+                                    tr('offline'),
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      decoration: TextDecoration.none,
+                                      fontSize: 14,
+                                    ),
+                                  )),
+                              const SizedBox(height: 110),
+                            ],
+                          ),
+                          child: c.watch<AppCubit>().isV2()
+                              ? CustomBanner(
+                                  message: 'V2',
+                                  color: Colors.green,
+                                  child: _buildMaterialAppChild(c, widget))
+                              : _buildMaterialAppChild(c, widget),
+                        );
+                      },
+                    ));
               })));
     });
   }
 
   MaxWidthBox _buildMaterialAppChild(BuildContext context, Widget? widget) {
     return MaxWidthBox(
-      maxWidth: 480,
+      maxWidth:
+          ResponsiveBreakpoints.of(context).largerThan(MOBILE) ? 960 : 480,
       backgroundColor: const Color(0xFFF5F5F5),
       child:
           BouncingScrollWrapper.builder(context, widget!, dragWithMouse: true),
@@ -632,7 +646,7 @@ class FeedbackAndSkeletonScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     /*
-    Commented as currectly there is an issue with the main theme
+    Commented as currently there is an issue with the main theme
      https://github.com/ueman/feedback/issues/317
      return BetterFeedback(
         theme: FeedbackThemeData(
@@ -710,5 +724,19 @@ Future<void> fetchTransactionsFromBackground([bool init = true]) async {
   } catch (e) {
     // We should try to do this better
     loggerDev(e.toString());
+  }
+}
+
+class AppStart extends StatelessWidget {
+  const AppStart({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final bool introViewed = GetIt.instance.get<AppCubit>().isIntroViewed;
+    if (introViewed) {
+      return const FeedbackAndSkeletonScreen();
+    } else {
+      return const AppIntro();
+    }
   }
 }

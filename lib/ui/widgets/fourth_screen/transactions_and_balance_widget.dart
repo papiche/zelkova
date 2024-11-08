@@ -50,7 +50,6 @@ class TransactionsAndBalanceWidget extends StatefulWidget {
 class _TransactionsAndBalanceWidgetState
     extends State<TransactionsAndBalanceWidget>
     with SingleTickerProviderStateMixin {
-  final ScrollController _transScrollController = ScrollController();
   late TransactionsBloc _bloc;
 
   late StreamSubscription<TransactionsState> _blocListingStateSubscription;
@@ -130,7 +129,6 @@ class _TransactionsAndBalanceWidgetState
 
   @override
   void dispose() {
-    _transScrollController.dispose();
     _pagingController.dispose();
     _pendingController.dispose();
     _blocListingStateSubscription.cancel();
@@ -358,8 +356,17 @@ class _TransactionsAndBalanceWidgetState
                           transaction: tx);
                     },
                     noItemsFoundIndicatorBuilder: (_) => Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Center(child: Text(tr('no_transactions'))))))
+                          padding: const EdgeInsets.all(20.0),
+                          child: Align(
+                            alignment: Alignment.topCenter,
+                            child: Text(
+                              tr(widget.isExternalAccount
+                                  ? 'no_transactions_simple'
+                                  : 'no_transactions'),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ))),
           ]),
     );
   }
@@ -402,7 +409,6 @@ class BalanceWidget extends StatelessWidget {
 
   final String pubKey;
   final bool small;
-  static const double balanceBigFontSize = 32;
 
   @override
   Widget build(BuildContext context) {

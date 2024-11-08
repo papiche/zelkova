@@ -126,6 +126,9 @@ dependencies:
   duniter_datapod:
     path: ./packages/duniter_datapod
   ferry_hive_store: ^0.5.2
+  latlong2: ^0.9.1
+  flutter_speed_dial: ^7.0.0
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

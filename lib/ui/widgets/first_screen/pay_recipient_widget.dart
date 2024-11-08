@@ -51,7 +51,7 @@ class _PayRecipientWidgetState extends State<PayRecipientWidget> {
                               child: Text('${currentContacts.length}'),
                             )
                           else
-                            avatar(currentContacts[0].avatar),
+                            avatar(currentContacts[0]),
                           const SizedBox(width: 16.0),
                           Expanded(
                             child: Column(

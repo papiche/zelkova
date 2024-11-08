@@ -99,6 +99,7 @@ class _ContactPageState extends State<ContactPage> {
           activeIcon: Icons.close,
           backgroundColor: Theme.of(context).colorScheme.primary,
           foregroundColor: Colors.white,
+          renderOverlay: false,
           children: <SpeedDialChild>[
             if (!me && inDevelopment)
               SpeedDialChild(

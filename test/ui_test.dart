@@ -203,7 +203,7 @@ void main() {
               'es',
               DateTime.parse('2024-11-08T20:40:00Z').toLocal()),
           'hace 2 minutos');
-      await initializeDateFormatting('es', null); // Inicializa el locale 'en'
+      await initializeDateFormatting('es'); // Inicializa el locale 'en'
 
       expect(
           humanizeTimeFull(

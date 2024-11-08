@@ -37,8 +37,16 @@ abstract class Tutorial {
   List<TargetFocus> createTargets();
 
   void showTutorial({bool showAlways = false}) {
-    if (showAlways || !context.read<AppCubit>().wasTutorialShown(tutorialId)) {
-      _tutorial.show(context: context);
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (showAlways ||
+          !context.read<AppCubit>().wasTutorialShown(tutorialId)) {
+        Future<void>.delayed(const Duration(milliseconds: 500), () {
+          if (!context.mounted) {
+            return;
+          }
+          _tutorial.show(context: context);
+        });
+      }
+    });
   }
 }

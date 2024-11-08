@@ -19,6 +19,26 @@ abstract class _$ContactCWProxy {
 
   Contact name(String? name);
 
+  Contact avatarCid(String? avatarCid);
+
+  Contact description(String? description);
+
+  Contact city(String? city);
+
+  Contact dataCid(String? dataCid);
+
+  Contact geoLoc(LatLng? geoLoc);
+
+  Contact indexRequestCid(String? indexRequestCid);
+
+  Contact socials(List<Map<String, String>>? socials);
+
+  Contact time(DateTime? time);
+
+  Contact certifiedFrom(List<String>? certifiedFrom);
+
+  Contact certifiedTo(List<String>? certifiedTo);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Contact(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -32,6 +52,16 @@ abstract class _$ContactCWProxy {
     Uint8List? avatar,
     String? notes,
     String? name,
+    String? avatarCid,
+    String? description,
+    String? city,
+    String? dataCid,
+    LatLng? geoLoc,
+    String? indexRequestCid,
+    List<Map<String, String>>? socials,
+    DateTime? time,
+    List<String>? certifiedFrom,
+    List<String>? certifiedTo,
   });
 }
 
@@ -60,6 +90,39 @@ class _$ContactCWProxyImpl implements _$ContactCWProxy {
   Contact name(String? name) => this(name: name);
 
   @override
+  Contact avatarCid(String? avatarCid) => this(avatarCid: avatarCid);
+
+  @override
+  Contact description(String? description) => this(description: description);
+
+  @override
+  Contact city(String? city) => this(city: city);
+
+  @override
+  Contact dataCid(String? dataCid) => this(dataCid: dataCid);
+
+  @override
+  Contact geoLoc(LatLng? geoLoc) => this(geoLoc: geoLoc);
+
+  @override
+  Contact indexRequestCid(String? indexRequestCid) =>
+      this(indexRequestCid: indexRequestCid);
+
+  @override
+  Contact socials(List<Map<String, String>>? socials) => this(socials: socials);
+
+  @override
+  Contact time(DateTime? time) => this(time: time);
+
+  @override
+  Contact certifiedFrom(List<String>? certifiedFrom) =>
+      this(certifiedFrom: certifiedFrom);
+
+  @override
+  Contact certifiedTo(List<String>? certifiedTo) =>
+      this(certifiedTo: certifiedTo);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Contact(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -74,6 +137,16 @@ class _$ContactCWProxyImpl implements _$ContactCWProxy {
     Object? avatar = const $CopyWithPlaceholder(),
     Object? notes = const $CopyWithPlaceholder(),
     Object? name = const $CopyWithPlaceholder(),
+    Object? avatarCid = const $CopyWithPlaceholder(),
+    Object? description = const $CopyWithPlaceholder(),
+    Object? city = const $CopyWithPlaceholder(),
+    Object? dataCid = const $CopyWithPlaceholder(),
+    Object? geoLoc = const $CopyWithPlaceholder(),
+    Object? indexRequestCid = const $CopyWithPlaceholder(),
+    Object? socials = const $CopyWithPlaceholder(),
+    Object? time = const $CopyWithPlaceholder(),
+    Object? certifiedFrom = const $CopyWithPlaceholder(),
+    Object? certifiedTo = const $CopyWithPlaceholder(),
   }) {
     return Contact(
       nick: nick == const $CopyWithPlaceholder()
@@ -100,6 +173,46 @@ class _$ContactCWProxyImpl implements _$ContactCWProxy {
           ? _value.name
           // ignore: cast_nullable_to_non_nullable
           : name as String?,
+      avatarCid: avatarCid == const $CopyWithPlaceholder()
+          ? _value.avatarCid
+          // ignore: cast_nullable_to_non_nullable
+          : avatarCid as String?,
+      description: description == const $CopyWithPlaceholder()
+          ? _value.description
+          // ignore: cast_nullable_to_non_nullable
+          : description as String?,
+      city: city == const $CopyWithPlaceholder()
+          ? _value.city
+          // ignore: cast_nullable_to_non_nullable
+          : city as String?,
+      dataCid: dataCid == const $CopyWithPlaceholder()
+          ? _value.dataCid
+          // ignore: cast_nullable_to_non_nullable
+          : dataCid as String?,
+      geoLoc: geoLoc == const $CopyWithPlaceholder()
+          ? _value.geoLoc
+          // ignore: cast_nullable_to_non_nullable
+          : geoLoc as LatLng?,
+      indexRequestCid: indexRequestCid == const $CopyWithPlaceholder()
+          ? _value.indexRequestCid
+          // ignore: cast_nullable_to_non_nullable
+          : indexRequestCid as String?,
+      socials: socials == const $CopyWithPlaceholder()
+          ? _value.socials
+          // ignore: cast_nullable_to_non_nullable
+          : socials as List<Map<String, String>>?,
+      time: time == const $CopyWithPlaceholder()
+          ? _value.time
+          // ignore: cast_nullable_to_non_nullable
+          : time as DateTime?,
+      certifiedFrom: certifiedFrom == const $CopyWithPlaceholder()
+          ? _value.certifiedFrom
+          // ignore: cast_nullable_to_non_nullable
+          : certifiedFrom as List<String>?,
+      certifiedTo: certifiedTo == const $CopyWithPlaceholder()
+          ? _value.certifiedTo
+          // ignore: cast_nullable_to_non_nullable
+          : certifiedTo as List<String>?,
     );
   }
 }
@@ -121,6 +234,25 @@ Contact _$ContactFromJson(Map<String, dynamic> json) => Contact(
       avatar: uIntFromList(json['avatar']),
       notes: json['notes'] as String?,
       name: json['name'] as String?,
+      avatarCid: json['avatarCid'] as String?,
+      description: json['description'] as String?,
+      city: json['city'] as String?,
+      dataCid: json['dataCid'] as String?,
+      geoLoc: json['geoLoc'] == null
+          ? null
+          : LatLng.fromJson(json['geoLoc'] as Map<String, dynamic>),
+      indexRequestCid: json['indexRequestCid'] as String?,
+      socials: (json['socials'] as List<dynamic>?)
+          ?.map((e) => Map<String, String>.from(e as Map))
+          .toList(),
+      time:
+          json['time'] == null ? null : DateTime.parse(json['time'] as String),
+      certifiedFrom: (json['certifiedFrom'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      certifiedTo: (json['certifiedTo'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$ContactToJson(Contact instance) => <String, dynamic>{
@@ -130,4 +262,14 @@ Map<String, dynamic> _$ContactToJson(Contact instance) => <String, dynamic>{
       'avatar': uIntToList(instance.avatar),
       'notes': instance.notes,
       'name': instance.name,
+      'avatarCid': instance.avatarCid,
+      'description': instance.description,
+      'city': instance.city,
+      'dataCid': instance.dataCid,
+      'geoLoc': instance.geoLoc,
+      'indexRequestCid': instance.indexRequestCid,
+      'socials': instance.socials,
+      'time': instance.time?.toIso8601String(),
+      'certifiedTo': instance.certifiedTo,
+      'certifiedFrom': instance.certifiedFrom,
     };

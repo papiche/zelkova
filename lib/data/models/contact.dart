@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../../g1/g1_helper.dart';
 import '../../g1/g1_v2_helper_multi.dart';
@@ -15,14 +16,24 @@ part 'contact.g.dart';
 @JsonSerializable()
 @CopyWith()
 class Contact extends Equatable implements IsJsonSerializable<Contact> {
-  Contact({
-    this.nick,
-    required String pubKey,
-    String? address,
-    this.avatar,
-    this.notes,
-    this.name,
-  })  :
+  Contact(
+      {this.nick,
+      required String pubKey,
+      String? address,
+      this.avatar,
+      this.notes,
+      this.name,
+      this.avatarCid,
+      this.description,
+      this.city,
+      this.dataCid,
+      this.geoLoc,
+      this.indexRequestCid,
+      this.socials,
+      this.time,
+      this.certifiedFrom,
+      this.certifiedTo})
+      :
         // ensure that Contact does not have v1 checksums
         pubKey = extractPublicKey(pubKey),
         address = address ?? addressFromV1PubkeyMulti(extractPublicKey(pubKey));
@@ -30,30 +41,57 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
   factory Contact.fromJson(Map<String, dynamic> json) =>
       _$ContactFromJson(json);
 
-  const Contact._({
-    this.nick,
-    required this.pubKey,
-    required this.address,
-    this.avatar,
-    this.notes,
-    this.name,
-  });
+  const Contact._(
+      {this.nick,
+      required this.pubKey,
+      required this.address,
+      this.avatar,
+      this.notes,
+      this.name,
+      this.avatarCid,
+      this.description,
+      this.city,
+      this.dataCid,
+      this.geoLoc,
+      this.indexRequestCid,
+      this.socials,
+      this.time,
+      this.certifiedFrom,
+      this.certifiedTo});
 
-  factory Contact.withPubKey({
-    String? nick,
-    required String pubKey,
-    Uint8List? avatar,
-    String? notes,
-    String? name,
-  }) {
+  factory Contact.withPubKey(
+      {String? nick,
+      required String pubKey,
+      Uint8List? avatar,
+      String? notes,
+      String? name,
+      String? avatarCid,
+      String? description,
+      String? city,
+      String? dataCid,
+      LatLng? geoLoc,
+      String? indexRequestCid,
+      List<Map<String, String>>? socials,
+      List<String>? certifiedTo,
+      List<String>? certifiedFrom,
+      DateTime? time}) {
     return Contact._(
-      nick: nick,
-      pubKey: extractPublicKey(pubKey),
-      address: addressFromV1PubkeyMulti(extractPublicKey(pubKey)),
-      avatar: avatar,
-      notes: notes,
-      name: name,
-    );
+        nick: nick,
+        pubKey: extractPublicKey(pubKey),
+        address: addressFromV1PubkeyMulti(extractPublicKey(pubKey)),
+        avatar: avatar,
+        notes: notes,
+        name: name,
+        avatarCid: avatarCid,
+        description: description,
+        city: city,
+        dataCid: dataCid,
+        geoLoc: geoLoc,
+        indexRequestCid: indexRequestCid,
+        socials: socials,
+        time: time,
+        certifiedTo: certifiedTo,
+        certifiedFrom: certifiedFrom);
   }
 
   factory Contact.empty() {
@@ -64,31 +102,35 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
     );
   }
 
-  factory Contact.withAddress({
-    String? nick,
-    required String address,
-    Uint8List? avatar,
-    String? notes,
-    String? name,
-  }) {
+  factory Contact.withAddress(
+      {String? nick,
+      required String address,
+      Uint8List? avatar,
+      String? notes,
+      String? name,
+      String? avatarCid,
+      String? description,
+      String? city,
+      String? dataCid,
+      LatLng? geoLoc,
+      String? indexRequestCid,
+      List<Map<String, String>>? socials,
+      DateTime? time}) {
     return Contact._(
-      nick: nick,
-      pubKey: v1pubkeyFromAddressMulti(address),
-      address: address,
-      avatar: avatar,
-      notes: notes,
-      name: name,
-    );
-  }
-
-  Contact merge(Contact c) {
-    return Contact(
-      nick: c.nick ?? nick,
-      pubKey: c.pubKey,
-      avatar: c.avatar ?? avatar,
-      notes: c.notes ?? notes,
-      name: c.name ?? name,
-    );
+        nick: nick,
+        pubKey: v1pubkeyFromAddressMulti(address),
+        address: address,
+        avatar: avatar,
+        notes: notes,
+        name: name,
+        avatarCid: avatarCid,
+        description: description,
+        city: city,
+        dataCid: dataCid,
+        geoLoc: geoLoc,
+        indexRequestCid: indexRequestCid,
+        socials: socials,
+        time: time);
   }
 
   final String? nick;
@@ -98,11 +140,56 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
   final Uint8List? avatar;
   final String? notes;
   final String? name;
+  final String? avatarCid;
+  final String? description;
+  final String? city;
+  final String? dataCid;
+  final LatLng? geoLoc;
+  final String? indexRequestCid;
+  final List<Map<String, String>>? socials;
+  final DateTime? time;
+  final List<String>? certifiedTo;
+  final List<String>? certifiedFrom;
+
+  Contact merge(Contact c) {
+    return Contact(
+        nick: c.nick ?? nick,
+        pubKey: c.pubKey,
+        avatar: c.avatar ?? avatar,
+        notes: c.notes ?? notes,
+        name: c.name ?? name,
+        avatarCid: c.avatarCid ?? avatarCid,
+        description: c.description ?? description,
+        city: c.city ?? city,
+        dataCid: c.dataCid ?? dataCid,
+        geoLoc: c.geoLoc ?? geoLoc,
+        indexRequestCid: c.indexRequestCid ?? indexRequestCid,
+        socials: c.socials ?? socials,
+        time: c.time ?? time);
+  }
 
   @override
-  List<Object?> get props =>
-      <dynamic>[pubKey, nick, pubKey, avatar, notes, name, address];
+  List<Object?> get props => <dynamic>[
+        pubKey,
+        nick,
+        pubKey,
+        avatar,
+        notes,
+        name,
+        address,
+        avatarCid,
+        description,
+        city,
+        dataCid,
+        geoLoc,
+        indexRequestCid,
+        socials,
+        time,
+        certifiedFrom,
+        certifiedTo
+      ];
 
+  // Only avatar binary
   bool get hasAvatar => avatar != null;
 
   @override
@@ -136,12 +223,19 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
 
   Contact cloneWithoutAvatar() {
     return Contact(
-      nick: nick,
-      pubKey: pubKey,
-      // avatar: null,
-      notes: notes,
-      name: name,
-    );
+        nick: nick,
+        pubKey: pubKey,
+        // avatar: null,
+        notes: notes,
+        name: name,
+        avatarCid: avatarCid,
+        description: description,
+        city: city,
+        dataCid: dataCid,
+        geoLoc: geoLoc,
+        indexRequestCid: indexRequestCid,
+        socials: socials,
+        time: time);
   }
 
   bool keyEqual(Contact other) =>

@@ -556,11 +556,11 @@ class _GinkgoAppState extends State<GinkgoApp> {
                   builder: (BuildContext context, ThemeModeState themeState) {
                 return ResponsiveBreakpoints.builder(
                     breakpoints: <Breakpoint>[
-                      const Breakpoint(start: 0, end: 450, name: MOBILE),
-                      const Breakpoint(start: 451, end: 800, name: TABLET),
-                      const Breakpoint(start: 801, end: 1920, name: DESKTOP),
+                      const Breakpoint(start: 0, end: 480, name: MOBILE),
+                      const Breakpoint(start: 481, end: 768, name: TABLET),
+                      const Breakpoint(start: 769, end: 1200, name: DESKTOP),
                       const Breakpoint(
-                          start: 1921, end: double.infinity, name: '4K'),
+                          start: 1201, end: double.infinity, name: '4K'),
                     ],
                     child: MaterialApp(
                       /// Localization is not available for the title.

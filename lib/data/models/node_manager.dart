@@ -27,6 +27,7 @@ class NodeManager {
   final List<Node> duniterIndexerNodes = <Node>[];
   final List<Node> duniterDataNodes = <Node>[];
   final List<Node> ipfsGateways = <Node>[];
+  String? currentIfpsNode;
 
   /*
   void loadFromCubit(NodeListCubit cubit) {
@@ -205,6 +206,11 @@ class NodeManager {
     }
     loggerDev('Best nodes: ${nodesAtMaxBlock.length}');
     return nodesAtMaxBlock;
+  }
+
+  String ipfsUrl(String path) {
+    currentIfpsNode ??= nodesWorkingList(NodeType.ipfsGateway).first.url;
+    return '${currentIfpsNode!}/ipfs/$path';
   }
 }
 

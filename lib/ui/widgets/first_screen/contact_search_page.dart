@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 
 import '../../../data/models/app_cubit.dart';
+import '../../../data/models/bottom_nav_cubit.dart';
 import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
 import '../../../data/models/contact_state.dart';
@@ -56,7 +57,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
   bool _isLoading = false;
   final Set<Contact> _selectedContacts = <Contact>{};
   late bool _isMultiSelect;
-  final int minSearchLength = 4;
+  final int minSearchLength = 3;
   late bool _isV2;
 
   Future<void> _search() async {
@@ -502,7 +503,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
               });
             },
             secondary: avatar(
-              contact.avatar,
+              contact,
               bgColor: tileColor(index, context),
               color: tileColor(index, context, true),
             ),
@@ -513,6 +514,9 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
             context,
             isV2: _isV2,
             onLongPress: () {
+              if (widget.searchUse == SearchUse.contactSearch) {
+                return;
+              }
               setState(() {
                 _isMultiSelect = true;
                 _selectedContacts.add(contact);
@@ -520,6 +524,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
             },
             onTap: () {
               context.read<PaymentCubit>().selectUser(contact);
+              context.read<BottomNavCubit>().updateIndex(0);
               Navigator.pop(context);
             },
             trailing: BlocBuilder<ContactsCubit, ContactsState>(

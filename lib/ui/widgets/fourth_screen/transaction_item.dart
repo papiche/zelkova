@@ -368,18 +368,21 @@ class TransactionListItem extends StatelessWidget {
                         ],
                       )),
                       const SizedBox(height: 4.0),
-                      Tooltip(
-                          message: DateFormat.yMd(currentLocale(context))
-                              .add_Hm()
-                              .format(transaction.time),
-                          child: Text(
-                            humanizeTime(
-                                transaction.time, currentLocale(context))!,
-                            style: const TextStyle(
-                              fontSize: 12.0,
-                              color: grey,
-                            ),
-                          )),
+                      LayoutBuilder(
+                          builder: (BuildContext context,
+                                  BoxConstraints constraints) =>
+                              Tooltip(
+                                  message: humanizeTimeFull(
+                                      locale: currentLocale(context),
+                                      utcDateTime: transaction.time),
+                                  child: Text(
+                                    humanizeTime(transaction.time,
+                                        currentLocale(context))!,
+                                    style: const TextStyle(
+                                      fontSize: 12.0,
+                                      color: grey,
+                                    ),
+                                  ))),
                     ],
                   ),
                 ))));
@@ -397,7 +400,7 @@ class TransactionListItem extends StatelessWidget {
     final Contact newContact = transaction.isIncoming
         ? transaction.from
         : transaction.recipientsWithoutCashBack[0];
-    addContact(contactsCubit, newContact, context);
+    addContact(context, newContact);
   }
 
   void _selectUserToPay(BuildContext context, Transaction transaction) {

@@ -8,6 +8,7 @@ import '../../data/models/contact_cubit.dart';
 import '../../data/models/payment_cubit.dart';
 import '../contacts_cache.dart';
 import '../ui_helpers.dart';
+import 'contact_page.dart';
 import 'third_screen/contact_form_dialog.dart';
 
 void onEditContact(BuildContext context, Contact contact) {
@@ -37,13 +38,22 @@ void onShowContactQr(BuildContext context, Contact contact) {
       feedbackText: 'some_key_copied_to_clipboard');
 }
 
+void showContactPage(BuildContext context, Contact contact) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return ContactPage(contact: contact);
+    },
+  );
+}
+
 void onSentContact(BuildContext c, Contact contact) {
   c.read<PaymentCubit>().selectUser(contact);
   c.read<BottomNavCubit>().updateIndex(0);
 }
 
-void addContact(
-    ContactsCubit contactsCubit, Contact newContact, BuildContext context) {
+void addContact(BuildContext context, Contact newContact) {
+  final ContactsCubit contactsCubit = context.read<ContactsCubit>();
   contactsCubit.addContact(newContact);
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(

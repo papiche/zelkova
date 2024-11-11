@@ -286,5 +286,10 @@
   "download_pdf": "PDF herunterladen",
   "form_contact_pub_or_address": "Schlüssel",
   "contacts_show_less": "Weniger anzeigen",
-  "contacts_show_more": "Mehr anzeigen"
+  "contacts_show_more": "Mehr anzeigen",
+  "no_transactions_simple": "Diese Brieftasche hat noch kein Saldo.",
+  "contact_about_me": "Profil",
+  "contact_address": "Wohnort",
+  "contact_socials": "Soziale Medien und Webseiten",
+  "info": "Info"
 }

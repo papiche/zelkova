@@ -12,10 +12,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:l10n_esperanto/l10n_esperanto.dart';
 import 'package:lehttp_overrides/lehttp_overrides.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:pwa_install/pwa_install.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -101,7 +103,7 @@ void main() async {
   }
   assert(shared.getPubKey() != null);
 
-  await hydratedInit();
+  await hiveInit();
 
   PWAInstall().setup(installCallback: () {
     logger('APP INSTALLED!');
@@ -679,17 +681,13 @@ Future<void> initGetItAll() async {
     getIt.registerSingleton<UtxoCubit>(UtxoCubit());
     getIt.registerSingleton<ServiceManager>(
         ServiceManager(initialIsV2: appCubit.isV2()));
-    // Ferry cache
-    final Box<dynamic> box = await Hive.openBox('ferry-graphql-cache');
-    final HiveStore store = HiveStore(box);
-    getIt.registerSingleton<HiveStore>(store);
   }
 }
 
 Future<void> fetchTransactionsFromBackground([bool init = true]) async {
   try {
     if (init) {
-      await hydratedInit();
+      await hiveInit();
       if (SharedPreferencesHelper().cards.isEmpty) {
         await SharedPreferencesHelper().init();
       }
@@ -739,4 +737,36 @@ class AppStart extends StatelessWidget {
       return const AppIntro();
     }
   }
+}
+
+Future<void> hiveInit() async {
+  await Hive.initFlutter();
+
+  // Reset hive old keys
+  if (kIsWeb) {
+    final Box<dynamic> box = await Hive.openBox('hydrated_box',
+        path: HydratedStorage.webStorageDirectory.path);
+    final List<dynamic> keysToDelete =
+        box.keys.where((dynamic key) => '$key'.startsWith('minified')).toList();
+    box.deleteAll(keysToDelete);
+    // This should we done after init
+    // await HydratedBloc.storage.clear();
+    box.close();
+  }
+
+  // Hydrated storage
+  final Directory storageDir = kIsWeb
+      ? HydratedStorage.webStorageDirectory
+      : await getApplicationDocumentsDirectory();
+  HydratedBloc.storage =
+      await HydratedStorage.build(storageDirectory: storageDir);
+
+  // Ferry cache
+  final Box<dynamic> ferryBox = await Hive.openBox(
+    'ferry-graphql-cache',
+    path: storageDir.path,
+  );
+  final HiveStore ferryStore = HiveStore(ferryBox);
+  final GetIt getIt = GetIt.instance;
+  getIt.registerSingleton<HiveStore>(ferryStore);
 }

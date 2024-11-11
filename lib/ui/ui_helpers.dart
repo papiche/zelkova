@@ -8,8 +8,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -23,15 +21,15 @@ import '../data/models/cesium_card.dart';
 import '../data/models/contact.dart';
 import '../data/models/contact_cubit.dart';
 import '../data/models/multi_wallet_transaction_cubit.dart';
-import '../data/models/node_manager.dart';
 import '../data/models/theme_cubit.dart';
 import '../g1/api.dart';
 import '../g1/currency.dart';
 import '../g1/g1_helper.dart';
 import '../shared_prefs_helper.dart';
+import 'basic_avatar.dart';
 import 'contacts_cache.dart';
+import 'ipfs_image.dart';
 import 'logger.dart';
-import 'widgets/first_screen/circular_icon.dart';
 
 Future<dynamic> showAlertDialog(
     BuildContext context, String title, String message) {
@@ -90,10 +88,9 @@ Widget avatar(Contact c,
     return CircleAvatar(
       radius: avatarSize,
       child: ClipOval(
-          child: Image.network(
-        NodeManager().ipfsUrl(c.avatarCid!),
-        fit: BoxFit.cover,
-      )),
+        child: IpfsImage(path: c.avatarCid!),
+        // fit: BoxFit.cover,
+      ),
     );
   }
   return c.avatar != null && c.avatar!.isNotEmpty
@@ -104,8 +101,7 @@ Widget avatar(Contact c,
             c.avatar!,
             fit: BoxFit.cover,
           )))
-      : CircularIcon(
-          iconData: Icons.person, backgroundColor: color, iconColor: bgColor);
+      : const BasicAvatar();
 }
 
 String humanizeFromToPubKey(String publicAddress, String address) {
@@ -709,32 +705,6 @@ bool get isIOS => !kIsWeb && Platform.isIOS;
 const String g1nkgoUserNameSuffix = ' ❥';
 const String protectedUserNameSuffix = ' 🔒';
 const double cardAspectRatio = 1.58;
-
-Future<void> hydratedInit() async {
-  await Hive.initFlutter();
-
-  // Reset hive old keys
-  if (kIsWeb) {
-    final Box<dynamic> box = await Hive.openBox('hydrated_box',
-        path: HydratedStorage.webStorageDirectory.path);
-    final List<dynamic> keysToDelete =
-        box.keys.where((dynamic key) => '$key'.startsWith('minified')).toList();
-    box.deleteAll(keysToDelete);
-    // This should we done after init
-    // await HydratedBloc.storage.clear();
-    box.close();
-  }
-
-  if (kIsWeb) {
-    HydratedBloc.storage = await HydratedStorage.build(
-        storageDirectory: HydratedStorage.webStorageDirectory);
-  } else {
-    final Directory tmpDir = await getTemporaryDirectory();
-    Hive.init(tmpDir.toString());
-    HydratedBloc.storage =
-        await HydratedStorage.build(storageDirectory: tmpDir);
-  }
-}
 
 String buildTxNotifTitle(String? from) {
   final String title = from != null

@@ -267,5 +267,21 @@
   "market_analysis": "Analysez votre marché !",
   "last_node": "Dernier nœud utilisé : ",
   "export_keys": "Exporter vos portefeuilles",
-  "import_keys": "Importer vos portefeuilles"
+  "import_keys": "Importer vos portefeuilles",
+  "pdf_generated": "PDF généré",
+  "no_transactions_simple": "Ce compte n'a pas de solde",
+  "transaction_summary": "Résumé des transactions",
+  "too_many_attempts": "Trop de tentatives",
+  "select_people_to_analyze": "Choisir les comptes à analyser",
+  "select_date_range": "Sélectionner une période",
+  "dates": "Dates",
+  "form_contact_pub_or_address": "Clé",
+  "total_received": "Total des achats ({number}) :",
+  "total_sent": "Total des ventes ({number}) :",
+  "other_contacts_involved": "Autres comptes concernés",
+  "invalid_date_range": "Plage de dates invalide",
+  "date_range_exceed": "La plage de dates ne peut pas dépasser {number} jours.",
+  "ok": "OK",
+  "market_analysis_report": "Rapport d'analyse du marché",
+  "analyze": "Analyse"
 }

@@ -129,6 +129,7 @@ dependencies:
   latlong2: ^0.9.1
   flutter_speed_dial: ^7.0.0
   intl: ^0.18.1
+  flutter_zxing: ^1.7.0
 
 dev_dependencies:
   flutter_test:

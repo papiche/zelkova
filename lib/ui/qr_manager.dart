@@ -1,1 +1,3 @@
-export 'qr_manager_mobile.dart' if (dart.library.html) 'qr_manager_web.dart';
+export 'qr_manager_mobile.dart'
+    if (dart.library.html) 'qr_manager_web.dart'
+    if (dart.library.io) 'qr_manager_linux.dart';

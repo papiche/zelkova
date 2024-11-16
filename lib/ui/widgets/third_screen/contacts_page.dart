@@ -175,11 +175,6 @@ class _ContactsPageState extends State<ContactsPage> {
                       onLongPress: () => onEditContact(context, contact),
                       onTap: () {
                         showContactPage(context, contact);
-/*                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(tr('long_press_to_edit')),
-                          ),
-                        ); */
                       },
                       trailing: ContactMenu(
                           contact: contact,

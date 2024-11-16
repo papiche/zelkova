@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:crypto/crypto.dart' as crypto;
 import 'package:crypto/crypto.dart';
 import 'package:durt/durt.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
@@ -158,8 +159,8 @@ String pkChecksum(String pubkey) {
   }
 
   // Double SHA256 hash
-  final Digest firstHash = sha256.convert(signpkInt8);
-  final Digest secondHash = sha256.convert(firstHash.bytes);
+  final crypto.Digest firstHash = sha256.convert(signpkInt8);
+  final crypto.Digest secondHash = sha256.convert(firstHash.bytes);
 
   // Base58 encode and take the first 3 characters
   final String checksum = Base58Encode(secondHash.bytes).substring(0, 3);
@@ -394,4 +395,27 @@ List<Transaction> lastTx(List<Transaction> origTxs) {
       .where((Transaction tx) =>
           areDatesClose(DateTime.now(), tx.time, paymentTimeRange))
       .toList();
+}
+
+Uint8List encryptAes(Uint8List data, Uint8List key) {
+  final encrypt.Encrypter encrypter = encrypt.Encrypter(encrypt.AES(
+    encrypt.Key(key),
+    mode: encrypt.AESMode.ecb,
+    padding: null,
+  ));
+  final encrypt.Encrypted encrypted =
+      encrypter.encryptBytes(data, iv: encrypt.IV(Uint8List(16)));
+  return Uint8List.fromList(encrypted.bytes);
+}
+
+Uint8List decryptAes(Uint8List encryptedData, Uint8List key) {
+  final encrypt.Encrypter encrypter = encrypt.Encrypter(encrypt.AES(
+    encrypt.Key(key),
+    mode: encrypt.AESMode.ecb,
+    padding: null,
+  ));
+  final List<int> decrypted = encrypter.decryptBytes(
+      encrypt.Encrypted(encryptedData),
+      iv: encrypt.IV(Uint8List(16)));
+  return Uint8List.fromList(decrypted);
 }

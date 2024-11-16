@@ -33,14 +33,14 @@ class ImportDialog extends StatefulWidget {
 
 class _ImportDialogState extends State<ImportDialog> {
   final GlobalKey<ScaffoldState> _importKey =
-  GlobalKey<ScaffoldState>(debugLabel: 'importKey');
+      GlobalKey<ScaffoldState>(debugLabel: 'importKey');
   int _attempts = 0;
 
   @override
   Widget build(BuildContext c) {
     return FutureBuilder<String>(
         future: widget.wallet == null
-            ? (kIsWeb ? _importWalletWeb(c) : _importWallet(c))
+            ? (kIsWeb ? importWalletWeb(c) : importWallet(c))
             : Future<String>.value(widget.wallet),
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           if (snapshot.hasData &&
@@ -48,7 +48,7 @@ class _ImportDialogState extends State<ImportDialog> {
               snapshot.data!.isNotEmpty) {
             final String keyEncString = snapshot.data!;
             final Map<String, dynamic> keyJson =
-            jsonDecode(keyEncString) as Map<String, dynamic>;
+                jsonDecode(keyEncString) as Map<String, dynamic>;
             final String keyEncrypted = keyJson['key'] as String;
             return Scaffold(
               key: _importKey,
@@ -86,17 +86,17 @@ class _ImportDialogState extends State<ImportDialog> {
                         try {
                           // try to decrypt
                           final Map<String, dynamic> keys =
-                          decryptJsonForImport(
-                              keyEncrypted, pattern.join());
+                              decryptJsonForImport(
+                                  keyEncrypted, pattern.join());
                           try {
                             final dynamic cesiumCards = keys['cesiumCards'];
                             final List<dynamic>? contacts =
-                            keys['contacts'] as List<dynamic>?;
+                                keys['contacts'] as List<dynamic>?;
                             importContacts(contacts, context);
                             if (cesiumCards != null) {
                               final List<dynamic> cesiumCardList =
-                              jsonDecode(cesiumCards as String)
-                              as List<dynamic>;
+                                  jsonDecode(cesiumCards as String)
+                                      as List<dynamic>;
                               // ignore: avoid_function_literals_in_foreach_calls
                               int imported = 0;
                               for (final dynamic cesiumCard in cesiumCardList) {
@@ -111,9 +111,9 @@ class _ImportDialogState extends State<ImportDialog> {
                                   imported == 0
                                       ? tr('no_wallets_imported')
                                       : tr('wallets_imported',
-                                      namedArgs: <String, String>{
-                                        'number': imported.toString()
-                                      }),
+                                          namedArgs: <String, String>{
+                                              'number': imported.toString()
+                                            }),
                                   style: TextStyle(
                                       color: imported == 0
                                           ? Colors.red
@@ -194,19 +194,19 @@ class _ImportDialogState extends State<ImportDialog> {
         if (existingContacts.isNotEmpty) {
           for (final dynamic contactJson in contacts) {
             final Contact contact =
-            Contact.fromJson(contactJson as Map<String, dynamic>);
+                Contact.fromJson(contactJson as Map<String, dynamic>);
             if (!contactsCubit.isContact(contact.pubKey)) {
               contactsCubit.addContact(contact);
             } else {
               final Contact storedContact =
-              contactsCubit.getContact(contact.pubKey)!;
+                  contactsCubit.getContact(contact.pubKey)!;
               contactsCubit.updateContact(storedContact.merge(contact));
             }
           }
         } else {
           for (final dynamic contactJson in contacts) {
             final Contact contact =
-            Contact.fromJson(contactJson as Map<String, dynamic>);
+                Contact.fromJson(contactJson as Map<String, dynamic>);
             contactsCubit.addContact(contact);
           }
         }
@@ -217,7 +217,7 @@ class _ImportDialogState extends State<ImportDialog> {
   bool importWalletToSharedPrefs(Map<String, dynamic> cesiumCard) {
     final dynamic pub = cesiumCard['pub'];
     final String pubKey =
-    pub != null ? pub as String : cesiumCard['pubKey'] as String;
+        pub != null ? pub as String : cesiumCard['pubKey'] as String;
     if (!SharedPreferencesHelper().has(pubKey)) {
       SharedPreferencesHelper().addCesiumCard(SharedPreferencesHelper()
           .buildCesiumCard(pubKey: pubKey, seed: cesiumCard['seed'] as String));
@@ -226,100 +226,10 @@ class _ImportDialogState extends State<ImportDialog> {
       return false;
     }
   }
-
-  Future<String> _importWallet(BuildContext context) async {
-    try {
-      final bool hasPermission = await requestStoragePermission(context);
-      if (!hasPermission) {
-        logger('No permission to access storage');
-        return '';
-      }
-
-      final Directory? directory = await getGinkgoDownloadDirectory();
-      if (directory == null) {
-        logger('App files directory not found');
-        return '';
-      }
-
-      logger('appDocDir: ${directory.path}');
-
-      if (!context.mounted) {
-        return '';
-      }
-
-      final String? filePath = await FilesystemPicker.openDialog(
-        title: tr('select_file_to_import'),
-        context: context,
-        rootDirectory: directory,
-        showGoUp: true,
-        fsType: FilesystemType.all,
-        allowedExtensions: <String>['.json'],
-        requestPermission: () async => requestStoragePermission(context),
-        fileTileSelectMode: FileTileSelectMode.wholeTile,
-      );
-
-      if (filePath == null || filePath.isEmpty) {
-        return '';
-      }
-
-      final File file = File(filePath);
-      final String jsonString = await file.readAsString();
-
-      // Log the content if not in release mode
-      if (!kReleaseMode) {
-        logger(jsonString);
-      }
-
-      return jsonString;
-    } catch (e, stacktrace) {
-      logger('Error importing wallet $e');
-      await Sentry.captureException(e, stackTrace: stacktrace);
-      // Handle the exception using Sentry or any other error reporting tool
-      // await Sentry.captureException(e, stackTrace: stacktrace);
-      return '';
-    }
-  }
-
-  Future<String> _importWalletWeb(BuildContext context) async {
-    final Completer<String> completer = Completer<String>();
-    final html.InputElement input = html.InputElement()
-      ..type = 'file';
-
-    input.multiple = false;
-    input.accept = '.json'; // limit file types
-    input.click();
-
-    input.onChange.listen((html.Event event) async {
-      if (input.files != null && input.files!.isEmpty) {
-        completer.complete('');
-        return;
-      }
-
-      final html.File file = input.files!.first;
-      final html.FileReader reader = html.FileReader();
-
-      // Read as text
-      reader.readAsText(file);
-      await reader.onLoadEnd.first;
-
-      try {
-        final String? jsonString = reader.result as String?;
-        if (jsonString != null && !kReleaseMode) {
-          logger(jsonString);
-        }
-        completer.complete(jsonString);
-      } catch (e, stacktrace) {
-        logger('Error importing wallet $e');
-        await Sentry.captureException(e, stackTrace: stacktrace);
-        completer.complete('');
-      }
-    });
-    return completer.future;
-  }
 }
 
-Future<void> showSelectImportMethodDialog(BuildContext context,
-    int returnTo) async {
+Future<void> showSelectImportMethodDialog(
+    BuildContext context, int returnTo) async {
   final String? method = await showDialog<String>(
     context: context,
     builder: (BuildContext context) => const SelectImportMethodDialog(),
@@ -358,8 +268,8 @@ Future<void> showSelectImportMethodDialog(BuildContext context,
   }
 }
 
-Future<bool?> showImportCesiumWalletDialog(BuildContext context, String wallet,
-    int returnTo) {
+Future<bool?> showImportCesiumWalletDialog(
+    BuildContext context, String wallet, int returnTo) {
   return showDialog<bool>(
     context: context,
     barrierDismissible: false,
@@ -404,5 +314,97 @@ class SelectImportMethodDialog extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+Future<String> importWalletWeb(BuildContext context,
+    [String allowedExtension = '.json']) async {
+  final Completer<String> completer = Completer<String>();
+  final html.InputElement input = html.InputElement()..type = 'file';
+
+  input.multiple = false;
+  input.accept = allowedExtension; // limit file types
+  input.click();
+
+  input.onChange.listen((html.Event event) async {
+    if (input.files != null && input.files!.isEmpty) {
+      completer.complete('');
+      return;
+    }
+
+    final html.File file = input.files!.first;
+    final html.FileReader reader = html.FileReader();
+
+    // Read as text
+    reader.readAsText(file);
+    await reader.onLoadEnd.first;
+
+    try {
+      final String? jsonString = reader.result as String?;
+      if (jsonString != null && !kReleaseMode) {
+        // logger(jsonString);
+      }
+      completer.complete(jsonString);
+    } catch (e, stacktrace) {
+      logger('Error importing wallet $e');
+      await Sentry.captureException(e, stackTrace: stacktrace);
+      completer.complete('');
+    }
+  });
+  return completer.future;
+}
+
+Future<String> importWallet(BuildContext context,
+    [List<String> allowedExtensions = const <String>['.json'],
+    String messageKey = 'select_file_to_import']) async {
+  try {
+    final bool hasPermission = await requestStoragePermission(context);
+    if (!hasPermission) {
+      logger('No permission to access storage');
+      return '';
+    }
+
+    final Directory? directory = await getGinkgoDownloadDirectory();
+    if (directory == null) {
+      logger('App files directory not found');
+      return '';
+    }
+
+    logger('appDocDir: ${directory.path}');
+
+    if (!context.mounted) {
+      return '';
+    }
+
+    final String? filePath = await FilesystemPicker.openDialog(
+      title: tr(messageKey),
+      context: context,
+      rootDirectory: directory,
+      showGoUp: true,
+      fsType: FilesystemType.all,
+      allowedExtensions: allowedExtensions,
+      requestPermission: () async => requestStoragePermission(context),
+      fileTileSelectMode: FileTileSelectMode.wholeTile,
+    );
+
+    if (filePath == null || filePath.isEmpty) {
+      return '';
+    }
+
+    final File file = File(filePath);
+    final String jsonString = await file.readAsString();
+
+    // Log the content if not in release mode
+    if (!kReleaseMode) {
+      // logger(jsonString);
+    }
+
+    return jsonString;
+  } catch (e, stacktrace) {
+    logger('Error importing wallet $e');
+    await Sentry.captureException(e, stackTrace: stacktrace);
+    // Handle the exception using Sentry or any other error reporting tool
+    // await Sentry.captureException(e, stackTrace: stacktrace);
+    return '';
   }
 }

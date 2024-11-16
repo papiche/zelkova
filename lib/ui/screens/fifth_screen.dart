@@ -56,7 +56,8 @@ class _FifthScreenState extends State<FifthScreen> {
     );
   }
 
-  Future<void> _openWalletSelector(BuildContext context) async {
+  Future<void> _openWalletSelector(
+      BuildContext context, bool expertMode) async {
     _showMultiWalletSelectorDialog(context,
         (List<CesiumCard> selectedCards, bool exportContacts) {
       setState(() {
@@ -64,7 +65,8 @@ class _FifthScreenState extends State<FifthScreen> {
         _selectedWallets = selectedCards;
         _exportContacts = exportContacts;
       });
-      _showSelectExportMethodDialog();
+      _showSelectExportMethodDialog(
+          onlyOneWalletSelected: selectedCards.length == 1 && expertMode);
     });
   }
 
@@ -229,7 +231,7 @@ class _FifthScreenState extends State<FifthScreen> {
                           title: 'export_key$pluralSuffix',
                           icon: Icons.download,
                           onTap: () async {
-                            _openWalletSelector(context);
+                            _openWalletSelector(context, state.expertMode);
                           }),
                       GridItem(
                           title: 'import_key$pluralSuffix',
@@ -308,10 +310,12 @@ class _FifthScreenState extends State<FifthScreen> {
     });
   }
 
-  Future<void> _showSelectExportMethodDialog() async {
+  Future<void> _showSelectExportMethodDialog(
+      {required bool onlyOneWalletSelected}) async {
     final ExportType? method = await showDialog<ExportType>(
       context: context,
-      builder: (BuildContext context) => const SelectExportMethodDialog(),
+      builder: (BuildContext context) => SelectExportMethodDialog(
+          onlyOneWalletSelected: onlyOneWalletSelected),
     );
     if (method != null) {
       if (!mounted) {

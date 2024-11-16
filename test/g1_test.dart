@@ -8,8 +8,21 @@ import 'package:ginkgo/data/models/contact.dart';
 import 'package:ginkgo/data/models/payment_state.dart';
 import 'package:ginkgo/data/models/transaction.dart';
 import 'package:ginkgo/data/models/transaction_type.dart';
+import 'package:ginkgo/g1/g1_export_utils.dart';
 import 'package:ginkgo/g1/g1_helper.dart';
 import 'package:ginkgo/ui/logger.dart';
+
+String _generateRandomPatternPassword(Random random) {
+  final int length = random.nextInt(8) + 2; // Password length between 2 and 9.
+  final Set<int> digits = <int>{1, 2, 3, 4, 5, 6, 7, 8, 9};
+  final List<int> passwordDigits = <int>[];
+  for (int i = 0; i < length; i++) {
+    final int selectedDigit = digits.elementAt(random.nextInt(digits.length));
+    passwordDigits.add(selectedDigit);
+    digits.remove(selectedDigit);
+  }
+  return passwordDigits.join();
+}
 
 void main() {
   const String testPubKey = '7wnDh2FPdwNW8Dd5JyoJTbspuu8b9QJKps2xAYenefsu';
@@ -651,16 +664,96 @@ void main() {
     final String primaryKey = firstCard['pubKey'] as String;
     expect(primaryKey, equals(expectedPrimaryKey));
   });
-}
 
-String _generateRandomPatternPassword(Random random) {
-  final int length = random.nextInt(8) + 2; // Password length between 2 and 9.
-  final Set<int> digits = <int>{1, 2, 3, 4, 5, 6, 7, 8, 9};
-  final List<int> passwordDigits = <int>[];
-  for (int i = 0; i < length; i++) {
-    final int selectedDigit = digits.elementAt(random.nextInt(digits.length));
-    passwordDigits.add(selectedDigit);
-    digits.remove(selectedDigit);
-  }
-  return passwordDigits.join();
+  test('Create Cesium account with devtest/devtest and validate pubkey', () {
+    // Given
+    const String expectedPubKey =
+        '6SvSMyZSTUFtKo8BJEN959xRX4ze9K3WT7SBK9tqR5vh';
+    const String expectedSecKey =
+        '3WUvt7z9M2tNNfmQkYakJ12VGGGaLdVVjQu4wMYdo92CMuL3cnkf4Zr29dWyrGM2JKKYo6D1BkQsRVouV33s1zim';
+    const String expectedWifData =
+        '9dA4Ciza7hLv1ShRgb1XSqd95BDQtYEi31ZwH6gzCb1gJBE';
+    const String expectedEwifData =
+        '2RTjpjZMnFnKHhgUadgT7JUvGeQem5sC6DQQpeuo5dCL6V1fgqsg8';
+
+    const String password = 'devtest';
+
+    // When
+    final CesiumWallet wallet = CesiumWallet(password, password);
+
+    // Generate
+    final String secKey = getPrivKey(wallet);
+    final String wifData = generateWif(wallet);
+    final String ewifData = generateEwif(wallet, 'devtest');
+
+    // Generate files
+    final Map<String, String> pubSecFile =
+        generatePubSecFile(wallet.pubkey, secKey);
+    final Map<String, String> wifFile = generateWifFile(wallet.pubkey, wifData);
+    final Map<String, String> ewifFile =
+        generateEwifFile(wallet.pubkey, ewifData);
+
+    // Validate
+    expect(wallet.pubkey, equals(expectedPubKey));
+    expect(secKey, equals(expectedSecKey));
+    expect(wifData, equals(expectedWifData));
+    expect(ewifData, equals(expectedEwifData));
+    expect(pubSecFile.values.first, equals('''
+Type: PubSec
+Version: 1
+pub: $expectedPubKey
+sec: $expectedSecKey
+'''));
+
+    expect(wifFile.values.first, equals('''
+Type: WIF
+Version: 1
+Data: $expectedWifData
+'''));
+
+    expect(ewifFile.values.first, equals('''
+Type: EWIF
+Version: 1
+Data: $expectedEwifData
+'''));
+  });
+
+  test('Parse PubSec file and validate wallet', () async {
+    const String pubSecContent = '''
+Type: PubSec
+Version: 1
+pub: 6SvSMyZSTUFtKo8BJEN959xRX4ze9K3WT7SBK9tqR5vh
+sec: 3WUvt7z9M2tNNfmQkYakJ12VGGGaLdVVjQu4wMYdo92CMuL3cnkf4Zr29dWyrGM2JKKYo6D1BkQsRVouV33s1zim
+''';
+
+    final CesiumWallet wallet =
+        await parseKeyFile(pubSecContent, null, 'devtest');
+    expect(
+        wallet.pubkey, equals('6SvSMyZSTUFtKo8BJEN959xRX4ze9K3WT7SBK9tqR5vh'));
+  });
+
+  test('Parse WIF file and validate wallet', () async {
+    const String wifContent = '''
+Type: WIF
+Version: 1
+Data: 9dA4Ciza7hLv1ShRgb1XSqd95BDQtYEi31ZwH6gzCb1gJBE
+''';
+
+    final CesiumWallet wallet = await parseKeyFile(wifContent, null, 'devtest');
+    expect(
+        wallet.pubkey, equals('6SvSMyZSTUFtKo8BJEN959xRX4ze9K3WT7SBK9tqR5vh'));
+  });
+
+  test('Parse EWIF file and validate wallet', () async {
+    const String ewifContent = '''
+Type: EWIF
+Version: 1
+Data: 2RTjpjZMnFnKHhgUadgT7JUvGeQem5sC6DQQpeuo5dCL6V1fgqsg8
+''';
+
+    final CesiumWallet wallet =
+        await parseKeyFile(ewifContent, null, 'devtest');
+    expect(
+        wallet.pubkey, equals('6SvSMyZSTUFtKo8BJEN959xRX4ze9K3WT7SBK9tqR5vh'));
+  });
 }

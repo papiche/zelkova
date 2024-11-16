@@ -4,9 +4,12 @@ import '../../../data/models/credit_card_themes.dart';
 import '../../ui_helpers.dart';
 
 class CreditCardSelectorItem extends StatelessWidget {
-  const CreditCardSelectorItem({super.key, this.name, required this.theme});
+  const CreditCardSelectorItem(
+      {super.key, this.name, required this.theme, this.suffix, this.hasName});
 
   final String? name;
+  final bool? hasName;
+  final String? suffix;
   final CreditCardTheme theme;
 
   @override
@@ -43,31 +46,45 @@ class CreditCardSelectorItem extends StatelessWidget {
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Stack(children: <Widget>[
-                        Padding(
-                            padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
-                            child: Opacity(
-                              opacity: 0.2,
-                              child: Image.asset('assets/img/gbrevedot_alt.png',
-                                  width: 100, height: 100),
-                            )),
-                        if (name != null)
-                          Positioned(
-                            bottom: 8,
-                            left: 8,
-                            child: Text(
-                              name!,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleSmall
-                                  ?.copyWith(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
-                          ),
-                      ]),
-                    )))));
+                        padding: const EdgeInsets.all(10),
+                        child: Stack(children: <Widget>[
+                          Padding(
+                              padding: const EdgeInsets.fromLTRB(40, 0, 0, 0),
+                              child: Opacity(
+                                opacity: 0.2,
+                                child: Image.asset(
+                                    'assets/img/gbrevedot_alt.png',
+                                    width: 100,
+                                    height: 100),
+                              )),
+                          if (name != null)
+                            Positioned(
+                                bottom: 8,
+                                left: 8,
+                                child: RichText(
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  text: TextSpan(
+                                      style: DefaultTextStyle.of(context).style,
+                                      children: <InlineSpan>[
+                                        TextSpan(
+                                          text: name,
+                                          style: _textStyle(context),
+                                        ),
+                                        if (hasName ?? false)
+                                          TextSpan(
+                                            text: suffix,
+                                            style: _textStyle(context),
+                                          ),
+                                      ]),
+                                ))
+                        ]))))));
+  }
+
+  TextStyle? _textStyle(BuildContext context) {
+    return Theme.of(context).textTheme.titleSmall?.copyWith(
+          fontFamily: 'SourceCode',
+          color: Colors.white,
+        );
   }
 }

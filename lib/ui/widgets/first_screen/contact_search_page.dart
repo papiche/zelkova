@@ -523,9 +523,13 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
               });
             },
             onTap: () {
-              context.read<PaymentCubit>().selectUser(contact);
-              context.read<BottomNavCubit>().updateIndex(0);
-              Navigator.pop(context);
+              if (widget.searchUse == SearchUse.payment) {
+                context.read<PaymentCubit>().selectUser(contact);
+                context.read<BottomNavCubit>().updateIndex(0);
+                Navigator.pop(context);
+              } else if (widget.searchUse == SearchUse.contactSearch) {
+                showContactPage(context, contact);
+              }
             },
             trailing: BlocBuilder<ContactsCubit, ContactsState>(
                 builder: (BuildContext context, ContactsState state) {

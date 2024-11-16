@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 import '../../ui/widgets/first_screen/credit_card_selector_item.dart';
 import 'cesium_card.dart';
@@ -13,8 +14,9 @@ class CardThemeSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount:
+            ResponsiveBreakpoints.of(context).largerThan(MOBILE) ? 4 : 2,
         childAspectRatio: 1.58,
       ),
       itemCount: CreditCardThemes.themes.length,

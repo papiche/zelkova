@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 import '../../../data/models/cesium_card.dart';
 import '../../../shared_prefs_helper.dart';
@@ -65,15 +66,17 @@ class _MultiWalletSelectorDialogState extends State<MultiWalletSelectorDialog> {
           SizedBox(
             height: screenHeight > 400 ? 400 : screenHeight,
             child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount:
+                    ResponsiveBreakpoints.of(context).largerThan(MOBILE)
+                        ? 4
+                        : 2,
                 childAspectRatio: 1.58,
               ),
               itemCount: _cards.length,
               itemBuilder: (BuildContext context, int index) {
                 final CesiumCard card = _cards[index];
                 final bool isSelected = _selectedCards.contains(card);
-
                 return GestureDetector(
                   onTap: () => _onCardTapped(card),
                   child: Stack(
@@ -93,6 +96,10 @@ class _MultiWalletSelectorDialogState extends State<MultiWalletSelectorDialog> {
                             name: card.name.isEmpty
                                 ? humanizePubKey(card.pubKey)
                                 : truncateName(card.name),
+                            hasName: card.name.isNotEmpty,
+                            suffix: SharedPreferencesHelper().isG1nkgoCard(card)
+                                ? g1nkgoUserNameSuffix
+                                : protectedUserNameSuffix,
                             theme: card.theme),
                       ),
                       if (isSelected)
@@ -151,7 +158,7 @@ class _MultiWalletSelectorDialogState extends State<MultiWalletSelectorDialog> {
                     Navigator.of(context).pop();
                     widget.onSelectionChanged(_selectedCards, _exportContacts);
                   },
-                  child: Text(tr('done')),
+                  child: Text(tr('continue')),
                 ),
               ],
             ),

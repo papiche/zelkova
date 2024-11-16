@@ -47,27 +47,28 @@ void showContactPage(BuildContext context, Contact contact) {
   );
 }
 
-void onSentContact(BuildContext c, Contact contact) {
-  c.read<PaymentCubit>().selectUser(contact);
-  c.read<BottomNavCubit>().updateIndex(0);
+void onSentContact(BuildContext context, Contact contact) {
+  context.read<PaymentCubit>().selectUser(contact);
+  Navigator.of(context, rootNavigator: true).pop();
+  context.read<BottomNavCubit>().updateIndex(0);
 }
 
 void addContact(BuildContext context, Contact newContact) {
   final ContactsCubit contactsCubit = context.read<ContactsCubit>();
   contactsCubit.addContact(newContact);
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(tr('contact_added')),
-    ),
-  );
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return ContactFormDialog(
           contact: newContact,
           onSave: (Contact c) {
-            context.read<ContactsCubit>().updateContact(c);
+            contactsCubit.updateContact(c);
             ContactsCache().saveContact(c);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(tr('contact_added')),
+              ),
+            );
           });
     },
   );

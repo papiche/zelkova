@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart';
 import 'package:pattern_lock/pattern_lock.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:universal_html/html.dart' as html;
@@ -292,6 +294,10 @@ class _ExportDialogState extends State<ExportDialog> {
       result = await _saveFileNonWeb(context, utf8.encode(content), fileName);
     }
     if (context.mounted && result) {
+      await _qrSave(context, content, fileName);
+      if (!context.mounted) {
+        return;
+      }
       context.replaceSnackbar(
         content: Text(
           tr('wallet_exported'),
@@ -360,5 +366,35 @@ class _ExportDialogState extends State<ExportDialog> {
     final String formattedDate = todayS(now);
     const String baseFileName = 'ginkgo-export';
     return '$baseFileName-$formattedDate.json';
+  }
+
+  Future<void> _qrSave(
+      BuildContext context, String content, String filename) async {
+    try {
+      final String qrFileName = '${filename.split('.').first}_qr.png';
+
+      final Widget qrPainter = Center(
+          child: Container(
+              padding: const EdgeInsets.all(20),
+              color: Colors.white,
+              child: QrImageView(data: content)));
+      final ScreenshotController screenshotController = ScreenshotController();
+      try {
+        final Uint8List imageBytes =
+            await screenshotController.captureFromWidget(qrPainter);
+        if (!context.mounted) {
+          return;
+        }
+        if (kIsWeb) {
+          _webFileDownload(imageBytes, qrFileName);
+        } else {
+          await _saveFileNonWeb(context, imageBytes, qrFileName);
+        }
+      } catch (e) {
+        loggerDev('Error saving QR code: $e');
+      }
+    } catch (e) {
+      loggerDev('Error saving QR code: $e');
+    }
   }
 }

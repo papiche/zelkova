@@ -82,18 +82,19 @@ class _CardDrawerState extends State<CardDrawer> {
                       );
                     },
                   ),
-                ListTile(
-                  leading: const Icon(Icons.analytics),
-                  title: Text(tr('market_analysis')),
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return const MarketAnalysisPage();
-                      },
-                    );
-                  },
-                ),
+                if (!kIsWeb)
+                  ListTile(
+                    leading: const Icon(Icons.analytics),
+                    title: Text(tr('market_analysis')),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const MarketAnalysisPage();
+                        },
+                      );
+                    },
+                  ),
                 ListTile(
                   leading: const Icon(Icons.telegram_outlined),
                   title: Text(tr('telegram_group')),

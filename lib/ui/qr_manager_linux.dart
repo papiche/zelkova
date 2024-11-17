@@ -8,7 +8,7 @@ class QrManager {
     try {
       final Code? result = await Navigator.push(
         context,
-        MaterialPageRoute(
+        MaterialPageRoute<Code>(
           builder: (BuildContext context) => const QrScannerScreen(),
         ),
       );

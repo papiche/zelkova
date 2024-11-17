@@ -22,6 +22,7 @@ class _MultiWalletSelectorDialogState extends State<MultiWalletSelectorDialog> {
   final List<CesiumCard> _selectedCards = <CesiumCard>[];
   bool _exportContacts = true;
 
+  // FIXME: we want to export too cesium protected cards
   final List<CesiumCard> _cards = SharedPreferencesHelper()
       .cesiumCards
       .where((CesiumCard card) => card.seed.isNotEmpty)

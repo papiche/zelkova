@@ -59,9 +59,16 @@ class _CesiumAddDialogState extends State<CesiumAddDialog> {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text(tr('cesium_auth_dialog_title', namedArgs: <String, String>{
-            'key': humanizeContact(widget.publicKey, contact),
-          })),
+          Expanded(
+            child: Text(
+              tr('cesium_auth_dialog_title', namedArgs: <String, String>{
+                'key': humanizeContact(widget.publicKey, contact),
+              }),
+              style: Theme.of(context).textTheme.titleLarge,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
           if (context.read<AppCubit>().isExpertMode)
             PopupMenuButton<String>(
               tooltip: tr('other_auth_methods'),

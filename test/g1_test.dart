@@ -5,11 +5,14 @@ import 'package:durt/durt.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ginkgo/data/models/contact.dart';
+import 'package:ginkgo/data/models/node.dart';
+import 'package:ginkgo/data/models/node_lists_default.dart';
 import 'package:ginkgo/data/models/payment_state.dart';
 import 'package:ginkgo/data/models/transaction.dart';
 import 'package:ginkgo/data/models/transaction_type.dart';
 import 'package:ginkgo/g1/g1_export_utils.dart';
 import 'package:ginkgo/g1/g1_helper.dart';
+import 'package:ginkgo/g1/g1_v2_helper.dart';
 import 'package:ginkgo/ui/logger.dart';
 
 String _generateRandomPatternPassword(Random random) {
@@ -755,5 +758,35 @@ Data: 2RTjpjZMnFnKHhgUadgT7JUvGeQem5sC6DQQpeuo5dCL6V1fgqsg8
         await parseKeyFile(ewifContent, null, 'devtest');
     expect(
         wallet.pubkey, equals('6SvSMyZSTUFtKo8BJEN959xRX4ze9K3WT7SBK9tqR5vh'));
+  });
+
+  test('Parse nodes URLs', () {
+    final List<Node> nodes = defaultEndPointNodes;
+
+    for (final Node node in nodes) {
+      final String url = node.url;
+
+      try {
+        final Uri parsedUri = ensurePortInWsUrl(url);
+
+        expect(parsedUri.scheme, 'wss', reason: 'Invalid scheme for URL: $url');
+
+        expect(parsedUri.host.isNotEmpty, true,
+            reason: 'Invalid host for URL: $url');
+
+        expect(parsedUri.port, 443, reason: 'Invalid port: $parsedUri');
+
+        if (parsedUri.path.isEmpty) {
+          expect(parsedUri.replace(path: '/').path, '/',
+              reason: 'Path was empty for URL: $url');
+        }
+        expect(parsedUri.toString(), equals(url),
+            reason: 'URLs $url and $parsedUri do not match');
+
+        logger('✅ Parsed successfully: $parsedUri');
+      } catch (e) {
+        fail('❌ Error parsing URL: $url - Error: $e');
+      }
+    }
   });
 }

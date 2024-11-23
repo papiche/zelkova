@@ -311,5 +311,8 @@
   "auth_file_pubkey_mismatch": "The public key from the file does not match.",
   "scan_qr_auth": "Scan a QR code",
   "qr_scanner_no_qr_detected": "No QR code detected. Please try again.",
-  "qr_scanner_error": "An error occurred while scanning the QR code."
+  "qr_scanner_error": "An error occurred while scanning the QR code.",
+  "transactions_error_title": "Something went wrong",
+  "transactions_error_message": "We couldn't fetch your transactions. Please try again later.",
+  "transactions_error_try_again": "Try Again"
 }

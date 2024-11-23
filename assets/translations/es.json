@@ -317,5 +317,8 @@
   "auth_file_pubkey_mismatch": "La clave pública del archivo no coincide.",
   "scan_qr_auth": "Escanear QR",
   "qr_scanner_no_qr_detected": "No se detectó ningún código QR. Inténtalo de nuevo.",
-  "qr_scanner_error": "Ocurrió un error al escanear el código QR."
+  "qr_scanner_error": "Ocurrió un error al escanear el código QR.",
+  "transactions_error_title": "Algo salió mal",
+  "transactions_error_message": "No se pudieron cargar las transacciones. Por favor, inténtalo de nuevo más tarde.",
+  "transactions_error_try_again": "Reintentar"
 }

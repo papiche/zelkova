@@ -187,13 +187,16 @@ class NodeManager {
   List<Node> getBestNodes(NodeType type) {
     final List<Node> fnodes = NodeManager().nodesWorkingList(type);
     final int maxCurrentBlock = fnodes.fold(
-        0,
-        (int max, Node node) =>
-            node.currentBlock > max ? node.currentBlock : max);
-    final List<Node> nodesAtMaxBlock = fnodes
-        .where((Node node) => node.currentBlock == maxCurrentBlock)
+      0,
+      (int max, Node node) => node.currentBlock > max ? node.currentBlock : max,
+    );
+
+    // Get nodes near the max block
+    final List<Node> nodesNearMaxBlock = fnodes
+        .where((Node node) => (maxCurrentBlock - node.currentBlock).abs() <= 2)
         .toList();
-    nodesAtMaxBlock.sort((Node a, Node b) {
+
+    nodesNearMaxBlock.sort((Node a, Node b) {
       final int errorComparison = a.errors.compareTo(b.errors);
       if (errorComparison != 0) {
         return errorComparison;
@@ -201,11 +204,14 @@ class NodeManager {
         return a.latency.compareTo(b.latency);
       }
     });
-    if (nodesAtMaxBlock.isEmpty) {
-      nodesAtMaxBlock.addAll(defaultNodes(type));
+
+    if (nodesNearMaxBlock.isEmpty) {
+      nodesNearMaxBlock.addAll(defaultNodes(type));
     }
-    loggerDev('Best nodes: ${nodesAtMaxBlock.length}');
-    return nodesAtMaxBlock;
+
+    loggerDev(
+        'Best nodes: ${nodesNearMaxBlock.length} (max block: $maxCurrentBlock)');
+    return nodesNearMaxBlock;
   }
 
   String ipfsUrl(String path) {

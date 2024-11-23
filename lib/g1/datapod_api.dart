@@ -24,7 +24,7 @@ import '../ui/contacts_cache.dart';
 import '../ui/logger.dart';
 import '../ui/ui_helpers.dart';
 import 'g1_helper.dart';
-import 'g1_v2_helper_multi.dart';
+import 'g1_v2_helper.dart';
 
 Future<Uint8List?> fetchAndResizeAvatar(String? avatarCid,
     {bool resize = true}) async {
@@ -115,7 +115,7 @@ Future<List<Contact>> searchWotV2(String searchPatternRaw) async {
     try {
       // if is a v1Key, search pubkey
       final String searchPattern = validateKey(searchPatternRaw)
-          ? addressFromV1PubkeyMulti(searchPatternRaw)
+          ? addressFromV1Pubkey(searchPatternRaw)
           : searchPatternRaw;
       loggerDev("Searching indexer v2 with '$searchPattern'");
 
@@ -216,7 +216,7 @@ Future<GGetProfileByAddressData_profiles?> _searchProfileByPKV2(
 Future<Contact> getProfileV2(String pubKey,
     {bool onlyCPlusProfile = false, bool resize = true}) async {
   loggerDev('Fetching profile v2 for pubkey $pubKey');
-  final String address = addressFromV1PubkeyMulti(pubKey);
+  final String address = addressFromV1PubkeyFaiSafe(pubKey);
   final GGetProfileByAddressData_profiles? profile =
       await _searchProfileByPKV2(address);
   Contact c;
@@ -339,33 +339,3 @@ Future<List<Contact>> searchProfilesV2({
   loggerDev('Contacts not found in searchProfilesV2');
   return contacts;
 }
-
-/*
-Future<Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalanceV2(
-  String pubKeyRaw, {
-  int? pageSize = 10,
-  int? from,
-  int? to,
-  String? cursor,
-}) async {
-  for (final Node node in NodeManager().getBestNodes(NodeType.duniterIndexer)) {
-    final ferry.Client client =
-        await initDuniterIndexerClient(node.url, GetIt.instance<HiveStore>());
-
-    final request = GGetHistoryAndBalanceReq((b) => b
-      ..vars.accountId = pubKeyRaw
-      ..vars.limit = pageSize
-      ..vars.offset = cursor != null ? int.parse(cursor) : 0);
-
-    final response = await client.request(request).first;
-
-    if (response.hasErrors) {
-      throw Exception('Error fetching data: ${response.graphqlErrors}');
-    }
-
-    final data = response.data?.toJson();
-
-    return Tuple2(data, node);
-  }
-}
-*/

@@ -44,8 +44,10 @@ Future<TransactionState> transactionParser(
       logger('Timestamp: $timestamp');
       logger('Fecha: $txDate');
     } */
-    final Contact fromC = getContactCache(pubKey: address2!);
-    final Contact toC = getContactCache(pubKey: address1!);
+    final Contact fromC =
+        getContactCache(simpleContact: Contact(pubKey: address2!));
+    final Contact toC =
+        getContactCache(simpleContact: Contact(pubKey: address1!));
 
     tx.insert(
         0,
@@ -64,15 +66,7 @@ Future<TransactionState> transactionParser(
       lastChecked: DateTime.now());
 }
 
-Contact getContactCache({required String pubKey}) {
-  final Contact contact =
-      ContactsCache().getCachedContact(pubKey, false, true) ??
-          Contact(pubKey: pubKey);
-  assert(contact.hasAvatar == false);
-  return contact;
-}
-
-Future<TransactionState> transactionsGvaParser(Map<String, dynamic> txData,
+Future<TransactionState> transactionsV1Parser(Map<String, dynamic> txData,
     TransactionState state, String myPubKeyRaw) async {
   final String myPubKey = extractPublicKey(myPubKeyRaw);
   // Balance
@@ -159,7 +153,8 @@ Future<Transaction> _txGvaParse(
     // Extract the recipient from each output
     final String outputS = output as String;
     final String? recipient = exp.firstMatch(outputS)!.group(1);
-    final Contact recipientContact = getContactCache(pubKey: recipient!);
+    final Contact recipientContact =
+        getContactCache(simpleContact: Contact(pubKey: recipient!));
     recipients.add(recipientContact);
 
     final double outputAmount = double.parse(outputS.split(':')[0]);
@@ -194,7 +189,7 @@ Future<Transaction> _txGvaParse(
   }
   // Comment
   final String comment = tx['comment'] as String;
-  final Contact fromC = getContactCache(pubKey: from);
+  final Contact fromC = getContactCache(simpleContact: Contact(pubKey: from));
 
   return Transaction(
     type: type,

@@ -1,10 +1,34 @@
 import 'dart:typed_data';
 
+import 'package:duniter_indexer/duniter_indexer_client.dart';
+import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.data.gql.dart';
+import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.req.gql.dart';
+import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.var.gql.dart';
 import 'package:durt/durt.dart';
 import 'package:fast_base58/fast_base58.dart';
+import 'package:ferry/ferry.dart' as ferry;
+import 'package:ferry_hive_store/ferry_hive_store.dart';
+import 'package:get_it/get_it.dart';
 import 'package:pointycastle/export.dart';
-
+import 'package:polkadart/polkadart.dart';
+import 'package:polkadart/scale_codec.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
+import 'package:ss58/ss58.dart';
+import 'package:tuple/tuple.dart' as tp;
+
+import '../data/models/node.dart';
+import '../data/models/node_manager.dart';
+import '../data/models/node_type.dart';
+import '../generated/gdev/gdev.dart';
+import '../generated/gdev/types/frame_system/account_info.dart';
+import '../generated/gdev/types/gdev_runtime/runtime_call.dart';
+import '../generated/gdev/types/primitive_types/h256.dart';
+import '../generated/gdev/types/sp_runtime/multiaddress/multi_address.dart';
+import '../shared_prefs_helper.dart';
+import '../ui/logger.dart';
+import '../ui/ui_helpers.dart';
+import 'api.dart';
+import 'g1_helper.dart';
 
 // From:
 // https://polkadot.js.org/docs/util-crypto/examples/validate-address/
@@ -183,7 +207,6 @@ String formatPubkey(String value) {
 }
 */
 
-/*
 Future<RpcResponse<dynamic, dynamic>?> queryPolkadartNode({
   required String nodeUri,
   required String queryMethod,
@@ -194,8 +217,7 @@ Future<RpcResponse<dynamic, dynamic>?> queryPolkadartNode({
     final Provider polkadot = Provider.fromUri(Uri.parse(nodeUri));
     final RpcResponse<dynamic, dynamic> response =
         await polkadot.send(queryMethod, params).timeout(timeout);
-    await polkadot.disconnect();
-
+    // await polkadot.disconnect();
     return response;
   } catch (e) {
     loggerDev(
@@ -203,4 +225,197 @@ Future<RpcResponse<dynamic, dynamic>?> queryPolkadartNode({
     return null;
   }
 }
-*/
+
+Future<BigInt?> getBalanceV2(
+    {required String address, Duration timeout = defPolkadotTimeout}) async {
+  for (final Node node in NodeManager().getBestNodes(NodeType.endpoint)) {
+    try {
+      final Address account = Address.decode(address);
+      final Provider polkadot = Provider.fromUri(ensurePortInWsUrl(node.url));
+      final AccountInfo accountInfo = await Gdev(polkadot)
+          .query
+          .system
+          .account(account.pubkey)
+          .timeout(timeout);
+      return accountInfo.data.free;
+    } catch (e, stacktrace) {
+      loggerDev(
+          'Error fetching balance for $address in node ${node.url}: $e $stacktrace');
+    }
+    continue;
+  }
+  return null;
+}
+
+Future<tp.Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalanceV2(
+  String pubKeyRaw, {
+  int? pageSize = 10,
+  int? from,
+  int? to,
+  String? cursor,
+}) async {
+  final String address = addressFromV1PubkeyFaiSafe(pubKeyRaw);
+
+  final BigInt? balance = await getBalanceV2(address: address);
+
+  if (balance == null) {
+    throw Exception('Error fetching balance for $address');
+  }
+
+  loggerDev('Fetching history and balance for $address gives balance $balance');
+
+  for (final Node node in NodeManager().getBestNodes(NodeType.duniterIndexer)) {
+    try {
+      final ferry.Client client =
+          await initDuniterIndexerClient(node.url, GetIt.instance<HiveStore>());
+
+      loggerDev('Fetching history for $address in node ${node.url}');
+
+      final GGetHistoryAndBalanceReq request =
+          GGetHistoryAndBalanceReq((GGetHistoryAndBalanceReqBuilder b) => b
+            ..vars.accountId = address
+            ..vars.limit = pageSize
+            ..vars.offset = cursor != null ? int.parse(cursor) : 0);
+
+      final ferry.OperationResponse<GGetHistoryAndBalanceData,
+              GGetHistoryAndBalanceVars> response =
+          await client.request(request).first;
+
+      if (response.hasErrors) {
+        throw Exception('Error fetching data: ${response.graphqlErrors}');
+      }
+
+      final Map<String, dynamic>? data = response.data?.toJson();
+      if (data != null) {
+        data['balance'] = balance;
+      }
+      return tp.Tuple2<Map<String, dynamic>?, Node>(data, node);
+    } catch (e, stackTrace) {
+      loggerDev(
+          'Error fetching history for $address in node ${node.url}: $e, $stackTrace');
+    }
+  }
+  return const tp.Tuple2<Map<String, dynamic>?, Node>(null, Node(url: ''));
+}
+
+String addressFromV1PubkeyFaiSafe(String pubKeyRaw) {
+  try {
+    return addressFromV1Pubkey(extractPublicKey(pubKeyRaw));
+  } catch (e) {
+    loggerDev('Error converting pubkey $pubKeyRaw to address: $e');
+    rethrow;
+  }
+}
+
+Future<PayResult> payV2({
+  required List<String> to,
+  required double amount,
+  String? comment,
+}) async {
+  final CesiumWallet walletV1 = await SharedPreferencesHelper().getWallet();
+
+  final KeyPair wallet = KeyPair.ed25519.fromSeed(walletV1.seed);
+
+  final String from = addressFromV1Pubkey(walletV1.pubkey);
+  final List<String> addresses = <String>[];
+  for (final String dest in to) {
+    try {
+      addresses.add(addressFromV1PubkeyFaiSafe(dest));
+    } catch (e) {
+      loggerDev('Error converting pubkey $dest to address: $e');
+      rethrow;
+    }
+  }
+
+  for (final Node node in NodeManager().getBestNodes(NodeType.endpoint)) {
+    try {
+      loggerDev(
+          'Starting payment from $from to ${addresses.join(', ')} for a total of $amount');
+
+      final Provider provider = Provider.fromUri(ensurePortInWsUrl(node.url));
+      final Gdev polkadot = Gdev(provider);
+
+      // From: https://polkadart.dev/guides/make-transfer/
+      // Get information necessary to build a proper extrinsic
+      final RuntimeVersion runtimeVersion =
+          await polkadot.rpc.state.getRuntimeVersion();
+      final int currentBlockNumber = (await polkadot.query.system.number()) - 1;
+      final H256 currentBlockHash =
+          await polkadot.query.system.blockHash(currentBlockNumber);
+      final H256 genesisHash = await polkadot.query.system.blockHash(0);
+      final int nonce =
+          await polkadot.rpc.system.accountNextIndex(wallet.address);
+
+      // Make the encoded call
+      final Id multiAddress =
+          const $MultiAddress().id(Address.decode(addresses.first).pubkey);
+      final RuntimeCall transferCall = polkadot.tx.balances
+          .transferKeepAlive(dest: multiAddress, value: BigInt.from(amount));
+      final Uint8List encodedCall = transferCall.encode();
+
+      // Make the payload
+      final Uint8List payload = SigningPayload(
+              method: encodedCall,
+              specVersion: runtimeVersion.specVersion,
+              transactionVersion: runtimeVersion.transactionVersion,
+              genesisHash: encodeHex(genesisHash),
+              blockHash: encodeHex(currentBlockHash),
+              blockNumber: currentBlockNumber,
+              eraPeriod: 64,
+              nonce: nonce,
+              tip: 0)
+          .encode(polkadot.registry);
+
+      // Sign the payload and build the final extrinsic
+      final Uint8List signature = wallet.sign(payload);
+      final Uint8List extrinsic = ExtrinsicPayload(
+        signer: wallet.bytes(),
+        method: encodedCall,
+        signature: signature,
+        eraPeriod: 64,
+        blockNumber: currentBlockNumber,
+        nonce: nonce,
+        tip: 0,
+      ).encode(polkadot.registry, SignatureType.ed25519);
+
+      // Send the extrinsic to the blockchain
+      final AuthorApi<Provider> author = AuthorApi<Provider>(provider);
+      await author.submitAndWatchExtrinsic(extrinsic, (ExtrinsicStatus data) {
+        loggerDev(
+            ' ===========================================  ${data.type} ${data.value}');
+      });
+
+      loggerDev(
+          'Payment of $amount successful to addresses: ${addresses.join(', ')}');
+      // pay_helper is expecting this to be success
+      return PayResult(
+        message: 'success',
+        node: node,
+      );
+    } catch (e) {
+      loggerDev(
+          'Error in payment for ${addresses.join(', ')} in node ${node.url}: $e');
+    }
+  }
+
+  return PayResult(
+    message: 'Payment failed on all available nodes.',
+  );
+}
+
+Uri ensurePortInWsUrl(String url) {
+  final Uri parsedUri = Uri.parse(url);
+  return parsedUri;
+
+  /*
+  if (parsedUri.scheme == 'wss') {
+    return Uri(
+      scheme: 'wss', // Force this
+      host: parsedUri.host,
+      port: parsedUri.hasPort ? parsedUri.port : 443,
+      path: parsedUri.path,
+    );
+  }
+
+  throw Exception('Unsupported scheme: ${parsedUri.scheme}'); */
+}

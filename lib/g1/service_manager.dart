@@ -1,10 +1,16 @@
 import 'package:flutter/foundation.dart';
+import 'package:tuple/tuple.dart';
 
 import '../data/models/contact.dart';
+import '../data/models/node.dart';
+import '../data/models/transaction_state.dart';
 import 'api.dart';
 import 'datapod_api.dart';
+import 'g1_v2_helper_others.dart';
+import 'transaction_v1_parser.dart';
+import 'transactions_v2_parser.dart';
 
-abstract class ProfileService {
+abstract class DuniterService {
   Future<Contact> getProfile(String pubKey,
       {bool onlyCPlusProfile = false, bool resize = true});
 
@@ -16,9 +22,23 @@ abstract class ProfileService {
       {required String searchTermLower,
       required String searchTerm,
       required String searchTermCapitalized});
+
+  Future<Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalance(
+    String pubKeyRaw, {
+    int? pageSize = 10,
+    int? from,
+    int? to,
+    String? cursor,
+  });
+
+  Future<TransactionState> transactionsParser(
+      Map<String, dynamic> txData, TransactionState state, String myPubKeyRaw);
+
+  Future<PayResult> pay(
+      {required List<String> to, required double amount, String? comment});
 }
 
-class ProfileServiceV1 implements ProfileService {
+class DuniterServiceV1 implements DuniterService {
   @override
   Future<Contact> getProfile(String pubKey,
       {bool onlyCPlusProfile = false, bool resize = true}) {
@@ -46,9 +66,32 @@ class ProfileServiceV1 implements ProfileService {
   Future<List<Contact>> getProfiles(List<String> pubKeys) {
     throw UnimplementedError();
   }
+
+  @override
+  Future<Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalance(
+      String pubKeyRaw,
+      {int? pageSize = 10,
+      int? from,
+      int? to,
+      String? cursor}) {
+    return getHistoryAndBalanceV1(pubKeyRaw,
+        pageSize: pageSize, from: from, to: to, cursor: cursor);
+  }
+
+  @override
+  Future<TransactionState> transactionsParser(
+      Map<String, dynamic> txData, TransactionState state, String myPubKeyRaw) {
+    return transactionsV1Parser(txData, state, myPubKeyRaw);
+  }
+
+  @override
+  Future<PayResult> pay(
+      {required List<String> to, required double amount, String? comment}) {
+    return payV1(to: to, amount: amount, comment: comment);
+  }
 }
 
-class ProfileServiceV2 implements ProfileService {
+class DuniterServiceV2 implements DuniterService {
   @override
   Future<Contact> getProfile(String pubKey,
       {bool onlyCPlusProfile = false, bool resize = true}) {
@@ -75,16 +118,39 @@ class ProfileServiceV2 implements ProfileService {
         searchTerm: searchTerm,
         searchTermCapitalized: searchTermCapitalized);
   }
+
+  @override
+  Future<Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalance(
+      String pubKeyRaw,
+      {int? pageSize = 10,
+      int? from,
+      int? to,
+      String? cursor}) {
+    return getHistoryAndBalanceV2(pubKeyRaw,
+        pageSize: pageSize, from: from, to: to, cursor: cursor);
+  }
+
+  @override
+  Future<TransactionState> transactionsParser(
+      Map<String, dynamic> txData, TransactionState state, String myPubKeyRaw) {
+    return transactionsV2Parser(txData, state, myPubKeyRaw);
+  }
+
+  @override
+  Future<PayResult> pay(
+      {required List<String> to, required double amount, String? comment}) {
+    return payV2(to: to, amount: amount, comment: comment);
+  }
 }
 
 class ServiceManager with ChangeNotifier {
   ServiceManager({required bool initialIsV2})
-      : _currentService = initialIsV2 ? ProfileServiceV2() : ProfileServiceV1();
-  ProfileService _currentService;
-  final ProfileService _v1Service = ProfileServiceV1();
-  final ProfileService _v2Service = ProfileServiceV2();
+      : _currentService = initialIsV2 ? DuniterServiceV2() : DuniterServiceV1();
+  DuniterService _currentService;
+  final DuniterService _v1Service = DuniterServiceV1();
+  final DuniterService _v2Service = DuniterServiceV2();
 
-  ProfileService get profileService => _currentService;
+  DuniterService get current => _currentService;
 
   void updateService(bool useV2) {
     _currentService = useV2 ? _v2Service : _v1Service;

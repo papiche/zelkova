@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../data/models/contact.dart';
 import '../../../g1/g1_helper.dart';
-import '../../../g1/g1_v2_helper_multi.dart';
+import '../../../g1/g1_v2_helper.dart';
 import '../../ui_helpers.dart';
 
 class ContactFormDialog extends StatefulWidget {
@@ -121,11 +121,11 @@ class _ContactFormDialogState extends State<ContactFormDialog> {
                 ),
                 onChanged: (String? value) {
                   if (value != null) {
-                    final bool isV2Address = isValidV2AddressMulti(value);
+                    final bool isV2Address = isValidV2Address(value);
                     final String pubKey =
-                        isV2Address ? v1pubkeyFromAddressMulti(value) : value;
+                        isV2Address ? v1pubkeyFromAddress(value) : value;
                     final String address =
-                        isV2Address ? value : addressFromV1PubkeyMulti(value);
+                        isV2Address ? value : addressFromV1Pubkey(value);
                     _updatedContact = _updatedContact.copyWith(
                         pubKey: pubKey, address: address);
                   }

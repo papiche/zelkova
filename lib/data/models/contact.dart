@@ -6,7 +6,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../../g1/g1_helper.dart';
-import '../../g1/g1_v2_helper_multi.dart';
+import '../../g1/g1_v2_helper.dart';
 import '../../ui/ui_helpers.dart';
 import 'is_json_serializable.dart';
 import 'model_utils.dart';
@@ -36,7 +36,7 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
       :
         // ensure that Contact does not have v1 checksums
         pubKey = extractPublicKey(pubKey),
-        address = address ?? addressFromV1PubkeyMulti(extractPublicKey(pubKey));
+        address = address ?? addressFromV1Pubkey(extractPublicKey(pubKey));
 
   factory Contact.fromJson(Map<String, dynamic> json) =>
       _$ContactFromJson(json);
@@ -78,7 +78,7 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
     return Contact._(
         nick: nick,
         pubKey: extractPublicKey(pubKey),
-        address: addressFromV1PubkeyMulti(extractPublicKey(pubKey)),
+        address: addressFromV1Pubkey(extractPublicKey(pubKey)),
         avatar: avatar,
         notes: notes,
         name: name,
@@ -118,7 +118,7 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
       DateTime? time}) {
     return Contact._(
         nick: nick,
-        pubKey: v1pubkeyFromAddressMulti(address),
+        pubKey: v1pubkeyFromAddress(address),
         address: address,
         avatar: avatar,
         notes: notes,

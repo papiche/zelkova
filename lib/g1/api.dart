@@ -32,6 +32,7 @@ import '../data/models/node.dart';
 import '../data/models/node_lists_default.dart';
 import '../data/models/node_manager.dart';
 import '../data/models/node_type.dart';
+import '../data/models/transaction_state.dart';
 import '../data/models/utxo.dart';
 import '../env.dart';
 import '../shared_prefs_helper.dart';
@@ -687,7 +688,7 @@ Future<Tuple2<Node, http.Response>> _requestWithRetry(
       'Cannot make the request to any of the ${nodes.length} nodes');
 }
 
-Future<PayResult> payWithGVA(
+Future<PayResult> payV1(
     {required List<String> to, required double amount, String? comment}) async {
   try {
     final Tuple2<String, Node> selected = getGvaNode();
@@ -763,7 +764,7 @@ Tuple2<String, Node> getGvaNode() {
     final Node newNode =
         currentIsInBest ? currentGvaNode ?? nodes.first : nodes.first;
     loggerDev(
-        'New GVA node ${newNode.url} and currentGva ${currentGvaNode ?? const Node(url: "Node").url} is in best nodes: $currentIsInBest');
+        'New GVA node ${newNode.url} and currentGva ${currentGvaNode ?? const Node(url: "No node").url} is in best nodes: $currentIsInBest');
     NodeManager().setCurrentGvaNode(newNode);
     loggerDev('New GVA node ${newNode.url}');
     return Tuple2<String, Node>(proxyfyNode(newNode.url), newNode);
@@ -1242,7 +1243,7 @@ Future<NodeCheckResult> testDuniterV1Node(String node, Duration timeout) async {
 
 Future<Contact> getProfile(String pubKeyRaw,
     {bool onlyCPlusProfile = false, bool resize = true}) async {
-  return GetIt.instance<ServiceManager>().profileService.getProfile(
+  return GetIt.instance<ServiceManager>().current.getProfile(
         pubKeyRaw,
         onlyCPlusProfile: onlyCPlusProfile,
         resize: resize,
@@ -1250,9 +1251,7 @@ Future<Contact> getProfile(String pubKeyRaw,
 }
 
 Future<List<Contact>> searchWot(String searchPattern) async {
-  return GetIt.instance<ServiceManager>()
-      .profileService
-      .searchWot(searchPattern);
+  return GetIt.instance<ServiceManager>().current.searchWot(searchPattern);
 }
 
 Future<List<Contact>> searchProfiles(String initialSearchTerm) async {
@@ -1260,12 +1259,41 @@ Future<List<Contact>> searchProfiles(String initialSearchTerm) async {
   final String searchTermLower = searchTerm.toLowerCase();
   final String searchTermCapitalized =
       searchTermLower[0].toUpperCase() + searchTermLower.substring(1);
-  return GetIt.instance<ServiceManager>().profileService.searchProfiles(
+  return GetIt.instance<ServiceManager>().current.searchProfiles(
       searchTermLower: searchTermLower,
       searchTerm: searchTerm,
       searchTermCapitalized: searchTermCapitalized);
 }
 
 Future<List<Contact>> getProfiles(List<String> pubKeys) async {
-  return GetIt.instance<ServiceManager>().profileService.getProfiles(pubKeys);
+  return GetIt.instance<ServiceManager>().current.getProfiles(pubKeys);
+}
+
+Future<Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalance(
+  String pubKeyRaw, {
+  int? pageSize,
+  int? from,
+  int? to,
+  String? cursor,
+}) {
+  return GetIt.instance<ServiceManager>().current.getHistoryAndBalance(
+      pubKeyRaw,
+      pageSize: pageSize,
+      from: from,
+      to: to,
+      cursor: cursor);
+}
+
+Future<TransactionState> transactionsParser(
+    Map<String, dynamic> txData, TransactionState state, String myPubKeyRaw) {
+  return GetIt.instance<ServiceManager>()
+      .current
+      .transactionsParser(txData, state, myPubKeyRaw);
+}
+
+Future<PayResult> pay(
+    {required List<String> to, required double amount, String? comment}) async {
+  return GetIt.instance<ServiceManager>()
+      .current
+      .pay(to: to, amount: amount, comment: comment);
 }

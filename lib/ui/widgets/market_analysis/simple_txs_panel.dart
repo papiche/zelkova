@@ -7,7 +7,7 @@ import '../../../data/models/node.dart';
 import '../../../data/models/transaction.dart';
 import '../../../data/models/transaction_state.dart';
 import '../../../g1/api.dart';
-import '../../../g1/transaction_parser.dart';
+import '../../../g1/transaction_v1_parser.dart';
 import '../../ui_helpers.dart';
 import '../fourth_screen/transaction_item.dart';
 
@@ -71,7 +71,7 @@ class _SimpleTransactionsPanelState extends State<SimpleTransactionsPanel> {
     }
 
     final Map<String, dynamic> txData = txDataResult.item1!;
-    final TransactionState newParsedState = await transactionsGvaParser(
+    final TransactionState newParsedState = await transactionsV1Parser(
       txData,
       TransactionState.emptyState,
       widget.contact.pubKey,

@@ -320,3 +320,11 @@ class MemoryFallbackBox<E> extends Box<E> {
         .cast<E>();
   }
 }
+
+Contact getContactCache({required Contact simpleContact}) {
+  final Contact contact =
+      ContactsCache().getCachedContact(simpleContact.pubKey, false, true) ??
+          simpleContact;
+  assert(contact.hasAvatar == false);
+  return contact;
+}

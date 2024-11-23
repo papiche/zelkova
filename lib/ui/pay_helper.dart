@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../../data/models/contact.dart';
-import '../../../data/models/node_type.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/transaction.dart';
 import '../../../data/models/transaction_type.dart';
@@ -18,6 +17,7 @@ import '../data/models/bottom_nav_cubit.dart';
 import '../data/models/multi_wallet_transaction_cubit.dart';
 import '../data/models/node.dart';
 import '../data/models/node_manager.dart';
+import '../data/models/node_type.dart';
 import '../data/models/payment_state.dart';
 import '../data/models/utxo.dart';
 import '../data/models/utxo_cubit.dart';
@@ -100,7 +100,7 @@ Future<bool> payWithRetry(
           // PAY!
           PayResult result;
           if (!useBMA) {
-            result = await payWithGVA(
+            result = await pay(
                 to: recipients.map((Contact c) => c.pubKey).toList(),
                 comment: comment,
                 amount: convertedAmount);

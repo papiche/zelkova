@@ -36,6 +36,7 @@ analyzer:
     # Ignore protoc generated files
     - "dev/conductor/lib/proto/*"
     - "lib/data/models/*g.dart"
+    - "lib/generated/**"
 
 linter:
   rules:

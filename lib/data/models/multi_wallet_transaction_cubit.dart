@@ -8,7 +8,6 @@ import 'package:tuple/tuple.dart';
 import '../../g1/api.dart';
 import '../../g1/currency.dart';
 import '../../g1/g1_helper.dart';
-import '../../g1/transaction_parser.dart';
 import '../../shared_prefs_helper.dart';
 import '../../ui/logger.dart';
 import '../../ui/notification_controller.dart';
@@ -149,13 +148,14 @@ class MultiWalletTransactionCubit
         (extractPublicKey(pubKey) ==
             extractPublicKey(SharedPreferencesHelper().getPubKey()));
     pubKey = _defKey(pubKey);
+    loggerDev('Fetching transactions for $pubKey in cubit');
     final TransactionState currentState = _getStateOfWallet(pubKey);
     Tuple2<Map<String, dynamic>?, Node> txDataResult;
     bool success = false;
     final bool isG1 = appCubit.currency == Currency.G1;
 
     for (int attempt = 0; attempt < retries; attempt++) {
-      txDataResult = await getHistoryAndBalanceV1(pubKey,
+      txDataResult = await getHistoryAndBalance(pubKey,
           pageSize: pageSize, cursor: cursor);
       final Node node = txDataResult.item2;
       logger(
@@ -170,8 +170,9 @@ class MultiWalletTransactionCubit
       }
 
       final Map<String, dynamic> txData = txDataResult.item1!;
+
       final TransactionState newParsedState =
-          await transactionsGvaParser(txData, currentState, pubKey);
+          await transactionsParser(txData, currentState, pubKey);
 
       if (newParsedState.balance < 0) {
         logger('Warning: Negative balance in node ${txDataResult.item2}');

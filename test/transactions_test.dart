@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:ginkgo/data/models/transaction.dart';
 import 'package:ginkgo/data/models/transaction_state.dart';
 import 'package:ginkgo/data/models/transaction_type.dart';
-import 'package:ginkgo/g1/transaction_parser.dart';
+import 'package:ginkgo/g1/transaction_v1_parser.dart';
 import 'package:ginkgo/ui/contacts_cache.dart';
 
 void main() {
@@ -46,7 +46,7 @@ void main() {
   test('Test gva history parsing', () async {
     TestWidgetsFlutterBinding.ensureInitialized();
     final String txData = await rootBundle.loadString('assets/gva-tx.json');
-    final TransactionState result = await transactionsGvaParser(
+    final TransactionState result = await transactionsV1Parser(
         (jsonDecode(txData) as Map<String, dynamic>)['data']
             as Map<String, dynamic>,
         TransactionState.emptyState,
@@ -101,7 +101,7 @@ void main() {
     }
   }
 }''';
-    final TransactionState emptyResult = await transactionsGvaParser(
+    final TransactionState emptyResult = await transactionsV1Parser(
         (jsonDecode(emptyTx) as Map<String, dynamic>)['data']
             as Map<String, dynamic>,
         TransactionState.emptyState,

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:bip39_multi_nullsafety/src/wordlists/spanish.dart' as spanish;
@@ -131,5 +132,22 @@ void main() {
     for (final String esWord in esMnemonicList) {
       expect(spanish.WORDLIST.contains(esWord), true);
     }
+  });
+
+  test('sign and verify', () async {
+    // https://polkadart.dev/keyring-signer/sign-verify/
+    const String messageS = 'lorem ipsum dolor sit amet';
+    final Uint8List message = Uint8List.fromList(utf8.encode(messageS));
+    final Keyring keyring = Keyring();
+    const String password = 'devtest';
+    final CesiumWallet walletV1 = CesiumWallet(password, password);
+    final KeyPair keyPair2 = KeyPair.ed25519.fromSeed(walletV1.seed);
+
+    keyring.add(keyPair2);
+    final KeyPair keypair = keyring.getByPublicKey(keyPair2.publicKey.bytes);
+    final Uint8List signature = keypair.sign(message);
+
+    final bool isVerified = keypair.verify(message, signature);
+    expect(isVerified, true);
   });
 }

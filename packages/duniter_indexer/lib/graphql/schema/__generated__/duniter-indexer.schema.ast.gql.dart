@@ -179,6 +179,15 @@ const Account = _i1.ObjectTypeDefinitionNode(
       ),
     ),
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Int'),
+        isNonNull: true,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'id'),
       directives: [],
       args: [],
@@ -925,6 +934,15 @@ const AccountAggregateFields = _i1.ObjectTypeDefinitionNode(
   interfaces: [],
   fields: [
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'avg'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'AccountAvgFields'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'count'),
       directives: [],
       args: [
@@ -973,12 +991,84 @@ const AccountAggregateFields = _i1.ObjectTypeDefinitionNode(
         isNonNull: false,
       ),
     ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'stddev'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'AccountStddevFields'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'stddevPop'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'AccountStddevPopFields'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'stddevSamp'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'AccountStddevSampFields'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'sum'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'AccountSumFields'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'varPop'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'AccountVarPopFields'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'varSamp'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'AccountVarSampFields'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'variance'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'AccountVarianceFields'),
+        isNonNull: false,
+      ),
+    ),
   ],
 );
 const AccountAggregateOrderBy = _i1.InputObjectTypeDefinitionNode(
   name: _i1.NameNode(value: 'AccountAggregateOrderBy'),
   directives: [],
   fields: [
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'avg'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'AccountAvgOrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'count'),
       directives: [],
@@ -1006,6 +1096,100 @@ const AccountAggregateOrderBy = _i1.InputObjectTypeDefinitionNode(
       ),
       defaultValue: null,
     ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'stddev'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'AccountStddevOrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'stddevPop'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'AccountStddevPopOrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'stddevSamp'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'AccountStddevSampOrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'sum'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'AccountSumOrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'varPop'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'AccountVarPopOrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'varSamp'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'AccountVarSampOrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'variance'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'AccountVarianceOrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+  ],
+);
+const AccountAvgFields = _i1.ObjectTypeDefinitionNode(
+  name: _i1.NameNode(value: 'AccountAvgFields'),
+  directives: [],
+  interfaces: [],
+  fields: [
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    )
+  ],
+);
+const AccountAvgOrderBy = _i1.InputObjectTypeDefinitionNode(
+  name: _i1.NameNode(value: 'AccountAvgOrderBy'),
+  directives: [],
+  fields: [
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    )
   ],
 );
 const AccountBoolExp = _i1.InputObjectTypeDefinitionNode(
@@ -1059,6 +1243,15 @@ const AccountBoolExp = _i1.InputObjectTypeDefinitionNode(
       directives: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'TxCommentAggregateBoolExp'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'IntComparisonExp'),
         isNonNull: false,
       ),
       defaultValue: null,
@@ -1188,6 +1381,15 @@ const AccountMaxFields = _i1.ObjectTypeDefinitionNode(
   interfaces: [],
   fields: [
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Int'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'id'),
       directives: [],
       args: [],
@@ -1211,6 +1413,15 @@ const AccountMaxOrderBy = _i1.InputObjectTypeDefinitionNode(
   name: _i1.NameNode(value: 'AccountMaxOrderBy'),
   directives: [],
   fields: [
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'id'),
       directives: [],
@@ -1237,6 +1448,15 @@ const AccountMinFields = _i1.ObjectTypeDefinitionNode(
   interfaces: [],
   fields: [
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Int'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'id'),
       directives: [],
       args: [],
@@ -1260,6 +1480,15 @@ const AccountMinOrderBy = _i1.InputObjectTypeDefinitionNode(
   name: _i1.NameNode(value: 'AccountMinOrderBy'),
   directives: [],
   fields: [
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'id'),
       directives: [],
@@ -1289,6 +1518,15 @@ const AccountOrderBy = _i1.InputObjectTypeDefinitionNode(
       directives: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'TxCommentAggregateOrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
         isNonNull: false,
       ),
       defaultValue: null,
@@ -1381,6 +1619,10 @@ const AccountSelectColumn = _i1.EnumTypeDefinitionNode(
   directives: [],
   values: [
     _i1.EnumValueDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+    ),
+    _i1.EnumValueDefinitionNode(
       name: _i1.NameNode(value: 'id'),
       directives: [],
     ),
@@ -1420,6 +1662,99 @@ const AccountSelectColumnAccountAggregateBoolExpBool_orArgumentsColumns =
     )
   ],
 );
+const AccountStddevFields = _i1.ObjectTypeDefinitionNode(
+  name: _i1.NameNode(value: 'AccountStddevFields'),
+  directives: [],
+  interfaces: [],
+  fields: [
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    )
+  ],
+);
+const AccountStddevOrderBy = _i1.InputObjectTypeDefinitionNode(
+  name: _i1.NameNode(value: 'AccountStddevOrderBy'),
+  directives: [],
+  fields: [
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    )
+  ],
+);
+const AccountStddevPopFields = _i1.ObjectTypeDefinitionNode(
+  name: _i1.NameNode(value: 'AccountStddevPopFields'),
+  directives: [],
+  interfaces: [],
+  fields: [
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    )
+  ],
+);
+const AccountStddevPopOrderBy = _i1.InputObjectTypeDefinitionNode(
+  name: _i1.NameNode(value: 'AccountStddevPopOrderBy'),
+  directives: [],
+  fields: [
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    )
+  ],
+);
+const AccountStddevSampFields = _i1.ObjectTypeDefinitionNode(
+  name: _i1.NameNode(value: 'AccountStddevSampFields'),
+  directives: [],
+  interfaces: [],
+  fields: [
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    )
+  ],
+);
+const AccountStddevSampOrderBy = _i1.InputObjectTypeDefinitionNode(
+  name: _i1.NameNode(value: 'AccountStddevSampOrderBy'),
+  directives: [],
+  fields: [
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    )
+  ],
+);
 const AccountStreamCursorInput = _i1.InputObjectTypeDefinitionNode(
   name: _i1.NameNode(value: 'AccountStreamCursorInput'),
   directives: [],
@@ -1449,6 +1784,15 @@ const AccountStreamCursorValueInput = _i1.InputObjectTypeDefinitionNode(
   directives: [],
   fields: [
     _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Int'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'id'),
       directives: [],
       type: _i1.NamedTypeNode(
@@ -1475,6 +1819,130 @@ const AccountStreamCursorValueInput = _i1.InputObjectTypeDefinitionNode(
       ),
       defaultValue: null,
     ),
+  ],
+);
+const AccountSumFields = _i1.ObjectTypeDefinitionNode(
+  name: _i1.NameNode(value: 'AccountSumFields'),
+  directives: [],
+  interfaces: [],
+  fields: [
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Int'),
+        isNonNull: false,
+      ),
+    )
+  ],
+);
+const AccountSumOrderBy = _i1.InputObjectTypeDefinitionNode(
+  name: _i1.NameNode(value: 'AccountSumOrderBy'),
+  directives: [],
+  fields: [
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    )
+  ],
+);
+const AccountVarianceFields = _i1.ObjectTypeDefinitionNode(
+  name: _i1.NameNode(value: 'AccountVarianceFields'),
+  directives: [],
+  interfaces: [],
+  fields: [
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    )
+  ],
+);
+const AccountVarianceOrderBy = _i1.InputObjectTypeDefinitionNode(
+  name: _i1.NameNode(value: 'AccountVarianceOrderBy'),
+  directives: [],
+  fields: [
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    )
+  ],
+);
+const AccountVarPopFields = _i1.ObjectTypeDefinitionNode(
+  name: _i1.NameNode(value: 'AccountVarPopFields'),
+  directives: [],
+  interfaces: [],
+  fields: [
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    )
+  ],
+);
+const AccountVarPopOrderBy = _i1.InputObjectTypeDefinitionNode(
+  name: _i1.NameNode(value: 'AccountVarPopOrderBy'),
+  directives: [],
+  fields: [
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    )
+  ],
+);
+const AccountVarSampFields = _i1.ObjectTypeDefinitionNode(
+  name: _i1.NameNode(value: 'AccountVarSampFields'),
+  directives: [],
+  interfaces: [],
+  fields: [
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    )
+  ],
+);
+const AccountVarSampOrderBy = _i1.InputObjectTypeDefinitionNode(
+  name: _i1.NameNode(value: 'AccountVarSampOrderBy'),
+  directives: [],
+  fields: [
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    )
   ],
 );
 const Block = _i1.ObjectTypeDefinitionNode(
@@ -34013,7 +34481,7 @@ const UdHistory = _i1.ObjectTypeDefinitionNode(
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'Int'),
+        name: _i1.NameNode(value: 'numeric'),
         isNonNull: true,
       ),
     ),
@@ -34415,7 +34883,7 @@ const UdHistoryBoolExp = _i1.InputObjectTypeDefinitionNode(
       name: _i1.NameNode(value: 'amount'),
       directives: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'IntComparisonExp'),
+        name: _i1.NameNode(value: 'NumericComparisonExp'),
         isNonNull: false,
       ),
       defaultValue: null,
@@ -34477,7 +34945,7 @@ const UdHistoryMaxFields = _i1.ObjectTypeDefinitionNode(
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'Int'),
+        name: _i1.NameNode(value: 'numeric'),
         isNonNull: false,
       ),
     ),
@@ -34580,7 +35048,7 @@ const UdHistoryMinFields = _i1.ObjectTypeDefinitionNode(
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'Int'),
+        name: _i1.NameNode(value: 'numeric'),
         isNonNull: false,
       ),
     ),
@@ -34938,7 +35406,7 @@ const UdHistoryStreamCursorValueInput = _i1.InputObjectTypeDefinitionNode(
       name: _i1.NameNode(value: 'amount'),
       directives: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'Int'),
+        name: _i1.NameNode(value: 'numeric'),
         isNonNull: false,
       ),
       defaultValue: null,
@@ -34991,7 +35459,7 @@ const UdHistorySumFields = _i1.ObjectTypeDefinitionNode(
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'Int'),
+        name: _i1.NameNode(value: 'numeric'),
         isNonNull: false,
       ),
     ),
@@ -37761,6 +38229,8 @@ const document = _i1.DocumentNode(definitions: [
   accountAggregateBoolExpCount,
   AccountAggregateFields,
   AccountAggregateOrderBy,
+  AccountAvgFields,
+  AccountAvgOrderBy,
   AccountBoolExp,
   AccountMaxFields,
   AccountMaxOrderBy,
@@ -37770,8 +38240,22 @@ const document = _i1.DocumentNode(definitions: [
   AccountSelectColumn,
   AccountSelectColumnAccountAggregateBoolExpBool_andArgumentsColumns,
   AccountSelectColumnAccountAggregateBoolExpBool_orArgumentsColumns,
+  AccountStddevFields,
+  AccountStddevOrderBy,
+  AccountStddevPopFields,
+  AccountStddevPopOrderBy,
+  AccountStddevSampFields,
+  AccountStddevSampOrderBy,
   AccountStreamCursorInput,
   AccountStreamCursorValueInput,
+  AccountSumFields,
+  AccountSumOrderBy,
+  AccountVarianceFields,
+  AccountVarianceOrderBy,
+  AccountVarPopFields,
+  AccountVarPopOrderBy,
+  AccountVarSampFields,
+  AccountVarSampOrderBy,
   Block,
   BlockAggregate,
   BlockAggregateFields,

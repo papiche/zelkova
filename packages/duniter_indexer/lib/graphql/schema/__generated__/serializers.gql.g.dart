@@ -10,6 +10,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(FetchPolicy.serializer)
       ..add(GAccountAggregateBoolExp.serializer)
       ..add(GAccountAggregateOrderBy.serializer)
+      ..add(GAccountAvgOrderBy.serializer)
       ..add(GAccountBoolExp.serializer)
       ..add(GAccountByPkData.serializer)
       ..add(GAccountByPkData_accountByPk.serializer)
@@ -23,8 +24,15 @@ Serializers _$serializers = (new Serializers().toBuilder()
           .serializer)
       ..add(GAccountSelectColumnAccountAggregateBoolExpBool_orArgumentsColumns
           .serializer)
+      ..add(GAccountStddevOrderBy.serializer)
+      ..add(GAccountStddevPopOrderBy.serializer)
+      ..add(GAccountStddevSampOrderBy.serializer)
       ..add(GAccountStreamCursorInput.serializer)
       ..add(GAccountStreamCursorValueInput.serializer)
+      ..add(GAccountSumOrderBy.serializer)
+      ..add(GAccountVarPopOrderBy.serializer)
+      ..add(GAccountVarSampOrderBy.serializer)
+      ..add(GAccountVarianceOrderBy.serializer)
       ..add(GAccountsByNameData.serializer)
       ..add(GAccountsByNameData_identity.serializer)
       ..add(GAccountsByNameData_identity_account.serializer)
@@ -367,7 +375,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GidentityAggregateBoolExpCount.serializer)
       ..add(Gidentity_scalar.serializer)
       ..add(GmembershipEventAggregateBoolExpCount.serializer)
-      ..add(Gnumeric.serializer)
       ..add(GsmithCertAggregateBoolExpCount.serializer)
       ..add(GsmithEventAggregateBoolExpCount.serializer)
       ..add(Gtimestamptz.serializer)
@@ -639,12 +646,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(Gbytea)]),
           () => new ListBuilder<Gbytea>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(Gnumeric)]),
-          () => new ListBuilder<Gnumeric>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(Gnumeric)]),
-          () => new ListBuilder<Gnumeric>())
-      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Gtimestamptz)]),
           () => new ListBuilder<Gtimestamptz>())
       ..addBuilderFactory(
@@ -717,6 +718,12 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(int)]),
+          () => new ListBuilder<int>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(int)]),
+          () => new ListBuilder<int>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(int)]),
           () => new ListBuilder<int>())

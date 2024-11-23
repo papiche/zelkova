@@ -1,3 +1,4 @@
+# npx get-graphql-schema https://datapod.gyroi.de/v1/graphql > duniter-datapod.schema.graphql.new
 schema {
   query: query_root
   mutation: mutation_root

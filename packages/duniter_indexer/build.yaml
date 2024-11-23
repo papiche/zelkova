@@ -9,6 +9,9 @@ targets:
             jsonb:
               name: JsonObject
               import: "package:built_value/json_object.dart"
+            numeric:
+              name: int
+              import: "dart:core"
       ferry_generator|serializer_builder:
         enabled: true
         options:
@@ -17,8 +20,9 @@ targets:
             jsonb:
               name: JsonObject
               import: "package:built_value/json_object.dart"
+            numeric:
+              name: int
+              import: "dart:core"
           custom_serializers:
             - import: "package:built_value/src/json_object_serializer.dart"
               name: JsonObjectSerializer
-
-

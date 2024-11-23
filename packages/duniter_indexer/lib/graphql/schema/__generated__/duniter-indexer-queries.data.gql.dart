@@ -411,7 +411,7 @@ abstract class GGetHistoryAndBalanceData_account_transfersIssued
   String get G__typename;
   int get blockNumber;
   _i2.Gtimestamptz get timestamp;
-  _i2.Gnumeric get amount;
+  int get amount;
   GGetHistoryAndBalanceData_account_transfersIssued_to? get to;
   GGetHistoryAndBalanceData_account_transfersIssued_from? get from;
   GGetHistoryAndBalanceData_account_transfersIssued_comment? get comment;
@@ -557,7 +557,7 @@ abstract class GGetHistoryAndBalanceData_account_transfersReceived
   String get G__typename;
   int get blockNumber;
   _i2.Gtimestamptz get timestamp;
-  _i2.Gnumeric get amount;
+  int get amount;
   GGetHistoryAndBalanceData_account_transfersReceived_from? get from;
   GGetHistoryAndBalanceData_account_transfersReceived_to? get to;
   GGetHistoryAndBalanceData_account_transfersReceived_comment? get comment;

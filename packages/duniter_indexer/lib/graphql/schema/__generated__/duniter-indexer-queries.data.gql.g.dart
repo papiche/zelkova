@@ -867,8 +867,7 @@ class _$GGetHistoryAndBalanceData_account_transfersIssuedSerializer
       serializers.serialize(object.timestamp,
           specifiedType: const FullType(_i2.Gtimestamptz)),
       'amount',
-      serializers.serialize(object.amount,
-          specifiedType: const FullType(_i2.Gnumeric)),
+      serializers.serialize(object.amount, specifiedType: const FullType(int)),
     ];
     Object? value;
     value = object.to;
@@ -925,8 +924,8 @@ class _$GGetHistoryAndBalanceData_account_transfersIssuedSerializer
               as _i2.Gtimestamptz);
           break;
         case 'amount':
-          result.amount.replace(serializers.deserialize(value,
-              specifiedType: const FullType(_i2.Gnumeric))! as _i2.Gnumeric);
+          result.amount = serializers.deserialize(value,
+              specifiedType: const FullType(int))! as int;
           break;
         case 'to':
           result.to.replace(serializers.deserialize(value,
@@ -1149,8 +1148,7 @@ class _$GGetHistoryAndBalanceData_account_transfersReceivedSerializer
       serializers.serialize(object.timestamp,
           specifiedType: const FullType(_i2.Gtimestamptz)),
       'amount',
-      serializers.serialize(object.amount,
-          specifiedType: const FullType(_i2.Gnumeric)),
+      serializers.serialize(object.amount, specifiedType: const FullType(int)),
     ];
     Object? value;
     value = object.from;
@@ -1207,8 +1205,8 @@ class _$GGetHistoryAndBalanceData_account_transfersReceivedSerializer
               as _i2.Gtimestamptz);
           break;
         case 'amount':
-          result.amount.replace(serializers.deserialize(value,
-              specifiedType: const FullType(_i2.Gnumeric))! as _i2.Gnumeric);
+          result.amount = serializers.deserialize(value,
+              specifiedType: const FullType(int))! as int;
           break;
         case 'from':
           result.from.replace(serializers.deserialize(value,
@@ -3024,7 +3022,7 @@ class _$GGetHistoryAndBalanceData_account_transfersIssued
   @override
   final _i2.Gtimestamptz timestamp;
   @override
-  final _i2.Gnumeric amount;
+  final int amount;
   @override
   final GGetHistoryAndBalanceData_account_transfersIssued_to? to;
   @override
@@ -3133,10 +3131,9 @@ class GGetHistoryAndBalanceData_account_transfersIssuedBuilder
   set timestamp(_i2.GtimestamptzBuilder? timestamp) =>
       _$this._timestamp = timestamp;
 
-  _i2.GnumericBuilder? _amount;
-  _i2.GnumericBuilder get amount =>
-      _$this._amount ??= new _i2.GnumericBuilder();
-  set amount(_i2.GnumericBuilder? amount) => _$this._amount = amount;
+  int? _amount;
+  int? get amount => _$this._amount;
+  set amount(int? amount) => _$this._amount = amount;
 
   GGetHistoryAndBalanceData_account_transfersIssued_toBuilder? _to;
   GGetHistoryAndBalanceData_account_transfersIssued_toBuilder get to =>
@@ -3173,7 +3170,7 @@ class GGetHistoryAndBalanceData_account_transfersIssuedBuilder
       _G__typename = $v.G__typename;
       _blockNumber = $v.blockNumber;
       _timestamp = $v.timestamp.toBuilder();
-      _amount = $v.amount.toBuilder();
+      _amount = $v.amount;
       _to = $v.to?.toBuilder();
       _from = $v.from?.toBuilder();
       _comment = $v.comment?.toBuilder();
@@ -3212,7 +3209,10 @@ class GGetHistoryAndBalanceData_account_transfersIssuedBuilder
                   r'GGetHistoryAndBalanceData_account_transfersIssued',
                   'blockNumber'),
               timestamp: timestamp.build(),
-              amount: amount.build(),
+              amount: BuiltValueNullFieldError.checkNotNull(
+                  amount,
+                  r'GGetHistoryAndBalanceData_account_transfersIssued',
+                  'amount'),
               to: _to?.build(),
               from: _from?.build(),
               comment: _comment?.build());
@@ -3221,8 +3221,7 @@ class GGetHistoryAndBalanceData_account_transfersIssuedBuilder
       try {
         _$failedField = 'timestamp';
         timestamp.build();
-        _$failedField = 'amount';
-        amount.build();
+
         _$failedField = 'to';
         _to?.build();
         _$failedField = 'from';
@@ -3630,7 +3629,7 @@ class _$GGetHistoryAndBalanceData_account_transfersReceived
   @override
   final _i2.Gtimestamptz timestamp;
   @override
-  final _i2.Gnumeric amount;
+  final int amount;
   @override
   final GGetHistoryAndBalanceData_account_transfersReceived_from? from;
   @override
@@ -3739,10 +3738,9 @@ class GGetHistoryAndBalanceData_account_transfersReceivedBuilder
   set timestamp(_i2.GtimestamptzBuilder? timestamp) =>
       _$this._timestamp = timestamp;
 
-  _i2.GnumericBuilder? _amount;
-  _i2.GnumericBuilder get amount =>
-      _$this._amount ??= new _i2.GnumericBuilder();
-  set amount(_i2.GnumericBuilder? amount) => _$this._amount = amount;
+  int? _amount;
+  int? get amount => _$this._amount;
+  set amount(int? amount) => _$this._amount = amount;
 
   GGetHistoryAndBalanceData_account_transfersReceived_fromBuilder? _from;
   GGetHistoryAndBalanceData_account_transfersReceived_fromBuilder get from =>
@@ -3780,7 +3778,7 @@ class GGetHistoryAndBalanceData_account_transfersReceivedBuilder
       _G__typename = $v.G__typename;
       _blockNumber = $v.blockNumber;
       _timestamp = $v.timestamp.toBuilder();
-      _amount = $v.amount.toBuilder();
+      _amount = $v.amount;
       _from = $v.from?.toBuilder();
       _to = $v.to?.toBuilder();
       _comment = $v.comment?.toBuilder();
@@ -3819,7 +3817,10 @@ class GGetHistoryAndBalanceData_account_transfersReceivedBuilder
                   r'GGetHistoryAndBalanceData_account_transfersReceived',
                   'blockNumber'),
               timestamp: timestamp.build(),
-              amount: amount.build(),
+              amount: BuiltValueNullFieldError.checkNotNull(
+                  amount,
+                  r'GGetHistoryAndBalanceData_account_transfersReceived',
+                  'amount'),
               from: _from?.build(),
               to: _to?.build(),
               comment: _comment?.build());
@@ -3828,8 +3829,7 @@ class GGetHistoryAndBalanceData_account_transfersReceivedBuilder
       try {
         _$failedField = 'timestamp';
         timestamp.build();
-        _$failedField = 'amount';
-        amount.build();
+
         _$failedField = 'from';
         _from?.build();
         _$failedField = 'to';

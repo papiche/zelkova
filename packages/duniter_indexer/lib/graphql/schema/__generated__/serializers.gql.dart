@@ -1,6 +1,8 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
 
+import 'dart:core';
+
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
@@ -47,6 +49,7 @@ import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer.sch
     show
         GAccountAggregateBoolExp,
         GAccountAggregateOrderBy,
+        GAccountAvgOrderBy,
         GAccountBoolExp,
         GAccountMaxOrderBy,
         GAccountMinOrderBy,
@@ -54,8 +57,15 @@ import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer.sch
         GAccountSelectColumn,
         GAccountSelectColumnAccountAggregateBoolExpBool_andArgumentsColumns,
         GAccountSelectColumnAccountAggregateBoolExpBool_orArgumentsColumns,
+        GAccountStddevOrderBy,
+        GAccountStddevPopOrderBy,
+        GAccountStddevSampOrderBy,
         GAccountStreamCursorInput,
         GAccountStreamCursorValueInput,
+        GAccountSumOrderBy,
+        GAccountVarPopOrderBy,
+        GAccountVarSampOrderBy,
+        GAccountVarianceOrderBy,
         GBlockBoolExp,
         GBlockOrderBy,
         GBlockSelectColumn,
@@ -359,7 +369,6 @@ import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer.sch
         GidentityAggregateBoolExpCount,
         Gidentity_scalar,
         GmembershipEventAggregateBoolExpCount,
-        Gnumeric,
         GsmithCertAggregateBoolExpCount,
         GsmithEventAggregateBoolExpCount,
         Gtimestamptz,
@@ -378,6 +387,7 @@ final SerializersBuilder _serializersBuilder = _$serializers.toBuilder()
 @SerializersFor([
   GAccountAggregateBoolExp,
   GAccountAggregateOrderBy,
+  GAccountAvgOrderBy,
   GAccountBoolExp,
   GAccountByPkData,
   GAccountByPkData_accountByPk,
@@ -389,8 +399,15 @@ final SerializersBuilder _serializersBuilder = _$serializers.toBuilder()
   GAccountSelectColumn,
   GAccountSelectColumnAccountAggregateBoolExpBool_andArgumentsColumns,
   GAccountSelectColumnAccountAggregateBoolExpBool_orArgumentsColumns,
+  GAccountStddevOrderBy,
+  GAccountStddevPopOrderBy,
+  GAccountStddevSampOrderBy,
   GAccountStreamCursorInput,
   GAccountStreamCursorValueInput,
+  GAccountSumOrderBy,
+  GAccountVarPopOrderBy,
+  GAccountVarSampOrderBy,
+  GAccountVarianceOrderBy,
   GAccountsByNameData,
   GAccountsByNameData_identity,
   GAccountsByNameData_identity_account,
@@ -720,7 +737,6 @@ final SerializersBuilder _serializersBuilder = _$serializers.toBuilder()
   GidentityAggregateBoolExpCount,
   Gidentity_scalar,
   GmembershipEventAggregateBoolExpCount,
-  Gnumeric,
   GsmithCertAggregateBoolExpCount,
   GsmithEventAggregateBoolExpCount,
   Gtimestamptz,

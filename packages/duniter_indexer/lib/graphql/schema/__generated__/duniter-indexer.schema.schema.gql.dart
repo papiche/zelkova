@@ -139,9 +139,17 @@ abstract class GAccountAggregateOrderBy
           [void Function(GAccountAggregateOrderByBuilder b) updates]) =
       _$GAccountAggregateOrderBy;
 
+  GAccountAvgOrderBy? get avg;
   GOrderBy? get count;
   GAccountMaxOrderBy? get max;
   GAccountMinOrderBy? get min;
+  GAccountStddevOrderBy? get stddev;
+  GAccountStddevPopOrderBy? get stddevPop;
+  GAccountStddevSampOrderBy? get stddevSamp;
+  GAccountSumOrderBy? get sum;
+  GAccountVarPopOrderBy? get varPop;
+  GAccountVarSampOrderBy? get varSamp;
+  GAccountVarianceOrderBy? get variance;
   static Serializer<GAccountAggregateOrderBy> get serializer =>
       _$gAccountAggregateOrderBySerializer;
 
@@ -153,6 +161,30 @@ abstract class GAccountAggregateOrderBy
   static GAccountAggregateOrderBy? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
         GAccountAggregateOrderBy.serializer,
+        json,
+      );
+}
+
+abstract class GAccountAvgOrderBy
+    implements Built<GAccountAvgOrderBy, GAccountAvgOrderByBuilder> {
+  GAccountAvgOrderBy._();
+
+  factory GAccountAvgOrderBy(
+          [void Function(GAccountAvgOrderByBuilder b) updates]) =
+      _$GAccountAvgOrderBy;
+
+  GOrderBy? get createdOn;
+  static Serializer<GAccountAvgOrderBy> get serializer =>
+      _$gAccountAvgOrderBySerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountAvgOrderBy.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountAvgOrderBy? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountAvgOrderBy.serializer,
         json,
       );
 }
@@ -172,6 +204,7 @@ abstract class GAccountBoolExp
   BuiltList<GAccountBoolExp>? get G_or;
   GTxCommentBoolExp? get commentsIssued;
   GTxCommentAggregateBoolExp? get commentsIssuedAggregate;
+  GIntComparisonExp? get createdOn;
   GStringComparisonExp? get id;
   GIdentityBoolExp? get identity;
   GBooleanComparisonExp? get isActive;
@@ -208,6 +241,7 @@ abstract class GAccountMaxOrderBy
           [void Function(GAccountMaxOrderByBuilder b) updates]) =
       _$GAccountMaxOrderBy;
 
+  GOrderBy? get createdOn;
   GOrderBy? get id;
   GOrderBy? get linkedIdentityId;
   static Serializer<GAccountMaxOrderBy> get serializer =>
@@ -233,6 +267,7 @@ abstract class GAccountMinOrderBy
           [void Function(GAccountMinOrderByBuilder b) updates]) =
       _$GAccountMinOrderBy;
 
+  GOrderBy? get createdOn;
   GOrderBy? get id;
   GOrderBy? get linkedIdentityId;
   static Serializer<GAccountMinOrderBy> get serializer =>
@@ -258,6 +293,7 @@ abstract class GAccountOrderBy
       _$GAccountOrderBy;
 
   GTxCommentAggregateOrderBy? get commentsIssuedAggregate;
+  GOrderBy? get createdOn;
   GOrderBy? get id;
   GIdentityOrderBy? get identity;
   GOrderBy? get isActive;
@@ -284,6 +320,8 @@ abstract class GAccountOrderBy
 
 class GAccountSelectColumn extends EnumClass {
   const GAccountSelectColumn._(String name) : super(name);
+
+  static const GAccountSelectColumn createdOn = _$gAccountSelectColumncreatedOn;
 
   static const GAccountSelectColumn id = _$gAccountSelectColumnid;
 
@@ -354,6 +392,80 @@ class GAccountSelectColumnAccountAggregateBoolExpBool_orArgumentsColumns
           name);
 }
 
+abstract class GAccountStddevOrderBy
+    implements Built<GAccountStddevOrderBy, GAccountStddevOrderByBuilder> {
+  GAccountStddevOrderBy._();
+
+  factory GAccountStddevOrderBy(
+          [void Function(GAccountStddevOrderByBuilder b) updates]) =
+      _$GAccountStddevOrderBy;
+
+  GOrderBy? get createdOn;
+  static Serializer<GAccountStddevOrderBy> get serializer =>
+      _$gAccountStddevOrderBySerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountStddevOrderBy.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountStddevOrderBy? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountStddevOrderBy.serializer,
+        json,
+      );
+}
+
+abstract class GAccountStddevPopOrderBy
+    implements
+        Built<GAccountStddevPopOrderBy, GAccountStddevPopOrderByBuilder> {
+  GAccountStddevPopOrderBy._();
+
+  factory GAccountStddevPopOrderBy(
+          [void Function(GAccountStddevPopOrderByBuilder b) updates]) =
+      _$GAccountStddevPopOrderBy;
+
+  GOrderBy? get createdOn;
+  static Serializer<GAccountStddevPopOrderBy> get serializer =>
+      _$gAccountStddevPopOrderBySerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountStddevPopOrderBy.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountStddevPopOrderBy? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountStddevPopOrderBy.serializer,
+        json,
+      );
+}
+
+abstract class GAccountStddevSampOrderBy
+    implements
+        Built<GAccountStddevSampOrderBy, GAccountStddevSampOrderByBuilder> {
+  GAccountStddevSampOrderBy._();
+
+  factory GAccountStddevSampOrderBy(
+          [void Function(GAccountStddevSampOrderByBuilder b) updates]) =
+      _$GAccountStddevSampOrderBy;
+
+  GOrderBy? get createdOn;
+  static Serializer<GAccountStddevSampOrderBy> get serializer =>
+      _$gAccountStddevSampOrderBySerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountStddevSampOrderBy.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountStddevSampOrderBy? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountStddevSampOrderBy.serializer,
+        json,
+      );
+}
+
 abstract class GAccountStreamCursorInput
     implements
         Built<GAccountStreamCursorInput, GAccountStreamCursorInputBuilder> {
@@ -390,6 +502,7 @@ abstract class GAccountStreamCursorValueInput
           [void Function(GAccountStreamCursorValueInputBuilder b) updates]) =
       _$GAccountStreamCursorValueInput;
 
+  int? get createdOn;
   String? get id;
   bool? get isActive;
   String? get linkedIdentityId;
@@ -404,6 +517,102 @@ abstract class GAccountStreamCursorValueInput
   static GAccountStreamCursorValueInput? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
         GAccountStreamCursorValueInput.serializer,
+        json,
+      );
+}
+
+abstract class GAccountSumOrderBy
+    implements Built<GAccountSumOrderBy, GAccountSumOrderByBuilder> {
+  GAccountSumOrderBy._();
+
+  factory GAccountSumOrderBy(
+          [void Function(GAccountSumOrderByBuilder b) updates]) =
+      _$GAccountSumOrderBy;
+
+  GOrderBy? get createdOn;
+  static Serializer<GAccountSumOrderBy> get serializer =>
+      _$gAccountSumOrderBySerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountSumOrderBy.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountSumOrderBy? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountSumOrderBy.serializer,
+        json,
+      );
+}
+
+abstract class GAccountVarianceOrderBy
+    implements Built<GAccountVarianceOrderBy, GAccountVarianceOrderByBuilder> {
+  GAccountVarianceOrderBy._();
+
+  factory GAccountVarianceOrderBy(
+          [void Function(GAccountVarianceOrderByBuilder b) updates]) =
+      _$GAccountVarianceOrderBy;
+
+  GOrderBy? get createdOn;
+  static Serializer<GAccountVarianceOrderBy> get serializer =>
+      _$gAccountVarianceOrderBySerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountVarianceOrderBy.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountVarianceOrderBy? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountVarianceOrderBy.serializer,
+        json,
+      );
+}
+
+abstract class GAccountVarPopOrderBy
+    implements Built<GAccountVarPopOrderBy, GAccountVarPopOrderByBuilder> {
+  GAccountVarPopOrderBy._();
+
+  factory GAccountVarPopOrderBy(
+          [void Function(GAccountVarPopOrderByBuilder b) updates]) =
+      _$GAccountVarPopOrderBy;
+
+  GOrderBy? get createdOn;
+  static Serializer<GAccountVarPopOrderBy> get serializer =>
+      _$gAccountVarPopOrderBySerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountVarPopOrderBy.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountVarPopOrderBy? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountVarPopOrderBy.serializer,
+        json,
+      );
+}
+
+abstract class GAccountVarSampOrderBy
+    implements Built<GAccountVarSampOrderBy, GAccountVarSampOrderByBuilder> {
+  GAccountVarSampOrderBy._();
+
+  factory GAccountVarSampOrderBy(
+          [void Function(GAccountVarSampOrderByBuilder b) updates]) =
+      _$GAccountVarSampOrderBy;
+
+  GOrderBy? get createdOn;
+  static Serializer<GAccountVarSampOrderBy> get serializer =>
+      _$gAccountVarSampOrderBySerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountVarSampOrderBy.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountVarSampOrderBy? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountVarSampOrderBy.serializer,
         json,
       );
 }
@@ -3962,13 +4171,13 @@ abstract class GExtrinsicStreamCursorValueInput
   String? get blockId;
   String? get callId;
   _i3.JsonObject? get error;
-  Gnumeric? get fee;
+  int? get fee;
   Gbytea? get hash;
   String? get id;
   int? get index;
   _i3.JsonObject? get signature;
   bool? get success;
-  Gnumeric? get tip;
+  int? get tip;
   int? get version;
   static Serializer<GExtrinsicStreamCursorValueInput> get serializer =>
       _$gExtrinsicStreamCursorValueInputSerializer;
@@ -5748,19 +5957,6 @@ abstract class GMembershipEventVarSampOrderBy
       );
 }
 
-abstract class Gnumeric implements Built<Gnumeric, GnumericBuilder> {
-  Gnumeric._();
-
-  factory Gnumeric([String? value]) =>
-      _$Gnumeric((b) => value != null ? (b..value = value) : b);
-
-  String get value;
-  @BuiltValueSerializer(custom: true)
-  static Serializer<Gnumeric> get serializer =>
-      _i2.DefaultScalarSerializer<Gnumeric>(
-          (Object serialized) => Gnumeric((serialized as String?)));
-}
-
 abstract class GNumericComparisonExp
     implements Built<GNumericComparisonExp, GNumericComparisonExpBuilder> {
   GNumericComparisonExp._();
@@ -5770,23 +5966,23 @@ abstract class GNumericComparisonExp
       _$GNumericComparisonExp;
 
   @BuiltValueField(wireName: '_eq')
-  Gnumeric? get G_eq;
+  int? get G_eq;
   @BuiltValueField(wireName: '_gt')
-  Gnumeric? get G_gt;
+  int? get G_gt;
   @BuiltValueField(wireName: '_gte')
-  Gnumeric? get G_gte;
+  int? get G_gte;
   @BuiltValueField(wireName: '_in')
-  BuiltList<Gnumeric>? get G_in;
+  BuiltList<int>? get G_in;
   @BuiltValueField(wireName: '_isNull')
   bool? get G_isNull;
   @BuiltValueField(wireName: '_lt')
-  Gnumeric? get G_lt;
+  int? get G_lt;
   @BuiltValueField(wireName: '_lte')
-  Gnumeric? get G_lte;
+  int? get G_lte;
   @BuiltValueField(wireName: '_neq')
-  Gnumeric? get G_neq;
+  int? get G_neq;
   @BuiltValueField(wireName: '_nin')
-  BuiltList<Gnumeric>? get G_nin;
+  BuiltList<int>? get G_nin;
   static Serializer<GNumericComparisonExp> get serializer =>
       _$gNumericComparisonExpSerializer;
 
@@ -7778,7 +7974,7 @@ abstract class GTransferStreamCursorValueInput
           [void Function(GTransferStreamCursorValueInputBuilder b) updates]) =
       _$GTransferStreamCursorValueInput;
 
-  Gnumeric? get amount;
+  int? get amount;
   int? get blockNumber;
   String? get commentId;
   String? get eventId;
@@ -8483,7 +8679,7 @@ abstract class GUdHistoryBoolExp
   GUdHistoryBoolExp? get G_not;
   @BuiltValueField(wireName: '_or')
   BuiltList<GUdHistoryBoolExp>? get G_or;
-  GIntComparisonExp? get amount;
+  GNumericComparisonExp? get amount;
   GIntComparisonExp? get blockNumber;
   GStringComparisonExp? get id;
   GIdentityBoolExp? get identity;
@@ -8989,8 +9185,8 @@ abstract class GUdReevalStreamCursorValueInput
   String? get eventId;
   String? get id;
   int? get membersCount;
-  Gnumeric? get monetaryMass;
-  Gnumeric? get newUdAmount;
+  int? get monetaryMass;
+  int? get newUdAmount;
   Gtimestamptz? get timestamp;
   static Serializer<GUdReevalStreamCursorValueInput> get serializer =>
       _$gUdReevalStreamCursorValueInputSerializer;
@@ -9149,12 +9345,12 @@ abstract class GUniversalDividendStreamCursorValueInput
       [void Function(GUniversalDividendStreamCursorValueInputBuilder b)
           updates]) = _$GUniversalDividendStreamCursorValueInput;
 
-  Gnumeric? get amount;
+  int? get amount;
   int? get blockNumber;
   String? get eventId;
   String? get id;
   int? get membersCount;
-  Gnumeric? get monetaryMass;
+  int? get monetaryMass;
   Gtimestamptz? get timestamp;
   static Serializer<GUniversalDividendStreamCursorValueInput> get serializer =>
       _$gUniversalDividendStreamCursorValueInputSerializer;

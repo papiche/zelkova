@@ -24,6 +24,7 @@ import '../../ui_helpers.dart';
 import '../card_drawer.dart';
 import 'fourth_tutorial.dart';
 import 'transaction_item.dart';
+import 'transactions_widget_error_widget.dart';
 
 class TransactionsAndBalanceWidget extends StatefulWidget {
   const TransactionsAndBalanceWidget(
@@ -331,6 +332,10 @@ class _TransactionsAndBalanceWidgetState
                           afterRetry: () => _refresh(),
                           afterCancel: () => _refresh());
                     },
+                    firstPageErrorIndicatorBuilder: (_) =>
+                        TransactionWidgetErrorWidget(
+                          onTryAgain: () => _pagingController.refresh(),
+                        ),
                     noItemsFoundIndicatorBuilder: (_) => Container()),
               ),
             PagedSliverList<String?, Transaction>(
@@ -355,6 +360,10 @@ class _TransactionsAndBalanceWidgetState
                                   : 0),
                           transaction: tx);
                     },
+                    firstPageErrorIndicatorBuilder: (_) =>
+                        TransactionWidgetErrorWidget(
+                          onTryAgain: () => _pagingController.refresh(),
+                        ),
                     noItemsFoundIndicatorBuilder: (_) => Padding(
                           padding: const EdgeInsets.all(20.0),
                           child: Align(

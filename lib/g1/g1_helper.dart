@@ -419,3 +419,5 @@ Uint8List decryptAes(Uint8List encryptedData, Uint8List key) {
       iv: encrypt.IV(Uint8List(16)));
   return Uint8List.fromList(decrypted);
 }
+
+const Duration defPolkadotTimeout = Duration(seconds: 10);

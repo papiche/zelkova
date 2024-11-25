@@ -1,6 +1,6 @@
 {
   "app_name": "Ğinkgo",
-  "credit_card_title": "Payer avec Ğ1",
+  "credit_card_title": "Payer en Ğ1",
   "g1_wallet": "Portefeuille Ğ1",
   "close": "FERMER",
   "bottom_nav_first": "Payer",
@@ -283,5 +283,13 @@
   "date_range_exceed": "La plage de dates ne peut pas dépasser {number} jours.",
   "ok": "OK",
   "market_analysis_report": "Rapport d'analyse du marché",
-  "analyze": "Analyse"
+  "analyze": "Analyse",
+  "contact_about_me": "Profile",
+  "contact_address": "Adresse physique",
+  "contact_socials": "Réseaux sociaux et sites web",
+  "info": "Info",
+  "total_received_sent": "Total achats et ventes",
+  "download_pdf": "Télécharger PDF",
+  "contacts_show_more": "Voir plus",
+  "contacts_show_less": "Voir moins"
 }

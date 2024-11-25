@@ -62,6 +62,9 @@ Future<TransactionState> transactionsV2Parser(
     ...issuedTransactions
   ];
 
+  allTransactions
+      .sort((Transaction a, Transaction b) => b.time.compareTo(a.time));
+
   return currentState.copyWith(
     balance: balance,
     transactions: allTransactions,
@@ -105,7 +108,7 @@ Future<List<Transaction>> _parseTransactions(
       );
       transactions.add(transaction);
     } catch (e, st) {
-      logger('Error parsing transaction $rawTx: $e, $st');
+      loggerDev('Error parsing transaction $rawTx', error: e, stackTrace: st);
       rethrow;
     }
   }

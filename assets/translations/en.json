@@ -314,5 +314,8 @@
   "qr_scanner_error": "An error occurred while scanning the QR code.",
   "transactions_error_title": "Something went wrong",
   "transactions_error_message": "We couldn't fetch your transactions. Please try again later.",
-  "transactions_error_try_again": "Try Again"
+  "transactions_error_try_again": "Try Again",
+  "tx_invalid": "The transaction could not be processed. Please check your data and try again",
+  "tx_dropped": "The transaction could not be completed. Please try again later",
+  "tx_usurped": "The transaction was replaced by another"
 }

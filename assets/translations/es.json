@@ -320,5 +320,8 @@
   "qr_scanner_error": "Ocurrió un error al escanear el código QR.",
   "transactions_error_title": "Algo salió mal",
   "transactions_error_message": "No se pudieron cargar las transacciones. Por favor, inténtalo de nuevo más tarde.",
-  "transactions_error_try_again": "Reintentar"
+  "transactions_error_try_again": "Reintentar",
+  "tx_invalid": "La transacción no se pudo procesar. Por favor, revisa los datos e inténtalo de nuevo",
+  "tx_dropped": "No se pudo completar la transacción. Por favor, inténtalo más tarde",
+  "tx_usurped": "Tu transacción fue reemplazada por otra"
 }

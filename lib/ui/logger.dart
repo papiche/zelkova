@@ -1,7 +1,10 @@
 // logs
 import 'package:easy_logger/easy_logger.dart';
+import 'package:logger/logger.dart';
 
 import 'ui_helpers.dart';
+
+final Logger log = Logger();
 
 final EasyLogger logger = EasyLogger(
   name: 'ginkgo',
@@ -19,8 +22,12 @@ final EasyLogger logger = EasyLogger(
   ],
 );
 
-void loggerDev(Object? message) {
+void loggerDev(Object? message, {Object? error, StackTrace? stackTrace}) {
   if (inDevelopment && message != null) {
-    logger(message);
+    if (error != null || stackTrace != null) {
+      log.e(message, error: error, stackTrace: stackTrace);
+    } else {
+      logger(message);
+    }
   }
 }

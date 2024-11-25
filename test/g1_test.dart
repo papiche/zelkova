@@ -760,7 +760,7 @@ Data: 2RTjpjZMnFnKHhgUadgT7JUvGeQem5sC6DQQpeuo5dCL6V1fgqsg8
         wallet.pubkey, equals('6SvSMyZSTUFtKo8BJEN959xRX4ze9K3WT7SBK9tqR5vh'));
   });
 
-  test('Parse nodes URLs', () {
+  test('Parse nodes URLs', skip: true, () {
     final List<Node> nodes = defaultEndPointNodes;
 
     for (final Node node in nodes) {

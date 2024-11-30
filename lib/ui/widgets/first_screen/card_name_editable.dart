@@ -252,19 +252,30 @@ class _CardNameEditableState extends State<CardNameEditable> {
     });
     try {
       if (_validate(newValue)) {
-        await createOrUpdateCesiumPlusUser(newValue);
-        SharedPreferencesHelper().setName(name: newValue, notify: false);
-        setState(() {
-          currentText = newValue;
-        });
-        if (!mounted) {
-          return;
+        final bool result = await createOrUpdateProfile(newValue);
+        if (!result) {
+          if (!mounted) {
+            return;
+          }
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(tr('card_name_changed_failed')),
+            ),
+          );
+        } else {
+          SharedPreferencesHelper().setName(name: newValue, notify: false);
+          setState(() {
+            currentText = newValue;
+          });
+          if (!mounted) {
+            return;
+          }
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(tr('card_name_changed')),
+            ),
+          );
         }
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(tr('card_name_changed')),
-          ),
-        );
       }
     } catch (e) {
       loggerDev(e.toString());
@@ -280,7 +291,7 @@ class _CardNameEditableState extends State<CardNameEditable> {
       _isSubmitting = true;
     });
     try {
-      await deleteCesiumPlusUser();
+      await deleteProfile();
       SharedPreferencesHelper().setName(name: '');
       setState(() {
         _controller.text = '';

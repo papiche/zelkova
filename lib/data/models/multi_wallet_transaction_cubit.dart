@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
@@ -154,9 +155,11 @@ class MultiWalletTransactionCubit
     bool success = false;
     final bool isG1 = appCubit.currency == Currency.G1;
 
+    final bool isConnected = await ConnectivityWidgetWrapperWrapper.isConnected;
+
     for (int attempt = 0; attempt < retries; attempt++) {
       txDataResult = await getHistoryAndBalance(pubKey,
-          pageSize: pageSize, cursor: cursor);
+          pageSize: pageSize, cursor: cursor, isConnected: isConnected);
       final Node node = txDataResult.item2;
       logger(
           'Loading transactions using $node (pageSize: $pageSize, cursor: $cursor) --------------------');
@@ -201,7 +204,7 @@ class MultiWalletTransactionCubit
       }
 
       // Is external, forget notifications
-      if (isExternal) {
+      if (isExternal || (!kIsWeb && Platform.isLinux)) {
         return currentModifiedState.transactions;
       }
 
@@ -211,7 +214,7 @@ class MultiWalletTransactionCubit
           'Last sent notification: ${currentModifiedState.latestSentNotification.toIso8601String()})}');
 
       logger(
-          '>>>>>>>>>>>>>>>>>>> Transactions: ${currentModifiedState.transactions.length}, balance: ${currentModifiedState.balance} wallets ${state.map.length}');
+          '>>>>>>>>>>>>>>>>>>> Transactions: ${currentModifiedState.transactions.length}, balance: ${currentModifiedState.balance} cursor: $cursor page size: $pageSize');
       for (final Transaction tx in currentModifiedState.transactions.reversed) {
         bool stateModified = false;
 
@@ -322,6 +325,12 @@ class MultiWalletTransactionCubit
         pendingMap[genTxKey(t)] = t;
       }
 
+      // log first pending
+      /*i f (newState.pendingTransactions.isNotEmpty) {
+        log.i(
+            'First pending transaction ${genTxKey(newState.pendingTransactions.first)}');
+      }*/
+
       // Adjust pending transactions in state
       // If waiting: re-add
       // If sent: don't add
@@ -331,11 +340,6 @@ class MultiWalletTransactionCubit
       //    - is old -> mark as failed
       //    - is not old --> re-add
       for (final Transaction pend in newState.pendingTransactions) {
-        /* if (pend.type == TransactionType.waitingNetwork) {
-          // Pending for manual retry
-          newPendingTxs.add(pend);
-          continue;
-        } */
         final Transaction? matchTx = txMap[genTxKey(pend)];
         if (matchTx != null) {
           // Found a match
@@ -378,6 +382,9 @@ class MultiWalletTransactionCubit
         }
       }
 
+      /* if (newState.transactions.isNotEmpty) {
+        log.i('First transaction ${genTxKey(newState.transactions.first)}');
+      }*/
       // Now that we have the pending, lets see the node retrieved txs
       for (final Transaction tx in newState.transactions) {
         if (pendingMap[genTxKey(tx)] != null &&

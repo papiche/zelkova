@@ -87,7 +87,7 @@ Future<List<Transaction>> _parseTransactions(
           (txData['from'] as Map<String, dynamic>)['id'] as String;
       final String to = (txData['to'] as Map<String, dynamic>)['id'] as String;
       final DateTime time = DateTime.parse(txData['timestamp'] as String);
-      final double amount = (txData['amount'] as num).toDouble();
+      double amount = (txData['amount'] as num).toDouble();
       final Map<String, dynamic>? commentRaw =
           txData['comment'] as Map<String, dynamic>?;
       final String? comment =
@@ -97,6 +97,10 @@ Future<List<Transaction>> _parseTransactions(
           getContactCache(simpleContact: Contact.withAddress(address: from));
       final Contact toContact =
           getContactCache(simpleContact: Contact.withAddress(address: to));
+
+      if (type == TransactionType.sent) {
+        amount = -amount;
+      }
 
       final Transaction transaction = Transaction(
         type: type,

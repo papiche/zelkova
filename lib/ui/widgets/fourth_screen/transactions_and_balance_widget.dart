@@ -71,14 +71,16 @@ class _TransactionsAndBalanceWidgetState
 
   @override
   void initState() {
-    _bloc = TransactionsBloc(
-        isExternal: widget.isExternalAccount, pubKey: widget.pubKey);
     appCubit = context.read<AppCubit>();
     transCubit = context.read<MultiWalletTransactionCubit>();
     utxoCubit = context.read<UtxoCubit>();
     _pagingController.addPageRequestListener((String? cursor) {
       _bloc.onPageRequestSink.add(cursor);
     });
+    _bloc = TransactionsBloc(
+        isExternal: widget.isExternalAccount,
+        pubKey: widget.pubKey,
+        isV2: appCubit.isV2());
     // We could've used StreamBuilder, but that would unnecessarily recreate
     // the entire [PagedSliverGrid] every time the state changes.
     // Instead, handling the subscription ourselves and updating only the
@@ -90,6 +92,10 @@ class _TransactionsAndBalanceWidgetState
         error: listingState.error,
         itemList: listingState.itemList,
       );
+    });
+    _pagingController.addPageRequestListener((String? cursor) {
+      loggerDev('Requesting new page with cursor: $cursor');
+      _bloc.onPageRequestSink.add(cursor);
     });
     _pagingController.addStatusListener((PagingStatus status) {
       if (status == PagingStatus.subsequentPageError) {
@@ -306,9 +312,7 @@ class _TransactionsAndBalanceWidgetState
       child: CustomScrollView(
           shrinkWrap: true,
           // scrollDirection: Axis.vertical,
-          physics: widget.isScrollEnabled
-              ? const AlwaysScrollableScrollPhysics()
-              : const NeverScrollableScrollPhysics(),
+          physics: const AlwaysScrollableScrollPhysics(),
           slivers: <Widget>[
             // Some widget before all,
             if (!widget.isExternalAccount)

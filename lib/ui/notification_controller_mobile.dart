@@ -1,3 +1,6 @@
+import 'dart:isolate';
+import 'dart:ui';
+
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
@@ -42,6 +45,17 @@ class NotificationController {
     initialAction = await AwesomeNotifications().getInitialNotificationAction();
   }
 
+  static ReceivePort? receivePort;
+  static Future<void> initializeIsolateReceivePort() async {
+    receivePort = ReceivePort('Notification action port in main isolate')
+      ..listen((dynamic silentData) =>
+          onActionReceivedImplementationMethod(silentData));
+
+    // This initialization only happens on main isolate
+    IsolateNameServer.registerPortWithName(
+        receivePort!.sendPort, 'notification_action_port');
+  }
+
   ///  *********************************************
   ///     NOTIFICATION EVENTS LISTENER
   ///  *********************************************
@@ -65,13 +79,34 @@ class NotificationController {
           'Message sent via notification input: "${receivedAction.buttonKeyInput}"');
       // await executeLongTaskInBackground();
     } else {
-      // FIXME (vjrj): go to transactions tab
-      GinkgoApp.navigatorKey.currentState?.pushNamedAndRemoveUntil(
-          '/notification-page',
-          (Route<dynamic> route) =>
-              (route.settings.name != '/notification-page') || route.isFirst,
-          arguments: receivedAction);
+      // this process is only necessary when you need to redirect the user
+      // to a new page or use a valid context, since parallel isolates do not
+      // have valid context, so you need redirect the execution to main isolate
+      if (receivePort == null) {
+        logger(
+            'onActionReceivedMethod was called inside a parallel dart isolate.');
+        final SendPort? sendPort =
+            IsolateNameServer.lookupPortByName('notification_action_port');
+
+        if (sendPort != null) {
+          logger('Redirecting the execution to main isolate process.');
+          sendPort.send(receivedAction);
+          return;
+        }
+      }
+
+      return onActionReceivedImplementationMethod(receivedAction);
     }
+  }
+
+  static Future<void> onActionReceivedImplementationMethod(
+      dynamic receivedAction) async {
+    // FIXME (vjrj): go to transactions tab
+    GinkgoApp.navigatorKey.currentState?.pushNamedAndRemoveUntil(
+        '/notification-page',
+        (Route<dynamic> route) =>
+            (route.settings.name != '/notification-page') || route.isFirst,
+        arguments: receivedAction);
   }
 
   ///  *********************************************

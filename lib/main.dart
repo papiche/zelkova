@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
-import 'package:cron/cron.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ferry_hive_store/ferry_hive_store.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
@@ -17,6 +16,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:l10n_esperanto/l10n_esperanto.dart';
 import 'package:lehttp_overrides/lehttp_overrides.dart';
+import 'package:once/once.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:pwa_install/pwa_install.dart';
@@ -246,7 +246,7 @@ void workManagerCallbackDispatcher() {
           '---------- Start fetchTransactionsTask Workmanager background task');
       switch (task) {
         case fetchWalletsTransactionsTask:
-          await NotificationController.initializeLocalNotifications();
+          // await NotificationController.initializeLocalNotifications();
           fetchTransactionsFromBackground();
           break;
         case Workmanager.iOSBackgroundTask:
@@ -369,13 +369,6 @@ class GinkgoApp extends StatefulWidget {
 }
 
 class _GinkgoAppState extends State<GinkgoApp> {
-  late ScheduledTask fetchTxsCronTask;
-  late ScheduledTask loadNodesCronTask;
-  late ScheduledTask clearErrorsCronTask;
-  late ScheduledTask clearCacheCronTask;
-  late ScheduledTask resizeAvatarsCronTask;
-  late ScheduledTask clearTxCubitCronTask;
-
   Future<void> _loadNodes() async {
     _printNodeStatus();
     for (final NodeType nodeType in NodeType.values) {
@@ -450,54 +443,44 @@ class _GinkgoAppState extends State<GinkgoApp> {
   }
 
   void initCronTask() {
-    // Schedule tasks using Cron
-    final Cron cron = Cron();
-
-    loadNodesCronTask = cron.schedule(Schedule.parse('0 * * * *'), () async {
+    Once.runHourly('load_nodes', callback: () async {
       final bool isConnected =
           await ConnectivityWidgetWrapperWrapper.isConnected;
-      if (!inDevelopment && isConnected) {
-        logger('========== Load nodes via cron');
+      if (isConnected) {
+        logger('Load nodes via once');
         _loadNodes();
       }
+    }, fallback: () {
+      _printNodeStatus(prefix: 'After once hourly fallback');
     });
-
-    clearErrorsCronTask = cron.schedule(Schedule.parse('0 0 * * *'), () {
-      logger('clearErrors via cron');
+    Once.runDaily('clear_errors', callback: () {
+      logger('clearErrors via once');
       NodeManager().cleanErrorStats();
     });
-
-    clearCacheCronTask = cron.schedule(Schedule.parse('0 0 * * *'), () {
-      logger('clear cache via cron');
+    Once.runDaily('clear_cache', callback: () {
+      logger('clear cache via once');
       ContactsCache().clear();
     });
-
-    resizeAvatarsCronTask = cron.schedule(Schedule.parse('0 0 * * *'), () {
-      logger('resize avatar via cron');
+    Once.runOnce('resize_avatars', callback: () {
+      logger('resize avatar via once');
       context.read<ContactsCubit>().resizeAvatars();
     });
-
-    clearTxCubitCronTask = cron.schedule(Schedule.parse('0 0 * * *'), () {
-      logger('clear tx cubit via cron');
+    Once.runDaily('clear_tx_cubit', callback: () {
+      logger('clear tx cubit via once');
       context.read<MultiWalletTransactionCubit>().clearState();
     });
-
-    fetchTxsCronTask = cron
-        .schedule(Schedule.parse(kReleaseMode ? '*/10 * * * *' : '*/5 * * * *'),
-            () async {
+    Once.runCustom('fetch_txs', callback: () {
       logger('---------- fetchTransactions via cron');
       // Disabled to check the back development
       // if (!inDevelopment) {
       fetchTransactions(context);
-      // }
-    });
+    }, duration: const Duration(minutes: 5));
   }
 
   @override
   void dispose() {
     ContactsCache().dispose();
     _disposeDeepLinkListener();
-    fetchTxsCronTask.cancel();
     if (!kIsWeb) {
       Workmanager().cancelAll();
     }
@@ -634,7 +617,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
       maxWidth:
           ResponsiveBreakpoints.of(context).largerThan(MOBILE) ? 960 : 480,
       backgroundColor: const Color(0xFFF5F5F5),
-      child:
+      child: /* widget! */
           BouncingScrollWrapper.builder(context, widget!, dragWithMouse: true),
     );
   }
@@ -693,7 +676,7 @@ Future<void> fetchTransactionsFromBackground([bool init = true]) async {
       }
       try {
         await initGetItAll();
-        await NotificationController.initializeLocalNotifications();
+        // await NotificationController.initializeLocalNotifications();
       } catch (e) {
         // We should try to do this better
         loggerDev(e.toString());

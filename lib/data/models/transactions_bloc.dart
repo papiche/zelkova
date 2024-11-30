@@ -14,7 +14,7 @@ class TransactionsBloc {
   TransactionsBloc(
       {this.isExternal = false,
       this.pubKey,
-      this.pageSize = 10,
+      this.pageSize = 20,
       required this.isV2}) {
     _onPageRequest.stream
         .flatMap(_fetchTransactionsList)

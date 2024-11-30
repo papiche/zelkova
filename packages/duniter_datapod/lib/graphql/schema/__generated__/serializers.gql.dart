@@ -7,6 +7,18 @@ import 'package:built_value/serializer.dart';
 import 'package:built_value/src/json_object_serializer.dart'
     show JsonObjectSerializer;
 import 'package:built_value/standard_json_plugin.dart' show StandardJsonPlugin;
+import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-mutations.data.gql.dart'
+    show
+        GDeleteProfileData,
+        GDeleteProfileData_deleteProfile,
+        GMigrateProfileData,
+        GMigrateProfileData_migrateProfile,
+        GUpdateProfileData,
+        GUpdateProfileData_updateProfile;
+import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-mutations.req.gql.dart'
+    show GDeleteProfileReq, GMigrateProfileReq, GUpdateProfileReq;
+import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-mutations.var.gql.dart'
+    show GDeleteProfileVars, GMigrateProfileVars, GUpdateProfileVars;
 import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-queries.data.gql.dart'
     show
         GGetProfileByAddressData,
@@ -63,6 +75,10 @@ final SerializersBuilder _serializersBuilder = _$serializers.toBuilder()
   ..add(JsonObjectSerializer())
   ..addPlugin(StandardJsonPlugin());
 @SerializersFor([
+  GDeleteProfileData,
+  GDeleteProfileData_deleteProfile,
+  GDeleteProfileReq,
+  GDeleteProfileVars,
   GGeolocInput,
   GGetProfileByAddressData,
   GGetProfileByAddressData_profiles,
@@ -77,6 +93,10 @@ final SerializersBuilder _serializersBuilder = _$serializers.toBuilder()
   GGetProfilesByAddressData_profiles,
   GGetProfilesByAddressReq,
   GGetProfilesByAddressVars,
+  GMigrateProfileData,
+  GMigrateProfileData_migrateProfile,
+  GMigrateProfileReq,
+  GMigrateProfileVars,
   GSearchProfileByTermData,
   GSearchProfileByTermData_profiles,
   GSearchProfileByTermReq,
@@ -87,6 +107,10 @@ final SerializersBuilder _serializersBuilder = _$serializers.toBuilder()
   GSearchProfilesVars,
   GSocialInput,
   GString_comparison_exp,
+  GUpdateProfileData,
+  GUpdateProfileData_updateProfile,
+  GUpdateProfileReq,
+  GUpdateProfileVars,
   Gcursor_ordering,
   Gjsonb_cast_exp,
   Gjsonb_comparison_exp,

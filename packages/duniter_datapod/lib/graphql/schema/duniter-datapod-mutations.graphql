@@ -1,0 +1,51 @@
+mutation DeleteProfile($address: String!, $hash: String!, $signature: String!) {
+    deleteProfile(address: $address, hash: $hash, signature: $signature)
+    {
+        success
+        message
+    }
+}
+
+mutation MigrateProfile(
+    $addressNew: String!,
+    $addressOld: String!,
+    $hash: String!,
+    $signature: String!
+) {
+    migrateProfile(
+        addressNew: $addressNew,
+        addressOld: $addressOld,
+        hash: $hash,
+        signature: $signature
+    ) {
+        success
+        message
+    }
+}
+
+mutation UpdateProfile(
+    $address: String!,
+    $avatarBase64: String,
+    $city: String,
+    $description: String,
+    $geoloc: GeolocInput,
+    $hash: String!,
+    $signature: String!,
+    $socials: [SocialInput!],
+    $title: String
+) {
+    updateProfile(
+        address: $address,
+        avatarBase64: $avatarBase64,
+        city: $city,
+        description: $description,
+        geoloc: $geoloc,
+        hash: $hash,
+        signature: $signature,
+        socials: $socials,
+        title: $title
+    ) {
+        success
+        message
+    }
+}

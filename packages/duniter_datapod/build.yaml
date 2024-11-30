@@ -4,6 +4,7 @@ targets:
       ferry_generator|graphql_builder:
         enabled: true
         options:
+          addTypename: true
           schema: duniter_datapod|lib/graphql/schema/duniter-datapod.schema.graphql
           type_overrides:
             jsonb:
@@ -12,6 +13,7 @@ targets:
       ferry_generator|serializer_builder:
         enabled: true
         options:
+          addTypename: true
           schema: duniter_datapod|lib/graphql/schema/duniter-datapod.schema.graphql
           type_overrides:
             jsonb:

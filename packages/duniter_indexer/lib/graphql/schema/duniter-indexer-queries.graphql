@@ -19,6 +19,8 @@ query AccountsByNameOrPk($pattern: String) {
     }
 }
 
+# createdOn: "Block number of account creation", if account is created multiple times, this is the first creation block
+
 query AccountsByName($pattern: String) {
     identity(
         where:

@@ -8,6 +8,10 @@ part of 'serializers.gql.dart';
 
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(FetchPolicy.serializer)
+      ..add(GDeleteProfileData.serializer)
+      ..add(GDeleteProfileData_deleteProfile.serializer)
+      ..add(GDeleteProfileReq.serializer)
+      ..add(GDeleteProfileVars.serializer)
       ..add(GGeolocInput.serializer)
       ..add(GGetProfileByAddressData.serializer)
       ..add(GGetProfileByAddressData_profiles.serializer)
@@ -22,6 +26,10 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GGetProfilesByAddressData_profiles.serializer)
       ..add(GGetProfilesByAddressReq.serializer)
       ..add(GGetProfilesByAddressVars.serializer)
+      ..add(GMigrateProfileData.serializer)
+      ..add(GMigrateProfileData_migrateProfile.serializer)
+      ..add(GMigrateProfileReq.serializer)
+      ..add(GMigrateProfileVars.serializer)
       ..add(GSearchProfileByTermData.serializer)
       ..add(GSearchProfileByTermData_profiles.serializer)
       ..add(GSearchProfileByTermReq.serializer)
@@ -32,6 +40,10 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GSearchProfilesVars.serializer)
       ..add(GSocialInput.serializer)
       ..add(GString_comparison_exp.serializer)
+      ..add(GUpdateProfileData.serializer)
+      ..add(GUpdateProfileData_updateProfile.serializer)
+      ..add(GUpdateProfileReq.serializer)
+      ..add(GUpdateProfileVars.serializer)
       ..add(Gcursor_ordering.serializer)
       ..add(Gjsonb_cast_exp.serializer)
       ..add(Gjsonb_comparison_exp.serializer)
@@ -61,6 +73,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(
               BuiltList, const [const FullType(GSearchProfilesData_profiles)]),
           () => new ListBuilder<GSearchProfilesData_profiles>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(GSocialInput)]),
+          () => new ListBuilder<GSocialInput>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Gpoint)]),
           () => new ListBuilder<Gpoint>())

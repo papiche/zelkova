@@ -242,6 +242,7 @@
   "accept": "ACEPTAR",
   "incorrect_passwords": "Contraseñas incorrectas",
   "card_name_changed": "El nombre de tu tarjeta ha sido actualizado. Recuerda que este nombre es público y permite a otr@s encontrarte",
+  "card_name_changed_failed": "No se pudo actualizar el nombre de tu tarjeta",
   "issueCreatedTitle": "Incidencia creada",
   "issueCreatedSuccessfully": "Una incidencia ha sido creada con tu problema. Guarda el enlace de la incidencia para seguir su progreso. ¡Gracias!",
   "viewIssue": "Ver la incidencia",
@@ -323,5 +324,9 @@
   "transactions_error_try_again": "Reintentar",
   "tx_invalid": "La transacción no se pudo procesar. Por favor, revisa los datos e inténtalo de nuevo",
   "tx_dropped": "No se pudo completar la transacción. Por favor, inténtalo más tarde",
-  "tx_usurped": "Tu transacción fue reemplazada por otra"
+  "tx_usurped": "Tu transacción fue reemplazada por otra",
+  "tx_processing": "Procesando pago...",
+  "tx_ready": "La transacción está lista para ser enviada",
+  "tx_in_block": "La transacción ha sido incluida en un bloque",
+  "tx_broadcast": "La transacción ha sido transmitida a la red"
 }

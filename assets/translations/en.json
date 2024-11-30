@@ -207,6 +207,7 @@
   "payment_waiting_internet_desc_beta": "Retry your payment when internet is back",
   "your_name_here": "Name this card",
   "card_name_changed": "Your card name has been updated. Please note that this name is public and allows others to find you",
+  "card_name_changed_failed": "Failed to update your card name",
   "copied_to_clipboard": "Copied to clipboard",
   "pay_with_nfc_tooltip": "To receive a payment, simply bring this device close to the other wallet with NFC activated.",
   "import_wallet_from_clipboard": "Import Wallet from Clipboard",
@@ -317,5 +318,8 @@
   "transactions_error_try_again": "Try Again",
   "tx_invalid": "The transaction could not be processed. Please check your data and try again",
   "tx_dropped": "The transaction could not be completed. Please try again later",
-  "tx_usurped": "The transaction was replaced by another"
+  "tx_usurped": "The transaction was replaced by another",
+  "tx_ready": "The transaction is ready to be processed",
+  "tx_in_block": "The transaction has been included in a block",
+  "tx_broadcast": "The transaction has been broadcasted to the network"
 }

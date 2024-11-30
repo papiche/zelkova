@@ -4,6 +4,8 @@ import 'package:durt/durt.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sn_progress_dialog/options/completed.dart';
+import 'package:sn_progress_dialog/progress_dialog.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../../data/models/contact.dart';
@@ -23,6 +25,7 @@ import '../data/models/utxo.dart';
 import '../data/models/utxo_cubit.dart';
 import '../g1/currency.dart';
 import '../g1/g1_helper.dart';
+import '../g1/pay_result.dart';
 import 'contacts_cache.dart';
 import 'logger.dart';
 import 'ui_helpers.dart';
@@ -125,52 +128,92 @@ Future<bool> payWithRetry(
                   message: 'Error retrieving payment data', node: triedNode);
             }
           }
-
           final Transaction pending = tx.copyWith(
               debugInfo:
                   'Node used: ${result != null && result.node != null ? result.node!.url : 'unknown'}');
-          if (result.message == 'success') {
-            paymentCubit.sent();
-            // ignore: use_build_context_synchronously
-            if (!context.mounted) {
-              return true;
-            }
-            showAlertDialog(context, tr('payment_successful'),
-                tr('payment_successful_desc'));
-            if (!isRetry) {
-              // Add here the transaction to the pending list (so we can check it the tx is confirmed)
-              txCubit.addPendingTransaction(pending);
-            } else {
-              // Update the previously failed tx with an update time and type pending
-              txCubit.updatePendingTransaction(
-                  pending.copyWith(type: TransactionType.pending));
-            }
-            context.read<BottomNavCubit>().updateIndex(3);
-            return true;
-          } else {
-            paymentCubit.pendingPayment();
+          if (result.progressStream != null) {
             if (!context.mounted) {
               return false;
             }
-            final bool failedWithoutBalance =
-                result.message == 'insufficient balance' ||
-                    result.message == 'Insufficient balance in your wallet';
-            showPayError(
-                context: context,
-                desc: tr('payment_error_desc',
-                    namedArgs: <String, String>{'error': tr(result.message)}),
-                increaseErrors: !failedWithoutBalance,
-                node: result.node);
-            if (!isRetry) {
-              txCubit.insertPendingTransaction(
-                  pending.copyWith(type: TransactionType.failed));
+            final ProgressDialog pd = ProgressDialog(context: context);
+            pd.show(
+              progressType: ProgressType.valuable,
+              msg: tr('tx_processing'),
+              hideValue: true,
+              progressBgColor: Colors.white70,
+              barrierDismissible: true,
+              completed: Completed(),
+            );
+            result.progressStream!.listen(
+              (String progressMessage) {
+                pd.update(msg: progressMessage);
+              },
+              onDone: () async {
+                await Future<dynamic>.delayed(
+                    const Duration(milliseconds: 1000));
+                pd.close();
+                if (!context.mounted) {
+                  return;
+                }
+                context.read<BottomNavCubit>().updateIndex(3);
+              },
+              onError: (dynamic error) {
+                pd.close();
+                if (!context.mounted) {
+                  return;
+                }
+                _addPending(isRetry, txCubit, pending, context);
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: Text(tr('payment_error')),
+                    content: Text(error is String ? error : 'Unknown error'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: Text(tr('accept')),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          } else {
+            if (result.message == 'success') {
+              paymentCubit.sent();
+              // ignore: use_build_context_synchronously
+              if (!context.mounted) {
+                return true;
+              }
+              showAlertDialog(context, tr('payment_successful'),
+                  tr('payment_successful_desc'));
+              if (!isRetry) {
+                // Add here the transaction to the pending list (so we can check it the tx is confirmed)
+                txCubit.addPendingTransaction(pending);
+              } else {
+                // Update the previously failed tx with an update time and type pending
+                txCubit.updatePendingTransaction(
+                    pending.copyWith(type: TransactionType.pending));
+              }
               context.read<BottomNavCubit>().updateIndex(3);
+              return true;
             } else {
-              // Update the previously failed tx with an update time and type pending
-              txCubit.updatePendingTransaction(
-                  pending.copyWith(type: TransactionType.failed));
+              paymentCubit.pendingPayment();
+              if (!context.mounted) {
+                return false;
+              }
+              final bool failedWithoutBalance =
+                  result.message == 'insufficient balance' ||
+                      result.message == 'Insufficient balance in your wallet';
+              showPayError(
+                  context: context,
+                  desc: tr('payment_error_desc',
+                      namedArgs: <String, String>{'error': tr(result.message)}),
+                  increaseErrors: !failedWithoutBalance,
+                  node: result.node);
+              _addPending(isRetry, txCubit, pending, context);
+              return false;
             }
-            return false;
           }
         }
       }
@@ -185,6 +228,19 @@ Future<bool> payWithRetry(
     return false;
   }
   return true;
+}
+
+void _addPending(bool isRetry, MultiWalletTransactionCubit txCubit,
+    Transaction pending, BuildContext context) {
+  if (!isRetry) {
+    txCubit.insertPendingTransaction(
+        pending.copyWith(type: TransactionType.failed));
+    context.read<BottomNavCubit>().updateIndex(3);
+  } else {
+    // Update the previously failed tx with an update time and type pending
+    txCubit.updatePendingTransaction(
+        pending.copyWith(type: TransactionType.failed));
+  }
 }
 
 bool weHaveBalance(BuildContext context, double amount) {

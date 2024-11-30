@@ -9,6 +9,7 @@ import '../../../data/models/transaction_state.dart';
 import '../../../g1/api.dart';
 import '../../../g1/transaction_v1_parser.dart';
 import '../../ui_helpers.dart';
+import '../connectivity_widget_wrapper_wrapper.dart';
 import '../fourth_screen/transaction_item.dart';
 
 class SimpleTransactionsPanel extends StatefulWidget {
@@ -62,9 +63,13 @@ class _SimpleTransactionsPanelState extends State<SimpleTransactionsPanel> {
   }
 
   Future<void> _fetchTransactions() async {
+    final bool isConnected = await ConnectivityWidgetWrapperWrapper.isConnected;
     final Tuple2<Map<String, dynamic>?, Node> txDataResult =
         await getHistoryAndBalanceV1(widget.contact.pubKey,
-            pageSize: widget.pageSize, from: widget.from, to: widget.to);
+            pageSize: widget.pageSize,
+            from: widget.from,
+            to: widget.to,
+            isConnected: isConnected);
 
     if (txDataResult.item1 == null) {
       return;

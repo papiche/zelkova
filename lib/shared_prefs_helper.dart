@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:durt/durt.dart';
 import 'package:flutter/foundation.dart';
+import 'package:polkadart_keyring/polkadart_keyring.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'data/models/cesium_card.dart';
@@ -201,5 +202,11 @@ class SharedPreferencesHelper with ChangeNotifier {
   bool isG1nkgoCard([CesiumCard? otherCard]) {
     final CesiumCard card = otherCard ?? cesiumCards[getCurrentWalletIndex()];
     return card.seed.isNotEmpty;
+  }
+
+  Future<KeyPair> getKeyPair() async {
+    final CesiumWallet walletV1 = await getWallet();
+    final KeyPair kp = KeyPair.ed25519.fromSeed(walletV1.seed);
+    return kp;
   }
 }

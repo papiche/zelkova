@@ -17,6 +17,7 @@ import '../../pay_helper.dart';
 import '../../ui_helpers.dart';
 import '../contact_menu.dart';
 import '../contacts_actions.dart';
+import 'transaction_item_time.dart';
 
 class TransactionListItem extends StatelessWidget {
   TransactionListItem(
@@ -368,21 +369,10 @@ class TransactionListItem extends StatelessWidget {
                         ],
                       )),
                       const SizedBox(height: 4.0),
-                      LayoutBuilder(
-                          builder: (BuildContext context,
-                                  BoxConstraints constraints) =>
-                              Tooltip(
-                                  message: humanizeTimeFull(
-                                      locale: currentLocale(context),
-                                      utcDateTime: transaction.time),
-                                  child: Text(
-                                    humanizeTime(transaction.time,
-                                        currentLocale(context))!,
-                                    style: const TextStyle(
-                                      fontSize: 12.0,
-                                      color: grey,
-                                    ),
-                                  ))),
+                      TransactionItemTime(
+                        transactionTime: transaction.time,
+                        locale: currentLocale(context),
+                      ),
                     ],
                   ),
                 ))));

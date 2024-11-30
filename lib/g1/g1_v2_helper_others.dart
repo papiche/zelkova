@@ -29,6 +29,7 @@ import '../generated/gdev/types/primitive_types/h256.dart';
 import '../generated/gdev/types/sp_runtime/multiaddress/multi_address.dart';
 import '../shared_prefs_helper.dart';
 import '../ui/logger.dart';
+import '../ui/ui_helpers.dart';
 import 'g1_helper.dart';
 import 'pay_result.dart';
 
@@ -211,7 +212,9 @@ String formatPubkey(String value) {
 
 Future<BigInt?> getBalanceV2(
     {required String address, Duration timeout = defPolkadotTimeout}) async {
-  for (final Node node in NodeManager().getBestNodes(NodeType.endpoint)) {
+  final nodes = NodeManager().getBestNodes(NodeType.endpoint);
+  nodes.shuffle();
+  for (final Node node in nodes) {
     try {
       final Address account = Address.decode(address);
       final Provider polkadot = Provider.fromUri(ensurePortInWsUrl(node.url));
@@ -335,13 +338,15 @@ Future<PayResult> payV2({
   final Node node = n.first;
 
   final PayResult result = PayResult(
-    message: tr('Transaction in progress...'),
+    message: tr('tx_processing'),
     node: node,
     progressStream: progressController.stream,
   );
 
   try {
-    progressController.add(tr('Connecting to node ${node.url}...'));
+    if (inDevelopment) {
+      progressController.add('Connecting to node ${node.url}...');
+    }
 
     final Provider provider = Provider.fromUri(ensurePortInWsUrl(node.url));
     final Gdev polkadot = Gdev(provider);
@@ -355,7 +360,9 @@ Future<PayResult> payV2({
     final int nonce =
         await polkadot.rpc.system.accountNextIndex(wallet.address);
 
-    progressController.add(tr('Building transaction...'));
+    if (inDevelopment) {
+      progressController.add('Building transaction...');
+    }
 
     final Id multiAddress =
         const $MultiAddress().id(Address.decode(addresses.first).pubkey);

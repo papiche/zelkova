@@ -24,19 +24,17 @@ class PayForm extends StatefulWidget {
 }
 
 class _PayFormState extends State<PayForm> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>(debugLabel: 'PayForm');
+  final GlobalKey<FormState> _formKey =
+      GlobalKey<FormState>(debugLabel: 'PayForm');
   final GlobalKey<FormFieldState<String>> _formCommentKey =
       GlobalKey<FormFieldState<String>>();
   final TextEditingController _commentController = TextEditingController();
   final ValueNotifier<String> _feedbackNotifier = ValueNotifier<String>('');
-  final StreamController<String> paymentResultsStreamController =
-      StreamController<String>.broadcast();
 
   @override
   void dispose() {
     _commentController.dispose();
     _feedbackNotifier.dispose();
-    paymentResultsStreamController.close();
     super.dispose();
   }
 

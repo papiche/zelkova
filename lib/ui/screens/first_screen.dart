@@ -189,8 +189,12 @@ class _FirstScreenState extends State<FirstScreen> {
                     if (state.status == PaymentStatus.sending)
                       Container(
                         color: Colors.black.withOpacity(0.5),
-                        child: const Center(
-                          child: CircularProgressIndicator(),
+                        child: Center(
+                          child: !context.read<AppCubit>().isV2()
+                              ? const CircularProgressIndicator()
+                              :
+                              // Nothing
+                              const SizedBox.shrink(),
                         ),
                       ),
                   ]));

@@ -1,7 +1,12 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/json_object.dart';
 import 'package:duniter_datapod/duniter_datapod_client.dart';
+import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-mutations.data.gql.dart';
+import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-mutations.req.gql.dart';
+import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-mutations.var.gql.dart';
 import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-queries.data.gql.dart';
 import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-queries.req.gql.dart';
 import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-queries.var.gql.dart';
@@ -14,15 +19,19 @@ import 'package:ferry/ferry.dart' as ferry;
 import 'package:ferry_hive_store/ferry_hive_store.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:polkadart/scale_codec.dart';
+import 'package:polkadart_keyring/polkadart_keyring.dart';
 
 import '../data/models/contact.dart';
 import '../data/models/lat_lng_parse.dart';
 import '../data/models/node.dart';
 import '../data/models/node_manager.dart';
 import '../data/models/node_type.dart';
+import '../shared_prefs_helper.dart';
 import '../ui/contacts_cache.dart';
 import '../ui/logger.dart';
 import '../ui/ui_helpers.dart';
+import 'api.dart';
 import 'g1_helper.dart';
 import 'g1_v2_helper.dart';
 
@@ -123,6 +132,7 @@ Future<List<Contact>> searchWotV2(String searchPatternRaw) async {
         loggerDev('Searching wot by name');
         final GAccountsByNameReq req = GAccountsByNameReq(
             (GAccountsByNameReqBuilder b) => b..vars.pattern = searchPattern);
+        // Warn: We are caching results in the hive store
         final ferry.Client client = await initDuniterIndexerClient(
             node.url, GetIt.instance<HiveStore>());
 
@@ -338,4 +348,100 @@ Future<List<Contact>> searchProfilesV2({
   }
   loggerDev('Contacts not found in searchProfilesV2');
   return contacts;
+}
+
+Future<bool> createOrUpdateProfileV2(String name) async {
+  final KeyPair kp = await SharedPreferencesHelper().getKeyPair();
+  final Map<String, dynamic> message = <String, dynamic>{
+    'address': kp.address,
+    'title': name
+  };
+  final String hash = calculateHash(jsonEncode(message));
+  final String signature =
+      encodeHex(kp.sign(Uint8List.fromList(hash.codeUnits)));
+  return updateProfileV2(
+      address: kp.address, hash: hash, signature: signature, title: name);
+}
+
+Future<bool> updateProfileV2(
+    {required String address,
+    String? avatarBase64,
+    String? city,
+    String? description,
+    GGeolocInputBuilder? geoloc,
+    ListBuilder<GSocialInput>? socials,
+    required String hash,
+    required String signature,
+    String? title}) async {
+  for (final Node node
+      in NodeManager().getBestNodes(NodeType.datapodEndpoint)) {
+    loggerDev('Updating profile in node ${node.url}');
+    try {
+      final ferry.Client client =
+          await initDuniterDatapodClient(node.url, GetIt.instance<HiveStore>());
+      final GUpdateProfileReq request =
+          GUpdateProfileReq((GUpdateProfileReqBuilder b) => b
+            ..vars.address = address
+            ..vars.avatarBase64 = avatarBase64
+            ..vars.city = city
+            ..vars.description = description
+            ..vars.geoloc = geoloc
+            ..vars.hash = hash
+            ..vars.signature = signature
+            ..vars.socials = socials
+            ..vars.title = title);
+
+      final ferry.OperationResponse<GUpdateProfileData, GUpdateProfileVars>
+          response = await client.request(request).first;
+
+      if (response.hasErrors) {
+        if (response.graphqlErrors != null) {
+          log.e('Error updating profile', error: response.graphqlErrors);
+        }
+        if (response.linkException != null) {
+          log.e('Error updating profile', error: response.linkException);
+        }
+        continue;
+      } else {
+        loggerDev('Profile updated successfully: ${response.data}');
+        return true;
+      }
+    } catch (e) {
+      log.e('Error updating profile in node ${node.url}', error: e);
+    }
+  }
+  return false;
+}
+
+Future<bool> deleteProfileV2() async {
+  final KeyPair kp = await SharedPreferencesHelper().getKeyPair();
+  final Map<String, dynamic> message = <String, dynamic>{'address': kp.address};
+  final String hash = calculateHash(jsonEncode(message));
+  final String signature =
+      encodeHex(kp.sign(Uint8List.fromList(hash.codeUnits)));
+  for (final Node node
+      in NodeManager().getBestNodes(NodeType.datapodEndpoint)) {
+    loggerDev('Updating profile in node ${node.url}');
+    try {
+      final GDeleteProfileReq request =
+          GDeleteProfileReq((GDeleteProfileReqBuilder b) => b
+            ..vars.address = kp.address
+            ..vars.hash = hash
+            ..vars.signature = signature);
+      final ferry.Client client =
+          await initDuniterDatapodClient(node.url, GetIt.instance<HiveStore>());
+      final ferry.OperationResponse<GDeleteProfileData, GDeleteProfileVars>
+          response = await client.request(request).first;
+
+      if (response.hasErrors) {
+        log.e('Error deleting profile', error: response.graphqlErrors);
+        return false;
+      } else {
+        return true;
+      }
+    } catch (e) {
+      log.e('Error updating profile in node ${node.url}', error: e);
+    }
+  }
+  return false;
 }

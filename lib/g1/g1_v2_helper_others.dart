@@ -9,6 +9,7 @@ import 'package:durt/durt.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fast_base58/fast_base58.dart';
 import 'package:ferry/ferry.dart' as ferry;
+import 'package:ferry/ferry.dart';
 import 'package:ferry_hive_store/ferry_hive_store.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pointycastle/export.dart';
@@ -28,8 +29,8 @@ import '../generated/gdev/types/primitive_types/h256.dart';
 import '../generated/gdev/types/sp_runtime/multiaddress/multi_address.dart';
 import '../shared_prefs_helper.dart';
 import '../ui/logger.dart';
-import 'api.dart';
 import 'g1_helper.dart';
+import 'pay_result.dart';
 
 // From:
 // https://polkadot.js.org/docs/util-crypto/examples/validate-address/
@@ -231,12 +232,12 @@ Future<BigInt?> getBalanceV2(
 }
 
 Future<tp.Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalanceV2(
-  String pubKeyRaw, {
-  int? pageSize = 10,
-  int? from,
-  int? to,
-  String? cursor,
-}) async {
+    String pubKeyRaw,
+    {int? pageSize = 10,
+    int? from,
+    int? to,
+    String? cursor,
+    required bool isConnected}) async {
   final String address = addressFromV1PubkeyFaiSafe(pubKeyRaw);
 
   final BigInt? balance = await getBalanceV2(address: address);
@@ -250,6 +251,8 @@ Future<tp.Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalanceV2(
 
   for (final Node node in NodeManager().getBestNodes(NodeType.duniterIndexer)) {
     try {
+      // Force for testing
+      // node = Node(url: 'https://squid.gdev.coinduf.eu/v1/graphql');
       final ferry.Client client =
           await initDuniterIndexerClient(node.url, GetIt.instance<HiveStore>());
 
@@ -257,9 +260,11 @@ Future<tp.Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalanceV2(
 
       final GGetHistoryAndBalanceReq request =
           GGetHistoryAndBalanceReq((GGetHistoryAndBalanceReqBuilder b) => b
+            ..fetchPolicy =
+                isConnected ? FetchPolicy.NetworkOnly : FetchPolicy.CacheFirst
             ..vars.accountId = address
             ..vars.limit = pageSize
-            ..vars.offset = cursor != null ? int.parse(cursor) : 0);
+            ..vars.offset = int.parse(cursor ?? '0'));
 
       final ferry.OperationResponse<GGetHistoryAndBalanceData,
               GGetHistoryAndBalanceVars> response =
@@ -304,144 +309,134 @@ Future<PayResult> payV2({
   String? comment,
 }) async {
   final CesiumWallet walletV1 = await SharedPreferencesHelper().getWallet();
-
   final KeyPair wallet = KeyPair.ed25519.fromSeed(walletV1.seed);
 
-  final String from = addressFromV1Pubkey(walletV1.pubkey);
+  // final String from = addressFromV1Pubkey(walletV1.pubkey);
   final List<String> addresses = <String>[];
+  final StreamController<String> progressController =
+      StreamController<String>();
+
   for (final String dest in to) {
     try {
       addresses.add(addressFromV1PubkeyFaiSafe(dest));
     } catch (e) {
-      loggerDev('Error converting pubkey $dest to address: $e');
-      rethrow;
-    }
-  }
-
-  for (final Node node in NodeManager().getBestNodes(NodeType.endpoint)) {
-    try {
-      loggerDev(
-          'Starting payment from $from to ${addresses.join(', ')} for a total of $amount');
-
-      final Provider provider = Provider.fromUri(ensurePortInWsUrl(node.url));
-      final Gdev polkadot = Gdev(provider);
-
-      final RuntimeVersion runtimeVersion =
-          await polkadot.rpc.state.getRuntimeVersion();
-      final int currentBlockNumber = (await polkadot.query.system.number()) - 1;
-      final H256 currentBlockHash =
-          await polkadot.query.system.blockHash(currentBlockNumber);
-      final H256 genesisHash = await polkadot.query.system.blockHash(0);
-      final int nonce =
-          await polkadot.rpc.system.accountNextIndex(wallet.address);
-
-      final Id multiAddress =
-          const $MultiAddress().id(Address.decode(addresses.first).pubkey);
-      final RuntimeCall transferCall = polkadot.tx.balances.transferKeepAlive(
-          dest: multiAddress, value: BigInt.from(amount * 100));
-      final Uint8List encodedCall = transferCall.encode();
-
-      final Uint8List payload = SigningPayload(
-              method: encodedCall,
-              specVersion: runtimeVersion.specVersion,
-              transactionVersion: runtimeVersion.transactionVersion,
-              genesisHash: encodeHex(genesisHash),
-              blockHash: encodeHex(currentBlockHash),
-              blockNumber: currentBlockNumber,
-              eraPeriod: 64,
-              nonce: nonce,
-              tip: 0)
-          .encode(polkadot.registry);
-
-      final Uint8List signature = wallet.sign(payload);
-      final Uint8List extrinsic = ExtrinsicPayload(
-        signer: wallet.bytes(),
-        method: encodedCall,
-        signature: signature,
-        eraPeriod: 64,
-        blockNumber: currentBlockNumber,
-        nonce: nonce,
-        tip: 0,
-      ).encode(polkadot.registry, SignatureType.ed25519);
-
-      final AuthorApi<Provider> author = AuthorApi<Provider>(provider);
-      final Completer<PayResult> completer = Completer<PayResult>();
-
-      final StreamSubscription<ExtrinsicStatus> subscription =
-          await author.submitAndWatchExtrinsic(
-        extrinsic,
-        (ExtrinsicStatus data) {
-          loggerDev('${data.type} ${data.value}');
-          switch (data.type) {
-            case 'finalized':
-              loggerDev('The transaction has been included in the block.');
-              completer.complete(PayResult(
-                message: 'success',
-                node: node,
-              ));
-              break;
-
-            case 'dropped':
-              loggerDev(tr('tx_dropped'));
-              completer.complete(PayResult(
-                message: tr('tx_dropped'),
-                node: node,
-              ));
-              break;
-
-            case 'invalid':
-              loggerDev(tr('tx_invalid'));
-              completer.complete(PayResult(
-                message: tr('tx_invalid'),
-                node: node,
-              ));
-              break;
-
-            case 'usurped':
-              loggerDev(tr('tx_usurped'));
-              completer.complete(PayResult(
-                message: tr('tx_usurped'),
-                node: node,
-              ));
-              break;
-
-            case 'broadcast':
-              loggerDev('The transaction has been sent to the network.');
-              break;
-
-            case 'inBlock':
-              loggerDev('The transaction is in block.');
-              break;
-
-            case 'ready':
-              loggerDev('The transaction is ready to be processed.');
-              break;
-
-            case 'future':
-              loggerDev('The transaction is waiting to be processed.');
-              break;
-
-            default:
-              loggerDev('Unhandled status: ${data.type}');
-              break;
-          }
-        },
+      progressController
+          .add(tr('Error converting pubkey $dest to address: $e'));
+      progressController.close();
+      return PayResult(
+        message: tr('Error converting pubkey $dest to address: $e'),
+        progressStream: progressController.stream,
       );
-
-      completer.future.whenComplete(() {
-        subscription.cancel();
-      });
-
-      return completer.future;
-    } catch (e) {
-      loggerDev(
-          'Error in payment for ${addresses.join(', ')} in node ${node.url}: $e');
     }
   }
 
-  return PayResult(
-    message: tr('Payment failed on all available nodes.'),
+  final List<Node> n = NodeManager().getBestNodes(NodeType.endpoint);
+  n.shuffle();
+  final Node node = n.first;
+
+  final PayResult result = PayResult(
+    message: tr('Transaction in progress...'),
+    node: node,
+    progressStream: progressController.stream,
   );
+
+  try {
+    progressController.add(tr('Connecting to node ${node.url}...'));
+
+    final Provider provider = Provider.fromUri(ensurePortInWsUrl(node.url));
+    final Gdev polkadot = Gdev(provider);
+
+    final RuntimeVersion runtimeVersion =
+        await polkadot.rpc.state.getRuntimeVersion();
+    final int currentBlockNumber = (await polkadot.query.system.number()) - 1;
+    final H256 currentBlockHash =
+        await polkadot.query.system.blockHash(currentBlockNumber);
+    final H256 genesisHash = await polkadot.query.system.blockHash(0);
+    final int nonce =
+        await polkadot.rpc.system.accountNextIndex(wallet.address);
+
+    progressController.add(tr('Building transaction...'));
+
+    final Id multiAddress =
+        const $MultiAddress().id(Address.decode(addresses.first).pubkey);
+    final RuntimeCall transferCall = polkadot.tx.balances.transferKeepAlive(
+        dest: multiAddress, value: BigInt.from(amount * 100));
+    final Uint8List encodedCall = transferCall.encode();
+
+    final Uint8List payload = SigningPayload(
+            method: encodedCall,
+            specVersion: runtimeVersion.specVersion,
+            transactionVersion: runtimeVersion.transactionVersion,
+            genesisHash: encodeHex(genesisHash),
+            blockHash: encodeHex(currentBlockHash),
+            blockNumber: currentBlockNumber,
+            eraPeriod: 64,
+            nonce: nonce,
+            tip: 0)
+        .encode(polkadot.registry);
+
+    final Uint8List signature = wallet.sign(payload);
+    final Uint8List extrinsic = ExtrinsicPayload(
+      signer: wallet.bytes(),
+      method: encodedCall,
+      signature: signature,
+      eraPeriod: 64,
+      blockNumber: currentBlockNumber,
+      nonce: nonce,
+      tip: 0,
+    ).encode(polkadot.registry, SignatureType.ed25519);
+
+    progressController.add(tr('Submitting transaction...'));
+
+    final AuthorApi<Provider> author = AuthorApi<Provider>(provider);
+
+    await author.submitAndWatchExtrinsic(
+      extrinsic,
+      (ExtrinsicStatus data) {
+        switch (data.type) {
+          case 'finalized':
+            progressController.add(tr('payment_successful'));
+            progressController.close();
+            break;
+
+          case 'dropped':
+            progressController.add(tr('tx_dropped'));
+            progressController.close();
+            break;
+          case 'invalid':
+            progressController.add(tr('tx_invalid'));
+            progressController.close();
+            break;
+          case 'usurped':
+            progressController.add(tr('tx_usurped'));
+            progressController.close();
+            break;
+          case 'future':
+            progressController.add(tr('tx_processing'));
+            break;
+          case 'ready':
+            progressController.add(tr('tx_ready'));
+            break;
+          case 'inBlock':
+            progressController.add(tr('tx_in_block'));
+            break;
+          case 'broadcast':
+            progressController.add(tr('tx_broadcast'));
+            break;
+          default:
+            progressController
+                .add('Unexpected transaction status: ${data.type}.');
+            loggerDev('Unexpected transaction status: ${data.type}.');
+            break;
+        }
+      },
+    );
+  } catch (e) {
+    progressController.add(tr('Error in payment on node ${node.url}: $e'));
+    progressController.close();
+  }
+
+  return result;
 }
 
 Uri ensurePortInWsUrl(String url) {

@@ -1,0 +1,3 @@
+./build/linux/x64/release/bundle/ginkgo
+./build/linux/x64/release/bundle/data
+./build/linux/x64/release/bundle/lib

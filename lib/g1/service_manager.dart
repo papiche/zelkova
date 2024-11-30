@@ -7,6 +7,7 @@ import '../data/models/transaction_state.dart';
 import 'api.dart';
 import 'datapod_api.dart';
 import 'g1_v2_helper_others.dart';
+import 'pay_result.dart';
 import 'transaction_v1_parser.dart';
 import 'transactions_v2_parser.dart';
 
@@ -24,18 +25,24 @@ abstract class DuniterService {
       required String searchTermCapitalized});
 
   Future<Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalance(
-    String pubKeyRaw, {
-    int? pageSize = 10,
-    int? from,
-    int? to,
-    String? cursor,
-  });
+      String pubKeyRaw,
+      {int? pageSize = 10,
+      int? from,
+      int? to,
+      String? cursor,
+      required bool isConnected});
 
   Future<TransactionState> transactionsParser(
       Map<String, dynamic> txData, TransactionState state, String myPubKeyRaw);
 
   Future<PayResult> pay(
       {required List<String> to, required double amount, String? comment});
+
+  Future<String?> getProfileUserName(String pubKey);
+
+  Future<bool> createOrUpdateProfile(String name);
+
+  Future<bool> deleteProfile();
 }
 
 class DuniterServiceV1 implements DuniterService {
@@ -73,9 +80,14 @@ class DuniterServiceV1 implements DuniterService {
       {int? pageSize = 10,
       int? from,
       int? to,
-      String? cursor}) {
+      String? cursor,
+      required bool isConnected}) {
     return getHistoryAndBalanceV1(pubKeyRaw,
-        pageSize: pageSize, from: from, to: to, cursor: cursor);
+        pageSize: pageSize,
+        from: from,
+        to: to,
+        cursor: cursor,
+        isConnected: isConnected);
   }
 
   @override
@@ -88,6 +100,21 @@ class DuniterServiceV1 implements DuniterService {
   Future<PayResult> pay(
       {required List<String> to, required double amount, String? comment}) {
     return payV1(to: to, amount: amount, comment: comment);
+  }
+
+  @override
+  Future<bool> createOrUpdateProfile(String name) {
+    return createOrUpdateProfileV1(name);
+  }
+
+  @override
+  Future<bool> deleteProfile() {
+    return deleteProfileV1();
+  }
+
+  @override
+  Future<String?> getProfileUserName(String pubKey) {
+    return getProfileUserNameV1(pubKey);
   }
 }
 
@@ -125,9 +152,14 @@ class DuniterServiceV2 implements DuniterService {
       {int? pageSize = 10,
       int? from,
       int? to,
-      String? cursor}) {
+      String? cursor,
+      required bool isConnected}) {
     return getHistoryAndBalanceV2(pubKeyRaw,
-        pageSize: pageSize, from: from, to: to, cursor: cursor);
+        pageSize: pageSize,
+        from: from,
+        to: to,
+        cursor: cursor,
+        isConnected: isConnected);
   }
 
   @override
@@ -140,6 +172,22 @@ class DuniterServiceV2 implements DuniterService {
   Future<PayResult> pay(
       {required List<String> to, required double amount, String? comment}) {
     return payV2(to: to, amount: amount, comment: comment);
+  }
+
+  @override
+  Future<bool> createOrUpdateProfile(String name) {
+    return createOrUpdateProfileV2(name);
+  }
+
+  @override
+  Future<bool> deleteProfile() {
+    return deleteProfileV2();
+  }
+
+  @override
+  Future<String?> getProfileUserName(String pubKey) async {
+    final Contact c = await getProfileV2(pubKey, onlyCPlusProfile: true);
+    return c.name;
   }
 }
 

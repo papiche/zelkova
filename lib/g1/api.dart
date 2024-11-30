@@ -18,10 +18,6 @@ import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-/*import 'package:polkadart/polkadart.dart' show SystemApi, Health; */
-/* import 'package:polkadart/polkadart.dart'
-    show SystemApi, ChainType, Health, PeerInfo, SyncState; */
-/* import 'package:polkadart/provider.dart'; */
 import 'package:polkadot_dart/polkadot_dart.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:tuple/tuple.dart';
@@ -42,6 +38,7 @@ import '../ui/ui_helpers.dart';
 import 'g1_helper.dart';
 import 'no_nodes_exception.dart';
 import 'node_check_result.dart';
+import 'pay_result.dart';
 import 'polkadot_provider.dart';
 import 'polkadot_substrate_service.dart';
 import 'service_manager.dart';
@@ -774,13 +771,6 @@ Tuple2<String, Node> getGvaNode() {
   }
 }
 
-class PayResult {
-  PayResult({required this.message, this.node});
-
-  final Node? node;
-  final String message;
-}
-
 String proxyfyNode(String nodeUrl) {
   final String url = inProduction && kIsWeb
       ? '${window.location.protocol}//${window.location.hostname}/proxy/${nodeUrl.replaceFirst('https://', '').replaceFirst('http://', '')}/'
@@ -793,7 +783,8 @@ Future<Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalanceV1(
     {int? pageSize,
     int? from,
     int? to,
-    String? cursor}) async {
+    String? cursor,
+    required bool isConnected}) async {
   logger(
       'Get tx history (page size: $pageSize: cursor $cursor, from: $from, to: $to)');
   final String pubKey = extractPublicKey(pubKeyRaw);
@@ -863,7 +854,7 @@ void increaseNodeErrors(NodeType type, Node node) {
 // Add a new profile: user/profile (POST)
 // Update an existing profile: user/profile/_update (POST)
 // Delete an existing profile: user/profile/_delete (DELETE?)
-Future<void> createOrUpdateCesiumPlusUser(String name) async {
+Future<bool> createOrUpdateProfileV1(String name) async {
   final CesiumWallet wallet = await SharedPreferencesHelper().getWallet();
   final String pubKey = wallet.pubkey;
 
@@ -899,10 +890,12 @@ Future<void> createOrUpdateCesiumPlusUser(String name) async {
         .item2;
     if (updateResponse.statusCode == 200) {
       logger('User profile updated successfully.');
+      return true;
     } else {
       logger(
           'Failed to update user profile. Status code: ${updateResponse.statusCode}');
       logger('Response body: ${updateResponse.body}');
+      return false;
     }
   } else if (userName == null) {
     logger('User does not exist, create a new user profile');
@@ -915,11 +908,14 @@ Future<void> createOrUpdateCesiumPlusUser(String name) async {
 
     if (createResponse.statusCode == 200) {
       logger('User profile created successfully.');
+      return true;
     } else {
       logger(
           'Failed to create user profile. Status code: ${createResponse.statusCode}');
+      return false;
     }
   }
+  return false;
 }
 
 Map<String, String> _defCPlusHeaders() {
@@ -937,12 +933,12 @@ void hashAndSign(Map<String, dynamic> data, CesiumWallet wallet) {
   data['signature'] = signature;
 }
 
-Future<String?> getProfileUserName(String pubKey) async {
+Future<String?> getProfileUserNameV1(String pubKey) async {
   final Contact c = await getProfile(pubKey, onlyCPlusProfile: true);
   return c.name;
 }
 
-Future<bool> deleteCesiumPlusUser() async {
+Future<bool> deleteProfileV1() async {
   final CesiumWallet wallet = await SharedPreferencesHelper().getWallet();
   final String pubKey = wallet.pubkey;
   final Map<String, dynamic> userProfile = <String, dynamic>{
@@ -1110,8 +1106,7 @@ Future<NodeCheckResult> testDuniterIndexerV2(
   NodeCheckResult result;
 
   final Stopwatch stopwatch = Stopwatch()..start();
-  final ferry.Client client =
-      await initDuniterIndexerClient(node, GetIt.instance<HiveStore>());
+  final ferry.Client client = await initDuniterIndexerClient(node);
   final ferry.OperationResponse<GLastBlockData, GLastBlockVars> response =
       await client.request(GLastBlockReq()).first.timeout(timeout);
   if (response.hasErrors) {
@@ -1270,18 +1265,19 @@ Future<List<Contact>> getProfiles(List<String> pubKeys) async {
 }
 
 Future<Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalance(
-  String pubKeyRaw, {
-  int? pageSize,
-  int? from,
-  int? to,
-  String? cursor,
-}) {
+    String pubKeyRaw,
+    {int? pageSize,
+    int? from,
+    int? to,
+    String? cursor,
+    required bool isConnected}) {
   return GetIt.instance<ServiceManager>().current.getHistoryAndBalance(
       pubKeyRaw,
       pageSize: pageSize,
       from: from,
       to: to,
-      cursor: cursor);
+      cursor: cursor,
+      isConnected: isConnected);
 }
 
 Future<TransactionState> transactionsParser(
@@ -1296,4 +1292,16 @@ Future<PayResult> pay(
   return GetIt.instance<ServiceManager>()
       .current
       .pay(to: to, amount: amount, comment: comment);
+}
+
+Future<String?> getProfileUserName(String pubKey) {
+  return GetIt.instance<ServiceManager>().current.getProfileUserName(pubKey);
+}
+
+Future<bool> createOrUpdateProfile(String name) {
+  return GetIt.instance<ServiceManager>().current.createOrUpdateProfile(name);
+}
+
+Future<bool> deleteProfile() {
+  return GetIt.instance<ServiceManager>().current.deleteProfile();
 }

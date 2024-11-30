@@ -321,5 +321,6 @@
   "tx_usurped": "The transaction was replaced by another",
   "tx_ready": "The transaction is ready to be processed",
   "tx_in_block": "The transaction has been included in a block",
-  "tx_broadcast": "The transaction has been broadcasted to the network"
+  "tx_broadcast": "The transaction has been broadcasted to the network",
+  "tx_processing": "Processing payment"
 }

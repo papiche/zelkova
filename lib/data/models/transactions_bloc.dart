@@ -11,7 +11,11 @@ import 'transaction.dart';
 part 'transactions_state.dart';
 
 class TransactionsBloc {
-  TransactionsBloc({this.isExternal = false, this.pubKey, this.pageSize = 20}) {
+  TransactionsBloc(
+      {this.isExternal = false,
+      this.pubKey,
+      this.pageSize = 10,
+      required this.isV2}) {
     _onPageRequest.stream
         .flatMap(_fetchTransactionsList)
         .listen(_onNewListingStateController.add)
@@ -26,6 +30,7 @@ class TransactionsBloc {
   final bool isExternal;
   final String? pubKey;
   final int pageSize;
+  final bool isV2;
 
   final CompositeSubscription _subscriptions = CompositeSubscription();
 
@@ -47,11 +52,9 @@ class TransactionsBloc {
   Sink<String?> get onSearchInputChangedSink =>
       _onSearchInputChangedSubject.sink;
 
-  // String? get _searchInputValue => _onSearchInputChangedSubject.value;
-
   Stream<TransactionsState> _resetSearch() async* {
     yield TransactionsState();
-    yield* _fetchTransactionsList(null);
+    yield* _fetchTransactionsList(isV2 ? '0' : null);
   }
 
   Stream<TransactionsState> _fetchTransactionsList(String? pageKey) async* {
@@ -72,17 +75,20 @@ class TransactionsBloc {
       } else {
         final List<Transaction> fetchedItems =
             await transCubit.fetchTransactions(
-                cursor: pageKey,
-                pageSize: pageSize,
-                pubKey: pubKey,
-                isExternal: isExternal);
+          cursor: isV2 ? _normalizePageKey(pageKey) : pageKey,
+          pageSize: pageSize,
+          pubKey: pubKey,
+          isExternal: isExternal,
+        );
 
         final bool isLastPage = fetchedItems.length < pageSize;
-        final String? nextPageKey =
-            isLastPage ? null : transCubit.currentWalletState(pubKey).endCursor;
+        final String? nextPageKey = isLastPage
+            ? null
+            : (isV2
+                ? ((int.tryParse(pageKey ?? '0') ?? 0) + pageSize).toString()
+                : transCubit.currentWalletState(pubKey).endCursor);
 
         yield TransactionsState(
-          // error: null,
           nextPageKey: nextPageKey,
           itemList: pageKey == null
               ? fetchedItems
@@ -99,6 +105,13 @@ class TransactionsBloc {
         itemList: lastListingState.itemList,
       );
     }
+  }
+
+  String? _normalizePageKey(String? pageKey) {
+    if (pageKey == null || int.tryParse(pageKey) == 0) {
+      return null;
+    }
+    return int.tryParse(pageKey)?.toString();
   }
 
   void dispose() {

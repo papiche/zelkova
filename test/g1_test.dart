@@ -7,6 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:ginkgo/data/models/contact.dart';
 import 'package:ginkgo/data/models/node.dart';
 import 'package:ginkgo/data/models/node_lists_default.dart';
+import 'package:ginkgo/data/models/node_manager.dart';
 import 'package:ginkgo/data/models/payment_state.dart';
 import 'package:ginkgo/data/models/transaction.dart';
 import 'package:ginkgo/data/models/transaction_type.dart';
@@ -788,5 +789,66 @@ Data: 2RTjpjZMnFnKHhgUadgT7JUvGeQem5sC6DQQpeuo5dCL6V1fgqsg8
         fail('❌ Error parsing URL: $url - Error: $e');
       }
     }
+  });
+
+  group('sortNodesByErrorOrLatency', () {
+    test('Sorts by errors first, then by latency', () {
+      final List<Node> nodes = <Node>[
+        const Node(url: 'node1', latency: 100, errors: 3),
+        const Node(url: 'node2', latency: 50, errors: 1),
+        const Node(url: 'node3', latency: 75, errors: 1),
+        const Node(url: 'node4', latency: 30, errors: 2),
+      ];
+
+      sortNodesByErrorOrLatency(nodes);
+
+      expect(nodes[0].url, 'node2'); // Lowest errors, lowest latency
+      expect(nodes[1].url, 'node3'); // Same errors, higher latency
+      expect(nodes[2].url, 'node4'); // Higher errors
+      expect(nodes[3].url, 'node1'); // Highest errors
+    });
+
+    test('Handles empty list', () {
+      final List<Node> nodes = <Node>[];
+      sortNodesByErrorOrLatency(nodes);
+      expect(nodes, isEmpty);
+    });
+
+    test('Handles single node', () {
+      final List<Node> nodes = <Node>[const Node(url: 'node1', latency: 100)];
+      sortNodesByErrorOrLatency(nodes);
+      expect(nodes.length, 1);
+      expect(nodes[0].url, 'node1');
+    });
+
+    test('Handles all nodes with same errors and latency', () {
+      final List<Node> nodes = <Node>[
+        const Node(url: 'node1', latency: 50, errors: 2),
+        const Node(url: 'node2', latency: 50, errors: 2),
+        const Node(url: 'node3', latency: 50, errors: 2),
+      ];
+
+      sortNodesByErrorOrLatency(nodes);
+
+      expect(nodes[0].url, 'node1'); // Order remains as is
+      expect(nodes[1].url, 'node2');
+      expect(nodes[2].url, 'node3');
+    });
+
+    test('Sorts correctly with mixed errors and latencies', () {
+      final List<Node> nodes = <Node>[
+        const Node(url: 'node1', latency: 70, errors: 2),
+        const Node(url: 'node2', latency: 60, errors: 2),
+        const Node(url: 'node3', latency: 80, errors: 1),
+        const Node(url: 'node4', latency: 50, errors: 1),
+      ];
+
+      sortNodesByErrorOrLatency(nodes);
+
+      expect(nodes[0].url, 'node4'); // Fewest errors, lowest latency
+      expect(nodes[1].url, 'node3'); // Fewest errors, higher latency
+      expect(nodes[2].url, 'node2'); // More errors, lower latency
+      expect(nodes[3].url, 'node1'); // More errors, higher latency
+    });
   });
 }

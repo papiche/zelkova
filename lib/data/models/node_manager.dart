@@ -196,14 +196,7 @@ class NodeManager {
         .where((Node node) => (maxCurrentBlock - node.currentBlock).abs() <= 2)
         .toList();
 
-    nodesNearMaxBlock.sort((Node a, Node b) {
-      final int errorComparison = a.errors.compareTo(b.errors);
-      if (errorComparison != 0) {
-        return errorComparison;
-      } else {
-        return a.latency.compareTo(b.latency);
-      }
-    });
+    sortNodesByErrorOrLatency(nodesNearMaxBlock);
 
     if (nodesNearMaxBlock.isEmpty) {
       nodesNearMaxBlock.addAll(defaultNodes(type));
@@ -248,4 +241,15 @@ class NodeManagerObserver {
   Node? get currentGvaNode {
     return cubit.currentGvaNode;
   }
+}
+
+void sortNodesByErrorOrLatency(List<Node> nodesNearMaxBlock) {
+  nodesNearMaxBlock.sort((Node a, Node b) {
+    final int errorComparison = a.errors.compareTo(b.errors);
+    if (errorComparison != 0) {
+      return errorComparison;
+    } else {
+      return a.latency.compareTo(b.latency);
+    }
+  });
 }

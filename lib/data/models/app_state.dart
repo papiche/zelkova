@@ -21,7 +21,7 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
       : tutorials = tutorials ?? <String, bool>{},
         currency = currency ?? Currency.G1,
         walletCreatedViewed = walletCreatedViewed ?? introViewed,
-        currentUd = currentUd ?? 10.68; // as 14/05/2023
+        currentUd = currentUd ?? 11.06; // as 01/12/2024
 
   factory AppState.fromJson(Map<String, dynamic> json) =>
       _$AppStateFromJson(json);

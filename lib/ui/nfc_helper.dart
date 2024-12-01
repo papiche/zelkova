@@ -9,7 +9,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'logger.dart';
 
-bool hasNft(AsyncSnapshot<NFCAvailability> snapshot) =>
+bool hasNft(AsyncSnapshot<NFCAvailability?> snapshot) =>
     !kIsWeb && snapshot.hasData && snapshot.data == NFCAvailability.available;
 
 Future<void> writeNfcUrl(String url) async {

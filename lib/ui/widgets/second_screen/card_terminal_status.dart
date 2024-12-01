@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 
@@ -14,11 +17,12 @@ class CardTerminalStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<NFCAvailability>(
-        future: FlutterNfcKit.nfcAvailability,
+    return FutureBuilder<NFCAvailability?>(
+        future:
+            !kIsWeb && Platform.isLinux ? null : FlutterNfcKit.nfcAvailability,
         builder:
-            (BuildContext context, AsyncSnapshot<NFCAvailability> snapshot) {
-          final bool nft = hasNft(snapshot);
+            (BuildContext context, AsyncSnapshot<NFCAvailability?> snapshot) {
+          final bool nft = snapshot != null && hasNft(snapshot);
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(

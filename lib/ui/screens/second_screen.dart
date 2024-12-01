@@ -37,8 +37,9 @@ class _SecondScreenState extends State<SecondScreen> {
         ],
       ),
       drawer: const CardDrawer(),
-      body:
-          const Column(children: <Widget>[SizedBox(height: 2), CardTerminal()]),
+      body: const SingleChildScrollView(
+          child:
+              Column(children: <Widget>[SizedBox(height: 2), CardTerminal()])),
     );
   }
 }

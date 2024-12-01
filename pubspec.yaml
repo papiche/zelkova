@@ -157,19 +157,33 @@ dev_dependencies:
 # source: https://stackoverflow.com/a/75332857/8301867
 dependency_overrides:
   normalize: ^0.9.1
+  #web_socket_channel: 2.4.4
   web_socket_channel: ^3.0.1
+  web_socket: ^0.1.6
   intl: ^0.18.1
   #analyzer: ^6.4.1
-  polkadart:
-    path: ../polkadart/packages/polkadart
-  polkadart_keyring:
-    path: ../polkadart/packages/polkadart_keyring
-  polkadart_scale_codec:
-    path: ../polkadart/packages/polkadart_scale_codec
   strobe:
     path: ../strobe
   edwards25519:
     path: ../edwards25519
+  polkadart:
+    path: ../polkadart/packages/polkadart
+  polkadart_cli:
+    path: ../polkadart/packages/polkadart_cli
+  polkadart_keyring:
+    path: ../polkadart/packages/polkadart_keyring
+  polkadart_scale_codec:
+    path: ../polkadart/packages/polkadart_scale_codec
+  ss58:
+    path: ../polkadart/packages/ss58
+  substrate_bip39:
+    path: ../polkadart/packages/substrate_bip39
+  substrate_metadata:
+    path: ../polkadart/packages/substrate_metadata
+  secp256k1_ecdsa:
+    path: ../polkadart/packages/secp256k1_ecdsa
+  sr25519:
+    path: ../polkadart/packages/sr25519
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

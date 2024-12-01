@@ -56,6 +56,30 @@ void main() {
     expect(result, null);
   });
 
+  test('Valid long decimal number - es_ES', () {
+    final String? result =
+        validateDecimal(sep: ',', locale: 'es_ES', amount: '12345', tr: tr);
+    expect(result, null);
+  });
+
+  test('Valid other long decimal number - es_ES', () {
+    final String? result =
+        validateDecimal(sep: ',', locale: 'es_ES', amount: '12.345', tr: tr);
+    expect(result, null);
+  });
+
+  test('Valid long decimal number - en_US', () {
+    final String? result =
+        validateDecimal(sep: ',', locale: 'en_US', amount: '12345', tr: tr);
+    expect(result, null);
+  });
+
+  test('Valid other long decimal number - en_US', () {
+    final String? result =
+        validateDecimal(sep: ',', locale: 'en_US', amount: '12,345', tr: tr);
+    expect(result, null);
+  });
+
   test('Empty amount - en_US', () {
     final String? result =
         validateDecimal(sep: '.', locale: 'en_US', amount: '', tr: tr);

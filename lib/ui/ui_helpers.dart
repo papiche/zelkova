@@ -577,12 +577,18 @@ String? validateDecimal(
     if (n < 0) {
       return tr('enter_a_positive_number');
     }
-    final String formattedAmount = format.format(n);
+
     if (amount.contains(sep) && amount.endsWith('0')) {
       // remove trailing zeros in 0.10 == 0.1
       amount = amount.replaceAll(RegExp(r'0*$'), '');
     }
-    if (formattedAmount != amount) {
+    final String normalizedInput =
+        amount.replaceAll(format.symbols.GROUP_SEP, '');
+    final String formattedAmount = format.format(n);
+    final String normalizedFormattedAmount =
+        formattedAmount.replaceAll(format.symbols.GROUP_SEP, '');
+
+    if (normalizedInput != normalizedFormattedAmount) {
       return tr('enter_a_valid_number');
     }
   } catch (e) {

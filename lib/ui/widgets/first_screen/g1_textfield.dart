@@ -18,7 +18,8 @@ class G1PayAmountField extends StatefulWidget {
 
 class _G1PayAmountFieldState extends State<G1PayAmountField> {
   final TextEditingController _controller = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>(debugLabel: 'g1PayAmountField');
+  final GlobalKey<FormState> _formKey =
+      GlobalKey<FormState>(debugLabel: 'g1PayAmountField');
   late String sep;
   late String locale;
 
@@ -96,10 +97,11 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
                 context.read<PaymentCubit>().selectAmount(
                     parseToDoubleLocalized(
                         locale: context.locale.toLanguageTag(), number: value));
-              } else {
+              } /* else {
+              // this parse is not localized, so it will fail in some locales, commenting out
                 context.read<PaymentCubit>().selectAmount(
                     value == null ? null : double.tryParse(value));
-              }
+              } */
             },
             decoration: InputDecoration(
               labelText: tr('g1_amount'),

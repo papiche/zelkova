@@ -13,6 +13,7 @@ import 'package:universal_html/html.dart' as html;
 
 import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
+import '../../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
@@ -101,6 +102,7 @@ class _ImportDialogState extends State<ImportDialog> {
                               int imported = 0;
                               for (final dynamic cesiumCard in cesiumCardList) {
                                 final bool result = importWalletToSharedPrefs(
+                                    context,
                                     cesiumCard as Map<String, dynamic>);
                                 if (result) {
                                   imported += 1;
@@ -123,7 +125,7 @@ class _ImportDialogState extends State<ImportDialog> {
                               Navigator.of(context).pop(true);
                               return;
                             } else {
-                              importWalletToSharedPrefs(keys);
+                              importWalletToSharedPrefs(context, keys);
                             }
                             if (!mounted) {
                               return;
@@ -214,13 +216,17 @@ class _ImportDialogState extends State<ImportDialog> {
     }
   }
 
-  bool importWalletToSharedPrefs(Map<String, dynamic> cesiumCard) {
+  bool importWalletToSharedPrefs(
+      BuildContext context, Map<String, dynamic> cesiumCard) {
     final dynamic pub = cesiumCard['pub'];
     final String pubKey =
         pub != null ? pub as String : cesiumCard['pubKey'] as String;
     if (!SharedPreferencesHelper().has(pubKey)) {
       SharedPreferencesHelper().addCesiumCard(SharedPreferencesHelper()
           .buildCesiumCard(pubKey: pubKey, seed: cesiumCard['seed'] as String));
+      context
+          .read<MultiWalletTransactionCubit>()
+          .fetchTransactions(pubKey: pubKey);
       return true;
     } else {
       return false;
@@ -247,7 +253,7 @@ Future<void> showSelectImportMethodDialog(
           // if (method == 'clipboard') {
           return ImportClipboardDialog(onImport: (String wallet) {
             if (validateKey(wallet)) {
-              // It's a simple pubkey, let's think is a cesium wallet
+              // It's a simple pubkey, let's think is a cesium password protected wallet
               if (!SharedPreferencesHelper().has(wallet)) {
                 showImportCesiumWalletDialog(context, wallet, returnTo);
               } else {
@@ -274,7 +280,7 @@ Future<bool?> showImportCesiumWalletDialog(
     context: context,
     barrierDismissible: false,
     builder: (BuildContext dialogContext) {
-      return CesiumAddDialog(publicKey: wallet, returnTo: returnTo);
+      return CesiumAuthDialog(publicKey: wallet, returnTo: returnTo);
     },
   );
 }

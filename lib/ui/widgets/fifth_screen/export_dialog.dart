@@ -19,7 +19,7 @@ import 'package:universal_html/html.dart' as html;
 import '../../../data/models/cesium_card.dart';
 import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
-import '../../../g1/g1_export_utils.dart';
+import '../../../g1/g1_export_auth_utils.dart';
 import '../../../g1/g1_helper.dart';
 import '../../logger.dart';
 import '../../ui_helpers.dart';

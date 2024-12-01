@@ -325,8 +325,8 @@
   "tx_invalid": "La transacción no se pudo procesar. Por favor, revisa los datos e inténtalo de nuevo",
   "tx_dropped": "No se pudo completar la transacción. Por favor, inténtalo más tarde",
   "tx_usurped": "Tu transacción fue reemplazada por otra",
-  "tx_processing": "Procesando pago...",
+  "tx_processing": "Procesando pago",
   "tx_ready": "La transacción está lista para ser enviada",
-  "tx_in_block": "La transacción ha sido incluida en un bloque",
-  "tx_broadcast": "La transacción ha sido transmitida a la red"
+  "tx_in_block": "La transacción ha sido confirmada",
+  "tx_broadcast": "La transacción ha se ha enviado y está siendo procesada"
 }

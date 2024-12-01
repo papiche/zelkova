@@ -43,6 +43,9 @@ class _PayFormState extends State<PayForm> {
     return BlocBuilder<PaymentCubit, PaymentState>(
         builder: (BuildContext context, PaymentState state) {
       final AppCubit appCubit = context.watch<AppCubit>();
+      final MultiWalletTransactionCubit txCubit =
+          context.watch<MultiWalletTransactionCubit>();
+      final double balance = txCubit.balance();
       final double currentUd = appCubit.currentUd;
       final Currency currency = appCubit.currency;
       if (state.comment != null && _commentController.text != state.comment) {
@@ -52,7 +55,7 @@ class _PayFormState extends State<PayForm> {
         _feedbackNotifier.value = '';
       }
       final bool sentDisabled =
-          _onPressed(state, context, currency, currentUd) == null;
+          _onPressed(state, context, currency, currentUd, balance) == null;
       final Color sentColor = sentDisabled
           ? Theme.of(context).disabledColor
           : isDark(context)
@@ -110,7 +113,7 @@ class _PayFormState extends State<PayForm> {
                           onPressed: () async {
                             if (mounted) {
                               final Future<void> Function()? func = _onPressed(
-                                  state, context, currency, currentUd);
+                                  state, context, currency, currentUd, balance);
                               if (func != null) {
                                 func();
                               }
@@ -138,7 +141,7 @@ class _PayFormState extends State<PayForm> {
   }
 
   Future<void> Function()? _onPressed(PaymentState state, BuildContext context,
-      Currency currency, double currentUd) {
+      Currency currency, double currentUd, double balance) {
     final bool isG1 = currency == Currency.G1;
     final bool notCanBeSent = !state.canBeSent();
     final bool notValidComment = !_commentValidate();
@@ -148,8 +151,8 @@ class _PayFormState extends State<PayForm> {
     if (notCanBeSent ||
         nullAmount ||
         notValidComment ||
-        notBalance(
-            context, state, currency, currentUd, state.contacts.length)) {
+        notBalance(context, state, currency, currentUd, state.contacts.length,
+            balance)) {
       return null;
     } else
       return () async {
@@ -164,8 +167,9 @@ class _PayFormState extends State<PayForm> {
   }
 
   bool notBalance(BuildContext context, PaymentState state, Currency currency,
-          double currentUd, int recipients) =>
-      !_weHaveBalance(context, state.amount!, currency, currentUd, recipients);
+          double currentUd, int recipients, double balance) =>
+      !_weHaveBalance(
+          context, state.amount!, currency, currentUd, recipients, balance);
 
   bool _commentValidate() {
     final String currentComment = _commentController.value.text;
@@ -180,9 +184,9 @@ class _PayFormState extends State<PayForm> {
   }
 
   bool _weHaveBalance(BuildContext context, double amount, Currency currency,
-      double currentUd, int recipients) {
+      double currentUd, int recipients, double g1Balance) {
     final double balance =
-        convertAmount(currency == Currency.G1, getBalance(context), currentUd);
+        convertAmount(currency == Currency.G1, g1Balance, currentUd);
     logger('We have $balance G1, need ${amount * recipients}');
     final bool weHave = balance >= amount * recipients;
 
@@ -193,9 +197,6 @@ class _PayFormState extends State<PayForm> {
     }
     return weHave;
   }
-
-  double getBalance(BuildContext context) =>
-      context.read<MultiWalletTransactionCubit>().balance();
 }
 
 class RetryException implements Exception {

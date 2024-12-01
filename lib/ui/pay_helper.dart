@@ -142,6 +142,7 @@ Future<bool> payWithRetry(
               hideValue: true,
               progressBgColor: Colors.white70,
               barrierDismissible: true,
+              msgMaxLines: 3,
               completed: Completed(),
             );
             result.progressStream!.listen(

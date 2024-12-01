@@ -10,7 +10,7 @@ import 'package:ginkgo/data/models/node_lists_default.dart';
 import 'package:ginkgo/data/models/payment_state.dart';
 import 'package:ginkgo/data/models/transaction.dart';
 import 'package:ginkgo/data/models/transaction_type.dart';
-import 'package:ginkgo/g1/g1_export_utils.dart';
+import 'package:ginkgo/g1/g1_export_auth_utils.dart';
 import 'package:ginkgo/g1/g1_helper.dart';
 import 'package:ginkgo/g1/g1_v2_helper.dart';
 import 'package:ginkgo/ui/logger.dart';

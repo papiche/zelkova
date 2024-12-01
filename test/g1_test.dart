@@ -767,7 +767,7 @@ Data: 2RTjpjZMnFnKHhgUadgT7JUvGeQem5sC6DQQpeuo5dCL6V1fgqsg8
       final String url = node.url;
 
       try {
-        final Uri parsedUri = ensurePortInWsUrl(url);
+        final Uri parsedUri = parseNodeUrl(url);
 
         expect(parsedUri.scheme, 'wss', reason: 'Invalid scheme for URL: $url');
 

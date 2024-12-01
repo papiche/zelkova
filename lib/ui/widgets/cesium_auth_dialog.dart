@@ -11,8 +11,9 @@ import '../../data/models/bottom_nav_cubit.dart';
 import '../../data/models/cesium_card.dart';
 import '../../data/models/contact.dart';
 import '../../data/models/credit_card_themes.dart';
+import '../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../g1/api.dart';
-import '../../g1/g1_export_utils.dart';
+import '../../g1/g1_export_auth_utils.dart';
 import '../../g1/g1_helper.dart';
 import '../../shared_prefs_helper.dart';
 import '../logger.dart';
@@ -21,18 +22,18 @@ import '../ui_helpers.dart';
 import 'fifth_screen/import_dialog.dart';
 import 'form_error_widget.dart';
 
-class CesiumAddDialog extends StatefulWidget {
-  const CesiumAddDialog(
+class CesiumAuthDialog extends StatefulWidget {
+  const CesiumAuthDialog(
       {super.key, required this.publicKey, required this.returnTo});
 
   final String publicKey;
   final int returnTo;
 
   @override
-  State<CesiumAddDialog> createState() => _CesiumAddDialogState();
+  State<CesiumAuthDialog> createState() => _CesiumAuthDialogState();
 }
 
-class _CesiumAddDialogState extends State<CesiumAddDialog> {
+class _CesiumAuthDialogState extends State<CesiumAuthDialog> {
   final TextEditingController secretPhraseController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool _obscureText1 = true;
@@ -206,6 +207,9 @@ class _CesiumAddDialogState extends State<CesiumAddDialog> {
     if (!SharedPreferencesHelper().has(extractPublicKey(widget.publicKey))) {
       SharedPreferencesHelper().addCesiumCard(card);
       SharedPreferencesHelper().selectCurrentWallet(card);
+      context
+          .read<MultiWalletTransactionCubit>()
+          .fetchTransactions(pubKey: extractPublicKey(widget.publicKey));
     }
     SharedPreferencesHelper().addCesiumVolatileCard(wallet);
     if (context.read<BottomNavCubit>().currentIndex != widget.returnTo) {

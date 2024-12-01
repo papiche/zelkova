@@ -6,6 +6,7 @@ import '../../../data/models/bottom_nav_cubit.dart';
 import '../../../data/models/cesium_card.dart';
 import '../../../data/models/credit_card_theme_selector.dart';
 import '../../../data/models/credit_card_themes.dart';
+import '../../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
@@ -192,10 +193,11 @@ class DrawerWalletCard extends StatelessWidget {
                 ))));
   }
 
-  void onCardTap(BuildContext context) {
+  Future<void> onCardTap(BuildContext context) async {
     logger("Card ${card.pubKey} '${card.name}' was tapped!");
     SharedPreferencesHelper().selectCurrentWallet(card);
     context.read<BottomNavCubit>().updateIndex(0);
     Navigator.pop(context);
+    await context.read<MultiWalletTransactionCubit>().fetchTransactions();
   }
 }

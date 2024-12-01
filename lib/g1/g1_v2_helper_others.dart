@@ -212,7 +212,7 @@ String formatPubkey(String value) {
 
 Future<BigInt?> getBalanceV2(
     {required String address, Duration timeout = defPolkadotTimeout}) async {
-  final nodes = NodeManager().getBestNodes(NodeType.endpoint);
+  final List<Node> nodes = NodeManager().getBestNodes(NodeType.endpoint);
   nodes.shuffle();
   for (final Node node in nodes) {
     try {

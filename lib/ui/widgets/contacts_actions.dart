@@ -49,7 +49,9 @@ void showContactPage(BuildContext context, Contact contact) {
 
 void onSentContact(BuildContext context, Contact contact) {
   context.read<PaymentCubit>().selectUser(contact);
-  Navigator.of(context, rootNavigator: true).pop();
+  if (Navigator.canPop(context)) {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
   context.read<BottomNavCubit>().updateIndex(0);
 }
 

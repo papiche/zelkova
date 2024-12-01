@@ -266,11 +266,7 @@ class _FifthScreenState extends State<FifthScreen> {
                           GetIt.instance<ServiceManager>()
                               .updateService(v2mode);
                           if (v2mode) {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                              content:
-                                  Text('v2 mode activated for testing/develop'),
-                            ));
+                            _showTestNetworkDialog(context);
                           }
                         }),
                   if (state.expertMode)
@@ -331,5 +327,23 @@ class _FifthScreenState extends State<FifthScreen> {
         },
       );
     }
+  }
+
+  void _showTestNetworkDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(tr('test_network_dialog_title')),
+          content: Text(tr('test_network_dialog_message')),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(tr('ok')),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

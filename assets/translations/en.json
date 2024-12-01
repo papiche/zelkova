@@ -322,5 +322,7 @@
   "tx_ready": "The transaction is ready to be processed",
   "tx_in_block": "The transaction has been confirmed",
   "tx_broadcast": "The transaction has been sent and is being processed",
-  "tx_processing": "Processing payment"
+  "tx_processing": "Processing payment",
+  "test_network_dialog_title": "Test Duniter Network Selected",
+  "test_network_dialog_message": "You have selected a testing duniter network used mainly for development. Any transactions made here are not real and occur in a testing environment separate from the main Ğ1 network. Feel free to test."
 }

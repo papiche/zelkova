@@ -217,7 +217,7 @@ Future<BigInt?> getBalanceV2(
   for (final Node node in nodes) {
     try {
       final Address account = Address.decode(address);
-      final Provider polkadot = Provider.fromUri(ensurePortInWsUrl(node.url));
+      final Provider polkadot = Provider.fromUri(parseNodeUrl(node.url));
       final AccountInfo accountInfo = await Gdev(polkadot)
           .query
           .system
@@ -348,7 +348,7 @@ Future<PayResult> payV2({
       progressController.add('Connecting to node ${node.url}...');
     }
 
-    final Provider provider = Provider.fromUri(ensurePortInWsUrl(node.url));
+    final Provider provider = Provider.fromUri(parseNodeUrl(node.url));
     final Gdev polkadot = Gdev(provider);
 
     final RuntimeVersion runtimeVersion =
@@ -364,10 +364,22 @@ Future<PayResult> payV2({
       progressController.add('Building transaction...');
     }
 
-    final Id multiAddress =
-        const $MultiAddress().id(Address.decode(addresses.first).pubkey);
-    final RuntimeCall transferCall = polkadot.tx.balances.transferKeepAlive(
-        dest: multiAddress, value: BigInt.from(amount * 100));
+    final bool useBatch = addresses.length > 1;
+    final RuntimeCall transferCall = useBatch
+        ? polkadot.tx.utility.batch(
+            calls: addresses.map((String address) {
+              final Id multiAddress =
+                  const $MultiAddress().id(Address.decode(address).pubkey);
+              final RuntimeCall transferCall = polkadot.tx.balances
+                  .transferKeepAlive(
+                      dest: multiAddress, value: BigInt.from(amount * 100));
+              return transferCall;
+            }).toList(),
+          )
+        : polkadot.tx.balances.transferKeepAlive(
+            dest: const $MultiAddress()
+                .id(Address.decode(addresses.first).pubkey),
+            value: BigInt.from(amount * 100));
     final Uint8List encodedCall = transferCall.encode();
 
     final Uint8List payload = SigningPayload(
@@ -446,19 +458,7 @@ Future<PayResult> payV2({
   return result;
 }
 
-Uri ensurePortInWsUrl(String url) {
+Uri parseNodeUrl(String url) {
   final Uri parsedUri = Uri.parse(url);
   return parsedUri;
-
-  /*
-  if (parsedUri.scheme == 'wss') {
-    return Uri(
-      scheme: 'wss', // Force this
-      host: parsedUri.host,
-      port: parsedUri.hasPort ? parsedUri.port : 443,
-      path: parsedUri.path,
-    );
-  }
-
-  throw Exception('Unsupported scheme: ${parsedUri.scheme}'); */
 }

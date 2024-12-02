@@ -291,5 +291,6 @@
   "total_received_sent": "Total achats et ventes",
   "download_pdf": "Télécharger PDF",
   "contacts_show_more": "Voir plus",
-  "contacts_show_less": "Voir moins"
+  "contacts_show_less": "Voir moins",
+  "export_wif_format_description": "Crée un fichier au format WIF avec votre portefeuille, pour un accès facilité. Gardez-le en sécurité, car il contient des données sensibles!"
 }

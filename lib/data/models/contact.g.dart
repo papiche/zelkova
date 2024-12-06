@@ -35,9 +35,17 @@ abstract class _$ContactCWProxy {
 
   Contact time(DateTime? time);
 
-  Contact certifiedFrom(List<String>? certifiedFrom);
+  Contact certsIssued(List<Cert>? certsIssued);
 
-  Contact certifiedTo(List<String>? certifiedTo);
+  Contact certsReceived(List<Cert>? certsReceived);
+
+  Contact status(IdentityStatus? status);
+
+  Contact isMember(bool? isMember);
+
+  Contact createdOn(int? createdOn);
+
+  Contact expireOn(int? expireOn);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Contact(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -60,8 +68,12 @@ abstract class _$ContactCWProxy {
     String? indexRequestCid,
     List<Map<String, String>>? socials,
     DateTime? time,
-    List<String>? certifiedFrom,
-    List<String>? certifiedTo,
+    List<Cert>? certsIssued,
+    List<Cert>? certsReceived,
+    IdentityStatus? status,
+    bool? isMember,
+    int? createdOn,
+    int? expireOn,
   });
 }
 
@@ -115,12 +127,24 @@ class _$ContactCWProxyImpl implements _$ContactCWProxy {
   Contact time(DateTime? time) => this(time: time);
 
   @override
-  Contact certifiedFrom(List<String>? certifiedFrom) =>
-      this(certifiedFrom: certifiedFrom);
+  Contact certsIssued(List<Cert>? certsIssued) =>
+      this(certsIssued: certsIssued);
 
   @override
-  Contact certifiedTo(List<String>? certifiedTo) =>
-      this(certifiedTo: certifiedTo);
+  Contact certsReceived(List<Cert>? certsReceived) =>
+      this(certsReceived: certsReceived);
+
+  @override
+  Contact status(IdentityStatus? status) => this(status: status);
+
+  @override
+  Contact isMember(bool? isMember) => this(isMember: isMember);
+
+  @override
+  Contact createdOn(int? createdOn) => this(createdOn: createdOn);
+
+  @override
+  Contact expireOn(int? expireOn) => this(expireOn: expireOn);
 
   @override
 
@@ -145,8 +169,12 @@ class _$ContactCWProxyImpl implements _$ContactCWProxy {
     Object? indexRequestCid = const $CopyWithPlaceholder(),
     Object? socials = const $CopyWithPlaceholder(),
     Object? time = const $CopyWithPlaceholder(),
-    Object? certifiedFrom = const $CopyWithPlaceholder(),
-    Object? certifiedTo = const $CopyWithPlaceholder(),
+    Object? certsIssued = const $CopyWithPlaceholder(),
+    Object? certsReceived = const $CopyWithPlaceholder(),
+    Object? status = const $CopyWithPlaceholder(),
+    Object? isMember = const $CopyWithPlaceholder(),
+    Object? createdOn = const $CopyWithPlaceholder(),
+    Object? expireOn = const $CopyWithPlaceholder(),
   }) {
     return Contact(
       nick: nick == const $CopyWithPlaceholder()
@@ -205,14 +233,30 @@ class _$ContactCWProxyImpl implements _$ContactCWProxy {
           ? _value.time
           // ignore: cast_nullable_to_non_nullable
           : time as DateTime?,
-      certifiedFrom: certifiedFrom == const $CopyWithPlaceholder()
-          ? _value.certifiedFrom
+      certsIssued: certsIssued == const $CopyWithPlaceholder()
+          ? _value.certsIssued
           // ignore: cast_nullable_to_non_nullable
-          : certifiedFrom as List<String>?,
-      certifiedTo: certifiedTo == const $CopyWithPlaceholder()
-          ? _value.certifiedTo
+          : certsIssued as List<Cert>?,
+      certsReceived: certsReceived == const $CopyWithPlaceholder()
+          ? _value.certsReceived
           // ignore: cast_nullable_to_non_nullable
-          : certifiedTo as List<String>?,
+          : certsReceived as List<Cert>?,
+      status: status == const $CopyWithPlaceholder()
+          ? _value.status
+          // ignore: cast_nullable_to_non_nullable
+          : status as IdentityStatus?,
+      isMember: isMember == const $CopyWithPlaceholder()
+          ? _value.isMember
+          // ignore: cast_nullable_to_non_nullable
+          : isMember as bool?,
+      createdOn: createdOn == const $CopyWithPlaceholder()
+          ? _value.createdOn
+          // ignore: cast_nullable_to_non_nullable
+          : createdOn as int?,
+      expireOn: expireOn == const $CopyWithPlaceholder()
+          ? _value.expireOn
+          // ignore: cast_nullable_to_non_nullable
+          : expireOn as int?,
     );
   }
 }
@@ -247,12 +291,16 @@ Contact _$ContactFromJson(Map<String, dynamic> json) => Contact(
           .toList(),
       time:
           json['time'] == null ? null : DateTime.parse(json['time'] as String),
-      certifiedFrom: (json['certifiedFrom'] as List<dynamic>?)
-          ?.map((e) => e as String)
+      certsIssued: (json['certsIssued'] as List<dynamic>?)
+          ?.map((e) => Cert.fromJson(e as Map<String, dynamic>))
           .toList(),
-      certifiedTo: (json['certifiedTo'] as List<dynamic>?)
-          ?.map((e) => e as String)
+      certsReceived: (json['certsReceived'] as List<dynamic>?)
+          ?.map((e) => Cert.fromJson(e as Map<String, dynamic>))
           .toList(),
+      status: $enumDecodeNullable(_$IdentityStatusEnumMap, json['status']),
+      isMember: json['isMember'] as bool?,
+      createdOn: (json['createdOn'] as num?)?.toInt(),
+      expireOn: (json['expireOn'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$ContactToJson(Contact instance) => <String, dynamic>{
@@ -270,6 +318,19 @@ Map<String, dynamic> _$ContactToJson(Contact instance) => <String, dynamic>{
       'indexRequestCid': instance.indexRequestCid,
       'socials': instance.socials,
       'time': instance.time?.toIso8601String(),
-      'certifiedTo': instance.certifiedTo,
-      'certifiedFrom': instance.certifiedFrom,
+      'certsReceived': instance.certsReceived,
+      'certsIssued': instance.certsIssued,
+      'status': _$IdentityStatusEnumMap[instance.status],
+      'isMember': instance.isMember,
+      'createdOn': instance.createdOn,
+      'expireOn': instance.expireOn,
     };
+
+const _$IdentityStatusEnumMap = {
+  IdentityStatus.MEMBER: 'MEMBER',
+  IdentityStatus.NOTMEMBER: 'NOTMEMBER',
+  IdentityStatus.REMOVED: 'REMOVED',
+  IdentityStatus.REVOKED: 'REVOKED',
+  IdentityStatus.UNCONFIRMED: 'UNCONFIRMED',
+  IdentityStatus.UNVALIDATED: 'UNVALIDATED',
+};

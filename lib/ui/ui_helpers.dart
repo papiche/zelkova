@@ -27,6 +27,7 @@ import '../g1/currency.dart';
 import '../g1/g1_helper.dart';
 import '../shared_prefs_helper.dart';
 import 'basic_avatar.dart';
+import 'contact_list_item.dart';
 import 'contacts_cache.dart';
 import 'ipfs_image.dart';
 import 'logger.dart';
@@ -182,7 +183,7 @@ Color tileColor(int index, BuildContext context, [bool inverse = false]) {
       : unselectedColor;
 }
 
-String? humanizeTime(DateTime time, String locale, [DateTime? now]) {
+String humanizeTime(DateTime time, String locale, [DateTime? now]) {
   final DateTime localTime = time.isUtc ? time.toLocal() : time;
   return timeago.format(localTime,
       locale: locale, clock: now ?? DateTime.now());
@@ -431,38 +432,13 @@ class _SlidableContactTile extends State<SlidableContactTile> {
   static String tutorialId = 'slidable_tutorial';
 
   @override
-  Widget build(_) =>
-      contactToListItem(widget.contact, widget.index, widget.context,
-          onTap: widget.onTap,
-          onLongPress: widget.onLongPress,
-          trailing: widget.trailing,
-          isV2: isV2);
-}
-
-Widget contactToListItem(Contact contact, int index, BuildContext context,
-    {VoidCallback? onTap,
-    VoidCallback? onLongPress,
-    Widget? trailing,
-    required bool isV2}) {
-  final String title = contact.title;
-  final Widget? subtitle = contact.subtitle != null
-      ? Text(isV2
-          ? '${contact.subtitle!} ${contact.subtitleV2}'
-          : contact.subtitle!)
-      : null;
-
-  return ListTile(
-      title: Text(title),
-      subtitle: subtitle ?? Container(),
-      tileColor: tileColor(index, context),
-      onTap: onTap,
-      onLongPress: onLongPress,
-      leading: avatar(
-        contact,
-        bgColor: tileColor(index, context),
-        color: tileColor(index, context, true),
-      ),
-      trailing: trailing);
+  Widget build(_) => ContactListItem(
+      contact: widget.contact,
+      index: widget.index,
+      onTap: widget.onTap,
+      onLongPress: widget.onLongPress,
+      trailing: widget.trailing,
+      isV2: isV2);
 }
 
 bool showShare() => onlyInDevelopment || !kIsWeb;
@@ -963,4 +939,11 @@ double calcWidthWithResponsive(BuildContext context) {
   return ResponsiveBreakpoints.of(context).largerThan(MOBILE)
       ? MediaQuery.of(context).size.width / 2
       : MediaQuery.of(context).size.width;
+}
+
+String? humanizeTimeFuture(String locale, int expireOn) {
+  final DateTime expiryDate = DateTime.now().add(Duration(seconds: expireOn));
+
+  return timeago.format(expiryDate,
+      locale: locale, clock: DateTime.now(), allowFromNow: true);
 }

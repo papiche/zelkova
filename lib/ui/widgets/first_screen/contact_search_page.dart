@@ -17,6 +17,7 @@ import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/payment_state.dart';
 import '../../../g1/api.dart';
 import '../../../g1/g1_helper.dart';
+import '../../contact_list_item.dart';
 import '../../contacts_cache.dart';
 import '../../logger.dart';
 import '../../nfc_helper.dart';
@@ -114,6 +115,11 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
         if (_isV2) {
           // search trying to be more optimized
           ContactsCache().addAllContacts(wotResults);
+          // ignore: prefer_foreach
+          for (final Contact wotC in wotResults) {
+            _addIfNotPresent(wotC);
+          }
+          // FIXME do more here
           final List<Contact> contactsWithProfiles = await getProfiles(
               wotResults.map((Contact c) => c.pubKey).toList());
           // addContacts also do a merge
@@ -508,10 +514,9 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
               color: tileColor(index, context, true),
             ),
           )
-        : contactToListItem(
-            contact,
-            index,
-            context,
+        : ContactListItem(
+            contact: contact,
+            index: index,
             isV2: _isV2,
             onLongPress: () {
               if (widget.searchUse == SearchUse.contactSearch) {

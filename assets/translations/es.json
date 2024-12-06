@@ -330,5 +330,9 @@
   "tx_in_block": "La transacción ha sido confirmada",
   "tx_broadcast": "La transacción ha se ha enviado y está siendo procesada",
   "test_network_dialog_title": "Red duniter de pruebas seleccionada",
-  "test_network_dialog_message": "Has seleccionado una red de pruebas de duniter utilizada principalmente para el desarrollo. Cualquier transacción realizada aquí no es real y ocurre en un entorno de pruebas separado de la red Ğ1 principal. Siéntete libre de probar."
+  "test_network_dialog_message": "Has seleccionado una red de pruebas de duniter utilizada principalmente para el desarrollo. Cualquier transacción realizada aquí no es real y ocurre en un entorno de pruebas separado de la red Ğ1 principal. Siéntete libre de probar.",
+  "certs_issued": "Certificaciones emitidas",
+  "certs_received": "Certificaciones recibidas",
+  "info_this_wallet": "Info sobre este monedero",
+  "cert_expired": "Caducado"
 }

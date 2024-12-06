@@ -13,6 +13,7 @@ import '../../data/models/node_manager.dart';
 import '../../g1/api.dart';
 import '../../shared_prefs_helper.dart';
 import '../ui_helpers.dart';
+import 'certifications_page.dart';
 import 'contacts_actions.dart';
 import 'fourth_screen/transactions_and_balance_widget.dart';
 import 'qr_list_tile.dart';
@@ -69,6 +70,39 @@ class _ContactPageState extends State<ContactPage> {
         context.read<ContactsCubit>().isContact(contact.pubKey);
     final String myPubKey = SharedPreferencesHelper().getPubKey();
     final bool me = isMe(contact, myPubKey);
+    final List<SpeedDialChild> actions = <SpeedDialChild>[
+      if (!me && inDevelopment)
+        SpeedDialChild(
+          child: const Icon(Icons.verified),
+          label: tr('certify'),
+          onTap: () {},
+        ),
+      if (isContact)
+        SpeedDialChild(
+          child: const Icon(Symbols.person_edit),
+          label: tr('form_contact_title'),
+          onTap: () {
+            onEditContact(context, contact);
+          },
+        ),
+      if (!isContact && !me)
+        SpeedDialChild(
+          child: const Icon(Icons.person_add),
+          label: tr('add_contact'),
+          onTap: () {
+            addContact(context, contact);
+          },
+        ),
+      if (!me)
+        SpeedDialChild(
+          child: const Icon(Icons.send),
+          label: tr('send_g1'),
+          onTap: () {
+            Navigator.pop(context);
+            onSentContact(context, contact);
+          },
+        ),
+    ];
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -94,46 +128,18 @@ class _ContactPageState extends State<ContactPage> {
             ),
           ],
         ),
-        floatingActionButton: SpeedDial(
-          icon: Icons.add,
-          activeIcon: Icons.close,
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          foregroundColor: Colors.white,
-          renderOverlay: false,
-          children: <SpeedDialChild>[
-            if (!me && inDevelopment)
-              SpeedDialChild(
-                child: const Icon(Icons.verified),
-                label: tr('certify'),
-                onTap: () {},
+        floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+        floatingActionButton: actions.isEmpty
+            ? null
+            : SpeedDial(
+                icon: Icons.add,
+                activeIcon: Icons.close,
+                direction: SpeedDialDirection.down,
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                foregroundColor: Colors.white,
+                renderOverlay: false,
+                children: actions,
               ),
-            if (isContact)
-              SpeedDialChild(
-                child: const Icon(Symbols.person_edit),
-                label: tr('form_contact_title'),
-                onTap: () {
-                  onEditContact(context, contact);
-                },
-              ),
-            if (!isContact && !me)
-              SpeedDialChild(
-                child: const Icon(Icons.person_add),
-                label: tr('add_contact'),
-                onTap: () {
-                  addContact(context, contact);
-                },
-              ),
-            if (!me)
-              SpeedDialChild(
-                child: const Icon(Icons.send),
-                label: tr('send_g1'),
-                onTap: () {
-                  Navigator.pop(context);
-                  onSentContact(context, contact);
-                },
-              ),
-          ],
-        ),
       ),
     );
   }
@@ -148,23 +154,31 @@ class _ContactPageState extends State<ContactPage> {
               leading: const Icon(Symbols.editor_choice),
               title: Text('@${contact.nick}'),
             ),
-          _buildQrListTile(contact),
-          if (context.watch<AppCubit>().isExpertMode)
+          if (!contact.isV2) _buildQrListTile(contact),
+          if (context.watch<AppCubit>().isExpertMode && contact.isV2)
             _buildQrListTile(contact, isV2: true),
+          if (contact.status != null && inDevelopment)
+            ListTile(
+              leading: const Icon(Icons.build),
+              title: Text(tr('status')),
+              subtitle: Text(contact.status!.name),
+            ),
+          if (contact.createdOn != null && inDevelopment)
+            ListTile(
+              leading: const Icon(Icons.calendar_today),
+              title: Text(tr('created_on')),
+              subtitle: Text(contact.createdOn!.toString()),
+            ),
+          if (contact.certsReceived != null &&
+              contact.certsReceived!.isNotEmpty)
+            _buildReceivedCerts(context, contact),
+          if (contact.certsIssued != null && contact.certsIssued!.isNotEmpty)
+            _buildIssuedCerts(context, contact),
           if (context
                   .watch<MultiWalletTransactionCubit>()
                   .balance(contact.pubKey) >
               0)
-            ListTile(
-              leading: const Icon(Icons.savings),
-              title: Row(
-                children: <Widget>[
-                  Text(tr('balance')),
-                  const Spacer(),
-                  BalanceWidget(pubKey: contact.pubKey, small: true),
-                ],
-              ),
-            ),
+            _buildBalance(contact),
           if (contact.description != null && contact.description!.isNotEmpty)
             _buildDescriptionTile(contact),
           if (contact.city != null && contact.city!.isNotEmpty)
@@ -173,6 +187,57 @@ class _ContactPageState extends State<ContactPage> {
             _buildSocialsTile(contact),
         ],
       ),
+    );
+  }
+
+  ListTile _buildBalance(Contact contact) {
+    return ListTile(
+      leading: const Icon(Icons.savings),
+      title: Row(
+        children: <Widget>[
+          Text(tr('balance')),
+          const Spacer(),
+          BalanceWidget(pubKey: contact.pubKey, small: true),
+        ],
+      ),
+    );
+  }
+
+  ListTile _buildIssuedCerts(BuildContext context, Contact contact) {
+    final String title = tr('certs_issued');
+    return ListTile(
+      leading: const Icon(Icons.verified_rounded),
+      title: Text(title),
+      trailing: _buildBadge(context, contact.certsIssued!.length),
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute<void>(
+          builder: (BuildContext context) => CertificationsPage(
+            issued: true,
+            title: contact.title,
+            subtitle: title,
+            certifications: contact.certsIssued!,
+          ),
+        ));
+      },
+    );
+  }
+
+  ListTile _buildReceivedCerts(BuildContext context, Contact contact) {
+    final String title = tr('certs_received');
+    return ListTile(
+      leading: const Icon(Icons.verified_user),
+      title: Text(title),
+      trailing: _buildBadge(context, contact.certsReceived!.length),
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute<void>(
+          builder: (BuildContext context) => CertificationsPage(
+            issued: false,
+            title: contact.title,
+            subtitle: title,
+            certifications: contact.certsReceived!,
+          ),
+        ));
+      },
     );
   }
 
@@ -191,6 +256,8 @@ class _ContactPageState extends State<ContactPage> {
   }
 
   Widget _buildAvatarSection(Contact contact) {
+    final String title =
+        contact.nick ?? contact.name ?? humanizePubKey(contact.pubKey);
     return Container(
       color: Theme.of(context).colorScheme.secondaryContainer,
       width: double.infinity,
@@ -246,10 +313,19 @@ class _ContactPageState extends State<ContactPage> {
             const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: TextScroll(
-                '${contact.titleWithoutNick}      ',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
+              child: title.length > 10
+                  ? TextScroll(
+                      textAlign: TextAlign.center,
+                      title,
+                      numberOfReps: 2,
+                      selectable: true,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    )
+                  : Text(
+                      title,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
             ),
           ],
         ),
@@ -297,4 +373,21 @@ class _ContactPageState extends State<ContactPage> {
       ),
     );
   }
+}
+
+Widget _buildBadge(BuildContext context, int count) {
+  return Container(
+    width: 30,
+    height: 30,
+    padding: const EdgeInsets.all(8),
+    decoration: BoxDecoration(
+      color: Theme.of(context).colorScheme.primary,
+      borderRadius: BorderRadius.circular(30),
+    ),
+    child: Center(
+        child: Text(
+      '$count',
+      style: const TextStyle(color: Colors.white),
+    )),
+  );
 }

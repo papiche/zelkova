@@ -31,7 +31,7 @@ class _TransactionItemTimeState extends State<TransactionItemTime> {
         _isFullText
             ? humanizeTimeFull(
                 locale: widget.locale, utcDateTime: widget.transactionTime)
-            : humanizeTime(widget.transactionTime, widget.locale) ?? '',
+            : humanizeTime(widget.transactionTime, widget.locale),
         style: const TextStyle(
           fontSize: 12.0,
           color: Colors.grey,

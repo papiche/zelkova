@@ -8,6 +8,8 @@ import 'package:latlong2/latlong.dart';
 import '../../g1/g1_helper.dart';
 import '../../g1/g1_v2_helper.dart';
 import '../../ui/ui_helpers.dart';
+import 'cert.dart';
+import 'identity_status.dart';
 import 'is_json_serializable.dart';
 import 'model_utils.dart';
 
@@ -31,12 +33,40 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
       this.indexRequestCid,
       this.socials,
       this.time,
-      this.certifiedFrom,
-      this.certifiedTo})
+      this.certsIssued,
+      this.certsReceived,
+      this.status,
+      this.isMember,
+      this.createdOn,
+      this.expireOn})
       :
         // ensure that Contact does not have v1 checksums
         pubKey = extractPublicKey(pubKey),
         address = address ?? addressFromV1Pubkey(extractPublicKey(pubKey));
+
+  factory Contact.withIdentityFields({
+    String? nick,
+    required String pubKey,
+    String? address,
+    List<Cert>? certsReceived,
+    List<Cert>? certsIssued,
+    IdentityStatus? status,
+    bool? isMember,
+    int? createdOn,
+    int? expireOn,
+  }) {
+    return Contact(
+      nick: nick,
+      pubKey: pubKey,
+      address: address,
+      certsReceived: certsReceived,
+      certsIssued: certsIssued,
+      status: status,
+      isMember: isMember,
+      createdOn: createdOn,
+      expireOn: expireOn,
+    );
+  }
 
   factory Contact.fromJson(Map<String, dynamic> json) =>
       _$ContactFromJson(json);
@@ -56,8 +86,12 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
       this.indexRequestCid,
       this.socials,
       this.time,
-      this.certifiedFrom,
-      this.certifiedTo});
+      this.certsIssued,
+      this.certsReceived,
+      this.status,
+      this.isMember,
+      this.createdOn,
+      this.expireOn});
 
   factory Contact.withPubKey(
       {String? nick,
@@ -72,8 +106,8 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
       LatLng? geoLoc,
       String? indexRequestCid,
       List<Map<String, String>>? socials,
-      List<String>? certifiedTo,
-      List<String>? certifiedFrom,
+      List<Cert>? certsReceived,
+      List<Cert>? certsIssued,
       DateTime? time}) {
     return Contact._(
         nick: nick,
@@ -90,8 +124,8 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
         indexRequestCid: indexRequestCid,
         socials: socials,
         time: time,
-        certifiedTo: certifiedTo,
-        certifiedFrom: certifiedFrom);
+        certsReceived: certsReceived,
+        certsIssued: certsIssued);
   }
 
   factory Contact.empty() {
@@ -115,7 +149,13 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
       LatLng? geoLoc,
       String? indexRequestCid,
       List<Map<String, String>>? socials,
-      DateTime? time}) {
+      DateTime? time,
+      List<Cert>? certsReceived,
+      List<Cert>? certsIssued,
+      IdentityStatus? status,
+      bool? isMember,
+      int? createdOn,
+      int? expireOn}) {
     return Contact._(
         nick: nick,
         pubKey: v1pubkeyFromAddress(address),
@@ -130,7 +170,13 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
         geoLoc: geoLoc,
         indexRequestCid: indexRequestCid,
         socials: socials,
-        time: time);
+        time: time,
+        certsReceived: certsReceived,
+        certsIssued: certsIssued,
+        status: status,
+        isMember: isMember,
+        createdOn: createdOn,
+        expireOn: expireOn);
   }
 
   final String? nick;
@@ -148,24 +194,51 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
   final String? indexRequestCid;
   final List<Map<String, String>>? socials;
   final DateTime? time;
-  final List<String>? certifiedTo;
-  final List<String>? certifiedFrom;
+
+  // identity fields
+  final List<Cert>? certsReceived;
+  final List<Cert>? certsIssued;
+  final IdentityStatus? status;
+  final bool? isMember;
+  final int? createdOn;
+  final int? expireOn;
 
   Contact merge(Contact c) {
     return Contact(
-        nick: c.nick ?? nick,
-        pubKey: c.pubKey,
-        avatar: c.avatar ?? avatar,
-        notes: c.notes ?? notes,
-        name: c.name ?? name,
-        avatarCid: c.avatarCid ?? avatarCid,
-        description: c.description ?? description,
-        city: c.city ?? city,
-        dataCid: c.dataCid ?? dataCid,
-        geoLoc: c.geoLoc ?? geoLoc,
-        indexRequestCid: c.indexRequestCid ?? indexRequestCid,
-        socials: c.socials ?? socials,
-        time: c.time ?? time);
+      nick: c.nick ?? nick,
+      pubKey: c.pubKey,
+      avatar: c.avatar ?? avatar,
+      notes: c.notes ?? notes,
+      name: c.name ?? name,
+      avatarCid: c.avatarCid ?? avatarCid,
+      description: c.description ?? description,
+      city: c.city ?? city,
+      dataCid: c.dataCid ?? dataCid,
+      geoLoc: c.geoLoc ?? geoLoc,
+      indexRequestCid: c.indexRequestCid ?? indexRequestCid,
+      socials: c.socials ?? socials,
+      time: c.time ?? time,
+      certsIssued: _mergeCertLists(c.certsIssued, certsIssued),
+      certsReceived: _mergeCertLists(c.certsReceived, certsReceived),
+      status: c.status ?? status,
+      isMember: c.isMember ?? isMember,
+      createdOn: c.createdOn ?? createdOn,
+      expireOn: c.expireOn ?? expireOn,
+    );
+  }
+
+  List<Cert>? _mergeCertLists(List<Cert>? listA, List<Cert>? listB) {
+    if (listA == null && listB == null) {
+      return null;
+    }
+    if (listA == null) {
+      return listB;
+    }
+    if (listB == null) {
+      return listA;
+    }
+
+    return listB;
   }
 
   @override
@@ -185,8 +258,13 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
         indexRequestCid,
         socials,
         time,
-        certifiedFrom,
-        certifiedTo
+        certsIssued,
+        certsReceived,
+        certsIssued,
+        status,
+        isMember,
+        createdOn,
+        expireOn
       ];
 
   // Only avatar binary
@@ -240,4 +318,6 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
 
   bool keyEqual(Contact other) =>
       extractPublicKey(pubKey) == extractPublicKey(other.pubKey);
+
+  bool get isV2 => createdOn != null && createdOn! > 0;
 }

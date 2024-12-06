@@ -11,10 +11,6 @@ import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-que
 import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-queries.req.gql.dart';
 import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-queries.var.gql.dart';
 import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod.schema.schema.gql.dart';
-import 'package:duniter_indexer/duniter_indexer_client.dart';
-import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.data.gql.dart';
-import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.req.gql.dart';
-import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.var.gql.dart';
 import 'package:ferry/ferry.dart' as ferry;
 import 'package:ferry_hive_store/ferry_hive_store.dart';
 import 'package:get_it/get_it.dart';
@@ -32,7 +28,7 @@ import '../ui/contacts_cache.dart';
 import '../ui/logger.dart';
 import '../ui/ui_helpers.dart';
 import 'api.dart';
-import 'g1_helper.dart';
+import 'duniter_indexer_helper.dart';
 import 'g1_v2_helper.dart';
 
 Future<Uint8List?> fetchAndResizeAvatar(String? avatarCid,
@@ -117,80 +113,6 @@ Future<Contact> createContactFromProfile(
   );
 }
 
-Future<List<Contact>> searchWotV2(String searchPatternRaw) async {
-  final List<Contact> contacts = <Contact>[];
-  for (final Node node in NodeManager().getBestNodes(NodeType.duniterIndexer)) {
-    loggerDev('Searching indexer v2 with pattern $searchPatternRaw');
-    try {
-      // if is a v1Key, search pubkey
-      final String searchPattern = validateKey(searchPatternRaw)
-          ? addressFromV1Pubkey(searchPatternRaw)
-          : searchPatternRaw;
-      loggerDev("Searching indexer v2 with '$searchPattern'");
-
-      if (searchPattern.length < 8) {
-        loggerDev('Searching wot by name');
-        final GAccountsByNameReq req = GAccountsByNameReq(
-            (GAccountsByNameReqBuilder b) => b..vars.pattern = searchPattern);
-        // Warn: We are caching results in the hive store
-        final ferry.Client client = await initDuniterIndexerClient(
-            node.url, GetIt.instance<HiveStore>());
-
-        final ferry.OperationResponse<GAccountsByNameData, GAccountsByNameVars>
-            response = await client.request(req).first;
-        if (response.hasErrors) {
-          loggerDev('Error: ${response.linkException?.originalException}');
-        } else {
-          final GAccountsByNameData? accounts = response.data;
-          for (final GAccountsByNameData_identity account
-              in accounts!.identity) {
-            final String? address = account.accountId;
-            if (address == null) {
-              loggerDev('ERROR: Pubkey is null');
-            } else {
-              contacts.add(
-                  Contact.withAddress(nick: account.name, address: address));
-            }
-          }
-        }
-      } else {
-        loggerDev('Searching wot by name or pk');
-        final GAccountsByNameOrPkReq req = GAccountsByNameOrPkReq(
-            (GAccountsByNameOrPkReqBuilder b) =>
-                b..vars.pattern = searchPattern);
-        final ferry.Client client = await initDuniterIndexerClient(
-            node.url, GetIt.instance<HiveStore>());
-
-        final ferry
-            .OperationResponse<GAccountsByNameOrPkData, GAccountsByNameOrPkVars>
-            response = await client.request(req).first;
-
-        if (response.hasErrors) {
-          loggerDev('Error: ${response.linkException?.originalException}');
-        } else {
-          final GAccountsByNameOrPkData? accounts = response.data;
-          for (final GAccountsByNameOrPkData_identity account
-              in accounts!.identity) {
-            final String? address = account.accountId;
-            if (address == null) {
-              loggerDev('ERROR: Pubkey is null');
-            } else {
-              contacts.add(
-                  Contact.withAddress(nick: account.name, address: address));
-            }
-          }
-        }
-      }
-    } catch (e) {
-      loggerDev('Error searching wot: $e');
-    }
-    loggerDev('Contacts found in wot search ${contacts.length}');
-    return contacts;
-  }
-  loggerDev('Contacts not found in wot search');
-  return contacts;
-}
-
 Future<GGetProfileByAddressData_profiles?> _searchProfileByPKV2(
     String pubkey) async {
   for (final Node node
@@ -236,11 +158,8 @@ Future<Contact> getProfileV2(String pubKey,
     c = Contact.withAddress(address: address);
   }
   if (!onlyCPlusProfile) {
-    final List<Contact> wotList = await searchWotV2(pubKey);
-    if (wotList.isNotEmpty) {
-      final Contact cWot = wotList[0];
-      c = c.merge(cWot);
-    }
+    final Contact cWot = await getAccount(address: c.address);
+    c = c.merge(cWot);
   }
   logger('Contact retrieved in getProfile $c (c+ only $onlyCPlusProfile)');
   ContactsCache().addContact(c);

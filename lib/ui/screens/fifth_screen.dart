@@ -10,6 +10,7 @@ import 'package:share_plus/share_plus.dart';
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
 import '../../data/models/cesium_card.dart';
+import '../../data/models/contact.dart';
 import '../../data/models/node_manager.dart';
 import '../../data/models/theme_cubit.dart';
 import '../../g1/currency.dart';
@@ -21,6 +22,7 @@ import '../tutorial_keys.dart';
 import '../ui_helpers.dart';
 import '../widgets/bottom_widget.dart';
 import '../widgets/card_drawer.dart';
+import '../widgets/contacts_actions.dart';
 import '../widgets/faq.dart';
 import '../widgets/fifth_screen/export_dialog.dart';
 import '../widgets/fifth_screen/fifth_tutorial.dart';
@@ -119,71 +121,83 @@ class _FifthScreenState extends State<FifthScreen> {
                 physics: const BouncingScrollPhysics(),
                 children: <Widget>[
                   const SizedBox(height: 10),
-                  DropdownButtonFormField<Locale>(
-                    value: context.locale,
-                    decoration: InputDecoration(
-                      labelText: tr('language_switch_title'),
-                      icon: const Icon(Icons.language),
-                      border: const OutlineInputBorder(),
-                    ),
-                    onChanged: (Locale? newLocale) {
-                      context.setLocale(newLocale!);
-                    },
-                    items: const <DropdownMenuItem<Locale>>[
-                      DropdownMenuItem<Locale>(
-                        value: Locale('es', 'AST'),
-                        child: Text('Asturianu'),
-                      ),
-                      DropdownMenuItem<Locale>(
-                        value: Locale('ca'),
-                        child: Text('Català'),
-                      ),
-                      DropdownMenuItem<Locale>(
-                        value: Locale('da'),
-                        child: Text('Dansk'),
-                      ),
-                      DropdownMenuItem<Locale>(
-                        value: Locale('de'),
-                        child: Text('Deutsch'),
-                      ),
-                      DropdownMenuItem<Locale>(
-                        value: Locale('en'),
-                        child: Text('English'),
-                      ),
-                      DropdownMenuItem<Locale>(
-                        value: Locale('eo'),
-                        child: Text('Esperanto'),
-                      ),
-                      DropdownMenuItem<Locale>(
-                        value: Locale('es'),
-                        child: Text('Español'),
-                      ),
-                      DropdownMenuItem<Locale>(
-                        value: Locale('eu'),
-                        child: Text('Euskara'),
-                      ),
-                      DropdownMenuItem<Locale>(
-                        value: Locale('fr'),
-                        child: Text('Français'),
-                      ),
-                      DropdownMenuItem<Locale>(
-                        value: Locale('gl'),
-                        child: Text('Galego'),
-                      ),
-                      DropdownMenuItem<Locale>(
-                        value: Locale('nl'),
-                        child: Text('Nederlands'),
-                      ),
-                      DropdownMenuItem<Locale>(
-                        value: Locale('it'),
-                        child: Text('Italiano'),
-                      ),
-                      DropdownMenuItem<Locale>(
-                        value: Locale('pt'),
-                        child: Text('Português'),
-                      ),
-                    ],
-                  ),
+                  ListTile(
+                      title: Text(tr('info_this_wallet')),
+                      leading: const Icon(Icons.wallet),
+                      onTap: () {
+                        showContactPage(
+                            context,
+                            Contact(
+                                pubKey: SharedPreferencesHelper().getPubKey()));
+                      }),
+                  const SizedBox(height: 15),
+                  Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: DropdownButtonFormField<Locale>(
+                        value: context.locale,
+                        decoration: InputDecoration(
+                          labelText: tr('language_switch_title'),
+                          icon: const Icon(Icons.language),
+                          border: const OutlineInputBorder(),
+                        ),
+                        onChanged: (Locale? newLocale) {
+                          context.setLocale(newLocale!);
+                        },
+                        items: const <DropdownMenuItem<Locale>>[
+                          DropdownMenuItem<Locale>(
+                            value: Locale('es', 'AST'),
+                            child: Text('Asturianu'),
+                          ),
+                          DropdownMenuItem<Locale>(
+                            value: Locale('ca'),
+                            child: Text('Català'),
+                          ),
+                          DropdownMenuItem<Locale>(
+                            value: Locale('da'),
+                            child: Text('Dansk'),
+                          ),
+                          DropdownMenuItem<Locale>(
+                            value: Locale('de'),
+                            child: Text('Deutsch'),
+                          ),
+                          DropdownMenuItem<Locale>(
+                            value: Locale('en'),
+                            child: Text('English'),
+                          ),
+                          DropdownMenuItem<Locale>(
+                            value: Locale('eo'),
+                            child: Text('Esperanto'),
+                          ),
+                          DropdownMenuItem<Locale>(
+                            value: Locale('es'),
+                            child: Text('Español'),
+                          ),
+                          DropdownMenuItem<Locale>(
+                            value: Locale('eu'),
+                            child: Text('Euskara'),
+                          ),
+                          DropdownMenuItem<Locale>(
+                            value: Locale('fr'),
+                            child: Text('Français'),
+                          ),
+                          DropdownMenuItem<Locale>(
+                            value: Locale('gl'),
+                            child: Text('Galego'),
+                          ),
+                          DropdownMenuItem<Locale>(
+                            value: Locale('nl'),
+                            child: Text('Nederlands'),
+                          ),
+                          DropdownMenuItem<Locale>(
+                            value: Locale('it'),
+                            child: Text('Italiano'),
+                          ),
+                          DropdownMenuItem<Locale>(
+                            value: Locale('pt'),
+                            child: Text('Português'),
+                          ),
+                        ],
+                      )),
                   const TextDivider(text: 'key_tools_title'),
                   const SizedBox(height: 20),
                   GridView.count(

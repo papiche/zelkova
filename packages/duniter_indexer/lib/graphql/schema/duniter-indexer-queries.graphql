@@ -1,4 +1,225 @@
-query AccountsByNameOrPk($pattern: String) {
+fragment CertFields on Cert {
+    id
+    issuerId
+    issuer {
+        ...IdentityBasicFields
+    }
+    receiverId
+    receiver {
+        ...IdentityBasicFields
+    }
+    createdOn
+    expireOn
+    isActive
+    updatedOn
+}
+
+fragment SmithCertFields on SmithCert {
+    id
+    issuerId
+    receiverId
+    createdOn
+}
+
+
+fragment SmithFields on Smith {
+    id
+    forged
+    index
+    lastChanged
+    lastForged
+    smithCertIssued {
+        ...SmithCertFields
+    }
+    smithCertReceived {
+        ...SmithCertFields
+    }
+}
+
+fragment OwnerKeyChangeFields on ChangeOwnerKey {
+    id
+    blockNumber
+    identityId
+    nextId
+    previousId
+}
+
+fragment IdentityBasicFields on Identity {
+    accountId
+    id
+    isMember
+    status
+    name
+    status
+}
+
+fragment IdentityFields on Identity {
+    # account {
+    #    createdOn
+    #    id
+    #    isActive
+    #}
+    accountId
+    accountRemovedId
+    certIssued (where: { isActive: { _eq: true } }) {
+        ...CertFields
+    }
+    certIssuedAggregate (where: { isActive: { _eq: true } }) {
+        aggregate {
+            count
+        }
+    }
+    certReceived (where: { isActive: { _eq: true } }) {
+        ...CertFields
+    }
+    certReceivedAggregate (where: { isActive: { _eq: true } }) {
+        aggregate {
+            count
+        }
+    }
+    createdInId
+    createdOn
+    expireOn
+    id
+    index
+    isMember
+    lastChangeOn
+    linkedAccount {
+        id
+        #     ...AccountFields
+    }
+    linkedAccountAggregate {
+        aggregate {
+            count
+        }
+    }
+    status
+    membershipHistory {
+        blockNumber
+        eventId
+        eventType
+        id
+        identityId
+    }
+    membershipHistoryAggregate {
+        aggregate {
+            count
+        }
+    }
+    name
+    ownerKeyChange {
+        ...OwnerKeyChangeFields
+    }
+    ownerKeyChangeAggregate {
+        aggregate {
+            count
+        }
+    }
+    status
+    smith {
+        ...SmithFields
+    }
+    udHistory {
+        id
+        amount
+        timestamp
+    }
+}
+
+fragment CommentsIssued on TxComment {
+    authorId
+    blockNumber
+    eventId
+    hash
+    id
+    remark
+    type
+}
+
+
+fragment AccountBasicFields on Account {
+    createdOn
+    id
+    identity {
+        ...IdentityBasicFields
+    }
+    isActive
+}
+
+fragment AccountFields on Account {
+    commentsIssued {
+        ...CommentsIssued
+    }
+    commentsIssuedAggregate {
+        aggregate {
+            count
+        }
+    }
+    createdOn
+    id
+    identity {
+        ...IdentityFields
+    }
+    isActive
+    linkedIdentity {
+        ...IdentityBasicFields
+    }
+    removedIdentities {
+        ...IdentityBasicFields
+    }
+    removedIdentitiesAggregate {
+        aggregate {
+            count
+        }
+    }
+    transfersIssued(limit: $limit, offset: $offset, orderBy: { timestamp: DESC }) {
+        ...TransferFields
+    }
+    transfersIssuedAggregate {
+        aggregate {
+            sum {
+                amount
+            }
+            count
+        }
+    }
+    transfersReceived(limit: $limit, offset: $offset, orderBy: { timestamp: DESC }) {
+        ...TransferFields
+    }
+    transfersReceivedAggregate {
+        aggregate {
+            sum {
+                amount
+            }
+            count
+        }
+    }
+    wasIdentity {
+        ...OwnerKeyChangeFields
+    }
+    wasIdentityAggregate {
+        aggregate {
+            count
+        }
+    }
+}
+
+fragment TransferFields on Transfer {
+    blockNumber
+    timestamp
+    amount
+    to {
+        id
+    }
+    from {
+        id
+    }
+    comment {
+        remark
+    }
+}
+
+query IdentitiesByNameOrPk($pattern: String) {
     identity(
         where: {
             _or: [
@@ -7,44 +228,39 @@ query AccountsByNameOrPk($pattern: String) {
             ]
         }
     ) {
-        isMember
-        name
-        accountId
-        status
-        createdOn
-        account {
-            isActive
-        }
-        index
+        ...IdentityFields
     }
 }
 
-# createdOn: "Block number of account creation", if account is created multiple times, this is the first creation block
-
-query AccountsByName($pattern: String) {
-    identity(
-        where:
-        { name: { _iregex: $pattern } }
-    ) {
-        isMember
-        name
-        accountId
-        status
-        createdOn
-        account {
-            isActive
-        }
-        index
+query IdentitiesByPk($pubKeys: [String!]!) {
+    identity(where: { accountId: { _in: $pubKeys } }) {
+        ...IdentityFields
     }
 }
 
+query IdentitiesByName($pattern: String) {
+    identity(where: { name: { _iregex: $pattern } }) {
+        ...IdentityFields
+    }
+}
 
-query AccountByPk ($id: String!)  {
+query AccountByPk($id: String!, $limit: Int, $offset: Int) {
     accountByPk(id: $id) {
-        isActive
+        ...AccountFields
     }
 }
 
+query AccountBasicByPk($id: String!) {
+    accountByPk(id: $id) {
+        ...AccountBasicFields
+    }
+}
+
+query AccountsByPk($accountIds: [String!]!, $limit: Int, $offset: Int) {
+    account(where: { id: { _in: $accountIds } }) {
+        ...AccountFields
+    }
+}
 
 query LastBlock {
     block(limit: 1, orderBy: {timestamp: DESC}) {
@@ -54,34 +270,6 @@ query LastBlock {
 
 query GetHistoryAndBalance($accountId: String!, $limit: Int, $offset: Int) {
     account(where: { id: { _eq: $accountId } }) {
-        id
-        transfersIssued(limit: $limit, offset: $offset, orderBy: { timestamp: DESC }) {
-            blockNumber
-            timestamp
-            amount
-            to {
-                id
-            }
-            from {
-                id
-            }
-            comment {
-                remark
-            }
-        }
-        transfersReceived(limit: $limit, offset: $offset, orderBy: { timestamp: DESC }) {
-            blockNumber
-            timestamp
-            amount
-            from {
-                id
-            }
-            to {
-                id
-            }
-            comment {
-                remark
-            }
-        }
+        ...AccountFields
     }
 }

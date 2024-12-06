@@ -219,9 +219,9 @@ DropdownMenuItem<Locale>(
 - de: Andreas Wahlen and FW
 - eo: flodef
 - eu: Anna Ayala Alcalá
-- fr: flodef, Hugo, Maaltir, poka and vincentux
+- fr: flodef, Hugo, Maaltir, Michel du 64, italpaola, poka and vincentux
 - gl: Vijitâtman
-- it: Anna Ayala Alcalá
+- it: Anna Ayala Alcalá, italpaola
 - nl: Maria Rosa Costa i Alandi
 - pt: Carlos Neto
 

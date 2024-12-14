@@ -319,5 +319,5 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
   bool keyEqual(Contact other) =>
       extractPublicKey(pubKey) == extractPublicKey(other.pubKey);
 
-  bool get isV2 => createdOn != null && createdOn! > 0;
+  bool get createdOnV2 => createdOn != null && createdOn! > 0;
 }

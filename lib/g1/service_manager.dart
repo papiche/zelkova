@@ -14,7 +14,7 @@ import 'transactions_v2_parser.dart';
 
 abstract class DuniterService {
   Future<Contact> getProfile(String pubKey,
-      {bool onlyCPlusProfile = false, bool resize = true});
+      {bool onlyProfile = false, bool resize = true, bool complete = false});
 
   Future<List<Contact>> getProfiles(List<String> pubKeys);
 
@@ -49,9 +49,8 @@ abstract class DuniterService {
 class DuniterServiceV1 implements DuniterService {
   @override
   Future<Contact> getProfile(String pubKey,
-      {bool onlyCPlusProfile = false, bool resize = true}) {
-    return getProfileV1(pubKey,
-        onlyCPlusProfile: onlyCPlusProfile, resize: resize);
+      {bool onlyProfile = false, bool resize = true, bool complete = false}) {
+    return getProfileV1(pubKey, onlyCPlusProfile: onlyProfile, resize: resize);
   }
 
   @override
@@ -122,8 +121,8 @@ class DuniterServiceV1 implements DuniterService {
 class DuniterServiceV2 implements DuniterService {
   @override
   Future<Contact> getProfile(String pubKey,
-      {bool onlyCPlusProfile = false, bool resize = true}) {
-    return getProfileV2(pubKey, onlyCPlusProfile: onlyCPlusProfile);
+      {bool onlyProfile = false, bool resize = true, bool complete = false}) {
+    return getProfileV2(pubKey, onlyProfile: onlyProfile, complete: complete);
   }
 
   @override
@@ -187,7 +186,7 @@ class DuniterServiceV2 implements DuniterService {
 
   @override
   Future<String?> getProfileUserName(String pubKey) async {
-    final Contact c = await getProfileV2(pubKey, onlyCPlusProfile: true);
+    final Contact c = await getProfileV2(pubKey, onlyProfile: true);
     return c.name;
   }
 }

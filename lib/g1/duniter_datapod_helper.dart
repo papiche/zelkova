@@ -146,7 +146,9 @@ Future<GGetProfileByAddressData_profiles?> _searchProfileByPKV2(
 }
 
 Future<Contact> getProfileV2(String pubKey,
-    {bool onlyCPlusProfile = false, bool resize = true}) async {
+    {bool onlyProfile = false,
+    bool resize = true,
+    bool complete = false}) async {
   loggerDev('Fetching profile v2 for pubkey $pubKey');
   final String address = addressFromV1PubkeyFaiSafe(pubKey);
   final GGetProfileByAddressData_profiles? profile =
@@ -157,11 +159,13 @@ Future<Contact> getProfileV2(String pubKey,
   } else {
     c = Contact.withAddress(address: address);
   }
-  if (!onlyCPlusProfile) {
-    final Contact cWot = await getAccount(address: c.address);
+  if (!onlyProfile) {
+    final Contact cWot = complete
+        ? await getAccount(address: c.address)
+        : await getAccountBasic(address: c.address);
     c = c.merge(cWot);
   }
-  logger('Contact retrieved in getProfile $c (c+ only $onlyCPlusProfile)');
+  logger('Contact retrieved in getProfile $c (c+ only $onlyProfile)');
   ContactsCache().addContact(c);
   return c;
 }
@@ -238,7 +242,7 @@ Future<List<Contact>> searchProfilesV2({
 
   for (final Node node
       in NodeManager().getBestNodes(NodeType.datapodEndpoint)) {
-    loggerDev('Searching profiles in node ${node.url} with term $searchTerm');
+    loggerDev("Searching profiles in node ${node.url} with term '$searchTerm'");
     try {
       final ferry.Client client =
           await initDuniterDatapodClient(node.url, GetIt.instance<HiveStore>());

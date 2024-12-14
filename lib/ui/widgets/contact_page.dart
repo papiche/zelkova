@@ -8,9 +8,11 @@ import 'package:text_scroll/text_scroll.dart';
 import '../../data/models/app_cubit.dart';
 import '../../data/models/contact.dart';
 import '../../data/models/contact_cubit.dart';
+import '../../data/models/menu_action.dart';
 import '../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../data/models/node_manager.dart';
 import '../../g1/api.dart';
+import '../../g1/wot_actions.dart';
 import '../../shared_prefs_helper.dart';
 import '../ui_helpers.dart';
 import 'certifications_page.dart';
@@ -30,11 +32,13 @@ class ContactPage extends StatefulWidget {
 class _ContactPageState extends State<ContactPage> {
   late MultiWalletTransactionCubit _txsCubit;
   bool isAvatarExpanded = false;
+  late bool isV2;
 
   @override
   void initState() {
     super.initState();
     _txsCubit = context.read<MultiWalletTransactionCubit>();
+    isV2 = context.read<AppCubit>().isV2();
     _updateBalance();
   }
 
@@ -52,8 +56,9 @@ class _ContactPageState extends State<ContactPage> {
   @override
   Widget build(BuildContext context) {
     final Contact contact = widget.contact;
+
     return FutureBuilder<Contact>(
-      future: getProfile(widget.contact.pubKey, resize: false),
+      future: getProfile(widget.contact.pubKey, resize: false, complete: true),
       builder: (BuildContext context, AsyncSnapshot<Contact> snapshot) {
         if (snapshot.hasData) {
           return _buildContactWidget(snapshot.data!, context);
@@ -71,12 +76,6 @@ class _ContactPageState extends State<ContactPage> {
     final String myPubKey = SharedPreferencesHelper().getPubKey();
     final bool me = isMe(contact, myPubKey);
     final List<SpeedDialChild> actions = <SpeedDialChild>[
-      if (!me && inDevelopment)
-        SpeedDialChild(
-          child: const Icon(Icons.verified),
-          label: tr('certify'),
-          onTap: () {},
-        ),
       if (isContact)
         SpeedDialChild(
           child: const Icon(Symbols.person_edit),
@@ -103,6 +102,27 @@ class _ContactPageState extends State<ContactPage> {
           },
         ),
     ];
+    if (isV2) {
+      getWotMenuActions(me, contact.status).forEach((MenuAction action) {
+        actions.add(
+          SpeedDialChild(
+            child: Icon(action.icon),
+            label: action.name,
+            onTap: () async {
+              final String msg = await action.action();
+              if (!context.mounted) {
+                return;
+              }
+              showAlertDialog(
+                context,
+                tr('result'),
+                msg,
+              );
+            },
+          ),
+        );
+      });
+    }
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -154,16 +174,16 @@ class _ContactPageState extends State<ContactPage> {
               leading: const Icon(Symbols.editor_choice),
               title: Text('@${contact.nick}'),
             ),
-          if (!contact.isV2) _buildQrListTile(contact),
-          if (context.watch<AppCubit>().isExpertMode && contact.isV2)
+          if (!contact.createdOnV2) _buildQrListTile(contact),
+          if (context.watch<AppCubit>().isExpertMode)
             _buildQrListTile(contact, isV2: true),
-          if (contact.status != null && inDevelopment)
+          if (contact.status != null)
             ListTile(
               leading: const Icon(Icons.build),
               title: Text(tr('status')),
               subtitle: Text(contact.status!.name),
             ),
-          if (contact.createdOn != null && inDevelopment)
+          if (contact.createdOn != null)
             ListTile(
               leading: const Icon(Icons.calendar_today),
               title: Text(tr('created_on')),

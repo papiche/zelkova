@@ -99,7 +99,7 @@ class ContactsCache {
     final Completer<Contact> completer = Completer<Contact>();
     _pendingRequests[pubKey] = <Completer<Contact>>[completer];
     try {
-      cachedContact = await getProfile(pubKey);
+      cachedContact = await getProfile(pubKey, complete: false);
       _storeContact(cachedContact);
       if (!kReleaseMode && debug) {
         logger('Returning non cached contact $cachedContact');

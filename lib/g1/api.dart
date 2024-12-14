@@ -934,7 +934,8 @@ void hashAndSign(Map<String, dynamic> data, CesiumWallet wallet) {
 }
 
 Future<String?> getProfileUserNameV1(String pubKey) async {
-  final Contact c = await getProfile(pubKey, onlyCPlusProfile: true);
+  final Contact c =
+      await getProfile(pubKey, onlyProfile: true, complete: false);
   return c.name;
 }
 
@@ -1237,11 +1238,14 @@ Future<NodeCheckResult> testDuniterV1Node(String node, Duration timeout) async {
 }
 
 Future<Contact> getProfile(String pubKeyRaw,
-    {bool onlyCPlusProfile = false, bool resize = true}) async {
+    {bool onlyProfile = false,
+    bool resize = true,
+    required bool complete}) async {
   return GetIt.instance<ServiceManager>().current.getProfile(
         pubKeyRaw,
-        onlyCPlusProfile: onlyCPlusProfile,
+        onlyProfile: onlyProfile,
         resize: resize,
+        complete: complete,
       );
 }
 

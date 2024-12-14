@@ -26,7 +26,7 @@ class ContactListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Contact>(
-        future: getProfile(contact.pubKey, resize: false),
+        future: getProfile(contact.pubKey, resize: false, complete: false),
         builder: (BuildContext context, AsyncSnapshot<Contact> snapshot) {
           if (snapshot.hasData) {
             return _buildListTile(snapshot.data!, context);
@@ -40,7 +40,7 @@ class ContactListItem extends StatelessWidget {
     final String title = contact.title;
     final Widget? subtitle = contact.subtitle != null
         ? Text(isV2
-            ? '${contact.isV2 ? contact.subtitleV2 : contact.subtitle!} ${subtitleExtra != null ? ' - $subtitleExtra' : ''}'
+            ? '${contact.createdOnV2 ? contact.subtitleV2 : contact.subtitle!} ${subtitleExtra != null ? ' - $subtitleExtra' : ''}'
             : contact.subtitle!)
         : null;
     return ListTile(

@@ -218,11 +218,9 @@ Future<BigInt?> getBalanceV2(
     try {
       final Address account = Address.decode(address);
       final Provider polkadot = Provider.fromUri(parseNodeUrl(node.url));
-      final AccountInfo accountInfo = await Gdev(polkadot)
-          .query
-          .system
-          .account(account.pubkey)
-          .timeout(timeout);
+      final Uint8List pubkey = account.pubkey;
+      final AccountInfo accountInfo =
+          await Gdev(polkadot).query.system.account(pubkey).timeout(timeout);
       return accountInfo.data.free;
     } catch (e, stacktrace) {
       NodeManager().increaseNodeErrors(NodeType.endpoint, node);
@@ -249,8 +247,7 @@ Future<tp.Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalanceV2(
     throw Exception('Error fetching balance for $pubKeyRaw/$address');
   }
 
-  loggerDev(
-      'Fetching history and balance for $pubKeyRaw/$address gives balance $balance');
+  loggerDev('Fetching balance for $pubKeyRaw/$address gives $balance');
 
   for (final Node node in NodeManager().getBestNodes(NodeType.duniterIndexer)) {
     try {
@@ -261,17 +258,17 @@ Future<tp.Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalanceV2(
 
       loggerDev('Fetching history for $pubKeyRaw/$address in node ${node.url}');
 
-      final GGetHistoryAndBalanceReq request =
-          GGetHistoryAndBalanceReq((GGetHistoryAndBalanceReqBuilder b) => b
+      final GAccountTransactionsReq request =
+          GAccountTransactionsReq((GAccountTransactionsReqBuilder b) => b
             ..fetchPolicy =
                 isConnected ? FetchPolicy.NetworkOnly : FetchPolicy.CacheFirst
             ..vars.accountId = address
             ..vars.limit = pageSize
             ..vars.offset = int.parse(cursor ?? '0'));
 
-      final ferry.OperationResponse<GGetHistoryAndBalanceData,
-              GGetHistoryAndBalanceVars> response =
-          await client.request(request).first;
+      final ferry
+          .OperationResponse<GAccountTransactionsData, GAccountTransactionsVars>
+          response = await client.request(request).first;
 
       if (response.hasErrors) {
         NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);

@@ -23,7 +23,12 @@ class QrListTile extends StatelessWidget {
         },
         child: ListTile(
             leading: const Icon(Icons.key),
-            trailing: const Icon(Icons.qr_code),
+            trailing: !isV2
+                ? const Icon(Icons.qr_code)
+                : const Badge(
+                    label: Text('v2'),
+                    child: Icon(Icons.qr_code),
+                  ),
             title: Text(!isV2
                 ? tr('form_contact_pub_key')
                 : tr('form_contact_address_v2')),

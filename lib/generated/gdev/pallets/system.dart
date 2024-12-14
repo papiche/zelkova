@@ -792,8 +792,8 @@ class Constants {
 
   /// The weight of runtime database operations the runtime can invoke.
   final _i25.RuntimeDbWeight dbWeight = _i25.RuntimeDbWeight(
-    read: BigInt.from(17872000),
-    write: BigInt.from(109046000),
+    read: BigInt.from(21040000),
+    write: BigInt.from(104032000),
   );
 
   /// Get the chain's in-code version.
@@ -801,7 +801,7 @@ class Constants {
     specName: 'gdev',
     implName: 'duniter-gdev',
     authoringVersion: 1,
-    specVersion: 803,
+    specVersion: 900,
     implVersion: 1,
     apis: [
       _i19.Tuple2<List<int>, int>(

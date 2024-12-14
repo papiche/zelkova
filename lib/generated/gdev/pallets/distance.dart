@@ -60,9 +60,9 @@ class Queries {
     valueCodec: _i5.BoolCodec.codec,
   );
 
-  final _i1.StorageValue<int> _currentPoolIndex = const _i1.StorageValue<int>(
+  final _i1.StorageValue<int> _currentPeriodIndex = const _i1.StorageValue<int>(
     prefix: 'Distance',
-    storage: 'CurrentPoolIndex',
+    storage: 'CurrentPeriodIndex',
     valueCodec: _i5.U32Codec.codec,
   );
 
@@ -163,15 +163,15 @@ class Queries {
     return false; /* Default */
   }
 
-  /// The current evaluation pool index.
-  _i6.Future<int> currentPoolIndex({_i1.BlockHash? at}) async {
-    final hashedKey = _currentPoolIndex.hashedKey();
+  /// The current evaluation period index.
+  _i6.Future<int> currentPeriodIndex({_i1.BlockHash? at}) async {
+    final hashedKey = _currentPeriodIndex.hashedKey();
     final bytes = await __api.getStorage(
       hashedKey,
       at: at,
     );
     if (bytes != null) {
-      return _currentPoolIndex.decodeValue(bytes);
+      return _currentPeriodIndex.decodeValue(bytes);
     }
     return 0; /* Default */
   }
@@ -212,9 +212,9 @@ class Queries {
     return hashedKey;
   }
 
-  /// Returns the storage key for `currentPoolIndex`.
-  _i7.Uint8List currentPoolIndexKey() {
-    final hashedKey = _currentPoolIndex.hashedKey();
+  /// Returns the storage key for `currentPeriodIndex`.
+  _i7.Uint8List currentPeriodIndexKey() {
+    final hashedKey = _currentPeriodIndex.hashedKey();
     return hashedKey;
   }
 

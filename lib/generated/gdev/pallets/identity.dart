@@ -342,10 +342,10 @@ class Constants {
   final int validationPeriod = 876600;
 
   /// The period before which an identity that lost membership is automatically revoked.
-  final int autorevocationPeriod = 5259600;
+  final int autorevocationPeriod = 438300;
 
   /// The period after which a revoked identity is removed and the keys are freed.
-  final int deletionPeriod = 52596000;
+  final int deletionPeriod = 438300;
 
   /// The minimum duration between two owner key changes to prevent identity theft.
   final int changeOwnerKeyPeriod = 100800;

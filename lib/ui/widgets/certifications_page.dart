@@ -28,18 +28,19 @@ class CertificationsPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
-                color: Theme.of(context).colorScheme.secondaryContainer,
+                color: Theme.of(context).colorScheme.primaryContainer,
                 width: double.infinity,
                 height: 40,
-                padding: const EdgeInsets.fromLTRB(75, 10, 0, 10),
-                child: Text(
+                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: Center(
+                    child: Text(
                   '$subtitle (${certifications.length})',
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         //fontWeight: FontWeight.w500,
                         color:
                             Theme.of(context).colorScheme.onSecondaryContainer,
                       ),
-                ),
+                )),
               ),
               Expanded(
                 child: ListView.builder(
@@ -48,7 +49,7 @@ class CertificationsPage extends StatelessWidget {
                     final Cert cert = certifications[index];
                     final Contact contact =
                         issued ? cert.receiverId : cert.issuerId;
-                    // FIXME I don't know how to calculate the cert date
+                    // FIXME Use block estimation to calculate the cert date
                     String? certDate = inDevelopment
                         ? humanizeTimeFull(
                             utcDateTime: DateTime.now()

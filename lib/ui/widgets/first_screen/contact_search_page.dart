@@ -62,6 +62,9 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
   late bool _isV2;
 
   Future<void> _search() async {
+    // Trim and remove tabs
+    _searchTerm = _searchTerm.replaceAll('\t', ' ');
+    _searchTerm = _searchTerm.trim();
     final ContactsCubit contactsCubit = context.read<ContactsCubit>();
 
     if (_searchTerm.length < minSearchLength) {
@@ -136,7 +139,8 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
                 // Users without c+ profile
                 final Contact cPlusProfile = await getProfile(
                     cachedWotProfile.pubKey,
-                    onlyCPlusProfile: true);
+                    onlyProfile: true,
+                    complete: false);
                 ContactsCache().addContact(cPlusProfile);
               }
             }

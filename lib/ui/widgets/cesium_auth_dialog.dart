@@ -44,7 +44,7 @@ class _CesiumAuthDialogState extends State<CesiumAuthDialog> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Contact>(
-      future: getProfile(widget.publicKey, onlyCPlusProfile: true),
+      future: getProfile(widget.publicKey, complete: false),
       builder: (BuildContext context, AsyncSnapshot<Contact> snapshot) {
         if (snapshot.hasData) {
           return _buildCustomAlertDialog(context, snapshot.data!);

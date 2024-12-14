@@ -10,6 +10,28 @@ import 'package:duniter_indexer/graphql/schema/__generated__/serializers.gql.dar
 
 part 'duniter-indexer-queries.var.gql.g.dart';
 
+abstract class GLastBlockVars
+    implements Built<GLastBlockVars, GLastBlockVarsBuilder> {
+  GLastBlockVars._();
+
+  factory GLastBlockVars([void Function(GLastBlockVarsBuilder b) updates]) =
+      _$GLastBlockVars;
+
+  static Serializer<GLastBlockVars> get serializer =>
+      _$gLastBlockVarsSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GLastBlockVars.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GLastBlockVars? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GLastBlockVars.serializer,
+        json,
+      );
+}
+
 abstract class GIdentitiesByNameOrPkVars
     implements
         Built<GIdentitiesByNameOrPkVars, GIdentitiesByNameOrPkVarsBuilder> {
@@ -108,30 +130,6 @@ abstract class GAccountByPkVars
       );
 }
 
-abstract class GAccountBasicByPkVars
-    implements Built<GAccountBasicByPkVars, GAccountBasicByPkVarsBuilder> {
-  GAccountBasicByPkVars._();
-
-  factory GAccountBasicByPkVars(
-          [void Function(GAccountBasicByPkVarsBuilder b) updates]) =
-      _$GAccountBasicByPkVars;
-
-  String get id;
-  static Serializer<GAccountBasicByPkVars> get serializer =>
-      _$gAccountBasicByPkVarsSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountBasicByPkVars.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountBasicByPkVars? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountBasicByPkVars.serializer,
-        json,
-      );
-}
-
 abstract class GAccountsByPkVars
     implements Built<GAccountsByPkVars, GAccountsByPkVarsBuilder> {
   GAccountsByPkVars._();
@@ -158,51 +156,79 @@ abstract class GAccountsByPkVars
       );
 }
 
-abstract class GLastBlockVars
-    implements Built<GLastBlockVars, GLastBlockVarsBuilder> {
-  GLastBlockVars._();
+abstract class GAccountBasicByPkVars
+    implements Built<GAccountBasicByPkVars, GAccountBasicByPkVarsBuilder> {
+  GAccountBasicByPkVars._();
 
-  factory GLastBlockVars([void Function(GLastBlockVarsBuilder b) updates]) =
-      _$GLastBlockVars;
+  factory GAccountBasicByPkVars(
+          [void Function(GAccountBasicByPkVarsBuilder b) updates]) =
+      _$GAccountBasicByPkVars;
 
-  static Serializer<GLastBlockVars> get serializer =>
-      _$gLastBlockVarsSerializer;
+  String get id;
+  static Serializer<GAccountBasicByPkVars> get serializer =>
+      _$gAccountBasicByPkVarsSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GLastBlockVars.serializer,
+        GAccountBasicByPkVars.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GLastBlockVars? fromJson(Map<String, dynamic> json) =>
+  static GAccountBasicByPkVars? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GLastBlockVars.serializer,
+        GAccountBasicByPkVars.serializer,
         json,
       );
 }
 
-abstract class GGetHistoryAndBalanceVars
-    implements
-        Built<GGetHistoryAndBalanceVars, GGetHistoryAndBalanceVarsBuilder> {
-  GGetHistoryAndBalanceVars._();
+abstract class GAccountsBasicByPkVars
+    implements Built<GAccountsBasicByPkVars, GAccountsBasicByPkVarsBuilder> {
+  GAccountsBasicByPkVars._();
 
-  factory GGetHistoryAndBalanceVars(
-          [void Function(GGetHistoryAndBalanceVarsBuilder b) updates]) =
-      _$GGetHistoryAndBalanceVars;
+  factory GAccountsBasicByPkVars(
+          [void Function(GAccountsBasicByPkVarsBuilder b) updates]) =
+      _$GAccountsBasicByPkVars;
+
+  BuiltList<String> get accountIds;
+  int? get limit;
+  int? get offset;
+  static Serializer<GAccountsBasicByPkVars> get serializer =>
+      _$gAccountsBasicByPkVarsSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsBasicByPkVars.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsBasicByPkVars? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountsBasicByPkVars.serializer,
+        json,
+      );
+}
+
+abstract class GAccountTransactionsVars
+    implements
+        Built<GAccountTransactionsVars, GAccountTransactionsVarsBuilder> {
+  GAccountTransactionsVars._();
+
+  factory GAccountTransactionsVars(
+          [void Function(GAccountTransactionsVarsBuilder b) updates]) =
+      _$GAccountTransactionsVars;
 
   String get accountId;
   int? get limit;
   int? get offset;
-  static Serializer<GGetHistoryAndBalanceVars> get serializer =>
-      _$gGetHistoryAndBalanceVarsSerializer;
+  static Serializer<GAccountTransactionsVars> get serializer =>
+      _$gAccountTransactionsVarsSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GGetHistoryAndBalanceVars.serializer,
+        GAccountTransactionsVars.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GGetHistoryAndBalanceVars? fromJson(Map<String, dynamic> json) =>
+  static GAccountTransactionsVars? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GGetHistoryAndBalanceVars.serializer,
+        GAccountTransactionsVars.serializer,
         json,
       );
 }
@@ -412,6 +438,31 @@ abstract class GAccountFieldsVars
   static GAccountFieldsVars? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
         GAccountFieldsVars.serializer,
+        json,
+      );
+}
+
+abstract class GAccountTxsFieldsVars
+    implements Built<GAccountTxsFieldsVars, GAccountTxsFieldsVarsBuilder> {
+  GAccountTxsFieldsVars._();
+
+  factory GAccountTxsFieldsVars(
+          [void Function(GAccountTxsFieldsVarsBuilder b) updates]) =
+      _$GAccountTxsFieldsVars;
+
+  int? get limit;
+  int? get offset;
+  static Serializer<GAccountTxsFieldsVars> get serializer =>
+      _$gAccountTxsFieldsVarsSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountTxsFieldsVars.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTxsFieldsVars? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountTxsFieldsVars.serializer,
         json,
       );
 }

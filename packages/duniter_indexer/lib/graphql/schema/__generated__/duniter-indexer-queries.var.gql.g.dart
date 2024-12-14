@@ -6,6 +6,8 @@ part of 'duniter-indexer-queries.var.gql.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
+Serializer<GLastBlockVars> _$gLastBlockVarsSerializer =
+    new _$GLastBlockVarsSerializer();
 Serializer<GIdentitiesByNameOrPkVars> _$gIdentitiesByNameOrPkVarsSerializer =
     new _$GIdentitiesByNameOrPkVarsSerializer();
 Serializer<GIdentitiesByPkVars> _$gIdentitiesByPkVarsSerializer =
@@ -14,14 +16,14 @@ Serializer<GIdentitiesByNameVars> _$gIdentitiesByNameVarsSerializer =
     new _$GIdentitiesByNameVarsSerializer();
 Serializer<GAccountByPkVars> _$gAccountByPkVarsSerializer =
     new _$GAccountByPkVarsSerializer();
-Serializer<GAccountBasicByPkVars> _$gAccountBasicByPkVarsSerializer =
-    new _$GAccountBasicByPkVarsSerializer();
 Serializer<GAccountsByPkVars> _$gAccountsByPkVarsSerializer =
     new _$GAccountsByPkVarsSerializer();
-Serializer<GLastBlockVars> _$gLastBlockVarsSerializer =
-    new _$GLastBlockVarsSerializer();
-Serializer<GGetHistoryAndBalanceVars> _$gGetHistoryAndBalanceVarsSerializer =
-    new _$GGetHistoryAndBalanceVarsSerializer();
+Serializer<GAccountBasicByPkVars> _$gAccountBasicByPkVarsSerializer =
+    new _$GAccountBasicByPkVarsSerializer();
+Serializer<GAccountsBasicByPkVars> _$gAccountsBasicByPkVarsSerializer =
+    new _$GAccountsBasicByPkVarsSerializer();
+Serializer<GAccountTransactionsVars> _$gAccountTransactionsVarsSerializer =
+    new _$GAccountTransactionsVarsSerializer();
 Serializer<GCertFieldsVars> _$gCertFieldsVarsSerializer =
     new _$GCertFieldsVarsSerializer();
 Serializer<GSmithCertFieldsVars> _$gSmithCertFieldsVarsSerializer =
@@ -40,8 +42,31 @@ Serializer<GAccountBasicFieldsVars> _$gAccountBasicFieldsVarsSerializer =
     new _$GAccountBasicFieldsVarsSerializer();
 Serializer<GAccountFieldsVars> _$gAccountFieldsVarsSerializer =
     new _$GAccountFieldsVarsSerializer();
+Serializer<GAccountTxsFieldsVars> _$gAccountTxsFieldsVarsSerializer =
+    new _$GAccountTxsFieldsVarsSerializer();
 Serializer<GTransferFieldsVars> _$gTransferFieldsVarsSerializer =
     new _$GTransferFieldsVarsSerializer();
+
+class _$GLastBlockVarsSerializer
+    implements StructuredSerializer<GLastBlockVars> {
+  @override
+  final Iterable<Type> types = const [GLastBlockVars, _$GLastBlockVars];
+  @override
+  final String wireName = 'GLastBlockVars';
+
+  @override
+  Iterable<Object?> serialize(Serializers serializers, GLastBlockVars object,
+      {FullType specifiedType = FullType.unspecified}) {
+    return <Object?>[];
+  }
+
+  @override
+  GLastBlockVars deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    return new GLastBlockVarsBuilder().build();
+  }
+}
 
 class _$GIdentitiesByNameOrPkVarsSerializer
     implements StructuredSerializer<GIdentitiesByNameOrPkVars> {
@@ -251,51 +276,6 @@ class _$GAccountByPkVarsSerializer
   }
 }
 
-class _$GAccountBasicByPkVarsSerializer
-    implements StructuredSerializer<GAccountBasicByPkVars> {
-  @override
-  final Iterable<Type> types = const [
-    GAccountBasicByPkVars,
-    _$GAccountBasicByPkVars
-  ];
-  @override
-  final String wireName = 'GAccountBasicByPkVars';
-
-  @override
-  Iterable<Object?> serialize(
-      Serializers serializers, GAccountBasicByPkVars object,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object?>[
-      'id',
-      serializers.serialize(object.id, specifiedType: const FullType(String)),
-    ];
-
-    return result;
-  }
-
-  @override
-  GAccountBasicByPkVars deserialize(
-      Serializers serializers, Iterable<Object?> serialized,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountBasicByPkVarsBuilder();
-
-    final iterator = serialized.iterator;
-    while (iterator.moveNext()) {
-      final key = iterator.current! as String;
-      iterator.moveNext();
-      final Object? value = iterator.current;
-      switch (key) {
-        case 'id':
-          result.id = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
-          break;
-      }
-    }
-
-    return result.build();
-  }
-}
-
 class _$GAccountsByPkVarsSerializer
     implements StructuredSerializer<GAccountsByPkVars> {
   @override
@@ -361,40 +341,133 @@ class _$GAccountsByPkVarsSerializer
   }
 }
 
-class _$GLastBlockVarsSerializer
-    implements StructuredSerializer<GLastBlockVars> {
-  @override
-  final Iterable<Type> types = const [GLastBlockVars, _$GLastBlockVars];
-  @override
-  final String wireName = 'GLastBlockVars';
-
-  @override
-  Iterable<Object?> serialize(Serializers serializers, GLastBlockVars object,
-      {FullType specifiedType = FullType.unspecified}) {
-    return <Object?>[];
-  }
-
-  @override
-  GLastBlockVars deserialize(
-      Serializers serializers, Iterable<Object?> serialized,
-      {FullType specifiedType = FullType.unspecified}) {
-    return new GLastBlockVarsBuilder().build();
-  }
-}
-
-class _$GGetHistoryAndBalanceVarsSerializer
-    implements StructuredSerializer<GGetHistoryAndBalanceVars> {
+class _$GAccountBasicByPkVarsSerializer
+    implements StructuredSerializer<GAccountBasicByPkVars> {
   @override
   final Iterable<Type> types = const [
-    GGetHistoryAndBalanceVars,
-    _$GGetHistoryAndBalanceVars
+    GAccountBasicByPkVars,
+    _$GAccountBasicByPkVars
   ];
   @override
-  final String wireName = 'GGetHistoryAndBalanceVars';
+  final String wireName = 'GAccountBasicByPkVars';
 
   @override
   Iterable<Object?> serialize(
-      Serializers serializers, GGetHistoryAndBalanceVars object,
+      Serializers serializers, GAccountBasicByPkVars object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      'id',
+      serializers.serialize(object.id, specifiedType: const FullType(String)),
+    ];
+
+    return result;
+  }
+
+  @override
+  GAccountBasicByPkVars deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GAccountBasicByPkVarsBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'id':
+          result.id = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GAccountsBasicByPkVarsSerializer
+    implements StructuredSerializer<GAccountsBasicByPkVars> {
+  @override
+  final Iterable<Type> types = const [
+    GAccountsBasicByPkVars,
+    _$GAccountsBasicByPkVars
+  ];
+  @override
+  final String wireName = 'GAccountsBasicByPkVars';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GAccountsBasicByPkVars object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      'accountIds',
+      serializers.serialize(object.accountIds,
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(String)])),
+    ];
+    Object? value;
+    value = object.limit;
+    if (value != null) {
+      result
+        ..add('limit')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.offset;
+    if (value != null) {
+      result
+        ..add('offset')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    return result;
+  }
+
+  @override
+  GAccountsBasicByPkVars deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GAccountsBasicByPkVarsBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'accountIds':
+          result.accountIds.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(String)]))!
+              as BuiltList<Object?>);
+          break;
+        case 'limit':
+          result.limit = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+        case 'offset':
+          result.offset = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GAccountTransactionsVarsSerializer
+    implements StructuredSerializer<GAccountTransactionsVars> {
+  @override
+  final Iterable<Type> types = const [
+    GAccountTransactionsVars,
+    _$GAccountTransactionsVars
+  ];
+  @override
+  final String wireName = 'GAccountTransactionsVars';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GAccountTransactionsVars object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
       'accountId',
@@ -418,10 +491,10 @@ class _$GGetHistoryAndBalanceVarsSerializer
   }
 
   @override
-  GGetHistoryAndBalanceVars deserialize(
+  GAccountTransactionsVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GGetHistoryAndBalanceVarsBuilder();
+    final result = new GAccountTransactionsVarsBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -695,6 +768,64 @@ class _$GAccountFieldsVarsSerializer
   }
 }
 
+class _$GAccountTxsFieldsVarsSerializer
+    implements StructuredSerializer<GAccountTxsFieldsVars> {
+  @override
+  final Iterable<Type> types = const [
+    GAccountTxsFieldsVars,
+    _$GAccountTxsFieldsVars
+  ];
+  @override
+  final String wireName = 'GAccountTxsFieldsVars';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GAccountTxsFieldsVars object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.limit;
+    if (value != null) {
+      result
+        ..add('limit')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.offset;
+    if (value != null) {
+      result
+        ..add('offset')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    return result;
+  }
+
+  @override
+  GAccountTxsFieldsVars deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GAccountTxsFieldsVarsBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'limit':
+          result.limit = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+        case 'offset':
+          result.offset = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
 class _$GTransferFieldsVarsSerializer
     implements StructuredSerializer<GTransferFieldsVars> {
   @override
@@ -717,6 +848,64 @@ class _$GTransferFieldsVarsSerializer
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     return new GTransferFieldsVarsBuilder().build();
+  }
+}
+
+class _$GLastBlockVars extends GLastBlockVars {
+  factory _$GLastBlockVars([void Function(GLastBlockVarsBuilder)? updates]) =>
+      (new GLastBlockVarsBuilder()..update(updates))._build();
+
+  _$GLastBlockVars._() : super._();
+
+  @override
+  GLastBlockVars rebuild(void Function(GLastBlockVarsBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GLastBlockVarsBuilder toBuilder() =>
+      new GLastBlockVarsBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GLastBlockVars;
+  }
+
+  @override
+  int get hashCode {
+    return 816187239;
+  }
+
+  @override
+  String toString() {
+    return newBuiltValueToStringHelper(r'GLastBlockVars').toString();
+  }
+}
+
+class GLastBlockVarsBuilder
+    implements Builder<GLastBlockVars, GLastBlockVarsBuilder> {
+  _$GLastBlockVars? _$v;
+
+  GLastBlockVarsBuilder();
+
+  @override
+  void replace(GLastBlockVars other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GLastBlockVars;
+  }
+
+  @override
+  void update(void Function(GLastBlockVarsBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GLastBlockVars build() => _build();
+
+  _$GLastBlockVars _build() {
+    final _$result = _$v ?? new _$GLastBlockVars._();
+    replace(_$result);
+    return _$result;
   }
 }
 
@@ -1090,92 +1279,6 @@ class GAccountByPkVarsBuilder
   }
 }
 
-class _$GAccountBasicByPkVars extends GAccountBasicByPkVars {
-  @override
-  final String id;
-
-  factory _$GAccountBasicByPkVars(
-          [void Function(GAccountBasicByPkVarsBuilder)? updates]) =>
-      (new GAccountBasicByPkVarsBuilder()..update(updates))._build();
-
-  _$GAccountBasicByPkVars._({required this.id}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(id, r'GAccountBasicByPkVars', 'id');
-  }
-
-  @override
-  GAccountBasicByPkVars rebuild(
-          void Function(GAccountBasicByPkVarsBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
-
-  @override
-  GAccountBasicByPkVarsBuilder toBuilder() =>
-      new GAccountBasicByPkVarsBuilder()..replace(this);
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(other, this)) return true;
-    return other is GAccountBasicByPkVars && id == other.id;
-  }
-
-  @override
-  int get hashCode {
-    var _$hash = 0;
-    _$hash = $jc(_$hash, id.hashCode);
-    _$hash = $jf(_$hash);
-    return _$hash;
-  }
-
-  @override
-  String toString() {
-    return (newBuiltValueToStringHelper(r'GAccountBasicByPkVars')
-          ..add('id', id))
-        .toString();
-  }
-}
-
-class GAccountBasicByPkVarsBuilder
-    implements Builder<GAccountBasicByPkVars, GAccountBasicByPkVarsBuilder> {
-  _$GAccountBasicByPkVars? _$v;
-
-  String? _id;
-  String? get id => _$this._id;
-  set id(String? id) => _$this._id = id;
-
-  GAccountBasicByPkVarsBuilder();
-
-  GAccountBasicByPkVarsBuilder get _$this {
-    final $v = _$v;
-    if ($v != null) {
-      _id = $v.id;
-      _$v = null;
-    }
-    return this;
-  }
-
-  @override
-  void replace(GAccountBasicByPkVars other) {
-    ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$GAccountBasicByPkVars;
-  }
-
-  @override
-  void update(void Function(GAccountBasicByPkVarsBuilder)? updates) {
-    if (updates != null) updates(this);
-  }
-
-  @override
-  GAccountBasicByPkVars build() => _build();
-
-  _$GAccountBasicByPkVars _build() {
-    final _$result = _$v ??
-        new _$GAccountBasicByPkVars._(
-            id: BuiltValueNullFieldError.checkNotNull(
-                id, r'GAccountBasicByPkVars', 'id'));
-    replace(_$result);
-    return _$result;
-  }
-}
-
 class _$GAccountsByPkVars extends GAccountsByPkVars {
   @override
   final BuiltList<String> accountIds;
@@ -1298,65 +1401,217 @@ class GAccountsByPkVarsBuilder
   }
 }
 
-class _$GLastBlockVars extends GLastBlockVars {
-  factory _$GLastBlockVars([void Function(GLastBlockVarsBuilder)? updates]) =>
-      (new GLastBlockVarsBuilder()..update(updates))._build();
+class _$GAccountBasicByPkVars extends GAccountBasicByPkVars {
+  @override
+  final String id;
 
-  _$GLastBlockVars._() : super._();
+  factory _$GAccountBasicByPkVars(
+          [void Function(GAccountBasicByPkVarsBuilder)? updates]) =>
+      (new GAccountBasicByPkVarsBuilder()..update(updates))._build();
+
+  _$GAccountBasicByPkVars._({required this.id}) : super._() {
+    BuiltValueNullFieldError.checkNotNull(id, r'GAccountBasicByPkVars', 'id');
+  }
 
   @override
-  GLastBlockVars rebuild(void Function(GLastBlockVarsBuilder) updates) =>
+  GAccountBasicByPkVars rebuild(
+          void Function(GAccountBasicByPkVarsBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GLastBlockVarsBuilder toBuilder() =>
-      new GLastBlockVarsBuilder()..replace(this);
+  GAccountBasicByPkVarsBuilder toBuilder() =>
+      new GAccountBasicByPkVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is GLastBlockVars;
+    return other is GAccountBasicByPkVars && id == other.id;
   }
 
   @override
   int get hashCode {
-    return 816187239;
+    var _$hash = 0;
+    _$hash = $jc(_$hash, id.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
   }
 
   @override
   String toString() {
-    return newBuiltValueToStringHelper(r'GLastBlockVars').toString();
+    return (newBuiltValueToStringHelper(r'GAccountBasicByPkVars')
+          ..add('id', id))
+        .toString();
   }
 }
 
-class GLastBlockVarsBuilder
-    implements Builder<GLastBlockVars, GLastBlockVarsBuilder> {
-  _$GLastBlockVars? _$v;
+class GAccountBasicByPkVarsBuilder
+    implements Builder<GAccountBasicByPkVars, GAccountBasicByPkVarsBuilder> {
+  _$GAccountBasicByPkVars? _$v;
 
-  GLastBlockVarsBuilder();
+  String? _id;
+  String? get id => _$this._id;
+  set id(String? id) => _$this._id = id;
 
-  @override
-  void replace(GLastBlockVars other) {
-    ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$GLastBlockVars;
+  GAccountBasicByPkVarsBuilder();
+
+  GAccountBasicByPkVarsBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _$v = null;
+    }
+    return this;
   }
 
   @override
-  void update(void Function(GLastBlockVarsBuilder)? updates) {
+  void replace(GAccountBasicByPkVars other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GAccountBasicByPkVars;
+  }
+
+  @override
+  void update(void Function(GAccountBasicByPkVarsBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  GLastBlockVars build() => _build();
+  GAccountBasicByPkVars build() => _build();
 
-  _$GLastBlockVars _build() {
-    final _$result = _$v ?? new _$GLastBlockVars._();
+  _$GAccountBasicByPkVars _build() {
+    final _$result = _$v ??
+        new _$GAccountBasicByPkVars._(
+            id: BuiltValueNullFieldError.checkNotNull(
+                id, r'GAccountBasicByPkVars', 'id'));
     replace(_$result);
     return _$result;
   }
 }
 
-class _$GGetHistoryAndBalanceVars extends GGetHistoryAndBalanceVars {
+class _$GAccountsBasicByPkVars extends GAccountsBasicByPkVars {
+  @override
+  final BuiltList<String> accountIds;
+  @override
+  final int? limit;
+  @override
+  final int? offset;
+
+  factory _$GAccountsBasicByPkVars(
+          [void Function(GAccountsBasicByPkVarsBuilder)? updates]) =>
+      (new GAccountsBasicByPkVarsBuilder()..update(updates))._build();
+
+  _$GAccountsBasicByPkVars._(
+      {required this.accountIds, this.limit, this.offset})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(
+        accountIds, r'GAccountsBasicByPkVars', 'accountIds');
+  }
+
+  @override
+  GAccountsBasicByPkVars rebuild(
+          void Function(GAccountsBasicByPkVarsBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GAccountsBasicByPkVarsBuilder toBuilder() =>
+      new GAccountsBasicByPkVarsBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GAccountsBasicByPkVars &&
+        accountIds == other.accountIds &&
+        limit == other.limit &&
+        offset == other.offset;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, accountIds.hashCode);
+    _$hash = $jc(_$hash, limit.hashCode);
+    _$hash = $jc(_$hash, offset.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GAccountsBasicByPkVars')
+          ..add('accountIds', accountIds)
+          ..add('limit', limit)
+          ..add('offset', offset))
+        .toString();
+  }
+}
+
+class GAccountsBasicByPkVarsBuilder
+    implements Builder<GAccountsBasicByPkVars, GAccountsBasicByPkVarsBuilder> {
+  _$GAccountsBasicByPkVars? _$v;
+
+  ListBuilder<String>? _accountIds;
+  ListBuilder<String> get accountIds =>
+      _$this._accountIds ??= new ListBuilder<String>();
+  set accountIds(ListBuilder<String>? accountIds) =>
+      _$this._accountIds = accountIds;
+
+  int? _limit;
+  int? get limit => _$this._limit;
+  set limit(int? limit) => _$this._limit = limit;
+
+  int? _offset;
+  int? get offset => _$this._offset;
+  set offset(int? offset) => _$this._offset = offset;
+
+  GAccountsBasicByPkVarsBuilder();
+
+  GAccountsBasicByPkVarsBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _accountIds = $v.accountIds.toBuilder();
+      _limit = $v.limit;
+      _offset = $v.offset;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GAccountsBasicByPkVars other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GAccountsBasicByPkVars;
+  }
+
+  @override
+  void update(void Function(GAccountsBasicByPkVarsBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GAccountsBasicByPkVars build() => _build();
+
+  _$GAccountsBasicByPkVars _build() {
+    _$GAccountsBasicByPkVars _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountsBasicByPkVars._(
+              accountIds: accountIds.build(), limit: limit, offset: offset);
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'accountIds';
+        accountIds.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountsBasicByPkVars', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GAccountTransactionsVars extends GAccountTransactionsVars {
   @override
   final String accountId;
   @override
@@ -1364,30 +1619,30 @@ class _$GGetHistoryAndBalanceVars extends GGetHistoryAndBalanceVars {
   @override
   final int? offset;
 
-  factory _$GGetHistoryAndBalanceVars(
-          [void Function(GGetHistoryAndBalanceVarsBuilder)? updates]) =>
-      (new GGetHistoryAndBalanceVarsBuilder()..update(updates))._build();
+  factory _$GAccountTransactionsVars(
+          [void Function(GAccountTransactionsVarsBuilder)? updates]) =>
+      (new GAccountTransactionsVarsBuilder()..update(updates))._build();
 
-  _$GGetHistoryAndBalanceVars._(
+  _$GAccountTransactionsVars._(
       {required this.accountId, this.limit, this.offset})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
-        accountId, r'GGetHistoryAndBalanceVars', 'accountId');
+        accountId, r'GAccountTransactionsVars', 'accountId');
   }
 
   @override
-  GGetHistoryAndBalanceVars rebuild(
-          void Function(GGetHistoryAndBalanceVarsBuilder) updates) =>
+  GAccountTransactionsVars rebuild(
+          void Function(GAccountTransactionsVarsBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GGetHistoryAndBalanceVarsBuilder toBuilder() =>
-      new GGetHistoryAndBalanceVarsBuilder()..replace(this);
+  GAccountTransactionsVarsBuilder toBuilder() =>
+      new GAccountTransactionsVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is GGetHistoryAndBalanceVars &&
+    return other is GAccountTransactionsVars &&
         accountId == other.accountId &&
         limit == other.limit &&
         offset == other.offset;
@@ -1405,7 +1660,7 @@ class _$GGetHistoryAndBalanceVars extends GGetHistoryAndBalanceVars {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'GGetHistoryAndBalanceVars')
+    return (newBuiltValueToStringHelper(r'GAccountTransactionsVars')
           ..add('accountId', accountId)
           ..add('limit', limit)
           ..add('offset', offset))
@@ -1413,10 +1668,10 @@ class _$GGetHistoryAndBalanceVars extends GGetHistoryAndBalanceVars {
   }
 }
 
-class GGetHistoryAndBalanceVarsBuilder
+class GAccountTransactionsVarsBuilder
     implements
-        Builder<GGetHistoryAndBalanceVars, GGetHistoryAndBalanceVarsBuilder> {
-  _$GGetHistoryAndBalanceVars? _$v;
+        Builder<GAccountTransactionsVars, GAccountTransactionsVarsBuilder> {
+  _$GAccountTransactionsVars? _$v;
 
   String? _accountId;
   String? get accountId => _$this._accountId;
@@ -1430,9 +1685,9 @@ class GGetHistoryAndBalanceVarsBuilder
   int? get offset => _$this._offset;
   set offset(int? offset) => _$this._offset = offset;
 
-  GGetHistoryAndBalanceVarsBuilder();
+  GAccountTransactionsVarsBuilder();
 
-  GGetHistoryAndBalanceVarsBuilder get _$this {
+  GAccountTransactionsVarsBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
       _accountId = $v.accountId;
@@ -1444,24 +1699,24 @@ class GGetHistoryAndBalanceVarsBuilder
   }
 
   @override
-  void replace(GGetHistoryAndBalanceVars other) {
+  void replace(GAccountTransactionsVars other) {
     ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$GGetHistoryAndBalanceVars;
+    _$v = other as _$GAccountTransactionsVars;
   }
 
   @override
-  void update(void Function(GGetHistoryAndBalanceVarsBuilder)? updates) {
+  void update(void Function(GAccountTransactionsVarsBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  GGetHistoryAndBalanceVars build() => _build();
+  GAccountTransactionsVars build() => _build();
 
-  _$GGetHistoryAndBalanceVars _build() {
+  _$GAccountTransactionsVars _build() {
     final _$result = _$v ??
-        new _$GGetHistoryAndBalanceVars._(
+        new _$GAccountTransactionsVars._(
             accountId: BuiltValueNullFieldError.checkNotNull(
-                accountId, r'GGetHistoryAndBalanceVars', 'accountId'),
+                accountId, r'GAccountTransactionsVars', 'accountId'),
             limit: limit,
             offset: offset);
     replace(_$result);
@@ -2037,6 +2292,99 @@ class GAccountFieldsVarsBuilder
   _$GAccountFieldsVars _build() {
     final _$result =
         _$v ?? new _$GAccountFieldsVars._(limit: limit, offset: offset);
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GAccountTxsFieldsVars extends GAccountTxsFieldsVars {
+  @override
+  final int? limit;
+  @override
+  final int? offset;
+
+  factory _$GAccountTxsFieldsVars(
+          [void Function(GAccountTxsFieldsVarsBuilder)? updates]) =>
+      (new GAccountTxsFieldsVarsBuilder()..update(updates))._build();
+
+  _$GAccountTxsFieldsVars._({this.limit, this.offset}) : super._();
+
+  @override
+  GAccountTxsFieldsVars rebuild(
+          void Function(GAccountTxsFieldsVarsBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GAccountTxsFieldsVarsBuilder toBuilder() =>
+      new GAccountTxsFieldsVarsBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GAccountTxsFieldsVars &&
+        limit == other.limit &&
+        offset == other.offset;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, limit.hashCode);
+    _$hash = $jc(_$hash, offset.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GAccountTxsFieldsVars')
+          ..add('limit', limit)
+          ..add('offset', offset))
+        .toString();
+  }
+}
+
+class GAccountTxsFieldsVarsBuilder
+    implements Builder<GAccountTxsFieldsVars, GAccountTxsFieldsVarsBuilder> {
+  _$GAccountTxsFieldsVars? _$v;
+
+  int? _limit;
+  int? get limit => _$this._limit;
+  set limit(int? limit) => _$this._limit = limit;
+
+  int? _offset;
+  int? get offset => _$this._offset;
+  set offset(int? offset) => _$this._offset = offset;
+
+  GAccountTxsFieldsVarsBuilder();
+
+  GAccountTxsFieldsVarsBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _limit = $v.limit;
+      _offset = $v.offset;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GAccountTxsFieldsVars other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GAccountTxsFieldsVars;
+  }
+
+  @override
+  void update(void Function(GAccountTxsFieldsVarsBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GAccountTxsFieldsVars build() => _build();
+
+  _$GAccountTxsFieldsVars _build() {
+    final _$result =
+        _$v ?? new _$GAccountTxsFieldsVars._(limit: limit, offset: offset);
     replace(_$result);
     return _$result;
   }

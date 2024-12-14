@@ -1,3 +1,9 @@
+query LastBlock {
+    block(limit: 1, orderBy: {timestamp: DESC}) {
+        height
+    }
+}
+
 fragment CertFields on Cert {
     id
     issuerId
@@ -46,19 +52,21 @@ fragment OwnerKeyChangeFields on ChangeOwnerKey {
 
 fragment IdentityBasicFields on Identity {
     accountId
+    account {
+        createdOn
+    }
     id
     isMember
     status
     name
     status
+    expireOn
 }
 
 fragment IdentityFields on Identity {
-    # account {
-    #    createdOn
-    #    id
-    #    isActive
-    #}
+    account {
+        createdOn
+    }
     accountId
     accountRemovedId
     certIssued (where: { isActive: { _eq: true } }) {
@@ -204,6 +212,43 @@ fragment AccountFields on Account {
     }
 }
 
+fragment AccountTxsFields on Account {
+    commentsIssued {
+        ...CommentsIssued
+    }
+    commentsIssuedAggregate {
+        aggregate {
+            count
+        }
+    }
+    createdOn
+    id
+    isActive
+    transfersIssued(limit: $limit, offset: $offset, orderBy: { timestamp: DESC }) {
+        ...TransferFields
+    }
+    transfersIssuedAggregate {
+        aggregate {
+            sum {
+                amount
+            }
+            count
+        }
+    }
+    transfersReceived(limit: $limit, offset: $offset, orderBy: { timestamp: DESC }) {
+        ...TransferFields
+    }
+    transfersReceivedAggregate {
+        aggregate {
+            sum {
+                amount
+            }
+            count
+        }
+    }
+}
+
+
 fragment TransferFields on Transfer {
     blockNumber
     timestamp
@@ -228,7 +273,7 @@ query IdentitiesByNameOrPk($pattern: String) {
             ]
         }
     ) {
-        ...IdentityFields
+        ...IdentityBasicFields
     }
 }
 
@@ -250,26 +295,26 @@ query AccountByPk($id: String!, $limit: Int, $offset: Int) {
     }
 }
 
-query AccountBasicByPk($id: String!) {
-    accountByPk(id: $id) {
-        ...AccountBasicFields
-    }
-}
-
 query AccountsByPk($accountIds: [String!]!, $limit: Int, $offset: Int) {
     account(where: { id: { _in: $accountIds } }) {
         ...AccountFields
     }
 }
 
-query LastBlock {
-    block(limit: 1, orderBy: {timestamp: DESC}) {
-        height
+query AccountBasicByPk($id: String!) {
+    accountByPk(id: $id) {
+        ...AccountBasicFields
     }
 }
 
-query GetHistoryAndBalance($accountId: String!, $limit: Int, $offset: Int) {
+query AccountsBasicByPk($accountIds: [String!]!, $limit: Int, $offset: Int) {
+    account(where: { id: { _in: $accountIds } }) {
+        ...AccountBasicFields
+    }
+}
+
+query AccountTransactions($accountId: String!, $limit: Int, $offset: Int) {
     account(where: { id: { _eq: $accountId } }) {
-        ...AccountFields
+        ...AccountTxsFields
     }
 }

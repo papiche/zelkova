@@ -18,6 +18,83 @@ import 'package:gql_exec/gql_exec.dart' as _i4;
 
 part 'duniter-indexer-queries.req.gql.g.dart';
 
+abstract class GLastBlockReq
+    implements
+        Built<GLastBlockReq, GLastBlockReqBuilder>,
+        _i1.OperationRequest<_i2.GLastBlockData, _i3.GLastBlockVars> {
+  GLastBlockReq._();
+
+  factory GLastBlockReq([void Function(GLastBlockReqBuilder b) updates]) =
+      _$GLastBlockReq;
+
+  static void _initializeBuilder(GLastBlockReqBuilder b) => b
+    ..operation = _i4.Operation(
+      document: _i5.document,
+      operationName: 'LastBlock',
+    )
+    ..executeOnListen = true;
+
+  @override
+  _i3.GLastBlockVars get vars;
+  @override
+  _i4.Operation get operation;
+  @override
+  _i4.Request get execRequest => _i4.Request(
+        operation: operation,
+        variables: vars.toJson(),
+        context: context ?? const _i4.Context(),
+      );
+
+  @override
+  String? get requestId;
+  @override
+  @BuiltValueField(serialize: false)
+  _i2.GLastBlockData? Function(
+    _i2.GLastBlockData?,
+    _i2.GLastBlockData?,
+  )? get updateResult;
+  @override
+  _i2.GLastBlockData? get optimisticResponse;
+  @override
+  String? get updateCacheHandlerKey;
+  @override
+  Map<String, dynamic>? get updateCacheHandlerContext;
+  @override
+  _i1.FetchPolicy? get fetchPolicy;
+  @override
+  bool get executeOnListen;
+  @override
+  @BuiltValueField(serialize: false)
+  _i4.Context? get context;
+  @override
+  _i2.GLastBlockData? parseData(Map<String, dynamic> json) =>
+      _i2.GLastBlockData.fromJson(json);
+
+  @override
+  Map<String, dynamic> varsToJson() => vars.toJson();
+
+  @override
+  Map<String, dynamic> dataToJson(_i2.GLastBlockData data) => data.toJson();
+
+  @override
+  _i1.OperationRequest<_i2.GLastBlockData, _i3.GLastBlockVars>
+      transformOperation(_i4.Operation Function(_i4.Operation) transform) =>
+          this.rebuild((b) => b..operation = transform(operation));
+
+  static Serializer<GLastBlockReq> get serializer => _$gLastBlockReqSerializer;
+
+  Map<String, dynamic> toJson() => (_i6.serializers.serializeWith(
+        GLastBlockReq.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GLastBlockReq? fromJson(Map<String, dynamic> json) =>
+      _i6.serializers.deserializeWith(
+        GLastBlockReq.serializer,
+        json,
+      );
+}
+
 abstract class GIdentitiesByNameOrPkReq
     implements
         Built<GIdentitiesByNameOrPkReq, GIdentitiesByNameOrPkReqBuilder>,
@@ -339,6 +416,84 @@ abstract class GAccountByPkReq
       );
 }
 
+abstract class GAccountsByPkReq
+    implements
+        Built<GAccountsByPkReq, GAccountsByPkReqBuilder>,
+        _i1.OperationRequest<_i2.GAccountsByPkData, _i3.GAccountsByPkVars> {
+  GAccountsByPkReq._();
+
+  factory GAccountsByPkReq([void Function(GAccountsByPkReqBuilder b) updates]) =
+      _$GAccountsByPkReq;
+
+  static void _initializeBuilder(GAccountsByPkReqBuilder b) => b
+    ..operation = _i4.Operation(
+      document: _i5.document,
+      operationName: 'AccountsByPk',
+    )
+    ..executeOnListen = true;
+
+  @override
+  _i3.GAccountsByPkVars get vars;
+  @override
+  _i4.Operation get operation;
+  @override
+  _i4.Request get execRequest => _i4.Request(
+        operation: operation,
+        variables: vars.toJson(),
+        context: context ?? const _i4.Context(),
+      );
+
+  @override
+  String? get requestId;
+  @override
+  @BuiltValueField(serialize: false)
+  _i2.GAccountsByPkData? Function(
+    _i2.GAccountsByPkData?,
+    _i2.GAccountsByPkData?,
+  )? get updateResult;
+  @override
+  _i2.GAccountsByPkData? get optimisticResponse;
+  @override
+  String? get updateCacheHandlerKey;
+  @override
+  Map<String, dynamic>? get updateCacheHandlerContext;
+  @override
+  _i1.FetchPolicy? get fetchPolicy;
+  @override
+  bool get executeOnListen;
+  @override
+  @BuiltValueField(serialize: false)
+  _i4.Context? get context;
+  @override
+  _i2.GAccountsByPkData? parseData(Map<String, dynamic> json) =>
+      _i2.GAccountsByPkData.fromJson(json);
+
+  @override
+  Map<String, dynamic> varsToJson() => vars.toJson();
+
+  @override
+  Map<String, dynamic> dataToJson(_i2.GAccountsByPkData data) => data.toJson();
+
+  @override
+  _i1.OperationRequest<_i2.GAccountsByPkData, _i3.GAccountsByPkVars>
+      transformOperation(_i4.Operation Function(_i4.Operation) transform) =>
+          this.rebuild((b) => b..operation = transform(operation));
+
+  static Serializer<GAccountsByPkReq> get serializer =>
+      _$gAccountsByPkReqSerializer;
+
+  Map<String, dynamic> toJson() => (_i6.serializers.serializeWith(
+        GAccountsByPkReq.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkReq? fromJson(Map<String, dynamic> json) =>
+      _i6.serializers.deserializeWith(
+        GAccountsByPkReq.serializer,
+        json,
+      );
+}
+
 abstract class GAccountBasicByPkReq
     implements
         Built<GAccountBasicByPkReq, GAccountBasicByPkReqBuilder>,
@@ -420,24 +575,26 @@ abstract class GAccountBasicByPkReq
       );
 }
 
-abstract class GAccountsByPkReq
+abstract class GAccountsBasicByPkReq
     implements
-        Built<GAccountsByPkReq, GAccountsByPkReqBuilder>,
-        _i1.OperationRequest<_i2.GAccountsByPkData, _i3.GAccountsByPkVars> {
-  GAccountsByPkReq._();
+        Built<GAccountsBasicByPkReq, GAccountsBasicByPkReqBuilder>,
+        _i1.OperationRequest<_i2.GAccountsBasicByPkData,
+            _i3.GAccountsBasicByPkVars> {
+  GAccountsBasicByPkReq._();
 
-  factory GAccountsByPkReq([void Function(GAccountsByPkReqBuilder b) updates]) =
-      _$GAccountsByPkReq;
+  factory GAccountsBasicByPkReq(
+          [void Function(GAccountsBasicByPkReqBuilder b) updates]) =
+      _$GAccountsBasicByPkReq;
 
-  static void _initializeBuilder(GAccountsByPkReqBuilder b) => b
+  static void _initializeBuilder(GAccountsBasicByPkReqBuilder b) => b
     ..operation = _i4.Operation(
       document: _i5.document,
-      operationName: 'AccountsByPk',
+      operationName: 'AccountsBasicByPk',
     )
     ..executeOnListen = true;
 
   @override
-  _i3.GAccountsByPkVars get vars;
+  _i3.GAccountsBasicByPkVars get vars;
   @override
   _i4.Operation get operation;
   @override
@@ -451,12 +608,12 @@ abstract class GAccountsByPkReq
   String? get requestId;
   @override
   @BuiltValueField(serialize: false)
-  _i2.GAccountsByPkData? Function(
-    _i2.GAccountsByPkData?,
-    _i2.GAccountsByPkData?,
+  _i2.GAccountsBasicByPkData? Function(
+    _i2.GAccountsBasicByPkData?,
+    _i2.GAccountsBasicByPkData?,
   )? get updateResult;
   @override
-  _i2.GAccountsByPkData? get optimisticResponse;
+  _i2.GAccountsBasicByPkData? get optimisticResponse;
   @override
   String? get updateCacheHandlerKey;
   @override
@@ -469,190 +626,114 @@ abstract class GAccountsByPkReq
   @BuiltValueField(serialize: false)
   _i4.Context? get context;
   @override
-  _i2.GAccountsByPkData? parseData(Map<String, dynamic> json) =>
-      _i2.GAccountsByPkData.fromJson(json);
+  _i2.GAccountsBasicByPkData? parseData(Map<String, dynamic> json) =>
+      _i2.GAccountsBasicByPkData.fromJson(json);
 
   @override
   Map<String, dynamic> varsToJson() => vars.toJson();
 
   @override
-  Map<String, dynamic> dataToJson(_i2.GAccountsByPkData data) => data.toJson();
-
-  @override
-  _i1.OperationRequest<_i2.GAccountsByPkData, _i3.GAccountsByPkVars>
-      transformOperation(_i4.Operation Function(_i4.Operation) transform) =>
-          this.rebuild((b) => b..operation = transform(operation));
-
-  static Serializer<GAccountsByPkReq> get serializer =>
-      _$gAccountsByPkReqSerializer;
-
-  Map<String, dynamic> toJson() => (_i6.serializers.serializeWith(
-        GAccountsByPkReq.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkReq? fromJson(Map<String, dynamic> json) =>
-      _i6.serializers.deserializeWith(
-        GAccountsByPkReq.serializer,
-        json,
-      );
-}
-
-abstract class GLastBlockReq
-    implements
-        Built<GLastBlockReq, GLastBlockReqBuilder>,
-        _i1.OperationRequest<_i2.GLastBlockData, _i3.GLastBlockVars> {
-  GLastBlockReq._();
-
-  factory GLastBlockReq([void Function(GLastBlockReqBuilder b) updates]) =
-      _$GLastBlockReq;
-
-  static void _initializeBuilder(GLastBlockReqBuilder b) => b
-    ..operation = _i4.Operation(
-      document: _i5.document,
-      operationName: 'LastBlock',
-    )
-    ..executeOnListen = true;
-
-  @override
-  _i3.GLastBlockVars get vars;
-  @override
-  _i4.Operation get operation;
-  @override
-  _i4.Request get execRequest => _i4.Request(
-        operation: operation,
-        variables: vars.toJson(),
-        context: context ?? const _i4.Context(),
-      );
-
-  @override
-  String? get requestId;
-  @override
-  @BuiltValueField(serialize: false)
-  _i2.GLastBlockData? Function(
-    _i2.GLastBlockData?,
-    _i2.GLastBlockData?,
-  )? get updateResult;
-  @override
-  _i2.GLastBlockData? get optimisticResponse;
-  @override
-  String? get updateCacheHandlerKey;
-  @override
-  Map<String, dynamic>? get updateCacheHandlerContext;
-  @override
-  _i1.FetchPolicy? get fetchPolicy;
-  @override
-  bool get executeOnListen;
-  @override
-  @BuiltValueField(serialize: false)
-  _i4.Context? get context;
-  @override
-  _i2.GLastBlockData? parseData(Map<String, dynamic> json) =>
-      _i2.GLastBlockData.fromJson(json);
-
-  @override
-  Map<String, dynamic> varsToJson() => vars.toJson();
-
-  @override
-  Map<String, dynamic> dataToJson(_i2.GLastBlockData data) => data.toJson();
-
-  @override
-  _i1.OperationRequest<_i2.GLastBlockData, _i3.GLastBlockVars>
-      transformOperation(_i4.Operation Function(_i4.Operation) transform) =>
-          this.rebuild((b) => b..operation = transform(operation));
-
-  static Serializer<GLastBlockReq> get serializer => _$gLastBlockReqSerializer;
-
-  Map<String, dynamic> toJson() => (_i6.serializers.serializeWith(
-        GLastBlockReq.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GLastBlockReq? fromJson(Map<String, dynamic> json) =>
-      _i6.serializers.deserializeWith(
-        GLastBlockReq.serializer,
-        json,
-      );
-}
-
-abstract class GGetHistoryAndBalanceReq
-    implements
-        Built<GGetHistoryAndBalanceReq, GGetHistoryAndBalanceReqBuilder>,
-        _i1.OperationRequest<_i2.GGetHistoryAndBalanceData,
-            _i3.GGetHistoryAndBalanceVars> {
-  GGetHistoryAndBalanceReq._();
-
-  factory GGetHistoryAndBalanceReq(
-          [void Function(GGetHistoryAndBalanceReqBuilder b) updates]) =
-      _$GGetHistoryAndBalanceReq;
-
-  static void _initializeBuilder(GGetHistoryAndBalanceReqBuilder b) => b
-    ..operation = _i4.Operation(
-      document: _i5.document,
-      operationName: 'GetHistoryAndBalance',
-    )
-    ..executeOnListen = true;
-
-  @override
-  _i3.GGetHistoryAndBalanceVars get vars;
-  @override
-  _i4.Operation get operation;
-  @override
-  _i4.Request get execRequest => _i4.Request(
-        operation: operation,
-        variables: vars.toJson(),
-        context: context ?? const _i4.Context(),
-      );
-
-  @override
-  String? get requestId;
-  @override
-  @BuiltValueField(serialize: false)
-  _i2.GGetHistoryAndBalanceData? Function(
-    _i2.GGetHistoryAndBalanceData?,
-    _i2.GGetHistoryAndBalanceData?,
-  )? get updateResult;
-  @override
-  _i2.GGetHistoryAndBalanceData? get optimisticResponse;
-  @override
-  String? get updateCacheHandlerKey;
-  @override
-  Map<String, dynamic>? get updateCacheHandlerContext;
-  @override
-  _i1.FetchPolicy? get fetchPolicy;
-  @override
-  bool get executeOnListen;
-  @override
-  @BuiltValueField(serialize: false)
-  _i4.Context? get context;
-  @override
-  _i2.GGetHistoryAndBalanceData? parseData(Map<String, dynamic> json) =>
-      _i2.GGetHistoryAndBalanceData.fromJson(json);
-
-  @override
-  Map<String, dynamic> varsToJson() => vars.toJson();
-
-  @override
-  Map<String, dynamic> dataToJson(_i2.GGetHistoryAndBalanceData data) =>
+  Map<String, dynamic> dataToJson(_i2.GAccountsBasicByPkData data) =>
       data.toJson();
 
   @override
-  _i1.OperationRequest<_i2.GGetHistoryAndBalanceData,
-      _i3.GGetHistoryAndBalanceVars> transformOperation(
-          _i4.Operation Function(_i4.Operation) transform) =>
-      this.rebuild((b) => b..operation = transform(operation));
+  _i1.OperationRequest<_i2.GAccountsBasicByPkData, _i3.GAccountsBasicByPkVars>
+      transformOperation(_i4.Operation Function(_i4.Operation) transform) =>
+          this.rebuild((b) => b..operation = transform(operation));
 
-  static Serializer<GGetHistoryAndBalanceReq> get serializer =>
-      _$gGetHistoryAndBalanceReqSerializer;
+  static Serializer<GAccountsBasicByPkReq> get serializer =>
+      _$gAccountsBasicByPkReqSerializer;
 
   Map<String, dynamic> toJson() => (_i6.serializers.serializeWith(
-        GGetHistoryAndBalanceReq.serializer,
+        GAccountsBasicByPkReq.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GGetHistoryAndBalanceReq? fromJson(Map<String, dynamic> json) =>
+  static GAccountsBasicByPkReq? fromJson(Map<String, dynamic> json) =>
       _i6.serializers.deserializeWith(
-        GGetHistoryAndBalanceReq.serializer,
+        GAccountsBasicByPkReq.serializer,
+        json,
+      );
+}
+
+abstract class GAccountTransactionsReq
+    implements
+        Built<GAccountTransactionsReq, GAccountTransactionsReqBuilder>,
+        _i1.OperationRequest<_i2.GAccountTransactionsData,
+            _i3.GAccountTransactionsVars> {
+  GAccountTransactionsReq._();
+
+  factory GAccountTransactionsReq(
+          [void Function(GAccountTransactionsReqBuilder b) updates]) =
+      _$GAccountTransactionsReq;
+
+  static void _initializeBuilder(GAccountTransactionsReqBuilder b) => b
+    ..operation = _i4.Operation(
+      document: _i5.document,
+      operationName: 'AccountTransactions',
+    )
+    ..executeOnListen = true;
+
+  @override
+  _i3.GAccountTransactionsVars get vars;
+  @override
+  _i4.Operation get operation;
+  @override
+  _i4.Request get execRequest => _i4.Request(
+        operation: operation,
+        variables: vars.toJson(),
+        context: context ?? const _i4.Context(),
+      );
+
+  @override
+  String? get requestId;
+  @override
+  @BuiltValueField(serialize: false)
+  _i2.GAccountTransactionsData? Function(
+    _i2.GAccountTransactionsData?,
+    _i2.GAccountTransactionsData?,
+  )? get updateResult;
+  @override
+  _i2.GAccountTransactionsData? get optimisticResponse;
+  @override
+  String? get updateCacheHandlerKey;
+  @override
+  Map<String, dynamic>? get updateCacheHandlerContext;
+  @override
+  _i1.FetchPolicy? get fetchPolicy;
+  @override
+  bool get executeOnListen;
+  @override
+  @BuiltValueField(serialize: false)
+  _i4.Context? get context;
+  @override
+  _i2.GAccountTransactionsData? parseData(Map<String, dynamic> json) =>
+      _i2.GAccountTransactionsData.fromJson(json);
+
+  @override
+  Map<String, dynamic> varsToJson() => vars.toJson();
+
+  @override
+  Map<String, dynamic> dataToJson(_i2.GAccountTransactionsData data) =>
+      data.toJson();
+
+  @override
+  _i1.OperationRequest<_i2.GAccountTransactionsData,
+      _i3.GAccountTransactionsVars> transformOperation(
+          _i4.Operation Function(_i4.Operation) transform) =>
+      this.rebuild((b) => b..operation = transform(operation));
+
+  static Serializer<GAccountTransactionsReq> get serializer =>
+      _$gAccountTransactionsReqSerializer;
+
+  Map<String, dynamic> toJson() => (_i6.serializers.serializeWith(
+        GAccountTransactionsReq.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTransactionsReq? fromJson(Map<String, dynamic> json) =>
+      _i6.serializers.deserializeWith(
+        GAccountTransactionsReq.serializer,
         json,
       );
 }
@@ -1084,6 +1165,55 @@ abstract class GAccountFieldsReq
   static GAccountFieldsReq? fromJson(Map<String, dynamic> json) =>
       _i6.serializers.deserializeWith(
         GAccountFieldsReq.serializer,
+        json,
+      );
+}
+
+abstract class GAccountTxsFieldsReq
+    implements
+        Built<GAccountTxsFieldsReq, GAccountTxsFieldsReqBuilder>,
+        _i1
+        .FragmentRequest<_i2.GAccountTxsFieldsData, _i3.GAccountTxsFieldsVars> {
+  GAccountTxsFieldsReq._();
+
+  factory GAccountTxsFieldsReq(
+          [void Function(GAccountTxsFieldsReqBuilder b) updates]) =
+      _$GAccountTxsFieldsReq;
+
+  static void _initializeBuilder(GAccountTxsFieldsReqBuilder b) => b
+    ..document = _i5.document
+    ..fragmentName = 'AccountTxsFields';
+
+  @override
+  _i3.GAccountTxsFieldsVars get vars;
+  @override
+  _i7.DocumentNode get document;
+  @override
+  String? get fragmentName;
+  @override
+  Map<String, dynamic> get idFields;
+  @override
+  _i2.GAccountTxsFieldsData? parseData(Map<String, dynamic> json) =>
+      _i2.GAccountTxsFieldsData.fromJson(json);
+
+  @override
+  Map<String, dynamic> varsToJson() => vars.toJson();
+
+  @override
+  Map<String, dynamic> dataToJson(_i2.GAccountTxsFieldsData data) =>
+      data.toJson();
+
+  static Serializer<GAccountTxsFieldsReq> get serializer =>
+      _$gAccountTxsFieldsReqSerializer;
+
+  Map<String, dynamic> toJson() => (_i6.serializers.serializeWith(
+        GAccountTxsFieldsReq.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTxsFieldsReq? fromJson(Map<String, dynamic> json) =>
+      _i6.serializers.deserializeWith(
+        GAccountTxsFieldsReq.serializer,
         json,
       );
 }

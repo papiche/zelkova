@@ -6,6 +6,8 @@ part of 'duniter-indexer-queries.req.gql.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
+Serializer<GLastBlockReq> _$gLastBlockReqSerializer =
+    new _$GLastBlockReqSerializer();
 Serializer<GIdentitiesByNameOrPkReq> _$gIdentitiesByNameOrPkReqSerializer =
     new _$GIdentitiesByNameOrPkReqSerializer();
 Serializer<GIdentitiesByPkReq> _$gIdentitiesByPkReqSerializer =
@@ -14,14 +16,14 @@ Serializer<GIdentitiesByNameReq> _$gIdentitiesByNameReqSerializer =
     new _$GIdentitiesByNameReqSerializer();
 Serializer<GAccountByPkReq> _$gAccountByPkReqSerializer =
     new _$GAccountByPkReqSerializer();
-Serializer<GAccountBasicByPkReq> _$gAccountBasicByPkReqSerializer =
-    new _$GAccountBasicByPkReqSerializer();
 Serializer<GAccountsByPkReq> _$gAccountsByPkReqSerializer =
     new _$GAccountsByPkReqSerializer();
-Serializer<GLastBlockReq> _$gLastBlockReqSerializer =
-    new _$GLastBlockReqSerializer();
-Serializer<GGetHistoryAndBalanceReq> _$gGetHistoryAndBalanceReqSerializer =
-    new _$GGetHistoryAndBalanceReqSerializer();
+Serializer<GAccountBasicByPkReq> _$gAccountBasicByPkReqSerializer =
+    new _$GAccountBasicByPkReqSerializer();
+Serializer<GAccountsBasicByPkReq> _$gAccountsBasicByPkReqSerializer =
+    new _$GAccountsBasicByPkReqSerializer();
+Serializer<GAccountTransactionsReq> _$gAccountTransactionsReqSerializer =
+    new _$GAccountTransactionsReqSerializer();
 Serializer<GCertFieldsReq> _$gCertFieldsReqSerializer =
     new _$GCertFieldsReqSerializer();
 Serializer<GSmithCertFieldsReq> _$gSmithCertFieldsReqSerializer =
@@ -40,8 +42,127 @@ Serializer<GAccountBasicFieldsReq> _$gAccountBasicFieldsReqSerializer =
     new _$GAccountBasicFieldsReqSerializer();
 Serializer<GAccountFieldsReq> _$gAccountFieldsReqSerializer =
     new _$GAccountFieldsReqSerializer();
+Serializer<GAccountTxsFieldsReq> _$gAccountTxsFieldsReqSerializer =
+    new _$GAccountTxsFieldsReqSerializer();
 Serializer<GTransferFieldsReq> _$gTransferFieldsReqSerializer =
     new _$GTransferFieldsReqSerializer();
+
+class _$GLastBlockReqSerializer implements StructuredSerializer<GLastBlockReq> {
+  @override
+  final Iterable<Type> types = const [GLastBlockReq, _$GLastBlockReq];
+  @override
+  final String wireName = 'GLastBlockReq';
+
+  @override
+  Iterable<Object?> serialize(Serializers serializers, GLastBlockReq object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      'vars',
+      serializers.serialize(object.vars,
+          specifiedType: const FullType(_i3.GLastBlockVars)),
+      'operation',
+      serializers.serialize(object.operation,
+          specifiedType: const FullType(_i4.Operation)),
+      'executeOnListen',
+      serializers.serialize(object.executeOnListen,
+          specifiedType: const FullType(bool)),
+    ];
+    Object? value;
+    value = object.requestId;
+    if (value != null) {
+      result
+        ..add('requestId')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.optimisticResponse;
+    if (value != null) {
+      result
+        ..add('optimisticResponse')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(_i2.GLastBlockData)));
+    }
+    value = object.updateCacheHandlerKey;
+    if (value != null) {
+      result
+        ..add('updateCacheHandlerKey')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.updateCacheHandlerContext;
+    if (value != null) {
+      result
+        ..add('updateCacheHandlerContext')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(
+                Map, const [const FullType(String), const FullType(dynamic)])));
+    }
+    value = object.fetchPolicy;
+    if (value != null) {
+      result
+        ..add('fetchPolicy')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(_i1.FetchPolicy)));
+    }
+    return result;
+  }
+
+  @override
+  GLastBlockReq deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GLastBlockReqBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'vars':
+          result.vars.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(_i3.GLastBlockVars))!
+              as _i3.GLastBlockVars);
+          break;
+        case 'operation':
+          result.operation = serializers.deserialize(value,
+              specifiedType: const FullType(_i4.Operation))! as _i4.Operation;
+          break;
+        case 'requestId':
+          result.requestId = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'optimisticResponse':
+          result.optimisticResponse.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(_i2.GLastBlockData))!
+              as _i2.GLastBlockData);
+          break;
+        case 'updateCacheHandlerKey':
+          result.updateCacheHandlerKey = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'updateCacheHandlerContext':
+          result.updateCacheHandlerContext = serializers.deserialize(value,
+              specifiedType: const FullType(Map, const [
+                const FullType(String),
+                const FullType(dynamic)
+              ])) as Map<String, dynamic>?;
+          break;
+        case 'fetchPolicy':
+          result.fetchPolicy = serializers.deserialize(value,
+                  specifiedType: const FullType(_i1.FetchPolicy))
+              as _i1.FetchPolicy?;
+          break;
+        case 'executeOnListen':
+          result.executeOnListen = serializers.deserialize(value,
+              specifiedType: const FullType(bool))! as bool;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
 
 class _$GIdentitiesByNameOrPkReqSerializer
     implements StructuredSerializer<GIdentitiesByNameOrPkReq> {
@@ -524,6 +645,124 @@ class _$GAccountByPkReqSerializer
   }
 }
 
+class _$GAccountsByPkReqSerializer
+    implements StructuredSerializer<GAccountsByPkReq> {
+  @override
+  final Iterable<Type> types = const [GAccountsByPkReq, _$GAccountsByPkReq];
+  @override
+  final String wireName = 'GAccountsByPkReq';
+
+  @override
+  Iterable<Object?> serialize(Serializers serializers, GAccountsByPkReq object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      'vars',
+      serializers.serialize(object.vars,
+          specifiedType: const FullType(_i3.GAccountsByPkVars)),
+      'operation',
+      serializers.serialize(object.operation,
+          specifiedType: const FullType(_i4.Operation)),
+      'executeOnListen',
+      serializers.serialize(object.executeOnListen,
+          specifiedType: const FullType(bool)),
+    ];
+    Object? value;
+    value = object.requestId;
+    if (value != null) {
+      result
+        ..add('requestId')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.optimisticResponse;
+    if (value != null) {
+      result
+        ..add('optimisticResponse')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(_i2.GAccountsByPkData)));
+    }
+    value = object.updateCacheHandlerKey;
+    if (value != null) {
+      result
+        ..add('updateCacheHandlerKey')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.updateCacheHandlerContext;
+    if (value != null) {
+      result
+        ..add('updateCacheHandlerContext')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(
+                Map, const [const FullType(String), const FullType(dynamic)])));
+    }
+    value = object.fetchPolicy;
+    if (value != null) {
+      result
+        ..add('fetchPolicy')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(_i1.FetchPolicy)));
+    }
+    return result;
+  }
+
+  @override
+  GAccountsByPkReq deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GAccountsByPkReqBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'vars':
+          result.vars.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(_i3.GAccountsByPkVars))!
+              as _i3.GAccountsByPkVars);
+          break;
+        case 'operation':
+          result.operation = serializers.deserialize(value,
+              specifiedType: const FullType(_i4.Operation))! as _i4.Operation;
+          break;
+        case 'requestId':
+          result.requestId = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'optimisticResponse':
+          result.optimisticResponse.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(_i2.GAccountsByPkData))!
+              as _i2.GAccountsByPkData);
+          break;
+        case 'updateCacheHandlerKey':
+          result.updateCacheHandlerKey = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'updateCacheHandlerContext':
+          result.updateCacheHandlerContext = serializers.deserialize(value,
+              specifiedType: const FullType(Map, const [
+                const FullType(String),
+                const FullType(dynamic)
+              ])) as Map<String, dynamic>?;
+          break;
+        case 'fetchPolicy':
+          result.fetchPolicy = serializers.deserialize(value,
+                  specifiedType: const FullType(_i1.FetchPolicy))
+              as _i1.FetchPolicy?;
+          break;
+        case 'executeOnListen':
+          result.executeOnListen = serializers.deserialize(value,
+              specifiedType: const FullType(bool))! as bool;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
 class _$GAccountBasicByPkReqSerializer
     implements StructuredSerializer<GAccountBasicByPkReq> {
   @override
@@ -646,259 +885,24 @@ class _$GAccountBasicByPkReqSerializer
   }
 }
 
-class _$GAccountsByPkReqSerializer
-    implements StructuredSerializer<GAccountsByPkReq> {
-  @override
-  final Iterable<Type> types = const [GAccountsByPkReq, _$GAccountsByPkReq];
-  @override
-  final String wireName = 'GAccountsByPkReq';
-
-  @override
-  Iterable<Object?> serialize(Serializers serializers, GAccountsByPkReq object,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object?>[
-      'vars',
-      serializers.serialize(object.vars,
-          specifiedType: const FullType(_i3.GAccountsByPkVars)),
-      'operation',
-      serializers.serialize(object.operation,
-          specifiedType: const FullType(_i4.Operation)),
-      'executeOnListen',
-      serializers.serialize(object.executeOnListen,
-          specifiedType: const FullType(bool)),
-    ];
-    Object? value;
-    value = object.requestId;
-    if (value != null) {
-      result
-        ..add('requestId')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
-    }
-    value = object.optimisticResponse;
-    if (value != null) {
-      result
-        ..add('optimisticResponse')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GAccountsByPkData)));
-    }
-    value = object.updateCacheHandlerKey;
-    if (value != null) {
-      result
-        ..add('updateCacheHandlerKey')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
-    }
-    value = object.updateCacheHandlerContext;
-    if (value != null) {
-      result
-        ..add('updateCacheHandlerContext')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(
-                Map, const [const FullType(String), const FullType(dynamic)])));
-    }
-    value = object.fetchPolicy;
-    if (value != null) {
-      result
-        ..add('fetchPolicy')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i1.FetchPolicy)));
-    }
-    return result;
-  }
-
-  @override
-  GAccountsByPkReq deserialize(
-      Serializers serializers, Iterable<Object?> serialized,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountsByPkReqBuilder();
-
-    final iterator = serialized.iterator;
-    while (iterator.moveNext()) {
-      final key = iterator.current! as String;
-      iterator.moveNext();
-      final Object? value = iterator.current;
-      switch (key) {
-        case 'vars':
-          result.vars.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(_i3.GAccountsByPkVars))!
-              as _i3.GAccountsByPkVars);
-          break;
-        case 'operation':
-          result.operation = serializers.deserialize(value,
-              specifiedType: const FullType(_i4.Operation))! as _i4.Operation;
-          break;
-        case 'requestId':
-          result.requestId = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
-          break;
-        case 'optimisticResponse':
-          result.optimisticResponse.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GAccountsByPkData))!
-              as _i2.GAccountsByPkData);
-          break;
-        case 'updateCacheHandlerKey':
-          result.updateCacheHandlerKey = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
-          break;
-        case 'updateCacheHandlerContext':
-          result.updateCacheHandlerContext = serializers.deserialize(value,
-              specifiedType: const FullType(Map, const [
-                const FullType(String),
-                const FullType(dynamic)
-              ])) as Map<String, dynamic>?;
-          break;
-        case 'fetchPolicy':
-          result.fetchPolicy = serializers.deserialize(value,
-                  specifiedType: const FullType(_i1.FetchPolicy))
-              as _i1.FetchPolicy?;
-          break;
-        case 'executeOnListen':
-          result.executeOnListen = serializers.deserialize(value,
-              specifiedType: const FullType(bool))! as bool;
-          break;
-      }
-    }
-
-    return result.build();
-  }
-}
-
-class _$GLastBlockReqSerializer implements StructuredSerializer<GLastBlockReq> {
-  @override
-  final Iterable<Type> types = const [GLastBlockReq, _$GLastBlockReq];
-  @override
-  final String wireName = 'GLastBlockReq';
-
-  @override
-  Iterable<Object?> serialize(Serializers serializers, GLastBlockReq object,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object?>[
-      'vars',
-      serializers.serialize(object.vars,
-          specifiedType: const FullType(_i3.GLastBlockVars)),
-      'operation',
-      serializers.serialize(object.operation,
-          specifiedType: const FullType(_i4.Operation)),
-      'executeOnListen',
-      serializers.serialize(object.executeOnListen,
-          specifiedType: const FullType(bool)),
-    ];
-    Object? value;
-    value = object.requestId;
-    if (value != null) {
-      result
-        ..add('requestId')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
-    }
-    value = object.optimisticResponse;
-    if (value != null) {
-      result
-        ..add('optimisticResponse')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GLastBlockData)));
-    }
-    value = object.updateCacheHandlerKey;
-    if (value != null) {
-      result
-        ..add('updateCacheHandlerKey')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
-    }
-    value = object.updateCacheHandlerContext;
-    if (value != null) {
-      result
-        ..add('updateCacheHandlerContext')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(
-                Map, const [const FullType(String), const FullType(dynamic)])));
-    }
-    value = object.fetchPolicy;
-    if (value != null) {
-      result
-        ..add('fetchPolicy')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i1.FetchPolicy)));
-    }
-    return result;
-  }
-
-  @override
-  GLastBlockReq deserialize(
-      Serializers serializers, Iterable<Object?> serialized,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = new GLastBlockReqBuilder();
-
-    final iterator = serialized.iterator;
-    while (iterator.moveNext()) {
-      final key = iterator.current! as String;
-      iterator.moveNext();
-      final Object? value = iterator.current;
-      switch (key) {
-        case 'vars':
-          result.vars.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(_i3.GLastBlockVars))!
-              as _i3.GLastBlockVars);
-          break;
-        case 'operation':
-          result.operation = serializers.deserialize(value,
-              specifiedType: const FullType(_i4.Operation))! as _i4.Operation;
-          break;
-        case 'requestId':
-          result.requestId = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
-          break;
-        case 'optimisticResponse':
-          result.optimisticResponse.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GLastBlockData))!
-              as _i2.GLastBlockData);
-          break;
-        case 'updateCacheHandlerKey':
-          result.updateCacheHandlerKey = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
-          break;
-        case 'updateCacheHandlerContext':
-          result.updateCacheHandlerContext = serializers.deserialize(value,
-              specifiedType: const FullType(Map, const [
-                const FullType(String),
-                const FullType(dynamic)
-              ])) as Map<String, dynamic>?;
-          break;
-        case 'fetchPolicy':
-          result.fetchPolicy = serializers.deserialize(value,
-                  specifiedType: const FullType(_i1.FetchPolicy))
-              as _i1.FetchPolicy?;
-          break;
-        case 'executeOnListen':
-          result.executeOnListen = serializers.deserialize(value,
-              specifiedType: const FullType(bool))! as bool;
-          break;
-      }
-    }
-
-    return result.build();
-  }
-}
-
-class _$GGetHistoryAndBalanceReqSerializer
-    implements StructuredSerializer<GGetHistoryAndBalanceReq> {
+class _$GAccountsBasicByPkReqSerializer
+    implements StructuredSerializer<GAccountsBasicByPkReq> {
   @override
   final Iterable<Type> types = const [
-    GGetHistoryAndBalanceReq,
-    _$GGetHistoryAndBalanceReq
+    GAccountsBasicByPkReq,
+    _$GAccountsBasicByPkReq
   ];
   @override
-  final String wireName = 'GGetHistoryAndBalanceReq';
+  final String wireName = 'GAccountsBasicByPkReq';
 
   @override
   Iterable<Object?> serialize(
-      Serializers serializers, GGetHistoryAndBalanceReq object,
+      Serializers serializers, GAccountsBasicByPkReq object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
       'vars',
       serializers.serialize(object.vars,
-          specifiedType: const FullType(_i3.GGetHistoryAndBalanceVars)),
+          specifiedType: const FullType(_i3.GAccountsBasicByPkVars)),
       'operation',
       serializers.serialize(object.operation,
           specifiedType: const FullType(_i4.Operation)),
@@ -919,7 +923,7 @@ class _$GGetHistoryAndBalanceReqSerializer
       result
         ..add('optimisticResponse')
         ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GGetHistoryAndBalanceData)));
+            specifiedType: const FullType(_i2.GAccountsBasicByPkData)));
     }
     value = object.updateCacheHandlerKey;
     if (value != null) {
@@ -947,10 +951,10 @@ class _$GGetHistoryAndBalanceReqSerializer
   }
 
   @override
-  GGetHistoryAndBalanceReq deserialize(
+  GAccountsBasicByPkReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GGetHistoryAndBalanceReqBuilder();
+    final result = new GAccountsBasicByPkReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -960,8 +964,8 @@ class _$GGetHistoryAndBalanceReqSerializer
       switch (key) {
         case 'vars':
           result.vars.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(_i3.GGetHistoryAndBalanceVars))!
-              as _i3.GGetHistoryAndBalanceVars);
+                  specifiedType: const FullType(_i3.GAccountsBasicByPkVars))!
+              as _i3.GAccountsBasicByPkVars);
           break;
         case 'operation':
           result.operation = serializers.deserialize(value,
@@ -973,8 +977,130 @@ class _$GGetHistoryAndBalanceReqSerializer
           break;
         case 'optimisticResponse':
           result.optimisticResponse.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GGetHistoryAndBalanceData))!
-              as _i2.GGetHistoryAndBalanceData);
+                  specifiedType: const FullType(_i2.GAccountsBasicByPkData))!
+              as _i2.GAccountsBasicByPkData);
+          break;
+        case 'updateCacheHandlerKey':
+          result.updateCacheHandlerKey = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'updateCacheHandlerContext':
+          result.updateCacheHandlerContext = serializers.deserialize(value,
+              specifiedType: const FullType(Map, const [
+                const FullType(String),
+                const FullType(dynamic)
+              ])) as Map<String, dynamic>?;
+          break;
+        case 'fetchPolicy':
+          result.fetchPolicy = serializers.deserialize(value,
+                  specifiedType: const FullType(_i1.FetchPolicy))
+              as _i1.FetchPolicy?;
+          break;
+        case 'executeOnListen':
+          result.executeOnListen = serializers.deserialize(value,
+              specifiedType: const FullType(bool))! as bool;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GAccountTransactionsReqSerializer
+    implements StructuredSerializer<GAccountTransactionsReq> {
+  @override
+  final Iterable<Type> types = const [
+    GAccountTransactionsReq,
+    _$GAccountTransactionsReq
+  ];
+  @override
+  final String wireName = 'GAccountTransactionsReq';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GAccountTransactionsReq object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      'vars',
+      serializers.serialize(object.vars,
+          specifiedType: const FullType(_i3.GAccountTransactionsVars)),
+      'operation',
+      serializers.serialize(object.operation,
+          specifiedType: const FullType(_i4.Operation)),
+      'executeOnListen',
+      serializers.serialize(object.executeOnListen,
+          specifiedType: const FullType(bool)),
+    ];
+    Object? value;
+    value = object.requestId;
+    if (value != null) {
+      result
+        ..add('requestId')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.optimisticResponse;
+    if (value != null) {
+      result
+        ..add('optimisticResponse')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(_i2.GAccountTransactionsData)));
+    }
+    value = object.updateCacheHandlerKey;
+    if (value != null) {
+      result
+        ..add('updateCacheHandlerKey')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.updateCacheHandlerContext;
+    if (value != null) {
+      result
+        ..add('updateCacheHandlerContext')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(
+                Map, const [const FullType(String), const FullType(dynamic)])));
+    }
+    value = object.fetchPolicy;
+    if (value != null) {
+      result
+        ..add('fetchPolicy')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(_i1.FetchPolicy)));
+    }
+    return result;
+  }
+
+  @override
+  GAccountTransactionsReq deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GAccountTransactionsReqBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'vars':
+          result.vars.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(_i3.GAccountTransactionsVars))!
+              as _i3.GAccountTransactionsVars);
+          break;
+        case 'operation':
+          result.operation = serializers.deserialize(value,
+              specifiedType: const FullType(_i4.Operation))! as _i4.Operation;
+          break;
+        case 'requestId':
+          result.requestId = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'optimisticResponse':
+          result.optimisticResponse.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(_i2.GAccountTransactionsData))!
+              as _i2.GAccountTransactionsData);
           break;
         case 'updateCacheHandlerKey':
           result.updateCacheHandlerKey = serializers.deserialize(value,
@@ -1678,6 +1804,83 @@ class _$GAccountFieldsReqSerializer
   }
 }
 
+class _$GAccountTxsFieldsReqSerializer
+    implements StructuredSerializer<GAccountTxsFieldsReq> {
+  @override
+  final Iterable<Type> types = const [
+    GAccountTxsFieldsReq,
+    _$GAccountTxsFieldsReq
+  ];
+  @override
+  final String wireName = 'GAccountTxsFieldsReq';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GAccountTxsFieldsReq object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      'vars',
+      serializers.serialize(object.vars,
+          specifiedType: const FullType(_i3.GAccountTxsFieldsVars)),
+      'document',
+      serializers.serialize(object.document,
+          specifiedType: const FullType(_i7.DocumentNode)),
+      'idFields',
+      serializers.serialize(object.idFields,
+          specifiedType: const FullType(
+              Map, const [const FullType(String), const FullType(dynamic)])),
+    ];
+    Object? value;
+    value = object.fragmentName;
+    if (value != null) {
+      result
+        ..add('fragmentName')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    return result;
+  }
+
+  @override
+  GAccountTxsFieldsReq deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GAccountTxsFieldsReqBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'vars':
+          result.vars.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(_i3.GAccountTxsFieldsVars))!
+              as _i3.GAccountTxsFieldsVars);
+          break;
+        case 'document':
+          result.document = serializers.deserialize(value,
+                  specifiedType: const FullType(_i7.DocumentNode))!
+              as _i7.DocumentNode;
+          break;
+        case 'fragmentName':
+          result.fragmentName = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'idFields':
+          result.idFields = serializers.deserialize(value,
+              specifiedType: const FullType(Map, const [
+                const FullType(String),
+                const FullType(dynamic)
+              ]))! as Map<String, dynamic>;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
 class _$GTransferFieldsReqSerializer
     implements StructuredSerializer<GTransferFieldsReq> {
   @override
@@ -1749,6 +1952,240 @@ class _$GTransferFieldsReqSerializer
     }
 
     return result.build();
+  }
+}
+
+class _$GLastBlockReq extends GLastBlockReq {
+  @override
+  final _i3.GLastBlockVars vars;
+  @override
+  final _i4.Operation operation;
+  @override
+  final String? requestId;
+  @override
+  final _i2.GLastBlockData? Function(_i2.GLastBlockData?, _i2.GLastBlockData?)?
+      updateResult;
+  @override
+  final _i2.GLastBlockData? optimisticResponse;
+  @override
+  final String? updateCacheHandlerKey;
+  @override
+  final Map<String, dynamic>? updateCacheHandlerContext;
+  @override
+  final _i1.FetchPolicy? fetchPolicy;
+  @override
+  final bool executeOnListen;
+  @override
+  final _i4.Context? context;
+
+  factory _$GLastBlockReq([void Function(GLastBlockReqBuilder)? updates]) =>
+      (new GLastBlockReqBuilder()..update(updates))._build();
+
+  _$GLastBlockReq._(
+      {required this.vars,
+      required this.operation,
+      this.requestId,
+      this.updateResult,
+      this.optimisticResponse,
+      this.updateCacheHandlerKey,
+      this.updateCacheHandlerContext,
+      this.fetchPolicy,
+      required this.executeOnListen,
+      this.context})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(vars, r'GLastBlockReq', 'vars');
+    BuiltValueNullFieldError.checkNotNull(
+        operation, r'GLastBlockReq', 'operation');
+    BuiltValueNullFieldError.checkNotNull(
+        executeOnListen, r'GLastBlockReq', 'executeOnListen');
+  }
+
+  @override
+  GLastBlockReq rebuild(void Function(GLastBlockReqBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GLastBlockReqBuilder toBuilder() => new GLastBlockReqBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    final dynamic _$dynamicOther = other;
+    return other is GLastBlockReq &&
+        vars == other.vars &&
+        operation == other.operation &&
+        requestId == other.requestId &&
+        updateResult == _$dynamicOther.updateResult &&
+        optimisticResponse == other.optimisticResponse &&
+        updateCacheHandlerKey == other.updateCacheHandlerKey &&
+        updateCacheHandlerContext == other.updateCacheHandlerContext &&
+        fetchPolicy == other.fetchPolicy &&
+        executeOnListen == other.executeOnListen &&
+        context == other.context;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, vars.hashCode);
+    _$hash = $jc(_$hash, operation.hashCode);
+    _$hash = $jc(_$hash, requestId.hashCode);
+    _$hash = $jc(_$hash, updateResult.hashCode);
+    _$hash = $jc(_$hash, optimisticResponse.hashCode);
+    _$hash = $jc(_$hash, updateCacheHandlerKey.hashCode);
+    _$hash = $jc(_$hash, updateCacheHandlerContext.hashCode);
+    _$hash = $jc(_$hash, fetchPolicy.hashCode);
+    _$hash = $jc(_$hash, executeOnListen.hashCode);
+    _$hash = $jc(_$hash, context.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GLastBlockReq')
+          ..add('vars', vars)
+          ..add('operation', operation)
+          ..add('requestId', requestId)
+          ..add('updateResult', updateResult)
+          ..add('optimisticResponse', optimisticResponse)
+          ..add('updateCacheHandlerKey', updateCacheHandlerKey)
+          ..add('updateCacheHandlerContext', updateCacheHandlerContext)
+          ..add('fetchPolicy', fetchPolicy)
+          ..add('executeOnListen', executeOnListen)
+          ..add('context', context))
+        .toString();
+  }
+}
+
+class GLastBlockReqBuilder
+    implements Builder<GLastBlockReq, GLastBlockReqBuilder> {
+  _$GLastBlockReq? _$v;
+
+  _i3.GLastBlockVarsBuilder? _vars;
+  _i3.GLastBlockVarsBuilder get vars =>
+      _$this._vars ??= new _i3.GLastBlockVarsBuilder();
+  set vars(_i3.GLastBlockVarsBuilder? vars) => _$this._vars = vars;
+
+  _i4.Operation? _operation;
+  _i4.Operation? get operation => _$this._operation;
+  set operation(_i4.Operation? operation) => _$this._operation = operation;
+
+  String? _requestId;
+  String? get requestId => _$this._requestId;
+  set requestId(String? requestId) => _$this._requestId = requestId;
+
+  _i2.GLastBlockData? Function(_i2.GLastBlockData?, _i2.GLastBlockData?)?
+      _updateResult;
+  _i2.GLastBlockData? Function(_i2.GLastBlockData?, _i2.GLastBlockData?)?
+      get updateResult => _$this._updateResult;
+  set updateResult(
+          _i2.GLastBlockData? Function(
+                  _i2.GLastBlockData?, _i2.GLastBlockData?)?
+              updateResult) =>
+      _$this._updateResult = updateResult;
+
+  _i2.GLastBlockDataBuilder? _optimisticResponse;
+  _i2.GLastBlockDataBuilder get optimisticResponse =>
+      _$this._optimisticResponse ??= new _i2.GLastBlockDataBuilder();
+  set optimisticResponse(_i2.GLastBlockDataBuilder? optimisticResponse) =>
+      _$this._optimisticResponse = optimisticResponse;
+
+  String? _updateCacheHandlerKey;
+  String? get updateCacheHandlerKey => _$this._updateCacheHandlerKey;
+  set updateCacheHandlerKey(String? updateCacheHandlerKey) =>
+      _$this._updateCacheHandlerKey = updateCacheHandlerKey;
+
+  Map<String, dynamic>? _updateCacheHandlerContext;
+  Map<String, dynamic>? get updateCacheHandlerContext =>
+      _$this._updateCacheHandlerContext;
+  set updateCacheHandlerContext(
+          Map<String, dynamic>? updateCacheHandlerContext) =>
+      _$this._updateCacheHandlerContext = updateCacheHandlerContext;
+
+  _i1.FetchPolicy? _fetchPolicy;
+  _i1.FetchPolicy? get fetchPolicy => _$this._fetchPolicy;
+  set fetchPolicy(_i1.FetchPolicy? fetchPolicy) =>
+      _$this._fetchPolicy = fetchPolicy;
+
+  bool? _executeOnListen;
+  bool? get executeOnListen => _$this._executeOnListen;
+  set executeOnListen(bool? executeOnListen) =>
+      _$this._executeOnListen = executeOnListen;
+
+  _i4.Context? _context;
+  _i4.Context? get context => _$this._context;
+  set context(_i4.Context? context) => _$this._context = context;
+
+  GLastBlockReqBuilder() {
+    GLastBlockReq._initializeBuilder(this);
+  }
+
+  GLastBlockReqBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _vars = $v.vars.toBuilder();
+      _operation = $v.operation;
+      _requestId = $v.requestId;
+      _updateResult = $v.updateResult;
+      _optimisticResponse = $v.optimisticResponse?.toBuilder();
+      _updateCacheHandlerKey = $v.updateCacheHandlerKey;
+      _updateCacheHandlerContext = $v.updateCacheHandlerContext;
+      _fetchPolicy = $v.fetchPolicy;
+      _executeOnListen = $v.executeOnListen;
+      _context = $v.context;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GLastBlockReq other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GLastBlockReq;
+  }
+
+  @override
+  void update(void Function(GLastBlockReqBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GLastBlockReq build() => _build();
+
+  _$GLastBlockReq _build() {
+    _$GLastBlockReq _$result;
+    try {
+      _$result = _$v ??
+          new _$GLastBlockReq._(
+              vars: vars.build(),
+              operation: BuiltValueNullFieldError.checkNotNull(
+                  operation, r'GLastBlockReq', 'operation'),
+              requestId: requestId,
+              updateResult: updateResult,
+              optimisticResponse: _optimisticResponse?.build(),
+              updateCacheHandlerKey: updateCacheHandlerKey,
+              updateCacheHandlerContext: updateCacheHandlerContext,
+              fetchPolicy: fetchPolicy,
+              executeOnListen: BuiltValueNullFieldError.checkNotNull(
+                  executeOnListen, r'GLastBlockReq', 'executeOnListen'),
+              context: context);
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'vars';
+        vars.build();
+
+        _$failedField = 'optimisticResponse';
+        _optimisticResponse?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GLastBlockReq', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
   }
 }
 
@@ -2711,6 +3148,243 @@ class GAccountByPkReqBuilder
   }
 }
 
+class _$GAccountsByPkReq extends GAccountsByPkReq {
+  @override
+  final _i3.GAccountsByPkVars vars;
+  @override
+  final _i4.Operation operation;
+  @override
+  final String? requestId;
+  @override
+  final _i2.GAccountsByPkData? Function(
+      _i2.GAccountsByPkData?, _i2.GAccountsByPkData?)? updateResult;
+  @override
+  final _i2.GAccountsByPkData? optimisticResponse;
+  @override
+  final String? updateCacheHandlerKey;
+  @override
+  final Map<String, dynamic>? updateCacheHandlerContext;
+  @override
+  final _i1.FetchPolicy? fetchPolicy;
+  @override
+  final bool executeOnListen;
+  @override
+  final _i4.Context? context;
+
+  factory _$GAccountsByPkReq(
+          [void Function(GAccountsByPkReqBuilder)? updates]) =>
+      (new GAccountsByPkReqBuilder()..update(updates))._build();
+
+  _$GAccountsByPkReq._(
+      {required this.vars,
+      required this.operation,
+      this.requestId,
+      this.updateResult,
+      this.optimisticResponse,
+      this.updateCacheHandlerKey,
+      this.updateCacheHandlerContext,
+      this.fetchPolicy,
+      required this.executeOnListen,
+      this.context})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(vars, r'GAccountsByPkReq', 'vars');
+    BuiltValueNullFieldError.checkNotNull(
+        operation, r'GAccountsByPkReq', 'operation');
+    BuiltValueNullFieldError.checkNotNull(
+        executeOnListen, r'GAccountsByPkReq', 'executeOnListen');
+  }
+
+  @override
+  GAccountsByPkReq rebuild(void Function(GAccountsByPkReqBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GAccountsByPkReqBuilder toBuilder() =>
+      new GAccountsByPkReqBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    final dynamic _$dynamicOther = other;
+    return other is GAccountsByPkReq &&
+        vars == other.vars &&
+        operation == other.operation &&
+        requestId == other.requestId &&
+        updateResult == _$dynamicOther.updateResult &&
+        optimisticResponse == other.optimisticResponse &&
+        updateCacheHandlerKey == other.updateCacheHandlerKey &&
+        updateCacheHandlerContext == other.updateCacheHandlerContext &&
+        fetchPolicy == other.fetchPolicy &&
+        executeOnListen == other.executeOnListen &&
+        context == other.context;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, vars.hashCode);
+    _$hash = $jc(_$hash, operation.hashCode);
+    _$hash = $jc(_$hash, requestId.hashCode);
+    _$hash = $jc(_$hash, updateResult.hashCode);
+    _$hash = $jc(_$hash, optimisticResponse.hashCode);
+    _$hash = $jc(_$hash, updateCacheHandlerKey.hashCode);
+    _$hash = $jc(_$hash, updateCacheHandlerContext.hashCode);
+    _$hash = $jc(_$hash, fetchPolicy.hashCode);
+    _$hash = $jc(_$hash, executeOnListen.hashCode);
+    _$hash = $jc(_$hash, context.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GAccountsByPkReq')
+          ..add('vars', vars)
+          ..add('operation', operation)
+          ..add('requestId', requestId)
+          ..add('updateResult', updateResult)
+          ..add('optimisticResponse', optimisticResponse)
+          ..add('updateCacheHandlerKey', updateCacheHandlerKey)
+          ..add('updateCacheHandlerContext', updateCacheHandlerContext)
+          ..add('fetchPolicy', fetchPolicy)
+          ..add('executeOnListen', executeOnListen)
+          ..add('context', context))
+        .toString();
+  }
+}
+
+class GAccountsByPkReqBuilder
+    implements Builder<GAccountsByPkReq, GAccountsByPkReqBuilder> {
+  _$GAccountsByPkReq? _$v;
+
+  _i3.GAccountsByPkVarsBuilder? _vars;
+  _i3.GAccountsByPkVarsBuilder get vars =>
+      _$this._vars ??= new _i3.GAccountsByPkVarsBuilder();
+  set vars(_i3.GAccountsByPkVarsBuilder? vars) => _$this._vars = vars;
+
+  _i4.Operation? _operation;
+  _i4.Operation? get operation => _$this._operation;
+  set operation(_i4.Operation? operation) => _$this._operation = operation;
+
+  String? _requestId;
+  String? get requestId => _$this._requestId;
+  set requestId(String? requestId) => _$this._requestId = requestId;
+
+  _i2.GAccountsByPkData? Function(
+      _i2.GAccountsByPkData?, _i2.GAccountsByPkData?)? _updateResult;
+  _i2.GAccountsByPkData? Function(
+          _i2.GAccountsByPkData?, _i2.GAccountsByPkData?)?
+      get updateResult => _$this._updateResult;
+  set updateResult(
+          _i2.GAccountsByPkData? Function(
+                  _i2.GAccountsByPkData?, _i2.GAccountsByPkData?)?
+              updateResult) =>
+      _$this._updateResult = updateResult;
+
+  _i2.GAccountsByPkDataBuilder? _optimisticResponse;
+  _i2.GAccountsByPkDataBuilder get optimisticResponse =>
+      _$this._optimisticResponse ??= new _i2.GAccountsByPkDataBuilder();
+  set optimisticResponse(_i2.GAccountsByPkDataBuilder? optimisticResponse) =>
+      _$this._optimisticResponse = optimisticResponse;
+
+  String? _updateCacheHandlerKey;
+  String? get updateCacheHandlerKey => _$this._updateCacheHandlerKey;
+  set updateCacheHandlerKey(String? updateCacheHandlerKey) =>
+      _$this._updateCacheHandlerKey = updateCacheHandlerKey;
+
+  Map<String, dynamic>? _updateCacheHandlerContext;
+  Map<String, dynamic>? get updateCacheHandlerContext =>
+      _$this._updateCacheHandlerContext;
+  set updateCacheHandlerContext(
+          Map<String, dynamic>? updateCacheHandlerContext) =>
+      _$this._updateCacheHandlerContext = updateCacheHandlerContext;
+
+  _i1.FetchPolicy? _fetchPolicy;
+  _i1.FetchPolicy? get fetchPolicy => _$this._fetchPolicy;
+  set fetchPolicy(_i1.FetchPolicy? fetchPolicy) =>
+      _$this._fetchPolicy = fetchPolicy;
+
+  bool? _executeOnListen;
+  bool? get executeOnListen => _$this._executeOnListen;
+  set executeOnListen(bool? executeOnListen) =>
+      _$this._executeOnListen = executeOnListen;
+
+  _i4.Context? _context;
+  _i4.Context? get context => _$this._context;
+  set context(_i4.Context? context) => _$this._context = context;
+
+  GAccountsByPkReqBuilder() {
+    GAccountsByPkReq._initializeBuilder(this);
+  }
+
+  GAccountsByPkReqBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _vars = $v.vars.toBuilder();
+      _operation = $v.operation;
+      _requestId = $v.requestId;
+      _updateResult = $v.updateResult;
+      _optimisticResponse = $v.optimisticResponse?.toBuilder();
+      _updateCacheHandlerKey = $v.updateCacheHandlerKey;
+      _updateCacheHandlerContext = $v.updateCacheHandlerContext;
+      _fetchPolicy = $v.fetchPolicy;
+      _executeOnListen = $v.executeOnListen;
+      _context = $v.context;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GAccountsByPkReq other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GAccountsByPkReq;
+  }
+
+  @override
+  void update(void Function(GAccountsByPkReqBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GAccountsByPkReq build() => _build();
+
+  _$GAccountsByPkReq _build() {
+    _$GAccountsByPkReq _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountsByPkReq._(
+              vars: vars.build(),
+              operation: BuiltValueNullFieldError.checkNotNull(
+                  operation, r'GAccountsByPkReq', 'operation'),
+              requestId: requestId,
+              updateResult: updateResult,
+              optimisticResponse: _optimisticResponse?.build(),
+              updateCacheHandlerKey: updateCacheHandlerKey,
+              updateCacheHandlerContext: updateCacheHandlerContext,
+              fetchPolicy: fetchPolicy,
+              executeOnListen: BuiltValueNullFieldError.checkNotNull(
+                  executeOnListen, r'GAccountsByPkReq', 'executeOnListen'),
+              context: context);
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'vars';
+        vars.build();
+
+        _$failedField = 'optimisticResponse';
+        _optimisticResponse?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountsByPkReq', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
 class _$GAccountBasicByPkReq extends GAccountBasicByPkReq {
   @override
   final _i3.GAccountBasicByPkVars vars;
@@ -2951,18 +3625,18 @@ class GAccountBasicByPkReqBuilder
   }
 }
 
-class _$GAccountsByPkReq extends GAccountsByPkReq {
+class _$GAccountsBasicByPkReq extends GAccountsBasicByPkReq {
   @override
-  final _i3.GAccountsByPkVars vars;
+  final _i3.GAccountsBasicByPkVars vars;
   @override
   final _i4.Operation operation;
   @override
   final String? requestId;
   @override
-  final _i2.GAccountsByPkData? Function(
-      _i2.GAccountsByPkData?, _i2.GAccountsByPkData?)? updateResult;
+  final _i2.GAccountsBasicByPkData? Function(
+      _i2.GAccountsBasicByPkData?, _i2.GAccountsBasicByPkData?)? updateResult;
   @override
-  final _i2.GAccountsByPkData? optimisticResponse;
+  final _i2.GAccountsBasicByPkData? optimisticResponse;
   @override
   final String? updateCacheHandlerKey;
   @override
@@ -2974,11 +3648,11 @@ class _$GAccountsByPkReq extends GAccountsByPkReq {
   @override
   final _i4.Context? context;
 
-  factory _$GAccountsByPkReq(
-          [void Function(GAccountsByPkReqBuilder)? updates]) =>
-      (new GAccountsByPkReqBuilder()..update(updates))._build();
+  factory _$GAccountsBasicByPkReq(
+          [void Function(GAccountsBasicByPkReqBuilder)? updates]) =>
+      (new GAccountsBasicByPkReqBuilder()..update(updates))._build();
 
-  _$GAccountsByPkReq._(
+  _$GAccountsBasicByPkReq._(
       {required this.vars,
       required this.operation,
       this.requestId,
@@ -2990,26 +3664,28 @@ class _$GAccountsByPkReq extends GAccountsByPkReq {
       required this.executeOnListen,
       this.context})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(vars, r'GAccountsByPkReq', 'vars');
     BuiltValueNullFieldError.checkNotNull(
-        operation, r'GAccountsByPkReq', 'operation');
+        vars, r'GAccountsBasicByPkReq', 'vars');
     BuiltValueNullFieldError.checkNotNull(
-        executeOnListen, r'GAccountsByPkReq', 'executeOnListen');
+        operation, r'GAccountsBasicByPkReq', 'operation');
+    BuiltValueNullFieldError.checkNotNull(
+        executeOnListen, r'GAccountsBasicByPkReq', 'executeOnListen');
   }
 
   @override
-  GAccountsByPkReq rebuild(void Function(GAccountsByPkReqBuilder) updates) =>
+  GAccountsBasicByPkReq rebuild(
+          void Function(GAccountsBasicByPkReqBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GAccountsByPkReqBuilder toBuilder() =>
-      new GAccountsByPkReqBuilder()..replace(this);
+  GAccountsBasicByPkReqBuilder toBuilder() =>
+      new GAccountsBasicByPkReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     final dynamic _$dynamicOther = other;
-    return other is GAccountsByPkReq &&
+    return other is GAccountsBasicByPkReq &&
         vars == other.vars &&
         operation == other.operation &&
         requestId == other.requestId &&
@@ -3041,7 +3717,7 @@ class _$GAccountsByPkReq extends GAccountsByPkReq {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'GAccountsByPkReq')
+    return (newBuiltValueToStringHelper(r'GAccountsBasicByPkReq')
           ..add('vars', vars)
           ..add('operation', operation)
           ..add('requestId', requestId)
@@ -3056,249 +3732,14 @@ class _$GAccountsByPkReq extends GAccountsByPkReq {
   }
 }
 
-class GAccountsByPkReqBuilder
-    implements Builder<GAccountsByPkReq, GAccountsByPkReqBuilder> {
-  _$GAccountsByPkReq? _$v;
+class GAccountsBasicByPkReqBuilder
+    implements Builder<GAccountsBasicByPkReq, GAccountsBasicByPkReqBuilder> {
+  _$GAccountsBasicByPkReq? _$v;
 
-  _i3.GAccountsByPkVarsBuilder? _vars;
-  _i3.GAccountsByPkVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GAccountsByPkVarsBuilder();
-  set vars(_i3.GAccountsByPkVarsBuilder? vars) => _$this._vars = vars;
-
-  _i4.Operation? _operation;
-  _i4.Operation? get operation => _$this._operation;
-  set operation(_i4.Operation? operation) => _$this._operation = operation;
-
-  String? _requestId;
-  String? get requestId => _$this._requestId;
-  set requestId(String? requestId) => _$this._requestId = requestId;
-
-  _i2.GAccountsByPkData? Function(
-      _i2.GAccountsByPkData?, _i2.GAccountsByPkData?)? _updateResult;
-  _i2.GAccountsByPkData? Function(
-          _i2.GAccountsByPkData?, _i2.GAccountsByPkData?)?
-      get updateResult => _$this._updateResult;
-  set updateResult(
-          _i2.GAccountsByPkData? Function(
-                  _i2.GAccountsByPkData?, _i2.GAccountsByPkData?)?
-              updateResult) =>
-      _$this._updateResult = updateResult;
-
-  _i2.GAccountsByPkDataBuilder? _optimisticResponse;
-  _i2.GAccountsByPkDataBuilder get optimisticResponse =>
-      _$this._optimisticResponse ??= new _i2.GAccountsByPkDataBuilder();
-  set optimisticResponse(_i2.GAccountsByPkDataBuilder? optimisticResponse) =>
-      _$this._optimisticResponse = optimisticResponse;
-
-  String? _updateCacheHandlerKey;
-  String? get updateCacheHandlerKey => _$this._updateCacheHandlerKey;
-  set updateCacheHandlerKey(String? updateCacheHandlerKey) =>
-      _$this._updateCacheHandlerKey = updateCacheHandlerKey;
-
-  Map<String, dynamic>? _updateCacheHandlerContext;
-  Map<String, dynamic>? get updateCacheHandlerContext =>
-      _$this._updateCacheHandlerContext;
-  set updateCacheHandlerContext(
-          Map<String, dynamic>? updateCacheHandlerContext) =>
-      _$this._updateCacheHandlerContext = updateCacheHandlerContext;
-
-  _i1.FetchPolicy? _fetchPolicy;
-  _i1.FetchPolicy? get fetchPolicy => _$this._fetchPolicy;
-  set fetchPolicy(_i1.FetchPolicy? fetchPolicy) =>
-      _$this._fetchPolicy = fetchPolicy;
-
-  bool? _executeOnListen;
-  bool? get executeOnListen => _$this._executeOnListen;
-  set executeOnListen(bool? executeOnListen) =>
-      _$this._executeOnListen = executeOnListen;
-
-  _i4.Context? _context;
-  _i4.Context? get context => _$this._context;
-  set context(_i4.Context? context) => _$this._context = context;
-
-  GAccountsByPkReqBuilder() {
-    GAccountsByPkReq._initializeBuilder(this);
-  }
-
-  GAccountsByPkReqBuilder get _$this {
-    final $v = _$v;
-    if ($v != null) {
-      _vars = $v.vars.toBuilder();
-      _operation = $v.operation;
-      _requestId = $v.requestId;
-      _updateResult = $v.updateResult;
-      _optimisticResponse = $v.optimisticResponse?.toBuilder();
-      _updateCacheHandlerKey = $v.updateCacheHandlerKey;
-      _updateCacheHandlerContext = $v.updateCacheHandlerContext;
-      _fetchPolicy = $v.fetchPolicy;
-      _executeOnListen = $v.executeOnListen;
-      _context = $v.context;
-      _$v = null;
-    }
-    return this;
-  }
-
-  @override
-  void replace(GAccountsByPkReq other) {
-    ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$GAccountsByPkReq;
-  }
-
-  @override
-  void update(void Function(GAccountsByPkReqBuilder)? updates) {
-    if (updates != null) updates(this);
-  }
-
-  @override
-  GAccountsByPkReq build() => _build();
-
-  _$GAccountsByPkReq _build() {
-    _$GAccountsByPkReq _$result;
-    try {
-      _$result = _$v ??
-          new _$GAccountsByPkReq._(
-              vars: vars.build(),
-              operation: BuiltValueNullFieldError.checkNotNull(
-                  operation, r'GAccountsByPkReq', 'operation'),
-              requestId: requestId,
-              updateResult: updateResult,
-              optimisticResponse: _optimisticResponse?.build(),
-              updateCacheHandlerKey: updateCacheHandlerKey,
-              updateCacheHandlerContext: updateCacheHandlerContext,
-              fetchPolicy: fetchPolicy,
-              executeOnListen: BuiltValueNullFieldError.checkNotNull(
-                  executeOnListen, r'GAccountsByPkReq', 'executeOnListen'),
-              context: context);
-    } catch (_) {
-      late String _$failedField;
-      try {
-        _$failedField = 'vars';
-        vars.build();
-
-        _$failedField = 'optimisticResponse';
-        _optimisticResponse?.build();
-      } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            r'GAccountsByPkReq', _$failedField, e.toString());
-      }
-      rethrow;
-    }
-    replace(_$result);
-    return _$result;
-  }
-}
-
-class _$GLastBlockReq extends GLastBlockReq {
-  @override
-  final _i3.GLastBlockVars vars;
-  @override
-  final _i4.Operation operation;
-  @override
-  final String? requestId;
-  @override
-  final _i2.GLastBlockData? Function(_i2.GLastBlockData?, _i2.GLastBlockData?)?
-      updateResult;
-  @override
-  final _i2.GLastBlockData? optimisticResponse;
-  @override
-  final String? updateCacheHandlerKey;
-  @override
-  final Map<String, dynamic>? updateCacheHandlerContext;
-  @override
-  final _i1.FetchPolicy? fetchPolicy;
-  @override
-  final bool executeOnListen;
-  @override
-  final _i4.Context? context;
-
-  factory _$GLastBlockReq([void Function(GLastBlockReqBuilder)? updates]) =>
-      (new GLastBlockReqBuilder()..update(updates))._build();
-
-  _$GLastBlockReq._(
-      {required this.vars,
-      required this.operation,
-      this.requestId,
-      this.updateResult,
-      this.optimisticResponse,
-      this.updateCacheHandlerKey,
-      this.updateCacheHandlerContext,
-      this.fetchPolicy,
-      required this.executeOnListen,
-      this.context})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(vars, r'GLastBlockReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        operation, r'GLastBlockReq', 'operation');
-    BuiltValueNullFieldError.checkNotNull(
-        executeOnListen, r'GLastBlockReq', 'executeOnListen');
-  }
-
-  @override
-  GLastBlockReq rebuild(void Function(GLastBlockReqBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
-
-  @override
-  GLastBlockReqBuilder toBuilder() => new GLastBlockReqBuilder()..replace(this);
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(other, this)) return true;
-    final dynamic _$dynamicOther = other;
-    return other is GLastBlockReq &&
-        vars == other.vars &&
-        operation == other.operation &&
-        requestId == other.requestId &&
-        updateResult == _$dynamicOther.updateResult &&
-        optimisticResponse == other.optimisticResponse &&
-        updateCacheHandlerKey == other.updateCacheHandlerKey &&
-        updateCacheHandlerContext == other.updateCacheHandlerContext &&
-        fetchPolicy == other.fetchPolicy &&
-        executeOnListen == other.executeOnListen &&
-        context == other.context;
-  }
-
-  @override
-  int get hashCode {
-    var _$hash = 0;
-    _$hash = $jc(_$hash, vars.hashCode);
-    _$hash = $jc(_$hash, operation.hashCode);
-    _$hash = $jc(_$hash, requestId.hashCode);
-    _$hash = $jc(_$hash, updateResult.hashCode);
-    _$hash = $jc(_$hash, optimisticResponse.hashCode);
-    _$hash = $jc(_$hash, updateCacheHandlerKey.hashCode);
-    _$hash = $jc(_$hash, updateCacheHandlerContext.hashCode);
-    _$hash = $jc(_$hash, fetchPolicy.hashCode);
-    _$hash = $jc(_$hash, executeOnListen.hashCode);
-    _$hash = $jc(_$hash, context.hashCode);
-    _$hash = $jf(_$hash);
-    return _$hash;
-  }
-
-  @override
-  String toString() {
-    return (newBuiltValueToStringHelper(r'GLastBlockReq')
-          ..add('vars', vars)
-          ..add('operation', operation)
-          ..add('requestId', requestId)
-          ..add('updateResult', updateResult)
-          ..add('optimisticResponse', optimisticResponse)
-          ..add('updateCacheHandlerKey', updateCacheHandlerKey)
-          ..add('updateCacheHandlerContext', updateCacheHandlerContext)
-          ..add('fetchPolicy', fetchPolicy)
-          ..add('executeOnListen', executeOnListen)
-          ..add('context', context))
-        .toString();
-  }
-}
-
-class GLastBlockReqBuilder
-    implements Builder<GLastBlockReq, GLastBlockReqBuilder> {
-  _$GLastBlockReq? _$v;
-
-  _i3.GLastBlockVarsBuilder? _vars;
-  _i3.GLastBlockVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GLastBlockVarsBuilder();
-  set vars(_i3.GLastBlockVarsBuilder? vars) => _$this._vars = vars;
+  _i3.GAccountsBasicByPkVarsBuilder? _vars;
+  _i3.GAccountsBasicByPkVarsBuilder get vars =>
+      _$this._vars ??= new _i3.GAccountsBasicByPkVarsBuilder();
+  set vars(_i3.GAccountsBasicByPkVarsBuilder? vars) => _$this._vars = vars;
 
   _i4.Operation? _operation;
   _i4.Operation? get operation => _$this._operation;
@@ -3308,264 +3749,22 @@ class GLastBlockReqBuilder
   String? get requestId => _$this._requestId;
   set requestId(String? requestId) => _$this._requestId = requestId;
 
-  _i2.GLastBlockData? Function(_i2.GLastBlockData?, _i2.GLastBlockData?)?
-      _updateResult;
-  _i2.GLastBlockData? Function(_i2.GLastBlockData?, _i2.GLastBlockData?)?
+  _i2.GAccountsBasicByPkData? Function(
+      _i2.GAccountsBasicByPkData?, _i2.GAccountsBasicByPkData?)? _updateResult;
+  _i2.GAccountsBasicByPkData? Function(
+          _i2.GAccountsBasicByPkData?, _i2.GAccountsBasicByPkData?)?
       get updateResult => _$this._updateResult;
   set updateResult(
-          _i2.GLastBlockData? Function(
-                  _i2.GLastBlockData?, _i2.GLastBlockData?)?
+          _i2.GAccountsBasicByPkData? Function(
+                  _i2.GAccountsBasicByPkData?, _i2.GAccountsBasicByPkData?)?
               updateResult) =>
       _$this._updateResult = updateResult;
 
-  _i2.GLastBlockDataBuilder? _optimisticResponse;
-  _i2.GLastBlockDataBuilder get optimisticResponse =>
-      _$this._optimisticResponse ??= new _i2.GLastBlockDataBuilder();
-  set optimisticResponse(_i2.GLastBlockDataBuilder? optimisticResponse) =>
-      _$this._optimisticResponse = optimisticResponse;
-
-  String? _updateCacheHandlerKey;
-  String? get updateCacheHandlerKey => _$this._updateCacheHandlerKey;
-  set updateCacheHandlerKey(String? updateCacheHandlerKey) =>
-      _$this._updateCacheHandlerKey = updateCacheHandlerKey;
-
-  Map<String, dynamic>? _updateCacheHandlerContext;
-  Map<String, dynamic>? get updateCacheHandlerContext =>
-      _$this._updateCacheHandlerContext;
-  set updateCacheHandlerContext(
-          Map<String, dynamic>? updateCacheHandlerContext) =>
-      _$this._updateCacheHandlerContext = updateCacheHandlerContext;
-
-  _i1.FetchPolicy? _fetchPolicy;
-  _i1.FetchPolicy? get fetchPolicy => _$this._fetchPolicy;
-  set fetchPolicy(_i1.FetchPolicy? fetchPolicy) =>
-      _$this._fetchPolicy = fetchPolicy;
-
-  bool? _executeOnListen;
-  bool? get executeOnListen => _$this._executeOnListen;
-  set executeOnListen(bool? executeOnListen) =>
-      _$this._executeOnListen = executeOnListen;
-
-  _i4.Context? _context;
-  _i4.Context? get context => _$this._context;
-  set context(_i4.Context? context) => _$this._context = context;
-
-  GLastBlockReqBuilder() {
-    GLastBlockReq._initializeBuilder(this);
-  }
-
-  GLastBlockReqBuilder get _$this {
-    final $v = _$v;
-    if ($v != null) {
-      _vars = $v.vars.toBuilder();
-      _operation = $v.operation;
-      _requestId = $v.requestId;
-      _updateResult = $v.updateResult;
-      _optimisticResponse = $v.optimisticResponse?.toBuilder();
-      _updateCacheHandlerKey = $v.updateCacheHandlerKey;
-      _updateCacheHandlerContext = $v.updateCacheHandlerContext;
-      _fetchPolicy = $v.fetchPolicy;
-      _executeOnListen = $v.executeOnListen;
-      _context = $v.context;
-      _$v = null;
-    }
-    return this;
-  }
-
-  @override
-  void replace(GLastBlockReq other) {
-    ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$GLastBlockReq;
-  }
-
-  @override
-  void update(void Function(GLastBlockReqBuilder)? updates) {
-    if (updates != null) updates(this);
-  }
-
-  @override
-  GLastBlockReq build() => _build();
-
-  _$GLastBlockReq _build() {
-    _$GLastBlockReq _$result;
-    try {
-      _$result = _$v ??
-          new _$GLastBlockReq._(
-              vars: vars.build(),
-              operation: BuiltValueNullFieldError.checkNotNull(
-                  operation, r'GLastBlockReq', 'operation'),
-              requestId: requestId,
-              updateResult: updateResult,
-              optimisticResponse: _optimisticResponse?.build(),
-              updateCacheHandlerKey: updateCacheHandlerKey,
-              updateCacheHandlerContext: updateCacheHandlerContext,
-              fetchPolicy: fetchPolicy,
-              executeOnListen: BuiltValueNullFieldError.checkNotNull(
-                  executeOnListen, r'GLastBlockReq', 'executeOnListen'),
-              context: context);
-    } catch (_) {
-      late String _$failedField;
-      try {
-        _$failedField = 'vars';
-        vars.build();
-
-        _$failedField = 'optimisticResponse';
-        _optimisticResponse?.build();
-      } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            r'GLastBlockReq', _$failedField, e.toString());
-      }
-      rethrow;
-    }
-    replace(_$result);
-    return _$result;
-  }
-}
-
-class _$GGetHistoryAndBalanceReq extends GGetHistoryAndBalanceReq {
-  @override
-  final _i3.GGetHistoryAndBalanceVars vars;
-  @override
-  final _i4.Operation operation;
-  @override
-  final String? requestId;
-  @override
-  final _i2.GGetHistoryAndBalanceData? Function(
-          _i2.GGetHistoryAndBalanceData?, _i2.GGetHistoryAndBalanceData?)?
-      updateResult;
-  @override
-  final _i2.GGetHistoryAndBalanceData? optimisticResponse;
-  @override
-  final String? updateCacheHandlerKey;
-  @override
-  final Map<String, dynamic>? updateCacheHandlerContext;
-  @override
-  final _i1.FetchPolicy? fetchPolicy;
-  @override
-  final bool executeOnListen;
-  @override
-  final _i4.Context? context;
-
-  factory _$GGetHistoryAndBalanceReq(
-          [void Function(GGetHistoryAndBalanceReqBuilder)? updates]) =>
-      (new GGetHistoryAndBalanceReqBuilder()..update(updates))._build();
-
-  _$GGetHistoryAndBalanceReq._(
-      {required this.vars,
-      required this.operation,
-      this.requestId,
-      this.updateResult,
-      this.optimisticResponse,
-      this.updateCacheHandlerKey,
-      this.updateCacheHandlerContext,
-      this.fetchPolicy,
-      required this.executeOnListen,
-      this.context})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        vars, r'GGetHistoryAndBalanceReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        operation, r'GGetHistoryAndBalanceReq', 'operation');
-    BuiltValueNullFieldError.checkNotNull(
-        executeOnListen, r'GGetHistoryAndBalanceReq', 'executeOnListen');
-  }
-
-  @override
-  GGetHistoryAndBalanceReq rebuild(
-          void Function(GGetHistoryAndBalanceReqBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
-
-  @override
-  GGetHistoryAndBalanceReqBuilder toBuilder() =>
-      new GGetHistoryAndBalanceReqBuilder()..replace(this);
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(other, this)) return true;
-    final dynamic _$dynamicOther = other;
-    return other is GGetHistoryAndBalanceReq &&
-        vars == other.vars &&
-        operation == other.operation &&
-        requestId == other.requestId &&
-        updateResult == _$dynamicOther.updateResult &&
-        optimisticResponse == other.optimisticResponse &&
-        updateCacheHandlerKey == other.updateCacheHandlerKey &&
-        updateCacheHandlerContext == other.updateCacheHandlerContext &&
-        fetchPolicy == other.fetchPolicy &&
-        executeOnListen == other.executeOnListen &&
-        context == other.context;
-  }
-
-  @override
-  int get hashCode {
-    var _$hash = 0;
-    _$hash = $jc(_$hash, vars.hashCode);
-    _$hash = $jc(_$hash, operation.hashCode);
-    _$hash = $jc(_$hash, requestId.hashCode);
-    _$hash = $jc(_$hash, updateResult.hashCode);
-    _$hash = $jc(_$hash, optimisticResponse.hashCode);
-    _$hash = $jc(_$hash, updateCacheHandlerKey.hashCode);
-    _$hash = $jc(_$hash, updateCacheHandlerContext.hashCode);
-    _$hash = $jc(_$hash, fetchPolicy.hashCode);
-    _$hash = $jc(_$hash, executeOnListen.hashCode);
-    _$hash = $jc(_$hash, context.hashCode);
-    _$hash = $jf(_$hash);
-    return _$hash;
-  }
-
-  @override
-  String toString() {
-    return (newBuiltValueToStringHelper(r'GGetHistoryAndBalanceReq')
-          ..add('vars', vars)
-          ..add('operation', operation)
-          ..add('requestId', requestId)
-          ..add('updateResult', updateResult)
-          ..add('optimisticResponse', optimisticResponse)
-          ..add('updateCacheHandlerKey', updateCacheHandlerKey)
-          ..add('updateCacheHandlerContext', updateCacheHandlerContext)
-          ..add('fetchPolicy', fetchPolicy)
-          ..add('executeOnListen', executeOnListen)
-          ..add('context', context))
-        .toString();
-  }
-}
-
-class GGetHistoryAndBalanceReqBuilder
-    implements
-        Builder<GGetHistoryAndBalanceReq, GGetHistoryAndBalanceReqBuilder> {
-  _$GGetHistoryAndBalanceReq? _$v;
-
-  _i3.GGetHistoryAndBalanceVarsBuilder? _vars;
-  _i3.GGetHistoryAndBalanceVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GGetHistoryAndBalanceVarsBuilder();
-  set vars(_i3.GGetHistoryAndBalanceVarsBuilder? vars) => _$this._vars = vars;
-
-  _i4.Operation? _operation;
-  _i4.Operation? get operation => _$this._operation;
-  set operation(_i4.Operation? operation) => _$this._operation = operation;
-
-  String? _requestId;
-  String? get requestId => _$this._requestId;
-  set requestId(String? requestId) => _$this._requestId = requestId;
-
-  _i2.GGetHistoryAndBalanceData? Function(
-          _i2.GGetHistoryAndBalanceData?, _i2.GGetHistoryAndBalanceData?)?
-      _updateResult;
-  _i2.GGetHistoryAndBalanceData? Function(
-          _i2.GGetHistoryAndBalanceData?, _i2.GGetHistoryAndBalanceData?)?
-      get updateResult => _$this._updateResult;
-  set updateResult(
-          _i2.GGetHistoryAndBalanceData? Function(
-                  _i2.GGetHistoryAndBalanceData?,
-                  _i2.GGetHistoryAndBalanceData?)?
-              updateResult) =>
-      _$this._updateResult = updateResult;
-
-  _i2.GGetHistoryAndBalanceDataBuilder? _optimisticResponse;
-  _i2.GGetHistoryAndBalanceDataBuilder get optimisticResponse =>
-      _$this._optimisticResponse ??= new _i2.GGetHistoryAndBalanceDataBuilder();
+  _i2.GAccountsBasicByPkDataBuilder? _optimisticResponse;
+  _i2.GAccountsBasicByPkDataBuilder get optimisticResponse =>
+      _$this._optimisticResponse ??= new _i2.GAccountsBasicByPkDataBuilder();
   set optimisticResponse(
-          _i2.GGetHistoryAndBalanceDataBuilder? optimisticResponse) =>
+          _i2.GAccountsBasicByPkDataBuilder? optimisticResponse) =>
       _$this._optimisticResponse = optimisticResponse;
 
   String? _updateCacheHandlerKey;
@@ -3594,11 +3793,11 @@ class GGetHistoryAndBalanceReqBuilder
   _i4.Context? get context => _$this._context;
   set context(_i4.Context? context) => _$this._context = context;
 
-  GGetHistoryAndBalanceReqBuilder() {
-    GGetHistoryAndBalanceReq._initializeBuilder(this);
+  GAccountsBasicByPkReqBuilder() {
+    GAccountsBasicByPkReq._initializeBuilder(this);
   }
 
-  GGetHistoryAndBalanceReqBuilder get _$this {
+  GAccountsBasicByPkReqBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
       _vars = $v.vars.toBuilder();
@@ -3617,27 +3816,270 @@ class GGetHistoryAndBalanceReqBuilder
   }
 
   @override
-  void replace(GGetHistoryAndBalanceReq other) {
+  void replace(GAccountsBasicByPkReq other) {
     ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$GGetHistoryAndBalanceReq;
+    _$v = other as _$GAccountsBasicByPkReq;
   }
 
   @override
-  void update(void Function(GGetHistoryAndBalanceReqBuilder)? updates) {
+  void update(void Function(GAccountsBasicByPkReqBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  GGetHistoryAndBalanceReq build() => _build();
+  GAccountsBasicByPkReq build() => _build();
 
-  _$GGetHistoryAndBalanceReq _build() {
-    _$GGetHistoryAndBalanceReq _$result;
+  _$GAccountsBasicByPkReq _build() {
+    _$GAccountsBasicByPkReq _$result;
     try {
       _$result = _$v ??
-          new _$GGetHistoryAndBalanceReq._(
+          new _$GAccountsBasicByPkReq._(
               vars: vars.build(),
               operation: BuiltValueNullFieldError.checkNotNull(
-                  operation, r'GGetHistoryAndBalanceReq', 'operation'),
+                  operation, r'GAccountsBasicByPkReq', 'operation'),
+              requestId: requestId,
+              updateResult: updateResult,
+              optimisticResponse: _optimisticResponse?.build(),
+              updateCacheHandlerKey: updateCacheHandlerKey,
+              updateCacheHandlerContext: updateCacheHandlerContext,
+              fetchPolicy: fetchPolicy,
+              executeOnListen: BuiltValueNullFieldError.checkNotNull(
+                  executeOnListen, r'GAccountsBasicByPkReq', 'executeOnListen'),
+              context: context);
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'vars';
+        vars.build();
+
+        _$failedField = 'optimisticResponse';
+        _optimisticResponse?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountsBasicByPkReq', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GAccountTransactionsReq extends GAccountTransactionsReq {
+  @override
+  final _i3.GAccountTransactionsVars vars;
+  @override
+  final _i4.Operation operation;
+  @override
+  final String? requestId;
+  @override
+  final _i2.GAccountTransactionsData? Function(
+          _i2.GAccountTransactionsData?, _i2.GAccountTransactionsData?)?
+      updateResult;
+  @override
+  final _i2.GAccountTransactionsData? optimisticResponse;
+  @override
+  final String? updateCacheHandlerKey;
+  @override
+  final Map<String, dynamic>? updateCacheHandlerContext;
+  @override
+  final _i1.FetchPolicy? fetchPolicy;
+  @override
+  final bool executeOnListen;
+  @override
+  final _i4.Context? context;
+
+  factory _$GAccountTransactionsReq(
+          [void Function(GAccountTransactionsReqBuilder)? updates]) =>
+      (new GAccountTransactionsReqBuilder()..update(updates))._build();
+
+  _$GAccountTransactionsReq._(
+      {required this.vars,
+      required this.operation,
+      this.requestId,
+      this.updateResult,
+      this.optimisticResponse,
+      this.updateCacheHandlerKey,
+      this.updateCacheHandlerContext,
+      this.fetchPolicy,
+      required this.executeOnListen,
+      this.context})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(
+        vars, r'GAccountTransactionsReq', 'vars');
+    BuiltValueNullFieldError.checkNotNull(
+        operation, r'GAccountTransactionsReq', 'operation');
+    BuiltValueNullFieldError.checkNotNull(
+        executeOnListen, r'GAccountTransactionsReq', 'executeOnListen');
+  }
+
+  @override
+  GAccountTransactionsReq rebuild(
+          void Function(GAccountTransactionsReqBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GAccountTransactionsReqBuilder toBuilder() =>
+      new GAccountTransactionsReqBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    final dynamic _$dynamicOther = other;
+    return other is GAccountTransactionsReq &&
+        vars == other.vars &&
+        operation == other.operation &&
+        requestId == other.requestId &&
+        updateResult == _$dynamicOther.updateResult &&
+        optimisticResponse == other.optimisticResponse &&
+        updateCacheHandlerKey == other.updateCacheHandlerKey &&
+        updateCacheHandlerContext == other.updateCacheHandlerContext &&
+        fetchPolicy == other.fetchPolicy &&
+        executeOnListen == other.executeOnListen &&
+        context == other.context;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, vars.hashCode);
+    _$hash = $jc(_$hash, operation.hashCode);
+    _$hash = $jc(_$hash, requestId.hashCode);
+    _$hash = $jc(_$hash, updateResult.hashCode);
+    _$hash = $jc(_$hash, optimisticResponse.hashCode);
+    _$hash = $jc(_$hash, updateCacheHandlerKey.hashCode);
+    _$hash = $jc(_$hash, updateCacheHandlerContext.hashCode);
+    _$hash = $jc(_$hash, fetchPolicy.hashCode);
+    _$hash = $jc(_$hash, executeOnListen.hashCode);
+    _$hash = $jc(_$hash, context.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GAccountTransactionsReq')
+          ..add('vars', vars)
+          ..add('operation', operation)
+          ..add('requestId', requestId)
+          ..add('updateResult', updateResult)
+          ..add('optimisticResponse', optimisticResponse)
+          ..add('updateCacheHandlerKey', updateCacheHandlerKey)
+          ..add('updateCacheHandlerContext', updateCacheHandlerContext)
+          ..add('fetchPolicy', fetchPolicy)
+          ..add('executeOnListen', executeOnListen)
+          ..add('context', context))
+        .toString();
+  }
+}
+
+class GAccountTransactionsReqBuilder
+    implements
+        Builder<GAccountTransactionsReq, GAccountTransactionsReqBuilder> {
+  _$GAccountTransactionsReq? _$v;
+
+  _i3.GAccountTransactionsVarsBuilder? _vars;
+  _i3.GAccountTransactionsVarsBuilder get vars =>
+      _$this._vars ??= new _i3.GAccountTransactionsVarsBuilder();
+  set vars(_i3.GAccountTransactionsVarsBuilder? vars) => _$this._vars = vars;
+
+  _i4.Operation? _operation;
+  _i4.Operation? get operation => _$this._operation;
+  set operation(_i4.Operation? operation) => _$this._operation = operation;
+
+  String? _requestId;
+  String? get requestId => _$this._requestId;
+  set requestId(String? requestId) => _$this._requestId = requestId;
+
+  _i2.GAccountTransactionsData? Function(
+          _i2.GAccountTransactionsData?, _i2.GAccountTransactionsData?)?
+      _updateResult;
+  _i2.GAccountTransactionsData? Function(
+          _i2.GAccountTransactionsData?, _i2.GAccountTransactionsData?)?
+      get updateResult => _$this._updateResult;
+  set updateResult(
+          _i2.GAccountTransactionsData? Function(
+                  _i2.GAccountTransactionsData?, _i2.GAccountTransactionsData?)?
+              updateResult) =>
+      _$this._updateResult = updateResult;
+
+  _i2.GAccountTransactionsDataBuilder? _optimisticResponse;
+  _i2.GAccountTransactionsDataBuilder get optimisticResponse =>
+      _$this._optimisticResponse ??= new _i2.GAccountTransactionsDataBuilder();
+  set optimisticResponse(
+          _i2.GAccountTransactionsDataBuilder? optimisticResponse) =>
+      _$this._optimisticResponse = optimisticResponse;
+
+  String? _updateCacheHandlerKey;
+  String? get updateCacheHandlerKey => _$this._updateCacheHandlerKey;
+  set updateCacheHandlerKey(String? updateCacheHandlerKey) =>
+      _$this._updateCacheHandlerKey = updateCacheHandlerKey;
+
+  Map<String, dynamic>? _updateCacheHandlerContext;
+  Map<String, dynamic>? get updateCacheHandlerContext =>
+      _$this._updateCacheHandlerContext;
+  set updateCacheHandlerContext(
+          Map<String, dynamic>? updateCacheHandlerContext) =>
+      _$this._updateCacheHandlerContext = updateCacheHandlerContext;
+
+  _i1.FetchPolicy? _fetchPolicy;
+  _i1.FetchPolicy? get fetchPolicy => _$this._fetchPolicy;
+  set fetchPolicy(_i1.FetchPolicy? fetchPolicy) =>
+      _$this._fetchPolicy = fetchPolicy;
+
+  bool? _executeOnListen;
+  bool? get executeOnListen => _$this._executeOnListen;
+  set executeOnListen(bool? executeOnListen) =>
+      _$this._executeOnListen = executeOnListen;
+
+  _i4.Context? _context;
+  _i4.Context? get context => _$this._context;
+  set context(_i4.Context? context) => _$this._context = context;
+
+  GAccountTransactionsReqBuilder() {
+    GAccountTransactionsReq._initializeBuilder(this);
+  }
+
+  GAccountTransactionsReqBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _vars = $v.vars.toBuilder();
+      _operation = $v.operation;
+      _requestId = $v.requestId;
+      _updateResult = $v.updateResult;
+      _optimisticResponse = $v.optimisticResponse?.toBuilder();
+      _updateCacheHandlerKey = $v.updateCacheHandlerKey;
+      _updateCacheHandlerContext = $v.updateCacheHandlerContext;
+      _fetchPolicy = $v.fetchPolicy;
+      _executeOnListen = $v.executeOnListen;
+      _context = $v.context;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GAccountTransactionsReq other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GAccountTransactionsReq;
+  }
+
+  @override
+  void update(void Function(GAccountTransactionsReqBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GAccountTransactionsReq build() => _build();
+
+  _$GAccountTransactionsReq _build() {
+    _$GAccountTransactionsReq _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountTransactionsReq._(
+              vars: vars.build(),
+              operation: BuiltValueNullFieldError.checkNotNull(
+                  operation, r'GAccountTransactionsReq', 'operation'),
               requestId: requestId,
               updateResult: updateResult,
               optimisticResponse: _optimisticResponse?.build(),
@@ -3646,7 +4088,7 @@ class GGetHistoryAndBalanceReqBuilder
               fetchPolicy: fetchPolicy,
               executeOnListen: BuiltValueNullFieldError.checkNotNull(
                   executeOnListen,
-                  r'GGetHistoryAndBalanceReq',
+                  r'GAccountTransactionsReq',
                   'executeOnListen'),
               context: context);
     } catch (_) {
@@ -3659,7 +4101,7 @@ class GGetHistoryAndBalanceReqBuilder
         _optimisticResponse?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'GGetHistoryAndBalanceReq', _$failedField, e.toString());
+            r'GAccountTransactionsReq', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -4974,6 +5416,153 @@ class GAccountFieldsReqBuilder
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'GAccountFieldsReq', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GAccountTxsFieldsReq extends GAccountTxsFieldsReq {
+  @override
+  final _i3.GAccountTxsFieldsVars vars;
+  @override
+  final _i7.DocumentNode document;
+  @override
+  final String? fragmentName;
+  @override
+  final Map<String, dynamic> idFields;
+
+  factory _$GAccountTxsFieldsReq(
+          [void Function(GAccountTxsFieldsReqBuilder)? updates]) =>
+      (new GAccountTxsFieldsReqBuilder()..update(updates))._build();
+
+  _$GAccountTxsFieldsReq._(
+      {required this.vars,
+      required this.document,
+      this.fragmentName,
+      required this.idFields})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(
+        vars, r'GAccountTxsFieldsReq', 'vars');
+    BuiltValueNullFieldError.checkNotNull(
+        document, r'GAccountTxsFieldsReq', 'document');
+    BuiltValueNullFieldError.checkNotNull(
+        idFields, r'GAccountTxsFieldsReq', 'idFields');
+  }
+
+  @override
+  GAccountTxsFieldsReq rebuild(
+          void Function(GAccountTxsFieldsReqBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GAccountTxsFieldsReqBuilder toBuilder() =>
+      new GAccountTxsFieldsReqBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GAccountTxsFieldsReq &&
+        vars == other.vars &&
+        document == other.document &&
+        fragmentName == other.fragmentName &&
+        idFields == other.idFields;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, vars.hashCode);
+    _$hash = $jc(_$hash, document.hashCode);
+    _$hash = $jc(_$hash, fragmentName.hashCode);
+    _$hash = $jc(_$hash, idFields.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GAccountTxsFieldsReq')
+          ..add('vars', vars)
+          ..add('document', document)
+          ..add('fragmentName', fragmentName)
+          ..add('idFields', idFields))
+        .toString();
+  }
+}
+
+class GAccountTxsFieldsReqBuilder
+    implements Builder<GAccountTxsFieldsReq, GAccountTxsFieldsReqBuilder> {
+  _$GAccountTxsFieldsReq? _$v;
+
+  _i3.GAccountTxsFieldsVarsBuilder? _vars;
+  _i3.GAccountTxsFieldsVarsBuilder get vars =>
+      _$this._vars ??= new _i3.GAccountTxsFieldsVarsBuilder();
+  set vars(_i3.GAccountTxsFieldsVarsBuilder? vars) => _$this._vars = vars;
+
+  _i7.DocumentNode? _document;
+  _i7.DocumentNode? get document => _$this._document;
+  set document(_i7.DocumentNode? document) => _$this._document = document;
+
+  String? _fragmentName;
+  String? get fragmentName => _$this._fragmentName;
+  set fragmentName(String? fragmentName) => _$this._fragmentName = fragmentName;
+
+  Map<String, dynamic>? _idFields;
+  Map<String, dynamic>? get idFields => _$this._idFields;
+  set idFields(Map<String, dynamic>? idFields) => _$this._idFields = idFields;
+
+  GAccountTxsFieldsReqBuilder() {
+    GAccountTxsFieldsReq._initializeBuilder(this);
+  }
+
+  GAccountTxsFieldsReqBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _vars = $v.vars.toBuilder();
+      _document = $v.document;
+      _fragmentName = $v.fragmentName;
+      _idFields = $v.idFields;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GAccountTxsFieldsReq other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GAccountTxsFieldsReq;
+  }
+
+  @override
+  void update(void Function(GAccountTxsFieldsReqBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GAccountTxsFieldsReq build() => _build();
+
+  _$GAccountTxsFieldsReq _build() {
+    _$GAccountTxsFieldsReq _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountTxsFieldsReq._(
+              vars: vars.build(),
+              document: BuiltValueNullFieldError.checkNotNull(
+                  document, r'GAccountTxsFieldsReq', 'document'),
+              fragmentName: fragmentName,
+              idFields: BuiltValueNullFieldError.checkNotNull(
+                  idFields, r'GAccountTxsFieldsReq', 'idFields'));
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'vars';
+        vars.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountTxsFieldsReq', _$failedField, e.toString());
       }
       rethrow;
     }

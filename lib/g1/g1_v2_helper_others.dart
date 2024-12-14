@@ -221,6 +221,8 @@ Future<BigInt?> getBalanceV2(
       final Uint8List pubkey = account.pubkey;
       final AccountInfo accountInfo =
           await Gdev(polkadot).query.system.account(pubkey).timeout(timeout);
+      loggerDev(
+          'Fetching balance for $address in node ${node.url} gives ${accountInfo.data.free}');
       return accountInfo.data.free;
     } catch (e, stacktrace) {
       NodeManager().increaseNodeErrors(NodeType.endpoint, node);

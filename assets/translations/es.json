@@ -334,5 +334,6 @@
   "certs_issued": "Certificaciones emitidas",
   "certs_received": "Certificaciones recibidas",
   "info_this_wallet": "Info sobre este monedero",
-  "cert_expired": "Caducado"
+  "cert_expired": "Caducado",
+  "result": "Resultado"
 }

@@ -328,5 +328,6 @@
   "certs_issued": "Issued certifications",
   "certs_received": "Received certifications",
   "info_this_wallet": "Info about this wallet",
-  "cert_expired": "Expired"
+  "cert_expired": "Expired",
+  "result": "Result"
 }

@@ -13,6 +13,7 @@ import '../data/models/identity_status.dart';
 import '../data/models/node.dart';
 import '../data/models/node_manager.dart';
 import '../data/models/node_type.dart';
+import '../ui/contacts_cache.dart';
 import '../ui/logger.dart';
 import 'g1_helper.dart';
 import 'g1_v2_helper_others.dart';
@@ -83,13 +84,16 @@ Future<List<Contact>> searchWotV2(String searchPatternRaw) async {
           }
         }
       }
+      // If works without errors, break
+      break;
     } catch (e) {
-      loggerDev('Error searching wot: $e');
+      log.e('Error searching wot', error: e);
     }
     loggerDev('Contacts found in wot search ${contacts.length}');
     return contacts;
   }
   loggerDev('Contacts not found in wot search');
+  ContactsCache().addContacts(contacts);
   return contacts;
 }
 
@@ -124,13 +128,16 @@ Future<List<Contact>> getIdentities({required List<String> addresses}) async {
           }
         }
       }
+      // If works without errors, break
+      break;
     } catch (e) {
-      loggerDev('Error searching wot: $e');
+      log.e('Error searching wot', error: e);
     }
     loggerDev('Contacts found in wot search ${contacts.length}');
     return contacts;
   }
   loggerDev('Contacts not found in wot search');
+  ContactsCache().addContacts(contacts);
   return contacts;
 }
 
@@ -138,21 +145,27 @@ Contact _contactFromIdentity(dynamic identity) {
   if (identity == null) {
     throw ArgumentError('Identity cannot be null');
   }
+  List<Cert> certReceived = <Cert>[];
+  try {
+    certReceived = ((identity as dynamic).certReceived as BuiltList<dynamic>)
+        .map((dynamic cert) => _buildCert(cert))
+        .toList();
+  } catch (e) {
+    // Do nothing
+  }
+  List<Cert> certIssued = <Cert>[];
+  try {
+    certIssued = ((identity as dynamic).certIssued as BuiltList<dynamic>)
+        .map((dynamic cert) => _buildCert(cert))
+        .toList();
+  } catch (e) {
+    // Do nothing
+  }
   return Contact.withAddress(
     nick: (identity as dynamic).name as String?,
     address: (identity as dynamic).accountId as String,
-    certsReceived: (identity as dynamic).certReceived == null
-        ? <Cert>[]
-        : ((identity as dynamic).certReceived as BuiltList<dynamic>)
-            // ignore: always_specify_types
-            .map((cert) => _buildCert(cert))
-            .toList(),
-    certsIssued: (identity as dynamic).certIssued == null
-        ? <Cert>[]
-        : ((identity as dynamic).certIssued as BuiltList<dynamic>)
-            // ignore: always_specify_types
-            .map((cert) => _buildCert(cert))
-            .toList(),
+    certsReceived: certReceived,
+    certsIssued: certIssued,
     status: parseIdentityStatus(
         ((identity as dynamic).status as dynamic)?.name as String?),
     isMember: (identity as dynamic).isMember as bool?,
@@ -162,14 +175,18 @@ Contact _contactFromIdentity(dynamic identity) {
 }
 
 Cert _buildCert(dynamic cert) {
+  final dynamic issuer = (cert as dynamic).issuer;
+  final dynamic receiver = (cert as dynamic).receiver;
   return Cert(
     id: (cert as dynamic).id as String,
     issuerId: Contact.withAddress(
-        name: ((cert as dynamic).issuer as dynamic).name as String,
-        address: ((cert as dynamic).issuer as dynamic).accountId as String),
+        name: (issuer as dynamic).name as String,
+        createdOn: ((issuer as dynamic).account as dynamic).createdOn as int,
+        address: (issuer as dynamic).accountId as String),
     receiverId: Contact.withAddress(
-        name: ((cert as dynamic).receiver as dynamic).name as String,
-        address: ((cert as dynamic).receiver as dynamic).accountId as String),
+        name: (receiver as dynamic).name as String,
+        createdOn: ((receiver as dynamic).account as dynamic).createdOn as int,
+        address: (receiver as dynamic).accountId as String),
     createdOn: (cert as dynamic).createdOn as int,
     expireOn: (cert as dynamic).expireOn as int,
     isActive: (cert as dynamic).isActive as bool,
@@ -190,26 +207,39 @@ Contact _contactFromAccount(dynamic account) {
     throw ArgumentError('Account cannot be null');
   }
   final dynamic identity = (account as dynamic).identity;
+  List<Cert> certReceived = <Cert>[];
+  List<Cert> certIssued = <Cert>[];
+  try {
+    certReceived = ((identity as dynamic).certReceived as BuiltList<dynamic>)
+        .map((dynamic cert) => _buildCert(cert))
+        .toList();
+  } catch (e) {
+    // Do nothing
+  }
+  try {
+    certIssued = ((identity as dynamic).certIssued as BuiltList<dynamic>)
+        .map((dynamic cert) => _buildCert(cert))
+        .toList();
+  } catch (e) {
+    // Do nothing
+  }
 
-  return Contact.withAddress(
-    nick: (identity as dynamic)?.name as String?,
-    address: (account as dynamic).id as String,
-    status: parseIdentityStatus(
-        ((identity as dynamic)?.status as dynamic)?.name as String?),
-    isMember: (identity as dynamic)?.isMember as bool?,
-    createdOn: (account as dynamic).createdOn as int?,
-    expireOn: (identity as dynamic).expireOn as int?,
-    certsIssued: (identity as dynamic)?.certIssued == null
-        ? <Cert>[]
-        : ((identity as dynamic).certIssued as BuiltList<dynamic>)
-            .map((dynamic cert) => _buildCert(cert))
-            .toList(),
-    certsReceived: (identity as dynamic)?.certReceived == null
-        ? <Cert>[]
-        : ((identity as dynamic).certReceived as BuiltList<dynamic>)
-            .map((dynamic cert) => _buildCert(cert))
-            .toList(),
-  );
+  return identity != null
+      ? Contact.withAddress(
+          nick: (identity as dynamic)?.name as String?,
+          address: (account as dynamic).id as String,
+          status: parseIdentityStatus(
+              ((identity as dynamic)?.status as dynamic)?.name as String?),
+          isMember: (identity as dynamic)?.isMember as bool?,
+          createdOn: (account as dynamic).createdOn as int?,
+          expireOn: (identity as dynamic).expireOn as int?,
+          certsIssued: certIssued,
+          certsReceived: certReceived,
+        )
+      : Contact.withAddress(
+          address: (account as dynamic).id as String,
+          createdOn: (account as dynamic).createdOn as int?,
+        );
 }
 
 Future<List<Contact>> getAccounts({required List<String> accountIds}) async {
@@ -241,20 +271,71 @@ Future<List<Contact>> getAccounts({required List<String> accountIds}) async {
           }
         }
       }
+      break;
     } catch (e) {
-      loggerDev('Error fetching accounts: $e');
-      // retry??
+      log.e('Error fetching accounts', error: e);
+      // retry
     }
-    loggerDev('Contacts found in wot search ${contacts.length}');
-    return contacts;
   }
-  loggerDev('Fetched ${contacts.length} accounts');
+  loggerDev('Accounts found in wot search ${contacts.length}');
+  ContactsCache().addContacts(contacts);
   return contacts;
 }
 
 Future<Contact> getAccount({required String address}) async {
   final List<Contact> contacts =
       await getAccounts(accountIds: <String>[address]);
+  return contacts.isNotEmpty
+      ? contacts.first
+      : Contact.withAddress(address: address);
+}
+
+Future<List<Contact>> getAccountsBasic(
+    {required List<String> accountIds}) async {
+  final List<Contact> contacts = <Contact>[];
+  for (final Node node in NodeManager().getBestNodes(NodeType.duniterIndexer)) {
+    loggerDev('Fetching accounts with IDs: $accountIds');
+    try {
+      final GAccountsBasicByPkReq req = GAccountsBasicByPkReq(
+        (GAccountsBasicByPkReqBuilder b) => b
+          ..fetchPolicy = ferry.FetchPolicy.NetworkOnly
+          ..vars.accountIds.replace(accountIds),
+      );
+
+      final ferry.Client client =
+          await initDuniterIndexerClient(node.url, GetIt.instance<HiveStore>());
+
+      final ferry
+          .OperationResponse<GAccountsBasicByPkData, GAccountsBasicByPkVars>
+          response = await client.request(req).first;
+
+      if (response.hasErrors) {
+        loggerDev('Error: ${response.linkException?.originalException}',
+            error: response.linkException?.originalException);
+      } else {
+        final GAccountsBasicByPkData? accountsData = response.data;
+        if (accountsData != null) {
+          for (final dynamic account in accountsData.account) {
+            final Contact contact = _contactFromAccount(account);
+            contacts.add(contact);
+          }
+        }
+      }
+      break;
+    } catch (e, st) {
+      log.e('Error fetching accounts', error: e, stackTrace: st);
+      // retry
+    }
+  }
+  loggerDev('Contacts found in wot search ${contacts.length}');
+  loggerDev('Fetched ${contacts.length} accounts');
+  ContactsCache().addContacts(contacts);
+  return contacts;
+}
+
+Future<Contact> getAccountBasic({required String address}) async {
+  final List<Contact> contacts =
+      await getAccountsBasic(accountIds: <String>[address]);
   return contacts.isNotEmpty
       ? contacts.first
       : Contact.withAddress(address: address);

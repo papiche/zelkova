@@ -1,3 +1,5 @@
+import '../../ui/logger.dart';
+
 enum IdentityStatus {
   MEMBER,
   NOTMEMBER,
@@ -7,7 +9,7 @@ enum IdentityStatus {
   UNVALIDATED
 }
 
-IdentityStatus parseIdentityStatus(String? state) {
+IdentityStatus? parseIdentityStatus(String? state) {
   switch (state?.toUpperCase()) {
     case 'MEMBER':
       return IdentityStatus.MEMBER;
@@ -22,6 +24,9 @@ IdentityStatus parseIdentityStatus(String? state) {
     case 'UNVALIDATED':
       return IdentityStatus.UNVALIDATED;
     default:
-      throw Exception('Unknown identity state: $state');
+      if (state != null) {
+        log.e('Unknown identity state: $state');
+      }
+      return null;
   }
 }

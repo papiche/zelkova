@@ -723,9 +723,17 @@ class AppStart extends StatelessWidget {
 }
 
 Future<void> hiveInit() async {
-  await Hive.initFlutter();
+  try {
+    loggerDev('Initializing Hive');
+    await Hive.initFlutter();
+  } catch (e) {
+    log.e('Error initializing Hive', error: e);
+    // If there is an error, we should delete the old hive files
+    await Hive.deleteFromDisk();
+    await Hive.initFlutter();
+  }
 
-  // Reset hive old keys
+  loggerDev('Reset hive old keys');
   if (kIsWeb) {
     final Box<dynamic> box = await Hive.openBox('hydrated_box',
         path: HydratedStorage.webStorageDirectory.path);
@@ -738,6 +746,7 @@ Future<void> hiveInit() async {
   }
 
   // Hydrated storage
+  loggerDev('Initializing Hydrated storage');
   final Directory storageDir = kIsWeb
       ? HydratedStorage.webStorageDirectory
       : await getApplicationDocumentsDirectory();
@@ -745,10 +754,12 @@ Future<void> hiveInit() async {
       await HydratedStorage.build(storageDirectory: storageDir);
 
   // Ferry cache
+  loggerDev('Initializing Ferry cache');
   final Box<dynamic> ferryBox = await Hive.openBox(
     'ferry-graphql-cache',
     path: storageDir.path,
   );
+
   final HiveStore ferryStore = HiveStore(ferryBox);
   final GetIt getIt = GetIt.instance;
   getIt.registerSingleton<HiveStore>(ferryStore);

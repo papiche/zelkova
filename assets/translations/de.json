@@ -330,5 +330,9 @@
   "tx_ready": "Die Transaktion ist bereit, verarbeitet zu werden",
   "tx_in_block": "Die Transaktion wurde bestätigt",
   "tx_broadcast": "Die Transaktion wurde gesendet und wird gerade verarbeitet",
-  "test_network_dialog_message": "Sie haben das Duniter Test-Netzwerk ausgewählt, das für die Entwicklung vorgesehen ist. Alle Transaktionen, die hier durchgeführt werden, sind nicht real und laufen in einer Testumgebung, die vom Ğ1-Netzwerk getrennt ist. Testen Sie, was das Zeug hält!"
+  "test_network_dialog_message": "Sie haben das Duniter Test-Netzwerk ausgewählt, das für die Entwicklung vorgesehen ist. Alle Transaktionen, die hier durchgeführt werden, sind nicht real und laufen in einer Testumgebung, die vom Ğ1-Netzwerk getrennt ist. Testen Sie, was das Zeug hält!",
+  "certs_received": "Empfangene Zertifizierungen",
+  "info_this_wallet": "Info über diese Brieftasche",
+  "cert_expired": "Abgelaufen",
+  "certs_issued": "Ausgestellte Zertifizierungen"
 }

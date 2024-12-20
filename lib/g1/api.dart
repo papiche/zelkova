@@ -18,7 +18,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'package:polkadot_dart/polkadot_dart.dart';
+import 'package:polkadart/polkadart.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:tuple/tuple.dart';
 import 'package:universal_html/html.dart' show window;
@@ -31,16 +31,16 @@ import '../data/models/node_type.dart';
 import '../data/models/transaction_state.dart';
 import '../data/models/utxo.dart';
 import '../env.dart';
+import '../generated/gdev/gdev.dart';
 import '../shared_prefs_helper.dart';
 import '../ui/contacts_cache.dart';
 import '../ui/logger.dart';
 import '../ui/ui_helpers.dart';
 import 'g1_helper.dart';
+import 'g1_v2_helper_others.dart';
 import 'no_nodes_exception.dart';
 import 'node_check_result.dart';
 import 'pay_result.dart';
-import 'polkadot_provider.dart';
-import 'polkadot_substrate_service.dart';
 import 'service_manager.dart';
 
 // Tx history
@@ -1177,16 +1177,12 @@ Future<NodeCheckResult> testGVAV1Node(String node, Duration timeout) async {
 
 Future<NodeCheckResult> testEndPointV2(String node, Duration timeout) async {
   final Stopwatch stopwatch = Stopwatch()..start();
-  final PolkaDotProvider wsProvider = PolkaDotProvider(Uri.parse(node));
-  await wsProvider.connect();
-  final WsSubstrateService wsService = WsSubstrateService(wsProvider);
-  final SubstrateRPC rpc = SubstrateRPC(wsService);
-  final SyncStateResponse syncState =
-      await rpc.request(const SubstrateRPCSystemSyncState()).timeout(timeout);
-  await wsProvider.disconnect();
+  final Provider provider = Provider.fromUri(parseNodeUrl(node));
+  final Gdev polkadot = Gdev(provider);
+  final int currentBlockNumber = (await polkadot.query.system.number()) - 1;
   stopwatch.stop();
   final NodeCheckResult nodeCheckResult = NodeCheckResult(
-      latency: stopwatch.elapsed, currentBlock: syncState.currentBlock);
+      latency: stopwatch.elapsed, currentBlock: currentBlockNumber);
   return nodeCheckResult;
 }
 

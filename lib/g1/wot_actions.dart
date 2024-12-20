@@ -36,31 +36,18 @@ Future<String> createIdentity({Duration timeout = defPolkadotTimeout}) async {
 
   for (final Node node in nodes) {
     try {
-/*
-      final Provider provider = Provider.fromUri(parseNodeUrl(node.url));
-
-      final Gdev polkadot = Gdev(provider);
-      final RuntimeCall rt = polkadot.tx.identity
-          .createIdentity(ownerKey: Address.decode(wallet.address).pubkey);
-      final AuthorApi<Provider> author = AuthorApi<Provider>(provider);
-      final Uint8List sign = wallet.sign(rt.encode());
-
-*/
       final Provider provider = Provider.fromUri(parseNodeUrl(node.url));
       final Gdev polkadot = Gdev(provider);
 
       final RuntimeVersion runtimeVersion =
           await polkadot.rpc.state.getRuntimeVersion();
       final int currentBlockNumber = (await polkadot.query.system.number()) - 1;
-      final H256 genesisHash = await polkadot.query.system.blockHash(0);
+      final H256 currentBlockHash =
+          await polkadot.query.system.blockHash(currentBlockNumber);
       final int nonce =
           await polkadot.rpc.system.accountNextIndex(wallet.address);
-      final int safeBlockNumber =
-          currentBlockNumber > 0 ? currentBlockNumber - 1 : 0;
-      assert(safeBlockNumber >= 0 && safeBlockNumber <= 0xFFFFFFFF,
-          'Block number out of range: $safeBlockNumber');
-      final H256 currentBlockHash =
-          await polkadot.query.system.blockHash(safeBlockNumber);
+
+      final H256 genesisHash = await polkadot.query.system.blockHash(0);
 
       final RuntimeCall createIdentityCall =
           polkadot.tx.identity.createIdentity(

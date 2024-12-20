@@ -723,9 +723,22 @@ class AppStart extends StatelessWidget {
 }
 
 Future<void> hiveInit() async {
+  // Hydrated storage
+  loggerDev('Initializing Hydrated storage');
+  final Directory storageDir = kIsWeb
+      ? HydratedStorage.webStorageDirectory
+      : await getApplicationDocumentsDirectory();
+  HydratedBloc.storage =
+      await HydratedStorage.build(storageDirectory: storageDir);
+
+  _clearCacheIfNeeded(storageDir);
+
   try {
     loggerDev('Initializing Hive');
-    await Hive.initFlutter();
+    await Hive.initFlutter().timeout(const Duration(seconds: 10),
+        onTimeout: () {
+      throw TimeoutException('Hive initialization timed out');
+    });
   } catch (e) {
     log.e('Error initializing Hive', error: e);
     // If there is an error, we should delete the old hive files
@@ -745,14 +758,6 @@ Future<void> hiveInit() async {
     box.close();
   }
 
-  // Hydrated storage
-  loggerDev('Initializing Hydrated storage');
-  final Directory storageDir = kIsWeb
-      ? HydratedStorage.webStorageDirectory
-      : await getApplicationDocumentsDirectory();
-  HydratedBloc.storage =
-      await HydratedStorage.build(storageDirectory: storageDir);
-
   // Ferry cache
   loggerDev('Initializing Ferry cache');
   final Box<dynamic> ferryBox = await Hive.openBox(
@@ -763,4 +768,27 @@ Future<void> hiveInit() async {
   final HiveStore ferryStore = HiveStore(ferryBox);
   final GetIt getIt = GetIt.instance;
   getIt.registerSingleton<HiveStore>(ferryStore);
+}
+
+Future<void> _clearCacheIfNeeded(Directory storageDir) async {
+  final List<String> boxes = <String>['contacts_cache', 'ferry-graphql-cache'];
+  for (final String box in boxes) {
+    loggerDev("Checking $box cache's size");
+    final String cachePath = '${storageDir.path}/$box.hive';
+
+    final File cacheFile = File(cachePath);
+    if (cacheFile.existsSync()) {
+      final int cacheSize = cacheFile.lengthSync();
+      const int maxCacheSize = 100000000;
+
+      if (cacheSize > maxCacheSize) {
+        loggerDev('Cache $box exceeds limit. Clearing cache...');
+        await cacheFile.delete();
+      } else {
+        loggerDev('Cache $box size is within limits.');
+      }
+    } else {
+      loggerDev('Cache $box file does not exist.');
+    }
+  }
 }

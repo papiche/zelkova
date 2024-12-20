@@ -127,7 +127,7 @@ fragment IdentityFields on Identity {
     smith {
         ...SmithFields
     }
-    udHistory {
+    udHistory(limit: 15) {
         id
         amount
         timestamp
@@ -155,7 +155,7 @@ fragment AccountBasicFields on Account {
 }
 
 fragment AccountFields on Account {
-    commentsIssued {
+    commentsIssued(limit:15) {
         ...CommentsIssued
     }
     commentsIssuedAggregate {
@@ -213,7 +213,7 @@ fragment AccountFields on Account {
 }
 
 fragment AccountTxsFields on Account {
-    commentsIssued {
+    commentsIssued(limit: $limit, offset: $offset, orderBy: { blockNumber: DESC }) {
         ...CommentsIssued
     }
     commentsIssuedAggregate {

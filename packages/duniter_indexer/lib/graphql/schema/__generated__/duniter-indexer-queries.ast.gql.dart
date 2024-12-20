@@ -747,7 +747,12 @@ const IdentityFields = _i1.FragmentDefinitionNode(
     _i1.FieldNode(
       name: _i1.NameNode(value: 'udHistory'),
       alias: null,
-      arguments: [],
+      arguments: [
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'limit'),
+          value: _i1.IntValueNode(value: '15'),
+        )
+      ],
       directives: [],
       selectionSet: _i1.SelectionSetNode(selections: [
         _i1.FieldNode(
@@ -891,7 +896,12 @@ const AccountFields = _i1.FragmentDefinitionNode(
     _i1.FieldNode(
       name: _i1.NameNode(value: 'commentsIssued'),
       alias: null,
-      arguments: [],
+      arguments: [
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'limit'),
+          value: _i1.IntValueNode(value: '15'),
+        )
+      ],
       directives: [],
       selectionSet: _i1.SelectionSetNode(selections: [
         _i1.FragmentSpreadNode(
@@ -1188,7 +1198,25 @@ const AccountTxsFields = _i1.FragmentDefinitionNode(
     _i1.FieldNode(
       name: _i1.NameNode(value: 'commentsIssued'),
       alias: null,
-      arguments: [],
+      arguments: [
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'limit'),
+          value: _i1.VariableNode(name: _i1.NameNode(value: 'limit')),
+        ),
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'offset'),
+          value: _i1.VariableNode(name: _i1.NameNode(value: 'offset')),
+        ),
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'orderBy'),
+          value: _i1.ObjectValueNode(fields: [
+            _i1.ObjectFieldNode(
+              name: _i1.NameNode(value: 'blockNumber'),
+              value: _i1.EnumValueNode(name: _i1.NameNode(value: 'DESC')),
+            )
+          ]),
+        ),
+      ],
       directives: [],
       selectionSet: _i1.SelectionSetNode(selections: [
         _i1.FragmentSpreadNode(

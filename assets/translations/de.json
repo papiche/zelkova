@@ -334,5 +334,6 @@
   "certs_received": "Empfangene Zertifizierungen",
   "info_this_wallet": "Info über diese Brieftasche",
   "cert_expired": "Abgelaufen",
-  "certs_issued": "Ausgestellte Zertifizierungen"
+  "certs_issued": "Ausgestellte Zertifizierungen",
+  "result": "Resultat"
 }

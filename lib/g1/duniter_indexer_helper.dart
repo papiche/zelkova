@@ -169,6 +169,7 @@ Contact _contactFromIdentity(dynamic identity) {
     status: parseIdentityStatus(
         ((identity as dynamic).status as dynamic)?.name as String?),
     isMember: (identity as dynamic).isMember as bool?,
+    index: (identity as dynamic).index as int?,
     createdOn: ((identity as dynamic).account as dynamic).createdOn as int?,
     expireOn: (identity as dynamic).expireOn as int?,
   );
@@ -194,12 +195,10 @@ Cert _buildCert(dynamic cert) {
   );
 }
 
-Future<Contact> getIdentity({required String address}) async {
+Future<Contact?> getIdentity({required String address}) async {
   final List<Contact> contacts =
       await getIdentities(addresses: <String>[address]);
-  return contacts.isNotEmpty
-      ? contacts.first
-      : Contact.withAddress(address: address);
+  return contacts.isNotEmpty ? contacts.first : null;
 }
 
 Contact _contactFromAccount(dynamic account) {
@@ -233,6 +232,7 @@ Contact _contactFromAccount(dynamic account) {
           isMember: (identity as dynamic)?.isMember as bool?,
           createdOn: (account as dynamic).createdOn as int?,
           expireOn: (identity as dynamic).expireOn as int?,
+          index: (identity as dynamic).index as int?,
           certsIssued: certIssued,
           certsReceived: certReceived,
         )

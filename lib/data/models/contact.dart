@@ -38,6 +38,7 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
       this.status,
       this.isMember,
       this.createdOn,
+      this.index,
       this.expireOn})
       :
         // ensure that Contact does not have v1 checksums
@@ -91,6 +92,7 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
       this.status,
       this.isMember,
       this.createdOn,
+      this.index,
       this.expireOn});
 
   factory Contact.withPubKey(
@@ -108,6 +110,7 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
       List<Map<String, String>>? socials,
       List<Cert>? certsReceived,
       List<Cert>? certsIssued,
+      int? index,
       DateTime? time}) {
     return Contact._(
         nick: nick,
@@ -125,7 +128,8 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
         socials: socials,
         time: time,
         certsReceived: certsReceived,
-        certsIssued: certsIssued);
+        certsIssued: certsIssued,
+        index: index);
   }
 
   factory Contact.empty() {
@@ -155,7 +159,8 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
       IdentityStatus? status,
       bool? isMember,
       int? createdOn,
-      int? expireOn}) {
+      int? expireOn,
+      int? index}) {
     return Contact._(
         nick: nick,
         pubKey: v1pubkeyFromAddress(address),
@@ -176,7 +181,8 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
         status: status,
         isMember: isMember,
         createdOn: createdOn,
-        expireOn: expireOn);
+        expireOn: expireOn,
+        index: index);
   }
 
   final String? nick;
@@ -202,6 +208,7 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
   final bool? isMember;
   final int? createdOn;
   final int? expireOn;
+  final int? index;
 
   Contact merge(Contact c) {
     return Contact(

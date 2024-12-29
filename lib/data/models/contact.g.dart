@@ -45,6 +45,8 @@ abstract class _$ContactCWProxy {
 
   Contact createdOn(int? createdOn);
 
+  Contact index(int? index);
+
   Contact expireOn(int? expireOn);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Contact(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
@@ -73,6 +75,7 @@ abstract class _$ContactCWProxy {
     IdentityStatus? status,
     bool? isMember,
     int? createdOn,
+    int? index,
     int? expireOn,
   });
 }
@@ -144,6 +147,9 @@ class _$ContactCWProxyImpl implements _$ContactCWProxy {
   Contact createdOn(int? createdOn) => this(createdOn: createdOn);
 
   @override
+  Contact index(int? index) => this(index: index);
+
+  @override
   Contact expireOn(int? expireOn) => this(expireOn: expireOn);
 
   @override
@@ -174,6 +180,7 @@ class _$ContactCWProxyImpl implements _$ContactCWProxy {
     Object? status = const $CopyWithPlaceholder(),
     Object? isMember = const $CopyWithPlaceholder(),
     Object? createdOn = const $CopyWithPlaceholder(),
+    Object? index = const $CopyWithPlaceholder(),
     Object? expireOn = const $CopyWithPlaceholder(),
   }) {
     return Contact(
@@ -253,6 +260,10 @@ class _$ContactCWProxyImpl implements _$ContactCWProxy {
           ? _value.createdOn
           // ignore: cast_nullable_to_non_nullable
           : createdOn as int?,
+      index: index == const $CopyWithPlaceholder()
+          ? _value.index
+          // ignore: cast_nullable_to_non_nullable
+          : index as int?,
       expireOn: expireOn == const $CopyWithPlaceholder()
           ? _value.expireOn
           // ignore: cast_nullable_to_non_nullable
@@ -300,6 +311,7 @@ Contact _$ContactFromJson(Map<String, dynamic> json) => Contact(
       status: $enumDecodeNullable(_$IdentityStatusEnumMap, json['status']),
       isMember: json['isMember'] as bool?,
       createdOn: (json['createdOn'] as num?)?.toInt(),
+      index: (json['index'] as num?)?.toInt(),
       expireOn: (json['expireOn'] as num?)?.toInt(),
     );
 
@@ -324,6 +336,7 @@ Map<String, dynamic> _$ContactToJson(Contact instance) => <String, dynamic>{
       'isMember': instance.isMember,
       'createdOn': instance.createdOn,
       'expireOn': instance.expireOn,
+      'index': instance.index,
     };
 
 const _$IdentityStatusEnumMap = {

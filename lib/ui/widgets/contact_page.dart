@@ -8,11 +8,17 @@ import 'package:text_scroll/text_scroll.dart';
 import '../../data/models/app_cubit.dart';
 import '../../data/models/contact.dart';
 import '../../data/models/contact_cubit.dart';
+import '../../data/models/contact_wot_info.dart';
 import '../../data/models/menu_action.dart';
 import '../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../data/models/node_manager.dart';
 import '../../g1/api.dart';
+import '../../g1/duniter_indexer_helper.dart';
+import '../../g1/g1_v2_helper_others.dart';
 import '../../g1/wot_actions.dart';
+import '../../generated/gdev/pallets/certification.dart';
+import '../../generated/gdev/types/pallet_certification/types/idty_cert_meta.dart';
+import '../../generated/gdev/types/pallet_identity/types/idty_value.dart';
 import '../../shared_prefs_helper.dart';
 import '../ui_helpers.dart';
 import 'certifications_page.dart';
@@ -57,19 +63,24 @@ class _ContactPageState extends State<ContactPage> {
   Widget build(BuildContext context) {
     final Contact contact = widget.contact;
 
-    return FutureBuilder<Contact>(
-      future: getProfile(widget.contact.pubKey, resize: false, complete: true),
-      builder: (BuildContext context, AsyncSnapshot<Contact> snapshot) {
+    return FutureBuilder<ContactWotInfo>(
+      future: _getWotInfo(widget.contact),
+      builder: (BuildContext context, AsyncSnapshot<ContactWotInfo> snapshot) {
         if (snapshot.hasData) {
           return _buildContactWidget(snapshot.data!, context);
         }
-        return _buildContactWidget(contact, context);
+        return _buildContactWidget(
+            ContactWotInfo(
+                me: Contact(pubKey: SharedPreferencesHelper().getPubKey()),
+                you: contact),
+            context);
       },
     );
   }
 
   DefaultTabController _buildContactWidget(
-      Contact contact, BuildContext context) {
+      ContactWotInfo contactWotInfo, BuildContext context) {
+    final Contact contact = contactWotInfo.you;
     // FIXME, duplicated code in contact_menu
     final bool isContact =
         context.read<ContactsCubit>().isContact(contact.pubKey);
@@ -103,7 +114,8 @@ class _ContactPageState extends State<ContactPage> {
         ),
     ];
     if (isV2) {
-      getWotMenuActions(me, contact.status).forEach((MenuAction action) {
+      getWotMenuActions(context, me, contactWotInfo)
+          .forEach((MenuAction action) {
         actions.add(
           SpeedDialChild(
             child: Icon(action.icon),
@@ -392,6 +404,50 @@ class _ContactPageState extends State<ContactPage> {
         }).toList(),
       ),
     );
+  }
+
+  Future<ContactWotInfo> _getWotInfo(Contact contact) async {
+    final Contact you =
+        await getProfile(widget.contact.pubKey, resize: false, complete: true);
+    final Contact me = await getProfile(SharedPreferencesHelper().getPubKey(),
+        resize: false, complete: true);
+    final ContactWotInfo wotInfo = ContactWotInfo(me: me, you: you);
+    if (isV2) {
+      if (you.status == null) {
+        // Can create Identity from:
+        // https://duniter.org/wiki/duniter-v2/doc/wot/
+
+        // storage.identity.identities(AliceIndex).status is Member
+        final bool iAmMember = me.isMember ?? false;
+
+        // EveAccount exists with minimum amount of 2 ĞD (existential deposit plus fee buffer)
+        // storage.system.account(EveAccount).data.free is higher than 200
+        final BigInt? youBalance =
+            await getBalanceV2(address: widget.contact.address);
+        final bool enoughBalance =
+            youBalance != null && youBalance > BigInt.from(200);
+        // EveAccount is not already used by an identity
+        // storage.identity.identities(EveAccount) is None
+        final bool identityUsed =
+            (await getIdentity(address: you.address)) != null;
+        wotInfo.canCreateIdty = iAmMember && enoughBalance && !identityUsed;
+      }
+      // Can Certificate
+      final IdtyValue? myIdty = await polkadotIdentity(me);
+      final IdtyCertMeta? idtyCertMeta = await polkadotIdtyCertMeta(me);
+      if (myIdty != null && idtyCertMeta != null) {
+        final int currentBlock = await polkadotCurrentBlock();
+        // From: https://duniter.org/wiki/duniter-v2/doc/wot/
+        // storage.identity.identities(AliceIndex).nextCreatableIdentityOn is lower than current block
+        // storage.certification.storageIdtyCertMeta(AliceIndex).nextIssuableOn is lower than current block
+        // storage.certification.storageIdtyCertMeta(AliceIndex).issuedCount is lower than constants.certification.maxByIssuer()
+        final bool canCert = myIdty.nextCreatableIdentityOn < currentBlock &&
+            idtyCertMeta.nextIssuableOn < currentBlock &&
+            idtyCertMeta.issuedCount < Constants().maxByIssuer;
+        wotInfo.canCert = canCert;
+      }
+    }
+    return wotInfo;
   }
 }
 

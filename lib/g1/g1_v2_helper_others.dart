@@ -19,12 +19,15 @@ import 'package:polkadart_keyring/polkadart_keyring.dart';
 import 'package:ss58/ss58.dart';
 import 'package:tuple/tuple.dart' as tp;
 
+import '../data/models/contact.dart';
 import '../data/models/node.dart';
 import '../data/models/node_manager.dart';
 import '../data/models/node_type.dart';
 import '../generated/gdev/gdev.dart';
 import '../generated/gdev/types/frame_system/account_info.dart';
 import '../generated/gdev/types/gdev_runtime/runtime_call.dart';
+import '../generated/gdev/types/pallet_certification/types/idty_cert_meta.dart';
+import '../generated/gdev/types/pallet_identity/types/idty_value.dart';
 import '../generated/gdev/types/primitive_types/h256.dart';
 import '../generated/gdev/types/sp_runtime/multiaddress/multi_address.dart';
 import '../shared_prefs_helper.dart';
@@ -209,6 +212,56 @@ String formatPubkey(String value) {
   return '${value.substring(0, 4)}\u2026${value.substring(value.length - 4)}';
 }
 */
+
+Future<T> executeOnNodes<T>(
+    Future<T> Function(Node node, Provider provider, Gdev polkadot) operation,
+    {Duration timeout = defPolkadotTimeout}) async {
+  final List<Node> nodes = NodeManager().getBestNodes(NodeType.endpoint);
+  nodes.shuffle();
+
+  for (final Node node in nodes) {
+    try {
+      final Provider provider = Provider.fromUri(parseNodeUrl(node.url));
+      final Gdev polkadot = Gdev(provider);
+
+      final T result =
+          await operation(node, provider, polkadot).timeout(timeout);
+      return result; // If the operation is successful, return the result
+    } catch (e, stacktrace) {
+      NodeManager().increaseNodeErrors(NodeType.endpoint, node);
+      loggerDev('Error in node ${node.url}', error: e, stackTrace: stacktrace);
+    }
+  }
+
+  throw Exception(
+      'All nodes failed to execute the operation'); // If all nodes fail, throw an exception
+}
+
+Future<IdtyValue?> polkadotIdentity(Contact contact) async {
+  return executeOnNodes<IdtyValue?>(
+      (Node node, Provider provider, Gdev gdev) async {
+    if (contact.index == null) {
+      return null;
+    }
+    return gdev.query.identity.identities(contact.index!);
+  });
+}
+
+Future<int> polkadotCurrentBlock() async {
+  return executeOnNodes<int>((Node node, Provider provider, Gdev gdev) async {
+    return gdev.query.system.number();
+  });
+}
+
+Future<IdtyCertMeta?> polkadotIdtyCertMeta(Contact contact) async {
+  return executeOnNodes<IdtyCertMeta?>(
+      (Node node, Provider provider, Gdev gdev) async {
+    if (contact.index == null) {
+      return null;
+    }
+    return gdev.query.certification.storageIdtyCertMeta(contact.index!);
+  });
+}
 
 Future<BigInt?> getBalanceV2(
     {required String address, Duration timeout = defPolkadotTimeout}) async {

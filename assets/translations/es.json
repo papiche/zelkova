@@ -336,4 +336,12 @@
   "info_this_wallet": "Info sobre este monedero",
   "cert_expired": "Caducado",
   "result": "Resultado"
+  "renew_membership": "Renovar Membresía",
+  "revoke_membership": "Revocar Membresía",
+  "confirm_identity": "Confirmar Identidad",
+  "identity_name_hint": "Nombre de Identidad",
+  "invalid_identity_name": "Nombre de identidad no válido. Asegúrese de que solo contenga caracteres alfanuméricos, guiones (-) o guiones bajos (_) y que tenga menos de 42 caracteres.",
+  "wot_create_identity": "Crear Identidad",
+  "request_distance_evaluation": "Solicitar evaluación de Distancia",
+  "certify_member": "Certificar Miembro"
 }

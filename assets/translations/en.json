@@ -329,5 +329,14 @@
   "certs_received": "Received certifications",
   "info_this_wallet": "Info about this wallet",
   "cert_expired": "Expired",
-  "result": "Result"
+  "result": "Result",
+  "renew_membership": "Renew Membership",
+  "revoke_membership": "Revoke Membership",
+  "confirm_identity": "Confirm Identity",
+  "identity_name_hint": "Identity Name",
+  "invalid_identity_name": "Invalid identity name. Please ensure it only contains alphanumeric characters, dashes (-), or underscores (_) and is less than 42 characters.",
+  "wot_create_identity": "Create Identity",
+  "request_distance_evaluation": "Request Distance Evaluation",
+  "certify_member": "Certify"
 }
+

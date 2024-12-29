@@ -446,6 +446,14 @@ class _ContactPageState extends State<ContactPage> {
             idtyCertMeta.issuedCount < Constants().maxByIssuer;
         wotInfo.canCert = canCert;
       }
+
+      // Waiting for Certifications
+      if (you.certsReceived != null &&
+          you.certsReceived!.isNotEmpty &&
+          you.certsReceived!.length <
+              gdevConstants().wot.minCertForMembership) {
+        wotInfo.waitingForCerts = true;
+      }
     }
     return wotInfo;
   }

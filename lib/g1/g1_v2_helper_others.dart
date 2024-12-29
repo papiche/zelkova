@@ -514,3 +514,126 @@ Uri parseNodeUrl(String url) {
   final Uri parsedUri = Uri.parse(url);
   return parsedUri;
 }
+
+Future<String> requestDistanceEvaluation(int idtyIndex,
+    {Duration timeout = defPolkadotTimeout}) async {
+  final CesiumWallet walletV1 = await SharedPreferencesHelper().getWallet();
+  final KeyPair wallet = KeyPair.ed25519.fromSeed(walletV1.seed);
+  final Completer<String> result = Completer<String>();
+
+  return executeOnNodes<String>(
+      (Node node, Provider provider, Gdev gdev) async {
+    // distance rule has been evaluated positively locally on web of trust at block storage.distance.evaluationBlock()
+    // TODO(vjrj): Implement this
+    // gdev.query.distance.evaluationBlock();
+    final RuntimeCall call =
+        gdev.tx.distance.requestDistanceEvaluationFor(target: idtyIndex);
+    return signAndSend(gdev, wallet, call, provider, result, timeout);
+  });
+}
+
+Future<String> signAndSend(Gdev polkadot, KeyPair wallet, RuntimeCall call,
+    Provider provider, Completer<String> result, Duration timeout) async {
+  final RuntimeVersion runtimeVersion =
+      await polkadot.rpc.state.getRuntimeVersion();
+  final int currentBlockNumber = (await polkadot.query.system.number()) - 1;
+  final H256 currentBlockHash =
+      await polkadot.query.system.blockHash(currentBlockNumber);
+  final int nonce = await polkadot.rpc.system.accountNextIndex(wallet.address);
+
+  final H256 genesisHash = await polkadot.query.system.blockHash(0);
+
+  final Uint8List encodedCall = call.encode();
+
+  final Uint8List payload = SigningPayload(
+          method: encodedCall,
+          specVersion: runtimeVersion.specVersion,
+          transactionVersion: runtimeVersion.transactionVersion,
+          genesisHash: encodeHex(genesisHash),
+          blockHash: encodeHex(currentBlockHash),
+          blockNumber: currentBlockNumber,
+          eraPeriod: 64,
+          nonce: nonce,
+          tip: 0)
+      .encode(polkadot.registry);
+
+  final Uint8List signature = wallet.sign(payload);
+  final Uint8List extrinsic = ExtrinsicPayload(
+          signer: wallet.bytes(),
+          method: encodedCall,
+          signature: signature,
+          eraPeriod: 64,
+          blockNumber: currentBlockNumber,
+          nonce: nonce,
+          tip: 0)
+      .encode(polkadot.registry, SignatureType.ed25519);
+
+  final AuthorApi<Provider> author = AuthorApi<Provider>(provider);
+
+  await author.submitAndWatchExtrinsic(extrinsic, (ExtrinsicStatus status) {
+    switch (status.type) {
+      case 'finalized':
+        result.complete('');
+        break;
+      case 'dropped':
+        result.complete(tr('op_dropped'));
+        break;
+      case 'invalid':
+        result.complete(tr('op_invalid'));
+        break;
+      case 'usurped':
+        result.complete(tr('op_usurped'));
+        break;
+      case 'future':
+        break;
+      case 'ready':
+        break;
+      case 'inBlock':
+        break;
+      case 'broadcast':
+        break;
+      default:
+        result.complete('Unexpected transaction status: ${status.type}.');
+        loggerDev('Unexpected transaction status: ${status.type}.');
+        break;
+    }
+  }).timeout(timeout);
+  return result.future;
+}
+
+Future<String> createIdentity(
+    {required Contact you, Duration timeout = defPolkadotTimeout}) async {
+  final List<Node> nodes = NodeManager().getBestNodes(NodeType.endpoint);
+  nodes.shuffle();
+  final CesiumWallet walletV1 = await SharedPreferencesHelper().getWallet();
+  final KeyPair wallet = KeyPair.ed25519.fromSeed(walletV1.seed);
+  final Completer<String> result = Completer<String>();
+  return executeOnNodes((Node node, Provider provider, Gdev polkadot) async {
+    final RuntimeCall call = polkadot.tx.identity.createIdentity(
+      ownerKey: Address.decode(you.address).pubkey,
+    );
+
+    return signAndSend(polkadot, wallet, call, provider, result, timeout);
+  });
+}
+
+Future<String> confirmIdentity(String identityName,
+    {Duration timeout = defPolkadotTimeout}) async {
+  final List<Node> nodes = NodeManager().getBestNodes(NodeType.endpoint);
+  nodes.shuffle();
+  final CesiumWallet walletV1 = await SharedPreferencesHelper().getWallet();
+  final KeyPair wallet = KeyPair.ed25519.fromSeed(walletV1.seed);
+  final Completer<String> result = Completer<String>();
+  return executeOnNodes((Node node, Provider provider, Gdev polkadot) async {
+    final RuntimeCall call =
+        polkadot.tx.identity.confirmIdentity(idtyName: identityName.codeUnits);
+    return signAndSend(polkadot, wallet, call, provider, result, timeout);
+  });
+}
+
+Constants gdevConstants() {
+  final Provider provider =
+      Provider.fromUri(parseNodeUrl(NodeManager().endpointNodes.first.url));
+  final Gdev gdev = Gdev(provider);
+  return gdev.constant;
+}

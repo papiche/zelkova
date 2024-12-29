@@ -1,5 +1,5 @@
+import '../../ui/ui_helpers.dart';
 import 'contact.dart';
-import 'identity_status.dart';
 
 class ContactWotInfo {
   ContactWotInfo({
@@ -11,16 +11,10 @@ class ContactWotInfo {
   final Contact you;
   bool? canCert;
   bool? canCreateIdty;
+  bool? waitingForCerts;
 
-  bool get isMe {
-    return me.pubKey == you.pubKey;
-  }
-
-  bool get isMember {
-    return you.status == IdentityStatus.MEMBER;
-  }
-
-  bool get iAmMember {
-    return me.status == IdentityStatus.MEMBER;
+  @override
+  String toString() {
+    return 'ContactWotInfo{me: ${humanizeContact('', me)}, you: ${humanizeContact('', you)}, canCert: $canCert, canCreateIdty: $canCreateIdty}, waitingForCert: $waitingForCerts}';
   }
 }

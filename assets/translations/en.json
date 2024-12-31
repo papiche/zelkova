@@ -337,6 +337,21 @@
   "invalid_identity_name": "Invalid identity name. Please ensure it only contains alphanumeric characters, dashes (-), or underscores (_) and is less than 42 characters.",
   "wot_create_identity": "Create Identity",
   "request_distance_evaluation": "Request Distance Evaluation",
-  "certify_member": "Certify"
+  "certify_member": "Certify",
+  "idty_status_MEMBER": "Member",
+  "idty_status_NOTMEMBER": "Not Member",
+  "idty_status_REMOVED": "Removed",
+  "idty_status_REVOKED": "Revoked",
+  "idty_status_UNCONFIRMED": "Unconfirmed",
+  "idty_status_UNVALIDATED": "Unvalidated",
+  "wallet_auth_failed": "Authentication failed",
+  "op_invalid": "The operation could not be processed. Please verify and try again.",
+  "op_dropped": "The operation was not completed. Please try again later.",
+  "op_usurped": "The operation was replaced by a newer one.",
+  "op_ready": "The operation is ready for processing.",
+  "op_in_block": "The operation has been confirmed and included in a block.",
+  "op_broadcast": "The operation has been sent to the network and is being processed.",
+  "op_processing": "The operation is being processed.",
+  "op_successful": "The operation was successful."
 }
 

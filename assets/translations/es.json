@@ -335,7 +335,7 @@
   "certs_received": "Certificaciones recibidas",
   "info_this_wallet": "Info sobre este monedero",
   "cert_expired": "Caducado",
-  "result": "Resultado"
+  "result": "Resultado",
   "renew_membership": "Renovar Membresía",
   "revoke_membership": "Revocar Membresía",
   "confirm_identity": "Confirmar Identidad",
@@ -345,7 +345,7 @@
   "request_distance_evaluation": "Solicitar evaluación de Distancia",
   "certify_member": "Certificar Miembro",
   "idty_status_MEMBER": "Miembro",
-  "idty_status_NOTMEMBER": "No Miembro"
+  "idty_status_NOTMEMBER": "No Miembro",
   "idty_status_REMOVED": "Eliminado",
   "idty_status_REVOKED": "Revocado",
   "idty_status_UNCONFIRMED": "No Confirmado",

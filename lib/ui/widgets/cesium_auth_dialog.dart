@@ -280,3 +280,29 @@ class _CesiumAuthDialogState extends State<CesiumAuthDialog> {
     }
   }
 }
+
+Future<bool?> showAuthCesiumWalletDialog(
+    BuildContext context, String wallet, int returnTo) {
+  return showDialog<bool>(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext dialogContext) {
+      return CesiumAuthDialog(publicKey: wallet, returnTo: returnTo);
+    },
+  );
+}
+
+Future<bool> walletAuth(BuildContext context) async {
+  bool hasPass = false;
+  if (!SharedPreferencesHelper().isG1nkgoCard() &&
+      !SharedPreferencesHelper().hasVolatile()) {
+    hasPass = await showAuthCesiumWalletDialog(
+            context,
+            SharedPreferencesHelper().getPubKey(),
+            context.read<BottomNavCubit>().currentIndex) ??
+        false;
+  } else {
+    hasPass = true;
+  }
+  return hasPass;
+}

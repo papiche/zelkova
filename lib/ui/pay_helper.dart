@@ -29,8 +29,9 @@ import '../g1/pay_result.dart';
 import 'contacts_cache.dart';
 import 'logger.dart';
 import 'ui_helpers.dart';
+import 'widgets/cesium_auth_dialog.dart';
 import 'widgets/connectivity_widget_wrapper_wrapper.dart';
-import 'widgets/fifth_screen/import_dialog.dart';
+import 'widgets/default_progress_dialog.dart';
 
 Future<bool> payWithRetry(
     {required BuildContext context,
@@ -42,18 +43,8 @@ Future<bool> payWithRetry(
     required double currentUd,
     bool useBMA = false}) async {
   assert(amount > 0);
-  bool hasPass = false;
   final bool isToMultiple = recipients.length > 1;
-  if (!SharedPreferencesHelper().isG1nkgoCard() &&
-      !SharedPreferencesHelper().hasVolatile()) {
-    hasPass = await showImportCesiumWalletDialog(
-            context,
-            SharedPreferencesHelper().getPubKey(),
-            context.read<BottomNavCubit>().currentIndex) ??
-        false;
-  } else {
-    hasPass = true;
-  }
+  final bool hasPass = await walletAuth(context);
   if (hasPass) {
     if (context.mounted) {
       final MultiWalletTransactionCubit txCubit =
@@ -137,12 +128,12 @@ Future<bool> payWithRetry(
             }
             final ProgressDialog pd = ProgressDialog(context: context);
             pd.show(
-              progressType: ProgressType.valuable,
+              progressType: defProgressType,
               msg: tr('tx_processing'),
-              hideValue: true,
-              progressBgColor: Colors.white70,
-              barrierDismissible: true,
-              msgMaxLines: 3,
+              hideValue: defProgressHideValue,
+              progressBgColor: defProgressBgColor,
+              barrierDismissible: defProgressBarrierDismissible,
+              msgMaxLines: defProgressMsgMaxLines,
               completed: Completed(),
             );
             result.progressStream!.listen(
@@ -152,31 +143,17 @@ Future<bool> payWithRetry(
               onDone: () async {
                 await Future<dynamic>.delayed(
                     const Duration(milliseconds: 1000));
-                pd.close();
                 if (!context.mounted) {
                   return;
                 }
-                context.read<BottomNavCubit>().updateIndex(3);
+                _onPaymentWIthProgressDone(pd, context);
               },
               onError: (dynamic error) {
-                pd.close();
                 if (!context.mounted) {
                   return;
                 }
-                _addPending(isRetry, txCubit, pending, context);
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) => AlertDialog(
-                    title: Text(tr('payment_error')),
-                    content: Text(error is String ? error : 'Unknown error'),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: Text(tr('accept')),
-                      ),
-                    ],
-                  ),
-                );
+                _onPaymentWithProgressError(
+                    pd, isRetry, txCubit, pending, context, error);
               },
             );
           } else {
@@ -229,6 +206,35 @@ Future<bool> payWithRetry(
     return false;
   }
   return true;
+}
+
+void _onPaymentWIthProgressDone(ProgressDialog pd, BuildContext context) {
+  pd.close();
+  context.read<BottomNavCubit>().updateIndex(3);
+}
+
+void _onPaymentWithProgressError(
+    ProgressDialog pd,
+    bool isRetry,
+    MultiWalletTransactionCubit txCubit,
+    Transaction pending,
+    BuildContext context,
+    dynamic error) {
+  pd.close();
+  _addPending(isRetry, txCubit, pending, context);
+  showDialog(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      title: Text(tr('payment_error')),
+      content: Text(error is String ? error : 'Unknown error'),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(tr('accept')),
+        ),
+      ],
+    ),
+  );
 }
 
 void _addPending(bool isRetry, MultiWalletTransactionCubit txCubit,

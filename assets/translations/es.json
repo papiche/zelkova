@@ -344,6 +344,7 @@
   "wot_create_identity": "Crear Identidad",
   "request_distance_evaluation": "Solicitar evaluación de Distancia",
   "certify_member": "Certificar Miembro",
+  "idty_status_title": "Estado",
   "idty_status_MEMBER": "Miembro",
   "idty_status_NOTMEMBER": "No Miembro",
   "idty_status_REMOVED": "Eliminado",
@@ -358,5 +359,9 @@
   "op_in_block": "La operación ha sido confirmada e incluida en un bloque.",
   "op_broadcast": "La operación se ha enviado a la red y está siendo procesada.",
   "op_processing": "La operación está siendo procesada.",
-  "op_successful": "La operación se ha completado con éxito."
+  "op_successful": "La operación se ha completado con éxito.",
+  "can_cert": "Puede certificar",
+  "can_cert_on": "Puede certificar el (aprox.)",
+  "yes": "Sí",
+  "no": "No"
 }

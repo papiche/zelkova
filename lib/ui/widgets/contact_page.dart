@@ -11,9 +11,9 @@ import '../../data/models/app_cubit.dart';
 import '../../data/models/contact.dart';
 import '../../data/models/contact_cubit.dart';
 import '../../data/models/contact_wot_info.dart';
-import '../../data/models/wot_menu_action.dart';
 import '../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../data/models/node_manager.dart';
+import '../../data/models/wot_menu_action.dart';
 import '../../g1/api.dart';
 import '../../g1/duniter_indexer_helper.dart';
 import '../../g1/g1_v2_helper_others.dart';
@@ -132,7 +132,7 @@ class _ContactPageState extends State<ContactPage> {
               final ProgressDialog pd = ProgressDialog(context: context);
               pd.show(
                 progressType: defProgressType,
-                msg: 'FIXME',
+                msg: '',
                 hideValue: defProgressHideValue,
                 progressBgColor: defProgressBgColor,
                 barrierDismissible: defProgressBarrierDismissible,
@@ -187,7 +187,7 @@ class _ContactPageState extends State<ContactPage> {
             Expanded(
               child: TabBarView(
                 children: <Widget>[
-                  _buildInfoTab(contact),
+                  _buildInfoTab(contact, contactWotInfo.canCertOn),
                   _buildTransactionsTab(contact),
                 ],
               ),
@@ -210,7 +210,7 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
-  Widget _buildInfoTab(Contact contact) {
+  Widget _buildInfoTab(Contact contact, DateTime? canCertOn) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -225,9 +225,26 @@ class _ContactPageState extends State<ContactPage> {
             _buildQrListTile(contact, isV2: true),
           if (contact.status != null)
             ListTile(
-              leading: const Icon(Icons.build),
-              title: Text(tr('status')),
+              leading: const Icon(Icons.card_membership_outlined),
+              title: Text(tr('idty_status_title')),
               subtitle: Text(tr('idty_status_${contact.status!.name}')),
+            ),
+          if (canCertOn != null && !canCertOn.isAfter(DateTime.now()))
+            ListTile(
+              leading: const Icon(Icons.verified_outlined),
+              title: Text(tr('can_cert')),
+              subtitle: Text(tr('yes')),
+            ),
+          if (canCertOn != null && canCertOn.isAfter(DateTime.now()))
+            ListTile(
+              leading: const Icon(Icons.timelapse),
+              title: Text(tr('can_cert_on')),
+              subtitle: Text(
+                  humanizeTimeFuture(context.locale.languageCode,
+                          canCertOn.millisecond * 1000) ??
+                      '??',
+                  // In red
+                  style: const TextStyle(color: Colors.red)),
             ),
           // FIXME: Add: Available for Cert yer or no??
           if (inDevelopment && contact.createdOn != null)
@@ -467,11 +484,21 @@ class _ContactPageState extends State<ContactPage> {
             (await getIdentity(address: you.address)) != null;
         wotInfo.canCreateIdty = iAmMember && enoughBalance && !identityUsed;
       }
+      final int currentBlock = await polkadotCurrentBlock();
+
+      final bool youAMember = you.isMember ?? false;
+      if (youAMember) {
+        final IdtyValue? youIdty = await polkadotIdentity(you);
+        final IdtyCertMeta? youCertMeta = await polkadotIdtyCertMeta(you);
+        if (youIdty != null && youCertMeta != null) {
+          wotInfo.canCertOn =
+              estimateDate(youCertMeta.nextIssuableOn, currentBlock);
+        }
+      }
       // Can Certificate
       final IdtyValue? myIdty = await polkadotIdentity(me);
       final IdtyCertMeta? idtyCertMeta = await polkadotIdtyCertMeta(me);
       if (myIdty != null && idtyCertMeta != null) {
-        final int currentBlock = await polkadotCurrentBlock();
         // From: https://duniter.org/wiki/duniter-v2/doc/wot/
         // storage.identity.identities(AliceIndex).nextCreatableIdentityOn is lower than current block
         // storage.certification.storageIdtyCertMeta(AliceIndex).nextIssuableOn is lower than current block
@@ -509,4 +536,11 @@ Widget _buildBadge(BuildContext context, int count) {
       style: const TextStyle(color: Colors.white),
     )),
   );
+}
+
+// Based on duniter-vue
+DateTime estimateDate(int futureBlock, int currentBlockHeight) {
+  const int millisPerBlock = 6000;
+  final int diff = futureBlock - currentBlockHeight;
+  return DateTime.now().add(Duration(milliseconds: diff * millisPerBlock));
 }

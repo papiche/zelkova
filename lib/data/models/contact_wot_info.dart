@@ -12,6 +12,7 @@ class ContactWotInfo {
   bool? canCert;
   bool? canCreateIdty;
   bool? waitingForCerts;
+  DateTime? canCertOn;
 
   @override
   String toString() {

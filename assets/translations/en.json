@@ -338,6 +338,7 @@
   "wot_create_identity": "Create Identity",
   "request_distance_evaluation": "Request Distance Evaluation",
   "certify_member": "Certify",
+  "idty_status_title": "Status",
   "idty_status_MEMBER": "Member",
   "idty_status_NOTMEMBER": "Not Member",
   "idty_status_REMOVED": "Removed",
@@ -352,6 +353,10 @@
   "op_in_block": "The operation has been confirmed and included in a block.",
   "op_broadcast": "The operation has been sent to the network and is being processed.",
   "op_processing": "The operation is being processed.",
-  "op_successful": "The operation was successful."
+  "op_successful": "The operation was successful.",
+  "can_cert": "Can Certify",
+  "can_cert_on": "Can Certify on (approx)",
+  "yes": "Yes",
+  "no": "No"
 }
 

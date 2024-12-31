@@ -61,6 +61,7 @@ fragment IdentityBasicFields on Identity {
     name
     status
     expireOn
+    index
 }
 
 fragment IdentityFields on Identity {

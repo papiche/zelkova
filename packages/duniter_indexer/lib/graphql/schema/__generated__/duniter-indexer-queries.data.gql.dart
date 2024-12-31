@@ -130,6 +130,8 @@ abstract class GIdentitiesByNameOrPkData_identity
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GIdentitiesByNameOrPkData_identity> get serializer =>
       _$gIdentitiesByNameOrPkDataIdentitySerializer;
 
@@ -423,6 +425,8 @@ abstract class GIdentitiesByPkData_identity_certIssued_issuer
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GIdentitiesByPkData_identity_certIssued_issuer>
       get serializer => _$gIdentitiesByPkDataIdentityCertIssuedIssuerSerializer;
 
@@ -515,6 +519,8 @@ abstract class GIdentitiesByPkData_identity_certIssued_receiver
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GIdentitiesByPkData_identity_certIssued_receiver>
       get serializer =>
           _$gIdentitiesByPkDataIdentityCertIssuedReceiverSerializer;
@@ -741,6 +747,8 @@ abstract class GIdentitiesByPkData_identity_certReceived_issuer
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GIdentitiesByPkData_identity_certReceived_issuer>
       get serializer =>
           _$gIdentitiesByPkDataIdentityCertReceivedIssuerSerializer;
@@ -835,6 +843,8 @@ abstract class GIdentitiesByPkData_identity_certReceived_receiver
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GIdentitiesByPkData_identity_certReceived_receiver>
       get serializer =>
           _$gIdentitiesByPkDataIdentityCertReceivedReceiverSerializer;
@@ -1783,6 +1793,8 @@ abstract class GIdentitiesByNameData_identity_certIssued_issuer
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GIdentitiesByNameData_identity_certIssued_issuer>
       get serializer =>
           _$gIdentitiesByNameDataIdentityCertIssuedIssuerSerializer;
@@ -1877,6 +1889,8 @@ abstract class GIdentitiesByNameData_identity_certIssued_receiver
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GIdentitiesByNameData_identity_certIssued_receiver>
       get serializer =>
           _$gIdentitiesByNameDataIdentityCertIssuedReceiverSerializer;
@@ -2109,6 +2123,8 @@ abstract class GIdentitiesByNameData_identity_certReceived_issuer
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GIdentitiesByNameData_identity_certReceived_issuer>
       get serializer =>
           _$gIdentitiesByNameDataIdentityCertReceivedIssuerSerializer;
@@ -2205,6 +2221,8 @@ abstract class GIdentitiesByNameData_identity_certReceived_receiver
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GIdentitiesByNameData_identity_certReceived_receiver>
       get serializer =>
           _$gIdentitiesByNameDataIdentityCertReceivedReceiverSerializer;
@@ -3374,6 +3392,8 @@ abstract class GAccountByPkData_accountByPk_identity_certIssued_issuer
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GAccountByPkData_accountByPk_identity_certIssued_issuer>
       get serializer =>
           _$gAccountByPkDataAccountByPkIdentityCertIssuedIssuerSerializer;
@@ -3477,6 +3497,8 @@ abstract class GAccountByPkData_accountByPk_identity_certIssued_receiver
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GAccountByPkData_accountByPk_identity_certIssued_receiver>
       get serializer =>
           _$gAccountByPkDataAccountByPkIdentityCertIssuedReceiverSerializer;
@@ -3725,6 +3747,8 @@ abstract class GAccountByPkData_accountByPk_identity_certReceived_issuer
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GAccountByPkData_accountByPk_identity_certReceived_issuer>
       get serializer =>
           _$gAccountByPkDataAccountByPkIdentityCertReceivedIssuerSerializer;
@@ -3829,6 +3853,8 @@ abstract class GAccountByPkData_accountByPk_identity_certReceived_receiver
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GAccountByPkData_accountByPk_identity_certReceived_receiver>
       get serializer =>
           _$gAccountByPkDataAccountByPkIdentityCertReceivedReceiverSerializer;
@@ -4628,6 +4654,8 @@ abstract class GAccountByPkData_accountByPk_linkedIdentity
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GAccountByPkData_accountByPk_linkedIdentity>
       get serializer => _$gAccountByPkDataAccountByPkLinkedIdentitySerializer;
 
@@ -4718,6 +4746,8 @@ abstract class GAccountByPkData_accountByPk_removedIdentities
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GAccountByPkData_accountByPk_removedIdentities>
       get serializer =>
           _$gAccountByPkDataAccountByPkRemovedIdentitiesSerializer;
@@ -6024,6 +6054,8 @@ abstract class GAccountsByPkData_account_identity_certIssued_issuer
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GAccountsByPkData_account_identity_certIssued_issuer>
       get serializer =>
           _$gAccountsByPkDataAccountIdentityCertIssuedIssuerSerializer;
@@ -6124,6 +6156,8 @@ abstract class GAccountsByPkData_account_identity_certIssued_receiver
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GAccountsByPkData_account_identity_certIssued_receiver>
       get serializer =>
           _$gAccountsByPkDataAccountIdentityCertIssuedReceiverSerializer;
@@ -6367,6 +6401,8 @@ abstract class GAccountsByPkData_account_identity_certReceived_issuer
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GAccountsByPkData_account_identity_certReceived_issuer>
       get serializer =>
           _$gAccountsByPkDataAccountIdentityCertReceivedIssuerSerializer;
@@ -6468,6 +6504,8 @@ abstract class GAccountsByPkData_account_identity_certReceived_receiver
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GAccountsByPkData_account_identity_certReceived_receiver>
       get serializer =>
           _$gAccountsByPkDataAccountIdentityCertReceivedReceiverSerializer;
@@ -7250,6 +7288,8 @@ abstract class GAccountsByPkData_account_linkedIdentity
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GAccountsByPkData_account_linkedIdentity> get serializer =>
       _$gAccountsByPkDataAccountLinkedIdentitySerializer;
 
@@ -7339,6 +7379,8 @@ abstract class GAccountsByPkData_account_removedIdentities
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GAccountsByPkData_account_removedIdentities>
       get serializer => _$gAccountsByPkDataAccountRemovedIdentitiesSerializer;
 
@@ -8292,6 +8334,8 @@ abstract class GAccountBasicByPkData_accountByPk_identity
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GAccountBasicByPkData_accountByPk_identity>
       get serializer => _$gAccountBasicByPkDataAccountByPkIdentitySerializer;
 
@@ -8452,6 +8496,8 @@ abstract class GAccountsBasicByPkData_account_identity
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GAccountsBasicByPkData_account_identity> get serializer =>
       _$gAccountsBasicByPkDataAccountIdentitySerializer;
 
@@ -9373,6 +9419,8 @@ abstract class GCertFields_issuer implements GIdentityBasicFields {
   @override
   int get expireOn;
   @override
+  int get index;
+  @override
   Map<String, dynamic> toJson();
 }
 
@@ -9403,6 +9451,8 @@ abstract class GCertFields_receiver implements GIdentityBasicFields {
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   @override
   Map<String, dynamic> toJson();
 }
@@ -9495,6 +9545,8 @@ abstract class GCertFieldsData_issuer
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GCertFieldsData_issuer> get serializer =>
       _$gCertFieldsDataIssuerSerializer;
 
@@ -9578,6 +9630,8 @@ abstract class GCertFieldsData_receiver
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GCertFieldsData_receiver> get serializer =>
       _$gCertFieldsDataReceiverSerializer;
 
@@ -9912,6 +9966,7 @@ abstract class GIdentityBasicFields {
   _i2.GIdentityStatusEnum? get status;
   String get name;
   int get expireOn;
+  int get index;
   Map<String, dynamic> toJson();
 }
 
@@ -9951,6 +10006,8 @@ abstract class GIdentityBasicFieldsData
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GIdentityBasicFieldsData> get serializer =>
       _$gIdentityBasicFieldsDataSerializer;
 
@@ -10082,6 +10139,8 @@ abstract class GIdentityFields_certIssued_issuer
   @override
   int get expireOn;
   @override
+  int get index;
+  @override
   Map<String, dynamic> toJson();
 }
 
@@ -10113,6 +10172,8 @@ abstract class GIdentityFields_certIssued_receiver
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   @override
   Map<String, dynamic> toJson();
 }
@@ -10183,6 +10244,8 @@ abstract class GIdentityFields_certReceived_issuer
   @override
   int get expireOn;
   @override
+  int get index;
+  @override
   Map<String, dynamic> toJson();
 }
 
@@ -10214,6 +10277,8 @@ abstract class GIdentityFields_certReceived_receiver
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   @override
   Map<String, dynamic> toJson();
 }
@@ -10570,6 +10635,8 @@ abstract class GIdentityFieldsData_certIssued_issuer
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GIdentityFieldsData_certIssued_issuer> get serializer =>
       _$gIdentityFieldsDataCertIssuedIssuerSerializer;
 
@@ -10660,6 +10727,8 @@ abstract class GIdentityFieldsData_certIssued_receiver
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GIdentityFieldsData_certIssued_receiver> get serializer =>
       _$gIdentityFieldsDataCertIssuedReceiverSerializer;
 
@@ -10879,6 +10948,8 @@ abstract class GIdentityFieldsData_certReceived_issuer
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GIdentityFieldsData_certReceived_issuer> get serializer =>
       _$gIdentityFieldsDataCertReceivedIssuerSerializer;
 
@@ -10970,6 +11041,8 @@ abstract class GIdentityFieldsData_certReceived_receiver
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GIdentityFieldsData_certReceived_receiver> get serializer =>
       _$gIdentityFieldsDataCertReceivedReceiverSerializer;
 
@@ -11719,6 +11792,8 @@ abstract class GAccountBasicFields_identity implements GIdentityBasicFields {
   @override
   int get expireOn;
   @override
+  int get index;
+  @override
   Map<String, dynamic> toJson();
 }
 
@@ -11804,6 +11879,8 @@ abstract class GAccountBasicFieldsData_identity
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GAccountBasicFieldsData_identity> get serializer =>
       _$gAccountBasicFieldsDataIdentitySerializer;
 
@@ -12026,6 +12103,8 @@ abstract class GAccountFields_identity_certIssued_issuer
   @override
   int get expireOn;
   @override
+  int get index;
+  @override
   Map<String, dynamic> toJson();
 }
 
@@ -12063,6 +12142,8 @@ abstract class GAccountFields_identity_certIssued_receiver
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   @override
   Map<String, dynamic> toJson();
 }
@@ -12148,6 +12229,8 @@ abstract class GAccountFields_identity_certReceived_issuer
   @override
   int get expireOn;
   @override
+  int get index;
+  @override
   Map<String, dynamic> toJson();
 }
 
@@ -12185,6 +12268,8 @@ abstract class GAccountFields_identity_certReceived_receiver
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   @override
   Map<String, dynamic> toJson();
 }
@@ -12421,6 +12506,8 @@ abstract class GAccountFields_linkedIdentity implements GIdentityBasicFields {
   @override
   int get expireOn;
   @override
+  int get index;
+  @override
   Map<String, dynamic> toJson();
 }
 
@@ -12452,6 +12539,8 @@ abstract class GAccountFields_removedIdentities
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   @override
   Map<String, dynamic> toJson();
 }
@@ -13041,6 +13130,8 @@ abstract class GAccountFieldsData_identity_certIssued_issuer
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GAccountFieldsData_identity_certIssued_issuer>
       get serializer => _$gAccountFieldsDataIdentityCertIssuedIssuerSerializer;
 
@@ -13135,6 +13226,8 @@ abstract class GAccountFieldsData_identity_certIssued_receiver
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GAccountFieldsData_identity_certIssued_receiver>
       get serializer =>
           _$gAccountFieldsDataIdentityCertIssuedReceiverSerializer;
@@ -13365,6 +13458,8 @@ abstract class GAccountFieldsData_identity_certReceived_issuer
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GAccountFieldsData_identity_certReceived_issuer>
       get serializer =>
           _$gAccountFieldsDataIdentityCertReceivedIssuerSerializer;
@@ -13460,6 +13555,8 @@ abstract class GAccountFieldsData_identity_certReceived_receiver
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GAccountFieldsData_identity_certReceived_receiver>
       get serializer =>
           _$gAccountFieldsDataIdentityCertReceivedReceiverSerializer;
@@ -14209,6 +14306,8 @@ abstract class GAccountFieldsData_linkedIdentity
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GAccountFieldsData_linkedIdentity> get serializer =>
       _$gAccountFieldsDataLinkedIdentitySerializer;
 
@@ -14297,6 +14396,8 @@ abstract class GAccountFieldsData_removedIdentities
   String get name;
   @override
   int get expireOn;
+  @override
+  int get index;
   static Serializer<GAccountFieldsData_removedIdentities> get serializer =>
       _$gAccountFieldsDataRemovedIdentitiesSerializer;
 

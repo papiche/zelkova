@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:bip39_multi_nullsafety/src/wordlists/spanish.dart' as spanish;
 import 'package:durt/src/crypto/cesium_wallet.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:ginkgo/data/models/auth_data.dart';
 import 'package:ginkgo/g1/g1_v2_helper.dart';
 import 'package:ginkgo/ui/logger.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
@@ -137,5 +138,19 @@ void main() {
 
     final bool isVerified = keypair.verify(message, signature);
     expect(isVerified, true);
+  });
+
+  test('createPair and AuthData', () async {
+    const String password = 'devtest';
+    // const String nm ='abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about';
+
+    final AuthDataV1 authDataV1 = AuthDataV1(password, password);
+    // final AuthDataV2 authDataV2 = AuthDataV2(nm, password);
+    final CesiumWallet walletV1 = CesiumWallet(password, password);
+
+    final KeyPair keyPair =
+        await createPair(AuthData(v1: authDataV1), Keyring());
+
+    expect(v1pubkeyFromAddress(keyPair.address), walletV1.pubkey);
   });
 }

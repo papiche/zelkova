@@ -100,7 +100,12 @@ class SharedPreferencesHelper with ChangeNotifier {
         return CesiumWallet.fromSeed(seedFromString(card.seed));
       } else {
         // This should have the wallet loaded
-        return cesiumVolatileCards[extractPublicKey(card.pubKey)]!;
+        final CesiumWallet? volatileWallet =
+            cesiumVolatileCards[extractPublicKey(card.pubKey)];
+        if (volatileWallet != null) {
+          return volatileWallet;
+        }
+        throw Exception('Volatile wallet not found (need to authenticate)');
       }
     } else {
       // Generate a new wallet if no wallets exist

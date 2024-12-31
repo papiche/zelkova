@@ -5,6 +5,7 @@ import 'package:duniter_indexer/duniter_indexer_client.dart';
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.data.gql.dart';
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.req.gql.dart';
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.var.gql.dart';
+import 'package:durt/durt.dart' as durt;
 import 'package:durt/durt.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fast_base58/fast_base58.dart';
@@ -12,9 +13,7 @@ import 'package:ferry/ferry.dart' as ferry;
 import 'package:ferry/ferry.dart';
 import 'package:ferry_hive_store/ferry_hive_store.dart';
 import 'package:get_it/get_it.dart';
-import 'package:pointycastle/export.dart';
 import 'package:polkadart/polkadart.dart';
-import 'package:polkadart/scale_codec.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 import 'package:ss58/ss58.dart';
 import 'package:tuple/tuple.dart' as tp;
@@ -28,13 +27,12 @@ import '../generated/gdev/types/frame_system/account_info.dart';
 import '../generated/gdev/types/gdev_runtime/runtime_call.dart';
 import '../generated/gdev/types/pallet_certification/types/idty_cert_meta.dart';
 import '../generated/gdev/types/pallet_identity/types/idty_value.dart';
-import '../generated/gdev/types/primitive_types/h256.dart';
 import '../generated/gdev/types/sp_runtime/multiaddress/multi_address.dart';
 import '../shared_prefs_helper.dart';
 import '../ui/logger.dart';
-import '../ui/ui_helpers.dart';
 import 'g1_helper.dart';
 import 'pay_result.dart';
+import 'sing_and_send.dart';
 
 // From:
 // https://polkadot.js.org/docs/util-crypto/examples/validate-address/
@@ -94,49 +92,6 @@ Keyring keyringFromSeed(Uint8List seed) {
   return keyring;
 }
 
-class AuthDataV1 {
-  AuthDataV1(this.password, this.salt);
-
-  String password;
-  String salt;
-}
-
-class AuthDataV2 {
-  AuthDataV2(this.mnemonic, this.meta);
-
-  String mnemonic;
-  String meta;
-}
-
-class AuthData {
-  AuthData({this.v1, this.v2});
-
-  AuthDataV1? v1;
-  AuthDataV2? v2;
-}
-
-Future<KeyPair> createPair(AuthData data, Keyring keyring) async {
-  if (data.v1 != null) {
-    final List<int> password = data.v1!.password.codeUnits;
-    final String salt = data.v1!.salt;
-    final Uint8List passwordU8a = Uint8List.fromList(password);
-    final Uint8List saltU8a = Uint8List.fromList(salt.codeUnits);
-    final Scrypt scrypt = Scrypt()
-      ..init(ScryptParameters(4096, 16, 1, 32, saltU8a));
-    final Uint8List seedBytes = scrypt.process(passwordU8a);
-    final String seedHex = Base58Encode(seedBytes);
-    final KeyPair keyPair = await keyring.fromUri(seedHex,
-        password: data.v1!.password, keyPairType: KeyPairType.ed25519);
-    return keyPair;
-  } else if (data.v2 != null) {
-    final KeyPair keyPair = await keyring.fromUri(data.v2!.mnemonic,
-        password: data.v2!.meta, keyPairType: KeyPairType.sr25519);
-    return keyPair;
-  } else {
-    throw Exception('Data format not recognized');
-  }
-}
-
 // From durt
 String mnemonicGenerate({String lang = 'english'}) {
   final List<String> supportedLanguages = <String>[
@@ -148,7 +103,7 @@ String mnemonicGenerate({String lang = 'english'}) {
   if (!supportedLanguages.contains(lang)) {
     throw ArgumentError('Unsupported language');
   }
-  final String mnemonic = generateMnemonic(lang: lang);
+  final String mnemonic = durt.generateMnemonic(lang: lang);
   return mnemonic;
 }
 
@@ -165,57 +120,11 @@ Future<KeyPair> addPair() async {
 
   return pair;
 }
-/*
-Future<Map<String, dynamic>> createAccount(
-    AuthData data, Keyring keyring) async {
-  final KeyPair pair = await createPair(data, keyring);
-  final String? publicKeyV1 = pair.keyPairType == KeyPairType.ed25519
-      ? Base58Encode(pair.publicKey.bytes)
-      : null;
-
-  final String name = data.v2?.meta ??
-      (publicKeyV1 != null
-          ? formatPubkey(publicKeyV1)
-          : formatAddress(pair.address));
-
-
-  Map<String, dynamic> accountMeta = {
-    'name': name,
-    'publicKeyV1': publicKeyV1,
-    'genesisHash':
-    ...data.v2?.meta ?? {}
-  };
-
-  Account account = Account(pair.address, pair.publicKey, accountMeta);
-  pair.setMeta(account.meta);
-
-  return {'pair': pair, 'account': account};
-}
-
-String formatAddress(String value) {
-  if (value.isEmpty) {
-    return '';
-  }
-  if (value.length < 12) {
-    return '?';
-  }
-  return '${value.substring(0, 6)}\u2026${value.substring(value.length - 6)}';
-}
-
-String formatPubkey(String value) {
-  if (value.isEmpty) {
-    return '';
-  }
-  if (value.length < 12) {
-    return '?';
-  }
-  return '${value.substring(0, 4)}\u2026${value.substring(value.length - 4)}';
-}
-*/
 
 Future<T> executeOnNodes<T>(
     Future<T> Function(Node node, Provider provider, Gdev polkadot) operation,
-    {Duration timeout = defPolkadotTimeout}) async {
+    {bool retry = true,
+    Duration timeout = defPolkadotTimeout}) async {
   final List<Node> nodes = NodeManager().getBestNodes(NodeType.endpoint);
   nodes.shuffle();
 
@@ -230,6 +139,9 @@ Future<T> executeOnNodes<T>(
     } catch (e, stacktrace) {
       NodeManager().increaseNodeErrors(NodeType.endpoint, node);
       loggerDev('Error in node ${node.url}', error: e, stackTrace: stacktrace);
+      if (!retry) {
+        rethrow;
+      }
     }
   }
 
@@ -358,6 +270,103 @@ String addressFromV1PubkeyFaiSafe(String pubKeyRaw) {
   }
 }
 
+Uri parseNodeUrl(String url) {
+  final Uri parsedUri = Uri.parse(url);
+  return parsedUri;
+}
+
+Future<SignAndSendResult> requestDistanceEvaluation(int idtyIndex,
+    {Duration timeout = defPolkadotTimeout}) async {
+  final CesiumWallet walletV1 = await SharedPreferencesHelper().getWallet();
+  final KeyPair wallet = KeyPair.ed25519.fromSeed(walletV1.seed);
+  return executeOnNodes<SignAndSendResult>(
+      (Node node, Provider provider, Gdev gdev) async {
+    // distance rule has been evaluated positively locally on web of trust at block storage.distance.evaluationBlock()
+    // TODO(vjrj): Implement this
+    // gdev.query.distance.evaluationBlock();
+    // Error to show too:
+    // Distance already in evaluation
+    final RuntimeCall call =
+        gdev.tx.distance.requestDistanceEvaluationFor(target: idtyIndex);
+    return signAndSend(
+      node,
+      provider,
+      gdev,
+      wallet,
+      call,
+      messageTransformer: _defaultResultTransformer,
+    );
+  });
+}
+
+Future<SignAndSendResult> createIdentity(
+    {required Contact you, Duration timeout = defPolkadotTimeout}) async {
+  final List<Node> nodes = NodeManager().getBestNodes(NodeType.endpoint);
+  nodes.shuffle();
+  final CesiumWallet walletV1 = await SharedPreferencesHelper().getWallet();
+  final KeyPair wallet = KeyPair.ed25519.fromSeed(walletV1.seed);
+  return executeOnNodes((Node node, Provider provider, Gdev polkadot) async {
+    final RuntimeCall call = polkadot.tx.identity.createIdentity(
+      ownerKey: Address.decode(you.address).pubkey,
+    );
+    return signAndSend(
+      node,
+      provider,
+      polkadot,
+      wallet,
+      call,
+      messageTransformer: _defaultResultTransformer,
+    );
+  });
+}
+
+Future<SignAndSendResult> confirmIdentity(String identityName,
+    {Duration timeout = defPolkadotTimeout}) async {
+  final List<Node> nodes = NodeManager().getBestNodes(NodeType.endpoint);
+  nodes.shuffle();
+  final CesiumWallet walletV1 = await SharedPreferencesHelper().getWallet();
+  final KeyPair wallet = KeyPair.ed25519.fromSeed(walletV1.seed);
+  return executeOnNodes((Node node, Provider provider, Gdev polkadot) async {
+    final RuntimeCall call =
+        polkadot.tx.identity.confirmIdentity(idtyName: identityName.codeUnits);
+    return signAndSend(
+      node,
+      provider,
+      polkadot,
+      wallet,
+      call,
+      messageTransformer: _defaultResultTransformer,
+    );
+  });
+}
+
+Future<SignAndSendResult> certify(int idtyIndex,
+    {Duration timeout = defPolkadotTimeout}) async {
+  final List<Node> nodes = NodeManager().getBestNodes(NodeType.endpoint);
+  nodes.shuffle();
+  final CesiumWallet walletV1 = await SharedPreferencesHelper().getWallet();
+  final KeyPair wallet = KeyPair.ed25519.fromSeed(walletV1.seed);
+  return executeOnNodes((Node node, Provider provider, Gdev polkadot) async {
+    final RuntimeCall call =
+        polkadot.tx.certification.addCert(receiver: idtyIndex);
+    return signAndSend(
+      node,
+      provider,
+      polkadot,
+      wallet,
+      call,
+      messageTransformer: _defaultResultTransformer,
+    );
+  });
+}
+
+Constants gdevConstants() {
+  final Provider provider =
+      Provider.fromUri(parseNodeUrl(NodeManager().endpointNodes.first.url));
+  final Gdev gdev = Gdev(provider);
+  return gdev.constant;
+}
+
 Future<PayResult> payV2({
   required List<String> to,
   required double amount,
@@ -366,7 +375,6 @@ Future<PayResult> payV2({
   final CesiumWallet walletV1 = await SharedPreferencesHelper().getWallet();
   final KeyPair wallet = KeyPair.ed25519.fromSeed(walletV1.seed);
 
-  // final String from = addressFromV1Pubkey(walletV1.pubkey);
   final List<String> addresses = <String>[];
   final StreamController<String> progressController =
       StreamController<String>();
@@ -384,38 +392,8 @@ Future<PayResult> payV2({
       );
     }
   }
-
-  final List<Node> n = NodeManager().getBestNodes(NodeType.endpoint);
-  n.shuffle();
-  final Node node = n.first;
-
-  final PayResult result = PayResult(
-    message: tr('tx_processing'),
-    node: node,
-    progressStream: progressController.stream,
-  );
-
-  try {
-    if (inDevelopment) {
-      progressController.add('Connecting to node ${node.url}...');
-    }
-
-    final Provider provider = Provider.fromUri(parseNodeUrl(node.url));
-    final Gdev polkadot = Gdev(provider);
-
-    final RuntimeVersion runtimeVersion =
-        await polkadot.rpc.state.getRuntimeVersion();
-    final int currentBlockNumber = (await polkadot.query.system.number()) - 1;
-    final H256 currentBlockHash =
-        await polkadot.query.system.blockHash(currentBlockNumber);
-    final H256 genesisHash = await polkadot.query.system.blockHash(0);
-    final int nonce =
-        await polkadot.rpc.system.accountNextIndex(wallet.address);
-
-    if (inDevelopment) {
-      progressController.add('Building transaction...');
-    }
-
+  return executeOnNodes(retry: false,
+      (Node node, Provider provider, Gdev polkadot) async {
     final bool useBatch = addresses.length > 1;
     final RuntimeCall transferCall = useBatch
         ? polkadot.tx.utility.batch(
@@ -432,208 +410,42 @@ Future<PayResult> payV2({
             dest: const $MultiAddress()
                 .id(Address.decode(addresses.first).pubkey),
             value: BigInt.from(amount * 100));
-    final Uint8List encodedCall = transferCall.encode();
 
-    final Uint8List payload = SigningPayload(
-            method: encodedCall,
-            specVersion: runtimeVersion.specVersion,
-            transactionVersion: runtimeVersion.transactionVersion,
-            genesisHash: encodeHex(genesisHash),
-            blockHash: encodeHex(currentBlockHash),
-            blockNumber: currentBlockNumber,
-            eraPeriod: 64,
-            nonce: nonce,
-            tip: 0)
-        .encode(polkadot.registry);
-
-    final Uint8List signature = wallet.sign(payload);
-    final Uint8List extrinsic = ExtrinsicPayload(
-      signer: wallet.bytes(),
-      method: encodedCall,
-      signature: signature,
-      eraPeriod: 64,
-      blockNumber: currentBlockNumber,
-      nonce: nonce,
-      tip: 0,
-    ).encode(polkadot.registry, SignatureType.ed25519);
-
-    progressController.add(tr('Submitting transaction...'));
-
-    final AuthorApi<Provider> author = AuthorApi<Provider>(provider);
-
-    await author.submitAndWatchExtrinsic(
-      extrinsic,
-      (ExtrinsicStatus data) {
-        switch (data.type) {
-          case 'finalized':
-            progressController.add(tr('payment_successful'));
-            progressController.close();
-            break;
-
-          case 'dropped':
-            progressController.add(tr('tx_dropped'));
-            progressController.close();
-            break;
-          case 'invalid':
-            progressController.add(tr('tx_invalid'));
-            progressController.close();
-            break;
-          case 'usurped':
-            progressController.add(tr('tx_usurped'));
-            progressController.close();
-            break;
-          case 'future':
-            progressController.add(tr('tx_processing'));
-            break;
-          case 'ready':
-            progressController.add(tr('tx_ready'));
-            break;
-          case 'inBlock':
-            progressController.add(tr('tx_in_block'));
-            break;
-          case 'broadcast':
-            progressController.add(tr('tx_broadcast'));
-            break;
-          default:
-            progressController
-                .add('Unexpected transaction status: ${data.type}.');
-            loggerDev('Unexpected transaction status: ${data.type}.');
-            break;
-        }
-      },
-    );
-  } catch (e) {
-    progressController.add(tr('Error in payment on node ${node.url}: $e'));
-    progressController.close();
-  }
-
-  return result;
-}
-
-Uri parseNodeUrl(String url) {
-  final Uri parsedUri = Uri.parse(url);
-  return parsedUri;
-}
-
-Future<String> requestDistanceEvaluation(int idtyIndex,
-    {Duration timeout = defPolkadotTimeout}) async {
-  final CesiumWallet walletV1 = await SharedPreferencesHelper().getWallet();
-  final KeyPair wallet = KeyPair.ed25519.fromSeed(walletV1.seed);
-  final Completer<String> result = Completer<String>();
-
-  return executeOnNodes<String>(
-      (Node node, Provider provider, Gdev gdev) async {
-    // distance rule has been evaluated positively locally on web of trust at block storage.distance.evaluationBlock()
-    // TODO(vjrj): Implement this
-    // gdev.query.distance.evaluationBlock();
-    final RuntimeCall call =
-        gdev.tx.distance.requestDistanceEvaluationFor(target: idtyIndex);
-    return signAndSend(gdev, wallet, call, provider, result, timeout);
-  });
-}
-
-Future<String> signAndSend(Gdev polkadot, KeyPair wallet, RuntimeCall call,
-    Provider provider, Completer<String> result, Duration timeout) async {
-  final RuntimeVersion runtimeVersion =
-      await polkadot.rpc.state.getRuntimeVersion();
-  final int currentBlockNumber = (await polkadot.query.system.number()) - 1;
-  final H256 currentBlockHash =
-      await polkadot.query.system.blockHash(currentBlockNumber);
-  final int nonce = await polkadot.rpc.system.accountNextIndex(wallet.address);
-
-  final H256 genesisHash = await polkadot.query.system.blockHash(0);
-
-  final Uint8List encodedCall = call.encode();
-
-  final Uint8List payload = SigningPayload(
-          method: encodedCall,
-          specVersion: runtimeVersion.specVersion,
-          transactionVersion: runtimeVersion.transactionVersion,
-          genesisHash: encodeHex(genesisHash),
-          blockHash: encodeHex(currentBlockHash),
-          blockNumber: currentBlockNumber,
-          eraPeriod: 64,
-          nonce: nonce,
-          tip: 0)
-      .encode(polkadot.registry);
-
-  final Uint8List signature = wallet.sign(payload);
-  final Uint8List extrinsic = ExtrinsicPayload(
-          signer: wallet.bytes(),
-          method: encodedCall,
-          signature: signature,
-          eraPeriod: 64,
-          blockNumber: currentBlockNumber,
-          nonce: nonce,
-          tip: 0)
-      .encode(polkadot.registry, SignatureType.ed25519);
-
-  final AuthorApi<Provider> author = AuthorApi<Provider>(provider);
-
-  await author.submitAndWatchExtrinsic(extrinsic, (ExtrinsicStatus status) {
-    switch (status.type) {
-      case 'finalized':
-        result.complete('');
-        break;
-      case 'dropped':
-        result.complete(tr('op_dropped'));
-        break;
-      case 'invalid':
-        result.complete(tr('op_invalid'));
-        break;
-      case 'usurped':
-        result.complete(tr('op_usurped'));
-        break;
-      case 'future':
-        break;
-      case 'ready':
-        break;
-      case 'inBlock':
-        break;
-      case 'broadcast':
-        break;
-      default:
-        result.complete('Unexpected transaction status: ${status.type}.');
-        loggerDev('Unexpected transaction status: ${status.type}.');
-        break;
-    }
-  }).timeout(timeout);
-  return result.future;
-}
-
-Future<String> createIdentity(
-    {required Contact you, Duration timeout = defPolkadotTimeout}) async {
-  final List<Node> nodes = NodeManager().getBestNodes(NodeType.endpoint);
-  nodes.shuffle();
-  final CesiumWallet walletV1 = await SharedPreferencesHelper().getWallet();
-  final KeyPair wallet = KeyPair.ed25519.fromSeed(walletV1.seed);
-  final Completer<String> result = Completer<String>();
-  return executeOnNodes((Node node, Provider provider, Gdev polkadot) async {
-    final RuntimeCall call = polkadot.tx.identity.createIdentity(
-      ownerKey: Address.decode(you.address).pubkey,
+    final SignAndSendResult result = await signAndSend(
+      node,
+      provider,
+      polkadot,
+      wallet,
+      transferCall,
+      messageTransformer: _paymentResultTransformer,
     );
 
-    return signAndSend(polkadot, wallet, call, provider, result, timeout);
+    return PayResult(
+      node: result.node,
+      progressStream: result.progressStream,
+      message: '',
+    );
   });
 }
 
-Future<String> confirmIdentity(String identityName,
-    {Duration timeout = defPolkadotTimeout}) async {
-  final List<Node> nodes = NodeManager().getBestNodes(NodeType.endpoint);
-  nodes.shuffle();
-  final CesiumWallet walletV1 = await SharedPreferencesHelper().getWallet();
-  final KeyPair wallet = KeyPair.ed25519.fromSeed(walletV1.seed);
-  final Completer<String> result = Completer<String>();
-  return executeOnNodes((Node node, Provider provider, Gdev polkadot) async {
-    final RuntimeCall call =
-        polkadot.tx.identity.confirmIdentity(idtyName: identityName.codeUnits);
-    return signAndSend(polkadot, wallet, call, provider, result, timeout);
-  });
+String _paymentResultTransformer(String statusType) {
+  return _resultTransformer('tx', statusType, 'payment_successful');
 }
 
-Constants gdevConstants() {
-  final Provider provider =
-      Provider.fromUri(parseNodeUrl(NodeManager().endpointNodes.first.url));
-  final Gdev gdev = Gdev(provider);
-  return gdev.constant;
+String _defaultResultTransformer(String statusType) {
+  return _resultTransformer('op', statusType, 'op_successful');
+}
+
+String _resultTransformer(String suffix, String statusType, String success) {
+  return <String, String>{
+        'finalized': tr(success),
+        'ready': tr('${suffix}_ready'),
+        'inBlock': tr('${suffix}_in_block'),
+        'broadcast': tr('${suffix}_broadcast'),
+        'dropped': tr('${suffix}_dropped'),
+        'invalid': tr('${suffix}_invalid'),
+        'usurped': tr('${suffix}_usurped'),
+        'future': tr('${suffix}_processing'),
+      }[statusType] ??
+      tr('${suffix}_processing');
 }

@@ -3,18 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:sn_progress_dialog/options/completed.dart';
+import 'package:sn_progress_dialog/progress_dialog.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../data/models/app_cubit.dart';
 import '../../data/models/contact.dart';
 import '../../data/models/contact_cubit.dart';
 import '../../data/models/contact_wot_info.dart';
-import '../../data/models/menu_action.dart';
+import '../../data/models/wot_menu_action.dart';
 import '../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../data/models/node_manager.dart';
 import '../../g1/api.dart';
 import '../../g1/duniter_indexer_helper.dart';
 import '../../g1/g1_v2_helper_others.dart';
+import '../../g1/sing_and_send.dart';
 import '../../g1/wot_actions.dart';
 import '../../generated/gdev/pallets/certification.dart';
 import '../../generated/gdev/types/pallet_certification/types/idty_cert_meta.dart';
@@ -23,6 +26,7 @@ import '../../shared_prefs_helper.dart';
 import '../ui_helpers.dart';
 import 'certifications_page.dart';
 import 'contacts_actions.dart';
+import 'default_progress_dialog.dart';
 import 'fourth_screen/transactions_and_balance_widget.dart';
 import 'qr_list_tile.dart';
 
@@ -115,20 +119,50 @@ class _ContactPageState extends State<ContactPage> {
     ];
     if (isV2) {
       getWotMenuActions(context, me, contactWotInfo)
-          .forEach((MenuAction action) {
+          .forEach((WotMenuAction action) {
         actions.add(
           SpeedDialChild(
             child: Icon(action.icon),
             label: action.name,
             onTap: () async {
-              final String msg = await action.action();
+              final SignAndSendResult result = await action.action();
               if (!context.mounted) {
                 return;
               }
-              showAlertDialog(
-                context,
-                tr('result'),
-                msg,
+              final ProgressDialog pd = ProgressDialog(context: context);
+              pd.show(
+                progressType: defProgressType,
+                msg: 'FIXME',
+                hideValue: defProgressHideValue,
+                progressBgColor: defProgressBgColor,
+                barrierDismissible: defProgressBarrierDismissible,
+                msgMaxLines: defProgressMsgMaxLines,
+                completed: Completed(),
+              );
+              result.progressStream.listen(
+                (String progressMessage) {
+                  pd.update(msg: progressMessage);
+                },
+                onDone: () async {
+                  if (!context.mounted) {
+                    return;
+                  }
+                  await Future<dynamic>.delayed(
+                      const Duration(milliseconds: 1000));
+                  setState(() {});
+                  pd.close();
+                },
+                onError: (dynamic error) {
+                  if (!context.mounted) {
+                    return;
+                  }
+                  pd.close();
+                  showAlertDialog(
+                    context,
+                    tr('result'),
+                    tr(error.toString()),
+                  );
+                },
               );
             },
           ),
@@ -193,9 +227,10 @@ class _ContactPageState extends State<ContactPage> {
             ListTile(
               leading: const Icon(Icons.build),
               title: Text(tr('status')),
-              subtitle: Text(contact.status!.name),
+              subtitle: Text(tr('idty_status_${contact.status!.name}')),
             ),
-          if (contact.createdOn != null)
+          // FIXME: Add: Available for Cert yer or no??
+          if (inDevelopment && contact.createdOn != null)
             ListTile(
               leading: const Icon(Icons.calendar_today),
               title: Text(tr('created_on')),

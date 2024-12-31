@@ -5,16 +5,17 @@ import 'package:flutter/material.dart';
 
 import '../data/models/contact_wot_info.dart';
 import '../data/models/identity_status.dart';
-import '../data/models/menu_action.dart';
+import '../data/models/wot_menu_action.dart';
 import '../ui/logger.dart';
-import '../ui/ui_helpers.dart';
+import '../ui/widgets/cesium_auth_dialog.dart';
 import 'g1_v2_helper_others.dart';
+import 'sing_and_send.dart';
 
-List<MenuAction> getWotMenuActions(
+List<WotMenuAction> getWotMenuActions(
     BuildContext context, bool isMe, ContactWotInfo wotInfo) {
-  final List<MenuAction> actions = <MenuAction>[];
+  final List<WotMenuAction> actions = <WotMenuAction>[];
   final IdentityStatus? status = wotInfo.you.status;
-  if (inDevelopment) {
+  /* if (inDevelopment) {
     actions.add(
       MenuAction(
         name: 'isMe: $isMe $wotInfo',
@@ -24,42 +25,40 @@ List<MenuAction> getWotMenuActions(
         },
       ),
     );
-  }
+  } */
   switch (status) {
     case IdentityStatus.MEMBER:
       if (isMe) {
-        actions.addAll(<MenuAction>[
-          MenuAction(
+        actions.addAll(<WotMenuAction>[
+          WotMenuAction(
             name: tr('renew_membership'),
             icon: Icons.refresh,
             action: () {
               loggerDev('Renewing Membership');
-              return Future<String>.value('');
+              throw Exception('Not implemented');
             },
           ),
-          MenuAction(
+          WotMenuAction(
             name: tr('revoke_membership'),
             icon: Icons.cancel,
             action: () {
               loggerDev('Revoking Membership');
-              return Future<String>.value('');
+              throw Exception('Not implemented');
             },
           ),
         ]);
       } else {
-        _certAction(wotInfo, actions);
+        _certAction(context, wotInfo, actions);
       }
       break;
     case IdentityStatus.UNVALIDATED:
     case IdentityStatus.NOTMEMBER:
       if (!isMe) {
-        _certAction(wotInfo, actions);
-        _requestDistanceAction(wotInfo.you.index, actions);
-      } else {
-        _requestDistanceAction(wotInfo.me.index, actions);
+        _certAction(context, wotInfo, actions);
+        _requestDistanceAction(context, wotInfo.you.index, actions);
       }
+      _requestDistanceAction(context, wotInfo.me.index, actions);
       break;
-
     case IdentityStatus.REMOVED:
       break;
 
@@ -69,12 +68,15 @@ List<MenuAction> getWotMenuActions(
     case IdentityStatus.UNCONFIRMED:
       if (isMe) {
         actions.add(
-          MenuAction(
+          WotMenuAction(
             name: tr('confirm_identity'),
             icon: Icons.verified,
             action: () {
+              final Completer<SignAndSendResult> completer =
+                  Completer<SignAndSendResult>();
               final TextEditingController controller = TextEditingController();
               final RegExp validateIdtyName = RegExp(r'^[a-zA-Z0-9_-]{1,42}$');
+
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
@@ -89,28 +91,48 @@ List<MenuAction> getWotMenuActions(
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
+                          completer.complete(_returnAuthFailed());
                         },
                         child: Text(tr('cancel')),
                       ),
                       TextButton(
-                        onPressed: () {
+                        onPressed: () async {
                           final String input = controller.text.trim();
 
                           if (validateIdtyName.hasMatch(input)) {
                             Navigator.of(context).pop();
-                            confirmIdentity(input).then((String result) {
+
+                            try {
+                              final SignAndSendResult result =
+                                  await confirmIdentity(input);
+
                               if (!context.mounted) {
+                                completer.complete(_returnAuthFailed());
                                 return;
                               }
+
+                              completer.complete(result);
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(result)),
+                                SnackBar(
+                                    content: Text(tr('payment_successful'))),
                               );
-                            });
+                            } catch (e) {
+                              final SignAndSendResult errorResult =
+                                  SignAndSendResult(
+                                progressStream:
+                                    Stream<String>.value(e.toString()),
+                              );
+                              completer.complete(errorResult);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(tr('error_occurred'))),
+                              );
+                            }
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                   content: Text(tr('invalid_identity_name'))),
                             );
+                            completer.complete(_returnAuthFailed());
                           }
                         },
                         child: Text(tr('ok')),
@@ -119,8 +141,8 @@ List<MenuAction> getWotMenuActions(
                   );
                 },
               );
-              // FIXME(vjrj): Implement this better
-              return Future<String>.value('');
+
+              return completer.future;
             },
           ),
         );
@@ -130,13 +152,11 @@ List<MenuAction> getWotMenuActions(
     case null:
       if (!isMe && (wotInfo.canCreateIdty ?? false)) {
         actions.add(
-          MenuAction(
-            name: tr('wot_create_identity'),
-            icon: Icons.verified_user_outlined,
-            action: () {
-              return createIdentity(you: wotInfo.you);
-            },
-          ),
+          WotMenuAction(
+              name: tr('wot_create_identity'),
+              icon: Icons.verified_user_outlined,
+              action: () async => _executeIfAuthenticated(
+                  context, () => createIdentity(you: wotInfo.you))),
         );
       }
   }
@@ -144,28 +164,49 @@ List<MenuAction> getWotMenuActions(
   return actions;
 }
 
-void _requestDistanceAction(int? idtyIndex, List<MenuAction> actions) {
+void _requestDistanceAction(
+    BuildContext context, int? idtyIndex, List<WotMenuAction> actions) {
   if (idtyIndex != null) {
-    actions.add(MenuAction(
+    actions.add(WotMenuAction(
         name: tr('request_distance_evaluation'),
         icon: Icons.social_distance,
-        action: () {
-          return requestDistanceEvaluation(idtyIndex);
-        }));
+        action: () async => _executeIfAuthenticated(
+            context, () => requestDistanceEvaluation(idtyIndex))));
   }
 }
 
-void _certAction(ContactWotInfo wotInfo, List<MenuAction> actions) {
-  if (wotInfo.canCert ?? false) {
-    actions.add(
-      MenuAction(
+void _certAction(
+    BuildContext context, ContactWotInfo wotInfo, List<WotMenuAction> actions) {
+  if ((wotInfo.canCert ?? false) && wotInfo.you.index != null) {
+    actions.add(WotMenuAction(
         name: tr('certify'),
         icon: Icons.verified,
-        action: () {
-          loggerDev('Certifying Member');
-          return Future<String>.value('');
-        },
-      ),
-    );
+        action: () async => _executeIfAuthenticated(
+            context, () => certify(wotInfo.you.index!))));
   }
+}
+
+Future<SignAndSendResult> _executeIfAuthenticated(
+  BuildContext context,
+  Future<SignAndSendResult> Function() action,
+) async {
+  final bool hasPass = await walletAuth(context);
+  if (!hasPass) {
+    if (!context.mounted) {
+      return _returnAuthFailed();
+    }
+    return _returnAuthFailed();
+  }
+  return action();
+}
+
+Future<SignAndSendResult> _returnAuthFailed() {
+  final StreamController<String> progressController =
+      StreamController<String>();
+  progressController.add('wallet_auth_failed');
+  progressController.close();
+
+  return Future<SignAndSendResult>.value(SignAndSendResult(
+    progressStream: progressController.stream,
+  ));
 }

@@ -179,7 +179,7 @@ void _certAction(
     BuildContext context, ContactWotInfo wotInfo, List<WotMenuAction> actions) {
   if ((wotInfo.canCert ?? false) && wotInfo.you.index != null) {
     actions.add(WotMenuAction(
-        name: tr('certify'),
+        name: tr('certify_member'),
         icon: Icons.verified,
         action: () async => _executeIfAuthenticated(
             context, () => certify(wotInfo.you.index!))));

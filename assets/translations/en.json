@@ -355,7 +355,7 @@
   "op_processing": "The operation is being processed.",
   "op_successful": "The operation was successful.",
   "can_cert": "Can Certify",
-  "can_cert_on": "Can Certify on (approx)",
+  "can_cert_on": "Can Certify in (approx)",
   "yes": "Yes",
   "no": "No"
 }

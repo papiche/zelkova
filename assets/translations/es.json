@@ -361,7 +361,7 @@
   "op_processing": "La operación está siendo procesada.",
   "op_successful": "La operación se ha completado con éxito.",
   "can_cert": "Puede certificar",
-  "can_cert_on": "Puede certificar el (aprox.)",
+  "can_cert_on": "Puede certificar en (aprox.)",
   "yes": "Sí",
   "no": "No"
 }

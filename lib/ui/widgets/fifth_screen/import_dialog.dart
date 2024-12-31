@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pattern_lock/pattern_lock.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:substrate_bip39/substrate_bip39.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '../../../data/models/contact.dart';
@@ -255,11 +256,12 @@ Future<void> showSelectImportMethodDialog(
             if (validateKey(wallet)) {
               // It's a simple pubkey, let's think is a cesium password protected wallet
               if (!SharedPreferencesHelper().has(wallet)) {
-                showImportCesiumWalletDialog(context, wallet, returnTo);
+                showAuthCesiumWalletDialog(context, wallet, returnTo);
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(tr('wallet_already_imported'))));
               }
+            } else if (_isMnemonic(wallet)) {
             } else {
               showDialog(
                   context: context,
@@ -274,15 +276,13 @@ Future<void> showSelectImportMethodDialog(
   }
 }
 
-Future<bool?> showImportCesiumWalletDialog(
-    BuildContext context, String wallet, int returnTo) {
-  return showDialog<bool>(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext dialogContext) {
-      return CesiumAuthDialog(publicKey: wallet, returnTo: returnTo);
-    },
-  );
+bool _isMnemonic(String wallet) {
+  try {
+    Mnemonic.fromSentence(wallet, Language.english);
+    return true;
+  } catch (e) {
+    return false;
+  }
 }
 
 class SelectImportMethodDialog extends StatelessWidget {
@@ -310,6 +310,12 @@ class SelectImportMethodDialog extends StatelessWidget {
               title: Text(tr('clipboard_import_pubkey')),
               onTap: () => Navigator.of(context).pop('clipboard_pubkey'),
             ),
+            if (inDevelopment)
+              ListTile(
+                leading: const Icon(Icons.password),
+                title: Text(tr('clipboard_import_mnemonic')),
+                onTap: () => Navigator.of(context).pop('clipboard_mnemonic'),
+              ),
           ],
         ),
       ),

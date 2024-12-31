@@ -54,6 +54,7 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
     IdentityStatus? status,
     bool? isMember,
     int? createdOn,
+    int? index,
     int? expireOn,
   }) {
     return Contact(
@@ -66,6 +67,7 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
       isMember: isMember,
       createdOn: createdOn,
       expireOn: expireOn,
+      index: index,
     );
   }
 
@@ -231,6 +233,7 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
       isMember: c.isMember ?? isMember,
       createdOn: c.createdOn ?? createdOn,
       expireOn: c.expireOn ?? expireOn,
+      index: c.index ?? index,
     );
   }
 
@@ -271,7 +274,8 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
         status,
         isMember,
         createdOn,
-        expireOn
+        expireOn,
+        index
       ];
 
   // Only avatar binary

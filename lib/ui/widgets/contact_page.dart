@@ -240,8 +240,12 @@ class _ContactPageState extends State<ContactPage> {
               leading: const Icon(Icons.timelapse),
               title: Text(tr('can_cert_on')),
               subtitle: Text(
-                  humanizeTimeFuture(context.locale.languageCode,
-                          canCertOn.millisecond * 1000) ??
+                  humanizeTimeFuture(
+                        context.locale.languageCode,
+                        (canCertOn.millisecondsSinceEpoch -
+                                DateTime.now().millisecondsSinceEpoch) ~/
+                            1000,
+                      ) ??
                       '??',
                   // In red
                   style: const TextStyle(color: Colors.red)),
@@ -491,8 +495,9 @@ class _ContactPageState extends State<ContactPage> {
         final IdtyValue? youIdty = await polkadotIdentity(you);
         final IdtyCertMeta? youCertMeta = await polkadotIdtyCertMeta(you);
         if (youIdty != null && youCertMeta != null) {
-          wotInfo.canCertOn =
-              estimateDate(youCertMeta.nextIssuableOn, currentBlock);
+          wotInfo.canCertOn = estimateDate(
+              futureBlock: youCertMeta.nextIssuableOn,
+              currentBlockHeight: currentBlock);
         }
       }
       // Can Certificate
@@ -539,7 +544,8 @@ Widget _buildBadge(BuildContext context, int count) {
 }
 
 // Based on duniter-vue
-DateTime estimateDate(int futureBlock, int currentBlockHeight) {
+DateTime estimateDate(
+    {required int futureBlock, required int currentBlockHeight}) {
   const int millisPerBlock = 6000;
   final int diff = futureBlock - currentBlockHeight;
   return DateTime.now().add(Duration(milliseconds: diff * millisPerBlock));

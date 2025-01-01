@@ -6,6 +6,7 @@ import '../../data/models/bottom_nav_cubit.dart';
 import '../../data/models/contact.dart';
 import '../../data/models/contact_cubit.dart';
 import '../../data/models/payment_cubit.dart';
+import '../../shared_prefs_helper.dart';
 import '../contacts_cache.dart';
 import '../ui_helpers.dart';
 import 'contact_page.dart';
@@ -36,6 +37,11 @@ void onShowContactQr(BuildContext context, Contact contact) {
       pubKeyOrAddress: contact.pubKey,
       noTitle: true,
       feedbackText: 'some_key_copied_to_clipboard');
+}
+
+void showMyContactPage(BuildContext context) {
+  showContactPage(
+      context, Contact(pubKey: SharedPreferencesHelper().getPubKey()));
 }
 
 void showContactPage(BuildContext context, Contact contact) {

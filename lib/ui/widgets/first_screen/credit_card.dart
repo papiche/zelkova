@@ -6,6 +6,7 @@ import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../tutorial_keys.dart';
 import '../../ui_helpers.dart';
+import '../contacts_actions.dart';
 import 'card_name_editable.dart';
 import 'card_text_style.dart';
 
@@ -82,10 +83,7 @@ class CreditCard extends StatelessWidget {
                           child: Row(children: <Widget>[
                             GestureDetector(
                                 onTap: () {
-                                  showQrDialog(
-                                      context: context,
-                                      isV2: false,
-                                      pubKeyOrAddress: publicKey);
+                                  showMyContactPage(context);
                                 },
                                 child: SvgPicture.asset(
                                   width: width < smallScreenWidth ? 25 : 40,
@@ -108,10 +106,7 @@ class CreditCard extends StatelessWidget {
                               EdgeInsets.symmetric(horizontal: cardPadding),
                           child: Row(children: <Widget>[
                             GestureDetector(
-                                onTap: () => showQrDialog(
-                                    context: context,
-                                    isV2: false,
-                                    pubKeyOrAddress: publicKey),
+                                onTap: () => showMyContactPage(context),
                                 child: FittedBox(
                                     key: creditCardPubKey,
                                     fit: BoxFit.scaleDown,
@@ -121,8 +116,7 @@ class CreditCard extends StatelessWidget {
                                       style: cardTextStyle(context),
                                     ))),
                             GestureDetector(
-                                onTap: () => showAlertDialog(
-                                    context, '', tr('keys_tooltip')),
+                                onTap: () => showMyContactPage(context),
                                 child: FittedBox(
                                     fit: BoxFit.scaleDown,
                                     child: Text(' **** ****',
@@ -134,8 +128,8 @@ class CreditCard extends StatelessWidget {
                           padding:
                               EdgeInsets.symmetric(horizontal: cardPadding),
                           child: GestureDetector(
-                            onTap: () => showAlertDialog(
-                                context, '', tr('card_validity_tooltip')),
+                            // onTap: () => showAlertDialog(
+                            // context, '', tr('card_validity_tooltip')),
                             child: Text(
                               tr('card_validity'),
                               style: TextStyle(

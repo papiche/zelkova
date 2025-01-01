@@ -125,10 +125,7 @@ class _FifthScreenState extends State<FifthScreen> {
                       title: Text(tr('info_this_wallet')),
                       leading: const Icon(Icons.wallet),
                       onTap: () {
-                        showContactPage(
-                            context,
-                            Contact(
-                                pubKey: SharedPreferencesHelper().getPubKey()));
+                        showMyContactPage(context);
                       }),
                   const SizedBox(height: 15),
                   Padding(

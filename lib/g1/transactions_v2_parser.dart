@@ -6,7 +6,7 @@ import '../data/models/transaction_state.dart';
 import '../data/models/transaction_type.dart';
 import '../ui/contacts_cache.dart';
 import '../ui/logger.dart';
-import 'g1_v2_helper_others.dart';
+import 'g1_v2_helper.dart';
 
 Future<TransactionState> transactionsV2Parser(
   Map<String, dynamic> jsonData,

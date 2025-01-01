@@ -16,7 +16,7 @@ import '../../data/models/node_manager.dart';
 import '../../data/models/wot_menu_action.dart';
 import '../../g1/api.dart';
 import '../../g1/duniter_indexer_helper.dart';
-import '../../g1/g1_v2_helper_others.dart';
+import '../../g1/g1_v2_helper.dart';
 import '../../g1/sing_and_send.dart';
 import '../../g1/wot_actions.dart';
 import '../../generated/gdev/pallets/certification.dart';
@@ -71,21 +71,21 @@ class _ContactPageState extends State<ContactPage> {
       future: _getWotInfo(widget.contact),
       builder: (BuildContext context, AsyncSnapshot<ContactWotInfo> snapshot) {
         if (snapshot.hasData) {
-          return _buildContactWidget(snapshot.data!, context);
+          return _buildContactWidget(snapshot.data!, context, true);
         }
         return _buildContactWidget(
             ContactWotInfo(
                 me: Contact(pubKey: SharedPreferencesHelper().getPubKey()),
                 you: contact),
-            context);
+            context,
+            false);
       },
     );
   }
 
   DefaultTabController _buildContactWidget(
-      ContactWotInfo contactWotInfo, BuildContext context) {
+      ContactWotInfo contactWotInfo, BuildContext context, bool loaded) {
     final Contact contact = contactWotInfo.you;
-    // FIXME, duplicated code in contact_menu
     final bool isContact =
         context.read<ContactsCubit>().isContact(contact.pubKey);
     final String myPubKey = SharedPreferencesHelper().getPubKey();
@@ -187,7 +187,7 @@ class _ContactPageState extends State<ContactPage> {
             Expanded(
               child: TabBarView(
                 children: <Widget>[
-                  _buildInfoTab(contact, contactWotInfo.canCertOn),
+                  _buildInfoTab(contact, contactWotInfo.canCertOn, loaded),
                   _buildTransactionsTab(contact),
                 ],
               ),
@@ -210,7 +210,7 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
-  Widget _buildInfoTab(Contact contact, DateTime? canCertOn) {
+  Widget _buildInfoTab(Contact contact, DateTime? canCertOn, bool loaded) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -223,6 +223,14 @@ class _ContactPageState extends State<ContactPage> {
           if (!contact.createdOnV2) _buildQrListTile(contact),
           if (context.watch<AppCubit>().isExpertMode)
             _buildQrListTile(contact, isV2: true),
+
+          if (context
+                  .watch<MultiWalletTransactionCubit>()
+                  .balance(contact.pubKey) >
+              0)
+            _buildBalance(contact),
+          // Separator
+          if (loaded) const Divider(),
           if (contact.status != null)
             ListTile(
               leading: const Icon(Icons.card_membership_outlined),
@@ -250,29 +258,26 @@ class _ContactPageState extends State<ContactPage> {
                   // In red
                   style: const TextStyle(color: Colors.red)),
             ),
-          // FIXME: Add: Available for Cert yer or no??
-          if (inDevelopment && contact.createdOn != null)
+          /* if (inDevelopment && contact.createdOn != null)
             ListTile(
               leading: const Icon(Icons.calendar_today),
               title: Text(tr('created_on')),
               subtitle: Text(contact.createdOn!.toString()),
-            ),
+            ), */
           if (contact.certsReceived != null &&
               contact.certsReceived!.isNotEmpty)
             _buildReceivedCerts(context, contact),
           if (contact.certsIssued != null && contact.certsIssued!.isNotEmpty)
             _buildIssuedCerts(context, contact),
-          if (context
-                  .watch<MultiWalletTransactionCubit>()
-                  .balance(contact.pubKey) >
-              0)
-            _buildBalance(contact),
+          if (loaded) const Divider(),
           if (contact.description != null && contact.description!.isNotEmpty)
             _buildDescriptionTile(contact),
           if (contact.city != null && contact.city!.isNotEmpty)
             _buildAddressTile(contact),
           if (contact.socials != null && contact.socials!.isNotEmpty)
             _buildSocialsTile(contact),
+          // if not loaded add spinner
+          if (!loaded) const Center(child: CircularProgressIndicator()),
         ],
       ),
     );
@@ -518,7 +523,7 @@ class _ContactPageState extends State<ContactPage> {
       if (you.certsReceived != null &&
           you.certsReceived!.isNotEmpty &&
           you.certsReceived!.length <
-              gdevConstants().wot.minCertForMembership) {
+              polkadotConstants().wot.minCertForMembership) {
         wotInfo.waitingForCerts = true;
       }
     }

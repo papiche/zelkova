@@ -8,6 +8,7 @@ import 'package:sn_progress_dialog/progress_dialog.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../data/models/app_cubit.dart';
+import '../../data/models/cert.dart';
 import '../../data/models/contact.dart';
 import '../../data/models/contact_cubit.dart';
 import '../../data/models/contact_wot_info.dart';
@@ -233,13 +234,13 @@ class _ContactPageState extends State<ContactPage> {
           if (loaded) const Divider(),
           if (contact.status != null)
             ListTile(
-              leading: const Icon(Icons.card_membership_outlined),
+              leading: const Icon(Icons.card_membership),
               title: Text(tr('idty_status_title')),
               subtitle: Text(tr('idty_status_${contact.status!.name}')),
             ),
           if (canCertOn != null && !canCertOn.isAfter(DateTime.now()))
             ListTile(
-              leading: const Icon(Icons.verified_outlined),
+              leading: const Icon(Icons.verified),
               title: Text(tr('can_cert')),
               subtitle: Text(tr('yes')),
             ),
@@ -526,6 +527,11 @@ class _ContactPageState extends State<ContactPage> {
               polkadotConstants().wot.minCertForMembership) {
         wotInfo.waitingForCerts = true;
       }
+      final bool alreadyCert = you.certsReceived != null &&
+          you.certsReceived!.isNotEmpty &&
+          you.certsReceived!
+              .any((Cert cert) => cert.issuerId.pubKey == me.pubKey);
+      wotInfo.alreadyCert = alreadyCert;
     }
     return wotInfo;
   }

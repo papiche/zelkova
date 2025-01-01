@@ -7,7 +7,7 @@ import '../data/models/transaction_state.dart';
 import 'api.dart';
 import 'duniter_datapod_helper.dart';
 import 'duniter_indexer_helper.dart';
-import 'g1_v2_helper_others.dart';
+import 'g1_v2_helper.dart';
 import 'pay_result.dart';
 import 'transaction_v1_parser.dart';
 import 'transactions_v2_parser.dart';

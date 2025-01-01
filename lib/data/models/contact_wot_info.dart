@@ -12,6 +12,7 @@ class ContactWotInfo {
   bool? canCert;
   bool? canCreateIdty;
   bool? waitingForCerts;
+  bool? alreadyCert;
   DateTime? canCertOn;
 
   @override

@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import '../data/models/contact_wot_info.dart';
 import '../data/models/identity_status.dart';
 import '../data/models/wot_menu_action.dart';
-import '../ui/logger.dart';
 import '../ui/widgets/cesium_auth_dialog.dart';
 import 'g1_v2_helper.dart';
 import 'sing_and_send.dart';
@@ -29,32 +28,17 @@ List<WotMenuAction> getWotMenuActions(
   switch (status) {
     case IdentityStatus.MEMBER:
       if (isMe) {
-        actions.addAll(<WotMenuAction>[
-          WotMenuAction(
-            name: tr('renew_membership'),
-            icon: Icons.refresh,
-            action: () {
-              loggerDev('Renewing Membership');
-              throw Exception('Not implemented');
-            },
-          ),
-          WotMenuAction(
-            name: tr('revoke_membership'),
-            icon: Icons.cancel,
-            action: () {
-              loggerDev('Revoking Membership');
-              throw Exception('Not implemented');
-            },
-          ),
-        ]);
+        // revoke
       } else {
         _certAction(context, wotInfo, actions);
+        _renewAction(context, wotInfo, actions);
       }
       break;
     case IdentityStatus.UNVALIDATED:
     case IdentityStatus.NOTMEMBER:
       if (!isMe) {
         _certAction(context, wotInfo, actions);
+        _renewAction(context, wotInfo, actions);
         _requestDistanceAction(context, wotInfo.you.index, actions);
       } else {
         _requestDistanceAction(context, wotInfo.me.index, actions);
@@ -99,19 +83,15 @@ List<WotMenuAction> getWotMenuActions(
                       TextButton(
                         onPressed: () async {
                           final String input = controller.text.trim();
-
                           if (validateIdtyName.hasMatch(input)) {
                             Navigator.of(context).pop();
-
                             try {
                               final SignAndSendResult result =
                                   await confirmIdentity(input);
-
                               if (!context.mounted) {
                                 completer.complete(_returnAuthFailed());
                                 return;
                               }
-
                               completer.complete(result);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
@@ -142,7 +122,6 @@ List<WotMenuAction> getWotMenuActions(
                   );
                 },
               );
-
               return completer.future;
             },
           ),
@@ -178,12 +157,27 @@ void _requestDistanceAction(
 
 void _certAction(
     BuildContext context, ContactWotInfo wotInfo, List<WotMenuAction> actions) {
-  if ((wotInfo.canCert ?? false) && wotInfo.you.index != null) {
+  if ((wotInfo.canCert ?? false) &&
+      !(wotInfo.alreadyCert ?? false) &&
+      wotInfo.you.index != null) {
     actions.add(WotMenuAction(
         name: tr('certify_member'),
         icon: Icons.verified,
         action: () async => _executeIfAuthenticated(
             context, () => certify(wotInfo.you.index!))));
+  }
+}
+
+void _renewAction(
+    BuildContext context, ContactWotInfo wotInfo, List<WotMenuAction> actions) {
+  if ((wotInfo.canCert ?? false) &&
+      (wotInfo.alreadyCert ?? false) &&
+      wotInfo.you.index != null) {
+    actions.add(WotMenuAction(
+        name: tr('renew_membership'),
+        icon: Icons.refresh_outlined,
+        action: () async =>
+            _executeIfAuthenticated(context, () => renew(wotInfo.you.index!))));
   }
 }
 

@@ -27,6 +27,7 @@ import '../generated/gdev/types/frame_system/account_info.dart';
 import '../generated/gdev/types/gdev_runtime/runtime_call.dart';
 import '../generated/gdev/types/pallet_certification/types/idty_cert_meta.dart';
 import '../generated/gdev/types/pallet_identity/types/idty_value.dart';
+import '../generated/gdev/types/sp_runtime/multi_signature.dart';
 import '../generated/gdev/types/sp_runtime/multiaddress/multi_address.dart';
 import '../shared_prefs_helper.dart';
 import '../ui/logger.dart';
@@ -436,4 +437,45 @@ String _resultTransformer(String suffix, String statusType, String success) {
         'future': tr('${suffix}_processing'),
       }[statusType] ??
       tr('${suffix}_processing');
+}
+
+Future<SignAndSendResult> renew(int idtyIndex,
+    {Duration timeout = defPolkadotTimeout}) async {
+  final KeyPair wallet = KeyPair.ed25519
+      .fromSeed((await SharedPreferencesHelper().getWallet()).seed);
+  return executeOnPolkadotNodes(
+      (Node node, Provider provider, Gdev polkadot) async {
+    final RuntimeCall call =
+        polkadot.tx.certification.renewCert(receiver: idtyIndex);
+    return signAndSend(
+      node,
+      provider,
+      polkadot,
+      wallet,
+      call,
+      messageTransformer: _defaultResultTransformer,
+    );
+  });
+}
+
+Future<SignAndSendResult> revoke(
+    int idtyIndex, List<int> revocationKey, MultiSignature revocationSig,
+    {Duration timeout = defPolkadotTimeout}) async {
+  final KeyPair wallet = KeyPair.ed25519
+      .fromSeed((await SharedPreferencesHelper().getWallet()).seed);
+  return executeOnPolkadotNodes(
+      (Node node, Provider provider, Gdev polkadot) async {
+    final RuntimeCall call = polkadot.tx.identity.revokeIdentity(
+        idtyIndex: idtyIndex,
+        revocationKey: revocationKey,
+        revocationSig: revocationSig);
+    return signAndSend(
+      node,
+      provider,
+      polkadot,
+      wallet,
+      call,
+      messageTransformer: _defaultResultTransformer,
+    );
+  });
 }

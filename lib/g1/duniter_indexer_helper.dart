@@ -16,7 +16,7 @@ import '../data/models/node_type.dart';
 import '../ui/contacts_cache.dart';
 import '../ui/logger.dart';
 import 'g1_helper.dart';
-import 'g1_v2_helper_others.dart';
+import 'g1_v2_helper.dart';
 
 Future<List<Contact>> searchWotV2(String searchPatternRaw) async {
   final List<Contact> contacts = <Contact>[];

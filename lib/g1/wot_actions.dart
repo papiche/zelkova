@@ -8,7 +8,7 @@ import '../data/models/identity_status.dart';
 import '../data/models/wot_menu_action.dart';
 import '../ui/logger.dart';
 import '../ui/widgets/cesium_auth_dialog.dart';
-import 'g1_v2_helper_others.dart';
+import 'g1_v2_helper.dart';
 import 'sing_and_send.dart';
 
 List<WotMenuAction> getWotMenuActions(
@@ -56,8 +56,9 @@ List<WotMenuAction> getWotMenuActions(
       if (!isMe) {
         _certAction(context, wotInfo, actions);
         _requestDistanceAction(context, wotInfo.you.index, actions);
+      } else {
+        _requestDistanceAction(context, wotInfo.me.index, actions);
       }
-      _requestDistanceAction(context, wotInfo.me.index, actions);
       break;
     case IdentityStatus.REMOVED:
       break;

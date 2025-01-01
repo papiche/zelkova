@@ -37,7 +37,7 @@ import '../ui/contacts_cache.dart';
 import '../ui/logger.dart';
 import '../ui/ui_helpers.dart';
 import 'g1_helper.dart';
-import 'g1_v2_helper_others.dart';
+import 'g1_v2_helper.dart';
 import 'no_nodes_exception.dart';
 import 'node_check_result.dart';
 import 'pay_result.dart';

@@ -27,6 +27,7 @@ import '../generated/gdev/types/frame_system/account_info.dart';
 import '../generated/gdev/types/gdev_runtime/runtime_call.dart';
 import '../generated/gdev/types/pallet_certification/types/idty_cert_meta.dart';
 import '../generated/gdev/types/pallet_identity/types/idty_value.dart';
+import '../generated/gdev/types/sp_membership/membership_data.dart';
 import '../generated/gdev/types/sp_runtime/multi_signature.dart';
 import '../generated/gdev/types/sp_runtime/multiaddress/multi_address.dart';
 import '../shared_prefs_helper.dart';
@@ -174,6 +175,16 @@ Future<IdtyCertMeta?> polkadotIdtyCertMeta(Contact contact) async {
       return null;
     }
     return polkadot.query.certification.storageIdtyCertMeta(contact.index!);
+  });
+}
+
+Future<MembershipData?> polkadortMembershipData(Contact contact) async {
+  return executeOnPolkadotNodes<MembershipData?>(
+      (Node node, Provider provider, Gdev polkadot) async {
+    if (contact.index == null) {
+      return null;
+    }
+    return polkadot.query.membership.membership(contact.index!);
   });
 }
 

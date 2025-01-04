@@ -163,7 +163,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                         color: Theme.of(context)
                                             .colorScheme
                                             .onSurface
-                                            .withOpacity(.4),
+                                            .withValues(alpha: .4),
                                       ),
                                     ),
                                     const SizedBox(height: 10),
@@ -188,9 +188,9 @@ class _FirstScreenState extends State<FirstScreen> {
                     ),
                     if (state.status == PaymentStatus.sending)
                       Container(
-                        color: Colors.black.withOpacity(0.5),
+                        color: Colors.black.withValues(alpha: 0.5),
                         child: Center(
-                          child: !context.read<AppCubit>().isV2()
+                          child: !context.read<AppCubit>().isV2
                               ? const CircularProgressIndicator()
                               :
                               // Nothing

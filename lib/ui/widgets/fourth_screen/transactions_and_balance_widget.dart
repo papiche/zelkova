@@ -80,7 +80,7 @@ class _TransactionsAndBalanceWidgetState
     _bloc = TransactionsBloc(
         isExternal: widget.isExternalAccount,
         pubKey: widget.pubKey,
-        isV2: appCubit.isV2());
+        isV2: appCubit.isV2);
     // We could've used StreamBuilder, but that would unnecessarily recreate
     // the entire [PagedSliverGrid] every time the state changes.
     // Instead, handling the subscription ourselves and updating only the

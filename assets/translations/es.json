@@ -336,7 +336,7 @@
   "info_this_wallet": "Info sobre este monedero",
   "cert_expired": "Caducado",
   "result": "Resultado",
-  "renew_membership": "Renovar Membresía",
+  "renew_membership": "Renovar Certificación",
   "revoke_membership": "Revocar Membresía",
   "confirm_identity": "Confirmar Identidad",
   "identity_name_hint": "Nombre de Identidad",
@@ -363,5 +363,7 @@
   "can_cert": "Puede certificar",
   "can_cert_on": "Puede certificar (aprox.)",
   "yes": "Sí",
-  "no": "No"
+  "no": "No",
+  "cert_expire_on": "La certificación expira",
+  "distance_rule": "Regla de la Distancia"
 }

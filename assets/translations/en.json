@@ -330,7 +330,7 @@
   "info_this_wallet": "Info about this wallet",
   "cert_expired": "Expired",
   "result": "Result",
-  "renew_membership": "Renew Membership",
+  "renew_membership": "Renew certification",
   "revoke_membership": "Revoke Membership",
   "confirm_identity": "Confirm Identity",
   "identity_name_hint": "Identity Name",
@@ -357,6 +357,8 @@
   "can_cert": "Can Certify",
   "can_cert_on": "Can Certify in (approx)",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "cert_expire_on": "Certification expires",
+  "distance_rule": "Distance Rule"
 }
 

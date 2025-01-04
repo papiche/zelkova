@@ -10,7 +10,6 @@ import 'package:share_plus/share_plus.dart';
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
 import '../../data/models/cesium_card.dart';
-import '../../data/models/contact.dart';
 import '../../data/models/node_manager.dart';
 import '../../data/models/theme_cubit.dart';
 import '../../g1/currency.dart';

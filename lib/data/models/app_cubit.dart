@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import '../../g1/currency.dart';
+import '../../g1/distance_precompute.dart';
 import 'app_state.dart';
 
 class AppCubit extends HydratedCubit<AppState> {
@@ -80,5 +81,11 @@ class AppCubit extends HydratedCubit<AppState> {
     emit(state.copyWith(v2mode: v2mode));
   }
 
-  bool isV2() => state.v2mode;
+  bool get isV2 => state.v2mode;
+
+  void setDistancePreCompute(DistancePrecompute? distancePrecompute) {
+    emit(state.copyWith(distancePrecompute: distancePrecompute));
+  }
+
+  DistancePrecompute? get distancePrecompute => state.distancePrecompute;
 }

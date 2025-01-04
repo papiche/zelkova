@@ -18,6 +18,10 @@ AppState _$AppStateFromJson(Map<String, dynamic> json) => AppState(
       tutorials: (json['tutorials'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, e as bool),
       ),
+      distancePrecompute: json['distancePrecompute'] == null
+          ? null
+          : DistancePrecompute.fromJson(
+              json['distancePrecompute'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$AppStateToJson(AppState instance) => <String, dynamic>{
@@ -30,6 +34,7 @@ Map<String, dynamic> _$AppStateToJson(AppState instance) => <String, dynamic>{
       'currency': _$CurrencyEnumMap[instance.currency]!,
       'currentUd': instance.currentUd,
       'tutorials': instance.tutorials,
+      'distancePrecompute': instance.distancePrecompute,
     };
 
 const _$CurrencyEnumMap = {

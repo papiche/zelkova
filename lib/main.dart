@@ -47,6 +47,8 @@ import 'data/models/theme_cubit.dart';
 import 'data/models/utxo_cubit.dart';
 import 'env.dart';
 import 'g1/api.dart';
+import 'g1/distance_precompute.dart';
+import 'g1/distance_precompute_provider.dart';
 import 'g1/g1_helper.dart';
 import 'g1/service_manager.dart';
 import 'shared_prefs_helper.dart';
@@ -65,7 +67,7 @@ void main() async {
   await NotificationController.initializeLocalNotifications();
 
   const int seedColor = 0xff98FB98;
-  final int seedColorDark = Colors.lightGreen.value;
+  final int seedColorDark = colorToValue(Colors.lightGreen);
 
   final ThemeData lightTheme = ThemeData.from(
     colorScheme: ColorScheme.fromSeed(
@@ -470,11 +472,20 @@ class _GinkgoAppState extends State<GinkgoApp> {
       context.read<MultiWalletTransactionCubit>().clearState();
     });
     Once.runCustom('fetch_txs', callback: () {
-      logger('---------- fetchTransactions via cron');
+      logger('---------- fetchTransactions via once');
       // Disabled to check the back development
       // if (!inDevelopment) {
       fetchTransactions(context);
     }, duration: const Duration(minutes: 5));
+    Once.runHourly('fetch_distance_precompute', callback: () async {
+      logger('---------- fetchDistanceEvaluation via once');
+      final AppCubit appCubit = context.read<AppCubit>();
+      if (appCubit.isV2) {
+        final DistancePrecompute? dP =
+            await DistancePrecomputeProvider().fetchDistancePrecompute();
+        appCubit.setDistancePreCompute(dP);
+      }
+    });
   }
 
   @override
@@ -599,7 +610,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
                               const SizedBox(height: 110),
                             ],
                           ),
-                          child: c.watch<AppCubit>().isV2()
+                          child: c.watch<AppCubit>().isV2
                               ? CustomBanner(
                                   message: 'V2',
                                   color: Colors.green,
@@ -663,7 +674,7 @@ Future<void> initGetItAll() async {
     getIt.registerSingleton<NodeListCubit>(NodeListCubit());
     getIt.registerSingleton<UtxoCubit>(UtxoCubit());
     getIt.registerSingleton<ServiceManager>(
-        ServiceManager(initialIsV2: appCubit.isV2()));
+        ServiceManager(initialIsV2: appCubit.isV2));
   }
 }
 

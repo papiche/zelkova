@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../g1/currency.dart';
+import '../../g1/distance_precompute.dart';
 import 'is_json_serializable.dart';
 
 part 'app_state.g.dart';
@@ -17,11 +18,12 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
       this.v2mode = false,
       Currency? currency,
       double? currentUd,
-      Map<String, bool>? tutorials})
+      Map<String, bool>? tutorials,
+      this.distancePrecompute})
       : tutorials = tutorials ?? <String, bool>{},
         currency = currency ?? Currency.G1,
         walletCreatedViewed = walletCreatedViewed ?? introViewed,
-        currentUd = currentUd ?? 11.06; // as 01/12/2024
+        currentUd = currentUd ?? 11.06;
 
   factory AppState.fromJson(Map<String, dynamic> json) =>
       _$AppStateFromJson(json);
@@ -35,6 +37,7 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
   final Currency currency;
   final double currentUd;
   final Map<String, bool> tutorials;
+  final DistancePrecompute? distancePrecompute;
 
   AppState copyWith(
       {bool? introViewed,
@@ -45,7 +48,8 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
       double? currentUd,
       bool? walletCreatedViewed,
       bool? v2mode,
-      Map<String, bool>? tutorials}) {
+      Map<String, bool>? tutorials,
+      DistancePrecompute? distancePrecompute}) {
     return AppState(
         introViewed: introViewed ?? this.introViewed,
         warningViewed: warningViewed ?? this.warningViewed,
@@ -55,17 +59,18 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
         walletCreatedViewed: walletCreatedViewed ?? this.walletCreatedViewed,
         v2mode: v2mode ?? this.v2mode,
         currentUd: currentUd ?? this.currentUd,
-        tutorials: tutorials ?? this.tutorials);
+        tutorials: tutorials ?? this.tutorials,
+        distancePrecompute: distancePrecompute);
   }
 
   @override
-  AppState fromJson(Map<String, dynamic> json) => AppState.fromJson(json);
+  AppState fromJson(Map<String, dynamic> json) => _$AppStateFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$AppStateToJson(this);
 
   @override
-  List<Object?> get props => <Object>[
+  List<Object?> get props => <Object?>[
         introViewed,
         warningViewed,
         expertMode,
@@ -74,6 +79,7 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
         tutorials,
         currency,
         currentUd,
-        v2mode
+        v2mode,
+        distancePrecompute
       ];
 }

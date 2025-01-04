@@ -202,8 +202,8 @@ class NodeManager {
       nodesNearMaxBlock.addAll(defaultNodes(type));
     }
 
-    loggerDev(
-        'Best nodes: ${nodesNearMaxBlock.length} (max block: $maxCurrentBlock)');
+    //   loggerDev(
+    //     'Best nodes: ${nodesNearMaxBlock.length} (max block: $maxCurrentBlock)');
     return nodesNearMaxBlock;
   }
 

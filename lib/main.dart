@@ -483,7 +483,9 @@ class _GinkgoAppState extends State<GinkgoApp> {
       if (appCubit.isV2) {
         final DistancePrecompute? dP =
             await DistancePrecomputeProvider().fetchDistancePrecompute();
-        appCubit.setDistancePreCompute(dP);
+        if (dP != null) {
+          appCubit.setDistancePreCompute(dP);
+        }
       }
     });
   }

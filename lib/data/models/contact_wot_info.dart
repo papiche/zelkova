@@ -9,9 +9,11 @@ class ContactWotInfo {
 
   final Contact me;
   final Contact you;
+
   bool? canCert;
   bool? canCreateIdty;
   bool? canCalcDistance;
+  bool? canCalcDistanceFor;
   bool? waitingForCerts;
   bool? alreadyCert;
   DateTime? canCertOn;
@@ -19,6 +21,8 @@ class ContactWotInfo {
   bool? distRuleOk;
   double? distRuleRatio;
   int? currentBlockHeight;
+
+  bool get isme => isMe(you, me.pubKey);
 
   @override
   String toString() {

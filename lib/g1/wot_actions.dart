@@ -28,6 +28,7 @@ List<WotMenuAction> getWotMenuActions(
   switch (status) {
     case IdentityStatus.MEMBER:
       if (isMe) {
+        _requestDistanceAction(context, actions, wotInfo);
         // revoke
       } else {
         _certAction(context, wotInfo, actions);
@@ -39,9 +40,9 @@ List<WotMenuAction> getWotMenuActions(
       if (!isMe) {
         _certAction(context, wotInfo, actions);
         _renewAction(context, wotInfo, actions);
-        _requestDistanceAction(context, wotInfo.you.index, actions, wotInfo);
+        _requestDistanceActionFor(context, wotInfo.you.index, actions, wotInfo);
       } else {
-        _requestDistanceAction(context, wotInfo.me.index, actions, wotInfo);
+        _requestDistanceAction(context, actions, wotInfo);
       }
       break;
     case IdentityStatus.REMOVED:
@@ -144,14 +145,25 @@ List<WotMenuAction> getWotMenuActions(
   return actions;
 }
 
-void _requestDistanceAction(BuildContext context, int? idtyIndex,
-    List<WotMenuAction> actions, ContactWotInfo info) {
-  if (idtyIndex != null && (info.canCalcDistance ?? false)) {
+void _requestDistanceAction(
+    BuildContext context, List<WotMenuAction> actions, ContactWotInfo info) {
+  if (info.canCalcDistance ?? false) {
     actions.add(WotMenuAction(
         name: tr('request_distance_evaluation'),
         icon: Icons.social_distance,
         action: () async => _executeIfAuthenticated(
-            context, () => requestDistanceEvaluation(idtyIndex))));
+            context, () => requestDistanceEvaluation())));
+  }
+}
+
+void _requestDistanceActionFor(BuildContext context, int? idtyIndex,
+    List<WotMenuAction> actions, ContactWotInfo info) {
+  if (idtyIndex != null && (info.canCalcDistanceFor ?? false)) {
+    actions.add(WotMenuAction(
+        name: tr('request_distance_evaluation'),
+        icon: Icons.social_distance,
+        action: () async => _executeIfAuthenticated(
+            context, () => requestDistanceEvaluationFor(idtyIndex))));
   }
 }
 

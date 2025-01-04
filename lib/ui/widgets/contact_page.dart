@@ -12,6 +12,7 @@ import '../../data/models/cert.dart';
 import '../../data/models/contact.dart';
 import '../../data/models/contact_cubit.dart';
 import '../../data/models/contact_wot_info.dart';
+import '../../data/models/identity_status.dart';
 import '../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../data/models/node_manager.dart';
 import '../../data/models/wot_menu_action.dart';
@@ -25,8 +26,8 @@ import '../../g1/wot_actions.dart';
 import '../../generated/gdev/pallets/certification.dart';
 import '../../generated/gdev/types/pallet_certification/types/idty_cert_meta.dart';
 import '../../generated/gdev/types/pallet_identity/types/idty_value.dart';
-import '../../generated/gdev/types/sp_membership/membership_data.dart';
 import '../../shared_prefs_helper.dart';
+import '../logger.dart';
 import '../ui_helpers.dart';
 import 'certifications_page.dart';
 import 'contacts_actions.dart';
@@ -72,7 +73,7 @@ class _ContactPageState extends State<ContactPage> {
     final Contact contact = widget.contact;
 
     return FutureBuilder<ContactWotInfo>(
-      future: _getWotInfo(widget.contact),
+      future: _getWotInfo(),
       builder: (BuildContext context, AsyncSnapshot<ContactWotInfo> snapshot) {
         if (snapshot.hasData) {
           return _buildContactWidget(snapshot.data!, context, true);
@@ -92,8 +93,7 @@ class _ContactPageState extends State<ContactPage> {
     final Contact contact = contactWotInfo.you;
     final bool isContact =
         context.read<ContactsCubit>().isContact(contact.pubKey);
-    final String myPubKey = SharedPreferencesHelper().getPubKey();
-    final bool me = isMe(contact, myPubKey);
+    final bool me = contactWotInfo.isme;
     final List<SpeedDialChild> actions = <SpeedDialChild>[
       if (isContact)
         SpeedDialChild(
@@ -237,10 +237,10 @@ class _ContactPageState extends State<ContactPage> {
           if (loaded && contact.status != null) const Divider(),
           if (contact.status != null)
             ListTile(
-              leading: const Icon(Icons.card_membership),
-              title: Text(tr('idty_status_title')),
-              subtitle: Text(tr('idty_status_${contact.status!.name}')),
-            ),
+                leading: const Icon(Icons.card_membership),
+                title: Text(tr('idty_status_title')),
+                subtitle: Text(
+                    '${tr('idty_status_${contact.status!.name}')}${_getIdentityStatusDescription(contact.status!, wotInfo.waitingForCerts ?? false)}')),
           if (wotInfo.expireOn != null)
             ListTile(
                 leading: const Icon(Icons.timer),
@@ -512,12 +512,13 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
-  Future<ContactWotInfo> _getWotInfo(Contact contact) async {
+  Future<ContactWotInfo> _getWotInfo() async {
     final Contact you =
         await getProfile(widget.contact.pubKey, resize: false, complete: true);
     final Contact me = await getProfile(SharedPreferencesHelper().getPubKey(),
         resize: false, complete: true);
     final ContactWotInfo wotInfo = ContactWotInfo(me: me, you: you);
+
     if (isV2) {
       if (you.status == null) {
         // Can create Identity from:
@@ -563,16 +564,6 @@ class _ContactPageState extends State<ContactPage> {
             idtyCertMeta.issuedCount < Constants().maxByIssuer;
         wotInfo.canCert = canCert;
       }
-      // Can call distance
-      final MembershipData? membershipMeta = await polkadortMembershipData(you);
-      if (membershipMeta != null) {
-        final int membershipExpireOn = membershipMeta.expireOn;
-        wotInfo.expireOn = estimateDate(
-            futureBlock: membershipExpireOn, currentBlockHeight: currentBlock);
-        wotInfo.canCalcDistance = membershipExpireOn +
-                polkadotConstants().membership.membershipRenewalPeriod <
-            currentBlock + polkadotConstants().membership.membershipPeriod;
-      }
 
       // Waiting for Certifications
       if (you.certsReceived != null &&
@@ -580,7 +571,37 @@ class _ContactPageState extends State<ContactPage> {
           you.certsReceived!.length <
               polkadotConstants().wot.minCertForMembership) {
         wotInfo.waitingForCerts = true;
+      } else {
+        wotInfo.waitingForCerts = false;
       }
+
+      final int membershipExpireOn = you.expireOn!;
+      wotInfo.expireOn = estimateDate(
+          futureBlock: membershipExpireOn, currentBlockHeight: currentBlock);
+
+      // Can call distance
+      if (wotInfo.isme &&
+          wotInfo.waitingForCerts == false &&
+          (you.status == IdentityStatus.MEMBER ||
+              you.status == IdentityStatus.NOTMEMBER ||
+              you.status == IdentityStatus.UNVALIDATED)) {
+        wotInfo.canCalcDistance = you.expireOn == null ||
+            (membershipExpireOn +
+                    polkadotConstants().membership.membershipRenewalPeriod <
+                currentBlock + polkadotConstants().membership.membershipPeriod);
+      } else {
+        wotInfo.canCalcDistance = false;
+      }
+
+      // Can call distanceFor
+      if (!wotInfo.isme &&
+          wotInfo.waitingForCerts != null &&
+          !wotInfo.waitingForCerts!) {
+        wotInfo.canCalcDistanceFor = true;
+      } else {
+        wotInfo.canCalcDistanceFor = false;
+      }
+
       final bool alreadyCert = you.certsReceived != null &&
           you.certsReceived!.isNotEmpty &&
           you.certsReceived!
@@ -590,9 +611,17 @@ class _ContactPageState extends State<ContactPage> {
         return wotInfo;
       }
       final AppCubit appCubit = context.read<AppCubit>();
-      final DistancePrecompute? distancePrecompute =
-          appCubit.distancePrecompute ??
-              await DistancePrecomputeProvider().fetchDistancePrecompute();
+      DistancePrecompute? distancePrecompute = appCubit.distancePrecompute;
+
+      if (distancePrecompute == null) {
+        loggerDev('Retrieving distance precompute');
+
+        distancePrecompute =
+            await DistancePrecomputeProvider().fetchDistancePrecompute();
+        if (distancePrecompute != null) {
+          appCubit.setDistancePreCompute(distancePrecompute);
+        }
+      }
       if (distancePrecompute != null) {
         final int distRuleReached = distancePrecompute.results[you.index] ?? 0;
         final int refereesCount = distancePrecompute.refereesCount;
@@ -630,4 +659,20 @@ DateTime estimateDate(
   const int millisPerBlock = 6000;
   final int diff = futureBlock - currentBlockHeight;
   return DateTime.now().add(Duration(milliseconds: diff * millisPerBlock));
+}
+
+String _getIdentityStatusDescription(IdentityStatus status, bool waitingCerts) {
+  switch (status) {
+    case IdentityStatus.UNCONFIRMED:
+      return " (${tr('idty_waiting_confirmation')})";
+    case IdentityStatus.UNVALIDATED:
+      return waitingCerts
+          ? " (${tr('idty_waiting_certifications')})"
+          : " (${tr('idty_waiting_distance_evaluation')})";
+    case IdentityStatus.MEMBER:
+    case IdentityStatus.NOTMEMBER:
+    case IdentityStatus.REMOVED:
+    case IdentityStatus.REVOKED:
+      return '';
+  }
 }

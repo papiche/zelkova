@@ -278,7 +278,7 @@ Uri parseNodeUrl(String url) {
   return parsedUri;
 }
 
-Future<SignAndSendResult> requestDistanceEvaluation(int idtyIndex,
+Future<SignAndSendResult> requestDistanceEvaluationFor(int idtyIndex,
     {Duration timeout = defPolkadotTimeout}) async {
   final CesiumWallet walletV1 = await SharedPreferencesHelper().getWallet();
   final KeyPair wallet = KeyPair.ed25519.fromSeed(walletV1.seed);
@@ -291,6 +291,29 @@ Future<SignAndSendResult> requestDistanceEvaluation(int idtyIndex,
     // Distance already in evaluation
     final RuntimeCall call =
         polkadot.tx.distance.requestDistanceEvaluationFor(target: idtyIndex);
+    return signAndSend(
+      node,
+      provider,
+      polkadot,
+      wallet,
+      call,
+      messageTransformer: _defaultResultTransformer,
+    );
+  });
+}
+
+Future<SignAndSendResult> requestDistanceEvaluation(
+    {Duration timeout = defPolkadotTimeout}) async {
+  final CesiumWallet walletV1 = await SharedPreferencesHelper().getWallet();
+  final KeyPair wallet = KeyPair.ed25519.fromSeed(walletV1.seed);
+  return executeOnPolkadotNodes<SignAndSendResult>(
+      (Node node, Provider provider, Gdev polkadot) async {
+    // distance rule has been evaluated positively locally on web of trust at block storage.distance.evaluationBlock()
+    // TODO(vjrj): Implement this
+    // polkadot.query.distance.evaluationBlock();
+    // Error to show too:
+    // Distance already in evaluation
+    final RuntimeCall call = polkadot.tx.distance.requestDistanceEvaluation();
     return signAndSend(
       node,
       provider,

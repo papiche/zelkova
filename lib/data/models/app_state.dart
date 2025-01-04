@@ -60,7 +60,7 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
         v2mode: v2mode ?? this.v2mode,
         currentUd: currentUd ?? this.currentUd,
         tutorials: tutorials ?? this.tutorials,
-        distancePrecompute: distancePrecompute);
+        distancePrecompute: distancePrecompute ?? this.distancePrecompute);
   }
 
   @override

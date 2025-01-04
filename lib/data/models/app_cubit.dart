@@ -83,7 +83,7 @@ class AppCubit extends HydratedCubit<AppState> {
 
   bool get isV2 => state.v2mode;
 
-  void setDistancePreCompute(DistancePrecompute? distancePrecompute) {
+  void setDistancePreCompute(DistancePrecompute distancePrecompute) {
     emit(state.copyWith(distancePrecompute: distancePrecompute));
   }
 

@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 import '../../env.dart';
 import 'node.dart';
 import 'node_type.dart';
@@ -28,7 +26,7 @@ List<Node> defaultGvaNodes = <Node>{
 
 List<Node> defaultEndPointNodes = <Node>{
   // For doing tests of faulty nodes
-  if (kDebugMode) const Node(url: 'wss://just-testing-a-wrong-node.com/ws'),
+  // if (kDebugMode) const Node(url: 'wss://just-testing-a-wrong-node.com/ws'),
   ..._readDotNodeConfig(Env.endPoints),
 }.toList();
 

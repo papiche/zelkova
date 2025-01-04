@@ -74,7 +74,7 @@ class QrScannerScreen extends StatelessWidget {
           );
         },
         scanDelay: const Duration(milliseconds: 500),
-        actionButtonsBackgroundColor: Colors.black.withOpacity(0.5),
+        actionButtonsBackgroundColor: Colors.black.withValues(alpha: 0.5),
       ),
     );
   }

@@ -76,7 +76,7 @@ class _FullScreenQrScannerState extends State<FullScreenQrScanner> {
           // Navigator.of(context).pop();
         },
         scanDelay: const Duration(milliseconds: 500),
-        actionButtonsBackgroundColor: Colors.black.withOpacity(0.5),
+        actionButtonsBackgroundColor: Colors.black.withValues(alpha: 0.5),
         actionButtonsBackgroundBorderRadius: BorderRadius.circular(8),
       ),
     );

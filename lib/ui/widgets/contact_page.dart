@@ -16,6 +16,8 @@ import '../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../data/models/node_manager.dart';
 import '../../data/models/wot_menu_action.dart';
 import '../../g1/api.dart';
+import '../../g1/distance_precompute.dart';
+import '../../g1/distance_precompute_provider.dart';
 import '../../g1/duniter_indexer_helper.dart';
 import '../../g1/g1_v2_helper.dart';
 import '../../g1/sing_and_send.dart';
@@ -23,6 +25,7 @@ import '../../g1/wot_actions.dart';
 import '../../generated/gdev/pallets/certification.dart';
 import '../../generated/gdev/types/pallet_certification/types/idty_cert_meta.dart';
 import '../../generated/gdev/types/pallet_identity/types/idty_value.dart';
+import '../../generated/gdev/types/sp_membership/membership_data.dart';
 import '../../shared_prefs_helper.dart';
 import '../ui_helpers.dart';
 import 'certifications_page.dart';
@@ -49,7 +52,7 @@ class _ContactPageState extends State<ContactPage> {
   void initState() {
     super.initState();
     _txsCubit = context.read<MultiWalletTransactionCubit>();
-    isV2 = context.read<AppCubit>().isV2();
+    isV2 = context.read<AppCubit>().isV2;
     _updateBalance();
   }
 
@@ -188,7 +191,7 @@ class _ContactPageState extends State<ContactPage> {
             Expanded(
               child: TabBarView(
                 children: <Widget>[
-                  _buildInfoTab(contact, contactWotInfo.canCertOn, loaded),
+                  _buildInfoTab(contact, contactWotInfo, loaded),
                   _buildTransactionsTab(contact),
                 ],
               ),
@@ -211,7 +214,7 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
-  Widget _buildInfoTab(Contact contact, DateTime? canCertOn, bool loaded) {
+  Widget _buildInfoTab(Contact contact, ContactWotInfo wotInfo, bool loaded) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -231,27 +234,58 @@ class _ContactPageState extends State<ContactPage> {
               0)
             _buildBalance(contact),
           // Separator
-          if (loaded) const Divider(),
+          if (loaded && contact.status != null) const Divider(),
           if (contact.status != null)
             ListTile(
               leading: const Icon(Icons.card_membership),
               title: Text(tr('idty_status_title')),
               subtitle: Text(tr('idty_status_${contact.status!.name}')),
             ),
-          if (canCertOn != null && !canCertOn.isAfter(DateTime.now()))
+          if (wotInfo.expireOn != null)
+            ListTile(
+                leading: const Icon(Icons.timer),
+                title: Text(tr('cert_expire_on')),
+                subtitle: Text(
+                  humanizeTimeFuture(
+                        context.locale.languageCode,
+                        (wotInfo.expireOn!.millisecondsSinceEpoch -
+                                DateTime.now().millisecondsSinceEpoch) ~/
+                            1000,
+                      ) ??
+                      '??',
+                )),
+          if (wotInfo.canCertOn != null &&
+              !wotInfo.canCertOn!.isAfter(DateTime.now()))
             ListTile(
               leading: const Icon(Icons.verified),
               title: Text(tr('can_cert')),
               subtitle: Text(tr('yes')),
             ),
-          if (canCertOn != null && canCertOn.isAfter(DateTime.now()))
+
+          // Distance Rule
+          if (wotInfo.distRuleOk != null)
+            ListTile(
+              leading: const Icon(Icons.social_distance),
+              title: Text(tr('distance_rule')),
+              subtitle: Text(
+                '${(wotInfo.distRuleRatio! * 100).toStringAsFixed(1)}% (${wotInfo.distRuleOk! ? 'OK' : 'KO'})',
+                style: TextStyle(
+                    color: wotInfo.distRuleOk! ? Colors.green : Colors.red),
+              ),
+              /* trailing: Tooltip(
+              message: '$distRuleReached / $refereesCount',
+              child: const Icon(Icons.info_outline),
+            ), */
+            ),
+          if (wotInfo.canCertOn != null &&
+              wotInfo.canCertOn!.isAfter(DateTime.now()))
             ListTile(
               leading: const Icon(Icons.timelapse),
               title: Text(tr('can_cert_on')),
               subtitle: Text(
                   humanizeTimeFuture(
                         context.locale.languageCode,
-                        (canCertOn.millisecondsSinceEpoch -
+                        (wotInfo.canCertOn!.millisecondsSinceEpoch -
                                 DateTime.now().millisecondsSinceEpoch) ~/
                             1000,
                       ) ??
@@ -266,11 +300,18 @@ class _ContactPageState extends State<ContactPage> {
               subtitle: Text(contact.createdOn!.toString()),
             ), */
           if (contact.certsReceived != null &&
-              contact.certsReceived!.isNotEmpty)
-            _buildReceivedCerts(context, contact),
-          if (contact.certsIssued != null && contact.certsIssued!.isNotEmpty)
-            _buildIssuedCerts(context, contact),
-          if (loaded) const Divider(),
+              contact.certsReceived!.isNotEmpty &&
+              wotInfo.currentBlockHeight != null)
+            _buildReceivedCerts(context, contact, wotInfo.currentBlockHeight!),
+          if (contact.certsIssued != null &&
+              contact.certsIssued!.isNotEmpty &&
+              wotInfo.currentBlockHeight != null)
+            _buildIssuedCerts(context, contact, wotInfo.currentBlockHeight!),
+          if (loaded &&
+              (contact.socials != null ||
+                  contact.city != null ||
+                  contact.description != null))
+            const Divider(),
           if (contact.description != null && contact.description!.isNotEmpty)
             _buildDescriptionTile(contact),
           if (contact.city != null && contact.city!.isNotEmpty)
@@ -297,7 +338,8 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
-  ListTile _buildIssuedCerts(BuildContext context, Contact contact) {
+  ListTile _buildIssuedCerts(
+      BuildContext context, Contact contact, int currentBlockHeight) {
     final String title = tr('certs_issued');
     return ListTile(
       leading: const Icon(Icons.verified_rounded),
@@ -310,13 +352,15 @@ class _ContactPageState extends State<ContactPage> {
             title: contact.title,
             subtitle: title,
             certifications: contact.certsIssued!,
+            currentBlockHeight: currentBlockHeight,
           ),
         ));
       },
     );
   }
 
-  ListTile _buildReceivedCerts(BuildContext context, Contact contact) {
+  ListTile _buildReceivedCerts(
+      BuildContext context, Contact contact, int currentBlockHeight) {
     final String title = tr('certs_received');
     return ListTile(
       leading: const Icon(Icons.verified_user),
@@ -325,11 +369,11 @@ class _ContactPageState extends State<ContactPage> {
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute<void>(
           builder: (BuildContext context) => CertificationsPage(
-            issued: false,
-            title: contact.title,
-            subtitle: title,
-            certifications: contact.certsReceived!,
-          ),
+              issued: false,
+              title: contact.title,
+              subtitle: title,
+              certifications: contact.certsReceived!,
+              currentBlockHeight: currentBlockHeight),
         ));
       },
     );
@@ -495,7 +539,7 @@ class _ContactPageState extends State<ContactPage> {
         wotInfo.canCreateIdty = iAmMember && enoughBalance && !identityUsed;
       }
       final int currentBlock = await polkadotCurrentBlock();
-
+      wotInfo.currentBlockHeight = currentBlock;
       final bool youAMember = you.isMember ?? false;
       if (youAMember) {
         final IdtyValue? youIdty = await polkadotIdentity(you);
@@ -519,6 +563,16 @@ class _ContactPageState extends State<ContactPage> {
             idtyCertMeta.issuedCount < Constants().maxByIssuer;
         wotInfo.canCert = canCert;
       }
+      // Can call distance
+      final MembershipData? membershipMeta = await polkadortMembershipData(you);
+      if (membershipMeta != null) {
+        final int membershipExpireOn = membershipMeta.expireOn;
+        wotInfo.expireOn = estimateDate(
+            futureBlock: membershipExpireOn, currentBlockHeight: currentBlock);
+        wotInfo.canCalcDistance = membershipExpireOn +
+                polkadotConstants().membership.membershipRenewalPeriod <
+            currentBlock + polkadotConstants().membership.membershipPeriod;
+      }
 
       // Waiting for Certifications
       if (you.certsReceived != null &&
@@ -532,6 +586,22 @@ class _ContactPageState extends State<ContactPage> {
           you.certsReceived!
               .any((Cert cert) => cert.issuerId.pubKey == me.pubKey);
       wotInfo.alreadyCert = alreadyCert;
+      if (!mounted) {
+        return wotInfo;
+      }
+      final AppCubit appCubit = context.read<AppCubit>();
+      final DistancePrecompute? distancePrecompute =
+          appCubit.distancePrecompute ??
+              await DistancePrecomputeProvider().fetchDistancePrecompute();
+      if (distancePrecompute != null) {
+        final int distRuleReached = distancePrecompute.results[you.index] ?? 0;
+        final int refereesCount = distancePrecompute.refereesCount;
+        final double distRuleRatio =
+            refereesCount > 0 ? distRuleReached / refereesCount : 0.0;
+        const double distThreshold = 0.8;
+        wotInfo.distRuleOk = distRuleRatio > distThreshold;
+        wotInfo.distRuleRatio = distRuleRatio;
+      }
     }
     return wotInfo;
   }

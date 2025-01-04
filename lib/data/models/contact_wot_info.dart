@@ -11,9 +11,14 @@ class ContactWotInfo {
   final Contact you;
   bool? canCert;
   bool? canCreateIdty;
+  bool? canCalcDistance;
   bool? waitingForCerts;
   bool? alreadyCert;
   DateTime? canCertOn;
+  DateTime? expireOn;
+  bool? distRuleOk;
+  double? distRuleRatio;
+  int? currentBlockHeight;
 
   @override
   String toString() {

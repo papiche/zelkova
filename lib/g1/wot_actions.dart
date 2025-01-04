@@ -39,9 +39,9 @@ List<WotMenuAction> getWotMenuActions(
       if (!isMe) {
         _certAction(context, wotInfo, actions);
         _renewAction(context, wotInfo, actions);
-        _requestDistanceAction(context, wotInfo.you.index, actions);
+        _requestDistanceAction(context, wotInfo.you.index, actions, wotInfo);
       } else {
-        _requestDistanceAction(context, wotInfo.me.index, actions);
+        _requestDistanceAction(context, wotInfo.me.index, actions, wotInfo);
       }
       break;
     case IdentityStatus.REMOVED:
@@ -144,9 +144,9 @@ List<WotMenuAction> getWotMenuActions(
   return actions;
 }
 
-void _requestDistanceAction(
-    BuildContext context, int? idtyIndex, List<WotMenuAction> actions) {
-  if (idtyIndex != null) {
+void _requestDistanceAction(BuildContext context, int? idtyIndex,
+    List<WotMenuAction> actions, ContactWotInfo info) {
+  if (idtyIndex != null && (info.canCalcDistance ?? false)) {
     actions.add(WotMenuAction(
         name: tr('request_distance_evaluation'),
         icon: Icons.social_distance,

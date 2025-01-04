@@ -173,7 +173,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    _isV2 = context.watch<AppCubit>().isV2();
+    _isV2 = context.watch<AppCubit>().isV2;
     return FutureBuilder<NFCAvailability>(
         future: !kIsWeb && Platform.isLinux
             ? Future<NFCAvailability>.value(NFCAvailability.not_supported)

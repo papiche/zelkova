@@ -120,7 +120,7 @@ class _PayFormState extends State<PayForm> {
                             }
                           },
                           splashRadius: 20,
-                          splashColor: Colors.white.withOpacity(0.5),
+                          splashColor: Colors.white.withValues(alpha: 0.5),
                           highlightColor: Colors.transparent,
                         ),
                       ),

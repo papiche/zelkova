@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../ui/ui_helpers.dart';
 import 'is_json_serializable.dart';
 
 part 'credit_card_themes.g.dart';
@@ -73,7 +74,7 @@ class CreditCardTheme implements IsJsonSerializable<CreditCardTheme> {
       name: 'secondary_color', toJson: _colorToJson, fromJson: _colorFromJson)
   final Color secondaryColor;
 
-  static int _colorToJson(Color color) => color.value;
+  static int _colorToJson(Color color) => colorToValue(color);
 
   static Color _colorFromJson(int value) => Color(value);
 

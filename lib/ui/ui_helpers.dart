@@ -176,7 +176,7 @@ String simplifyPubKey(String address) => address.length <= 8
 
 Color tileColor(int index, BuildContext context, [bool inverse = false]) {
   final ColorScheme colorScheme = Theme.of(context).colorScheme;
-  final Color selectedColor = colorScheme.primary.withOpacity(0.1);
+  final Color selectedColor = colorScheme.primary.withValues(alpha: 0.1);
   final Color unselectedColor = colorScheme.surface;
   return (inverse ? index.isOdd : index.isEven)
       ? selectedColor
@@ -386,7 +386,7 @@ class _SlidableContactTile extends State<SlidableContactTile> {
   @override
   void initState() {
     super.initState();
-    isV2 = context.read<AppCubit>().isV2();
+    isV2 = context.read<AppCubit>().isV2;
     // Disable for now
     //   _start();
   }
@@ -946,4 +946,15 @@ String? humanizeTimeFuture(String locale, int expireOn) {
 
   return timeago.format(expiryDate,
       locale: locale, clock: DateTime.now(), allowFromNow: true);
+}
+
+// https://stackoverflow.com/a/79303317
+int colorToValue(Color color) {
+  final int a = (color.a * 255).round();
+  final int r = (color.r * 255).round();
+  final int g = (color.g * 255).round();
+  final int b = (color.b * 255).round();
+
+  // Combine the components into a single int using bit shifting
+  return (a << 24) | (r << 16) | (g << 8) | b;
 }

@@ -14,12 +14,12 @@ TextStyle cardTextStyle(BuildContext context,
     shadows: <Shadow>[
       Shadow(
         blurRadius: 1,
-        color: Colors.black.withOpacity(0.7),
+        color: Colors.black.withValues(alpha: 0.7),
         offset: const Offset(0, 2),
       ),
       Shadow(
         blurRadius: 1,
-        color: Colors.white.withOpacity(0.5),
+        color: Colors.white.withValues(alpha: 0.5),
         offset: const Offset(0, -1),
       ),
     ],

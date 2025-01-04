@@ -13,7 +13,8 @@ class TextDivider extends StatelessWidget {
       child: Row(children: <Widget>[
         Expanded(
           child: Divider(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(.4),
+            color:
+                Theme.of(context).colorScheme.onSurface.withValues(alpha: .4),
           ),
         ),
         Padding(
@@ -25,7 +26,8 @@ class TextDivider extends StatelessWidget {
         ),
         Expanded(
           child: Divider(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(.4),
+            color:
+                Theme.of(context).colorScheme.onSurface.withValues(alpha: .4),
           ),
         ),
       ]),

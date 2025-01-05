@@ -329,5 +329,13 @@
   "export_pubsec_format_description": "Génère un fichier qui vous permet de vous authentifier sans avoir à saisir vos identifiants. Gardez-le en lieu sûr, car il contient des données sensibles !",
   "auth_file_error": "Échec de l'analyse du fichier d'authentification.",
   "tx_invalid": "La transaction n'a pas pu être traitée. Veuillez vérifier vos données et réessayer",
-  "test_network_dialog_message": "Vous avez sélectionné un réseau de test duniter qui est utilisé principalement pour le développement. Les transactions effectuées ici ne sont pas réelles et se produisent dans un environnement de test distinct du réseau principal Ğ1. N'hésitez pas à tester."
+  "test_network_dialog_message": "Vous avez sélectionné un réseau de test duniter qui est utilisé principalement pour le développement. Les transactions effectuées ici ne sont pas réelles et se produisent dans un environnement de test distinct du réseau principal Ğ1. N'hésitez pas à tester.",
+  "test_network_dialog_title": "Réseau de test Duniter sélectionné",
+  "info_this_wallet": "Info sur ce portefeuille",
+  "cert_expired": "Expirées",
+  "result": "Résultat",
+  "renew_membership": "Renouveler l'adhésion",
+  "revoke_membership": "Révoquer l'adhésion",
+  "certs_issued": "Certifications émises",
+  "certs_received": "Certifications reçues"
 }

@@ -1,12 +1,8 @@
-import 'dart:io';
-
 import 'package:collection/collection.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 
 import '../../../data/models/app_cubit.dart';
 import '../../../data/models/bottom_nav_cubit.dart';
@@ -20,7 +16,6 @@ import '../../../g1/g1_helper.dart';
 import '../../contact_list_item.dart';
 import '../../contacts_cache.dart';
 import '../../logger.dart';
-import '../../nfc_helper.dart';
 import '../../qr_manager.dart';
 import '../../ui_helpers.dart';
 import '../connectivity_widget_wrapper_wrapper.dart';
@@ -174,172 +169,136 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
   @override
   Widget build(BuildContext context) {
     _isV2 = context.watch<AppCubit>().isV2;
-    return FutureBuilder<NFCAvailability>(
-        future: !kIsWeb && Platform.isLinux
-            ? Future<NFCAvailability>.value(NFCAvailability.not_supported)
-            : FlutterNfcKit.nfcAvailability,
-        builder:
-            (BuildContext context, AsyncSnapshot<NFCAvailability> snapshot) {
-          final bool nft = hasNft(snapshot);
-          final bool notForContactPage =
-              widget.searchUse != SearchUse.contactSearch;
-          final PaymentCubit paymentCubit = context.read<PaymentCubit>();
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(tr(widget.searchUse.title())),
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              foregroundColor: Theme.of(context).colorScheme.inversePrimary,
-              actions: <Widget>[
-                if (nft)
-                  IconButton(
-                    icon: const Icon(Icons.nfc),
-                    onPressed: () async {
-                      final String? nfcUrl = await readNfcUrl();
-                      if (nfcUrl is String &&
-                          nfcUrl != null &&
-                          nfcUrl != '-1') {
-                        final bool back =
-                            await _onKeyScanned(nfcUrl, paymentCubit);
-                        if (!context.mounted) {
-                          return;
-                        }
-                        if (back) {
-                          Navigator.pop(context);
-                        }
-                      }
-                    },
-                  ),
-                IconButton(
-                    icon: const Icon(Icons.qr_code_scanner),
-                    onPressed: () async {
-                      final String? scannedKey =
-                          await QrManager.qrScan(context);
-                      if (scannedKey is String &&
-                          scannedKey != null &&
-                          scannedKey != '-1') {
-                        final bool back =
-                            await _onKeyScanned(scannedKey, paymentCubit);
-                        if (!context.mounted) {
-                          return;
-                        }
-                        if (back) {
-                          Navigator.pop(context);
-                        }
-                      }
-                    }),
-                IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () => Navigator.pop(context),
-                )
-              ],
-            ),
-            body: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextField(
-                      controller: _searchController,
-                      focusNode: _searchFocusNode,
-                      decoration: InputDecoration(
-                        filled: true,
-                        labelText: tr('search_user'),
-                        helperText: _searchTerm.isEmpty
-                            ? notForContactPage
-                                ? tr('search_user_hint')
-                                : tr('search_user_hint_basic')
-                            : !_isMultiSelect &&
-                                    !_isLoading &&
-                                    notForContactPage
-                                ? tr('search_multiuser_hint')
-                                : null,
-                        suffixIcon: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            IconButton(
-                              icon: const Icon(Icons.clear),
-                              onPressed: () {
-                                _searchController.clear();
-                                _searchTerm = '';
-                                _previousSearchTerm = '';
-                                setState(() {
-                                  _isLoading = false;
-                                  _results.clear();
-                                });
-                              },
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.search),
-                              onPressed: () =>
-                                  _searchTerm.length < minSearchLength
-                                      ? null
-                                      : _search(),
-                            ),
-                          ],
-                        ),
-                      ),
-                      onSubmitted: (_) {
-                        _search();
-                      },
-                      onChanged: (String value) {
-                        if (value.length < _previousSearchTerm.length &&
-                            value.length < minSearchLength) {
-                          _previousSearchTerm = value;
+
+    final bool notForContactPage = widget.searchUse != SearchUse.contactSearch;
+    final PaymentCubit paymentCubit = context.read<PaymentCubit>();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(tr(widget.searchUse.title())),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Theme.of(context).colorScheme.inversePrimary,
+        actions: <Widget>[
+          IconButton(
+              icon: const Icon(Icons.qr_code_scanner),
+              onPressed: () async {
+                final String? scannedKey = await QrManager.qrScan(context);
+                if (scannedKey is String &&
+                    scannedKey != null &&
+                    scannedKey != '-1') {
+                  final bool back =
+                      await _onKeyScanned(scannedKey, paymentCubit);
+                  if (!context.mounted) {
+                    return;
+                  }
+                  if (back) {
+                    Navigator.pop(context);
+                  }
+                }
+              }),
+          IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: () => Navigator.pop(context),
+          )
+        ],
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                controller: _searchController,
+                focusNode: _searchFocusNode,
+                decoration: InputDecoration(
+                  filled: true,
+                  labelText: tr('search_user'),
+                  helperText: _searchTerm.isEmpty
+                      ? notForContactPage
+                          ? tr('search_user_hint')
+                          : tr('search_user_hint_basic')
+                      : !_isMultiSelect && !_isLoading && notForContactPage
+                          ? tr('search_multiuser_hint')
+                          : null,
+                  suffixIcon: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: () {
+                          _searchController.clear();
+                          _searchTerm = '';
+                          _previousSearchTerm = '';
                           setState(() {
                             _isLoading = false;
+                            _results.clear();
                           });
-                          return;
-                        }
-                        _searchTerm = value;
-                        _previousSearchTerm = value;
-                        if (_searchTerm.length >= minSearchLength) {
-                          setState(() {
-                            _isLoading = true;
-                          });
-                          EasyDebounce.debounce(
-                              'profile_search_debouncer',
-                              const Duration(milliseconds: 500),
-                              () => _search());
-                        }
-                      },
-                    )),
-                if (_isLoading)
-                  const LoadingBox(simple: false)
-                else if (_searchTerm.isNotEmpty &&
-                    _results.isEmpty &&
-                    _isLoading)
-                  const NoElements(text: 'nothing_found')
-                else
-                  Expanded(
-                    child: ListView.builder(
-                        itemCount: _results.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final Contact contact = _results.toList()[index];
-                          return FutureBuilder<Contact>(
-                              future: _getAndReplaceContact(contact),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<Contact> snapshot) {
-                                Widget widget;
-                                if (snapshot.hasData) {
-                                  widget = _buildItem(
-                                      snapshot.data!, index, context);
-                                } else if (snapshot.hasError) {
-                                  widget = CustomErrorWidget(snapshot.error);
-                                } else {
-                                  // Contact without wot
-                                  widget = _buildItem(contact, index, context);
-                                }
-                                return widget;
-                              });
-                        }),
-                  )
-              ],
-            ),
-            floatingActionButton:
-                _isMultiSelect ? _buildFloatingActionButtons() : null,
-          );
-        });
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.search),
+                        onPressed: () => _searchTerm.length < minSearchLength
+                            ? null
+                            : _search(),
+                      ),
+                    ],
+                  ),
+                ),
+                onSubmitted: (_) {
+                  _search();
+                },
+                onChanged: (String value) {
+                  if (value.length < _previousSearchTerm.length &&
+                      value.length < minSearchLength) {
+                    _previousSearchTerm = value;
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    return;
+                  }
+                  _searchTerm = value;
+                  _previousSearchTerm = value;
+                  if (_searchTerm.length >= minSearchLength) {
+                    setState(() {
+                      _isLoading = true;
+                    });
+                    EasyDebounce.debounce('profile_search_debouncer',
+                        const Duration(milliseconds: 500), () => _search());
+                  }
+                },
+              )),
+          if (_isLoading)
+            const LoadingBox(simple: false)
+          else if (_searchTerm.isNotEmpty && _results.isEmpty && _isLoading)
+            const NoElements(text: 'nothing_found')
+          else
+            Expanded(
+              child: ListView.builder(
+                  itemCount: _results.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final Contact contact = _results.toList()[index];
+                    return FutureBuilder<Contact>(
+                        future: _getAndReplaceContact(contact),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<Contact> snapshot) {
+                          Widget widget;
+                          if (snapshot.hasData) {
+                            widget = _buildItem(snapshot.data!, index, context);
+                          } else if (snapshot.hasError) {
+                            widget = CustomErrorWidget(snapshot.error);
+                          } else {
+                            // Contact without wot
+                            widget = _buildItem(contact, index, context);
+                          }
+                          return widget;
+                        });
+                  }),
+            )
+        ],
+      ),
+      floatingActionButton:
+          _isMultiSelect ? _buildFloatingActionButtons() : null,
+    );
   }
 
   Widget _buildFloatingActionButtons() {

@@ -34,7 +34,8 @@ Map<String, dynamic> _$AppStateToJson(AppState instance) => <String, dynamic>{
       'currency': _$CurrencyEnumMap[instance.currency]!,
       'currentUd': instance.currentUd,
       'tutorials': instance.tutorials,
-      'distancePrecompute': instance.distancePrecompute,
+      if (instance.distancePrecompute case final value?)
+        'distancePrecompute': value,
     };
 
 const _$CurrencyEnumMap = {

@@ -37,6 +37,7 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
   final Currency currency;
   final double currentUd;
   final Map<String, bool> tutorials;
+  @JsonKey(includeIfNull: false)
   final DistancePrecompute? distancePrecompute;
 
   AppState copyWith(

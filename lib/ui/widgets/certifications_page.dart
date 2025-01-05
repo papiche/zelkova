@@ -13,11 +13,13 @@ class CertificationsPage extends StatelessWidget {
       required this.title,
       required this.subtitle,
       required this.certifications,
+      required this.currentBlockHeight,
       required this.issued});
 
   final String title;
   final String subtitle;
   final bool issued;
+  final int currentBlockHeight;
   final List<Cert> certifications;
 
   @override

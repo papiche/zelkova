@@ -1,6 +1,11 @@
+import 'package:copy_with_extension/copy_with_extension.dart';
+
 import '../../ui/ui_helpers.dart';
 import 'contact.dart';
 
+part 'contact_wot_info.g.dart';
+
+@CopyWith()
 class ContactWotInfo {
   ContactWotInfo({
     required this.me,
@@ -21,6 +26,7 @@ class ContactWotInfo {
   bool? distRuleOk;
   double? distRuleRatio;
   int? currentBlockHeight;
+  bool loaded = false;
 
   bool get isme => isMe(you, me.pubKey);
 

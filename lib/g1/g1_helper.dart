@@ -421,3 +421,11 @@ Uint8List decryptAes(Uint8List encryptedData, Uint8List key) {
 }
 
 const Duration defPolkadotTimeout = Duration(seconds: 20);
+
+// Based on duniter-vue
+DateTime estimateDateFromBlock(
+    {required int futureBlock, required int currentBlockHeight}) {
+  const int millisPerBlock = 6000;
+  final int diff = futureBlock - currentBlockHeight;
+  return DateTime.now().add(Duration(milliseconds: diff * millisPerBlock));
+}

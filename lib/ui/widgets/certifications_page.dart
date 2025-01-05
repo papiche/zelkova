@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../../data/models/cert.dart';
 import '../../data/models/contact.dart';
 import '../contact_list_item.dart';
-import '../ui_helpers.dart';
 import 'contacts_actions.dart';
 
 class CertificationsPage extends StatelessWidget {
@@ -21,6 +20,7 @@ class CertificationsPage extends StatelessWidget {
   final bool issued;
   final int currentBlockHeight;
   final List<Cert> certifications;
+  static const int limit = 201600;
 
   @override
   Widget build(BuildContext context) {
@@ -51,27 +51,39 @@ class CertificationsPage extends StatelessWidget {
                     final Cert cert = certifications[index];
                     final Contact contact =
                         issued ? cert.receiverId : cert.issuerId;
-                    // FIXME Use block estimation to calculate the cert date
-                    String? certDate = inDevelopment
-                        ? humanizeTimeFull(
-                            utcDateTime: DateTime.now()
-                                .add(Duration(seconds: cert.updatedOn)),
-                            locale: currentLocale(context))
-                        : null;
-                    certDate = null;
+                    final bool isExpired = cert.expireOn <= currentBlockHeight;
+                    final bool isExpiringSoon = cert.isActive &&
+                        (cert.expireOn - currentBlockHeight < limit);
+                    final bool isMember = contact.isMember ?? false;
+                    /* final DateTime updateOn = estimateDateFromBlock(
+                        futureBlock: cert.updatedOn,
+                        currentBlockHeight: currentBlockHeight); */
+                    /* final String certDate = humanizeTimeFull(
+                        locale: currentLocale(context), utcDateTime: updateOn); */
+                    final String statusMsg =
+                        tr('idty_status_${contact.status!.name}');
                     return ContactListItem(
                         contact: contact,
-                        subtitleExtra: certDate,
+                        // subtitleExtra: statusMsg,
                         index: index,
                         isV2: true,
                         onTap: () {
                           showContactPage(context, contact);
                         },
-                        trailing: cert.expireOn > 0
-                            ? Text(humanizeTimeFuture(
-                                    currentLocale(context), cert.expireOn) ??
-                                '')
-                            : Text(tr('cert_expired')));
+                        trailing: Tooltip(
+                            message: statusMsg,
+                            child: Icon(
+                              isMember
+                                  ? isExpiringSoon
+                                      ? Icons.timelapse
+                                      : Icons.check_circle_outline
+                                  : Icons.warning_amber_outlined,
+                              color: isMember
+                                  ? isExpiringSoon
+                                      ? Colors.orange.shade300
+                                      : Theme.of(context).colorScheme.primary
+                                  : Colors.red.shade300,
+                            )));
                   },
                 ),
               )

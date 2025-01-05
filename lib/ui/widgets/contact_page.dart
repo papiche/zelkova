@@ -20,6 +20,7 @@ import '../../g1/api.dart';
 import '../../g1/distance_precompute.dart';
 import '../../g1/distance_precompute_provider.dart';
 import '../../g1/duniter_indexer_helper.dart';
+import '../../g1/g1_helper.dart';
 import '../../g1/g1_v2_helper.dart';
 import '../../g1/sing_and_send.dart';
 import '../../g1/wot_actions.dart';
@@ -70,26 +71,25 @@ class _ContactPageState extends State<ContactPage> {
 
   @override
   Widget build(BuildContext context) {
-    final Contact contact = widget.contact;
-
-    return FutureBuilder<ContactWotInfo>(
-      future: _getWotInfo(),
+    final Contact me = Contact(pubKey: SharedPreferencesHelper().getPubKey());
+    return StreamBuilder<ContactWotInfo>(
+      stream: _getWotInfo(),
+      initialData: ContactWotInfo(
+        me: me,
+        you: widget.contact,
+      ),
       builder: (BuildContext context, AsyncSnapshot<ContactWotInfo> snapshot) {
         if (snapshot.hasData) {
-          return _buildContactWidget(snapshot.data!, context, true);
+          return _buildContactWidget(snapshot.requireData, context);
         }
         return _buildContactWidget(
-            ContactWotInfo(
-                me: Contact(pubKey: SharedPreferencesHelper().getPubKey()),
-                you: contact),
-            context,
-            false);
+            ContactWotInfo(me: me, you: widget.contact), context);
       },
     );
   }
 
   DefaultTabController _buildContactWidget(
-      ContactWotInfo contactWotInfo, BuildContext context, bool loaded) {
+      ContactWotInfo contactWotInfo, BuildContext context) {
     final Contact contact = contactWotInfo.you;
     final bool isContact =
         context.read<ContactsCubit>().isContact(contact.pubKey);
@@ -191,7 +191,7 @@ class _ContactPageState extends State<ContactPage> {
             Expanded(
               child: TabBarView(
                 children: <Widget>[
-                  _buildInfoTab(contact, contactWotInfo, loaded),
+                  _buildInfoTab(contact, contactWotInfo, contactWotInfo.loaded),
                   _buildTransactionsTab(contact),
                 ],
               ),
@@ -512,7 +512,7 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
-  Future<ContactWotInfo> _getWotInfo() async {
+  Stream<ContactWotInfo> _getWotInfo() async* {
     final Contact you =
         await getProfile(widget.contact.pubKey, resize: false, complete: true);
     final Contact me = await getProfile(SharedPreferencesHelper().getPubKey(),
@@ -539,6 +539,8 @@ class _ContactPageState extends State<ContactPage> {
             (await getIdentity(address: you.address)) != null;
         wotInfo.canCreateIdty = iAmMember && enoughBalance && !identityUsed;
       }
+      yield wotInfo;
+
       final int currentBlock = await polkadotCurrentBlock();
       wotInfo.currentBlockHeight = currentBlock;
       final bool youAMember = you.isMember ?? false;
@@ -546,11 +548,13 @@ class _ContactPageState extends State<ContactPage> {
         final IdtyValue? youIdty = await polkadotIdentity(you);
         final IdtyCertMeta? youCertMeta = await polkadotIdtyCertMeta(you);
         if (youIdty != null && youCertMeta != null) {
-          wotInfo.canCertOn = estimateDate(
+          wotInfo.canCertOn = estimateDateFromBlock(
               futureBlock: youCertMeta.nextIssuableOn,
               currentBlockHeight: currentBlock);
         }
       }
+      yield wotInfo;
+
       // Can Certificate
       final IdtyValue? myIdty = await polkadotIdentity(me);
       final IdtyCertMeta? idtyCertMeta = await polkadotIdtyCertMeta(me);
@@ -563,7 +567,10 @@ class _ContactPageState extends State<ContactPage> {
             idtyCertMeta.nextIssuableOn < currentBlock &&
             idtyCertMeta.issuedCount < Constants().maxByIssuer;
         wotInfo.canCert = canCert;
+      } else {
+        wotInfo.canCert = false;
       }
+      yield wotInfo;
 
       // Waiting for Certifications
       if (you.certsReceived != null &&
@@ -574,9 +581,10 @@ class _ContactPageState extends State<ContactPage> {
       } else {
         wotInfo.waitingForCerts = false;
       }
+      yield wotInfo;
 
       final int membershipExpireOn = you.expireOn!;
-      wotInfo.expireOn = estimateDate(
+      wotInfo.expireOn = estimateDateFromBlock(
           futureBlock: membershipExpireOn, currentBlockHeight: currentBlock);
 
       // Can call distance
@@ -592,6 +600,7 @@ class _ContactPageState extends State<ContactPage> {
       } else {
         wotInfo.canCalcDistance = false;
       }
+      yield wotInfo;
 
       // Can call distanceFor
       if (!wotInfo.isme &&
@@ -601,14 +610,16 @@ class _ContactPageState extends State<ContactPage> {
       } else {
         wotInfo.canCalcDistanceFor = false;
       }
+      yield wotInfo;
 
       final bool alreadyCert = you.certsReceived != null &&
           you.certsReceived!.isNotEmpty &&
           you.certsReceived!
               .any((Cert cert) => cert.issuerId.pubKey == me.pubKey);
       wotInfo.alreadyCert = alreadyCert;
+      yield wotInfo;
       if (!mounted) {
-        return wotInfo;
+        yield wotInfo;
       }
       final AppCubit appCubit = context.read<AppCubit>();
       DistancePrecompute? distancePrecompute = appCubit.distancePrecompute;
@@ -632,7 +643,8 @@ class _ContactPageState extends State<ContactPage> {
         wotInfo.distRuleRatio = distRuleRatio;
       }
     }
-    return wotInfo;
+    wotInfo.loaded = true;
+    yield wotInfo;
   }
 }
 
@@ -651,14 +663,6 @@ Widget _buildBadge(BuildContext context, int count) {
       style: const TextStyle(color: Colors.white),
     )),
   );
-}
-
-// Based on duniter-vue
-DateTime estimateDate(
-    {required int futureBlock, required int currentBlockHeight}) {
-  const int millisPerBlock = 6000;
-  final int diff = futureBlock - currentBlockHeight;
-  return DateTime.now().add(Duration(milliseconds: diff * millisPerBlock));
 }
 
 String _getIdentityStatusDescription(IdentityStatus status, bool waitingCerts) {

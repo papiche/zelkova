@@ -183,11 +183,21 @@ Cert _buildCert(dynamic cert) {
     issuerId: Contact.withAddress(
         name: (issuer as dynamic).name as String,
         createdOn: ((issuer as dynamic).account as dynamic).createdOn as int,
-        address: (issuer as dynamic).accountId as String),
+        address: (issuer as dynamic).accountId as String,
+        status: parseIdentityStatus(
+            ((issuer as dynamic)?.status as dynamic)?.name as String?),
+        isMember: (issuer as dynamic)?.isMember as bool?,
+        expireOn: (issuer as dynamic).expireOn as int?,
+        index: (issuer as dynamic).index as int?),
     receiverId: Contact.withAddress(
         name: (receiver as dynamic).name as String,
         createdOn: ((receiver as dynamic).account as dynamic).createdOn as int,
-        address: (receiver as dynamic).accountId as String),
+        address: (receiver as dynamic).accountId as String,
+        status: parseIdentityStatus(
+            ((issuer as dynamic)?.status as dynamic)?.name as String?),
+        isMember: (receiver as dynamic)?.isMember as bool?,
+        expireOn: (receiver as dynamic).expireOn as int?,
+        index: (receiver as dynamic).index as int?),
     createdOn: (cert as dynamic).createdOn as int,
     expireOn: (cert as dynamic).expireOn as int,
     isActive: (cert as dynamic).isActive as bool,

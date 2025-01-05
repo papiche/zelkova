@@ -69,9 +69,11 @@ dependencies:
   filesystem_picker: ^4.1.0
   path: ^1.8.2
   path_provider: ^2.0.14
-  awesome_notifications: ^0.9.3+1
+  awesome_notifications: 0.9.3+1
   cron: ^0.6.1
-  barcode_scan2: ^4.2.4
+  barcode_scan2: #^4.2.4
+    git:
+      url: https://github.com/kee-org/barcode_scan2.git
   jsqr: ^0.1.4
   web_browser_detect: ^2.0.3
   tuple: ^2.0.1
@@ -85,9 +87,9 @@ dependencies:
   toggle_switch: ^2.1.0
   fast_base58: ^0.2.1
   crypto: ^3.0.3
-  flutter_nfc_kit: ^3.3.3
+  # Requires minSdk 26
+  #flutter_nfc_kit: ^3.5.2
   ndef: ^0.3.1
-  uni_links3: ^0.5.3
   feedback: ^3.0.0
   check_vpn_connection: ^0.0.2
   provider: ^6.0.5
@@ -134,6 +136,7 @@ dependencies:
   bip39_multi_nullsafety: ^1.0.7
   substrate_bip39: ^0.4.1
   intl: ^0.18.1
+  app_links: ^6.3.3
 
 dev_dependencies:
   flutter_test:

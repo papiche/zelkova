@@ -80,5 +80,7 @@
   <string>description</string>
   <key>kTCCServiceMediaLibrary</key>
   <string>description</string>
+  <key>FlutterDeepLinkingEnabled</key>
+  <false/>
 </dict>
 </plist>

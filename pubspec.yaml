@@ -89,7 +89,6 @@ dependencies:
   crypto: ^3.0.3
   # Requires minSdk 26
   #flutter_nfc_kit: ^3.5.2
-  ndef: ^0.3.1
   feedback: ^3.0.0
   check_vpn_connection: ^0.0.2
   provider: ^6.0.5

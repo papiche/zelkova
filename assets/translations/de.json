@@ -335,5 +335,21 @@
   "info_this_wallet": "Info über diese Brieftasche",
   "cert_expired": "Abgelaufen",
   "certs_issued": "Ausgestellte Zertifizierungen",
-  "result": "Resultat"
+  "result": "Resultat",
+  "renew_membership": "Zertifizierung erneuern",
+  "revoke_membership": "Mitgliedschaft widerrufen",
+  "confirm_identity": "Identität bestätigen",
+  "identity_name_hint": "Identitätsname",
+  "invalid_identity_name": "Ungültiger Identitätsname. Er darf nur Nummern, Buchstaben, Gedankenstriche (-) und Unterstriche (_) enthalten und darf höchstens 42 Zeichen lang sein.",
+  "wot_create_identity": "Identität erstellen",
+  "request_distance_evaluation": "Eine Evaluation der Entfernung anfordern",
+  "certify_member": "Zertifizieren",
+  "idty_status_MEMBER": "Mitglied",
+  "idty_status_title": "Status",
+  "idty_status_NOTMEMBER": "Nicht-Mitglied",
+  "idty_status_REMOVED": "Entfernt",
+  "idty_status_REVOKED": "Widerrufen",
+  "idty_status_UNCONFIRMED": "Unbestätigt",
+  "wallet_auth_failed": "Authentifizierung fehlgeschlagen",
+  "op_invalid": "Diese Aktion konnte nicht verarbeitet werden. Bitte überprüfe und versuche es nochmals."
 }

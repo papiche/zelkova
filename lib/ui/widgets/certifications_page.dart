@@ -29,20 +29,16 @@ class CertificationsPage extends StatelessWidget {
         body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(
-                color: Theme.of(context).colorScheme.primaryContainer,
-                width: double.infinity,
-                height: 40,
-                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: Center(
-                    child: Text(
+              ListTile(
+                tileColor: Theme.of(context).colorScheme.primaryContainer,
+                title: Text(
                   '$subtitle (${certifications.length})',
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        //fontWeight: FontWeight.w500,
                         color:
                             Theme.of(context).colorScheme.onSecondaryContainer,
                       ),
-                )),
+                ),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
               ),
               Expanded(
                 child: ListView.builder(

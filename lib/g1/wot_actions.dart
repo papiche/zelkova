@@ -7,7 +7,7 @@ import '../data/models/contact_wot_info.dart';
 import '../data/models/identity_status.dart';
 import '../data/models/wot_menu_action.dart';
 import '../ui/widgets/cesium_auth_dialog.dart';
-import 'g1_v2_helper.dart';
+import 'duniter_endpoint_helper.dart';
 import 'sing_and_send.dart';
 
 List<WotMenuAction> getWotMenuActions(

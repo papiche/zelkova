@@ -9,6 +9,7 @@ import '../../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/payment_state.dart';
 import '../../../g1/currency.dart';
+import '../../currency_helper.dart';
 import '../../logger.dart';
 import '../../pay_helper.dart';
 import '../../tutorial_keys.dart';

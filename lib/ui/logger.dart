@@ -2,7 +2,7 @@
 import 'package:easy_logger/easy_logger.dart';
 import 'package:logger/logger.dart';
 
-import 'ui_helpers.dart';
+import 'in_dev_helper.dart';
 
 final Logger log = Logger();
 

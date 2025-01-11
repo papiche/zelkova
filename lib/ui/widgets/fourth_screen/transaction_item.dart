@@ -13,6 +13,10 @@ import '../../../data/models/transaction.dart';
 import '../../../data/models/transaction_type.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
+import '../../contacts_helper.dart';
+import '../../currency_helper.dart';
+import '../../in_dev_helper.dart';
+import '../../locale_helper.dart';
 import '../../pay_helper.dart';
 import '../../ui_helpers.dart';
 import '../contact_menu.dart';
@@ -551,14 +555,15 @@ class TransactionListItem extends StatelessWidget {
       BuildContext context, Transaction tx) async {
     final ContactsCubit contactsCubit = context.read<ContactsCubit>();
     final String fromKey = tx.from.pubKey;
-    final Contact fromContact = await retrieveContact(contactsCubit, fromKey);
+    final Contact fromContact =
+        await retrieveContactFromCubitOrCache(contactsCubit, fromKey);
     final Contact toContact =
         // ignore: deprecated_member_use_from_same_package
-        await retrieveContact(contactsCubit, tx.to.pubKey);
+        await retrieveContactFromCubitOrCache(contactsCubit, tx.to.pubKey);
     final List<Contact> recipients = <Contact>[];
     for (final Contact recipient in tx.recipients) {
-      final Contact recipientNew =
-          await retrieveContact(contactsCubit, recipient.pubKey);
+      final Contact recipientNew = await retrieveContactFromCubitOrCache(
+          contactsCubit, recipient.pubKey);
       recipients.add(recipientNew);
     }
     return transaction.copyWith(

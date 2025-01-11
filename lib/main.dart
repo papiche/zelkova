@@ -53,6 +53,7 @@ import 'g1/g1_helper.dart';
 import 'g1/service_manager.dart';
 import 'shared_prefs_helper.dart';
 import 'ui/contacts_cache.dart';
+import 'ui/in_dev_helper.dart';
 import 'ui/logger.dart';
 import 'ui/notification_controller.dart';
 import 'ui/pay_helper.dart';
@@ -555,6 +556,8 @@ class _GinkgoAppState extends State<GinkgoApp> {
                   builder: (BuildContext context, ThemeModeState themeState) {
                 return ResponsiveBreakpoints.builder(
                     breakpoints: <Breakpoint>[
+                      const Breakpoint(
+                          start: 0, end: 360, name: 'SMALL_MOBILE'),
                       const Breakpoint(start: 0, end: 480, name: MOBILE),
                       const Breakpoint(start: 481, end: 768, name: TABLET),
                       const Breakpoint(start: 769, end: 1200, name: DESKTOP),
@@ -804,5 +807,13 @@ Future<void> _clearCacheIfNeeded(Directory storageDir) async {
     } else {
       loggerDev('Cache $box file does not exist.');
     }
+  }
+}
+
+Future<void> fetchTransactions(BuildContext context) async {
+  final MultiWalletTransactionCubit transCubit =
+      context.read<MultiWalletTransactionCubit>();
+  for (final CesiumCard card in SharedPreferencesHelper().cards) {
+    transCubit.fetchTransactions(pubKey: card.pubKey);
   }
 }

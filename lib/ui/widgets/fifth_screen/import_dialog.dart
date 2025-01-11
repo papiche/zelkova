@@ -17,6 +17,7 @@ import '../../../data/models/contact_cubit.dart';
 import '../../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
+import '../../in_dev_helper.dart';
 import '../../logger.dart';
 import '../../ui_helpers.dart';
 import '../cesium_auth_dialog.dart';

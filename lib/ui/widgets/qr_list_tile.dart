@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../../g1/g1_helper.dart';
 import '../ui_helpers.dart';
 
 class QrListTile extends StatelessWidget {

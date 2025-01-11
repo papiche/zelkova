@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '../main.dart';
+import 'notif_utils.dart';
 import 'ui_helpers.dart';
 
 // ignore: avoid_classes_with_only_static_members

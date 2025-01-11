@@ -7,6 +7,8 @@ import '../../../data/models/app_cubit.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/payment_state.dart';
 import '../../../g1/currency.dart';
+import '../../currency_helper.dart';
+import '../../locale_helper.dart';
 import '../../ui_helpers.dart';
 
 class G1PayAmountField extends StatefulWidget {

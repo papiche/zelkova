@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:crypto/crypto.dart';
 import 'package:durt/durt.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:encrypt/encrypt.dart';
 import 'package:fast_base58/fast_base58.dart';
@@ -14,6 +15,7 @@ import '../data/models/contact.dart';
 import '../data/models/payment_state.dart';
 import '../data/models/transaction.dart';
 import '../data/models/utxo.dart';
+import '../ui/currency_helper.dart';
 import '../ui/logger.dart';
 import '../ui/pay_helper.dart';
 import '../ui/ui_helpers.dart';
@@ -420,12 +422,38 @@ Uint8List decryptAes(Uint8List encryptedData, Uint8List key) {
   return Uint8List.fromList(decrypted);
 }
 
-const Duration defPolkadotTimeout = Duration(seconds: 20);
-
 // Based on duniter-vue
 DateTime estimateDateFromBlock(
     {required int futureBlock, required int currentBlockHeight}) {
   const int millisPerBlock = 6000;
   final int diff = futureBlock - currentBlockHeight;
   return DateTime.now().add(Duration(milliseconds: diff * millisPerBlock));
+}
+
+bool isMe(Contact contact, String publicAddress) =>
+    extractPublicKey(contact.pubKey) == extractPublicKey(publicAddress);
+
+String humanizePubKey(String rawAddress, [bool minimal = false]) {
+  final String address = extractPublicKey(rawAddress);
+  return minimal
+      ? '\u{1F5DD} ${simplifyPubKey(address).substring(0, 4)}'
+      : '\u{1F5DD} ${simplifyPubKey(address)}';
+}
+
+String humanizeAddress(String address, [bool minimal = false]) {
+  return minimal
+      ? ' \u{1F511} ${simplifyPubKey(address).substring(0, 4)}'
+      : ' \u{1F511} ${simplifyPubKey(address)}';
+}
+
+String simplifyPubKey(String address) => address.length <= 8
+    ? 'WRONG ADDRESS'
+    : '${address.substring(0, 4)}…${address.substring(address.length - 4)}';
+
+String humanizeFromToPubKey(String publicAddress, String address) {
+  if (address == publicAddress) {
+    return tr('your_wallet');
+  } else {
+    return humanizePubKey(address);
+  }
 }

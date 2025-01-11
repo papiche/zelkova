@@ -5,8 +5,8 @@ import 'package:material_symbols_icons/symbols.dart';
 
 import '../../data/models/contact.dart';
 import '../../data/models/contact_cubit.dart';
+import '../../g1/g1_helper.dart';
 import '../../shared_prefs_helper.dart';
-import '../ui_helpers.dart';
 import 'contacts_actions.dart';
 
 class ContactMenu extends StatelessWidget {

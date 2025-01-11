@@ -13,8 +13,10 @@ import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/payment_state.dart';
 import '../../../g1/api.dart';
 import '../../../g1/g1_helper.dart';
+import '../../../g1/g1_v2_helper.dart';
 import '../../contact_list_item.dart';
 import '../../contacts_cache.dart';
+import '../../in_dev_helper.dart';
 import '../../logger.dart';
 import '../../qr_manager.dart';
 import '../../ui_helpers.dart';
@@ -148,6 +150,14 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
       logger('$_searchTerm looks like a plain pub key');
       setState(() {
         final Contact contact = Contact(pubKey: _searchTerm);
+        _results.add(contact);
+      });
+    }
+
+    if (_results.isEmpty && isValidV2Address(_searchTerm)) {
+      logger('$_searchTerm looks like a plain address key');
+      setState(() {
+        final Contact contact = Contact.withAddress(address: _searchTerm);
         _results.add(contact);
       });
     }

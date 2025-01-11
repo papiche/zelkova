@@ -19,9 +19,9 @@ import '../../data/models/wot_menu_action.dart';
 import '../../g1/api.dart';
 import '../../g1/distance_precompute.dart';
 import '../../g1/distance_precompute_provider.dart';
+import '../../g1/duniter_endpoint_helper.dart';
 import '../../g1/duniter_indexer_helper.dart';
 import '../../g1/g1_helper.dart';
-import '../../g1/g1_v2_helper.dart';
 import '../../g1/sing_and_send.dart';
 import '../../g1/wot_actions.dart';
 import '../../generated/gdev/pallets/certification.dart';
@@ -49,17 +49,20 @@ class _ContactPageState extends State<ContactPage> {
   late MultiWalletTransactionCubit _txsCubit;
   bool isAvatarExpanded = false;
   late bool isV2;
+  late Stream<ContactWotInfo> _wotInfoStream;
 
   @override
   void initState() {
-    super.initState();
     _txsCubit = context.read<MultiWalletTransactionCubit>();
-    isV2 = context.read<AppCubit>().isV2;
+    final AppCubit appCubit = context.read<AppCubit>();
+    isV2 = appCubit.isV2;
     _updateBalance();
+    _wotInfoStream = _getWotInfo(appCubit);
+    super.initState();
   }
 
   Future<void> _updateBalance() async {
-    _txsCubit.fetchTransactions(pubKey: widget.contact.pubKey);
+    await _txsCubit.fetchTransactions(pubKey: widget.contact.pubKey);
     setState(() {});
   }
 
@@ -73,7 +76,7 @@ class _ContactPageState extends State<ContactPage> {
   Widget build(BuildContext context) {
     final Contact me = Contact(pubKey: SharedPreferencesHelper().getPubKey());
     return StreamBuilder<ContactWotInfo>(
-      stream: _getWotInfo(),
+      stream: _wotInfoStream,
       initialData: ContactWotInfo(
         me: me,
         you: widget.contact,
@@ -191,7 +194,7 @@ class _ContactPageState extends State<ContactPage> {
             Expanded(
               child: TabBarView(
                 children: <Widget>[
-                  _buildInfoTab(contact, contactWotInfo, contactWotInfo.loaded),
+                  _buildInfoTab(contact, contactWotInfo),
                   _buildTransactionsTab(contact),
                 ],
               ),
@@ -214,7 +217,8 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
-  Widget _buildInfoTab(Contact contact, ContactWotInfo wotInfo, bool loaded) {
+  Widget _buildInfoTab(Contact contact, ContactWotInfo wotInfo) {
+    final bool loaded = wotInfo.loaded;
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -512,7 +516,7 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
-  Stream<ContactWotInfo> _getWotInfo() async* {
+  Stream<ContactWotInfo> _getWotInfo(AppCubit appCubit) async* {
     final Contact you =
         await getProfile(widget.contact.pubKey, resize: false, complete: true);
     final Contact me = await getProfile(SharedPreferencesHelper().getPubKey(),
@@ -583,12 +587,16 @@ class _ContactPageState extends State<ContactPage> {
       }
       yield wotInfo;
 
-      final int membershipExpireOn = you.expireOn!;
-      wotInfo.expireOn = estimateDateFromBlock(
-          futureBlock: membershipExpireOn, currentBlockHeight: currentBlock);
+      final int? membershipExpireOn = you.expireOn;
+      if (membershipExpireOn != null) {
+        wotInfo.expireOn = estimateDateFromBlock(
+            futureBlock: membershipExpireOn, currentBlockHeight: currentBlock);
+        yield wotInfo;
+      }
 
       // Can call distance
-      if (wotInfo.isme &&
+      if (membershipExpireOn != null &&
+          wotInfo.isme &&
           wotInfo.waitingForCerts == false &&
           (you.status == IdentityStatus.MEMBER ||
               you.status == IdentityStatus.NOTMEMBER ||
@@ -621,7 +629,7 @@ class _ContactPageState extends State<ContactPage> {
       if (!mounted) {
         yield wotInfo;
       }
-      final AppCubit appCubit = context.read<AppCubit>();
+
       DistancePrecompute? distancePrecompute = appCubit.distancePrecompute;
 
       if (distancePrecompute == null) {
@@ -633,7 +641,7 @@ class _ContactPageState extends State<ContactPage> {
           appCubit.setDistancePreCompute(distancePrecompute);
         }
       }
-      if (distancePrecompute != null) {
+      if (you.index != null && distancePrecompute != null) {
         final int distRuleReached = distancePrecompute.results[you.index] ?? 0;
         final int refereesCount = distancePrecompute.refereesCount;
         final double distRuleRatio =

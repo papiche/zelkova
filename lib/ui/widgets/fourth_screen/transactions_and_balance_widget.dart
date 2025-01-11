@@ -17,6 +17,8 @@ import '../../../data/models/transactions_bloc.dart';
 import '../../../data/models/utxo_cubit.dart';
 import '../../../g1/currency.dart';
 import '../../../shared_prefs_helper.dart';
+import '../../currency_helper.dart';
+import '../../locale_helper.dart';
 import '../../logger.dart';
 import '../../tutorial.dart';
 import '../../tutorial_keys.dart';

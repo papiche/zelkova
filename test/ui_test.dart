@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ginkgo/data/models/contact.dart';
+import 'package:ginkgo/ui/currency_helper.dart';
 import 'package:ginkgo/ui/ui_helpers.dart';
 import 'package:intl/date_symbol_data_local.dart';
 

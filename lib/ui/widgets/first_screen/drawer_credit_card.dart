@@ -96,7 +96,7 @@ class DrawerWalletCard extends StatelessWidget {
                       child: Visibility(
                         visible: settingsVisible,
                         child: FloatingActionButton(
-                          backgroundColor: Colors.transparent,
+                          backgroundColor: Colors.white12,
                           elevation: 1,
                           onPressed: () {
                             showDialog<bool>(
@@ -140,7 +140,7 @@ class DrawerWalletCard extends StatelessWidget {
                       child: Visibility(
                         visible: settingsVisible,
                         child: FloatingActionButton(
-                          backgroundColor: Colors.transparent,
+                          backgroundColor: Colors.white10,
                           elevation: 1,
                           onPressed: () => _showThemeSelector(context),
                           child:

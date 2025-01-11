@@ -11,7 +11,7 @@ import '../generated/gdev/gdev.dart';
 import '../generated/gdev/types/gdev_runtime/runtime_call.dart';
 import '../generated/gdev/types/primitive_types/h256.dart';
 import '../ui/logger.dart';
-import 'g1_helper.dart';
+import 'duniter_endpoint_helper.dart';
 
 class SignAndSendResult {
   SignAndSendResult({

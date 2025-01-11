@@ -29,12 +29,11 @@ class GenericQrButton extends StatelessWidget {
           },
           icon: const Row(children: <Widget>[
             SizedBox(width: 5),
-            Icon(Icons.qr_code_scanner)
+            Icon(Icons.qr_code_scanner_sharp, color: Colors.white, size: 24),
           ]),
           label: const Text(''),
           style: ElevatedButton.styleFrom(
             minimumSize: const Size(30.0, 60.0),
-            foregroundColor: Colors.white,
             backgroundColor: Theme.of(context).colorScheme.primary,
             padding:
                 const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),

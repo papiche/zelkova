@@ -31,6 +31,34 @@ import 'api.dart';
 import 'duniter_indexer_helper.dart';
 import 'g1_v2_helper.dart';
 
+const Duration defDatapodTimeout = Duration(seconds: 20);
+
+Future<T> executeOnDatapodNodes<T>(
+    Future<T> Function(Node node, ferry.Client client) operation,
+    {bool retry = true,
+    Duration timeout = defDatapodTimeout}) async {
+  final List<Node> nodes = NodeManager().getBestNodes(NodeType.datapodEndpoint);
+  nodes.shuffle();
+
+  for (final Node node in nodes) {
+    try {
+      final ferry.Client client =
+          await initDuniterDatapodClient(node.url, GetIt.instance<HiveStore>());
+
+      final T result = await operation(node, client).timeout(timeout);
+      return result; // If the operation is successful, return the result
+    } catch (e, stacktrace) {
+      NodeManager().increaseNodeErrors(NodeType.datapodEndpoint, node);
+      loggerDev('Error in node ${node.url}', error: e, stackTrace: stacktrace);
+      if (!retry) {
+        rethrow;
+      }
+    }
+  }
+  throw Exception(
+      'All nodes failed to execute the operation'); // If all nodes fail, throw an exception
+}
+
 Future<Uint8List?> fetchAndResizeAvatar(String? avatarCid,
     {bool resize = true}) async {
   if (avatarCid == null) {
@@ -115,13 +143,9 @@ Future<Contact> createContactFromProfile(
 
 Future<GGetProfileByAddressData_profiles?> _searchProfileByPKV2(
     String pubkey) async {
-  for (final Node node
-      in NodeManager().getBestNodes(NodeType.datapodEndpoint)) {
+  executeOnDatapodNodes((Node node, ferry.Client client) async {
     loggerDev('Searching profile in node ${node.url} with address $pubkey');
     try {
-      final ferry.Client client =
-          await initDuniterDatapodClient(node.url, GetIt.instance<HiveStore>());
-
       final GGetProfileByAddressReq request = GGetProfileByAddressReq(
           (GGetProfileByAddressReqBuilder b) => b..vars.pubkey = pubkey);
       final ferry
@@ -133,7 +157,7 @@ Future<GGetProfileByAddressData_profiles?> _searchProfileByPKV2(
       }
       if (response.data!.profiles.isEmpty) {
         loggerDev('No profile found for pubkey $pubkey in node ${node.url}');
-        continue;
+        return null;
       }
       loggerDev('Profile found for pubkey $pubkey in node ${node.url}');
       return response.data?.profiles.first;
@@ -141,7 +165,7 @@ Future<GGetProfileByAddressData_profiles?> _searchProfileByPKV2(
       logger(
           'Error fetching profile in node ${node.url} with address $pubkey ($e)');
     }
-  }
+  });
   return null;
 }
 

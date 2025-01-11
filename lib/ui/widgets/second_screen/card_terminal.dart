@@ -5,6 +5,8 @@ import 'package:vibration/vibration.dart';
 
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
+import '../../currency_helper.dart';
+import '../../locale_helper.dart';
 import '../../tutorial_keys.dart';
 import '../../ui_helpers.dart';
 import 'card_terminal_screen.dart';

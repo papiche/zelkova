@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 
 import '../main.dart';
 import 'logger.dart';
-import 'ui_helpers.dart';
+import 'notif_utils.dart';
 
 // ignore: avoid_classes_with_only_static_members
 ///  *********************************************
@@ -46,6 +46,7 @@ class NotificationController {
   }
 
   static ReceivePort? receivePort;
+
   static Future<void> initializeIsolateReceivePort() async {
     receivePort = ReceivePort('Notification action port in main isolate')
       ..listen((dynamic silentData) =>

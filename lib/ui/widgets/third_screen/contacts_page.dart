@@ -11,6 +11,7 @@ import '../../ui_helpers.dart';
 import '../bottom_widget.dart';
 import '../contact_menu.dart';
 import '../contacts_actions.dart';
+import '../slidable_contact_tile.dart';
 
 class ContactsPage extends StatefulWidget {
   const ContactsPage({super.key});

@@ -1,13 +1,11 @@
 import 'dart:io';
 
-import 'package:clipboard/clipboard.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fast_image_resizer/fast_image_resizer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -16,20 +14,16 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
 
-import '../data/models/app_cubit.dart';
-import '../data/models/cesium_card.dart';
 import '../data/models/contact.dart';
-import '../data/models/contact_cubit.dart';
-import '../data/models/multi_wallet_transaction_cubit.dart';
 import '../data/models/theme_cubit.dart';
-import '../g1/api.dart';
-import '../g1/currency.dart';
 import '../g1/g1_helper.dart';
-import '../shared_prefs_helper.dart';
 import 'basic_avatar.dart';
-import 'contact_list_item.dart';
-import 'contacts_cache.dart';
+import 'copy_helper.dart';
+import 'currency_helper.dart';
+import 'image_utils.dart';
+import 'in_dev_helper.dart';
 import 'ipfs_image.dart';
+import 'locale_helper.dart';
 import 'logger.dart';
 
 Future<dynamic> showAlertDialog(
@@ -51,29 +45,6 @@ Future<dynamic> showAlertDialog(
       );
     },
   );
-}
-
-void copyPublicKeyToClipboard(BuildContext context,
-    [String? uri, String? feedbackText]) {
-  FlutterClipboard.copy(uri ?? SharedPreferencesHelper().getPubKey())
-      .then((dynamic value) {
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(tr(feedbackText ?? 'key_copied_to_clipboard'))));
-    }
-  });
-}
-
-void copyToClipboard(
-    {required BuildContext context,
-    required String uri,
-    required String feedbackText}) {
-  FlutterClipboard.copy(uri).then((dynamic value) {
-    if (context.mounted) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(tr(feedbackText))));
-    }
-  });
 }
 
 const Color defAvatarBgColor = Colors.grey;
@@ -103,14 +74,6 @@ Widget avatar(Contact c,
             fit: BoxFit.cover,
           )))
       : const BasicAvatar();
-}
-
-String humanizeFromToPubKey(String publicAddress, String address) {
-  if (address == publicAddress) {
-    return tr('your_wallet');
-  } else {
-    return humanizePubKey(address);
-  }
 }
 
 String humanizeContacts(
@@ -154,26 +117,6 @@ String humanizeContact(String publicAddress, Contact contact,
   }
 }
 
-bool isMe(Contact contact, String publicAddress) =>
-    extractPublicKey(contact.pubKey) == extractPublicKey(publicAddress);
-
-String humanizePubKey(String rawAddress, [bool minimal = false]) {
-  final String address = extractPublicKey(rawAddress);
-  return minimal
-      ? '\u{1F5DD} ${simplifyPubKey(address).substring(0, 4)}'
-      : '\u{1F5DD} ${simplifyPubKey(address)}';
-}
-
-String humanizeAddress(String address, [bool minimal = false]) {
-  return minimal
-      ? ' \u{1F511} ${simplifyPubKey(address).substring(0, 4)}'
-      : ' \u{1F511} ${simplifyPubKey(address)}';
-}
-
-String simplifyPubKey(String address) => address.length <= 8
-    ? 'WRONG ADDRESS'
-    : '${address.substring(0, 4)}…${address.substring(address.length - 4)}';
-
 Color tileColor(int index, BuildContext context, [bool inverse = false]) {
   final ColorScheme colorScheme = Theme.of(context).colorScheme;
   final Color selectedColor = colorScheme.primary.withValues(alpha: 0.1);
@@ -203,84 +146,6 @@ bool bigScreen(BuildContext context) =>
 
 bool smallScreen(BuildContext context) =>
     MediaQuery.of(context).size.width <= smallScreenWidth;
-
-String _formatAmount(
-    {required String locale,
-    required double amount,
-    required bool isG1,
-    required bool useSymbol}) {
-  return formatAmountWithLocale(
-      locale: locale, amount: amount, isG1: isG1, useSymbol: useSymbol);
-}
-
-String formatAmountWithLocale(
-    {required String locale,
-    required double amount,
-    required bool isG1,
-    required bool useSymbol}) {
-  final NumberFormat currencyFormatter =
-      currentNumberFormat(isG1: isG1, locale: locale, useSymbol: useSymbol);
-  return currencyFormatter.format(amount);
-}
-
-NumberFormat currentNumberFormat(
-    {required bool useSymbol, required bool isG1, required String locale}) {
-  final NumberFormat currencyFormatter = NumberFormat.currency(
-    symbol: useSymbol ? currentCurrency(isG1) : '',
-    locale: eo(locale),
-    decimalDigits: isG1 ? 2 : 3,
-  );
-  return currencyFormatter;
-}
-
-String currentCurrency(bool isG1) {
-  return isG1 ? '${Currency.G1.name()} ' : '${Currency.DU.name()} ';
-}
-
-String currentCurrencyTrimmed(bool isG1) {
-  return currentCurrency(isG1).trim();
-}
-
-String formatKAmountInView(
-        {required BuildContext context,
-        required double amount,
-        required bool isG1,
-        required double currentUd,
-        required bool useSymbol}) =>
-    _formatAmount(
-        locale: currentLocale(context),
-        amount: convertAmount(isG1, amount, currentUd),
-        isG1: isG1,
-        useSymbol: useSymbol);
-
-String formatKAmountInViewWithLocale(
-        {required String locale,
-        required double amount,
-        required bool isG1,
-        required double currentUd,
-        required bool useSymbol}) =>
-    _formatAmount(
-        locale: locale,
-        amount: convertAmount(isG1, amount, currentUd),
-        isG1: isG1,
-        useSymbol: useSymbol);
-
-double convertAmount(bool isG1, double amount, double currentUd) =>
-    isG1 ? amount / 100 : ((amount / 100) / currentUd);
-
-// NumberFormat does not work with esperanto nowadays, so we use
-// this fallback
-// https://en.wikipedia.org/wiki/Decimal_separator
-// The three most spoken international auxiliary languages, Ido, Esperanto, and
-// Interlingua, all use the comma as the decimal separator.
-String eo(String locale) => locale == 'eo' ? 'es' : locale;
-
-double parseToDoubleLocalized(
-        {required String locale, required String number}) =>
-    NumberFormat.decimalPattern(eo(locale)).parse(number).toDouble();
-
-String localizeNumber(BuildContext context, double amount) =>
-    NumberFormat.decimalPattern(eo(currentLocale(context))).format(amount);
 
 Future<Contact> contactFromResultSearch(Map<String, dynamic> record,
     {bool resize = true}) async {
@@ -352,104 +217,7 @@ String cleanComment(String? comment) {
           basicEnglishCharsRegExpNegative, (Match match) => ' ');
 }
 
-Future<void> fetchTransactions(BuildContext context) async {
-  final MultiWalletTransactionCubit transCubit =
-      context.read<MultiWalletTransactionCubit>();
-  for (final CesiumCard card in SharedPreferencesHelper().cards) {
-    transCubit.fetchTransactions(pubKey: card.pubKey);
-  }
-}
-
-class SlidableContactTile extends StatefulWidget {
-  const SlidableContactTile(this.contact,
-      {super.key,
-      required this.index,
-      required this.context,
-      this.onTap,
-      this.onLongPress,
-      this.trailing});
-
-  @override
-  State<SlidableContactTile> createState() => _SlidableContactTile();
-
-  final Contact contact;
-  final int index;
-  final BuildContext context;
-  final VoidCallback? onTap;
-  final VoidCallback? onLongPress;
-  final Widget? trailing;
-}
-
-class _SlidableContactTile extends State<SlidableContactTile> {
-  late bool isV2;
-
-  @override
-  void initState() {
-    super.initState();
-    isV2 = context.read<AppCubit>().isV2;
-    // Disable for now
-    //   _start();
-  }
-
-  // Based in https://github.com/letsar/flutter_slidable/issues/288
-  // ignore: unused_element
-  Future<void> _start() async {
-    if (widget.index == 0 &&
-        !context.read<AppCubit>().wasTutorialShown(tutorialId)) {
-      await Future<void>.delayed(const Duration(seconds: 1));
-      if (!mounted) {
-        return;
-      }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(tr('slidable_tutorial')),
-          action: SnackBarAction(
-            label: 'OK',
-            onPressed: () {
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              context.read<AppCubit>().onFinishTutorial(tutorialId);
-              // context.read<AppCubit>().warningViewed();
-            },
-          ),
-        ),
-      );
-      final SlidableController? slidable = Slidable.of(context);
-
-      slidable?.openEndActionPane(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.decelerate,
-      );
-
-      Future<void>.delayed(const Duration(seconds: 1), () {
-        slidable?.close(
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.bounceInOut,
-        );
-      });
-    }
-  }
-
-  static String tutorialId = 'slidable_tutorial';
-
-  @override
-  Widget build(_) => ContactListItem(
-      contact: widget.contact,
-      index: widget.index,
-      onTap: widget.onTap,
-      onLongPress: widget.onLongPress,
-      trailing: widget.trailing,
-      isV2: isV2);
-}
-
 bool showShare() => onlyInDevelopment || !kIsWeb;
-
-bool get onlyInDevelopment => !inProduction;
-
-bool get inDevelopment => !inProduction;
-
-bool get onlyInProduction => kReleaseMode;
-
-bool get inProduction => onlyInProduction;
 
 String assets(String str) =>
     (kIsWeb && kReleaseMode) || (isAndroid()) || (!kIsWeb && Platform.isLinux)
@@ -536,8 +304,6 @@ bool isSymbolPlacementBefore(String pattern) {
     return false;
   }
 }
-
-String currentLocale(BuildContext context) => context.locale.languageCode;
 
 String? validateDecimal(
     {required String sep,
@@ -687,40 +453,6 @@ bool get isIOS => !kIsWeb && Platform.isIOS;
 const String g1nkgoUserNameSuffix = ' ❥';
 const String protectedUserNameSuffix = ' 🔒';
 const double cardAspectRatio = 1.58;
-
-String buildTxNotifTitle(String? from) {
-  final String title = from != null
-      ? tr('notification_new_payment_title')
-      : tr('notification_new_sent_title');
-  return title;
-}
-
-String buildTxNotifDescription({
-  required String? from,
-  required String? to,
-  required String? comment,
-  required String localeLanguageCode,
-  required double amount,
-  required bool isG1,
-  required double currentUd,
-}) {
-  final String formattedAmount = formatKAmountInViewWithLocale(
-    locale: localeLanguageCode,
-    amount: amount,
-    isG1: isG1,
-    currentUd: currentUd,
-    useSymbol: true,
-  );
-  final String desc = from != null
-      ? tr('notification_new_payment_desc', namedArgs: <String, String>{
-          'amount': formattedAmount,
-          'from': from,
-        })
-      : tr('notification_new_sent_desc',
-          namedArgs: <String, String>{'amount': formattedAmount, 'to': to!});
-
-  return comment != null && comment.isNotEmpty ? '$desc ($comment)' : desc;
-}
 
 Future<bool> requestStoragePermission(BuildContext context) async {
   // TODO(vjrj): IOS https://pub.dev/packages/permission_handler#setup
@@ -916,24 +648,6 @@ InlineSpan separatorAmountSpan(bool small) {
 }
 
 String todayS(DateTime now) => DateFormat('yyyyMMddHHmm').format(now);
-
-Future<Contact> retrieveContact(
-    ContactsCubit contactsCubit, String pubKey) async {
-  final Contact? cubitContact = contactsCubit.getContact(pubKey);
-  return cubitContact ?? await ContactsCache().getContact(pubKey);
-}
-
-Future<List<Contact>> enrichContacts(
-    BuildContext context, List<Contact> contacts) async {
-  final ContactsCubit contactsCubit = context.read<ContactsCubit>();
-  final Set<Contact> newContacts = <Contact>{};
-  for (final Contact contact in contacts) {
-    final Contact contactNew =
-        await retrieveContact(contactsCubit, contact.pubKey);
-    newContacts.add(contactNew);
-  }
-  return newContacts.toList();
-}
 
 double calcWidthWithResponsive(BuildContext context) {
   return ResponsiveBreakpoints.of(context).largerThan(MOBILE)

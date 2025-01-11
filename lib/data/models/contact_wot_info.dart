@@ -1,12 +1,14 @@
 import 'package:copy_with_extension/copy_with_extension.dart';
+import 'package:equatable/equatable.dart';
 
+import '../../g1/g1_helper.dart';
 import '../../ui/ui_helpers.dart';
 import 'contact.dart';
 
 part 'contact_wot_info.g.dart';
 
 @CopyWith()
-class ContactWotInfo {
+class ContactWotInfo extends Equatable {
   ContactWotInfo({
     required this.me,
     required this.you,
@@ -34,4 +36,22 @@ class ContactWotInfo {
   String toString() {
     return 'ContactWotInfo{me: ${humanizeContact('', me)}, you: ${humanizeContact('', you)}, canCert: $canCert, canCreateIdty: $canCreateIdty}, waitingForCert: $waitingForCerts}';
   }
+
+  @override
+  List<Object?> get props => <Object?>[
+        me,
+        you,
+        canCert,
+        canCreateIdty,
+        canCalcDistance,
+        canCalcDistanceFor,
+        waitingForCerts,
+        alreadyCert,
+        canCertOn,
+        expireOn,
+        distRuleOk,
+        distRuleRatio,
+        currentBlockHeight,
+        loaded
+      ];
 }

@@ -5,7 +5,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -16,6 +15,10 @@ import '../../../data/models/contact.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/payment_state.dart';
 import '../../../g1/currency.dart';
+import '../../contacts_helper.dart';
+import '../../currency_helper.dart';
+import '../../in_dev_helper.dart';
+import '../../locale_helper.dart';
 import '../../logger.dart';
 import '../../ui_helpers.dart';
 import '../contact_page.dart';

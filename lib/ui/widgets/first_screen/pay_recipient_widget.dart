@@ -7,6 +7,7 @@ import '../../../data/models/contact_cubit.dart';
 import '../../../data/models/contact_state.dart';
 import '../../../data/models/payment_cubit.dart';
 import '../../../data/models/payment_state.dart';
+import '../../contacts_helper.dart';
 import '../../ui_helpers.dart';
 import 'contact_fav_icon.dart';
 import 'contact_search_page.dart';

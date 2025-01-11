@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:pwa_install/pwa_install.dart';
-import 'package:responsive_framework/responsive_framework.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../data/models/app_cubit.dart';
@@ -15,6 +14,7 @@ import '../../data/models/theme_cubit.dart';
 import '../../g1/currency.dart';
 import '../../g1/service_manager.dart';
 import '../../shared_prefs_helper.dart';
+import '../copy_helper.dart';
 import '../logger.dart';
 import '../tutorial.dart';
 import '../tutorial_keys.dart';
@@ -22,10 +22,8 @@ import '../ui_helpers.dart';
 import '../widgets/bottom_widget.dart';
 import '../widgets/card_drawer.dart';
 import '../widgets/contacts_actions.dart';
-import '../widgets/faq.dart';
 import '../widgets/fifth_screen/export_dialog.dart';
 import '../widgets/fifth_screen/fifth_tutorial.dart';
-import '../widgets/fifth_screen/grid_item.dart';
 import '../widgets/fifth_screen/import_dialog.dart';
 import '../widgets/fifth_screen/link_card.dart';
 import '../widgets/fifth_screen/multi_wallet_selector.dart';
@@ -113,8 +111,6 @@ class _FifthScreenState extends State<FifthScreen> {
           drawer: const CardDrawer(),
           body: LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
-              final bool isLargeScreen =
-                  ResponsiveBreakpoints.of(context).largerThan(MOBILE);
               return ListView(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 physics: const BouncingScrollPhysics(),
@@ -196,28 +192,27 @@ class _FifthScreenState extends State<FifthScreen> {
                       )),
                   const TextDivider(text: 'key_tools_title'),
                   const SizedBox(height: 20),
-                  GridView.count(
-                    physics: const NeverScrollableScrollPhysics(),
-                    crossAxisCount: isLargeScreen ? 4 : 2,
-                    childAspectRatio: 2 / 1.15,
-                    crossAxisSpacing: 8,
-                    mainAxisSpacing: 8,
-                    shrinkWrap: true,
-                    padding: EdgeInsets.zero,
-                    children: <GridItem>[
+                  Wrap(
+                    spacing: 8.0,
+                    // Espacio horizontal entre los elementos
+                    runSpacing: 8.0,
+                    // Espacio vertical entre las filas
+                    alignment: WrapAlignment.start,
+                    // Alineación de los elementos en una fila
+                    children: <Widget>[
                       if (showShare())
-                        GridItem(
+                        LinkCard(
                             title: 'share_your_key',
                             icon: Icons.share,
                             onTap: () => Share.share(
                                 SharedPreferencesHelper().getPubKey())),
-                      GridItem(
+                      LinkCard(
                         title: 'copy_your_key',
                         icon: Icons.copy,
                         onTap: () => copyPublicKeyToClipboard(context),
                       ),
                       if (PWAInstall().installPromptEnabled)
-                        GridItem(
+                        LinkCard(
                           title: 'install_desktop',
                           icon: Icons.install_desktop,
                           onTap: () {
@@ -236,14 +231,14 @@ class _FifthScreenState extends State<FifthScreen> {
                             }
                           },
                         ),
-                      GridItem(
+                      LinkCard(
                           key: exportMainKey,
                           title: 'export_key$pluralSuffix',
                           icon: Icons.download,
                           onTap: () async {
                             _openWalletSelector(context, state.expertMode);
                           }),
-                      GridItem(
+                      LinkCard(
                           title: 'import_key$pluralSuffix',
                           icon: Icons.upload,
                           onTap: () =>
@@ -304,8 +299,8 @@ class _FifthScreenState extends State<FifthScreen> {
                       icon: Icons.translate,
                       url: Uri.parse(
                           'https://weblate.duniter.org/projects/g1nkgo/g1nkgo/')),
-                  const TextDivider(text: 'faq_title'),
-                  const FAQ(),
+                  // const TextDivider(text: 'faq_title'),
+                  // const FAQ(),
                   const BottomWidget()
                 ],
               );

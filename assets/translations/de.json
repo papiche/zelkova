@@ -351,5 +351,17 @@
   "idty_status_REVOKED": "Widerrufen",
   "idty_status_UNCONFIRMED": "Unbestätigt",
   "wallet_auth_failed": "Authentifizierung fehlgeschlagen",
-  "op_invalid": "Diese Aktion konnte nicht verarbeitet werden. Bitte überprüfe und versuche es nochmals."
+  "op_invalid": "Diese Aktion konnte nicht verarbeitet werden. Bitte überprüfe und versuche es nochmals.",
+  "op_ready": "Der Vorgang ist bereit zur Durchführung.",
+  "op_dropped": "Der Vorgang konnte nicht vervollständigt werden. Bitte versuche es später nochmals.",
+  "yes": "Ja",
+  "no": "Nein",
+  "cert_expire_on": "Das Zertifikat läuft ab",
+  "distance_rule": "Distanzregel",
+  "idty_waiting_confirmation": "Auf Bestätigung warten",
+  "can_cert": "Kann Zertifizieren",
+  "can_cert_on": "Kann Zertifizieren in (ungefähr)",
+  "idty_status_UNVALIDATED": "Nicht validiert",
+  "idty_waiting_distance_evaluation": "Auf Distanzregel-Überprüfung warten",
+  "idty_waiting_certifications": "Auf Zertifizierung warten"
 }

@@ -6,8 +6,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'data/models/cesium_card.dart';
-import 'data/models/credit_card_themes.dart';
+import 'data/models/wallet.dart';
+import 'data/models/wallet_themes.dart';
 import 'g1/g1_helper.dart';
 import 'ui/logger.dart';
 
@@ -25,7 +25,7 @@ class SharedPreferencesHelper with ChangeNotifier {
 
   static const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
-  List<AccountCard> cesiumCards = <AccountCard>[];
+  List<Wallet> wallets = <Wallet>[];
   Map<String, CesiumWallet> cesiumVolatileCards = <String, CesiumWallet>{};
   late SharedPreferences _prefs;
 
@@ -50,8 +50,8 @@ class SharedPreferencesHelper with ChangeNotifier {
     final String? json = await _secureStorage.read(key: _accountsKey);
     if (json != null) {
       final List<dynamic> list = jsonDecode(json) as List<dynamic>;
-      cesiumCards = list
-          .map((dynamic e) => AccountCard.fromJson(e as Map<String, dynamic>))
+      wallets = list
+          .map((dynamic e) => Wallet.fromJson(e as Map<String, dynamic>))
           .toList();
     }
   }
@@ -83,11 +83,11 @@ class SharedPreferencesHelper with ChangeNotifier {
   Future<void> migrateCurrentPair() async {
     if (_prefs.containsKey(_seedKey) &&
         _prefs.containsKey(_pubKey) &&
-        cesiumCards.isEmpty) {
+        wallets.isEmpty) {
       final String seed = _prefs.getString(_seedKey)!;
       final String pubKey = _prefs.getString(_pubKey)!;
-      final AccountCard card = buildCesiumCard(seed: seed, pubKey: pubKey);
-      addCesiumCard(card);
+      final Wallet card = buildCesiumCard(seed: seed, pubKey: pubKey);
+      addWallet(card);
       // Let's do this later
       await _prefs.remove(_seedKey);
       await _prefs.remove(_pubKey);
@@ -95,29 +95,29 @@ class SharedPreferencesHelper with ChangeNotifier {
     }
   }
 
-  AccountCard buildCesiumCard({required String seed, required String pubKey}) {
-    return AccountCard(
-        seed: seed, pubKey: pubKey, theme: CreditCardThemes.theme1, name: '');
+  Wallet buildCesiumCard({required String seed, required String pubKey}) {
+    return Wallet(
+        seed: seed, pubKey: pubKey, theme: WalletThemes.theme1, name: '');
   }
 
-  void addCesiumCard(AccountCard cesiumCard) {
-    cesiumCards.add(cesiumCard);
-    saveCesiumCards();
+  void addWallet(Wallet cesiumCard) {
+    wallets.add(cesiumCard);
+    saveWallets();
   }
 
-  void removeCesiumCard() {
+  void removeWallet() {
     // Don't allow the last card to be removed
     final int index = getCurrentWalletIndex();
     logger('Removing card at index $index');
-    if (cesiumCards.length > 1) {
-      cesiumCards.removeAt(index);
-      saveCesiumCards();
+    if (wallets.length > 1) {
+      wallets.removeAt(index);
+      saveWallets();
     }
   }
 
-  Future<void> saveCesiumCards([bool notify = true]) async {
+  Future<void> saveWallets([bool notify = true]) async {
     final String json =
-        jsonEncode(cesiumCards.map((AccountCard e) => e.toJson()).toList());
+        jsonEncode(wallets.map((Wallet e) => e.toJson()).toList());
     await _secureStorage.write(key: _accountsKey, value: json);
     if (notify) {
       notifyListeners();
@@ -126,9 +126,9 @@ class SharedPreferencesHelper with ChangeNotifier {
 
   // Get the wallet from the specified index (default to first wallet)
   Future<CesiumWallet> getWallet() async {
-    if (cesiumCards.isNotEmpty) {
-      final AccountCard card = cesiumCards[getCurrentWalletIndex()];
-      if (isG1nkgoCard()) {
+    if (wallets.isNotEmpty) {
+      final Wallet card = wallets[getCurrentWalletIndex()];
+      if (isPasswordLessWallet()) {
         return CesiumWallet.fromSeed(seedFromString(card.seed));
       } else {
         // This should have the wallet loaded
@@ -145,42 +145,42 @@ class SharedPreferencesHelper with ChangeNotifier {
       final String seed = seedToString(uS);
       final CesiumWallet wallet = CesiumWallet.fromSeed(uS);
       logger('Generated public key: ${wallet.pubkey}');
-      addCesiumCard(buildCesiumCard(seed: seed, pubKey: wallet.pubkey));
+      addWallet(buildCesiumCard(seed: seed, pubKey: wallet.pubkey));
       return wallet;
     }
   }
 
   // Get the public key from the specified index (default to first wallet)
   String getPubKey() {
-    final AccountCard card = cesiumCards[getCurrentWalletIndex()];
+    final Wallet card = wallets[getCurrentWalletIndex()];
     final String pubKey = card.pubKey;
     final String checksum = pkChecksum(extractPublicKey(pubKey));
     return '$pubKey:$checksum';
   }
 
   String getName() {
-    final AccountCard card = cesiumCards[getCurrentWalletIndex()];
+    final Wallet card = wallets[getCurrentWalletIndex()];
     return card.name;
   }
 
-  AccountCardTheme getTheme() {
-    final AccountCard card = cesiumCards[getCurrentWalletIndex()];
+  WalletTheme getTheme() {
+    final Wallet card = wallets[getCurrentWalletIndex()];
     return card.theme;
   }
 
   void setName({required String name, bool notify = true}) {
-    final AccountCard card = cesiumCards[getCurrentWalletIndex()];
-    cesiumCards[getCurrentWalletIndex()] = card.copyWith(name: name);
-    saveCesiumCards(notify);
+    final Wallet card = wallets[getCurrentWalletIndex()];
+    wallets[getCurrentWalletIndex()] = card.copyWith(name: name);
+    saveWallets(notify);
   }
 
-  void setTheme({required AccountCardTheme theme}) {
-    final AccountCard card = cesiumCards[getCurrentWalletIndex()];
-    cesiumCards[getCurrentWalletIndex()] = card.copyWith(theme: theme);
-    saveCesiumCards();
+  void setTheme({required WalletTheme theme}) {
+    final Wallet card = wallets[getCurrentWalletIndex()];
+    wallets[getCurrentWalletIndex()] = card.copyWith(theme: theme);
+    saveWallets();
   }
 
-  List<AccountCard> get cards => cesiumCards;
+  List<Wallet> get cards => wallets;
 
   int getCurrentWalletIndex() {
     final String? indexStr =
@@ -194,7 +194,7 @@ class SharedPreferencesHelper with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> selectCurrentWallet(AccountCard card) async {
+  Future<void> selectCurrentWallet(Wallet card) async {
     // TODO(vjrj): this should be a find with pubkey
     final int index = cards.indexOf(card);
     if (index >= 0) {
@@ -207,7 +207,7 @@ class SharedPreferencesHelper with ChangeNotifier {
 
   // Select the current wallet and save its index in shared preferences
   Future<void> selectCurrentWalletIndex(int index) async {
-    if (index < cesiumCards.length) {
+    if (index < wallets.length) {
       await setCurrentWalletIndex(index);
     } else {
       throw Exception('Invalid wallet index: $index');
@@ -215,7 +215,7 @@ class SharedPreferencesHelper with ChangeNotifier {
   }
 
   bool has(String pubKey) {
-    for (final AccountCard card in cesiumCards) {
+    for (final Wallet card in wallets) {
       if (card.pubKey == extractPublicKey(pubKey) || card.pubKey == pubKey) {
         return true;
       }
@@ -227,16 +227,16 @@ class SharedPreferencesHelper with ChangeNotifier {
     return cesiumVolatileCards.containsKey(extractPublicKey(getPubKey()));
   }
 
-  bool hasMultipleCards() {
-    return cesiumCards.length > 1;
+  bool hasMultipleWallets() {
+    return wallets.length > 1;
   }
 
   void addCesiumVolatileCard(CesiumWallet cesiumWallet) {
     cesiumVolatileCards[cesiumWallet.pubkey] = cesiumWallet;
   }
 
-  bool isG1nkgoCard([AccountCard? otherCard]) {
-    final AccountCard card = otherCard ?? cesiumCards[getCurrentWalletIndex()];
+  bool isPasswordLessWallet([Wallet? otherCard]) {
+    final Wallet card = otherCard ?? wallets[getCurrentWalletIndex()];
     return card.seed.isNotEmpty;
   }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../data/models/cesium_card.dart';
+import '../../../data/models/wallet.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
 import '../add_wallet_assistant.dart';
@@ -21,12 +21,12 @@ class _CardStackState extends State<CardStack> {
   Widget build(BuildContext context) {
     return Consumer<SharedPreferencesHelper>(builder: (BuildContext context,
         SharedPreferencesHelper prefsHelper, Widget? child) {
-      final List<AccountCard> cards =
-          List<AccountCard>.from(SharedPreferencesHelper().cesiumCards);
+      final List<Wallet> cards =
+          List<Wallet>.from(SharedPreferencesHelper().wallets);
       final int currentIndex =
           SharedPreferencesHelper().getCurrentWalletIndex();
       logger('Current wallet index is $currentIndex of ${cards.length}');
-      final AccountCard currentItem = cards.removeAt(currentIndex);
+      final Wallet currentItem = cards.removeAt(currentIndex);
       cards.add(currentItem);
       final int walletsSize = cards.length;
       return SizedBox(

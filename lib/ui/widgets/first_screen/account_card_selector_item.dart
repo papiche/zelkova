@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-import '../../../data/models/credit_card_themes.dart';
+import '../../../data/models/wallet_themes.dart';
 import '../../ui_helpers.dart';
 
-class CreditCardSelectorItem extends StatelessWidget {
-  const CreditCardSelectorItem(
+class AccountCardSelectorItem extends StatelessWidget {
+  const AccountCardSelectorItem(
       {super.key, this.name, required this.theme, this.suffix, this.hasName});
 
   final String? name;
   final bool? hasName;
   final String? suffix;
-  final AccountCardTheme theme;
+  final WalletTheme theme;
 
   @override
   Widget build(BuildContext context) {

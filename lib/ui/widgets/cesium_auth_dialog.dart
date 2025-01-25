@@ -8,10 +8,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/models/app_cubit.dart';
 import '../../data/models/bottom_nav_cubit.dart';
-import '../../data/models/cesium_card.dart';
 import '../../data/models/contact.dart';
-import '../../data/models/credit_card_themes.dart';
 import '../../data/models/multi_wallet_transaction_cubit.dart';
+import '../../data/models/wallet.dart';
+import '../../data/models/wallet_themes.dart';
 import '../../g1/api.dart';
 import '../../g1/g1_export_auth_utils.dart';
 import '../../g1/g1_helper.dart';
@@ -198,14 +198,14 @@ class _CesiumAuthDialogState extends State<CesiumAuthDialog> {
 
   void _onCorrectAuth(
       Contact contact, CesiumWallet wallet, BuildContext context) {
-    final AccountCard card = AccountCard(
+    final Wallet card = Wallet(
       name: contact.name ?? '',
       pubKey: extractPublicKey(widget.publicKey),
       seed: '',
-      theme: CreditCardThemes.themes[Random().nextInt(10)],
+      theme: WalletThemes.themes[Random().nextInt(10)],
     );
     if (!SharedPreferencesHelper().has(extractPublicKey(widget.publicKey))) {
-      SharedPreferencesHelper().addCesiumCard(card);
+      SharedPreferencesHelper().addWallet(card);
       SharedPreferencesHelper().selectCurrentWallet(card);
       context
           .read<MultiWalletTransactionCubit>()
@@ -294,7 +294,7 @@ Future<bool?> showAuthCesiumWalletDialog(
 
 Future<bool> walletAuth(BuildContext context) async {
   bool hasPass = false;
-  if (!SharedPreferencesHelper().isG1nkgoCard() &&
+  if (!SharedPreferencesHelper().isPasswordLessWallet() &&
       !SharedPreferencesHelper().hasVolatile()) {
     hasPass = await showAuthCesiumWalletDialog(
             context,

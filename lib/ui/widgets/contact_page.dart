@@ -15,7 +15,6 @@ import '../../data/models/contact_wot_info.dart';
 import '../../data/models/identity_status.dart';
 import '../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../data/models/node_manager.dart';
-import '../../data/models/wot_menu_action.dart';
 import '../../g1/api.dart';
 import '../../g1/distance_precompute.dart';
 import '../../g1/distance_precompute_provider.dart';
@@ -23,7 +22,6 @@ import '../../g1/duniter_endpoint_helper.dart';
 import '../../g1/duniter_indexer_helper.dart';
 import '../../g1/g1_helper.dart';
 import '../../g1/sing_and_send.dart';
-import '../../g1/wot_actions.dart';
 import '../../generated/gdev/pallets/certification.dart';
 import '../../generated/gdev/types/pallet_certification/types/idty_cert_meta.dart';
 import '../../generated/gdev/types/pallet_identity/types/idty_value.dart';
@@ -35,6 +33,8 @@ import 'contacts_actions.dart';
 import 'default_progress_dialog.dart';
 import 'fourth_screen/transactions_and_balance_widget.dart';
 import 'qr_list_tile.dart';
+import 'wot_actions.dart';
+import 'wot_menu_action.dart';
 
 class ContactPage extends StatefulWidget {
   const ContactPage({super.key, required this.contact});

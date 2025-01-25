@@ -16,9 +16,9 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:universal_html/html.dart' as html;
 
-import '../../../data/models/cesium_card.dart';
 import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
+import '../../../data/models/wallet.dart';
 import '../../../g1/g1_export_auth_utils.dart';
 import '../../../g1/g1_helper.dart';
 import '../../in_dev_helper.dart';
@@ -37,7 +37,7 @@ class ExportDialog extends StatefulWidget {
   });
 
   final ExportType type;
-  final List<AccountCard> wallets;
+  final List<Wallet> wallets;
   final bool exportContacts;
 
   @override
@@ -186,7 +186,7 @@ class _ExportDialogState extends State<ExportDialog> {
     context.read<ContactsCubit>().sortContactsAsStored();
     // Export only selected wallets, not all of them
     final List<Map<String, dynamic>> selectedWallets =
-        widget.wallets.map((AccountCard card) => card.toJson()).toList();
+        widget.wallets.map((Wallet card) => card.toJson()).toList();
     final Map<String, dynamic> prefsObj = <String, dynamic>{};
     // Add only the selected wallets to prefsObj
     prefsObj['cesiumCards'] = jsonEncode(selectedWallets);
@@ -309,7 +309,7 @@ class _ExportDialogState extends State<ExportDialog> {
   }
 
   CesiumWallet _getFirstWallet() {
-    final AccountCard card = widget.wallets.first;
+    final Wallet card = widget.wallets.first;
     final CesiumWallet wallet =
         CesiumWallet.fromSeed(seedFromString(card.seed));
     return wallet;

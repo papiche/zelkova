@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/fifth_screen/export_dialog.dart';
+import 'fifth_screen/export_dialog.dart';
 
 class SelectExportMethodDialog extends StatelessWidget {
   const SelectExportMethodDialog(

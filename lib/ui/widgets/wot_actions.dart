@@ -3,12 +3,12 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
-import '../data/models/contact_wot_info.dart';
-import '../data/models/identity_status.dart';
-import '../data/models/wot_menu_action.dart';
-import '../ui/widgets/cesium_auth_dialog.dart';
-import 'duniter_endpoint_helper.dart';
-import 'sing_and_send.dart';
+import '../../data/models/contact_wot_info.dart';
+import '../../data/models/identity_status.dart';
+import '../../g1/duniter_endpoint_helper.dart';
+import '../../g1/sing_and_send.dart';
+import 'cesium_auth_dialog.dart';
+import 'wot_menu_action.dart';
 
 List<WotMenuAction> getWotMenuActions(
     BuildContext context, bool isMe, ContactWotInfo wotInfo) {

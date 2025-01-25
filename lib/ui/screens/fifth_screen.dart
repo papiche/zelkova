@@ -8,9 +8,9 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
-import '../../data/models/cesium_card.dart';
 import '../../data/models/node_manager.dart';
 import '../../data/models/theme_cubit.dart';
+import '../../data/models/wallet.dart';
 import '../../g1/currency.dart';
 import '../../g1/service_manager.dart';
 import '../../shared_prefs_helper.dart';
@@ -29,7 +29,7 @@ import '../widgets/fifth_screen/link_card.dart';
 import '../widgets/fifth_screen/multi_wallet_selector.dart';
 import '../widgets/fifth_screen/node_list_card.dart';
 import '../widgets/fifth_screen/text_divider.dart';
-import 'select_export_method_dialog.dart';
+import '../widgets/select_export_method_dialog.dart';
 
 class FifthScreen extends StatefulWidget {
   const FifthScreen({super.key});
@@ -40,13 +40,13 @@ class FifthScreen extends StatefulWidget {
 
 class _FifthScreenState extends State<FifthScreen> {
   late Tutorial tutorial;
-  List<AccountCard> _selectedWallets = <AccountCard>[];
+  List<Wallet> _selectedWallets = <Wallet>[];
   bool _exportContacts = false;
 
   Future<void> _openWalletSelector(
       BuildContext context, bool expertMode) async {
     showMultiWalletSelector(context,
-        (List<AccountCard> selectedCards, bool exportContacts) {
+        (List<Wallet> selectedCards, bool exportContacts) {
       setState(() {
         loggerDev('Selected wallets: ${selectedCards.length}');
         _selectedWallets = selectedCards;
@@ -70,7 +70,7 @@ class _FifthScreenState extends State<FifthScreen> {
       return BlocBuilder<AppCubit, AppState>(
           builder: (BuildContext context, AppState state) {
         final String pluralSuffix =
-            SharedPreferencesHelper().hasMultipleCards() ? 's' : '';
+            SharedPreferencesHelper().hasMultipleWallets() ? 's' : '';
         return Scaffold(
           appBar: AppBar(
             key: infoMainKey,

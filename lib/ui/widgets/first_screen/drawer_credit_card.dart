@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/models/bottom_nav_cubit.dart';
-import '../../../data/models/cesium_card.dart';
-import '../../../data/models/credit_card_theme_selector.dart';
-import '../../../data/models/credit_card_themes.dart';
 import '../../../data/models/multi_wallet_transaction_cubit.dart';
+import '../../../data/models/wallet.dart';
+import '../../../data/models/wallet_themes.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
 import '../../ui_helpers.dart';
+import '../account_card_theme_selector.dart';
 import 'card_name_text.dart';
 import 'card_text_style.dart';
 
@@ -21,7 +21,7 @@ class DrawerWalletCard extends StatelessWidget {
       required this.cardIndex,
       required this.settingsVisible});
 
-  final AccountCard card;
+  final Wallet card;
   final bool settingsVisible;
   final int cardIndex;
 
@@ -33,9 +33,9 @@ class DrawerWalletCard extends StatelessWidget {
           title: Text(tr('card_theme_select')),
           content: SizedBox(
               width: double.maxFinite,
-              child: CardThemeSelector(
+              child: AccountCardThemeSelector(
                   card: card,
-                  onTap: (AccountCardTheme theme) =>
+                  onTap: (WalletTheme theme) =>
                       SharedPreferencesHelper().setTheme(theme: theme))),
         );
       },
@@ -105,7 +105,7 @@ class DrawerWalletCard extends StatelessWidget {
                                   return AlertDialog(
                                     title: Text(tr('please_confirm_delete')),
                                     content: Text(tr(SharedPreferencesHelper()
-                                            .isG1nkgoCard()
+                                            .isPasswordLessWallet()
                                         ? 'please_confirm_delete_desc_g1nkgo'
                                         : 'please_confirm_delete_desc')),
                                     actions: <Widget>[
@@ -117,9 +117,9 @@ class DrawerWalletCard extends StatelessWidget {
                                       TextButton(
                                         onPressed: () {
                                           if (SharedPreferencesHelper()
-                                              .isG1nkgoCard()) {}
+                                              .isPasswordLessWallet()) {}
                                           SharedPreferencesHelper()
-                                              .removeCesiumCard();
+                                              .removeWallet();
                                           SharedPreferencesHelper()
                                               .selectCurrentWalletIndex(0);
                                           Navigator.pop(context);
@@ -169,7 +169,7 @@ class DrawerWalletCard extends StatelessWidget {
                                         currentText: card.name,
                                         onTap: null,
                                         isGinkgoCard: SharedPreferencesHelper()
-                                            .isG1nkgoCard(card)),
+                                            .isPasswordLessWallet(card)),
                                   ),
                                 ])),
                           Padding(

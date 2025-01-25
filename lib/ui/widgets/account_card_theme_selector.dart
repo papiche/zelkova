@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-import '../../ui/widgets/first_screen/credit_card_selector_item.dart';
-import 'cesium_card.dart';
-import 'credit_card_themes.dart';
+import '../../data/models/wallet.dart';
+import '../../data/models/wallet_themes.dart';
+import 'first_screen/account_card_selector_item.dart';
 
-class CardThemeSelector extends StatelessWidget {
-  const CardThemeSelector({super.key, required this.card, required this.onTap});
+class AccountCardThemeSelector extends StatelessWidget {
+  const AccountCardThemeSelector(
+      {super.key, required this.card, required this.onTap});
 
-  final AccountCard card;
-  final Function(AccountCardTheme) onTap;
+  final Wallet card;
+  final Function(WalletTheme) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -19,17 +20,16 @@ class CardThemeSelector extends StatelessWidget {
             ResponsiveBreakpoints.of(context).largerThan(MOBILE) ? 4 : 2,
         childAspectRatio: 1.58,
       ),
-      itemCount: CreditCardThemes.themes.length,
+      itemCount: WalletThemes.themes.length,
       itemBuilder: (BuildContext context, int index) {
-        final AccountCardTheme theme = CreditCardThemes.themes[index];
+        final WalletTheme theme = WalletThemes.themes[index];
         return GestureDetector(
           onTap: () {
             onTap(theme);
             Navigator.pop(context);
           },
           child: Center(
-            child:
-                CreditCardSelectorItem(theme: CreditCardThemes.themes[index]),
+            child: AccountCardSelectorItem(theme: WalletThemes.themes[index]),
           ),
         );
       },

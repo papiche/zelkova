@@ -117,8 +117,8 @@ class _FirstScreenState extends State<FirstScreen> {
                                           key: creditCardKey,
                                           publicKey: prefsHelper.getPubKey(),
                                           cardName: prefsHelper.getName(),
-                                          isG1nkgoCard:
-                                              prefsHelper.isG1nkgoCard()),
+                                          isG1nkgoCard: prefsHelper
+                                              .isPasswordLessWallet()),
                                     ),
                                     const SizedBox(width: 20),
                                     Expanded(
@@ -154,7 +154,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                         publicKey: prefsHelper.getPubKey(),
                                         cardName: prefsHelper.getName(),
                                         isG1nkgoCard:
-                                            prefsHelper.isG1nkgoCard()),
+                                            prefsHelper.isPasswordLessWallet()),
                                     const SizedBox(height: 8),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(

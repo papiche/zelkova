@@ -2,16 +2,16 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-import '../../../data/models/cesium_card.dart';
+import '../../../data/models/wallet.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../ui_helpers.dart';
-import '../first_screen/credit_card_selector_item.dart';
+import '../first_screen/account_card_selector_item.dart';
 
 class MultiWalletSelectorPage extends StatefulWidget {
   const MultiWalletSelectorPage({super.key, required this.onSelectionChanged});
 
-  final Function(List<AccountCard>, bool) onSelectionChanged;
+  final Function(List<Wallet>, bool) onSelectionChanged;
 
   @override
   State<MultiWalletSelectorPage> createState() =>
@@ -19,16 +19,16 @@ class MultiWalletSelectorPage extends StatefulWidget {
 }
 
 class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
-  final List<AccountCard> _selectedCards = <AccountCard>[];
+  final List<Wallet> _selectedCards = <Wallet>[];
   bool _exportContacts = true;
   bool _selectAll = false;
 
-  final List<AccountCard> _cards = SharedPreferencesHelper()
-      .cesiumCards
-      .where((AccountCard card) => card.seed.isNotEmpty)
+  final List<Wallet> _cards = SharedPreferencesHelper()
+      .wallets
+      .where((Wallet card) => card.seed.isNotEmpty)
       .toList();
 
-  void _onCardTapped(AccountCard card) {
+  void _onCardTapped(Wallet card) {
     setState(() {
       if (_selectedCards.contains(card)) {
         _selectedCards.remove(card);
@@ -82,7 +82,7 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
               ),
               itemCount: _cards.length,
               itemBuilder: (BuildContext context, int index) {
-                final AccountCard card = _cards[index];
+                final Wallet card = _cards[index];
                 final bool isSelected = _selectedCards.contains(card);
                 return GestureDetector(
                   onTap: () => _onCardTapped(card),
@@ -99,12 +99,13 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
                         ),
                       ),
                       Center(
-                        child: CreditCardSelectorItem(
+                        child: AccountCardSelectorItem(
                             name: card.name.isEmpty
                                 ? humanizePubKey(card.pubKey)
                                 : truncateName(card.name),
                             hasName: card.name.isNotEmpty,
-                            suffix: SharedPreferencesHelper().isG1nkgoCard(card)
+                            suffix: SharedPreferencesHelper()
+                                    .isPasswordLessWallet(card)
                                 ? g1nkgoUserNameSuffix
                                 : protectedUserNameSuffix,
                             theme: card.theme),
@@ -151,8 +152,8 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
   }
 }
 
-void showMultiWalletSelector(BuildContext context,
-    Function(List<AccountCard>, bool) onSelectionChanged) {
+void showMultiWalletSelector(
+    BuildContext context, Function(List<Wallet>, bool) onSelectionChanged) {
   Navigator.push(
     context,
     MaterialPageRoute<Widget>(

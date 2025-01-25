@@ -35,7 +35,6 @@ import 'data/gl_timeago_support.dart';
 import 'data/models/app_cubit.dart';
 import 'data/models/app_state.dart';
 import 'data/models/bottom_nav_cubit.dart';
-import 'data/models/cesium_card.dart';
 import 'data/models/contact_cubit.dart';
 import 'data/models/multi_wallet_transaction_cubit.dart';
 import 'data/models/node_list_cubit.dart';
@@ -45,6 +44,7 @@ import 'data/models/node_type.dart';
 import 'data/models/payment_cubit.dart';
 import 'data/models/theme_cubit.dart';
 import 'data/models/utxo_cubit.dart';
+import 'data/models/wallet.dart';
 import 'env.dart';
 import 'g1/api.dart';
 import 'g1/distance_precompute.dart';
@@ -101,7 +101,7 @@ void main() async {
 
   final SharedPreferencesHelper shared = SharedPreferencesHelper();
   await shared.init();
-  if (shared.cesiumCards.isEmpty) {
+  if (shared.wallets.isEmpty) {
     await shared.getWallet();
   }
   assert(shared.getPubKey() != null);
@@ -713,7 +713,7 @@ Future<void> fetchTransactionsFromBackground([bool init = true]) async {
     final GetIt getIt = GetIt.instance;
     final MultiWalletTransactionCubit transCubit =
         getIt.get<MultiWalletTransactionCubit>();
-    for (final AccountCard card in SharedPreferencesHelper().cards) {
+    for (final Wallet card in SharedPreferencesHelper().cards) {
       loggerDev('Fetching transactions for ${card.pubKey} in background');
       transCubit.fetchTransactions(pubKey: card.pubKey);
     }
@@ -817,7 +817,7 @@ Future<void> _clearCacheIfNeeded(Directory storageDir) async {
 Future<void> fetchTransactions(BuildContext context) async {
   final MultiWalletTransactionCubit transCubit =
       context.read<MultiWalletTransactionCubit>();
-  for (final AccountCard card in SharedPreferencesHelper().cards) {
+  for (final Wallet card in SharedPreferencesHelper().cards) {
     transCubit.fetchTransactions(pubKey: card.pubKey);
   }
 }

@@ -315,15 +315,16 @@ class SelectImportMethodDialog extends StatelessWidget {
               ListTile(
                 leading: const Icon(Icons.password),
                 title: Text(tr('clipboard_import_mnemonic')),
+                subtitle: Text(tr('clipboard_import_mnemonic_description')),
                 onTap: () => Navigator.of(context).pop('clipboard_mnemonic'),
               ),
           ],
         ),
       ),
       actions: <Widget>[
-        TextButton(
+        IconButton(
+          icon: const Icon(Icons.close),
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(tr('cancel')),
         ),
       ],
     );

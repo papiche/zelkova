@@ -47,6 +47,7 @@ class CertificationsPage extends StatelessWidget {
                     final Cert cert = certifications[index];
                     final Contact contact =
                         issued ? cert.receiverId : cert.issuerId;
+                    // ignore: unused_local_variable
                     final bool isExpired = cert.expireOn <= currentBlockHeight;
                     final bool isExpiringSoon = cert.isActive &&
                         (cert.expireOn - currentBlockHeight < limit);

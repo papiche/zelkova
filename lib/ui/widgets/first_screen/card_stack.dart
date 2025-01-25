@@ -21,12 +21,12 @@ class _CardStackState extends State<CardStack> {
   Widget build(BuildContext context) {
     return Consumer<SharedPreferencesHelper>(builder: (BuildContext context,
         SharedPreferencesHelper prefsHelper, Widget? child) {
-      final List<CesiumCard> cards =
-          List<CesiumCard>.from(SharedPreferencesHelper().cesiumCards);
+      final List<AccountCard> cards =
+          List<AccountCard>.from(SharedPreferencesHelper().cesiumCards);
       final int currentIndex =
           SharedPreferencesHelper().getCurrentWalletIndex();
       logger('Current wallet index is $currentIndex of ${cards.length}');
-      final CesiumCard currentItem = cards.removeAt(currentIndex);
+      final AccountCard currentItem = cards.removeAt(currentIndex);
       cards.add(currentItem);
       final int walletsSize = cards.length;
       return SizedBox(

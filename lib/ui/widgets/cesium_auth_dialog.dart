@@ -198,7 +198,7 @@ class _CesiumAuthDialogState extends State<CesiumAuthDialog> {
 
   void _onCorrectAuth(
       Contact contact, CesiumWallet wallet, BuildContext context) {
-    final CesiumCard card = CesiumCard(
+    final AccountCard card = AccountCard(
       name: contact.name ?? '',
       pubKey: extractPublicKey(widget.publicKey),
       seed: '',

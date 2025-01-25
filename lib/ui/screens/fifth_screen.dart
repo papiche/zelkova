@@ -40,13 +40,13 @@ class FifthScreen extends StatefulWidget {
 
 class _FifthScreenState extends State<FifthScreen> {
   late Tutorial tutorial;
-  List<CesiumCard> _selectedWallets = <CesiumCard>[];
+  List<AccountCard> _selectedWallets = <AccountCard>[];
   bool _exportContacts = false;
 
   Future<void> _openWalletSelector(
       BuildContext context, bool expertMode) async {
     showMultiWalletSelector(context,
-        (List<CesiumCard> selectedCards, bool exportContacts) {
+        (List<AccountCard> selectedCards, bool exportContacts) {
       setState(() {
         loggerDev('Selected wallets: ${selectedCards.length}');
         _selectedWallets = selectedCards;

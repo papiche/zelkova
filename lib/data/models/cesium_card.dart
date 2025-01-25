@@ -8,26 +8,26 @@ part 'cesium_card.g.dart';
 
 @JsonSerializable()
 @CopyWith()
-class CesiumCard implements IsJsonSerializable<CesiumCard> {
-  CesiumCard(
+class AccountCard implements IsJsonSerializable<AccountCard> {
+  AccountCard(
       {required this.seed,
       required this.pubKey,
       required this.name,
       required this.theme});
 
-  factory CesiumCard.fromJson(Map<String, dynamic> json) =>
-      _$CesiumCardFromJson(json);
+  factory AccountCard.fromJson(Map<String, dynamic> json) =>
+      _$AccountCardFromJson(json);
 
   final String pubKey;
   final String seed;
-  final CreditCardTheme theme;
+  final AccountCardTheme theme;
   final String name;
 
   @override
-  Map<String, dynamic> toJson() => _$CesiumCardToJson(this);
+  Map<String, dynamic> toJson() => _$AccountCardToJson(this);
 
   @override
-  CesiumCard fromJson(Map<String, dynamic> json) {
-    return CesiumCard.fromJson(json);
+  AccountCard fromJson(Map<String, dynamic> json) {
+    return AccountCard.fromJson(json);
   }
 }

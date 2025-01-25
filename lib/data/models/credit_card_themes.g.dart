@@ -6,14 +6,14 @@ part of 'credit_card_themes.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-CreditCardTheme _$CreditCardThemeFromJson(Map<String, dynamic> json) =>
-    CreditCardTheme(
-      CreditCardTheme._colorFromJson((json['primary_color'] as num).toInt()),
-      CreditCardTheme._colorFromJson((json['secondary_color'] as num).toInt()),
+AccountCardTheme _$AccountCardThemeFromJson(Map<String, dynamic> json) =>
+    AccountCardTheme(
+      AccountCardTheme._colorFromJson((json['primary_color'] as num).toInt()),
+      AccountCardTheme._colorFromJson((json['secondary_color'] as num).toInt()),
     );
 
-Map<String, dynamic> _$CreditCardThemeToJson(CreditCardTheme instance) =>
+Map<String, dynamic> _$AccountCardThemeToJson(AccountCardTheme instance) =>
     <String, dynamic>{
-      'primary_color': CreditCardTheme._colorToJson(instance.primaryColor),
-      'secondary_color': CreditCardTheme._colorToJson(instance.secondaryColor),
+      'primary_color': AccountCardTheme._colorToJson(instance.primaryColor),
+      'secondary_color': AccountCardTheme._colorToJson(instance.secondaryColor),
     };

@@ -11,7 +11,7 @@ import '../first_screen/credit_card_selector_item.dart';
 class MultiWalletSelectorPage extends StatefulWidget {
   const MultiWalletSelectorPage({super.key, required this.onSelectionChanged});
 
-  final Function(List<CesiumCard>, bool) onSelectionChanged;
+  final Function(List<AccountCard>, bool) onSelectionChanged;
 
   @override
   State<MultiWalletSelectorPage> createState() =>
@@ -19,16 +19,16 @@ class MultiWalletSelectorPage extends StatefulWidget {
 }
 
 class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
-  final List<CesiumCard> _selectedCards = <CesiumCard>[];
+  final List<AccountCard> _selectedCards = <AccountCard>[];
   bool _exportContacts = true;
   bool _selectAll = false;
 
-  final List<CesiumCard> _cards = SharedPreferencesHelper()
+  final List<AccountCard> _cards = SharedPreferencesHelper()
       .cesiumCards
-      .where((CesiumCard card) => card.seed.isNotEmpty)
+      .where((AccountCard card) => card.seed.isNotEmpty)
       .toList();
 
-  void _onCardTapped(CesiumCard card) {
+  void _onCardTapped(AccountCard card) {
     setState(() {
       if (_selectedCards.contains(card)) {
         _selectedCards.remove(card);
@@ -82,7 +82,7 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
               ),
               itemCount: _cards.length,
               itemBuilder: (BuildContext context, int index) {
-                final CesiumCard card = _cards[index];
+                final AccountCard card = _cards[index];
                 final bool isSelected = _selectedCards.contains(card);
                 return GestureDetector(
                   onTap: () => _onCardTapped(card),
@@ -151,8 +151,8 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
   }
 }
 
-void showMultiWalletSelector(
-    BuildContext context, Function(List<CesiumCard>, bool) onSelectionChanged) {
+void showMultiWalletSelector(BuildContext context,
+    Function(List<AccountCard>, bool) onSelectionChanged) {
   Navigator.push(
     context,
     MaterialPageRoute<Widget>(

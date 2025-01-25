@@ -713,7 +713,7 @@ Future<void> fetchTransactionsFromBackground([bool init = true]) async {
     final GetIt getIt = GetIt.instance;
     final MultiWalletTransactionCubit transCubit =
         getIt.get<MultiWalletTransactionCubit>();
-    for (final CesiumCard card in SharedPreferencesHelper().cards) {
+    for (final AccountCard card in SharedPreferencesHelper().cards) {
       loggerDev('Fetching transactions for ${card.pubKey} in background');
       transCubit.fetchTransactions(pubKey: card.pubKey);
     }
@@ -817,7 +817,7 @@ Future<void> _clearCacheIfNeeded(Directory storageDir) async {
 Future<void> fetchTransactions(BuildContext context) async {
   final MultiWalletTransactionCubit transCubit =
       context.read<MultiWalletTransactionCubit>();
-  for (final CesiumCard card in SharedPreferencesHelper().cards) {
+  for (final AccountCard card in SharedPreferencesHelper().cards) {
     transCubit.fetchTransactions(pubKey: card.pubKey);
   }
 }

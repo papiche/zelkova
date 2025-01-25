@@ -8,8 +8,8 @@ import 'credit_card_themes.dart';
 class CardThemeSelector extends StatelessWidget {
   const CardThemeSelector({super.key, required this.card, required this.onTap});
 
-  final CesiumCard card;
-  final Function(CreditCardTheme) onTap;
+  final AccountCard card;
+  final Function(AccountCardTheme) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class CardThemeSelector extends StatelessWidget {
       ),
       itemCount: CreditCardThemes.themes.length,
       itemBuilder: (BuildContext context, int index) {
-        final CreditCardTheme theme = CreditCardThemes.themes[index];
+        final AccountCardTheme theme = CreditCardThemes.themes[index];
         return GestureDetector(
           onTap: () {
             onTap(theme);

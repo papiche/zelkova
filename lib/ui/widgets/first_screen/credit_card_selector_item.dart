@@ -10,7 +10,7 @@ class CreditCardSelectorItem extends StatelessWidget {
   final String? name;
   final bool? hasName;
   final String? suffix;
-  final CreditCardTheme theme;
+  final AccountCardTheme theme;
 
   @override
   Widget build(BuildContext context) {

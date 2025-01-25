@@ -6,62 +6,62 @@ part of 'cesium_card.dart';
 // CopyWithGenerator
 // **************************************************************************
 
-abstract class _$CesiumCardCWProxy {
-  CesiumCard seed(String seed);
+abstract class _$AccountCardCWProxy {
+  AccountCard seed(String seed);
 
-  CesiumCard pubKey(String pubKey);
+  AccountCard pubKey(String pubKey);
 
-  CesiumCard name(String name);
+  AccountCard name(String name);
 
-  CesiumCard theme(CreditCardTheme theme);
+  AccountCard theme(AccountCardTheme theme);
 
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `CesiumCard(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `AccountCard(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
   /// ```dart
-  /// CesiumCard(...).copyWith(id: 12, name: "My name")
+  /// AccountCard(...).copyWith(id: 12, name: "My name")
   /// ````
-  CesiumCard call({
+  AccountCard call({
     String? seed,
     String? pubKey,
     String? name,
-    CreditCardTheme? theme,
+    AccountCardTheme? theme,
   });
 }
 
-/// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfCesiumCard.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfCesiumCard.copyWith.fieldName(...)`
-class _$CesiumCardCWProxyImpl implements _$CesiumCardCWProxy {
-  const _$CesiumCardCWProxyImpl(this._value);
+/// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfAccountCard.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfAccountCard.copyWith.fieldName(...)`
+class _$AccountCardCWProxyImpl implements _$AccountCardCWProxy {
+  const _$AccountCardCWProxyImpl(this._value);
 
-  final CesiumCard _value;
-
-  @override
-  CesiumCard seed(String seed) => this(seed: seed);
+  final AccountCard _value;
 
   @override
-  CesiumCard pubKey(String pubKey) => this(pubKey: pubKey);
+  AccountCard seed(String seed) => this(seed: seed);
 
   @override
-  CesiumCard name(String name) => this(name: name);
+  AccountCard pubKey(String pubKey) => this(pubKey: pubKey);
 
   @override
-  CesiumCard theme(CreditCardTheme theme) => this(theme: theme);
+  AccountCard name(String name) => this(name: name);
+
+  @override
+  AccountCard theme(AccountCardTheme theme) => this(theme: theme);
 
   @override
 
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `CesiumCard(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `AccountCard(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
   /// ```dart
-  /// CesiumCard(...).copyWith(id: 12, name: "My name")
+  /// AccountCard(...).copyWith(id: 12, name: "My name")
   /// ````
-  CesiumCard call({
+  AccountCard call({
     Object? seed = const $CopyWithPlaceholder(),
     Object? pubKey = const $CopyWithPlaceholder(),
     Object? name = const $CopyWithPlaceholder(),
     Object? theme = const $CopyWithPlaceholder(),
   }) {
-    return CesiumCard(
+    return AccountCard(
       seed: seed == const $CopyWithPlaceholder() || seed == null
           ? _value.seed
           // ignore: cast_nullable_to_non_nullable
@@ -77,29 +77,29 @@ class _$CesiumCardCWProxyImpl implements _$CesiumCardCWProxy {
       theme: theme == const $CopyWithPlaceholder() || theme == null
           ? _value.theme
           // ignore: cast_nullable_to_non_nullable
-          : theme as CreditCardTheme,
+          : theme as AccountCardTheme,
     );
   }
 }
 
-extension $CesiumCardCopyWith on CesiumCard {
-  /// Returns a callable class that can be used as follows: `instanceOfCesiumCard.copyWith(...)` or like so:`instanceOfCesiumCard.copyWith.fieldName(...)`.
+extension $AccountCardCopyWith on AccountCard {
+  /// Returns a callable class that can be used as follows: `instanceOfAccountCard.copyWith(...)` or like so:`instanceOfAccountCard.copyWith.fieldName(...)`.
   // ignore: library_private_types_in_public_api
-  _$CesiumCardCWProxy get copyWith => _$CesiumCardCWProxyImpl(this);
+  _$AccountCardCWProxy get copyWith => _$AccountCardCWProxyImpl(this);
 }
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-CesiumCard _$CesiumCardFromJson(Map<String, dynamic> json) => CesiumCard(
+AccountCard _$AccountCardFromJson(Map<String, dynamic> json) => AccountCard(
       seed: json['seed'] as String,
       pubKey: json['pubKey'] as String,
       name: json['name'] as String,
-      theme: CreditCardTheme.fromJson(json['theme'] as Map<String, dynamic>),
+      theme: AccountCardTheme.fromJson(json['theme'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$CesiumCardToJson(CesiumCard instance) =>
+Map<String, dynamic> _$AccountCardToJson(AccountCard instance) =>
     <String, dynamic>{
       'pubKey': instance.pubKey,
       'seed': instance.seed,

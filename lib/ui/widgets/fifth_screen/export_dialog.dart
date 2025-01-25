@@ -37,7 +37,7 @@ class ExportDialog extends StatefulWidget {
   });
 
   final ExportType type;
-  final List<CesiumCard> wallets;
+  final List<AccountCard> wallets;
   final bool exportContacts;
 
   @override
@@ -186,7 +186,7 @@ class _ExportDialogState extends State<ExportDialog> {
     context.read<ContactsCubit>().sortContactsAsStored();
     // Export only selected wallets, not all of them
     final List<Map<String, dynamic>> selectedWallets =
-        widget.wallets.map((CesiumCard card) => card.toJson()).toList();
+        widget.wallets.map((AccountCard card) => card.toJson()).toList();
     final Map<String, dynamic> prefsObj = <String, dynamic>{};
     // Add only the selected wallets to prefsObj
     prefsObj['cesiumCards'] = jsonEncode(selectedWallets);
@@ -309,7 +309,7 @@ class _ExportDialogState extends State<ExportDialog> {
   }
 
   CesiumWallet _getFirstWallet() {
-    final CesiumCard card = widget.wallets.first;
+    final AccountCard card = widget.wallets.first;
     final CesiumWallet wallet =
         CesiumWallet.fromSeed(seedFromString(card.seed));
     return wallet;

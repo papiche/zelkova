@@ -21,7 +21,7 @@ class DrawerWalletCard extends StatelessWidget {
       required this.cardIndex,
       required this.settingsVisible});
 
-  final CesiumCard card;
+  final AccountCard card;
   final bool settingsVisible;
   final int cardIndex;
 
@@ -35,7 +35,7 @@ class DrawerWalletCard extends StatelessWidget {
               width: double.maxFinite,
               child: CardThemeSelector(
                   card: card,
-                  onTap: (CreditCardTheme theme) =>
+                  onTap: (AccountCardTheme theme) =>
                       SharedPreferencesHelper().setTheme(theme: theme))),
         );
       },

@@ -91,7 +91,7 @@ class DrawerWalletCard extends StatelessWidget {
                   child: Stack(children: <Widget>[
                     // if (!SharedPreferencesHelper().isG1nkgoCard())
                     Positioned(
-                      top: 60,
+                      top: 90,
                       right: 0,
                       child: Visibility(
                         visible: settingsVisible,
@@ -135,7 +135,7 @@ class DrawerWalletCard extends StatelessWidget {
                       ),
                     ),
                     Positioned(
-                      top: 0,
+                      top: 25,
                       right: 0,
                       child: Visibility(
                         visible: settingsVisible,

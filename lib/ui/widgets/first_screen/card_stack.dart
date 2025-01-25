@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../data/models/cesium_card.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
-import '../fifth_screen/import_dialog.dart';
+import '../add_wallet_assistant.dart';
 import 'drawer_credit_card.dart';
 
 class CardStack extends StatefulWidget {
@@ -29,52 +29,60 @@ class _CardStackState extends State<CardStack> {
       final CesiumCard currentItem = cards.removeAt(currentIndex);
       cards.add(currentItem);
       final int walletsSize = cards.length;
-      return Stack(
-        alignment: Alignment.center,
-        children: <Widget>[
-          ...List<Widget>.generate(
-            walletsSize,
-            (int index) {
-              return Positioned(
-                top: 50.0 * index,
-                child: SizedBox(
-                    height: 200,
-                    child: DrawerWalletCard(
-                        card: cards[index],
-                        cardIndex: index,
-                        settingsVisible: index == walletsSize - 1)),
-              );
-            },
-          ),
-          Positioned(
-              left: 30,
-              bottom: -15,
-              child: Container(
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: Colors.black45,
-                      spreadRadius: 10,
-                      blurRadius: 10,
-                      offset: Offset(0, 6),
+      return SizedBox(
+          height: 200 + ((cards.length - 1) * 45),
+          child: Center(
+              child: Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              ...List<Widget>.generate(
+                walletsSize,
+                (int index) {
+                  return Positioned(
+                    top: 45.0 * index,
+                    child: SizedBox(
+                        height: 200,
+                        child: DrawerWalletCard(
+                            card: cards[index],
+                            cardIndex: index,
+                            settingsVisible: index == walletsSize - 1)),
+                  );
+                },
+              ),
+              Positioned(
+                  right: 25,
+                  top: -15,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                          color: Colors.black45,
+                          spreadRadius: 10,
+                          blurRadius: 10,
+                          offset: Offset(0, 6),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                child: FloatingActionButton(
-                  // elevation: 20,
-                  /* shape: RoundedRectangleBorder(
+                    child: FloatingActionButton(
+                      // elevation: 20,
+                      /* shape: RoundedRectangleBorder(
                   side: const BorderSide(color: Colors.grey, width: 1.0),
                   borderRadius: BorderRadius.circular(20),
                 ), */
-                  onPressed: () {
-                    showSelectImportMethodDialog(context, 0);
-                  },
-                  child: const Icon(Icons.add),
-                ),
-              ))
-        ],
-      );
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return const WalletOptionsDialog();
+                              // showSelectImportMethodDialog(context, 0);
+                            });
+                      },
+                      child: const Icon(Icons.add),
+                    ),
+                  ))
+            ],
+          )));
     });
   }
 }

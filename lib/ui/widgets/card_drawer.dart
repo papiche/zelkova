@@ -7,8 +7,6 @@ import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
-import '../../data/models/cesium_card.dart';
-import '../../shared_prefs_helper.dart';
 import '../in_dev_helper.dart';
 import '../screens/sandbox.dart';
 import '../ui_helpers.dart';
@@ -31,7 +29,7 @@ class _CardDrawerState extends State<CardDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    final List<CesiumCard> cards = SharedPreferencesHelper().cesiumCards;
+    // final List<CesiumCard> cards = SharedPreferencesHelper().cesiumCards;
     return FutureBuilder<PackageInfo>(
       future: PackageInfo.fromPlatform(),
       builder: (BuildContext context, AsyncSnapshot<PackageInfo> snapshot) {
@@ -44,32 +42,31 @@ class _CardDrawerState extends State<CardDrawer> {
                 GestureDetector(
                     onTap: () => tryCatch(),
                     onLongPress: () => tryCatch(),
-                    child: DrawerHeader(
-                      /* decoration: BoxDecoration(
+                    child: SizedBox(
+                        height: 110.0,
+                        child: DrawerHeader(
+                          padding: const EdgeInsets.all(10.0),
+                          // margin: const EdgeInsets.all(5.0),
+                          /* decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
                   ), */
-                      child: Column(
-                        children: <Widget>[
-                          Image.asset(
-                            'assets/img/logo.png',
-                            fit: BoxFit.scaleDown,
-                            height: 80.0,
-                          ),
-                          // const SizedBox(height: 20.0),
-                          /* Text(tr('app_name'),
+                          child: Column(
+                            children: <Widget>[
+                              Image.asset(
+                                'assets/img/logo.png',
+                                fit: BoxFit.scaleDown,
+                                height: 80.0,
+                              ),
+                              // const SizedBox(height: 20.0),
+                              /* Text(tr('app_name'),
                           style: const TextStyle(
                             fontSize: 24.0,
                             color: Colors.white,
                           )), */
-                        ],
-                      ),
-                    )),
-                SizedBox(
-                  height: (cards.length * 70) + 50,
-                  child: const Center(
-                    child: CardStack(),
-                  ),
-                ),
+                            ],
+                          ),
+                        ))),
+                const CardStack(),
                 if (inDevelopment)
                   ListTile(
                     leading: const Icon(Icons.build),

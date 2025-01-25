@@ -368,5 +368,19 @@
   "distance_rule": "Regla de la Distancia",
   "idty_waiting_confirmation": "esperando confirmación",
   "idty_waiting_certifications": "esperando certificaciones",
-  "idty_waiting_distance_evaluation": "esperando evaluación de distancia"
+  "idty_waiting_distance_evaluation": "esperando evaluación de distancia",
+  "wallet_options_title": "¿Qué deseas hacer?",
+  "create_wallet_option": "Crear un monedero nuevo",
+  "create_wallet_description": "Configura un monedero nuevo para tus transacciones Ğ1",
+  "import_wallet_option": "Importar un monedero existente",
+  "import_wallet_description": "Carga un monedero que ya tienes utilizando diferentes métodos",
+  "create_wallet_title": "Elige cómo crear tu monedero Ğ1",
+  "create_no_password_option": "Sin contraseña",
+  "create_no_password_description": "Ideal para pequeñas cantidades y acceso rápido",
+  "create_with_password_option": "Con contraseñas",
+  "create_with_password_description": "Monedero clásico tipo duniter v1",
+  "create_with_mnemonics_option": "Con frase mnemónica",
+  "create_with_mnemonics_description": "Monedero recuperable utilizando una frase semilla (recomendado en Duniter v2)",
+  "clipboard_import_mnemonic": "Importar frase mnemónica",
+  "clipboard_import_mnemonic_description": "Introduce una frase mnemónica para recuperar tu monedero"
 }

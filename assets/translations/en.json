@@ -362,6 +362,20 @@
   "distance_rule": "Distance Rule",
   "idty_waiting_confirmation": "waiting for confirmation",
   "idty_waiting_certifications": "waiting for certifications",
-  "idty_waiting_distance_evaluation": "waiting for distance evaluation"
+  "idty_waiting_distance_evaluation": "waiting for distance evaluation",
+  "wallet_options_title": "What do you want to do?",
+  "create_wallet_option": "Create a new wallet",
+  "create_wallet_description": "Set up a brand-new wallet for your Ğ1 transactions",
+  "import_wallet_option": "Import an existing wallet",
+  "import_wallet_description": "Load a wallet you already have, using different methods",
+  "create_wallet_title": "Choose how to create your Ğ1 wallet",
+  "create_no_password_option": "No passwords",
+  "create_no_password_description": "Ideal for small amounts and quick access",
+  "create_with_password_option": "With passwords",
+  "create_with_password_description": "Legacy duniter v1 type wallet",
+  "create_with_mnemonics_option": "With mnemonic phrase",
+  "create_with_mnemonics_description": "Recoverable wallet using a seed phrase (recommended in duniter v2)",
+  "clipboard_import_mnemonic": "Import mnemonic phrase",
+  "clipboard_import_mnemonic_description": "Enter a mnemonic phrase to recover your wallet"
 }
 

@@ -106,7 +106,7 @@ dependencies:
     path: ../polkadart/packages/polkadart_keyring
   ferry: ^0.16.0+1
   pointycastle: ^3.9.1
-  material_symbols_icons: ^4.2719.3
+  material_symbols_icons: ^4.2801.1
   text_scroll: ^0.2.0
   # flutter_neumorphic_plus: ^3.3.0
   flutter_neumorphic_plus:

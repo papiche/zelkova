@@ -8,34 +8,25 @@ import '../../../shared_prefs_helper.dart';
 import '../../ui_helpers.dart';
 import '../first_screen/credit_card_selector_item.dart';
 
-class MultiWalletSelectorDialog extends StatefulWidget {
-  const MultiWalletSelectorDialog(
-      {super.key, required this.onSelectionChanged});
+class MultiWalletSelectorPage extends StatefulWidget {
+  const MultiWalletSelectorPage({super.key, required this.onSelectionChanged});
 
   final Function(List<CesiumCard>, bool) onSelectionChanged;
 
   @override
-  State<MultiWalletSelectorDialog> createState() =>
-      _MultiWalletSelectorDialogState();
+  State<MultiWalletSelectorPage> createState() =>
+      _MultiWalletSelectorPageState();
 }
 
-class _MultiWalletSelectorDialogState extends State<MultiWalletSelectorDialog> {
+class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
   final List<CesiumCard> _selectedCards = <CesiumCard>[];
   bool _exportContacts = true;
+  bool _selectAll = false;
 
-  // FIXME: we want to export too cesium protected cards
   final List<CesiumCard> _cards = SharedPreferencesHelper()
       .cesiumCards
       .where((CesiumCard card) => card.seed.isNotEmpty)
       .toList();
-
-  /* To test many
-    ..addAll(kDebugMode
-        ? SharedPreferencesHelper()
-            .cesiumCards
-            .where((CesiumCard card) => card.seed.isNotEmpty)
-            .toList()
-        : []); */
 
   void _onCardTapped(CesiumCard card) {
     setState(() {
@@ -44,30 +35,44 @@ class _MultiWalletSelectorDialogState extends State<MultiWalletSelectorDialog> {
       } else {
         _selectedCards.add(card);
       }
+
+      // Sync select all state
+      _selectAll = _selectedCards.length == _cards.length;
+    });
+  }
+
+  void _toggleSelectAll(bool value) {
+    setState(() {
+      _selectAll = value;
+      if (_selectAll) {
+        _selectedCards.clear();
+        _selectedCards.addAll(_cards);
+      } else {
+        _selectedCards.clear();
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final double screenHeight = MediaQuery.of(context).size.height - 252;
-
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              tr('select_wallets_export'),
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(tr('select_wallets_export')),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.check),
+            onPressed: () {
+              Navigator.of(context).pop();
+              widget.onSelectionChanged(_selectedCards, _exportContacts);
+            },
           ),
-          SizedBox(
-            height: screenHeight > 400 ? 400 : screenHeight,
+        ],
+      ),
+      body: Column(
+        children: <Widget>[
+          Expanded(
             child: GridView.builder(
+              padding: const EdgeInsets.all(16.0),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount:
                     ResponsiveBreakpoints.of(context).largerThan(MOBILE)
@@ -121,7 +126,15 @@ class _MultiWalletSelectorDialogState extends State<MultiWalletSelectorDialog> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: SwitchListTile(
+              title: Text(tr('select_all_wallets')),
+              value: _selectAll,
+              onChanged: _toggleSelectAll,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: SwitchListTile(
               title: Text(tr('export_contacts')),
               value: _exportContacts,
@@ -132,41 +145,19 @@ class _MultiWalletSelectorDialogState extends State<MultiWalletSelectorDialog> {
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        _selectedCards.clear();
-                        _selectedCards.addAll(_cards);
-                      });
-                    },
-                    child: SizedBox(
-                        width: 100,
-                        child: Center(
-                          child: Text(
-                            tr('select_all_wallets'),
-                            textAlign: TextAlign.center,
-                            maxLines: 3,
-                            softWrap: true,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ))),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    widget.onSelectionChanged(_selectedCards, _exportContacts);
-                  },
-                  child: Text(tr('continue')),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );
   }
+}
+
+void showMultiWalletSelector(
+    BuildContext context, Function(List<CesiumCard>, bool) onSelectionChanged) {
+  Navigator.push(
+    context,
+    MaterialPageRoute<Widget>(
+      builder: (BuildContext context) =>
+          MultiWalletSelectorPage(onSelectionChanged: onSelectionChanged),
+    ),
+  );
 }

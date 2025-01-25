@@ -16,30 +16,37 @@ class TutorialTarget extends TargetFocus {
       : super(contents: <TargetContent>[
           TargetContent(
               align: align,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  if (title!)
-                    Text(
-                      tr('${identify}_title'),
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: 20.0),
-                    ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: Text(
-                      tr('${identify}_desc'),
-                      style: const TextStyle(color: Colors.white),
-                    ),
+              child: Container(
+                  constraints: BoxConstraints(
+                    maxHeight: WidgetsBinding.instance.platformDispatcher.views
+                            .first.physicalSize.height *
+                        0.4,
                   ),
-                  if (extraWidget != null)
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                        child: extraWidget)
-                ],
-              ))
+                  child: SingleChildScrollView(
+                      child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      if (title!)
+                        Text(
+                          tr('${identify}_title'),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 20.0),
+                        ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: Text(
+                          tr('${identify}_desc'),
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      if (extraWidget != null)
+                        Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                            child: extraWidget)
+                    ],
+                  ))))
         ]);
 }

@@ -8,6 +8,7 @@ import 'contact.dart';
 part 'contact_wot_info.g.dart';
 
 @CopyWith()
+// ignore: must_be_immutable
 class ContactWotInfo extends Equatable {
   ContactWotInfo({
     required this.me,

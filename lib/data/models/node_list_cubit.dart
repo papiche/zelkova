@@ -33,31 +33,38 @@ class NodeListCubit extends HydratedCubit<NodeListState> {
   }
 
   void setDuniterNodes(List<Node> nodes) {
-    emit(state.copyWith(duniterNodes: nodes));
+    emit(state.copyWith(
+        duniterNodes: nodes, duniterNodesLastUpdate: DateTime.now()));
   }
 
   void setDuniterIndexerNodes(List<Node> nodes) {
-    emit(state.copyWith(duniterIndexerNodes: nodes));
+    emit(state.copyWith(
+        duniterIndexerNodes: nodes,
+        duniterIndexerNodesLastUpdate: DateTime.now()));
   }
 
   void setDuniterDataNodes(List<Node> nodes) {
-    emit(state.copyWith(duniterDataNodes: nodes));
+    emit(state.copyWith(
+        duniterDataNodes: nodes, duniterDataNodesLastUpdate: DateTime.now()));
   }
 
   void setIpfsGateways(List<Node> nodes) {
-    emit(state.copyWith(ipfsGateways: nodes));
+    emit(state.copyWith(
+        ipfsGateways: nodes, ipfsGatewaysLastUpdate: DateTime.now()));
   }
 
   void setCesiumPlusNodes(List<Node> nodes) {
-    emit(state.copyWith(cesiumPlusNodes: nodes));
+    emit(state.copyWith(
+        cesiumPlusNodes: nodes, cesiumPlusNodesLastUpdate: DateTime.now()));
   }
 
   void setGvaNodes(List<Node> nodes) {
-    emit(state.copyWith(gvaNodes: nodes));
+    emit(state.copyWith(gvaNodes: nodes, gvaNodesLastUpdate: DateTime.now()));
   }
 
   void setEndpointNodes(List<Node> nodes) {
-    emit(state.copyWith(endpointNodes: nodes));
+    emit(state.copyWith(
+        endpointNodes: nodes, endpointNodesLastUpdate: DateTime.now()));
   }
 
   List<Node> get duniterNodes => state.duniterNodes;

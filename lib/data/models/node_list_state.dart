@@ -12,17 +12,24 @@ part 'node_list_state.g.dart';
 @JsonSerializable()
 @CopyWith()
 class NodeListState extends Equatable {
-  NodeListState(
-      {List<Node>? duniterNodes,
-      List<Node>? cesiumPlusNodes,
-      List<Node>? gvaNodes,
-      List<Node>? endpointNodes,
-      List<Node>? duniterIndexerNodes,
-      List<Node>? duniterDataNodes,
-      List<Node>? ipfsGateways,
-      this.currentGvaNode,
-      bool? isLoading})
-      : duniterNodes = duniterNodes ?? defaultDuniterNodes,
+  NodeListState({
+    List<Node>? duniterNodes,
+    List<Node>? cesiumPlusNodes,
+    List<Node>? gvaNodes,
+    List<Node>? endpointNodes,
+    List<Node>? duniterIndexerNodes,
+    List<Node>? duniterDataNodes,
+    List<Node>? ipfsGateways,
+    this.currentGvaNode,
+    this.duniterNodesLastUpdate,
+    this.cesiumPlusNodesLastUpdate,
+    this.gvaNodesLastUpdate,
+    this.endpointNodesLastUpdate,
+    this.duniterIndexerNodesLastUpdate,
+    this.duniterDataNodesLastUpdate,
+    this.ipfsGatewaysLastUpdate,
+    bool? isLoading,
+  })  : duniterNodes = duniterNodes ?? defaultDuniterNodes,
         cesiumPlusNodes = cesiumPlusNodes ?? defaultCesiumPlusNodes,
         gvaNodes = gvaNodes ?? defaultGvaNodes,
         endpointNodes = endpointNodes ?? defaultEndPointNodes,
@@ -48,6 +55,15 @@ class NodeListState extends Equatable {
   final List<Node> duniterDataNodes;
   @JsonKey(fromJson: _nodesFromJson, toJson: _nodesToJson)
   final List<Node> ipfsGateways;
+
+  final DateTime? duniterNodesLastUpdate;
+  final DateTime? cesiumPlusNodesLastUpdate;
+  final DateTime? gvaNodesLastUpdate;
+  final DateTime? endpointNodesLastUpdate;
+  final DateTime? duniterIndexerNodesLastUpdate;
+  final DateTime? duniterDataNodesLastUpdate;
+  final DateTime? ipfsGatewaysLastUpdate;
+
   final bool isLoading;
   @JsonKey(fromJson: _nodeFromJson, toJson: _nodeToJson)
   final Node? currentGvaNode;
@@ -62,6 +78,13 @@ class NodeListState extends Equatable {
         duniterDataNodes,
         ipfsGateways,
         currentGvaNode,
+        duniterNodesLastUpdate,
+        cesiumPlusNodesLastUpdate,
+        gvaNodesLastUpdate,
+        endpointNodesLastUpdate,
+        duniterIndexerNodesLastUpdate,
+        duniterDataNodesLastUpdate,
+        ipfsGatewaysLastUpdate,
         isLoading
       ];
 

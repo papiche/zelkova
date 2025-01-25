@@ -63,6 +63,7 @@ class NodeListPage extends StatelessWidget {
                     children: <Widget>[
                       NodeListHeader(
                           type: NodeType.endpoint,
+                          lastUpdated: state.endpointNodesLastUpdate,
                           nodesCount: endPointNodes.length),
                       if (endPointNodes.isNotEmpty)
                         NodeListWidget(
@@ -71,6 +72,7 @@ class NodeListPage extends StatelessWidget {
                             currentBlock: endPointNodes[0].currentBlock),
                       NodeListHeader(
                           type: NodeType.duniterIndexer,
+                          lastUpdated: state.duniterIndexerNodesLastUpdate,
                           nodesCount: defaultDuniterIndexerNodes.length),
                       if (duniterIndexerNodes.isNotEmpty)
                         NodeListWidget(
@@ -79,6 +81,7 @@ class NodeListPage extends StatelessWidget {
                             currentBlock: duniterIndexerNodes[0].currentBlock),
                       NodeListHeader(
                           type: NodeType.datapodEndpoint,
+                          lastUpdated: state.duniterDataNodesLastUpdate,
                           nodesCount: defaultDatapodEndpointNodes.length),
                       if (duniterDataNodes.isNotEmpty)
                         NodeListWidget(
@@ -87,6 +90,7 @@ class NodeListPage extends StatelessWidget {
                             currentBlock: duniterDataNodes[0].currentBlock),
                       NodeListHeader(
                           type: NodeType.ipfsGateway,
+                          lastUpdated: state.ipfsGatewaysLastUpdate,
                           nodesCount: defaultIpfsGateways.length),
                       if (ipfsGateways.isNotEmpty)
                         NodeListWidget(
@@ -94,7 +98,9 @@ class NodeListPage extends StatelessWidget {
                             type: NodeType.ipfsGateway,
                             currentBlock: ipfsGateways[0].currentBlock),
                       NodeListHeader(
-                          type: NodeType.gva, nodesCount: gvaNodes.length),
+                          type: NodeType.gva,
+                          lastUpdated: state.gvaNodesLastUpdate,
+                          nodesCount: gvaNodes.length),
                       if (gvaNodes.isNotEmpty)
                         NodeListWidget(
                             nodes: gvaNodes,
@@ -102,6 +108,7 @@ class NodeListPage extends StatelessWidget {
                             currentBlock: gvaNodes[0].currentBlock),
                       NodeListHeader(
                         type: NodeType.duniter,
+                        lastUpdated: state.duniterNodesLastUpdate,
                         nodesCount: duniterNodes.length,
                       ),
                       if (duniterNodes.isNotEmpty)
@@ -111,6 +118,7 @@ class NodeListPage extends StatelessWidget {
                             currentBlock: duniterNodes[0].currentBlock),
                       NodeListHeader(
                           type: NodeType.cesiumPlus,
+                          lastUpdated: state.cesiumPlusNodesLastUpdate,
                           nodesCount: cesiumPlusNodes.length),
                       if (cesiumPlusNodes.isNotEmpty)
                         NodeListWidget(
@@ -127,29 +135,50 @@ class NodeListPage extends StatelessWidget {
 
 class NodeListHeader extends StatelessWidget {
   const NodeListHeader(
-      {super.key, required this.type, required this.nodesCount});
+      {super.key,
+      required this.type,
+      required this.nodesCount,
+      this.lastUpdated});
 
   final NodeType type;
   final int nodesCount;
+  final DateTime? lastUpdated;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text('${capitalize(type.name)} Nodes ($nodesCount)',
-                style: const TextStyle(fontSize: 20)),
-            GestureDetector(
-              onLongPress: () => _fetchNodes(context, true, type),
-              child: IconButton(
-                  icon: const Icon(Icons.refresh),
-                  // Force in all cases
-                  onPressed: () => _fetchNodes(context, false, type)),
-            )
-          ],
-        ));
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                tr('nodes_list_title',
+                    args: <String>[capitalize(type.name), '$nodesCount']),
+                style: const TextStyle(fontSize: 20),
+              ),
+              if (lastUpdated != null)
+                Text(
+                  tr('nodes_list_last_updated', args: <String>[
+                    humanizeTime(lastUpdated!, context.locale.toString())
+                  ]),
+                  style: const TextStyle(fontSize: 14, color: Colors.grey),
+                ),
+            ],
+          ),
+          GestureDetector(
+            onLongPress: () => _fetchNodes(context, true, type),
+            child: IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: () => _fetchNodes(context, false, type),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   void _fetchNodes(BuildContext context, bool force, NodeType type) {

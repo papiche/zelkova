@@ -382,5 +382,7 @@
   "create_with_mnemonics_option": "Con frase mnemónica",
   "create_with_mnemonics_description": "Monedero recuperable utilizando una frase semilla (recomendado en Duniter v2)",
   "clipboard_import_mnemonic": "Importar frase mnemónica",
-  "clipboard_import_mnemonic_description": "Introduce una frase mnemónica para recuperar tu monedero"
+  "clipboard_import_mnemonic_description": "Introduce una frase mnemónica para recuperar tu monedero",
+  "nodes_list_title": "Nodos {} ({})",
+  "nodes_list_last_updated": "Última actualización: {}"
 }

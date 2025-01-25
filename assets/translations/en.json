@@ -376,6 +376,8 @@
   "create_with_mnemonics_option": "With mnemonic phrase",
   "create_with_mnemonics_description": "Recoverable wallet using a seed phrase (recommended in duniter v2)",
   "clipboard_import_mnemonic": "Import mnemonic phrase",
-  "clipboard_import_mnemonic_description": "Enter a mnemonic phrase to recover your wallet"
+  "clipboard_import_mnemonic_description": "Enter a mnemonic phrase to recover your wallet",
+  "nodes_list_title": "{} Nodes ({})",
+  "nodes_list_last_updated": "Last updated: {}"
 }
 

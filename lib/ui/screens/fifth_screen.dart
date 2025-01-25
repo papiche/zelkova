@@ -43,21 +43,9 @@ class _FifthScreenState extends State<FifthScreen> {
   List<CesiumCard> _selectedWallets = <CesiumCard>[];
   bool _exportContacts = false;
 
-  Future<void> _showMultiWalletSelectorDialog(BuildContext context,
-      Function(List<CesiumCard>, bool) onSelectionChanged) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return MultiWalletSelectorDialog(
-          onSelectionChanged: onSelectionChanged,
-        );
-      },
-    );
-  }
-
   Future<void> _openWalletSelector(
       BuildContext context, bool expertMode) async {
-    _showMultiWalletSelectorDialog(context,
+    showMultiWalletSelector(context,
         (List<CesiumCard> selectedCards, bool exportContacts) {
       setState(() {
         loggerDev('Selected wallets: ${selectedCards.length}');
@@ -197,7 +185,7 @@ class _FifthScreenState extends State<FifthScreen> {
                     // Espacio horizontal entre los elementos
                     runSpacing: 8.0,
                     // Espacio vertical entre las filas
-                    alignment: WrapAlignment.start,
+                    // alignment: WrapAlignment.start,
                     // Alineación de los elementos en una fila
                     children: <Widget>[
                       if (showShare())

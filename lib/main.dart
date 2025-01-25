@@ -472,6 +472,10 @@ class _GinkgoAppState extends State<GinkgoApp> {
       logger('clear tx cubit via once');
       context.read<MultiWalletTransactionCubit>().clearState();
     });
+    Once.runHourly('fetch_nodes', callback: () {
+      logger('---------- fetchNodes via once');
+      _loadNodes();
+    });
     Once.runCustom('fetch_txs', callback: () {
       logger('---------- fetchTransactions via once');
       // Disabled to check the back development

@@ -136,6 +136,7 @@ dependencies:
   substrate_bip39: ^0.4.1
   intl: ^0.18.1
   app_links: ^6.3.3
+  flutter_secure_storage: ^9.2.4
 
 dev_dependencies:
   flutter_test:

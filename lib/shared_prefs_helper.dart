@@ -70,58 +70,52 @@ class SharedPreferencesHelper with ChangeNotifier {
 
     if (!isMigrated) {
       try {
+        final List<Wallet> walletsToMigrate = <Wallet>[];
+
         // Migrate legacy accounts based on seed and pub key
-        if (_prefs.containsKey(_seedKey) && _prefs.containsKey(_pubKey)) {
-          final String? seed = _prefs.getString(_seedKey);
-          final String? pubKey = _prefs.getString(_pubKey);
-          if (seed != null && pubKey != null) {
-            final Wallet legacyWallet = Wallet(
-                seed: seed,
-                pubKey: pubKey,
-                theme: WalletThemes.theme1,
-                name: 'Legacy Wallet');
-            wallets.add(legacyWallet);
-          }
+        final String? seed = _prefs.getString(_seedKey);
+        final String? pubKey = _prefs.getString(_pubKey);
+        if (seed != null && pubKey != null) {
+          final Wallet wallet = buildCesiumCard(seed: seed, pubKey: pubKey);
+          walletsToMigrate.add(wallet);
         }
 
-        // Migrate legacy accounts
+        // Migrate legacy accounts (array)
         final String? json = _prefs.getString(_legacyAccountsKey);
         if (json != null) {
           final List<dynamic> list = jsonDecode(json) as List<dynamic>;
           final List<Wallet> legacyWallets = list
               .map((dynamic e) => Wallet.fromJson(e as Map<String, dynamic>))
               .toList();
-          wallets.addAll(legacyWallets);
+          walletsToMigrate.addAll(legacyWallets);
         }
 
         // Migration current index
         final int? legacyIndex = _prefs.getInt(_legacyCurrentAccountIndex);
         if (legacyIndex != null) {
           _currentWalletIndex = legacyIndex;
-          await _secureStorage.write(
-              key: _currentAccountIndex, value: _currentWalletIndex.toString());
+        } else {
+          _currentWalletIndex = 0; // Default to the first wallet
         }
 
-        // Save wallets
+        // Save wallets in memory and secure storage
+        wallets = walletsToMigrate;
         await saveWallets();
+
+        // Save current index
+        await _secureStorage.write(
+            key: _currentAccountIndex, value: _currentWalletIndex.toString());
+
+        // Remove legacy data only if migration succeeded
+        await _prefs.remove(_seedKey);
+        await _prefs.remove(_pubKey);
+        await _prefs.remove(_legacyAccountsKey);
+        await _prefs.remove(_legacyCurrentAccountIndex);
+
+        logger('Migration completed successfully');
       } catch (e) {
         logger('Migration failed: $e');
       }
-    }
-  }
-
-  Future<void> migrateCurrentPair() async {
-    if (_prefs.containsKey(_seedKey) &&
-        _prefs.containsKey(_pubKey) &&
-        wallets.isEmpty) {
-      final String seed = _prefs.getString(_seedKey)!;
-      final String pubKey = _prefs.getString(_pubKey)!;
-      final Wallet card = buildCesiumCard(seed: seed, pubKey: pubKey);
-      addWallet(card);
-      // Let's do this later
-      await _prefs.remove(_seedKey);
-      await _prefs.remove(_pubKey);
-      setCurrentWalletIndex(0);
     }
   }
 

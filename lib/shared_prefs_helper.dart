@@ -25,12 +25,14 @@ class SharedPreferencesHelper with ChangeNotifier {
 
   static const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
+  // Memory cache
   List<Wallet> wallets = <Wallet>[];
   Map<String, CesiumWallet> cesiumVolatileCards = <String, CesiumWallet>{};
   late SharedPreferences _prefs;
+  int _currentWalletIndex = 0;
 
   static final SharedPreferencesHelper _instance =
-  SharedPreferencesHelper._internal();
+      SharedPreferencesHelper._internal();
 
   // Legacy keys
   static const String _seedKey = 'seed';
@@ -54,29 +56,57 @@ class SharedPreferencesHelper with ChangeNotifier {
           .map((dynamic e) => Wallet.fromJson(e as Map<String, dynamic>))
           .toList();
     }
+
+    // load current index
+    final String? indexStr =
+        await _secureStorage.read(key: _currentAccountIndex);
+    if (indexStr != null) {
+      _currentWalletIndex = int.parse(indexStr);
+    }
   }
 
   Future<void> _migrateToSecureStorage() async {
-    // Check if data is already in secure storage
     final bool isMigrated = await _secureStorage.containsKey(key: _accountsKey);
 
     if (!isMigrated) {
-      // Migrate cesiumCards
-      final String? json = _prefs.getString(_legacyAccountsKey);
-      if (json != null) {
-        await _secureStorage.write(key: _accountsKey, value: json);
-      }
+      try {
+        // Migrate legacy accounts based on seed and pub key
+        if (_prefs.containsKey(_seedKey) && _prefs.containsKey(_pubKey)) {
+          final String? seed = _prefs.getString(_seedKey);
+          final String? pubKey = _prefs.getString(_pubKey);
+          if (seed != null && pubKey != null) {
+            final Wallet legacyWallet = Wallet(
+                seed: seed,
+                pubKey: pubKey,
+                theme: WalletThemes.theme1,
+                name: 'Legacy Wallet');
+            wallets.add(legacyWallet);
+          }
+        }
 
-      // Migrate current wallet index
-      final int? currentWalletIndex = _prefs.getInt(_legacyCurrentAccountIndex);
-      if (currentWalletIndex != null) {
-        await _secureStorage.write(
-            key: _currentAccountIndex, value: currentWalletIndex.toString());
-      }
+        // Migrate legacy accounts
+        final String? json = _prefs.getString(_legacyAccountsKey);
+        if (json != null) {
+          final List<dynamic> list = jsonDecode(json) as List<dynamic>;
+          final List<Wallet> legacyWallets = list
+              .map((dynamic e) => Wallet.fromJson(e as Map<String, dynamic>))
+              .toList();
+          wallets.addAll(legacyWallets);
+        }
 
-      // Remove sensitive data from SharedPreferences
-      await _prefs.remove(_legacyAccountsKey);
-      await _prefs.remove(_legacyCurrentAccountIndex);
+        // Migration current index
+        final int? legacyIndex = _prefs.getInt(_legacyCurrentAccountIndex);
+        if (legacyIndex != null) {
+          _currentWalletIndex = legacyIndex;
+          await _secureStorage.write(
+              key: _currentAccountIndex, value: _currentWalletIndex.toString());
+        }
+
+        // Save wallets
+        await saveWallets();
+      } catch (e) {
+        logger('Migration failed: $e');
+      }
     }
   }
 
@@ -117,7 +147,7 @@ class SharedPreferencesHelper with ChangeNotifier {
 
   Future<void> saveWallets([bool notify = true]) async {
     final String json =
-    jsonEncode(wallets.map((Wallet e) => e.toJson()).toList());
+        jsonEncode(wallets.map((Wallet e) => e.toJson()).toList());
     await _secureStorage.write(key: _accountsKey, value: json);
     if (notify) {
       notifyListeners();
@@ -133,7 +163,7 @@ class SharedPreferencesHelper with ChangeNotifier {
       } else {
         // This should have the wallet loaded
         final CesiumWallet? volatileWallet =
-        cesiumVolatileCards[extractPublicKey(card.pubKey)];
+            cesiumVolatileCards[extractPublicKey(card.pubKey)];
         if (volatileWallet != null) {
           return volatileWallet;
         }
@@ -180,13 +210,10 @@ class SharedPreferencesHelper with ChangeNotifier {
     saveWallets();
   }
 
-  int getCurrentWalletIndex() {
-    final String? indexStr =
-    _secureStorage.read(key: _currentAccountIndex) as String?;
-    return indexStr != null ? int.parse(indexStr) : 0;
-  }
+  int getCurrentWalletIndex() => _currentWalletIndex;
 
   Future<void> setCurrentWalletIndex(int index) async {
+    _currentWalletIndex = index;
     await _secureStorage.write(
         key: _currentAccountIndex, value: index.toString());
     notifyListeners();

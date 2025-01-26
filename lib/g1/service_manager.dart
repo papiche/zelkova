@@ -9,7 +9,7 @@ import 'duniter_datapod_helper.dart';
 import 'duniter_endpoint_helper.dart';
 import 'duniter_indexer_helper.dart';
 import 'pay_result.dart';
-import 'transaction_v1_parser.dart';
+import 'transactions_v1_parser.dart';
 import 'transactions_v2_parser.dart';
 
 abstract class DuniterService {

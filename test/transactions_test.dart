@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:ginkgo/data/models/transaction.dart';
 import 'package:ginkgo/data/models/transaction_state.dart';
 import 'package:ginkgo/data/models/transaction_type.dart';
-import 'package:ginkgo/g1/transaction_v1_parser.dart';
+import 'package:ginkgo/g1/transactions_v1_parser.dart';
 import 'package:ginkgo/ui/contacts_cache.dart';
 
 void main() {
@@ -26,7 +26,7 @@ void main() {
     TestWidgetsFlutterBinding.ensureInitialized();
     final String txData = await rootBundle.loadString('assets/tx.json');
     final TransactionState result =
-        await transactionParser(txData, <Transaction>[]);
+        await transactionsParser(txData, <Transaction>[]);
     expect(result.balance, equals(6700));
     final List<Transaction> txs = result.transactions;
     for (final Transaction tx in txs) {

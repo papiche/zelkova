@@ -10,7 +10,7 @@ import 'g1_helper.dart';
 
 final RegExp exp = RegExp(r'\((.*?)\)');
 
-Future<TransactionState> transactionParser(
+Future<TransactionState> transactionsParser(
     String txData, List<Transaction> pendingTransactions) async {
   final Map<String, dynamic> parsedTxData =
       json.decode(txData) as Map<String, dynamic>;

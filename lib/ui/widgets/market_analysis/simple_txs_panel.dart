@@ -7,7 +7,7 @@ import '../../../data/models/node.dart';
 import '../../../data/models/transaction.dart';
 import '../../../data/models/transaction_state.dart';
 import '../../../g1/api.dart';
-import '../../../g1/transaction_v1_parser.dart';
+import '../../../g1/transactions_v1_parser.dart';
 import '../../ui_helpers.dart';
 import '../connectivity_widget_wrapper_wrapper.dart';
 import '../fourth_screen/transaction_item.dart';

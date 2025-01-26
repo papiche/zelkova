@@ -692,7 +692,7 @@ Future<void> fetchTransactionsFromBackground([bool init = true]) async {
   try {
     if (init) {
       await hiveInit();
-      if (SharedPreferencesHelper().cards.isEmpty) {
+      if (SharedPreferencesHelper().wallets.isEmpty) {
         await SharedPreferencesHelper().init();
       }
       try {
@@ -713,9 +713,9 @@ Future<void> fetchTransactionsFromBackground([bool init = true]) async {
     final GetIt getIt = GetIt.instance;
     final MultiWalletTransactionCubit transCubit =
         getIt.get<MultiWalletTransactionCubit>();
-    for (final Wallet card in SharedPreferencesHelper().cards) {
-      loggerDev('Fetching transactions for ${card.pubKey} in background');
-      transCubit.fetchTransactions(pubKey: card.pubKey);
+    for (final Wallet wallet in SharedPreferencesHelper().wallets) {
+      loggerDev('Fetching transactions for ${wallet.pubKey} in background');
+      transCubit.fetchTransactions(pubKey: wallet.pubKey);
     }
     if (inDevelopment) {
       NotificationController.notify(
@@ -817,7 +817,7 @@ Future<void> _clearCacheIfNeeded(Directory storageDir) async {
 Future<void> fetchTransactions(BuildContext context) async {
   final MultiWalletTransactionCubit transCubit =
       context.read<MultiWalletTransactionCubit>();
-  for (final Wallet card in SharedPreferencesHelper().cards) {
-    transCubit.fetchTransactions(pubKey: card.pubKey);
+  for (final Wallet wallet in SharedPreferencesHelper().wallets) {
+    transCubit.fetchTransactions(pubKey: wallet.pubKey);
   }
 }

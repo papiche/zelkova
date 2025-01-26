@@ -30,7 +30,7 @@ class SharedPreferencesHelper with ChangeNotifier {
   late SharedPreferences _prefs;
 
   static final SharedPreferencesHelper _instance =
-      SharedPreferencesHelper._internal();
+  SharedPreferencesHelper._internal();
 
   // Legacy keys
   static const String _seedKey = 'seed';
@@ -117,7 +117,7 @@ class SharedPreferencesHelper with ChangeNotifier {
 
   Future<void> saveWallets([bool notify = true]) async {
     final String json =
-        jsonEncode(wallets.map((Wallet e) => e.toJson()).toList());
+    jsonEncode(wallets.map((Wallet e) => e.toJson()).toList());
     await _secureStorage.write(key: _accountsKey, value: json);
     if (notify) {
       notifyListeners();
@@ -133,7 +133,7 @@ class SharedPreferencesHelper with ChangeNotifier {
       } else {
         // This should have the wallet loaded
         final CesiumWallet? volatileWallet =
-            cesiumVolatileCards[extractPublicKey(card.pubKey)];
+        cesiumVolatileCards[extractPublicKey(card.pubKey)];
         if (volatileWallet != null) {
           return volatileWallet;
         }
@@ -180,11 +180,9 @@ class SharedPreferencesHelper with ChangeNotifier {
     saveWallets();
   }
 
-  List<Wallet> get cards => wallets;
-
   int getCurrentWalletIndex() {
     final String? indexStr =
-        _secureStorage.read(key: _currentAccountIndex) as String?;
+    _secureStorage.read(key: _currentAccountIndex) as String?;
     return indexStr != null ? int.parse(indexStr) : 0;
   }
 
@@ -194,9 +192,9 @@ class SharedPreferencesHelper with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> selectCurrentWallet(Wallet card) async {
+  Future<void> selectCurrentWallet(Wallet wallet) async {
     // TODO(vjrj): this should be a find with pubkey
-    final int index = cards.indexOf(card);
+    final int index = wallets.indexOf(wallet);
     if (index >= 0) {
       await _prefs.setInt(_legacyCurrentAccountIndex, index);
       notifyListeners();

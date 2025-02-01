@@ -19,7 +19,6 @@ class SharedPreferencesHelper with ChangeNotifier {
   SharedPreferencesHelper._internal() {
     SharedPreferences.getInstance().then((SharedPreferences value) {
       _prefs = value;
-      _migrateToSecureStorage();
     });
   }
 
@@ -124,8 +123,8 @@ class SharedPreferencesHelper with ChangeNotifier {
         seed: seed, pubKey: pubKey, theme: WalletThemes.theme1, name: '');
   }
 
-  void addWallet(Wallet cesiumCard) {
-    wallets.add(cesiumCard);
+  void addWallet(Wallet wallet) {
+    wallets.add(wallet);
     saveWallets();
   }
 
@@ -151,13 +150,13 @@ class SharedPreferencesHelper with ChangeNotifier {
   // Get the wallet from the specified index (default to first wallet)
   Future<CesiumWallet> getWallet() async {
     if (wallets.isNotEmpty) {
-      final Wallet card = wallets[getCurrentWalletIndex()];
+      final Wallet wallet = wallets[getCurrentWalletIndex()];
       if (isPasswordLessWallet()) {
-        return CesiumWallet.fromSeed(seedFromString(card.seed));
+        return CesiumWallet.fromSeed(seedFromString(wallet.seed));
       } else {
         // This should have the wallet loaded
         final CesiumWallet? volatileWallet =
-            cesiumVolatileCards[extractPublicKey(card.pubKey)];
+            cesiumVolatileCards[extractPublicKey(wallet.pubKey)];
         if (volatileWallet != null) {
           return volatileWallet;
         }
@@ -176,31 +175,31 @@ class SharedPreferencesHelper with ChangeNotifier {
 
   // Get the public key from the specified index (default to first wallet)
   String getPubKey() {
-    final Wallet card = wallets[getCurrentWalletIndex()];
-    final String pubKey = card.pubKey;
+    final Wallet wallet = wallets[getCurrentWalletIndex()];
+    final String pubKey = wallet.pubKey;
     final String checksum = pkChecksum(extractPublicKey(pubKey));
     return '$pubKey:$checksum';
   }
 
   String getName() {
-    final Wallet card = wallets[getCurrentWalletIndex()];
-    return card.name;
+    final Wallet wallet = wallets[getCurrentWalletIndex()];
+    return wallet.name;
   }
 
   WalletTheme getTheme() {
-    final Wallet card = wallets[getCurrentWalletIndex()];
-    return card.theme;
+    final Wallet wallet = wallets[getCurrentWalletIndex()];
+    return wallet.theme;
   }
 
   void setName({required String name, bool notify = true}) {
-    final Wallet card = wallets[getCurrentWalletIndex()];
-    wallets[getCurrentWalletIndex()] = card.copyWith(name: name);
+    final Wallet wallet = wallets[getCurrentWalletIndex()];
+    wallets[getCurrentWalletIndex()] = wallet.copyWith(name: name);
     saveWallets(notify);
   }
 
   void setTheme({required WalletTheme theme}) {
-    final Wallet card = wallets[getCurrentWalletIndex()];
-    wallets[getCurrentWalletIndex()] = card.copyWith(theme: theme);
+    final Wallet wallet = wallets[getCurrentWalletIndex()];
+    wallets[getCurrentWalletIndex()] = wallet.copyWith(theme: theme);
     saveWallets();
   }
 
@@ -234,8 +233,9 @@ class SharedPreferencesHelper with ChangeNotifier {
   }
 
   bool has(String pubKey) {
-    for (final Wallet card in wallets) {
-      if (card.pubKey == extractPublicKey(pubKey) || card.pubKey == pubKey) {
+    for (final Wallet wallet in wallets) {
+      if (wallet.pubKey == extractPublicKey(pubKey) ||
+          wallet.pubKey == pubKey) {
         return true;
       }
     }
@@ -255,8 +255,8 @@ class SharedPreferencesHelper with ChangeNotifier {
   }
 
   bool isPasswordLessWallet([Wallet? otherCard]) {
-    final Wallet card = otherCard ?? wallets[getCurrentWalletIndex()];
-    return card.seed.isNotEmpty;
+    final Wallet wallet = otherCard ?? wallets[getCurrentWalletIndex()];
+    return wallet.seed.isNotEmpty;
   }
 
   Future<KeyPair> getKeyPair() async {

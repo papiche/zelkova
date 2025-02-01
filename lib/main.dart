@@ -793,25 +793,29 @@ Future<void> hiveInit() async {
 
 Future<void> _clearCacheIfNeeded(Directory storageDir) async {
   final List<String> boxes = <String>['contacts_cache', 'ferry-graphql-cache'];
-  for (final String box in boxes) {
-    loggerDev("Checking $box cache's size");
-    final String cachePath = '${storageDir.path}/$box.hive';
 
-    final File cacheFile = File(cachePath);
-    if (cacheFile.existsSync()) {
-      final int cacheSize = cacheFile.lengthSync();
-      const int maxCacheSize = 100000000;
+  for (final String boxName in boxes) {
+    loggerDev("Checking $boxName cache's size");
 
-      if (cacheSize > maxCacheSize) {
-        loggerDev('Cache $box exceeds limit. Clearing cache...');
-        await cacheFile.delete();
+    if (!kIsWeb) {
+      final String cachePath = '${storageDir.path}/$boxName.hive';
+
+      final File cacheFile = File(cachePath);
+      if (cacheFile.existsSync()) {
+        final int cacheSize = cacheFile.lengthSync();
+        const int maxCacheSize = 100000000;
+
+        if (cacheSize > maxCacheSize) {
+          loggerDev('Cache $boxName exceeds limit. Clearing cache...');
+          await cacheFile.delete();
+        } else {
+          loggerDev('Cache $boxName size is within limits.');
+        }
       } else {
-        loggerDev('Cache $box size is within limits.');
+        loggerDev('Cache $boxName file does not exist.');
       }
-    } else {
-      loggerDev('Cache $box file does not exist.');
     }
-  }
+  } // TODO(vjrj): do something for web too
 }
 
 Future<void> fetchTransactions(BuildContext context) async {

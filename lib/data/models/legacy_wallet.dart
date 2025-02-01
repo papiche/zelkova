@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'is_json_serializable.dart';
 import 'wallet_themes.dart';
 
-part 'wallet.g.dart';
+part 'legacy_wallet.g.dart';
 
 @JsonSerializable()
 @CopyWith()
@@ -16,7 +16,7 @@ class LegacyWallet implements IsJsonSerializable<LegacyWallet> {
       required this.theme});
 
   factory LegacyWallet.fromJson(Map<String, dynamic> json) =>
-      _$WalletFromJson(json);
+      _$LegacyWalletFromJson(json);
 
   final String pubKey;
   final String seed;
@@ -24,7 +24,7 @@ class LegacyWallet implements IsJsonSerializable<LegacyWallet> {
   final String name;
 
   @override
-  Map<String, dynamic> toJson() => _$WalletToJson(this);
+  Map<String, dynamic> toJson() => _$LegacyWalletToJson(this);
 
   @override
   LegacyWallet fromJson(Map<String, dynamic> json) {

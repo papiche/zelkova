@@ -36,6 +36,7 @@ import 'data/models/app_cubit.dart';
 import 'data/models/app_state.dart';
 import 'data/models/bottom_nav_cubit.dart';
 import 'data/models/contact_cubit.dart';
+import 'data/models/legacy_wallet.dart';
 import 'data/models/multi_wallet_transaction_cubit.dart';
 import 'data/models/node_list_cubit.dart';
 import 'data/models/node_list_state.dart';
@@ -44,7 +45,6 @@ import 'data/models/node_type.dart';
 import 'data/models/payment_cubit.dart';
 import 'data/models/theme_cubit.dart';
 import 'data/models/utxo_cubit.dart';
-import 'data/models/wallet.dart';
 import 'env.dart';
 import 'g1/api.dart';
 import 'g1/distance_precompute.dart';
@@ -101,7 +101,7 @@ void main() async {
 
   final SharedPreferencesHelper shared = SharedPreferencesHelper();
   await shared.init();
-  if (shared.wallets.isEmpty) {
+  if (shared.legacyWallets.isEmpty) {
     await shared.getWallet();
   }
   assert(shared.getPubKey() != null);
@@ -692,7 +692,7 @@ Future<void> fetchTransactionsFromBackground([bool init = true]) async {
   try {
     if (init) {
       await hiveInit();
-      if (SharedPreferencesHelper().wallets.isEmpty) {
+      if (SharedPreferencesHelper().legacyWallets.isEmpty) {
         await SharedPreferencesHelper().init();
       }
       try {
@@ -713,7 +713,7 @@ Future<void> fetchTransactionsFromBackground([bool init = true]) async {
     final GetIt getIt = GetIt.instance;
     final MultiWalletTransactionCubit transCubit =
         getIt.get<MultiWalletTransactionCubit>();
-    for (final Wallet wallet in SharedPreferencesHelper().wallets) {
+    for (final LegacyWallet wallet in SharedPreferencesHelper().legacyWallets) {
       loggerDev('Fetching transactions for ${wallet.pubKey} in background');
       transCubit.fetchTransactions(pubKey: wallet.pubKey);
     }
@@ -821,7 +821,7 @@ Future<void> _clearCacheIfNeeded(Directory storageDir) async {
 Future<void> fetchTransactions(BuildContext context) async {
   final MultiWalletTransactionCubit transCubit =
       context.read<MultiWalletTransactionCubit>();
-  for (final Wallet wallet in SharedPreferencesHelper().wallets) {
+  for (final LegacyWallet wallet in SharedPreferencesHelper().legacyWallets) {
     transCubit.fetchTransactions(pubKey: wallet.pubKey);
   }
 }

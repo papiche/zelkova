@@ -9,8 +9,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/models/app_cubit.dart';
 import '../../data/models/bottom_nav_cubit.dart';
 import '../../data/models/contact.dart';
+import '../../data/models/legacy_wallet.dart';
 import '../../data/models/multi_wallet_transaction_cubit.dart';
-import '../../data/models/wallet.dart';
 import '../../data/models/wallet_themes.dart';
 import '../../g1/api.dart';
 import '../../g1/g1_export_auth_utils.dart';
@@ -198,7 +198,7 @@ class _CesiumAuthDialogState extends State<CesiumAuthDialog> {
 
   void _onCorrectAuth(
       Contact contact, CesiumWallet wallet, BuildContext context) {
-    final Wallet card = Wallet(
+    final LegacyWallet card = LegacyWallet(
       name: contact.name ?? '',
       pubKey: extractPublicKey(widget.publicKey),
       seed: '',

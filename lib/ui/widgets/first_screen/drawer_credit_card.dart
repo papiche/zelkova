@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/models/bottom_nav_cubit.dart';
+import '../../../data/models/legacy_wallet.dart';
 import '../../../data/models/multi_wallet_transaction_cubit.dart';
-import '../../../data/models/wallet.dart';
 import '../../../data/models/wallet_themes.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
@@ -21,7 +21,7 @@ class DrawerWalletCard extends StatelessWidget {
       required this.cardIndex,
       required this.settingsVisible});
 
-  final Wallet card;
+  final LegacyWallet card;
   final bool settingsVisible;
   final int cardIndex;
 

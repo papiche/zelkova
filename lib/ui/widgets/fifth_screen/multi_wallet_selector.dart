@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-import '../../../data/models/wallet.dart';
+import '../../../data/models/legacy_wallet.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../ui_helpers.dart';
@@ -11,7 +11,7 @@ import '../first_screen/account_card_selector_item.dart';
 class MultiWalletSelectorPage extends StatefulWidget {
   const MultiWalletSelectorPage({super.key, required this.onSelectionChanged});
 
-  final Function(List<Wallet>, bool) onSelectionChanged;
+  final Function(List<LegacyWallet>, bool) onSelectionChanged;
 
   @override
   State<MultiWalletSelectorPage> createState() =>
@@ -19,16 +19,16 @@ class MultiWalletSelectorPage extends StatefulWidget {
 }
 
 class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
-  final List<Wallet> _selectedCards = <Wallet>[];
+  final List<LegacyWallet> _selectedCards = <LegacyWallet>[];
   bool _exportContacts = true;
   bool _selectAll = false;
 
-  final List<Wallet> _cards = SharedPreferencesHelper()
-      .wallets
-      .where((Wallet card) => card.seed.isNotEmpty)
+  final List<LegacyWallet> _cards = SharedPreferencesHelper()
+      .legacyWallets
+      .where((LegacyWallet card) => card.seed.isNotEmpty)
       .toList();
 
-  void _onCardTapped(Wallet card) {
+  void _onCardTapped(LegacyWallet card) {
     setState(() {
       if (_selectedCards.contains(card)) {
         _selectedCards.remove(card);
@@ -82,7 +82,7 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
               ),
               itemCount: _cards.length,
               itemBuilder: (BuildContext context, int index) {
-                final Wallet card = _cards[index];
+                final LegacyWallet card = _cards[index];
                 final bool isSelected = _selectedCards.contains(card);
                 return GestureDetector(
                   onTap: () => _onCardTapped(card),
@@ -152,8 +152,8 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
   }
 }
 
-void showMultiWalletSelector(
-    BuildContext context, Function(List<Wallet>, bool) onSelectionChanged) {
+void showMultiWalletSelector(BuildContext context,
+    Function(List<LegacyWallet>, bool) onSelectionChanged) {
   Navigator.push(
     context,
     MaterialPageRoute<Widget>(

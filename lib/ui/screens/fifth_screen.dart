@@ -8,9 +8,9 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
+import '../../data/models/legacy_wallet.dart';
 import '../../data/models/node_manager.dart';
 import '../../data/models/theme_cubit.dart';
-import '../../data/models/wallet.dart';
 import '../../g1/currency.dart';
 import '../../g1/service_manager.dart';
 import '../../shared_prefs_helper.dart';
@@ -40,13 +40,13 @@ class FifthScreen extends StatefulWidget {
 
 class _FifthScreenState extends State<FifthScreen> {
   late Tutorial tutorial;
-  List<Wallet> _selectedWallets = <Wallet>[];
+  List<LegacyWallet> _selectedWallets = <LegacyWallet>[];
   bool _exportContacts = false;
 
   Future<void> _openWalletSelector(
       BuildContext context, bool expertMode) async {
     showMultiWalletSelector(context,
-        (List<Wallet> selectedCards, bool exportContacts) {
+        (List<LegacyWallet> selectedCards, bool exportContacts) {
       setState(() {
         loggerDev('Selected wallets: ${selectedCards.length}');
         _selectedWallets = selectedCards;

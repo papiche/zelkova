@@ -18,7 +18,7 @@ import 'package:universal_html/html.dart' as html;
 
 import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
-import '../../../data/models/wallet.dart';
+import '../../../data/models/legacy_wallet.dart';
 import '../../../g1/g1_export_auth_utils.dart';
 import '../../../g1/g1_helper.dart';
 import '../../in_dev_helper.dart';
@@ -37,7 +37,7 @@ class ExportDialog extends StatefulWidget {
   });
 
   final ExportType type;
-  final List<Wallet> wallets;
+  final List<LegacyWallet> wallets;
   final bool exportContacts;
 
   @override
@@ -186,7 +186,7 @@ class _ExportDialogState extends State<ExportDialog> {
     context.read<ContactsCubit>().sortContactsAsStored();
     // Export only selected wallets, not all of them
     final List<Map<String, dynamic>> selectedWallets =
-        widget.wallets.map((Wallet card) => card.toJson()).toList();
+        widget.wallets.map((LegacyWallet card) => card.toJson()).toList();
     final Map<String, dynamic> prefsObj = <String, dynamic>{};
     // Add only the selected wallets to prefsObj
     prefsObj['cesiumCards'] = jsonEncode(selectedWallets);
@@ -309,7 +309,7 @@ class _ExportDialogState extends State<ExportDialog> {
   }
 
   CesiumWallet _getFirstWallet() {
-    final Wallet card = widget.wallets.first;
+    final LegacyWallet card = widget.wallets.first;
     final CesiumWallet wallet =
         CesiumWallet.fromSeed(seedFromString(card.seed));
     return wallet;

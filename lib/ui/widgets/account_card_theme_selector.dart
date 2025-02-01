@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-import '../../data/models/wallet.dart';
+import '../../data/models/legacy_wallet.dart';
 import '../../data/models/wallet_themes.dart';
 import 'first_screen/account_card_selector_item.dart';
 
@@ -9,7 +9,7 @@ class AccountCardThemeSelector extends StatelessWidget {
   const AccountCardThemeSelector(
       {super.key, required this.card, required this.onTap});
 
-  final Wallet card;
+  final LegacyWallet card;
   final Function(WalletTheme) onTap;
 
   @override

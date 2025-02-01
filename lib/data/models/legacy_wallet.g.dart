@@ -1,27 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'wallet.dart';
+part of 'legacy_wallet.dart';
 
 // **************************************************************************
 // CopyWithGenerator
 // **************************************************************************
 
-abstract class _$WalletCWProxy {
-  Wallet seed(String seed);
+abstract class _$LegacyWalletCWProxy {
+  LegacyWallet seed(String seed);
 
-  Wallet pubKey(String pubKey);
+  LegacyWallet pubKey(String pubKey);
 
-  Wallet name(String name);
+  LegacyWallet name(String name);
 
-  Wallet theme(WalletTheme theme);
+  LegacyWallet theme(WalletTheme theme);
 
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Wallet(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `LegacyWallet(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
   /// ```dart
-  /// Wallet(...).copyWith(id: 12, name: "My name")
+  /// LegacyWallet(...).copyWith(id: 12, name: "My name")
   /// ````
-  Wallet call({
+  LegacyWallet call({
     String? seed,
     String? pubKey,
     String? name,
@@ -29,39 +29,39 @@ abstract class _$WalletCWProxy {
   });
 }
 
-/// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfWallet.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfWallet.copyWith.fieldName(...)`
-class _$WalletCWProxyImpl implements _$WalletCWProxy {
-  const _$WalletCWProxyImpl(this._value);
+/// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfLegacyWallet.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfLegacyWallet.copyWith.fieldName(...)`
+class _$LegacyWalletCWProxyImpl implements _$LegacyWalletCWProxy {
+  const _$LegacyWalletCWProxyImpl(this._value);
 
-  final Wallet _value;
-
-  @override
-  Wallet seed(String seed) => this(seed: seed);
+  final LegacyWallet _value;
 
   @override
-  Wallet pubKey(String pubKey) => this(pubKey: pubKey);
+  LegacyWallet seed(String seed) => this(seed: seed);
 
   @override
-  Wallet name(String name) => this(name: name);
+  LegacyWallet pubKey(String pubKey) => this(pubKey: pubKey);
 
   @override
-  Wallet theme(WalletTheme theme) => this(theme: theme);
+  LegacyWallet name(String name) => this(name: name);
+
+  @override
+  LegacyWallet theme(WalletTheme theme) => this(theme: theme);
 
   @override
 
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Wallet(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `LegacyWallet(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
   /// ```dart
-  /// Wallet(...).copyWith(id: 12, name: "My name")
+  /// LegacyWallet(...).copyWith(id: 12, name: "My name")
   /// ````
-  Wallet call({
+  LegacyWallet call({
     Object? seed = const $CopyWithPlaceholder(),
     Object? pubKey = const $CopyWithPlaceholder(),
     Object? name = const $CopyWithPlaceholder(),
     Object? theme = const $CopyWithPlaceholder(),
   }) {
-    return Wallet(
+    return LegacyWallet(
       seed: seed == const $CopyWithPlaceholder() || seed == null
           ? _value.seed
           // ignore: cast_nullable_to_non_nullable
@@ -82,24 +82,25 @@ class _$WalletCWProxyImpl implements _$WalletCWProxy {
   }
 }
 
-extension $WalletCopyWith on Wallet {
-  /// Returns a callable class that can be used as follows: `instanceOfWallet.copyWith(...)` or like so:`instanceOfWallet.copyWith.fieldName(...)`.
+extension $LegacyWalletCopyWith on LegacyWallet {
+  /// Returns a callable class that can be used as follows: `instanceOfLegacyWallet.copyWith(...)` or like so:`instanceOfLegacyWallet.copyWith.fieldName(...)`.
   // ignore: library_private_types_in_public_api
-  _$WalletCWProxy get copyWith => _$WalletCWProxyImpl(this);
+  _$LegacyWalletCWProxy get copyWith => _$LegacyWalletCWProxyImpl(this);
 }
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Wallet _$WalletFromJson(Map<String, dynamic> json) => Wallet(
+LegacyWallet _$LegacyWalletFromJson(Map<String, dynamic> json) => LegacyWallet(
       seed: json['seed'] as String,
       pubKey: json['pubKey'] as String,
       name: json['name'] as String,
       theme: WalletTheme.fromJson(json['theme'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$WalletToJson(Wallet instance) => <String, dynamic>{
+Map<String, dynamic> _$LegacyWalletToJson(LegacyWallet instance) =>
+    <String, dynamic>{
       'pubKey': instance.pubKey,
       'seed': instance.seed,
       'theme': instance.theme,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../data/models/wallet.dart';
+import '../../../data/models/legacy_wallet.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
 import '../add_wallet_assistant.dart';
@@ -21,12 +21,12 @@ class _CardStackState extends State<CardStack> {
   Widget build(BuildContext context) {
     return Consumer<SharedPreferencesHelper>(builder: (BuildContext context,
         SharedPreferencesHelper prefsHelper, Widget? child) {
-      final List<Wallet> cards =
-          List<Wallet>.from(SharedPreferencesHelper().wallets);
+      final List<LegacyWallet> cards =
+          List<LegacyWallet>.from(SharedPreferencesHelper().legacyWallets);
       final int currentIndex =
           SharedPreferencesHelper().getCurrentWalletIndex();
       logger('Current wallet index is $currentIndex of ${cards.length}');
-      final Wallet currentItem = cards.removeAt(currentIndex);
+      final LegacyWallet currentItem = cards.removeAt(currentIndex);
       cards.add(currentItem);
       final int walletsSize = cards.length;
       return SizedBox(

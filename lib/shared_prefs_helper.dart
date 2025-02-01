@@ -6,7 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'data/models/wallet.dart';
+import 'data/models/legacy_wallet.dart';
 import 'data/models/wallet_themes.dart';
 import 'g1/g1_helper.dart';
 import 'ui/logger.dart';
@@ -25,7 +25,7 @@ class SharedPreferencesHelper with ChangeNotifier {
   static const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
   // Memory cache
-  List<Wallet> wallets = <Wallet>[];
+  List<LegacyWallet> legacyWallets = <LegacyWallet>[];
   Map<String, CesiumWallet> cesiumVolatileCards = <String, CesiumWallet>{};
   late SharedPreferences _prefs;
   int _currentWalletIndex = 0;
@@ -51,8 +51,8 @@ class SharedPreferencesHelper with ChangeNotifier {
     final String? json = await _secureStorage.read(key: _accountsKey);
     if (json != null) {
       final List<dynamic> list = jsonDecode(json) as List<dynamic>;
-      wallets = list
-          .map((dynamic e) => Wallet.fromJson(e as Map<String, dynamic>))
+      legacyWallets = list
+          .map((dynamic e) => LegacyWallet.fromJson(e as Map<String, dynamic>))
           .toList();
     }
 
@@ -69,13 +69,14 @@ class SharedPreferencesHelper with ChangeNotifier {
 
     if (!isMigrated) {
       try {
-        final List<Wallet> walletsToMigrate = <Wallet>[];
+        final List<LegacyWallet> walletsToMigrate = <LegacyWallet>[];
 
         // Migrate legacy accounts based on seed and pub key
         final String? seed = _prefs.getString(_seedKey);
         final String? pubKey = _prefs.getString(_pubKey);
         if (seed != null && pubKey != null) {
-          final Wallet wallet = buildCesiumCard(seed: seed, pubKey: pubKey);
+          final LegacyWallet wallet =
+              buildCesiumCard(seed: seed, pubKey: pubKey);
           walletsToMigrate.add(wallet);
         }
 
@@ -83,8 +84,9 @@ class SharedPreferencesHelper with ChangeNotifier {
         final String? json = _prefs.getString(_legacyAccountsKey);
         if (json != null) {
           final List<dynamic> list = jsonDecode(json) as List<dynamic>;
-          final List<Wallet> legacyWallets = list
-              .map((dynamic e) => Wallet.fromJson(e as Map<String, dynamic>))
+          final List<LegacyWallet> legacyWallets = list
+              .map((dynamic e) =>
+                  LegacyWallet.fromJson(e as Map<String, dynamic>))
               .toList();
           walletsToMigrate.addAll(legacyWallets);
         }
@@ -98,7 +100,7 @@ class SharedPreferencesHelper with ChangeNotifier {
         }
 
         // Save wallets in memory and secure storage
-        wallets = walletsToMigrate;
+        legacyWallets = walletsToMigrate;
         await saveWallets();
 
         // Save current index
@@ -118,13 +120,13 @@ class SharedPreferencesHelper with ChangeNotifier {
     }
   }
 
-  Wallet buildCesiumCard({required String seed, required String pubKey}) {
-    return Wallet(
+  LegacyWallet buildCesiumCard({required String seed, required String pubKey}) {
+    return LegacyWallet(
         seed: seed, pubKey: pubKey, theme: WalletThemes.theme1, name: '');
   }
 
-  void addWallet(Wallet wallet) {
-    wallets.add(wallet);
+  void addWallet(LegacyWallet wallet) {
+    legacyWallets.add(wallet);
     saveWallets();
   }
 
@@ -132,15 +134,15 @@ class SharedPreferencesHelper with ChangeNotifier {
     // Don't allow the last card to be removed
     final int index = getCurrentWalletIndex();
     logger('Removing card at index $index');
-    if (wallets.length > 1) {
-      wallets.removeAt(index);
+    if (legacyWallets.length > 1) {
+      legacyWallets.removeAt(index);
       saveWallets();
     }
   }
 
   Future<void> saveWallets([bool notify = true]) async {
     final String json =
-        jsonEncode(wallets.map((Wallet e) => e.toJson()).toList());
+        jsonEncode(legacyWallets.map((LegacyWallet e) => e.toJson()).toList());
     await _secureStorage.write(key: _accountsKey, value: json);
     if (notify) {
       notifyListeners();
@@ -149,8 +151,8 @@ class SharedPreferencesHelper with ChangeNotifier {
 
   // Get the wallet from the specified index (default to first wallet)
   Future<CesiumWallet> getWallet() async {
-    if (wallets.isNotEmpty) {
-      final Wallet wallet = wallets[getCurrentWalletIndex()];
+    if (legacyWallets.isNotEmpty) {
+      final LegacyWallet wallet = legacyWallets[getCurrentWalletIndex()];
       if (isPasswordLessWallet()) {
         return CesiumWallet.fromSeed(seedFromString(wallet.seed));
       } else {
@@ -175,31 +177,31 @@ class SharedPreferencesHelper with ChangeNotifier {
 
   // Get the public key from the specified index (default to first wallet)
   String getPubKey() {
-    final Wallet wallet = wallets[getCurrentWalletIndex()];
+    final LegacyWallet wallet = legacyWallets[getCurrentWalletIndex()];
     final String pubKey = wallet.pubKey;
     final String checksum = pkChecksum(extractPublicKey(pubKey));
     return '$pubKey:$checksum';
   }
 
   String getName() {
-    final Wallet wallet = wallets[getCurrentWalletIndex()];
+    final LegacyWallet wallet = legacyWallets[getCurrentWalletIndex()];
     return wallet.name;
   }
 
   WalletTheme getTheme() {
-    final Wallet wallet = wallets[getCurrentWalletIndex()];
+    final LegacyWallet wallet = legacyWallets[getCurrentWalletIndex()];
     return wallet.theme;
   }
 
   void setName({required String name, bool notify = true}) {
-    final Wallet wallet = wallets[getCurrentWalletIndex()];
-    wallets[getCurrentWalletIndex()] = wallet.copyWith(name: name);
+    final LegacyWallet wallet = legacyWallets[getCurrentWalletIndex()];
+    legacyWallets[getCurrentWalletIndex()] = wallet.copyWith(name: name);
     saveWallets(notify);
   }
 
   void setTheme({required WalletTheme theme}) {
-    final Wallet wallet = wallets[getCurrentWalletIndex()];
-    wallets[getCurrentWalletIndex()] = wallet.copyWith(theme: theme);
+    final LegacyWallet wallet = legacyWallets[getCurrentWalletIndex()];
+    legacyWallets[getCurrentWalletIndex()] = wallet.copyWith(theme: theme);
     saveWallets();
   }
 
@@ -212,9 +214,9 @@ class SharedPreferencesHelper with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> selectCurrentWallet(Wallet wallet) async {
+  Future<void> selectCurrentWallet(LegacyWallet wallet) async {
     // TODO(vjrj): this should be a find with pubkey
-    final int index = wallets.indexOf(wallet);
+    final int index = legacyWallets.indexOf(wallet);
     if (index >= 0) {
       await _prefs.setInt(_legacyCurrentAccountIndex, index);
       notifyListeners();
@@ -225,7 +227,7 @@ class SharedPreferencesHelper with ChangeNotifier {
 
   // Select the current wallet and save its index in shared preferences
   Future<void> selectCurrentWalletIndex(int index) async {
-    if (index < wallets.length) {
+    if (index < legacyWallets.length) {
       await setCurrentWalletIndex(index);
     } else {
       throw Exception('Invalid wallet index: $index');
@@ -233,7 +235,7 @@ class SharedPreferencesHelper with ChangeNotifier {
   }
 
   bool has(String pubKey) {
-    for (final Wallet wallet in wallets) {
+    for (final LegacyWallet wallet in legacyWallets) {
       if (wallet.pubKey == extractPublicKey(pubKey) ||
           wallet.pubKey == pubKey) {
         return true;
@@ -247,15 +249,16 @@ class SharedPreferencesHelper with ChangeNotifier {
   }
 
   bool hasMultipleWallets() {
-    return wallets.length > 1;
+    return legacyWallets.length > 1;
   }
 
   void addCesiumVolatileCard(CesiumWallet cesiumWallet) {
     cesiumVolatileCards[cesiumWallet.pubkey] = cesiumWallet;
   }
 
-  bool isPasswordLessWallet([Wallet? otherCard]) {
-    final Wallet wallet = otherCard ?? wallets[getCurrentWalletIndex()];
+  bool isPasswordLessWallet([LegacyWallet? otherCard]) {
+    final LegacyWallet wallet =
+        otherCard ?? legacyWallets[getCurrentWalletIndex()];
     return wallet.seed.isNotEmpty;
   }
 

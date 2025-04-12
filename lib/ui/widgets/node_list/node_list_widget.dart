@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../data/models/node.dart';
 import '../../../data/models/node_type.dart';
 import '../../../g1/g1_helper.dart';
-import '../../copy_helper.dart';
+import '../../clipboard_helper.dart';
 
 class NodeListWidget extends StatelessWidget {
   const NodeListWidget(

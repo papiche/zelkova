@@ -18,7 +18,7 @@ import '../data/models/contact.dart';
 import '../data/models/theme_cubit.dart';
 import '../g1/g1_helper.dart';
 import 'basic_avatar.dart';
-import 'copy_helper.dart';
+import 'clipboard_helper.dart';
 import 'currency_helper.dart';
 import 'image_utils.dart';
 import 'in_dev_helper.dart';

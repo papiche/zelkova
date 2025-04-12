@@ -19,11 +19,11 @@ import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../in_dev_helper.dart';
 import '../../logger.dart';
+import '../../pattern_util.dart';
 import '../../ui_helpers.dart';
 import '../cesium_auth_dialog.dart';
 import '../custom_error_widget.dart';
 import 'import_clipboard_dialog.dart';
-import 'pattern_util.dart';
 
 class ImportDialog extends StatefulWidget {
   const ImportDialog({super.key, this.wallet});

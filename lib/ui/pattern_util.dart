@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../ui_helpers.dart';
+import 'ui_helpers.dart';
 
 extension BuildContextX on BuildContext {
   void replaceSnackbar({required Widget content}) {

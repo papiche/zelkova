@@ -1,7 +1,7 @@
-import 'package:clipboard/clipboard.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../../clipboard_helper.dart';
 import '../generic_qr_button.dart';
 
 class ImportClipboardDialog extends StatefulWidget {
@@ -17,7 +17,7 @@ class _ImportClipboardDialogState extends State<ImportClipboardDialog> {
   final TextEditingController _textController = TextEditingController();
 
   Future<void> _pasteFromClipboard() async {
-    FlutterClipboard.paste().then((String? value) {
+    pasteFromClipboard(onPaste: (String? value) {
       setState(() {
         if (value != null) {
           _textController.text = value;

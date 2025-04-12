@@ -14,7 +14,7 @@ import '../../data/models/theme_cubit.dart';
 import '../../g1/currency.dart';
 import '../../g1/service_manager.dart';
 import '../../shared_prefs_helper.dart';
-import '../copy_helper.dart';
+import '../clipboard_helper.dart';
 import '../logger.dart';
 import '../tutorial.dart';
 import '../tutorial_keys.dart';

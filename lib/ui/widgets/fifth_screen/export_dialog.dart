@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:clipboard/clipboard.dart';
 import 'package:durt/durt.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
@@ -21,10 +20,11 @@ import '../../../data/models/contact_cubit.dart';
 import '../../../data/models/legacy_wallet.dart';
 import '../../../g1/g1_export_auth_utils.dart';
 import '../../../g1/g1_helper.dart';
+import '../../clipboard_helper.dart';
 import '../../in_dev_helper.dart';
 import '../../logger.dart';
+import '../../pattern_util.dart';
 import '../../ui_helpers.dart';
-import 'pattern_util.dart';
 
 enum ExportType { clipboard, file, share, pubsec, wif, ewif }
 
@@ -206,16 +206,11 @@ class _ExportDialogState extends State<ExportDialog> {
     final List<int> bytes = utf8.encode(fileJson);
     switch (type) {
       case ExportType.clipboard:
-        FlutterClipboard.copy(fileJson).then((dynamic value) {
-          if (context.mounted) {
-            context.replaceSnackbar(
-              content: Text(
-                tr('wallet_copied'),
-                style: const TextStyle(color: Colors.red),
-              ),
-            );
-          }
-        });
+        copyFileToClipboard(
+          context: context,
+          fileJson: fileJson,
+          feedbackText: tr('wallet_copied'),
+        );
         break;
       case ExportType.file:
         bool result = false;

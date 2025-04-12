@@ -99,8 +99,6 @@ void main() {
     expect(v1pubkeyFromAddress(expectedV2DevAddressSr),
         equals(expectedV1PubKeySr));
 
-    // No sr25519 seed support yet
-    // https://github.com/leonardocustodio/polkadart/issues/448
     final List<int> devSeed =
         await SubstrateBip39.ed25519.seedFromUri(devMnemonic);
     final Uint8List devSeedU8a = Uint8List.fromList(devSeed);

@@ -177,8 +177,8 @@ class _CardTerminalState extends State<CardTerminal> {
 
 Future<void> vibrateIfPossible() async {
   try {
-    final bool? hasVibrator = await Vibration.hasVibrator();
-    if (hasVibrator ?? false) {
+    final bool hasVibrator = await Vibration.hasVibrator();
+    if (hasVibrator) {
       Vibration.vibrate(duration: 100);
     }
   } catch (e) {

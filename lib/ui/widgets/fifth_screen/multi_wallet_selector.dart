@@ -5,6 +5,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 import '../../../data/models/legacy_wallet.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
+import '../../pattern_util.dart';
 import '../../ui_helpers.dart';
 import '../first_screen/account_card_selector_item.dart';
 
@@ -59,12 +60,22 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
       appBar: AppBar(
         title: Text(tr('select_wallets_export')),
         actions: <Widget>[
-          IconButton(
+          TextButton.icon(
             icon: const Icon(Icons.check),
-            onPressed: () {
-              Navigator.of(context).pop();
-              widget.onSelectionChanged(_selectedCards, _exportContacts);
-            },
+            label: Text(tr('ok')),
+            onPressed: _selectedCards.isEmpty
+                ? () {
+                    context.replaceSnackbar(
+                      content: Text(
+                        tr('please_select_wallets'),
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                    );
+                  }
+                : () {
+                    Navigator.of(context).pop();
+                    widget.onSelectionChanged(_selectedCards, _exportContacts);
+                  },
           ),
         ],
       ),

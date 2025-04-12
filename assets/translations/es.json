@@ -384,5 +384,6 @@
   "clipboard_import_mnemonic": "Importar frase mnemónica",
   "clipboard_import_mnemonic_description": "Introduce una frase mnemónica para recuperar tu monedero",
   "nodes_list_title": "Nodos {} ({})",
-  "nodes_list_last_updated": "Última actualización: {}"
+  "nodes_list_last_updated": "Última actualización: {}",
+  "please_select_wallets": "Please select at least one wallet to export"
 }

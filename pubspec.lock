@@ -1895,10 +1895,10 @@ packages:
     dependency: "direct main"
     description:
       name: share_plus
-      sha256: "59dfd53f497340a0c3a81909b220cfdb9b8973a91055c4e5ab9b9b9ad7c513c0"
+      sha256: fce43200aa03ea87b91ce4c3ac79f0cecd52e2a7a56c7a4185023c271fbfa6da
       url: "https://pub.dev"
     source: hosted
-    version: "10.0.0"
+    version: "10.1.4"
   share_plus_platform_interface:
     dependency: transitive
     description:
@@ -2103,18 +2103,18 @@ packages:
     dependency: "direct main"
     description:
       name: super_clipboard
-      sha256: "74098001413e075cc53dee72b68c32eaffc10709df41806800393abaa6dac9d5"
+      sha256: "5203c881d24033c3e6154c2ae01afd94e7f0a3201280373f28e540f1defa3f40"
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.19"
+    version: "0.9.0-dev.6"
   super_native_extensions:
     dependency: transitive
     description:
       name: super_native_extensions
-      sha256: c24676825c9f3ae844676a843d45ad186f2270539ffe72be4277753e46d14e29
+      sha256: "09ccc40c475e6f91770eaeb2553bf4803812d7beadc3759aa57d643370619c86"
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.19"
+    version: "0.9.0-dev.6"
   synchronized:
     dependency: transitive
     description:
@@ -2380,13 +2380,13 @@ packages:
     source: hosted
     version: "2.4.0"
   web:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: web
-      sha256: "97da13628db363c635202ad97068d47c5b8aa555808e7a9411963c533b449b27"
+      sha256: "868d88a33d8a87b18ffc05f9f030ba328ffefba92d6c127917a2ba740f9cfe4a"
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.1"
+    version: "1.1.1"
   web_browser_detect:
     dependency: "direct main"
     description:

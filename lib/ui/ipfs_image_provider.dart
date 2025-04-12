@@ -1,4 +1,5 @@
 import 'dart:ui' as ui;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -6,9 +7,11 @@ import 'package:http/http.dart' as http;
 import '../data/models/node.dart';
 import '../data/models/node_manager.dart';
 import '../data/models/node_type.dart';
+import 'logger.dart';
 
 class IpfsImageProvider extends ImageProvider<IpfsImageProvider> {
   IpfsImageProvider(this.path);
+
   final String path;
 
   @override
@@ -33,6 +36,7 @@ class IpfsImageProvider extends ImageProvider<IpfsImageProvider> {
     while (nodeIndex < ipfsNodes.length) {
       final String url = '${ipfsNodes[nodeIndex].url}/ipfs/$path';
       try {
+        loggerDev('Loading image from IPFS $url');
         final http.Response response = await http.get(Uri.parse(url));
         if (response.statusCode == 200) {
           final Uint8List imageData = response.bodyBytes;
@@ -43,6 +47,7 @@ class IpfsImageProvider extends ImageProvider<IpfsImageProvider> {
           nodeIndex++;
         }
       } catch (e) {
+        loggerDev('Error loading image from IPFS $url', error: e);
         NodeManager()
             .increaseNodeErrors(NodeType.ipfsGateway, ipfsNodes[nodeIndex]);
         nodeIndex++;

@@ -4,6 +4,7 @@ import '../data/models/node.dart';
 import '../data/models/node_manager.dart';
 import '../data/models/node_type.dart';
 import 'basic_avatar.dart';
+import 'logger.dart';
 
 class IpfsImage extends StatefulWidget {
   const IpfsImage({
@@ -29,7 +30,6 @@ class _IpfsImageState extends State<IpfsImage> {
     _updateUrl();
   }
 
-  // Actualiza la URL al nodo actual
   void _updateUrl() {
     if (_currentNodeIndex < _ipfsNodes.length) {
       final String baseUrl = _ipfsNodes[_currentNodeIndex].url;
@@ -54,6 +54,7 @@ class _IpfsImageState extends State<IpfsImage> {
 
   @override
   Widget build(BuildContext context) {
+    loggerDev('Loading image from IPFS $_currentUrl');
     return _currentUrl.isNotEmpty
         ? Image.network(
             _currentUrl,

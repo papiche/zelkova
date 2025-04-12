@@ -1,51 +1,76 @@
-import 'package:clipboard/clipboard.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:super_clipboard/super_clipboard.dart';
 
 import '../shared_prefs_helper.dart';
 import 'pattern_util.dart';
 
-void copyPublicKeyToClipboard(BuildContext context,
-    [String? uri, String? feedbackText]) {
-  FlutterClipboard.copy(uri ?? SharedPreferencesHelper().getPubKey())
-      .then((dynamic value) {
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(tr(feedbackText ?? 'key_copied_to_clipboard'))));
-    }
-  });
+Future<void> copyPublicKeyToClipboard(BuildContext context,
+    [String? uri, String? feedbackText]) async {
+  final SystemClipboard? clipboard = SystemClipboard.instance;
+  if (clipboard == null) {
+    return; // Clipboard API is not supported on this platform.
+  }
+  final DataWriterItem item = DataWriterItem();
+  item.add(Formats.plainText(uri ?? SharedPreferencesHelper().getPubKey()));
+  await clipboard.write(<DataWriterItem>[item]);
+  if (context.mounted) {
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(tr(feedbackText ?? 'key_copied_to_clipboard'))));
+  }
 }
 
-void copyToClipboard(
+Future<void> copyToClipboard(
     {required BuildContext context,
     required String uri,
-    required String feedbackText}) {
-  FlutterClipboard.copy(uri).then((dynamic value) {
-    if (context.mounted) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(tr(feedbackText))));
-    }
-  });
+    required String feedbackText}) async {
+  final SystemClipboard? clipboard = SystemClipboard.instance;
+  if (clipboard == null) {
+    return; // Clipboard API is not supported on this platform.
+  }
+  final DataWriterItem item = DataWriterItem();
+  item.add(Formats.plainText(uri));
+  await clipboard.write(<DataWriterItem>[item]);
+  if (context.mounted) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(tr(feedbackText))));
+  }
 }
 
-void copyFileToClipboard(
+Future<void> copyFileToClipboard(
     {required BuildContext context,
     required String fileJson,
-    required String feedbackText}) {
-  FlutterClipboard.copy(fileJson).then((dynamic value) {
-    if (context.mounted) {
-      context.replaceSnackbar(
-        content: Text(
-          feedbackText,
-          style: const TextStyle(color: Colors.red),
-        ),
-      );
-    }
-  });
+    required String feedbackText}) async {
+  final SystemClipboard? clipboard = SystemClipboard.instance;
+  if (clipboard == null) {
+    return; // Clipboard API is not supported on this platform.
+  }
+  final DataWriterItem item = DataWriterItem();
+  item.add(Formats.plainText(fileJson));
+  await clipboard.write(<DataWriterItem>[item]);
+
+  if (context.mounted) {
+    context.replaceSnackbar(
+      content: Text(
+        feedbackText,
+        style: const TextStyle(color: Colors.red),
+      ),
+    );
+  }
 }
 
 Future<void> pasteFromClipboard({required Function(String?) onPaste}) async {
-  FlutterClipboard.paste().then((String? value) {
-    onPaste(value);
-  });
+  final SystemClipboard? clipboard = SystemClipboard.instance;
+  if (clipboard != null) {
+    final ClipboardReader reader = await clipboard.read();
+    final ClipboardDataReader? item = reader.items.firstOrNull;
+    if (item != null) {
+      final String? text = await item.readValue(Formats.plainText);
+      onPaste(text);
+    } else {
+      onPaste(null);
+    }
+  } else {
+    onPaste(null);
+  }
 }

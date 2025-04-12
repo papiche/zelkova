@@ -49,7 +49,6 @@ dependencies:
   #      ref: feature/remoce_accentcolor
   shared_preferences: ^2.0.18
   vibration: ^2.0.0
-  clipboard: ^0.1.3
   # Does not work with encypt > 5.0.1
   # See: https://github.com/leocavalcante/encrypt/issues/314
   # Fix: https://github.com/leocavalcante/encrypt/issues/314#issuecomment-1729499372
@@ -138,6 +137,7 @@ dependencies:
   app_links: ^6.3.3
   flutter_secure_storage: ^9.2.4
   mockito: ^5.4.5
+  super_clipboard: ^0.8.19
 
 dev_dependencies:
   flutter_test:

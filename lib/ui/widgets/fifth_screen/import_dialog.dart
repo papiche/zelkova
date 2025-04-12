@@ -224,8 +224,8 @@ class _ImportDialogState extends State<ImportDialog> {
     final String pubKey =
         pub != null ? pub as String : cesiumCard['pubKey'] as String;
     if (!SharedPreferencesHelper().has(pubKey)) {
-      SharedPreferencesHelper().addWallet(SharedPreferencesHelper()
-          .buildCesiumCard(pubKey: pubKey, seed: cesiumCard['seed'] as String));
+      SharedPreferencesHelper().addWalletFromSeed(
+          pubKey: pubKey, seed: cesiumCard['seed'] as String);
       context
           .read<MultiWalletTransactionCubit>()
           .fetchTransactions(pubKey: pubKey);

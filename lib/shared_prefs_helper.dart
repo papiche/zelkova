@@ -76,7 +76,7 @@ class SharedPreferencesHelper with ChangeNotifier {
         final String? pubKey = _prefs.getString(_pubKey);
         if (seed != null && pubKey != null) {
           final LegacyWallet wallet =
-              buildCesiumCard(seed: seed, pubKey: pubKey);
+              _buildLegacyWallet(seed: seed, pubKey: pubKey);
           walletsToMigrate.add(wallet);
         }
 
@@ -120,7 +120,8 @@ class SharedPreferencesHelper with ChangeNotifier {
     }
   }
 
-  LegacyWallet buildCesiumCard({required String seed, required String pubKey}) {
+  LegacyWallet _buildLegacyWallet(
+      {required String seed, required String pubKey}) {
     return LegacyWallet(
         seed: seed, pubKey: pubKey, theme: WalletThemes.theme1, name: '');
   }
@@ -128,6 +129,10 @@ class SharedPreferencesHelper with ChangeNotifier {
   void addWallet(LegacyWallet wallet) {
     legacyWallets.add(wallet);
     saveWallets();
+  }
+
+  void addWalletFromSeed({required String seed, required String pubKey}) {
+    addWallet(_buildLegacyWallet(seed: seed, pubKey: pubKey));
   }
 
   void removeWallet() {
@@ -170,7 +175,7 @@ class SharedPreferencesHelper with ChangeNotifier {
       final String seed = seedToString(uS);
       final CesiumWallet wallet = CesiumWallet.fromSeed(uS);
       logger('Generated public key: ${wallet.pubkey}');
-      addWallet(buildCesiumCard(seed: seed, pubKey: wallet.pubkey));
+      addWallet(_buildLegacyWallet(seed: seed, pubKey: wallet.pubkey));
       return wallet;
     }
   }
@@ -207,13 +212,6 @@ class SharedPreferencesHelper with ChangeNotifier {
 
   int getCurrentWalletIndex() => _currentWalletIndex;
 
-  Future<void> setCurrentWalletIndex(int index) async {
-    _currentWalletIndex = index;
-    await _secureStorage.write(
-        key: _currentAccountIndex, value: index.toString());
-    notifyListeners();
-  }
-
   Future<void> selectCurrentWallet(LegacyWallet wallet) async {
     // TODO(vjrj): this should be a find with pubkey
     final int index = legacyWallets.indexOf(wallet);
@@ -228,7 +226,10 @@ class SharedPreferencesHelper with ChangeNotifier {
   // Select the current wallet and save its index in shared preferences
   Future<void> selectCurrentWalletIndex(int index) async {
     if (index < legacyWallets.length) {
-      await setCurrentWalletIndex(index);
+      _currentWalletIndex = index;
+      await _secureStorage.write(
+          key: _currentAccountIndex, value: index.toString());
+      notifyListeners();
     } else {
       throw Exception('Invalid wallet index: $index');
     }

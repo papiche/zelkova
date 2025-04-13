@@ -119,7 +119,7 @@ class DrawerWalletCard extends StatelessWidget {
                                           if (SharedPreferencesHelper()
                                               .isPasswordLessWallet()) {}
                                           SharedPreferencesHelper()
-                                              .removeWallet();
+                                              .removeLegacyWallet();
                                           SharedPreferencesHelper()
                                               .selectCurrentWalletIndex(0);
                                           Navigator.pop(context);

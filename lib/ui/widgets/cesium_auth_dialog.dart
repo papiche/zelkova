@@ -205,7 +205,7 @@ class _CesiumAuthDialogState extends State<CesiumAuthDialog> {
       theme: WalletThemes.themes[Random().nextInt(10)],
     );
     if (!SharedPreferencesHelper().has(extractPublicKey(widget.publicKey))) {
-      SharedPreferencesHelper().addWallet(card);
+      SharedPreferencesHelper().addLegacyWallet(card);
       SharedPreferencesHelper().selectCurrentWallet(card);
       context
           .read<MultiWalletTransactionCubit>()

@@ -104,7 +104,21 @@ class _ContactsPageState extends State<ContactsPage> {
                 ]))),
         const SizedBox(height: 20),
         if (cubit.state.filteredContacts.isEmpty)
-          const NoElements(text: 'no_contacts')
+          Expanded(
+              child: Center(
+                  child:
+                      Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+            Text(cubit.state.contacts.isEmpty
+                ? tr('no_contacts')
+                : tr('not_found_contacts')),
+            const SizedBox(height: 10),
+            TextButton.icon(
+                icon: const Icon(Icons.travel_explore),
+                label: Text(tr('search_users_globally')),
+                onPressed: () async {
+                  searchForContactsGlobally(context);
+                })
+          ])))
         else
           Expanded(
               child: ListView.builder(

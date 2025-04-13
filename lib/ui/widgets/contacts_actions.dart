@@ -10,6 +10,8 @@ import '../../shared_prefs_helper.dart';
 import '../contacts_cache.dart';
 import '../ui_helpers.dart';
 import 'contact_page.dart';
+import 'first_screen/contact_search_page.dart'
+    show ContactSearchPage, SearchUse;
 import 'third_screen/contact_form_dialog.dart';
 
 void onEditContact(BuildContext context, Contact contact) {
@@ -78,6 +80,15 @@ void addContact(BuildContext context, Contact newContact) {
               ),
             );
           });
+    },
+  );
+}
+
+void searchForContactsGlobally(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return const ContactSearchPage(searchUse: SearchUse.contactSearch);
     },
   );
 }

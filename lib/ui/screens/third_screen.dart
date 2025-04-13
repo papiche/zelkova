@@ -10,7 +10,7 @@ import '../qr_manager.dart';
 import '../tutorial.dart';
 import '../tutorial_keys.dart';
 import '../widgets/card_drawer.dart';
-import '../widgets/first_screen/contact_search_page.dart';
+import '../widgets/contacts_actions.dart' show searchForContactsGlobally;
 import '../widgets/third_screen/contact_form_dialog.dart';
 import '../widgets/third_screen/contacts_page.dart';
 import '../widgets/third_screen/third_tutorial.dart';
@@ -38,13 +38,7 @@ class _ThirdScreenState extends State<ThirdScreen> {
           IconButton(
               icon: const Icon(Icons.travel_explore),
               onPressed: () async {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return const ContactSearchPage(
-                        searchUse: SearchUse.contactSearch);
-                  },
-                );
+                searchForContactsGlobally(context);
               }),
           IconButton(
               key: contactsQrKey,

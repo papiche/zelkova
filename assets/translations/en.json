@@ -379,6 +379,8 @@
   "clipboard_import_mnemonic_description": "Enter a mnemonic phrase to recover your wallet",
   "nodes_list_title": "{} Nodes ({})",
   "nodes_list_last_updated": "Last updated: {}",
-  "please_select_wallets": "Please select at least one wallet to export"
+  "please_select_wallets": "Please select at least one wallet to export",
+  "search_users_globally": "Search for users in the network",
+  "not_found_contacts": "No contacts found"
 }
 

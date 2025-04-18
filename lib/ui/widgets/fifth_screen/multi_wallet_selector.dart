@@ -24,6 +24,13 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
   bool _exportContacts = true;
   bool _selectAll = false;
 
+  @override
+  void initState() {
+    super.initState();
+    _selectedCards.addAll(_cards);
+    _selectAll = true;
+  }
+
   final List<LegacyWallet> _cards = SharedPreferencesHelper()
       .legacyWallets
       .where((LegacyWallet card) => card.seed.isNotEmpty)
@@ -163,7 +170,33 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
   }
 }
 
-void showMultiWalletSelector(BuildContext context,
+void showMultiWalletSelector(
+  BuildContext context,
+  Function(List<LegacyWallet>, bool) onSelectionChanged,
+) {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
+    builder: (BuildContext context) {
+      return DraggableScrollableSheet(
+        initialChildSize: 0.95,
+        minChildSize: 0.5,
+        maxChildSize: 0.95,
+        expand: false,
+        builder: (BuildContext context, ScrollController scrollController) {
+          return Material(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+            child:
+                MultiWalletSelectorPage(onSelectionChanged: onSelectionChanged),
+          );
+        },
+      );
+    },
+  );
+}
+
+void showMultiWalletSelectorOld(BuildContext context,
     Function(List<LegacyWallet>, bool) onSelectionChanged) {
   Navigator.push(
     context,

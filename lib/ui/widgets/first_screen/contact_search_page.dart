@@ -185,8 +185,8 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(tr(widget.searchUse.title())),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Theme.of(context).colorScheme.inversePrimary,
+        // backgroundColor: Theme.of(context).colorScheme.primary,
+        // foregroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: <Widget>[
           IconButton(
               icon: const Icon(Icons.qr_code_scanner),

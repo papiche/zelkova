@@ -48,3 +48,5 @@ app.*.map.json
 /android/app/release
 build.sh
 lib/env.g.dart
+
+/android/local.properties

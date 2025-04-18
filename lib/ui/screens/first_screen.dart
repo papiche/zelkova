@@ -47,11 +47,11 @@ class _FirstScreenState extends State<FirstScreen> {
 
   @override
   Widget build(BuildContext context) => BlocBuilder<AppCubit, AppState>(
-          builder: (BuildContext context, AppState state) {
+          builder: (BuildContext context, AppState appState) {
         WidgetsBinding.instance.addPostFrameCallback((_) async {
           if (kIsWeb) {
             final Browser? browser = Browser.detectOrNull();
-            if (!state.warningBrowserViewed) {
+            if (!appState.warningBrowserViewed) {
               if (browser == null ||
                   (browser.browserAgent != BrowserAgent.Chrome &&
                       browser.browserAgent != BrowserAgent.Firefox) ||
@@ -86,6 +86,20 @@ class _FirstScreenState extends State<FirstScreen> {
                     Scaffold(
                       appBar: AppBar(
                         title: Text(tr('credit_card_title')),
+                        leading: context.watch<AppCubit>().hasRecentExport
+                            ? null
+                            : Builder(
+                                builder: (BuildContext context) => IconButton(
+                                    icon: const Badge(
+                                      backgroundColor: Colors.red,
+                                      label: Text('!',
+                                          style:
+                                              TextStyle(color: Colors.white)),
+                                      child: Icon(Icons.menu),
+                                    ),
+                                    onPressed: () {
+                                      Scaffold.of(context).openDrawer();
+                                    })),
                         actions: <Widget>[
                           IconButton(
                             icon: const Icon(Icons.info_outline),

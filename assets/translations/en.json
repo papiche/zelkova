@@ -379,8 +379,17 @@
   "clipboard_import_mnemonic_description": "Enter a mnemonic phrase to recover your wallet",
   "nodes_list_title": "{} Nodes ({})",
   "nodes_list_last_updated": "Last updated: {}",
-  "please_select_wallets": "Please select at least one wallet to export",
+  "please_select_wallets": "Please select what to export",
   "search_users_globally": "Search for users in the network",
-  "not_found_contacts": "No contacts found"
+  "not_found_contacts": "No contacts found",
+  "export_reminder_title": "Do you have a recent export?",
+  "export_reminder_question": "Have you made a recent export of your wallets and contacts?",
+  "export_reminder_description": "Maintaining up-to-date export of your wallet protects your funds if you:",
+  "export_reminder_scenario1": "Lose your device",
+  "export_reminder_scenario2": "Uninstall the app accidentally",
+  "export_reminder_scenario3": "Experience device failure",
+  "export_reminder_recommendation": "We recommend storing export backups in multiple secure locations.",
+  "export_reminder_yes_button": "I HAVE a export",
+  "export_reminder_no_button": "I NEED to export"
 }
 

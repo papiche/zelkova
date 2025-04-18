@@ -385,7 +385,16 @@
   "clipboard_import_mnemonic_description": "Introduce una frase mnemónica para recuperar tu monedero",
   "nodes_list_title": "Nodos {} ({})",
   "nodes_list_last_updated": "Última actualización: {}",
-  "please_select_wallets": "Please select at least one wallet to export",
+  "please_select_wallets": "Por favor selecciona que exportar",
   "search_users_globally": "Buscar usuarios en la red",
-  "not_found_contacts": "No se encontraron contactos"
+  "not_found_contacts": "No se encontraron contactos",
+  "export_reminder_title": "¿Tienes una backup reciente?",
+  "export_reminder_question": "¿Has hecho una copia de seguridad reciente de tus monederos y contactos?",
+  "export_reminder_description": "Mantener copia de seguridad actualizada protege tus fondos si:",
+  "export_reminder_scenario1": "Pierdes tu dispositivo",
+  "export_reminder_scenario2": "Desinstalas la aplicación por error",
+  "export_reminder_scenario3": "Experimentas fallos en el dispositivo",
+  "export_reminder_recommendation": "Recomendamos guardar un export de tus monedederos en múltiples ubicaciones seguras.",
+  "export_reminder_yes_button": "SÍ, tengo backup",
+  "export_reminder_no_button": "NECESITO un backup"
 }

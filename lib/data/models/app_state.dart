@@ -1,3 +1,4 @@
+import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -8,6 +9,7 @@ import 'is_json_serializable.dart';
 part 'app_state.g.dart';
 
 @JsonSerializable()
+@CopyWith()
 class AppState extends Equatable implements IsJsonSerializable<AppState> {
   AppState(
       {this.introViewed = false,
@@ -19,16 +21,22 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
       Currency? currency,
       double? currentUd,
       Map<String, bool>? tutorials,
+      bool? hasRecentExport,
+      int? recentExportReminderInDays,
       this.distancePrecompute})
       : tutorials = tutorials ?? <String, bool>{},
         currency = currency ?? Currency.G1,
         walletCreatedViewed = walletCreatedViewed ?? introViewed,
-        currentUd = currentUd ?? 11.06;
+        currentUd = currentUd ?? 11.06,
+        hasRecentExport = hasRecentExport ?? false,
+        recentExportReminderInDays = recentExportReminderInDays ?? 7;
 
   factory AppState.fromJson(Map<String, dynamic> json) =>
       _$AppStateFromJson(json);
 
   final bool introViewed;
+  final bool hasRecentExport;
+  final int recentExportReminderInDays;
   final bool walletCreatedViewed;
   final bool warningViewed;
   final bool warningBrowserViewed;
@@ -39,30 +47,6 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
   final Map<String, bool> tutorials;
   @JsonKey(includeIfNull: false)
   final DistancePrecompute? distancePrecompute;
-
-  AppState copyWith(
-      {bool? introViewed,
-      bool? warningViewed,
-      bool? warningBrowserViewed,
-      bool? expertMode,
-      Currency? currency,
-      double? currentUd,
-      bool? walletCreatedViewed,
-      bool? v2mode,
-      Map<String, bool>? tutorials,
-      DistancePrecompute? distancePrecompute}) {
-    return AppState(
-        introViewed: introViewed ?? this.introViewed,
-        warningViewed: warningViewed ?? this.warningViewed,
-        warningBrowserViewed: warningBrowserViewed ?? this.warningBrowserViewed,
-        expertMode: expertMode ?? this.expertMode,
-        currency: currency ?? this.currency,
-        walletCreatedViewed: walletCreatedViewed ?? this.walletCreatedViewed,
-        v2mode: v2mode ?? this.v2mode,
-        currentUd: currentUd ?? this.currentUd,
-        tutorials: tutorials ?? this.tutorials,
-        distancePrecompute: distancePrecompute ?? this.distancePrecompute);
-  }
 
   @override
   AppState fromJson(Map<String, dynamic> json) => _$AppStateFromJson(json);
@@ -81,6 +65,8 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
         currency,
         currentUd,
         v2mode,
-        distancePrecompute
+        distancePrecompute,
+        recentExportReminderInDays,
+        hasRecentExport
       ];
 }

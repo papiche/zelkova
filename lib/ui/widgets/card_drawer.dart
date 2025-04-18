@@ -3,13 +3,17 @@ import 'dart:convert';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
+import '../../data/models/app_cubit.dart';
+import '../../data/models/app_state.dart';
 import '../in_dev_helper.dart';
 import '../screens/sandbox.dart';
 import '../ui_helpers.dart';
+import 'backup_reminder_dialog.dart';
 import 'first_screen/card_stack.dart';
 import 'market_analysis/market_analysis_page.dart';
 
@@ -29,89 +33,95 @@ class _CardDrawerState extends State<CardDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    // final List<CesiumCard> cards = SharedPreferencesHelper().cesiumCards;
-    return FutureBuilder<PackageInfo>(
-      future: PackageInfo.fromPlatform(),
-      builder: (BuildContext context, AsyncSnapshot<PackageInfo> snapshot) {
-        if (snapshot.hasData) {
-          return Drawer(
-            child: ListView(
-              // Important: Remove any padding from the ListView.
-              padding: EdgeInsets.zero,
-              children: <Widget>[
-                GestureDetector(
-                    onTap: () => tryCatch(),
-                    onLongPress: () => tryCatch(),
-                    child: SizedBox(
-                        height: 110.0,
-                        child: DrawerHeader(
-                          padding: const EdgeInsets.all(10.0),
-                          // margin: const EdgeInsets.all(5.0),
-                          /* decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                  ), */
-                          child: Column(
-                            children: <Widget>[
-                              Image.asset(
-                                'assets/img/logo.png',
-                                fit: BoxFit.scaleDown,
-                                height: 80.0,
-                              ),
-                              // const SizedBox(height: 20.0),
-                              /* Text(tr('app_name'),
+    return BlocBuilder<AppCubit, AppState>(
+        builder: (BuildContext context, AppState state) {
+      return FutureBuilder<PackageInfo>(
+        future: PackageInfo.fromPlatform(),
+        builder: (BuildContext context, AsyncSnapshot<PackageInfo> snapshot) {
+          if (snapshot.hasData) {
+            return Drawer(
+              child: ListView(
+                // Important: Remove any padding from the ListView.
+                padding: EdgeInsets.zero,
+                children: <Widget>[
+                  GestureDetector(
+                      onTap: () => tryCatch(),
+                      onLongPress: () => tryCatch(),
+                      child: SizedBox(
+                          height: 140.0,
+                          child: DrawerHeader(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Column(
+                              children: <Widget>[
+                                Image.asset(
+                                  'assets/img/logo.png',
+                                  fit: BoxFit.scaleDown,
+                                  height: 80.0,
+                                ),
+                              ],
+                            ),
+                          ))),
+                  if (!state.hasRecentExport)
+                    ListTile(
+                      tileColor: Colors.red[100],
+                      leading: const Icon(
+                        Icons.warning_rounded,
+                        color: Colors.redAccent,
+                      ),
+                      // color de link ,
+                      title: Text(tr('export_reminder_title'),
                           style: const TextStyle(
-                            fontSize: 24.0,
-                            color: Colors.white,
-                          )), */
-                            ],
-                          ),
-                        ))),
-                const CardStack(),
-                if (inDevelopment)
+                            color: Colors.blue,
+                            // decoration: TextDecoration.underline,
+                          )),
+                      onTap: () => showBackupReminderDialog(context),
+                    ),
+                  const CardStack(),
+                  if (inDevelopment)
+                    ListTile(
+                      leading: const Icon(Icons.build),
+                      title: const Text('Sandbox'),
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const Sandbox();
+                          },
+                        );
+                      },
+                    ),
+                  if (!kIsWeb)
+                    ListTile(
+                      leading: const Icon(Icons.analytics),
+                      title: Text(tr('market_analysis')),
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const MarketAnalysisPage();
+                          },
+                        );
+                      },
+                    ),
                   ListTile(
-                    leading: const Icon(Icons.build),
-                    title: const Text('Sandbox'),
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return const Sandbox();
-                        },
-                      );
+                    leading: const Icon(Icons.telegram_outlined),
+                    title: Text(tr('telegram_group')),
+                    onTap: () async {
+                      final Locale locale = context.locale;
+                      if (locale == const Locale('es') ||
+                          locale == const Locale('ca') ||
+                          locale == const Locale('gl') ||
+                          locale == const Locale('eu') ||
+                          locale == const Locale('ast')) {
+                        await openUrl('https://t.me/g1nkgoES');
+                      } else if (locale == const Locale('fr')) {
+                        await openUrl('https://t.me/g1nkgoFR');
+                      } else {
+                        await openUrl('https://t.me/g1nkgoEN');
+                      }
                     },
                   ),
-                if (!kIsWeb)
-                  ListTile(
-                    leading: const Icon(Icons.analytics),
-                    title: Text(tr('market_analysis')),
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return const MarketAnalysisPage();
-                        },
-                      );
-                    },
-                  ),
-                ListTile(
-                  leading: const Icon(Icons.telegram_outlined),
-                  title: Text(tr('telegram_group')),
-                  onTap: () async {
-                    final Locale locale = context.locale;
-                    if (locale == const Locale('es') ||
-                        locale == const Locale('ca') ||
-                        locale == const Locale('gl') ||
-                        locale == const Locale('eu') ||
-                        locale == const Locale('ast')) {
-                      await openUrl('https://t.me/g1nkgoES');
-                    } else if (locale == const Locale('fr')) {
-                      await openUrl('https://t.me/g1nkgoFR');
-                    } else {
-                      await openUrl('https://t.me/g1nkgoEN');
-                    }
-                  },
-                ),
-                /*
+                  /*
                 Until this is solved, we comment the feedback functionality
                 https://github.com/ueman/feedback/issues/317
                 ListTile(
@@ -182,24 +192,25 @@ class _CardDrawerState extends State<CardDrawer> {
                   },
                 ),
                 */
-                AboutListTile(
-                    icon: g1nkgoIcon,
-                    applicationName: tr('app_name'),
-                    applicationVersion: 'Version: ${snapshot.data!.version}',
-                    applicationIcon: g1nkgoIcon,
-                    applicationLegalese:
-                        '© ${DateTime.now().year.toString() == '2023' ? '2023' : '2023-${DateTime.now().year}'} Comunes Association, under AGPLv3',
-                    aboutBoxChildren: const <Widget>[
-                      SizedBox(height: 10.0),
-                    ]),
-              ],
-            ),
-          );
-        } else {
-          return const Center(child: CircularProgressIndicator());
-        }
-      },
-    );
+                  AboutListTile(
+                      icon: g1nkgoIcon,
+                      applicationName: tr('app_name'),
+                      applicationVersion: 'Version: ${snapshot.data!.version}',
+                      applicationIcon: g1nkgoIcon,
+                      applicationLegalese:
+                          '© ${DateTime.now().year.toString() == '2023' ? '2023' : '2023-${DateTime.now().year}'} Comunes Association, under AGPLv3',
+                      aboutBoxChildren: const <Widget>[
+                        SizedBox(height: 10.0),
+                      ]),
+                ],
+              ),
+            );
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        },
+      );
+    });
   }
 
   void bonusTrack(BuildContext context) {

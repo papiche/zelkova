@@ -25,6 +25,10 @@ class AppCubit extends HydratedCubit<AppState> {
 
   double get currentUd => state.currentUd;
 
+  bool get hasRecentExport => state.hasRecentExport;
+
+  int get recentExportReminderInDays => state.recentExportReminderInDays;
+
   void introViewed() {
     emit(state.copyWith(introViewed: true));
   }
@@ -88,4 +92,12 @@ class AppCubit extends HydratedCubit<AppState> {
   }
 
   DistancePrecompute? get distancePrecompute => state.distancePrecompute;
+
+  void setHasRecentExport(bool value) {
+    emit(state.copyWith(hasRecentExport: value));
+  }
+
+  void setRecentExportReminderInDays(int days) {
+    emit(state.copyWith(recentExportReminderInDays: days));
+  }
 }

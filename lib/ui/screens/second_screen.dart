@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../tutorial.dart';
+import '../ui_helpers.dart';
 import '../widgets/card_drawer.dart';
 import '../widgets/second_screen/card_terminal.dart';
 import '../widgets/second_screen/second_tutorial.dart';
@@ -20,6 +21,15 @@ class _SecondScreenState extends State<SecondScreen> {
   void initState() {
     super.initState();
     tutorial = SecondTutorial(context);
+    if (isBrightnessSupported()) {
+      setHighBrightness();
+    }
+  }
+
+  @override
+  void dispose() {
+    resetBrightness();
+    super.dispose();
   }
 
   @override

@@ -248,8 +248,8 @@ void workManagerCallbackDispatcher() {
       loggerDev(
           '---------- Start fetchTransactionsTask Workmanager background task');
       switch (task) {
-        case fetchWalletsTransactionsTask:
-          // await NotificationController.initializeLocalNotifications();
+        case 'fetchWalletsTransactionsTask':
+          await NotificationController.initializeLocalNotifications();
           fetchTransactionsFromBackground();
           break;
         case Workmanager.iOSBackgroundTask:
@@ -425,8 +425,12 @@ class _GinkgoAppState extends State<GinkgoApp> {
               true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
           ); */
       Workmanager().registerPeriodicTask(
-        fetchWalletsTransactionsTask,
-        fetchWalletsTransactionsTask,
+        'fetchWalletsTransactionsTaskId',
+        'fetchWalletsTransactionsTask',
+        constraints: Constraints(
+          networkType: NetworkType.connected,
+          requiresBatteryNotLow: true,
+        ),
         frequency: const Duration(minutes: 15),
       );
     }
@@ -446,6 +450,16 @@ class _GinkgoAppState extends State<GinkgoApp> {
   }
 
   void initCronTask() {
+    // once only runs on startup, if we need something to run every time after
+    // the app is opened, we need to use a timer
+    Timer(const Duration(hours: 1), () async {
+      logger('---------- fetchNodes via timer');
+      final bool isConnected =
+          await ConnectivityWidgetWrapperWrapper.isConnected;
+      if (isConnected) {
+        _loadNodes();
+      }
+    });
     Once.runHourly('load_nodes', callback: () async {
       final bool isConnected =
           await ConnectivityWidgetWrapperWrapper.isConnected;
@@ -472,9 +486,18 @@ class _GinkgoAppState extends State<GinkgoApp> {
       logger('clear tx cubit via once');
       context.read<MultiWalletTransactionCubit>().clearState();
     });
-    Once.runHourly('fetch_nodes', callback: () {
-      logger('---------- fetchNodes via once');
-      _loadNodes();
+    final int remindMeIn = context.read<AppCubit>().recentExportReminderInDays;
+
+    Once.runCustom('remind_backups', callback: () {
+      logger('---------- remind backups in $remindMeIn days');
+      context.read<AppCubit>().setHasRecentExport(false);
+    },
+        duration: inDevelopment
+            ? Duration(minutes: remindMeIn)
+            : Duration(days: remindMeIn));
+    Timer(const Duration(minutes: 5), () async {
+      logger('---------- fetchTransactions via timer');
+      fetchTransactions(context);
     });
     Once.runCustom('fetch_txs', callback: () {
       logger('---------- fetchTransactions via once');

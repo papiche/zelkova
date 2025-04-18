@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.4.0-3
+version: 1.4.0-4
 
 environment:
   sdk: ^3.5.2
@@ -70,9 +70,7 @@ dependencies:
   path_provider: ^2.0.14
   awesome_notifications: ^0.10.0
   cron: ^0.6.1
-  barcode_scan2: #^4.2.4
-    git:
-      url: https://github.com/kee-org/barcode_scan2.git
+  barcode_scan2: ^4.5.1
   jsqr: ^0.1.4
   web_browser_detect: ^2.0.3
   tuple: ^2.0.1
@@ -92,7 +90,12 @@ dependencies:
   check_vpn_connection: ^0.0.2
   provider: ^6.0.5
   we_slide: ^2.4.0
-  workmanager: ^0.5.1
+  # https://github.com/fluttercommunity/flutter_workmanager/issues/588
+  workmanager:
+    git:
+      url: https://github.com/fluttercommunity/flutter_workmanager.git
+      path: workmanager
+      ref: main
   get_it: ^8.0.0
   l10n_esperanto: ^2.0.9
   collection: ^1.17.2
@@ -138,6 +141,7 @@ dependencies:
   flutter_secure_storage: ^9.2.4
   mockito: ^5.4.5
   super_clipboard: ^0.9.0-dev.6
+  screen_brightness: ^2.1.2
 
 dev_dependencies:
   flutter_test:

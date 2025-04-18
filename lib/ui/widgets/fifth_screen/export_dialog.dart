@@ -15,6 +15,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:universal_html/html.dart' as html;
 
+import '../../../data/models/app_cubit.dart';
 import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
 import '../../../data/models/legacy_wallet.dart';
@@ -25,6 +26,46 @@ import '../../in_dev_helper.dart';
 import '../../logger.dart';
 import '../../pattern_util.dart';
 import '../../ui_helpers.dart';
+import '../select_export_method_dialog.dart';
+import 'multi_wallet_selector.dart';
+
+Future<void> openExportWalletsSelector(
+    BuildContext context, bool expertMode) async {
+  showMultiWalletSelector(context,
+      (List<LegacyWallet> selectedWallets, bool exportContacts) {
+    _showSelectExportMethodDialog(
+        context: context,
+        onlyOneWalletSelected: selectedWallets.length == 1 && expertMode,
+        selectedWallets: selectedWallets,
+        exportContacts: exportContacts);
+  });
+}
+
+Future<void> _showSelectExportMethodDialog(
+    {required BuildContext context,
+    required bool onlyOneWalletSelected,
+    required List<LegacyWallet> selectedWallets,
+    required bool exportContacts}) async {
+  final ExportType? method = await showDialog<ExportType>(
+    context: context,
+    builder: (BuildContext context) =>
+        SelectExportMethodDialog(onlyOneWalletSelected: onlyOneWalletSelected),
+  );
+  if (method != null) {
+    if (!context.mounted) {
+      return;
+    }
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ExportDialog(
+            type: method,
+            wallets: selectedWallets,
+            exportContacts: exportContacts);
+      },
+    );
+  }
+}
 
 enum ExportType { clipboard, file, share, pubsec, wif, ewif }
 
@@ -260,6 +301,11 @@ class _ExportDialogState extends State<ExportDialog> {
             password: password);
         break;
     }
+    if (!context.mounted) {
+      return;
+    }
+    context.read<AppCubit>().setHasRecentExport(true);
+    context.read<AppCubit>().setRecentExportReminderInDays(120);
   }
 
   bool _requiresPattern(ExportType type) {

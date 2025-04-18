@@ -8,14 +8,12 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
-import '../../data/models/legacy_wallet.dart';
 import '../../data/models/node_manager.dart';
 import '../../data/models/theme_cubit.dart';
 import '../../g1/currency.dart';
 import '../../g1/service_manager.dart';
 import '../../shared_prefs_helper.dart';
 import '../clipboard_helper.dart';
-import '../logger.dart';
 import '../tutorial.dart';
 import '../tutorial_keys.dart';
 import '../ui_helpers.dart';
@@ -26,10 +24,8 @@ import '../widgets/fifth_screen/export_dialog.dart';
 import '../widgets/fifth_screen/fifth_tutorial.dart';
 import '../widgets/fifth_screen/import_dialog.dart';
 import '../widgets/fifth_screen/link_card.dart';
-import '../widgets/fifth_screen/multi_wallet_selector.dart';
 import '../widgets/fifth_screen/node_list_card.dart';
 import '../widgets/fifth_screen/text_divider.dart';
-import '../widgets/select_export_method_dialog.dart';
 
 class FifthScreen extends StatefulWidget {
   const FifthScreen({super.key});
@@ -40,22 +36,6 @@ class FifthScreen extends StatefulWidget {
 
 class _FifthScreenState extends State<FifthScreen> {
   late Tutorial tutorial;
-  List<LegacyWallet> _selectedWallets = <LegacyWallet>[];
-  bool _exportContacts = false;
-
-  Future<void> _openWalletSelector(
-      BuildContext context, bool expertMode) async {
-    showMultiWalletSelector(context,
-        (List<LegacyWallet> selectedCards, bool exportContacts) {
-      setState(() {
-        loggerDev('Selected wallets: ${selectedCards.length}');
-        _selectedWallets = selectedCards;
-        _exportContacts = exportContacts;
-      });
-      _showSelectExportMethodDialog(
-          onlyOneWalletSelected: selectedCards.length == 1 && expertMode);
-    });
-  }
 
   @override
   void initState() {
@@ -182,11 +162,7 @@ class _FifthScreenState extends State<FifthScreen> {
                   const SizedBox(height: 20),
                   Wrap(
                     spacing: 8.0,
-                    // Espacio horizontal entre los elementos
                     runSpacing: 8.0,
-                    // Espacio vertical entre las filas
-                    // alignment: WrapAlignment.start,
-                    // Alineación de los elementos en una fila
                     children: <Widget>[
                       if (showShare())
                         LinkCard(
@@ -224,7 +200,8 @@ class _FifthScreenState extends State<FifthScreen> {
                           title: 'export_key$pluralSuffix',
                           icon: Icons.download,
                           onTap: () async {
-                            _openWalletSelector(context, state.expertMode);
+                            openExportWalletsSelector(
+                                context, state.expertMode);
                           }),
                       LinkCard(
                           title: 'import_key$pluralSuffix',
@@ -297,29 +274,6 @@ class _FifthScreenState extends State<FifthScreen> {
         );
       });
     });
-  }
-
-  Future<void> _showSelectExportMethodDialog(
-      {required bool onlyOneWalletSelected}) async {
-    final ExportType? method = await showDialog<ExportType>(
-      context: context,
-      builder: (BuildContext context) => SelectExportMethodDialog(
-          onlyOneWalletSelected: onlyOneWalletSelected),
-    );
-    if (method != null) {
-      if (!mounted) {
-        return;
-      }
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return ExportDialog(
-              type: method,
-              wallets: _selectedWallets,
-              exportContacts: _exportContacts);
-        },
-      );
-    }
   }
 
   void _showTestNetworkDialog(BuildContext context) {

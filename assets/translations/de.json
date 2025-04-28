@@ -378,7 +378,7 @@
   "clipboard_import_mnemonic": "Mnemonische Phrase importieren",
   "clipboard_import_mnemonic_description": "Gib eine mnemonische Phrase an, um deine Brieftasche wiederherzustellen",
   "nodes_list_title": "{} Knoten ({})",
-  "please_select_wallets": "Bitte wähle mindestens eine Brieftasche für den Export aus",
+  "please_select_wallets": "Bitte wähle aus, was eportiert werden soll",
   "not_found_contacts": "Keine Kontakte gefunden",
   "op_successful": "Der Vorgang wurde erfolgreich abgeschlossen.",
   "op_processing": "Der Vorgang wird bearbeitet.",
@@ -387,5 +387,7 @@
   "op_broadcast": "Der Vorgang wurde in das Netzwerk gesendet und wird verarbeitet.",
   "wallet_options_title": "Was möchtest du tun?",
   "import_wallet_description": "Eine bereits bestehende Brieftasche mit einer anderen Methode laden",
-  "nodes_list_last_updated": "Letzte Aktualisierung: {}"
+  "nodes_list_last_updated": "Letzte Aktualisierung: {}",
+  "export_reminder_title": "Hast du einen aktuellen Export?",
+  "export_reminder_question": "Hast du einen aktuellen Export deiner Brieftaschen und Kontakte?"
 }

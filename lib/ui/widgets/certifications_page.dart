@@ -26,9 +26,10 @@ class CertificationsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text(title)),
-        body: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
+        body: SingleChildScrollView(
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
               ListTile(
                 tileColor: Theme.of(context).colorScheme.primaryContainer,
                 title: Text(
@@ -40,7 +41,8 @@ class CertificationsPage extends StatelessWidget {
                 ),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
               ),
-              Expanded(
+              SizedBox(
+                height: MediaQuery.of(context).size.height - kToolbarHeight,
                 child: ListView.builder(
                   itemCount: certifications.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -84,6 +86,6 @@ class CertificationsPage extends StatelessWidget {
                   },
                 ),
               )
-            ]));
+            ])));
   }
 }

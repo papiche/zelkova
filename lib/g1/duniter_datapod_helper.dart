@@ -143,7 +143,7 @@ Future<Contact> createContactFromProfile(
 
 Future<GGetProfileByAddressData_profiles?> _searchProfileByPKV2(
     String pubkey) async {
-  executeOnDatapodNodes((Node node, ferry.Client client) async {
+  return executeOnDatapodNodes((Node node, ferry.Client client) async {
     loggerDev('Searching profile in node ${node.url} with address $pubkey');
     try {
       final GGetProfileByAddressReq request = GGetProfileByAddressReq(
@@ -162,11 +162,12 @@ Future<GGetProfileByAddressData_profiles?> _searchProfileByPKV2(
       loggerDev('Profile found for pubkey $pubkey in node ${node.url}');
       return response.data?.profiles.first;
     } catch (e) {
-      logger(
-          'Error fetching profile in node ${node.url} with address $pubkey ($e)');
+      loggerDev(
+          'Error fetching profile in node ${node.url} with address $pubkey',
+          error: e);
     }
+    return null;
   });
-  return null;
 }
 
 Future<Contact> getProfileV2(String pubKey,
@@ -288,7 +289,7 @@ Future<List<Contact>> searchProfilesV2({
         contacts.add(await createContactFromProfile(profile));
       }
     } catch (e) {
-      logger('Error fetching profiles in node ${node.url}: $e');
+      loggerDev('Error fetching profiles in node ${node.url}', error: e);
     }
     loggerDev('Contacts found in searchProfiles ${contacts.length}');
     return contacts;

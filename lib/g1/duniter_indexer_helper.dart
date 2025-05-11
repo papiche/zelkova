@@ -149,6 +149,8 @@ Contact _contactFromIdentity(dynamic identity) {
   try {
     certReceived = ((identity as dynamic).certReceived as BuiltList<dynamic>)
         .map((dynamic cert) => _buildCert(cert))
+        .where((Cert? cert) => cert != null)
+        .cast<Cert>()
         .toList();
   } catch (e) {
     // Do nothing
@@ -157,6 +159,8 @@ Contact _contactFromIdentity(dynamic identity) {
   try {
     certIssued = ((identity as dynamic).certIssued as BuiltList<dynamic>)
         .map((dynamic cert) => _buildCert(cert))
+        .where((Cert? cert) => cert != null)
+        .cast<Cert>()
         .toList();
   } catch (e) {
     // Do nothing
@@ -175,9 +179,15 @@ Contact _contactFromIdentity(dynamic identity) {
   );
 }
 
-Cert _buildCert(dynamic cert) {
+Cert? _buildCert(dynamic cert) {
   final dynamic issuer = (cert as dynamic).issuer;
   final dynamic receiver = (cert as dynamic).receiver;
+
+  // If the issuer or receiver is null (if the account is REMOVED), return null
+  if ((issuer as dynamic).accountId == null ||
+      (receiver as dynamic).accountId == null) {
+    return null;
+  }
   return Cert(
     id: (cert as dynamic).id as String,
     issuerId: Contact.withAddress(
@@ -194,7 +204,7 @@ Cert _buildCert(dynamic cert) {
         createdOn: ((receiver as dynamic).account as dynamic).createdOn as int,
         address: (receiver as dynamic).accountId as String,
         status: parseIdentityStatus(
-            ((issuer as dynamic)?.status as dynamic)?.name as String?),
+            ((receiver as dynamic)?.status as dynamic)?.name as String?),
         isMember: (receiver as dynamic)?.isMember as bool?,
         expireOn: (receiver as dynamic).expireOn as int?,
         index: (receiver as dynamic).index as int?),
@@ -221,6 +231,8 @@ Contact _contactFromAccount(dynamic account) {
   try {
     certReceived = ((identity as dynamic).certReceived as BuiltList<dynamic>)
         .map((dynamic cert) => _buildCert(cert))
+        .where((Cert? cert) => cert != null)
+        .cast<Cert>()
         .toList();
   } catch (e) {
     // Do nothing
@@ -228,6 +240,8 @@ Contact _contactFromAccount(dynamic account) {
   try {
     certIssued = ((identity as dynamic).certIssued as BuiltList<dynamic>)
         .map((dynamic cert) => _buildCert(cert))
+        .where((Cert? cert) => cert != null)
+        .cast<Cert>()
         .toList();
   } catch (e) {
     // Do nothing

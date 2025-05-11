@@ -50,6 +50,7 @@ class _ContactPageState extends State<ContactPage> {
   bool isAvatarExpanded = false;
   late bool isV2;
   late Stream<ContactWotInfo> _wotInfoStream;
+  late ScrollController _scrollController;
 
   @override
   void initState() {
@@ -58,6 +59,8 @@ class _ContactPageState extends State<ContactPage> {
     isV2 = appCubit.isV2;
     _updateBalance();
     _wotInfoStream = _getWotInfo(appCubit);
+    _scrollController = ScrollController();
+    _scrollController.addListener(_onScroll);
     super.initState();
   }
 
@@ -68,8 +71,23 @@ class _ContactPageState extends State<ContactPage> {
 
   @override
   void dispose() {
+    _scrollController.dispose();
     _txsCubit.removeStateForKey(widget.contact.pubKey);
     super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.minScrollExtent) {
+      _refresh();
+    }
+  }
+
+  Future<void> _refresh() async {
+    setState(() {
+      final AppCubit appCubit = context.read<AppCubit>();
+      _wotInfoStream = _getWotInfo(appCubit);
+    });
   }
 
   @override
@@ -220,6 +238,7 @@ class _ContactPageState extends State<ContactPage> {
   Widget _buildInfoTab(Contact contact, ContactWotInfo wotInfo) {
     final bool loaded = wotInfo.loaded;
     return SingleChildScrollView(
+      controller: _scrollController,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

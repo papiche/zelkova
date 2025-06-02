@@ -368,5 +368,12 @@
   "idty_status_NOTMEMBER": "Non-membre",
   "op_invalid": "L'opération n'a pas pu être traitée. Veuillez vérifier et réessayer.",
   "op_in_block": "L'opération a été confirmée et incluse dans un bloc.",
-  "cert_expire_on": "La certification expire"
+  "cert_expire_on": "La certification expire",
+  "wallet_options_title": "Que voulez-vous faire ?",
+  "create_wallet_option": "Créer un nouveau portefeuille",
+  "import_wallet_option": "Importer un portefeuille existant",
+  "create_wallet_title": "Choisissez comment créer votre portefeuille Ğ1",
+  "create_no_password_option": "Sans mot de passe",
+  "create_wallet_description": "Créez un tout nouveau portefeuille pour vos transactions de Ğ1",
+  "import_wallet_description": "Charger un portefeuille que vous possédez déjà, en utilisant différentes méthodes"
 }

@@ -6,6 +6,7 @@ import '../data/models/transaction_state.dart';
 import '../data/models/transaction_type.dart';
 import '../ui/contacts_cache.dart';
 import '../ui/logger.dart';
+import 'duniter_endpoint_helper.dart';
 import 'g1_v2_helper.dart';
 
 Future<TransactionState> transactionsV2Parser(
@@ -14,9 +15,13 @@ Future<TransactionState> transactionsV2Parser(
   String pubKeyRaw,
 ) async {
   final String accountAddress = addressFromV1PubkeyFaiSafe(pubKeyRaw);
+
+  final BigInt currentUd = await currentUniversalDividendV2();
+
   if (jsonData == null || jsonData.isEmpty) {
     return currentState.copyWith(
       balance: 0.0,
+      currentUd: currentUd.toDouble(),
       transactions: <Transaction>[],
       lastChecked: DateTime.now(),
     );
@@ -26,6 +31,7 @@ Future<TransactionState> transactionsV2Parser(
   if (accounts == null || accounts.isEmpty) {
     return currentState.copyWith(
       balance: 0.0,
+      currentUd: currentUd.toDouble(),
       transactions: <Transaction>[],
       lastChecked: DateTime.now(),
     );
@@ -39,6 +45,7 @@ Future<TransactionState> transactionsV2Parser(
   if (account == null) {
     return currentState.copyWith(
       balance: 0.0,
+      currentUd: currentUd.toDouble(),
       transactions: <Transaction>[],
       lastChecked: DateTime.now(),
     );
@@ -67,6 +74,7 @@ Future<TransactionState> transactionsV2Parser(
 
   return currentState.copyWith(
     balance: balance,
+    currentUd: currentUd.toDouble(),
     transactions: allTransactions,
     lastChecked: DateTime.now(),
   );

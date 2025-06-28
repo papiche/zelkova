@@ -442,3 +442,12 @@ Future<SignAndSendResult> revoke(
     );
   });
 }
+
+Future<BigInt> currentUniversalDividendV2() async {
+  return executeOnPolkadotNodes(
+      (Node node, Provider provider, Gdev polkadot) async {
+    final Gdev polkadot = Gdev(provider);
+    final BigInt currentUd = await polkadot.query.universalDividend.currentUd();
+    return currentUd;
+  });
+}

@@ -15,11 +15,11 @@ abstract class _$ContactCWProxy {
 
   Contact avatar(Uint8List? avatar);
 
+  Contact avatarCid(String? avatarCid);
+
   Contact notes(String? notes);
 
   Contact name(String? name);
-
-  Contact avatarCid(String? avatarCid);
 
   Contact description(String? description);
 
@@ -60,9 +60,9 @@ abstract class _$ContactCWProxy {
     String? pubKey,
     String? address,
     Uint8List? avatar,
+    String? avatarCid,
     String? notes,
     String? name,
-    String? avatarCid,
     String? description,
     String? city,
     String? dataCid,
@@ -99,13 +99,13 @@ class _$ContactCWProxyImpl implements _$ContactCWProxy {
   Contact avatar(Uint8List? avatar) => this(avatar: avatar);
 
   @override
+  Contact avatarCid(String? avatarCid) => this(avatarCid: avatarCid);
+
+  @override
   Contact notes(String? notes) => this(notes: notes);
 
   @override
   Contact name(String? name) => this(name: name);
-
-  @override
-  Contact avatarCid(String? avatarCid) => this(avatarCid: avatarCid);
 
   @override
   Contact description(String? description) => this(description: description);
@@ -165,9 +165,9 @@ class _$ContactCWProxyImpl implements _$ContactCWProxy {
     Object? pubKey = const $CopyWithPlaceholder(),
     Object? address = const $CopyWithPlaceholder(),
     Object? avatar = const $CopyWithPlaceholder(),
+    Object? avatarCid = const $CopyWithPlaceholder(),
     Object? notes = const $CopyWithPlaceholder(),
     Object? name = const $CopyWithPlaceholder(),
-    Object? avatarCid = const $CopyWithPlaceholder(),
     Object? description = const $CopyWithPlaceholder(),
     Object? city = const $CopyWithPlaceholder(),
     Object? dataCid = const $CopyWithPlaceholder(),
@@ -200,6 +200,10 @@ class _$ContactCWProxyImpl implements _$ContactCWProxy {
           ? _value.avatar
           // ignore: cast_nullable_to_non_nullable
           : avatar as Uint8List?,
+      avatarCid: avatarCid == const $CopyWithPlaceholder()
+          ? _value.avatarCid
+          // ignore: cast_nullable_to_non_nullable
+          : avatarCid as String?,
       notes: notes == const $CopyWithPlaceholder()
           ? _value.notes
           // ignore: cast_nullable_to_non_nullable
@@ -208,10 +212,6 @@ class _$ContactCWProxyImpl implements _$ContactCWProxy {
           ? _value.name
           // ignore: cast_nullable_to_non_nullable
           : name as String?,
-      avatarCid: avatarCid == const $CopyWithPlaceholder()
-          ? _value.avatarCid
-          // ignore: cast_nullable_to_non_nullable
-          : avatarCid as String?,
       description: description == const $CopyWithPlaceholder()
           ? _value.description
           // ignore: cast_nullable_to_non_nullable
@@ -287,9 +287,9 @@ Contact _$ContactFromJson(Map<String, dynamic> json) => Contact(
       pubKey: json['pubKey'] as String,
       address: json['address'] as String?,
       avatar: uIntFromList(json['avatar']),
+      avatarCid: json['avatarCid'] as String?,
       notes: json['notes'] as String?,
       name: json['name'] as String?,
-      avatarCid: json['avatarCid'] as String?,
       description: json['description'] as String?,
       city: json['city'] as String?,
       dataCid: json['dataCid'] as String?,

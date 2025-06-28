@@ -34,12 +34,14 @@ class ContactSearchPage extends StatefulWidget {
       this.uri,
       required this.searchUse,
       this.startInMultiSelect = false,
-      this.isEdit = false});
+      this.isEdit = false,
+      this.initialSearch});
 
   final String? uri;
   final SearchUse searchUse;
   final bool startInMultiSelect;
   final bool isEdit;
+  final String? initialSearch;
 
   @override
   State<ContactSearchPage> createState() => _ContactSearchPageState();
@@ -220,7 +222,8 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
                 controller: _searchController,
                 focusNode: _searchFocusNode,
                 decoration: InputDecoration(
-                  filled: true,
+                  // filled: true,
+                  border: const OutlineInputBorder(),
                   labelText: tr('search_user'),
                   helperText: _searchTerm.isEmpty
                       ? notForContactPage
@@ -446,6 +449,11 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
     if (widget.isEdit) {
       _selectedContacts.addAll(paymentCubit.contacts);
       _results.addAll(paymentCubit.contacts);
+    }
+    if (widget.initialSearch?.isNotEmpty ?? false) {
+      _searchTerm = widget.initialSearch!;
+      _searchController.text = widget.initialSearch!;
+      _search();
     }
   }
 

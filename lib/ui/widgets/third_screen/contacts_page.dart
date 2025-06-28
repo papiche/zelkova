@@ -116,7 +116,8 @@ class _ContactsPageState extends State<ContactsPage> {
                 icon: const Icon(Icons.travel_explore),
                 label: Text(tr('search_users_globally')),
                 onPressed: () async {
-                  searchForContactsGlobally(context);
+                  searchForContactsGlobally(context,
+                      search: _searchController.text);
                 })
           ])))
         else

@@ -84,11 +84,12 @@ void addContact(BuildContext context, Contact newContact) {
   );
 }
 
-void searchForContactsGlobally(BuildContext context) {
+void searchForContactsGlobally(BuildContext context, {String? search}) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return const ContactSearchPage(searchUse: SearchUse.contactSearch);
+      return ContactSearchPage(
+          searchUse: SearchUse.contactSearch, initialSearch: search);
     },
   );
 }

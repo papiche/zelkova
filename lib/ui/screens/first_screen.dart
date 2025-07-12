@@ -53,9 +53,9 @@ class _FirstScreenState extends State<FirstScreen> {
             final Browser? browser = Browser.detectOrNull();
             if (!appState.warningBrowserViewed) {
               if (browser == null ||
-                  (browser.browserAgent != BrowserAgent.Chrome &&
-                      browser.browserAgent != BrowserAgent.Firefox) ||
-                  browser.browserAgent == BrowserAgent.Safari) {
+                  (browser.browserAgent != BrowserAgent.chrome &&
+                      browser.browserAgent != BrowserAgent.firefox) ||
+                  browser.browserAgent == BrowserAgent.safari) {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   behavior: SnackBarBehavior.floating,
                   content: Text(tr('browser_warning')),

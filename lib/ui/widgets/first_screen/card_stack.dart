@@ -22,7 +22,7 @@ class _CardStackState extends State<CardStack> {
     return Consumer<SharedPreferencesHelper>(builder: (BuildContext context,
         SharedPreferencesHelper prefsHelper, Widget? child) {
       final List<LegacyWallet> cards =
-          List<LegacyWallet>.from(SharedPreferencesHelper().legacyWallets);
+          List<LegacyWallet>.from(SharedPreferencesHelper().cards);
       final int currentIndex =
           SharedPreferencesHelper().getCurrentWalletIndex();
       logger('Current wallet index is $currentIndex of ${cards.length}');

@@ -233,6 +233,7 @@ class _FifthScreenState extends State<FifthScreen> {
                         value: state.v2mode,
                         onChanged: (bool v2mode) {
                           context.read<AppCubit>().setV2Mode(v2mode);
+                          SharedPreferencesHelper.configure(useV2: v2mode);
                           GetIt.instance<ServiceManager>()
                               .updateService(v2mode);
                           if (v2mode) {

@@ -82,5 +82,7 @@
   <string>description</string>
   <key>FlutterDeepLinkingEnabled</key>
   <false/>
+  <key>NSFaceIDUsageDescription</key>
+  <string>Unlock your wallets via</string>
 </dict>
 </plist>

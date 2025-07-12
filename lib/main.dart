@@ -52,6 +52,7 @@ import 'g1/distance_precompute_provider.dart';
 import 'g1/g1_helper.dart';
 import 'g1/service_manager.dart';
 import 'shared_prefs_helper.dart';
+import 'ui/biometrics/biometric_auth_service.dart';
 import 'ui/contacts_cache.dart';
 import 'ui/in_dev_helper.dart';
 import 'ui/logger.dart';
@@ -60,13 +61,18 @@ import 'ui/pay_helper.dart';
 import 'ui/screens/skeleton_screen.dart';
 import 'ui/ui_helpers.dart';
 import 'ui/widgets/connectivity_widget_wrapper_wrapper.dart';
+import 'ui/widgets/pages/biometric_lock_screen.dart';
 
 const String fetchWalletsTransactionsTask =
     'org.comunes.ginkgo.fetchWalletsTransactionsTask';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+    await Workmanager().initialize(workManagerCallbackDispatcher,
+        isInDebugMode: inDevelopment);
+  }
   await NotificationController.initializeLocalNotifications();
-
   const int seedColor = 0xff98FB98;
   final int seedColorDark = colorToValue(Colors.lightGreen);
 
@@ -92,7 +98,7 @@ void main() async {
   }
 
   /// Initialize packages
-  WidgetsFlutterBinding.ensureInitialized();
+
   await EasyLocalization.ensureInitialized();
 
   if (!kIsWeb && Platform.isAndroid) {
@@ -101,8 +107,8 @@ void main() async {
 
   final SharedPreferencesHelper shared = SharedPreferencesHelper();
   await shared.init();
-  if (shared.legacyWallets.isEmpty) {
-    await shared.getWallet();
+  if (shared.cards.isEmpty) {
+    await shared.getLegacyWallet();
   }
   assert(shared.getPubKey() != null);
 
@@ -248,7 +254,7 @@ void workManagerCallbackDispatcher() {
       loggerDev(
           '---------- Start fetchTransactionsTask Workmanager background task');
       switch (task) {
-        case 'fetchWalletsTransactionsTask':
+        case fetchWalletsTransactionsTask:
           await NotificationController.initializeLocalNotifications();
           fetchTransactionsFromBackground();
           break;
@@ -398,11 +404,13 @@ class _GinkgoAppState extends State<GinkgoApp> {
   @override
   void initState() {
     super.initState();
+
     if (!kIsWeb) {
       _initDeepLinkListener();
     }
     // Only after at least the action method is set, the notification events are delivered
     NotificationController.startListeningNotificationEvents();
+
     // Schedule tasks using Cron
     initCronTask();
 
@@ -419,14 +427,9 @@ class _GinkgoAppState extends State<GinkgoApp> {
     });
 
     if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
-      Workmanager().initialize(
-          workManagerCallbackDispatcher); // The top level function, aka callbackDispatcher
-      /* , isInDebugMode:
-              true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
-          ); */
       Workmanager().registerPeriodicTask(
-        'fetchWalletsTransactionsTaskId',
-        'fetchWalletsTransactionsTask',
+        fetchWalletsTransactionsTask,
+        fetchWalletsTransactionsTask,
         constraints: Constraints(
           networkType: NetworkType.connected,
           requiresBatteryNotLow: true,
@@ -715,7 +718,7 @@ Future<void> fetchTransactionsFromBackground([bool init = true]) async {
   try {
     if (init) {
       await hiveInit();
-      if (SharedPreferencesHelper().legacyWallets.isEmpty) {
+      if (SharedPreferencesHelper().cards.isEmpty) {
         await SharedPreferencesHelper().init();
       }
       try {
@@ -736,7 +739,7 @@ Future<void> fetchTransactionsFromBackground([bool init = true]) async {
     final GetIt getIt = GetIt.instance;
     final MultiWalletTransactionCubit transCubit =
         getIt.get<MultiWalletTransactionCubit>();
-    for (final LegacyWallet wallet in SharedPreferencesHelper().legacyWallets) {
+    for (final LegacyWallet wallet in SharedPreferencesHelper().cards) {
       loggerDev('Fetching transactions for ${wallet.pubKey} in background');
       transCubit.fetchTransactions(pubKey: wallet.pubKey);
     }
@@ -752,14 +755,65 @@ Future<void> fetchTransactionsFromBackground([bool init = true]) async {
   }
 }
 
-class AppStart extends StatelessWidget {
+class AppStart extends StatefulWidget {
   const AppStart({super.key});
+
+  @override
+  State<AppStart> createState() => _AppStartState();
+}
+
+class _AppStartState extends State<AppStart> {
+  final BiometricAuthService _authService = BiometricAuthService();
+  bool _isAppLocked = true;
+  bool _biometricSupported = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeApp();
+  }
+
+  Future<void> _initializeApp() async {
+    _biometricSupported = await _authService.isBiometricSupported();
+    await _checkAuthStatus();
+  }
+
+  Future<void> _checkAuthStatus() async {
+    final bool biometricEnabled = await _authService.isBiometricEnabled();
+
+    if (biometricEnabled && _biometricSupported) {
+      final bool authenticated = await _authService.authenticate(
+          localizedReason: tr('biometric_auth_reason'));
+
+      setState(() => _isAppLocked = !authenticated);
+    } else {
+      setState(() => _isAppLocked = false);
+    }
+  }
+
+  Future<void> _unlockApp() async {
+    if (_biometricSupported) {
+      final bool authenticated = await _authService.authenticate(
+        localizedReason: tr('biometric_auth_reason'),
+      );
+
+      if (authenticated) {
+        setState(() => _isAppLocked = false);
+      }
+    } else {
+      setState(() => _isAppLocked = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final bool introViewed = GetIt.instance.get<AppCubit>().isIntroViewed;
     if (introViewed) {
-      return const FeedbackAndSkeletonScreen();
+      return _isAppLocked
+          ? BiometricLockScreen(
+              onUnlock: () => _unlockApp(),
+            )
+          : const FeedbackAndSkeletonScreen();
     } else {
       return const AppIntro();
     }
@@ -844,7 +898,7 @@ Future<void> _clearCacheIfNeeded(Directory storageDir) async {
 Future<void> fetchTransactions(BuildContext context) async {
   final MultiWalletTransactionCubit transCubit =
       context.read<MultiWalletTransactionCubit>();
-  for (final LegacyWallet wallet in SharedPreferencesHelper().legacyWallets) {
+  for (final LegacyWallet wallet in SharedPreferencesHelper().cards) {
     transCubit.fetchTransactions(pubKey: wallet.pubKey);
   }
 }

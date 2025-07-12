@@ -5,7 +5,6 @@ import 'package:duniter_indexer/duniter_indexer_client.dart';
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.data.gql.dart';
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.req.gql.dart';
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.var.gql.dart';
-import 'package:durt/durt.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ferry/ferry.dart' as ferry;
 import 'package:ferry/ferry.dart';
@@ -197,8 +196,7 @@ Future<tp.Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalanceV2(
 
 Future<SignAndSendResult> requestDistanceEvaluationFor(int idtyIndex,
     {Duration timeout = defPolkadotTimeout}) async {
-  final CesiumWallet walletV1 = await SharedPreferencesHelper().getWallet();
-  final KeyPair wallet = KeyPair.ed25519.fromSeed(walletV1.seed);
+  final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
   return executeOnPolkadotNodes<SignAndSendResult>(
       (Node node, Provider provider, Gdev polkadot) async {
     // distance rule has been evaluated positively locally on web of trust at block storage.distance.evaluationBlock()
@@ -221,8 +219,7 @@ Future<SignAndSendResult> requestDistanceEvaluationFor(int idtyIndex,
 
 Future<SignAndSendResult> requestDistanceEvaluation(
     {Duration timeout = defPolkadotTimeout}) async {
-  final CesiumWallet walletV1 = await SharedPreferencesHelper().getWallet();
-  final KeyPair wallet = KeyPair.ed25519.fromSeed(walletV1.seed);
+  final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
   return executeOnPolkadotNodes<SignAndSendResult>(
       (Node node, Provider provider, Gdev polkadot) async {
     // distance rule has been evaluated positively locally on web of trust at block storage.distance.evaluationBlock()
@@ -244,8 +241,7 @@ Future<SignAndSendResult> requestDistanceEvaluation(
 
 Future<SignAndSendResult> createIdentity(
     {required Contact you, Duration timeout = defPolkadotTimeout}) async {
-  final CesiumWallet walletV1 = await SharedPreferencesHelper().getWallet();
-  final KeyPair wallet = KeyPair.ed25519.fromSeed(walletV1.seed);
+  final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
   return executeOnPolkadotNodes(
       (Node node, Provider provider, Gdev polkadot) async {
     final RuntimeCall call = polkadot.tx.identity.createIdentity(
@@ -264,8 +260,7 @@ Future<SignAndSendResult> createIdentity(
 
 Future<SignAndSendResult> confirmIdentity(String identityName,
     {Duration timeout = defPolkadotTimeout}) async {
-  final CesiumWallet walletV1 = await SharedPreferencesHelper().getWallet();
-  final KeyPair wallet = KeyPair.ed25519.fromSeed(walletV1.seed);
+  final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
   return executeOnPolkadotNodes(
       (Node node, Provider provider, Gdev polkadot) async {
     final RuntimeCall call =
@@ -283,8 +278,7 @@ Future<SignAndSendResult> confirmIdentity(String identityName,
 
 Future<SignAndSendResult> certify(int idtyIndex,
     {Duration timeout = defPolkadotTimeout}) async {
-  final CesiumWallet walletV1 = await SharedPreferencesHelper().getWallet();
-  final KeyPair wallet = KeyPair.ed25519.fromSeed(walletV1.seed);
+  final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
   return executeOnPolkadotNodes(
       (Node node, Provider provider, Gdev polkadot) async {
     final RuntimeCall call =
@@ -312,9 +306,7 @@ Future<PayResult> payV2({
   required double amount,
   String? comment,
 }) async {
-  final CesiumWallet walletV1 = await SharedPreferencesHelper().getWallet();
-  final KeyPair wallet = KeyPair.ed25519.fromSeed(walletV1.seed);
-
+  final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
   final List<String> addresses = <String>[];
   final StreamController<String> progressController =
       StreamController<String>();
@@ -404,8 +396,7 @@ String _resultTransformer(String suffix, String statusType, String success) {
 
 Future<SignAndSendResult> renew(int idtyIndex,
     {Duration timeout = defPolkadotTimeout}) async {
-  final KeyPair wallet = KeyPair.ed25519
-      .fromSeed((await SharedPreferencesHelper().getWallet()).seed);
+  final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
   return executeOnPolkadotNodes(
       (Node node, Provider provider, Gdev polkadot) async {
     final RuntimeCall call =
@@ -424,8 +415,7 @@ Future<SignAndSendResult> renew(int idtyIndex,
 Future<SignAndSendResult> revoke(
     int idtyIndex, List<int> revocationKey, MultiSignature revocationSig,
     {Duration timeout = defPolkadotTimeout}) async {
-  final KeyPair wallet = KeyPair.ed25519
-      .fromSeed((await SharedPreferencesHelper().getWallet()).seed);
+  final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
   return executeOnPolkadotNodes(
       (Node node, Provider provider, Gdev polkadot) async {
     final RuntimeCall call = polkadot.tx.identity.revokeIdentity(

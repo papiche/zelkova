@@ -8,6 +8,8 @@ import 'package:ginkgo/shared_prefs_helper.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'secure_storage_mock.dart' show registerMockSecureStorage;
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -17,6 +19,7 @@ void main() {
     SharedPreferencesHelper.configure(useV2: false);
     SharedPreferences.setMockInitialValues(<String, Object>{});
     helper = SharedPreferencesHelper();
+    registerMockSecureStorage();
     await helper.init();
     helper.cards.clear();
   });

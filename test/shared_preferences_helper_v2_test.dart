@@ -10,6 +10,8 @@ import 'package:ginkgo/shared_prefs_helper.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'secure_storage_mock.dart' show registerMockSecureStorage;
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -216,36 +218,5 @@ void main() {
       expect(prefs.containsKey('seed'), false);
       expect(prefs.containsKey('pub'), false);
     });
-  });
-}
-
-final Map<String, String?> secureStore = <String, String?>{};
-
-void registerMockSecureStorage() {
-  const MethodChannel channel =
-      MethodChannel('plugins.it_nomads.com/flutter_secure_storage');
-
-  TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-      .setMockMethodCallHandler(channel, (MethodCall call) async {
-    final Map<String, dynamic> args =
-        (call.arguments as Map<dynamic, dynamic>?)?.cast<String, dynamic>() ??
-            <String, dynamic>{};
-    switch (call.method) {
-      case 'read':
-        return secureStore[args['key']];
-      case 'write':
-        secureStore[args['key'] as String] = args['value'] as String?;
-        return true;
-      case 'delete':
-        secureStore.remove(args['key']);
-        return true;
-      case 'readAll':
-        return secureStore;
-      case 'deleteAll':
-        secureStore.clear();
-        return true;
-      default:
-        return null;
-    }
   });
 }

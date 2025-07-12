@@ -16,6 +16,7 @@ import '../ui_helpers.dart';
 import 'backup_reminder_dialog.dart';
 import 'first_screen/card_stack.dart';
 import 'market_analysis/market_analysis_page.dart';
+import 'pages/settings_page.dart';
 
 typedef IssueCreatedCallback = void Function(
     String? issueUrl, Map<String, dynamic> issueData, bool isSuccess);
@@ -77,6 +78,19 @@ class _CardDrawerState extends State<CardDrawer> {
                       onTap: () => showBackupReminderDialog(context),
                     ),
                   const CardStack(),
+                  if (context.read<AppCubit>().isV2)
+                    ListTile(
+                      leading: const Icon(Icons.settings),
+                      title: Text(tr('settings_title')),
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const SettingsPage();
+                          },
+                        );
+                      },
+                    ),
                   if (inDevelopment)
                     ListTile(
                       leading: const Icon(Icons.build),

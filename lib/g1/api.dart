@@ -687,7 +687,8 @@ Future<PayResult> payV1(
     final String nodeUrl = selected.item1;
     try {
       final Gva gva = Gva(node: nodeUrl);
-      final CesiumWallet wallet = await SharedPreferencesHelper().getWallet();
+      final CesiumWallet wallet =
+          await SharedPreferencesHelper().getLegacyWallet();
       logger(
           'Trying $nodeUrl to send $amount to $to with comment ${comment ?? ''}');
       String response;
@@ -849,7 +850,7 @@ void increaseNodeErrors(NodeType type, Node node) {
 // Update an existing profile: user/profile/_update (POST)
 // Delete an existing profile: user/profile/_delete (DELETE?)
 Future<bool> createOrUpdateProfileV1(String name) async {
-  final CesiumWallet wallet = await SharedPreferencesHelper().getWallet();
+  final CesiumWallet wallet = await SharedPreferencesHelper().getLegacyWallet();
   final String pubKey = wallet.pubkey;
 
   // Check if the user exists
@@ -934,7 +935,7 @@ Future<String?> getProfileUserNameV1(String pubKey) async {
 }
 
 Future<bool> deleteProfileV1() async {
-  final CesiumWallet wallet = await SharedPreferencesHelper().getWallet();
+  final CesiumWallet wallet = await SharedPreferencesHelper().getLegacyWallet();
   final String pubKey = wallet.pubkey;
   final Map<String, dynamic> userProfile = <String, dynamic>{
     'version': 2,

@@ -57,7 +57,8 @@ Future<bool> payWithRetry(
       final bool? confirmed = await _confirmSend(context, amount.toString(),
           fromPubKey, recipients, isRetry, appCubit.currency, isToMultiple);
       final Contact fromContact = await ContactsCache().getContact(fromPubKey);
-      final CesiumWallet wallet = await SharedPreferencesHelper().getWallet();
+      final CesiumWallet wallet =
+          await SharedPreferencesHelper().getLegacyWallet();
       if (!context.mounted) {
         return false;
       }

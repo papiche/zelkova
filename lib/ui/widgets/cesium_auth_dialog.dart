@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:durt/durt.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
@@ -9,9 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/models/app_cubit.dart';
 import '../../data/models/bottom_nav_cubit.dart';
 import '../../data/models/contact.dart';
-import '../../data/models/legacy_wallet.dart';
 import '../../data/models/multi_wallet_transaction_cubit.dart';
-import '../../data/models/wallet_themes.dart';
 import '../../g1/api.dart';
 import '../../g1/g1_export_auth_utils.dart';
 import '../../g1/g1_helper.dart';
@@ -21,6 +17,7 @@ import '../qr_manager.dart';
 import '../ui_helpers.dart';
 import 'fifth_screen/import_dialog.dart';
 import 'form_error_widget.dart';
+import 'password_field.dart';
 
 class CesiumAuthDialog extends StatefulWidget {
   const CesiumAuthDialog(
@@ -36,8 +33,6 @@ class CesiumAuthDialog extends StatefulWidget {
 class _CesiumAuthDialogState extends State<CesiumAuthDialog> {
   final TextEditingController secretPhraseController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  bool _obscureText1 = true;
-  bool _obscureText2 = true;
   bool _isProcessing = false;
   final ValueNotifier<String> _feedbackNotifier = ValueNotifier<String>('');
 
@@ -114,45 +109,15 @@ class _CesiumAuthDialogState extends State<CesiumAuthDialog> {
     return SingleChildScrollView(
       child: ListBody(
         children: <Widget>[
-          TextField(
+          PasswordField(
             controller: secretPhraseController,
-            obscureText: _obscureText1,
-            onChanged: (String? value) {
-              _feedbackNotifier.value = '';
-            },
-            decoration: InputDecoration(
-              labelText: tr('cesium_secret_phrase'),
-              suffixIcon: IconButton(
-                icon: Icon(
-                  _obscureText1 ? Icons.visibility : Icons.visibility_off,
-                ),
-                onPressed: () {
-                  setState(() {
-                    _obscureText1 = !_obscureText1;
-                  });
-                },
-              ),
-            ),
+            label: tr('cesium_secret_phrase'),
+            onChanged: (String value) => _feedbackNotifier.value = '',
           ),
-          TextField(
+          PasswordField(
             controller: passwordController,
-            obscureText: _obscureText2,
-            onChanged: (String? value) {
-              _feedbackNotifier.value = '';
-            },
-            decoration: InputDecoration(
-              labelText: tr('cesium_password'),
-              suffixIcon: IconButton(
-                icon: Icon(
-                  _obscureText2 ? Icons.visibility : Icons.visibility_off,
-                ),
-                onPressed: () {
-                  setState(() {
-                    _obscureText2 = !_obscureText2;
-                  });
-                },
-              ),
-            ),
+            label: tr('cesium_password'),
+            onChanged: (String value) => _feedbackNotifier.value = '',
           ),
           FormErrorWidget(feedbackNotifier: _feedbackNotifier),
         ],
@@ -198,20 +163,11 @@ class _CesiumAuthDialogState extends State<CesiumAuthDialog> {
 
   void _onCorrectAuth(
       Contact contact, CesiumWallet wallet, BuildContext context) {
-    final LegacyWallet card = LegacyWallet(
-      name: contact.name ?? '',
-      pubKey: extractPublicKey(widget.publicKey),
-      seed: '',
-      theme: WalletThemes.themes[Random().nextInt(10)],
-    );
-    if (!SharedPreferencesHelper().has(extractPublicKey(widget.publicKey))) {
-      SharedPreferencesHelper().addLegacyWallet(card);
-      SharedPreferencesHelper().selectCurrentWallet(card);
-      context
-          .read<MultiWalletTransactionCubit>()
-          .fetchTransactions(pubKey: extractPublicKey(widget.publicKey));
-    }
-    SharedPreferencesHelper().addCesiumVolatileCard(wallet);
+    SharedPreferencesHelper().handleCorrectCesiumV1Auth(
+        publicKey: widget.publicKey, name: contact.name, wallet: wallet);
+    context
+        .read<MultiWalletTransactionCubit>()
+        .fetchTransactions(pubKey: extractPublicKey(widget.publicKey));
     if (context.read<BottomNavCubit>().currentIndex != widget.returnTo) {
       context.read<BottomNavCubit>().updateIndex(widget.returnTo);
     }
@@ -295,7 +251,7 @@ Future<bool?> showAuthCesiumWalletDialog(
 Future<bool> walletAuth(BuildContext context) async {
   bool hasPass = false;
   if (!SharedPreferencesHelper().isPasswordLessWallet() &&
-      !SharedPreferencesHelper().hasVolatile()) {
+      !SharedPreferencesHelper().hasVolatilePass()) {
     hasPass = await showAuthCesiumWalletDialog(
             context,
             SharedPreferencesHelper().getPubKey(),

@@ -32,7 +32,7 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
   }
 
   final List<LegacyWallet> _cards = SharedPreferencesHelper()
-      .legacyWallets
+      .cards
       .where((LegacyWallet card) => card.seed.isNotEmpty)
       .toList();
 

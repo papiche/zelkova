@@ -116,10 +116,8 @@ class DrawerWalletCard extends StatelessWidget {
                                       ),
                                       TextButton(
                                         onPressed: () {
-                                          if (SharedPreferencesHelper()
-                                              .isPasswordLessWallet()) {}
                                           SharedPreferencesHelper()
-                                              .removeLegacyWallet();
+                                              .removeCurrentWallet();
                                           SharedPreferencesHelper()
                                               .selectCurrentWalletIndex(0);
                                           Navigator.pop(context);

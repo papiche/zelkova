@@ -59,13 +59,6 @@ Keyring keyringFromV1Seed(Uint8List seed) {
   return keyring;
 }
 
-Keyring keyringFromSeed(Uint8List seed) {
-  final Keyring keyring = Keyring();
-  final KeyPair keypair = KeyPair.sr25519.fromSeed(seed);
-  keyring.add(keypair);
-  return keyring;
-}
-
 // From durt
 String mnemonicGenerate({String lang = 'english'}) {
   final List<String> supportedLanguages = <String>[
@@ -90,7 +83,7 @@ Future<KeyPair> addPair() async {
   // TODOAdd some additional metadata as in polkadot-js
 
   final KeyPair pair =
-      await keyring.fromUri(mnemonic, keyPairType: KeyPairType.sr25519);
+  await keyring.fromUri(mnemonic, keyPairType: KeyPairType.ed25519);
 
   return pair;
 }

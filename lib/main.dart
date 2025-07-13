@@ -766,6 +766,7 @@ class _AppStartState extends State<AppStart> {
   final BiometricAuthService _authService = BiometricAuthService();
   bool _isAppLocked = true;
   bool _biometricSupported = false;
+  bool _initializing = true;
 
   @override
   void initState() {
@@ -775,20 +776,18 @@ class _AppStartState extends State<AppStart> {
 
   Future<void> _initializeApp() async {
     _biometricSupported = await _authService.isBiometricSupported();
-    await _checkAuthStatus();
-  }
-
-  Future<void> _checkAuthStatus() async {
     final bool biometricEnabled = await _authService.isBiometricEnabled();
 
     if (biometricEnabled && _biometricSupported) {
       final bool authenticated = await _authService.authenticate(
-          localizedReason: tr('biometric_auth_reason'));
-
-      setState(() => _isAppLocked = !authenticated);
+        localizedReason: tr('biometric_auth_reason'),
+      );
+      _isAppLocked = !authenticated;
     } else {
-      setState(() => _isAppLocked = false);
+      _isAppLocked = false;
     }
+
+    setState(() => _initializing = false);
   }
 
   Future<void> _unlockApp() async {
@@ -808,6 +807,12 @@ class _AppStartState extends State<AppStart> {
   @override
   Widget build(BuildContext context) {
     final bool introViewed = GetIt.instance.get<AppCubit>().isIntroViewed;
+    if (_initializing) {
+      return Scaffold(
+          // Show nothing
+          body: Center(child: Container() // CircularProgressIndicator()),
+              ));
+    }
     if (introViewed) {
       return _isAppLocked
           ? BiometricLockScreen(

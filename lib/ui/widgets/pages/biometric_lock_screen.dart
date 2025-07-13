@@ -1,6 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../../../main.dart';
+import '../../biometrics/biometric_auth_service.dart';
+
 class BiometricLockScreen extends StatelessWidget {
   const BiometricLockScreen({
     super.key,
@@ -65,4 +68,58 @@ class BiometricLockScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<bool> showBiometricLockScreen({bool force = false}) async {
+  final BiometricLockState lockState = BiometricLockState();
+
+  if (!force && lockState.isUnlocked) {
+    return true;
+  }
+
+  final BiometricAuthService authService = BiometricAuthService();
+  final bool supported = await authService.isBiometricSupported();
+  final bool enabled = await authService.isBiometricEnabled();
+
+  if (!supported || !enabled) {
+    return false;
+  }
+
+  final bool authResult = await authService.authenticate();
+  if (authResult) {
+    lockState.unlocked = true;
+    return true;
+  }
+
+  final NavigatorState? navigator = GinkgoApp.navigatorKey.currentState;
+  if (navigator == null) {
+    return false;
+  }
+
+  final bool result = await navigator.push<bool>(
+        MaterialPageRoute<bool>(
+          builder: (_) => BiometricLockScreen(
+            onUnlock: () => navigator.pop(true),
+          ),
+          fullscreenDialog: true,
+        ),
+      ) ??
+      false;
+
+  lockState.unlocked = result;
+  return result;
+}
+
+class BiometricLockState {
+  factory BiometricLockState() => _instance;
+
+  BiometricLockState._internal();
+
+  static final BiometricLockState _instance = BiometricLockState._internal();
+
+  bool unlocked = false;
+
+  bool get isUnlocked => unlocked;
+
+  void reset() => unlocked = false;
 }

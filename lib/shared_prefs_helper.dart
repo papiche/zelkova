@@ -15,6 +15,7 @@ import 'package:polkadart_keyring/polkadart_keyring.dart';
 
 import '../data/models/legacy_wallet.dart';
 import '../data/models/wallet_themes.dart';
+import 'data/models/stored_account.dart';
 import 'g1/g1_helper.dart';
 import 'shared_prefs_helper_v1.dart' as v1;
 import 'shared_prefs_helper_v2.dart' as v2;
@@ -25,7 +26,7 @@ abstract class SharedPreferencesHelperDelegate {
 
   Future<void> init();
 
-  Future<CesiumWallet> getWallet();
+  Future<CesiumWallet> getLegacyWallet();
 
   String getPubKey();
 
@@ -100,12 +101,17 @@ class SharedPreferencesHelper with ChangeNotifier {
   // Public API
   // ──────────────────────────────────────────────────────────────────────────
 
-  Future<void> init() async {
-    await v1.SharedPreferencesHelperV1().init();
-    await v2.SharedPreferencesHelperV2().init();
+  Future<void> init({bool onlyV2 = false}) async {
+    if (onlyV2) {
+      // Used V2
+      await v2.SharedPreferencesHelperV2().init();
+    } else {
+      await v1.SharedPreferencesHelperV1().init();
+      await v2.SharedPreferencesHelperV2().init();
+    }
   }
 
-  Future<CesiumWallet> getLegacyWallet() => _d.getWallet();
+  Future<CesiumWallet> getLegacyWallet() => _d.getLegacyWallet();
 
   String getPubKey() => _d.getPubKey();
 
@@ -116,8 +122,6 @@ class SharedPreferencesHelper with ChangeNotifier {
   List<LegacyWallet> get cards => _d.cards;
 
   int getCurrentWalletIndex() => _d.getCurrentWalletIndex();
-
-  Future<void> setCurrentWalletIndex(int i) => _d.setCurrentWalletIndex(i);
 
   Future<void> selectCurrentWalletIndex(int i) =>
       _d.selectCurrentWalletIndex(i);
@@ -144,6 +148,8 @@ class SharedPreferencesHelper with ChangeNotifier {
   Future<void> importWalletFromMnemonic(String m) =>
       _d.importWalletFromMnemonic(m);
 
+  /// Helper to create a v1 LegacyWallet, either password-less (with seed) or
+  /// password-protected (with empty seed).
   LegacyWallet buildLegacyWallet(
       {required String seed, required String pubKey}) {
     return LegacyWallet(
@@ -181,5 +187,22 @@ class SharedPreferencesHelper with ChangeNotifier {
 
   bool hasMultipleWallets() {
     return cards.length > 1;
+  }
+
+  void cardsClear() => v2.SharedPreferencesHelperV2().cardsClear();
+
+  List<StoredAccount> get accounts => v2.SharedPreferencesHelperV2().accounts;
+
+  Uint8List? get passwordKey => v2.SharedPreferencesHelperV2().passwordKey;
+
+  set passwordKey(Uint8List? key) =>
+      v2.SharedPreferencesHelperV2().passwordKey = key;
+
+  Future<void> saveLegacyWallets([bool notify = true]) {
+    return _d.saveLegacyWallets(notify);
+  }
+
+  void setPasswordKeyFromUserInput(Uint8List passwordKey) {
+    v2.SharedPreferencesHelperV2().setPasswordKeyFromUserInput(passwordKey);
   }
 }

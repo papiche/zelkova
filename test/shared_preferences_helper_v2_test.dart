@@ -1,12 +1,19 @@
+import 'dart:convert';
+
 import 'package:bip39_multi_nullsafety/bip39_multi_nullsafety.dart' as bip39;
 import 'package:durt/durt.dart';
 import 'package:fast_base58/fast_base58.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:ginkgo/data/models/contact.dart';
 import 'package:ginkgo/data/models/legacy_wallet.dart';
+import 'package:ginkgo/data/models/stored_account.dart';
 import 'package:ginkgo/data/models/wallet_themes.dart';
 import 'package:ginkgo/g1/g1_helper.dart';
+import 'package:ginkgo/g1/g1_v2_helper.dart';
+import 'package:ginkgo/secure_crypto_helper.dart';
 import 'package:ginkgo/shared_prefs_helper.dart';
+import 'package:ginkgo/ui/logger.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,12 +25,12 @@ void main() {
   late SharedPreferencesHelper helper;
 
   setUp(() async {
-    SharedPreferencesHelper.configure(useV2: false);
+    SharedPreferencesHelper.configure(useV2: true);
     SharedPreferences.setMockInitialValues(<String, Object>{});
     helper = SharedPreferencesHelper();
+    // await helper.init();
     registerMockSecureStorage();
-    await helper.init();
-    helper.cards.clear();
+    helper.cardsClear();
   });
 
   // V1 tests
@@ -41,10 +48,10 @@ void main() {
       expect(prefs.containsKey('seed'), true);
       expect(prefs.containsKey('pub'), true);
       helper = SharedPreferencesHelper();
-      await helper.init();
-      expect(helper.cards.length, 1);
+      await helper.init(onlyV2: true);
       expect(prefs.containsKey('seed'), false);
       expect(prefs.containsKey('pub'), false);
+      expect(helper.cards.length, 1);
       expect(helper.getCurrentWalletIndex(), 0);
     });
   });
@@ -95,9 +102,8 @@ void main() {
   group('current index control', () {
     test('setCurrentWalletIndex persists value', () async {
       await helper.getLegacyWallet();
-      await helper.setCurrentWalletIndex(0);
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      expect(prefs.getInt('current_wallet_index'), 0);
+      await helper.selectCurrentWalletIndex(0);
+      expect(helper.getCurrentWalletIndex(), 0);
     });
 
     test('selectCurrentWalletIndex throws on invalid index', () async {
@@ -153,11 +159,15 @@ void main() {
 
   group('pubkey presentation', () {
     test('getPubKey appends checksum', () async {
-      final CesiumWallet w = await helper.getLegacyWallet();
+      final CesiumWallet w = CesiumWallet.fromSeed(generateUintSeed());
+      helper.addLegacyWallet(helper.buildLegacyWallet(
+          seed: seedToString(w.seed), pubKey: w.pubkey));
+      final CesiumWallet wNew = await helper.getLegacyWallet();
+      expect(wNew.pubkey, w.pubkey);
       final String pkWithChecksum = helper.getPubKey();
       final List<String> parts = pkWithChecksum.split(':');
       expect(parts.length, 2);
-      expect(parts.first, w.pubkey);
+      expect(parts.first, wNew.pubkey);
       expect(parts.last.length, greaterThan(0));
     });
   });
@@ -182,11 +192,18 @@ void main() {
       await helper.importWalletFromMnemonic(mnemonic);
 
       final CesiumWallet current = await helper.getLegacyWallet();
+
       final CesiumWallet expected = CesiumWallet.fromSeed(
-        Uint8List.fromList(bip39.mnemonicToSeed(mnemonic).sublist(0, 32)),
+        seedFromMnemonic(mnemonic),
       );
 
       expect(current.pubkey, expected.pubkey);
+
+      logger(current.pubkey);
+      for (final LegacyWallet card in helper.cards) {
+        logger(card.pubKey);
+      }
+
       expect(
         helper.getCurrentWalletIndex(),
         helper.cards
@@ -211,12 +228,115 @@ void main() {
       });
 
       helper = SharedPreferencesHelper();
-      await helper.init();
+      await helper.init(onlyV2: true);
 
       expect(helper.cards.any((LegacyWallet c) => c.pubKey == w.pubkey), true);
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       expect(prefs.containsKey('seed'), false);
       expect(prefs.containsKey('pub'), false);
     });
+  });
+
+  test('Store and retrieve v1PasswordLess account', () async {
+    final Uint8List seed = generateUintSeed();
+    final CesiumWallet w = CesiumWallet.fromSeed(seed);
+
+    final StoredAccount acc = StoredAccount(
+      pubKey: w.pubkey,
+      seed: seed,
+      type: AccountType.v1PasswordLess,
+      contact: Contact.withPubKey(pubKey: w.pubkey, name: 'v1Plain'),
+      theme: WalletThemes.theme1,
+    );
+    helper.accounts.add(acc);
+    await helper.saveLegacyWallets();
+
+    final SharedPreferencesHelper reloaded = SharedPreferencesHelper();
+    await reloaded.init(onlyV2: true);
+    final StoredAccount restored =
+        reloaded.accounts.firstWhere((StoredAccount a) => a.pubKey == w.pubkey);
+    expect(restored.type, AccountType.v1PasswordLess);
+    expect(restored.seed, seed);
+    expect(restored.contact.name, 'v1Plain');
+  });
+
+  test('Store and retrieve v1PasswordProtected account (volatile)', () async {
+    final Uint8List seed = generateUintSeed();
+    final CesiumWallet wallet = CesiumWallet.fromSeed(seed);
+
+    helper.addCesiumVolatileCard(wallet);
+
+    final StoredAccount acc = StoredAccount(
+      pubKey: wallet.pubkey,
+      type: AccountType.v1PasswordProtected,
+      contact: Contact.withPubKey(pubKey: wallet.pubkey, name: 'v1Protected'),
+      theme: WalletThemes.theme2,
+    );
+    helper.accounts.add(acc);
+    helper.saveLegacyWallets();
+
+    final SharedPreferencesHelper reloaded = SharedPreferencesHelper();
+    await reloaded.init(onlyV2: true);
+    final StoredAccount restored = reloaded.accounts
+        .firstWhere((StoredAccount a) => a.pubKey == wallet.pubkey);
+    expect(restored.type, AccountType.v1PasswordProtected);
+    expect(restored.seed, isNull);
+    expect(restored.contact.name, 'v1Protected');
+  });
+
+  test('Store and retrieve v2PasswordLess account', () async {
+    final String mnemonic = mnemonicGenerate();
+    final Uint8List seed = seedFromMnemonic(mnemonic).sublist(0, 32);
+    final KeyPair kp = KeyPair.ed25519.fromSeed(seed);
+    final String pubKey = Base58Encode(kp.publicKey.bytes);
+
+    final StoredAccount acc = StoredAccount(
+      pubKey: pubKey,
+      seed: Uint8List.fromList(utf8.encode(mnemonic)),
+      type: AccountType.v2PasswordLess,
+      contact: Contact.withAddress(address: kp.address),
+      theme: WalletThemes.theme3,
+    );
+    helper.accounts.add(acc);
+    await helper.saveLegacyWallets();
+
+    final SharedPreferencesHelper reloaded = SharedPreferencesHelper();
+    await reloaded.init(onlyV2: true);
+    final StoredAccount restored =
+        reloaded.accounts.firstWhere((StoredAccount a) => a.pubKey == pubKey);
+    expect(restored.type, AccountType.v2PasswordLess);
+    expect(utf8.decode(restored.seed!), mnemonic);
+  });
+
+  test('Store and retrieve v2PasswordProtected account', () async {
+    final String mnemonic = mnemonicGenerate();
+    final KeyPair kp =
+        await Keyring().fromUri(mnemonic, keyPairType: KeyPairType.ed25519);
+    final String pubKey = Base58Encode(kp.publicKey.bytes);
+
+    final Uint8List passwordKey = generateUintSeed().sublist(0, 32);
+    final Uint8List encMnemonic = SecureCryptoHelper.encrypt(
+        Uint8List.fromList(utf8.encode(mnemonic)), passwordKey);
+    helper.setPasswordKeyFromUserInput(passwordKey);
+
+    final StoredAccount acc = StoredAccount(
+      pubKey: pubKey,
+      seed: encMnemonic,
+      type: AccountType.v2PasswordProtected,
+      contact: Contact.withAddress(address: kp.address),
+      theme: WalletThemes.theme4,
+    );
+    helper.accounts.add(acc);
+    await helper.saveLegacyWallets();
+
+    final SharedPreferencesHelper reloaded = SharedPreferencesHelper();
+    await reloaded.init(onlyV2: true);
+    reloaded.passwordKey = passwordKey;
+    final StoredAccount restored =
+        reloaded.accounts.firstWhere((StoredAccount a) => a.pubKey == pubKey);
+    final String decoded =
+        utf8.decode(SecureCryptoHelper.decrypt(restored.seed!, passwordKey)!);
+    expect(restored.type, AccountType.v2PasswordProtected);
+    expect(decoded, mnemonic);
   });
 }

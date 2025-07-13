@@ -91,7 +91,7 @@ void main() {
   group('current index control', () {
     test('setCurrentWalletIndex persists value', () async {
       await helper.getLegacyWallet();
-      await helper.setCurrentWalletIndex(0);
+      await helper.selectCurrentWalletIndex(0);
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       expect(prefs.getInt('current_wallet_index'), 0);
     });

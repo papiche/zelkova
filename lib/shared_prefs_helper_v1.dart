@@ -101,7 +101,7 @@ class SharedPreferencesHelperV1
 
   // Get the wallet from the specified index (default to first wallet)
   @override
-  Future<CesiumWallet> getWallet() async {
+  Future<CesiumWallet> getLegacyWallet() async {
     if (legacyWallets.isNotEmpty) {
       final LegacyWallet card = legacyWallets[getCurrentWalletIndex()];
       if (SharedPreferencesHelper().isPasswordLessWallet()) {
@@ -218,7 +218,7 @@ class SharedPreferencesHelperV1
   // Although this should not be used in V1, we implement it for consistency
   @override
   Future<KeyPair> getKeyPair() async {
-    final CesiumWallet walletV1 = await getWallet();
+    final CesiumWallet walletV1 = await getLegacyWallet();
     final KeyPair kp = KeyPair.ed25519.fromSeed(walletV1.seed);
     return kp;
   }

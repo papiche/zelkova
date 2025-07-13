@@ -107,6 +107,8 @@ void main() async {
 
   final SharedPreferencesHelper shared = SharedPreferencesHelper();
   await shared.init();
+  // For now, init v2 too
+  await shared.init();
   if (shared.cards.isEmpty) {
     await shared.getLegacyWallet();
   }

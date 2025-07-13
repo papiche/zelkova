@@ -9,15 +9,15 @@ part of 'stored_account.dart';
 abstract class _$StoredAccountCWProxy {
   StoredAccount pubKey(String pubKey);
 
-  StoredAccount index(int index);
-
   StoredAccount contact(Contact contact);
 
   StoredAccount theme(WalletTheme theme);
 
-  StoredAccount seed(String? seed);
+  StoredAccount type(AccountType type);
 
-  StoredAccount seedEnc(String? seedEnc);
+  StoredAccount seed(Uint8List? seed);
+
+  StoredAccount derivationPath(String? derivationPath);
 
   StoredAccount derivationParentId(String? derivationParentId);
 
@@ -29,11 +29,11 @@ abstract class _$StoredAccountCWProxy {
   /// ````
   StoredAccount call({
     String? pubKey,
-    int? index,
     Contact? contact,
     WalletTheme? theme,
-    String? seed,
-    String? seedEnc,
+    AccountType? type,
+    Uint8List? seed,
+    String? derivationPath,
     String? derivationParentId,
   });
 }
@@ -48,19 +48,20 @@ class _$StoredAccountCWProxyImpl implements _$StoredAccountCWProxy {
   StoredAccount pubKey(String pubKey) => this(pubKey: pubKey);
 
   @override
-  StoredAccount index(int index) => this(index: index);
-
-  @override
   StoredAccount contact(Contact contact) => this(contact: contact);
 
   @override
   StoredAccount theme(WalletTheme theme) => this(theme: theme);
 
   @override
-  StoredAccount seed(String? seed) => this(seed: seed);
+  StoredAccount type(AccountType type) => this(type: type);
 
   @override
-  StoredAccount seedEnc(String? seedEnc) => this(seedEnc: seedEnc);
+  StoredAccount seed(Uint8List? seed) => this(seed: seed);
+
+  @override
+  StoredAccount derivationPath(String? derivationPath) =>
+      this(derivationPath: derivationPath);
 
   @override
   StoredAccount derivationParentId(String? derivationParentId) =>
@@ -76,11 +77,11 @@ class _$StoredAccountCWProxyImpl implements _$StoredAccountCWProxy {
   /// ````
   StoredAccount call({
     Object? pubKey = const $CopyWithPlaceholder(),
-    Object? index = const $CopyWithPlaceholder(),
     Object? contact = const $CopyWithPlaceholder(),
     Object? theme = const $CopyWithPlaceholder(),
+    Object? type = const $CopyWithPlaceholder(),
     Object? seed = const $CopyWithPlaceholder(),
-    Object? seedEnc = const $CopyWithPlaceholder(),
+    Object? derivationPath = const $CopyWithPlaceholder(),
     Object? derivationParentId = const $CopyWithPlaceholder(),
   }) {
     return StoredAccount(
@@ -88,10 +89,6 @@ class _$StoredAccountCWProxyImpl implements _$StoredAccountCWProxy {
           ? _value.pubKey
           // ignore: cast_nullable_to_non_nullable
           : pubKey as String,
-      index: index == const $CopyWithPlaceholder() || index == null
-          ? _value.index
-          // ignore: cast_nullable_to_non_nullable
-          : index as int,
       contact: contact == const $CopyWithPlaceholder() || contact == null
           ? _value.contact
           // ignore: cast_nullable_to_non_nullable
@@ -100,14 +97,18 @@ class _$StoredAccountCWProxyImpl implements _$StoredAccountCWProxy {
           ? _value.theme
           // ignore: cast_nullable_to_non_nullable
           : theme as WalletTheme,
+      type: type == const $CopyWithPlaceholder() || type == null
+          ? _value.type
+          // ignore: cast_nullable_to_non_nullable
+          : type as AccountType,
       seed: seed == const $CopyWithPlaceholder()
           ? _value.seed
           // ignore: cast_nullable_to_non_nullable
-          : seed as String?,
-      seedEnc: seedEnc == const $CopyWithPlaceholder()
-          ? _value.seedEnc
+          : seed as Uint8List?,
+      derivationPath: derivationPath == const $CopyWithPlaceholder()
+          ? _value.derivationPath
           // ignore: cast_nullable_to_non_nullable
-          : seedEnc as String?,
+          : derivationPath as String?,
       derivationParentId: derivationParentId == const $CopyWithPlaceholder()
           ? _value.derivationParentId
           // ignore: cast_nullable_to_non_nullable
@@ -129,21 +130,28 @@ extension $StoredAccountCopyWith on StoredAccount {
 StoredAccount _$StoredAccountFromJson(Map<String, dynamic> json) =>
     StoredAccount(
       pubKey: json['pubKey'] as String,
-      index: (json['index'] as num).toInt(),
       contact: Contact.fromJson(json['contact'] as Map<String, dynamic>),
       theme: WalletTheme.fromJson(json['theme'] as Map<String, dynamic>),
-      seed: json['seed'] as String?,
-      seedEnc: json['seedEnc'] as String?,
+      type: $enumDecode(_$AccountTypeEnumMap, json['type']),
+      seed: uIntFromList(json['seed']),
+      derivationPath: json['derivationPath'] as String?,
       derivationParentId: json['derivationParentId'] as String?,
     );
 
 Map<String, dynamic> _$StoredAccountToJson(StoredAccount instance) =>
     <String, dynamic>{
       'pubKey': instance.pubKey,
-      'index': instance.index,
+      'derivationPath': instance.derivationPath,
+      'type': _$AccountTypeEnumMap[instance.type]!,
       'contact': instance.contact,
       'theme': instance.theme,
-      'seed': instance.seed,
-      'seedEnc': instance.seedEnc,
+      'seed': uIntToList(instance.seed),
       'derivationParentId': instance.derivationParentId,
     };
+
+const _$AccountTypeEnumMap = {
+  AccountType.v1PasswordLess: 'v1PasswordLess',
+  AccountType.v1PasswordProtected: 'v1PasswordProtected',
+  AccountType.v2PasswordLess: 'v2PasswordLess',
+  AccountType.v2PasswordProtected: 'v2PasswordProtected',
+};

@@ -58,36 +58,43 @@ mixin SecureCryptoHelper {
     return result.sublist(0, keyLength);
   }
 
-  static String encrypt(String data, List<int> salt) {
+  static Uint8List encrypt(Uint8List data, List<int> salt) {
     try {
       final Key key = Key(Uint8List.fromList(salt));
-      final IV iv = IV.fromSecureRandom(12);
+      final IV iv = IV.fromSecureRandom(12); // GCM needs 12 bytes
       final Encrypter encrypter = Encrypter(AES(key, mode: AESMode.gcm));
 
-      final Encrypted encrypted = encrypter.encrypt(data, iv: iv);
+      final Encrypted encrypted = encrypter.encryptBytes(data, iv: iv);
 
-      final String combined = '${iv.base64}|${encrypted.base64}';
-      return combined;
+      // Combine IV + ciphertext
+      final Uint8List result =
+          Uint8List(iv.bytes.length + encrypted.bytes.length)
+            ..setRange(0, iv.bytes.length, iv.bytes)
+            ..setRange(iv.bytes.length,
+                iv.bytes.length + encrypted.bytes.length, encrypted.bytes);
+
+      return result;
     } catch (e) {
       loggerDev('Encryption error', error: e);
       throw Exception('Encryption failed');
     }
   }
 
-  static String? decrypt(String encryptedData, List<int> salt) {
+  /// Decrypts a [Uint8List] `encryptedData` that combines IV + ciphertext.
+  static Uint8List? decrypt(Uint8List encryptedData, List<int> salt) {
     try {
-      final List<String> parts = encryptedData.split('|');
-      if (parts.length != 2) {
+      const int ivLength = 12; // GCM IV size
+      if (encryptedData.length <= ivLength) {
         return null;
       }
 
-      final IV iv = IV.fromBase64(parts[0]);
-      final String encrypted = parts[1];
+      final IV iv = IV(encryptedData.sublist(0, ivLength));
+      final Encrypted encrypted = Encrypted(encryptedData.sublist(ivLength));
 
       final Key key = Key(Uint8List.fromList(salt));
       final Encrypter encrypter = Encrypter(AES(key, mode: AESMode.gcm));
 
-      return encrypter.decrypt64(encrypted, iv: iv);
+      return Uint8List.fromList(encrypter.decryptBytes(encrypted, iv: iv));
     } catch (_) {
       return null;
     }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:bip39_multi_nullsafety/bip39_multi_nullsafety.dart' as bip39;
 import 'package:durt/durt.dart' as durt;
 import 'package:fast_base58/fast_base58.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
@@ -76,14 +77,14 @@ String mnemonicGenerate({String lang = 'english'}) {
 
 // From:
 // https://polkadot.js.org/docs/keyring/start/create
-Future<KeyPair> addPair() async {
+Future<KeyPair> createKeyPair() async {
   final String mnemonic = mnemonicGenerate();
   final Keyring keyring = Keyring();
   // create & add the pair to the keyring with the type
   // TODOAdd some additional metadata as in polkadot-js
 
   final KeyPair pair =
-  await keyring.fromUri(mnemonic, keyPairType: KeyPairType.ed25519);
+      await keyring.fromUri(mnemonic, keyPairType: KeyPairType.ed25519);
 
   return pair;
 }
@@ -95,4 +96,13 @@ String addressFromV1PubkeyFaiSafe(String pubKeyRaw) {
     loggerDev('Error converting pubkey $pubKeyRaw to address: $e');
     rethrow;
   }
+}
+
+Uint8List seedFromMnemonic(String mnemonic, {String password = ''}) {
+  final String seedHex =
+      bip39.mnemonicToSeedHex(mnemonic, passphrase: password);
+  return Uint8List.fromList(<int>[
+    for (int i = 0; i < seedHex.length; i += 2)
+      int.parse(seedHex.substring(i, i + 2), radix: 16)
+  ]).sublist(0, 32);
 }

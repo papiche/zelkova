@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -8,28 +7,25 @@ void main() {
   test('Encrypt and decrypt pattern key using salt', () async {
     final List<int> pattern = <int>[0, 1, 2, 4, 7];
     final List<int> salt = SecureCryptoHelper.generateSalt();
-
     final Uint8List key =
         await SecureCryptoHelper.deriveKeyFromPattern(pattern, salt);
-    final String encoded = base64Encode(key);
 
-    final String encrypted = SecureCryptoHelper.encrypt(encoded, salt);
-    final String? decrypted = SecureCryptoHelper.decrypt(encrypted, salt);
+    final Uint8List encrypted = SecureCryptoHelper.encrypt(key, salt);
+    final Uint8List? decrypted = SecureCryptoHelper.decrypt(encrypted, salt);
 
-    expect(decrypted, encoded);
+    expect(decrypted, key);
   });
 
   test('Decryption with wrong salt fails', () async {
     final List<int> pattern = <int>[1, 3, 6];
     final List<int> salt = SecureCryptoHelper.generateSalt();
     final List<int> wrongSalt = SecureCryptoHelper.generateSalt();
-
     final Uint8List key =
         await SecureCryptoHelper.deriveKeyFromPattern(pattern, salt);
-    final String encoded = base64Encode(key);
 
-    final String encrypted = SecureCryptoHelper.encrypt(encoded, salt);
-    final String? decrypted = SecureCryptoHelper.decrypt(encrypted, wrongSalt);
+    final Uint8List encrypted = SecureCryptoHelper.encrypt(key, salt);
+    final Uint8List? decrypted =
+        SecureCryptoHelper.decrypt(encrypted, wrongSalt);
 
     expect(decrypted, isNull);
   });

@@ -12,7 +12,6 @@ import '../../g1/g1_helper.dart';
 import '../../shared_prefs_helper.dart';
 import '../../ui/logger.dart';
 import '../../ui/notification_controller.dart';
-import '../../ui/pay_helper.dart';
 import '../../ui/ui_helpers.dart';
 import '../../ui/widgets/connectivity_widget_wrapper_wrapper.dart';
 import 'app_cubit.dart';

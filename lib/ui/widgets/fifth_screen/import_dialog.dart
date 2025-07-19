@@ -47,7 +47,7 @@ class _ImportDialogState extends State<ImportDialog> {
   Widget build(BuildContext c) {
     return FutureBuilder<String>(
         future: widget.textToImport == null
-            ? (kIsWeb ? importWalletWithFilePicker() : importWallet(c))
+            ? (kIsWeb ? importWalletWeb(context) : importWallet(c))
             : Future<String>.value(widget.textToImport),
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           if (snapshot.hasData &&
@@ -347,7 +347,7 @@ class SelectImportMethodDialog extends StatelessWidget {
   }
 }
 
-Future<String> importWalletWebOld(BuildContext context,
+Future<String> importWalletWebHtml(BuildContext context,
     [String allowedExtension = '.json']) async {
   final Completer<String> completer = Completer<String>();
   final html.InputElement input = html.InputElement()..type = 'file';
@@ -468,5 +468,26 @@ Future<String> importWalletWithFilePicker(
     loggerDev('Error importing wallet with file picker',
         error: e, stackTrace: s);
     return '';
+  }
+}
+
+bool isAppleWeb() {
+  final String ua = html.window.navigator.userAgent.toLowerCase();
+  return kIsWeb &&
+      (ua.contains('iphone') ||
+          ua.contains('ipad') ||
+          ua.contains('macintosh'));
+}
+
+Future<String> importWalletWeb(BuildContext context,
+    [String extension = 'json']) async {
+  if (isAppleWeb()) {
+    return importWalletWithFilePicker(extension);
+  } else {
+    // add dot to the extension if not present
+    if (!extension.startsWith('.')) {
+      extension = '.$extension';
+    }
+    return importWalletWebHtml(context, extension);
   }
 }

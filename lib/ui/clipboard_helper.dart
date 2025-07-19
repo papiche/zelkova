@@ -22,14 +22,14 @@ Future<void> copyPublicKeyToClipboard(BuildContext context,
 
 Future<void> copyToClipboard(
     {required BuildContext context,
-    required String uri,
+    required String text,
     required String feedbackText}) async {
   final SystemClipboard? clipboard = SystemClipboard.instance;
   if (clipboard == null) {
     return; // Clipboard API is not supported on this platform.
   }
   final DataWriterItem item = DataWriterItem();
-  item.add(Formats.plainText(uri));
+  item.add(Formats.plainText(text));
   await clipboard.write(<DataWriterItem>[item]);
   if (context.mounted) {
     ScaffoldMessenger.of(context)

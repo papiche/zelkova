@@ -31,7 +31,7 @@ class NodeListWidget extends StatelessWidget {
             child: GestureDetector(
                 onTap: () => copyToClipboard(
                     context: context,
-                    uri: node.url,
+                    text: node.url,
                     feedbackText: 'copied_to_clipboard'),
                 child: ListTile(
                   dense: true,

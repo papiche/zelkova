@@ -50,7 +50,7 @@ class _FifthScreenState extends State<FifthScreen> {
       return BlocBuilder<AppCubit, AppState>(
           builder: (BuildContext context, AppState state) {
         final String pluralSuffix =
-            SharedPreferencesHelper().hasMultipleWallets() ? 's' : '';
+            SharedPreferencesHelper().hasMultipleWallets ? 's' : '';
         return Scaffold(
           appBar: AppBar(
             key: infoMainKey,
@@ -229,11 +229,15 @@ class _FifthScreenState extends State<FifthScreen> {
                         }),
                   if (state.expertMode)
                     SwitchListTile(
-                        title: const Text('Test v2'),
+                        title: const Text('Test v2 (ĞTest)'),
                         value: state.v2mode,
                         onChanged: (bool v2mode) {
                           context.read<AppCubit>().setV2Mode(v2mode);
                           SharedPreferencesHelper.configure(useV2: v2mode);
+                          if (v2mode) {
+                            SharedPreferencesHelper()
+                                .init(onlyV2: state.v2mode);
+                          }
                           GetIt.instance<ServiceManager>()
                               .updateService(v2mode);
                           if (v2mode) {

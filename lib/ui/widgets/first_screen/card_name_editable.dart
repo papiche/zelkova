@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../data/models/app_cubit.dart';
 import '../../../g1/api.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
@@ -14,12 +16,14 @@ class CardNameEditable extends StatefulWidget {
       required this.defValue,
       required this.publicKey,
       required this.cardName,
-      required this.isG1nkgoCard});
+      required this.isEditable,
+      required this.isPassProtected});
 
   final String defValue;
   final String publicKey;
   final String cardName;
-  final bool isG1nkgoCard;
+  final bool isEditable;
+  final bool isPassProtected;
 
   @override
   State<CardNameEditable> createState() => _CardNameEditableState();
@@ -36,7 +40,7 @@ class _CardNameEditableState extends State<CardNameEditable> {
   void initState() {
     super.initState();
     _initValue();
-    _usernameFetchFuture = _fetchAndSetUsername();
+    _usernameFetchFuture = _fetchAndSetUsername(context);
   }
 
   void _initValue() {
@@ -74,9 +78,14 @@ class _CardNameEditableState extends State<CardNameEditable> {
     }
   }
 
-  Future<bool> _fetchAndSetUsername() async {
+  Future<bool> _fetchAndSetUsername(BuildContext context) async {
     final bool isConnected = await ConnectivityWidgetWrapperWrapper.isConnected;
-    if (isConnected) {
+    if (!context.mounted) {
+      return false;
+    }
+
+    if (isConnected && !context.read<AppCubit>().isV2) {
+      // In V2 this is done directly in the SharedPreferencesHelper
       try {
         String? name = await getProfileUserName(widget.publicKey);
         if (name != null && name.isNotEmpty) {
@@ -166,7 +175,7 @@ class _CardNameEditableState extends State<CardNameEditable> {
   Widget _buildDisplayField() {
     return InkWell(
       onTap: () {
-        if (widget.isG1nkgoCard) {
+        if (widget.isEditable) {
           setState(() {
             _isEditingText = true;
           });
@@ -193,7 +202,7 @@ class _CardNameEditableState extends State<CardNameEditable> {
                   ],
                 ),
               ),
-            if (currentText == widget.defValue)
+            if (widget.isEditable && currentText == widget.defValue)
               const WidgetSpan(
                 child: Padding(
                     padding: EdgeInsets.fromLTRB(3, 0, 0, 0),
@@ -204,11 +213,13 @@ class _CardNameEditableState extends State<CardNameEditable> {
                 text: currentText,
                 style: cardTextStyle(context, fontSize: 15),
               ),
-            if (currentText.isNotEmpty && currentText != widget.defValue)
+            if (widget.isPassProtected ||
+                currentText.isNotEmpty && currentText != widget.defValue)
               TextSpan(
-                text: widget.isG1nkgoCard
+                // Show a nothing if the card name is not editable (before a lock)
+                text: widget.isEditable
                     ? g1nkgoUserNameSuffix
-                    : protectedUserNameSuffix,
+                    : '', // protectedUserNameSuffix,
                 style: cardTextStyle(context, fontSize: 12),
               ),
           ],
@@ -226,7 +237,7 @@ class _CardNameEditableState extends State<CardNameEditable> {
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           return GestureDetector(
             onTap: () {
-              if (widget.isG1nkgoCard) {
+              if (widget.isEditable) {
                 setState(() {
                   _isEditingText = true;
                 });

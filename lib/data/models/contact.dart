@@ -300,9 +300,18 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
       ? name != nick && name!.toLowerCase() != nick!.toLowerCase()
           ? '$name ($nick)'
           : name! // avoid "nick (nick)" users
-      : nick ?? name ?? humanizePubKey(pubKey);
+      : nick ??
+          name ??
+          (createdOnV2 ? humanizeAddress(address) : humanizePubKey(pubKey));
 
-  String get titleWithoutNick => name ?? humanizePubKey(pubKey);
+  String get titleWithoutAddressOrPubKey => name != null && nick != null
+      ? name != nick && name!.toLowerCase() != nick!.toLowerCase()
+          ? (name!.isNotEmpty ? '$name! ($nick!)' : nick!)
+          : name!
+      : nick ?? name ?? '';
+
+  bool get hasTitle =>
+      (name != null && name!.isNotEmpty) || (nick != null && nick!.isNotEmpty);
 
   String? get subtitle =>
       (nick != null || name != null) ? humanizePubKey(pubKey) : null;

@@ -19,12 +19,16 @@ import '../../../data/models/app_cubit.dart';
 import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
 import '../../../data/models/legacy_wallet.dart';
+import '../../../data/models/stored_account.dart';
 import '../../../g1/g1_export_auth_utils.dart';
 import '../../../g1/g1_helper.dart';
+import '../../../g1/g1_v2_helper.dart';
+import '../../../secure_crypto_helper.dart';
 import '../../clipboard_helper.dart';
 import '../../in_dev_helper.dart';
 import '../../logger.dart';
 import '../../pattern_util.dart';
+import '../../secure_unlock_widget.dart';
 import '../../ui_helpers.dart';
 import '../select_export_method_dialog.dart';
 import 'multi_wallet_selector.dart';
@@ -32,19 +36,147 @@ import 'multi_wallet_selector.dart';
 Future<void> openExportWalletsSelector(
     BuildContext context, bool expertMode) async {
   showMultiWalletSelector(context,
-      (List<LegacyWallet> selectedWallets, bool exportContacts) {
-    _showSelectExportMethodDialog(
-        context: context,
-        onlyOneWalletSelected: selectedWallets.length == 1 && expertMode,
-        selectedWallets: selectedWallets,
-        exportContacts: exportContacts);
+      (List<StoredAccount> selectedWallets, bool exportContacts) {
+    final List<StoredAccount> v2Accounts =
+        selectedWallets.where((StoredAccount w) => w.type.isV2).toList();
+
+    if (v2Accounts.length > 1) {
+      context.replaceSnackbar(
+        content: Text(
+          tr('export_one_v2_only'),
+          style: const TextStyle(color: Colors.red),
+        ),
+      );
+      return;
+    } else {
+      if (v2Accounts.length == 1) {
+        _showV2SeedDialog(context, v2Accounts.first);
+      } else {
+        _showSelectExportMethodDialog(
+            context: context,
+            onlyOneWalletSelected: selectedWallets.length == 1 && expertMode,
+            selectedWallets: selectedWallets,
+            exportContacts: exportContacts);
+      }
+    }
   });
+}
+
+Future<void> _showV2SeedDialog(
+    BuildContext context, StoredAccount account) async {
+  final bool isPassProtected = account.type == AccountType.v2PasswordProtected;
+  String mnemonic;
+
+  if (isPassProtected) {
+    final Uint8List? key = await requestSecureUnlock();
+    if (!context.mounted) {
+      return;
+    }
+    if (key == null) {
+      _showSnackBar(context, tr('wallet_unlock_failed'));
+      return;
+    }
+
+    final Uint8List? dec = SecureCryptoHelper.decrypt(account.seed!, key);
+    if (dec == null) {
+      _showSnackBar(context, tr('decryption_failed'));
+      return;
+    }
+
+    mnemonic = storeToMnemonic(dec);
+  } else {
+    mnemonic = storeToMnemonic(account.seed!);
+  }
+
+  bool isVisible = false;
+
+  if (!context.mounted) {
+    return;
+  }
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return StatefulBuilder(
+        builder:
+            (BuildContext context, void Function(void Function()) setState) {
+          return AlertDialog(
+            title: Text(tr('v2_seed_export_title')), // already present
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(tr('v2_seed_export_description')),
+                    const SizedBox(height: 12),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(6),
+                        color: Colors.grey[100],
+                      ),
+                      padding: const EdgeInsets.all(12),
+                      child: isVisible
+                          ? SelectableText(mnemonic)
+                          : SelectableText('•' * mnemonic.length),
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton.icon(
+                        icon: Icon(isVisible
+                            ? Icons.visibility_off
+                            : Icons.visibility),
+                        label: Text(isVisible ? tr('hide') : tr('show')),
+                        onPressed: () {
+                          setState(() => isVisible = !isVisible);
+                        },
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+            actions: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.copy),
+                onPressed: () {
+                  copyToClipboard(
+                    context: context,
+                    text: mnemonic,
+                    feedbackText: 'copied_to_clipboard',
+                  );
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          );
+        },
+      );
+    },
+  );
+}
+
+void _showSnackBar(BuildContext context, String message) {
+  if (!context.mounted) {
+    return;
+  }
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.red,
+    ),
+  );
 }
 
 Future<void> _showSelectExportMethodDialog(
     {required BuildContext context,
     required bool onlyOneWalletSelected,
-    required List<LegacyWallet> selectedWallets,
+    required List<StoredAccount> selectedWallets,
     required bool exportContacts}) async {
   final ExportType? method = await showDialog<ExportType>(
     context: context,
@@ -60,7 +192,7 @@ Future<void> _showSelectExportMethodDialog(
       builder: (BuildContext context) {
         return ExportDialog(
             type: method,
-            wallets: selectedWallets,
+            selectedWallets: selectedWallets,
             exportContacts: exportContacts);
       },
     );
@@ -73,12 +205,12 @@ class ExportDialog extends StatefulWidget {
   const ExportDialog({
     super.key,
     required this.type,
-    required this.wallets,
+    required this.selectedWallets,
     required this.exportContacts,
   });
 
   final ExportType type;
-  final List<LegacyWallet> wallets;
+  final List<StoredAccount> selectedWallets;
   final bool exportContacts;
 
   @override
@@ -91,6 +223,23 @@ class _ExportDialogState extends State<ExportDialog> {
 
   final GlobalKey<ScaffoldState> _exportKey =
       GlobalKey<ScaffoldState>(debugLabel: 'exportKey');
+
+  late List<LegacyWallet> _legacyWallets;
+
+  @override
+  void initState() {
+    super.initState();
+    _legacyWallets = widget.selectedWallets
+        .where((StoredAccount account) =>
+            account.type == AccountType.v1PasswordLess)
+        .map((StoredAccount account) => LegacyWallet(
+              pubKey: account.pubKey,
+              seed: seedToString(account.seed!),
+              name: account.contact.name ?? '',
+              theme: account.theme,
+            ))
+        .toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -226,8 +375,9 @@ class _ExportDialogState extends State<ExportDialog> {
     final ContactsCubit cubit = context.read<ContactsCubit>();
     context.read<ContactsCubit>().sortContactsAsStored();
     // Export only selected wallets, not all of them
+
     final List<Map<String, dynamic>> selectedWallets =
-        widget.wallets.map((LegacyWallet card) => card.toJson()).toList();
+        _legacyWallets.map((LegacyWallet card) => card.toJson()).toList();
     final Map<String, dynamic> prefsObj = <String, dynamic>{};
     // Add only the selected wallets to prefsObj
     prefsObj['cesiumCards'] = jsonEncode(selectedWallets);
@@ -350,7 +500,7 @@ class _ExportDialogState extends State<ExportDialog> {
   }
 
   CesiumWallet _getFirstWallet() {
-    final LegacyWallet card = widget.wallets.first;
+    final LegacyWallet card = _legacyWallets.first;
     final CesiumWallet wallet =
         CesiumWallet.fromSeed(seedFromString(card.seed));
     return wallet;

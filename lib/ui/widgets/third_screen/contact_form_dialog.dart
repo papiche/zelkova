@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../data/models/contact.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../g1/g1_v2_helper.dart';
-import '../../ui_helpers.dart';
+import '../../qr_helper.dart';
 
 class ContactFormDialog extends StatefulWidget {
   const ContactFormDialog({

@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-import '../../../data/models/legacy_wallet.dart';
+import '../../../data/models/stored_account.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../pattern_util.dart';
@@ -12,7 +12,7 @@ import '../first_screen/account_card_selector_item.dart';
 class MultiWalletSelectorPage extends StatefulWidget {
   const MultiWalletSelectorPage({super.key, required this.onSelectionChanged});
 
-  final Function(List<LegacyWallet>, bool) onSelectionChanged;
+  final Function(List<StoredAccount>, bool) onSelectionChanged;
 
   @override
   State<MultiWalletSelectorPage> createState() =>
@@ -20,32 +20,33 @@ class MultiWalletSelectorPage extends StatefulWidget {
 }
 
 class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
-  final List<LegacyWallet> _selectedCards = <LegacyWallet>[];
+  final List<StoredAccount> _selectedAccounts = <StoredAccount>[];
   bool _exportContacts = true;
   bool _selectAll = false;
 
   @override
   void initState() {
     super.initState();
-    _selectedCards.addAll(_cards);
+    _selectedAccounts.addAll(_accounts);
     _selectAll = true;
   }
 
-  final List<LegacyWallet> _cards = SharedPreferencesHelper()
-      .cards
-      .where((LegacyWallet card) => card.seed.isNotEmpty)
+  final List<StoredAccount> _accounts = SharedPreferencesHelper()
+      .accounts
+      .where(
+          (StoredAccount card) => card.type != AccountType.v1PasswordProtected)
       .toList();
 
-  void _onCardTapped(LegacyWallet card) {
+  void _onCardTapped(StoredAccount account) {
     setState(() {
-      if (_selectedCards.contains(card)) {
-        _selectedCards.remove(card);
+      if (_selectedAccounts.contains(account)) {
+        _selectedAccounts.remove(account);
       } else {
-        _selectedCards.add(card);
+        _selectedAccounts.add(account);
       }
 
       // Sync select all state
-      _selectAll = _selectedCards.length == _cards.length;
+      _selectAll = _selectedAccounts.length == _accounts.length;
     });
   }
 
@@ -53,10 +54,10 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
     setState(() {
       _selectAll = value;
       if (_selectAll) {
-        _selectedCards.clear();
-        _selectedCards.addAll(_cards);
+        _selectedAccounts.clear();
+        _selectedAccounts.addAll(_accounts);
       } else {
-        _selectedCards.clear();
+        _selectedAccounts.clear();
       }
     });
   }
@@ -70,7 +71,7 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
           TextButton.icon(
             icon: const Icon(Icons.check),
             label: Text(tr('ok')),
-            onPressed: _selectedCards.isEmpty
+            onPressed: _selectedAccounts.isEmpty
                 ? () {
                     context.replaceSnackbar(
                       content: Text(
@@ -81,7 +82,8 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
                   }
                 : () {
                     Navigator.of(context).pop();
-                    widget.onSelectionChanged(_selectedCards, _exportContacts);
+                    widget.onSelectionChanged(
+                        _selectedAccounts, _exportContacts);
                   },
           ),
         ],
@@ -98,12 +100,12 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
                         : 2,
                 childAspectRatio: 1.58,
               ),
-              itemCount: _cards.length,
+              itemCount: _accounts.length,
               itemBuilder: (BuildContext context, int index) {
-                final LegacyWallet card = _cards[index];
-                final bool isSelected = _selectedCards.contains(card);
+                final StoredAccount account = _accounts[index];
+                final bool isSelected = _selectedAccounts.contains(account);
                 return GestureDetector(
-                  onTap: () => _onCardTapped(card),
+                  onTap: () => _onCardTapped(account),
                   child: Stack(
                     children: <Widget>[
                       Container(
@@ -118,15 +120,20 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
                       ),
                       Center(
                         child: AccountCardSelectorItem(
-                            name: card.name.isEmpty
-                                ? humanizePubKey(card.pubKey)
-                                : truncateName(card.name),
-                            hasName: card.name.isNotEmpty,
+                            name: account.contact.name == null ||
+                                    (account.contact.name != null &&
+                                        account.contact.name!.isEmpty)
+                                ? account.type.isV2
+                                    ? humanizeAddress(account.contact.address)
+                                    : humanizePubKey(account.contact.pubKey)
+                                : truncateName(account.contact.name!),
+                            hasName: account.contact.name != null &&
+                                account.contact.name!.isNotEmpty,
                             suffix: SharedPreferencesHelper()
-                                    .isPasswordLessWallet(card)
+                                    .isPasswordLessWallet(account)
                                 ? g1nkgoUserNameSuffix
                                 : protectedUserNameSuffix,
-                            theme: card.theme),
+                            theme: account.theme),
                       ),
                       if (isSelected)
                         const Positioned(
@@ -172,7 +179,7 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
 
 void showMultiWalletSelector(
   BuildContext context,
-  Function(List<LegacyWallet>, bool) onSelectionChanged,
+  Function(List<StoredAccount>, bool) onSelectionChanged,
 ) {
   showModalBottomSheet(
     context: context,
@@ -193,16 +200,5 @@ void showMultiWalletSelector(
         },
       );
     },
-  );
-}
-
-void showMultiWalletSelectorOld(BuildContext context,
-    Function(List<LegacyWallet>, bool) onSelectionChanged) {
-  Navigator.push(
-    context,
-    MaterialPageRoute<Widget>(
-      builder: (BuildContext context) =>
-          MultiWalletSelectorPage(onSelectionChanged: onSelectionChanged),
-    ),
   );
 }

@@ -163,4 +163,93 @@ void main() {
     final String b = storeToMnemonic(a);
     expect(mnemonic, equals(b));
   });
+
+  group('decodeHexToText', () {
+    test('should decode valid UTF-8 string', () {
+      const String hex = '48656c6c6f20576f726c64'; // "Hello World"
+      expect(decodeHexToText(hex), 'Hello World');
+    });
+
+    test(r'should decode hex with \x prefix', () {
+      const String hex = r'\x48\x65\x6c\x6c\x6f'; // "Hello"
+      expect(decodeHexToText(hex), 'Hello');
+    });
+
+    test('should decode accented characters like Resumé', () {
+      const String hex = '526573756dc3a9'; // Resumé
+      expect(decodeHexToText(hex), 'Resumé');
+    });
+
+    test('should fallback to Latin-1 when UTF-8 fails', () {
+      const String hex = '5465737420e1'; // "Test á" (á in Latin-1)
+      expect(decodeHexToText(hex), 'Test á');
+    });
+
+    test('should fallback to malformed UTF-8 if needed', () {
+      const String hex = '54657374ff54657374'; // Invalid byte in middle
+      final String result = decodeHexToText(hex);
+      expect(result.contains('Test'), isTrue);
+    });
+
+    test('should return empty string on empty input', () {
+      expect(decodeHexToText(''), '');
+    });
+
+    test('should return empty string on null input', () {
+      expect(decodeHexToText(null), '');
+    });
+
+    test('should return original input on invalid hex', () {
+      const String invalid = 'zz1234';
+      expect(decodeHexToText(invalid), invalid);
+    });
+
+    test('should decode UTF-8 string with emoji and symbols', () {
+      const String hex = '48656c6c6f20f09f9a80e29c94'; // "Hello 🚀✔"
+      expect(decodeHexToText(hex), 'Hello 🚀✔');
+    });
+
+    test('should decode Chinese characters', () {
+      const String hex = 'e4b8ade69687'; // 中文 (Chinese)
+      expect(decodeHexToText(hex), '中文');
+    });
+
+    test('should decode mixed ASCII and Chinese', () {
+      const String hex = '48656c6c6f20e4b8ade69687'; // "Hello 中文"
+      expect(decodeHexToText(hex), 'Hello 中文');
+    });
+
+    test('should decode Japanese characters', () {
+      const String hex = 'e38182e38184e38186'; // あいう (Hiragana)
+      expect(decodeHexToText(hex), 'あいう');
+    });
+
+    test('should decode Arabic characters', () {
+      const String hex = 'd8b3d984d8a7d985'; // سلام (salaam)
+      expect(decodeHexToText(hex), 'سلام');
+    });
+
+    test('should decode emoji-only string', () {
+      const String hex = 'f09f9a80f09f8c9f'; // 🚀🌟
+      expect(decodeHexToText(hex), '🚀🌟');
+    });
+
+    test('should decode long multi-language string', () {
+      const String hex =
+          '48656c6c6f2c20e4b8ade69687e38182e38184e38186d8b3d984d8a7d985f09f9a80';
+      // "Hello, 中文あいうسلام🚀"
+      expect(decodeHexToText(hex), 'Hello, 中文あいうسلام🚀');
+    });
+
+    test('should ignore odd-length hex strings safely', () {
+      const String hex = '48656c6c6f2'; // Missing one digit
+      final String result = decodeHexToText(hex);
+      expect(result.contains('Hell'), isTrue); // partial decode
+    });
+
+    test('should return original input if all bytes are invalid', () {
+      const String hex = 'zzzzzz';
+      expect(decodeHexToText(hex), hex);
+    });
+  });
 }

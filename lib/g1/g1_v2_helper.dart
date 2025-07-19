@@ -104,3 +104,53 @@ Uint8List mnemonicToStore(String mnemonic) =>
     Uint8List.fromList(utf8.encode(mnemonic));
 
 String storeToMnemonic(Uint8List storedMnemonic) => utf8.decode(storedMnemonic);
+
+// From https://forum.duniter.org/t/gecko-talks-user-support/9372/490
+// Thanks to @poka
+String decodeHexToText(String? hexString) {
+  if (hexString == null) {
+    return '';
+  }
+
+  try {
+    // Remove any leading backslash-x prefix if present
+    final String cleanHex = hexString.replaceAll(r'\x', '');
+
+    // Convert hex string to bytes
+    final List<int> bytes = <int>[];
+    for (int i = 0; i < cleanHex.length; i += 2) {
+      if (i + 1 < cleanHex.length) {
+        final String hexByte = cleanHex.substring(i, i + 2);
+        final int? byte = int.tryParse(hexByte, radix: 16);
+        if (byte == null) {
+          // If any byte is invalid, return original input
+          return hexString;
+        }
+        bytes.add(byte);
+      }
+    }
+
+    // Try UTF-8 first
+    try {
+      final String result = utf8.decode(bytes);
+      // Check if the result contains replacement characters
+      if (!result.contains('�')) {
+        return result;
+      }
+    } catch (_) {}
+
+    // If UTF-8 fails or contains replacement characters, try Latin-1
+    try {
+      final String result = latin1.decode(bytes);
+      return result;
+    } catch (_) {}
+
+    // If both fail, fallback to UTF-8 with malformed allowed
+    final String result = utf8.decode(bytes, allowMalformed: true);
+    return result;
+  } catch (e) {
+    // If decoding fails, return the original string
+    log.e('Error decoding hex string: $e');
+    return hexString;
+  }
+}

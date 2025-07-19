@@ -4,7 +4,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import '../../../data/models/legacy_wallet.dart';
+
+import '../../../data/models/stored_account.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../../storage_keys.dart';
 import '../../biometrics/biometric_auth_service.dart';
@@ -62,39 +63,53 @@ class _AuthenticationSettingsPageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('auth_config_title').tr()),
+      appBar: AppBar(title: Text(tr('auth_config_title'))),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            if (inDevelopment) ...<Widget>[
-              if (!_hasUnlockMethod)
-                ElevatedButton(
-                  onPressed: () => _showSetup(context),
-                  child: const Text('auth_config_setup_button').tr(),
-                ),
-              const SizedBox(height: 10),
-              _walletStatsWidget(),
-              const SizedBox(height: 20),
-            ],
-            ElevatedButton(
-              onPressed: () => _showChange(context),
-              child: const Text('auth_change_pattern_button').tr(),
-            ),
+            if (!_hasUnlockMethod)
+              ElevatedButton(
+                onPressed: () => _showSetup(context),
+                child: Text(tr('auth_config_setup_button')),
+              ),
+            if (_hasUnlockMethod)
+              ElevatedButton(
+                onPressed: () => _showChange(context),
+                child: Text(tr('auth_change_pattern_button')),
+              ),
+            if (_hasUnlockMethod) const SizedBox(height: 10),
+            // alarm emergency unicode
+            if (_hasUnlockMethod)
+              const Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: Text(
+                      "⚠️: Change of password is under development, it should work but don't change your password without an export/backup of your wallets!")),
             const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () => _showUnlock(context),
-              child: const Text('auth_test_button').tr(),
-            ),
+            if (_hasUnlockMethod)
+              ElevatedButton(
+                onPressed: () => _showUnlock(context),
+                child: Text(tr('auth_test_button')),
+              ),
             const SizedBox(height: 20),
             if (_canCheckBiometrics)
               SwitchListTile(
-                title: const Text('auth_enable_biometrics').tr(),
+                title: Text(tr('auth_enable_biometrics')),
                 value: _biometricsEnabled,
                 onChanged: (bool value) {
                   _updateBiometricPreference(value);
                 },
               ),
+            if (inDevelopment) ...<Widget>[
+              const SizedBox(height: 20),
+              _walletStatsWidget(),
+              const SizedBox(height: 20),
+              ElevatedButton.icon(
+                  onPressed: () => _storage.deleteAll(),
+                  //icon: const Icon(Icons.delete),
+
+                  label: const Text('⚠️ Reset local storage (Danger)')),
+            ],
           ],
         ),
       ),
@@ -103,18 +118,25 @@ class _AuthenticationSettingsPageState
 
   Widget _walletStatsWidget() {
     final SharedPreferencesHelper helper = SharedPreferencesHelper();
-    final int total = helper.cards.length;
-    final int noPass =
-        helper.cards.where((LegacyWallet w) => w.seed.isNotEmpty).length;
+    final int total = helper.length;
+    final int noPass = helper.accounts
+        .where((StoredAccount w) =>
+            SharedPreferencesHelper().isPasswordLessWallet(w))
+        .length;
     final int withPass = total - noPass;
+    final bool isPasswordSet = _hasUnlockMethod;
 
     return Column(
       children: <Widget>[
-        const Text('auth_dev_stats_title').tr(),
+        Text(tr('auth_dev_stats_title'),
+            style: Theme.of(context).textTheme.titleMedium),
+        const SizedBox(height: 20),
         Text('auth_dev_stats_nopass'
             .tr(namedArgs: <String, String>{'count': noPass.toString()})),
         Text('auth_dev_stats_withpass'
             .tr(namedArgs: <String, String>{'count': withPass.toString()})),
+        Text("Password or pattern setted: ${isPasswordSet ? 'yes' : 'no'}"),
+        Text('Is locked in shared prefs: ${helper.isLocked}'),
       ],
     );
   }
@@ -128,7 +150,7 @@ class _AuthenticationSettingsPageState
             final String base64Key = base64Encode(key);
             debugPrint('🔓 Derived key: $base64Key');
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: const Text('auth_success_message').tr()),
+              SnackBar(content: Text(tr('auth_success_message'))),
             );
           },
         ),
@@ -146,7 +168,7 @@ class _AuthenticationSettingsPageState
             final String base64Key = base64Encode(derivedKey);
             debugPrint('🧷 Derived key during setup: $base64Key');
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: const Text('auth_pattern_set_message').tr()),
+              SnackBar(content: Text(tr('auth_pattern_set_message'))),
             );
             _checkUnlockStatus();
           },
@@ -165,8 +187,7 @@ class _AuthenticationSettingsPageState
             final String base64Key = base64Encode(derivedKey);
             debugPrint('🧷 Derived key during change: $base64Key');
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                  content: const Text('auth_pattern_changed_message').tr()),
+              SnackBar(content: Text(tr('auth_pattern_changed_message'))),
             );
             _checkUnlockStatus();
           },

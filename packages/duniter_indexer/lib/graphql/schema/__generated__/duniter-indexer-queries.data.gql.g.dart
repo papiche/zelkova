@@ -6657,6 +6657,9 @@ class _$GAccountByPkData_accountByPk_commentsIssuedSerializer
       'remark',
       serializers.serialize(object.remark,
           specifiedType: const FullType(String)),
+      'remarkBytes',
+      serializers.serialize(object.remarkBytes,
+          specifiedType: const FullType(_i2.Gbytea)),
     ];
     Object? value;
     value = object.authorId;
@@ -6722,6 +6725,10 @@ class _$GAccountByPkData_accountByPk_commentsIssuedSerializer
         case 'remark':
           result.remark = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
+          break;
+        case 'remarkBytes':
+          result.remarkBytes.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.Gbytea))! as _i2.Gbytea);
           break;
         case 'type':
           result.type = serializers.deserialize(value,
@@ -10084,6 +10091,9 @@ class _$GAccountByPkData_accountByPk_transfersIssued_commentSerializer
       'remark',
       serializers.serialize(object.remark,
           specifiedType: const FullType(String)),
+      'remarkBytes',
+      serializers.serialize(object.remarkBytes,
+          specifiedType: const FullType(_i2.Gbytea)),
     ];
 
     return result;
@@ -10109,6 +10119,10 @@ class _$GAccountByPkData_accountByPk_transfersIssued_commentSerializer
         case 'remark':
           result.remark = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
+          break;
+        case 'remarkBytes':
+          result.remarkBytes.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.Gbytea))! as _i2.Gbytea);
           break;
       }
     }
@@ -10557,6 +10571,9 @@ class _$GAccountByPkData_accountByPk_transfersReceived_commentSerializer
       'remark',
       serializers.serialize(object.remark,
           specifiedType: const FullType(String)),
+      'remarkBytes',
+      serializers.serialize(object.remarkBytes,
+          specifiedType: const FullType(_i2.Gbytea)),
     ];
 
     return result;
@@ -10582,6 +10599,10 @@ class _$GAccountByPkData_accountByPk_transfersReceived_commentSerializer
         case 'remark':
           result.remark = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
+          break;
+        case 'remarkBytes':
+          result.remarkBytes.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.Gbytea))! as _i2.Gbytea);
           break;
       }
     }
@@ -11276,6 +11297,9 @@ class _$GAccountsByPkData_account_commentsIssuedSerializer
       'remark',
       serializers.serialize(object.remark,
           specifiedType: const FullType(String)),
+      'remarkBytes',
+      serializers.serialize(object.remarkBytes,
+          specifiedType: const FullType(_i2.Gbytea)),
     ];
     Object? value;
     value = object.authorId;
@@ -11341,6 +11365,10 @@ class _$GAccountsByPkData_account_commentsIssuedSerializer
         case 'remark':
           result.remark = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
+          break;
+        case 'remarkBytes':
+          result.remarkBytes.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.Gbytea))! as _i2.Gbytea);
           break;
         case 'type':
           result.type = serializers.deserialize(value,
@@ -14680,6 +14708,9 @@ class _$GAccountsByPkData_account_transfersIssued_commentSerializer
       'remark',
       serializers.serialize(object.remark,
           specifiedType: const FullType(String)),
+      'remarkBytes',
+      serializers.serialize(object.remarkBytes,
+          specifiedType: const FullType(_i2.Gbytea)),
     ];
 
     return result;
@@ -14705,6 +14736,10 @@ class _$GAccountsByPkData_account_transfersIssued_commentSerializer
         case 'remark':
           result.remark = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
+          break;
+        case 'remarkBytes':
+          result.remarkBytes.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.Gbytea))! as _i2.Gbytea);
           break;
       }
     }
@@ -15146,6 +15181,9 @@ class _$GAccountsByPkData_account_transfersReceived_commentSerializer
       'remark',
       serializers.serialize(object.remark,
           specifiedType: const FullType(String)),
+      'remarkBytes',
+      serializers.serialize(object.remarkBytes,
+          specifiedType: const FullType(_i2.Gbytea)),
     ];
 
     return result;
@@ -15171,6 +15209,10 @@ class _$GAccountsByPkData_account_transfersReceived_commentSerializer
         case 'remark':
           result.remark = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
+          break;
+        case 'remarkBytes':
+          result.remarkBytes.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.Gbytea))! as _i2.Gbytea);
           break;
       }
     }
@@ -16414,6 +16456,9 @@ class _$GAccountTransactionsData_account_commentsIssuedSerializer
       'remark',
       serializers.serialize(object.remark,
           specifiedType: const FullType(String)),
+      'remarkBytes',
+      serializers.serialize(object.remarkBytes,
+          specifiedType: const FullType(_i2.Gbytea)),
     ];
     Object? value;
     value = object.authorId;
@@ -16479,6 +16524,10 @@ class _$GAccountTransactionsData_account_commentsIssuedSerializer
         case 'remark':
           result.remark = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
+          break;
+        case 'remarkBytes':
+          result.remarkBytes.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.Gbytea))! as _i2.Gbytea);
           break;
         case 'type':
           result.type = serializers.deserialize(value,
@@ -16858,6 +16907,9 @@ class _$GAccountTransactionsData_account_transfersIssued_commentSerializer
       'remark',
       serializers.serialize(object.remark,
           specifiedType: const FullType(String)),
+      'remarkBytes',
+      serializers.serialize(object.remarkBytes,
+          specifiedType: const FullType(_i2.Gbytea)),
     ];
 
     return result;
@@ -16883,6 +16935,10 @@ class _$GAccountTransactionsData_account_transfersIssued_commentSerializer
         case 'remark':
           result.remark = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
+          break;
+        case 'remarkBytes':
+          result.remarkBytes.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.Gbytea))! as _i2.Gbytea);
           break;
       }
     }
@@ -17337,6 +17393,9 @@ class _$GAccountTransactionsData_account_transfersReceived_commentSerializer
       'remark',
       serializers.serialize(object.remark,
           specifiedType: const FullType(String)),
+      'remarkBytes',
+      serializers.serialize(object.remarkBytes,
+          specifiedType: const FullType(_i2.Gbytea)),
     ];
 
     return result;
@@ -17362,6 +17421,10 @@ class _$GAccountTransactionsData_account_transfersReceived_commentSerializer
         case 'remark':
           result.remark = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
+          break;
+        case 'remarkBytes':
+          result.remarkBytes.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.Gbytea))! as _i2.Gbytea);
           break;
       }
     }
@@ -21074,6 +21137,9 @@ class _$GCommentsIssuedDataSerializer
       'remark',
       serializers.serialize(object.remark,
           specifiedType: const FullType(String)),
+      'remarkBytes',
+      serializers.serialize(object.remarkBytes,
+          specifiedType: const FullType(_i2.Gbytea)),
     ];
     Object? value;
     value = object.authorId;
@@ -21139,6 +21205,10 @@ class _$GCommentsIssuedDataSerializer
         case 'remark':
           result.remark = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
+          break;
+        case 'remarkBytes':
+          result.remarkBytes.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.Gbytea))! as _i2.Gbytea);
           break;
         case 'type':
           result.type = serializers.deserialize(value,
@@ -21617,6 +21687,9 @@ class _$GAccountFieldsData_commentsIssuedSerializer
       'remark',
       serializers.serialize(object.remark,
           specifiedType: const FullType(String)),
+      'remarkBytes',
+      serializers.serialize(object.remarkBytes,
+          specifiedType: const FullType(_i2.Gbytea)),
     ];
     Object? value;
     value = object.authorId;
@@ -21682,6 +21755,10 @@ class _$GAccountFieldsData_commentsIssuedSerializer
         case 'remark':
           result.remark = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
+          break;
+        case 'remarkBytes':
+          result.remarkBytes.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.Gbytea))! as _i2.Gbytea);
           break;
         case 'type':
           result.type = serializers.deserialize(value,
@@ -24967,6 +25044,9 @@ class _$GAccountFieldsData_transfersIssued_commentSerializer
       'remark',
       serializers.serialize(object.remark,
           specifiedType: const FullType(String)),
+      'remarkBytes',
+      serializers.serialize(object.remarkBytes,
+          specifiedType: const FullType(_i2.Gbytea)),
     ];
 
     return result;
@@ -24991,6 +25071,10 @@ class _$GAccountFieldsData_transfersIssued_commentSerializer
         case 'remark':
           result.remark = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
+          break;
+        case 'remarkBytes':
+          result.remarkBytes.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.Gbytea))! as _i2.Gbytea);
           break;
       }
     }
@@ -25425,6 +25509,9 @@ class _$GAccountFieldsData_transfersReceived_commentSerializer
       'remark',
       serializers.serialize(object.remark,
           specifiedType: const FullType(String)),
+      'remarkBytes',
+      serializers.serialize(object.remarkBytes,
+          specifiedType: const FullType(_i2.Gbytea)),
     ];
 
     return result;
@@ -25449,6 +25536,10 @@ class _$GAccountFieldsData_transfersReceived_commentSerializer
         case 'remark':
           result.remark = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
+          break;
+        case 'remarkBytes':
+          result.remarkBytes.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.Gbytea))! as _i2.Gbytea);
           break;
       }
     }
@@ -26010,6 +26101,9 @@ class _$GAccountTxsFieldsData_commentsIssuedSerializer
       'remark',
       serializers.serialize(object.remark,
           specifiedType: const FullType(String)),
+      'remarkBytes',
+      serializers.serialize(object.remarkBytes,
+          specifiedType: const FullType(_i2.Gbytea)),
     ];
     Object? value;
     value = object.authorId;
@@ -26075,6 +26169,10 @@ class _$GAccountTxsFieldsData_commentsIssuedSerializer
         case 'remark':
           result.remark = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
+          break;
+        case 'remarkBytes':
+          result.remarkBytes.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.Gbytea))! as _i2.Gbytea);
           break;
         case 'type':
           result.type = serializers.deserialize(value,
@@ -26441,6 +26539,9 @@ class _$GAccountTxsFieldsData_transfersIssued_commentSerializer
       'remark',
       serializers.serialize(object.remark,
           specifiedType: const FullType(String)),
+      'remarkBytes',
+      serializers.serialize(object.remarkBytes,
+          specifiedType: const FullType(_i2.Gbytea)),
     ];
 
     return result;
@@ -26465,6 +26566,10 @@ class _$GAccountTxsFieldsData_transfersIssued_commentSerializer
         case 'remark':
           result.remark = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
+          break;
+        case 'remarkBytes':
+          result.remarkBytes.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.Gbytea))! as _i2.Gbytea);
           break;
       }
     }
@@ -26901,6 +27006,9 @@ class _$GAccountTxsFieldsData_transfersReceived_commentSerializer
       'remark',
       serializers.serialize(object.remark,
           specifiedType: const FullType(String)),
+      'remarkBytes',
+      serializers.serialize(object.remarkBytes,
+          specifiedType: const FullType(_i2.Gbytea)),
     ];
 
     return result;
@@ -26925,6 +27033,10 @@ class _$GAccountTxsFieldsData_transfersReceived_commentSerializer
         case 'remark':
           result.remark = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
+          break;
+        case 'remarkBytes':
+          result.remarkBytes.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.Gbytea))! as _i2.Gbytea);
           break;
       }
     }
@@ -27353,6 +27465,9 @@ class _$GTransferFieldsData_commentSerializer
       'remark',
       serializers.serialize(object.remark,
           specifiedType: const FullType(String)),
+      'remarkBytes',
+      serializers.serialize(object.remarkBytes,
+          specifiedType: const FullType(_i2.Gbytea)),
     ];
 
     return result;
@@ -27377,6 +27492,10 @@ class _$GTransferFieldsData_commentSerializer
         case 'remark':
           result.remark = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
+          break;
+        case 'remarkBytes':
+          result.remarkBytes.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.Gbytea))! as _i2.Gbytea);
           break;
       }
     }
@@ -39227,6 +39346,8 @@ class _$GAccountByPkData_accountByPk_commentsIssued
   @override
   final String remark;
   @override
+  final _i2.Gbytea remarkBytes;
+  @override
   final _i2.GCommentTypeEnum? type;
 
   factory _$GAccountByPkData_accountByPk_commentsIssued(
@@ -39244,6 +39365,7 @@ class _$GAccountByPkData_accountByPk_commentsIssued
       required this.hash,
       required this.id,
       required this.remark,
+      required this.remarkBytes,
       this.type})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(G__typename,
@@ -39256,6 +39378,8 @@ class _$GAccountByPkData_accountByPk_commentsIssued
         id, r'GAccountByPkData_accountByPk_commentsIssued', 'id');
     BuiltValueNullFieldError.checkNotNull(
         remark, r'GAccountByPkData_accountByPk_commentsIssued', 'remark');
+    BuiltValueNullFieldError.checkNotNull(remarkBytes,
+        r'GAccountByPkData_accountByPk_commentsIssued', 'remarkBytes');
   }
 
   @override
@@ -39279,6 +39403,7 @@ class _$GAccountByPkData_accountByPk_commentsIssued
         hash == other.hash &&
         id == other.id &&
         remark == other.remark &&
+        remarkBytes == other.remarkBytes &&
         type == other.type;
   }
 
@@ -39292,6 +39417,7 @@ class _$GAccountByPkData_accountByPk_commentsIssued
     _$hash = $jc(_$hash, hash.hashCode);
     _$hash = $jc(_$hash, id.hashCode);
     _$hash = $jc(_$hash, remark.hashCode);
+    _$hash = $jc(_$hash, remarkBytes.hashCode);
     _$hash = $jc(_$hash, type.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
@@ -39308,6 +39434,7 @@ class _$GAccountByPkData_accountByPk_commentsIssued
           ..add('hash', hash)
           ..add('id', id)
           ..add('remark', remark)
+          ..add('remarkBytes', remarkBytes)
           ..add('type', type))
         .toString();
   }
@@ -39347,6 +39474,12 @@ class GAccountByPkData_accountByPk_commentsIssuedBuilder
   String? get remark => _$this._remark;
   set remark(String? remark) => _$this._remark = remark;
 
+  _i2.GbyteaBuilder? _remarkBytes;
+  _i2.GbyteaBuilder get remarkBytes =>
+      _$this._remarkBytes ??= new _i2.GbyteaBuilder();
+  set remarkBytes(_i2.GbyteaBuilder? remarkBytes) =>
+      _$this._remarkBytes = remarkBytes;
+
   _i2.GCommentTypeEnum? _type;
   _i2.GCommentTypeEnum? get type => _$this._type;
   set type(_i2.GCommentTypeEnum? type) => _$this._type = type;
@@ -39365,6 +39498,7 @@ class GAccountByPkData_accountByPk_commentsIssuedBuilder
       _hash = $v.hash;
       _id = $v.id;
       _remark = $v.remark;
+      _remarkBytes = $v.remarkBytes.toBuilder();
       _type = $v.type;
       _$v = null;
     }
@@ -39388,21 +39522,41 @@ class GAccountByPkData_accountByPk_commentsIssuedBuilder
   GAccountByPkData_accountByPk_commentsIssued build() => _build();
 
   _$GAccountByPkData_accountByPk_commentsIssued _build() {
-    final _$result = _$v ??
-        new _$GAccountByPkData_accountByPk_commentsIssued._(
-            G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
-                r'GAccountByPkData_accountByPk_commentsIssued', 'G__typename'),
-            authorId: authorId,
-            blockNumber: BuiltValueNullFieldError.checkNotNull(blockNumber,
-                r'GAccountByPkData_accountByPk_commentsIssued', 'blockNumber'),
-            eventId: eventId,
-            hash: BuiltValueNullFieldError.checkNotNull(
-                hash, r'GAccountByPkData_accountByPk_commentsIssued', 'hash'),
-            id: BuiltValueNullFieldError.checkNotNull(
-                id, r'GAccountByPkData_accountByPk_commentsIssued', 'id'),
-            remark: BuiltValueNullFieldError.checkNotNull(remark,
-                r'GAccountByPkData_accountByPk_commentsIssued', 'remark'),
-            type: type);
+    _$GAccountByPkData_accountByPk_commentsIssued _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountByPkData_accountByPk_commentsIssued._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename,
+                  r'GAccountByPkData_accountByPk_commentsIssued',
+                  'G__typename'),
+              authorId: authorId,
+              blockNumber: BuiltValueNullFieldError.checkNotNull(
+                  blockNumber,
+                  r'GAccountByPkData_accountByPk_commentsIssued',
+                  'blockNumber'),
+              eventId: eventId,
+              hash: BuiltValueNullFieldError.checkNotNull(
+                  hash, r'GAccountByPkData_accountByPk_commentsIssued', 'hash'),
+              id: BuiltValueNullFieldError.checkNotNull(
+                  id, r'GAccountByPkData_accountByPk_commentsIssued', 'id'),
+              remark: BuiltValueNullFieldError.checkNotNull(remark,
+                  r'GAccountByPkData_accountByPk_commentsIssued', 'remark'),
+              remarkBytes: remarkBytes.build(),
+              type: type);
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'remarkBytes';
+        remarkBytes.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountByPkData_accountByPk_commentsIssued',
+            _$failedField,
+            e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
@@ -46585,6 +46739,8 @@ class _$GAccountByPkData_accountByPk_transfersIssued_comment
   final String G__typename;
   @override
   final String remark;
+  @override
+  final _i2.Gbytea remarkBytes;
 
   factory _$GAccountByPkData_accountByPk_transfersIssued_comment(
           [void Function(
@@ -46595,12 +46751,16 @@ class _$GAccountByPkData_accountByPk_transfersIssued_comment
           ._build();
 
   _$GAccountByPkData_accountByPk_transfersIssued_comment._(
-      {required this.G__typename, required this.remark})
+      {required this.G__typename,
+      required this.remark,
+      required this.remarkBytes})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(G__typename,
         r'GAccountByPkData_accountByPk_transfersIssued_comment', 'G__typename');
     BuiltValueNullFieldError.checkNotNull(remark,
         r'GAccountByPkData_accountByPk_transfersIssued_comment', 'remark');
+    BuiltValueNullFieldError.checkNotNull(remarkBytes,
+        r'GAccountByPkData_accountByPk_transfersIssued_comment', 'remarkBytes');
   }
 
   @override
@@ -46620,7 +46780,8 @@ class _$GAccountByPkData_accountByPk_transfersIssued_comment
     if (identical(other, this)) return true;
     return other is GAccountByPkData_accountByPk_transfersIssued_comment &&
         G__typename == other.G__typename &&
-        remark == other.remark;
+        remark == other.remark &&
+        remarkBytes == other.remarkBytes;
   }
 
   @override
@@ -46628,6 +46789,7 @@ class _$GAccountByPkData_accountByPk_transfersIssued_comment
     var _$hash = 0;
     _$hash = $jc(_$hash, G__typename.hashCode);
     _$hash = $jc(_$hash, remark.hashCode);
+    _$hash = $jc(_$hash, remarkBytes.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -46637,7 +46799,8 @@ class _$GAccountByPkData_accountByPk_transfersIssued_comment
     return (newBuiltValueToStringHelper(
             r'GAccountByPkData_accountByPk_transfersIssued_comment')
           ..add('G__typename', G__typename)
-          ..add('remark', remark))
+          ..add('remark', remark)
+          ..add('remarkBytes', remarkBytes))
         .toString();
   }
 }
@@ -46656,6 +46819,12 @@ class GAccountByPkData_accountByPk_transfersIssued_commentBuilder
   String? get remark => _$this._remark;
   set remark(String? remark) => _$this._remark = remark;
 
+  _i2.GbyteaBuilder? _remarkBytes;
+  _i2.GbyteaBuilder get remarkBytes =>
+      _$this._remarkBytes ??= new _i2.GbyteaBuilder();
+  set remarkBytes(_i2.GbyteaBuilder? remarkBytes) =>
+      _$this._remarkBytes = remarkBytes;
+
   GAccountByPkData_accountByPk_transfersIssued_commentBuilder() {
     GAccountByPkData_accountByPk_transfersIssued_comment._initializeBuilder(
         this);
@@ -46666,6 +46835,7 @@ class GAccountByPkData_accountByPk_transfersIssued_commentBuilder
     if ($v != null) {
       _G__typename = $v.G__typename;
       _remark = $v.remark;
+      _remarkBytes = $v.remarkBytes.toBuilder();
       _$v = null;
     }
     return this;
@@ -46689,16 +46859,32 @@ class GAccountByPkData_accountByPk_transfersIssued_commentBuilder
   GAccountByPkData_accountByPk_transfersIssued_comment build() => _build();
 
   _$GAccountByPkData_accountByPk_transfersIssued_comment _build() {
-    final _$result = _$v ??
-        new _$GAccountByPkData_accountByPk_transfersIssued_comment._(
-            G__typename: BuiltValueNullFieldError.checkNotNull(
-                G__typename,
-                r'GAccountByPkData_accountByPk_transfersIssued_comment',
-                'G__typename'),
-            remark: BuiltValueNullFieldError.checkNotNull(
-                remark,
-                r'GAccountByPkData_accountByPk_transfersIssued_comment',
-                'remark'));
+    _$GAccountByPkData_accountByPk_transfersIssued_comment _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountByPkData_accountByPk_transfersIssued_comment._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename,
+                  r'GAccountByPkData_accountByPk_transfersIssued_comment',
+                  'G__typename'),
+              remark: BuiltValueNullFieldError.checkNotNull(
+                  remark,
+                  r'GAccountByPkData_accountByPk_transfersIssued_comment',
+                  'remark'),
+              remarkBytes: remarkBytes.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'remarkBytes';
+        remarkBytes.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountByPkData_accountByPk_transfersIssued_comment',
+            _$failedField,
+            e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
@@ -47620,6 +47806,8 @@ class _$GAccountByPkData_accountByPk_transfersReceived_comment
   final String G__typename;
   @override
   final String remark;
+  @override
+  final _i2.Gbytea remarkBytes;
 
   factory _$GAccountByPkData_accountByPk_transfersReceived_comment(
           [void Function(
@@ -47630,7 +47818,9 @@ class _$GAccountByPkData_accountByPk_transfersReceived_comment
           ._build();
 
   _$GAccountByPkData_accountByPk_transfersReceived_comment._(
-      {required this.G__typename, required this.remark})
+      {required this.G__typename,
+      required this.remark,
+      required this.remarkBytes})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         G__typename,
@@ -47638,6 +47828,10 @@ class _$GAccountByPkData_accountByPk_transfersReceived_comment
         'G__typename');
     BuiltValueNullFieldError.checkNotNull(remark,
         r'GAccountByPkData_accountByPk_transfersReceived_comment', 'remark');
+    BuiltValueNullFieldError.checkNotNull(
+        remarkBytes,
+        r'GAccountByPkData_accountByPk_transfersReceived_comment',
+        'remarkBytes');
   }
 
   @override
@@ -47657,7 +47851,8 @@ class _$GAccountByPkData_accountByPk_transfersReceived_comment
     if (identical(other, this)) return true;
     return other is GAccountByPkData_accountByPk_transfersReceived_comment &&
         G__typename == other.G__typename &&
-        remark == other.remark;
+        remark == other.remark &&
+        remarkBytes == other.remarkBytes;
   }
 
   @override
@@ -47665,6 +47860,7 @@ class _$GAccountByPkData_accountByPk_transfersReceived_comment
     var _$hash = 0;
     _$hash = $jc(_$hash, G__typename.hashCode);
     _$hash = $jc(_$hash, remark.hashCode);
+    _$hash = $jc(_$hash, remarkBytes.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -47674,7 +47870,8 @@ class _$GAccountByPkData_accountByPk_transfersReceived_comment
     return (newBuiltValueToStringHelper(
             r'GAccountByPkData_accountByPk_transfersReceived_comment')
           ..add('G__typename', G__typename)
-          ..add('remark', remark))
+          ..add('remark', remark)
+          ..add('remarkBytes', remarkBytes))
         .toString();
   }
 }
@@ -47693,6 +47890,12 @@ class GAccountByPkData_accountByPk_transfersReceived_commentBuilder
   String? get remark => _$this._remark;
   set remark(String? remark) => _$this._remark = remark;
 
+  _i2.GbyteaBuilder? _remarkBytes;
+  _i2.GbyteaBuilder get remarkBytes =>
+      _$this._remarkBytes ??= new _i2.GbyteaBuilder();
+  set remarkBytes(_i2.GbyteaBuilder? remarkBytes) =>
+      _$this._remarkBytes = remarkBytes;
+
   GAccountByPkData_accountByPk_transfersReceived_commentBuilder() {
     GAccountByPkData_accountByPk_transfersReceived_comment._initializeBuilder(
         this);
@@ -47703,6 +47906,7 @@ class GAccountByPkData_accountByPk_transfersReceived_commentBuilder
     if ($v != null) {
       _G__typename = $v.G__typename;
       _remark = $v.remark;
+      _remarkBytes = $v.remarkBytes.toBuilder();
       _$v = null;
     }
     return this;
@@ -47726,16 +47930,32 @@ class GAccountByPkData_accountByPk_transfersReceived_commentBuilder
   GAccountByPkData_accountByPk_transfersReceived_comment build() => _build();
 
   _$GAccountByPkData_accountByPk_transfersReceived_comment _build() {
-    final _$result = _$v ??
-        new _$GAccountByPkData_accountByPk_transfersReceived_comment._(
-            G__typename: BuiltValueNullFieldError.checkNotNull(
-                G__typename,
-                r'GAccountByPkData_accountByPk_transfersReceived_comment',
-                'G__typename'),
-            remark: BuiltValueNullFieldError.checkNotNull(
-                remark,
-                r'GAccountByPkData_accountByPk_transfersReceived_comment',
-                'remark'));
+    _$GAccountByPkData_accountByPk_transfersReceived_comment _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountByPkData_accountByPk_transfersReceived_comment._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename,
+                  r'GAccountByPkData_accountByPk_transfersReceived_comment',
+                  'G__typename'),
+              remark: BuiltValueNullFieldError.checkNotNull(
+                  remark,
+                  r'GAccountByPkData_accountByPk_transfersReceived_comment',
+                  'remark'),
+              remarkBytes: remarkBytes.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'remarkBytes';
+        remarkBytes.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountByPkData_accountByPk_transfersReceived_comment',
+            _$failedField,
+            e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
@@ -49167,6 +49387,8 @@ class _$GAccountsByPkData_account_commentsIssued
   @override
   final String remark;
   @override
+  final _i2.Gbytea remarkBytes;
+  @override
   final _i2.GCommentTypeEnum? type;
 
   factory _$GAccountsByPkData_account_commentsIssued(
@@ -49183,6 +49405,7 @@ class _$GAccountsByPkData_account_commentsIssued
       required this.hash,
       required this.id,
       required this.remark,
+      required this.remarkBytes,
       this.type})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(G__typename,
@@ -49195,6 +49418,8 @@ class _$GAccountsByPkData_account_commentsIssued
         id, r'GAccountsByPkData_account_commentsIssued', 'id');
     BuiltValueNullFieldError.checkNotNull(
         remark, r'GAccountsByPkData_account_commentsIssued', 'remark');
+    BuiltValueNullFieldError.checkNotNull(remarkBytes,
+        r'GAccountsByPkData_account_commentsIssued', 'remarkBytes');
   }
 
   @override
@@ -49218,6 +49443,7 @@ class _$GAccountsByPkData_account_commentsIssued
         hash == other.hash &&
         id == other.id &&
         remark == other.remark &&
+        remarkBytes == other.remarkBytes &&
         type == other.type;
   }
 
@@ -49231,6 +49457,7 @@ class _$GAccountsByPkData_account_commentsIssued
     _$hash = $jc(_$hash, hash.hashCode);
     _$hash = $jc(_$hash, id.hashCode);
     _$hash = $jc(_$hash, remark.hashCode);
+    _$hash = $jc(_$hash, remarkBytes.hashCode);
     _$hash = $jc(_$hash, type.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
@@ -49247,6 +49474,7 @@ class _$GAccountsByPkData_account_commentsIssued
           ..add('hash', hash)
           ..add('id', id)
           ..add('remark', remark)
+          ..add('remarkBytes', remarkBytes)
           ..add('type', type))
         .toString();
   }
@@ -49286,6 +49514,12 @@ class GAccountsByPkData_account_commentsIssuedBuilder
   String? get remark => _$this._remark;
   set remark(String? remark) => _$this._remark = remark;
 
+  _i2.GbyteaBuilder? _remarkBytes;
+  _i2.GbyteaBuilder get remarkBytes =>
+      _$this._remarkBytes ??= new _i2.GbyteaBuilder();
+  set remarkBytes(_i2.GbyteaBuilder? remarkBytes) =>
+      _$this._remarkBytes = remarkBytes;
+
   _i2.GCommentTypeEnum? _type;
   _i2.GCommentTypeEnum? get type => _$this._type;
   set type(_i2.GCommentTypeEnum? type) => _$this._type = type;
@@ -49304,6 +49538,7 @@ class GAccountsByPkData_account_commentsIssuedBuilder
       _hash = $v.hash;
       _id = $v.id;
       _remark = $v.remark;
+      _remarkBytes = $v.remarkBytes.toBuilder();
       _type = $v.type;
       _$v = null;
     }
@@ -49326,21 +49561,37 @@ class GAccountsByPkData_account_commentsIssuedBuilder
   GAccountsByPkData_account_commentsIssued build() => _build();
 
   _$GAccountsByPkData_account_commentsIssued _build() {
-    final _$result = _$v ??
-        new _$GAccountsByPkData_account_commentsIssued._(
-            G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
-                r'GAccountsByPkData_account_commentsIssued', 'G__typename'),
-            authorId: authorId,
-            blockNumber: BuiltValueNullFieldError.checkNotNull(blockNumber,
-                r'GAccountsByPkData_account_commentsIssued', 'blockNumber'),
-            eventId: eventId,
-            hash: BuiltValueNullFieldError.checkNotNull(
-                hash, r'GAccountsByPkData_account_commentsIssued', 'hash'),
-            id: BuiltValueNullFieldError.checkNotNull(
-                id, r'GAccountsByPkData_account_commentsIssued', 'id'),
-            remark: BuiltValueNullFieldError.checkNotNull(
-                remark, r'GAccountsByPkData_account_commentsIssued', 'remark'),
-            type: type);
+    _$GAccountsByPkData_account_commentsIssued _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountsByPkData_account_commentsIssued._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
+                  r'GAccountsByPkData_account_commentsIssued', 'G__typename'),
+              authorId: authorId,
+              blockNumber: BuiltValueNullFieldError.checkNotNull(blockNumber,
+                  r'GAccountsByPkData_account_commentsIssued', 'blockNumber'),
+              eventId: eventId,
+              hash: BuiltValueNullFieldError.checkNotNull(
+                  hash, r'GAccountsByPkData_account_commentsIssued', 'hash'),
+              id: BuiltValueNullFieldError.checkNotNull(
+                  id, r'GAccountsByPkData_account_commentsIssued', 'id'),
+              remark: BuiltValueNullFieldError.checkNotNull(remark,
+                  r'GAccountsByPkData_account_commentsIssued', 'remark'),
+              remarkBytes: remarkBytes.build(),
+              type: type);
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'remarkBytes';
+        remarkBytes.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountsByPkData_account_commentsIssued',
+            _$failedField,
+            e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
@@ -56399,6 +56650,8 @@ class _$GAccountsByPkData_account_transfersIssued_comment
   final String G__typename;
   @override
   final String remark;
+  @override
+  final _i2.Gbytea remarkBytes;
 
   factory _$GAccountsByPkData_account_transfersIssued_comment(
           [void Function(
@@ -56409,12 +56662,16 @@ class _$GAccountsByPkData_account_transfersIssued_comment
           ._build();
 
   _$GAccountsByPkData_account_transfersIssued_comment._(
-      {required this.G__typename, required this.remark})
+      {required this.G__typename,
+      required this.remark,
+      required this.remarkBytes})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(G__typename,
         r'GAccountsByPkData_account_transfersIssued_comment', 'G__typename');
     BuiltValueNullFieldError.checkNotNull(
         remark, r'GAccountsByPkData_account_transfersIssued_comment', 'remark');
+    BuiltValueNullFieldError.checkNotNull(remarkBytes,
+        r'GAccountsByPkData_account_transfersIssued_comment', 'remarkBytes');
   }
 
   @override
@@ -56434,7 +56691,8 @@ class _$GAccountsByPkData_account_transfersIssued_comment
     if (identical(other, this)) return true;
     return other is GAccountsByPkData_account_transfersIssued_comment &&
         G__typename == other.G__typename &&
-        remark == other.remark;
+        remark == other.remark &&
+        remarkBytes == other.remarkBytes;
   }
 
   @override
@@ -56442,6 +56700,7 @@ class _$GAccountsByPkData_account_transfersIssued_comment
     var _$hash = 0;
     _$hash = $jc(_$hash, G__typename.hashCode);
     _$hash = $jc(_$hash, remark.hashCode);
+    _$hash = $jc(_$hash, remarkBytes.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -56451,7 +56710,8 @@ class _$GAccountsByPkData_account_transfersIssued_comment
     return (newBuiltValueToStringHelper(
             r'GAccountsByPkData_account_transfersIssued_comment')
           ..add('G__typename', G__typename)
-          ..add('remark', remark))
+          ..add('remark', remark)
+          ..add('remarkBytes', remarkBytes))
         .toString();
   }
 }
@@ -56470,6 +56730,12 @@ class GAccountsByPkData_account_transfersIssued_commentBuilder
   String? get remark => _$this._remark;
   set remark(String? remark) => _$this._remark = remark;
 
+  _i2.GbyteaBuilder? _remarkBytes;
+  _i2.GbyteaBuilder get remarkBytes =>
+      _$this._remarkBytes ??= new _i2.GbyteaBuilder();
+  set remarkBytes(_i2.GbyteaBuilder? remarkBytes) =>
+      _$this._remarkBytes = remarkBytes;
+
   GAccountsByPkData_account_transfersIssued_commentBuilder() {
     GAccountsByPkData_account_transfersIssued_comment._initializeBuilder(this);
   }
@@ -56479,6 +56745,7 @@ class GAccountsByPkData_account_transfersIssued_commentBuilder
     if ($v != null) {
       _G__typename = $v.G__typename;
       _remark = $v.remark;
+      _remarkBytes = $v.remarkBytes.toBuilder();
       _$v = null;
     }
     return this;
@@ -56501,16 +56768,32 @@ class GAccountsByPkData_account_transfersIssued_commentBuilder
   GAccountsByPkData_account_transfersIssued_comment build() => _build();
 
   _$GAccountsByPkData_account_transfersIssued_comment _build() {
-    final _$result = _$v ??
-        new _$GAccountsByPkData_account_transfersIssued_comment._(
-            G__typename: BuiltValueNullFieldError.checkNotNull(
-                G__typename,
-                r'GAccountsByPkData_account_transfersIssued_comment',
-                'G__typename'),
-            remark: BuiltValueNullFieldError.checkNotNull(
-                remark,
-                r'GAccountsByPkData_account_transfersIssued_comment',
-                'remark'));
+    _$GAccountsByPkData_account_transfersIssued_comment _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountsByPkData_account_transfersIssued_comment._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename,
+                  r'GAccountsByPkData_account_transfersIssued_comment',
+                  'G__typename'),
+              remark: BuiltValueNullFieldError.checkNotNull(
+                  remark,
+                  r'GAccountsByPkData_account_transfersIssued_comment',
+                  'remark'),
+              remarkBytes: remarkBytes.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'remarkBytes';
+        remarkBytes.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountsByPkData_account_transfersIssued_comment',
+            _$failedField,
+            e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
@@ -57416,6 +57699,8 @@ class _$GAccountsByPkData_account_transfersReceived_comment
   final String G__typename;
   @override
   final String remark;
+  @override
+  final _i2.Gbytea remarkBytes;
 
   factory _$GAccountsByPkData_account_transfersReceived_comment(
           [void Function(
@@ -57426,12 +57711,16 @@ class _$GAccountsByPkData_account_transfersReceived_comment
           ._build();
 
   _$GAccountsByPkData_account_transfersReceived_comment._(
-      {required this.G__typename, required this.remark})
+      {required this.G__typename,
+      required this.remark,
+      required this.remarkBytes})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(G__typename,
         r'GAccountsByPkData_account_transfersReceived_comment', 'G__typename');
     BuiltValueNullFieldError.checkNotNull(remark,
         r'GAccountsByPkData_account_transfersReceived_comment', 'remark');
+    BuiltValueNullFieldError.checkNotNull(remarkBytes,
+        r'GAccountsByPkData_account_transfersReceived_comment', 'remarkBytes');
   }
 
   @override
@@ -57451,7 +57740,8 @@ class _$GAccountsByPkData_account_transfersReceived_comment
     if (identical(other, this)) return true;
     return other is GAccountsByPkData_account_transfersReceived_comment &&
         G__typename == other.G__typename &&
-        remark == other.remark;
+        remark == other.remark &&
+        remarkBytes == other.remarkBytes;
   }
 
   @override
@@ -57459,6 +57749,7 @@ class _$GAccountsByPkData_account_transfersReceived_comment
     var _$hash = 0;
     _$hash = $jc(_$hash, G__typename.hashCode);
     _$hash = $jc(_$hash, remark.hashCode);
+    _$hash = $jc(_$hash, remarkBytes.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -57468,7 +57759,8 @@ class _$GAccountsByPkData_account_transfersReceived_comment
     return (newBuiltValueToStringHelper(
             r'GAccountsByPkData_account_transfersReceived_comment')
           ..add('G__typename', G__typename)
-          ..add('remark', remark))
+          ..add('remark', remark)
+          ..add('remarkBytes', remarkBytes))
         .toString();
   }
 }
@@ -57487,6 +57779,12 @@ class GAccountsByPkData_account_transfersReceived_commentBuilder
   String? get remark => _$this._remark;
   set remark(String? remark) => _$this._remark = remark;
 
+  _i2.GbyteaBuilder? _remarkBytes;
+  _i2.GbyteaBuilder get remarkBytes =>
+      _$this._remarkBytes ??= new _i2.GbyteaBuilder();
+  set remarkBytes(_i2.GbyteaBuilder? remarkBytes) =>
+      _$this._remarkBytes = remarkBytes;
+
   GAccountsByPkData_account_transfersReceived_commentBuilder() {
     GAccountsByPkData_account_transfersReceived_comment._initializeBuilder(
         this);
@@ -57497,6 +57795,7 @@ class GAccountsByPkData_account_transfersReceived_commentBuilder
     if ($v != null) {
       _G__typename = $v.G__typename;
       _remark = $v.remark;
+      _remarkBytes = $v.remarkBytes.toBuilder();
       _$v = null;
     }
     return this;
@@ -57519,16 +57818,32 @@ class GAccountsByPkData_account_transfersReceived_commentBuilder
   GAccountsByPkData_account_transfersReceived_comment build() => _build();
 
   _$GAccountsByPkData_account_transfersReceived_comment _build() {
-    final _$result = _$v ??
-        new _$GAccountsByPkData_account_transfersReceived_comment._(
-            G__typename: BuiltValueNullFieldError.checkNotNull(
-                G__typename,
-                r'GAccountsByPkData_account_transfersReceived_comment',
-                'G__typename'),
-            remark: BuiltValueNullFieldError.checkNotNull(
-                remark,
-                r'GAccountsByPkData_account_transfersReceived_comment',
-                'remark'));
+    _$GAccountsByPkData_account_transfersReceived_comment _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountsByPkData_account_transfersReceived_comment._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename,
+                  r'GAccountsByPkData_account_transfersReceived_comment',
+                  'G__typename'),
+              remark: BuiltValueNullFieldError.checkNotNull(
+                  remark,
+                  r'GAccountsByPkData_account_transfersReceived_comment',
+                  'remark'),
+              remarkBytes: remarkBytes.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'remarkBytes';
+        remarkBytes.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountsByPkData_account_transfersReceived_comment',
+            _$failedField,
+            e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
@@ -60110,6 +60425,8 @@ class _$GAccountTransactionsData_account_commentsIssued
   @override
   final String remark;
   @override
+  final _i2.Gbytea remarkBytes;
+  @override
   final _i2.GCommentTypeEnum? type;
 
   factory _$GAccountTransactionsData_account_commentsIssued(
@@ -60128,6 +60445,7 @@ class _$GAccountTransactionsData_account_commentsIssued
       required this.hash,
       required this.id,
       required this.remark,
+      required this.remarkBytes,
       this.type})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(G__typename,
@@ -60140,6 +60458,8 @@ class _$GAccountTransactionsData_account_commentsIssued
         id, r'GAccountTransactionsData_account_commentsIssued', 'id');
     BuiltValueNullFieldError.checkNotNull(
         remark, r'GAccountTransactionsData_account_commentsIssued', 'remark');
+    BuiltValueNullFieldError.checkNotNull(remarkBytes,
+        r'GAccountTransactionsData_account_commentsIssued', 'remarkBytes');
   }
 
   @override
@@ -60164,6 +60484,7 @@ class _$GAccountTransactionsData_account_commentsIssued
         hash == other.hash &&
         id == other.id &&
         remark == other.remark &&
+        remarkBytes == other.remarkBytes &&
         type == other.type;
   }
 
@@ -60177,6 +60498,7 @@ class _$GAccountTransactionsData_account_commentsIssued
     _$hash = $jc(_$hash, hash.hashCode);
     _$hash = $jc(_$hash, id.hashCode);
     _$hash = $jc(_$hash, remark.hashCode);
+    _$hash = $jc(_$hash, remarkBytes.hashCode);
     _$hash = $jc(_$hash, type.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
@@ -60193,6 +60515,7 @@ class _$GAccountTransactionsData_account_commentsIssued
           ..add('hash', hash)
           ..add('id', id)
           ..add('remark', remark)
+          ..add('remarkBytes', remarkBytes)
           ..add('type', type))
         .toString();
   }
@@ -60232,6 +60555,12 @@ class GAccountTransactionsData_account_commentsIssuedBuilder
   String? get remark => _$this._remark;
   set remark(String? remark) => _$this._remark = remark;
 
+  _i2.GbyteaBuilder? _remarkBytes;
+  _i2.GbyteaBuilder get remarkBytes =>
+      _$this._remarkBytes ??= new _i2.GbyteaBuilder();
+  set remarkBytes(_i2.GbyteaBuilder? remarkBytes) =>
+      _$this._remarkBytes = remarkBytes;
+
   _i2.GCommentTypeEnum? _type;
   _i2.GCommentTypeEnum? get type => _$this._type;
   set type(_i2.GCommentTypeEnum? type) => _$this._type = type;
@@ -60250,6 +60579,7 @@ class GAccountTransactionsData_account_commentsIssuedBuilder
       _hash = $v.hash;
       _id = $v.id;
       _remark = $v.remark;
+      _remarkBytes = $v.remarkBytes.toBuilder();
       _type = $v.type;
       _$v = null;
     }
@@ -60273,25 +60603,41 @@ class GAccountTransactionsData_account_commentsIssuedBuilder
   GAccountTransactionsData_account_commentsIssued build() => _build();
 
   _$GAccountTransactionsData_account_commentsIssued _build() {
-    final _$result = _$v ??
-        new _$GAccountTransactionsData_account_commentsIssued._(
-            G__typename: BuiltValueNullFieldError.checkNotNull(
-                G__typename,
-                r'GAccountTransactionsData_account_commentsIssued',
-                'G__typename'),
-            authorId: authorId,
-            blockNumber: BuiltValueNullFieldError.checkNotNull(
-                blockNumber,
-                r'GAccountTransactionsData_account_commentsIssued',
-                'blockNumber'),
-            eventId: eventId,
-            hash: BuiltValueNullFieldError.checkNotNull(
-                hash, r'GAccountTransactionsData_account_commentsIssued', 'hash'),
-            id: BuiltValueNullFieldError.checkNotNull(
-                id, r'GAccountTransactionsData_account_commentsIssued', 'id'),
-            remark: BuiltValueNullFieldError.checkNotNull(remark,
-                r'GAccountTransactionsData_account_commentsIssued', 'remark'),
-            type: type);
+    _$GAccountTransactionsData_account_commentsIssued _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountTransactionsData_account_commentsIssued._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename,
+                  r'GAccountTransactionsData_account_commentsIssued',
+                  'G__typename'),
+              authorId: authorId,
+              blockNumber: BuiltValueNullFieldError.checkNotNull(
+                  blockNumber,
+                  r'GAccountTransactionsData_account_commentsIssued',
+                  'blockNumber'),
+              eventId: eventId,
+              hash: BuiltValueNullFieldError.checkNotNull(hash,
+                  r'GAccountTransactionsData_account_commentsIssued', 'hash'),
+              id: BuiltValueNullFieldError.checkNotNull(
+                  id, r'GAccountTransactionsData_account_commentsIssued', 'id'),
+              remark: BuiltValueNullFieldError.checkNotNull(remark,
+                  r'GAccountTransactionsData_account_commentsIssued', 'remark'),
+              remarkBytes: remarkBytes.build(),
+              type: type);
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'remarkBytes';
+        remarkBytes.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountTransactionsData_account_commentsIssued',
+            _$failedField,
+            e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
@@ -61061,6 +61407,8 @@ class _$GAccountTransactionsData_account_transfersIssued_comment
   final String G__typename;
   @override
   final String remark;
+  @override
+  final _i2.Gbytea remarkBytes;
 
   factory _$GAccountTransactionsData_account_transfersIssued_comment(
           [void Function(
@@ -61071,7 +61419,9 @@ class _$GAccountTransactionsData_account_transfersIssued_comment
           ._build();
 
   _$GAccountTransactionsData_account_transfersIssued_comment._(
-      {required this.G__typename, required this.remark})
+      {required this.G__typename,
+      required this.remark,
+      required this.remarkBytes})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         G__typename,
@@ -61079,6 +61429,10 @@ class _$GAccountTransactionsData_account_transfersIssued_comment
         'G__typename');
     BuiltValueNullFieldError.checkNotNull(remark,
         r'GAccountTransactionsData_account_transfersIssued_comment', 'remark');
+    BuiltValueNullFieldError.checkNotNull(
+        remarkBytes,
+        r'GAccountTransactionsData_account_transfersIssued_comment',
+        'remarkBytes');
   }
 
   @override
@@ -61098,7 +61452,8 @@ class _$GAccountTransactionsData_account_transfersIssued_comment
     if (identical(other, this)) return true;
     return other is GAccountTransactionsData_account_transfersIssued_comment &&
         G__typename == other.G__typename &&
-        remark == other.remark;
+        remark == other.remark &&
+        remarkBytes == other.remarkBytes;
   }
 
   @override
@@ -61106,6 +61461,7 @@ class _$GAccountTransactionsData_account_transfersIssued_comment
     var _$hash = 0;
     _$hash = $jc(_$hash, G__typename.hashCode);
     _$hash = $jc(_$hash, remark.hashCode);
+    _$hash = $jc(_$hash, remarkBytes.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -61115,7 +61471,8 @@ class _$GAccountTransactionsData_account_transfersIssued_comment
     return (newBuiltValueToStringHelper(
             r'GAccountTransactionsData_account_transfersIssued_comment')
           ..add('G__typename', G__typename)
-          ..add('remark', remark))
+          ..add('remark', remark)
+          ..add('remarkBytes', remarkBytes))
         .toString();
   }
 }
@@ -61134,6 +61491,12 @@ class GAccountTransactionsData_account_transfersIssued_commentBuilder
   String? get remark => _$this._remark;
   set remark(String? remark) => _$this._remark = remark;
 
+  _i2.GbyteaBuilder? _remarkBytes;
+  _i2.GbyteaBuilder get remarkBytes =>
+      _$this._remarkBytes ??= new _i2.GbyteaBuilder();
+  set remarkBytes(_i2.GbyteaBuilder? remarkBytes) =>
+      _$this._remarkBytes = remarkBytes;
+
   GAccountTransactionsData_account_transfersIssued_commentBuilder() {
     GAccountTransactionsData_account_transfersIssued_comment._initializeBuilder(
         this);
@@ -61144,6 +61507,7 @@ class GAccountTransactionsData_account_transfersIssued_commentBuilder
     if ($v != null) {
       _G__typename = $v.G__typename;
       _remark = $v.remark;
+      _remarkBytes = $v.remarkBytes.toBuilder();
       _$v = null;
     }
     return this;
@@ -61167,16 +61531,32 @@ class GAccountTransactionsData_account_transfersIssued_commentBuilder
   GAccountTransactionsData_account_transfersIssued_comment build() => _build();
 
   _$GAccountTransactionsData_account_transfersIssued_comment _build() {
-    final _$result = _$v ??
-        new _$GAccountTransactionsData_account_transfersIssued_comment._(
-            G__typename: BuiltValueNullFieldError.checkNotNull(
-                G__typename,
-                r'GAccountTransactionsData_account_transfersIssued_comment',
-                'G__typename'),
-            remark: BuiltValueNullFieldError.checkNotNull(
-                remark,
-                r'GAccountTransactionsData_account_transfersIssued_comment',
-                'remark'));
+    _$GAccountTransactionsData_account_transfersIssued_comment _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountTransactionsData_account_transfersIssued_comment._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename,
+                  r'GAccountTransactionsData_account_transfersIssued_comment',
+                  'G__typename'),
+              remark: BuiltValueNullFieldError.checkNotNull(
+                  remark,
+                  r'GAccountTransactionsData_account_transfersIssued_comment',
+                  'remark'),
+              remarkBytes: remarkBytes.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'remarkBytes';
+        remarkBytes.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountTransactionsData_account_transfersIssued_comment',
+            _$failedField,
+            e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
@@ -62123,6 +62503,8 @@ class _$GAccountTransactionsData_account_transfersReceived_comment
   final String G__typename;
   @override
   final String remark;
+  @override
+  final _i2.Gbytea remarkBytes;
 
   factory _$GAccountTransactionsData_account_transfersReceived_comment(
           [void Function(
@@ -62133,7 +62515,9 @@ class _$GAccountTransactionsData_account_transfersReceived_comment
           ._build();
 
   _$GAccountTransactionsData_account_transfersReceived_comment._(
-      {required this.G__typename, required this.remark})
+      {required this.G__typename,
+      required this.remark,
+      required this.remarkBytes})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         G__typename,
@@ -62143,6 +62527,10 @@ class _$GAccountTransactionsData_account_transfersReceived_comment
         remark,
         r'GAccountTransactionsData_account_transfersReceived_comment',
         'remark');
+    BuiltValueNullFieldError.checkNotNull(
+        remarkBytes,
+        r'GAccountTransactionsData_account_transfersReceived_comment',
+        'remarkBytes');
   }
 
   @override
@@ -62164,7 +62552,8 @@ class _$GAccountTransactionsData_account_transfersReceived_comment
     return other
             is GAccountTransactionsData_account_transfersReceived_comment &&
         G__typename == other.G__typename &&
-        remark == other.remark;
+        remark == other.remark &&
+        remarkBytes == other.remarkBytes;
   }
 
   @override
@@ -62172,6 +62561,7 @@ class _$GAccountTransactionsData_account_transfersReceived_comment
     var _$hash = 0;
     _$hash = $jc(_$hash, G__typename.hashCode);
     _$hash = $jc(_$hash, remark.hashCode);
+    _$hash = $jc(_$hash, remarkBytes.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -62181,7 +62571,8 @@ class _$GAccountTransactionsData_account_transfersReceived_comment
     return (newBuiltValueToStringHelper(
             r'GAccountTransactionsData_account_transfersReceived_comment')
           ..add('G__typename', G__typename)
-          ..add('remark', remark))
+          ..add('remark', remark)
+          ..add('remarkBytes', remarkBytes))
         .toString();
   }
 }
@@ -62200,6 +62591,12 @@ class GAccountTransactionsData_account_transfersReceived_commentBuilder
   String? get remark => _$this._remark;
   set remark(String? remark) => _$this._remark = remark;
 
+  _i2.GbyteaBuilder? _remarkBytes;
+  _i2.GbyteaBuilder get remarkBytes =>
+      _$this._remarkBytes ??= new _i2.GbyteaBuilder();
+  set remarkBytes(_i2.GbyteaBuilder? remarkBytes) =>
+      _$this._remarkBytes = remarkBytes;
+
   GAccountTransactionsData_account_transfersReceived_commentBuilder() {
     GAccountTransactionsData_account_transfersReceived_comment
         ._initializeBuilder(this);
@@ -62210,6 +62607,7 @@ class GAccountTransactionsData_account_transfersReceived_commentBuilder
     if ($v != null) {
       _G__typename = $v.G__typename;
       _remark = $v.remark;
+      _remarkBytes = $v.remarkBytes.toBuilder();
       _$v = null;
     }
     return this;
@@ -62235,16 +62633,32 @@ class GAccountTransactionsData_account_transfersReceived_commentBuilder
       _build();
 
   _$GAccountTransactionsData_account_transfersReceived_comment _build() {
-    final _$result = _$v ??
-        new _$GAccountTransactionsData_account_transfersReceived_comment._(
-            G__typename: BuiltValueNullFieldError.checkNotNull(
-                G__typename,
-                r'GAccountTransactionsData_account_transfersReceived_comment',
-                'G__typename'),
-            remark: BuiltValueNullFieldError.checkNotNull(
-                remark,
-                r'GAccountTransactionsData_account_transfersReceived_comment',
-                'remark'));
+    _$GAccountTransactionsData_account_transfersReceived_comment _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountTransactionsData_account_transfersReceived_comment._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename,
+                  r'GAccountTransactionsData_account_transfersReceived_comment',
+                  'G__typename'),
+              remark: BuiltValueNullFieldError.checkNotNull(
+                  remark,
+                  r'GAccountTransactionsData_account_transfersReceived_comment',
+                  'remark'),
+              remarkBytes: remarkBytes.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'remarkBytes';
+        remarkBytes.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountTransactionsData_account_transfersReceived_comment',
+            _$failedField,
+            e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
@@ -69660,6 +70074,8 @@ class _$GCommentsIssuedData extends GCommentsIssuedData {
   @override
   final String remark;
   @override
+  final _i2.Gbytea remarkBytes;
+  @override
   final _i2.GCommentTypeEnum? type;
 
   factory _$GCommentsIssuedData(
@@ -69674,6 +70090,7 @@ class _$GCommentsIssuedData extends GCommentsIssuedData {
       required this.hash,
       required this.id,
       required this.remark,
+      required this.remarkBytes,
       this.type})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
@@ -69684,6 +70101,8 @@ class _$GCommentsIssuedData extends GCommentsIssuedData {
     BuiltValueNullFieldError.checkNotNull(id, r'GCommentsIssuedData', 'id');
     BuiltValueNullFieldError.checkNotNull(
         remark, r'GCommentsIssuedData', 'remark');
+    BuiltValueNullFieldError.checkNotNull(
+        remarkBytes, r'GCommentsIssuedData', 'remarkBytes');
   }
 
   @override
@@ -69706,6 +70125,7 @@ class _$GCommentsIssuedData extends GCommentsIssuedData {
         hash == other.hash &&
         id == other.id &&
         remark == other.remark &&
+        remarkBytes == other.remarkBytes &&
         type == other.type;
   }
 
@@ -69719,6 +70139,7 @@ class _$GCommentsIssuedData extends GCommentsIssuedData {
     _$hash = $jc(_$hash, hash.hashCode);
     _$hash = $jc(_$hash, id.hashCode);
     _$hash = $jc(_$hash, remark.hashCode);
+    _$hash = $jc(_$hash, remarkBytes.hashCode);
     _$hash = $jc(_$hash, type.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
@@ -69734,6 +70155,7 @@ class _$GCommentsIssuedData extends GCommentsIssuedData {
           ..add('hash', hash)
           ..add('id', id)
           ..add('remark', remark)
+          ..add('remarkBytes', remarkBytes)
           ..add('type', type))
         .toString();
   }
@@ -69771,6 +70193,12 @@ class GCommentsIssuedDataBuilder
   String? get remark => _$this._remark;
   set remark(String? remark) => _$this._remark = remark;
 
+  _i2.GbyteaBuilder? _remarkBytes;
+  _i2.GbyteaBuilder get remarkBytes =>
+      _$this._remarkBytes ??= new _i2.GbyteaBuilder();
+  set remarkBytes(_i2.GbyteaBuilder? remarkBytes) =>
+      _$this._remarkBytes = remarkBytes;
+
   _i2.GCommentTypeEnum? _type;
   _i2.GCommentTypeEnum? get type => _$this._type;
   set type(_i2.GCommentTypeEnum? type) => _$this._type = type;
@@ -69789,6 +70217,7 @@ class GCommentsIssuedDataBuilder
       _hash = $v.hash;
       _id = $v.id;
       _remark = $v.remark;
+      _remarkBytes = $v.remarkBytes.toBuilder();
       _type = $v.type;
       _$v = null;
     }
@@ -69810,21 +70239,35 @@ class GCommentsIssuedDataBuilder
   GCommentsIssuedData build() => _build();
 
   _$GCommentsIssuedData _build() {
-    final _$result = _$v ??
-        new _$GCommentsIssuedData._(
-            G__typename: BuiltValueNullFieldError.checkNotNull(
-                G__typename, r'GCommentsIssuedData', 'G__typename'),
-            authorId: authorId,
-            blockNumber: BuiltValueNullFieldError.checkNotNull(
-                blockNumber, r'GCommentsIssuedData', 'blockNumber'),
-            eventId: eventId,
-            hash: BuiltValueNullFieldError.checkNotNull(
-                hash, r'GCommentsIssuedData', 'hash'),
-            id: BuiltValueNullFieldError.checkNotNull(
-                id, r'GCommentsIssuedData', 'id'),
-            remark: BuiltValueNullFieldError.checkNotNull(
-                remark, r'GCommentsIssuedData', 'remark'),
-            type: type);
+    _$GCommentsIssuedData _$result;
+    try {
+      _$result = _$v ??
+          new _$GCommentsIssuedData._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename, r'GCommentsIssuedData', 'G__typename'),
+              authorId: authorId,
+              blockNumber: BuiltValueNullFieldError.checkNotNull(
+                  blockNumber, r'GCommentsIssuedData', 'blockNumber'),
+              eventId: eventId,
+              hash: BuiltValueNullFieldError.checkNotNull(
+                  hash, r'GCommentsIssuedData', 'hash'),
+              id: BuiltValueNullFieldError.checkNotNull(
+                  id, r'GCommentsIssuedData', 'id'),
+              remark: BuiltValueNullFieldError.checkNotNull(
+                  remark, r'GCommentsIssuedData', 'remark'),
+              remarkBytes: remarkBytes.build(),
+              type: type);
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'remarkBytes';
+        remarkBytes.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GCommentsIssuedData', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
@@ -70737,6 +71180,8 @@ class _$GAccountFieldsData_commentsIssued
   @override
   final String remark;
   @override
+  final _i2.Gbytea remarkBytes;
+  @override
   final _i2.GCommentTypeEnum? type;
 
   factory _$GAccountFieldsData_commentsIssued(
@@ -70752,6 +71197,7 @@ class _$GAccountFieldsData_commentsIssued
       required this.hash,
       required this.id,
       required this.remark,
+      required this.remarkBytes,
       this.type})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
@@ -70764,6 +71210,8 @@ class _$GAccountFieldsData_commentsIssued
         id, r'GAccountFieldsData_commentsIssued', 'id');
     BuiltValueNullFieldError.checkNotNull(
         remark, r'GAccountFieldsData_commentsIssued', 'remark');
+    BuiltValueNullFieldError.checkNotNull(
+        remarkBytes, r'GAccountFieldsData_commentsIssued', 'remarkBytes');
   }
 
   @override
@@ -70786,6 +71234,7 @@ class _$GAccountFieldsData_commentsIssued
         hash == other.hash &&
         id == other.id &&
         remark == other.remark &&
+        remarkBytes == other.remarkBytes &&
         type == other.type;
   }
 
@@ -70799,6 +71248,7 @@ class _$GAccountFieldsData_commentsIssued
     _$hash = $jc(_$hash, hash.hashCode);
     _$hash = $jc(_$hash, id.hashCode);
     _$hash = $jc(_$hash, remark.hashCode);
+    _$hash = $jc(_$hash, remarkBytes.hashCode);
     _$hash = $jc(_$hash, type.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
@@ -70814,6 +71264,7 @@ class _$GAccountFieldsData_commentsIssued
           ..add('hash', hash)
           ..add('id', id)
           ..add('remark', remark)
+          ..add('remarkBytes', remarkBytes)
           ..add('type', type))
         .toString();
   }
@@ -70853,6 +71304,12 @@ class GAccountFieldsData_commentsIssuedBuilder
   String? get remark => _$this._remark;
   set remark(String? remark) => _$this._remark = remark;
 
+  _i2.GbyteaBuilder? _remarkBytes;
+  _i2.GbyteaBuilder get remarkBytes =>
+      _$this._remarkBytes ??= new _i2.GbyteaBuilder();
+  set remarkBytes(_i2.GbyteaBuilder? remarkBytes) =>
+      _$this._remarkBytes = remarkBytes;
+
   _i2.GCommentTypeEnum? _type;
   _i2.GCommentTypeEnum? get type => _$this._type;
   set type(_i2.GCommentTypeEnum? type) => _$this._type = type;
@@ -70871,6 +71328,7 @@ class GAccountFieldsData_commentsIssuedBuilder
       _hash = $v.hash;
       _id = $v.id;
       _remark = $v.remark;
+      _remarkBytes = $v.remarkBytes.toBuilder();
       _type = $v.type;
       _$v = null;
     }
@@ -70893,21 +71351,35 @@ class GAccountFieldsData_commentsIssuedBuilder
   GAccountFieldsData_commentsIssued build() => _build();
 
   _$GAccountFieldsData_commentsIssued _build() {
-    final _$result = _$v ??
-        new _$GAccountFieldsData_commentsIssued._(
-            G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
-                r'GAccountFieldsData_commentsIssued', 'G__typename'),
-            authorId: authorId,
-            blockNumber: BuiltValueNullFieldError.checkNotNull(blockNumber,
-                r'GAccountFieldsData_commentsIssued', 'blockNumber'),
-            eventId: eventId,
-            hash: BuiltValueNullFieldError.checkNotNull(
-                hash, r'GAccountFieldsData_commentsIssued', 'hash'),
-            id: BuiltValueNullFieldError.checkNotNull(
-                id, r'GAccountFieldsData_commentsIssued', 'id'),
-            remark: BuiltValueNullFieldError.checkNotNull(
-                remark, r'GAccountFieldsData_commentsIssued', 'remark'),
-            type: type);
+    _$GAccountFieldsData_commentsIssued _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountFieldsData_commentsIssued._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
+                  r'GAccountFieldsData_commentsIssued', 'G__typename'),
+              authorId: authorId,
+              blockNumber: BuiltValueNullFieldError.checkNotNull(blockNumber,
+                  r'GAccountFieldsData_commentsIssued', 'blockNumber'),
+              eventId: eventId,
+              hash: BuiltValueNullFieldError.checkNotNull(
+                  hash, r'GAccountFieldsData_commentsIssued', 'hash'),
+              id: BuiltValueNullFieldError.checkNotNull(
+                  id, r'GAccountFieldsData_commentsIssued', 'id'),
+              remark: BuiltValueNullFieldError.checkNotNull(
+                  remark, r'GAccountFieldsData_commentsIssued', 'remark'),
+              remarkBytes: remarkBytes.build(),
+              type: type);
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'remarkBytes';
+        remarkBytes.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountFieldsData_commentsIssued', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
@@ -77698,6 +78170,8 @@ class _$GAccountFieldsData_transfersIssued_comment
   final String G__typename;
   @override
   final String remark;
+  @override
+  final _i2.Gbytea remarkBytes;
 
   factory _$GAccountFieldsData_transfersIssued_comment(
           [void Function(GAccountFieldsData_transfersIssued_commentBuilder)?
@@ -77706,12 +78180,16 @@ class _$GAccountFieldsData_transfersIssued_comment
           ._build();
 
   _$GAccountFieldsData_transfersIssued_comment._(
-      {required this.G__typename, required this.remark})
+      {required this.G__typename,
+      required this.remark,
+      required this.remarkBytes})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(G__typename,
         r'GAccountFieldsData_transfersIssued_comment', 'G__typename');
     BuiltValueNullFieldError.checkNotNull(
         remark, r'GAccountFieldsData_transfersIssued_comment', 'remark');
+    BuiltValueNullFieldError.checkNotNull(remarkBytes,
+        r'GAccountFieldsData_transfersIssued_comment', 'remarkBytes');
   }
 
   @override
@@ -77729,7 +78207,8 @@ class _$GAccountFieldsData_transfersIssued_comment
     if (identical(other, this)) return true;
     return other is GAccountFieldsData_transfersIssued_comment &&
         G__typename == other.G__typename &&
-        remark == other.remark;
+        remark == other.remark &&
+        remarkBytes == other.remarkBytes;
   }
 
   @override
@@ -77737,6 +78216,7 @@ class _$GAccountFieldsData_transfersIssued_comment
     var _$hash = 0;
     _$hash = $jc(_$hash, G__typename.hashCode);
     _$hash = $jc(_$hash, remark.hashCode);
+    _$hash = $jc(_$hash, remarkBytes.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -77746,7 +78226,8 @@ class _$GAccountFieldsData_transfersIssued_comment
     return (newBuiltValueToStringHelper(
             r'GAccountFieldsData_transfersIssued_comment')
           ..add('G__typename', G__typename)
-          ..add('remark', remark))
+          ..add('remark', remark)
+          ..add('remarkBytes', remarkBytes))
         .toString();
   }
 }
@@ -77765,6 +78246,12 @@ class GAccountFieldsData_transfersIssued_commentBuilder
   String? get remark => _$this._remark;
   set remark(String? remark) => _$this._remark = remark;
 
+  _i2.GbyteaBuilder? _remarkBytes;
+  _i2.GbyteaBuilder get remarkBytes =>
+      _$this._remarkBytes ??= new _i2.GbyteaBuilder();
+  set remarkBytes(_i2.GbyteaBuilder? remarkBytes) =>
+      _$this._remarkBytes = remarkBytes;
+
   GAccountFieldsData_transfersIssued_commentBuilder() {
     GAccountFieldsData_transfersIssued_comment._initializeBuilder(this);
   }
@@ -77774,6 +78261,7 @@ class GAccountFieldsData_transfersIssued_commentBuilder
     if ($v != null) {
       _G__typename = $v.G__typename;
       _remark = $v.remark;
+      _remarkBytes = $v.remarkBytes.toBuilder();
       _$v = null;
     }
     return this;
@@ -77796,12 +78284,28 @@ class GAccountFieldsData_transfersIssued_commentBuilder
   GAccountFieldsData_transfersIssued_comment build() => _build();
 
   _$GAccountFieldsData_transfersIssued_comment _build() {
-    final _$result = _$v ??
-        new _$GAccountFieldsData_transfersIssued_comment._(
-            G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
-                r'GAccountFieldsData_transfersIssued_comment', 'G__typename'),
-            remark: BuiltValueNullFieldError.checkNotNull(remark,
-                r'GAccountFieldsData_transfersIssued_comment', 'remark'));
+    _$GAccountFieldsData_transfersIssued_comment _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountFieldsData_transfersIssued_comment._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
+                  r'GAccountFieldsData_transfersIssued_comment', 'G__typename'),
+              remark: BuiltValueNullFieldError.checkNotNull(remark,
+                  r'GAccountFieldsData_transfersIssued_comment', 'remark'),
+              remarkBytes: remarkBytes.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'remarkBytes';
+        remarkBytes.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountFieldsData_transfersIssued_comment',
+            _$failedField,
+            e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
@@ -78667,6 +79171,8 @@ class _$GAccountFieldsData_transfersReceived_comment
   final String G__typename;
   @override
   final String remark;
+  @override
+  final _i2.Gbytea remarkBytes;
 
   factory _$GAccountFieldsData_transfersReceived_comment(
           [void Function(GAccountFieldsData_transfersReceived_commentBuilder)?
@@ -78676,12 +79182,16 @@ class _$GAccountFieldsData_transfersReceived_comment
           ._build();
 
   _$GAccountFieldsData_transfersReceived_comment._(
-      {required this.G__typename, required this.remark})
+      {required this.G__typename,
+      required this.remark,
+      required this.remarkBytes})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(G__typename,
         r'GAccountFieldsData_transfersReceived_comment', 'G__typename');
     BuiltValueNullFieldError.checkNotNull(
         remark, r'GAccountFieldsData_transfersReceived_comment', 'remark');
+    BuiltValueNullFieldError.checkNotNull(remarkBytes,
+        r'GAccountFieldsData_transfersReceived_comment', 'remarkBytes');
   }
 
   @override
@@ -78699,7 +79209,8 @@ class _$GAccountFieldsData_transfersReceived_comment
     if (identical(other, this)) return true;
     return other is GAccountFieldsData_transfersReceived_comment &&
         G__typename == other.G__typename &&
-        remark == other.remark;
+        remark == other.remark &&
+        remarkBytes == other.remarkBytes;
   }
 
   @override
@@ -78707,6 +79218,7 @@ class _$GAccountFieldsData_transfersReceived_comment
     var _$hash = 0;
     _$hash = $jc(_$hash, G__typename.hashCode);
     _$hash = $jc(_$hash, remark.hashCode);
+    _$hash = $jc(_$hash, remarkBytes.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -78716,7 +79228,8 @@ class _$GAccountFieldsData_transfersReceived_comment
     return (newBuiltValueToStringHelper(
             r'GAccountFieldsData_transfersReceived_comment')
           ..add('G__typename', G__typename)
-          ..add('remark', remark))
+          ..add('remark', remark)
+          ..add('remarkBytes', remarkBytes))
         .toString();
   }
 }
@@ -78735,6 +79248,12 @@ class GAccountFieldsData_transfersReceived_commentBuilder
   String? get remark => _$this._remark;
   set remark(String? remark) => _$this._remark = remark;
 
+  _i2.GbyteaBuilder? _remarkBytes;
+  _i2.GbyteaBuilder get remarkBytes =>
+      _$this._remarkBytes ??= new _i2.GbyteaBuilder();
+  set remarkBytes(_i2.GbyteaBuilder? remarkBytes) =>
+      _$this._remarkBytes = remarkBytes;
+
   GAccountFieldsData_transfersReceived_commentBuilder() {
     GAccountFieldsData_transfersReceived_comment._initializeBuilder(this);
   }
@@ -78744,6 +79263,7 @@ class GAccountFieldsData_transfersReceived_commentBuilder
     if ($v != null) {
       _G__typename = $v.G__typename;
       _remark = $v.remark;
+      _remarkBytes = $v.remarkBytes.toBuilder();
       _$v = null;
     }
     return this;
@@ -78766,12 +79286,30 @@ class GAccountFieldsData_transfersReceived_commentBuilder
   GAccountFieldsData_transfersReceived_comment build() => _build();
 
   _$GAccountFieldsData_transfersReceived_comment _build() {
-    final _$result = _$v ??
-        new _$GAccountFieldsData_transfersReceived_comment._(
-            G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
-                r'GAccountFieldsData_transfersReceived_comment', 'G__typename'),
-            remark: BuiltValueNullFieldError.checkNotNull(remark,
-                r'GAccountFieldsData_transfersReceived_comment', 'remark'));
+    _$GAccountFieldsData_transfersReceived_comment _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountFieldsData_transfersReceived_comment._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename,
+                  r'GAccountFieldsData_transfersReceived_comment',
+                  'G__typename'),
+              remark: BuiltValueNullFieldError.checkNotNull(remark,
+                  r'GAccountFieldsData_transfersReceived_comment', 'remark'),
+              remarkBytes: remarkBytes.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'remarkBytes';
+        remarkBytes.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountFieldsData_transfersReceived_comment',
+            _$failedField,
+            e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
@@ -79904,6 +80442,8 @@ class _$GAccountTxsFieldsData_commentsIssued
   @override
   final String remark;
   @override
+  final _i2.Gbytea remarkBytes;
+  @override
   final _i2.GCommentTypeEnum? type;
 
   factory _$GAccountTxsFieldsData_commentsIssued(
@@ -79920,6 +80460,7 @@ class _$GAccountTxsFieldsData_commentsIssued
       required this.hash,
       required this.id,
       required this.remark,
+      required this.remarkBytes,
       this.type})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
@@ -79932,6 +80473,8 @@ class _$GAccountTxsFieldsData_commentsIssued
         id, r'GAccountTxsFieldsData_commentsIssued', 'id');
     BuiltValueNullFieldError.checkNotNull(
         remark, r'GAccountTxsFieldsData_commentsIssued', 'remark');
+    BuiltValueNullFieldError.checkNotNull(
+        remarkBytes, r'GAccountTxsFieldsData_commentsIssued', 'remarkBytes');
   }
 
   @override
@@ -79954,6 +80497,7 @@ class _$GAccountTxsFieldsData_commentsIssued
         hash == other.hash &&
         id == other.id &&
         remark == other.remark &&
+        remarkBytes == other.remarkBytes &&
         type == other.type;
   }
 
@@ -79967,6 +80511,7 @@ class _$GAccountTxsFieldsData_commentsIssued
     _$hash = $jc(_$hash, hash.hashCode);
     _$hash = $jc(_$hash, id.hashCode);
     _$hash = $jc(_$hash, remark.hashCode);
+    _$hash = $jc(_$hash, remarkBytes.hashCode);
     _$hash = $jc(_$hash, type.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
@@ -79982,6 +80527,7 @@ class _$GAccountTxsFieldsData_commentsIssued
           ..add('hash', hash)
           ..add('id', id)
           ..add('remark', remark)
+          ..add('remarkBytes', remarkBytes)
           ..add('type', type))
         .toString();
   }
@@ -80021,6 +80567,12 @@ class GAccountTxsFieldsData_commentsIssuedBuilder
   String? get remark => _$this._remark;
   set remark(String? remark) => _$this._remark = remark;
 
+  _i2.GbyteaBuilder? _remarkBytes;
+  _i2.GbyteaBuilder get remarkBytes =>
+      _$this._remarkBytes ??= new _i2.GbyteaBuilder();
+  set remarkBytes(_i2.GbyteaBuilder? remarkBytes) =>
+      _$this._remarkBytes = remarkBytes;
+
   _i2.GCommentTypeEnum? _type;
   _i2.GCommentTypeEnum? get type => _$this._type;
   set type(_i2.GCommentTypeEnum? type) => _$this._type = type;
@@ -80039,6 +80591,7 @@ class GAccountTxsFieldsData_commentsIssuedBuilder
       _hash = $v.hash;
       _id = $v.id;
       _remark = $v.remark;
+      _remarkBytes = $v.remarkBytes.toBuilder();
       _type = $v.type;
       _$v = null;
     }
@@ -80061,21 +80614,37 @@ class GAccountTxsFieldsData_commentsIssuedBuilder
   GAccountTxsFieldsData_commentsIssued build() => _build();
 
   _$GAccountTxsFieldsData_commentsIssued _build() {
-    final _$result = _$v ??
-        new _$GAccountTxsFieldsData_commentsIssued._(
-            G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
-                r'GAccountTxsFieldsData_commentsIssued', 'G__typename'),
-            authorId: authorId,
-            blockNumber: BuiltValueNullFieldError.checkNotNull(blockNumber,
-                r'GAccountTxsFieldsData_commentsIssued', 'blockNumber'),
-            eventId: eventId,
-            hash: BuiltValueNullFieldError.checkNotNull(
-                hash, r'GAccountTxsFieldsData_commentsIssued', 'hash'),
-            id: BuiltValueNullFieldError.checkNotNull(
-                id, r'GAccountTxsFieldsData_commentsIssued', 'id'),
-            remark: BuiltValueNullFieldError.checkNotNull(
-                remark, r'GAccountTxsFieldsData_commentsIssued', 'remark'),
-            type: type);
+    _$GAccountTxsFieldsData_commentsIssued _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountTxsFieldsData_commentsIssued._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
+                  r'GAccountTxsFieldsData_commentsIssued', 'G__typename'),
+              authorId: authorId,
+              blockNumber: BuiltValueNullFieldError.checkNotNull(blockNumber,
+                  r'GAccountTxsFieldsData_commentsIssued', 'blockNumber'),
+              eventId: eventId,
+              hash: BuiltValueNullFieldError.checkNotNull(
+                  hash, r'GAccountTxsFieldsData_commentsIssued', 'hash'),
+              id: BuiltValueNullFieldError.checkNotNull(
+                  id, r'GAccountTxsFieldsData_commentsIssued', 'id'),
+              remark: BuiltValueNullFieldError.checkNotNull(
+                  remark, r'GAccountTxsFieldsData_commentsIssued', 'remark'),
+              remarkBytes: remarkBytes.build(),
+              type: type);
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'remarkBytes';
+        remarkBytes.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountTxsFieldsData_commentsIssued',
+            _$failedField,
+            e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
@@ -80789,6 +81358,8 @@ class _$GAccountTxsFieldsData_transfersIssued_comment
   final String G__typename;
   @override
   final String remark;
+  @override
+  final _i2.Gbytea remarkBytes;
 
   factory _$GAccountTxsFieldsData_transfersIssued_comment(
           [void Function(GAccountTxsFieldsData_transfersIssued_commentBuilder)?
@@ -80798,12 +81369,16 @@ class _$GAccountTxsFieldsData_transfersIssued_comment
           ._build();
 
   _$GAccountTxsFieldsData_transfersIssued_comment._(
-      {required this.G__typename, required this.remark})
+      {required this.G__typename,
+      required this.remark,
+      required this.remarkBytes})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(G__typename,
         r'GAccountTxsFieldsData_transfersIssued_comment', 'G__typename');
     BuiltValueNullFieldError.checkNotNull(
         remark, r'GAccountTxsFieldsData_transfersIssued_comment', 'remark');
+    BuiltValueNullFieldError.checkNotNull(remarkBytes,
+        r'GAccountTxsFieldsData_transfersIssued_comment', 'remarkBytes');
   }
 
   @override
@@ -80821,7 +81396,8 @@ class _$GAccountTxsFieldsData_transfersIssued_comment
     if (identical(other, this)) return true;
     return other is GAccountTxsFieldsData_transfersIssued_comment &&
         G__typename == other.G__typename &&
-        remark == other.remark;
+        remark == other.remark &&
+        remarkBytes == other.remarkBytes;
   }
 
   @override
@@ -80829,6 +81405,7 @@ class _$GAccountTxsFieldsData_transfersIssued_comment
     var _$hash = 0;
     _$hash = $jc(_$hash, G__typename.hashCode);
     _$hash = $jc(_$hash, remark.hashCode);
+    _$hash = $jc(_$hash, remarkBytes.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -80838,7 +81415,8 @@ class _$GAccountTxsFieldsData_transfersIssued_comment
     return (newBuiltValueToStringHelper(
             r'GAccountTxsFieldsData_transfersIssued_comment')
           ..add('G__typename', G__typename)
-          ..add('remark', remark))
+          ..add('remark', remark)
+          ..add('remarkBytes', remarkBytes))
         .toString();
   }
 }
@@ -80857,6 +81435,12 @@ class GAccountTxsFieldsData_transfersIssued_commentBuilder
   String? get remark => _$this._remark;
   set remark(String? remark) => _$this._remark = remark;
 
+  _i2.GbyteaBuilder? _remarkBytes;
+  _i2.GbyteaBuilder get remarkBytes =>
+      _$this._remarkBytes ??= new _i2.GbyteaBuilder();
+  set remarkBytes(_i2.GbyteaBuilder? remarkBytes) =>
+      _$this._remarkBytes = remarkBytes;
+
   GAccountTxsFieldsData_transfersIssued_commentBuilder() {
     GAccountTxsFieldsData_transfersIssued_comment._initializeBuilder(this);
   }
@@ -80866,6 +81450,7 @@ class GAccountTxsFieldsData_transfersIssued_commentBuilder
     if ($v != null) {
       _G__typename = $v.G__typename;
       _remark = $v.remark;
+      _remarkBytes = $v.remarkBytes.toBuilder();
       _$v = null;
     }
     return this;
@@ -80888,14 +81473,30 @@ class GAccountTxsFieldsData_transfersIssued_commentBuilder
   GAccountTxsFieldsData_transfersIssued_comment build() => _build();
 
   _$GAccountTxsFieldsData_transfersIssued_comment _build() {
-    final _$result = _$v ??
-        new _$GAccountTxsFieldsData_transfersIssued_comment._(
-            G__typename: BuiltValueNullFieldError.checkNotNull(
-                G__typename,
-                r'GAccountTxsFieldsData_transfersIssued_comment',
-                'G__typename'),
-            remark: BuiltValueNullFieldError.checkNotNull(remark,
-                r'GAccountTxsFieldsData_transfersIssued_comment', 'remark'));
+    _$GAccountTxsFieldsData_transfersIssued_comment _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountTxsFieldsData_transfersIssued_comment._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename,
+                  r'GAccountTxsFieldsData_transfersIssued_comment',
+                  'G__typename'),
+              remark: BuiltValueNullFieldError.checkNotNull(remark,
+                  r'GAccountTxsFieldsData_transfersIssued_comment', 'remark'),
+              remarkBytes: remarkBytes.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'remarkBytes';
+        remarkBytes.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountTxsFieldsData_transfersIssued_comment',
+            _$failedField,
+            e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
@@ -81773,6 +82374,8 @@ class _$GAccountTxsFieldsData_transfersReceived_comment
   final String G__typename;
   @override
   final String remark;
+  @override
+  final _i2.Gbytea remarkBytes;
 
   factory _$GAccountTxsFieldsData_transfersReceived_comment(
           [void Function(
@@ -81783,12 +82386,16 @@ class _$GAccountTxsFieldsData_transfersReceived_comment
           ._build();
 
   _$GAccountTxsFieldsData_transfersReceived_comment._(
-      {required this.G__typename, required this.remark})
+      {required this.G__typename,
+      required this.remark,
+      required this.remarkBytes})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(G__typename,
         r'GAccountTxsFieldsData_transfersReceived_comment', 'G__typename');
     BuiltValueNullFieldError.checkNotNull(
         remark, r'GAccountTxsFieldsData_transfersReceived_comment', 'remark');
+    BuiltValueNullFieldError.checkNotNull(remarkBytes,
+        r'GAccountTxsFieldsData_transfersReceived_comment', 'remarkBytes');
   }
 
   @override
@@ -81807,7 +82414,8 @@ class _$GAccountTxsFieldsData_transfersReceived_comment
     if (identical(other, this)) return true;
     return other is GAccountTxsFieldsData_transfersReceived_comment &&
         G__typename == other.G__typename &&
-        remark == other.remark;
+        remark == other.remark &&
+        remarkBytes == other.remarkBytes;
   }
 
   @override
@@ -81815,6 +82423,7 @@ class _$GAccountTxsFieldsData_transfersReceived_comment
     var _$hash = 0;
     _$hash = $jc(_$hash, G__typename.hashCode);
     _$hash = $jc(_$hash, remark.hashCode);
+    _$hash = $jc(_$hash, remarkBytes.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -81824,7 +82433,8 @@ class _$GAccountTxsFieldsData_transfersReceived_comment
     return (newBuiltValueToStringHelper(
             r'GAccountTxsFieldsData_transfersReceived_comment')
           ..add('G__typename', G__typename)
-          ..add('remark', remark))
+          ..add('remark', remark)
+          ..add('remarkBytes', remarkBytes))
         .toString();
   }
 }
@@ -81843,6 +82453,12 @@ class GAccountTxsFieldsData_transfersReceived_commentBuilder
   String? get remark => _$this._remark;
   set remark(String? remark) => _$this._remark = remark;
 
+  _i2.GbyteaBuilder? _remarkBytes;
+  _i2.GbyteaBuilder get remarkBytes =>
+      _$this._remarkBytes ??= new _i2.GbyteaBuilder();
+  set remarkBytes(_i2.GbyteaBuilder? remarkBytes) =>
+      _$this._remarkBytes = remarkBytes;
+
   GAccountTxsFieldsData_transfersReceived_commentBuilder() {
     GAccountTxsFieldsData_transfersReceived_comment._initializeBuilder(this);
   }
@@ -81852,6 +82468,7 @@ class GAccountTxsFieldsData_transfersReceived_commentBuilder
     if ($v != null) {
       _G__typename = $v.G__typename;
       _remark = $v.remark;
+      _remarkBytes = $v.remarkBytes.toBuilder();
       _$v = null;
     }
     return this;
@@ -81874,14 +82491,30 @@ class GAccountTxsFieldsData_transfersReceived_commentBuilder
   GAccountTxsFieldsData_transfersReceived_comment build() => _build();
 
   _$GAccountTxsFieldsData_transfersReceived_comment _build() {
-    final _$result = _$v ??
-        new _$GAccountTxsFieldsData_transfersReceived_comment._(
-            G__typename: BuiltValueNullFieldError.checkNotNull(
-                G__typename,
-                r'GAccountTxsFieldsData_transfersReceived_comment',
-                'G__typename'),
-            remark: BuiltValueNullFieldError.checkNotNull(remark,
-                r'GAccountTxsFieldsData_transfersReceived_comment', 'remark'));
+    _$GAccountTxsFieldsData_transfersReceived_comment _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountTxsFieldsData_transfersReceived_comment._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename,
+                  r'GAccountTxsFieldsData_transfersReceived_comment',
+                  'G__typename'),
+              remark: BuiltValueNullFieldError.checkNotNull(remark,
+                  r'GAccountTxsFieldsData_transfersReceived_comment', 'remark'),
+              remarkBytes: remarkBytes.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'remarkBytes';
+        remarkBytes.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountTxsFieldsData_transfersReceived_comment',
+            _$failedField,
+            e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
@@ -82727,18 +83360,24 @@ class _$GTransferFieldsData_comment extends GTransferFieldsData_comment {
   final String G__typename;
   @override
   final String remark;
+  @override
+  final _i2.Gbytea remarkBytes;
 
   factory _$GTransferFieldsData_comment(
           [void Function(GTransferFieldsData_commentBuilder)? updates]) =>
       (new GTransferFieldsData_commentBuilder()..update(updates))._build();
 
   _$GTransferFieldsData_comment._(
-      {required this.G__typename, required this.remark})
+      {required this.G__typename,
+      required this.remark,
+      required this.remarkBytes})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         G__typename, r'GTransferFieldsData_comment', 'G__typename');
     BuiltValueNullFieldError.checkNotNull(
         remark, r'GTransferFieldsData_comment', 'remark');
+    BuiltValueNullFieldError.checkNotNull(
+        remarkBytes, r'GTransferFieldsData_comment', 'remarkBytes');
   }
 
   @override
@@ -82755,7 +83394,8 @@ class _$GTransferFieldsData_comment extends GTransferFieldsData_comment {
     if (identical(other, this)) return true;
     return other is GTransferFieldsData_comment &&
         G__typename == other.G__typename &&
-        remark == other.remark;
+        remark == other.remark &&
+        remarkBytes == other.remarkBytes;
   }
 
   @override
@@ -82763,6 +83403,7 @@ class _$GTransferFieldsData_comment extends GTransferFieldsData_comment {
     var _$hash = 0;
     _$hash = $jc(_$hash, G__typename.hashCode);
     _$hash = $jc(_$hash, remark.hashCode);
+    _$hash = $jc(_$hash, remarkBytes.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -82771,7 +83412,8 @@ class _$GTransferFieldsData_comment extends GTransferFieldsData_comment {
   String toString() {
     return (newBuiltValueToStringHelper(r'GTransferFieldsData_comment')
           ..add('G__typename', G__typename)
-          ..add('remark', remark))
+          ..add('remark', remark)
+          ..add('remarkBytes', remarkBytes))
         .toString();
   }
 }
@@ -82790,6 +83432,12 @@ class GTransferFieldsData_commentBuilder
   String? get remark => _$this._remark;
   set remark(String? remark) => _$this._remark = remark;
 
+  _i2.GbyteaBuilder? _remarkBytes;
+  _i2.GbyteaBuilder get remarkBytes =>
+      _$this._remarkBytes ??= new _i2.GbyteaBuilder();
+  set remarkBytes(_i2.GbyteaBuilder? remarkBytes) =>
+      _$this._remarkBytes = remarkBytes;
+
   GTransferFieldsData_commentBuilder() {
     GTransferFieldsData_comment._initializeBuilder(this);
   }
@@ -82799,6 +83447,7 @@ class GTransferFieldsData_commentBuilder
     if ($v != null) {
       _G__typename = $v.G__typename;
       _remark = $v.remark;
+      _remarkBytes = $v.remarkBytes.toBuilder();
       _$v = null;
     }
     return this;
@@ -82819,12 +83468,26 @@ class GTransferFieldsData_commentBuilder
   GTransferFieldsData_comment build() => _build();
 
   _$GTransferFieldsData_comment _build() {
-    final _$result = _$v ??
-        new _$GTransferFieldsData_comment._(
-            G__typename: BuiltValueNullFieldError.checkNotNull(
-                G__typename, r'GTransferFieldsData_comment', 'G__typename'),
-            remark: BuiltValueNullFieldError.checkNotNull(
-                remark, r'GTransferFieldsData_comment', 'remark'));
+    _$GTransferFieldsData_comment _$result;
+    try {
+      _$result = _$v ??
+          new _$GTransferFieldsData_comment._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename, r'GTransferFieldsData_comment', 'G__typename'),
+              remark: BuiltValueNullFieldError.checkNotNull(
+                  remark, r'GTransferFieldsData_comment', 'remark'),
+              remarkBytes: remarkBytes.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'remarkBytes';
+        remarkBytes.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GTransferFieldsData_comment', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

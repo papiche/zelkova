@@ -142,6 +142,7 @@ fragment CommentsIssued on TxComment {
     hash
     id
     remark
+    remarkBytes
     type
 }
 
@@ -262,6 +263,7 @@ fragment TransferFields on Transfer {
     }
     comment {
         remark
+        remarkBytes
     }
 }
 

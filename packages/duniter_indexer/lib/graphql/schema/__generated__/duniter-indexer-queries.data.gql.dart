@@ -3068,6 +3068,8 @@ abstract class GAccountByPkData_accountByPk_commentsIssued
   @override
   String get remark;
   @override
+  _i2.Gbytea get remarkBytes;
+  @override
   _i2.GCommentTypeEnum? get type;
   static Serializer<GAccountByPkData_accountByPk_commentsIssued>
       get serializer => _$gAccountByPkDataAccountByPkCommentsIssuedSerializer;
@@ -5038,6 +5040,8 @@ abstract class GAccountByPkData_accountByPk_transfersIssued_comment
   String get G__typename;
   @override
   String get remark;
+  @override
+  _i2.Gbytea get remarkBytes;
   static Serializer<GAccountByPkData_accountByPk_transfersIssued_comment>
       get serializer =>
           _$gAccountByPkDataAccountByPkTransfersIssuedCommentSerializer;
@@ -5337,6 +5341,8 @@ abstract class GAccountByPkData_accountByPk_transfersReceived_comment
   String get G__typename;
   @override
   String get remark;
+  @override
+  _i2.Gbytea get remarkBytes;
   static Serializer<GAccountByPkData_accountByPk_transfersReceived_comment>
       get serializer =>
           _$gAccountByPkDataAccountByPkTransfersReceivedCommentSerializer;
@@ -5737,6 +5743,8 @@ abstract class GAccountsByPkData_account_commentsIssued
   String get id;
   @override
   String get remark;
+  @override
+  _i2.Gbytea get remarkBytes;
   @override
   _i2.GCommentTypeEnum? get type;
   static Serializer<GAccountsByPkData_account_commentsIssued> get serializer =>
@@ -7666,6 +7674,8 @@ abstract class GAccountsByPkData_account_transfersIssued_comment
   String get G__typename;
   @override
   String get remark;
+  @override
+  _i2.Gbytea get remarkBytes;
   static Serializer<GAccountsByPkData_account_transfersIssued_comment>
       get serializer =>
           _$gAccountsByPkDataAccountTransfersIssuedCommentSerializer;
@@ -7959,6 +7969,8 @@ abstract class GAccountsByPkData_account_transfersReceived_comment
   String get G__typename;
   @override
   String get remark;
+  @override
+  _i2.Gbytea get remarkBytes;
   static Serializer<GAccountsByPkData_account_transfersReceived_comment>
       get serializer =>
           _$gAccountsByPkDataAccountTransfersReceivedCommentSerializer;
@@ -8673,6 +8685,8 @@ abstract class GAccountTransactionsData_account_commentsIssued
   @override
   String get remark;
   @override
+  _i2.Gbytea get remarkBytes;
+  @override
   _i2.GCommentTypeEnum? get type;
   static Serializer<GAccountTransactionsData_account_commentsIssued>
       get serializer =>
@@ -8928,6 +8942,8 @@ abstract class GAccountTransactionsData_account_transfersIssued_comment
   String get G__typename;
   @override
   String get remark;
+  @override
+  _i2.Gbytea get remarkBytes;
   static Serializer<GAccountTransactionsData_account_transfersIssued_comment>
       get serializer =>
           _$gAccountTransactionsDataAccountTransfersIssuedCommentSerializer;
@@ -9234,6 +9250,8 @@ abstract class GAccountTransactionsData_account_transfersReceived_comment
   String get G__typename;
   @override
   String get remark;
+  @override
+  _i2.Gbytea get remarkBytes;
   static Serializer<GAccountTransactionsData_account_transfersReceived_comment>
       get serializer =>
           _$gAccountTransactionsDataAccountTransfersReceivedCommentSerializer;
@@ -11715,6 +11733,7 @@ abstract class GCommentsIssued {
   String get hash;
   String get id;
   String get remark;
+  _i2.Gbytea get remarkBytes;
   _i2.GCommentTypeEnum? get type;
   Map<String, dynamic> toJson();
 }
@@ -11747,6 +11766,8 @@ abstract class GCommentsIssuedData
   String get id;
   @override
   String get remark;
+  @override
+  _i2.Gbytea get remarkBytes;
   @override
   _i2.GCommentTypeEnum? get type;
   static Serializer<GCommentsIssuedData> get serializer =>
@@ -11971,6 +11992,8 @@ abstract class GAccountFields_commentsIssued implements GCommentsIssued {
   String get id;
   @override
   String get remark;
+  @override
+  _i2.Gbytea get remarkBytes;
   @override
   _i2.GCommentTypeEnum? get type;
   @override
@@ -12612,6 +12635,8 @@ abstract class GAccountFields_transfersIssued_comment
   @override
   String get remark;
   @override
+  _i2.Gbytea get remarkBytes;
+  @override
   Map<String, dynamic> toJson();
 }
 
@@ -12679,6 +12704,8 @@ abstract class GAccountFields_transfersReceived_comment
   String get G__typename;
   @override
   String get remark;
+  @override
+  _i2.Gbytea get remarkBytes;
   @override
   Map<String, dynamic> toJson();
 }
@@ -12823,6 +12850,8 @@ abstract class GAccountFieldsData_commentsIssued
   String get id;
   @override
   String get remark;
+  @override
+  _i2.Gbytea get remarkBytes;
   @override
   _i2.GCommentTypeEnum? get type;
   static Serializer<GAccountFieldsData_commentsIssued> get serializer =>
@@ -14674,6 +14703,8 @@ abstract class GAccountFieldsData_transfersIssued_comment
   String get G__typename;
   @override
   String get remark;
+  @override
+  _i2.Gbytea get remarkBytes;
   static Serializer<GAccountFieldsData_transfersIssued_comment>
       get serializer => _$gAccountFieldsDataTransfersIssuedCommentSerializer;
 
@@ -14954,6 +14985,8 @@ abstract class GAccountFieldsData_transfersReceived_comment
   String get G__typename;
   @override
   String get remark;
+  @override
+  _i2.Gbytea get remarkBytes;
   static Serializer<GAccountFieldsData_transfersReceived_comment>
       get serializer => _$gAccountFieldsDataTransfersReceivedCommentSerializer;
 
@@ -15240,6 +15273,8 @@ abstract class GAccountTxsFields_commentsIssued implements GCommentsIssued {
   @override
   String get remark;
   @override
+  _i2.Gbytea get remarkBytes;
+  @override
   _i2.GCommentTypeEnum? get type;
   @override
   Map<String, dynamic> toJson();
@@ -15302,6 +15337,8 @@ abstract class GAccountTxsFields_transfersIssued_comment
   String get G__typename;
   @override
   String get remark;
+  @override
+  _i2.Gbytea get remarkBytes;
   @override
   Map<String, dynamic> toJson();
 }
@@ -15370,6 +15407,8 @@ abstract class GAccountTxsFields_transfersReceived_comment
   String get G__typename;
   @override
   String get remark;
+  @override
+  _i2.Gbytea get remarkBytes;
   @override
   Map<String, dynamic> toJson();
 }
@@ -15475,6 +15514,8 @@ abstract class GAccountTxsFieldsData_commentsIssued
   String get id;
   @override
   String get remark;
+  @override
+  _i2.Gbytea get remarkBytes;
   @override
   _i2.GCommentTypeEnum? get type;
   static Serializer<GAccountTxsFieldsData_commentsIssued> get serializer =>
@@ -15716,6 +15757,8 @@ abstract class GAccountTxsFieldsData_transfersIssued_comment
   String get G__typename;
   @override
   String get remark;
+  @override
+  _i2.Gbytea get remarkBytes;
   static Serializer<GAccountTxsFieldsData_transfersIssued_comment>
       get serializer => _$gAccountTxsFieldsDataTransfersIssuedCommentSerializer;
 
@@ -16000,6 +16043,8 @@ abstract class GAccountTxsFieldsData_transfersReceived_comment
   String get G__typename;
   @override
   String get remark;
+  @override
+  _i2.Gbytea get remarkBytes;
   static Serializer<GAccountTxsFieldsData_transfersReceived_comment>
       get serializer =>
           _$gAccountTxsFieldsDataTransfersReceivedCommentSerializer;
@@ -16169,6 +16214,7 @@ abstract class GTransferFields_from {
 abstract class GTransferFields_comment {
   String get G__typename;
   String get remark;
+  _i2.Gbytea get remarkBytes;
   Map<String, dynamic> toJson();
 }
 
@@ -16302,6 +16348,8 @@ abstract class GTransferFieldsData_comment
   String get G__typename;
   @override
   String get remark;
+  @override
+  _i2.Gbytea get remarkBytes;
   static Serializer<GTransferFieldsData_comment> get serializer =>
       _$gTransferFieldsDataCommentSerializer;
 

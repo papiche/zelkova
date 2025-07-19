@@ -839,6 +839,13 @@ const CommentsIssued = _i1.FragmentDefinitionNode(
       selectionSet: null,
     ),
     _i1.FieldNode(
+      name: _i1.NameNode(value: 'remarkBytes'),
+      alias: null,
+      arguments: [],
+      directives: [],
+      selectionSet: null,
+    ),
+    _i1.FieldNode(
       name: _i1.NameNode(value: 'type'),
       alias: null,
       arguments: [],
@@ -1486,7 +1493,14 @@ const TransferFields = _i1.FragmentDefinitionNode(
           arguments: [],
           directives: [],
           selectionSet: null,
-        )
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'remarkBytes'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        ),
       ]),
     ),
   ]),

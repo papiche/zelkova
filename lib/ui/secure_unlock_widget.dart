@@ -8,6 +8,7 @@ import 'package:pattern_lock/pattern_lock.dart';
 
 import '../main.dart';
 import '../secure_crypto_helper.dart';
+import '../shared_prefs_helper.dart';
 import '../storage_keys.dart';
 import 'widgets/password_field.dart';
 
@@ -37,6 +38,7 @@ class _SecureUnlockWidgetState extends State<SecureUnlockWidget> {
   bool _usePassword = false;
   late List<int> _salt;
   List<int>? _firstPattern;
+  Uint8List? _previousKey;
 
   @override
   void initState() {
@@ -95,27 +97,41 @@ class _SecureUnlockWidgetState extends State<SecureUnlockWidget> {
         return;
       }
 
-      final Uint8List key =
+      final Uint8List newKey =
           await SecureCryptoHelper.deriveKeyFromPassword(pwd, _salt);
+
       await _storage.write(
-          key: StorageKeys.securePatternOrPass, value: base64Encode(key));
+          key: StorageKeys.securePatternOrPass, value: base64Encode(newKey));
       await _storage.write(key: StorageKeys.usesPassword, value: 'true');
 
-      widget.onUnlocked(key);
+      // If changing password, re-encrypt protected accounts
+      if (_previousKey != null) {
+        final SharedPreferencesHelper helper = SharedPreferencesHelper();
+        await helper.init(onlyV2: true);
+        await helper.reEncryptAllProtectedAccounts(
+          oldKey: _previousKey!,
+          newKey: newKey,
+        );
+        _previousKey = null;
+      }
+
+      widget.onUnlocked(newKey);
     } else {
-      final Uint8List key =
+      final Uint8List currentKey =
           await SecureCryptoHelper.deriveKeyFromPassword(pwd, _salt);
       final String? stored =
           await _storage.read(key: StorageKeys.securePatternOrPass);
-      if (stored != null && base64Encode(key) == stored) {
+
+      if (stored != null && base64Encode(currentKey) == stored) {
         if (widget.isChange) {
           setState(() {
             _changing = true;
             _passwordController.clear();
             _confirmController.clear();
+            _previousKey = currentKey;
           });
         } else {
-          widget.onUnlocked(key);
+          widget.onUnlocked(currentKey);
         }
       } else {
         _showError(tr('wrong_password'));
@@ -316,4 +332,44 @@ Future<Uint8List?> requestSecureUnlock() async {
       ),
     ),
   );
+}
+
+Future<bool> walletV2Auth() async {
+  if (!SharedPreferencesHelper().isLocked()) {
+    // Already authenticated
+    return true;
+  }
+  final Uint8List? key = await requestSecureUnlock();
+  if (key == null) {
+    return false;
+  }
+  final SharedPreferencesHelper helper = SharedPreferencesHelper();
+  helper.passwordKey = key;
+  return true;
+}
+
+Future<void> requestUnlockOrSetupAndThenAddWallet(
+    {required BuildContext context,
+    required Future<void> Function(Uint8List? key) onAuth}) async {
+  const FlutterSecureStorage storage = FlutterSecureStorage();
+  final String? storedKey =
+      await storage.read(key: StorageKeys.securePatternOrPass);
+  final bool needsSetup = storedKey == null || storedKey.isEmpty;
+
+  if (context.mounted) {
+    final Uint8List? key = await Navigator.of(context).push<Uint8List>(
+      MaterialPageRoute<Uint8List>(
+        fullscreenDialog: true,
+        builder: (_) => SecureUnlockWidget(
+          isSetup: needsSetup,
+          onUnlocked: (Uint8List password) {
+            if (context.mounted) {
+              Navigator.of(context).pop(password);
+            }
+          },
+        ),
+      ),
+    );
+    onAuth(key);
+  }
 }

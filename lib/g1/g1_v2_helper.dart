@@ -1,7 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:bip39_multi_nullsafety/bip39_multi_nullsafety.dart' as bip39;
 import 'package:durt/durt.dart' as durt;
 import 'package:fast_base58/fast_base58.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
@@ -15,7 +15,8 @@ bool isValidV2Address(String address) {
   try {
     final Keyring keyring = Keyring();
     keyring.encodeAddress(
-        isHex(address) ? hexToU8a(address) : keyring.decodeAddress(address));
+        isHex(address) ? hexToU8a(address) : keyring.decodeAddress(address),
+        4450);
     return true;
   } catch (error) {
     return false;
@@ -42,7 +43,7 @@ bool isHex(String value, [int bitLength = -1]) {
 String addressFromV1Pubkey(String pubkey) {
   final Keyring keyring = Keyring();
   final List<int> pubkeyByte = Base58Decode(pubkey);
-  final String address = keyring.encodeAddress(pubkeyByte);
+  final String address = keyring.encodeAddress(pubkeyByte, 4450);
   return address;
 }
 
@@ -56,6 +57,7 @@ String v1pubkeyFromAddress(String address) {
 Keyring keyringFromV1Seed(Uint8List seed) {
   final Keyring keyring = Keyring();
   final KeyPair keypair = KeyPair.ed25519.fromSeed(seed);
+  keypair.ss58Format = 4450;
   keyring.add(keypair);
   return keyring;
 }
@@ -85,7 +87,7 @@ Future<KeyPair> createKeyPair() async {
 
   final KeyPair pair =
       await keyring.fromUri(mnemonic, keyPairType: KeyPairType.ed25519);
-
+  pair.ss58Format = 4450;
   return pair;
 }
 
@@ -98,11 +100,7 @@ String addressFromV1PubkeyFaiSafe(String pubKeyRaw) {
   }
 }
 
-Uint8List seedFromMnemonic(String mnemonic, {String password = ''}) {
-  final String seedHex =
-      bip39.mnemonicToSeedHex(mnemonic, passphrase: password);
-  return Uint8List.fromList(<int>[
-    for (int i = 0; i < seedHex.length; i += 2)
-      int.parse(seedHex.substring(i, i + 2), radix: 16)
-  ]).sublist(0, 32);
-}
+Uint8List mnemonicToStore(String mnemonic) =>
+    Uint8List.fromList(utf8.encode(mnemonic));
+
+String storeToMnemonic(Uint8List storedMnemonic) => utf8.decode(storedMnemonic);

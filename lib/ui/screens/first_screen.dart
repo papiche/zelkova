@@ -128,11 +128,10 @@ class _FirstScreenState extends State<FirstScreen> {
                                     Expanded(
                                       flex: 2,
                                       child: CreditCard(
-                                          key: creditCardKey,
-                                          publicKey: prefsHelper.getPubKey(),
-                                          cardName: prefsHelper.getName(),
-                                          isG1nkgoCard: prefsHelper
-                                              .isPasswordLessWallet()),
+                                        key: creditCardKey,
+                                        account:
+                                            prefsHelper.getCurrentAccount(),
+                                      ),
                                     ),
                                     const SizedBox(width: 20),
                                     Expanded(
@@ -165,10 +164,8 @@ class _FirstScreenState extends State<FirstScreen> {
                                   children: <Widget>[
                                     CreditCard(
                                         key: creditCardKey,
-                                        publicKey: prefsHelper.getPubKey(),
-                                        cardName: prefsHelper.getName(),
-                                        isG1nkgoCard:
-                                            prefsHelper.isPasswordLessWallet()),
+                                        account:
+                                            prefsHelper.getCurrentAccount()),
                                     const SizedBox(height: 8),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(

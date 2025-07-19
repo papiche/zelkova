@@ -248,7 +248,7 @@ Future<bool?> showAuthCesiumWalletDialog(
   );
 }
 
-Future<bool> walletAuth(BuildContext context) async {
+Future<bool> walletV1Auth(BuildContext context) async {
   bool hasPass = false;
   if (!SharedPreferencesHelper().isPasswordLessWallet() &&
       !SharedPreferencesHelper().hasVolatilePass()) {

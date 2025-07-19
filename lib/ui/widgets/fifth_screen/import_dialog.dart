@@ -3,13 +3,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:file_picker/_internal/file_picker_web.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:pattern_lock/pattern_lock.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:substrate_bip39/substrate_bip39.dart';
@@ -21,6 +18,7 @@ import '../../../data/models/contact_cubit.dart';
 import '../../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
+import '../../file_picker/file_picker_wrapper.dart';
 import '../../logger.dart';
 import '../../pattern_util.dart';
 import '../../ui_helpers.dart';
@@ -435,38 +433,6 @@ Future<String> importWallet(BuildContext context,
     await Sentry.captureException(e, stackTrace: stacktrace);
     // Handle the exception using Sentry or any other error reporting tool
     // await Sentry.captureException(e, stackTrace: stacktrace);
-    return '';
-  }
-}
-
-Future<String> importWalletWithFilePicker(
-    [String allowedExtension = 'json']) async {
-  try {
-    if (kIsWeb) {
-      FilePickerWeb.registerWith(Registrar());
-    }
-    final FilePickerResult? result = await FilePicker.platform.pickFiles(
-//      allowMultiple: false,
-      type: FileType.custom,
-      allowedExtensions: <String>[allowedExtension],
-      withData: true,
-    );
-
-    if (result != null && result.files.isNotEmpty) {
-      final PlatformFile file = result.files.first;
-
-      final Uint8List? bytes = file.bytes;
-      if (bytes != null) {
-        return utf8.decode(bytes);
-      } else {
-        throw Exception('File does not contain valid data');
-      }
-    } else {
-      return '';
-    }
-  } catch (e, s) {
-    loggerDev('Error importing wallet with file picker',
-        error: e, stackTrace: s);
     return '';
   }
 }

@@ -17,7 +17,7 @@ import '../data/models/transaction.dart';
 import '../data/models/utxo.dart';
 import '../ui/currency_helper.dart';
 import '../ui/logger.dart';
-import '../ui/pay_helper.dart';
+//import '../ui/pay_helper.dart';
 import '../ui/ui_helpers.dart';
 
 Random createRandom() {
@@ -399,6 +399,8 @@ bool compareRecipientListsByKey(List<Contact> list1, List<Contact> list2) {
 
   return true;
 }
+
+const Duration paymentTimeRange = Duration(minutes: 60);
 
 List<Transaction> lastTx(List<Transaction> origTxs) {
   return origTxs

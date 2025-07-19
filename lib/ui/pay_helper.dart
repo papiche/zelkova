@@ -323,8 +323,6 @@ void showPayError(
   }
 }
 
-const Duration paymentTimeRange = Duration(minutes: 60);
-
 Future<void> onKeyScanned(BuildContext context, String scannedKey) async {
   final PaymentState? pay = parseScannedUri(scannedKey);
   final PaymentCubit paymentCubit = context.read<PaymentCubit>();

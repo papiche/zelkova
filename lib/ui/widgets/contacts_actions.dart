@@ -8,7 +8,7 @@ import '../../data/models/contact_cubit.dart';
 import '../../data/models/payment_cubit.dart';
 import '../../shared_prefs_helper.dart';
 import '../contacts_cache.dart';
-import '../ui_helpers.dart';
+import '../qr_helper.dart';
 import 'contact_page.dart';
 import 'first_screen/contact_search_page.dart'
     show ContactSearchPage, SearchUse;

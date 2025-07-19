@@ -181,7 +181,8 @@ class _CesiumAuthDialogState extends State<CesiumAuthDialog> {
     }
     String? fileContent;
     if (kIsWeb) {
-      fileContent = await importWalletWeb(c, '.dunikey');
+      // Previous used .dunikey with dot
+      fileContent = await importWalletWithFilePicker('dunikey');
     } else {
       fileContent =
           await importWallet(c, <String>['.dunikey'], 'select_auth_file');

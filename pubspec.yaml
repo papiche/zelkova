@@ -139,6 +139,7 @@ dependencies:
   screen_brightness: ^2.1.2
   local_auth: ^2.3.0
   zxing2: ^0.2.4
+  file_picker: ^10.2.0
 
 dev_dependencies:
   flutter_test:

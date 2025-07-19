@@ -46,28 +46,49 @@ class BiometricLockScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                'app_lock_subtitle'.tr(),
+                tr('app_lock_subtitle'),
                 style: theme.textTheme.bodyLarge,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 40),
               SizedBox(
-                width: double.infinity,
-                child: FilledButton.icon(
-                  icon: const Icon(Icons.fingerprint),
-                  label: Text('app_lock_unlock_with_biometrics'.tr()),
-                  onPressed: onUnlock,
-                  style: FilledButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                ),
-              ),
+                  width: double.infinity,
+                  child: FilledButton.icon(
+                    icon: const Icon(Icons.fingerprint),
+                    style: FilledButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
+                    label: Text(tr('app_lock_unlock_with_biometrics')),
+                    onPressed: () async {
+                      final BiometricAuthService authService =
+                          BiometricAuthService();
+                      final bool result = await authService.authenticate();
+                      if (result) {
+                        BiometricLockState().unlocked = true;
+                        onUnlock();
+                      }
+                    },
+                  )),
             ],
           ),
         ),
       ),
     );
   }
+}
+
+class BiometricLockState {
+  factory BiometricLockState() => _instance;
+
+  BiometricLockState._internal();
+
+  static final BiometricLockState _instance = BiometricLockState._internal();
+
+  bool unlocked = false;
+
+  bool get isUnlocked => unlocked;
+
+  void reset() => unlocked = false;
 }
 
 Future<bool> showBiometricLockScreen({bool force = false}) async {
@@ -83,12 +104,6 @@ Future<bool> showBiometricLockScreen({bool force = false}) async {
 
   if (!supported || !enabled) {
     return false;
-  }
-
-  final bool authResult = await authService.authenticate();
-  if (authResult) {
-    lockState.unlocked = true;
-    return true;
   }
 
   final NavigatorState? navigator = GinkgoApp.navigatorKey.currentState;
@@ -108,18 +123,4 @@ Future<bool> showBiometricLockScreen({bool force = false}) async {
 
   lockState.unlocked = result;
   return result;
-}
-
-class BiometricLockState {
-  factory BiometricLockState() => _instance;
-
-  BiometricLockState._internal();
-
-  static final BiometricLockState _instance = BiometricLockState._internal();
-
-  bool unlocked = false;
-
-  bool get isUnlocked => unlocked;
-
-  void reset() => unlocked = false;
 }

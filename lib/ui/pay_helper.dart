@@ -28,6 +28,7 @@ import '../g1/g1_helper.dart';
 import '../g1/pay_result.dart';
 import 'contacts_cache.dart';
 import 'logger.dart';
+import 'secure_unlock_widget.dart';
 import 'ui_helpers.dart';
 import 'widgets/cesium_auth_dialog.dart';
 import 'widgets/connectivity_widget_wrapper_wrapper.dart';
@@ -44,7 +45,12 @@ Future<bool> payWithRetry(
     bool useBMA = false}) async {
   assert(amount > 0);
   final bool isToMultiple = recipients.length > 1;
-  final bool hasPass = await walletAuth(context);
+  bool hasPass;
+  if (SharedPreferencesHelper().getCurrentAccount().type.isV1)
+    hasPass = await walletV1Auth(context);
+  else {
+    hasPass = await walletV2Auth();
+  }
   if (hasPass) {
     if (context.mounted) {
       final MultiWalletTransactionCubit txCubit =
@@ -57,8 +63,7 @@ Future<bool> payWithRetry(
       final bool? confirmed = await _confirmSend(context, amount.toString(),
           fromPubKey, recipients, isRetry, appCubit.currency, isToMultiple);
       final Contact fromContact = await ContactsCache().getContact(fromPubKey);
-      final CesiumWallet wallet =
-          await SharedPreferencesHelper().getLegacyWallet();
+
       if (!context.mounted) {
         return false;
       }
@@ -106,6 +111,8 @@ Future<bool> payWithRetry(
                 await getCurrentBlockGVA();
 
             if (currentBlock != null && utxos != null) {
+              final CesiumWallet wallet =
+                  await SharedPreferencesHelper().getCesiumWallet();
               result = await payWithBMA(
                   destPub: recipients[0].pubKey,
                   blockHash: '${currentBlock.item1!['hash']}',

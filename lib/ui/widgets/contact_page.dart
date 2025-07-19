@@ -21,10 +21,10 @@ import '../../g1/distance_precompute_provider.dart';
 import '../../g1/duniter_endpoint_helper.dart';
 import '../../g1/duniter_indexer_helper.dart';
 import '../../g1/g1_helper.dart';
-import '../../g1/sing_and_send.dart';
-import '../../generated/gdev/pallets/certification.dart';
-import '../../generated/gdev/types/pallet_certification/types/idty_cert_meta.dart';
-import '../../generated/gdev/types/pallet_identity/types/idty_value.dart';
+import '../../g1/sign_and_send.dart';
+import '../../generated/gtest/pallets/certification.dart';
+import '../../generated/gtest/types/pallet_certification/types/idty_cert_meta.dart';
+import '../../generated/gtest/types/pallet_identity/types/idty_value.dart';
 import '../../shared_prefs_helper.dart';
 import '../logger.dart';
 import '../ui_helpers.dart';
@@ -115,6 +115,8 @@ class _ContactPageState extends State<ContactPage> {
     final bool isContact =
         context.read<ContactsCubit>().isContact(contact.pubKey);
     final bool me = contactWotInfo.isme;
+    final bool isPassProtected =
+        !SharedPreferencesHelper().isPasswordLessWallet();
     final List<SpeedDialChild> actions = <SpeedDialChild>[
       if (isContact)
         SpeedDialChild(
@@ -142,7 +144,7 @@ class _ContactPageState extends State<ContactPage> {
           },
         ),
     ];
-    if (isV2) {
+    if (isV2 && isPassProtected) {
       getWotMenuActions(context, me, contactWotInfo)
           .forEach((WotMenuAction action) {
         actions.add(
@@ -417,8 +419,8 @@ class _ContactPageState extends State<ContactPage> {
   }
 
   Widget _buildAvatarSection(Contact contact) {
-    final String title =
-        contact.nick ?? contact.name ?? humanizePubKey(contact.pubKey);
+    final String title = contact.title;
+    // contact.nick ?? contact.name ?? humanizePubKey(contact.pubKey);
     return Container(
       color: Theme.of(context).colorScheme.secondaryContainer,
       width: double.infinity,

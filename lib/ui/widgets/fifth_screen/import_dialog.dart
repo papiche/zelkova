@@ -12,23 +12,24 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:substrate_bip39/substrate_bip39.dart';
 import 'package:universal_html/html.dart' as html;
 
+import '../../../data/models/app_cubit.dart';
 import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
 import '../../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
-import '../../in_dev_helper.dart';
 import '../../logger.dart';
 import '../../pattern_util.dart';
 import '../../ui_helpers.dart';
 import '../cesium_auth_dialog.dart';
 import '../custom_error_widget.dart';
 import 'import_clipboard_dialog.dart';
+import 'import_types.dart';
 
 class ImportDialog extends StatefulWidget {
-  const ImportDialog({super.key, this.wallet});
+  const ImportDialog({super.key, this.textToImport});
 
-  final String? wallet;
+  final String? textToImport;
 
   @override
   State<ImportDialog> createState() => _ImportDialogState();
@@ -42,9 +43,9 @@ class _ImportDialogState extends State<ImportDialog> {
   @override
   Widget build(BuildContext c) {
     return FutureBuilder<String>(
-        future: widget.wallet == null
+        future: widget.textToImport == null
             ? (kIsWeb ? importWalletWeb(c) : importWallet(c))
-            : Future<String>.value(widget.wallet),
+            : Future<String>.value(widget.textToImport),
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           if (snapshot.hasData &&
               snapshot.data != null &&
@@ -185,7 +186,7 @@ class _ImportDialogState extends State<ImportDialog> {
           } else if (snapshot.hasError) {
             return CustomErrorWidget(snapshot.error);
           } else {
-            return CustomErrorWidget(tr('import_failed'));
+            return Container(); //  CustomErrorWidget(tr('import_failed'));
           }
         });
   }
@@ -239,39 +240,46 @@ class _ImportDialogState extends State<ImportDialog> {
 
 Future<void> showSelectImportMethodDialog(
     BuildContext context, int returnTo) async {
-  final String? method = await showDialog<String>(
+  final ImportType? importType = await showDialog<ImportType>(
     context: context,
-    builder: (BuildContext context) => const SelectImportMethodDialog(),
+    builder: (BuildContext c) => const SelectImportMethodDialog(),
   );
-  if (method != null) {
+  if (importType != null) {
     if (!context.mounted) {
+      // FIXME when I call this form add wallet assistant, after a pop, the context is not mounted
+      // But if a show this dialog from another screen, it works
       return;
     }
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        if (method == 'file') {
+        if (importType == ImportType.fileG1nkgoV1Export) {
           return const ImportDialog();
         } else {
-          // if (method == 'clipboard') {
-          return ImportClipboardDialog(onImport: (String wallet) {
-            if (validateKey(wallet)) {
-              // It's a simple pubkey, let's think is a cesium password protected wallet
-              if (!SharedPreferencesHelper().has(wallet)) {
-                showAuthCesiumWalletDialog(context, wallet, returnTo);
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(tr('wallet_already_imported'))));
-              }
-            } else if (_isMnemonic(wallet)) {
-            } else {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return ImportDialog(wallet: wallet);
-                  });
-            }
-          });
+          return ImportClipboardDialog(
+              importType: importType,
+              onImport: (String textToImport) {
+                if (validateKey(textToImport)) {
+                  // It's a simple pubkey, let's think is a cesium password protected wallet
+                  if (!SharedPreferencesHelper().has(textToImport)) {
+                    showAuthCesiumWalletDialog(context, textToImport, returnTo);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(tr('wallet_already_imported'))));
+                  }
+                } else if (_isMnemonic(textToImport)) {
+                  SharedPreferencesHelper()
+                      .importWalletFromMnemonic(textToImport);
+                  context.replaceSnackbar(content: Text(tr('wallet_imported')));
+                  Navigator.of(context).pop(true);
+                } else {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ImportDialog(textToImport: textToImport);
+                      });
+                }
+              });
         }
       },
     );
@@ -300,24 +308,28 @@ class SelectImportMethodDialog extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.file_present),
               title: Text(tr('file_import')),
-              onTap: () => Navigator.of(context).pop('file'),
+              onTap: () =>
+                  Navigator.of(context).pop(ImportType.fileG1nkgoV1Export),
             ),
             ListTile(
               leading: const Icon(Icons.content_paste),
               title: Text(tr('clipboard_import')),
-              onTap: () => Navigator.of(context).pop('clipboard'),
+              onTap: () =>
+                  Navigator.of(context).pop(ImportType.clipboardG1nkgoV1Export),
             ),
             ListTile(
               leading: const Icon(Icons.key),
               title: Text(tr('clipboard_import_pubkey')),
-              onTap: () => Navigator.of(context).pop('clipboard_pubkey'),
+              onTap: () =>
+                  Navigator.of(context).pop(ImportType.clipboardPubKey),
             ),
-            if (inDevelopment)
+            if (context.read<AppCubit>().isV2)
               ListTile(
                 leading: const Icon(Icons.password),
                 title: Text(tr('clipboard_import_mnemonic')),
                 subtitle: Text(tr('clipboard_import_mnemonic_description')),
-                onTap: () => Navigator.of(context).pop('clipboard_mnemonic'),
+                onTap: () =>
+                    Navigator.of(context).pop(ImportType.clipboardMnemonic),
               ),
           ],
         ),

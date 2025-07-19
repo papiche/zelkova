@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -6,7 +8,26 @@ import 'is_json_serializable.dart';
 
 part 'wallet_themes.g.dart';
 
-class WalletThemes {
+mixin WalletThemes {
+  @Deprecated('Use WalletThemes.randomExcluding instead')
+  static WalletTheme get random {
+    final int index = Random().nextInt(themes.length);
+    return themes[index];
+  }
+
+  static WalletTheme randomExcluding(List<WalletTheme> exclusions) {
+    final List<WalletTheme> filteredThemes = themes
+        .where((WalletTheme theme) => !exclusions.contains(theme))
+        .toList();
+
+    if (filteredThemes.isEmpty) {
+      return themes[Random().nextInt(themes.length)];
+    }
+
+    final int index = Random().nextInt(filteredThemes.length);
+    return filteredThemes[index];
+  }
+
   static const WalletTheme theme1 =
       WalletTheme(Color(0xFF05112B), Color(0xFF085476));
   static const WalletTheme theme2 = WalletTheme(

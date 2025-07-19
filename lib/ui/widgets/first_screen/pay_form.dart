@@ -48,6 +48,7 @@ class _PayFormState extends State<PayForm> {
           context.watch<MultiWalletTransactionCubit>();
       final double balance = txCubit.balance();
       final double currentUd = appCubit.currentUd;
+      final bool isV2 = appCubit.isV2;
       final Currency currency = appCubit.currency;
       if (state.comment != null && _commentController.text != state.comment) {
         _commentController.text = state.comment;
@@ -55,8 +56,10 @@ class _PayFormState extends State<PayForm> {
       if (state.amount == null || state.amount == 0) {
         _feedbackNotifier.value = '';
       }
+
       final bool sentDisabled =
-          _onPressed(state, context, currency, currentUd, balance) == null;
+          _onPressed(state, context, currency, currentUd, balance, isV2) ==
+              null;
       final Color sentColor = sentDisabled
           ? Theme.of(context).disabledColor
           : isDark(context)
@@ -77,6 +80,16 @@ class _PayFormState extends State<PayForm> {
                 controller: _commentController,
                 onChanged: (String? value) {
                   final String newText = (value ?? '').replaceAll('\n', '');
+                  // https://forum.duniter.org/t/implementation-des-commentaires-de-transaction/12289/12
+                  // TODO do the > 256 part
+                  if (isV2 && newText.length > 256) {
+                    _commentController.text = newText.substring(0, 256);
+                    _commentController.selection = TextSelection.fromPosition(
+                      TextPosition(offset: _commentController.text.length),
+                    );
+                  } else {
+                    context.read<PaymentCubit>().setComment(newText);
+                  }
                   context.read<PaymentCubit>().setComment(newText);
                 },
                 decoration: InputDecoration(
@@ -86,7 +99,7 @@ class _PayFormState extends State<PayForm> {
                 ),
                 validator: (String? value) {
                   if (value != null &&
-                      !basicEnglishCharsRegExp.hasMatch(value)) {
+                      (!isV2 && !basicEnglishCharsRegExp.hasMatch(value))) {
                     return tr('valid_comment');
                   }
                   return null;
@@ -114,7 +127,12 @@ class _PayFormState extends State<PayForm> {
                           onPressed: () async {
                             if (mounted) {
                               final Future<void> Function()? func = _onPressed(
-                                  state, context, currency, currentUd, balance);
+                                  state,
+                                  context,
+                                  currency,
+                                  currentUd,
+                                  balance,
+                                  isV2);
                               if (func != null) {
                                 func();
                               }
@@ -142,10 +160,11 @@ class _PayFormState extends State<PayForm> {
   }
 
   Future<void> Function()? _onPressed(PaymentState state, BuildContext context,
-      Currency currency, double currentUd, double balance) {
+      Currency currency, double currentUd, double balance, bool isV2) {
     final bool isG1 = currency == Currency.G1;
     final bool notCanBeSent = !state.canBeSent();
-    final bool notValidComment = !_commentValidate();
+    final bool notValidComment =
+        isV2 ? !_commentValidateV2() : !_commentValidate();
     final bool nullAmount = state.amount == null;
     loggerDev(
         'notCanBeSent: $notCanBeSent, notValidComment: $notValidComment, nullAmount: $nullAmount');
@@ -177,6 +196,16 @@ class _PayFormState extends State<PayForm> {
     final bool val = (currentComment != null &&
             basicEnglishCharsRegExp.hasMatch(currentComment)) ||
         currentComment.isEmpty;
+    logger('Validating comment: $val');
+    if (_formKey.currentState != null) {
+      _formKey.currentState!.validate();
+    }
+    return val;
+  }
+
+  bool _commentValidateV2() {
+    final String currentComment = _commentController.value.text;
+    final bool val = currentComment != null || currentComment.isEmpty;
     logger('Validating comment: $val');
     if (_formKey.currentState != null) {
       _formKey.currentState!.validate();

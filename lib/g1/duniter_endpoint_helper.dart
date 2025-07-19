@@ -20,27 +20,27 @@ import '../data/models/contact.dart';
 import '../data/models/node.dart';
 import '../data/models/node_manager.dart';
 import '../data/models/node_type.dart';
-import '../generated/gdev/gdev.dart';
-import '../generated/gdev/types/frame_system/account_info.dart';
-import '../generated/gdev/types/gdev_runtime/runtime_call.dart';
-import '../generated/gdev/types/pallet_certification/types/idty_cert_meta.dart';
-import '../generated/gdev/types/pallet_identity/types/idty_value.dart';
-import '../generated/gdev/types/sp_membership/membership_data.dart';
-import '../generated/gdev/types/sp_runtime/multi_signature.dart';
-import '../generated/gdev/types/sp_runtime/multiaddress/multi_address.dart';
+import '../generated/gtest/gtest.dart';
+import '../generated/gtest/types/frame_system/account_info.dart';
+import '../generated/gtest/types/gtest_runtime/runtime_call.dart';
+import '../generated/gtest/types/pallet_certification/types/idty_cert_meta.dart';
+import '../generated/gtest/types/pallet_identity/types/idty_value.dart';
+import '../generated/gtest/types/sp_membership/membership_data.dart';
+import '../generated/gtest/types/sp_runtime/multi_signature.dart';
+import '../generated/gtest/types/sp_runtime/multiaddress/multi_address.dart';
 import '../shared_prefs_helper.dart';
 import '../ui/logger.dart';
 import 'g1_v2_helper.dart';
 import 'node_check_result.dart';
 import 'pay_result.dart';
-import 'sing_and_send.dart';
+import 'sign_and_send.dart';
 
 const Duration defPolkadotTimeout = Duration(seconds: 20);
 
 Future<NodeCheckResult> testEndPointV2(String node, Duration timeout) async {
   final Stopwatch stopwatch = Stopwatch()..start();
   final Provider provider = Provider.fromUri(parseNodeUrl(node));
-  final Gdev polkadot = Gdev(provider);
+  final Gtest polkadot = Gtest(provider);
   final int currentBlockNumber = (await polkadot.query.system.number()) - 1;
   stopwatch.stop();
   final NodeCheckResult nodeCheckResult = NodeCheckResult(
@@ -54,7 +54,7 @@ Uri parseNodeUrl(String url) {
 }
 
 Future<T> executeOnPolkadotNodes<T>(
-    Future<T> Function(Node node, Provider provider, Gdev polkadot) operation,
+    Future<T> Function(Node node, Provider provider, Gtest polkadot) operation,
     {bool retry = true,
     Duration timeout = defPolkadotTimeout}) async {
   final List<Node> nodes = NodeManager().getBestNodes(NodeType.endpoint);
@@ -63,7 +63,7 @@ Future<T> executeOnPolkadotNodes<T>(
   for (final Node node in nodes) {
     try {
       final Provider provider = Provider.fromUri(parseNodeUrl(node.url));
-      final Gdev polkadot = Gdev(provider);
+      final Gtest polkadot = Gtest(provider);
 
       final T result =
           await operation(node, provider, polkadot).timeout(timeout);
@@ -83,7 +83,7 @@ Future<T> executeOnPolkadotNodes<T>(
 
 Future<IdtyValue?> polkadotIdentity(Contact contact) async {
   return executeOnPolkadotNodes<IdtyValue?>(
-      (Node node, Provider provider, Gdev polkadot) async {
+      (Node node, Provider provider, Gtest polkadot) async {
     if (contact.index == null) {
       return null;
     }
@@ -93,14 +93,14 @@ Future<IdtyValue?> polkadotIdentity(Contact contact) async {
 
 Future<int> polkadotCurrentBlock() async {
   return executeOnPolkadotNodes<int>(
-      (Node node, Provider provider, Gdev polkadot) async {
+      (Node node, Provider provider, Gtest polkadot) async {
     return polkadot.query.system.number();
   });
 }
 
 Future<IdtyCertMeta?> polkadotIdtyCertMeta(Contact contact) async {
   return executeOnPolkadotNodes<IdtyCertMeta?>(
-      (Node node, Provider provider, Gdev polkadot) async {
+      (Node node, Provider provider, Gtest polkadot) async {
     if (contact.index == null) {
       return null;
     }
@@ -110,7 +110,7 @@ Future<IdtyCertMeta?> polkadotIdtyCertMeta(Contact contact) async {
 
 Future<MembershipData?> polkadortMembershipData(Contact contact) async {
   return executeOnPolkadotNodes<MembershipData?>(
-      (Node node, Provider provider, Gdev polkadot) async {
+      (Node node, Provider provider, Gtest polkadot) async {
     if (contact.index == null) {
       return null;
     }
@@ -121,7 +121,7 @@ Future<MembershipData?> polkadortMembershipData(Contact contact) async {
 Future<BigInt?> getBalanceV2(
     {required String address, Duration timeout = defPolkadotTimeout}) async {
   return executeOnPolkadotNodes<BigInt?>(
-      (Node node, Provider provider, Gdev polkadot) async {
+      (Node node, Provider provider, Gtest polkadot) async {
     final Address account = Address.decode(address);
     final Uint8List pubkey = account.pubkey;
     final AccountInfo accountInfo =
@@ -198,7 +198,7 @@ Future<SignAndSendResult> requestDistanceEvaluationFor(int idtyIndex,
     {Duration timeout = defPolkadotTimeout}) async {
   final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
   return executeOnPolkadotNodes<SignAndSendResult>(
-      (Node node, Provider provider, Gdev polkadot) async {
+      (Node node, Provider provider, Gtest polkadot) async {
     // distance rule has been evaluated positively locally on web of trust at block storage.distance.evaluationBlock()
     // TODO(vjrj): Implement this
     // polkadot.query.distance.evaluationBlock();
@@ -221,7 +221,7 @@ Future<SignAndSendResult> requestDistanceEvaluation(
     {Duration timeout = defPolkadotTimeout}) async {
   final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
   return executeOnPolkadotNodes<SignAndSendResult>(
-      (Node node, Provider provider, Gdev polkadot) async {
+      (Node node, Provider provider, Gtest polkadot) async {
     // distance rule has been evaluated positively locally on web of trust at block storage.distance.evaluationBlock()
     // TODO(vjrj): Implement this
     // polkadot.query.distance.evaluationBlock();
@@ -243,7 +243,7 @@ Future<SignAndSendResult> createIdentity(
     {required Contact you, Duration timeout = defPolkadotTimeout}) async {
   final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
   return executeOnPolkadotNodes(
-      (Node node, Provider provider, Gdev polkadot) async {
+      (Node node, Provider provider, Gtest polkadot) async {
     final RuntimeCall call = polkadot.tx.identity.createIdentity(
       ownerKey: Address.decode(you.address).pubkey,
     );
@@ -262,7 +262,7 @@ Future<SignAndSendResult> confirmIdentity(String identityName,
     {Duration timeout = defPolkadotTimeout}) async {
   final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
   return executeOnPolkadotNodes(
-      (Node node, Provider provider, Gdev polkadot) async {
+      (Node node, Provider provider, Gtest polkadot) async {
     final RuntimeCall call =
         polkadot.tx.identity.confirmIdentity(idtyName: identityName.codeUnits);
     return signAndSend(
@@ -280,7 +280,7 @@ Future<SignAndSendResult> certify(int idtyIndex,
     {Duration timeout = defPolkadotTimeout}) async {
   final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
   return executeOnPolkadotNodes(
-      (Node node, Provider provider, Gdev polkadot) async {
+      (Node node, Provider provider, Gtest polkadot) async {
     final RuntimeCall call =
         polkadot.tx.certification.addCert(receiver: idtyIndex);
     return signAndSend(
@@ -297,7 +297,7 @@ Future<SignAndSendResult> certify(int idtyIndex,
 Constants polkadotConstants() {
   final Provider provider =
       Provider.fromUri(parseNodeUrl(NodeManager().endpointNodes.first.url));
-  final Gdev polkadot = Gdev(provider);
+  final Gtest polkadot = Gtest(provider);
   return polkadot.constant;
 }
 
@@ -325,7 +325,7 @@ Future<PayResult> payV2({
     }
   }
   return executeOnPolkadotNodes(retry: false,
-      (Node node, Provider provider, Gdev polkadot) async {
+      (Node node, Provider provider, Gtest polkadot) async {
     RuntimeCall transferCall;
 
     if (addresses.length > 1 || comment != null) {
@@ -398,7 +398,7 @@ Future<SignAndSendResult> renew(int idtyIndex,
     {Duration timeout = defPolkadotTimeout}) async {
   final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
   return executeOnPolkadotNodes(
-      (Node node, Provider provider, Gdev polkadot) async {
+      (Node node, Provider provider, Gtest polkadot) async {
     final RuntimeCall call =
         polkadot.tx.certification.renewCert(receiver: idtyIndex);
     return signAndSend(
@@ -417,7 +417,7 @@ Future<SignAndSendResult> revoke(
     {Duration timeout = defPolkadotTimeout}) async {
   final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
   return executeOnPolkadotNodes(
-      (Node node, Provider provider, Gdev polkadot) async {
+      (Node node, Provider provider, Gtest polkadot) async {
     final RuntimeCall call = polkadot.tx.identity.revokeIdentity(
         idtyIndex: idtyIndex,
         revocationKey: revocationKey,
@@ -435,9 +435,19 @@ Future<SignAndSendResult> revoke(
 
 Future<BigInt> currentUniversalDividendV2() async {
   return executeOnPolkadotNodes(
-      (Node node, Provider provider, Gdev polkadot) async {
-    final Gdev polkadot = Gdev(provider);
+      (Node node, Provider provider, Gtest polkadot) async {
+    final Gtest polkadot = Gtest(provider);
     final BigInt currentUd = await polkadot.query.universalDividend.currentUd();
     return currentUd;
   });
 }
+/*
+Future<BigInt> newBalanceV2() async {
+  return executeOnPolkadotNodes(
+      (Node node, Provider provider, Gtest polkadot) async {
+    final Gtest polkadot = Gtest(provider);
+    bal = await polkadot.query.universalDividend.accountBalance();
+    return currentUd;
+  });
+}
+*/

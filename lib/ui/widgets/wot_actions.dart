@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import '../../data/models/contact_wot_info.dart';
 import '../../data/models/identity_status.dart';
 import '../../g1/duniter_endpoint_helper.dart';
-import '../../g1/sing_and_send.dart';
+import '../../g1/sign_and_send.dart';
+import '../logger.dart';
 import 'cesium_auth_dialog.dart';
 import 'wot_menu_action.dart';
 
@@ -142,6 +143,8 @@ List<WotMenuAction> getWotMenuActions(
       }
   }
 
+  logger.info(
+      'getWotMenuActions: isMe: $isMe wotInfo: $wotInfo,  actions(${actions.length}): $actions');
   return actions;
 }
 
@@ -197,7 +200,7 @@ Future<SignAndSendResult> _executeIfAuthenticated(
   BuildContext context,
   Future<SignAndSendResult> Function() action,
 ) async {
-  final bool hasPass = await walletAuth(context);
+  final bool hasPass = await walletV1Auth(context);
   if (!hasPass) {
     if (!context.mounted) {
       return _returnAuthFailed();

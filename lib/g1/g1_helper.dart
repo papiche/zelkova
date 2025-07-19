@@ -34,20 +34,28 @@ Uint8List generateUintSeed() {
 }
 
 String seedToString(Uint8List seed) {
+  // We don't store v1 pass protected accounts only a '' as seed
+  if (seed.isEmpty) {
+    return '';
+  }
   final Uint8List seedsBytes = Uint8List.fromList(seed);
   final String encoded = json.encode(seedsBytes.toList());
   return encoded;
 }
 
-CesiumWallet generateCesiumWallet(Uint8List seed) {
-  return CesiumWallet.fromSeed(seed);
-}
-
 Uint8List seedFromString(String sString) {
+  // We don't store v1 pass protected accounts only a '' as seed
+  if (sString.isEmpty) {
+    return Uint8List(0);
+  }
   final List<dynamic> list = json.decode(sString) as List<dynamic>;
   final Uint8List bytes =
       Uint8List.fromList(list.map((dynamic e) => e as int).toList());
   return bytes;
+}
+
+CesiumWallet generateCesiumWallet(Uint8List seed) {
+  return CesiumWallet.fromSeed(seed);
 }
 
 String generateSalt(int length) {

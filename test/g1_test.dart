@@ -851,4 +851,9 @@ Data: 2RTjpjZMnFnKHhgUadgT7JUvGeQem5sC6DQQpeuo5dCL6V1fgqsg8
       expect(nodes[3].url, 'node1'); // More errors, higher latency
     });
   });
+
+  test('Test serialization and deserialization of empty UInt8List seeds', () {
+    final Uint8List seedRestored = seedFromString('');
+    expect(seedToString(seedRestored), equals(''));
+  });
 }

@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/models/bottom_nav_cubit.dart';
-import '../../../data/models/legacy_wallet.dart';
+import '../../../data/models/contact.dart';
 import '../../../data/models/multi_wallet_transaction_cubit.dart';
+import '../../../data/models/stored_account.dart';
 import '../../../data/models/wallet_themes.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
 import '../../ui_helpers.dart';
 import '../account_card_theme_selector.dart';
-import 'card_name_text.dart';
-import 'card_text_style.dart';
+import 'simple_card_name_text.dart';
 
 class DrawerWalletCard extends StatelessWidget {
   const DrawerWalletCard(
@@ -21,7 +21,7 @@ class DrawerWalletCard extends StatelessWidget {
       required this.cardIndex,
       required this.settingsVisible});
 
-  final LegacyWallet card;
+  final StoredAccount card;
   final bool settingsVisible;
   final int cardIndex;
 
@@ -34,7 +34,7 @@ class DrawerWalletCard extends StatelessWidget {
           content: SizedBox(
               width: double.maxFinite,
               child: AccountCardThemeSelector(
-                  card: card,
+                  account: card,
                   onTap: (WalletTheme theme) =>
                       SharedPreferencesHelper().setTheme(theme: theme))),
         );
@@ -59,6 +59,7 @@ class DrawerWalletCard extends StatelessWidget {
 
   Card _buildCard(double cardRadius, BuildContext context,
       double cardInternalElPadding, bool bigDevice) {
+    final Contact c = card.contact;
     return Card(
         elevation: 8.0,
         shape: RoundedRectangleBorder(
@@ -89,49 +90,50 @@ class DrawerWalletCard extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: Stack(children: <Widget>[
-                    // if (!SharedPreferencesHelper().isG1nkgoCard())
-                    Positioned(
-                      top: 90,
-                      right: 0,
-                      child: Visibility(
-                        visible: settingsVisible,
-                        child: FloatingActionButton(
-                          backgroundColor: Colors.white12,
-                          elevation: 1,
-                          onPressed: () {
-                            showDialog<bool>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text(tr('please_confirm_delete')),
-                                    content: Text(tr(SharedPreferencesHelper()
-                                            .isPasswordLessWallet()
-                                        ? 'please_confirm_delete_desc_g1nkgo'
-                                        : 'please_confirm_delete_desc')),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.of(context).pop(false),
-                                        child: Text(tr('cancel')),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          SharedPreferencesHelper()
-                                              .removeCurrentWallet();
-                                          SharedPreferencesHelper()
-                                              .selectCurrentWalletIndex(0);
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text(tr('accept')),
-                                      ),
-                                    ],
-                                  );
-                                });
-                          },
-                          child: const Icon(Icons.delete, color: Colors.white),
+                    if (SharedPreferencesHelper().hasMultipleWallets)
+                      Positioned(
+                        top: 90,
+                        right: 0,
+                        child: Visibility(
+                          visible: settingsVisible,
+                          child: FloatingActionButton(
+                            backgroundColor: Colors.white12,
+                            elevation: 1,
+                            onPressed: () {
+                              showDialog<bool>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text(tr('please_confirm_delete')),
+                                      content: Text(tr(SharedPreferencesHelper()
+                                              .isPasswordLessWallet()
+                                          ? 'please_confirm_delete_desc_g1nkgo'
+                                          : 'please_confirm_delete_desc')),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(false),
+                                          child: Text(tr('cancel')),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            SharedPreferencesHelper()
+                                                .removeCurrentWallet();
+                                            SharedPreferencesHelper()
+                                                .selectCurrentWalletIndex(0);
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text(tr('accept')),
+                                        ),
+                                      ],
+                                    );
+                                  });
+                            },
+                            child:
+                                const Icon(Icons.delete, color: Colors.white),
+                          ),
                         ),
                       ),
-                    ),
                     Positioned(
                       top: 25,
                       right: 0,
@@ -156,34 +158,39 @@ class DrawerWalletCard extends StatelessWidget {
                     Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          if (card.name.isNotEmpty)
+                          if (c.hasTitle)
                             Padding(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: cardInternalElPadding,
                                     vertical: cardInternalElPadding),
                                 child: Row(children: <Widget>[
                                   Expanded(
-                                    child: CardNameText(
-                                        currentText: card.name,
+                                    child: SimpleCardNameText(
+                                        currentText:
+                                            c.titleWithoutAddressOrPubKey,
                                         onTap: null,
-                                        isGinkgoCard: SharedPreferencesHelper()
-                                            .isPasswordLessWallet(card)),
+                                        addSuffix: true,
+                                        account: card),
                                   ),
                                 ])),
-                          Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: cardInternalElPadding,
-                                  vertical: cardInternalElPadding),
-                              child: Row(children: <Widget>[
-                                FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(
-                                      simplifyPubKey(
-                                          extractPublicKey(card.pubKey)),
-                                      style:
-                                          cardTextStyle(context, fontSize: 16),
-                                    )),
-                              ])),
+                          if (!c.hasTitle)
+                            Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: cardInternalElPadding,
+                                    vertical: cardInternalElPadding),
+                                child: Row(children: <Widget>[
+                                  Expanded(
+                                    child: SimpleCardNameText(
+                                        currentText: card.type.isV2
+                                            ? simplifyPubKey(
+                                                extractPublicKey(card.address))
+                                            : simplifyPubKey(
+                                                extractPublicKey(card.pubKey)),
+                                        onTap: null,
+                                        addSuffix: false,
+                                        account: card),
+                                  ),
+                                ])),
                           if (bigDevice) const SizedBox(height: 6.0),
                           const SizedBox(height: 8.0),
                         ]),
@@ -192,8 +199,8 @@ class DrawerWalletCard extends StatelessWidget {
   }
 
   Future<void> onCardTap(BuildContext context) async {
-    logger("Card ${card.pubKey} '${card.name}' was tapped!");
-    SharedPreferencesHelper().selectCurrentWallet(card);
+    logger("Card ${humanizeContact('', card.contact)} was tapped!");
+    SharedPreferencesHelper().selectCurrentWallet(card.pubKey);
     context.read<BottomNavCubit>().updateIndex(0);
     Navigator.pop(context);
     await context.read<MultiWalletTransactionCubit>().fetchTransactions();

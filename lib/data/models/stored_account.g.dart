@@ -9,6 +9,8 @@ part of 'stored_account.dart';
 abstract class _$StoredAccountCWProxy {
   StoredAccount pubKey(String pubKey);
 
+  StoredAccount address(String address);
+
   StoredAccount contact(Contact contact);
 
   StoredAccount theme(WalletTheme theme);
@@ -29,6 +31,7 @@ abstract class _$StoredAccountCWProxy {
   /// ````
   StoredAccount call({
     String? pubKey,
+    String? address,
     Contact? contact,
     WalletTheme? theme,
     AccountType? type,
@@ -46,6 +49,9 @@ class _$StoredAccountCWProxyImpl implements _$StoredAccountCWProxy {
 
   @override
   StoredAccount pubKey(String pubKey) => this(pubKey: pubKey);
+
+  @override
+  StoredAccount address(String address) => this(address: address);
 
   @override
   StoredAccount contact(Contact contact) => this(contact: contact);
@@ -77,6 +83,7 @@ class _$StoredAccountCWProxyImpl implements _$StoredAccountCWProxy {
   /// ````
   StoredAccount call({
     Object? pubKey = const $CopyWithPlaceholder(),
+    Object? address = const $CopyWithPlaceholder(),
     Object? contact = const $CopyWithPlaceholder(),
     Object? theme = const $CopyWithPlaceholder(),
     Object? type = const $CopyWithPlaceholder(),
@@ -89,6 +96,10 @@ class _$StoredAccountCWProxyImpl implements _$StoredAccountCWProxy {
           ? _value.pubKey
           // ignore: cast_nullable_to_non_nullable
           : pubKey as String,
+      address: address == const $CopyWithPlaceholder() || address == null
+          ? _value.address
+          // ignore: cast_nullable_to_non_nullable
+          : address as String,
       contact: contact == const $CopyWithPlaceholder() || contact == null
           ? _value.contact
           // ignore: cast_nullable_to_non_nullable
@@ -130,6 +141,7 @@ extension $StoredAccountCopyWith on StoredAccount {
 StoredAccount _$StoredAccountFromJson(Map<String, dynamic> json) =>
     StoredAccount(
       pubKey: json['pubKey'] as String,
+      address: json['address'] as String,
       contact: Contact.fromJson(json['contact'] as Map<String, dynamic>),
       theme: WalletTheme.fromJson(json['theme'] as Map<String, dynamic>),
       type: $enumDecode(_$AccountTypeEnumMap, json['type']),
@@ -141,6 +153,7 @@ StoredAccount _$StoredAccountFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$StoredAccountToJson(StoredAccount instance) =>
     <String, dynamic>{
       'pubKey': instance.pubKey,
+      'address': instance.address,
       'derivationPath': instance.derivationPath,
       'type': _$AccountTypeEnumMap[instance.type]!,
       'contact': instance.contact,

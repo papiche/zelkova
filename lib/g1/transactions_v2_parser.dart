@@ -98,8 +98,15 @@ Future<List<Transaction>> _parseTransactions(
       double amount = (txData['amount'] as num).toDouble();
       final Map<String, dynamic>? commentRaw =
           txData['comment'] as Map<String, dynamic>?;
+
+      /* final String? comment =
+          commentRaw != null ? commentRaw['remark'] as String : null; */
+
+      // log.i(commentRaw != null ? commentRaw['remarkBytes'] as String? : '');
       final String? comment =
-          commentRaw != null ? commentRaw['remark'] as String : null;
+          commentRaw != null && commentRaw['remarkBytes'] != null
+              ? decodeHexToText(commentRaw['remarkBytes'] as String)
+              : null;
 
       final Contact fromContact =
           getContactCache(simpleContact: Contact.withAddress(address: from));

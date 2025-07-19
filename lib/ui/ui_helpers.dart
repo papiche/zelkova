@@ -499,7 +499,7 @@ bool isDark(BuildContext context) =>
 bool get isIOS => !kIsWeb && Platform.isIOS;
 
 const String g1nkgoUserNameSuffix = ' ❥';
-const String protectedUserNameSuffix = ' 🔒';
+const String protectedUserNameSuffix = ' 🔒'; // lock
 const double cardAspectRatio = 1.58;
 
 Future<bool> requestStoragePermission(BuildContext context) async {

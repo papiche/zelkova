@@ -36,7 +36,6 @@ import 'data/models/app_cubit.dart';
 import 'data/models/app_state.dart';
 import 'data/models/bottom_nav_cubit.dart';
 import 'data/models/contact_cubit.dart';
-import 'data/models/legacy_wallet.dart';
 import 'data/models/multi_wallet_transaction_cubit.dart';
 import 'data/models/node_list_cubit.dart';
 import 'data/models/node_list_state.dart';
@@ -66,13 +65,42 @@ import 'ui/widgets/pages/biometric_lock_screen.dart';
 const String fetchWalletsTransactionsTask =
     'org.comunes.ginkgo.fetchWalletsTransactionsTask';
 
+@pragma(
+    'vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
+void workManagerCallbackDispatcher() {
+  Workmanager()
+      .executeTask((String task, Map<String, dynamic>? inputData) async {
+    try {
+      logger.info(
+          '---------- Start fetchTransactionsTask Workmanager background task: $task');
+      switch (task) {
+        case fetchWalletsTransactionsTask:
+          await NotificationController.initializeLocalNotifications();
+          fetchTransactionsFromBackground();
+          break;
+        case Workmanager.iOSBackgroundTask:
+          break;
+      }
+      loggerDev(
+          '---------- End fetchTransactionsTask Workmanager background task');
+    } catch (err, stacktrace) {
+      logger(err.toString());
+      await Sentry.captureException(err, stackTrace: stacktrace);
+    }
+    return Future<bool>.value(true);
+  });
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  logger.info('Starting Ginkgo app');
   if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
     await Workmanager().initialize(workManagerCallbackDispatcher,
         isInDebugMode: inDevelopment);
   }
+  logger.info('Workmanager initialized');
   await NotificationController.initializeLocalNotifications();
+  logger.info('NotificationController initialized');
   const int seedColor = 0xff98FB98;
   final int seedColorDark = colorToValue(Colors.lightGreen);
 
@@ -107,10 +135,9 @@ void main() async {
 
   final SharedPreferencesHelper shared = SharedPreferencesHelper();
   await shared.init();
-  // For now, init v2 too
-  await shared.init();
-  if (shared.cards.isEmpty) {
-    await shared.getLegacyWallet();
+
+  if (shared.isEmpty) {
+    await shared.createDefWalletIfNotExist();
   }
   assert(shared.getPubKey() != null);
 
@@ -245,32 +272,6 @@ void main() async {
   } else {
     appRunner();
   }
-}
-
-@pragma(
-    'vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
-void workManagerCallbackDispatcher() {
-  Workmanager()
-      .executeTask((String task, Map<String, dynamic>? inputData) async {
-    try {
-      loggerDev(
-          '---------- Start fetchTransactionsTask Workmanager background task');
-      switch (task) {
-        case fetchWalletsTransactionsTask:
-          await NotificationController.initializeLocalNotifications();
-          fetchTransactionsFromBackground();
-          break;
-        case Workmanager.iOSBackgroundTask:
-          break;
-      }
-      loggerDev(
-          '---------- End fetchTransactionsTask Workmanager background task');
-    } catch (err, stacktrace) {
-      logger(err.toString());
-      await Sentry.captureException(err, stackTrace: stacktrace);
-    }
-    return Future<bool>.value(true);
-  });
 }
 
 class AppIntro extends StatefulWidget {
@@ -413,6 +414,9 @@ class _GinkgoAppState extends State<GinkgoApp> {
     // Only after at least the action method is set, the notification events are delivered
     NotificationController.startListeningNotificationEvents();
 
+    final bool useV2 = context.read<AppCubit>().isV2;
+    SharedPreferencesHelper.configure(useV2: useV2);
+
     // Schedule tasks using Cron
     initCronTask();
 
@@ -432,6 +436,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
       Workmanager().registerPeriodicTask(
         fetchWalletsTransactionsTask,
         fetchWalletsTransactionsTask,
+        inputData: <String, dynamic>{},
         constraints: Constraints(
           networkType: NetworkType.connected,
           requiresBatteryNotLow: true,
@@ -439,6 +444,8 @@ class _GinkgoAppState extends State<GinkgoApp> {
         frequency: const Duration(minutes: 15),
       );
     }
+
+    SharedPreferencesHelper().refreshWalletsInfo();
 
     /*  if (inDevelopment) {
       printCubitStateSize(
@@ -520,6 +527,10 @@ class _GinkgoAppState extends State<GinkgoApp> {
           appCubit.setDistancePreCompute(dP);
         }
       }
+    });
+    Once.runHourly('refresh_wallet_info', callback: () async {
+      logger('---------- refresh wallets info via once');
+      SharedPreferencesHelper().refreshWalletsInfo();
     });
   }
 
@@ -720,7 +731,7 @@ Future<void> fetchTransactionsFromBackground([bool init = true]) async {
   try {
     if (init) {
       await hiveInit();
-      if (SharedPreferencesHelper().cards.isEmpty) {
+      if (SharedPreferencesHelper().isEmpty) {
         await SharedPreferencesHelper().init();
       }
       try {
@@ -741,9 +752,9 @@ Future<void> fetchTransactionsFromBackground([bool init = true]) async {
     final GetIt getIt = GetIt.instance;
     final MultiWalletTransactionCubit transCubit =
         getIt.get<MultiWalletTransactionCubit>();
-    for (final LegacyWallet wallet in SharedPreferencesHelper().cards) {
-      loggerDev('Fetching transactions for ${wallet.pubKey} in background');
-      transCubit.fetchTransactions(pubKey: wallet.pubKey);
+    for (final String pubKey in SharedPreferencesHelper().publicKeys) {
+      loggerDev('Fetching transactions for $pubKey in background');
+      transCubit.fetchTransactions(pubKey: pubKey);
     }
     if (inDevelopment) {
       NotificationController.notify(
@@ -769,51 +780,60 @@ class _AppStartState extends State<AppStart> {
   bool _isAppLocked = true;
   bool _biometricSupported = false;
   bool _initializing = true;
+  late AppLifecycleReactor _reactor;
 
   @override
   void initState() {
     super.initState();
     _initializeApp();
+    _reactor = AppLifecycleReactor(
+      lockAfter: Duration(minutes: inDevelopment ? 1 : 5),
+      onRequireBiometricLock: _lockApp,
+    )..start();
   }
 
   Future<void> _initializeApp() async {
     _biometricSupported = await _authService.isBiometricSupported();
     final bool biometricEnabled = await _authService.isBiometricEnabled();
 
-    if (biometricEnabled && _biometricSupported) {
-      final bool authenticated = await _authService.authenticate(
-        localizedReason: tr('biometric_auth_reason'),
-      );
-      _isAppLocked = !authenticated;
-    } else {
-      _isAppLocked = false;
-    }
-
+    _isAppLocked = biometricEnabled && _biometricSupported;
     setState(() => _initializing = false);
   }
 
-  Future<void> _unlockApp() async {
-    if (_biometricSupported) {
-      final bool authenticated = await _authService.authenticate(
-        localizedReason: tr('biometric_auth_reason'),
-      );
+  Future<void> _lockApp() async {
+    BiometricLockState().reset();
+    final bool enabled = await _authService.isBiometricEnabled();
+    final bool supported = await _authService.isBiometricSupported();
 
-      if (authenticated) {
-        setState(() => _isAppLocked = false);
-      }
-    } else {
+    if (enabled && supported) {
+      setState(() => _isAppLocked = true);
+    }
+  }
+
+  Future<void> _unlockApp() async {
+    if (_isAppLocked) {
+      setState(() => _isAppLocked = false);
+      _reactor.resetTimer();
+      return;
+    }
+
+    final bool success = await showBiometricLockScreen();
+    if (success) {
       setState(() => _isAppLocked = false);
     }
+  }
+
+  @override
+  void dispose() {
+    _reactor.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final bool introViewed = GetIt.instance.get<AppCubit>().isIntroViewed;
     if (_initializing) {
-      return Scaffold(
-          // Show nothing
-          body: Center(child: Container() // CircularProgressIndicator()),
-              ));
+      return const SizedBox.shrink();
     }
     if (introViewed) {
       return _isAppLocked
@@ -823,6 +843,47 @@ class _AppStartState extends State<AppStart> {
           : const FeedbackAndSkeletonScreen();
     } else {
       return const AppIntro();
+    }
+  }
+}
+
+class AppLifecycleReactor with WidgetsBindingObserver {
+  AppLifecycleReactor({
+    required this.lockAfter,
+    required this.onRequireBiometricLock,
+  });
+
+  void resetTimer() => _lastPaused = DateTime.now();
+
+  DateTime? _lastPaused;
+  final Duration lockAfter;
+  final VoidCallback onRequireBiometricLock;
+
+  void start() {
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      _lastPaused = DateTime.now();
+    } else if (state == AppLifecycleState.resumed) {
+      if (_lastPaused == null) {
+        return;
+      }
+
+      final bool shouldLock =
+          DateTime.now().difference(_lastPaused!) > lockAfter;
+
+      _lastPaused = null;
+
+      if (shouldLock) {
+        onRequireBiometricLock();
+      }
     }
   }
 }
@@ -905,7 +966,7 @@ Future<void> _clearCacheIfNeeded(Directory storageDir) async {
 Future<void> fetchTransactions(BuildContext context) async {
   final MultiWalletTransactionCubit transCubit =
       context.read<MultiWalletTransactionCubit>();
-  for (final LegacyWallet wallet in SharedPreferencesHelper().cards) {
-    transCubit.fetchTransactions(pubKey: wallet.pubKey);
+  for (final String pubKey in SharedPreferencesHelper().publicKeys) {
+    transCubit.fetchTransactions(pubKey: pubKey);
   }
 }

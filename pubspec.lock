@@ -1319,14 +1319,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.9.0"
-  jsqr:
-    dependency: "direct main"
-    description:
-      name: jsqr
-      sha256: ee5505e32dc0f6f3ad6df674ea0270bd79138812481090ab09cfa788e8193b7a
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.4"
   l10n_esperanto:
     dependency: "direct main"
     description:
@@ -2586,6 +2578,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.4+10"
+  zxing2:
+    dependency: "direct main"
+    description:
+      name: zxing2
+      sha256: "2677c49a3b9ca9457cb1d294fd4bd5041cac6aab8cdb07b216ba4e98945c684f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.4"
 sdks:
   dart: ">=3.8.0 <4.0.0"
   flutter: ">=3.32.0"

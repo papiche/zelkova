@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.4.0-6
+version: 1.5.0-5
 
 environment:
   sdk: ^3.5.2
@@ -72,7 +72,6 @@ dependencies:
   awesome_notifications: ^0.10.0
   cron: ^0.6.1
   barcode_scan2: ^4.5.1
-  jsqr: ^0.1.4
   web_browser_detect: ^2.0.3
   tuple: ^2.0.1
   infinite_scroll_pagination: ^4.0.0
@@ -139,6 +138,7 @@ dependencies:
   super_clipboard: ^0.9.0-dev.6
   screen_brightness: ^2.1.2
   local_auth: ^2.3.0
+  zxing2: ^0.2.4
 
 dev_dependencies:
   flutter_test:
@@ -290,4 +290,4 @@ sentry:
 polkadart:
   output_dir: lib/generated
   chains:
-    gdev: wss://gdev.p2p.legal/ws
+    gtest: wss://gt.elo.tf/ws

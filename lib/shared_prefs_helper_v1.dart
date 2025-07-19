@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:bip39_multi_nullsafety/bip39_multi_nullsafety.dart' as bip39;
 import 'package:durt/durt.dart';
 import 'package:flutter/foundation.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'data/models/legacy_wallet.dart';
+import 'data/models/stored_account.dart';
 import 'data/models/wallet_themes.dart';
 import 'g1/g1_helper.dart';
 import 'shared_prefs_helper.dart';
@@ -68,7 +68,7 @@ class SharedPreferencesHelperV1
       // Let's do this later
       await _prefs.remove(_seedKey);
       await _prefs.remove(_pubKey);
-      setCurrentWalletIndex(0);
+      _setCurrentWalletIndex(0);
     }
   }
 
@@ -101,10 +101,10 @@ class SharedPreferencesHelperV1
 
   // Get the wallet from the specified index (default to first wallet)
   @override
-  Future<CesiumWallet> getLegacyWallet() async {
+  Future<CesiumWallet> getCesiumWallet() async {
     if (legacyWallets.isNotEmpty) {
       final LegacyWallet card = legacyWallets[getCurrentWalletIndex()];
-      if (SharedPreferencesHelper().isPasswordLessWallet()) {
+      if (isPasswordLessWallet()) {
         return CesiumWallet.fromSeed(seedFromString(card.seed));
       } else {
         // This should have the wallet loaded
@@ -166,20 +166,19 @@ class SharedPreferencesHelperV1
     return _prefs.getInt(_currentCardIndexKey) ?? 0;
   }
 
-  // Set the current wallet index in shared preferences
-  @override
-  Future<void> setCurrentWalletIndex(int index) async {
+  Future<void> _setCurrentWalletIndex(int index) async {
     await _prefs.setInt(_currentCardIndexKey, index);
     notifyListeners();
   }
 
   @override
-  Future<void> selectCurrentWallet(LegacyWallet card) async {
-    // TODO(vjrj): this should be a find with pubkey
-    final int index = cards.indexOf(card);
+  Future<void> selectCurrentWallet(String pubKey) async {
+    // Find the wallet with the given public key
+    final String extractedPubKey = extractPublicKey(pubKey);
+    final int index =
+        cards.indexWhere((LegacyWallet a) => a.pubKey == extractedPubKey);
     if (index >= 0) {
-      await _prefs.setInt(_currentCardIndexKey, index);
-      notifyListeners();
+      await _setCurrentWalletIndex(index);
     } else {
       throw Exception('Invalid wallet index: $index');
     }
@@ -189,7 +188,7 @@ class SharedPreferencesHelperV1
   @override
   Future<void> selectCurrentWalletIndex(int index) async {
     if (index < legacyWallets.length) {
-      await setCurrentWalletIndex(index);
+      await _setCurrentWalletIndex(index);
     } else {
       throw Exception('Invalid wallet index: $index');
     }
@@ -206,7 +205,11 @@ class SharedPreferencesHelperV1
   }
 
   @override
-  bool hasVolatilePass() {
+  bool hasVolatilePass([StoredAccount? account]) {
+    if (account != null) {
+      final String pubKey = extractPublicKey(account.pubKey);
+      return cesiumVolatileCards.containsKey(pubKey);
+    }
     return cesiumVolatileCards.containsKey(extractPublicKey(getPubKey()));
   }
 
@@ -218,26 +221,80 @@ class SharedPreferencesHelperV1
   // Although this should not be used in V1, we implement it for consistency
   @override
   Future<KeyPair> getKeyPair() async {
-    final CesiumWallet walletV1 = await getLegacyWallet();
+    final CesiumWallet walletV1 = await getCesiumWallet();
     final KeyPair kp = KeyPair.ed25519.fromSeed(walletV1.seed);
+    kp.ss58Format = 4450;
     return kp;
   }
 
   @override
   Future<void> importWalletFromMnemonic(String m) async {
-    final Uint8List seedBytes = bip39.mnemonicToSeed(m).sublist(0, 32);
-    final CesiumWallet wallet = CesiumWallet.fromSeed(seedBytes);
-    final LegacyWallet lw = SharedPreferencesHelper().buildLegacyWallet(
-      seed: seedToString(wallet.seed),
-      pubKey: wallet.pubkey,
-    );
+    throw UnimplementedError(
+        'importWalletFromMnemonic is not implemented in SharedPreferencesHelperV1');
+  }
 
-    if (!has(wallet.pubkey)) {
-      cards.add(lw);
-      await saveLegacyWallets();
-      await setCurrentWalletIndex(cards.indexOf(lw));
-    } else {
-      await selectCurrentWallet(lw);
-    }
+  @override
+  void accountsClear() {
+    cards.clear();
+  }
+
+  @override
+  bool get hasMultipleWallets => cards.length > 1;
+
+  @override
+  bool get isEmpty => cards.isEmpty;
+
+  @override
+  int get length => cards.length;
+
+  @override
+  List<String> get publicKeys =>
+      cards.map((LegacyWallet e) => e.pubKey).toList();
+
+  @override
+  List<StoredAccount> get accounts {
+    return cards.map((LegacyWallet e) => StoredAccount.fromLegacy(e)).toList();
+  }
+
+  @override
+  bool isPasswordLessWallet([StoredAccount? other]) {
+    final String pubKey =
+        extractPublicKey(other != null ? other.pubKey : getPubKey());
+    final LegacyWallet w =
+        cards.where((LegacyWallet c) => c.pubKey == pubKey).first;
+    return w.seed.isNotEmpty;
+  }
+
+  @override
+  Future<StoredAccount> createDefWalletIfNotExist() async {
+    await getCesiumWallet();
+    return StoredAccount.fromLegacy(
+      legacyWallets[getCurrentWalletIndex()],
+    );
+  }
+
+  @override
+  StoredAccount getCurrentAccount() {
+    return accounts[getCurrentWalletIndex()];
+  }
+
+  @override
+  Future<void> reEncryptAllProtectedAccounts(
+      {required Uint8List oldKey, required Uint8List newKey}) {
+    throw UnimplementedError('This should only work in V2');
+  }
+
+  @override
+  bool isLocked([StoredAccount? account]) {
+    if (isPasswordLessWallet(account)) {
+      return false;
+    } else
+      return !hasVolatilePass(account);
+  }
+
+  @override
+  Future<void> refreshWalletsInfo() {
+    // Not implemented in V1
+    return Future<void>.value();
   }
 }

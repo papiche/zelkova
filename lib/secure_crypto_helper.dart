@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'ui/logger.dart' show loggerDev;
 
@@ -29,7 +30,7 @@ mixin SecureCryptoHelper {
   }
 
   static List<int> _pbkdf2(List<int> password, List<int> salt,
-      {int iterations = 100000, int keyLength = 32}) {
+      {int iterations = kIsWeb ? 10000 : 100000, int keyLength = 32}) {
     final Hmac hmac = Hmac(sha256, password);
     final List<int> result = <int>[];
     final int blockCount =

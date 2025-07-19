@@ -26,7 +26,7 @@ abstract class SharedPreferencesHelperDelegate {
 
   Future<void> init();
 
-  Future<CesiumWallet> getLegacyWallet();
+  Future<CesiumWallet> getCesiumWallet();
 
   String getPubKey();
 
@@ -38,11 +38,9 @@ abstract class SharedPreferencesHelperDelegate {
 
   int getCurrentWalletIndex();
 
-  Future<void> setCurrentWalletIndex(int i);
-
   Future<void> selectCurrentWalletIndex(int i);
 
-  Future<void> selectCurrentWallet(LegacyWallet c);
+  Future<void> selectCurrentWallet(String pubKey);
 
   void setName({required String name, bool notify});
 
@@ -54,7 +52,7 @@ abstract class SharedPreferencesHelperDelegate {
 
   bool has(String pk);
 
-  bool hasVolatilePass();
+  bool hasVolatilePass([StoredAccount? account]);
 
   void addCesiumVolatileCard(CesiumWallet w);
 
@@ -63,6 +61,35 @@ abstract class SharedPreferencesHelperDelegate {
   Future<void> importWalletFromMnemonic(String m);
 
   Future<void> saveLegacyWallets([bool notify]);
+
+  bool get hasMultipleWallets;
+
+  bool get isEmpty;
+
+  int get length;
+
+  List<String> get publicKeys;
+
+  /// This should replace cards
+  List<StoredAccount> get accounts;
+
+  StoredAccount getCurrentAccount();
+
+  /// Used only in tests
+  void accountsClear();
+
+  bool isPasswordLessWallet([StoredAccount? other]);
+
+  Future<StoredAccount> createDefWalletIfNotExist();
+
+  Future<void> reEncryptAllProtectedAccounts({
+    required Uint8List oldKey,
+    required Uint8List newKey,
+  });
+
+  bool isLocked([StoredAccount? account]);
+
+  Future<void> refreshWalletsInfo();
 }
 
 class SharedPreferencesHelper with ChangeNotifier {
@@ -85,17 +112,47 @@ class SharedPreferencesHelper with ChangeNotifier {
     }
   }
 
-  // ──────────────────────────────────────────────────────────────────────────
-  // Internal delegation (lazy instantiation)
-  // ──────────────────────────────────────────────────────────────────────────
-  static SharedPreferencesHelperDelegate? _delegate;
-
   SharedPreferencesHelperDelegate get _d {
     _delegate ??= _useV2
         ? v2.SharedPreferencesHelperV2()
         : v1.SharedPreferencesHelperV1();
     return _delegate!;
   }
+
+  @override
+  void addListener(VoidCallback listener) {
+    super.addListener(listener);
+    v1.SharedPreferencesHelperV1().addListener(listener);
+    v2.SharedPreferencesHelperV2().addListener(listener);
+    /* if (_d is ChangeNotifier) {
+      (_d as ChangeNotifier).addListener(listener);
+    } */
+  }
+
+  @override
+  void removeListener(VoidCallback listener) {
+    super.removeListener(listener);
+    v1.SharedPreferencesHelperV1().removeListener(listener);
+    v2.SharedPreferencesHelperV2().removeListener(listener);
+    /* if (_d is ChangeNotifier) {
+      (_d as ChangeNotifier).removeListener(listener);
+    } */
+  }
+
+  @override
+  void dispose() {
+    /* if (_d is ChangeNotifier) {
+      (_d as ChangeNotifier).dispose();
+    } */
+    v1.SharedPreferencesHelperV1().dispose();
+    v2.SharedPreferencesHelperV2().dispose();
+    super.dispose();
+  }
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // Internal delegation (lazy instantiation)
+  // ──────────────────────────────────────────────────────────────────────────
+  static SharedPreferencesHelperDelegate? _delegate;
 
   // ──────────────────────────────────────────────────────────────────────────
   // Public API
@@ -111,7 +168,7 @@ class SharedPreferencesHelper with ChangeNotifier {
     }
   }
 
-  Future<CesiumWallet> getLegacyWallet() => _d.getLegacyWallet();
+  Future<CesiumWallet> getCesiumWallet() => _d.getCesiumWallet();
 
   String getPubKey() => _d.getPubKey();
 
@@ -119,6 +176,7 @@ class SharedPreferencesHelper with ChangeNotifier {
 
   WalletTheme getTheme() => _d.getTheme();
 
+  @Deprecated('Review its use')
   List<LegacyWallet> get cards => _d.cards;
 
   int getCurrentWalletIndex() => _d.getCurrentWalletIndex();
@@ -126,7 +184,8 @@ class SharedPreferencesHelper with ChangeNotifier {
   Future<void> selectCurrentWalletIndex(int i) =>
       _d.selectCurrentWalletIndex(i);
 
-  Future<void> selectCurrentWallet(LegacyWallet c) => _d.selectCurrentWallet(c);
+  Future<void> selectCurrentWallet(String pubKey) =>
+      _d.selectCurrentWallet(pubKey);
 
   void setName({required String name, bool notify = true}) =>
       _d.setName(name: name, notify: notify);
@@ -139,7 +198,7 @@ class SharedPreferencesHelper with ChangeNotifier {
 
   bool has(String pk) => _d.has(pk);
 
-  bool hasVolatilePass() => _d.hasVolatilePass();
+  bool hasVolatilePass([StoredAccount? account]) => _d.hasVolatilePass(account);
 
   void addCesiumVolatileCard(CesiumWallet w) => _d.addCesiumVolatileCard(w);
 
@@ -155,10 +214,15 @@ class SharedPreferencesHelper with ChangeNotifier {
     return LegacyWallet(
       seed: seed,
       pubKey: pubKey,
-      theme: WalletThemes.theme1,
+      theme: SharedPreferencesHelper().randomTheme(),
       name: '',
     );
   }
+
+  WalletTheme randomTheme() => WalletThemes.randomExcluding(availableThemes);
+
+  List<WalletTheme> get availableThemes =>
+      accounts.map((StoredAccount a) => a.theme).toList();
 
   void handleCorrectCesiumV1Auth(
       {required String publicKey,
@@ -174,35 +238,53 @@ class SharedPreferencesHelper with ChangeNotifier {
 
     if (!has(extractPublicKey(publicKey))) {
       _d.addLegacyWallet(card);
-      _d.selectCurrentWallet(card);
+      _d.selectCurrentWallet(card.pubKey);
     }
 
     _d.addCesiumVolatileCard(wallet);
   }
 
-  bool isPasswordLessWallet([LegacyWallet? other]) {
-    final LegacyWallet w = other ?? cards[getCurrentWalletIndex()];
-    return w.seed.isNotEmpty;
-  }
+  bool isPasswordLessWallet([StoredAccount? other]) =>
+      _d.isPasswordLessWallet(other);
 
-  bool hasMultipleWallets() {
-    return cards.length > 1;
-  }
+  bool get isEmpty => _d.isEmpty;
 
-  void cardsClear() => v2.SharedPreferencesHelperV2().cardsClear();
+  bool get hasMultipleWallets => _d.hasMultipleWallets;
 
-  List<StoredAccount> get accounts => v2.SharedPreferencesHelperV2().accounts;
+  int get length => _d.length;
 
-  Uint8List? get passwordKey => v2.SharedPreferencesHelperV2().passwordKey;
+  List<StoredAccount> get accounts => _d.accounts;
+
+  void accountsClear() => _d.accountsClear();
+
+  Uint8List? get passwordKey => v2.SharedPreferencesHelperV2().getPasswordKey();
 
   set passwordKey(Uint8List? key) =>
-      v2.SharedPreferencesHelperV2().passwordKey = key;
+      v2.SharedPreferencesHelperV2().setPasswordKey(key);
 
   Future<void> saveLegacyWallets([bool notify = true]) {
     return _d.saveLegacyWallets(notify);
   }
 
-  void setPasswordKeyFromUserInput(Uint8List passwordKey) {
-    v2.SharedPreferencesHelperV2().setPasswordKeyFromUserInput(passwordKey);
+  List<String> get publicKeys => _d.publicKeys;
+
+  bool isLocked([StoredAccount? account]) => _d.isLocked(account);
+
+  Future<StoredAccount> createDefWalletIfNotExist() =>
+      _d.createDefWalletIfNotExist();
+
+  StoredAccount getCurrentAccount() => _d.getCurrentAccount();
+
+  Future<void> reEncryptAllProtectedAccounts({
+    required Uint8List oldKey,
+    required Uint8List newKey,
+  }) =>
+      _d.reEncryptAllProtectedAccounts(oldKey: oldKey, newKey: newKey);
+
+  Future<void> refreshWalletsInfo() => _d.refreshWalletsInfo();
+
+  @override
+  void notifyListeners() {
+    super.notifyListeners();
   }
 }

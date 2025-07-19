@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:durt/durt.dart';
-import 'package:fast_base58/fast_base58.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
@@ -12,6 +11,7 @@ import '../data/models/legacy_wallet.dart';
 import '../data/models/stored_account.dart';
 import '../data/models/wallet_themes.dart';
 import '../g1/g1_helper.dart';
+import 'g1/api.dart';
 import 'g1/g1_v2_helper.dart';
 import 'secure_crypto_helper.dart';
 import 'shared_prefs_helper.dart';
@@ -22,9 +22,15 @@ import 'ui/secure_unlock_widget.dart';
 class SharedPreferencesHelperV2
     with ChangeNotifier
     implements SharedPreferencesHelperDelegate {
-  factory SharedPreferencesHelperV2() => _instance;
+  factory SharedPreferencesHelperV2() {
+    return _instance;
+  }
 
-  SharedPreferencesHelperV2._internal();
+  SharedPreferencesHelperV2._internal() {
+    SharedPreferences.getInstance().then((SharedPreferences value) {
+      _prefs = value;
+    });
+  }
 
   static final SharedPreferencesHelperV2 _instance =
       SharedPreferencesHelperV2._internal();
@@ -32,34 +38,29 @@ class SharedPreferencesHelperV2
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
   late SharedPreferences _prefs;
 
+  @override
   final List<StoredAccount> accounts = <StoredAccount>[];
+
   final Map<String, CesiumWallet> _cesiumVolatileCards =
       <String, CesiumWallet>{};
 
   int _currentIndex = 0;
-  Uint8List? passwordKey;
-  Uint8List? _salt;
+  Uint8List? _passwordKey;
+
+  Uint8List? getPasswordKey() => _passwordKey!;
+
+  void setPasswordKey(Uint8List? key) {
+    _passwordKey = key;
+    notifyListeners();
+  }
 
   @override
   Future<void> init() async {
     _prefs = await SharedPreferences.getInstance();
-    await _loadPasswordKey();
     await _migrateBetaAccount();
     await _loadAccounts();
+    await _migrateLegacyAccounts();
     await _loadCurrentIndex();
-  }
-
-  Future<void> _loadPasswordKey() async {
-    final String? saltBase64 = await _storage.read(key: StorageKeys.secureSalt);
-    final String? keyBase64 =
-        await _storage.read(key: StorageKeys.securePatternOrPass);
-
-    if (saltBase64 != null) {
-      _salt = base64Decode(saltBase64);
-    }
-    if (keyBase64 != null) {
-      passwordKey = base64Decode(keyBase64);
-    }
   }
 
   Future<void> _migrateBetaAccount() async {
@@ -70,10 +71,11 @@ class SharedPreferencesHelperV2
 
       accounts.add(StoredAccount(
         pubKey: pubKey,
+        address: addressFromV1Pubkey(pubKey),
         type: AccountType.v1PasswordLess,
         seed: seedFromString(seed),
         contact: Contact.withPubKey(pubKey: pubKey, name: 'Migrated'),
-        theme: WalletThemes.theme1,
+        theme: SharedPreferencesHelper().randomTheme(),
       ));
       await _prefs.remove(StorageKeys.seedKey);
       await _prefs.remove(StorageKeys.pubKey);
@@ -95,10 +97,44 @@ class SharedPreferencesHelperV2
   }
 
   Future<void> _loadCurrentIndex() async {
-    _currentIndex = int.tryParse(
+    final int currentIndex = int.tryParse(
             await _storage.read(key: StorageKeys.currentCardIndexKey) ?? '') ??
         _prefs.getInt(StorageKeys.currentCardIndexKey) ??
         0;
+    if (currentIndex < accounts.length) {
+      _currentIndex = currentIndex;
+    } else {
+      logger('Current index $currentIndex is out of bounds, resetting to 0');
+      _currentIndex = 0;
+      await _setCurrentWalletIndex(_currentIndex);
+    }
+  }
+
+  Future<void> _migrateLegacyAccounts() async {
+    final String? legacyJson = _prefs.getString(StorageKeys.cardsKey);
+    if (legacyJson != null) {
+      final List<dynamic> list = jsonDecode(legacyJson) as List<dynamic>;
+      for (final dynamic e in list) {
+        final LegacyWallet lw =
+            LegacyWallet.fromJson(e as Map<String, dynamic>);
+        if (accounts
+            .where((StoredAccount a) => a.pubKey == lw.pubKey)
+            .isNotEmpty) {
+          continue;
+        }
+        accounts.add(StoredAccount(
+          seed: seedFromString(lw.seed),
+          pubKey: lw.pubKey,
+          address: addressFromV1Pubkey(lw.pubKey),
+          theme: lw.theme,
+          contact: Contact.withPubKey(pubKey: lw.pubKey, name: lw.name),
+          type: lw.seed.isEmpty
+              ? AccountType.v1PasswordProtected
+              : AccountType.v1PasswordLess,
+        ));
+      }
+      await _saveAccounts();
+    }
   }
 
   Future<void> _saveAccounts([bool notify = true]) async {
@@ -126,8 +162,7 @@ class SharedPreferencesHelperV2
   @override
   int getCurrentWalletIndex() => _currentIndex;
 
-  @override
-  Future<void> setCurrentWalletIndex(int index) async {
+  Future<void> _setCurrentWalletIndex(int index) async {
     _currentIndex = index;
     await _storage.write(key: StorageKeys.currentCardIndexKey, value: '$index');
     notifyListeners();
@@ -136,17 +171,19 @@ class SharedPreferencesHelperV2
   @override
   Future<void> selectCurrentWalletIndex(int index) async {
     if (index < accounts.length) {
-      await setCurrentWalletIndex(index);
+      await _setCurrentWalletIndex(index);
     } else {
       throw Exception('Invalid wallet index: $index');
     }
   }
 
   @override
-  Future<void> selectCurrentWallet(LegacyWallet c) async {
+  Future<void> selectCurrentWallet(String pubKey) async {
+    final String extractedPubkey = extractPublicKey(pubKey);
     final int i =
-        accounts.indexWhere((StoredAccount a) => a.pubKey == c.pubKey);
-    await setCurrentWalletIndex(i);
+        accounts.indexWhere((StoredAccount a) => a.pubKey == extractedPubkey);
+    logger('Selecting wallet with pubKey: $extractedPubkey at index $i');
+    await _setCurrentWalletIndex(i);
   }
 
   @override
@@ -183,50 +220,40 @@ class SharedPreferencesHelperV2
   }
 
   @override
-  Future<CesiumWallet> getLegacyWallet() async {
-    await createDefAccountIfNotExist();
-    final StoredAccount acc = accounts[_currentIndex];
-
-    switch (acc.type) {
-      case AccountType.v1PasswordLess:
-      case AccountType.v2PasswordLess:
-      case AccountType.v2PasswordProtected:
-        final Uint8List seed = await _resolveActualSeed(acc);
-        return CesiumWallet.fromSeed(seed);
-      case AccountType.v1PasswordProtected:
-        final CesiumWallet? wallet = _cesiumVolatileCards[acc.pubKey];
-        if (wallet == null) {
-          throw Exception(
-              'Volatile wallet not available for v1PasswordProtected');
-        }
-        return wallet;
-    }
+  Future<CesiumWallet> getCesiumWallet() async {
+    throw UnimplementedError(
+        'getCesiumWallet is not implemented in SharedPreferencesHelperV2');
   }
 
-  Future<void> createDefAccountIfNotExist() async {
+  @override
+  Future<StoredAccount> createDefWalletIfNotExist() async {
     if (accounts.isNotEmpty) {
-      return;
+      return accounts[_currentIndex];
     }
 
     final StoredAccount acc = await createV2PasswordLessAccount();
-    accounts.add(acc);
-    await setCurrentWalletIndex(0);
-    await _saveAccounts();
+    return acc;
   }
 
   Future<StoredAccount> createV2PasswordLessAccount() async {
     final String mnemonic = mnemonicGenerate();
     final KeyPair kp =
         await Keyring().fromUri(mnemonic, keyPairType: KeyPairType.ed25519);
-    final String pubKey = Base58Encode(kp.publicKey.bytes);
+    kp.ss58Format = 4450;
+    final String address = kp.address;
+    final String pubKey = v1pubkeyFromAddress(address);
 
-    return StoredAccount(
+    final StoredAccount account = StoredAccount(
       type: AccountType.v2PasswordLess,
       pubKey: pubKey,
-      seed: Uint8List.fromList(utf8.encode(mnemonic)),
+      address: address,
+      seed: mnemonicToStore(mnemonic),
       contact: Contact.withAddress(address: kp.address),
-      theme: WalletThemes.theme1,
+      theme: SharedPreferencesHelper().randomTheme(),
     );
+
+    _onAccountAdded(account);
+    return account;
   }
 
   Future<StoredAccount> createV2PasswordProtectedAccount(
@@ -234,26 +261,34 @@ class SharedPreferencesHelperV2
     final String mnemonic = mnemonicGenerate();
     final KeyPair kp =
         await Keyring().fromUri(mnemonic, keyPairType: KeyPairType.ed25519);
-    final String pubKey = Base58Encode(kp.publicKey.bytes);
+    kp.ss58Format = 4450;
     final Uint8List encryptedMnemonic = SecureCryptoHelper.encrypt(
-      Uint8List.fromList(utf8.encode(mnemonic)),
+      mnemonicToStore(mnemonic),
       passwordKey,
     );
-
-    return StoredAccount(
+    final String address = kp.address;
+    final String pubKey = v1pubkeyFromAddress(address);
+    final StoredAccount account = StoredAccount(
       type: AccountType.v2PasswordProtected,
       pubKey: pubKey,
+      address: address,
       seed: encryptedMnemonic,
       contact: Contact.withAddress(address: kp.address),
-      theme: WalletThemes.theme1,
+      theme: SharedPreferencesHelper().randomTheme(),
     );
+    _onAccountAdded(account);
+    return account;
   }
 
   @override
   Future<KeyPair> getKeyPair([int? index]) async {
     final StoredAccount acc = accounts[index ?? _currentIndex];
     final Uint8List resolvedSeed = await _resolveActualSeed(acc);
-    return KeyPair.ed25519.fromSeed(resolvedSeed);
+    final KeyPair kp = acc.type.isV1
+        ? KeyPair.ed25519.fromSeed(resolvedSeed)
+        : await KeyPair.ed25519.fromMnemonic(storeToMnemonic(resolvedSeed));
+    kp.ss58Format = 4450;
+    return kp;
   }
 
   @override
@@ -261,8 +296,13 @@ class SharedPreferencesHelperV2
       .any((StoredAccount acc) => acc.pubKey == extractPublicKey(pubKey));
 
   @override
-  bool hasVolatilePass() =>
-      _cesiumVolatileCards.containsKey(extractPublicKey(getPubKey()));
+  bool hasVolatilePass([StoredAccount? account]) {
+    if (account != null) {
+      final String pubKey = extractPublicKey(account.pubKey);
+      return _cesiumVolatileCards.containsKey(pubKey);
+    }
+    return _cesiumVolatileCards.containsKey(extractPublicKey(getPubKey()));
+  }
 
   @override
   void addCesiumVolatileCard(CesiumWallet wallet) {
@@ -277,6 +317,7 @@ class SharedPreferencesHelperV2
     final bool isVolatile = card.seed == '';
     final StoredAccount acc = StoredAccount(
       pubKey: card.pubKey,
+      address: addressFromV1Pubkey(card.pubKey),
       seed: !isVolatile ? seedFromString(card.seed) : null,
       type: isVolatile
           ? AccountType.v1PasswordProtected
@@ -296,17 +337,20 @@ class SharedPreferencesHelperV2
     if (accounts.length > 1) {
       accounts.removeAt(index);
       _saveAccounts();
-      notifyListeners();
+      _setCurrentWalletIndex(accounts.length - 1);
     }
   }
 
   @override
-  Future<void> importWalletFromMnemonic(String mnemonic) async {
-    final Uint8List seed = seedFromMnemonic(mnemonic); // 64 bytes
-    final Uint8List shortSeed = seed.sublist(0, 32); // como en V1
-    final KeyPair kp = KeyPair.ed25519.fromSeed(shortSeed);
-
-    final String pubKey = Base58Encode(kp.publicKey.bytes);
+  Future<void> importWalletFromMnemonic(String? mnemonicProv) async {
+    final String mnemonic = mnemonicProv ?? mnemonicGenerate();
+    final Keyring keyring = Keyring();
+    final KeyPair kp =
+        await keyring.fromMnemonic(mnemonic, keyPairType: KeyPairType.ed25519);
+    kp.ss58Format = 4450;
+    final String address = kp.address;
+    final String pubKey = v1pubkeyFromAddress(address);
+    logger('Importing wallet with pubKey: $pubKey and address: $address');
 
     if (has(pubKey)) {
       throw Exception('Already exists');
@@ -314,41 +358,36 @@ class SharedPreferencesHelperV2
 
     final StoredAccount acc = StoredAccount(
       pubKey: pubKey,
-      seed: Uint8List.fromList(utf8.encode(mnemonic)),
+      address: address,
+      seed: mnemonicToStore(mnemonic),
       type: AccountType.v2PasswordLess,
-      theme: WalletThemes.theme1,
-      contact: Contact.withAddress(address: kp.address),
+      theme: SharedPreferencesHelper().randomTheme(),
+      contact: Contact.withAddress(
+          address: kp.address,
+          createdOn: DateTime.now().millisecondsSinceEpoch),
     );
 
+    await _onAccountAdded(acc);
+  }
+
+  Future<void> _onAccountAdded(StoredAccount acc) async {
     accounts.add(acc);
     await _saveAccounts();
-    _currentIndex = accounts.indexOf(acc);
+    _setCurrentWalletIndex(accounts.length - 1);
     notifyListeners();
   }
 
   @override
   Future<void> saveLegacyWallets([bool notify = true]) => _saveAccounts(notify);
 
-  Future<void> setPasswordKeyFromUserInput(Uint8List key) async {
-    passwordKey = key;
-    _salt = SecureCryptoHelper.generateSalt();
-    await _storage.write(
-        key: StorageKeys.securePatternOrPass, value: base64Encode(key));
-    await _storage.write(
-        key: StorageKeys.secureSalt, value: base64Encode(_salt!));
-  }
-
-  Uint8List? get salt => _salt;
-
   Future<Uint8List> _resolveActualSeed(StoredAccount acc) async {
     switch (acc.type) {
       case AccountType.v1PasswordLess:
         return acc.seed!;
       case AccountType.v2PasswordLess:
-        final String mnemonic = utf8.decode(acc.seed!);
-        return seedFromMnemonic(mnemonic).sublist(0, 32);
+        return acc.seed!;
       case AccountType.v2PasswordProtected:
-        final Uint8List? key = passwordKey ?? (await requestSecureUnlock());
+        final Uint8List? key = _passwordKey ?? (await requestSecureUnlock());
         if (key == null) {
           throw Exception('No password key available');
         }
@@ -356,8 +395,7 @@ class SharedPreferencesHelperV2
         if (dec == null) {
           throw Exception('Cannot decrypt mnemonic');
         }
-        final String mnemonic = utf8.decode(dec);
-        return seedFromMnemonic(mnemonic).sublist(0, 32);
+        return dec;
       case AccountType.v1PasswordProtected:
         final CesiumWallet? wallet = _cesiumVolatileCards[acc.pubKey];
         if (wallet == null) {
@@ -367,7 +405,84 @@ class SharedPreferencesHelperV2
     }
   }
 
-  Future<void> cardsClear() async {
+  @override
+  void accountsClear() {
     accounts.clear();
+  }
+
+  @override
+  bool get hasMultipleWallets => accounts.length > 1;
+
+  @override
+  bool get isEmpty => accounts.isEmpty;
+
+  @override
+  int get length => accounts.length;
+
+  @override
+  List<String> get publicKeys =>
+      accounts.map((StoredAccount a) => a.pubKey).toList();
+
+  @override
+  bool isPasswordLessWallet([StoredAccount? other]) {
+    final StoredAccount w = other ?? accounts[getCurrentWalletIndex()];
+    return w.type == AccountType.v1PasswordLess ||
+        w.type == AccountType.v2PasswordLess;
+  }
+
+  @override
+  StoredAccount getCurrentAccount() {
+    return accounts[_currentIndex];
+  }
+
+  @override
+  Future<void> reEncryptAllProtectedAccounts({
+    required Uint8List oldKey,
+    required Uint8List newKey,
+  }) async {
+    for (final StoredAccount acc in accounts) {
+      if (acc.type == AccountType.v2PasswordProtected) {
+        final Uint8List? decrypted =
+            SecureCryptoHelper.decrypt(acc.seed!, oldKey);
+        if (decrypted != null) {
+          final Uint8List reEncrypted =
+              SecureCryptoHelper.encrypt(decrypted, newKey);
+          final StoredAccount updated = acc.copyWith(seed: reEncrypted);
+          accounts[accounts.indexOf(acc)] = updated;
+        }
+      }
+    }
+    await _saveAccounts();
+  }
+
+  @override
+  bool isLocked([StoredAccount? account]) {
+    if (isPasswordLessWallet(account)) {
+      return false;
+    } else {
+      final StoredAccount acc = account == null
+          ? getCurrentAccount()
+          : accounts
+              .firstWhere((StoredAccount a) => a.pubKey == account.pubKey);
+      if (acc.type.isV1) {
+        return !hasVolatilePass(account);
+      } else {
+        return _passwordKey == null || _passwordKey!.isEmpty;
+      }
+    }
+  }
+
+  @override
+  Future<void> refreshWalletsInfo() async {
+    for (int i = 0; i < accounts.length; i++) {
+      final StoredAccount acc = accounts[i];
+      final Contact updatedContact = await getProfile(
+        acc.pubKey,
+        resize: false,
+        complete: true,
+      );
+      accounts[i] = acc.copyWith(contact: updatedContact);
+    }
+    await _saveAccounts();
   }
 }

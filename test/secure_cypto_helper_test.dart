@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:ginkgo/g1/g1_v2_helper.dart';
 import 'package:ginkgo/secure_crypto_helper.dart';
 
 void main() {
@@ -62,5 +63,61 @@ void main() {
           await SecureCryptoHelper.deriveKeyFromPassword(password, salt);
       expect(key.length, greaterThanOrEqualTo(16));
     });
+  });
+  test('Mnemonic is correctly encrypted and decrypted with password key',
+      () async {
+    // Original mnemonic phrase to store
+    const String originalMnemonic =
+        'legal winner thank year wave sausage worth useful legal winner thank yellow';
+
+    // Convert the mnemonic to bytes (Uint8List)
+    final Uint8List plainBytes = mnemonicToStore(originalMnemonic);
+
+    // Derive a password-based key from a pattern and salt
+    final List<int> pattern = <int>[1, 2, 5, 8];
+    final List<int> salt = SecureCryptoHelper.generateSalt();
+    final Uint8List passwordKey =
+        await SecureCryptoHelper.deriveKeyFromPattern(pattern, salt);
+
+    // Encrypt the mnemonic bytes using the derived key
+    final Uint8List encrypted =
+        SecureCryptoHelper.encrypt(plainBytes, passwordKey);
+
+    // Decrypt the encrypted data using the same key
+    final Uint8List? decrypted =
+        SecureCryptoHelper.decrypt(encrypted, passwordKey);
+
+    // Convert the decrypted bytes back to a string
+    final String recoveredMnemonic = storeToMnemonic(decrypted!);
+
+    // Assert that the recovered mnemonic matches the original
+    expect(recoveredMnemonic, equals(originalMnemonic));
+  });
+
+  test('Decryption fails with wrong key', () async {
+    const String originalMnemonic =
+        'legal winner thank year wave sausage worth useful legal winner thank yellow';
+    final Uint8List plainBytes = mnemonicToStore(originalMnemonic);
+
+    // Derive two different keys from different patterns
+    final List<int> correctPattern = <int>[0, 1, 2];
+    final List<int> wrongPattern = <int>[3, 4, 5];
+    final List<int> salt = SecureCryptoHelper.generateSalt();
+
+    final Uint8List correctKey =
+        await SecureCryptoHelper.deriveKeyFromPattern(correctPattern, salt);
+    final Uint8List wrongKey =
+        await SecureCryptoHelper.deriveKeyFromPattern(wrongPattern, salt);
+
+    // Encrypt using the correct key
+    final Uint8List encrypted =
+        SecureCryptoHelper.encrypt(plainBytes, correctKey);
+
+    // Try decrypting with the wrong key (should fail)
+    final Uint8List? decrypted =
+        SecureCryptoHelper.decrypt(encrypted, wrongKey);
+
+    // Ensure the decryption fails (null)
+    expect(decrypted, isNull);
   });
 }

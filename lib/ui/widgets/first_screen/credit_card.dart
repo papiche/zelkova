@@ -1,25 +1,23 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../data/models/app_cubit.dart';
+import '../../../data/models/stored_account.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../tutorial_keys.dart';
 import '../../ui_helpers.dart';
+import '../card_helper.dart';
 import '../contacts_actions.dart';
 import 'card_name_editable.dart';
 import 'card_text_style.dart';
 
 class CreditCard extends StatelessWidget {
-  const CreditCard(
-      {super.key,
-      required this.publicKey,
-      required this.cardName,
-      required this.isG1nkgoCard});
+  const CreditCard({super.key, required this.account});
 
-  final String publicKey;
-  final String cardName;
-  final bool isG1nkgoCard;
+  final StoredAccount account;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +26,10 @@ class CreditCard extends StatelessWidget {
     final double cardPadding = bigDevice ? 26.0 : 16.0;
 
     final double width = calcWidthWithResponsive(context);
+    final String publicKey =
+        account.type.isV2 ? account.address : account.pubKey;
+    final bool allowEditName = account.type == AccountType.v1PasswordLess &&
+        !context.read<AppCubit>().state.v2mode;
     return Card(
         elevation: 8.0,
         shape: RoundedRectangleBorder(
@@ -65,18 +67,29 @@ class CreditCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.all(cardPadding),
-                        child: FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: Text(
-                              tr('g1_wallet'),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: width * 0.07,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            )),
-                      ),
+                          padding: EdgeInsets.all(cardPadding),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      tr('g1_wallet'),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: width * 0.07,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )),
+                                walletIconByType(
+                                    context, account, bigDevice ? 28 : 20, true)
+                                /* Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Icon(iconByAccountType(account),
+                                        color: Colors.white
+                                            .withValues(alpha: 0.45),
+                                        size: bigDevice ? 28 : 20)), */
+                              ])),
                       Padding(
                           padding:
                               EdgeInsets.symmetric(horizontal: cardPadding),
@@ -92,12 +105,13 @@ class CreditCard extends StatelessWidget {
                             const SizedBox(width: 10.0),
                             Expanded(
                                 child: CardNameEditable(
-                              key: Key(publicKey),
+                              key: Key(account.pubKey),
                               publicKey: publicKey,
-                              cardName: cardName,
-                              isG1nkgoCard: isG1nkgoCard,
+                              cardName: account.title,
+                              isEditable: allowEditName,
+                              isPassProtected: account.type.isPasswordProtected,
                               defValue:
-                                  isG1nkgoCard ? tr('your_name_here') : '',
+                                  allowEditName ? tr('your_name_here') : '',
                             )),
                           ])),
                       const SizedBox(height: 6.0),
@@ -133,7 +147,7 @@ class CreditCard extends StatelessWidget {
                             child: Text(
                               tr('card_validity'),
                               style: TextStyle(
-                                decoration: TextDecoration.underline,
+                                // decoration: TextDecoration.underline,
                                 color: Colors.white.withValues(alpha: 0.8),
                                 fontSize: 14.0,
                               ),

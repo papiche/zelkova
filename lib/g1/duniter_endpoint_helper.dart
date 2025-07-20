@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:duniter_indexer/duniter_indexer_client.dart';
@@ -263,8 +264,8 @@ Future<SignAndSendResult> confirmIdentity(String identityName,
   final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
   return executeOnPolkadotNodes(
       (Node node, Provider provider, Gtest polkadot) async {
-    final RuntimeCall call =
-        polkadot.tx.identity.confirmIdentity(idtyName: identityName.codeUnits);
+    final RuntimeCall call = polkadot.tx.identity
+        .confirmIdentity(idtyName: utf8.encode(identityName));
     return signAndSend(
       node,
       provider,
@@ -340,7 +341,7 @@ Future<PayResult> payV2({
 
       if (comment != null) {
         batchCalls.add(
-          polkadot.tx.system.remarkWithEvent(remark: comment.codeUnits),
+          polkadot.tx.system.remarkWithEvent(remark: utf8.encode(comment)),
         );
       }
 

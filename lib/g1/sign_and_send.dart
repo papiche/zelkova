@@ -89,7 +89,7 @@ sign_and_send.Future<SignAndSendResult> signAndSend(Node node,
     ).timeout(timeout);
   } catch (e, stacktrace) {
     final String errorMessage = messageTransformer('error');
-    progressController.add(errorMessage);
+    progressController.addError(errorMessage);
     loggerDev(errorMessage, error: e, stackTrace: stacktrace);
     progressController.close();
   }

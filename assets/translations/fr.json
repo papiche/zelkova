@@ -375,5 +375,9 @@
   "create_wallet_title": "Choisissez comment créer votre portefeuille Ğ1",
   "create_no_password_option": "Sans mot de passe",
   "create_wallet_description": "Créez un tout nouveau portefeuille pour vos transactions de Ğ1",
-  "import_wallet_description": "Charger un portefeuille que vous possédez déjà, en utilisant différentes méthodes"
+  "import_wallet_description": "Charger un portefeuille que vous possédez déjà, en utilisant différentes méthodes",
+  "tooltip_wallet_unlocked": "Ce portefeuille est débloqué",
+  "v2_seed_export_description": "Vous trouverez ci-dessous votre phrase de récupération secrète. Ne la partagez avec personne. Vous pouvez le copier ou l’écrire en toute sécurité. Cela vous permettra de récupérer votre portefeuille au cas où vous en perdriez l'accès.",
+  "create_no_password_description": "Idéal pour les petites quantités et un accès rapide",
+  "tooltip_wallet_locked": "Ce portefeuille est bloqué"
 }

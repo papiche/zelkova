@@ -263,5 +263,6 @@
   "qr_scanner_title": "Escaneja un codi QR",
   "no_transactions_simple": "Aquest moneder no té saldo",
   "issueCreationErrorTitle": "Error en crear la incidència",
-  "select_wallets_export": "Tria els moneders a exportar"
+  "select_wallets_export": "Trieu els moneders a exportar",
+  "select_all_wallets": "Tria'ls tots"
 }

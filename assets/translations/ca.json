@@ -251,5 +251,6 @@
   "wallet_copied": "Moneder desat al porta-retalls",
   "search_user_title_in_contacts": "Busca usuaris",
   "form_contact_name_validation_pub_key": "Si us plau, poseu una clau pública vàlida",
-  "import": "IMPORTA"
+  "import": "IMPORTA",
+  "search_user_title_in_analysis": "Cerca d'usuaris"
 }

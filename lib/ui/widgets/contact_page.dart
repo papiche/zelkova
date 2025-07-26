@@ -270,8 +270,9 @@ class _ContactPageState extends State<ContactPage> {
           if (wotInfo.expireOn != null)
             ListTile(
                 leading: const Icon(Icons.timer),
-                // TODO use cert_expire_on_past if old
-                title: Text(tr('cert_expire_on')),
+                title: Text(tr(wotInfo.expireOn!.isBefore(DateTime.now())
+                    ? 'cert_expire_on_past'
+                    : 'cert_expire_on')),
                 subtitle: Text(
                   humanizeTimeFuture(
                         context.locale.languageCode,

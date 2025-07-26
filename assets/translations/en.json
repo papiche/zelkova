@@ -356,6 +356,7 @@
   "yes": "Yes",
   "no": "No",
   "cert_expire_on": "Certification expires",
+  "cert_expire_on_past": "Certification expired",
   "distance_rule": "Distance Rule",
   "idty_waiting_confirmation": "waiting for confirmation",
   "idty_waiting_certifications": "waiting for certifications",

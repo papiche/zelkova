@@ -3,6 +3,7 @@ import 'dart:typed_data' show Uint8List;
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../g1/g1_helper.dart';
 import '../../g1/g1_v2_helper.dart';
 import 'contact.dart';
 import 'legacy_wallet.dart';
@@ -53,6 +54,7 @@ class StoredAccount {
     return StoredAccount(
       pubKey: e.pubKey,
       address: addressFromV1Pubkey(e.pubKey),
+      seed: seedFromString(e.seed),
       contact: Contact(pubKey: e.pubKey, name: e.name),
       theme: e.theme,
       type: e.seed.isEmpty

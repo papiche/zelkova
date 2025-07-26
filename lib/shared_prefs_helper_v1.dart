@@ -297,4 +297,16 @@ class SharedPreferencesHelperV1
     // Not implemented in V1
     return Future<void>.value();
   }
+
+  @override
+  Future<void> removeCesiumVolatileCard([CesiumWallet? wallet]) async {
+    if (wallet != null) {
+      cesiumVolatileCards.remove(extractPublicKey(wallet.pubkey));
+    } else {
+      final CesiumWallet w = await getCesiumWallet();
+      cesiumVolatileCards.removeWhere((String key, CesiumWallet value) {
+        return key == extractPublicKey(w.pubkey);
+      });
+    }
+  }
 }

@@ -30,7 +30,7 @@ GestureDetector walletIconByType(
             if (account.type == AccountType.v2PasswordProtected) {
               SharedPreferencesHelper().passwordKey = null;
             } else {
-              // TODO
+              SharedPreferencesHelper().removeCesiumVolatileCard();
             }
           } else {
             if (account.type == AccountType.v2PasswordProtected) {

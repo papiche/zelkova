@@ -485,4 +485,17 @@ class SharedPreferencesHelperV2
     }
     await _saveAccounts();
   }
+
+  // Duplicate in V1
+  @override
+  Future<void> removeCesiumVolatileCard([CesiumWallet? wallet]) async {
+    if (wallet != null) {
+      _cesiumVolatileCards.remove(extractPublicKey(wallet.pubkey));
+    } else {
+      final CesiumWallet w = await getCesiumWallet();
+      _cesiumVolatileCards.removeWhere((String key, CesiumWallet value) {
+        return key == extractPublicKey(w.pubkey);
+      });
+    }
+  }
 }

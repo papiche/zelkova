@@ -90,6 +90,8 @@ abstract class SharedPreferencesHelperDelegate {
   bool isLocked([StoredAccount? account]);
 
   Future<void> refreshWalletsInfo();
+
+  void removeCesiumVolatileCard(CesiumWallet? wallet);
 }
 
 class SharedPreferencesHelper with ChangeNotifier {
@@ -201,6 +203,9 @@ class SharedPreferencesHelper with ChangeNotifier {
   bool hasVolatilePass([StoredAccount? account]) => _d.hasVolatilePass(account);
 
   void addCesiumVolatileCard(CesiumWallet w) => _d.addCesiumVolatileCard(w);
+
+  void removeCesiumVolatileCard([CesiumWallet? w]) =>
+      _d.removeCesiumVolatileCard(w);
 
   Future<KeyPair> getKeyPair() => _d.getKeyPair();
 

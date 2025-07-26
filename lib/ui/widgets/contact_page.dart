@@ -57,15 +57,16 @@ class _ContactPageState extends State<ContactPage> {
     _txsCubit = context.read<MultiWalletTransactionCubit>();
     final AppCubit appCubit = context.read<AppCubit>();
     isV2 = appCubit.isV2;
-    _updateBalance();
+    _updateBalance(isMe(widget.contact, SharedPreferencesHelper().getPubKey()));
     _wotInfoStream = _getWotInfo(appCubit);
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
     super.initState();
   }
 
-  Future<void> _updateBalance() async {
-    await _txsCubit.fetchTransactions(pubKey: widget.contact.pubKey);
+  Future<void> _updateBalance(bool isMe) async {
+    await _txsCubit.fetchTransactions(
+        pubKey: widget.contact.pubKey, isExternal: !isMe);
     setState(() {});
   }
 
@@ -269,6 +270,7 @@ class _ContactPageState extends State<ContactPage> {
           if (wotInfo.expireOn != null)
             ListTile(
                 leading: const Icon(Icons.timer),
+                // TODO use cert_expire_on_past if old
                 title: Text(tr('cert_expire_on')),
                 subtitle: Text(
                   humanizeTimeFuture(

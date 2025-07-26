@@ -264,5 +264,22 @@
   "no_transactions_simple": "Aquest moneder no té saldo",
   "issueCreationErrorTitle": "Error en crear la incidència",
   "select_wallets_export": "Trieu els moneders a exportar",
-  "select_all_wallets": "Tria'ls tots"
+  "select_all_wallets": "Tria'ls tots",
+  "date_range_exceed": "El rang de dates no pot excedir els {number} dies.",
+  "market_analysis_report": "Informe d'Anàlisi del Mercat",
+  "select_people_to_analyze": "Tria els comptes a analitzar",
+  "ok": "OK",
+  "done": "FET",
+  "export_contacts": "Exporta els contactes",
+  "other_contacts_involved": "Altres comptes relacionats",
+  "no_wallets_imported": "No s'ha importat cap moneder",
+  "too_many_attempts": "Intents excessius",
+  "transaction_summary": "Resum de les transaccions",
+  "total_received": "Vendes totals ({number}):",
+  "total_sent": "Compres totals ({number}):",
+  "invalid_date_range": "Rang de dates incorrecte",
+  "pdf_generated": "PDF generat",
+  "analyze": "Analitza",
+  "select_date_range": "Trieu un rang de dates",
+  "dates": "Dates"
 }

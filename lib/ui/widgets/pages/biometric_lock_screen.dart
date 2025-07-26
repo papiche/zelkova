@@ -4,13 +4,40 @@ import 'package:flutter/material.dart';
 import '../../../main.dart';
 import '../../biometrics/biometric_auth_service.dart';
 
-class BiometricLockScreen extends StatelessWidget {
+class BiometricLockScreen extends StatefulWidget {
   const BiometricLockScreen({
     super.key,
     required this.onUnlock,
   });
 
   final VoidCallback onUnlock;
+
+  @override
+  State<BiometricLockScreen> createState() => _BiometricLockScreenState();
+}
+
+class _BiometricLockScreenState extends State<BiometricLockScreen> {
+  final BiometricAuthService authService = BiometricAuthService();
+
+  @override
+  void initState() {
+    super.initState();
+    _startAuth(); // inicia autenticación al construir
+  }
+
+  Future<void> _startAuth() async {
+    final bool result = await authService.authenticate();
+    if (!mounted) {
+      return;
+    }
+
+    if (result) {
+      BiometricLockState().unlocked = true;
+      widget.onUnlock();
+    } else {
+      Navigator.of(context).pop(false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +57,9 @@ class BiometricLockScreen extends StatelessWidget {
                 height: 100.0,
               ),
               const SizedBox(height: 24),
-              AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 500),
-                  child: Icon(Icons.lock,
-                      key: ValueKey<dynamic>(isDarkMode),
-                      size: 60,
-                      color: isDarkMode ? Colors.white70 : Colors.blueGrey)),
+              Icon(Icons.lock,
+                  size: 60,
+                  color: isDarkMode ? Colors.white70 : Colors.blueGrey),
               const SizedBox(height: 32),
               Text(
                 tr('app_lock_title'),
@@ -51,24 +75,8 @@ class BiometricLockScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 40),
-              SizedBox(
-                  width: double.infinity,
-                  child: FilledButton.icon(
-                    icon: const Icon(Icons.fingerprint),
-                    style: FilledButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                    ),
-                    label: Text(tr('app_lock_unlock_with_biometrics')),
-                    onPressed: () async {
-                      final BiometricAuthService authService =
-                          BiometricAuthService();
-                      final bool result = await authService.authenticate();
-                      if (result) {
-                        BiometricLockState().unlocked = true;
-                        onUnlock();
-                      }
-                    },
-                  )),
+              const CircularProgressIndicator(),
+              // opcional para mostrar que está esperando
             ],
           ),
         ),

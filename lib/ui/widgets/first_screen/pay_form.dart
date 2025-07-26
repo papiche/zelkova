@@ -81,7 +81,7 @@ class _PayFormState extends State<PayForm> {
                 onChanged: (String? value) {
                   final String newText = (value ?? '').replaceAll('\n', '');
                   // https://forum.duniter.org/t/implementation-des-commentaires-de-transaction/12289/12
-                  // TODO do the > 256 part
+                  // TODO(vjrj): do the > 256 part
                   if (isV2 && newText.length > 256) {
                     _commentController.text = newText.substring(0, 256);
                     _commentController.selection = TextSelection.fromPosition(

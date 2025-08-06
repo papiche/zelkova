@@ -447,5 +447,6 @@
   "import_wallet_from_clipboard_mnemonic": "Importer un portefeuille à partir d'une phrase de récupération",
   "import_wallet_from_clipboard_mnemonic_desc": "Collez une phrase de récupération pour récupérer votre portefeuille",
   "tooltip_wallet_password_less": "Ce portefeuille n'a pas de mot de passe",
-  "v2_seed_export_title": "Phrase de récupération du portefeuille"
+  "v2_seed_export_title": "Phrase de récupération du portefeuille",
+  "cert_expire_on_past": "Certification expiré"
 }

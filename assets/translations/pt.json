@@ -139,5 +139,13 @@
   "notification_new_sent_title": "Novo pagamento enviado",
   "code_translate": "Ayúdanos a traducir Ğ1nkgo",
   "info_links": "Links",
-  "nodes_tech_info": "Lista do Nó"
+  "nodes_tech_info": "Lista do Nó",
+  "search_user_hint": "Digite um nome ou chave ou cole uma lista de chaves",
+  "search_multiuser_hint": "Pressione e segure se quiser pagar vários usuários de uma vez",
+  "search_user_hint_basic": "Digite um nome ou chave",
+  "search_user_title_in_contacts": "Pesquisar usuários",
+  "search_user_title_in_analysis": "Pesquisar usuários",
+  "export_keys": "Exportar suas carteiras",
+  "import_keys": "Importar suas carteiras",
+  "no_transactions_simple": "Esta carteira não tem saldo"
 }

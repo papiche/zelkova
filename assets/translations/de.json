@@ -411,5 +411,10 @@
   "password_too_short": "Das Passwort muss mindestens 6 Zeichen lang sein",
   "passwords_do_not_match": "Die Passwörter stimmen nicht überein",
   "wrong_password": "Falsches Passwort",
-  "use_pattern_instead": "Ein Sperrmuster anstatt eines Passwortes benutzen"
+  "use_pattern_instead": "Ein Sperrmuster anstatt eines Passwortes benutzen",
+  "auth_config_title": "Authentifizierungseinstellungen",
+  "auth_enable_biometrics": "Biometrie verwenden, um Ihre Brieftasche zu schützen",
+  "auth_config_setup_button": "Sperrmuster oder Passwort einrichten",
+  "auth_change_pattern_button": "Sperrmuster oder Passwort ändern",
+  "auth_success_message": "Authentifizierung erfolgreich"
 }

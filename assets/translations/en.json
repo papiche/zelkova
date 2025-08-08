@@ -441,5 +441,8 @@
   "v2_seed_export_description": "Below is your secret recovery seed. Do not share it with anyone. You can copy it or write it down securely. This will allow you to recover your wallet in case you lose access to it.",
   "tooltip_wallet_locked": "This wallet is locked",
   "tooltip_wallet_unlocked": "This wallet is unlocked",
-  "tooltip_wallet_password_less": "This wallet does not have a password"
+  "tooltip_wallet_password_less": "This wallet does not have a password",
+  "error": "Error",
+  "invalid_import_json": "Invalid g1nkgo export file",
+  "error_decoding_json": "Error decoding the g1nkgo export file"
 }

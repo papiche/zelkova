@@ -446,5 +446,8 @@
   "v2_seed_export_description": "A continuación se muestra tu frase de recuperación secreta. No la compartas con nadie. Puedes copiarla o escribirla de forma segura. Esto te permitirá recuperar tu modenero en caso de que pierdas acceso a el.",
   "tooltip_wallet_locked": "Este monedero está bloqueado",
   "tooltip_wallet_unlocked": "Este monedero está desbloqueado",
-  "tooltip_wallet_password_less": "Este monedero no tiene contraseña"
+  "tooltip_wallet_password_less": "Este monedero no tiene contraseña",
+  "error": "Error",
+  "invalid_import_json": "Export de g1nkgo invalido",
+  "error_decoding_json": "Error decodificando el export de g1nkgo"
 }

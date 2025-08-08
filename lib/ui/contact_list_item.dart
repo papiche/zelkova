@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../data/models/contact.dart';
 import '../g1/api.dart';
 import 'ui_helpers.dart';
+import 'widgets/connectivity_widget_wrapper_wrapper.dart';
 
 class ContactListItem extends StatelessWidget {
   const ContactListItem(
@@ -29,16 +31,31 @@ class ContactListItem extends StatelessWidget {
         future: getProfile(contact.pubKey, resize: false, complete: false),
         builder: (BuildContext context, AsyncSnapshot<Contact> snapshot) {
           if (snapshot.hasData) {
-            return _buildListTile(snapshot.data!, context);
+            return _buildListTile(snapshot.data!, context, true);
           } else {
-            return _buildListTile(contact, context);
+            // here a mock contact is used
+            return ConnectivityWidgetWrapperWrapper(
+                offlineWidget: _buildListTile(contact, context, false),
+                child: Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: _buildListTile(
+                    Contact(
+                      pubKey: contact.pubKey,
+                      name: '',
+                    ),
+                    context,
+                    false,
+                  ),
+                ));
           }
         });
   }
 
-  ListTile _buildListTile(Contact contact, BuildContext context) {
+  ListTile _buildListTile(
+      Contact contact, BuildContext context, bool hasProfile) {
     final String title = contact.title;
-    final Widget? subtitle = contact.subtitle != null
+    final Widget? subtitle = contact.subtitle != null && hasProfile
         ? Text(isV2
             ? '${contact.createdOnV2 ? contact.subtitleV2 : contact.subtitle!} ${subtitleExtra != null ? ' - $subtitleExtra' : ''}'
             : contact.subtitle!)

@@ -185,26 +185,34 @@ class NodeManager {
   }
 
   List<Node> getBestNodes(NodeType type) {
-    final List<Node> fnodes = NodeManager().nodesWorkingList(type);
-    final int maxCurrentBlock = fnodes.fold(
+    final List<Node> allNodes = NodeManager().nodeList(type);
+    final List<Node> nodesWithFewErrors = NodeManager().nodesWorkingList(type);
+
+    // Use all nodes to find the max block, even those with errors
+    final int maxCurrentBlock = allNodes.fold(
       0,
       (int max, Node node) => node.currentBlock > max ? node.currentBlock : max,
     );
 
-    // Get nodes near the max block
-    final List<Node> nodesNearMaxBlock = fnodes
-        .where((Node node) => (maxCurrentBlock - node.currentBlock).abs() <= 2)
-        .toList();
+    bool isNearMax(Node node) =>
+        (maxCurrentBlock - node.currentBlock).abs() <= 2;
 
-    sortNodesByErrorOrLatency(nodesNearMaxBlock);
+    final List<Node> workingAndSynced =
+        nodesWithFewErrors.where(isNearMax).toList();
 
-    if (nodesNearMaxBlock.isEmpty) {
-      nodesNearMaxBlock.addAll(defaultNodes(type));
+    if (workingAndSynced.isNotEmpty) {
+      sortNodesByErrorOrLatency(workingAndSynced);
+      return workingAndSynced;
     }
 
-    //   loggerDev(
-    //     'Best nodes: ${nodesNearMaxBlock.length} (max block: $maxCurrentBlock)');
-    return nodesNearMaxBlock;
+    final List<Node> syncedWithErrors = allNodes.where(isNearMax).toList();
+
+    if (syncedWithErrors.isNotEmpty) {
+      syncedWithErrors.shuffle();
+      return syncedWithErrors;
+    }
+
+    return defaultNodes(type);
   }
 
   String ipfsUrl(String path) {

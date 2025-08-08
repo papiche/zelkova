@@ -434,12 +434,13 @@ Future<SignAndSendResult> revoke(
   });
 }
 
-Future<BigInt> currentUniversalDividendV2() async {
+Future<double> currentUniversalDividendV2() async {
   return executeOnPolkadotNodes(
       (Node node, Provider provider, Gtest polkadot) async {
     final Gtest polkadot = Gtest(provider);
     final BigInt currentUd = await polkadot.query.universalDividend.currentUd();
-    return currentUd;
+    logger.warning('Current Universal Dividend: $currentUd');
+    return currentUd.toDouble() / 10;
   });
 }
 /*

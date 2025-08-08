@@ -16,12 +16,12 @@ Future<TransactionState> transactionsV2Parser(
 ) async {
   final String accountAddress = addressFromV1PubkeyFaiSafe(pubKeyRaw);
 
-  final BigInt currentUd = await currentUniversalDividendV2();
+  final double currentUd = await currentUniversalDividendV2();
 
   if (jsonData == null || jsonData.isEmpty) {
     return currentState.copyWith(
       balance: 0.0,
-      currentUd: currentUd.toDouble(),
+      currentUd: currentUd,
       transactions: <Transaction>[],
       lastChecked: DateTime.now(),
     );
@@ -31,7 +31,7 @@ Future<TransactionState> transactionsV2Parser(
   if (accounts == null || accounts.isEmpty) {
     return currentState.copyWith(
       balance: 0.0,
-      currentUd: currentUd.toDouble(),
+      currentUd: currentUd,
       transactions: <Transaction>[],
       lastChecked: DateTime.now(),
     );
@@ -45,7 +45,7 @@ Future<TransactionState> transactionsV2Parser(
   if (account == null) {
     return currentState.copyWith(
       balance: 0.0,
-      currentUd: currentUd.toDouble(),
+      currentUd: currentUd,
       transactions: <Transaction>[],
       lastChecked: DateTime.now(),
     );
@@ -74,7 +74,7 @@ Future<TransactionState> transactionsV2Parser(
 
   return currentState.copyWith(
     balance: balance,
-    currentUd: currentUd.toDouble(),
+    currentUd: currentUd,
     transactions: allTransactions,
     lastChecked: DateTime.now(),
   );

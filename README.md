@@ -216,14 +216,14 @@ DropdownMenuItem<Locale>(
 - ast: dixebral
 - ca: calbasi
 - da: Gerhard Pischinger
-- de: Andreas Wahlen and FW
+- de: Andreas Wahlen, Christophe Parot and FW
 - eo: flodef
 - eu: Anna Ayala Alcalá
-- fr: flodef, Hugo, Maaltir, Michel du 64, italpaola, poka, Cristina Abella and vincentux
+- fr: flodef, Hugo, Maaltir, Michel du 64, italpaola, poka, Cristina Abella, Christophe Parot and vincentux
 - gl: Vijitâtman
 - it: Anna Ayala Alcalá, italpaola
 - nl: Maria Rosa Costa i Alandi
-- pt: Carlos Neto
+- pt: Carlos Neto and Christophe Parot
 
 Thanks!
 

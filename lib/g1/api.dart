@@ -749,6 +749,39 @@ Future<PayResult> payV1(
 
 Tuple2<String, Node> getGvaNode() {
   final List<Node> nodes = NodeManager().getBestNodes(NodeType.gva);
+
+  if (nodes.isEmpty) {
+    throw Exception(
+        'Sorry: I cannot find a working node to send the transaction');
+  }
+
+  final Node? currentGvaNode = NodeManager().getCurrentGvaNode();
+
+  // Check if the current node is in the list and has no errors
+  final bool currentIsHealthy = currentGvaNode != null &&
+      currentGvaNode.errors == 0 &&
+      nodes.contains(currentGvaNode);
+
+  // It's in the list but has some errors
+  final bool currentIsFallback =
+      currentGvaNode != null && nodes.contains(currentGvaNode);
+
+  final Node selectedNode = currentIsHealthy
+      ? currentGvaNode
+      : nodes.firstWhere((Node node) => node.errors == 0,
+          orElse: () => currentIsFallback ? currentGvaNode : nodes.first);
+
+  loggerDev(
+    'Selected GVA node ${selectedNode.url}, '
+    'previous: ${currentGvaNode?.url ?? "none"}, '
+    'errors: ${selectedNode.errors}',
+  );
+
+  return Tuple2<String, Node>(proxyfyNode(selectedNode.url), selectedNode);
+}
+
+Tuple2<String, Node> getGvaNodeOld() {
+  final List<Node> nodes = NodeManager().getBestNodes(NodeType.gva);
   if (nodes.isNotEmpty) {
     final Node? currentGvaNode = NodeManager().getCurrentGvaNode();
     final bool currentIsInBest = nodes.contains(currentGvaNode);

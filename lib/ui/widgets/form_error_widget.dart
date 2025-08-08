@@ -23,10 +23,11 @@ class FormErrorWidget extends StatelessWidget {
               children: <Widget>[
                 const Icon(Icons.error_outline, color: Colors.red),
                 const SizedBox(width: 4),
-                Text(
+                Flexible(
+                    child: Text(
                   capitalize(value),
                   style: const TextStyle(color: Colors.red),
-                ),
+                )),
               ],
             );
           } else {

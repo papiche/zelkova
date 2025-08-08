@@ -319,6 +319,10 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
   String? get subtitleV2 =>
       (nick != null || name != null) ? humanizeAddress(address) : null;
 
+  String? get subtitleV1V2 => (nick != null || name != null)
+      ? '${humanizePubKey(pubKey)} ${humanizeAddress(address)}'
+      : null;
+
   Contact cloneWithoutAvatar() {
     return Contact(
         nick: nick,

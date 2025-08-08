@@ -377,6 +377,8 @@ class MultiWalletTransactionCubit
                 '@@@@@ Warn user: Not found an old pending transaction ${pend.toStringSmall(myPubKey)}');
             // Add it but with missing type
             newPendingTxs.add(pend.copyWith(type: TransactionType.failed));
+            // Mark the node with one more error via increaseNodeErrors
+            increaseNodeErrors(NodeType.gva, node);
           }
         }
       }

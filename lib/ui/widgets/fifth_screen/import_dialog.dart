@@ -24,6 +24,7 @@ import '../../pattern_util.dart';
 import '../../ui_helpers.dart';
 import '../cesium_auth_dialog.dart';
 import '../custom_error_widget.dart';
+import '../error_dialog.dart';
 import 'import_clipboard_dialog.dart';
 import 'import_types.dart';
 
@@ -40,6 +41,7 @@ class _ImportDialogState extends State<ImportDialog> {
   final GlobalKey<ScaffoldState> _importKey =
       GlobalKey<ScaffoldState>(debugLabel: 'importKey');
   int _attempts = 0;
+  bool _errorDialogShown = false;
 
   @override
   Widget build(BuildContext c) {
@@ -52,138 +54,191 @@ class _ImportDialogState extends State<ImportDialog> {
               snapshot.data != null &&
               snapshot.data!.isNotEmpty) {
             final String keyEncString = snapshot.data!;
-            final Map<String, dynamic> keyJson =
-                jsonDecode(keyEncString) as Map<String, dynamic>;
-            final String keyEncrypted = keyJson['key'] as String;
-            return Scaffold(
-              key: _importKey,
-              appBar: AppBar(
-                title: Text(tr('draw_your_pattern')),
-              ),
-              body: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Flexible(
-                    child: Padding(
-                        padding: const EdgeInsets.only(left: 30),
-                        child: Text(
-                          tr('intro_pattern_to_import'),
-                          style: const TextStyle(fontSize: 26),
-                        )),
-                  ),
-                  Flexible(
-                    child: PatternLock(
-                      selectedColor: selectedPatternLock(),
-                      notSelectedColor: notSelectedPatternLock(),
-                      pointRadius: 8,
-                      fillPoints: true,
-                      onInputComplete: (List<int> pattern) async {
-                        if (_attempts >= 3) {
-                          c.replaceSnackbar(
-                            content: Text(
-                              tr('too_many_attempts'),
-                              style: const TextStyle(color: Colors.red),
-                            ),
-                          );
-                          Navigator.of(context).pop(true);
-                          return;
-                        }
-                        try {
-                          // try to decrypt
-                          final Map<String, dynamic> keys =
-                              decryptJsonForImport(
-                                  keyEncrypted, pattern.join());
+            // This can fail if the string is not a valid JSON or a valid
+            // export so we catch the error
+            try {
+              final Map<String, dynamic> keyJson =
+                  jsonDecode(keyEncString) as Map<String, dynamic>;
+              if (keyJson['key'] == null) {
+                if (!_errorDialogShown) {
+                  _errorDialogShown = true;
+
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return const ErrorDialog(
+                          titleKey: 'error',
+                          messageKey: 'invalid_import_json',
+                        );
+                      },
+                    ).then((_) {
+                      _errorDialogShown = false;
+                      if (!context.mounted) {
+                        return;
+                      }
+                      Navigator.of(context).pop();
+                    });
+                  });
+                }
+                return Container();
+              }
+
+              final String keyEncrypted = keyJson['key'] as String;
+              return Scaffold(
+                key: _importKey,
+                appBar: AppBar(
+                  title: Text(tr('draw_your_pattern')),
+                ),
+                body: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Flexible(
+                      child: Padding(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: Text(
+                            tr('intro_pattern_to_import'),
+                            style: const TextStyle(fontSize: 26),
+                          )),
+                    ),
+                    Flexible(
+                      child: PatternLock(
+                        selectedColor: selectedPatternLock(),
+                        notSelectedColor: notSelectedPatternLock(),
+                        pointRadius: 8,
+                        fillPoints: true,
+                        onInputComplete: (List<int> pattern) async {
+                          if (_attempts >= 3) {
+                            c.replaceSnackbar(
+                              content: Text(
+                                tr('too_many_attempts'),
+                                style: const TextStyle(color: Colors.red),
+                              ),
+                            );
+                            Navigator.of(context).pop(true);
+                            return;
+                          }
                           try {
-                            final dynamic cesiumCards = keys['cesiumCards'];
-                            final List<dynamic>? contacts =
-                                keys['contacts'] as List<dynamic>?;
-                            importContacts(contacts, context);
-                            if (cesiumCards != null) {
-                              final List<dynamic> cesiumCardList =
-                                  jsonDecode(cesiumCards as String)
-                                      as List<dynamic>;
-                              // ignore: avoid_function_literals_in_foreach_calls
-                              int imported = 0;
-                              for (final dynamic cesiumCard in cesiumCardList) {
-                                final bool result = importWalletToSharedPrefs(
-                                    context,
-                                    cesiumCard as Map<String, dynamic>);
-                                if (result) {
-                                  imported += 1;
+                            // try to decrypt
+                            final Map<String, dynamic> keys =
+                                decryptJsonForImport(
+                                    keyEncrypted, pattern.join());
+                            try {
+                              final dynamic cesiumCards = keys['cesiumCards'];
+                              final List<dynamic>? contacts =
+                                  keys['contacts'] as List<dynamic>?;
+                              importContacts(contacts, context);
+                              if (cesiumCards != null) {
+                                final List<dynamic> cesiumCardList =
+                                    jsonDecode(cesiumCards as String)
+                                        as List<dynamic>;
+                                // ignore: avoid_function_literals_in_foreach_calls
+                                int imported = 0;
+                                for (final dynamic cesiumCard
+                                    in cesiumCardList) {
+                                  final bool result = importWalletToSharedPrefs(
+                                      context,
+                                      cesiumCard as Map<String, dynamic>);
+                                  if (result) {
+                                    imported += 1;
+                                  }
                                 }
+                                c.replaceSnackbar(
+                                  content: Text(
+                                    imported == 0
+                                        ? tr('no_wallets_imported')
+                                        : tr('wallets_imported',
+                                            namedArgs: <String, String>{
+                                                'number': imported.toString()
+                                              }),
+                                    style: TextStyle(
+                                        color: imported == 0
+                                            ? Colors.red
+                                            : Colors.white),
+                                  ),
+                                );
+                                Navigator.of(context).pop(true);
+                                return;
+                              } else {
+                                importWalletToSharedPrefs(context, keys);
+                              }
+                              if (!mounted) {
+                                return;
                               }
                               c.replaceSnackbar(
                                 content: Text(
-                                  imported == 0
-                                      ? tr('no_wallets_imported')
-                                      : tr('wallets_imported',
-                                          namedArgs: <String, String>{
-                                              'number': imported.toString()
-                                            }),
-                                  style: TextStyle(
-                                      color: imported == 0
-                                          ? Colors.red
-                                          : Colors.white),
+                                  tr('wallet_imported'),
+                                  style: const TextStyle(color: Colors.white),
                                 ),
                               );
-                              Navigator.of(context).pop(true);
+                              // ok, fetch the transactions & balance
+                              // fetchTransactions(context);
+                            } catch (e, stacktrace) {
+                              logger('Error importing wallet: $e');
+                              if (!c.mounted) {
+                                return;
+                              }
+                              c.replaceSnackbar(
+                                content: Text(
+                                  tr('error_importing_wallet'),
+                                  style: const TextStyle(color: Colors.red),
+                                ),
+                              );
+                              await Sentry.captureException(e,
+                                  stackTrace: stacktrace);
                               return;
-                            } else {
-                              importWalletToSharedPrefs(context, keys);
                             }
-                            if (!mounted) {
+
+                            if (!context.mounted) {
                               return;
                             }
-                            c.replaceSnackbar(
-                              content: Text(
-                                tr('wallet_imported'),
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                            );
-                            // ok, fetch the transactions & balance
-                            // fetchTransactions(context);
+                            Navigator.of(context).pop(true);
                           } catch (e, stacktrace) {
-                            logger('Error importing wallet: $e');
-                            if (!c.mounted) {
+                            _attempts++;
+                            logger(e.toString());
+                            logger(stacktrace);
+                            if (!context.mounted) {
                               return;
                             }
-                            c.replaceSnackbar(
+                            context.replaceSnackbar(
                               content: Text(
-                                tr('error_importing_wallet'),
+                                tr('wrong_pattern'),
                                 style: const TextStyle(color: Colors.red),
                               ),
                             );
                             await Sentry.captureException(e,
                                 stackTrace: stacktrace);
-                            return;
                           }
-
-                          if (!context.mounted) {
-                            return;
-                          }
-                          Navigator.of(context).pop(true);
-                        } catch (e, stacktrace) {
-                          _attempts++;
-                          logger(e.toString());
-                          logger(stacktrace);
-                          if (!context.mounted) {
-                            return;
-                          }
-                          context.replaceSnackbar(
-                            content: Text(
-                              tr('wrong_pattern'),
-                              style: const TextStyle(color: Colors.red),
-                            ),
-                          );
-                          await Sentry.captureException(e,
-                              stackTrace: stacktrace);
-                        }
-                      },
+                        },
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            );
+                  ],
+                ),
+              );
+            } catch (e) {
+              if (!_errorDialogShown) {
+                _errorDialogShown = true;
+                logger('Error decoding JSON: $e');
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const ErrorDialog(
+                        titleKey: 'error',
+                        messageKey: 'error_decoding_json',
+                      );
+                    },
+                  ).then((_) {
+                    _errorDialogShown = false;
+                    if (!context.mounted) {
+                      return;
+                    }
+                    Navigator.of(context).pop();
+                  });
+                });
+              }
+              return Container();
+            }
           } else if (snapshot.hasError) {
             return CustomErrorWidget(snapshot.error);
           } else {

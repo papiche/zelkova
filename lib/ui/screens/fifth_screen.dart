@@ -14,6 +14,7 @@ import '../../g1/currency.dart';
 import '../../g1/service_manager.dart';
 import '../../shared_prefs_helper.dart';
 import '../clipboard_helper.dart';
+import '../contacts_cache.dart';
 import '../tutorial.dart';
 import '../tutorial_keys.dart';
 import '../ui_helpers.dart';
@@ -237,6 +238,7 @@ class _FifthScreenState extends State<FifthScreen> {
                           if (v2mode) {
                             SharedPreferencesHelper()
                                 .init(onlyV2: state.v2mode);
+                            ContactsCache().clear();
                           }
                           GetIt.instance<ServiceManager>()
                               .updateService(v2mode);

@@ -45,19 +45,37 @@ String formatAmountWithLocale(
     required double amount,
     required bool isG1,
     required bool useSymbol}) {
-  final NumberFormat currencyFormatter =
-      currentNumberFormat(isG1: isG1, locale: locale, useSymbol: useSymbol);
+  final NumberFormat currencyFormatter = currentNumberFormat(
+      isG1: isG1, locale: locale, useSymbol: useSymbol, amount: amount);
   return currencyFormatter.format(amount);
 }
 
-NumberFormat currentNumberFormat(
-    {required bool useSymbol, required bool isG1, required String locale}) {
-  final NumberFormat currencyFormatter = NumberFormat.currency(
+NumberFormat currentNumberFormat({
+  required bool useSymbol,
+  required bool isG1,
+  required String locale,
+  required double amount,
+}) {
+  // Maximum decimals allowed depending on currency type
+  final int maxDecimals = isG1 ? 2 : 3;
+
+  // Minimum decimals depending on currency type
+  final int minDecimals = isG1 ? 1 : 0;
+
+  // Start from the max decimals and trim trailing zeros
+  int decimalsToShow = maxDecimals;
+  String asString = amount.toStringAsFixed(maxDecimals);
+  while (decimalsToShow > minDecimals && asString.endsWith('0')) {
+    decimalsToShow--;
+    asString = amount.toStringAsFixed(decimalsToShow);
+  }
+
+  // Build the currency formatter with the correct locale and symbol
+  return NumberFormat.currency(
     symbol: useSymbol ? currentCurrency(isG1) : '',
-    locale: eo(locale),
-    decimalDigits: isG1 ? 2 : 3,
+    locale: eo(locale), // fallback for Esperanto
+    decimalDigits: decimalsToShow,
   );
-  return currencyFormatter;
 }
 
 String currentCurrency(bool isG1) {

@@ -179,7 +179,7 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
     currentUd = appCubit.currentUd;
     currentSymbol = currentCurrencyTrimmed(isG1);
     currentNumber = currentNumberFormat(
-        useSymbol: true, isG1: isG1, locale: currentLocale(context));
+        useSymbol: true, isG1: isG1, locale: currentLocale(context), amount: 1);
     isCurrencyBefore =
         isSymbolPlacementBefore(currentNumber.symbols.CURRENCY_PATTERN);
     return BlocBuilder<PaymentCubit, PaymentState>(

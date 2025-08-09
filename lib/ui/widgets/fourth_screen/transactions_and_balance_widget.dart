@@ -154,10 +154,6 @@ class _TransactionsAndBalanceWidgetState
     final bool isG1 = appCubit.currency == Currency.G1;
     final double currentUd = appCubit.currentUd;
     final String currentSymbol = currentCurrencyTrimmed(isG1);
-    final NumberFormat currentNumber = currentNumberFormat(
-        useSymbol: true, isG1: isG1, locale: currentLocale(context));
-    final bool isCurrencyBefore =
-        isSymbolPlacementBefore(currentNumber.symbols.CURRENCY_PATTERN);
     return BlocBuilder<MultiWalletTransactionCubit,
             MultiWalletTransactionState>(
         builder: (BuildContext context,
@@ -166,7 +162,13 @@ class _TransactionsAndBalanceWidgetState
       final String currentPubKey =
           widget.pubKey ?? SharedPreferencesHelper().getPubKey();
       final double balance = getBalance(context);
-
+      final NumberFormat currentNumber = currentNumberFormat(
+          useSymbol: true,
+          isG1: isG1,
+          locale: currentLocale(context),
+          amount: balance);
+      final bool isCurrencyBefore =
+          isSymbolPlacementBefore(currentNumber.symbols.CURRENCY_PATTERN);
       return widget.pubKey == null
           ? Scaffold(
               drawer: const CardDrawer(),
@@ -432,12 +434,15 @@ class BalanceWidget extends StatelessWidget {
     final bool isG1 = appCubit.currency == Currency.G1;
     final double currentUd = appCubit.currentUd;
     final String currentSymbol = currentCurrencyTrimmed(isG1);
-    final NumberFormat currentNumber = currentNumberFormat(
-        useSymbol: true, isG1: isG1, locale: currentLocale(context));
-    final bool isCurrencyBefore =
-        isSymbolPlacementBefore(currentNumber.symbols.CURRENCY_PATTERN);
     final double balance =
         context.read<MultiWalletTransactionCubit>().balance(pubKey);
+    final NumberFormat currentNumber = currentNumberFormat(
+        useSymbol: true,
+        isG1: isG1,
+        locale: currentLocale(context),
+        amount: balance);
+    final bool isCurrencyBefore =
+        isSymbolPlacementBefore(currentNumber.symbols.CURRENCY_PATTERN);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Center(

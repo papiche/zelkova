@@ -76,19 +76,23 @@ class _ImportClipboardDialogState extends State<ImportClipboardDialog> {
   Widget build(BuildContext context) {
     String title;
     String description;
+    bool showQrButton = false;
 
     switch (widget.importType) {
       case ImportType.clipboardG1nkgoV1Export:
         title = tr('import_wallet_from_clipboard');
         description = tr('import_wallet_from_clipboard_desc');
+        showQrButton = false;
         break;
       case ImportType.clipboardPubKey:
         title = tr('import_wallet_from_clipboard_pubkey');
         description = tr('import_wallet_from_clipboard_pubkey_desc');
+        showQrButton = true;
         break;
       case ImportType.clipboardMnemonic:
         title = tr('import_wallet_from_clipboard_mnemonic');
         description = tr('import_wallet_from_clipboard_mnemonic_desc');
+        showQrButton = false;
       case ImportType.fileG1nkgoV1Export:
         throw UnimplementedError('Other import types are not supported here');
     }
@@ -114,12 +118,13 @@ class _ImportClipboardDialogState extends State<ImportClipboardDialog> {
         Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              GenericQrButton(
-                onKeyScanned: (String key) {
-                  Navigator.of(context).pop(key);
-                  widget.onImport(key);
-                },
-              ),
+              if (showQrButton)
+                GenericQrButton(
+                  onKeyScanned: (String key) {
+                    Navigator.of(context).pop(key);
+                    widget.onImport(key);
+                  },
+                ),
               TextButton(
                 child: Text(tr('import')),
                 onPressed: () {

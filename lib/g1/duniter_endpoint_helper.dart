@@ -439,7 +439,7 @@ Future<double> currentUniversalDividendV2() async {
       (Node node, Provider provider, Gtest polkadot) async {
     final Gtest polkadot = Gtest(provider);
     final BigInt currentUd = await polkadot.query.universalDividend.currentUd();
-    logger.warning('Current Universal Dividend: $currentUd');
+    // logger.warning('Current Universal Dividend: $currentUd');
     return currentUd.toDouble() / 100;
   });
 }

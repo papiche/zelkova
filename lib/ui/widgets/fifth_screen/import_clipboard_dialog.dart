@@ -1,8 +1,8 @@
-import 'package:bip39_multi_nullsafety/bip39_multi_nullsafety.dart' as bip39;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../../g1/g1_helper.dart';
+import '../../../g1/g1_v2_helper.dart';
 import '../../clipboard_helper.dart';
 import '../generic_qr_button.dart';
 import 'import_types.dart';
@@ -11,7 +11,8 @@ class ImportClipboardDialog extends StatefulWidget {
   const ImportClipboardDialog(
       {super.key, required this.onImport, required this.importType});
 
-  final Function(String) onImport;
+  final Future<void> Function(String) onImport;
+
   final ImportType importType;
 
   @override
@@ -21,45 +22,53 @@ class ImportClipboardDialog extends StatefulWidget {
 class _ImportClipboardDialogState extends State<ImportClipboardDialog> {
   final TextEditingController _textController = TextEditingController();
   String? _errorMessage;
+  bool _isImporting = false; // optional guard
 
-  void _validateAndImport() {
+  Future<void> _validateAndImport() async {
+    if (_isImporting) {
+      return;
+    }
     final String text = _textController.text;
 
     switch (widget.importType) {
       case ImportType.clipboardG1nkgoV1Export:
         if (text.isEmpty) {
-          setState(() {
-            _errorMessage = tr('error_empty_g1nkgo');
-          });
+          setState(() => _errorMessage = tr('error_empty_g1nkgo'));
           return;
         }
         break;
       case ImportType.clipboardPubKey:
         if (!validateKey(text)) {
-          setState(() {
-            _errorMessage = tr('error_invalid_pubkey');
-          });
+          setState(() => _errorMessage = tr('error_invalid_pubkey'));
           return;
         }
         break;
       case ImportType.clipboardMnemonic:
-        if (text.split(' ').length < 12 ||
-            bip39.validateMnemonic(text) == false) {
-          setState(() {
-            _errorMessage = tr('error_invalid_mnemonic');
-          });
+        if (text.split(' ').length < 12 || !validateMnemonicMulti(text)) {
+          setState(() => _errorMessage = tr('error_invalid_mnemonic'));
           return;
         }
         break;
       case ImportType.fileG1nkgoV1Export:
-        throw UnimplementedError('Other import types are not supported here');
+        throw UnimplementedError('Not supported here');
     }
 
     setState(() {
       _errorMessage = null;
+      _isImporting = true;
     });
-    Navigator.of(context).pop(text);
-    widget.onImport(text);
+
+    try {
+      await widget.onImport(text);
+      if (!mounted) {
+        return;
+      }
+      Navigator.of(context).pop(text); // close the dialog AFTER import
+    } finally {
+      if (mounted) {
+        setState(() => _isImporting = false);
+      }
+    }
   }
 
   Future<void> _pasteFromClipboard() async {

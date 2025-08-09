@@ -14,6 +14,7 @@ import 'package:ginkgo/g1/g1_v2_helper.dart';
 import 'package:ginkgo/secure_crypto_helper.dart';
 import 'package:ginkgo/shared_prefs_helper.dart';
 import 'package:ginkgo/storage_keys.dart';
+import 'package:ginkgo/ui/logger.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -249,7 +250,7 @@ void main() {
 
   test('Store and retrieve v2PasswordLess account', () async {
     final String mnemonic = mnemonicGenerate();
-    helper.importWalletFromMnemonic(mnemonic);
+    helper.importWalletFromMnemonic(mnemonic, AccountType.v2PasswordLess);
     final KeyPair kp = await KeyPair.ed25519.fromMnemonic(mnemonic);
     final String pubKey = v1pubkeyFromAddress(kp.address);
 
@@ -330,7 +331,7 @@ void main() {
         'legal winner thank year wave sausage worth useful legal winner thank yellow';
     expect(mnemonic.split(' ').length, 12);
     expect(bip39.validateMnemonic(mnemonic), true);
-    await helper.importWalletFromMnemonic(mnemonic);
+    await helper.importWalletFromMnemonic(mnemonic, AccountType.v2PasswordLess);
     final StoredAccount acc = helper.accounts.last;
     expect(acc.address, 'g1MmPVNXofuDN4tQFyGoFg7GT9npLscGWVLtV7hXCqMmha1DS',
         reason: 'No same address');
@@ -391,5 +392,115 @@ void main() {
     final Uint8List? decryptedWithOldKey =
         SecureCryptoHelper.decrypt(updated.seed!, oldKey);
     expect(decryptedWithOldKey, isNull);
+  });
+
+  group('derivation compatibility', () {
+    test('known EN mnemonic -> expected address (compat bridge)', () async {
+      const String mnemonic =
+          'attitude legend purchase discover canyon panda phone change flavor language often will';
+      const String expectedAddress =
+          'g1Px6m62yD5J1CYLTwqVA4jFZ4YfyR6zWX8GyPgBwPNpukQx6';
+
+      final KeyPair kp = await deriveKeyPairCompat(mnemonic);
+      expect(kp.address, expectedAddress, reason: 'KeyPair address mismatch');
+
+      await helper.importWalletFromMnemonic(
+          mnemonic, AccountType.v2PasswordLess);
+      final StoredAccount acc = helper.accounts.last;
+      expect(acc.address, expectedAddress,
+          reason: 'Stored account address mismatch');
+    });
+  });
+
+  group('cross-language mnemonic equivalence', () {
+    test('EN/ES/FR/IT mnemonics (same entropy) yield the same address',
+        () async {
+      const String enMnemonic =
+          'attitude legend purchase discover canyon panda phone change flavor language often will';
+      const String expectedAddress =
+          'g1Px6m62yD5J1CYLTwqVA4jFZ4YfyR6zWX8GyPgBwPNpukQx6';
+
+      // Build equivalents from the same entropy
+      final String entropyHex =
+          bip39.mnemonicToEntropy(enMnemonic); // , language: 'english');
+
+      final Map<String, String> mnemonics = <String, String>{
+        'english': enMnemonic,
+        'spanish': bip39.entropyToMnemonic(entropyHex, language: 'spanish'),
+        'french': bip39.entropyToMnemonic(entropyHex, language: 'french'),
+        'italian': bip39.entropyToMnemonic(entropyHex, language: 'italian'),
+      };
+
+      // english mnemonic: attitude legend purchase discover canyon panda phone change flavor language often will
+      // spanish mnemonic: añadir lima pedal danza bozal océano opaco cadáver fiebre legión nervio violín
+      // french mnemonic: anormal imposer orifice déborder bouquin mouche néfaste cabanon éprouver humide menhir vinaigre
+      // italian mnemonic: appetito minerale ramingo docente buca piacere poderoso capra fumante mercurio pari virulento
+
+      for (final MapEntry<String, String> entry in mnemonics.entries) {
+        logger('${entry.key} mnemonic: ${entry.value}');
+      }
+
+      // Sanity: each validates in its wordlist
+      expect(
+          bip39.validateMnemonic(mnemonics['english']!),
+          // , language: 'english'),
+          isTrue);
+      expect(bip39.validateMnemonic(mnemonics['spanish']!, language: 'spanish'),
+          isTrue);
+      expect(bip39.validateMnemonic(mnemonics['french']!, language: 'french'),
+          isTrue);
+      expect(bip39.validateMnemonic(mnemonics['italian']!, language: 'italian'),
+          isTrue);
+
+      // All derived addresses must match the expected one
+      for (final MapEntry<String, String> entry in mnemonics.entries) {
+        final KeyPair kp = await deriveKeyPairCompat(entry.value);
+        expect(kp.address, expectedAddress,
+            reason: 'Mismatch for language ${entry.key}');
+      }
+    });
+
+    test('import flow deduplicates the same entropy across languages',
+        () async {
+      // Fresh helper (mock storage is already set up in setUp)
+      final SharedPreferencesHelper importHelper = SharedPreferencesHelper();
+      await importHelper.init(onlyV2: true);
+      importHelper.accountsClear();
+
+      const String enMnemonic =
+          'attitude legend purchase discover canyon panda phone change flavor language often will';
+      final String entropyHex =
+          bip39.mnemonicToEntropy(enMnemonic); // , language: 'english');
+
+      final String esMnemonic =
+          bip39.entropyToMnemonic(entropyHex, language: 'spanish');
+      final String frMnemonic =
+          bip39.entropyToMnemonic(entropyHex, language: 'french');
+      final String itMnemonic =
+          bip39.entropyToMnemonic(entropyHex, language: 'italian');
+
+      // First import should succeed
+      await importHelper.importWalletFromMnemonic(
+          enMnemonic, AccountType.v2PasswordLess);
+      expect(importHelper.length, 1);
+
+      // Subsequent imports of the same entropy (other languages) should fail with "Already exists"
+      Future<void> expectAlreadyExists(String m) async {
+        try {
+          await importHelper.importWalletFromMnemonic(
+              m, AccountType.v2PasswordLess);
+          fail('Expected "Already exists" when importing same entropy again');
+        } catch (e) {
+          expect(e.toString(), contains('Already exists'));
+        }
+      }
+
+      await expectAlreadyExists(esMnemonic);
+      await expectAlreadyExists(frMnemonic);
+      await expectAlreadyExists(itMnemonic);
+
+      // Still only one wallet stored
+      expect(importHelper.length, 1);
+    });
   });
 }

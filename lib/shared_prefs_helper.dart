@@ -58,7 +58,7 @@ abstract class SharedPreferencesHelperDelegate {
 
   Future<KeyPair> getKeyPair();
 
-  Future<void> importWalletFromMnemonic(String m);
+  Future<void> importWalletFromMnemonic(String m, AccountType type);
 
   Future<void> saveLegacyWallets([bool notify]);
 
@@ -209,8 +209,8 @@ class SharedPreferencesHelper with ChangeNotifier {
 
   Future<KeyPair> getKeyPair() => _d.getKeyPair();
 
-  Future<void> importWalletFromMnemonic(String m) =>
-      _d.importWalletFromMnemonic(m);
+  Future<void> importWalletFromMnemonic(String m, AccountType type) =>
+      _d.importWalletFromMnemonic(m, type);
 
   /// Helper to create a v1 LegacyWallet, either password-less (with seed) or
   /// password-protected (with empty seed).

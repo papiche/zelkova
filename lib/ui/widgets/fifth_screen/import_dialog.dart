@@ -9,15 +9,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pattern_lock/pattern_lock.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:substrate_bip39/substrate_bip39.dart';
 import 'package:universal_html/html.dart' as html;
 
-import '../../../data/models/app_cubit.dart';
 import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
 import '../../../data/models/multi_wallet_transaction_cubit.dart';
+import '../../../data/models/stored_account.dart';
 import '../../../g1/g1_helper.dart';
+import '../../../g1/g1_v2_helper.dart'; // validateMnemonicMulti
 import '../../../shared_prefs_helper.dart';
+import '../../../wallet_already_exists_exception.dart';
 import '../../file_picker/file_picker_wrapper.dart';
 import '../../logger.dart';
 import '../../pattern_util.dart';
@@ -27,6 +28,7 @@ import '../custom_error_widget.dart';
 import '../error_dialog.dart';
 import 'import_clipboard_dialog.dart';
 import 'import_types.dart';
+import 'select_import_method.dart';
 
 class ImportDialog extends StatefulWidget {
   const ImportDialog({super.key, this.textToImport});
@@ -54,6 +56,57 @@ class _ImportDialogState extends State<ImportDialog> {
               snapshot.data != null &&
               snapshot.data!.isNotEmpty) {
             final String keyEncString = snapshot.data!;
+
+            // If it's a pubkey, do not try to parse JSON here.
+            if (validateKey(keyEncString)) {
+              if (!_errorDialogShown) {
+                _errorDialogShown = true;
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const ErrorDialog(
+                        titleKey: 'error',
+                        messageKey: 'invalid_import_json',
+                      );
+                    },
+                  ).then((_) {
+                    _errorDialogShown = false;
+                    if (!context.mounted) {
+                      return;
+                    }
+                    Navigator.of(context).pop();
+                  });
+                });
+              }
+              return const SizedBox.shrink();
+            }
+
+            // Only JSON path from here.
+            if (!looksLikeJson(keyEncString)) {
+              if (!_errorDialogShown) {
+                _errorDialogShown = true;
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const ErrorDialog(
+                        titleKey: 'error',
+                        messageKey: 'invalid_import_json',
+                      );
+                    },
+                  ).then((_) {
+                    _errorDialogShown = false;
+                    if (!context.mounted) {
+                      return;
+                    }
+                    Navigator.of(context).pop();
+                  });
+                });
+              }
+              return const SizedBox.shrink();
+            }
+
             // This can fail if the string is not a valid JSON or a valid
             // export so we catch the error
             try {
@@ -313,89 +366,60 @@ Future<void> showSelectImportMethodDialog(
           return const ImportDialog();
         } else {
           return ImportClipboardDialog(
-              importType: importType,
-              onImport: (String textToImport) {
-                if (validateKey(textToImport)) {
-                  // It's a simple pubkey, let's think is a cesium password protected wallet
-                  if (!SharedPreferencesHelper().has(textToImport)) {
-                    showAuthCesiumWalletDialog(context, textToImport, returnTo);
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(tr('wallet_already_imported'))));
+            importType: importType,
+            onImport: (String textToImport) async {
+              if (validateKey(textToImport)) {
+                if (!SharedPreferencesHelper().has(textToImport)) {
+                  showAuthCesiumWalletDialog(context, textToImport, returnTo);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(tr('wallet_already_imported'))),
+                  );
+                }
+                return;
+              }
+
+              if (validateMnemonicMulti(textToImport)) {
+                try {
+                  await SharedPreferencesHelper().importWalletFromMnemonic(
+                    textToImport,
+                    AccountType.v2PasswordProtected,
+                  );
+                  if (!context.mounted) {
+                    return;
                   }
-                } else if (_isMnemonic(textToImport)) {
-                  SharedPreferencesHelper()
-                      .importWalletFromMnemonic(textToImport);
                   context.replaceSnackbar(content: Text(tr('wallet_imported')));
                   Navigator.of(context).pop(true);
-                } else {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return ImportDialog(textToImport: textToImport);
-                      });
+                } on WalletAlreadyExistsException {
+                  if (!context.mounted) {
+                    return;
+                  }
+                  context.replaceSnackbar(
+                      content: Text(tr('wallet_already_imported')));
+                  Navigator.of(context).pop(true);
+                } catch (e, st) {
+                  logger('Error importing mnemonic: $e');
+                  await Sentry.captureException(e, stackTrace: st);
+                  if (!context.mounted) {
+                    return;
+                  }
+                  context.replaceSnackbar(
+                      content: Text(tr('error_importing_wallet')));
                 }
-              });
+                return;
+              }
+
+              // Fallback: route non-JSON / non-mnemonic / non-pubkey to ImportDialog
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return ImportDialog(textToImport: textToImport);
+                },
+              );
+            },
+          );
         }
       },
-    );
-  }
-}
-
-bool _isMnemonic(String wallet) {
-  try {
-    Mnemonic.fromSentence(wallet, Language.english);
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
-
-class SelectImportMethodDialog extends StatelessWidget {
-  const SelectImportMethodDialog({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(tr('select_import_method')),
-      content: SingleChildScrollView(
-        child: ListBody(
-          children: <Widget>[
-            ListTile(
-              leading: const Icon(Icons.file_present),
-              title: Text(tr('file_import')),
-              onTap: () =>
-                  Navigator.of(context).pop(ImportType.fileG1nkgoV1Export),
-            ),
-            ListTile(
-              leading: const Icon(Icons.content_paste),
-              title: Text(tr('clipboard_import')),
-              onTap: () =>
-                  Navigator.of(context).pop(ImportType.clipboardG1nkgoV1Export),
-            ),
-            ListTile(
-              leading: const Icon(Icons.key),
-              title: Text(tr('clipboard_import_pubkey')),
-              onTap: () =>
-                  Navigator.of(context).pop(ImportType.clipboardPubKey),
-            ),
-            if (context.read<AppCubit>().isV2)
-              ListTile(
-                leading: const Icon(Icons.password),
-                title: Text(tr('clipboard_import_mnemonic')),
-                subtitle: Text(tr('clipboard_import_mnemonic_description')),
-                onTap: () =>
-                    Navigator.of(context).pop(ImportType.clipboardMnemonic),
-              ),
-          ],
-        ),
-      ),
-      actions: <Widget>[
-        IconButton(
-          icon: const Icon(Icons.close),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ],
     );
   }
 }
@@ -511,4 +535,10 @@ Future<String> importWalletWeb(BuildContext context,
     }
     return importWalletWebHtml(context, extension);
   }
+}
+
+// Quick check to avoid jsonDecode on obvious non-JSON inputs.
+bool looksLikeJson(String s) {
+  final String t = s.trimLeft();
+  return t.startsWith('{') || t.startsWith('[');
 }

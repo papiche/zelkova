@@ -75,7 +75,7 @@ class WalletOptionsDialog extends StatelessWidget {
                   subtitle: Text(tr('create_no_password_description')),
                   onTap: () async {
                     await SharedPreferencesHelperV2()
-                        .createV2PasswordLessAccount();
+                        .createV2PasswordLessAccount(context.locale);
                     if (context.mounted) {
                       Navigator.of(context).pop();
                       context.read<AppCubit>().setHasRecentExport(false);
@@ -110,7 +110,8 @@ class WalletOptionsDialog extends StatelessWidget {
                               Navigator.of(context).pop();
                             } else {
                               await SharedPreferencesHelperV2()
-                                  .createV2PasswordProtectedAccount(key);
+                                  .createV2PasswordProtectedAccount(
+                                      key, context.locale);
                               if (context.mounted) {
                                 Navigator.of(context).pop();
                                 context

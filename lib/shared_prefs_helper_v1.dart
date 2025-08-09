@@ -228,7 +228,7 @@ class SharedPreferencesHelperV1
   }
 
   @override
-  Future<void> importWalletFromMnemonic(String m) async {
+  Future<void> importWalletFromMnemonic(String m, AccountType type) async {
     throw UnimplementedError(
         'importWalletFromMnemonic is not implemented in SharedPreferencesHelperV1');
   }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:durt/durt.dart';
 import 'package:flutter/foundation.dart';
@@ -18,6 +19,7 @@ import 'shared_prefs_helper.dart';
 import 'storage_keys.dart';
 import 'ui/logger.dart';
 import 'ui/secure_unlock_widget.dart';
+import 'wallet_already_exists_exception.dart';
 
 class SharedPreferencesHelperV2
     with ChangeNotifier
@@ -52,6 +54,27 @@ class SharedPreferencesHelperV2
   void setPasswordKey(Uint8List? key) {
     _passwordKey = key;
     notifyListeners();
+  }
+
+  /// Ensures a non-empty password key is available:
+  /// 1) use provided
+  /// 2) use cached _passwordKey
+  /// 3) await requestSecureUnlock()
+  /// Throws if user cancels / no key available.
+  Future<Uint8List> _ensurePasswordKey([Uint8List? provided]) async {
+    if (provided != null && provided.isNotEmpty) {
+      _passwordKey = provided; // cache for later
+      return provided;
+    }
+    if (_passwordKey != null && _passwordKey!.isNotEmpty) {
+      return _passwordKey!;
+    }
+    final Uint8List? unlocked = await requestSecureUnlock();
+    if (unlocked == null || unlocked.isEmpty) {
+      throw Exception('No password key available');
+    }
+    _passwordKey = unlocked; // cache
+    return unlocked;
   }
 
   @override
@@ -235,11 +258,16 @@ class SharedPreferencesHelperV2
     return acc;
   }
 
-  Future<StoredAccount> createV2PasswordLessAccount() async {
-    final String mnemonic = mnemonicGenerate();
+  Future<StoredAccount> createV2PasswordLessAccount([Locale? locale]) async {
+    final String original =
+        mnemonicGenerate(lang: bip39LanguageFromLocale(locale));
+    // Convert to English for polkadart
+    final String english = toEnglishMnemonic(normalizeMnemonic(original));
+
     final KeyPair kp =
-        await Keyring().fromUri(mnemonic, keyPairType: KeyPairType.ed25519);
+        await Keyring().fromUri(english, keyPairType: KeyPairType.ed25519);
     kp.ss58Format = 4450;
+
     final String address = kp.address;
     final String pubKey = v1pubkeyFromAddress(address);
 
@@ -247,7 +275,8 @@ class SharedPreferencesHelperV2
       type: AccountType.v2PasswordLess,
       pubKey: pubKey,
       address: address,
-      seed: mnemonicToStore(mnemonic),
+      // Store what the user saw/received
+      seed: mnemonicToStore(original),
       contact: Contact.withAddress(address: kp.address),
       theme: SharedPreferencesHelper().randomTheme(),
     );
@@ -257,13 +286,17 @@ class SharedPreferencesHelperV2
   }
 
   Future<StoredAccount> createV2PasswordProtectedAccount(
-      Uint8List passwordKey) async {
-    final String mnemonic = mnemonicGenerate();
+      Uint8List passwordKey, Locale locale) async {
+    final String original =
+        mnemonicGenerate(lang: bip39LanguageFromLocale(locale));
+    // Convert to English for polkadart
+    final String english = toEnglishMnemonic(normalizeMnemonic(original));
+
     final KeyPair kp =
-        await Keyring().fromUri(mnemonic, keyPairType: KeyPairType.ed25519);
+        await Keyring().fromUri(english, keyPairType: KeyPairType.ed25519);
     kp.ss58Format = 4450;
     final Uint8List encryptedMnemonic = SecureCryptoHelper.encrypt(
-      mnemonicToStore(mnemonic),
+      mnemonicToStore(english),
       passwordKey,
     );
     final String address = kp.address;
@@ -286,7 +319,7 @@ class SharedPreferencesHelperV2
     final Uint8List resolvedSeed = await _resolveActualSeed(acc);
     final KeyPair kp = acc.type.isV1
         ? KeyPair.ed25519.fromSeed(resolvedSeed)
-        : await KeyPair.ed25519.fromMnemonic(storeToMnemonic(resolvedSeed));
+        : await deriveKeyPairCompat(storeToMnemonic(resolvedSeed));
     kp.ss58Format = 4450;
     return kp;
   }
@@ -342,29 +375,53 @@ class SharedPreferencesHelperV2
   }
 
   @override
-  Future<void> importWalletFromMnemonic(String? mnemonicProv) async {
-    final String mnemonic = mnemonicProv ?? mnemonicGenerate();
-    final Keyring keyring = Keyring();
-    final KeyPair kp =
-        await keyring.fromMnemonic(mnemonic, keyPairType: KeyPairType.ed25519);
-    kp.ss58Format = 4450;
+  Future<void> importWalletFromMnemonic(
+      String? mnemonicProv, AccountType type) async {
+    // Validate account type
+    if (type != AccountType.v2PasswordLess &&
+        type != AccountType.v2PasswordProtected) {
+      throw Exception('Unsupported account type for mnemonic import: $type');
+    }
+
+    // Keep the original mnemonic (user-facing); normalize for processing
+    final String original = mnemonicProv ?? mnemonicGenerate();
+    final String normalized = normalizeMnemonic(original);
+
+    // Optional: early validation for better UX
+    if (detectMnemonicLanguage(normalized) == null) {
+      throw Exception(
+          'Invalid mnemonic (supported: ${supportedMnemonicLanguages.join(", ")})');
+    }
+
+    // Derive keypair regardless of language (fallback to EN if needed)
+    final KeyPair kp = await deriveKeyPairCompat(normalized);
     final String address = kp.address;
     final String pubKey = v1pubkeyFromAddress(address);
     logger('Importing wallet with pubKey: $pubKey and address: $address');
 
     if (has(pubKey)) {
-      throw Exception('Already exists');
+      throw WalletAlreadyExistsException(pubKey);
     }
-
+    // Store seed depending on type
+    Uint8List seedBytes;
+    if (type == AccountType.v2PasswordProtected) {
+      // this awaits the unlock dialog properly when needed
+      final Uint8List key = await _ensurePasswordKey(_passwordKey);
+      seedBytes = SecureCryptoHelper.encrypt(mnemonicToStore(original), key);
+    } else {
+      // v2PasswordLess: store plaintext mnemonic bytes
+      seedBytes = mnemonicToStore(original);
+    }
     final StoredAccount acc = StoredAccount(
       pubKey: pubKey,
       address: address,
-      seed: mnemonicToStore(mnemonic),
-      type: AccountType.v2PasswordLess,
+      seed: seedBytes,
+      type: type,
       theme: SharedPreferencesHelper().randomTheme(),
       contact: Contact.withAddress(
-          address: kp.address,
-          createdOn: DateTime.now().millisecondsSinceEpoch),
+        address: kp.address,
+        createdOn: DateTime.now().millisecondsSinceEpoch,
+      ),
     );
 
     await _onAccountAdded(acc);
@@ -387,10 +444,7 @@ class SharedPreferencesHelperV2
       case AccountType.v2PasswordLess:
         return acc.seed!;
       case AccountType.v2PasswordProtected:
-        final Uint8List? key = _passwordKey ?? (await requestSecureUnlock());
-        if (key == null) {
-          throw Exception('No password key available');
-        }
+        final Uint8List key = await _ensurePasswordKey();
         final Uint8List? dec = SecureCryptoHelper.decrypt(acc.seed!, key);
         if (dec == null) {
           throw Exception('Cannot decrypt mnemonic');

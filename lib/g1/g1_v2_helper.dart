@@ -170,26 +170,38 @@ Future<KeyPair> deriveKeyPairCompat(
 }
 
 Language bip39LanguageFromLocale(Locale? locale) {
-  final String lc = (locale?.languageCode ?? 'en').toLowerCase();
-  final String cc = (locale?.countryCode ?? '').toUpperCase();
+  final List<Locale> sys = PlatformDispatcher.instance.locales;
+  final Locale L = locale ??
+      (sys.isNotEmpty ? sys.first : PlatformDispatcher.instance.locale);
+  final String lc = L.languageCode.toLowerCase();
+  final String cc = (L.countryCode ?? '').toUpperCase();
+
   if (lc == 'zh') {
     if (cc == 'TW' || cc == 'HK' || cc == 'MO') {
       return Language.traditionalChinese;
     }
     return Language.simplifiedChinese;
   }
+
   final Map<String, Language> map = <String, Language>{
     'en': Language.english,
     'es': Language.spanish,
+    'ast': Language.spanish,
+    'ca': Language.spanish,
+    'gl': Language.portuguese,
+    'pt': Language.portuguese,
     'fr': Language.french,
     'it': Language.italian,
-    'pt': Language.portuguese,
     'cs': Language.czech,
     'ko': Language.korean,
     'ja': Language.japanese,
     'de': Language.english,
-    'ca': Language.spanish,
+    'nl': Language.english,
+    'da': Language.english,
+    'eu': Language.spanish,
+    'eo': Language.english,
   };
+
   return map[lc] ?? Language.english;
 }
 

@@ -512,10 +512,13 @@ class _ExportDialogState extends State<ExportDialog> {
       final String fileJsonUrlComponent = Uri.encodeComponent(fileJson);
       final Uri finalUri = uri.replace(path: '/import/$fileJsonUrlComponent');
       // TODO(vjrj): Allow to import this link
-      return Share.share(inDevelopment ? finalUri.toString() : fileJson,
-          subject: tr('share_export_subject'));
+      return inDevelopment
+          ? SharePlus.instance.share(ShareParams(uri: finalUri))
+          : SharePlus.instance.share(
+              ShareParams(text: fileJson, subject: tr('share_export_subject')));
     } else {
-      return Share.share(fileJson, subject: tr('share_export_subject'));
+      return SharePlus.instance.share(
+          ShareParams(text: fileJson, subject: tr('share_export_subject')));
     }
   }
 

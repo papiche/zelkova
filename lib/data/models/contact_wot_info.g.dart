@@ -18,8 +18,8 @@ abstract class _$ContactWotInfoCWProxy {
   /// ContactWotInfo(...).copyWith(id: 12, name: "My name")
   /// ````
   ContactWotInfo call({
-    Contact? me,
-    Contact? you,
+    Contact me,
+    Contact you,
   });
 }
 
@@ -48,11 +48,11 @@ class _$ContactWotInfoCWProxyImpl implements _$ContactWotInfoCWProxy {
     Object? you = const $CopyWithPlaceholder(),
   }) {
     return ContactWotInfo(
-      me: me == const $CopyWithPlaceholder() || me == null
+      me: me == const $CopyWithPlaceholder()
           ? _value.me
           // ignore: cast_nullable_to_non_nullable
           : me as Contact,
-      you: you == const $CopyWithPlaceholder() || you == null
+      you: you == const $CopyWithPlaceholder()
           ? _value.you
           // ignore: cast_nullable_to_non_nullable
           : you as Contact,

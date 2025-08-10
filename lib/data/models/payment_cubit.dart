@@ -14,9 +14,9 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
   List<Contact> get contacts => state.contacts;
 
   void updatePayment({
-    String? description,
+    required String description,
     double? amount,
-    PaymentStatus? status,
+    required PaymentStatus status,
   }) {
     final PaymentState newState = state.copyWith(
       comment: description,

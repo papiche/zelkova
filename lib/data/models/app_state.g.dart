@@ -38,12 +38,12 @@ abstract class _$AppStateCWProxy {
   /// AppState(...).copyWith(id: 12, name: "My name")
   /// ````
   AppState call({
-    bool? introViewed,
-    bool? warningViewed,
-    bool? warningBrowserViewed,
-    bool? expertMode,
+    bool introViewed,
+    bool warningViewed,
+    bool warningBrowserViewed,
+    bool expertMode,
     bool? walletCreatedViewed,
-    bool? v2mode,
+    bool v2mode,
     Currency? currency,
     double? currentUd,
     Map<String, bool>? tutorials,
@@ -125,32 +125,27 @@ class _$AppStateCWProxyImpl implements _$AppStateCWProxy {
     Object? distancePrecompute = const $CopyWithPlaceholder(),
   }) {
     return AppState(
-      introViewed:
-          introViewed == const $CopyWithPlaceholder() || introViewed == null
-              ? _value.introViewed
-              // ignore: cast_nullable_to_non_nullable
-              : introViewed as bool,
-      warningViewed:
-          warningViewed == const $CopyWithPlaceholder() || warningViewed == null
-              ? _value.warningViewed
-              // ignore: cast_nullable_to_non_nullable
-              : warningViewed as bool,
-      warningBrowserViewed:
-          warningBrowserViewed == const $CopyWithPlaceholder() ||
-                  warningBrowserViewed == null
-              ? _value.warningBrowserViewed
-              // ignore: cast_nullable_to_non_nullable
-              : warningBrowserViewed as bool,
-      expertMode:
-          expertMode == const $CopyWithPlaceholder() || expertMode == null
-              ? _value.expertMode
-              // ignore: cast_nullable_to_non_nullable
-              : expertMode as bool,
+      introViewed: introViewed == const $CopyWithPlaceholder()
+          ? _value.introViewed
+          // ignore: cast_nullable_to_non_nullable
+          : introViewed as bool,
+      warningViewed: warningViewed == const $CopyWithPlaceholder()
+          ? _value.warningViewed
+          // ignore: cast_nullable_to_non_nullable
+          : warningViewed as bool,
+      warningBrowserViewed: warningBrowserViewed == const $CopyWithPlaceholder()
+          ? _value.warningBrowserViewed
+          // ignore: cast_nullable_to_non_nullable
+          : warningBrowserViewed as bool,
+      expertMode: expertMode == const $CopyWithPlaceholder()
+          ? _value.expertMode
+          // ignore: cast_nullable_to_non_nullable
+          : expertMode as bool,
       walletCreatedViewed: walletCreatedViewed == const $CopyWithPlaceholder()
           ? _value.walletCreatedViewed
           // ignore: cast_nullable_to_non_nullable
           : walletCreatedViewed as bool?,
-      v2mode: v2mode == const $CopyWithPlaceholder() || v2mode == null
+      v2mode: v2mode == const $CopyWithPlaceholder()
           ? _value.v2mode
           // ignore: cast_nullable_to_non_nullable
           : v2mode as bool,

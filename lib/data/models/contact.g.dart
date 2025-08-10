@@ -57,7 +57,7 @@ abstract class _$ContactCWProxy {
   /// ````
   Contact call({
     String? nick,
-    String? pubKey,
+    String pubKey,
     String? address,
     Uint8List? avatar,
     String? avatarCid,
@@ -188,7 +188,7 @@ class _$ContactCWProxyImpl implements _$ContactCWProxy {
           ? _value.nick
           // ignore: cast_nullable_to_non_nullable
           : nick as String?,
-      pubKey: pubKey == const $CopyWithPlaceholder() || pubKey == null
+      pubKey: pubKey == const $CopyWithPlaceholder()
           ? _value.pubKey
           // ignore: cast_nullable_to_non_nullable
           : pubKey as String,

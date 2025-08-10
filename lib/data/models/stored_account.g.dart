@@ -30,11 +30,11 @@ abstract class _$StoredAccountCWProxy {
   /// StoredAccount(...).copyWith(id: 12, name: "My name")
   /// ````
   StoredAccount call({
-    String? pubKey,
-    String? address,
-    Contact? contact,
-    WalletTheme? theme,
-    AccountType? type,
+    String pubKey,
+    String address,
+    Contact contact,
+    WalletTheme theme,
+    AccountType type,
     Uint8List? seed,
     String? derivationPath,
     String? derivationParentId,
@@ -92,23 +92,23 @@ class _$StoredAccountCWProxyImpl implements _$StoredAccountCWProxy {
     Object? derivationParentId = const $CopyWithPlaceholder(),
   }) {
     return StoredAccount(
-      pubKey: pubKey == const $CopyWithPlaceholder() || pubKey == null
+      pubKey: pubKey == const $CopyWithPlaceholder()
           ? _value.pubKey
           // ignore: cast_nullable_to_non_nullable
           : pubKey as String,
-      address: address == const $CopyWithPlaceholder() || address == null
+      address: address == const $CopyWithPlaceholder()
           ? _value.address
           // ignore: cast_nullable_to_non_nullable
           : address as String,
-      contact: contact == const $CopyWithPlaceholder() || contact == null
+      contact: contact == const $CopyWithPlaceholder()
           ? _value.contact
           // ignore: cast_nullable_to_non_nullable
           : contact as Contact,
-      theme: theme == const $CopyWithPlaceholder() || theme == null
+      theme: theme == const $CopyWithPlaceholder()
           ? _value.theme
           // ignore: cast_nullable_to_non_nullable
           : theme as WalletTheme,
-      type: type == const $CopyWithPlaceholder() || type == null
+      type: type == const $CopyWithPlaceholder()
           ? _value.type
           // ignore: cast_nullable_to_non_nullable
           : type as AccountType,

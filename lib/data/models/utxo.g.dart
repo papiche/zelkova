@@ -26,12 +26,12 @@ abstract class _$UtxoCWProxy {
   /// Utxo(...).copyWith(id: 12, name: "My name")
   /// ````
   Utxo call({
-    String? txHash,
-    double? amount,
-    int? base,
-    int? outputIndex,
-    double? writtenTime,
-    double? writtenBlock,
+    String txHash,
+    double amount,
+    int base,
+    int outputIndex,
+    double writtenTime,
+    double writtenBlock,
   });
 }
 
@@ -76,33 +76,30 @@ class _$UtxoCWProxyImpl implements _$UtxoCWProxy {
     Object? writtenBlock = const $CopyWithPlaceholder(),
   }) {
     return Utxo(
-      txHash: txHash == const $CopyWithPlaceholder() || txHash == null
+      txHash: txHash == const $CopyWithPlaceholder()
           ? _value.txHash
           // ignore: cast_nullable_to_non_nullable
           : txHash as String,
-      amount: amount == const $CopyWithPlaceholder() || amount == null
+      amount: amount == const $CopyWithPlaceholder()
           ? _value.amount
           // ignore: cast_nullable_to_non_nullable
           : amount as double,
-      base: base == const $CopyWithPlaceholder() || base == null
+      base: base == const $CopyWithPlaceholder()
           ? _value.base
           // ignore: cast_nullable_to_non_nullable
           : base as int,
-      outputIndex:
-          outputIndex == const $CopyWithPlaceholder() || outputIndex == null
-              ? _value.outputIndex
-              // ignore: cast_nullable_to_non_nullable
-              : outputIndex as int,
-      writtenTime:
-          writtenTime == const $CopyWithPlaceholder() || writtenTime == null
-              ? _value.writtenTime
-              // ignore: cast_nullable_to_non_nullable
-              : writtenTime as double,
-      writtenBlock:
-          writtenBlock == const $CopyWithPlaceholder() || writtenBlock == null
-              ? _value.writtenBlock
-              // ignore: cast_nullable_to_non_nullable
-              : writtenBlock as double,
+      outputIndex: outputIndex == const $CopyWithPlaceholder()
+          ? _value.outputIndex
+          // ignore: cast_nullable_to_non_nullable
+          : outputIndex as int,
+      writtenTime: writtenTime == const $CopyWithPlaceholder()
+          ? _value.writtenTime
+          // ignore: cast_nullable_to_non_nullable
+          : writtenTime as double,
+      writtenBlock: writtenBlock == const $CopyWithPlaceholder()
+          ? _value.writtenBlock
+          // ignore: cast_nullable_to_non_nullable
+          : writtenBlock as double,
     );
   }
 }

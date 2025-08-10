@@ -28,13 +28,13 @@ abstract class _$CertCWProxy {
   /// Cert(...).copyWith(id: 12, name: "My name")
   /// ````
   Cert call({
-    String? id,
-    Contact? issuerId,
-    Contact? receiverId,
-    int? createdOn,
-    int? expireOn,
-    bool? isActive,
-    int? updatedOn,
+    String id,
+    Contact issuerId,
+    Contact receiverId,
+    int createdOn,
+    int expireOn,
+    bool isActive,
+    int updatedOn,
   });
 }
 
@@ -83,32 +83,31 @@ class _$CertCWProxyImpl implements _$CertCWProxy {
     Object? updatedOn = const $CopyWithPlaceholder(),
   }) {
     return Cert(
-      id: id == const $CopyWithPlaceholder() || id == null
+      id: id == const $CopyWithPlaceholder()
           ? _value.id
           // ignore: cast_nullable_to_non_nullable
           : id as String,
-      issuerId: issuerId == const $CopyWithPlaceholder() || issuerId == null
+      issuerId: issuerId == const $CopyWithPlaceholder()
           ? _value.issuerId
           // ignore: cast_nullable_to_non_nullable
           : issuerId as Contact,
-      receiverId:
-          receiverId == const $CopyWithPlaceholder() || receiverId == null
-              ? _value.receiverId
-              // ignore: cast_nullable_to_non_nullable
-              : receiverId as Contact,
-      createdOn: createdOn == const $CopyWithPlaceholder() || createdOn == null
+      receiverId: receiverId == const $CopyWithPlaceholder()
+          ? _value.receiverId
+          // ignore: cast_nullable_to_non_nullable
+          : receiverId as Contact,
+      createdOn: createdOn == const $CopyWithPlaceholder()
           ? _value.createdOn
           // ignore: cast_nullable_to_non_nullable
           : createdOn as int,
-      expireOn: expireOn == const $CopyWithPlaceholder() || expireOn == null
+      expireOn: expireOn == const $CopyWithPlaceholder()
           ? _value.expireOn
           // ignore: cast_nullable_to_non_nullable
           : expireOn as int,
-      isActive: isActive == const $CopyWithPlaceholder() || isActive == null
+      isActive: isActive == const $CopyWithPlaceholder()
           ? _value.isActive
           // ignore: cast_nullable_to_non_nullable
           : isActive as bool,
-      updatedOn: updatedOn == const $CopyWithPlaceholder() || updatedOn == null
+      updatedOn: updatedOn == const $CopyWithPlaceholder()
           ? _value.updatedOn
           // ignore: cast_nullable_to_non_nullable
           : updatedOn as int,

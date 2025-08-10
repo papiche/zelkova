@@ -22,10 +22,10 @@ abstract class _$LegacyWalletCWProxy {
   /// LegacyWallet(...).copyWith(id: 12, name: "My name")
   /// ````
   LegacyWallet call({
-    String? seed,
-    String? pubKey,
-    String? name,
-    WalletTheme? theme,
+    String seed,
+    String pubKey,
+    String name,
+    WalletTheme theme,
   });
 }
 
@@ -62,19 +62,19 @@ class _$LegacyWalletCWProxyImpl implements _$LegacyWalletCWProxy {
     Object? theme = const $CopyWithPlaceholder(),
   }) {
     return LegacyWallet(
-      seed: seed == const $CopyWithPlaceholder() || seed == null
+      seed: seed == const $CopyWithPlaceholder()
           ? _value.seed
           // ignore: cast_nullable_to_non_nullable
           : seed as String,
-      pubKey: pubKey == const $CopyWithPlaceholder() || pubKey == null
+      pubKey: pubKey == const $CopyWithPlaceholder()
           ? _value.pubKey
           // ignore: cast_nullable_to_non_nullable
           : pubKey as String,
-      name: name == const $CopyWithPlaceholder() || name == null
+      name: name == const $CopyWithPlaceholder()
           ? _value.name
           // ignore: cast_nullable_to_non_nullable
           : name as String,
-      theme: theme == const $CopyWithPlaceholder() || theme == null
+      theme: theme == const $CopyWithPlaceholder()
           ? _value.theme
           // ignore: cast_nullable_to_non_nullable
           : theme as WalletTheme,

@@ -31,11 +31,11 @@ abstract class _$TransactionStateCWProxy {
   /// TransactionState(...).copyWith(id: 12, name: "My name")
   /// ````
   TransactionState call({
-    List<Transaction>? transactions,
-    List<Transaction>? pendingTransactions,
-    double? balance,
+    List<Transaction> transactions,
+    List<Transaction> pendingTransactions,
+    double balance,
     double? currentUd,
-    DateTime? lastChecked,
+    DateTime lastChecked,
     DateTime? latestSentNotification,
     DateTime? latestReceivedNotification,
     String? endCursor,
@@ -97,18 +97,15 @@ class _$TransactionStateCWProxyImpl implements _$TransactionStateCWProxy {
     Object? endCursor = const $CopyWithPlaceholder(),
   }) {
     return TransactionState(
-      transactions:
-          transactions == const $CopyWithPlaceholder() || transactions == null
-              ? _value.transactions
-              // ignore: cast_nullable_to_non_nullable
-              : transactions as List<Transaction>,
-      pendingTransactions:
-          pendingTransactions == const $CopyWithPlaceholder() ||
-                  pendingTransactions == null
-              ? _value.pendingTransactions
-              // ignore: cast_nullable_to_non_nullable
-              : pendingTransactions as List<Transaction>,
-      balance: balance == const $CopyWithPlaceholder() || balance == null
+      transactions: transactions == const $CopyWithPlaceholder()
+          ? _value.transactions
+          // ignore: cast_nullable_to_non_nullable
+          : transactions as List<Transaction>,
+      pendingTransactions: pendingTransactions == const $CopyWithPlaceholder()
+          ? _value.pendingTransactions
+          // ignore: cast_nullable_to_non_nullable
+          : pendingTransactions as List<Transaction>,
+      balance: balance == const $CopyWithPlaceholder()
           ? _value.balance
           // ignore: cast_nullable_to_non_nullable
           : balance as double,
@@ -116,11 +113,10 @@ class _$TransactionStateCWProxyImpl implements _$TransactionStateCWProxy {
           ? _value.currentUd
           // ignore: cast_nullable_to_non_nullable
           : currentUd as double?,
-      lastChecked:
-          lastChecked == const $CopyWithPlaceholder() || lastChecked == null
-              ? _value.lastChecked
-              // ignore: cast_nullable_to_non_nullable
-              : lastChecked as DateTime,
+      lastChecked: lastChecked == const $CopyWithPlaceholder()
+          ? _value.lastChecked
+          // ignore: cast_nullable_to_non_nullable
+          : lastChecked as DateTime,
       latestSentNotification:
           latestSentNotification == const $CopyWithPlaceholder()
               ? _value.latestSentNotification

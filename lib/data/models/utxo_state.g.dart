@@ -24,11 +24,11 @@ abstract class _$UtxoLoadedCWProxy {
   /// UtxoLoaded(...).copyWith(id: 12, name: "My name")
   /// ````
   UtxoLoaded call({
-    List<Utxo>? utxos,
+    List<Utxo> utxos,
     Map<String, Utxo>? consumedUtxos,
-    bool? hasNextPage,
+    bool hasNextPage,
     String? cursor,
-    double? total,
+    double total,
   });
 }
 
@@ -70,7 +70,7 @@ class _$UtxoLoadedCWProxyImpl implements _$UtxoLoadedCWProxy {
     Object? total = const $CopyWithPlaceholder(),
   }) {
     return UtxoLoaded(
-      utxos: utxos == const $CopyWithPlaceholder() || utxos == null
+      utxos: utxos == const $CopyWithPlaceholder()
           ? _value.utxos
           // ignore: cast_nullable_to_non_nullable
           : utxos as List<Utxo>,
@@ -78,16 +78,15 @@ class _$UtxoLoadedCWProxyImpl implements _$UtxoLoadedCWProxy {
           ? _value.consumedUtxos
           // ignore: cast_nullable_to_non_nullable
           : consumedUtxos as Map<String, Utxo>?,
-      hasNextPage:
-          hasNextPage == const $CopyWithPlaceholder() || hasNextPage == null
-              ? _value.hasNextPage
-              // ignore: cast_nullable_to_non_nullable
-              : hasNextPage as bool,
+      hasNextPage: hasNextPage == const $CopyWithPlaceholder()
+          ? _value.hasNextPage
+          // ignore: cast_nullable_to_non_nullable
+          : hasNextPage as bool,
       cursor: cursor == const $CopyWithPlaceholder()
           ? _value.cursor
           // ignore: cast_nullable_to_non_nullable
           : cursor as String?,
-      total: total == const $CopyWithPlaceholder() || total == null
+      total: total == const $CopyWithPlaceholder()
           ? _value.total
           // ignore: cast_nullable_to_non_nullable
           : total as double,

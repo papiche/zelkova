@@ -32,12 +32,12 @@ abstract class _$TransactionCWProxy {
   /// Transaction(...).copyWith(id: 12, name: "My name")
   /// ````
   Transaction call({
-    TransactionType? type,
-    double? amount,
-    String? comment,
-    DateTime? time,
-    Contact? from,
-    Contact? to,
+    TransactionType type,
+    double amount,
+    String comment,
+    DateTime time,
+    Contact from,
+    Contact to,
     List<Contact>? recipients,
     List<double>? recipientsAmounts,
     String? debugInfo,
@@ -99,27 +99,27 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
     Object? debugInfo = const $CopyWithPlaceholder(),
   }) {
     return Transaction(
-      type: type == const $CopyWithPlaceholder() || type == null
+      type: type == const $CopyWithPlaceholder()
           ? _value.type
           // ignore: cast_nullable_to_non_nullable
           : type as TransactionType,
-      amount: amount == const $CopyWithPlaceholder() || amount == null
+      amount: amount == const $CopyWithPlaceholder()
           ? _value.amount
           // ignore: cast_nullable_to_non_nullable
           : amount as double,
-      comment: comment == const $CopyWithPlaceholder() || comment == null
+      comment: comment == const $CopyWithPlaceholder()
           ? _value.comment
           // ignore: cast_nullable_to_non_nullable
           : comment as String,
-      time: time == const $CopyWithPlaceholder() || time == null
+      time: time == const $CopyWithPlaceholder()
           ? _value.time
           // ignore: cast_nullable_to_non_nullable
           : time as DateTime,
-      from: from == const $CopyWithPlaceholder() || from == null
+      from: from == const $CopyWithPlaceholder()
           ? _value.from
           // ignore: cast_nullable_to_non_nullable
           : from as Contact,
-      to: to == const $CopyWithPlaceholder() || to == null
+      to: to == const $CopyWithPlaceholder()
           ? _value.to
           // ignore: cast_nullable_to_non_nullable
           : to as Contact,

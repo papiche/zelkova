@@ -23,9 +23,9 @@ abstract class _$PaymentStateCWProxy {
   /// ````
   PaymentState call({
     List<Contact>? contacts,
-    String? comment,
+    String comment,
     double? amount,
-    PaymentStatus? status,
+    PaymentStatus status,
   });
 }
 
@@ -66,7 +66,7 @@ class _$PaymentStateCWProxyImpl implements _$PaymentStateCWProxy {
           ? _value.contacts
           // ignore: cast_nullable_to_non_nullable
           : contacts as List<Contact>?,
-      comment: comment == const $CopyWithPlaceholder() || comment == null
+      comment: comment == const $CopyWithPlaceholder()
           ? _value.comment
           // ignore: cast_nullable_to_non_nullable
           : comment as String,
@@ -74,7 +74,7 @@ class _$PaymentStateCWProxyImpl implements _$PaymentStateCWProxy {
           ? _value.amount
           // ignore: cast_nullable_to_non_nullable
           : amount as double?,
-      status: status == const $CopyWithPlaceholder() || status == null
+      status: status == const $CopyWithPlaceholder()
           ? _value.status
           // ignore: cast_nullable_to_non_nullable
           : status as PaymentStatus,

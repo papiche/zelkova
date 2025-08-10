@@ -132,10 +132,11 @@ class _CardTerminalState extends State<CardTerminal> {
                 useSymbol: false,
               );
             } else {
-              Share.share(getQrUri(
-                  pubKey: SharedPreferencesHelper().getPubKey(),
-                  locale: context.locale.toLanguageTag(),
-                  amount: _currentValue));
+              SharePlus.instance.share(ShareParams(
+                  uri: Uri.parse(getQrUri(
+                      pubKey: SharedPreferencesHelper().getPubKey(),
+                      locale: context.locale.toLanguageTag(),
+                      amount: _currentValue))));
             }
           });
         },

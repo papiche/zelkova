@@ -44,7 +44,7 @@ class _ImportClipboardDialogState extends State<ImportClipboardDialog> {
         }
         break;
       case ImportType.clipboardMnemonic:
-        if (text.split(' ').length < 12 || !validateMnemonicMulti(text)) {
+        if (text.split(' ').length < 12 || !isValidMnemonic(text)) {
           setState(() => _errorMessage = tr('error_invalid_mnemonic'));
           return;
         }

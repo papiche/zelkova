@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:substrate_bip39/substrate_bip39.dart' show Language;
 
 import '../data/models/contact.dart';
 import '../data/models/legacy_wallet.dart';
@@ -35,7 +36,7 @@ class SharedPreferencesHelperV2
   }
 
   static final SharedPreferencesHelperV2 _instance =
-      SharedPreferencesHelperV2._internal();
+  SharedPreferencesHelperV2._internal();
 
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
   late SharedPreferences _prefs;
@@ -44,7 +45,7 @@ class SharedPreferencesHelperV2
   final List<StoredAccount> accounts = <StoredAccount>[];
 
   final Map<String, CesiumWallet> _cesiumVolatileCards =
-      <String, CesiumWallet>{};
+  <String, CesiumWallet>{};
 
   int _currentIndex = 0;
   Uint8List? _passwordKey;
@@ -97,7 +98,7 @@ class SharedPreferencesHelperV2
         address: addressFromV1Pubkey(pubKey),
         type: AccountType.v1PasswordLess,
         seed: seedFromString(seed),
-        contact: Contact.withPubKey(pubKey: pubKey, name: 'Migrated'),
+        contact: Contact.withPubKey(pubKey: pubKey, name: ''),
         theme: SharedPreferencesHelper().randomTheme(),
       ));
       await _prefs.remove(StorageKeys.seedKey);
@@ -121,7 +122,7 @@ class SharedPreferencesHelperV2
 
   Future<void> _loadCurrentIndex() async {
     final int currentIndex = int.tryParse(
-            await _storage.read(key: StorageKeys.currentCardIndexKey) ?? '') ??
+        await _storage.read(key: StorageKeys.currentCardIndexKey) ?? '') ??
         _prefs.getInt(StorageKeys.currentCardIndexKey) ??
         0;
     if (currentIndex < accounts.length) {
@@ -139,7 +140,7 @@ class SharedPreferencesHelperV2
       final List<dynamic> list = jsonDecode(legacyJson) as List<dynamic>;
       for (final dynamic e in list) {
         final LegacyWallet lw =
-            LegacyWallet.fromJson(e as Map<String, dynamic>);
+        LegacyWallet.fromJson(e as Map<String, dynamic>);
         if (accounts
             .where((StoredAccount a) => a.pubKey == lw.pubKey)
             .isNotEmpty) {
@@ -162,7 +163,7 @@ class SharedPreferencesHelperV2
 
   Future<void> _saveAccounts([bool notify = true]) async {
     final List<Map<String, dynamic>> data =
-        accounts.map((StoredAccount a) => a.toJson()).toList();
+    accounts.map((StoredAccount a) => a.toJson()).toList();
     await _storage.write(key: StorageKeys.accountsKey, value: jsonEncode(data));
 
     if (notify) {
@@ -173,14 +174,16 @@ class SharedPreferencesHelperV2
   // ────────────── Public API ──────────────
 
   @override
-  List<LegacyWallet> get cards => accounts
-      .map((StoredAccount acc) => LegacyWallet(
+  List<LegacyWallet> get cards =>
+      accounts
+          .map((StoredAccount acc) =>
+          LegacyWallet(
             seed: acc.seed != null ? seedToString(acc.seed!) : '',
             pubKey: acc.pubKey,
             name: acc.contact.name ?? '',
             theme: acc.theme,
           ))
-      .toList();
+          .toList();
 
   @override
   int getCurrentWalletIndex() => _currentIndex;
@@ -204,7 +207,7 @@ class SharedPreferencesHelperV2
   Future<void> selectCurrentWallet(String pubKey) async {
     final String extractedPubkey = extractPublicKey(pubKey);
     final int i =
-        accounts.indexWhere((StoredAccount a) => a.pubKey == extractedPubkey);
+    accounts.indexWhere((StoredAccount a) => a.pubKey == extractedPubkey);
     logger('Selecting wallet with pubKey: $extractedPubkey at index $i');
     await _setCurrentWalletIndex(i);
   }
@@ -260,12 +263,12 @@ class SharedPreferencesHelperV2
 
   Future<StoredAccount> createV2PasswordLessAccount([Locale? locale]) async {
     final String original =
-        mnemonicGenerate(lang: bip39LanguageFromLocale(locale));
+    mnemonicGenerate(lang: bip39LanguageFromLocale(locale));
     // Convert to English for polkadart
-    final String english = toEnglishMnemonic(normalizeMnemonic(original));
+    final String english = toEnglishMnemonic(original);
 
     final KeyPair kp =
-        await Keyring().fromUri(english, keyPairType: KeyPairType.ed25519);
+    await Keyring().fromUri(english, keyPairType: KeyPairType.ed25519);
     kp.ss58Format = 4450;
 
     final String address = kp.address;
@@ -285,15 +288,15 @@ class SharedPreferencesHelperV2
     return account;
   }
 
-  Future<StoredAccount> createV2PasswordProtectedAccount(
-      Uint8List passwordKey, Locale locale) async {
+  Future<StoredAccount> createV2PasswordProtectedAccount(Uint8List passwordKey,
+      Locale locale) async {
     final String original =
-        mnemonicGenerate(lang: bip39LanguageFromLocale(locale));
+    mnemonicGenerate(lang: bip39LanguageFromLocale(locale));
     // Convert to English for polkadart
-    final String english = toEnglishMnemonic(normalizeMnemonic(original));
+    final String english = toEnglishMnemonic(original);
 
     final KeyPair kp =
-        await Keyring().fromUri(english, keyPairType: KeyPairType.ed25519);
+    await Keyring().fromUri(english, keyPairType: KeyPairType.ed25519);
     kp.ss58Format = 4450;
     final Uint8List encryptedMnemonic = SecureCryptoHelper.encrypt(
       mnemonicToStore(english),
@@ -325,8 +328,9 @@ class SharedPreferencesHelperV2
   }
 
   @override
-  bool has(String pubKey) => accounts
-      .any((StoredAccount acc) => acc.pubKey == extractPublicKey(pubKey));
+  bool has(String pubKey) =>
+      accounts
+          .any((StoredAccount acc) => acc.pubKey == extractPublicKey(pubKey));
 
   @override
   bool hasVolatilePass([StoredAccount? account]) {
@@ -375,26 +379,27 @@ class SharedPreferencesHelperV2
   }
 
   @override
-  Future<void> importWalletFromMnemonic(
-      String? mnemonicProv, AccountType type) async {
+  Future<void> importWalletFromMnemonic(String? mnemonicProv,
+      AccountType type) async {
     // Validate account type
     if (type != AccountType.v2PasswordLess &&
         type != AccountType.v2PasswordProtected) {
       throw Exception('Unsupported account type for mnemonic import: $type');
     }
 
-    // Keep the original mnemonic (user-facing); normalize for processing
     final String original = mnemonicProv ?? mnemonicGenerate();
-    final String normalized = normalizeMnemonic(original);
 
-    // Optional: early validation for better UX
-    if (detectMnemonicLanguage(normalized) == null) {
+    if (!isValidMnemonic(original)) {
       throw Exception(
-          'Invalid mnemonic (supported: ${supportedMnemonicLanguages.join(", ")})');
+          'Invalid mnemonic (supported: ${supportedMnemonicLanguages.join(
+              ", ")})');
     }
 
+    final Language? lang = detectMnemonicLanguage(original);
+    loggerDev('mnemonic language detected: ${lang ?? "unknown"}');
+
     // Derive keypair regardless of language (fallback to EN if needed)
-    final KeyPair kp = await deriveKeyPairCompat(normalized);
+    final KeyPair kp = await deriveKeyPairCompat(original);
     final String address = kp.address;
     final String pubKey = v1pubkeyFromAddress(address);
     logger('Importing wallet with pubKey: $pubKey and address: $address');
@@ -420,7 +425,9 @@ class SharedPreferencesHelperV2
       theme: SharedPreferencesHelper().randomTheme(),
       contact: Contact.withAddress(
         address: kp.address,
-        createdOn: DateTime.now().millisecondsSinceEpoch,
+        createdOn: DateTime
+            .now()
+            .millisecondsSinceEpoch,
       ),
     );
 
@@ -497,10 +504,10 @@ class SharedPreferencesHelperV2
     for (final StoredAccount acc in accounts) {
       if (acc.type == AccountType.v2PasswordProtected) {
         final Uint8List? decrypted =
-            SecureCryptoHelper.decrypt(acc.seed!, oldKey);
+        SecureCryptoHelper.decrypt(acc.seed!, oldKey);
         if (decrypted != null) {
           final Uint8List reEncrypted =
-              SecureCryptoHelper.encrypt(decrypted, newKey);
+          SecureCryptoHelper.encrypt(decrypted, newKey);
           final StoredAccount updated = acc.copyWith(seed: reEncrypted);
           accounts[accounts.indexOf(acc)] = updated;
         }
@@ -517,7 +524,7 @@ class SharedPreferencesHelperV2
       final StoredAccount acc = account == null
           ? getCurrentAccount()
           : accounts
-              .firstWhere((StoredAccount a) => a.pubKey == account.pubKey);
+          .firstWhere((StoredAccount a) => a.pubKey == account.pubKey);
       if (acc.type.isV1) {
         return !hasVolatilePass(account);
       } else {

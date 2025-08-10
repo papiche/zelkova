@@ -1,6 +1,7 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
-import 'package:bip39_multi_nullsafety/bip39_multi_nullsafety.dart' as bip39;
+import 'package:bip39_mnemonic/bip39_mnemonic.dart';
 import 'package:durt/durt.dart';
 import 'package:fast_base58/fast_base58.dart';
 import 'package:flutter/services.dart';
@@ -15,6 +16,7 @@ import 'package:ginkgo/secure_crypto_helper.dart';
 import 'package:ginkgo/shared_prefs_helper.dart';
 import 'package:ginkgo/storage_keys.dart';
 import 'package:ginkgo/ui/logger.dart';
+import 'package:ginkgo/wallet_already_exists_exception.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,8 +35,6 @@ void main() {
     SharedPreferencesHelper.configure(useV2: true);
     helper.accountsClear();
   });
-
-  // V1 tests
 
   group('migration', () {
     test('moves legacy seed/pub keys into cesiumCards', () async {
@@ -68,7 +68,7 @@ void main() {
 
   group('wallet persistence and retrieval', () {
     test('addLegacyWallet is durable across helper instances', () async {
-      await helper.createDefWalletIfNotExist(); // ensure 1st wallet
+      await helper.createDefWalletIfNotExist();
       final CesiumWallet w1 = CesiumWallet.fromSeed(generateUintSeed());
       helper.addLegacyWallet(helper.buildLegacyWallet(
           seed: seedToString(w1.seed), pubKey: w1.pubkey));
@@ -158,7 +158,6 @@ void main() {
     });
   });
 
-  // V2 tests
   group('V2 wallet flow', () {
     test('creates and retrieves wallet from secure storage', () async {
       expect(helper.isEmpty, true);
@@ -249,7 +248,7 @@ void main() {
   });
 
   test('Store and retrieve v2PasswordLess account', () async {
-    final String mnemonic = mnemonicGenerate();
+    final String mnemonic = generateMnemonic();
     helper.importWalletFromMnemonic(mnemonic, AccountType.v2PasswordLess);
     final KeyPair kp = await KeyPair.ed25519.fromMnemonic(mnemonic);
     final String pubKey = v1pubkeyFromAddress(kp.address);
@@ -271,19 +270,16 @@ void main() {
         await Keyring().fromUri(mnemonic, keyPairType: KeyPairType.ed25519);
     final String pubKey = Base58Encode(kp.publicKey.bytes);
 
-    // Step 1: Generate a fixed salt and derive a password-based key
     final List<int> salt = List<int>.generate(32, (int i) => i);
     const String password = 'testPassword123';
     final Uint8List passwordKey =
         await SecureCryptoHelper.deriveKeyFromPassword(password, salt);
 
-    // Step 2: Encrypt the mnemonic
     final Uint8List encryptedMnemonic = SecureCryptoHelper.encrypt(
       Uint8List.fromList(utf8.encode(mnemonic)),
       passwordKey,
     );
 
-    // Step 3: Manually store the salt and passwordKey in the mocked secure storage
     const FlutterSecureStorage storage = FlutterSecureStorage();
     await storage.write(
       key: StorageKeys.secureSalt,
@@ -294,7 +290,6 @@ void main() {
       value: base64Encode(passwordKey),
     );
 
-    // Step 4: Create and persist the account
     final StoredAccount acc = StoredAccount(
       pubKey: pubKey,
       address: addressFromV1Pubkey(pubKey),
@@ -307,14 +302,12 @@ void main() {
     helper.accounts.add(acc);
     await helper.saveLegacyWallets();
 
-    // Step 5: Reload helper and decrypt the mnemonic
     final SharedPreferencesHelper reloaded = SharedPreferencesHelper();
     await reloaded.init(onlyV2: true);
 
     final StoredAccount restored =
         reloaded.accounts.firstWhere((StoredAccount a) => a.pubKey == pubKey);
 
-    // Manually provide the passwordKey (normally obtained via unlock flow)
     reloaded.passwordKey = passwordKey;
 
     final Uint8List? decryptedBytes =
@@ -330,7 +323,7 @@ void main() {
     const String mnemonic =
         'legal winner thank year wave sausage worth useful legal winner thank yellow';
     expect(mnemonic.split(' ').length, 12);
-    expect(bip39.validateMnemonic(mnemonic), true);
+    expect(isValidMnemonic(mnemonic), true);
     await helper.importWalletFromMnemonic(mnemonic, AccountType.v2PasswordLess);
     final StoredAccount acc = helper.accounts.last;
     expect(acc.address, 'g1MmPVNXofuDN4tQFyGoFg7GT9npLscGWVLtV7hXCqMmha1DS',
@@ -342,19 +335,16 @@ void main() {
     const String mnemonic =
         'legal winner thank year wave sausage worth useful legal winner thank yellow';
 
-    // Simulate original password and salt
     final List<int> oldSalt = List<int>.generate(32, (int i) => i);
     const String oldPassword = 'old-password';
     final Uint8List oldKey =
         await SecureCryptoHelper.deriveKeyFromPassword(oldPassword, oldSalt);
 
-    // Encrypt the mnemonic with oldKey
     final Uint8List encryptedMnemonic = SecureCryptoHelper.encrypt(
       mnemonicToStore(mnemonic),
       oldKey,
     );
 
-    // Create and add the account
     final KeyPair kp =
         await Keyring().fromUri(mnemonic, keyPairType: KeyPairType.ed25519);
     final StoredAccount acc = StoredAccount(
@@ -369,7 +359,6 @@ void main() {
     helper.accountsClear();
     helper.accounts.add(acc);
 
-    // Simulate password change
     const String newPassword = 'new-password';
     final List<int> newSalt = List<int>.generate(32, (int i) => 100 - i);
     final Uint8List newKey =
@@ -380,7 +369,6 @@ void main() {
       newKey: newKey,
     );
 
-    // After re-encryption, mnemonic must be recoverable with new key
     final StoredAccount updated = helper.accounts.first;
     final Uint8List? decrypted =
         SecureCryptoHelper.decrypt(updated.seed!, newKey);
@@ -388,7 +376,6 @@ void main() {
 
     expect(recoveredMnemonic, equals(mnemonic));
 
-    // Decryption with old key should now fail
     final Uint8List? decryptedWithOldKey =
         SecureCryptoHelper.decrypt(updated.seed!, oldKey);
     expect(decryptedWithOldKey, isNull);
@@ -420,39 +407,27 @@ void main() {
       const String expectedAddress =
           'g1Px6m62yD5J1CYLTwqVA4jFZ4YfyR6zWX8GyPgBwPNpukQx6';
 
-      // Build equivalents from the same entropy
-      final String entropyHex =
-          bip39.mnemonicToEntropy(enMnemonic); // , language: 'english');
+      final List<int> entropy = Mnemonic.fromSentence(
+        enMnemonic,
+        Language.english,
+      ).entropy;
 
       final Map<String, String> mnemonics = <String, String>{
-        'english': enMnemonic,
-        'spanish': bip39.entropyToMnemonic(entropyHex, language: 'spanish'),
-        'french': bip39.entropyToMnemonic(entropyHex, language: 'french'),
-        'italian': bip39.entropyToMnemonic(entropyHex, language: 'italian'),
+        'english': Mnemonic(entropy, Language.english).sentence,
+        'spanish': Mnemonic(entropy, Language.spanish).sentence,
+        'french': Mnemonic(entropy, Language.french).sentence,
+        'italian': Mnemonic(entropy, Language.italian).sentence,
       };
-
-      // english mnemonic: attitude legend purchase discover canyon panda phone change flavor language often will
-      // spanish mnemonic: añadir lima pedal danza bozal océano opaco cadáver fiebre legión nervio violín
-      // french mnemonic: anormal imposer orifice déborder bouquin mouche néfaste cabanon éprouver humide menhir vinaigre
-      // italian mnemonic: appetito minerale ramingo docente buca piacere poderoso capra fumante mercurio pari virulento
 
       for (final MapEntry<String, String> entry in mnemonics.entries) {
         logger('${entry.key} mnemonic: ${entry.value}');
       }
 
-      // Sanity: each validates in its wordlist
-      expect(
-          bip39.validateMnemonic(mnemonics['english']!),
-          // , language: 'english'),
-          isTrue);
-      expect(bip39.validateMnemonic(mnemonics['spanish']!, language: 'spanish'),
-          isTrue);
-      expect(bip39.validateMnemonic(mnemonics['french']!, language: 'french'),
-          isTrue);
-      expect(bip39.validateMnemonic(mnemonics['italian']!, language: 'italian'),
-          isTrue);
+      expect(isValidMnemonic(mnemonics['english']!), isTrue);
+      expect(isValidMnemonic(mnemonics['spanish']!), isTrue);
+      expect(isValidMnemonic(mnemonics['french']!), isTrue);
+      expect(isValidMnemonic(mnemonics['italian']!), isTrue);
 
-      // All derived addresses must match the expected one
       for (final MapEntry<String, String> entry in mnemonics.entries) {
         final KeyPair kp = await deriveKeyPairCompat(entry.value);
         expect(kp.address, expectedAddress,
@@ -462,36 +437,34 @@ void main() {
 
     test('import flow deduplicates the same entropy across languages',
         () async {
-      // Fresh helper (mock storage is already set up in setUp)
       final SharedPreferencesHelper importHelper = SharedPreferencesHelper();
       await importHelper.init(onlyV2: true);
       importHelper.accountsClear();
 
       const String enMnemonic =
           'attitude legend purchase discover canyon panda phone change flavor language often will';
-      final String entropyHex =
-          bip39.mnemonicToEntropy(enMnemonic); // , language: 'english');
 
-      final String esMnemonic =
-          bip39.entropyToMnemonic(entropyHex, language: 'spanish');
-      final String frMnemonic =
-          bip39.entropyToMnemonic(entropyHex, language: 'french');
-      final String itMnemonic =
-          bip39.entropyToMnemonic(entropyHex, language: 'italian');
+      final List<int> entropy = Mnemonic.fromSentence(
+        enMnemonic,
+        Language.english,
+      ).entropy;
 
-      // First import should succeed
+      final String esMnemonic = Mnemonic(entropy, Language.spanish).sentence;
+      final String frMnemonic = Mnemonic(entropy, Language.french).sentence;
+      final String itMnemonic = Mnemonic(entropy, Language.italian).sentence;
+
       await importHelper.importWalletFromMnemonic(
           enMnemonic, AccountType.v2PasswordLess);
       expect(importHelper.length, 1);
 
-      // Subsequent imports of the same entropy (other languages) should fail with "Already exists"
       Future<void> expectAlreadyExists(String m) async {
         try {
           await importHelper.importWalletFromMnemonic(
               m, AccountType.v2PasswordLess);
           fail('Expected "Already exists" when importing same entropy again');
         } catch (e) {
-          expect(e.toString(), contains('Already exists'));
+          expect(e is WalletAlreadyExistsException, true,
+              reason: 'Expected WalletAlreadyExistsException, got $e');
         }
       }
 
@@ -499,8 +472,24 @@ void main() {
       await expectAlreadyExists(frMnemonic);
       await expectAlreadyExists(itMnemonic);
 
-      // Still only one wallet stored
       expect(importHelper.length, 1);
     });
+  });
+
+  test('importing french mnemonic succeeds and derives same address', () async {
+    const String fr2 =
+        'anormal imposer orifice déborder bouquin mouche néfaste cabanon éprouver humide menhir vinaigre';
+    final SharedPreferencesHelper helper = SharedPreferencesHelper();
+    await helper.init(onlyV2: true);
+    SharedPreferencesHelper.configure(useV2: true);
+    helper.accountsClear();
+
+    await helper.importWalletFromMnemonic(fr2, AccountType.v2PasswordLess);
+
+    expect(helper.length, 1);
+    final StoredAccount acc = helper.getCurrentAccount();
+
+    final KeyPair kp = await helper.getKeyPair();
+    expect(acc.address, kp.address);
   });
 }

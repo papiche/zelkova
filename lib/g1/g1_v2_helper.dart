@@ -3,8 +3,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:ui';
 
-import 'package:bip39_multi_nullsafety/bip39_multi_nullsafety.dart' as bip39;
-import 'package:durt/durt.dart' as durt;
+import 'package:bip39_mnemonic/bip39_mnemonic.dart';
 import 'package:fast_base58/fast_base58.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 
@@ -64,33 +63,13 @@ Keyring keyringFromV1Seed(Uint8List seed) {
   return keyring;
 }
 
-final List<String> supportedMnemonicLanguages = <String>[
-  'english',
-  'french',
-  'italian',
-  'spanish'
-];
+final List<Language> supportedMnemonicLanguages = Language.values.toList();
 
-// From durt
-String mnemonicGenerate({String lang = 'english'}) {
+String mnemonicGenerate({Language lang = Language.english}) {
   if (!supportedMnemonicLanguages.contains(lang)) {
     throw ArgumentError('Unsupported language');
   }
-  final String mnemonic = durt.generateMnemonic(lang: lang);
-  return mnemonic;
-}
-
-/// Returns true if the mnemonic is valid in ANY of the supported languages.
-bool validateMnemonicMulti(String mnemonic) {
-  for (final String lang in supportedMnemonicLanguages) {
-    try {
-      bip39.validateMnemonic(mnemonic, language: lang);
-      return true;
-    } catch (_) {
-      // try next language
-    }
-  }
-  return false;
+  return Mnemonic.generate(lang, entropyLength: 128).sentence;
 }
 
 // From:
@@ -171,67 +150,93 @@ String decodeHexToText(String? hexString) {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Multi‑language BIP-39 helpers
-// ─────────────────────────────────────────────────────────────────────────────
-
-/// Normalize by trimming and collapsing whitespace (no lowercase; keep accents)
-String normalizeMnemonic(String mnemonic) =>
-    mnemonic.trim().replaceAll(RegExp(r'\s+'), ' ');
-
-/// Returns the detected language if mnemonic is valid in one of the supported lists.
-String? detectMnemonicLanguage(String mnemonic) {
-  final String m = normalizeMnemonic(mnemonic);
-  for (final String lang in supportedMnemonicLanguages) {
-    try {
-      // If it doesn't throw, it's valid in this language.
-      bip39.mnemonicToEntropy(m, language: lang);
-      return lang;
-    } catch (_) {
-      /* try next */
-    }
-  }
-  return null;
-}
-
-/// Re-encode the same entropy to English words (keeps keys identical).
-/// Throws if the input is not a valid mnemonic in our supported languages.
-String toEnglishMnemonic(String mnemonic) {
-  final String m = normalizeMnemonic(mnemonic);
-  for (final String lang in supportedMnemonicLanguages) {
-    try {
-      final String entropyHex = bip39.mnemonicToEntropy(m, language: lang);
-      return bip39.entropyToMnemonic(entropyHex); // def language: 'english');
-    } catch (_) {
-      /* try next */
-    }
-  }
-  throw ArgumentError(
-      'Invalid mnemonic (supported: ${supportedMnemonicLanguages.join(', ')})');
-}
-
 Future<KeyPair> deriveKeyPairCompat(
   String mnemonic, {
   int ss58 = 4450,
   KeyPairType keyPairType = KeyPairType.ed25519,
 }) async {
-  final String en = toEnglishMnemonic(mnemonic);
-  final KeyPair kp = await Keyring().fromMnemonic(en, keyPairType: keyPairType);
-  kp.ss58Format = ss58;
-  return kp;
+  try {
+    final KeyPair kp =
+        await Keyring().fromMnemonic(mnemonic, keyPairType: keyPairType);
+    kp.ss58Format = ss58;
+    return kp;
+  } catch (_) {
+    final String en = toEnglishMnemonic(mnemonic);
+    final KeyPair kp =
+        await Keyring().fromMnemonic(en, keyPairType: keyPairType);
+    kp.ss58Format = ss58;
+    return kp;
+  }
 }
 
-String bip39LanguageFromLocale(Locale? locale) {
-  final String code = (locale?.languageCode ?? 'en').toLowerCase();
-  switch (code) {
-    case 'es':
-      return 'spanish';
-    case 'fr':
-      return 'french';
-    case 'it':
-      return 'italian';
-    case 'en':
-    default:
-      return 'english';
+Language bip39LanguageFromLocale(Locale? locale) {
+  final String lc = (locale?.languageCode ?? 'en').toLowerCase();
+  final String cc = (locale?.countryCode ?? '').toUpperCase();
+  if (lc == 'zh') {
+    if (cc == 'TW' || cc == 'HK' || cc == 'MO') {
+      return Language.traditionalChinese;
+    }
+    return Language.simplifiedChinese;
   }
+  final Map<String, Language> map = <String, Language>{
+    'en': Language.english,
+    'es': Language.spanish,
+    'fr': Language.french,
+    'it': Language.italian,
+    'pt': Language.portuguese,
+    'cs': Language.czech,
+    'ko': Language.korean,
+    'ja': Language.japanese,
+    'de': Language.english,
+    'ca': Language.spanish,
+  };
+  return map[lc] ?? Language.english;
+}
+
+bool _parsesAs(Language lang, String sentence) {
+  try {
+    Mnemonic.fromSentence(sentence.trim(), lang);
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
+
+bool isValidMnemonic(String sentence) {
+  final List<String> words = sentence.trim().split(RegExp(r'\s+'));
+  if (words.length != 12) {
+    return false;
+  }
+  final List<Language> langs = supportedMnemonicLanguages;
+  for (final Language lang in langs) {
+    if (_parsesAs(lang, sentence)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+Language? detectMnemonicLanguage(String sentence, {List<Language>? languages}) {
+  final List<String> words = sentence.trim().split(RegExp(r'\s+'));
+  if (words.length != 12) {
+    loggerDev('Invalid mnemonic length: ${words.length} words');
+    return null;
+  }
+  final List<Language> langs = languages ?? supportedMnemonicLanguages;
+  for (final Language lang in langs) {
+    if (_parsesAs(lang, sentence)) {
+      return lang;
+    }
+  }
+  return null;
+}
+
+String toEnglishMnemonic(String sentence, {List<Language>? languages}) {
+  final Language? lang = detectMnemonicLanguage(sentence, languages: languages);
+  if (lang == null) {
+    throw ArgumentError('Invalid 12-word mnemonic: $sentence');
+  }
+  final List<int> entropy =
+      Mnemonic.fromSentence(sentence.trim(), lang).entropy;
+  return Mnemonic(entropy, Language.english).sentence;
 }

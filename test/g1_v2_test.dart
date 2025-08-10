@@ -1,9 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:bip39_multi_nullsafety/bip39_multi_nullsafety.dart' as bip39
-    show validateMnemonic;
-import 'package:bip39_multi_nullsafety/src/wordlists/spanish.dart' as spanish;
 import 'package:durt/src/crypto/cesium_wallet.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ginkgo/g1/g1_v2_helper.dart';
@@ -111,7 +108,7 @@ void main() {
   // Disabled as polkadot does not support spanish mnemonics
   test('Spanish bit39', skip: true, () async {
     final List<String> esMnemonicList =
-        mnemonicGenerate(lang: 'spanish').split(' ');
+        mnemonicGenerate(lang: Language.spanish).split(' ');
 
     final Keyring keyring = Keyring();
     final String mnemonic = esMnemonicList.join(' ');
@@ -119,7 +116,7 @@ void main() {
     await keyring.fromMnemonic(mnemonic, keyPairType: KeyPairType.sr25519);
 
     for (final String esWord in esMnemonicList) {
-      expect(spanish.WORDLIST.contains(esWord), true);
+      expect(Language.spanish.list.contains(esWord), true);
     }
   });
 
@@ -144,7 +141,7 @@ void main() {
     const String mnemonic =
         'legal winner thank year wave sausage worth useful legal winner thank yellow';
     expect(mnemonic.split(' ').length, 12);
-    expect(bip39.validateMnemonic(mnemonic), true);
+    expect(isValidMnemonic(mnemonic), true);
     // pubkey should be: 5EHgWw2Af1pnoc7f1A8bfmM97W3DAYW8xr82RfhLL9oAabAe
     final Keyring keyring = Keyring();
     final KeyPair keypair =

@@ -379,7 +379,7 @@ Future<void> showSelectImportMethodDialog(
                 return;
               }
 
-              if (validateMnemonicMulti(textToImport)) {
+              if (isValidMnemonic(textToImport)) {
                 try {
                   await SharedPreferencesHelper().importWalletFromMnemonic(
                     textToImport,

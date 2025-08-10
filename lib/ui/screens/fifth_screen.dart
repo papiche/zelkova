@@ -169,8 +169,8 @@ class _FifthScreenState extends State<FifthScreen> {
                         LinkCard(
                             title: 'share_your_key',
                             icon: Icons.share,
-                            onTap: () => Share.share(
-                                SharedPreferencesHelper().getPubKey())),
+                            onTap: () => SharePlus.instance.share(ShareParams(
+                                text: SharedPreferencesHelper().getPubKey()))),
                       LinkCard(
                         title: 'copy_your_key',
                         icon: Icons.copy,

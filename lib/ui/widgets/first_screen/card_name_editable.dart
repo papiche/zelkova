@@ -11,13 +11,12 @@ import '../connectivity_widget_wrapper_wrapper.dart';
 import 'card_text_style.dart';
 
 class CardNameEditable extends StatefulWidget {
-  const CardNameEditable(
-      {super.key,
-      required this.defValue,
-      required this.publicKey,
-      required this.cardName,
-      required this.isEditable,
-      required this.isPassProtected});
+  const CardNameEditable({super.key,
+    required this.defValue,
+    required this.publicKey,
+    required this.cardName,
+    required this.isEditable,
+    required this.isPassProtected});
 
   final String defValue;
   final String publicKey;
@@ -84,7 +83,7 @@ class _CardNameEditableState extends State<CardNameEditable> {
       return false;
     }
 
-    if (isConnected && !context.read<AppCubit>().isV2) {
+    if (isConnected) { // && !context.read<AppCubit>().isV2) {
       // In V2 this is done directly in the SharedPreferencesHelper
       try {
         String? name = await getProfileUserName(widget.publicKey);
@@ -123,7 +122,7 @@ class _CardNameEditableState extends State<CardNameEditable> {
           style: const TextStyle(color: Colors.black87),
           decoration: InputDecoration(
             contentPadding:
-                const EdgeInsets.symmetric(vertical: 5.0, horizontal: 7.0),
+            const EdgeInsets.symmetric(vertical: 5.0, horizontal: 7.0),
             filled: true,
             fillColor: Colors.white,
             enabledBorder: const OutlineInputBorder(
@@ -136,31 +135,31 @@ class _CardNameEditableState extends State<CardNameEditable> {
             suffixIcon: _isSubmitting
                 ? const RefreshProgressIndicator()
                 : Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _isEditingText = false;
-                          });
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.only(right: 8.0),
-                          child: Icon(Icons.cancel_outlined,
-                              color: Colors.black87),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          _updateValue(_controller.text);
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.only(right: 8.0),
-                          child: Icon(Icons.check, color: Colors.black87),
-                        ),
-                      ),
-                    ],
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _isEditingText = false;
+                    });
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.only(right: 8.0),
+                    child: Icon(Icons.cancel_outlined,
+                        color: Colors.black87),
                   ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    _updateValue(_controller.text);
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.only(right: 8.0),
+                    child: Icon(Icons.check, color: Colors.black87),
+                  ),
+                ),
+              ],
+            ),
           ),
           cursorColor: Colors.black87,
           onSubmitted: _updateValue,
@@ -185,7 +184,9 @@ class _CardNameEditableState extends State<CardNameEditable> {
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
         text: TextSpan(
-          style: DefaultTextStyle.of(context).style,
+          style: DefaultTextStyle
+              .of(context)
+              .style,
           children: <InlineSpan>[
             if (currentText == widget.defValue)
               TextSpan(
@@ -231,7 +232,8 @@ class _CardNameEditableState extends State<CardNameEditable> {
   @override
   Widget build(BuildContext context) {
     loggerDev(
-        "Building CardNameEditable for ${widget.publicKey} '${widget.cardName}'");
+        "Building CardNameEditable for ${widget.publicKey} '${widget
+            .cardName}'");
     return FutureBuilder<bool>(
         future: _usernameFetchFuture,
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {

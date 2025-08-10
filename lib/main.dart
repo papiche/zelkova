@@ -256,7 +256,6 @@ void main() async {
       options.debug = false;
 
       options.maxRequestBodySize = MaxRequestBodySize.always;
-      options.maxResponseBodySize = MaxResponseBodySize.always;
 
       // options.release = version;
       // options.environment = 'production';

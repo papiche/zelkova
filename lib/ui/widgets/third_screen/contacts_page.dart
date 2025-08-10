@@ -148,8 +148,8 @@ class _ContactsPageState extends State<ContactsPage> {
                       ),
                       if (showShare())
                         SlidableAction(
-                          onPressed: (BuildContext c) =>
-                              Share.share(contact.pubKey),
+                          onPressed: (BuildContext c) => SharePlus.instance
+                              .share(ShareParams(text: contact.pubKey)),
                           backgroundColor:
                               Theme.of(context).secondaryHeaderColor,
                           foregroundColor: Theme.of(context).primaryColor,

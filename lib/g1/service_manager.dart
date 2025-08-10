@@ -20,21 +20,20 @@ abstract class DuniterService {
 
   Future<List<Contact>> searchWot(String searchPatternRaw);
 
-  Future<List<Contact>> searchProfiles(
-      {required String searchTermLower,
-      required String searchTerm,
-      required String searchTermCapitalized});
+  Future<List<Contact>> searchProfiles({required String searchTermLower,
+    required String searchTerm,
+    required String searchTermCapitalized});
 
   Future<Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalance(
       String pubKeyRaw,
       {int? pageSize = 10,
-      int? from,
-      int? to,
-      String? cursor,
-      required bool isConnected});
+        int? from,
+        int? to,
+        String? cursor,
+        required bool isConnected});
 
-  Future<TransactionState> transactionsParser(
-      Map<String, dynamic> txData, TransactionState state, String myPubKeyRaw);
+  Future<TransactionState> transactionsParser(Map<String, dynamic> txData,
+      TransactionState state, String myPubKeyRaw);
 
   Future<PayResult> pay(
       {required List<String> to, required double amount, String? comment});
@@ -59,10 +58,9 @@ class DuniterServiceV1 implements DuniterService {
   }
 
   @override
-  Future<List<Contact>> searchProfiles(
-      {required String searchTermLower,
-      required String searchTerm,
-      required String searchTermCapitalized}) {
+  Future<List<Contact>> searchProfiles({required String searchTermLower,
+    required String searchTerm,
+    required String searchTermCapitalized}) {
     return searchProfilesV1(
         searchTermLower: searchTermLower,
         searchTerm: searchTerm,
@@ -78,10 +76,10 @@ class DuniterServiceV1 implements DuniterService {
   Future<Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalance(
       String pubKeyRaw,
       {int? pageSize = 10,
-      int? from,
-      int? to,
-      String? cursor,
-      required bool isConnected}) {
+        int? from,
+        int? to,
+        String? cursor,
+        required bool isConnected}) {
     return getHistoryAndBalanceV1(pubKeyRaw,
         pageSize: pageSize,
         from: from,
@@ -91,8 +89,8 @@ class DuniterServiceV1 implements DuniterService {
   }
 
   @override
-  Future<TransactionState> transactionsParser(
-      Map<String, dynamic> txData, TransactionState state, String myPubKeyRaw) {
+  Future<TransactionState> transactionsParser(Map<String, dynamic> txData,
+      TransactionState state, String myPubKeyRaw) {
     return transactionsV1Parser(txData, state, myPubKeyRaw);
   }
 
@@ -136,10 +134,9 @@ class DuniterServiceV2 implements DuniterService {
   }
 
   @override
-  Future<List<Contact>> searchProfiles(
-      {required String searchTermLower,
-      required String searchTerm,
-      required String searchTermCapitalized}) {
+  Future<List<Contact>> searchProfiles({required String searchTermLower,
+    required String searchTerm,
+    required String searchTermCapitalized}) {
     return searchProfilesV2(
         searchTermLower: searchTermLower,
         searchTerm: searchTerm,
@@ -150,10 +147,10 @@ class DuniterServiceV2 implements DuniterService {
   Future<Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalance(
       String pubKeyRaw,
       {int? pageSize = 10,
-      int? from,
-      int? to,
-      String? cursor,
-      required bool isConnected}) {
+        int? from,
+        int? to,
+        String? cursor,
+        required bool isConnected}) {
     return getHistoryAndBalanceV2(pubKeyRaw,
         pageSize: pageSize,
         from: from,
@@ -163,8 +160,8 @@ class DuniterServiceV2 implements DuniterService {
   }
 
   @override
-  Future<TransactionState> transactionsParser(
-      Map<String, dynamic> txData, TransactionState state, String myPubKeyRaw) {
+  Future<TransactionState> transactionsParser(Map<String, dynamic> txData,
+      TransactionState state, String myPubKeyRaw) {
     return transactionsV2Parser(txData, state, myPubKeyRaw);
   }
 
@@ -186,7 +183,7 @@ class DuniterServiceV2 implements DuniterService {
 
   @override
   Future<String?> getProfileUserName(String pubKey) async {
-    final Contact c = await getProfileV2(pubKey, onlyProfile: true);
+    final Contact c = await getProfileV2(pubKey, onlyProfile: false);
     return c.name;
   }
 }

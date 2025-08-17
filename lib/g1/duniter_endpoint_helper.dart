@@ -9,7 +9,7 @@ import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-que
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ferry/ferry.dart' as ferry;
 import 'package:ferry/ferry.dart';
-import 'package:ferry_hive_store/ferry_hive_store.dart';
+import 'package:ferry_hive_ce_store/ferry_hive_ce_store.dart';
 import 'package:get_it/get_it.dart';
 import 'package:polkadart/polkadart.dart';
 import 'package:polkadart/provider.dart';

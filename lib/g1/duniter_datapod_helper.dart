@@ -12,7 +12,7 @@ import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-que
 import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-queries.var.gql.dart';
 import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod.schema.schema.gql.dart';
 import 'package:ferry/ferry.dart' as ferry;
-import 'package:ferry_hive_store/ferry_hive_store.dart';
+import 'package:ferry_hive_ce_store/ferry_hive_ce_store.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:polkadart/scale_codec.dart';

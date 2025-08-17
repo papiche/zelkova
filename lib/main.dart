@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:app_links/app_links.dart';
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:ferry_hive_store/ferry_hive_store.dart';
+import 'package:ferry_hive_ce_store/ferry_hive_ce_store.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:l10n_esperanto/l10n_esperanto.dart';
@@ -70,6 +70,11 @@ const String fetchWalletsTransactionsTask =
 void workManagerCallbackDispatcher() {
   Workmanager()
       .executeTask((String task, Map<String, dynamic>? inputData) async {
+    if (task == null) {
+      logger.warning(
+          'Received null task from Workmanager with inputData: $inputData');
+      return Future<bool>.value(false);
+    }
     try {
       logger.info(
           '---------- Start fetchTransactionsTask Workmanager background task: $task');
@@ -79,6 +84,9 @@ void workManagerCallbackDispatcher() {
           fetchTransactionsFromBackground();
           break;
         case Workmanager.iOSBackgroundTask:
+          break;
+        default:
+          logger.warning('Unknown Dart task: $task');
           break;
       }
       loggerDev(
@@ -95,8 +103,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   logger.info('Starting Ginkgo app');
   if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
-    await Workmanager().initialize(workManagerCallbackDispatcher,
-        isInDebugMode: inDevelopment);
+    await Workmanager().initialize(workManagerCallbackDispatcher);
   }
   logger.info('Workmanager initialized');
   await NotificationController.initializeLocalNotifications();
@@ -440,7 +447,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
           networkType: NetworkType.connected,
           requiresBatteryNotLow: true,
         ),
-        frequency: const Duration(minutes: 15),
+        frequency: const Duration(minutes: 16),
       );
     }
 
@@ -890,11 +897,13 @@ class AppLifecycleReactor with WidgetsBindingObserver {
 Future<void> hiveInit() async {
   // Hydrated storage
   loggerDev('Initializing Hydrated storage');
-  final Directory storageDir = kIsWeb
-      ? HydratedStorage.webStorageDirectory
-      : await getApplicationDocumentsDirectory();
-  HydratedBloc.storage =
-      await HydratedStorage.build(storageDirectory: storageDir);
+  final HydratedStorageDirectory storageDir = kIsWeb
+      ? HydratedStorageDirectory.web
+      : HydratedStorageDirectory(
+          (await getApplicationDocumentsDirectory()).path);
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: storageDir,
+  );
 
   _clearCacheIfNeeded(storageDir);
 
@@ -914,7 +923,7 @@ Future<void> hiveInit() async {
   loggerDev('Reset hive old keys');
   if (kIsWeb) {
     final Box<dynamic> box = await Hive.openBox('hydrated_box',
-        path: HydratedStorage.webStorageDirectory.path);
+        path: HydratedStorageDirectory.web.path);
     final List<dynamic> keysToDelete =
         box.keys.where((dynamic key) => '$key'.startsWith('minified')).toList();
     box.deleteAll(keysToDelete);
@@ -935,7 +944,7 @@ Future<void> hiveInit() async {
   getIt.registerSingleton<HiveStore>(ferryStore);
 }
 
-Future<void> _clearCacheIfNeeded(Directory storageDir) async {
+Future<void> _clearCacheIfNeeded(HydratedStorageDirectory storageDir) async {
   final List<String> boxes = <String>['contacts_cache', 'ferry-graphql-cache'];
 
   for (final String boxName in boxes) {

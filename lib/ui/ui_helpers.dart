@@ -475,7 +475,8 @@ TextSpan humanizeAmount(
   return TextSpan(
     children: <InlineSpan>[
       if (isCurrencyBefore)
-        currencyBalanceWidget(context, isG1, currentSymbol, balanceFontSize),
+        currencyBalanceWidget(
+            context, isG1, currentSymbol, balanceFontSize, small),
       if (isCurrencyBefore) separatorAmountSpan(small),
       TextSpan(
         text: formatKAmountInView(
@@ -494,7 +495,8 @@ TextSpan humanizeAmount(
       ),
       if (!isCurrencyBefore) separatorAmountSpan(small),
       if (!isCurrencyBefore)
-        currencyBalanceWidget(context, isG1, currentSymbol, balanceFontSize),
+        currencyBalanceWidget(
+            context, isG1, currentSymbol, balanceFontSize, small),
     ],
   );
 }
@@ -511,9 +513,9 @@ String humanizeAmountS(
     [Color? color]) {
   final StringBuffer result = StringBuffer();
   if (isCurrencyBefore) {
-    result.write(
-        currencyBalanceWidget(context, isG1, currentSymbol, balanceFontSize)
-            .toPlainText());
+    result.write(currencyBalanceWidget(
+            context, isG1, currentSymbol, balanceFontSize, small)
+        .toPlainText());
     result.write(' ');
   }
   result.write(formatKAmountInView(
@@ -524,9 +526,9 @@ String humanizeAmountS(
       useSymbol: false));
   if (!isCurrencyBefore) {
     result.write(' ');
-    result.write(
-        currencyBalanceWidget(context, isG1, currentSymbol, balanceFontSize)
-            .toPlainText());
+    result.write(currencyBalanceWidget(
+            context, isG1, currentSymbol, balanceFontSize, small)
+        .toPlainText());
   }
   return result.toString();
 }
@@ -538,7 +540,7 @@ extension DateTimeExtension on DateTime {
 }
 
 InlineSpan currencyBalanceWidget(BuildContext context, bool isG1,
-    String currentSymbol, double balanceFontSize) {
+    String currentSymbol, double balanceFontSize, bool small) {
   const Color currencyColor = Colors.grey;
   return TextSpan(children: <InlineSpan>[
     TextSpan(
@@ -552,11 +554,11 @@ InlineSpan currencyBalanceWidget(BuildContext context, bool isG1,
     if (!isG1)
       WidgetSpan(
           child: Transform.translate(
-              offset: const Offset(2, 16),
+              offset: Offset(2, small ? 8 : 16),
               child: Text(
                 'Ğ1',
                 style: TextStyle(
-                  fontSize: balanceFontSize - 10,
+                  fontSize: balanceFontSize - (small ? 5 : 10),
                   fontWeight: FontWeight.w500,
                   // fontFeatures: <FontFeature>[FontFeature.subscripts()],
                   color: currencyColor,

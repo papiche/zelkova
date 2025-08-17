@@ -120,31 +120,44 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
                       ),
                       Center(
                         child: AccountCardSelectorItem(
-                            name: account.contact.name == null ||
-                                    (account.contact.name != null &&
-                                        account.contact.name!.isEmpty)
-                                ? account.type.isV2
-                                    ? humanizeAddress(account.contact.address)
-                                    : humanizePubKey(account.contact.pubKey)
-                                : truncateName(account.contact.name!),
-                            hasName: account.contact.name != null &&
-                                account.contact.name!.isNotEmpty,
-                            suffix: SharedPreferencesHelper()
-                                    .isPasswordLessWallet(account)
-                                ? g1nkgoUserNameSuffix
-                                : protectedUserNameSuffix,
-                            theme: account.theme),
-                      ),
-                      if (isSelected)
-                        const Positioned(
-                          top: 8,
-                          right: 8,
-                          child: Icon(
-                            Icons.check_circle,
-                            color: Colors.green,
-                            size: 24,
-                          ),
+                          name: account.contact.name == null ||
+                                  (account.contact.name != null &&
+                                      account.contact.name!.isEmpty)
+                              ? account.type.isV2
+                                  ? humanizeAddress(account.contact.address)
+                                  : humanizePubKey(account.contact.pubKey)
+                              : truncateName(account.contact.name!),
+                          hasName: account.contact.name != null &&
+                              account.contact.name!.isNotEmpty,
+                          suffix: SharedPreferencesHelper()
+                                  .isPasswordLessWallet(account)
+                              ? g1nkgoUserNameSuffix
+                              : protectedUserNameSuffix,
+                          theme: account.theme,
                         ),
+                      ),
+                      Positioned(
+                        top: 8,
+                        right: 8,
+                        child: Checkbox(
+                          value: isSelected,
+                          onChanged: (bool? value) {
+                            _onCardTapped(account);
+                          },
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4.0),
+                          ),
+                          checkColor: Colors.white,
+                          fillColor: WidgetStateProperty.resolveWith<Color>(
+                              (Set<WidgetState> states) {
+                            if (states.contains(WidgetState.selected)) {
+                              return Theme.of(context).colorScheme.primary;
+                            }
+                            return Colors.white.withAlpha(60);
+                          }),
+                          activeColor: Colors.transparent,
+                        ),
+                      ),
                     ],
                   ),
                 );

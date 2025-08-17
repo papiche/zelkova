@@ -29,14 +29,15 @@ import 'transaction_item.dart';
 import 'transactions_widget_error_widget.dart';
 
 class TransactionsAndBalanceWidget extends StatefulWidget {
-  const TransactionsAndBalanceWidget(
-      {super.key,
-      this.isExternalAccount = false,
-      this.isScrollEnabled = true,
-      this.pubKey,
-      this.from,
-      this.to,
-      this.pageSize});
+  const TransactionsAndBalanceWidget({
+    super.key,
+    this.isExternalAccount = false,
+    this.isScrollEnabled = true,
+    this.pubKey,
+    this.from,
+    this.to,
+    this.pageSize,
+  });
 
   final bool isExternalAccount;
   final String? pubKey;
@@ -60,11 +61,13 @@ class _TransactionsAndBalanceWidgetState
   late MultiWalletTransactionCubit transCubit;
   late UtxoCubit utxoCubit;
 
-  final PagingController<String?, Transaction> _pagingController =
-      PagingController<String?, Transaction>(firstPageKey: null);
+  PagingState<String?, Transaction> _txState =
+      PagingState<String?, Transaction>(isLoading: true);
+  PagingState<int, Transaction> _pendingState =
+      PagingState<int, Transaction>(isLoading: true);
 
-  final PagingController<int, Transaction> _pendingController =
-      PagingController<int, Transaction>(firstPageKey: 0);
+  String? _nextCursor;
+  String? _lastRequestedCursor;
 
   static const int _pendingPageSize = 30;
   final Cron cron = Cron();
@@ -76,74 +79,142 @@ class _TransactionsAndBalanceWidgetState
     appCubit = context.read<AppCubit>();
     transCubit = context.read<MultiWalletTransactionCubit>();
     utxoCubit = context.read<UtxoCubit>();
-    _pagingController.addPageRequestListener((String? cursor) {
-      _bloc.onPageRequestSink.add(cursor);
-    });
+
     _bloc = TransactionsBloc(
-        isExternal: widget.isExternalAccount,
-        pubKey: widget.pubKey,
-        isV2: appCubit.isV2);
-    // We could've used StreamBuilder, but that would unnecessarily recreate
-    // the entire [PagedSliverGrid] every time the state changes.
-    // Instead, handling the subscription ourselves and updating only the
-    // _pagingController is more efficient.
+      isExternal: widget.isExternalAccount,
+      pubKey: widget.pubKey,
+      isV2: appCubit.isV2,
+    );
+
     _blocListingStateSubscription =
         _bloc.onNewListingState.listen((TransactionsState listingState) {
-      _pagingController.value = PagingState<String?, Transaction>(
-        nextPageKey: listingState.nextPageKey,
-        error: listingState.error,
-        itemList: listingState.itemList,
-      );
-    });
-    _pagingController.addPageRequestListener((String? cursor) {
-      loggerDev('Requesting new page with cursor: $cursor');
-      _bloc.onPageRequestSink.add(cursor);
-    });
-    _pagingController.addStatusListener((PagingStatus status) {
-      if (status == PagingStatus.subsequentPageError) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(tr('fetch_tx_error')),
-            action: SnackBarAction(
-                label: tr('retry'),
-                textColor: Theme.of(context).primaryColor,
-                onPressed: () =>
-                    _refresh() //  _pagingController.retryLastFailedRequest(),
-                ),
-          ),
-        );
-      }
-    });
-    if (!widget.isExternalAccount) {
-      _pendingController.addPageRequestListener((int cursor) {
-        _fetchPending(cursor);
-      });
-    }
+      final List<Transaction> items = listingState.itemList ?? <Transaction>[];
 
-    scheduledTask = cron
-        .schedule(Schedule.parse(kReleaseMode ? '*/10 * * * *' : '*/5 * * * *'),
-            () async {
-      logger('---------- fetchTransactions via cron in txs_and_balance widget');
-      try {
-        _refresh();
-      } catch (e) {
-        logger('Failed via _refresh, lets try a basic fetchTransactions');
-        transCubit.fetchTransactions(
-            isExternal: widget.isExternalAccount, pubKey: widget.pubKey);
-      }
+      setState(() {
+        final List<List<Transaction>> pageList = <List<Transaction>>[items];
+        final List<String?> keyList = <String?>[_lastRequestedCursor];
+
+        final bool keepLoading = items.isEmpty &&
+            listingState.error == null &&
+            (listingState.nextPageKey != null || _txState.isLoading);
+
+        _txState = _txState.copyWith(
+          pages: pageList,
+          keys: keyList,
+          hasNextPage: listingState.nextPageKey != null,
+          isLoading: keepLoading,
+          error: listingState.error,
+        );
+
+        _nextCursor = listingState.nextPageKey;
+      });
     });
+
+    _fetchNextTxPage();
+
+    scheduledTask = cron.schedule(
+      Schedule.parse(kReleaseMode ? '*/10 * * * *' : '*/5 * * * *'),
+      () async {
+        logger(
+            '---------- fetchTransactions via cron in txs_and_balance widget');
+        try {
+          await _refresh();
+        } catch (e) {
+          logger('Failed via _refresh, lets try a basic fetchTransactions');
+          transCubit.fetchTransactions(
+            isExternal: widget.isExternalAccount,
+            pubKey: widget.pubKey,
+          );
+        }
+      },
+    );
+
     tutorial = FourthTutorial(context);
     super.initState();
   }
 
   @override
   void dispose() {
-    _pagingController.dispose();
-    _pendingController.dispose();
     _blocListingStateSubscription.cancel();
     scheduledTask.cancel();
     super.dispose();
   }
+
+  Future<void> _fetchNextTxPage() async {
+    if (_txState.isLoading) {
+      return;
+    }
+
+    setState(() {
+      _txState = _txState.copyWith(isLoading: true, error: null);
+    });
+
+    _lastRequestedCursor = _nextCursor;
+    _bloc.onPageRequestSink.add(_lastRequestedCursor);
+  }
+
+  Future<void> _fetchNextPendingPage() async {
+    if (widget.pubKey != null) {
+      return;
+    }
+    if (_pendingState.isLoading) {
+      return;
+    }
+
+    setState(() {
+      _pendingState = _pendingState.copyWith(isLoading: true, error: null);
+    });
+
+    try {
+      final List<Transaction> pendTxs =
+          transCubit.currentWalletState(widget.pubKey).pendingTransactions;
+
+      final int already = _pendingState.items?.length ?? 0;
+      final List<Transaction> newItems =
+          pendTxs.skip(already).take(_pendingPageSize).toList(growable: false);
+
+      final bool isLastPage = already + newItems.length >= pendTxs.length;
+
+      setState(() {
+        _pendingState = _pendingState.copyWith(
+          pages: <List<Transaction>>[
+            ...?_pendingState.pages,
+            newItems,
+          ],
+          keys: <int>[
+            ...?_pendingState.keys,
+            (_pendingState.keys?.length ?? 0)
+          ],
+          hasNextPage: !isLastPage,
+          isLoading: false,
+        );
+      });
+    } catch (error) {
+      setState(() {
+        _pendingState = _pendingState.copyWith(
+          error: error,
+          isLoading: false,
+        );
+      });
+    }
+  }
+
+  Future<void> _refresh() async {
+    setState(() {
+      _txState = PagingState<String?, Transaction>();
+      _pendingState = PagingState<int, Transaction>();
+      _nextCursor = null;
+      _lastRequestedCursor = null;
+    });
+
+    await Future.wait(<Future<void>>[
+      Future<void>.sync(_fetchNextTxPage),
+      if (!widget.isExternalAccount) Future<void>.sync(_fetchNextPendingPage),
+    ]);
+  }
+
+  double getBalance(BuildContext context) =>
+      context.read<MultiWalletTransactionCubit>().balance(widget.pubKey);
 
   @override
   Widget build(BuildContext context) {
@@ -154,61 +225,60 @@ class _TransactionsAndBalanceWidgetState
     final bool isG1 = appCubit.currency == Currency.G1;
     final double currentUd = appCubit.currentUd;
     final String currentSymbol = currentCurrencyTrimmed(isG1);
+
     return BlocBuilder<MultiWalletTransactionCubit,
-            MultiWalletTransactionState>(
-        builder: (BuildContext context,
-            MultiWalletTransactionState transBalanceState) {
-      // final List<Transaction> transactions = transBalanceState.transactions;
-      final String currentPubKey =
-          widget.pubKey ?? SharedPreferencesHelper().getPubKey();
-      final double balance = getBalance(context);
-      final NumberFormat currentNumber = currentNumberFormat(
+        MultiWalletTransactionState>(
+      builder: (BuildContext context,
+          MultiWalletTransactionState transBalanceState) {
+        final String currentPubKey =
+            widget.pubKey ?? SharedPreferencesHelper().getPubKey();
+        final double balance = getBalance(context);
+        final NumberFormat currentNumber = currentNumberFormat(
           useSymbol: true,
           isG1: isG1,
           locale: currentLocale(context),
-          amount: balance);
-      final bool isCurrencyBefore =
-          isSymbolPlacementBefore(currentNumber.symbols.CURRENCY_PATTERN);
-      return widget.pubKey == null
-          ? Scaffold(
-              drawer: const CardDrawer(),
-              onDrawerChanged: (bool isOpened) {
-                if (isOpened && weSlideController.isOpened) {
-                  weSlideController.hide();
-                } else {
-                  // I do here a refresh because for some reason the Consumer is not working on card change
-                  _refresh();
-                }
-              },
-              appBar: AppBar(
-                title: Text(key: txMainKey, tr('transactions')),
-                actions: <Widget>[
-                  IconButton(
+          amount: balance,
+        );
+        final bool isCurrencyBefore =
+            isSymbolPlacementBefore(currentNumber.symbols.CURRENCY_PATTERN);
+
+        return widget.pubKey == null
+            ? Scaffold(
+                drawer: const CardDrawer(),
+                onDrawerChanged: (bool isOpened) {
+                  if (isOpened && weSlideController.isOpened) {
+                    weSlideController.hide();
+                  } else {
+                    _refresh();
+                  }
+                },
+                appBar: AppBar(
+                  title: Text(key: txMainKey, tr('transactions')),
+                  actions: <Widget>[
+                    IconButton(
                       key: txRefreshKey,
                       icon: const Icon(Icons.refresh),
                       onPressed: () => EasyThrottle.throttle(
-                          'my-throttler-refresh',
-                          const Duration(seconds: 1),
-                          () => _refresh(),
-                          onAfter:
-                              () {} // <-- Optional callback, called after the duration has passed
-                          )),
-                  IconButton(
+                        'my-throttler-refresh',
+                        const Duration(seconds: 1),
+                        () => _refresh(),
+                      ),
+                    ),
+                    IconButton(
                       key: txBalanceKey,
                       icon: const Icon(Icons.savings),
                       onPressed: () => weSlideController.isOpened
                           ? weSlideController.hide()
-                          : weSlideController.show()),
-                  IconButton(
-                    icon: const Icon(Icons.info_outline),
-                    onPressed: () {
-                      tutorial.showTutorial(showAlways: true);
-                    },
-                  ),
-                  const SizedBox(width: 10),
-                ],
-              ),
-              body: _buildMainTxContainer(
+                          : weSlideController.show(),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.info_outline),
+                      onPressed: () => tutorial.showTutorial(showAlways: true),
+                    ),
+                    const SizedBox(width: 10),
+                  ],
+                ),
+                body: _buildMainTxContainer(
                   weSlideController,
                   panelMinSize,
                   panelMaxSize,
@@ -219,49 +289,58 @@ class _TransactionsAndBalanceWidgetState
                   currentSymbol,
                   currentUd,
                   isCurrencyBefore,
-                  balance),
-            )
-          : _buildMainTxContainer(
-              weSlideController,
-              panelMinSize,
-              panelMaxSize,
-              colorScheme,
-              context,
-              currentPubKey,
-              isG1,
-              currentSymbol,
-              currentUd,
-              isCurrencyBefore,
-              balance);
-    });
+                  balance,
+                ),
+              )
+            : _buildMainTxContainer(
+                weSlideController,
+                panelMinSize,
+                panelMaxSize,
+                colorScheme,
+                context,
+                currentPubKey,
+                isG1,
+                currentSymbol,
+                currentUd,
+                isCurrencyBefore,
+                balance,
+              );
+      },
+    );
   }
 
   WeSlide _buildMainTxContainer(
-      WeSlideController weSlideController,
-      double panelMinSize,
-      double panelMaxSize,
-      ColorScheme colorScheme,
-      BuildContext context,
-      String pubKey,
-      bool isG1,
-      String currentSymbol,
-      double currentUd,
-      bool isCurrencyBefore,
-      double balance) {
+    WeSlideController weSlideController,
+    double panelMinSize,
+    double panelMaxSize,
+    ColorScheme colorScheme,
+    BuildContext context,
+    String pubKey,
+    bool isG1,
+    String currentSymbol,
+    double currentUd,
+    bool isCurrencyBefore,
+    double balance,
+  ) {
     return WeSlide(
       controller: weSlideController,
       panelMinSize: panelMinSize,
       panelMaxSize: panelMaxSize,
-      // isDismissible: false,
       body: Container(
         color: colorScheme.surface,
-        child: _transactionPanelBuilder(context, pubKey, isG1, currentSymbol,
-            currentUd, isCurrencyBefore, balance),
+        child: _transactionPanelBuilder(
+          context,
+          pubKey,
+          isG1,
+          currentSymbol,
+          currentUd,
+          isCurrencyBefore,
+          balance,
+        ),
       ),
       panel: widget.isExternalAccount
-          ? Container()
+          ? const SizedBox.shrink()
           : _balancePanelBuilder(colorScheme, context, pubKey),
-      // This is hidden right now
       panelHeader: Container(
         height: panelMinSize,
         color: colorScheme.secondary,
@@ -271,154 +350,153 @@ class _TransactionsAndBalanceWidgetState
   }
 
   Container _balancePanelBuilder(
-      ColorScheme colorScheme, BuildContext context, String pubKey) {
+    ColorScheme colorScheme,
+    BuildContext context,
+    String pubKey,
+  ) {
     return Container(
-        color: colorScheme.inversePrimary,
-        child: Column(children: <Widget>[
+      color: colorScheme.inversePrimary,
+      child: Column(
+        children: <Widget>[
           Align(
-              alignment: Alignment.topLeft,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-                child: Row(children: <Widget>[
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+              child: Row(
+                children: <Widget>[
                   const Icon(Icons.savings),
                   const SizedBox(width: 30),
                   Text(
                     tr('balance'),
                     style: Theme.of(context).textTheme.titleLarge,
-                  )
-                ]),
-              )),
+                  ),
+                ],
+              ),
+            ),
+          ),
           Expanded(
-              child: Scrollbar(
-                  child: ListView(
-            children: <Widget>[
-              BalanceWidget(pubKey: pubKey, small: false),
-              // if (!kReleaseMode) TransactionChart(transactions: transactions)
-            ],
-          )))
-        ]));
+            child: Scrollbar(
+              child: ListView(
+                children: <Widget>[
+                  BalanceWidget(pubKey: pubKey, small: false),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   RefreshIndicator _transactionPanelBuilder(
-      BuildContext context,
-      String myPubKey,
-      bool isG1,
-      String currentSymbol,
-      double currentUd,
-      bool isCurrencyBefore,
-      double balance) {
+    BuildContext context,
+    String myPubKey,
+    bool isG1,
+    String currentSymbol,
+    double currentUd,
+    bool isCurrencyBefore,
+    double balance,
+  ) {
+    final int pendingCount = _pendingState.items?.length ?? 0;
+
     return RefreshIndicator(
       displacement: 120.0,
       color: Colors.white,
       backgroundColor: Theme.of(context).colorScheme.primary,
       strokeWidth: 4.0,
-      onRefresh: () => _refresh(),
+      onRefresh: _refresh,
       child: CustomScrollView(
-          shrinkWrap: true,
-          // scrollDirection: Axis.vertical,
-          physics: const AlwaysScrollableScrollPhysics(),
-          slivers: <Widget>[
-            // Some widget before all,
-            if (!widget.isExternalAccount)
-              PagedSliverList<int, Transaction>(
-                shrinkWrapFirstPageIndicators: true,
-                pagingController: _pendingController,
+        shrinkWrap: true,
+        physics: const AlwaysScrollableScrollPhysics(),
+        slivers: <Widget>[
+          SliverVisibility(
+              visible: !widget.isExternalAccount &&
+                  (_pendingState.items?.isNotEmpty ?? false),
+              sliver: PagedSliverList<int, Transaction>(
+                state: _pendingState,
+                fetchNextPage: _fetchNextPendingPage,
                 builderDelegate: PagedChildBuilderDelegate<Transaction>(
-                    animateTransitions: true,
-                    transitionDuration: const Duration(milliseconds: 500),
-                    itemBuilder:
-                        (BuildContext context, Transaction tx, int index) {
-                      return TransactionListItem(
-                          pubKey: myPubKey,
-                          index: index,
-                          transaction: tx,
-                          isG1: isG1,
-                          currentSymbol: currentSymbol,
-                          currentUd: currentUd,
-                          isCurrencyBefore: isCurrencyBefore,
-                          isExternalAccount: widget.isExternalAccount,
-                          afterRetry: () => _refresh(),
-                          afterCancel: () => _refresh());
-                    },
-                    firstPageErrorIndicatorBuilder: (_) =>
-                        TransactionWidgetErrorWidget(
-                          onTryAgain: () => _pagingController.refresh(),
-                        ),
-                    noItemsFoundIndicatorBuilder: (_) => Container()),
+                  animateTransitions: true,
+                  transitionDuration: const Duration(milliseconds: 500),
+                  itemBuilder:
+                      (BuildContext context, Transaction tx, int index) {
+                    return TransactionListItem(
+                      pubKey: myPubKey,
+                      index: index,
+                      transaction: tx,
+                      isG1: isG1,
+                      currentSymbol: currentSymbol,
+                      currentUd: currentUd,
+                      isCurrencyBefore: isCurrencyBefore,
+                      isExternalAccount: widget.isExternalAccount,
+                      afterRetry: _refresh,
+                      afterCancel: _refresh,
+                    );
+                  },
+                  firstPageErrorIndicatorBuilder: (_) =>
+                      TransactionWidgetErrorWidget(
+                    onTryAgain: _fetchNextPendingPage,
+                  ),
+                  newPageProgressIndicatorBuilder: (_) => const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
+                  newPageErrorIndicatorBuilder: (_) =>
+                      TransactionWidgetErrorWidget(
+                    onTryAgain: _fetchNextPendingPage,
+                  ),
+                  noItemsFoundIndicatorBuilder: (_) => const SizedBox.shrink(),
+                ),
+              )),
+          PagedSliverList<String?, Transaction>(
+            state: _txState,
+            fetchNextPage: _fetchNextTxPage,
+            builderDelegate: PagedChildBuilderDelegate<Transaction>(
+              animateTransitions: true,
+              transitionDuration: const Duration(milliseconds: 500),
+              itemBuilder: (BuildContext context, Transaction tx, int index) {
+                return TransactionListItem(
+                  pubKey: myPubKey,
+                  currentUd: currentUd,
+                  isG1: isG1,
+                  isCurrencyBefore: isCurrencyBefore,
+                  currentSymbol: currentSymbol,
+                  isExternalAccount: widget.isExternalAccount,
+                  index: index + pendingCount,
+                  transaction: tx,
+                );
+              },
+              firstPageErrorIndicatorBuilder: (_) =>
+                  TransactionWidgetErrorWidget(
+                onTryAgain: _fetchNextTxPage,
               ),
-            PagedSliverList<String?, Transaction>(
-                pagingController: _pagingController,
-                // separatorBuilder: (BuildContext context, int index) =>
-                //    const Divider(),
-                builderDelegate: PagedChildBuilderDelegate<Transaction>(
-                    animateTransitions: true,
-                    transitionDuration: const Duration(milliseconds: 500),
-                    itemBuilder:
-                        (BuildContext context, Transaction tx, int index) {
-                      return TransactionListItem(
-                          pubKey: myPubKey,
-                          currentUd: currentUd,
-                          isG1: isG1,
-                          isCurrencyBefore: isCurrencyBefore,
-                          currentSymbol: currentSymbol,
-                          isExternalAccount: widget.isExternalAccount,
-                          index: index +
-                              (_pendingController.itemList != null
-                                  ? _pendingController.itemList!.length
-                                  : 0),
-                          transaction: tx);
-                    },
-                    firstPageErrorIndicatorBuilder: (_) =>
-                        TransactionWidgetErrorWidget(
-                          onTryAgain: () => _pagingController.refresh(),
-                        ),
-                    noItemsFoundIndicatorBuilder: (_) => Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Align(
-                            alignment: Alignment.topCenter,
-                            child: Text(
-                              tr(widget.isExternalAccount
-                                  ? 'no_transactions_simple'
-                                  : 'no_transactions'),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ))),
-          ]),
+              newPageProgressIndicatorBuilder: (_) => const Padding(
+                padding: EdgeInsets.symmetric(vertical: 24.0),
+                child: Center(child: CircularProgressIndicator()),
+              ),
+              newPageErrorIndicatorBuilder: (_) => TransactionWidgetErrorWidget(
+                onTryAgain: _fetchNextTxPage,
+              ),
+              noItemsFoundIndicatorBuilder: (_) => Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Text(
+                    _txState.isLoading
+                        ? ''
+                        : tr(widget.isExternalAccount
+                            ? 'no_transactions_simple'
+                            : 'no_transactions'),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
-
-  Future<void> _refresh() {
-    return Future<void>.sync(() {
-      _pagingController.refresh();
-      _pendingController.refresh();
-    });
-  }
-
-  Future<void> _fetchPending(int pageKey) async {
-    if (widget.pubKey != null) {
-      return;
-    }
-    try {
-      final List<Transaction> pendTxs =
-          transCubit.currentWalletState(widget.pubKey).pendingTransactions;
-      final bool shouldPaginate = pendTxs.length > _pendingPageSize;
-      final List<Transaction> newItems =
-          shouldPaginate ? pendTxs.sublist(pageKey, _pendingPageSize) : pendTxs;
-      final bool isLastPage = newItems.length < _pendingPageSize;
-      if (isLastPage) {
-        _pendingController.appendLastPage(newItems);
-      } else {
-        final int nextPageKey = pageKey + newItems.length;
-        _pendingController.appendPage(newItems, nextPageKey);
-      }
-    } catch (error) {
-      _pendingController.error = error;
-    }
-  }
-
-  double getBalance(BuildContext context) =>
-      context.read<MultiWalletTransactionCubit>().balance(widget.pubKey);
 }
 
 class BalanceWidget extends StatelessWidget {

@@ -62,9 +62,8 @@ class _TransactionsAndBalanceWidgetState
   late UtxoCubit utxoCubit;
 
   PagingState<String?, Transaction> _txState =
-      PagingState<String?, Transaction>(isLoading: true);
-  PagingState<int, Transaction> _pendingState =
-      PagingState<int, Transaction>(isLoading: true);
+      PagingState<String?, Transaction>();
+  PagingState<int, Transaction> _pendingState = PagingState<int, Transaction>();
 
   String? _nextCursor;
   String? _lastRequestedCursor;
@@ -96,7 +95,7 @@ class _TransactionsAndBalanceWidgetState
 
         final bool keepLoading = items.isEmpty &&
             listingState.error == null &&
-            (listingState.nextPageKey != null || _txState.isLoading);
+            listingState.nextPageKey != null;
 
         _txState = _txState.copyWith(
           pages: pageList,
@@ -466,6 +465,10 @@ class _TransactionsAndBalanceWidgetState
                   transaction: tx,
                 );
               },
+              firstPageProgressIndicatorBuilder: (_) => const Padding(
+                padding: EdgeInsets.symmetric(vertical: 24.0),
+                child: Center(child: CircularProgressIndicator()),
+              ),
               firstPageErrorIndicatorBuilder: (_) =>
                   TransactionWidgetErrorWidget(
                 onTryAgain: _fetchNextTxPage,
@@ -477,20 +480,25 @@ class _TransactionsAndBalanceWidgetState
               newPageErrorIndicatorBuilder: (_) => TransactionWidgetErrorWidget(
                 onTryAgain: _fetchNextTxPage,
               ),
-              noItemsFoundIndicatorBuilder: (_) => Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Text(
-                    _txState.isLoading
-                        ? ''
-                        : tr(widget.isExternalAccount
-                            ? 'no_transactions_simple'
-                            : 'no_transactions'),
-                    textAlign: TextAlign.center,
+              noItemsFoundIndicatorBuilder: (_) {
+                final bool firstPageNeverLoaded =
+                    _txState.pages == null || (_txState.pages?.isEmpty ?? true);
+                if (_txState.isLoading || firstPageNeverLoaded) {
+                  return const SizedBox.shrink();
+                }
+                return Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Text(
+                      tr(widget.isExternalAccount
+                          ? 'no_transactions_simple'
+                          : 'no_transactions'),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                ),
-              ),
+                );
+              },
             ),
           ),
         ],

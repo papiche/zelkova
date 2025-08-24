@@ -62,7 +62,10 @@ class _TransactionsAndBalanceWidgetState
   late UtxoCubit utxoCubit;
 
   PagingState<String?, Transaction> _txState =
-      PagingState<String?, Transaction>();
+      PagingState<String?, Transaction>(
+    isLoading: true,
+  );
+
   PagingState<int, Transaction> _pendingState = PagingState<int, Transaction>();
 
   String? _nextCursor;
@@ -140,8 +143,9 @@ class _TransactionsAndBalanceWidgetState
   }
 
   Future<void> _fetchNextTxPage() async {
-    if (_txState.isLoading) {
-      return;
+    if (_txState.isLoading &&
+        (_txState.pages != null && _txState.pages!.isNotEmpty == true)) {
+      return; // Already loading and has data
     }
 
     setState(() {
@@ -199,17 +203,51 @@ class _TransactionsAndBalanceWidgetState
   }
 
   Future<void> _refresh() async {
+    // Store current pages to restore if refresh fails
+    final List<List<Transaction>>? oldTxPages = _txState.pages;
+    final List<List<Transaction>>? oldPendingPages = _pendingState.pages;
+
     setState(() {
-      _txState = PagingState<String?, Transaction>();
-      _pendingState = PagingState<int, Transaction>();
-      _nextCursor = null;
-      _lastRequestedCursor = null;
+      _txState = _txState.copyWith(
+        isLoading: true,
+        error: null,
+        pages: <List<Transaction>>[], // Clear pages for fresh data
+        keys: <String?>[],
+      );
+      _pendingState = _pendingState.copyWith(
+        isLoading: true,
+        error: null,
+        pages: <List<Transaction>>[],
+        keys: <int>[],
+      );
     });
 
-    await Future.wait(<Future<void>>[
-      Future<void>.sync(_fetchNextTxPage),
-      if (!widget.isExternalAccount) Future<void>.sync(_fetchNextPendingPage),
-    ]);
+    _nextCursor = null;
+    _lastRequestedCursor = null;
+
+    try {
+      await Future.wait(<Future<void>>[
+        _fetchNextTxPage(),
+        if (!widget.isExternalAccount) _fetchNextPendingPage(),
+      ]);
+    } catch (error) {
+      // Restore previous data on error
+      setState(() {
+        _txState = _txState.copyWith(
+          isLoading: false,
+          error: error,
+          pages: oldTxPages,
+          keys: _txState.keys?.sublist(0, oldTxPages?.length ?? 0),
+        );
+        _pendingState = _pendingState.copyWith(
+          isLoading: false,
+          error: error,
+          pages: oldPendingPages,
+          keys: _pendingState.keys?.sublist(0, oldPendingPages?.length ?? 0),
+        );
+      });
+      rethrow; // Re-throw to let RefreshIndicator handle it
+    }
   }
 
   double getBalance(BuildContext context) =>
@@ -481,23 +519,31 @@ class _TransactionsAndBalanceWidgetState
                 onTryAgain: _fetchNextTxPage,
               ),
               noItemsFoundIndicatorBuilder: (_) {
-                final bool firstPageNeverLoaded =
-                    _txState.pages == null || (_txState.pages?.isEmpty ?? true);
-                if (_txState.isLoading || firstPageNeverLoaded) {
-                  return const SizedBox.shrink();
+                final bool hasPages =
+                    _txState.pages != null && _txState.pages!.isNotEmpty;
+                final bool hasItems = hasPages &&
+                    _txState.pages!
+                        .any((List<Transaction> page) => page.isNotEmpty);
+                final bool isLoading = _txState.isLoading;
+                if (isLoading) {
+                  return const Center(child: CircularProgressIndicator());
                 }
-                return Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: Text(
-                      tr(widget.isExternalAccount
-                          ? 'no_transactions_simple'
-                          : 'no_transactions'),
-                      textAlign: TextAlign.center,
+                if (hasPages && !hasItems) {
+                  return Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Text(
+                        tr(widget.isExternalAccount
+                            ? 'no_transactions_simple'
+                            : 'no_transactions'),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                  ),
-                );
+                  );
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
               },
             ),
           ),

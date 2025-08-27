@@ -420,7 +420,7 @@
   "app_lock_unlock_with_biometrics": "Unlock with biometrics",
   "biometric_auth_reason": "Use biometrics to unlock G1nkgo",
   "import_wallet_from_clipboard": "Import Wallet from Clipboard",
-  "import_wallet_from_clipboard_desc": "Paste a previously exported Ğ1nkgo wallet text",
+  "import_wallet_from_clipboard_desc": "Paste the text of a previously exported Ğ1nkgo wallet",
   "import_wallet_from_clipboard_pubkey": "Import Wallet from Public Key",
   "import_wallet_from_clipboard_pubkey_desc": "Paste a public key of other type of wallets (like Cesium) to import it with authentication",
   "error_empty_g1nkgo": "The export text cannot be empty",

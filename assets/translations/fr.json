@@ -395,7 +395,7 @@
   "create_with_mnemonics_description": "Portefeuille récupérable utilisant une phrase de récupération (plus sécurisé)",
   "clipboard_import_mnemonic": "Importer une phrase de récupération",
   "nodes_list_title": "{} Nœuds ({})",
-  "clipboard_import_mnemonic_description": "Entrez une phrase de récupératinon pour récupérer votre portefeuille",
+  "clipboard_import_mnemonic_description": "Entrez une phrase de récupération pour récupérer votre portefeuille",
   "nodes_list_last_updated": "Dernière mise à jour : {}",
   "search_users_globally": "Rechercher des utilisateurs sur le réseau",
   "not_found_contacts": "Aucun contact trouvé",
@@ -448,5 +448,8 @@
   "import_wallet_from_clipboard_mnemonic_desc": "Collez une phrase de récupération pour récupérer votre portefeuille",
   "tooltip_wallet_password_less": "Ce portefeuille n'a pas de mot de passe",
   "v2_seed_export_title": "Phrase de récupération du portefeuille",
-  "cert_expire_on_past": "Certification expiré"
+  "cert_expire_on_past": "Certification expiré",
+  "error_decoding_json": "Erreur lors du décodage du fichier d'export g1ncko",
+  "error": "Erreur",
+  "invalid_import_json": "Fichier d'export g1ncko invalide"
 }

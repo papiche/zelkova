@@ -81,6 +81,42 @@ class Queries {
     return 0; /* Default */
   }
 
+  /// The Smith metadata for each identity.
+  _i4.Future<List<_i2.SmithMeta?>> multiSmiths(
+    List<int> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys = keys.map((key) => _smiths.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _smiths.decodeValue(v.key))
+          .toList();
+    }
+    return []; /* Nullable */
+  }
+
+  /// The indexes of Smith to remove at a given session.
+  _i4.Future<List<List<int>?>> multiExpiresOn(
+    List<int> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys = keys.map((key) => _expiresOn.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _expiresOn.decodeValue(v.key))
+          .toList();
+    }
+    return []; /* Nullable */
+  }
+
   /// Returns the storage key for `smiths`.
   _i5.Uint8List smithsKey(int key1) {
     final hashedKey = _smiths.hashedKeyFor(key1);
@@ -116,21 +152,18 @@ class Txs {
   const Txs();
 
   /// Invite a member of the Web of Trust to attempt becoming a Smith.
-  _i6.RuntimeCall inviteSmith({required int receiver}) {
-    final _call = _i7.Call.values.inviteSmith(receiver: receiver);
-    return _i6.RuntimeCall.values.smithMembers(_call);
+  _i6.SmithMembers inviteSmith({required int receiver}) {
+    return _i6.SmithMembers(_i7.InviteSmith(receiver: receiver));
   }
 
   /// Accept an invitation to become a Smith (must have been invited first).
-  _i6.RuntimeCall acceptInvitation() {
-    final _call = _i7.Call.values.acceptInvitation();
-    return _i6.RuntimeCall.values.smithMembers(_call);
+  _i6.SmithMembers acceptInvitation() {
+    return _i6.SmithMembers(_i7.AcceptInvitation());
   }
 
   /// Certify an invited Smith, which can lead the certified to become a Smith.
-  _i6.RuntimeCall certifySmith({required int receiver}) {
-    final _call = _i7.Call.values.certifySmith(receiver: receiver);
-    return _i6.RuntimeCall.values.smithMembers(_call);
+  _i6.SmithMembers certifySmith({required int receiver}) {
+    return _i6.SmithMembers(_i7.CertifySmith(receiver: receiver));
   }
 }
 

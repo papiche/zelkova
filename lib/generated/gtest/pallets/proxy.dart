@@ -85,6 +85,57 @@ class Queries {
     ); /* Default */
   }
 
+  /// The set of account proxies. Maps the account which has delegated to the accounts
+  /// which are being delegated to, together with the amount held on deposit.
+  _i7.Future<List<_i3.Tuple2<List<_i4.ProxyDefinition>, BigInt>>> multiProxies(
+    List<_i2.AccountId32> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys = keys.map((key) => _proxies.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _proxies.decodeValue(v.key))
+          .toList();
+    }
+    return (keys
+            .map((key) => _i3.Tuple2<List<_i4.ProxyDefinition>, BigInt>(
+                  [],
+                  BigInt.zero,
+                ))
+            .toList()
+        as List<_i3.Tuple2<List<_i4.ProxyDefinition>, BigInt>>); /* Default */
+  }
+
+  /// The announcements made by the proxy (key).
+  _i7.Future<List<_i3.Tuple2<List<_i6.Announcement>, BigInt>>>
+      multiAnnouncements(
+    List<_i2.AccountId32> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys =
+        keys.map((key) => _announcements.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _announcements.decodeValue(v.key))
+          .toList();
+    }
+    return (keys
+            .map((key) => _i3.Tuple2<List<_i6.Announcement>, BigInt>(
+                  [],
+                  BigInt.zero,
+                ))
+            .toList()
+        as List<_i3.Tuple2<List<_i6.Announcement>, BigInt>>); /* Default */
+  }
+
   /// Returns the storage key for `proxies`.
   _i8.Uint8List proxiesKey(_i2.AccountId32 key1) {
     final hashedKey = _proxies.hashedKeyFor(key1);
@@ -122,17 +173,16 @@ class Txs {
   /// - `real`: The account that the proxy will make a call on behalf of.
   /// - `force_proxy_type`: Specify the exact proxy type to be used and checked for this call.
   /// - `call`: The call to be made by the `real` account.
-  _i9.RuntimeCall proxy({
+  _i9.Proxy proxy({
     required _i10.MultiAddress real,
     _i11.ProxyType? forceProxyType,
     required _i9.RuntimeCall call,
   }) {
-    final _call = _i12.Call.values.proxy(
+    return _i9.Proxy(_i12.Proxy(
       real: real,
       forceProxyType: forceProxyType,
       call: call,
-    );
-    return _i9.RuntimeCall.values.proxy(_call);
+    ));
   }
 
   /// Register a proxy account for the sender that is able to make calls on its behalf.
@@ -144,17 +194,16 @@ class Txs {
   /// - `proxy_type`: The permissions allowed for this proxy account.
   /// - `delay`: The announcement period required of the initial proxy. Will generally be
   /// zero.
-  _i9.RuntimeCall addProxy({
+  _i9.Proxy addProxy({
     required _i10.MultiAddress delegate,
     required _i11.ProxyType proxyType,
     required int delay,
   }) {
-    final _call = _i12.Call.values.addProxy(
+    return _i9.Proxy(_i12.AddProxy(
       delegate: delegate,
       proxyType: proxyType,
       delay: delay,
-    );
-    return _i9.RuntimeCall.values.proxy(_call);
+    ));
   }
 
   /// Unregister a proxy account for the sender.
@@ -164,17 +213,16 @@ class Txs {
   /// Parameters:
   /// - `proxy`: The account that the `caller` would like to remove as a proxy.
   /// - `proxy_type`: The permissions currently enabled for the removed proxy account.
-  _i9.RuntimeCall removeProxy({
+  _i9.Proxy removeProxy({
     required _i10.MultiAddress delegate,
     required _i11.ProxyType proxyType,
     required int delay,
   }) {
-    final _call = _i12.Call.values.removeProxy(
+    return _i9.Proxy(_i12.RemoveProxy(
       delegate: delegate,
       proxyType: proxyType,
       delay: delay,
-    );
-    return _i9.RuntimeCall.values.proxy(_call);
+    ));
   }
 
   /// Unregister all proxy accounts for the sender.
@@ -183,9 +231,8 @@ class Txs {
   ///
   /// WARNING: This may be called on accounts created by `pure`, however if done, then
   /// the unreserved fees will be inaccessible. **All access to this account will be lost.**
-  _i9.RuntimeCall removeProxies() {
-    final _call = _i12.Call.values.removeProxies();
-    return _i9.RuntimeCall.values.proxy(_call);
+  _i9.Proxy removeProxies() {
+    return _i9.Proxy(_i12.RemoveProxies());
   }
 
   /// Spawn a fresh new account that is guaranteed to be otherwise inaccessible, and
@@ -206,17 +253,16 @@ class Txs {
   /// same sender, with the same parameters.
   ///
   /// Fails if there are insufficient funds to pay for deposit.
-  _i9.RuntimeCall createPure({
+  _i9.Proxy createPure({
     required _i11.ProxyType proxyType,
     required int delay,
     required int index,
   }) {
-    final _call = _i12.Call.values.createPure(
+    return _i9.Proxy(_i12.CreatePure(
       proxyType: proxyType,
       delay: delay,
       index: index,
-    );
-    return _i9.RuntimeCall.values.proxy(_call);
+    ));
   }
 
   /// Removes a previously spawned pure proxy.
@@ -235,21 +281,20 @@ class Txs {
   ///
   /// Fails with `NoPermission` in case the caller is not a previously created pure
   /// account whose `pure` call has corresponding parameters.
-  _i9.RuntimeCall killPure({
+  _i9.Proxy killPure({
     required _i10.MultiAddress spawner,
     required _i11.ProxyType proxyType,
     required int index,
     required BigInt height,
     required BigInt extIndex,
   }) {
-    final _call = _i12.Call.values.killPure(
+    return _i9.Proxy(_i12.KillPure(
       spawner: spawner,
       proxyType: proxyType,
       index: index,
       height: height,
       extIndex: extIndex,
-    );
-    return _i9.RuntimeCall.values.proxy(_call);
+    ));
   }
 
   /// Publish the hash of a proxy-call that will be made in the future.
@@ -267,15 +312,14 @@ class Txs {
   /// Parameters:
   /// - `real`: The account that the proxy will make a call on behalf of.
   /// - `call_hash`: The hash of the call to be made by the `real` account.
-  _i9.RuntimeCall announce({
+  _i9.Proxy announce({
     required _i10.MultiAddress real,
     required _i13.H256 callHash,
   }) {
-    final _call = _i12.Call.values.announce(
+    return _i9.Proxy(_i12.Announce(
       real: real,
       callHash: callHash,
-    );
-    return _i9.RuntimeCall.values.proxy(_call);
+    ));
   }
 
   /// Remove a given announcement.
@@ -288,15 +332,14 @@ class Txs {
   /// Parameters:
   /// - `real`: The account that the proxy will make a call on behalf of.
   /// - `call_hash`: The hash of the call to be made by the `real` account.
-  _i9.RuntimeCall removeAnnouncement({
+  _i9.Proxy removeAnnouncement({
     required _i10.MultiAddress real,
     required _i13.H256 callHash,
   }) {
-    final _call = _i12.Call.values.removeAnnouncement(
+    return _i9.Proxy(_i12.RemoveAnnouncement(
       real: real,
       callHash: callHash,
-    );
-    return _i9.RuntimeCall.values.proxy(_call);
+    ));
   }
 
   /// Remove the given announcement of a delegate.
@@ -309,15 +352,14 @@ class Txs {
   /// Parameters:
   /// - `delegate`: The account that previously announced the call.
   /// - `call_hash`: The hash of the call to be made.
-  _i9.RuntimeCall rejectAnnouncement({
+  _i9.Proxy rejectAnnouncement({
     required _i10.MultiAddress delegate,
     required _i13.H256 callHash,
   }) {
-    final _call = _i12.Call.values.rejectAnnouncement(
+    return _i9.Proxy(_i12.RejectAnnouncement(
       delegate: delegate,
       callHash: callHash,
-    );
-    return _i9.RuntimeCall.values.proxy(_call);
+    ));
   }
 
   /// Dispatch the given `call` from an account that the sender is authorized for through
@@ -331,19 +373,18 @@ class Txs {
   /// - `real`: The account that the proxy will make a call on behalf of.
   /// - `force_proxy_type`: Specify the exact proxy type to be used and checked for this call.
   /// - `call`: The call to be made by the `real` account.
-  _i9.RuntimeCall proxyAnnounced({
+  _i9.Proxy proxyAnnounced({
     required _i10.MultiAddress delegate,
     required _i10.MultiAddress real,
     _i11.ProxyType? forceProxyType,
     required _i9.RuntimeCall call,
   }) {
-    final _call = _i12.Call.values.proxyAnnounced(
+    return _i9.Proxy(_i12.ProxyAnnounced(
       delegate: delegate,
       real: real,
       forceProxyType: forceProxyType,
       call: call,
-    );
-    return _i9.RuntimeCall.values.proxy(_call);
+    ));
   }
 
   /// Poke / Adjust deposits made for proxies and announcements based on current values.
@@ -354,9 +395,8 @@ class Txs {
   /// The transaction fee is waived if the deposit amount has changed.
   ///
   /// Emits `DepositPoked` if successful.
-  _i9.RuntimeCall pokeDeposit() {
-    final _call = _i12.Call.values.pokeDeposit();
-    return _i9.RuntimeCall.values.proxy(_call);
+  _i9.Proxy pokeDeposit() {
+    return _i9.Proxy(_i12.PokeDeposit());
   }
 }
 

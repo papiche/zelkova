@@ -435,6 +435,26 @@ class Queries {
     return []; /* Default */
   }
 
+  /// TWOX-NOTE: `SegmentIndex` is an increasing integer, so this is okay.
+  _i10.Future<List<List<List<int>>>> multiUnderConstruction(
+    List<int> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys =
+        keys.map((key) => _underConstruction.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _underConstruction.decodeValue(v.key))
+          .toList();
+    }
+    return (keys.map((key) => []).toList()
+        as List<List<List<int>>>); /* Default */
+  }
+
   /// Returns the storage key for `epochIndex`.
   _i11.Uint8List epochIndexKey() {
     final hashedKey = _epochIndex.hashedKey();
@@ -551,15 +571,14 @@ class Txs {
   /// the equivocation proof and validate the given key ownership proof
   /// against the extracted offender. If both are valid, the offence will
   /// be reported.
-  _i12.RuntimeCall reportEquivocation({
+  _i12.Babe reportEquivocation({
     required _i13.EquivocationProof equivocationProof,
     required _i14.MembershipProof keyOwnerProof,
   }) {
-    final _call = _i15.Call.values.reportEquivocation(
+    return _i12.Babe(_i15.ReportEquivocation(
       equivocationProof: equivocationProof,
       keyOwnerProof: keyOwnerProof,
-    );
-    return _i12.RuntimeCall.values.babe(_call);
+    ));
   }
 
   /// Report authority equivocation/misbehavior. This method will verify
@@ -570,25 +589,22 @@ class Txs {
   /// block authors will call it (validated in `ValidateUnsigned`), as such
   /// if the block author is defined it will be defined as the equivocation
   /// reporter.
-  _i12.RuntimeCall reportEquivocationUnsigned({
+  _i12.Babe reportEquivocationUnsigned({
     required _i13.EquivocationProof equivocationProof,
     required _i14.MembershipProof keyOwnerProof,
   }) {
-    final _call = _i15.Call.values.reportEquivocationUnsigned(
+    return _i12.Babe(_i15.ReportEquivocationUnsigned(
       equivocationProof: equivocationProof,
       keyOwnerProof: keyOwnerProof,
-    );
-    return _i12.RuntimeCall.values.babe(_call);
+    ));
   }
 
   /// Plan an epoch config change. The epoch config change is recorded and will be enacted on
   /// the next call to `enact_epoch_change`. The config will be activated one epoch after.
   /// Multiple calls to this method will replace any existing planned config change that had
   /// not been enacted yet.
-  _i12.RuntimeCall planConfigChange(
-      {required _i6.NextConfigDescriptor config}) {
-    final _call = _i15.Call.values.planConfigChange(config: config);
-    return _i12.RuntimeCall.values.babe(_call);
+  _i12.Babe planConfigChange({required _i6.NextConfigDescriptor config}) {
+    return _i12.Babe(_i15.PlanConfigChange(config: config));
   }
 }
 

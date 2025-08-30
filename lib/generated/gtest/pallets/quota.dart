@@ -58,6 +58,24 @@ class Queries {
     return []; /* Default */
   }
 
+  /// The quota for each identity.
+  _i5.Future<List<_i2.Quota?>> multiIdtyQuota(
+    List<int> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys = keys.map((key) => _idtyQuota.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _idtyQuota.decodeValue(v.key))
+          .toList();
+    }
+    return []; /* Nullable */
+  }
+
   /// Returns the storage key for `idtyQuota`.
   _i6.Uint8List idtyQuotaKey(int key1) {
     final hashedKey = _idtyQuota.hashedKeyFor(key1);

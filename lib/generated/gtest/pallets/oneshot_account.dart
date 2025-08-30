@@ -40,6 +40,25 @@ class Queries {
     return null; /* Nullable */
   }
 
+  /// The balance for each oneshot account.
+  _i4.Future<List<BigInt?>> multiOneshotAccounts(
+    List<_i2.AccountId32> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys =
+        keys.map((key) => _oneshotAccounts.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _oneshotAccounts.decodeValue(v.key))
+          .toList();
+    }
+    return []; /* Nullable */
+  }
+
   /// Returns the storage key for `oneshotAccounts`.
   _i5.Uint8List oneshotAccountsKey(_i2.AccountId32 key1) {
     final hashedKey = _oneshotAccounts.hashedKeyFor(key1);
@@ -62,15 +81,14 @@ class Txs {
   /// - `balance`: The balance to be transfered to this oneshot account.
   ///
   /// Origin account is kept alive.
-  _i6.RuntimeCall createOneshotAccount({
+  _i6.OneshotAccount createOneshotAccount({
     required _i7.MultiAddress dest,
     required BigInt value,
   }) {
-    final _call = _i8.Call.values.createOneshotAccount(
+    return _i6.OneshotAccount(_i8.CreateOneshotAccount(
       dest: dest,
       value: value,
-    );
-    return _i6.RuntimeCall.values.oneshotAccount(_call);
+    ));
   }
 
   /// Consume a oneshot account and transfer its balance to an account
@@ -78,15 +96,14 @@ class Txs {
   /// - `block_height`: Must be a recent block number. The limit is `BlockHashCount` in the past. (this is to prevent replay attacks)
   /// - `dest`: The destination account.
   /// - `dest_is_oneshot`: If set to `true`, then a oneshot account is created at `dest`. Else, `dest` has to be an existing account.
-  _i6.RuntimeCall consumeOneshotAccount({
+  _i6.OneshotAccount consumeOneshotAccount({
     required int blockHeight,
     required _i9.Account dest,
   }) {
-    final _call = _i8.Call.values.consumeOneshotAccount(
+    return _i6.OneshotAccount(_i8.ConsumeOneshotAccount(
       blockHeight: blockHeight,
       dest: dest,
-    );
-    return _i6.RuntimeCall.values.oneshotAccount(_call);
+    ));
   }
 
   /// Consume a oneshot account then transfer some amount to an account,
@@ -99,18 +116,17 @@ class Txs {
   /// - `dest2`: The second destination account.
   /// - `dest2_is_oneshot`: If set to `true`, then a oneshot account is created at `dest2`. Else, `dest2` has to be an existing account.
   /// - `balance1`: The amount transfered to `dest`, the leftover being transfered to `dest2`.
-  _i6.RuntimeCall consumeOneshotAccountWithRemaining({
+  _i6.OneshotAccount consumeOneshotAccountWithRemaining({
     required int blockHeight,
     required _i9.Account dest,
     required _i9.Account remainingTo,
     required BigInt balance,
   }) {
-    final _call = _i8.Call.values.consumeOneshotAccountWithRemaining(
+    return _i6.OneshotAccount(_i8.ConsumeOneshotAccountWithRemaining(
       blockHeight: blockHeight,
       dest: dest,
       remainingTo: remainingTo,
       balance: balance,
-    );
-    return _i6.RuntimeCall.values.oneshotAccount(_call);
+    ));
   }
 }

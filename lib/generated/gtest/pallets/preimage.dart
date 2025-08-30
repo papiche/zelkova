@@ -91,6 +91,61 @@ class Queries {
     return null; /* Nullable */
   }
 
+  /// The request status of a given hash.
+  _i7.Future<List<_i3.OldRequestStatus?>> multiStatusFor(
+    List<_i2.H256> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys = keys.map((key) => _statusFor.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _statusFor.decodeValue(v.key))
+          .toList();
+    }
+    return []; /* Nullable */
+  }
+
+  /// The request status of a given hash.
+  _i7.Future<List<_i4.RequestStatus?>> multiRequestStatusFor(
+    List<_i2.H256> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys =
+        keys.map((key) => _requestStatusFor.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _requestStatusFor.decodeValue(v.key))
+          .toList();
+    }
+    return []; /* Nullable */
+  }
+
+  _i7.Future<List<List<int>?>> multiPreimageFor(
+    List<_i5.Tuple2<_i2.H256, int>> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys =
+        keys.map((key) => _preimageFor.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _preimageFor.decodeValue(v.key))
+          .toList();
+    }
+    return []; /* Nullable */
+  }
+
   /// Returns the storage key for `statusFor`.
   _i8.Uint8List statusForKey(_i2.H256 key1) {
     final hashedKey = _statusFor.hashedKeyFor(key1);
@@ -135,9 +190,8 @@ class Txs {
   ///
   /// If the preimage was previously requested, no fees or deposits are taken for providing
   /// the preimage. Otherwise, a deposit is taken proportional to the size of the preimage.
-  _i9.RuntimeCall notePreimage({required List<int> bytes}) {
-    final _call = _i10.Call.values.notePreimage(bytes: bytes);
-    return _i9.RuntimeCall.values.preimage(_call);
+  _i9.Preimage notePreimage({required List<int> bytes}) {
+    return _i9.Preimage(_i10.NotePreimage(bytes: bytes));
   }
 
   /// Clear an unrequested preimage from the runtime storage.
@@ -146,33 +200,29 @@ class Txs {
   ///
   /// - `hash`: The hash of the preimage to be removed from the store.
   /// - `len`: The length of the preimage of `hash`.
-  _i9.RuntimeCall unnotePreimage({required _i2.H256 hash}) {
-    final _call = _i10.Call.values.unnotePreimage(hash: hash);
-    return _i9.RuntimeCall.values.preimage(_call);
+  _i9.Preimage unnotePreimage({required _i2.H256 hash}) {
+    return _i9.Preimage(_i10.UnnotePreimage(hash: hash));
   }
 
   /// Request a preimage be uploaded to the chain without paying any fees or deposits.
   ///
   /// If the preimage requests has already been provided on-chain, we unreserve any deposit
   /// a user may have paid, and take the control of the preimage out of their hands.
-  _i9.RuntimeCall requestPreimage({required _i2.H256 hash}) {
-    final _call = _i10.Call.values.requestPreimage(hash: hash);
-    return _i9.RuntimeCall.values.preimage(_call);
+  _i9.Preimage requestPreimage({required _i2.H256 hash}) {
+    return _i9.Preimage(_i10.RequestPreimage(hash: hash));
   }
 
   /// Clear a previously made request for a preimage.
   ///
   /// NOTE: THIS MUST NOT BE CALLED ON `hash` MORE TIMES THAN `request_preimage`.
-  _i9.RuntimeCall unrequestPreimage({required _i2.H256 hash}) {
-    final _call = _i10.Call.values.unrequestPreimage(hash: hash);
-    return _i9.RuntimeCall.values.preimage(_call);
+  _i9.Preimage unrequestPreimage({required _i2.H256 hash}) {
+    return _i9.Preimage(_i10.UnrequestPreimage(hash: hash));
   }
 
   /// Ensure that the bulk of pre-images is upgraded.
   ///
   /// The caller pays no fee if at least 90% of pre-images were successfully updated.
-  _i9.RuntimeCall ensureUpdated({required List<_i2.H256> hashes}) {
-    final _call = _i10.Call.values.ensureUpdated(hashes: hashes);
-    return _i9.RuntimeCall.values.preimage(_call);
+  _i9.Preimage ensureUpdated({required List<_i2.H256> hashes}) {
+    return _i9.Preimage(_i10.EnsureUpdated(hashes: hashes));
   }
 }

@@ -176,6 +176,25 @@ class Queries {
     return 0; /* Default */
   }
 
+  /// The pending evaluation requesters.
+  _i6.Future<List<_i4.AccountId32?>> multiPendingEvaluationRequest(
+    List<int> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys =
+        keys.map((key) => _pendingEvaluationRequest.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _pendingEvaluationRequest.decodeValue(v.key))
+          .toList();
+    }
+    return []; /* Nullable */
+  }
+
   /// Returns the storage key for `evaluationPool0`.
   _i7.Uint8List evaluationPool0Key() {
     final hashedKey = _evaluationPool0.hashedKey();
@@ -233,29 +252,26 @@ class Txs {
   /// This function allows the caller to request an evaluation of their distance.
   /// A positive evaluation will lead to claiming or renewing membership, while a negative
   /// evaluation will result in slashing for the caller.
-  _i8.RuntimeCall requestDistanceEvaluation() {
-    final _call = _i9.Call.values.requestDistanceEvaluation();
-    return _i8.RuntimeCall.values.distance(_call);
+  _i8.Distance requestDistanceEvaluation() {
+    return _i8.Distance(_i9.RequestDistanceEvaluation());
   }
 
   /// Request evaluation of a target identity's distance.
   ///
   /// This function allows the caller to request an evaluation of a specific target identity's distance.
   /// This action is only permitted for unvalidated identities.
-  _i8.RuntimeCall requestDistanceEvaluationFor({required int target}) {
-    final _call = _i9.Call.values.requestDistanceEvaluationFor(target: target);
-    return _i8.RuntimeCall.values.distance(_call);
+  _i8.Distance requestDistanceEvaluationFor({required int target}) {
+    return _i8.Distance(_i9.RequestDistanceEvaluationFor(target: target));
   }
 
   /// Push an evaluation result to the pool.
   ///
   /// This inherent function is called internally by validators to push an evaluation result
   /// to the evaluation pool.
-  _i8.RuntimeCall updateEvaluation(
+  _i8.Distance updateEvaluation(
       {required _i10.ComputationResult computationResult}) {
-    final _call =
-        _i9.Call.values.updateEvaluation(computationResult: computationResult);
-    return _i8.RuntimeCall.values.distance(_call);
+    return _i8.Distance(
+        _i9.UpdateEvaluation(computationResult: computationResult));
   }
 
   /// Force push an evaluation result to the pool.
@@ -263,15 +279,14 @@ class Txs {
   /// It is primarily used for testing purposes.
   ///
   /// - `origin`: Must be `Root`.
-  _i8.RuntimeCall forceUpdateEvaluation({
+  _i8.Distance forceUpdateEvaluation({
     required _i4.AccountId32 evaluator,
     required _i10.ComputationResult computationResult,
   }) {
-    final _call = _i9.Call.values.forceUpdateEvaluation(
+    return _i8.Distance(_i9.ForceUpdateEvaluation(
       evaluator: evaluator,
       computationResult: computationResult,
-    );
-    return _i8.RuntimeCall.values.distance(_call);
+    ));
   }
 
   /// Force set the distance evaluation status of an identity.
@@ -279,9 +294,8 @@ class Txs {
   /// It is primarily used for testing purposes.
   ///
   /// - `origin`: Must be `Root`.
-  _i8.RuntimeCall forceValidDistanceStatus({required int identity}) {
-    final _call = _i9.Call.values.forceValidDistanceStatus(identity: identity);
-    return _i8.RuntimeCall.values.distance(_call);
+  _i8.Distance forceValidDistanceStatus({required int identity}) {
+    return _i8.Distance(_i9.ForceValidDistanceStatus(identity: identity));
   }
 }
 

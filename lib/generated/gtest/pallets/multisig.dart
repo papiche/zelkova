@@ -81,15 +81,14 @@ class Txs {
   ///
   /// ## Complexity
   /// O(Z + C) where Z is the length of the call and C its execution weight.
-  _i7.RuntimeCall asMultiThreshold1({
+  _i7.Multisig asMultiThreshold1({
     required List<_i2.AccountId32> otherSignatories,
     required _i7.RuntimeCall call,
   }) {
-    final _call = _i8.Call.values.asMultiThreshold1(
+    return _i7.Multisig(_i8.AsMultiThreshold1(
       otherSignatories: otherSignatories,
       call: call,
-    );
-    return _i7.RuntimeCall.values.multisig(_call);
+    ));
   }
 
   /// Register approval for a dispatch to be made from a deterministic composite account if
@@ -131,21 +130,20 @@ class Txs {
   /// - The weight of the `call`.
   /// - Storage: inserts one item, value size bounded by `MaxSignatories`, with a deposit
   ///  taken for its lifetime of `DepositBase + threshold * DepositFactor`.
-  _i7.RuntimeCall asMulti({
+  _i7.Multisig asMulti({
     required int threshold,
     required List<_i2.AccountId32> otherSignatories,
     _i9.Timepoint? maybeTimepoint,
     required _i7.RuntimeCall call,
     required _i10.Weight maxWeight,
   }) {
-    final _call = _i8.Call.values.asMulti(
+    return _i7.Multisig(_i8.AsMulti(
       threshold: threshold,
       otherSignatories: otherSignatories,
       maybeTimepoint: maybeTimepoint,
       call: call,
       maxWeight: maxWeight,
-    );
-    return _i7.RuntimeCall.values.multisig(_call);
+    ));
   }
 
   /// Register approval for a dispatch to be made from a deterministic composite account if
@@ -178,21 +176,20 @@ class Txs {
   /// - One event.
   /// - Storage: inserts one item, value size bounded by `MaxSignatories`, with a deposit
   ///  taken for its lifetime of `DepositBase + threshold * DepositFactor`.
-  _i7.RuntimeCall approveAsMulti({
+  _i7.Multisig approveAsMulti({
     required int threshold,
     required List<_i2.AccountId32> otherSignatories,
     _i9.Timepoint? maybeTimepoint,
     required List<int> callHash,
     required _i10.Weight maxWeight,
   }) {
-    final _call = _i8.Call.values.approveAsMulti(
+    return _i7.Multisig(_i8.ApproveAsMulti(
       threshold: threshold,
       otherSignatories: otherSignatories,
       maybeTimepoint: maybeTimepoint,
       callHash: callHash,
       maxWeight: maxWeight,
-    );
-    return _i7.RuntimeCall.values.multisig(_call);
+    ));
   }
 
   /// Cancel a pre-existing, on-going multisig transaction. Any deposit reserved previously
@@ -216,19 +213,18 @@ class Txs {
   /// - One event.
   /// - I/O: 1 read `O(S)`, one remove.
   /// - Storage: removes one item.
-  _i7.RuntimeCall cancelAsMulti({
+  _i7.Multisig cancelAsMulti({
     required int threshold,
     required List<_i2.AccountId32> otherSignatories,
     required _i9.Timepoint timepoint,
     required List<int> callHash,
   }) {
-    final _call = _i8.Call.values.cancelAsMulti(
+    return _i7.Multisig(_i8.CancelAsMulti(
       threshold: threshold,
       otherSignatories: otherSignatories,
       timepoint: timepoint,
       callHash: callHash,
-    );
-    return _i7.RuntimeCall.values.multisig(_call);
+    ));
   }
 
   /// Poke the deposit reserved for an existing multisig operation.
@@ -244,17 +240,16 @@ class Txs {
   /// - `call_hash`: The hash of the call this deposit is reserved for.
   ///
   /// Emits `DepositPoked` if successful.
-  _i7.RuntimeCall pokeDeposit({
+  _i7.Multisig pokeDeposit({
     required int threshold,
     required List<_i2.AccountId32> otherSignatories,
     required List<int> callHash,
   }) {
-    final _call = _i8.Call.values.pokeDeposit(
+    return _i7.Multisig(_i8.PokeDeposit(
       threshold: threshold,
       otherSignatories: otherSignatories,
       callHash: callHash,
-    );
-    return _i7.RuntimeCall.values.multisig(_call);
+    ));
   }
 }
 

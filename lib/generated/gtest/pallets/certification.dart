@@ -99,6 +99,70 @@ class Queries {
     return null; /* Nullable */
   }
 
+  /// The certification metadata for each issuer.
+  _i5.Future<List<_i2.IdtyCertMeta>> multiStorageIdtyCertMeta(
+    List<int> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys =
+        keys.map((key) => _storageIdtyCertMeta.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _storageIdtyCertMeta.decodeValue(v.key))
+          .toList();
+    }
+    return (keys
+        .map((key) => _i2.IdtyCertMeta(
+              issuedCount: 0,
+              nextIssuableOn: 0,
+              receivedCount: 0,
+            ))
+        .toList() as List<_i2.IdtyCertMeta>); /* Default */
+  }
+
+  /// The certifications for each receiver.
+  _i5.Future<List<List<_i4.Tuple2<int, int>>>> multiCertsByReceiver(
+    List<int> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys =
+        keys.map((key) => _certsByReceiver.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _certsByReceiver.decodeValue(v.key))
+          .toList();
+    }
+    return (keys.map((key) => []).toList()
+        as List<List<_i4.Tuple2<int, int>>>); /* Default */
+  }
+
+  /// The certifications that should expire at a given block.
+  _i5.Future<List<List<_i4.Tuple2<int, int>>?>> multiCertsRemovableOn(
+    List<int> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys =
+        keys.map((key) => _certsRemovableOn.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _certsRemovableOn.decodeValue(v.key))
+          .toList();
+    }
+    return []; /* Nullable */
+  }
+
   /// Returns the storage key for `storageIdtyCertMeta`.
   _i6.Uint8List storageIdtyCertMetaKey(int key1) {
     final hashedKey = _storageIdtyCertMeta.hashedKeyFor(key1);
@@ -140,38 +204,34 @@ class Txs {
   const Txs();
 
   /// Add a new certification.
-  _i7.RuntimeCall addCert({required int receiver}) {
-    final _call = _i8.Call.values.addCert(receiver: receiver);
-    return _i7.RuntimeCall.values.certification(_call);
+  _i7.Certification addCert({required int receiver}) {
+    return _i7.Certification(_i8.AddCert(receiver: receiver));
   }
 
   /// Renew an existing certification.
-  _i7.RuntimeCall renewCert({required int receiver}) {
-    final _call = _i8.Call.values.renewCert(receiver: receiver);
-    return _i7.RuntimeCall.values.certification(_call);
+  _i7.Certification renewCert({required int receiver}) {
+    return _i7.Certification(_i8.RenewCert(receiver: receiver));
   }
 
   /// Remove one certification given the issuer and the receiver.
   ///
   /// - `origin`: Must be `Root`.
-  _i7.RuntimeCall delCert({
+  _i7.Certification delCert({
     required int issuer,
     required int receiver,
   }) {
-    final _call = _i8.Call.values.delCert(
+    return _i7.Certification(_i8.DelCert(
       issuer: issuer,
       receiver: receiver,
-    );
-    return _i7.RuntimeCall.values.certification(_call);
+    ));
   }
 
   /// Remove all certifications received by an identity.
   ///
   /// - `origin`: Must be `Root`.
-  _i7.RuntimeCall removeAllCertsReceivedBy({required int idtyIndex}) {
-    final _call =
-        _i8.Call.values.removeAllCertsReceivedBy(idtyIndex: idtyIndex);
-    return _i7.RuntimeCall.values.certification(_call);
+  _i7.Certification removeAllCertsReceivedBy({required int idtyIndex}) {
+    return _i7.Certification(
+        _i8.RemoveAllCertsReceivedBy(idtyIndex: idtyIndex));
   }
 }
 

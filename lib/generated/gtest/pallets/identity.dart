@@ -156,6 +156,88 @@ class Queries {
     ); /* Default */
   }
 
+  /// The identity value for each identity.
+  _i6.Future<List<_i2.IdtyValue?>> multiIdentities(
+    List<int> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys =
+        keys.map((key) => _identities.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _identities.decodeValue(v.key))
+          .toList();
+    }
+    return []; /* Nullable */
+  }
+
+  /// The identity associated with each account.
+  _i6.Future<List<int?>> multiIdentityIndexOf(
+    List<_i4.AccountId32> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys =
+        keys.map((key) => _identityIndexOf.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _identityIndexOf.decodeValue(v.key))
+          .toList();
+    }
+    return []; /* Nullable */
+  }
+
+  /// The name associated with each identity.
+  _i6.Future<List<int?>> multiIdentitiesNames(
+    List<_i5.IdtyName> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys =
+        keys.map((key) => _identitiesNames.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _identitiesNames.decodeValue(v.key))
+          .toList();
+    }
+    return []; /* Nullable */
+  }
+
+  /// The identities to remove at a given block.
+  _i6.Future<List<List<int>>> multiIdentityChangeSchedule(
+    List<int> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys =
+        keys.map((key) => _identityChangeSchedule.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _identityChangeSchedule.decodeValue(v.key))
+          .toList();
+    }
+    return (keys
+        .map((key) => List<int>.filled(
+              0,
+              0,
+              growable: true,
+            ))
+        .toList() as List<List<int>>); /* Default */
+  }
+
   /// Returns the storage key for `identities`.
   _i7.Uint8List identitiesKey(int key1) {
     final hashedKey = _identities.hashedKeyFor(key1);
@@ -225,9 +307,8 @@ class Txs {
   /// - `owner_key`: the public key corresponding to the identity to be created
   ///
   /// The origin must be allowed to create an identity.
-  _i8.RuntimeCall createIdentity({required _i4.AccountId32 ownerKey}) {
-    final _call = _i9.Call.values.createIdentity(ownerKey: ownerKey);
-    return _i8.RuntimeCall.values.identity(_call);
+  _i8.Identity createIdentity({required _i4.AccountId32 ownerKey}) {
+    return _i8.Identity(_i9.CreateIdentity(ownerKey: ownerKey));
   }
 
   /// Confirm the creation of an identity and give it a name
@@ -235,9 +316,8 @@ class Txs {
   /// - `idty_name`: the name uniquely associated to this identity. Must match the validation rules defined by the runtime.
   ///
   /// The identity must have been created using `create_identity` before it can be confirmed.
-  _i8.RuntimeCall confirmIdentity({required _i5.IdtyName idtyName}) {
-    final _call = _i9.Call.values.confirmIdentity(idtyName: idtyName);
-    return _i8.RuntimeCall.values.identity(_call);
+  _i8.Identity confirmIdentity({required _i5.IdtyName idtyName}) {
+    return _i8.Identity(_i9.ConfirmIdentity(idtyName: idtyName));
   }
 
   /// Change identity owner key.
@@ -247,15 +327,14 @@ class Txs {
   ///                 Must be signed by `new_key`.
   ///
   /// The origin should be the old identity owner key.
-  _i8.RuntimeCall changeOwnerKey({
+  _i8.Identity changeOwnerKey({
     required _i4.AccountId32 newKey,
     required _i10.MultiSignature newKeySig,
   }) {
-    final _call = _i9.Call.values.changeOwnerKey(
+    return _i8.Identity(_i9.ChangeOwnerKey(
       newKey: newKey,
       newKeySig: newKeySig,
-    );
-    return _i8.RuntimeCall.values.identity(_call);
+    ));
   }
 
   /// Revoke an identity using a revocation signature
@@ -266,17 +345,16 @@ class Txs {
   ///                    Must be signed by `revocation_key`.
   ///
   /// Any signed origin can execute this call.
-  _i8.RuntimeCall revokeIdentity({
+  _i8.Identity revokeIdentity({
     required int idtyIndex,
     required _i4.AccountId32 revocationKey,
     required _i10.MultiSignature revocationSig,
   }) {
-    final _call = _i9.Call.values.revokeIdentity(
+    return _i8.Identity(_i9.RevokeIdentity(
       idtyIndex: idtyIndex,
       revocationKey: revocationKey,
       revocationSig: revocationSig,
-    );
-    return _i8.RuntimeCall.values.identity(_call);
+    ));
   }
 
   /// Revoke an identity using a legacy (DUBP) revocation document
@@ -284,11 +362,9 @@ class Txs {
   /// - `revocation document`: the full-length revocation document, signature included
   ///
   /// Any signed origin can execute this call.
-  _i8.RuntimeCall revokeIdentityLegacy(
-      {required List<int> revocationDocument}) {
-    final _call = _i9.Call.values
-        .revokeIdentityLegacy(revocationDocument: revocationDocument);
-    return _i8.RuntimeCall.values.identity(_call);
+  _i8.Identity revokeIdentityLegacy({required List<int> revocationDocument}) {
+    return _i8.Identity(
+        _i9.RevokeIdentityLegacy(revocationDocument: revocationDocument));
   }
 
   /// Remove identity names from storage.
@@ -298,10 +374,8 @@ class Txs {
   ///
   /// - `origin` - The origin of the call. It must be root.
   /// - `names` - A vector containing the identity names to be removed from storage.
-  _i8.RuntimeCall pruneItemIdentitiesNames(
-      {required List<_i5.IdtyName> names}) {
-    final _call = _i9.Call.values.pruneItemIdentitiesNames(names: names);
-    return _i8.RuntimeCall.values.identity(_call);
+  _i8.Identity pruneItemIdentitiesNames({required List<_i5.IdtyName> names}) {
+    return _i8.Identity(_i9.PruneItemIdentitiesNames(names: names));
   }
 
   /// Change sufficient reference count for a given key.
@@ -313,15 +387,14 @@ class Txs {
   /// - `owner_key` - The account whose sufficient reference count will be modified.
   /// - `inc` - A boolean indicating whether to increment (`true`) or decrement (`false`) the count.
   ///
-  _i8.RuntimeCall fixSufficients({
+  _i8.Identity fixSufficients({
     required _i4.AccountId32 ownerKey,
     required bool inc,
   }) {
-    final _call = _i9.Call.values.fixSufficients(
+    return _i8.Identity(_i9.FixSufficients(
       ownerKey: ownerKey,
       inc: inc,
-    );
-    return _i8.RuntimeCall.values.identity(_call);
+    ));
   }
 
   /// Link an account to an identity.
@@ -332,15 +405,14 @@ class Txs {
   /// - `origin` - The origin of the call, which must have an associated identity index.
   /// - `account_id` - The account ID to link, which must sign the payload.
   /// - `payload_sig` - The signature with the linked identity.
-  _i8.RuntimeCall linkAccount({
+  _i8.Identity linkAccount({
     required _i4.AccountId32 accountId,
     required _i10.MultiSignature payloadSig,
   }) {
-    final _call = _i9.Call.values.linkAccount(
+    return _i8.Identity(_i9.LinkAccount(
       accountId: accountId,
       payloadSig: payloadSig,
-    );
-    return _i8.RuntimeCall.values.identity(_call);
+    ));
   }
 }
 

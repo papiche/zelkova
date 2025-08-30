@@ -187,6 +187,42 @@ class Queries {
     return null; /* Nullable */
   }
 
+  /// The next session keys for a validator.
+  _i8.Future<List<_i5.SessionKeys?>> multiNextKeys(
+    List<_i2.AccountId32> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys = keys.map((key) => _nextKeys.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _nextKeys.decodeValue(v.key))
+          .toList();
+    }
+    return []; /* Nullable */
+  }
+
+  /// The owner of a key. The key is the `KeyTypeId` + the encoded key.
+  _i8.Future<List<_i2.AccountId32?>> multiKeyOwner(
+    List<_i4.Tuple2<_i7.KeyTypeId, List<int>>> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys = keys.map((key) => _keyOwner.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _keyOwner.decodeValue(v.key))
+          .toList();
+    }
+    return []; /* Nullable */
+  }
+
   /// Returns the storage key for `validators`.
   _i9.Uint8List validatorsKey() {
     final hashedKey = _validators.hashedKey();
@@ -254,15 +290,14 @@ class Txs {
   /// ## Complexity
   /// - `O(1)`. Actual cost depends on the number of length of `T::Keys::key_ids()` which is
   ///  fixed.
-  _i10.RuntimeCall setKeys({
+  _i10.Session setKeys({
     required _i5.SessionKeys keys,
     required List<int> proof,
   }) {
-    final _call = _i11.Call.values.setKeys(
+    return _i10.Session(_i11.SetKeys(
       keys: keys,
       proof: proof,
-    );
-    return _i10.RuntimeCall.values.session(_call);
+    ));
   }
 
   /// Removes any session key(s) of the function caller.
@@ -277,8 +312,7 @@ class Txs {
   /// ## Complexity
   /// - `O(1)` in number of key types. Actual cost depends on the number of length of
   ///  `T::Keys::key_ids()` which is fixed.
-  _i10.RuntimeCall purgeKeys() {
-    final _call = _i11.Call.values.purgeKeys();
-    return _i10.RuntimeCall.values.session(_call);
+  _i10.Session purgeKeys() {
+    return _i10.Session(_i11.PurgeKeys());
   }
 }

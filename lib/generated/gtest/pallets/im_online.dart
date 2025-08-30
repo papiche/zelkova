@@ -180,15 +180,14 @@ class Txs {
   /// ## Complexity:
   /// - `O(K)` where K is length of `Keys` (heartbeat.validators_len)
   ///  - `O(K)`: decoding of length `K`
-  _i7.RuntimeCall heartbeat({
+  _i7.ImOnline heartbeat({
     required _i8.Heartbeat heartbeat,
     required _i9.Signature signature,
   }) {
-    final _call = _i10.Call.values.heartbeat(
+    return _i7.ImOnline(_i10.Heartbeat(
       heartbeat: heartbeat,
       signature: signature,
-    );
-    return _i7.RuntimeCall.values.imOnline(_call);
+    ));
   }
 }
 

@@ -135,6 +135,24 @@ class Queries {
     ); /* Default */
   }
 
+  /// The member data.
+  _i4.Future<List<_i3.MemberData?>> multiMembers(
+    List<int> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys = keys.map((key) => _members.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _members.decodeValue(v.key))
+          .toList();
+    }
+    return []; /* Nullable */
+  }
+
   /// Returns the storage key for `incomingAuthorities`.
   _i5.Uint8List incomingAuthoritiesKey() {
     final hashedKey = _incomingAuthorities.hashedKey();
@@ -176,34 +194,30 @@ class Txs {
   const Txs();
 
   /// Request to leave the set of validators two sessions later.
-  _i6.RuntimeCall goOffline() {
-    final _call = _i7.Call.values.goOffline();
-    return _i6.RuntimeCall.values.authorityMembers(_call);
+  _i6.AuthorityMembers goOffline() {
+    return _i6.AuthorityMembers(_i7.GoOffline());
   }
 
   /// Request to join the set of validators two sessions later.
-  _i6.RuntimeCall goOnline() {
-    final _call = _i7.Call.values.goOnline();
-    return _i6.RuntimeCall.values.authorityMembers(_call);
+  _i6.AuthorityMembers goOnline() {
+    return _i6.AuthorityMembers(_i7.GoOnline());
   }
 
   /// Declare new session keys to replace current ones.
-  _i6.RuntimeCall setSessionKeys({required _i8.SessionKeys keys}) {
-    final _call = _i7.Call.values.setSessionKeys(keys: keys);
-    return _i6.RuntimeCall.values.authorityMembers(_call);
+  _i6.AuthorityMembers setSessionKeys({required _i8.SessionKeys keys}) {
+    return _i6.AuthorityMembers(_i7.SetSessionKeys(keys: keys));
   }
 
   /// Remove a member from the set of validators.
-  _i6.RuntimeCall removeMember({required int memberId}) {
-    final _call = _i7.Call.values.removeMember(memberId: memberId);
-    return _i6.RuntimeCall.values.authorityMembers(_call);
+  _i6.AuthorityMembers removeMember({required int memberId}) {
+    return _i6.AuthorityMembers(_i7.RemoveMember(memberId: memberId));
   }
 
   /// Remove a member from the blacklist.
   /// remove an identity from the blacklist
-  _i6.RuntimeCall removeMemberFromBlacklist({required int memberId}) {
-    final _call = _i7.Call.values.removeMemberFromBlacklist(memberId: memberId);
-    return _i6.RuntimeCall.values.authorityMembers(_call);
+  _i6.AuthorityMembers removeMemberFromBlacklist({required int memberId}) {
+    return _i6.AuthorityMembers(
+        _i7.RemoveMemberFromBlacklist(memberId: memberId));
   }
 }
 

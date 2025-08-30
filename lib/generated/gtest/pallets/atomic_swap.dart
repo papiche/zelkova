@@ -79,19 +79,18 @@ class Txs {
   /// - `duration`: Locked duration of the atomic swap. For safety reasons, it is recommended
   ///  that the revealer uses a shorter duration than the counterparty, to prevent the
   ///  situation where the revealer reveals the proof too late around the end block.
-  _i7.RuntimeCall createSwap({
+  _i7.AtomicSwap createSwap({
     required _i2.AccountId32 target,
     required List<int> hashedProof,
     required _i8.BalanceSwapAction action,
     required int duration,
   }) {
-    final _call = _i9.Call.values.createSwap(
+    return _i7.AtomicSwap(_i9.CreateSwap(
       target: target,
       hashedProof: hashedProof,
       action: action,
       duration: duration,
-    );
-    return _i7.RuntimeCall.values.atomicSwap(_call);
+    ));
   }
 
   /// Claim an atomic swap.
@@ -101,15 +100,14 @@ class Txs {
   /// - `proof`: Revealed proof of the claim.
   /// - `action`: Action defined in the swap, it must match the entry in blockchain. Otherwise
   ///  the operation fails. This is used for weight calculation.
-  _i7.RuntimeCall claimSwap({
+  _i7.AtomicSwap claimSwap({
     required List<int> proof,
     required _i8.BalanceSwapAction action,
   }) {
-    final _call = _i9.Call.values.claimSwap(
+    return _i7.AtomicSwap(_i9.ClaimSwap(
       proof: proof,
       action: action,
-    );
-    return _i7.RuntimeCall.values.atomicSwap(_call);
+    ));
   }
 
   /// Cancel an atomic swap. Only possible after the originally set duration has passed.
@@ -118,15 +116,14 @@ class Txs {
   ///
   /// - `target`: Target of the original atomic swap.
   /// - `hashed_proof`: Hashed proof of the original atomic swap.
-  _i7.RuntimeCall cancelSwap({
+  _i7.AtomicSwap cancelSwap({
     required _i2.AccountId32 target,
     required List<int> hashedProof,
   }) {
-    final _call = _i9.Call.values.cancelSwap(
+    return _i7.AtomicSwap(_i9.CancelSwap(
       target: target,
       hashedProof: hashedProof,
-    );
-    return _i7.RuntimeCall.values.atomicSwap(_call);
+    ));
   }
 }
 

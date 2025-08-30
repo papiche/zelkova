@@ -176,6 +176,45 @@ class Queries {
     return null; /* Nullable */
   }
 
+  /// DEPRECATED: associated with `spend_local` call and will be removed in May 2025.
+  /// Refer to <https://github.com/paritytech/polkadot-sdk/pull/5961> for migration to `spend`.
+  ///
+  /// Proposals that have been made.
+  _i5.Future<List<_i3.Proposal?>> multiProposals(
+    List<int> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys = keys.map((key) => _proposals.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _proposals.decodeValue(v.key))
+          .toList();
+    }
+    return []; /* Nullable */
+  }
+
+  /// Spends that have been approved and being processed.
+  _i5.Future<List<_i4.SpendStatus?>> multiSpends(
+    List<int> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys = keys.map((key) => _spends.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _spends.decodeValue(v.key))
+          .toList();
+    }
+    return []; /* Nullable */
+  }
+
   /// Returns the storage key for `proposalCount`.
   _i6.Uint8List proposalCountKey() {
     final hashedKey = _proposalCount.hashedKey();
@@ -251,15 +290,14 @@ class Txs {
   /// ## Events
   ///
   /// Emits [`Event::SpendApproved`] if successful.
-  _i7.RuntimeCall spendLocal({
+  _i7.Treasury spendLocal({
     required BigInt amount,
     required _i8.MultiAddress beneficiary,
   }) {
-    final _call = _i9.Call.values.spendLocal(
+    return _i7.Treasury(_i9.SpendLocal(
       amount: amount,
       beneficiary: beneficiary,
-    );
-    return _i7.RuntimeCall.values.treasury(_call);
+    ));
   }
 
   /// Force a previously approved proposal to be removed from the approval queue.
@@ -283,9 +321,8 @@ class Txs {
   ///  approval queue, i.e., the proposal has not been approved. This could also mean the
   ///  proposal does not exist altogether, thus there is no way it would have been approved
   ///  in the first place.
-  _i7.RuntimeCall removeApproval({required BigInt proposalId}) {
-    final _call = _i9.Call.values.removeApproval(proposalId: proposalId);
-    return _i7.RuntimeCall.values.treasury(_call);
+  _i7.Treasury removeApproval({required BigInt proposalId}) {
+    return _i7.Treasury(_i9.RemoveApproval(proposalId: proposalId));
   }
 
   /// Propose and approve a spend of treasury funds.
@@ -314,19 +351,18 @@ class Txs {
   /// ## Events
   ///
   /// Emits [`Event::AssetSpendApproved`] if successful.
-  _i7.RuntimeCall spend({
+  _i7.Treasury spend({
     required dynamic assetKind,
     required BigInt amount,
     required _i8.MultiAddress beneficiary,
     int? validFrom,
   }) {
-    final _call = _i9.Call.values.spend(
+    return _i7.Treasury(_i9.Spend(
       assetKind: assetKind,
       amount: amount,
       beneficiary: beneficiary,
       validFrom: validFrom,
-    );
-    return _i7.RuntimeCall.values.treasury(_call);
+    ));
   }
 
   /// Claim a spend.
@@ -348,9 +384,8 @@ class Txs {
   /// ## Events
   ///
   /// Emits [`Event::Paid`] if successful.
-  _i7.RuntimeCall payout({required int index}) {
-    final _call = _i9.Call.values.payout(index: index);
-    return _i7.RuntimeCall.values.treasury(_call);
+  _i7.Treasury payout({required int index}) {
+    return _i7.Treasury(_i9.Payout(index: index));
   }
 
   /// Check the status of the spend and remove it from the storage if processed.
@@ -372,9 +407,8 @@ class Txs {
   ///
   /// Emits [`Event::PaymentFailed`] if the spend payout has failed.
   /// Emits [`Event::SpendProcessed`] if the spend payout has succeed.
-  _i7.RuntimeCall checkStatus({required int index}) {
-    final _call = _i9.Call.values.checkStatus(index: index);
-    return _i7.RuntimeCall.values.treasury(_call);
+  _i7.Treasury checkStatus({required int index}) {
+    return _i7.Treasury(_i9.CheckStatus(index: index));
   }
 
   /// Void previously approved spend.
@@ -393,9 +427,8 @@ class Txs {
   /// ## Events
   ///
   /// Emits [`Event::AssetSpendVoided`] if successful.
-  _i7.RuntimeCall voidSpend({required int index}) {
-    final _call = _i9.Call.values.voidSpend(index: index);
-    return _i7.RuntimeCall.values.treasury(_call);
+  _i7.Treasury voidSpend({required int index}) {
+    return _i7.Treasury(_i9.VoidSpend(index: index));
   }
 }
 

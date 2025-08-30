@@ -9,9 +9,8 @@ class Txs {
   /// Dispatches a function call from root origin.
   ///
   /// The weight of this call is defined by the caller.
-  _i1.RuntimeCall dispatchAsRoot({required _i1.RuntimeCall call}) {
-    final _call = _i2.Call.values.dispatchAsRoot(call: call);
-    return _i1.RuntimeCall.values.upgradeOrigin(_call);
+  _i1.UpgradeOrigin dispatchAsRoot({required _i1.RuntimeCall call}) {
+    return _i1.UpgradeOrigin(_i2.DispatchAsRoot(call: call));
   }
 
   /// Dispatches a function call from root origin.
@@ -19,14 +18,13 @@ class Txs {
   /// caller to specify the weight of the call.
   ///
   /// The weight of this call is defined by the caller.
-  _i1.RuntimeCall dispatchAsRootUncheckedWeight({
+  _i1.UpgradeOrigin dispatchAsRootUncheckedWeight({
     required _i1.RuntimeCall call,
     required _i3.Weight weight,
   }) {
-    final _call = _i2.Call.values.dispatchAsRootUncheckedWeight(
+    return _i1.UpgradeOrigin(_i2.DispatchAsRootUncheckedWeight(
       call: call,
       weight: weight,
-    );
-    return _i1.RuntimeCall.values.upgradeOrigin(_call);
+    ));
   }
 }

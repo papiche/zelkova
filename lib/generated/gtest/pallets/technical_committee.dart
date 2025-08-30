@@ -175,6 +175,64 @@ class Queries {
     return null; /* Nullable */
   }
 
+  /// Actual proposal for a given hash, if it's current.
+  _i8.Future<List<_i4.RuntimeCall?>> multiProposalOf(
+    List<_i2.H256> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys =
+        keys.map((key) => _proposalOf.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _proposalOf.decodeValue(v.key))
+          .toList();
+    }
+    return []; /* Nullable */
+  }
+
+  /// Consideration cost created for publishing and storing a proposal.
+  ///
+  /// Determined by [Config::Consideration] and may be not present for certain proposals (e.g. if
+  /// the proposal count at the time of creation was below threshold N).
+  _i8.Future<List<_i5.Tuple2<_i6.AccountId32, dynamic>?>> multiCostOf(
+    List<_i2.H256> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys = keys.map((key) => _costOf.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _costOf.decodeValue(v.key))
+          .toList();
+    }
+    return []; /* Nullable */
+  }
+
+  /// Votes on a given proposal, if it is ongoing.
+  _i8.Future<List<_i7.Votes?>> multiVoting(
+    List<_i2.H256> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys = keys.map((key) => _voting.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _voting.decodeValue(v.key))
+          .toList();
+    }
+    return []; /* Nullable */
+  }
+
   /// Returns the storage key for `proposals`.
   _i9.Uint8List proposalsKey() {
     final hashedKey = _proposals.hashedKey();
@@ -263,17 +321,16 @@ class Txs {
   ///  - `M` old-members-count (code- and governance-bounded)
   ///  - `N` new-members-count (code- and governance-bounded)
   ///  - `P` proposals-count (code-bounded)
-  _i4.RuntimeCall setMembers({
+  _i4.TechnicalCommittee setMembers({
     required List<_i6.AccountId32> newMembers,
     _i6.AccountId32? prime,
     required int oldCount,
   }) {
-    final _call = _i10.Call.values.setMembers(
+    return _i4.TechnicalCommittee(_i10.SetMembers(
       newMembers: newMembers,
       prime: prime,
       oldCount: oldCount,
-    );
-    return _i4.RuntimeCall.values.technicalCommittee(_call);
+    ));
   }
 
   /// Dispatch a proposal from a member using the `Member` origin.
@@ -285,15 +342,14 @@ class Txs {
   /// - `B` is `proposal` size in bytes (length-fee-bounded)
   /// - `M` members-count (code-bounded)
   /// - `P` complexity of dispatching `proposal`
-  _i4.RuntimeCall execute({
+  _i4.TechnicalCommittee execute({
     required _i4.RuntimeCall proposal,
     required BigInt lengthBound,
   }) {
-    final _call = _i10.Call.values.execute(
+    return _i4.TechnicalCommittee(_i10.Execute(
       proposal: proposal,
       lengthBound: lengthBound,
-    );
-    return _i4.RuntimeCall.values.technicalCommittee(_call);
+    ));
   }
 
   /// Add a new proposal to either be voted on or executed directly.
@@ -310,17 +366,16 @@ class Txs {
   ///  - branching is influenced by `threshold` where:
   ///    - `P1` is proposal execution complexity (`threshold < 2`)
   ///    - `P2` is proposals-count (code-bounded) (`threshold >= 2`)
-  _i4.RuntimeCall propose({
+  _i4.TechnicalCommittee propose({
     required BigInt threshold,
     required _i4.RuntimeCall proposal,
     required BigInt lengthBound,
   }) {
-    final _call = _i10.Call.values.propose(
+    return _i4.TechnicalCommittee(_i10.Propose(
       threshold: threshold,
       proposal: proposal,
       lengthBound: lengthBound,
-    );
-    return _i4.RuntimeCall.values.technicalCommittee(_call);
+    ));
   }
 
   /// Add an aye or nay vote for the sender to the given proposal.
@@ -332,17 +387,16 @@ class Txs {
   /// fee.
   /// ## Complexity
   /// - `O(M)` where `M` is members-count (code- and governance-bounded)
-  _i4.RuntimeCall vote({
+  _i4.TechnicalCommittee vote({
     required _i2.H256 proposal,
     required BigInt index,
     required bool approve,
   }) {
-    final _call = _i10.Call.values.vote(
+    return _i4.TechnicalCommittee(_i10.Vote(
       proposal: proposal,
       index: index,
       approve: approve,
-    );
-    return _i4.RuntimeCall.values.technicalCommittee(_call);
+    ));
   }
 
   /// Disapprove a proposal, close, and remove it from the system, regardless of its current
@@ -355,10 +409,9 @@ class Txs {
   ///
   /// ## Complexity
   /// O(P) where P is the number of max proposals
-  _i4.RuntimeCall disapproveProposal({required _i2.H256 proposalHash}) {
-    final _call =
-        _i10.Call.values.disapproveProposal(proposalHash: proposalHash);
-    return _i4.RuntimeCall.values.technicalCommittee(_call);
+  _i4.TechnicalCommittee disapproveProposal({required _i2.H256 proposalHash}) {
+    return _i4.TechnicalCommittee(
+        _i10.DisapproveProposal(proposalHash: proposalHash));
   }
 
   /// Close a vote that is either approved, disapproved or whose voting period has ended.
@@ -385,19 +438,18 @@ class Txs {
   ///  - `M` is members-count (code- and governance-bounded)
   ///  - `P1` is the complexity of `proposal` preimage.
   ///  - `P2` is proposal-count (code-bounded)
-  _i4.RuntimeCall close({
+  _i4.TechnicalCommittee close({
     required _i2.H256 proposalHash,
     required BigInt index,
     required _i11.Weight proposalWeightBound,
     required BigInt lengthBound,
   }) {
-    final _call = _i10.Call.values.close(
+    return _i4.TechnicalCommittee(_i10.Close(
       proposalHash: proposalHash,
       index: index,
       proposalWeightBound: proposalWeightBound,
       lengthBound: lengthBound,
-    );
-    return _i4.RuntimeCall.values.technicalCommittee(_call);
+    ));
   }
 
   /// Disapprove the proposal and burn the cost held for storing this proposal.
@@ -407,9 +459,8 @@ class Txs {
   /// - `proposal_hash`: The hash of the proposal that should be killed.
   ///
   /// Emits `Killed` and `ProposalCostBurned` if any cost was held for a given proposal.
-  _i4.RuntimeCall kill({required _i2.H256 proposalHash}) {
-    final _call = _i10.Call.values.kill(proposalHash: proposalHash);
-    return _i4.RuntimeCall.values.technicalCommittee(_call);
+  _i4.TechnicalCommittee kill({required _i2.H256 proposalHash}) {
+    return _i4.TechnicalCommittee(_i10.Kill(proposalHash: proposalHash));
   }
 
   /// Release the cost held for storing a proposal once the given proposal is completed.
@@ -421,10 +472,9 @@ class Txs {
   /// - `proposal_hash`: The hash of the proposal.
   ///
   /// Emits `ProposalCostReleased` if any cost held for a given proposal.
-  _i4.RuntimeCall releaseProposalCost({required _i2.H256 proposalHash}) {
-    final _call =
-        _i10.Call.values.releaseProposalCost(proposalHash: proposalHash);
-    return _i4.RuntimeCall.values.technicalCommittee(_call);
+  _i4.TechnicalCommittee releaseProposalCost({required _i2.H256 proposalHash}) {
+    return _i4.TechnicalCommittee(
+        _i10.ReleaseProposalCost(proposalHash: proposalHash));
   }
 }
 

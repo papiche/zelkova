@@ -84,6 +84,50 @@ class Queries {
     ); /* Default */
   }
 
+  /// The membership data for each identity.
+  _i4.Future<List<_i2.MembershipData?>> multiMembership(
+    List<int> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys =
+        keys.map((key) => _membership.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _membership.decodeValue(v.key))
+          .toList();
+    }
+    return []; /* Nullable */
+  }
+
+  /// The identities of memberships to expire at a given block.
+  _i4.Future<List<List<int>>> multiMembershipsExpireOn(
+    List<int> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys =
+        keys.map((key) => _membershipsExpireOn.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _membershipsExpireOn.decodeValue(v.key))
+          .toList();
+    }
+    return (keys
+        .map((key) => List<int>.filled(
+              0,
+              0,
+              growable: true,
+            ))
+        .toList() as List<List<int>>); /* Default */
+  }
+
   /// Returns the storage key for `membership`.
   _i5.Uint8List membershipKey(int key1) {
     final hashedKey = _membership.hashedKeyFor(key1);

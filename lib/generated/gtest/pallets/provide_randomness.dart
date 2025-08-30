@@ -144,6 +144,45 @@ class Queries {
     return 0; /* Default */
   }
 
+  /// The requests that will be fulfilled at the next epoch.
+  _i4.Future<List<List<_i3.Request>>> multiRequestsReadyAtEpoch(
+    List<BigInt> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys =
+        keys.map((key) => _requestsReadyAtEpoch.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _requestsReadyAtEpoch.decodeValue(v.key))
+          .toList();
+    }
+    return (keys.map((key) => []).toList()
+        as List<List<_i3.Request>>); /* Default */
+  }
+
+  /// The requests being processed.
+  _i4.Future<List<dynamic>> multiRequestsIds(
+    List<BigInt> keys, {
+    _i1.BlockHash? at,
+  }) async {
+    final hashedKeys =
+        keys.map((key) => _requestsIds.hashedKeyFor(key)).toList();
+    final bytes = await __api.queryStorageAt(
+      hashedKeys,
+      at: at,
+    );
+    if (bytes.isNotEmpty) {
+      return bytes.first.changes
+          .map((v) => _requestsIds.decodeValue(v.key))
+          .toList();
+    }
+    return []; /* Nullable */
+  }
+
   /// Returns the storage key for `nexEpochHookIn`.
   _i5.Uint8List nexEpochHookInKey() {
     final hashedKey = _nexEpochHookIn.hashedKey();
@@ -197,15 +236,14 @@ class Txs {
   const Txs();
 
   /// Request randomness.
-  _i6.RuntimeCall request({
+  _i6.ProvideRandomness request({
     required _i7.RandomnessType randomnessType,
     required _i8.H256 salt,
   }) {
-    final _call = _i9.Call.values.request(
+    return _i6.ProvideRandomness(_i9.Request(
       randomnessType: randomnessType,
       salt: salt,
-    );
-    return _i6.RuntimeCall.values.provideRandomness(_call);
+    ));
   }
 }
 

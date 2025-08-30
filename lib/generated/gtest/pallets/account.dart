@@ -6,8 +6,7 @@ class Txs {
   const Txs();
 
   /// Unlink the identity associated with the account.
-  _i1.RuntimeCall unlinkIdentity() {
-    final _call = _i2.Call.unlinkIdentity;
-    return _i1.RuntimeCall.values.account(_call);
+  _i1.Account unlinkIdentity() {
+    return _i1.Account(_i2.Call.unlinkIdentity);
   }
 }

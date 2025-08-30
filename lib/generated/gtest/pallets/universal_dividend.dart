@@ -177,33 +177,30 @@ class Txs {
   const Txs();
 
   /// Claim Universal Dividends.
-  _i6.RuntimeCall claimUds() {
-    final _call = _i7.Call.values.claimUds();
-    return _i6.RuntimeCall.values.universalDividend(_call);
+  _i6.UniversalDividend claimUds() {
+    return _i6.UniversalDividend(_i7.ClaimUds());
   }
 
   /// Transfer some liquid free balance to another account, in milliUD.
-  _i6.RuntimeCall transferUd({
+  _i6.UniversalDividend transferUd({
     required _i8.MultiAddress dest,
     required BigInt value,
   }) {
-    final _call = _i7.Call.values.transferUd(
+    return _i6.UniversalDividend(_i7.TransferUd(
       dest: dest,
       value: value,
-    );
-    return _i6.RuntimeCall.values.universalDividend(_call);
+    ));
   }
 
   /// Transfer some liquid free balance to another account in milliUD and keep the account alive.
-  _i6.RuntimeCall transferUdKeepAlive({
+  _i6.UniversalDividend transferUdKeepAlive({
     required _i8.MultiAddress dest,
     required BigInt value,
   }) {
-    final _call = _i7.Call.values.transferUdKeepAlive(
+    return _i6.UniversalDividend(_i7.TransferUdKeepAlive(
       dest: dest,
       value: value,
-    );
-    return _i6.RuntimeCall.values.universalDividend(_call);
+    ));
   }
 }
 

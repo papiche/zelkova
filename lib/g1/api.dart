@@ -61,18 +61,22 @@ Future<String> getTxHistory(String publicKey) async {
   }
 }
 
-Future<List<dynamic>> getPeers(NodeType type) async {
+Future<List<dynamic>> getPeers(NodeType type, {bool debug = false}) async {
   // const Duration timeout = Duration(seconds: 10);
   // Prevent concurrent modification
   final List<Node> nodes = List<Node>.from(NodeManager().nodeList(type));
-  loggerDev('Fetching ${type.name} peers with peers ${nodes.length}');
+  if (debug) {
+    loggerDev('Fetching ${type.name} peers with peers ${nodes.length}');
+  }
   List<dynamic> currentPeers = <dynamic>[];
   for (final Node node in nodes) {
     if (type == NodeType.duniter || type == NodeType.gva) {
       String nodeUrl = node.url;
       nodeUrl = nodeUrl.replaceAll(RegExp(r'/gva$'), '');
       nodeUrl = '$nodeUrl/network/peers';
-      loggerDev('Fetching $nodeUrl');
+      if (debug) {
+        loggerDev('Fetching $nodeUrl');
+      }
       try {
         final Response response = await http.get(Uri.parse(nodeUrl));
         if (response.statusCode == 200) {
@@ -93,7 +97,9 @@ Future<List<dynamic>> getPeers(NodeType type) async {
           }
         }
       } catch (e) {
-        loggerDev('Error retrieving $nodeUrl ($e)');
+        if (debug) {
+          loggerDev('Error retrieving $nodeUrl ($e)');
+        }
         // Ignore
       }
     } else if (type == NodeType.endpoint) {
@@ -143,8 +149,10 @@ Future<List<dynamic>> getPeers(NodeType type) async {
           }
         }*/
       } catch (e, stacktrace) {
-        loggerDev('Error retrieving peers from ${node.url} ($e)');
-        loggerDev(stacktrace);
+        if (debug) {
+          loggerDev('Error retrieving peers from ${node.url} ($e)');
+          loggerDev(stacktrace);
+        }
         // Ignore
       }
     }
@@ -491,7 +499,7 @@ void loggerD(bool debug, String message) {
   }
 }
 
-Future<List<Node>> _fetchNodes(NodeType type) async {
+Future<List<Node>> _fetchNodes(NodeType type, {bool debug = false}) async {
   final List<Node> lNodes = <Node>[];
   String? fastestNode;
   late Duration fastestLatency = const Duration(minutes: 1);
@@ -501,10 +509,15 @@ Future<List<Node>> _fetchNodes(NodeType type) async {
     for (final Node node in currentNodes) {
       final String endpoint = node.url;
       try {
-        logger('Evaluating node: $endpoint');
+        if (debug) {
+          logger('Evaluating node: $endpoint');
+        }
         final NodeCheckResult nodeCheck = await _pingNode(endpoint, type);
         final Duration latency = nodeCheck.latency;
-        logger('Evaluating node: $endpoint, latency ${latency.inMicroseconds}');
+        if (debug) {
+          logger(
+              'Evaluating node: $endpoint, latency ${latency.inMicroseconds}');
+        }
         final Node node = Node(
             url: endpoint,
             latency: latency.inMicroseconds,
@@ -513,7 +526,9 @@ Future<List<Node>> _fetchNodes(NodeType type) async {
           fastestNode = endpoint;
           fastestLatency = latency;
           if (!kReleaseMode) {
-            logger('Node $type: Current faster node $fastestNode');
+            if (debug) {
+              logger('Node $type: Current faster node $fastestNode');
+            }
           }
           NodeManager().insertNode(type, node);
           lNodes.insert(0, node);
@@ -523,12 +538,16 @@ Future<List<Node>> _fetchNodes(NodeType type) async {
           lNodes.add(node);
         }
       } catch (e) {
-        logger('Error fetching $endpoint, error: $e');
+        if (debug) {
+          logger('Error fetching $endpoint, error: $e');
+        }
       }
     }
     if (lNodes.isNotEmpty) {
-      logger(
-          'Fetched ${lNodes.length} ${type.name} nodes ordered by latency (first: ${lNodes.first.url})');
+      if (debug) {
+        logger(
+            'Fetched ${lNodes.length} ${type.name} nodes ordered by latency (first: ${lNodes.first.url})');
+      }
     }
   } catch (e, stacktrace) {
     await Sentry.captureException(e, stackTrace: stacktrace);
@@ -536,11 +555,14 @@ Future<List<Node>> _fetchNodes(NodeType type) async {
     logger(stacktrace);
   }
   lNodes.sort((Node a, Node b) => a.latency.compareTo(b.latency));
-  logger('First node in list ${lNodes.first.url}');
+  if (debug) {
+    logger('First node in list ${lNodes.first.url}');
+  }
   return lNodes;
 }
 
-Future<NodeCheckResult> _pingNode(String node, NodeType type) async {
+Future<NodeCheckResult> _pingNode(String node, NodeType type,
+    {bool debug = false}) async {
   const Duration timeout = Duration(seconds: 10);
 
   final Map<NodeType,
@@ -561,12 +583,16 @@ Future<NodeCheckResult> _pingNode(String node, NodeType type) async {
 
   try {
     final NodeCheckResult result = await testFunction(node, timeout);
-    _logNodePing(node, type, result.latency, result.currentBlock);
+    if (debug) {
+      _logNodePing(node, type, result.latency, result.currentBlock);
+    }
     return NodeCheckResult(
         latency: result.latency, currentBlock: result.currentBlock);
   } catch (e) {
-    logger(
-        'Node $node does not respond to ping: ${removeNewlines(e.toString())}');
+    if (debug) {
+      logger(
+          'Node $node does not respond to ping: ${removeNewlines(e.toString())}');
+    }
     return NodeCheckResult(latency: wrongNodeDuration, currentBlock: 0);
   }
 }

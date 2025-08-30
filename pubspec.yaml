@@ -107,9 +107,7 @@ dependencies:
   material_symbols_icons: ^4.2801.1
   text_scroll: ^0.2.0
   # flutter_neumorphic_plus: ^3.3.0
-  flutter_neumorphic_plus:
-    git:
-      url: https://github.com/bsz0206/flutter_neumorphic_plus2.git
+  flutter_neumorphic_plus: ^3.5.0
   permission_handler: ^12.0.1
   calendar_date_picker2: ^2.0.1
   device_info_plus: ^11.5.0

@@ -141,14 +141,17 @@ class MultiWalletTransactionCubit
       int? pageSize,
       String? cursor,
       String? pubKey,
-      bool isExternal = false}) async {
+      bool isExternal = false,
+      bool debug = false}) async {
     final NodeListCubit nodeListCubit = GetIt.instance.get<NodeListCubit>();
     final AppCubit appCubit = GetIt.instance.get<AppCubit>();
     final bool isCurrentWallet = pubKey != null &&
         (extractPublicKey(pubKey) ==
             extractPublicKey(SharedPreferencesHelper().getPubKey()));
     pubKey = _defKey(pubKey);
-    loggerDev('Fetching transactions for $pubKey in cubit');
+    if (debug) {
+      loggerDev('Fetching transactions for $pubKey in cubit');
+    }
     final TransactionState currentState = _getStateOfWallet(pubKey);
     Tuple2<Map<String, dynamic>?, Node> txDataResult;
     bool success = false;
@@ -160,8 +163,9 @@ class MultiWalletTransactionCubit
       txDataResult = await getHistoryAndBalance(pubKey,
           pageSize: pageSize, cursor: cursor, isConnected: isConnected);
       final Node node = txDataResult.item2;
-      logger(
-          'Loading transactions using $node (pageSize: $pageSize, cursor: $cursor) --------------------');
+      if (debug)
+        logger(
+            'Loading transactions using $node (pageSize: $pageSize, cursor: $cursor) --------------------');
 
       if (txDataResult.item1 == null) {
         logger(
@@ -207,13 +211,15 @@ class MultiWalletTransactionCubit
         return currentModifiedState.transactions;
       }
 
-      logger(
-          'Last received notification: ${currentModifiedState.latestReceivedNotification.toIso8601String()})}');
-      logger(
-          'Last sent notification: ${currentModifiedState.latestSentNotification.toIso8601String()})}');
+      if (debug) {
+        logger(
+            'Last received notification: ${currentModifiedState.latestReceivedNotification.toIso8601String()})}');
+        logger(
+            'Last sent notification: ${currentModifiedState.latestSentNotification.toIso8601String()})}');
 
-      logger(
-          '>>>>>>>>>>>>>>>>>>> Transactions: ${currentModifiedState.transactions.length}, balance: ${currentModifiedState.balance} cursor: $cursor page size: $pageSize');
+        logger(
+            '>>>>>>>>>>>>>>>>>>> Transactions: ${currentModifiedState.transactions.length}, balance: ${currentModifiedState.balance} cursor: $cursor page size: $pageSize');
+      }
       for (final Transaction tx in currentModifiedState.transactions.reversed) {
         bool stateModified = false;
 

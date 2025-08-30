@@ -47,7 +47,7 @@ class SimpleCardNameText extends StatelessWidget {
           const SizedBox(width: 4),
           Opacity(
               opacity: 0.45,
-              child: walletIconByType(context, account, 18, false)),
+              child: walletIconByTypeSimple(context, account, 18)),
         ],
       ),
     );

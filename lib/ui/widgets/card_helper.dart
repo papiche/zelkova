@@ -51,3 +51,12 @@ GestureDetector walletIconByType(
         ),
       ));
 }
+
+Widget walletIconByTypeSimple(
+    BuildContext context, StoredAccount account, double size) {
+  return Icon(
+    account.type.isPasswordProtected ? Icons.lock : Symbols.money_bag,
+    color: Colors.white.withValues(alpha: 0.45),
+    size: size,
+  );
+}

@@ -51,4 +51,3 @@ lib/env.g.dart
 
 /android/local.properties
 android/app/.cxx/
-lib/env.g.dart

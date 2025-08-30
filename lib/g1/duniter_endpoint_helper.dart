@@ -148,8 +148,6 @@ Future<tp.Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalanceV2(
     throw Exception('Error fetching balance for $pubKeyRaw/$address');
   }
 
-  loggerDev('Fetching balance for $pubKeyRaw/$address gives $balance');
-
   for (final Node node in NodeManager().getBestNodes(NodeType.duniterIndexer)) {
     try {
       // Force for testing

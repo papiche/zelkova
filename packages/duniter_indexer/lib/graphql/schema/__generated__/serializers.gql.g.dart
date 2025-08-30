@@ -80,7 +80,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
           .serializer)
       ..add(GAccountByPkData_accountByPk_identity_smith_smithCertReceived
           .serializer)
-      ..add(GAccountByPkData_accountByPk_identity_udHistory.serializer)
       ..add(GAccountByPkData_accountByPk_linkedIdentity.serializer)
       ..add(GAccountByPkData_accountByPk_linkedIdentity_account.serializer)
       ..add(GAccountByPkData_accountByPk_removedIdentities.serializer)
@@ -151,7 +150,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GAccountFieldsData_identity_smith.serializer)
       ..add(GAccountFieldsData_identity_smith_smithCertIssued.serializer)
       ..add(GAccountFieldsData_identity_smith_smithCertReceived.serializer)
-      ..add(GAccountFieldsData_identity_udHistory.serializer)
       ..add(GAccountFieldsData_linkedIdentity.serializer)
       ..add(GAccountFieldsData_linkedIdentity_account.serializer)
       ..add(GAccountFieldsData_removedIdentities.serializer)
@@ -305,7 +303,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GAccountsByPkData_account_identity_smith_smithCertIssued.serializer)
       ..add(
           GAccountsByPkData_account_identity_smith_smithCertReceived.serializer)
-      ..add(GAccountsByPkData_account_identity_udHistory.serializer)
       ..add(GAccountsByPkData_account_linkedIdentity.serializer)
       ..add(GAccountsByPkData_account_linkedIdentity_account.serializer)
       ..add(GAccountsByPkData_account_removedIdentities.serializer)
@@ -418,13 +415,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GChangeOwnerKeyVarPopOrderBy.serializer)
       ..add(GChangeOwnerKeyVarSampOrderBy.serializer)
       ..add(GChangeOwnerKeyVarianceOrderBy.serializer)
-      ..add(GCommentTypeEnum.serializer)
-      ..add(GCommentTypeEnumComparisonExp.serializer)
       ..add(GCommentsIssuedData.serializer)
       ..add(GCommentsIssuedReq.serializer)
       ..add(GCommentsIssuedVars.serializer)
-      ..add(GCounterLevelEnum.serializer)
-      ..add(GCounterLevelEnumComparisonExp.serializer)
       ..add(GCursorOrdering.serializer)
       ..add(GEventAggregateBoolExp.serializer)
       ..add(GEventAggregateOrderBy.serializer)
@@ -440,8 +433,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GEventStreamCursorInput.serializer)
       ..add(GEventStreamCursorValueInput.serializer)
       ..add(GEventSumOrderBy.serializer)
-      ..add(GEventTypeEnum.serializer)
-      ..add(GEventTypeEnumComparisonExp.serializer)
       ..add(GEventVarPopOrderBy.serializer)
       ..add(GEventVarSampOrderBy.serializer)
       ..add(GEventVarianceOrderBy.serializer)
@@ -506,7 +497,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GIdentitiesByNameData_identity_smith.serializer)
       ..add(GIdentitiesByNameData_identity_smith_smithCertIssued.serializer)
       ..add(GIdentitiesByNameData_identity_smith_smithCertReceived.serializer)
-      ..add(GIdentitiesByNameData_identity_udHistory.serializer)
       ..add(GIdentitiesByNameOrPkData.serializer)
       ..add(GIdentitiesByNameOrPkData_identity.serializer)
       ..add(GIdentitiesByNameOrPkData_identity_account.serializer)
@@ -549,7 +539,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GIdentitiesByPkData_identity_smith.serializer)
       ..add(GIdentitiesByPkData_identity_smith_smithCertIssued.serializer)
       ..add(GIdentitiesByPkData_identity_smith_smithCertReceived.serializer)
-      ..add(GIdentitiesByPkData_identity_udHistory.serializer)
       ..add(GIdentitiesByPkReq.serializer)
       ..add(GIdentitiesByPkVars.serializer)
       ..add(GIdentityAggregateBoolExp.serializer)
@@ -588,7 +577,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GIdentityFieldsData_smith.serializer)
       ..add(GIdentityFieldsData_smith_smithCertIssued.serializer)
       ..add(GIdentityFieldsData_smith_smithCertReceived.serializer)
-      ..add(GIdentityFieldsData_udHistory.serializer)
       ..add(GIdentityFieldsReq.serializer)
       ..add(GIdentityFieldsVars.serializer)
       ..add(GIdentityMaxOrderBy.serializer)
@@ -600,8 +588,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
               .serializer)
       ..add(GIdentitySelectColumnIdentityAggregateBoolExpBool_orArgumentsColumns
           .serializer)
-      ..add(GIdentityStatusEnum.serializer)
-      ..add(GIdentityStatusEnumComparisonExp.serializer)
       ..add(GIdentityStddevOrderBy.serializer)
       ..add(GIdentityStddevPopOrderBy.serializer)
       ..add(GIdentityStddevSampOrderBy.serializer)
@@ -613,8 +599,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GIdentityVarianceOrderBy.serializer)
       ..add(GIntArrayComparisonExp.serializer)
       ..add(GIntComparisonExp.serializer)
-      ..add(GItemTypeEnum.serializer)
-      ..add(GItemTypeEnumComparisonExp.serializer)
       ..add(GItemsCounterBoolExp.serializer)
       ..add(GItemsCounterOrderBy.serializer)
       ..add(GItemsCounterSelectColumn.serializer)
@@ -688,8 +672,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GSmithEventStreamCursorInput.serializer)
       ..add(GSmithEventStreamCursorValueInput.serializer)
       ..add(GSmithEventSumOrderBy.serializer)
-      ..add(GSmithEventTypeEnum.serializer)
-      ..add(GSmithEventTypeEnumComparisonExp.serializer)
       ..add(GSmithEventVarPopOrderBy.serializer)
       ..add(GSmithEventVarSampOrderBy.serializer)
       ..add(GSmithEventVarianceOrderBy.serializer)
@@ -700,8 +682,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GSmithFieldsVars.serializer)
       ..add(GSmithOrderBy.serializer)
       ..add(GSmithSelectColumn.serializer)
-      ..add(GSmithStatusEnum.serializer)
-      ..add(GSmithStatusEnumComparisonExp.serializer)
       ..add(GSmithStreamCursorInput.serializer)
       ..add(GSmithStreamCursorValueInput.serializer)
       ..add(GStringArrayComparisonExp.serializer)
@@ -747,22 +727,11 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GTxCommentVarPopOrderBy.serializer)
       ..add(GTxCommentVarSampOrderBy.serializer)
       ..add(GTxCommentVarianceOrderBy.serializer)
-      ..add(GUdHistoryAggregateOrderBy.serializer)
-      ..add(GUdHistoryAvgOrderBy.serializer)
       ..add(GUdHistoryBoolExp.serializer)
-      ..add(GUdHistoryMaxOrderBy.serializer)
-      ..add(GUdHistoryMinOrderBy.serializer)
       ..add(GUdHistoryOrderBy.serializer)
       ..add(GUdHistorySelectColumn.serializer)
-      ..add(GUdHistoryStddevOrderBy.serializer)
-      ..add(GUdHistoryStddevPopOrderBy.serializer)
-      ..add(GUdHistoryStddevSampOrderBy.serializer)
       ..add(GUdHistoryStreamCursorInput.serializer)
       ..add(GUdHistoryStreamCursorValueInput.serializer)
-      ..add(GUdHistorySumOrderBy.serializer)
-      ..add(GUdHistoryVarPopOrderBy.serializer)
-      ..add(GUdHistoryVarSampOrderBy.serializer)
-      ..add(GUdHistoryVarianceOrderBy.serializer)
       ..add(GUdReevalBoolExp.serializer)
       ..add(GUdReevalOrderBy.serializer)
       ..add(GUdReevalSelectColumn.serializer)
@@ -794,11 +763,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GextrinsicAggregateBoolExpBool_and.serializer)
       ..add(GextrinsicAggregateBoolExpBool_or.serializer)
       ..add(GextrinsicAggregateBoolExpCount.serializer)
-      ..add(GgetUdHistoryArgs.serializer)
       ..add(GidentityAggregateBoolExpBool_and.serializer)
       ..add(GidentityAggregateBoolExpBool_or.serializer)
       ..add(GidentityAggregateBoolExpCount.serializer)
-      ..add(Gidentity_scalar.serializer)
       ..add(GmembershipEventAggregateBoolExpCount.serializer)
       ..add(GsmithCertAggregateBoolExpCount.serializer)
       ..add(GsmithEventAggregateBoolExpCount.serializer)
@@ -870,12 +837,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
               GAccountByPkData_accountByPk_identity_ownerKeyChange>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [
-            const FullType(GAccountByPkData_accountByPk_identity_udHistory)
-          ]),
-          () => new ListBuilder<
-              GAccountByPkData_accountByPk_identity_udHistory>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [
             const FullType(
                 GAccountByPkData_accountByPk_identity_smith_smithCertIssued)
           ]),
@@ -932,10 +893,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
             const FullType(GAccountFieldsData_identity_ownerKeyChange)
           ]),
           () => new ListBuilder<GAccountFieldsData_identity_ownerKeyChange>())
-      ..addBuilderFactory(
-          const FullType(BuiltList,
-              const [const FullType(GAccountFieldsData_identity_udHistory)]),
-          () => new ListBuilder<GAccountFieldsData_identity_udHistory>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [
             const FullType(GAccountFieldsData_identity_smith_smithCertIssued)
@@ -1049,11 +1006,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
               GAccountsByPkData_account_identity_ownerKeyChange>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [
-            const FullType(GAccountsByPkData_account_identity_udHistory)
-          ]),
-          () => new ListBuilder<GAccountsByPkData_account_identity_udHistory>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [
             const FullType(
                 GAccountsByPkData_account_identity_smith_smithCertIssued)
           ]),
@@ -1113,18 +1065,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
               BuiltList, const [const FullType(GChangeOwnerKeySelectColumn)]),
           () => new ListBuilder<GChangeOwnerKeySelectColumn>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(GCommentTypeEnum)]),
-          () => new ListBuilder<GCommentTypeEnum>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(GCommentTypeEnum)]),
-          () => new ListBuilder<GCommentTypeEnum>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(GCounterLevelEnum)]),
-          () => new ListBuilder<GCounterLevelEnum>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(GCounterLevelEnum)]),
-          () => new ListBuilder<GCounterLevelEnum>())
-      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(GEventBoolExp)]),
           () => new ListBuilder<GEventBoolExp>())
       ..addBuilderFactory(
@@ -1133,12 +1073,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(GEventSelectColumn)]),
           () => new ListBuilder<GEventSelectColumn>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(GEventTypeEnum)]),
-          () => new ListBuilder<GEventTypeEnum>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(GEventTypeEnum)]),
-          () => new ListBuilder<GEventTypeEnum>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(GExtrinsicBoolExp)]),
           () => new ListBuilder<GExtrinsicBoolExp>())
@@ -1180,10 +1114,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
           ]),
           () =>
               new ListBuilder<GIdentitiesByNameData_identity_ownerKeyChange>())
-      ..addBuilderFactory(
-          const FullType(BuiltList,
-              const [const FullType(GIdentitiesByNameData_identity_udHistory)]),
-          () => new ListBuilder<GIdentitiesByNameData_identity_udHistory>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [
             const FullType(GIdentitiesByNameData_identity_smith_smithCertIssued)
@@ -1231,10 +1161,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
           ]),
           () => new ListBuilder<GIdentitiesByPkData_identity_ownerKeyChange>())
       ..addBuilderFactory(
-          const FullType(BuiltList,
-              const [const FullType(GIdentitiesByPkData_identity_udHistory)]),
-          () => new ListBuilder<GIdentitiesByPkData_identity_udHistory>())
-      ..addBuilderFactory(
           const FullType(BuiltList, const [
             const FullType(GIdentitiesByPkData_identity_smith_smithCertIssued)
           ]),
@@ -1273,10 +1199,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
               const [const FullType(GIdentityFieldsData_ownerKeyChange)]),
           () => new ListBuilder<GIdentityFieldsData_ownerKeyChange>())
       ..addBuilderFactory(
-          const FullType(
-              BuiltList, const [const FullType(GIdentityFieldsData_udHistory)]),
-          () => new ListBuilder<GIdentityFieldsData_udHistory>())
-      ..addBuilderFactory(
           const FullType(BuiltList, const [
             const FullType(GIdentityFieldsData_smith_smithCertIssued)
           ]),
@@ -1290,20 +1212,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(
               BuiltList, const [const FullType(GIdentitySelectColumn)]),
           () => new ListBuilder<GIdentitySelectColumn>())
-      ..addBuilderFactory(
-          const FullType(
-              BuiltList, const [const FullType(GIdentityStatusEnum)]),
-          () => new ListBuilder<GIdentityStatusEnum>())
-      ..addBuilderFactory(
-          const FullType(
-              BuiltList, const [const FullType(GIdentityStatusEnum)]),
-          () => new ListBuilder<GIdentityStatusEnum>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(GItemTypeEnum)]),
-          () => new ListBuilder<GItemTypeEnum>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(GItemTypeEnum)]),
-          () => new ListBuilder<GItemTypeEnum>())
       ..addBuilderFactory(
           const FullType(
               BuiltList, const [const FullType(GItemsCounterBoolExp)]),
@@ -1363,14 +1271,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
               BuiltList, const [const FullType(GSmithEventSelectColumn)]),
           () => new ListBuilder<GSmithEventSelectColumn>())
       ..addBuilderFactory(
-          const FullType(
-              BuiltList, const [const FullType(GSmithEventTypeEnum)]),
-          () => new ListBuilder<GSmithEventTypeEnum>())
-      ..addBuilderFactory(
-          const FullType(
-              BuiltList, const [const FullType(GSmithEventTypeEnum)]),
-          () => new ListBuilder<GSmithEventTypeEnum>())
-      ..addBuilderFactory(
           const FullType(BuiltList,
               const [const FullType(GSmithFieldsData_smithCertIssued)]),
           () => new ListBuilder<GSmithFieldsData_smithCertIssued>())
@@ -1378,12 +1278,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList,
               const [const FullType(GSmithFieldsData_smithCertReceived)]),
           () => new ListBuilder<GSmithFieldsData_smithCertReceived>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(GSmithStatusEnum)]),
-          () => new ListBuilder<GSmithStatusEnum>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(GSmithStatusEnum)]),
-          () => new ListBuilder<GSmithStatusEnum>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(GTransferBoolExp)]),
           () => new ListBuilder<GTransferBoolExp>())

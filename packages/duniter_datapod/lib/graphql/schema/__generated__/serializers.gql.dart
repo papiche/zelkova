@@ -63,7 +63,12 @@ import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod.sch
         Gprofiles_stream_cursor_input,
         Gprofiles_stream_cursor_value_input,
         Gtimestamp,
-        Gtimestamp_comparison_exp;
+        Gtimestamp_comparison_exp,
+        Guser_fs_bool_exp,
+        Guser_fs_order_by,
+        Guser_fs_select_column,
+        Guser_fs_stream_cursor_input,
+        Guser_fs_stream_cursor_value_input;
 import 'package:ferry_exec/ferry_exec.dart';
 import 'package:gql_code_builder_serializers/gql_code_builder_serializers.dart'
     show OperationSerializer;
@@ -124,5 +129,10 @@ final SerializersBuilder _serializersBuilder = _$serializers.toBuilder()
   Gprofiles_stream_cursor_value_input,
   Gtimestamp,
   Gtimestamp_comparison_exp,
+  Guser_fs_bool_exp,
+  Guser_fs_order_by,
+  Guser_fs_select_column,
+  Guser_fs_stream_cursor_input,
+  Guser_fs_stream_cursor_value_input,
 ])
 final Serializers serializers = _serializersBuilder.build();

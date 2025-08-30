@@ -125,7 +125,7 @@ abstract class GIdentitiesByNameOrPkData_identity
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -266,7 +266,7 @@ abstract class GIdentitiesByPkData_identity
   GIdentitiesByPkData_identity_linkedAccountAggregate
       get linkedAccountAggregate;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   BuiltList<GIdentitiesByPkData_identity_membershipHistory>
       get membershipHistory;
@@ -282,8 +282,6 @@ abstract class GIdentitiesByPkData_identity
       get ownerKeyChangeAggregate;
   @override
   GIdentitiesByPkData_identity_smith? get smith;
-  @override
-  BuiltList<GIdentitiesByPkData_identity_udHistory>? get udHistory;
   static Serializer<GIdentitiesByPkData_identity> get serializer =>
       _$gIdentitiesByPkDataIdentitySerializer;
 
@@ -420,7 +418,7 @@ abstract class GIdentitiesByPkData_identity_certIssued_issuer
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -514,7 +512,7 @@ abstract class GIdentitiesByPkData_identity_certIssued_receiver
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -742,7 +740,7 @@ abstract class GIdentitiesByPkData_identity_certReceived_issuer
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -838,7 +836,7 @@ abstract class GIdentitiesByPkData_identity_certReceived_receiver
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -1131,7 +1129,7 @@ abstract class GIdentitiesByPkData_identity_membershipHistory
   @override
   String? get eventId;
   @override
-  _i2.GEventTypeEnum? get eventType;
+  String get eventType;
   @override
   String get id;
   @override
@@ -1512,47 +1510,6 @@ abstract class GIdentitiesByPkData_identity_smith_smithCertReceived
       );
 }
 
-abstract class GIdentitiesByPkData_identity_udHistory
-    implements
-        Built<GIdentitiesByPkData_identity_udHistory,
-            GIdentitiesByPkData_identity_udHistoryBuilder>,
-        GIdentityFields_udHistory {
-  GIdentitiesByPkData_identity_udHistory._();
-
-  factory GIdentitiesByPkData_identity_udHistory(
-      [void Function(GIdentitiesByPkData_identity_udHistoryBuilder b)
-          updates]) = _$GIdentitiesByPkData_identity_udHistory;
-
-  static void _initializeBuilder(
-          GIdentitiesByPkData_identity_udHistoryBuilder b) =>
-      b..G__typename = 'UdHistory';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  @override
-  int get amount;
-  @override
-  _i2.Gtimestamptz get timestamp;
-  static Serializer<GIdentitiesByPkData_identity_udHistory> get serializer =>
-      _$gIdentitiesByPkDataIdentityUdHistorySerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_udHistory.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByPkData_identity_udHistory? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByPkData_identity_udHistory.serializer,
-        json,
-      );
-}
-
 abstract class GIdentitiesByNameData
     implements Built<GIdentitiesByNameData, GIdentitiesByNameDataBuilder> {
   GIdentitiesByNameData._();
@@ -1634,7 +1591,7 @@ abstract class GIdentitiesByNameData_identity
   GIdentitiesByNameData_identity_linkedAccountAggregate
       get linkedAccountAggregate;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   BuiltList<GIdentitiesByNameData_identity_membershipHistory>
       get membershipHistory;
@@ -1650,8 +1607,6 @@ abstract class GIdentitiesByNameData_identity
       get ownerKeyChangeAggregate;
   @override
   GIdentitiesByNameData_identity_smith? get smith;
-  @override
-  BuiltList<GIdentitiesByNameData_identity_udHistory>? get udHistory;
   static Serializer<GIdentitiesByNameData_identity> get serializer =>
       _$gIdentitiesByNameDataIdentitySerializer;
 
@@ -1788,7 +1743,7 @@ abstract class GIdentitiesByNameData_identity_certIssued_issuer
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -1884,7 +1839,7 @@ abstract class GIdentitiesByNameData_identity_certIssued_receiver
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -2118,7 +2073,7 @@ abstract class GIdentitiesByNameData_identity_certReceived_issuer
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -2216,7 +2171,7 @@ abstract class GIdentitiesByNameData_identity_certReceived_receiver
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -2513,7 +2468,7 @@ abstract class GIdentitiesByNameData_identity_membershipHistory
   @override
   String? get eventId;
   @override
-  _i2.GEventTypeEnum? get eventType;
+  String get eventType;
   @override
   String get id;
   @override
@@ -2898,47 +2853,6 @@ abstract class GIdentitiesByNameData_identity_smith_smithCertReceived
       );
 }
 
-abstract class GIdentitiesByNameData_identity_udHistory
-    implements
-        Built<GIdentitiesByNameData_identity_udHistory,
-            GIdentitiesByNameData_identity_udHistoryBuilder>,
-        GIdentityFields_udHistory {
-  GIdentitiesByNameData_identity_udHistory._();
-
-  factory GIdentitiesByNameData_identity_udHistory(
-      [void Function(GIdentitiesByNameData_identity_udHistoryBuilder b)
-          updates]) = _$GIdentitiesByNameData_identity_udHistory;
-
-  static void _initializeBuilder(
-          GIdentitiesByNameData_identity_udHistoryBuilder b) =>
-      b..G__typename = 'UdHistory';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  @override
-  int get amount;
-  @override
-  _i2.Gtimestamptz get timestamp;
-  static Serializer<GIdentitiesByNameData_identity_udHistory> get serializer =>
-      _$gIdentitiesByNameDataIdentityUdHistorySerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_udHistory.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByNameData_identity_udHistory? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByNameData_identity_udHistory.serializer,
-        json,
-      );
-}
-
 abstract class GAccountByPkData
     implements Built<GAccountByPkData, GAccountByPkDataBuilder> {
   GAccountByPkData._();
@@ -3070,7 +2984,7 @@ abstract class GAccountByPkData_accountByPk_commentsIssued
   @override
   _i2.Gbytea get remarkBytes;
   @override
-  _i2.GCommentTypeEnum? get type;
+  String get type;
   static Serializer<GAccountByPkData_accountByPk_commentsIssued>
       get serializer => _$gAccountByPkDataAccountByPkCommentsIssuedSerializer;
 
@@ -3228,7 +3142,7 @@ abstract class GAccountByPkData_accountByPk_identity
   GAccountByPkData_accountByPk_identity_linkedAccountAggregate
       get linkedAccountAggregate;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   BuiltList<GAccountByPkData_accountByPk_identity_membershipHistory>
       get membershipHistory;
@@ -3245,8 +3159,6 @@ abstract class GAccountByPkData_accountByPk_identity
       get ownerKeyChangeAggregate;
   @override
   GAccountByPkData_accountByPk_identity_smith? get smith;
-  @override
-  BuiltList<GAccountByPkData_accountByPk_identity_udHistory>? get udHistory;
   static Serializer<GAccountByPkData_accountByPk_identity> get serializer =>
       _$gAccountByPkDataAccountByPkIdentitySerializer;
 
@@ -3389,7 +3301,7 @@ abstract class GAccountByPkData_accountByPk_identity_certIssued_issuer
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -3494,7 +3406,7 @@ abstract class GAccountByPkData_accountByPk_identity_certIssued_receiver
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -3744,7 +3656,7 @@ abstract class GAccountByPkData_accountByPk_identity_certReceived_issuer
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -3850,7 +3762,7 @@ abstract class GAccountByPkData_accountByPk_identity_certReceived_receiver
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -4168,7 +4080,7 @@ abstract class GAccountByPkData_accountByPk_identity_membershipHistory
   @override
   String? get eventId;
   @override
-  _i2.GEventTypeEnum? get eventType;
+  String get eventType;
   @override
   String get id;
   @override
@@ -4580,49 +4492,6 @@ abstract class GAccountByPkData_accountByPk_identity_smith_smithCertReceived
           );
 }
 
-abstract class GAccountByPkData_accountByPk_identity_udHistory
-    implements
-        Built<GAccountByPkData_accountByPk_identity_udHistory,
-            GAccountByPkData_accountByPk_identity_udHistoryBuilder>,
-        GAccountFields_identity_udHistory,
-        GIdentityFields_udHistory {
-  GAccountByPkData_accountByPk_identity_udHistory._();
-
-  factory GAccountByPkData_accountByPk_identity_udHistory(
-      [void Function(GAccountByPkData_accountByPk_identity_udHistoryBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_identity_udHistory;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_udHistoryBuilder b) =>
-      b..G__typename = 'UdHistory';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  @override
-  int get amount;
-  @override
-  _i2.Gtimestamptz get timestamp;
-  static Serializer<GAccountByPkData_accountByPk_identity_udHistory>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkIdentityUdHistorySerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_udHistory.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_identity_udHistory? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_identity_udHistory.serializer,
-        json,
-      );
-}
-
 abstract class GAccountByPkData_accountByPk_linkedIdentity
     implements
         Built<GAccountByPkData_accountByPk_linkedIdentity,
@@ -4651,7 +4520,7 @@ abstract class GAccountByPkData_accountByPk_linkedIdentity
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -4743,7 +4612,7 @@ abstract class GAccountByPkData_accountByPk_removedIdentities
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -5746,7 +5615,7 @@ abstract class GAccountsByPkData_account_commentsIssued
   @override
   _i2.Gbytea get remarkBytes;
   @override
-  _i2.GCommentTypeEnum? get type;
+  String get type;
   static Serializer<GAccountsByPkData_account_commentsIssued> get serializer =>
       _$gAccountsByPkDataAccountCommentsIssuedSerializer;
 
@@ -5897,7 +5766,7 @@ abstract class GAccountsByPkData_account_identity
   GAccountsByPkData_account_identity_linkedAccountAggregate
       get linkedAccountAggregate;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   BuiltList<GAccountsByPkData_account_identity_membershipHistory>
       get membershipHistory;
@@ -5914,8 +5783,6 @@ abstract class GAccountsByPkData_account_identity
       get ownerKeyChangeAggregate;
   @override
   GAccountsByPkData_account_identity_smith? get smith;
-  @override
-  BuiltList<GAccountsByPkData_account_identity_udHistory>? get udHistory;
   static Serializer<GAccountsByPkData_account_identity> get serializer =>
       _$gAccountsByPkDataAccountIdentitySerializer;
 
@@ -6057,7 +5924,7 @@ abstract class GAccountsByPkData_account_identity_certIssued_issuer
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -6159,7 +6026,7 @@ abstract class GAccountsByPkData_account_identity_certIssued_receiver
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -6404,7 +6271,7 @@ abstract class GAccountsByPkData_account_identity_certReceived_issuer
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -6507,7 +6374,7 @@ abstract class GAccountsByPkData_account_identity_certReceived_receiver
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -6818,7 +6685,7 @@ abstract class GAccountsByPkData_account_identity_membershipHistory
   @override
   String? get eventId;
   @override
-  _i2.GEventTypeEnum? get eventType;
+  String get eventType;
   @override
   String get id;
   @override
@@ -7221,48 +7088,6 @@ abstract class GAccountsByPkData_account_identity_smith_smithCertReceived
       );
 }
 
-abstract class GAccountsByPkData_account_identity_udHistory
-    implements
-        Built<GAccountsByPkData_account_identity_udHistory,
-            GAccountsByPkData_account_identity_udHistoryBuilder>,
-        GAccountFields_identity_udHistory,
-        GIdentityFields_udHistory {
-  GAccountsByPkData_account_identity_udHistory._();
-
-  factory GAccountsByPkData_account_identity_udHistory(
-      [void Function(GAccountsByPkData_account_identity_udHistoryBuilder b)
-          updates]) = _$GAccountsByPkData_account_identity_udHistory;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_identity_udHistoryBuilder b) =>
-      b..G__typename = 'UdHistory';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  @override
-  int get amount;
-  @override
-  _i2.Gtimestamptz get timestamp;
-  static Serializer<GAccountsByPkData_account_identity_udHistory>
-      get serializer => _$gAccountsByPkDataAccountIdentityUdHistorySerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_udHistory.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_identity_udHistory? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_identity_udHistory.serializer,
-        json,
-      );
-}
-
 abstract class GAccountsByPkData_account_linkedIdentity
     implements
         Built<GAccountsByPkData_account_linkedIdentity,
@@ -7291,7 +7116,7 @@ abstract class GAccountsByPkData_account_linkedIdentity
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -7382,7 +7207,7 @@ abstract class GAccountsByPkData_account_removedIdentities
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -8341,7 +8166,7 @@ abstract class GAccountBasicByPkData_accountByPk_identity
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -8503,7 +8328,7 @@ abstract class GAccountsBasicByPkData_account_identity
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -8687,7 +8512,7 @@ abstract class GAccountTransactionsData_account_commentsIssued
   @override
   _i2.Gbytea get remarkBytes;
   @override
-  _i2.GCommentTypeEnum? get type;
+  String get type;
   static Serializer<GAccountTransactionsData_account_commentsIssued>
       get serializer =>
           _$gAccountTransactionsDataAccountCommentsIssuedSerializer;
@@ -9431,7 +9256,7 @@ abstract class GCertFields_issuer implements GIdentityBasicFields {
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -9464,7 +9289,7 @@ abstract class GCertFields_receiver implements GIdentityBasicFields {
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -9558,7 +9383,7 @@ abstract class GCertFieldsData_issuer
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -9643,7 +9468,7 @@ abstract class GCertFieldsData_receiver
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -9981,7 +9806,7 @@ abstract class GIdentityBasicFields {
   GIdentityBasicFields_account? get account;
   String get id;
   bool get isMember;
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   String get name;
   int get expireOn;
   int get index;
@@ -10019,7 +9844,7 @@ abstract class GIdentityBasicFieldsData
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -10096,14 +9921,13 @@ abstract class GIdentityFields {
   int get lastChangeOn;
   BuiltList<GIdentityFields_linkedAccount> get linkedAccount;
   GIdentityFields_linkedAccountAggregate get linkedAccountAggregate;
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   BuiltList<GIdentityFields_membershipHistory> get membershipHistory;
   GIdentityFields_membershipHistoryAggregate get membershipHistoryAggregate;
   String get name;
   BuiltList<GIdentityFields_ownerKeyChange> get ownerKeyChange;
   GIdentityFields_ownerKeyChangeAggregate get ownerKeyChangeAggregate;
   GIdentityFields_smith? get smith;
-  BuiltList<GIdentityFields_udHistory>? get udHistory;
   Map<String, dynamic> toJson();
 }
 
@@ -10151,7 +9975,7 @@ abstract class GIdentityFields_certIssued_issuer
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -10185,7 +10009,7 @@ abstract class GIdentityFields_certIssued_receiver
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -10256,7 +10080,7 @@ abstract class GIdentityFields_certReceived_issuer
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -10290,7 +10114,7 @@ abstract class GIdentityFields_certReceived_receiver
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -10345,7 +10169,7 @@ abstract class GIdentityFields_membershipHistory {
   String get G__typename;
   int get blockNumber;
   String? get eventId;
-  _i2.GEventTypeEnum? get eventType;
+  String get eventType;
   String get id;
   String? get identityId;
   Map<String, dynamic> toJson();
@@ -10445,14 +10269,6 @@ abstract class GIdentityFields_smith_smithCertReceived
   Map<String, dynamic> toJson();
 }
 
-abstract class GIdentityFields_udHistory {
-  String get G__typename;
-  String get id;
-  int get amount;
-  _i2.Gtimestamptz get timestamp;
-  Map<String, dynamic> toJson();
-}
-
 abstract class GIdentityFieldsData
     implements
         Built<GIdentityFieldsData, GIdentityFieldsDataBuilder>,
@@ -10502,7 +10318,7 @@ abstract class GIdentityFieldsData
   @override
   GIdentityFieldsData_linkedAccountAggregate get linkedAccountAggregate;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   BuiltList<GIdentityFieldsData_membershipHistory> get membershipHistory;
   @override
@@ -10515,8 +10331,6 @@ abstract class GIdentityFieldsData
   GIdentityFieldsData_ownerKeyChangeAggregate get ownerKeyChangeAggregate;
   @override
   GIdentityFieldsData_smith? get smith;
-  @override
-  BuiltList<GIdentityFieldsData_udHistory>? get udHistory;
   static Serializer<GIdentityFieldsData> get serializer =>
       _$gIdentityFieldsDataSerializer;
 
@@ -10648,7 +10462,7 @@ abstract class GIdentityFieldsData_certIssued_issuer
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -10740,7 +10554,7 @@ abstract class GIdentityFieldsData_certIssued_receiver
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -10961,7 +10775,7 @@ abstract class GIdentityFieldsData_certReceived_issuer
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -11054,7 +10868,7 @@ abstract class GIdentityFieldsData_certReceived_receiver
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -11329,7 +11143,7 @@ abstract class GIdentityFieldsData_membershipHistory
   @override
   String? get eventId;
   @override
-  _i2.GEventTypeEnum? get eventType;
+  String get eventType;
   @override
   String get id;
   @override
@@ -11686,45 +11500,6 @@ abstract class GIdentityFieldsData_smith_smithCertReceived
       );
 }
 
-abstract class GIdentityFieldsData_udHistory
-    implements
-        Built<GIdentityFieldsData_udHistory,
-            GIdentityFieldsData_udHistoryBuilder>,
-        GIdentityFields_udHistory {
-  GIdentityFieldsData_udHistory._();
-
-  factory GIdentityFieldsData_udHistory(
-          [void Function(GIdentityFieldsData_udHistoryBuilder b) updates]) =
-      _$GIdentityFieldsData_udHistory;
-
-  static void _initializeBuilder(GIdentityFieldsData_udHistoryBuilder b) =>
-      b..G__typename = 'UdHistory';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  @override
-  int get amount;
-  @override
-  _i2.Gtimestamptz get timestamp;
-  static Serializer<GIdentityFieldsData_udHistory> get serializer =>
-      _$gIdentityFieldsDataUdHistorySerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityFieldsData_udHistory.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentityFieldsData_udHistory? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentityFieldsData_udHistory.serializer,
-        json,
-      );
-}
-
 abstract class GCommentsIssued {
   String get G__typename;
   String? get authorId;
@@ -11734,7 +11509,7 @@ abstract class GCommentsIssued {
   String get id;
   String get remark;
   _i2.Gbytea get remarkBytes;
-  _i2.GCommentTypeEnum? get type;
+  String get type;
   Map<String, dynamic> toJson();
 }
 
@@ -11769,7 +11544,7 @@ abstract class GCommentsIssuedData
   @override
   _i2.Gbytea get remarkBytes;
   @override
-  _i2.GCommentTypeEnum? get type;
+  String get type;
   static Serializer<GCommentsIssuedData> get serializer =>
       _$gCommentsIssuedDataSerializer;
 
@@ -11807,7 +11582,7 @@ abstract class GAccountBasicFields_identity implements GIdentityBasicFields {
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -11895,7 +11670,7 @@ abstract class GAccountBasicFieldsData_identity
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -11995,7 +11770,7 @@ abstract class GAccountFields_commentsIssued implements GCommentsIssued {
   @override
   _i2.Gbytea get remarkBytes;
   @override
-  _i2.GCommentTypeEnum? get type;
+  String get type;
   @override
   Map<String, dynamic> toJson();
 }
@@ -12048,7 +11823,7 @@ abstract class GAccountFields_identity implements GIdentityFields {
   @override
   GAccountFields_identity_linkedAccountAggregate get linkedAccountAggregate;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   BuiltList<GAccountFields_identity_membershipHistory> get membershipHistory;
   @override
@@ -12062,8 +11837,6 @@ abstract class GAccountFields_identity implements GIdentityFields {
   GAccountFields_identity_ownerKeyChangeAggregate get ownerKeyChangeAggregate;
   @override
   GAccountFields_identity_smith? get smith;
-  @override
-  BuiltList<GAccountFields_identity_udHistory>? get udHistory;
   @override
   Map<String, dynamic> toJson();
 }
@@ -12120,7 +11893,7 @@ abstract class GAccountFields_identity_certIssued_issuer
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -12160,7 +11933,7 @@ abstract class GAccountFields_identity_certIssued_receiver
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -12246,7 +12019,7 @@ abstract class GAccountFields_identity_certReceived_issuer
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -12286,7 +12059,7 @@ abstract class GAccountFields_identity_certReceived_receiver
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -12369,7 +12142,7 @@ abstract class GAccountFields_identity_membershipHistory
   @override
   String? get eventId;
   @override
-  _i2.GEventTypeEnum? get eventType;
+  String get eventType;
   @override
   String get id;
   @override
@@ -12497,20 +12270,6 @@ abstract class GAccountFields_identity_smith_smithCertReceived
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_identity_udHistory
-    implements GIdentityFields_udHistory {
-  @override
-  String get G__typename;
-  @override
-  String get id;
-  @override
-  int get amount;
-  @override
-  _i2.Gtimestamptz get timestamp;
-  @override
-  Map<String, dynamic> toJson();
-}
-
 abstract class GAccountFields_linkedIdentity implements GIdentityBasicFields {
   @override
   String get G__typename;
@@ -12523,7 +12282,7 @@ abstract class GAccountFields_linkedIdentity implements GIdentityBasicFields {
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -12557,7 +12316,7 @@ abstract class GAccountFields_removedIdentities
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -12853,7 +12612,7 @@ abstract class GAccountFieldsData_commentsIssued
   @override
   _i2.Gbytea get remarkBytes;
   @override
-  _i2.GCommentTypeEnum? get type;
+  String get type;
   static Serializer<GAccountFieldsData_commentsIssued> get serializer =>
       _$gAccountFieldsDataCommentsIssuedSerializer;
 
@@ -12997,7 +12756,7 @@ abstract class GAccountFieldsData_identity
   @override
   GAccountFieldsData_identity_linkedAccountAggregate get linkedAccountAggregate;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   BuiltList<GAccountFieldsData_identity_membershipHistory>
       get membershipHistory;
@@ -13013,8 +12772,6 @@ abstract class GAccountFieldsData_identity
       get ownerKeyChangeAggregate;
   @override
   GAccountFieldsData_identity_smith? get smith;
-  @override
-  BuiltList<GAccountFieldsData_identity_udHistory>? get udHistory;
   static Serializer<GAccountFieldsData_identity> get serializer =>
       _$gAccountFieldsDataIdentitySerializer;
 
@@ -13154,7 +12911,7 @@ abstract class GAccountFieldsData_identity_certIssued_issuer
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -13250,7 +13007,7 @@ abstract class GAccountFieldsData_identity_certIssued_receiver
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -13482,7 +13239,7 @@ abstract class GAccountFieldsData_identity_certReceived_issuer
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -13579,7 +13336,7 @@ abstract class GAccountFieldsData_identity_certReceived_receiver
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -13874,7 +13631,7 @@ abstract class GAccountFieldsData_identity_membershipHistory
   @override
   String? get eventId;
   @override
-  _i2.GEventTypeEnum? get eventType;
+  String get eventType;
   @override
   String get id;
   @override
@@ -14261,48 +14018,6 @@ abstract class GAccountFieldsData_identity_smith_smithCertReceived
       );
 }
 
-abstract class GAccountFieldsData_identity_udHistory
-    implements
-        Built<GAccountFieldsData_identity_udHistory,
-            GAccountFieldsData_identity_udHistoryBuilder>,
-        GAccountFields_identity_udHistory,
-        GIdentityFields_udHistory {
-  GAccountFieldsData_identity_udHistory._();
-
-  factory GAccountFieldsData_identity_udHistory(
-      [void Function(GAccountFieldsData_identity_udHistoryBuilder b)
-          updates]) = _$GAccountFieldsData_identity_udHistory;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_identity_udHistoryBuilder b) =>
-      b..G__typename = 'UdHistory';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  @override
-  int get amount;
-  @override
-  _i2.Gtimestamptz get timestamp;
-  static Serializer<GAccountFieldsData_identity_udHistory> get serializer =>
-      _$gAccountFieldsDataIdentityUdHistorySerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_udHistory.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_identity_udHistory? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity_udHistory.serializer,
-        json,
-      );
-}
-
 abstract class GAccountFieldsData_linkedIdentity
     implements
         Built<GAccountFieldsData_linkedIdentity,
@@ -14330,7 +14045,7 @@ abstract class GAccountFieldsData_linkedIdentity
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -14420,7 +14135,7 @@ abstract class GAccountFieldsData_removedIdentities
   @override
   bool get isMember;
   @override
-  _i2.GIdentityStatusEnum? get status;
+  String get status;
   @override
   String get name;
   @override
@@ -15275,7 +14990,7 @@ abstract class GAccountTxsFields_commentsIssued implements GCommentsIssued {
   @override
   _i2.Gbytea get remarkBytes;
   @override
-  _i2.GCommentTypeEnum? get type;
+  String get type;
   @override
   Map<String, dynamic> toJson();
 }
@@ -15517,7 +15232,7 @@ abstract class GAccountTxsFieldsData_commentsIssued
   @override
   _i2.Gbytea get remarkBytes;
   @override
-  _i2.GCommentTypeEnum? get type;
+  String get type;
   static Serializer<GAccountTxsFieldsData_commentsIssued> get serializer =>
       _$gAccountTxsFieldsDataCommentsIssuedSerializer;
 

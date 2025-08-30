@@ -1,3 +1,4 @@
+# npx get-graphql-schema https://gt-squid.axiom-team.fr/v1/graphql > duniter-indexer.schema.graphql
 query LastBlock {
     block(limit: 1, orderBy: {timestamp: DESC}) {
         height
@@ -128,11 +129,11 @@ fragment IdentityFields on Identity {
     smith {
         ...SmithFields
     }
-    udHistory(limit: 15) {
-        id
-        amount
-        timestamp
-    }
+    #    udHistory(limit: 15) {
+    #        id
+    #        amount
+    #        timestamp
+    #    }
 }
 
 fragment CommentsIssued on TxComment {

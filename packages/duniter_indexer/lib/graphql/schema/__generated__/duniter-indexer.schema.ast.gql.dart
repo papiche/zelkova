@@ -54,6 +54,15 @@ const Account = _i1.ObjectTypeDefinitionNode(
   interfaces: [],
   fields: [
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'balance'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'numeric'),
+        isNonNull: true,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'commentsIssued'),
       directives: [],
       args: [
@@ -1167,6 +1176,15 @@ const AccountAvgFields = _i1.ObjectTypeDefinitionNode(
   interfaces: [],
   fields: [
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'balance'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'createdOn'),
       directives: [],
       args: [],
@@ -1174,13 +1192,22 @@ const AccountAvgFields = _i1.ObjectTypeDefinitionNode(
         name: _i1.NameNode(value: 'Float'),
         isNonNull: false,
       ),
-    )
+    ),
   ],
 );
 const AccountAvgOrderBy = _i1.InputObjectTypeDefinitionNode(
   name: _i1.NameNode(value: 'AccountAvgOrderBy'),
   directives: [],
   fields: [
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'balance'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'createdOn'),
       directives: [],
@@ -1189,7 +1216,7 @@ const AccountAvgOrderBy = _i1.InputObjectTypeDefinitionNode(
         isNonNull: false,
       ),
       defaultValue: null,
-    )
+    ),
   ],
 );
 const AccountBoolExp = _i1.InputObjectTypeDefinitionNode(
@@ -1225,6 +1252,15 @@ const AccountBoolExp = _i1.InputObjectTypeDefinitionNode(
           name: _i1.NameNode(value: 'AccountBoolExp'),
           isNonNull: true,
         ),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'balance'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'NumericComparisonExp'),
         isNonNull: false,
       ),
       defaultValue: null,
@@ -1381,6 +1417,15 @@ const AccountMaxFields = _i1.ObjectTypeDefinitionNode(
   interfaces: [],
   fields: [
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'balance'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'numeric'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'createdOn'),
       directives: [],
       args: [],
@@ -1413,6 +1458,15 @@ const AccountMaxOrderBy = _i1.InputObjectTypeDefinitionNode(
   name: _i1.NameNode(value: 'AccountMaxOrderBy'),
   directives: [],
   fields: [
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'balance'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'createdOn'),
       directives: [],
@@ -1448,6 +1502,15 @@ const AccountMinFields = _i1.ObjectTypeDefinitionNode(
   interfaces: [],
   fields: [
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'balance'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'numeric'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'createdOn'),
       directives: [],
       args: [],
@@ -1481,6 +1544,15 @@ const AccountMinOrderBy = _i1.InputObjectTypeDefinitionNode(
   directives: [],
   fields: [
     _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'balance'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'createdOn'),
       directives: [],
       type: _i1.NamedTypeNode(
@@ -1513,6 +1585,15 @@ const AccountOrderBy = _i1.InputObjectTypeDefinitionNode(
   name: _i1.NameNode(value: 'AccountOrderBy'),
   directives: [],
   fields: [
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'balance'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'commentsIssuedAggregate'),
       directives: [],
@@ -1619,6 +1700,10 @@ const AccountSelectColumn = _i1.EnumTypeDefinitionNode(
   directives: [],
   values: [
     _i1.EnumValueDefinitionNode(
+      name: _i1.NameNode(value: 'balance'),
+      directives: [],
+    ),
+    _i1.EnumValueDefinitionNode(
       name: _i1.NameNode(value: 'createdOn'),
       directives: [],
     ),
@@ -1668,6 +1753,15 @@ const AccountStddevFields = _i1.ObjectTypeDefinitionNode(
   interfaces: [],
   fields: [
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'balance'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'createdOn'),
       directives: [],
       args: [],
@@ -1675,13 +1769,22 @@ const AccountStddevFields = _i1.ObjectTypeDefinitionNode(
         name: _i1.NameNode(value: 'Float'),
         isNonNull: false,
       ),
-    )
+    ),
   ],
 );
 const AccountStddevOrderBy = _i1.InputObjectTypeDefinitionNode(
   name: _i1.NameNode(value: 'AccountStddevOrderBy'),
   directives: [],
   fields: [
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'balance'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'createdOn'),
       directives: [],
@@ -1690,7 +1793,7 @@ const AccountStddevOrderBy = _i1.InputObjectTypeDefinitionNode(
         isNonNull: false,
       ),
       defaultValue: null,
-    )
+    ),
   ],
 );
 const AccountStddevPopFields = _i1.ObjectTypeDefinitionNode(
@@ -1699,36 +1802,14 @@ const AccountStddevPopFields = _i1.ObjectTypeDefinitionNode(
   interfaces: [],
   fields: [
     _i1.FieldDefinitionNode(
-      name: _i1.NameNode(value: 'createdOn'),
+      name: _i1.NameNode(value: 'balance'),
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'Float'),
         isNonNull: false,
       ),
-    )
-  ],
-);
-const AccountStddevPopOrderBy = _i1.InputObjectTypeDefinitionNode(
-  name: _i1.NameNode(value: 'AccountStddevPopOrderBy'),
-  directives: [],
-  fields: [
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'createdOn'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    )
-  ],
-);
-const AccountStddevSampFields = _i1.ObjectTypeDefinitionNode(
-  name: _i1.NameNode(value: 'AccountStddevSampFields'),
-  directives: [],
-  interfaces: [],
-  fields: [
+    ),
     _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'createdOn'),
       directives: [],
@@ -1737,13 +1818,22 @@ const AccountStddevSampFields = _i1.ObjectTypeDefinitionNode(
         name: _i1.NameNode(value: 'Float'),
         isNonNull: false,
       ),
-    )
+    ),
   ],
 );
-const AccountStddevSampOrderBy = _i1.InputObjectTypeDefinitionNode(
-  name: _i1.NameNode(value: 'AccountStddevSampOrderBy'),
+const AccountStddevPopOrderBy = _i1.InputObjectTypeDefinitionNode(
+  name: _i1.NameNode(value: 'AccountStddevPopOrderBy'),
   directives: [],
   fields: [
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'balance'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'createdOn'),
       directives: [],
@@ -1752,7 +1842,56 @@ const AccountStddevSampOrderBy = _i1.InputObjectTypeDefinitionNode(
         isNonNull: false,
       ),
       defaultValue: null,
-    )
+    ),
+  ],
+);
+const AccountStddevSampFields = _i1.ObjectTypeDefinitionNode(
+  name: _i1.NameNode(value: 'AccountStddevSampFields'),
+  directives: [],
+  interfaces: [],
+  fields: [
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'balance'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
+  ],
+);
+const AccountStddevSampOrderBy = _i1.InputObjectTypeDefinitionNode(
+  name: _i1.NameNode(value: 'AccountStddevSampOrderBy'),
+  directives: [],
+  fields: [
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'balance'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
   ],
 );
 const AccountStreamCursorInput = _i1.InputObjectTypeDefinitionNode(
@@ -1783,6 +1922,15 @@ const AccountStreamCursorValueInput = _i1.InputObjectTypeDefinitionNode(
   name: _i1.NameNode(value: 'AccountStreamCursorValueInput'),
   directives: [],
   fields: [
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'balance'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'numeric'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'createdOn'),
       directives: [],
@@ -1827,6 +1975,15 @@ const AccountSumFields = _i1.ObjectTypeDefinitionNode(
   interfaces: [],
   fields: [
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'balance'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'numeric'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'createdOn'),
       directives: [],
       args: [],
@@ -1834,13 +1991,22 @@ const AccountSumFields = _i1.ObjectTypeDefinitionNode(
         name: _i1.NameNode(value: 'Int'),
         isNonNull: false,
       ),
-    )
+    ),
   ],
 );
 const AccountSumOrderBy = _i1.InputObjectTypeDefinitionNode(
   name: _i1.NameNode(value: 'AccountSumOrderBy'),
   directives: [],
   fields: [
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'balance'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'createdOn'),
       directives: [],
@@ -1849,7 +2015,7 @@ const AccountSumOrderBy = _i1.InputObjectTypeDefinitionNode(
         isNonNull: false,
       ),
       defaultValue: null,
-    )
+    ),
   ],
 );
 const AccountVarianceFields = _i1.ObjectTypeDefinitionNode(
@@ -1858,6 +2024,15 @@ const AccountVarianceFields = _i1.ObjectTypeDefinitionNode(
   interfaces: [],
   fields: [
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'balance'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'createdOn'),
       directives: [],
       args: [],
@@ -1865,13 +2040,22 @@ const AccountVarianceFields = _i1.ObjectTypeDefinitionNode(
         name: _i1.NameNode(value: 'Float'),
         isNonNull: false,
       ),
-    )
+    ),
   ],
 );
 const AccountVarianceOrderBy = _i1.InputObjectTypeDefinitionNode(
   name: _i1.NameNode(value: 'AccountVarianceOrderBy'),
   directives: [],
   fields: [
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'balance'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'createdOn'),
       directives: [],
@@ -1880,7 +2064,7 @@ const AccountVarianceOrderBy = _i1.InputObjectTypeDefinitionNode(
         isNonNull: false,
       ),
       defaultValue: null,
-    )
+    ),
   ],
 );
 const AccountVarPopFields = _i1.ObjectTypeDefinitionNode(
@@ -1889,36 +2073,14 @@ const AccountVarPopFields = _i1.ObjectTypeDefinitionNode(
   interfaces: [],
   fields: [
     _i1.FieldDefinitionNode(
-      name: _i1.NameNode(value: 'createdOn'),
+      name: _i1.NameNode(value: 'balance'),
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'Float'),
         isNonNull: false,
       ),
-    )
-  ],
-);
-const AccountVarPopOrderBy = _i1.InputObjectTypeDefinitionNode(
-  name: _i1.NameNode(value: 'AccountVarPopOrderBy'),
-  directives: [],
-  fields: [
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'createdOn'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    )
-  ],
-);
-const AccountVarSampFields = _i1.ObjectTypeDefinitionNode(
-  name: _i1.NameNode(value: 'AccountVarSampFields'),
-  directives: [],
-  interfaces: [],
-  fields: [
+    ),
     _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'createdOn'),
       directives: [],
@@ -1927,13 +2089,22 @@ const AccountVarSampFields = _i1.ObjectTypeDefinitionNode(
         name: _i1.NameNode(value: 'Float'),
         isNonNull: false,
       ),
-    )
+    ),
   ],
 );
-const AccountVarSampOrderBy = _i1.InputObjectTypeDefinitionNode(
-  name: _i1.NameNode(value: 'AccountVarSampOrderBy'),
+const AccountVarPopOrderBy = _i1.InputObjectTypeDefinitionNode(
+  name: _i1.NameNode(value: 'AccountVarPopOrderBy'),
   directives: [],
   fields: [
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'balance'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'createdOn'),
       directives: [],
@@ -1942,7 +2113,56 @@ const AccountVarSampOrderBy = _i1.InputObjectTypeDefinitionNode(
         isNonNull: false,
       ),
       defaultValue: null,
-    )
+    ),
+  ],
+);
+const AccountVarSampFields = _i1.ObjectTypeDefinitionNode(
+  name: _i1.NameNode(value: 'AccountVarSampFields'),
+  directives: [],
+  interfaces: [],
+  fields: [
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'balance'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
+  ],
+);
+const AccountVarSampOrderBy = _i1.InputObjectTypeDefinitionNode(
+  name: _i1.NameNode(value: 'AccountVarSampOrderBy'),
+  directives: [],
+  fields: [
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'balance'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'createdOn'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
   ],
 );
 const Block = _i1.ObjectTypeDefinitionNode(
@@ -6667,8 +6887,8 @@ const CertEvent = _i1.ObjectTypeDefinitionNode(
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'EventTypeEnum'),
-        isNonNull: false,
+        name: _i1.NameNode(value: 'String'),
+        isNonNull: true,
       ),
     ),
     _i1.FieldDefinitionNode(
@@ -7120,7 +7340,7 @@ const CertEventBoolExp = _i1.InputObjectTypeDefinitionNode(
       name: _i1.NameNode(value: 'eventType'),
       directives: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'EventTypeEnumComparisonExp'),
+        name: _i1.NameNode(value: 'StringComparisonExp'),
         isNonNull: false,
       ),
       defaultValue: null,
@@ -7169,6 +7389,15 @@ const CertEventMaxFields = _i1.ObjectTypeDefinitionNode(
       ),
     ),
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'eventType'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'String'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'id'),
       directives: [],
       args: [],
@@ -7203,6 +7432,15 @@ const CertEventMaxOrderBy = _i1.InputObjectTypeDefinitionNode(
     ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'eventId'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'eventType'),
       directives: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'OrderBy'),
@@ -7254,6 +7492,15 @@ const CertEventMinFields = _i1.ObjectTypeDefinitionNode(
       ),
     ),
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'eventType'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'String'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'id'),
       directives: [],
       args: [],
@@ -7288,6 +7535,15 @@ const CertEventMinOrderBy = _i1.InputObjectTypeDefinitionNode(
     ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'eventId'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'eventType'),
       directives: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'OrderBy'),
@@ -7553,7 +7809,7 @@ const CertEventStreamCursorValueInput = _i1.InputObjectTypeDefinitionNode(
       name: _i1.NameNode(value: 'eventType'),
       directives: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'EventTypeEnum'),
+        name: _i1.NameNode(value: 'String'),
         isNonNull: false,
       ),
       defaultValue: null,
@@ -9929,160 +10185,6 @@ const ChangeOwnerKeyVarSampOrderBy = _i1.InputObjectTypeDefinitionNode(
     )
   ],
 );
-const CommentTypeEnum = _i1.EnumTypeDefinitionNode(
-  name: _i1.NameNode(value: 'CommentTypeEnum'),
-  directives: [],
-  values: [
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'ASCII'),
-      directives: [],
-    ),
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'CID'),
-      directives: [],
-    ),
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'RAW'),
-      directives: [],
-    ),
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'UNICODE'),
-      directives: [],
-    ),
-  ],
-);
-const CommentTypeEnumComparisonExp = _i1.InputObjectTypeDefinitionNode(
-  name: _i1.NameNode(value: 'CommentTypeEnumComparisonExp'),
-  directives: [],
-  fields: [
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_eq'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'CommentTypeEnum'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_in'),
-      directives: [],
-      type: _i1.ListTypeNode(
-        type: _i1.NamedTypeNode(
-          name: _i1.NameNode(value: 'CommentTypeEnum'),
-          isNonNull: true,
-        ),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_isNull'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'Boolean'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_neq'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'CommentTypeEnum'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_nin'),
-      directives: [],
-      type: _i1.ListTypeNode(
-        type: _i1.NamedTypeNode(
-          name: _i1.NameNode(value: 'CommentTypeEnum'),
-          isNonNull: true,
-        ),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-  ],
-);
-const CounterLevelEnum = _i1.EnumTypeDefinitionNode(
-  name: _i1.NameNode(value: 'CounterLevelEnum'),
-  directives: [],
-  values: [
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'GLOBAL'),
-      directives: [],
-    ),
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'ITEM'),
-      directives: [],
-    ),
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'PALLET'),
-      directives: [],
-    ),
-  ],
-);
-const CounterLevelEnumComparisonExp = _i1.InputObjectTypeDefinitionNode(
-  name: _i1.NameNode(value: 'CounterLevelEnumComparisonExp'),
-  directives: [],
-  fields: [
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_eq'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'CounterLevelEnum'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_in'),
-      directives: [],
-      type: _i1.ListTypeNode(
-        type: _i1.NamedTypeNode(
-          name: _i1.NameNode(value: 'CounterLevelEnum'),
-          isNonNull: true,
-        ),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_isNull'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'Boolean'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_neq'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'CounterLevelEnum'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_nin'),
-      directives: [],
-      type: _i1.ListTypeNode(
-        type: _i1.NamedTypeNode(
-          name: _i1.NameNode(value: 'CounterLevelEnum'),
-          isNonNull: true,
-        ),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-  ],
-);
 const CursorOrdering = _i1.EnumTypeDefinitionNode(
   name: _i1.NameNode(value: 'CursorOrdering'),
   directives: [],
@@ -11512,81 +11614,6 @@ const EventSumOrderBy = _i1.InputObjectTypeDefinitionNode(
       ),
       defaultValue: null,
     )
-  ],
-);
-const EventTypeEnum = _i1.EnumTypeDefinitionNode(
-  name: _i1.NameNode(value: 'EventTypeEnum'),
-  directives: [],
-  values: [
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'CREATION'),
-      directives: [],
-    ),
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'REMOVAL'),
-      directives: [],
-    ),
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'RENEWAL'),
-      directives: [],
-    ),
-  ],
-);
-const EventTypeEnumComparisonExp = _i1.InputObjectTypeDefinitionNode(
-  name: _i1.NameNode(value: 'EventTypeEnumComparisonExp'),
-  directives: [],
-  fields: [
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_eq'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'EventTypeEnum'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_in'),
-      directives: [],
-      type: _i1.ListTypeNode(
-        type: _i1.NamedTypeNode(
-          name: _i1.NameNode(value: 'EventTypeEnum'),
-          isNonNull: true,
-        ),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_isNull'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'Boolean'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_neq'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'EventTypeEnum'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_nin'),
-      directives: [],
-      type: _i1.ListTypeNode(
-        type: _i1.NamedTypeNode(
-          name: _i1.NameNode(value: 'EventTypeEnum'),
-          isNonNull: true,
-        ),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
   ],
 );
 const EventVarianceFields = _i1.ObjectTypeDefinitionNode(
@@ -13999,21 +14026,6 @@ const ExtrinsicVarSampOrderBy = _i1.InputObjectTypeDefinitionNode(
     ),
   ],
 );
-const getUdHistoryArgs = _i1.InputObjectTypeDefinitionNode(
-  name: _i1.NameNode(value: 'getUdHistoryArgs'),
-  directives: [],
-  fields: [
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'identity_row'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'identity_scalar'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    )
-  ],
-);
 const Identity = _i1.ObjectTypeDefinitionNode(
   name: _i1.NameNode(value: 'Identity'),
   directives: [],
@@ -14339,6 +14351,15 @@ const Identity = _i1.ObjectTypeDefinitionNode(
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'Int'),
         isNonNull: true,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'firstEligibleUd'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Int'),
+        isNonNull: false,
       ),
     ),
     _i1.FieldDefinitionNode(
@@ -14775,79 +14796,11 @@ const Identity = _i1.ObjectTypeDefinitionNode(
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'IdentityStatusEnum'),
-        isNonNull: false,
-      ),
-    ),
-    _i1.FieldDefinitionNode(
-      name: _i1.NameNode(value: 'udHistory'),
-      directives: [],
-      args: [
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'distinctOn'),
-          directives: [],
-          type: _i1.ListTypeNode(
-            type: _i1.NamedTypeNode(
-              name: _i1.NameNode(value: 'UdHistorySelectColumn'),
-              isNonNull: true,
-            ),
-            isNonNull: false,
-          ),
-          defaultValue: null,
-        ),
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'limit'),
-          directives: [],
-          type: _i1.NamedTypeNode(
-            name: _i1.NameNode(value: 'Int'),
-            isNonNull: false,
-          ),
-          defaultValue: null,
-        ),
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'offset'),
-          directives: [],
-          type: _i1.NamedTypeNode(
-            name: _i1.NameNode(value: 'Int'),
-            isNonNull: false,
-          ),
-          defaultValue: null,
-        ),
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'orderBy'),
-          directives: [],
-          type: _i1.ListTypeNode(
-            type: _i1.NamedTypeNode(
-              name: _i1.NameNode(value: 'UdHistoryOrderBy'),
-              isNonNull: true,
-            ),
-            isNonNull: false,
-          ),
-          defaultValue: null,
-        ),
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'where'),
-          directives: [],
-          type: _i1.NamedTypeNode(
-            name: _i1.NameNode(value: 'UdHistoryBoolExp'),
-            isNonNull: false,
-          ),
-          defaultValue: null,
-        ),
-      ],
-      type: _i1.ListTypeNode(
-        type: _i1.NamedTypeNode(
-          name: _i1.NameNode(value: 'UdHistory'),
-          isNonNull: true,
-        ),
-        isNonNull: false,
+        name: _i1.NameNode(value: 'String'),
+        isNonNull: true,
       ),
     ),
   ],
-);
-const identity_scalar = _i1.ScalarTypeDefinitionNode(
-  name: _i1.NameNode(value: 'identity_scalar'),
-  directives: [],
 );
 const IdentityAggregate = _i1.ObjectTypeDefinitionNode(
   name: _i1.NameNode(value: 'IdentityAggregate'),
@@ -15300,6 +15253,15 @@ const IdentityAvgFields = _i1.ObjectTypeDefinitionNode(
       ),
     ),
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'firstEligibleUd'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'index'),
       directives: [],
       args: [],
@@ -15334,6 +15296,15 @@ const IdentityAvgOrderBy = _i1.InputObjectTypeDefinitionNode(
     ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'expireOn'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'firstEligibleUd'),
       directives: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'OrderBy'),
@@ -15507,6 +15478,15 @@ const IdentityBoolExp = _i1.InputObjectTypeDefinitionNode(
       defaultValue: null,
     ),
     _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'firstEligibleUd'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'IntComparisonExp'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'id'),
       directives: [],
       type: _i1.NamedTypeNode(
@@ -15618,16 +15598,7 @@ const IdentityBoolExp = _i1.InputObjectTypeDefinitionNode(
       name: _i1.NameNode(value: 'status'),
       directives: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'IdentityStatusEnumComparisonExp'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'udHistory'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'UdHistoryBoolExp'),
+        name: _i1.NameNode(value: 'StringComparisonExp'),
         isNonNull: false,
       ),
       defaultValue: null,
@@ -15685,6 +15656,15 @@ const IdentityMaxFields = _i1.ObjectTypeDefinitionNode(
       ),
     ),
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'firstEligibleUd'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Int'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'id'),
       directives: [],
       args: [],
@@ -15713,6 +15693,15 @@ const IdentityMaxFields = _i1.ObjectTypeDefinitionNode(
     ),
     _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'name'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'String'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'status'),
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
@@ -15772,6 +15761,15 @@ const IdentityMaxOrderBy = _i1.InputObjectTypeDefinitionNode(
       defaultValue: null,
     ),
     _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'firstEligibleUd'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'id'),
       directives: [],
       type: _i1.NamedTypeNode(
@@ -15800,6 +15798,15 @@ const IdentityMaxOrderBy = _i1.InputObjectTypeDefinitionNode(
     ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'name'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'status'),
       directives: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'OrderBy'),
@@ -15860,6 +15867,15 @@ const IdentityMinFields = _i1.ObjectTypeDefinitionNode(
       ),
     ),
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'firstEligibleUd'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Int'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'id'),
       directives: [],
       args: [],
@@ -15888,6 +15904,15 @@ const IdentityMinFields = _i1.ObjectTypeDefinitionNode(
     ),
     _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'name'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'String'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'status'),
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
@@ -15947,6 +15972,15 @@ const IdentityMinOrderBy = _i1.InputObjectTypeDefinitionNode(
       defaultValue: null,
     ),
     _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'firstEligibleUd'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'id'),
       directives: [],
       type: _i1.NamedTypeNode(
@@ -15975,6 +16009,15 @@ const IdentityMinOrderBy = _i1.InputObjectTypeDefinitionNode(
     ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'name'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'status'),
       directives: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'OrderBy'),
@@ -16079,6 +16122,15 @@ const IdentityOrderBy = _i1.InputObjectTypeDefinitionNode(
       defaultValue: null,
     ),
     _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'firstEligibleUd'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'id'),
       directives: [],
       type: _i1.NamedTypeNode(
@@ -16168,15 +16220,6 @@ const IdentityOrderBy = _i1.InputObjectTypeDefinitionNode(
       ),
       defaultValue: null,
     ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'udHistoryAggregate'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'UdHistoryAggregateOrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
   ],
 );
 const IdentitySelectColumn = _i1.EnumTypeDefinitionNode(
@@ -16201,6 +16244,10 @@ const IdentitySelectColumn = _i1.EnumTypeDefinitionNode(
     ),
     _i1.EnumValueDefinitionNode(
       name: _i1.NameNode(value: 'expireOn'),
+      directives: [],
+    ),
+    _i1.EnumValueDefinitionNode(
+      name: _i1.NameNode(value: 'firstEligibleUd'),
       directives: [],
     ),
     _i1.EnumValueDefinitionNode(
@@ -16255,93 +16302,6 @@ const IdentitySelectColumnIdentityAggregateBoolExpBool_orArgumentsColumns =
     )
   ],
 );
-const IdentityStatusEnum = _i1.EnumTypeDefinitionNode(
-  name: _i1.NameNode(value: 'IdentityStatusEnum'),
-  directives: [],
-  values: [
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'MEMBER'),
-      directives: [],
-    ),
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'NOTMEMBER'),
-      directives: [],
-    ),
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'REMOVED'),
-      directives: [],
-    ),
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'REVOKED'),
-      directives: [],
-    ),
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'UNCONFIRMED'),
-      directives: [],
-    ),
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'UNVALIDATED'),
-      directives: [],
-    ),
-  ],
-);
-const IdentityStatusEnumComparisonExp = _i1.InputObjectTypeDefinitionNode(
-  name: _i1.NameNode(value: 'IdentityStatusEnumComparisonExp'),
-  directives: [],
-  fields: [
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_eq'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'IdentityStatusEnum'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_in'),
-      directives: [],
-      type: _i1.ListTypeNode(
-        type: _i1.NamedTypeNode(
-          name: _i1.NameNode(value: 'IdentityStatusEnum'),
-          isNonNull: true,
-        ),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_isNull'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'Boolean'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_neq'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'IdentityStatusEnum'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_nin'),
-      directives: [],
-      type: _i1.ListTypeNode(
-        type: _i1.NamedTypeNode(
-          name: _i1.NameNode(value: 'IdentityStatusEnum'),
-          isNonNull: true,
-        ),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-  ],
-);
 const IdentityStddevFields = _i1.ObjectTypeDefinitionNode(
   name: _i1.NameNode(value: 'IdentityStddevFields'),
   directives: [],
@@ -16358,6 +16318,15 @@ const IdentityStddevFields = _i1.ObjectTypeDefinitionNode(
     ),
     _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'expireOn'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'firstEligibleUd'),
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
@@ -16400,6 +16369,15 @@ const IdentityStddevOrderBy = _i1.InputObjectTypeDefinitionNode(
     ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'expireOn'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'firstEligibleUd'),
       directives: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'OrderBy'),
@@ -16451,6 +16429,15 @@ const IdentityStddevPopFields = _i1.ObjectTypeDefinitionNode(
       ),
     ),
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'firstEligibleUd'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'index'),
       directives: [],
       args: [],
@@ -16485,6 +16472,15 @@ const IdentityStddevPopOrderBy = _i1.InputObjectTypeDefinitionNode(
     ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'expireOn'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'firstEligibleUd'),
       directives: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'OrderBy'),
@@ -16536,6 +16532,15 @@ const IdentityStddevSampFields = _i1.ObjectTypeDefinitionNode(
       ),
     ),
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'firstEligibleUd'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'index'),
       directives: [],
       args: [],
@@ -16570,6 +16575,15 @@ const IdentityStddevSampOrderBy = _i1.InputObjectTypeDefinitionNode(
     ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'expireOn'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'firstEligibleUd'),
       directives: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'OrderBy'),
@@ -16671,6 +16685,15 @@ const IdentityStreamCursorValueInput = _i1.InputObjectTypeDefinitionNode(
       defaultValue: null,
     ),
     _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'firstEligibleUd'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Int'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'id'),
       directives: [],
       type: _i1.NamedTypeNode(
@@ -16719,7 +16742,7 @@ const IdentityStreamCursorValueInput = _i1.InputObjectTypeDefinitionNode(
       name: _i1.NameNode(value: 'status'),
       directives: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'IdentityStatusEnum'),
+        name: _i1.NameNode(value: 'String'),
         isNonNull: false,
       ),
       defaultValue: null,
@@ -16742,6 +16765,15 @@ const IdentitySumFields = _i1.ObjectTypeDefinitionNode(
     ),
     _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'expireOn'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Int'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'firstEligibleUd'),
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
@@ -16784,6 +16816,15 @@ const IdentitySumOrderBy = _i1.InputObjectTypeDefinitionNode(
     ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'expireOn'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'firstEligibleUd'),
       directives: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'OrderBy'),
@@ -16835,6 +16876,15 @@ const IdentityVarianceFields = _i1.ObjectTypeDefinitionNode(
       ),
     ),
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'firstEligibleUd'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'index'),
       directives: [],
       args: [],
@@ -16869,6 +16919,15 @@ const IdentityVarianceOrderBy = _i1.InputObjectTypeDefinitionNode(
     ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'expireOn'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'firstEligibleUd'),
       directives: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'OrderBy'),
@@ -16920,6 +16979,15 @@ const IdentityVarPopFields = _i1.ObjectTypeDefinitionNode(
       ),
     ),
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'firstEligibleUd'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'index'),
       directives: [],
       args: [],
@@ -16954,6 +17022,15 @@ const IdentityVarPopOrderBy = _i1.InputObjectTypeDefinitionNode(
     ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'expireOn'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'firstEligibleUd'),
       directives: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'OrderBy'),
@@ -17005,6 +17082,15 @@ const IdentityVarSampFields = _i1.ObjectTypeDefinitionNode(
       ),
     ),
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'firstEligibleUd'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'index'),
       directives: [],
       args: [],
@@ -17039,6 +17125,15 @@ const IdentityVarSampOrderBy = _i1.InputObjectTypeDefinitionNode(
     ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'expireOn'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'firstEligibleUd'),
       directives: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'OrderBy'),
@@ -17319,8 +17414,8 @@ const ItemsCounter = _i1.ObjectTypeDefinitionNode(
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'CounterLevelEnum'),
-        isNonNull: false,
+        name: _i1.NameNode(value: 'String'),
+        isNonNull: true,
       ),
     ),
     _i1.FieldDefinitionNode(
@@ -17337,8 +17432,8 @@ const ItemsCounter = _i1.ObjectTypeDefinitionNode(
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'ItemTypeEnum'),
-        isNonNull: false,
+        name: _i1.NameNode(value: 'String'),
+        isNonNull: true,
       ),
     ),
   ],
@@ -17565,7 +17660,7 @@ const ItemsCounterBoolExp = _i1.InputObjectTypeDefinitionNode(
       name: _i1.NameNode(value: 'level'),
       directives: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'CounterLevelEnumComparisonExp'),
+        name: _i1.NameNode(value: 'StringComparisonExp'),
         isNonNull: false,
       ),
       defaultValue: null,
@@ -17583,7 +17678,7 @@ const ItemsCounterBoolExp = _i1.InputObjectTypeDefinitionNode(
       name: _i1.NameNode(value: 'type'),
       directives: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'ItemTypeEnumComparisonExp'),
+        name: _i1.NameNode(value: 'StringComparisonExp'),
         isNonNull: false,
       ),
       defaultValue: null,
@@ -17605,11 +17700,29 @@ const ItemsCounterMaxFields = _i1.ObjectTypeDefinitionNode(
       ),
     ),
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'level'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'String'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'total'),
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'Int'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'type'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'String'),
         isNonNull: false,
       ),
     ),
@@ -17630,11 +17743,29 @@ const ItemsCounterMinFields = _i1.ObjectTypeDefinitionNode(
       ),
     ),
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'level'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'String'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'total'),
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'Int'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'type'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'String'),
         isNonNull: false,
       ),
     ),
@@ -17793,7 +17924,7 @@ const ItemsCounterStreamCursorValueInput = _i1.InputObjectTypeDefinitionNode(
       name: _i1.NameNode(value: 'level'),
       directives: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'CounterLevelEnum'),
+        name: _i1.NameNode(value: 'String'),
         isNonNull: false,
       ),
       defaultValue: null,
@@ -17811,7 +17942,7 @@ const ItemsCounterStreamCursorValueInput = _i1.InputObjectTypeDefinitionNode(
       name: _i1.NameNode(value: 'type'),
       directives: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'ItemTypeEnum'),
+        name: _i1.NameNode(value: 'String'),
         isNonNull: false,
       ),
       defaultValue: null,
@@ -17880,81 +18011,6 @@ const ItemsCounterVarSampFields = _i1.ObjectTypeDefinitionNode(
         isNonNull: false,
       ),
     )
-  ],
-);
-const ItemTypeEnum = _i1.EnumTypeDefinitionNode(
-  name: _i1.NameNode(value: 'ItemTypeEnum'),
-  directives: [],
-  values: [
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'CALLS'),
-      directives: [],
-    ),
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'EVENTS'),
-      directives: [],
-    ),
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'EXTRINSICS'),
-      directives: [],
-    ),
-  ],
-);
-const ItemTypeEnumComparisonExp = _i1.InputObjectTypeDefinitionNode(
-  name: _i1.NameNode(value: 'ItemTypeEnumComparisonExp'),
-  directives: [],
-  fields: [
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_eq'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'ItemTypeEnum'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_in'),
-      directives: [],
-      type: _i1.ListTypeNode(
-        type: _i1.NamedTypeNode(
-          name: _i1.NameNode(value: 'ItemTypeEnum'),
-          isNonNull: true,
-        ),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_isNull'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'Boolean'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_neq'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'ItemTypeEnum'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_nin'),
-      directives: [],
-      type: _i1.ListTypeNode(
-        type: _i1.NamedTypeNode(
-          name: _i1.NameNode(value: 'ItemTypeEnum'),
-          isNonNull: true,
-        ),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
   ],
 );
 const jsonb = _i1.ScalarTypeDefinitionNode(
@@ -18166,8 +18222,8 @@ const MembershipEvent = _i1.ObjectTypeDefinitionNode(
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'EventTypeEnum'),
-        isNonNull: false,
+        name: _i1.NameNode(value: 'String'),
+        isNonNull: true,
       ),
     ),
     _i1.FieldDefinitionNode(
@@ -18619,7 +18675,7 @@ const MembershipEventBoolExp = _i1.InputObjectTypeDefinitionNode(
       name: _i1.NameNode(value: 'eventType'),
       directives: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'EventTypeEnumComparisonExp'),
+        name: _i1.NameNode(value: 'StringComparisonExp'),
         isNonNull: false,
       ),
       defaultValue: null,
@@ -18677,6 +18733,15 @@ const MembershipEventMaxFields = _i1.ObjectTypeDefinitionNode(
       ),
     ),
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'eventType'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'String'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'id'),
       directives: [],
       args: [],
@@ -18711,6 +18776,15 @@ const MembershipEventMaxOrderBy = _i1.InputObjectTypeDefinitionNode(
     ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'eventId'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'eventType'),
       directives: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'OrderBy'),
@@ -18762,6 +18836,15 @@ const MembershipEventMinFields = _i1.ObjectTypeDefinitionNode(
       ),
     ),
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'eventType'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'String'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'id'),
       directives: [],
       args: [],
@@ -18796,6 +18879,15 @@ const MembershipEventMinOrderBy = _i1.InputObjectTypeDefinitionNode(
     ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'eventId'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'eventType'),
       directives: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'OrderBy'),
@@ -19061,7 +19153,7 @@ const MembershipEventStreamCursorValueInput = _i1.InputObjectTypeDefinitionNode(
       name: _i1.NameNode(value: 'eventType'),
       directives: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'EventTypeEnum'),
+        name: _i1.NameNode(value: 'String'),
         isNonNull: false,
       ),
       defaultValue: null,
@@ -21388,149 +21480,6 @@ const query_root = _i1.ObjectTypeDefinitionNode(
       ),
     ),
     _i1.FieldDefinitionNode(
-      name: _i1.NameNode(value: 'getUdHistory'),
-      directives: [],
-      args: [
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'args'),
-          directives: [],
-          type: _i1.NamedTypeNode(
-            name: _i1.NameNode(value: 'getUdHistoryArgs'),
-            isNonNull: true,
-          ),
-          defaultValue: null,
-        ),
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'distinctOn'),
-          directives: [],
-          type: _i1.ListTypeNode(
-            type: _i1.NamedTypeNode(
-              name: _i1.NameNode(value: 'UdHistorySelectColumn'),
-              isNonNull: true,
-            ),
-            isNonNull: false,
-          ),
-          defaultValue: null,
-        ),
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'limit'),
-          directives: [],
-          type: _i1.NamedTypeNode(
-            name: _i1.NameNode(value: 'Int'),
-            isNonNull: false,
-          ),
-          defaultValue: null,
-        ),
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'offset'),
-          directives: [],
-          type: _i1.NamedTypeNode(
-            name: _i1.NameNode(value: 'Int'),
-            isNonNull: false,
-          ),
-          defaultValue: null,
-        ),
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'orderBy'),
-          directives: [],
-          type: _i1.ListTypeNode(
-            type: _i1.NamedTypeNode(
-              name: _i1.NameNode(value: 'UdHistoryOrderBy'),
-              isNonNull: true,
-            ),
-            isNonNull: false,
-          ),
-          defaultValue: null,
-        ),
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'where'),
-          directives: [],
-          type: _i1.NamedTypeNode(
-            name: _i1.NameNode(value: 'UdHistoryBoolExp'),
-            isNonNull: false,
-          ),
-          defaultValue: null,
-        ),
-      ],
-      type: _i1.ListTypeNode(
-        type: _i1.NamedTypeNode(
-          name: _i1.NameNode(value: 'UdHistory'),
-          isNonNull: true,
-        ),
-        isNonNull: true,
-      ),
-    ),
-    _i1.FieldDefinitionNode(
-      name: _i1.NameNode(value: 'getUdHistoryAggregate'),
-      directives: [],
-      args: [
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'args'),
-          directives: [],
-          type: _i1.NamedTypeNode(
-            name: _i1.NameNode(value: 'getUdHistoryArgs'),
-            isNonNull: true,
-          ),
-          defaultValue: null,
-        ),
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'distinctOn'),
-          directives: [],
-          type: _i1.ListTypeNode(
-            type: _i1.NamedTypeNode(
-              name: _i1.NameNode(value: 'UdHistorySelectColumn'),
-              isNonNull: true,
-            ),
-            isNonNull: false,
-          ),
-          defaultValue: null,
-        ),
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'limit'),
-          directives: [],
-          type: _i1.NamedTypeNode(
-            name: _i1.NameNode(value: 'Int'),
-            isNonNull: false,
-          ),
-          defaultValue: null,
-        ),
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'offset'),
-          directives: [],
-          type: _i1.NamedTypeNode(
-            name: _i1.NameNode(value: 'Int'),
-            isNonNull: false,
-          ),
-          defaultValue: null,
-        ),
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'orderBy'),
-          directives: [],
-          type: _i1.ListTypeNode(
-            type: _i1.NamedTypeNode(
-              name: _i1.NameNode(value: 'UdHistoryOrderBy'),
-              isNonNull: true,
-            ),
-            isNonNull: false,
-          ),
-          defaultValue: null,
-        ),
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'where'),
-          directives: [],
-          type: _i1.NamedTypeNode(
-            name: _i1.NameNode(value: 'UdHistoryBoolExp'),
-            isNonNull: false,
-          ),
-          defaultValue: null,
-        ),
-      ],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'UdHistoryAggregate'),
-        isNonNull: true,
-      ),
-    ),
-    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'identity'),
       directives: [],
       args: [
@@ -23852,7 +23801,7 @@ const Smith = _i1.ObjectTypeDefinitionNode(
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'SmithStatusEnum'),
+        name: _i1.NameNode(value: 'String'),
         isNonNull: false,
       ),
     ),
@@ -24215,7 +24164,7 @@ const SmithBoolExp = _i1.InputObjectTypeDefinitionNode(
       name: _i1.NameNode(value: 'smithStatus'),
       directives: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'SmithStatusEnumComparisonExp'),
+        name: _i1.NameNode(value: 'StringComparisonExp'),
         isNonNull: false,
       ),
       defaultValue: null,
@@ -25300,8 +25249,8 @@ const SmithEvent = _i1.ObjectTypeDefinitionNode(
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'SmithEventTypeEnum'),
-        isNonNull: false,
+        name: _i1.NameNode(value: 'String'),
+        isNonNull: true,
       ),
     ),
     _i1.FieldDefinitionNode(
@@ -25753,7 +25702,7 @@ const SmithEventBoolExp = _i1.InputObjectTypeDefinitionNode(
       name: _i1.NameNode(value: 'eventType'),
       directives: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'SmithEventTypeEnumComparisonExp'),
+        name: _i1.NameNode(value: 'StringComparisonExp'),
         isNonNull: false,
       ),
       defaultValue: null,
@@ -25811,6 +25760,15 @@ const SmithEventMaxFields = _i1.ObjectTypeDefinitionNode(
       ),
     ),
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'eventType'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'String'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'id'),
       directives: [],
       args: [],
@@ -25845,6 +25803,15 @@ const SmithEventMaxOrderBy = _i1.InputObjectTypeDefinitionNode(
     ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'eventId'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'eventType'),
       directives: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'OrderBy'),
@@ -25896,6 +25863,15 @@ const SmithEventMinFields = _i1.ObjectTypeDefinitionNode(
       ),
     ),
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'eventType'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'String'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'id'),
       directives: [],
       args: [],
@@ -25930,6 +25906,15 @@ const SmithEventMinOrderBy = _i1.InputObjectTypeDefinitionNode(
     ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'eventId'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'eventType'),
       directives: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'OrderBy'),
@@ -26195,7 +26180,7 @@ const SmithEventStreamCursorValueInput = _i1.InputObjectTypeDefinitionNode(
       name: _i1.NameNode(value: 'eventType'),
       directives: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'SmithEventTypeEnum'),
+        name: _i1.NameNode(value: 'String'),
         isNonNull: false,
       ),
       defaultValue: null,
@@ -26249,85 +26234,6 @@ const SmithEventSumOrderBy = _i1.InputObjectTypeDefinitionNode(
       ),
       defaultValue: null,
     )
-  ],
-);
-const SmithEventTypeEnum = _i1.EnumTypeDefinitionNode(
-  name: _i1.NameNode(value: 'SmithEventTypeEnum'),
-  directives: [],
-  values: [
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'ACCEPTED'),
-      directives: [],
-    ),
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'EXCLUDED'),
-      directives: [],
-    ),
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'INVITED'),
-      directives: [],
-    ),
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'PROMOTED'),
-      directives: [],
-    ),
-  ],
-);
-const SmithEventTypeEnumComparisonExp = _i1.InputObjectTypeDefinitionNode(
-  name: _i1.NameNode(value: 'SmithEventTypeEnumComparisonExp'),
-  directives: [],
-  fields: [
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_eq'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'SmithEventTypeEnum'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_in'),
-      directives: [],
-      type: _i1.ListTypeNode(
-        type: _i1.NamedTypeNode(
-          name: _i1.NameNode(value: 'SmithEventTypeEnum'),
-          isNonNull: true,
-        ),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_isNull'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'Boolean'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_neq'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'SmithEventTypeEnum'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_nin'),
-      directives: [],
-      type: _i1.ListTypeNode(
-        type: _i1.NamedTypeNode(
-          name: _i1.NameNode(value: 'SmithEventTypeEnum'),
-          isNonNull: true,
-        ),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
   ],
 );
 const SmithEventVarianceFields = _i1.ObjectTypeDefinitionNode(
@@ -26482,6 +26388,15 @@ const SmithMaxFields = _i1.ObjectTypeDefinitionNode(
         isNonNull: false,
       ),
     ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'smithStatus'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'String'),
+        isNonNull: false,
+      ),
+    ),
   ],
 );
 const SmithMinFields = _i1.ObjectTypeDefinitionNode(
@@ -26540,6 +26455,15 @@ const SmithMinFields = _i1.ObjectTypeDefinitionNode(
       args: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'Int'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'smithStatus'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'String'),
         isNonNull: false,
       ),
     ),
@@ -26681,85 +26605,6 @@ const SmithSelectColumn = _i1.EnumTypeDefinitionNode(
     _i1.EnumValueDefinitionNode(
       name: _i1.NameNode(value: 'smithStatus'),
       directives: [],
-    ),
-  ],
-);
-const SmithStatusEnum = _i1.EnumTypeDefinitionNode(
-  name: _i1.NameNode(value: 'SmithStatusEnum'),
-  directives: [],
-  values: [
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'EXCLUDED'),
-      directives: [],
-    ),
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'INVITED'),
-      directives: [],
-    ),
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'PENDING'),
-      directives: [],
-    ),
-    _i1.EnumValueDefinitionNode(
-      name: _i1.NameNode(value: 'SMITH'),
-      directives: [],
-    ),
-  ],
-);
-const SmithStatusEnumComparisonExp = _i1.InputObjectTypeDefinitionNode(
-  name: _i1.NameNode(value: 'SmithStatusEnumComparisonExp'),
-  directives: [],
-  fields: [
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_eq'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'SmithStatusEnum'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_in'),
-      directives: [],
-      type: _i1.ListTypeNode(
-        type: _i1.NamedTypeNode(
-          name: _i1.NameNode(value: 'SmithStatusEnum'),
-          isNonNull: true,
-        ),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_isNull'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'Boolean'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_neq'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'SmithStatusEnum'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: '_nin'),
-      directives: [],
-      type: _i1.ListTypeNode(
-        type: _i1.NamedTypeNode(
-          name: _i1.NameNode(value: 'SmithStatusEnum'),
-          isNonNull: true,
-        ),
-        isNonNull: false,
-      ),
-      defaultValue: null,
     ),
   ],
 );
@@ -26978,7 +26823,7 @@ const SmithStreamCursorValueInput = _i1.InputObjectTypeDefinitionNode(
       name: _i1.NameNode(value: 'smithStatus'),
       directives: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'SmithStatusEnum'),
+        name: _i1.NameNode(value: 'String'),
         isNonNull: false,
       ),
       defaultValue: null,
@@ -28979,149 +28824,6 @@ const subscription_root = _i1.ObjectTypeDefinitionNode(
           name: _i1.NameNode(value: 'Extrinsic'),
           isNonNull: true,
         ),
-        isNonNull: true,
-      ),
-    ),
-    _i1.FieldDefinitionNode(
-      name: _i1.NameNode(value: 'getUdHistory'),
-      directives: [],
-      args: [
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'args'),
-          directives: [],
-          type: _i1.NamedTypeNode(
-            name: _i1.NameNode(value: 'getUdHistoryArgs'),
-            isNonNull: true,
-          ),
-          defaultValue: null,
-        ),
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'distinctOn'),
-          directives: [],
-          type: _i1.ListTypeNode(
-            type: _i1.NamedTypeNode(
-              name: _i1.NameNode(value: 'UdHistorySelectColumn'),
-              isNonNull: true,
-            ),
-            isNonNull: false,
-          ),
-          defaultValue: null,
-        ),
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'limit'),
-          directives: [],
-          type: _i1.NamedTypeNode(
-            name: _i1.NameNode(value: 'Int'),
-            isNonNull: false,
-          ),
-          defaultValue: null,
-        ),
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'offset'),
-          directives: [],
-          type: _i1.NamedTypeNode(
-            name: _i1.NameNode(value: 'Int'),
-            isNonNull: false,
-          ),
-          defaultValue: null,
-        ),
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'orderBy'),
-          directives: [],
-          type: _i1.ListTypeNode(
-            type: _i1.NamedTypeNode(
-              name: _i1.NameNode(value: 'UdHistoryOrderBy'),
-              isNonNull: true,
-            ),
-            isNonNull: false,
-          ),
-          defaultValue: null,
-        ),
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'where'),
-          directives: [],
-          type: _i1.NamedTypeNode(
-            name: _i1.NameNode(value: 'UdHistoryBoolExp'),
-            isNonNull: false,
-          ),
-          defaultValue: null,
-        ),
-      ],
-      type: _i1.ListTypeNode(
-        type: _i1.NamedTypeNode(
-          name: _i1.NameNode(value: 'UdHistory'),
-          isNonNull: true,
-        ),
-        isNonNull: true,
-      ),
-    ),
-    _i1.FieldDefinitionNode(
-      name: _i1.NameNode(value: 'getUdHistoryAggregate'),
-      directives: [],
-      args: [
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'args'),
-          directives: [],
-          type: _i1.NamedTypeNode(
-            name: _i1.NameNode(value: 'getUdHistoryArgs'),
-            isNonNull: true,
-          ),
-          defaultValue: null,
-        ),
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'distinctOn'),
-          directives: [],
-          type: _i1.ListTypeNode(
-            type: _i1.NamedTypeNode(
-              name: _i1.NameNode(value: 'UdHistorySelectColumn'),
-              isNonNull: true,
-            ),
-            isNonNull: false,
-          ),
-          defaultValue: null,
-        ),
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'limit'),
-          directives: [],
-          type: _i1.NamedTypeNode(
-            name: _i1.NameNode(value: 'Int'),
-            isNonNull: false,
-          ),
-          defaultValue: null,
-        ),
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'offset'),
-          directives: [],
-          type: _i1.NamedTypeNode(
-            name: _i1.NameNode(value: 'Int'),
-            isNonNull: false,
-          ),
-          defaultValue: null,
-        ),
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'orderBy'),
-          directives: [],
-          type: _i1.ListTypeNode(
-            type: _i1.NamedTypeNode(
-              name: _i1.NameNode(value: 'UdHistoryOrderBy'),
-              isNonNull: true,
-            ),
-            isNonNull: false,
-          ),
-          defaultValue: null,
-        ),
-        _i1.InputValueDefinitionNode(
-          name: _i1.NameNode(value: 'where'),
-          directives: [],
-          type: _i1.NamedTypeNode(
-            name: _i1.NameNode(value: 'UdHistoryBoolExp'),
-            isNonNull: false,
-          ),
-          defaultValue: null,
-        ),
-      ],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'UdHistoryAggregate'),
         isNonNull: true,
       ),
     ),
@@ -33289,8 +32991,8 @@ const TxComment = _i1.ObjectTypeDefinitionNode(
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'CommentTypeEnum'),
-        isNonNull: false,
+        name: _i1.NameNode(value: 'String'),
+        isNonNull: true,
       ),
     ),
   ],
@@ -33769,7 +33471,7 @@ const TxCommentBoolExp = _i1.InputObjectTypeDefinitionNode(
       name: _i1.NameNode(value: 'type'),
       directives: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'CommentTypeEnumComparisonExp'),
+        name: _i1.NameNode(value: 'StringComparisonExp'),
         isNonNull: false,
       ),
       defaultValue: null,
@@ -33835,6 +33537,15 @@ const TxCommentMaxFields = _i1.ObjectTypeDefinitionNode(
         isNonNull: false,
       ),
     ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'type'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'String'),
+        isNonNull: false,
+      ),
+    ),
   ],
 );
 const TxCommentMaxOrderBy = _i1.InputObjectTypeDefinitionNode(
@@ -33888,6 +33599,15 @@ const TxCommentMaxOrderBy = _i1.InputObjectTypeDefinitionNode(
     ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'remark'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'type'),
       directives: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'OrderBy'),
@@ -33956,6 +33676,15 @@ const TxCommentMinFields = _i1.ObjectTypeDefinitionNode(
         isNonNull: false,
       ),
     ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'type'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'String'),
+        isNonNull: false,
+      ),
+    ),
   ],
 );
 const TxCommentMinOrderBy = _i1.InputObjectTypeDefinitionNode(
@@ -34009,6 +33738,15 @@ const TxCommentMinOrderBy = _i1.InputObjectTypeDefinitionNode(
     ),
     _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'remark'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'type'),
       directives: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'OrderBy'),
@@ -34340,7 +34078,7 @@ const TxCommentStreamCursorValueInput = _i1.InputObjectTypeDefinitionNode(
       name: _i1.NameNode(value: 'type'),
       directives: [],
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'CommentTypeEnum'),
+        name: _i1.NameNode(value: 'String'),
         isNonNull: false,
       ),
       defaultValue: null,
@@ -34688,111 +34426,6 @@ const UdHistoryAggregateFields = _i1.ObjectTypeDefinitionNode(
     ),
   ],
 );
-const UdHistoryAggregateOrderBy = _i1.InputObjectTypeDefinitionNode(
-  name: _i1.NameNode(value: 'UdHistoryAggregateOrderBy'),
-  directives: [],
-  fields: [
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'avg'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'UdHistoryAvgOrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'count'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'max'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'UdHistoryMaxOrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'min'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'UdHistoryMinOrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'stddev'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'UdHistoryStddevOrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'stddevPop'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'UdHistoryStddevPopOrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'stddevSamp'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'UdHistoryStddevSampOrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'sum'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'UdHistorySumOrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'varPop'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'UdHistoryVarPopOrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'varSamp'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'UdHistoryVarSampOrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'variance'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'UdHistoryVarianceOrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-  ],
-);
 const UdHistoryAvgFields = _i1.ObjectTypeDefinitionNode(
   name: _i1.NameNode(value: 'UdHistoryAvgFields'),
   directives: [],
@@ -34815,30 +34448,6 @@ const UdHistoryAvgFields = _i1.ObjectTypeDefinitionNode(
         name: _i1.NameNode(value: 'Float'),
         isNonNull: false,
       ),
-    ),
-  ],
-);
-const UdHistoryAvgOrderBy = _i1.InputObjectTypeDefinitionNode(
-  name: _i1.NameNode(value: 'UdHistoryAvgOrderBy'),
-  directives: [],
-  fields: [
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'amount'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'blockNumber'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
     ),
   ],
 );
@@ -34987,57 +34596,6 @@ const UdHistoryMaxFields = _i1.ObjectTypeDefinitionNode(
     ),
   ],
 );
-const UdHistoryMaxOrderBy = _i1.InputObjectTypeDefinitionNode(
-  name: _i1.NameNode(value: 'UdHistoryMaxOrderBy'),
-  directives: [],
-  fields: [
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'amount'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'blockNumber'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'id'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'identityId'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'timestamp'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-  ],
-);
 const UdHistoryMinFields = _i1.ObjectTypeDefinitionNode(
   name: _i1.NameNode(value: 'UdHistoryMinFields'),
   directives: [],
@@ -35087,57 +34645,6 @@ const UdHistoryMinFields = _i1.ObjectTypeDefinitionNode(
         name: _i1.NameNode(value: 'timestamptz'),
         isNonNull: false,
       ),
-    ),
-  ],
-);
-const UdHistoryMinOrderBy = _i1.InputObjectTypeDefinitionNode(
-  name: _i1.NameNode(value: 'UdHistoryMinOrderBy'),
-  directives: [],
-  fields: [
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'amount'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'blockNumber'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'id'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'identityId'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'timestamp'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
     ),
   ],
 );
@@ -35252,30 +34759,6 @@ const UdHistoryStddevFields = _i1.ObjectTypeDefinitionNode(
     ),
   ],
 );
-const UdHistoryStddevOrderBy = _i1.InputObjectTypeDefinitionNode(
-  name: _i1.NameNode(value: 'UdHistoryStddevOrderBy'),
-  directives: [],
-  fields: [
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'amount'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'blockNumber'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-  ],
-);
 const UdHistoryStddevPopFields = _i1.ObjectTypeDefinitionNode(
   name: _i1.NameNode(value: 'UdHistoryStddevPopFields'),
   directives: [],
@@ -35301,30 +34784,6 @@ const UdHistoryStddevPopFields = _i1.ObjectTypeDefinitionNode(
     ),
   ],
 );
-const UdHistoryStddevPopOrderBy = _i1.InputObjectTypeDefinitionNode(
-  name: _i1.NameNode(value: 'UdHistoryStddevPopOrderBy'),
-  directives: [],
-  fields: [
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'amount'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'blockNumber'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-  ],
-);
 const UdHistoryStddevSampFields = _i1.ObjectTypeDefinitionNode(
   name: _i1.NameNode(value: 'UdHistoryStddevSampFields'),
   directives: [],
@@ -35347,30 +34806,6 @@ const UdHistoryStddevSampFields = _i1.ObjectTypeDefinitionNode(
         name: _i1.NameNode(value: 'Float'),
         isNonNull: false,
       ),
-    ),
-  ],
-);
-const UdHistoryStddevSampOrderBy = _i1.InputObjectTypeDefinitionNode(
-  name: _i1.NameNode(value: 'UdHistoryStddevSampOrderBy'),
-  directives: [],
-  fields: [
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'amount'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'blockNumber'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
     ),
   ],
 );
@@ -35474,30 +34909,6 @@ const UdHistorySumFields = _i1.ObjectTypeDefinitionNode(
     ),
   ],
 );
-const UdHistorySumOrderBy = _i1.InputObjectTypeDefinitionNode(
-  name: _i1.NameNode(value: 'UdHistorySumOrderBy'),
-  directives: [],
-  fields: [
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'amount'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'blockNumber'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-  ],
-);
 const UdHistoryVarianceFields = _i1.ObjectTypeDefinitionNode(
   name: _i1.NameNode(value: 'UdHistoryVarianceFields'),
   directives: [],
@@ -35520,30 +34931,6 @@ const UdHistoryVarianceFields = _i1.ObjectTypeDefinitionNode(
         name: _i1.NameNode(value: 'Float'),
         isNonNull: false,
       ),
-    ),
-  ],
-);
-const UdHistoryVarianceOrderBy = _i1.InputObjectTypeDefinitionNode(
-  name: _i1.NameNode(value: 'UdHistoryVarianceOrderBy'),
-  directives: [],
-  fields: [
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'amount'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'blockNumber'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
     ),
   ],
 );
@@ -35572,30 +34959,6 @@ const UdHistoryVarPopFields = _i1.ObjectTypeDefinitionNode(
     ),
   ],
 );
-const UdHistoryVarPopOrderBy = _i1.InputObjectTypeDefinitionNode(
-  name: _i1.NameNode(value: 'UdHistoryVarPopOrderBy'),
-  directives: [],
-  fields: [
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'amount'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'blockNumber'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-  ],
-);
 const UdHistoryVarSampFields = _i1.ObjectTypeDefinitionNode(
   name: _i1.NameNode(value: 'UdHistoryVarSampFields'),
   directives: [],
@@ -35618,30 +34981,6 @@ const UdHistoryVarSampFields = _i1.ObjectTypeDefinitionNode(
         name: _i1.NameNode(value: 'Float'),
         isNonNull: false,
       ),
-    ),
-  ],
-);
-const UdHistoryVarSampOrderBy = _i1.InputObjectTypeDefinitionNode(
-  name: _i1.NameNode(value: 'UdHistoryVarSampOrderBy'),
-  directives: [],
-  fields: [
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'amount'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
-    ),
-    _i1.InputValueDefinitionNode(
-      name: _i1.NameNode(value: 'blockNumber'),
-      directives: [],
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'OrderBy'),
-        isNonNull: false,
-      ),
-      defaultValue: null,
     ),
   ],
 );
@@ -35719,6 +35058,15 @@ const UdReeval = _i1.ObjectTypeDefinitionNode(
       args: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'timestamptz'),
+        isNonNull: true,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'udIndex'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Int'),
         isNonNull: true,
       ),
     ),
@@ -35921,6 +35269,15 @@ const UdReevalAvgFields = _i1.ObjectTypeDefinitionNode(
         isNonNull: false,
       ),
     ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'udIndex'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
   ],
 );
 const UdReevalBoolExp = _i1.InputObjectTypeDefinitionNode(
@@ -36032,6 +35389,15 @@ const UdReevalBoolExp = _i1.InputObjectTypeDefinitionNode(
       ),
       defaultValue: null,
     ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'udIndex'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'IntComparisonExp'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
   ],
 );
 const UdReevalMaxFields = _i1.ObjectTypeDefinitionNode(
@@ -36102,6 +35468,15 @@ const UdReevalMaxFields = _i1.ObjectTypeDefinitionNode(
         isNonNull: false,
       ),
     ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'udIndex'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Int'),
+        isNonNull: false,
+      ),
+    ),
   ],
 );
 const UdReevalMinFields = _i1.ObjectTypeDefinitionNode(
@@ -36169,6 +35544,15 @@ const UdReevalMinFields = _i1.ObjectTypeDefinitionNode(
       args: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'timestamptz'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'udIndex'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Int'),
         isNonNull: false,
       ),
     ),
@@ -36250,6 +35634,15 @@ const UdReevalOrderBy = _i1.InputObjectTypeDefinitionNode(
       ),
       defaultValue: null,
     ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'udIndex'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
   ],
 );
 const UdReevalSelectColumn = _i1.EnumTypeDefinitionNode(
@@ -36282,6 +35675,10 @@ const UdReevalSelectColumn = _i1.EnumTypeDefinitionNode(
     ),
     _i1.EnumValueDefinitionNode(
       name: _i1.NameNode(value: 'timestamp'),
+      directives: [],
+    ),
+    _i1.EnumValueDefinitionNode(
+      name: _i1.NameNode(value: 'udIndex'),
       directives: [],
     ),
   ],
@@ -36320,6 +35717,15 @@ const UdReevalStddevFields = _i1.ObjectTypeDefinitionNode(
     ),
     _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'newUdAmount'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'udIndex'),
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
@@ -36370,6 +35776,15 @@ const UdReevalStddevPopFields = _i1.ObjectTypeDefinitionNode(
         isNonNull: false,
       ),
     ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'udIndex'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
   ],
 );
 const UdReevalStddevSampFields = _i1.ObjectTypeDefinitionNode(
@@ -36406,6 +35821,15 @@ const UdReevalStddevSampFields = _i1.ObjectTypeDefinitionNode(
     ),
     _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'newUdAmount'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'udIndex'),
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
@@ -36506,6 +35930,15 @@ const UdReevalStreamCursorValueInput = _i1.InputObjectTypeDefinitionNode(
       ),
       defaultValue: null,
     ),
+    _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'udIndex'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Int'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
   ],
 );
 const UdReevalSumFields = _i1.ObjectTypeDefinitionNode(
@@ -36549,6 +35982,15 @@ const UdReevalSumFields = _i1.ObjectTypeDefinitionNode(
         isNonNull: false,
       ),
     ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'udIndex'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Int'),
+        isNonNull: false,
+      ),
+    ),
   ],
 );
 const UdReevalVarianceFields = _i1.ObjectTypeDefinitionNode(
@@ -36585,6 +36027,15 @@ const UdReevalVarianceFields = _i1.ObjectTypeDefinitionNode(
     ),
     _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'newUdAmount'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'udIndex'),
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
@@ -36635,6 +36086,15 @@ const UdReevalVarPopFields = _i1.ObjectTypeDefinitionNode(
         isNonNull: false,
       ),
     ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'udIndex'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
   ],
 );
 const UdReevalVarSampFields = _i1.ObjectTypeDefinitionNode(
@@ -36671,6 +36131,15 @@ const UdReevalVarSampFields = _i1.ObjectTypeDefinitionNode(
     ),
     _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'newUdAmount'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'udIndex'),
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
@@ -36727,6 +36196,15 @@ const UniversalDividend = _i1.ObjectTypeDefinitionNode(
       args: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'String'),
+        isNonNull: true,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'index'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Int'),
         isNonNull: true,
       ),
     ),
@@ -36939,6 +36417,15 @@ const UniversalDividendAvgFields = _i1.ObjectTypeDefinitionNode(
       ),
     ),
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'index'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'membersCount'),
       directives: [],
       args: [],
@@ -37041,6 +36528,15 @@ const UniversalDividendBoolExp = _i1.InputObjectTypeDefinitionNode(
       defaultValue: null,
     ),
     _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'index'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'IntComparisonExp'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'membersCount'),
       directives: [],
       type: _i1.NamedTypeNode(
@@ -37111,6 +36607,15 @@ const UniversalDividendMaxFields = _i1.ObjectTypeDefinitionNode(
       ),
     ),
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'index'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Int'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'membersCount'),
       directives: [],
       args: [],
@@ -37177,6 +36682,15 @@ const UniversalDividendMinFields = _i1.ObjectTypeDefinitionNode(
       args: [],
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'String'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'index'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Int'),
         isNonNull: false,
       ),
     ),
@@ -37259,6 +36773,15 @@ const UniversalDividendOrderBy = _i1.InputObjectTypeDefinitionNode(
       defaultValue: null,
     ),
     _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'index'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'OrderBy'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'membersCount'),
       directives: [],
       type: _i1.NamedTypeNode(
@@ -37308,6 +36831,10 @@ const UniversalDividendSelectColumn = _i1.EnumTypeDefinitionNode(
       directives: [],
     ),
     _i1.EnumValueDefinitionNode(
+      name: _i1.NameNode(value: 'index'),
+      directives: [],
+    ),
+    _i1.EnumValueDefinitionNode(
       name: _i1.NameNode(value: 'membersCount'),
       directives: [],
     ),
@@ -37337,6 +36864,15 @@ const UniversalDividendStddevFields = _i1.ObjectTypeDefinitionNode(
     ),
     _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'blockNumber'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'index'),
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
@@ -37388,6 +36924,15 @@ const UniversalDividendStddevPopFields = _i1.ObjectTypeDefinitionNode(
       ),
     ),
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'index'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'membersCount'),
       directives: [],
       args: [],
@@ -37423,6 +36968,15 @@ const UniversalDividendStddevSampFields = _i1.ObjectTypeDefinitionNode(
     ),
     _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'blockNumber'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'index'),
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
@@ -37516,6 +37070,15 @@ const UniversalDividendStreamCursorValueInput =
       defaultValue: null,
     ),
     _i1.InputValueDefinitionNode(
+      name: _i1.NameNode(value: 'index'),
+      directives: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Int'),
+        isNonNull: false,
+      ),
+      defaultValue: null,
+    ),
+    _i1.InputValueDefinitionNode(
       name: _i1.NameNode(value: 'membersCount'),
       directives: [],
       type: _i1.NamedTypeNode(
@@ -37568,6 +37131,15 @@ const UniversalDividendSumFields = _i1.ObjectTypeDefinitionNode(
       ),
     ),
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'index'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Int'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'membersCount'),
       directives: [],
       args: [],
@@ -37603,6 +37175,15 @@ const UniversalDividendVarianceFields = _i1.ObjectTypeDefinitionNode(
     ),
     _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'blockNumber'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'index'),
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
@@ -37654,6 +37235,15 @@ const UniversalDividendVarPopFields = _i1.ObjectTypeDefinitionNode(
       ),
     ),
     _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'index'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'membersCount'),
       directives: [],
       args: [],
@@ -37689,6 +37279,15 @@ const UniversalDividendVarSampFields = _i1.ObjectTypeDefinitionNode(
     ),
     _i1.FieldDefinitionNode(
       name: _i1.NameNode(value: 'blockNumber'),
+      directives: [],
+      args: [],
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Float'),
+        isNonNull: false,
+      ),
+    ),
+    _i1.FieldDefinitionNode(
+      name: _i1.NameNode(value: 'index'),
       directives: [],
       args: [],
       type: _i1.NamedTypeNode(
@@ -38393,10 +37992,6 @@ const document = _i1.DocumentNode(definitions: [
   ChangeOwnerKeyVarPopOrderBy,
   ChangeOwnerKeyVarSampFields,
   ChangeOwnerKeyVarSampOrderBy,
-  CommentTypeEnum,
-  CommentTypeEnumComparisonExp,
-  CounterLevelEnum,
-  CounterLevelEnumComparisonExp,
   CursorOrdering,
   Event,
   EventAggregate,
@@ -38423,8 +38018,6 @@ const document = _i1.DocumentNode(definitions: [
   EventStreamCursorValueInput,
   EventSumFields,
   EventSumOrderBy,
-  EventTypeEnum,
-  EventTypeEnumComparisonExp,
   EventVarianceFields,
   EventVarianceOrderBy,
   EventVarPopFields,
@@ -38466,9 +38059,7 @@ const document = _i1.DocumentNode(definitions: [
   ExtrinsicVarPopOrderBy,
   ExtrinsicVarSampFields,
   ExtrinsicVarSampOrderBy,
-  getUdHistoryArgs,
   Identity,
-  identity_scalar,
   IdentityAggregate,
   IdentityAggregateBoolExp,
   identityAggregateBoolExpBool_and,
@@ -38487,8 +38078,6 @@ const document = _i1.DocumentNode(definitions: [
   IdentitySelectColumn,
   IdentitySelectColumnIdentityAggregateBoolExpBool_andArgumentsColumns,
   IdentitySelectColumnIdentityAggregateBoolExpBool_orArgumentsColumns,
-  IdentityStatusEnum,
-  IdentityStatusEnumComparisonExp,
   IdentityStddevFields,
   IdentityStddevOrderBy,
   IdentityStddevPopFields,
@@ -38525,8 +38114,6 @@ const document = _i1.DocumentNode(definitions: [
   ItemsCounterVarianceFields,
   ItemsCounterVarPopFields,
   ItemsCounterVarSampFields,
-  ItemTypeEnum,
-  ItemTypeEnumComparisonExp,
   jsonb,
   JsonbCastExp,
   JsonbComparisonExp,
@@ -38644,8 +38231,6 @@ const document = _i1.DocumentNode(definitions: [
   SmithEventStreamCursorValueInput,
   SmithEventSumFields,
   SmithEventSumOrderBy,
-  SmithEventTypeEnum,
-  SmithEventTypeEnumComparisonExp,
   SmithEventVarianceFields,
   SmithEventVarianceOrderBy,
   SmithEventVarPopFields,
@@ -38656,8 +38241,6 @@ const document = _i1.DocumentNode(definitions: [
   SmithMinFields,
   SmithOrderBy,
   SmithSelectColumn,
-  SmithStatusEnum,
-  SmithStatusEnumComparisonExp,
   SmithStddevFields,
   SmithStddevPopFields,
   SmithStddevSampFields,
@@ -38737,32 +38320,21 @@ const document = _i1.DocumentNode(definitions: [
   UdHistory,
   UdHistoryAggregate,
   UdHistoryAggregateFields,
-  UdHistoryAggregateOrderBy,
   UdHistoryAvgFields,
-  UdHistoryAvgOrderBy,
   UdHistoryBoolExp,
   UdHistoryMaxFields,
-  UdHistoryMaxOrderBy,
   UdHistoryMinFields,
-  UdHistoryMinOrderBy,
   UdHistoryOrderBy,
   UdHistorySelectColumn,
   UdHistoryStddevFields,
-  UdHistoryStddevOrderBy,
   UdHistoryStddevPopFields,
-  UdHistoryStddevPopOrderBy,
   UdHistoryStddevSampFields,
-  UdHistoryStddevSampOrderBy,
   UdHistoryStreamCursorInput,
   UdHistoryStreamCursorValueInput,
   UdHistorySumFields,
-  UdHistorySumOrderBy,
   UdHistoryVarianceFields,
-  UdHistoryVarianceOrderBy,
   UdHistoryVarPopFields,
-  UdHistoryVarPopOrderBy,
   UdHistoryVarSampFields,
-  UdHistoryVarSampOrderBy,
   UdReeval,
   UdReevalAggregate,
   UdReevalAggregateFields,

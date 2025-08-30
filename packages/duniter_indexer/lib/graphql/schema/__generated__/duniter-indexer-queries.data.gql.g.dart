@@ -104,9 +104,6 @@ Serializer<GIdentitiesByPkData_identity_smith_smithCertIssued>
 Serializer<GIdentitiesByPkData_identity_smith_smithCertReceived>
     _$gIdentitiesByPkDataIdentitySmithSmithCertReceivedSerializer =
     new _$GIdentitiesByPkData_identity_smith_smithCertReceivedSerializer();
-Serializer<GIdentitiesByPkData_identity_udHistory>
-    _$gIdentitiesByPkDataIdentityUdHistorySerializer =
-    new _$GIdentitiesByPkData_identity_udHistorySerializer();
 Serializer<GIdentitiesByNameData> _$gIdentitiesByNameDataSerializer =
     new _$GIdentitiesByNameDataSerializer();
 Serializer<GIdentitiesByNameData_identity>
@@ -193,9 +190,6 @@ Serializer<GIdentitiesByNameData_identity_smith_smithCertIssued>
 Serializer<GIdentitiesByNameData_identity_smith_smithCertReceived>
     _$gIdentitiesByNameDataIdentitySmithSmithCertReceivedSerializer =
     new _$GIdentitiesByNameData_identity_smith_smithCertReceivedSerializer();
-Serializer<GIdentitiesByNameData_identity_udHistory>
-    _$gIdentitiesByNameDataIdentityUdHistorySerializer =
-    new _$GIdentitiesByNameData_identity_udHistorySerializer();
 Serializer<GAccountByPkData> _$gAccountByPkDataSerializer =
     new _$GAccountByPkDataSerializer();
 Serializer<GAccountByPkData_accountByPk>
@@ -298,9 +292,6 @@ Serializer<GAccountByPkData_accountByPk_identity_smith_smithCertIssued>
 Serializer<GAccountByPkData_accountByPk_identity_smith_smithCertReceived>
     _$gAccountByPkDataAccountByPkIdentitySmithSmithCertReceivedSerializer =
     new _$GAccountByPkData_accountByPk_identity_smith_smithCertReceivedSerializer();
-Serializer<GAccountByPkData_accountByPk_identity_udHistory>
-    _$gAccountByPkDataAccountByPkIdentityUdHistorySerializer =
-    new _$GAccountByPkData_accountByPk_identity_udHistorySerializer();
 Serializer<GAccountByPkData_accountByPk_linkedIdentity>
     _$gAccountByPkDataAccountByPkLinkedIdentitySerializer =
     new _$GAccountByPkData_accountByPk_linkedIdentitySerializer();
@@ -469,9 +460,6 @@ Serializer<GAccountsByPkData_account_identity_smith_smithCertIssued>
 Serializer<GAccountsByPkData_account_identity_smith_smithCertReceived>
     _$gAccountsByPkDataAccountIdentitySmithSmithCertReceivedSerializer =
     new _$GAccountsByPkData_account_identity_smith_smithCertReceivedSerializer();
-Serializer<GAccountsByPkData_account_identity_udHistory>
-    _$gAccountsByPkDataAccountIdentityUdHistorySerializer =
-    new _$GAccountsByPkData_account_identity_udHistorySerializer();
 Serializer<GAccountsByPkData_account_linkedIdentity>
     _$gAccountsByPkDataAccountLinkedIdentitySerializer =
     new _$GAccountsByPkData_account_linkedIdentitySerializer();
@@ -732,9 +720,6 @@ Serializer<GIdentityFieldsData_smith_smithCertIssued>
 Serializer<GIdentityFieldsData_smith_smithCertReceived>
     _$gIdentityFieldsDataSmithSmithCertReceivedSerializer =
     new _$GIdentityFieldsData_smith_smithCertReceivedSerializer();
-Serializer<GIdentityFieldsData_udHistory>
-    _$gIdentityFieldsDataUdHistorySerializer =
-    new _$GIdentityFieldsData_udHistorySerializer();
 Serializer<GCommentsIssuedData> _$gCommentsIssuedDataSerializer =
     new _$GCommentsIssuedDataSerializer();
 Serializer<GAccountBasicFieldsData> _$gAccountBasicFieldsDataSerializer =
@@ -839,9 +824,6 @@ Serializer<GAccountFieldsData_identity_smith_smithCertIssued>
 Serializer<GAccountFieldsData_identity_smith_smithCertReceived>
     _$gAccountFieldsDataIdentitySmithSmithCertReceivedSerializer =
     new _$GAccountFieldsData_identity_smith_smithCertReceivedSerializer();
-Serializer<GAccountFieldsData_identity_udHistory>
-    _$gAccountFieldsDataIdentityUdHistorySerializer =
-    new _$GAccountFieldsData_identity_udHistorySerializer();
 Serializer<GAccountFieldsData_linkedIdentity>
     _$gAccountFieldsDataLinkedIdentitySerializer =
     new _$GAccountFieldsData_linkedIdentitySerializer();
@@ -1156,6 +1138,9 @@ class _$GIdentitiesByNameOrPkData_identitySerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -1179,13 +1164,6 @@ class _$GIdentitiesByNameOrPkData_identitySerializer
         ..add(serializers.serialize(value,
             specifiedType:
                 const FullType(GIdentitiesByNameOrPkData_identity_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -1226,8 +1204,7 @@ class _$GIdentitiesByNameOrPkData_identitySerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -1418,6 +1395,9 @@ class _$GIdentitiesByPkData_identitySerializer
       serializers.serialize(object.linkedAccountAggregate,
           specifiedType: const FullType(
               GIdentitiesByPkData_identity_linkedAccountAggregate)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'membershipHistory',
       serializers.serialize(object.membershipHistory,
           specifiedType: const FullType(BuiltList, const [
@@ -1469,28 +1449,12 @@ class _$GIdentitiesByPkData_identitySerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
-    }
     value = object.smith;
     if (value != null) {
       result
         ..add('smith')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(GIdentitiesByPkData_identity_smith)));
-    }
-    value = object.udHistory;
-    if (value != null) {
-      result
-        ..add('udHistory')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(BuiltList, const [
-              const FullType(GIdentitiesByPkData_identity_udHistory)
-            ])));
     }
     return result;
   }
@@ -1591,8 +1555,7 @@ class _$GIdentitiesByPkData_identitySerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'membershipHistory':
           result.membershipHistory.replace(serializers.deserialize(value,
@@ -1628,12 +1591,6 @@ class _$GIdentitiesByPkData_identitySerializer
                   specifiedType:
                       const FullType(GIdentitiesByPkData_identity_smith))!
               as GIdentitiesByPkData_identity_smith);
-          break;
-        case 'udHistory':
-          result.udHistory.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltList, const [
-                const FullType(GIdentitiesByPkData_identity_udHistory)
-              ]))! as BuiltList<Object?>);
           break;
       }
     }
@@ -1849,6 +1806,9 @@ class _$GIdentitiesByPkData_identity_certIssued_issuerSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -1872,13 +1832,6 @@ class _$GIdentitiesByPkData_identity_certIssued_issuerSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GIdentitiesByPkData_identity_certIssued_issuer_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -1919,8 +1872,7 @@ class _$GIdentitiesByPkData_identity_certIssued_issuerSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -2022,6 +1974,9 @@ class _$GIdentitiesByPkData_identity_certIssued_receiverSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -2045,13 +2000,6 @@ class _$GIdentitiesByPkData_identity_certIssued_receiverSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GIdentitiesByPkData_identity_certIssued_receiver_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -2093,8 +2041,7 @@ class _$GIdentitiesByPkData_identity_certIssued_receiverSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -2444,6 +2391,9 @@ class _$GIdentitiesByPkData_identity_certReceived_issuerSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -2467,13 +2417,6 @@ class _$GIdentitiesByPkData_identity_certReceived_issuerSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GIdentitiesByPkData_identity_certReceived_issuer_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -2515,8 +2458,7 @@ class _$GIdentitiesByPkData_identity_certReceived_issuerSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -2619,6 +2561,9 @@ class _$GIdentitiesByPkData_identity_certReceived_receiverSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -2642,13 +2587,6 @@ class _$GIdentitiesByPkData_identity_certReceived_receiverSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GIdentitiesByPkData_identity_certReceived_receiver_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -2690,8 +2628,7 @@ class _$GIdentitiesByPkData_identity_certReceived_receiverSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -3082,6 +3019,9 @@ class _$GIdentitiesByPkData_identity_membershipHistorySerializer
       'blockNumber',
       serializers.serialize(object.blockNumber,
           specifiedType: const FullType(int)),
+      'eventType',
+      serializers.serialize(object.eventType,
+          specifiedType: const FullType(String)),
       'id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
     ];
@@ -3092,13 +3032,6 @@ class _$GIdentitiesByPkData_identity_membershipHistorySerializer
         ..add('eventId')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
-    }
-    value = object.eventType;
-    if (value != null) {
-      result
-        ..add('eventType')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GEventTypeEnum)));
     }
     value = object.identityId;
     if (value != null) {
@@ -3136,8 +3069,7 @@ class _$GIdentitiesByPkData_identity_membershipHistorySerializer
           break;
         case 'eventType':
           result.eventType = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GEventTypeEnum))
-              as _i2.GEventTypeEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'id':
           result.id = serializers.deserialize(value,
@@ -3764,72 +3696,6 @@ class _$GIdentitiesByPkData_identity_smith_smithCertReceivedSerializer
   }
 }
 
-class _$GIdentitiesByPkData_identity_udHistorySerializer
-    implements StructuredSerializer<GIdentitiesByPkData_identity_udHistory> {
-  @override
-  final Iterable<Type> types = const [
-    GIdentitiesByPkData_identity_udHistory,
-    _$GIdentitiesByPkData_identity_udHistory
-  ];
-  @override
-  final String wireName = 'GIdentitiesByPkData_identity_udHistory';
-
-  @override
-  Iterable<Object?> serialize(
-      Serializers serializers, GIdentitiesByPkData_identity_udHistory object,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object?>[
-      '__typename',
-      serializers.serialize(object.G__typename,
-          specifiedType: const FullType(String)),
-      'id',
-      serializers.serialize(object.id, specifiedType: const FullType(String)),
-      'amount',
-      serializers.serialize(object.amount, specifiedType: const FullType(int)),
-      'timestamp',
-      serializers.serialize(object.timestamp,
-          specifiedType: const FullType(_i2.Gtimestamptz)),
-    ];
-
-    return result;
-  }
-
-  @override
-  GIdentitiesByPkData_identity_udHistory deserialize(
-      Serializers serializers, Iterable<Object?> serialized,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = new GIdentitiesByPkData_identity_udHistoryBuilder();
-
-    final iterator = serialized.iterator;
-    while (iterator.moveNext()) {
-      final key = iterator.current! as String;
-      iterator.moveNext();
-      final Object? value = iterator.current;
-      switch (key) {
-        case '__typename':
-          result.G__typename = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
-          break;
-        case 'id':
-          result.id = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
-          break;
-        case 'amount':
-          result.amount = serializers.deserialize(value,
-              specifiedType: const FullType(int))! as int;
-          break;
-        case 'timestamp':
-          result.timestamp.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.Gtimestamptz))!
-              as _i2.Gtimestamptz);
-          break;
-      }
-    }
-
-    return result.build();
-  }
-}
-
 class _$GIdentitiesByNameDataSerializer
     implements StructuredSerializer<GIdentitiesByNameData> {
   @override
@@ -3947,6 +3813,9 @@ class _$GIdentitiesByNameData_identitySerializer
       serializers.serialize(object.linkedAccountAggregate,
           specifiedType: const FullType(
               GIdentitiesByNameData_identity_linkedAccountAggregate)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'membershipHistory',
       serializers.serialize(object.membershipHistory,
           specifiedType: const FullType(BuiltList, const [
@@ -3998,13 +3867,6 @@ class _$GIdentitiesByNameData_identitySerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
-    }
     value = object.smith;
     if (value != null) {
       result
@@ -4012,15 +3874,6 @@ class _$GIdentitiesByNameData_identitySerializer
         ..add(serializers.serialize(value,
             specifiedType:
                 const FullType(GIdentitiesByNameData_identity_smith)));
-    }
-    value = object.udHistory;
-    if (value != null) {
-      result
-        ..add('udHistory')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(BuiltList, const [
-              const FullType(GIdentitiesByNameData_identity_udHistory)
-            ])));
     }
     return result;
   }
@@ -4121,8 +3974,7 @@ class _$GIdentitiesByNameData_identitySerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'membershipHistory':
           result.membershipHistory.replace(serializers.deserialize(value,
@@ -4158,12 +4010,6 @@ class _$GIdentitiesByNameData_identitySerializer
                   specifiedType:
                       const FullType(GIdentitiesByNameData_identity_smith))!
               as GIdentitiesByNameData_identity_smith);
-          break;
-        case 'udHistory':
-          result.udHistory.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltList, const [
-                const FullType(GIdentitiesByNameData_identity_udHistory)
-              ]))! as BuiltList<Object?>);
           break;
       }
     }
@@ -4379,6 +4225,9 @@ class _$GIdentitiesByNameData_identity_certIssued_issuerSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -4402,13 +4251,6 @@ class _$GIdentitiesByNameData_identity_certIssued_issuerSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GIdentitiesByNameData_identity_certIssued_issuer_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -4450,8 +4292,7 @@ class _$GIdentitiesByNameData_identity_certIssued_issuerSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -4554,6 +4395,9 @@ class _$GIdentitiesByNameData_identity_certIssued_receiverSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -4577,13 +4421,6 @@ class _$GIdentitiesByNameData_identity_certIssued_receiverSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GIdentitiesByNameData_identity_certIssued_receiver_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -4625,8 +4462,7 @@ class _$GIdentitiesByNameData_identity_certIssued_receiverSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -4979,6 +4815,9 @@ class _$GIdentitiesByNameData_identity_certReceived_issuerSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -5002,13 +4841,6 @@ class _$GIdentitiesByNameData_identity_certReceived_issuerSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GIdentitiesByNameData_identity_certReceived_issuer_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -5050,8 +4882,7 @@ class _$GIdentitiesByNameData_identity_certReceived_issuerSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -5155,6 +4986,9 @@ class _$GIdentitiesByNameData_identity_certReceived_receiverSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -5178,13 +5012,6 @@ class _$GIdentitiesByNameData_identity_certReceived_receiverSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GIdentitiesByNameData_identity_certReceived_receiver_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -5226,8 +5053,7 @@ class _$GIdentitiesByNameData_identity_certReceived_receiverSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -5620,6 +5446,9 @@ class _$GIdentitiesByNameData_identity_membershipHistorySerializer
       'blockNumber',
       serializers.serialize(object.blockNumber,
           specifiedType: const FullType(int)),
+      'eventType',
+      serializers.serialize(object.eventType,
+          specifiedType: const FullType(String)),
       'id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
     ];
@@ -5630,13 +5459,6 @@ class _$GIdentitiesByNameData_identity_membershipHistorySerializer
         ..add('eventId')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
-    }
-    value = object.eventType;
-    if (value != null) {
-      result
-        ..add('eventType')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GEventTypeEnum)));
     }
     value = object.identityId;
     if (value != null) {
@@ -5675,8 +5497,7 @@ class _$GIdentitiesByNameData_identity_membershipHistorySerializer
           break;
         case 'eventType':
           result.eventType = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GEventTypeEnum))
-              as _i2.GEventTypeEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'id':
           result.id = serializers.deserialize(value,
@@ -6307,72 +6128,6 @@ class _$GIdentitiesByNameData_identity_smith_smithCertReceivedSerializer
   }
 }
 
-class _$GIdentitiesByNameData_identity_udHistorySerializer
-    implements StructuredSerializer<GIdentitiesByNameData_identity_udHistory> {
-  @override
-  final Iterable<Type> types = const [
-    GIdentitiesByNameData_identity_udHistory,
-    _$GIdentitiesByNameData_identity_udHistory
-  ];
-  @override
-  final String wireName = 'GIdentitiesByNameData_identity_udHistory';
-
-  @override
-  Iterable<Object?> serialize(
-      Serializers serializers, GIdentitiesByNameData_identity_udHistory object,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object?>[
-      '__typename',
-      serializers.serialize(object.G__typename,
-          specifiedType: const FullType(String)),
-      'id',
-      serializers.serialize(object.id, specifiedType: const FullType(String)),
-      'amount',
-      serializers.serialize(object.amount, specifiedType: const FullType(int)),
-      'timestamp',
-      serializers.serialize(object.timestamp,
-          specifiedType: const FullType(_i2.Gtimestamptz)),
-    ];
-
-    return result;
-  }
-
-  @override
-  GIdentitiesByNameData_identity_udHistory deserialize(
-      Serializers serializers, Iterable<Object?> serialized,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = new GIdentitiesByNameData_identity_udHistoryBuilder();
-
-    final iterator = serialized.iterator;
-    while (iterator.moveNext()) {
-      final key = iterator.current! as String;
-      iterator.moveNext();
-      final Object? value = iterator.current;
-      switch (key) {
-        case '__typename':
-          result.G__typename = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
-          break;
-        case 'id':
-          result.id = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
-          break;
-        case 'amount':
-          result.amount = serializers.deserialize(value,
-              specifiedType: const FullType(int))! as int;
-          break;
-        case 'timestamp':
-          result.timestamp.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.Gtimestamptz))!
-              as _i2.Gtimestamptz);
-          break;
-      }
-    }
-
-    return result.build();
-  }
-}
-
 class _$GAccountByPkDataSerializer
     implements StructuredSerializer<GAccountByPkData> {
   @override
@@ -6660,6 +6415,8 @@ class _$GAccountByPkData_accountByPk_commentsIssuedSerializer
       'remarkBytes',
       serializers.serialize(object.remarkBytes,
           specifiedType: const FullType(_i2.Gbytea)),
+      'type',
+      serializers.serialize(object.type, specifiedType: const FullType(String)),
     ];
     Object? value;
     value = object.authorId;
@@ -6675,13 +6432,6 @@ class _$GAccountByPkData_accountByPk_commentsIssuedSerializer
         ..add('eventId')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
-    }
-    value = object.type;
-    if (value != null) {
-      result
-        ..add('type')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GCommentTypeEnum)));
     }
     return result;
   }
@@ -6732,8 +6482,7 @@ class _$GAccountByPkData_accountByPk_commentsIssuedSerializer
           break;
         case 'type':
           result.type = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GCommentTypeEnum))
-              as _i2.GCommentTypeEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
       }
     }
@@ -6923,6 +6672,9 @@ class _$GAccountByPkData_accountByPk_identitySerializer
       serializers.serialize(object.linkedAccountAggregate,
           specifiedType: const FullType(
               GAccountByPkData_accountByPk_identity_linkedAccountAggregate)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'membershipHistory',
       serializers.serialize(object.membershipHistory,
           specifiedType: const FullType(BuiltList, const [
@@ -6975,13 +6727,6 @@ class _$GAccountByPkData_accountByPk_identitySerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
-    }
     value = object.smith;
     if (value != null) {
       result
@@ -6989,15 +6734,6 @@ class _$GAccountByPkData_accountByPk_identitySerializer
         ..add(serializers.serialize(value,
             specifiedType:
                 const FullType(GAccountByPkData_accountByPk_identity_smith)));
-    }
-    value = object.udHistory;
-    if (value != null) {
-      result
-        ..add('udHistory')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(BuiltList, const [
-              const FullType(GAccountByPkData_accountByPk_identity_udHistory)
-            ])));
     }
     return result;
   }
@@ -7100,8 +6836,7 @@ class _$GAccountByPkData_accountByPk_identitySerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'membershipHistory':
           result.membershipHistory.replace(serializers.deserialize(value,
@@ -7139,12 +6874,6 @@ class _$GAccountByPkData_accountByPk_identitySerializer
                   specifiedType: const FullType(
                       GAccountByPkData_accountByPk_identity_smith))!
               as GAccountByPkData_accountByPk_identity_smith);
-          break;
-        case 'udHistory':
-          result.udHistory.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltList, const [
-                const FullType(GAccountByPkData_accountByPk_identity_udHistory)
-              ]))! as BuiltList<Object?>);
           break;
       }
     }
@@ -7365,6 +7094,9 @@ class _$GAccountByPkData_accountByPk_identity_certIssued_issuerSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -7388,13 +7120,6 @@ class _$GAccountByPkData_accountByPk_identity_certIssued_issuerSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GAccountByPkData_accountByPk_identity_certIssued_issuer_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -7436,8 +7161,7 @@ class _$GAccountByPkData_accountByPk_identity_certIssued_issuerSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -7541,6 +7265,9 @@ class _$GAccountByPkData_accountByPk_identity_certIssued_receiverSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -7564,13 +7291,6 @@ class _$GAccountByPkData_accountByPk_identity_certIssued_receiverSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GAccountByPkData_accountByPk_identity_certIssued_receiver_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -7612,8 +7332,7 @@ class _$GAccountByPkData_accountByPk_identity_certIssued_receiverSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -7972,6 +7691,9 @@ class _$GAccountByPkData_accountByPk_identity_certReceived_issuerSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -7995,13 +7717,6 @@ class _$GAccountByPkData_accountByPk_identity_certReceived_issuerSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GAccountByPkData_accountByPk_identity_certReceived_issuer_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -8043,8 +7758,7 @@ class _$GAccountByPkData_accountByPk_identity_certReceived_issuerSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -8148,6 +7862,9 @@ class _$GAccountByPkData_accountByPk_identity_certReceived_receiverSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -8171,13 +7888,6 @@ class _$GAccountByPkData_accountByPk_identity_certReceived_receiverSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GAccountByPkData_accountByPk_identity_certReceived_receiver_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -8219,8 +7929,7 @@ class _$GAccountByPkData_accountByPk_identity_certReceived_receiverSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -8623,6 +8332,9 @@ class _$GAccountByPkData_accountByPk_identity_membershipHistorySerializer
       'blockNumber',
       serializers.serialize(object.blockNumber,
           specifiedType: const FullType(int)),
+      'eventType',
+      serializers.serialize(object.eventType,
+          specifiedType: const FullType(String)),
       'id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
     ];
@@ -8633,13 +8345,6 @@ class _$GAccountByPkData_accountByPk_identity_membershipHistorySerializer
         ..add('eventId')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
-    }
-    value = object.eventType;
-    if (value != null) {
-      result
-        ..add('eventType')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GEventTypeEnum)));
     }
     value = object.identityId;
     if (value != null) {
@@ -8678,8 +8383,7 @@ class _$GAccountByPkData_accountByPk_identity_membershipHistorySerializer
           break;
         case 'eventType':
           result.eventType = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GEventTypeEnum))
-              as _i2.GEventTypeEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'id':
           result.id = serializers.deserialize(value,
@@ -9317,73 +9021,6 @@ class _$GAccountByPkData_accountByPk_identity_smith_smithCertReceivedSerializer
   }
 }
 
-class _$GAccountByPkData_accountByPk_identity_udHistorySerializer
-    implements
-        StructuredSerializer<GAccountByPkData_accountByPk_identity_udHistory> {
-  @override
-  final Iterable<Type> types = const [
-    GAccountByPkData_accountByPk_identity_udHistory,
-    _$GAccountByPkData_accountByPk_identity_udHistory
-  ];
-  @override
-  final String wireName = 'GAccountByPkData_accountByPk_identity_udHistory';
-
-  @override
-  Iterable<Object?> serialize(Serializers serializers,
-      GAccountByPkData_accountByPk_identity_udHistory object,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object?>[
-      '__typename',
-      serializers.serialize(object.G__typename,
-          specifiedType: const FullType(String)),
-      'id',
-      serializers.serialize(object.id, specifiedType: const FullType(String)),
-      'amount',
-      serializers.serialize(object.amount, specifiedType: const FullType(int)),
-      'timestamp',
-      serializers.serialize(object.timestamp,
-          specifiedType: const FullType(_i2.Gtimestamptz)),
-    ];
-
-    return result;
-  }
-
-  @override
-  GAccountByPkData_accountByPk_identity_udHistory deserialize(
-      Serializers serializers, Iterable<Object?> serialized,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountByPkData_accountByPk_identity_udHistoryBuilder();
-
-    final iterator = serialized.iterator;
-    while (iterator.moveNext()) {
-      final key = iterator.current! as String;
-      iterator.moveNext();
-      final Object? value = iterator.current;
-      switch (key) {
-        case '__typename':
-          result.G__typename = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
-          break;
-        case 'id':
-          result.id = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
-          break;
-        case 'amount':
-          result.amount = serializers.deserialize(value,
-              specifiedType: const FullType(int))! as int;
-          break;
-        case 'timestamp':
-          result.timestamp.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.Gtimestamptz))!
-              as _i2.Gtimestamptz);
-          break;
-      }
-    }
-
-    return result.build();
-  }
-}
-
 class _$GAccountByPkData_accountByPk_linkedIdentitySerializer
     implements
         StructuredSerializer<GAccountByPkData_accountByPk_linkedIdentity> {
@@ -9408,6 +9045,9 @@ class _$GAccountByPkData_accountByPk_linkedIdentitySerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -9431,13 +9071,6 @@ class _$GAccountByPkData_accountByPk_linkedIdentitySerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GAccountByPkData_accountByPk_linkedIdentity_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -9478,8 +9111,7 @@ class _$GAccountByPkData_accountByPk_linkedIdentitySerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -9580,6 +9212,9 @@ class _$GAccountByPkData_accountByPk_removedIdentitiesSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -9603,13 +9238,6 @@ class _$GAccountByPkData_accountByPk_removedIdentitiesSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GAccountByPkData_accountByPk_removedIdentities_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -9650,8 +9278,7 @@ class _$GAccountByPkData_accountByPk_removedIdentitiesSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -11300,6 +10927,8 @@ class _$GAccountsByPkData_account_commentsIssuedSerializer
       'remarkBytes',
       serializers.serialize(object.remarkBytes,
           specifiedType: const FullType(_i2.Gbytea)),
+      'type',
+      serializers.serialize(object.type, specifiedType: const FullType(String)),
     ];
     Object? value;
     value = object.authorId;
@@ -11315,13 +10944,6 @@ class _$GAccountsByPkData_account_commentsIssuedSerializer
         ..add('eventId')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
-    }
-    value = object.type;
-    if (value != null) {
-      result
-        ..add('type')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GCommentTypeEnum)));
     }
     return result;
   }
@@ -11372,8 +10994,7 @@ class _$GAccountsByPkData_account_commentsIssuedSerializer
           break;
         case 'type':
           result.type = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GCommentTypeEnum))
-              as _i2.GCommentTypeEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
       }
     }
@@ -11562,6 +11183,9 @@ class _$GAccountsByPkData_account_identitySerializer
       serializers.serialize(object.linkedAccountAggregate,
           specifiedType: const FullType(
               GAccountsByPkData_account_identity_linkedAccountAggregate)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'membershipHistory',
       serializers.serialize(object.membershipHistory,
           specifiedType: const FullType(BuiltList, const [
@@ -11613,13 +11237,6 @@ class _$GAccountsByPkData_account_identitySerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
-    }
     value = object.smith;
     if (value != null) {
       result
@@ -11627,15 +11244,6 @@ class _$GAccountsByPkData_account_identitySerializer
         ..add(serializers.serialize(value,
             specifiedType:
                 const FullType(GAccountsByPkData_account_identity_smith)));
-    }
-    value = object.udHistory;
-    if (value != null) {
-      result
-        ..add('udHistory')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(BuiltList, const [
-              const FullType(GAccountsByPkData_account_identity_udHistory)
-            ])));
     }
     return result;
   }
@@ -11736,8 +11344,7 @@ class _$GAccountsByPkData_account_identitySerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'membershipHistory':
           result.membershipHistory.replace(serializers.deserialize(value,
@@ -11775,12 +11382,6 @@ class _$GAccountsByPkData_account_identitySerializer
                   specifiedType:
                       const FullType(GAccountsByPkData_account_identity_smith))!
               as GAccountsByPkData_account_identity_smith);
-          break;
-        case 'udHistory':
-          result.udHistory.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltList, const [
-                const FullType(GAccountsByPkData_account_identity_udHistory)
-              ]))! as BuiltList<Object?>);
           break;
       }
     }
@@ -12000,6 +11601,9 @@ class _$GAccountsByPkData_account_identity_certIssued_issuerSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -12023,13 +11627,6 @@ class _$GAccountsByPkData_account_identity_certIssued_issuerSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GAccountsByPkData_account_identity_certIssued_issuer_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -12071,8 +11668,7 @@ class _$GAccountsByPkData_account_identity_certIssued_issuerSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -12176,6 +11772,9 @@ class _$GAccountsByPkData_account_identity_certIssued_receiverSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -12199,13 +11798,6 @@ class _$GAccountsByPkData_account_identity_certIssued_receiverSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GAccountsByPkData_account_identity_certIssued_receiver_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -12247,8 +11839,7 @@ class _$GAccountsByPkData_account_identity_certIssued_receiverSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -12603,6 +12194,9 @@ class _$GAccountsByPkData_account_identity_certReceived_issuerSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -12626,13 +12220,6 @@ class _$GAccountsByPkData_account_identity_certReceived_issuerSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GAccountsByPkData_account_identity_certReceived_issuer_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -12674,8 +12261,7 @@ class _$GAccountsByPkData_account_identity_certReceived_issuerSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -12779,6 +12365,9 @@ class _$GAccountsByPkData_account_identity_certReceived_receiverSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -12802,13 +12391,6 @@ class _$GAccountsByPkData_account_identity_certReceived_receiverSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GAccountsByPkData_account_identity_certReceived_receiver_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -12850,8 +12432,7 @@ class _$GAccountsByPkData_account_identity_certReceived_receiverSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -13249,6 +12830,9 @@ class _$GAccountsByPkData_account_identity_membershipHistorySerializer
       'blockNumber',
       serializers.serialize(object.blockNumber,
           specifiedType: const FullType(int)),
+      'eventType',
+      serializers.serialize(object.eventType,
+          specifiedType: const FullType(String)),
       'id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
     ];
@@ -13259,13 +12843,6 @@ class _$GAccountsByPkData_account_identity_membershipHistorySerializer
         ..add('eventId')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
-    }
-    value = object.eventType;
-    if (value != null) {
-      result
-        ..add('eventType')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GEventTypeEnum)));
     }
     value = object.identityId;
     if (value != null) {
@@ -13304,8 +12881,7 @@ class _$GAccountsByPkData_account_identity_membershipHistorySerializer
           break;
         case 'eventType':
           result.eventType = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GEventTypeEnum))
-              as _i2.GEventTypeEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'id':
           result.id = serializers.deserialize(value,
@@ -13941,73 +13517,6 @@ class _$GAccountsByPkData_account_identity_smith_smithCertReceivedSerializer
   }
 }
 
-class _$GAccountsByPkData_account_identity_udHistorySerializer
-    implements
-        StructuredSerializer<GAccountsByPkData_account_identity_udHistory> {
-  @override
-  final Iterable<Type> types = const [
-    GAccountsByPkData_account_identity_udHistory,
-    _$GAccountsByPkData_account_identity_udHistory
-  ];
-  @override
-  final String wireName = 'GAccountsByPkData_account_identity_udHistory';
-
-  @override
-  Iterable<Object?> serialize(Serializers serializers,
-      GAccountsByPkData_account_identity_udHistory object,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object?>[
-      '__typename',
-      serializers.serialize(object.G__typename,
-          specifiedType: const FullType(String)),
-      'id',
-      serializers.serialize(object.id, specifiedType: const FullType(String)),
-      'amount',
-      serializers.serialize(object.amount, specifiedType: const FullType(int)),
-      'timestamp',
-      serializers.serialize(object.timestamp,
-          specifiedType: const FullType(_i2.Gtimestamptz)),
-    ];
-
-    return result;
-  }
-
-  @override
-  GAccountsByPkData_account_identity_udHistory deserialize(
-      Serializers serializers, Iterable<Object?> serialized,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountsByPkData_account_identity_udHistoryBuilder();
-
-    final iterator = serialized.iterator;
-    while (iterator.moveNext()) {
-      final key = iterator.current! as String;
-      iterator.moveNext();
-      final Object? value = iterator.current;
-      switch (key) {
-        case '__typename':
-          result.G__typename = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
-          break;
-        case 'id':
-          result.id = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
-          break;
-        case 'amount':
-          result.amount = serializers.deserialize(value,
-              specifiedType: const FullType(int))! as int;
-          break;
-        case 'timestamp':
-          result.timestamp.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.Gtimestamptz))!
-              as _i2.Gtimestamptz);
-          break;
-      }
-    }
-
-    return result.build();
-  }
-}
-
 class _$GAccountsByPkData_account_linkedIdentitySerializer
     implements StructuredSerializer<GAccountsByPkData_account_linkedIdentity> {
   @override
@@ -14031,6 +13540,9 @@ class _$GAccountsByPkData_account_linkedIdentitySerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -14054,13 +13566,6 @@ class _$GAccountsByPkData_account_linkedIdentitySerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GAccountsByPkData_account_linkedIdentity_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -14101,8 +13606,7 @@ class _$GAccountsByPkData_account_linkedIdentitySerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -14202,6 +13706,9 @@ class _$GAccountsByPkData_account_removedIdentitiesSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -14225,13 +13732,6 @@ class _$GAccountsByPkData_account_removedIdentitiesSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GAccountsByPkData_account_removedIdentities_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -14272,8 +13772,7 @@ class _$GAccountsByPkData_account_removedIdentitiesSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -15787,6 +15286,9 @@ class _$GAccountBasicByPkData_accountByPk_identitySerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -15810,13 +15312,6 @@ class _$GAccountBasicByPkData_accountByPk_identitySerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GAccountBasicByPkData_accountByPk_identity_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -15857,8 +15352,7 @@ class _$GAccountBasicByPkData_accountByPk_identitySerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -16094,6 +15588,9 @@ class _$GAccountsBasicByPkData_account_identitySerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -16117,13 +15614,6 @@ class _$GAccountsBasicByPkData_account_identitySerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GAccountsBasicByPkData_account_identity_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -16164,8 +15654,7 @@ class _$GAccountsBasicByPkData_account_identitySerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -16459,6 +15948,8 @@ class _$GAccountTransactionsData_account_commentsIssuedSerializer
       'remarkBytes',
       serializers.serialize(object.remarkBytes,
           specifiedType: const FullType(_i2.Gbytea)),
+      'type',
+      serializers.serialize(object.type, specifiedType: const FullType(String)),
     ];
     Object? value;
     value = object.authorId;
@@ -16474,13 +15965,6 @@ class _$GAccountTransactionsData_account_commentsIssuedSerializer
         ..add('eventId')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
-    }
-    value = object.type;
-    if (value != null) {
-      result
-        ..add('type')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GCommentTypeEnum)));
     }
     return result;
   }
@@ -16531,8 +16015,7 @@ class _$GAccountTransactionsData_account_commentsIssuedSerializer
           break;
         case 'type':
           result.type = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GCommentTypeEnum))
-              as _i2.GCommentTypeEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
       }
     }
@@ -17776,6 +17259,9 @@ class _$GCertFieldsData_issuerSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -17798,13 +17284,6 @@ class _$GCertFieldsData_issuerSerializer
         ..add('account')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(GCertFieldsData_issuer_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -17845,8 +17324,7 @@ class _$GCertFieldsData_issuerSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -17943,6 +17421,9 @@ class _$GCertFieldsData_receiverSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -17965,13 +17446,6 @@ class _$GCertFieldsData_receiverSerializer
         ..add('account')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(GCertFieldsData_receiver_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -18012,8 +17486,7 @@ class _$GCertFieldsData_receiverSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -18545,6 +18018,9 @@ class _$GIdentityBasicFieldsDataSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -18567,13 +18043,6 @@ class _$GIdentityBasicFieldsDataSerializer
         ..add('account')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(GIdentityBasicFieldsData_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -18614,8 +18083,7 @@ class _$GIdentityBasicFieldsDataSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -18747,6 +18215,9 @@ class _$GIdentityFieldsDataSerializer
       serializers.serialize(object.linkedAccountAggregate,
           specifiedType:
               const FullType(GIdentityFieldsData_linkedAccountAggregate)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'membershipHistory',
       serializers.serialize(object.membershipHistory,
           specifiedType: const FullType(BuiltList,
@@ -18795,27 +18266,12 @@ class _$GIdentityFieldsDataSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
-    }
     value = object.smith;
     if (value != null) {
       result
         ..add('smith')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(GIdentityFieldsData_smith)));
-    }
-    value = object.udHistory;
-    if (value != null) {
-      result
-        ..add('udHistory')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(BuiltList,
-                const [const FullType(GIdentityFieldsData_udHistory)])));
     }
     return result;
   }
@@ -18915,8 +18371,7 @@ class _$GIdentityFieldsDataSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'membershipHistory':
           result.membershipHistory.replace(serializers.deserialize(value,
@@ -18951,12 +18406,6 @@ class _$GIdentityFieldsDataSerializer
           result.smith.replace(serializers.deserialize(value,
                   specifiedType: const FullType(GIdentityFieldsData_smith))!
               as GIdentityFieldsData_smith);
-          break;
-        case 'udHistory':
-          result.udHistory.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltList, const [
-                const FullType(GIdentityFieldsData_udHistory)
-              ]))! as BuiltList<Object?>);
           break;
       }
     }
@@ -19171,6 +18620,9 @@ class _$GIdentityFieldsData_certIssued_issuerSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -19194,13 +18646,6 @@ class _$GIdentityFieldsData_certIssued_issuerSerializer
         ..add(serializers.serialize(value,
             specifiedType:
                 const FullType(GIdentityFieldsData_certIssued_issuer_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -19241,8 +18686,7 @@ class _$GIdentityFieldsData_certIssued_issuerSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -19340,6 +18784,9 @@ class _$GIdentityFieldsData_certIssued_receiverSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -19363,13 +18810,6 @@ class _$GIdentityFieldsData_certIssued_receiverSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GIdentityFieldsData_certIssued_receiver_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -19410,8 +18850,7 @@ class _$GIdentityFieldsData_certIssued_receiverSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -19754,6 +19193,9 @@ class _$GIdentityFieldsData_certReceived_issuerSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -19777,13 +19219,6 @@ class _$GIdentityFieldsData_certReceived_issuerSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GIdentityFieldsData_certReceived_issuer_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -19824,8 +19259,7 @@ class _$GIdentityFieldsData_certReceived_issuerSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -19923,6 +19357,9 @@ class _$GIdentityFieldsData_certReceived_receiverSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -19946,13 +19383,6 @@ class _$GIdentityFieldsData_certReceived_receiverSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GIdentityFieldsData_certReceived_receiver_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -19993,8 +19423,7 @@ class _$GIdentityFieldsData_certReceived_receiverSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -20376,6 +19805,9 @@ class _$GIdentityFieldsData_membershipHistorySerializer
       'blockNumber',
       serializers.serialize(object.blockNumber,
           specifiedType: const FullType(int)),
+      'eventType',
+      serializers.serialize(object.eventType,
+          specifiedType: const FullType(String)),
       'id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
     ];
@@ -20386,13 +19818,6 @@ class _$GIdentityFieldsData_membershipHistorySerializer
         ..add('eventId')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
-    }
-    value = object.eventType;
-    if (value != null) {
-      result
-        ..add('eventType')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GEventTypeEnum)));
     }
     value = object.identityId;
     if (value != null) {
@@ -20430,8 +19855,7 @@ class _$GIdentityFieldsData_membershipHistorySerializer
           break;
         case 'eventType':
           result.eventType = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GEventTypeEnum))
-              as _i2.GEventTypeEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'id':
           result.id = serializers.deserialize(value,
@@ -21043,72 +20467,6 @@ class _$GIdentityFieldsData_smith_smithCertReceivedSerializer
   }
 }
 
-class _$GIdentityFieldsData_udHistorySerializer
-    implements StructuredSerializer<GIdentityFieldsData_udHistory> {
-  @override
-  final Iterable<Type> types = const [
-    GIdentityFieldsData_udHistory,
-    _$GIdentityFieldsData_udHistory
-  ];
-  @override
-  final String wireName = 'GIdentityFieldsData_udHistory';
-
-  @override
-  Iterable<Object?> serialize(
-      Serializers serializers, GIdentityFieldsData_udHistory object,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object?>[
-      '__typename',
-      serializers.serialize(object.G__typename,
-          specifiedType: const FullType(String)),
-      'id',
-      serializers.serialize(object.id, specifiedType: const FullType(String)),
-      'amount',
-      serializers.serialize(object.amount, specifiedType: const FullType(int)),
-      'timestamp',
-      serializers.serialize(object.timestamp,
-          specifiedType: const FullType(_i2.Gtimestamptz)),
-    ];
-
-    return result;
-  }
-
-  @override
-  GIdentityFieldsData_udHistory deserialize(
-      Serializers serializers, Iterable<Object?> serialized,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = new GIdentityFieldsData_udHistoryBuilder();
-
-    final iterator = serialized.iterator;
-    while (iterator.moveNext()) {
-      final key = iterator.current! as String;
-      iterator.moveNext();
-      final Object? value = iterator.current;
-      switch (key) {
-        case '__typename':
-          result.G__typename = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
-          break;
-        case 'id':
-          result.id = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
-          break;
-        case 'amount':
-          result.amount = serializers.deserialize(value,
-              specifiedType: const FullType(int))! as int;
-          break;
-        case 'timestamp':
-          result.timestamp.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.Gtimestamptz))!
-              as _i2.Gtimestamptz);
-          break;
-      }
-    }
-
-    return result.build();
-  }
-}
-
 class _$GCommentsIssuedDataSerializer
     implements StructuredSerializer<GCommentsIssuedData> {
   @override
@@ -21140,6 +20498,8 @@ class _$GCommentsIssuedDataSerializer
       'remarkBytes',
       serializers.serialize(object.remarkBytes,
           specifiedType: const FullType(_i2.Gbytea)),
+      'type',
+      serializers.serialize(object.type, specifiedType: const FullType(String)),
     ];
     Object? value;
     value = object.authorId;
@@ -21155,13 +20515,6 @@ class _$GCommentsIssuedDataSerializer
         ..add('eventId')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
-    }
-    value = object.type;
-    if (value != null) {
-      result
-        ..add('type')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GCommentTypeEnum)));
     }
     return result;
   }
@@ -21212,8 +20565,7 @@ class _$GCommentsIssuedDataSerializer
           break;
         case 'type':
           result.type = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GCommentTypeEnum))
-              as _i2.GCommentTypeEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
       }
     }
@@ -21324,6 +20676,9 @@ class _$GAccountBasicFieldsData_identitySerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -21347,13 +20702,6 @@ class _$GAccountBasicFieldsData_identitySerializer
         ..add(serializers.serialize(value,
             specifiedType:
                 const FullType(GAccountBasicFieldsData_identity_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -21394,8 +20742,7 @@ class _$GAccountBasicFieldsData_identitySerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -21690,6 +21037,8 @@ class _$GAccountFieldsData_commentsIssuedSerializer
       'remarkBytes',
       serializers.serialize(object.remarkBytes,
           specifiedType: const FullType(_i2.Gbytea)),
+      'type',
+      serializers.serialize(object.type, specifiedType: const FullType(String)),
     ];
     Object? value;
     value = object.authorId;
@@ -21705,13 +21054,6 @@ class _$GAccountFieldsData_commentsIssuedSerializer
         ..add('eventId')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
-    }
-    value = object.type;
-    if (value != null) {
-      result
-        ..add('type')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GCommentTypeEnum)));
     }
     return result;
   }
@@ -21762,8 +21104,7 @@ class _$GAccountFieldsData_commentsIssuedSerializer
           break;
         case 'type':
           result.type = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GCommentTypeEnum))
-              as _i2.GCommentTypeEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
       }
     }
@@ -21949,6 +21290,9 @@ class _$GAccountFieldsData_identitySerializer
       serializers.serialize(object.linkedAccountAggregate,
           specifiedType: const FullType(
               GAccountFieldsData_identity_linkedAccountAggregate)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'membershipHistory',
       serializers.serialize(object.membershipHistory,
           specifiedType: const FullType(BuiltList, const [
@@ -22000,28 +21344,12 @@ class _$GAccountFieldsData_identitySerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
-    }
     value = object.smith;
     if (value != null) {
       result
         ..add('smith')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(GAccountFieldsData_identity_smith)));
-    }
-    value = object.udHistory;
-    if (value != null) {
-      result
-        ..add('udHistory')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(BuiltList, const [
-              const FullType(GAccountFieldsData_identity_udHistory)
-            ])));
     }
     return result;
   }
@@ -22122,8 +21450,7 @@ class _$GAccountFieldsData_identitySerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'membershipHistory':
           result.membershipHistory.replace(serializers.deserialize(value,
@@ -22159,12 +21486,6 @@ class _$GAccountFieldsData_identitySerializer
                   specifiedType:
                       const FullType(GAccountFieldsData_identity_smith))!
               as GAccountFieldsData_identity_smith);
-          break;
-        case 'udHistory':
-          result.udHistory.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltList, const [
-                const FullType(GAccountFieldsData_identity_udHistory)
-              ]))! as BuiltList<Object?>);
           break;
       }
     }
@@ -22380,6 +21701,9 @@ class _$GAccountFieldsData_identity_certIssued_issuerSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -22403,13 +21727,6 @@ class _$GAccountFieldsData_identity_certIssued_issuerSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GAccountFieldsData_identity_certIssued_issuer_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -22450,8 +21767,7 @@ class _$GAccountFieldsData_identity_certIssued_issuerSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -22553,6 +21869,9 @@ class _$GAccountFieldsData_identity_certIssued_receiverSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -22576,13 +21895,6 @@ class _$GAccountFieldsData_identity_certIssued_receiverSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GAccountFieldsData_identity_certIssued_receiver_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -22623,8 +21935,7 @@ class _$GAccountFieldsData_identity_certIssued_receiverSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -22973,6 +22284,9 @@ class _$GAccountFieldsData_identity_certReceived_issuerSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -22996,13 +22310,6 @@ class _$GAccountFieldsData_identity_certReceived_issuerSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GAccountFieldsData_identity_certReceived_issuer_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -23043,8 +22350,7 @@ class _$GAccountFieldsData_identity_certReceived_issuerSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -23147,6 +22453,9 @@ class _$GAccountFieldsData_identity_certReceived_receiverSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -23170,13 +22479,6 @@ class _$GAccountFieldsData_identity_certReceived_receiverSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 GAccountFieldsData_identity_certReceived_receiver_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -23218,8 +22520,7 @@ class _$GAccountFieldsData_identity_certReceived_receiverSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -23609,6 +22910,9 @@ class _$GAccountFieldsData_identity_membershipHistorySerializer
       'blockNumber',
       serializers.serialize(object.blockNumber,
           specifiedType: const FullType(int)),
+      'eventType',
+      serializers.serialize(object.eventType,
+          specifiedType: const FullType(String)),
       'id',
       serializers.serialize(object.id, specifiedType: const FullType(String)),
     ];
@@ -23619,13 +22923,6 @@ class _$GAccountFieldsData_identity_membershipHistorySerializer
         ..add('eventId')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
-    }
-    value = object.eventType;
-    if (value != null) {
-      result
-        ..add('eventType')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GEventTypeEnum)));
     }
     value = object.identityId;
     if (value != null) {
@@ -23663,8 +22960,7 @@ class _$GAccountFieldsData_identity_membershipHistorySerializer
           break;
         case 'eventType':
           result.eventType = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GEventTypeEnum))
-              as _i2.GEventTypeEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'id':
           result.id = serializers.deserialize(value,
@@ -24289,72 +23585,6 @@ class _$GAccountFieldsData_identity_smith_smithCertReceivedSerializer
   }
 }
 
-class _$GAccountFieldsData_identity_udHistorySerializer
-    implements StructuredSerializer<GAccountFieldsData_identity_udHistory> {
-  @override
-  final Iterable<Type> types = const [
-    GAccountFieldsData_identity_udHistory,
-    _$GAccountFieldsData_identity_udHistory
-  ];
-  @override
-  final String wireName = 'GAccountFieldsData_identity_udHistory';
-
-  @override
-  Iterable<Object?> serialize(
-      Serializers serializers, GAccountFieldsData_identity_udHistory object,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object?>[
-      '__typename',
-      serializers.serialize(object.G__typename,
-          specifiedType: const FullType(String)),
-      'id',
-      serializers.serialize(object.id, specifiedType: const FullType(String)),
-      'amount',
-      serializers.serialize(object.amount, specifiedType: const FullType(int)),
-      'timestamp',
-      serializers.serialize(object.timestamp,
-          specifiedType: const FullType(_i2.Gtimestamptz)),
-    ];
-
-    return result;
-  }
-
-  @override
-  GAccountFieldsData_identity_udHistory deserialize(
-      Serializers serializers, Iterable<Object?> serialized,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountFieldsData_identity_udHistoryBuilder();
-
-    final iterator = serialized.iterator;
-    while (iterator.moveNext()) {
-      final key = iterator.current! as String;
-      iterator.moveNext();
-      final Object? value = iterator.current;
-      switch (key) {
-        case '__typename':
-          result.G__typename = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
-          break;
-        case 'id':
-          result.id = serializers.deserialize(value,
-              specifiedType: const FullType(String))! as String;
-          break;
-        case 'amount':
-          result.amount = serializers.deserialize(value,
-              specifiedType: const FullType(int))! as int;
-          break;
-        case 'timestamp':
-          result.timestamp.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.Gtimestamptz))!
-              as _i2.Gtimestamptz);
-          break;
-      }
-    }
-
-    return result.build();
-  }
-}
-
 class _$GAccountFieldsData_linkedIdentitySerializer
     implements StructuredSerializer<GAccountFieldsData_linkedIdentity> {
   @override
@@ -24378,6 +23608,9 @@ class _$GAccountFieldsData_linkedIdentitySerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -24401,13 +23634,6 @@ class _$GAccountFieldsData_linkedIdentitySerializer
         ..add(serializers.serialize(value,
             specifiedType:
                 const FullType(GAccountFieldsData_linkedIdentity_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -24448,8 +23674,7 @@ class _$GAccountFieldsData_linkedIdentitySerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -24546,6 +23771,9 @@ class _$GAccountFieldsData_removedIdentitiesSerializer
       'isMember',
       serializers.serialize(object.isMember,
           specifiedType: const FullType(bool)),
+      'status',
+      serializers.serialize(object.status,
+          specifiedType: const FullType(String)),
       'name',
       serializers.serialize(object.name, specifiedType: const FullType(String)),
       'expireOn',
@@ -24569,13 +23797,6 @@ class _$GAccountFieldsData_removedIdentitiesSerializer
         ..add(serializers.serialize(value,
             specifiedType:
                 const FullType(GAccountFieldsData_removedIdentities_account)));
-    }
-    value = object.status;
-    if (value != null) {
-      result
-        ..add('status')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GIdentityStatusEnum)));
     }
     return result;
   }
@@ -24616,8 +23837,7 @@ class _$GAccountFieldsData_removedIdentitiesSerializer
           break;
         case 'status':
           result.status = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GIdentityStatusEnum))
-              as _i2.GIdentityStatusEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
         case 'name':
           result.name = serializers.deserialize(value,
@@ -26104,6 +25324,8 @@ class _$GAccountTxsFieldsData_commentsIssuedSerializer
       'remarkBytes',
       serializers.serialize(object.remarkBytes,
           specifiedType: const FullType(_i2.Gbytea)),
+      'type',
+      serializers.serialize(object.type, specifiedType: const FullType(String)),
     ];
     Object? value;
     value = object.authorId;
@@ -26119,13 +25341,6 @@ class _$GAccountTxsFieldsData_commentsIssuedSerializer
         ..add('eventId')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
-    }
-    value = object.type;
-    if (value != null) {
-      result
-        ..add('type')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(_i2.GCommentTypeEnum)));
     }
     return result;
   }
@@ -26176,8 +25391,7 @@ class _$GAccountTxsFieldsData_commentsIssuedSerializer
           break;
         case 'type':
           result.type = serializers.deserialize(value,
-                  specifiedType: const FullType(_i2.GCommentTypeEnum))
-              as _i2.GCommentTypeEnum?;
+              specifiedType: const FullType(String))! as String;
           break;
       }
     }
@@ -27859,7 +27073,7 @@ class _$GIdentitiesByNameOrPkData_identity
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -27879,7 +27093,7 @@ class _$GIdentitiesByNameOrPkData_identity
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -27890,6 +27104,8 @@ class _$GIdentitiesByNameOrPkData_identity
         id, r'GIdentitiesByNameOrPkData_identity', 'id');
     BuiltValueNullFieldError.checkNotNull(
         isMember, r'GIdentitiesByNameOrPkData_identity', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GIdentitiesByNameOrPkData_identity', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GIdentitiesByNameOrPkData_identity', 'name');
     BuiltValueNullFieldError.checkNotNull(
@@ -27983,9 +27199,9 @@ class GIdentitiesByNameOrPkData_identityBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -28048,7 +27264,8 @@ class GIdentitiesByNameOrPkData_identityBuilder
                   id, r'GIdentitiesByNameOrPkData_identity', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GIdentitiesByNameOrPkData_identity', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GIdentitiesByNameOrPkData_identity', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GIdentitiesByNameOrPkData_identity', 'name'),
               expireOn: BuiltValueNullFieldError.checkNotNull(
@@ -28343,7 +27560,7 @@ class _$GIdentitiesByPkData_identity extends GIdentitiesByPkData_identity {
   final GIdentitiesByPkData_identity_linkedAccountAggregate
       linkedAccountAggregate;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final BuiltList<GIdentitiesByPkData_identity_membershipHistory>
       membershipHistory;
@@ -28359,8 +27576,6 @@ class _$GIdentitiesByPkData_identity extends GIdentitiesByPkData_identity {
       ownerKeyChangeAggregate;
   @override
   final GIdentitiesByPkData_identity_smith? smith;
-  @override
-  final BuiltList<GIdentitiesByPkData_identity_udHistory>? udHistory;
 
   factory _$GIdentitiesByPkData_identity(
           [void Function(GIdentitiesByPkData_identityBuilder)? updates]) =>
@@ -28384,14 +27599,13 @@ class _$GIdentitiesByPkData_identity extends GIdentitiesByPkData_identity {
       required this.lastChangeOn,
       required this.linkedAccount,
       required this.linkedAccountAggregate,
-      this.status,
+      required this.status,
       required this.membershipHistory,
       required this.membershipHistoryAggregate,
       required this.name,
       required this.ownerKeyChange,
       required this.ownerKeyChangeAggregate,
-      this.smith,
-      this.udHistory})
+      this.smith})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         G__typename, r'GIdentitiesByPkData_identity', 'G__typename');
@@ -28419,6 +27633,8 @@ class _$GIdentitiesByPkData_identity extends GIdentitiesByPkData_identity {
         linkedAccount, r'GIdentitiesByPkData_identity', 'linkedAccount');
     BuiltValueNullFieldError.checkNotNull(linkedAccountAggregate,
         r'GIdentitiesByPkData_identity', 'linkedAccountAggregate');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GIdentitiesByPkData_identity', 'status');
     BuiltValueNullFieldError.checkNotNull(membershipHistory,
         r'GIdentitiesByPkData_identity', 'membershipHistory');
     BuiltValueNullFieldError.checkNotNull(membershipHistoryAggregate,
@@ -28467,8 +27683,7 @@ class _$GIdentitiesByPkData_identity extends GIdentitiesByPkData_identity {
         name == other.name &&
         ownerKeyChange == other.ownerKeyChange &&
         ownerKeyChangeAggregate == other.ownerKeyChangeAggregate &&
-        smith == other.smith &&
-        udHistory == other.udHistory;
+        smith == other.smith;
   }
 
   @override
@@ -28498,7 +27713,6 @@ class _$GIdentitiesByPkData_identity extends GIdentitiesByPkData_identity {
     _$hash = $jc(_$hash, ownerKeyChange.hashCode);
     _$hash = $jc(_$hash, ownerKeyChangeAggregate.hashCode);
     _$hash = $jc(_$hash, smith.hashCode);
-    _$hash = $jc(_$hash, udHistory.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -28529,8 +27743,7 @@ class _$GIdentitiesByPkData_identity extends GIdentitiesByPkData_identity {
           ..add('name', name)
           ..add('ownerKeyChange', ownerKeyChange)
           ..add('ownerKeyChangeAggregate', ownerKeyChangeAggregate)
-          ..add('smith', smith)
-          ..add('udHistory', udHistory))
+          ..add('smith', smith))
         .toString();
   }
 }
@@ -28643,9 +27856,9 @@ class GIdentitiesByPkData_identityBuilder
               linkedAccountAggregate) =>
       _$this._linkedAccountAggregate = linkedAccountAggregate;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   ListBuilder<GIdentitiesByPkData_identity_membershipHistory>?
       _membershipHistory;
@@ -28696,14 +27909,6 @@ class GIdentitiesByPkData_identityBuilder
   set smith(GIdentitiesByPkData_identity_smithBuilder? smith) =>
       _$this._smith = smith;
 
-  ListBuilder<GIdentitiesByPkData_identity_udHistory>? _udHistory;
-  ListBuilder<GIdentitiesByPkData_identity_udHistory> get udHistory =>
-      _$this._udHistory ??=
-          new ListBuilder<GIdentitiesByPkData_identity_udHistory>();
-  set udHistory(
-          ListBuilder<GIdentitiesByPkData_identity_udHistory>? udHistory) =>
-      _$this._udHistory = udHistory;
-
   GIdentitiesByPkData_identityBuilder() {
     GIdentitiesByPkData_identity._initializeBuilder(this);
   }
@@ -28735,7 +27940,6 @@ class GIdentitiesByPkData_identityBuilder
       _ownerKeyChange = $v.ownerKeyChange.toBuilder();
       _ownerKeyChangeAggregate = $v.ownerKeyChangeAggregate.toBuilder();
       _smith = $v.smith?.toBuilder();
-      _udHistory = $v.udHistory?.toBuilder();
       _$v = null;
     }
     return this;
@@ -28784,15 +27988,14 @@ class GIdentitiesByPkData_identityBuilder
                   lastChangeOn, r'GIdentitiesByPkData_identity', 'lastChangeOn'),
               linkedAccount: linkedAccount.build(),
               linkedAccountAggregate: linkedAccountAggregate.build(),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GIdentitiesByPkData_identity', 'status'),
               membershipHistory: membershipHistory.build(),
               membershipHistoryAggregate: membershipHistoryAggregate.build(),
-              name: BuiltValueNullFieldError.checkNotNull(
-                  name, r'GIdentitiesByPkData_identity', 'name'),
+              name: BuiltValueNullFieldError.checkNotNull(name, r'GIdentitiesByPkData_identity', 'name'),
               ownerKeyChange: ownerKeyChange.build(),
               ownerKeyChangeAggregate: ownerKeyChangeAggregate.build(),
-              smith: _smith?.build(),
-              udHistory: _udHistory?.build());
+              smith: _smith?.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -28824,8 +28027,6 @@ class GIdentitiesByPkData_identityBuilder
         ownerKeyChangeAggregate.build();
         _$failedField = 'smith';
         _smith?.build();
-        _$failedField = 'udHistory';
-        _udHistory?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'GIdentitiesByPkData_identity', _$failedField, e.toString());
@@ -29210,7 +28411,7 @@ class _$GIdentitiesByPkData_identity_certIssued_issuer
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -29231,7 +28432,7 @@ class _$GIdentitiesByPkData_identity_certIssued_issuer
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -29242,6 +28443,8 @@ class _$GIdentitiesByPkData_identity_certIssued_issuer
         id, r'GIdentitiesByPkData_identity_certIssued_issuer', 'id');
     BuiltValueNullFieldError.checkNotNull(isMember,
         r'GIdentitiesByPkData_identity_certIssued_issuer', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GIdentitiesByPkData_identity_certIssued_issuer', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GIdentitiesByPkData_identity_certIssued_issuer', 'name');
     BuiltValueNullFieldError.checkNotNull(expireOn,
@@ -29340,9 +28543,9 @@ class GIdentitiesByPkData_identity_certIssued_issuerBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -29399,22 +28602,19 @@ class GIdentitiesByPkData_identity_certIssued_issuerBuilder
       _$result = _$v ??
           new _$GIdentitiesByPkData_identity_certIssued_issuer._(
               G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename,
-                  r'GIdentitiesByPkData_identity_certIssued_issuer',
-                  'G__typename'),
+                  G__typename, r'GIdentitiesByPkData_identity_certIssued_issuer', 'G__typename'),
               accountId: accountId,
               account: _account?.build(),
               id: BuiltValueNullFieldError.checkNotNull(
                   id, r'GIdentitiesByPkData_identity_certIssued_issuer', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GIdentitiesByPkData_identity_certIssued_issuer', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GIdentitiesByPkData_identity_certIssued_issuer', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GIdentitiesByPkData_identity_certIssued_issuer', 'name'),
               expireOn: BuiltValueNullFieldError.checkNotNull(
-                  expireOn,
-                  r'GIdentitiesByPkData_identity_certIssued_issuer',
-                  'expireOn'),
+                  expireOn, r'GIdentitiesByPkData_identity_certIssued_issuer', 'expireOn'),
               index: BuiltValueNullFieldError.checkNotNull(
                   index, r'GIdentitiesByPkData_identity_certIssued_issuer', 'index'));
     } catch (_) {
@@ -29575,7 +28775,7 @@ class _$GIdentitiesByPkData_identity_certIssued_receiver
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -29597,7 +28797,7 @@ class _$GIdentitiesByPkData_identity_certIssued_receiver
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -29608,6 +28808,8 @@ class _$GIdentitiesByPkData_identity_certIssued_receiver
         id, r'GIdentitiesByPkData_identity_certIssued_receiver', 'id');
     BuiltValueNullFieldError.checkNotNull(isMember,
         r'GIdentitiesByPkData_identity_certIssued_receiver', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GIdentitiesByPkData_identity_certIssued_receiver', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GIdentitiesByPkData_identity_certIssued_receiver', 'name');
     BuiltValueNullFieldError.checkNotNull(expireOn,
@@ -29706,9 +28908,9 @@ class GIdentitiesByPkData_identity_certIssued_receiverBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -29765,22 +28967,19 @@ class GIdentitiesByPkData_identity_certIssued_receiverBuilder
       _$result = _$v ??
           new _$GIdentitiesByPkData_identity_certIssued_receiver._(
               G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename,
-                  r'GIdentitiesByPkData_identity_certIssued_receiver',
-                  'G__typename'),
+                  G__typename, r'GIdentitiesByPkData_identity_certIssued_receiver', 'G__typename'),
               accountId: accountId,
               account: _account?.build(),
               id: BuiltValueNullFieldError.checkNotNull(
                   id, r'GIdentitiesByPkData_identity_certIssued_receiver', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GIdentitiesByPkData_identity_certIssued_receiver', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GIdentitiesByPkData_identity_certIssued_receiver', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GIdentitiesByPkData_identity_certIssued_receiver', 'name'),
               expireOn: BuiltValueNullFieldError.checkNotNull(
-                  expireOn,
-                  r'GIdentitiesByPkData_identity_certIssued_receiver',
-                  'expireOn'),
+                  expireOn, r'GIdentitiesByPkData_identity_certIssued_receiver', 'expireOn'),
               index: BuiltValueNullFieldError.checkNotNull(
                   index, r'GIdentitiesByPkData_identity_certIssued_receiver', 'index'));
     } catch (_) {
@@ -30461,7 +29660,7 @@ class _$GIdentitiesByPkData_identity_certReceived_issuer
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -30483,7 +29682,7 @@ class _$GIdentitiesByPkData_identity_certReceived_issuer
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -30494,6 +29693,8 @@ class _$GIdentitiesByPkData_identity_certReceived_issuer
         id, r'GIdentitiesByPkData_identity_certReceived_issuer', 'id');
     BuiltValueNullFieldError.checkNotNull(isMember,
         r'GIdentitiesByPkData_identity_certReceived_issuer', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GIdentitiesByPkData_identity_certReceived_issuer', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GIdentitiesByPkData_identity_certReceived_issuer', 'name');
     BuiltValueNullFieldError.checkNotNull(expireOn,
@@ -30592,9 +29793,9 @@ class GIdentitiesByPkData_identity_certReceived_issuerBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -30651,22 +29852,19 @@ class GIdentitiesByPkData_identity_certReceived_issuerBuilder
       _$result = _$v ??
           new _$GIdentitiesByPkData_identity_certReceived_issuer._(
               G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename,
-                  r'GIdentitiesByPkData_identity_certReceived_issuer',
-                  'G__typename'),
+                  G__typename, r'GIdentitiesByPkData_identity_certReceived_issuer', 'G__typename'),
               accountId: accountId,
               account: _account?.build(),
               id: BuiltValueNullFieldError.checkNotNull(
                   id, r'GIdentitiesByPkData_identity_certReceived_issuer', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GIdentitiesByPkData_identity_certReceived_issuer', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GIdentitiesByPkData_identity_certReceived_issuer', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GIdentitiesByPkData_identity_certReceived_issuer', 'name'),
               expireOn: BuiltValueNullFieldError.checkNotNull(
-                  expireOn,
-                  r'GIdentitiesByPkData_identity_certReceived_issuer',
-                  'expireOn'),
+                  expireOn, r'GIdentitiesByPkData_identity_certReceived_issuer', 'expireOn'),
               index: BuiltValueNullFieldError.checkNotNull(
                   index, r'GIdentitiesByPkData_identity_certReceived_issuer', 'index'));
     } catch (_) {
@@ -30829,7 +30027,7 @@ class _$GIdentitiesByPkData_identity_certReceived_receiver
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -30851,7 +30049,7 @@ class _$GIdentitiesByPkData_identity_certReceived_receiver
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -30862,6 +30060,8 @@ class _$GIdentitiesByPkData_identity_certReceived_receiver
         id, r'GIdentitiesByPkData_identity_certReceived_receiver', 'id');
     BuiltValueNullFieldError.checkNotNull(isMember,
         r'GIdentitiesByPkData_identity_certReceived_receiver', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(status,
+        r'GIdentitiesByPkData_identity_certReceived_receiver', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GIdentitiesByPkData_identity_certReceived_receiver', 'name');
     BuiltValueNullFieldError.checkNotNull(expireOn,
@@ -30961,9 +30161,9 @@ class GIdentitiesByPkData_identity_certReceived_receiverBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -31020,22 +30220,19 @@ class GIdentitiesByPkData_identity_certReceived_receiverBuilder
       _$result = _$v ??
           new _$GIdentitiesByPkData_identity_certReceived_receiver._(
               G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename,
-                  r'GIdentitiesByPkData_identity_certReceived_receiver',
-                  'G__typename'),
+                  G__typename, r'GIdentitiesByPkData_identity_certReceived_receiver', 'G__typename'),
               accountId: accountId,
               account: _account?.build(),
               id: BuiltValueNullFieldError.checkNotNull(
                   id, r'GIdentitiesByPkData_identity_certReceived_receiver', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GIdentitiesByPkData_identity_certReceived_receiver', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GIdentitiesByPkData_identity_certReceived_receiver', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GIdentitiesByPkData_identity_certReceived_receiver', 'name'),
               expireOn: BuiltValueNullFieldError.checkNotNull(
-                  expireOn,
-                  r'GIdentitiesByPkData_identity_certReceived_receiver',
-                  'expireOn'),
+                  expireOn, r'GIdentitiesByPkData_identity_certReceived_receiver', 'expireOn'),
               index: BuiltValueNullFieldError.checkNotNull(
                   index, r'GIdentitiesByPkData_identity_certReceived_receiver', 'index'));
     } catch (_) {
@@ -31863,7 +31060,7 @@ class _$GIdentitiesByPkData_identity_membershipHistory
   @override
   final String? eventId;
   @override
-  final _i2.GEventTypeEnum? eventType;
+  final String eventType;
   @override
   final String id;
   @override
@@ -31880,7 +31077,7 @@ class _$GIdentitiesByPkData_identity_membershipHistory
       {required this.G__typename,
       required this.blockNumber,
       this.eventId,
-      this.eventType,
+      required this.eventType,
       required this.id,
       this.identityId})
       : super._() {
@@ -31888,6 +31085,8 @@ class _$GIdentitiesByPkData_identity_membershipHistory
         r'GIdentitiesByPkData_identity_membershipHistory', 'G__typename');
     BuiltValueNullFieldError.checkNotNull(blockNumber,
         r'GIdentitiesByPkData_identity_membershipHistory', 'blockNumber');
+    BuiltValueNullFieldError.checkNotNull(eventType,
+        r'GIdentitiesByPkData_identity_membershipHistory', 'eventType');
     BuiltValueNullFieldError.checkNotNull(
         id, r'GIdentitiesByPkData_identity_membershipHistory', 'id');
   }
@@ -31960,9 +31159,9 @@ class GIdentitiesByPkData_identity_membershipHistoryBuilder
   String? get eventId => _$this._eventId;
   set eventId(String? eventId) => _$this._eventId = eventId;
 
-  _i2.GEventTypeEnum? _eventType;
-  _i2.GEventTypeEnum? get eventType => _$this._eventType;
-  set eventType(_i2.GEventTypeEnum? eventType) => _$this._eventType = eventType;
+  String? _eventType;
+  String? get eventType => _$this._eventType;
+  set eventType(String? eventType) => _$this._eventType = eventType;
 
   String? _id;
   String? get id => _$this._id;
@@ -32018,7 +31217,8 @@ class GIdentitiesByPkData_identity_membershipHistoryBuilder
                 r'GIdentitiesByPkData_identity_membershipHistory',
                 'blockNumber'),
             eventId: eventId,
-            eventType: eventType,
+            eventType: BuiltValueNullFieldError.checkNotNull(eventType,
+                r'GIdentitiesByPkData_identity_membershipHistory', 'eventType'),
             id: BuiltValueNullFieldError.checkNotNull(
                 id, r'GIdentitiesByPkData_identity_membershipHistory', 'id'),
             identityId: identityId);
@@ -33305,167 +32505,6 @@ class GIdentitiesByPkData_identity_smith_smithCertReceivedBuilder
   }
 }
 
-class _$GIdentitiesByPkData_identity_udHistory
-    extends GIdentitiesByPkData_identity_udHistory {
-  @override
-  final String G__typename;
-  @override
-  final String id;
-  @override
-  final int amount;
-  @override
-  final _i2.Gtimestamptz timestamp;
-
-  factory _$GIdentitiesByPkData_identity_udHistory(
-          [void Function(GIdentitiesByPkData_identity_udHistoryBuilder)?
-              updates]) =>
-      (new GIdentitiesByPkData_identity_udHistoryBuilder()..update(updates))
-          ._build();
-
-  _$GIdentitiesByPkData_identity_udHistory._(
-      {required this.G__typename,
-      required this.id,
-      required this.amount,
-      required this.timestamp})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        G__typename, r'GIdentitiesByPkData_identity_udHistory', 'G__typename');
-    BuiltValueNullFieldError.checkNotNull(
-        id, r'GIdentitiesByPkData_identity_udHistory', 'id');
-    BuiltValueNullFieldError.checkNotNull(
-        amount, r'GIdentitiesByPkData_identity_udHistory', 'amount');
-    BuiltValueNullFieldError.checkNotNull(
-        timestamp, r'GIdentitiesByPkData_identity_udHistory', 'timestamp');
-  }
-
-  @override
-  GIdentitiesByPkData_identity_udHistory rebuild(
-          void Function(GIdentitiesByPkData_identity_udHistoryBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
-
-  @override
-  GIdentitiesByPkData_identity_udHistoryBuilder toBuilder() =>
-      new GIdentitiesByPkData_identity_udHistoryBuilder()..replace(this);
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(other, this)) return true;
-    return other is GIdentitiesByPkData_identity_udHistory &&
-        G__typename == other.G__typename &&
-        id == other.id &&
-        amount == other.amount &&
-        timestamp == other.timestamp;
-  }
-
-  @override
-  int get hashCode {
-    var _$hash = 0;
-    _$hash = $jc(_$hash, G__typename.hashCode);
-    _$hash = $jc(_$hash, id.hashCode);
-    _$hash = $jc(_$hash, amount.hashCode);
-    _$hash = $jc(_$hash, timestamp.hashCode);
-    _$hash = $jf(_$hash);
-    return _$hash;
-  }
-
-  @override
-  String toString() {
-    return (newBuiltValueToStringHelper(
-            r'GIdentitiesByPkData_identity_udHistory')
-          ..add('G__typename', G__typename)
-          ..add('id', id)
-          ..add('amount', amount)
-          ..add('timestamp', timestamp))
-        .toString();
-  }
-}
-
-class GIdentitiesByPkData_identity_udHistoryBuilder
-    implements
-        Builder<GIdentitiesByPkData_identity_udHistory,
-            GIdentitiesByPkData_identity_udHistoryBuilder> {
-  _$GIdentitiesByPkData_identity_udHistory? _$v;
-
-  String? _G__typename;
-  String? get G__typename => _$this._G__typename;
-  set G__typename(String? G__typename) => _$this._G__typename = G__typename;
-
-  String? _id;
-  String? get id => _$this._id;
-  set id(String? id) => _$this._id = id;
-
-  int? _amount;
-  int? get amount => _$this._amount;
-  set amount(int? amount) => _$this._amount = amount;
-
-  _i2.GtimestamptzBuilder? _timestamp;
-  _i2.GtimestamptzBuilder get timestamp =>
-      _$this._timestamp ??= new _i2.GtimestamptzBuilder();
-  set timestamp(_i2.GtimestamptzBuilder? timestamp) =>
-      _$this._timestamp = timestamp;
-
-  GIdentitiesByPkData_identity_udHistoryBuilder() {
-    GIdentitiesByPkData_identity_udHistory._initializeBuilder(this);
-  }
-
-  GIdentitiesByPkData_identity_udHistoryBuilder get _$this {
-    final $v = _$v;
-    if ($v != null) {
-      _G__typename = $v.G__typename;
-      _id = $v.id;
-      _amount = $v.amount;
-      _timestamp = $v.timestamp.toBuilder();
-      _$v = null;
-    }
-    return this;
-  }
-
-  @override
-  void replace(GIdentitiesByPkData_identity_udHistory other) {
-    ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$GIdentitiesByPkData_identity_udHistory;
-  }
-
-  @override
-  void update(
-      void Function(GIdentitiesByPkData_identity_udHistoryBuilder)? updates) {
-    if (updates != null) updates(this);
-  }
-
-  @override
-  GIdentitiesByPkData_identity_udHistory build() => _build();
-
-  _$GIdentitiesByPkData_identity_udHistory _build() {
-    _$GIdentitiesByPkData_identity_udHistory _$result;
-    try {
-      _$result = _$v ??
-          new _$GIdentitiesByPkData_identity_udHistory._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
-                  r'GIdentitiesByPkData_identity_udHistory', 'G__typename'),
-              id: BuiltValueNullFieldError.checkNotNull(
-                  id, r'GIdentitiesByPkData_identity_udHistory', 'id'),
-              amount: BuiltValueNullFieldError.checkNotNull(
-                  amount, r'GIdentitiesByPkData_identity_udHistory', 'amount'),
-              timestamp: timestamp.build());
-    } catch (_) {
-      late String _$failedField;
-      try {
-        _$failedField = 'timestamp';
-        timestamp.build();
-      } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            r'GIdentitiesByPkData_identity_udHistory',
-            _$failedField,
-            e.toString());
-      }
-      rethrow;
-    }
-    replace(_$result);
-    return _$result;
-  }
-}
-
 class _$GIdentitiesByNameData extends GIdentitiesByNameData {
   @override
   final String G__typename;
@@ -33623,7 +32662,7 @@ class _$GIdentitiesByNameData_identity extends GIdentitiesByNameData_identity {
   final GIdentitiesByNameData_identity_linkedAccountAggregate
       linkedAccountAggregate;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final BuiltList<GIdentitiesByNameData_identity_membershipHistory>
       membershipHistory;
@@ -33639,8 +32678,6 @@ class _$GIdentitiesByNameData_identity extends GIdentitiesByNameData_identity {
       ownerKeyChangeAggregate;
   @override
   final GIdentitiesByNameData_identity_smith? smith;
-  @override
-  final BuiltList<GIdentitiesByNameData_identity_udHistory>? udHistory;
 
   factory _$GIdentitiesByNameData_identity(
           [void Function(GIdentitiesByNameData_identityBuilder)? updates]) =>
@@ -33664,14 +32701,13 @@ class _$GIdentitiesByNameData_identity extends GIdentitiesByNameData_identity {
       required this.lastChangeOn,
       required this.linkedAccount,
       required this.linkedAccountAggregate,
-      this.status,
+      required this.status,
       required this.membershipHistory,
       required this.membershipHistoryAggregate,
       required this.name,
       required this.ownerKeyChange,
       required this.ownerKeyChangeAggregate,
-      this.smith,
-      this.udHistory})
+      this.smith})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         G__typename, r'GIdentitiesByNameData_identity', 'G__typename');
@@ -33699,6 +32735,8 @@ class _$GIdentitiesByNameData_identity extends GIdentitiesByNameData_identity {
         linkedAccount, r'GIdentitiesByNameData_identity', 'linkedAccount');
     BuiltValueNullFieldError.checkNotNull(linkedAccountAggregate,
         r'GIdentitiesByNameData_identity', 'linkedAccountAggregate');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GIdentitiesByNameData_identity', 'status');
     BuiltValueNullFieldError.checkNotNull(membershipHistory,
         r'GIdentitiesByNameData_identity', 'membershipHistory');
     BuiltValueNullFieldError.checkNotNull(membershipHistoryAggregate,
@@ -33747,8 +32785,7 @@ class _$GIdentitiesByNameData_identity extends GIdentitiesByNameData_identity {
         name == other.name &&
         ownerKeyChange == other.ownerKeyChange &&
         ownerKeyChangeAggregate == other.ownerKeyChangeAggregate &&
-        smith == other.smith &&
-        udHistory == other.udHistory;
+        smith == other.smith;
   }
 
   @override
@@ -33778,7 +32815,6 @@ class _$GIdentitiesByNameData_identity extends GIdentitiesByNameData_identity {
     _$hash = $jc(_$hash, ownerKeyChange.hashCode);
     _$hash = $jc(_$hash, ownerKeyChangeAggregate.hashCode);
     _$hash = $jc(_$hash, smith.hashCode);
-    _$hash = $jc(_$hash, udHistory.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -33809,8 +32845,7 @@ class _$GIdentitiesByNameData_identity extends GIdentitiesByNameData_identity {
           ..add('name', name)
           ..add('ownerKeyChange', ownerKeyChange)
           ..add('ownerKeyChangeAggregate', ownerKeyChangeAggregate)
-          ..add('smith', smith)
-          ..add('udHistory', udHistory))
+          ..add('smith', smith))
         .toString();
   }
 }
@@ -33924,9 +32959,9 @@ class GIdentitiesByNameData_identityBuilder
               linkedAccountAggregate) =>
       _$this._linkedAccountAggregate = linkedAccountAggregate;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   ListBuilder<GIdentitiesByNameData_identity_membershipHistory>?
       _membershipHistory;
@@ -33977,14 +33012,6 @@ class GIdentitiesByNameData_identityBuilder
   set smith(GIdentitiesByNameData_identity_smithBuilder? smith) =>
       _$this._smith = smith;
 
-  ListBuilder<GIdentitiesByNameData_identity_udHistory>? _udHistory;
-  ListBuilder<GIdentitiesByNameData_identity_udHistory> get udHistory =>
-      _$this._udHistory ??=
-          new ListBuilder<GIdentitiesByNameData_identity_udHistory>();
-  set udHistory(
-          ListBuilder<GIdentitiesByNameData_identity_udHistory>? udHistory) =>
-      _$this._udHistory = udHistory;
-
   GIdentitiesByNameData_identityBuilder() {
     GIdentitiesByNameData_identity._initializeBuilder(this);
   }
@@ -34016,7 +33043,6 @@ class GIdentitiesByNameData_identityBuilder
       _ownerKeyChange = $v.ownerKeyChange.toBuilder();
       _ownerKeyChangeAggregate = $v.ownerKeyChangeAggregate.toBuilder();
       _smith = $v.smith?.toBuilder();
-      _udHistory = $v.udHistory?.toBuilder();
       _$v = null;
     }
     return this;
@@ -34061,18 +33087,18 @@ class GIdentitiesByNameData_identityBuilder
                   index, r'GIdentitiesByNameData_identity', 'index'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GIdentitiesByNameData_identity', 'isMember'),
-              lastChangeOn: BuiltValueNullFieldError.checkNotNull(lastChangeOn,
-                  r'GIdentitiesByNameData_identity', 'lastChangeOn'),
+              lastChangeOn: BuiltValueNullFieldError.checkNotNull(
+                  lastChangeOn, r'GIdentitiesByNameData_identity', 'lastChangeOn'),
               linkedAccount: linkedAccount.build(),
               linkedAccountAggregate: linkedAccountAggregate.build(),
-              status: status,
+              status:
+                  BuiltValueNullFieldError.checkNotNull(status, r'GIdentitiesByNameData_identity', 'status'),
               membershipHistory: membershipHistory.build(),
               membershipHistoryAggregate: membershipHistoryAggregate.build(),
               name: BuiltValueNullFieldError.checkNotNull(name, r'GIdentitiesByNameData_identity', 'name'),
               ownerKeyChange: ownerKeyChange.build(),
               ownerKeyChangeAggregate: ownerKeyChangeAggregate.build(),
-              smith: _smith?.build(),
-              udHistory: _udHistory?.build());
+              smith: _smith?.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -34104,8 +33130,6 @@ class GIdentitiesByNameData_identityBuilder
         ownerKeyChangeAggregate.build();
         _$failedField = 'smith';
         _smith?.build();
-        _$failedField = 'udHistory';
-        _udHistory?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'GIdentitiesByNameData_identity', _$failedField, e.toString());
@@ -34494,7 +33518,7 @@ class _$GIdentitiesByNameData_identity_certIssued_issuer
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -34516,7 +33540,7 @@ class _$GIdentitiesByNameData_identity_certIssued_issuer
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -34527,6 +33551,8 @@ class _$GIdentitiesByNameData_identity_certIssued_issuer
         id, r'GIdentitiesByNameData_identity_certIssued_issuer', 'id');
     BuiltValueNullFieldError.checkNotNull(isMember,
         r'GIdentitiesByNameData_identity_certIssued_issuer', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GIdentitiesByNameData_identity_certIssued_issuer', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GIdentitiesByNameData_identity_certIssued_issuer', 'name');
     BuiltValueNullFieldError.checkNotNull(expireOn,
@@ -34625,9 +33651,9 @@ class GIdentitiesByNameData_identity_certIssued_issuerBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -34684,22 +33710,19 @@ class GIdentitiesByNameData_identity_certIssued_issuerBuilder
       _$result = _$v ??
           new _$GIdentitiesByNameData_identity_certIssued_issuer._(
               G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename,
-                  r'GIdentitiesByNameData_identity_certIssued_issuer',
-                  'G__typename'),
+                  G__typename, r'GIdentitiesByNameData_identity_certIssued_issuer', 'G__typename'),
               accountId: accountId,
               account: _account?.build(),
               id: BuiltValueNullFieldError.checkNotNull(
                   id, r'GIdentitiesByNameData_identity_certIssued_issuer', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GIdentitiesByNameData_identity_certIssued_issuer', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GIdentitiesByNameData_identity_certIssued_issuer', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GIdentitiesByNameData_identity_certIssued_issuer', 'name'),
               expireOn: BuiltValueNullFieldError.checkNotNull(
-                  expireOn,
-                  r'GIdentitiesByNameData_identity_certIssued_issuer',
-                  'expireOn'),
+                  expireOn, r'GIdentitiesByNameData_identity_certIssued_issuer', 'expireOn'),
               index: BuiltValueNullFieldError.checkNotNull(
                   index, r'GIdentitiesByNameData_identity_certIssued_issuer', 'index'));
     } catch (_) {
@@ -34862,7 +33885,7 @@ class _$GIdentitiesByNameData_identity_certIssued_receiver
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -34884,7 +33907,7 @@ class _$GIdentitiesByNameData_identity_certIssued_receiver
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -34895,6 +33918,8 @@ class _$GIdentitiesByNameData_identity_certIssued_receiver
         id, r'GIdentitiesByNameData_identity_certIssued_receiver', 'id');
     BuiltValueNullFieldError.checkNotNull(isMember,
         r'GIdentitiesByNameData_identity_certIssued_receiver', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(status,
+        r'GIdentitiesByNameData_identity_certIssued_receiver', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GIdentitiesByNameData_identity_certIssued_receiver', 'name');
     BuiltValueNullFieldError.checkNotNull(expireOn,
@@ -34994,9 +34019,9 @@ class GIdentitiesByNameData_identity_certIssued_receiverBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -35053,22 +34078,19 @@ class GIdentitiesByNameData_identity_certIssued_receiverBuilder
       _$result = _$v ??
           new _$GIdentitiesByNameData_identity_certIssued_receiver._(
               G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename,
-                  r'GIdentitiesByNameData_identity_certIssued_receiver',
-                  'G__typename'),
+                  G__typename, r'GIdentitiesByNameData_identity_certIssued_receiver', 'G__typename'),
               accountId: accountId,
               account: _account?.build(),
               id: BuiltValueNullFieldError.checkNotNull(
                   id, r'GIdentitiesByNameData_identity_certIssued_receiver', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GIdentitiesByNameData_identity_certIssued_receiver', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GIdentitiesByNameData_identity_certIssued_receiver', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GIdentitiesByNameData_identity_certIssued_receiver', 'name'),
               expireOn: BuiltValueNullFieldError.checkNotNull(
-                  expireOn,
-                  r'GIdentitiesByNameData_identity_certIssued_receiver',
-                  'expireOn'),
+                  expireOn, r'GIdentitiesByNameData_identity_certIssued_receiver', 'expireOn'),
               index: BuiltValueNullFieldError.checkNotNull(
                   index, r'GIdentitiesByNameData_identity_certIssued_receiver', 'index'));
     } catch (_) {
@@ -35763,7 +34785,7 @@ class _$GIdentitiesByNameData_identity_certReceived_issuer
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -35785,7 +34807,7 @@ class _$GIdentitiesByNameData_identity_certReceived_issuer
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -35796,6 +34818,8 @@ class _$GIdentitiesByNameData_identity_certReceived_issuer
         id, r'GIdentitiesByNameData_identity_certReceived_issuer', 'id');
     BuiltValueNullFieldError.checkNotNull(isMember,
         r'GIdentitiesByNameData_identity_certReceived_issuer', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(status,
+        r'GIdentitiesByNameData_identity_certReceived_issuer', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GIdentitiesByNameData_identity_certReceived_issuer', 'name');
     BuiltValueNullFieldError.checkNotNull(expireOn,
@@ -35895,9 +34919,9 @@ class GIdentitiesByNameData_identity_certReceived_issuerBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -35954,22 +34978,19 @@ class GIdentitiesByNameData_identity_certReceived_issuerBuilder
       _$result = _$v ??
           new _$GIdentitiesByNameData_identity_certReceived_issuer._(
               G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename,
-                  r'GIdentitiesByNameData_identity_certReceived_issuer',
-                  'G__typename'),
+                  G__typename, r'GIdentitiesByNameData_identity_certReceived_issuer', 'G__typename'),
               accountId: accountId,
               account: _account?.build(),
               id: BuiltValueNullFieldError.checkNotNull(
                   id, r'GIdentitiesByNameData_identity_certReceived_issuer', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GIdentitiesByNameData_identity_certReceived_issuer', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GIdentitiesByNameData_identity_certReceived_issuer', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GIdentitiesByNameData_identity_certReceived_issuer', 'name'),
               expireOn: BuiltValueNullFieldError.checkNotNull(
-                  expireOn,
-                  r'GIdentitiesByNameData_identity_certReceived_issuer',
-                  'expireOn'),
+                  expireOn, r'GIdentitiesByNameData_identity_certReceived_issuer', 'expireOn'),
               index: BuiltValueNullFieldError.checkNotNull(
                   index, r'GIdentitiesByNameData_identity_certReceived_issuer', 'index'));
     } catch (_) {
@@ -36136,7 +35157,7 @@ class _$GIdentitiesByNameData_identity_certReceived_receiver
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -36158,7 +35179,7 @@ class _$GIdentitiesByNameData_identity_certReceived_receiver
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -36169,6 +35190,8 @@ class _$GIdentitiesByNameData_identity_certReceived_receiver
         id, r'GIdentitiesByNameData_identity_certReceived_receiver', 'id');
     BuiltValueNullFieldError.checkNotNull(isMember,
         r'GIdentitiesByNameData_identity_certReceived_receiver', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(status,
+        r'GIdentitiesByNameData_identity_certReceived_receiver', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GIdentitiesByNameData_identity_certReceived_receiver', 'name');
     BuiltValueNullFieldError.checkNotNull(expireOn,
@@ -36268,9 +35291,9 @@ class GIdentitiesByNameData_identity_certReceived_receiverBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -36329,22 +35352,19 @@ class GIdentitiesByNameData_identity_certReceived_receiverBuilder
       _$result = _$v ??
           new _$GIdentitiesByNameData_identity_certReceived_receiver._(
               G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename,
-                  r'GIdentitiesByNameData_identity_certReceived_receiver',
-                  'G__typename'),
+                  G__typename, r'GIdentitiesByNameData_identity_certReceived_receiver', 'G__typename'),
               accountId: accountId,
               account: _account?.build(),
               id: BuiltValueNullFieldError.checkNotNull(
                   id, r'GIdentitiesByNameData_identity_certReceived_receiver', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GIdentitiesByNameData_identity_certReceived_receiver', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GIdentitiesByNameData_identity_certReceived_receiver', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GIdentitiesByNameData_identity_certReceived_receiver', 'name'),
               expireOn: BuiltValueNullFieldError.checkNotNull(
-                  expireOn,
-                  r'GIdentitiesByNameData_identity_certReceived_receiver',
-                  'expireOn'),
+                  expireOn, r'GIdentitiesByNameData_identity_certReceived_receiver', 'expireOn'),
               index: BuiltValueNullFieldError.checkNotNull(
                   index, r'GIdentitiesByNameData_identity_certReceived_receiver', 'index'));
     } catch (_) {
@@ -37181,7 +36201,7 @@ class _$GIdentitiesByNameData_identity_membershipHistory
   @override
   final String? eventId;
   @override
-  final _i2.GEventTypeEnum? eventType;
+  final String eventType;
   @override
   final String id;
   @override
@@ -37199,7 +36219,7 @@ class _$GIdentitiesByNameData_identity_membershipHistory
       {required this.G__typename,
       required this.blockNumber,
       this.eventId,
-      this.eventType,
+      required this.eventType,
       required this.id,
       this.identityId})
       : super._() {
@@ -37207,6 +36227,8 @@ class _$GIdentitiesByNameData_identity_membershipHistory
         r'GIdentitiesByNameData_identity_membershipHistory', 'G__typename');
     BuiltValueNullFieldError.checkNotNull(blockNumber,
         r'GIdentitiesByNameData_identity_membershipHistory', 'blockNumber');
+    BuiltValueNullFieldError.checkNotNull(eventType,
+        r'GIdentitiesByNameData_identity_membershipHistory', 'eventType');
     BuiltValueNullFieldError.checkNotNull(
         id, r'GIdentitiesByNameData_identity_membershipHistory', 'id');
   }
@@ -37279,9 +36301,9 @@ class GIdentitiesByNameData_identity_membershipHistoryBuilder
   String? get eventId => _$this._eventId;
   set eventId(String? eventId) => _$this._eventId = eventId;
 
-  _i2.GEventTypeEnum? _eventType;
-  _i2.GEventTypeEnum? get eventType => _$this._eventType;
-  set eventType(_i2.GEventTypeEnum? eventType) => _$this._eventType = eventType;
+  String? _eventType;
+  String? get eventType => _$this._eventType;
+  set eventType(String? eventType) => _$this._eventType = eventType;
 
   String? _id;
   String? get id => _$this._id;
@@ -37337,7 +36359,10 @@ class GIdentitiesByNameData_identity_membershipHistoryBuilder
                 r'GIdentitiesByNameData_identity_membershipHistory',
                 'blockNumber'),
             eventId: eventId,
-            eventType: eventType,
+            eventType: BuiltValueNullFieldError.checkNotNull(
+                eventType,
+                r'GIdentitiesByNameData_identity_membershipHistory',
+                'eventType'),
             id: BuiltValueNullFieldError.checkNotNull(
                 id, r'GIdentitiesByNameData_identity_membershipHistory', 'id'),
             identityId: identityId);
@@ -38644,167 +37669,6 @@ class GIdentitiesByNameData_identity_smith_smithCertReceivedBuilder
   }
 }
 
-class _$GIdentitiesByNameData_identity_udHistory
-    extends GIdentitiesByNameData_identity_udHistory {
-  @override
-  final String G__typename;
-  @override
-  final String id;
-  @override
-  final int amount;
-  @override
-  final _i2.Gtimestamptz timestamp;
-
-  factory _$GIdentitiesByNameData_identity_udHistory(
-          [void Function(GIdentitiesByNameData_identity_udHistoryBuilder)?
-              updates]) =>
-      (new GIdentitiesByNameData_identity_udHistoryBuilder()..update(updates))
-          ._build();
-
-  _$GIdentitiesByNameData_identity_udHistory._(
-      {required this.G__typename,
-      required this.id,
-      required this.amount,
-      required this.timestamp})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(G__typename,
-        r'GIdentitiesByNameData_identity_udHistory', 'G__typename');
-    BuiltValueNullFieldError.checkNotNull(
-        id, r'GIdentitiesByNameData_identity_udHistory', 'id');
-    BuiltValueNullFieldError.checkNotNull(
-        amount, r'GIdentitiesByNameData_identity_udHistory', 'amount');
-    BuiltValueNullFieldError.checkNotNull(
-        timestamp, r'GIdentitiesByNameData_identity_udHistory', 'timestamp');
-  }
-
-  @override
-  GIdentitiesByNameData_identity_udHistory rebuild(
-          void Function(GIdentitiesByNameData_identity_udHistoryBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
-
-  @override
-  GIdentitiesByNameData_identity_udHistoryBuilder toBuilder() =>
-      new GIdentitiesByNameData_identity_udHistoryBuilder()..replace(this);
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(other, this)) return true;
-    return other is GIdentitiesByNameData_identity_udHistory &&
-        G__typename == other.G__typename &&
-        id == other.id &&
-        amount == other.amount &&
-        timestamp == other.timestamp;
-  }
-
-  @override
-  int get hashCode {
-    var _$hash = 0;
-    _$hash = $jc(_$hash, G__typename.hashCode);
-    _$hash = $jc(_$hash, id.hashCode);
-    _$hash = $jc(_$hash, amount.hashCode);
-    _$hash = $jc(_$hash, timestamp.hashCode);
-    _$hash = $jf(_$hash);
-    return _$hash;
-  }
-
-  @override
-  String toString() {
-    return (newBuiltValueToStringHelper(
-            r'GIdentitiesByNameData_identity_udHistory')
-          ..add('G__typename', G__typename)
-          ..add('id', id)
-          ..add('amount', amount)
-          ..add('timestamp', timestamp))
-        .toString();
-  }
-}
-
-class GIdentitiesByNameData_identity_udHistoryBuilder
-    implements
-        Builder<GIdentitiesByNameData_identity_udHistory,
-            GIdentitiesByNameData_identity_udHistoryBuilder> {
-  _$GIdentitiesByNameData_identity_udHistory? _$v;
-
-  String? _G__typename;
-  String? get G__typename => _$this._G__typename;
-  set G__typename(String? G__typename) => _$this._G__typename = G__typename;
-
-  String? _id;
-  String? get id => _$this._id;
-  set id(String? id) => _$this._id = id;
-
-  int? _amount;
-  int? get amount => _$this._amount;
-  set amount(int? amount) => _$this._amount = amount;
-
-  _i2.GtimestamptzBuilder? _timestamp;
-  _i2.GtimestamptzBuilder get timestamp =>
-      _$this._timestamp ??= new _i2.GtimestamptzBuilder();
-  set timestamp(_i2.GtimestamptzBuilder? timestamp) =>
-      _$this._timestamp = timestamp;
-
-  GIdentitiesByNameData_identity_udHistoryBuilder() {
-    GIdentitiesByNameData_identity_udHistory._initializeBuilder(this);
-  }
-
-  GIdentitiesByNameData_identity_udHistoryBuilder get _$this {
-    final $v = _$v;
-    if ($v != null) {
-      _G__typename = $v.G__typename;
-      _id = $v.id;
-      _amount = $v.amount;
-      _timestamp = $v.timestamp.toBuilder();
-      _$v = null;
-    }
-    return this;
-  }
-
-  @override
-  void replace(GIdentitiesByNameData_identity_udHistory other) {
-    ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$GIdentitiesByNameData_identity_udHistory;
-  }
-
-  @override
-  void update(
-      void Function(GIdentitiesByNameData_identity_udHistoryBuilder)? updates) {
-    if (updates != null) updates(this);
-  }
-
-  @override
-  GIdentitiesByNameData_identity_udHistory build() => _build();
-
-  _$GIdentitiesByNameData_identity_udHistory _build() {
-    _$GIdentitiesByNameData_identity_udHistory _$result;
-    try {
-      _$result = _$v ??
-          new _$GIdentitiesByNameData_identity_udHistory._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
-                  r'GIdentitiesByNameData_identity_udHistory', 'G__typename'),
-              id: BuiltValueNullFieldError.checkNotNull(
-                  id, r'GIdentitiesByNameData_identity_udHistory', 'id'),
-              amount: BuiltValueNullFieldError.checkNotNull(amount,
-                  r'GIdentitiesByNameData_identity_udHistory', 'amount'),
-              timestamp: timestamp.build());
-    } catch (_) {
-      late String _$failedField;
-      try {
-        _$failedField = 'timestamp';
-        timestamp.build();
-      } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            r'GIdentitiesByNameData_identity_udHistory',
-            _$failedField,
-            e.toString());
-      }
-      rethrow;
-    }
-    replace(_$result);
-    return _$result;
-  }
-}
-
 class _$GAccountByPkData extends GAccountByPkData {
   @override
   final String G__typename;
@@ -39348,7 +38212,7 @@ class _$GAccountByPkData_accountByPk_commentsIssued
   @override
   final _i2.Gbytea remarkBytes;
   @override
-  final _i2.GCommentTypeEnum? type;
+  final String type;
 
   factory _$GAccountByPkData_accountByPk_commentsIssued(
           [void Function(GAccountByPkData_accountByPk_commentsIssuedBuilder)?
@@ -39366,7 +38230,7 @@ class _$GAccountByPkData_accountByPk_commentsIssued
       required this.id,
       required this.remark,
       required this.remarkBytes,
-      this.type})
+      required this.type})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(G__typename,
         r'GAccountByPkData_accountByPk_commentsIssued', 'G__typename');
@@ -39380,6 +38244,8 @@ class _$GAccountByPkData_accountByPk_commentsIssued
         remark, r'GAccountByPkData_accountByPk_commentsIssued', 'remark');
     BuiltValueNullFieldError.checkNotNull(remarkBytes,
         r'GAccountByPkData_accountByPk_commentsIssued', 'remarkBytes');
+    BuiltValueNullFieldError.checkNotNull(
+        type, r'GAccountByPkData_accountByPk_commentsIssued', 'type');
   }
 
   @override
@@ -39480,9 +38346,9 @@ class GAccountByPkData_accountByPk_commentsIssuedBuilder
   set remarkBytes(_i2.GbyteaBuilder? remarkBytes) =>
       _$this._remarkBytes = remarkBytes;
 
-  _i2.GCommentTypeEnum? _type;
-  _i2.GCommentTypeEnum? get type => _$this._type;
-  set type(_i2.GCommentTypeEnum? type) => _$this._type = type;
+  String? _type;
+  String? get type => _$this._type;
+  set type(String? type) => _$this._type = type;
 
   GAccountByPkData_accountByPk_commentsIssuedBuilder() {
     GAccountByPkData_accountByPk_commentsIssued._initializeBuilder(this);
@@ -39543,7 +38409,8 @@ class GAccountByPkData_accountByPk_commentsIssuedBuilder
               remark: BuiltValueNullFieldError.checkNotNull(remark,
                   r'GAccountByPkData_accountByPk_commentsIssued', 'remark'),
               remarkBytes: remarkBytes.build(),
-              type: type);
+              type: BuiltValueNullFieldError.checkNotNull(
+                  type, r'GAccountByPkData_accountByPk_commentsIssued', 'type'));
     } catch (_) {
       late String _$failedField;
       try {
@@ -39881,7 +38748,7 @@ class _$GAccountByPkData_accountByPk_identity
   final GAccountByPkData_accountByPk_identity_linkedAccountAggregate
       linkedAccountAggregate;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final BuiltList<GAccountByPkData_accountByPk_identity_membershipHistory>
       membershipHistory;
@@ -39898,8 +38765,6 @@ class _$GAccountByPkData_accountByPk_identity
       ownerKeyChangeAggregate;
   @override
   final GAccountByPkData_accountByPk_identity_smith? smith;
-  @override
-  final BuiltList<GAccountByPkData_accountByPk_identity_udHistory>? udHistory;
 
   factory _$GAccountByPkData_accountByPk_identity(
           [void Function(GAccountByPkData_accountByPk_identityBuilder)?
@@ -39925,14 +38790,13 @@ class _$GAccountByPkData_accountByPk_identity
       required this.lastChangeOn,
       required this.linkedAccount,
       required this.linkedAccountAggregate,
-      this.status,
+      required this.status,
       required this.membershipHistory,
       required this.membershipHistoryAggregate,
       required this.name,
       required this.ownerKeyChange,
       required this.ownerKeyChangeAggregate,
-      this.smith,
-      this.udHistory})
+      this.smith})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         G__typename, r'GAccountByPkData_accountByPk_identity', 'G__typename');
@@ -39960,6 +38824,8 @@ class _$GAccountByPkData_accountByPk_identity
         r'GAccountByPkData_accountByPk_identity', 'linkedAccount');
     BuiltValueNullFieldError.checkNotNull(linkedAccountAggregate,
         r'GAccountByPkData_accountByPk_identity', 'linkedAccountAggregate');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GAccountByPkData_accountByPk_identity', 'status');
     BuiltValueNullFieldError.checkNotNull(membershipHistory,
         r'GAccountByPkData_accountByPk_identity', 'membershipHistory');
     BuiltValueNullFieldError.checkNotNull(membershipHistoryAggregate,
@@ -40009,8 +38875,7 @@ class _$GAccountByPkData_accountByPk_identity
         name == other.name &&
         ownerKeyChange == other.ownerKeyChange &&
         ownerKeyChangeAggregate == other.ownerKeyChangeAggregate &&
-        smith == other.smith &&
-        udHistory == other.udHistory;
+        smith == other.smith;
   }
 
   @override
@@ -40040,7 +38905,6 @@ class _$GAccountByPkData_accountByPk_identity
     _$hash = $jc(_$hash, ownerKeyChange.hashCode);
     _$hash = $jc(_$hash, ownerKeyChangeAggregate.hashCode);
     _$hash = $jc(_$hash, smith.hashCode);
-    _$hash = $jc(_$hash, udHistory.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -40072,8 +38936,7 @@ class _$GAccountByPkData_accountByPk_identity
           ..add('name', name)
           ..add('ownerKeyChange', ownerKeyChange)
           ..add('ownerKeyChangeAggregate', ownerKeyChangeAggregate)
-          ..add('smith', smith)
-          ..add('udHistory', udHistory))
+          ..add('smith', smith))
         .toString();
   }
 }
@@ -40191,9 +39054,9 @@ class GAccountByPkData_accountByPk_identityBuilder
               linkedAccountAggregate) =>
       _$this._linkedAccountAggregate = linkedAccountAggregate;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   ListBuilder<GAccountByPkData_accountByPk_identity_membershipHistory>?
       _membershipHistory;
@@ -40246,15 +39109,6 @@ class GAccountByPkData_accountByPk_identityBuilder
   set smith(GAccountByPkData_accountByPk_identity_smithBuilder? smith) =>
       _$this._smith = smith;
 
-  ListBuilder<GAccountByPkData_accountByPk_identity_udHistory>? _udHistory;
-  ListBuilder<GAccountByPkData_accountByPk_identity_udHistory> get udHistory =>
-      _$this._udHistory ??=
-          new ListBuilder<GAccountByPkData_accountByPk_identity_udHistory>();
-  set udHistory(
-          ListBuilder<GAccountByPkData_accountByPk_identity_udHistory>?
-              udHistory) =>
-      _$this._udHistory = udHistory;
-
   GAccountByPkData_accountByPk_identityBuilder() {
     GAccountByPkData_accountByPk_identity._initializeBuilder(this);
   }
@@ -40286,7 +39140,6 @@ class GAccountByPkData_accountByPk_identityBuilder
       _ownerKeyChange = $v.ownerKeyChange.toBuilder();
       _ownerKeyChangeAggregate = $v.ownerKeyChangeAggregate.toBuilder();
       _smith = $v.smith?.toBuilder();
-      _udHistory = $v.udHistory?.toBuilder();
       _$v = null;
     }
     return this;
@@ -40336,14 +39189,13 @@ class GAccountByPkData_accountByPk_identityBuilder
                   r'GAccountByPkData_accountByPk_identity', 'lastChangeOn'),
               linkedAccount: linkedAccount.build(),
               linkedAccountAggregate: linkedAccountAggregate.build(),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(status, r'GAccountByPkData_accountByPk_identity', 'status'),
               membershipHistory: membershipHistory.build(),
               membershipHistoryAggregate: membershipHistoryAggregate.build(),
               name: BuiltValueNullFieldError.checkNotNull(name, r'GAccountByPkData_accountByPk_identity', 'name'),
               ownerKeyChange: ownerKeyChange.build(),
               ownerKeyChangeAggregate: ownerKeyChangeAggregate.build(),
-              smith: _smith?.build(),
-              udHistory: _udHistory?.build());
+              smith: _smith?.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -40375,8 +39227,6 @@ class GAccountByPkData_accountByPk_identityBuilder
         ownerKeyChangeAggregate.build();
         _$failedField = 'smith';
         _smith?.build();
-        _$failedField = 'udHistory';
-        _udHistory?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'GAccountByPkData_accountByPk_identity',
@@ -40781,7 +39631,7 @@ class _$GAccountByPkData_accountByPk_identity_certIssued_issuer
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -40803,7 +39653,7 @@ class _$GAccountByPkData_accountByPk_identity_certIssued_issuer
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -40816,6 +39666,8 @@ class _$GAccountByPkData_accountByPk_identity_certIssued_issuer
         id, r'GAccountByPkData_accountByPk_identity_certIssued_issuer', 'id');
     BuiltValueNullFieldError.checkNotNull(isMember,
         r'GAccountByPkData_accountByPk_identity_certIssued_issuer', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(status,
+        r'GAccountByPkData_accountByPk_identity_certIssued_issuer', 'status');
     BuiltValueNullFieldError.checkNotNull(name,
         r'GAccountByPkData_accountByPk_identity_certIssued_issuer', 'name');
     BuiltValueNullFieldError.checkNotNull(expireOn,
@@ -40916,9 +39768,9 @@ class GAccountByPkData_accountByPk_identity_certIssued_issuerBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -40986,15 +39838,15 @@ class GAccountByPkData_accountByPk_identity_certIssued_issuerBuilder
                   id, r'GAccountByPkData_accountByPk_identity_certIssued_issuer', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GAccountByPkData_accountByPk_identity_certIssued_issuer', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GAccountByPkData_accountByPk_identity_certIssued_issuer', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GAccountByPkData_accountByPk_identity_certIssued_issuer', 'name'),
               expireOn: BuiltValueNullFieldError.checkNotNull(
                   expireOn,
                   r'GAccountByPkData_accountByPk_identity_certIssued_issuer',
                   'expireOn'),
-              index: BuiltValueNullFieldError.checkNotNull(
-                  index, r'GAccountByPkData_accountByPk_identity_certIssued_issuer', 'index'));
+              index: BuiltValueNullFieldError.checkNotNull(index, r'GAccountByPkData_accountByPk_identity_certIssued_issuer', 'index'));
     } catch (_) {
       late String _$failedField;
       try {
@@ -41162,7 +40014,7 @@ class _$GAccountByPkData_accountByPk_identity_certIssued_receiver
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -41184,7 +40036,7 @@ class _$GAccountByPkData_accountByPk_identity_certIssued_receiver
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -41199,6 +40051,8 @@ class _$GAccountByPkData_accountByPk_identity_certIssued_receiver
         isMember,
         r'GAccountByPkData_accountByPk_identity_certIssued_receiver',
         'isMember');
+    BuiltValueNullFieldError.checkNotNull(status,
+        r'GAccountByPkData_accountByPk_identity_certIssued_receiver', 'status');
     BuiltValueNullFieldError.checkNotNull(name,
         r'GAccountByPkData_accountByPk_identity_certIssued_receiver', 'name');
     BuiltValueNullFieldError.checkNotNull(
@@ -41302,9 +40156,9 @@ class GAccountByPkData_accountByPk_identity_certIssued_receiverBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -41373,15 +40227,15 @@ class GAccountByPkData_accountByPk_identity_certIssued_receiverBuilder
                   id, r'GAccountByPkData_accountByPk_identity_certIssued_receiver', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GAccountByPkData_accountByPk_identity_certIssued_receiver', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GAccountByPkData_accountByPk_identity_certIssued_receiver', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GAccountByPkData_accountByPk_identity_certIssued_receiver', 'name'),
               expireOn: BuiltValueNullFieldError.checkNotNull(
                   expireOn,
                   r'GAccountByPkData_accountByPk_identity_certIssued_receiver',
                   'expireOn'),
-              index: BuiltValueNullFieldError.checkNotNull(
-                  index, r'GAccountByPkData_accountByPk_identity_certIssued_receiver', 'index'));
+              index: BuiltValueNullFieldError.checkNotNull(index, r'GAccountByPkData_accountByPk_identity_certIssued_receiver', 'index'));
     } catch (_) {
       late String _$failedField;
       try {
@@ -42096,7 +40950,7 @@ class _$GAccountByPkData_accountByPk_identity_certReceived_issuer
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -42118,7 +40972,7 @@ class _$GAccountByPkData_accountByPk_identity_certReceived_issuer
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -42133,6 +40987,8 @@ class _$GAccountByPkData_accountByPk_identity_certReceived_issuer
         isMember,
         r'GAccountByPkData_accountByPk_identity_certReceived_issuer',
         'isMember');
+    BuiltValueNullFieldError.checkNotNull(status,
+        r'GAccountByPkData_accountByPk_identity_certReceived_issuer', 'status');
     BuiltValueNullFieldError.checkNotNull(name,
         r'GAccountByPkData_accountByPk_identity_certReceived_issuer', 'name');
     BuiltValueNullFieldError.checkNotNull(
@@ -42236,9 +41092,9 @@ class GAccountByPkData_accountByPk_identity_certReceived_issuerBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -42307,15 +41163,15 @@ class GAccountByPkData_accountByPk_identity_certReceived_issuerBuilder
                   id, r'GAccountByPkData_accountByPk_identity_certReceived_issuer', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GAccountByPkData_accountByPk_identity_certReceived_issuer', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GAccountByPkData_accountByPk_identity_certReceived_issuer', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GAccountByPkData_accountByPk_identity_certReceived_issuer', 'name'),
               expireOn: BuiltValueNullFieldError.checkNotNull(
                   expireOn,
                   r'GAccountByPkData_accountByPk_identity_certReceived_issuer',
                   'expireOn'),
-              index: BuiltValueNullFieldError.checkNotNull(
-                  index, r'GAccountByPkData_accountByPk_identity_certReceived_issuer', 'index'));
+              index: BuiltValueNullFieldError.checkNotNull(index, r'GAccountByPkData_accountByPk_identity_certReceived_issuer', 'index'));
     } catch (_) {
       late String _$failedField;
       try {
@@ -42485,7 +41341,7 @@ class _$GAccountByPkData_accountByPk_identity_certReceived_receiver
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -42507,7 +41363,7 @@ class _$GAccountByPkData_accountByPk_identity_certReceived_receiver
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -42522,6 +41378,10 @@ class _$GAccountByPkData_accountByPk_identity_certReceived_receiver
         isMember,
         r'GAccountByPkData_accountByPk_identity_certReceived_receiver',
         'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        status,
+        r'GAccountByPkData_accountByPk_identity_certReceived_receiver',
+        'status');
     BuiltValueNullFieldError.checkNotNull(name,
         r'GAccountByPkData_accountByPk_identity_certReceived_receiver', 'name');
     BuiltValueNullFieldError.checkNotNull(
@@ -42628,9 +41488,9 @@ class GAccountByPkData_accountByPk_identity_certReceived_receiverBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -42702,15 +41562,15 @@ class GAccountByPkData_accountByPk_identity_certReceived_receiverBuilder
                   id, r'GAccountByPkData_accountByPk_identity_certReceived_receiver', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GAccountByPkData_accountByPk_identity_certReceived_receiver', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GAccountByPkData_accountByPk_identity_certReceived_receiver', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GAccountByPkData_accountByPk_identity_certReceived_receiver', 'name'),
               expireOn: BuiltValueNullFieldError.checkNotNull(
                   expireOn,
                   r'GAccountByPkData_accountByPk_identity_certReceived_receiver',
                   'expireOn'),
-              index: BuiltValueNullFieldError.checkNotNull(
-                  index, r'GAccountByPkData_accountByPk_identity_certReceived_receiver', 'index'));
+              index: BuiltValueNullFieldError.checkNotNull(index, r'GAccountByPkData_accountByPk_identity_certReceived_receiver', 'index'));
     } catch (_) {
       late String _$failedField;
       try {
@@ -43577,7 +42437,7 @@ class _$GAccountByPkData_accountByPk_identity_membershipHistory
   @override
   final String? eventId;
   @override
-  final _i2.GEventTypeEnum? eventType;
+  final String eventType;
   @override
   final String id;
   @override
@@ -43595,7 +42455,7 @@ class _$GAccountByPkData_accountByPk_identity_membershipHistory
       {required this.G__typename,
       required this.blockNumber,
       this.eventId,
-      this.eventType,
+      required this.eventType,
       required this.id,
       this.identityId})
       : super._() {
@@ -43607,6 +42467,10 @@ class _$GAccountByPkData_accountByPk_identity_membershipHistory
         blockNumber,
         r'GAccountByPkData_accountByPk_identity_membershipHistory',
         'blockNumber');
+    BuiltValueNullFieldError.checkNotNull(
+        eventType,
+        r'GAccountByPkData_accountByPk_identity_membershipHistory',
+        'eventType');
     BuiltValueNullFieldError.checkNotNull(
         id, r'GAccountByPkData_accountByPk_identity_membershipHistory', 'id');
   }
@@ -43680,9 +42544,9 @@ class GAccountByPkData_accountByPk_identity_membershipHistoryBuilder
   String? get eventId => _$this._eventId;
   set eventId(String? eventId) => _$this._eventId = eventId;
 
-  _i2.GEventTypeEnum? _eventType;
-  _i2.GEventTypeEnum? get eventType => _$this._eventType;
-  set eventType(_i2.GEventTypeEnum? eventType) => _$this._eventType = eventType;
+  String? _eventType;
+  String? get eventType => _$this._eventType;
+  set eventType(String? eventType) => _$this._eventType = eventType;
 
   String? _id;
   String? get id => _$this._id;
@@ -43740,7 +42604,10 @@ class GAccountByPkData_accountByPk_identity_membershipHistoryBuilder
                 r'GAccountByPkData_accountByPk_identity_membershipHistory',
                 'blockNumber'),
             eventId: eventId,
-            eventType: eventType,
+            eventType: BuiltValueNullFieldError.checkNotNull(
+                eventType,
+                r'GAccountByPkData_accountByPk_identity_membershipHistory',
+                'eventType'),
             id: BuiltValueNullFieldError.checkNotNull(
                 id,
                 r'GAccountByPkData_accountByPk_identity_membershipHistory',
@@ -45099,173 +43966,6 @@ class GAccountByPkData_accountByPk_identity_smith_smithCertReceivedBuilder
   }
 }
 
-class _$GAccountByPkData_accountByPk_identity_udHistory
-    extends GAccountByPkData_accountByPk_identity_udHistory {
-  @override
-  final String G__typename;
-  @override
-  final String id;
-  @override
-  final int amount;
-  @override
-  final _i2.Gtimestamptz timestamp;
-
-  factory _$GAccountByPkData_accountByPk_identity_udHistory(
-          [void Function(
-                  GAccountByPkData_accountByPk_identity_udHistoryBuilder)?
-              updates]) =>
-      (new GAccountByPkData_accountByPk_identity_udHistoryBuilder()
-            ..update(updates))
-          ._build();
-
-  _$GAccountByPkData_accountByPk_identity_udHistory._(
-      {required this.G__typename,
-      required this.id,
-      required this.amount,
-      required this.timestamp})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(G__typename,
-        r'GAccountByPkData_accountByPk_identity_udHistory', 'G__typename');
-    BuiltValueNullFieldError.checkNotNull(
-        id, r'GAccountByPkData_accountByPk_identity_udHistory', 'id');
-    BuiltValueNullFieldError.checkNotNull(
-        amount, r'GAccountByPkData_accountByPk_identity_udHistory', 'amount');
-    BuiltValueNullFieldError.checkNotNull(timestamp,
-        r'GAccountByPkData_accountByPk_identity_udHistory', 'timestamp');
-  }
-
-  @override
-  GAccountByPkData_accountByPk_identity_udHistory rebuild(
-          void Function(GAccountByPkData_accountByPk_identity_udHistoryBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
-
-  @override
-  GAccountByPkData_accountByPk_identity_udHistoryBuilder toBuilder() =>
-      new GAccountByPkData_accountByPk_identity_udHistoryBuilder()
-        ..replace(this);
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(other, this)) return true;
-    return other is GAccountByPkData_accountByPk_identity_udHistory &&
-        G__typename == other.G__typename &&
-        id == other.id &&
-        amount == other.amount &&
-        timestamp == other.timestamp;
-  }
-
-  @override
-  int get hashCode {
-    var _$hash = 0;
-    _$hash = $jc(_$hash, G__typename.hashCode);
-    _$hash = $jc(_$hash, id.hashCode);
-    _$hash = $jc(_$hash, amount.hashCode);
-    _$hash = $jc(_$hash, timestamp.hashCode);
-    _$hash = $jf(_$hash);
-    return _$hash;
-  }
-
-  @override
-  String toString() {
-    return (newBuiltValueToStringHelper(
-            r'GAccountByPkData_accountByPk_identity_udHistory')
-          ..add('G__typename', G__typename)
-          ..add('id', id)
-          ..add('amount', amount)
-          ..add('timestamp', timestamp))
-        .toString();
-  }
-}
-
-class GAccountByPkData_accountByPk_identity_udHistoryBuilder
-    implements
-        Builder<GAccountByPkData_accountByPk_identity_udHistory,
-            GAccountByPkData_accountByPk_identity_udHistoryBuilder> {
-  _$GAccountByPkData_accountByPk_identity_udHistory? _$v;
-
-  String? _G__typename;
-  String? get G__typename => _$this._G__typename;
-  set G__typename(String? G__typename) => _$this._G__typename = G__typename;
-
-  String? _id;
-  String? get id => _$this._id;
-  set id(String? id) => _$this._id = id;
-
-  int? _amount;
-  int? get amount => _$this._amount;
-  set amount(int? amount) => _$this._amount = amount;
-
-  _i2.GtimestamptzBuilder? _timestamp;
-  _i2.GtimestamptzBuilder get timestamp =>
-      _$this._timestamp ??= new _i2.GtimestamptzBuilder();
-  set timestamp(_i2.GtimestamptzBuilder? timestamp) =>
-      _$this._timestamp = timestamp;
-
-  GAccountByPkData_accountByPk_identity_udHistoryBuilder() {
-    GAccountByPkData_accountByPk_identity_udHistory._initializeBuilder(this);
-  }
-
-  GAccountByPkData_accountByPk_identity_udHistoryBuilder get _$this {
-    final $v = _$v;
-    if ($v != null) {
-      _G__typename = $v.G__typename;
-      _id = $v.id;
-      _amount = $v.amount;
-      _timestamp = $v.timestamp.toBuilder();
-      _$v = null;
-    }
-    return this;
-  }
-
-  @override
-  void replace(GAccountByPkData_accountByPk_identity_udHistory other) {
-    ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$GAccountByPkData_accountByPk_identity_udHistory;
-  }
-
-  @override
-  void update(
-      void Function(GAccountByPkData_accountByPk_identity_udHistoryBuilder)?
-          updates) {
-    if (updates != null) updates(this);
-  }
-
-  @override
-  GAccountByPkData_accountByPk_identity_udHistory build() => _build();
-
-  _$GAccountByPkData_accountByPk_identity_udHistory _build() {
-    _$GAccountByPkData_accountByPk_identity_udHistory _$result;
-    try {
-      _$result = _$v ??
-          new _$GAccountByPkData_accountByPk_identity_udHistory._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename,
-                  r'GAccountByPkData_accountByPk_identity_udHistory',
-                  'G__typename'),
-              id: BuiltValueNullFieldError.checkNotNull(
-                  id, r'GAccountByPkData_accountByPk_identity_udHistory', 'id'),
-              amount: BuiltValueNullFieldError.checkNotNull(amount,
-                  r'GAccountByPkData_accountByPk_identity_udHistory', 'amount'),
-              timestamp: timestamp.build());
-    } catch (_) {
-      late String _$failedField;
-      try {
-        _$failedField = 'timestamp';
-        timestamp.build();
-      } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            r'GAccountByPkData_accountByPk_identity_udHistory',
-            _$failedField,
-            e.toString());
-      }
-      rethrow;
-    }
-    replace(_$result);
-    return _$result;
-  }
-}
-
 class _$GAccountByPkData_accountByPk_linkedIdentity
     extends GAccountByPkData_accountByPk_linkedIdentity {
   @override
@@ -45279,7 +43979,7 @@ class _$GAccountByPkData_accountByPk_linkedIdentity
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -45300,7 +44000,7 @@ class _$GAccountByPkData_accountByPk_linkedIdentity
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -45311,6 +44011,8 @@ class _$GAccountByPkData_accountByPk_linkedIdentity
         id, r'GAccountByPkData_accountByPk_linkedIdentity', 'id');
     BuiltValueNullFieldError.checkNotNull(
         isMember, r'GAccountByPkData_accountByPk_linkedIdentity', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GAccountByPkData_accountByPk_linkedIdentity', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GAccountByPkData_accountByPk_linkedIdentity', 'name');
     BuiltValueNullFieldError.checkNotNull(
@@ -45408,9 +44110,9 @@ class GAccountByPkData_accountByPk_linkedIdentityBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -45467,20 +44169,19 @@ class GAccountByPkData_accountByPk_linkedIdentityBuilder
       _$result = _$v ??
           new _$GAccountByPkData_accountByPk_linkedIdentity._(
               G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename,
-                  r'GAccountByPkData_accountByPk_linkedIdentity',
-                  'G__typename'),
+                  G__typename, r'GAccountByPkData_accountByPk_linkedIdentity', 'G__typename'),
               accountId: accountId,
               account: _account?.build(),
               id: BuiltValueNullFieldError.checkNotNull(
                   id, r'GAccountByPkData_accountByPk_linkedIdentity', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GAccountByPkData_accountByPk_linkedIdentity', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GAccountByPkData_accountByPk_linkedIdentity', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GAccountByPkData_accountByPk_linkedIdentity', 'name'),
-              expireOn: BuiltValueNullFieldError.checkNotNull(expireOn,
-                  r'GAccountByPkData_accountByPk_linkedIdentity', 'expireOn'),
+              expireOn: BuiltValueNullFieldError.checkNotNull(
+                  expireOn, r'GAccountByPkData_accountByPk_linkedIdentity', 'expireOn'),
               index: BuiltValueNullFieldError.checkNotNull(
                   index, r'GAccountByPkData_accountByPk_linkedIdentity', 'index'));
     } catch (_) {
@@ -45638,7 +44339,7 @@ class _$GAccountByPkData_accountByPk_removedIdentities
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -45659,7 +44360,7 @@ class _$GAccountByPkData_accountByPk_removedIdentities
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -45670,6 +44371,8 @@ class _$GAccountByPkData_accountByPk_removedIdentities
         id, r'GAccountByPkData_accountByPk_removedIdentities', 'id');
     BuiltValueNullFieldError.checkNotNull(isMember,
         r'GAccountByPkData_accountByPk_removedIdentities', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GAccountByPkData_accountByPk_removedIdentities', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GAccountByPkData_accountByPk_removedIdentities', 'name');
     BuiltValueNullFieldError.checkNotNull(expireOn,
@@ -45768,9 +44471,9 @@ class GAccountByPkData_accountByPk_removedIdentitiesBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -45827,22 +44530,19 @@ class GAccountByPkData_accountByPk_removedIdentitiesBuilder
       _$result = _$v ??
           new _$GAccountByPkData_accountByPk_removedIdentities._(
               G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename,
-                  r'GAccountByPkData_accountByPk_removedIdentities',
-                  'G__typename'),
+                  G__typename, r'GAccountByPkData_accountByPk_removedIdentities', 'G__typename'),
               accountId: accountId,
               account: _account?.build(),
               id: BuiltValueNullFieldError.checkNotNull(
                   id, r'GAccountByPkData_accountByPk_removedIdentities', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GAccountByPkData_accountByPk_removedIdentities', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GAccountByPkData_accountByPk_removedIdentities', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GAccountByPkData_accountByPk_removedIdentities', 'name'),
               expireOn: BuiltValueNullFieldError.checkNotNull(
-                  expireOn,
-                  r'GAccountByPkData_accountByPk_removedIdentities',
-                  'expireOn'),
+                  expireOn, r'GAccountByPkData_accountByPk_removedIdentities', 'expireOn'),
               index: BuiltValueNullFieldError.checkNotNull(
                   index, r'GAccountByPkData_accountByPk_removedIdentities', 'index'));
     } catch (_) {
@@ -49389,7 +48089,7 @@ class _$GAccountsByPkData_account_commentsIssued
   @override
   final _i2.Gbytea remarkBytes;
   @override
-  final _i2.GCommentTypeEnum? type;
+  final String type;
 
   factory _$GAccountsByPkData_account_commentsIssued(
           [void Function(GAccountsByPkData_account_commentsIssuedBuilder)?
@@ -49406,7 +48106,7 @@ class _$GAccountsByPkData_account_commentsIssued
       required this.id,
       required this.remark,
       required this.remarkBytes,
-      this.type})
+      required this.type})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(G__typename,
         r'GAccountsByPkData_account_commentsIssued', 'G__typename');
@@ -49420,6 +48120,8 @@ class _$GAccountsByPkData_account_commentsIssued
         remark, r'GAccountsByPkData_account_commentsIssued', 'remark');
     BuiltValueNullFieldError.checkNotNull(remarkBytes,
         r'GAccountsByPkData_account_commentsIssued', 'remarkBytes');
+    BuiltValueNullFieldError.checkNotNull(
+        type, r'GAccountsByPkData_account_commentsIssued', 'type');
   }
 
   @override
@@ -49520,9 +48222,9 @@ class GAccountsByPkData_account_commentsIssuedBuilder
   set remarkBytes(_i2.GbyteaBuilder? remarkBytes) =>
       _$this._remarkBytes = remarkBytes;
 
-  _i2.GCommentTypeEnum? _type;
-  _i2.GCommentTypeEnum? get type => _$this._type;
-  set type(_i2.GCommentTypeEnum? type) => _$this._type = type;
+  String? _type;
+  String? get type => _$this._type;
+  set type(String? type) => _$this._type = type;
 
   GAccountsByPkData_account_commentsIssuedBuilder() {
     GAccountsByPkData_account_commentsIssued._initializeBuilder(this);
@@ -49578,7 +48280,8 @@ class GAccountsByPkData_account_commentsIssuedBuilder
               remark: BuiltValueNullFieldError.checkNotNull(remark,
                   r'GAccountsByPkData_account_commentsIssued', 'remark'),
               remarkBytes: remarkBytes.build(),
-              type: type);
+              type: BuiltValueNullFieldError.checkNotNull(
+                  type, r'GAccountsByPkData_account_commentsIssued', 'type'));
     } catch (_) {
       late String _$failedField;
       try {
@@ -49912,7 +48615,7 @@ class _$GAccountsByPkData_account_identity
   final GAccountsByPkData_account_identity_linkedAccountAggregate
       linkedAccountAggregate;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final BuiltList<GAccountsByPkData_account_identity_membershipHistory>
       membershipHistory;
@@ -49929,8 +48632,6 @@ class _$GAccountsByPkData_account_identity
       ownerKeyChangeAggregate;
   @override
   final GAccountsByPkData_account_identity_smith? smith;
-  @override
-  final BuiltList<GAccountsByPkData_account_identity_udHistory>? udHistory;
 
   factory _$GAccountsByPkData_account_identity(
           [void Function(GAccountsByPkData_account_identityBuilder)?
@@ -49956,14 +48657,13 @@ class _$GAccountsByPkData_account_identity
       required this.lastChangeOn,
       required this.linkedAccount,
       required this.linkedAccountAggregate,
-      this.status,
+      required this.status,
       required this.membershipHistory,
       required this.membershipHistoryAggregate,
       required this.name,
       required this.ownerKeyChange,
       required this.ownerKeyChangeAggregate,
-      this.smith,
-      this.udHistory})
+      this.smith})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         G__typename, r'GAccountsByPkData_account_identity', 'G__typename');
@@ -49991,6 +48691,8 @@ class _$GAccountsByPkData_account_identity
         linkedAccount, r'GAccountsByPkData_account_identity', 'linkedAccount');
     BuiltValueNullFieldError.checkNotNull(linkedAccountAggregate,
         r'GAccountsByPkData_account_identity', 'linkedAccountAggregate');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GAccountsByPkData_account_identity', 'status');
     BuiltValueNullFieldError.checkNotNull(membershipHistory,
         r'GAccountsByPkData_account_identity', 'membershipHistory');
     BuiltValueNullFieldError.checkNotNull(membershipHistoryAggregate,
@@ -50039,8 +48741,7 @@ class _$GAccountsByPkData_account_identity
         name == other.name &&
         ownerKeyChange == other.ownerKeyChange &&
         ownerKeyChangeAggregate == other.ownerKeyChangeAggregate &&
-        smith == other.smith &&
-        udHistory == other.udHistory;
+        smith == other.smith;
   }
 
   @override
@@ -50070,7 +48771,6 @@ class _$GAccountsByPkData_account_identity
     _$hash = $jc(_$hash, ownerKeyChange.hashCode);
     _$hash = $jc(_$hash, ownerKeyChangeAggregate.hashCode);
     _$hash = $jc(_$hash, smith.hashCode);
-    _$hash = $jc(_$hash, udHistory.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -50101,8 +48801,7 @@ class _$GAccountsByPkData_account_identity
           ..add('name', name)
           ..add('ownerKeyChange', ownerKeyChange)
           ..add('ownerKeyChangeAggregate', ownerKeyChangeAggregate)
-          ..add('smith', smith)
-          ..add('udHistory', udHistory))
+          ..add('smith', smith))
         .toString();
   }
 }
@@ -50218,9 +48917,9 @@ class GAccountsByPkData_account_identityBuilder
               linkedAccountAggregate) =>
       _$this._linkedAccountAggregate = linkedAccountAggregate;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   ListBuilder<GAccountsByPkData_account_identity_membershipHistory>?
       _membershipHistory;
@@ -50272,15 +48971,6 @@ class GAccountsByPkData_account_identityBuilder
   set smith(GAccountsByPkData_account_identity_smithBuilder? smith) =>
       _$this._smith = smith;
 
-  ListBuilder<GAccountsByPkData_account_identity_udHistory>? _udHistory;
-  ListBuilder<GAccountsByPkData_account_identity_udHistory> get udHistory =>
-      _$this._udHistory ??=
-          new ListBuilder<GAccountsByPkData_account_identity_udHistory>();
-  set udHistory(
-          ListBuilder<GAccountsByPkData_account_identity_udHistory>?
-              udHistory) =>
-      _$this._udHistory = udHistory;
-
   GAccountsByPkData_account_identityBuilder() {
     GAccountsByPkData_account_identity._initializeBuilder(this);
   }
@@ -50312,7 +49002,6 @@ class GAccountsByPkData_account_identityBuilder
       _ownerKeyChange = $v.ownerKeyChange.toBuilder();
       _ownerKeyChangeAggregate = $v.ownerKeyChangeAggregate.toBuilder();
       _smith = $v.smith?.toBuilder();
-      _udHistory = $v.udHistory?.toBuilder();
       _$v = null;
     }
     return this;
@@ -50362,14 +49051,13 @@ class GAccountsByPkData_account_identityBuilder
                   r'GAccountsByPkData_account_identity', 'lastChangeOn'),
               linkedAccount: linkedAccount.build(),
               linkedAccountAggregate: linkedAccountAggregate.build(),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(status, r'GAccountsByPkData_account_identity', 'status'),
               membershipHistory: membershipHistory.build(),
               membershipHistoryAggregate: membershipHistoryAggregate.build(),
               name: BuiltValueNullFieldError.checkNotNull(name, r'GAccountsByPkData_account_identity', 'name'),
               ownerKeyChange: ownerKeyChange.build(),
               ownerKeyChangeAggregate: ownerKeyChangeAggregate.build(),
-              smith: _smith?.build(),
-              udHistory: _udHistory?.build());
+              smith: _smith?.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -50401,8 +49089,6 @@ class GAccountsByPkData_account_identityBuilder
         ownerKeyChangeAggregate.build();
         _$failedField = 'smith';
         _smith?.build();
-        _$failedField = 'udHistory';
-        _udHistory?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'GAccountsByPkData_account_identity', _$failedField, e.toString());
@@ -50799,7 +49485,7 @@ class _$GAccountsByPkData_account_identity_certIssued_issuer
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -50821,7 +49507,7 @@ class _$GAccountsByPkData_account_identity_certIssued_issuer
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -50832,6 +49518,8 @@ class _$GAccountsByPkData_account_identity_certIssued_issuer
         id, r'GAccountsByPkData_account_identity_certIssued_issuer', 'id');
     BuiltValueNullFieldError.checkNotNull(isMember,
         r'GAccountsByPkData_account_identity_certIssued_issuer', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(status,
+        r'GAccountsByPkData_account_identity_certIssued_issuer', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GAccountsByPkData_account_identity_certIssued_issuer', 'name');
     BuiltValueNullFieldError.checkNotNull(expireOn,
@@ -50931,9 +49619,9 @@ class GAccountsByPkData_account_identity_certIssued_issuerBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -50992,22 +49680,19 @@ class GAccountsByPkData_account_identity_certIssued_issuerBuilder
       _$result = _$v ??
           new _$GAccountsByPkData_account_identity_certIssued_issuer._(
               G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename,
-                  r'GAccountsByPkData_account_identity_certIssued_issuer',
-                  'G__typename'),
+                  G__typename, r'GAccountsByPkData_account_identity_certIssued_issuer', 'G__typename'),
               accountId: accountId,
               account: _account?.build(),
               id: BuiltValueNullFieldError.checkNotNull(
                   id, r'GAccountsByPkData_account_identity_certIssued_issuer', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GAccountsByPkData_account_identity_certIssued_issuer', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GAccountsByPkData_account_identity_certIssued_issuer', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GAccountsByPkData_account_identity_certIssued_issuer', 'name'),
               expireOn: BuiltValueNullFieldError.checkNotNull(
-                  expireOn,
-                  r'GAccountsByPkData_account_identity_certIssued_issuer',
-                  'expireOn'),
+                  expireOn, r'GAccountsByPkData_account_identity_certIssued_issuer', 'expireOn'),
               index: BuiltValueNullFieldError.checkNotNull(
                   index, r'GAccountsByPkData_account_identity_certIssued_issuer', 'index'));
     } catch (_) {
@@ -51176,7 +49861,7 @@ class _$GAccountsByPkData_account_identity_certIssued_receiver
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -51198,7 +49883,7 @@ class _$GAccountsByPkData_account_identity_certIssued_receiver
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -51211,6 +49896,8 @@ class _$GAccountsByPkData_account_identity_certIssued_receiver
         id, r'GAccountsByPkData_account_identity_certIssued_receiver', 'id');
     BuiltValueNullFieldError.checkNotNull(isMember,
         r'GAccountsByPkData_account_identity_certIssued_receiver', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(status,
+        r'GAccountsByPkData_account_identity_certIssued_receiver', 'status');
     BuiltValueNullFieldError.checkNotNull(name,
         r'GAccountsByPkData_account_identity_certIssued_receiver', 'name');
     BuiltValueNullFieldError.checkNotNull(expireOn,
@@ -51311,9 +49998,9 @@ class GAccountsByPkData_account_identity_certIssued_receiverBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -51381,15 +50068,15 @@ class GAccountsByPkData_account_identity_certIssued_receiverBuilder
                   id, r'GAccountsByPkData_account_identity_certIssued_receiver', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GAccountsByPkData_account_identity_certIssued_receiver', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GAccountsByPkData_account_identity_certIssued_receiver', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GAccountsByPkData_account_identity_certIssued_receiver', 'name'),
               expireOn: BuiltValueNullFieldError.checkNotNull(
                   expireOn,
                   r'GAccountsByPkData_account_identity_certIssued_receiver',
                   'expireOn'),
-              index: BuiltValueNullFieldError.checkNotNull(
-                  index, r'GAccountsByPkData_account_identity_certIssued_receiver', 'index'));
+              index: BuiltValueNullFieldError.checkNotNull(index, r'GAccountsByPkData_account_identity_certIssued_receiver', 'index'));
     } catch (_) {
       late String _$failedField;
       try {
@@ -52096,7 +50783,7 @@ class _$GAccountsByPkData_account_identity_certReceived_issuer
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -52118,7 +50805,7 @@ class _$GAccountsByPkData_account_identity_certReceived_issuer
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -52131,6 +50818,8 @@ class _$GAccountsByPkData_account_identity_certReceived_issuer
         id, r'GAccountsByPkData_account_identity_certReceived_issuer', 'id');
     BuiltValueNullFieldError.checkNotNull(isMember,
         r'GAccountsByPkData_account_identity_certReceived_issuer', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(status,
+        r'GAccountsByPkData_account_identity_certReceived_issuer', 'status');
     BuiltValueNullFieldError.checkNotNull(name,
         r'GAccountsByPkData_account_identity_certReceived_issuer', 'name');
     BuiltValueNullFieldError.checkNotNull(expireOn,
@@ -52231,9 +50920,9 @@ class GAccountsByPkData_account_identity_certReceived_issuerBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -52301,15 +50990,15 @@ class GAccountsByPkData_account_identity_certReceived_issuerBuilder
                   id, r'GAccountsByPkData_account_identity_certReceived_issuer', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GAccountsByPkData_account_identity_certReceived_issuer', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GAccountsByPkData_account_identity_certReceived_issuer', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GAccountsByPkData_account_identity_certReceived_issuer', 'name'),
               expireOn: BuiltValueNullFieldError.checkNotNull(
                   expireOn,
                   r'GAccountsByPkData_account_identity_certReceived_issuer',
                   'expireOn'),
-              index: BuiltValueNullFieldError.checkNotNull(
-                  index, r'GAccountsByPkData_account_identity_certReceived_issuer', 'index'));
+              index: BuiltValueNullFieldError.checkNotNull(index, r'GAccountsByPkData_account_identity_certReceived_issuer', 'index'));
     } catch (_) {
       late String _$failedField;
       try {
@@ -52477,7 +51166,7 @@ class _$GAccountsByPkData_account_identity_certReceived_receiver
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -52499,7 +51188,7 @@ class _$GAccountsByPkData_account_identity_certReceived_receiver
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -52514,6 +51203,8 @@ class _$GAccountsByPkData_account_identity_certReceived_receiver
         isMember,
         r'GAccountsByPkData_account_identity_certReceived_receiver',
         'isMember');
+    BuiltValueNullFieldError.checkNotNull(status,
+        r'GAccountsByPkData_account_identity_certReceived_receiver', 'status');
     BuiltValueNullFieldError.checkNotNull(name,
         r'GAccountsByPkData_account_identity_certReceived_receiver', 'name');
     BuiltValueNullFieldError.checkNotNull(
@@ -52616,9 +51307,9 @@ class GAccountsByPkData_account_identity_certReceived_receiverBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -52686,15 +51377,13 @@ class GAccountsByPkData_account_identity_certReceived_receiverBuilder
                   id, r'GAccountsByPkData_account_identity_certReceived_receiver', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GAccountsByPkData_account_identity_certReceived_receiver', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GAccountsByPkData_account_identity_certReceived_receiver', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GAccountsByPkData_account_identity_certReceived_receiver', 'name'),
               expireOn: BuiltValueNullFieldError.checkNotNull(
-                  expireOn,
-                  r'GAccountsByPkData_account_identity_certReceived_receiver',
-                  'expireOn'),
-              index: BuiltValueNullFieldError.checkNotNull(
-                  index, r'GAccountsByPkData_account_identity_certReceived_receiver', 'index'));
+                  expireOn, r'GAccountsByPkData_account_identity_certReceived_receiver', 'expireOn'),
+              index: BuiltValueNullFieldError.checkNotNull(index, r'GAccountsByPkData_account_identity_certReceived_receiver', 'index'));
     } catch (_) {
       late String _$failedField;
       try {
@@ -53547,7 +52236,7 @@ class _$GAccountsByPkData_account_identity_membershipHistory
   @override
   final String? eventId;
   @override
-  final _i2.GEventTypeEnum? eventType;
+  final String eventType;
   @override
   final String id;
   @override
@@ -53565,7 +52254,7 @@ class _$GAccountsByPkData_account_identity_membershipHistory
       {required this.G__typename,
       required this.blockNumber,
       this.eventId,
-      this.eventType,
+      required this.eventType,
       required this.id,
       this.identityId})
       : super._() {
@@ -53573,6 +52262,8 @@ class _$GAccountsByPkData_account_identity_membershipHistory
         r'GAccountsByPkData_account_identity_membershipHistory', 'G__typename');
     BuiltValueNullFieldError.checkNotNull(blockNumber,
         r'GAccountsByPkData_account_identity_membershipHistory', 'blockNumber');
+    BuiltValueNullFieldError.checkNotNull(eventType,
+        r'GAccountsByPkData_account_identity_membershipHistory', 'eventType');
     BuiltValueNullFieldError.checkNotNull(
         id, r'GAccountsByPkData_account_identity_membershipHistory', 'id');
   }
@@ -53646,9 +52337,9 @@ class GAccountsByPkData_account_identity_membershipHistoryBuilder
   String? get eventId => _$this._eventId;
   set eventId(String? eventId) => _$this._eventId = eventId;
 
-  _i2.GEventTypeEnum? _eventType;
-  _i2.GEventTypeEnum? get eventType => _$this._eventType;
-  set eventType(_i2.GEventTypeEnum? eventType) => _$this._eventType = eventType;
+  String? _eventType;
+  String? get eventType => _$this._eventType;
+  set eventType(String? eventType) => _$this._eventType = eventType;
 
   String? _id;
   String? get id => _$this._id;
@@ -53701,12 +52392,17 @@ class GAccountsByPkData_account_identity_membershipHistoryBuilder
                 G__typename,
                 r'GAccountsByPkData_account_identity_membershipHistory',
                 'G__typename'),
-            blockNumber: BuiltValueNullFieldError.checkNotNull(
-                blockNumber,
-                r'GAccountsByPkData_account_identity_membershipHistory',
-                'blockNumber'),
+            blockNumber:
+                BuiltValueNullFieldError.checkNotNull(
+                    blockNumber,
+                    r'GAccountsByPkData_account_identity_membershipHistory',
+                    'blockNumber'),
             eventId: eventId,
-            eventType: eventType,
+            eventType:
+                BuiltValueNullFieldError.checkNotNull(
+                    eventType,
+                    r'GAccountsByPkData_account_identity_membershipHistory',
+                    'eventType'),
             id: BuiltValueNullFieldError.checkNotNull(id,
                 r'GAccountsByPkData_account_identity_membershipHistory', 'id'),
             identityId: identityId);
@@ -55042,171 +53738,6 @@ class GAccountsByPkData_account_identity_smith_smithCertReceivedBuilder
   }
 }
 
-class _$GAccountsByPkData_account_identity_udHistory
-    extends GAccountsByPkData_account_identity_udHistory {
-  @override
-  final String G__typename;
-  @override
-  final String id;
-  @override
-  final int amount;
-  @override
-  final _i2.Gtimestamptz timestamp;
-
-  factory _$GAccountsByPkData_account_identity_udHistory(
-          [void Function(GAccountsByPkData_account_identity_udHistoryBuilder)?
-              updates]) =>
-      (new GAccountsByPkData_account_identity_udHistoryBuilder()
-            ..update(updates))
-          ._build();
-
-  _$GAccountsByPkData_account_identity_udHistory._(
-      {required this.G__typename,
-      required this.id,
-      required this.amount,
-      required this.timestamp})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(G__typename,
-        r'GAccountsByPkData_account_identity_udHistory', 'G__typename');
-    BuiltValueNullFieldError.checkNotNull(
-        id, r'GAccountsByPkData_account_identity_udHistory', 'id');
-    BuiltValueNullFieldError.checkNotNull(
-        amount, r'GAccountsByPkData_account_identity_udHistory', 'amount');
-    BuiltValueNullFieldError.checkNotNull(timestamp,
-        r'GAccountsByPkData_account_identity_udHistory', 'timestamp');
-  }
-
-  @override
-  GAccountsByPkData_account_identity_udHistory rebuild(
-          void Function(GAccountsByPkData_account_identity_udHistoryBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
-
-  @override
-  GAccountsByPkData_account_identity_udHistoryBuilder toBuilder() =>
-      new GAccountsByPkData_account_identity_udHistoryBuilder()..replace(this);
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(other, this)) return true;
-    return other is GAccountsByPkData_account_identity_udHistory &&
-        G__typename == other.G__typename &&
-        id == other.id &&
-        amount == other.amount &&
-        timestamp == other.timestamp;
-  }
-
-  @override
-  int get hashCode {
-    var _$hash = 0;
-    _$hash = $jc(_$hash, G__typename.hashCode);
-    _$hash = $jc(_$hash, id.hashCode);
-    _$hash = $jc(_$hash, amount.hashCode);
-    _$hash = $jc(_$hash, timestamp.hashCode);
-    _$hash = $jf(_$hash);
-    return _$hash;
-  }
-
-  @override
-  String toString() {
-    return (newBuiltValueToStringHelper(
-            r'GAccountsByPkData_account_identity_udHistory')
-          ..add('G__typename', G__typename)
-          ..add('id', id)
-          ..add('amount', amount)
-          ..add('timestamp', timestamp))
-        .toString();
-  }
-}
-
-class GAccountsByPkData_account_identity_udHistoryBuilder
-    implements
-        Builder<GAccountsByPkData_account_identity_udHistory,
-            GAccountsByPkData_account_identity_udHistoryBuilder> {
-  _$GAccountsByPkData_account_identity_udHistory? _$v;
-
-  String? _G__typename;
-  String? get G__typename => _$this._G__typename;
-  set G__typename(String? G__typename) => _$this._G__typename = G__typename;
-
-  String? _id;
-  String? get id => _$this._id;
-  set id(String? id) => _$this._id = id;
-
-  int? _amount;
-  int? get amount => _$this._amount;
-  set amount(int? amount) => _$this._amount = amount;
-
-  _i2.GtimestamptzBuilder? _timestamp;
-  _i2.GtimestamptzBuilder get timestamp =>
-      _$this._timestamp ??= new _i2.GtimestamptzBuilder();
-  set timestamp(_i2.GtimestamptzBuilder? timestamp) =>
-      _$this._timestamp = timestamp;
-
-  GAccountsByPkData_account_identity_udHistoryBuilder() {
-    GAccountsByPkData_account_identity_udHistory._initializeBuilder(this);
-  }
-
-  GAccountsByPkData_account_identity_udHistoryBuilder get _$this {
-    final $v = _$v;
-    if ($v != null) {
-      _G__typename = $v.G__typename;
-      _id = $v.id;
-      _amount = $v.amount;
-      _timestamp = $v.timestamp.toBuilder();
-      _$v = null;
-    }
-    return this;
-  }
-
-  @override
-  void replace(GAccountsByPkData_account_identity_udHistory other) {
-    ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$GAccountsByPkData_account_identity_udHistory;
-  }
-
-  @override
-  void update(
-      void Function(GAccountsByPkData_account_identity_udHistoryBuilder)?
-          updates) {
-    if (updates != null) updates(this);
-  }
-
-  @override
-  GAccountsByPkData_account_identity_udHistory build() => _build();
-
-  _$GAccountsByPkData_account_identity_udHistory _build() {
-    _$GAccountsByPkData_account_identity_udHistory _$result;
-    try {
-      _$result = _$v ??
-          new _$GAccountsByPkData_account_identity_udHistory._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename,
-                  r'GAccountsByPkData_account_identity_udHistory',
-                  'G__typename'),
-              id: BuiltValueNullFieldError.checkNotNull(
-                  id, r'GAccountsByPkData_account_identity_udHistory', 'id'),
-              amount: BuiltValueNullFieldError.checkNotNull(amount,
-                  r'GAccountsByPkData_account_identity_udHistory', 'amount'),
-              timestamp: timestamp.build());
-    } catch (_) {
-      late String _$failedField;
-      try {
-        _$failedField = 'timestamp';
-        timestamp.build();
-      } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            r'GAccountsByPkData_account_identity_udHistory',
-            _$failedField,
-            e.toString());
-      }
-      rethrow;
-    }
-    replace(_$result);
-    return _$result;
-  }
-}
-
 class _$GAccountsByPkData_account_linkedIdentity
     extends GAccountsByPkData_account_linkedIdentity {
   @override
@@ -55220,7 +53751,7 @@ class _$GAccountsByPkData_account_linkedIdentity
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -55240,7 +53771,7 @@ class _$GAccountsByPkData_account_linkedIdentity
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -55251,6 +53782,8 @@ class _$GAccountsByPkData_account_linkedIdentity
         id, r'GAccountsByPkData_account_linkedIdentity', 'id');
     BuiltValueNullFieldError.checkNotNull(
         isMember, r'GAccountsByPkData_account_linkedIdentity', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GAccountsByPkData_account_linkedIdentity', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GAccountsByPkData_account_linkedIdentity', 'name');
     BuiltValueNullFieldError.checkNotNull(
@@ -55347,9 +53880,9 @@ class GAccountsByPkData_account_linkedIdentityBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -55404,19 +53937,20 @@ class GAccountsByPkData_account_linkedIdentityBuilder
     try {
       _$result = _$v ??
           new _$GAccountsByPkData_account_linkedIdentity._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
-                  r'GAccountsByPkData_account_linkedIdentity', 'G__typename'),
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename, r'GAccountsByPkData_account_linkedIdentity', 'G__typename'),
               accountId: accountId,
               account: _account?.build(),
               id: BuiltValueNullFieldError.checkNotNull(
                   id, r'GAccountsByPkData_account_linkedIdentity', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GAccountsByPkData_account_linkedIdentity', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GAccountsByPkData_account_linkedIdentity', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GAccountsByPkData_account_linkedIdentity', 'name'),
-              expireOn: BuiltValueNullFieldError.checkNotNull(expireOn,
-                  r'GAccountsByPkData_account_linkedIdentity', 'expireOn'),
+              expireOn: BuiltValueNullFieldError.checkNotNull(
+                  expireOn, r'GAccountsByPkData_account_linkedIdentity', 'expireOn'),
               index: BuiltValueNullFieldError.checkNotNull(
                   index, r'GAccountsByPkData_account_linkedIdentity', 'index'));
     } catch (_) {
@@ -55572,7 +54106,7 @@ class _$GAccountsByPkData_account_removedIdentities
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -55593,7 +54127,7 @@ class _$GAccountsByPkData_account_removedIdentities
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -55604,6 +54138,8 @@ class _$GAccountsByPkData_account_removedIdentities
         id, r'GAccountsByPkData_account_removedIdentities', 'id');
     BuiltValueNullFieldError.checkNotNull(
         isMember, r'GAccountsByPkData_account_removedIdentities', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GAccountsByPkData_account_removedIdentities', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GAccountsByPkData_account_removedIdentities', 'name');
     BuiltValueNullFieldError.checkNotNull(
@@ -55701,9 +54237,9 @@ class GAccountsByPkData_account_removedIdentitiesBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -55760,20 +54296,19 @@ class GAccountsByPkData_account_removedIdentitiesBuilder
       _$result = _$v ??
           new _$GAccountsByPkData_account_removedIdentities._(
               G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename,
-                  r'GAccountsByPkData_account_removedIdentities',
-                  'G__typename'),
+                  G__typename, r'GAccountsByPkData_account_removedIdentities', 'G__typename'),
               accountId: accountId,
               account: _account?.build(),
               id: BuiltValueNullFieldError.checkNotNull(
                   id, r'GAccountsByPkData_account_removedIdentities', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GAccountsByPkData_account_removedIdentities', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GAccountsByPkData_account_removedIdentities', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GAccountsByPkData_account_removedIdentities', 'name'),
-              expireOn: BuiltValueNullFieldError.checkNotNull(expireOn,
-                  r'GAccountsByPkData_account_removedIdentities', 'expireOn'),
+              expireOn: BuiltValueNullFieldError.checkNotNull(
+                  expireOn, r'GAccountsByPkData_account_removedIdentities', 'expireOn'),
               index: BuiltValueNullFieldError.checkNotNull(
                   index, r'GAccountsByPkData_account_removedIdentities', 'index'));
     } catch (_) {
@@ -59020,7 +57555,7 @@ class _$GAccountBasicByPkData_accountByPk_identity
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -59040,7 +57575,7 @@ class _$GAccountBasicByPkData_accountByPk_identity
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -59051,6 +57586,8 @@ class _$GAccountBasicByPkData_accountByPk_identity
         id, r'GAccountBasicByPkData_accountByPk_identity', 'id');
     BuiltValueNullFieldError.checkNotNull(
         isMember, r'GAccountBasicByPkData_accountByPk_identity', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GAccountBasicByPkData_accountByPk_identity', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GAccountBasicByPkData_accountByPk_identity', 'name');
     BuiltValueNullFieldError.checkNotNull(
@@ -59147,9 +57684,9 @@ class GAccountBasicByPkData_accountByPk_identityBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -59205,19 +57742,20 @@ class GAccountBasicByPkData_accountByPk_identityBuilder
     try {
       _$result = _$v ??
           new _$GAccountBasicByPkData_accountByPk_identity._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
-                  r'GAccountBasicByPkData_accountByPk_identity', 'G__typename'),
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename, r'GAccountBasicByPkData_accountByPk_identity', 'G__typename'),
               accountId: accountId,
               account: _account?.build(),
               id: BuiltValueNullFieldError.checkNotNull(
                   id, r'GAccountBasicByPkData_accountByPk_identity', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GAccountBasicByPkData_accountByPk_identity', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GAccountBasicByPkData_accountByPk_identity', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GAccountBasicByPkData_accountByPk_identity', 'name'),
-              expireOn: BuiltValueNullFieldError.checkNotNull(expireOn,
-                  r'GAccountBasicByPkData_accountByPk_identity', 'expireOn'),
+              expireOn: BuiltValueNullFieldError.checkNotNull(
+                  expireOn, r'GAccountBasicByPkData_accountByPk_identity', 'expireOn'),
               index: BuiltValueNullFieldError.checkNotNull(
                   index, r'GAccountBasicByPkData_accountByPk_identity', 'index'));
     } catch (_) {
@@ -59659,7 +58197,7 @@ class _$GAccountsBasicByPkData_account_identity
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -59679,7 +58217,7 @@ class _$GAccountsBasicByPkData_account_identity
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -59690,6 +58228,8 @@ class _$GAccountsBasicByPkData_account_identity
         id, r'GAccountsBasicByPkData_account_identity', 'id');
     BuiltValueNullFieldError.checkNotNull(
         isMember, r'GAccountsBasicByPkData_account_identity', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GAccountsBasicByPkData_account_identity', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GAccountsBasicByPkData_account_identity', 'name');
     BuiltValueNullFieldError.checkNotNull(
@@ -59786,9 +58326,9 @@ class GAccountsBasicByPkData_account_identityBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -59843,19 +58383,20 @@ class GAccountsBasicByPkData_account_identityBuilder
     try {
       _$result = _$v ??
           new _$GAccountsBasicByPkData_account_identity._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
-                  r'GAccountsBasicByPkData_account_identity', 'G__typename'),
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename, r'GAccountsBasicByPkData_account_identity', 'G__typename'),
               accountId: accountId,
               account: _account?.build(),
               id: BuiltValueNullFieldError.checkNotNull(
                   id, r'GAccountsBasicByPkData_account_identity', 'id'),
-              isMember: BuiltValueNullFieldError.checkNotNull(isMember,
-                  r'GAccountsBasicByPkData_account_identity', 'isMember'),
-              status: status,
+              isMember: BuiltValueNullFieldError.checkNotNull(
+                  isMember, r'GAccountsBasicByPkData_account_identity', 'isMember'),
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GAccountsBasicByPkData_account_identity', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GAccountsBasicByPkData_account_identity', 'name'),
-              expireOn: BuiltValueNullFieldError.checkNotNull(expireOn,
-                  r'GAccountsBasicByPkData_account_identity', 'expireOn'),
+              expireOn: BuiltValueNullFieldError.checkNotNull(
+                  expireOn, r'GAccountsBasicByPkData_account_identity', 'expireOn'),
               index: BuiltValueNullFieldError.checkNotNull(
                   index, r'GAccountsBasicByPkData_account_identity', 'index'));
     } catch (_) {
@@ -60427,7 +58968,7 @@ class _$GAccountTransactionsData_account_commentsIssued
   @override
   final _i2.Gbytea remarkBytes;
   @override
-  final _i2.GCommentTypeEnum? type;
+  final String type;
 
   factory _$GAccountTransactionsData_account_commentsIssued(
           [void Function(
@@ -60446,7 +58987,7 @@ class _$GAccountTransactionsData_account_commentsIssued
       required this.id,
       required this.remark,
       required this.remarkBytes,
-      this.type})
+      required this.type})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(G__typename,
         r'GAccountTransactionsData_account_commentsIssued', 'G__typename');
@@ -60460,6 +59001,8 @@ class _$GAccountTransactionsData_account_commentsIssued
         remark, r'GAccountTransactionsData_account_commentsIssued', 'remark');
     BuiltValueNullFieldError.checkNotNull(remarkBytes,
         r'GAccountTransactionsData_account_commentsIssued', 'remarkBytes');
+    BuiltValueNullFieldError.checkNotNull(
+        type, r'GAccountTransactionsData_account_commentsIssued', 'type');
   }
 
   @override
@@ -60561,9 +59104,9 @@ class GAccountTransactionsData_account_commentsIssuedBuilder
   set remarkBytes(_i2.GbyteaBuilder? remarkBytes) =>
       _$this._remarkBytes = remarkBytes;
 
-  _i2.GCommentTypeEnum? _type;
-  _i2.GCommentTypeEnum? get type => _$this._type;
-  set type(_i2.GCommentTypeEnum? type) => _$this._type = type;
+  String? _type;
+  String? get type => _$this._type;
+  set type(String? type) => _$this._type = type;
 
   GAccountTransactionsData_account_commentsIssuedBuilder() {
     GAccountTransactionsData_account_commentsIssued._initializeBuilder(this);
@@ -60617,14 +59160,15 @@ class GAccountTransactionsData_account_commentsIssuedBuilder
                   r'GAccountTransactionsData_account_commentsIssued',
                   'blockNumber'),
               eventId: eventId,
-              hash: BuiltValueNullFieldError.checkNotNull(hash,
-                  r'GAccountTransactionsData_account_commentsIssued', 'hash'),
+              hash: BuiltValueNullFieldError.checkNotNull(
+                  hash, r'GAccountTransactionsData_account_commentsIssued', 'hash'),
               id: BuiltValueNullFieldError.checkNotNull(
                   id, r'GAccountTransactionsData_account_commentsIssued', 'id'),
               remark: BuiltValueNullFieldError.checkNotNull(remark,
                   r'GAccountTransactionsData_account_commentsIssued', 'remark'),
               remarkBytes: remarkBytes.build(),
-              type: type);
+              type: BuiltValueNullFieldError.checkNotNull(
+                  type, r'GAccountTransactionsData_account_commentsIssued', 'type'));
     } catch (_) {
       late String _$failedField;
       try {
@@ -63363,7 +61907,7 @@ class _$GCertFieldsData_issuer extends GCertFieldsData_issuer {
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -63381,7 +61925,7 @@ class _$GCertFieldsData_issuer extends GCertFieldsData_issuer {
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -63391,6 +61935,8 @@ class _$GCertFieldsData_issuer extends GCertFieldsData_issuer {
     BuiltValueNullFieldError.checkNotNull(id, r'GCertFieldsData_issuer', 'id');
     BuiltValueNullFieldError.checkNotNull(
         isMember, r'GCertFieldsData_issuer', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GCertFieldsData_issuer', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GCertFieldsData_issuer', 'name');
     BuiltValueNullFieldError.checkNotNull(
@@ -63481,9 +62027,9 @@ class GCertFieldsData_issuerBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -63545,7 +62091,8 @@ class GCertFieldsData_issuerBuilder
                   id, r'GCertFieldsData_issuer', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GCertFieldsData_issuer', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GCertFieldsData_issuer', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GCertFieldsData_issuer', 'name'),
               expireOn: BuiltValueNullFieldError.checkNotNull(
@@ -63688,7 +62235,7 @@ class _$GCertFieldsData_receiver extends GCertFieldsData_receiver {
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -63706,7 +62253,7 @@ class _$GCertFieldsData_receiver extends GCertFieldsData_receiver {
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -63717,6 +62264,8 @@ class _$GCertFieldsData_receiver extends GCertFieldsData_receiver {
         id, r'GCertFieldsData_receiver', 'id');
     BuiltValueNullFieldError.checkNotNull(
         isMember, r'GCertFieldsData_receiver', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GCertFieldsData_receiver', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GCertFieldsData_receiver', 'name');
     BuiltValueNullFieldError.checkNotNull(
@@ -63808,9 +62357,9 @@ class GCertFieldsData_receiverBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -63872,7 +62421,8 @@ class GCertFieldsData_receiverBuilder
                   id, r'GCertFieldsData_receiver', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GCertFieldsData_receiver', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GCertFieldsData_receiver', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GCertFieldsData_receiver', 'name'),
               expireOn: BuiltValueNullFieldError.checkNotNull(
@@ -64830,7 +63380,7 @@ class _$GIdentityBasicFieldsData extends GIdentityBasicFieldsData {
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -64848,7 +63398,7 @@ class _$GIdentityBasicFieldsData extends GIdentityBasicFieldsData {
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -64859,6 +63409,8 @@ class _$GIdentityBasicFieldsData extends GIdentityBasicFieldsData {
         id, r'GIdentityBasicFieldsData', 'id');
     BuiltValueNullFieldError.checkNotNull(
         isMember, r'GIdentityBasicFieldsData', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GIdentityBasicFieldsData', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GIdentityBasicFieldsData', 'name');
     BuiltValueNullFieldError.checkNotNull(
@@ -64950,9 +63502,9 @@ class GIdentityBasicFieldsDataBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -65014,7 +63566,8 @@ class GIdentityBasicFieldsDataBuilder
                   id, r'GIdentityBasicFieldsData', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GIdentityBasicFieldsData', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GIdentityBasicFieldsData', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GIdentityBasicFieldsData', 'name'),
               expireOn: BuiltValueNullFieldError.checkNotNull(
@@ -65182,7 +63735,7 @@ class _$GIdentityFieldsData extends GIdentityFieldsData {
   @override
   final GIdentityFieldsData_linkedAccountAggregate linkedAccountAggregate;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final BuiltList<GIdentityFieldsData_membershipHistory> membershipHistory;
   @override
@@ -65196,8 +63749,6 @@ class _$GIdentityFieldsData extends GIdentityFieldsData {
   final GIdentityFieldsData_ownerKeyChangeAggregate ownerKeyChangeAggregate;
   @override
   final GIdentityFieldsData_smith? smith;
-  @override
-  final BuiltList<GIdentityFieldsData_udHistory>? udHistory;
 
   factory _$GIdentityFieldsData(
           [void Function(GIdentityFieldsDataBuilder)? updates]) =>
@@ -65221,14 +63772,13 @@ class _$GIdentityFieldsData extends GIdentityFieldsData {
       required this.lastChangeOn,
       required this.linkedAccount,
       required this.linkedAccountAggregate,
-      this.status,
+      required this.status,
       required this.membershipHistory,
       required this.membershipHistoryAggregate,
       required this.name,
       required this.ownerKeyChange,
       required this.ownerKeyChangeAggregate,
-      this.smith,
-      this.udHistory})
+      this.smith})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         G__typename, r'GIdentityFieldsData', 'G__typename');
@@ -65255,6 +63805,8 @@ class _$GIdentityFieldsData extends GIdentityFieldsData {
         linkedAccount, r'GIdentityFieldsData', 'linkedAccount');
     BuiltValueNullFieldError.checkNotNull(linkedAccountAggregate,
         r'GIdentityFieldsData', 'linkedAccountAggregate');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GIdentityFieldsData', 'status');
     BuiltValueNullFieldError.checkNotNull(
         membershipHistory, r'GIdentityFieldsData', 'membershipHistory');
     BuiltValueNullFieldError.checkNotNull(membershipHistoryAggregate,
@@ -65302,8 +63854,7 @@ class _$GIdentityFieldsData extends GIdentityFieldsData {
         name == other.name &&
         ownerKeyChange == other.ownerKeyChange &&
         ownerKeyChangeAggregate == other.ownerKeyChangeAggregate &&
-        smith == other.smith &&
-        udHistory == other.udHistory;
+        smith == other.smith;
   }
 
   @override
@@ -65333,7 +63884,6 @@ class _$GIdentityFieldsData extends GIdentityFieldsData {
     _$hash = $jc(_$hash, ownerKeyChange.hashCode);
     _$hash = $jc(_$hash, ownerKeyChangeAggregate.hashCode);
     _$hash = $jc(_$hash, smith.hashCode);
-    _$hash = $jc(_$hash, udHistory.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -65364,8 +63914,7 @@ class _$GIdentityFieldsData extends GIdentityFieldsData {
           ..add('name', name)
           ..add('ownerKeyChange', ownerKeyChange)
           ..add('ownerKeyChangeAggregate', ownerKeyChangeAggregate)
-          ..add('smith', smith)
-          ..add('udHistory', udHistory))
+          ..add('smith', smith))
         .toString();
   }
 }
@@ -65470,9 +64019,9 @@ class GIdentityFieldsDataBuilder
               linkedAccountAggregate) =>
       _$this._linkedAccountAggregate = linkedAccountAggregate;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   ListBuilder<GIdentityFieldsData_membershipHistory>? _membershipHistory;
   ListBuilder<GIdentityFieldsData_membershipHistory> get membershipHistory =>
@@ -65519,12 +64068,6 @@ class GIdentityFieldsDataBuilder
       _$this._smith ??= new GIdentityFieldsData_smithBuilder();
   set smith(GIdentityFieldsData_smithBuilder? smith) => _$this._smith = smith;
 
-  ListBuilder<GIdentityFieldsData_udHistory>? _udHistory;
-  ListBuilder<GIdentityFieldsData_udHistory> get udHistory =>
-      _$this._udHistory ??= new ListBuilder<GIdentityFieldsData_udHistory>();
-  set udHistory(ListBuilder<GIdentityFieldsData_udHistory>? udHistory) =>
-      _$this._udHistory = udHistory;
-
   GIdentityFieldsDataBuilder() {
     GIdentityFieldsData._initializeBuilder(this);
   }
@@ -65556,7 +64099,6 @@ class GIdentityFieldsDataBuilder
       _ownerKeyChange = $v.ownerKeyChange.toBuilder();
       _ownerKeyChangeAggregate = $v.ownerKeyChangeAggregate.toBuilder();
       _smith = $v.smith?.toBuilder();
-      _udHistory = $v.udHistory?.toBuilder();
       _$v = null;
     }
     return this;
@@ -65605,15 +64147,15 @@ class GIdentityFieldsDataBuilder
                   lastChangeOn, r'GIdentityFieldsData', 'lastChangeOn'),
               linkedAccount: linkedAccount.build(),
               linkedAccountAggregate: linkedAccountAggregate.build(),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GIdentityFieldsData', 'status'),
               membershipHistory: membershipHistory.build(),
               membershipHistoryAggregate: membershipHistoryAggregate.build(),
-              name: BuiltValueNullFieldError.checkNotNull(
-                  name, r'GIdentityFieldsData', 'name'),
+              name:
+                  BuiltValueNullFieldError.checkNotNull(name, r'GIdentityFieldsData', 'name'),
               ownerKeyChange: ownerKeyChange.build(),
               ownerKeyChangeAggregate: ownerKeyChangeAggregate.build(),
-              smith: _smith?.build(),
-              udHistory: _udHistory?.build());
+              smith: _smith?.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -65645,8 +64187,6 @@ class GIdentityFieldsDataBuilder
         ownerKeyChangeAggregate.build();
         _$failedField = 'smith';
         _smith?.build();
-        _$failedField = 'udHistory';
-        _udHistory?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'GIdentityFieldsData', _$failedField, e.toString());
@@ -66016,7 +64556,7 @@ class _$GIdentityFieldsData_certIssued_issuer
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -66036,7 +64576,7 @@ class _$GIdentityFieldsData_certIssued_issuer
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -66047,6 +64587,8 @@ class _$GIdentityFieldsData_certIssued_issuer
         id, r'GIdentityFieldsData_certIssued_issuer', 'id');
     BuiltValueNullFieldError.checkNotNull(
         isMember, r'GIdentityFieldsData_certIssued_issuer', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GIdentityFieldsData_certIssued_issuer', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GIdentityFieldsData_certIssued_issuer', 'name');
     BuiltValueNullFieldError.checkNotNull(
@@ -66142,9 +64684,9 @@ class GIdentityFieldsData_certIssued_issuerBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -66199,19 +64741,20 @@ class GIdentityFieldsData_certIssued_issuerBuilder
     try {
       _$result = _$v ??
           new _$GIdentityFieldsData_certIssued_issuer._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
-                  r'GIdentityFieldsData_certIssued_issuer', 'G__typename'),
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename, r'GIdentityFieldsData_certIssued_issuer', 'G__typename'),
               accountId: accountId,
               account: _account?.build(),
               id: BuiltValueNullFieldError.checkNotNull(
                   id, r'GIdentityFieldsData_certIssued_issuer', 'id'),
-              isMember: BuiltValueNullFieldError.checkNotNull(isMember,
-                  r'GIdentityFieldsData_certIssued_issuer', 'isMember'),
-              status: status,
+              isMember: BuiltValueNullFieldError.checkNotNull(
+                  isMember, r'GIdentityFieldsData_certIssued_issuer', 'isMember'),
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GIdentityFieldsData_certIssued_issuer', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GIdentityFieldsData_certIssued_issuer', 'name'),
-              expireOn: BuiltValueNullFieldError.checkNotNull(expireOn,
-                  r'GIdentityFieldsData_certIssued_issuer', 'expireOn'),
+              expireOn: BuiltValueNullFieldError.checkNotNull(
+                  expireOn, r'GIdentityFieldsData_certIssued_issuer', 'expireOn'),
               index: BuiltValueNullFieldError.checkNotNull(
                   index, r'GIdentityFieldsData_certIssued_issuer', 'index'));
     } catch (_) {
@@ -66363,7 +64906,7 @@ class _$GIdentityFieldsData_certIssued_receiver
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -66383,7 +64926,7 @@ class _$GIdentityFieldsData_certIssued_receiver
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -66394,6 +64937,8 @@ class _$GIdentityFieldsData_certIssued_receiver
         id, r'GIdentityFieldsData_certIssued_receiver', 'id');
     BuiltValueNullFieldError.checkNotNull(
         isMember, r'GIdentityFieldsData_certIssued_receiver', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GIdentityFieldsData_certIssued_receiver', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GIdentityFieldsData_certIssued_receiver', 'name');
     BuiltValueNullFieldError.checkNotNull(
@@ -66490,9 +65035,9 @@ class GIdentityFieldsData_certIssued_receiverBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -66547,19 +65092,20 @@ class GIdentityFieldsData_certIssued_receiverBuilder
     try {
       _$result = _$v ??
           new _$GIdentityFieldsData_certIssued_receiver._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
-                  r'GIdentityFieldsData_certIssued_receiver', 'G__typename'),
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename, r'GIdentityFieldsData_certIssued_receiver', 'G__typename'),
               accountId: accountId,
               account: _account?.build(),
               id: BuiltValueNullFieldError.checkNotNull(
                   id, r'GIdentityFieldsData_certIssued_receiver', 'id'),
-              isMember: BuiltValueNullFieldError.checkNotNull(isMember,
-                  r'GIdentityFieldsData_certIssued_receiver', 'isMember'),
-              status: status,
+              isMember: BuiltValueNullFieldError.checkNotNull(
+                  isMember, r'GIdentityFieldsData_certIssued_receiver', 'isMember'),
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GIdentityFieldsData_certIssued_receiver', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GIdentityFieldsData_certIssued_receiver', 'name'),
-              expireOn: BuiltValueNullFieldError.checkNotNull(expireOn,
-                  r'GIdentityFieldsData_certIssued_receiver', 'expireOn'),
+              expireOn: BuiltValueNullFieldError.checkNotNull(
+                  expireOn, r'GIdentityFieldsData_certIssued_receiver', 'expireOn'),
               index: BuiltValueNullFieldError.checkNotNull(
                   index, r'GIdentityFieldsData_certIssued_receiver', 'index'));
     } catch (_) {
@@ -67206,7 +65752,7 @@ class _$GIdentityFieldsData_certReceived_issuer
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -67226,7 +65772,7 @@ class _$GIdentityFieldsData_certReceived_issuer
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -67237,6 +65783,8 @@ class _$GIdentityFieldsData_certReceived_issuer
         id, r'GIdentityFieldsData_certReceived_issuer', 'id');
     BuiltValueNullFieldError.checkNotNull(
         isMember, r'GIdentityFieldsData_certReceived_issuer', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GIdentityFieldsData_certReceived_issuer', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GIdentityFieldsData_certReceived_issuer', 'name');
     BuiltValueNullFieldError.checkNotNull(
@@ -67333,9 +65881,9 @@ class GIdentityFieldsData_certReceived_issuerBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -67390,19 +65938,20 @@ class GIdentityFieldsData_certReceived_issuerBuilder
     try {
       _$result = _$v ??
           new _$GIdentityFieldsData_certReceived_issuer._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
-                  r'GIdentityFieldsData_certReceived_issuer', 'G__typename'),
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename, r'GIdentityFieldsData_certReceived_issuer', 'G__typename'),
               accountId: accountId,
               account: _account?.build(),
               id: BuiltValueNullFieldError.checkNotNull(
                   id, r'GIdentityFieldsData_certReceived_issuer', 'id'),
-              isMember: BuiltValueNullFieldError.checkNotNull(isMember,
-                  r'GIdentityFieldsData_certReceived_issuer', 'isMember'),
-              status: status,
+              isMember: BuiltValueNullFieldError.checkNotNull(
+                  isMember, r'GIdentityFieldsData_certReceived_issuer', 'isMember'),
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GIdentityFieldsData_certReceived_issuer', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GIdentityFieldsData_certReceived_issuer', 'name'),
-              expireOn: BuiltValueNullFieldError.checkNotNull(expireOn,
-                  r'GIdentityFieldsData_certReceived_issuer', 'expireOn'),
+              expireOn: BuiltValueNullFieldError.checkNotNull(
+                  expireOn, r'GIdentityFieldsData_certReceived_issuer', 'expireOn'),
               index: BuiltValueNullFieldError.checkNotNull(
                   index, r'GIdentityFieldsData_certReceived_issuer', 'index'));
     } catch (_) {
@@ -67558,7 +66107,7 @@ class _$GIdentityFieldsData_certReceived_receiver
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -67578,7 +66127,7 @@ class _$GIdentityFieldsData_certReceived_receiver
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -67589,6 +66138,8 @@ class _$GIdentityFieldsData_certReceived_receiver
         id, r'GIdentityFieldsData_certReceived_receiver', 'id');
     BuiltValueNullFieldError.checkNotNull(
         isMember, r'GIdentityFieldsData_certReceived_receiver', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GIdentityFieldsData_certReceived_receiver', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GIdentityFieldsData_certReceived_receiver', 'name');
     BuiltValueNullFieldError.checkNotNull(
@@ -67685,9 +66236,9 @@ class GIdentityFieldsData_certReceived_receiverBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -67743,19 +66294,20 @@ class GIdentityFieldsData_certReceived_receiverBuilder
     try {
       _$result = _$v ??
           new _$GIdentityFieldsData_certReceived_receiver._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
-                  r'GIdentityFieldsData_certReceived_receiver', 'G__typename'),
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename, r'GIdentityFieldsData_certReceived_receiver', 'G__typename'),
               accountId: accountId,
               account: _account?.build(),
               id: BuiltValueNullFieldError.checkNotNull(
                   id, r'GIdentityFieldsData_certReceived_receiver', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GIdentityFieldsData_certReceived_receiver', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GIdentityFieldsData_certReceived_receiver', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GIdentityFieldsData_certReceived_receiver', 'name'),
-              expireOn: BuiltValueNullFieldError.checkNotNull(expireOn,
-                  r'GIdentityFieldsData_certReceived_receiver', 'expireOn'),
+              expireOn: BuiltValueNullFieldError.checkNotNull(
+                  expireOn, r'GIdentityFieldsData_certReceived_receiver', 'expireOn'),
               index: BuiltValueNullFieldError.checkNotNull(
                   index, r'GIdentityFieldsData_certReceived_receiver', 'index'));
     } catch (_) {
@@ -68532,7 +67084,7 @@ class _$GIdentityFieldsData_membershipHistory
   @override
   final String? eventId;
   @override
-  final _i2.GEventTypeEnum? eventType;
+  final String eventType;
   @override
   final String id;
   @override
@@ -68548,7 +67100,7 @@ class _$GIdentityFieldsData_membershipHistory
       {required this.G__typename,
       required this.blockNumber,
       this.eventId,
-      this.eventType,
+      required this.eventType,
       required this.id,
       this.identityId})
       : super._() {
@@ -68556,6 +67108,8 @@ class _$GIdentityFieldsData_membershipHistory
         G__typename, r'GIdentityFieldsData_membershipHistory', 'G__typename');
     BuiltValueNullFieldError.checkNotNull(
         blockNumber, r'GIdentityFieldsData_membershipHistory', 'blockNumber');
+    BuiltValueNullFieldError.checkNotNull(
+        eventType, r'GIdentityFieldsData_membershipHistory', 'eventType');
     BuiltValueNullFieldError.checkNotNull(
         id, r'GIdentityFieldsData_membershipHistory', 'id');
   }
@@ -68627,9 +67181,9 @@ class GIdentityFieldsData_membershipHistoryBuilder
   String? get eventId => _$this._eventId;
   set eventId(String? eventId) => _$this._eventId = eventId;
 
-  _i2.GEventTypeEnum? _eventType;
-  _i2.GEventTypeEnum? get eventType => _$this._eventType;
-  set eventType(_i2.GEventTypeEnum? eventType) => _$this._eventType = eventType;
+  String? _eventType;
+  String? get eventType => _$this._eventType;
+  set eventType(String? eventType) => _$this._eventType = eventType;
 
   String? _id;
   String? get id => _$this._id;
@@ -68680,7 +67234,8 @@ class GIdentityFieldsData_membershipHistoryBuilder
             blockNumber: BuiltValueNullFieldError.checkNotNull(blockNumber,
                 r'GIdentityFieldsData_membershipHistory', 'blockNumber'),
             eventId: eventId,
-            eventType: eventType,
+            eventType: BuiltValueNullFieldError.checkNotNull(eventType,
+                r'GIdentityFieldsData_membershipHistory', 'eventType'),
             id: BuiltValueNullFieldError.checkNotNull(
                 id, r'GIdentityFieldsData_membershipHistory', 'id'),
             identityId: identityId);
@@ -69905,159 +68460,6 @@ class GIdentityFieldsData_smith_smithCertReceivedBuilder
   }
 }
 
-class _$GIdentityFieldsData_udHistory extends GIdentityFieldsData_udHistory {
-  @override
-  final String G__typename;
-  @override
-  final String id;
-  @override
-  final int amount;
-  @override
-  final _i2.Gtimestamptz timestamp;
-
-  factory _$GIdentityFieldsData_udHistory(
-          [void Function(GIdentityFieldsData_udHistoryBuilder)? updates]) =>
-      (new GIdentityFieldsData_udHistoryBuilder()..update(updates))._build();
-
-  _$GIdentityFieldsData_udHistory._(
-      {required this.G__typename,
-      required this.id,
-      required this.amount,
-      required this.timestamp})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        G__typename, r'GIdentityFieldsData_udHistory', 'G__typename');
-    BuiltValueNullFieldError.checkNotNull(
-        id, r'GIdentityFieldsData_udHistory', 'id');
-    BuiltValueNullFieldError.checkNotNull(
-        amount, r'GIdentityFieldsData_udHistory', 'amount');
-    BuiltValueNullFieldError.checkNotNull(
-        timestamp, r'GIdentityFieldsData_udHistory', 'timestamp');
-  }
-
-  @override
-  GIdentityFieldsData_udHistory rebuild(
-          void Function(GIdentityFieldsData_udHistoryBuilder) updates) =>
-      (toBuilder()..update(updates)).build();
-
-  @override
-  GIdentityFieldsData_udHistoryBuilder toBuilder() =>
-      new GIdentityFieldsData_udHistoryBuilder()..replace(this);
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(other, this)) return true;
-    return other is GIdentityFieldsData_udHistory &&
-        G__typename == other.G__typename &&
-        id == other.id &&
-        amount == other.amount &&
-        timestamp == other.timestamp;
-  }
-
-  @override
-  int get hashCode {
-    var _$hash = 0;
-    _$hash = $jc(_$hash, G__typename.hashCode);
-    _$hash = $jc(_$hash, id.hashCode);
-    _$hash = $jc(_$hash, amount.hashCode);
-    _$hash = $jc(_$hash, timestamp.hashCode);
-    _$hash = $jf(_$hash);
-    return _$hash;
-  }
-
-  @override
-  String toString() {
-    return (newBuiltValueToStringHelper(r'GIdentityFieldsData_udHistory')
-          ..add('G__typename', G__typename)
-          ..add('id', id)
-          ..add('amount', amount)
-          ..add('timestamp', timestamp))
-        .toString();
-  }
-}
-
-class GIdentityFieldsData_udHistoryBuilder
-    implements
-        Builder<GIdentityFieldsData_udHistory,
-            GIdentityFieldsData_udHistoryBuilder> {
-  _$GIdentityFieldsData_udHistory? _$v;
-
-  String? _G__typename;
-  String? get G__typename => _$this._G__typename;
-  set G__typename(String? G__typename) => _$this._G__typename = G__typename;
-
-  String? _id;
-  String? get id => _$this._id;
-  set id(String? id) => _$this._id = id;
-
-  int? _amount;
-  int? get amount => _$this._amount;
-  set amount(int? amount) => _$this._amount = amount;
-
-  _i2.GtimestamptzBuilder? _timestamp;
-  _i2.GtimestamptzBuilder get timestamp =>
-      _$this._timestamp ??= new _i2.GtimestamptzBuilder();
-  set timestamp(_i2.GtimestamptzBuilder? timestamp) =>
-      _$this._timestamp = timestamp;
-
-  GIdentityFieldsData_udHistoryBuilder() {
-    GIdentityFieldsData_udHistory._initializeBuilder(this);
-  }
-
-  GIdentityFieldsData_udHistoryBuilder get _$this {
-    final $v = _$v;
-    if ($v != null) {
-      _G__typename = $v.G__typename;
-      _id = $v.id;
-      _amount = $v.amount;
-      _timestamp = $v.timestamp.toBuilder();
-      _$v = null;
-    }
-    return this;
-  }
-
-  @override
-  void replace(GIdentityFieldsData_udHistory other) {
-    ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$GIdentityFieldsData_udHistory;
-  }
-
-  @override
-  void update(void Function(GIdentityFieldsData_udHistoryBuilder)? updates) {
-    if (updates != null) updates(this);
-  }
-
-  @override
-  GIdentityFieldsData_udHistory build() => _build();
-
-  _$GIdentityFieldsData_udHistory _build() {
-    _$GIdentityFieldsData_udHistory _$result;
-    try {
-      _$result = _$v ??
-          new _$GIdentityFieldsData_udHistory._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename, r'GIdentityFieldsData_udHistory', 'G__typename'),
-              id: BuiltValueNullFieldError.checkNotNull(
-                  id, r'GIdentityFieldsData_udHistory', 'id'),
-              amount: BuiltValueNullFieldError.checkNotNull(
-                  amount, r'GIdentityFieldsData_udHistory', 'amount'),
-              timestamp: timestamp.build());
-    } catch (_) {
-      late String _$failedField;
-      try {
-        _$failedField = 'timestamp';
-        timestamp.build();
-      } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            r'GIdentityFieldsData_udHistory', _$failedField, e.toString());
-      }
-      rethrow;
-    }
-    replace(_$result);
-    return _$result;
-  }
-}
-
 class _$GCommentsIssuedData extends GCommentsIssuedData {
   @override
   final String G__typename;
@@ -70076,7 +68478,7 @@ class _$GCommentsIssuedData extends GCommentsIssuedData {
   @override
   final _i2.Gbytea remarkBytes;
   @override
-  final _i2.GCommentTypeEnum? type;
+  final String type;
 
   factory _$GCommentsIssuedData(
           [void Function(GCommentsIssuedDataBuilder)? updates]) =>
@@ -70091,7 +68493,7 @@ class _$GCommentsIssuedData extends GCommentsIssuedData {
       required this.id,
       required this.remark,
       required this.remarkBytes,
-      this.type})
+      required this.type})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         G__typename, r'GCommentsIssuedData', 'G__typename');
@@ -70103,6 +68505,7 @@ class _$GCommentsIssuedData extends GCommentsIssuedData {
         remark, r'GCommentsIssuedData', 'remark');
     BuiltValueNullFieldError.checkNotNull(
         remarkBytes, r'GCommentsIssuedData', 'remarkBytes');
+    BuiltValueNullFieldError.checkNotNull(type, r'GCommentsIssuedData', 'type');
   }
 
   @override
@@ -70199,9 +68602,9 @@ class GCommentsIssuedDataBuilder
   set remarkBytes(_i2.GbyteaBuilder? remarkBytes) =>
       _$this._remarkBytes = remarkBytes;
 
-  _i2.GCommentTypeEnum? _type;
-  _i2.GCommentTypeEnum? get type => _$this._type;
-  set type(_i2.GCommentTypeEnum? type) => _$this._type = type;
+  String? _type;
+  String? get type => _$this._type;
+  set type(String? type) => _$this._type = type;
 
   GCommentsIssuedDataBuilder() {
     GCommentsIssuedData._initializeBuilder(this);
@@ -70256,7 +68659,8 @@ class GCommentsIssuedDataBuilder
               remark: BuiltValueNullFieldError.checkNotNull(
                   remark, r'GCommentsIssuedData', 'remark'),
               remarkBytes: remarkBytes.build(),
-              type: type);
+              type: BuiltValueNullFieldError.checkNotNull(
+                  type, r'GCommentsIssuedData', 'type'));
     } catch (_) {
       late String _$failedField;
       try {
@@ -70450,7 +68854,7 @@ class _$GAccountBasicFieldsData_identity
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -70468,7 +68872,7 @@ class _$GAccountBasicFieldsData_identity
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -70479,6 +68883,8 @@ class _$GAccountBasicFieldsData_identity
         id, r'GAccountBasicFieldsData_identity', 'id');
     BuiltValueNullFieldError.checkNotNull(
         isMember, r'GAccountBasicFieldsData_identity', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GAccountBasicFieldsData_identity', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GAccountBasicFieldsData_identity', 'name');
     BuiltValueNullFieldError.checkNotNull(
@@ -70571,9 +68977,9 @@ class GAccountBasicFieldsData_identityBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -70635,7 +69041,8 @@ class GAccountBasicFieldsData_identityBuilder
                   id, r'GAccountBasicFieldsData_identity', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GAccountBasicFieldsData_identity', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GAccountBasicFieldsData_identity', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GAccountBasicFieldsData_identity', 'name'),
               expireOn: BuiltValueNullFieldError.checkNotNull(
@@ -71182,7 +69589,7 @@ class _$GAccountFieldsData_commentsIssued
   @override
   final _i2.Gbytea remarkBytes;
   @override
-  final _i2.GCommentTypeEnum? type;
+  final String type;
 
   factory _$GAccountFieldsData_commentsIssued(
           [void Function(GAccountFieldsData_commentsIssuedBuilder)? updates]) =>
@@ -71198,7 +69605,7 @@ class _$GAccountFieldsData_commentsIssued
       required this.id,
       required this.remark,
       required this.remarkBytes,
-      this.type})
+      required this.type})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         G__typename, r'GAccountFieldsData_commentsIssued', 'G__typename');
@@ -71212,6 +69619,8 @@ class _$GAccountFieldsData_commentsIssued
         remark, r'GAccountFieldsData_commentsIssued', 'remark');
     BuiltValueNullFieldError.checkNotNull(
         remarkBytes, r'GAccountFieldsData_commentsIssued', 'remarkBytes');
+    BuiltValueNullFieldError.checkNotNull(
+        type, r'GAccountFieldsData_commentsIssued', 'type');
   }
 
   @override
@@ -71310,9 +69719,9 @@ class GAccountFieldsData_commentsIssuedBuilder
   set remarkBytes(_i2.GbyteaBuilder? remarkBytes) =>
       _$this._remarkBytes = remarkBytes;
 
-  _i2.GCommentTypeEnum? _type;
-  _i2.GCommentTypeEnum? get type => _$this._type;
-  set type(_i2.GCommentTypeEnum? type) => _$this._type = type;
+  String? _type;
+  String? get type => _$this._type;
+  set type(String? type) => _$this._type = type;
 
   GAccountFieldsData_commentsIssuedBuilder() {
     GAccountFieldsData_commentsIssued._initializeBuilder(this);
@@ -71368,7 +69777,8 @@ class GAccountFieldsData_commentsIssuedBuilder
               remark: BuiltValueNullFieldError.checkNotNull(
                   remark, r'GAccountFieldsData_commentsIssued', 'remark'),
               remarkBytes: remarkBytes.build(),
-              type: type);
+              type: BuiltValueNullFieldError.checkNotNull(
+                  type, r'GAccountFieldsData_commentsIssued', 'type'));
     } catch (_) {
       late String _$failedField;
       try {
@@ -71679,7 +70089,7 @@ class _$GAccountFieldsData_identity extends GAccountFieldsData_identity {
   final GAccountFieldsData_identity_linkedAccountAggregate
       linkedAccountAggregate;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final BuiltList<GAccountFieldsData_identity_membershipHistory>
       membershipHistory;
@@ -71695,8 +70105,6 @@ class _$GAccountFieldsData_identity extends GAccountFieldsData_identity {
       ownerKeyChangeAggregate;
   @override
   final GAccountFieldsData_identity_smith? smith;
-  @override
-  final BuiltList<GAccountFieldsData_identity_udHistory>? udHistory;
 
   factory _$GAccountFieldsData_identity(
           [void Function(GAccountFieldsData_identityBuilder)? updates]) =>
@@ -71720,14 +70128,13 @@ class _$GAccountFieldsData_identity extends GAccountFieldsData_identity {
       required this.lastChangeOn,
       required this.linkedAccount,
       required this.linkedAccountAggregate,
-      this.status,
+      required this.status,
       required this.membershipHistory,
       required this.membershipHistoryAggregate,
       required this.name,
       required this.ownerKeyChange,
       required this.ownerKeyChangeAggregate,
-      this.smith,
-      this.udHistory})
+      this.smith})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         G__typename, r'GAccountFieldsData_identity', 'G__typename');
@@ -71755,6 +70162,8 @@ class _$GAccountFieldsData_identity extends GAccountFieldsData_identity {
         linkedAccount, r'GAccountFieldsData_identity', 'linkedAccount');
     BuiltValueNullFieldError.checkNotNull(linkedAccountAggregate,
         r'GAccountFieldsData_identity', 'linkedAccountAggregate');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GAccountFieldsData_identity', 'status');
     BuiltValueNullFieldError.checkNotNull(
         membershipHistory, r'GAccountFieldsData_identity', 'membershipHistory');
     BuiltValueNullFieldError.checkNotNull(membershipHistoryAggregate,
@@ -71803,8 +70212,7 @@ class _$GAccountFieldsData_identity extends GAccountFieldsData_identity {
         name == other.name &&
         ownerKeyChange == other.ownerKeyChange &&
         ownerKeyChangeAggregate == other.ownerKeyChangeAggregate &&
-        smith == other.smith &&
-        udHistory == other.udHistory;
+        smith == other.smith;
   }
 
   @override
@@ -71834,7 +70242,6 @@ class _$GAccountFieldsData_identity extends GAccountFieldsData_identity {
     _$hash = $jc(_$hash, ownerKeyChange.hashCode);
     _$hash = $jc(_$hash, ownerKeyChangeAggregate.hashCode);
     _$hash = $jc(_$hash, smith.hashCode);
-    _$hash = $jc(_$hash, udHistory.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -71865,8 +70272,7 @@ class _$GAccountFieldsData_identity extends GAccountFieldsData_identity {
           ..add('name', name)
           ..add('ownerKeyChange', ownerKeyChange)
           ..add('ownerKeyChangeAggregate', ownerKeyChangeAggregate)
-          ..add('smith', smith)
-          ..add('udHistory', udHistory))
+          ..add('smith', smith))
         .toString();
   }
 }
@@ -71979,9 +70385,9 @@ class GAccountFieldsData_identityBuilder
               linkedAccountAggregate) =>
       _$this._linkedAccountAggregate = linkedAccountAggregate;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   ListBuilder<GAccountFieldsData_identity_membershipHistory>?
       _membershipHistory;
@@ -72032,14 +70438,6 @@ class GAccountFieldsData_identityBuilder
   set smith(GAccountFieldsData_identity_smithBuilder? smith) =>
       _$this._smith = smith;
 
-  ListBuilder<GAccountFieldsData_identity_udHistory>? _udHistory;
-  ListBuilder<GAccountFieldsData_identity_udHistory> get udHistory =>
-      _$this._udHistory ??=
-          new ListBuilder<GAccountFieldsData_identity_udHistory>();
-  set udHistory(
-          ListBuilder<GAccountFieldsData_identity_udHistory>? udHistory) =>
-      _$this._udHistory = udHistory;
-
   GAccountFieldsData_identityBuilder() {
     GAccountFieldsData_identity._initializeBuilder(this);
   }
@@ -72071,7 +70469,6 @@ class GAccountFieldsData_identityBuilder
       _ownerKeyChange = $v.ownerKeyChange.toBuilder();
       _ownerKeyChangeAggregate = $v.ownerKeyChangeAggregate.toBuilder();
       _smith = $v.smith?.toBuilder();
-      _udHistory = $v.udHistory?.toBuilder();
       _$v = null;
     }
     return this;
@@ -72120,15 +70517,14 @@ class GAccountFieldsData_identityBuilder
                   lastChangeOn, r'GAccountFieldsData_identity', 'lastChangeOn'),
               linkedAccount: linkedAccount.build(),
               linkedAccountAggregate: linkedAccountAggregate.build(),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GAccountFieldsData_identity', 'status'),
               membershipHistory: membershipHistory.build(),
               membershipHistoryAggregate: membershipHistoryAggregate.build(),
-              name: BuiltValueNullFieldError.checkNotNull(
-                  name, r'GAccountFieldsData_identity', 'name'),
+              name: BuiltValueNullFieldError.checkNotNull(name, r'GAccountFieldsData_identity', 'name'),
               ownerKeyChange: ownerKeyChange.build(),
               ownerKeyChangeAggregate: ownerKeyChangeAggregate.build(),
-              smith: _smith?.build(),
-              udHistory: _udHistory?.build());
+              smith: _smith?.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -72160,8 +70556,6 @@ class GAccountFieldsData_identityBuilder
         ownerKeyChangeAggregate.build();
         _$failedField = 'smith';
         _smith?.build();
-        _$failedField = 'udHistory';
-        _udHistory?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'GAccountFieldsData_identity', _$failedField, e.toString());
@@ -72546,7 +70940,7 @@ class _$GAccountFieldsData_identity_certIssued_issuer
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -72567,7 +70961,7 @@ class _$GAccountFieldsData_identity_certIssued_issuer
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -72578,6 +70972,8 @@ class _$GAccountFieldsData_identity_certIssued_issuer
         id, r'GAccountFieldsData_identity_certIssued_issuer', 'id');
     BuiltValueNullFieldError.checkNotNull(
         isMember, r'GAccountFieldsData_identity_certIssued_issuer', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GAccountFieldsData_identity_certIssued_issuer', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GAccountFieldsData_identity_certIssued_issuer', 'name');
     BuiltValueNullFieldError.checkNotNull(
@@ -72675,9 +71071,9 @@ class GAccountFieldsData_identity_certIssued_issuerBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -72734,20 +71130,19 @@ class GAccountFieldsData_identity_certIssued_issuerBuilder
       _$result = _$v ??
           new _$GAccountFieldsData_identity_certIssued_issuer._(
               G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename,
-                  r'GAccountFieldsData_identity_certIssued_issuer',
-                  'G__typename'),
+                  G__typename, r'GAccountFieldsData_identity_certIssued_issuer', 'G__typename'),
               accountId: accountId,
               account: _account?.build(),
               id: BuiltValueNullFieldError.checkNotNull(
                   id, r'GAccountFieldsData_identity_certIssued_issuer', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GAccountFieldsData_identity_certIssued_issuer', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GAccountFieldsData_identity_certIssued_issuer', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GAccountFieldsData_identity_certIssued_issuer', 'name'),
-              expireOn: BuiltValueNullFieldError.checkNotNull(expireOn,
-                  r'GAccountFieldsData_identity_certIssued_issuer', 'expireOn'),
+              expireOn: BuiltValueNullFieldError.checkNotNull(
+                  expireOn, r'GAccountFieldsData_identity_certIssued_issuer', 'expireOn'),
               index: BuiltValueNullFieldError.checkNotNull(
                   index, r'GAccountFieldsData_identity_certIssued_issuer', 'index'));
     } catch (_) {
@@ -72908,7 +71303,7 @@ class _$GAccountFieldsData_identity_certIssued_receiver
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -72930,7 +71325,7 @@ class _$GAccountFieldsData_identity_certIssued_receiver
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -72941,6 +71336,8 @@ class _$GAccountFieldsData_identity_certIssued_receiver
         id, r'GAccountFieldsData_identity_certIssued_receiver', 'id');
     BuiltValueNullFieldError.checkNotNull(isMember,
         r'GAccountFieldsData_identity_certIssued_receiver', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GAccountFieldsData_identity_certIssued_receiver', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GAccountFieldsData_identity_certIssued_receiver', 'name');
     BuiltValueNullFieldError.checkNotNull(expireOn,
@@ -73039,9 +71436,9 @@ class GAccountFieldsData_identity_certIssued_receiverBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -73098,22 +71495,19 @@ class GAccountFieldsData_identity_certIssued_receiverBuilder
       _$result = _$v ??
           new _$GAccountFieldsData_identity_certIssued_receiver._(
               G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename,
-                  r'GAccountFieldsData_identity_certIssued_receiver',
-                  'G__typename'),
+                  G__typename, r'GAccountFieldsData_identity_certIssued_receiver', 'G__typename'),
               accountId: accountId,
               account: _account?.build(),
               id: BuiltValueNullFieldError.checkNotNull(
                   id, r'GAccountFieldsData_identity_certIssued_receiver', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GAccountFieldsData_identity_certIssued_receiver', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GAccountFieldsData_identity_certIssued_receiver', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GAccountFieldsData_identity_certIssued_receiver', 'name'),
               expireOn: BuiltValueNullFieldError.checkNotNull(
-                  expireOn,
-                  r'GAccountFieldsData_identity_certIssued_receiver',
-                  'expireOn'),
+                  expireOn, r'GAccountFieldsData_identity_certIssued_receiver', 'expireOn'),
               index: BuiltValueNullFieldError.checkNotNull(
                   index, r'GAccountFieldsData_identity_certIssued_receiver', 'index'));
     } catch (_) {
@@ -73790,7 +72184,7 @@ class _$GAccountFieldsData_identity_certReceived_issuer
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -73812,7 +72206,7 @@ class _$GAccountFieldsData_identity_certReceived_issuer
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -73823,6 +72217,8 @@ class _$GAccountFieldsData_identity_certReceived_issuer
         id, r'GAccountFieldsData_identity_certReceived_issuer', 'id');
     BuiltValueNullFieldError.checkNotNull(isMember,
         r'GAccountFieldsData_identity_certReceived_issuer', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GAccountFieldsData_identity_certReceived_issuer', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GAccountFieldsData_identity_certReceived_issuer', 'name');
     BuiltValueNullFieldError.checkNotNull(expireOn,
@@ -73921,9 +72317,9 @@ class GAccountFieldsData_identity_certReceived_issuerBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -73980,22 +72376,19 @@ class GAccountFieldsData_identity_certReceived_issuerBuilder
       _$result = _$v ??
           new _$GAccountFieldsData_identity_certReceived_issuer._(
               G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename,
-                  r'GAccountFieldsData_identity_certReceived_issuer',
-                  'G__typename'),
+                  G__typename, r'GAccountFieldsData_identity_certReceived_issuer', 'G__typename'),
               accountId: accountId,
               account: _account?.build(),
               id: BuiltValueNullFieldError.checkNotNull(
                   id, r'GAccountFieldsData_identity_certReceived_issuer', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GAccountFieldsData_identity_certReceived_issuer', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GAccountFieldsData_identity_certReceived_issuer', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GAccountFieldsData_identity_certReceived_issuer', 'name'),
               expireOn: BuiltValueNullFieldError.checkNotNull(
-                  expireOn,
-                  r'GAccountFieldsData_identity_certReceived_issuer',
-                  'expireOn'),
+                  expireOn, r'GAccountFieldsData_identity_certReceived_issuer', 'expireOn'),
               index: BuiltValueNullFieldError.checkNotNull(
                   index, r'GAccountFieldsData_identity_certReceived_issuer', 'index'));
     } catch (_) {
@@ -74158,7 +72551,7 @@ class _$GAccountFieldsData_identity_certReceived_receiver
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -74180,7 +72573,7 @@ class _$GAccountFieldsData_identity_certReceived_receiver
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -74191,6 +72584,8 @@ class _$GAccountFieldsData_identity_certReceived_receiver
         id, r'GAccountFieldsData_identity_certReceived_receiver', 'id');
     BuiltValueNullFieldError.checkNotNull(isMember,
         r'GAccountFieldsData_identity_certReceived_receiver', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GAccountFieldsData_identity_certReceived_receiver', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GAccountFieldsData_identity_certReceived_receiver', 'name');
     BuiltValueNullFieldError.checkNotNull(expireOn,
@@ -74290,9 +72685,9 @@ class GAccountFieldsData_identity_certReceived_receiverBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -74349,22 +72744,19 @@ class GAccountFieldsData_identity_certReceived_receiverBuilder
       _$result = _$v ??
           new _$GAccountFieldsData_identity_certReceived_receiver._(
               G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename,
-                  r'GAccountFieldsData_identity_certReceived_receiver',
-                  'G__typename'),
+                  G__typename, r'GAccountFieldsData_identity_certReceived_receiver', 'G__typename'),
               accountId: accountId,
               account: _account?.build(),
               id: BuiltValueNullFieldError.checkNotNull(
                   id, r'GAccountFieldsData_identity_certReceived_receiver', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GAccountFieldsData_identity_certReceived_receiver', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GAccountFieldsData_identity_certReceived_receiver', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GAccountFieldsData_identity_certReceived_receiver', 'name'),
               expireOn: BuiltValueNullFieldError.checkNotNull(
-                  expireOn,
-                  r'GAccountFieldsData_identity_certReceived_receiver',
-                  'expireOn'),
+                  expireOn, r'GAccountFieldsData_identity_certReceived_receiver', 'expireOn'),
               index: BuiltValueNullFieldError.checkNotNull(
                   index, r'GAccountFieldsData_identity_certReceived_receiver', 'index'));
     } catch (_) {
@@ -75188,7 +73580,7 @@ class _$GAccountFieldsData_identity_membershipHistory
   @override
   final String? eventId;
   @override
-  final _i2.GEventTypeEnum? eventType;
+  final String eventType;
   @override
   final String id;
   @override
@@ -75205,7 +73597,7 @@ class _$GAccountFieldsData_identity_membershipHistory
       {required this.G__typename,
       required this.blockNumber,
       this.eventId,
-      this.eventType,
+      required this.eventType,
       required this.id,
       this.identityId})
       : super._() {
@@ -75213,6 +73605,8 @@ class _$GAccountFieldsData_identity_membershipHistory
         r'GAccountFieldsData_identity_membershipHistory', 'G__typename');
     BuiltValueNullFieldError.checkNotNull(blockNumber,
         r'GAccountFieldsData_identity_membershipHistory', 'blockNumber');
+    BuiltValueNullFieldError.checkNotNull(eventType,
+        r'GAccountFieldsData_identity_membershipHistory', 'eventType');
     BuiltValueNullFieldError.checkNotNull(
         id, r'GAccountFieldsData_identity_membershipHistory', 'id');
   }
@@ -75284,9 +73678,9 @@ class GAccountFieldsData_identity_membershipHistoryBuilder
   String? get eventId => _$this._eventId;
   set eventId(String? eventId) => _$this._eventId = eventId;
 
-  _i2.GEventTypeEnum? _eventType;
-  _i2.GEventTypeEnum? get eventType => _$this._eventType;
-  set eventType(_i2.GEventTypeEnum? eventType) => _$this._eventType = eventType;
+  String? _eventType;
+  String? get eventType => _$this._eventType;
+  set eventType(String? eventType) => _$this._eventType = eventType;
 
   String? _id;
   String? get id => _$this._id;
@@ -75342,7 +73736,8 @@ class GAccountFieldsData_identity_membershipHistoryBuilder
                 r'GAccountFieldsData_identity_membershipHistory',
                 'blockNumber'),
             eventId: eventId,
-            eventType: eventType,
+            eventType: BuiltValueNullFieldError.checkNotNull(eventType,
+                r'GAccountFieldsData_identity_membershipHistory', 'eventType'),
             id: BuiltValueNullFieldError.checkNotNull(
                 id, r'GAccountFieldsData_identity_membershipHistory', 'id'),
             identityId: identityId);
@@ -76625,167 +75020,6 @@ class GAccountFieldsData_identity_smith_smithCertReceivedBuilder
   }
 }
 
-class _$GAccountFieldsData_identity_udHistory
-    extends GAccountFieldsData_identity_udHistory {
-  @override
-  final String G__typename;
-  @override
-  final String id;
-  @override
-  final int amount;
-  @override
-  final _i2.Gtimestamptz timestamp;
-
-  factory _$GAccountFieldsData_identity_udHistory(
-          [void Function(GAccountFieldsData_identity_udHistoryBuilder)?
-              updates]) =>
-      (new GAccountFieldsData_identity_udHistoryBuilder()..update(updates))
-          ._build();
-
-  _$GAccountFieldsData_identity_udHistory._(
-      {required this.G__typename,
-      required this.id,
-      required this.amount,
-      required this.timestamp})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        G__typename, r'GAccountFieldsData_identity_udHistory', 'G__typename');
-    BuiltValueNullFieldError.checkNotNull(
-        id, r'GAccountFieldsData_identity_udHistory', 'id');
-    BuiltValueNullFieldError.checkNotNull(
-        amount, r'GAccountFieldsData_identity_udHistory', 'amount');
-    BuiltValueNullFieldError.checkNotNull(
-        timestamp, r'GAccountFieldsData_identity_udHistory', 'timestamp');
-  }
-
-  @override
-  GAccountFieldsData_identity_udHistory rebuild(
-          void Function(GAccountFieldsData_identity_udHistoryBuilder)
-              updates) =>
-      (toBuilder()..update(updates)).build();
-
-  @override
-  GAccountFieldsData_identity_udHistoryBuilder toBuilder() =>
-      new GAccountFieldsData_identity_udHistoryBuilder()..replace(this);
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(other, this)) return true;
-    return other is GAccountFieldsData_identity_udHistory &&
-        G__typename == other.G__typename &&
-        id == other.id &&
-        amount == other.amount &&
-        timestamp == other.timestamp;
-  }
-
-  @override
-  int get hashCode {
-    var _$hash = 0;
-    _$hash = $jc(_$hash, G__typename.hashCode);
-    _$hash = $jc(_$hash, id.hashCode);
-    _$hash = $jc(_$hash, amount.hashCode);
-    _$hash = $jc(_$hash, timestamp.hashCode);
-    _$hash = $jf(_$hash);
-    return _$hash;
-  }
-
-  @override
-  String toString() {
-    return (newBuiltValueToStringHelper(
-            r'GAccountFieldsData_identity_udHistory')
-          ..add('G__typename', G__typename)
-          ..add('id', id)
-          ..add('amount', amount)
-          ..add('timestamp', timestamp))
-        .toString();
-  }
-}
-
-class GAccountFieldsData_identity_udHistoryBuilder
-    implements
-        Builder<GAccountFieldsData_identity_udHistory,
-            GAccountFieldsData_identity_udHistoryBuilder> {
-  _$GAccountFieldsData_identity_udHistory? _$v;
-
-  String? _G__typename;
-  String? get G__typename => _$this._G__typename;
-  set G__typename(String? G__typename) => _$this._G__typename = G__typename;
-
-  String? _id;
-  String? get id => _$this._id;
-  set id(String? id) => _$this._id = id;
-
-  int? _amount;
-  int? get amount => _$this._amount;
-  set amount(int? amount) => _$this._amount = amount;
-
-  _i2.GtimestamptzBuilder? _timestamp;
-  _i2.GtimestamptzBuilder get timestamp =>
-      _$this._timestamp ??= new _i2.GtimestamptzBuilder();
-  set timestamp(_i2.GtimestamptzBuilder? timestamp) =>
-      _$this._timestamp = timestamp;
-
-  GAccountFieldsData_identity_udHistoryBuilder() {
-    GAccountFieldsData_identity_udHistory._initializeBuilder(this);
-  }
-
-  GAccountFieldsData_identity_udHistoryBuilder get _$this {
-    final $v = _$v;
-    if ($v != null) {
-      _G__typename = $v.G__typename;
-      _id = $v.id;
-      _amount = $v.amount;
-      _timestamp = $v.timestamp.toBuilder();
-      _$v = null;
-    }
-    return this;
-  }
-
-  @override
-  void replace(GAccountFieldsData_identity_udHistory other) {
-    ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$GAccountFieldsData_identity_udHistory;
-  }
-
-  @override
-  void update(
-      void Function(GAccountFieldsData_identity_udHistoryBuilder)? updates) {
-    if (updates != null) updates(this);
-  }
-
-  @override
-  GAccountFieldsData_identity_udHistory build() => _build();
-
-  _$GAccountFieldsData_identity_udHistory _build() {
-    _$GAccountFieldsData_identity_udHistory _$result;
-    try {
-      _$result = _$v ??
-          new _$GAccountFieldsData_identity_udHistory._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
-                  r'GAccountFieldsData_identity_udHistory', 'G__typename'),
-              id: BuiltValueNullFieldError.checkNotNull(
-                  id, r'GAccountFieldsData_identity_udHistory', 'id'),
-              amount: BuiltValueNullFieldError.checkNotNull(
-                  amount, r'GAccountFieldsData_identity_udHistory', 'amount'),
-              timestamp: timestamp.build());
-    } catch (_) {
-      late String _$failedField;
-      try {
-        _$failedField = 'timestamp';
-        timestamp.build();
-      } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            r'GAccountFieldsData_identity_udHistory',
-            _$failedField,
-            e.toString());
-      }
-      rethrow;
-    }
-    replace(_$result);
-    return _$result;
-  }
-}
-
 class _$GAccountFieldsData_linkedIdentity
     extends GAccountFieldsData_linkedIdentity {
   @override
@@ -76799,7 +75033,7 @@ class _$GAccountFieldsData_linkedIdentity
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -76818,7 +75052,7 @@ class _$GAccountFieldsData_linkedIdentity
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -76829,6 +75063,8 @@ class _$GAccountFieldsData_linkedIdentity
         id, r'GAccountFieldsData_linkedIdentity', 'id');
     BuiltValueNullFieldError.checkNotNull(
         isMember, r'GAccountFieldsData_linkedIdentity', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GAccountFieldsData_linkedIdentity', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GAccountFieldsData_linkedIdentity', 'name');
     BuiltValueNullFieldError.checkNotNull(
@@ -76922,9 +75158,9 @@ class GAccountFieldsData_linkedIdentityBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -76987,7 +75223,8 @@ class GAccountFieldsData_linkedIdentityBuilder
                   id, r'GAccountFieldsData_linkedIdentity', 'id'),
               isMember: BuiltValueNullFieldError.checkNotNull(
                   isMember, r'GAccountFieldsData_linkedIdentity', 'isMember'),
-              status: status,
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GAccountFieldsData_linkedIdentity', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GAccountFieldsData_linkedIdentity', 'name'),
               expireOn: BuiltValueNullFieldError.checkNotNull(
@@ -77138,7 +75375,7 @@ class _$GAccountFieldsData_removedIdentities
   @override
   final bool isMember;
   @override
-  final _i2.GIdentityStatusEnum? status;
+  final String status;
   @override
   final String name;
   @override
@@ -77158,7 +75395,7 @@ class _$GAccountFieldsData_removedIdentities
       this.account,
       required this.id,
       required this.isMember,
-      this.status,
+      required this.status,
       required this.name,
       required this.expireOn,
       required this.index})
@@ -77169,6 +75406,8 @@ class _$GAccountFieldsData_removedIdentities
         id, r'GAccountFieldsData_removedIdentities', 'id');
     BuiltValueNullFieldError.checkNotNull(
         isMember, r'GAccountFieldsData_removedIdentities', 'isMember');
+    BuiltValueNullFieldError.checkNotNull(
+        status, r'GAccountFieldsData_removedIdentities', 'status');
     BuiltValueNullFieldError.checkNotNull(
         name, r'GAccountFieldsData_removedIdentities', 'name');
     BuiltValueNullFieldError.checkNotNull(
@@ -77262,9 +75501,9 @@ class GAccountFieldsData_removedIdentitiesBuilder
   bool? get isMember => _$this._isMember;
   set isMember(bool? isMember) => _$this._isMember = isMember;
 
-  _i2.GIdentityStatusEnum? _status;
-  _i2.GIdentityStatusEnum? get status => _$this._status;
-  set status(_i2.GIdentityStatusEnum? status) => _$this._status = status;
+  String? _status;
+  String? get status => _$this._status;
+  set status(String? status) => _$this._status = status;
 
   String? _name;
   String? get name => _$this._name;
@@ -77325,13 +75564,14 @@ class GAccountFieldsData_removedIdentitiesBuilder
               account: _account?.build(),
               id: BuiltValueNullFieldError.checkNotNull(
                   id, r'GAccountFieldsData_removedIdentities', 'id'),
-              isMember: BuiltValueNullFieldError.checkNotNull(isMember,
-                  r'GAccountFieldsData_removedIdentities', 'isMember'),
-              status: status,
+              isMember: BuiltValueNullFieldError.checkNotNull(
+                  isMember, r'GAccountFieldsData_removedIdentities', 'isMember'),
+              status: BuiltValueNullFieldError.checkNotNull(
+                  status, r'GAccountFieldsData_removedIdentities', 'status'),
               name: BuiltValueNullFieldError.checkNotNull(
                   name, r'GAccountFieldsData_removedIdentities', 'name'),
-              expireOn: BuiltValueNullFieldError.checkNotNull(expireOn,
-                  r'GAccountFieldsData_removedIdentities', 'expireOn'),
+              expireOn: BuiltValueNullFieldError.checkNotNull(
+                  expireOn, r'GAccountFieldsData_removedIdentities', 'expireOn'),
               index: BuiltValueNullFieldError.checkNotNull(
                   index, r'GAccountFieldsData_removedIdentities', 'index'));
     } catch (_) {
@@ -80444,7 +78684,7 @@ class _$GAccountTxsFieldsData_commentsIssued
   @override
   final _i2.Gbytea remarkBytes;
   @override
-  final _i2.GCommentTypeEnum? type;
+  final String type;
 
   factory _$GAccountTxsFieldsData_commentsIssued(
           [void Function(GAccountTxsFieldsData_commentsIssuedBuilder)?
@@ -80461,7 +78701,7 @@ class _$GAccountTxsFieldsData_commentsIssued
       required this.id,
       required this.remark,
       required this.remarkBytes,
-      this.type})
+      required this.type})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         G__typename, r'GAccountTxsFieldsData_commentsIssued', 'G__typename');
@@ -80475,6 +78715,8 @@ class _$GAccountTxsFieldsData_commentsIssued
         remark, r'GAccountTxsFieldsData_commentsIssued', 'remark');
     BuiltValueNullFieldError.checkNotNull(
         remarkBytes, r'GAccountTxsFieldsData_commentsIssued', 'remarkBytes');
+    BuiltValueNullFieldError.checkNotNull(
+        type, r'GAccountTxsFieldsData_commentsIssued', 'type');
   }
 
   @override
@@ -80573,9 +78815,9 @@ class GAccountTxsFieldsData_commentsIssuedBuilder
   set remarkBytes(_i2.GbyteaBuilder? remarkBytes) =>
       _$this._remarkBytes = remarkBytes;
 
-  _i2.GCommentTypeEnum? _type;
-  _i2.GCommentTypeEnum? get type => _$this._type;
-  set type(_i2.GCommentTypeEnum? type) => _$this._type = type;
+  String? _type;
+  String? get type => _$this._type;
+  set type(String? type) => _$this._type = type;
 
   GAccountTxsFieldsData_commentsIssuedBuilder() {
     GAccountTxsFieldsData_commentsIssued._initializeBuilder(this);
@@ -80631,7 +78873,8 @@ class GAccountTxsFieldsData_commentsIssuedBuilder
               remark: BuiltValueNullFieldError.checkNotNull(
                   remark, r'GAccountTxsFieldsData_commentsIssued', 'remark'),
               remarkBytes: remarkBytes.build(),
-              type: type);
+              type: BuiltValueNullFieldError.checkNotNull(
+                  type, r'GAccountTxsFieldsData_commentsIssued', 'type'));
     } catch (_) {
       late String _$failedField;
       try {

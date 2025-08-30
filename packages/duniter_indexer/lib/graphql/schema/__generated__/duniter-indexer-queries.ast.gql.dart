@@ -751,40 +751,6 @@ const IdentityFields = _i1.FragmentDefinitionNode(
         )
       ]),
     ),
-    _i1.FieldNode(
-      name: _i1.NameNode(value: 'udHistory'),
-      alias: null,
-      arguments: [
-        _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'limit'),
-          value: _i1.IntValueNode(value: '15'),
-        )
-      ],
-      directives: [],
-      selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FieldNode(
-          name: _i1.NameNode(value: 'id'),
-          alias: null,
-          arguments: [],
-          directives: [],
-          selectionSet: null,
-        ),
-        _i1.FieldNode(
-          name: _i1.NameNode(value: 'amount'),
-          alias: null,
-          arguments: [],
-          directives: [],
-          selectionSet: null,
-        ),
-        _i1.FieldNode(
-          name: _i1.NameNode(value: 'timestamp'),
-          alias: null,
-          arguments: [],
-          directives: [],
-          selectionSet: null,
-        ),
-      ]),
-    ),
   ]),
 );
 const CommentsIssued = _i1.FragmentDefinitionNode(

@@ -57,6 +57,11 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Gprofiles_stream_cursor_value_input.serializer)
       ..add(Gtimestamp.serializer)
       ..add(Gtimestamp_comparison_exp.serializer)
+      ..add(Guser_fs_bool_exp.serializer)
+      ..add(Guser_fs_order_by.serializer)
+      ..add(Guser_fs_select_column.serializer)
+      ..add(Guser_fs_stream_cursor_input.serializer)
+      ..add(Guser_fs_stream_cursor_value_input.serializer)
       ..addBuilderFactory(
           const FullType(BuiltList,
               const [const FullType(GGetProfileByAddressData_profiles)]),
@@ -94,6 +99,12 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Gtimestamp)]),
           () => new ListBuilder<Gtimestamp>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(Guser_fs_bool_exp)]),
+          () => new ListBuilder<Guser_fs_bool_exp>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(Guser_fs_bool_exp)]),
+          () => new ListBuilder<Guser_fs_bool_exp>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(String)]),
           () => new ListBuilder<String>())

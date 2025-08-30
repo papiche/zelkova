@@ -127,6 +127,38 @@ final BuiltSet<Gprofiles_select_column> _$gprofilesSelectColumnValues =
   _$gprofilesSelectColumntitle,
 ]);
 
+const Guser_fs_select_column _$guserFsSelectColumndata_cid =
+    const Guser_fs_select_column._('data_cid');
+const Guser_fs_select_column _$guserFsSelectColumnindex_request_cid =
+    const Guser_fs_select_column._('index_request_cid');
+const Guser_fs_select_column _$guserFsSelectColumnpubkey =
+    const Guser_fs_select_column._('pubkey');
+const Guser_fs_select_column _$guserFsSelectColumntime =
+    const Guser_fs_select_column._('time');
+
+Guser_fs_select_column _$guserFsSelectColumnValueOf(String name) {
+  switch (name) {
+    case 'data_cid':
+      return _$guserFsSelectColumndata_cid;
+    case 'index_request_cid':
+      return _$guserFsSelectColumnindex_request_cid;
+    case 'pubkey':
+      return _$guserFsSelectColumnpubkey;
+    case 'time':
+      return _$guserFsSelectColumntime;
+    default:
+      throw new ArgumentError(name);
+  }
+}
+
+final BuiltSet<Guser_fs_select_column> _$guserFsSelectColumnValues =
+    new BuiltSet<Guser_fs_select_column>(const <Guser_fs_select_column>[
+  _$guserFsSelectColumndata_cid,
+  _$guserFsSelectColumnindex_request_cid,
+  _$guserFsSelectColumnpubkey,
+  _$guserFsSelectColumntime,
+]);
+
 Serializer<Gcursor_ordering> _$gcursorOrderingSerializer =
     new _$Gcursor_orderingSerializer();
 Serializer<GGeolocInput> _$gGeolocInputSerializer =
@@ -156,6 +188,17 @@ Serializer<GString_comparison_exp> _$gStringComparisonExpSerializer =
     new _$GString_comparison_expSerializer();
 Serializer<Gtimestamp_comparison_exp> _$gtimestampComparisonExpSerializer =
     new _$Gtimestamp_comparison_expSerializer();
+Serializer<Guser_fs_bool_exp> _$guserFsBoolExpSerializer =
+    new _$Guser_fs_bool_expSerializer();
+Serializer<Guser_fs_order_by> _$guserFsOrderBySerializer =
+    new _$Guser_fs_order_bySerializer();
+Serializer<Guser_fs_select_column> _$guserFsSelectColumnSerializer =
+    new _$Guser_fs_select_columnSerializer();
+Serializer<Guser_fs_stream_cursor_input> _$guserFsStreamCursorInputSerializer =
+    new _$Guser_fs_stream_cursor_inputSerializer();
+Serializer<Guser_fs_stream_cursor_value_input>
+    _$guserFsStreamCursorValueInputSerializer =
+    new _$Guser_fs_stream_cursor_value_inputSerializer();
 
 class _$Gcursor_orderingSerializer
     implements PrimitiveSerializer<Gcursor_ordering> {
@@ -1651,6 +1694,366 @@ class _$Gtimestamp_comparison_expSerializer
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(Gtimestamp)]))!
               as BuiltList<Object?>);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$Guser_fs_bool_expSerializer
+    implements StructuredSerializer<Guser_fs_bool_exp> {
+  @override
+  final Iterable<Type> types = const [Guser_fs_bool_exp, _$Guser_fs_bool_exp];
+  @override
+  final String wireName = 'Guser_fs_bool_exp';
+
+  @override
+  Iterable<Object?> serialize(Serializers serializers, Guser_fs_bool_exp object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.G_and;
+    if (value != null) {
+      result
+        ..add('_and')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(
+                BuiltList, const [const FullType(Guser_fs_bool_exp)])));
+    }
+    value = object.G_not;
+    if (value != null) {
+      result
+        ..add('_not')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(Guser_fs_bool_exp)));
+    }
+    value = object.G_or;
+    if (value != null) {
+      result
+        ..add('_or')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(
+                BuiltList, const [const FullType(Guser_fs_bool_exp)])));
+    }
+    value = object.data_cid;
+    if (value != null) {
+      result
+        ..add('data_cid')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GString_comparison_exp)));
+    }
+    value = object.index_request_cid;
+    if (value != null) {
+      result
+        ..add('index_request_cid')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GString_comparison_exp)));
+    }
+    value = object.pubkey;
+    if (value != null) {
+      result
+        ..add('pubkey')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GString_comparison_exp)));
+    }
+    value = object.time;
+    if (value != null) {
+      result
+        ..add('time')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(Gtimestamp_comparison_exp)));
+    }
+    return result;
+  }
+
+  @override
+  Guser_fs_bool_exp deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new Guser_fs_bool_expBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case '_and':
+          result.G_and.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(Guser_fs_bool_exp)]))!
+              as BuiltList<Object?>);
+          break;
+        case '_not':
+          result.G_not.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(Guser_fs_bool_exp))!
+              as Guser_fs_bool_exp);
+          break;
+        case '_or':
+          result.G_or.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(Guser_fs_bool_exp)]))!
+              as BuiltList<Object?>);
+          break;
+        case 'data_cid':
+          result.data_cid.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GString_comparison_exp))!
+              as GString_comparison_exp);
+          break;
+        case 'index_request_cid':
+          result.index_request_cid.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GString_comparison_exp))!
+              as GString_comparison_exp);
+          break;
+        case 'pubkey':
+          result.pubkey.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GString_comparison_exp))!
+              as GString_comparison_exp);
+          break;
+        case 'time':
+          result.time.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(Gtimestamp_comparison_exp))!
+              as Gtimestamp_comparison_exp);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$Guser_fs_order_bySerializer
+    implements StructuredSerializer<Guser_fs_order_by> {
+  @override
+  final Iterable<Type> types = const [Guser_fs_order_by, _$Guser_fs_order_by];
+  @override
+  final String wireName = 'Guser_fs_order_by';
+
+  @override
+  Iterable<Object?> serialize(Serializers serializers, Guser_fs_order_by object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.data_cid;
+    if (value != null) {
+      result
+        ..add('data_cid')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(Gorder_by)));
+    }
+    value = object.index_request_cid;
+    if (value != null) {
+      result
+        ..add('index_request_cid')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(Gorder_by)));
+    }
+    value = object.pubkey;
+    if (value != null) {
+      result
+        ..add('pubkey')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(Gorder_by)));
+    }
+    value = object.time;
+    if (value != null) {
+      result
+        ..add('time')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(Gorder_by)));
+    }
+    return result;
+  }
+
+  @override
+  Guser_fs_order_by deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new Guser_fs_order_byBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'data_cid':
+          result.data_cid = serializers.deserialize(value,
+              specifiedType: const FullType(Gorder_by)) as Gorder_by?;
+          break;
+        case 'index_request_cid':
+          result.index_request_cid = serializers.deserialize(value,
+              specifiedType: const FullType(Gorder_by)) as Gorder_by?;
+          break;
+        case 'pubkey':
+          result.pubkey = serializers.deserialize(value,
+              specifiedType: const FullType(Gorder_by)) as Gorder_by?;
+          break;
+        case 'time':
+          result.time = serializers.deserialize(value,
+              specifiedType: const FullType(Gorder_by)) as Gorder_by?;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$Guser_fs_select_columnSerializer
+    implements PrimitiveSerializer<Guser_fs_select_column> {
+  @override
+  final Iterable<Type> types = const <Type>[Guser_fs_select_column];
+  @override
+  final String wireName = 'Guser_fs_select_column';
+
+  @override
+  Object serialize(Serializers serializers, Guser_fs_select_column object,
+          {FullType specifiedType = FullType.unspecified}) =>
+      object.name;
+
+  @override
+  Guser_fs_select_column deserialize(Serializers serializers, Object serialized,
+          {FullType specifiedType = FullType.unspecified}) =>
+      Guser_fs_select_column.valueOf(serialized as String);
+}
+
+class _$Guser_fs_stream_cursor_inputSerializer
+    implements StructuredSerializer<Guser_fs_stream_cursor_input> {
+  @override
+  final Iterable<Type> types = const [
+    Guser_fs_stream_cursor_input,
+    _$Guser_fs_stream_cursor_input
+  ];
+  @override
+  final String wireName = 'Guser_fs_stream_cursor_input';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, Guser_fs_stream_cursor_input object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      'initial_value',
+      serializers.serialize(object.initial_value,
+          specifiedType: const FullType(Guser_fs_stream_cursor_value_input)),
+    ];
+    Object? value;
+    value = object.ordering;
+    if (value != null) {
+      result
+        ..add('ordering')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(Gcursor_ordering)));
+    }
+    return result;
+  }
+
+  @override
+  Guser_fs_stream_cursor_input deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new Guser_fs_stream_cursor_inputBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'initial_value':
+          result.initial_value.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(Guser_fs_stream_cursor_value_input))!
+              as Guser_fs_stream_cursor_value_input);
+          break;
+        case 'ordering':
+          result.ordering = serializers.deserialize(value,
+                  specifiedType: const FullType(Gcursor_ordering))
+              as Gcursor_ordering?;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$Guser_fs_stream_cursor_value_inputSerializer
+    implements StructuredSerializer<Guser_fs_stream_cursor_value_input> {
+  @override
+  final Iterable<Type> types = const [
+    Guser_fs_stream_cursor_value_input,
+    _$Guser_fs_stream_cursor_value_input
+  ];
+  @override
+  final String wireName = 'Guser_fs_stream_cursor_value_input';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, Guser_fs_stream_cursor_value_input object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.data_cid;
+    if (value != null) {
+      result
+        ..add('data_cid')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.index_request_cid;
+    if (value != null) {
+      result
+        ..add('index_request_cid')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.pubkey;
+    if (value != null) {
+      result
+        ..add('pubkey')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
+    value = object.time;
+    if (value != null) {
+      result
+        ..add('time')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(Gtimestamp)));
+    }
+    return result;
+  }
+
+  @override
+  Guser_fs_stream_cursor_value_input deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new Guser_fs_stream_cursor_value_inputBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'data_cid':
+          result.data_cid = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'index_request_cid':
+          result.index_request_cid = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'pubkey':
+          result.pubkey = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
+        case 'time':
+          result.time.replace(serializers.deserialize(value,
+              specifiedType: const FullType(Gtimestamp))! as Gtimestamp);
           break;
       }
     }
@@ -3942,6 +4345,570 @@ class Gtimestamp_comparison_expBuilder
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'Gtimestamp_comparison_exp', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$Guser_fs_bool_exp extends Guser_fs_bool_exp {
+  @override
+  final BuiltList<Guser_fs_bool_exp>? G_and;
+  @override
+  final Guser_fs_bool_exp? G_not;
+  @override
+  final BuiltList<Guser_fs_bool_exp>? G_or;
+  @override
+  final GString_comparison_exp? data_cid;
+  @override
+  final GString_comparison_exp? index_request_cid;
+  @override
+  final GString_comparison_exp? pubkey;
+  @override
+  final Gtimestamp_comparison_exp? time;
+
+  factory _$Guser_fs_bool_exp(
+          [void Function(Guser_fs_bool_expBuilder)? updates]) =>
+      (new Guser_fs_bool_expBuilder()..update(updates))._build();
+
+  _$Guser_fs_bool_exp._(
+      {this.G_and,
+      this.G_not,
+      this.G_or,
+      this.data_cid,
+      this.index_request_cid,
+      this.pubkey,
+      this.time})
+      : super._();
+
+  @override
+  Guser_fs_bool_exp rebuild(void Function(Guser_fs_bool_expBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  Guser_fs_bool_expBuilder toBuilder() =>
+      new Guser_fs_bool_expBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is Guser_fs_bool_exp &&
+        G_and == other.G_and &&
+        G_not == other.G_not &&
+        G_or == other.G_or &&
+        data_cid == other.data_cid &&
+        index_request_cid == other.index_request_cid &&
+        pubkey == other.pubkey &&
+        time == other.time;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, G_and.hashCode);
+    _$hash = $jc(_$hash, G_not.hashCode);
+    _$hash = $jc(_$hash, G_or.hashCode);
+    _$hash = $jc(_$hash, data_cid.hashCode);
+    _$hash = $jc(_$hash, index_request_cid.hashCode);
+    _$hash = $jc(_$hash, pubkey.hashCode);
+    _$hash = $jc(_$hash, time.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'Guser_fs_bool_exp')
+          ..add('G_and', G_and)
+          ..add('G_not', G_not)
+          ..add('G_or', G_or)
+          ..add('data_cid', data_cid)
+          ..add('index_request_cid', index_request_cid)
+          ..add('pubkey', pubkey)
+          ..add('time', time))
+        .toString();
+  }
+}
+
+class Guser_fs_bool_expBuilder
+    implements Builder<Guser_fs_bool_exp, Guser_fs_bool_expBuilder> {
+  _$Guser_fs_bool_exp? _$v;
+
+  ListBuilder<Guser_fs_bool_exp>? _G_and;
+  ListBuilder<Guser_fs_bool_exp> get G_and =>
+      _$this._G_and ??= new ListBuilder<Guser_fs_bool_exp>();
+  set G_and(ListBuilder<Guser_fs_bool_exp>? G_and) => _$this._G_and = G_and;
+
+  Guser_fs_bool_expBuilder? _G_not;
+  Guser_fs_bool_expBuilder get G_not =>
+      _$this._G_not ??= new Guser_fs_bool_expBuilder();
+  set G_not(Guser_fs_bool_expBuilder? G_not) => _$this._G_not = G_not;
+
+  ListBuilder<Guser_fs_bool_exp>? _G_or;
+  ListBuilder<Guser_fs_bool_exp> get G_or =>
+      _$this._G_or ??= new ListBuilder<Guser_fs_bool_exp>();
+  set G_or(ListBuilder<Guser_fs_bool_exp>? G_or) => _$this._G_or = G_or;
+
+  GString_comparison_expBuilder? _data_cid;
+  GString_comparison_expBuilder get data_cid =>
+      _$this._data_cid ??= new GString_comparison_expBuilder();
+  set data_cid(GString_comparison_expBuilder? data_cid) =>
+      _$this._data_cid = data_cid;
+
+  GString_comparison_expBuilder? _index_request_cid;
+  GString_comparison_expBuilder get index_request_cid =>
+      _$this._index_request_cid ??= new GString_comparison_expBuilder();
+  set index_request_cid(GString_comparison_expBuilder? index_request_cid) =>
+      _$this._index_request_cid = index_request_cid;
+
+  GString_comparison_expBuilder? _pubkey;
+  GString_comparison_expBuilder get pubkey =>
+      _$this._pubkey ??= new GString_comparison_expBuilder();
+  set pubkey(GString_comparison_expBuilder? pubkey) => _$this._pubkey = pubkey;
+
+  Gtimestamp_comparison_expBuilder? _time;
+  Gtimestamp_comparison_expBuilder get time =>
+      _$this._time ??= new Gtimestamp_comparison_expBuilder();
+  set time(Gtimestamp_comparison_expBuilder? time) => _$this._time = time;
+
+  Guser_fs_bool_expBuilder();
+
+  Guser_fs_bool_expBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _G_and = $v.G_and?.toBuilder();
+      _G_not = $v.G_not?.toBuilder();
+      _G_or = $v.G_or?.toBuilder();
+      _data_cid = $v.data_cid?.toBuilder();
+      _index_request_cid = $v.index_request_cid?.toBuilder();
+      _pubkey = $v.pubkey?.toBuilder();
+      _time = $v.time?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(Guser_fs_bool_exp other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$Guser_fs_bool_exp;
+  }
+
+  @override
+  void update(void Function(Guser_fs_bool_expBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  Guser_fs_bool_exp build() => _build();
+
+  _$Guser_fs_bool_exp _build() {
+    _$Guser_fs_bool_exp _$result;
+    try {
+      _$result = _$v ??
+          new _$Guser_fs_bool_exp._(
+              G_and: _G_and?.build(),
+              G_not: _G_not?.build(),
+              G_or: _G_or?.build(),
+              data_cid: _data_cid?.build(),
+              index_request_cid: _index_request_cid?.build(),
+              pubkey: _pubkey?.build(),
+              time: _time?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'G_and';
+        _G_and?.build();
+        _$failedField = 'G_not';
+        _G_not?.build();
+        _$failedField = 'G_or';
+        _G_or?.build();
+        _$failedField = 'data_cid';
+        _data_cid?.build();
+        _$failedField = 'index_request_cid';
+        _index_request_cid?.build();
+        _$failedField = 'pubkey';
+        _pubkey?.build();
+        _$failedField = 'time';
+        _time?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'Guser_fs_bool_exp', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$Guser_fs_order_by extends Guser_fs_order_by {
+  @override
+  final Gorder_by? data_cid;
+  @override
+  final Gorder_by? index_request_cid;
+  @override
+  final Gorder_by? pubkey;
+  @override
+  final Gorder_by? time;
+
+  factory _$Guser_fs_order_by(
+          [void Function(Guser_fs_order_byBuilder)? updates]) =>
+      (new Guser_fs_order_byBuilder()..update(updates))._build();
+
+  _$Guser_fs_order_by._(
+      {this.data_cid, this.index_request_cid, this.pubkey, this.time})
+      : super._();
+
+  @override
+  Guser_fs_order_by rebuild(void Function(Guser_fs_order_byBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  Guser_fs_order_byBuilder toBuilder() =>
+      new Guser_fs_order_byBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is Guser_fs_order_by &&
+        data_cid == other.data_cid &&
+        index_request_cid == other.index_request_cid &&
+        pubkey == other.pubkey &&
+        time == other.time;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, data_cid.hashCode);
+    _$hash = $jc(_$hash, index_request_cid.hashCode);
+    _$hash = $jc(_$hash, pubkey.hashCode);
+    _$hash = $jc(_$hash, time.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'Guser_fs_order_by')
+          ..add('data_cid', data_cid)
+          ..add('index_request_cid', index_request_cid)
+          ..add('pubkey', pubkey)
+          ..add('time', time))
+        .toString();
+  }
+}
+
+class Guser_fs_order_byBuilder
+    implements Builder<Guser_fs_order_by, Guser_fs_order_byBuilder> {
+  _$Guser_fs_order_by? _$v;
+
+  Gorder_by? _data_cid;
+  Gorder_by? get data_cid => _$this._data_cid;
+  set data_cid(Gorder_by? data_cid) => _$this._data_cid = data_cid;
+
+  Gorder_by? _index_request_cid;
+  Gorder_by? get index_request_cid => _$this._index_request_cid;
+  set index_request_cid(Gorder_by? index_request_cid) =>
+      _$this._index_request_cid = index_request_cid;
+
+  Gorder_by? _pubkey;
+  Gorder_by? get pubkey => _$this._pubkey;
+  set pubkey(Gorder_by? pubkey) => _$this._pubkey = pubkey;
+
+  Gorder_by? _time;
+  Gorder_by? get time => _$this._time;
+  set time(Gorder_by? time) => _$this._time = time;
+
+  Guser_fs_order_byBuilder();
+
+  Guser_fs_order_byBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _data_cid = $v.data_cid;
+      _index_request_cid = $v.index_request_cid;
+      _pubkey = $v.pubkey;
+      _time = $v.time;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(Guser_fs_order_by other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$Guser_fs_order_by;
+  }
+
+  @override
+  void update(void Function(Guser_fs_order_byBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  Guser_fs_order_by build() => _build();
+
+  _$Guser_fs_order_by _build() {
+    final _$result = _$v ??
+        new _$Guser_fs_order_by._(
+            data_cid: data_cid,
+            index_request_cid: index_request_cid,
+            pubkey: pubkey,
+            time: time);
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$Guser_fs_stream_cursor_input extends Guser_fs_stream_cursor_input {
+  @override
+  final Guser_fs_stream_cursor_value_input initial_value;
+  @override
+  final Gcursor_ordering? ordering;
+
+  factory _$Guser_fs_stream_cursor_input(
+          [void Function(Guser_fs_stream_cursor_inputBuilder)? updates]) =>
+      (new Guser_fs_stream_cursor_inputBuilder()..update(updates))._build();
+
+  _$Guser_fs_stream_cursor_input._({required this.initial_value, this.ordering})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(
+        initial_value, r'Guser_fs_stream_cursor_input', 'initial_value');
+  }
+
+  @override
+  Guser_fs_stream_cursor_input rebuild(
+          void Function(Guser_fs_stream_cursor_inputBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  Guser_fs_stream_cursor_inputBuilder toBuilder() =>
+      new Guser_fs_stream_cursor_inputBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is Guser_fs_stream_cursor_input &&
+        initial_value == other.initial_value &&
+        ordering == other.ordering;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, initial_value.hashCode);
+    _$hash = $jc(_$hash, ordering.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'Guser_fs_stream_cursor_input')
+          ..add('initial_value', initial_value)
+          ..add('ordering', ordering))
+        .toString();
+  }
+}
+
+class Guser_fs_stream_cursor_inputBuilder
+    implements
+        Builder<Guser_fs_stream_cursor_input,
+            Guser_fs_stream_cursor_inputBuilder> {
+  _$Guser_fs_stream_cursor_input? _$v;
+
+  Guser_fs_stream_cursor_value_inputBuilder? _initial_value;
+  Guser_fs_stream_cursor_value_inputBuilder get initial_value =>
+      _$this._initial_value ??= new Guser_fs_stream_cursor_value_inputBuilder();
+  set initial_value(Guser_fs_stream_cursor_value_inputBuilder? initial_value) =>
+      _$this._initial_value = initial_value;
+
+  Gcursor_ordering? _ordering;
+  Gcursor_ordering? get ordering => _$this._ordering;
+  set ordering(Gcursor_ordering? ordering) => _$this._ordering = ordering;
+
+  Guser_fs_stream_cursor_inputBuilder();
+
+  Guser_fs_stream_cursor_inputBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _initial_value = $v.initial_value.toBuilder();
+      _ordering = $v.ordering;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(Guser_fs_stream_cursor_input other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$Guser_fs_stream_cursor_input;
+  }
+
+  @override
+  void update(void Function(Guser_fs_stream_cursor_inputBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  Guser_fs_stream_cursor_input build() => _build();
+
+  _$Guser_fs_stream_cursor_input _build() {
+    _$Guser_fs_stream_cursor_input _$result;
+    try {
+      _$result = _$v ??
+          new _$Guser_fs_stream_cursor_input._(
+              initial_value: initial_value.build(), ordering: ordering);
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'initial_value';
+        initial_value.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'Guser_fs_stream_cursor_input', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$Guser_fs_stream_cursor_value_input
+    extends Guser_fs_stream_cursor_value_input {
+  @override
+  final String? data_cid;
+  @override
+  final String? index_request_cid;
+  @override
+  final String? pubkey;
+  @override
+  final Gtimestamp? time;
+
+  factory _$Guser_fs_stream_cursor_value_input(
+          [void Function(Guser_fs_stream_cursor_value_inputBuilder)?
+              updates]) =>
+      (new Guser_fs_stream_cursor_value_inputBuilder()..update(updates))
+          ._build();
+
+  _$Guser_fs_stream_cursor_value_input._(
+      {this.data_cid, this.index_request_cid, this.pubkey, this.time})
+      : super._();
+
+  @override
+  Guser_fs_stream_cursor_value_input rebuild(
+          void Function(Guser_fs_stream_cursor_value_inputBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  Guser_fs_stream_cursor_value_inputBuilder toBuilder() =>
+      new Guser_fs_stream_cursor_value_inputBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is Guser_fs_stream_cursor_value_input &&
+        data_cid == other.data_cid &&
+        index_request_cid == other.index_request_cid &&
+        pubkey == other.pubkey &&
+        time == other.time;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, data_cid.hashCode);
+    _$hash = $jc(_$hash, index_request_cid.hashCode);
+    _$hash = $jc(_$hash, pubkey.hashCode);
+    _$hash = $jc(_$hash, time.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'Guser_fs_stream_cursor_value_input')
+          ..add('data_cid', data_cid)
+          ..add('index_request_cid', index_request_cid)
+          ..add('pubkey', pubkey)
+          ..add('time', time))
+        .toString();
+  }
+}
+
+class Guser_fs_stream_cursor_value_inputBuilder
+    implements
+        Builder<Guser_fs_stream_cursor_value_input,
+            Guser_fs_stream_cursor_value_inputBuilder> {
+  _$Guser_fs_stream_cursor_value_input? _$v;
+
+  String? _data_cid;
+  String? get data_cid => _$this._data_cid;
+  set data_cid(String? data_cid) => _$this._data_cid = data_cid;
+
+  String? _index_request_cid;
+  String? get index_request_cid => _$this._index_request_cid;
+  set index_request_cid(String? index_request_cid) =>
+      _$this._index_request_cid = index_request_cid;
+
+  String? _pubkey;
+  String? get pubkey => _$this._pubkey;
+  set pubkey(String? pubkey) => _$this._pubkey = pubkey;
+
+  GtimestampBuilder? _time;
+  GtimestampBuilder get time => _$this._time ??= new GtimestampBuilder();
+  set time(GtimestampBuilder? time) => _$this._time = time;
+
+  Guser_fs_stream_cursor_value_inputBuilder();
+
+  Guser_fs_stream_cursor_value_inputBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _data_cid = $v.data_cid;
+      _index_request_cid = $v.index_request_cid;
+      _pubkey = $v.pubkey;
+      _time = $v.time?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(Guser_fs_stream_cursor_value_input other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$Guser_fs_stream_cursor_value_input;
+  }
+
+  @override
+  void update(
+      void Function(Guser_fs_stream_cursor_value_inputBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  Guser_fs_stream_cursor_value_input build() => _build();
+
+  _$Guser_fs_stream_cursor_value_input _build() {
+    _$Guser_fs_stream_cursor_value_input _$result;
+    try {
+      _$result = _$v ??
+          new _$Guser_fs_stream_cursor_value_input._(
+              data_cid: data_cid,
+              index_request_cid: index_request_cid,
+              pubkey: pubkey,
+              time: _time?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'time';
+        _time?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'Guser_fs_stream_cursor_value_input', _$failedField, e.toString());
       }
       rethrow;
     }

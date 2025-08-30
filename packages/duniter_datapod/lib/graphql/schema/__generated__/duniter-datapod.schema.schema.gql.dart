@@ -515,4 +515,143 @@ abstract class Gtimestamp_comparison_exp
       );
 }
 
+abstract class Guser_fs_bool_exp
+    implements Built<Guser_fs_bool_exp, Guser_fs_bool_expBuilder> {
+  Guser_fs_bool_exp._();
+
+  factory Guser_fs_bool_exp(
+          [void Function(Guser_fs_bool_expBuilder b) updates]) =
+      _$Guser_fs_bool_exp;
+
+  @BuiltValueField(wireName: '_and')
+  BuiltList<Guser_fs_bool_exp>? get G_and;
+  @BuiltValueField(wireName: '_not')
+  Guser_fs_bool_exp? get G_not;
+  @BuiltValueField(wireName: '_or')
+  BuiltList<Guser_fs_bool_exp>? get G_or;
+  GString_comparison_exp? get data_cid;
+  GString_comparison_exp? get index_request_cid;
+  GString_comparison_exp? get pubkey;
+  Gtimestamp_comparison_exp? get time;
+  static Serializer<Guser_fs_bool_exp> get serializer =>
+      _$guserFsBoolExpSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        Guser_fs_bool_exp.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static Guser_fs_bool_exp? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        Guser_fs_bool_exp.serializer,
+        json,
+      );
+}
+
+abstract class Guser_fs_order_by
+    implements Built<Guser_fs_order_by, Guser_fs_order_byBuilder> {
+  Guser_fs_order_by._();
+
+  factory Guser_fs_order_by(
+          [void Function(Guser_fs_order_byBuilder b) updates]) =
+      _$Guser_fs_order_by;
+
+  Gorder_by? get data_cid;
+  Gorder_by? get index_request_cid;
+  Gorder_by? get pubkey;
+  Gorder_by? get time;
+  static Serializer<Guser_fs_order_by> get serializer =>
+      _$guserFsOrderBySerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        Guser_fs_order_by.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static Guser_fs_order_by? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        Guser_fs_order_by.serializer,
+        json,
+      );
+}
+
+class Guser_fs_select_column extends EnumClass {
+  const Guser_fs_select_column._(String name) : super(name);
+
+  static const Guser_fs_select_column data_cid = _$guserFsSelectColumndata_cid;
+
+  static const Guser_fs_select_column index_request_cid =
+      _$guserFsSelectColumnindex_request_cid;
+
+  static const Guser_fs_select_column pubkey = _$guserFsSelectColumnpubkey;
+
+  static const Guser_fs_select_column time = _$guserFsSelectColumntime;
+
+  static Serializer<Guser_fs_select_column> get serializer =>
+      _$guserFsSelectColumnSerializer;
+
+  static BuiltSet<Guser_fs_select_column> get values =>
+      _$guserFsSelectColumnValues;
+
+  static Guser_fs_select_column valueOf(String name) =>
+      _$guserFsSelectColumnValueOf(name);
+}
+
+abstract class Guser_fs_stream_cursor_input
+    implements
+        Built<Guser_fs_stream_cursor_input,
+            Guser_fs_stream_cursor_inputBuilder> {
+  Guser_fs_stream_cursor_input._();
+
+  factory Guser_fs_stream_cursor_input(
+          [void Function(Guser_fs_stream_cursor_inputBuilder b) updates]) =
+      _$Guser_fs_stream_cursor_input;
+
+  Guser_fs_stream_cursor_value_input get initial_value;
+  Gcursor_ordering? get ordering;
+  static Serializer<Guser_fs_stream_cursor_input> get serializer =>
+      _$guserFsStreamCursorInputSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        Guser_fs_stream_cursor_input.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static Guser_fs_stream_cursor_input? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        Guser_fs_stream_cursor_input.serializer,
+        json,
+      );
+}
+
+abstract class Guser_fs_stream_cursor_value_input
+    implements
+        Built<Guser_fs_stream_cursor_value_input,
+            Guser_fs_stream_cursor_value_inputBuilder> {
+  Guser_fs_stream_cursor_value_input._();
+
+  factory Guser_fs_stream_cursor_value_input(
+      [void Function(Guser_fs_stream_cursor_value_inputBuilder b)
+          updates]) = _$Guser_fs_stream_cursor_value_input;
+
+  String? get data_cid;
+  String? get index_request_cid;
+  String? get pubkey;
+  Gtimestamp? get time;
+  static Serializer<Guser_fs_stream_cursor_value_input> get serializer =>
+      _$guserFsStreamCursorValueInputSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        Guser_fs_stream_cursor_value_input.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static Guser_fs_stream_cursor_value_input? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        Guser_fs_stream_cursor_value_input.serializer,
+        json,
+      );
+}
+
 const Map<String, Set<String>> possibleTypesMap = {};

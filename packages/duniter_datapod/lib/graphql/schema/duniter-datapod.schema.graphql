@@ -1,4 +1,3 @@
-# npx get-graphql-schema https://datapod.gyroi.de/v1/graphql > duniter-datapod.schema.graphql.new
 schema {
   query: query_root
   mutation: mutation_root
@@ -376,6 +375,32 @@ type query_root {
     """ss58 address of profile owner"""
     pubkey: String!
   ): profiles
+
+  """
+  fetch data from the table: "user_fs"
+  """
+  user_fs(
+    """distinct select on columns"""
+    distinct_on: [user_fs_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [user_fs_order_by!]
+
+    """filter the rows returned"""
+    where: user_fs_bool_exp
+  ): [user_fs!]!
+
+  """fetch data from the table: "user_fs" using primary key columns"""
+  user_fs_by_pk(
+    """ss58 address of owner"""
+    pubkey: String!
+  ): user_fs
 }
 
 input SocialInput {
@@ -496,6 +521,46 @@ type subscription_root {
     """filter the rows returned"""
     where: profiles_bool_exp
   ): [profiles!]!
+
+  """
+  fetch data from the table: "user_fs"
+  """
+  user_fs(
+    """distinct select on columns"""
+    distinct_on: [user_fs_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [user_fs_order_by!]
+
+    """filter the rows returned"""
+    where: user_fs_bool_exp
+  ): [user_fs!]!
+
+  """fetch data from the table: "user_fs" using primary key columns"""
+  user_fs_by_pk(
+    """ss58 address of owner"""
+    pubkey: String!
+  ): user_fs
+
+  """
+  fetch data from the table in a streaming manner: "user_fs"
+  """
+  user_fs_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [user_fs_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: user_fs_bool_exp
+  ): [user_fs!]!
 }
 
 scalar timestamp
@@ -518,5 +583,84 @@ input timestamp_comparison_exp {
 type UpdateProfileResponse {
   message: String!
   success: Boolean!
+}
+
+"""User filesystem root cid"""
+type user_fs {
+  """CID of the user filesystem root"""
+  data_cid: String!
+
+  """CID of the latest index request that modified this document"""
+  index_request_cid: String!
+
+  """ss58 address of owner"""
+  pubkey: String!
+
+  """timestamp of the latest index request that modified this document"""
+  time: timestamp!
+}
+
+"""
+Boolean expression to filter rows from the table "user_fs". All fields are combined with a logical 'AND'.
+"""
+input user_fs_bool_exp {
+  _and: [user_fs_bool_exp!]
+  _not: user_fs_bool_exp
+  _or: [user_fs_bool_exp!]
+  data_cid: String_comparison_exp
+  index_request_cid: String_comparison_exp
+  pubkey: String_comparison_exp
+  time: timestamp_comparison_exp
+}
+
+"""Ordering options when selecting data from "user_fs"."""
+input user_fs_order_by {
+  data_cid: order_by
+  index_request_cid: order_by
+  pubkey: order_by
+  time: order_by
+}
+
+"""
+select columns of table "user_fs"
+"""
+enum user_fs_select_column {
+  """column name"""
+  data_cid
+
+  """column name"""
+  index_request_cid
+
+  """column name"""
+  pubkey
+
+  """column name"""
+  time
+}
+
+"""
+Streaming cursor of the table "user_fs"
+"""
+input user_fs_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: user_fs_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input user_fs_stream_cursor_value_input {
+  """CID of the user filesystem root"""
+  data_cid: String
+
+  """CID of the latest index request that modified this document"""
+  index_request_cid: String
+
+  """ss58 address of owner"""
+  pubkey: String
+
+  """timestamp of the latest index request that modified this document"""
+  time: timestamp
 }
 

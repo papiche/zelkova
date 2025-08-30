@@ -1,4 +1,3 @@
-#npx get-graphql-schema https://duniter-v2-vjrj-squid.comunes.net/v1/graphql > duniter-indexer.graphql
 schema {
   query: query_root
   subscription: subscription_root
@@ -17,6 +16,8 @@ directive @cached(
 columns and relationships of "account"
 """
 type Account {
+  balance: numeric!
+
   """An array relationship"""
   commentsIssued(
     """distinct select on columns"""
@@ -279,6 +280,7 @@ input AccountAggregateOrderBy {
 
 """aggregate avg on columns"""
 type AccountAvgFields {
+  balance: Float
   createdOn: Float
 }
 
@@ -286,6 +288,7 @@ type AccountAvgFields {
 order by avg() on columns of table "account"
 """
 input AccountAvgOrderBy {
+  balance: OrderBy
   createdOn: OrderBy
 }
 
@@ -296,6 +299,7 @@ input AccountBoolExp {
   _and: [AccountBoolExp!]
   _not: AccountBoolExp
   _or: [AccountBoolExp!]
+  balance: NumericComparisonExp
   commentsIssued: TxCommentBoolExp
   commentsIssuedAggregate: TxCommentAggregateBoolExp
   createdOn: IntComparisonExp
@@ -316,6 +320,7 @@ input AccountBoolExp {
 
 """aggregate max on columns"""
 type AccountMaxFields {
+  balance: numeric
   createdOn: Int
   id: String
   linkedIdentityId: String
@@ -325,6 +330,7 @@ type AccountMaxFields {
 order by max() on columns of table "account"
 """
 input AccountMaxOrderBy {
+  balance: OrderBy
   createdOn: OrderBy
   id: OrderBy
   linkedIdentityId: OrderBy
@@ -332,6 +338,7 @@ input AccountMaxOrderBy {
 
 """aggregate min on columns"""
 type AccountMinFields {
+  balance: numeric
   createdOn: Int
   id: String
   linkedIdentityId: String
@@ -341,6 +348,7 @@ type AccountMinFields {
 order by min() on columns of table "account"
 """
 input AccountMinOrderBy {
+  balance: OrderBy
   createdOn: OrderBy
   id: OrderBy
   linkedIdentityId: OrderBy
@@ -348,6 +356,7 @@ input AccountMinOrderBy {
 
 """Ordering options when selecting data from "account"."""
 input AccountOrderBy {
+  balance: OrderBy
   commentsIssuedAggregate: TxCommentAggregateOrderBy
   createdOn: OrderBy
   id: OrderBy
@@ -365,6 +374,9 @@ input AccountOrderBy {
 select columns of table "account"
 """
 enum AccountSelectColumn {
+  """column name"""
+  balance
+
   """column name"""
   createdOn
 
@@ -396,6 +408,7 @@ enum AccountSelectColumnAccountAggregateBoolExpBool_orArgumentsColumns {
 
 """aggregate stddev on columns"""
 type AccountStddevFields {
+  balance: Float
   createdOn: Float
 }
 
@@ -403,11 +416,13 @@ type AccountStddevFields {
 order by stddev() on columns of table "account"
 """
 input AccountStddevOrderBy {
+  balance: OrderBy
   createdOn: OrderBy
 }
 
 """aggregate stddevPop on columns"""
 type AccountStddevPopFields {
+  balance: Float
   createdOn: Float
 }
 
@@ -415,11 +430,13 @@ type AccountStddevPopFields {
 order by stddevPop() on columns of table "account"
 """
 input AccountStddevPopOrderBy {
+  balance: OrderBy
   createdOn: OrderBy
 }
 
 """aggregate stddevSamp on columns"""
 type AccountStddevSampFields {
+  balance: Float
   createdOn: Float
 }
 
@@ -427,6 +444,7 @@ type AccountStddevSampFields {
 order by stddevSamp() on columns of table "account"
 """
 input AccountStddevSampOrderBy {
+  balance: OrderBy
   createdOn: OrderBy
 }
 
@@ -443,6 +461,7 @@ input AccountStreamCursorInput {
 
 """Initial value of the column from where the streaming should start"""
 input AccountStreamCursorValueInput {
+  balance: numeric
   createdOn: Int
   id: String
   isActive: Boolean
@@ -451,6 +470,7 @@ input AccountStreamCursorValueInput {
 
 """aggregate sum on columns"""
 type AccountSumFields {
+  balance: numeric
   createdOn: Int
 }
 
@@ -458,11 +478,13 @@ type AccountSumFields {
 order by sum() on columns of table "account"
 """
 input AccountSumOrderBy {
+  balance: OrderBy
   createdOn: OrderBy
 }
 
 """aggregate variance on columns"""
 type AccountVarianceFields {
+  balance: Float
   createdOn: Float
 }
 
@@ -470,11 +492,13 @@ type AccountVarianceFields {
 order by variance() on columns of table "account"
 """
 input AccountVarianceOrderBy {
+  balance: OrderBy
   createdOn: OrderBy
 }
 
 """aggregate varPop on columns"""
 type AccountVarPopFields {
+  balance: Float
   createdOn: Float
 }
 
@@ -482,11 +506,13 @@ type AccountVarPopFields {
 order by varPop() on columns of table "account"
 """
 input AccountVarPopOrderBy {
+  balance: OrderBy
   createdOn: OrderBy
 }
 
 """aggregate varSamp on columns"""
 type AccountVarSampFields {
+  balance: Float
   createdOn: Float
 }
 
@@ -494,6 +520,7 @@ type AccountVarSampFields {
 order by varSamp() on columns of table "account"
 """
 input AccountVarSampOrderBy {
+  balance: OrderBy
   createdOn: OrderBy
 }
 
@@ -1442,7 +1469,7 @@ type CertEvent {
   """An object relationship"""
   event: Event
   eventId: String
-  eventType: EventTypeEnum
+  eventType: String!
   id: String!
 }
 
@@ -1523,7 +1550,7 @@ input CertEventBoolExp {
   certId: StringComparisonExp
   event: EventBoolExp
   eventId: StringComparisonExp
-  eventType: EventTypeEnumComparisonExp
+  eventType: StringComparisonExp
   id: StringComparisonExp
 }
 
@@ -1532,6 +1559,7 @@ type CertEventMaxFields {
   blockNumber: Int
   certId: String
   eventId: String
+  eventType: String
   id: String
 }
 
@@ -1542,6 +1570,7 @@ input CertEventMaxOrderBy {
   blockNumber: OrderBy
   certId: OrderBy
   eventId: OrderBy
+  eventType: OrderBy
   id: OrderBy
 }
 
@@ -1550,6 +1579,7 @@ type CertEventMinFields {
   blockNumber: Int
   certId: String
   eventId: String
+  eventType: String
   id: String
 }
 
@@ -1560,6 +1590,7 @@ input CertEventMinOrderBy {
   blockNumber: OrderBy
   certId: OrderBy
   eventId: OrderBy
+  eventType: OrderBy
   id: OrderBy
 }
 
@@ -1646,7 +1677,7 @@ input CertEventStreamCursorValueInput {
   blockNumber: Int
   certId: String
   eventId: String
-  eventType: EventTypeEnum
+  eventType: String
   id: String
 }
 
@@ -2230,41 +2261,6 @@ input ChangeOwnerKeyVarSampOrderBy {
   blockNumber: OrderBy
 }
 
-enum CommentTypeEnum {
-  ASCII
-  CID
-  RAW
-  UNICODE
-}
-
-"""
-Boolean expression to compare columns of type "CommentTypeEnum". All fields are combined with logical 'AND'.
-"""
-input CommentTypeEnumComparisonExp {
-  _eq: CommentTypeEnum
-  _in: [CommentTypeEnum!]
-  _isNull: Boolean
-  _neq: CommentTypeEnum
-  _nin: [CommentTypeEnum!]
-}
-
-enum CounterLevelEnum {
-  GLOBAL
-  ITEM
-  PALLET
-}
-
-"""
-Boolean expression to compare columns of type "CounterLevelEnum". All fields are combined with logical 'AND'.
-"""
-input CounterLevelEnumComparisonExp {
-  _eq: CounterLevelEnum
-  _in: [CounterLevelEnum!]
-  _isNull: Boolean
-  _neq: CounterLevelEnum
-  _nin: [CounterLevelEnum!]
-}
-
 """ordering argument of a cursor"""
 enum CursorOrdering {
   """ascending ordering of the cursor"""
@@ -2568,23 +2564,6 @@ order by sum() on columns of table "event"
 """
 input EventSumOrderBy {
   index: OrderBy
-}
-
-enum EventTypeEnum {
-  CREATION
-  REMOVAL
-  RENEWAL
-}
-
-"""
-Boolean expression to compare columns of type "EventTypeEnum". All fields are combined with logical 'AND'.
-"""
-input EventTypeEnumComparisonExp {
-  _eq: EventTypeEnum
-  _in: [EventTypeEnum!]
-  _isNull: Boolean
-  _neq: EventTypeEnum
-  _nin: [EventTypeEnum!]
 }
 
 """aggregate variance on columns"""
@@ -3109,10 +3088,6 @@ input ExtrinsicVarSampOrderBy {
   version: OrderBy
 }
 
-input getUdHistoryArgs {
-  identity_row: identity_scalar
-}
-
 """
 columns and relationships of "identity"
 """
@@ -3202,6 +3177,7 @@ type Identity {
   createdInId: String
   createdOn: Int!
   expireOn: Int!
+  firstEligibleUd: Int
   id: String!
   index: Int!
   isMember: Boolean!
@@ -3318,30 +3294,8 @@ type Identity {
 
   """An object relationship"""
   smith: Smith
-  status: IdentityStatusEnum
-
-  """
-  "Get UD History by Identity"
-  """
-  udHistory(
-    """distinct select on columns"""
-    distinctOn: [UdHistorySelectColumn!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    orderBy: [UdHistoryOrderBy!]
-
-    """filter the rows returned"""
-    where: UdHistoryBoolExp
-  ): [UdHistory!]
+  status: String!
 }
-
-scalar identity_scalar
 
 """
 aggregated selection of "identity"
@@ -3416,6 +3370,7 @@ input IdentityAggregateOrderBy {
 type IdentityAvgFields {
   createdOn: Float
   expireOn: Float
+  firstEligibleUd: Float
   index: Float
   lastChangeOn: Float
 }
@@ -3426,6 +3381,7 @@ order by avg() on columns of table "identity"
 input IdentityAvgOrderBy {
   createdOn: OrderBy
   expireOn: OrderBy
+  firstEligibleUd: OrderBy
   index: OrderBy
   lastChangeOn: OrderBy
 }
@@ -3449,6 +3405,7 @@ input IdentityBoolExp {
   createdInId: StringComparisonExp
   createdOn: IntComparisonExp
   expireOn: IntComparisonExp
+  firstEligibleUd: IntComparisonExp
   id: StringComparisonExp
   index: IntComparisonExp
   isMember: BooleanComparisonExp
@@ -3461,8 +3418,7 @@ input IdentityBoolExp {
   ownerKeyChange: ChangeOwnerKeyBoolExp
   ownerKeyChangeAggregate: ChangeOwnerKeyAggregateBoolExp
   smith: SmithBoolExp
-  status: IdentityStatusEnumComparisonExp
-  udHistory: UdHistoryBoolExp
+  status: StringComparisonExp
 }
 
 """aggregate max on columns"""
@@ -3472,10 +3428,12 @@ type IdentityMaxFields {
   createdInId: String
   createdOn: Int
   expireOn: Int
+  firstEligibleUd: Int
   id: String
   index: Int
   lastChangeOn: Int
   name: String
+  status: String
 }
 
 """
@@ -3487,10 +3445,12 @@ input IdentityMaxOrderBy {
   createdInId: OrderBy
   createdOn: OrderBy
   expireOn: OrderBy
+  firstEligibleUd: OrderBy
   id: OrderBy
   index: OrderBy
   lastChangeOn: OrderBy
   name: OrderBy
+  status: OrderBy
 }
 
 """aggregate min on columns"""
@@ -3500,10 +3460,12 @@ type IdentityMinFields {
   createdInId: String
   createdOn: Int
   expireOn: Int
+  firstEligibleUd: Int
   id: String
   index: Int
   lastChangeOn: Int
   name: String
+  status: String
 }
 
 """
@@ -3515,10 +3477,12 @@ input IdentityMinOrderBy {
   createdInId: OrderBy
   createdOn: OrderBy
   expireOn: OrderBy
+  firstEligibleUd: OrderBy
   id: OrderBy
   index: OrderBy
   lastChangeOn: OrderBy
   name: OrderBy
+  status: OrderBy
 }
 
 """Ordering options when selecting data from "identity"."""
@@ -3533,6 +3497,7 @@ input IdentityOrderBy {
   createdInId: OrderBy
   createdOn: OrderBy
   expireOn: OrderBy
+  firstEligibleUd: OrderBy
   id: OrderBy
   index: OrderBy
   isMember: OrderBy
@@ -3543,7 +3508,6 @@ input IdentityOrderBy {
   ownerKeyChangeAggregate: ChangeOwnerKeyAggregateOrderBy
   smith: SmithOrderBy
   status: OrderBy
-  udHistoryAggregate: UdHistoryAggregateOrderBy
 }
 
 """
@@ -3564,6 +3528,9 @@ enum IdentitySelectColumn {
 
   """column name"""
   expireOn
+
+  """column name"""
+  firstEligibleUd
 
   """column name"""
   id
@@ -3600,30 +3567,11 @@ enum IdentitySelectColumnIdentityAggregateBoolExpBool_orArgumentsColumns {
   isMember
 }
 
-enum IdentityStatusEnum {
-  MEMBER
-  NOTMEMBER
-  REMOVED
-  REVOKED
-  UNCONFIRMED
-  UNVALIDATED
-}
-
-"""
-Boolean expression to compare columns of type "IdentityStatusEnum". All fields are combined with logical 'AND'.
-"""
-input IdentityStatusEnumComparisonExp {
-  _eq: IdentityStatusEnum
-  _in: [IdentityStatusEnum!]
-  _isNull: Boolean
-  _neq: IdentityStatusEnum
-  _nin: [IdentityStatusEnum!]
-}
-
 """aggregate stddev on columns"""
 type IdentityStddevFields {
   createdOn: Float
   expireOn: Float
+  firstEligibleUd: Float
   index: Float
   lastChangeOn: Float
 }
@@ -3634,6 +3582,7 @@ order by stddev() on columns of table "identity"
 input IdentityStddevOrderBy {
   createdOn: OrderBy
   expireOn: OrderBy
+  firstEligibleUd: OrderBy
   index: OrderBy
   lastChangeOn: OrderBy
 }
@@ -3642,6 +3591,7 @@ input IdentityStddevOrderBy {
 type IdentityStddevPopFields {
   createdOn: Float
   expireOn: Float
+  firstEligibleUd: Float
   index: Float
   lastChangeOn: Float
 }
@@ -3652,6 +3602,7 @@ order by stddevPop() on columns of table "identity"
 input IdentityStddevPopOrderBy {
   createdOn: OrderBy
   expireOn: OrderBy
+  firstEligibleUd: OrderBy
   index: OrderBy
   lastChangeOn: OrderBy
 }
@@ -3660,6 +3611,7 @@ input IdentityStddevPopOrderBy {
 type IdentityStddevSampFields {
   createdOn: Float
   expireOn: Float
+  firstEligibleUd: Float
   index: Float
   lastChangeOn: Float
 }
@@ -3670,6 +3622,7 @@ order by stddevSamp() on columns of table "identity"
 input IdentityStddevSampOrderBy {
   createdOn: OrderBy
   expireOn: OrderBy
+  firstEligibleUd: OrderBy
   index: OrderBy
   lastChangeOn: OrderBy
 }
@@ -3692,18 +3645,20 @@ input IdentityStreamCursorValueInput {
   createdInId: String
   createdOn: Int
   expireOn: Int
+  firstEligibleUd: Int
   id: String
   index: Int
   isMember: Boolean
   lastChangeOn: Int
   name: String
-  status: IdentityStatusEnum
+  status: String
 }
 
 """aggregate sum on columns"""
 type IdentitySumFields {
   createdOn: Int
   expireOn: Int
+  firstEligibleUd: Int
   index: Int
   lastChangeOn: Int
 }
@@ -3714,6 +3669,7 @@ order by sum() on columns of table "identity"
 input IdentitySumOrderBy {
   createdOn: OrderBy
   expireOn: OrderBy
+  firstEligibleUd: OrderBy
   index: OrderBy
   lastChangeOn: OrderBy
 }
@@ -3722,6 +3678,7 @@ input IdentitySumOrderBy {
 type IdentityVarianceFields {
   createdOn: Float
   expireOn: Float
+  firstEligibleUd: Float
   index: Float
   lastChangeOn: Float
 }
@@ -3732,6 +3689,7 @@ order by variance() on columns of table "identity"
 input IdentityVarianceOrderBy {
   createdOn: OrderBy
   expireOn: OrderBy
+  firstEligibleUd: OrderBy
   index: OrderBy
   lastChangeOn: OrderBy
 }
@@ -3740,6 +3698,7 @@ input IdentityVarianceOrderBy {
 type IdentityVarPopFields {
   createdOn: Float
   expireOn: Float
+  firstEligibleUd: Float
   index: Float
   lastChangeOn: Float
 }
@@ -3750,6 +3709,7 @@ order by varPop() on columns of table "identity"
 input IdentityVarPopOrderBy {
   createdOn: OrderBy
   expireOn: OrderBy
+  firstEligibleUd: OrderBy
   index: OrderBy
   lastChangeOn: OrderBy
 }
@@ -3758,6 +3718,7 @@ input IdentityVarPopOrderBy {
 type IdentityVarSampFields {
   createdOn: Float
   expireOn: Float
+  firstEligibleUd: Float
   index: Float
   lastChangeOn: Float
 }
@@ -3768,6 +3729,7 @@ order by varSamp() on columns of table "identity"
 input IdentityVarSampOrderBy {
   createdOn: OrderBy
   expireOn: OrderBy
+  firstEligibleUd: OrderBy
   index: OrderBy
   lastChangeOn: OrderBy
 }
@@ -3812,9 +3774,9 @@ columns and relationships of "items_counter"
 """
 type ItemsCounter {
   id: String!
-  level: CounterLevelEnum
+  level: String!
   total: Int!
-  type: ItemTypeEnum
+  type: String!
 }
 
 """
@@ -3855,21 +3817,25 @@ input ItemsCounterBoolExp {
   _not: ItemsCounterBoolExp
   _or: [ItemsCounterBoolExp!]
   id: StringComparisonExp
-  level: CounterLevelEnumComparisonExp
+  level: StringComparisonExp
   total: IntComparisonExp
-  type: ItemTypeEnumComparisonExp
+  type: StringComparisonExp
 }
 
 """aggregate max on columns"""
 type ItemsCounterMaxFields {
   id: String
+  level: String
   total: Int
+  type: String
 }
 
 """aggregate min on columns"""
 type ItemsCounterMinFields {
   id: String
+  level: String
   total: Int
+  type: String
 }
 
 """Ordering options when selecting data from "items_counter"."""
@@ -3926,9 +3892,9 @@ input ItemsCounterStreamCursorInput {
 """Initial value of the column from where the streaming should start"""
 input ItemsCounterStreamCursorValueInput {
   id: String
-  level: CounterLevelEnum
+  level: String
   total: Int
-  type: ItemTypeEnum
+  type: String
 }
 
 """aggregate sum on columns"""
@@ -3949,23 +3915,6 @@ type ItemsCounterVarPopFields {
 """aggregate varSamp on columns"""
 type ItemsCounterVarSampFields {
   total: Float
-}
-
-enum ItemTypeEnum {
-  CALLS
-  EVENTS
-  EXTRINSICS
-}
-
-"""
-Boolean expression to compare columns of type "ItemTypeEnum". All fields are combined with logical 'AND'.
-"""
-input ItemTypeEnumComparisonExp {
-  _eq: ItemTypeEnum
-  _in: [ItemTypeEnum!]
-  _isNull: Boolean
-  _neq: ItemTypeEnum
-  _nin: [ItemTypeEnum!]
 }
 
 scalar jsonb
@@ -4014,7 +3963,7 @@ type MembershipEvent {
   """An object relationship"""
   event: Event
   eventId: String
-  eventType: EventTypeEnum
+  eventType: String!
   id: String!
 
   """An object relationship"""
@@ -4097,7 +4046,7 @@ input MembershipEventBoolExp {
   blockNumber: IntComparisonExp
   event: EventBoolExp
   eventId: StringComparisonExp
-  eventType: EventTypeEnumComparisonExp
+  eventType: StringComparisonExp
   id: StringComparisonExp
   identity: IdentityBoolExp
   identityId: StringComparisonExp
@@ -4107,6 +4056,7 @@ input MembershipEventBoolExp {
 type MembershipEventMaxFields {
   blockNumber: Int
   eventId: String
+  eventType: String
   id: String
   identityId: String
 }
@@ -4117,6 +4067,7 @@ order by max() on columns of table "membership_event"
 input MembershipEventMaxOrderBy {
   blockNumber: OrderBy
   eventId: OrderBy
+  eventType: OrderBy
   id: OrderBy
   identityId: OrderBy
 }
@@ -4125,6 +4076,7 @@ input MembershipEventMaxOrderBy {
 type MembershipEventMinFields {
   blockNumber: Int
   eventId: String
+  eventType: String
   id: String
   identityId: String
 }
@@ -4135,6 +4087,7 @@ order by min() on columns of table "membership_event"
 input MembershipEventMinOrderBy {
   blockNumber: OrderBy
   eventId: OrderBy
+  eventType: OrderBy
   id: OrderBy
   identityId: OrderBy
 }
@@ -4221,7 +4174,7 @@ input MembershipEventStreamCursorInput {
 input MembershipEventStreamCursorValueInput {
   blockNumber: Int
   eventId: String
-  eventType: EventTypeEnum
+  eventType: String
   id: String
   identityId: String
 }
@@ -4839,56 +4792,6 @@ type query_root {
 
   """fetch data from the table: "extrinsic" using primary key columns"""
   extrinsicByPk(id: String!): Extrinsic
-
-  """
-  execute function "get_ud_history" which returns "ud_history"
-  """
-  getUdHistory(
-    """
-    input parameters for function "getUdHistory"
-    """
-    args: getUdHistoryArgs!
-
-    """distinct select on columns"""
-    distinctOn: [UdHistorySelectColumn!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    orderBy: [UdHistoryOrderBy!]
-
-    """filter the rows returned"""
-    where: UdHistoryBoolExp
-  ): [UdHistory!]!
-
-  """
-  execute function "get_ud_history" and query aggregates on result of table type "ud_history"
-  """
-  getUdHistoryAggregate(
-    """
-    input parameters for function "getUdHistoryAggregate"
-    """
-    args: getUdHistoryArgs!
-
-    """distinct select on columns"""
-    distinctOn: [UdHistorySelectColumn!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    orderBy: [UdHistoryOrderBy!]
-
-    """filter the rows returned"""
-    where: UdHistoryBoolExp
-  ): UdHistoryAggregate!
 
   """
   fetch data from the table: "identity"
@@ -5577,7 +5480,7 @@ type Smith {
     """filter the rows returned"""
     where: SmithEventBoolExp
   ): SmithEventAggregate!
-  smithStatus: SmithStatusEnum
+  smithStatus: String
 }
 
 """
@@ -5633,7 +5536,7 @@ input SmithBoolExp {
   smithCertReceivedAggregate: SmithCertAggregateBoolExp
   smithHistory: SmithEventBoolExp
   smithHistoryAggregate: SmithEventAggregateBoolExp
-  smithStatus: SmithStatusEnumComparisonExp
+  smithStatus: StringComparisonExp
 }
 
 """
@@ -5907,7 +5810,7 @@ type SmithEvent {
   """An object relationship"""
   event: Event
   eventId: String
-  eventType: SmithEventTypeEnum
+  eventType: String!
   id: String!
 
   """An object relationship"""
@@ -5990,7 +5893,7 @@ input SmithEventBoolExp {
   blockNumber: IntComparisonExp
   event: EventBoolExp
   eventId: StringComparisonExp
-  eventType: SmithEventTypeEnumComparisonExp
+  eventType: StringComparisonExp
   id: StringComparisonExp
   smith: SmithBoolExp
   smithId: StringComparisonExp
@@ -6000,6 +5903,7 @@ input SmithEventBoolExp {
 type SmithEventMaxFields {
   blockNumber: Int
   eventId: String
+  eventType: String
   id: String
   smithId: String
 }
@@ -6010,6 +5914,7 @@ order by max() on columns of table "smith_event"
 input SmithEventMaxOrderBy {
   blockNumber: OrderBy
   eventId: OrderBy
+  eventType: OrderBy
   id: OrderBy
   smithId: OrderBy
 }
@@ -6018,6 +5923,7 @@ input SmithEventMaxOrderBy {
 type SmithEventMinFields {
   blockNumber: Int
   eventId: String
+  eventType: String
   id: String
   smithId: String
 }
@@ -6028,6 +5934,7 @@ order by min() on columns of table "smith_event"
 input SmithEventMinOrderBy {
   blockNumber: OrderBy
   eventId: OrderBy
+  eventType: OrderBy
   id: OrderBy
   smithId: OrderBy
 }
@@ -6114,7 +6021,7 @@ input SmithEventStreamCursorInput {
 input SmithEventStreamCursorValueInput {
   blockNumber: Int
   eventId: String
-  eventType: SmithEventTypeEnum
+  eventType: String
   id: String
   smithId: String
 }
@@ -6129,24 +6036,6 @@ order by sum() on columns of table "smith_event"
 """
 input SmithEventSumOrderBy {
   blockNumber: OrderBy
-}
-
-enum SmithEventTypeEnum {
-  ACCEPTED
-  EXCLUDED
-  INVITED
-  PROMOTED
-}
-
-"""
-Boolean expression to compare columns of type "SmithEventTypeEnum". All fields are combined with logical 'AND'.
-"""
-input SmithEventTypeEnumComparisonExp {
-  _eq: SmithEventTypeEnum
-  _in: [SmithEventTypeEnum!]
-  _isNull: Boolean
-  _neq: SmithEventTypeEnum
-  _nin: [SmithEventTypeEnum!]
 }
 
 """aggregate variance on columns"""
@@ -6193,6 +6082,7 @@ type SmithMaxFields {
   index: Int
   lastChanged: Int
   lastForged: Int
+  smithStatus: String
 }
 
 """aggregate min on columns"""
@@ -6203,6 +6093,7 @@ type SmithMinFields {
   index: Int
   lastChanged: Int
   lastForged: Int
+  smithStatus: String
 }
 
 """Ordering options when selecting data from "smith"."""
@@ -6244,24 +6135,6 @@ enum SmithSelectColumn {
 
   """column name"""
   smithStatus
-}
-
-enum SmithStatusEnum {
-  EXCLUDED
-  INVITED
-  PENDING
-  SMITH
-}
-
-"""
-Boolean expression to compare columns of type "SmithStatusEnum". All fields are combined with logical 'AND'.
-"""
-input SmithStatusEnumComparisonExp {
-  _eq: SmithStatusEnum
-  _in: [SmithStatusEnum!]
-  _isNull: Boolean
-  _neq: SmithStatusEnum
-  _nin: [SmithStatusEnum!]
 }
 
 """aggregate stddev on columns"""
@@ -6307,7 +6180,7 @@ input SmithStreamCursorValueInput {
   index: Int
   lastChanged: Int
   lastForged: Int
-  smithStatus: SmithStatusEnum
+  smithStatus: String
 }
 
 """aggregate sum on columns"""
@@ -6873,56 +6746,6 @@ type subscription_root {
     """filter the rows returned"""
     where: ExtrinsicBoolExp
   ): [Extrinsic!]!
-
-  """
-  execute function "get_ud_history" which returns "ud_history"
-  """
-  getUdHistory(
-    """
-    input parameters for function "getUdHistory"
-    """
-    args: getUdHistoryArgs!
-
-    """distinct select on columns"""
-    distinctOn: [UdHistorySelectColumn!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    orderBy: [UdHistoryOrderBy!]
-
-    """filter the rows returned"""
-    where: UdHistoryBoolExp
-  ): [UdHistory!]!
-
-  """
-  execute function "get_ud_history" and query aggregates on result of table type "ud_history"
-  """
-  getUdHistoryAggregate(
-    """
-    input parameters for function "getUdHistoryAggregate"
-    """
-    args: getUdHistoryArgs!
-
-    """distinct select on columns"""
-    distinctOn: [UdHistorySelectColumn!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    orderBy: [UdHistoryOrderBy!]
-
-    """filter the rows returned"""
-    where: UdHistoryBoolExp
-  ): UdHistoryAggregate!
 
   """
   fetch data from the table: "identity"
@@ -8037,7 +7860,7 @@ type TxComment {
   id: String!
   remark: String!
   remarkBytes: bytea!
-  type: CommentTypeEnum
+  type: String!
 }
 
 """
@@ -8121,7 +7944,7 @@ input TxCommentBoolExp {
   id: StringComparisonExp
   remark: StringComparisonExp
   remarkBytes: ByteaComparisonExp
-  type: CommentTypeEnumComparisonExp
+  type: StringComparisonExp
 }
 
 """aggregate max on columns"""
@@ -8132,6 +7955,7 @@ type TxCommentMaxFields {
   hash: String
   id: String
   remark: String
+  type: String
 }
 
 """
@@ -8144,6 +7968,7 @@ input TxCommentMaxOrderBy {
   hash: OrderBy
   id: OrderBy
   remark: OrderBy
+  type: OrderBy
 }
 
 """aggregate min on columns"""
@@ -8154,6 +7979,7 @@ type TxCommentMinFields {
   hash: String
   id: String
   remark: String
+  type: String
 }
 
 """
@@ -8166,6 +7992,7 @@ input TxCommentMinOrderBy {
   hash: OrderBy
   id: OrderBy
   remark: OrderBy
+  type: OrderBy
 }
 
 """Ordering options when selecting data from "tx_comment"."""
@@ -8267,7 +8094,7 @@ input TxCommentStreamCursorValueInput {
   id: String
   remark: String
   remarkBytes: bytea
-  type: CommentTypeEnum
+  type: String
 }
 
 """aggregate sum on columns"""
@@ -8332,6 +8159,9 @@ type UdHistory {
   timestamp: timestamptz!
 }
 
+"""
+aggregated selection of "ud_history"
+"""
 type UdHistoryAggregate {
   aggregate: UdHistoryAggregateFields
   nodes: [UdHistory!]!
@@ -8354,35 +8184,10 @@ type UdHistoryAggregateFields {
   variance: UdHistoryVarianceFields
 }
 
-"""
-order by aggregate values of table "ud_history"
-"""
-input UdHistoryAggregateOrderBy {
-  avg: UdHistoryAvgOrderBy
-  count: OrderBy
-  max: UdHistoryMaxOrderBy
-  min: UdHistoryMinOrderBy
-  stddev: UdHistoryStddevOrderBy
-  stddevPop: UdHistoryStddevPopOrderBy
-  stddevSamp: UdHistoryStddevSampOrderBy
-  sum: UdHistorySumOrderBy
-  varPop: UdHistoryVarPopOrderBy
-  varSamp: UdHistoryVarSampOrderBy
-  variance: UdHistoryVarianceOrderBy
-}
-
 """aggregate avg on columns"""
 type UdHistoryAvgFields {
   amount: Float
   blockNumber: Float
-}
-
-"""
-order by avg() on columns of table "ud_history"
-"""
-input UdHistoryAvgOrderBy {
-  amount: OrderBy
-  blockNumber: OrderBy
 }
 
 """
@@ -8409,17 +8214,6 @@ type UdHistoryMaxFields {
   timestamp: timestamptz
 }
 
-"""
-order by max() on columns of table "ud_history"
-"""
-input UdHistoryMaxOrderBy {
-  amount: OrderBy
-  blockNumber: OrderBy
-  id: OrderBy
-  identityId: OrderBy
-  timestamp: OrderBy
-}
-
 """aggregate min on columns"""
 type UdHistoryMinFields {
   amount: numeric
@@ -8427,17 +8221,6 @@ type UdHistoryMinFields {
   id: String
   identityId: String
   timestamp: timestamptz
-}
-
-"""
-order by min() on columns of table "ud_history"
-"""
-input UdHistoryMinOrderBy {
-  amount: OrderBy
-  blockNumber: OrderBy
-  id: OrderBy
-  identityId: OrderBy
-  timestamp: OrderBy
 }
 
 """Ordering options when selecting data from "ud_history"."""
@@ -8476,40 +8259,16 @@ type UdHistoryStddevFields {
   blockNumber: Float
 }
 
-"""
-order by stddev() on columns of table "ud_history"
-"""
-input UdHistoryStddevOrderBy {
-  amount: OrderBy
-  blockNumber: OrderBy
-}
-
 """aggregate stddevPop on columns"""
 type UdHistoryStddevPopFields {
   amount: Float
   blockNumber: Float
 }
 
-"""
-order by stddevPop() on columns of table "ud_history"
-"""
-input UdHistoryStddevPopOrderBy {
-  amount: OrderBy
-  blockNumber: OrderBy
-}
-
 """aggregate stddevSamp on columns"""
 type UdHistoryStddevSampFields {
   amount: Float
   blockNumber: Float
-}
-
-"""
-order by stddevSamp() on columns of table "ud_history"
-"""
-input UdHistoryStddevSampOrderBy {
-  amount: OrderBy
-  blockNumber: OrderBy
 }
 
 """
@@ -8538,26 +8297,10 @@ type UdHistorySumFields {
   blockNumber: Int
 }
 
-"""
-order by sum() on columns of table "ud_history"
-"""
-input UdHistorySumOrderBy {
-  amount: OrderBy
-  blockNumber: OrderBy
-}
-
 """aggregate variance on columns"""
 type UdHistoryVarianceFields {
   amount: Float
   blockNumber: Float
-}
-
-"""
-order by variance() on columns of table "ud_history"
-"""
-input UdHistoryVarianceOrderBy {
-  amount: OrderBy
-  blockNumber: OrderBy
 }
 
 """aggregate varPop on columns"""
@@ -8566,26 +8309,10 @@ type UdHistoryVarPopFields {
   blockNumber: Float
 }
 
-"""
-order by varPop() on columns of table "ud_history"
-"""
-input UdHistoryVarPopOrderBy {
-  amount: OrderBy
-  blockNumber: OrderBy
-}
-
 """aggregate varSamp on columns"""
 type UdHistoryVarSampFields {
   amount: Float
   blockNumber: Float
-}
-
-"""
-order by varSamp() on columns of table "ud_history"
-"""
-input UdHistoryVarSampOrderBy {
-  amount: OrderBy
-  blockNumber: OrderBy
 }
 
 """
@@ -8602,6 +8329,7 @@ type UdReeval {
   monetaryMass: numeric!
   newUdAmount: numeric!
   timestamp: timestamptz!
+  udIndex: Int!
 }
 
 """
@@ -8635,6 +8363,7 @@ type UdReevalAvgFields {
   membersCount: Float
   monetaryMass: Float
   newUdAmount: Float
+  udIndex: Float
 }
 
 """
@@ -8652,6 +8381,7 @@ input UdReevalBoolExp {
   monetaryMass: NumericComparisonExp
   newUdAmount: NumericComparisonExp
   timestamp: TimestamptzComparisonExp
+  udIndex: IntComparisonExp
 }
 
 """aggregate max on columns"""
@@ -8663,6 +8393,7 @@ type UdReevalMaxFields {
   monetaryMass: numeric
   newUdAmount: numeric
   timestamp: timestamptz
+  udIndex: Int
 }
 
 """aggregate min on columns"""
@@ -8674,6 +8405,7 @@ type UdReevalMinFields {
   monetaryMass: numeric
   newUdAmount: numeric
   timestamp: timestamptz
+  udIndex: Int
 }
 
 """Ordering options when selecting data from "ud_reeval"."""
@@ -8686,6 +8418,7 @@ input UdReevalOrderBy {
   monetaryMass: OrderBy
   newUdAmount: OrderBy
   timestamp: OrderBy
+  udIndex: OrderBy
 }
 
 """
@@ -8712,6 +8445,9 @@ enum UdReevalSelectColumn {
 
   """column name"""
   timestamp
+
+  """column name"""
+  udIndex
 }
 
 """aggregate stddev on columns"""
@@ -8720,6 +8456,7 @@ type UdReevalStddevFields {
   membersCount: Float
   monetaryMass: Float
   newUdAmount: Float
+  udIndex: Float
 }
 
 """aggregate stddevPop on columns"""
@@ -8728,6 +8465,7 @@ type UdReevalStddevPopFields {
   membersCount: Float
   monetaryMass: Float
   newUdAmount: Float
+  udIndex: Float
 }
 
 """aggregate stddevSamp on columns"""
@@ -8736,6 +8474,7 @@ type UdReevalStddevSampFields {
   membersCount: Float
   monetaryMass: Float
   newUdAmount: Float
+  udIndex: Float
 }
 
 """
@@ -8758,6 +8497,7 @@ input UdReevalStreamCursorValueInput {
   monetaryMass: numeric
   newUdAmount: numeric
   timestamp: timestamptz
+  udIndex: Int
 }
 
 """aggregate sum on columns"""
@@ -8766,6 +8506,7 @@ type UdReevalSumFields {
   membersCount: Int
   monetaryMass: numeric
   newUdAmount: numeric
+  udIndex: Int
 }
 
 """aggregate variance on columns"""
@@ -8774,6 +8515,7 @@ type UdReevalVarianceFields {
   membersCount: Float
   monetaryMass: Float
   newUdAmount: Float
+  udIndex: Float
 }
 
 """aggregate varPop on columns"""
@@ -8782,6 +8524,7 @@ type UdReevalVarPopFields {
   membersCount: Float
   monetaryMass: Float
   newUdAmount: Float
+  udIndex: Float
 }
 
 """aggregate varSamp on columns"""
@@ -8790,6 +8533,7 @@ type UdReevalVarSampFields {
   membersCount: Float
   monetaryMass: Float
   newUdAmount: Float
+  udIndex: Float
 }
 
 """
@@ -8803,6 +8547,7 @@ type UniversalDividend {
   event: Event
   eventId: String
   id: String!
+  index: Int!
   membersCount: Int!
   monetaryMass: numeric!
   timestamp: timestamptz!
@@ -8837,6 +8582,7 @@ type UniversalDividendAggregateFields {
 type UniversalDividendAvgFields {
   amount: Float
   blockNumber: Float
+  index: Float
   membersCount: Float
   monetaryMass: Float
 }
@@ -8853,6 +8599,7 @@ input UniversalDividendBoolExp {
   event: EventBoolExp
   eventId: StringComparisonExp
   id: StringComparisonExp
+  index: IntComparisonExp
   membersCount: IntComparisonExp
   monetaryMass: NumericComparisonExp
   timestamp: TimestamptzComparisonExp
@@ -8864,6 +8611,7 @@ type UniversalDividendMaxFields {
   blockNumber: Int
   eventId: String
   id: String
+  index: Int
   membersCount: Int
   monetaryMass: numeric
   timestamp: timestamptz
@@ -8875,6 +8623,7 @@ type UniversalDividendMinFields {
   blockNumber: Int
   eventId: String
   id: String
+  index: Int
   membersCount: Int
   monetaryMass: numeric
   timestamp: timestamptz
@@ -8887,6 +8636,7 @@ input UniversalDividendOrderBy {
   event: EventOrderBy
   eventId: OrderBy
   id: OrderBy
+  index: OrderBy
   membersCount: OrderBy
   monetaryMass: OrderBy
   timestamp: OrderBy
@@ -8909,6 +8659,9 @@ enum UniversalDividendSelectColumn {
   id
 
   """column name"""
+  index
+
+  """column name"""
   membersCount
 
   """column name"""
@@ -8922,6 +8675,7 @@ enum UniversalDividendSelectColumn {
 type UniversalDividendStddevFields {
   amount: Float
   blockNumber: Float
+  index: Float
   membersCount: Float
   monetaryMass: Float
 }
@@ -8930,6 +8684,7 @@ type UniversalDividendStddevFields {
 type UniversalDividendStddevPopFields {
   amount: Float
   blockNumber: Float
+  index: Float
   membersCount: Float
   monetaryMass: Float
 }
@@ -8938,6 +8693,7 @@ type UniversalDividendStddevPopFields {
 type UniversalDividendStddevSampFields {
   amount: Float
   blockNumber: Float
+  index: Float
   membersCount: Float
   monetaryMass: Float
 }
@@ -8959,6 +8715,7 @@ input UniversalDividendStreamCursorValueInput {
   blockNumber: Int
   eventId: String
   id: String
+  index: Int
   membersCount: Int
   monetaryMass: numeric
   timestamp: timestamptz
@@ -8968,6 +8725,7 @@ input UniversalDividendStreamCursorValueInput {
 type UniversalDividendSumFields {
   amount: numeric
   blockNumber: Int
+  index: Int
   membersCount: Int
   monetaryMass: numeric
 }
@@ -8976,6 +8734,7 @@ type UniversalDividendSumFields {
 type UniversalDividendVarianceFields {
   amount: Float
   blockNumber: Float
+  index: Float
   membersCount: Float
   monetaryMass: Float
 }
@@ -8984,6 +8743,7 @@ type UniversalDividendVarianceFields {
 type UniversalDividendVarPopFields {
   amount: Float
   blockNumber: Float
+  index: Float
   membersCount: Float
   monetaryMass: Float
 }
@@ -8992,6 +8752,7 @@ type UniversalDividendVarPopFields {
 type UniversalDividendVarSampFields {
   amount: Float
   blockNumber: Float
+  index: Float
   membersCount: Float
   monetaryMass: Float
 }

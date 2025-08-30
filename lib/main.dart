@@ -101,6 +101,13 @@ void workManagerCallbackDispatcher() {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  FlutterError.onError = (FlutterErrorDetails details) {
+    FlutterError.presentError(details);
+  };
+  PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
+    logger('Top-level error: $error\n$stack');
+    return true;
+  };
   logger.info('Starting Ginkgo app');
   if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
     await Workmanager().initialize(workManagerCallbackDispatcher);

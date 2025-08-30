@@ -95,7 +95,7 @@ class _FifthScreenState extends State<FifthScreen> {
                   Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: DropdownButtonFormField<Locale>(
-                        value: context.locale,
+                        initialValue: context.locale,
                         decoration: InputDecoration(
                           labelText: tr('language_switch_title'),
                           icon: const Icon(Icons.language),

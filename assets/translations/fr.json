@@ -405,7 +405,7 @@
   "export_reminder_description": "Maintenir à jour l'exportation de votre portefeuille protège vos fonds si vous :",
   "export_reminder_scenario1": "Perte de votre appareil",
   "export_reminder_scenario2": "Vous avez accidentellement désinstallé l'application",
-  "export_reminder_scenario3": "Panne de l'appareil",
+  "export_reminder_scenario3": "Avez une panne de l'appareil",
   "export_reminder_recommendation": "Nous vous recommandons de stocker les sauvegardes d'exportation dans plusieurs emplacements sécurisés.",
   "export_reminder_yes_button": "J'AI une exportation",
   "set_pattern_title": "Sécurisez votre portefeuille",

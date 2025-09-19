@@ -78,7 +78,7 @@ Future<List<dynamic>> getPeers(NodeType type, {bool debug = false}) async {
         loggerDev('Fetching $nodeUrl');
       }
       try {
-        final Response response = await http.get(Uri.parse(nodeUrl));
+        final Response response = await getWithTimeout(Uri.parse(nodeUrl));
         if (response.statusCode == 200) {
           // Try decode
           final Map<String, dynamic> peerList =
@@ -92,7 +92,7 @@ Future<List<dynamic>> getPeers(NodeType type, {bool debug = false}) async {
                   (peer as Map<String, dynamic>)['status'] == 'UP')
               .toList();
           if (currentPeers.length < peers.length) {
-            // sometimes getPeers returns a small list of nodes (somethmes even one)
+            // sometimes getPeers returns a small list of nodes (sometimes even one)
             currentPeers = peers;
           }
         }
@@ -653,13 +653,15 @@ Future<Tuple2<Node, http.Response>> _requestWithRetry(
         logger('Fetching $url (${type.name})');
         final int startTime = DateTime.now().millisecondsSinceEpoch;
         final Response response = httpType == HttpType.get
-            ? await http.get(url).timeout(Duration(seconds: timeout))
+            ? await getWithTimeout(url)
             : httpType == HttpType.post
                 ? await http
                     .post(url, body: body, headers: headers, encoding: encoding)
                     .timeout(Duration(seconds: timeout))
-                : await http.delete(url,
-                    body: body, headers: headers, encoding: encoding);
+                : await http
+                    .delete(url,
+                        body: body, headers: headers, encoding: encoding)
+                    .timeout(Duration(seconds: timeout));
         final int endTime = DateTime.now().millisecondsSinceEpoch;
         final int newLatency = endTime - startTime;
         if (!kReleaseMode) {
@@ -1204,7 +1206,7 @@ Future<NodeCheckResult> testDuniterDatapodV2(
 
 Future<NodeCheckResult> testIpfsGateway(String node, Duration timeout) async {
   final Stopwatch stopwatch = Stopwatch()..start();
-  final Response response = await http.get(Uri.parse(node)).timeout(timeout);
+  final Response response = await getWithTimeout(Uri.parse(node));
   stopwatch.stop();
   final Duration latency = stopwatch.elapsed;
   final int currentBlock = response.statusCode;
@@ -1234,10 +1236,7 @@ Future<NodeCheckResult> testCPlusV1Node(String node, Duration timeout) async {
   Duration latency;
   final Stopwatch stopwatch = Stopwatch()..start();
   // see: http://g1.data.e-is.pro/network/peering
-  final Response response = await http
-      .get(Uri.parse('$node/node/stats'))
-      // Decrease http timeout during ping
-      .timeout(timeout);
+  final Response response = await getWithTimeout(Uri.parse('$node/node/stats'));
   if (response.statusCode == 200) {
     try {
       final Map<String, dynamic> json =
@@ -1263,7 +1262,7 @@ Future<NodeCheckResult> testDuniterV1Node(String node, Duration timeout) async {
   Duration latency;
   final Stopwatch stopwatch = Stopwatch()..start();
   final Response response =
-      await http.get(Uri.parse('$node/blockchain/current')).timeout(timeout);
+      await getWithTimeout(Uri.parse('$node/blockchain/current'));
   stopwatch.stop();
   latency = stopwatch.elapsed;
   if (response.statusCode == 200) {
@@ -1347,4 +1346,10 @@ Future<bool> createOrUpdateProfile(String name) {
 
 Future<bool> deleteProfile() {
   return GetIt.instance<ServiceManager>().current.deleteProfile();
+}
+
+// Always wrap HTTP calls with this to enforce a hard timeout on Web as well.
+Future<http.Response> getWithTimeout(Uri uri,
+    {Duration timeout = const Duration(seconds: 10)}) {
+  return http.get(uri).timeout(timeout);
 }

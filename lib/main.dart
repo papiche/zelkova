@@ -66,18 +66,17 @@ const String fetchWalletsTransactionsTask =
     'org.comunes.ginkgo.fetchWalletsTransactionsTask';
 
 @pragma(
-    'vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
+  'vm:entry-point',
+) // Mandatory if the App is obfuscated or using Flutter 3.1+
 void workManagerCallbackDispatcher() {
-  Workmanager()
-      .executeTask((String task, Map<String, dynamic>? inputData) async {
-    if (task == null) {
-      logger.warning(
-          'Received null task from Workmanager with inputData: $inputData');
-      return Future<bool>.value(false);
-    }
+  Workmanager().executeTask((
+    String task,
+    Map<String, dynamic>? inputData,
+  ) async {
     try {
       logger.info(
-          '---------- Start fetchTransactionsTask Workmanager background task: $task');
+        '---------- Start fetchTransactionsTask Workmanager background task: $task',
+      );
       switch (task) {
         case fetchWalletsTransactionsTask:
           await NotificationController.initializeLocalNotifications();
@@ -90,7 +89,8 @@ void workManagerCallbackDispatcher() {
           break;
       }
       loggerDev(
-          '---------- End fetchTransactionsTask Workmanager background task');
+        '---------- End fetchTransactionsTask Workmanager background task',
+      );
     } catch (err, stacktrace) {
       logger(err.toString());
       await Sentry.captureException(err, stackTrace: stacktrace);
@@ -157,9 +157,11 @@ void main() async {
 
   await hiveInit();
 
-  PWAInstall().setup(installCallback: () {
-    logger('APP INSTALLED!');
-  });
+  PWAInstall().setup(
+    installCallback: () {
+      logger('APP INSTALLED!');
+    },
+  );
 
   Bloc.observer = AppBlocObserver();
 
@@ -187,11 +189,13 @@ void main() async {
 
   await initGetItAll();
 
-  void appRunner() => SystemChrome.setPreferredOrientations(<DeviceOrientation>[
+  void appRunner() =>
+      SystemChrome.setPreferredOrientations(<DeviceOrientation>[
         DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown
+        DeviceOrientation.portraitDown,
       ]).then((_) {
-        runApp(ChangeNotifierProvider<SharedPreferencesHelper>(
+        runApp(
+          ChangeNotifierProvider<SharedPreferencesHelper>(
             create: (BuildContext context) => SharedPreferencesHelper(),
             child: EasyLocalization(
               path: 'assets/translations',
@@ -218,39 +222,47 @@ void main() async {
               useFallbackTranslations: true,
               // https://stackoverflow.com/a/77799043
               child: MultiBlocProvider(
-                  providers: <BlocProvider<dynamic>>[
-                    BlocProvider<BottomNavCubit>(
-                        create: (BuildContext context) => BottomNavCubit()),
-                    BlocProvider<AppCubit>(
-                        create: (BuildContext context) =>
-                            GetIt.instance.get<AppCubit>()),
-                    BlocProvider<PaymentCubit>(
-                        create: (BuildContext context) => PaymentCubit()),
-                    BlocProvider<NodeListCubit>(
-                        create: (BuildContext context) =>
-                            GetIt.instance.get<NodeListCubit>()),
-                    BlocProvider<ContactsCubit>(
-                        create: (BuildContext context) => ContactsCubit()),
-                    BlocProvider<UtxoCubit>(
-                        create: (BuildContext context) => UtxoCubit()),
-                    BlocProvider<MultiWalletTransactionCubit>(
-                        create: (BuildContext context) =>
-                            GetIt.instance.get<MultiWalletTransactionCubit>()),
-                    BlocProvider<ThemeCubit>(
-                        create: (BuildContext context) => ThemeCubit()),
-                    // Add other BlocProviders here if needed
-                  ],
-                  child:
-                      GinkgoApp(darkTheme: darkTheme, lightTheme: lightTheme)),
-            )));
+                providers: <BlocProvider<dynamic>>[
+                  BlocProvider<BottomNavCubit>(
+                    create: (BuildContext context) => BottomNavCubit(),
+                  ),
+                  BlocProvider<AppCubit>(
+                    create: (BuildContext context) =>
+                        GetIt.instance.get<AppCubit>(),
+                  ),
+                  BlocProvider<PaymentCubit>(
+                    create: (BuildContext context) => PaymentCubit(),
+                  ),
+                  BlocProvider<NodeListCubit>(
+                    create: (BuildContext context) =>
+                        GetIt.instance.get<NodeListCubit>(),
+                  ),
+                  BlocProvider<ContactsCubit>(
+                    create: (BuildContext context) => ContactsCubit(),
+                  ),
+                  BlocProvider<UtxoCubit>(
+                    create: (BuildContext context) => UtxoCubit(),
+                  ),
+                  BlocProvider<MultiWalletTransactionCubit>(
+                    create: (BuildContext context) =>
+                        GetIt.instance.get<MultiWalletTransactionCubit>(),
+                  ),
+                  BlocProvider<ThemeCubit>(
+                    create: (BuildContext context) => ThemeCubit(),
+                  ),
+                  // Add other BlocProviders here if needed
+                ],
+                child: GinkgoApp(darkTheme: darkTheme, lightTheme: lightTheme),
+              ),
+            ),
+          ),
+        );
       });
   const bool enableSentry = false;
   // ignore: dead_code
   if (!kIsWeb && inDevelopment && enableSentry) {
     // Only use sentry in development
-    await SentryFlutter.init((
-      SentryFlutterOptions options,
-    ) {
+    await SentryFlutter.init((SentryFlutterOptions options) {
       options.tracesSampleRate = 1.0;
       options.reportPackages = false;
       // options.addInAppInclude('sentry_flutter_example');
@@ -305,7 +317,8 @@ class _AppIntro extends State<AppIntro> {
       }
       Navigator.of(context).pushReplacement(
         MaterialPageRoute<void>(
-            builder: (BuildContext _) => const FeedbackAndSkeletonScreen()),
+          builder: (BuildContext _) => const FeedbackAndSkeletonScreen(),
+        ),
       );
       cubit.introViewed();
     });
@@ -314,35 +327,42 @@ class _AppIntro extends State<AppIntro> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppState>(
-        builder: (BuildContext buildContext, AppState state) {
-      final AppCubit cubit = context.read<AppCubit>();
-      return IntroductionScreen(
-        key: introKey,
-        pages: <PageViewModel>[
-          for (int i = 1; i <= 5; i++)
-            createPageViewModel('intro_${i}_title', 'intro_${i}_description',
-                'assets/img/undraw_intro_$i.png', context),
-        ],
-        onDone: () => _onIntroEnd(buildContext, cubit),
-        showSkipButton: true,
-        skipOrBackFlex: 0,
-        onSkip: () => _onIntroEnd(buildContext, cubit),
-        nextFlex: 0,
-        skip: Text(tr('skip')),
-        next: const Icon(Icons.arrow_forward),
-        done: Text(tr('start'),
-            style: const TextStyle(fontWeight: FontWeight.w600)),
-        dotsDecorator: const DotsDecorator(
-          size: Size(10.0, 10.0),
-          color: Color(0xFFBDBDBD),
-          activeColor: Colors.blueAccent,
-          activeSize: Size(22.0, 10.0),
-          activeShape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(25.0)),
+      builder: (BuildContext buildContext, AppState state) {
+        final AppCubit cubit = context.read<AppCubit>();
+        return IntroductionScreen(
+          key: introKey,
+          pages: <PageViewModel>[
+            for (int i = 1; i <= 5; i++)
+              createPageViewModel(
+                'intro_${i}_title',
+                'intro_${i}_description',
+                'assets/img/undraw_intro_$i.png',
+                context,
+              ),
+          ],
+          onDone: () => _onIntroEnd(buildContext, cubit),
+          showSkipButton: true,
+          skipOrBackFlex: 0,
+          onSkip: () => _onIntroEnd(buildContext, cubit),
+          nextFlex: 0,
+          skip: Text(tr('skip')),
+          next: const Icon(Icons.arrow_forward),
+          done: Text(
+            tr('start'),
+            style: const TextStyle(fontWeight: FontWeight.w600),
           ),
-        ),
-      );
-    });
+          dotsDecorator: const DotsDecorator(
+            size: Size(10.0, 10.0),
+            color: Color(0xFFBDBDBD),
+            activeColor: Colors.blueAccent,
+            activeSize: Size(22.0, 10.0),
+            activeShape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(25.0)),
+            ),
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -354,7 +374,11 @@ void printCubitStateSize(String cubitName, HydratedCubit cubit) {
 */
 
 PageViewModel createPageViewModel(
-    String title, String body, String imageAsset, BuildContext context) {
+  String title,
+  String body,
+  String imageAsset,
+  BuildContext context,
+) {
   final ColorScheme colorScheme = Theme.of(context).colorScheme;
   final TextStyle titleStyle = TextStyle(
     color: colorScheme.primary,
@@ -379,8 +403,11 @@ PageViewModel createPageViewModel(
 }
 
 class GinkgoApp extends StatefulWidget {
-  const GinkgoApp(
-      {super.key, required this.lightTheme, required this.darkTheme});
+  const GinkgoApp({
+    super.key,
+    required this.lightTheme,
+    required this.darkTheme,
+  });
 
   // The navigator key is necessary to navigate using static methods
   static final GlobalKey<NavigatorState> navigatorKey =
@@ -404,11 +431,13 @@ class _GinkgoAppState extends State<GinkgoApp> {
 
   void _printNodeStatus({String prefix = 'Starting'}) {
     final int nDuniterNodes = NodeManager().nodeList(NodeType.duniter).length;
-    final int nCesiumPlusNodes =
-        NodeManager().nodeList(NodeType.cesiumPlus).length;
+    final int nCesiumPlusNodes = NodeManager()
+        .nodeList(NodeType.cesiumPlus)
+        .length;
     final int nGvaNodes = NodeManager().nodeList(NodeType.gva).length;
     logger(
-        '$prefix with $nDuniterNodes duniter nodes, $nCesiumPlusNodes c+ nodes, and $nGvaNodes gva nodes');
+      '$prefix with $nDuniterNodes duniter nodes, $nCesiumPlusNodes c+ nodes, and $nGvaNodes gva nodes',
+    );
     if (!kReleaseMode) {
       logger('${NodeManager().nodeList(NodeType.cesiumPlus)}');
     }
@@ -485,66 +514,95 @@ class _GinkgoAppState extends State<GinkgoApp> {
         _loadNodes();
       }
     });
-    Once.runHourly('load_nodes', callback: () async {
-      final bool isConnected =
-          await ConnectivityWidgetWrapperWrapper.isConnected;
-      if (isConnected) {
-        logger('Load nodes via once');
-        _loadNodes();
-      }
-    }, fallback: () {
-      _printNodeStatus(prefix: 'After once hourly fallback');
-    });
-    Once.runDaily('clear_errors', callback: () {
-      logger('clearErrors via once');
-      NodeManager().cleanErrorStats();
-    });
-    Once.runDaily('clear_cache', callback: () {
-      logger('clear cache via once');
-      ContactsCache().clear();
-    });
-    Once.runOnce('resize_avatars', callback: () {
-      logger('resize avatar via once');
-      context.read<ContactsCubit>().resizeAvatars();
-    });
-    Once.runDaily('clear_tx_cubit', callback: () {
-      logger('clear tx cubit via once');
-      context.read<MultiWalletTransactionCubit>().clearState();
-    });
+    Once.runHourly(
+      'load_nodes',
+      callback: () async {
+        final bool isConnected =
+            await ConnectivityWidgetWrapperWrapper.isConnected;
+        if (isConnected) {
+          logger('Load nodes via once');
+          _loadNodes();
+        }
+      },
+      fallback: () {
+        _printNodeStatus(prefix: 'After once hourly fallback');
+      },
+    );
+    Once.runDaily(
+      'clear_errors',
+      callback: () {
+        logger('clearErrors via once');
+        NodeManager().cleanErrorStats();
+      },
+    );
+    Once.runDaily(
+      'clear_cache',
+      callback: () {
+        logger('clear cache via once');
+        ContactsCache().clear();
+      },
+    );
+    Once.runOnce(
+      'resize_avatars',
+      callback: () {
+        logger('resize avatar via once');
+        context.read<ContactsCubit>().resizeAvatars();
+      },
+    );
+    Once.runDaily(
+      'clear_tx_cubit',
+      callback: () {
+        logger('clear tx cubit via once');
+        context.read<MultiWalletTransactionCubit>().clearState();
+      },
+    );
     final int remindMeIn = context.read<AppCubit>().recentExportReminderInDays;
 
-    Once.runCustom('remind_backups', callback: () {
-      logger('---------- remind backups in $remindMeIn days');
-      context.read<AppCubit>().setHasRecentExport(false);
-    },
-        duration: inDevelopment
-            ? Duration(minutes: remindMeIn)
-            : Duration(days: remindMeIn));
+    Once.runCustom(
+      'remind_backups',
+      callback: () {
+        logger('---------- remind backups in $remindMeIn days');
+        context.read<AppCubit>().setHasRecentExport(false);
+      },
+      duration: inDevelopment
+          ? Duration(minutes: remindMeIn)
+          : Duration(days: remindMeIn),
+    );
     Timer(const Duration(minutes: 5), () async {
       logger('---------- fetchTransactions via timer');
       fetchTransactions(context);
     });
-    Once.runCustom('fetch_txs', callback: () {
-      logger('---------- fetchTransactions via once');
-      // Disabled to check the back development
-      // if (!inDevelopment) {
-      fetchTransactions(context);
-    }, duration: const Duration(minutes: 5));
-    Once.runHourly('fetch_distance_precompute', callback: () async {
-      logger('---------- fetchDistanceEvaluation via once');
-      final AppCubit appCubit = context.read<AppCubit>();
-      if (appCubit.isV2) {
-        final DistancePrecompute? dP =
-            await DistancePrecomputeProvider().fetchDistancePrecompute();
-        if (dP != null) {
-          appCubit.setDistancePreCompute(dP);
+    Once.runCustom(
+      'fetch_txs',
+      callback: () {
+        logger('---------- fetchTransactions via once');
+        // Disabled to check the back development
+        // if (!inDevelopment) {
+        fetchTransactions(context);
+      },
+      duration: const Duration(minutes: 5),
+    );
+    Once.runHourly(
+      'fetch_distance_precompute',
+      callback: () async {
+        logger('---------- fetchDistanceEvaluation via once');
+        final AppCubit appCubit = context.read<AppCubit>();
+        if (appCubit.isV2) {
+          final DistancePrecompute? dP = await DistancePrecomputeProvider()
+              .fetchDistancePrecompute();
+          if (dP != null) {
+            appCubit.setDistancePreCompute(dP);
+          }
         }
-      }
-    });
-    Once.runHourly('refresh_wallet_info', callback: () async {
-      logger('---------- refresh wallets info via once');
-      SharedPreferencesHelper().refreshWalletsInfo();
-    });
+      },
+    );
+    Once.runHourly(
+      'refresh_wallet_info',
+      callback: () async {
+        logger('---------- refresh wallets info via once');
+        SharedPreferencesHelper().refreshWalletsInfo();
+      },
+    );
   }
 
   @override
@@ -565,27 +623,30 @@ class _GinkgoAppState extends State<GinkgoApp> {
     // TODO(vjrj): Configure properly Windows
     if (Platform.isAndroid || kIsWeb || Platform.isLinux || Platform.isIOS) {
       final AppLinks appLinks = AppLinks(); // AppLinks is singleton
-      _sub = appLinks.stringLinkStream.listen((String? link) async {
-        if (!mounted) {
-          return;
-        }
-        if (link != null) {
-          logger('got link: $link');
-          if (parseScannedUri(link) != null) {
-            await onKeyScanned(context, link);
-            if (!mounted) {
-              return;
-            } else {
-              context.read<BottomNavCubit>().updateIndex(0);
+      _sub = appLinks.stringLinkStream.listen(
+        (String? link) async {
+          if (!mounted) {
+            return;
+          }
+          if (link != null) {
+            logger('got link: $link');
+            if (parseScannedUri(link) != null) {
+              await onKeyScanned(context, link);
+              if (!mounted) {
+                return;
+              } else {
+                context.read<BottomNavCubit>().updateIndex(0);
+              }
             }
           }
-        }
-      }, onError: (Object err) {
-        if (!mounted) {
-          return;
-        }
-        logger('got err: $err');
-      });
+        },
+        onError: (Object err) {
+          if (!mounted) {
+            return;
+          }
+          logger('got err: $err');
+        },
+      );
     }
   }
 
@@ -599,107 +660,119 @@ class _GinkgoAppState extends State<GinkgoApp> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NodeListCubit, NodeListState>(
-        builder: (BuildContext nodeContext, NodeListState state) {
-      return ConnectivityAppWrapper(
+      builder: (BuildContext nodeContext, NodeListState state) {
+        return ConnectivityAppWrapper(
           app: FilesystemPickerDefaultOptions(
-              fileTileSelectMode: FileTileSelectMode.wholeTile,
-              theme: FilesystemPickerTheme(
-                topBar: FilesystemPickerTopBarThemeData(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                ),
+            fileTileSelectMode: FileTileSelectMode.wholeTile,
+            theme: FilesystemPickerTheme(
+              topBar: FilesystemPickerTopBarThemeData(
+                backgroundColor: Theme.of(context).colorScheme.primary,
               ),
-              child: BlocBuilder<ThemeCubit, ThemeModeState>(
-                  builder: (BuildContext context, ThemeModeState themeState) {
+            ),
+            child: BlocBuilder<ThemeCubit, ThemeModeState>(
+              builder: (BuildContext context, ThemeModeState themeState) {
                 return ResponsiveBreakpoints.builder(
-                    breakpoints: <Breakpoint>[
-                      const Breakpoint(
-                          start: 0, end: 360, name: 'SMALL_MOBILE'),
-                      const Breakpoint(start: 0, end: 480, name: MOBILE),
-                      const Breakpoint(start: 481, end: 768, name: TABLET),
-                      const Breakpoint(start: 769, end: 1200, name: DESKTOP),
-                      const Breakpoint(
-                          start: 1201, end: double.infinity, name: '4K'),
-                    ],
-                    child: MaterialApp(
-                      /// Localization is not available for the title.
-                      title: 'Ğ1nkgo',
-                      navigatorKey: GinkgoApp.navigatorKey,
-                      scaffoldMessengerKey: globalMessengerKey,
+                  breakpoints: <Breakpoint>[
+                    const Breakpoint(start: 0, end: 360, name: 'SMALL_MOBILE'),
+                    const Breakpoint(start: 0, end: 480, name: MOBILE),
+                    const Breakpoint(start: 481, end: 768, name: TABLET),
+                    const Breakpoint(start: 769, end: 1200, name: DESKTOP),
+                    const Breakpoint(
+                      start: 1201,
+                      end: double.infinity,
+                      name: '4K',
+                    ),
+                  ],
+                  child: MaterialApp(
+                    /// Localization is not available for the title.
+                    title: 'Ğ1nkgo',
+                    navigatorKey: GinkgoApp.navigatorKey,
+                    scaffoldMessengerKey: globalMessengerKey,
 
-                      /// Theme stuff
-                      theme: widget.lightTheme,
-                      highContrastTheme: widget.darkTheme,
-                      darkTheme: widget.darkTheme,
-                      themeMode: themeState.themeMode,
+                    /// Theme stuff
+                    theme: widget.lightTheme,
+                    highContrastTheme: widget.darkTheme,
+                    darkTheme: widget.darkTheme,
+                    themeMode: themeState.themeMode,
 
-                      /// Localization stuff
-                      localizationsDelegates: context.localizationDelegates
-                        ..addAll(<LocalizationsDelegate<dynamic>>[
-                          MaterialLocalizationsEo.delegate,
-                          CupertinoLocalizationsEo.delegate
-                        ]),
-                      supportedLocales: context.supportedLocales,
-                      locale: context.locale,
-                      debugShowCheckedModeBanner: false,
-                      home: const AppStart(),
-                      builder: (BuildContext c, Widget? widget) {
-                        NotificationController.locale = c.locale;
-                        return ConnectivityWidgetWrapperWrapper(
-                          offlineWidget: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              const Icon(
-                                Icons.cloud_off,
-                                size: 48,
+                    /// Localization stuff
+                    localizationsDelegates: context.localizationDelegates
+                      ..addAll(<LocalizationsDelegate<dynamic>>[
+                        MaterialLocalizationsEo.delegate,
+                        CupertinoLocalizationsEo.delegate,
+                      ]),
+                    supportedLocales: context.supportedLocales,
+                    locale: context.locale,
+                    debugShowCheckedModeBanner: false,
+                    home: const AppStart(),
+                    builder: (BuildContext c, Widget? widget) {
+                      NotificationController.locale = c.locale;
+                      return ConnectivityWidgetWrapperWrapper(
+                        offlineWidget: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            const Icon(
+                              Icons.cloud_off,
+                              size: 48,
+                              color: Colors.grey,
+                            ),
+                            const SizedBox(height: 6),
+                            Container(
+                              padding: const EdgeInsets.all(5.0),
+                              decoration: const BoxDecoration(
                                 color: Colors.grey,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10.0),
+                                ),
                               ),
-                              const SizedBox(height: 6),
-                              Container(
-                                  padding: const EdgeInsets.all(5.0),
-                                  decoration: const BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10.0)),
-                                  ),
-                                  child: Text(
-                                    tr('offline'),
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      decoration: TextDecoration.none,
-                                      fontSize: 14,
-                                    ),
-                                  )),
-                              const SizedBox(height: 110),
-                            ],
-                          ),
-                          child: c.watch<AppCubit>().isV2
-                              ? CustomBanner(
-                                  message: 'V2',
-                                  color: Colors.green,
-                                  child: _buildMaterialAppChild(c, widget))
-                              : _buildMaterialAppChild(c, widget),
-                        );
-                      },
-                    ));
-              })));
-    });
+                              child: Text(
+                                tr('offline'),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  decoration: TextDecoration.none,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 110),
+                          ],
+                        ),
+                        child: c.watch<AppCubit>().isV2
+                            ? CustomBanner(
+                                message: 'V2',
+                                color: Colors.green,
+                                child: _buildMaterialAppChild(c, widget),
+                              )
+                            : _buildMaterialAppChild(c, widget),
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
   }
 
   MaxWidthBox _buildMaterialAppChild(BuildContext context, Widget? widget) {
     return MaxWidthBox(
-      maxWidth:
-          ResponsiveBreakpoints.of(context).largerThan(MOBILE) ? 960 : 480,
+      maxWidth: ResponsiveBreakpoints.of(context).largerThan(MOBILE)
+          ? 960
+          : 480,
       backgroundColor: const Color(0xFFF5F5F5),
-      child: /* widget! */
-          BouncingScrollWrapper.builder(context, widget!, dragWithMouse: true),
+      child: /* widget! */ BouncingScrollWrapper.builder(
+        context,
+        widget!,
+        dragWithMouse: true,
+      ),
     );
   }
 }
 
 class FeedbackAndSkeletonScreen extends StatelessWidget {
-  const FeedbackAndSkeletonScreen({
-    super.key,
-  });
+  const FeedbackAndSkeletonScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -730,13 +803,15 @@ Future<void> initGetItAll() async {
   final GetIt getIt = GetIt.instance;
   if (!getIt.isRegistered<MultiWalletTransactionCubit>()) {
     getIt.registerSingleton<MultiWalletTransactionCubit>(
-        MultiWalletTransactionCubit());
+      MultiWalletTransactionCubit(),
+    );
     final AppCubit appCubit = AppCubit();
     getIt.registerSingleton<AppCubit>(appCubit);
     getIt.registerSingleton<NodeListCubit>(NodeListCubit());
     getIt.registerSingleton<UtxoCubit>(UtxoCubit());
     getIt.registerSingleton<ServiceManager>(
-        ServiceManager(initialIsV2: appCubit.isV2));
+      ServiceManager(initialIsV2: appCubit.isV2),
+    );
   }
 }
 
@@ -755,25 +830,27 @@ Future<void> fetchTransactionsFromBackground([bool init = true]) async {
         loggerDev(e.toString());
         if (inDevelopment) {
           NotificationController.notify(
-              title: 'Background process failed',
-              desc: e.toString(),
-              id: DateTime.now().toIso8601String());
+            title: 'Background process failed',
+            desc: e.toString(),
+            id: DateTime.now().toIso8601String(),
+          );
         }
       }
     }
     loggerDev('Initialized background context');
     final GetIt getIt = GetIt.instance;
-    final MultiWalletTransactionCubit transCubit =
-        getIt.get<MultiWalletTransactionCubit>();
+    final MultiWalletTransactionCubit transCubit = getIt
+        .get<MultiWalletTransactionCubit>();
     for (final String pubKey in SharedPreferencesHelper().publicKeys) {
       loggerDev('Fetching transactions for $pubKey in background');
       transCubit.fetchTransactions(pubKey: pubKey);
     }
     if (inDevelopment) {
       NotificationController.notify(
-          title: 'Background process ended correctly',
-          desc: '',
-          id: DateTime.now().toIso8601String());
+        title: 'Background process ended correctly',
+        desc: '',
+        id: DateTime.now().toIso8601String(),
+      );
     }
   } catch (e) {
     // We should try to do this better
@@ -850,9 +927,7 @@ class _AppStartState extends State<AppStart> {
     }
     if (introViewed) {
       return _isAppLocked
-          ? BiometricLockScreen(
-              onUnlock: () => _unlockApp(),
-            )
+          ? BiometricLockScreen(onUnlock: () => _unlockApp())
           : const FeedbackAndSkeletonScreen();
     } else {
       return const AppIntro();
@@ -907,7 +982,8 @@ Future<void> hiveInit() async {
   final HydratedStorageDirectory storageDir = kIsWeb
       ? HydratedStorageDirectory.web
       : HydratedStorageDirectory(
-          (await getApplicationDocumentsDirectory()).path);
+          (await getApplicationDocumentsDirectory()).path,
+        );
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: storageDir,
   );
@@ -916,10 +992,12 @@ Future<void> hiveInit() async {
 
   try {
     loggerDev('Initializing Hive');
-    await Hive.initFlutter().timeout(const Duration(seconds: 10),
-        onTimeout: () {
-      throw TimeoutException('Hive initialization timed out');
-    });
+    await Hive.initFlutter().timeout(
+      const Duration(seconds: 10),
+      onTimeout: () {
+        throw TimeoutException('Hive initialization timed out');
+      },
+    );
   } catch (e) {
     log.e('Error initializing Hive', error: e);
     // If there is an error, we should delete the old hive files
@@ -929,10 +1007,13 @@ Future<void> hiveInit() async {
 
   loggerDev('Reset hive old keys');
   if (kIsWeb) {
-    final Box<dynamic> box = await Hive.openBox('hydrated_box',
-        path: HydratedStorageDirectory.web.path);
-    final List<dynamic> keysToDelete =
-        box.keys.where((dynamic key) => '$key'.startsWith('minified')).toList();
+    final Box<dynamic> box = await Hive.openBox(
+      'hydrated_box',
+      path: HydratedStorageDirectory.web.path,
+    );
+    final List<dynamic> keysToDelete = box.keys
+        .where((dynamic key) => '$key'.startsWith('minified'))
+        .toList();
     box.deleteAll(keysToDelete);
     // This should we done after init
     // await HydratedBloc.storage.clear();
@@ -979,8 +1060,8 @@ Future<void> _clearCacheIfNeeded(HydratedStorageDirectory storageDir) async {
 }
 
 Future<void> fetchTransactions(BuildContext context) async {
-  final MultiWalletTransactionCubit transCubit =
-      context.read<MultiWalletTransactionCubit>();
+  final MultiWalletTransactionCubit transCubit = context
+      .read<MultiWalletTransactionCubit>();
   for (final String pubKey in SharedPreferencesHelper().publicKeys) {
     transCubit.fetchTransactions(pubKey: pubKey);
   }

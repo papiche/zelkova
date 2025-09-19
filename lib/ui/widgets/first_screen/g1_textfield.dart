@@ -20,8 +20,9 @@ class G1PayAmountField extends StatefulWidget {
 
 class _G1PayAmountFieldState extends State<G1PayAmountField> {
   final TextEditingController _controller = TextEditingController();
-  final GlobalKey<FormState> _formKey =
-      GlobalKey<FormState>(debugLabel: 'g1PayAmountField');
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>(
+    debugLabel: 'g1PayAmountField',
+  );
   late String sep;
   late String locale;
 
@@ -46,13 +47,14 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
         newValue.isNotEmpty &&
         validate) {
       final double newAmount = parseToDoubleLocalized(
-          locale: context.locale.toLanguageTag(), number: newValue);
+        locale: context.locale.toLanguageTag(),
+        number: newValue,
+      );
       if (newAmount != context.read<PaymentCubit>().state.amount) {
         context.read<PaymentCubit>().selectAmount(newAmount);
       }
     } else {
-      final double? newAmount =
-          newValue == null ? null : double.tryParse(newValue);
+      final double? newAmount = double.tryParse(newValue);
       if (newAmount != context.read<PaymentCubit>().state.amount) {
         context.read<PaymentCubit>().selectAmount(newAmount);
       }
@@ -71,7 +73,8 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
           if (_controller.text != amountFormatted) {
             _controller.text = amountFormatted;
             _controller.selection = TextSelection.fromPosition(
-                TextPosition(offset: _controller.text.length));
+              TextPosition(offset: _controller.text.length),
+            );
           }
         } else {
           if (state.status == PaymentStatus.isSent) {
@@ -97,8 +100,11 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
                   value.isNotEmpty &&
                   validate) {
                 context.read<PaymentCubit>().selectAmount(
-                    parseToDoubleLocalized(
-                        locale: context.locale.toLanguageTag(), number: value));
+                  parseToDoubleLocalized(
+                    locale: context.locale.toLanguageTag(),
+                    number: value,
+                  ),
+                );
               } /* else {
               // this parse is not localized, so it will fail in some locales, commenting out
                 context.read<PaymentCubit>().selectAmount(
@@ -107,9 +113,9 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
             },
             decoration: InputDecoration(
               labelText: tr('g1_amount'),
-              hintText: 'g1_amount_hint'.tr(namedArgs: <String, String>{
-                'currency': currentCurrency.name()
-              }),
+              hintText: 'g1_amount_hint'.tr(
+                namedArgs: <String, String>{'currency': currentCurrency.name()},
+              ),
               contentPadding: const EdgeInsets.fromLTRB(16, 0, 10, 10),
               border: const OutlineInputBorder(),
               suffix: Padding(
@@ -124,7 +130,7 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
                   inactiveFgColor: Colors.white,
                   totalSwitches: 1,
                   labels: <String>[
-                    if (currentCurrency == Currency.G1) 'Ğ1' else 'DU'
+                    if (currentCurrency == Currency.G1) 'Ğ1' else 'DU',
                   ],
                   iconSize: 30.0,
                   borderWidth: 1.0,
@@ -149,10 +155,15 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
     if (_controller.text.startsWith(sep)) {
       _controller.text = '0${_controller.text}';
       _controller.selection = TextSelection.fromPosition(
-          TextPosition(offset: _controller.text.length));
+        TextPosition(offset: _controller.text.length),
+      );
       value = _controller.text;
     }
     return validateDecimal(
-        sep: sep, locale: locale, amount: value, tr: (String s) => tr(s));
+      sep: sep,
+      locale: locale,
+      amount: value,
+      tr: (String s) => tr(s),
+    );
   }
 }

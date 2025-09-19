@@ -25,8 +25,9 @@ class PayForm extends StatefulWidget {
 }
 
 class _PayFormState extends State<PayForm> {
-  final GlobalKey<FormState> _formKey =
-      GlobalKey<FormState>(debugLabel: 'PayForm');
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>(
+    debugLabel: 'PayForm',
+  );
   final GlobalKey<FormFieldState<String>> _formCommentKey =
       GlobalKey<FormFieldState<String>>();
   final TextEditingController _commentController = TextEditingController();
@@ -42,158 +43,195 @@ class _PayFormState extends State<PayForm> {
   @override
   Widget build(BuildContext cp) {
     return BlocBuilder<PaymentCubit, PaymentState>(
-        builder: (BuildContext context, PaymentState state) {
-      final AppCubit appCubit = context.watch<AppCubit>();
-      final MultiWalletTransactionCubit txCubit =
-          context.watch<MultiWalletTransactionCubit>();
-      final double balance = txCubit.balance();
-      final double currentUd = appCubit.currentUd;
-      final bool isV2 = appCubit.isV2;
-      final Currency currency = appCubit.currency;
-      if (state.comment != null && _commentController.text != state.comment) {
-        _commentController.text = state.comment;
-      }
-      if (state.amount == null || state.amount == 0) {
-        _feedbackNotifier.value = '';
-      }
+      builder: (BuildContext context, PaymentState state) {
+        final AppCubit appCubit = context.watch<AppCubit>();
+        final MultiWalletTransactionCubit txCubit = context
+            .watch<MultiWalletTransactionCubit>();
+        final double balance = txCubit.balance();
+        final double currentUd = appCubit.currentUd;
+        final bool isV2 = appCubit.isV2;
+        final Currency currency = appCubit.currency;
+        if (state.comment != null && _commentController.text != state.comment) {
+          _commentController.text = state.comment;
+        }
+        if (state.amount == null || state.amount == 0) {
+          _feedbackNotifier.value = '';
+        }
 
-      final bool sentDisabled =
-          _onPressed(state, context, currency, currentUd, balance, isV2) ==
-              null;
-      final Color sentColor = sentDisabled
-          ? Theme.of(context).disabledColor
-          : isDark(context)
-              ? const Color(0xFFB8D166)
-              : Theme.of(context).primaryColor;
-      return Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            const SizedBox(height: 10.0),
-            G1PayAmountField(key: payAmountKey),
-            const SizedBox(height: 10.0),
-            Row(children: <Widget>[
-              Expanded(
-                  child: TextFormField(
-                key: _formCommentKey,
-                controller: _commentController,
-                onChanged: (String? value) {
-                  final String newText = (value ?? '').replaceAll('\n', '');
-                  // https://forum.duniter.org/t/implementation-des-commentaires-de-transaction/12289/12
-                  // TODO(vjrj): do the > 256 part
-                  if (isV2 && newText.length > 256) {
-                    _commentController.text = newText.substring(0, 256);
-                    _commentController.selection = TextSelection.fromPosition(
-                      TextPosition(offset: _commentController.text.length),
-                    );
-                  } else {
-                    context.read<PaymentCubit>().setComment(newText);
-                  }
-                  context.read<PaymentCubit>().setComment(newText);
-                },
-                decoration: InputDecoration(
-                  labelText: tr('g1_form_pay_desc'),
-                  hintText: tr('g1_form_pay_hint'),
-                  border: const OutlineInputBorder(),
-                ),
-                validator: (String? value) {
-                  if (value != null &&
-                      (!isV2 && !basicEnglishCharsRegExp.hasMatch(value))) {
-                    return tr('valid_comment');
-                  }
-                  return null;
-                },
-                // Disallow autocomplete
-                autofillHints: const <String>[],
-              )),
-              const SizedBox(width: 5.0),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+        final bool sentDisabled =
+            _onPressed(state, context, currency, currentUd, balance, isV2) ==
+            null;
+        final Color sentColor = sentDisabled
+            ? Theme.of(context).disabledColor
+            : isDark(context)
+            ? const Color(0xFFB8D166)
+            : Theme.of(context).primaryColor;
+        return Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              const SizedBox(height: 10.0),
+              G1PayAmountField(key: payAmountKey),
+              const SizedBox(height: 10.0),
+              Row(
                 children: <Widget>[
-                  Material(
-                    color: Colors.transparent,
-                    child: IgnorePointer(
-                      ignoring: sentDisabled,
-                      child: IconTheme(
-                        data: const IconThemeData(size: 40.0),
-                        child: IconButton(
-                          key: paySentKey,
-                          tooltip: tr('g1_form_pay_send'),
-                          icon: Icon(
-                            Icons.send,
-                            color: sentColor,
-                          ),
-                          onPressed: () async {
-                            if (mounted) {
-                              final Future<void> Function()? func = _onPressed(
-                                  state,
-                                  context,
-                                  currency,
-                                  currentUd,
-                                  balance,
-                                  isV2);
-                              if (func != null) {
-                                func();
-                              }
-                            }
-                          },
-                          splashRadius: 20,
-                          splashColor: Colors.white.withValues(alpha: 0.5),
-                          highlightColor: Colors.transparent,
-                        ),
+                  Expanded(
+                    child: TextFormField(
+                      key: _formCommentKey,
+                      controller: _commentController,
+                      onChanged: (String? value) {
+                        final String newText = (value ?? '').replaceAll(
+                          '\n',
+                          '',
+                        );
+                        // https://forum.duniter.org/t/implementation-des-commentaires-de-transaction/12289/12
+                        // TODO(vjrj): do the > 256 part
+                        if (isV2 && newText.length > 256) {
+                          _commentController.text = newText.substring(0, 256);
+                          _commentController.selection =
+                              TextSelection.fromPosition(
+                                TextPosition(
+                                  offset: _commentController.text.length,
+                                ),
+                              );
+                        } else {
+                          context.read<PaymentCubit>().setComment(newText);
+                        }
+                        context.read<PaymentCubit>().setComment(newText);
+                      },
+                      decoration: InputDecoration(
+                        labelText: tr('g1_form_pay_desc'),
+                        hintText: tr('g1_form_pay_hint'),
+                        border: const OutlineInputBorder(),
                       ),
+                      validator: (String? value) {
+                        if (value != null &&
+                            (!isV2 &&
+                                !basicEnglishCharsRegExp.hasMatch(value))) {
+                          return tr('valid_comment');
+                        }
+                        return null;
+                      },
+                      // Disallow autocomplete
+                      autofillHints: const <String>[],
                     ),
                   ),
-                  Text(
-                    tr('g1_form_pay_send'),
-                    style: TextStyle(fontSize: 12, color: sentColor),
+                  const SizedBox(width: 5.0),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Material(
+                        color: Colors.transparent,
+                        child: IgnorePointer(
+                          ignoring: sentDisabled,
+                          child: IconTheme(
+                            data: const IconThemeData(size: 40.0),
+                            child: IconButton(
+                              key: paySentKey,
+                              tooltip: tr('g1_form_pay_send'),
+                              icon: Icon(Icons.send, color: sentColor),
+                              onPressed: () async {
+                                if (mounted) {
+                                  final Future<void> Function()? func =
+                                      _onPressed(
+                                        state,
+                                        context,
+                                        currency,
+                                        currentUd,
+                                        balance,
+                                        isV2,
+                                      );
+                                  if (func != null) {
+                                    func();
+                                  }
+                                }
+                              },
+                              splashRadius: 20,
+                              splashColor: Colors.white.withValues(alpha: 0.5),
+                              highlightColor: Colors.transparent,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Text(
+                        tr('g1_form_pay_send'),
+                        style: TextStyle(fontSize: 12, color: sentColor),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ]),
-            FormErrorWidget(feedbackNotifier: _feedbackNotifier),
-          ],
-        ),
-      );
-    });
+              FormErrorWidget(feedbackNotifier: _feedbackNotifier),
+            ],
+          ),
+        );
+      },
+    );
   }
 
-  Future<void> Function()? _onPressed(PaymentState state, BuildContext context,
-      Currency currency, double currentUd, double balance, bool isV2) {
+  Future<void> Function()? _onPressed(
+    PaymentState state,
+    BuildContext context,
+    Currency currency,
+    double currentUd,
+    double balance,
+    bool isV2,
+  ) {
     final bool isG1 = currency == Currency.G1;
     final bool notCanBeSent = !state.canBeSent();
-    final bool notValidComment =
-        isV2 ? !_commentValidateV2() : !_commentValidate();
+    final bool notValidComment = isV2
+        ? !_commentValidateV2()
+        : !_commentValidate();
     final bool nullAmount = state.amount == null;
     loggerDev(
-        'notCanBeSent: $notCanBeSent, notValidComment: $notValidComment, nullAmount: $nullAmount');
+      'notCanBeSent: $notCanBeSent, notValidComment: $notValidComment, nullAmount: $nullAmount',
+    );
     if (notCanBeSent ||
         nullAmount ||
         notValidComment ||
-        notBalance(context, state, currency, currentUd, state.contacts.length,
-            balance)) {
+        notBalance(
+          context,
+          state,
+          currency,
+          currentUd,
+          state.contacts.length,
+          balance,
+        )) {
       return null;
     } else
       return () async {
         await payWithRetry(
-            context: context,
-            recipients: state.contacts,
-            amount: state.amount!,
-            isG1: isG1,
-            currentUd: currentUd,
-            comment: state.comment);
+          context: context,
+          recipients: state.contacts,
+          amount: state.amount!,
+          isG1: isG1,
+          currentUd: currentUd,
+          comment: state.comment,
+        );
       };
   }
 
-  bool notBalance(BuildContext context, PaymentState state, Currency currency,
-          double currentUd, int recipients, double balance) =>
-      !_weHaveBalance(
-          context, state.amount!, currency, currentUd, recipients, balance);
+  bool notBalance(
+    BuildContext context,
+    PaymentState state,
+    Currency currency,
+    double currentUd,
+    int recipients,
+    double balance,
+  ) => !_weHaveBalance(
+    context,
+    state.amount!,
+    currency,
+    currentUd,
+    recipients,
+    balance,
+  );
 
   bool _commentValidate() {
     final String currentComment = _commentController.value.text;
-    final bool val = (currentComment != null &&
+    final bool val =
+        (currentComment != null &&
             basicEnglishCharsRegExp.hasMatch(currentComment)) ||
         currentComment.isEmpty;
     logger('Validating comment: $val');
@@ -205,7 +243,7 @@ class _PayFormState extends State<PayForm> {
 
   bool _commentValidateV2() {
     final String currentComment = _commentController.value.text;
-    final bool val = currentComment != null || currentComment.isEmpty;
+    final bool val = currentComment.isEmpty;
     logger('Validating comment: $val');
     if (_formKey.currentState != null) {
       _formKey.currentState!.validate();
@@ -213,10 +251,19 @@ class _PayFormState extends State<PayForm> {
     return val;
   }
 
-  bool _weHaveBalance(BuildContext context, double amount, Currency currency,
-      double currentUd, int recipients, double g1Balance) {
-    final double balance =
-        convertAmount(currency == Currency.G1, g1Balance, currentUd);
+  bool _weHaveBalance(
+    BuildContext context,
+    double amount,
+    Currency currency,
+    double currentUd,
+    int recipients,
+    double g1Balance,
+  ) {
+    final double balance = convertAmount(
+      currency == Currency.G1,
+      g1Balance,
+      currentUd,
+    );
     logger('We have $balance G1, need ${amount * recipients}');
     final bool weHave = balance >= amount * recipients;
 

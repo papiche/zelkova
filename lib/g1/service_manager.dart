@@ -186,7 +186,7 @@ class DuniterServiceV2 implements DuniterService {
 
   @override
   Future<String?> getProfileUserName(String pubKey) async {
-    final Contact c = await getProfileV2(pubKey);
+    final Contact c = await getProfileV2(pubKey, onlyProfile: true);
     return c.name;
   }
 }

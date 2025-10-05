@@ -100,203 +100,230 @@ void workManagerCallbackDispatcher() {
 }
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  FlutterError.onError = (FlutterErrorDetails details) {
-    FlutterError.presentError(details);
-  };
-  PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
-    logger('Top-level error: $error\n$stack');
-    return true;
-  };
-  logger.info('Starting Ginkgo app');
-  if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
-    await Workmanager().initialize(workManagerCallbackDispatcher);
-  }
-  logger.info('Workmanager initialized');
-  await NotificationController.initializeLocalNotifications();
-  logger.info('NotificationController initialized');
-  const int seedColor = 0xff98FB98;
-  final int seedColorDark = colorToValue(Colors.lightGreen);
+  // Wrap the entire bootstrap in runZonedGuarded to catch async uncaught errors.
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
 
-  final ThemeData lightTheme = ThemeData.from(
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: const Color(seedColor),
-      // brightness: Brightness.light,
-    ),
-    useMaterial3: true,
-  );
+    // Forward Flutter framework errors to the default presenter (and your logs).
+    FlutterError.onError = (FlutterErrorDetails details) {
+      FlutterError.presentError(details);
+    };
 
-  final ThemeData darkTheme = ThemeData.from(
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: Color(seedColorDark),
-      brightness: Brightness.dark,
-    ),
-    useMaterial3: true,
-  );
+    // Catch top-level uncaught errors on the platform dispatcher.
+    PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
+      logger('Top-level error: $error\n$stack');
+      return true;
+    };
 
-  // To resolve Let's Encrypt SSL certificate problems with Android 7.1.1 and below
-  if (!kIsWeb && Platform.isAndroid) {
-    HttpOverrides.global = LEHttpOverrides();
-  }
+    logger.info('Starting Ginkgo app');
 
-  /// Initialize packages
+    // Initialize Workmanager early (mobile only).
+    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+      await Workmanager().initialize(workManagerCallbackDispatcher);
+    }
+    logger.info('Workmanager initialized');
 
-  await EasyLocalization.ensureInitialized();
+    await NotificationController.initializeLocalNotifications();
+    logger.info('NotificationController initialized');
 
-  if (!kIsWeb && Platform.isAndroid) {
-    await FlutterDisplayMode.setHighRefreshRate();
-  }
+    // Define themes and pass them to the app widget.
+    const int seedColor = 0xff98FB98;
+    final int seedColorDark = colorToValue(Colors.lightGreen);
 
-  final SharedPreferencesHelper shared = SharedPreferencesHelper();
-  await shared.init();
+    final ThemeData lightTheme = ThemeData.from(
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: const Color(seedColor),
+        // brightness: Brightness.light,
+      ),
+      useMaterial3: true,
+    );
 
-  if (shared.isEmpty) {
-    await shared.createDefWalletIfNotExist();
-  }
-  assert(shared.getPubKey() != null);
+    final ThemeData darkTheme = ThemeData.from(
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: Color(seedColorDark),
+        brightness: Brightness.dark,
+      ),
+      useMaterial3: true,
+    );
 
-  await hiveInit();
+    // To resolve Let's Encrypt SSL certificate problems with Android 7.1.1 and below
+    if (!kIsWeb && Platform.isAndroid) {
+      HttpOverrides.global = LEHttpOverrides();
+    }
 
-  PWAInstall().setup(
-    installCallback: () {
-      logger('APP INSTALLED!');
-    },
-  );
+    // Initialize i18n and high refresh rate on Android.
+    await EasyLocalization.ensureInitialized();
 
-  Bloc.observer = AppBlocObserver();
+    if (!kIsWeb && Platform.isAndroid) {
+      await FlutterDisplayMode.setHighRefreshRate();
+    }
 
-  await ContactsCache().init();
-  timeago.setLocaleMessages('eo', EoMessages());
-  timeago.setLocaleMessages('eo_short', EoShortMessages());
-  timeago.setLocaleMessages('eu', EuMessages());
-  timeago.setLocaleMessages('eu_short', EuShortMessages());
-  timeago.setLocaleMessages('de', timeago.DeMessages());
-  timeago.setLocaleMessages('de_short', timeago.DeShortMessages());
-  timeago.setLocaleMessages('fr', timeago.FrMessages());
-  timeago.setLocaleMessages('fr_short', timeago.FrShortMessages());
-  timeago.setLocaleMessages('ca', timeago.CaMessages());
-  timeago.setLocaleMessages('ca_short', timeago.CaShortMessages());
-  timeago.setLocaleMessages('nl', timeago.NlMessages());
-  timeago.setLocaleMessages('nl_short', timeago.NlShortMessages());
-  timeago.setLocaleMessages('it', timeago.ItMessages());
-  timeago.setLocaleMessages('it_short', timeago.ItShortMessages());
-  timeago.setLocaleMessages('pt', timeago.PtBrMessages());
-  timeago.setLocaleMessages('pt_short', timeago.PtBrShortMessages());
-  timeago.setLocaleMessages('gl', GlMessages());
-  timeago.setLocaleMessages('gl_short', GlShortMessages());
-  timeago.setLocaleMessages('da', timeago.DaMessages());
-  timeago.setLocaleMessages('da_short', timeago.DaShortMessages());
+    // Init shared prefs and ensure a default wallet exists.
+    final SharedPreferencesHelper shared = SharedPreferencesHelper();
+    await shared.init();
 
-  await initGetItAll();
+    if (shared.isEmpty) {
+      await shared.createDefWalletIfNotExist();
+    }
+    assert(shared.getPubKey() != null);
 
-  void appRunner() =>
-      SystemChrome.setPreferredOrientations(<DeviceOrientation>[
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-      ]).then((_) {
-        runApp(
-          ChangeNotifierProvider<SharedPreferencesHelper>(
-            create: (BuildContext context) => SharedPreferencesHelper(),
-            child: EasyLocalization(
-              path: 'assets/translations',
-              supportedLocales: const <Locale>[
-                // Asturian is not supported in flutter
-                // More info: https://docs.flutter.dev/development/accessibility-and-localization/internationalization#adding-support-for-a-new-language
-                // Meantime we use this workaround:
-                // https://github.com/aissat/easy_localization/issues/220#issuecomment-846035493
-                Locale('es', 'AST'),
-                Locale('ca'),
-                Locale('da'),
-                Locale('de'),
-                Locale('en'),
-                Locale('eo'),
-                Locale('es'),
-                Locale('eu'),
-                Locale('fr'),
-                Locale('gl'),
-                Locale('it'),
-                Locale('nl'),
-                Locale('pt'),
-              ],
-              fallbackLocale: const Locale('en'),
-              useFallbackTranslations: true,
-              // https://stackoverflow.com/a/77799043
-              child: MultiBlocProvider(
-                providers: <BlocProvider<dynamic>>[
-                  BlocProvider<BottomNavCubit>(
-                    create: (BuildContext context) => BottomNavCubit(),
-                  ),
-                  BlocProvider<AppCubit>(
-                    create: (BuildContext context) =>
-                        GetIt.instance.get<AppCubit>(),
-                  ),
-                  BlocProvider<PaymentCubit>(
-                    create: (BuildContext context) => PaymentCubit(),
-                  ),
-                  BlocProvider<NodeListCubit>(
-                    create: (BuildContext context) =>
-                        GetIt.instance.get<NodeListCubit>(),
-                  ),
-                  BlocProvider<ContactsCubit>(
-                    create: (BuildContext context) => ContactsCubit(),
-                  ),
-                  BlocProvider<UtxoCubit>(
-                    create: (BuildContext context) => UtxoCubit(),
-                  ),
-                  BlocProvider<MultiWalletTransactionCubit>(
-                    create: (BuildContext context) =>
-                        GetIt.instance.get<MultiWalletTransactionCubit>(),
-                  ),
-                  BlocProvider<ThemeCubit>(
-                    create: (BuildContext context) => ThemeCubit(),
-                  ),
-                  // Add other BlocProviders here if needed
+    // Initialize storage layers (Hydrated + Hive + Ferry cache).
+    await hiveInit();
+
+    // PWA install hook.
+    PWAInstall().setup(
+      installCallback: () {
+        logger('APP INSTALLED!');
+      },
+    );
+
+    // Bloc observer for debugging.
+    Bloc.observer = AppBlocObserver();
+
+    // Init cache and timeago locales.
+    await ContactsCache().init();
+    timeago.setLocaleMessages('eo', EoMessages());
+    timeago.setLocaleMessages('eo_short', EoShortMessages());
+    timeago.setLocaleMessages('eu', EuMessages());
+    timeago.setLocaleMessages('eu_short', EuShortMessages());
+    timeago.setLocaleMessages('de', timeago.DeMessages());
+    timeago.setLocaleMessages('de_short', timeago.DeShortMessages());
+    timeago.setLocaleMessages('fr', timeago.FrMessages());
+    timeago.setLocaleMessages('fr_short', timeago.FrShortMessages());
+    timeago.setLocaleMessages('ca', timeago.CaMessages());
+    timeago.setLocaleMessages('ca_short', timeago.CaShortMessages());
+    timeago.setLocaleMessages('nl', timeago.NlMessages());
+    timeago.setLocaleMessages('nl_short', timeago.NlShortMessages());
+    timeago.setLocaleMessages('it', timeago.ItMessages());
+    timeago.setLocaleMessages('it_short', timeago.ItShortMessages());
+    timeago.setLocaleMessages('pt', timeago.PtBrMessages());
+    timeago.setLocaleMessages('pt_short', timeago.PtBrShortMessages());
+    timeago.setLocaleMessages('gl', GlMessages());
+    timeago.setLocaleMessages('gl_short', GlShortMessages());
+    timeago.setLocaleMessages('da', timeago.DaMessages());
+    timeago.setLocaleMessages('da_short', timeago.DaShortMessages());
+
+    // Register singletons.
+    await initGetItAll();
+
+    // Run the app with forced portrait orientation.
+    void appRunner() =>
+        SystemChrome.setPreferredOrientations(<DeviceOrientation>[
+          DeviceOrientation.portraitUp,
+          DeviceOrientation.portraitDown,
+        ]).then((_) {
+          runApp(
+            ChangeNotifierProvider<SharedPreferencesHelper>(
+              create: (BuildContext context) => SharedPreferencesHelper(),
+              child: EasyLocalization(
+                path: 'assets/translations',
+                supportedLocales: const <Locale>[
+                  // Asturian is not supported in flutter
+                  // More info: https://docs.flutter.dev/development/accessibility-and-localization/internationalization#adding-support-for-a-new-language
+                  // Meantime we use this workaround:
+                  // https://github.com/aissat/easy_localization/issues/220#issuecomment-846035493
+                  Locale('es', 'AST'),
+                  Locale('ca'),
+                  Locale('da'),
+                  Locale('de'),
+                  Locale('en'),
+                  Locale('eo'),
+                  Locale('es'),
+                  Locale('eu'),
+                  Locale('fr'),
+                  Locale('gl'),
+                  Locale('it'),
+                  Locale('nl'),
+                  Locale('pt'),
                 ],
-                child: GinkgoApp(darkTheme: darkTheme, lightTheme: lightTheme),
+                fallbackLocale: const Locale('en'),
+                useFallbackTranslations: true,
+                // https://stackoverflow.com/a/77799043
+                child: MultiBlocProvider(
+                  providers: <BlocProvider<dynamic>>[
+                    BlocProvider<BottomNavCubit>(
+                      create: (BuildContext context) => BottomNavCubit(),
+                    ),
+                    BlocProvider<AppCubit>(
+                      create: (BuildContext context) =>
+                          GetIt.instance.get<AppCubit>(),
+                    ),
+                    BlocProvider<PaymentCubit>(
+                      create: (BuildContext context) => PaymentCubit(),
+                    ),
+                    BlocProvider<NodeListCubit>(
+                      create: (BuildContext context) =>
+                          GetIt.instance.get<NodeListCubit>(),
+                    ),
+                    BlocProvider<ContactsCubit>(
+                      create: (BuildContext context) => ContactsCubit(),
+                    ),
+                    BlocProvider<UtxoCubit>(
+                      create: (BuildContext context) => UtxoCubit(),
+                    ),
+                    BlocProvider<MultiWalletTransactionCubit>(
+                      create: (BuildContext context) =>
+                          GetIt.instance.get<MultiWalletTransactionCubit>(),
+                    ),
+                    BlocProvider<ThemeCubit>(
+                      create: (BuildContext context) => ThemeCubit(),
+                    ),
+                    // Add other BlocProviders here if needed
+                  ],
+                  child: GinkgoApp(
+                    darkTheme: darkTheme,
+                    lightTheme: lightTheme,
+                  ),
+                ),
               ),
             ),
-          ),
-        );
-      });
-  const bool enableSentry = false;
-  // ignore: dead_code
-  if (!kIsWeb && inDevelopment && enableSentry) {
-    // Only use sentry in development
-    await SentryFlutter.init((SentryFlutterOptions options) {
-      options.tracesSampleRate = 1.0;
-      options.reportPackages = false;
-      // options.addInAppInclude('sentry_flutter_example');
-      options.considerInAppFramesByDefault = false;
-      // options.attachThreads = true;
-      // options.enableWindowMetricBreadcrumbs = true;
-      options.addIntegration(LoggingIntegration());
-      options.sendDefaultPii = true;
-      options.reportSilentFlutterErrors = true;
-      // options.attachScreenshot = true;
-      // options.screenshotQuality = SentryScreenshotQuality.low;
-      // This fails:
-      // options.attachViewHierarchy = true;
-      // We can enable Sentry debug logging during development. This is likely
-      // going to log too much for your app, but can be useful when figuring out
-      // configuration issues, e.g. finding out why your events are not uploaded.
-      options.debug = false;
+          );
+        });
+    const bool enableSentry = false;
+    // ignore: dead_code
+    if (!kIsWeb && inDevelopment && enableSentry) {
+      // Only use sentry in development
+      await SentryFlutter.init((SentryFlutterOptions options) {
+        options.tracesSampleRate = 1.0;
+        options.reportPackages = false;
+        // options.addInAppInclude('sentry_flutter_example');
+        options.considerInAppFramesByDefault = false;
+        // options.attachThreads = true;
+        // options.enableWindowMetricBreadcrumbs = true;
+        options.addIntegration(LoggingIntegration());
+        options.sendDefaultPii = true;
+        options.reportSilentFlutterErrors = true;
+        // options.attachScreenshot = true;
+        // options.screenshotQuality = SentryScreenshotQuality.low;
+        // This fails:
+        // options.attachViewHierarchy = true;
+        // We can enable Sentry debug logging during development. This is likely
+        // going to log too much for your app, but can be useful when figuring out
+        // configuration issues, e.g. finding out why your events are not uploaded.
+        options.debug = false;
 
-      options.maxRequestBodySize = MaxRequestBodySize.always;
+        options.maxRequestBodySize = MaxRequestBodySize.always;
 
-      // options.release = version;
-      // options.environment = 'production';
-      // options.beforeSend = (SentryEvent event, {dynamic hint}) {
-      //  return event;
-      //};
+        // options.release = version;
+        // options.environment = 'production';
+        // options.beforeSend = (SentryEvent event, {dynamic hint}) {
+        //  return event;
+        //};
 
-      options.dsn = Env.sentryDsn;
-      // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
-      // We recommend adjusting this value in production.
-      // options.tracesSampleRate = 1.0;
-    }, appRunner: appRunner);
-  } else {
-    appRunner();
-  }
+        options.dsn = Env.sentryDsn;
+        // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+        // We recommend adjusting this value in production.
+        // options.tracesSampleRate = 1.0;
+      }, appRunner: appRunner);
+    } else {
+      appRunner();
+    }
+  }, (Object error, StackTrace stack) async {
+    // Last-chance catch for any uncaught error within the zone.
+    logger('UNCAUGHT (zone): $error\n$stack');
+    // Optionally report to Sentry here.
+    // await Sentry.captureException(error, stackTrace: stack);
+  });
 }
 
 class AppIntro extends StatefulWidget {
@@ -431,17 +458,14 @@ class _GinkgoAppState extends State<GinkgoApp> {
 
   void _printNodeStatus({String prefix = 'Starting'}) {
     final int nDuniterNodes = NodeManager().nodeList(NodeType.duniter).length;
-    final int nCesiumPlusNodes = NodeManager()
-        .nodeList(NodeType.cesiumPlus)
-        .length;
+    final int nCesiumPlusNodes =
+        NodeManager().nodeList(NodeType.cesiumPlus).length;
     final int nGvaNodes = NodeManager().nodeList(NodeType.gva).length;
     logger(
       '$prefix with $nDuniterNodes duniter nodes, $nCesiumPlusNodes c+ nodes, and $nGvaNodes gva nodes',
     );
     if (!kReleaseMode) {
       logger('${NodeManager().nodeList(NodeType.cesiumPlus)}');
-    }
-    if (!kReleaseMode) {
       logger('${NodeManager().nodeList(NodeType.gva)}');
     }
   }
@@ -459,11 +483,13 @@ class _GinkgoAppState extends State<GinkgoApp> {
     final bool useV2 = context.read<AppCubit>().isV2;
     SharedPreferencesHelper.configure(useV2: useV2);
 
-    // Schedule tasks using Cron
+    // Schedule periodic/one-off tasks using Once/Timer.
     initCronTask();
 
+    // Warm up contacts cache with current ContactsCubit state.
     ContactsCache().addContacts(context.read<ContactsCubit>().state.contacts);
 
+    // Kick off nodes/tx fetch if online.
     ConnectivityWidgetWrapperWrapper.isConnected.then((bool isConnected) {
       if (isConnected) {
         fetchNodesIfNotReady();
@@ -514,6 +540,8 @@ class _GinkgoAppState extends State<GinkgoApp> {
         _loadNodes();
       }
     });
+
+    // Hourly nodes load (Once).
     Once.runHourly(
       'load_nodes',
       callback: () async {
@@ -528,6 +556,8 @@ class _GinkgoAppState extends State<GinkgoApp> {
         _printNodeStatus(prefix: 'After once hourly fallback');
       },
     );
+
+    // Daily cleanups.
     Once.runDaily(
       'clear_errors',
       callback: () {
@@ -535,6 +565,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
         NodeManager().cleanErrorStats();
       },
     );
+
     Once.runDaily(
       'clear_cache',
       callback: () {
@@ -542,6 +573,8 @@ class _GinkgoAppState extends State<GinkgoApp> {
         ContactsCache().clear();
       },
     );
+
+    // One-off avatar resize after first run.
     Once.runOnce(
       'resize_avatars',
       callback: () {
@@ -549,6 +582,8 @@ class _GinkgoAppState extends State<GinkgoApp> {
         context.read<ContactsCubit>().resizeAvatars();
       },
     );
+
+    // Clear tx cubit daily to keep memory small.
     Once.runDaily(
       'clear_tx_cubit',
       callback: () {
@@ -556,6 +591,8 @@ class _GinkgoAppState extends State<GinkgoApp> {
         context.read<MultiWalletTransactionCubit>().clearState();
       },
     );
+
+    // Reminder to export backups.
     final int remindMeIn = context.read<AppCubit>().recentExportReminderInDays;
 
     Once.runCustom(
@@ -568,6 +605,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
           ? Duration(minutes: remindMeIn)
           : Duration(days: remindMeIn),
     );
+    // Fetch transactions after a short delay on startup.
     Timer(const Duration(minutes: 5), () async {
       logger('---------- fetchTransactions via timer');
       fetchTransactions(context);
@@ -582,20 +620,24 @@ class _GinkgoAppState extends State<GinkgoApp> {
       },
       duration: const Duration(minutes: 5),
     );
+
+    // Hourly distance precompute (v2 only).
     Once.runHourly(
       'fetch_distance_precompute',
       callback: () async {
         logger('---------- fetchDistanceEvaluation via once');
         final AppCubit appCubit = context.read<AppCubit>();
         if (appCubit.isV2) {
-          final DistancePrecompute? dP = await DistancePrecomputeProvider()
-              .fetchDistancePrecompute();
+          final DistancePrecompute? dP =
+              await DistancePrecomputeProvider().fetchDistancePrecompute();
           if (dP != null) {
             appCubit.setDistancePreCompute(dP);
           }
         }
       },
     );
+
+    // Hourly wallets info refresh.
     Once.runHourly(
       'refresh_wallet_info',
       callback: () async {
@@ -758,9 +800,8 @@ class _GinkgoAppState extends State<GinkgoApp> {
 
   MaxWidthBox _buildMaterialAppChild(BuildContext context, Widget? widget) {
     return MaxWidthBox(
-      maxWidth: ResponsiveBreakpoints.of(context).largerThan(MOBILE)
-          ? 960
-          : 480,
+      maxWidth:
+          ResponsiveBreakpoints.of(context).largerThan(MOBILE) ? 960 : 480,
       backgroundColor: const Color(0xFFF5F5F5),
       child: /* widget! */ BouncingScrollWrapper.builder(
         context,
@@ -839,8 +880,8 @@ Future<void> fetchTransactionsFromBackground([bool init = true]) async {
     }
     loggerDev('Initialized background context');
     final GetIt getIt = GetIt.instance;
-    final MultiWalletTransactionCubit transCubit = getIt
-        .get<MultiWalletTransactionCubit>();
+    final MultiWalletTransactionCubit transCubit =
+        getIt.get<MultiWalletTransactionCubit>();
     for (final String pubKey in SharedPreferencesHelper().publicKeys) {
       loggerDev('Fetching transactions for $pubKey in background');
       transCubit.fetchTransactions(pubKey: pubKey);
@@ -925,7 +966,8 @@ class _AppStartState extends State<AppStart> {
     if (_initializing) {
       return const SizedBox.shrink();
     }
-    if (introViewed) {
+    // Don't show tutorial in development
+    if (inDevelopment || introViewed) {
       return _isAppLocked
           ? BiometricLockScreen(onUnlock: () => _unlockApp())
           : const FeedbackAndSkeletonScreen();
@@ -1011,9 +1053,8 @@ Future<void> hiveInit() async {
       'hydrated_box',
       path: HydratedStorageDirectory.web.path,
     );
-    final List<dynamic> keysToDelete = box.keys
-        .where((dynamic key) => '$key'.startsWith('minified'))
-        .toList();
+    final List<dynamic> keysToDelete =
+        box.keys.where((dynamic key) => '$key'.startsWith('minified')).toList();
     box.deleteAll(keysToDelete);
     // This should we done after init
     // await HydratedBloc.storage.clear();
@@ -1060,8 +1101,8 @@ Future<void> _clearCacheIfNeeded(HydratedStorageDirectory storageDir) async {
 }
 
 Future<void> fetchTransactions(BuildContext context) async {
-  final MultiWalletTransactionCubit transCubit = context
-      .read<MultiWalletTransactionCubit>();
+  final MultiWalletTransactionCubit transCubit =
+      context.read<MultiWalletTransactionCubit>();
   for (final String pubKey in SharedPreferencesHelper().publicKeys) {
     transCubit.fetchTransactions(pubKey: pubKey);
   }

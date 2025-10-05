@@ -28,32 +28,48 @@ class ContactListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Contact>(
-        future: getProfile(contact.pubKey, resize: false, complete: false),
-        builder: (BuildContext context, AsyncSnapshot<Contact> snapshot) {
-          if (snapshot.hasData) {
-            return _buildListTile(snapshot.data!, context, true);
-          } else {
-            // here a mock contact is used
-            return ConnectivityWidgetWrapperWrapper(
-                offlineWidget: _buildListTile(contact, context, false),
-                child: Shimmer.fromColors(
-                  baseColor: Colors.grey.shade300,
-                  highlightColor: Colors.grey.shade100,
-                  child: _buildListTile(
-                    Contact(
-                      pubKey: contact.pubKey,
-                      name: '',
-                    ),
-                    context,
-                    false,
-                  ),
-                ));
-          }
-        });
+      future: getProfile(contact.pubKey, resize: false, complete: false),
+      builder: (BuildContext context, AsyncSnapshot<Contact> snapshot) {
+        Widget avatarWidget;
+        Contact displayContact;
+        bool hasProfile = false;
+        if (snapshot.connectionState == ConnectionState.done &&
+            snapshot.hasData) {
+          avatarWidget = avatar(
+            snapshot.data!,
+            bgColor: tileColor(index, context),
+            color: tileColor(index, context, true),
+          );
+          displayContact = snapshot.data!;
+          hasProfile = true;
+        } else {
+          // Show local data while the snapshot is loading
+          avatarWidget = Shimmer.fromColors(
+            baseColor: Colors.grey.shade300,
+            highlightColor: Colors.grey.shade100,
+            child: avatar(
+              contact,
+              bgColor: tileColor(index, context),
+              color: tileColor(index, context, true),
+            ),
+          );
+          displayContact = contact;
+        }
+        return ConnectivityWidgetWrapperWrapper(
+          offlineWidget: _buildListTile(contact, context, false, avatarWidget),
+          child: _buildListTile(
+            displayContact,
+            context,
+            hasProfile,
+            avatarWidget,
+          ),
+        );
+      },
+    );
   }
 
-  ListTile _buildListTile(
-      Contact contact, BuildContext context, bool hasProfile) {
+  ListTile _buildListTile(Contact contact, BuildContext context,
+      bool hasProfile, Widget avatarWidget) {
     final String title = contact.title;
     final Widget? subtitle = contact.subtitle != null && hasProfile
         ? Text(isV2
@@ -66,11 +82,7 @@ class ContactListItem extends StatelessWidget {
         tileColor: tileColor(index, context),
         onTap: onTap,
         onLongPress: onLongPress,
-        leading: avatar(
-          contact,
-          bgColor: tileColor(index, context),
-          color: tileColor(index, context, true),
-        ),
+        leading: avatarWidget,
         trailing: trailing);
   }
 }

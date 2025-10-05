@@ -334,14 +334,24 @@ class TransactionListItem extends StatelessWidget {
                       ? null
                       : Padding(
                           padding: const EdgeInsets.fromLTRB(8, 6, 0, 5),
-                          child: Text(
-                              inDevelopment
-                                  ? '${transaction.comment}$debugText'
-                                  : transaction.comment,
-                              style: const TextStyle(
-                                fontStyle: FontStyle.italic,
-                                color: grey,
-                              )),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.mode_comment_outlined,
+                                  size: 18, color: grey),
+                              const SizedBox(width: 6),
+                              Expanded(
+                                child: Text(
+                                  inDevelopment
+                                      ? '${transaction.comment}$debugText'
+                                      : transaction.comment,
+                                  style: const TextStyle(
+                                    color: grey,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                   trailing: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

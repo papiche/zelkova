@@ -10,6 +10,7 @@ import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
 import '../../data/models/node_manager.dart';
 import '../../data/models/theme_cubit.dart';
+import '../../g1/api.dart';
 import '../../g1/currency.dart';
 import '../../g1/service_manager.dart';
 import '../../shared_prefs_helper.dart';
@@ -245,6 +246,7 @@ class _FifthScreenState extends State<FifthScreen> {
                           if (v2mode) {
                             _showTestNetworkDialog(context);
                           }
+                          fetchNodesIfNotReady(v2Only: v2mode);
                         }),
                   if (state.expertMode)
                     const TextDivider(text: 'technical_info_title'),

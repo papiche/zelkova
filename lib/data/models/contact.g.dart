@@ -290,29 +290,12 @@ Contact _$ContactFromJson(Map<String, dynamic> json) => Contact(
       avatarCid: json['avatarCid'] as String?,
       notes: json['notes'] as String?,
       name: json['name'] as String?,
-      description: json['description'] as String?,
-      city: json['city'] as String?,
       dataCid: json['dataCid'] as String?,
-      geoLoc: json['geoLoc'] == null
-          ? null
-          : LatLng.fromJson(json['geoLoc'] as Map<String, dynamic>),
       indexRequestCid: json['indexRequestCid'] as String?,
-      socials: (json['socials'] as List<dynamic>?)
-          ?.map((e) => Map<String, String>.from(e as Map))
-          .toList(),
       time:
           json['time'] == null ? null : DateTime.parse(json['time'] as String),
-      certsIssued: (json['certsIssued'] as List<dynamic>?)
-          ?.map((e) => Cert.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      certsReceived: (json['certsReceived'] as List<dynamic>?)
-          ?.map((e) => Cert.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      status: $enumDecodeNullable(_$IdentityStatusEnumMap, json['status']),
-      isMember: json['isMember'] as bool?,
       createdOn: (json['createdOn'] as num?)?.toInt(),
       index: (json['index'] as num?)?.toInt(),
-      expireOn: (json['expireOn'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$ContactToJson(Contact instance) => <String, dynamic>{
@@ -323,27 +306,9 @@ Map<String, dynamic> _$ContactToJson(Contact instance) => <String, dynamic>{
       'notes': instance.notes,
       'name': instance.name,
       'avatarCid': instance.avatarCid,
-      'description': instance.description,
-      'city': instance.city,
       'dataCid': instance.dataCid,
-      'geoLoc': instance.geoLoc,
       'indexRequestCid': instance.indexRequestCid,
-      'socials': instance.socials,
       'time': instance.time?.toIso8601String(),
-      'certsReceived': instance.certsReceived,
-      'certsIssued': instance.certsIssued,
-      'status': _$IdentityStatusEnumMap[instance.status],
-      'isMember': instance.isMember,
       'createdOn': instance.createdOn,
-      'expireOn': instance.expireOn,
       'index': instance.index,
     };
-
-const _$IdentityStatusEnumMap = {
-  IdentityStatus.MEMBER: 'MEMBER',
-  IdentityStatus.NOTMEMBER: 'NOTMEMBER',
-  IdentityStatus.REMOVED: 'REMOVED',
-  IdentityStatus.REVOKED: 'REVOKED',
-  IdentityStatus.UNCONFIRMED: 'UNCONFIRMED',
-  IdentityStatus.UNVALIDATED: 'UNVALIDATED',
-};

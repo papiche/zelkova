@@ -195,20 +195,29 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
   final String? notes;
   final String? name;
   final String? avatarCid;
+  @JsonKey(includeToJson: false, includeFromJson: false)
   final String? description;
+  @JsonKey(includeToJson: false, includeFromJson: false)
   final String? city;
   final String? dataCid;
+  @JsonKey(includeToJson: false, includeFromJson: false)
   final LatLng? geoLoc;
   final String? indexRequestCid;
+  @JsonKey(includeToJson: false, includeFromJson: false)
   final List<Map<String, String>>? socials;
   final DateTime? time;
 
   // identity fields
+  @JsonKey(includeToJson: false, includeFromJson: false)
   final List<Cert>? certsReceived;
+  @JsonKey(includeToJson: false, includeFromJson: false)
   final List<Cert>? certsIssued;
+  @JsonKey(includeToJson: false, includeFromJson: false)
   final IdentityStatus? status;
+  @JsonKey(includeToJson: false, includeFromJson: false)
   final bool? isMember;
   final int? createdOn;
+  @JsonKey(includeToJson: false, includeFromJson: false)
   final int? expireOn;
   final int? index;
 
@@ -255,26 +264,15 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
   List<Object?> get props => <dynamic>[
         pubKey,
         nick,
-        pubKey,
         avatar,
         avatarCid,
         notes,
         name,
         address,
-        description,
-        city,
         dataCid,
-        geoLoc,
         indexRequestCid,
-        socials,
         time,
-        certsIssued,
-        certsReceived,
-        certsIssued,
-        status,
-        isMember,
         createdOn,
-        expireOn,
         index
       ];
 

@@ -38,7 +38,9 @@ class _FirstScreenState extends State<FirstScreen> {
     tutorial = FirstTutorial(
         context, context.read<AppCubit>().wasTutorialShown('first_screen'));
     super.initState();
-    if (context.read<BottomNavCubit>().state == 0 &&
+    // Show tutorial only in release mode (not in development)
+    if (kReleaseMode &&
+        context.read<BottomNavCubit>().state == 0 &&
         !context.read<AppCubit>().isWalletCreatedViewed) {
       tutorial.showTutorial();
       context.read<AppCubit>().walletCreatedViewed();

@@ -261,10 +261,10 @@ packages:
     dependency: transitive
     description:
       name: camera_android_camerax
-      sha256: "2d438248554f44766bf9ea34c117a5bb0074e241342ef7c22c768fb431335234"
+      sha256: "0db8e7b161ec6cdb2219540eaa4cf599dc963929e5f8ded3b20b3acb52712fa4"
       url: "https://pub.dev"
     source: hosted
-    version: "0.6.21"
+    version: "0.6.21+1"
   camera_avfoundation:
     dependency: transitive
     description:
@@ -445,10 +445,10 @@ packages:
     dependency: transitive
     description:
       name: dart_pubspec_licenses
-      sha256: "391ca09a09430e485839118b89b55a5fb142845d6c305d33fdc92d75ec65c2e5"
+      sha256: ed8ce6e093ce94ba0cadba0c9c33d84960b5cf6b76d371d6b5cba2228dc3722e
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.9"
+    version: "3.0.10"
   dart_style:
     dependency: transitive
     description:
@@ -854,10 +854,10 @@ packages:
     dependency: "direct dev"
     description:
       name: flutter_oss_licenses
-      sha256: "57c1e38b44ed8815d0303c278238b54796c4c4f57b0c4b89fa7f3c5359ac815e"
+      sha256: "4417ff4a25481f0aa538db25b0a76e91c53b2dea66b9b23ad4288c82e834b5bc"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.6"
+    version: "3.0.7"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:

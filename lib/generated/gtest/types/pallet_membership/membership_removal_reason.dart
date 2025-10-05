@@ -26,6 +26,7 @@ enum MembershipRemovalReason {
       $MembershipRemovalReasonCodec();
 
   String toJson() => variantName;
+
   _i2.Uint8List encode() {
     return codec.encode(this);
   }

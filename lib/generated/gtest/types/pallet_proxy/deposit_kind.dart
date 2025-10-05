@@ -23,6 +23,7 @@ enum DepositKind {
   static const $DepositKindCodec codec = $DepositKindCodec();
 
   String toJson() => variantName;
+
   _i2.Uint8List encode() {
     return codec.encode(this);
   }

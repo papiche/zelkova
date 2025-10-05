@@ -26,6 +26,7 @@ enum IdtyStatus {
   static const $IdtyStatusCodec codec = $IdtyStatusCodec();
 
   String toJson() => variantName;
+
   _i2.Uint8List encode() {
     return codec.encode(this);
   }

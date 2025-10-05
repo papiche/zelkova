@@ -24,6 +24,7 @@ enum RandomnessType {
   static const $RandomnessTypeCodec codec = $RandomnessTypeCodec();
 
   String toJson() => variantName;
+
   _i2.Uint8List encode() {
     return codec.encode(this);
   }

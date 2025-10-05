@@ -76,6 +76,21 @@ class _TransactionsAndBalanceWidgetState
   late Tutorial tutorial;
   late ScheduledTask scheduledTask;
 
+  bool _gotFirstResponse = false;
+  bool _bootstrapping = true;
+
+  int _countItems(PagingState<dynamic, Transaction> s) =>
+      (s.pages ?? const <List<Transaction>>[])
+          .fold(0, (int a, List<Transaction> p) => a + p.length);
+
+  bool _isTerminalEmpty() {
+    return _gotFirstResponse &&
+        _txState.isLoading != true &&
+        _txState.hasNextPage != true &&
+        _countItems(_txState) == 0 &&
+        _txState.error == null;
+  }
+
   @override
   void initState() {
     appCubit = context.read<AppCubit>();
@@ -87,28 +102,44 @@ class _TransactionsAndBalanceWidgetState
       pubKey: widget.pubKey,
       isV2: appCubit.isV2,
     );
-
     _blocListingStateSubscription =
-        _bloc.onNewListingState.listen((TransactionsState listingState) {
-      final List<Transaction> items = listingState.itemList ?? <Transaction>[];
+        _bloc.onNewListingState.listen((TransactionsState s) {
+      final List<Transaction> items = s.itemList ?? const <Transaction>[];
+
+      final bool isReal =
+          items.isNotEmpty || s.error != null || s.nextPageKey != null;
+      if (!isReal) {
+        return;
+      }
 
       setState(() {
-        final List<List<Transaction>> pageList = <List<Transaction>>[items];
-        final List<String?> keyList = <String?>[_lastRequestedCursor];
+        final List<List<Transaction>> prevPages =
+            _txState.pages ?? const <List<Transaction>>[];
+        final bool isFirstPage = _lastRequestedCursor == null;
 
-        final bool keepLoading = items.isEmpty &&
-            listingState.error == null &&
-            listingState.nextPageKey != null;
+        final List<List<Transaction>> newPages = isFirstPage
+            ? <List<Transaction>>[items]
+            : <List<Transaction>>[...prevPages, items];
+
+        final List<String?> newKeys = isFirstPage
+            ? <String?>[_lastRequestedCursor]
+            : <String?>[...?_txState.keys, _lastRequestedCursor];
+
+        final bool keepLoading = s.nextPageKey != null &&
+            _countItems(_txState) == 0 &&
+            items.isEmpty;
 
         _txState = _txState.copyWith(
-          pages: pageList,
-          keys: keyList,
-          hasNextPage: listingState.nextPageKey != null,
+          pages: newPages,
+          keys: newKeys,
+          hasNextPage: s.nextPageKey != null,
           isLoading: keepLoading,
-          error: listingState.error,
+          error: s.error,
         );
 
-        _nextCursor = listingState.nextPageKey;
+        _nextCursor = s.nextPageKey;
+        _gotFirstResponse = true;
+        _bootstrapping = false;
       });
     });
 
@@ -474,75 +505,75 @@ class _TransactionsAndBalanceWidgetState
                 ),
               )),
           PagedSliverList<String?, Transaction>(
-            state: _txState,
-            fetchNextPage: _fetchNextTxPage,
-            builderDelegate: PagedChildBuilderDelegate<Transaction>(
-              animateTransitions: true,
-              transitionDuration: const Duration(milliseconds: 500),
-              itemBuilder: (BuildContext context, Transaction tx, int index) {
-                return TransactionListItem(
-                  pubKey: myPubKey,
-                  currentUd: currentUd,
-                  isG1: isG1,
-                  isCurrencyBefore: isCurrencyBefore,
-                  currentSymbol: currentSymbol,
-                  isExternalAccount: widget.isExternalAccount,
-                  index: index + pendingCount,
-                  transaction: tx,
-                );
-              },
-              firstPageProgressIndicatorBuilder: (_) => const Padding(
-                padding: EdgeInsets.symmetric(vertical: 24.0),
-                child: Center(child: CircularProgressIndicator()),
-              ),
-              firstPageErrorIndicatorBuilder: (_) =>
-                  TransactionWidgetErrorWidget(
-                onTryAgain: _fetchNextTxPage,
-              ),
-              newPageProgressIndicatorBuilder: (_) => const Padding(
-                padding: EdgeInsets.symmetric(vertical: 24.0),
-                child: Center(child: CircularProgressIndicator()),
-              ),
-              newPageErrorIndicatorBuilder: (_) => TransactionWidgetErrorWidget(
-                onTryAgain: _fetchNextTxPage,
-              ),
-              noItemsFoundIndicatorBuilder: (_) {
-                final bool hasPages =
-                    _txState.pages != null && _txState.pages!.isNotEmpty;
-                final bool hasItems = hasPages &&
-                    _txState.pages!
-                        .any((List<Transaction> page) => page.isNotEmpty);
-                final bool isLoading = _txState.isLoading;
-                final bool hasError = _txState.error != null;
+              state: _txState,
+              fetchNextPage: _fetchNextTxPage,
+              builderDelegate: PagedChildBuilderDelegate<Transaction>(
+                animateTransitions: true,
+                transitionDuration: const Duration(milliseconds: 500),
+                itemBuilder: (BuildContext context, Transaction tx, int index) {
+                  return TransactionListItem(
+                    pubKey: myPubKey,
+                    currentUd: currentUd,
+                    isG1: isG1,
+                    isCurrencyBefore: isCurrencyBefore,
+                    currentSymbol: currentSymbol,
+                    isExternalAccount: widget.isExternalAccount,
+                    index: index + pendingCount,
+                    transaction: tx,
+                  );
+                },
+                firstPageProgressIndicatorBuilder: (_) => const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 24.0),
+                  child: Center(child: CircularProgressIndicator()),
+                ),
+                firstPageErrorIndicatorBuilder: (_) =>
+                    TransactionWidgetErrorWidget(
+                  onTryAgain: _fetchNextTxPage,
+                ),
+                newPageProgressIndicatorBuilder: (_) => const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 24.0),
+                  child: Center(child: CircularProgressIndicator()),
+                ),
+                newPageErrorIndicatorBuilder: (_) =>
+                    TransactionWidgetErrorWidget(
+                  onTryAgain: _fetchNextTxPage,
+                ),
+                noItemsFoundIndicatorBuilder: (_) {
+                  if (_bootstrapping) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-                if (isLoading && !hasPages) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (hasError && !hasPages) {
-                  return TransactionWidgetErrorWidget(
-                    onTryAgain: _fetchNextTxPage,
-                  );
-                }
-                logger(
-                    '🔍 Builder state - hasPages: $hasPages, hasItems: $hasItems, isLoading: $isLoading, hasError: $hasError');
-                if (!isLoading && !hasError && !hasItems) {
-                  return Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: Text(
-                        tr(widget.isExternalAccount
-                            ? 'no_transactions_simple'
-                            : 'no_transactions'),
-                        textAlign: TextAlign.center,
+                  final bool isLoading = _txState.isLoading == true;
+                  final bool hasNext = _txState.hasNextPage == true;
+                  final bool hasError = _txState.error != null;
+
+                  if (isLoading || hasNext) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (hasError && (_txState.pages?.isEmpty ?? true)) {
+                    return TransactionWidgetErrorWidget(
+                        onTryAgain: _fetchNextTxPage);
+                  }
+
+                  if (_isTerminalEmpty()) {
+                    return Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: Text(
+                          tr(widget.isExternalAccount
+                              ? 'no_transactions_simple'
+                              : 'no_transactions'),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                    ),
-                  );
-                }
-                return const SizedBox.shrink();
-              },
-            ),
-          ),
+                    );
+                  }
+
+                  return const SizedBox.shrink();
+                },
+              )),
         ],
       ),
     );

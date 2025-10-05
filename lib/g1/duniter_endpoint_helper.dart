@@ -435,10 +435,15 @@ Future<SignAndSendResult> revoke(
 Future<double> currentUniversalDividendV2() async {
   return executeOnPolkadotNodes(
       (Node node, Provider provider, Gtest polkadot) async {
-    final Gtest polkadot = Gtest(provider);
-    final BigInt currentUd = await polkadot.query.universalDividend.currentUd();
-    // logger.warning('Current Universal Dividend: $currentUd');
-    return currentUd.toDouble() / 100;
+    try {
+      final BigInt currentUd =
+          await polkadot.query.universalDividend.currentUd();
+      // logger.info('Current Universal Dividend: $currentUd');
+      return currentUd.toDouble() / 100;
+    } catch (e, stacktrace) {
+      loggerDev('Error fetching current UD', error: e, stackTrace: stacktrace);
+      rethrow;
+    }
   });
 }
 /*

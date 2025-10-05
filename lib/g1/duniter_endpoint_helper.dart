@@ -78,8 +78,8 @@ Future<T> executeOnPolkadotNodes<T>(
     }
   }
 
-  throw Exception(
-      'All nodes failed to execute the operation'); // If all nodes fail, throw an exception
+  throw Exception('All nodes failed to execute the operation: $operation');
+  // If all nodes fail, throw an exception
 }
 
 Future<IdtyValue?> polkadotIdentity(Contact contact) async {

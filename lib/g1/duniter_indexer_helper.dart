@@ -5,7 +5,6 @@ import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-que
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.var.gql.dart';
 import 'package:ferry/ferry.dart' as ferry;
 import 'package:ferry_hive_ce_store/ferry_hive_ce_store.dart';
-
 import 'package:get_it/get_it.dart';
 
 import '../data/models/cert.dart';
@@ -253,7 +252,7 @@ Contact _contactFromAccount(dynamic account) {
           nick: (identity as dynamic)?.name as String?,
           address: (account as dynamic).id as String,
           status: parseIdentityStatus(
-              ((identity as dynamic)?.status as dynamic)?.name as String?),
+              ((identity as dynamic)?.status as dynamic) as String?),
           isMember: (identity as dynamic)?.isMember as bool?,
           createdOn: (account as dynamic).createdOn as int?,
           expireOn: (identity as dynamic).expireOn as int?,

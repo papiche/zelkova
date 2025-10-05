@@ -37,10 +37,11 @@ Future<TransactionState> transactionsV2Parser(
     );
   }
 
-  final Map<String, dynamic>? account = accounts.firstWhere(
-    (dynamic acc) => (acc as Map<String, dynamic>)['id'] == accountAddress,
-    orElse: () => null,
-  ) as Map<String, dynamic>?;
+  final Map<String, dynamic>? account = accounts
+      .where((dynamic acc) =>
+          (acc as Map<String, dynamic>)['id'] == accountAddress)
+      .cast<Map<String, dynamic>>()
+      .firstOrNull;
 
   if (account == null) {
     return currentState.copyWith(

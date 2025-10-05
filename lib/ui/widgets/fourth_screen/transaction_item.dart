@@ -336,7 +336,7 @@ class TransactionListItem extends StatelessWidget {
                           padding: const EdgeInsets.fromLTRB(8, 6, 0, 5),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                            children: <Widget>[
                               const Icon(Icons.mode_comment_outlined,
                                   size: 18, color: grey),
                               const SizedBox(width: 6),

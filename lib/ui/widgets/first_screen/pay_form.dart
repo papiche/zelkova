@@ -45,8 +45,8 @@ class _PayFormState extends State<PayForm> {
     return BlocBuilder<PaymentCubit, PaymentState>(
       builder: (BuildContext context, PaymentState state) {
         final AppCubit appCubit = context.watch<AppCubit>();
-        final MultiWalletTransactionCubit txCubit = context
-            .watch<MultiWalletTransactionCubit>();
+        final MultiWalletTransactionCubit txCubit =
+            context.watch<MultiWalletTransactionCubit>();
         final double balance = txCubit.balance();
         final double currentUd = appCubit.currentUd;
         final bool isV2 = appCubit.isV2;
@@ -60,12 +60,12 @@ class _PayFormState extends State<PayForm> {
 
         final bool sentDisabled =
             _onPressed(state, context, currency, currentUd, balance, isV2) ==
-            null;
+                null;
         final Color sentColor = sentDisabled
             ? Theme.of(context).disabledColor
             : isDark(context)
-            ? const Color(0xFFB8D166)
-            : Theme.of(context).primaryColor;
+                ? const Color(0xFFB8D166)
+                : Theme.of(context).primaryColor;
         return Form(
           key: _formKey,
           child: Column(
@@ -91,10 +91,10 @@ class _PayFormState extends State<PayForm> {
                           _commentController.text = newText.substring(0, 256);
                           _commentController.selection =
                               TextSelection.fromPosition(
-                                TextPosition(
-                                  offset: _commentController.text.length,
-                                ),
-                              );
+                            TextPosition(
+                              offset: _commentController.text.length,
+                            ),
+                          );
                         } else {
                           context.read<PaymentCubit>().setComment(newText);
                         }
@@ -135,13 +135,13 @@ class _PayFormState extends State<PayForm> {
                                 if (mounted) {
                                   final Future<void> Function()? func =
                                       _onPressed(
-                                        state,
-                                        context,
-                                        currency,
-                                        currentUd,
-                                        balance,
-                                        isV2,
-                                      );
+                                    state,
+                                    context,
+                                    currency,
+                                    currentUd,
+                                    balance,
+                                    isV2,
+                                  );
                                   if (func != null) {
                                     func();
                                   }
@@ -180,9 +180,8 @@ class _PayFormState extends State<PayForm> {
   ) {
     final bool isG1 = currency == Currency.G1;
     final bool notCanBeSent = !state.canBeSent();
-    final bool notValidComment = isV2
-        ? !_commentValidateV2()
-        : !_commentValidate();
+    final bool notValidComment =
+        isV2 ? !_commentValidateV2() : !_commentValidate();
     final bool nullAmount = state.amount == null;
     loggerDev(
       'notCanBeSent: $notCanBeSent, notValidComment: $notValidComment, nullAmount: $nullAmount',
@@ -219,36 +218,36 @@ class _PayFormState extends State<PayForm> {
     double currentUd,
     int recipients,
     double balance,
-  ) => !_weHaveBalance(
-    context,
-    state.amount!,
-    currency,
-    currentUd,
-    recipients,
-    balance,
-  );
+  ) =>
+      !_weHaveBalance(
+        context,
+        state.amount!,
+        currency,
+        currentUd,
+        recipients,
+        balance,
+      );
 
   bool _commentValidate() {
     final String currentComment = _commentController.value.text;
-    final bool val =
-        (currentComment != null &&
+    final bool valid = (currentComment != null &&
             basicEnglishCharsRegExp.hasMatch(currentComment)) ||
         currentComment.isEmpty;
-    logger('Validating comment: $val');
+    logger('Validating comment: $valid');
     if (_formKey.currentState != null) {
       _formKey.currentState!.validate();
     }
-    return val;
+    return valid;
   }
 
   bool _commentValidateV2() {
     final String currentComment = _commentController.value.text;
-    final bool val = currentComment.isEmpty;
-    logger('Validating comment: $val');
+    final bool valid = currentComment != null;
+    logger('Validating comment: $valid');
     if (_formKey.currentState != null) {
       _formKey.currentState!.validate();
     }
-    return val;
+    return valid;
   }
 
   bool _weHaveBalance(

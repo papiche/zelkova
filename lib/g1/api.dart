@@ -263,7 +263,7 @@ Future<List<Contact>> searchWotV1(String initialSearchTerm) async {
   return contacts;
 }
 
-Future<void> fetchNodesIfNotReady() async {
+Future<void> fetchNodesIfNotReady({required bool v2Only}) async {
   final List<Future<void>> fetchFutures = <Future<void>>[];
 
   for (final NodeType type in <NodeType>[
@@ -275,11 +275,13 @@ Future<void> fetchNodesIfNotReady() async {
     NodeType.datapodEndpoint,
     NodeType.ipfsGateway
   ]) {
-    if (NodeManager().nodesWorking(type) < 3) {
-      fetchFutures.add(fetchNodes(type, true));
+    if (type.isV2 && v2Only) {
+      if (NodeManager().nodesWorking(type) < 3) {
+        fetchFutures.add(fetchNodes(type, true));
+      }
     }
+    await Future.wait(fetchFutures);
   }
-  await Future.wait(fetchFutures);
 }
 
 Future<void> fetchNodes(NodeType type, bool force) async {

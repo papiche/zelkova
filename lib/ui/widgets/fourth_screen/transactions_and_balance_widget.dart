@@ -112,6 +112,12 @@ class _TransactionsAndBalanceWidgetState
       });
     });
 
+    if (!widget.isExternalAccount) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _fetchNextPendingPage();
+      });
+    }
+
     _fetchNextTxPage();
 
     scheduledTask = cron.schedule(
@@ -157,10 +163,14 @@ class _TransactionsAndBalanceWidgetState
   }
 
   Future<void> _fetchNextPendingPage() async {
+    // Log for debugging
+    logger('Calling _fetchNextPendingPage, pubKey: [32m${widget.pubKey}[0m');
     if (widget.pubKey != null) {
+      logger('Not fetching pending txs because pubKey is not null');
       return;
     }
     if (_pendingState.isLoading) {
+      logger('Already loading pending txs');
       return;
     }
 
@@ -171,6 +181,7 @@ class _TransactionsAndBalanceWidgetState
     try {
       final List<Transaction> pendTxs =
           transCubit.currentWalletState(widget.pubKey).pendingTransactions;
+      logger('Fetched pending txs: [32m${pendTxs.length}[0m');
 
       final int already = _pendingState.items?.length ?? 0;
       final List<Transaction> newItems =
@@ -193,6 +204,7 @@ class _TransactionsAndBalanceWidgetState
         );
       });
     } catch (error) {
+      logger('Error fetching pending txs: $error');
       setState(() {
         _pendingState = _pendingState.copyWith(
           error: error,
@@ -203,50 +215,25 @@ class _TransactionsAndBalanceWidgetState
   }
 
   Future<void> _refresh() async {
-    // Store current pages to restore if refresh fails
-    final List<List<Transaction>>? oldTxPages = _txState.pages;
-    final List<List<Transaction>>? oldPendingPages = _pendingState.pages;
-
     setState(() {
-      _txState = _txState.copyWith(
-        isLoading: true,
-        error: null,
-        pages: <List<Transaction>>[], // Clear pages for fresh data
-        keys: <String?>[],
-      );
-      _pendingState = _pendingState.copyWith(
-        isLoading: true,
-        error: null,
-        pages: <List<Transaction>>[],
-        keys: <int>[],
-      );
+      _txState = PagingState<String?, Transaction>(isLoading: true);
+      if (!widget.isExternalAccount) {
+        _pendingState = PagingState<int, Transaction>();
+      }
     });
 
     _nextCursor = null;
     _lastRequestedCursor = null;
 
     try {
-      await Future.wait(<Future<void>>[
-        _fetchNextTxPage(),
-        if (!widget.isExternalAccount) _fetchNextPendingPage(),
-      ]);
+      await _fetchNextTxPage();
+      if (!widget.isExternalAccount) {
+        await _fetchNextPendingPage();
+      }
     } catch (error) {
-      // Restore previous data on error
       setState(() {
-        _txState = _txState.copyWith(
-          isLoading: false,
-          error: error,
-          pages: oldTxPages,
-          keys: _txState.keys?.sublist(0, oldTxPages?.length ?? 0),
-        );
-        _pendingState = _pendingState.copyWith(
-          isLoading: false,
-          error: error,
-          pages: oldPendingPages,
-          keys: _pendingState.keys?.sublist(0, oldPendingPages?.length ?? 0),
-        );
+        _txState = _txState.copyWith(error: error, isLoading: false);
       });
-      rethrow; // Re-throw to let RefreshIndicator handle it
     }
   }
 
@@ -448,6 +435,7 @@ class _TransactionsAndBalanceWidgetState
         slivers: <Widget>[
           SliverVisibility(
               visible: !widget.isExternalAccount &&
+                  widget.pubKey == null &&
                   (_pendingState.items?.isNotEmpty ?? false),
               sliver: PagedSliverList<int, Transaction>(
                 state: _pendingState,
@@ -525,10 +513,19 @@ class _TransactionsAndBalanceWidgetState
                     _txState.pages!
                         .any((List<Transaction> page) => page.isNotEmpty);
                 final bool isLoading = _txState.isLoading;
-                if (isLoading) {
+                final bool hasError = _txState.error != null;
+
+                if (isLoading && !hasPages) {
                   return const Center(child: CircularProgressIndicator());
                 }
-                if (hasPages && !hasItems) {
+                if (hasError && !hasPages) {
+                  return TransactionWidgetErrorWidget(
+                    onTryAgain: _fetchNextTxPage,
+                  );
+                }
+                logger(
+                    '🔍 Builder state - hasPages: $hasPages, hasItems: $hasItems, isLoading: $isLoading, hasError: $hasError');
+                if (!isLoading && !hasError && !hasItems) {
                   return Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Align(
@@ -541,9 +538,8 @@ class _TransactionsAndBalanceWidgetState
                       ),
                     ),
                   );
-                } else {
-                  return const Center(child: CircularProgressIndicator());
                 }
+                return const SizedBox.shrink();
               },
             ),
           ),

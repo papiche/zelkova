@@ -176,6 +176,7 @@ class _TransactionsAndBalanceWidgetState
   void dispose() {
     _blocListingStateSubscription.cancel();
     scheduledTask.cancel();
+    _bloc.dispose();
     super.dispose();
   }
 

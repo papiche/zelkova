@@ -328,19 +328,21 @@ Future<PayResult> payV2({
     RuntimeCall transferCall;
 
     if (addresses.length > 1 || comment != null) {
-      final List<RuntimeCall> batchCalls = addresses.map((String address) {
+      final List<RuntimeCall> batchCalls = <RuntimeCall>[];
+
+      for (final String address in addresses) {
         final Id multiAddress =
             const $MultiAddress().id(Address.decode(address).pubkey);
-        return polkadot.tx.balances.transferKeepAlive(
-          dest: multiAddress,
-          value: BigInt.from(amount * 100),
-        );
-      }).toList();
-
-      if (comment != null) {
         batchCalls.add(
-          polkadot.tx.system.remarkWithEvent(remark: utf8.encode(comment)),
+          polkadot.tx.balances.transferKeepAlive(
+            dest: multiAddress,
+            value: BigInt.from((amount * 100).round()),
+          ),
         );
+      }
+      if (comment != null && comment.isNotEmpty) {
+        batchCalls.add(polkadot.tx.system
+            .remarkWithEvent(remark: Uint8List.fromList(utf8.encode(comment))));
       }
 
       transferCall = polkadot.tx.utility.batch(calls: batchCalls);

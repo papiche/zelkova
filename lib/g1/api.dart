@@ -41,6 +41,7 @@ import 'no_nodes_exception.dart';
 import 'node_check_result.dart';
 import 'pay_result.dart';
 import 'service_manager.dart';
+import 'v2_peers.dart';
 
 // Tx history
 // https://g1.duniter.org/tx/history/FadJvhddHL7qbRd3WcRPrWEJJwABQa3oZvmCBhotc7Kg
@@ -61,7 +62,7 @@ Future<String> getTxHistory(String publicKey) async {
   }
 }
 
-Future<List<dynamic>> getPeers(NodeType type, {bool debug = false}) async {
+Future<List<dynamic>> getPeers(NodeType type, {bool debug = true}) async {
   // const Duration timeout = Duration(seconds: 10);
   // Prevent concurrent modification
   final List<Node> nodes = List<Node>.from(NodeManager().nodeList(type));
@@ -102,62 +103,95 @@ Future<List<dynamic>> getPeers(NodeType type, {bool debug = false}) async {
         }
         // Ignore
       }
-    } else if (type == NodeType.endpoint) {
-      try {
-        /*   final PolkaDotProvider wsProvider =
-            PolkaDotProvider(Uri.parse('wss://rpc.polkadot.io'));
-        final MyWsSubstrateService wsService = MyWsSubstrateService(wsProvider);
-        final SubstrateRPC rpc = SubstrateRPC(wsService);
-        final SyncStateResponse syncState =
-            await rpc.request(const SubstrateRPCSystemSyncState());
-        syncState.currentBlock
-
-        print('Sync State: $syncState'); */
-
-        /*
-        final Provider polkadot = Provider.fromUri(Uri.parse(node.url));
-        final SystemApi<Provider, dynamic, dynamic> api =
-            SystemApi<Provider, dynamic, dynamic>(polkadot);
-
-        final List<PeerInfo<dynamic, dynamic>>? peers =
-            await api.peers().timeout(timeout);
-        for (final PeerInfo<dynamic, dynamic> peer in peers) {
-          print(peer);
-        }
-        final Health health = await api.health();
-        if (health.isSyncing) {
-          loggerDev('Node ${node.url} is syncing');
-          continue;
-        }
-        print('node ${node.url} has ${health.peers} peers');
-*/
-        /*     final Provider polkadot = Provider.fromUri(Uri.parse(node.url));
-        final SystemApi<Provider, dynamic, dynamic> api =
-            SystemApi<Provider, dynamic, dynamic>(polkadot);
-        final Health health = await api.health();
-        if (!health.isSyncing) {
-          final RpcResponse<dynamic, dynamic>? response =
-              await queryPolkadotNode(
-                  nodeUri: node.url,
-                  queryMethod: 'system_peers',
-                  params: <dynamic>[],
-                  timeout: timeout);
-
-          if (response != null && response.error != null) {
-            // final SyncState syncState = SyncState.fromJson(result.result as Map<String, dynamic>);
-            loggerDev('result ${response.result}');
-          }
-        }*/
-      } catch (e, stacktrace) {
-        if (debug) {
-          loggerDev('Error retrieving peers from ${node.url} ($e)');
-          loggerDev(stacktrace);
-        }
-        // Ignore
-      }
     }
   }
   return currentPeers;
+}
+
+Future<Tuple2<Set<Node>, Set<Node>>> getV2Peers({
+  required List<Node> endpointNodes,
+  required List<Node> indexerNodes,
+  int? maxNodes,
+  bool debug = true,
+}) async {
+  final Set<Node> discoveredEndpointNodes = <Node>{};
+  final Set<Node> discoveredIndexerNodes = <Node>{};
+  final Set<String> discoveredEndpointUrls = <String>{};
+  final Set<String> scannedEndpointUrls = <String>{};
+  maxNodes ??= NodeManager.maxNodes;
+
+  Future<void> scanEndpointNode(String nodeUrl) async {
+    if (scannedEndpointUrls.contains(nodeUrl) ||
+        discoveredEndpointUrls.length >= maxNodes!) {
+      return;
+    }
+    scannedEndpointUrls.add(nodeUrl);
+
+    try {
+      final V2Peers res = await discoverV2PeersFromNode(nodeUrl);
+      for (final String url in res.endpoint) {
+        if (discoveredEndpointUrls.length >= maxNodes) {
+          break;
+        }
+        if (discoveredEndpointUrls.add(url)) {
+          try {
+            final NodeCheckResult nodeCheck =
+                await _pingNode(url, NodeType.endpoint);
+            discoveredEndpointNodes.add(Node(
+              url: url,
+              latency: nodeCheck.latency.inMicroseconds,
+              currentBlock: nodeCheck.currentBlock,
+            ));
+            await scanEndpointNode(url);
+          } catch (_) {
+            // Do nothing if some scan fails
+            if (debug) {
+              loggerDev('Error scanning endpoint node $url');
+            }
+          }
+        }
+      }
+      for (final String url in res.indexer) {
+        try {
+          final NodeCheckResult nodeCheck =
+              await _pingNode(url, NodeType.duniterIndexer);
+          discoveredIndexerNodes.add(Node(
+            url: url,
+            latency: nodeCheck.latency.inMicroseconds,
+            currentBlock: nodeCheck.currentBlock,
+          ));
+        } catch (_) {
+          if (debug) {
+            loggerDev('Error scanning indexer node $url');
+          }
+        }
+      }
+    } catch (e) {
+      if (debug) {
+        loggerDev('Error retrieving $nodeUrl ($e)');
+      }
+    }
+  }
+
+  for (final Node node in endpointNodes) {
+    if (discoveredEndpointUrls.length >= maxNodes) {
+      break;
+    }
+    discoveredEndpointUrls.add(node.url);
+    discoveredEndpointNodes.add(node);
+    await scanEndpointNode(node.url);
+  }
+  indexerNodes.forEach(discoveredIndexerNodes.add);
+
+  final List<Node> sortedEndpoints = discoveredEndpointNodes.toList()
+    ..sort((Node a, Node b) => a.latency.compareTo(b.latency));
+  final List<Node> sortedIndexers = discoveredIndexerNodes.toList()
+    ..sort((Node a, Node b) => a.latency.compareTo(b.latency));
+
+  return Tuple2<Set<Node>, Set<Node>>(
+    sortedEndpoints.toSet(),
+    sortedIndexers.toSet(),
+  );
 }
 
 Future<List<Contact>> searchProfilesV1(
@@ -270,7 +304,8 @@ Future<void> fetchNodesIfNotReady({required bool v2Only}) async {
     NodeType.gva,
     NodeType.duniter,
     NodeType.endpoint,
-    NodeType.duniterIndexer,
+    // Endpoint and squid are fetched together
+    // NodeType.duniterIndexer,
     NodeType.cesiumPlus,
     NodeType.datapodEndpoint,
     NodeType.ipfsGateway
@@ -299,11 +334,8 @@ Future<void> fetchNodes(NodeType type, bool force) async {
         fetchFutures.add(_fetchCesiumPlusNodes(force: force));
         break;
       case NodeType.endpoint:
-        fetchFutures.add(_fetchEndPointNodes(force: force));
-        break;
       case NodeType.duniterIndexer:
-        fetchFutures
-            .add(_fetchV2Nodes(type: NodeType.duniterIndexer, force: force));
+        fetchFutures.add(_fetchEndPointAndSquidNodes(force: force));
         break;
       case NodeType.datapodEndpoint:
         fetchFutures
@@ -374,20 +406,26 @@ Future<void> _fetchCesiumPlusNodes({bool force = false}) async {
   NodeManager().loading = false;
 }
 
-Future<void> _fetchEndPointNodes({bool force = false}) async {
+Future<void> _fetchEndPointAndSquidNodes({bool force = false}) async {
   NodeManager().loading = true;
-  const NodeType type = NodeType.endpoint;
   if (force) {
-    NodeManager().updateNodes(type, defaultEndPointNodes);
+    NodeManager().updateNodes(NodeType.endpoint, defaultEndPointNodes);
+    NodeManager()
+        .updateNodes(NodeType.duniterIndexer, defaultDuniterIndexerNodes);
     logger('Fetching endPoint nodes forced');
   } else {
     logger(
-        'Fetching endPoint nodes, we have ${NodeManager().nodesWorking(type)}');
+        'Fetching endPoint and indexer nodes, we have ${NodeManager().nodesWorking(NodeType.endpoint)} and ${NodeManager().nodesWorking(NodeType.duniterIndexer)}');
   }
-  final List<Node> nodes = await _fetchNodes(type);
-  // FIXME (this does not return urls)
-  // await getPeers(type);
-  NodeManager().updateNodes(type, nodes);
+  final List<Node> initialEndPointNodes = await _fetchNodes(NodeType.endpoint);
+  final List<Node> initialIndexerNodes =
+      await _fetchNodes(NodeType.duniterIndexer);
+  final Tuple2<Set<Node>, Set<Node>> discoveredNodes = await getV2Peers(
+      endpointNodes: initialEndPointNodes, indexerNodes: initialIndexerNodes);
+
+  NodeManager().updateNodes(NodeType.endpoint, discoveredNodes.item1.toList());
+  NodeManager()
+      .updateNodes(NodeType.duniterIndexer, discoveredNodes.item2.toList());
   NodeManager().loading = false;
 }
 
@@ -564,7 +602,7 @@ Future<List<Node>> _fetchNodes(NodeType type, {bool debug = false}) async {
 }
 
 Future<NodeCheckResult> _pingNode(String node, NodeType type,
-    {bool debug = false}) async {
+    {bool debug = true}) async {
   const Duration timeout = Duration(seconds: 10);
 
   final Map<NodeType,
@@ -1170,10 +1208,10 @@ Future<NodeCheckResult> testDuniterIndexerV2(
       await client.request(GLastBlockReq()).first.timeout(timeout);
   if (response.hasErrors) {
     loggerDev(
-        'Node $node has errors: ${removeNewlines(response.linkException!.originalException.toString())}');
+        'Node $node has errors: ${removeNewlines(response.linkException!.toString())}');
     result = NodeCheckResult(currentBlock: 0, latency: wrongNodeDuration);
   } else {
-    final int currentBlock = response.data?.block.first.height ?? 0;
+    final int currentBlock = response.data?.blocks?.nodes.first.height ?? 0;
     result = NodeCheckResult(
         currentBlock: currentBlock,
         latency: currentBlock > 0 ? stopwatch.elapsed : wrongNodeDuration);

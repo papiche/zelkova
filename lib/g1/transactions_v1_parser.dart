@@ -4,7 +4,6 @@ import '../data/models/contact.dart';
 import '../data/models/transaction.dart';
 import '../data/models/transaction_state.dart';
 import '../data/models/transaction_type.dart';
-import '../ui/contacts_cache.dart';
 import '../ui/logger.dart';
 import 'g1_helper.dart';
 
@@ -44,17 +43,15 @@ Future<TransactionState> transactionsParser(
       logger('Timestamp: $timestamp');
       logger('Fecha: $txDate');
     } */
-    final Contact fromC =
-        getContactCache(simpleContact: Contact(pubKey: address2!));
-    final Contact toC =
-        getContactCache(simpleContact: Contact(pubKey: address1!));
+    final Contact fromC = Contact(pubKey: address2!);
+    final Contact toC = Contact(pubKey: address1!);
 
     tx.insert(
         0,
         Transaction(
             type: type,
             from: fromC,
-            to: toC,
+            recipients: <Contact>[toC],
             amount: pubKey == address2 ? -amount : amount,
             comment: comment,
             time: txDate));
@@ -146,15 +143,13 @@ Future<Transaction> _txGvaParse(
   final List<Contact> recipients = <Contact>[];
   final List<double> recipientsAmounts = <double>[];
   double amount = 0.0;
-  Contact? toC;
   final bool isSent =
       type == TransactionType.sent || type == TransactionType.sending;
   for (final dynamic output in outputs) {
     // Extract the recipient from each output
     final String outputS = output as String;
     final String? recipient = exp.firstMatch(outputS)!.group(1);
-    final Contact recipientContact =
-        getContactCache(simpleContact: Contact(pubKey: recipient!));
+    final Contact recipientContact = Contact(pubKey: recipient!);
     recipients.add(recipientContact);
 
     final double outputAmount = double.parse(outputS.split(':')[0]);
@@ -167,14 +162,8 @@ Future<Transaction> _txGvaParse(
     } else {
       if (recipient == myPubKey) {
         amount = outputAmount;
-        toC = recipientContact;
       }
     }
-  }
-
-  if (isSent) {
-    // this only works in the case of a single recipient
-    toC = recipients.first;
   }
 
   // Time
@@ -189,12 +178,11 @@ Future<Transaction> _txGvaParse(
   }
   // Comment
   final String comment = tx['comment'] as String;
-  final Contact fromC = getContactCache(simpleContact: Contact(pubKey: from));
+  final Contact fromC = Contact(pubKey: from);
 
   return Transaction(
     type: type,
     from: fromC,
-    to: toC!,
     recipients: recipients,
     recipientsAmounts: recipientsAmounts,
     amount: amount,

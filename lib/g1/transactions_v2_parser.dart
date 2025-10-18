@@ -4,7 +4,6 @@ import '../data/models/contact.dart';
 import '../data/models/transaction.dart';
 import '../data/models/transaction_state.dart';
 import '../data/models/transaction_type.dart';
-import '../ui/contacts_cache.dart';
 import '../ui/logger.dart';
 import 'duniter_endpoint_helper.dart';
 import 'g1_v2_helper.dart';
@@ -109,10 +108,8 @@ Future<List<Transaction>> _parseTransactions(
               ? decodeHexToText(commentRaw['remarkBytes'] as String)
               : null;
 
-      final Contact fromContact =
-          getContactCache(simpleContact: Contact.withAddress(address: from));
-      final Contact toContact =
-          getContactCache(simpleContact: Contact.withAddress(address: to));
+      final Contact fromContact = Contact.withAddress(address: from);
+      final Contact toContact = Contact.withAddress(address: to);
 
       if (type == TransactionType.sent) {
         amount = -amount;
@@ -121,7 +118,7 @@ Future<List<Transaction>> _parseTransactions(
       final Transaction transaction = Transaction(
         type: type,
         from: fromContact,
-        to: toContact,
+        recipients: <Contact>[toContact],
         amount: amount,
         comment: comment ?? '',
         time: time,

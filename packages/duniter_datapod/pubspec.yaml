@@ -3,6 +3,8 @@ description: "A new Flutter package project."
 version: 0.0.1
 homepage:
 
+publish_to: 'none'
+
 environment:
   sdk: ^3.5.3
   flutter: ">=1.17.0"
@@ -10,7 +12,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  ferry: ^0.16.0+1
+  ferry: ^0.16.1+2
   built_value: ^8.9.2
   gql_http_link: ^1.1.0
 
@@ -20,7 +22,7 @@ dev_dependencies:
   flutter_lints: ^4.0.0
   # built_value: ^8.0.0
   build_runner: ^2.4.12
-  ferry_generator: ^0.12.0
+  ferry_generator: ^0.12.0+2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

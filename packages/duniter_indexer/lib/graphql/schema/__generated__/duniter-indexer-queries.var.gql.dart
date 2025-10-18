@@ -189,8 +189,6 @@ abstract class GAccountsBasicByPkVars
       _$GAccountsBasicByPkVars;
 
   BuiltList<String> get accountIds;
-  int? get limit;
-  int? get offset;
   static Serializer<GAccountsBasicByPkVars> get serializer =>
       _$gAccountsBasicByPkVarsSerializer;
 
@@ -425,7 +423,7 @@ abstract class GAccountFieldsVars
           [void Function(GAccountFieldsVarsBuilder b) updates]) =
       _$GAccountFieldsVars;
 
-  int? get limit;
+  int? get first;
   int? get offset;
   static Serializer<GAccountFieldsVars> get serializer =>
       _$gAccountFieldsVarsSerializer;
@@ -450,7 +448,7 @@ abstract class GAccountTxsFieldsVars
           [void Function(GAccountTxsFieldsVarsBuilder b) updates]) =
       _$GAccountTxsFieldsVars;
 
-  int? get limit;
+  int? get first;
   int? get offset;
   static Serializer<GAccountTxsFieldsVars> get serializer =>
       _$gAccountTxsFieldsVarsSerializer;

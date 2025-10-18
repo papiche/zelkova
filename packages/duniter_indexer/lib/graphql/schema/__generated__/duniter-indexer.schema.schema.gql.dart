@@ -4,7 +4,6 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
-import 'package:built_value/json_object.dart' as _i3;
 import 'package:built_value/serializer.dart';
 import 'package:duniter_indexer/graphql/schema/__generated__/serializers.gql.dart'
     as _i1;
@@ -13,8819 +12,3111 @@ import 'package:gql_code_builder_serializers/gql_code_builder_serializers.dart'
 
 part 'duniter-indexer.schema.schema.gql.g.dart';
 
-abstract class GAccountAggregateBoolExp
-    implements
-        Built<GAccountAggregateBoolExp, GAccountAggregateBoolExpBuilder> {
-  GAccountAggregateBoolExp._();
-
-  factory GAccountAggregateBoolExp(
-          [void Function(GAccountAggregateBoolExpBuilder b) updates]) =
-      _$GAccountAggregateBoolExp;
-
-  GaccountAggregateBoolExpBool_and? get bool_and;
-  GaccountAggregateBoolExpBool_or? get bool_or;
-  GaccountAggregateBoolExpCount? get count;
-  static Serializer<GAccountAggregateBoolExp> get serializer =>
-      _$gAccountAggregateBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountAggregateBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountAggregateBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountAggregateBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GaccountAggregateBoolExpBool_and
-    implements
-        Built<GaccountAggregateBoolExpBool_and,
-            GaccountAggregateBoolExpBool_andBuilder> {
-  GaccountAggregateBoolExpBool_and._();
-
-  factory GaccountAggregateBoolExpBool_and(
-          [void Function(GaccountAggregateBoolExpBool_andBuilder b) updates]) =
-      _$GaccountAggregateBoolExpBool_and;
-
-  GAccountSelectColumnAccountAggregateBoolExpBool_andArgumentsColumns
-      get arguments;
-  bool? get distinct;
-  GAccountBoolExp? get filter;
-  GBooleanComparisonExp get predicate;
-  static Serializer<GaccountAggregateBoolExpBool_and> get serializer =>
-      _$gaccountAggregateBoolExpBoolAndSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GaccountAggregateBoolExpBool_and.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GaccountAggregateBoolExpBool_and? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GaccountAggregateBoolExpBool_and.serializer,
-        json,
-      );
-}
-
-abstract class GaccountAggregateBoolExpBool_or
-    implements
-        Built<GaccountAggregateBoolExpBool_or,
-            GaccountAggregateBoolExpBool_orBuilder> {
-  GaccountAggregateBoolExpBool_or._();
-
-  factory GaccountAggregateBoolExpBool_or(
-          [void Function(GaccountAggregateBoolExpBool_orBuilder b) updates]) =
-      _$GaccountAggregateBoolExpBool_or;
-
-  GAccountSelectColumnAccountAggregateBoolExpBool_orArgumentsColumns
-      get arguments;
-  bool? get distinct;
-  GAccountBoolExp? get filter;
-  GBooleanComparisonExp get predicate;
-  static Serializer<GaccountAggregateBoolExpBool_or> get serializer =>
-      _$gaccountAggregateBoolExpBoolOrSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GaccountAggregateBoolExpBool_or.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GaccountAggregateBoolExpBool_or? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GaccountAggregateBoolExpBool_or.serializer,
-        json,
-      );
-}
-
-abstract class GaccountAggregateBoolExpCount
-    implements
-        Built<GaccountAggregateBoolExpCount,
-            GaccountAggregateBoolExpCountBuilder> {
-  GaccountAggregateBoolExpCount._();
-
-  factory GaccountAggregateBoolExpCount(
-          [void Function(GaccountAggregateBoolExpCountBuilder b) updates]) =
-      _$GaccountAggregateBoolExpCount;
-
-  BuiltList<GAccountSelectColumn>? get arguments;
-  bool? get distinct;
-  GAccountBoolExp? get filter;
-  GIntComparisonExp get predicate;
-  static Serializer<GaccountAggregateBoolExpCount> get serializer =>
-      _$gaccountAggregateBoolExpCountSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GaccountAggregateBoolExpCount.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GaccountAggregateBoolExpCount? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GaccountAggregateBoolExpCount.serializer,
-        json,
-      );
-}
-
-abstract class GAccountAggregateOrderBy
-    implements
-        Built<GAccountAggregateOrderBy, GAccountAggregateOrderByBuilder> {
-  GAccountAggregateOrderBy._();
-
-  factory GAccountAggregateOrderBy(
-          [void Function(GAccountAggregateOrderByBuilder b) updates]) =
-      _$GAccountAggregateOrderBy;
-
-  GAccountAvgOrderBy? get avg;
-  GOrderBy? get count;
-  GAccountMaxOrderBy? get max;
-  GAccountMinOrderBy? get min;
-  GAccountStddevOrderBy? get stddev;
-  GAccountStddevPopOrderBy? get stddevPop;
-  GAccountStddevSampOrderBy? get stddevSamp;
-  GAccountSumOrderBy? get sum;
-  GAccountVarPopOrderBy? get varPop;
-  GAccountVarSampOrderBy? get varSamp;
-  GAccountVarianceOrderBy? get variance;
-  static Serializer<GAccountAggregateOrderBy> get serializer =>
-      _$gAccountAggregateOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountAggregateOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountAggregateOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountAggregateOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GAccountAvgOrderBy
-    implements Built<GAccountAvgOrderBy, GAccountAvgOrderByBuilder> {
-  GAccountAvgOrderBy._();
-
-  factory GAccountAvgOrderBy(
-          [void Function(GAccountAvgOrderByBuilder b) updates]) =
-      _$GAccountAvgOrderBy;
-
-  GOrderBy? get balance;
-  GOrderBy? get createdOn;
-  static Serializer<GAccountAvgOrderBy> get serializer =>
-      _$gAccountAvgOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountAvgOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountAvgOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountAvgOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GAccountBoolExp
-    implements Built<GAccountBoolExp, GAccountBoolExpBuilder> {
-  GAccountBoolExp._();
-
-  factory GAccountBoolExp([void Function(GAccountBoolExpBuilder b) updates]) =
-      _$GAccountBoolExp;
-
-  @BuiltValueField(wireName: '_and')
-  BuiltList<GAccountBoolExp>? get G_and;
-  @BuiltValueField(wireName: '_not')
-  GAccountBoolExp? get G_not;
-  @BuiltValueField(wireName: '_or')
-  BuiltList<GAccountBoolExp>? get G_or;
-  GNumericComparisonExp? get balance;
-  GTxCommentBoolExp? get commentsIssued;
-  GTxCommentAggregateBoolExp? get commentsIssuedAggregate;
-  GIntComparisonExp? get createdOn;
-  GStringComparisonExp? get id;
-  GIdentityBoolExp? get identity;
-  GBooleanComparisonExp? get isActive;
-  GIdentityBoolExp? get linkedIdentity;
-  GStringComparisonExp? get linkedIdentityId;
-  GIdentityBoolExp? get removedIdentities;
-  GIdentityAggregateBoolExp? get removedIdentitiesAggregate;
-  GTransferBoolExp? get transfersIssued;
-  GTransferAggregateBoolExp? get transfersIssuedAggregate;
-  GTransferBoolExp? get transfersReceived;
-  GTransferAggregateBoolExp? get transfersReceivedAggregate;
-  GChangeOwnerKeyBoolExp? get wasIdentity;
-  GChangeOwnerKeyAggregateBoolExp? get wasIdentityAggregate;
-  static Serializer<GAccountBoolExp> get serializer =>
-      _$gAccountBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GAccountMaxOrderBy
-    implements Built<GAccountMaxOrderBy, GAccountMaxOrderByBuilder> {
-  GAccountMaxOrderBy._();
-
-  factory GAccountMaxOrderBy(
-          [void Function(GAccountMaxOrderByBuilder b) updates]) =
-      _$GAccountMaxOrderBy;
-
-  GOrderBy? get balance;
-  GOrderBy? get createdOn;
-  GOrderBy? get id;
-  GOrderBy? get linkedIdentityId;
-  static Serializer<GAccountMaxOrderBy> get serializer =>
-      _$gAccountMaxOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountMaxOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountMaxOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountMaxOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GAccountMinOrderBy
-    implements Built<GAccountMinOrderBy, GAccountMinOrderByBuilder> {
-  GAccountMinOrderBy._();
-
-  factory GAccountMinOrderBy(
-          [void Function(GAccountMinOrderByBuilder b) updates]) =
-      _$GAccountMinOrderBy;
-
-  GOrderBy? get balance;
-  GOrderBy? get createdOn;
-  GOrderBy? get id;
-  GOrderBy? get linkedIdentityId;
-  static Serializer<GAccountMinOrderBy> get serializer =>
-      _$gAccountMinOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountMinOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountMinOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountMinOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GAccountOrderBy
-    implements Built<GAccountOrderBy, GAccountOrderByBuilder> {
-  GAccountOrderBy._();
-
-  factory GAccountOrderBy([void Function(GAccountOrderByBuilder b) updates]) =
-      _$GAccountOrderBy;
-
-  GOrderBy? get balance;
-  GTxCommentAggregateOrderBy? get commentsIssuedAggregate;
-  GOrderBy? get createdOn;
-  GOrderBy? get id;
-  GIdentityOrderBy? get identity;
-  GOrderBy? get isActive;
-  GIdentityOrderBy? get linkedIdentity;
-  GOrderBy? get linkedIdentityId;
-  GIdentityAggregateOrderBy? get removedIdentitiesAggregate;
-  GTransferAggregateOrderBy? get transfersIssuedAggregate;
-  GTransferAggregateOrderBy? get transfersReceivedAggregate;
-  GChangeOwnerKeyAggregateOrderBy? get wasIdentityAggregate;
-  static Serializer<GAccountOrderBy> get serializer =>
-      _$gAccountOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountOrderBy.serializer,
-        json,
-      );
-}
-
-class GAccountSelectColumn extends EnumClass {
-  const GAccountSelectColumn._(String name) : super(name);
-
-  static const GAccountSelectColumn balance = _$gAccountSelectColumnbalance;
-
-  static const GAccountSelectColumn createdOn = _$gAccountSelectColumncreatedOn;
-
-  static const GAccountSelectColumn id = _$gAccountSelectColumnid;
-
-  static const GAccountSelectColumn isActive = _$gAccountSelectColumnisActive;
-
-  static const GAccountSelectColumn linkedIdentityId =
-      _$gAccountSelectColumnlinkedIdentityId;
-
-  static Serializer<GAccountSelectColumn> get serializer =>
-      _$gAccountSelectColumnSerializer;
-
-  static BuiltSet<GAccountSelectColumn> get values =>
-      _$gAccountSelectColumnValues;
-
-  static GAccountSelectColumn valueOf(String name) =>
-      _$gAccountSelectColumnValueOf(name);
-}
-
-class GAccountSelectColumnAccountAggregateBoolExpBool_andArgumentsColumns
-    extends EnumClass {
-  const GAccountSelectColumnAccountAggregateBoolExpBool_andArgumentsColumns._(
-      String name)
-      : super(name);
-
-  static const GAccountSelectColumnAccountAggregateBoolExpBool_andArgumentsColumns
-      isActive =
-      _$gAccountSelectColumnAccountAggregateBoolExpBoolAndArgumentsColumnsisActive;
-
-  static Serializer<
-          GAccountSelectColumnAccountAggregateBoolExpBool_andArgumentsColumns>
-      get serializer =>
-          _$gAccountSelectColumnAccountAggregateBoolExpBoolAndArgumentsColumnsSerializer;
-
-  static BuiltSet<
-          GAccountSelectColumnAccountAggregateBoolExpBool_andArgumentsColumns>
-      get values =>
-          _$gAccountSelectColumnAccountAggregateBoolExpBoolAndArgumentsColumnsValues;
-
-  static GAccountSelectColumnAccountAggregateBoolExpBool_andArgumentsColumns
-      valueOf(String name) =>
-          _$gAccountSelectColumnAccountAggregateBoolExpBoolAndArgumentsColumnsValueOf(
-              name);
-}
-
-class GAccountSelectColumnAccountAggregateBoolExpBool_orArgumentsColumns
-    extends EnumClass {
-  const GAccountSelectColumnAccountAggregateBoolExpBool_orArgumentsColumns._(
-      String name)
-      : super(name);
-
-  static const GAccountSelectColumnAccountAggregateBoolExpBool_orArgumentsColumns
-      isActive =
-      _$gAccountSelectColumnAccountAggregateBoolExpBoolOrArgumentsColumnsisActive;
-
-  static Serializer<
-          GAccountSelectColumnAccountAggregateBoolExpBool_orArgumentsColumns>
-      get serializer =>
-          _$gAccountSelectColumnAccountAggregateBoolExpBoolOrArgumentsColumnsSerializer;
-
-  static BuiltSet<
-          GAccountSelectColumnAccountAggregateBoolExpBool_orArgumentsColumns>
-      get values =>
-          _$gAccountSelectColumnAccountAggregateBoolExpBoolOrArgumentsColumnsValues;
-
-  static GAccountSelectColumnAccountAggregateBoolExpBool_orArgumentsColumns valueOf(
-          String name) =>
-      _$gAccountSelectColumnAccountAggregateBoolExpBoolOrArgumentsColumnsValueOf(
-          name);
-}
-
-abstract class GAccountStddevOrderBy
-    implements Built<GAccountStddevOrderBy, GAccountStddevOrderByBuilder> {
-  GAccountStddevOrderBy._();
-
-  factory GAccountStddevOrderBy(
-          [void Function(GAccountStddevOrderByBuilder b) updates]) =
-      _$GAccountStddevOrderBy;
-
-  GOrderBy? get balance;
-  GOrderBy? get createdOn;
-  static Serializer<GAccountStddevOrderBy> get serializer =>
-      _$gAccountStddevOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountStddevOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountStddevOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountStddevOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GAccountStddevPopOrderBy
-    implements
-        Built<GAccountStddevPopOrderBy, GAccountStddevPopOrderByBuilder> {
-  GAccountStddevPopOrderBy._();
-
-  factory GAccountStddevPopOrderBy(
-          [void Function(GAccountStddevPopOrderByBuilder b) updates]) =
-      _$GAccountStddevPopOrderBy;
-
-  GOrderBy? get balance;
-  GOrderBy? get createdOn;
-  static Serializer<GAccountStddevPopOrderBy> get serializer =>
-      _$gAccountStddevPopOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountStddevPopOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountStddevPopOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountStddevPopOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GAccountStddevSampOrderBy
-    implements
-        Built<GAccountStddevSampOrderBy, GAccountStddevSampOrderByBuilder> {
-  GAccountStddevSampOrderBy._();
-
-  factory GAccountStddevSampOrderBy(
-          [void Function(GAccountStddevSampOrderByBuilder b) updates]) =
-      _$GAccountStddevSampOrderBy;
-
-  GOrderBy? get balance;
-  GOrderBy? get createdOn;
-  static Serializer<GAccountStddevSampOrderBy> get serializer =>
-      _$gAccountStddevSampOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountStddevSampOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountStddevSampOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountStddevSampOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GAccountStreamCursorInput
-    implements
-        Built<GAccountStreamCursorInput, GAccountStreamCursorInputBuilder> {
-  GAccountStreamCursorInput._();
-
-  factory GAccountStreamCursorInput(
-          [void Function(GAccountStreamCursorInputBuilder b) updates]) =
-      _$GAccountStreamCursorInput;
-
-  GAccountStreamCursorValueInput get initialValue;
-  GCursorOrdering? get ordering;
-  static Serializer<GAccountStreamCursorInput> get serializer =>
-      _$gAccountStreamCursorInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountStreamCursorInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountStreamCursorInput? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountStreamCursorInput.serializer,
-        json,
-      );
-}
-
-abstract class GAccountStreamCursorValueInput
-    implements
-        Built<GAccountStreamCursorValueInput,
-            GAccountStreamCursorValueInputBuilder> {
-  GAccountStreamCursorValueInput._();
-
-  factory GAccountStreamCursorValueInput(
-          [void Function(GAccountStreamCursorValueInputBuilder b) updates]) =
-      _$GAccountStreamCursorValueInput;
-
-  int? get balance;
+abstract class GAccountCondition
+    implements Built<GAccountCondition, GAccountConditionBuilder> {
+  GAccountCondition._();
+
+  factory GAccountCondition(
+          [void Function(GAccountConditionBuilder b) updates]) =
+      _$GAccountCondition;
+
+  String? get id;
   int? get createdOn;
-  String? get id;
   bool? get isActive;
+  GBigFloat? get balance;
   String? get linkedIdentityId;
-  static Serializer<GAccountStreamCursorValueInput> get serializer =>
-      _$gAccountStreamCursorValueInputSerializer;
+  static Serializer<GAccountCondition> get serializer =>
+      _$gAccountConditionSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountStreamCursorValueInput.serializer,
+        GAccountCondition.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountStreamCursorValueInput? fromJson(Map<String, dynamic> json) =>
+  static GAccountCondition? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountStreamCursorValueInput.serializer,
+        GAccountCondition.serializer,
         json,
       );
 }
 
-abstract class GAccountSumOrderBy
-    implements Built<GAccountSumOrderBy, GAccountSumOrderByBuilder> {
-  GAccountSumOrderBy._();
+abstract class GAccountFilter
+    implements Built<GAccountFilter, GAccountFilterBuilder> {
+  GAccountFilter._();
 
-  factory GAccountSumOrderBy(
-          [void Function(GAccountSumOrderByBuilder b) updates]) =
-      _$GAccountSumOrderBy;
+  factory GAccountFilter([void Function(GAccountFilterBuilder b) updates]) =
+      _$GAccountFilter;
 
-  GOrderBy? get balance;
-  GOrderBy? get createdOn;
-  static Serializer<GAccountSumOrderBy> get serializer =>
-      _$gAccountSumOrderBySerializer;
+  GStringFilter? get id;
+  GIntFilter? get createdOn;
+  GBooleanFilter? get isActive;
+  GBigFloatFilter? get balance;
+  GStringFilter? get linkedIdentityId;
+  GBigFloatFilter? get totalBalance;
+  BuiltList<GAccountFilter>? get and;
+  BuiltList<GAccountFilter>? get or;
+  GAccountFilter? get not;
+  static Serializer<GAccountFilter> get serializer =>
+      _$gAccountFilterSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountSumOrderBy.serializer,
+        GAccountFilter.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountSumOrderBy? fromJson(Map<String, dynamic> json) =>
+  static GAccountFilter? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountSumOrderBy.serializer,
+        GAccountFilter.serializer,
         json,
       );
 }
 
-abstract class GAccountVarianceOrderBy
-    implements Built<GAccountVarianceOrderBy, GAccountVarianceOrderByBuilder> {
-  GAccountVarianceOrderBy._();
+class GAccountsOrderBy extends EnumClass {
+  const GAccountsOrderBy._(String name) : super(name);
 
-  factory GAccountVarianceOrderBy(
-          [void Function(GAccountVarianceOrderByBuilder b) updates]) =
-      _$GAccountVarianceOrderBy;
+  static const GAccountsOrderBy NATURAL = _$gAccountsOrderByNATURAL;
 
-  GOrderBy? get balance;
-  GOrderBy? get createdOn;
-  static Serializer<GAccountVarianceOrderBy> get serializer =>
-      _$gAccountVarianceOrderBySerializer;
+  static const GAccountsOrderBy ID_ASC = _$gAccountsOrderByID_ASC;
 
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountVarianceOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
+  static const GAccountsOrderBy ID_DESC = _$gAccountsOrderByID_DESC;
 
-  static GAccountVarianceOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountVarianceOrderBy.serializer,
-        json,
-      );
+  static const GAccountsOrderBy CREATED_ON_ASC =
+      _$gAccountsOrderByCREATED_ON_ASC;
+
+  static const GAccountsOrderBy CREATED_ON_DESC =
+      _$gAccountsOrderByCREATED_ON_DESC;
+
+  static const GAccountsOrderBy IS_ACTIVE_ASC = _$gAccountsOrderByIS_ACTIVE_ASC;
+
+  static const GAccountsOrderBy IS_ACTIVE_DESC =
+      _$gAccountsOrderByIS_ACTIVE_DESC;
+
+  static const GAccountsOrderBy BALANCE_ASC = _$gAccountsOrderByBALANCE_ASC;
+
+  static const GAccountsOrderBy BALANCE_DESC = _$gAccountsOrderByBALANCE_DESC;
+
+  static const GAccountsOrderBy LINKED_IDENTITY_ID_ASC =
+      _$gAccountsOrderByLINKED_IDENTITY_ID_ASC;
+
+  static const GAccountsOrderBy LINKED_IDENTITY_ID_DESC =
+      _$gAccountsOrderByLINKED_IDENTITY_ID_DESC;
+
+  static const GAccountsOrderBy PRIMARY_KEY_ASC =
+      _$gAccountsOrderByPRIMARY_KEY_ASC;
+
+  static const GAccountsOrderBy PRIMARY_KEY_DESC =
+      _$gAccountsOrderByPRIMARY_KEY_DESC;
+
+  static Serializer<GAccountsOrderBy> get serializer =>
+      _$gAccountsOrderBySerializer;
+
+  static BuiltSet<GAccountsOrderBy> get values => _$gAccountsOrderByValues;
+
+  static GAccountsOrderBy valueOf(String name) =>
+      _$gAccountsOrderByValueOf(name);
 }
 
-abstract class GAccountVarPopOrderBy
-    implements Built<GAccountVarPopOrderBy, GAccountVarPopOrderByBuilder> {
-  GAccountVarPopOrderBy._();
+abstract class GBigFloat implements Built<GBigFloat, GBigFloatBuilder> {
+  GBigFloat._();
 
-  factory GAccountVarPopOrderBy(
-          [void Function(GAccountVarPopOrderByBuilder b) updates]) =
-      _$GAccountVarPopOrderBy;
-
-  GOrderBy? get balance;
-  GOrderBy? get createdOn;
-  static Serializer<GAccountVarPopOrderBy> get serializer =>
-      _$gAccountVarPopOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountVarPopOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountVarPopOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountVarPopOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GAccountVarSampOrderBy
-    implements Built<GAccountVarSampOrderBy, GAccountVarSampOrderByBuilder> {
-  GAccountVarSampOrderBy._();
-
-  factory GAccountVarSampOrderBy(
-          [void Function(GAccountVarSampOrderByBuilder b) updates]) =
-      _$GAccountVarSampOrderBy;
-
-  GOrderBy? get balance;
-  GOrderBy? get createdOn;
-  static Serializer<GAccountVarSampOrderBy> get serializer =>
-      _$gAccountVarSampOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountVarSampOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountVarSampOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountVarSampOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GBlockBoolExp
-    implements Built<GBlockBoolExp, GBlockBoolExpBuilder> {
-  GBlockBoolExp._();
-
-  factory GBlockBoolExp([void Function(GBlockBoolExpBuilder b) updates]) =
-      _$GBlockBoolExp;
-
-  @BuiltValueField(wireName: '_and')
-  BuiltList<GBlockBoolExp>? get G_and;
-  @BuiltValueField(wireName: '_not')
-  GBlockBoolExp? get G_not;
-  @BuiltValueField(wireName: '_or')
-  BuiltList<GBlockBoolExp>? get G_or;
-  GCallBoolExp? get calls;
-  GCallAggregateBoolExp? get callsAggregate;
-  GIntComparisonExp? get callsCount;
-  GEventBoolExp? get events;
-  GEventAggregateBoolExp? get eventsAggregate;
-  GIntComparisonExp? get eventsCount;
-  GExtrinsicBoolExp? get extrinsics;
-  GExtrinsicAggregateBoolExp? get extrinsicsAggregate;
-  GIntComparisonExp? get extrinsicsCount;
-  GByteaComparisonExp? get extrinsicsicRoot;
-  GByteaComparisonExp? get hash;
-  GIntComparisonExp? get height;
-  GStringComparisonExp? get id;
-  GStringComparisonExp? get implName;
-  GIntComparisonExp? get implVersion;
-  GByteaComparisonExp? get parentHash;
-  GStringComparisonExp? get specName;
-  GIntComparisonExp? get specVersion;
-  GByteaComparisonExp? get stateRoot;
-  GTimestamptzComparisonExp? get timestamp;
-  GByteaComparisonExp? get validator;
-  static Serializer<GBlockBoolExp> get serializer => _$gBlockBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GBlockBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GBlockBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GBlockBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GBlockOrderBy
-    implements Built<GBlockOrderBy, GBlockOrderByBuilder> {
-  GBlockOrderBy._();
-
-  factory GBlockOrderBy([void Function(GBlockOrderByBuilder b) updates]) =
-      _$GBlockOrderBy;
-
-  GCallAggregateOrderBy? get callsAggregate;
-  GOrderBy? get callsCount;
-  GEventAggregateOrderBy? get eventsAggregate;
-  GOrderBy? get eventsCount;
-  GExtrinsicAggregateOrderBy? get extrinsicsAggregate;
-  GOrderBy? get extrinsicsCount;
-  GOrderBy? get extrinsicsicRoot;
-  GOrderBy? get hash;
-  GOrderBy? get height;
-  GOrderBy? get id;
-  GOrderBy? get implName;
-  GOrderBy? get implVersion;
-  GOrderBy? get parentHash;
-  GOrderBy? get specName;
-  GOrderBy? get specVersion;
-  GOrderBy? get stateRoot;
-  GOrderBy? get timestamp;
-  GOrderBy? get validator;
-  static Serializer<GBlockOrderBy> get serializer => _$gBlockOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GBlockOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GBlockOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GBlockOrderBy.serializer,
-        json,
-      );
-}
-
-class GBlockSelectColumn extends EnumClass {
-  const GBlockSelectColumn._(String name) : super(name);
-
-  static const GBlockSelectColumn callsCount = _$gBlockSelectColumncallsCount;
-
-  static const GBlockSelectColumn eventsCount = _$gBlockSelectColumneventsCount;
-
-  static const GBlockSelectColumn extrinsicsCount =
-      _$gBlockSelectColumnextrinsicsCount;
-
-  static const GBlockSelectColumn extrinsicsicRoot =
-      _$gBlockSelectColumnextrinsicsicRoot;
-
-  static const GBlockSelectColumn hash = _$gBlockSelectColumnhash;
-
-  static const GBlockSelectColumn height = _$gBlockSelectColumnheight;
-
-  static const GBlockSelectColumn id = _$gBlockSelectColumnid;
-
-  static const GBlockSelectColumn implName = _$gBlockSelectColumnimplName;
-
-  static const GBlockSelectColumn implVersion = _$gBlockSelectColumnimplVersion;
-
-  static const GBlockSelectColumn parentHash = _$gBlockSelectColumnparentHash;
-
-  static const GBlockSelectColumn specName = _$gBlockSelectColumnspecName;
-
-  static const GBlockSelectColumn specVersion = _$gBlockSelectColumnspecVersion;
-
-  static const GBlockSelectColumn stateRoot = _$gBlockSelectColumnstateRoot;
-
-  static const GBlockSelectColumn timestamp = _$gBlockSelectColumntimestamp;
-
-  static const GBlockSelectColumn validator = _$gBlockSelectColumnvalidator;
-
-  static Serializer<GBlockSelectColumn> get serializer =>
-      _$gBlockSelectColumnSerializer;
-
-  static BuiltSet<GBlockSelectColumn> get values => _$gBlockSelectColumnValues;
-
-  static GBlockSelectColumn valueOf(String name) =>
-      _$gBlockSelectColumnValueOf(name);
-}
-
-abstract class GBlockStreamCursorInput
-    implements Built<GBlockStreamCursorInput, GBlockStreamCursorInputBuilder> {
-  GBlockStreamCursorInput._();
-
-  factory GBlockStreamCursorInput(
-          [void Function(GBlockStreamCursorInputBuilder b) updates]) =
-      _$GBlockStreamCursorInput;
-
-  GBlockStreamCursorValueInput get initialValue;
-  GCursorOrdering? get ordering;
-  static Serializer<GBlockStreamCursorInput> get serializer =>
-      _$gBlockStreamCursorInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GBlockStreamCursorInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GBlockStreamCursorInput? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GBlockStreamCursorInput.serializer,
-        json,
-      );
-}
-
-abstract class GBlockStreamCursorValueInput
-    implements
-        Built<GBlockStreamCursorValueInput,
-            GBlockStreamCursorValueInputBuilder> {
-  GBlockStreamCursorValueInput._();
-
-  factory GBlockStreamCursorValueInput(
-          [void Function(GBlockStreamCursorValueInputBuilder b) updates]) =
-      _$GBlockStreamCursorValueInput;
-
-  int? get callsCount;
-  int? get eventsCount;
-  int? get extrinsicsCount;
-  Gbytea? get extrinsicsicRoot;
-  Gbytea? get hash;
-  int? get height;
-  String? get id;
-  String? get implName;
-  int? get implVersion;
-  Gbytea? get parentHash;
-  String? get specName;
-  int? get specVersion;
-  Gbytea? get stateRoot;
-  Gtimestamptz? get timestamp;
-  Gbytea? get validator;
-  static Serializer<GBlockStreamCursorValueInput> get serializer =>
-      _$gBlockStreamCursorValueInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GBlockStreamCursorValueInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GBlockStreamCursorValueInput? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GBlockStreamCursorValueInput.serializer,
-        json,
-      );
-}
-
-abstract class GBooleanComparisonExp
-    implements Built<GBooleanComparisonExp, GBooleanComparisonExpBuilder> {
-  GBooleanComparisonExp._();
-
-  factory GBooleanComparisonExp(
-          [void Function(GBooleanComparisonExpBuilder b) updates]) =
-      _$GBooleanComparisonExp;
-
-  @BuiltValueField(wireName: '_eq')
-  bool? get G_eq;
-  @BuiltValueField(wireName: '_gt')
-  bool? get G_gt;
-  @BuiltValueField(wireName: '_gte')
-  bool? get G_gte;
-  @BuiltValueField(wireName: '_in')
-  BuiltList<bool>? get G_in;
-  @BuiltValueField(wireName: '_isNull')
-  bool? get G_isNull;
-  @BuiltValueField(wireName: '_lt')
-  bool? get G_lt;
-  @BuiltValueField(wireName: '_lte')
-  bool? get G_lte;
-  @BuiltValueField(wireName: '_neq')
-  bool? get G_neq;
-  @BuiltValueField(wireName: '_nin')
-  BuiltList<bool>? get G_nin;
-  static Serializer<GBooleanComparisonExp> get serializer =>
-      _$gBooleanComparisonExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GBooleanComparisonExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GBooleanComparisonExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GBooleanComparisonExp.serializer,
-        json,
-      );
-}
-
-abstract class Gbytea implements Built<Gbytea, GbyteaBuilder> {
-  Gbytea._();
-
-  factory Gbytea([String? value]) =>
-      _$Gbytea((b) => value != null ? (b..value = value) : b);
+  factory GBigFloat([String? value]) =>
+      _$GBigFloat((b) => value != null ? (b..value = value) : b);
 
   String get value;
   @BuiltValueSerializer(custom: true)
-  static Serializer<Gbytea> get serializer =>
-      _i2.DefaultScalarSerializer<Gbytea>(
-          (Object serialized) => Gbytea((serialized as String?)));
+  static Serializer<GBigFloat> get serializer =>
+      _i2.DefaultScalarSerializer<GBigFloat>(
+          (Object serialized) => GBigFloat((serialized as String?)));
 }
 
-abstract class GByteaComparisonExp
-    implements Built<GByteaComparisonExp, GByteaComparisonExpBuilder> {
-  GByteaComparisonExp._();
+abstract class GBigFloatFilter
+    implements Built<GBigFloatFilter, GBigFloatFilterBuilder> {
+  GBigFloatFilter._();
 
-  factory GByteaComparisonExp(
-          [void Function(GByteaComparisonExpBuilder b) updates]) =
-      _$GByteaComparisonExp;
+  factory GBigFloatFilter([void Function(GBigFloatFilterBuilder b) updates]) =
+      _$GBigFloatFilter;
 
-  @BuiltValueField(wireName: '_eq')
-  Gbytea? get G_eq;
-  @BuiltValueField(wireName: '_gt')
-  Gbytea? get G_gt;
-  @BuiltValueField(wireName: '_gte')
-  Gbytea? get G_gte;
-  @BuiltValueField(wireName: '_in')
-  BuiltList<Gbytea>? get G_in;
-  @BuiltValueField(wireName: '_isNull')
-  bool? get G_isNull;
-  @BuiltValueField(wireName: '_lt')
-  Gbytea? get G_lt;
-  @BuiltValueField(wireName: '_lte')
-  Gbytea? get G_lte;
-  @BuiltValueField(wireName: '_neq')
-  Gbytea? get G_neq;
-  @BuiltValueField(wireName: '_nin')
-  BuiltList<Gbytea>? get G_nin;
-  static Serializer<GByteaComparisonExp> get serializer =>
-      _$gByteaComparisonExpSerializer;
+  bool? get isNull;
+  GBigFloat? get equalTo;
+  GBigFloat? get notEqualTo;
+  GBigFloat? get distinctFrom;
+  GBigFloat? get notDistinctFrom;
+  @BuiltValueField(wireName: 'in')
+  BuiltList<GBigFloat>? get Gin;
+  BuiltList<GBigFloat>? get notIn;
+  GBigFloat? get lessThan;
+  GBigFloat? get lessThanOrEqualTo;
+  GBigFloat? get greaterThan;
+  GBigFloat? get greaterThanOrEqualTo;
+  static Serializer<GBigFloatFilter> get serializer =>
+      _$gBigFloatFilterSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GByteaComparisonExp.serializer,
+        GBigFloatFilter.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GByteaComparisonExp? fromJson(Map<String, dynamic> json) =>
+  static GBigFloatFilter? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GByteaComparisonExp.serializer,
+        GBigFloatFilter.serializer,
         json,
       );
 }
 
-abstract class GCallAggregateBoolExp
-    implements Built<GCallAggregateBoolExp, GCallAggregateBoolExpBuilder> {
-  GCallAggregateBoolExp._();
+abstract class GBigInt implements Built<GBigInt, GBigIntBuilder> {
+  GBigInt._();
 
-  factory GCallAggregateBoolExp(
-          [void Function(GCallAggregateBoolExpBuilder b) updates]) =
-      _$GCallAggregateBoolExp;
+  factory GBigInt([String? value]) =>
+      _$GBigInt((b) => value != null ? (b..value = value) : b);
 
-  GcallAggregateBoolExpBool_and? get bool_and;
-  GcallAggregateBoolExpBool_or? get bool_or;
-  GcallAggregateBoolExpCount? get count;
-  static Serializer<GCallAggregateBoolExp> get serializer =>
-      _$gCallAggregateBoolExpSerializer;
+  String get value;
+  @BuiltValueSerializer(custom: true)
+  static Serializer<GBigInt> get serializer =>
+      _i2.DefaultScalarSerializer<GBigInt>(
+          (Object serialized) => GBigInt((serialized as String?)));
+}
+
+abstract class GBigIntFilter
+    implements Built<GBigIntFilter, GBigIntFilterBuilder> {
+  GBigIntFilter._();
+
+  factory GBigIntFilter([void Function(GBigIntFilterBuilder b) updates]) =
+      _$GBigIntFilter;
+
+  bool? get isNull;
+  GBigInt? get equalTo;
+  GBigInt? get notEqualTo;
+  GBigInt? get distinctFrom;
+  GBigInt? get notDistinctFrom;
+  @BuiltValueField(wireName: 'in')
+  BuiltList<GBigInt>? get Gin;
+  BuiltList<GBigInt>? get notIn;
+  GBigInt? get lessThan;
+  GBigInt? get lessThanOrEqualTo;
+  GBigInt? get greaterThan;
+  GBigInt? get greaterThanOrEqualTo;
+  static Serializer<GBigIntFilter> get serializer => _$gBigIntFilterSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCallAggregateBoolExp.serializer,
+        GBigIntFilter.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GCallAggregateBoolExp? fromJson(Map<String, dynamic> json) =>
+  static GBigIntFilter? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GCallAggregateBoolExp.serializer,
+        GBigIntFilter.serializer,
         json,
       );
 }
 
-abstract class GcallAggregateBoolExpBool_and
-    implements
-        Built<GcallAggregateBoolExpBool_and,
-            GcallAggregateBoolExpBool_andBuilder> {
-  GcallAggregateBoolExpBool_and._();
+abstract class GBlockCondition
+    implements Built<GBlockCondition, GBlockConditionBuilder> {
+  GBlockCondition._();
 
-  factory GcallAggregateBoolExpBool_and(
-          [void Function(GcallAggregateBoolExpBool_andBuilder b) updates]) =
-      _$GcallAggregateBoolExpBool_and;
+  factory GBlockCondition([void Function(GBlockConditionBuilder b) updates]) =
+      _$GBlockCondition;
 
-  GCallSelectColumnCallAggregateBoolExpBool_andArgumentsColumns get arguments;
-  bool? get distinct;
-  GCallBoolExp? get filter;
-  GBooleanComparisonExp get predicate;
-  static Serializer<GcallAggregateBoolExpBool_and> get serializer =>
-      _$gcallAggregateBoolExpBoolAndSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GcallAggregateBoolExpBool_and.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GcallAggregateBoolExpBool_and? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GcallAggregateBoolExpBool_and.serializer,
-        json,
-      );
-}
-
-abstract class GcallAggregateBoolExpBool_or
-    implements
-        Built<GcallAggregateBoolExpBool_or,
-            GcallAggregateBoolExpBool_orBuilder> {
-  GcallAggregateBoolExpBool_or._();
-
-  factory GcallAggregateBoolExpBool_or(
-          [void Function(GcallAggregateBoolExpBool_orBuilder b) updates]) =
-      _$GcallAggregateBoolExpBool_or;
-
-  GCallSelectColumnCallAggregateBoolExpBool_orArgumentsColumns get arguments;
-  bool? get distinct;
-  GCallBoolExp? get filter;
-  GBooleanComparisonExp get predicate;
-  static Serializer<GcallAggregateBoolExpBool_or> get serializer =>
-      _$gcallAggregateBoolExpBoolOrSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GcallAggregateBoolExpBool_or.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GcallAggregateBoolExpBool_or? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GcallAggregateBoolExpBool_or.serializer,
-        json,
-      );
-}
-
-abstract class GcallAggregateBoolExpCount
-    implements
-        Built<GcallAggregateBoolExpCount, GcallAggregateBoolExpCountBuilder> {
-  GcallAggregateBoolExpCount._();
-
-  factory GcallAggregateBoolExpCount(
-          [void Function(GcallAggregateBoolExpCountBuilder b) updates]) =
-      _$GcallAggregateBoolExpCount;
-
-  BuiltList<GCallSelectColumn>? get arguments;
-  bool? get distinct;
-  GCallBoolExp? get filter;
-  GIntComparisonExp get predicate;
-  static Serializer<GcallAggregateBoolExpCount> get serializer =>
-      _$gcallAggregateBoolExpCountSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GcallAggregateBoolExpCount.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GcallAggregateBoolExpCount? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GcallAggregateBoolExpCount.serializer,
-        json,
-      );
-}
-
-abstract class GCallAggregateOrderBy
-    implements Built<GCallAggregateOrderBy, GCallAggregateOrderByBuilder> {
-  GCallAggregateOrderBy._();
-
-  factory GCallAggregateOrderBy(
-          [void Function(GCallAggregateOrderByBuilder b) updates]) =
-      _$GCallAggregateOrderBy;
-
-  GOrderBy? get count;
-  GCallMaxOrderBy? get max;
-  GCallMinOrderBy? get min;
-  static Serializer<GCallAggregateOrderBy> get serializer =>
-      _$gCallAggregateOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCallAggregateOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCallAggregateOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCallAggregateOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GCallBoolExp
-    implements Built<GCallBoolExp, GCallBoolExpBuilder> {
-  GCallBoolExp._();
-
-  factory GCallBoolExp([void Function(GCallBoolExpBuilder b) updates]) =
-      _$GCallBoolExp;
-
-  @BuiltValueField(wireName: '_and')
-  BuiltList<GCallBoolExp>? get G_and;
-  @BuiltValueField(wireName: '_not')
-  GCallBoolExp? get G_not;
-  @BuiltValueField(wireName: '_or')
-  BuiltList<GCallBoolExp>? get G_or;
-  GIntArrayComparisonExp? get address;
-  GJsonbComparisonExp? get args;
-  GStringArrayComparisonExp? get argsStr;
-  GBlockBoolExp? get block;
-  GStringComparisonExp? get blockId;
-  GJsonbComparisonExp? get error;
-  GEventBoolExp? get events;
-  GEventAggregateBoolExp? get eventsAggregate;
-  GExtrinsicBoolExp? get extrinsic;
-  GStringComparisonExp? get extrinsicId;
-  GStringComparisonExp? get id;
-  GStringComparisonExp? get name;
-  GStringComparisonExp? get pallet;
-  GCallBoolExp? get parent;
-  GStringComparisonExp? get parentId;
-  GCallBoolExp? get subcalls;
-  GCallAggregateBoolExp? get subcallsAggregate;
-  GBooleanComparisonExp? get success;
-  static Serializer<GCallBoolExp> get serializer => _$gCallBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCallBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCallBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCallBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GCallMaxOrderBy
-    implements Built<GCallMaxOrderBy, GCallMaxOrderByBuilder> {
-  GCallMaxOrderBy._();
-
-  factory GCallMaxOrderBy([void Function(GCallMaxOrderByBuilder b) updates]) =
-      _$GCallMaxOrderBy;
-
-  GOrderBy? get address;
-  GOrderBy? get argsStr;
-  GOrderBy? get blockId;
-  GOrderBy? get extrinsicId;
-  GOrderBy? get id;
-  GOrderBy? get name;
-  GOrderBy? get pallet;
-  GOrderBy? get parentId;
-  static Serializer<GCallMaxOrderBy> get serializer =>
-      _$gCallMaxOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCallMaxOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCallMaxOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCallMaxOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GCallMinOrderBy
-    implements Built<GCallMinOrderBy, GCallMinOrderByBuilder> {
-  GCallMinOrderBy._();
-
-  factory GCallMinOrderBy([void Function(GCallMinOrderByBuilder b) updates]) =
-      _$GCallMinOrderBy;
-
-  GOrderBy? get address;
-  GOrderBy? get argsStr;
-  GOrderBy? get blockId;
-  GOrderBy? get extrinsicId;
-  GOrderBy? get id;
-  GOrderBy? get name;
-  GOrderBy? get pallet;
-  GOrderBy? get parentId;
-  static Serializer<GCallMinOrderBy> get serializer =>
-      _$gCallMinOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCallMinOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCallMinOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCallMinOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GCallOrderBy
-    implements Built<GCallOrderBy, GCallOrderByBuilder> {
-  GCallOrderBy._();
-
-  factory GCallOrderBy([void Function(GCallOrderByBuilder b) updates]) =
-      _$GCallOrderBy;
-
-  GOrderBy? get address;
-  GOrderBy? get args;
-  GOrderBy? get argsStr;
-  GBlockOrderBy? get block;
-  GOrderBy? get blockId;
-  GOrderBy? get error;
-  GEventAggregateOrderBy? get eventsAggregate;
-  GExtrinsicOrderBy? get extrinsic;
-  GOrderBy? get extrinsicId;
-  GOrderBy? get id;
-  GOrderBy? get name;
-  GOrderBy? get pallet;
-  GCallOrderBy? get parent;
-  GOrderBy? get parentId;
-  GCallAggregateOrderBy? get subcallsAggregate;
-  GOrderBy? get success;
-  static Serializer<GCallOrderBy> get serializer => _$gCallOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCallOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCallOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCallOrderBy.serializer,
-        json,
-      );
-}
-
-class GCallSelectColumn extends EnumClass {
-  const GCallSelectColumn._(String name) : super(name);
-
-  static const GCallSelectColumn address = _$gCallSelectColumnaddress;
-
-  static const GCallSelectColumn args = _$gCallSelectColumnargs;
-
-  static const GCallSelectColumn argsStr = _$gCallSelectColumnargsStr;
-
-  static const GCallSelectColumn blockId = _$gCallSelectColumnblockId;
-
-  static const GCallSelectColumn error = _$gCallSelectColumnerror;
-
-  static const GCallSelectColumn extrinsicId = _$gCallSelectColumnextrinsicId;
-
-  static const GCallSelectColumn id = _$gCallSelectColumnid;
-
-  @BuiltValueEnumConst(wireName: 'name')
-  static const GCallSelectColumn Gname = _$gCallSelectColumnGname;
-
-  static const GCallSelectColumn pallet = _$gCallSelectColumnpallet;
-
-  static const GCallSelectColumn parentId = _$gCallSelectColumnparentId;
-
-  static const GCallSelectColumn success = _$gCallSelectColumnsuccess;
-
-  static Serializer<GCallSelectColumn> get serializer =>
-      _$gCallSelectColumnSerializer;
-
-  static BuiltSet<GCallSelectColumn> get values => _$gCallSelectColumnValues;
-
-  static GCallSelectColumn valueOf(String name) =>
-      _$gCallSelectColumnValueOf(name);
-}
-
-class GCallSelectColumnCallAggregateBoolExpBool_andArgumentsColumns
-    extends EnumClass {
-  const GCallSelectColumnCallAggregateBoolExpBool_andArgumentsColumns._(
-      String name)
-      : super(name);
-
-  static const GCallSelectColumnCallAggregateBoolExpBool_andArgumentsColumns
-      success =
-      _$gCallSelectColumnCallAggregateBoolExpBoolAndArgumentsColumnssuccess;
-
-  static Serializer<
-          GCallSelectColumnCallAggregateBoolExpBool_andArgumentsColumns>
-      get serializer =>
-          _$gCallSelectColumnCallAggregateBoolExpBoolAndArgumentsColumnsSerializer;
-
-  static BuiltSet<GCallSelectColumnCallAggregateBoolExpBool_andArgumentsColumns>
-      get values =>
-          _$gCallSelectColumnCallAggregateBoolExpBoolAndArgumentsColumnsValues;
-
-  static GCallSelectColumnCallAggregateBoolExpBool_andArgumentsColumns valueOf(
-          String name) =>
-      _$gCallSelectColumnCallAggregateBoolExpBoolAndArgumentsColumnsValueOf(
-          name);
-}
-
-class GCallSelectColumnCallAggregateBoolExpBool_orArgumentsColumns
-    extends EnumClass {
-  const GCallSelectColumnCallAggregateBoolExpBool_orArgumentsColumns._(
-      String name)
-      : super(name);
-
-  static const GCallSelectColumnCallAggregateBoolExpBool_orArgumentsColumns
-      success =
-      _$gCallSelectColumnCallAggregateBoolExpBoolOrArgumentsColumnssuccess;
-
-  static Serializer<
-          GCallSelectColumnCallAggregateBoolExpBool_orArgumentsColumns>
-      get serializer =>
-          _$gCallSelectColumnCallAggregateBoolExpBoolOrArgumentsColumnsSerializer;
-
-  static BuiltSet<GCallSelectColumnCallAggregateBoolExpBool_orArgumentsColumns>
-      get values =>
-          _$gCallSelectColumnCallAggregateBoolExpBoolOrArgumentsColumnsValues;
-
-  static GCallSelectColumnCallAggregateBoolExpBool_orArgumentsColumns valueOf(
-          String name) =>
-      _$gCallSelectColumnCallAggregateBoolExpBoolOrArgumentsColumnsValueOf(
-          name);
-}
-
-abstract class GCallStreamCursorInput
-    implements Built<GCallStreamCursorInput, GCallStreamCursorInputBuilder> {
-  GCallStreamCursorInput._();
-
-  factory GCallStreamCursorInput(
-          [void Function(GCallStreamCursorInputBuilder b) updates]) =
-      _$GCallStreamCursorInput;
-
-  GCallStreamCursorValueInput get initialValue;
-  GCursorOrdering? get ordering;
-  static Serializer<GCallStreamCursorInput> get serializer =>
-      _$gCallStreamCursorInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCallStreamCursorInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCallStreamCursorInput? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCallStreamCursorInput.serializer,
-        json,
-      );
-}
-
-abstract class GCallStreamCursorValueInput
-    implements
-        Built<GCallStreamCursorValueInput, GCallStreamCursorValueInputBuilder> {
-  GCallStreamCursorValueInput._();
-
-  factory GCallStreamCursorValueInput(
-          [void Function(GCallStreamCursorValueInputBuilder b) updates]) =
-      _$GCallStreamCursorValueInput;
-
-  BuiltList<int>? get address;
-  _i3.JsonObject? get args;
-  BuiltList<String>? get argsStr;
-  String? get blockId;
-  _i3.JsonObject? get error;
-  String? get extrinsicId;
   String? get id;
-  String? get name;
-  String? get pallet;
-  String? get parentId;
+  int? get height;
+  String? get hash;
+  String? get parentHash;
+  String? get stateRoot;
+  String? get extrinsicsicRoot;
+  String? get specName;
+  int? get specVersion;
+  String? get implName;
+  int? get implVersion;
+  GDatetime? get timestamp;
+  String? get validator;
+  int? get extrinsicsCount;
+  int? get callsCount;
+  int? get eventsCount;
+  static Serializer<GBlockCondition> get serializer =>
+      _$gBlockConditionSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GBlockCondition.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GBlockCondition? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GBlockCondition.serializer,
+        json,
+      );
+}
+
+abstract class GBlockFilter
+    implements Built<GBlockFilter, GBlockFilterBuilder> {
+  GBlockFilter._();
+
+  factory GBlockFilter([void Function(GBlockFilterBuilder b) updates]) =
+      _$GBlockFilter;
+
+  GStringFilter? get id;
+  GIntFilter? get height;
+  GStringFilter? get specName;
+  GIntFilter? get specVersion;
+  GStringFilter? get implName;
+  GIntFilter? get implVersion;
+  GDatetimeFilter? get timestamp;
+  GIntFilter? get extrinsicsCount;
+  GIntFilter? get callsCount;
+  GIntFilter? get eventsCount;
+  BuiltList<GBlockFilter>? get and;
+  BuiltList<GBlockFilter>? get or;
+  GBlockFilter? get not;
+  static Serializer<GBlockFilter> get serializer => _$gBlockFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GBlockFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GBlockFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GBlockFilter.serializer,
+        json,
+      );
+}
+
+class GBlocksOrderBy extends EnumClass {
+  const GBlocksOrderBy._(String name) : super(name);
+
+  static const GBlocksOrderBy NATURAL = _$gBlocksOrderByNATURAL;
+
+  static const GBlocksOrderBy ID_ASC = _$gBlocksOrderByID_ASC;
+
+  static const GBlocksOrderBy ID_DESC = _$gBlocksOrderByID_DESC;
+
+  static const GBlocksOrderBy HEIGHT_ASC = _$gBlocksOrderByHEIGHT_ASC;
+
+  static const GBlocksOrderBy HEIGHT_DESC = _$gBlocksOrderByHEIGHT_DESC;
+
+  static const GBlocksOrderBy HASH_ASC = _$gBlocksOrderByHASH_ASC;
+
+  static const GBlocksOrderBy HASH_DESC = _$gBlocksOrderByHASH_DESC;
+
+  static const GBlocksOrderBy PARENT_HASH_ASC = _$gBlocksOrderByPARENT_HASH_ASC;
+
+  static const GBlocksOrderBy PARENT_HASH_DESC =
+      _$gBlocksOrderByPARENT_HASH_DESC;
+
+  static const GBlocksOrderBy STATE_ROOT_ASC = _$gBlocksOrderBySTATE_ROOT_ASC;
+
+  static const GBlocksOrderBy STATE_ROOT_DESC = _$gBlocksOrderBySTATE_ROOT_DESC;
+
+  static const GBlocksOrderBy EXTRINSICSIC_ROOT_ASC =
+      _$gBlocksOrderByEXTRINSICSIC_ROOT_ASC;
+
+  static const GBlocksOrderBy EXTRINSICSIC_ROOT_DESC =
+      _$gBlocksOrderByEXTRINSICSIC_ROOT_DESC;
+
+  static const GBlocksOrderBy SPEC_NAME_ASC = _$gBlocksOrderBySPEC_NAME_ASC;
+
+  static const GBlocksOrderBy SPEC_NAME_DESC = _$gBlocksOrderBySPEC_NAME_DESC;
+
+  static const GBlocksOrderBy SPEC_VERSION_ASC =
+      _$gBlocksOrderBySPEC_VERSION_ASC;
+
+  static const GBlocksOrderBy SPEC_VERSION_DESC =
+      _$gBlocksOrderBySPEC_VERSION_DESC;
+
+  static const GBlocksOrderBy IMPL_NAME_ASC = _$gBlocksOrderByIMPL_NAME_ASC;
+
+  static const GBlocksOrderBy IMPL_NAME_DESC = _$gBlocksOrderByIMPL_NAME_DESC;
+
+  static const GBlocksOrderBy IMPL_VERSION_ASC =
+      _$gBlocksOrderByIMPL_VERSION_ASC;
+
+  static const GBlocksOrderBy IMPL_VERSION_DESC =
+      _$gBlocksOrderByIMPL_VERSION_DESC;
+
+  static const GBlocksOrderBy TIMESTAMP_ASC = _$gBlocksOrderByTIMESTAMP_ASC;
+
+  static const GBlocksOrderBy TIMESTAMP_DESC = _$gBlocksOrderByTIMESTAMP_DESC;
+
+  static const GBlocksOrderBy VALIDATOR_ASC = _$gBlocksOrderByVALIDATOR_ASC;
+
+  static const GBlocksOrderBy VALIDATOR_DESC = _$gBlocksOrderByVALIDATOR_DESC;
+
+  static const GBlocksOrderBy EXTRINSICS_COUNT_ASC =
+      _$gBlocksOrderByEXTRINSICS_COUNT_ASC;
+
+  static const GBlocksOrderBy EXTRINSICS_COUNT_DESC =
+      _$gBlocksOrderByEXTRINSICS_COUNT_DESC;
+
+  static const GBlocksOrderBy CALLS_COUNT_ASC = _$gBlocksOrderByCALLS_COUNT_ASC;
+
+  static const GBlocksOrderBy CALLS_COUNT_DESC =
+      _$gBlocksOrderByCALLS_COUNT_DESC;
+
+  static const GBlocksOrderBy EVENTS_COUNT_ASC =
+      _$gBlocksOrderByEVENTS_COUNT_ASC;
+
+  static const GBlocksOrderBy EVENTS_COUNT_DESC =
+      _$gBlocksOrderByEVENTS_COUNT_DESC;
+
+  static const GBlocksOrderBy PRIMARY_KEY_ASC = _$gBlocksOrderByPRIMARY_KEY_ASC;
+
+  static const GBlocksOrderBy PRIMARY_KEY_DESC =
+      _$gBlocksOrderByPRIMARY_KEY_DESC;
+
+  static Serializer<GBlocksOrderBy> get serializer =>
+      _$gBlocksOrderBySerializer;
+
+  static BuiltSet<GBlocksOrderBy> get values => _$gBlocksOrderByValues;
+
+  static GBlocksOrderBy valueOf(String name) => _$gBlocksOrderByValueOf(name);
+}
+
+abstract class GBooleanFilter
+    implements Built<GBooleanFilter, GBooleanFilterBuilder> {
+  GBooleanFilter._();
+
+  factory GBooleanFilter([void Function(GBooleanFilterBuilder b) updates]) =
+      _$GBooleanFilter;
+
+  bool? get isNull;
+  bool? get equalTo;
+  bool? get notEqualTo;
+  bool? get distinctFrom;
+  bool? get notDistinctFrom;
+  @BuiltValueField(wireName: 'in')
+  BuiltList<bool>? get Gin;
+  BuiltList<bool>? get notIn;
+  bool? get lessThan;
+  bool? get lessThanOrEqualTo;
+  bool? get greaterThan;
+  bool? get greaterThanOrEqualTo;
+  static Serializer<GBooleanFilter> get serializer =>
+      _$gBooleanFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GBooleanFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GBooleanFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GBooleanFilter.serializer,
+        json,
+      );
+}
+
+abstract class GCallCondition
+    implements Built<GCallCondition, GCallConditionBuilder> {
+  GCallCondition._();
+
+  factory GCallCondition([void Function(GCallConditionBuilder b) updates]) =
+      _$GCallCondition;
+
+  String? get id;
+  BuiltList<int?>? get address;
   bool? get success;
-  static Serializer<GCallStreamCursorValueInput> get serializer =>
-      _$gCallStreamCursorValueInputSerializer;
+  GJSON? get error;
+  String? get pallet;
+  String? get name;
+  GJSON? get args;
+  BuiltList<String?>? get argsStr;
+  String? get blockId;
+  String? get extrinsicId;
+  String? get parentId;
+  static Serializer<GCallCondition> get serializer =>
+      _$gCallConditionSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCallStreamCursorValueInput.serializer,
+        GCallCondition.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GCallStreamCursorValueInput? fromJson(Map<String, dynamic> json) =>
+  static GCallCondition? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GCallStreamCursorValueInput.serializer,
+        GCallCondition.serializer,
         json,
       );
 }
 
-abstract class GCertAggregateBoolExp
-    implements Built<GCertAggregateBoolExp, GCertAggregateBoolExpBuilder> {
-  GCertAggregateBoolExp._();
+abstract class GCallFilter implements Built<GCallFilter, GCallFilterBuilder> {
+  GCallFilter._();
 
-  factory GCertAggregateBoolExp(
-          [void Function(GCertAggregateBoolExpBuilder b) updates]) =
-      _$GCertAggregateBoolExp;
+  factory GCallFilter([void Function(GCallFilterBuilder b) updates]) =
+      _$GCallFilter;
 
-  GcertAggregateBoolExpBool_and? get bool_and;
-  GcertAggregateBoolExpBool_or? get bool_or;
-  GcertAggregateBoolExpCount? get count;
-  static Serializer<GCertAggregateBoolExp> get serializer =>
-      _$gCertAggregateBoolExpSerializer;
+  GStringFilter? get id;
+  GIntListFilter? get address;
+  GBooleanFilter? get success;
+  GJSONFilter? get error;
+  GStringFilter? get pallet;
+  GStringFilter? get name;
+  GJSONFilter? get args;
+  GStringListFilter? get argsStr;
+  GStringFilter? get blockId;
+  GStringFilter? get extrinsicId;
+  GStringFilter? get parentId;
+  BuiltList<GCallFilter>? get and;
+  BuiltList<GCallFilter>? get or;
+  GCallFilter? get not;
+  static Serializer<GCallFilter> get serializer => _$gCallFilterSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertAggregateBoolExp.serializer,
+        GCallFilter.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GCertAggregateBoolExp? fromJson(Map<String, dynamic> json) =>
+  static GCallFilter? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GCertAggregateBoolExp.serializer,
+        GCallFilter.serializer,
         json,
       );
 }
 
-abstract class GcertAggregateBoolExpBool_and
-    implements
-        Built<GcertAggregateBoolExpBool_and,
-            GcertAggregateBoolExpBool_andBuilder> {
-  GcertAggregateBoolExpBool_and._();
+class GCallsOrderBy extends EnumClass {
+  const GCallsOrderBy._(String name) : super(name);
 
-  factory GcertAggregateBoolExpBool_and(
-          [void Function(GcertAggregateBoolExpBool_andBuilder b) updates]) =
-      _$GcertAggregateBoolExpBool_and;
+  static const GCallsOrderBy NATURAL = _$gCallsOrderByNATURAL;
 
-  GCertSelectColumnCertAggregateBoolExpBool_andArgumentsColumns get arguments;
-  bool? get distinct;
-  GCertBoolExp? get filter;
-  GBooleanComparisonExp get predicate;
-  static Serializer<GcertAggregateBoolExpBool_and> get serializer =>
-      _$gcertAggregateBoolExpBoolAndSerializer;
+  static const GCallsOrderBy ID_ASC = _$gCallsOrderByID_ASC;
 
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GcertAggregateBoolExpBool_and.serializer,
-        this,
-      ) as Map<String, dynamic>);
+  static const GCallsOrderBy ID_DESC = _$gCallsOrderByID_DESC;
 
-  static GcertAggregateBoolExpBool_and? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GcertAggregateBoolExpBool_and.serializer,
-        json,
-      );
+  static const GCallsOrderBy ADDRESS_ASC = _$gCallsOrderByADDRESS_ASC;
+
+  static const GCallsOrderBy ADDRESS_DESC = _$gCallsOrderByADDRESS_DESC;
+
+  static const GCallsOrderBy SUCCESS_ASC = _$gCallsOrderBySUCCESS_ASC;
+
+  static const GCallsOrderBy SUCCESS_DESC = _$gCallsOrderBySUCCESS_DESC;
+
+  static const GCallsOrderBy ERROR_ASC = _$gCallsOrderByERROR_ASC;
+
+  static const GCallsOrderBy ERROR_DESC = _$gCallsOrderByERROR_DESC;
+
+  static const GCallsOrderBy PALLET_ASC = _$gCallsOrderByPALLET_ASC;
+
+  static const GCallsOrderBy PALLET_DESC = _$gCallsOrderByPALLET_DESC;
+
+  static const GCallsOrderBy NAME_ASC = _$gCallsOrderByNAME_ASC;
+
+  static const GCallsOrderBy NAME_DESC = _$gCallsOrderByNAME_DESC;
+
+  static const GCallsOrderBy ARGS_ASC = _$gCallsOrderByARGS_ASC;
+
+  static const GCallsOrderBy ARGS_DESC = _$gCallsOrderByARGS_DESC;
+
+  static const GCallsOrderBy ARGS_STR_ASC = _$gCallsOrderByARGS_STR_ASC;
+
+  static const GCallsOrderBy ARGS_STR_DESC = _$gCallsOrderByARGS_STR_DESC;
+
+  static const GCallsOrderBy BLOCK_ID_ASC = _$gCallsOrderByBLOCK_ID_ASC;
+
+  static const GCallsOrderBy BLOCK_ID_DESC = _$gCallsOrderByBLOCK_ID_DESC;
+
+  static const GCallsOrderBy EXTRINSIC_ID_ASC = _$gCallsOrderByEXTRINSIC_ID_ASC;
+
+  static const GCallsOrderBy EXTRINSIC_ID_DESC =
+      _$gCallsOrderByEXTRINSIC_ID_DESC;
+
+  static const GCallsOrderBy PARENT_ID_ASC = _$gCallsOrderByPARENT_ID_ASC;
+
+  static const GCallsOrderBy PARENT_ID_DESC = _$gCallsOrderByPARENT_ID_DESC;
+
+  static const GCallsOrderBy PRIMARY_KEY_ASC = _$gCallsOrderByPRIMARY_KEY_ASC;
+
+  static const GCallsOrderBy PRIMARY_KEY_DESC = _$gCallsOrderByPRIMARY_KEY_DESC;
+
+  static Serializer<GCallsOrderBy> get serializer => _$gCallsOrderBySerializer;
+
+  static BuiltSet<GCallsOrderBy> get values => _$gCallsOrderByValues;
+
+  static GCallsOrderBy valueOf(String name) => _$gCallsOrderByValueOf(name);
 }
 
-abstract class GcertAggregateBoolExpBool_or
-    implements
-        Built<GcertAggregateBoolExpBool_or,
-            GcertAggregateBoolExpBool_orBuilder> {
-  GcertAggregateBoolExpBool_or._();
+abstract class GCertCondition
+    implements Built<GCertCondition, GCertConditionBuilder> {
+  GCertCondition._();
 
-  factory GcertAggregateBoolExpBool_or(
-          [void Function(GcertAggregateBoolExpBool_orBuilder b) updates]) =
-      _$GcertAggregateBoolExpBool_or;
+  factory GCertCondition([void Function(GCertConditionBuilder b) updates]) =
+      _$GCertCondition;
 
-  GCertSelectColumnCertAggregateBoolExpBool_orArgumentsColumns get arguments;
-  bool? get distinct;
-  GCertBoolExp? get filter;
-  GBooleanComparisonExp get predicate;
-  static Serializer<GcertAggregateBoolExpBool_or> get serializer =>
-      _$gcertAggregateBoolExpBoolOrSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GcertAggregateBoolExpBool_or.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GcertAggregateBoolExpBool_or? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GcertAggregateBoolExpBool_or.serializer,
-        json,
-      );
-}
-
-abstract class GcertAggregateBoolExpCount
-    implements
-        Built<GcertAggregateBoolExpCount, GcertAggregateBoolExpCountBuilder> {
-  GcertAggregateBoolExpCount._();
-
-  factory GcertAggregateBoolExpCount(
-          [void Function(GcertAggregateBoolExpCountBuilder b) updates]) =
-      _$GcertAggregateBoolExpCount;
-
-  BuiltList<GCertSelectColumn>? get arguments;
-  bool? get distinct;
-  GCertBoolExp? get filter;
-  GIntComparisonExp get predicate;
-  static Serializer<GcertAggregateBoolExpCount> get serializer =>
-      _$gcertAggregateBoolExpCountSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GcertAggregateBoolExpCount.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GcertAggregateBoolExpCount? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GcertAggregateBoolExpCount.serializer,
-        json,
-      );
-}
-
-abstract class GCertAggregateOrderBy
-    implements Built<GCertAggregateOrderBy, GCertAggregateOrderByBuilder> {
-  GCertAggregateOrderBy._();
-
-  factory GCertAggregateOrderBy(
-          [void Function(GCertAggregateOrderByBuilder b) updates]) =
-      _$GCertAggregateOrderBy;
-
-  GCertAvgOrderBy? get avg;
-  GOrderBy? get count;
-  GCertMaxOrderBy? get max;
-  GCertMinOrderBy? get min;
-  GCertStddevOrderBy? get stddev;
-  GCertStddevPopOrderBy? get stddevPop;
-  GCertStddevSampOrderBy? get stddevSamp;
-  GCertSumOrderBy? get sum;
-  GCertVarPopOrderBy? get varPop;
-  GCertVarSampOrderBy? get varSamp;
-  GCertVarianceOrderBy? get variance;
-  static Serializer<GCertAggregateOrderBy> get serializer =>
-      _$gCertAggregateOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertAggregateOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertAggregateOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertAggregateOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GCertAvgOrderBy
-    implements Built<GCertAvgOrderBy, GCertAvgOrderByBuilder> {
-  GCertAvgOrderBy._();
-
-  factory GCertAvgOrderBy([void Function(GCertAvgOrderByBuilder b) updates]) =
-      _$GCertAvgOrderBy;
-
-  GOrderBy? get createdOn;
-  GOrderBy? get expireOn;
-  GOrderBy? get updatedOn;
-  static Serializer<GCertAvgOrderBy> get serializer =>
-      _$gCertAvgOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertAvgOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertAvgOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertAvgOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GCertBoolExp
-    implements Built<GCertBoolExp, GCertBoolExpBuilder> {
-  GCertBoolExp._();
-
-  factory GCertBoolExp([void Function(GCertBoolExpBuilder b) updates]) =
-      _$GCertBoolExp;
-
-  @BuiltValueField(wireName: '_and')
-  BuiltList<GCertBoolExp>? get G_and;
-  @BuiltValueField(wireName: '_not')
-  GCertBoolExp? get G_not;
-  @BuiltValueField(wireName: '_or')
-  BuiltList<GCertBoolExp>? get G_or;
-  GCertEventBoolExp? get certHistory;
-  GCertEventAggregateBoolExp? get certHistoryAggregate;
-  GEventBoolExp? get createdIn;
-  GStringComparisonExp? get createdInId;
-  GIntComparisonExp? get createdOn;
-  GIntComparisonExp? get expireOn;
-  GStringComparisonExp? get id;
-  GBooleanComparisonExp? get isActive;
-  GIdentityBoolExp? get issuer;
-  GStringComparisonExp? get issuerId;
-  GIdentityBoolExp? get receiver;
-  GStringComparisonExp? get receiverId;
-  GEventBoolExp? get updatedIn;
-  GStringComparisonExp? get updatedInId;
-  GIntComparisonExp? get updatedOn;
-  static Serializer<GCertBoolExp> get serializer => _$gCertBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GCertEventAggregateBoolExp
-    implements
-        Built<GCertEventAggregateBoolExp, GCertEventAggregateBoolExpBuilder> {
-  GCertEventAggregateBoolExp._();
-
-  factory GCertEventAggregateBoolExp(
-          [void Function(GCertEventAggregateBoolExpBuilder b) updates]) =
-      _$GCertEventAggregateBoolExp;
-
-  GcertEventAggregateBoolExpCount? get count;
-  static Serializer<GCertEventAggregateBoolExp> get serializer =>
-      _$gCertEventAggregateBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertEventAggregateBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertEventAggregateBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertEventAggregateBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GcertEventAggregateBoolExpCount
-    implements
-        Built<GcertEventAggregateBoolExpCount,
-            GcertEventAggregateBoolExpCountBuilder> {
-  GcertEventAggregateBoolExpCount._();
-
-  factory GcertEventAggregateBoolExpCount(
-          [void Function(GcertEventAggregateBoolExpCountBuilder b) updates]) =
-      _$GcertEventAggregateBoolExpCount;
-
-  BuiltList<GCertEventSelectColumn>? get arguments;
-  bool? get distinct;
-  GCertEventBoolExp? get filter;
-  GIntComparisonExp get predicate;
-  static Serializer<GcertEventAggregateBoolExpCount> get serializer =>
-      _$gcertEventAggregateBoolExpCountSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GcertEventAggregateBoolExpCount.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GcertEventAggregateBoolExpCount? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GcertEventAggregateBoolExpCount.serializer,
-        json,
-      );
-}
-
-abstract class GCertEventAggregateOrderBy
-    implements
-        Built<GCertEventAggregateOrderBy, GCertEventAggregateOrderByBuilder> {
-  GCertEventAggregateOrderBy._();
-
-  factory GCertEventAggregateOrderBy(
-          [void Function(GCertEventAggregateOrderByBuilder b) updates]) =
-      _$GCertEventAggregateOrderBy;
-
-  GCertEventAvgOrderBy? get avg;
-  GOrderBy? get count;
-  GCertEventMaxOrderBy? get max;
-  GCertEventMinOrderBy? get min;
-  GCertEventStddevOrderBy? get stddev;
-  GCertEventStddevPopOrderBy? get stddevPop;
-  GCertEventStddevSampOrderBy? get stddevSamp;
-  GCertEventSumOrderBy? get sum;
-  GCertEventVarPopOrderBy? get varPop;
-  GCertEventVarSampOrderBy? get varSamp;
-  GCertEventVarianceOrderBy? get variance;
-  static Serializer<GCertEventAggregateOrderBy> get serializer =>
-      _$gCertEventAggregateOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertEventAggregateOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertEventAggregateOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertEventAggregateOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GCertEventAvgOrderBy
-    implements Built<GCertEventAvgOrderBy, GCertEventAvgOrderByBuilder> {
-  GCertEventAvgOrderBy._();
-
-  factory GCertEventAvgOrderBy(
-          [void Function(GCertEventAvgOrderByBuilder b) updates]) =
-      _$GCertEventAvgOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GCertEventAvgOrderBy> get serializer =>
-      _$gCertEventAvgOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertEventAvgOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertEventAvgOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertEventAvgOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GCertEventBoolExp
-    implements Built<GCertEventBoolExp, GCertEventBoolExpBuilder> {
-  GCertEventBoolExp._();
-
-  factory GCertEventBoolExp(
-          [void Function(GCertEventBoolExpBuilder b) updates]) =
-      _$GCertEventBoolExp;
-
-  @BuiltValueField(wireName: '_and')
-  BuiltList<GCertEventBoolExp>? get G_and;
-  @BuiltValueField(wireName: '_not')
-  GCertEventBoolExp? get G_not;
-  @BuiltValueField(wireName: '_or')
-  BuiltList<GCertEventBoolExp>? get G_or;
-  GIntComparisonExp? get blockNumber;
-  GCertBoolExp? get cert;
-  GStringComparisonExp? get certId;
-  GEventBoolExp? get event;
-  GStringComparisonExp? get eventId;
-  GStringComparisonExp? get eventType;
-  GStringComparisonExp? get id;
-  static Serializer<GCertEventBoolExp> get serializer =>
-      _$gCertEventBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertEventBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertEventBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertEventBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GCertEventMaxOrderBy
-    implements Built<GCertEventMaxOrderBy, GCertEventMaxOrderByBuilder> {
-  GCertEventMaxOrderBy._();
-
-  factory GCertEventMaxOrderBy(
-          [void Function(GCertEventMaxOrderByBuilder b) updates]) =
-      _$GCertEventMaxOrderBy;
-
-  GOrderBy? get blockNumber;
-  GOrderBy? get certId;
-  GOrderBy? get eventId;
-  GOrderBy? get eventType;
-  GOrderBy? get id;
-  static Serializer<GCertEventMaxOrderBy> get serializer =>
-      _$gCertEventMaxOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertEventMaxOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertEventMaxOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertEventMaxOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GCertEventMinOrderBy
-    implements Built<GCertEventMinOrderBy, GCertEventMinOrderByBuilder> {
-  GCertEventMinOrderBy._();
-
-  factory GCertEventMinOrderBy(
-          [void Function(GCertEventMinOrderByBuilder b) updates]) =
-      _$GCertEventMinOrderBy;
-
-  GOrderBy? get blockNumber;
-  GOrderBy? get certId;
-  GOrderBy? get eventId;
-  GOrderBy? get eventType;
-  GOrderBy? get id;
-  static Serializer<GCertEventMinOrderBy> get serializer =>
-      _$gCertEventMinOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertEventMinOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertEventMinOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertEventMinOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GCertEventOrderBy
-    implements Built<GCertEventOrderBy, GCertEventOrderByBuilder> {
-  GCertEventOrderBy._();
-
-  factory GCertEventOrderBy(
-          [void Function(GCertEventOrderByBuilder b) updates]) =
-      _$GCertEventOrderBy;
-
-  GOrderBy? get blockNumber;
-  GCertOrderBy? get cert;
-  GOrderBy? get certId;
-  GEventOrderBy? get event;
-  GOrderBy? get eventId;
-  GOrderBy? get eventType;
-  GOrderBy? get id;
-  static Serializer<GCertEventOrderBy> get serializer =>
-      _$gCertEventOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertEventOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertEventOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertEventOrderBy.serializer,
-        json,
-      );
-}
-
-class GCertEventSelectColumn extends EnumClass {
-  const GCertEventSelectColumn._(String name) : super(name);
-
-  static const GCertEventSelectColumn blockNumber =
-      _$gCertEventSelectColumnblockNumber;
-
-  static const GCertEventSelectColumn certId = _$gCertEventSelectColumncertId;
-
-  static const GCertEventSelectColumn eventId = _$gCertEventSelectColumneventId;
-
-  static const GCertEventSelectColumn eventType =
-      _$gCertEventSelectColumneventType;
-
-  static const GCertEventSelectColumn id = _$gCertEventSelectColumnid;
-
-  static Serializer<GCertEventSelectColumn> get serializer =>
-      _$gCertEventSelectColumnSerializer;
-
-  static BuiltSet<GCertEventSelectColumn> get values =>
-      _$gCertEventSelectColumnValues;
-
-  static GCertEventSelectColumn valueOf(String name) =>
-      _$gCertEventSelectColumnValueOf(name);
-}
-
-abstract class GCertEventStddevOrderBy
-    implements Built<GCertEventStddevOrderBy, GCertEventStddevOrderByBuilder> {
-  GCertEventStddevOrderBy._();
-
-  factory GCertEventStddevOrderBy(
-          [void Function(GCertEventStddevOrderByBuilder b) updates]) =
-      _$GCertEventStddevOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GCertEventStddevOrderBy> get serializer =>
-      _$gCertEventStddevOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertEventStddevOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertEventStddevOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertEventStddevOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GCertEventStddevPopOrderBy
-    implements
-        Built<GCertEventStddevPopOrderBy, GCertEventStddevPopOrderByBuilder> {
-  GCertEventStddevPopOrderBy._();
-
-  factory GCertEventStddevPopOrderBy(
-          [void Function(GCertEventStddevPopOrderByBuilder b) updates]) =
-      _$GCertEventStddevPopOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GCertEventStddevPopOrderBy> get serializer =>
-      _$gCertEventStddevPopOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertEventStddevPopOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertEventStddevPopOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertEventStddevPopOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GCertEventStddevSampOrderBy
-    implements
-        Built<GCertEventStddevSampOrderBy, GCertEventStddevSampOrderByBuilder> {
-  GCertEventStddevSampOrderBy._();
-
-  factory GCertEventStddevSampOrderBy(
-          [void Function(GCertEventStddevSampOrderByBuilder b) updates]) =
-      _$GCertEventStddevSampOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GCertEventStddevSampOrderBy> get serializer =>
-      _$gCertEventStddevSampOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertEventStddevSampOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertEventStddevSampOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertEventStddevSampOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GCertEventStreamCursorInput
-    implements
-        Built<GCertEventStreamCursorInput, GCertEventStreamCursorInputBuilder> {
-  GCertEventStreamCursorInput._();
-
-  factory GCertEventStreamCursorInput(
-          [void Function(GCertEventStreamCursorInputBuilder b) updates]) =
-      _$GCertEventStreamCursorInput;
-
-  GCertEventStreamCursorValueInput get initialValue;
-  GCursorOrdering? get ordering;
-  static Serializer<GCertEventStreamCursorInput> get serializer =>
-      _$gCertEventStreamCursorInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertEventStreamCursorInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertEventStreamCursorInput? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertEventStreamCursorInput.serializer,
-        json,
-      );
-}
-
-abstract class GCertEventStreamCursorValueInput
-    implements
-        Built<GCertEventStreamCursorValueInput,
-            GCertEventStreamCursorValueInputBuilder> {
-  GCertEventStreamCursorValueInput._();
-
-  factory GCertEventStreamCursorValueInput(
-          [void Function(GCertEventStreamCursorValueInputBuilder b) updates]) =
-      _$GCertEventStreamCursorValueInput;
-
-  int? get blockNumber;
-  String? get certId;
-  String? get eventId;
-  String? get eventType;
-  String? get id;
-  static Serializer<GCertEventStreamCursorValueInput> get serializer =>
-      _$gCertEventStreamCursorValueInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertEventStreamCursorValueInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertEventStreamCursorValueInput? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertEventStreamCursorValueInput.serializer,
-        json,
-      );
-}
-
-abstract class GCertEventSumOrderBy
-    implements Built<GCertEventSumOrderBy, GCertEventSumOrderByBuilder> {
-  GCertEventSumOrderBy._();
-
-  factory GCertEventSumOrderBy(
-          [void Function(GCertEventSumOrderByBuilder b) updates]) =
-      _$GCertEventSumOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GCertEventSumOrderBy> get serializer =>
-      _$gCertEventSumOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertEventSumOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertEventSumOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertEventSumOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GCertEventVarianceOrderBy
-    implements
-        Built<GCertEventVarianceOrderBy, GCertEventVarianceOrderByBuilder> {
-  GCertEventVarianceOrderBy._();
-
-  factory GCertEventVarianceOrderBy(
-          [void Function(GCertEventVarianceOrderByBuilder b) updates]) =
-      _$GCertEventVarianceOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GCertEventVarianceOrderBy> get serializer =>
-      _$gCertEventVarianceOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertEventVarianceOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertEventVarianceOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertEventVarianceOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GCertEventVarPopOrderBy
-    implements Built<GCertEventVarPopOrderBy, GCertEventVarPopOrderByBuilder> {
-  GCertEventVarPopOrderBy._();
-
-  factory GCertEventVarPopOrderBy(
-          [void Function(GCertEventVarPopOrderByBuilder b) updates]) =
-      _$GCertEventVarPopOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GCertEventVarPopOrderBy> get serializer =>
-      _$gCertEventVarPopOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertEventVarPopOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertEventVarPopOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertEventVarPopOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GCertEventVarSampOrderBy
-    implements
-        Built<GCertEventVarSampOrderBy, GCertEventVarSampOrderByBuilder> {
-  GCertEventVarSampOrderBy._();
-
-  factory GCertEventVarSampOrderBy(
-          [void Function(GCertEventVarSampOrderByBuilder b) updates]) =
-      _$GCertEventVarSampOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GCertEventVarSampOrderBy> get serializer =>
-      _$gCertEventVarSampOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertEventVarSampOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertEventVarSampOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertEventVarSampOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GCertMaxOrderBy
-    implements Built<GCertMaxOrderBy, GCertMaxOrderByBuilder> {
-  GCertMaxOrderBy._();
-
-  factory GCertMaxOrderBy([void Function(GCertMaxOrderByBuilder b) updates]) =
-      _$GCertMaxOrderBy;
-
-  GOrderBy? get createdInId;
-  GOrderBy? get createdOn;
-  GOrderBy? get expireOn;
-  GOrderBy? get id;
-  GOrderBy? get issuerId;
-  GOrderBy? get receiverId;
-  GOrderBy? get updatedInId;
-  GOrderBy? get updatedOn;
-  static Serializer<GCertMaxOrderBy> get serializer =>
-      _$gCertMaxOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertMaxOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertMaxOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertMaxOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GCertMinOrderBy
-    implements Built<GCertMinOrderBy, GCertMinOrderByBuilder> {
-  GCertMinOrderBy._();
-
-  factory GCertMinOrderBy([void Function(GCertMinOrderByBuilder b) updates]) =
-      _$GCertMinOrderBy;
-
-  GOrderBy? get createdInId;
-  GOrderBy? get createdOn;
-  GOrderBy? get expireOn;
-  GOrderBy? get id;
-  GOrderBy? get issuerId;
-  GOrderBy? get receiverId;
-  GOrderBy? get updatedInId;
-  GOrderBy? get updatedOn;
-  static Serializer<GCertMinOrderBy> get serializer =>
-      _$gCertMinOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertMinOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertMinOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertMinOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GCertOrderBy
-    implements Built<GCertOrderBy, GCertOrderByBuilder> {
-  GCertOrderBy._();
-
-  factory GCertOrderBy([void Function(GCertOrderByBuilder b) updates]) =
-      _$GCertOrderBy;
-
-  GCertEventAggregateOrderBy? get certHistoryAggregate;
-  GEventOrderBy? get createdIn;
-  GOrderBy? get createdInId;
-  GOrderBy? get createdOn;
-  GOrderBy? get expireOn;
-  GOrderBy? get id;
-  GOrderBy? get isActive;
-  GIdentityOrderBy? get issuer;
-  GOrderBy? get issuerId;
-  GIdentityOrderBy? get receiver;
-  GOrderBy? get receiverId;
-  GEventOrderBy? get updatedIn;
-  GOrderBy? get updatedInId;
-  GOrderBy? get updatedOn;
-  static Serializer<GCertOrderBy> get serializer => _$gCertOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertOrderBy.serializer,
-        json,
-      );
-}
-
-class GCertSelectColumn extends EnumClass {
-  const GCertSelectColumn._(String name) : super(name);
-
-  static const GCertSelectColumn createdInId = _$gCertSelectColumncreatedInId;
-
-  static const GCertSelectColumn createdOn = _$gCertSelectColumncreatedOn;
-
-  static const GCertSelectColumn expireOn = _$gCertSelectColumnexpireOn;
-
-  static const GCertSelectColumn id = _$gCertSelectColumnid;
-
-  static const GCertSelectColumn isActive = _$gCertSelectColumnisActive;
-
-  static const GCertSelectColumn issuerId = _$gCertSelectColumnissuerId;
-
-  static const GCertSelectColumn receiverId = _$gCertSelectColumnreceiverId;
-
-  static const GCertSelectColumn updatedInId = _$gCertSelectColumnupdatedInId;
-
-  static const GCertSelectColumn updatedOn = _$gCertSelectColumnupdatedOn;
-
-  static Serializer<GCertSelectColumn> get serializer =>
-      _$gCertSelectColumnSerializer;
-
-  static BuiltSet<GCertSelectColumn> get values => _$gCertSelectColumnValues;
-
-  static GCertSelectColumn valueOf(String name) =>
-      _$gCertSelectColumnValueOf(name);
-}
-
-class GCertSelectColumnCertAggregateBoolExpBool_andArgumentsColumns
-    extends EnumClass {
-  const GCertSelectColumnCertAggregateBoolExpBool_andArgumentsColumns._(
-      String name)
-      : super(name);
-
-  static const GCertSelectColumnCertAggregateBoolExpBool_andArgumentsColumns
-      isActive =
-      _$gCertSelectColumnCertAggregateBoolExpBoolAndArgumentsColumnsisActive;
-
-  static Serializer<
-          GCertSelectColumnCertAggregateBoolExpBool_andArgumentsColumns>
-      get serializer =>
-          _$gCertSelectColumnCertAggregateBoolExpBoolAndArgumentsColumnsSerializer;
-
-  static BuiltSet<GCertSelectColumnCertAggregateBoolExpBool_andArgumentsColumns>
-      get values =>
-          _$gCertSelectColumnCertAggregateBoolExpBoolAndArgumentsColumnsValues;
-
-  static GCertSelectColumnCertAggregateBoolExpBool_andArgumentsColumns valueOf(
-          String name) =>
-      _$gCertSelectColumnCertAggregateBoolExpBoolAndArgumentsColumnsValueOf(
-          name);
-}
-
-class GCertSelectColumnCertAggregateBoolExpBool_orArgumentsColumns
-    extends EnumClass {
-  const GCertSelectColumnCertAggregateBoolExpBool_orArgumentsColumns._(
-      String name)
-      : super(name);
-
-  static const GCertSelectColumnCertAggregateBoolExpBool_orArgumentsColumns
-      isActive =
-      _$gCertSelectColumnCertAggregateBoolExpBoolOrArgumentsColumnsisActive;
-
-  static Serializer<
-          GCertSelectColumnCertAggregateBoolExpBool_orArgumentsColumns>
-      get serializer =>
-          _$gCertSelectColumnCertAggregateBoolExpBoolOrArgumentsColumnsSerializer;
-
-  static BuiltSet<GCertSelectColumnCertAggregateBoolExpBool_orArgumentsColumns>
-      get values =>
-          _$gCertSelectColumnCertAggregateBoolExpBoolOrArgumentsColumnsValues;
-
-  static GCertSelectColumnCertAggregateBoolExpBool_orArgumentsColumns valueOf(
-          String name) =>
-      _$gCertSelectColumnCertAggregateBoolExpBoolOrArgumentsColumnsValueOf(
-          name);
-}
-
-abstract class GCertStddevOrderBy
-    implements Built<GCertStddevOrderBy, GCertStddevOrderByBuilder> {
-  GCertStddevOrderBy._();
-
-  factory GCertStddevOrderBy(
-          [void Function(GCertStddevOrderByBuilder b) updates]) =
-      _$GCertStddevOrderBy;
-
-  GOrderBy? get createdOn;
-  GOrderBy? get expireOn;
-  GOrderBy? get updatedOn;
-  static Serializer<GCertStddevOrderBy> get serializer =>
-      _$gCertStddevOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertStddevOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertStddevOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertStddevOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GCertStddevPopOrderBy
-    implements Built<GCertStddevPopOrderBy, GCertStddevPopOrderByBuilder> {
-  GCertStddevPopOrderBy._();
-
-  factory GCertStddevPopOrderBy(
-          [void Function(GCertStddevPopOrderByBuilder b) updates]) =
-      _$GCertStddevPopOrderBy;
-
-  GOrderBy? get createdOn;
-  GOrderBy? get expireOn;
-  GOrderBy? get updatedOn;
-  static Serializer<GCertStddevPopOrderBy> get serializer =>
-      _$gCertStddevPopOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertStddevPopOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertStddevPopOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertStddevPopOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GCertStddevSampOrderBy
-    implements Built<GCertStddevSampOrderBy, GCertStddevSampOrderByBuilder> {
-  GCertStddevSampOrderBy._();
-
-  factory GCertStddevSampOrderBy(
-          [void Function(GCertStddevSampOrderByBuilder b) updates]) =
-      _$GCertStddevSampOrderBy;
-
-  GOrderBy? get createdOn;
-  GOrderBy? get expireOn;
-  GOrderBy? get updatedOn;
-  static Serializer<GCertStddevSampOrderBy> get serializer =>
-      _$gCertStddevSampOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertStddevSampOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertStddevSampOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertStddevSampOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GCertStreamCursorInput
-    implements Built<GCertStreamCursorInput, GCertStreamCursorInputBuilder> {
-  GCertStreamCursorInput._();
-
-  factory GCertStreamCursorInput(
-          [void Function(GCertStreamCursorInputBuilder b) updates]) =
-      _$GCertStreamCursorInput;
-
-  GCertStreamCursorValueInput get initialValue;
-  GCursorOrdering? get ordering;
-  static Serializer<GCertStreamCursorInput> get serializer =>
-      _$gCertStreamCursorInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertStreamCursorInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertStreamCursorInput? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertStreamCursorInput.serializer,
-        json,
-      );
-}
-
-abstract class GCertStreamCursorValueInput
-    implements
-        Built<GCertStreamCursorValueInput, GCertStreamCursorValueInputBuilder> {
-  GCertStreamCursorValueInput._();
-
-  factory GCertStreamCursorValueInput(
-          [void Function(GCertStreamCursorValueInputBuilder b) updates]) =
-      _$GCertStreamCursorValueInput;
-
-  String? get createdInId;
-  int? get createdOn;
-  int? get expireOn;
   String? get id;
   bool? get isActive;
+  int? get createdOn;
+  int? get updatedOn;
+  int? get expireOn;
   String? get issuerId;
   String? get receiverId;
+  String? get createdInId;
   String? get updatedInId;
-  int? get updatedOn;
-  static Serializer<GCertStreamCursorValueInput> get serializer =>
-      _$gCertStreamCursorValueInputSerializer;
+  static Serializer<GCertCondition> get serializer =>
+      _$gCertConditionSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertStreamCursorValueInput.serializer,
+        GCertCondition.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GCertStreamCursorValueInput? fromJson(Map<String, dynamic> json) =>
+  static GCertCondition? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GCertStreamCursorValueInput.serializer,
+        GCertCondition.serializer,
         json,
       );
 }
 
-abstract class GCertSumOrderBy
-    implements Built<GCertSumOrderBy, GCertSumOrderByBuilder> {
-  GCertSumOrderBy._();
+abstract class GCertEventCondition
+    implements Built<GCertEventCondition, GCertEventConditionBuilder> {
+  GCertEventCondition._();
 
-  factory GCertSumOrderBy([void Function(GCertSumOrderByBuilder b) updates]) =
-      _$GCertSumOrderBy;
+  factory GCertEventCondition(
+          [void Function(GCertEventConditionBuilder b) updates]) =
+      _$GCertEventCondition;
 
-  GOrderBy? get createdOn;
-  GOrderBy? get expireOn;
-  GOrderBy? get updatedOn;
-  static Serializer<GCertSumOrderBy> get serializer =>
-      _$gCertSumOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertSumOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertSumOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertSumOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GCertVarianceOrderBy
-    implements Built<GCertVarianceOrderBy, GCertVarianceOrderByBuilder> {
-  GCertVarianceOrderBy._();
-
-  factory GCertVarianceOrderBy(
-          [void Function(GCertVarianceOrderByBuilder b) updates]) =
-      _$GCertVarianceOrderBy;
-
-  GOrderBy? get createdOn;
-  GOrderBy? get expireOn;
-  GOrderBy? get updatedOn;
-  static Serializer<GCertVarianceOrderBy> get serializer =>
-      _$gCertVarianceOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertVarianceOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertVarianceOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertVarianceOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GCertVarPopOrderBy
-    implements Built<GCertVarPopOrderBy, GCertVarPopOrderByBuilder> {
-  GCertVarPopOrderBy._();
-
-  factory GCertVarPopOrderBy(
-          [void Function(GCertVarPopOrderByBuilder b) updates]) =
-      _$GCertVarPopOrderBy;
-
-  GOrderBy? get createdOn;
-  GOrderBy? get expireOn;
-  GOrderBy? get updatedOn;
-  static Serializer<GCertVarPopOrderBy> get serializer =>
-      _$gCertVarPopOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertVarPopOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertVarPopOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertVarPopOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GCertVarSampOrderBy
-    implements Built<GCertVarSampOrderBy, GCertVarSampOrderByBuilder> {
-  GCertVarSampOrderBy._();
-
-  factory GCertVarSampOrderBy(
-          [void Function(GCertVarSampOrderByBuilder b) updates]) =
-      _$GCertVarSampOrderBy;
-
-  GOrderBy? get createdOn;
-  GOrderBy? get expireOn;
-  GOrderBy? get updatedOn;
-  static Serializer<GCertVarSampOrderBy> get serializer =>
-      _$gCertVarSampOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GCertVarSampOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GCertVarSampOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GCertVarSampOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GChangeOwnerKeyAggregateBoolExp
-    implements
-        Built<GChangeOwnerKeyAggregateBoolExp,
-            GChangeOwnerKeyAggregateBoolExpBuilder> {
-  GChangeOwnerKeyAggregateBoolExp._();
-
-  factory GChangeOwnerKeyAggregateBoolExp(
-          [void Function(GChangeOwnerKeyAggregateBoolExpBuilder b) updates]) =
-      _$GChangeOwnerKeyAggregateBoolExp;
-
-  GchangeOwnerKeyAggregateBoolExpCount? get count;
-  static Serializer<GChangeOwnerKeyAggregateBoolExp> get serializer =>
-      _$gChangeOwnerKeyAggregateBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GChangeOwnerKeyAggregateBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GChangeOwnerKeyAggregateBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GChangeOwnerKeyAggregateBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GchangeOwnerKeyAggregateBoolExpCount
-    implements
-        Built<GchangeOwnerKeyAggregateBoolExpCount,
-            GchangeOwnerKeyAggregateBoolExpCountBuilder> {
-  GchangeOwnerKeyAggregateBoolExpCount._();
-
-  factory GchangeOwnerKeyAggregateBoolExpCount(
-      [void Function(GchangeOwnerKeyAggregateBoolExpCountBuilder b)
-          updates]) = _$GchangeOwnerKeyAggregateBoolExpCount;
-
-  BuiltList<GChangeOwnerKeySelectColumn>? get arguments;
-  bool? get distinct;
-  GChangeOwnerKeyBoolExp? get filter;
-  GIntComparisonExp get predicate;
-  static Serializer<GchangeOwnerKeyAggregateBoolExpCount> get serializer =>
-      _$gchangeOwnerKeyAggregateBoolExpCountSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GchangeOwnerKeyAggregateBoolExpCount.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GchangeOwnerKeyAggregateBoolExpCount? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GchangeOwnerKeyAggregateBoolExpCount.serializer,
-        json,
-      );
-}
-
-abstract class GChangeOwnerKeyAggregateOrderBy
-    implements
-        Built<GChangeOwnerKeyAggregateOrderBy,
-            GChangeOwnerKeyAggregateOrderByBuilder> {
-  GChangeOwnerKeyAggregateOrderBy._();
-
-  factory GChangeOwnerKeyAggregateOrderBy(
-          [void Function(GChangeOwnerKeyAggregateOrderByBuilder b) updates]) =
-      _$GChangeOwnerKeyAggregateOrderBy;
-
-  GChangeOwnerKeyAvgOrderBy? get avg;
-  GOrderBy? get count;
-  GChangeOwnerKeyMaxOrderBy? get max;
-  GChangeOwnerKeyMinOrderBy? get min;
-  GChangeOwnerKeyStddevOrderBy? get stddev;
-  GChangeOwnerKeyStddevPopOrderBy? get stddevPop;
-  GChangeOwnerKeyStddevSampOrderBy? get stddevSamp;
-  GChangeOwnerKeySumOrderBy? get sum;
-  GChangeOwnerKeyVarPopOrderBy? get varPop;
-  GChangeOwnerKeyVarSampOrderBy? get varSamp;
-  GChangeOwnerKeyVarianceOrderBy? get variance;
-  static Serializer<GChangeOwnerKeyAggregateOrderBy> get serializer =>
-      _$gChangeOwnerKeyAggregateOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GChangeOwnerKeyAggregateOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GChangeOwnerKeyAggregateOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GChangeOwnerKeyAggregateOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GChangeOwnerKeyAvgOrderBy
-    implements
-        Built<GChangeOwnerKeyAvgOrderBy, GChangeOwnerKeyAvgOrderByBuilder> {
-  GChangeOwnerKeyAvgOrderBy._();
-
-  factory GChangeOwnerKeyAvgOrderBy(
-          [void Function(GChangeOwnerKeyAvgOrderByBuilder b) updates]) =
-      _$GChangeOwnerKeyAvgOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GChangeOwnerKeyAvgOrderBy> get serializer =>
-      _$gChangeOwnerKeyAvgOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GChangeOwnerKeyAvgOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GChangeOwnerKeyAvgOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GChangeOwnerKeyAvgOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GChangeOwnerKeyBoolExp
-    implements Built<GChangeOwnerKeyBoolExp, GChangeOwnerKeyBoolExpBuilder> {
-  GChangeOwnerKeyBoolExp._();
-
-  factory GChangeOwnerKeyBoolExp(
-          [void Function(GChangeOwnerKeyBoolExpBuilder b) updates]) =
-      _$GChangeOwnerKeyBoolExp;
-
-  @BuiltValueField(wireName: '_and')
-  BuiltList<GChangeOwnerKeyBoolExp>? get G_and;
-  @BuiltValueField(wireName: '_not')
-  GChangeOwnerKeyBoolExp? get G_not;
-  @BuiltValueField(wireName: '_or')
-  BuiltList<GChangeOwnerKeyBoolExp>? get G_or;
-  GIntComparisonExp? get blockNumber;
-  GStringComparisonExp? get id;
-  GIdentityBoolExp? get identity;
-  GStringComparisonExp? get identityId;
-  GAccountBoolExp? get next;
-  GStringComparisonExp? get nextId;
-  GAccountBoolExp? get previous;
-  GStringComparisonExp? get previousId;
-  static Serializer<GChangeOwnerKeyBoolExp> get serializer =>
-      _$gChangeOwnerKeyBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GChangeOwnerKeyBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GChangeOwnerKeyBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GChangeOwnerKeyBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GChangeOwnerKeyMaxOrderBy
-    implements
-        Built<GChangeOwnerKeyMaxOrderBy, GChangeOwnerKeyMaxOrderByBuilder> {
-  GChangeOwnerKeyMaxOrderBy._();
-
-  factory GChangeOwnerKeyMaxOrderBy(
-          [void Function(GChangeOwnerKeyMaxOrderByBuilder b) updates]) =
-      _$GChangeOwnerKeyMaxOrderBy;
-
-  GOrderBy? get blockNumber;
-  GOrderBy? get id;
-  GOrderBy? get identityId;
-  GOrderBy? get nextId;
-  GOrderBy? get previousId;
-  static Serializer<GChangeOwnerKeyMaxOrderBy> get serializer =>
-      _$gChangeOwnerKeyMaxOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GChangeOwnerKeyMaxOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GChangeOwnerKeyMaxOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GChangeOwnerKeyMaxOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GChangeOwnerKeyMinOrderBy
-    implements
-        Built<GChangeOwnerKeyMinOrderBy, GChangeOwnerKeyMinOrderByBuilder> {
-  GChangeOwnerKeyMinOrderBy._();
-
-  factory GChangeOwnerKeyMinOrderBy(
-          [void Function(GChangeOwnerKeyMinOrderByBuilder b) updates]) =
-      _$GChangeOwnerKeyMinOrderBy;
-
-  GOrderBy? get blockNumber;
-  GOrderBy? get id;
-  GOrderBy? get identityId;
-  GOrderBy? get nextId;
-  GOrderBy? get previousId;
-  static Serializer<GChangeOwnerKeyMinOrderBy> get serializer =>
-      _$gChangeOwnerKeyMinOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GChangeOwnerKeyMinOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GChangeOwnerKeyMinOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GChangeOwnerKeyMinOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GChangeOwnerKeyOrderBy
-    implements Built<GChangeOwnerKeyOrderBy, GChangeOwnerKeyOrderByBuilder> {
-  GChangeOwnerKeyOrderBy._();
-
-  factory GChangeOwnerKeyOrderBy(
-          [void Function(GChangeOwnerKeyOrderByBuilder b) updates]) =
-      _$GChangeOwnerKeyOrderBy;
-
-  GOrderBy? get blockNumber;
-  GOrderBy? get id;
-  GIdentityOrderBy? get identity;
-  GOrderBy? get identityId;
-  GAccountOrderBy? get next;
-  GOrderBy? get nextId;
-  GAccountOrderBy? get previous;
-  GOrderBy? get previousId;
-  static Serializer<GChangeOwnerKeyOrderBy> get serializer =>
-      _$gChangeOwnerKeyOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GChangeOwnerKeyOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GChangeOwnerKeyOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GChangeOwnerKeyOrderBy.serializer,
-        json,
-      );
-}
-
-class GChangeOwnerKeySelectColumn extends EnumClass {
-  const GChangeOwnerKeySelectColumn._(String name) : super(name);
-
-  static const GChangeOwnerKeySelectColumn blockNumber =
-      _$gChangeOwnerKeySelectColumnblockNumber;
-
-  static const GChangeOwnerKeySelectColumn id = _$gChangeOwnerKeySelectColumnid;
-
-  static const GChangeOwnerKeySelectColumn identityId =
-      _$gChangeOwnerKeySelectColumnidentityId;
-
-  static const GChangeOwnerKeySelectColumn nextId =
-      _$gChangeOwnerKeySelectColumnnextId;
-
-  static const GChangeOwnerKeySelectColumn previousId =
-      _$gChangeOwnerKeySelectColumnpreviousId;
-
-  static Serializer<GChangeOwnerKeySelectColumn> get serializer =>
-      _$gChangeOwnerKeySelectColumnSerializer;
-
-  static BuiltSet<GChangeOwnerKeySelectColumn> get values =>
-      _$gChangeOwnerKeySelectColumnValues;
-
-  static GChangeOwnerKeySelectColumn valueOf(String name) =>
-      _$gChangeOwnerKeySelectColumnValueOf(name);
-}
-
-abstract class GChangeOwnerKeyStddevOrderBy
-    implements
-        Built<GChangeOwnerKeyStddevOrderBy,
-            GChangeOwnerKeyStddevOrderByBuilder> {
-  GChangeOwnerKeyStddevOrderBy._();
-
-  factory GChangeOwnerKeyStddevOrderBy(
-          [void Function(GChangeOwnerKeyStddevOrderByBuilder b) updates]) =
-      _$GChangeOwnerKeyStddevOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GChangeOwnerKeyStddevOrderBy> get serializer =>
-      _$gChangeOwnerKeyStddevOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GChangeOwnerKeyStddevOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GChangeOwnerKeyStddevOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GChangeOwnerKeyStddevOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GChangeOwnerKeyStddevPopOrderBy
-    implements
-        Built<GChangeOwnerKeyStddevPopOrderBy,
-            GChangeOwnerKeyStddevPopOrderByBuilder> {
-  GChangeOwnerKeyStddevPopOrderBy._();
-
-  factory GChangeOwnerKeyStddevPopOrderBy(
-          [void Function(GChangeOwnerKeyStddevPopOrderByBuilder b) updates]) =
-      _$GChangeOwnerKeyStddevPopOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GChangeOwnerKeyStddevPopOrderBy> get serializer =>
-      _$gChangeOwnerKeyStddevPopOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GChangeOwnerKeyStddevPopOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GChangeOwnerKeyStddevPopOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GChangeOwnerKeyStddevPopOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GChangeOwnerKeyStddevSampOrderBy
-    implements
-        Built<GChangeOwnerKeyStddevSampOrderBy,
-            GChangeOwnerKeyStddevSampOrderByBuilder> {
-  GChangeOwnerKeyStddevSampOrderBy._();
-
-  factory GChangeOwnerKeyStddevSampOrderBy(
-          [void Function(GChangeOwnerKeyStddevSampOrderByBuilder b) updates]) =
-      _$GChangeOwnerKeyStddevSampOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GChangeOwnerKeyStddevSampOrderBy> get serializer =>
-      _$gChangeOwnerKeyStddevSampOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GChangeOwnerKeyStddevSampOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GChangeOwnerKeyStddevSampOrderBy? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GChangeOwnerKeyStddevSampOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GChangeOwnerKeyStreamCursorInput
-    implements
-        Built<GChangeOwnerKeyStreamCursorInput,
-            GChangeOwnerKeyStreamCursorInputBuilder> {
-  GChangeOwnerKeyStreamCursorInput._();
-
-  factory GChangeOwnerKeyStreamCursorInput(
-          [void Function(GChangeOwnerKeyStreamCursorInputBuilder b) updates]) =
-      _$GChangeOwnerKeyStreamCursorInput;
-
-  GChangeOwnerKeyStreamCursorValueInput get initialValue;
-  GCursorOrdering? get ordering;
-  static Serializer<GChangeOwnerKeyStreamCursorInput> get serializer =>
-      _$gChangeOwnerKeyStreamCursorInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GChangeOwnerKeyStreamCursorInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GChangeOwnerKeyStreamCursorInput? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GChangeOwnerKeyStreamCursorInput.serializer,
-        json,
-      );
-}
-
-abstract class GChangeOwnerKeyStreamCursorValueInput
-    implements
-        Built<GChangeOwnerKeyStreamCursorValueInput,
-            GChangeOwnerKeyStreamCursorValueInputBuilder> {
-  GChangeOwnerKeyStreamCursorValueInput._();
-
-  factory GChangeOwnerKeyStreamCursorValueInput(
-      [void Function(GChangeOwnerKeyStreamCursorValueInputBuilder b)
-          updates]) = _$GChangeOwnerKeyStreamCursorValueInput;
-
-  int? get blockNumber;
   String? get id;
+  int? get blockNumber;
+  String? get eventType;
+  String? get certId;
+  String? get eventId;
+  static Serializer<GCertEventCondition> get serializer =>
+      _$gCertEventConditionSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GCertEventCondition.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GCertEventCondition? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GCertEventCondition.serializer,
+        json,
+      );
+}
+
+abstract class GCertEventFilter
+    implements Built<GCertEventFilter, GCertEventFilterBuilder> {
+  GCertEventFilter._();
+
+  factory GCertEventFilter([void Function(GCertEventFilterBuilder b) updates]) =
+      _$GCertEventFilter;
+
+  GStringFilter? get id;
+  GIntFilter? get blockNumber;
+  GStringFilter? get eventType;
+  GStringFilter? get certId;
+  GStringFilter? get eventId;
+  BuiltList<GCertEventFilter>? get and;
+  BuiltList<GCertEventFilter>? get or;
+  GCertEventFilter? get not;
+  static Serializer<GCertEventFilter> get serializer =>
+      _$gCertEventFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GCertEventFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GCertEventFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GCertEventFilter.serializer,
+        json,
+      );
+}
+
+class GCertEventsOrderBy extends EnumClass {
+  const GCertEventsOrderBy._(String name) : super(name);
+
+  static const GCertEventsOrderBy NATURAL = _$gCertEventsOrderByNATURAL;
+
+  static const GCertEventsOrderBy ID_ASC = _$gCertEventsOrderByID_ASC;
+
+  static const GCertEventsOrderBy ID_DESC = _$gCertEventsOrderByID_DESC;
+
+  static const GCertEventsOrderBy BLOCK_NUMBER_ASC =
+      _$gCertEventsOrderByBLOCK_NUMBER_ASC;
+
+  static const GCertEventsOrderBy BLOCK_NUMBER_DESC =
+      _$gCertEventsOrderByBLOCK_NUMBER_DESC;
+
+  static const GCertEventsOrderBy EVENT_TYPE_ASC =
+      _$gCertEventsOrderByEVENT_TYPE_ASC;
+
+  static const GCertEventsOrderBy EVENT_TYPE_DESC =
+      _$gCertEventsOrderByEVENT_TYPE_DESC;
+
+  static const GCertEventsOrderBy CERT_ID_ASC = _$gCertEventsOrderByCERT_ID_ASC;
+
+  static const GCertEventsOrderBy CERT_ID_DESC =
+      _$gCertEventsOrderByCERT_ID_DESC;
+
+  static const GCertEventsOrderBy EVENT_ID_ASC =
+      _$gCertEventsOrderByEVENT_ID_ASC;
+
+  static const GCertEventsOrderBy EVENT_ID_DESC =
+      _$gCertEventsOrderByEVENT_ID_DESC;
+
+  static const GCertEventsOrderBy PRIMARY_KEY_ASC =
+      _$gCertEventsOrderByPRIMARY_KEY_ASC;
+
+  static const GCertEventsOrderBy PRIMARY_KEY_DESC =
+      _$gCertEventsOrderByPRIMARY_KEY_DESC;
+
+  static Serializer<GCertEventsOrderBy> get serializer =>
+      _$gCertEventsOrderBySerializer;
+
+  static BuiltSet<GCertEventsOrderBy> get values => _$gCertEventsOrderByValues;
+
+  static GCertEventsOrderBy valueOf(String name) =>
+      _$gCertEventsOrderByValueOf(name);
+}
+
+abstract class GCertFilter implements Built<GCertFilter, GCertFilterBuilder> {
+  GCertFilter._();
+
+  factory GCertFilter([void Function(GCertFilterBuilder b) updates]) =
+      _$GCertFilter;
+
+  GStringFilter? get id;
+  GBooleanFilter? get isActive;
+  GIntFilter? get createdOn;
+  GIntFilter? get updatedOn;
+  GIntFilter? get expireOn;
+  GStringFilter? get issuerId;
+  GStringFilter? get receiverId;
+  GStringFilter? get createdInId;
+  GStringFilter? get updatedInId;
+  BuiltList<GCertFilter>? get and;
+  BuiltList<GCertFilter>? get or;
+  GCertFilter? get not;
+  static Serializer<GCertFilter> get serializer => _$gCertFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GCertFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GCertFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GCertFilter.serializer,
+        json,
+      );
+}
+
+class GCertsOrderBy extends EnumClass {
+  const GCertsOrderBy._(String name) : super(name);
+
+  static const GCertsOrderBy NATURAL = _$gCertsOrderByNATURAL;
+
+  static const GCertsOrderBy ID_ASC = _$gCertsOrderByID_ASC;
+
+  static const GCertsOrderBy ID_DESC = _$gCertsOrderByID_DESC;
+
+  static const GCertsOrderBy IS_ACTIVE_ASC = _$gCertsOrderByIS_ACTIVE_ASC;
+
+  static const GCertsOrderBy IS_ACTIVE_DESC = _$gCertsOrderByIS_ACTIVE_DESC;
+
+  static const GCertsOrderBy CREATED_ON_ASC = _$gCertsOrderByCREATED_ON_ASC;
+
+  static const GCertsOrderBy CREATED_ON_DESC = _$gCertsOrderByCREATED_ON_DESC;
+
+  static const GCertsOrderBy UPDATED_ON_ASC = _$gCertsOrderByUPDATED_ON_ASC;
+
+  static const GCertsOrderBy UPDATED_ON_DESC = _$gCertsOrderByUPDATED_ON_DESC;
+
+  static const GCertsOrderBy EXPIRE_ON_ASC = _$gCertsOrderByEXPIRE_ON_ASC;
+
+  static const GCertsOrderBy EXPIRE_ON_DESC = _$gCertsOrderByEXPIRE_ON_DESC;
+
+  static const GCertsOrderBy ISSUER_ID_ASC = _$gCertsOrderByISSUER_ID_ASC;
+
+  static const GCertsOrderBy ISSUER_ID_DESC = _$gCertsOrderByISSUER_ID_DESC;
+
+  static const GCertsOrderBy RECEIVER_ID_ASC = _$gCertsOrderByRECEIVER_ID_ASC;
+
+  static const GCertsOrderBy RECEIVER_ID_DESC = _$gCertsOrderByRECEIVER_ID_DESC;
+
+  static const GCertsOrderBy CREATED_IN_ID_ASC =
+      _$gCertsOrderByCREATED_IN_ID_ASC;
+
+  static const GCertsOrderBy CREATED_IN_ID_DESC =
+      _$gCertsOrderByCREATED_IN_ID_DESC;
+
+  static const GCertsOrderBy UPDATED_IN_ID_ASC =
+      _$gCertsOrderByUPDATED_IN_ID_ASC;
+
+  static const GCertsOrderBy UPDATED_IN_ID_DESC =
+      _$gCertsOrderByUPDATED_IN_ID_DESC;
+
+  static const GCertsOrderBy PRIMARY_KEY_ASC = _$gCertsOrderByPRIMARY_KEY_ASC;
+
+  static const GCertsOrderBy PRIMARY_KEY_DESC = _$gCertsOrderByPRIMARY_KEY_DESC;
+
+  static Serializer<GCertsOrderBy> get serializer => _$gCertsOrderBySerializer;
+
+  static BuiltSet<GCertsOrderBy> get values => _$gCertsOrderByValues;
+
+  static GCertsOrderBy valueOf(String name) => _$gCertsOrderByValueOf(name);
+}
+
+abstract class GChangeOwnerKeyCondition
+    implements
+        Built<GChangeOwnerKeyCondition, GChangeOwnerKeyConditionBuilder> {
+  GChangeOwnerKeyCondition._();
+
+  factory GChangeOwnerKeyCondition(
+          [void Function(GChangeOwnerKeyConditionBuilder b) updates]) =
+      _$GChangeOwnerKeyCondition;
+
+  String? get id;
+  int? get blockNumber;
   String? get identityId;
-  String? get nextId;
   String? get previousId;
-  static Serializer<GChangeOwnerKeyStreamCursorValueInput> get serializer =>
-      _$gChangeOwnerKeyStreamCursorValueInputSerializer;
+  String? get nextId;
+  static Serializer<GChangeOwnerKeyCondition> get serializer =>
+      _$gChangeOwnerKeyConditionSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GChangeOwnerKeyStreamCursorValueInput.serializer,
+        GChangeOwnerKeyCondition.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GChangeOwnerKeyStreamCursorValueInput? fromJson(
-          Map<String, dynamic> json) =>
+  static GChangeOwnerKeyCondition? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GChangeOwnerKeyStreamCursorValueInput.serializer,
+        GChangeOwnerKeyCondition.serializer,
         json,
       );
 }
 
-abstract class GChangeOwnerKeySumOrderBy
-    implements
-        Built<GChangeOwnerKeySumOrderBy, GChangeOwnerKeySumOrderByBuilder> {
-  GChangeOwnerKeySumOrderBy._();
+abstract class GChangeOwnerKeyFilter
+    implements Built<GChangeOwnerKeyFilter, GChangeOwnerKeyFilterBuilder> {
+  GChangeOwnerKeyFilter._();
 
-  factory GChangeOwnerKeySumOrderBy(
-          [void Function(GChangeOwnerKeySumOrderByBuilder b) updates]) =
-      _$GChangeOwnerKeySumOrderBy;
+  factory GChangeOwnerKeyFilter(
+          [void Function(GChangeOwnerKeyFilterBuilder b) updates]) =
+      _$GChangeOwnerKeyFilter;
 
-  GOrderBy? get blockNumber;
-  static Serializer<GChangeOwnerKeySumOrderBy> get serializer =>
-      _$gChangeOwnerKeySumOrderBySerializer;
+  GStringFilter? get id;
+  GIntFilter? get blockNumber;
+  GStringFilter? get identityId;
+  GStringFilter? get previousId;
+  GStringFilter? get nextId;
+  BuiltList<GChangeOwnerKeyFilter>? get and;
+  BuiltList<GChangeOwnerKeyFilter>? get or;
+  GChangeOwnerKeyFilter? get not;
+  static Serializer<GChangeOwnerKeyFilter> get serializer =>
+      _$gChangeOwnerKeyFilterSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GChangeOwnerKeySumOrderBy.serializer,
+        GChangeOwnerKeyFilter.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GChangeOwnerKeySumOrderBy? fromJson(Map<String, dynamic> json) =>
+  static GChangeOwnerKeyFilter? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GChangeOwnerKeySumOrderBy.serializer,
+        GChangeOwnerKeyFilter.serializer,
         json,
       );
 }
 
-abstract class GChangeOwnerKeyVarianceOrderBy
-    implements
-        Built<GChangeOwnerKeyVarianceOrderBy,
-            GChangeOwnerKeyVarianceOrderByBuilder> {
-  GChangeOwnerKeyVarianceOrderBy._();
+class GChangeOwnerKeysOrderBy extends EnumClass {
+  const GChangeOwnerKeysOrderBy._(String name) : super(name);
 
-  factory GChangeOwnerKeyVarianceOrderBy(
-          [void Function(GChangeOwnerKeyVarianceOrderByBuilder b) updates]) =
-      _$GChangeOwnerKeyVarianceOrderBy;
+  static const GChangeOwnerKeysOrderBy NATURAL =
+      _$gChangeOwnerKeysOrderByNATURAL;
 
-  GOrderBy? get blockNumber;
-  static Serializer<GChangeOwnerKeyVarianceOrderBy> get serializer =>
-      _$gChangeOwnerKeyVarianceOrderBySerializer;
+  static const GChangeOwnerKeysOrderBy ID_ASC = _$gChangeOwnerKeysOrderByID_ASC;
+
+  static const GChangeOwnerKeysOrderBy ID_DESC =
+      _$gChangeOwnerKeysOrderByID_DESC;
+
+  static const GChangeOwnerKeysOrderBy BLOCK_NUMBER_ASC =
+      _$gChangeOwnerKeysOrderByBLOCK_NUMBER_ASC;
+
+  static const GChangeOwnerKeysOrderBy BLOCK_NUMBER_DESC =
+      _$gChangeOwnerKeysOrderByBLOCK_NUMBER_DESC;
+
+  static const GChangeOwnerKeysOrderBy IDENTITY_ID_ASC =
+      _$gChangeOwnerKeysOrderByIDENTITY_ID_ASC;
+
+  static const GChangeOwnerKeysOrderBy IDENTITY_ID_DESC =
+      _$gChangeOwnerKeysOrderByIDENTITY_ID_DESC;
+
+  static const GChangeOwnerKeysOrderBy PREVIOUS_ID_ASC =
+      _$gChangeOwnerKeysOrderByPREVIOUS_ID_ASC;
+
+  static const GChangeOwnerKeysOrderBy PREVIOUS_ID_DESC =
+      _$gChangeOwnerKeysOrderByPREVIOUS_ID_DESC;
+
+  static const GChangeOwnerKeysOrderBy NEXT_ID_ASC =
+      _$gChangeOwnerKeysOrderByNEXT_ID_ASC;
+
+  static const GChangeOwnerKeysOrderBy NEXT_ID_DESC =
+      _$gChangeOwnerKeysOrderByNEXT_ID_DESC;
+
+  static const GChangeOwnerKeysOrderBy PRIMARY_KEY_ASC =
+      _$gChangeOwnerKeysOrderByPRIMARY_KEY_ASC;
+
+  static const GChangeOwnerKeysOrderBy PRIMARY_KEY_DESC =
+      _$gChangeOwnerKeysOrderByPRIMARY_KEY_DESC;
+
+  static Serializer<GChangeOwnerKeysOrderBy> get serializer =>
+      _$gChangeOwnerKeysOrderBySerializer;
+
+  static BuiltSet<GChangeOwnerKeysOrderBy> get values =>
+      _$gChangeOwnerKeysOrderByValues;
+
+  static GChangeOwnerKeysOrderBy valueOf(String name) =>
+      _$gChangeOwnerKeysOrderByValueOf(name);
+}
+
+abstract class GCursor implements Built<GCursor, GCursorBuilder> {
+  GCursor._();
+
+  factory GCursor([String? value]) =>
+      _$GCursor((b) => value != null ? (b..value = value) : b);
+
+  String get value;
+  @BuiltValueSerializer(custom: true)
+  static Serializer<GCursor> get serializer =>
+      _i2.DefaultScalarSerializer<GCursor>(
+          (Object serialized) => GCursor((serialized as String?)));
+}
+
+abstract class GDatetime implements Built<GDatetime, GDatetimeBuilder> {
+  GDatetime._();
+
+  factory GDatetime([String? value]) =>
+      _$GDatetime((b) => value != null ? (b..value = value) : b);
+
+  String get value;
+  @BuiltValueSerializer(custom: true)
+  static Serializer<GDatetime> get serializer =>
+      _i2.DefaultScalarSerializer<GDatetime>(
+          (Object serialized) => GDatetime((serialized as String?)));
+}
+
+abstract class GDatetimeFilter
+    implements Built<GDatetimeFilter, GDatetimeFilterBuilder> {
+  GDatetimeFilter._();
+
+  factory GDatetimeFilter([void Function(GDatetimeFilterBuilder b) updates]) =
+      _$GDatetimeFilter;
+
+  bool? get isNull;
+  GDatetime? get equalTo;
+  GDatetime? get notEqualTo;
+  GDatetime? get distinctFrom;
+  GDatetime? get notDistinctFrom;
+  @BuiltValueField(wireName: 'in')
+  BuiltList<GDatetime>? get Gin;
+  BuiltList<GDatetime>? get notIn;
+  GDatetime? get lessThan;
+  GDatetime? get lessThanOrEqualTo;
+  GDatetime? get greaterThan;
+  GDatetime? get greaterThanOrEqualTo;
+  static Serializer<GDatetimeFilter> get serializer =>
+      _$gDatetimeFilterSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GChangeOwnerKeyVarianceOrderBy.serializer,
+        GDatetimeFilter.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GChangeOwnerKeyVarianceOrderBy? fromJson(Map<String, dynamic> json) =>
+  static GDatetimeFilter? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GChangeOwnerKeyVarianceOrderBy.serializer,
+        GDatetimeFilter.serializer,
         json,
       );
 }
 
-abstract class GChangeOwnerKeyVarPopOrderBy
-    implements
-        Built<GChangeOwnerKeyVarPopOrderBy,
-            GChangeOwnerKeyVarPopOrderByBuilder> {
-  GChangeOwnerKeyVarPopOrderBy._();
+abstract class GEventCondition
+    implements Built<GEventCondition, GEventConditionBuilder> {
+  GEventCondition._();
 
-  factory GChangeOwnerKeyVarPopOrderBy(
-          [void Function(GChangeOwnerKeyVarPopOrderByBuilder b) updates]) =
-      _$GChangeOwnerKeyVarPopOrderBy;
+  factory GEventCondition([void Function(GEventConditionBuilder b) updates]) =
+      _$GEventCondition;
 
-  GOrderBy? get blockNumber;
-  static Serializer<GChangeOwnerKeyVarPopOrderBy> get serializer =>
-      _$gChangeOwnerKeyVarPopOrderBySerializer;
+  String? get id;
+  int? get index;
+  String? get phase;
+  String? get pallet;
+  String? get name;
+  GJSON? get args;
+  BuiltList<String?>? get argsStr;
+  String? get blockId;
+  String? get extrinsicId;
+  String? get callId;
+  static Serializer<GEventCondition> get serializer =>
+      _$gEventConditionSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GChangeOwnerKeyVarPopOrderBy.serializer,
+        GEventCondition.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GChangeOwnerKeyVarPopOrderBy? fromJson(Map<String, dynamic> json) =>
+  static GEventCondition? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GChangeOwnerKeyVarPopOrderBy.serializer,
+        GEventCondition.serializer,
         json,
       );
 }
 
-abstract class GChangeOwnerKeyVarSampOrderBy
-    implements
-        Built<GChangeOwnerKeyVarSampOrderBy,
-            GChangeOwnerKeyVarSampOrderByBuilder> {
-  GChangeOwnerKeyVarSampOrderBy._();
+abstract class GEventFilter
+    implements Built<GEventFilter, GEventFilterBuilder> {
+  GEventFilter._();
 
-  factory GChangeOwnerKeyVarSampOrderBy(
-          [void Function(GChangeOwnerKeyVarSampOrderByBuilder b) updates]) =
-      _$GChangeOwnerKeyVarSampOrderBy;
+  factory GEventFilter([void Function(GEventFilterBuilder b) updates]) =
+      _$GEventFilter;
 
-  GOrderBy? get blockNumber;
-  static Serializer<GChangeOwnerKeyVarSampOrderBy> get serializer =>
-      _$gChangeOwnerKeyVarSampOrderBySerializer;
+  GStringFilter? get id;
+  GIntFilter? get index;
+  GStringFilter? get phase;
+  GStringFilter? get pallet;
+  GStringFilter? get name;
+  GJSONFilter? get args;
+  GStringListFilter? get argsStr;
+  GStringFilter? get blockId;
+  GStringFilter? get extrinsicId;
+  GStringFilter? get callId;
+  BuiltList<GEventFilter>? get and;
+  BuiltList<GEventFilter>? get or;
+  GEventFilter? get not;
+  static Serializer<GEventFilter> get serializer => _$gEventFilterSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GChangeOwnerKeyVarSampOrderBy.serializer,
+        GEventFilter.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GChangeOwnerKeyVarSampOrderBy? fromJson(Map<String, dynamic> json) =>
+  static GEventFilter? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GChangeOwnerKeyVarSampOrderBy.serializer,
+        GEventFilter.serializer,
         json,
       );
 }
 
-class GCursorOrdering extends EnumClass {
-  const GCursorOrdering._(String name) : super(name);
+class GEventsOrderBy extends EnumClass {
+  const GEventsOrderBy._(String name) : super(name);
 
-  static const GCursorOrdering ASC = _$gCursorOrderingASC;
+  static const GEventsOrderBy NATURAL = _$gEventsOrderByNATURAL;
 
-  static const GCursorOrdering DESC = _$gCursorOrderingDESC;
+  static const GEventsOrderBy ID_ASC = _$gEventsOrderByID_ASC;
 
-  static Serializer<GCursorOrdering> get serializer =>
-      _$gCursorOrderingSerializer;
+  static const GEventsOrderBy ID_DESC = _$gEventsOrderByID_DESC;
 
-  static BuiltSet<GCursorOrdering> get values => _$gCursorOrderingValues;
+  static const GEventsOrderBy INDEX_ASC = _$gEventsOrderByINDEX_ASC;
 
-  static GCursorOrdering valueOf(String name) => _$gCursorOrderingValueOf(name);
+  static const GEventsOrderBy INDEX_DESC = _$gEventsOrderByINDEX_DESC;
+
+  static const GEventsOrderBy PHASE_ASC = _$gEventsOrderByPHASE_ASC;
+
+  static const GEventsOrderBy PHASE_DESC = _$gEventsOrderByPHASE_DESC;
+
+  static const GEventsOrderBy PALLET_ASC = _$gEventsOrderByPALLET_ASC;
+
+  static const GEventsOrderBy PALLET_DESC = _$gEventsOrderByPALLET_DESC;
+
+  static const GEventsOrderBy NAME_ASC = _$gEventsOrderByNAME_ASC;
+
+  static const GEventsOrderBy NAME_DESC = _$gEventsOrderByNAME_DESC;
+
+  static const GEventsOrderBy ARGS_ASC = _$gEventsOrderByARGS_ASC;
+
+  static const GEventsOrderBy ARGS_DESC = _$gEventsOrderByARGS_DESC;
+
+  static const GEventsOrderBy ARGS_STR_ASC = _$gEventsOrderByARGS_STR_ASC;
+
+  static const GEventsOrderBy ARGS_STR_DESC = _$gEventsOrderByARGS_STR_DESC;
+
+  static const GEventsOrderBy BLOCK_ID_ASC = _$gEventsOrderByBLOCK_ID_ASC;
+
+  static const GEventsOrderBy BLOCK_ID_DESC = _$gEventsOrderByBLOCK_ID_DESC;
+
+  static const GEventsOrderBy EXTRINSIC_ID_ASC =
+      _$gEventsOrderByEXTRINSIC_ID_ASC;
+
+  static const GEventsOrderBy EXTRINSIC_ID_DESC =
+      _$gEventsOrderByEXTRINSIC_ID_DESC;
+
+  static const GEventsOrderBy CALL_ID_ASC = _$gEventsOrderByCALL_ID_ASC;
+
+  static const GEventsOrderBy CALL_ID_DESC = _$gEventsOrderByCALL_ID_DESC;
+
+  static const GEventsOrderBy PRIMARY_KEY_ASC = _$gEventsOrderByPRIMARY_KEY_ASC;
+
+  static const GEventsOrderBy PRIMARY_KEY_DESC =
+      _$gEventsOrderByPRIMARY_KEY_DESC;
+
+  static Serializer<GEventsOrderBy> get serializer =>
+      _$gEventsOrderBySerializer;
+
+  static BuiltSet<GEventsOrderBy> get values => _$gEventsOrderByValues;
+
+  static GEventsOrderBy valueOf(String name) => _$gEventsOrderByValueOf(name);
 }
 
-abstract class GEventAggregateBoolExp
-    implements Built<GEventAggregateBoolExp, GEventAggregateBoolExpBuilder> {
-  GEventAggregateBoolExp._();
-
-  factory GEventAggregateBoolExp(
-          [void Function(GEventAggregateBoolExpBuilder b) updates]) =
-      _$GEventAggregateBoolExp;
-
-  GeventAggregateBoolExpCount? get count;
-  static Serializer<GEventAggregateBoolExp> get serializer =>
-      _$gEventAggregateBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GEventAggregateBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GEventAggregateBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GEventAggregateBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GeventAggregateBoolExpCount
-    implements
-        Built<GeventAggregateBoolExpCount, GeventAggregateBoolExpCountBuilder> {
-  GeventAggregateBoolExpCount._();
-
-  factory GeventAggregateBoolExpCount(
-          [void Function(GeventAggregateBoolExpCountBuilder b) updates]) =
-      _$GeventAggregateBoolExpCount;
-
-  BuiltList<GEventSelectColumn>? get arguments;
-  bool? get distinct;
-  GEventBoolExp? get filter;
-  GIntComparisonExp get predicate;
-  static Serializer<GeventAggregateBoolExpCount> get serializer =>
-      _$geventAggregateBoolExpCountSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GeventAggregateBoolExpCount.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GeventAggregateBoolExpCount? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GeventAggregateBoolExpCount.serializer,
-        json,
-      );
-}
-
-abstract class GEventAggregateOrderBy
-    implements Built<GEventAggregateOrderBy, GEventAggregateOrderByBuilder> {
-  GEventAggregateOrderBy._();
-
-  factory GEventAggregateOrderBy(
-          [void Function(GEventAggregateOrderByBuilder b) updates]) =
-      _$GEventAggregateOrderBy;
-
-  GEventAvgOrderBy? get avg;
-  GOrderBy? get count;
-  GEventMaxOrderBy? get max;
-  GEventMinOrderBy? get min;
-  GEventStddevOrderBy? get stddev;
-  GEventStddevPopOrderBy? get stddevPop;
-  GEventStddevSampOrderBy? get stddevSamp;
-  GEventSumOrderBy? get sum;
-  GEventVarPopOrderBy? get varPop;
-  GEventVarSampOrderBy? get varSamp;
-  GEventVarianceOrderBy? get variance;
-  static Serializer<GEventAggregateOrderBy> get serializer =>
-      _$gEventAggregateOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GEventAggregateOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GEventAggregateOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GEventAggregateOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GEventAvgOrderBy
-    implements Built<GEventAvgOrderBy, GEventAvgOrderByBuilder> {
-  GEventAvgOrderBy._();
-
-  factory GEventAvgOrderBy([void Function(GEventAvgOrderByBuilder b) updates]) =
-      _$GEventAvgOrderBy;
-
-  GOrderBy? get index;
-  static Serializer<GEventAvgOrderBy> get serializer =>
-      _$gEventAvgOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GEventAvgOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GEventAvgOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GEventAvgOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GEventBoolExp
-    implements Built<GEventBoolExp, GEventBoolExpBuilder> {
-  GEventBoolExp._();
-
-  factory GEventBoolExp([void Function(GEventBoolExpBuilder b) updates]) =
-      _$GEventBoolExp;
-
-  @BuiltValueField(wireName: '_and')
-  BuiltList<GEventBoolExp>? get G_and;
-  @BuiltValueField(wireName: '_not')
-  GEventBoolExp? get G_not;
-  @BuiltValueField(wireName: '_or')
-  BuiltList<GEventBoolExp>? get G_or;
-  GJsonbComparisonExp? get args;
-  GStringArrayComparisonExp? get argsStr;
-  GBlockBoolExp? get block;
-  GStringComparisonExp? get blockId;
-  GCallBoolExp? get call;
-  GStringComparisonExp? get callId;
-  GExtrinsicBoolExp? get extrinsic;
-  GStringComparisonExp? get extrinsicId;
-  GStringComparisonExp? get id;
-  GIntComparisonExp? get index;
-  GStringComparisonExp? get name;
-  GStringComparisonExp? get pallet;
-  GStringComparisonExp? get phase;
-  static Serializer<GEventBoolExp> get serializer => _$gEventBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GEventBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GEventBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GEventBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GEventMaxOrderBy
-    implements Built<GEventMaxOrderBy, GEventMaxOrderByBuilder> {
-  GEventMaxOrderBy._();
-
-  factory GEventMaxOrderBy([void Function(GEventMaxOrderByBuilder b) updates]) =
-      _$GEventMaxOrderBy;
-
-  GOrderBy? get argsStr;
-  GOrderBy? get blockId;
-  GOrderBy? get callId;
-  GOrderBy? get extrinsicId;
-  GOrderBy? get id;
-  GOrderBy? get index;
-  GOrderBy? get name;
-  GOrderBy? get pallet;
-  GOrderBy? get phase;
-  static Serializer<GEventMaxOrderBy> get serializer =>
-      _$gEventMaxOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GEventMaxOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GEventMaxOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GEventMaxOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GEventMinOrderBy
-    implements Built<GEventMinOrderBy, GEventMinOrderByBuilder> {
-  GEventMinOrderBy._();
-
-  factory GEventMinOrderBy([void Function(GEventMinOrderByBuilder b) updates]) =
-      _$GEventMinOrderBy;
-
-  GOrderBy? get argsStr;
-  GOrderBy? get blockId;
-  GOrderBy? get callId;
-  GOrderBy? get extrinsicId;
-  GOrderBy? get id;
-  GOrderBy? get index;
-  GOrderBy? get name;
-  GOrderBy? get pallet;
-  GOrderBy? get phase;
-  static Serializer<GEventMinOrderBy> get serializer =>
-      _$gEventMinOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GEventMinOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GEventMinOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GEventMinOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GEventOrderBy
-    implements Built<GEventOrderBy, GEventOrderByBuilder> {
-  GEventOrderBy._();
-
-  factory GEventOrderBy([void Function(GEventOrderByBuilder b) updates]) =
-      _$GEventOrderBy;
-
-  GOrderBy? get args;
-  GOrderBy? get argsStr;
-  GBlockOrderBy? get block;
-  GOrderBy? get blockId;
-  GCallOrderBy? get call;
-  GOrderBy? get callId;
-  GExtrinsicOrderBy? get extrinsic;
-  GOrderBy? get extrinsicId;
-  GOrderBy? get id;
-  GOrderBy? get index;
-  GOrderBy? get name;
-  GOrderBy? get pallet;
-  GOrderBy? get phase;
-  static Serializer<GEventOrderBy> get serializer => _$gEventOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GEventOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GEventOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GEventOrderBy.serializer,
-        json,
-      );
-}
-
-class GEventSelectColumn extends EnumClass {
-  const GEventSelectColumn._(String name) : super(name);
-
-  static const GEventSelectColumn args = _$gEventSelectColumnargs;
-
-  static const GEventSelectColumn argsStr = _$gEventSelectColumnargsStr;
-
-  static const GEventSelectColumn blockId = _$gEventSelectColumnblockId;
-
-  static const GEventSelectColumn callId = _$gEventSelectColumncallId;
-
-  static const GEventSelectColumn extrinsicId = _$gEventSelectColumnextrinsicId;
-
-  static const GEventSelectColumn id = _$gEventSelectColumnid;
-
-  static const GEventSelectColumn index = _$gEventSelectColumnindex;
-
-  @BuiltValueEnumConst(wireName: 'name')
-  static const GEventSelectColumn Gname = _$gEventSelectColumnGname;
-
-  static const GEventSelectColumn pallet = _$gEventSelectColumnpallet;
-
-  static const GEventSelectColumn phase = _$gEventSelectColumnphase;
-
-  static Serializer<GEventSelectColumn> get serializer =>
-      _$gEventSelectColumnSerializer;
-
-  static BuiltSet<GEventSelectColumn> get values => _$gEventSelectColumnValues;
-
-  static GEventSelectColumn valueOf(String name) =>
-      _$gEventSelectColumnValueOf(name);
-}
-
-abstract class GEventStddevOrderBy
-    implements Built<GEventStddevOrderBy, GEventStddevOrderByBuilder> {
-  GEventStddevOrderBy._();
-
-  factory GEventStddevOrderBy(
-          [void Function(GEventStddevOrderByBuilder b) updates]) =
-      _$GEventStddevOrderBy;
-
-  GOrderBy? get index;
-  static Serializer<GEventStddevOrderBy> get serializer =>
-      _$gEventStddevOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GEventStddevOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GEventStddevOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GEventStddevOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GEventStddevPopOrderBy
-    implements Built<GEventStddevPopOrderBy, GEventStddevPopOrderByBuilder> {
-  GEventStddevPopOrderBy._();
-
-  factory GEventStddevPopOrderBy(
-          [void Function(GEventStddevPopOrderByBuilder b) updates]) =
-      _$GEventStddevPopOrderBy;
-
-  GOrderBy? get index;
-  static Serializer<GEventStddevPopOrderBy> get serializer =>
-      _$gEventStddevPopOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GEventStddevPopOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GEventStddevPopOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GEventStddevPopOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GEventStddevSampOrderBy
-    implements Built<GEventStddevSampOrderBy, GEventStddevSampOrderByBuilder> {
-  GEventStddevSampOrderBy._();
-
-  factory GEventStddevSampOrderBy(
-          [void Function(GEventStddevSampOrderByBuilder b) updates]) =
-      _$GEventStddevSampOrderBy;
-
-  GOrderBy? get index;
-  static Serializer<GEventStddevSampOrderBy> get serializer =>
-      _$gEventStddevSampOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GEventStddevSampOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GEventStddevSampOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GEventStddevSampOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GEventStreamCursorInput
-    implements Built<GEventStreamCursorInput, GEventStreamCursorInputBuilder> {
-  GEventStreamCursorInput._();
-
-  factory GEventStreamCursorInput(
-          [void Function(GEventStreamCursorInputBuilder b) updates]) =
-      _$GEventStreamCursorInput;
-
-  GEventStreamCursorValueInput get initialValue;
-  GCursorOrdering? get ordering;
-  static Serializer<GEventStreamCursorInput> get serializer =>
-      _$gEventStreamCursorInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GEventStreamCursorInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GEventStreamCursorInput? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GEventStreamCursorInput.serializer,
-        json,
-      );
-}
-
-abstract class GEventStreamCursorValueInput
-    implements
-        Built<GEventStreamCursorValueInput,
-            GEventStreamCursorValueInputBuilder> {
-  GEventStreamCursorValueInput._();
-
-  factory GEventStreamCursorValueInput(
-          [void Function(GEventStreamCursorValueInputBuilder b) updates]) =
-      _$GEventStreamCursorValueInput;
-
-  _i3.JsonObject? get args;
-  BuiltList<String>? get argsStr;
+abstract class GExtrinsicCondition
+    implements Built<GExtrinsicCondition, GExtrinsicConditionBuilder> {
+  GExtrinsicCondition._();
+
+  factory GExtrinsicCondition(
+          [void Function(GExtrinsicConditionBuilder b) updates]) =
+      _$GExtrinsicCondition;
+
+  String? get id;
+  int? get index;
+  int? get version;
+  GJSON? get signature;
+  GBigFloat? get tip;
+  GBigFloat? get fee;
+  bool? get success;
+  GJSON? get error;
+  String? get hash;
   String? get blockId;
   String? get callId;
-  String? get extrinsicId;
+  static Serializer<GExtrinsicCondition> get serializer =>
+      _$gExtrinsicConditionSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GExtrinsicCondition.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GExtrinsicCondition? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GExtrinsicCondition.serializer,
+        json,
+      );
+}
+
+abstract class GExtrinsicFilter
+    implements Built<GExtrinsicFilter, GExtrinsicFilterBuilder> {
+  GExtrinsicFilter._();
+
+  factory GExtrinsicFilter([void Function(GExtrinsicFilterBuilder b) updates]) =
+      _$GExtrinsicFilter;
+
+  GStringFilter? get id;
+  GIntFilter? get index;
+  GIntFilter? get version;
+  GJSONFilter? get signature;
+  GBigFloatFilter? get tip;
+  GBigFloatFilter? get fee;
+  GBooleanFilter? get success;
+  GJSONFilter? get error;
+  GStringFilter? get blockId;
+  GStringFilter? get callId;
+  BuiltList<GExtrinsicFilter>? get and;
+  BuiltList<GExtrinsicFilter>? get or;
+  GExtrinsicFilter? get not;
+  static Serializer<GExtrinsicFilter> get serializer =>
+      _$gExtrinsicFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GExtrinsicFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GExtrinsicFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GExtrinsicFilter.serializer,
+        json,
+      );
+}
+
+class GExtrinsicsOrderBy extends EnumClass {
+  const GExtrinsicsOrderBy._(String name) : super(name);
+
+  static const GExtrinsicsOrderBy NATURAL = _$gExtrinsicsOrderByNATURAL;
+
+  static const GExtrinsicsOrderBy ID_ASC = _$gExtrinsicsOrderByID_ASC;
+
+  static const GExtrinsicsOrderBy ID_DESC = _$gExtrinsicsOrderByID_DESC;
+
+  static const GExtrinsicsOrderBy INDEX_ASC = _$gExtrinsicsOrderByINDEX_ASC;
+
+  static const GExtrinsicsOrderBy INDEX_DESC = _$gExtrinsicsOrderByINDEX_DESC;
+
+  static const GExtrinsicsOrderBy VERSION_ASC = _$gExtrinsicsOrderByVERSION_ASC;
+
+  static const GExtrinsicsOrderBy VERSION_DESC =
+      _$gExtrinsicsOrderByVERSION_DESC;
+
+  static const GExtrinsicsOrderBy SIGNATURE_ASC =
+      _$gExtrinsicsOrderBySIGNATURE_ASC;
+
+  static const GExtrinsicsOrderBy SIGNATURE_DESC =
+      _$gExtrinsicsOrderBySIGNATURE_DESC;
+
+  static const GExtrinsicsOrderBy TIP_ASC = _$gExtrinsicsOrderByTIP_ASC;
+
+  static const GExtrinsicsOrderBy TIP_DESC = _$gExtrinsicsOrderByTIP_DESC;
+
+  static const GExtrinsicsOrderBy FEE_ASC = _$gExtrinsicsOrderByFEE_ASC;
+
+  static const GExtrinsicsOrderBy FEE_DESC = _$gExtrinsicsOrderByFEE_DESC;
+
+  static const GExtrinsicsOrderBy SUCCESS_ASC = _$gExtrinsicsOrderBySUCCESS_ASC;
+
+  static const GExtrinsicsOrderBy SUCCESS_DESC =
+      _$gExtrinsicsOrderBySUCCESS_DESC;
+
+  static const GExtrinsicsOrderBy ERROR_ASC = _$gExtrinsicsOrderByERROR_ASC;
+
+  static const GExtrinsicsOrderBy ERROR_DESC = _$gExtrinsicsOrderByERROR_DESC;
+
+  static const GExtrinsicsOrderBy HASH_ASC = _$gExtrinsicsOrderByHASH_ASC;
+
+  static const GExtrinsicsOrderBy HASH_DESC = _$gExtrinsicsOrderByHASH_DESC;
+
+  static const GExtrinsicsOrderBy BLOCK_ID_ASC =
+      _$gExtrinsicsOrderByBLOCK_ID_ASC;
+
+  static const GExtrinsicsOrderBy BLOCK_ID_DESC =
+      _$gExtrinsicsOrderByBLOCK_ID_DESC;
+
+  static const GExtrinsicsOrderBy CALL_ID_ASC = _$gExtrinsicsOrderByCALL_ID_ASC;
+
+  static const GExtrinsicsOrderBy CALL_ID_DESC =
+      _$gExtrinsicsOrderByCALL_ID_DESC;
+
+  static const GExtrinsicsOrderBy PRIMARY_KEY_ASC =
+      _$gExtrinsicsOrderByPRIMARY_KEY_ASC;
+
+  static const GExtrinsicsOrderBy PRIMARY_KEY_DESC =
+      _$gExtrinsicsOrderByPRIMARY_KEY_DESC;
+
+  static Serializer<GExtrinsicsOrderBy> get serializer =>
+      _$gExtrinsicsOrderBySerializer;
+
+  static BuiltSet<GExtrinsicsOrderBy> get values => _$gExtrinsicsOrderByValues;
+
+  static GExtrinsicsOrderBy valueOf(String name) =>
+      _$gExtrinsicsOrderByValueOf(name);
+}
+
+class GIdentitiesOrderBy extends EnumClass {
+  const GIdentitiesOrderBy._(String name) : super(name);
+
+  static const GIdentitiesOrderBy NATURAL = _$gIdentitiesOrderByNATURAL;
+
+  static const GIdentitiesOrderBy ID_ASC = _$gIdentitiesOrderByID_ASC;
+
+  static const GIdentitiesOrderBy ID_DESC = _$gIdentitiesOrderByID_DESC;
+
+  static const GIdentitiesOrderBy INDEX_ASC = _$gIdentitiesOrderByINDEX_ASC;
+
+  static const GIdentitiesOrderBy INDEX_DESC = _$gIdentitiesOrderByINDEX_DESC;
+
+  static const GIdentitiesOrderBy NAME_ASC = _$gIdentitiesOrderByNAME_ASC;
+
+  static const GIdentitiesOrderBy NAME_DESC = _$gIdentitiesOrderByNAME_DESC;
+
+  static const GIdentitiesOrderBy STATUS_ASC = _$gIdentitiesOrderBySTATUS_ASC;
+
+  static const GIdentitiesOrderBy STATUS_DESC = _$gIdentitiesOrderBySTATUS_DESC;
+
+  static const GIdentitiesOrderBy CREATED_ON_ASC =
+      _$gIdentitiesOrderByCREATED_ON_ASC;
+
+  static const GIdentitiesOrderBy CREATED_ON_DESC =
+      _$gIdentitiesOrderByCREATED_ON_DESC;
+
+  static const GIdentitiesOrderBy LAST_CHANGE_ON_ASC =
+      _$gIdentitiesOrderByLAST_CHANGE_ON_ASC;
+
+  static const GIdentitiesOrderBy LAST_CHANGE_ON_DESC =
+      _$gIdentitiesOrderByLAST_CHANGE_ON_DESC;
+
+  static const GIdentitiesOrderBy IS_MEMBER_ASC =
+      _$gIdentitiesOrderByIS_MEMBER_ASC;
+
+  static const GIdentitiesOrderBy IS_MEMBER_DESC =
+      _$gIdentitiesOrderByIS_MEMBER_DESC;
+
+  static const GIdentitiesOrderBy EXPIRE_ON_ASC =
+      _$gIdentitiesOrderByEXPIRE_ON_ASC;
+
+  static const GIdentitiesOrderBy EXPIRE_ON_DESC =
+      _$gIdentitiesOrderByEXPIRE_ON_DESC;
+
+  static const GIdentitiesOrderBy FIRST_ELIGIBLE_UD_ASC =
+      _$gIdentitiesOrderByFIRST_ELIGIBLE_UD_ASC;
+
+  static const GIdentitiesOrderBy FIRST_ELIGIBLE_UD_DESC =
+      _$gIdentitiesOrderByFIRST_ELIGIBLE_UD_DESC;
+
+  static const GIdentitiesOrderBy ACCOUNT_ID_ASC =
+      _$gIdentitiesOrderByACCOUNT_ID_ASC;
+
+  static const GIdentitiesOrderBy ACCOUNT_ID_DESC =
+      _$gIdentitiesOrderByACCOUNT_ID_DESC;
+
+  static const GIdentitiesOrderBy ACCOUNT_REMOVED_ID_ASC =
+      _$gIdentitiesOrderByACCOUNT_REMOVED_ID_ASC;
+
+  static const GIdentitiesOrderBy ACCOUNT_REMOVED_ID_DESC =
+      _$gIdentitiesOrderByACCOUNT_REMOVED_ID_DESC;
+
+  static const GIdentitiesOrderBy CREATED_IN_ID_ASC =
+      _$gIdentitiesOrderByCREATED_IN_ID_ASC;
+
+  static const GIdentitiesOrderBy CREATED_IN_ID_DESC =
+      _$gIdentitiesOrderByCREATED_IN_ID_DESC;
+
+  static const GIdentitiesOrderBy PRIMARY_KEY_ASC =
+      _$gIdentitiesOrderByPRIMARY_KEY_ASC;
+
+  static const GIdentitiesOrderBy PRIMARY_KEY_DESC =
+      _$gIdentitiesOrderByPRIMARY_KEY_DESC;
+
+  static Serializer<GIdentitiesOrderBy> get serializer =>
+      _$gIdentitiesOrderBySerializer;
+
+  static BuiltSet<GIdentitiesOrderBy> get values => _$gIdentitiesOrderByValues;
+
+  static GIdentitiesOrderBy valueOf(String name) =>
+      _$gIdentitiesOrderByValueOf(name);
+}
+
+abstract class GIdentityCondition
+    implements Built<GIdentityCondition, GIdentityConditionBuilder> {
+  GIdentityCondition._();
+
+  factory GIdentityCondition(
+          [void Function(GIdentityConditionBuilder b) updates]) =
+      _$GIdentityCondition;
+
   String? get id;
   int? get index;
   String? get name;
-  String? get pallet;
-  String? get phase;
-  static Serializer<GEventStreamCursorValueInput> get serializer =>
-      _$gEventStreamCursorValueInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GEventStreamCursorValueInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GEventStreamCursorValueInput? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GEventStreamCursorValueInput.serializer,
-        json,
-      );
-}
-
-abstract class GEventSumOrderBy
-    implements Built<GEventSumOrderBy, GEventSumOrderByBuilder> {
-  GEventSumOrderBy._();
-
-  factory GEventSumOrderBy([void Function(GEventSumOrderByBuilder b) updates]) =
-      _$GEventSumOrderBy;
-
-  GOrderBy? get index;
-  static Serializer<GEventSumOrderBy> get serializer =>
-      _$gEventSumOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GEventSumOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GEventSumOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GEventSumOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GEventVarianceOrderBy
-    implements Built<GEventVarianceOrderBy, GEventVarianceOrderByBuilder> {
-  GEventVarianceOrderBy._();
-
-  factory GEventVarianceOrderBy(
-          [void Function(GEventVarianceOrderByBuilder b) updates]) =
-      _$GEventVarianceOrderBy;
-
-  GOrderBy? get index;
-  static Serializer<GEventVarianceOrderBy> get serializer =>
-      _$gEventVarianceOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GEventVarianceOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GEventVarianceOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GEventVarianceOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GEventVarPopOrderBy
-    implements Built<GEventVarPopOrderBy, GEventVarPopOrderByBuilder> {
-  GEventVarPopOrderBy._();
-
-  factory GEventVarPopOrderBy(
-          [void Function(GEventVarPopOrderByBuilder b) updates]) =
-      _$GEventVarPopOrderBy;
-
-  GOrderBy? get index;
-  static Serializer<GEventVarPopOrderBy> get serializer =>
-      _$gEventVarPopOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GEventVarPopOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GEventVarPopOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GEventVarPopOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GEventVarSampOrderBy
-    implements Built<GEventVarSampOrderBy, GEventVarSampOrderByBuilder> {
-  GEventVarSampOrderBy._();
-
-  factory GEventVarSampOrderBy(
-          [void Function(GEventVarSampOrderByBuilder b) updates]) =
-      _$GEventVarSampOrderBy;
-
-  GOrderBy? get index;
-  static Serializer<GEventVarSampOrderBy> get serializer =>
-      _$gEventVarSampOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GEventVarSampOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GEventVarSampOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GEventVarSampOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GExtrinsicAggregateBoolExp
-    implements
-        Built<GExtrinsicAggregateBoolExp, GExtrinsicAggregateBoolExpBuilder> {
-  GExtrinsicAggregateBoolExp._();
-
-  factory GExtrinsicAggregateBoolExp(
-          [void Function(GExtrinsicAggregateBoolExpBuilder b) updates]) =
-      _$GExtrinsicAggregateBoolExp;
-
-  GextrinsicAggregateBoolExpBool_and? get bool_and;
-  GextrinsicAggregateBoolExpBool_or? get bool_or;
-  GextrinsicAggregateBoolExpCount? get count;
-  static Serializer<GExtrinsicAggregateBoolExp> get serializer =>
-      _$gExtrinsicAggregateBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GExtrinsicAggregateBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GExtrinsicAggregateBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GExtrinsicAggregateBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GextrinsicAggregateBoolExpBool_and
-    implements
-        Built<GextrinsicAggregateBoolExpBool_and,
-            GextrinsicAggregateBoolExpBool_andBuilder> {
-  GextrinsicAggregateBoolExpBool_and._();
-
-  factory GextrinsicAggregateBoolExpBool_and(
-      [void Function(GextrinsicAggregateBoolExpBool_andBuilder b)
-          updates]) = _$GextrinsicAggregateBoolExpBool_and;
-
-  GExtrinsicSelectColumnExtrinsicAggregateBoolExpBool_andArgumentsColumns
-      get arguments;
-  bool? get distinct;
-  GExtrinsicBoolExp? get filter;
-  GBooleanComparisonExp get predicate;
-  static Serializer<GextrinsicAggregateBoolExpBool_and> get serializer =>
-      _$gextrinsicAggregateBoolExpBoolAndSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GextrinsicAggregateBoolExpBool_and.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GextrinsicAggregateBoolExpBool_and? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GextrinsicAggregateBoolExpBool_and.serializer,
-        json,
-      );
-}
-
-abstract class GextrinsicAggregateBoolExpBool_or
-    implements
-        Built<GextrinsicAggregateBoolExpBool_or,
-            GextrinsicAggregateBoolExpBool_orBuilder> {
-  GextrinsicAggregateBoolExpBool_or._();
-
-  factory GextrinsicAggregateBoolExpBool_or(
-          [void Function(GextrinsicAggregateBoolExpBool_orBuilder b) updates]) =
-      _$GextrinsicAggregateBoolExpBool_or;
-
-  GExtrinsicSelectColumnExtrinsicAggregateBoolExpBool_orArgumentsColumns
-      get arguments;
-  bool? get distinct;
-  GExtrinsicBoolExp? get filter;
-  GBooleanComparisonExp get predicate;
-  static Serializer<GextrinsicAggregateBoolExpBool_or> get serializer =>
-      _$gextrinsicAggregateBoolExpBoolOrSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GextrinsicAggregateBoolExpBool_or.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GextrinsicAggregateBoolExpBool_or? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GextrinsicAggregateBoolExpBool_or.serializer,
-        json,
-      );
-}
-
-abstract class GextrinsicAggregateBoolExpCount
-    implements
-        Built<GextrinsicAggregateBoolExpCount,
-            GextrinsicAggregateBoolExpCountBuilder> {
-  GextrinsicAggregateBoolExpCount._();
-
-  factory GextrinsicAggregateBoolExpCount(
-          [void Function(GextrinsicAggregateBoolExpCountBuilder b) updates]) =
-      _$GextrinsicAggregateBoolExpCount;
-
-  BuiltList<GExtrinsicSelectColumn>? get arguments;
-  bool? get distinct;
-  GExtrinsicBoolExp? get filter;
-  GIntComparisonExp get predicate;
-  static Serializer<GextrinsicAggregateBoolExpCount> get serializer =>
-      _$gextrinsicAggregateBoolExpCountSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GextrinsicAggregateBoolExpCount.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GextrinsicAggregateBoolExpCount? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GextrinsicAggregateBoolExpCount.serializer,
-        json,
-      );
-}
-
-abstract class GExtrinsicAggregateOrderBy
-    implements
-        Built<GExtrinsicAggregateOrderBy, GExtrinsicAggregateOrderByBuilder> {
-  GExtrinsicAggregateOrderBy._();
-
-  factory GExtrinsicAggregateOrderBy(
-          [void Function(GExtrinsicAggregateOrderByBuilder b) updates]) =
-      _$GExtrinsicAggregateOrderBy;
-
-  GExtrinsicAvgOrderBy? get avg;
-  GOrderBy? get count;
-  GExtrinsicMaxOrderBy? get max;
-  GExtrinsicMinOrderBy? get min;
-  GExtrinsicStddevOrderBy? get stddev;
-  GExtrinsicStddevPopOrderBy? get stddevPop;
-  GExtrinsicStddevSampOrderBy? get stddevSamp;
-  GExtrinsicSumOrderBy? get sum;
-  GExtrinsicVarPopOrderBy? get varPop;
-  GExtrinsicVarSampOrderBy? get varSamp;
-  GExtrinsicVarianceOrderBy? get variance;
-  static Serializer<GExtrinsicAggregateOrderBy> get serializer =>
-      _$gExtrinsicAggregateOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GExtrinsicAggregateOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GExtrinsicAggregateOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GExtrinsicAggregateOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GExtrinsicAvgOrderBy
-    implements Built<GExtrinsicAvgOrderBy, GExtrinsicAvgOrderByBuilder> {
-  GExtrinsicAvgOrderBy._();
-
-  factory GExtrinsicAvgOrderBy(
-          [void Function(GExtrinsicAvgOrderByBuilder b) updates]) =
-      _$GExtrinsicAvgOrderBy;
-
-  GOrderBy? get fee;
-  GOrderBy? get index;
-  GOrderBy? get tip;
-  GOrderBy? get version;
-  static Serializer<GExtrinsicAvgOrderBy> get serializer =>
-      _$gExtrinsicAvgOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GExtrinsicAvgOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GExtrinsicAvgOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GExtrinsicAvgOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GExtrinsicBoolExp
-    implements Built<GExtrinsicBoolExp, GExtrinsicBoolExpBuilder> {
-  GExtrinsicBoolExp._();
-
-  factory GExtrinsicBoolExp(
-          [void Function(GExtrinsicBoolExpBuilder b) updates]) =
-      _$GExtrinsicBoolExp;
-
-  @BuiltValueField(wireName: '_and')
-  BuiltList<GExtrinsicBoolExp>? get G_and;
-  @BuiltValueField(wireName: '_not')
-  GExtrinsicBoolExp? get G_not;
-  @BuiltValueField(wireName: '_or')
-  BuiltList<GExtrinsicBoolExp>? get G_or;
-  GBlockBoolExp? get block;
-  GStringComparisonExp? get blockId;
-  GCallBoolExp? get call;
-  GStringComparisonExp? get callId;
-  GCallBoolExp? get calls;
-  GCallAggregateBoolExp? get callsAggregate;
-  GJsonbComparisonExp? get error;
-  GEventBoolExp? get events;
-  GEventAggregateBoolExp? get eventsAggregate;
-  GNumericComparisonExp? get fee;
-  GByteaComparisonExp? get hash;
-  GStringComparisonExp? get id;
-  GIntComparisonExp? get index;
-  GJsonbComparisonExp? get signature;
-  GBooleanComparisonExp? get success;
-  GNumericComparisonExp? get tip;
-  GIntComparisonExp? get version;
-  static Serializer<GExtrinsicBoolExp> get serializer =>
-      _$gExtrinsicBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GExtrinsicBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GExtrinsicBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GExtrinsicBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GExtrinsicMaxOrderBy
-    implements Built<GExtrinsicMaxOrderBy, GExtrinsicMaxOrderByBuilder> {
-  GExtrinsicMaxOrderBy._();
-
-  factory GExtrinsicMaxOrderBy(
-          [void Function(GExtrinsicMaxOrderByBuilder b) updates]) =
-      _$GExtrinsicMaxOrderBy;
-
-  GOrderBy? get blockId;
-  GOrderBy? get callId;
-  GOrderBy? get fee;
-  GOrderBy? get id;
-  GOrderBy? get index;
-  GOrderBy? get tip;
-  GOrderBy? get version;
-  static Serializer<GExtrinsicMaxOrderBy> get serializer =>
-      _$gExtrinsicMaxOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GExtrinsicMaxOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GExtrinsicMaxOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GExtrinsicMaxOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GExtrinsicMinOrderBy
-    implements Built<GExtrinsicMinOrderBy, GExtrinsicMinOrderByBuilder> {
-  GExtrinsicMinOrderBy._();
-
-  factory GExtrinsicMinOrderBy(
-          [void Function(GExtrinsicMinOrderByBuilder b) updates]) =
-      _$GExtrinsicMinOrderBy;
-
-  GOrderBy? get blockId;
-  GOrderBy? get callId;
-  GOrderBy? get fee;
-  GOrderBy? get id;
-  GOrderBy? get index;
-  GOrderBy? get tip;
-  GOrderBy? get version;
-  static Serializer<GExtrinsicMinOrderBy> get serializer =>
-      _$gExtrinsicMinOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GExtrinsicMinOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GExtrinsicMinOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GExtrinsicMinOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GExtrinsicOrderBy
-    implements Built<GExtrinsicOrderBy, GExtrinsicOrderByBuilder> {
-  GExtrinsicOrderBy._();
-
-  factory GExtrinsicOrderBy(
-          [void Function(GExtrinsicOrderByBuilder b) updates]) =
-      _$GExtrinsicOrderBy;
-
-  GBlockOrderBy? get block;
-  GOrderBy? get blockId;
-  GCallOrderBy? get call;
-  GOrderBy? get callId;
-  GCallAggregateOrderBy? get callsAggregate;
-  GOrderBy? get error;
-  GEventAggregateOrderBy? get eventsAggregate;
-  GOrderBy? get fee;
-  GOrderBy? get hash;
-  GOrderBy? get id;
-  GOrderBy? get index;
-  GOrderBy? get signature;
-  GOrderBy? get success;
-  GOrderBy? get tip;
-  GOrderBy? get version;
-  static Serializer<GExtrinsicOrderBy> get serializer =>
-      _$gExtrinsicOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GExtrinsicOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GExtrinsicOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GExtrinsicOrderBy.serializer,
-        json,
-      );
-}
-
-class GExtrinsicSelectColumn extends EnumClass {
-  const GExtrinsicSelectColumn._(String name) : super(name);
-
-  static const GExtrinsicSelectColumn blockId = _$gExtrinsicSelectColumnblockId;
-
-  static const GExtrinsicSelectColumn callId = _$gExtrinsicSelectColumncallId;
-
-  static const GExtrinsicSelectColumn error = _$gExtrinsicSelectColumnerror;
-
-  static const GExtrinsicSelectColumn fee = _$gExtrinsicSelectColumnfee;
-
-  static const GExtrinsicSelectColumn hash = _$gExtrinsicSelectColumnhash;
-
-  static const GExtrinsicSelectColumn id = _$gExtrinsicSelectColumnid;
-
-  static const GExtrinsicSelectColumn index = _$gExtrinsicSelectColumnindex;
-
-  static const GExtrinsicSelectColumn signature =
-      _$gExtrinsicSelectColumnsignature;
-
-  static const GExtrinsicSelectColumn success = _$gExtrinsicSelectColumnsuccess;
-
-  static const GExtrinsicSelectColumn tip = _$gExtrinsicSelectColumntip;
-
-  static const GExtrinsicSelectColumn version = _$gExtrinsicSelectColumnversion;
-
-  static Serializer<GExtrinsicSelectColumn> get serializer =>
-      _$gExtrinsicSelectColumnSerializer;
-
-  static BuiltSet<GExtrinsicSelectColumn> get values =>
-      _$gExtrinsicSelectColumnValues;
-
-  static GExtrinsicSelectColumn valueOf(String name) =>
-      _$gExtrinsicSelectColumnValueOf(name);
-}
-
-class GExtrinsicSelectColumnExtrinsicAggregateBoolExpBool_andArgumentsColumns
-    extends EnumClass {
-  const GExtrinsicSelectColumnExtrinsicAggregateBoolExpBool_andArgumentsColumns._(
-      String name)
-      : super(name);
-
-  static const GExtrinsicSelectColumnExtrinsicAggregateBoolExpBool_andArgumentsColumns
-      success =
-      _$gExtrinsicSelectColumnExtrinsicAggregateBoolExpBoolAndArgumentsColumnssuccess;
-
-  static Serializer<
-          GExtrinsicSelectColumnExtrinsicAggregateBoolExpBool_andArgumentsColumns>
-      get serializer =>
-          _$gExtrinsicSelectColumnExtrinsicAggregateBoolExpBoolAndArgumentsColumnsSerializer;
-
-  static BuiltSet<
-          GExtrinsicSelectColumnExtrinsicAggregateBoolExpBool_andArgumentsColumns>
-      get values =>
-          _$gExtrinsicSelectColumnExtrinsicAggregateBoolExpBoolAndArgumentsColumnsValues;
-
-  static GExtrinsicSelectColumnExtrinsicAggregateBoolExpBool_andArgumentsColumns
-      valueOf(String name) =>
-          _$gExtrinsicSelectColumnExtrinsicAggregateBoolExpBoolAndArgumentsColumnsValueOf(
-              name);
-}
-
-class GExtrinsicSelectColumnExtrinsicAggregateBoolExpBool_orArgumentsColumns
-    extends EnumClass {
-  const GExtrinsicSelectColumnExtrinsicAggregateBoolExpBool_orArgumentsColumns._(
-      String name)
-      : super(name);
-
-  static const GExtrinsicSelectColumnExtrinsicAggregateBoolExpBool_orArgumentsColumns
-      success =
-      _$gExtrinsicSelectColumnExtrinsicAggregateBoolExpBoolOrArgumentsColumnssuccess;
-
-  static Serializer<
-          GExtrinsicSelectColumnExtrinsicAggregateBoolExpBool_orArgumentsColumns>
-      get serializer =>
-          _$gExtrinsicSelectColumnExtrinsicAggregateBoolExpBoolOrArgumentsColumnsSerializer;
-
-  static BuiltSet<
-          GExtrinsicSelectColumnExtrinsicAggregateBoolExpBool_orArgumentsColumns>
-      get values =>
-          _$gExtrinsicSelectColumnExtrinsicAggregateBoolExpBoolOrArgumentsColumnsValues;
-
-  static GExtrinsicSelectColumnExtrinsicAggregateBoolExpBool_orArgumentsColumns
-      valueOf(String name) =>
-          _$gExtrinsicSelectColumnExtrinsicAggregateBoolExpBoolOrArgumentsColumnsValueOf(
-              name);
-}
-
-abstract class GExtrinsicStddevOrderBy
-    implements Built<GExtrinsicStddevOrderBy, GExtrinsicStddevOrderByBuilder> {
-  GExtrinsicStddevOrderBy._();
-
-  factory GExtrinsicStddevOrderBy(
-          [void Function(GExtrinsicStddevOrderByBuilder b) updates]) =
-      _$GExtrinsicStddevOrderBy;
-
-  GOrderBy? get fee;
-  GOrderBy? get index;
-  GOrderBy? get tip;
-  GOrderBy? get version;
-  static Serializer<GExtrinsicStddevOrderBy> get serializer =>
-      _$gExtrinsicStddevOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GExtrinsicStddevOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GExtrinsicStddevOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GExtrinsicStddevOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GExtrinsicStddevPopOrderBy
-    implements
-        Built<GExtrinsicStddevPopOrderBy, GExtrinsicStddevPopOrderByBuilder> {
-  GExtrinsicStddevPopOrderBy._();
-
-  factory GExtrinsicStddevPopOrderBy(
-          [void Function(GExtrinsicStddevPopOrderByBuilder b) updates]) =
-      _$GExtrinsicStddevPopOrderBy;
-
-  GOrderBy? get fee;
-  GOrderBy? get index;
-  GOrderBy? get tip;
-  GOrderBy? get version;
-  static Serializer<GExtrinsicStddevPopOrderBy> get serializer =>
-      _$gExtrinsicStddevPopOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GExtrinsicStddevPopOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GExtrinsicStddevPopOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GExtrinsicStddevPopOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GExtrinsicStddevSampOrderBy
-    implements
-        Built<GExtrinsicStddevSampOrderBy, GExtrinsicStddevSampOrderByBuilder> {
-  GExtrinsicStddevSampOrderBy._();
-
-  factory GExtrinsicStddevSampOrderBy(
-          [void Function(GExtrinsicStddevSampOrderByBuilder b) updates]) =
-      _$GExtrinsicStddevSampOrderBy;
-
-  GOrderBy? get fee;
-  GOrderBy? get index;
-  GOrderBy? get tip;
-  GOrderBy? get version;
-  static Serializer<GExtrinsicStddevSampOrderBy> get serializer =>
-      _$gExtrinsicStddevSampOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GExtrinsicStddevSampOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GExtrinsicStddevSampOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GExtrinsicStddevSampOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GExtrinsicStreamCursorInput
-    implements
-        Built<GExtrinsicStreamCursorInput, GExtrinsicStreamCursorInputBuilder> {
-  GExtrinsicStreamCursorInput._();
-
-  factory GExtrinsicStreamCursorInput(
-          [void Function(GExtrinsicStreamCursorInputBuilder b) updates]) =
-      _$GExtrinsicStreamCursorInput;
-
-  GExtrinsicStreamCursorValueInput get initialValue;
-  GCursorOrdering? get ordering;
-  static Serializer<GExtrinsicStreamCursorInput> get serializer =>
-      _$gExtrinsicStreamCursorInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GExtrinsicStreamCursorInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GExtrinsicStreamCursorInput? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GExtrinsicStreamCursorInput.serializer,
-        json,
-      );
-}
-
-abstract class GExtrinsicStreamCursorValueInput
-    implements
-        Built<GExtrinsicStreamCursorValueInput,
-            GExtrinsicStreamCursorValueInputBuilder> {
-  GExtrinsicStreamCursorValueInput._();
-
-  factory GExtrinsicStreamCursorValueInput(
-          [void Function(GExtrinsicStreamCursorValueInputBuilder b) updates]) =
-      _$GExtrinsicStreamCursorValueInput;
-
-  String? get blockId;
-  String? get callId;
-  _i3.JsonObject? get error;
-  int? get fee;
-  Gbytea? get hash;
-  String? get id;
-  int? get index;
-  _i3.JsonObject? get signature;
-  bool? get success;
-  int? get tip;
-  int? get version;
-  static Serializer<GExtrinsicStreamCursorValueInput> get serializer =>
-      _$gExtrinsicStreamCursorValueInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GExtrinsicStreamCursorValueInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GExtrinsicStreamCursorValueInput? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GExtrinsicStreamCursorValueInput.serializer,
-        json,
-      );
-}
-
-abstract class GExtrinsicSumOrderBy
-    implements Built<GExtrinsicSumOrderBy, GExtrinsicSumOrderByBuilder> {
-  GExtrinsicSumOrderBy._();
-
-  factory GExtrinsicSumOrderBy(
-          [void Function(GExtrinsicSumOrderByBuilder b) updates]) =
-      _$GExtrinsicSumOrderBy;
-
-  GOrderBy? get fee;
-  GOrderBy? get index;
-  GOrderBy? get tip;
-  GOrderBy? get version;
-  static Serializer<GExtrinsicSumOrderBy> get serializer =>
-      _$gExtrinsicSumOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GExtrinsicSumOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GExtrinsicSumOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GExtrinsicSumOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GExtrinsicVarianceOrderBy
-    implements
-        Built<GExtrinsicVarianceOrderBy, GExtrinsicVarianceOrderByBuilder> {
-  GExtrinsicVarianceOrderBy._();
-
-  factory GExtrinsicVarianceOrderBy(
-          [void Function(GExtrinsicVarianceOrderByBuilder b) updates]) =
-      _$GExtrinsicVarianceOrderBy;
-
-  GOrderBy? get fee;
-  GOrderBy? get index;
-  GOrderBy? get tip;
-  GOrderBy? get version;
-  static Serializer<GExtrinsicVarianceOrderBy> get serializer =>
-      _$gExtrinsicVarianceOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GExtrinsicVarianceOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GExtrinsicVarianceOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GExtrinsicVarianceOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GExtrinsicVarPopOrderBy
-    implements Built<GExtrinsicVarPopOrderBy, GExtrinsicVarPopOrderByBuilder> {
-  GExtrinsicVarPopOrderBy._();
-
-  factory GExtrinsicVarPopOrderBy(
-          [void Function(GExtrinsicVarPopOrderByBuilder b) updates]) =
-      _$GExtrinsicVarPopOrderBy;
-
-  GOrderBy? get fee;
-  GOrderBy? get index;
-  GOrderBy? get tip;
-  GOrderBy? get version;
-  static Serializer<GExtrinsicVarPopOrderBy> get serializer =>
-      _$gExtrinsicVarPopOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GExtrinsicVarPopOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GExtrinsicVarPopOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GExtrinsicVarPopOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GExtrinsicVarSampOrderBy
-    implements
-        Built<GExtrinsicVarSampOrderBy, GExtrinsicVarSampOrderByBuilder> {
-  GExtrinsicVarSampOrderBy._();
-
-  factory GExtrinsicVarSampOrderBy(
-          [void Function(GExtrinsicVarSampOrderByBuilder b) updates]) =
-      _$GExtrinsicVarSampOrderBy;
-
-  GOrderBy? get fee;
-  GOrderBy? get index;
-  GOrderBy? get tip;
-  GOrderBy? get version;
-  static Serializer<GExtrinsicVarSampOrderBy> get serializer =>
-      _$gExtrinsicVarSampOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GExtrinsicVarSampOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GExtrinsicVarSampOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GExtrinsicVarSampOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GIdentityAggregateBoolExp
-    implements
-        Built<GIdentityAggregateBoolExp, GIdentityAggregateBoolExpBuilder> {
-  GIdentityAggregateBoolExp._();
-
-  factory GIdentityAggregateBoolExp(
-          [void Function(GIdentityAggregateBoolExpBuilder b) updates]) =
-      _$GIdentityAggregateBoolExp;
-
-  GidentityAggregateBoolExpBool_and? get bool_and;
-  GidentityAggregateBoolExpBool_or? get bool_or;
-  GidentityAggregateBoolExpCount? get count;
-  static Serializer<GIdentityAggregateBoolExp> get serializer =>
-      _$gIdentityAggregateBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityAggregateBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentityAggregateBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentityAggregateBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GidentityAggregateBoolExpBool_and
-    implements
-        Built<GidentityAggregateBoolExpBool_and,
-            GidentityAggregateBoolExpBool_andBuilder> {
-  GidentityAggregateBoolExpBool_and._();
-
-  factory GidentityAggregateBoolExpBool_and(
-          [void Function(GidentityAggregateBoolExpBool_andBuilder b) updates]) =
-      _$GidentityAggregateBoolExpBool_and;
-
-  GIdentitySelectColumnIdentityAggregateBoolExpBool_andArgumentsColumns
-      get arguments;
-  bool? get distinct;
-  GIdentityBoolExp? get filter;
-  GBooleanComparisonExp get predicate;
-  static Serializer<GidentityAggregateBoolExpBool_and> get serializer =>
-      _$gidentityAggregateBoolExpBoolAndSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GidentityAggregateBoolExpBool_and.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GidentityAggregateBoolExpBool_and? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GidentityAggregateBoolExpBool_and.serializer,
-        json,
-      );
-}
-
-abstract class GidentityAggregateBoolExpBool_or
-    implements
-        Built<GidentityAggregateBoolExpBool_or,
-            GidentityAggregateBoolExpBool_orBuilder> {
-  GidentityAggregateBoolExpBool_or._();
-
-  factory GidentityAggregateBoolExpBool_or(
-          [void Function(GidentityAggregateBoolExpBool_orBuilder b) updates]) =
-      _$GidentityAggregateBoolExpBool_or;
-
-  GIdentitySelectColumnIdentityAggregateBoolExpBool_orArgumentsColumns
-      get arguments;
-  bool? get distinct;
-  GIdentityBoolExp? get filter;
-  GBooleanComparisonExp get predicate;
-  static Serializer<GidentityAggregateBoolExpBool_or> get serializer =>
-      _$gidentityAggregateBoolExpBoolOrSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GidentityAggregateBoolExpBool_or.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GidentityAggregateBoolExpBool_or? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GidentityAggregateBoolExpBool_or.serializer,
-        json,
-      );
-}
-
-abstract class GidentityAggregateBoolExpCount
-    implements
-        Built<GidentityAggregateBoolExpCount,
-            GidentityAggregateBoolExpCountBuilder> {
-  GidentityAggregateBoolExpCount._();
-
-  factory GidentityAggregateBoolExpCount(
-          [void Function(GidentityAggregateBoolExpCountBuilder b) updates]) =
-      _$GidentityAggregateBoolExpCount;
-
-  BuiltList<GIdentitySelectColumn>? get arguments;
-  bool? get distinct;
-  GIdentityBoolExp? get filter;
-  GIntComparisonExp get predicate;
-  static Serializer<GidentityAggregateBoolExpCount> get serializer =>
-      _$gidentityAggregateBoolExpCountSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GidentityAggregateBoolExpCount.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GidentityAggregateBoolExpCount? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GidentityAggregateBoolExpCount.serializer,
-        json,
-      );
-}
-
-abstract class GIdentityAggregateOrderBy
-    implements
-        Built<GIdentityAggregateOrderBy, GIdentityAggregateOrderByBuilder> {
-  GIdentityAggregateOrderBy._();
-
-  factory GIdentityAggregateOrderBy(
-          [void Function(GIdentityAggregateOrderByBuilder b) updates]) =
-      _$GIdentityAggregateOrderBy;
-
-  GIdentityAvgOrderBy? get avg;
-  GOrderBy? get count;
-  GIdentityMaxOrderBy? get max;
-  GIdentityMinOrderBy? get min;
-  GIdentityStddevOrderBy? get stddev;
-  GIdentityStddevPopOrderBy? get stddevPop;
-  GIdentityStddevSampOrderBy? get stddevSamp;
-  GIdentitySumOrderBy? get sum;
-  GIdentityVarPopOrderBy? get varPop;
-  GIdentityVarSampOrderBy? get varSamp;
-  GIdentityVarianceOrderBy? get variance;
-  static Serializer<GIdentityAggregateOrderBy> get serializer =>
-      _$gIdentityAggregateOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityAggregateOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentityAggregateOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentityAggregateOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GIdentityAvgOrderBy
-    implements Built<GIdentityAvgOrderBy, GIdentityAvgOrderByBuilder> {
-  GIdentityAvgOrderBy._();
-
-  factory GIdentityAvgOrderBy(
-          [void Function(GIdentityAvgOrderByBuilder b) updates]) =
-      _$GIdentityAvgOrderBy;
-
-  GOrderBy? get createdOn;
-  GOrderBy? get expireOn;
-  GOrderBy? get firstEligibleUd;
-  GOrderBy? get index;
-  GOrderBy? get lastChangeOn;
-  static Serializer<GIdentityAvgOrderBy> get serializer =>
-      _$gIdentityAvgOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityAvgOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentityAvgOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentityAvgOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GIdentityBoolExp
-    implements Built<GIdentityBoolExp, GIdentityBoolExpBuilder> {
-  GIdentityBoolExp._();
-
-  factory GIdentityBoolExp([void Function(GIdentityBoolExpBuilder b) updates]) =
-      _$GIdentityBoolExp;
-
-  @BuiltValueField(wireName: '_and')
-  BuiltList<GIdentityBoolExp>? get G_and;
-  @BuiltValueField(wireName: '_not')
-  GIdentityBoolExp? get G_not;
-  @BuiltValueField(wireName: '_or')
-  BuiltList<GIdentityBoolExp>? get G_or;
-  GAccountBoolExp? get account;
-  GStringComparisonExp? get accountId;
-  GAccountBoolExp? get accountRemoved;
-  GStringComparisonExp? get accountRemovedId;
-  GCertBoolExp? get certIssued;
-  GCertAggregateBoolExp? get certIssuedAggregate;
-  GCertBoolExp? get certReceived;
-  GCertAggregateBoolExp? get certReceivedAggregate;
-  GEventBoolExp? get createdIn;
-  GStringComparisonExp? get createdInId;
-  GIntComparisonExp? get createdOn;
-  GIntComparisonExp? get expireOn;
-  GIntComparisonExp? get firstEligibleUd;
-  GStringComparisonExp? get id;
-  GIntComparisonExp? get index;
-  GBooleanComparisonExp? get isMember;
-  GIntComparisonExp? get lastChangeOn;
-  GAccountBoolExp? get linkedAccount;
-  GAccountAggregateBoolExp? get linkedAccountAggregate;
-  GMembershipEventBoolExp? get membershipHistory;
-  GMembershipEventAggregateBoolExp? get membershipHistoryAggregate;
-  GStringComparisonExp? get name;
-  GChangeOwnerKeyBoolExp? get ownerKeyChange;
-  GChangeOwnerKeyAggregateBoolExp? get ownerKeyChangeAggregate;
-  GSmithBoolExp? get smith;
-  GStringComparisonExp? get status;
-  static Serializer<GIdentityBoolExp> get serializer =>
-      _$gIdentityBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentityBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentityBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GIdentityMaxOrderBy
-    implements Built<GIdentityMaxOrderBy, GIdentityMaxOrderByBuilder> {
-  GIdentityMaxOrderBy._();
-
-  factory GIdentityMaxOrderBy(
-          [void Function(GIdentityMaxOrderByBuilder b) updates]) =
-      _$GIdentityMaxOrderBy;
-
-  GOrderBy? get accountId;
-  GOrderBy? get accountRemovedId;
-  GOrderBy? get createdInId;
-  GOrderBy? get createdOn;
-  GOrderBy? get expireOn;
-  GOrderBy? get firstEligibleUd;
-  GOrderBy? get id;
-  GOrderBy? get index;
-  GOrderBy? get lastChangeOn;
-  GOrderBy? get name;
-  GOrderBy? get status;
-  static Serializer<GIdentityMaxOrderBy> get serializer =>
-      _$gIdentityMaxOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityMaxOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentityMaxOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentityMaxOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GIdentityMinOrderBy
-    implements Built<GIdentityMinOrderBy, GIdentityMinOrderByBuilder> {
-  GIdentityMinOrderBy._();
-
-  factory GIdentityMinOrderBy(
-          [void Function(GIdentityMinOrderByBuilder b) updates]) =
-      _$GIdentityMinOrderBy;
-
-  GOrderBy? get accountId;
-  GOrderBy? get accountRemovedId;
-  GOrderBy? get createdInId;
-  GOrderBy? get createdOn;
-  GOrderBy? get expireOn;
-  GOrderBy? get firstEligibleUd;
-  GOrderBy? get id;
-  GOrderBy? get index;
-  GOrderBy? get lastChangeOn;
-  GOrderBy? get name;
-  GOrderBy? get status;
-  static Serializer<GIdentityMinOrderBy> get serializer =>
-      _$gIdentityMinOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityMinOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentityMinOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentityMinOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GIdentityOrderBy
-    implements Built<GIdentityOrderBy, GIdentityOrderByBuilder> {
-  GIdentityOrderBy._();
-
-  factory GIdentityOrderBy([void Function(GIdentityOrderByBuilder b) updates]) =
-      _$GIdentityOrderBy;
-
-  GAccountOrderBy? get account;
-  GOrderBy? get accountId;
-  GAccountOrderBy? get accountRemoved;
-  GOrderBy? get accountRemovedId;
-  GCertAggregateOrderBy? get certIssuedAggregate;
-  GCertAggregateOrderBy? get certReceivedAggregate;
-  GEventOrderBy? get createdIn;
-  GOrderBy? get createdInId;
-  GOrderBy? get createdOn;
-  GOrderBy? get expireOn;
-  GOrderBy? get firstEligibleUd;
-  GOrderBy? get id;
-  GOrderBy? get index;
-  GOrderBy? get isMember;
-  GOrderBy? get lastChangeOn;
-  GAccountAggregateOrderBy? get linkedAccountAggregate;
-  GMembershipEventAggregateOrderBy? get membershipHistoryAggregate;
-  GOrderBy? get name;
-  GChangeOwnerKeyAggregateOrderBy? get ownerKeyChangeAggregate;
-  GSmithOrderBy? get smith;
-  GOrderBy? get status;
-  static Serializer<GIdentityOrderBy> get serializer =>
-      _$gIdentityOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentityOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentityOrderBy.serializer,
-        json,
-      );
-}
-
-class GIdentitySelectColumn extends EnumClass {
-  const GIdentitySelectColumn._(String name) : super(name);
-
-  static const GIdentitySelectColumn accountId =
-      _$gIdentitySelectColumnaccountId;
-
-  static const GIdentitySelectColumn accountRemovedId =
-      _$gIdentitySelectColumnaccountRemovedId;
-
-  static const GIdentitySelectColumn createdInId =
-      _$gIdentitySelectColumncreatedInId;
-
-  static const GIdentitySelectColumn createdOn =
-      _$gIdentitySelectColumncreatedOn;
-
-  static const GIdentitySelectColumn expireOn = _$gIdentitySelectColumnexpireOn;
-
-  static const GIdentitySelectColumn firstEligibleUd =
-      _$gIdentitySelectColumnfirstEligibleUd;
-
-  static const GIdentitySelectColumn id = _$gIdentitySelectColumnid;
-
-  static const GIdentitySelectColumn index = _$gIdentitySelectColumnindex;
-
-  static const GIdentitySelectColumn isMember = _$gIdentitySelectColumnisMember;
-
-  static const GIdentitySelectColumn lastChangeOn =
-      _$gIdentitySelectColumnlastChangeOn;
-
-  @BuiltValueEnumConst(wireName: 'name')
-  static const GIdentitySelectColumn Gname = _$gIdentitySelectColumnGname;
-
-  static const GIdentitySelectColumn status = _$gIdentitySelectColumnstatus;
-
-  static Serializer<GIdentitySelectColumn> get serializer =>
-      _$gIdentitySelectColumnSerializer;
-
-  static BuiltSet<GIdentitySelectColumn> get values =>
-      _$gIdentitySelectColumnValues;
-
-  static GIdentitySelectColumn valueOf(String name) =>
-      _$gIdentitySelectColumnValueOf(name);
-}
-
-class GIdentitySelectColumnIdentityAggregateBoolExpBool_andArgumentsColumns
-    extends EnumClass {
-  const GIdentitySelectColumnIdentityAggregateBoolExpBool_andArgumentsColumns._(
-      String name)
-      : super(name);
-
-  static const GIdentitySelectColumnIdentityAggregateBoolExpBool_andArgumentsColumns
-      isMember =
-      _$gIdentitySelectColumnIdentityAggregateBoolExpBoolAndArgumentsColumnsisMember;
-
-  static Serializer<
-          GIdentitySelectColumnIdentityAggregateBoolExpBool_andArgumentsColumns>
-      get serializer =>
-          _$gIdentitySelectColumnIdentityAggregateBoolExpBoolAndArgumentsColumnsSerializer;
-
-  static BuiltSet<
-          GIdentitySelectColumnIdentityAggregateBoolExpBool_andArgumentsColumns>
-      get values =>
-          _$gIdentitySelectColumnIdentityAggregateBoolExpBoolAndArgumentsColumnsValues;
-
-  static GIdentitySelectColumnIdentityAggregateBoolExpBool_andArgumentsColumns
-      valueOf(String name) =>
-          _$gIdentitySelectColumnIdentityAggregateBoolExpBoolAndArgumentsColumnsValueOf(
-              name);
-}
-
-class GIdentitySelectColumnIdentityAggregateBoolExpBool_orArgumentsColumns
-    extends EnumClass {
-  const GIdentitySelectColumnIdentityAggregateBoolExpBool_orArgumentsColumns._(
-      String name)
-      : super(name);
-
-  static const GIdentitySelectColumnIdentityAggregateBoolExpBool_orArgumentsColumns
-      isMember =
-      _$gIdentitySelectColumnIdentityAggregateBoolExpBoolOrArgumentsColumnsisMember;
-
-  static Serializer<
-          GIdentitySelectColumnIdentityAggregateBoolExpBool_orArgumentsColumns>
-      get serializer =>
-          _$gIdentitySelectColumnIdentityAggregateBoolExpBoolOrArgumentsColumnsSerializer;
-
-  static BuiltSet<
-          GIdentitySelectColumnIdentityAggregateBoolExpBool_orArgumentsColumns>
-      get values =>
-          _$gIdentitySelectColumnIdentityAggregateBoolExpBoolOrArgumentsColumnsValues;
-
-  static GIdentitySelectColumnIdentityAggregateBoolExpBool_orArgumentsColumns
-      valueOf(String name) =>
-          _$gIdentitySelectColumnIdentityAggregateBoolExpBoolOrArgumentsColumnsValueOf(
-              name);
-}
-
-abstract class GIdentityStddevOrderBy
-    implements Built<GIdentityStddevOrderBy, GIdentityStddevOrderByBuilder> {
-  GIdentityStddevOrderBy._();
-
-  factory GIdentityStddevOrderBy(
-          [void Function(GIdentityStddevOrderByBuilder b) updates]) =
-      _$GIdentityStddevOrderBy;
-
-  GOrderBy? get createdOn;
-  GOrderBy? get expireOn;
-  GOrderBy? get firstEligibleUd;
-  GOrderBy? get index;
-  GOrderBy? get lastChangeOn;
-  static Serializer<GIdentityStddevOrderBy> get serializer =>
-      _$gIdentityStddevOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityStddevOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentityStddevOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentityStddevOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GIdentityStddevPopOrderBy
-    implements
-        Built<GIdentityStddevPopOrderBy, GIdentityStddevPopOrderByBuilder> {
-  GIdentityStddevPopOrderBy._();
-
-  factory GIdentityStddevPopOrderBy(
-          [void Function(GIdentityStddevPopOrderByBuilder b) updates]) =
-      _$GIdentityStddevPopOrderBy;
-
-  GOrderBy? get createdOn;
-  GOrderBy? get expireOn;
-  GOrderBy? get firstEligibleUd;
-  GOrderBy? get index;
-  GOrderBy? get lastChangeOn;
-  static Serializer<GIdentityStddevPopOrderBy> get serializer =>
-      _$gIdentityStddevPopOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityStddevPopOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentityStddevPopOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentityStddevPopOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GIdentityStddevSampOrderBy
-    implements
-        Built<GIdentityStddevSampOrderBy, GIdentityStddevSampOrderByBuilder> {
-  GIdentityStddevSampOrderBy._();
-
-  factory GIdentityStddevSampOrderBy(
-          [void Function(GIdentityStddevSampOrderByBuilder b) updates]) =
-      _$GIdentityStddevSampOrderBy;
-
-  GOrderBy? get createdOn;
-  GOrderBy? get expireOn;
-  GOrderBy? get firstEligibleUd;
-  GOrderBy? get index;
-  GOrderBy? get lastChangeOn;
-  static Serializer<GIdentityStddevSampOrderBy> get serializer =>
-      _$gIdentityStddevSampOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityStddevSampOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentityStddevSampOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentityStddevSampOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GIdentityStreamCursorInput
-    implements
-        Built<GIdentityStreamCursorInput, GIdentityStreamCursorInputBuilder> {
-  GIdentityStreamCursorInput._();
-
-  factory GIdentityStreamCursorInput(
-          [void Function(GIdentityStreamCursorInputBuilder b) updates]) =
-      _$GIdentityStreamCursorInput;
-
-  GIdentityStreamCursorValueInput get initialValue;
-  GCursorOrdering? get ordering;
-  static Serializer<GIdentityStreamCursorInput> get serializer =>
-      _$gIdentityStreamCursorInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityStreamCursorInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentityStreamCursorInput? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentityStreamCursorInput.serializer,
-        json,
-      );
-}
-
-abstract class GIdentityStreamCursorValueInput
-    implements
-        Built<GIdentityStreamCursorValueInput,
-            GIdentityStreamCursorValueInputBuilder> {
-  GIdentityStreamCursorValueInput._();
-
-  factory GIdentityStreamCursorValueInput(
-          [void Function(GIdentityStreamCursorValueInputBuilder b) updates]) =
-      _$GIdentityStreamCursorValueInput;
-
+  String? get status;
+  int? get createdOn;
+  int? get lastChangeOn;
+  bool? get isMember;
+  int? get expireOn;
+  int? get firstEligibleUd;
   String? get accountId;
   String? get accountRemovedId;
   String? get createdInId;
-  int? get createdOn;
-  int? get expireOn;
-  int? get firstEligibleUd;
-  String? get id;
-  int? get index;
-  bool? get isMember;
-  int? get lastChangeOn;
-  String? get name;
-  String? get status;
-  static Serializer<GIdentityStreamCursorValueInput> get serializer =>
-      _$gIdentityStreamCursorValueInputSerializer;
+  static Serializer<GIdentityCondition> get serializer =>
+      _$gIdentityConditionSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityStreamCursorValueInput.serializer,
+        GIdentityCondition.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentityStreamCursorValueInput? fromJson(Map<String, dynamic> json) =>
+  static GIdentityCondition? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentityStreamCursorValueInput.serializer,
+        GIdentityCondition.serializer,
         json,
       );
 }
 
-abstract class GIdentitySumOrderBy
-    implements Built<GIdentitySumOrderBy, GIdentitySumOrderByBuilder> {
-  GIdentitySumOrderBy._();
+abstract class GIdentityFilter
+    implements Built<GIdentityFilter, GIdentityFilterBuilder> {
+  GIdentityFilter._();
 
-  factory GIdentitySumOrderBy(
-          [void Function(GIdentitySumOrderByBuilder b) updates]) =
-      _$GIdentitySumOrderBy;
+  factory GIdentityFilter([void Function(GIdentityFilterBuilder b) updates]) =
+      _$GIdentityFilter;
 
-  GOrderBy? get createdOn;
-  GOrderBy? get expireOn;
-  GOrderBy? get firstEligibleUd;
-  GOrderBy? get index;
-  GOrderBy? get lastChangeOn;
-  static Serializer<GIdentitySumOrderBy> get serializer =>
-      _$gIdentitySumOrderBySerializer;
+  GStringFilter? get id;
+  GIntFilter? get index;
+  GStringFilter? get name;
+  GStringFilter? get status;
+  GIntFilter? get createdOn;
+  GIntFilter? get lastChangeOn;
+  GBooleanFilter? get isMember;
+  GIntFilter? get expireOn;
+  GIntFilter? get firstEligibleUd;
+  GStringFilter? get accountId;
+  GStringFilter? get accountRemovedId;
+  GStringFilter? get createdInId;
+  BuiltList<GIdentityFilter>? get and;
+  BuiltList<GIdentityFilter>? get or;
+  GIdentityFilter? get not;
+  static Serializer<GIdentityFilter> get serializer =>
+      _$gIdentityFilterSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitySumOrderBy.serializer,
+        GIdentityFilter.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitySumOrderBy? fromJson(Map<String, dynamic> json) =>
+  static GIdentityFilter? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentitySumOrderBy.serializer,
+        GIdentityFilter.serializer,
         json,
       );
 }
 
-abstract class GIdentityVarianceOrderBy
-    implements
-        Built<GIdentityVarianceOrderBy, GIdentityVarianceOrderByBuilder> {
-  GIdentityVarianceOrderBy._();
+abstract class GIntFilter implements Built<GIntFilter, GIntFilterBuilder> {
+  GIntFilter._();
 
-  factory GIdentityVarianceOrderBy(
-          [void Function(GIdentityVarianceOrderByBuilder b) updates]) =
-      _$GIdentityVarianceOrderBy;
+  factory GIntFilter([void Function(GIntFilterBuilder b) updates]) =
+      _$GIntFilter;
 
-  GOrderBy? get createdOn;
-  GOrderBy? get expireOn;
-  GOrderBy? get firstEligibleUd;
-  GOrderBy? get index;
-  GOrderBy? get lastChangeOn;
-  static Serializer<GIdentityVarianceOrderBy> get serializer =>
-      _$gIdentityVarianceOrderBySerializer;
+  bool? get isNull;
+  int? get equalTo;
+  int? get notEqualTo;
+  int? get distinctFrom;
+  int? get notDistinctFrom;
+  @BuiltValueField(wireName: 'in')
+  BuiltList<int>? get Gin;
+  BuiltList<int>? get notIn;
+  int? get lessThan;
+  int? get lessThanOrEqualTo;
+  int? get greaterThan;
+  int? get greaterThanOrEqualTo;
+  static Serializer<GIntFilter> get serializer => _$gIntFilterSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityVarianceOrderBy.serializer,
+        GIntFilter.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentityVarianceOrderBy? fromJson(Map<String, dynamic> json) =>
+  static GIntFilter? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentityVarianceOrderBy.serializer,
+        GIntFilter.serializer,
         json,
       );
 }
 
-abstract class GIdentityVarPopOrderBy
-    implements Built<GIdentityVarPopOrderBy, GIdentityVarPopOrderByBuilder> {
-  GIdentityVarPopOrderBy._();
+abstract class GIntListFilter
+    implements Built<GIntListFilter, GIntListFilterBuilder> {
+  GIntListFilter._();
 
-  factory GIdentityVarPopOrderBy(
-          [void Function(GIdentityVarPopOrderByBuilder b) updates]) =
-      _$GIdentityVarPopOrderBy;
+  factory GIntListFilter([void Function(GIntListFilterBuilder b) updates]) =
+      _$GIntListFilter;
 
-  GOrderBy? get createdOn;
-  GOrderBy? get expireOn;
-  GOrderBy? get firstEligibleUd;
-  GOrderBy? get index;
-  GOrderBy? get lastChangeOn;
-  static Serializer<GIdentityVarPopOrderBy> get serializer =>
-      _$gIdentityVarPopOrderBySerializer;
+  bool? get isNull;
+  BuiltList<int?>? get equalTo;
+  BuiltList<int?>? get notEqualTo;
+  BuiltList<int?>? get distinctFrom;
+  BuiltList<int?>? get notDistinctFrom;
+  BuiltList<int?>? get lessThan;
+  BuiltList<int?>? get lessThanOrEqualTo;
+  BuiltList<int?>? get greaterThan;
+  BuiltList<int?>? get greaterThanOrEqualTo;
+  BuiltList<int?>? get contains;
+  BuiltList<int?>? get containedBy;
+  BuiltList<int?>? get overlaps;
+  int? get anyEqualTo;
+  int? get anyNotEqualTo;
+  int? get anyLessThan;
+  int? get anyLessThanOrEqualTo;
+  int? get anyGreaterThan;
+  int? get anyGreaterThanOrEqualTo;
+  static Serializer<GIntListFilter> get serializer =>
+      _$gIntListFilterSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityVarPopOrderBy.serializer,
+        GIntListFilter.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentityVarPopOrderBy? fromJson(Map<String, dynamic> json) =>
+  static GIntListFilter? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentityVarPopOrderBy.serializer,
+        GIntListFilter.serializer,
         json,
       );
 }
 
-abstract class GIdentityVarSampOrderBy
-    implements Built<GIdentityVarSampOrderBy, GIdentityVarSampOrderByBuilder> {
-  GIdentityVarSampOrderBy._();
+abstract class GItemsCounterCondition
+    implements Built<GItemsCounterCondition, GItemsCounterConditionBuilder> {
+  GItemsCounterCondition._();
 
-  factory GIdentityVarSampOrderBy(
-          [void Function(GIdentityVarSampOrderByBuilder b) updates]) =
-      _$GIdentityVarSampOrderBy;
-
-  GOrderBy? get createdOn;
-  GOrderBy? get expireOn;
-  GOrderBy? get firstEligibleUd;
-  GOrderBy? get index;
-  GOrderBy? get lastChangeOn;
-  static Serializer<GIdentityVarSampOrderBy> get serializer =>
-      _$gIdentityVarSampOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityVarSampOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentityVarSampOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentityVarSampOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GIntArrayComparisonExp
-    implements Built<GIntArrayComparisonExp, GIntArrayComparisonExpBuilder> {
-  GIntArrayComparisonExp._();
-
-  factory GIntArrayComparisonExp(
-          [void Function(GIntArrayComparisonExpBuilder b) updates]) =
-      _$GIntArrayComparisonExp;
-
-  @BuiltValueField(wireName: '_containedIn')
-  BuiltList<int>? get G_containedIn;
-  @BuiltValueField(wireName: '_contains')
-  BuiltList<int>? get G_contains;
-  @BuiltValueField(wireName: '_eq')
-  BuiltList<int>? get G_eq;
-  @BuiltValueField(wireName: '_gt')
-  BuiltList<int>? get G_gt;
-  @BuiltValueField(wireName: '_gte')
-  BuiltList<int>? get G_gte;
-  @BuiltValueField(wireName: '_in')
-  BuiltList<BuiltList<int>>? get G_in;
-  @BuiltValueField(wireName: '_isNull')
-  bool? get G_isNull;
-  @BuiltValueField(wireName: '_lt')
-  BuiltList<int>? get G_lt;
-  @BuiltValueField(wireName: '_lte')
-  BuiltList<int>? get G_lte;
-  @BuiltValueField(wireName: '_neq')
-  BuiltList<int>? get G_neq;
-  @BuiltValueField(wireName: '_nin')
-  BuiltList<BuiltList<int>>? get G_nin;
-  static Serializer<GIntArrayComparisonExp> get serializer =>
-      _$gIntArrayComparisonExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIntArrayComparisonExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIntArrayComparisonExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIntArrayComparisonExp.serializer,
-        json,
-      );
-}
-
-abstract class GIntComparisonExp
-    implements Built<GIntComparisonExp, GIntComparisonExpBuilder> {
-  GIntComparisonExp._();
-
-  factory GIntComparisonExp(
-          [void Function(GIntComparisonExpBuilder b) updates]) =
-      _$GIntComparisonExp;
-
-  @BuiltValueField(wireName: '_eq')
-  int? get G_eq;
-  @BuiltValueField(wireName: '_gt')
-  int? get G_gt;
-  @BuiltValueField(wireName: '_gte')
-  int? get G_gte;
-  @BuiltValueField(wireName: '_in')
-  BuiltList<int>? get G_in;
-  @BuiltValueField(wireName: '_isNull')
-  bool? get G_isNull;
-  @BuiltValueField(wireName: '_lt')
-  int? get G_lt;
-  @BuiltValueField(wireName: '_lte')
-  int? get G_lte;
-  @BuiltValueField(wireName: '_neq')
-  int? get G_neq;
-  @BuiltValueField(wireName: '_nin')
-  BuiltList<int>? get G_nin;
-  static Serializer<GIntComparisonExp> get serializer =>
-      _$gIntComparisonExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIntComparisonExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIntComparisonExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIntComparisonExp.serializer,
-        json,
-      );
-}
-
-abstract class GItemsCounterBoolExp
-    implements Built<GItemsCounterBoolExp, GItemsCounterBoolExpBuilder> {
-  GItemsCounterBoolExp._();
-
-  factory GItemsCounterBoolExp(
-          [void Function(GItemsCounterBoolExpBuilder b) updates]) =
-      _$GItemsCounterBoolExp;
-
-  @BuiltValueField(wireName: '_and')
-  BuiltList<GItemsCounterBoolExp>? get G_and;
-  @BuiltValueField(wireName: '_not')
-  GItemsCounterBoolExp? get G_not;
-  @BuiltValueField(wireName: '_or')
-  BuiltList<GItemsCounterBoolExp>? get G_or;
-  GStringComparisonExp? get id;
-  GStringComparisonExp? get level;
-  GIntComparisonExp? get total;
-  GStringComparisonExp? get type;
-  static Serializer<GItemsCounterBoolExp> get serializer =>
-      _$gItemsCounterBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GItemsCounterBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GItemsCounterBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GItemsCounterBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GItemsCounterOrderBy
-    implements Built<GItemsCounterOrderBy, GItemsCounterOrderByBuilder> {
-  GItemsCounterOrderBy._();
-
-  factory GItemsCounterOrderBy(
-          [void Function(GItemsCounterOrderByBuilder b) updates]) =
-      _$GItemsCounterOrderBy;
-
-  GOrderBy? get id;
-  GOrderBy? get level;
-  GOrderBy? get total;
-  GOrderBy? get type;
-  static Serializer<GItemsCounterOrderBy> get serializer =>
-      _$gItemsCounterOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GItemsCounterOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GItemsCounterOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GItemsCounterOrderBy.serializer,
-        json,
-      );
-}
-
-class GItemsCounterSelectColumn extends EnumClass {
-  const GItemsCounterSelectColumn._(String name) : super(name);
-
-  static const GItemsCounterSelectColumn id = _$gItemsCounterSelectColumnid;
-
-  static const GItemsCounterSelectColumn level =
-      _$gItemsCounterSelectColumnlevel;
-
-  static const GItemsCounterSelectColumn total =
-      _$gItemsCounterSelectColumntotal;
-
-  static const GItemsCounterSelectColumn type = _$gItemsCounterSelectColumntype;
-
-  static Serializer<GItemsCounterSelectColumn> get serializer =>
-      _$gItemsCounterSelectColumnSerializer;
-
-  static BuiltSet<GItemsCounterSelectColumn> get values =>
-      _$gItemsCounterSelectColumnValues;
-
-  static GItemsCounterSelectColumn valueOf(String name) =>
-      _$gItemsCounterSelectColumnValueOf(name);
-}
-
-abstract class GItemsCounterStreamCursorInput
-    implements
-        Built<GItemsCounterStreamCursorInput,
-            GItemsCounterStreamCursorInputBuilder> {
-  GItemsCounterStreamCursorInput._();
-
-  factory GItemsCounterStreamCursorInput(
-          [void Function(GItemsCounterStreamCursorInputBuilder b) updates]) =
-      _$GItemsCounterStreamCursorInput;
-
-  GItemsCounterStreamCursorValueInput get initialValue;
-  GCursorOrdering? get ordering;
-  static Serializer<GItemsCounterStreamCursorInput> get serializer =>
-      _$gItemsCounterStreamCursorInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GItemsCounterStreamCursorInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GItemsCounterStreamCursorInput? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GItemsCounterStreamCursorInput.serializer,
-        json,
-      );
-}
-
-abstract class GItemsCounterStreamCursorValueInput
-    implements
-        Built<GItemsCounterStreamCursorValueInput,
-            GItemsCounterStreamCursorValueInputBuilder> {
-  GItemsCounterStreamCursorValueInput._();
-
-  factory GItemsCounterStreamCursorValueInput(
-      [void Function(GItemsCounterStreamCursorValueInputBuilder b)
-          updates]) = _$GItemsCounterStreamCursorValueInput;
+  factory GItemsCounterCondition(
+          [void Function(GItemsCounterConditionBuilder b) updates]) =
+      _$GItemsCounterCondition;
 
   String? get id;
+  String? get type;
   String? get level;
   int? get total;
-  String? get type;
-  static Serializer<GItemsCounterStreamCursorValueInput> get serializer =>
-      _$gItemsCounterStreamCursorValueInputSerializer;
+  static Serializer<GItemsCounterCondition> get serializer =>
+      _$gItemsCounterConditionSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GItemsCounterStreamCursorValueInput.serializer,
+        GItemsCounterCondition.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GItemsCounterStreamCursorValueInput? fromJson(
-          Map<String, dynamic> json) =>
+  static GItemsCounterCondition? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GItemsCounterStreamCursorValueInput.serializer,
+        GItemsCounterCondition.serializer,
         json,
       );
 }
 
-abstract class GJsonbCastExp
-    implements Built<GJsonbCastExp, GJsonbCastExpBuilder> {
-  GJsonbCastExp._();
+abstract class GItemsCounterFilter
+    implements Built<GItemsCounterFilter, GItemsCounterFilterBuilder> {
+  GItemsCounterFilter._();
 
-  factory GJsonbCastExp([void Function(GJsonbCastExpBuilder b) updates]) =
-      _$GJsonbCastExp;
+  factory GItemsCounterFilter(
+          [void Function(GItemsCounterFilterBuilder b) updates]) =
+      _$GItemsCounterFilter;
 
-  @BuiltValueField(wireName: 'String')
-  GStringComparisonExp? get GString;
-  static Serializer<GJsonbCastExp> get serializer => _$gJsonbCastExpSerializer;
+  GStringFilter? get id;
+  GStringFilter? get type;
+  GStringFilter? get level;
+  GIntFilter? get total;
+  BuiltList<GItemsCounterFilter>? get and;
+  BuiltList<GItemsCounterFilter>? get or;
+  GItemsCounterFilter? get not;
+  static Serializer<GItemsCounterFilter> get serializer =>
+      _$gItemsCounterFilterSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GJsonbCastExp.serializer,
+        GItemsCounterFilter.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GJsonbCastExp? fromJson(Map<String, dynamic> json) =>
+  static GItemsCounterFilter? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GJsonbCastExp.serializer,
+        GItemsCounterFilter.serializer,
         json,
       );
 }
 
-abstract class GJsonbComparisonExp
-    implements Built<GJsonbComparisonExp, GJsonbComparisonExpBuilder> {
-  GJsonbComparisonExp._();
+class GItemsCountersOrderBy extends EnumClass {
+  const GItemsCountersOrderBy._(String name) : super(name);
 
-  factory GJsonbComparisonExp(
-          [void Function(GJsonbComparisonExpBuilder b) updates]) =
-      _$GJsonbComparisonExp;
+  static const GItemsCountersOrderBy NATURAL = _$gItemsCountersOrderByNATURAL;
 
-  @BuiltValueField(wireName: '_cast')
-  GJsonbCastExp? get G_cast;
-  @BuiltValueField(wireName: '_containedIn')
-  _i3.JsonObject? get G_containedIn;
-  @BuiltValueField(wireName: '_contains')
-  _i3.JsonObject? get G_contains;
-  @BuiltValueField(wireName: '_eq')
-  _i3.JsonObject? get G_eq;
-  @BuiltValueField(wireName: '_gt')
-  _i3.JsonObject? get G_gt;
-  @BuiltValueField(wireName: '_gte')
-  _i3.JsonObject? get G_gte;
-  @BuiltValueField(wireName: '_hasKey')
-  String? get G_hasKey;
-  @BuiltValueField(wireName: '_hasKeysAll')
-  BuiltList<String>? get G_hasKeysAll;
-  @BuiltValueField(wireName: '_hasKeysAny')
-  BuiltList<String>? get G_hasKeysAny;
-  @BuiltValueField(wireName: '_in')
-  BuiltList<_i3.JsonObject>? get G_in;
-  @BuiltValueField(wireName: '_isNull')
-  bool? get G_isNull;
-  @BuiltValueField(wireName: '_lt')
-  _i3.JsonObject? get G_lt;
-  @BuiltValueField(wireName: '_lte')
-  _i3.JsonObject? get G_lte;
-  @BuiltValueField(wireName: '_neq')
-  _i3.JsonObject? get G_neq;
-  @BuiltValueField(wireName: '_nin')
-  BuiltList<_i3.JsonObject>? get G_nin;
-  static Serializer<GJsonbComparisonExp> get serializer =>
-      _$gJsonbComparisonExpSerializer;
+  static const GItemsCountersOrderBy ID_ASC = _$gItemsCountersOrderByID_ASC;
 
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GJsonbComparisonExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GJsonbComparisonExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GJsonbComparisonExp.serializer,
-        json,
-      );
-}
-
-abstract class GMembershipEventAggregateBoolExp
-    implements
-        Built<GMembershipEventAggregateBoolExp,
-            GMembershipEventAggregateBoolExpBuilder> {
-  GMembershipEventAggregateBoolExp._();
-
-  factory GMembershipEventAggregateBoolExp(
-          [void Function(GMembershipEventAggregateBoolExpBuilder b) updates]) =
-      _$GMembershipEventAggregateBoolExp;
-
-  GmembershipEventAggregateBoolExpCount? get count;
-  static Serializer<GMembershipEventAggregateBoolExp> get serializer =>
-      _$gMembershipEventAggregateBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GMembershipEventAggregateBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GMembershipEventAggregateBoolExp? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GMembershipEventAggregateBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GmembershipEventAggregateBoolExpCount
-    implements
-        Built<GmembershipEventAggregateBoolExpCount,
-            GmembershipEventAggregateBoolExpCountBuilder> {
-  GmembershipEventAggregateBoolExpCount._();
-
-  factory GmembershipEventAggregateBoolExpCount(
-      [void Function(GmembershipEventAggregateBoolExpCountBuilder b)
-          updates]) = _$GmembershipEventAggregateBoolExpCount;
-
-  BuiltList<GMembershipEventSelectColumn>? get arguments;
-  bool? get distinct;
-  GMembershipEventBoolExp? get filter;
-  GIntComparisonExp get predicate;
-  static Serializer<GmembershipEventAggregateBoolExpCount> get serializer =>
-      _$gmembershipEventAggregateBoolExpCountSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GmembershipEventAggregateBoolExpCount.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GmembershipEventAggregateBoolExpCount? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GmembershipEventAggregateBoolExpCount.serializer,
-        json,
-      );
-}
-
-abstract class GMembershipEventAggregateOrderBy
-    implements
-        Built<GMembershipEventAggregateOrderBy,
-            GMembershipEventAggregateOrderByBuilder> {
-  GMembershipEventAggregateOrderBy._();
-
-  factory GMembershipEventAggregateOrderBy(
-          [void Function(GMembershipEventAggregateOrderByBuilder b) updates]) =
-      _$GMembershipEventAggregateOrderBy;
-
-  GMembershipEventAvgOrderBy? get avg;
-  GOrderBy? get count;
-  GMembershipEventMaxOrderBy? get max;
-  GMembershipEventMinOrderBy? get min;
-  GMembershipEventStddevOrderBy? get stddev;
-  GMembershipEventStddevPopOrderBy? get stddevPop;
-  GMembershipEventStddevSampOrderBy? get stddevSamp;
-  GMembershipEventSumOrderBy? get sum;
-  GMembershipEventVarPopOrderBy? get varPop;
-  GMembershipEventVarSampOrderBy? get varSamp;
-  GMembershipEventVarianceOrderBy? get variance;
-  static Serializer<GMembershipEventAggregateOrderBy> get serializer =>
-      _$gMembershipEventAggregateOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GMembershipEventAggregateOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GMembershipEventAggregateOrderBy? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GMembershipEventAggregateOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GMembershipEventAvgOrderBy
-    implements
-        Built<GMembershipEventAvgOrderBy, GMembershipEventAvgOrderByBuilder> {
-  GMembershipEventAvgOrderBy._();
-
-  factory GMembershipEventAvgOrderBy(
-          [void Function(GMembershipEventAvgOrderByBuilder b) updates]) =
-      _$GMembershipEventAvgOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GMembershipEventAvgOrderBy> get serializer =>
-      _$gMembershipEventAvgOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GMembershipEventAvgOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GMembershipEventAvgOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GMembershipEventAvgOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GMembershipEventBoolExp
-    implements Built<GMembershipEventBoolExp, GMembershipEventBoolExpBuilder> {
-  GMembershipEventBoolExp._();
-
-  factory GMembershipEventBoolExp(
-          [void Function(GMembershipEventBoolExpBuilder b) updates]) =
-      _$GMembershipEventBoolExp;
-
-  @BuiltValueField(wireName: '_and')
-  BuiltList<GMembershipEventBoolExp>? get G_and;
-  @BuiltValueField(wireName: '_not')
-  GMembershipEventBoolExp? get G_not;
-  @BuiltValueField(wireName: '_or')
-  BuiltList<GMembershipEventBoolExp>? get G_or;
-  GIntComparisonExp? get blockNumber;
-  GEventBoolExp? get event;
-  GStringComparisonExp? get eventId;
-  GStringComparisonExp? get eventType;
-  GStringComparisonExp? get id;
-  GIdentityBoolExp? get identity;
-  GStringComparisonExp? get identityId;
-  static Serializer<GMembershipEventBoolExp> get serializer =>
-      _$gMembershipEventBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GMembershipEventBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GMembershipEventBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GMembershipEventBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GMembershipEventMaxOrderBy
-    implements
-        Built<GMembershipEventMaxOrderBy, GMembershipEventMaxOrderByBuilder> {
-  GMembershipEventMaxOrderBy._();
-
-  factory GMembershipEventMaxOrderBy(
-          [void Function(GMembershipEventMaxOrderByBuilder b) updates]) =
-      _$GMembershipEventMaxOrderBy;
-
-  GOrderBy? get blockNumber;
-  GOrderBy? get eventId;
-  GOrderBy? get eventType;
-  GOrderBy? get id;
-  GOrderBy? get identityId;
-  static Serializer<GMembershipEventMaxOrderBy> get serializer =>
-      _$gMembershipEventMaxOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GMembershipEventMaxOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GMembershipEventMaxOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GMembershipEventMaxOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GMembershipEventMinOrderBy
-    implements
-        Built<GMembershipEventMinOrderBy, GMembershipEventMinOrderByBuilder> {
-  GMembershipEventMinOrderBy._();
-
-  factory GMembershipEventMinOrderBy(
-          [void Function(GMembershipEventMinOrderByBuilder b) updates]) =
-      _$GMembershipEventMinOrderBy;
-
-  GOrderBy? get blockNumber;
-  GOrderBy? get eventId;
-  GOrderBy? get eventType;
-  GOrderBy? get id;
-  GOrderBy? get identityId;
-  static Serializer<GMembershipEventMinOrderBy> get serializer =>
-      _$gMembershipEventMinOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GMembershipEventMinOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GMembershipEventMinOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GMembershipEventMinOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GMembershipEventOrderBy
-    implements Built<GMembershipEventOrderBy, GMembershipEventOrderByBuilder> {
-  GMembershipEventOrderBy._();
-
-  factory GMembershipEventOrderBy(
-          [void Function(GMembershipEventOrderByBuilder b) updates]) =
-      _$GMembershipEventOrderBy;
-
-  GOrderBy? get blockNumber;
-  GEventOrderBy? get event;
-  GOrderBy? get eventId;
-  GOrderBy? get eventType;
-  GOrderBy? get id;
-  GIdentityOrderBy? get identity;
-  GOrderBy? get identityId;
-  static Serializer<GMembershipEventOrderBy> get serializer =>
-      _$gMembershipEventOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GMembershipEventOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GMembershipEventOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GMembershipEventOrderBy.serializer,
-        json,
-      );
-}
-
-class GMembershipEventSelectColumn extends EnumClass {
-  const GMembershipEventSelectColumn._(String name) : super(name);
-
-  static const GMembershipEventSelectColumn blockNumber =
-      _$gMembershipEventSelectColumnblockNumber;
-
-  static const GMembershipEventSelectColumn eventId =
-      _$gMembershipEventSelectColumneventId;
-
-  static const GMembershipEventSelectColumn eventType =
-      _$gMembershipEventSelectColumneventType;
-
-  static const GMembershipEventSelectColumn id =
-      _$gMembershipEventSelectColumnid;
-
-  static const GMembershipEventSelectColumn identityId =
-      _$gMembershipEventSelectColumnidentityId;
-
-  static Serializer<GMembershipEventSelectColumn> get serializer =>
-      _$gMembershipEventSelectColumnSerializer;
-
-  static BuiltSet<GMembershipEventSelectColumn> get values =>
-      _$gMembershipEventSelectColumnValues;
-
-  static GMembershipEventSelectColumn valueOf(String name) =>
-      _$gMembershipEventSelectColumnValueOf(name);
-}
-
-abstract class GMembershipEventStddevOrderBy
-    implements
-        Built<GMembershipEventStddevOrderBy,
-            GMembershipEventStddevOrderByBuilder> {
-  GMembershipEventStddevOrderBy._();
-
-  factory GMembershipEventStddevOrderBy(
-          [void Function(GMembershipEventStddevOrderByBuilder b) updates]) =
-      _$GMembershipEventStddevOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GMembershipEventStddevOrderBy> get serializer =>
-      _$gMembershipEventStddevOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GMembershipEventStddevOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GMembershipEventStddevOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GMembershipEventStddevOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GMembershipEventStddevPopOrderBy
-    implements
-        Built<GMembershipEventStddevPopOrderBy,
-            GMembershipEventStddevPopOrderByBuilder> {
-  GMembershipEventStddevPopOrderBy._();
-
-  factory GMembershipEventStddevPopOrderBy(
-          [void Function(GMembershipEventStddevPopOrderByBuilder b) updates]) =
-      _$GMembershipEventStddevPopOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GMembershipEventStddevPopOrderBy> get serializer =>
-      _$gMembershipEventStddevPopOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GMembershipEventStddevPopOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GMembershipEventStddevPopOrderBy? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GMembershipEventStddevPopOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GMembershipEventStddevSampOrderBy
-    implements
-        Built<GMembershipEventStddevSampOrderBy,
-            GMembershipEventStddevSampOrderByBuilder> {
-  GMembershipEventStddevSampOrderBy._();
-
-  factory GMembershipEventStddevSampOrderBy(
-          [void Function(GMembershipEventStddevSampOrderByBuilder b) updates]) =
-      _$GMembershipEventStddevSampOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GMembershipEventStddevSampOrderBy> get serializer =>
-      _$gMembershipEventStddevSampOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GMembershipEventStddevSampOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GMembershipEventStddevSampOrderBy? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GMembershipEventStddevSampOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GMembershipEventStreamCursorInput
-    implements
-        Built<GMembershipEventStreamCursorInput,
-            GMembershipEventStreamCursorInputBuilder> {
-  GMembershipEventStreamCursorInput._();
-
-  factory GMembershipEventStreamCursorInput(
-          [void Function(GMembershipEventStreamCursorInputBuilder b) updates]) =
-      _$GMembershipEventStreamCursorInput;
-
-  GMembershipEventStreamCursorValueInput get initialValue;
-  GCursorOrdering? get ordering;
-  static Serializer<GMembershipEventStreamCursorInput> get serializer =>
-      _$gMembershipEventStreamCursorInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GMembershipEventStreamCursorInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GMembershipEventStreamCursorInput? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GMembershipEventStreamCursorInput.serializer,
-        json,
-      );
-}
-
-abstract class GMembershipEventStreamCursorValueInput
-    implements
-        Built<GMembershipEventStreamCursorValueInput,
-            GMembershipEventStreamCursorValueInputBuilder> {
-  GMembershipEventStreamCursorValueInput._();
-
-  factory GMembershipEventStreamCursorValueInput(
-      [void Function(GMembershipEventStreamCursorValueInputBuilder b)
-          updates]) = _$GMembershipEventStreamCursorValueInput;
-
-  int? get blockNumber;
-  String? get eventId;
-  String? get eventType;
-  String? get id;
-  String? get identityId;
-  static Serializer<GMembershipEventStreamCursorValueInput> get serializer =>
-      _$gMembershipEventStreamCursorValueInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GMembershipEventStreamCursorValueInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GMembershipEventStreamCursorValueInput? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GMembershipEventStreamCursorValueInput.serializer,
-        json,
-      );
-}
-
-abstract class GMembershipEventSumOrderBy
-    implements
-        Built<GMembershipEventSumOrderBy, GMembershipEventSumOrderByBuilder> {
-  GMembershipEventSumOrderBy._();
-
-  factory GMembershipEventSumOrderBy(
-          [void Function(GMembershipEventSumOrderByBuilder b) updates]) =
-      _$GMembershipEventSumOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GMembershipEventSumOrderBy> get serializer =>
-      _$gMembershipEventSumOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GMembershipEventSumOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GMembershipEventSumOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GMembershipEventSumOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GMembershipEventVarianceOrderBy
-    implements
-        Built<GMembershipEventVarianceOrderBy,
-            GMembershipEventVarianceOrderByBuilder> {
-  GMembershipEventVarianceOrderBy._();
-
-  factory GMembershipEventVarianceOrderBy(
-          [void Function(GMembershipEventVarianceOrderByBuilder b) updates]) =
-      _$GMembershipEventVarianceOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GMembershipEventVarianceOrderBy> get serializer =>
-      _$gMembershipEventVarianceOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GMembershipEventVarianceOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GMembershipEventVarianceOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GMembershipEventVarianceOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GMembershipEventVarPopOrderBy
-    implements
-        Built<GMembershipEventVarPopOrderBy,
-            GMembershipEventVarPopOrderByBuilder> {
-  GMembershipEventVarPopOrderBy._();
-
-  factory GMembershipEventVarPopOrderBy(
-          [void Function(GMembershipEventVarPopOrderByBuilder b) updates]) =
-      _$GMembershipEventVarPopOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GMembershipEventVarPopOrderBy> get serializer =>
-      _$gMembershipEventVarPopOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GMembershipEventVarPopOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GMembershipEventVarPopOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GMembershipEventVarPopOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GMembershipEventVarSampOrderBy
-    implements
-        Built<GMembershipEventVarSampOrderBy,
-            GMembershipEventVarSampOrderByBuilder> {
-  GMembershipEventVarSampOrderBy._();
-
-  factory GMembershipEventVarSampOrderBy(
-          [void Function(GMembershipEventVarSampOrderByBuilder b) updates]) =
-      _$GMembershipEventVarSampOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GMembershipEventVarSampOrderBy> get serializer =>
-      _$gMembershipEventVarSampOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GMembershipEventVarSampOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GMembershipEventVarSampOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GMembershipEventVarSampOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GNumericComparisonExp
-    implements Built<GNumericComparisonExp, GNumericComparisonExpBuilder> {
-  GNumericComparisonExp._();
-
-  factory GNumericComparisonExp(
-          [void Function(GNumericComparisonExpBuilder b) updates]) =
-      _$GNumericComparisonExp;
-
-  @BuiltValueField(wireName: '_eq')
-  int? get G_eq;
-  @BuiltValueField(wireName: '_gt')
-  int? get G_gt;
-  @BuiltValueField(wireName: '_gte')
-  int? get G_gte;
-  @BuiltValueField(wireName: '_in')
-  BuiltList<int>? get G_in;
-  @BuiltValueField(wireName: '_isNull')
-  bool? get G_isNull;
-  @BuiltValueField(wireName: '_lt')
-  int? get G_lt;
-  @BuiltValueField(wireName: '_lte')
-  int? get G_lte;
-  @BuiltValueField(wireName: '_neq')
-  int? get G_neq;
-  @BuiltValueField(wireName: '_nin')
-  BuiltList<int>? get G_nin;
-  static Serializer<GNumericComparisonExp> get serializer =>
-      _$gNumericComparisonExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GNumericComparisonExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GNumericComparisonExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GNumericComparisonExp.serializer,
-        json,
-      );
-}
-
-class GOrderBy extends EnumClass {
-  const GOrderBy._(String name) : super(name);
-
-  static const GOrderBy ASC = _$gOrderByASC;
-
-  static const GOrderBy ASC_NULLS_FIRST = _$gOrderByASC_NULLS_FIRST;
-
-  static const GOrderBy ASC_NULLS_LAST = _$gOrderByASC_NULLS_LAST;
-
-  static const GOrderBy DESC = _$gOrderByDESC;
-
-  static const GOrderBy DESC_NULLS_FIRST = _$gOrderByDESC_NULLS_FIRST;
-
-  static const GOrderBy DESC_NULLS_LAST = _$gOrderByDESC_NULLS_LAST;
-
-  static Serializer<GOrderBy> get serializer => _$gOrderBySerializer;
-
-  static BuiltSet<GOrderBy> get values => _$gOrderByValues;
-
-  static GOrderBy valueOf(String name) => _$gOrderByValueOf(name);
-}
-
-abstract class GPopulationHistoryBoolExp
-    implements
-        Built<GPopulationHistoryBoolExp, GPopulationHistoryBoolExpBuilder> {
-  GPopulationHistoryBoolExp._();
-
-  factory GPopulationHistoryBoolExp(
-          [void Function(GPopulationHistoryBoolExpBuilder b) updates]) =
-      _$GPopulationHistoryBoolExp;
-
-  @BuiltValueField(wireName: '_and')
-  BuiltList<GPopulationHistoryBoolExp>? get G_and;
-  @BuiltValueField(wireName: '_not')
-  GPopulationHistoryBoolExp? get G_not;
-  @BuiltValueField(wireName: '_or')
-  BuiltList<GPopulationHistoryBoolExp>? get G_or;
-  GIntComparisonExp? get activeAccountCount;
-  GIntComparisonExp? get blockNumber;
-  GStringComparisonExp? get id;
-  GIntComparisonExp? get memberCount;
-  GIntComparisonExp? get smithCount;
-  static Serializer<GPopulationHistoryBoolExp> get serializer =>
-      _$gPopulationHistoryBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GPopulationHistoryBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GPopulationHistoryBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GPopulationHistoryBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GPopulationHistoryOrderBy
-    implements
-        Built<GPopulationHistoryOrderBy, GPopulationHistoryOrderByBuilder> {
-  GPopulationHistoryOrderBy._();
-
-  factory GPopulationHistoryOrderBy(
-          [void Function(GPopulationHistoryOrderByBuilder b) updates]) =
-      _$GPopulationHistoryOrderBy;
-
-  GOrderBy? get activeAccountCount;
-  GOrderBy? get blockNumber;
-  GOrderBy? get id;
-  GOrderBy? get memberCount;
-  GOrderBy? get smithCount;
-  static Serializer<GPopulationHistoryOrderBy> get serializer =>
-      _$gPopulationHistoryOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GPopulationHistoryOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GPopulationHistoryOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GPopulationHistoryOrderBy.serializer,
-        json,
-      );
-}
-
-class GPopulationHistorySelectColumn extends EnumClass {
-  const GPopulationHistorySelectColumn._(String name) : super(name);
-
-  static const GPopulationHistorySelectColumn activeAccountCount =
-      _$gPopulationHistorySelectColumnactiveAccountCount;
-
-  static const GPopulationHistorySelectColumn blockNumber =
-      _$gPopulationHistorySelectColumnblockNumber;
-
-  static const GPopulationHistorySelectColumn id =
-      _$gPopulationHistorySelectColumnid;
-
-  static const GPopulationHistorySelectColumn memberCount =
-      _$gPopulationHistorySelectColumnmemberCount;
-
-  static const GPopulationHistorySelectColumn smithCount =
-      _$gPopulationHistorySelectColumnsmithCount;
-
-  static Serializer<GPopulationHistorySelectColumn> get serializer =>
-      _$gPopulationHistorySelectColumnSerializer;
-
-  static BuiltSet<GPopulationHistorySelectColumn> get values =>
-      _$gPopulationHistorySelectColumnValues;
-
-  static GPopulationHistorySelectColumn valueOf(String name) =>
-      _$gPopulationHistorySelectColumnValueOf(name);
-}
-
-abstract class GPopulationHistoryStreamCursorInput
-    implements
-        Built<GPopulationHistoryStreamCursorInput,
-            GPopulationHistoryStreamCursorInputBuilder> {
-  GPopulationHistoryStreamCursorInput._();
-
-  factory GPopulationHistoryStreamCursorInput(
-      [void Function(GPopulationHistoryStreamCursorInputBuilder b)
-          updates]) = _$GPopulationHistoryStreamCursorInput;
-
-  GPopulationHistoryStreamCursorValueInput get initialValue;
-  GCursorOrdering? get ordering;
-  static Serializer<GPopulationHistoryStreamCursorInput> get serializer =>
-      _$gPopulationHistoryStreamCursorInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GPopulationHistoryStreamCursorInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GPopulationHistoryStreamCursorInput? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GPopulationHistoryStreamCursorInput.serializer,
-        json,
-      );
-}
-
-abstract class GPopulationHistoryStreamCursorValueInput
-    implements
-        Built<GPopulationHistoryStreamCursorValueInput,
-            GPopulationHistoryStreamCursorValueInputBuilder> {
-  GPopulationHistoryStreamCursorValueInput._();
-
-  factory GPopulationHistoryStreamCursorValueInput(
-      [void Function(GPopulationHistoryStreamCursorValueInputBuilder b)
-          updates]) = _$GPopulationHistoryStreamCursorValueInput;
-
-  int? get activeAccountCount;
-  int? get blockNumber;
-  String? get id;
-  int? get memberCount;
-  int? get smithCount;
-  static Serializer<GPopulationHistoryStreamCursorValueInput> get serializer =>
-      _$gPopulationHistoryStreamCursorValueInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GPopulationHistoryStreamCursorValueInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GPopulationHistoryStreamCursorValueInput? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GPopulationHistoryStreamCursorValueInput.serializer,
-        json,
-      );
-}
-
-abstract class GSmithBoolExp
-    implements Built<GSmithBoolExp, GSmithBoolExpBuilder> {
-  GSmithBoolExp._();
-
-  factory GSmithBoolExp([void Function(GSmithBoolExpBuilder b) updates]) =
-      _$GSmithBoolExp;
-
-  @BuiltValueField(wireName: '_and')
-  BuiltList<GSmithBoolExp>? get G_and;
-  @BuiltValueField(wireName: '_not')
-  GSmithBoolExp? get G_not;
-  @BuiltValueField(wireName: '_or')
-  BuiltList<GSmithBoolExp>? get G_or;
-  GIntComparisonExp? get forged;
-  GStringComparisonExp? get id;
-  GIdentityBoolExp? get identity;
-  GStringComparisonExp? get identityId;
-  GIntComparisonExp? get index;
-  GIntComparisonExp? get lastChanged;
-  GIntComparisonExp? get lastForged;
-  GSmithCertBoolExp? get smithCertIssued;
-  GSmithCertAggregateBoolExp? get smithCertIssuedAggregate;
-  GSmithCertBoolExp? get smithCertReceived;
-  GSmithCertAggregateBoolExp? get smithCertReceivedAggregate;
-  GSmithEventBoolExp? get smithHistory;
-  GSmithEventAggregateBoolExp? get smithHistoryAggregate;
-  GStringComparisonExp? get smithStatus;
-  static Serializer<GSmithBoolExp> get serializer => _$gSmithBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GSmithCertAggregateBoolExp
-    implements
-        Built<GSmithCertAggregateBoolExp, GSmithCertAggregateBoolExpBuilder> {
-  GSmithCertAggregateBoolExp._();
-
-  factory GSmithCertAggregateBoolExp(
-          [void Function(GSmithCertAggregateBoolExpBuilder b) updates]) =
-      _$GSmithCertAggregateBoolExp;
-
-  GsmithCertAggregateBoolExpCount? get count;
-  static Serializer<GSmithCertAggregateBoolExp> get serializer =>
-      _$gSmithCertAggregateBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithCertAggregateBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithCertAggregateBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithCertAggregateBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GsmithCertAggregateBoolExpCount
-    implements
-        Built<GsmithCertAggregateBoolExpCount,
-            GsmithCertAggregateBoolExpCountBuilder> {
-  GsmithCertAggregateBoolExpCount._();
-
-  factory GsmithCertAggregateBoolExpCount(
-          [void Function(GsmithCertAggregateBoolExpCountBuilder b) updates]) =
-      _$GsmithCertAggregateBoolExpCount;
-
-  BuiltList<GSmithCertSelectColumn>? get arguments;
-  bool? get distinct;
-  GSmithCertBoolExp? get filter;
-  GIntComparisonExp get predicate;
-  static Serializer<GsmithCertAggregateBoolExpCount> get serializer =>
-      _$gsmithCertAggregateBoolExpCountSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GsmithCertAggregateBoolExpCount.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GsmithCertAggregateBoolExpCount? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GsmithCertAggregateBoolExpCount.serializer,
-        json,
-      );
-}
-
-abstract class GSmithCertAggregateOrderBy
-    implements
-        Built<GSmithCertAggregateOrderBy, GSmithCertAggregateOrderByBuilder> {
-  GSmithCertAggregateOrderBy._();
-
-  factory GSmithCertAggregateOrderBy(
-          [void Function(GSmithCertAggregateOrderByBuilder b) updates]) =
-      _$GSmithCertAggregateOrderBy;
-
-  GSmithCertAvgOrderBy? get avg;
-  GOrderBy? get count;
-  GSmithCertMaxOrderBy? get max;
-  GSmithCertMinOrderBy? get min;
-  GSmithCertStddevOrderBy? get stddev;
-  GSmithCertStddevPopOrderBy? get stddevPop;
-  GSmithCertStddevSampOrderBy? get stddevSamp;
-  GSmithCertSumOrderBy? get sum;
-  GSmithCertVarPopOrderBy? get varPop;
-  GSmithCertVarSampOrderBy? get varSamp;
-  GSmithCertVarianceOrderBy? get variance;
-  static Serializer<GSmithCertAggregateOrderBy> get serializer =>
-      _$gSmithCertAggregateOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithCertAggregateOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithCertAggregateOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithCertAggregateOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GSmithCertAvgOrderBy
-    implements Built<GSmithCertAvgOrderBy, GSmithCertAvgOrderByBuilder> {
-  GSmithCertAvgOrderBy._();
-
-  factory GSmithCertAvgOrderBy(
-          [void Function(GSmithCertAvgOrderByBuilder b) updates]) =
-      _$GSmithCertAvgOrderBy;
-
-  GOrderBy? get createdOn;
-  static Serializer<GSmithCertAvgOrderBy> get serializer =>
-      _$gSmithCertAvgOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithCertAvgOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithCertAvgOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithCertAvgOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GSmithCertBoolExp
-    implements Built<GSmithCertBoolExp, GSmithCertBoolExpBuilder> {
-  GSmithCertBoolExp._();
-
-  factory GSmithCertBoolExp(
-          [void Function(GSmithCertBoolExpBuilder b) updates]) =
-      _$GSmithCertBoolExp;
-
-  @BuiltValueField(wireName: '_and')
-  BuiltList<GSmithCertBoolExp>? get G_and;
-  @BuiltValueField(wireName: '_not')
-  GSmithCertBoolExp? get G_not;
-  @BuiltValueField(wireName: '_or')
-  BuiltList<GSmithCertBoolExp>? get G_or;
-  GIntComparisonExp? get createdOn;
-  GStringComparisonExp? get id;
-  GSmithBoolExp? get issuer;
-  GStringComparisonExp? get issuerId;
-  GSmithBoolExp? get receiver;
-  GStringComparisonExp? get receiverId;
-  static Serializer<GSmithCertBoolExp> get serializer =>
-      _$gSmithCertBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithCertBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithCertBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithCertBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GSmithCertMaxOrderBy
-    implements Built<GSmithCertMaxOrderBy, GSmithCertMaxOrderByBuilder> {
-  GSmithCertMaxOrderBy._();
-
-  factory GSmithCertMaxOrderBy(
-          [void Function(GSmithCertMaxOrderByBuilder b) updates]) =
-      _$GSmithCertMaxOrderBy;
-
-  GOrderBy? get createdOn;
-  GOrderBy? get id;
-  GOrderBy? get issuerId;
-  GOrderBy? get receiverId;
-  static Serializer<GSmithCertMaxOrderBy> get serializer =>
-      _$gSmithCertMaxOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithCertMaxOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithCertMaxOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithCertMaxOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GSmithCertMinOrderBy
-    implements Built<GSmithCertMinOrderBy, GSmithCertMinOrderByBuilder> {
-  GSmithCertMinOrderBy._();
-
-  factory GSmithCertMinOrderBy(
-          [void Function(GSmithCertMinOrderByBuilder b) updates]) =
-      _$GSmithCertMinOrderBy;
-
-  GOrderBy? get createdOn;
-  GOrderBy? get id;
-  GOrderBy? get issuerId;
-  GOrderBy? get receiverId;
-  static Serializer<GSmithCertMinOrderBy> get serializer =>
-      _$gSmithCertMinOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithCertMinOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithCertMinOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithCertMinOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GSmithCertOrderBy
-    implements Built<GSmithCertOrderBy, GSmithCertOrderByBuilder> {
-  GSmithCertOrderBy._();
-
-  factory GSmithCertOrderBy(
-          [void Function(GSmithCertOrderByBuilder b) updates]) =
-      _$GSmithCertOrderBy;
-
-  GOrderBy? get createdOn;
-  GOrderBy? get id;
-  GSmithOrderBy? get issuer;
-  GOrderBy? get issuerId;
-  GSmithOrderBy? get receiver;
-  GOrderBy? get receiverId;
-  static Serializer<GSmithCertOrderBy> get serializer =>
-      _$gSmithCertOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithCertOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithCertOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithCertOrderBy.serializer,
-        json,
-      );
-}
-
-class GSmithCertSelectColumn extends EnumClass {
-  const GSmithCertSelectColumn._(String name) : super(name);
-
-  static const GSmithCertSelectColumn createdOn =
-      _$gSmithCertSelectColumncreatedOn;
-
-  static const GSmithCertSelectColumn id = _$gSmithCertSelectColumnid;
-
-  static const GSmithCertSelectColumn issuerId =
-      _$gSmithCertSelectColumnissuerId;
-
-  static const GSmithCertSelectColumn receiverId =
-      _$gSmithCertSelectColumnreceiverId;
-
-  static Serializer<GSmithCertSelectColumn> get serializer =>
-      _$gSmithCertSelectColumnSerializer;
-
-  static BuiltSet<GSmithCertSelectColumn> get values =>
-      _$gSmithCertSelectColumnValues;
-
-  static GSmithCertSelectColumn valueOf(String name) =>
-      _$gSmithCertSelectColumnValueOf(name);
-}
-
-abstract class GSmithCertStddevOrderBy
-    implements Built<GSmithCertStddevOrderBy, GSmithCertStddevOrderByBuilder> {
-  GSmithCertStddevOrderBy._();
-
-  factory GSmithCertStddevOrderBy(
-          [void Function(GSmithCertStddevOrderByBuilder b) updates]) =
-      _$GSmithCertStddevOrderBy;
-
-  GOrderBy? get createdOn;
-  static Serializer<GSmithCertStddevOrderBy> get serializer =>
-      _$gSmithCertStddevOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithCertStddevOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithCertStddevOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithCertStddevOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GSmithCertStddevPopOrderBy
-    implements
-        Built<GSmithCertStddevPopOrderBy, GSmithCertStddevPopOrderByBuilder> {
-  GSmithCertStddevPopOrderBy._();
-
-  factory GSmithCertStddevPopOrderBy(
-          [void Function(GSmithCertStddevPopOrderByBuilder b) updates]) =
-      _$GSmithCertStddevPopOrderBy;
-
-  GOrderBy? get createdOn;
-  static Serializer<GSmithCertStddevPopOrderBy> get serializer =>
-      _$gSmithCertStddevPopOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithCertStddevPopOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithCertStddevPopOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithCertStddevPopOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GSmithCertStddevSampOrderBy
-    implements
-        Built<GSmithCertStddevSampOrderBy, GSmithCertStddevSampOrderByBuilder> {
-  GSmithCertStddevSampOrderBy._();
-
-  factory GSmithCertStddevSampOrderBy(
-          [void Function(GSmithCertStddevSampOrderByBuilder b) updates]) =
-      _$GSmithCertStddevSampOrderBy;
-
-  GOrderBy? get createdOn;
-  static Serializer<GSmithCertStddevSampOrderBy> get serializer =>
-      _$gSmithCertStddevSampOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithCertStddevSampOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithCertStddevSampOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithCertStddevSampOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GSmithCertStreamCursorInput
-    implements
-        Built<GSmithCertStreamCursorInput, GSmithCertStreamCursorInputBuilder> {
-  GSmithCertStreamCursorInput._();
-
-  factory GSmithCertStreamCursorInput(
-          [void Function(GSmithCertStreamCursorInputBuilder b) updates]) =
-      _$GSmithCertStreamCursorInput;
-
-  GSmithCertStreamCursorValueInput get initialValue;
-  GCursorOrdering? get ordering;
-  static Serializer<GSmithCertStreamCursorInput> get serializer =>
-      _$gSmithCertStreamCursorInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithCertStreamCursorInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithCertStreamCursorInput? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithCertStreamCursorInput.serializer,
-        json,
-      );
-}
-
-abstract class GSmithCertStreamCursorValueInput
-    implements
-        Built<GSmithCertStreamCursorValueInput,
-            GSmithCertStreamCursorValueInputBuilder> {
-  GSmithCertStreamCursorValueInput._();
-
-  factory GSmithCertStreamCursorValueInput(
-          [void Function(GSmithCertStreamCursorValueInputBuilder b) updates]) =
-      _$GSmithCertStreamCursorValueInput;
-
-  int? get createdOn;
-  String? get id;
-  String? get issuerId;
-  String? get receiverId;
-  static Serializer<GSmithCertStreamCursorValueInput> get serializer =>
-      _$gSmithCertStreamCursorValueInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithCertStreamCursorValueInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithCertStreamCursorValueInput? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithCertStreamCursorValueInput.serializer,
-        json,
-      );
-}
-
-abstract class GSmithCertSumOrderBy
-    implements Built<GSmithCertSumOrderBy, GSmithCertSumOrderByBuilder> {
-  GSmithCertSumOrderBy._();
-
-  factory GSmithCertSumOrderBy(
-          [void Function(GSmithCertSumOrderByBuilder b) updates]) =
-      _$GSmithCertSumOrderBy;
-
-  GOrderBy? get createdOn;
-  static Serializer<GSmithCertSumOrderBy> get serializer =>
-      _$gSmithCertSumOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithCertSumOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithCertSumOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithCertSumOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GSmithCertVarianceOrderBy
-    implements
-        Built<GSmithCertVarianceOrderBy, GSmithCertVarianceOrderByBuilder> {
-  GSmithCertVarianceOrderBy._();
-
-  factory GSmithCertVarianceOrderBy(
-          [void Function(GSmithCertVarianceOrderByBuilder b) updates]) =
-      _$GSmithCertVarianceOrderBy;
-
-  GOrderBy? get createdOn;
-  static Serializer<GSmithCertVarianceOrderBy> get serializer =>
-      _$gSmithCertVarianceOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithCertVarianceOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithCertVarianceOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithCertVarianceOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GSmithCertVarPopOrderBy
-    implements Built<GSmithCertVarPopOrderBy, GSmithCertVarPopOrderByBuilder> {
-  GSmithCertVarPopOrderBy._();
-
-  factory GSmithCertVarPopOrderBy(
-          [void Function(GSmithCertVarPopOrderByBuilder b) updates]) =
-      _$GSmithCertVarPopOrderBy;
-
-  GOrderBy? get createdOn;
-  static Serializer<GSmithCertVarPopOrderBy> get serializer =>
-      _$gSmithCertVarPopOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithCertVarPopOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithCertVarPopOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithCertVarPopOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GSmithCertVarSampOrderBy
-    implements
-        Built<GSmithCertVarSampOrderBy, GSmithCertVarSampOrderByBuilder> {
-  GSmithCertVarSampOrderBy._();
-
-  factory GSmithCertVarSampOrderBy(
-          [void Function(GSmithCertVarSampOrderByBuilder b) updates]) =
-      _$GSmithCertVarSampOrderBy;
-
-  GOrderBy? get createdOn;
-  static Serializer<GSmithCertVarSampOrderBy> get serializer =>
-      _$gSmithCertVarSampOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithCertVarSampOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithCertVarSampOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithCertVarSampOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GSmithEventAggregateBoolExp
-    implements
-        Built<GSmithEventAggregateBoolExp, GSmithEventAggregateBoolExpBuilder> {
-  GSmithEventAggregateBoolExp._();
-
-  factory GSmithEventAggregateBoolExp(
-          [void Function(GSmithEventAggregateBoolExpBuilder b) updates]) =
-      _$GSmithEventAggregateBoolExp;
-
-  GsmithEventAggregateBoolExpCount? get count;
-  static Serializer<GSmithEventAggregateBoolExp> get serializer =>
-      _$gSmithEventAggregateBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithEventAggregateBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithEventAggregateBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithEventAggregateBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GsmithEventAggregateBoolExpCount
-    implements
-        Built<GsmithEventAggregateBoolExpCount,
-            GsmithEventAggregateBoolExpCountBuilder> {
-  GsmithEventAggregateBoolExpCount._();
-
-  factory GsmithEventAggregateBoolExpCount(
-          [void Function(GsmithEventAggregateBoolExpCountBuilder b) updates]) =
-      _$GsmithEventAggregateBoolExpCount;
-
-  BuiltList<GSmithEventSelectColumn>? get arguments;
-  bool? get distinct;
-  GSmithEventBoolExp? get filter;
-  GIntComparisonExp get predicate;
-  static Serializer<GsmithEventAggregateBoolExpCount> get serializer =>
-      _$gsmithEventAggregateBoolExpCountSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GsmithEventAggregateBoolExpCount.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GsmithEventAggregateBoolExpCount? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GsmithEventAggregateBoolExpCount.serializer,
-        json,
-      );
-}
-
-abstract class GSmithEventAggregateOrderBy
-    implements
-        Built<GSmithEventAggregateOrderBy, GSmithEventAggregateOrderByBuilder> {
-  GSmithEventAggregateOrderBy._();
-
-  factory GSmithEventAggregateOrderBy(
-          [void Function(GSmithEventAggregateOrderByBuilder b) updates]) =
-      _$GSmithEventAggregateOrderBy;
-
-  GSmithEventAvgOrderBy? get avg;
-  GOrderBy? get count;
-  GSmithEventMaxOrderBy? get max;
-  GSmithEventMinOrderBy? get min;
-  GSmithEventStddevOrderBy? get stddev;
-  GSmithEventStddevPopOrderBy? get stddevPop;
-  GSmithEventStddevSampOrderBy? get stddevSamp;
-  GSmithEventSumOrderBy? get sum;
-  GSmithEventVarPopOrderBy? get varPop;
-  GSmithEventVarSampOrderBy? get varSamp;
-  GSmithEventVarianceOrderBy? get variance;
-  static Serializer<GSmithEventAggregateOrderBy> get serializer =>
-      _$gSmithEventAggregateOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithEventAggregateOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithEventAggregateOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithEventAggregateOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GSmithEventAvgOrderBy
-    implements Built<GSmithEventAvgOrderBy, GSmithEventAvgOrderByBuilder> {
-  GSmithEventAvgOrderBy._();
-
-  factory GSmithEventAvgOrderBy(
-          [void Function(GSmithEventAvgOrderByBuilder b) updates]) =
-      _$GSmithEventAvgOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GSmithEventAvgOrderBy> get serializer =>
-      _$gSmithEventAvgOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithEventAvgOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithEventAvgOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithEventAvgOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GSmithEventBoolExp
-    implements Built<GSmithEventBoolExp, GSmithEventBoolExpBuilder> {
-  GSmithEventBoolExp._();
-
-  factory GSmithEventBoolExp(
-          [void Function(GSmithEventBoolExpBuilder b) updates]) =
-      _$GSmithEventBoolExp;
-
-  @BuiltValueField(wireName: '_and')
-  BuiltList<GSmithEventBoolExp>? get G_and;
-  @BuiltValueField(wireName: '_not')
-  GSmithEventBoolExp? get G_not;
-  @BuiltValueField(wireName: '_or')
-  BuiltList<GSmithEventBoolExp>? get G_or;
-  GIntComparisonExp? get blockNumber;
-  GEventBoolExp? get event;
-  GStringComparisonExp? get eventId;
-  GStringComparisonExp? get eventType;
-  GStringComparisonExp? get id;
-  GSmithBoolExp? get smith;
-  GStringComparisonExp? get smithId;
-  static Serializer<GSmithEventBoolExp> get serializer =>
-      _$gSmithEventBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithEventBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithEventBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithEventBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GSmithEventMaxOrderBy
-    implements Built<GSmithEventMaxOrderBy, GSmithEventMaxOrderByBuilder> {
-  GSmithEventMaxOrderBy._();
-
-  factory GSmithEventMaxOrderBy(
-          [void Function(GSmithEventMaxOrderByBuilder b) updates]) =
-      _$GSmithEventMaxOrderBy;
-
-  GOrderBy? get blockNumber;
-  GOrderBy? get eventId;
-  GOrderBy? get eventType;
-  GOrderBy? get id;
-  GOrderBy? get smithId;
-  static Serializer<GSmithEventMaxOrderBy> get serializer =>
-      _$gSmithEventMaxOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithEventMaxOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithEventMaxOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithEventMaxOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GSmithEventMinOrderBy
-    implements Built<GSmithEventMinOrderBy, GSmithEventMinOrderByBuilder> {
-  GSmithEventMinOrderBy._();
-
-  factory GSmithEventMinOrderBy(
-          [void Function(GSmithEventMinOrderByBuilder b) updates]) =
-      _$GSmithEventMinOrderBy;
-
-  GOrderBy? get blockNumber;
-  GOrderBy? get eventId;
-  GOrderBy? get eventType;
-  GOrderBy? get id;
-  GOrderBy? get smithId;
-  static Serializer<GSmithEventMinOrderBy> get serializer =>
-      _$gSmithEventMinOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithEventMinOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithEventMinOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithEventMinOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GSmithEventOrderBy
-    implements Built<GSmithEventOrderBy, GSmithEventOrderByBuilder> {
-  GSmithEventOrderBy._();
-
-  factory GSmithEventOrderBy(
-          [void Function(GSmithEventOrderByBuilder b) updates]) =
-      _$GSmithEventOrderBy;
-
-  GOrderBy? get blockNumber;
-  GEventOrderBy? get event;
-  GOrderBy? get eventId;
-  GOrderBy? get eventType;
-  GOrderBy? get id;
-  GSmithOrderBy? get smith;
-  GOrderBy? get smithId;
-  static Serializer<GSmithEventOrderBy> get serializer =>
-      _$gSmithEventOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithEventOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithEventOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithEventOrderBy.serializer,
-        json,
-      );
-}
-
-class GSmithEventSelectColumn extends EnumClass {
-  const GSmithEventSelectColumn._(String name) : super(name);
-
-  static const GSmithEventSelectColumn blockNumber =
-      _$gSmithEventSelectColumnblockNumber;
-
-  static const GSmithEventSelectColumn eventId =
-      _$gSmithEventSelectColumneventId;
-
-  static const GSmithEventSelectColumn eventType =
-      _$gSmithEventSelectColumneventType;
-
-  static const GSmithEventSelectColumn id = _$gSmithEventSelectColumnid;
-
-  static const GSmithEventSelectColumn smithId =
-      _$gSmithEventSelectColumnsmithId;
-
-  static Serializer<GSmithEventSelectColumn> get serializer =>
-      _$gSmithEventSelectColumnSerializer;
-
-  static BuiltSet<GSmithEventSelectColumn> get values =>
-      _$gSmithEventSelectColumnValues;
-
-  static GSmithEventSelectColumn valueOf(String name) =>
-      _$gSmithEventSelectColumnValueOf(name);
-}
-
-abstract class GSmithEventStddevOrderBy
-    implements
-        Built<GSmithEventStddevOrderBy, GSmithEventStddevOrderByBuilder> {
-  GSmithEventStddevOrderBy._();
-
-  factory GSmithEventStddevOrderBy(
-          [void Function(GSmithEventStddevOrderByBuilder b) updates]) =
-      _$GSmithEventStddevOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GSmithEventStddevOrderBy> get serializer =>
-      _$gSmithEventStddevOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithEventStddevOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithEventStddevOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithEventStddevOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GSmithEventStddevPopOrderBy
-    implements
-        Built<GSmithEventStddevPopOrderBy, GSmithEventStddevPopOrderByBuilder> {
-  GSmithEventStddevPopOrderBy._();
-
-  factory GSmithEventStddevPopOrderBy(
-          [void Function(GSmithEventStddevPopOrderByBuilder b) updates]) =
-      _$GSmithEventStddevPopOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GSmithEventStddevPopOrderBy> get serializer =>
-      _$gSmithEventStddevPopOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithEventStddevPopOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithEventStddevPopOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithEventStddevPopOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GSmithEventStddevSampOrderBy
-    implements
-        Built<GSmithEventStddevSampOrderBy,
-            GSmithEventStddevSampOrderByBuilder> {
-  GSmithEventStddevSampOrderBy._();
-
-  factory GSmithEventStddevSampOrderBy(
-          [void Function(GSmithEventStddevSampOrderByBuilder b) updates]) =
-      _$GSmithEventStddevSampOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GSmithEventStddevSampOrderBy> get serializer =>
-      _$gSmithEventStddevSampOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithEventStddevSampOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithEventStddevSampOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithEventStddevSampOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GSmithEventStreamCursorInput
-    implements
-        Built<GSmithEventStreamCursorInput,
-            GSmithEventStreamCursorInputBuilder> {
-  GSmithEventStreamCursorInput._();
-
-  factory GSmithEventStreamCursorInput(
-          [void Function(GSmithEventStreamCursorInputBuilder b) updates]) =
-      _$GSmithEventStreamCursorInput;
-
-  GSmithEventStreamCursorValueInput get initialValue;
-  GCursorOrdering? get ordering;
-  static Serializer<GSmithEventStreamCursorInput> get serializer =>
-      _$gSmithEventStreamCursorInputSerializer;
+  static const GItemsCountersOrderBy ID_DESC = _$gItemsCountersOrderByID_DESC;
 
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithEventStreamCursorInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithEventStreamCursorInput? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithEventStreamCursorInput.serializer,
-        json,
-      );
-}
-
-abstract class GSmithEventStreamCursorValueInput
-    implements
-        Built<GSmithEventStreamCursorValueInput,
-            GSmithEventStreamCursorValueInputBuilder> {
-  GSmithEventStreamCursorValueInput._();
-
-  factory GSmithEventStreamCursorValueInput(
-          [void Function(GSmithEventStreamCursorValueInputBuilder b) updates]) =
-      _$GSmithEventStreamCursorValueInput;
-
-  int? get blockNumber;
-  String? get eventId;
-  String? get eventType;
-  String? get id;
-  String? get smithId;
-  static Serializer<GSmithEventStreamCursorValueInput> get serializer =>
-      _$gSmithEventStreamCursorValueInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithEventStreamCursorValueInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithEventStreamCursorValueInput? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithEventStreamCursorValueInput.serializer,
-        json,
-      );
-}
-
-abstract class GSmithEventSumOrderBy
-    implements Built<GSmithEventSumOrderBy, GSmithEventSumOrderByBuilder> {
-  GSmithEventSumOrderBy._();
-
-  factory GSmithEventSumOrderBy(
-          [void Function(GSmithEventSumOrderByBuilder b) updates]) =
-      _$GSmithEventSumOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GSmithEventSumOrderBy> get serializer =>
-      _$gSmithEventSumOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithEventSumOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithEventSumOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithEventSumOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GSmithEventVarianceOrderBy
-    implements
-        Built<GSmithEventVarianceOrderBy, GSmithEventVarianceOrderByBuilder> {
-  GSmithEventVarianceOrderBy._();
-
-  factory GSmithEventVarianceOrderBy(
-          [void Function(GSmithEventVarianceOrderByBuilder b) updates]) =
-      _$GSmithEventVarianceOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GSmithEventVarianceOrderBy> get serializer =>
-      _$gSmithEventVarianceOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithEventVarianceOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithEventVarianceOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithEventVarianceOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GSmithEventVarPopOrderBy
-    implements
-        Built<GSmithEventVarPopOrderBy, GSmithEventVarPopOrderByBuilder> {
-  GSmithEventVarPopOrderBy._();
-
-  factory GSmithEventVarPopOrderBy(
-          [void Function(GSmithEventVarPopOrderByBuilder b) updates]) =
-      _$GSmithEventVarPopOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GSmithEventVarPopOrderBy> get serializer =>
-      _$gSmithEventVarPopOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithEventVarPopOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithEventVarPopOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithEventVarPopOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GSmithEventVarSampOrderBy
-    implements
-        Built<GSmithEventVarSampOrderBy, GSmithEventVarSampOrderByBuilder> {
-  GSmithEventVarSampOrderBy._();
-
-  factory GSmithEventVarSampOrderBy(
-          [void Function(GSmithEventVarSampOrderByBuilder b) updates]) =
-      _$GSmithEventVarSampOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GSmithEventVarSampOrderBy> get serializer =>
-      _$gSmithEventVarSampOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithEventVarSampOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithEventVarSampOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithEventVarSampOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GSmithOrderBy
-    implements Built<GSmithOrderBy, GSmithOrderByBuilder> {
-  GSmithOrderBy._();
-
-  factory GSmithOrderBy([void Function(GSmithOrderByBuilder b) updates]) =
-      _$GSmithOrderBy;
-
-  GOrderBy? get forged;
-  GOrderBy? get id;
-  GIdentityOrderBy? get identity;
-  GOrderBy? get identityId;
-  GOrderBy? get index;
-  GOrderBy? get lastChanged;
-  GOrderBy? get lastForged;
-  GSmithCertAggregateOrderBy? get smithCertIssuedAggregate;
-  GSmithCertAggregateOrderBy? get smithCertReceivedAggregate;
-  GSmithEventAggregateOrderBy? get smithHistoryAggregate;
-  GOrderBy? get smithStatus;
-  static Serializer<GSmithOrderBy> get serializer => _$gSmithOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithOrderBy.serializer,
-        json,
-      );
-}
-
-class GSmithSelectColumn extends EnumClass {
-  const GSmithSelectColumn._(String name) : super(name);
-
-  static const GSmithSelectColumn forged = _$gSmithSelectColumnforged;
-
-  static const GSmithSelectColumn id = _$gSmithSelectColumnid;
-
-  static const GSmithSelectColumn identityId = _$gSmithSelectColumnidentityId;
-
-  static const GSmithSelectColumn index = _$gSmithSelectColumnindex;
-
-  static const GSmithSelectColumn lastChanged = _$gSmithSelectColumnlastChanged;
-
-  static const GSmithSelectColumn lastForged = _$gSmithSelectColumnlastForged;
-
-  static const GSmithSelectColumn smithStatus = _$gSmithSelectColumnsmithStatus;
-
-  static Serializer<GSmithSelectColumn> get serializer =>
-      _$gSmithSelectColumnSerializer;
-
-  static BuiltSet<GSmithSelectColumn> get values => _$gSmithSelectColumnValues;
-
-  static GSmithSelectColumn valueOf(String name) =>
-      _$gSmithSelectColumnValueOf(name);
-}
-
-abstract class GSmithStreamCursorInput
-    implements Built<GSmithStreamCursorInput, GSmithStreamCursorInputBuilder> {
-  GSmithStreamCursorInput._();
-
-  factory GSmithStreamCursorInput(
-          [void Function(GSmithStreamCursorInputBuilder b) updates]) =
-      _$GSmithStreamCursorInput;
-
-  GSmithStreamCursorValueInput get initialValue;
-  GCursorOrdering? get ordering;
-  static Serializer<GSmithStreamCursorInput> get serializer =>
-      _$gSmithStreamCursorInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithStreamCursorInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithStreamCursorInput? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithStreamCursorInput.serializer,
-        json,
-      );
-}
-
-abstract class GSmithStreamCursorValueInput
-    implements
-        Built<GSmithStreamCursorValueInput,
-            GSmithStreamCursorValueInputBuilder> {
-  GSmithStreamCursorValueInput._();
-
-  factory GSmithStreamCursorValueInput(
-          [void Function(GSmithStreamCursorValueInputBuilder b) updates]) =
-      _$GSmithStreamCursorValueInput;
-
-  int? get forged;
-  String? get id;
-  String? get identityId;
-  int? get index;
-  int? get lastChanged;
-  int? get lastForged;
-  String? get smithStatus;
-  static Serializer<GSmithStreamCursorValueInput> get serializer =>
-      _$gSmithStreamCursorValueInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithStreamCursorValueInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GSmithStreamCursorValueInput? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GSmithStreamCursorValueInput.serializer,
-        json,
-      );
-}
+  static const GItemsCountersOrderBy TYPE_ASC = _$gItemsCountersOrderByTYPE_ASC;
 
-abstract class GStringArrayComparisonExp
-    implements
-        Built<GStringArrayComparisonExp, GStringArrayComparisonExpBuilder> {
-  GStringArrayComparisonExp._();
+  static const GItemsCountersOrderBy TYPE_DESC =
+      _$gItemsCountersOrderByTYPE_DESC;
 
-  factory GStringArrayComparisonExp(
-          [void Function(GStringArrayComparisonExpBuilder b) updates]) =
-      _$GStringArrayComparisonExp;
+  static const GItemsCountersOrderBy LEVEL_ASC =
+      _$gItemsCountersOrderByLEVEL_ASC;
 
-  @BuiltValueField(wireName: '_containedIn')
-  BuiltList<String>? get G_containedIn;
-  @BuiltValueField(wireName: '_contains')
-  BuiltList<String>? get G_contains;
-  @BuiltValueField(wireName: '_eq')
-  BuiltList<String>? get G_eq;
-  @BuiltValueField(wireName: '_gt')
-  BuiltList<String>? get G_gt;
-  @BuiltValueField(wireName: '_gte')
-  BuiltList<String>? get G_gte;
-  @BuiltValueField(wireName: '_in')
-  BuiltList<BuiltList<String>>? get G_in;
-  @BuiltValueField(wireName: '_isNull')
-  bool? get G_isNull;
-  @BuiltValueField(wireName: '_lt')
-  BuiltList<String>? get G_lt;
-  @BuiltValueField(wireName: '_lte')
-  BuiltList<String>? get G_lte;
-  @BuiltValueField(wireName: '_neq')
-  BuiltList<String>? get G_neq;
-  @BuiltValueField(wireName: '_nin')
-  BuiltList<BuiltList<String>>? get G_nin;
-  static Serializer<GStringArrayComparisonExp> get serializer =>
-      _$gStringArrayComparisonExpSerializer;
+  static const GItemsCountersOrderBy LEVEL_DESC =
+      _$gItemsCountersOrderByLEVEL_DESC;
 
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GStringArrayComparisonExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
+  static const GItemsCountersOrderBy TOTAL_ASC =
+      _$gItemsCountersOrderByTOTAL_ASC;
 
-  static GStringArrayComparisonExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GStringArrayComparisonExp.serializer,
-        json,
-      );
-}
+  static const GItemsCountersOrderBy TOTAL_DESC =
+      _$gItemsCountersOrderByTOTAL_DESC;
 
-abstract class GStringComparisonExp
-    implements Built<GStringComparisonExp, GStringComparisonExpBuilder> {
-  GStringComparisonExp._();
+  static const GItemsCountersOrderBy PRIMARY_KEY_ASC =
+      _$gItemsCountersOrderByPRIMARY_KEY_ASC;
 
-  factory GStringComparisonExp(
-          [void Function(GStringComparisonExpBuilder b) updates]) =
-      _$GStringComparisonExp;
+  static const GItemsCountersOrderBy PRIMARY_KEY_DESC =
+      _$gItemsCountersOrderByPRIMARY_KEY_DESC;
 
-  @BuiltValueField(wireName: '_eq')
-  String? get G_eq;
-  @BuiltValueField(wireName: '_gt')
-  String? get G_gt;
-  @BuiltValueField(wireName: '_gte')
-  String? get G_gte;
-  @BuiltValueField(wireName: '_ilike')
-  String? get G_ilike;
-  @BuiltValueField(wireName: '_in')
-  BuiltList<String>? get G_in;
-  @BuiltValueField(wireName: '_iregex')
-  String? get G_iregex;
-  @BuiltValueField(wireName: '_isNull')
-  bool? get G_isNull;
-  @BuiltValueField(wireName: '_like')
-  String? get G_like;
-  @BuiltValueField(wireName: '_lt')
-  String? get G_lt;
-  @BuiltValueField(wireName: '_lte')
-  String? get G_lte;
-  @BuiltValueField(wireName: '_neq')
-  String? get G_neq;
-  @BuiltValueField(wireName: '_nilike')
-  String? get G_nilike;
-  @BuiltValueField(wireName: '_nin')
-  BuiltList<String>? get G_nin;
-  @BuiltValueField(wireName: '_niregex')
-  String? get G_niregex;
-  @BuiltValueField(wireName: '_nlike')
-  String? get G_nlike;
-  @BuiltValueField(wireName: '_nregex')
-  String? get G_nregex;
-  @BuiltValueField(wireName: '_nsimilar')
-  String? get G_nsimilar;
-  @BuiltValueField(wireName: '_regex')
-  String? get G_regex;
-  @BuiltValueField(wireName: '_similar')
-  String? get G_similar;
-  static Serializer<GStringComparisonExp> get serializer =>
-      _$gStringComparisonExpSerializer;
+  static Serializer<GItemsCountersOrderBy> get serializer =>
+      _$gItemsCountersOrderBySerializer;
 
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GStringComparisonExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
+  static BuiltSet<GItemsCountersOrderBy> get values =>
+      _$gItemsCountersOrderByValues;
 
-  static GStringComparisonExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GStringComparisonExp.serializer,
-        json,
-      );
+  static GItemsCountersOrderBy valueOf(String name) =>
+      _$gItemsCountersOrderByValueOf(name);
 }
 
-abstract class Gtimestamptz
-    implements Built<Gtimestamptz, GtimestamptzBuilder> {
-  Gtimestamptz._();
+abstract class GJSON implements Built<GJSON, GJSONBuilder> {
+  GJSON._();
 
-  factory Gtimestamptz([String? value]) =>
-      _$Gtimestamptz((b) => value != null ? (b..value = value) : b);
+  factory GJSON([String? value]) =>
+      _$GJSON((b) => value != null ? (b..value = value) : b);
 
   String get value;
   @BuiltValueSerializer(custom: true)
-  static Serializer<Gtimestamptz> get serializer =>
-      _i2.DefaultScalarSerializer<Gtimestamptz>(
-          (Object serialized) => Gtimestamptz((serialized as String?)));
+  static Serializer<GJSON> get serializer => _i2.DefaultScalarSerializer<GJSON>(
+      (Object serialized) => GJSON((serialized as String?)));
 }
 
-abstract class GTimestamptzComparisonExp
+abstract class GJSONFilter implements Built<GJSONFilter, GJSONFilterBuilder> {
+  GJSONFilter._();
+
+  factory GJSONFilter([void Function(GJSONFilterBuilder b) updates]) =
+      _$GJSONFilter;
+
+  bool? get isNull;
+  GJSON? get equalTo;
+  GJSON? get notEqualTo;
+  GJSON? get distinctFrom;
+  GJSON? get notDistinctFrom;
+  @BuiltValueField(wireName: 'in')
+  BuiltList<GJSON>? get Gin;
+  BuiltList<GJSON>? get notIn;
+  GJSON? get lessThan;
+  GJSON? get lessThanOrEqualTo;
+  GJSON? get greaterThan;
+  GJSON? get greaterThanOrEqualTo;
+  GJSON? get contains;
+  String? get containsKey;
+  BuiltList<String>? get containsAllKeys;
+  BuiltList<String>? get containsAnyKeys;
+  GJSON? get containedBy;
+  static Serializer<GJSONFilter> get serializer => _$gJSONFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GJSONFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GJSONFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GJSONFilter.serializer,
+        json,
+      );
+}
+
+abstract class GMembershipEventCondition
     implements
-        Built<GTimestamptzComparisonExp, GTimestamptzComparisonExpBuilder> {
-  GTimestamptzComparisonExp._();
-
-  factory GTimestamptzComparisonExp(
-          [void Function(GTimestamptzComparisonExpBuilder b) updates]) =
-      _$GTimestamptzComparisonExp;
-
-  @BuiltValueField(wireName: '_eq')
-  Gtimestamptz? get G_eq;
-  @BuiltValueField(wireName: '_gt')
-  Gtimestamptz? get G_gt;
-  @BuiltValueField(wireName: '_gte')
-  Gtimestamptz? get G_gte;
-  @BuiltValueField(wireName: '_in')
-  BuiltList<Gtimestamptz>? get G_in;
-  @BuiltValueField(wireName: '_isNull')
-  bool? get G_isNull;
-  @BuiltValueField(wireName: '_lt')
-  Gtimestamptz? get G_lt;
-  @BuiltValueField(wireName: '_lte')
-  Gtimestamptz? get G_lte;
-  @BuiltValueField(wireName: '_neq')
-  Gtimestamptz? get G_neq;
-  @BuiltValueField(wireName: '_nin')
-  BuiltList<Gtimestamptz>? get G_nin;
-  static Serializer<GTimestamptzComparisonExp> get serializer =>
-      _$gTimestamptzComparisonExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTimestamptzComparisonExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTimestamptzComparisonExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTimestamptzComparisonExp.serializer,
-        json,
-      );
-}
-
-abstract class GTransferAggregateBoolExp
-    implements
-        Built<GTransferAggregateBoolExp, GTransferAggregateBoolExpBuilder> {
-  GTransferAggregateBoolExp._();
-
-  factory GTransferAggregateBoolExp(
-          [void Function(GTransferAggregateBoolExpBuilder b) updates]) =
-      _$GTransferAggregateBoolExp;
-
-  GtransferAggregateBoolExpCount? get count;
-  static Serializer<GTransferAggregateBoolExp> get serializer =>
-      _$gTransferAggregateBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTransferAggregateBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTransferAggregateBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTransferAggregateBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GtransferAggregateBoolExpCount
-    implements
-        Built<GtransferAggregateBoolExpCount,
-            GtransferAggregateBoolExpCountBuilder> {
-  GtransferAggregateBoolExpCount._();
-
-  factory GtransferAggregateBoolExpCount(
-          [void Function(GtransferAggregateBoolExpCountBuilder b) updates]) =
-      _$GtransferAggregateBoolExpCount;
-
-  BuiltList<GTransferSelectColumn>? get arguments;
-  bool? get distinct;
-  GTransferBoolExp? get filter;
-  GIntComparisonExp get predicate;
-  static Serializer<GtransferAggregateBoolExpCount> get serializer =>
-      _$gtransferAggregateBoolExpCountSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GtransferAggregateBoolExpCount.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GtransferAggregateBoolExpCount? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GtransferAggregateBoolExpCount.serializer,
-        json,
-      );
-}
-
-abstract class GTransferAggregateOrderBy
-    implements
-        Built<GTransferAggregateOrderBy, GTransferAggregateOrderByBuilder> {
-  GTransferAggregateOrderBy._();
-
-  factory GTransferAggregateOrderBy(
-          [void Function(GTransferAggregateOrderByBuilder b) updates]) =
-      _$GTransferAggregateOrderBy;
-
-  GTransferAvgOrderBy? get avg;
-  GOrderBy? get count;
-  GTransferMaxOrderBy? get max;
-  GTransferMinOrderBy? get min;
-  GTransferStddevOrderBy? get stddev;
-  GTransferStddevPopOrderBy? get stddevPop;
-  GTransferStddevSampOrderBy? get stddevSamp;
-  GTransferSumOrderBy? get sum;
-  GTransferVarPopOrderBy? get varPop;
-  GTransferVarSampOrderBy? get varSamp;
-  GTransferVarianceOrderBy? get variance;
-  static Serializer<GTransferAggregateOrderBy> get serializer =>
-      _$gTransferAggregateOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTransferAggregateOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTransferAggregateOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTransferAggregateOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GTransferAvgOrderBy
-    implements Built<GTransferAvgOrderBy, GTransferAvgOrderByBuilder> {
-  GTransferAvgOrderBy._();
-
-  factory GTransferAvgOrderBy(
-          [void Function(GTransferAvgOrderByBuilder b) updates]) =
-      _$GTransferAvgOrderBy;
-
-  GOrderBy? get amount;
-  GOrderBy? get blockNumber;
-  static Serializer<GTransferAvgOrderBy> get serializer =>
-      _$gTransferAvgOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTransferAvgOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTransferAvgOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTransferAvgOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GTransferBoolExp
-    implements Built<GTransferBoolExp, GTransferBoolExpBuilder> {
-  GTransferBoolExp._();
-
-  factory GTransferBoolExp([void Function(GTransferBoolExpBuilder b) updates]) =
-      _$GTransferBoolExp;
-
-  @BuiltValueField(wireName: '_and')
-  BuiltList<GTransferBoolExp>? get G_and;
-  @BuiltValueField(wireName: '_not')
-  GTransferBoolExp? get G_not;
-  @BuiltValueField(wireName: '_or')
-  BuiltList<GTransferBoolExp>? get G_or;
-  GNumericComparisonExp? get amount;
-  GIntComparisonExp? get blockNumber;
-  GTxCommentBoolExp? get comment;
-  GStringComparisonExp? get commentId;
-  GEventBoolExp? get event;
-  GStringComparisonExp? get eventId;
-  GAccountBoolExp? get from;
-  GStringComparisonExp? get fromId;
-  GStringComparisonExp? get id;
-  GTimestamptzComparisonExp? get timestamp;
-  GAccountBoolExp? get to;
-  GStringComparisonExp? get toId;
-  static Serializer<GTransferBoolExp> get serializer =>
-      _$gTransferBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTransferBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTransferBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTransferBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GTransferMaxOrderBy
-    implements Built<GTransferMaxOrderBy, GTransferMaxOrderByBuilder> {
-  GTransferMaxOrderBy._();
-
-  factory GTransferMaxOrderBy(
-          [void Function(GTransferMaxOrderByBuilder b) updates]) =
-      _$GTransferMaxOrderBy;
-
-  GOrderBy? get amount;
-  GOrderBy? get blockNumber;
-  GOrderBy? get commentId;
-  GOrderBy? get eventId;
-  GOrderBy? get fromId;
-  GOrderBy? get id;
-  GOrderBy? get timestamp;
-  GOrderBy? get toId;
-  static Serializer<GTransferMaxOrderBy> get serializer =>
-      _$gTransferMaxOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTransferMaxOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTransferMaxOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTransferMaxOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GTransferMinOrderBy
-    implements Built<GTransferMinOrderBy, GTransferMinOrderByBuilder> {
-  GTransferMinOrderBy._();
-
-  factory GTransferMinOrderBy(
-          [void Function(GTransferMinOrderByBuilder b) updates]) =
-      _$GTransferMinOrderBy;
-
-  GOrderBy? get amount;
-  GOrderBy? get blockNumber;
-  GOrderBy? get commentId;
-  GOrderBy? get eventId;
-  GOrderBy? get fromId;
-  GOrderBy? get id;
-  GOrderBy? get timestamp;
-  GOrderBy? get toId;
-  static Serializer<GTransferMinOrderBy> get serializer =>
-      _$gTransferMinOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTransferMinOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTransferMinOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTransferMinOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GTransferOrderBy
-    implements Built<GTransferOrderBy, GTransferOrderByBuilder> {
-  GTransferOrderBy._();
-
-  factory GTransferOrderBy([void Function(GTransferOrderByBuilder b) updates]) =
-      _$GTransferOrderBy;
-
-  GOrderBy? get amount;
-  GOrderBy? get blockNumber;
-  GTxCommentOrderBy? get comment;
-  GOrderBy? get commentId;
-  GEventOrderBy? get event;
-  GOrderBy? get eventId;
-  GAccountOrderBy? get from;
-  GOrderBy? get fromId;
-  GOrderBy? get id;
-  GOrderBy? get timestamp;
-  GAccountOrderBy? get to;
-  GOrderBy? get toId;
-  static Serializer<GTransferOrderBy> get serializer =>
-      _$gTransferOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTransferOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTransferOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTransferOrderBy.serializer,
-        json,
-      );
-}
-
-class GTransferSelectColumn extends EnumClass {
-  const GTransferSelectColumn._(String name) : super(name);
-
-  static const GTransferSelectColumn amount = _$gTransferSelectColumnamount;
-
-  static const GTransferSelectColumn blockNumber =
-      _$gTransferSelectColumnblockNumber;
-
-  static const GTransferSelectColumn commentId =
-      _$gTransferSelectColumncommentId;
-
-  static const GTransferSelectColumn eventId = _$gTransferSelectColumneventId;
-
-  static const GTransferSelectColumn fromId = _$gTransferSelectColumnfromId;
-
-  static const GTransferSelectColumn id = _$gTransferSelectColumnid;
-
-  static const GTransferSelectColumn timestamp =
-      _$gTransferSelectColumntimestamp;
-
-  static const GTransferSelectColumn toId = _$gTransferSelectColumntoId;
-
-  static Serializer<GTransferSelectColumn> get serializer =>
-      _$gTransferSelectColumnSerializer;
-
-  static BuiltSet<GTransferSelectColumn> get values =>
-      _$gTransferSelectColumnValues;
-
-  static GTransferSelectColumn valueOf(String name) =>
-      _$gTransferSelectColumnValueOf(name);
-}
-
-abstract class GTransferStddevOrderBy
-    implements Built<GTransferStddevOrderBy, GTransferStddevOrderByBuilder> {
-  GTransferStddevOrderBy._();
-
-  factory GTransferStddevOrderBy(
-          [void Function(GTransferStddevOrderByBuilder b) updates]) =
-      _$GTransferStddevOrderBy;
-
-  GOrderBy? get amount;
-  GOrderBy? get blockNumber;
-  static Serializer<GTransferStddevOrderBy> get serializer =>
-      _$gTransferStddevOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTransferStddevOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTransferStddevOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTransferStddevOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GTransferStddevPopOrderBy
-    implements
-        Built<GTransferStddevPopOrderBy, GTransferStddevPopOrderByBuilder> {
-  GTransferStddevPopOrderBy._();
-
-  factory GTransferStddevPopOrderBy(
-          [void Function(GTransferStddevPopOrderByBuilder b) updates]) =
-      _$GTransferStddevPopOrderBy;
-
-  GOrderBy? get amount;
-  GOrderBy? get blockNumber;
-  static Serializer<GTransferStddevPopOrderBy> get serializer =>
-      _$gTransferStddevPopOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTransferStddevPopOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTransferStddevPopOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTransferStddevPopOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GTransferStddevSampOrderBy
-    implements
-        Built<GTransferStddevSampOrderBy, GTransferStddevSampOrderByBuilder> {
-  GTransferStddevSampOrderBy._();
-
-  factory GTransferStddevSampOrderBy(
-          [void Function(GTransferStddevSampOrderByBuilder b) updates]) =
-      _$GTransferStddevSampOrderBy;
-
-  GOrderBy? get amount;
-  GOrderBy? get blockNumber;
-  static Serializer<GTransferStddevSampOrderBy> get serializer =>
-      _$gTransferStddevSampOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTransferStddevSampOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTransferStddevSampOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTransferStddevSampOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GTransferStreamCursorInput
-    implements
-        Built<GTransferStreamCursorInput, GTransferStreamCursorInputBuilder> {
-  GTransferStreamCursorInput._();
-
-  factory GTransferStreamCursorInput(
-          [void Function(GTransferStreamCursorInputBuilder b) updates]) =
-      _$GTransferStreamCursorInput;
-
-  GTransferStreamCursorValueInput get initialValue;
-  GCursorOrdering? get ordering;
-  static Serializer<GTransferStreamCursorInput> get serializer =>
-      _$gTransferStreamCursorInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTransferStreamCursorInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTransferStreamCursorInput? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTransferStreamCursorInput.serializer,
-        json,
-      );
-}
-
-abstract class GTransferStreamCursorValueInput
-    implements
-        Built<GTransferStreamCursorValueInput,
-            GTransferStreamCursorValueInputBuilder> {
-  GTransferStreamCursorValueInput._();
-
-  factory GTransferStreamCursorValueInput(
-          [void Function(GTransferStreamCursorValueInputBuilder b) updates]) =
-      _$GTransferStreamCursorValueInput;
-
-  int? get amount;
+        Built<GMembershipEventCondition, GMembershipEventConditionBuilder> {
+  GMembershipEventCondition._();
+
+  factory GMembershipEventCondition(
+          [void Function(GMembershipEventConditionBuilder b) updates]) =
+      _$GMembershipEventCondition;
+
+  String? get id;
+  String? get eventType;
   int? get blockNumber;
-  String? get commentId;
+  String? get identityId;
   String? get eventId;
+  static Serializer<GMembershipEventCondition> get serializer =>
+      _$gMembershipEventConditionSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GMembershipEventCondition.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GMembershipEventCondition? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GMembershipEventCondition.serializer,
+        json,
+      );
+}
+
+abstract class GMembershipEventFilter
+    implements Built<GMembershipEventFilter, GMembershipEventFilterBuilder> {
+  GMembershipEventFilter._();
+
+  factory GMembershipEventFilter(
+          [void Function(GMembershipEventFilterBuilder b) updates]) =
+      _$GMembershipEventFilter;
+
+  GStringFilter? get id;
+  GStringFilter? get eventType;
+  GIntFilter? get blockNumber;
+  GStringFilter? get identityId;
+  GStringFilter? get eventId;
+  BuiltList<GMembershipEventFilter>? get and;
+  BuiltList<GMembershipEventFilter>? get or;
+  GMembershipEventFilter? get not;
+  static Serializer<GMembershipEventFilter> get serializer =>
+      _$gMembershipEventFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GMembershipEventFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GMembershipEventFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GMembershipEventFilter.serializer,
+        json,
+      );
+}
+
+class GMembershipEventsOrderBy extends EnumClass {
+  const GMembershipEventsOrderBy._(String name) : super(name);
+
+  static const GMembershipEventsOrderBy NATURAL =
+      _$gMembershipEventsOrderByNATURAL;
+
+  static const GMembershipEventsOrderBy ID_ASC =
+      _$gMembershipEventsOrderByID_ASC;
+
+  static const GMembershipEventsOrderBy ID_DESC =
+      _$gMembershipEventsOrderByID_DESC;
+
+  static const GMembershipEventsOrderBy EVENT_TYPE_ASC =
+      _$gMembershipEventsOrderByEVENT_TYPE_ASC;
+
+  static const GMembershipEventsOrderBy EVENT_TYPE_DESC =
+      _$gMembershipEventsOrderByEVENT_TYPE_DESC;
+
+  static const GMembershipEventsOrderBy BLOCK_NUMBER_ASC =
+      _$gMembershipEventsOrderByBLOCK_NUMBER_ASC;
+
+  static const GMembershipEventsOrderBy BLOCK_NUMBER_DESC =
+      _$gMembershipEventsOrderByBLOCK_NUMBER_DESC;
+
+  static const GMembershipEventsOrderBy IDENTITY_ID_ASC =
+      _$gMembershipEventsOrderByIDENTITY_ID_ASC;
+
+  static const GMembershipEventsOrderBy IDENTITY_ID_DESC =
+      _$gMembershipEventsOrderByIDENTITY_ID_DESC;
+
+  static const GMembershipEventsOrderBy EVENT_ID_ASC =
+      _$gMembershipEventsOrderByEVENT_ID_ASC;
+
+  static const GMembershipEventsOrderBy EVENT_ID_DESC =
+      _$gMembershipEventsOrderByEVENT_ID_DESC;
+
+  static const GMembershipEventsOrderBy PRIMARY_KEY_ASC =
+      _$gMembershipEventsOrderByPRIMARY_KEY_ASC;
+
+  static const GMembershipEventsOrderBy PRIMARY_KEY_DESC =
+      _$gMembershipEventsOrderByPRIMARY_KEY_DESC;
+
+  static Serializer<GMembershipEventsOrderBy> get serializer =>
+      _$gMembershipEventsOrderBySerializer;
+
+  static BuiltSet<GMembershipEventsOrderBy> get values =>
+      _$gMembershipEventsOrderByValues;
+
+  static GMembershipEventsOrderBy valueOf(String name) =>
+      _$gMembershipEventsOrderByValueOf(name);
+}
+
+abstract class GMigrationCondition
+    implements Built<GMigrationCondition, GMigrationConditionBuilder> {
+  GMigrationCondition._();
+
+  factory GMigrationCondition(
+          [void Function(GMigrationConditionBuilder b) updates]) =
+      _$GMigrationCondition;
+
+  int? get id;
+  GBigInt? get timestamp;
+  String? get name;
+  static Serializer<GMigrationCondition> get serializer =>
+      _$gMigrationConditionSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GMigrationCondition.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GMigrationCondition? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GMigrationCondition.serializer,
+        json,
+      );
+}
+
+abstract class GMigrationFilter
+    implements Built<GMigrationFilter, GMigrationFilterBuilder> {
+  GMigrationFilter._();
+
+  factory GMigrationFilter([void Function(GMigrationFilterBuilder b) updates]) =
+      _$GMigrationFilter;
+
+  GIntFilter? get id;
+  GBigIntFilter? get timestamp;
+  GStringFilter? get name;
+  BuiltList<GMigrationFilter>? get and;
+  BuiltList<GMigrationFilter>? get or;
+  GMigrationFilter? get not;
+  static Serializer<GMigrationFilter> get serializer =>
+      _$gMigrationFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GMigrationFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GMigrationFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GMigrationFilter.serializer,
+        json,
+      );
+}
+
+class GMigrationsOrderBy extends EnumClass {
+  const GMigrationsOrderBy._(String name) : super(name);
+
+  static const GMigrationsOrderBy NATURAL = _$gMigrationsOrderByNATURAL;
+
+  static const GMigrationsOrderBy ID_ASC = _$gMigrationsOrderByID_ASC;
+
+  static const GMigrationsOrderBy ID_DESC = _$gMigrationsOrderByID_DESC;
+
+  static const GMigrationsOrderBy TIMESTAMP_ASC =
+      _$gMigrationsOrderByTIMESTAMP_ASC;
+
+  static const GMigrationsOrderBy TIMESTAMP_DESC =
+      _$gMigrationsOrderByTIMESTAMP_DESC;
+
+  static const GMigrationsOrderBy NAME_ASC = _$gMigrationsOrderByNAME_ASC;
+
+  static const GMigrationsOrderBy NAME_DESC = _$gMigrationsOrderByNAME_DESC;
+
+  static const GMigrationsOrderBy PRIMARY_KEY_ASC =
+      _$gMigrationsOrderByPRIMARY_KEY_ASC;
+
+  static const GMigrationsOrderBy PRIMARY_KEY_DESC =
+      _$gMigrationsOrderByPRIMARY_KEY_DESC;
+
+  static Serializer<GMigrationsOrderBy> get serializer =>
+      _$gMigrationsOrderBySerializer;
+
+  static BuiltSet<GMigrationsOrderBy> get values => _$gMigrationsOrderByValues;
+
+  static GMigrationsOrderBy valueOf(String name) =>
+      _$gMigrationsOrderByValueOf(name);
+}
+
+class GPopulationHistoriesOrderBy extends EnumClass {
+  const GPopulationHistoriesOrderBy._(String name) : super(name);
+
+  static const GPopulationHistoriesOrderBy NATURAL =
+      _$gPopulationHistoriesOrderByNATURAL;
+
+  static const GPopulationHistoriesOrderBy ID_ASC =
+      _$gPopulationHistoriesOrderByID_ASC;
+
+  static const GPopulationHistoriesOrderBy ID_DESC =
+      _$gPopulationHistoriesOrderByID_DESC;
+
+  static const GPopulationHistoriesOrderBy SMITH_COUNT_ASC =
+      _$gPopulationHistoriesOrderBySMITH_COUNT_ASC;
+
+  static const GPopulationHistoriesOrderBy SMITH_COUNT_DESC =
+      _$gPopulationHistoriesOrderBySMITH_COUNT_DESC;
+
+  static const GPopulationHistoriesOrderBy MEMBER_COUNT_ASC =
+      _$gPopulationHistoriesOrderByMEMBER_COUNT_ASC;
+
+  static const GPopulationHistoriesOrderBy MEMBER_COUNT_DESC =
+      _$gPopulationHistoriesOrderByMEMBER_COUNT_DESC;
+
+  static const GPopulationHistoriesOrderBy ACTIVE_ACCOUNT_COUNT_ASC =
+      _$gPopulationHistoriesOrderByACTIVE_ACCOUNT_COUNT_ASC;
+
+  static const GPopulationHistoriesOrderBy ACTIVE_ACCOUNT_COUNT_DESC =
+      _$gPopulationHistoriesOrderByACTIVE_ACCOUNT_COUNT_DESC;
+
+  static const GPopulationHistoriesOrderBy BLOCK_NUMBER_ASC =
+      _$gPopulationHistoriesOrderByBLOCK_NUMBER_ASC;
+
+  static const GPopulationHistoriesOrderBy BLOCK_NUMBER_DESC =
+      _$gPopulationHistoriesOrderByBLOCK_NUMBER_DESC;
+
+  static const GPopulationHistoriesOrderBy PRIMARY_KEY_ASC =
+      _$gPopulationHistoriesOrderByPRIMARY_KEY_ASC;
+
+  static const GPopulationHistoriesOrderBy PRIMARY_KEY_DESC =
+      _$gPopulationHistoriesOrderByPRIMARY_KEY_DESC;
+
+  static Serializer<GPopulationHistoriesOrderBy> get serializer =>
+      _$gPopulationHistoriesOrderBySerializer;
+
+  static BuiltSet<GPopulationHistoriesOrderBy> get values =>
+      _$gPopulationHistoriesOrderByValues;
+
+  static GPopulationHistoriesOrderBy valueOf(String name) =>
+      _$gPopulationHistoriesOrderByValueOf(name);
+}
+
+abstract class GPopulationHistoryCondition
+    implements
+        Built<GPopulationHistoryCondition, GPopulationHistoryConditionBuilder> {
+  GPopulationHistoryCondition._();
+
+  factory GPopulationHistoryCondition(
+          [void Function(GPopulationHistoryConditionBuilder b) updates]) =
+      _$GPopulationHistoryCondition;
+
+  String? get id;
+  int? get smithCount;
+  int? get memberCount;
+  int? get activeAccountCount;
+  int? get blockNumber;
+  static Serializer<GPopulationHistoryCondition> get serializer =>
+      _$gPopulationHistoryConditionSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GPopulationHistoryCondition.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GPopulationHistoryCondition? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GPopulationHistoryCondition.serializer,
+        json,
+      );
+}
+
+abstract class GPopulationHistoryFilter
+    implements
+        Built<GPopulationHistoryFilter, GPopulationHistoryFilterBuilder> {
+  GPopulationHistoryFilter._();
+
+  factory GPopulationHistoryFilter(
+          [void Function(GPopulationHistoryFilterBuilder b) updates]) =
+      _$GPopulationHistoryFilter;
+
+  GStringFilter? get id;
+  GIntFilter? get smithCount;
+  GIntFilter? get memberCount;
+  GIntFilter? get activeAccountCount;
+  GIntFilter? get blockNumber;
+  BuiltList<GPopulationHistoryFilter>? get and;
+  BuiltList<GPopulationHistoryFilter>? get or;
+  GPopulationHistoryFilter? get not;
+  static Serializer<GPopulationHistoryFilter> get serializer =>
+      _$gPopulationHistoryFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GPopulationHistoryFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GPopulationHistoryFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GPopulationHistoryFilter.serializer,
+        json,
+      );
+}
+
+abstract class GSmithCertCondition
+    implements Built<GSmithCertCondition, GSmithCertConditionBuilder> {
+  GSmithCertCondition._();
+
+  factory GSmithCertCondition(
+          [void Function(GSmithCertConditionBuilder b) updates]) =
+      _$GSmithCertCondition;
+
+  String? get id;
+  int? get createdOn;
+  String? get issuerId;
+  String? get receiverId;
+  static Serializer<GSmithCertCondition> get serializer =>
+      _$gSmithCertConditionSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GSmithCertCondition.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GSmithCertCondition? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GSmithCertCondition.serializer,
+        json,
+      );
+}
+
+abstract class GSmithCertFilter
+    implements Built<GSmithCertFilter, GSmithCertFilterBuilder> {
+  GSmithCertFilter._();
+
+  factory GSmithCertFilter([void Function(GSmithCertFilterBuilder b) updates]) =
+      _$GSmithCertFilter;
+
+  GStringFilter? get id;
+  GIntFilter? get createdOn;
+  GStringFilter? get issuerId;
+  GStringFilter? get receiverId;
+  BuiltList<GSmithCertFilter>? get and;
+  BuiltList<GSmithCertFilter>? get or;
+  GSmithCertFilter? get not;
+  static Serializer<GSmithCertFilter> get serializer =>
+      _$gSmithCertFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GSmithCertFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GSmithCertFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GSmithCertFilter.serializer,
+        json,
+      );
+}
+
+class GSmithCertsOrderBy extends EnumClass {
+  const GSmithCertsOrderBy._(String name) : super(name);
+
+  static const GSmithCertsOrderBy NATURAL = _$gSmithCertsOrderByNATURAL;
+
+  static const GSmithCertsOrderBy ID_ASC = _$gSmithCertsOrderByID_ASC;
+
+  static const GSmithCertsOrderBy ID_DESC = _$gSmithCertsOrderByID_DESC;
+
+  static const GSmithCertsOrderBy CREATED_ON_ASC =
+      _$gSmithCertsOrderByCREATED_ON_ASC;
+
+  static const GSmithCertsOrderBy CREATED_ON_DESC =
+      _$gSmithCertsOrderByCREATED_ON_DESC;
+
+  static const GSmithCertsOrderBy ISSUER_ID_ASC =
+      _$gSmithCertsOrderByISSUER_ID_ASC;
+
+  static const GSmithCertsOrderBy ISSUER_ID_DESC =
+      _$gSmithCertsOrderByISSUER_ID_DESC;
+
+  static const GSmithCertsOrderBy RECEIVER_ID_ASC =
+      _$gSmithCertsOrderByRECEIVER_ID_ASC;
+
+  static const GSmithCertsOrderBy RECEIVER_ID_DESC =
+      _$gSmithCertsOrderByRECEIVER_ID_DESC;
+
+  static const GSmithCertsOrderBy PRIMARY_KEY_ASC =
+      _$gSmithCertsOrderByPRIMARY_KEY_ASC;
+
+  static const GSmithCertsOrderBy PRIMARY_KEY_DESC =
+      _$gSmithCertsOrderByPRIMARY_KEY_DESC;
+
+  static Serializer<GSmithCertsOrderBy> get serializer =>
+      _$gSmithCertsOrderBySerializer;
+
+  static BuiltSet<GSmithCertsOrderBy> get values => _$gSmithCertsOrderByValues;
+
+  static GSmithCertsOrderBy valueOf(String name) =>
+      _$gSmithCertsOrderByValueOf(name);
+}
+
+abstract class GSmithCondition
+    implements Built<GSmithCondition, GSmithConditionBuilder> {
+  GSmithCondition._();
+
+  factory GSmithCondition([void Function(GSmithConditionBuilder b) updates]) =
+      _$GSmithCondition;
+
+  String? get id;
+  int? get index;
+  String? get smithStatus;
+  int? get lastChanged;
+  int? get forged;
+  int? get lastForged;
+  String? get identityId;
+  static Serializer<GSmithCondition> get serializer =>
+      _$gSmithConditionSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GSmithCondition.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GSmithCondition? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GSmithCondition.serializer,
+        json,
+      );
+}
+
+abstract class GSmithEventCondition
+    implements Built<GSmithEventCondition, GSmithEventConditionBuilder> {
+  GSmithEventCondition._();
+
+  factory GSmithEventCondition(
+          [void Function(GSmithEventConditionBuilder b) updates]) =
+      _$GSmithEventCondition;
+
+  String? get id;
+  String? get eventType;
+  int? get blockNumber;
+  String? get smithId;
+  String? get eventId;
+  static Serializer<GSmithEventCondition> get serializer =>
+      _$gSmithEventConditionSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GSmithEventCondition.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GSmithEventCondition? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GSmithEventCondition.serializer,
+        json,
+      );
+}
+
+abstract class GSmithEventFilter
+    implements Built<GSmithEventFilter, GSmithEventFilterBuilder> {
+  GSmithEventFilter._();
+
+  factory GSmithEventFilter(
+          [void Function(GSmithEventFilterBuilder b) updates]) =
+      _$GSmithEventFilter;
+
+  GStringFilter? get id;
+  GStringFilter? get eventType;
+  GIntFilter? get blockNumber;
+  GStringFilter? get smithId;
+  GStringFilter? get eventId;
+  BuiltList<GSmithEventFilter>? get and;
+  BuiltList<GSmithEventFilter>? get or;
+  GSmithEventFilter? get not;
+  static Serializer<GSmithEventFilter> get serializer =>
+      _$gSmithEventFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GSmithEventFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GSmithEventFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GSmithEventFilter.serializer,
+        json,
+      );
+}
+
+class GSmithEventsOrderBy extends EnumClass {
+  const GSmithEventsOrderBy._(String name) : super(name);
+
+  static const GSmithEventsOrderBy NATURAL = _$gSmithEventsOrderByNATURAL;
+
+  static const GSmithEventsOrderBy ID_ASC = _$gSmithEventsOrderByID_ASC;
+
+  static const GSmithEventsOrderBy ID_DESC = _$gSmithEventsOrderByID_DESC;
+
+  static const GSmithEventsOrderBy EVENT_TYPE_ASC =
+      _$gSmithEventsOrderByEVENT_TYPE_ASC;
+
+  static const GSmithEventsOrderBy EVENT_TYPE_DESC =
+      _$gSmithEventsOrderByEVENT_TYPE_DESC;
+
+  static const GSmithEventsOrderBy BLOCK_NUMBER_ASC =
+      _$gSmithEventsOrderByBLOCK_NUMBER_ASC;
+
+  static const GSmithEventsOrderBy BLOCK_NUMBER_DESC =
+      _$gSmithEventsOrderByBLOCK_NUMBER_DESC;
+
+  static const GSmithEventsOrderBy SMITH_ID_ASC =
+      _$gSmithEventsOrderBySMITH_ID_ASC;
+
+  static const GSmithEventsOrderBy SMITH_ID_DESC =
+      _$gSmithEventsOrderBySMITH_ID_DESC;
+
+  static const GSmithEventsOrderBy EVENT_ID_ASC =
+      _$gSmithEventsOrderByEVENT_ID_ASC;
+
+  static const GSmithEventsOrderBy EVENT_ID_DESC =
+      _$gSmithEventsOrderByEVENT_ID_DESC;
+
+  static const GSmithEventsOrderBy PRIMARY_KEY_ASC =
+      _$gSmithEventsOrderByPRIMARY_KEY_ASC;
+
+  static const GSmithEventsOrderBy PRIMARY_KEY_DESC =
+      _$gSmithEventsOrderByPRIMARY_KEY_DESC;
+
+  static Serializer<GSmithEventsOrderBy> get serializer =>
+      _$gSmithEventsOrderBySerializer;
+
+  static BuiltSet<GSmithEventsOrderBy> get values =>
+      _$gSmithEventsOrderByValues;
+
+  static GSmithEventsOrderBy valueOf(String name) =>
+      _$gSmithEventsOrderByValueOf(name);
+}
+
+abstract class GSmithFilter
+    implements Built<GSmithFilter, GSmithFilterBuilder> {
+  GSmithFilter._();
+
+  factory GSmithFilter([void Function(GSmithFilterBuilder b) updates]) =
+      _$GSmithFilter;
+
+  GStringFilter? get id;
+  GIntFilter? get index;
+  GStringFilter? get smithStatus;
+  GIntFilter? get lastChanged;
+  GIntFilter? get forged;
+  GIntFilter? get lastForged;
+  GStringFilter? get identityId;
+  BuiltList<GSmithFilter>? get and;
+  BuiltList<GSmithFilter>? get or;
+  GSmithFilter? get not;
+  static Serializer<GSmithFilter> get serializer => _$gSmithFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GSmithFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GSmithFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GSmithFilter.serializer,
+        json,
+      );
+}
+
+class GSmithsOrderBy extends EnumClass {
+  const GSmithsOrderBy._(String name) : super(name);
+
+  static const GSmithsOrderBy NATURAL = _$gSmithsOrderByNATURAL;
+
+  static const GSmithsOrderBy ID_ASC = _$gSmithsOrderByID_ASC;
+
+  static const GSmithsOrderBy ID_DESC = _$gSmithsOrderByID_DESC;
+
+  static const GSmithsOrderBy INDEX_ASC = _$gSmithsOrderByINDEX_ASC;
+
+  static const GSmithsOrderBy INDEX_DESC = _$gSmithsOrderByINDEX_DESC;
+
+  static const GSmithsOrderBy SMITH_STATUS_ASC =
+      _$gSmithsOrderBySMITH_STATUS_ASC;
+
+  static const GSmithsOrderBy SMITH_STATUS_DESC =
+      _$gSmithsOrderBySMITH_STATUS_DESC;
+
+  static const GSmithsOrderBy LAST_CHANGED_ASC =
+      _$gSmithsOrderByLAST_CHANGED_ASC;
+
+  static const GSmithsOrderBy LAST_CHANGED_DESC =
+      _$gSmithsOrderByLAST_CHANGED_DESC;
+
+  static const GSmithsOrderBy FORGED_ASC = _$gSmithsOrderByFORGED_ASC;
+
+  static const GSmithsOrderBy FORGED_DESC = _$gSmithsOrderByFORGED_DESC;
+
+  static const GSmithsOrderBy LAST_FORGED_ASC = _$gSmithsOrderByLAST_FORGED_ASC;
+
+  static const GSmithsOrderBy LAST_FORGED_DESC =
+      _$gSmithsOrderByLAST_FORGED_DESC;
+
+  static const GSmithsOrderBy IDENTITY_ID_ASC = _$gSmithsOrderByIDENTITY_ID_ASC;
+
+  static const GSmithsOrderBy IDENTITY_ID_DESC =
+      _$gSmithsOrderByIDENTITY_ID_DESC;
+
+  static const GSmithsOrderBy PRIMARY_KEY_ASC = _$gSmithsOrderByPRIMARY_KEY_ASC;
+
+  static const GSmithsOrderBy PRIMARY_KEY_DESC =
+      _$gSmithsOrderByPRIMARY_KEY_DESC;
+
+  static Serializer<GSmithsOrderBy> get serializer =>
+      _$gSmithsOrderBySerializer;
+
+  static BuiltSet<GSmithsOrderBy> get values => _$gSmithsOrderByValues;
+
+  static GSmithsOrderBy valueOf(String name) => _$gSmithsOrderByValueOf(name);
+}
+
+abstract class GStringFilter
+    implements Built<GStringFilter, GStringFilterBuilder> {
+  GStringFilter._();
+
+  factory GStringFilter([void Function(GStringFilterBuilder b) updates]) =
+      _$GStringFilter;
+
+  bool? get isNull;
+  String? get equalTo;
+  String? get notEqualTo;
+  String? get distinctFrom;
+  String? get notDistinctFrom;
+  @BuiltValueField(wireName: 'in')
+  BuiltList<String>? get Gin;
+  BuiltList<String>? get notIn;
+  String? get lessThan;
+  String? get lessThanOrEqualTo;
+  String? get greaterThan;
+  String? get greaterThanOrEqualTo;
+  String? get includes;
+  String? get notIncludes;
+  String? get includesInsensitive;
+  String? get notIncludesInsensitive;
+  String? get startsWith;
+  String? get notStartsWith;
+  String? get startsWithInsensitive;
+  String? get notStartsWithInsensitive;
+  String? get endsWith;
+  String? get notEndsWith;
+  String? get endsWithInsensitive;
+  String? get notEndsWithInsensitive;
+  String? get like;
+  String? get notLike;
+  String? get likeInsensitive;
+  String? get notLikeInsensitive;
+  String? get equalToInsensitive;
+  String? get notEqualToInsensitive;
+  String? get distinctFromInsensitive;
+  String? get notDistinctFromInsensitive;
+  BuiltList<String>? get inInsensitive;
+  BuiltList<String>? get notInInsensitive;
+  String? get lessThanInsensitive;
+  String? get lessThanOrEqualToInsensitive;
+  String? get greaterThanInsensitive;
+  String? get greaterThanOrEqualToInsensitive;
+  static Serializer<GStringFilter> get serializer => _$gStringFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GStringFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GStringFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GStringFilter.serializer,
+        json,
+      );
+}
+
+abstract class GStringListFilter
+    implements Built<GStringListFilter, GStringListFilterBuilder> {
+  GStringListFilter._();
+
+  factory GStringListFilter(
+          [void Function(GStringListFilterBuilder b) updates]) =
+      _$GStringListFilter;
+
+  bool? get isNull;
+  BuiltList<String?>? get equalTo;
+  BuiltList<String?>? get notEqualTo;
+  BuiltList<String?>? get distinctFrom;
+  BuiltList<String?>? get notDistinctFrom;
+  BuiltList<String?>? get lessThan;
+  BuiltList<String?>? get lessThanOrEqualTo;
+  BuiltList<String?>? get greaterThan;
+  BuiltList<String?>? get greaterThanOrEqualTo;
+  BuiltList<String?>? get contains;
+  BuiltList<String?>? get containedBy;
+  BuiltList<String?>? get overlaps;
+  String? get anyEqualTo;
+  String? get anyNotEqualTo;
+  String? get anyLessThan;
+  String? get anyLessThanOrEqualTo;
+  String? get anyGreaterThan;
+  String? get anyGreaterThanOrEqualTo;
+  static Serializer<GStringListFilter> get serializer =>
+      _$gStringListFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GStringListFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GStringListFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GStringListFilter.serializer,
+        json,
+      );
+}
+
+abstract class GTransferCondition
+    implements Built<GTransferCondition, GTransferConditionBuilder> {
+  GTransferCondition._();
+
+  factory GTransferCondition(
+          [void Function(GTransferConditionBuilder b) updates]) =
+      _$GTransferCondition;
+
+  String? get id;
+  int? get blockNumber;
+  GDatetime? get timestamp;
+  GBigFloat? get amount;
   String? get fromId;
-  String? get id;
-  Gtimestamptz? get timestamp;
   String? get toId;
-  static Serializer<GTransferStreamCursorValueInput> get serializer =>
-      _$gTransferStreamCursorValueInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTransferStreamCursorValueInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTransferStreamCursorValueInput? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTransferStreamCursorValueInput.serializer,
-        json,
-      );
-}
-
-abstract class GTransferSumOrderBy
-    implements Built<GTransferSumOrderBy, GTransferSumOrderByBuilder> {
-  GTransferSumOrderBy._();
-
-  factory GTransferSumOrderBy(
-          [void Function(GTransferSumOrderByBuilder b) updates]) =
-      _$GTransferSumOrderBy;
-
-  GOrderBy? get amount;
-  GOrderBy? get blockNumber;
-  static Serializer<GTransferSumOrderBy> get serializer =>
-      _$gTransferSumOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTransferSumOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTransferSumOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTransferSumOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GTransferVarianceOrderBy
-    implements
-        Built<GTransferVarianceOrderBy, GTransferVarianceOrderByBuilder> {
-  GTransferVarianceOrderBy._();
-
-  factory GTransferVarianceOrderBy(
-          [void Function(GTransferVarianceOrderByBuilder b) updates]) =
-      _$GTransferVarianceOrderBy;
-
-  GOrderBy? get amount;
-  GOrderBy? get blockNumber;
-  static Serializer<GTransferVarianceOrderBy> get serializer =>
-      _$gTransferVarianceOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTransferVarianceOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTransferVarianceOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTransferVarianceOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GTransferVarPopOrderBy
-    implements Built<GTransferVarPopOrderBy, GTransferVarPopOrderByBuilder> {
-  GTransferVarPopOrderBy._();
-
-  factory GTransferVarPopOrderBy(
-          [void Function(GTransferVarPopOrderByBuilder b) updates]) =
-      _$GTransferVarPopOrderBy;
-
-  GOrderBy? get amount;
-  GOrderBy? get blockNumber;
-  static Serializer<GTransferVarPopOrderBy> get serializer =>
-      _$gTransferVarPopOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTransferVarPopOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTransferVarPopOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTransferVarPopOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GTransferVarSampOrderBy
-    implements Built<GTransferVarSampOrderBy, GTransferVarSampOrderByBuilder> {
-  GTransferVarSampOrderBy._();
-
-  factory GTransferVarSampOrderBy(
-          [void Function(GTransferVarSampOrderByBuilder b) updates]) =
-      _$GTransferVarSampOrderBy;
-
-  GOrderBy? get amount;
-  GOrderBy? get blockNumber;
-  static Serializer<GTransferVarSampOrderBy> get serializer =>
-      _$gTransferVarSampOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTransferVarSampOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTransferVarSampOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTransferVarSampOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GTxCommentAggregateBoolExp
-    implements
-        Built<GTxCommentAggregateBoolExp, GTxCommentAggregateBoolExpBuilder> {
-  GTxCommentAggregateBoolExp._();
-
-  factory GTxCommentAggregateBoolExp(
-          [void Function(GTxCommentAggregateBoolExpBuilder b) updates]) =
-      _$GTxCommentAggregateBoolExp;
-
-  GtxCommentAggregateBoolExpCount? get count;
-  static Serializer<GTxCommentAggregateBoolExp> get serializer =>
-      _$gTxCommentAggregateBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTxCommentAggregateBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTxCommentAggregateBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTxCommentAggregateBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GtxCommentAggregateBoolExpCount
-    implements
-        Built<GtxCommentAggregateBoolExpCount,
-            GtxCommentAggregateBoolExpCountBuilder> {
-  GtxCommentAggregateBoolExpCount._();
-
-  factory GtxCommentAggregateBoolExpCount(
-          [void Function(GtxCommentAggregateBoolExpCountBuilder b) updates]) =
-      _$GtxCommentAggregateBoolExpCount;
-
-  BuiltList<GTxCommentSelectColumn>? get arguments;
-  bool? get distinct;
-  GTxCommentBoolExp? get filter;
-  GIntComparisonExp get predicate;
-  static Serializer<GtxCommentAggregateBoolExpCount> get serializer =>
-      _$gtxCommentAggregateBoolExpCountSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GtxCommentAggregateBoolExpCount.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GtxCommentAggregateBoolExpCount? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GtxCommentAggregateBoolExpCount.serializer,
-        json,
-      );
-}
-
-abstract class GTxCommentAggregateOrderBy
-    implements
-        Built<GTxCommentAggregateOrderBy, GTxCommentAggregateOrderByBuilder> {
-  GTxCommentAggregateOrderBy._();
-
-  factory GTxCommentAggregateOrderBy(
-          [void Function(GTxCommentAggregateOrderByBuilder b) updates]) =
-      _$GTxCommentAggregateOrderBy;
-
-  GTxCommentAvgOrderBy? get avg;
-  GOrderBy? get count;
-  GTxCommentMaxOrderBy? get max;
-  GTxCommentMinOrderBy? get min;
-  GTxCommentStddevOrderBy? get stddev;
-  GTxCommentStddevPopOrderBy? get stddevPop;
-  GTxCommentStddevSampOrderBy? get stddevSamp;
-  GTxCommentSumOrderBy? get sum;
-  GTxCommentVarPopOrderBy? get varPop;
-  GTxCommentVarSampOrderBy? get varSamp;
-  GTxCommentVarianceOrderBy? get variance;
-  static Serializer<GTxCommentAggregateOrderBy> get serializer =>
-      _$gTxCommentAggregateOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTxCommentAggregateOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTxCommentAggregateOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTxCommentAggregateOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GTxCommentAvgOrderBy
-    implements Built<GTxCommentAvgOrderBy, GTxCommentAvgOrderByBuilder> {
-  GTxCommentAvgOrderBy._();
-
-  factory GTxCommentAvgOrderBy(
-          [void Function(GTxCommentAvgOrderByBuilder b) updates]) =
-      _$GTxCommentAvgOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GTxCommentAvgOrderBy> get serializer =>
-      _$gTxCommentAvgOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTxCommentAvgOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTxCommentAvgOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTxCommentAvgOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GTxCommentBoolExp
-    implements Built<GTxCommentBoolExp, GTxCommentBoolExpBuilder> {
-  GTxCommentBoolExp._();
-
-  factory GTxCommentBoolExp(
-          [void Function(GTxCommentBoolExpBuilder b) updates]) =
-      _$GTxCommentBoolExp;
-
-  @BuiltValueField(wireName: '_and')
-  BuiltList<GTxCommentBoolExp>? get G_and;
-  @BuiltValueField(wireName: '_not')
-  GTxCommentBoolExp? get G_not;
-  @BuiltValueField(wireName: '_or')
-  BuiltList<GTxCommentBoolExp>? get G_or;
-  GAccountBoolExp? get author;
-  GStringComparisonExp? get authorId;
-  GIntComparisonExp? get blockNumber;
-  GEventBoolExp? get event;
-  GStringComparisonExp? get eventId;
-  GStringComparisonExp? get hash;
-  GStringComparisonExp? get id;
-  GStringComparisonExp? get remark;
-  GByteaComparisonExp? get remarkBytes;
-  GStringComparisonExp? get type;
-  static Serializer<GTxCommentBoolExp> get serializer =>
-      _$gTxCommentBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTxCommentBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTxCommentBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTxCommentBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GTxCommentMaxOrderBy
-    implements Built<GTxCommentMaxOrderBy, GTxCommentMaxOrderByBuilder> {
-  GTxCommentMaxOrderBy._();
-
-  factory GTxCommentMaxOrderBy(
-          [void Function(GTxCommentMaxOrderByBuilder b) updates]) =
-      _$GTxCommentMaxOrderBy;
-
-  GOrderBy? get authorId;
-  GOrderBy? get blockNumber;
-  GOrderBy? get eventId;
-  GOrderBy? get hash;
-  GOrderBy? get id;
-  GOrderBy? get remark;
-  GOrderBy? get type;
-  static Serializer<GTxCommentMaxOrderBy> get serializer =>
-      _$gTxCommentMaxOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTxCommentMaxOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTxCommentMaxOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTxCommentMaxOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GTxCommentMinOrderBy
-    implements Built<GTxCommentMinOrderBy, GTxCommentMinOrderByBuilder> {
-  GTxCommentMinOrderBy._();
-
-  factory GTxCommentMinOrderBy(
-          [void Function(GTxCommentMinOrderByBuilder b) updates]) =
-      _$GTxCommentMinOrderBy;
-
-  GOrderBy? get authorId;
-  GOrderBy? get blockNumber;
-  GOrderBy? get eventId;
-  GOrderBy? get hash;
-  GOrderBy? get id;
-  GOrderBy? get remark;
-  GOrderBy? get type;
-  static Serializer<GTxCommentMinOrderBy> get serializer =>
-      _$gTxCommentMinOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTxCommentMinOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTxCommentMinOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTxCommentMinOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GTxCommentOrderBy
-    implements Built<GTxCommentOrderBy, GTxCommentOrderByBuilder> {
-  GTxCommentOrderBy._();
-
-  factory GTxCommentOrderBy(
-          [void Function(GTxCommentOrderByBuilder b) updates]) =
-      _$GTxCommentOrderBy;
-
-  GAccountOrderBy? get author;
-  GOrderBy? get authorId;
-  GOrderBy? get blockNumber;
-  GEventOrderBy? get event;
-  GOrderBy? get eventId;
-  GOrderBy? get hash;
-  GOrderBy? get id;
-  GOrderBy? get remark;
-  GOrderBy? get remarkBytes;
-  GOrderBy? get type;
-  static Serializer<GTxCommentOrderBy> get serializer =>
-      _$gTxCommentOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTxCommentOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTxCommentOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTxCommentOrderBy.serializer,
-        json,
-      );
-}
-
-class GTxCommentSelectColumn extends EnumClass {
-  const GTxCommentSelectColumn._(String name) : super(name);
-
-  static const GTxCommentSelectColumn authorId =
-      _$gTxCommentSelectColumnauthorId;
-
-  static const GTxCommentSelectColumn blockNumber =
-      _$gTxCommentSelectColumnblockNumber;
-
-  static const GTxCommentSelectColumn eventId = _$gTxCommentSelectColumneventId;
-
-  static const GTxCommentSelectColumn hash = _$gTxCommentSelectColumnhash;
-
-  static const GTxCommentSelectColumn id = _$gTxCommentSelectColumnid;
-
-  static const GTxCommentSelectColumn remark = _$gTxCommentSelectColumnremark;
-
-  static const GTxCommentSelectColumn remarkBytes =
-      _$gTxCommentSelectColumnremarkBytes;
-
-  static const GTxCommentSelectColumn type = _$gTxCommentSelectColumntype;
-
-  static Serializer<GTxCommentSelectColumn> get serializer =>
-      _$gTxCommentSelectColumnSerializer;
-
-  static BuiltSet<GTxCommentSelectColumn> get values =>
-      _$gTxCommentSelectColumnValues;
-
-  static GTxCommentSelectColumn valueOf(String name) =>
-      _$gTxCommentSelectColumnValueOf(name);
-}
-
-abstract class GTxCommentStddevOrderBy
-    implements Built<GTxCommentStddevOrderBy, GTxCommentStddevOrderByBuilder> {
-  GTxCommentStddevOrderBy._();
-
-  factory GTxCommentStddevOrderBy(
-          [void Function(GTxCommentStddevOrderByBuilder b) updates]) =
-      _$GTxCommentStddevOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GTxCommentStddevOrderBy> get serializer =>
-      _$gTxCommentStddevOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTxCommentStddevOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTxCommentStddevOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTxCommentStddevOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GTxCommentStddevPopOrderBy
-    implements
-        Built<GTxCommentStddevPopOrderBy, GTxCommentStddevPopOrderByBuilder> {
-  GTxCommentStddevPopOrderBy._();
-
-  factory GTxCommentStddevPopOrderBy(
-          [void Function(GTxCommentStddevPopOrderByBuilder b) updates]) =
-      _$GTxCommentStddevPopOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GTxCommentStddevPopOrderBy> get serializer =>
-      _$gTxCommentStddevPopOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTxCommentStddevPopOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTxCommentStddevPopOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTxCommentStddevPopOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GTxCommentStddevSampOrderBy
-    implements
-        Built<GTxCommentStddevSampOrderBy, GTxCommentStddevSampOrderByBuilder> {
-  GTxCommentStddevSampOrderBy._();
-
-  factory GTxCommentStddevSampOrderBy(
-          [void Function(GTxCommentStddevSampOrderByBuilder b) updates]) =
-      _$GTxCommentStddevSampOrderBy;
-
-  GOrderBy? get blockNumber;
-  static Serializer<GTxCommentStddevSampOrderBy> get serializer =>
-      _$gTxCommentStddevSampOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTxCommentStddevSampOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTxCommentStddevSampOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTxCommentStddevSampOrderBy.serializer,
-        json,
-      );
-}
-
-abstract class GTxCommentStreamCursorInput
-    implements
-        Built<GTxCommentStreamCursorInput, GTxCommentStreamCursorInputBuilder> {
-  GTxCommentStreamCursorInput._();
-
-  factory GTxCommentStreamCursorInput(
-          [void Function(GTxCommentStreamCursorInputBuilder b) updates]) =
-      _$GTxCommentStreamCursorInput;
-
-  GTxCommentStreamCursorValueInput get initialValue;
-  GCursorOrdering? get ordering;
-  static Serializer<GTxCommentStreamCursorInput> get serializer =>
-      _$gTxCommentStreamCursorInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTxCommentStreamCursorInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GTxCommentStreamCursorInput? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTxCommentStreamCursorInput.serializer,
-        json,
-      );
-}
-
-abstract class GTxCommentStreamCursorValueInput
-    implements
-        Built<GTxCommentStreamCursorValueInput,
-            GTxCommentStreamCursorValueInputBuilder> {
-  GTxCommentStreamCursorValueInput._();
-
-  factory GTxCommentStreamCursorValueInput(
-          [void Function(GTxCommentStreamCursorValueInputBuilder b) updates]) =
-      _$GTxCommentStreamCursorValueInput;
-
-  String? get authorId;
-  int? get blockNumber;
   String? get eventId;
-  String? get hash;
+  String? get commentId;
+  static Serializer<GTransferCondition> get serializer =>
+      _$gTransferConditionSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GTransferCondition.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GTransferCondition? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GTransferCondition.serializer,
+        json,
+      );
+}
+
+abstract class GTransferFilter
+    implements Built<GTransferFilter, GTransferFilterBuilder> {
+  GTransferFilter._();
+
+  factory GTransferFilter([void Function(GTransferFilterBuilder b) updates]) =
+      _$GTransferFilter;
+
+  GStringFilter? get id;
+  GIntFilter? get blockNumber;
+  GDatetimeFilter? get timestamp;
+  GBigFloatFilter? get amount;
+  GStringFilter? get fromId;
+  GStringFilter? get toId;
+  GStringFilter? get eventId;
+  GStringFilter? get commentId;
+  BuiltList<GTransferFilter>? get and;
+  BuiltList<GTransferFilter>? get or;
+  GTransferFilter? get not;
+  static Serializer<GTransferFilter> get serializer =>
+      _$gTransferFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GTransferFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GTransferFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GTransferFilter.serializer,
+        json,
+      );
+}
+
+class GTransfersOrderBy extends EnumClass {
+  const GTransfersOrderBy._(String name) : super(name);
+
+  static const GTransfersOrderBy NATURAL = _$gTransfersOrderByNATURAL;
+
+  static const GTransfersOrderBy ID_ASC = _$gTransfersOrderByID_ASC;
+
+  static const GTransfersOrderBy ID_DESC = _$gTransfersOrderByID_DESC;
+
+  static const GTransfersOrderBy BLOCK_NUMBER_ASC =
+      _$gTransfersOrderByBLOCK_NUMBER_ASC;
+
+  static const GTransfersOrderBy BLOCK_NUMBER_DESC =
+      _$gTransfersOrderByBLOCK_NUMBER_DESC;
+
+  static const GTransfersOrderBy TIMESTAMP_ASC =
+      _$gTransfersOrderByTIMESTAMP_ASC;
+
+  static const GTransfersOrderBy TIMESTAMP_DESC =
+      _$gTransfersOrderByTIMESTAMP_DESC;
+
+  static const GTransfersOrderBy AMOUNT_ASC = _$gTransfersOrderByAMOUNT_ASC;
+
+  static const GTransfersOrderBy AMOUNT_DESC = _$gTransfersOrderByAMOUNT_DESC;
+
+  static const GTransfersOrderBy FROM_ID_ASC = _$gTransfersOrderByFROM_ID_ASC;
+
+  static const GTransfersOrderBy FROM_ID_DESC = _$gTransfersOrderByFROM_ID_DESC;
+
+  static const GTransfersOrderBy TO_ID_ASC = _$gTransfersOrderByTO_ID_ASC;
+
+  static const GTransfersOrderBy TO_ID_DESC = _$gTransfersOrderByTO_ID_DESC;
+
+  static const GTransfersOrderBy EVENT_ID_ASC = _$gTransfersOrderByEVENT_ID_ASC;
+
+  static const GTransfersOrderBy EVENT_ID_DESC =
+      _$gTransfersOrderByEVENT_ID_DESC;
+
+  static const GTransfersOrderBy COMMENT_ID_ASC =
+      _$gTransfersOrderByCOMMENT_ID_ASC;
+
+  static const GTransfersOrderBy COMMENT_ID_DESC =
+      _$gTransfersOrderByCOMMENT_ID_DESC;
+
+  static const GTransfersOrderBy PRIMARY_KEY_ASC =
+      _$gTransfersOrderByPRIMARY_KEY_ASC;
+
+  static const GTransfersOrderBy PRIMARY_KEY_DESC =
+      _$gTransfersOrderByPRIMARY_KEY_DESC;
+
+  static Serializer<GTransfersOrderBy> get serializer =>
+      _$gTransfersOrderBySerializer;
+
+  static BuiltSet<GTransfersOrderBy> get values => _$gTransfersOrderByValues;
+
+  static GTransfersOrderBy valueOf(String name) =>
+      _$gTransfersOrderByValueOf(name);
+}
+
+abstract class GTransferWithUdFilter
+    implements Built<GTransferWithUdFilter, GTransferWithUdFilterBuilder> {
+  GTransferWithUdFilter._();
+
+  factory GTransferWithUdFilter(
+          [void Function(GTransferWithUdFilterBuilder b) updates]) =
+      _$GTransferWithUdFilter;
+
+  GStringFilter? get id;
+  GIntFilter? get blockNumber;
+  GDatetimeFilter? get timestamp;
+  GStringFilter? get fromId;
+  GStringFilter? get toId;
+  GBigFloatFilter? get amount;
+  GStringFilter? get eventId;
+  GStringFilter? get commentId;
+  GBooleanFilter? get isUd;
+  GBigFloatFilter? get udAmount;
+  GStringFilter? get udIdentityId;
+  BuiltList<GTransferWithUdFilter>? get and;
+  BuiltList<GTransferWithUdFilter>? get or;
+  GTransferWithUdFilter? get not;
+  static Serializer<GTransferWithUdFilter> get serializer =>
+      _$gTransferWithUdFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GTransferWithUdFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GTransferWithUdFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GTransferWithUdFilter.serializer,
+        json,
+      );
+}
+
+class GTransferWithUdOrderBy extends EnumClass {
+  const GTransferWithUdOrderBy._(String name) : super(name);
+
+  static const GTransferWithUdOrderBy BLOCK_NUMBER_ASC =
+      _$gTransferWithUdOrderByBLOCK_NUMBER_ASC;
+
+  static const GTransferWithUdOrderBy BLOCK_NUMBER_DESC =
+      _$gTransferWithUdOrderByBLOCK_NUMBER_DESC;
+
+  static const GTransferWithUdOrderBy TIMESTAMP_ASC =
+      _$gTransferWithUdOrderByTIMESTAMP_ASC;
+
+  static const GTransferWithUdOrderBy TIMESTAMP_DESC =
+      _$gTransferWithUdOrderByTIMESTAMP_DESC;
+
+  static const GTransferWithUdOrderBy AMOUNT_ASC =
+      _$gTransferWithUdOrderByAMOUNT_ASC;
+
+  static const GTransferWithUdOrderBy AMOUNT_DESC =
+      _$gTransferWithUdOrderByAMOUNT_DESC;
+
+  static Serializer<GTransferWithUdOrderBy> get serializer =>
+      _$gTransferWithUdOrderBySerializer;
+
+  static BuiltSet<GTransferWithUdOrderBy> get values =>
+      _$gTransferWithUdOrderByValues;
+
+  static GTransferWithUdOrderBy valueOf(String name) =>
+      _$gTransferWithUdOrderByValueOf(name);
+}
+
+abstract class GTxCommentCondition
+    implements Built<GTxCommentCondition, GTxCommentConditionBuilder> {
+  GTxCommentCondition._();
+
+  factory GTxCommentCondition(
+          [void Function(GTxCommentConditionBuilder b) updates]) =
+      _$GTxCommentCondition;
+
   String? get id;
+  int? get blockNumber;
+  String? get remarkBytes;
   String? get remark;
-  Gbytea? get remarkBytes;
+  String? get hash;
   String? get type;
-  static Serializer<GTxCommentStreamCursorValueInput> get serializer =>
-      _$gTxCommentStreamCursorValueInputSerializer;
+  String? get authorId;
+  String? get eventId;
+  static Serializer<GTxCommentCondition> get serializer =>
+      _$gTxCommentConditionSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTxCommentStreamCursorValueInput.serializer,
+        GTxCommentCondition.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GTxCommentStreamCursorValueInput? fromJson(
-          Map<String, dynamic> json) =>
+  static GTxCommentCondition? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GTxCommentStreamCursorValueInput.serializer,
+        GTxCommentCondition.serializer,
         json,
       );
 }
 
-abstract class GTxCommentSumOrderBy
-    implements Built<GTxCommentSumOrderBy, GTxCommentSumOrderByBuilder> {
-  GTxCommentSumOrderBy._();
+abstract class GTxCommentFilter
+    implements Built<GTxCommentFilter, GTxCommentFilterBuilder> {
+  GTxCommentFilter._();
 
-  factory GTxCommentSumOrderBy(
-          [void Function(GTxCommentSumOrderByBuilder b) updates]) =
-      _$GTxCommentSumOrderBy;
+  factory GTxCommentFilter([void Function(GTxCommentFilterBuilder b) updates]) =
+      _$GTxCommentFilter;
 
-  GOrderBy? get blockNumber;
-  static Serializer<GTxCommentSumOrderBy> get serializer =>
-      _$gTxCommentSumOrderBySerializer;
+  GStringFilter? get id;
+  GIntFilter? get blockNumber;
+  GStringFilter? get remark;
+  GStringFilter? get hash;
+  GStringFilter? get type;
+  GStringFilter? get authorId;
+  GStringFilter? get eventId;
+  BuiltList<GTxCommentFilter>? get and;
+  BuiltList<GTxCommentFilter>? get or;
+  GTxCommentFilter? get not;
+  static Serializer<GTxCommentFilter> get serializer =>
+      _$gTxCommentFilterSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTxCommentSumOrderBy.serializer,
+        GTxCommentFilter.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GTxCommentSumOrderBy? fromJson(Map<String, dynamic> json) =>
+  static GTxCommentFilter? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GTxCommentSumOrderBy.serializer,
+        GTxCommentFilter.serializer,
         json,
       );
 }
 
-abstract class GTxCommentVarianceOrderBy
-    implements
-        Built<GTxCommentVarianceOrderBy, GTxCommentVarianceOrderByBuilder> {
-  GTxCommentVarianceOrderBy._();
+class GTxCommentsOrderBy extends EnumClass {
+  const GTxCommentsOrderBy._(String name) : super(name);
 
-  factory GTxCommentVarianceOrderBy(
-          [void Function(GTxCommentVarianceOrderByBuilder b) updates]) =
-      _$GTxCommentVarianceOrderBy;
+  static const GTxCommentsOrderBy NATURAL = _$gTxCommentsOrderByNATURAL;
 
-  GOrderBy? get blockNumber;
-  static Serializer<GTxCommentVarianceOrderBy> get serializer =>
-      _$gTxCommentVarianceOrderBySerializer;
+  static const GTxCommentsOrderBy ID_ASC = _$gTxCommentsOrderByID_ASC;
+
+  static const GTxCommentsOrderBy ID_DESC = _$gTxCommentsOrderByID_DESC;
+
+  static const GTxCommentsOrderBy BLOCK_NUMBER_ASC =
+      _$gTxCommentsOrderByBLOCK_NUMBER_ASC;
+
+  static const GTxCommentsOrderBy BLOCK_NUMBER_DESC =
+      _$gTxCommentsOrderByBLOCK_NUMBER_DESC;
+
+  static const GTxCommentsOrderBy REMARK_BYTES_ASC =
+      _$gTxCommentsOrderByREMARK_BYTES_ASC;
+
+  static const GTxCommentsOrderBy REMARK_BYTES_DESC =
+      _$gTxCommentsOrderByREMARK_BYTES_DESC;
+
+  static const GTxCommentsOrderBy REMARK_ASC = _$gTxCommentsOrderByREMARK_ASC;
+
+  static const GTxCommentsOrderBy REMARK_DESC = _$gTxCommentsOrderByREMARK_DESC;
+
+  static const GTxCommentsOrderBy HASH_ASC = _$gTxCommentsOrderByHASH_ASC;
+
+  static const GTxCommentsOrderBy HASH_DESC = _$gTxCommentsOrderByHASH_DESC;
+
+  static const GTxCommentsOrderBy TYPE_ASC = _$gTxCommentsOrderByTYPE_ASC;
+
+  static const GTxCommentsOrderBy TYPE_DESC = _$gTxCommentsOrderByTYPE_DESC;
+
+  static const GTxCommentsOrderBy AUTHOR_ID_ASC =
+      _$gTxCommentsOrderByAUTHOR_ID_ASC;
+
+  static const GTxCommentsOrderBy AUTHOR_ID_DESC =
+      _$gTxCommentsOrderByAUTHOR_ID_DESC;
+
+  static const GTxCommentsOrderBy EVENT_ID_ASC =
+      _$gTxCommentsOrderByEVENT_ID_ASC;
+
+  static const GTxCommentsOrderBy EVENT_ID_DESC =
+      _$gTxCommentsOrderByEVENT_ID_DESC;
+
+  static const GTxCommentsOrderBy PRIMARY_KEY_ASC =
+      _$gTxCommentsOrderByPRIMARY_KEY_ASC;
+
+  static const GTxCommentsOrderBy PRIMARY_KEY_DESC =
+      _$gTxCommentsOrderByPRIMARY_KEY_DESC;
+
+  static Serializer<GTxCommentsOrderBy> get serializer =>
+      _$gTxCommentsOrderBySerializer;
+
+  static BuiltSet<GTxCommentsOrderBy> get values => _$gTxCommentsOrderByValues;
+
+  static GTxCommentsOrderBy valueOf(String name) =>
+      _$gTxCommentsOrderByValueOf(name);
+}
+
+class GUdHistoriesOrderBy extends EnumClass {
+  const GUdHistoriesOrderBy._(String name) : super(name);
+
+  static const GUdHistoriesOrderBy NATURAL = _$gUdHistoriesOrderByNATURAL;
+
+  static const GUdHistoriesOrderBy ID_ASC = _$gUdHistoriesOrderByID_ASC;
+
+  static const GUdHistoriesOrderBy ID_DESC = _$gUdHistoriesOrderByID_DESC;
+
+  static const GUdHistoriesOrderBy AMOUNT_ASC = _$gUdHistoriesOrderByAMOUNT_ASC;
+
+  static const GUdHistoriesOrderBy AMOUNT_DESC =
+      _$gUdHistoriesOrderByAMOUNT_DESC;
+
+  static const GUdHistoriesOrderBy BLOCK_NUMBER_ASC =
+      _$gUdHistoriesOrderByBLOCK_NUMBER_ASC;
+
+  static const GUdHistoriesOrderBy BLOCK_NUMBER_DESC =
+      _$gUdHistoriesOrderByBLOCK_NUMBER_DESC;
+
+  static const GUdHistoriesOrderBy TIMESTAMP_ASC =
+      _$gUdHistoriesOrderByTIMESTAMP_ASC;
+
+  static const GUdHistoriesOrderBy TIMESTAMP_DESC =
+      _$gUdHistoriesOrderByTIMESTAMP_DESC;
+
+  static const GUdHistoriesOrderBy IDENTITY_ID_ASC =
+      _$gUdHistoriesOrderByIDENTITY_ID_ASC;
+
+  static const GUdHistoriesOrderBy IDENTITY_ID_DESC =
+      _$gUdHistoriesOrderByIDENTITY_ID_DESC;
+
+  static const GUdHistoriesOrderBy PRIMARY_KEY_ASC =
+      _$gUdHistoriesOrderByPRIMARY_KEY_ASC;
+
+  static const GUdHistoriesOrderBy PRIMARY_KEY_DESC =
+      _$gUdHistoriesOrderByPRIMARY_KEY_DESC;
+
+  static Serializer<GUdHistoriesOrderBy> get serializer =>
+      _$gUdHistoriesOrderBySerializer;
+
+  static BuiltSet<GUdHistoriesOrderBy> get values =>
+      _$gUdHistoriesOrderByValues;
+
+  static GUdHistoriesOrderBy valueOf(String name) =>
+      _$gUdHistoriesOrderByValueOf(name);
+}
+
+abstract class GUdHistoryCondition
+    implements Built<GUdHistoryCondition, GUdHistoryConditionBuilder> {
+  GUdHistoryCondition._();
+
+  factory GUdHistoryCondition(
+          [void Function(GUdHistoryConditionBuilder b) updates]) =
+      _$GUdHistoryCondition;
+
+  String? get id;
+  GBigFloat? get amount;
+  int? get blockNumber;
+  GDatetime? get timestamp;
+  String? get identityId;
+  static Serializer<GUdHistoryCondition> get serializer =>
+      _$gUdHistoryConditionSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTxCommentVarianceOrderBy.serializer,
+        GUdHistoryCondition.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GTxCommentVarianceOrderBy? fromJson(Map<String, dynamic> json) =>
+  static GUdHistoryCondition? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GTxCommentVarianceOrderBy.serializer,
+        GUdHistoryCondition.serializer,
         json,
       );
 }
 
-abstract class GTxCommentVarPopOrderBy
-    implements Built<GTxCommentVarPopOrderBy, GTxCommentVarPopOrderByBuilder> {
-  GTxCommentVarPopOrderBy._();
+abstract class GUdHistoryFilter
+    implements Built<GUdHistoryFilter, GUdHistoryFilterBuilder> {
+  GUdHistoryFilter._();
 
-  factory GTxCommentVarPopOrderBy(
-          [void Function(GTxCommentVarPopOrderByBuilder b) updates]) =
-      _$GTxCommentVarPopOrderBy;
+  factory GUdHistoryFilter([void Function(GUdHistoryFilterBuilder b) updates]) =
+      _$GUdHistoryFilter;
 
-  GOrderBy? get blockNumber;
-  static Serializer<GTxCommentVarPopOrderBy> get serializer =>
-      _$gTxCommentVarPopOrderBySerializer;
+  GStringFilter? get id;
+  GBigFloatFilter? get amount;
+  GIntFilter? get blockNumber;
+  GDatetimeFilter? get timestamp;
+  GStringFilter? get identityId;
+  BuiltList<GUdHistoryFilter>? get and;
+  BuiltList<GUdHistoryFilter>? get or;
+  GUdHistoryFilter? get not;
+  static Serializer<GUdHistoryFilter> get serializer =>
+      _$gUdHistoryFilterSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTxCommentVarPopOrderBy.serializer,
+        GUdHistoryFilter.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GTxCommentVarPopOrderBy? fromJson(Map<String, dynamic> json) =>
+  static GUdHistoryFilter? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GTxCommentVarPopOrderBy.serializer,
+        GUdHistoryFilter.serializer,
         json,
       );
 }
 
-abstract class GTxCommentVarSampOrderBy
-    implements
-        Built<GTxCommentVarSampOrderBy, GTxCommentVarSampOrderByBuilder> {
-  GTxCommentVarSampOrderBy._();
+class GUdHistoryOrderBy extends EnumClass {
+  const GUdHistoryOrderBy._(String name) : super(name);
 
-  factory GTxCommentVarSampOrderBy(
-          [void Function(GTxCommentVarSampOrderByBuilder b) updates]) =
-      _$GTxCommentVarSampOrderBy;
+  static const GUdHistoryOrderBy BLOCK_NUMBER_ASC =
+      _$gUdHistoryOrderByBLOCK_NUMBER_ASC;
 
-  GOrderBy? get blockNumber;
-  static Serializer<GTxCommentVarSampOrderBy> get serializer =>
-      _$gTxCommentVarSampOrderBySerializer;
+  static const GUdHistoryOrderBy BLOCK_NUMBER_DESC =
+      _$gUdHistoryOrderByBLOCK_NUMBER_DESC;
 
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GTxCommentVarSampOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
+  static const GUdHistoryOrderBy TIMESTAMP_ASC =
+      _$gUdHistoryOrderByTIMESTAMP_ASC;
 
-  static GTxCommentVarSampOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GTxCommentVarSampOrderBy.serializer,
-        json,
-      );
-}
+  static const GUdHistoryOrderBy TIMESTAMP_DESC =
+      _$gUdHistoryOrderByTIMESTAMP_DESC;
 
-abstract class GUdHistoryBoolExp
-    implements Built<GUdHistoryBoolExp, GUdHistoryBoolExpBuilder> {
-  GUdHistoryBoolExp._();
+  static const GUdHistoryOrderBy AMOUNT_ASC = _$gUdHistoryOrderByAMOUNT_ASC;
 
-  factory GUdHistoryBoolExp(
-          [void Function(GUdHistoryBoolExpBuilder b) updates]) =
-      _$GUdHistoryBoolExp;
+  static const GUdHistoryOrderBy AMOUNT_DESC = _$gUdHistoryOrderByAMOUNT_DESC;
 
-  @BuiltValueField(wireName: '_and')
-  BuiltList<GUdHistoryBoolExp>? get G_and;
-  @BuiltValueField(wireName: '_not')
-  GUdHistoryBoolExp? get G_not;
-  @BuiltValueField(wireName: '_or')
-  BuiltList<GUdHistoryBoolExp>? get G_or;
-  GNumericComparisonExp? get amount;
-  GIntComparisonExp? get blockNumber;
-  GStringComparisonExp? get id;
-  GIdentityBoolExp? get identity;
-  GStringComparisonExp? get identityId;
-  GTimestamptzComparisonExp? get timestamp;
-  static Serializer<GUdHistoryBoolExp> get serializer =>
-      _$gUdHistoryBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GUdHistoryBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GUdHistoryBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GUdHistoryBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GUdHistoryOrderBy
-    implements Built<GUdHistoryOrderBy, GUdHistoryOrderByBuilder> {
-  GUdHistoryOrderBy._();
-
-  factory GUdHistoryOrderBy(
-          [void Function(GUdHistoryOrderByBuilder b) updates]) =
-      _$GUdHistoryOrderBy;
-
-  GOrderBy? get amount;
-  GOrderBy? get blockNumber;
-  GOrderBy? get id;
-  GIdentityOrderBy? get identity;
-  GOrderBy? get identityId;
-  GOrderBy? get timestamp;
   static Serializer<GUdHistoryOrderBy> get serializer =>
       _$gUdHistoryOrderBySerializer;
 
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GUdHistoryOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
+  static BuiltSet<GUdHistoryOrderBy> get values => _$gUdHistoryOrderByValues;
 
-  static GUdHistoryOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GUdHistoryOrderBy.serializer,
-        json,
-      );
+  static GUdHistoryOrderBy valueOf(String name) =>
+      _$gUdHistoryOrderByValueOf(name);
 }
 
-class GUdHistorySelectColumn extends EnumClass {
-  const GUdHistorySelectColumn._(String name) : super(name);
+abstract class GUdReevalCondition
+    implements Built<GUdReevalCondition, GUdReevalConditionBuilder> {
+  GUdReevalCondition._();
 
-  static const GUdHistorySelectColumn amount = _$gUdHistorySelectColumnamount;
+  factory GUdReevalCondition(
+          [void Function(GUdReevalConditionBuilder b) updates]) =
+      _$GUdReevalCondition;
 
-  static const GUdHistorySelectColumn blockNumber =
-      _$gUdHistorySelectColumnblockNumber;
-
-  static const GUdHistorySelectColumn id = _$gUdHistorySelectColumnid;
-
-  static const GUdHistorySelectColumn identityId =
-      _$gUdHistorySelectColumnidentityId;
-
-  static const GUdHistorySelectColumn timestamp =
-      _$gUdHistorySelectColumntimestamp;
-
-  static Serializer<GUdHistorySelectColumn> get serializer =>
-      _$gUdHistorySelectColumnSerializer;
-
-  static BuiltSet<GUdHistorySelectColumn> get values =>
-      _$gUdHistorySelectColumnValues;
-
-  static GUdHistorySelectColumn valueOf(String name) =>
-      _$gUdHistorySelectColumnValueOf(name);
-}
-
-abstract class GUdHistoryStreamCursorInput
-    implements
-        Built<GUdHistoryStreamCursorInput, GUdHistoryStreamCursorInputBuilder> {
-  GUdHistoryStreamCursorInput._();
-
-  factory GUdHistoryStreamCursorInput(
-          [void Function(GUdHistoryStreamCursorInputBuilder b) updates]) =
-      _$GUdHistoryStreamCursorInput;
-
-  GUdHistoryStreamCursorValueInput get initialValue;
-  GCursorOrdering? get ordering;
-  static Serializer<GUdHistoryStreamCursorInput> get serializer =>
-      _$gUdHistoryStreamCursorInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GUdHistoryStreamCursorInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GUdHistoryStreamCursorInput? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GUdHistoryStreamCursorInput.serializer,
-        json,
-      );
-}
-
-abstract class GUdHistoryStreamCursorValueInput
-    implements
-        Built<GUdHistoryStreamCursorValueInput,
-            GUdHistoryStreamCursorValueInputBuilder> {
-  GUdHistoryStreamCursorValueInput._();
-
-  factory GUdHistoryStreamCursorValueInput(
-          [void Function(GUdHistoryStreamCursorValueInputBuilder b) updates]) =
-      _$GUdHistoryStreamCursorValueInput;
-
-  int? get amount;
-  int? get blockNumber;
   String? get id;
-  String? get identityId;
-  Gtimestamptz? get timestamp;
-  static Serializer<GUdHistoryStreamCursorValueInput> get serializer =>
-      _$gUdHistoryStreamCursorValueInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GUdHistoryStreamCursorValueInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GUdHistoryStreamCursorValueInput? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GUdHistoryStreamCursorValueInput.serializer,
-        json,
-      );
-}
-
-abstract class GUdReevalBoolExp
-    implements Built<GUdReevalBoolExp, GUdReevalBoolExpBuilder> {
-  GUdReevalBoolExp._();
-
-  factory GUdReevalBoolExp([void Function(GUdReevalBoolExpBuilder b) updates]) =
-      _$GUdReevalBoolExp;
-
-  @BuiltValueField(wireName: '_and')
-  BuiltList<GUdReevalBoolExp>? get G_and;
-  @BuiltValueField(wireName: '_not')
-  GUdReevalBoolExp? get G_not;
-  @BuiltValueField(wireName: '_or')
-  BuiltList<GUdReevalBoolExp>? get G_or;
-  GIntComparisonExp? get blockNumber;
-  GEventBoolExp? get event;
-  GStringComparisonExp? get eventId;
-  GStringComparisonExp? get id;
-  GIntComparisonExp? get membersCount;
-  GNumericComparisonExp? get monetaryMass;
-  GNumericComparisonExp? get newUdAmount;
-  GTimestamptzComparisonExp? get timestamp;
-  GIntComparisonExp? get udIndex;
-  static Serializer<GUdReevalBoolExp> get serializer =>
-      _$gUdReevalBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GUdReevalBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GUdReevalBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GUdReevalBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GUdReevalOrderBy
-    implements Built<GUdReevalOrderBy, GUdReevalOrderByBuilder> {
-  GUdReevalOrderBy._();
-
-  factory GUdReevalOrderBy([void Function(GUdReevalOrderByBuilder b) updates]) =
-      _$GUdReevalOrderBy;
-
-  GOrderBy? get blockNumber;
-  GEventOrderBy? get event;
-  GOrderBy? get eventId;
-  GOrderBy? get id;
-  GOrderBy? get membersCount;
-  GOrderBy? get monetaryMass;
-  GOrderBy? get newUdAmount;
-  GOrderBy? get timestamp;
-  GOrderBy? get udIndex;
-  static Serializer<GUdReevalOrderBy> get serializer =>
-      _$gUdReevalOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GUdReevalOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GUdReevalOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GUdReevalOrderBy.serializer,
-        json,
-      );
-}
-
-class GUdReevalSelectColumn extends EnumClass {
-  const GUdReevalSelectColumn._(String name) : super(name);
-
-  static const GUdReevalSelectColumn blockNumber =
-      _$gUdReevalSelectColumnblockNumber;
-
-  static const GUdReevalSelectColumn eventId = _$gUdReevalSelectColumneventId;
-
-  static const GUdReevalSelectColumn id = _$gUdReevalSelectColumnid;
-
-  static const GUdReevalSelectColumn membersCount =
-      _$gUdReevalSelectColumnmembersCount;
-
-  static const GUdReevalSelectColumn monetaryMass =
-      _$gUdReevalSelectColumnmonetaryMass;
-
-  static const GUdReevalSelectColumn newUdAmount =
-      _$gUdReevalSelectColumnnewUdAmount;
-
-  static const GUdReevalSelectColumn timestamp =
-      _$gUdReevalSelectColumntimestamp;
-
-  static const GUdReevalSelectColumn udIndex = _$gUdReevalSelectColumnudIndex;
-
-  static Serializer<GUdReevalSelectColumn> get serializer =>
-      _$gUdReevalSelectColumnSerializer;
-
-  static BuiltSet<GUdReevalSelectColumn> get values =>
-      _$gUdReevalSelectColumnValues;
-
-  static GUdReevalSelectColumn valueOf(String name) =>
-      _$gUdReevalSelectColumnValueOf(name);
-}
-
-abstract class GUdReevalStreamCursorInput
-    implements
-        Built<GUdReevalStreamCursorInput, GUdReevalStreamCursorInputBuilder> {
-  GUdReevalStreamCursorInput._();
-
-  factory GUdReevalStreamCursorInput(
-          [void Function(GUdReevalStreamCursorInputBuilder b) updates]) =
-      _$GUdReevalStreamCursorInput;
-
-  GUdReevalStreamCursorValueInput get initialValue;
-  GCursorOrdering? get ordering;
-  static Serializer<GUdReevalStreamCursorInput> get serializer =>
-      _$gUdReevalStreamCursorInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GUdReevalStreamCursorInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GUdReevalStreamCursorInput? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GUdReevalStreamCursorInput.serializer,
-        json,
-      );
-}
-
-abstract class GUdReevalStreamCursorValueInput
-    implements
-        Built<GUdReevalStreamCursorValueInput,
-            GUdReevalStreamCursorValueInputBuilder> {
-  GUdReevalStreamCursorValueInput._();
-
-  factory GUdReevalStreamCursorValueInput(
-          [void Function(GUdReevalStreamCursorValueInputBuilder b) updates]) =
-      _$GUdReevalStreamCursorValueInput;
-
   int? get blockNumber;
-  String? get eventId;
-  String? get id;
+  GDatetime? get timestamp;
+  GBigFloat? get newUdAmount;
+  GBigFloat? get monetaryMass;
   int? get membersCount;
-  int? get monetaryMass;
-  int? get newUdAmount;
-  Gtimestamptz? get timestamp;
   int? get udIndex;
-  static Serializer<GUdReevalStreamCursorValueInput> get serializer =>
-      _$gUdReevalStreamCursorValueInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GUdReevalStreamCursorValueInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GUdReevalStreamCursorValueInput? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GUdReevalStreamCursorValueInput.serializer,
-        json,
-      );
-}
-
-abstract class GUniversalDividendBoolExp
-    implements
-        Built<GUniversalDividendBoolExp, GUniversalDividendBoolExpBuilder> {
-  GUniversalDividendBoolExp._();
-
-  factory GUniversalDividendBoolExp(
-          [void Function(GUniversalDividendBoolExpBuilder b) updates]) =
-      _$GUniversalDividendBoolExp;
-
-  @BuiltValueField(wireName: '_and')
-  BuiltList<GUniversalDividendBoolExp>? get G_and;
-  @BuiltValueField(wireName: '_not')
-  GUniversalDividendBoolExp? get G_not;
-  @BuiltValueField(wireName: '_or')
-  BuiltList<GUniversalDividendBoolExp>? get G_or;
-  GNumericComparisonExp? get amount;
-  GIntComparisonExp? get blockNumber;
-  GEventBoolExp? get event;
-  GStringComparisonExp? get eventId;
-  GStringComparisonExp? get id;
-  GIntComparisonExp? get index;
-  GIntComparisonExp? get membersCount;
-  GNumericComparisonExp? get monetaryMass;
-  GTimestamptzComparisonExp? get timestamp;
-  static Serializer<GUniversalDividendBoolExp> get serializer =>
-      _$gUniversalDividendBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GUniversalDividendBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GUniversalDividendBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GUniversalDividendBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GUniversalDividendOrderBy
-    implements
-        Built<GUniversalDividendOrderBy, GUniversalDividendOrderByBuilder> {
-  GUniversalDividendOrderBy._();
-
-  factory GUniversalDividendOrderBy(
-          [void Function(GUniversalDividendOrderByBuilder b) updates]) =
-      _$GUniversalDividendOrderBy;
-
-  GOrderBy? get amount;
-  GOrderBy? get blockNumber;
-  GEventOrderBy? get event;
-  GOrderBy? get eventId;
-  GOrderBy? get id;
-  GOrderBy? get index;
-  GOrderBy? get membersCount;
-  GOrderBy? get monetaryMass;
-  GOrderBy? get timestamp;
-  static Serializer<GUniversalDividendOrderBy> get serializer =>
-      _$gUniversalDividendOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GUniversalDividendOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GUniversalDividendOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GUniversalDividendOrderBy.serializer,
-        json,
-      );
-}
-
-class GUniversalDividendSelectColumn extends EnumClass {
-  const GUniversalDividendSelectColumn._(String name) : super(name);
-
-  static const GUniversalDividendSelectColumn amount =
-      _$gUniversalDividendSelectColumnamount;
-
-  static const GUniversalDividendSelectColumn blockNumber =
-      _$gUniversalDividendSelectColumnblockNumber;
-
-  static const GUniversalDividendSelectColumn eventId =
-      _$gUniversalDividendSelectColumneventId;
-
-  static const GUniversalDividendSelectColumn id =
-      _$gUniversalDividendSelectColumnid;
-
-  static const GUniversalDividendSelectColumn index =
-      _$gUniversalDividendSelectColumnindex;
-
-  static const GUniversalDividendSelectColumn membersCount =
-      _$gUniversalDividendSelectColumnmembersCount;
-
-  static const GUniversalDividendSelectColumn monetaryMass =
-      _$gUniversalDividendSelectColumnmonetaryMass;
-
-  static const GUniversalDividendSelectColumn timestamp =
-      _$gUniversalDividendSelectColumntimestamp;
-
-  static Serializer<GUniversalDividendSelectColumn> get serializer =>
-      _$gUniversalDividendSelectColumnSerializer;
-
-  static BuiltSet<GUniversalDividendSelectColumn> get values =>
-      _$gUniversalDividendSelectColumnValues;
-
-  static GUniversalDividendSelectColumn valueOf(String name) =>
-      _$gUniversalDividendSelectColumnValueOf(name);
-}
-
-abstract class GUniversalDividendStreamCursorInput
-    implements
-        Built<GUniversalDividendStreamCursorInput,
-            GUniversalDividendStreamCursorInputBuilder> {
-  GUniversalDividendStreamCursorInput._();
-
-  factory GUniversalDividendStreamCursorInput(
-      [void Function(GUniversalDividendStreamCursorInputBuilder b)
-          updates]) = _$GUniversalDividendStreamCursorInput;
-
-  GUniversalDividendStreamCursorValueInput get initialValue;
-  GCursorOrdering? get ordering;
-  static Serializer<GUniversalDividendStreamCursorInput> get serializer =>
-      _$gUniversalDividendStreamCursorInputSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GUniversalDividendStreamCursorInput.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GUniversalDividendStreamCursorInput? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GUniversalDividendStreamCursorInput.serializer,
-        json,
-      );
-}
-
-abstract class GUniversalDividendStreamCursorValueInput
-    implements
-        Built<GUniversalDividendStreamCursorValueInput,
-            GUniversalDividendStreamCursorValueInputBuilder> {
-  GUniversalDividendStreamCursorValueInput._();
-
-  factory GUniversalDividendStreamCursorValueInput(
-      [void Function(GUniversalDividendStreamCursorValueInputBuilder b)
-          updates]) = _$GUniversalDividendStreamCursorValueInput;
-
-  int? get amount;
-  int? get blockNumber;
   String? get eventId;
+  static Serializer<GUdReevalCondition> get serializer =>
+      _$gUdReevalConditionSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GUdReevalCondition.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GUdReevalCondition? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GUdReevalCondition.serializer,
+        json,
+      );
+}
+
+abstract class GUdReevalFilter
+    implements Built<GUdReevalFilter, GUdReevalFilterBuilder> {
+  GUdReevalFilter._();
+
+  factory GUdReevalFilter([void Function(GUdReevalFilterBuilder b) updates]) =
+      _$GUdReevalFilter;
+
+  GStringFilter? get id;
+  GIntFilter? get blockNumber;
+  GDatetimeFilter? get timestamp;
+  GBigFloatFilter? get newUdAmount;
+  GBigFloatFilter? get monetaryMass;
+  GIntFilter? get membersCount;
+  GIntFilter? get udIndex;
+  GStringFilter? get eventId;
+  BuiltList<GUdReevalFilter>? get and;
+  BuiltList<GUdReevalFilter>? get or;
+  GUdReevalFilter? get not;
+  static Serializer<GUdReevalFilter> get serializer =>
+      _$gUdReevalFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GUdReevalFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GUdReevalFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GUdReevalFilter.serializer,
+        json,
+      );
+}
+
+class GUdReevalsOrderBy extends EnumClass {
+  const GUdReevalsOrderBy._(String name) : super(name);
+
+  static const GUdReevalsOrderBy NATURAL = _$gUdReevalsOrderByNATURAL;
+
+  static const GUdReevalsOrderBy ID_ASC = _$gUdReevalsOrderByID_ASC;
+
+  static const GUdReevalsOrderBy ID_DESC = _$gUdReevalsOrderByID_DESC;
+
+  static const GUdReevalsOrderBy BLOCK_NUMBER_ASC =
+      _$gUdReevalsOrderByBLOCK_NUMBER_ASC;
+
+  static const GUdReevalsOrderBy BLOCK_NUMBER_DESC =
+      _$gUdReevalsOrderByBLOCK_NUMBER_DESC;
+
+  static const GUdReevalsOrderBy TIMESTAMP_ASC =
+      _$gUdReevalsOrderByTIMESTAMP_ASC;
+
+  static const GUdReevalsOrderBy TIMESTAMP_DESC =
+      _$gUdReevalsOrderByTIMESTAMP_DESC;
+
+  static const GUdReevalsOrderBy NEW_UD_AMOUNT_ASC =
+      _$gUdReevalsOrderByNEW_UD_AMOUNT_ASC;
+
+  static const GUdReevalsOrderBy NEW_UD_AMOUNT_DESC =
+      _$gUdReevalsOrderByNEW_UD_AMOUNT_DESC;
+
+  static const GUdReevalsOrderBy MONETARY_MASS_ASC =
+      _$gUdReevalsOrderByMONETARY_MASS_ASC;
+
+  static const GUdReevalsOrderBy MONETARY_MASS_DESC =
+      _$gUdReevalsOrderByMONETARY_MASS_DESC;
+
+  static const GUdReevalsOrderBy MEMBERS_COUNT_ASC =
+      _$gUdReevalsOrderByMEMBERS_COUNT_ASC;
+
+  static const GUdReevalsOrderBy MEMBERS_COUNT_DESC =
+      _$gUdReevalsOrderByMEMBERS_COUNT_DESC;
+
+  static const GUdReevalsOrderBy UD_INDEX_ASC = _$gUdReevalsOrderByUD_INDEX_ASC;
+
+  static const GUdReevalsOrderBy UD_INDEX_DESC =
+      _$gUdReevalsOrderByUD_INDEX_DESC;
+
+  static const GUdReevalsOrderBy EVENT_ID_ASC = _$gUdReevalsOrderByEVENT_ID_ASC;
+
+  static const GUdReevalsOrderBy EVENT_ID_DESC =
+      _$gUdReevalsOrderByEVENT_ID_DESC;
+
+  static const GUdReevalsOrderBy PRIMARY_KEY_ASC =
+      _$gUdReevalsOrderByPRIMARY_KEY_ASC;
+
+  static const GUdReevalsOrderBy PRIMARY_KEY_DESC =
+      _$gUdReevalsOrderByPRIMARY_KEY_DESC;
+
+  static Serializer<GUdReevalsOrderBy> get serializer =>
+      _$gUdReevalsOrderBySerializer;
+
+  static BuiltSet<GUdReevalsOrderBy> get values => _$gUdReevalsOrderByValues;
+
+  static GUdReevalsOrderBy valueOf(String name) =>
+      _$gUdReevalsOrderByValueOf(name);
+}
+
+abstract class GUniversalDividendCondition
+    implements
+        Built<GUniversalDividendCondition, GUniversalDividendConditionBuilder> {
+  GUniversalDividendCondition._();
+
+  factory GUniversalDividendCondition(
+          [void Function(GUniversalDividendConditionBuilder b) updates]) =
+      _$GUniversalDividendCondition;
+
   String? get id;
-  int? get index;
+  int? get blockNumber;
+  GDatetime? get timestamp;
+  GBigFloat? get amount;
+  GBigFloat? get monetaryMass;
   int? get membersCount;
-  int? get monetaryMass;
-  Gtimestamptz? get timestamp;
-  static Serializer<GUniversalDividendStreamCursorValueInput> get serializer =>
-      _$gUniversalDividendStreamCursorValueInputSerializer;
+  int? get index;
+  String? get eventId;
+  static Serializer<GUniversalDividendCondition> get serializer =>
+      _$gUniversalDividendConditionSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GUniversalDividendStreamCursorValueInput.serializer,
+        GUniversalDividendCondition.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GUniversalDividendStreamCursorValueInput? fromJson(
-          Map<String, dynamic> json) =>
+  static GUniversalDividendCondition? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GUniversalDividendStreamCursorValueInput.serializer,
+        GUniversalDividendCondition.serializer,
         json,
       );
 }
 
-abstract class GValidatorBoolExp
-    implements Built<GValidatorBoolExp, GValidatorBoolExpBuilder> {
-  GValidatorBoolExp._();
-
-  factory GValidatorBoolExp(
-          [void Function(GValidatorBoolExpBuilder b) updates]) =
-      _$GValidatorBoolExp;
-
-  @BuiltValueField(wireName: '_and')
-  BuiltList<GValidatorBoolExp>? get G_and;
-  @BuiltValueField(wireName: '_not')
-  GValidatorBoolExp? get G_not;
-  @BuiltValueField(wireName: '_or')
-  BuiltList<GValidatorBoolExp>? get G_or;
-  GStringComparisonExp? get id;
-  GIntComparisonExp? get index;
-  static Serializer<GValidatorBoolExp> get serializer =>
-      _$gValidatorBoolExpSerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GValidatorBoolExp.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GValidatorBoolExp? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GValidatorBoolExp.serializer,
-        json,
-      );
-}
-
-abstract class GValidatorOrderBy
-    implements Built<GValidatorOrderBy, GValidatorOrderByBuilder> {
-  GValidatorOrderBy._();
-
-  factory GValidatorOrderBy(
-          [void Function(GValidatorOrderByBuilder b) updates]) =
-      _$GValidatorOrderBy;
-
-  GOrderBy? get id;
-  GOrderBy? get index;
-  static Serializer<GValidatorOrderBy> get serializer =>
-      _$gValidatorOrderBySerializer;
-
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GValidatorOrderBy.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GValidatorOrderBy? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GValidatorOrderBy.serializer,
-        json,
-      );
-}
-
-class GValidatorSelectColumn extends EnumClass {
-  const GValidatorSelectColumn._(String name) : super(name);
-
-  static const GValidatorSelectColumn id = _$gValidatorSelectColumnid;
-
-  static const GValidatorSelectColumn index = _$gValidatorSelectColumnindex;
-
-  static Serializer<GValidatorSelectColumn> get serializer =>
-      _$gValidatorSelectColumnSerializer;
-
-  static BuiltSet<GValidatorSelectColumn> get values =>
-      _$gValidatorSelectColumnValues;
-
-  static GValidatorSelectColumn valueOf(String name) =>
-      _$gValidatorSelectColumnValueOf(name);
-}
-
-abstract class GValidatorStreamCursorInput
+abstract class GUniversalDividendFilter
     implements
-        Built<GValidatorStreamCursorInput, GValidatorStreamCursorInputBuilder> {
-  GValidatorStreamCursorInput._();
+        Built<GUniversalDividendFilter, GUniversalDividendFilterBuilder> {
+  GUniversalDividendFilter._();
 
-  factory GValidatorStreamCursorInput(
-          [void Function(GValidatorStreamCursorInputBuilder b) updates]) =
-      _$GValidatorStreamCursorInput;
+  factory GUniversalDividendFilter(
+          [void Function(GUniversalDividendFilterBuilder b) updates]) =
+      _$GUniversalDividendFilter;
 
-  GValidatorStreamCursorValueInput get initialValue;
-  GCursorOrdering? get ordering;
-  static Serializer<GValidatorStreamCursorInput> get serializer =>
-      _$gValidatorStreamCursorInputSerializer;
+  GStringFilter? get id;
+  GIntFilter? get blockNumber;
+  GDatetimeFilter? get timestamp;
+  GBigFloatFilter? get amount;
+  GBigFloatFilter? get monetaryMass;
+  GIntFilter? get membersCount;
+  GIntFilter? get index;
+  GStringFilter? get eventId;
+  BuiltList<GUniversalDividendFilter>? get and;
+  BuiltList<GUniversalDividendFilter>? get or;
+  GUniversalDividendFilter? get not;
+  static Serializer<GUniversalDividendFilter> get serializer =>
+      _$gUniversalDividendFilterSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GValidatorStreamCursorInput.serializer,
+        GUniversalDividendFilter.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GValidatorStreamCursorInput? fromJson(Map<String, dynamic> json) =>
+  static GUniversalDividendFilter? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GValidatorStreamCursorInput.serializer,
+        GUniversalDividendFilter.serializer,
         json,
       );
 }
 
-abstract class GValidatorStreamCursorValueInput
-    implements
-        Built<GValidatorStreamCursorValueInput,
-            GValidatorStreamCursorValueInputBuilder> {
-  GValidatorStreamCursorValueInput._();
+class GUniversalDividendsOrderBy extends EnumClass {
+  const GUniversalDividendsOrderBy._(String name) : super(name);
 
-  factory GValidatorStreamCursorValueInput(
-          [void Function(GValidatorStreamCursorValueInputBuilder b) updates]) =
-      _$GValidatorStreamCursorValueInput;
+  static const GUniversalDividendsOrderBy NATURAL =
+      _$gUniversalDividendsOrderByNATURAL;
+
+  static const GUniversalDividendsOrderBy ID_ASC =
+      _$gUniversalDividendsOrderByID_ASC;
+
+  static const GUniversalDividendsOrderBy ID_DESC =
+      _$gUniversalDividendsOrderByID_DESC;
+
+  static const GUniversalDividendsOrderBy BLOCK_NUMBER_ASC =
+      _$gUniversalDividendsOrderByBLOCK_NUMBER_ASC;
+
+  static const GUniversalDividendsOrderBy BLOCK_NUMBER_DESC =
+      _$gUniversalDividendsOrderByBLOCK_NUMBER_DESC;
+
+  static const GUniversalDividendsOrderBy TIMESTAMP_ASC =
+      _$gUniversalDividendsOrderByTIMESTAMP_ASC;
+
+  static const GUniversalDividendsOrderBy TIMESTAMP_DESC =
+      _$gUniversalDividendsOrderByTIMESTAMP_DESC;
+
+  static const GUniversalDividendsOrderBy AMOUNT_ASC =
+      _$gUniversalDividendsOrderByAMOUNT_ASC;
+
+  static const GUniversalDividendsOrderBy AMOUNT_DESC =
+      _$gUniversalDividendsOrderByAMOUNT_DESC;
+
+  static const GUniversalDividendsOrderBy MONETARY_MASS_ASC =
+      _$gUniversalDividendsOrderByMONETARY_MASS_ASC;
+
+  static const GUniversalDividendsOrderBy MONETARY_MASS_DESC =
+      _$gUniversalDividendsOrderByMONETARY_MASS_DESC;
+
+  static const GUniversalDividendsOrderBy MEMBERS_COUNT_ASC =
+      _$gUniversalDividendsOrderByMEMBERS_COUNT_ASC;
+
+  static const GUniversalDividendsOrderBy MEMBERS_COUNT_DESC =
+      _$gUniversalDividendsOrderByMEMBERS_COUNT_DESC;
+
+  static const GUniversalDividendsOrderBy INDEX_ASC =
+      _$gUniversalDividendsOrderByINDEX_ASC;
+
+  static const GUniversalDividendsOrderBy INDEX_DESC =
+      _$gUniversalDividendsOrderByINDEX_DESC;
+
+  static const GUniversalDividendsOrderBy EVENT_ID_ASC =
+      _$gUniversalDividendsOrderByEVENT_ID_ASC;
+
+  static const GUniversalDividendsOrderBy EVENT_ID_DESC =
+      _$gUniversalDividendsOrderByEVENT_ID_DESC;
+
+  static const GUniversalDividendsOrderBy PRIMARY_KEY_ASC =
+      _$gUniversalDividendsOrderByPRIMARY_KEY_ASC;
+
+  static const GUniversalDividendsOrderBy PRIMARY_KEY_DESC =
+      _$gUniversalDividendsOrderByPRIMARY_KEY_DESC;
+
+  static Serializer<GUniversalDividendsOrderBy> get serializer =>
+      _$gUniversalDividendsOrderBySerializer;
+
+  static BuiltSet<GUniversalDividendsOrderBy> get values =>
+      _$gUniversalDividendsOrderByValues;
+
+  static GUniversalDividendsOrderBy valueOf(String name) =>
+      _$gUniversalDividendsOrderByValueOf(name);
+}
+
+abstract class GValidatorCondition
+    implements Built<GValidatorCondition, GValidatorConditionBuilder> {
+  GValidatorCondition._();
+
+  factory GValidatorCondition(
+          [void Function(GValidatorConditionBuilder b) updates]) =
+      _$GValidatorCondition;
 
   String? get id;
   int? get index;
-  static Serializer<GValidatorStreamCursorValueInput> get serializer =>
-      _$gValidatorStreamCursorValueInputSerializer;
+  static Serializer<GValidatorCondition> get serializer =>
+      _$gValidatorConditionSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GValidatorStreamCursorValueInput.serializer,
+        GValidatorCondition.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GValidatorStreamCursorValueInput? fromJson(
-          Map<String, dynamic> json) =>
+  static GValidatorCondition? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GValidatorStreamCursorValueInput.serializer,
+        GValidatorCondition.serializer,
         json,
       );
 }
 
-const Map<String, Set<String>> possibleTypesMap = {};
+abstract class GValidatorFilter
+    implements Built<GValidatorFilter, GValidatorFilterBuilder> {
+  GValidatorFilter._();
+
+  factory GValidatorFilter([void Function(GValidatorFilterBuilder b) updates]) =
+      _$GValidatorFilter;
+
+  GStringFilter? get id;
+  GIntFilter? get index;
+  BuiltList<GValidatorFilter>? get and;
+  BuiltList<GValidatorFilter>? get or;
+  GValidatorFilter? get not;
+  static Serializer<GValidatorFilter> get serializer =>
+      _$gValidatorFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GValidatorFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GValidatorFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GValidatorFilter.serializer,
+        json,
+      );
+}
+
+class GValidatorsOrderBy extends EnumClass {
+  const GValidatorsOrderBy._(String name) : super(name);
+
+  static const GValidatorsOrderBy NATURAL = _$gValidatorsOrderByNATURAL;
+
+  static const GValidatorsOrderBy ID_ASC = _$gValidatorsOrderByID_ASC;
+
+  static const GValidatorsOrderBy ID_DESC = _$gValidatorsOrderByID_DESC;
+
+  static const GValidatorsOrderBy INDEX_ASC = _$gValidatorsOrderByINDEX_ASC;
+
+  static const GValidatorsOrderBy INDEX_DESC = _$gValidatorsOrderByINDEX_DESC;
+
+  static const GValidatorsOrderBy PRIMARY_KEY_ASC =
+      _$gValidatorsOrderByPRIMARY_KEY_ASC;
+
+  static const GValidatorsOrderBy PRIMARY_KEY_DESC =
+      _$gValidatorsOrderByPRIMARY_KEY_DESC;
+
+  static Serializer<GValidatorsOrderBy> get serializer =>
+      _$gValidatorsOrderBySerializer;
+
+  static BuiltSet<GValidatorsOrderBy> get values => _$gValidatorsOrderByValues;
+
+  static GValidatorsOrderBy valueOf(String name) =>
+      _$gValidatorsOrderByValueOf(name);
+}
+
+const Map<String, Set<String>> possibleTypesMap = {
+  'Node': {
+    'Account',
+    'Block',
+    'Call',
+    'Cert',
+    'CertEvent',
+    'ChangeOwnerKey',
+    'Event',
+    'Extrinsic',
+    'Identity',
+    'ItemsCounter',
+    'MembershipEvent',
+    'Migration',
+    'PopulationHistory',
+    'Query',
+    'Smith',
+    'SmithCert',
+    'SmithEvent',
+    'Transfer',
+    'TxComment',
+    'UdHistory',
+    'UdReeval',
+    'UniversalDividend',
+    'Validator',
+  }
+};

@@ -20,11 +20,11 @@ abstract class GLastBlockData
       _$GLastBlockData;
 
   static void _initializeBuilder(GLastBlockDataBuilder b) =>
-      b..G__typename = 'query_root';
+      b..G__typename = 'Query';
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
-  BuiltList<GLastBlockData_block> get block;
+  GLastBlockData_blocks? get blocks;
   static Serializer<GLastBlockData> get serializer =>
       _$gLastBlockDataSerializer;
 
@@ -40,31 +40,61 @@ abstract class GLastBlockData
       );
 }
 
-abstract class GLastBlockData_block
-    implements Built<GLastBlockData_block, GLastBlockData_blockBuilder> {
-  GLastBlockData_block._();
+abstract class GLastBlockData_blocks
+    implements Built<GLastBlockData_blocks, GLastBlockData_blocksBuilder> {
+  GLastBlockData_blocks._();
 
-  factory GLastBlockData_block(
-          [void Function(GLastBlockData_blockBuilder b) updates]) =
-      _$GLastBlockData_block;
+  factory GLastBlockData_blocks(
+          [void Function(GLastBlockData_blocksBuilder b) updates]) =
+      _$GLastBlockData_blocks;
 
-  static void _initializeBuilder(GLastBlockData_blockBuilder b) =>
+  static void _initializeBuilder(GLastBlockData_blocksBuilder b) =>
+      b..G__typename = 'BlocksConnection';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  BuiltList<GLastBlockData_blocks_nodes> get nodes;
+  static Serializer<GLastBlockData_blocks> get serializer =>
+      _$gLastBlockDataBlocksSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GLastBlockData_blocks.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GLastBlockData_blocks? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GLastBlockData_blocks.serializer,
+        json,
+      );
+}
+
+abstract class GLastBlockData_blocks_nodes
+    implements
+        Built<GLastBlockData_blocks_nodes, GLastBlockData_blocks_nodesBuilder> {
+  GLastBlockData_blocks_nodes._();
+
+  factory GLastBlockData_blocks_nodes(
+          [void Function(GLastBlockData_blocks_nodesBuilder b) updates]) =
+      _$GLastBlockData_blocks_nodes;
+
+  static void _initializeBuilder(GLastBlockData_blocks_nodesBuilder b) =>
       b..G__typename = 'Block';
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   int get height;
-  static Serializer<GLastBlockData_block> get serializer =>
-      _$gLastBlockDataBlockSerializer;
+  static Serializer<GLastBlockData_blocks_nodes> get serializer =>
+      _$gLastBlockDataBlocksNodesSerializer;
 
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GLastBlockData_block.serializer,
+        GLastBlockData_blocks_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GLastBlockData_block? fromJson(Map<String, dynamic> json) =>
+  static GLastBlockData_blocks_nodes? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GLastBlockData_block.serializer,
+        GLastBlockData_blocks_nodes.serializer,
         json,
       );
 }
@@ -79,11 +109,11 @@ abstract class GIdentitiesByNameOrPkData
       _$GIdentitiesByNameOrPkData;
 
   static void _initializeBuilder(GIdentitiesByNameOrPkDataBuilder b) =>
-      b..G__typename = 'query_root';
+      b..G__typename = 'Query';
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
-  BuiltList<GIdentitiesByNameOrPkData_identity> get identity;
+  GIdentitiesByNameOrPkData_identities? get identities;
   static Serializer<GIdentitiesByNameOrPkData> get serializer =>
       _$gIdentitiesByNameOrPkDataSerializer;
 
@@ -99,18 +129,52 @@ abstract class GIdentitiesByNameOrPkData
       );
 }
 
-abstract class GIdentitiesByNameOrPkData_identity
+abstract class GIdentitiesByNameOrPkData_identities
     implements
-        Built<GIdentitiesByNameOrPkData_identity,
-            GIdentitiesByNameOrPkData_identityBuilder>,
+        Built<GIdentitiesByNameOrPkData_identities,
+            GIdentitiesByNameOrPkData_identitiesBuilder> {
+  GIdentitiesByNameOrPkData_identities._();
+
+  factory GIdentitiesByNameOrPkData_identities(
+      [void Function(GIdentitiesByNameOrPkData_identitiesBuilder b)
+          updates]) = _$GIdentitiesByNameOrPkData_identities;
+
+  static void _initializeBuilder(
+          GIdentitiesByNameOrPkData_identitiesBuilder b) =>
+      b..G__typename = 'IdentitiesConnection';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  BuiltList<GIdentitiesByNameOrPkData_identities_nodes> get nodes;
+  static Serializer<GIdentitiesByNameOrPkData_identities> get serializer =>
+      _$gIdentitiesByNameOrPkDataIdentitiesSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentitiesByNameOrPkData_identities.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentitiesByNameOrPkData_identities? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GIdentitiesByNameOrPkData_identities.serializer,
+        json,
+      );
+}
+
+abstract class GIdentitiesByNameOrPkData_identities_nodes
+    implements
+        Built<GIdentitiesByNameOrPkData_identities_nodes,
+            GIdentitiesByNameOrPkData_identities_nodesBuilder>,
         GIdentityBasicFields {
-  GIdentitiesByNameOrPkData_identity._();
+  GIdentitiesByNameOrPkData_identities_nodes._();
 
-  factory GIdentitiesByNameOrPkData_identity(
-      [void Function(GIdentitiesByNameOrPkData_identityBuilder b)
-          updates]) = _$GIdentitiesByNameOrPkData_identity;
+  factory GIdentitiesByNameOrPkData_identities_nodes(
+      [void Function(GIdentitiesByNameOrPkData_identities_nodesBuilder b)
+          updates]) = _$GIdentitiesByNameOrPkData_identities_nodes;
 
-  static void _initializeBuilder(GIdentitiesByNameOrPkData_identityBuilder b) =>
+  static void _initializeBuilder(
+          GIdentitiesByNameOrPkData_identities_nodesBuilder b) =>
       b..G__typename = 'Identity';
 
   @override
@@ -119,7 +183,7 @@ abstract class GIdentitiesByNameOrPkData_identity
   @override
   String? get accountId;
   @override
-  GIdentitiesByNameOrPkData_identity_account? get account;
+  GIdentitiesByNameOrPkData_identities_nodes_account? get account;
   @override
   String get id;
   @override
@@ -132,36 +196,37 @@ abstract class GIdentitiesByNameOrPkData_identity
   int get expireOn;
   @override
   int get index;
-  static Serializer<GIdentitiesByNameOrPkData_identity> get serializer =>
-      _$gIdentitiesByNameOrPkDataIdentitySerializer;
+  static Serializer<GIdentitiesByNameOrPkData_identities_nodes>
+      get serializer => _$gIdentitiesByNameOrPkDataIdentitiesNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameOrPkData_identity.serializer,
+        GIdentitiesByNameOrPkData_identities_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByNameOrPkData_identity? fromJson(
+  static GIdentitiesByNameOrPkData_identities_nodes? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentitiesByNameOrPkData_identity.serializer,
+        GIdentitiesByNameOrPkData_identities_nodes.serializer,
         json,
       );
 }
 
-abstract class GIdentitiesByNameOrPkData_identity_account
+abstract class GIdentitiesByNameOrPkData_identities_nodes_account
     implements
-        Built<GIdentitiesByNameOrPkData_identity_account,
-            GIdentitiesByNameOrPkData_identity_accountBuilder>,
+        Built<GIdentitiesByNameOrPkData_identities_nodes_account,
+            GIdentitiesByNameOrPkData_identities_nodes_accountBuilder>,
         GIdentityBasicFields_account {
-  GIdentitiesByNameOrPkData_identity_account._();
+  GIdentitiesByNameOrPkData_identities_nodes_account._();
 
-  factory GIdentitiesByNameOrPkData_identity_account(
-      [void Function(GIdentitiesByNameOrPkData_identity_accountBuilder b)
-          updates]) = _$GIdentitiesByNameOrPkData_identity_account;
+  factory GIdentitiesByNameOrPkData_identities_nodes_account(
+      [void Function(
+              GIdentitiesByNameOrPkData_identities_nodes_accountBuilder b)
+          updates]) = _$GIdentitiesByNameOrPkData_identities_nodes_account;
 
   static void _initializeBuilder(
-          GIdentitiesByNameOrPkData_identity_accountBuilder b) =>
+          GIdentitiesByNameOrPkData_identities_nodes_accountBuilder b) =>
       b..G__typename = 'Account';
 
   @override
@@ -169,19 +234,20 @@ abstract class GIdentitiesByNameOrPkData_identity_account
   String get G__typename;
   @override
   int get createdOn;
-  static Serializer<GIdentitiesByNameOrPkData_identity_account>
-      get serializer => _$gIdentitiesByNameOrPkDataIdentityAccountSerializer;
+  static Serializer<GIdentitiesByNameOrPkData_identities_nodes_account>
+      get serializer =>
+          _$gIdentitiesByNameOrPkDataIdentitiesNodesAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameOrPkData_identity_account.serializer,
+        GIdentitiesByNameOrPkData_identities_nodes_account.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByNameOrPkData_identity_account? fromJson(
+  static GIdentitiesByNameOrPkData_identities_nodes_account? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentitiesByNameOrPkData_identity_account.serializer,
+        GIdentitiesByNameOrPkData_identities_nodes_account.serializer,
         json,
       );
 }
@@ -195,11 +261,11 @@ abstract class GIdentitiesByPkData
       _$GIdentitiesByPkData;
 
   static void _initializeBuilder(GIdentitiesByPkDataBuilder b) =>
-      b..G__typename = 'query_root';
+      b..G__typename = 'Query';
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
-  BuiltList<GIdentitiesByPkData_identity> get identity;
+  GIdentitiesByPkData_identities? get identities;
   static Serializer<GIdentitiesByPkData> get serializer =>
       _$gIdentitiesByPkDataSerializer;
 
@@ -215,37 +281,65 @@ abstract class GIdentitiesByPkData
       );
 }
 
-abstract class GIdentitiesByPkData_identity
+abstract class GIdentitiesByPkData_identities
     implements
-        Built<GIdentitiesByPkData_identity,
-            GIdentitiesByPkData_identityBuilder>,
+        Built<GIdentitiesByPkData_identities,
+            GIdentitiesByPkData_identitiesBuilder> {
+  GIdentitiesByPkData_identities._();
+
+  factory GIdentitiesByPkData_identities(
+          [void Function(GIdentitiesByPkData_identitiesBuilder b) updates]) =
+      _$GIdentitiesByPkData_identities;
+
+  static void _initializeBuilder(GIdentitiesByPkData_identitiesBuilder b) =>
+      b..G__typename = 'IdentitiesConnection';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  BuiltList<GIdentitiesByPkData_identities_nodes> get nodes;
+  static Serializer<GIdentitiesByPkData_identities> get serializer =>
+      _$gIdentitiesByPkDataIdentitiesSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentitiesByPkData_identities.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentitiesByPkData_identities? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GIdentitiesByPkData_identities.serializer,
+        json,
+      );
+}
+
+abstract class GIdentitiesByPkData_identities_nodes
+    implements
+        Built<GIdentitiesByPkData_identities_nodes,
+            GIdentitiesByPkData_identities_nodesBuilder>,
         GIdentityFields {
-  GIdentitiesByPkData_identity._();
+  GIdentitiesByPkData_identities_nodes._();
 
-  factory GIdentitiesByPkData_identity(
-          [void Function(GIdentitiesByPkData_identityBuilder b) updates]) =
-      _$GIdentitiesByPkData_identity;
+  factory GIdentitiesByPkData_identities_nodes(
+      [void Function(GIdentitiesByPkData_identities_nodesBuilder b)
+          updates]) = _$GIdentitiesByPkData_identities_nodes;
 
-  static void _initializeBuilder(GIdentitiesByPkData_identityBuilder b) =>
+  static void _initializeBuilder(
+          GIdentitiesByPkData_identities_nodesBuilder b) =>
       b..G__typename = 'Identity';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  GIdentitiesByPkData_identity_account? get account;
+  GIdentitiesByPkData_identities_nodes_account? get account;
   @override
   String? get accountId;
   @override
   String? get accountRemovedId;
   @override
-  BuiltList<GIdentitiesByPkData_identity_certIssued> get certIssued;
+  GIdentitiesByPkData_identities_nodes_certsByIssuerId get certsByIssuerId;
   @override
-  GIdentitiesByPkData_identity_certIssuedAggregate get certIssuedAggregate;
-  @override
-  BuiltList<GIdentitiesByPkData_identity_certReceived> get certReceived;
-  @override
-  GIdentitiesByPkData_identity_certReceivedAggregate get certReceivedAggregate;
+  GIdentitiesByPkData_identities_nodes_certsByReceiverId get certsByReceiverId;
   @override
   String? get createdInId;
   @override
@@ -261,56 +355,45 @@ abstract class GIdentitiesByPkData_identity
   @override
   int get lastChangeOn;
   @override
-  BuiltList<GIdentitiesByPkData_identity_linkedAccount> get linkedAccount;
-  @override
-  GIdentitiesByPkData_identity_linkedAccountAggregate
-      get linkedAccountAggregate;
-  @override
   String get status;
-  @override
-  BuiltList<GIdentitiesByPkData_identity_membershipHistory>
-      get membershipHistory;
-  @override
-  GIdentitiesByPkData_identity_membershipHistoryAggregate
-      get membershipHistoryAggregate;
   @override
   String get name;
   @override
-  BuiltList<GIdentitiesByPkData_identity_ownerKeyChange> get ownerKeyChange;
+  GIdentitiesByPkData_identities_nodes_membershipEvents get membershipEvents;
   @override
-  GIdentitiesByPkData_identity_ownerKeyChangeAggregate
-      get ownerKeyChangeAggregate;
+  GIdentitiesByPkData_identities_nodes_changeOwnerKeys get changeOwnerKeys;
   @override
-  GIdentitiesByPkData_identity_smith? get smith;
-  static Serializer<GIdentitiesByPkData_identity> get serializer =>
-      _$gIdentitiesByPkDataIdentitySerializer;
+  GIdentitiesByPkData_identities_nodes_smith? get smith;
+  static Serializer<GIdentitiesByPkData_identities_nodes> get serializer =>
+      _$gIdentitiesByPkDataIdentitiesNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity.serializer,
+        GIdentitiesByPkData_identities_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByPkData_identity? fromJson(Map<String, dynamic> json) =>
+  static GIdentitiesByPkData_identities_nodes? fromJson(
+          Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentitiesByPkData_identity.serializer,
+        GIdentitiesByPkData_identities_nodes.serializer,
         json,
       );
 }
 
-abstract class GIdentitiesByPkData_identity_account
+abstract class GIdentitiesByPkData_identities_nodes_account
     implements
-        Built<GIdentitiesByPkData_identity_account,
-            GIdentitiesByPkData_identity_accountBuilder>,
+        Built<GIdentitiesByPkData_identities_nodes_account,
+            GIdentitiesByPkData_identities_nodes_accountBuilder>,
         GIdentityFields_account {
-  GIdentitiesByPkData_identity_account._();
+  GIdentitiesByPkData_identities_nodes_account._();
 
-  factory GIdentitiesByPkData_identity_account(
-      [void Function(GIdentitiesByPkData_identity_accountBuilder b)
-          updates]) = _$GIdentitiesByPkData_identity_account;
+  factory GIdentitiesByPkData_identities_nodes_account(
+      [void Function(GIdentitiesByPkData_identities_nodes_accountBuilder b)
+          updates]) = _$GIdentitiesByPkData_identities_nodes_account;
 
   static void _initializeBuilder(
-          GIdentitiesByPkData_identity_accountBuilder b) =>
+          GIdentitiesByPkData_identities_nodes_accountBuilder b) =>
       b..G__typename = 'Account';
 
   @override
@@ -318,37 +401,82 @@ abstract class GIdentitiesByPkData_identity_account
   String get G__typename;
   @override
   int get createdOn;
-  static Serializer<GIdentitiesByPkData_identity_account> get serializer =>
-      _$gIdentitiesByPkDataIdentityAccountSerializer;
+  static Serializer<GIdentitiesByPkData_identities_nodes_account>
+      get serializer => _$gIdentitiesByPkDataIdentitiesNodesAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_account.serializer,
+        GIdentitiesByPkData_identities_nodes_account.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByPkData_identity_account? fromJson(
+  static GIdentitiesByPkData_identities_nodes_account? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentitiesByPkData_identity_account.serializer,
+        GIdentitiesByPkData_identities_nodes_account.serializer,
         json,
       );
 }
 
-abstract class GIdentitiesByPkData_identity_certIssued
+abstract class GIdentitiesByPkData_identities_nodes_certsByIssuerId
     implements
-        Built<GIdentitiesByPkData_identity_certIssued,
-            GIdentitiesByPkData_identity_certIssuedBuilder>,
-        GIdentityFields_certIssued,
-        GCertFields {
-  GIdentitiesByPkData_identity_certIssued._();
+        Built<GIdentitiesByPkData_identities_nodes_certsByIssuerId,
+            GIdentitiesByPkData_identities_nodes_certsByIssuerIdBuilder>,
+        GIdentityFields_certsByIssuerId {
+  GIdentitiesByPkData_identities_nodes_certsByIssuerId._();
 
-  factory GIdentitiesByPkData_identity_certIssued(
-      [void Function(GIdentitiesByPkData_identity_certIssuedBuilder b)
-          updates]) = _$GIdentitiesByPkData_identity_certIssued;
+  factory GIdentitiesByPkData_identities_nodes_certsByIssuerId(
+      [void Function(
+              GIdentitiesByPkData_identities_nodes_certsByIssuerIdBuilder b)
+          updates]) = _$GIdentitiesByPkData_identities_nodes_certsByIssuerId;
 
   static void _initializeBuilder(
-          GIdentitiesByPkData_identity_certIssuedBuilder b) =>
+          GIdentitiesByPkData_identities_nodes_certsByIssuerIdBuilder b) =>
+      b..G__typename = 'CertsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes>
+      get nodes;
+  static Serializer<GIdentitiesByPkData_identities_nodes_certsByIssuerId>
+      get serializer =>
+          _$gIdentitiesByPkDataIdentitiesNodesCertsByIssuerIdSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentitiesByPkData_identities_nodes_certsByIssuerId.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentitiesByPkData_identities_nodes_certsByIssuerId? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GIdentitiesByPkData_identities_nodes_certsByIssuerId.serializer,
+        json,
+      );
+}
+
+abstract class GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes
+    implements
+        Built<GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes,
+            GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodesBuilder>,
+        GIdentityFields_certsByIssuerId_nodes,
+        GCertFields {
+  GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes._();
+
+  factory GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes(
+      [void Function(
+              GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodesBuilder
+                  b)
+          updates]) = _$GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes;
+
+  static void _initializeBuilder(
+          GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodesBuilder
+              b) =>
       b..G__typename = 'Cert';
 
   @override
@@ -359,11 +487,12 @@ abstract class GIdentitiesByPkData_identity_certIssued
   @override
   String? get issuerId;
   @override
-  GIdentitiesByPkData_identity_certIssued_issuer? get issuer;
+  GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer? get issuer;
   @override
   String? get receiverId;
   @override
-  GIdentitiesByPkData_identity_certIssued_receiver? get receiver;
+  GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver?
+      get receiver;
   @override
   int get createdOn;
   @override
@@ -372,753 +501,621 @@ abstract class GIdentitiesByPkData_identity_certIssued
   bool get isActive;
   @override
   int get updatedOn;
-  static Serializer<GIdentitiesByPkData_identity_certIssued> get serializer =>
-      _$gIdentitiesByPkDataIdentityCertIssuedSerializer;
+  static Serializer<GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes>
+      get serializer =>
+          _$gIdentitiesByPkDataIdentitiesNodesCertsByIssuerIdNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_certIssued.serializer,
+        GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByPkData_identity_certIssued? fromJson(
+  static GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentitiesByPkData_identity_certIssued.serializer,
+        GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes.serializer,
         json,
       );
 }
 
-abstract class GIdentitiesByPkData_identity_certIssued_issuer
+abstract class GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer
     implements
-        Built<GIdentitiesByPkData_identity_certIssued_issuer,
-            GIdentitiesByPkData_identity_certIssued_issuerBuilder>,
-        GIdentityFields_certIssued_issuer,
+        Built<GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer,
+            GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuerBuilder>,
+        GIdentityFields_certsByIssuerId_nodes_issuer,
         GCertFields_issuer,
         GIdentityBasicFields {
-  GIdentitiesByPkData_identity_certIssued_issuer._();
+  GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer._();
 
-  factory GIdentitiesByPkData_identity_certIssued_issuer(
-      [void Function(GIdentitiesByPkData_identity_certIssued_issuerBuilder b)
-          updates]) = _$GIdentitiesByPkData_identity_certIssued_issuer;
-
-  static void _initializeBuilder(
-          GIdentitiesByPkData_identity_certIssued_issuerBuilder b) =>
-      b..G__typename = 'Identity';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String? get accountId;
-  @override
-  GIdentitiesByPkData_identity_certIssued_issuer_account? get account;
-  @override
-  String get id;
-  @override
-  bool get isMember;
-  @override
-  String get status;
-  @override
-  String get name;
-  @override
-  int get expireOn;
-  @override
-  int get index;
-  static Serializer<GIdentitiesByPkData_identity_certIssued_issuer>
-      get serializer => _$gIdentitiesByPkDataIdentityCertIssuedIssuerSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_certIssued_issuer.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByPkData_identity_certIssued_issuer? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByPkData_identity_certIssued_issuer.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByPkData_identity_certIssued_issuer_account
-    implements
-        Built<GIdentitiesByPkData_identity_certIssued_issuer_account,
-            GIdentitiesByPkData_identity_certIssued_issuer_accountBuilder>,
-        GIdentityFields_certIssued_issuer_account,
-        GCertFields_issuer_account,
-        GIdentityBasicFields_account {
-  GIdentitiesByPkData_identity_certIssued_issuer_account._();
-
-  factory GIdentitiesByPkData_identity_certIssued_issuer_account(
-      [void Function(
-              GIdentitiesByPkData_identity_certIssued_issuer_accountBuilder b)
-          updates]) = _$GIdentitiesByPkData_identity_certIssued_issuer_account;
-
-  static void _initializeBuilder(
-          GIdentitiesByPkData_identity_certIssued_issuer_accountBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get createdOn;
-  static Serializer<GIdentitiesByPkData_identity_certIssued_issuer_account>
-      get serializer =>
-          _$gIdentitiesByPkDataIdentityCertIssuedIssuerAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_certIssued_issuer_account.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByPkData_identity_certIssued_issuer_account? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByPkData_identity_certIssued_issuer_account.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByPkData_identity_certIssued_receiver
-    implements
-        Built<GIdentitiesByPkData_identity_certIssued_receiver,
-            GIdentitiesByPkData_identity_certIssued_receiverBuilder>,
-        GIdentityFields_certIssued_receiver,
-        GCertFields_receiver,
-        GIdentityBasicFields {
-  GIdentitiesByPkData_identity_certIssued_receiver._();
-
-  factory GIdentitiesByPkData_identity_certIssued_receiver(
-      [void Function(GIdentitiesByPkData_identity_certIssued_receiverBuilder b)
-          updates]) = _$GIdentitiesByPkData_identity_certIssued_receiver;
-
-  static void _initializeBuilder(
-          GIdentitiesByPkData_identity_certIssued_receiverBuilder b) =>
-      b..G__typename = 'Identity';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String? get accountId;
-  @override
-  GIdentitiesByPkData_identity_certIssued_receiver_account? get account;
-  @override
-  String get id;
-  @override
-  bool get isMember;
-  @override
-  String get status;
-  @override
-  String get name;
-  @override
-  int get expireOn;
-  @override
-  int get index;
-  static Serializer<GIdentitiesByPkData_identity_certIssued_receiver>
-      get serializer =>
-          _$gIdentitiesByPkDataIdentityCertIssuedReceiverSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_certIssued_receiver.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByPkData_identity_certIssued_receiver? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByPkData_identity_certIssued_receiver.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByPkData_identity_certIssued_receiver_account
-    implements
-        Built<GIdentitiesByPkData_identity_certIssued_receiver_account,
-            GIdentitiesByPkData_identity_certIssued_receiver_accountBuilder>,
-        GIdentityFields_certIssued_receiver_account,
-        GCertFields_receiver_account,
-        GIdentityBasicFields_account {
-  GIdentitiesByPkData_identity_certIssued_receiver_account._();
-
-  factory GIdentitiesByPkData_identity_certIssued_receiver_account(
-      [void Function(
-              GIdentitiesByPkData_identity_certIssued_receiver_accountBuilder b)
-          updates]) = _$GIdentitiesByPkData_identity_certIssued_receiver_account;
-
-  static void _initializeBuilder(
-          GIdentitiesByPkData_identity_certIssued_receiver_accountBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get createdOn;
-  static Serializer<GIdentitiesByPkData_identity_certIssued_receiver_account>
-      get serializer =>
-          _$gIdentitiesByPkDataIdentityCertIssuedReceiverAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_certIssued_receiver_account.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByPkData_identity_certIssued_receiver_account? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByPkData_identity_certIssued_receiver_account.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByPkData_identity_certIssuedAggregate
-    implements
-        Built<GIdentitiesByPkData_identity_certIssuedAggregate,
-            GIdentitiesByPkData_identity_certIssuedAggregateBuilder>,
-        GIdentityFields_certIssuedAggregate {
-  GIdentitiesByPkData_identity_certIssuedAggregate._();
-
-  factory GIdentitiesByPkData_identity_certIssuedAggregate(
-      [void Function(GIdentitiesByPkData_identity_certIssuedAggregateBuilder b)
-          updates]) = _$GIdentitiesByPkData_identity_certIssuedAggregate;
-
-  static void _initializeBuilder(
-          GIdentitiesByPkData_identity_certIssuedAggregateBuilder b) =>
-      b..G__typename = 'CertAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GIdentitiesByPkData_identity_certIssuedAggregate_aggregate? get aggregate;
-  static Serializer<GIdentitiesByPkData_identity_certIssuedAggregate>
-      get serializer =>
-          _$gIdentitiesByPkDataIdentityCertIssuedAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_certIssuedAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByPkData_identity_certIssuedAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByPkData_identity_certIssuedAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByPkData_identity_certIssuedAggregate_aggregate
-    implements
-        Built<GIdentitiesByPkData_identity_certIssuedAggregate_aggregate,
-            GIdentitiesByPkData_identity_certIssuedAggregate_aggregateBuilder>,
-        GIdentityFields_certIssuedAggregate_aggregate {
-  GIdentitiesByPkData_identity_certIssuedAggregate_aggregate._();
-
-  factory GIdentitiesByPkData_identity_certIssuedAggregate_aggregate(
-      [void Function(
-              GIdentitiesByPkData_identity_certIssuedAggregate_aggregateBuilder
-                  b)
-          updates]) = _$GIdentitiesByPkData_identity_certIssuedAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GIdentitiesByPkData_identity_certIssuedAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'CertAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<GIdentitiesByPkData_identity_certIssuedAggregate_aggregate>
-      get serializer =>
-          _$gIdentitiesByPkDataIdentityCertIssuedAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_certIssuedAggregate_aggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByPkData_identity_certIssuedAggregate_aggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByPkData_identity_certIssuedAggregate_aggregate.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByPkData_identity_certReceived
-    implements
-        Built<GIdentitiesByPkData_identity_certReceived,
-            GIdentitiesByPkData_identity_certReceivedBuilder>,
-        GIdentityFields_certReceived,
-        GCertFields {
-  GIdentitiesByPkData_identity_certReceived._();
-
-  factory GIdentitiesByPkData_identity_certReceived(
-      [void Function(GIdentitiesByPkData_identity_certReceivedBuilder b)
-          updates]) = _$GIdentitiesByPkData_identity_certReceived;
-
-  static void _initializeBuilder(
-          GIdentitiesByPkData_identity_certReceivedBuilder b) =>
-      b..G__typename = 'Cert';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  @override
-  String? get issuerId;
-  @override
-  GIdentitiesByPkData_identity_certReceived_issuer? get issuer;
-  @override
-  String? get receiverId;
-  @override
-  GIdentitiesByPkData_identity_certReceived_receiver? get receiver;
-  @override
-  int get createdOn;
-  @override
-  int get expireOn;
-  @override
-  bool get isActive;
-  @override
-  int get updatedOn;
-  static Serializer<GIdentitiesByPkData_identity_certReceived> get serializer =>
-      _$gIdentitiesByPkDataIdentityCertReceivedSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_certReceived.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByPkData_identity_certReceived? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByPkData_identity_certReceived.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByPkData_identity_certReceived_issuer
-    implements
-        Built<GIdentitiesByPkData_identity_certReceived_issuer,
-            GIdentitiesByPkData_identity_certReceived_issuerBuilder>,
-        GIdentityFields_certReceived_issuer,
-        GCertFields_issuer,
-        GIdentityBasicFields {
-  GIdentitiesByPkData_identity_certReceived_issuer._();
-
-  factory GIdentitiesByPkData_identity_certReceived_issuer(
-      [void Function(GIdentitiesByPkData_identity_certReceived_issuerBuilder b)
-          updates]) = _$GIdentitiesByPkData_identity_certReceived_issuer;
-
-  static void _initializeBuilder(
-          GIdentitiesByPkData_identity_certReceived_issuerBuilder b) =>
-      b..G__typename = 'Identity';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String? get accountId;
-  @override
-  GIdentitiesByPkData_identity_certReceived_issuer_account? get account;
-  @override
-  String get id;
-  @override
-  bool get isMember;
-  @override
-  String get status;
-  @override
-  String get name;
-  @override
-  int get expireOn;
-  @override
-  int get index;
-  static Serializer<GIdentitiesByPkData_identity_certReceived_issuer>
-      get serializer =>
-          _$gIdentitiesByPkDataIdentityCertReceivedIssuerSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_certReceived_issuer.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByPkData_identity_certReceived_issuer? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByPkData_identity_certReceived_issuer.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByPkData_identity_certReceived_issuer_account
-    implements
-        Built<GIdentitiesByPkData_identity_certReceived_issuer_account,
-            GIdentitiesByPkData_identity_certReceived_issuer_accountBuilder>,
-        GIdentityFields_certReceived_issuer_account,
-        GCertFields_issuer_account,
-        GIdentityBasicFields_account {
-  GIdentitiesByPkData_identity_certReceived_issuer_account._();
-
-  factory GIdentitiesByPkData_identity_certReceived_issuer_account(
-      [void Function(
-              GIdentitiesByPkData_identity_certReceived_issuer_accountBuilder b)
-          updates]) = _$GIdentitiesByPkData_identity_certReceived_issuer_account;
-
-  static void _initializeBuilder(
-          GIdentitiesByPkData_identity_certReceived_issuer_accountBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get createdOn;
-  static Serializer<GIdentitiesByPkData_identity_certReceived_issuer_account>
-      get serializer =>
-          _$gIdentitiesByPkDataIdentityCertReceivedIssuerAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_certReceived_issuer_account.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByPkData_identity_certReceived_issuer_account? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByPkData_identity_certReceived_issuer_account.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByPkData_identity_certReceived_receiver
-    implements
-        Built<GIdentitiesByPkData_identity_certReceived_receiver,
-            GIdentitiesByPkData_identity_certReceived_receiverBuilder>,
-        GIdentityFields_certReceived_receiver,
-        GCertFields_receiver,
-        GIdentityBasicFields {
-  GIdentitiesByPkData_identity_certReceived_receiver._();
-
-  factory GIdentitiesByPkData_identity_certReceived_receiver(
-      [void Function(
-              GIdentitiesByPkData_identity_certReceived_receiverBuilder b)
-          updates]) = _$GIdentitiesByPkData_identity_certReceived_receiver;
-
-  static void _initializeBuilder(
-          GIdentitiesByPkData_identity_certReceived_receiverBuilder b) =>
-      b..G__typename = 'Identity';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String? get accountId;
-  @override
-  GIdentitiesByPkData_identity_certReceived_receiver_account? get account;
-  @override
-  String get id;
-  @override
-  bool get isMember;
-  @override
-  String get status;
-  @override
-  String get name;
-  @override
-  int get expireOn;
-  @override
-  int get index;
-  static Serializer<GIdentitiesByPkData_identity_certReceived_receiver>
-      get serializer =>
-          _$gIdentitiesByPkDataIdentityCertReceivedReceiverSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_certReceived_receiver.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByPkData_identity_certReceived_receiver? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByPkData_identity_certReceived_receiver.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByPkData_identity_certReceived_receiver_account
-    implements
-        Built<GIdentitiesByPkData_identity_certReceived_receiver_account,
-            GIdentitiesByPkData_identity_certReceived_receiver_accountBuilder>,
-        GIdentityFields_certReceived_receiver_account,
-        GCertFields_receiver_account,
-        GIdentityBasicFields_account {
-  GIdentitiesByPkData_identity_certReceived_receiver_account._();
-
-  factory GIdentitiesByPkData_identity_certReceived_receiver_account(
-      [void Function(
-              GIdentitiesByPkData_identity_certReceived_receiver_accountBuilder
-                  b)
-          updates]) = _$GIdentitiesByPkData_identity_certReceived_receiver_account;
-
-  static void _initializeBuilder(
-          GIdentitiesByPkData_identity_certReceived_receiver_accountBuilder
-              b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get createdOn;
-  static Serializer<GIdentitiesByPkData_identity_certReceived_receiver_account>
-      get serializer =>
-          _$gIdentitiesByPkDataIdentityCertReceivedReceiverAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_certReceived_receiver_account.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByPkData_identity_certReceived_receiver_account? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByPkData_identity_certReceived_receiver_account.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByPkData_identity_certReceivedAggregate
-    implements
-        Built<GIdentitiesByPkData_identity_certReceivedAggregate,
-            GIdentitiesByPkData_identity_certReceivedAggregateBuilder>,
-        GIdentityFields_certReceivedAggregate {
-  GIdentitiesByPkData_identity_certReceivedAggregate._();
-
-  factory GIdentitiesByPkData_identity_certReceivedAggregate(
-      [void Function(
-              GIdentitiesByPkData_identity_certReceivedAggregateBuilder b)
-          updates]) = _$GIdentitiesByPkData_identity_certReceivedAggregate;
-
-  static void _initializeBuilder(
-          GIdentitiesByPkData_identity_certReceivedAggregateBuilder b) =>
-      b..G__typename = 'CertAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GIdentitiesByPkData_identity_certReceivedAggregate_aggregate? get aggregate;
-  static Serializer<GIdentitiesByPkData_identity_certReceivedAggregate>
-      get serializer =>
-          _$gIdentitiesByPkDataIdentityCertReceivedAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_certReceivedAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByPkData_identity_certReceivedAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByPkData_identity_certReceivedAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByPkData_identity_certReceivedAggregate_aggregate
-    implements
-        Built<GIdentitiesByPkData_identity_certReceivedAggregate_aggregate,
-            GIdentitiesByPkData_identity_certReceivedAggregate_aggregateBuilder>,
-        GIdentityFields_certReceivedAggregate_aggregate {
-  GIdentitiesByPkData_identity_certReceivedAggregate_aggregate._();
-
-  factory GIdentitiesByPkData_identity_certReceivedAggregate_aggregate(
+  factory GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer(
           [void Function(
-                  GIdentitiesByPkData_identity_certReceivedAggregate_aggregateBuilder
+                  GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuerBuilder
                       b)
               updates]) =
-      _$GIdentitiesByPkData_identity_certReceivedAggregate_aggregate;
+      _$GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer;
 
   static void _initializeBuilder(
-          GIdentitiesByPkData_identity_certReceivedAggregate_aggregateBuilder
+          GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuerBuilder
               b) =>
-      b..G__typename = 'CertAggregateFields';
+      b..G__typename = 'Identity';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  int get count;
-  static Serializer<
-          GIdentitiesByPkData_identity_certReceivedAggregate_aggregate>
-      get serializer =>
-          _$gIdentitiesByPkDataIdentityCertReceivedAggregateAggregateSerializer;
-
+  String? get accountId;
   @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_certReceivedAggregate_aggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByPkData_identity_certReceivedAggregate_aggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByPkData_identity_certReceivedAggregate_aggregate.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByPkData_identity_linkedAccount
-    implements
-        Built<GIdentitiesByPkData_identity_linkedAccount,
-            GIdentitiesByPkData_identity_linkedAccountBuilder>,
-        GIdentityFields_linkedAccount {
-  GIdentitiesByPkData_identity_linkedAccount._();
-
-  factory GIdentitiesByPkData_identity_linkedAccount(
-      [void Function(GIdentitiesByPkData_identity_linkedAccountBuilder b)
-          updates]) = _$GIdentitiesByPkData_identity_linkedAccount;
-
-  static void _initializeBuilder(
-          GIdentitiesByPkData_identity_linkedAccountBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
+  GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer_account?
+      get account;
   @override
   String get id;
-  static Serializer<GIdentitiesByPkData_identity_linkedAccount>
-      get serializer => _$gIdentitiesByPkDataIdentityLinkedAccountSerializer;
-
   @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_linkedAccount.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByPkData_identity_linkedAccount? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByPkData_identity_linkedAccount.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByPkData_identity_linkedAccountAggregate
-    implements
-        Built<GIdentitiesByPkData_identity_linkedAccountAggregate,
-            GIdentitiesByPkData_identity_linkedAccountAggregateBuilder>,
-        GIdentityFields_linkedAccountAggregate {
-  GIdentitiesByPkData_identity_linkedAccountAggregate._();
-
-  factory GIdentitiesByPkData_identity_linkedAccountAggregate(
-      [void Function(
-              GIdentitiesByPkData_identity_linkedAccountAggregateBuilder b)
-          updates]) = _$GIdentitiesByPkData_identity_linkedAccountAggregate;
-
-  static void _initializeBuilder(
-          GIdentitiesByPkData_identity_linkedAccountAggregateBuilder b) =>
-      b..G__typename = 'AccountAggregate';
-
+  bool get isMember;
   @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
+  String get status;
   @override
-  GIdentitiesByPkData_identity_linkedAccountAggregate_aggregate? get aggregate;
-  static Serializer<GIdentitiesByPkData_identity_linkedAccountAggregate>
-      get serializer =>
-          _$gIdentitiesByPkDataIdentityLinkedAccountAggregateSerializer;
-
+  String get name;
   @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_linkedAccountAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByPkData_identity_linkedAccountAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByPkData_identity_linkedAccountAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByPkData_identity_linkedAccountAggregate_aggregate
-    implements
-        Built<GIdentitiesByPkData_identity_linkedAccountAggregate_aggregate,
-            GIdentitiesByPkData_identity_linkedAccountAggregate_aggregateBuilder>,
-        GIdentityFields_linkedAccountAggregate_aggregate {
-  GIdentitiesByPkData_identity_linkedAccountAggregate_aggregate._();
-
-  factory GIdentitiesByPkData_identity_linkedAccountAggregate_aggregate(
-          [void Function(
-                  GIdentitiesByPkData_identity_linkedAccountAggregate_aggregateBuilder
-                      b)
-              updates]) =
-      _$GIdentitiesByPkData_identity_linkedAccountAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GIdentitiesByPkData_identity_linkedAccountAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'AccountAggregateFields';
-
+  int get expireOn;
   @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
+  int get index;
   static Serializer<
-          GIdentitiesByPkData_identity_linkedAccountAggregate_aggregate>
+          GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer>
       get serializer =>
-          _$gIdentitiesByPkDataIdentityLinkedAccountAggregateAggregateSerializer;
+          _$gIdentitiesByPkDataIdentitiesNodesCertsByIssuerIdNodesIssuerSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_linkedAccountAggregate_aggregate
+        GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByPkData_identity_linkedAccountAggregate_aggregate?
+  static GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GIdentitiesByPkData_identity_linkedAccountAggregate_aggregate
+            GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer
                 .serializer,
             json,
           );
 }
 
-abstract class GIdentitiesByPkData_identity_membershipHistory
+abstract class GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer_account
     implements
-        Built<GIdentitiesByPkData_identity_membershipHistory,
-            GIdentitiesByPkData_identity_membershipHistoryBuilder>,
-        GIdentityFields_membershipHistory {
-  GIdentitiesByPkData_identity_membershipHistory._();
+        Built<
+            GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer_account,
+            GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer_accountBuilder>,
+        GIdentityFields_certsByIssuerId_nodes_issuer_account,
+        GCertFields_issuer_account,
+        GIdentityBasicFields_account {
+  GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer_account._();
 
-  factory GIdentitiesByPkData_identity_membershipHistory(
-      [void Function(GIdentitiesByPkData_identity_membershipHistoryBuilder b)
-          updates]) = _$GIdentitiesByPkData_identity_membershipHistory;
+  factory GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer_account(
+          [void Function(
+                  GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer_accountBuilder
+                      b)
+              updates]) =
+      _$GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer_account;
 
   static void _initializeBuilder(
-          GIdentitiesByPkData_identity_membershipHistoryBuilder b) =>
+          GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer_accountBuilder
+              b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get createdOn;
+  static Serializer<
+          GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer_account>
+      get serializer =>
+          _$gIdentitiesByPkDataIdentitiesNodesCertsByIssuerIdNodesIssuerAccountSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer_account
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer_account?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer_account
+                .serializer,
+            json,
+          );
+}
+
+abstract class GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver
+    implements
+        Built<
+            GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver,
+            GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiverBuilder>,
+        GIdentityFields_certsByIssuerId_nodes_receiver,
+        GCertFields_receiver,
+        GIdentityBasicFields {
+  GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver._();
+
+  factory GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver(
+          [void Function(
+                  GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiverBuilder
+                      b)
+              updates]) =
+      _$GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver;
+
+  static void _initializeBuilder(
+          GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiverBuilder
+              b) =>
+      b..G__typename = 'Identity';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String? get accountId;
+  @override
+  GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver_account?
+      get account;
+  @override
+  String get id;
+  @override
+  bool get isMember;
+  @override
+  String get status;
+  @override
+  String get name;
+  @override
+  int get expireOn;
+  @override
+  int get index;
+  static Serializer<
+          GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver>
+      get serializer =>
+          _$gIdentitiesByPkDataIdentitiesNodesCertsByIssuerIdNodesReceiverSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver
+                .serializer,
+            json,
+          );
+}
+
+abstract class GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver_account
+    implements
+        Built<
+            GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver_account,
+            GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver_accountBuilder>,
+        GIdentityFields_certsByIssuerId_nodes_receiver_account,
+        GCertFields_receiver_account,
+        GIdentityBasicFields_account {
+  GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver_account._();
+
+  factory GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver_account(
+          [void Function(
+                  GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver_accountBuilder
+                      b)
+              updates]) =
+      _$GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver_account;
+
+  static void _initializeBuilder(
+          GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver_accountBuilder
+              b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get createdOn;
+  static Serializer<
+          GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver_account>
+      get serializer =>
+          _$gIdentitiesByPkDataIdentitiesNodesCertsByIssuerIdNodesReceiverAccountSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver_account
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver_account?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver_account
+                .serializer,
+            json,
+          );
+}
+
+abstract class GIdentitiesByPkData_identities_nodes_certsByReceiverId
+    implements
+        Built<GIdentitiesByPkData_identities_nodes_certsByReceiverId,
+            GIdentitiesByPkData_identities_nodes_certsByReceiverIdBuilder>,
+        GIdentityFields_certsByReceiverId {
+  GIdentitiesByPkData_identities_nodes_certsByReceiverId._();
+
+  factory GIdentitiesByPkData_identities_nodes_certsByReceiverId(
+      [void Function(
+              GIdentitiesByPkData_identities_nodes_certsByReceiverIdBuilder b)
+          updates]) = _$GIdentitiesByPkData_identities_nodes_certsByReceiverId;
+
+  static void _initializeBuilder(
+          GIdentitiesByPkData_identities_nodes_certsByReceiverIdBuilder b) =>
+      b..G__typename = 'CertsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes>
+      get nodes;
+  static Serializer<GIdentitiesByPkData_identities_nodes_certsByReceiverId>
+      get serializer =>
+          _$gIdentitiesByPkDataIdentitiesNodesCertsByReceiverIdSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentitiesByPkData_identities_nodes_certsByReceiverId.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentitiesByPkData_identities_nodes_certsByReceiverId? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GIdentitiesByPkData_identities_nodes_certsByReceiverId.serializer,
+        json,
+      );
+}
+
+abstract class GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes
+    implements
+        Built<GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes,
+            GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodesBuilder>,
+        GIdentityFields_certsByReceiverId_nodes,
+        GCertFields {
+  GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes._();
+
+  factory GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes(
+          [void Function(
+                  GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodesBuilder
+                      b)
+              updates]) =
+      _$GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes;
+
+  static void _initializeBuilder(
+          GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodesBuilder
+              b) =>
+      b..G__typename = 'Cert';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  @override
+  String? get issuerId;
+  @override
+  GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer?
+      get issuer;
+  @override
+  String? get receiverId;
+  @override
+  GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver?
+      get receiver;
+  @override
+  int get createdOn;
+  @override
+  int get expireOn;
+  @override
+  bool get isActive;
+  @override
+  int get updatedOn;
+  static Serializer<
+          GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes>
+      get serializer =>
+          _$gIdentitiesByPkDataIdentitiesNodesCertsByReceiverIdNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes.serializer,
+        json,
+      );
+}
+
+abstract class GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer
+    implements
+        Built<
+            GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer,
+            GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuerBuilder>,
+        GIdentityFields_certsByReceiverId_nodes_issuer,
+        GCertFields_issuer,
+        GIdentityBasicFields {
+  GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer._();
+
+  factory GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer(
+          [void Function(
+                  GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuerBuilder
+                      b)
+              updates]) =
+      _$GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer;
+
+  static void _initializeBuilder(
+          GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuerBuilder
+              b) =>
+      b..G__typename = 'Identity';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String? get accountId;
+  @override
+  GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer_account?
+      get account;
+  @override
+  String get id;
+  @override
+  bool get isMember;
+  @override
+  String get status;
+  @override
+  String get name;
+  @override
+  int get expireOn;
+  @override
+  int get index;
+  static Serializer<
+          GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer>
+      get serializer =>
+          _$gIdentitiesByPkDataIdentitiesNodesCertsByReceiverIdNodesIssuerSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer
+                .serializer,
+            json,
+          );
+}
+
+abstract class GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer_account
+    implements
+        Built<
+            GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer_account,
+            GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer_accountBuilder>,
+        GIdentityFields_certsByReceiverId_nodes_issuer_account,
+        GCertFields_issuer_account,
+        GIdentityBasicFields_account {
+  GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer_account._();
+
+  factory GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer_account(
+          [void Function(
+                  GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer_accountBuilder
+                      b)
+              updates]) =
+      _$GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer_account;
+
+  static void _initializeBuilder(
+          GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer_accountBuilder
+              b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get createdOn;
+  static Serializer<
+          GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer_account>
+      get serializer =>
+          _$gIdentitiesByPkDataIdentitiesNodesCertsByReceiverIdNodesIssuerAccountSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer_account
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer_account?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer_account
+                .serializer,
+            json,
+          );
+}
+
+abstract class GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver
+    implements
+        Built<
+            GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver,
+            GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiverBuilder>,
+        GIdentityFields_certsByReceiverId_nodes_receiver,
+        GCertFields_receiver,
+        GIdentityBasicFields {
+  GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver._();
+
+  factory GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver(
+          [void Function(
+                  GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiverBuilder
+                      b)
+              updates]) =
+      _$GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver;
+
+  static void _initializeBuilder(
+          GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiverBuilder
+              b) =>
+      b..G__typename = 'Identity';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String? get accountId;
+  @override
+  GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver_account?
+      get account;
+  @override
+  String get id;
+  @override
+  bool get isMember;
+  @override
+  String get status;
+  @override
+  String get name;
+  @override
+  int get expireOn;
+  @override
+  int get index;
+  static Serializer<
+          GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver>
+      get serializer =>
+          _$gIdentitiesByPkDataIdentitiesNodesCertsByReceiverIdNodesReceiverSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver
+                .serializer,
+            json,
+          );
+}
+
+abstract class GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver_account
+    implements
+        Built<
+            GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver_account,
+            GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver_accountBuilder>,
+        GIdentityFields_certsByReceiverId_nodes_receiver_account,
+        GCertFields_receiver_account,
+        GIdentityBasicFields_account {
+  GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver_account._();
+
+  factory GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver_account(
+          [void Function(
+                  GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver_accountBuilder
+                      b)
+              updates]) =
+      _$GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver_account;
+
+  static void _initializeBuilder(
+          GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver_accountBuilder
+              b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get createdOn;
+  static Serializer<
+          GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver_account>
+      get serializer =>
+          _$gIdentitiesByPkDataIdentitiesNodesCertsByReceiverIdNodesReceiverAccountSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver_account
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver_account?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver_account
+                .serializer,
+            json,
+          );
+}
+
+abstract class GIdentitiesByPkData_identities_nodes_membershipEvents
+    implements
+        Built<GIdentitiesByPkData_identities_nodes_membershipEvents,
+            GIdentitiesByPkData_identities_nodes_membershipEventsBuilder>,
+        GIdentityFields_membershipEvents {
+  GIdentitiesByPkData_identities_nodes_membershipEvents._();
+
+  factory GIdentitiesByPkData_identities_nodes_membershipEvents(
+      [void Function(
+              GIdentitiesByPkData_identities_nodes_membershipEventsBuilder b)
+          updates]) = _$GIdentitiesByPkData_identities_nodes_membershipEvents;
+
+  static void _initializeBuilder(
+          GIdentitiesByPkData_identities_nodes_membershipEventsBuilder b) =>
+      b..G__typename = 'MembershipEventsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GIdentitiesByPkData_identities_nodes_membershipEvents_nodes>
+      get nodes;
+  static Serializer<GIdentitiesByPkData_identities_nodes_membershipEvents>
+      get serializer =>
+          _$gIdentitiesByPkDataIdentitiesNodesMembershipEventsSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentitiesByPkData_identities_nodes_membershipEvents.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentitiesByPkData_identities_nodes_membershipEvents? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GIdentitiesByPkData_identities_nodes_membershipEvents.serializer,
+        json,
+      );
+}
+
+abstract class GIdentitiesByPkData_identities_nodes_membershipEvents_nodes
+    implements
+        Built<GIdentitiesByPkData_identities_nodes_membershipEvents_nodes,
+            GIdentitiesByPkData_identities_nodes_membershipEvents_nodesBuilder>,
+        GIdentityFields_membershipEvents_nodes {
+  GIdentitiesByPkData_identities_nodes_membershipEvents_nodes._();
+
+  factory GIdentitiesByPkData_identities_nodes_membershipEvents_nodes(
+      [void Function(
+              GIdentitiesByPkData_identities_nodes_membershipEvents_nodesBuilder
+                  b)
+          updates]) = _$GIdentitiesByPkData_identities_nodes_membershipEvents_nodes;
+
+  static void _initializeBuilder(
+          GIdentitiesByPkData_identities_nodes_membershipEvents_nodesBuilder
+              b) =>
       b..G__typename = 'MembershipEvent';
 
   @override
@@ -1134,122 +1131,83 @@ abstract class GIdentitiesByPkData_identity_membershipHistory
   String get id;
   @override
   String? get identityId;
-  static Serializer<GIdentitiesByPkData_identity_membershipHistory>
+  static Serializer<GIdentitiesByPkData_identities_nodes_membershipEvents_nodes>
       get serializer =>
-          _$gIdentitiesByPkDataIdentityMembershipHistorySerializer;
+          _$gIdentitiesByPkDataIdentitiesNodesMembershipEventsNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_membershipHistory.serializer,
+        GIdentitiesByPkData_identities_nodes_membershipEvents_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByPkData_identity_membershipHistory? fromJson(
+  static GIdentitiesByPkData_identities_nodes_membershipEvents_nodes? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentitiesByPkData_identity_membershipHistory.serializer,
+        GIdentitiesByPkData_identities_nodes_membershipEvents_nodes.serializer,
         json,
       );
 }
 
-abstract class GIdentitiesByPkData_identity_membershipHistoryAggregate
+abstract class GIdentitiesByPkData_identities_nodes_changeOwnerKeys
     implements
-        Built<GIdentitiesByPkData_identity_membershipHistoryAggregate,
-            GIdentitiesByPkData_identity_membershipHistoryAggregateBuilder>,
-        GIdentityFields_membershipHistoryAggregate {
-  GIdentitiesByPkData_identity_membershipHistoryAggregate._();
+        Built<GIdentitiesByPkData_identities_nodes_changeOwnerKeys,
+            GIdentitiesByPkData_identities_nodes_changeOwnerKeysBuilder>,
+        GIdentityFields_changeOwnerKeys {
+  GIdentitiesByPkData_identities_nodes_changeOwnerKeys._();
 
-  factory GIdentitiesByPkData_identity_membershipHistoryAggregate(
+  factory GIdentitiesByPkData_identities_nodes_changeOwnerKeys(
       [void Function(
-              GIdentitiesByPkData_identity_membershipHistoryAggregateBuilder b)
-          updates]) = _$GIdentitiesByPkData_identity_membershipHistoryAggregate;
+              GIdentitiesByPkData_identities_nodes_changeOwnerKeysBuilder b)
+          updates]) = _$GIdentitiesByPkData_identities_nodes_changeOwnerKeys;
 
   static void _initializeBuilder(
-          GIdentitiesByPkData_identity_membershipHistoryAggregateBuilder b) =>
-      b..G__typename = 'MembershipEventAggregate';
+          GIdentitiesByPkData_identities_nodes_changeOwnerKeysBuilder b) =>
+      b..G__typename = 'ChangeOwnerKeysConnection';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  GIdentitiesByPkData_identity_membershipHistoryAggregate_aggregate?
-      get aggregate;
-  static Serializer<GIdentitiesByPkData_identity_membershipHistoryAggregate>
+  int get totalCount;
+  @override
+  BuiltList<GIdentitiesByPkData_identities_nodes_changeOwnerKeys_nodes>
+      get nodes;
+  static Serializer<GIdentitiesByPkData_identities_nodes_changeOwnerKeys>
       get serializer =>
-          _$gIdentitiesByPkDataIdentityMembershipHistoryAggregateSerializer;
+          _$gIdentitiesByPkDataIdentitiesNodesChangeOwnerKeysSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_membershipHistoryAggregate.serializer,
+        GIdentitiesByPkData_identities_nodes_changeOwnerKeys.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByPkData_identity_membershipHistoryAggregate? fromJson(
+  static GIdentitiesByPkData_identities_nodes_changeOwnerKeys? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentitiesByPkData_identity_membershipHistoryAggregate.serializer,
+        GIdentitiesByPkData_identities_nodes_changeOwnerKeys.serializer,
         json,
       );
 }
 
-abstract class GIdentitiesByPkData_identity_membershipHistoryAggregate_aggregate
+abstract class GIdentitiesByPkData_identities_nodes_changeOwnerKeys_nodes
     implements
-        Built<GIdentitiesByPkData_identity_membershipHistoryAggregate_aggregate,
-            GIdentitiesByPkData_identity_membershipHistoryAggregate_aggregateBuilder>,
-        GIdentityFields_membershipHistoryAggregate_aggregate {
-  GIdentitiesByPkData_identity_membershipHistoryAggregate_aggregate._();
-
-  factory GIdentitiesByPkData_identity_membershipHistoryAggregate_aggregate(
-          [void Function(
-                  GIdentitiesByPkData_identity_membershipHistoryAggregate_aggregateBuilder
-                      b)
-              updates]) =
-      _$GIdentitiesByPkData_identity_membershipHistoryAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GIdentitiesByPkData_identity_membershipHistoryAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'MembershipEventAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<
-          GIdentitiesByPkData_identity_membershipHistoryAggregate_aggregate>
-      get serializer =>
-          _$gIdentitiesByPkDataIdentityMembershipHistoryAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_membershipHistoryAggregate_aggregate
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByPkData_identity_membershipHistoryAggregate_aggregate?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GIdentitiesByPkData_identity_membershipHistoryAggregate_aggregate
-                .serializer,
-            json,
-          );
-}
-
-abstract class GIdentitiesByPkData_identity_ownerKeyChange
-    implements
-        Built<GIdentitiesByPkData_identity_ownerKeyChange,
-            GIdentitiesByPkData_identity_ownerKeyChangeBuilder>,
-        GIdentityFields_ownerKeyChange,
+        Built<GIdentitiesByPkData_identities_nodes_changeOwnerKeys_nodes,
+            GIdentitiesByPkData_identities_nodes_changeOwnerKeys_nodesBuilder>,
+        GIdentityFields_changeOwnerKeys_nodes,
         GOwnerKeyChangeFields {
-  GIdentitiesByPkData_identity_ownerKeyChange._();
+  GIdentitiesByPkData_identities_nodes_changeOwnerKeys_nodes._();
 
-  factory GIdentitiesByPkData_identity_ownerKeyChange(
-      [void Function(GIdentitiesByPkData_identity_ownerKeyChangeBuilder b)
-          updates]) = _$GIdentitiesByPkData_identity_ownerKeyChange;
+  factory GIdentitiesByPkData_identities_nodes_changeOwnerKeys_nodes(
+      [void Function(
+              GIdentitiesByPkData_identities_nodes_changeOwnerKeys_nodesBuilder
+                  b)
+          updates]) = _$GIdentitiesByPkData_identities_nodes_changeOwnerKeys_nodes;
 
   static void _initializeBuilder(
-          GIdentitiesByPkData_identity_ownerKeyChangeBuilder b) =>
+          GIdentitiesByPkData_identities_nodes_changeOwnerKeys_nodesBuilder
+              b) =>
       b..G__typename = 'ChangeOwnerKey';
 
   @override
@@ -1265,119 +1223,38 @@ abstract class GIdentitiesByPkData_identity_ownerKeyChange
   String? get nextId;
   @override
   String? get previousId;
-  static Serializer<GIdentitiesByPkData_identity_ownerKeyChange>
-      get serializer => _$gIdentitiesByPkDataIdentityOwnerKeyChangeSerializer;
+  static Serializer<GIdentitiesByPkData_identities_nodes_changeOwnerKeys_nodes>
+      get serializer =>
+          _$gIdentitiesByPkDataIdentitiesNodesChangeOwnerKeysNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_ownerKeyChange.serializer,
+        GIdentitiesByPkData_identities_nodes_changeOwnerKeys_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByPkData_identity_ownerKeyChange? fromJson(
+  static GIdentitiesByPkData_identities_nodes_changeOwnerKeys_nodes? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentitiesByPkData_identity_ownerKeyChange.serializer,
+        GIdentitiesByPkData_identities_nodes_changeOwnerKeys_nodes.serializer,
         json,
       );
 }
 
-abstract class GIdentitiesByPkData_identity_ownerKeyChangeAggregate
+abstract class GIdentitiesByPkData_identities_nodes_smith
     implements
-        Built<GIdentitiesByPkData_identity_ownerKeyChangeAggregate,
-            GIdentitiesByPkData_identity_ownerKeyChangeAggregateBuilder>,
-        GIdentityFields_ownerKeyChangeAggregate {
-  GIdentitiesByPkData_identity_ownerKeyChangeAggregate._();
-
-  factory GIdentitiesByPkData_identity_ownerKeyChangeAggregate(
-      [void Function(
-              GIdentitiesByPkData_identity_ownerKeyChangeAggregateBuilder b)
-          updates]) = _$GIdentitiesByPkData_identity_ownerKeyChangeAggregate;
-
-  static void _initializeBuilder(
-          GIdentitiesByPkData_identity_ownerKeyChangeAggregateBuilder b) =>
-      b..G__typename = 'ChangeOwnerKeyAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GIdentitiesByPkData_identity_ownerKeyChangeAggregate_aggregate? get aggregate;
-  static Serializer<GIdentitiesByPkData_identity_ownerKeyChangeAggregate>
-      get serializer =>
-          _$gIdentitiesByPkDataIdentityOwnerKeyChangeAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_ownerKeyChangeAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByPkData_identity_ownerKeyChangeAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByPkData_identity_ownerKeyChangeAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByPkData_identity_ownerKeyChangeAggregate_aggregate
-    implements
-        Built<GIdentitiesByPkData_identity_ownerKeyChangeAggregate_aggregate,
-            GIdentitiesByPkData_identity_ownerKeyChangeAggregate_aggregateBuilder>,
-        GIdentityFields_ownerKeyChangeAggregate_aggregate {
-  GIdentitiesByPkData_identity_ownerKeyChangeAggregate_aggregate._();
-
-  factory GIdentitiesByPkData_identity_ownerKeyChangeAggregate_aggregate(
-          [void Function(
-                  GIdentitiesByPkData_identity_ownerKeyChangeAggregate_aggregateBuilder
-                      b)
-              updates]) =
-      _$GIdentitiesByPkData_identity_ownerKeyChangeAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GIdentitiesByPkData_identity_ownerKeyChangeAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'ChangeOwnerKeyAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<
-          GIdentitiesByPkData_identity_ownerKeyChangeAggregate_aggregate>
-      get serializer =>
-          _$gIdentitiesByPkDataIdentityOwnerKeyChangeAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_ownerKeyChangeAggregate_aggregate
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByPkData_identity_ownerKeyChangeAggregate_aggregate?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GIdentitiesByPkData_identity_ownerKeyChangeAggregate_aggregate
-                .serializer,
-            json,
-          );
-}
-
-abstract class GIdentitiesByPkData_identity_smith
-    implements
-        Built<GIdentitiesByPkData_identity_smith,
-            GIdentitiesByPkData_identity_smithBuilder>,
+        Built<GIdentitiesByPkData_identities_nodes_smith,
+            GIdentitiesByPkData_identities_nodes_smithBuilder>,
         GIdentityFields_smith,
         GSmithFields {
-  GIdentitiesByPkData_identity_smith._();
+  GIdentitiesByPkData_identities_nodes_smith._();
 
-  factory GIdentitiesByPkData_identity_smith(
-      [void Function(GIdentitiesByPkData_identity_smithBuilder b)
-          updates]) = _$GIdentitiesByPkData_identity_smith;
+  factory GIdentitiesByPkData_identities_nodes_smith(
+      [void Function(GIdentitiesByPkData_identities_nodes_smithBuilder b)
+          updates]) = _$GIdentitiesByPkData_identities_nodes_smith;
 
-  static void _initializeBuilder(GIdentitiesByPkData_identity_smithBuilder b) =>
+  static void _initializeBuilder(
+          GIdentitiesByPkData_identities_nodes_smithBuilder b) =>
       b..G__typename = 'Smith';
 
   @override
@@ -1394,44 +1271,97 @@ abstract class GIdentitiesByPkData_identity_smith
   @override
   int? get lastForged;
   @override
-  BuiltList<GIdentitiesByPkData_identity_smith_smithCertIssued>
-      get smithCertIssued;
+  GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId
+      get smithCertsByIssuerId;
   @override
-  BuiltList<GIdentitiesByPkData_identity_smith_smithCertReceived>
-      get smithCertReceived;
-  static Serializer<GIdentitiesByPkData_identity_smith> get serializer =>
-      _$gIdentitiesByPkDataIdentitySmithSerializer;
+  GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId
+      get smithCertsByReceiverId;
+  static Serializer<GIdentitiesByPkData_identities_nodes_smith>
+      get serializer => _$gIdentitiesByPkDataIdentitiesNodesSmithSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_smith.serializer,
+        GIdentitiesByPkData_identities_nodes_smith.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByPkData_identity_smith? fromJson(
+  static GIdentitiesByPkData_identities_nodes_smith? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentitiesByPkData_identity_smith.serializer,
+        GIdentitiesByPkData_identities_nodes_smith.serializer,
         json,
       );
 }
 
-abstract class GIdentitiesByPkData_identity_smith_smithCertIssued
+abstract class GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId
     implements
-        Built<GIdentitiesByPkData_identity_smith_smithCertIssued,
-            GIdentitiesByPkData_identity_smith_smithCertIssuedBuilder>,
-        GIdentityFields_smith_smithCertIssued,
-        GSmithFields_smithCertIssued,
-        GSmithCertFields {
-  GIdentitiesByPkData_identity_smith_smithCertIssued._();
+        Built<GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId,
+            GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerIdBuilder>,
+        GIdentityFields_smith_smithCertsByIssuerId,
+        GSmithFields_smithCertsByIssuerId {
+  GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId._();
 
-  factory GIdentitiesByPkData_identity_smith_smithCertIssued(
-      [void Function(
-              GIdentitiesByPkData_identity_smith_smithCertIssuedBuilder b)
-          updates]) = _$GIdentitiesByPkData_identity_smith_smithCertIssued;
+  factory GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId(
+          [void Function(
+                  GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerIdBuilder
+                      b)
+              updates]) =
+      _$GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId;
 
   static void _initializeBuilder(
-          GIdentitiesByPkData_identity_smith_smithCertIssuedBuilder b) =>
+          GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerIdBuilder
+              b) =>
+      b..G__typename = 'SmithCertsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<
+          GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId_nodes>
+      get nodes;
+  static Serializer<
+          GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId>
+      get serializer =>
+          _$gIdentitiesByPkDataIdentitiesNodesSmithSmithCertsByIssuerIdSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId
+                .serializer,
+            json,
+          );
+}
+
+abstract class GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId_nodes
+    implements
+        Built<
+            GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId_nodes,
+            GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId_nodesBuilder>,
+        GIdentityFields_smith_smithCertsByIssuerId_nodes,
+        GSmithFields_smithCertsByIssuerId_nodes,
+        GSmithCertFields {
+  GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId_nodes._();
+
+  factory GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId_nodes(
+          [void Function(
+                  GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId_nodesBuilder
+                      b)
+              updates]) =
+      _$GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId_nodes;
+
+  static void _initializeBuilder(
+          GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId_nodesBuilder
+              b) =>
       b..G__typename = 'SmithCert';
 
   @override
@@ -1445,40 +1375,95 @@ abstract class GIdentitiesByPkData_identity_smith_smithCertIssued
   String? get receiverId;
   @override
   int get createdOn;
-  static Serializer<GIdentitiesByPkData_identity_smith_smithCertIssued>
+  static Serializer<
+          GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId_nodes>
       get serializer =>
-          _$gIdentitiesByPkDataIdentitySmithSmithCertIssuedSerializer;
+          _$gIdentitiesByPkDataIdentitiesNodesSmithSmithCertsByIssuerIdNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_smith_smithCertIssued.serializer,
+        GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId_nodes
+            .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByPkData_identity_smith_smithCertIssued? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByPkData_identity_smith_smithCertIssued.serializer,
-        json,
-      );
+  static GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId_nodes?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId_nodes
+                .serializer,
+            json,
+          );
 }
 
-abstract class GIdentitiesByPkData_identity_smith_smithCertReceived
+abstract class GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId
     implements
-        Built<GIdentitiesByPkData_identity_smith_smithCertReceived,
-            GIdentitiesByPkData_identity_smith_smithCertReceivedBuilder>,
-        GIdentityFields_smith_smithCertReceived,
-        GSmithFields_smithCertReceived,
-        GSmithCertFields {
-  GIdentitiesByPkData_identity_smith_smithCertReceived._();
+        Built<GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId,
+            GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverIdBuilder>,
+        GIdentityFields_smith_smithCertsByReceiverId,
+        GSmithFields_smithCertsByReceiverId {
+  GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId._();
 
-  factory GIdentitiesByPkData_identity_smith_smithCertReceived(
-      [void Function(
-              GIdentitiesByPkData_identity_smith_smithCertReceivedBuilder b)
-          updates]) = _$GIdentitiesByPkData_identity_smith_smithCertReceived;
+  factory GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId(
+          [void Function(
+                  GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverIdBuilder
+                      b)
+              updates]) =
+      _$GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId;
 
   static void _initializeBuilder(
-          GIdentitiesByPkData_identity_smith_smithCertReceivedBuilder b) =>
+          GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverIdBuilder
+              b) =>
+      b..G__typename = 'SmithCertsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<
+          GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId_nodes>
+      get nodes;
+  static Serializer<
+          GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId>
+      get serializer =>
+          _$gIdentitiesByPkDataIdentitiesNodesSmithSmithCertsByReceiverIdSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId
+                .serializer,
+            json,
+          );
+}
+
+abstract class GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId_nodes
+    implements
+        Built<
+            GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId_nodes,
+            GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId_nodesBuilder>,
+        GIdentityFields_smith_smithCertsByReceiverId_nodes,
+        GSmithFields_smithCertsByReceiverId_nodes,
+        GSmithCertFields {
+  GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId_nodes._();
+
+  factory GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId_nodes(
+          [void Function(
+                  GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId_nodesBuilder
+                      b)
+              updates]) =
+      _$GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId_nodes;
+
+  static void _initializeBuilder(
+          GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId_nodesBuilder
+              b) =>
       b..G__typename = 'SmithCert';
 
   @override
@@ -1492,22 +1477,24 @@ abstract class GIdentitiesByPkData_identity_smith_smithCertReceived
   String? get receiverId;
   @override
   int get createdOn;
-  static Serializer<GIdentitiesByPkData_identity_smith_smithCertReceived>
+  static Serializer<
+          GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId_nodes>
       get serializer =>
-          _$gIdentitiesByPkDataIdentitySmithSmithCertReceivedSerializer;
+          _$gIdentitiesByPkDataIdentitiesNodesSmithSmithCertsByReceiverIdNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByPkData_identity_smith_smithCertReceived.serializer,
+        GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId_nodes
+            .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByPkData_identity_smith_smithCertReceived? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByPkData_identity_smith_smithCertReceived.serializer,
-        json,
-      );
+  static GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId_nodes?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId_nodes
+                .serializer,
+            json,
+          );
 }
 
 abstract class GIdentitiesByNameData
@@ -1519,11 +1506,11 @@ abstract class GIdentitiesByNameData
       _$GIdentitiesByNameData;
 
   static void _initializeBuilder(GIdentitiesByNameDataBuilder b) =>
-      b..G__typename = 'query_root';
+      b..G__typename = 'Query';
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
-  BuiltList<GIdentitiesByNameData_identity> get identity;
+  GIdentitiesByNameData_identities? get identities;
   static Serializer<GIdentitiesByNameData> get serializer =>
       _$gIdentitiesByNameDataSerializer;
 
@@ -1539,38 +1526,67 @@ abstract class GIdentitiesByNameData
       );
 }
 
-abstract class GIdentitiesByNameData_identity
+abstract class GIdentitiesByNameData_identities
     implements
-        Built<GIdentitiesByNameData_identity,
-            GIdentitiesByNameData_identityBuilder>,
+        Built<GIdentitiesByNameData_identities,
+            GIdentitiesByNameData_identitiesBuilder> {
+  GIdentitiesByNameData_identities._();
+
+  factory GIdentitiesByNameData_identities(
+          [void Function(GIdentitiesByNameData_identitiesBuilder b) updates]) =
+      _$GIdentitiesByNameData_identities;
+
+  static void _initializeBuilder(GIdentitiesByNameData_identitiesBuilder b) =>
+      b..G__typename = 'IdentitiesConnection';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  BuiltList<GIdentitiesByNameData_identities_nodes> get nodes;
+  static Serializer<GIdentitiesByNameData_identities> get serializer =>
+      _$gIdentitiesByNameDataIdentitiesSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentitiesByNameData_identities.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentitiesByNameData_identities? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GIdentitiesByNameData_identities.serializer,
+        json,
+      );
+}
+
+abstract class GIdentitiesByNameData_identities_nodes
+    implements
+        Built<GIdentitiesByNameData_identities_nodes,
+            GIdentitiesByNameData_identities_nodesBuilder>,
         GIdentityFields {
-  GIdentitiesByNameData_identity._();
+  GIdentitiesByNameData_identities_nodes._();
 
-  factory GIdentitiesByNameData_identity(
-          [void Function(GIdentitiesByNameData_identityBuilder b) updates]) =
-      _$GIdentitiesByNameData_identity;
+  factory GIdentitiesByNameData_identities_nodes(
+      [void Function(GIdentitiesByNameData_identities_nodesBuilder b)
+          updates]) = _$GIdentitiesByNameData_identities_nodes;
 
-  static void _initializeBuilder(GIdentitiesByNameData_identityBuilder b) =>
+  static void _initializeBuilder(
+          GIdentitiesByNameData_identities_nodesBuilder b) =>
       b..G__typename = 'Identity';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  GIdentitiesByNameData_identity_account? get account;
+  GIdentitiesByNameData_identities_nodes_account? get account;
   @override
   String? get accountId;
   @override
   String? get accountRemovedId;
   @override
-  BuiltList<GIdentitiesByNameData_identity_certIssued> get certIssued;
+  GIdentitiesByNameData_identities_nodes_certsByIssuerId get certsByIssuerId;
   @override
-  GIdentitiesByNameData_identity_certIssuedAggregate get certIssuedAggregate;
-  @override
-  BuiltList<GIdentitiesByNameData_identity_certReceived> get certReceived;
-  @override
-  GIdentitiesByNameData_identity_certReceivedAggregate
-      get certReceivedAggregate;
+  GIdentitiesByNameData_identities_nodes_certsByReceiverId
+      get certsByReceiverId;
   @override
   String? get createdInId;
   @override
@@ -1586,56 +1602,45 @@ abstract class GIdentitiesByNameData_identity
   @override
   int get lastChangeOn;
   @override
-  BuiltList<GIdentitiesByNameData_identity_linkedAccount> get linkedAccount;
-  @override
-  GIdentitiesByNameData_identity_linkedAccountAggregate
-      get linkedAccountAggregate;
-  @override
   String get status;
-  @override
-  BuiltList<GIdentitiesByNameData_identity_membershipHistory>
-      get membershipHistory;
-  @override
-  GIdentitiesByNameData_identity_membershipHistoryAggregate
-      get membershipHistoryAggregate;
   @override
   String get name;
   @override
-  BuiltList<GIdentitiesByNameData_identity_ownerKeyChange> get ownerKeyChange;
+  GIdentitiesByNameData_identities_nodes_membershipEvents get membershipEvents;
   @override
-  GIdentitiesByNameData_identity_ownerKeyChangeAggregate
-      get ownerKeyChangeAggregate;
+  GIdentitiesByNameData_identities_nodes_changeOwnerKeys get changeOwnerKeys;
   @override
-  GIdentitiesByNameData_identity_smith? get smith;
-  static Serializer<GIdentitiesByNameData_identity> get serializer =>
-      _$gIdentitiesByNameDataIdentitySerializer;
+  GIdentitiesByNameData_identities_nodes_smith? get smith;
+  static Serializer<GIdentitiesByNameData_identities_nodes> get serializer =>
+      _$gIdentitiesByNameDataIdentitiesNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity.serializer,
+        GIdentitiesByNameData_identities_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByNameData_identity? fromJson(Map<String, dynamic> json) =>
+  static GIdentitiesByNameData_identities_nodes? fromJson(
+          Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentitiesByNameData_identity.serializer,
+        GIdentitiesByNameData_identities_nodes.serializer,
         json,
       );
 }
 
-abstract class GIdentitiesByNameData_identity_account
+abstract class GIdentitiesByNameData_identities_nodes_account
     implements
-        Built<GIdentitiesByNameData_identity_account,
-            GIdentitiesByNameData_identity_accountBuilder>,
+        Built<GIdentitiesByNameData_identities_nodes_account,
+            GIdentitiesByNameData_identities_nodes_accountBuilder>,
         GIdentityFields_account {
-  GIdentitiesByNameData_identity_account._();
+  GIdentitiesByNameData_identities_nodes_account._();
 
-  factory GIdentitiesByNameData_identity_account(
-      [void Function(GIdentitiesByNameData_identity_accountBuilder b)
-          updates]) = _$GIdentitiesByNameData_identity_account;
+  factory GIdentitiesByNameData_identities_nodes_account(
+      [void Function(GIdentitiesByNameData_identities_nodes_accountBuilder b)
+          updates]) = _$GIdentitiesByNameData_identities_nodes_account;
 
   static void _initializeBuilder(
-          GIdentitiesByNameData_identity_accountBuilder b) =>
+          GIdentitiesByNameData_identities_nodes_accountBuilder b) =>
       b..G__typename = 'Account';
 
   @override
@@ -1643,37 +1648,83 @@ abstract class GIdentitiesByNameData_identity_account
   String get G__typename;
   @override
   int get createdOn;
-  static Serializer<GIdentitiesByNameData_identity_account> get serializer =>
-      _$gIdentitiesByNameDataIdentityAccountSerializer;
+  static Serializer<GIdentitiesByNameData_identities_nodes_account>
+      get serializer => _$gIdentitiesByNameDataIdentitiesNodesAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_account.serializer,
+        GIdentitiesByNameData_identities_nodes_account.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByNameData_identity_account? fromJson(
+  static GIdentitiesByNameData_identities_nodes_account? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentitiesByNameData_identity_account.serializer,
+        GIdentitiesByNameData_identities_nodes_account.serializer,
         json,
       );
 }
 
-abstract class GIdentitiesByNameData_identity_certIssued
+abstract class GIdentitiesByNameData_identities_nodes_certsByIssuerId
     implements
-        Built<GIdentitiesByNameData_identity_certIssued,
-            GIdentitiesByNameData_identity_certIssuedBuilder>,
-        GIdentityFields_certIssued,
-        GCertFields {
-  GIdentitiesByNameData_identity_certIssued._();
+        Built<GIdentitiesByNameData_identities_nodes_certsByIssuerId,
+            GIdentitiesByNameData_identities_nodes_certsByIssuerIdBuilder>,
+        GIdentityFields_certsByIssuerId {
+  GIdentitiesByNameData_identities_nodes_certsByIssuerId._();
 
-  factory GIdentitiesByNameData_identity_certIssued(
-      [void Function(GIdentitiesByNameData_identity_certIssuedBuilder b)
-          updates]) = _$GIdentitiesByNameData_identity_certIssued;
+  factory GIdentitiesByNameData_identities_nodes_certsByIssuerId(
+      [void Function(
+              GIdentitiesByNameData_identities_nodes_certsByIssuerIdBuilder b)
+          updates]) = _$GIdentitiesByNameData_identities_nodes_certsByIssuerId;
 
   static void _initializeBuilder(
-          GIdentitiesByNameData_identity_certIssuedBuilder b) =>
+          GIdentitiesByNameData_identities_nodes_certsByIssuerIdBuilder b) =>
+      b..G__typename = 'CertsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes>
+      get nodes;
+  static Serializer<GIdentitiesByNameData_identities_nodes_certsByIssuerId>
+      get serializer =>
+          _$gIdentitiesByNameDataIdentitiesNodesCertsByIssuerIdSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentitiesByNameData_identities_nodes_certsByIssuerId.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentitiesByNameData_identities_nodes_certsByIssuerId? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GIdentitiesByNameData_identities_nodes_certsByIssuerId.serializer,
+        json,
+      );
+}
+
+abstract class GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes
+    implements
+        Built<GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes,
+            GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodesBuilder>,
+        GIdentityFields_certsByIssuerId_nodes,
+        GCertFields {
+  GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes._();
+
+  factory GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes(
+          [void Function(
+                  GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodesBuilder
+                      b)
+              updates]) =
+      _$GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes;
+
+  static void _initializeBuilder(
+          GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodesBuilder
+              b) =>
       b..G__typename = 'Cert';
 
   @override
@@ -1684,11 +1735,13 @@ abstract class GIdentitiesByNameData_identity_certIssued
   @override
   String? get issuerId;
   @override
-  GIdentitiesByNameData_identity_certIssued_issuer? get issuer;
+  GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer?
+      get issuer;
   @override
   String? get receiverId;
   @override
-  GIdentitiesByNameData_identity_certIssued_receiver? get receiver;
+  GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver?
+      get receiver;
   @override
   int get createdOn;
   @override
@@ -1697,312 +1750,303 @@ abstract class GIdentitiesByNameData_identity_certIssued
   bool get isActive;
   @override
   int get updatedOn;
-  static Serializer<GIdentitiesByNameData_identity_certIssued> get serializer =>
-      _$gIdentitiesByNameDataIdentityCertIssuedSerializer;
+  static Serializer<
+          GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes>
+      get serializer =>
+          _$gIdentitiesByNameDataIdentitiesNodesCertsByIssuerIdNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_certIssued.serializer,
+        GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByNameData_identity_certIssued? fromJson(
+  static GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentitiesByNameData_identity_certIssued.serializer,
+        GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes.serializer,
         json,
       );
 }
 
-abstract class GIdentitiesByNameData_identity_certIssued_issuer
+abstract class GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer
     implements
-        Built<GIdentitiesByNameData_identity_certIssued_issuer,
-            GIdentitiesByNameData_identity_certIssued_issuerBuilder>,
-        GIdentityFields_certIssued_issuer,
+        Built<
+            GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer,
+            GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuerBuilder>,
+        GIdentityFields_certsByIssuerId_nodes_issuer,
         GCertFields_issuer,
         GIdentityBasicFields {
-  GIdentitiesByNameData_identity_certIssued_issuer._();
+  GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer._();
 
-  factory GIdentitiesByNameData_identity_certIssued_issuer(
-      [void Function(GIdentitiesByNameData_identity_certIssued_issuerBuilder b)
-          updates]) = _$GIdentitiesByNameData_identity_certIssued_issuer;
-
-  static void _initializeBuilder(
-          GIdentitiesByNameData_identity_certIssued_issuerBuilder b) =>
-      b..G__typename = 'Identity';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String? get accountId;
-  @override
-  GIdentitiesByNameData_identity_certIssued_issuer_account? get account;
-  @override
-  String get id;
-  @override
-  bool get isMember;
-  @override
-  String get status;
-  @override
-  String get name;
-  @override
-  int get expireOn;
-  @override
-  int get index;
-  static Serializer<GIdentitiesByNameData_identity_certIssued_issuer>
-      get serializer =>
-          _$gIdentitiesByNameDataIdentityCertIssuedIssuerSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_certIssued_issuer.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByNameData_identity_certIssued_issuer? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByNameData_identity_certIssued_issuer.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByNameData_identity_certIssued_issuer_account
-    implements
-        Built<GIdentitiesByNameData_identity_certIssued_issuer_account,
-            GIdentitiesByNameData_identity_certIssued_issuer_accountBuilder>,
-        GIdentityFields_certIssued_issuer_account,
-        GCertFields_issuer_account,
-        GIdentityBasicFields_account {
-  GIdentitiesByNameData_identity_certIssued_issuer_account._();
-
-  factory GIdentitiesByNameData_identity_certIssued_issuer_account(
-      [void Function(
-              GIdentitiesByNameData_identity_certIssued_issuer_accountBuilder b)
-          updates]) = _$GIdentitiesByNameData_identity_certIssued_issuer_account;
-
-  static void _initializeBuilder(
-          GIdentitiesByNameData_identity_certIssued_issuer_accountBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get createdOn;
-  static Serializer<GIdentitiesByNameData_identity_certIssued_issuer_account>
-      get serializer =>
-          _$gIdentitiesByNameDataIdentityCertIssuedIssuerAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_certIssued_issuer_account.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByNameData_identity_certIssued_issuer_account? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByNameData_identity_certIssued_issuer_account.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByNameData_identity_certIssued_receiver
-    implements
-        Built<GIdentitiesByNameData_identity_certIssued_receiver,
-            GIdentitiesByNameData_identity_certIssued_receiverBuilder>,
-        GIdentityFields_certIssued_receiver,
-        GCertFields_receiver,
-        GIdentityBasicFields {
-  GIdentitiesByNameData_identity_certIssued_receiver._();
-
-  factory GIdentitiesByNameData_identity_certIssued_receiver(
-      [void Function(
-              GIdentitiesByNameData_identity_certIssued_receiverBuilder b)
-          updates]) = _$GIdentitiesByNameData_identity_certIssued_receiver;
-
-  static void _initializeBuilder(
-          GIdentitiesByNameData_identity_certIssued_receiverBuilder b) =>
-      b..G__typename = 'Identity';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String? get accountId;
-  @override
-  GIdentitiesByNameData_identity_certIssued_receiver_account? get account;
-  @override
-  String get id;
-  @override
-  bool get isMember;
-  @override
-  String get status;
-  @override
-  String get name;
-  @override
-  int get expireOn;
-  @override
-  int get index;
-  static Serializer<GIdentitiesByNameData_identity_certIssued_receiver>
-      get serializer =>
-          _$gIdentitiesByNameDataIdentityCertIssuedReceiverSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_certIssued_receiver.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByNameData_identity_certIssued_receiver? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByNameData_identity_certIssued_receiver.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByNameData_identity_certIssued_receiver_account
-    implements
-        Built<GIdentitiesByNameData_identity_certIssued_receiver_account,
-            GIdentitiesByNameData_identity_certIssued_receiver_accountBuilder>,
-        GIdentityFields_certIssued_receiver_account,
-        GCertFields_receiver_account,
-        GIdentityBasicFields_account {
-  GIdentitiesByNameData_identity_certIssued_receiver_account._();
-
-  factory GIdentitiesByNameData_identity_certIssued_receiver_account(
-      [void Function(
-              GIdentitiesByNameData_identity_certIssued_receiver_accountBuilder
-                  b)
-          updates]) = _$GIdentitiesByNameData_identity_certIssued_receiver_account;
-
-  static void _initializeBuilder(
-          GIdentitiesByNameData_identity_certIssued_receiver_accountBuilder
-              b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get createdOn;
-  static Serializer<GIdentitiesByNameData_identity_certIssued_receiver_account>
-      get serializer =>
-          _$gIdentitiesByNameDataIdentityCertIssuedReceiverAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_certIssued_receiver_account.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByNameData_identity_certIssued_receiver_account? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByNameData_identity_certIssued_receiver_account.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByNameData_identity_certIssuedAggregate
-    implements
-        Built<GIdentitiesByNameData_identity_certIssuedAggregate,
-            GIdentitiesByNameData_identity_certIssuedAggregateBuilder>,
-        GIdentityFields_certIssuedAggregate {
-  GIdentitiesByNameData_identity_certIssuedAggregate._();
-
-  factory GIdentitiesByNameData_identity_certIssuedAggregate(
-      [void Function(
-              GIdentitiesByNameData_identity_certIssuedAggregateBuilder b)
-          updates]) = _$GIdentitiesByNameData_identity_certIssuedAggregate;
-
-  static void _initializeBuilder(
-          GIdentitiesByNameData_identity_certIssuedAggregateBuilder b) =>
-      b..G__typename = 'CertAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GIdentitiesByNameData_identity_certIssuedAggregate_aggregate? get aggregate;
-  static Serializer<GIdentitiesByNameData_identity_certIssuedAggregate>
-      get serializer =>
-          _$gIdentitiesByNameDataIdentityCertIssuedAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_certIssuedAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByNameData_identity_certIssuedAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByNameData_identity_certIssuedAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByNameData_identity_certIssuedAggregate_aggregate
-    implements
-        Built<GIdentitiesByNameData_identity_certIssuedAggregate_aggregate,
-            GIdentitiesByNameData_identity_certIssuedAggregate_aggregateBuilder>,
-        GIdentityFields_certIssuedAggregate_aggregate {
-  GIdentitiesByNameData_identity_certIssuedAggregate_aggregate._();
-
-  factory GIdentitiesByNameData_identity_certIssuedAggregate_aggregate(
+  factory GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer(
           [void Function(
-                  GIdentitiesByNameData_identity_certIssuedAggregate_aggregateBuilder
+                  GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuerBuilder
                       b)
               updates]) =
-      _$GIdentitiesByNameData_identity_certIssuedAggregate_aggregate;
+      _$GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer;
 
   static void _initializeBuilder(
-          GIdentitiesByNameData_identity_certIssuedAggregate_aggregateBuilder
+          GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuerBuilder
               b) =>
-      b..G__typename = 'CertAggregateFields';
+      b..G__typename = 'Identity';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  int get count;
+  String? get accountId;
+  @override
+  GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer_account?
+      get account;
+  @override
+  String get id;
+  @override
+  bool get isMember;
+  @override
+  String get status;
+  @override
+  String get name;
+  @override
+  int get expireOn;
+  @override
+  int get index;
   static Serializer<
-          GIdentitiesByNameData_identity_certIssuedAggregate_aggregate>
+          GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer>
       get serializer =>
-          _$gIdentitiesByNameDataIdentityCertIssuedAggregateAggregateSerializer;
+          _$gIdentitiesByNameDataIdentitiesNodesCertsByIssuerIdNodesIssuerSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_certIssuedAggregate_aggregate.serializer,
+        GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer
+            .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByNameData_identity_certIssuedAggregate_aggregate? fromJson(
+  static GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer
+                .serializer,
+            json,
+          );
+}
+
+abstract class GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer_account
+    implements
+        Built<
+            GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer_account,
+            GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer_accountBuilder>,
+        GIdentityFields_certsByIssuerId_nodes_issuer_account,
+        GCertFields_issuer_account,
+        GIdentityBasicFields_account {
+  GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer_account._();
+
+  factory GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer_account(
+          [void Function(
+                  GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer_accountBuilder
+                      b)
+              updates]) =
+      _$GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer_account;
+
+  static void _initializeBuilder(
+          GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer_accountBuilder
+              b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get createdOn;
+  static Serializer<
+          GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer_account>
+      get serializer =>
+          _$gIdentitiesByNameDataIdentitiesNodesCertsByIssuerIdNodesIssuerAccountSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer_account
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer_account?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer_account
+                .serializer,
+            json,
+          );
+}
+
+abstract class GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver
+    implements
+        Built<
+            GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver,
+            GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiverBuilder>,
+        GIdentityFields_certsByIssuerId_nodes_receiver,
+        GCertFields_receiver,
+        GIdentityBasicFields {
+  GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver._();
+
+  factory GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver(
+          [void Function(
+                  GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiverBuilder
+                      b)
+              updates]) =
+      _$GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver;
+
+  static void _initializeBuilder(
+          GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiverBuilder
+              b) =>
+      b..G__typename = 'Identity';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String? get accountId;
+  @override
+  GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver_account?
+      get account;
+  @override
+  String get id;
+  @override
+  bool get isMember;
+  @override
+  String get status;
+  @override
+  String get name;
+  @override
+  int get expireOn;
+  @override
+  int get index;
+  static Serializer<
+          GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver>
+      get serializer =>
+          _$gIdentitiesByNameDataIdentitiesNodesCertsByIssuerIdNodesReceiverSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver
+                .serializer,
+            json,
+          );
+}
+
+abstract class GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver_account
+    implements
+        Built<
+            GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver_account,
+            GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver_accountBuilder>,
+        GIdentityFields_certsByIssuerId_nodes_receiver_account,
+        GCertFields_receiver_account,
+        GIdentityBasicFields_account {
+  GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver_account._();
+
+  factory GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver_account(
+          [void Function(
+                  GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver_accountBuilder
+                      b)
+              updates]) =
+      _$GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver_account;
+
+  static void _initializeBuilder(
+          GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver_accountBuilder
+              b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get createdOn;
+  static Serializer<
+          GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver_account>
+      get serializer =>
+          _$gIdentitiesByNameDataIdentitiesNodesCertsByIssuerIdNodesReceiverAccountSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver_account
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver_account?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver_account
+                .serializer,
+            json,
+          );
+}
+
+abstract class GIdentitiesByNameData_identities_nodes_certsByReceiverId
+    implements
+        Built<GIdentitiesByNameData_identities_nodes_certsByReceiverId,
+            GIdentitiesByNameData_identities_nodes_certsByReceiverIdBuilder>,
+        GIdentityFields_certsByReceiverId {
+  GIdentitiesByNameData_identities_nodes_certsByReceiverId._();
+
+  factory GIdentitiesByNameData_identities_nodes_certsByReceiverId(
+      [void Function(
+              GIdentitiesByNameData_identities_nodes_certsByReceiverIdBuilder b)
+          updates]) = _$GIdentitiesByNameData_identities_nodes_certsByReceiverId;
+
+  static void _initializeBuilder(
+          GIdentitiesByNameData_identities_nodes_certsByReceiverIdBuilder b) =>
+      b..G__typename = 'CertsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes>
+      get nodes;
+  static Serializer<GIdentitiesByNameData_identities_nodes_certsByReceiverId>
+      get serializer =>
+          _$gIdentitiesByNameDataIdentitiesNodesCertsByReceiverIdSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentitiesByNameData_identities_nodes_certsByReceiverId.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentitiesByNameData_identities_nodes_certsByReceiverId? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentitiesByNameData_identity_certIssuedAggregate_aggregate.serializer,
+        GIdentitiesByNameData_identities_nodes_certsByReceiverId.serializer,
         json,
       );
 }
 
-abstract class GIdentitiesByNameData_identity_certReceived
+abstract class GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes
     implements
-        Built<GIdentitiesByNameData_identity_certReceived,
-            GIdentitiesByNameData_identity_certReceivedBuilder>,
-        GIdentityFields_certReceived,
+        Built<GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes,
+            GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodesBuilder>,
+        GIdentityFields_certsByReceiverId_nodes,
         GCertFields {
-  GIdentitiesByNameData_identity_certReceived._();
+  GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes._();
 
-  factory GIdentitiesByNameData_identity_certReceived(
-      [void Function(GIdentitiesByNameData_identity_certReceivedBuilder b)
-          updates]) = _$GIdentitiesByNameData_identity_certReceived;
+  factory GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes(
+          [void Function(
+                  GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodesBuilder
+                      b)
+              updates]) =
+      _$GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes;
 
   static void _initializeBuilder(
-          GIdentitiesByNameData_identity_certReceivedBuilder b) =>
+          GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodesBuilder
+              b) =>
       b..G__typename = 'Cert';
 
   @override
@@ -2013,11 +2057,13 @@ abstract class GIdentitiesByNameData_identity_certReceived
   @override
   String? get issuerId;
   @override
-  GIdentitiesByNameData_identity_certReceived_issuer? get issuer;
+  GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer?
+      get issuer;
   @override
   String? get receiverId;
   @override
-  GIdentitiesByNameData_identity_certReceived_receiver? get receiver;
+  GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver?
+      get receiver;
   @override
   int get createdOn;
   @override
@@ -2026,39 +2072,46 @@ abstract class GIdentitiesByNameData_identity_certReceived
   bool get isActive;
   @override
   int get updatedOn;
-  static Serializer<GIdentitiesByNameData_identity_certReceived>
-      get serializer => _$gIdentitiesByNameDataIdentityCertReceivedSerializer;
+  static Serializer<
+          GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes>
+      get serializer =>
+          _$gIdentitiesByNameDataIdentitiesNodesCertsByReceiverIdNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_certReceived.serializer,
+        GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes
+            .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByNameData_identity_certReceived? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByNameData_identity_certReceived.serializer,
-        json,
-      );
+  static GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes
+                .serializer,
+            json,
+          );
 }
 
-abstract class GIdentitiesByNameData_identity_certReceived_issuer
+abstract class GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer
     implements
-        Built<GIdentitiesByNameData_identity_certReceived_issuer,
-            GIdentitiesByNameData_identity_certReceived_issuerBuilder>,
-        GIdentityFields_certReceived_issuer,
+        Built<
+            GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer,
+            GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuerBuilder>,
+        GIdentityFields_certsByReceiverId_nodes_issuer,
         GCertFields_issuer,
         GIdentityBasicFields {
-  GIdentitiesByNameData_identity_certReceived_issuer._();
+  GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer._();
 
-  factory GIdentitiesByNameData_identity_certReceived_issuer(
-      [void Function(
-              GIdentitiesByNameData_identity_certReceived_issuerBuilder b)
-          updates]) = _$GIdentitiesByNameData_identity_certReceived_issuer;
+  factory GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer(
+          [void Function(
+                  GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuerBuilder
+                      b)
+              updates]) =
+      _$GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer;
 
   static void _initializeBuilder(
-          GIdentitiesByNameData_identity_certReceived_issuerBuilder b) =>
+          GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuerBuilder
+              b) =>
       b..G__typename = 'Identity';
 
   @override
@@ -2067,7 +2120,8 @@ abstract class GIdentitiesByNameData_identity_certReceived_issuer
   @override
   String? get accountId;
   @override
-  GIdentitiesByNameData_identity_certReceived_issuer_account? get account;
+  GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer_account?
+      get account;
   @override
   String get id;
   @override
@@ -2080,41 +2134,45 @@ abstract class GIdentitiesByNameData_identity_certReceived_issuer
   int get expireOn;
   @override
   int get index;
-  static Serializer<GIdentitiesByNameData_identity_certReceived_issuer>
+  static Serializer<
+          GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer>
       get serializer =>
-          _$gIdentitiesByNameDataIdentityCertReceivedIssuerSerializer;
+          _$gIdentitiesByNameDataIdentitiesNodesCertsByReceiverIdNodesIssuerSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_certReceived_issuer.serializer,
+        GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer
+            .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByNameData_identity_certReceived_issuer? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByNameData_identity_certReceived_issuer.serializer,
-        json,
-      );
+  static GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer
+                .serializer,
+            json,
+          );
 }
 
-abstract class GIdentitiesByNameData_identity_certReceived_issuer_account
+abstract class GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer_account
     implements
-        Built<GIdentitiesByNameData_identity_certReceived_issuer_account,
-            GIdentitiesByNameData_identity_certReceived_issuer_accountBuilder>,
-        GIdentityFields_certReceived_issuer_account,
+        Built<
+            GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer_account,
+            GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer_accountBuilder>,
+        GIdentityFields_certsByReceiverId_nodes_issuer_account,
         GCertFields_issuer_account,
         GIdentityBasicFields_account {
-  GIdentitiesByNameData_identity_certReceived_issuer_account._();
+  GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer_account._();
 
-  factory GIdentitiesByNameData_identity_certReceived_issuer_account(
-      [void Function(
-              GIdentitiesByNameData_identity_certReceived_issuer_accountBuilder
-                  b)
-          updates]) = _$GIdentitiesByNameData_identity_certReceived_issuer_account;
+  factory GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer_account(
+          [void Function(
+                  GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer_accountBuilder
+                      b)
+              updates]) =
+      _$GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer_account;
 
   static void _initializeBuilder(
-          GIdentitiesByNameData_identity_certReceived_issuer_accountBuilder
+          GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer_accountBuilder
               b) =>
       b..G__typename = 'Account';
 
@@ -2123,40 +2181,46 @@ abstract class GIdentitiesByNameData_identity_certReceived_issuer_account
   String get G__typename;
   @override
   int get createdOn;
-  static Serializer<GIdentitiesByNameData_identity_certReceived_issuer_account>
+  static Serializer<
+          GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer_account>
       get serializer =>
-          _$gIdentitiesByNameDataIdentityCertReceivedIssuerAccountSerializer;
+          _$gIdentitiesByNameDataIdentitiesNodesCertsByReceiverIdNodesIssuerAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_certReceived_issuer_account.serializer,
+        GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer_account
+            .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByNameData_identity_certReceived_issuer_account? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByNameData_identity_certReceived_issuer_account.serializer,
-        json,
-      );
+  static GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer_account?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer_account
+                .serializer,
+            json,
+          );
 }
 
-abstract class GIdentitiesByNameData_identity_certReceived_receiver
+abstract class GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver
     implements
-        Built<GIdentitiesByNameData_identity_certReceived_receiver,
-            GIdentitiesByNameData_identity_certReceived_receiverBuilder>,
-        GIdentityFields_certReceived_receiver,
+        Built<
+            GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver,
+            GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiverBuilder>,
+        GIdentityFields_certsByReceiverId_nodes_receiver,
         GCertFields_receiver,
         GIdentityBasicFields {
-  GIdentitiesByNameData_identity_certReceived_receiver._();
+  GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver._();
 
-  factory GIdentitiesByNameData_identity_certReceived_receiver(
-      [void Function(
-              GIdentitiesByNameData_identity_certReceived_receiverBuilder b)
-          updates]) = _$GIdentitiesByNameData_identity_certReceived_receiver;
+  factory GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver(
+          [void Function(
+                  GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiverBuilder
+                      b)
+              updates]) =
+      _$GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver;
 
   static void _initializeBuilder(
-          GIdentitiesByNameData_identity_certReceived_receiverBuilder b) =>
+          GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiverBuilder
+              b) =>
       b..G__typename = 'Identity';
 
   @override
@@ -2165,7 +2229,8 @@ abstract class GIdentitiesByNameData_identity_certReceived_receiver
   @override
   String? get accountId;
   @override
-  GIdentitiesByNameData_identity_certReceived_receiver_account? get account;
+  GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver_account?
+      get account;
   @override
   String get id;
   @override
@@ -2178,42 +2243,45 @@ abstract class GIdentitiesByNameData_identity_certReceived_receiver
   int get expireOn;
   @override
   int get index;
-  static Serializer<GIdentitiesByNameData_identity_certReceived_receiver>
+  static Serializer<
+          GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver>
       get serializer =>
-          _$gIdentitiesByNameDataIdentityCertReceivedReceiverSerializer;
+          _$gIdentitiesByNameDataIdentitiesNodesCertsByReceiverIdNodesReceiverSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_certReceived_receiver.serializer,
+        GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver
+            .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByNameData_identity_certReceived_receiver? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByNameData_identity_certReceived_receiver.serializer,
-        json,
-      );
+  static GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver
+                .serializer,
+            json,
+          );
 }
 
-abstract class GIdentitiesByNameData_identity_certReceived_receiver_account
+abstract class GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver_account
     implements
-        Built<GIdentitiesByNameData_identity_certReceived_receiver_account,
-            GIdentitiesByNameData_identity_certReceived_receiver_accountBuilder>,
-        GIdentityFields_certReceived_receiver_account,
+        Built<
+            GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver_account,
+            GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver_accountBuilder>,
+        GIdentityFields_certsByReceiverId_nodes_receiver_account,
         GCertFields_receiver_account,
         GIdentityBasicFields_account {
-  GIdentitiesByNameData_identity_certReceived_receiver_account._();
+  GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver_account._();
 
-  factory GIdentitiesByNameData_identity_certReceived_receiver_account(
+  factory GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver_account(
           [void Function(
-                  GIdentitiesByNameData_identity_certReceived_receiver_accountBuilder
+                  GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver_accountBuilder
                       b)
               updates]) =
-      _$GIdentitiesByNameData_identity_certReceived_receiver_account;
+      _$GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver_account;
 
   static void _initializeBuilder(
-          GIdentitiesByNameData_identity_certReceived_receiver_accountBuilder
+          GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver_accountBuilder
               b) =>
       b..G__typename = 'Account';
 
@@ -2223,241 +2291,84 @@ abstract class GIdentitiesByNameData_identity_certReceived_receiver_account
   @override
   int get createdOn;
   static Serializer<
-          GIdentitiesByNameData_identity_certReceived_receiver_account>
+          GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver_account>
       get serializer =>
-          _$gIdentitiesByNameDataIdentityCertReceivedReceiverAccountSerializer;
+          _$gIdentitiesByNameDataIdentitiesNodesCertsByReceiverIdNodesReceiverAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_certReceived_receiver_account.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByNameData_identity_certReceived_receiver_account? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByNameData_identity_certReceived_receiver_account.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByNameData_identity_certReceivedAggregate
-    implements
-        Built<GIdentitiesByNameData_identity_certReceivedAggregate,
-            GIdentitiesByNameData_identity_certReceivedAggregateBuilder>,
-        GIdentityFields_certReceivedAggregate {
-  GIdentitiesByNameData_identity_certReceivedAggregate._();
-
-  factory GIdentitiesByNameData_identity_certReceivedAggregate(
-      [void Function(
-              GIdentitiesByNameData_identity_certReceivedAggregateBuilder b)
-          updates]) = _$GIdentitiesByNameData_identity_certReceivedAggregate;
-
-  static void _initializeBuilder(
-          GIdentitiesByNameData_identity_certReceivedAggregateBuilder b) =>
-      b..G__typename = 'CertAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GIdentitiesByNameData_identity_certReceivedAggregate_aggregate? get aggregate;
-  static Serializer<GIdentitiesByNameData_identity_certReceivedAggregate>
-      get serializer =>
-          _$gIdentitiesByNameDataIdentityCertReceivedAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_certReceivedAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByNameData_identity_certReceivedAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByNameData_identity_certReceivedAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByNameData_identity_certReceivedAggregate_aggregate
-    implements
-        Built<GIdentitiesByNameData_identity_certReceivedAggregate_aggregate,
-            GIdentitiesByNameData_identity_certReceivedAggregate_aggregateBuilder>,
-        GIdentityFields_certReceivedAggregate_aggregate {
-  GIdentitiesByNameData_identity_certReceivedAggregate_aggregate._();
-
-  factory GIdentitiesByNameData_identity_certReceivedAggregate_aggregate(
-          [void Function(
-                  GIdentitiesByNameData_identity_certReceivedAggregate_aggregateBuilder
-                      b)
-              updates]) =
-      _$GIdentitiesByNameData_identity_certReceivedAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GIdentitiesByNameData_identity_certReceivedAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'CertAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<
-          GIdentitiesByNameData_identity_certReceivedAggregate_aggregate>
-      get serializer =>
-          _$gIdentitiesByNameDataIdentityCertReceivedAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_certReceivedAggregate_aggregate
+        GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver_account
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByNameData_identity_certReceivedAggregate_aggregate?
+  static GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver_account?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GIdentitiesByNameData_identity_certReceivedAggregate_aggregate
+            GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver_account
                 .serializer,
             json,
           );
 }
 
-abstract class GIdentitiesByNameData_identity_linkedAccount
+abstract class GIdentitiesByNameData_identities_nodes_membershipEvents
     implements
-        Built<GIdentitiesByNameData_identity_linkedAccount,
-            GIdentitiesByNameData_identity_linkedAccountBuilder>,
-        GIdentityFields_linkedAccount {
-  GIdentitiesByNameData_identity_linkedAccount._();
+        Built<GIdentitiesByNameData_identities_nodes_membershipEvents,
+            GIdentitiesByNameData_identities_nodes_membershipEventsBuilder>,
+        GIdentityFields_membershipEvents {
+  GIdentitiesByNameData_identities_nodes_membershipEvents._();
 
-  factory GIdentitiesByNameData_identity_linkedAccount(
-      [void Function(GIdentitiesByNameData_identity_linkedAccountBuilder b)
-          updates]) = _$GIdentitiesByNameData_identity_linkedAccount;
-
-  static void _initializeBuilder(
-          GIdentitiesByNameData_identity_linkedAccountBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  static Serializer<GIdentitiesByNameData_identity_linkedAccount>
-      get serializer => _$gIdentitiesByNameDataIdentityLinkedAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_linkedAccount.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByNameData_identity_linkedAccount? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByNameData_identity_linkedAccount.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByNameData_identity_linkedAccountAggregate
-    implements
-        Built<GIdentitiesByNameData_identity_linkedAccountAggregate,
-            GIdentitiesByNameData_identity_linkedAccountAggregateBuilder>,
-        GIdentityFields_linkedAccountAggregate {
-  GIdentitiesByNameData_identity_linkedAccountAggregate._();
-
-  factory GIdentitiesByNameData_identity_linkedAccountAggregate(
+  factory GIdentitiesByNameData_identities_nodes_membershipEvents(
       [void Function(
-              GIdentitiesByNameData_identity_linkedAccountAggregateBuilder b)
-          updates]) = _$GIdentitiesByNameData_identity_linkedAccountAggregate;
+              GIdentitiesByNameData_identities_nodes_membershipEventsBuilder b)
+          updates]) = _$GIdentitiesByNameData_identities_nodes_membershipEvents;
 
   static void _initializeBuilder(
-          GIdentitiesByNameData_identity_linkedAccountAggregateBuilder b) =>
-      b..G__typename = 'AccountAggregate';
+          GIdentitiesByNameData_identities_nodes_membershipEventsBuilder b) =>
+      b..G__typename = 'MembershipEventsConnection';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  GIdentitiesByNameData_identity_linkedAccountAggregate_aggregate?
-      get aggregate;
-  static Serializer<GIdentitiesByNameData_identity_linkedAccountAggregate>
+  int get totalCount;
+  @override
+  BuiltList<GIdentitiesByNameData_identities_nodes_membershipEvents_nodes>
+      get nodes;
+  static Serializer<GIdentitiesByNameData_identities_nodes_membershipEvents>
       get serializer =>
-          _$gIdentitiesByNameDataIdentityLinkedAccountAggregateSerializer;
+          _$gIdentitiesByNameDataIdentitiesNodesMembershipEventsSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_linkedAccountAggregate.serializer,
+        GIdentitiesByNameData_identities_nodes_membershipEvents.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByNameData_identity_linkedAccountAggregate? fromJson(
+  static GIdentitiesByNameData_identities_nodes_membershipEvents? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentitiesByNameData_identity_linkedAccountAggregate.serializer,
+        GIdentitiesByNameData_identities_nodes_membershipEvents.serializer,
         json,
       );
 }
 
-abstract class GIdentitiesByNameData_identity_linkedAccountAggregate_aggregate
+abstract class GIdentitiesByNameData_identities_nodes_membershipEvents_nodes
     implements
-        Built<GIdentitiesByNameData_identity_linkedAccountAggregate_aggregate,
-            GIdentitiesByNameData_identity_linkedAccountAggregate_aggregateBuilder>,
-        GIdentityFields_linkedAccountAggregate_aggregate {
-  GIdentitiesByNameData_identity_linkedAccountAggregate_aggregate._();
+        Built<GIdentitiesByNameData_identities_nodes_membershipEvents_nodes,
+            GIdentitiesByNameData_identities_nodes_membershipEvents_nodesBuilder>,
+        GIdentityFields_membershipEvents_nodes {
+  GIdentitiesByNameData_identities_nodes_membershipEvents_nodes._();
 
-  factory GIdentitiesByNameData_identity_linkedAccountAggregate_aggregate(
+  factory GIdentitiesByNameData_identities_nodes_membershipEvents_nodes(
           [void Function(
-                  GIdentitiesByNameData_identity_linkedAccountAggregate_aggregateBuilder
+                  GIdentitiesByNameData_identities_nodes_membershipEvents_nodesBuilder
                       b)
               updates]) =
-      _$GIdentitiesByNameData_identity_linkedAccountAggregate_aggregate;
+      _$GIdentitiesByNameData_identities_nodes_membershipEvents_nodes;
 
   static void _initializeBuilder(
-          GIdentitiesByNameData_identity_linkedAccountAggregate_aggregateBuilder
+          GIdentitiesByNameData_identities_nodes_membershipEvents_nodesBuilder
               b) =>
-      b..G__typename = 'AccountAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<
-          GIdentitiesByNameData_identity_linkedAccountAggregate_aggregate>
-      get serializer =>
-          _$gIdentitiesByNameDataIdentityLinkedAccountAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_linkedAccountAggregate_aggregate
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByNameData_identity_linkedAccountAggregate_aggregate?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GIdentitiesByNameData_identity_linkedAccountAggregate_aggregate
-                .serializer,
-            json,
-          );
-}
-
-abstract class GIdentitiesByNameData_identity_membershipHistory
-    implements
-        Built<GIdentitiesByNameData_identity_membershipHistory,
-            GIdentitiesByNameData_identity_membershipHistoryBuilder>,
-        GIdentityFields_membershipHistory {
-  GIdentitiesByNameData_identity_membershipHistory._();
-
-  factory GIdentitiesByNameData_identity_membershipHistory(
-      [void Function(GIdentitiesByNameData_identity_membershipHistoryBuilder b)
-          updates]) = _$GIdentitiesByNameData_identity_membershipHistory;
-
-  static void _initializeBuilder(
-          GIdentitiesByNameData_identity_membershipHistoryBuilder b) =>
       b..G__typename = 'MembershipEvent';
 
   @override
@@ -2473,124 +2384,86 @@ abstract class GIdentitiesByNameData_identity_membershipHistory
   String get id;
   @override
   String? get identityId;
-  static Serializer<GIdentitiesByNameData_identity_membershipHistory>
-      get serializer =>
-          _$gIdentitiesByNameDataIdentityMembershipHistorySerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_membershipHistory.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByNameData_identity_membershipHistory? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByNameData_identity_membershipHistory.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByNameData_identity_membershipHistoryAggregate
-    implements
-        Built<GIdentitiesByNameData_identity_membershipHistoryAggregate,
-            GIdentitiesByNameData_identity_membershipHistoryAggregateBuilder>,
-        GIdentityFields_membershipHistoryAggregate {
-  GIdentitiesByNameData_identity_membershipHistoryAggregate._();
-
-  factory GIdentitiesByNameData_identity_membershipHistoryAggregate(
-      [void Function(
-              GIdentitiesByNameData_identity_membershipHistoryAggregateBuilder
-                  b)
-          updates]) = _$GIdentitiesByNameData_identity_membershipHistoryAggregate;
-
-  static void _initializeBuilder(
-          GIdentitiesByNameData_identity_membershipHistoryAggregateBuilder b) =>
-      b..G__typename = 'MembershipEventAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GIdentitiesByNameData_identity_membershipHistoryAggregate_aggregate?
-      get aggregate;
-  static Serializer<GIdentitiesByNameData_identity_membershipHistoryAggregate>
-      get serializer =>
-          _$gIdentitiesByNameDataIdentityMembershipHistoryAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_membershipHistoryAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByNameData_identity_membershipHistoryAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByNameData_identity_membershipHistoryAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByNameData_identity_membershipHistoryAggregate_aggregate
-    implements
-        Built<
-            GIdentitiesByNameData_identity_membershipHistoryAggregate_aggregate,
-            GIdentitiesByNameData_identity_membershipHistoryAggregate_aggregateBuilder>,
-        GIdentityFields_membershipHistoryAggregate_aggregate {
-  GIdentitiesByNameData_identity_membershipHistoryAggregate_aggregate._();
-
-  factory GIdentitiesByNameData_identity_membershipHistoryAggregate_aggregate(
-          [void Function(
-                  GIdentitiesByNameData_identity_membershipHistoryAggregate_aggregateBuilder
-                      b)
-              updates]) =
-      _$GIdentitiesByNameData_identity_membershipHistoryAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GIdentitiesByNameData_identity_membershipHistoryAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'MembershipEventAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
   static Serializer<
-          GIdentitiesByNameData_identity_membershipHistoryAggregate_aggregate>
+          GIdentitiesByNameData_identities_nodes_membershipEvents_nodes>
       get serializer =>
-          _$gIdentitiesByNameDataIdentityMembershipHistoryAggregateAggregateSerializer;
+          _$gIdentitiesByNameDataIdentitiesNodesMembershipEventsNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_membershipHistoryAggregate_aggregate
+        GIdentitiesByNameData_identities_nodes_membershipEvents_nodes
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByNameData_identity_membershipHistoryAggregate_aggregate?
+  static GIdentitiesByNameData_identities_nodes_membershipEvents_nodes?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GIdentitiesByNameData_identity_membershipHistoryAggregate_aggregate
+            GIdentitiesByNameData_identities_nodes_membershipEvents_nodes
                 .serializer,
             json,
           );
 }
 
-abstract class GIdentitiesByNameData_identity_ownerKeyChange
+abstract class GIdentitiesByNameData_identities_nodes_changeOwnerKeys
     implements
-        Built<GIdentitiesByNameData_identity_ownerKeyChange,
-            GIdentitiesByNameData_identity_ownerKeyChangeBuilder>,
-        GIdentityFields_ownerKeyChange,
-        GOwnerKeyChangeFields {
-  GIdentitiesByNameData_identity_ownerKeyChange._();
+        Built<GIdentitiesByNameData_identities_nodes_changeOwnerKeys,
+            GIdentitiesByNameData_identities_nodes_changeOwnerKeysBuilder>,
+        GIdentityFields_changeOwnerKeys {
+  GIdentitiesByNameData_identities_nodes_changeOwnerKeys._();
 
-  factory GIdentitiesByNameData_identity_ownerKeyChange(
-      [void Function(GIdentitiesByNameData_identity_ownerKeyChangeBuilder b)
-          updates]) = _$GIdentitiesByNameData_identity_ownerKeyChange;
+  factory GIdentitiesByNameData_identities_nodes_changeOwnerKeys(
+      [void Function(
+              GIdentitiesByNameData_identities_nodes_changeOwnerKeysBuilder b)
+          updates]) = _$GIdentitiesByNameData_identities_nodes_changeOwnerKeys;
 
   static void _initializeBuilder(
-          GIdentitiesByNameData_identity_ownerKeyChangeBuilder b) =>
+          GIdentitiesByNameData_identities_nodes_changeOwnerKeysBuilder b) =>
+      b..G__typename = 'ChangeOwnerKeysConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GIdentitiesByNameData_identities_nodes_changeOwnerKeys_nodes>
+      get nodes;
+  static Serializer<GIdentitiesByNameData_identities_nodes_changeOwnerKeys>
+      get serializer =>
+          _$gIdentitiesByNameDataIdentitiesNodesChangeOwnerKeysSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentitiesByNameData_identities_nodes_changeOwnerKeys.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentitiesByNameData_identities_nodes_changeOwnerKeys? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GIdentitiesByNameData_identities_nodes_changeOwnerKeys.serializer,
+        json,
+      );
+}
+
+abstract class GIdentitiesByNameData_identities_nodes_changeOwnerKeys_nodes
+    implements
+        Built<GIdentitiesByNameData_identities_nodes_changeOwnerKeys_nodes,
+            GIdentitiesByNameData_identities_nodes_changeOwnerKeys_nodesBuilder>,
+        GIdentityFields_changeOwnerKeys_nodes,
+        GOwnerKeyChangeFields {
+  GIdentitiesByNameData_identities_nodes_changeOwnerKeys_nodes._();
+
+  factory GIdentitiesByNameData_identities_nodes_changeOwnerKeys_nodes(
+          [void Function(
+                  GIdentitiesByNameData_identities_nodes_changeOwnerKeys_nodesBuilder
+                      b)
+              updates]) =
+      _$GIdentitiesByNameData_identities_nodes_changeOwnerKeys_nodes;
+
+  static void _initializeBuilder(
+          GIdentitiesByNameData_identities_nodes_changeOwnerKeys_nodesBuilder
+              b) =>
       b..G__typename = 'ChangeOwnerKey';
 
   @override
@@ -2606,121 +2479,39 @@ abstract class GIdentitiesByNameData_identity_ownerKeyChange
   String? get nextId;
   @override
   String? get previousId;
-  static Serializer<GIdentitiesByNameData_identity_ownerKeyChange>
-      get serializer => _$gIdentitiesByNameDataIdentityOwnerKeyChangeSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_ownerKeyChange.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByNameData_identity_ownerKeyChange? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByNameData_identity_ownerKeyChange.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByNameData_identity_ownerKeyChangeAggregate
-    implements
-        Built<GIdentitiesByNameData_identity_ownerKeyChangeAggregate,
-            GIdentitiesByNameData_identity_ownerKeyChangeAggregateBuilder>,
-        GIdentityFields_ownerKeyChangeAggregate {
-  GIdentitiesByNameData_identity_ownerKeyChangeAggregate._();
-
-  factory GIdentitiesByNameData_identity_ownerKeyChangeAggregate(
-      [void Function(
-              GIdentitiesByNameData_identity_ownerKeyChangeAggregateBuilder b)
-          updates]) = _$GIdentitiesByNameData_identity_ownerKeyChangeAggregate;
-
-  static void _initializeBuilder(
-          GIdentitiesByNameData_identity_ownerKeyChangeAggregateBuilder b) =>
-      b..G__typename = 'ChangeOwnerKeyAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GIdentitiesByNameData_identity_ownerKeyChangeAggregate_aggregate?
-      get aggregate;
-  static Serializer<GIdentitiesByNameData_identity_ownerKeyChangeAggregate>
-      get serializer =>
-          _$gIdentitiesByNameDataIdentityOwnerKeyChangeAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_ownerKeyChangeAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentitiesByNameData_identity_ownerKeyChangeAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByNameData_identity_ownerKeyChangeAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GIdentitiesByNameData_identity_ownerKeyChangeAggregate_aggregate
-    implements
-        Built<GIdentitiesByNameData_identity_ownerKeyChangeAggregate_aggregate,
-            GIdentitiesByNameData_identity_ownerKeyChangeAggregate_aggregateBuilder>,
-        GIdentityFields_ownerKeyChangeAggregate_aggregate {
-  GIdentitiesByNameData_identity_ownerKeyChangeAggregate_aggregate._();
-
-  factory GIdentitiesByNameData_identity_ownerKeyChangeAggregate_aggregate(
-          [void Function(
-                  GIdentitiesByNameData_identity_ownerKeyChangeAggregate_aggregateBuilder
-                      b)
-              updates]) =
-      _$GIdentitiesByNameData_identity_ownerKeyChangeAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GIdentitiesByNameData_identity_ownerKeyChangeAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'ChangeOwnerKeyAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
   static Serializer<
-          GIdentitiesByNameData_identity_ownerKeyChangeAggregate_aggregate>
+          GIdentitiesByNameData_identities_nodes_changeOwnerKeys_nodes>
       get serializer =>
-          _$gIdentitiesByNameDataIdentityOwnerKeyChangeAggregateAggregateSerializer;
+          _$gIdentitiesByNameDataIdentitiesNodesChangeOwnerKeysNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_ownerKeyChangeAggregate_aggregate
-            .serializer,
+        GIdentitiesByNameData_identities_nodes_changeOwnerKeys_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByNameData_identity_ownerKeyChangeAggregate_aggregate?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GIdentitiesByNameData_identity_ownerKeyChangeAggregate_aggregate
-                .serializer,
-            json,
-          );
+  static GIdentitiesByNameData_identities_nodes_changeOwnerKeys_nodes? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GIdentitiesByNameData_identities_nodes_changeOwnerKeys_nodes.serializer,
+        json,
+      );
 }
 
-abstract class GIdentitiesByNameData_identity_smith
+abstract class GIdentitiesByNameData_identities_nodes_smith
     implements
-        Built<GIdentitiesByNameData_identity_smith,
-            GIdentitiesByNameData_identity_smithBuilder>,
+        Built<GIdentitiesByNameData_identities_nodes_smith,
+            GIdentitiesByNameData_identities_nodes_smithBuilder>,
         GIdentityFields_smith,
         GSmithFields {
-  GIdentitiesByNameData_identity_smith._();
+  GIdentitiesByNameData_identities_nodes_smith._();
 
-  factory GIdentitiesByNameData_identity_smith(
-      [void Function(GIdentitiesByNameData_identity_smithBuilder b)
-          updates]) = _$GIdentitiesByNameData_identity_smith;
+  factory GIdentitiesByNameData_identities_nodes_smith(
+      [void Function(GIdentitiesByNameData_identities_nodes_smithBuilder b)
+          updates]) = _$GIdentitiesByNameData_identities_nodes_smith;
 
   static void _initializeBuilder(
-          GIdentitiesByNameData_identity_smithBuilder b) =>
+          GIdentitiesByNameData_identities_nodes_smithBuilder b) =>
       b..G__typename = 'Smith';
 
   @override
@@ -2737,44 +2528,97 @@ abstract class GIdentitiesByNameData_identity_smith
   @override
   int? get lastForged;
   @override
-  BuiltList<GIdentitiesByNameData_identity_smith_smithCertIssued>
-      get smithCertIssued;
+  GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId
+      get smithCertsByIssuerId;
   @override
-  BuiltList<GIdentitiesByNameData_identity_smith_smithCertReceived>
-      get smithCertReceived;
-  static Serializer<GIdentitiesByNameData_identity_smith> get serializer =>
-      _$gIdentitiesByNameDataIdentitySmithSerializer;
+  GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId
+      get smithCertsByReceiverId;
+  static Serializer<GIdentitiesByNameData_identities_nodes_smith>
+      get serializer => _$gIdentitiesByNameDataIdentitiesNodesSmithSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_smith.serializer,
+        GIdentitiesByNameData_identities_nodes_smith.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByNameData_identity_smith? fromJson(
+  static GIdentitiesByNameData_identities_nodes_smith? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentitiesByNameData_identity_smith.serializer,
+        GIdentitiesByNameData_identities_nodes_smith.serializer,
         json,
       );
 }
 
-abstract class GIdentitiesByNameData_identity_smith_smithCertIssued
+abstract class GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId
     implements
-        Built<GIdentitiesByNameData_identity_smith_smithCertIssued,
-            GIdentitiesByNameData_identity_smith_smithCertIssuedBuilder>,
-        GIdentityFields_smith_smithCertIssued,
-        GSmithFields_smithCertIssued,
-        GSmithCertFields {
-  GIdentitiesByNameData_identity_smith_smithCertIssued._();
+        Built<GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId,
+            GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerIdBuilder>,
+        GIdentityFields_smith_smithCertsByIssuerId,
+        GSmithFields_smithCertsByIssuerId {
+  GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId._();
 
-  factory GIdentitiesByNameData_identity_smith_smithCertIssued(
-      [void Function(
-              GIdentitiesByNameData_identity_smith_smithCertIssuedBuilder b)
-          updates]) = _$GIdentitiesByNameData_identity_smith_smithCertIssued;
+  factory GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId(
+          [void Function(
+                  GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerIdBuilder
+                      b)
+              updates]) =
+      _$GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId;
 
   static void _initializeBuilder(
-          GIdentitiesByNameData_identity_smith_smithCertIssuedBuilder b) =>
+          GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerIdBuilder
+              b) =>
+      b..G__typename = 'SmithCertsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<
+          GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId_nodes>
+      get nodes;
+  static Serializer<
+          GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId>
+      get serializer =>
+          _$gIdentitiesByNameDataIdentitiesNodesSmithSmithCertsByIssuerIdSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId
+                .serializer,
+            json,
+          );
+}
+
+abstract class GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId_nodes
+    implements
+        Built<
+            GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId_nodes,
+            GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId_nodesBuilder>,
+        GIdentityFields_smith_smithCertsByIssuerId_nodes,
+        GSmithFields_smithCertsByIssuerId_nodes,
+        GSmithCertFields {
+  GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId_nodes._();
+
+  factory GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId_nodes(
+          [void Function(
+                  GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId_nodesBuilder
+                      b)
+              updates]) =
+      _$GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId_nodes;
+
+  static void _initializeBuilder(
+          GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId_nodesBuilder
+              b) =>
       b..G__typename = 'SmithCert';
 
   @override
@@ -2788,40 +2632,96 @@ abstract class GIdentitiesByNameData_identity_smith_smithCertIssued
   String? get receiverId;
   @override
   int get createdOn;
-  static Serializer<GIdentitiesByNameData_identity_smith_smithCertIssued>
+  static Serializer<
+          GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId_nodes>
       get serializer =>
-          _$gIdentitiesByNameDataIdentitySmithSmithCertIssuedSerializer;
+          _$gIdentitiesByNameDataIdentitiesNodesSmithSmithCertsByIssuerIdNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_smith_smithCertIssued.serializer,
+        GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId_nodes
+            .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByNameData_identity_smith_smithCertIssued? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByNameData_identity_smith_smithCertIssued.serializer,
-        json,
-      );
+  static GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId_nodes?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId_nodes
+                .serializer,
+            json,
+          );
 }
 
-abstract class GIdentitiesByNameData_identity_smith_smithCertReceived
+abstract class GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId
     implements
-        Built<GIdentitiesByNameData_identity_smith_smithCertReceived,
-            GIdentitiesByNameData_identity_smith_smithCertReceivedBuilder>,
-        GIdentityFields_smith_smithCertReceived,
-        GSmithFields_smithCertReceived,
-        GSmithCertFields {
-  GIdentitiesByNameData_identity_smith_smithCertReceived._();
+        Built<
+            GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId,
+            GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverIdBuilder>,
+        GIdentityFields_smith_smithCertsByReceiverId,
+        GSmithFields_smithCertsByReceiverId {
+  GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId._();
 
-  factory GIdentitiesByNameData_identity_smith_smithCertReceived(
-      [void Function(
-              GIdentitiesByNameData_identity_smith_smithCertReceivedBuilder b)
-          updates]) = _$GIdentitiesByNameData_identity_smith_smithCertReceived;
+  factory GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId(
+          [void Function(
+                  GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverIdBuilder
+                      b)
+              updates]) =
+      _$GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId;
 
   static void _initializeBuilder(
-          GIdentitiesByNameData_identity_smith_smithCertReceivedBuilder b) =>
+          GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverIdBuilder
+              b) =>
+      b..G__typename = 'SmithCertsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<
+          GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId_nodes>
+      get nodes;
+  static Serializer<
+          GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId>
+      get serializer =>
+          _$gIdentitiesByNameDataIdentitiesNodesSmithSmithCertsByReceiverIdSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId
+                .serializer,
+            json,
+          );
+}
+
+abstract class GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId_nodes
+    implements
+        Built<
+            GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId_nodes,
+            GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId_nodesBuilder>,
+        GIdentityFields_smith_smithCertsByReceiverId_nodes,
+        GSmithFields_smithCertsByReceiverId_nodes,
+        GSmithCertFields {
+  GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId_nodes._();
+
+  factory GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId_nodes(
+          [void Function(
+                  GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId_nodesBuilder
+                      b)
+              updates]) =
+      _$GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId_nodes;
+
+  static void _initializeBuilder(
+          GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId_nodesBuilder
+              b) =>
       b..G__typename = 'SmithCert';
 
   @override
@@ -2835,22 +2735,24 @@ abstract class GIdentitiesByNameData_identity_smith_smithCertReceived
   String? get receiverId;
   @override
   int get createdOn;
-  static Serializer<GIdentitiesByNameData_identity_smith_smithCertReceived>
+  static Serializer<
+          GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId_nodes>
       get serializer =>
-          _$gIdentitiesByNameDataIdentitySmithSmithCertReceivedSerializer;
+          _$gIdentitiesByNameDataIdentitiesNodesSmithSmithCertsByReceiverIdNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentitiesByNameData_identity_smith_smithCertReceived.serializer,
+        GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId_nodes
+            .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentitiesByNameData_identity_smith_smithCertReceived? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentitiesByNameData_identity_smith_smithCertReceived.serializer,
-        json,
-      );
+  static GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId_nodes?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId_nodes
+                .serializer,
+            json,
+          );
 }
 
 abstract class GAccountByPkData
@@ -2861,11 +2763,11 @@ abstract class GAccountByPkData
       _$GAccountByPkData;
 
   static void _initializeBuilder(GAccountByPkDataBuilder b) =>
-      b..G__typename = 'query_root';
+      b..G__typename = 'Query';
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
-  GAccountByPkData_accountByPk? get accountByPk;
+  GAccountByPkData_accounts? get accounts;
   static Serializer<GAccountByPkData> get serializer =>
       _$gAccountByPkDataSerializer;
 
@@ -2881,1336 +2783,582 @@ abstract class GAccountByPkData
       );
 }
 
-abstract class GAccountByPkData_accountByPk
+abstract class GAccountByPkData_accounts
     implements
-        Built<GAccountByPkData_accountByPk,
-            GAccountByPkData_accountByPkBuilder>,
+        Built<GAccountByPkData_accounts, GAccountByPkData_accountsBuilder> {
+  GAccountByPkData_accounts._();
+
+  factory GAccountByPkData_accounts(
+          [void Function(GAccountByPkData_accountsBuilder b) updates]) =
+      _$GAccountByPkData_accounts;
+
+  static void _initializeBuilder(GAccountByPkData_accountsBuilder b) =>
+      b..G__typename = 'AccountsConnection';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  BuiltList<GAccountByPkData_accounts_nodes> get nodes;
+  static Serializer<GAccountByPkData_accounts> get serializer =>
+      _$gAccountByPkDataAccountsSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountByPkData_accounts.serializer,
+        json,
+      );
+}
+
+abstract class GAccountByPkData_accounts_nodes
+    implements
+        Built<GAccountByPkData_accounts_nodes,
+            GAccountByPkData_accounts_nodesBuilder>,
         GAccountFields {
-  GAccountByPkData_accountByPk._();
+  GAccountByPkData_accounts_nodes._();
 
-  factory GAccountByPkData_accountByPk(
-          [void Function(GAccountByPkData_accountByPkBuilder b) updates]) =
-      _$GAccountByPkData_accountByPk;
+  factory GAccountByPkData_accounts_nodes(
+          [void Function(GAccountByPkData_accounts_nodesBuilder b) updates]) =
+      _$GAccountByPkData_accounts_nodes;
 
-  static void _initializeBuilder(GAccountByPkData_accountByPkBuilder b) =>
+  static void _initializeBuilder(GAccountByPkData_accounts_nodesBuilder b) =>
       b..G__typename = 'Account';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  BuiltList<GAccountByPkData_accountByPk_commentsIssued> get commentsIssued;
-  @override
-  GAccountByPkData_accountByPk_commentsIssuedAggregate
-      get commentsIssuedAggregate;
-  @override
   int get createdOn;
   @override
   String get id;
   @override
-  GAccountByPkData_accountByPk_identity? get identity;
-  @override
   bool get isActive;
   @override
-  GAccountByPkData_accountByPk_linkedIdentity? get linkedIdentity;
+  GAccountByPkData_accounts_nodes_transfersIssued get transfersIssued;
   @override
-  BuiltList<GAccountByPkData_accountByPk_removedIdentities>
-      get removedIdentities;
+  GAccountByPkData_accounts_nodes_transfersReceived get transfersReceived;
   @override
-  GAccountByPkData_accountByPk_removedIdentitiesAggregate
-      get removedIdentitiesAggregate;
+  GAccountByPkData_accounts_nodes_wasIdentityPrev get wasIdentityPrev;
   @override
-  BuiltList<GAccountByPkData_accountByPk_transfersIssued> get transfersIssued;
+  GAccountByPkData_accounts_nodes_wasIdentityNext get wasIdentityNext;
   @override
-  GAccountByPkData_accountByPk_transfersIssuedAggregate
-      get transfersIssuedAggregate;
-  @override
-  BuiltList<GAccountByPkData_accountByPk_transfersReceived>
-      get transfersReceived;
-  @override
-  GAccountByPkData_accountByPk_transfersReceivedAggregate
-      get transfersReceivedAggregate;
-  @override
-  BuiltList<GAccountByPkData_accountByPk_wasIdentity> get wasIdentity;
-  @override
-  GAccountByPkData_accountByPk_wasIdentityAggregate get wasIdentityAggregate;
-  static Serializer<GAccountByPkData_accountByPk> get serializer =>
-      _$gAccountByPkDataAccountByPkSerializer;
+  GAccountByPkData_accounts_nodes_linkedIdentity? get linkedIdentity;
+  static Serializer<GAccountByPkData_accounts_nodes> get serializer =>
+      _$gAccountByPkDataAccountsNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk.serializer,
+        GAccountByPkData_accounts_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accountByPk? fromJson(Map<String, dynamic> json) =>
+  static GAccountByPkData_accounts_nodes? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk.serializer,
+        GAccountByPkData_accounts_nodes.serializer,
         json,
       );
 }
 
-abstract class GAccountByPkData_accountByPk_commentsIssued
+abstract class GAccountByPkData_accounts_nodes_transfersIssued
     implements
-        Built<GAccountByPkData_accountByPk_commentsIssued,
-            GAccountByPkData_accountByPk_commentsIssuedBuilder>,
-        GAccountFields_commentsIssued,
-        GCommentsIssued {
-  GAccountByPkData_accountByPk_commentsIssued._();
+        Built<GAccountByPkData_accounts_nodes_transfersIssued,
+            GAccountByPkData_accounts_nodes_transfersIssuedBuilder>,
+        GAccountFields_transfersIssued {
+  GAccountByPkData_accounts_nodes_transfersIssued._();
 
-  factory GAccountByPkData_accountByPk_commentsIssued(
-      [void Function(GAccountByPkData_accountByPk_commentsIssuedBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_commentsIssued;
+  factory GAccountByPkData_accounts_nodes_transfersIssued(
+      [void Function(GAccountByPkData_accounts_nodes_transfersIssuedBuilder b)
+          updates]) = _$GAccountByPkData_accounts_nodes_transfersIssued;
 
   static void _initializeBuilder(
-          GAccountByPkData_accountByPk_commentsIssuedBuilder b) =>
+          GAccountByPkData_accounts_nodes_transfersIssuedBuilder b) =>
+      b..G__typename = 'TransfersConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GAccountByPkData_accounts_nodes_transfersIssued_nodes> get nodes;
+  static Serializer<GAccountByPkData_accounts_nodes_transfersIssued>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesTransfersIssuedSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_transfersIssued.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_transfersIssued? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountByPkData_accounts_nodes_transfersIssued.serializer,
+        json,
+      );
+}
+
+abstract class GAccountByPkData_accounts_nodes_transfersIssued_nodes
+    implements
+        Built<GAccountByPkData_accounts_nodes_transfersIssued_nodes,
+            GAccountByPkData_accounts_nodes_transfersIssued_nodesBuilder>,
+        GAccountFields_transfersIssued_nodes,
+        GTransferFields {
+  GAccountByPkData_accounts_nodes_transfersIssued_nodes._();
+
+  factory GAccountByPkData_accounts_nodes_transfersIssued_nodes(
+      [void Function(
+              GAccountByPkData_accounts_nodes_transfersIssued_nodesBuilder b)
+          updates]) = _$GAccountByPkData_accounts_nodes_transfersIssued_nodes;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_transfersIssued_nodesBuilder b) =>
+      b..G__typename = 'Transfer';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get blockNumber;
+  @override
+  _i2.GDatetime get timestamp;
+  @override
+  _i2.GBigFloat get amount;
+  @override
+  GAccountByPkData_accounts_nodes_transfersIssued_nodes_to? get to;
+  @override
+  GAccountByPkData_accounts_nodes_transfersIssued_nodes_from? get from;
+  @override
+  GAccountByPkData_accounts_nodes_transfersIssued_nodes_comment? get comment;
+  static Serializer<GAccountByPkData_accounts_nodes_transfersIssued_nodes>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesTransfersIssuedNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_transfersIssued_nodes.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_transfersIssued_nodes? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountByPkData_accounts_nodes_transfersIssued_nodes.serializer,
+        json,
+      );
+}
+
+abstract class GAccountByPkData_accounts_nodes_transfersIssued_nodes_to
+    implements
+        Built<GAccountByPkData_accounts_nodes_transfersIssued_nodes_to,
+            GAccountByPkData_accounts_nodes_transfersIssued_nodes_toBuilder>,
+        GAccountFields_transfersIssued_nodes_to,
+        GTransferFields_to {
+  GAccountByPkData_accounts_nodes_transfersIssued_nodes_to._();
+
+  factory GAccountByPkData_accounts_nodes_transfersIssued_nodes_to(
+      [void Function(
+              GAccountByPkData_accounts_nodes_transfersIssued_nodes_toBuilder b)
+          updates]) = _$GAccountByPkData_accounts_nodes_transfersIssued_nodes_to;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_transfersIssued_nodes_toBuilder b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  static Serializer<GAccountByPkData_accounts_nodes_transfersIssued_nodes_to>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesTransfersIssuedNodesToSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_transfersIssued_nodes_to.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_transfersIssued_nodes_to? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountByPkData_accounts_nodes_transfersIssued_nodes_to.serializer,
+        json,
+      );
+}
+
+abstract class GAccountByPkData_accounts_nodes_transfersIssued_nodes_from
+    implements
+        Built<GAccountByPkData_accounts_nodes_transfersIssued_nodes_from,
+            GAccountByPkData_accounts_nodes_transfersIssued_nodes_fromBuilder>,
+        GAccountFields_transfersIssued_nodes_from,
+        GTransferFields_from {
+  GAccountByPkData_accounts_nodes_transfersIssued_nodes_from._();
+
+  factory GAccountByPkData_accounts_nodes_transfersIssued_nodes_from(
+      [void Function(
+              GAccountByPkData_accounts_nodes_transfersIssued_nodes_fromBuilder
+                  b)
+          updates]) = _$GAccountByPkData_accounts_nodes_transfersIssued_nodes_from;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_transfersIssued_nodes_fromBuilder
+              b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  static Serializer<GAccountByPkData_accounts_nodes_transfersIssued_nodes_from>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesTransfersIssuedNodesFromSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_transfersIssued_nodes_from.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_transfersIssued_nodes_from? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountByPkData_accounts_nodes_transfersIssued_nodes_from.serializer,
+        json,
+      );
+}
+
+abstract class GAccountByPkData_accounts_nodes_transfersIssued_nodes_comment
+    implements
+        Built<GAccountByPkData_accounts_nodes_transfersIssued_nodes_comment,
+            GAccountByPkData_accounts_nodes_transfersIssued_nodes_commentBuilder>,
+        GAccountFields_transfersIssued_nodes_comment,
+        GTransferFields_comment {
+  GAccountByPkData_accounts_nodes_transfersIssued_nodes_comment._();
+
+  factory GAccountByPkData_accounts_nodes_transfersIssued_nodes_comment(
+          [void Function(
+                  GAccountByPkData_accounts_nodes_transfersIssued_nodes_commentBuilder
+                      b)
+              updates]) =
+      _$GAccountByPkData_accounts_nodes_transfersIssued_nodes_comment;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_transfersIssued_nodes_commentBuilder
+              b) =>
       b..G__typename = 'TxComment';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  String? get authorId;
+  String get remark;
+  @override
+  String get remarkBytes;
+  static Serializer<
+          GAccountByPkData_accounts_nodes_transfersIssued_nodes_comment>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesTransfersIssuedNodesCommentSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_transfersIssued_nodes_comment
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_transfersIssued_nodes_comment?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountByPkData_accounts_nodes_transfersIssued_nodes_comment
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountByPkData_accounts_nodes_transfersReceived
+    implements
+        Built<GAccountByPkData_accounts_nodes_transfersReceived,
+            GAccountByPkData_accounts_nodes_transfersReceivedBuilder>,
+        GAccountFields_transfersReceived {
+  GAccountByPkData_accounts_nodes_transfersReceived._();
+
+  factory GAccountByPkData_accounts_nodes_transfersReceived(
+      [void Function(GAccountByPkData_accounts_nodes_transfersReceivedBuilder b)
+          updates]) = _$GAccountByPkData_accounts_nodes_transfersReceived;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_transfersReceivedBuilder b) =>
+      b..G__typename = 'TransfersConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GAccountByPkData_accounts_nodes_transfersReceived_nodes> get nodes;
+  static Serializer<GAccountByPkData_accounts_nodes_transfersReceived>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesTransfersReceivedSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_transfersReceived.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_transfersReceived? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountByPkData_accounts_nodes_transfersReceived.serializer,
+        json,
+      );
+}
+
+abstract class GAccountByPkData_accounts_nodes_transfersReceived_nodes
+    implements
+        Built<GAccountByPkData_accounts_nodes_transfersReceived_nodes,
+            GAccountByPkData_accounts_nodes_transfersReceived_nodesBuilder>,
+        GAccountFields_transfersReceived_nodes,
+        GTransferFields {
+  GAccountByPkData_accounts_nodes_transfersReceived_nodes._();
+
+  factory GAccountByPkData_accounts_nodes_transfersReceived_nodes(
+      [void Function(
+              GAccountByPkData_accounts_nodes_transfersReceived_nodesBuilder b)
+          updates]) = _$GAccountByPkData_accounts_nodes_transfersReceived_nodes;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_transfersReceived_nodesBuilder b) =>
+      b..G__typename = 'Transfer';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
   @override
   int get blockNumber;
   @override
-  String? get eventId;
+  _i2.GDatetime get timestamp;
   @override
-  String get hash;
+  _i2.GBigFloat get amount;
+  @override
+  GAccountByPkData_accounts_nodes_transfersReceived_nodes_to? get to;
+  @override
+  GAccountByPkData_accounts_nodes_transfersReceived_nodes_from? get from;
+  @override
+  GAccountByPkData_accounts_nodes_transfersReceived_nodes_comment? get comment;
+  static Serializer<GAccountByPkData_accounts_nodes_transfersReceived_nodes>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesTransfersReceivedNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_transfersReceived_nodes.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_transfersReceived_nodes? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountByPkData_accounts_nodes_transfersReceived_nodes.serializer,
+        json,
+      );
+}
+
+abstract class GAccountByPkData_accounts_nodes_transfersReceived_nodes_to
+    implements
+        Built<GAccountByPkData_accounts_nodes_transfersReceived_nodes_to,
+            GAccountByPkData_accounts_nodes_transfersReceived_nodes_toBuilder>,
+        GAccountFields_transfersReceived_nodes_to,
+        GTransferFields_to {
+  GAccountByPkData_accounts_nodes_transfersReceived_nodes_to._();
+
+  factory GAccountByPkData_accounts_nodes_transfersReceived_nodes_to(
+      [void Function(
+              GAccountByPkData_accounts_nodes_transfersReceived_nodes_toBuilder
+                  b)
+          updates]) = _$GAccountByPkData_accounts_nodes_transfersReceived_nodes_to;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_transfersReceived_nodes_toBuilder
+              b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
   @override
   String get id;
+  static Serializer<GAccountByPkData_accounts_nodes_transfersReceived_nodes_to>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesTransfersReceivedNodesToSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_transfersReceived_nodes_to.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_transfersReceived_nodes_to? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountByPkData_accounts_nodes_transfersReceived_nodes_to.serializer,
+        json,
+      );
+}
+
+abstract class GAccountByPkData_accounts_nodes_transfersReceived_nodes_from
+    implements
+        Built<GAccountByPkData_accounts_nodes_transfersReceived_nodes_from,
+            GAccountByPkData_accounts_nodes_transfersReceived_nodes_fromBuilder>,
+        GAccountFields_transfersReceived_nodes_from,
+        GTransferFields_from {
+  GAccountByPkData_accounts_nodes_transfersReceived_nodes_from._();
+
+  factory GAccountByPkData_accounts_nodes_transfersReceived_nodes_from(
+          [void Function(
+                  GAccountByPkData_accounts_nodes_transfersReceived_nodes_fromBuilder
+                      b)
+              updates]) =
+      _$GAccountByPkData_accounts_nodes_transfersReceived_nodes_from;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_transfersReceived_nodes_fromBuilder
+              b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  static Serializer<
+          GAccountByPkData_accounts_nodes_transfersReceived_nodes_from>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesTransfersReceivedNodesFromSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_transfersReceived_nodes_from.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_transfersReceived_nodes_from? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountByPkData_accounts_nodes_transfersReceived_nodes_from.serializer,
+        json,
+      );
+}
+
+abstract class GAccountByPkData_accounts_nodes_transfersReceived_nodes_comment
+    implements
+        Built<GAccountByPkData_accounts_nodes_transfersReceived_nodes_comment,
+            GAccountByPkData_accounts_nodes_transfersReceived_nodes_commentBuilder>,
+        GAccountFields_transfersReceived_nodes_comment,
+        GTransferFields_comment {
+  GAccountByPkData_accounts_nodes_transfersReceived_nodes_comment._();
+
+  factory GAccountByPkData_accounts_nodes_transfersReceived_nodes_comment(
+          [void Function(
+                  GAccountByPkData_accounts_nodes_transfersReceived_nodes_commentBuilder
+                      b)
+              updates]) =
+      _$GAccountByPkData_accounts_nodes_transfersReceived_nodes_comment;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_transfersReceived_nodes_commentBuilder
+              b) =>
+      b..G__typename = 'TxComment';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
   @override
   String get remark;
   @override
-  _i2.Gbytea get remarkBytes;
-  @override
-  String get type;
-  static Serializer<GAccountByPkData_accountByPk_commentsIssued>
-      get serializer => _$gAccountByPkDataAccountByPkCommentsIssuedSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_commentsIssued.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_commentsIssued? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_commentsIssued.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_commentsIssuedAggregate
-    implements
-        Built<GAccountByPkData_accountByPk_commentsIssuedAggregate,
-            GAccountByPkData_accountByPk_commentsIssuedAggregateBuilder>,
-        GAccountFields_commentsIssuedAggregate {
-  GAccountByPkData_accountByPk_commentsIssuedAggregate._();
-
-  factory GAccountByPkData_accountByPk_commentsIssuedAggregate(
-      [void Function(
-              GAccountByPkData_accountByPk_commentsIssuedAggregateBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_commentsIssuedAggregate;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_commentsIssuedAggregateBuilder b) =>
-      b..G__typename = 'TxCommentAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountByPkData_accountByPk_commentsIssuedAggregate_aggregate? get aggregate;
-  static Serializer<GAccountByPkData_accountByPk_commentsIssuedAggregate>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkCommentsIssuedAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_commentsIssuedAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_commentsIssuedAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_commentsIssuedAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_commentsIssuedAggregate_aggregate
-    implements
-        Built<GAccountByPkData_accountByPk_commentsIssuedAggregate_aggregate,
-            GAccountByPkData_accountByPk_commentsIssuedAggregate_aggregateBuilder>,
-        GAccountFields_commentsIssuedAggregate_aggregate {
-  GAccountByPkData_accountByPk_commentsIssuedAggregate_aggregate._();
-
-  factory GAccountByPkData_accountByPk_commentsIssuedAggregate_aggregate(
-          [void Function(
-                  GAccountByPkData_accountByPk_commentsIssuedAggregate_aggregateBuilder
-                      b)
-              updates]) =
-      _$GAccountByPkData_accountByPk_commentsIssuedAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_commentsIssuedAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'TxCommentAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
+  String get remarkBytes;
   static Serializer<
-          GAccountByPkData_accountByPk_commentsIssuedAggregate_aggregate>
+          GAccountByPkData_accounts_nodes_transfersReceived_nodes_comment>
       get serializer =>
-          _$gAccountByPkDataAccountByPkCommentsIssuedAggregateAggregateSerializer;
+          _$gAccountByPkDataAccountsNodesTransfersReceivedNodesCommentSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_commentsIssuedAggregate_aggregate
+        GAccountByPkData_accounts_nodes_transfersReceived_nodes_comment
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accountByPk_commentsIssuedAggregate_aggregate?
+  static GAccountByPkData_accounts_nodes_transfersReceived_nodes_comment?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accountByPk_commentsIssuedAggregate_aggregate
+            GAccountByPkData_accounts_nodes_transfersReceived_nodes_comment
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountByPkData_accountByPk_identity
+abstract class GAccountByPkData_accounts_nodes_wasIdentityPrev
     implements
-        Built<GAccountByPkData_accountByPk_identity,
-            GAccountByPkData_accountByPk_identityBuilder>,
-        GAccountFields_identity,
-        GIdentityFields {
-  GAccountByPkData_accountByPk_identity._();
+        Built<GAccountByPkData_accounts_nodes_wasIdentityPrev,
+            GAccountByPkData_accounts_nodes_wasIdentityPrevBuilder>,
+        GAccountFields_wasIdentityPrev {
+  GAccountByPkData_accounts_nodes_wasIdentityPrev._();
 
-  factory GAccountByPkData_accountByPk_identity(
-      [void Function(GAccountByPkData_accountByPk_identityBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_identity;
+  factory GAccountByPkData_accounts_nodes_wasIdentityPrev(
+      [void Function(GAccountByPkData_accounts_nodes_wasIdentityPrevBuilder b)
+          updates]) = _$GAccountByPkData_accounts_nodes_wasIdentityPrev;
 
   static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identityBuilder b) =>
-      b..G__typename = 'Identity';
+          GAccountByPkData_accounts_nodes_wasIdentityPrevBuilder b) =>
+      b..G__typename = 'ChangeOwnerKeysConnection';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  GAccountByPkData_accountByPk_identity_account? get account;
+  int get totalCount;
   @override
-  String? get accountId;
-  @override
-  String? get accountRemovedId;
-  @override
-  BuiltList<GAccountByPkData_accountByPk_identity_certIssued> get certIssued;
-  @override
-  GAccountByPkData_accountByPk_identity_certIssuedAggregate
-      get certIssuedAggregate;
-  @override
-  BuiltList<GAccountByPkData_accountByPk_identity_certReceived>
-      get certReceived;
-  @override
-  GAccountByPkData_accountByPk_identity_certReceivedAggregate
-      get certReceivedAggregate;
-  @override
-  String? get createdInId;
-  @override
-  int get createdOn;
-  @override
-  int get expireOn;
-  @override
-  String get id;
-  @override
-  int get index;
-  @override
-  bool get isMember;
-  @override
-  int get lastChangeOn;
-  @override
-  BuiltList<GAccountByPkData_accountByPk_identity_linkedAccount>
-      get linkedAccount;
-  @override
-  GAccountByPkData_accountByPk_identity_linkedAccountAggregate
-      get linkedAccountAggregate;
-  @override
-  String get status;
-  @override
-  BuiltList<GAccountByPkData_accountByPk_identity_membershipHistory>
-      get membershipHistory;
-  @override
-  GAccountByPkData_accountByPk_identity_membershipHistoryAggregate
-      get membershipHistoryAggregate;
-  @override
-  String get name;
-  @override
-  BuiltList<GAccountByPkData_accountByPk_identity_ownerKeyChange>
-      get ownerKeyChange;
-  @override
-  GAccountByPkData_accountByPk_identity_ownerKeyChangeAggregate
-      get ownerKeyChangeAggregate;
-  @override
-  GAccountByPkData_accountByPk_identity_smith? get smith;
-  static Serializer<GAccountByPkData_accountByPk_identity> get serializer =>
-      _$gAccountByPkDataAccountByPkIdentitySerializer;
+  BuiltList<GAccountByPkData_accounts_nodes_wasIdentityPrev_nodes> get nodes;
+  static Serializer<GAccountByPkData_accounts_nodes_wasIdentityPrev>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesWasIdentityPrevSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity.serializer,
+        GAccountByPkData_accounts_nodes_wasIdentityPrev.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accountByPk_identity? fromJson(
+  static GAccountByPkData_accounts_nodes_wasIdentityPrev? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_identity.serializer,
+        GAccountByPkData_accounts_nodes_wasIdentityPrev.serializer,
         json,
       );
 }
 
-abstract class GAccountByPkData_accountByPk_identity_account
+abstract class GAccountByPkData_accounts_nodes_wasIdentityPrev_nodes
     implements
-        Built<GAccountByPkData_accountByPk_identity_account,
-            GAccountByPkData_accountByPk_identity_accountBuilder>,
-        GAccountFields_identity_account,
-        GIdentityFields_account {
-  GAccountByPkData_accountByPk_identity_account._();
-
-  factory GAccountByPkData_accountByPk_identity_account(
-      [void Function(GAccountByPkData_accountByPk_identity_accountBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_identity_account;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_accountBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get createdOn;
-  static Serializer<GAccountByPkData_accountByPk_identity_account>
-      get serializer => _$gAccountByPkDataAccountByPkIdentityAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_account.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_identity_account? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_identity_account.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_identity_certIssued
-    implements
-        Built<GAccountByPkData_accountByPk_identity_certIssued,
-            GAccountByPkData_accountByPk_identity_certIssuedBuilder>,
-        GAccountFields_identity_certIssued,
-        GIdentityFields_certIssued,
-        GCertFields {
-  GAccountByPkData_accountByPk_identity_certIssued._();
-
-  factory GAccountByPkData_accountByPk_identity_certIssued(
-      [void Function(GAccountByPkData_accountByPk_identity_certIssuedBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_identity_certIssued;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_certIssuedBuilder b) =>
-      b..G__typename = 'Cert';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  @override
-  String? get issuerId;
-  @override
-  GAccountByPkData_accountByPk_identity_certIssued_issuer? get issuer;
-  @override
-  String? get receiverId;
-  @override
-  GAccountByPkData_accountByPk_identity_certIssued_receiver? get receiver;
-  @override
-  int get createdOn;
-  @override
-  int get expireOn;
-  @override
-  bool get isActive;
-  @override
-  int get updatedOn;
-  static Serializer<GAccountByPkData_accountByPk_identity_certIssued>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkIdentityCertIssuedSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_certIssued.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_identity_certIssued? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_identity_certIssued.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_identity_certIssued_issuer
-    implements
-        Built<GAccountByPkData_accountByPk_identity_certIssued_issuer,
-            GAccountByPkData_accountByPk_identity_certIssued_issuerBuilder>,
-        GAccountFields_identity_certIssued_issuer,
-        GIdentityFields_certIssued_issuer,
-        GCertFields_issuer,
-        GIdentityBasicFields {
-  GAccountByPkData_accountByPk_identity_certIssued_issuer._();
-
-  factory GAccountByPkData_accountByPk_identity_certIssued_issuer(
-      [void Function(
-              GAccountByPkData_accountByPk_identity_certIssued_issuerBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_identity_certIssued_issuer;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_certIssued_issuerBuilder b) =>
-      b..G__typename = 'Identity';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String? get accountId;
-  @override
-  GAccountByPkData_accountByPk_identity_certIssued_issuer_account? get account;
-  @override
-  String get id;
-  @override
-  bool get isMember;
-  @override
-  String get status;
-  @override
-  String get name;
-  @override
-  int get expireOn;
-  @override
-  int get index;
-  static Serializer<GAccountByPkData_accountByPk_identity_certIssued_issuer>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkIdentityCertIssuedIssuerSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_certIssued_issuer.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_identity_certIssued_issuer? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_identity_certIssued_issuer.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_identity_certIssued_issuer_account
-    implements
-        Built<GAccountByPkData_accountByPk_identity_certIssued_issuer_account,
-            GAccountByPkData_accountByPk_identity_certIssued_issuer_accountBuilder>,
-        GAccountFields_identity_certIssued_issuer_account,
-        GIdentityFields_certIssued_issuer_account,
-        GCertFields_issuer_account,
-        GIdentityBasicFields_account {
-  GAccountByPkData_accountByPk_identity_certIssued_issuer_account._();
-
-  factory GAccountByPkData_accountByPk_identity_certIssued_issuer_account(
-          [void Function(
-                  GAccountByPkData_accountByPk_identity_certIssued_issuer_accountBuilder
-                      b)
-              updates]) =
-      _$GAccountByPkData_accountByPk_identity_certIssued_issuer_account;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_certIssued_issuer_accountBuilder
-              b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get createdOn;
-  static Serializer<
-          GAccountByPkData_accountByPk_identity_certIssued_issuer_account>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkIdentityCertIssuedIssuerAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_certIssued_issuer_account
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_identity_certIssued_issuer_account?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accountByPk_identity_certIssued_issuer_account
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountByPkData_accountByPk_identity_certIssued_receiver
-    implements
-        Built<GAccountByPkData_accountByPk_identity_certIssued_receiver,
-            GAccountByPkData_accountByPk_identity_certIssued_receiverBuilder>,
-        GAccountFields_identity_certIssued_receiver,
-        GIdentityFields_certIssued_receiver,
-        GCertFields_receiver,
-        GIdentityBasicFields {
-  GAccountByPkData_accountByPk_identity_certIssued_receiver._();
-
-  factory GAccountByPkData_accountByPk_identity_certIssued_receiver(
-      [void Function(
-              GAccountByPkData_accountByPk_identity_certIssued_receiverBuilder
-                  b)
-          updates]) = _$GAccountByPkData_accountByPk_identity_certIssued_receiver;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_certIssued_receiverBuilder b) =>
-      b..G__typename = 'Identity';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String? get accountId;
-  @override
-  GAccountByPkData_accountByPk_identity_certIssued_receiver_account?
-      get account;
-  @override
-  String get id;
-  @override
-  bool get isMember;
-  @override
-  String get status;
-  @override
-  String get name;
-  @override
-  int get expireOn;
-  @override
-  int get index;
-  static Serializer<GAccountByPkData_accountByPk_identity_certIssued_receiver>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkIdentityCertIssuedReceiverSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_certIssued_receiver.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_identity_certIssued_receiver? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_identity_certIssued_receiver.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_identity_certIssued_receiver_account
-    implements
-        Built<GAccountByPkData_accountByPk_identity_certIssued_receiver_account,
-            GAccountByPkData_accountByPk_identity_certIssued_receiver_accountBuilder>,
-        GAccountFields_identity_certIssued_receiver_account,
-        GIdentityFields_certIssued_receiver_account,
-        GCertFields_receiver_account,
-        GIdentityBasicFields_account {
-  GAccountByPkData_accountByPk_identity_certIssued_receiver_account._();
-
-  factory GAccountByPkData_accountByPk_identity_certIssued_receiver_account(
-          [void Function(
-                  GAccountByPkData_accountByPk_identity_certIssued_receiver_accountBuilder
-                      b)
-              updates]) =
-      _$GAccountByPkData_accountByPk_identity_certIssued_receiver_account;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_certIssued_receiver_accountBuilder
-              b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get createdOn;
-  static Serializer<
-          GAccountByPkData_accountByPk_identity_certIssued_receiver_account>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkIdentityCertIssuedReceiverAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_certIssued_receiver_account
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_identity_certIssued_receiver_account?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accountByPk_identity_certIssued_receiver_account
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountByPkData_accountByPk_identity_certIssuedAggregate
-    implements
-        Built<GAccountByPkData_accountByPk_identity_certIssuedAggregate,
-            GAccountByPkData_accountByPk_identity_certIssuedAggregateBuilder>,
-        GAccountFields_identity_certIssuedAggregate,
-        GIdentityFields_certIssuedAggregate {
-  GAccountByPkData_accountByPk_identity_certIssuedAggregate._();
-
-  factory GAccountByPkData_accountByPk_identity_certIssuedAggregate(
-      [void Function(
-              GAccountByPkData_accountByPk_identity_certIssuedAggregateBuilder
-                  b)
-          updates]) = _$GAccountByPkData_accountByPk_identity_certIssuedAggregate;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_certIssuedAggregateBuilder b) =>
-      b..G__typename = 'CertAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountByPkData_accountByPk_identity_certIssuedAggregate_aggregate?
-      get aggregate;
-  static Serializer<GAccountByPkData_accountByPk_identity_certIssuedAggregate>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkIdentityCertIssuedAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_certIssuedAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_identity_certIssuedAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_identity_certIssuedAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_identity_certIssuedAggregate_aggregate
-    implements
-        Built<
-            GAccountByPkData_accountByPk_identity_certIssuedAggregate_aggregate,
-            GAccountByPkData_accountByPk_identity_certIssuedAggregate_aggregateBuilder>,
-        GAccountFields_identity_certIssuedAggregate_aggregate,
-        GIdentityFields_certIssuedAggregate_aggregate {
-  GAccountByPkData_accountByPk_identity_certIssuedAggregate_aggregate._();
-
-  factory GAccountByPkData_accountByPk_identity_certIssuedAggregate_aggregate(
-          [void Function(
-                  GAccountByPkData_accountByPk_identity_certIssuedAggregate_aggregateBuilder
-                      b)
-              updates]) =
-      _$GAccountByPkData_accountByPk_identity_certIssuedAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_certIssuedAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'CertAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<
-          GAccountByPkData_accountByPk_identity_certIssuedAggregate_aggregate>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkIdentityCertIssuedAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_certIssuedAggregate_aggregate
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_identity_certIssuedAggregate_aggregate?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accountByPk_identity_certIssuedAggregate_aggregate
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountByPkData_accountByPk_identity_certReceived
-    implements
-        Built<GAccountByPkData_accountByPk_identity_certReceived,
-            GAccountByPkData_accountByPk_identity_certReceivedBuilder>,
-        GAccountFields_identity_certReceived,
-        GIdentityFields_certReceived,
-        GCertFields {
-  GAccountByPkData_accountByPk_identity_certReceived._();
-
-  factory GAccountByPkData_accountByPk_identity_certReceived(
-      [void Function(
-              GAccountByPkData_accountByPk_identity_certReceivedBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_identity_certReceived;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_certReceivedBuilder b) =>
-      b..G__typename = 'Cert';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  @override
-  String? get issuerId;
-  @override
-  GAccountByPkData_accountByPk_identity_certReceived_issuer? get issuer;
-  @override
-  String? get receiverId;
-  @override
-  GAccountByPkData_accountByPk_identity_certReceived_receiver? get receiver;
-  @override
-  int get createdOn;
-  @override
-  int get expireOn;
-  @override
-  bool get isActive;
-  @override
-  int get updatedOn;
-  static Serializer<GAccountByPkData_accountByPk_identity_certReceived>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkIdentityCertReceivedSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_certReceived.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_identity_certReceived? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_identity_certReceived.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_identity_certReceived_issuer
-    implements
-        Built<GAccountByPkData_accountByPk_identity_certReceived_issuer,
-            GAccountByPkData_accountByPk_identity_certReceived_issuerBuilder>,
-        GAccountFields_identity_certReceived_issuer,
-        GIdentityFields_certReceived_issuer,
-        GCertFields_issuer,
-        GIdentityBasicFields {
-  GAccountByPkData_accountByPk_identity_certReceived_issuer._();
-
-  factory GAccountByPkData_accountByPk_identity_certReceived_issuer(
-      [void Function(
-              GAccountByPkData_accountByPk_identity_certReceived_issuerBuilder
-                  b)
-          updates]) = _$GAccountByPkData_accountByPk_identity_certReceived_issuer;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_certReceived_issuerBuilder b) =>
-      b..G__typename = 'Identity';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String? get accountId;
-  @override
-  GAccountByPkData_accountByPk_identity_certReceived_issuer_account?
-      get account;
-  @override
-  String get id;
-  @override
-  bool get isMember;
-  @override
-  String get status;
-  @override
-  String get name;
-  @override
-  int get expireOn;
-  @override
-  int get index;
-  static Serializer<GAccountByPkData_accountByPk_identity_certReceived_issuer>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkIdentityCertReceivedIssuerSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_certReceived_issuer.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_identity_certReceived_issuer? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_identity_certReceived_issuer.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_identity_certReceived_issuer_account
-    implements
-        Built<GAccountByPkData_accountByPk_identity_certReceived_issuer_account,
-            GAccountByPkData_accountByPk_identity_certReceived_issuer_accountBuilder>,
-        GAccountFields_identity_certReceived_issuer_account,
-        GIdentityFields_certReceived_issuer_account,
-        GCertFields_issuer_account,
-        GIdentityBasicFields_account {
-  GAccountByPkData_accountByPk_identity_certReceived_issuer_account._();
-
-  factory GAccountByPkData_accountByPk_identity_certReceived_issuer_account(
-          [void Function(
-                  GAccountByPkData_accountByPk_identity_certReceived_issuer_accountBuilder
-                      b)
-              updates]) =
-      _$GAccountByPkData_accountByPk_identity_certReceived_issuer_account;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_certReceived_issuer_accountBuilder
-              b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get createdOn;
-  static Serializer<
-          GAccountByPkData_accountByPk_identity_certReceived_issuer_account>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkIdentityCertReceivedIssuerAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_certReceived_issuer_account
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_identity_certReceived_issuer_account?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accountByPk_identity_certReceived_issuer_account
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountByPkData_accountByPk_identity_certReceived_receiver
-    implements
-        Built<GAccountByPkData_accountByPk_identity_certReceived_receiver,
-            GAccountByPkData_accountByPk_identity_certReceived_receiverBuilder>,
-        GAccountFields_identity_certReceived_receiver,
-        GIdentityFields_certReceived_receiver,
-        GCertFields_receiver,
-        GIdentityBasicFields {
-  GAccountByPkData_accountByPk_identity_certReceived_receiver._();
-
-  factory GAccountByPkData_accountByPk_identity_certReceived_receiver(
-      [void Function(
-              GAccountByPkData_accountByPk_identity_certReceived_receiverBuilder
-                  b)
-          updates]) = _$GAccountByPkData_accountByPk_identity_certReceived_receiver;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_certReceived_receiverBuilder
-              b) =>
-      b..G__typename = 'Identity';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String? get accountId;
-  @override
-  GAccountByPkData_accountByPk_identity_certReceived_receiver_account?
-      get account;
-  @override
-  String get id;
-  @override
-  bool get isMember;
-  @override
-  String get status;
-  @override
-  String get name;
-  @override
-  int get expireOn;
-  @override
-  int get index;
-  static Serializer<GAccountByPkData_accountByPk_identity_certReceived_receiver>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkIdentityCertReceivedReceiverSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_certReceived_receiver.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_identity_certReceived_receiver? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_identity_certReceived_receiver.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_identity_certReceived_receiver_account
-    implements
-        Built<
-            GAccountByPkData_accountByPk_identity_certReceived_receiver_account,
-            GAccountByPkData_accountByPk_identity_certReceived_receiver_accountBuilder>,
-        GAccountFields_identity_certReceived_receiver_account,
-        GIdentityFields_certReceived_receiver_account,
-        GCertFields_receiver_account,
-        GIdentityBasicFields_account {
-  GAccountByPkData_accountByPk_identity_certReceived_receiver_account._();
-
-  factory GAccountByPkData_accountByPk_identity_certReceived_receiver_account(
-          [void Function(
-                  GAccountByPkData_accountByPk_identity_certReceived_receiver_accountBuilder
-                      b)
-              updates]) =
-      _$GAccountByPkData_accountByPk_identity_certReceived_receiver_account;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_certReceived_receiver_accountBuilder
-              b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get createdOn;
-  static Serializer<
-          GAccountByPkData_accountByPk_identity_certReceived_receiver_account>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkIdentityCertReceivedReceiverAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_certReceived_receiver_account
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_identity_certReceived_receiver_account?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accountByPk_identity_certReceived_receiver_account
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountByPkData_accountByPk_identity_certReceivedAggregate
-    implements
-        Built<GAccountByPkData_accountByPk_identity_certReceivedAggregate,
-            GAccountByPkData_accountByPk_identity_certReceivedAggregateBuilder>,
-        GAccountFields_identity_certReceivedAggregate,
-        GIdentityFields_certReceivedAggregate {
-  GAccountByPkData_accountByPk_identity_certReceivedAggregate._();
-
-  factory GAccountByPkData_accountByPk_identity_certReceivedAggregate(
-      [void Function(
-              GAccountByPkData_accountByPk_identity_certReceivedAggregateBuilder
-                  b)
-          updates]) = _$GAccountByPkData_accountByPk_identity_certReceivedAggregate;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_certReceivedAggregateBuilder
-              b) =>
-      b..G__typename = 'CertAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountByPkData_accountByPk_identity_certReceivedAggregate_aggregate?
-      get aggregate;
-  static Serializer<GAccountByPkData_accountByPk_identity_certReceivedAggregate>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkIdentityCertReceivedAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_certReceivedAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_identity_certReceivedAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_identity_certReceivedAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_identity_certReceivedAggregate_aggregate
-    implements
-        Built<
-            GAccountByPkData_accountByPk_identity_certReceivedAggregate_aggregate,
-            GAccountByPkData_accountByPk_identity_certReceivedAggregate_aggregateBuilder>,
-        GAccountFields_identity_certReceivedAggregate_aggregate,
-        GIdentityFields_certReceivedAggregate_aggregate {
-  GAccountByPkData_accountByPk_identity_certReceivedAggregate_aggregate._();
-
-  factory GAccountByPkData_accountByPk_identity_certReceivedAggregate_aggregate(
-          [void Function(
-                  GAccountByPkData_accountByPk_identity_certReceivedAggregate_aggregateBuilder
-                      b)
-              updates]) =
-      _$GAccountByPkData_accountByPk_identity_certReceivedAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_certReceivedAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'CertAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<
-          GAccountByPkData_accountByPk_identity_certReceivedAggregate_aggregate>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkIdentityCertReceivedAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_certReceivedAggregate_aggregate
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_identity_certReceivedAggregate_aggregate?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accountByPk_identity_certReceivedAggregate_aggregate
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountByPkData_accountByPk_identity_linkedAccount
-    implements
-        Built<GAccountByPkData_accountByPk_identity_linkedAccount,
-            GAccountByPkData_accountByPk_identity_linkedAccountBuilder>,
-        GAccountFields_identity_linkedAccount,
-        GIdentityFields_linkedAccount {
-  GAccountByPkData_accountByPk_identity_linkedAccount._();
-
-  factory GAccountByPkData_accountByPk_identity_linkedAccount(
-      [void Function(
-              GAccountByPkData_accountByPk_identity_linkedAccountBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_identity_linkedAccount;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_linkedAccountBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  static Serializer<GAccountByPkData_accountByPk_identity_linkedAccount>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkIdentityLinkedAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_linkedAccount.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_identity_linkedAccount? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_identity_linkedAccount.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_identity_linkedAccountAggregate
-    implements
-        Built<GAccountByPkData_accountByPk_identity_linkedAccountAggregate,
-            GAccountByPkData_accountByPk_identity_linkedAccountAggregateBuilder>,
-        GAccountFields_identity_linkedAccountAggregate,
-        GIdentityFields_linkedAccountAggregate {
-  GAccountByPkData_accountByPk_identity_linkedAccountAggregate._();
-
-  factory GAccountByPkData_accountByPk_identity_linkedAccountAggregate(
-          [void Function(
-                  GAccountByPkData_accountByPk_identity_linkedAccountAggregateBuilder
-                      b)
-              updates]) =
-      _$GAccountByPkData_accountByPk_identity_linkedAccountAggregate;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_linkedAccountAggregateBuilder
-              b) =>
-      b..G__typename = 'AccountAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountByPkData_accountByPk_identity_linkedAccountAggregate_aggregate?
-      get aggregate;
-  static Serializer<
-          GAccountByPkData_accountByPk_identity_linkedAccountAggregate>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkIdentityLinkedAccountAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_linkedAccountAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_identity_linkedAccountAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_identity_linkedAccountAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_identity_linkedAccountAggregate_aggregate
-    implements
-        Built<
-            GAccountByPkData_accountByPk_identity_linkedAccountAggregate_aggregate,
-            GAccountByPkData_accountByPk_identity_linkedAccountAggregate_aggregateBuilder>,
-        GAccountFields_identity_linkedAccountAggregate_aggregate,
-        GIdentityFields_linkedAccountAggregate_aggregate {
-  GAccountByPkData_accountByPk_identity_linkedAccountAggregate_aggregate._();
-
-  factory GAccountByPkData_accountByPk_identity_linkedAccountAggregate_aggregate(
-          [void Function(
-                  GAccountByPkData_accountByPk_identity_linkedAccountAggregate_aggregateBuilder
-                      b)
-              updates]) =
-      _$GAccountByPkData_accountByPk_identity_linkedAccountAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_linkedAccountAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'AccountAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<
-          GAccountByPkData_accountByPk_identity_linkedAccountAggregate_aggregate>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkIdentityLinkedAccountAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_linkedAccountAggregate_aggregate
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_identity_linkedAccountAggregate_aggregate?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accountByPk_identity_linkedAccountAggregate_aggregate
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountByPkData_accountByPk_identity_membershipHistory
-    implements
-        Built<GAccountByPkData_accountByPk_identity_membershipHistory,
-            GAccountByPkData_accountByPk_identity_membershipHistoryBuilder>,
-        GAccountFields_identity_membershipHistory,
-        GIdentityFields_membershipHistory {
-  GAccountByPkData_accountByPk_identity_membershipHistory._();
-
-  factory GAccountByPkData_accountByPk_identity_membershipHistory(
-      [void Function(
-              GAccountByPkData_accountByPk_identity_membershipHistoryBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_identity_membershipHistory;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_membershipHistoryBuilder b) =>
-      b..G__typename = 'MembershipEvent';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get blockNumber;
-  @override
-  String? get eventId;
-  @override
-  String get eventType;
-  @override
-  String get id;
-  @override
-  String? get identityId;
-  static Serializer<GAccountByPkData_accountByPk_identity_membershipHistory>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkIdentityMembershipHistorySerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_membershipHistory.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_identity_membershipHistory? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_identity_membershipHistory.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_identity_membershipHistoryAggregate
-    implements
-        Built<GAccountByPkData_accountByPk_identity_membershipHistoryAggregate,
-            GAccountByPkData_accountByPk_identity_membershipHistoryAggregateBuilder>,
-        GAccountFields_identity_membershipHistoryAggregate,
-        GIdentityFields_membershipHistoryAggregate {
-  GAccountByPkData_accountByPk_identity_membershipHistoryAggregate._();
-
-  factory GAccountByPkData_accountByPk_identity_membershipHistoryAggregate(
-          [void Function(
-                  GAccountByPkData_accountByPk_identity_membershipHistoryAggregateBuilder
-                      b)
-              updates]) =
-      _$GAccountByPkData_accountByPk_identity_membershipHistoryAggregate;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_membershipHistoryAggregateBuilder
-              b) =>
-      b..G__typename = 'MembershipEventAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountByPkData_accountByPk_identity_membershipHistoryAggregate_aggregate?
-      get aggregate;
-  static Serializer<
-          GAccountByPkData_accountByPk_identity_membershipHistoryAggregate>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkIdentityMembershipHistoryAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_membershipHistoryAggregate
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_identity_membershipHistoryAggregate?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accountByPk_identity_membershipHistoryAggregate
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountByPkData_accountByPk_identity_membershipHistoryAggregate_aggregate
-    implements
-        Built<
-            GAccountByPkData_accountByPk_identity_membershipHistoryAggregate_aggregate,
-            GAccountByPkData_accountByPk_identity_membershipHistoryAggregate_aggregateBuilder>,
-        GAccountFields_identity_membershipHistoryAggregate_aggregate,
-        GIdentityFields_membershipHistoryAggregate_aggregate {
-  GAccountByPkData_accountByPk_identity_membershipHistoryAggregate_aggregate._();
-
-  factory GAccountByPkData_accountByPk_identity_membershipHistoryAggregate_aggregate(
-          [void Function(
-                  GAccountByPkData_accountByPk_identity_membershipHistoryAggregate_aggregateBuilder
-                      b)
-              updates]) =
-      _$GAccountByPkData_accountByPk_identity_membershipHistoryAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_membershipHistoryAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'MembershipEventAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<
-          GAccountByPkData_accountByPk_identity_membershipHistoryAggregate_aggregate>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkIdentityMembershipHistoryAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_membershipHistoryAggregate_aggregate
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_identity_membershipHistoryAggregate_aggregate?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accountByPk_identity_membershipHistoryAggregate_aggregate
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountByPkData_accountByPk_identity_ownerKeyChange
-    implements
-        Built<GAccountByPkData_accountByPk_identity_ownerKeyChange,
-            GAccountByPkData_accountByPk_identity_ownerKeyChangeBuilder>,
-        GAccountFields_identity_ownerKeyChange,
-        GIdentityFields_ownerKeyChange,
+        Built<GAccountByPkData_accounts_nodes_wasIdentityPrev_nodes,
+            GAccountByPkData_accounts_nodes_wasIdentityPrev_nodesBuilder>,
+        GAccountFields_wasIdentityPrev_nodes,
         GOwnerKeyChangeFields {
-  GAccountByPkData_accountByPk_identity_ownerKeyChange._();
+  GAccountByPkData_accounts_nodes_wasIdentityPrev_nodes._();
 
-  factory GAccountByPkData_accountByPk_identity_ownerKeyChange(
+  factory GAccountByPkData_accounts_nodes_wasIdentityPrev_nodes(
       [void Function(
-              GAccountByPkData_accountByPk_identity_ownerKeyChangeBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_identity_ownerKeyChange;
+              GAccountByPkData_accounts_nodes_wasIdentityPrev_nodesBuilder b)
+          updates]) = _$GAccountByPkData_accounts_nodes_wasIdentityPrev_nodes;
 
   static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_ownerKeyChangeBuilder b) =>
+          GAccountByPkData_accounts_nodes_wasIdentityPrev_nodesBuilder b) =>
       b..G__typename = 'ChangeOwnerKey';
 
   @override
@@ -4226,131 +3374,1121 @@ abstract class GAccountByPkData_accountByPk_identity_ownerKeyChange
   String? get nextId;
   @override
   String? get previousId;
-  static Serializer<GAccountByPkData_accountByPk_identity_ownerKeyChange>
+  static Serializer<GAccountByPkData_accounts_nodes_wasIdentityPrev_nodes>
       get serializer =>
-          _$gAccountByPkDataAccountByPkIdentityOwnerKeyChangeSerializer;
+          _$gAccountByPkDataAccountsNodesWasIdentityPrevNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_ownerKeyChange.serializer,
+        GAccountByPkData_accounts_nodes_wasIdentityPrev_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accountByPk_identity_ownerKeyChange? fromJson(
+  static GAccountByPkData_accounts_nodes_wasIdentityPrev_nodes? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_identity_ownerKeyChange.serializer,
+        GAccountByPkData_accounts_nodes_wasIdentityPrev_nodes.serializer,
         json,
       );
 }
 
-abstract class GAccountByPkData_accountByPk_identity_ownerKeyChangeAggregate
+abstract class GAccountByPkData_accounts_nodes_wasIdentityNext
     implements
-        Built<GAccountByPkData_accountByPk_identity_ownerKeyChangeAggregate,
-            GAccountByPkData_accountByPk_identity_ownerKeyChangeAggregateBuilder>,
-        GAccountFields_identity_ownerKeyChangeAggregate,
-        GIdentityFields_ownerKeyChangeAggregate {
-  GAccountByPkData_accountByPk_identity_ownerKeyChangeAggregate._();
+        Built<GAccountByPkData_accounts_nodes_wasIdentityNext,
+            GAccountByPkData_accounts_nodes_wasIdentityNextBuilder>,
+        GAccountFields_wasIdentityNext {
+  GAccountByPkData_accounts_nodes_wasIdentityNext._();
 
-  factory GAccountByPkData_accountByPk_identity_ownerKeyChangeAggregate(
-          [void Function(
-                  GAccountByPkData_accountByPk_identity_ownerKeyChangeAggregateBuilder
-                      b)
-              updates]) =
-      _$GAccountByPkData_accountByPk_identity_ownerKeyChangeAggregate;
+  factory GAccountByPkData_accounts_nodes_wasIdentityNext(
+      [void Function(GAccountByPkData_accounts_nodes_wasIdentityNextBuilder b)
+          updates]) = _$GAccountByPkData_accounts_nodes_wasIdentityNext;
 
   static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_ownerKeyChangeAggregateBuilder
-              b) =>
-      b..G__typename = 'ChangeOwnerKeyAggregate';
+          GAccountByPkData_accounts_nodes_wasIdentityNextBuilder b) =>
+      b..G__typename = 'ChangeOwnerKeysConnection';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  GAccountByPkData_accountByPk_identity_ownerKeyChangeAggregate_aggregate?
-      get aggregate;
-  static Serializer<
-          GAccountByPkData_accountByPk_identity_ownerKeyChangeAggregate>
+  int get totalCount;
+  @override
+  BuiltList<GAccountByPkData_accounts_nodes_wasIdentityNext_nodes> get nodes;
+  static Serializer<GAccountByPkData_accounts_nodes_wasIdentityNext>
       get serializer =>
-          _$gAccountByPkDataAccountByPkIdentityOwnerKeyChangeAggregateSerializer;
+          _$gAccountByPkDataAccountsNodesWasIdentityNextSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_ownerKeyChangeAggregate
+        GAccountByPkData_accounts_nodes_wasIdentityNext.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_wasIdentityNext? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountByPkData_accounts_nodes_wasIdentityNext.serializer,
+        json,
+      );
+}
+
+abstract class GAccountByPkData_accounts_nodes_wasIdentityNext_nodes
+    implements
+        Built<GAccountByPkData_accounts_nodes_wasIdentityNext_nodes,
+            GAccountByPkData_accounts_nodes_wasIdentityNext_nodesBuilder>,
+        GAccountFields_wasIdentityNext_nodes,
+        GOwnerKeyChangeFields {
+  GAccountByPkData_accounts_nodes_wasIdentityNext_nodes._();
+
+  factory GAccountByPkData_accounts_nodes_wasIdentityNext_nodes(
+      [void Function(
+              GAccountByPkData_accounts_nodes_wasIdentityNext_nodesBuilder b)
+          updates]) = _$GAccountByPkData_accounts_nodes_wasIdentityNext_nodes;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_wasIdentityNext_nodesBuilder b) =>
+      b..G__typename = 'ChangeOwnerKey';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  @override
+  int get blockNumber;
+  @override
+  String? get identityId;
+  @override
+  String? get nextId;
+  @override
+  String? get previousId;
+  static Serializer<GAccountByPkData_accounts_nodes_wasIdentityNext_nodes>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesWasIdentityNextNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_wasIdentityNext_nodes.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_wasIdentityNext_nodes? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountByPkData_accounts_nodes_wasIdentityNext_nodes.serializer,
+        json,
+      );
+}
+
+abstract class GAccountByPkData_accounts_nodes_linkedIdentity
+    implements
+        Built<GAccountByPkData_accounts_nodes_linkedIdentity,
+            GAccountByPkData_accounts_nodes_linkedIdentityBuilder>,
+        GAccountFields_linkedIdentity,
+        GIdentityFields {
+  GAccountByPkData_accounts_nodes_linkedIdentity._();
+
+  factory GAccountByPkData_accounts_nodes_linkedIdentity(
+      [void Function(GAccountByPkData_accounts_nodes_linkedIdentityBuilder b)
+          updates]) = _$GAccountByPkData_accounts_nodes_linkedIdentity;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_linkedIdentityBuilder b) =>
+      b..G__typename = 'Identity';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  GAccountByPkData_accounts_nodes_linkedIdentity_account? get account;
+  @override
+  String? get accountId;
+  @override
+  String? get accountRemovedId;
+  @override
+  GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId
+      get certsByIssuerId;
+  @override
+  GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId
+      get certsByReceiverId;
+  @override
+  String? get createdInId;
+  @override
+  int get createdOn;
+  @override
+  int get expireOn;
+  @override
+  String get id;
+  @override
+  int get index;
+  @override
+  bool get isMember;
+  @override
+  int get lastChangeOn;
+  @override
+  String get status;
+  @override
+  String get name;
+  @override
+  GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents
+      get membershipEvents;
+  @override
+  GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys
+      get changeOwnerKeys;
+  @override
+  GAccountByPkData_accounts_nodes_linkedIdentity_smith? get smith;
+  static Serializer<GAccountByPkData_accounts_nodes_linkedIdentity>
+      get serializer => _$gAccountByPkDataAccountsNodesLinkedIdentitySerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_linkedIdentity.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_linkedIdentity? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountByPkData_accounts_nodes_linkedIdentity.serializer,
+        json,
+      );
+}
+
+abstract class GAccountByPkData_accounts_nodes_linkedIdentity_account
+    implements
+        Built<GAccountByPkData_accounts_nodes_linkedIdentity_account,
+            GAccountByPkData_accounts_nodes_linkedIdentity_accountBuilder>,
+        GAccountFields_linkedIdentity_account,
+        GIdentityFields_account {
+  GAccountByPkData_accounts_nodes_linkedIdentity_account._();
+
+  factory GAccountByPkData_accounts_nodes_linkedIdentity_account(
+      [void Function(
+              GAccountByPkData_accounts_nodes_linkedIdentity_accountBuilder b)
+          updates]) = _$GAccountByPkData_accounts_nodes_linkedIdentity_account;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_linkedIdentity_accountBuilder b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get createdOn;
+  static Serializer<GAccountByPkData_accounts_nodes_linkedIdentity_account>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesLinkedIdentityAccountSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_linkedIdentity_account.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_linkedIdentity_account? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountByPkData_accounts_nodes_linkedIdentity_account.serializer,
+        json,
+      );
+}
+
+abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId
+    implements
+        Built<GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId,
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerIdBuilder>,
+        GAccountFields_linkedIdentity_certsByIssuerId,
+        GIdentityFields_certsByIssuerId {
+  GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId._();
+
+  factory GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId(
+          [void Function(
+                  GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerIdBuilder
+                      b)
+              updates]) =
+      _$GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerIdBuilder
+              b) =>
+      b..G__typename = 'CertsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<
+          GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes>
+      get nodes;
+  static Serializer<
+          GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesLinkedIdentityCertsByIssuerIdSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accountByPk_identity_ownerKeyChangeAggregate?
+  static GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accountByPk_identity_ownerKeyChangeAggregate
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountByPkData_accountByPk_identity_ownerKeyChangeAggregate_aggregate
+abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes
     implements
         Built<
-            GAccountByPkData_accountByPk_identity_ownerKeyChangeAggregate_aggregate,
-            GAccountByPkData_accountByPk_identity_ownerKeyChangeAggregate_aggregateBuilder>,
-        GAccountFields_identity_ownerKeyChangeAggregate_aggregate,
-        GIdentityFields_ownerKeyChangeAggregate_aggregate {
-  GAccountByPkData_accountByPk_identity_ownerKeyChangeAggregate_aggregate._();
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes,
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodesBuilder>,
+        GAccountFields_linkedIdentity_certsByIssuerId_nodes,
+        GIdentityFields_certsByIssuerId_nodes,
+        GCertFields {
+  GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes._();
 
-  factory GAccountByPkData_accountByPk_identity_ownerKeyChangeAggregate_aggregate(
+  factory GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes(
           [void Function(
-                  GAccountByPkData_accountByPk_identity_ownerKeyChangeAggregate_aggregateBuilder
+                  GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodesBuilder
                       b)
               updates]) =
-      _$GAccountByPkData_accountByPk_identity_ownerKeyChangeAggregate_aggregate;
+      _$GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes;
 
   static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_ownerKeyChangeAggregate_aggregateBuilder
+          GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodesBuilder
               b) =>
-      b..G__typename = 'ChangeOwnerKeyAggregateFields';
+      b..G__typename = 'Cert';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  int get count;
+  String get id;
+  @override
+  String? get issuerId;
+  @override
+  GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer?
+      get issuer;
+  @override
+  String? get receiverId;
+  @override
+  GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver?
+      get receiver;
+  @override
+  int get createdOn;
+  @override
+  int get expireOn;
+  @override
+  bool get isActive;
+  @override
+  int get updatedOn;
   static Serializer<
-          GAccountByPkData_accountByPk_identity_ownerKeyChangeAggregate_aggregate>
+          GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes>
       get serializer =>
-          _$gAccountByPkDataAccountByPkIdentityOwnerKeyChangeAggregateAggregateSerializer;
+          _$gAccountByPkDataAccountsNodesLinkedIdentityCertsByIssuerIdNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_ownerKeyChangeAggregate_aggregate
+        GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accountByPk_identity_ownerKeyChangeAggregate_aggregate?
+  static GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accountByPk_identity_ownerKeyChangeAggregate_aggregate
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountByPkData_accountByPk_identity_smith
+abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer
     implements
-        Built<GAccountByPkData_accountByPk_identity_smith,
-            GAccountByPkData_accountByPk_identity_smithBuilder>,
-        GAccountFields_identity_smith,
-        GIdentityFields_smith,
-        GSmithFields {
-  GAccountByPkData_accountByPk_identity_smith._();
+        Built<
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer,
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuerBuilder>,
+        GAccountFields_linkedIdentity_certsByIssuerId_nodes_issuer,
+        GIdentityFields_certsByIssuerId_nodes_issuer,
+        GCertFields_issuer,
+        GIdentityBasicFields {
+  GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer._();
 
-  factory GAccountByPkData_accountByPk_identity_smith(
-      [void Function(GAccountByPkData_accountByPk_identity_smithBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_identity_smith;
+  factory GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer(
+          [void Function(
+                  GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuerBuilder
+                      b)
+              updates]) =
+      _$GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer;
 
   static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_smithBuilder b) =>
+          GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuerBuilder
+              b) =>
+      b..G__typename = 'Identity';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String? get accountId;
+  @override
+  GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_account?
+      get account;
+  @override
+  String get id;
+  @override
+  bool get isMember;
+  @override
+  String get status;
+  @override
+  String get name;
+  @override
+  int get expireOn;
+  @override
+  int get index;
+  static Serializer<
+          GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesLinkedIdentityCertsByIssuerIdNodesIssuerSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_account
+    implements
+        Built<
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_account,
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_accountBuilder>,
+        GAccountFields_linkedIdentity_certsByIssuerId_nodes_issuer_account,
+        GIdentityFields_certsByIssuerId_nodes_issuer_account,
+        GCertFields_issuer_account,
+        GIdentityBasicFields_account {
+  GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_account._();
+
+  factory GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_account(
+          [void Function(
+                  GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_accountBuilder
+                      b)
+              updates]) =
+      _$GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_account;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_accountBuilder
+              b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get createdOn;
+  static Serializer<
+          GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_account>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesLinkedIdentityCertsByIssuerIdNodesIssuerAccountSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_account
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_account?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_account
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver
+    implements
+        Built<
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver,
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiverBuilder>,
+        GAccountFields_linkedIdentity_certsByIssuerId_nodes_receiver,
+        GIdentityFields_certsByIssuerId_nodes_receiver,
+        GCertFields_receiver,
+        GIdentityBasicFields {
+  GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver._();
+
+  factory GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver(
+          [void Function(
+                  GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiverBuilder
+                      b)
+              updates]) =
+      _$GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiverBuilder
+              b) =>
+      b..G__typename = 'Identity';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String? get accountId;
+  @override
+  GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_account?
+      get account;
+  @override
+  String get id;
+  @override
+  bool get isMember;
+  @override
+  String get status;
+  @override
+  String get name;
+  @override
+  int get expireOn;
+  @override
+  int get index;
+  static Serializer<
+          GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesLinkedIdentityCertsByIssuerIdNodesReceiverSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_account
+    implements
+        Built<
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_account,
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_accountBuilder>,
+        GAccountFields_linkedIdentity_certsByIssuerId_nodes_receiver_account,
+        GIdentityFields_certsByIssuerId_nodes_receiver_account,
+        GCertFields_receiver_account,
+        GIdentityBasicFields_account {
+  GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_account._();
+
+  factory GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_account(
+          [void Function(
+                  GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_accountBuilder
+                      b)
+              updates]) =
+      _$GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_account;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_accountBuilder
+              b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get createdOn;
+  static Serializer<
+          GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_account>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesLinkedIdentityCertsByIssuerIdNodesReceiverAccountSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_account
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_account?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_account
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId
+    implements
+        Built<GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId,
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverIdBuilder>,
+        GAccountFields_linkedIdentity_certsByReceiverId,
+        GIdentityFields_certsByReceiverId {
+  GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId._();
+
+  factory GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId(
+          [void Function(
+                  GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverIdBuilder
+                      b)
+              updates]) =
+      _$GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverIdBuilder
+              b) =>
+      b..G__typename = 'CertsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<
+          GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes>
+      get nodes;
+  static Serializer<
+          GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesLinkedIdentityCertsByReceiverIdSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes
+    implements
+        Built<
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes,
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodesBuilder>,
+        GAccountFields_linkedIdentity_certsByReceiverId_nodes,
+        GIdentityFields_certsByReceiverId_nodes,
+        GCertFields {
+  GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes._();
+
+  factory GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes(
+          [void Function(
+                  GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodesBuilder
+                      b)
+              updates]) =
+      _$GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodesBuilder
+              b) =>
+      b..G__typename = 'Cert';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  @override
+  String? get issuerId;
+  @override
+  GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer?
+      get issuer;
+  @override
+  String? get receiverId;
+  @override
+  GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver?
+      get receiver;
+  @override
+  int get createdOn;
+  @override
+  int get expireOn;
+  @override
+  bool get isActive;
+  @override
+  int get updatedOn;
+  static Serializer<
+          GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesLinkedIdentityCertsByReceiverIdNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer
+    implements
+        Built<
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer,
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuerBuilder>,
+        GAccountFields_linkedIdentity_certsByReceiverId_nodes_issuer,
+        GIdentityFields_certsByReceiverId_nodes_issuer,
+        GCertFields_issuer,
+        GIdentityBasicFields {
+  GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer._();
+
+  factory GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer(
+          [void Function(
+                  GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuerBuilder
+                      b)
+              updates]) =
+      _$GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuerBuilder
+              b) =>
+      b..G__typename = 'Identity';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String? get accountId;
+  @override
+  GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_account?
+      get account;
+  @override
+  String get id;
+  @override
+  bool get isMember;
+  @override
+  String get status;
+  @override
+  String get name;
+  @override
+  int get expireOn;
+  @override
+  int get index;
+  static Serializer<
+          GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesLinkedIdentityCertsByReceiverIdNodesIssuerSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_account
+    implements
+        Built<
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_account,
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_accountBuilder>,
+        GAccountFields_linkedIdentity_certsByReceiverId_nodes_issuer_account,
+        GIdentityFields_certsByReceiverId_nodes_issuer_account,
+        GCertFields_issuer_account,
+        GIdentityBasicFields_account {
+  GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_account._();
+
+  factory GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_account(
+          [void Function(
+                  GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_accountBuilder
+                      b)
+              updates]) =
+      _$GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_account;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_accountBuilder
+              b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get createdOn;
+  static Serializer<
+          GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_account>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesLinkedIdentityCertsByReceiverIdNodesIssuerAccountSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_account
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_account?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_account
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver
+    implements
+        Built<
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver,
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiverBuilder>,
+        GAccountFields_linkedIdentity_certsByReceiverId_nodes_receiver,
+        GIdentityFields_certsByReceiverId_nodes_receiver,
+        GCertFields_receiver,
+        GIdentityBasicFields {
+  GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver._();
+
+  factory GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver(
+          [void Function(
+                  GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiverBuilder
+                      b)
+              updates]) =
+      _$GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiverBuilder
+              b) =>
+      b..G__typename = 'Identity';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String? get accountId;
+  @override
+  GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_account?
+      get account;
+  @override
+  String get id;
+  @override
+  bool get isMember;
+  @override
+  String get status;
+  @override
+  String get name;
+  @override
+  int get expireOn;
+  @override
+  int get index;
+  static Serializer<
+          GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesLinkedIdentityCertsByReceiverIdNodesReceiverSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_account
+    implements
+        Built<
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_account,
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_accountBuilder>,
+        GAccountFields_linkedIdentity_certsByReceiverId_nodes_receiver_account,
+        GIdentityFields_certsByReceiverId_nodes_receiver_account,
+        GCertFields_receiver_account,
+        GIdentityBasicFields_account {
+  GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_account._();
+
+  factory GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_account(
+          [void Function(
+                  GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_accountBuilder
+                      b)
+              updates]) =
+      _$GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_account;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_accountBuilder
+              b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get createdOn;
+  static Serializer<
+          GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_account>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesLinkedIdentityCertsByReceiverIdNodesReceiverAccountSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_account
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_account?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_account
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents
+    implements
+        Built<GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents,
+            GAccountByPkData_accounts_nodes_linkedIdentity_membershipEventsBuilder>,
+        GAccountFields_linkedIdentity_membershipEvents,
+        GIdentityFields_membershipEvents {
+  GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents._();
+
+  factory GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents(
+          [void Function(
+                  GAccountByPkData_accounts_nodes_linkedIdentity_membershipEventsBuilder
+                      b)
+              updates]) =
+      _$GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_linkedIdentity_membershipEventsBuilder
+              b) =>
+      b..G__typename = 'MembershipEventsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<
+          GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodes>
+      get nodes;
+  static Serializer<
+          GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesLinkedIdentityMembershipEventsSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodes
+    implements
+        Built<
+            GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodes,
+            GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodesBuilder>,
+        GAccountFields_linkedIdentity_membershipEvents_nodes,
+        GIdentityFields_membershipEvents_nodes {
+  GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodes._();
+
+  factory GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodes(
+          [void Function(
+                  GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodesBuilder
+                      b)
+              updates]) =
+      _$GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodes;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodesBuilder
+              b) =>
+      b..G__typename = 'MembershipEvent';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get blockNumber;
+  @override
+  String? get eventId;
+  @override
+  String get eventType;
+  @override
+  String get id;
+  @override
+  String? get identityId;
+  static Serializer<
+          GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodes>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesLinkedIdentityMembershipEventsNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodes
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodes?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodes
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys
+    implements
+        Built<GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys,
+            GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeysBuilder>,
+        GAccountFields_linkedIdentity_changeOwnerKeys,
+        GIdentityFields_changeOwnerKeys {
+  GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys._();
+
+  factory GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys(
+          [void Function(
+                  GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeysBuilder
+                      b)
+              updates]) =
+      _$GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeysBuilder
+              b) =>
+      b..G__typename = 'ChangeOwnerKeysConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<
+          GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodes>
+      get nodes;
+  static Serializer<
+          GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesLinkedIdentityChangeOwnerKeysSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodes
+    implements
+        Built<
+            GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodes,
+            GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodesBuilder>,
+        GAccountFields_linkedIdentity_changeOwnerKeys_nodes,
+        GIdentityFields_changeOwnerKeys_nodes,
+        GOwnerKeyChangeFields {
+  GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodes._();
+
+  factory GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodes(
+          [void Function(
+                  GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodesBuilder
+                      b)
+              updates]) =
+      _$GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodes;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodesBuilder
+              b) =>
+      b..G__typename = 'ChangeOwnerKey';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  @override
+  int get blockNumber;
+  @override
+  String? get identityId;
+  @override
+  String? get nextId;
+  @override
+  String? get previousId;
+  static Serializer<
+          GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodes>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesLinkedIdentityChangeOwnerKeysNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodes
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodes?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodes
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountByPkData_accounts_nodes_linkedIdentity_smith
+    implements
+        Built<GAccountByPkData_accounts_nodes_linkedIdentity_smith,
+            GAccountByPkData_accounts_nodes_linkedIdentity_smithBuilder>,
+        GAccountFields_linkedIdentity_smith,
+        GIdentityFields_smith,
+        GSmithFields {
+  GAccountByPkData_accounts_nodes_linkedIdentity_smith._();
+
+  factory GAccountByPkData_accounts_nodes_linkedIdentity_smith(
+      [void Function(
+              GAccountByPkData_accounts_nodes_linkedIdentity_smithBuilder b)
+          updates]) = _$GAccountByPkData_accounts_nodes_linkedIdentity_smith;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_linkedIdentity_smithBuilder b) =>
       b..G__typename = 'Smith';
 
   @override
@@ -4367,46 +4505,100 @@ abstract class GAccountByPkData_accountByPk_identity_smith
   @override
   int? get lastForged;
   @override
-  BuiltList<GAccountByPkData_accountByPk_identity_smith_smithCertIssued>
-      get smithCertIssued;
+  GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId
+      get smithCertsByIssuerId;
   @override
-  BuiltList<GAccountByPkData_accountByPk_identity_smith_smithCertReceived>
-      get smithCertReceived;
-  static Serializer<GAccountByPkData_accountByPk_identity_smith>
-      get serializer => _$gAccountByPkDataAccountByPkIdentitySmithSerializer;
+  GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId
+      get smithCertsByReceiverId;
+  static Serializer<GAccountByPkData_accounts_nodes_linkedIdentity_smith>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesLinkedIdentitySmithSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_smith.serializer,
+        GAccountByPkData_accounts_nodes_linkedIdentity_smith.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accountByPk_identity_smith? fromJson(
+  static GAccountByPkData_accounts_nodes_linkedIdentity_smith? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_identity_smith.serializer,
+        GAccountByPkData_accounts_nodes_linkedIdentity_smith.serializer,
         json,
       );
 }
 
-abstract class GAccountByPkData_accountByPk_identity_smith_smithCertIssued
+abstract class GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId
     implements
-        Built<GAccountByPkData_accountByPk_identity_smith_smithCertIssued,
-            GAccountByPkData_accountByPk_identity_smith_smithCertIssuedBuilder>,
-        GAccountFields_identity_smith_smithCertIssued,
-        GIdentityFields_smith_smithCertIssued,
-        GSmithFields_smithCertIssued,
-        GSmithCertFields {
-  GAccountByPkData_accountByPk_identity_smith_smithCertIssued._();
+        Built<
+            GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId,
+            GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerIdBuilder>,
+        GAccountFields_linkedIdentity_smith_smithCertsByIssuerId,
+        GIdentityFields_smith_smithCertsByIssuerId,
+        GSmithFields_smithCertsByIssuerId {
+  GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId._();
 
-  factory GAccountByPkData_accountByPk_identity_smith_smithCertIssued(
-      [void Function(
-              GAccountByPkData_accountByPk_identity_smith_smithCertIssuedBuilder
-                  b)
-          updates]) = _$GAccountByPkData_accountByPk_identity_smith_smithCertIssued;
+  factory GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId(
+          [void Function(
+                  GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerIdBuilder
+                      b)
+              updates]) =
+      _$GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId;
 
   static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_smith_smithCertIssuedBuilder
+          GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerIdBuilder
+              b) =>
+      b..G__typename = 'SmithCertsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<
+          GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodes>
+      get nodes;
+  static Serializer<
+          GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesLinkedIdentitySmithSmithCertsByIssuerIdSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodes
+    implements
+        Built<
+            GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodes,
+            GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodesBuilder>,
+        GAccountFields_linkedIdentity_smith_smithCertsByIssuerId_nodes,
+        GIdentityFields_smith_smithCertsByIssuerId_nodes,
+        GSmithFields_smithCertsByIssuerId_nodes,
+        GSmithCertFields {
+  GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodes._();
+
+  factory GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodes(
+          [void Function(
+                  GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodesBuilder
+                      b)
+              updates]) =
+      _$GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodes;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodesBuilder
               b) =>
       b..G__typename = 'SmithCert';
 
@@ -4421,43 +4613,97 @@ abstract class GAccountByPkData_accountByPk_identity_smith_smithCertIssued
   String? get receiverId;
   @override
   int get createdOn;
-  static Serializer<GAccountByPkData_accountByPk_identity_smith_smithCertIssued>
+  static Serializer<
+          GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodes>
       get serializer =>
-          _$gAccountByPkDataAccountByPkIdentitySmithSmithCertIssuedSerializer;
+          _$gAccountByPkDataAccountsNodesLinkedIdentitySmithSmithCertsByIssuerIdNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_smith_smithCertIssued.serializer,
+        GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodes
+            .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accountByPk_identity_smith_smithCertIssued? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_identity_smith_smithCertIssued.serializer,
-        json,
-      );
+  static GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodes?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodes
+                .serializer,
+            json,
+          );
 }
 
-abstract class GAccountByPkData_accountByPk_identity_smith_smithCertReceived
+abstract class GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId
     implements
-        Built<GAccountByPkData_accountByPk_identity_smith_smithCertReceived,
-            GAccountByPkData_accountByPk_identity_smith_smithCertReceivedBuilder>,
-        GAccountFields_identity_smith_smithCertReceived,
-        GIdentityFields_smith_smithCertReceived,
-        GSmithFields_smithCertReceived,
-        GSmithCertFields {
-  GAccountByPkData_accountByPk_identity_smith_smithCertReceived._();
+        Built<
+            GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId,
+            GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverIdBuilder>,
+        GAccountFields_linkedIdentity_smith_smithCertsByReceiverId,
+        GIdentityFields_smith_smithCertsByReceiverId,
+        GSmithFields_smithCertsByReceiverId {
+  GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId._();
 
-  factory GAccountByPkData_accountByPk_identity_smith_smithCertReceived(
+  factory GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId(
           [void Function(
-                  GAccountByPkData_accountByPk_identity_smith_smithCertReceivedBuilder
+                  GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverIdBuilder
                       b)
               updates]) =
-      _$GAccountByPkData_accountByPk_identity_smith_smithCertReceived;
+      _$GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId;
 
   static void _initializeBuilder(
-          GAccountByPkData_accountByPk_identity_smith_smithCertReceivedBuilder
+          GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverIdBuilder
+              b) =>
+      b..G__typename = 'SmithCertsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<
+          GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodes>
+      get nodes;
+  static Serializer<
+          GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesLinkedIdentitySmithSmithCertsByReceiverIdSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodes
+    implements
+        Built<
+            GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodes,
+            GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodesBuilder>,
+        GAccountFields_linkedIdentity_smith_smithCertsByReceiverId_nodes,
+        GIdentityFields_smith_smithCertsByReceiverId_nodes,
+        GSmithFields_smithCertsByReceiverId_nodes,
+        GSmithCertFields {
+  GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodes._();
+
+  factory GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodes(
+          [void Function(
+                  GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodesBuilder
+                      b)
+              updates]) =
+      _$GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodes;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodesBuilder
               b) =>
       b..G__typename = 'SmithCert';
 
@@ -4473,1018 +4719,23 @@ abstract class GAccountByPkData_accountByPk_identity_smith_smithCertReceived
   @override
   int get createdOn;
   static Serializer<
-          GAccountByPkData_accountByPk_identity_smith_smithCertReceived>
+          GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodes>
       get serializer =>
-          _$gAccountByPkDataAccountByPkIdentitySmithSmithCertReceivedSerializer;
+          _$gAccountByPkDataAccountsNodesLinkedIdentitySmithSmithCertsByReceiverIdNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_identity_smith_smithCertReceived
+        GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodes
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accountByPk_identity_smith_smithCertReceived?
+  static GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodes?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accountByPk_identity_smith_smithCertReceived
+            GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodes
                 .serializer,
             json,
           );
-}
-
-abstract class GAccountByPkData_accountByPk_linkedIdentity
-    implements
-        Built<GAccountByPkData_accountByPk_linkedIdentity,
-            GAccountByPkData_accountByPk_linkedIdentityBuilder>,
-        GAccountFields_linkedIdentity,
-        GIdentityBasicFields {
-  GAccountByPkData_accountByPk_linkedIdentity._();
-
-  factory GAccountByPkData_accountByPk_linkedIdentity(
-      [void Function(GAccountByPkData_accountByPk_linkedIdentityBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_linkedIdentity;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_linkedIdentityBuilder b) =>
-      b..G__typename = 'Identity';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String? get accountId;
-  @override
-  GAccountByPkData_accountByPk_linkedIdentity_account? get account;
-  @override
-  String get id;
-  @override
-  bool get isMember;
-  @override
-  String get status;
-  @override
-  String get name;
-  @override
-  int get expireOn;
-  @override
-  int get index;
-  static Serializer<GAccountByPkData_accountByPk_linkedIdentity>
-      get serializer => _$gAccountByPkDataAccountByPkLinkedIdentitySerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_linkedIdentity.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_linkedIdentity? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_linkedIdentity.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_linkedIdentity_account
-    implements
-        Built<GAccountByPkData_accountByPk_linkedIdentity_account,
-            GAccountByPkData_accountByPk_linkedIdentity_accountBuilder>,
-        GAccountFields_linkedIdentity_account,
-        GIdentityBasicFields_account {
-  GAccountByPkData_accountByPk_linkedIdentity_account._();
-
-  factory GAccountByPkData_accountByPk_linkedIdentity_account(
-      [void Function(
-              GAccountByPkData_accountByPk_linkedIdentity_accountBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_linkedIdentity_account;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_linkedIdentity_accountBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get createdOn;
-  static Serializer<GAccountByPkData_accountByPk_linkedIdentity_account>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkLinkedIdentityAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_linkedIdentity_account.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_linkedIdentity_account? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_linkedIdentity_account.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_removedIdentities
-    implements
-        Built<GAccountByPkData_accountByPk_removedIdentities,
-            GAccountByPkData_accountByPk_removedIdentitiesBuilder>,
-        GAccountFields_removedIdentities,
-        GIdentityBasicFields {
-  GAccountByPkData_accountByPk_removedIdentities._();
-
-  factory GAccountByPkData_accountByPk_removedIdentities(
-      [void Function(GAccountByPkData_accountByPk_removedIdentitiesBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_removedIdentities;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_removedIdentitiesBuilder b) =>
-      b..G__typename = 'Identity';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String? get accountId;
-  @override
-  GAccountByPkData_accountByPk_removedIdentities_account? get account;
-  @override
-  String get id;
-  @override
-  bool get isMember;
-  @override
-  String get status;
-  @override
-  String get name;
-  @override
-  int get expireOn;
-  @override
-  int get index;
-  static Serializer<GAccountByPkData_accountByPk_removedIdentities>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkRemovedIdentitiesSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_removedIdentities.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_removedIdentities? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_removedIdentities.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_removedIdentities_account
-    implements
-        Built<GAccountByPkData_accountByPk_removedIdentities_account,
-            GAccountByPkData_accountByPk_removedIdentities_accountBuilder>,
-        GAccountFields_removedIdentities_account,
-        GIdentityBasicFields_account {
-  GAccountByPkData_accountByPk_removedIdentities_account._();
-
-  factory GAccountByPkData_accountByPk_removedIdentities_account(
-      [void Function(
-              GAccountByPkData_accountByPk_removedIdentities_accountBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_removedIdentities_account;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_removedIdentities_accountBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get createdOn;
-  static Serializer<GAccountByPkData_accountByPk_removedIdentities_account>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkRemovedIdentitiesAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_removedIdentities_account.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_removedIdentities_account? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_removedIdentities_account.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_removedIdentitiesAggregate
-    implements
-        Built<GAccountByPkData_accountByPk_removedIdentitiesAggregate,
-            GAccountByPkData_accountByPk_removedIdentitiesAggregateBuilder>,
-        GAccountFields_removedIdentitiesAggregate {
-  GAccountByPkData_accountByPk_removedIdentitiesAggregate._();
-
-  factory GAccountByPkData_accountByPk_removedIdentitiesAggregate(
-      [void Function(
-              GAccountByPkData_accountByPk_removedIdentitiesAggregateBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_removedIdentitiesAggregate;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_removedIdentitiesAggregateBuilder b) =>
-      b..G__typename = 'IdentityAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountByPkData_accountByPk_removedIdentitiesAggregate_aggregate?
-      get aggregate;
-  static Serializer<GAccountByPkData_accountByPk_removedIdentitiesAggregate>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkRemovedIdentitiesAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_removedIdentitiesAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_removedIdentitiesAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_removedIdentitiesAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_removedIdentitiesAggregate_aggregate
-    implements
-        Built<GAccountByPkData_accountByPk_removedIdentitiesAggregate_aggregate,
-            GAccountByPkData_accountByPk_removedIdentitiesAggregate_aggregateBuilder>,
-        GAccountFields_removedIdentitiesAggregate_aggregate {
-  GAccountByPkData_accountByPk_removedIdentitiesAggregate_aggregate._();
-
-  factory GAccountByPkData_accountByPk_removedIdentitiesAggregate_aggregate(
-          [void Function(
-                  GAccountByPkData_accountByPk_removedIdentitiesAggregate_aggregateBuilder
-                      b)
-              updates]) =
-      _$GAccountByPkData_accountByPk_removedIdentitiesAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_removedIdentitiesAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'IdentityAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<
-          GAccountByPkData_accountByPk_removedIdentitiesAggregate_aggregate>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkRemovedIdentitiesAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_removedIdentitiesAggregate_aggregate
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_removedIdentitiesAggregate_aggregate?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accountByPk_removedIdentitiesAggregate_aggregate
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountByPkData_accountByPk_transfersIssued
-    implements
-        Built<GAccountByPkData_accountByPk_transfersIssued,
-            GAccountByPkData_accountByPk_transfersIssuedBuilder>,
-        GAccountFields_transfersIssued,
-        GTransferFields {
-  GAccountByPkData_accountByPk_transfersIssued._();
-
-  factory GAccountByPkData_accountByPk_transfersIssued(
-      [void Function(GAccountByPkData_accountByPk_transfersIssuedBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_transfersIssued;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_transfersIssuedBuilder b) =>
-      b..G__typename = 'Transfer';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get blockNumber;
-  @override
-  _i2.Gtimestamptz get timestamp;
-  @override
-  int get amount;
-  @override
-  GAccountByPkData_accountByPk_transfersIssued_to? get to;
-  @override
-  GAccountByPkData_accountByPk_transfersIssued_from? get from;
-  @override
-  GAccountByPkData_accountByPk_transfersIssued_comment? get comment;
-  static Serializer<GAccountByPkData_accountByPk_transfersIssued>
-      get serializer => _$gAccountByPkDataAccountByPkTransfersIssuedSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_transfersIssued.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_transfersIssued? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_transfersIssued.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_transfersIssued_to
-    implements
-        Built<GAccountByPkData_accountByPk_transfersIssued_to,
-            GAccountByPkData_accountByPk_transfersIssued_toBuilder>,
-        GAccountFields_transfersIssued_to,
-        GTransferFields_to {
-  GAccountByPkData_accountByPk_transfersIssued_to._();
-
-  factory GAccountByPkData_accountByPk_transfersIssued_to(
-      [void Function(GAccountByPkData_accountByPk_transfersIssued_toBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_transfersIssued_to;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_transfersIssued_toBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  static Serializer<GAccountByPkData_accountByPk_transfersIssued_to>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkTransfersIssuedToSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_transfersIssued_to.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_transfersIssued_to? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_transfersIssued_to.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_transfersIssued_from
-    implements
-        Built<GAccountByPkData_accountByPk_transfersIssued_from,
-            GAccountByPkData_accountByPk_transfersIssued_fromBuilder>,
-        GAccountFields_transfersIssued_from,
-        GTransferFields_from {
-  GAccountByPkData_accountByPk_transfersIssued_from._();
-
-  factory GAccountByPkData_accountByPk_transfersIssued_from(
-      [void Function(GAccountByPkData_accountByPk_transfersIssued_fromBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_transfersIssued_from;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_transfersIssued_fromBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  static Serializer<GAccountByPkData_accountByPk_transfersIssued_from>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkTransfersIssuedFromSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_transfersIssued_from.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_transfersIssued_from? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_transfersIssued_from.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_transfersIssued_comment
-    implements
-        Built<GAccountByPkData_accountByPk_transfersIssued_comment,
-            GAccountByPkData_accountByPk_transfersIssued_commentBuilder>,
-        GAccountFields_transfersIssued_comment,
-        GTransferFields_comment {
-  GAccountByPkData_accountByPk_transfersIssued_comment._();
-
-  factory GAccountByPkData_accountByPk_transfersIssued_comment(
-      [void Function(
-              GAccountByPkData_accountByPk_transfersIssued_commentBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_transfersIssued_comment;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_transfersIssued_commentBuilder b) =>
-      b..G__typename = 'TxComment';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get remark;
-  @override
-  _i2.Gbytea get remarkBytes;
-  static Serializer<GAccountByPkData_accountByPk_transfersIssued_comment>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkTransfersIssuedCommentSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_transfersIssued_comment.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_transfersIssued_comment? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_transfersIssued_comment.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_transfersIssuedAggregate
-    implements
-        Built<GAccountByPkData_accountByPk_transfersIssuedAggregate,
-            GAccountByPkData_accountByPk_transfersIssuedAggregateBuilder>,
-        GAccountFields_transfersIssuedAggregate {
-  GAccountByPkData_accountByPk_transfersIssuedAggregate._();
-
-  factory GAccountByPkData_accountByPk_transfersIssuedAggregate(
-      [void Function(
-              GAccountByPkData_accountByPk_transfersIssuedAggregateBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_transfersIssuedAggregate;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_transfersIssuedAggregateBuilder b) =>
-      b..G__typename = 'TransferAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountByPkData_accountByPk_transfersIssuedAggregate_aggregate?
-      get aggregate;
-  static Serializer<GAccountByPkData_accountByPk_transfersIssuedAggregate>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkTransfersIssuedAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_transfersIssuedAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_transfersIssuedAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_transfersIssuedAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_transfersIssuedAggregate_aggregate
-    implements
-        Built<GAccountByPkData_accountByPk_transfersIssuedAggregate_aggregate,
-            GAccountByPkData_accountByPk_transfersIssuedAggregate_aggregateBuilder>,
-        GAccountFields_transfersIssuedAggregate_aggregate {
-  GAccountByPkData_accountByPk_transfersIssuedAggregate_aggregate._();
-
-  factory GAccountByPkData_accountByPk_transfersIssuedAggregate_aggregate(
-          [void Function(
-                  GAccountByPkData_accountByPk_transfersIssuedAggregate_aggregateBuilder
-                      b)
-              updates]) =
-      _$GAccountByPkData_accountByPk_transfersIssuedAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_transfersIssuedAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'TransferAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountByPkData_accountByPk_transfersIssuedAggregate_aggregate_sum? get sum;
-  @override
-  int get count;
-  static Serializer<
-          GAccountByPkData_accountByPk_transfersIssuedAggregate_aggregate>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkTransfersIssuedAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_transfersIssuedAggregate_aggregate
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_transfersIssuedAggregate_aggregate?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accountByPk_transfersIssuedAggregate_aggregate
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountByPkData_accountByPk_transfersIssuedAggregate_aggregate_sum
-    implements
-        Built<
-            GAccountByPkData_accountByPk_transfersIssuedAggregate_aggregate_sum,
-            GAccountByPkData_accountByPk_transfersIssuedAggregate_aggregate_sumBuilder>,
-        GAccountFields_transfersIssuedAggregate_aggregate_sum {
-  GAccountByPkData_accountByPk_transfersIssuedAggregate_aggregate_sum._();
-
-  factory GAccountByPkData_accountByPk_transfersIssuedAggregate_aggregate_sum(
-          [void Function(
-                  GAccountByPkData_accountByPk_transfersIssuedAggregate_aggregate_sumBuilder
-                      b)
-              updates]) =
-      _$GAccountByPkData_accountByPk_transfersIssuedAggregate_aggregate_sum;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_transfersIssuedAggregate_aggregate_sumBuilder
-              b) =>
-      b..G__typename = 'TransferSumFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int? get amount;
-  static Serializer<
-          GAccountByPkData_accountByPk_transfersIssuedAggregate_aggregate_sum>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkTransfersIssuedAggregateAggregateSumSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_transfersIssuedAggregate_aggregate_sum
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_transfersIssuedAggregate_aggregate_sum?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accountByPk_transfersIssuedAggregate_aggregate_sum
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountByPkData_accountByPk_transfersReceived
-    implements
-        Built<GAccountByPkData_accountByPk_transfersReceived,
-            GAccountByPkData_accountByPk_transfersReceivedBuilder>,
-        GAccountFields_transfersReceived,
-        GTransferFields {
-  GAccountByPkData_accountByPk_transfersReceived._();
-
-  factory GAccountByPkData_accountByPk_transfersReceived(
-      [void Function(GAccountByPkData_accountByPk_transfersReceivedBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_transfersReceived;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_transfersReceivedBuilder b) =>
-      b..G__typename = 'Transfer';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get blockNumber;
-  @override
-  _i2.Gtimestamptz get timestamp;
-  @override
-  int get amount;
-  @override
-  GAccountByPkData_accountByPk_transfersReceived_to? get to;
-  @override
-  GAccountByPkData_accountByPk_transfersReceived_from? get from;
-  @override
-  GAccountByPkData_accountByPk_transfersReceived_comment? get comment;
-  static Serializer<GAccountByPkData_accountByPk_transfersReceived>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkTransfersReceivedSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_transfersReceived.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_transfersReceived? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_transfersReceived.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_transfersReceived_to
-    implements
-        Built<GAccountByPkData_accountByPk_transfersReceived_to,
-            GAccountByPkData_accountByPk_transfersReceived_toBuilder>,
-        GAccountFields_transfersReceived_to,
-        GTransferFields_to {
-  GAccountByPkData_accountByPk_transfersReceived_to._();
-
-  factory GAccountByPkData_accountByPk_transfersReceived_to(
-      [void Function(GAccountByPkData_accountByPk_transfersReceived_toBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_transfersReceived_to;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_transfersReceived_toBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  static Serializer<GAccountByPkData_accountByPk_transfersReceived_to>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkTransfersReceivedToSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_transfersReceived_to.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_transfersReceived_to? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_transfersReceived_to.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_transfersReceived_from
-    implements
-        Built<GAccountByPkData_accountByPk_transfersReceived_from,
-            GAccountByPkData_accountByPk_transfersReceived_fromBuilder>,
-        GAccountFields_transfersReceived_from,
-        GTransferFields_from {
-  GAccountByPkData_accountByPk_transfersReceived_from._();
-
-  factory GAccountByPkData_accountByPk_transfersReceived_from(
-      [void Function(
-              GAccountByPkData_accountByPk_transfersReceived_fromBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_transfersReceived_from;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_transfersReceived_fromBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  static Serializer<GAccountByPkData_accountByPk_transfersReceived_from>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkTransfersReceivedFromSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_transfersReceived_from.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_transfersReceived_from? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_transfersReceived_from.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_transfersReceived_comment
-    implements
-        Built<GAccountByPkData_accountByPk_transfersReceived_comment,
-            GAccountByPkData_accountByPk_transfersReceived_commentBuilder>,
-        GAccountFields_transfersReceived_comment,
-        GTransferFields_comment {
-  GAccountByPkData_accountByPk_transfersReceived_comment._();
-
-  factory GAccountByPkData_accountByPk_transfersReceived_comment(
-      [void Function(
-              GAccountByPkData_accountByPk_transfersReceived_commentBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_transfersReceived_comment;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_transfersReceived_commentBuilder b) =>
-      b..G__typename = 'TxComment';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get remark;
-  @override
-  _i2.Gbytea get remarkBytes;
-  static Serializer<GAccountByPkData_accountByPk_transfersReceived_comment>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkTransfersReceivedCommentSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_transfersReceived_comment.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_transfersReceived_comment? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_transfersReceived_comment.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_transfersReceivedAggregate
-    implements
-        Built<GAccountByPkData_accountByPk_transfersReceivedAggregate,
-            GAccountByPkData_accountByPk_transfersReceivedAggregateBuilder>,
-        GAccountFields_transfersReceivedAggregate {
-  GAccountByPkData_accountByPk_transfersReceivedAggregate._();
-
-  factory GAccountByPkData_accountByPk_transfersReceivedAggregate(
-      [void Function(
-              GAccountByPkData_accountByPk_transfersReceivedAggregateBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_transfersReceivedAggregate;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_transfersReceivedAggregateBuilder b) =>
-      b..G__typename = 'TransferAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountByPkData_accountByPk_transfersReceivedAggregate_aggregate?
-      get aggregate;
-  static Serializer<GAccountByPkData_accountByPk_transfersReceivedAggregate>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkTransfersReceivedAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_transfersReceivedAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_transfersReceivedAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_transfersReceivedAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_transfersReceivedAggregate_aggregate
-    implements
-        Built<GAccountByPkData_accountByPk_transfersReceivedAggregate_aggregate,
-            GAccountByPkData_accountByPk_transfersReceivedAggregate_aggregateBuilder>,
-        GAccountFields_transfersReceivedAggregate_aggregate {
-  GAccountByPkData_accountByPk_transfersReceivedAggregate_aggregate._();
-
-  factory GAccountByPkData_accountByPk_transfersReceivedAggregate_aggregate(
-          [void Function(
-                  GAccountByPkData_accountByPk_transfersReceivedAggregate_aggregateBuilder
-                      b)
-              updates]) =
-      _$GAccountByPkData_accountByPk_transfersReceivedAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_transfersReceivedAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'TransferAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountByPkData_accountByPk_transfersReceivedAggregate_aggregate_sum?
-      get sum;
-  @override
-  int get count;
-  static Serializer<
-          GAccountByPkData_accountByPk_transfersReceivedAggregate_aggregate>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkTransfersReceivedAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_transfersReceivedAggregate_aggregate
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_transfersReceivedAggregate_aggregate?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accountByPk_transfersReceivedAggregate_aggregate
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountByPkData_accountByPk_transfersReceivedAggregate_aggregate_sum
-    implements
-        Built<
-            GAccountByPkData_accountByPk_transfersReceivedAggregate_aggregate_sum,
-            GAccountByPkData_accountByPk_transfersReceivedAggregate_aggregate_sumBuilder>,
-        GAccountFields_transfersReceivedAggregate_aggregate_sum {
-  GAccountByPkData_accountByPk_transfersReceivedAggregate_aggregate_sum._();
-
-  factory GAccountByPkData_accountByPk_transfersReceivedAggregate_aggregate_sum(
-          [void Function(
-                  GAccountByPkData_accountByPk_transfersReceivedAggregate_aggregate_sumBuilder
-                      b)
-              updates]) =
-      _$GAccountByPkData_accountByPk_transfersReceivedAggregate_aggregate_sum;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_transfersReceivedAggregate_aggregate_sumBuilder
-              b) =>
-      b..G__typename = 'TransferSumFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int? get amount;
-  static Serializer<
-          GAccountByPkData_accountByPk_transfersReceivedAggregate_aggregate_sum>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkTransfersReceivedAggregateAggregateSumSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_transfersReceivedAggregate_aggregate_sum
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_transfersReceivedAggregate_aggregate_sum?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accountByPk_transfersReceivedAggregate_aggregate_sum
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountByPkData_accountByPk_wasIdentity
-    implements
-        Built<GAccountByPkData_accountByPk_wasIdentity,
-            GAccountByPkData_accountByPk_wasIdentityBuilder>,
-        GAccountFields_wasIdentity,
-        GOwnerKeyChangeFields {
-  GAccountByPkData_accountByPk_wasIdentity._();
-
-  factory GAccountByPkData_accountByPk_wasIdentity(
-      [void Function(GAccountByPkData_accountByPk_wasIdentityBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_wasIdentity;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_wasIdentityBuilder b) =>
-      b..G__typename = 'ChangeOwnerKey';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  @override
-  int get blockNumber;
-  @override
-  String? get identityId;
-  @override
-  String? get nextId;
-  @override
-  String? get previousId;
-  static Serializer<GAccountByPkData_accountByPk_wasIdentity> get serializer =>
-      _$gAccountByPkDataAccountByPkWasIdentitySerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_wasIdentity.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_wasIdentity? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_wasIdentity.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_wasIdentityAggregate
-    implements
-        Built<GAccountByPkData_accountByPk_wasIdentityAggregate,
-            GAccountByPkData_accountByPk_wasIdentityAggregateBuilder>,
-        GAccountFields_wasIdentityAggregate {
-  GAccountByPkData_accountByPk_wasIdentityAggregate._();
-
-  factory GAccountByPkData_accountByPk_wasIdentityAggregate(
-      [void Function(GAccountByPkData_accountByPk_wasIdentityAggregateBuilder b)
-          updates]) = _$GAccountByPkData_accountByPk_wasIdentityAggregate;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_wasIdentityAggregateBuilder b) =>
-      b..G__typename = 'ChangeOwnerKeyAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountByPkData_accountByPk_wasIdentityAggregate_aggregate? get aggregate;
-  static Serializer<GAccountByPkData_accountByPk_wasIdentityAggregate>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkWasIdentityAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_wasIdentityAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_wasIdentityAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_wasIdentityAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountByPkData_accountByPk_wasIdentityAggregate_aggregate
-    implements
-        Built<GAccountByPkData_accountByPk_wasIdentityAggregate_aggregate,
-            GAccountByPkData_accountByPk_wasIdentityAggregate_aggregateBuilder>,
-        GAccountFields_wasIdentityAggregate_aggregate {
-  GAccountByPkData_accountByPk_wasIdentityAggregate_aggregate._();
-
-  factory GAccountByPkData_accountByPk_wasIdentityAggregate_aggregate(
-      [void Function(
-              GAccountByPkData_accountByPk_wasIdentityAggregate_aggregateBuilder
-                  b)
-          updates]) = _$GAccountByPkData_accountByPk_wasIdentityAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountByPkData_accountByPk_wasIdentityAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'ChangeOwnerKeyAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<GAccountByPkData_accountByPk_wasIdentityAggregate_aggregate>
-      get serializer =>
-          _$gAccountByPkDataAccountByPkWasIdentityAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accountByPk_wasIdentityAggregate_aggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountByPkData_accountByPk_wasIdentityAggregate_aggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountByPkData_accountByPk_wasIdentityAggregate_aggregate.serializer,
-        json,
-      );
 }
 
 abstract class GAccountsByPkData
@@ -5496,11 +4747,11 @@ abstract class GAccountsByPkData
       _$GAccountsByPkData;
 
   static void _initializeBuilder(GAccountsByPkDataBuilder b) =>
-      b..G__typename = 'query_root';
+      b..G__typename = 'Query';
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
-  BuiltList<GAccountsByPkData_account> get account;
+  GAccountsByPkData_accounts? get accounts;
   static Serializer<GAccountsByPkData> get serializer =>
       _$gAccountsByPkDataSerializer;
 
@@ -5516,1305 +4767,586 @@ abstract class GAccountsByPkData
       );
 }
 
-abstract class GAccountsByPkData_account
+abstract class GAccountsByPkData_accounts
     implements
-        Built<GAccountsByPkData_account, GAccountsByPkData_accountBuilder>,
+        Built<GAccountsByPkData_accounts, GAccountsByPkData_accountsBuilder> {
+  GAccountsByPkData_accounts._();
+
+  factory GAccountsByPkData_accounts(
+          [void Function(GAccountsByPkData_accountsBuilder b) updates]) =
+      _$GAccountsByPkData_accounts;
+
+  static void _initializeBuilder(GAccountsByPkData_accountsBuilder b) =>
+      b..G__typename = 'AccountsConnection';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  BuiltList<GAccountsByPkData_accounts_nodes> get nodes;
+  static Serializer<GAccountsByPkData_accounts> get serializer =>
+      _$gAccountsByPkDataAccountsSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountsByPkData_accounts.serializer,
+        json,
+      );
+}
+
+abstract class GAccountsByPkData_accounts_nodes
+    implements
+        Built<GAccountsByPkData_accounts_nodes,
+            GAccountsByPkData_accounts_nodesBuilder>,
         GAccountFields {
-  GAccountsByPkData_account._();
+  GAccountsByPkData_accounts_nodes._();
 
-  factory GAccountsByPkData_account(
-          [void Function(GAccountsByPkData_accountBuilder b) updates]) =
-      _$GAccountsByPkData_account;
+  factory GAccountsByPkData_accounts_nodes(
+          [void Function(GAccountsByPkData_accounts_nodesBuilder b) updates]) =
+      _$GAccountsByPkData_accounts_nodes;
 
-  static void _initializeBuilder(GAccountsByPkData_accountBuilder b) =>
+  static void _initializeBuilder(GAccountsByPkData_accounts_nodesBuilder b) =>
       b..G__typename = 'Account';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  BuiltList<GAccountsByPkData_account_commentsIssued> get commentsIssued;
-  @override
-  GAccountsByPkData_account_commentsIssuedAggregate get commentsIssuedAggregate;
-  @override
   int get createdOn;
   @override
   String get id;
   @override
-  GAccountsByPkData_account_identity? get identity;
-  @override
   bool get isActive;
   @override
-  GAccountsByPkData_account_linkedIdentity? get linkedIdentity;
+  GAccountsByPkData_accounts_nodes_transfersIssued get transfersIssued;
   @override
-  BuiltList<GAccountsByPkData_account_removedIdentities> get removedIdentities;
+  GAccountsByPkData_accounts_nodes_transfersReceived get transfersReceived;
   @override
-  GAccountsByPkData_account_removedIdentitiesAggregate
-      get removedIdentitiesAggregate;
+  GAccountsByPkData_accounts_nodes_wasIdentityPrev get wasIdentityPrev;
   @override
-  BuiltList<GAccountsByPkData_account_transfersIssued> get transfersIssued;
+  GAccountsByPkData_accounts_nodes_wasIdentityNext get wasIdentityNext;
   @override
-  GAccountsByPkData_account_transfersIssuedAggregate
-      get transfersIssuedAggregate;
-  @override
-  BuiltList<GAccountsByPkData_account_transfersReceived> get transfersReceived;
-  @override
-  GAccountsByPkData_account_transfersReceivedAggregate
-      get transfersReceivedAggregate;
-  @override
-  BuiltList<GAccountsByPkData_account_wasIdentity> get wasIdentity;
-  @override
-  GAccountsByPkData_account_wasIdentityAggregate get wasIdentityAggregate;
-  static Serializer<GAccountsByPkData_account> get serializer =>
-      _$gAccountsByPkDataAccountSerializer;
+  GAccountsByPkData_accounts_nodes_linkedIdentity? get linkedIdentity;
+  static Serializer<GAccountsByPkData_accounts_nodes> get serializer =>
+      _$gAccountsByPkDataAccountsNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account.serializer,
+        GAccountsByPkData_accounts_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_account? fromJson(Map<String, dynamic> json) =>
+  static GAccountsByPkData_accounts_nodes? fromJson(
+          Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountsByPkData_account.serializer,
+        GAccountsByPkData_accounts_nodes.serializer,
         json,
       );
 }
 
-abstract class GAccountsByPkData_account_commentsIssued
+abstract class GAccountsByPkData_accounts_nodes_transfersIssued
     implements
-        Built<GAccountsByPkData_account_commentsIssued,
-            GAccountsByPkData_account_commentsIssuedBuilder>,
-        GAccountFields_commentsIssued,
-        GCommentsIssued {
-  GAccountsByPkData_account_commentsIssued._();
+        Built<GAccountsByPkData_accounts_nodes_transfersIssued,
+            GAccountsByPkData_accounts_nodes_transfersIssuedBuilder>,
+        GAccountFields_transfersIssued {
+  GAccountsByPkData_accounts_nodes_transfersIssued._();
 
-  factory GAccountsByPkData_account_commentsIssued(
-      [void Function(GAccountsByPkData_account_commentsIssuedBuilder b)
-          updates]) = _$GAccountsByPkData_account_commentsIssued;
+  factory GAccountsByPkData_accounts_nodes_transfersIssued(
+      [void Function(GAccountsByPkData_accounts_nodes_transfersIssuedBuilder b)
+          updates]) = _$GAccountsByPkData_accounts_nodes_transfersIssued;
 
   static void _initializeBuilder(
-          GAccountsByPkData_account_commentsIssuedBuilder b) =>
+          GAccountsByPkData_accounts_nodes_transfersIssuedBuilder b) =>
+      b..G__typename = 'TransfersConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GAccountsByPkData_accounts_nodes_transfersIssued_nodes> get nodes;
+  static Serializer<GAccountsByPkData_accounts_nodes_transfersIssued>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesTransfersIssuedSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_transfersIssued.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_transfersIssued? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountsByPkData_accounts_nodes_transfersIssued.serializer,
+        json,
+      );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_transfersIssued_nodes
+    implements
+        Built<GAccountsByPkData_accounts_nodes_transfersIssued_nodes,
+            GAccountsByPkData_accounts_nodes_transfersIssued_nodesBuilder>,
+        GAccountFields_transfersIssued_nodes,
+        GTransferFields {
+  GAccountsByPkData_accounts_nodes_transfersIssued_nodes._();
+
+  factory GAccountsByPkData_accounts_nodes_transfersIssued_nodes(
+      [void Function(
+              GAccountsByPkData_accounts_nodes_transfersIssued_nodesBuilder b)
+          updates]) = _$GAccountsByPkData_accounts_nodes_transfersIssued_nodes;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_transfersIssued_nodesBuilder b) =>
+      b..G__typename = 'Transfer';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get blockNumber;
+  @override
+  _i2.GDatetime get timestamp;
+  @override
+  _i2.GBigFloat get amount;
+  @override
+  GAccountsByPkData_accounts_nodes_transfersIssued_nodes_to? get to;
+  @override
+  GAccountsByPkData_accounts_nodes_transfersIssued_nodes_from? get from;
+  @override
+  GAccountsByPkData_accounts_nodes_transfersIssued_nodes_comment? get comment;
+  static Serializer<GAccountsByPkData_accounts_nodes_transfersIssued_nodes>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesTransfersIssuedNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_transfersIssued_nodes.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_transfersIssued_nodes? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountsByPkData_accounts_nodes_transfersIssued_nodes.serializer,
+        json,
+      );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_transfersIssued_nodes_to
+    implements
+        Built<GAccountsByPkData_accounts_nodes_transfersIssued_nodes_to,
+            GAccountsByPkData_accounts_nodes_transfersIssued_nodes_toBuilder>,
+        GAccountFields_transfersIssued_nodes_to,
+        GTransferFields_to {
+  GAccountsByPkData_accounts_nodes_transfersIssued_nodes_to._();
+
+  factory GAccountsByPkData_accounts_nodes_transfersIssued_nodes_to(
+      [void Function(
+              GAccountsByPkData_accounts_nodes_transfersIssued_nodes_toBuilder
+                  b)
+          updates]) = _$GAccountsByPkData_accounts_nodes_transfersIssued_nodes_to;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_transfersIssued_nodes_toBuilder b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  static Serializer<GAccountsByPkData_accounts_nodes_transfersIssued_nodes_to>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesTransfersIssuedNodesToSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_transfersIssued_nodes_to.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_transfersIssued_nodes_to? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountsByPkData_accounts_nodes_transfersIssued_nodes_to.serializer,
+        json,
+      );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_transfersIssued_nodes_from
+    implements
+        Built<GAccountsByPkData_accounts_nodes_transfersIssued_nodes_from,
+            GAccountsByPkData_accounts_nodes_transfersIssued_nodes_fromBuilder>,
+        GAccountFields_transfersIssued_nodes_from,
+        GTransferFields_from {
+  GAccountsByPkData_accounts_nodes_transfersIssued_nodes_from._();
+
+  factory GAccountsByPkData_accounts_nodes_transfersIssued_nodes_from(
+      [void Function(
+              GAccountsByPkData_accounts_nodes_transfersIssued_nodes_fromBuilder
+                  b)
+          updates]) = _$GAccountsByPkData_accounts_nodes_transfersIssued_nodes_from;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_transfersIssued_nodes_fromBuilder
+              b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  static Serializer<GAccountsByPkData_accounts_nodes_transfersIssued_nodes_from>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesTransfersIssuedNodesFromSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_transfersIssued_nodes_from.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_transfersIssued_nodes_from? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountsByPkData_accounts_nodes_transfersIssued_nodes_from.serializer,
+        json,
+      );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_transfersIssued_nodes_comment
+    implements
+        Built<GAccountsByPkData_accounts_nodes_transfersIssued_nodes_comment,
+            GAccountsByPkData_accounts_nodes_transfersIssued_nodes_commentBuilder>,
+        GAccountFields_transfersIssued_nodes_comment,
+        GTransferFields_comment {
+  GAccountsByPkData_accounts_nodes_transfersIssued_nodes_comment._();
+
+  factory GAccountsByPkData_accounts_nodes_transfersIssued_nodes_comment(
+          [void Function(
+                  GAccountsByPkData_accounts_nodes_transfersIssued_nodes_commentBuilder
+                      b)
+              updates]) =
+      _$GAccountsByPkData_accounts_nodes_transfersIssued_nodes_comment;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_transfersIssued_nodes_commentBuilder
+              b) =>
       b..G__typename = 'TxComment';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  String? get authorId;
+  String get remark;
+  @override
+  String get remarkBytes;
+  static Serializer<
+          GAccountsByPkData_accounts_nodes_transfersIssued_nodes_comment>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesTransfersIssuedNodesCommentSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_transfersIssued_nodes_comment
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_transfersIssued_nodes_comment?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountsByPkData_accounts_nodes_transfersIssued_nodes_comment
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_transfersReceived
+    implements
+        Built<GAccountsByPkData_accounts_nodes_transfersReceived,
+            GAccountsByPkData_accounts_nodes_transfersReceivedBuilder>,
+        GAccountFields_transfersReceived {
+  GAccountsByPkData_accounts_nodes_transfersReceived._();
+
+  factory GAccountsByPkData_accounts_nodes_transfersReceived(
+      [void Function(
+              GAccountsByPkData_accounts_nodes_transfersReceivedBuilder b)
+          updates]) = _$GAccountsByPkData_accounts_nodes_transfersReceived;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_transfersReceivedBuilder b) =>
+      b..G__typename = 'TransfersConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GAccountsByPkData_accounts_nodes_transfersReceived_nodes> get nodes;
+  static Serializer<GAccountsByPkData_accounts_nodes_transfersReceived>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesTransfersReceivedSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_transfersReceived.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_transfersReceived? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountsByPkData_accounts_nodes_transfersReceived.serializer,
+        json,
+      );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_transfersReceived_nodes
+    implements
+        Built<GAccountsByPkData_accounts_nodes_transfersReceived_nodes,
+            GAccountsByPkData_accounts_nodes_transfersReceived_nodesBuilder>,
+        GAccountFields_transfersReceived_nodes,
+        GTransferFields {
+  GAccountsByPkData_accounts_nodes_transfersReceived_nodes._();
+
+  factory GAccountsByPkData_accounts_nodes_transfersReceived_nodes(
+      [void Function(
+              GAccountsByPkData_accounts_nodes_transfersReceived_nodesBuilder b)
+          updates]) = _$GAccountsByPkData_accounts_nodes_transfersReceived_nodes;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_transfersReceived_nodesBuilder b) =>
+      b..G__typename = 'Transfer';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
   @override
   int get blockNumber;
   @override
-  String? get eventId;
+  _i2.GDatetime get timestamp;
   @override
-  String get hash;
+  _i2.GBigFloat get amount;
+  @override
+  GAccountsByPkData_accounts_nodes_transfersReceived_nodes_to? get to;
+  @override
+  GAccountsByPkData_accounts_nodes_transfersReceived_nodes_from? get from;
+  @override
+  GAccountsByPkData_accounts_nodes_transfersReceived_nodes_comment? get comment;
+  static Serializer<GAccountsByPkData_accounts_nodes_transfersReceived_nodes>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesTransfersReceivedNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_transfersReceived_nodes.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_transfersReceived_nodes? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountsByPkData_accounts_nodes_transfersReceived_nodes.serializer,
+        json,
+      );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_transfersReceived_nodes_to
+    implements
+        Built<GAccountsByPkData_accounts_nodes_transfersReceived_nodes_to,
+            GAccountsByPkData_accounts_nodes_transfersReceived_nodes_toBuilder>,
+        GAccountFields_transfersReceived_nodes_to,
+        GTransferFields_to {
+  GAccountsByPkData_accounts_nodes_transfersReceived_nodes_to._();
+
+  factory GAccountsByPkData_accounts_nodes_transfersReceived_nodes_to(
+      [void Function(
+              GAccountsByPkData_accounts_nodes_transfersReceived_nodes_toBuilder
+                  b)
+          updates]) = _$GAccountsByPkData_accounts_nodes_transfersReceived_nodes_to;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_transfersReceived_nodes_toBuilder
+              b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
   @override
   String get id;
+  static Serializer<GAccountsByPkData_accounts_nodes_transfersReceived_nodes_to>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesTransfersReceivedNodesToSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_transfersReceived_nodes_to.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_transfersReceived_nodes_to? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountsByPkData_accounts_nodes_transfersReceived_nodes_to.serializer,
+        json,
+      );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_transfersReceived_nodes_from
+    implements
+        Built<GAccountsByPkData_accounts_nodes_transfersReceived_nodes_from,
+            GAccountsByPkData_accounts_nodes_transfersReceived_nodes_fromBuilder>,
+        GAccountFields_transfersReceived_nodes_from,
+        GTransferFields_from {
+  GAccountsByPkData_accounts_nodes_transfersReceived_nodes_from._();
+
+  factory GAccountsByPkData_accounts_nodes_transfersReceived_nodes_from(
+          [void Function(
+                  GAccountsByPkData_accounts_nodes_transfersReceived_nodes_fromBuilder
+                      b)
+              updates]) =
+      _$GAccountsByPkData_accounts_nodes_transfersReceived_nodes_from;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_transfersReceived_nodes_fromBuilder
+              b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  static Serializer<
+          GAccountsByPkData_accounts_nodes_transfersReceived_nodes_from>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesTransfersReceivedNodesFromSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_transfersReceived_nodes_from
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_transfersReceived_nodes_from?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountsByPkData_accounts_nodes_transfersReceived_nodes_from
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_transfersReceived_nodes_comment
+    implements
+        Built<GAccountsByPkData_accounts_nodes_transfersReceived_nodes_comment,
+            GAccountsByPkData_accounts_nodes_transfersReceived_nodes_commentBuilder>,
+        GAccountFields_transfersReceived_nodes_comment,
+        GTransferFields_comment {
+  GAccountsByPkData_accounts_nodes_transfersReceived_nodes_comment._();
+
+  factory GAccountsByPkData_accounts_nodes_transfersReceived_nodes_comment(
+          [void Function(
+                  GAccountsByPkData_accounts_nodes_transfersReceived_nodes_commentBuilder
+                      b)
+              updates]) =
+      _$GAccountsByPkData_accounts_nodes_transfersReceived_nodes_comment;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_transfersReceived_nodes_commentBuilder
+              b) =>
+      b..G__typename = 'TxComment';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
   @override
   String get remark;
   @override
-  _i2.Gbytea get remarkBytes;
-  @override
-  String get type;
-  static Serializer<GAccountsByPkData_account_commentsIssued> get serializer =>
-      _$gAccountsByPkDataAccountCommentsIssuedSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_commentsIssued.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_commentsIssued? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_commentsIssued.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_commentsIssuedAggregate
-    implements
-        Built<GAccountsByPkData_account_commentsIssuedAggregate,
-            GAccountsByPkData_account_commentsIssuedAggregateBuilder>,
-        GAccountFields_commentsIssuedAggregate {
-  GAccountsByPkData_account_commentsIssuedAggregate._();
-
-  factory GAccountsByPkData_account_commentsIssuedAggregate(
-      [void Function(GAccountsByPkData_account_commentsIssuedAggregateBuilder b)
-          updates]) = _$GAccountsByPkData_account_commentsIssuedAggregate;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_commentsIssuedAggregateBuilder b) =>
-      b..G__typename = 'TxCommentAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountsByPkData_account_commentsIssuedAggregate_aggregate? get aggregate;
-  static Serializer<GAccountsByPkData_account_commentsIssuedAggregate>
-      get serializer =>
-          _$gAccountsByPkDataAccountCommentsIssuedAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_commentsIssuedAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_commentsIssuedAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_commentsIssuedAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_commentsIssuedAggregate_aggregate
-    implements
-        Built<GAccountsByPkData_account_commentsIssuedAggregate_aggregate,
-            GAccountsByPkData_account_commentsIssuedAggregate_aggregateBuilder>,
-        GAccountFields_commentsIssuedAggregate_aggregate {
-  GAccountsByPkData_account_commentsIssuedAggregate_aggregate._();
-
-  factory GAccountsByPkData_account_commentsIssuedAggregate_aggregate(
-      [void Function(
-              GAccountsByPkData_account_commentsIssuedAggregate_aggregateBuilder
-                  b)
-          updates]) = _$GAccountsByPkData_account_commentsIssuedAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_commentsIssuedAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'TxCommentAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<GAccountsByPkData_account_commentsIssuedAggregate_aggregate>
-      get serializer =>
-          _$gAccountsByPkDataAccountCommentsIssuedAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_commentsIssuedAggregate_aggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_commentsIssuedAggregate_aggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_commentsIssuedAggregate_aggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_identity
-    implements
-        Built<GAccountsByPkData_account_identity,
-            GAccountsByPkData_account_identityBuilder>,
-        GAccountFields_identity,
-        GIdentityFields {
-  GAccountsByPkData_account_identity._();
-
-  factory GAccountsByPkData_account_identity(
-      [void Function(GAccountsByPkData_account_identityBuilder b)
-          updates]) = _$GAccountsByPkData_account_identity;
-
-  static void _initializeBuilder(GAccountsByPkData_account_identityBuilder b) =>
-      b..G__typename = 'Identity';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountsByPkData_account_identity_account? get account;
-  @override
-  String? get accountId;
-  @override
-  String? get accountRemovedId;
-  @override
-  BuiltList<GAccountsByPkData_account_identity_certIssued> get certIssued;
-  @override
-  GAccountsByPkData_account_identity_certIssuedAggregate
-      get certIssuedAggregate;
-  @override
-  BuiltList<GAccountsByPkData_account_identity_certReceived> get certReceived;
-  @override
-  GAccountsByPkData_account_identity_certReceivedAggregate
-      get certReceivedAggregate;
-  @override
-  String? get createdInId;
-  @override
-  int get createdOn;
-  @override
-  int get expireOn;
-  @override
-  String get id;
-  @override
-  int get index;
-  @override
-  bool get isMember;
-  @override
-  int get lastChangeOn;
-  @override
-  BuiltList<GAccountsByPkData_account_identity_linkedAccount> get linkedAccount;
-  @override
-  GAccountsByPkData_account_identity_linkedAccountAggregate
-      get linkedAccountAggregate;
-  @override
-  String get status;
-  @override
-  BuiltList<GAccountsByPkData_account_identity_membershipHistory>
-      get membershipHistory;
-  @override
-  GAccountsByPkData_account_identity_membershipHistoryAggregate
-      get membershipHistoryAggregate;
-  @override
-  String get name;
-  @override
-  BuiltList<GAccountsByPkData_account_identity_ownerKeyChange>
-      get ownerKeyChange;
-  @override
-  GAccountsByPkData_account_identity_ownerKeyChangeAggregate
-      get ownerKeyChangeAggregate;
-  @override
-  GAccountsByPkData_account_identity_smith? get smith;
-  static Serializer<GAccountsByPkData_account_identity> get serializer =>
-      _$gAccountsByPkDataAccountIdentitySerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_identity? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_identity.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_identity_account
-    implements
-        Built<GAccountsByPkData_account_identity_account,
-            GAccountsByPkData_account_identity_accountBuilder>,
-        GAccountFields_identity_account,
-        GIdentityFields_account {
-  GAccountsByPkData_account_identity_account._();
-
-  factory GAccountsByPkData_account_identity_account(
-      [void Function(GAccountsByPkData_account_identity_accountBuilder b)
-          updates]) = _$GAccountsByPkData_account_identity_account;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_identity_accountBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get createdOn;
-  static Serializer<GAccountsByPkData_account_identity_account>
-      get serializer => _$gAccountsByPkDataAccountIdentityAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_account.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_identity_account? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_identity_account.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_identity_certIssued
-    implements
-        Built<GAccountsByPkData_account_identity_certIssued,
-            GAccountsByPkData_account_identity_certIssuedBuilder>,
-        GAccountFields_identity_certIssued,
-        GIdentityFields_certIssued,
-        GCertFields {
-  GAccountsByPkData_account_identity_certIssued._();
-
-  factory GAccountsByPkData_account_identity_certIssued(
-      [void Function(GAccountsByPkData_account_identity_certIssuedBuilder b)
-          updates]) = _$GAccountsByPkData_account_identity_certIssued;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_identity_certIssuedBuilder b) =>
-      b..G__typename = 'Cert';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  @override
-  String? get issuerId;
-  @override
-  GAccountsByPkData_account_identity_certIssued_issuer? get issuer;
-  @override
-  String? get receiverId;
-  @override
-  GAccountsByPkData_account_identity_certIssued_receiver? get receiver;
-  @override
-  int get createdOn;
-  @override
-  int get expireOn;
-  @override
-  bool get isActive;
-  @override
-  int get updatedOn;
-  static Serializer<GAccountsByPkData_account_identity_certIssued>
-      get serializer => _$gAccountsByPkDataAccountIdentityCertIssuedSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_certIssued.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_identity_certIssued? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_identity_certIssued.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_identity_certIssued_issuer
-    implements
-        Built<GAccountsByPkData_account_identity_certIssued_issuer,
-            GAccountsByPkData_account_identity_certIssued_issuerBuilder>,
-        GAccountFields_identity_certIssued_issuer,
-        GIdentityFields_certIssued_issuer,
-        GCertFields_issuer,
-        GIdentityBasicFields {
-  GAccountsByPkData_account_identity_certIssued_issuer._();
-
-  factory GAccountsByPkData_account_identity_certIssued_issuer(
-      [void Function(
-              GAccountsByPkData_account_identity_certIssued_issuerBuilder b)
-          updates]) = _$GAccountsByPkData_account_identity_certIssued_issuer;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_identity_certIssued_issuerBuilder b) =>
-      b..G__typename = 'Identity';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String? get accountId;
-  @override
-  GAccountsByPkData_account_identity_certIssued_issuer_account? get account;
-  @override
-  String get id;
-  @override
-  bool get isMember;
-  @override
-  String get status;
-  @override
-  String get name;
-  @override
-  int get expireOn;
-  @override
-  int get index;
-  static Serializer<GAccountsByPkData_account_identity_certIssued_issuer>
-      get serializer =>
-          _$gAccountsByPkDataAccountIdentityCertIssuedIssuerSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_certIssued_issuer.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_identity_certIssued_issuer? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_identity_certIssued_issuer.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_identity_certIssued_issuer_account
-    implements
-        Built<GAccountsByPkData_account_identity_certIssued_issuer_account,
-            GAccountsByPkData_account_identity_certIssued_issuer_accountBuilder>,
-        GAccountFields_identity_certIssued_issuer_account,
-        GIdentityFields_certIssued_issuer_account,
-        GCertFields_issuer_account,
-        GIdentityBasicFields_account {
-  GAccountsByPkData_account_identity_certIssued_issuer_account._();
-
-  factory GAccountsByPkData_account_identity_certIssued_issuer_account(
-          [void Function(
-                  GAccountsByPkData_account_identity_certIssued_issuer_accountBuilder
-                      b)
-              updates]) =
-      _$GAccountsByPkData_account_identity_certIssued_issuer_account;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_identity_certIssued_issuer_accountBuilder
-              b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get createdOn;
+  String get remarkBytes;
   static Serializer<
-          GAccountsByPkData_account_identity_certIssued_issuer_account>
+          GAccountsByPkData_accounts_nodes_transfersReceived_nodes_comment>
       get serializer =>
-          _$gAccountsByPkDataAccountIdentityCertIssuedIssuerAccountSerializer;
+          _$gAccountsByPkDataAccountsNodesTransfersReceivedNodesCommentSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_certIssued_issuer_account.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_identity_certIssued_issuer_account? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_identity_certIssued_issuer_account.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_identity_certIssued_receiver
-    implements
-        Built<GAccountsByPkData_account_identity_certIssued_receiver,
-            GAccountsByPkData_account_identity_certIssued_receiverBuilder>,
-        GAccountFields_identity_certIssued_receiver,
-        GIdentityFields_certIssued_receiver,
-        GCertFields_receiver,
-        GIdentityBasicFields {
-  GAccountsByPkData_account_identity_certIssued_receiver._();
-
-  factory GAccountsByPkData_account_identity_certIssued_receiver(
-      [void Function(
-              GAccountsByPkData_account_identity_certIssued_receiverBuilder b)
-          updates]) = _$GAccountsByPkData_account_identity_certIssued_receiver;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_identity_certIssued_receiverBuilder b) =>
-      b..G__typename = 'Identity';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String? get accountId;
-  @override
-  GAccountsByPkData_account_identity_certIssued_receiver_account? get account;
-  @override
-  String get id;
-  @override
-  bool get isMember;
-  @override
-  String get status;
-  @override
-  String get name;
-  @override
-  int get expireOn;
-  @override
-  int get index;
-  static Serializer<GAccountsByPkData_account_identity_certIssued_receiver>
-      get serializer =>
-          _$gAccountsByPkDataAccountIdentityCertIssuedReceiverSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_certIssued_receiver.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_identity_certIssued_receiver? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_identity_certIssued_receiver.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_identity_certIssued_receiver_account
-    implements
-        Built<GAccountsByPkData_account_identity_certIssued_receiver_account,
-            GAccountsByPkData_account_identity_certIssued_receiver_accountBuilder>,
-        GAccountFields_identity_certIssued_receiver_account,
-        GIdentityFields_certIssued_receiver_account,
-        GCertFields_receiver_account,
-        GIdentityBasicFields_account {
-  GAccountsByPkData_account_identity_certIssued_receiver_account._();
-
-  factory GAccountsByPkData_account_identity_certIssued_receiver_account(
-          [void Function(
-                  GAccountsByPkData_account_identity_certIssued_receiver_accountBuilder
-                      b)
-              updates]) =
-      _$GAccountsByPkData_account_identity_certIssued_receiver_account;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_identity_certIssued_receiver_accountBuilder
-              b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get createdOn;
-  static Serializer<
-          GAccountsByPkData_account_identity_certIssued_receiver_account>
-      get serializer =>
-          _$gAccountsByPkDataAccountIdentityCertIssuedReceiverAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_certIssued_receiver_account
+        GAccountsByPkData_accounts_nodes_transfersReceived_nodes_comment
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_account_identity_certIssued_receiver_account?
+  static GAccountsByPkData_accounts_nodes_transfersReceived_nodes_comment?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_account_identity_certIssued_receiver_account
+            GAccountsByPkData_accounts_nodes_transfersReceived_nodes_comment
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountsByPkData_account_identity_certIssuedAggregate
+abstract class GAccountsByPkData_accounts_nodes_wasIdentityPrev
     implements
-        Built<GAccountsByPkData_account_identity_certIssuedAggregate,
-            GAccountsByPkData_account_identity_certIssuedAggregateBuilder>,
-        GAccountFields_identity_certIssuedAggregate,
-        GIdentityFields_certIssuedAggregate {
-  GAccountsByPkData_account_identity_certIssuedAggregate._();
+        Built<GAccountsByPkData_accounts_nodes_wasIdentityPrev,
+            GAccountsByPkData_accounts_nodes_wasIdentityPrevBuilder>,
+        GAccountFields_wasIdentityPrev {
+  GAccountsByPkData_accounts_nodes_wasIdentityPrev._();
 
-  factory GAccountsByPkData_account_identity_certIssuedAggregate(
-      [void Function(
-              GAccountsByPkData_account_identity_certIssuedAggregateBuilder b)
-          updates]) = _$GAccountsByPkData_account_identity_certIssuedAggregate;
+  factory GAccountsByPkData_accounts_nodes_wasIdentityPrev(
+      [void Function(GAccountsByPkData_accounts_nodes_wasIdentityPrevBuilder b)
+          updates]) = _$GAccountsByPkData_accounts_nodes_wasIdentityPrev;
 
   static void _initializeBuilder(
-          GAccountsByPkData_account_identity_certIssuedAggregateBuilder b) =>
-      b..G__typename = 'CertAggregate';
+          GAccountsByPkData_accounts_nodes_wasIdentityPrevBuilder b) =>
+      b..G__typename = 'ChangeOwnerKeysConnection';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  GAccountsByPkData_account_identity_certIssuedAggregate_aggregate?
-      get aggregate;
-  static Serializer<GAccountsByPkData_account_identity_certIssuedAggregate>
+  int get totalCount;
+  @override
+  BuiltList<GAccountsByPkData_accounts_nodes_wasIdentityPrev_nodes> get nodes;
+  static Serializer<GAccountsByPkData_accounts_nodes_wasIdentityPrev>
       get serializer =>
-          _$gAccountsByPkDataAccountIdentityCertIssuedAggregateSerializer;
+          _$gAccountsByPkDataAccountsNodesWasIdentityPrevSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_certIssuedAggregate.serializer,
+        GAccountsByPkData_accounts_nodes_wasIdentityPrev.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_account_identity_certIssuedAggregate? fromJson(
+  static GAccountsByPkData_accounts_nodes_wasIdentityPrev? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_identity_certIssuedAggregate.serializer,
+        GAccountsByPkData_accounts_nodes_wasIdentityPrev.serializer,
         json,
       );
 }
 
-abstract class GAccountsByPkData_account_identity_certIssuedAggregate_aggregate
+abstract class GAccountsByPkData_accounts_nodes_wasIdentityPrev_nodes
     implements
-        Built<GAccountsByPkData_account_identity_certIssuedAggregate_aggregate,
-            GAccountsByPkData_account_identity_certIssuedAggregate_aggregateBuilder>,
-        GAccountFields_identity_certIssuedAggregate_aggregate,
-        GIdentityFields_certIssuedAggregate_aggregate {
-  GAccountsByPkData_account_identity_certIssuedAggregate_aggregate._();
-
-  factory GAccountsByPkData_account_identity_certIssuedAggregate_aggregate(
-          [void Function(
-                  GAccountsByPkData_account_identity_certIssuedAggregate_aggregateBuilder
-                      b)
-              updates]) =
-      _$GAccountsByPkData_account_identity_certIssuedAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_identity_certIssuedAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'CertAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<
-          GAccountsByPkData_account_identity_certIssuedAggregate_aggregate>
-      get serializer =>
-          _$gAccountsByPkDataAccountIdentityCertIssuedAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_certIssuedAggregate_aggregate
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_identity_certIssuedAggregate_aggregate?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_account_identity_certIssuedAggregate_aggregate
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountsByPkData_account_identity_certReceived
-    implements
-        Built<GAccountsByPkData_account_identity_certReceived,
-            GAccountsByPkData_account_identity_certReceivedBuilder>,
-        GAccountFields_identity_certReceived,
-        GIdentityFields_certReceived,
-        GCertFields {
-  GAccountsByPkData_account_identity_certReceived._();
-
-  factory GAccountsByPkData_account_identity_certReceived(
-      [void Function(GAccountsByPkData_account_identity_certReceivedBuilder b)
-          updates]) = _$GAccountsByPkData_account_identity_certReceived;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_identity_certReceivedBuilder b) =>
-      b..G__typename = 'Cert';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  @override
-  String? get issuerId;
-  @override
-  GAccountsByPkData_account_identity_certReceived_issuer? get issuer;
-  @override
-  String? get receiverId;
-  @override
-  GAccountsByPkData_account_identity_certReceived_receiver? get receiver;
-  @override
-  int get createdOn;
-  @override
-  int get expireOn;
-  @override
-  bool get isActive;
-  @override
-  int get updatedOn;
-  static Serializer<GAccountsByPkData_account_identity_certReceived>
-      get serializer =>
-          _$gAccountsByPkDataAccountIdentityCertReceivedSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_certReceived.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_identity_certReceived? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_identity_certReceived.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_identity_certReceived_issuer
-    implements
-        Built<GAccountsByPkData_account_identity_certReceived_issuer,
-            GAccountsByPkData_account_identity_certReceived_issuerBuilder>,
-        GAccountFields_identity_certReceived_issuer,
-        GIdentityFields_certReceived_issuer,
-        GCertFields_issuer,
-        GIdentityBasicFields {
-  GAccountsByPkData_account_identity_certReceived_issuer._();
-
-  factory GAccountsByPkData_account_identity_certReceived_issuer(
-      [void Function(
-              GAccountsByPkData_account_identity_certReceived_issuerBuilder b)
-          updates]) = _$GAccountsByPkData_account_identity_certReceived_issuer;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_identity_certReceived_issuerBuilder b) =>
-      b..G__typename = 'Identity';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String? get accountId;
-  @override
-  GAccountsByPkData_account_identity_certReceived_issuer_account? get account;
-  @override
-  String get id;
-  @override
-  bool get isMember;
-  @override
-  String get status;
-  @override
-  String get name;
-  @override
-  int get expireOn;
-  @override
-  int get index;
-  static Serializer<GAccountsByPkData_account_identity_certReceived_issuer>
-      get serializer =>
-          _$gAccountsByPkDataAccountIdentityCertReceivedIssuerSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_certReceived_issuer.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_identity_certReceived_issuer? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_identity_certReceived_issuer.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_identity_certReceived_issuer_account
-    implements
-        Built<GAccountsByPkData_account_identity_certReceived_issuer_account,
-            GAccountsByPkData_account_identity_certReceived_issuer_accountBuilder>,
-        GAccountFields_identity_certReceived_issuer_account,
-        GIdentityFields_certReceived_issuer_account,
-        GCertFields_issuer_account,
-        GIdentityBasicFields_account {
-  GAccountsByPkData_account_identity_certReceived_issuer_account._();
-
-  factory GAccountsByPkData_account_identity_certReceived_issuer_account(
-          [void Function(
-                  GAccountsByPkData_account_identity_certReceived_issuer_accountBuilder
-                      b)
-              updates]) =
-      _$GAccountsByPkData_account_identity_certReceived_issuer_account;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_identity_certReceived_issuer_accountBuilder
-              b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get createdOn;
-  static Serializer<
-          GAccountsByPkData_account_identity_certReceived_issuer_account>
-      get serializer =>
-          _$gAccountsByPkDataAccountIdentityCertReceivedIssuerAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_certReceived_issuer_account
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_identity_certReceived_issuer_account?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_account_identity_certReceived_issuer_account
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountsByPkData_account_identity_certReceived_receiver
-    implements
-        Built<GAccountsByPkData_account_identity_certReceived_receiver,
-            GAccountsByPkData_account_identity_certReceived_receiverBuilder>,
-        GAccountFields_identity_certReceived_receiver,
-        GIdentityFields_certReceived_receiver,
-        GCertFields_receiver,
-        GIdentityBasicFields {
-  GAccountsByPkData_account_identity_certReceived_receiver._();
-
-  factory GAccountsByPkData_account_identity_certReceived_receiver(
-      [void Function(
-              GAccountsByPkData_account_identity_certReceived_receiverBuilder b)
-          updates]) = _$GAccountsByPkData_account_identity_certReceived_receiver;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_identity_certReceived_receiverBuilder b) =>
-      b..G__typename = 'Identity';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String? get accountId;
-  @override
-  GAccountsByPkData_account_identity_certReceived_receiver_account? get account;
-  @override
-  String get id;
-  @override
-  bool get isMember;
-  @override
-  String get status;
-  @override
-  String get name;
-  @override
-  int get expireOn;
-  @override
-  int get index;
-  static Serializer<GAccountsByPkData_account_identity_certReceived_receiver>
-      get serializer =>
-          _$gAccountsByPkDataAccountIdentityCertReceivedReceiverSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_certReceived_receiver.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_identity_certReceived_receiver? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_identity_certReceived_receiver.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_identity_certReceived_receiver_account
-    implements
-        Built<GAccountsByPkData_account_identity_certReceived_receiver_account,
-            GAccountsByPkData_account_identity_certReceived_receiver_accountBuilder>,
-        GAccountFields_identity_certReceived_receiver_account,
-        GIdentityFields_certReceived_receiver_account,
-        GCertFields_receiver_account,
-        GIdentityBasicFields_account {
-  GAccountsByPkData_account_identity_certReceived_receiver_account._();
-
-  factory GAccountsByPkData_account_identity_certReceived_receiver_account(
-          [void Function(
-                  GAccountsByPkData_account_identity_certReceived_receiver_accountBuilder
-                      b)
-              updates]) =
-      _$GAccountsByPkData_account_identity_certReceived_receiver_account;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_identity_certReceived_receiver_accountBuilder
-              b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get createdOn;
-  static Serializer<
-          GAccountsByPkData_account_identity_certReceived_receiver_account>
-      get serializer =>
-          _$gAccountsByPkDataAccountIdentityCertReceivedReceiverAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_certReceived_receiver_account
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_identity_certReceived_receiver_account?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_account_identity_certReceived_receiver_account
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountsByPkData_account_identity_certReceivedAggregate
-    implements
-        Built<GAccountsByPkData_account_identity_certReceivedAggregate,
-            GAccountsByPkData_account_identity_certReceivedAggregateBuilder>,
-        GAccountFields_identity_certReceivedAggregate,
-        GIdentityFields_certReceivedAggregate {
-  GAccountsByPkData_account_identity_certReceivedAggregate._();
-
-  factory GAccountsByPkData_account_identity_certReceivedAggregate(
-      [void Function(
-              GAccountsByPkData_account_identity_certReceivedAggregateBuilder b)
-          updates]) = _$GAccountsByPkData_account_identity_certReceivedAggregate;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_identity_certReceivedAggregateBuilder b) =>
-      b..G__typename = 'CertAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountsByPkData_account_identity_certReceivedAggregate_aggregate?
-      get aggregate;
-  static Serializer<GAccountsByPkData_account_identity_certReceivedAggregate>
-      get serializer =>
-          _$gAccountsByPkDataAccountIdentityCertReceivedAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_certReceivedAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_identity_certReceivedAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_identity_certReceivedAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_identity_certReceivedAggregate_aggregate
-    implements
-        Built<
-            GAccountsByPkData_account_identity_certReceivedAggregate_aggregate,
-            GAccountsByPkData_account_identity_certReceivedAggregate_aggregateBuilder>,
-        GAccountFields_identity_certReceivedAggregate_aggregate,
-        GIdentityFields_certReceivedAggregate_aggregate {
-  GAccountsByPkData_account_identity_certReceivedAggregate_aggregate._();
-
-  factory GAccountsByPkData_account_identity_certReceivedAggregate_aggregate(
-          [void Function(
-                  GAccountsByPkData_account_identity_certReceivedAggregate_aggregateBuilder
-                      b)
-              updates]) =
-      _$GAccountsByPkData_account_identity_certReceivedAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_identity_certReceivedAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'CertAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<
-          GAccountsByPkData_account_identity_certReceivedAggregate_aggregate>
-      get serializer =>
-          _$gAccountsByPkDataAccountIdentityCertReceivedAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_certReceivedAggregate_aggregate
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_identity_certReceivedAggregate_aggregate?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_account_identity_certReceivedAggregate_aggregate
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountsByPkData_account_identity_linkedAccount
-    implements
-        Built<GAccountsByPkData_account_identity_linkedAccount,
-            GAccountsByPkData_account_identity_linkedAccountBuilder>,
-        GAccountFields_identity_linkedAccount,
-        GIdentityFields_linkedAccount {
-  GAccountsByPkData_account_identity_linkedAccount._();
-
-  factory GAccountsByPkData_account_identity_linkedAccount(
-      [void Function(GAccountsByPkData_account_identity_linkedAccountBuilder b)
-          updates]) = _$GAccountsByPkData_account_identity_linkedAccount;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_identity_linkedAccountBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  static Serializer<GAccountsByPkData_account_identity_linkedAccount>
-      get serializer =>
-          _$gAccountsByPkDataAccountIdentityLinkedAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_linkedAccount.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_identity_linkedAccount? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_identity_linkedAccount.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_identity_linkedAccountAggregate
-    implements
-        Built<GAccountsByPkData_account_identity_linkedAccountAggregate,
-            GAccountsByPkData_account_identity_linkedAccountAggregateBuilder>,
-        GAccountFields_identity_linkedAccountAggregate,
-        GIdentityFields_linkedAccountAggregate {
-  GAccountsByPkData_account_identity_linkedAccountAggregate._();
-
-  factory GAccountsByPkData_account_identity_linkedAccountAggregate(
-      [void Function(
-              GAccountsByPkData_account_identity_linkedAccountAggregateBuilder
-                  b)
-          updates]) = _$GAccountsByPkData_account_identity_linkedAccountAggregate;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_identity_linkedAccountAggregateBuilder b) =>
-      b..G__typename = 'AccountAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountsByPkData_account_identity_linkedAccountAggregate_aggregate?
-      get aggregate;
-  static Serializer<GAccountsByPkData_account_identity_linkedAccountAggregate>
-      get serializer =>
-          _$gAccountsByPkDataAccountIdentityLinkedAccountAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_linkedAccountAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_identity_linkedAccountAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_identity_linkedAccountAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_identity_linkedAccountAggregate_aggregate
-    implements
-        Built<
-            GAccountsByPkData_account_identity_linkedAccountAggregate_aggregate,
-            GAccountsByPkData_account_identity_linkedAccountAggregate_aggregateBuilder>,
-        GAccountFields_identity_linkedAccountAggregate_aggregate,
-        GIdentityFields_linkedAccountAggregate_aggregate {
-  GAccountsByPkData_account_identity_linkedAccountAggregate_aggregate._();
-
-  factory GAccountsByPkData_account_identity_linkedAccountAggregate_aggregate(
-          [void Function(
-                  GAccountsByPkData_account_identity_linkedAccountAggregate_aggregateBuilder
-                      b)
-              updates]) =
-      _$GAccountsByPkData_account_identity_linkedAccountAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_identity_linkedAccountAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'AccountAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<
-          GAccountsByPkData_account_identity_linkedAccountAggregate_aggregate>
-      get serializer =>
-          _$gAccountsByPkDataAccountIdentityLinkedAccountAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_linkedAccountAggregate_aggregate
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_identity_linkedAccountAggregate_aggregate?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_account_identity_linkedAccountAggregate_aggregate
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountsByPkData_account_identity_membershipHistory
-    implements
-        Built<GAccountsByPkData_account_identity_membershipHistory,
-            GAccountsByPkData_account_identity_membershipHistoryBuilder>,
-        GAccountFields_identity_membershipHistory,
-        GIdentityFields_membershipHistory {
-  GAccountsByPkData_account_identity_membershipHistory._();
-
-  factory GAccountsByPkData_account_identity_membershipHistory(
-      [void Function(
-              GAccountsByPkData_account_identity_membershipHistoryBuilder b)
-          updates]) = _$GAccountsByPkData_account_identity_membershipHistory;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_identity_membershipHistoryBuilder b) =>
-      b..G__typename = 'MembershipEvent';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get blockNumber;
-  @override
-  String? get eventId;
-  @override
-  String get eventType;
-  @override
-  String get id;
-  @override
-  String? get identityId;
-  static Serializer<GAccountsByPkData_account_identity_membershipHistory>
-      get serializer =>
-          _$gAccountsByPkDataAccountIdentityMembershipHistorySerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_membershipHistory.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_identity_membershipHistory? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_identity_membershipHistory.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_identity_membershipHistoryAggregate
-    implements
-        Built<GAccountsByPkData_account_identity_membershipHistoryAggregate,
-            GAccountsByPkData_account_identity_membershipHistoryAggregateBuilder>,
-        GAccountFields_identity_membershipHistoryAggregate,
-        GIdentityFields_membershipHistoryAggregate {
-  GAccountsByPkData_account_identity_membershipHistoryAggregate._();
-
-  factory GAccountsByPkData_account_identity_membershipHistoryAggregate(
-          [void Function(
-                  GAccountsByPkData_account_identity_membershipHistoryAggregateBuilder
-                      b)
-              updates]) =
-      _$GAccountsByPkData_account_identity_membershipHistoryAggregate;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_identity_membershipHistoryAggregateBuilder
-              b) =>
-      b..G__typename = 'MembershipEventAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountsByPkData_account_identity_membershipHistoryAggregate_aggregate?
-      get aggregate;
-  static Serializer<
-          GAccountsByPkData_account_identity_membershipHistoryAggregate>
-      get serializer =>
-          _$gAccountsByPkDataAccountIdentityMembershipHistoryAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_membershipHistoryAggregate
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_identity_membershipHistoryAggregate?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_account_identity_membershipHistoryAggregate
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountsByPkData_account_identity_membershipHistoryAggregate_aggregate
-    implements
-        Built<
-            GAccountsByPkData_account_identity_membershipHistoryAggregate_aggregate,
-            GAccountsByPkData_account_identity_membershipHistoryAggregate_aggregateBuilder>,
-        GAccountFields_identity_membershipHistoryAggregate_aggregate,
-        GIdentityFields_membershipHistoryAggregate_aggregate {
-  GAccountsByPkData_account_identity_membershipHistoryAggregate_aggregate._();
-
-  factory GAccountsByPkData_account_identity_membershipHistoryAggregate_aggregate(
-          [void Function(
-                  GAccountsByPkData_account_identity_membershipHistoryAggregate_aggregateBuilder
-                      b)
-              updates]) =
-      _$GAccountsByPkData_account_identity_membershipHistoryAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_identity_membershipHistoryAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'MembershipEventAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<
-          GAccountsByPkData_account_identity_membershipHistoryAggregate_aggregate>
-      get serializer =>
-          _$gAccountsByPkDataAccountIdentityMembershipHistoryAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_membershipHistoryAggregate_aggregate
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_identity_membershipHistoryAggregate_aggregate?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_account_identity_membershipHistoryAggregate_aggregate
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountsByPkData_account_identity_ownerKeyChange
-    implements
-        Built<GAccountsByPkData_account_identity_ownerKeyChange,
-            GAccountsByPkData_account_identity_ownerKeyChangeBuilder>,
-        GAccountFields_identity_ownerKeyChange,
-        GIdentityFields_ownerKeyChange,
+        Built<GAccountsByPkData_accounts_nodes_wasIdentityPrev_nodes,
+            GAccountsByPkData_accounts_nodes_wasIdentityPrev_nodesBuilder>,
+        GAccountFields_wasIdentityPrev_nodes,
         GOwnerKeyChangeFields {
-  GAccountsByPkData_account_identity_ownerKeyChange._();
+  GAccountsByPkData_accounts_nodes_wasIdentityPrev_nodes._();
 
-  factory GAccountsByPkData_account_identity_ownerKeyChange(
-      [void Function(GAccountsByPkData_account_identity_ownerKeyChangeBuilder b)
-          updates]) = _$GAccountsByPkData_account_identity_ownerKeyChange;
+  factory GAccountsByPkData_accounts_nodes_wasIdentityPrev_nodes(
+      [void Function(
+              GAccountsByPkData_accounts_nodes_wasIdentityPrev_nodesBuilder b)
+          updates]) = _$GAccountsByPkData_accounts_nodes_wasIdentityPrev_nodes;
 
   static void _initializeBuilder(
-          GAccountsByPkData_account_identity_ownerKeyChangeBuilder b) =>
+          GAccountsByPkData_accounts_nodes_wasIdentityPrev_nodesBuilder b) =>
       b..G__typename = 'ChangeOwnerKey';
 
   @override
@@ -6830,128 +5362,1122 @@ abstract class GAccountsByPkData_account_identity_ownerKeyChange
   String? get nextId;
   @override
   String? get previousId;
-  static Serializer<GAccountsByPkData_account_identity_ownerKeyChange>
+  static Serializer<GAccountsByPkData_accounts_nodes_wasIdentityPrev_nodes>
       get serializer =>
-          _$gAccountsByPkDataAccountIdentityOwnerKeyChangeSerializer;
+          _$gAccountsByPkDataAccountsNodesWasIdentityPrevNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_ownerKeyChange.serializer,
+        GAccountsByPkData_accounts_nodes_wasIdentityPrev_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_account_identity_ownerKeyChange? fromJson(
+  static GAccountsByPkData_accounts_nodes_wasIdentityPrev_nodes? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_identity_ownerKeyChange.serializer,
+        GAccountsByPkData_accounts_nodes_wasIdentityPrev_nodes.serializer,
         json,
       );
 }
 
-abstract class GAccountsByPkData_account_identity_ownerKeyChangeAggregate
+abstract class GAccountsByPkData_accounts_nodes_wasIdentityNext
     implements
-        Built<GAccountsByPkData_account_identity_ownerKeyChangeAggregate,
-            GAccountsByPkData_account_identity_ownerKeyChangeAggregateBuilder>,
-        GAccountFields_identity_ownerKeyChangeAggregate,
-        GIdentityFields_ownerKeyChangeAggregate {
-  GAccountsByPkData_account_identity_ownerKeyChangeAggregate._();
+        Built<GAccountsByPkData_accounts_nodes_wasIdentityNext,
+            GAccountsByPkData_accounts_nodes_wasIdentityNextBuilder>,
+        GAccountFields_wasIdentityNext {
+  GAccountsByPkData_accounts_nodes_wasIdentityNext._();
 
-  factory GAccountsByPkData_account_identity_ownerKeyChangeAggregate(
-      [void Function(
-              GAccountsByPkData_account_identity_ownerKeyChangeAggregateBuilder
-                  b)
-          updates]) = _$GAccountsByPkData_account_identity_ownerKeyChangeAggregate;
+  factory GAccountsByPkData_accounts_nodes_wasIdentityNext(
+      [void Function(GAccountsByPkData_accounts_nodes_wasIdentityNextBuilder b)
+          updates]) = _$GAccountsByPkData_accounts_nodes_wasIdentityNext;
 
   static void _initializeBuilder(
-          GAccountsByPkData_account_identity_ownerKeyChangeAggregateBuilder
-              b) =>
-      b..G__typename = 'ChangeOwnerKeyAggregate';
+          GAccountsByPkData_accounts_nodes_wasIdentityNextBuilder b) =>
+      b..G__typename = 'ChangeOwnerKeysConnection';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  GAccountsByPkData_account_identity_ownerKeyChangeAggregate_aggregate?
-      get aggregate;
-  static Serializer<GAccountsByPkData_account_identity_ownerKeyChangeAggregate>
+  int get totalCount;
+  @override
+  BuiltList<GAccountsByPkData_accounts_nodes_wasIdentityNext_nodes> get nodes;
+  static Serializer<GAccountsByPkData_accounts_nodes_wasIdentityNext>
       get serializer =>
-          _$gAccountsByPkDataAccountIdentityOwnerKeyChangeAggregateSerializer;
+          _$gAccountsByPkDataAccountsNodesWasIdentityNextSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_ownerKeyChangeAggregate.serializer,
+        GAccountsByPkData_accounts_nodes_wasIdentityNext.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_account_identity_ownerKeyChangeAggregate? fromJson(
+  static GAccountsByPkData_accounts_nodes_wasIdentityNext? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_identity_ownerKeyChangeAggregate.serializer,
+        GAccountsByPkData_accounts_nodes_wasIdentityNext.serializer,
         json,
       );
 }
 
-abstract class GAccountsByPkData_account_identity_ownerKeyChangeAggregate_aggregate
+abstract class GAccountsByPkData_accounts_nodes_wasIdentityNext_nodes
     implements
-        Built<
-            GAccountsByPkData_account_identity_ownerKeyChangeAggregate_aggregate,
-            GAccountsByPkData_account_identity_ownerKeyChangeAggregate_aggregateBuilder>,
-        GAccountFields_identity_ownerKeyChangeAggregate_aggregate,
-        GIdentityFields_ownerKeyChangeAggregate_aggregate {
-  GAccountsByPkData_account_identity_ownerKeyChangeAggregate_aggregate._();
+        Built<GAccountsByPkData_accounts_nodes_wasIdentityNext_nodes,
+            GAccountsByPkData_accounts_nodes_wasIdentityNext_nodesBuilder>,
+        GAccountFields_wasIdentityNext_nodes,
+        GOwnerKeyChangeFields {
+  GAccountsByPkData_accounts_nodes_wasIdentityNext_nodes._();
 
-  factory GAccountsByPkData_account_identity_ownerKeyChangeAggregate_aggregate(
+  factory GAccountsByPkData_accounts_nodes_wasIdentityNext_nodes(
+      [void Function(
+              GAccountsByPkData_accounts_nodes_wasIdentityNext_nodesBuilder b)
+          updates]) = _$GAccountsByPkData_accounts_nodes_wasIdentityNext_nodes;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_wasIdentityNext_nodesBuilder b) =>
+      b..G__typename = 'ChangeOwnerKey';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  @override
+  int get blockNumber;
+  @override
+  String? get identityId;
+  @override
+  String? get nextId;
+  @override
+  String? get previousId;
+  static Serializer<GAccountsByPkData_accounts_nodes_wasIdentityNext_nodes>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesWasIdentityNextNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_wasIdentityNext_nodes.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_wasIdentityNext_nodes? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountsByPkData_accounts_nodes_wasIdentityNext_nodes.serializer,
+        json,
+      );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_linkedIdentity
+    implements
+        Built<GAccountsByPkData_accounts_nodes_linkedIdentity,
+            GAccountsByPkData_accounts_nodes_linkedIdentityBuilder>,
+        GAccountFields_linkedIdentity,
+        GIdentityFields {
+  GAccountsByPkData_accounts_nodes_linkedIdentity._();
+
+  factory GAccountsByPkData_accounts_nodes_linkedIdentity(
+      [void Function(GAccountsByPkData_accounts_nodes_linkedIdentityBuilder b)
+          updates]) = _$GAccountsByPkData_accounts_nodes_linkedIdentity;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_linkedIdentityBuilder b) =>
+      b..G__typename = 'Identity';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  GAccountsByPkData_accounts_nodes_linkedIdentity_account? get account;
+  @override
+  String? get accountId;
+  @override
+  String? get accountRemovedId;
+  @override
+  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId
+      get certsByIssuerId;
+  @override
+  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId
+      get certsByReceiverId;
+  @override
+  String? get createdInId;
+  @override
+  int get createdOn;
+  @override
+  int get expireOn;
+  @override
+  String get id;
+  @override
+  int get index;
+  @override
+  bool get isMember;
+  @override
+  int get lastChangeOn;
+  @override
+  String get status;
+  @override
+  String get name;
+  @override
+  GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents
+      get membershipEvents;
+  @override
+  GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys
+      get changeOwnerKeys;
+  @override
+  GAccountsByPkData_accounts_nodes_linkedIdentity_smith? get smith;
+  static Serializer<GAccountsByPkData_accounts_nodes_linkedIdentity>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesLinkedIdentitySerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_linkedIdentity.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_linkedIdentity? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountsByPkData_accounts_nodes_linkedIdentity.serializer,
+        json,
+      );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_account
+    implements
+        Built<GAccountsByPkData_accounts_nodes_linkedIdentity_account,
+            GAccountsByPkData_accounts_nodes_linkedIdentity_accountBuilder>,
+        GAccountFields_linkedIdentity_account,
+        GIdentityFields_account {
+  GAccountsByPkData_accounts_nodes_linkedIdentity_account._();
+
+  factory GAccountsByPkData_accounts_nodes_linkedIdentity_account(
+      [void Function(
+              GAccountsByPkData_accounts_nodes_linkedIdentity_accountBuilder b)
+          updates]) = _$GAccountsByPkData_accounts_nodes_linkedIdentity_account;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_linkedIdentity_accountBuilder b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get createdOn;
+  static Serializer<GAccountsByPkData_accounts_nodes_linkedIdentity_account>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesLinkedIdentityAccountSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_linkedIdentity_account.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_linkedIdentity_account? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountsByPkData_accounts_nodes_linkedIdentity_account.serializer,
+        json,
+      );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId
+    implements
+        Built<GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId,
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerIdBuilder>,
+        GAccountFields_linkedIdentity_certsByIssuerId,
+        GIdentityFields_certsByIssuerId {
+  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId._();
+
+  factory GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId(
           [void Function(
-                  GAccountsByPkData_account_identity_ownerKeyChangeAggregate_aggregateBuilder
+                  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerIdBuilder
                       b)
               updates]) =
-      _$GAccountsByPkData_account_identity_ownerKeyChangeAggregate_aggregate;
+      _$GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId;
 
   static void _initializeBuilder(
-          GAccountsByPkData_account_identity_ownerKeyChangeAggregate_aggregateBuilder
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerIdBuilder
               b) =>
-      b..G__typename = 'ChangeOwnerKeyAggregateFields';
+      b..G__typename = 'CertsConnection';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  int get count;
+  int get totalCount;
+  @override
+  BuiltList<
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes>
+      get nodes;
   static Serializer<
-          GAccountsByPkData_account_identity_ownerKeyChangeAggregate_aggregate>
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId>
       get serializer =>
-          _$gAccountsByPkDataAccountIdentityOwnerKeyChangeAggregateAggregateSerializer;
+          _$gAccountsByPkDataAccountsNodesLinkedIdentityCertsByIssuerIdSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_ownerKeyChangeAggregate_aggregate
+        GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_account_identity_ownerKeyChangeAggregate_aggregate?
+  static GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_account_identity_ownerKeyChangeAggregate_aggregate
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountsByPkData_account_identity_smith
+abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes
     implements
-        Built<GAccountsByPkData_account_identity_smith,
-            GAccountsByPkData_account_identity_smithBuilder>,
-        GAccountFields_identity_smith,
-        GIdentityFields_smith,
-        GSmithFields {
-  GAccountsByPkData_account_identity_smith._();
+        Built<
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes,
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodesBuilder>,
+        GAccountFields_linkedIdentity_certsByIssuerId_nodes,
+        GIdentityFields_certsByIssuerId_nodes,
+        GCertFields {
+  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes._();
 
-  factory GAccountsByPkData_account_identity_smith(
-      [void Function(GAccountsByPkData_account_identity_smithBuilder b)
-          updates]) = _$GAccountsByPkData_account_identity_smith;
+  factory GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes(
+          [void Function(
+                  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodesBuilder
+                      b)
+              updates]) =
+      _$GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes;
 
   static void _initializeBuilder(
-          GAccountsByPkData_account_identity_smithBuilder b) =>
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodesBuilder
+              b) =>
+      b..G__typename = 'Cert';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  @override
+  String? get issuerId;
+  @override
+  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer?
+      get issuer;
+  @override
+  String? get receiverId;
+  @override
+  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver?
+      get receiver;
+  @override
+  int get createdOn;
+  @override
+  int get expireOn;
+  @override
+  bool get isActive;
+  @override
+  int get updatedOn;
+  static Serializer<
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesLinkedIdentityCertsByIssuerIdNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer
+    implements
+        Built<
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer,
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuerBuilder>,
+        GAccountFields_linkedIdentity_certsByIssuerId_nodes_issuer,
+        GIdentityFields_certsByIssuerId_nodes_issuer,
+        GCertFields_issuer,
+        GIdentityBasicFields {
+  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer._();
+
+  factory GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer(
+          [void Function(
+                  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuerBuilder
+                      b)
+              updates]) =
+      _$GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuerBuilder
+              b) =>
+      b..G__typename = 'Identity';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String? get accountId;
+  @override
+  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_account?
+      get account;
+  @override
+  String get id;
+  @override
+  bool get isMember;
+  @override
+  String get status;
+  @override
+  String get name;
+  @override
+  int get expireOn;
+  @override
+  int get index;
+  static Serializer<
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesLinkedIdentityCertsByIssuerIdNodesIssuerSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_account
+    implements
+        Built<
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_account,
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_accountBuilder>,
+        GAccountFields_linkedIdentity_certsByIssuerId_nodes_issuer_account,
+        GIdentityFields_certsByIssuerId_nodes_issuer_account,
+        GCertFields_issuer_account,
+        GIdentityBasicFields_account {
+  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_account._();
+
+  factory GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_account(
+          [void Function(
+                  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_accountBuilder
+                      b)
+              updates]) =
+      _$GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_account;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_accountBuilder
+              b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get createdOn;
+  static Serializer<
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_account>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesLinkedIdentityCertsByIssuerIdNodesIssuerAccountSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_account
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_account?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_account
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver
+    implements
+        Built<
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver,
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiverBuilder>,
+        GAccountFields_linkedIdentity_certsByIssuerId_nodes_receiver,
+        GIdentityFields_certsByIssuerId_nodes_receiver,
+        GCertFields_receiver,
+        GIdentityBasicFields {
+  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver._();
+
+  factory GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver(
+          [void Function(
+                  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiverBuilder
+                      b)
+              updates]) =
+      _$GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiverBuilder
+              b) =>
+      b..G__typename = 'Identity';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String? get accountId;
+  @override
+  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_account?
+      get account;
+  @override
+  String get id;
+  @override
+  bool get isMember;
+  @override
+  String get status;
+  @override
+  String get name;
+  @override
+  int get expireOn;
+  @override
+  int get index;
+  static Serializer<
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesLinkedIdentityCertsByIssuerIdNodesReceiverSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_account
+    implements
+        Built<
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_account,
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_accountBuilder>,
+        GAccountFields_linkedIdentity_certsByIssuerId_nodes_receiver_account,
+        GIdentityFields_certsByIssuerId_nodes_receiver_account,
+        GCertFields_receiver_account,
+        GIdentityBasicFields_account {
+  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_account._();
+
+  factory GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_account(
+          [void Function(
+                  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_accountBuilder
+                      b)
+              updates]) =
+      _$GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_account;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_accountBuilder
+              b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get createdOn;
+  static Serializer<
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_account>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesLinkedIdentityCertsByIssuerIdNodesReceiverAccountSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_account
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_account?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_account
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId
+    implements
+        Built<GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId,
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverIdBuilder>,
+        GAccountFields_linkedIdentity_certsByReceiverId,
+        GIdentityFields_certsByReceiverId {
+  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId._();
+
+  factory GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId(
+          [void Function(
+                  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverIdBuilder
+                      b)
+              updates]) =
+      _$GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverIdBuilder
+              b) =>
+      b..G__typename = 'CertsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes>
+      get nodes;
+  static Serializer<
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesLinkedIdentityCertsByReceiverIdSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes
+    implements
+        Built<
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes,
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodesBuilder>,
+        GAccountFields_linkedIdentity_certsByReceiverId_nodes,
+        GIdentityFields_certsByReceiverId_nodes,
+        GCertFields {
+  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes._();
+
+  factory GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes(
+          [void Function(
+                  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodesBuilder
+                      b)
+              updates]) =
+      _$GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodesBuilder
+              b) =>
+      b..G__typename = 'Cert';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  @override
+  String? get issuerId;
+  @override
+  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer?
+      get issuer;
+  @override
+  String? get receiverId;
+  @override
+  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver?
+      get receiver;
+  @override
+  int get createdOn;
+  @override
+  int get expireOn;
+  @override
+  bool get isActive;
+  @override
+  int get updatedOn;
+  static Serializer<
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesLinkedIdentityCertsByReceiverIdNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer
+    implements
+        Built<
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer,
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuerBuilder>,
+        GAccountFields_linkedIdentity_certsByReceiverId_nodes_issuer,
+        GIdentityFields_certsByReceiverId_nodes_issuer,
+        GCertFields_issuer,
+        GIdentityBasicFields {
+  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer._();
+
+  factory GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer(
+          [void Function(
+                  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuerBuilder
+                      b)
+              updates]) =
+      _$GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuerBuilder
+              b) =>
+      b..G__typename = 'Identity';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String? get accountId;
+  @override
+  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_account?
+      get account;
+  @override
+  String get id;
+  @override
+  bool get isMember;
+  @override
+  String get status;
+  @override
+  String get name;
+  @override
+  int get expireOn;
+  @override
+  int get index;
+  static Serializer<
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesLinkedIdentityCertsByReceiverIdNodesIssuerSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_account
+    implements
+        Built<
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_account,
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_accountBuilder>,
+        GAccountFields_linkedIdentity_certsByReceiverId_nodes_issuer_account,
+        GIdentityFields_certsByReceiverId_nodes_issuer_account,
+        GCertFields_issuer_account,
+        GIdentityBasicFields_account {
+  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_account._();
+
+  factory GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_account(
+          [void Function(
+                  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_accountBuilder
+                      b)
+              updates]) =
+      _$GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_account;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_accountBuilder
+              b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get createdOn;
+  static Serializer<
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_account>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesLinkedIdentityCertsByReceiverIdNodesIssuerAccountSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_account
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_account?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_account
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver
+    implements
+        Built<
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver,
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiverBuilder>,
+        GAccountFields_linkedIdentity_certsByReceiverId_nodes_receiver,
+        GIdentityFields_certsByReceiverId_nodes_receiver,
+        GCertFields_receiver,
+        GIdentityBasicFields {
+  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver._();
+
+  factory GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver(
+          [void Function(
+                  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiverBuilder
+                      b)
+              updates]) =
+      _$GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiverBuilder
+              b) =>
+      b..G__typename = 'Identity';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String? get accountId;
+  @override
+  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_account?
+      get account;
+  @override
+  String get id;
+  @override
+  bool get isMember;
+  @override
+  String get status;
+  @override
+  String get name;
+  @override
+  int get expireOn;
+  @override
+  int get index;
+  static Serializer<
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesLinkedIdentityCertsByReceiverIdNodesReceiverSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_account
+    implements
+        Built<
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_account,
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_accountBuilder>,
+        GAccountFields_linkedIdentity_certsByReceiverId_nodes_receiver_account,
+        GIdentityFields_certsByReceiverId_nodes_receiver_account,
+        GCertFields_receiver_account,
+        GIdentityBasicFields_account {
+  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_account._();
+
+  factory GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_account(
+          [void Function(
+                  GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_accountBuilder
+                      b)
+              updates]) =
+      _$GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_account;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_accountBuilder
+              b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get createdOn;
+  static Serializer<
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_account>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesLinkedIdentityCertsByReceiverIdNodesReceiverAccountSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_account
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_account?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_account
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents
+    implements
+        Built<GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents,
+            GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEventsBuilder>,
+        GAccountFields_linkedIdentity_membershipEvents,
+        GIdentityFields_membershipEvents {
+  GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents._();
+
+  factory GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents(
+          [void Function(
+                  GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEventsBuilder
+                      b)
+              updates]) =
+      _$GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEventsBuilder
+              b) =>
+      b..G__typename = 'MembershipEventsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<
+          GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodes>
+      get nodes;
+  static Serializer<
+          GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesLinkedIdentityMembershipEventsSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodes
+    implements
+        Built<
+            GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodes,
+            GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodesBuilder>,
+        GAccountFields_linkedIdentity_membershipEvents_nodes,
+        GIdentityFields_membershipEvents_nodes {
+  GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodes._();
+
+  factory GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodes(
+          [void Function(
+                  GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodesBuilder
+                      b)
+              updates]) =
+      _$GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodes;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodesBuilder
+              b) =>
+      b..G__typename = 'MembershipEvent';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get blockNumber;
+  @override
+  String? get eventId;
+  @override
+  String get eventType;
+  @override
+  String get id;
+  @override
+  String? get identityId;
+  static Serializer<
+          GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodes>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesLinkedIdentityMembershipEventsNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodes
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodes?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodes
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys
+    implements
+        Built<GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys,
+            GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeysBuilder>,
+        GAccountFields_linkedIdentity_changeOwnerKeys,
+        GIdentityFields_changeOwnerKeys {
+  GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys._();
+
+  factory GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys(
+          [void Function(
+                  GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeysBuilder
+                      b)
+              updates]) =
+      _$GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeysBuilder
+              b) =>
+      b..G__typename = 'ChangeOwnerKeysConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<
+          GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodes>
+      get nodes;
+  static Serializer<
+          GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesLinkedIdentityChangeOwnerKeysSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodes
+    implements
+        Built<
+            GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodes,
+            GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodesBuilder>,
+        GAccountFields_linkedIdentity_changeOwnerKeys_nodes,
+        GIdentityFields_changeOwnerKeys_nodes,
+        GOwnerKeyChangeFields {
+  GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodes._();
+
+  factory GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodes(
+          [void Function(
+                  GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodesBuilder
+                      b)
+              updates]) =
+      _$GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodes;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodesBuilder
+              b) =>
+      b..G__typename = 'ChangeOwnerKey';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  @override
+  int get blockNumber;
+  @override
+  String? get identityId;
+  @override
+  String? get nextId;
+  @override
+  String? get previousId;
+  static Serializer<
+          GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodes>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesLinkedIdentityChangeOwnerKeysNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodes
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodes?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodes
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_smith
+    implements
+        Built<GAccountsByPkData_accounts_nodes_linkedIdentity_smith,
+            GAccountsByPkData_accounts_nodes_linkedIdentity_smithBuilder>,
+        GAccountFields_linkedIdentity_smith,
+        GIdentityFields_smith,
+        GSmithFields {
+  GAccountsByPkData_accounts_nodes_linkedIdentity_smith._();
+
+  factory GAccountsByPkData_accounts_nodes_linkedIdentity_smith(
+      [void Function(
+              GAccountsByPkData_accounts_nodes_linkedIdentity_smithBuilder b)
+          updates]) = _$GAccountsByPkData_accounts_nodes_linkedIdentity_smith;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_linkedIdentity_smithBuilder b) =>
       b..G__typename = 'Smith';
 
   @override
@@ -6968,997 +6494,102 @@ abstract class GAccountsByPkData_account_identity_smith
   @override
   int? get lastForged;
   @override
-  BuiltList<GAccountsByPkData_account_identity_smith_smithCertIssued>
-      get smithCertIssued;
+  GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId
+      get smithCertsByIssuerId;
   @override
-  BuiltList<GAccountsByPkData_account_identity_smith_smithCertReceived>
-      get smithCertReceived;
-  static Serializer<GAccountsByPkData_account_identity_smith> get serializer =>
-      _$gAccountsByPkDataAccountIdentitySmithSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_smith.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_identity_smith? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_identity_smith.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_identity_smith_smithCertIssued
-    implements
-        Built<GAccountsByPkData_account_identity_smith_smithCertIssued,
-            GAccountsByPkData_account_identity_smith_smithCertIssuedBuilder>,
-        GAccountFields_identity_smith_smithCertIssued,
-        GIdentityFields_smith_smithCertIssued,
-        GSmithFields_smithCertIssued,
-        GSmithCertFields {
-  GAccountsByPkData_account_identity_smith_smithCertIssued._();
-
-  factory GAccountsByPkData_account_identity_smith_smithCertIssued(
-      [void Function(
-              GAccountsByPkData_account_identity_smith_smithCertIssuedBuilder b)
-          updates]) = _$GAccountsByPkData_account_identity_smith_smithCertIssued;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_identity_smith_smithCertIssuedBuilder b) =>
-      b..G__typename = 'SmithCert';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  @override
-  String? get issuerId;
-  @override
-  String? get receiverId;
-  @override
-  int get createdOn;
-  static Serializer<GAccountsByPkData_account_identity_smith_smithCertIssued>
+  GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId
+      get smithCertsByReceiverId;
+  static Serializer<GAccountsByPkData_accounts_nodes_linkedIdentity_smith>
       get serializer =>
-          _$gAccountsByPkDataAccountIdentitySmithSmithCertIssuedSerializer;
+          _$gAccountsByPkDataAccountsNodesLinkedIdentitySmithSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_smith_smithCertIssued.serializer,
+        GAccountsByPkData_accounts_nodes_linkedIdentity_smith.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_account_identity_smith_smithCertIssued? fromJson(
+  static GAccountsByPkData_accounts_nodes_linkedIdentity_smith? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_identity_smith_smithCertIssued.serializer,
+        GAccountsByPkData_accounts_nodes_linkedIdentity_smith.serializer,
         json,
       );
 }
 
-abstract class GAccountsByPkData_account_identity_smith_smithCertReceived
-    implements
-        Built<GAccountsByPkData_account_identity_smith_smithCertReceived,
-            GAccountsByPkData_account_identity_smith_smithCertReceivedBuilder>,
-        GAccountFields_identity_smith_smithCertReceived,
-        GIdentityFields_smith_smithCertReceived,
-        GSmithFields_smithCertReceived,
-        GSmithCertFields {
-  GAccountsByPkData_account_identity_smith_smithCertReceived._();
-
-  factory GAccountsByPkData_account_identity_smith_smithCertReceived(
-      [void Function(
-              GAccountsByPkData_account_identity_smith_smithCertReceivedBuilder
-                  b)
-          updates]) = _$GAccountsByPkData_account_identity_smith_smithCertReceived;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_identity_smith_smithCertReceivedBuilder
-              b) =>
-      b..G__typename = 'SmithCert';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  @override
-  String? get issuerId;
-  @override
-  String? get receiverId;
-  @override
-  int get createdOn;
-  static Serializer<GAccountsByPkData_account_identity_smith_smithCertReceived>
-      get serializer =>
-          _$gAccountsByPkDataAccountIdentitySmithSmithCertReceivedSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_identity_smith_smithCertReceived.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_identity_smith_smithCertReceived? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_identity_smith_smithCertReceived.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_linkedIdentity
-    implements
-        Built<GAccountsByPkData_account_linkedIdentity,
-            GAccountsByPkData_account_linkedIdentityBuilder>,
-        GAccountFields_linkedIdentity,
-        GIdentityBasicFields {
-  GAccountsByPkData_account_linkedIdentity._();
-
-  factory GAccountsByPkData_account_linkedIdentity(
-      [void Function(GAccountsByPkData_account_linkedIdentityBuilder b)
-          updates]) = _$GAccountsByPkData_account_linkedIdentity;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_linkedIdentityBuilder b) =>
-      b..G__typename = 'Identity';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String? get accountId;
-  @override
-  GAccountsByPkData_account_linkedIdentity_account? get account;
-  @override
-  String get id;
-  @override
-  bool get isMember;
-  @override
-  String get status;
-  @override
-  String get name;
-  @override
-  int get expireOn;
-  @override
-  int get index;
-  static Serializer<GAccountsByPkData_account_linkedIdentity> get serializer =>
-      _$gAccountsByPkDataAccountLinkedIdentitySerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_linkedIdentity.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_linkedIdentity? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_linkedIdentity.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_linkedIdentity_account
-    implements
-        Built<GAccountsByPkData_account_linkedIdentity_account,
-            GAccountsByPkData_account_linkedIdentity_accountBuilder>,
-        GAccountFields_linkedIdentity_account,
-        GIdentityBasicFields_account {
-  GAccountsByPkData_account_linkedIdentity_account._();
-
-  factory GAccountsByPkData_account_linkedIdentity_account(
-      [void Function(GAccountsByPkData_account_linkedIdentity_accountBuilder b)
-          updates]) = _$GAccountsByPkData_account_linkedIdentity_account;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_linkedIdentity_accountBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get createdOn;
-  static Serializer<GAccountsByPkData_account_linkedIdentity_account>
-      get serializer =>
-          _$gAccountsByPkDataAccountLinkedIdentityAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_linkedIdentity_account.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_linkedIdentity_account? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_linkedIdentity_account.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_removedIdentities
-    implements
-        Built<GAccountsByPkData_account_removedIdentities,
-            GAccountsByPkData_account_removedIdentitiesBuilder>,
-        GAccountFields_removedIdentities,
-        GIdentityBasicFields {
-  GAccountsByPkData_account_removedIdentities._();
-
-  factory GAccountsByPkData_account_removedIdentities(
-      [void Function(GAccountsByPkData_account_removedIdentitiesBuilder b)
-          updates]) = _$GAccountsByPkData_account_removedIdentities;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_removedIdentitiesBuilder b) =>
-      b..G__typename = 'Identity';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String? get accountId;
-  @override
-  GAccountsByPkData_account_removedIdentities_account? get account;
-  @override
-  String get id;
-  @override
-  bool get isMember;
-  @override
-  String get status;
-  @override
-  String get name;
-  @override
-  int get expireOn;
-  @override
-  int get index;
-  static Serializer<GAccountsByPkData_account_removedIdentities>
-      get serializer => _$gAccountsByPkDataAccountRemovedIdentitiesSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_removedIdentities.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_removedIdentities? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_removedIdentities.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_removedIdentities_account
-    implements
-        Built<GAccountsByPkData_account_removedIdentities_account,
-            GAccountsByPkData_account_removedIdentities_accountBuilder>,
-        GAccountFields_removedIdentities_account,
-        GIdentityBasicFields_account {
-  GAccountsByPkData_account_removedIdentities_account._();
-
-  factory GAccountsByPkData_account_removedIdentities_account(
-      [void Function(
-              GAccountsByPkData_account_removedIdentities_accountBuilder b)
-          updates]) = _$GAccountsByPkData_account_removedIdentities_account;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_removedIdentities_accountBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get createdOn;
-  static Serializer<GAccountsByPkData_account_removedIdentities_account>
-      get serializer =>
-          _$gAccountsByPkDataAccountRemovedIdentitiesAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_removedIdentities_account.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_removedIdentities_account? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_removedIdentities_account.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_removedIdentitiesAggregate
-    implements
-        Built<GAccountsByPkData_account_removedIdentitiesAggregate,
-            GAccountsByPkData_account_removedIdentitiesAggregateBuilder>,
-        GAccountFields_removedIdentitiesAggregate {
-  GAccountsByPkData_account_removedIdentitiesAggregate._();
-
-  factory GAccountsByPkData_account_removedIdentitiesAggregate(
-      [void Function(
-              GAccountsByPkData_account_removedIdentitiesAggregateBuilder b)
-          updates]) = _$GAccountsByPkData_account_removedIdentitiesAggregate;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_removedIdentitiesAggregateBuilder b) =>
-      b..G__typename = 'IdentityAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountsByPkData_account_removedIdentitiesAggregate_aggregate? get aggregate;
-  static Serializer<GAccountsByPkData_account_removedIdentitiesAggregate>
-      get serializer =>
-          _$gAccountsByPkDataAccountRemovedIdentitiesAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_removedIdentitiesAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_removedIdentitiesAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_removedIdentitiesAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_removedIdentitiesAggregate_aggregate
-    implements
-        Built<GAccountsByPkData_account_removedIdentitiesAggregate_aggregate,
-            GAccountsByPkData_account_removedIdentitiesAggregate_aggregateBuilder>,
-        GAccountFields_removedIdentitiesAggregate_aggregate {
-  GAccountsByPkData_account_removedIdentitiesAggregate_aggregate._();
-
-  factory GAccountsByPkData_account_removedIdentitiesAggregate_aggregate(
-          [void Function(
-                  GAccountsByPkData_account_removedIdentitiesAggregate_aggregateBuilder
-                      b)
-              updates]) =
-      _$GAccountsByPkData_account_removedIdentitiesAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_removedIdentitiesAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'IdentityAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<
-          GAccountsByPkData_account_removedIdentitiesAggregate_aggregate>
-      get serializer =>
-          _$gAccountsByPkDataAccountRemovedIdentitiesAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_removedIdentitiesAggregate_aggregate
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_removedIdentitiesAggregate_aggregate?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_account_removedIdentitiesAggregate_aggregate
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountsByPkData_account_transfersIssued
-    implements
-        Built<GAccountsByPkData_account_transfersIssued,
-            GAccountsByPkData_account_transfersIssuedBuilder>,
-        GAccountFields_transfersIssued,
-        GTransferFields {
-  GAccountsByPkData_account_transfersIssued._();
-
-  factory GAccountsByPkData_account_transfersIssued(
-      [void Function(GAccountsByPkData_account_transfersIssuedBuilder b)
-          updates]) = _$GAccountsByPkData_account_transfersIssued;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_transfersIssuedBuilder b) =>
-      b..G__typename = 'Transfer';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get blockNumber;
-  @override
-  _i2.Gtimestamptz get timestamp;
-  @override
-  int get amount;
-  @override
-  GAccountsByPkData_account_transfersIssued_to? get to;
-  @override
-  GAccountsByPkData_account_transfersIssued_from? get from;
-  @override
-  GAccountsByPkData_account_transfersIssued_comment? get comment;
-  static Serializer<GAccountsByPkData_account_transfersIssued> get serializer =>
-      _$gAccountsByPkDataAccountTransfersIssuedSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_transfersIssued.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_transfersIssued? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_transfersIssued.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_transfersIssued_to
-    implements
-        Built<GAccountsByPkData_account_transfersIssued_to,
-            GAccountsByPkData_account_transfersIssued_toBuilder>,
-        GAccountFields_transfersIssued_to,
-        GTransferFields_to {
-  GAccountsByPkData_account_transfersIssued_to._();
-
-  factory GAccountsByPkData_account_transfersIssued_to(
-      [void Function(GAccountsByPkData_account_transfersIssued_toBuilder b)
-          updates]) = _$GAccountsByPkData_account_transfersIssued_to;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_transfersIssued_toBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  static Serializer<GAccountsByPkData_account_transfersIssued_to>
-      get serializer => _$gAccountsByPkDataAccountTransfersIssuedToSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_transfersIssued_to.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_transfersIssued_to? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_transfersIssued_to.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_transfersIssued_from
-    implements
-        Built<GAccountsByPkData_account_transfersIssued_from,
-            GAccountsByPkData_account_transfersIssued_fromBuilder>,
-        GAccountFields_transfersIssued_from,
-        GTransferFields_from {
-  GAccountsByPkData_account_transfersIssued_from._();
-
-  factory GAccountsByPkData_account_transfersIssued_from(
-      [void Function(GAccountsByPkData_account_transfersIssued_fromBuilder b)
-          updates]) = _$GAccountsByPkData_account_transfersIssued_from;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_transfersIssued_fromBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  static Serializer<GAccountsByPkData_account_transfersIssued_from>
-      get serializer => _$gAccountsByPkDataAccountTransfersIssuedFromSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_transfersIssued_from.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_transfersIssued_from? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_transfersIssued_from.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_transfersIssued_comment
-    implements
-        Built<GAccountsByPkData_account_transfersIssued_comment,
-            GAccountsByPkData_account_transfersIssued_commentBuilder>,
-        GAccountFields_transfersIssued_comment,
-        GTransferFields_comment {
-  GAccountsByPkData_account_transfersIssued_comment._();
-
-  factory GAccountsByPkData_account_transfersIssued_comment(
-      [void Function(GAccountsByPkData_account_transfersIssued_commentBuilder b)
-          updates]) = _$GAccountsByPkData_account_transfersIssued_comment;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_transfersIssued_commentBuilder b) =>
-      b..G__typename = 'TxComment';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get remark;
-  @override
-  _i2.Gbytea get remarkBytes;
-  static Serializer<GAccountsByPkData_account_transfersIssued_comment>
-      get serializer =>
-          _$gAccountsByPkDataAccountTransfersIssuedCommentSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_transfersIssued_comment.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_transfersIssued_comment? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_transfersIssued_comment.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_transfersIssuedAggregate
-    implements
-        Built<GAccountsByPkData_account_transfersIssuedAggregate,
-            GAccountsByPkData_account_transfersIssuedAggregateBuilder>,
-        GAccountFields_transfersIssuedAggregate {
-  GAccountsByPkData_account_transfersIssuedAggregate._();
-
-  factory GAccountsByPkData_account_transfersIssuedAggregate(
-      [void Function(
-              GAccountsByPkData_account_transfersIssuedAggregateBuilder b)
-          updates]) = _$GAccountsByPkData_account_transfersIssuedAggregate;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_transfersIssuedAggregateBuilder b) =>
-      b..G__typename = 'TransferAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountsByPkData_account_transfersIssuedAggregate_aggregate? get aggregate;
-  static Serializer<GAccountsByPkData_account_transfersIssuedAggregate>
-      get serializer =>
-          _$gAccountsByPkDataAccountTransfersIssuedAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_transfersIssuedAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_transfersIssuedAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_transfersIssuedAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_transfersIssuedAggregate_aggregate
-    implements
-        Built<GAccountsByPkData_account_transfersIssuedAggregate_aggregate,
-            GAccountsByPkData_account_transfersIssuedAggregate_aggregateBuilder>,
-        GAccountFields_transfersIssuedAggregate_aggregate {
-  GAccountsByPkData_account_transfersIssuedAggregate_aggregate._();
-
-  factory GAccountsByPkData_account_transfersIssuedAggregate_aggregate(
-          [void Function(
-                  GAccountsByPkData_account_transfersIssuedAggregate_aggregateBuilder
-                      b)
-              updates]) =
-      _$GAccountsByPkData_account_transfersIssuedAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_transfersIssuedAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'TransferAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountsByPkData_account_transfersIssuedAggregate_aggregate_sum? get sum;
-  @override
-  int get count;
-  static Serializer<
-          GAccountsByPkData_account_transfersIssuedAggregate_aggregate>
-      get serializer =>
-          _$gAccountsByPkDataAccountTransfersIssuedAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_transfersIssuedAggregate_aggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_transfersIssuedAggregate_aggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_transfersIssuedAggregate_aggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_transfersIssuedAggregate_aggregate_sum
-    implements
-        Built<GAccountsByPkData_account_transfersIssuedAggregate_aggregate_sum,
-            GAccountsByPkData_account_transfersIssuedAggregate_aggregate_sumBuilder>,
-        GAccountFields_transfersIssuedAggregate_aggregate_sum {
-  GAccountsByPkData_account_transfersIssuedAggregate_aggregate_sum._();
-
-  factory GAccountsByPkData_account_transfersIssuedAggregate_aggregate_sum(
-          [void Function(
-                  GAccountsByPkData_account_transfersIssuedAggregate_aggregate_sumBuilder
-                      b)
-              updates]) =
-      _$GAccountsByPkData_account_transfersIssuedAggregate_aggregate_sum;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_transfersIssuedAggregate_aggregate_sumBuilder
-              b) =>
-      b..G__typename = 'TransferSumFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int? get amount;
-  static Serializer<
-          GAccountsByPkData_account_transfersIssuedAggregate_aggregate_sum>
-      get serializer =>
-          _$gAccountsByPkDataAccountTransfersIssuedAggregateAggregateSumSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_transfersIssuedAggregate_aggregate_sum
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_transfersIssuedAggregate_aggregate_sum?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_account_transfersIssuedAggregate_aggregate_sum
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountsByPkData_account_transfersReceived
-    implements
-        Built<GAccountsByPkData_account_transfersReceived,
-            GAccountsByPkData_account_transfersReceivedBuilder>,
-        GAccountFields_transfersReceived,
-        GTransferFields {
-  GAccountsByPkData_account_transfersReceived._();
-
-  factory GAccountsByPkData_account_transfersReceived(
-      [void Function(GAccountsByPkData_account_transfersReceivedBuilder b)
-          updates]) = _$GAccountsByPkData_account_transfersReceived;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_transfersReceivedBuilder b) =>
-      b..G__typename = 'Transfer';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get blockNumber;
-  @override
-  _i2.Gtimestamptz get timestamp;
-  @override
-  int get amount;
-  @override
-  GAccountsByPkData_account_transfersReceived_to? get to;
-  @override
-  GAccountsByPkData_account_transfersReceived_from? get from;
-  @override
-  GAccountsByPkData_account_transfersReceived_comment? get comment;
-  static Serializer<GAccountsByPkData_account_transfersReceived>
-      get serializer => _$gAccountsByPkDataAccountTransfersReceivedSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_transfersReceived.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_transfersReceived? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_transfersReceived.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_transfersReceived_to
-    implements
-        Built<GAccountsByPkData_account_transfersReceived_to,
-            GAccountsByPkData_account_transfersReceived_toBuilder>,
-        GAccountFields_transfersReceived_to,
-        GTransferFields_to {
-  GAccountsByPkData_account_transfersReceived_to._();
-
-  factory GAccountsByPkData_account_transfersReceived_to(
-      [void Function(GAccountsByPkData_account_transfersReceived_toBuilder b)
-          updates]) = _$GAccountsByPkData_account_transfersReceived_to;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_transfersReceived_toBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  static Serializer<GAccountsByPkData_account_transfersReceived_to>
-      get serializer => _$gAccountsByPkDataAccountTransfersReceivedToSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_transfersReceived_to.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_transfersReceived_to? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_transfersReceived_to.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_transfersReceived_from
-    implements
-        Built<GAccountsByPkData_account_transfersReceived_from,
-            GAccountsByPkData_account_transfersReceived_fromBuilder>,
-        GAccountFields_transfersReceived_from,
-        GTransferFields_from {
-  GAccountsByPkData_account_transfersReceived_from._();
-
-  factory GAccountsByPkData_account_transfersReceived_from(
-      [void Function(GAccountsByPkData_account_transfersReceived_fromBuilder b)
-          updates]) = _$GAccountsByPkData_account_transfersReceived_from;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_transfersReceived_fromBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  static Serializer<GAccountsByPkData_account_transfersReceived_from>
-      get serializer =>
-          _$gAccountsByPkDataAccountTransfersReceivedFromSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_transfersReceived_from.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_transfersReceived_from? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_transfersReceived_from.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_transfersReceived_comment
-    implements
-        Built<GAccountsByPkData_account_transfersReceived_comment,
-            GAccountsByPkData_account_transfersReceived_commentBuilder>,
-        GAccountFields_transfersReceived_comment,
-        GTransferFields_comment {
-  GAccountsByPkData_account_transfersReceived_comment._();
-
-  factory GAccountsByPkData_account_transfersReceived_comment(
-      [void Function(
-              GAccountsByPkData_account_transfersReceived_commentBuilder b)
-          updates]) = _$GAccountsByPkData_account_transfersReceived_comment;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_transfersReceived_commentBuilder b) =>
-      b..G__typename = 'TxComment';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get remark;
-  @override
-  _i2.Gbytea get remarkBytes;
-  static Serializer<GAccountsByPkData_account_transfersReceived_comment>
-      get serializer =>
-          _$gAccountsByPkDataAccountTransfersReceivedCommentSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_transfersReceived_comment.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_transfersReceived_comment? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_transfersReceived_comment.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_transfersReceivedAggregate
-    implements
-        Built<GAccountsByPkData_account_transfersReceivedAggregate,
-            GAccountsByPkData_account_transfersReceivedAggregateBuilder>,
-        GAccountFields_transfersReceivedAggregate {
-  GAccountsByPkData_account_transfersReceivedAggregate._();
-
-  factory GAccountsByPkData_account_transfersReceivedAggregate(
-      [void Function(
-              GAccountsByPkData_account_transfersReceivedAggregateBuilder b)
-          updates]) = _$GAccountsByPkData_account_transfersReceivedAggregate;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_transfersReceivedAggregateBuilder b) =>
-      b..G__typename = 'TransferAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountsByPkData_account_transfersReceivedAggregate_aggregate? get aggregate;
-  static Serializer<GAccountsByPkData_account_transfersReceivedAggregate>
-      get serializer =>
-          _$gAccountsByPkDataAccountTransfersReceivedAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_transfersReceivedAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_transfersReceivedAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_transfersReceivedAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountsByPkData_account_transfersReceivedAggregate_aggregate
-    implements
-        Built<GAccountsByPkData_account_transfersReceivedAggregate_aggregate,
-            GAccountsByPkData_account_transfersReceivedAggregate_aggregateBuilder>,
-        GAccountFields_transfersReceivedAggregate_aggregate {
-  GAccountsByPkData_account_transfersReceivedAggregate_aggregate._();
-
-  factory GAccountsByPkData_account_transfersReceivedAggregate_aggregate(
-          [void Function(
-                  GAccountsByPkData_account_transfersReceivedAggregate_aggregateBuilder
-                      b)
-              updates]) =
-      _$GAccountsByPkData_account_transfersReceivedAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountsByPkData_account_transfersReceivedAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'TransferAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountsByPkData_account_transfersReceivedAggregate_aggregate_sum? get sum;
-  @override
-  int get count;
-  static Serializer<
-          GAccountsByPkData_account_transfersReceivedAggregate_aggregate>
-      get serializer =>
-          _$gAccountsByPkDataAccountTransfersReceivedAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_transfersReceivedAggregate_aggregate
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountsByPkData_account_transfersReceivedAggregate_aggregate?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_account_transfersReceivedAggregate_aggregate
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountsByPkData_account_transfersReceivedAggregate_aggregate_sum
+abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId
     implements
         Built<
-            GAccountsByPkData_account_transfersReceivedAggregate_aggregate_sum,
-            GAccountsByPkData_account_transfersReceivedAggregate_aggregate_sumBuilder>,
-        GAccountFields_transfersReceivedAggregate_aggregate_sum {
-  GAccountsByPkData_account_transfersReceivedAggregate_aggregate_sum._();
+            GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId,
+            GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerIdBuilder>,
+        GAccountFields_linkedIdentity_smith_smithCertsByIssuerId,
+        GIdentityFields_smith_smithCertsByIssuerId,
+        GSmithFields_smithCertsByIssuerId {
+  GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId._();
 
-  factory GAccountsByPkData_account_transfersReceivedAggregate_aggregate_sum(
+  factory GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId(
           [void Function(
-                  GAccountsByPkData_account_transfersReceivedAggregate_aggregate_sumBuilder
+                  GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerIdBuilder
                       b)
               updates]) =
-      _$GAccountsByPkData_account_transfersReceivedAggregate_aggregate_sum;
+      _$GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId;
 
   static void _initializeBuilder(
-          GAccountsByPkData_account_transfersReceivedAggregate_aggregate_sumBuilder
+          GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerIdBuilder
               b) =>
-      b..G__typename = 'TransferSumFields';
+      b..G__typename = 'SmithCertsConnection';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  int? get amount;
+  int get totalCount;
+  @override
+  BuiltList<
+          GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodes>
+      get nodes;
   static Serializer<
-          GAccountsByPkData_account_transfersReceivedAggregate_aggregate_sum>
+          GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId>
       get serializer =>
-          _$gAccountsByPkDataAccountTransfersReceivedAggregateAggregateSumSerializer;
+          _$gAccountsByPkDataAccountsNodesLinkedIdentitySmithSmithCertsByIssuerIdSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_transfersReceivedAggregate_aggregate_sum
+        GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_account_transfersReceivedAggregate_aggregate_sum?
+  static GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_account_transfersReceivedAggregate_aggregate_sum
+            GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountsByPkData_account_wasIdentity
+abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodes
     implements
-        Built<GAccountsByPkData_account_wasIdentity,
-            GAccountsByPkData_account_wasIdentityBuilder>,
-        GAccountFields_wasIdentity,
-        GOwnerKeyChangeFields {
-  GAccountsByPkData_account_wasIdentity._();
+        Built<
+            GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodes,
+            GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodesBuilder>,
+        GAccountFields_linkedIdentity_smith_smithCertsByIssuerId_nodes,
+        GIdentityFields_smith_smithCertsByIssuerId_nodes,
+        GSmithFields_smithCertsByIssuerId_nodes,
+        GSmithCertFields {
+  GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodes._();
 
-  factory GAccountsByPkData_account_wasIdentity(
-      [void Function(GAccountsByPkData_account_wasIdentityBuilder b)
-          updates]) = _$GAccountsByPkData_account_wasIdentity;
+  factory GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodes(
+          [void Function(
+                  GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodesBuilder
+                      b)
+              updates]) =
+      _$GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodes;
 
   static void _initializeBuilder(
-          GAccountsByPkData_account_wasIdentityBuilder b) =>
-      b..G__typename = 'ChangeOwnerKey';
+          GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodesBuilder
+              b) =>
+      b..G__typename = 'SmithCert';
 
   @override
   @BuiltValueField(wireName: '__typename')
@@ -7966,105 +6597,134 @@ abstract class GAccountsByPkData_account_wasIdentity
   @override
   String get id;
   @override
-  int get blockNumber;
+  String? get issuerId;
   @override
-  String? get identityId;
+  String? get receiverId;
   @override
-  String? get nextId;
-  @override
-  String? get previousId;
-  static Serializer<GAccountsByPkData_account_wasIdentity> get serializer =>
-      _$gAccountsByPkDataAccountWasIdentitySerializer;
+  int get createdOn;
+  static Serializer<
+          GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodes>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesLinkedIdentitySmithSmithCertsByIssuerIdNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_wasIdentity.serializer,
+        GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodes
+            .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_account_wasIdentity? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_wasIdentity.serializer,
-        json,
-      );
+  static GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodes?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodes
+                .serializer,
+            json,
+          );
 }
 
-abstract class GAccountsByPkData_account_wasIdentityAggregate
+abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId
     implements
-        Built<GAccountsByPkData_account_wasIdentityAggregate,
-            GAccountsByPkData_account_wasIdentityAggregateBuilder>,
-        GAccountFields_wasIdentityAggregate {
-  GAccountsByPkData_account_wasIdentityAggregate._();
+        Built<
+            GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId,
+            GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverIdBuilder>,
+        GAccountFields_linkedIdentity_smith_smithCertsByReceiverId,
+        GIdentityFields_smith_smithCertsByReceiverId,
+        GSmithFields_smithCertsByReceiverId {
+  GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId._();
 
-  factory GAccountsByPkData_account_wasIdentityAggregate(
-      [void Function(GAccountsByPkData_account_wasIdentityAggregateBuilder b)
-          updates]) = _$GAccountsByPkData_account_wasIdentityAggregate;
+  factory GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId(
+          [void Function(
+                  GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverIdBuilder
+                      b)
+              updates]) =
+      _$GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId;
 
   static void _initializeBuilder(
-          GAccountsByPkData_account_wasIdentityAggregateBuilder b) =>
-      b..G__typename = 'ChangeOwnerKeyAggregate';
+          GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverIdBuilder
+              b) =>
+      b..G__typename = 'SmithCertsConnection';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  GAccountsByPkData_account_wasIdentityAggregate_aggregate? get aggregate;
-  static Serializer<GAccountsByPkData_account_wasIdentityAggregate>
+  int get totalCount;
+  @override
+  BuiltList<
+          GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodes>
+      get nodes;
+  static Serializer<
+          GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId>
       get serializer =>
-          _$gAccountsByPkDataAccountWasIdentityAggregateSerializer;
+          _$gAccountsByPkDataAccountsNodesLinkedIdentitySmithSmithCertsByReceiverIdSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_wasIdentityAggregate.serializer,
+        GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId
+            .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_account_wasIdentityAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_wasIdentityAggregate.serializer,
-        json,
-      );
+  static GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId
+                .serializer,
+            json,
+          );
 }
 
-abstract class GAccountsByPkData_account_wasIdentityAggregate_aggregate
+abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodes
     implements
-        Built<GAccountsByPkData_account_wasIdentityAggregate_aggregate,
-            GAccountsByPkData_account_wasIdentityAggregate_aggregateBuilder>,
-        GAccountFields_wasIdentityAggregate_aggregate {
-  GAccountsByPkData_account_wasIdentityAggregate_aggregate._();
+        Built<
+            GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodes,
+            GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodesBuilder>,
+        GAccountFields_linkedIdentity_smith_smithCertsByReceiverId_nodes,
+        GIdentityFields_smith_smithCertsByReceiverId_nodes,
+        GSmithFields_smithCertsByReceiverId_nodes,
+        GSmithCertFields {
+  GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodes._();
 
-  factory GAccountsByPkData_account_wasIdentityAggregate_aggregate(
-      [void Function(
-              GAccountsByPkData_account_wasIdentityAggregate_aggregateBuilder b)
-          updates]) = _$GAccountsByPkData_account_wasIdentityAggregate_aggregate;
+  factory GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodes(
+          [void Function(
+                  GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodesBuilder
+                      b)
+              updates]) =
+      _$GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodes;
 
   static void _initializeBuilder(
-          GAccountsByPkData_account_wasIdentityAggregate_aggregateBuilder b) =>
-      b..G__typename = 'ChangeOwnerKeyAggregateFields';
+          GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodesBuilder
+              b) =>
+      b..G__typename = 'SmithCert';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  int get count;
-  static Serializer<GAccountsByPkData_account_wasIdentityAggregate_aggregate>
+  String get id;
+  @override
+  String? get issuerId;
+  @override
+  String? get receiverId;
+  @override
+  int get createdOn;
+  static Serializer<
+          GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodes>
       get serializer =>
-          _$gAccountsByPkDataAccountWasIdentityAggregateAggregateSerializer;
+          _$gAccountsByPkDataAccountsNodesLinkedIdentitySmithSmithCertsByReceiverIdNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_account_wasIdentityAggregate_aggregate.serializer,
+        GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodes
+            .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_account_wasIdentityAggregate_aggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountsByPkData_account_wasIdentityAggregate_aggregate.serializer,
-        json,
-      );
+  static GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodes?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodes
+                .serializer,
+            json,
+          );
 }
 
 abstract class GAccountBasicByPkData
@@ -8076,11 +6736,11 @@ abstract class GAccountBasicByPkData
       _$GAccountBasicByPkData;
 
   static void _initializeBuilder(GAccountBasicByPkDataBuilder b) =>
-      b..G__typename = 'query_root';
+      b..G__typename = 'Query';
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
-  GAccountBasicByPkData_accountByPk? get accountByPk;
+  GAccountBasicByPkData_accounts? get accounts;
   static Serializer<GAccountBasicByPkData> get serializer =>
       _$gAccountBasicByPkDataSerializer;
 
@@ -8096,18 +6756,50 @@ abstract class GAccountBasicByPkData
       );
 }
 
-abstract class GAccountBasicByPkData_accountByPk
+abstract class GAccountBasicByPkData_accounts
     implements
-        Built<GAccountBasicByPkData_accountByPk,
-            GAccountBasicByPkData_accountByPkBuilder>,
+        Built<GAccountBasicByPkData_accounts,
+            GAccountBasicByPkData_accountsBuilder> {
+  GAccountBasicByPkData_accounts._();
+
+  factory GAccountBasicByPkData_accounts(
+          [void Function(GAccountBasicByPkData_accountsBuilder b) updates]) =
+      _$GAccountBasicByPkData_accounts;
+
+  static void _initializeBuilder(GAccountBasicByPkData_accountsBuilder b) =>
+      b..G__typename = 'AccountsConnection';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  BuiltList<GAccountBasicByPkData_accounts_nodes> get nodes;
+  static Serializer<GAccountBasicByPkData_accounts> get serializer =>
+      _$gAccountBasicByPkDataAccountsSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountBasicByPkData_accounts.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountBasicByPkData_accounts? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountBasicByPkData_accounts.serializer,
+        json,
+      );
+}
+
+abstract class GAccountBasicByPkData_accounts_nodes
+    implements
+        Built<GAccountBasicByPkData_accounts_nodes,
+            GAccountBasicByPkData_accounts_nodesBuilder>,
         GAccountBasicFields {
-  GAccountBasicByPkData_accountByPk._();
+  GAccountBasicByPkData_accounts_nodes._();
 
-  factory GAccountBasicByPkData_accountByPk(
-          [void Function(GAccountBasicByPkData_accountByPkBuilder b) updates]) =
-      _$GAccountBasicByPkData_accountByPk;
+  factory GAccountBasicByPkData_accounts_nodes(
+      [void Function(GAccountBasicByPkData_accounts_nodesBuilder b)
+          updates]) = _$GAccountBasicByPkData_accounts_nodes;
 
-  static void _initializeBuilder(GAccountBasicByPkData_accountByPkBuilder b) =>
+  static void _initializeBuilder(
+          GAccountBasicByPkData_accounts_nodesBuilder b) =>
       b..G__typename = 'Account';
 
   @override
@@ -8118,40 +6810,41 @@ abstract class GAccountBasicByPkData_accountByPk
   @override
   String get id;
   @override
-  GAccountBasicByPkData_accountByPk_identity? get identity;
+  GAccountBasicByPkData_accounts_nodes_linkedIdentity? get linkedIdentity;
   @override
   bool get isActive;
-  static Serializer<GAccountBasicByPkData_accountByPk> get serializer =>
-      _$gAccountBasicByPkDataAccountByPkSerializer;
+  static Serializer<GAccountBasicByPkData_accounts_nodes> get serializer =>
+      _$gAccountBasicByPkDataAccountsNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountBasicByPkData_accountByPk.serializer,
+        GAccountBasicByPkData_accounts_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountBasicByPkData_accountByPk? fromJson(
+  static GAccountBasicByPkData_accounts_nodes? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountBasicByPkData_accountByPk.serializer,
+        GAccountBasicByPkData_accounts_nodes.serializer,
         json,
       );
 }
 
-abstract class GAccountBasicByPkData_accountByPk_identity
+abstract class GAccountBasicByPkData_accounts_nodes_linkedIdentity
     implements
-        Built<GAccountBasicByPkData_accountByPk_identity,
-            GAccountBasicByPkData_accountByPk_identityBuilder>,
-        GAccountBasicFields_identity,
+        Built<GAccountBasicByPkData_accounts_nodes_linkedIdentity,
+            GAccountBasicByPkData_accounts_nodes_linkedIdentityBuilder>,
+        GAccountBasicFields_linkedIdentity,
         GIdentityBasicFields {
-  GAccountBasicByPkData_accountByPk_identity._();
+  GAccountBasicByPkData_accounts_nodes_linkedIdentity._();
 
-  factory GAccountBasicByPkData_accountByPk_identity(
-      [void Function(GAccountBasicByPkData_accountByPk_identityBuilder b)
-          updates]) = _$GAccountBasicByPkData_accountByPk_identity;
+  factory GAccountBasicByPkData_accounts_nodes_linkedIdentity(
+      [void Function(
+              GAccountBasicByPkData_accounts_nodes_linkedIdentityBuilder b)
+          updates]) = _$GAccountBasicByPkData_accounts_nodes_linkedIdentity;
 
   static void _initializeBuilder(
-          GAccountBasicByPkData_accountByPk_identityBuilder b) =>
+          GAccountBasicByPkData_accounts_nodes_linkedIdentityBuilder b) =>
       b..G__typename = 'Identity';
 
   @override
@@ -8160,7 +6853,7 @@ abstract class GAccountBasicByPkData_accountByPk_identity
   @override
   String? get accountId;
   @override
-  GAccountBasicByPkData_accountByPk_identity_account? get account;
+  GAccountBasicByPkData_accounts_nodes_linkedIdentity_account? get account;
   @override
   String get id;
   @override
@@ -8173,38 +6866,41 @@ abstract class GAccountBasicByPkData_accountByPk_identity
   int get expireOn;
   @override
   int get index;
-  static Serializer<GAccountBasicByPkData_accountByPk_identity>
-      get serializer => _$gAccountBasicByPkDataAccountByPkIdentitySerializer;
+  static Serializer<GAccountBasicByPkData_accounts_nodes_linkedIdentity>
+      get serializer =>
+          _$gAccountBasicByPkDataAccountsNodesLinkedIdentitySerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountBasicByPkData_accountByPk_identity.serializer,
+        GAccountBasicByPkData_accounts_nodes_linkedIdentity.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountBasicByPkData_accountByPk_identity? fromJson(
+  static GAccountBasicByPkData_accounts_nodes_linkedIdentity? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountBasicByPkData_accountByPk_identity.serializer,
+        GAccountBasicByPkData_accounts_nodes_linkedIdentity.serializer,
         json,
       );
 }
 
-abstract class GAccountBasicByPkData_accountByPk_identity_account
+abstract class GAccountBasicByPkData_accounts_nodes_linkedIdentity_account
     implements
-        Built<GAccountBasicByPkData_accountByPk_identity_account,
-            GAccountBasicByPkData_accountByPk_identity_accountBuilder>,
-        GAccountBasicFields_identity_account,
+        Built<GAccountBasicByPkData_accounts_nodes_linkedIdentity_account,
+            GAccountBasicByPkData_accounts_nodes_linkedIdentity_accountBuilder>,
+        GAccountBasicFields_linkedIdentity_account,
         GIdentityBasicFields_account {
-  GAccountBasicByPkData_accountByPk_identity_account._();
+  GAccountBasicByPkData_accounts_nodes_linkedIdentity_account._();
 
-  factory GAccountBasicByPkData_accountByPk_identity_account(
+  factory GAccountBasicByPkData_accounts_nodes_linkedIdentity_account(
       [void Function(
-              GAccountBasicByPkData_accountByPk_identity_accountBuilder b)
-          updates]) = _$GAccountBasicByPkData_accountByPk_identity_account;
+              GAccountBasicByPkData_accounts_nodes_linkedIdentity_accountBuilder
+                  b)
+          updates]) = _$GAccountBasicByPkData_accounts_nodes_linkedIdentity_account;
 
   static void _initializeBuilder(
-          GAccountBasicByPkData_accountByPk_identity_accountBuilder b) =>
+          GAccountBasicByPkData_accounts_nodes_linkedIdentity_accountBuilder
+              b) =>
       b..G__typename = 'Account';
 
   @override
@@ -8212,20 +6908,20 @@ abstract class GAccountBasicByPkData_accountByPk_identity_account
   String get G__typename;
   @override
   int get createdOn;
-  static Serializer<GAccountBasicByPkData_accountByPk_identity_account>
+  static Serializer<GAccountBasicByPkData_accounts_nodes_linkedIdentity_account>
       get serializer =>
-          _$gAccountBasicByPkDataAccountByPkIdentityAccountSerializer;
+          _$gAccountBasicByPkDataAccountsNodesLinkedIdentityAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountBasicByPkData_accountByPk_identity_account.serializer,
+        GAccountBasicByPkData_accounts_nodes_linkedIdentity_account.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountBasicByPkData_accountByPk_identity_account? fromJson(
+  static GAccountBasicByPkData_accounts_nodes_linkedIdentity_account? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountBasicByPkData_accountByPk_identity_account.serializer,
+        GAccountBasicByPkData_accounts_nodes_linkedIdentity_account.serializer,
         json,
       );
 }
@@ -8239,11 +6935,11 @@ abstract class GAccountsBasicByPkData
       _$GAccountsBasicByPkData;
 
   static void _initializeBuilder(GAccountsBasicByPkDataBuilder b) =>
-      b..G__typename = 'query_root';
+      b..G__typename = 'Query';
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
-  BuiltList<GAccountsBasicByPkData_account> get account;
+  GAccountsBasicByPkData_accounts? get accounts;
   static Serializer<GAccountsBasicByPkData> get serializer =>
       _$gAccountsBasicByPkDataSerializer;
 
@@ -8259,18 +6955,50 @@ abstract class GAccountsBasicByPkData
       );
 }
 
-abstract class GAccountsBasicByPkData_account
+abstract class GAccountsBasicByPkData_accounts
     implements
-        Built<GAccountsBasicByPkData_account,
-            GAccountsBasicByPkData_accountBuilder>,
+        Built<GAccountsBasicByPkData_accounts,
+            GAccountsBasicByPkData_accountsBuilder> {
+  GAccountsBasicByPkData_accounts._();
+
+  factory GAccountsBasicByPkData_accounts(
+          [void Function(GAccountsBasicByPkData_accountsBuilder b) updates]) =
+      _$GAccountsBasicByPkData_accounts;
+
+  static void _initializeBuilder(GAccountsBasicByPkData_accountsBuilder b) =>
+      b..G__typename = 'AccountsConnection';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  BuiltList<GAccountsBasicByPkData_accounts_nodes> get nodes;
+  static Serializer<GAccountsBasicByPkData_accounts> get serializer =>
+      _$gAccountsBasicByPkDataAccountsSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsBasicByPkData_accounts.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsBasicByPkData_accounts? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountsBasicByPkData_accounts.serializer,
+        json,
+      );
+}
+
+abstract class GAccountsBasicByPkData_accounts_nodes
+    implements
+        Built<GAccountsBasicByPkData_accounts_nodes,
+            GAccountsBasicByPkData_accounts_nodesBuilder>,
         GAccountBasicFields {
-  GAccountsBasicByPkData_account._();
+  GAccountsBasicByPkData_accounts_nodes._();
 
-  factory GAccountsBasicByPkData_account(
-          [void Function(GAccountsBasicByPkData_accountBuilder b) updates]) =
-      _$GAccountsBasicByPkData_account;
+  factory GAccountsBasicByPkData_accounts_nodes(
+      [void Function(GAccountsBasicByPkData_accounts_nodesBuilder b)
+          updates]) = _$GAccountsBasicByPkData_accounts_nodes;
 
-  static void _initializeBuilder(GAccountsBasicByPkData_accountBuilder b) =>
+  static void _initializeBuilder(
+          GAccountsBasicByPkData_accounts_nodesBuilder b) =>
       b..G__typename = 'Account';
 
   @override
@@ -8281,39 +7009,41 @@ abstract class GAccountsBasicByPkData_account
   @override
   String get id;
   @override
-  GAccountsBasicByPkData_account_identity? get identity;
+  GAccountsBasicByPkData_accounts_nodes_linkedIdentity? get linkedIdentity;
   @override
   bool get isActive;
-  static Serializer<GAccountsBasicByPkData_account> get serializer =>
-      _$gAccountsBasicByPkDataAccountSerializer;
+  static Serializer<GAccountsBasicByPkData_accounts_nodes> get serializer =>
+      _$gAccountsBasicByPkDataAccountsNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsBasicByPkData_account.serializer,
+        GAccountsBasicByPkData_accounts_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsBasicByPkData_account? fromJson(Map<String, dynamic> json) =>
+  static GAccountsBasicByPkData_accounts_nodes? fromJson(
+          Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountsBasicByPkData_account.serializer,
+        GAccountsBasicByPkData_accounts_nodes.serializer,
         json,
       );
 }
 
-abstract class GAccountsBasicByPkData_account_identity
+abstract class GAccountsBasicByPkData_accounts_nodes_linkedIdentity
     implements
-        Built<GAccountsBasicByPkData_account_identity,
-            GAccountsBasicByPkData_account_identityBuilder>,
-        GAccountBasicFields_identity,
+        Built<GAccountsBasicByPkData_accounts_nodes_linkedIdentity,
+            GAccountsBasicByPkData_accounts_nodes_linkedIdentityBuilder>,
+        GAccountBasicFields_linkedIdentity,
         GIdentityBasicFields {
-  GAccountsBasicByPkData_account_identity._();
+  GAccountsBasicByPkData_accounts_nodes_linkedIdentity._();
 
-  factory GAccountsBasicByPkData_account_identity(
-      [void Function(GAccountsBasicByPkData_account_identityBuilder b)
-          updates]) = _$GAccountsBasicByPkData_account_identity;
+  factory GAccountsBasicByPkData_accounts_nodes_linkedIdentity(
+      [void Function(
+              GAccountsBasicByPkData_accounts_nodes_linkedIdentityBuilder b)
+          updates]) = _$GAccountsBasicByPkData_accounts_nodes_linkedIdentity;
 
   static void _initializeBuilder(
-          GAccountsBasicByPkData_account_identityBuilder b) =>
+          GAccountsBasicByPkData_accounts_nodes_linkedIdentityBuilder b) =>
       b..G__typename = 'Identity';
 
   @override
@@ -8322,7 +7052,7 @@ abstract class GAccountsBasicByPkData_account_identity
   @override
   String? get accountId;
   @override
-  GAccountsBasicByPkData_account_identity_account? get account;
+  GAccountsBasicByPkData_accounts_nodes_linkedIdentity_account? get account;
   @override
   String get id;
   @override
@@ -8335,37 +7065,42 @@ abstract class GAccountsBasicByPkData_account_identity
   int get expireOn;
   @override
   int get index;
-  static Serializer<GAccountsBasicByPkData_account_identity> get serializer =>
-      _$gAccountsBasicByPkDataAccountIdentitySerializer;
+  static Serializer<GAccountsBasicByPkData_accounts_nodes_linkedIdentity>
+      get serializer =>
+          _$gAccountsBasicByPkDataAccountsNodesLinkedIdentitySerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsBasicByPkData_account_identity.serializer,
+        GAccountsBasicByPkData_accounts_nodes_linkedIdentity.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsBasicByPkData_account_identity? fromJson(
+  static GAccountsBasicByPkData_accounts_nodes_linkedIdentity? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountsBasicByPkData_account_identity.serializer,
+        GAccountsBasicByPkData_accounts_nodes_linkedIdentity.serializer,
         json,
       );
 }
 
-abstract class GAccountsBasicByPkData_account_identity_account
+abstract class GAccountsBasicByPkData_accounts_nodes_linkedIdentity_account
     implements
-        Built<GAccountsBasicByPkData_account_identity_account,
-            GAccountsBasicByPkData_account_identity_accountBuilder>,
-        GAccountBasicFields_identity_account,
+        Built<GAccountsBasicByPkData_accounts_nodes_linkedIdentity_account,
+            GAccountsBasicByPkData_accounts_nodes_linkedIdentity_accountBuilder>,
+        GAccountBasicFields_linkedIdentity_account,
         GIdentityBasicFields_account {
-  GAccountsBasicByPkData_account_identity_account._();
+  GAccountsBasicByPkData_accounts_nodes_linkedIdentity_account._();
 
-  factory GAccountsBasicByPkData_account_identity_account(
-      [void Function(GAccountsBasicByPkData_account_identity_accountBuilder b)
-          updates]) = _$GAccountsBasicByPkData_account_identity_account;
+  factory GAccountsBasicByPkData_accounts_nodes_linkedIdentity_account(
+          [void Function(
+                  GAccountsBasicByPkData_accounts_nodes_linkedIdentity_accountBuilder
+                      b)
+              updates]) =
+      _$GAccountsBasicByPkData_accounts_nodes_linkedIdentity_account;
 
   static void _initializeBuilder(
-          GAccountsBasicByPkData_account_identity_accountBuilder b) =>
+          GAccountsBasicByPkData_accounts_nodes_linkedIdentity_accountBuilder
+              b) =>
       b..G__typename = 'Account';
 
   @override
@@ -8373,20 +7108,21 @@ abstract class GAccountsBasicByPkData_account_identity_account
   String get G__typename;
   @override
   int get createdOn;
-  static Serializer<GAccountsBasicByPkData_account_identity_account>
+  static Serializer<
+          GAccountsBasicByPkData_accounts_nodes_linkedIdentity_account>
       get serializer =>
-          _$gAccountsBasicByPkDataAccountIdentityAccountSerializer;
+          _$gAccountsBasicByPkDataAccountsNodesLinkedIdentityAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsBasicByPkData_account_identity_account.serializer,
+        GAccountsBasicByPkData_accounts_nodes_linkedIdentity_account.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsBasicByPkData_account_identity_account? fromJson(
+  static GAccountsBasicByPkData_accounts_nodes_linkedIdentity_account? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountsBasicByPkData_account_identity_account.serializer,
+        GAccountsBasicByPkData_accounts_nodes_linkedIdentity_account.serializer,
         json,
       );
 }
@@ -8401,11 +7137,11 @@ abstract class GAccountTransactionsData
       _$GAccountTransactionsData;
 
   static void _initializeBuilder(GAccountTransactionsDataBuilder b) =>
-      b..G__typename = 'query_root';
+      b..G__typename = 'Query';
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
-  BuiltList<GAccountTransactionsData_account> get account;
+  GAccountTransactionsData_accounts? get accounts;
   static Serializer<GAccountTransactionsData> get serializer =>
       _$gAccountTransactionsDataSerializer;
 
@@ -8421,28 +7157,56 @@ abstract class GAccountTransactionsData
       );
 }
 
-abstract class GAccountTransactionsData_account
+abstract class GAccountTransactionsData_accounts
     implements
-        Built<GAccountTransactionsData_account,
-            GAccountTransactionsData_accountBuilder>,
+        Built<GAccountTransactionsData_accounts,
+            GAccountTransactionsData_accountsBuilder> {
+  GAccountTransactionsData_accounts._();
+
+  factory GAccountTransactionsData_accounts(
+          [void Function(GAccountTransactionsData_accountsBuilder b) updates]) =
+      _$GAccountTransactionsData_accounts;
+
+  static void _initializeBuilder(GAccountTransactionsData_accountsBuilder b) =>
+      b..G__typename = 'AccountsConnection';
+
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  BuiltList<GAccountTransactionsData_accounts_nodes> get nodes;
+  static Serializer<GAccountTransactionsData_accounts> get serializer =>
+      _$gAccountTransactionsDataAccountsSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountTransactionsData_accounts.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTransactionsData_accounts? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountTransactionsData_accounts.serializer,
+        json,
+      );
+}
+
+abstract class GAccountTransactionsData_accounts_nodes
+    implements
+        Built<GAccountTransactionsData_accounts_nodes,
+            GAccountTransactionsData_accounts_nodesBuilder>,
         GAccountTxsFields {
-  GAccountTransactionsData_account._();
+  GAccountTransactionsData_accounts_nodes._();
 
-  factory GAccountTransactionsData_account(
-          [void Function(GAccountTransactionsData_accountBuilder b) updates]) =
-      _$GAccountTransactionsData_account;
+  factory GAccountTransactionsData_accounts_nodes(
+      [void Function(GAccountTransactionsData_accounts_nodesBuilder b)
+          updates]) = _$GAccountTransactionsData_accounts_nodes;
 
-  static void _initializeBuilder(GAccountTransactionsData_accountBuilder b) =>
+  static void _initializeBuilder(
+          GAccountTransactionsData_accounts_nodesBuilder b) =>
       b..G__typename = 'Account';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
-  @override
-  BuiltList<GAccountTransactionsData_account_commentsIssued> get commentsIssued;
-  @override
-  GAccountTransactionsData_account_commentsIssuedAggregate
-      get commentsIssuedAggregate;
   @override
   int get createdOn;
   @override
@@ -8450,48 +7214,84 @@ abstract class GAccountTransactionsData_account
   @override
   bool get isActive;
   @override
-  BuiltList<GAccountTransactionsData_account_transfersIssued>
-      get transfersIssued;
+  GAccountTransactionsData_accounts_nodes_comments get comments;
   @override
-  GAccountTransactionsData_account_transfersIssuedAggregate
-      get transfersIssuedAggregate;
+  GAccountTransactionsData_accounts_nodes_transfersIssued get transfersIssued;
   @override
-  BuiltList<GAccountTransactionsData_account_transfersReceived>
+  GAccountTransactionsData_accounts_nodes_transfersReceived
       get transfersReceived;
-  @override
-  GAccountTransactionsData_account_transfersReceivedAggregate
-      get transfersReceivedAggregate;
-  static Serializer<GAccountTransactionsData_account> get serializer =>
-      _$gAccountTransactionsDataAccountSerializer;
+  static Serializer<GAccountTransactionsData_accounts_nodes> get serializer =>
+      _$gAccountTransactionsDataAccountsNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTransactionsData_account.serializer,
+        GAccountTransactionsData_accounts_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountTransactionsData_account? fromJson(
+  static GAccountTransactionsData_accounts_nodes? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountTransactionsData_account.serializer,
+        GAccountTransactionsData_accounts_nodes.serializer,
         json,
       );
 }
 
-abstract class GAccountTransactionsData_account_commentsIssued
+abstract class GAccountTransactionsData_accounts_nodes_comments
     implements
-        Built<GAccountTransactionsData_account_commentsIssued,
-            GAccountTransactionsData_account_commentsIssuedBuilder>,
-        GAccountTxsFields_commentsIssued,
-        GCommentsIssued {
-  GAccountTransactionsData_account_commentsIssued._();
+        Built<GAccountTransactionsData_accounts_nodes_comments,
+            GAccountTransactionsData_accounts_nodes_commentsBuilder>,
+        GAccountTxsFields_comments {
+  GAccountTransactionsData_accounts_nodes_comments._();
 
-  factory GAccountTransactionsData_account_commentsIssued(
-      [void Function(GAccountTransactionsData_account_commentsIssuedBuilder b)
-          updates]) = _$GAccountTransactionsData_account_commentsIssued;
+  factory GAccountTransactionsData_accounts_nodes_comments(
+      [void Function(GAccountTransactionsData_accounts_nodes_commentsBuilder b)
+          updates]) = _$GAccountTransactionsData_accounts_nodes_comments;
 
   static void _initializeBuilder(
-          GAccountTransactionsData_account_commentsIssuedBuilder b) =>
+          GAccountTransactionsData_accounts_nodes_commentsBuilder b) =>
+      b..G__typename = 'TxCommentsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GAccountTransactionsData_accounts_nodes_comments_nodes> get nodes;
+  static Serializer<GAccountTransactionsData_accounts_nodes_comments>
+      get serializer =>
+          _$gAccountTransactionsDataAccountsNodesCommentsSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountTransactionsData_accounts_nodes_comments.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTransactionsData_accounts_nodes_comments? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountTransactionsData_accounts_nodes_comments.serializer,
+        json,
+      );
+}
+
+abstract class GAccountTransactionsData_accounts_nodes_comments_nodes
+    implements
+        Built<GAccountTransactionsData_accounts_nodes_comments_nodes,
+            GAccountTransactionsData_accounts_nodes_comments_nodesBuilder>,
+        GAccountTxsFields_comments_nodes,
+        GCommentsIssued {
+  GAccountTransactionsData_accounts_nodes_comments_nodes._();
+
+  factory GAccountTransactionsData_accounts_nodes_comments_nodes(
+      [void Function(
+              GAccountTransactionsData_accounts_nodes_comments_nodesBuilder b)
+          updates]) = _$GAccountTransactionsData_accounts_nodes_comments_nodes;
+
+  static void _initializeBuilder(
+          GAccountTransactionsData_accounts_nodes_comments_nodesBuilder b) =>
       b..G__typename = 'TxComment';
 
   @override
@@ -8510,126 +7310,87 @@ abstract class GAccountTransactionsData_account_commentsIssued
   @override
   String get remark;
   @override
-  _i2.Gbytea get remarkBytes;
+  String get remarkBytes;
   @override
   String get type;
-  static Serializer<GAccountTransactionsData_account_commentsIssued>
+  static Serializer<GAccountTransactionsData_accounts_nodes_comments_nodes>
       get serializer =>
-          _$gAccountTransactionsDataAccountCommentsIssuedSerializer;
+          _$gAccountTransactionsDataAccountsNodesCommentsNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTransactionsData_account_commentsIssued.serializer,
+        GAccountTransactionsData_accounts_nodes_comments_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountTransactionsData_account_commentsIssued? fromJson(
+  static GAccountTransactionsData_accounts_nodes_comments_nodes? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountTransactionsData_account_commentsIssued.serializer,
+        GAccountTransactionsData_accounts_nodes_comments_nodes.serializer,
         json,
       );
 }
 
-abstract class GAccountTransactionsData_account_commentsIssuedAggregate
+abstract class GAccountTransactionsData_accounts_nodes_transfersIssued
     implements
-        Built<GAccountTransactionsData_account_commentsIssuedAggregate,
-            GAccountTransactionsData_account_commentsIssuedAggregateBuilder>,
-        GAccountTxsFields_commentsIssuedAggregate {
-  GAccountTransactionsData_account_commentsIssuedAggregate._();
+        Built<GAccountTransactionsData_accounts_nodes_transfersIssued,
+            GAccountTransactionsData_accounts_nodes_transfersIssuedBuilder>,
+        GAccountTxsFields_transfersIssued {
+  GAccountTransactionsData_accounts_nodes_transfersIssued._();
 
-  factory GAccountTransactionsData_account_commentsIssuedAggregate(
+  factory GAccountTransactionsData_accounts_nodes_transfersIssued(
       [void Function(
-              GAccountTransactionsData_account_commentsIssuedAggregateBuilder b)
-          updates]) = _$GAccountTransactionsData_account_commentsIssuedAggregate;
+              GAccountTransactionsData_accounts_nodes_transfersIssuedBuilder b)
+          updates]) = _$GAccountTransactionsData_accounts_nodes_transfersIssued;
 
   static void _initializeBuilder(
-          GAccountTransactionsData_account_commentsIssuedAggregateBuilder b) =>
-      b..G__typename = 'TxCommentAggregate';
+          GAccountTransactionsData_accounts_nodes_transfersIssuedBuilder b) =>
+      b..G__typename = 'TransfersConnection';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  GAccountTransactionsData_account_commentsIssuedAggregate_aggregate?
-      get aggregate;
-  static Serializer<GAccountTransactionsData_account_commentsIssuedAggregate>
+  int get totalCount;
+  @override
+  BuiltList<GAccountTransactionsData_accounts_nodes_transfersIssued_nodes>
+      get nodes;
+  static Serializer<GAccountTransactionsData_accounts_nodes_transfersIssued>
       get serializer =>
-          _$gAccountTransactionsDataAccountCommentsIssuedAggregateSerializer;
+          _$gAccountTransactionsDataAccountsNodesTransfersIssuedSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTransactionsData_account_commentsIssuedAggregate.serializer,
+        GAccountTransactionsData_accounts_nodes_transfersIssued.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountTransactionsData_account_commentsIssuedAggregate? fromJson(
+  static GAccountTransactionsData_accounts_nodes_transfersIssued? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountTransactionsData_account_commentsIssuedAggregate.serializer,
+        GAccountTransactionsData_accounts_nodes_transfersIssued.serializer,
         json,
       );
 }
 
-abstract class GAccountTransactionsData_account_commentsIssuedAggregate_aggregate
+abstract class GAccountTransactionsData_accounts_nodes_transfersIssued_nodes
     implements
-        Built<
-            GAccountTransactionsData_account_commentsIssuedAggregate_aggregate,
-            GAccountTransactionsData_account_commentsIssuedAggregate_aggregateBuilder>,
-        GAccountTxsFields_commentsIssuedAggregate_aggregate {
-  GAccountTransactionsData_account_commentsIssuedAggregate_aggregate._();
+        Built<GAccountTransactionsData_accounts_nodes_transfersIssued_nodes,
+            GAccountTransactionsData_accounts_nodes_transfersIssued_nodesBuilder>,
+        GAccountTxsFields_transfersIssued_nodes,
+        GTransferFields {
+  GAccountTransactionsData_accounts_nodes_transfersIssued_nodes._();
 
-  factory GAccountTransactionsData_account_commentsIssuedAggregate_aggregate(
+  factory GAccountTransactionsData_accounts_nodes_transfersIssued_nodes(
           [void Function(
-                  GAccountTransactionsData_account_commentsIssuedAggregate_aggregateBuilder
+                  GAccountTransactionsData_accounts_nodes_transfersIssued_nodesBuilder
                       b)
               updates]) =
-      _$GAccountTransactionsData_account_commentsIssuedAggregate_aggregate;
+      _$GAccountTransactionsData_accounts_nodes_transfersIssued_nodes;
 
   static void _initializeBuilder(
-          GAccountTransactionsData_account_commentsIssuedAggregate_aggregateBuilder
+          GAccountTransactionsData_accounts_nodes_transfersIssued_nodesBuilder
               b) =>
-      b..G__typename = 'TxCommentAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<
-          GAccountTransactionsData_account_commentsIssuedAggregate_aggregate>
-      get serializer =>
-          _$gAccountTransactionsDataAccountCommentsIssuedAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTransactionsData_account_commentsIssuedAggregate_aggregate
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountTransactionsData_account_commentsIssuedAggregate_aggregate?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountTransactionsData_account_commentsIssuedAggregate_aggregate
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountTransactionsData_account_transfersIssued
-    implements
-        Built<GAccountTransactionsData_account_transfersIssued,
-            GAccountTransactionsData_account_transfersIssuedBuilder>,
-        GAccountTxsFields_transfersIssued,
-        GTransferFields {
-  GAccountTransactionsData_account_transfersIssued._();
-
-  factory GAccountTransactionsData_account_transfersIssued(
-      [void Function(GAccountTransactionsData_account_transfersIssuedBuilder b)
-          updates]) = _$GAccountTransactionsData_account_transfersIssued;
-
-  static void _initializeBuilder(
-          GAccountTransactionsData_account_transfersIssuedBuilder b) =>
       b..G__typename = 'Transfer';
 
   @override
@@ -8638,394 +7399,100 @@ abstract class GAccountTransactionsData_account_transfersIssued
   @override
   int get blockNumber;
   @override
-  _i2.Gtimestamptz get timestamp;
+  _i2.GDatetime get timestamp;
   @override
-  int get amount;
+  _i2.GBigFloat get amount;
   @override
-  GAccountTransactionsData_account_transfersIssued_to? get to;
+  GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_to? get to;
   @override
-  GAccountTransactionsData_account_transfersIssued_from? get from;
+  GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_from? get from;
   @override
-  GAccountTransactionsData_account_transfersIssued_comment? get comment;
-  static Serializer<GAccountTransactionsData_account_transfersIssued>
-      get serializer =>
-          _$gAccountTransactionsDataAccountTransfersIssuedSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTransactionsData_account_transfersIssued.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountTransactionsData_account_transfersIssued? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountTransactionsData_account_transfersIssued.serializer,
-        json,
-      );
-}
-
-abstract class GAccountTransactionsData_account_transfersIssued_to
-    implements
-        Built<GAccountTransactionsData_account_transfersIssued_to,
-            GAccountTransactionsData_account_transfersIssued_toBuilder>,
-        GAccountTxsFields_transfersIssued_to,
-        GTransferFields_to {
-  GAccountTransactionsData_account_transfersIssued_to._();
-
-  factory GAccountTransactionsData_account_transfersIssued_to(
-      [void Function(
-              GAccountTransactionsData_account_transfersIssued_toBuilder b)
-          updates]) = _$GAccountTransactionsData_account_transfersIssued_to;
-
-  static void _initializeBuilder(
-          GAccountTransactionsData_account_transfersIssued_toBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  static Serializer<GAccountTransactionsData_account_transfersIssued_to>
-      get serializer =>
-          _$gAccountTransactionsDataAccountTransfersIssuedToSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTransactionsData_account_transfersIssued_to.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountTransactionsData_account_transfersIssued_to? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountTransactionsData_account_transfersIssued_to.serializer,
-        json,
-      );
-}
-
-abstract class GAccountTransactionsData_account_transfersIssued_from
-    implements
-        Built<GAccountTransactionsData_account_transfersIssued_from,
-            GAccountTransactionsData_account_transfersIssued_fromBuilder>,
-        GAccountTxsFields_transfersIssued_from,
-        GTransferFields_from {
-  GAccountTransactionsData_account_transfersIssued_from._();
-
-  factory GAccountTransactionsData_account_transfersIssued_from(
-      [void Function(
-              GAccountTransactionsData_account_transfersIssued_fromBuilder b)
-          updates]) = _$GAccountTransactionsData_account_transfersIssued_from;
-
-  static void _initializeBuilder(
-          GAccountTransactionsData_account_transfersIssued_fromBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  static Serializer<GAccountTransactionsData_account_transfersIssued_from>
-      get serializer =>
-          _$gAccountTransactionsDataAccountTransfersIssuedFromSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTransactionsData_account_transfersIssued_from.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountTransactionsData_account_transfersIssued_from? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountTransactionsData_account_transfersIssued_from.serializer,
-        json,
-      );
-}
-
-abstract class GAccountTransactionsData_account_transfersIssued_comment
-    implements
-        Built<GAccountTransactionsData_account_transfersIssued_comment,
-            GAccountTransactionsData_account_transfersIssued_commentBuilder>,
-        GAccountTxsFields_transfersIssued_comment,
-        GTransferFields_comment {
-  GAccountTransactionsData_account_transfersIssued_comment._();
-
-  factory GAccountTransactionsData_account_transfersIssued_comment(
-      [void Function(
-              GAccountTransactionsData_account_transfersIssued_commentBuilder b)
-          updates]) = _$GAccountTransactionsData_account_transfersIssued_comment;
-
-  static void _initializeBuilder(
-          GAccountTransactionsData_account_transfersIssued_commentBuilder b) =>
-      b..G__typename = 'TxComment';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get remark;
-  @override
-  _i2.Gbytea get remarkBytes;
-  static Serializer<GAccountTransactionsData_account_transfersIssued_comment>
-      get serializer =>
-          _$gAccountTransactionsDataAccountTransfersIssuedCommentSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTransactionsData_account_transfersIssued_comment.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountTransactionsData_account_transfersIssued_comment? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountTransactionsData_account_transfersIssued_comment.serializer,
-        json,
-      );
-}
-
-abstract class GAccountTransactionsData_account_transfersIssuedAggregate
-    implements
-        Built<GAccountTransactionsData_account_transfersIssuedAggregate,
-            GAccountTransactionsData_account_transfersIssuedAggregateBuilder>,
-        GAccountTxsFields_transfersIssuedAggregate {
-  GAccountTransactionsData_account_transfersIssuedAggregate._();
-
-  factory GAccountTransactionsData_account_transfersIssuedAggregate(
-      [void Function(
-              GAccountTransactionsData_account_transfersIssuedAggregateBuilder
-                  b)
-          updates]) = _$GAccountTransactionsData_account_transfersIssuedAggregate;
-
-  static void _initializeBuilder(
-          GAccountTransactionsData_account_transfersIssuedAggregateBuilder b) =>
-      b..G__typename = 'TransferAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountTransactionsData_account_transfersIssuedAggregate_aggregate?
-      get aggregate;
-  static Serializer<GAccountTransactionsData_account_transfersIssuedAggregate>
-      get serializer =>
-          _$gAccountTransactionsDataAccountTransfersIssuedAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTransactionsData_account_transfersIssuedAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountTransactionsData_account_transfersIssuedAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountTransactionsData_account_transfersIssuedAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountTransactionsData_account_transfersIssuedAggregate_aggregate
-    implements
-        Built<
-            GAccountTransactionsData_account_transfersIssuedAggregate_aggregate,
-            GAccountTransactionsData_account_transfersIssuedAggregate_aggregateBuilder>,
-        GAccountTxsFields_transfersIssuedAggregate_aggregate {
-  GAccountTransactionsData_account_transfersIssuedAggregate_aggregate._();
-
-  factory GAccountTransactionsData_account_transfersIssuedAggregate_aggregate(
-          [void Function(
-                  GAccountTransactionsData_account_transfersIssuedAggregate_aggregateBuilder
-                      b)
-              updates]) =
-      _$GAccountTransactionsData_account_transfersIssuedAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountTransactionsData_account_transfersIssuedAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'TransferAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountTransactionsData_account_transfersIssuedAggregate_aggregate_sum?
-      get sum;
-  @override
-  int get count;
+  GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_comment?
+      get comment;
   static Serializer<
-          GAccountTransactionsData_account_transfersIssuedAggregate_aggregate>
+          GAccountTransactionsData_accounts_nodes_transfersIssued_nodes>
       get serializer =>
-          _$gAccountTransactionsDataAccountTransfersIssuedAggregateAggregateSerializer;
+          _$gAccountTransactionsDataAccountsNodesTransfersIssuedNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTransactionsData_account_transfersIssuedAggregate_aggregate
+        GAccountTransactionsData_accounts_nodes_transfersIssued_nodes
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountTransactionsData_account_transfersIssuedAggregate_aggregate?
+  static GAccountTransactionsData_accounts_nodes_transfersIssued_nodes?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountTransactionsData_account_transfersIssuedAggregate_aggregate
+            GAccountTransactionsData_accounts_nodes_transfersIssued_nodes
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountTransactionsData_account_transfersIssuedAggregate_aggregate_sum
+abstract class GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_to
     implements
-        Built<
-            GAccountTransactionsData_account_transfersIssuedAggregate_aggregate_sum,
-            GAccountTransactionsData_account_transfersIssuedAggregate_aggregate_sumBuilder>,
-        GAccountTxsFields_transfersIssuedAggregate_aggregate_sum {
-  GAccountTransactionsData_account_transfersIssuedAggregate_aggregate_sum._();
+        Built<GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_to,
+            GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_toBuilder>,
+        GAccountTxsFields_transfersIssued_nodes_to,
+        GTransferFields_to {
+  GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_to._();
 
-  factory GAccountTransactionsData_account_transfersIssuedAggregate_aggregate_sum(
+  factory GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_to(
           [void Function(
-                  GAccountTransactionsData_account_transfersIssuedAggregate_aggregate_sumBuilder
+                  GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_toBuilder
                       b)
               updates]) =
-      _$GAccountTransactionsData_account_transfersIssuedAggregate_aggregate_sum;
+      _$GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_to;
 
   static void _initializeBuilder(
-          GAccountTransactionsData_account_transfersIssuedAggregate_aggregate_sumBuilder
+          GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_toBuilder
               b) =>
-      b..G__typename = 'TransferSumFields';
+      b..G__typename = 'Account';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  int? get amount;
+  String get id;
   static Serializer<
-          GAccountTransactionsData_account_transfersIssuedAggregate_aggregate_sum>
+          GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_to>
       get serializer =>
-          _$gAccountTransactionsDataAccountTransfersIssuedAggregateAggregateSumSerializer;
+          _$gAccountTransactionsDataAccountsNodesTransfersIssuedNodesToSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTransactionsData_account_transfersIssuedAggregate_aggregate_sum
+        GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_to
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountTransactionsData_account_transfersIssuedAggregate_aggregate_sum?
+  static GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_to?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountTransactionsData_account_transfersIssuedAggregate_aggregate_sum
+            GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_to
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountTransactionsData_account_transfersReceived
+abstract class GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_from
     implements
-        Built<GAccountTransactionsData_account_transfersReceived,
-            GAccountTransactionsData_account_transfersReceivedBuilder>,
-        GAccountTxsFields_transfersReceived,
-        GTransferFields {
-  GAccountTransactionsData_account_transfersReceived._();
-
-  factory GAccountTransactionsData_account_transfersReceived(
-      [void Function(
-              GAccountTransactionsData_account_transfersReceivedBuilder b)
-          updates]) = _$GAccountTransactionsData_account_transfersReceived;
-
-  static void _initializeBuilder(
-          GAccountTransactionsData_account_transfersReceivedBuilder b) =>
-      b..G__typename = 'Transfer';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get blockNumber;
-  @override
-  _i2.Gtimestamptz get timestamp;
-  @override
-  int get amount;
-  @override
-  GAccountTransactionsData_account_transfersReceived_to? get to;
-  @override
-  GAccountTransactionsData_account_transfersReceived_from? get from;
-  @override
-  GAccountTransactionsData_account_transfersReceived_comment? get comment;
-  static Serializer<GAccountTransactionsData_account_transfersReceived>
-      get serializer =>
-          _$gAccountTransactionsDataAccountTransfersReceivedSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTransactionsData_account_transfersReceived.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountTransactionsData_account_transfersReceived? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountTransactionsData_account_transfersReceived.serializer,
-        json,
-      );
-}
-
-abstract class GAccountTransactionsData_account_transfersReceived_to
-    implements
-        Built<GAccountTransactionsData_account_transfersReceived_to,
-            GAccountTransactionsData_account_transfersReceived_toBuilder>,
-        GAccountTxsFields_transfersReceived_to,
-        GTransferFields_to {
-  GAccountTransactionsData_account_transfersReceived_to._();
-
-  factory GAccountTransactionsData_account_transfersReceived_to(
-      [void Function(
-              GAccountTransactionsData_account_transfersReceived_toBuilder b)
-          updates]) = _$GAccountTransactionsData_account_transfersReceived_to;
-
-  static void _initializeBuilder(
-          GAccountTransactionsData_account_transfersReceived_toBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  static Serializer<GAccountTransactionsData_account_transfersReceived_to>
-      get serializer =>
-          _$gAccountTransactionsDataAccountTransfersReceivedToSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTransactionsData_account_transfersReceived_to.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountTransactionsData_account_transfersReceived_to? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountTransactionsData_account_transfersReceived_to.serializer,
-        json,
-      );
-}
-
-abstract class GAccountTransactionsData_account_transfersReceived_from
-    implements
-        Built<GAccountTransactionsData_account_transfersReceived_from,
-            GAccountTransactionsData_account_transfersReceived_fromBuilder>,
-        GAccountTxsFields_transfersReceived_from,
+        Built<
+            GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_from,
+            GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_fromBuilder>,
+        GAccountTxsFields_transfersIssued_nodes_from,
         GTransferFields_from {
-  GAccountTransactionsData_account_transfersReceived_from._();
+  GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_from._();
 
-  factory GAccountTransactionsData_account_transfersReceived_from(
-      [void Function(
-              GAccountTransactionsData_account_transfersReceived_fromBuilder b)
-          updates]) = _$GAccountTransactionsData_account_transfersReceived_from;
+  factory GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_from(
+          [void Function(
+                  GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_fromBuilder
+                      b)
+              updates]) =
+      _$GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_from;
 
   static void _initializeBuilder(
-          GAccountTransactionsData_account_transfersReceived_fromBuilder b) =>
+          GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_fromBuilder
+              b) =>
       b..G__typename = 'Account';
 
   @override
@@ -9033,40 +7500,44 @@ abstract class GAccountTransactionsData_account_transfersReceived_from
   String get G__typename;
   @override
   String get id;
-  static Serializer<GAccountTransactionsData_account_transfersReceived_from>
+  static Serializer<
+          GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_from>
       get serializer =>
-          _$gAccountTransactionsDataAccountTransfersReceivedFromSerializer;
+          _$gAccountTransactionsDataAccountsNodesTransfersIssuedNodesFromSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTransactionsData_account_transfersReceived_from.serializer,
+        GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_from
+            .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountTransactionsData_account_transfersReceived_from? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountTransactionsData_account_transfersReceived_from.serializer,
-        json,
-      );
+  static GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_from?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_from
+                .serializer,
+            json,
+          );
 }
 
-abstract class GAccountTransactionsData_account_transfersReceived_comment
+abstract class GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_comment
     implements
-        Built<GAccountTransactionsData_account_transfersReceived_comment,
-            GAccountTransactionsData_account_transfersReceived_commentBuilder>,
-        GAccountTxsFields_transfersReceived_comment,
+        Built<
+            GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_comment,
+            GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_commentBuilder>,
+        GAccountTxsFields_transfersIssued_nodes_comment,
         GTransferFields_comment {
-  GAccountTransactionsData_account_transfersReceived_comment._();
+  GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_comment._();
 
-  factory GAccountTransactionsData_account_transfersReceived_comment(
-      [void Function(
-              GAccountTransactionsData_account_transfersReceived_commentBuilder
-                  b)
-          updates]) = _$GAccountTransactionsData_account_transfersReceived_comment;
+  factory GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_comment(
+          [void Function(
+                  GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_commentBuilder
+                      b)
+              updates]) =
+      _$GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_comment;
 
   static void _initializeBuilder(
-          GAccountTransactionsData_account_transfersReceived_commentBuilder
+          GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_commentBuilder
               b) =>
       b..G__typename = 'TxComment';
 
@@ -9076,155 +7547,262 @@ abstract class GAccountTransactionsData_account_transfersReceived_comment
   @override
   String get remark;
   @override
-  _i2.Gbytea get remarkBytes;
-  static Serializer<GAccountTransactionsData_account_transfersReceived_comment>
-      get serializer =>
-          _$gAccountTransactionsDataAccountTransfersReceivedCommentSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTransactionsData_account_transfersReceived_comment.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountTransactionsData_account_transfersReceived_comment? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountTransactionsData_account_transfersReceived_comment.serializer,
-        json,
-      );
-}
-
-abstract class GAccountTransactionsData_account_transfersReceivedAggregate
-    implements
-        Built<GAccountTransactionsData_account_transfersReceivedAggregate,
-            GAccountTransactionsData_account_transfersReceivedAggregateBuilder>,
-        GAccountTxsFields_transfersReceivedAggregate {
-  GAccountTransactionsData_account_transfersReceivedAggregate._();
-
-  factory GAccountTransactionsData_account_transfersReceivedAggregate(
-      [void Function(
-              GAccountTransactionsData_account_transfersReceivedAggregateBuilder
-                  b)
-          updates]) = _$GAccountTransactionsData_account_transfersReceivedAggregate;
-
-  static void _initializeBuilder(
-          GAccountTransactionsData_account_transfersReceivedAggregateBuilder
-              b) =>
-      b..G__typename = 'TransferAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountTransactionsData_account_transfersReceivedAggregate_aggregate?
-      get aggregate;
-  static Serializer<GAccountTransactionsData_account_transfersReceivedAggregate>
-      get serializer =>
-          _$gAccountTransactionsDataAccountTransfersReceivedAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTransactionsData_account_transfersReceivedAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountTransactionsData_account_transfersReceivedAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountTransactionsData_account_transfersReceivedAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountTransactionsData_account_transfersReceivedAggregate_aggregate
-    implements
-        Built<
-            GAccountTransactionsData_account_transfersReceivedAggregate_aggregate,
-            GAccountTransactionsData_account_transfersReceivedAggregate_aggregateBuilder>,
-        GAccountTxsFields_transfersReceivedAggregate_aggregate {
-  GAccountTransactionsData_account_transfersReceivedAggregate_aggregate._();
-
-  factory GAccountTransactionsData_account_transfersReceivedAggregate_aggregate(
-          [void Function(
-                  GAccountTransactionsData_account_transfersReceivedAggregate_aggregateBuilder
-                      b)
-              updates]) =
-      _$GAccountTransactionsData_account_transfersReceivedAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountTransactionsData_account_transfersReceivedAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'TransferAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountTransactionsData_account_transfersReceivedAggregate_aggregate_sum?
-      get sum;
-  @override
-  int get count;
+  String get remarkBytes;
   static Serializer<
-          GAccountTransactionsData_account_transfersReceivedAggregate_aggregate>
+          GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_comment>
       get serializer =>
-          _$gAccountTransactionsDataAccountTransfersReceivedAggregateAggregateSerializer;
+          _$gAccountTransactionsDataAccountsNodesTransfersIssuedNodesCommentSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTransactionsData_account_transfersReceivedAggregate_aggregate
+        GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_comment
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountTransactionsData_account_transfersReceivedAggregate_aggregate?
+  static GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_comment?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountTransactionsData_account_transfersReceivedAggregate_aggregate
+            GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_comment
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountTransactionsData_account_transfersReceivedAggregate_aggregate_sum
+abstract class GAccountTransactionsData_accounts_nodes_transfersReceived
     implements
-        Built<
-            GAccountTransactionsData_account_transfersReceivedAggregate_aggregate_sum,
-            GAccountTransactionsData_account_transfersReceivedAggregate_aggregate_sumBuilder>,
-        GAccountTxsFields_transfersReceivedAggregate_aggregate_sum {
-  GAccountTransactionsData_account_transfersReceivedAggregate_aggregate_sum._();
+        Built<GAccountTransactionsData_accounts_nodes_transfersReceived,
+            GAccountTransactionsData_accounts_nodes_transfersReceivedBuilder>,
+        GAccountTxsFields_transfersReceived {
+  GAccountTransactionsData_accounts_nodes_transfersReceived._();
 
-  factory GAccountTransactionsData_account_transfersReceivedAggregate_aggregate_sum(
-          [void Function(
-                  GAccountTransactionsData_account_transfersReceivedAggregate_aggregate_sumBuilder
-                      b)
-              updates]) =
-      _$GAccountTransactionsData_account_transfersReceivedAggregate_aggregate_sum;
+  factory GAccountTransactionsData_accounts_nodes_transfersReceived(
+      [void Function(
+              GAccountTransactionsData_accounts_nodes_transfersReceivedBuilder
+                  b)
+          updates]) = _$GAccountTransactionsData_accounts_nodes_transfersReceived;
 
   static void _initializeBuilder(
-          GAccountTransactionsData_account_transfersReceivedAggregate_aggregate_sumBuilder
-              b) =>
-      b..G__typename = 'TransferSumFields';
+          GAccountTransactionsData_accounts_nodes_transfersReceivedBuilder b) =>
+      b..G__typename = 'TransfersConnection';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  int? get amount;
-  static Serializer<
-          GAccountTransactionsData_account_transfersReceivedAggregate_aggregate_sum>
+  int get totalCount;
+  @override
+  BuiltList<GAccountTransactionsData_accounts_nodes_transfersReceived_nodes>
+      get nodes;
+  static Serializer<GAccountTransactionsData_accounts_nodes_transfersReceived>
       get serializer =>
-          _$gAccountTransactionsDataAccountTransfersReceivedAggregateAggregateSumSerializer;
+          _$gAccountTransactionsDataAccountsNodesTransfersReceivedSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTransactionsData_account_transfersReceivedAggregate_aggregate_sum
+        GAccountTransactionsData_accounts_nodes_transfersReceived.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTransactionsData_accounts_nodes_transfersReceived? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountTransactionsData_accounts_nodes_transfersReceived.serializer,
+        json,
+      );
+}
+
+abstract class GAccountTransactionsData_accounts_nodes_transfersReceived_nodes
+    implements
+        Built<GAccountTransactionsData_accounts_nodes_transfersReceived_nodes,
+            GAccountTransactionsData_accounts_nodes_transfersReceived_nodesBuilder>,
+        GAccountTxsFields_transfersReceived_nodes,
+        GTransferFields {
+  GAccountTransactionsData_accounts_nodes_transfersReceived_nodes._();
+
+  factory GAccountTransactionsData_accounts_nodes_transfersReceived_nodes(
+          [void Function(
+                  GAccountTransactionsData_accounts_nodes_transfersReceived_nodesBuilder
+                      b)
+              updates]) =
+      _$GAccountTransactionsData_accounts_nodes_transfersReceived_nodes;
+
+  static void _initializeBuilder(
+          GAccountTransactionsData_accounts_nodes_transfersReceived_nodesBuilder
+              b) =>
+      b..G__typename = 'Transfer';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get blockNumber;
+  @override
+  _i2.GDatetime get timestamp;
+  @override
+  _i2.GBigFloat get amount;
+  @override
+  GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_to? get to;
+  @override
+  GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_from?
+      get from;
+  @override
+  GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_comment?
+      get comment;
+  static Serializer<
+          GAccountTransactionsData_accounts_nodes_transfersReceived_nodes>
+      get serializer =>
+          _$gAccountTransactionsDataAccountsNodesTransfersReceivedNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountTransactionsData_accounts_nodes_transfersReceived_nodes
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountTransactionsData_account_transfersReceivedAggregate_aggregate_sum?
+  static GAccountTransactionsData_accounts_nodes_transfersReceived_nodes?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountTransactionsData_account_transfersReceivedAggregate_aggregate_sum
+            GAccountTransactionsData_accounts_nodes_transfersReceived_nodes
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_to
+    implements
+        Built<
+            GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_to,
+            GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_toBuilder>,
+        GAccountTxsFields_transfersReceived_nodes_to,
+        GTransferFields_to {
+  GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_to._();
+
+  factory GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_to(
+          [void Function(
+                  GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_toBuilder
+                      b)
+              updates]) =
+      _$GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_to;
+
+  static void _initializeBuilder(
+          GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_toBuilder
+              b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  static Serializer<
+          GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_to>
+      get serializer =>
+          _$gAccountTransactionsDataAccountsNodesTransfersReceivedNodesToSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_to
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_to?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_to
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_from
+    implements
+        Built<
+            GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_from,
+            GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_fromBuilder>,
+        GAccountTxsFields_transfersReceived_nodes_from,
+        GTransferFields_from {
+  GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_from._();
+
+  factory GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_from(
+          [void Function(
+                  GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_fromBuilder
+                      b)
+              updates]) =
+      _$GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_from;
+
+  static void _initializeBuilder(
+          GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_fromBuilder
+              b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  static Serializer<
+          GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_from>
+      get serializer =>
+          _$gAccountTransactionsDataAccountsNodesTransfersReceivedNodesFromSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_from
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_from?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_from
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_comment
+    implements
+        Built<
+            GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_comment,
+            GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_commentBuilder>,
+        GAccountTxsFields_transfersReceived_nodes_comment,
+        GTransferFields_comment {
+  GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_comment._();
+
+  factory GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_comment(
+          [void Function(
+                  GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_commentBuilder
+                      b)
+              updates]) =
+      _$GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_comment;
+
+  static void _initializeBuilder(
+          GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_commentBuilder
+              b) =>
+      b..G__typename = 'TxComment';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get remark;
+  @override
+  String get remarkBytes;
+  static Serializer<
+          GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_comment>
+      get serializer =>
+          _$gAccountTransactionsDataAccountsNodesTransfersReceivedNodesCommentSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_comment
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_comment?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_comment
                 .serializer,
             json,
           );
@@ -9584,12 +8162,20 @@ abstract class GSmithFields {
   int get index;
   int? get lastChanged;
   int? get lastForged;
-  BuiltList<GSmithFields_smithCertIssued> get smithCertIssued;
-  BuiltList<GSmithFields_smithCertReceived> get smithCertReceived;
+  GSmithFields_smithCertsByIssuerId get smithCertsByIssuerId;
+  GSmithFields_smithCertsByReceiverId get smithCertsByReceiverId;
   Map<String, dynamic> toJson();
 }
 
-abstract class GSmithFields_smithCertIssued implements GSmithCertFields {
+abstract class GSmithFields_smithCertsByIssuerId {
+  String get G__typename;
+  int get totalCount;
+  BuiltList<GSmithFields_smithCertsByIssuerId_nodes> get nodes;
+  Map<String, dynamic> toJson();
+}
+
+abstract class GSmithFields_smithCertsByIssuerId_nodes
+    implements GSmithCertFields {
   @override
   String get G__typename;
   @override
@@ -9604,7 +8190,15 @@ abstract class GSmithFields_smithCertIssued implements GSmithCertFields {
   Map<String, dynamic> toJson();
 }
 
-abstract class GSmithFields_smithCertReceived implements GSmithCertFields {
+abstract class GSmithFields_smithCertsByReceiverId {
+  String get G__typename;
+  int get totalCount;
+  BuiltList<GSmithFields_smithCertsByReceiverId_nodes> get nodes;
+  Map<String, dynamic> toJson();
+}
+
+abstract class GSmithFields_smithCertsByReceiverId_nodes
+    implements GSmithCertFields {
   @override
   String get G__typename;
   @override
@@ -9643,9 +8237,9 @@ abstract class GSmithFieldsData
   @override
   int? get lastForged;
   @override
-  BuiltList<GSmithFieldsData_smithCertIssued> get smithCertIssued;
+  GSmithFieldsData_smithCertsByIssuerId get smithCertsByIssuerId;
   @override
-  BuiltList<GSmithFieldsData_smithCertReceived> get smithCertReceived;
+  GSmithFieldsData_smithCertsByReceiverId get smithCertsByReceiverId;
   static Serializer<GSmithFieldsData> get serializer =>
       _$gSmithFieldsDataSerializer;
 
@@ -9662,62 +8256,59 @@ abstract class GSmithFieldsData
       );
 }
 
-abstract class GSmithFieldsData_smithCertIssued
+abstract class GSmithFieldsData_smithCertsByIssuerId
     implements
-        Built<GSmithFieldsData_smithCertIssued,
-            GSmithFieldsData_smithCertIssuedBuilder>,
-        GSmithFields_smithCertIssued,
-        GSmithCertFields {
-  GSmithFieldsData_smithCertIssued._();
+        Built<GSmithFieldsData_smithCertsByIssuerId,
+            GSmithFieldsData_smithCertsByIssuerIdBuilder>,
+        GSmithFields_smithCertsByIssuerId {
+  GSmithFieldsData_smithCertsByIssuerId._();
 
-  factory GSmithFieldsData_smithCertIssued(
-          [void Function(GSmithFieldsData_smithCertIssuedBuilder b) updates]) =
-      _$GSmithFieldsData_smithCertIssued;
+  factory GSmithFieldsData_smithCertsByIssuerId(
+      [void Function(GSmithFieldsData_smithCertsByIssuerIdBuilder b)
+          updates]) = _$GSmithFieldsData_smithCertsByIssuerId;
 
-  static void _initializeBuilder(GSmithFieldsData_smithCertIssuedBuilder b) =>
-      b..G__typename = 'SmithCert';
+  static void _initializeBuilder(
+          GSmithFieldsData_smithCertsByIssuerIdBuilder b) =>
+      b..G__typename = 'SmithCertsConnection';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  String get id;
+  int get totalCount;
   @override
-  String? get issuerId;
-  @override
-  String? get receiverId;
-  @override
-  int get createdOn;
-  static Serializer<GSmithFieldsData_smithCertIssued> get serializer =>
-      _$gSmithFieldsDataSmithCertIssuedSerializer;
+  BuiltList<GSmithFieldsData_smithCertsByIssuerId_nodes> get nodes;
+  static Serializer<GSmithFieldsData_smithCertsByIssuerId> get serializer =>
+      _$gSmithFieldsDataSmithCertsByIssuerIdSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithFieldsData_smithCertIssued.serializer,
+        GSmithFieldsData_smithCertsByIssuerId.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GSmithFieldsData_smithCertIssued? fromJson(
+  static GSmithFieldsData_smithCertsByIssuerId? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GSmithFieldsData_smithCertIssued.serializer,
+        GSmithFieldsData_smithCertsByIssuerId.serializer,
         json,
       );
 }
 
-abstract class GSmithFieldsData_smithCertReceived
+abstract class GSmithFieldsData_smithCertsByIssuerId_nodes
     implements
-        Built<GSmithFieldsData_smithCertReceived,
-            GSmithFieldsData_smithCertReceivedBuilder>,
-        GSmithFields_smithCertReceived,
+        Built<GSmithFieldsData_smithCertsByIssuerId_nodes,
+            GSmithFieldsData_smithCertsByIssuerId_nodesBuilder>,
+        GSmithFields_smithCertsByIssuerId_nodes,
         GSmithCertFields {
-  GSmithFieldsData_smithCertReceived._();
+  GSmithFieldsData_smithCertsByIssuerId_nodes._();
 
-  factory GSmithFieldsData_smithCertReceived(
-      [void Function(GSmithFieldsData_smithCertReceivedBuilder b)
-          updates]) = _$GSmithFieldsData_smithCertReceived;
+  factory GSmithFieldsData_smithCertsByIssuerId_nodes(
+      [void Function(GSmithFieldsData_smithCertsByIssuerId_nodesBuilder b)
+          updates]) = _$GSmithFieldsData_smithCertsByIssuerId_nodes;
 
-  static void _initializeBuilder(GSmithFieldsData_smithCertReceivedBuilder b) =>
+  static void _initializeBuilder(
+          GSmithFieldsData_smithCertsByIssuerId_nodesBuilder b) =>
       b..G__typename = 'SmithCert';
 
   @override
@@ -9731,19 +8322,102 @@ abstract class GSmithFieldsData_smithCertReceived
   String? get receiverId;
   @override
   int get createdOn;
-  static Serializer<GSmithFieldsData_smithCertReceived> get serializer =>
-      _$gSmithFieldsDataSmithCertReceivedSerializer;
+  static Serializer<GSmithFieldsData_smithCertsByIssuerId_nodes>
+      get serializer => _$gSmithFieldsDataSmithCertsByIssuerIdNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GSmithFieldsData_smithCertReceived.serializer,
+        GSmithFieldsData_smithCertsByIssuerId_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GSmithFieldsData_smithCertReceived? fromJson(
+  static GSmithFieldsData_smithCertsByIssuerId_nodes? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GSmithFieldsData_smithCertReceived.serializer,
+        GSmithFieldsData_smithCertsByIssuerId_nodes.serializer,
+        json,
+      );
+}
+
+abstract class GSmithFieldsData_smithCertsByReceiverId
+    implements
+        Built<GSmithFieldsData_smithCertsByReceiverId,
+            GSmithFieldsData_smithCertsByReceiverIdBuilder>,
+        GSmithFields_smithCertsByReceiverId {
+  GSmithFieldsData_smithCertsByReceiverId._();
+
+  factory GSmithFieldsData_smithCertsByReceiverId(
+      [void Function(GSmithFieldsData_smithCertsByReceiverIdBuilder b)
+          updates]) = _$GSmithFieldsData_smithCertsByReceiverId;
+
+  static void _initializeBuilder(
+          GSmithFieldsData_smithCertsByReceiverIdBuilder b) =>
+      b..G__typename = 'SmithCertsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GSmithFieldsData_smithCertsByReceiverId_nodes> get nodes;
+  static Serializer<GSmithFieldsData_smithCertsByReceiverId> get serializer =>
+      _$gSmithFieldsDataSmithCertsByReceiverIdSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GSmithFieldsData_smithCertsByReceiverId.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GSmithFieldsData_smithCertsByReceiverId? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GSmithFieldsData_smithCertsByReceiverId.serializer,
+        json,
+      );
+}
+
+abstract class GSmithFieldsData_smithCertsByReceiverId_nodes
+    implements
+        Built<GSmithFieldsData_smithCertsByReceiverId_nodes,
+            GSmithFieldsData_smithCertsByReceiverId_nodesBuilder>,
+        GSmithFields_smithCertsByReceiverId_nodes,
+        GSmithCertFields {
+  GSmithFieldsData_smithCertsByReceiverId_nodes._();
+
+  factory GSmithFieldsData_smithCertsByReceiverId_nodes(
+      [void Function(GSmithFieldsData_smithCertsByReceiverId_nodesBuilder b)
+          updates]) = _$GSmithFieldsData_smithCertsByReceiverId_nodes;
+
+  static void _initializeBuilder(
+          GSmithFieldsData_smithCertsByReceiverId_nodesBuilder b) =>
+      b..G__typename = 'SmithCert';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  @override
+  String? get issuerId;
+  @override
+  String? get receiverId;
+  @override
+  int get createdOn;
+  static Serializer<GSmithFieldsData_smithCertsByReceiverId_nodes>
+      get serializer => _$gSmithFieldsDataSmithCertsByReceiverIdNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GSmithFieldsData_smithCertsByReceiverId_nodes.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GSmithFieldsData_smithCertsByReceiverId_nodes? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GSmithFieldsData_smithCertsByReceiverId_nodes.serializer,
         json,
       );
 }
@@ -9908,10 +8582,8 @@ abstract class GIdentityFields {
   GIdentityFields_account? get account;
   String? get accountId;
   String? get accountRemovedId;
-  BuiltList<GIdentityFields_certIssued> get certIssued;
-  GIdentityFields_certIssuedAggregate get certIssuedAggregate;
-  BuiltList<GIdentityFields_certReceived> get certReceived;
-  GIdentityFields_certReceivedAggregate get certReceivedAggregate;
+  GIdentityFields_certsByIssuerId get certsByIssuerId;
+  GIdentityFields_certsByReceiverId get certsByReceiverId;
   String? get createdInId;
   int get createdOn;
   int get expireOn;
@@ -9919,14 +8591,10 @@ abstract class GIdentityFields {
   int get index;
   bool get isMember;
   int get lastChangeOn;
-  BuiltList<GIdentityFields_linkedAccount> get linkedAccount;
-  GIdentityFields_linkedAccountAggregate get linkedAccountAggregate;
   String get status;
-  BuiltList<GIdentityFields_membershipHistory> get membershipHistory;
-  GIdentityFields_membershipHistoryAggregate get membershipHistoryAggregate;
   String get name;
-  BuiltList<GIdentityFields_ownerKeyChange> get ownerKeyChange;
-  GIdentityFields_ownerKeyChangeAggregate get ownerKeyChangeAggregate;
+  GIdentityFields_membershipEvents get membershipEvents;
+  GIdentityFields_changeOwnerKeys get changeOwnerKeys;
   GIdentityFields_smith? get smith;
   Map<String, dynamic> toJson();
 }
@@ -9937,7 +8605,14 @@ abstract class GIdentityFields_account {
   Map<String, dynamic> toJson();
 }
 
-abstract class GIdentityFields_certIssued implements GCertFields {
+abstract class GIdentityFields_certsByIssuerId {
+  String get G__typename;
+  int get totalCount;
+  BuiltList<GIdentityFields_certsByIssuerId_nodes> get nodes;
+  Map<String, dynamic> toJson();
+}
+
+abstract class GIdentityFields_certsByIssuerId_nodes implements GCertFields {
   @override
   String get G__typename;
   @override
@@ -9945,11 +8620,11 @@ abstract class GIdentityFields_certIssued implements GCertFields {
   @override
   String? get issuerId;
   @override
-  GIdentityFields_certIssued_issuer? get issuer;
+  GIdentityFields_certsByIssuerId_nodes_issuer? get issuer;
   @override
   String? get receiverId;
   @override
-  GIdentityFields_certIssued_receiver? get receiver;
+  GIdentityFields_certsByIssuerId_nodes_receiver? get receiver;
   @override
   int get createdOn;
   @override
@@ -9962,14 +8637,14 @@ abstract class GIdentityFields_certIssued implements GCertFields {
   Map<String, dynamic> toJson();
 }
 
-abstract class GIdentityFields_certIssued_issuer
+abstract class GIdentityFields_certsByIssuerId_nodes_issuer
     implements GCertFields_issuer, GIdentityBasicFields {
   @override
   String get G__typename;
   @override
   String? get accountId;
   @override
-  GIdentityFields_certIssued_issuer_account? get account;
+  GIdentityFields_certsByIssuerId_nodes_issuer_account? get account;
   @override
   String get id;
   @override
@@ -9986,7 +8661,7 @@ abstract class GIdentityFields_certIssued_issuer
   Map<String, dynamic> toJson();
 }
 
-abstract class GIdentityFields_certIssued_issuer_account
+abstract class GIdentityFields_certsByIssuerId_nodes_issuer_account
     implements GCertFields_issuer_account, GIdentityBasicFields_account {
   @override
   String get G__typename;
@@ -9996,14 +8671,14 @@ abstract class GIdentityFields_certIssued_issuer_account
   Map<String, dynamic> toJson();
 }
 
-abstract class GIdentityFields_certIssued_receiver
+abstract class GIdentityFields_certsByIssuerId_nodes_receiver
     implements GCertFields_receiver, GIdentityBasicFields {
   @override
   String get G__typename;
   @override
   String? get accountId;
   @override
-  GIdentityFields_certIssued_receiver_account? get account;
+  GIdentityFields_certsByIssuerId_nodes_receiver_account? get account;
   @override
   String get id;
   @override
@@ -10020,7 +8695,7 @@ abstract class GIdentityFields_certIssued_receiver
   Map<String, dynamic> toJson();
 }
 
-abstract class GIdentityFields_certIssued_receiver_account
+abstract class GIdentityFields_certsByIssuerId_nodes_receiver_account
     implements GCertFields_receiver_account, GIdentityBasicFields_account {
   @override
   String get G__typename;
@@ -10030,19 +8705,14 @@ abstract class GIdentityFields_certIssued_receiver_account
   Map<String, dynamic> toJson();
 }
 
-abstract class GIdentityFields_certIssuedAggregate {
+abstract class GIdentityFields_certsByReceiverId {
   String get G__typename;
-  GIdentityFields_certIssuedAggregate_aggregate? get aggregate;
+  int get totalCount;
+  BuiltList<GIdentityFields_certsByReceiverId_nodes> get nodes;
   Map<String, dynamic> toJson();
 }
 
-abstract class GIdentityFields_certIssuedAggregate_aggregate {
-  String get G__typename;
-  int get count;
-  Map<String, dynamic> toJson();
-}
-
-abstract class GIdentityFields_certReceived implements GCertFields {
+abstract class GIdentityFields_certsByReceiverId_nodes implements GCertFields {
   @override
   String get G__typename;
   @override
@@ -10050,11 +8720,11 @@ abstract class GIdentityFields_certReceived implements GCertFields {
   @override
   String? get issuerId;
   @override
-  GIdentityFields_certReceived_issuer? get issuer;
+  GIdentityFields_certsByReceiverId_nodes_issuer? get issuer;
   @override
   String? get receiverId;
   @override
-  GIdentityFields_certReceived_receiver? get receiver;
+  GIdentityFields_certsByReceiverId_nodes_receiver? get receiver;
   @override
   int get createdOn;
   @override
@@ -10067,14 +8737,14 @@ abstract class GIdentityFields_certReceived implements GCertFields {
   Map<String, dynamic> toJson();
 }
 
-abstract class GIdentityFields_certReceived_issuer
+abstract class GIdentityFields_certsByReceiverId_nodes_issuer
     implements GCertFields_issuer, GIdentityBasicFields {
   @override
   String get G__typename;
   @override
   String? get accountId;
   @override
-  GIdentityFields_certReceived_issuer_account? get account;
+  GIdentityFields_certsByReceiverId_nodes_issuer_account? get account;
   @override
   String get id;
   @override
@@ -10091,7 +8761,7 @@ abstract class GIdentityFields_certReceived_issuer
   Map<String, dynamic> toJson();
 }
 
-abstract class GIdentityFields_certReceived_issuer_account
+abstract class GIdentityFields_certsByReceiverId_nodes_issuer_account
     implements GCertFields_issuer_account, GIdentityBasicFields_account {
   @override
   String get G__typename;
@@ -10101,14 +8771,14 @@ abstract class GIdentityFields_certReceived_issuer_account
   Map<String, dynamic> toJson();
 }
 
-abstract class GIdentityFields_certReceived_receiver
+abstract class GIdentityFields_certsByReceiverId_nodes_receiver
     implements GCertFields_receiver, GIdentityBasicFields {
   @override
   String get G__typename;
   @override
   String? get accountId;
   @override
-  GIdentityFields_certReceived_receiver_account? get account;
+  GIdentityFields_certsByReceiverId_nodes_receiver_account? get account;
   @override
   String get id;
   @override
@@ -10125,7 +8795,7 @@ abstract class GIdentityFields_certReceived_receiver
   Map<String, dynamic> toJson();
 }
 
-abstract class GIdentityFields_certReceived_receiver_account
+abstract class GIdentityFields_certsByReceiverId_nodes_receiver_account
     implements GCertFields_receiver_account, GIdentityBasicFields_account {
   @override
   String get G__typename;
@@ -10135,37 +8805,14 @@ abstract class GIdentityFields_certReceived_receiver_account
   Map<String, dynamic> toJson();
 }
 
-abstract class GIdentityFields_certReceivedAggregate {
+abstract class GIdentityFields_membershipEvents {
   String get G__typename;
-  GIdentityFields_certReceivedAggregate_aggregate? get aggregate;
+  int get totalCount;
+  BuiltList<GIdentityFields_membershipEvents_nodes> get nodes;
   Map<String, dynamic> toJson();
 }
 
-abstract class GIdentityFields_certReceivedAggregate_aggregate {
-  String get G__typename;
-  int get count;
-  Map<String, dynamic> toJson();
-}
-
-abstract class GIdentityFields_linkedAccount {
-  String get G__typename;
-  String get id;
-  Map<String, dynamic> toJson();
-}
-
-abstract class GIdentityFields_linkedAccountAggregate {
-  String get G__typename;
-  GIdentityFields_linkedAccountAggregate_aggregate? get aggregate;
-  Map<String, dynamic> toJson();
-}
-
-abstract class GIdentityFields_linkedAccountAggregate_aggregate {
-  String get G__typename;
-  int get count;
-  Map<String, dynamic> toJson();
-}
-
-abstract class GIdentityFields_membershipHistory {
+abstract class GIdentityFields_membershipEvents_nodes {
   String get G__typename;
   int get blockNumber;
   String? get eventId;
@@ -10175,19 +8822,15 @@ abstract class GIdentityFields_membershipHistory {
   Map<String, dynamic> toJson();
 }
 
-abstract class GIdentityFields_membershipHistoryAggregate {
+abstract class GIdentityFields_changeOwnerKeys {
   String get G__typename;
-  GIdentityFields_membershipHistoryAggregate_aggregate? get aggregate;
+  int get totalCount;
+  BuiltList<GIdentityFields_changeOwnerKeys_nodes> get nodes;
   Map<String, dynamic> toJson();
 }
 
-abstract class GIdentityFields_membershipHistoryAggregate_aggregate {
-  String get G__typename;
-  int get count;
-  Map<String, dynamic> toJson();
-}
-
-abstract class GIdentityFields_ownerKeyChange implements GOwnerKeyChangeFields {
+abstract class GIdentityFields_changeOwnerKeys_nodes
+    implements GOwnerKeyChangeFields {
   @override
   String get G__typename;
   @override
@@ -10201,18 +8844,6 @@ abstract class GIdentityFields_ownerKeyChange implements GOwnerKeyChangeFields {
   @override
   String? get previousId;
   @override
-  Map<String, dynamic> toJson();
-}
-
-abstract class GIdentityFields_ownerKeyChangeAggregate {
-  String get G__typename;
-  GIdentityFields_ownerKeyChangeAggregate_aggregate? get aggregate;
-  Map<String, dynamic> toJson();
-}
-
-abstract class GIdentityFields_ownerKeyChangeAggregate_aggregate {
-  String get G__typename;
-  int get count;
   Map<String, dynamic> toJson();
 }
 
@@ -10230,15 +8861,27 @@ abstract class GIdentityFields_smith implements GSmithFields {
   @override
   int? get lastForged;
   @override
-  BuiltList<GIdentityFields_smith_smithCertIssued> get smithCertIssued;
+  GIdentityFields_smith_smithCertsByIssuerId get smithCertsByIssuerId;
   @override
-  BuiltList<GIdentityFields_smith_smithCertReceived> get smithCertReceived;
+  GIdentityFields_smith_smithCertsByReceiverId get smithCertsByReceiverId;
   @override
   Map<String, dynamic> toJson();
 }
 
-abstract class GIdentityFields_smith_smithCertIssued
-    implements GSmithFields_smithCertIssued, GSmithCertFields {
+abstract class GIdentityFields_smith_smithCertsByIssuerId
+    implements GSmithFields_smithCertsByIssuerId {
+  @override
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GIdentityFields_smith_smithCertsByIssuerId_nodes> get nodes;
+  @override
+  Map<String, dynamic> toJson();
+}
+
+abstract class GIdentityFields_smith_smithCertsByIssuerId_nodes
+    implements GSmithFields_smithCertsByIssuerId_nodes, GSmithCertFields {
   @override
   String get G__typename;
   @override
@@ -10253,8 +8896,20 @@ abstract class GIdentityFields_smith_smithCertIssued
   Map<String, dynamic> toJson();
 }
 
-abstract class GIdentityFields_smith_smithCertReceived
-    implements GSmithFields_smithCertReceived, GSmithCertFields {
+abstract class GIdentityFields_smith_smithCertsByReceiverId
+    implements GSmithFields_smithCertsByReceiverId {
+  @override
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GIdentityFields_smith_smithCertsByReceiverId_nodes> get nodes;
+  @override
+  Map<String, dynamic> toJson();
+}
+
+abstract class GIdentityFields_smith_smithCertsByReceiverId_nodes
+    implements GSmithFields_smithCertsByReceiverId_nodes, GSmithCertFields {
   @override
   String get G__typename;
   @override
@@ -10292,13 +8947,9 @@ abstract class GIdentityFieldsData
   @override
   String? get accountRemovedId;
   @override
-  BuiltList<GIdentityFieldsData_certIssued> get certIssued;
+  GIdentityFieldsData_certsByIssuerId get certsByIssuerId;
   @override
-  GIdentityFieldsData_certIssuedAggregate get certIssuedAggregate;
-  @override
-  BuiltList<GIdentityFieldsData_certReceived> get certReceived;
-  @override
-  GIdentityFieldsData_certReceivedAggregate get certReceivedAggregate;
+  GIdentityFieldsData_certsByReceiverId get certsByReceiverId;
   @override
   String? get createdInId;
   @override
@@ -10314,21 +8965,13 @@ abstract class GIdentityFieldsData
   @override
   int get lastChangeOn;
   @override
-  BuiltList<GIdentityFieldsData_linkedAccount> get linkedAccount;
-  @override
-  GIdentityFieldsData_linkedAccountAggregate get linkedAccountAggregate;
-  @override
   String get status;
-  @override
-  BuiltList<GIdentityFieldsData_membershipHistory> get membershipHistory;
-  @override
-  GIdentityFieldsData_membershipHistoryAggregate get membershipHistoryAggregate;
   @override
   String get name;
   @override
-  BuiltList<GIdentityFieldsData_ownerKeyChange> get ownerKeyChange;
+  GIdentityFieldsData_membershipEvents get membershipEvents;
   @override
-  GIdentityFieldsData_ownerKeyChangeAggregate get ownerKeyChangeAggregate;
+  GIdentityFieldsData_changeOwnerKeys get changeOwnerKeys;
   @override
   GIdentityFieldsData_smith? get smith;
   static Serializer<GIdentityFieldsData> get serializer =>
@@ -10381,19 +9024,59 @@ abstract class GIdentityFieldsData_account
       );
 }
 
-abstract class GIdentityFieldsData_certIssued
+abstract class GIdentityFieldsData_certsByIssuerId
     implements
-        Built<GIdentityFieldsData_certIssued,
-            GIdentityFieldsData_certIssuedBuilder>,
-        GIdentityFields_certIssued,
+        Built<GIdentityFieldsData_certsByIssuerId,
+            GIdentityFieldsData_certsByIssuerIdBuilder>,
+        GIdentityFields_certsByIssuerId {
+  GIdentityFieldsData_certsByIssuerId._();
+
+  factory GIdentityFieldsData_certsByIssuerId(
+      [void Function(GIdentityFieldsData_certsByIssuerIdBuilder b)
+          updates]) = _$GIdentityFieldsData_certsByIssuerId;
+
+  static void _initializeBuilder(
+          GIdentityFieldsData_certsByIssuerIdBuilder b) =>
+      b..G__typename = 'CertsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GIdentityFieldsData_certsByIssuerId_nodes> get nodes;
+  static Serializer<GIdentityFieldsData_certsByIssuerId> get serializer =>
+      _$gIdentityFieldsDataCertsByIssuerIdSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentityFieldsData_certsByIssuerId.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentityFieldsData_certsByIssuerId? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GIdentityFieldsData_certsByIssuerId.serializer,
+        json,
+      );
+}
+
+abstract class GIdentityFieldsData_certsByIssuerId_nodes
+    implements
+        Built<GIdentityFieldsData_certsByIssuerId_nodes,
+            GIdentityFieldsData_certsByIssuerId_nodesBuilder>,
+        GIdentityFields_certsByIssuerId_nodes,
         GCertFields {
-  GIdentityFieldsData_certIssued._();
+  GIdentityFieldsData_certsByIssuerId_nodes._();
 
-  factory GIdentityFieldsData_certIssued(
-          [void Function(GIdentityFieldsData_certIssuedBuilder b) updates]) =
-      _$GIdentityFieldsData_certIssued;
+  factory GIdentityFieldsData_certsByIssuerId_nodes(
+      [void Function(GIdentityFieldsData_certsByIssuerId_nodesBuilder b)
+          updates]) = _$GIdentityFieldsData_certsByIssuerId_nodes;
 
-  static void _initializeBuilder(GIdentityFieldsData_certIssuedBuilder b) =>
+  static void _initializeBuilder(
+          GIdentityFieldsData_certsByIssuerId_nodesBuilder b) =>
       b..G__typename = 'Cert';
 
   @override
@@ -10404,11 +9087,11 @@ abstract class GIdentityFieldsData_certIssued
   @override
   String? get issuerId;
   @override
-  GIdentityFieldsData_certIssued_issuer? get issuer;
+  GIdentityFieldsData_certsByIssuerId_nodes_issuer? get issuer;
   @override
   String? get receiverId;
   @override
-  GIdentityFieldsData_certIssued_receiver? get receiver;
+  GIdentityFieldsData_certsByIssuerId_nodes_receiver? get receiver;
   @override
   int get createdOn;
   @override
@@ -10417,37 +9100,38 @@ abstract class GIdentityFieldsData_certIssued
   bool get isActive;
   @override
   int get updatedOn;
-  static Serializer<GIdentityFieldsData_certIssued> get serializer =>
-      _$gIdentityFieldsDataCertIssuedSerializer;
+  static Serializer<GIdentityFieldsData_certsByIssuerId_nodes> get serializer =>
+      _$gIdentityFieldsDataCertsByIssuerIdNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityFieldsData_certIssued.serializer,
+        GIdentityFieldsData_certsByIssuerId_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentityFieldsData_certIssued? fromJson(Map<String, dynamic> json) =>
+  static GIdentityFieldsData_certsByIssuerId_nodes? fromJson(
+          Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentityFieldsData_certIssued.serializer,
+        GIdentityFieldsData_certsByIssuerId_nodes.serializer,
         json,
       );
 }
 
-abstract class GIdentityFieldsData_certIssued_issuer
+abstract class GIdentityFieldsData_certsByIssuerId_nodes_issuer
     implements
-        Built<GIdentityFieldsData_certIssued_issuer,
-            GIdentityFieldsData_certIssued_issuerBuilder>,
-        GIdentityFields_certIssued_issuer,
+        Built<GIdentityFieldsData_certsByIssuerId_nodes_issuer,
+            GIdentityFieldsData_certsByIssuerId_nodes_issuerBuilder>,
+        GIdentityFields_certsByIssuerId_nodes_issuer,
         GCertFields_issuer,
         GIdentityBasicFields {
-  GIdentityFieldsData_certIssued_issuer._();
+  GIdentityFieldsData_certsByIssuerId_nodes_issuer._();
 
-  factory GIdentityFieldsData_certIssued_issuer(
-      [void Function(GIdentityFieldsData_certIssued_issuerBuilder b)
-          updates]) = _$GIdentityFieldsData_certIssued_issuer;
+  factory GIdentityFieldsData_certsByIssuerId_nodes_issuer(
+      [void Function(GIdentityFieldsData_certsByIssuerId_nodes_issuerBuilder b)
+          updates]) = _$GIdentityFieldsData_certsByIssuerId_nodes_issuer;
 
   static void _initializeBuilder(
-          GIdentityFieldsData_certIssued_issuerBuilder b) =>
+          GIdentityFieldsData_certsByIssuerId_nodes_issuerBuilder b) =>
       b..G__typename = 'Identity';
 
   @override
@@ -10456,7 +9140,7 @@ abstract class GIdentityFieldsData_certIssued_issuer
   @override
   String? get accountId;
   @override
-  GIdentityFieldsData_certIssued_issuer_account? get account;
+  GIdentityFieldsData_certsByIssuerId_nodes_issuer_account? get account;
   @override
   String get id;
   @override
@@ -10469,38 +9153,40 @@ abstract class GIdentityFieldsData_certIssued_issuer
   int get expireOn;
   @override
   int get index;
-  static Serializer<GIdentityFieldsData_certIssued_issuer> get serializer =>
-      _$gIdentityFieldsDataCertIssuedIssuerSerializer;
+  static Serializer<GIdentityFieldsData_certsByIssuerId_nodes_issuer>
+      get serializer =>
+          _$gIdentityFieldsDataCertsByIssuerIdNodesIssuerSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityFieldsData_certIssued_issuer.serializer,
+        GIdentityFieldsData_certsByIssuerId_nodes_issuer.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentityFieldsData_certIssued_issuer? fromJson(
+  static GIdentityFieldsData_certsByIssuerId_nodes_issuer? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentityFieldsData_certIssued_issuer.serializer,
+        GIdentityFieldsData_certsByIssuerId_nodes_issuer.serializer,
         json,
       );
 }
 
-abstract class GIdentityFieldsData_certIssued_issuer_account
+abstract class GIdentityFieldsData_certsByIssuerId_nodes_issuer_account
     implements
-        Built<GIdentityFieldsData_certIssued_issuer_account,
-            GIdentityFieldsData_certIssued_issuer_accountBuilder>,
-        GIdentityFields_certIssued_issuer_account,
+        Built<GIdentityFieldsData_certsByIssuerId_nodes_issuer_account,
+            GIdentityFieldsData_certsByIssuerId_nodes_issuer_accountBuilder>,
+        GIdentityFields_certsByIssuerId_nodes_issuer_account,
         GCertFields_issuer_account,
         GIdentityBasicFields_account {
-  GIdentityFieldsData_certIssued_issuer_account._();
+  GIdentityFieldsData_certsByIssuerId_nodes_issuer_account._();
 
-  factory GIdentityFieldsData_certIssued_issuer_account(
-      [void Function(GIdentityFieldsData_certIssued_issuer_accountBuilder b)
-          updates]) = _$GIdentityFieldsData_certIssued_issuer_account;
+  factory GIdentityFieldsData_certsByIssuerId_nodes_issuer_account(
+      [void Function(
+              GIdentityFieldsData_certsByIssuerId_nodes_issuer_accountBuilder b)
+          updates]) = _$GIdentityFieldsData_certsByIssuerId_nodes_issuer_account;
 
   static void _initializeBuilder(
-          GIdentityFieldsData_certIssued_issuer_accountBuilder b) =>
+          GIdentityFieldsData_certsByIssuerId_nodes_issuer_accountBuilder b) =>
       b..G__typename = 'Account';
 
   @override
@@ -10508,38 +9194,40 @@ abstract class GIdentityFieldsData_certIssued_issuer_account
   String get G__typename;
   @override
   int get createdOn;
-  static Serializer<GIdentityFieldsData_certIssued_issuer_account>
-      get serializer => _$gIdentityFieldsDataCertIssuedIssuerAccountSerializer;
+  static Serializer<GIdentityFieldsData_certsByIssuerId_nodes_issuer_account>
+      get serializer =>
+          _$gIdentityFieldsDataCertsByIssuerIdNodesIssuerAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityFieldsData_certIssued_issuer_account.serializer,
+        GIdentityFieldsData_certsByIssuerId_nodes_issuer_account.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentityFieldsData_certIssued_issuer_account? fromJson(
+  static GIdentityFieldsData_certsByIssuerId_nodes_issuer_account? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentityFieldsData_certIssued_issuer_account.serializer,
+        GIdentityFieldsData_certsByIssuerId_nodes_issuer_account.serializer,
         json,
       );
 }
 
-abstract class GIdentityFieldsData_certIssued_receiver
+abstract class GIdentityFieldsData_certsByIssuerId_nodes_receiver
     implements
-        Built<GIdentityFieldsData_certIssued_receiver,
-            GIdentityFieldsData_certIssued_receiverBuilder>,
-        GIdentityFields_certIssued_receiver,
+        Built<GIdentityFieldsData_certsByIssuerId_nodes_receiver,
+            GIdentityFieldsData_certsByIssuerId_nodes_receiverBuilder>,
+        GIdentityFields_certsByIssuerId_nodes_receiver,
         GCertFields_receiver,
         GIdentityBasicFields {
-  GIdentityFieldsData_certIssued_receiver._();
+  GIdentityFieldsData_certsByIssuerId_nodes_receiver._();
 
-  factory GIdentityFieldsData_certIssued_receiver(
-      [void Function(GIdentityFieldsData_certIssued_receiverBuilder b)
-          updates]) = _$GIdentityFieldsData_certIssued_receiver;
+  factory GIdentityFieldsData_certsByIssuerId_nodes_receiver(
+      [void Function(
+              GIdentityFieldsData_certsByIssuerId_nodes_receiverBuilder b)
+          updates]) = _$GIdentityFieldsData_certsByIssuerId_nodes_receiver;
 
   static void _initializeBuilder(
-          GIdentityFieldsData_certIssued_receiverBuilder b) =>
+          GIdentityFieldsData_certsByIssuerId_nodes_receiverBuilder b) =>
       b..G__typename = 'Identity';
 
   @override
@@ -10548,7 +9236,7 @@ abstract class GIdentityFieldsData_certIssued_receiver
   @override
   String? get accountId;
   @override
-  GIdentityFieldsData_certIssued_receiver_account? get account;
+  GIdentityFieldsData_certsByIssuerId_nodes_receiver_account? get account;
   @override
   String get id;
   @override
@@ -10561,38 +9249,42 @@ abstract class GIdentityFieldsData_certIssued_receiver
   int get expireOn;
   @override
   int get index;
-  static Serializer<GIdentityFieldsData_certIssued_receiver> get serializer =>
-      _$gIdentityFieldsDataCertIssuedReceiverSerializer;
+  static Serializer<GIdentityFieldsData_certsByIssuerId_nodes_receiver>
+      get serializer =>
+          _$gIdentityFieldsDataCertsByIssuerIdNodesReceiverSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityFieldsData_certIssued_receiver.serializer,
+        GIdentityFieldsData_certsByIssuerId_nodes_receiver.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentityFieldsData_certIssued_receiver? fromJson(
+  static GIdentityFieldsData_certsByIssuerId_nodes_receiver? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentityFieldsData_certIssued_receiver.serializer,
+        GIdentityFieldsData_certsByIssuerId_nodes_receiver.serializer,
         json,
       );
 }
 
-abstract class GIdentityFieldsData_certIssued_receiver_account
+abstract class GIdentityFieldsData_certsByIssuerId_nodes_receiver_account
     implements
-        Built<GIdentityFieldsData_certIssued_receiver_account,
-            GIdentityFieldsData_certIssued_receiver_accountBuilder>,
-        GIdentityFields_certIssued_receiver_account,
+        Built<GIdentityFieldsData_certsByIssuerId_nodes_receiver_account,
+            GIdentityFieldsData_certsByIssuerId_nodes_receiver_accountBuilder>,
+        GIdentityFields_certsByIssuerId_nodes_receiver_account,
         GCertFields_receiver_account,
         GIdentityBasicFields_account {
-  GIdentityFieldsData_certIssued_receiver_account._();
+  GIdentityFieldsData_certsByIssuerId_nodes_receiver_account._();
 
-  factory GIdentityFieldsData_certIssued_receiver_account(
-      [void Function(GIdentityFieldsData_certIssued_receiver_accountBuilder b)
-          updates]) = _$GIdentityFieldsData_certIssued_receiver_account;
+  factory GIdentityFieldsData_certsByIssuerId_nodes_receiver_account(
+      [void Function(
+              GIdentityFieldsData_certsByIssuerId_nodes_receiver_accountBuilder
+                  b)
+          updates]) = _$GIdentityFieldsData_certsByIssuerId_nodes_receiver_account;
 
   static void _initializeBuilder(
-          GIdentityFieldsData_certIssued_receiver_accountBuilder b) =>
+          GIdentityFieldsData_certsByIssuerId_nodes_receiver_accountBuilder
+              b) =>
       b..G__typename = 'Account';
 
   @override
@@ -10600,112 +9292,77 @@ abstract class GIdentityFieldsData_certIssued_receiver_account
   String get G__typename;
   @override
   int get createdOn;
-  static Serializer<GIdentityFieldsData_certIssued_receiver_account>
+  static Serializer<GIdentityFieldsData_certsByIssuerId_nodes_receiver_account>
       get serializer =>
-          _$gIdentityFieldsDataCertIssuedReceiverAccountSerializer;
+          _$gIdentityFieldsDataCertsByIssuerIdNodesReceiverAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityFieldsData_certIssued_receiver_account.serializer,
+        GIdentityFieldsData_certsByIssuerId_nodes_receiver_account.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentityFieldsData_certIssued_receiver_account? fromJson(
+  static GIdentityFieldsData_certsByIssuerId_nodes_receiver_account? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentityFieldsData_certIssued_receiver_account.serializer,
+        GIdentityFieldsData_certsByIssuerId_nodes_receiver_account.serializer,
         json,
       );
 }
 
-abstract class GIdentityFieldsData_certIssuedAggregate
+abstract class GIdentityFieldsData_certsByReceiverId
     implements
-        Built<GIdentityFieldsData_certIssuedAggregate,
-            GIdentityFieldsData_certIssuedAggregateBuilder>,
-        GIdentityFields_certIssuedAggregate {
-  GIdentityFieldsData_certIssuedAggregate._();
+        Built<GIdentityFieldsData_certsByReceiverId,
+            GIdentityFieldsData_certsByReceiverIdBuilder>,
+        GIdentityFields_certsByReceiverId {
+  GIdentityFieldsData_certsByReceiverId._();
 
-  factory GIdentityFieldsData_certIssuedAggregate(
-      [void Function(GIdentityFieldsData_certIssuedAggregateBuilder b)
-          updates]) = _$GIdentityFieldsData_certIssuedAggregate;
+  factory GIdentityFieldsData_certsByReceiverId(
+      [void Function(GIdentityFieldsData_certsByReceiverIdBuilder b)
+          updates]) = _$GIdentityFieldsData_certsByReceiverId;
 
   static void _initializeBuilder(
-          GIdentityFieldsData_certIssuedAggregateBuilder b) =>
-      b..G__typename = 'CertAggregate';
+          GIdentityFieldsData_certsByReceiverIdBuilder b) =>
+      b..G__typename = 'CertsConnection';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  GIdentityFieldsData_certIssuedAggregate_aggregate? get aggregate;
-  static Serializer<GIdentityFieldsData_certIssuedAggregate> get serializer =>
-      _$gIdentityFieldsDataCertIssuedAggregateSerializer;
+  int get totalCount;
+  @override
+  BuiltList<GIdentityFieldsData_certsByReceiverId_nodes> get nodes;
+  static Serializer<GIdentityFieldsData_certsByReceiverId> get serializer =>
+      _$gIdentityFieldsDataCertsByReceiverIdSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityFieldsData_certIssuedAggregate.serializer,
+        GIdentityFieldsData_certsByReceiverId.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentityFieldsData_certIssuedAggregate? fromJson(
+  static GIdentityFieldsData_certsByReceiverId? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentityFieldsData_certIssuedAggregate.serializer,
+        GIdentityFieldsData_certsByReceiverId.serializer,
         json,
       );
 }
 
-abstract class GIdentityFieldsData_certIssuedAggregate_aggregate
+abstract class GIdentityFieldsData_certsByReceiverId_nodes
     implements
-        Built<GIdentityFieldsData_certIssuedAggregate_aggregate,
-            GIdentityFieldsData_certIssuedAggregate_aggregateBuilder>,
-        GIdentityFields_certIssuedAggregate_aggregate {
-  GIdentityFieldsData_certIssuedAggregate_aggregate._();
-
-  factory GIdentityFieldsData_certIssuedAggregate_aggregate(
-      [void Function(GIdentityFieldsData_certIssuedAggregate_aggregateBuilder b)
-          updates]) = _$GIdentityFieldsData_certIssuedAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GIdentityFieldsData_certIssuedAggregate_aggregateBuilder b) =>
-      b..G__typename = 'CertAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<GIdentityFieldsData_certIssuedAggregate_aggregate>
-      get serializer =>
-          _$gIdentityFieldsDataCertIssuedAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityFieldsData_certIssuedAggregate_aggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentityFieldsData_certIssuedAggregate_aggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentityFieldsData_certIssuedAggregate_aggregate.serializer,
-        json,
-      );
-}
-
-abstract class GIdentityFieldsData_certReceived
-    implements
-        Built<GIdentityFieldsData_certReceived,
-            GIdentityFieldsData_certReceivedBuilder>,
-        GIdentityFields_certReceived,
+        Built<GIdentityFieldsData_certsByReceiverId_nodes,
+            GIdentityFieldsData_certsByReceiverId_nodesBuilder>,
+        GIdentityFields_certsByReceiverId_nodes,
         GCertFields {
-  GIdentityFieldsData_certReceived._();
+  GIdentityFieldsData_certsByReceiverId_nodes._();
 
-  factory GIdentityFieldsData_certReceived(
-          [void Function(GIdentityFieldsData_certReceivedBuilder b) updates]) =
-      _$GIdentityFieldsData_certReceived;
+  factory GIdentityFieldsData_certsByReceiverId_nodes(
+      [void Function(GIdentityFieldsData_certsByReceiverId_nodesBuilder b)
+          updates]) = _$GIdentityFieldsData_certsByReceiverId_nodes;
 
-  static void _initializeBuilder(GIdentityFieldsData_certReceivedBuilder b) =>
+  static void _initializeBuilder(
+          GIdentityFieldsData_certsByReceiverId_nodesBuilder b) =>
       b..G__typename = 'Cert';
 
   @override
@@ -10716,11 +9373,11 @@ abstract class GIdentityFieldsData_certReceived
   @override
   String? get issuerId;
   @override
-  GIdentityFieldsData_certReceived_issuer? get issuer;
+  GIdentityFieldsData_certsByReceiverId_nodes_issuer? get issuer;
   @override
   String? get receiverId;
   @override
-  GIdentityFieldsData_certReceived_receiver? get receiver;
+  GIdentityFieldsData_certsByReceiverId_nodes_receiver? get receiver;
   @override
   int get createdOn;
   @override
@@ -10729,38 +9386,39 @@ abstract class GIdentityFieldsData_certReceived
   bool get isActive;
   @override
   int get updatedOn;
-  static Serializer<GIdentityFieldsData_certReceived> get serializer =>
-      _$gIdentityFieldsDataCertReceivedSerializer;
+  static Serializer<GIdentityFieldsData_certsByReceiverId_nodes>
+      get serializer => _$gIdentityFieldsDataCertsByReceiverIdNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityFieldsData_certReceived.serializer,
+        GIdentityFieldsData_certsByReceiverId_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentityFieldsData_certReceived? fromJson(
+  static GIdentityFieldsData_certsByReceiverId_nodes? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentityFieldsData_certReceived.serializer,
+        GIdentityFieldsData_certsByReceiverId_nodes.serializer,
         json,
       );
 }
 
-abstract class GIdentityFieldsData_certReceived_issuer
+abstract class GIdentityFieldsData_certsByReceiverId_nodes_issuer
     implements
-        Built<GIdentityFieldsData_certReceived_issuer,
-            GIdentityFieldsData_certReceived_issuerBuilder>,
-        GIdentityFields_certReceived_issuer,
+        Built<GIdentityFieldsData_certsByReceiverId_nodes_issuer,
+            GIdentityFieldsData_certsByReceiverId_nodes_issuerBuilder>,
+        GIdentityFields_certsByReceiverId_nodes_issuer,
         GCertFields_issuer,
         GIdentityBasicFields {
-  GIdentityFieldsData_certReceived_issuer._();
+  GIdentityFieldsData_certsByReceiverId_nodes_issuer._();
 
-  factory GIdentityFieldsData_certReceived_issuer(
-      [void Function(GIdentityFieldsData_certReceived_issuerBuilder b)
-          updates]) = _$GIdentityFieldsData_certReceived_issuer;
+  factory GIdentityFieldsData_certsByReceiverId_nodes_issuer(
+      [void Function(
+              GIdentityFieldsData_certsByReceiverId_nodes_issuerBuilder b)
+          updates]) = _$GIdentityFieldsData_certsByReceiverId_nodes_issuer;
 
   static void _initializeBuilder(
-          GIdentityFieldsData_certReceived_issuerBuilder b) =>
+          GIdentityFieldsData_certsByReceiverId_nodes_issuerBuilder b) =>
       b..G__typename = 'Identity';
 
   @override
@@ -10769,7 +9427,7 @@ abstract class GIdentityFieldsData_certReceived_issuer
   @override
   String? get accountId;
   @override
-  GIdentityFieldsData_certReceived_issuer_account? get account;
+  GIdentityFieldsData_certsByReceiverId_nodes_issuer_account? get account;
   @override
   String get id;
   @override
@@ -10782,38 +9440,42 @@ abstract class GIdentityFieldsData_certReceived_issuer
   int get expireOn;
   @override
   int get index;
-  static Serializer<GIdentityFieldsData_certReceived_issuer> get serializer =>
-      _$gIdentityFieldsDataCertReceivedIssuerSerializer;
+  static Serializer<GIdentityFieldsData_certsByReceiverId_nodes_issuer>
+      get serializer =>
+          _$gIdentityFieldsDataCertsByReceiverIdNodesIssuerSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityFieldsData_certReceived_issuer.serializer,
+        GIdentityFieldsData_certsByReceiverId_nodes_issuer.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentityFieldsData_certReceived_issuer? fromJson(
+  static GIdentityFieldsData_certsByReceiverId_nodes_issuer? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentityFieldsData_certReceived_issuer.serializer,
+        GIdentityFieldsData_certsByReceiverId_nodes_issuer.serializer,
         json,
       );
 }
 
-abstract class GIdentityFieldsData_certReceived_issuer_account
+abstract class GIdentityFieldsData_certsByReceiverId_nodes_issuer_account
     implements
-        Built<GIdentityFieldsData_certReceived_issuer_account,
-            GIdentityFieldsData_certReceived_issuer_accountBuilder>,
-        GIdentityFields_certReceived_issuer_account,
+        Built<GIdentityFieldsData_certsByReceiverId_nodes_issuer_account,
+            GIdentityFieldsData_certsByReceiverId_nodes_issuer_accountBuilder>,
+        GIdentityFields_certsByReceiverId_nodes_issuer_account,
         GCertFields_issuer_account,
         GIdentityBasicFields_account {
-  GIdentityFieldsData_certReceived_issuer_account._();
+  GIdentityFieldsData_certsByReceiverId_nodes_issuer_account._();
 
-  factory GIdentityFieldsData_certReceived_issuer_account(
-      [void Function(GIdentityFieldsData_certReceived_issuer_accountBuilder b)
-          updates]) = _$GIdentityFieldsData_certReceived_issuer_account;
+  factory GIdentityFieldsData_certsByReceiverId_nodes_issuer_account(
+      [void Function(
+              GIdentityFieldsData_certsByReceiverId_nodes_issuer_accountBuilder
+                  b)
+          updates]) = _$GIdentityFieldsData_certsByReceiverId_nodes_issuer_account;
 
   static void _initializeBuilder(
-          GIdentityFieldsData_certReceived_issuer_accountBuilder b) =>
+          GIdentityFieldsData_certsByReceiverId_nodes_issuer_accountBuilder
+              b) =>
       b..G__typename = 'Account';
 
   @override
@@ -10821,39 +9483,40 @@ abstract class GIdentityFieldsData_certReceived_issuer_account
   String get G__typename;
   @override
   int get createdOn;
-  static Serializer<GIdentityFieldsData_certReceived_issuer_account>
+  static Serializer<GIdentityFieldsData_certsByReceiverId_nodes_issuer_account>
       get serializer =>
-          _$gIdentityFieldsDataCertReceivedIssuerAccountSerializer;
+          _$gIdentityFieldsDataCertsByReceiverIdNodesIssuerAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityFieldsData_certReceived_issuer_account.serializer,
+        GIdentityFieldsData_certsByReceiverId_nodes_issuer_account.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentityFieldsData_certReceived_issuer_account? fromJson(
+  static GIdentityFieldsData_certsByReceiverId_nodes_issuer_account? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentityFieldsData_certReceived_issuer_account.serializer,
+        GIdentityFieldsData_certsByReceiverId_nodes_issuer_account.serializer,
         json,
       );
 }
 
-abstract class GIdentityFieldsData_certReceived_receiver
+abstract class GIdentityFieldsData_certsByReceiverId_nodes_receiver
     implements
-        Built<GIdentityFieldsData_certReceived_receiver,
-            GIdentityFieldsData_certReceived_receiverBuilder>,
-        GIdentityFields_certReceived_receiver,
+        Built<GIdentityFieldsData_certsByReceiverId_nodes_receiver,
+            GIdentityFieldsData_certsByReceiverId_nodes_receiverBuilder>,
+        GIdentityFields_certsByReceiverId_nodes_receiver,
         GCertFields_receiver,
         GIdentityBasicFields {
-  GIdentityFieldsData_certReceived_receiver._();
+  GIdentityFieldsData_certsByReceiverId_nodes_receiver._();
 
-  factory GIdentityFieldsData_certReceived_receiver(
-      [void Function(GIdentityFieldsData_certReceived_receiverBuilder b)
-          updates]) = _$GIdentityFieldsData_certReceived_receiver;
+  factory GIdentityFieldsData_certsByReceiverId_nodes_receiver(
+      [void Function(
+              GIdentityFieldsData_certsByReceiverId_nodes_receiverBuilder b)
+          updates]) = _$GIdentityFieldsData_certsByReceiverId_nodes_receiver;
 
   static void _initializeBuilder(
-          GIdentityFieldsData_certReceived_receiverBuilder b) =>
+          GIdentityFieldsData_certsByReceiverId_nodes_receiverBuilder b) =>
       b..G__typename = 'Identity';
 
   @override
@@ -10862,7 +9525,7 @@ abstract class GIdentityFieldsData_certReceived_receiver
   @override
   String? get accountId;
   @override
-  GIdentityFieldsData_certReceived_receiver_account? get account;
+  GIdentityFieldsData_certsByReceiverId_nodes_receiver_account? get account;
   @override
   String get id;
   @override
@@ -10875,38 +9538,43 @@ abstract class GIdentityFieldsData_certReceived_receiver
   int get expireOn;
   @override
   int get index;
-  static Serializer<GIdentityFieldsData_certReceived_receiver> get serializer =>
-      _$gIdentityFieldsDataCertReceivedReceiverSerializer;
+  static Serializer<GIdentityFieldsData_certsByReceiverId_nodes_receiver>
+      get serializer =>
+          _$gIdentityFieldsDataCertsByReceiverIdNodesReceiverSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityFieldsData_certReceived_receiver.serializer,
+        GIdentityFieldsData_certsByReceiverId_nodes_receiver.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentityFieldsData_certReceived_receiver? fromJson(
+  static GIdentityFieldsData_certsByReceiverId_nodes_receiver? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentityFieldsData_certReceived_receiver.serializer,
+        GIdentityFieldsData_certsByReceiverId_nodes_receiver.serializer,
         json,
       );
 }
 
-abstract class GIdentityFieldsData_certReceived_receiver_account
+abstract class GIdentityFieldsData_certsByReceiverId_nodes_receiver_account
     implements
-        Built<GIdentityFieldsData_certReceived_receiver_account,
-            GIdentityFieldsData_certReceived_receiver_accountBuilder>,
-        GIdentityFields_certReceived_receiver_account,
+        Built<GIdentityFieldsData_certsByReceiverId_nodes_receiver_account,
+            GIdentityFieldsData_certsByReceiverId_nodes_receiver_accountBuilder>,
+        GIdentityFields_certsByReceiverId_nodes_receiver_account,
         GCertFields_receiver_account,
         GIdentityBasicFields_account {
-  GIdentityFieldsData_certReceived_receiver_account._();
+  GIdentityFieldsData_certsByReceiverId_nodes_receiver_account._();
 
-  factory GIdentityFieldsData_certReceived_receiver_account(
-      [void Function(GIdentityFieldsData_certReceived_receiver_accountBuilder b)
-          updates]) = _$GIdentityFieldsData_certReceived_receiver_account;
+  factory GIdentityFieldsData_certsByReceiverId_nodes_receiver_account(
+          [void Function(
+                  GIdentityFieldsData_certsByReceiverId_nodes_receiver_accountBuilder
+                      b)
+              updates]) =
+      _$GIdentityFieldsData_certsByReceiverId_nodes_receiver_account;
 
   static void _initializeBuilder(
-          GIdentityFieldsData_certReceived_receiver_accountBuilder b) =>
+          GIdentityFieldsData_certsByReceiverId_nodes_receiver_accountBuilder
+              b) =>
       b..G__typename = 'Account';
 
   @override
@@ -10914,225 +9582,77 @@ abstract class GIdentityFieldsData_certReceived_receiver_account
   String get G__typename;
   @override
   int get createdOn;
-  static Serializer<GIdentityFieldsData_certReceived_receiver_account>
+  static Serializer<
+          GIdentityFieldsData_certsByReceiverId_nodes_receiver_account>
       get serializer =>
-          _$gIdentityFieldsDataCertReceivedReceiverAccountSerializer;
+          _$gIdentityFieldsDataCertsByReceiverIdNodesReceiverAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityFieldsData_certReceived_receiver_account.serializer,
+        GIdentityFieldsData_certsByReceiverId_nodes_receiver_account.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentityFieldsData_certReceived_receiver_account? fromJson(
+  static GIdentityFieldsData_certsByReceiverId_nodes_receiver_account? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentityFieldsData_certReceived_receiver_account.serializer,
+        GIdentityFieldsData_certsByReceiverId_nodes_receiver_account.serializer,
         json,
       );
 }
 
-abstract class GIdentityFieldsData_certReceivedAggregate
+abstract class GIdentityFieldsData_membershipEvents
     implements
-        Built<GIdentityFieldsData_certReceivedAggregate,
-            GIdentityFieldsData_certReceivedAggregateBuilder>,
-        GIdentityFields_certReceivedAggregate {
-  GIdentityFieldsData_certReceivedAggregate._();
+        Built<GIdentityFieldsData_membershipEvents,
+            GIdentityFieldsData_membershipEventsBuilder>,
+        GIdentityFields_membershipEvents {
+  GIdentityFieldsData_membershipEvents._();
 
-  factory GIdentityFieldsData_certReceivedAggregate(
-      [void Function(GIdentityFieldsData_certReceivedAggregateBuilder b)
-          updates]) = _$GIdentityFieldsData_certReceivedAggregate;
+  factory GIdentityFieldsData_membershipEvents(
+      [void Function(GIdentityFieldsData_membershipEventsBuilder b)
+          updates]) = _$GIdentityFieldsData_membershipEvents;
 
   static void _initializeBuilder(
-          GIdentityFieldsData_certReceivedAggregateBuilder b) =>
-      b..G__typename = 'CertAggregate';
+          GIdentityFieldsData_membershipEventsBuilder b) =>
+      b..G__typename = 'MembershipEventsConnection';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  GIdentityFieldsData_certReceivedAggregate_aggregate? get aggregate;
-  static Serializer<GIdentityFieldsData_certReceivedAggregate> get serializer =>
-      _$gIdentityFieldsDataCertReceivedAggregateSerializer;
+  int get totalCount;
+  @override
+  BuiltList<GIdentityFieldsData_membershipEvents_nodes> get nodes;
+  static Serializer<GIdentityFieldsData_membershipEvents> get serializer =>
+      _$gIdentityFieldsDataMembershipEventsSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityFieldsData_certReceivedAggregate.serializer,
+        GIdentityFieldsData_membershipEvents.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentityFieldsData_certReceivedAggregate? fromJson(
+  static GIdentityFieldsData_membershipEvents? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentityFieldsData_certReceivedAggregate.serializer,
+        GIdentityFieldsData_membershipEvents.serializer,
         json,
       );
 }
 
-abstract class GIdentityFieldsData_certReceivedAggregate_aggregate
+abstract class GIdentityFieldsData_membershipEvents_nodes
     implements
-        Built<GIdentityFieldsData_certReceivedAggregate_aggregate,
-            GIdentityFieldsData_certReceivedAggregate_aggregateBuilder>,
-        GIdentityFields_certReceivedAggregate_aggregate {
-  GIdentityFieldsData_certReceivedAggregate_aggregate._();
+        Built<GIdentityFieldsData_membershipEvents_nodes,
+            GIdentityFieldsData_membershipEvents_nodesBuilder>,
+        GIdentityFields_membershipEvents_nodes {
+  GIdentityFieldsData_membershipEvents_nodes._();
 
-  factory GIdentityFieldsData_certReceivedAggregate_aggregate(
-      [void Function(
-              GIdentityFieldsData_certReceivedAggregate_aggregateBuilder b)
-          updates]) = _$GIdentityFieldsData_certReceivedAggregate_aggregate;
+  factory GIdentityFieldsData_membershipEvents_nodes(
+      [void Function(GIdentityFieldsData_membershipEvents_nodesBuilder b)
+          updates]) = _$GIdentityFieldsData_membershipEvents_nodes;
 
   static void _initializeBuilder(
-          GIdentityFieldsData_certReceivedAggregate_aggregateBuilder b) =>
-      b..G__typename = 'CertAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<GIdentityFieldsData_certReceivedAggregate_aggregate>
-      get serializer =>
-          _$gIdentityFieldsDataCertReceivedAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityFieldsData_certReceivedAggregate_aggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentityFieldsData_certReceivedAggregate_aggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentityFieldsData_certReceivedAggregate_aggregate.serializer,
-        json,
-      );
-}
-
-abstract class GIdentityFieldsData_linkedAccount
-    implements
-        Built<GIdentityFieldsData_linkedAccount,
-            GIdentityFieldsData_linkedAccountBuilder>,
-        GIdentityFields_linkedAccount {
-  GIdentityFieldsData_linkedAccount._();
-
-  factory GIdentityFieldsData_linkedAccount(
-          [void Function(GIdentityFieldsData_linkedAccountBuilder b) updates]) =
-      _$GIdentityFieldsData_linkedAccount;
-
-  static void _initializeBuilder(GIdentityFieldsData_linkedAccountBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  static Serializer<GIdentityFieldsData_linkedAccount> get serializer =>
-      _$gIdentityFieldsDataLinkedAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityFieldsData_linkedAccount.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentityFieldsData_linkedAccount? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentityFieldsData_linkedAccount.serializer,
-        json,
-      );
-}
-
-abstract class GIdentityFieldsData_linkedAccountAggregate
-    implements
-        Built<GIdentityFieldsData_linkedAccountAggregate,
-            GIdentityFieldsData_linkedAccountAggregateBuilder>,
-        GIdentityFields_linkedAccountAggregate {
-  GIdentityFieldsData_linkedAccountAggregate._();
-
-  factory GIdentityFieldsData_linkedAccountAggregate(
-      [void Function(GIdentityFieldsData_linkedAccountAggregateBuilder b)
-          updates]) = _$GIdentityFieldsData_linkedAccountAggregate;
-
-  static void _initializeBuilder(
-          GIdentityFieldsData_linkedAccountAggregateBuilder b) =>
-      b..G__typename = 'AccountAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GIdentityFieldsData_linkedAccountAggregate_aggregate? get aggregate;
-  static Serializer<GIdentityFieldsData_linkedAccountAggregate>
-      get serializer => _$gIdentityFieldsDataLinkedAccountAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityFieldsData_linkedAccountAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentityFieldsData_linkedAccountAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentityFieldsData_linkedAccountAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GIdentityFieldsData_linkedAccountAggregate_aggregate
-    implements
-        Built<GIdentityFieldsData_linkedAccountAggregate_aggregate,
-            GIdentityFieldsData_linkedAccountAggregate_aggregateBuilder>,
-        GIdentityFields_linkedAccountAggregate_aggregate {
-  GIdentityFieldsData_linkedAccountAggregate_aggregate._();
-
-  factory GIdentityFieldsData_linkedAccountAggregate_aggregate(
-      [void Function(
-              GIdentityFieldsData_linkedAccountAggregate_aggregateBuilder b)
-          updates]) = _$GIdentityFieldsData_linkedAccountAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GIdentityFieldsData_linkedAccountAggregate_aggregateBuilder b) =>
-      b..G__typename = 'AccountAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<GIdentityFieldsData_linkedAccountAggregate_aggregate>
-      get serializer =>
-          _$gIdentityFieldsDataLinkedAccountAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityFieldsData_linkedAccountAggregate_aggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentityFieldsData_linkedAccountAggregate_aggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentityFieldsData_linkedAccountAggregate_aggregate.serializer,
-        json,
-      );
-}
-
-abstract class GIdentityFieldsData_membershipHistory
-    implements
-        Built<GIdentityFieldsData_membershipHistory,
-            GIdentityFieldsData_membershipHistoryBuilder>,
-        GIdentityFields_membershipHistory {
-  GIdentityFieldsData_membershipHistory._();
-
-  factory GIdentityFieldsData_membershipHistory(
-      [void Function(GIdentityFieldsData_membershipHistoryBuilder b)
-          updates]) = _$GIdentityFieldsData_membershipHistory;
-
-  static void _initializeBuilder(
-          GIdentityFieldsData_membershipHistoryBuilder b) =>
+          GIdentityFieldsData_membershipEvents_nodesBuilder b) =>
       b..G__typename = 'MembershipEvent';
 
   @override
@@ -11148,113 +9668,76 @@ abstract class GIdentityFieldsData_membershipHistory
   String get id;
   @override
   String? get identityId;
-  static Serializer<GIdentityFieldsData_membershipHistory> get serializer =>
-      _$gIdentityFieldsDataMembershipHistorySerializer;
+  static Serializer<GIdentityFieldsData_membershipEvents_nodes>
+      get serializer => _$gIdentityFieldsDataMembershipEventsNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityFieldsData_membershipHistory.serializer,
+        GIdentityFieldsData_membershipEvents_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentityFieldsData_membershipHistory? fromJson(
+  static GIdentityFieldsData_membershipEvents_nodes? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentityFieldsData_membershipHistory.serializer,
+        GIdentityFieldsData_membershipEvents_nodes.serializer,
         json,
       );
 }
 
-abstract class GIdentityFieldsData_membershipHistoryAggregate
+abstract class GIdentityFieldsData_changeOwnerKeys
     implements
-        Built<GIdentityFieldsData_membershipHistoryAggregate,
-            GIdentityFieldsData_membershipHistoryAggregateBuilder>,
-        GIdentityFields_membershipHistoryAggregate {
-  GIdentityFieldsData_membershipHistoryAggregate._();
+        Built<GIdentityFieldsData_changeOwnerKeys,
+            GIdentityFieldsData_changeOwnerKeysBuilder>,
+        GIdentityFields_changeOwnerKeys {
+  GIdentityFieldsData_changeOwnerKeys._();
 
-  factory GIdentityFieldsData_membershipHistoryAggregate(
-      [void Function(GIdentityFieldsData_membershipHistoryAggregateBuilder b)
-          updates]) = _$GIdentityFieldsData_membershipHistoryAggregate;
+  factory GIdentityFieldsData_changeOwnerKeys(
+      [void Function(GIdentityFieldsData_changeOwnerKeysBuilder b)
+          updates]) = _$GIdentityFieldsData_changeOwnerKeys;
 
   static void _initializeBuilder(
-          GIdentityFieldsData_membershipHistoryAggregateBuilder b) =>
-      b..G__typename = 'MembershipEventAggregate';
+          GIdentityFieldsData_changeOwnerKeysBuilder b) =>
+      b..G__typename = 'ChangeOwnerKeysConnection';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  GIdentityFieldsData_membershipHistoryAggregate_aggregate? get aggregate;
-  static Serializer<GIdentityFieldsData_membershipHistoryAggregate>
-      get serializer =>
-          _$gIdentityFieldsDataMembershipHistoryAggregateSerializer;
+  int get totalCount;
+  @override
+  BuiltList<GIdentityFieldsData_changeOwnerKeys_nodes> get nodes;
+  static Serializer<GIdentityFieldsData_changeOwnerKeys> get serializer =>
+      _$gIdentityFieldsDataChangeOwnerKeysSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityFieldsData_membershipHistoryAggregate.serializer,
+        GIdentityFieldsData_changeOwnerKeys.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentityFieldsData_membershipHistoryAggregate? fromJson(
+  static GIdentityFieldsData_changeOwnerKeys? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentityFieldsData_membershipHistoryAggregate.serializer,
+        GIdentityFieldsData_changeOwnerKeys.serializer,
         json,
       );
 }
 
-abstract class GIdentityFieldsData_membershipHistoryAggregate_aggregate
+abstract class GIdentityFieldsData_changeOwnerKeys_nodes
     implements
-        Built<GIdentityFieldsData_membershipHistoryAggregate_aggregate,
-            GIdentityFieldsData_membershipHistoryAggregate_aggregateBuilder>,
-        GIdentityFields_membershipHistoryAggregate_aggregate {
-  GIdentityFieldsData_membershipHistoryAggregate_aggregate._();
-
-  factory GIdentityFieldsData_membershipHistoryAggregate_aggregate(
-      [void Function(
-              GIdentityFieldsData_membershipHistoryAggregate_aggregateBuilder b)
-          updates]) = _$GIdentityFieldsData_membershipHistoryAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GIdentityFieldsData_membershipHistoryAggregate_aggregateBuilder b) =>
-      b..G__typename = 'MembershipEventAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<GIdentityFieldsData_membershipHistoryAggregate_aggregate>
-      get serializer =>
-          _$gIdentityFieldsDataMembershipHistoryAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityFieldsData_membershipHistoryAggregate_aggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentityFieldsData_membershipHistoryAggregate_aggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentityFieldsData_membershipHistoryAggregate_aggregate.serializer,
-        json,
-      );
-}
-
-abstract class GIdentityFieldsData_ownerKeyChange
-    implements
-        Built<GIdentityFieldsData_ownerKeyChange,
-            GIdentityFieldsData_ownerKeyChangeBuilder>,
-        GIdentityFields_ownerKeyChange,
+        Built<GIdentityFieldsData_changeOwnerKeys_nodes,
+            GIdentityFieldsData_changeOwnerKeys_nodesBuilder>,
+        GIdentityFields_changeOwnerKeys_nodes,
         GOwnerKeyChangeFields {
-  GIdentityFieldsData_ownerKeyChange._();
+  GIdentityFieldsData_changeOwnerKeys_nodes._();
 
-  factory GIdentityFieldsData_ownerKeyChange(
-      [void Function(GIdentityFieldsData_ownerKeyChangeBuilder b)
-          updates]) = _$GIdentityFieldsData_ownerKeyChange;
+  factory GIdentityFieldsData_changeOwnerKeys_nodes(
+      [void Function(GIdentityFieldsData_changeOwnerKeys_nodesBuilder b)
+          updates]) = _$GIdentityFieldsData_changeOwnerKeys_nodes;
 
-  static void _initializeBuilder(GIdentityFieldsData_ownerKeyChangeBuilder b) =>
+  static void _initializeBuilder(
+          GIdentityFieldsData_changeOwnerKeys_nodesBuilder b) =>
       b..G__typename = 'ChangeOwnerKey';
 
   @override
@@ -11270,95 +9753,19 @@ abstract class GIdentityFieldsData_ownerKeyChange
   String? get nextId;
   @override
   String? get previousId;
-  static Serializer<GIdentityFieldsData_ownerKeyChange> get serializer =>
-      _$gIdentityFieldsDataOwnerKeyChangeSerializer;
+  static Serializer<GIdentityFieldsData_changeOwnerKeys_nodes> get serializer =>
+      _$gIdentityFieldsDataChangeOwnerKeysNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityFieldsData_ownerKeyChange.serializer,
+        GIdentityFieldsData_changeOwnerKeys_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentityFieldsData_ownerKeyChange? fromJson(
+  static GIdentityFieldsData_changeOwnerKeys_nodes? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentityFieldsData_ownerKeyChange.serializer,
-        json,
-      );
-}
-
-abstract class GIdentityFieldsData_ownerKeyChangeAggregate
-    implements
-        Built<GIdentityFieldsData_ownerKeyChangeAggregate,
-            GIdentityFieldsData_ownerKeyChangeAggregateBuilder>,
-        GIdentityFields_ownerKeyChangeAggregate {
-  GIdentityFieldsData_ownerKeyChangeAggregate._();
-
-  factory GIdentityFieldsData_ownerKeyChangeAggregate(
-      [void Function(GIdentityFieldsData_ownerKeyChangeAggregateBuilder b)
-          updates]) = _$GIdentityFieldsData_ownerKeyChangeAggregate;
-
-  static void _initializeBuilder(
-          GIdentityFieldsData_ownerKeyChangeAggregateBuilder b) =>
-      b..G__typename = 'ChangeOwnerKeyAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GIdentityFieldsData_ownerKeyChangeAggregate_aggregate? get aggregate;
-  static Serializer<GIdentityFieldsData_ownerKeyChangeAggregate>
-      get serializer => _$gIdentityFieldsDataOwnerKeyChangeAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityFieldsData_ownerKeyChangeAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentityFieldsData_ownerKeyChangeAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentityFieldsData_ownerKeyChangeAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GIdentityFieldsData_ownerKeyChangeAggregate_aggregate
-    implements
-        Built<GIdentityFieldsData_ownerKeyChangeAggregate_aggregate,
-            GIdentityFieldsData_ownerKeyChangeAggregate_aggregateBuilder>,
-        GIdentityFields_ownerKeyChangeAggregate_aggregate {
-  GIdentityFieldsData_ownerKeyChangeAggregate_aggregate._();
-
-  factory GIdentityFieldsData_ownerKeyChangeAggregate_aggregate(
-      [void Function(
-              GIdentityFieldsData_ownerKeyChangeAggregate_aggregateBuilder b)
-          updates]) = _$GIdentityFieldsData_ownerKeyChangeAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GIdentityFieldsData_ownerKeyChangeAggregate_aggregateBuilder b) =>
-      b..G__typename = 'ChangeOwnerKeyAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<GIdentityFieldsData_ownerKeyChangeAggregate_aggregate>
-      get serializer =>
-          _$gIdentityFieldsDataOwnerKeyChangeAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityFieldsData_ownerKeyChangeAggregate_aggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GIdentityFieldsData_ownerKeyChangeAggregate_aggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GIdentityFieldsData_ownerKeyChangeAggregate_aggregate.serializer,
+        GIdentityFieldsData_changeOwnerKeys_nodes.serializer,
         json,
       );
 }
@@ -11391,9 +9798,9 @@ abstract class GIdentityFieldsData_smith
   @override
   int? get lastForged;
   @override
-  BuiltList<GIdentityFieldsData_smith_smithCertIssued> get smithCertIssued;
+  GIdentityFieldsData_smith_smithCertsByIssuerId get smithCertsByIssuerId;
   @override
-  BuiltList<GIdentityFieldsData_smith_smithCertReceived> get smithCertReceived;
+  GIdentityFieldsData_smith_smithCertsByReceiverId get smithCertsByReceiverId;
   static Serializer<GIdentityFieldsData_smith> get serializer =>
       _$gIdentityFieldsDataSmithSerializer;
 
@@ -11410,66 +9817,63 @@ abstract class GIdentityFieldsData_smith
       );
 }
 
-abstract class GIdentityFieldsData_smith_smithCertIssued
+abstract class GIdentityFieldsData_smith_smithCertsByIssuerId
     implements
-        Built<GIdentityFieldsData_smith_smithCertIssued,
-            GIdentityFieldsData_smith_smithCertIssuedBuilder>,
-        GIdentityFields_smith_smithCertIssued,
-        GSmithFields_smithCertIssued,
-        GSmithCertFields {
-  GIdentityFieldsData_smith_smithCertIssued._();
+        Built<GIdentityFieldsData_smith_smithCertsByIssuerId,
+            GIdentityFieldsData_smith_smithCertsByIssuerIdBuilder>,
+        GIdentityFields_smith_smithCertsByIssuerId,
+        GSmithFields_smithCertsByIssuerId {
+  GIdentityFieldsData_smith_smithCertsByIssuerId._();
 
-  factory GIdentityFieldsData_smith_smithCertIssued(
-      [void Function(GIdentityFieldsData_smith_smithCertIssuedBuilder b)
-          updates]) = _$GIdentityFieldsData_smith_smithCertIssued;
+  factory GIdentityFieldsData_smith_smithCertsByIssuerId(
+      [void Function(GIdentityFieldsData_smith_smithCertsByIssuerIdBuilder b)
+          updates]) = _$GIdentityFieldsData_smith_smithCertsByIssuerId;
 
   static void _initializeBuilder(
-          GIdentityFieldsData_smith_smithCertIssuedBuilder b) =>
-      b..G__typename = 'SmithCert';
+          GIdentityFieldsData_smith_smithCertsByIssuerIdBuilder b) =>
+      b..G__typename = 'SmithCertsConnection';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  String get id;
+  int get totalCount;
   @override
-  String? get issuerId;
-  @override
-  String? get receiverId;
-  @override
-  int get createdOn;
-  static Serializer<GIdentityFieldsData_smith_smithCertIssued> get serializer =>
-      _$gIdentityFieldsDataSmithSmithCertIssuedSerializer;
+  BuiltList<GIdentityFieldsData_smith_smithCertsByIssuerId_nodes> get nodes;
+  static Serializer<GIdentityFieldsData_smith_smithCertsByIssuerId>
+      get serializer =>
+          _$gIdentityFieldsDataSmithSmithCertsByIssuerIdSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityFieldsData_smith_smithCertIssued.serializer,
+        GIdentityFieldsData_smith_smithCertsByIssuerId.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentityFieldsData_smith_smithCertIssued? fromJson(
+  static GIdentityFieldsData_smith_smithCertsByIssuerId? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentityFieldsData_smith_smithCertIssued.serializer,
+        GIdentityFieldsData_smith_smithCertsByIssuerId.serializer,
         json,
       );
 }
 
-abstract class GIdentityFieldsData_smith_smithCertReceived
+abstract class GIdentityFieldsData_smith_smithCertsByIssuerId_nodes
     implements
-        Built<GIdentityFieldsData_smith_smithCertReceived,
-            GIdentityFieldsData_smith_smithCertReceivedBuilder>,
-        GIdentityFields_smith_smithCertReceived,
-        GSmithFields_smithCertReceived,
+        Built<GIdentityFieldsData_smith_smithCertsByIssuerId_nodes,
+            GIdentityFieldsData_smith_smithCertsByIssuerId_nodesBuilder>,
+        GIdentityFields_smith_smithCertsByIssuerId_nodes,
+        GSmithFields_smithCertsByIssuerId_nodes,
         GSmithCertFields {
-  GIdentityFieldsData_smith_smithCertReceived._();
+  GIdentityFieldsData_smith_smithCertsByIssuerId_nodes._();
 
-  factory GIdentityFieldsData_smith_smithCertReceived(
-      [void Function(GIdentityFieldsData_smith_smithCertReceivedBuilder b)
-          updates]) = _$GIdentityFieldsData_smith_smithCertReceived;
+  factory GIdentityFieldsData_smith_smithCertsByIssuerId_nodes(
+      [void Function(
+              GIdentityFieldsData_smith_smithCertsByIssuerId_nodesBuilder b)
+          updates]) = _$GIdentityFieldsData_smith_smithCertsByIssuerId_nodes;
 
   static void _initializeBuilder(
-          GIdentityFieldsData_smith_smithCertReceivedBuilder b) =>
+          GIdentityFieldsData_smith_smithCertsByIssuerId_nodesBuilder b) =>
       b..G__typename = 'SmithCert';
 
   @override
@@ -11483,19 +9887,108 @@ abstract class GIdentityFieldsData_smith_smithCertReceived
   String? get receiverId;
   @override
   int get createdOn;
-  static Serializer<GIdentityFieldsData_smith_smithCertReceived>
-      get serializer => _$gIdentityFieldsDataSmithSmithCertReceivedSerializer;
+  static Serializer<GIdentityFieldsData_smith_smithCertsByIssuerId_nodes>
+      get serializer =>
+          _$gIdentityFieldsDataSmithSmithCertsByIssuerIdNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GIdentityFieldsData_smith_smithCertReceived.serializer,
+        GIdentityFieldsData_smith_smithCertsByIssuerId_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GIdentityFieldsData_smith_smithCertReceived? fromJson(
+  static GIdentityFieldsData_smith_smithCertsByIssuerId_nodes? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GIdentityFieldsData_smith_smithCertReceived.serializer,
+        GIdentityFieldsData_smith_smithCertsByIssuerId_nodes.serializer,
+        json,
+      );
+}
+
+abstract class GIdentityFieldsData_smith_smithCertsByReceiverId
+    implements
+        Built<GIdentityFieldsData_smith_smithCertsByReceiverId,
+            GIdentityFieldsData_smith_smithCertsByReceiverIdBuilder>,
+        GIdentityFields_smith_smithCertsByReceiverId,
+        GSmithFields_smithCertsByReceiverId {
+  GIdentityFieldsData_smith_smithCertsByReceiverId._();
+
+  factory GIdentityFieldsData_smith_smithCertsByReceiverId(
+      [void Function(GIdentityFieldsData_smith_smithCertsByReceiverIdBuilder b)
+          updates]) = _$GIdentityFieldsData_smith_smithCertsByReceiverId;
+
+  static void _initializeBuilder(
+          GIdentityFieldsData_smith_smithCertsByReceiverIdBuilder b) =>
+      b..G__typename = 'SmithCertsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GIdentityFieldsData_smith_smithCertsByReceiverId_nodes> get nodes;
+  static Serializer<GIdentityFieldsData_smith_smithCertsByReceiverId>
+      get serializer =>
+          _$gIdentityFieldsDataSmithSmithCertsByReceiverIdSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentityFieldsData_smith_smithCertsByReceiverId.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentityFieldsData_smith_smithCertsByReceiverId? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GIdentityFieldsData_smith_smithCertsByReceiverId.serializer,
+        json,
+      );
+}
+
+abstract class GIdentityFieldsData_smith_smithCertsByReceiverId_nodes
+    implements
+        Built<GIdentityFieldsData_smith_smithCertsByReceiverId_nodes,
+            GIdentityFieldsData_smith_smithCertsByReceiverId_nodesBuilder>,
+        GIdentityFields_smith_smithCertsByReceiverId_nodes,
+        GSmithFields_smithCertsByReceiverId_nodes,
+        GSmithCertFields {
+  GIdentityFieldsData_smith_smithCertsByReceiverId_nodes._();
+
+  factory GIdentityFieldsData_smith_smithCertsByReceiverId_nodes(
+      [void Function(
+              GIdentityFieldsData_smith_smithCertsByReceiverId_nodesBuilder b)
+          updates]) = _$GIdentityFieldsData_smith_smithCertsByReceiverId_nodes;
+
+  static void _initializeBuilder(
+          GIdentityFieldsData_smith_smithCertsByReceiverId_nodesBuilder b) =>
+      b..G__typename = 'SmithCert';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  @override
+  String? get issuerId;
+  @override
+  String? get receiverId;
+  @override
+  int get createdOn;
+  static Serializer<GIdentityFieldsData_smith_smithCertsByReceiverId_nodes>
+      get serializer =>
+          _$gIdentityFieldsDataSmithSmithCertsByReceiverIdNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentityFieldsData_smith_smithCertsByReceiverId_nodes.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentityFieldsData_smith_smithCertsByReceiverId_nodes? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GIdentityFieldsData_smith_smithCertsByReceiverId_nodes.serializer,
         json,
       );
 }
@@ -11508,7 +10001,7 @@ abstract class GCommentsIssued {
   String get hash;
   String get id;
   String get remark;
-  _i2.Gbytea get remarkBytes;
+  String get remarkBytes;
   String get type;
   Map<String, dynamic> toJson();
 }
@@ -11542,7 +10035,7 @@ abstract class GCommentsIssuedData
   @override
   String get remark;
   @override
-  _i2.Gbytea get remarkBytes;
+  String get remarkBytes;
   @override
   String get type;
   static Serializer<GCommentsIssuedData> get serializer =>
@@ -11565,18 +10058,19 @@ abstract class GAccountBasicFields {
   String get G__typename;
   int get createdOn;
   String get id;
-  GAccountBasicFields_identity? get identity;
+  GAccountBasicFields_linkedIdentity? get linkedIdentity;
   bool get isActive;
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountBasicFields_identity implements GIdentityBasicFields {
+abstract class GAccountBasicFields_linkedIdentity
+    implements GIdentityBasicFields {
   @override
   String get G__typename;
   @override
   String? get accountId;
   @override
-  GAccountBasicFields_identity_account? get account;
+  GAccountBasicFields_linkedIdentity_account? get account;
   @override
   String get id;
   @override
@@ -11593,7 +10087,7 @@ abstract class GAccountBasicFields_identity implements GIdentityBasicFields {
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountBasicFields_identity_account
+abstract class GAccountBasicFields_linkedIdentity_account
     implements GIdentityBasicFields_account {
   @override
   String get G__typename;
@@ -11624,7 +10118,7 @@ abstract class GAccountBasicFieldsData
   @override
   String get id;
   @override
-  GAccountBasicFieldsData_identity? get identity;
+  GAccountBasicFieldsData_linkedIdentity? get linkedIdentity;
   @override
   bool get isActive;
   static Serializer<GAccountBasicFieldsData> get serializer =>
@@ -11643,19 +10137,20 @@ abstract class GAccountBasicFieldsData
       );
 }
 
-abstract class GAccountBasicFieldsData_identity
+abstract class GAccountBasicFieldsData_linkedIdentity
     implements
-        Built<GAccountBasicFieldsData_identity,
-            GAccountBasicFieldsData_identityBuilder>,
-        GAccountBasicFields_identity,
+        Built<GAccountBasicFieldsData_linkedIdentity,
+            GAccountBasicFieldsData_linkedIdentityBuilder>,
+        GAccountBasicFields_linkedIdentity,
         GIdentityBasicFields {
-  GAccountBasicFieldsData_identity._();
+  GAccountBasicFieldsData_linkedIdentity._();
 
-  factory GAccountBasicFieldsData_identity(
-          [void Function(GAccountBasicFieldsData_identityBuilder b) updates]) =
-      _$GAccountBasicFieldsData_identity;
+  factory GAccountBasicFieldsData_linkedIdentity(
+      [void Function(GAccountBasicFieldsData_linkedIdentityBuilder b)
+          updates]) = _$GAccountBasicFieldsData_linkedIdentity;
 
-  static void _initializeBuilder(GAccountBasicFieldsData_identityBuilder b) =>
+  static void _initializeBuilder(
+          GAccountBasicFieldsData_linkedIdentityBuilder b) =>
       b..G__typename = 'Identity';
 
   @override
@@ -11664,7 +10159,7 @@ abstract class GAccountBasicFieldsData_identity
   @override
   String? get accountId;
   @override
-  GAccountBasicFieldsData_identity_account? get account;
+  GAccountBasicFieldsData_linkedIdentity_account? get account;
   @override
   String get id;
   @override
@@ -11677,37 +10172,37 @@ abstract class GAccountBasicFieldsData_identity
   int get expireOn;
   @override
   int get index;
-  static Serializer<GAccountBasicFieldsData_identity> get serializer =>
-      _$gAccountBasicFieldsDataIdentitySerializer;
+  static Serializer<GAccountBasicFieldsData_linkedIdentity> get serializer =>
+      _$gAccountBasicFieldsDataLinkedIdentitySerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountBasicFieldsData_identity.serializer,
+        GAccountBasicFieldsData_linkedIdentity.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountBasicFieldsData_identity? fromJson(
+  static GAccountBasicFieldsData_linkedIdentity? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountBasicFieldsData_identity.serializer,
+        GAccountBasicFieldsData_linkedIdentity.serializer,
         json,
       );
 }
 
-abstract class GAccountBasicFieldsData_identity_account
+abstract class GAccountBasicFieldsData_linkedIdentity_account
     implements
-        Built<GAccountBasicFieldsData_identity_account,
-            GAccountBasicFieldsData_identity_accountBuilder>,
-        GAccountBasicFields_identity_account,
+        Built<GAccountBasicFieldsData_linkedIdentity_account,
+            GAccountBasicFieldsData_linkedIdentity_accountBuilder>,
+        GAccountBasicFields_linkedIdentity_account,
         GIdentityBasicFields_account {
-  GAccountBasicFieldsData_identity_account._();
+  GAccountBasicFieldsData_linkedIdentity_account._();
 
-  factory GAccountBasicFieldsData_identity_account(
-      [void Function(GAccountBasicFieldsData_identity_accountBuilder b)
-          updates]) = _$GAccountBasicFieldsData_identity_account;
+  factory GAccountBasicFieldsData_linkedIdentity_account(
+      [void Function(GAccountBasicFieldsData_linkedIdentity_accountBuilder b)
+          updates]) = _$GAccountBasicFieldsData_linkedIdentity_account;
 
   static void _initializeBuilder(
-          GAccountBasicFieldsData_identity_accountBuilder b) =>
+          GAccountBasicFieldsData_linkedIdentity_accountBuilder b) =>
       b..G__typename = 'Account';
 
   @override
@@ -11715,95 +10210,217 @@ abstract class GAccountBasicFieldsData_identity_account
   String get G__typename;
   @override
   int get createdOn;
-  static Serializer<GAccountBasicFieldsData_identity_account> get serializer =>
-      _$gAccountBasicFieldsDataIdentityAccountSerializer;
+  static Serializer<GAccountBasicFieldsData_linkedIdentity_account>
+      get serializer =>
+          _$gAccountBasicFieldsDataLinkedIdentityAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountBasicFieldsData_identity_account.serializer,
+        GAccountBasicFieldsData_linkedIdentity_account.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountBasicFieldsData_identity_account? fromJson(
+  static GAccountBasicFieldsData_linkedIdentity_account? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountBasicFieldsData_identity_account.serializer,
+        GAccountBasicFieldsData_linkedIdentity_account.serializer,
         json,
       );
 }
 
 abstract class GAccountFields {
   String get G__typename;
-  BuiltList<GAccountFields_commentsIssued> get commentsIssued;
-  GAccountFields_commentsIssuedAggregate get commentsIssuedAggregate;
   int get createdOn;
   String get id;
-  GAccountFields_identity? get identity;
   bool get isActive;
+  GAccountFields_transfersIssued get transfersIssued;
+  GAccountFields_transfersReceived get transfersReceived;
+  GAccountFields_wasIdentityPrev get wasIdentityPrev;
+  GAccountFields_wasIdentityNext get wasIdentityNext;
   GAccountFields_linkedIdentity? get linkedIdentity;
-  BuiltList<GAccountFields_removedIdentities> get removedIdentities;
-  GAccountFields_removedIdentitiesAggregate get removedIdentitiesAggregate;
-  BuiltList<GAccountFields_transfersIssued> get transfersIssued;
-  GAccountFields_transfersIssuedAggregate get transfersIssuedAggregate;
-  BuiltList<GAccountFields_transfersReceived> get transfersReceived;
-  GAccountFields_transfersReceivedAggregate get transfersReceivedAggregate;
-  BuiltList<GAccountFields_wasIdentity> get wasIdentity;
-  GAccountFields_wasIdentityAggregate get wasIdentityAggregate;
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_commentsIssued implements GCommentsIssued {
+abstract class GAccountFields_transfersIssued {
+  String get G__typename;
+  int get totalCount;
+  BuiltList<GAccountFields_transfersIssued_nodes> get nodes;
+  Map<String, dynamic> toJson();
+}
+
+abstract class GAccountFields_transfersIssued_nodes implements GTransferFields {
   @override
   String get G__typename;
-  @override
-  String? get authorId;
   @override
   int get blockNumber;
   @override
-  String? get eventId;
+  _i2.GDatetime get timestamp;
   @override
-  String get hash;
+  _i2.GBigFloat get amount;
+  @override
+  GAccountFields_transfersIssued_nodes_to? get to;
+  @override
+  GAccountFields_transfersIssued_nodes_from? get from;
+  @override
+  GAccountFields_transfersIssued_nodes_comment? get comment;
+  @override
+  Map<String, dynamic> toJson();
+}
+
+abstract class GAccountFields_transfersIssued_nodes_to
+    implements GTransferFields_to {
+  @override
+  String get G__typename;
   @override
   String get id;
   @override
+  Map<String, dynamic> toJson();
+}
+
+abstract class GAccountFields_transfersIssued_nodes_from
+    implements GTransferFields_from {
+  @override
+  String get G__typename;
+  @override
+  String get id;
+  @override
+  Map<String, dynamic> toJson();
+}
+
+abstract class GAccountFields_transfersIssued_nodes_comment
+    implements GTransferFields_comment {
+  @override
+  String get G__typename;
+  @override
   String get remark;
   @override
-  _i2.Gbytea get remarkBytes;
-  @override
-  String get type;
+  String get remarkBytes;
   @override
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_commentsIssuedAggregate {
+abstract class GAccountFields_transfersReceived {
   String get G__typename;
-  GAccountFields_commentsIssuedAggregate_aggregate? get aggregate;
+  int get totalCount;
+  BuiltList<GAccountFields_transfersReceived_nodes> get nodes;
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_commentsIssuedAggregate_aggregate {
+abstract class GAccountFields_transfersReceived_nodes
+    implements GTransferFields {
+  @override
   String get G__typename;
-  int get count;
+  @override
+  int get blockNumber;
+  @override
+  _i2.GDatetime get timestamp;
+  @override
+  _i2.GBigFloat get amount;
+  @override
+  GAccountFields_transfersReceived_nodes_to? get to;
+  @override
+  GAccountFields_transfersReceived_nodes_from? get from;
+  @override
+  GAccountFields_transfersReceived_nodes_comment? get comment;
+  @override
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_identity implements GIdentityFields {
+abstract class GAccountFields_transfersReceived_nodes_to
+    implements GTransferFields_to {
   @override
   String get G__typename;
   @override
-  GAccountFields_identity_account? get account;
+  String get id;
+  @override
+  Map<String, dynamic> toJson();
+}
+
+abstract class GAccountFields_transfersReceived_nodes_from
+    implements GTransferFields_from {
+  @override
+  String get G__typename;
+  @override
+  String get id;
+  @override
+  Map<String, dynamic> toJson();
+}
+
+abstract class GAccountFields_transfersReceived_nodes_comment
+    implements GTransferFields_comment {
+  @override
+  String get G__typename;
+  @override
+  String get remark;
+  @override
+  String get remarkBytes;
+  @override
+  Map<String, dynamic> toJson();
+}
+
+abstract class GAccountFields_wasIdentityPrev {
+  String get G__typename;
+  int get totalCount;
+  BuiltList<GAccountFields_wasIdentityPrev_nodes> get nodes;
+  Map<String, dynamic> toJson();
+}
+
+abstract class GAccountFields_wasIdentityPrev_nodes
+    implements GOwnerKeyChangeFields {
+  @override
+  String get G__typename;
+  @override
+  String get id;
+  @override
+  int get blockNumber;
+  @override
+  String? get identityId;
+  @override
+  String? get nextId;
+  @override
+  String? get previousId;
+  @override
+  Map<String, dynamic> toJson();
+}
+
+abstract class GAccountFields_wasIdentityNext {
+  String get G__typename;
+  int get totalCount;
+  BuiltList<GAccountFields_wasIdentityNext_nodes> get nodes;
+  Map<String, dynamic> toJson();
+}
+
+abstract class GAccountFields_wasIdentityNext_nodes
+    implements GOwnerKeyChangeFields {
+  @override
+  String get G__typename;
+  @override
+  String get id;
+  @override
+  int get blockNumber;
+  @override
+  String? get identityId;
+  @override
+  String? get nextId;
+  @override
+  String? get previousId;
+  @override
+  Map<String, dynamic> toJson();
+}
+
+abstract class GAccountFields_linkedIdentity implements GIdentityFields {
+  @override
+  String get G__typename;
+  @override
+  GAccountFields_linkedIdentity_account? get account;
   @override
   String? get accountId;
   @override
   String? get accountRemovedId;
   @override
-  BuiltList<GAccountFields_identity_certIssued> get certIssued;
+  GAccountFields_linkedIdentity_certsByIssuerId get certsByIssuerId;
   @override
-  GAccountFields_identity_certIssuedAggregate get certIssuedAggregate;
-  @override
-  BuiltList<GAccountFields_identity_certReceived> get certReceived;
-  @override
-  GAccountFields_identity_certReceivedAggregate get certReceivedAggregate;
+  GAccountFields_linkedIdentity_certsByReceiverId get certsByReceiverId;
   @override
   String? get createdInId;
   @override
@@ -11819,29 +10436,20 @@ abstract class GAccountFields_identity implements GIdentityFields {
   @override
   int get lastChangeOn;
   @override
-  BuiltList<GAccountFields_identity_linkedAccount> get linkedAccount;
-  @override
-  GAccountFields_identity_linkedAccountAggregate get linkedAccountAggregate;
-  @override
   String get status;
-  @override
-  BuiltList<GAccountFields_identity_membershipHistory> get membershipHistory;
-  @override
-  GAccountFields_identity_membershipHistoryAggregate
-      get membershipHistoryAggregate;
   @override
   String get name;
   @override
-  BuiltList<GAccountFields_identity_ownerKeyChange> get ownerKeyChange;
+  GAccountFields_linkedIdentity_membershipEvents get membershipEvents;
   @override
-  GAccountFields_identity_ownerKeyChangeAggregate get ownerKeyChangeAggregate;
+  GAccountFields_linkedIdentity_changeOwnerKeys get changeOwnerKeys;
   @override
-  GAccountFields_identity_smith? get smith;
+  GAccountFields_linkedIdentity_smith? get smith;
   @override
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_identity_account
+abstract class GAccountFields_linkedIdentity_account
     implements GIdentityFields_account {
   @override
   String get G__typename;
@@ -11851,8 +10459,20 @@ abstract class GAccountFields_identity_account
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_identity_certIssued
-    implements GIdentityFields_certIssued, GCertFields {
+abstract class GAccountFields_linkedIdentity_certsByIssuerId
+    implements GIdentityFields_certsByIssuerId {
+  @override
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GAccountFields_linkedIdentity_certsByIssuerId_nodes> get nodes;
+  @override
+  Map<String, dynamic> toJson();
+}
+
+abstract class GAccountFields_linkedIdentity_certsByIssuerId_nodes
+    implements GIdentityFields_certsByIssuerId_nodes, GCertFields {
   @override
   String get G__typename;
   @override
@@ -11860,11 +10480,11 @@ abstract class GAccountFields_identity_certIssued
   @override
   String? get issuerId;
   @override
-  GAccountFields_identity_certIssued_issuer? get issuer;
+  GAccountFields_linkedIdentity_certsByIssuerId_nodes_issuer? get issuer;
   @override
   String? get receiverId;
   @override
-  GAccountFields_identity_certIssued_receiver? get receiver;
+  GAccountFields_linkedIdentity_certsByIssuerId_nodes_receiver? get receiver;
   @override
   int get createdOn;
   @override
@@ -11877,9 +10497,9 @@ abstract class GAccountFields_identity_certIssued
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_identity_certIssued_issuer
+abstract class GAccountFields_linkedIdentity_certsByIssuerId_nodes_issuer
     implements
-        GIdentityFields_certIssued_issuer,
+        GIdentityFields_certsByIssuerId_nodes_issuer,
         GCertFields_issuer,
         GIdentityBasicFields {
   @override
@@ -11887,7 +10507,8 @@ abstract class GAccountFields_identity_certIssued_issuer
   @override
   String? get accountId;
   @override
-  GAccountFields_identity_certIssued_issuer_account? get account;
+  GAccountFields_linkedIdentity_certsByIssuerId_nodes_issuer_account?
+      get account;
   @override
   String get id;
   @override
@@ -11904,9 +10525,9 @@ abstract class GAccountFields_identity_certIssued_issuer
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_identity_certIssued_issuer_account
+abstract class GAccountFields_linkedIdentity_certsByIssuerId_nodes_issuer_account
     implements
-        GIdentityFields_certIssued_issuer_account,
+        GIdentityFields_certsByIssuerId_nodes_issuer_account,
         GCertFields_issuer_account,
         GIdentityBasicFields_account {
   @override
@@ -11917,9 +10538,9 @@ abstract class GAccountFields_identity_certIssued_issuer_account
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_identity_certIssued_receiver
+abstract class GAccountFields_linkedIdentity_certsByIssuerId_nodes_receiver
     implements
-        GIdentityFields_certIssued_receiver,
+        GIdentityFields_certsByIssuerId_nodes_receiver,
         GCertFields_receiver,
         GIdentityBasicFields {
   @override
@@ -11927,7 +10548,8 @@ abstract class GAccountFields_identity_certIssued_receiver
   @override
   String? get accountId;
   @override
-  GAccountFields_identity_certIssued_receiver_account? get account;
+  GAccountFields_linkedIdentity_certsByIssuerId_nodes_receiver_account?
+      get account;
   @override
   String get id;
   @override
@@ -11944,9 +10566,9 @@ abstract class GAccountFields_identity_certIssued_receiver
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_identity_certIssued_receiver_account
+abstract class GAccountFields_linkedIdentity_certsByIssuerId_nodes_receiver_account
     implements
-        GIdentityFields_certIssued_receiver_account,
+        GIdentityFields_certsByIssuerId_nodes_receiver_account,
         GCertFields_receiver_account,
         GIdentityBasicFields_account {
   @override
@@ -11957,28 +10579,20 @@ abstract class GAccountFields_identity_certIssued_receiver_account
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_identity_certIssuedAggregate
-    implements GIdentityFields_certIssuedAggregate {
+abstract class GAccountFields_linkedIdentity_certsByReceiverId
+    implements GIdentityFields_certsByReceiverId {
   @override
   String get G__typename;
   @override
-  GAccountFields_identity_certIssuedAggregate_aggregate? get aggregate;
+  int get totalCount;
+  @override
+  BuiltList<GAccountFields_linkedIdentity_certsByReceiverId_nodes> get nodes;
   @override
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_identity_certIssuedAggregate_aggregate
-    implements GIdentityFields_certIssuedAggregate_aggregate {
-  @override
-  String get G__typename;
-  @override
-  int get count;
-  @override
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_identity_certReceived
-    implements GIdentityFields_certReceived, GCertFields {
+abstract class GAccountFields_linkedIdentity_certsByReceiverId_nodes
+    implements GIdentityFields_certsByReceiverId_nodes, GCertFields {
   @override
   String get G__typename;
   @override
@@ -11986,11 +10600,11 @@ abstract class GAccountFields_identity_certReceived
   @override
   String? get issuerId;
   @override
-  GAccountFields_identity_certReceived_issuer? get issuer;
+  GAccountFields_linkedIdentity_certsByReceiverId_nodes_issuer? get issuer;
   @override
   String? get receiverId;
   @override
-  GAccountFields_identity_certReceived_receiver? get receiver;
+  GAccountFields_linkedIdentity_certsByReceiverId_nodes_receiver? get receiver;
   @override
   int get createdOn;
   @override
@@ -12003,9 +10617,9 @@ abstract class GAccountFields_identity_certReceived
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_identity_certReceived_issuer
+abstract class GAccountFields_linkedIdentity_certsByReceiverId_nodes_issuer
     implements
-        GIdentityFields_certReceived_issuer,
+        GIdentityFields_certsByReceiverId_nodes_issuer,
         GCertFields_issuer,
         GIdentityBasicFields {
   @override
@@ -12013,7 +10627,8 @@ abstract class GAccountFields_identity_certReceived_issuer
   @override
   String? get accountId;
   @override
-  GAccountFields_identity_certReceived_issuer_account? get account;
+  GAccountFields_linkedIdentity_certsByReceiverId_nodes_issuer_account?
+      get account;
   @override
   String get id;
   @override
@@ -12030,9 +10645,9 @@ abstract class GAccountFields_identity_certReceived_issuer
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_identity_certReceived_issuer_account
+abstract class GAccountFields_linkedIdentity_certsByReceiverId_nodes_issuer_account
     implements
-        GIdentityFields_certReceived_issuer_account,
+        GIdentityFields_certsByReceiverId_nodes_issuer_account,
         GCertFields_issuer_account,
         GIdentityBasicFields_account {
   @override
@@ -12043,9 +10658,9 @@ abstract class GAccountFields_identity_certReceived_issuer_account
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_identity_certReceived_receiver
+abstract class GAccountFields_linkedIdentity_certsByReceiverId_nodes_receiver
     implements
-        GIdentityFields_certReceived_receiver,
+        GIdentityFields_certsByReceiverId_nodes_receiver,
         GCertFields_receiver,
         GIdentityBasicFields {
   @override
@@ -12053,7 +10668,8 @@ abstract class GAccountFields_identity_certReceived_receiver
   @override
   String? get accountId;
   @override
-  GAccountFields_identity_certReceived_receiver_account? get account;
+  GAccountFields_linkedIdentity_certsByReceiverId_nodes_receiver_account?
+      get account;
   @override
   String get id;
   @override
@@ -12070,9 +10686,9 @@ abstract class GAccountFields_identity_certReceived_receiver
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_identity_certReceived_receiver_account
+abstract class GAccountFields_linkedIdentity_certsByReceiverId_nodes_receiver_account
     implements
-        GIdentityFields_certReceived_receiver_account,
+        GIdentityFields_certsByReceiverId_nodes_receiver_account,
         GCertFields_receiver_account,
         GIdentityBasicFields_account {
   @override
@@ -12083,58 +10699,20 @@ abstract class GAccountFields_identity_certReceived_receiver_account
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_identity_certReceivedAggregate
-    implements GIdentityFields_certReceivedAggregate {
+abstract class GAccountFields_linkedIdentity_membershipEvents
+    implements GIdentityFields_membershipEvents {
   @override
   String get G__typename;
   @override
-  GAccountFields_identity_certReceivedAggregate_aggregate? get aggregate;
+  int get totalCount;
+  @override
+  BuiltList<GAccountFields_linkedIdentity_membershipEvents_nodes> get nodes;
   @override
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_identity_certReceivedAggregate_aggregate
-    implements GIdentityFields_certReceivedAggregate_aggregate {
-  @override
-  String get G__typename;
-  @override
-  int get count;
-  @override
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_identity_linkedAccount
-    implements GIdentityFields_linkedAccount {
-  @override
-  String get G__typename;
-  @override
-  String get id;
-  @override
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_identity_linkedAccountAggregate
-    implements GIdentityFields_linkedAccountAggregate {
-  @override
-  String get G__typename;
-  @override
-  GAccountFields_identity_linkedAccountAggregate_aggregate? get aggregate;
-  @override
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_identity_linkedAccountAggregate_aggregate
-    implements GIdentityFields_linkedAccountAggregate_aggregate {
-  @override
-  String get G__typename;
-  @override
-  int get count;
-  @override
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_identity_membershipHistory
-    implements GIdentityFields_membershipHistory {
+abstract class GAccountFields_linkedIdentity_membershipEvents_nodes
+    implements GIdentityFields_membershipEvents_nodes {
   @override
   String get G__typename;
   @override
@@ -12151,28 +10729,20 @@ abstract class GAccountFields_identity_membershipHistory
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_identity_membershipHistoryAggregate
-    implements GIdentityFields_membershipHistoryAggregate {
+abstract class GAccountFields_linkedIdentity_changeOwnerKeys
+    implements GIdentityFields_changeOwnerKeys {
   @override
   String get G__typename;
   @override
-  GAccountFields_identity_membershipHistoryAggregate_aggregate? get aggregate;
+  int get totalCount;
+  @override
+  BuiltList<GAccountFields_linkedIdentity_changeOwnerKeys_nodes> get nodes;
   @override
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_identity_membershipHistoryAggregate_aggregate
-    implements GIdentityFields_membershipHistoryAggregate_aggregate {
-  @override
-  String get G__typename;
-  @override
-  int get count;
-  @override
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_identity_ownerKeyChange
-    implements GIdentityFields_ownerKeyChange, GOwnerKeyChangeFields {
+abstract class GAccountFields_linkedIdentity_changeOwnerKeys_nodes
+    implements GIdentityFields_changeOwnerKeys_nodes, GOwnerKeyChangeFields {
   @override
   String get G__typename;
   @override
@@ -12189,27 +10759,7 @@ abstract class GAccountFields_identity_ownerKeyChange
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_identity_ownerKeyChangeAggregate
-    implements GIdentityFields_ownerKeyChangeAggregate {
-  @override
-  String get G__typename;
-  @override
-  GAccountFields_identity_ownerKeyChangeAggregate_aggregate? get aggregate;
-  @override
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_identity_ownerKeyChangeAggregate_aggregate
-    implements GIdentityFields_ownerKeyChangeAggregate_aggregate {
-  @override
-  String get G__typename;
-  @override
-  int get count;
-  @override
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_identity_smith
+abstract class GAccountFields_linkedIdentity_smith
     implements GIdentityFields_smith, GSmithFields {
   @override
   String get G__typename;
@@ -12224,18 +10774,34 @@ abstract class GAccountFields_identity_smith
   @override
   int? get lastForged;
   @override
-  BuiltList<GAccountFields_identity_smith_smithCertIssued> get smithCertIssued;
+  GAccountFields_linkedIdentity_smith_smithCertsByIssuerId
+      get smithCertsByIssuerId;
   @override
-  BuiltList<GAccountFields_identity_smith_smithCertReceived>
-      get smithCertReceived;
+  GAccountFields_linkedIdentity_smith_smithCertsByReceiverId
+      get smithCertsByReceiverId;
   @override
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_identity_smith_smithCertIssued
+abstract class GAccountFields_linkedIdentity_smith_smithCertsByIssuerId
     implements
-        GIdentityFields_smith_smithCertIssued,
-        GSmithFields_smithCertIssued,
+        GIdentityFields_smith_smithCertsByIssuerId,
+        GSmithFields_smithCertsByIssuerId {
+  @override
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GAccountFields_linkedIdentity_smith_smithCertsByIssuerId_nodes>
+      get nodes;
+  @override
+  Map<String, dynamic> toJson();
+}
+
+abstract class GAccountFields_linkedIdentity_smith_smithCertsByIssuerId_nodes
+    implements
+        GIdentityFields_smith_smithCertsByIssuerId_nodes,
+        GSmithFields_smithCertsByIssuerId_nodes,
         GSmithCertFields {
   @override
   String get G__typename;
@@ -12251,10 +10817,25 @@ abstract class GAccountFields_identity_smith_smithCertIssued
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_identity_smith_smithCertReceived
+abstract class GAccountFields_linkedIdentity_smith_smithCertsByReceiverId
     implements
-        GIdentityFields_smith_smithCertReceived,
-        GSmithFields_smithCertReceived,
+        GIdentityFields_smith_smithCertsByReceiverId,
+        GSmithFields_smithCertsByReceiverId {
+  @override
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GAccountFields_linkedIdentity_smith_smithCertsByReceiverId_nodes>
+      get nodes;
+  @override
+  Map<String, dynamic> toJson();
+}
+
+abstract class GAccountFields_linkedIdentity_smith_smithCertsByReceiverId_nodes
+    implements
+        GIdentityFields_smith_smithCertsByReceiverId_nodes,
+        GSmithFields_smithCertsByReceiverId_nodes,
         GSmithCertFields {
   @override
   String get G__typename;
@@ -12267,253 +10848,6 @@ abstract class GAccountFields_identity_smith_smithCertReceived
   @override
   int get createdOn;
   @override
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_linkedIdentity implements GIdentityBasicFields {
-  @override
-  String get G__typename;
-  @override
-  String? get accountId;
-  @override
-  GAccountFields_linkedIdentity_account? get account;
-  @override
-  String get id;
-  @override
-  bool get isMember;
-  @override
-  String get status;
-  @override
-  String get name;
-  @override
-  int get expireOn;
-  @override
-  int get index;
-  @override
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_linkedIdentity_account
-    implements GIdentityBasicFields_account {
-  @override
-  String get G__typename;
-  @override
-  int get createdOn;
-  @override
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_removedIdentities
-    implements GIdentityBasicFields {
-  @override
-  String get G__typename;
-  @override
-  String? get accountId;
-  @override
-  GAccountFields_removedIdentities_account? get account;
-  @override
-  String get id;
-  @override
-  bool get isMember;
-  @override
-  String get status;
-  @override
-  String get name;
-  @override
-  int get expireOn;
-  @override
-  int get index;
-  @override
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_removedIdentities_account
-    implements GIdentityBasicFields_account {
-  @override
-  String get G__typename;
-  @override
-  int get createdOn;
-  @override
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_removedIdentitiesAggregate {
-  String get G__typename;
-  GAccountFields_removedIdentitiesAggregate_aggregate? get aggregate;
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_removedIdentitiesAggregate_aggregate {
-  String get G__typename;
-  int get count;
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_transfersIssued implements GTransferFields {
-  @override
-  String get G__typename;
-  @override
-  int get blockNumber;
-  @override
-  _i2.Gtimestamptz get timestamp;
-  @override
-  int get amount;
-  @override
-  GAccountFields_transfersIssued_to? get to;
-  @override
-  GAccountFields_transfersIssued_from? get from;
-  @override
-  GAccountFields_transfersIssued_comment? get comment;
-  @override
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_transfersIssued_to implements GTransferFields_to {
-  @override
-  String get G__typename;
-  @override
-  String get id;
-  @override
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_transfersIssued_from
-    implements GTransferFields_from {
-  @override
-  String get G__typename;
-  @override
-  String get id;
-  @override
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_transfersIssued_comment
-    implements GTransferFields_comment {
-  @override
-  String get G__typename;
-  @override
-  String get remark;
-  @override
-  _i2.Gbytea get remarkBytes;
-  @override
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_transfersIssuedAggregate {
-  String get G__typename;
-  GAccountFields_transfersIssuedAggregate_aggregate? get aggregate;
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_transfersIssuedAggregate_aggregate {
-  String get G__typename;
-  GAccountFields_transfersIssuedAggregate_aggregate_sum? get sum;
-  int get count;
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_transfersIssuedAggregate_aggregate_sum {
-  String get G__typename;
-  int? get amount;
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_transfersReceived implements GTransferFields {
-  @override
-  String get G__typename;
-  @override
-  int get blockNumber;
-  @override
-  _i2.Gtimestamptz get timestamp;
-  @override
-  int get amount;
-  @override
-  GAccountFields_transfersReceived_to? get to;
-  @override
-  GAccountFields_transfersReceived_from? get from;
-  @override
-  GAccountFields_transfersReceived_comment? get comment;
-  @override
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_transfersReceived_to
-    implements GTransferFields_to {
-  @override
-  String get G__typename;
-  @override
-  String get id;
-  @override
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_transfersReceived_from
-    implements GTransferFields_from {
-  @override
-  String get G__typename;
-  @override
-  String get id;
-  @override
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_transfersReceived_comment
-    implements GTransferFields_comment {
-  @override
-  String get G__typename;
-  @override
-  String get remark;
-  @override
-  _i2.Gbytea get remarkBytes;
-  @override
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_transfersReceivedAggregate {
-  String get G__typename;
-  GAccountFields_transfersReceivedAggregate_aggregate? get aggregate;
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_transfersReceivedAggregate_aggregate {
-  String get G__typename;
-  GAccountFields_transfersReceivedAggregate_aggregate_sum? get sum;
-  int get count;
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_transfersReceivedAggregate_aggregate_sum {
-  String get G__typename;
-  int? get amount;
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_wasIdentity implements GOwnerKeyChangeFields {
-  @override
-  String get G__typename;
-  @override
-  String get id;
-  @override
-  int get blockNumber;
-  @override
-  String? get identityId;
-  @override
-  String? get nextId;
-  @override
-  String? get previousId;
-  @override
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_wasIdentityAggregate {
-  String get G__typename;
-  GAccountFields_wasIdentityAggregate_aggregate? get aggregate;
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountFields_wasIdentityAggregate_aggregate {
-  String get G__typename;
-  int get count;
   Map<String, dynamic> toJson();
 }
 
@@ -12534,35 +10868,21 @@ abstract class GAccountFieldsData
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  BuiltList<GAccountFieldsData_commentsIssued> get commentsIssued;
-  @override
-  GAccountFieldsData_commentsIssuedAggregate get commentsIssuedAggregate;
-  @override
   int get createdOn;
   @override
   String get id;
   @override
-  GAccountFieldsData_identity? get identity;
-  @override
   bool get isActive;
   @override
+  GAccountFieldsData_transfersIssued get transfersIssued;
+  @override
+  GAccountFieldsData_transfersReceived get transfersReceived;
+  @override
+  GAccountFieldsData_wasIdentityPrev get wasIdentityPrev;
+  @override
+  GAccountFieldsData_wasIdentityNext get wasIdentityNext;
+  @override
   GAccountFieldsData_linkedIdentity? get linkedIdentity;
-  @override
-  BuiltList<GAccountFieldsData_removedIdentities> get removedIdentities;
-  @override
-  GAccountFieldsData_removedIdentitiesAggregate get removedIdentitiesAggregate;
-  @override
-  BuiltList<GAccountFieldsData_transfersIssued> get transfersIssued;
-  @override
-  GAccountFieldsData_transfersIssuedAggregate get transfersIssuedAggregate;
-  @override
-  BuiltList<GAccountFieldsData_transfersReceived> get transfersReceived;
-  @override
-  GAccountFieldsData_transfersReceivedAggregate get transfersReceivedAggregate;
-  @override
-  BuiltList<GAccountFieldsData_wasIdentity> get wasIdentity;
-  @override
-  GAccountFieldsData_wasIdentityAggregate get wasIdentityAggregate;
   static Serializer<GAccountFieldsData> get serializer =>
       _$gAccountFieldsDataSerializer;
 
@@ -12579,1181 +10899,467 @@ abstract class GAccountFieldsData
       );
 }
 
-abstract class GAccountFieldsData_commentsIssued
+abstract class GAccountFieldsData_transfersIssued
     implements
-        Built<GAccountFieldsData_commentsIssued,
-            GAccountFieldsData_commentsIssuedBuilder>,
-        GAccountFields_commentsIssued,
-        GCommentsIssued {
-  GAccountFieldsData_commentsIssued._();
+        Built<GAccountFieldsData_transfersIssued,
+            GAccountFieldsData_transfersIssuedBuilder>,
+        GAccountFields_transfersIssued {
+  GAccountFieldsData_transfersIssued._();
 
-  factory GAccountFieldsData_commentsIssued(
-          [void Function(GAccountFieldsData_commentsIssuedBuilder b) updates]) =
-      _$GAccountFieldsData_commentsIssued;
+  factory GAccountFieldsData_transfersIssued(
+      [void Function(GAccountFieldsData_transfersIssuedBuilder b)
+          updates]) = _$GAccountFieldsData_transfersIssued;
 
-  static void _initializeBuilder(GAccountFieldsData_commentsIssuedBuilder b) =>
+  static void _initializeBuilder(GAccountFieldsData_transfersIssuedBuilder b) =>
+      b..G__typename = 'TransfersConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GAccountFieldsData_transfersIssued_nodes> get nodes;
+  static Serializer<GAccountFieldsData_transfersIssued> get serializer =>
+      _$gAccountFieldsDataTransfersIssuedSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_transfersIssued.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_transfersIssued? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountFieldsData_transfersIssued.serializer,
+        json,
+      );
+}
+
+abstract class GAccountFieldsData_transfersIssued_nodes
+    implements
+        Built<GAccountFieldsData_transfersIssued_nodes,
+            GAccountFieldsData_transfersIssued_nodesBuilder>,
+        GAccountFields_transfersIssued_nodes,
+        GTransferFields {
+  GAccountFieldsData_transfersIssued_nodes._();
+
+  factory GAccountFieldsData_transfersIssued_nodes(
+      [void Function(GAccountFieldsData_transfersIssued_nodesBuilder b)
+          updates]) = _$GAccountFieldsData_transfersIssued_nodes;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_transfersIssued_nodesBuilder b) =>
+      b..G__typename = 'Transfer';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get blockNumber;
+  @override
+  _i2.GDatetime get timestamp;
+  @override
+  _i2.GBigFloat get amount;
+  @override
+  GAccountFieldsData_transfersIssued_nodes_to? get to;
+  @override
+  GAccountFieldsData_transfersIssued_nodes_from? get from;
+  @override
+  GAccountFieldsData_transfersIssued_nodes_comment? get comment;
+  static Serializer<GAccountFieldsData_transfersIssued_nodes> get serializer =>
+      _$gAccountFieldsDataTransfersIssuedNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_transfersIssued_nodes.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_transfersIssued_nodes? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountFieldsData_transfersIssued_nodes.serializer,
+        json,
+      );
+}
+
+abstract class GAccountFieldsData_transfersIssued_nodes_to
+    implements
+        Built<GAccountFieldsData_transfersIssued_nodes_to,
+            GAccountFieldsData_transfersIssued_nodes_toBuilder>,
+        GAccountFields_transfersIssued_nodes_to,
+        GTransferFields_to {
+  GAccountFieldsData_transfersIssued_nodes_to._();
+
+  factory GAccountFieldsData_transfersIssued_nodes_to(
+      [void Function(GAccountFieldsData_transfersIssued_nodes_toBuilder b)
+          updates]) = _$GAccountFieldsData_transfersIssued_nodes_to;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_transfersIssued_nodes_toBuilder b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  static Serializer<GAccountFieldsData_transfersIssued_nodes_to>
+      get serializer => _$gAccountFieldsDataTransfersIssuedNodesToSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_transfersIssued_nodes_to.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_transfersIssued_nodes_to? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountFieldsData_transfersIssued_nodes_to.serializer,
+        json,
+      );
+}
+
+abstract class GAccountFieldsData_transfersIssued_nodes_from
+    implements
+        Built<GAccountFieldsData_transfersIssued_nodes_from,
+            GAccountFieldsData_transfersIssued_nodes_fromBuilder>,
+        GAccountFields_transfersIssued_nodes_from,
+        GTransferFields_from {
+  GAccountFieldsData_transfersIssued_nodes_from._();
+
+  factory GAccountFieldsData_transfersIssued_nodes_from(
+      [void Function(GAccountFieldsData_transfersIssued_nodes_fromBuilder b)
+          updates]) = _$GAccountFieldsData_transfersIssued_nodes_from;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_transfersIssued_nodes_fromBuilder b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  static Serializer<GAccountFieldsData_transfersIssued_nodes_from>
+      get serializer => _$gAccountFieldsDataTransfersIssuedNodesFromSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_transfersIssued_nodes_from.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_transfersIssued_nodes_from? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountFieldsData_transfersIssued_nodes_from.serializer,
+        json,
+      );
+}
+
+abstract class GAccountFieldsData_transfersIssued_nodes_comment
+    implements
+        Built<GAccountFieldsData_transfersIssued_nodes_comment,
+            GAccountFieldsData_transfersIssued_nodes_commentBuilder>,
+        GAccountFields_transfersIssued_nodes_comment,
+        GTransferFields_comment {
+  GAccountFieldsData_transfersIssued_nodes_comment._();
+
+  factory GAccountFieldsData_transfersIssued_nodes_comment(
+      [void Function(GAccountFieldsData_transfersIssued_nodes_commentBuilder b)
+          updates]) = _$GAccountFieldsData_transfersIssued_nodes_comment;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_transfersIssued_nodes_commentBuilder b) =>
       b..G__typename = 'TxComment';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  String? get authorId;
+  String get remark;
+  @override
+  String get remarkBytes;
+  static Serializer<GAccountFieldsData_transfersIssued_nodes_comment>
+      get serializer =>
+          _$gAccountFieldsDataTransfersIssuedNodesCommentSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_transfersIssued_nodes_comment.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_transfersIssued_nodes_comment? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountFieldsData_transfersIssued_nodes_comment.serializer,
+        json,
+      );
+}
+
+abstract class GAccountFieldsData_transfersReceived
+    implements
+        Built<GAccountFieldsData_transfersReceived,
+            GAccountFieldsData_transfersReceivedBuilder>,
+        GAccountFields_transfersReceived {
+  GAccountFieldsData_transfersReceived._();
+
+  factory GAccountFieldsData_transfersReceived(
+      [void Function(GAccountFieldsData_transfersReceivedBuilder b)
+          updates]) = _$GAccountFieldsData_transfersReceived;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_transfersReceivedBuilder b) =>
+      b..G__typename = 'TransfersConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GAccountFieldsData_transfersReceived_nodes> get nodes;
+  static Serializer<GAccountFieldsData_transfersReceived> get serializer =>
+      _$gAccountFieldsDataTransfersReceivedSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_transfersReceived.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_transfersReceived? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountFieldsData_transfersReceived.serializer,
+        json,
+      );
+}
+
+abstract class GAccountFieldsData_transfersReceived_nodes
+    implements
+        Built<GAccountFieldsData_transfersReceived_nodes,
+            GAccountFieldsData_transfersReceived_nodesBuilder>,
+        GAccountFields_transfersReceived_nodes,
+        GTransferFields {
+  GAccountFieldsData_transfersReceived_nodes._();
+
+  factory GAccountFieldsData_transfersReceived_nodes(
+      [void Function(GAccountFieldsData_transfersReceived_nodesBuilder b)
+          updates]) = _$GAccountFieldsData_transfersReceived_nodes;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_transfersReceived_nodesBuilder b) =>
+      b..G__typename = 'Transfer';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
   @override
   int get blockNumber;
   @override
-  String? get eventId;
+  _i2.GDatetime get timestamp;
   @override
-  String get hash;
+  _i2.GBigFloat get amount;
+  @override
+  GAccountFieldsData_transfersReceived_nodes_to? get to;
+  @override
+  GAccountFieldsData_transfersReceived_nodes_from? get from;
+  @override
+  GAccountFieldsData_transfersReceived_nodes_comment? get comment;
+  static Serializer<GAccountFieldsData_transfersReceived_nodes>
+      get serializer => _$gAccountFieldsDataTransfersReceivedNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_transfersReceived_nodes.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_transfersReceived_nodes? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountFieldsData_transfersReceived_nodes.serializer,
+        json,
+      );
+}
+
+abstract class GAccountFieldsData_transfersReceived_nodes_to
+    implements
+        Built<GAccountFieldsData_transfersReceived_nodes_to,
+            GAccountFieldsData_transfersReceived_nodes_toBuilder>,
+        GAccountFields_transfersReceived_nodes_to,
+        GTransferFields_to {
+  GAccountFieldsData_transfersReceived_nodes_to._();
+
+  factory GAccountFieldsData_transfersReceived_nodes_to(
+      [void Function(GAccountFieldsData_transfersReceived_nodes_toBuilder b)
+          updates]) = _$GAccountFieldsData_transfersReceived_nodes_to;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_transfersReceived_nodes_toBuilder b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
   @override
   String get id;
+  static Serializer<GAccountFieldsData_transfersReceived_nodes_to>
+      get serializer => _$gAccountFieldsDataTransfersReceivedNodesToSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_transfersReceived_nodes_to.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_transfersReceived_nodes_to? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountFieldsData_transfersReceived_nodes_to.serializer,
+        json,
+      );
+}
+
+abstract class GAccountFieldsData_transfersReceived_nodes_from
+    implements
+        Built<GAccountFieldsData_transfersReceived_nodes_from,
+            GAccountFieldsData_transfersReceived_nodes_fromBuilder>,
+        GAccountFields_transfersReceived_nodes_from,
+        GTransferFields_from {
+  GAccountFieldsData_transfersReceived_nodes_from._();
+
+  factory GAccountFieldsData_transfersReceived_nodes_from(
+      [void Function(GAccountFieldsData_transfersReceived_nodes_fromBuilder b)
+          updates]) = _$GAccountFieldsData_transfersReceived_nodes_from;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_transfersReceived_nodes_fromBuilder b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  static Serializer<GAccountFieldsData_transfersReceived_nodes_from>
+      get serializer =>
+          _$gAccountFieldsDataTransfersReceivedNodesFromSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_transfersReceived_nodes_from.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_transfersReceived_nodes_from? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountFieldsData_transfersReceived_nodes_from.serializer,
+        json,
+      );
+}
+
+abstract class GAccountFieldsData_transfersReceived_nodes_comment
+    implements
+        Built<GAccountFieldsData_transfersReceived_nodes_comment,
+            GAccountFieldsData_transfersReceived_nodes_commentBuilder>,
+        GAccountFields_transfersReceived_nodes_comment,
+        GTransferFields_comment {
+  GAccountFieldsData_transfersReceived_nodes_comment._();
+
+  factory GAccountFieldsData_transfersReceived_nodes_comment(
+      [void Function(
+              GAccountFieldsData_transfersReceived_nodes_commentBuilder b)
+          updates]) = _$GAccountFieldsData_transfersReceived_nodes_comment;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_transfersReceived_nodes_commentBuilder b) =>
+      b..G__typename = 'TxComment';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
   @override
   String get remark;
   @override
-  _i2.Gbytea get remarkBytes;
-  @override
-  String get type;
-  static Serializer<GAccountFieldsData_commentsIssued> get serializer =>
-      _$gAccountFieldsDataCommentsIssuedSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_commentsIssued.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_commentsIssued? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_commentsIssued.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_commentsIssuedAggregate
-    implements
-        Built<GAccountFieldsData_commentsIssuedAggregate,
-            GAccountFieldsData_commentsIssuedAggregateBuilder>,
-        GAccountFields_commentsIssuedAggregate {
-  GAccountFieldsData_commentsIssuedAggregate._();
-
-  factory GAccountFieldsData_commentsIssuedAggregate(
-      [void Function(GAccountFieldsData_commentsIssuedAggregateBuilder b)
-          updates]) = _$GAccountFieldsData_commentsIssuedAggregate;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_commentsIssuedAggregateBuilder b) =>
-      b..G__typename = 'TxCommentAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountFieldsData_commentsIssuedAggregate_aggregate? get aggregate;
-  static Serializer<GAccountFieldsData_commentsIssuedAggregate>
-      get serializer => _$gAccountFieldsDataCommentsIssuedAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_commentsIssuedAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_commentsIssuedAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_commentsIssuedAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_commentsIssuedAggregate_aggregate
-    implements
-        Built<GAccountFieldsData_commentsIssuedAggregate_aggregate,
-            GAccountFieldsData_commentsIssuedAggregate_aggregateBuilder>,
-        GAccountFields_commentsIssuedAggregate_aggregate {
-  GAccountFieldsData_commentsIssuedAggregate_aggregate._();
-
-  factory GAccountFieldsData_commentsIssuedAggregate_aggregate(
-      [void Function(
-              GAccountFieldsData_commentsIssuedAggregate_aggregateBuilder b)
-          updates]) = _$GAccountFieldsData_commentsIssuedAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_commentsIssuedAggregate_aggregateBuilder b) =>
-      b..G__typename = 'TxCommentAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<GAccountFieldsData_commentsIssuedAggregate_aggregate>
+  String get remarkBytes;
+  static Serializer<GAccountFieldsData_transfersReceived_nodes_comment>
       get serializer =>
-          _$gAccountFieldsDataCommentsIssuedAggregateAggregateSerializer;
+          _$gAccountFieldsDataTransfersReceivedNodesCommentSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_commentsIssuedAggregate_aggregate.serializer,
+        GAccountFieldsData_transfersReceived_nodes_comment.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_commentsIssuedAggregate_aggregate? fromJson(
+  static GAccountFieldsData_transfersReceived_nodes_comment? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountFieldsData_commentsIssuedAggregate_aggregate.serializer,
+        GAccountFieldsData_transfersReceived_nodes_comment.serializer,
         json,
       );
 }
 
-abstract class GAccountFieldsData_identity
+abstract class GAccountFieldsData_wasIdentityPrev
     implements
-        Built<GAccountFieldsData_identity, GAccountFieldsData_identityBuilder>,
-        GAccountFields_identity,
-        GIdentityFields {
-  GAccountFieldsData_identity._();
+        Built<GAccountFieldsData_wasIdentityPrev,
+            GAccountFieldsData_wasIdentityPrevBuilder>,
+        GAccountFields_wasIdentityPrev {
+  GAccountFieldsData_wasIdentityPrev._();
 
-  factory GAccountFieldsData_identity(
-          [void Function(GAccountFieldsData_identityBuilder b) updates]) =
-      _$GAccountFieldsData_identity;
+  factory GAccountFieldsData_wasIdentityPrev(
+      [void Function(GAccountFieldsData_wasIdentityPrevBuilder b)
+          updates]) = _$GAccountFieldsData_wasIdentityPrev;
 
-  static void _initializeBuilder(GAccountFieldsData_identityBuilder b) =>
-      b..G__typename = 'Identity';
+  static void _initializeBuilder(GAccountFieldsData_wasIdentityPrevBuilder b) =>
+      b..G__typename = 'ChangeOwnerKeysConnection';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  GAccountFieldsData_identity_account? get account;
+  int get totalCount;
   @override
-  String? get accountId;
-  @override
-  String? get accountRemovedId;
-  @override
-  BuiltList<GAccountFieldsData_identity_certIssued> get certIssued;
-  @override
-  GAccountFieldsData_identity_certIssuedAggregate get certIssuedAggregate;
-  @override
-  BuiltList<GAccountFieldsData_identity_certReceived> get certReceived;
-  @override
-  GAccountFieldsData_identity_certReceivedAggregate get certReceivedAggregate;
-  @override
-  String? get createdInId;
-  @override
-  int get createdOn;
-  @override
-  int get expireOn;
-  @override
-  String get id;
-  @override
-  int get index;
-  @override
-  bool get isMember;
-  @override
-  int get lastChangeOn;
-  @override
-  BuiltList<GAccountFieldsData_identity_linkedAccount> get linkedAccount;
-  @override
-  GAccountFieldsData_identity_linkedAccountAggregate get linkedAccountAggregate;
-  @override
-  String get status;
-  @override
-  BuiltList<GAccountFieldsData_identity_membershipHistory>
-      get membershipHistory;
-  @override
-  GAccountFieldsData_identity_membershipHistoryAggregate
-      get membershipHistoryAggregate;
-  @override
-  String get name;
-  @override
-  BuiltList<GAccountFieldsData_identity_ownerKeyChange> get ownerKeyChange;
-  @override
-  GAccountFieldsData_identity_ownerKeyChangeAggregate
-      get ownerKeyChangeAggregate;
-  @override
-  GAccountFieldsData_identity_smith? get smith;
-  static Serializer<GAccountFieldsData_identity> get serializer =>
-      _$gAccountFieldsDataIdentitySerializer;
+  BuiltList<GAccountFieldsData_wasIdentityPrev_nodes> get nodes;
+  static Serializer<GAccountFieldsData_wasIdentityPrev> get serializer =>
+      _$gAccountFieldsDataWasIdentityPrevSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity.serializer,
+        GAccountFieldsData_wasIdentityPrev.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_identity? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_identity_account
-    implements
-        Built<GAccountFieldsData_identity_account,
-            GAccountFieldsData_identity_accountBuilder>,
-        GAccountFields_identity_account,
-        GIdentityFields_account {
-  GAccountFieldsData_identity_account._();
-
-  factory GAccountFieldsData_identity_account(
-      [void Function(GAccountFieldsData_identity_accountBuilder b)
-          updates]) = _$GAccountFieldsData_identity_account;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_identity_accountBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get createdOn;
-  static Serializer<GAccountFieldsData_identity_account> get serializer =>
-      _$gAccountFieldsDataIdentityAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_account.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_identity_account? fromJson(
+  static GAccountFieldsData_wasIdentityPrev? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity_account.serializer,
+        GAccountFieldsData_wasIdentityPrev.serializer,
         json,
       );
 }
 
-abstract class GAccountFieldsData_identity_certIssued
+abstract class GAccountFieldsData_wasIdentityPrev_nodes
     implements
-        Built<GAccountFieldsData_identity_certIssued,
-            GAccountFieldsData_identity_certIssuedBuilder>,
-        GAccountFields_identity_certIssued,
-        GIdentityFields_certIssued,
-        GCertFields {
-  GAccountFieldsData_identity_certIssued._();
-
-  factory GAccountFieldsData_identity_certIssued(
-      [void Function(GAccountFieldsData_identity_certIssuedBuilder b)
-          updates]) = _$GAccountFieldsData_identity_certIssued;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_identity_certIssuedBuilder b) =>
-      b..G__typename = 'Cert';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  @override
-  String? get issuerId;
-  @override
-  GAccountFieldsData_identity_certIssued_issuer? get issuer;
-  @override
-  String? get receiverId;
-  @override
-  GAccountFieldsData_identity_certIssued_receiver? get receiver;
-  @override
-  int get createdOn;
-  @override
-  int get expireOn;
-  @override
-  bool get isActive;
-  @override
-  int get updatedOn;
-  static Serializer<GAccountFieldsData_identity_certIssued> get serializer =>
-      _$gAccountFieldsDataIdentityCertIssuedSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_certIssued.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_identity_certIssued? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity_certIssued.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_identity_certIssued_issuer
-    implements
-        Built<GAccountFieldsData_identity_certIssued_issuer,
-            GAccountFieldsData_identity_certIssued_issuerBuilder>,
-        GAccountFields_identity_certIssued_issuer,
-        GIdentityFields_certIssued_issuer,
-        GCertFields_issuer,
-        GIdentityBasicFields {
-  GAccountFieldsData_identity_certIssued_issuer._();
-
-  factory GAccountFieldsData_identity_certIssued_issuer(
-      [void Function(GAccountFieldsData_identity_certIssued_issuerBuilder b)
-          updates]) = _$GAccountFieldsData_identity_certIssued_issuer;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_identity_certIssued_issuerBuilder b) =>
-      b..G__typename = 'Identity';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String? get accountId;
-  @override
-  GAccountFieldsData_identity_certIssued_issuer_account? get account;
-  @override
-  String get id;
-  @override
-  bool get isMember;
-  @override
-  String get status;
-  @override
-  String get name;
-  @override
-  int get expireOn;
-  @override
-  int get index;
-  static Serializer<GAccountFieldsData_identity_certIssued_issuer>
-      get serializer => _$gAccountFieldsDataIdentityCertIssuedIssuerSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_certIssued_issuer.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_identity_certIssued_issuer? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity_certIssued_issuer.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_identity_certIssued_issuer_account
-    implements
-        Built<GAccountFieldsData_identity_certIssued_issuer_account,
-            GAccountFieldsData_identity_certIssued_issuer_accountBuilder>,
-        GAccountFields_identity_certIssued_issuer_account,
-        GIdentityFields_certIssued_issuer_account,
-        GCertFields_issuer_account,
-        GIdentityBasicFields_account {
-  GAccountFieldsData_identity_certIssued_issuer_account._();
-
-  factory GAccountFieldsData_identity_certIssued_issuer_account(
-      [void Function(
-              GAccountFieldsData_identity_certIssued_issuer_accountBuilder b)
-          updates]) = _$GAccountFieldsData_identity_certIssued_issuer_account;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_identity_certIssued_issuer_accountBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get createdOn;
-  static Serializer<GAccountFieldsData_identity_certIssued_issuer_account>
-      get serializer =>
-          _$gAccountFieldsDataIdentityCertIssuedIssuerAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_certIssued_issuer_account.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_identity_certIssued_issuer_account? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity_certIssued_issuer_account.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_identity_certIssued_receiver
-    implements
-        Built<GAccountFieldsData_identity_certIssued_receiver,
-            GAccountFieldsData_identity_certIssued_receiverBuilder>,
-        GAccountFields_identity_certIssued_receiver,
-        GIdentityFields_certIssued_receiver,
-        GCertFields_receiver,
-        GIdentityBasicFields {
-  GAccountFieldsData_identity_certIssued_receiver._();
-
-  factory GAccountFieldsData_identity_certIssued_receiver(
-      [void Function(GAccountFieldsData_identity_certIssued_receiverBuilder b)
-          updates]) = _$GAccountFieldsData_identity_certIssued_receiver;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_identity_certIssued_receiverBuilder b) =>
-      b..G__typename = 'Identity';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String? get accountId;
-  @override
-  GAccountFieldsData_identity_certIssued_receiver_account? get account;
-  @override
-  String get id;
-  @override
-  bool get isMember;
-  @override
-  String get status;
-  @override
-  String get name;
-  @override
-  int get expireOn;
-  @override
-  int get index;
-  static Serializer<GAccountFieldsData_identity_certIssued_receiver>
-      get serializer =>
-          _$gAccountFieldsDataIdentityCertIssuedReceiverSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_certIssued_receiver.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_identity_certIssued_receiver? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity_certIssued_receiver.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_identity_certIssued_receiver_account
-    implements
-        Built<GAccountFieldsData_identity_certIssued_receiver_account,
-            GAccountFieldsData_identity_certIssued_receiver_accountBuilder>,
-        GAccountFields_identity_certIssued_receiver_account,
-        GIdentityFields_certIssued_receiver_account,
-        GCertFields_receiver_account,
-        GIdentityBasicFields_account {
-  GAccountFieldsData_identity_certIssued_receiver_account._();
-
-  factory GAccountFieldsData_identity_certIssued_receiver_account(
-      [void Function(
-              GAccountFieldsData_identity_certIssued_receiver_accountBuilder b)
-          updates]) = _$GAccountFieldsData_identity_certIssued_receiver_account;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_identity_certIssued_receiver_accountBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get createdOn;
-  static Serializer<GAccountFieldsData_identity_certIssued_receiver_account>
-      get serializer =>
-          _$gAccountFieldsDataIdentityCertIssuedReceiverAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_certIssued_receiver_account.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_identity_certIssued_receiver_account? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity_certIssued_receiver_account.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_identity_certIssuedAggregate
-    implements
-        Built<GAccountFieldsData_identity_certIssuedAggregate,
-            GAccountFieldsData_identity_certIssuedAggregateBuilder>,
-        GAccountFields_identity_certIssuedAggregate,
-        GIdentityFields_certIssuedAggregate {
-  GAccountFieldsData_identity_certIssuedAggregate._();
-
-  factory GAccountFieldsData_identity_certIssuedAggregate(
-      [void Function(GAccountFieldsData_identity_certIssuedAggregateBuilder b)
-          updates]) = _$GAccountFieldsData_identity_certIssuedAggregate;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_identity_certIssuedAggregateBuilder b) =>
-      b..G__typename = 'CertAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountFieldsData_identity_certIssuedAggregate_aggregate? get aggregate;
-  static Serializer<GAccountFieldsData_identity_certIssuedAggregate>
-      get serializer =>
-          _$gAccountFieldsDataIdentityCertIssuedAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_certIssuedAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_identity_certIssuedAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity_certIssuedAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_identity_certIssuedAggregate_aggregate
-    implements
-        Built<GAccountFieldsData_identity_certIssuedAggregate_aggregate,
-            GAccountFieldsData_identity_certIssuedAggregate_aggregateBuilder>,
-        GAccountFields_identity_certIssuedAggregate_aggregate,
-        GIdentityFields_certIssuedAggregate_aggregate {
-  GAccountFieldsData_identity_certIssuedAggregate_aggregate._();
-
-  factory GAccountFieldsData_identity_certIssuedAggregate_aggregate(
-      [void Function(
-              GAccountFieldsData_identity_certIssuedAggregate_aggregateBuilder
-                  b)
-          updates]) = _$GAccountFieldsData_identity_certIssuedAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_identity_certIssuedAggregate_aggregateBuilder b) =>
-      b..G__typename = 'CertAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<GAccountFieldsData_identity_certIssuedAggregate_aggregate>
-      get serializer =>
-          _$gAccountFieldsDataIdentityCertIssuedAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_certIssuedAggregate_aggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_identity_certIssuedAggregate_aggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity_certIssuedAggregate_aggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_identity_certReceived
-    implements
-        Built<GAccountFieldsData_identity_certReceived,
-            GAccountFieldsData_identity_certReceivedBuilder>,
-        GAccountFields_identity_certReceived,
-        GIdentityFields_certReceived,
-        GCertFields {
-  GAccountFieldsData_identity_certReceived._();
-
-  factory GAccountFieldsData_identity_certReceived(
-      [void Function(GAccountFieldsData_identity_certReceivedBuilder b)
-          updates]) = _$GAccountFieldsData_identity_certReceived;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_identity_certReceivedBuilder b) =>
-      b..G__typename = 'Cert';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  @override
-  String? get issuerId;
-  @override
-  GAccountFieldsData_identity_certReceived_issuer? get issuer;
-  @override
-  String? get receiverId;
-  @override
-  GAccountFieldsData_identity_certReceived_receiver? get receiver;
-  @override
-  int get createdOn;
-  @override
-  int get expireOn;
-  @override
-  bool get isActive;
-  @override
-  int get updatedOn;
-  static Serializer<GAccountFieldsData_identity_certReceived> get serializer =>
-      _$gAccountFieldsDataIdentityCertReceivedSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_certReceived.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_identity_certReceived? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity_certReceived.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_identity_certReceived_issuer
-    implements
-        Built<GAccountFieldsData_identity_certReceived_issuer,
-            GAccountFieldsData_identity_certReceived_issuerBuilder>,
-        GAccountFields_identity_certReceived_issuer,
-        GIdentityFields_certReceived_issuer,
-        GCertFields_issuer,
-        GIdentityBasicFields {
-  GAccountFieldsData_identity_certReceived_issuer._();
-
-  factory GAccountFieldsData_identity_certReceived_issuer(
-      [void Function(GAccountFieldsData_identity_certReceived_issuerBuilder b)
-          updates]) = _$GAccountFieldsData_identity_certReceived_issuer;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_identity_certReceived_issuerBuilder b) =>
-      b..G__typename = 'Identity';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String? get accountId;
-  @override
-  GAccountFieldsData_identity_certReceived_issuer_account? get account;
-  @override
-  String get id;
-  @override
-  bool get isMember;
-  @override
-  String get status;
-  @override
-  String get name;
-  @override
-  int get expireOn;
-  @override
-  int get index;
-  static Serializer<GAccountFieldsData_identity_certReceived_issuer>
-      get serializer =>
-          _$gAccountFieldsDataIdentityCertReceivedIssuerSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_certReceived_issuer.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_identity_certReceived_issuer? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity_certReceived_issuer.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_identity_certReceived_issuer_account
-    implements
-        Built<GAccountFieldsData_identity_certReceived_issuer_account,
-            GAccountFieldsData_identity_certReceived_issuer_accountBuilder>,
-        GAccountFields_identity_certReceived_issuer_account,
-        GIdentityFields_certReceived_issuer_account,
-        GCertFields_issuer_account,
-        GIdentityBasicFields_account {
-  GAccountFieldsData_identity_certReceived_issuer_account._();
-
-  factory GAccountFieldsData_identity_certReceived_issuer_account(
-      [void Function(
-              GAccountFieldsData_identity_certReceived_issuer_accountBuilder b)
-          updates]) = _$GAccountFieldsData_identity_certReceived_issuer_account;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_identity_certReceived_issuer_accountBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get createdOn;
-  static Serializer<GAccountFieldsData_identity_certReceived_issuer_account>
-      get serializer =>
-          _$gAccountFieldsDataIdentityCertReceivedIssuerAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_certReceived_issuer_account.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_identity_certReceived_issuer_account? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity_certReceived_issuer_account.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_identity_certReceived_receiver
-    implements
-        Built<GAccountFieldsData_identity_certReceived_receiver,
-            GAccountFieldsData_identity_certReceived_receiverBuilder>,
-        GAccountFields_identity_certReceived_receiver,
-        GIdentityFields_certReceived_receiver,
-        GCertFields_receiver,
-        GIdentityBasicFields {
-  GAccountFieldsData_identity_certReceived_receiver._();
-
-  factory GAccountFieldsData_identity_certReceived_receiver(
-      [void Function(GAccountFieldsData_identity_certReceived_receiverBuilder b)
-          updates]) = _$GAccountFieldsData_identity_certReceived_receiver;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_identity_certReceived_receiverBuilder b) =>
-      b..G__typename = 'Identity';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String? get accountId;
-  @override
-  GAccountFieldsData_identity_certReceived_receiver_account? get account;
-  @override
-  String get id;
-  @override
-  bool get isMember;
-  @override
-  String get status;
-  @override
-  String get name;
-  @override
-  int get expireOn;
-  @override
-  int get index;
-  static Serializer<GAccountFieldsData_identity_certReceived_receiver>
-      get serializer =>
-          _$gAccountFieldsDataIdentityCertReceivedReceiverSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_certReceived_receiver.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_identity_certReceived_receiver? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity_certReceived_receiver.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_identity_certReceived_receiver_account
-    implements
-        Built<GAccountFieldsData_identity_certReceived_receiver_account,
-            GAccountFieldsData_identity_certReceived_receiver_accountBuilder>,
-        GAccountFields_identity_certReceived_receiver_account,
-        GIdentityFields_certReceived_receiver_account,
-        GCertFields_receiver_account,
-        GIdentityBasicFields_account {
-  GAccountFieldsData_identity_certReceived_receiver_account._();
-
-  factory GAccountFieldsData_identity_certReceived_receiver_account(
-      [void Function(
-              GAccountFieldsData_identity_certReceived_receiver_accountBuilder
-                  b)
-          updates]) = _$GAccountFieldsData_identity_certReceived_receiver_account;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_identity_certReceived_receiver_accountBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get createdOn;
-  static Serializer<GAccountFieldsData_identity_certReceived_receiver_account>
-      get serializer =>
-          _$gAccountFieldsDataIdentityCertReceivedReceiverAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_certReceived_receiver_account.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_identity_certReceived_receiver_account? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity_certReceived_receiver_account.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_identity_certReceivedAggregate
-    implements
-        Built<GAccountFieldsData_identity_certReceivedAggregate,
-            GAccountFieldsData_identity_certReceivedAggregateBuilder>,
-        GAccountFields_identity_certReceivedAggregate,
-        GIdentityFields_certReceivedAggregate {
-  GAccountFieldsData_identity_certReceivedAggregate._();
-
-  factory GAccountFieldsData_identity_certReceivedAggregate(
-      [void Function(GAccountFieldsData_identity_certReceivedAggregateBuilder b)
-          updates]) = _$GAccountFieldsData_identity_certReceivedAggregate;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_identity_certReceivedAggregateBuilder b) =>
-      b..G__typename = 'CertAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountFieldsData_identity_certReceivedAggregate_aggregate? get aggregate;
-  static Serializer<GAccountFieldsData_identity_certReceivedAggregate>
-      get serializer =>
-          _$gAccountFieldsDataIdentityCertReceivedAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_certReceivedAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_identity_certReceivedAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity_certReceivedAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_identity_certReceivedAggregate_aggregate
-    implements
-        Built<GAccountFieldsData_identity_certReceivedAggregate_aggregate,
-            GAccountFieldsData_identity_certReceivedAggregate_aggregateBuilder>,
-        GAccountFields_identity_certReceivedAggregate_aggregate,
-        GIdentityFields_certReceivedAggregate_aggregate {
-  GAccountFieldsData_identity_certReceivedAggregate_aggregate._();
-
-  factory GAccountFieldsData_identity_certReceivedAggregate_aggregate(
-      [void Function(
-              GAccountFieldsData_identity_certReceivedAggregate_aggregateBuilder
-                  b)
-          updates]) = _$GAccountFieldsData_identity_certReceivedAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_identity_certReceivedAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'CertAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<GAccountFieldsData_identity_certReceivedAggregate_aggregate>
-      get serializer =>
-          _$gAccountFieldsDataIdentityCertReceivedAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_certReceivedAggregate_aggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_identity_certReceivedAggregate_aggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity_certReceivedAggregate_aggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_identity_linkedAccount
-    implements
-        Built<GAccountFieldsData_identity_linkedAccount,
-            GAccountFieldsData_identity_linkedAccountBuilder>,
-        GAccountFields_identity_linkedAccount,
-        GIdentityFields_linkedAccount {
-  GAccountFieldsData_identity_linkedAccount._();
-
-  factory GAccountFieldsData_identity_linkedAccount(
-      [void Function(GAccountFieldsData_identity_linkedAccountBuilder b)
-          updates]) = _$GAccountFieldsData_identity_linkedAccount;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_identity_linkedAccountBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  static Serializer<GAccountFieldsData_identity_linkedAccount> get serializer =>
-      _$gAccountFieldsDataIdentityLinkedAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_linkedAccount.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_identity_linkedAccount? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity_linkedAccount.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_identity_linkedAccountAggregate
-    implements
-        Built<GAccountFieldsData_identity_linkedAccountAggregate,
-            GAccountFieldsData_identity_linkedAccountAggregateBuilder>,
-        GAccountFields_identity_linkedAccountAggregate,
-        GIdentityFields_linkedAccountAggregate {
-  GAccountFieldsData_identity_linkedAccountAggregate._();
-
-  factory GAccountFieldsData_identity_linkedAccountAggregate(
-      [void Function(
-              GAccountFieldsData_identity_linkedAccountAggregateBuilder b)
-          updates]) = _$GAccountFieldsData_identity_linkedAccountAggregate;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_identity_linkedAccountAggregateBuilder b) =>
-      b..G__typename = 'AccountAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountFieldsData_identity_linkedAccountAggregate_aggregate? get aggregate;
-  static Serializer<GAccountFieldsData_identity_linkedAccountAggregate>
-      get serializer =>
-          _$gAccountFieldsDataIdentityLinkedAccountAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_linkedAccountAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_identity_linkedAccountAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity_linkedAccountAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_identity_linkedAccountAggregate_aggregate
-    implements
-        Built<GAccountFieldsData_identity_linkedAccountAggregate_aggregate,
-            GAccountFieldsData_identity_linkedAccountAggregate_aggregateBuilder>,
-        GAccountFields_identity_linkedAccountAggregate_aggregate,
-        GIdentityFields_linkedAccountAggregate_aggregate {
-  GAccountFieldsData_identity_linkedAccountAggregate_aggregate._();
-
-  factory GAccountFieldsData_identity_linkedAccountAggregate_aggregate(
-          [void Function(
-                  GAccountFieldsData_identity_linkedAccountAggregate_aggregateBuilder
-                      b)
-              updates]) =
-      _$GAccountFieldsData_identity_linkedAccountAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_identity_linkedAccountAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'AccountAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<
-          GAccountFieldsData_identity_linkedAccountAggregate_aggregate>
-      get serializer =>
-          _$gAccountFieldsDataIdentityLinkedAccountAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_linkedAccountAggregate_aggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_identity_linkedAccountAggregate_aggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity_linkedAccountAggregate_aggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_identity_membershipHistory
-    implements
-        Built<GAccountFieldsData_identity_membershipHistory,
-            GAccountFieldsData_identity_membershipHistoryBuilder>,
-        GAccountFields_identity_membershipHistory,
-        GIdentityFields_membershipHistory {
-  GAccountFieldsData_identity_membershipHistory._();
-
-  factory GAccountFieldsData_identity_membershipHistory(
-      [void Function(GAccountFieldsData_identity_membershipHistoryBuilder b)
-          updates]) = _$GAccountFieldsData_identity_membershipHistory;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_identity_membershipHistoryBuilder b) =>
-      b..G__typename = 'MembershipEvent';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get blockNumber;
-  @override
-  String? get eventId;
-  @override
-  String get eventType;
-  @override
-  String get id;
-  @override
-  String? get identityId;
-  static Serializer<GAccountFieldsData_identity_membershipHistory>
-      get serializer => _$gAccountFieldsDataIdentityMembershipHistorySerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_membershipHistory.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_identity_membershipHistory? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity_membershipHistory.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_identity_membershipHistoryAggregate
-    implements
-        Built<GAccountFieldsData_identity_membershipHistoryAggregate,
-            GAccountFieldsData_identity_membershipHistoryAggregateBuilder>,
-        GAccountFields_identity_membershipHistoryAggregate,
-        GIdentityFields_membershipHistoryAggregate {
-  GAccountFieldsData_identity_membershipHistoryAggregate._();
-
-  factory GAccountFieldsData_identity_membershipHistoryAggregate(
-      [void Function(
-              GAccountFieldsData_identity_membershipHistoryAggregateBuilder b)
-          updates]) = _$GAccountFieldsData_identity_membershipHistoryAggregate;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_identity_membershipHistoryAggregateBuilder b) =>
-      b..G__typename = 'MembershipEventAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountFieldsData_identity_membershipHistoryAggregate_aggregate?
-      get aggregate;
-  static Serializer<GAccountFieldsData_identity_membershipHistoryAggregate>
-      get serializer =>
-          _$gAccountFieldsDataIdentityMembershipHistoryAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_membershipHistoryAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_identity_membershipHistoryAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity_membershipHistoryAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_identity_membershipHistoryAggregate_aggregate
-    implements
-        Built<GAccountFieldsData_identity_membershipHistoryAggregate_aggregate,
-            GAccountFieldsData_identity_membershipHistoryAggregate_aggregateBuilder>,
-        GAccountFields_identity_membershipHistoryAggregate_aggregate,
-        GIdentityFields_membershipHistoryAggregate_aggregate {
-  GAccountFieldsData_identity_membershipHistoryAggregate_aggregate._();
-
-  factory GAccountFieldsData_identity_membershipHistoryAggregate_aggregate(
-          [void Function(
-                  GAccountFieldsData_identity_membershipHistoryAggregate_aggregateBuilder
-                      b)
-              updates]) =
-      _$GAccountFieldsData_identity_membershipHistoryAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_identity_membershipHistoryAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'MembershipEventAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<
-          GAccountFieldsData_identity_membershipHistoryAggregate_aggregate>
-      get serializer =>
-          _$gAccountFieldsDataIdentityMembershipHistoryAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_membershipHistoryAggregate_aggregate
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_identity_membershipHistoryAggregate_aggregate?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountFieldsData_identity_membershipHistoryAggregate_aggregate
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountFieldsData_identity_ownerKeyChange
-    implements
-        Built<GAccountFieldsData_identity_ownerKeyChange,
-            GAccountFieldsData_identity_ownerKeyChangeBuilder>,
-        GAccountFields_identity_ownerKeyChange,
-        GIdentityFields_ownerKeyChange,
+        Built<GAccountFieldsData_wasIdentityPrev_nodes,
+            GAccountFieldsData_wasIdentityPrev_nodesBuilder>,
+        GAccountFields_wasIdentityPrev_nodes,
         GOwnerKeyChangeFields {
-  GAccountFieldsData_identity_ownerKeyChange._();
+  GAccountFieldsData_wasIdentityPrev_nodes._();
 
-  factory GAccountFieldsData_identity_ownerKeyChange(
-      [void Function(GAccountFieldsData_identity_ownerKeyChangeBuilder b)
-          updates]) = _$GAccountFieldsData_identity_ownerKeyChange;
+  factory GAccountFieldsData_wasIdentityPrev_nodes(
+      [void Function(GAccountFieldsData_wasIdentityPrev_nodesBuilder b)
+          updates]) = _$GAccountFieldsData_wasIdentityPrev_nodes;
 
   static void _initializeBuilder(
-          GAccountFieldsData_identity_ownerKeyChangeBuilder b) =>
+          GAccountFieldsData_wasIdentityPrev_nodesBuilder b) =>
       b..G__typename = 'ChangeOwnerKey';
 
   @override
@@ -13769,123 +11375,76 @@ abstract class GAccountFieldsData_identity_ownerKeyChange
   String? get nextId;
   @override
   String? get previousId;
-  static Serializer<GAccountFieldsData_identity_ownerKeyChange>
-      get serializer => _$gAccountFieldsDataIdentityOwnerKeyChangeSerializer;
+  static Serializer<GAccountFieldsData_wasIdentityPrev_nodes> get serializer =>
+      _$gAccountFieldsDataWasIdentityPrevNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_ownerKeyChange.serializer,
+        GAccountFieldsData_wasIdentityPrev_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_identity_ownerKeyChange? fromJson(
+  static GAccountFieldsData_wasIdentityPrev_nodes? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity_ownerKeyChange.serializer,
+        GAccountFieldsData_wasIdentityPrev_nodes.serializer,
         json,
       );
 }
 
-abstract class GAccountFieldsData_identity_ownerKeyChangeAggregate
+abstract class GAccountFieldsData_wasIdentityNext
     implements
-        Built<GAccountFieldsData_identity_ownerKeyChangeAggregate,
-            GAccountFieldsData_identity_ownerKeyChangeAggregateBuilder>,
-        GAccountFields_identity_ownerKeyChangeAggregate,
-        GIdentityFields_ownerKeyChangeAggregate {
-  GAccountFieldsData_identity_ownerKeyChangeAggregate._();
+        Built<GAccountFieldsData_wasIdentityNext,
+            GAccountFieldsData_wasIdentityNextBuilder>,
+        GAccountFields_wasIdentityNext {
+  GAccountFieldsData_wasIdentityNext._();
 
-  factory GAccountFieldsData_identity_ownerKeyChangeAggregate(
-      [void Function(
-              GAccountFieldsData_identity_ownerKeyChangeAggregateBuilder b)
-          updates]) = _$GAccountFieldsData_identity_ownerKeyChangeAggregate;
+  factory GAccountFieldsData_wasIdentityNext(
+      [void Function(GAccountFieldsData_wasIdentityNextBuilder b)
+          updates]) = _$GAccountFieldsData_wasIdentityNext;
 
-  static void _initializeBuilder(
-          GAccountFieldsData_identity_ownerKeyChangeAggregateBuilder b) =>
-      b..G__typename = 'ChangeOwnerKeyAggregate';
+  static void _initializeBuilder(GAccountFieldsData_wasIdentityNextBuilder b) =>
+      b..G__typename = 'ChangeOwnerKeysConnection';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  GAccountFieldsData_identity_ownerKeyChangeAggregate_aggregate? get aggregate;
-  static Serializer<GAccountFieldsData_identity_ownerKeyChangeAggregate>
-      get serializer =>
-          _$gAccountFieldsDataIdentityOwnerKeyChangeAggregateSerializer;
+  int get totalCount;
+  @override
+  BuiltList<GAccountFieldsData_wasIdentityNext_nodes> get nodes;
+  static Serializer<GAccountFieldsData_wasIdentityNext> get serializer =>
+      _$gAccountFieldsDataWasIdentityNextSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_ownerKeyChangeAggregate.serializer,
+        GAccountFieldsData_wasIdentityNext.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_identity_ownerKeyChangeAggregate? fromJson(
+  static GAccountFieldsData_wasIdentityNext? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity_ownerKeyChangeAggregate.serializer,
+        GAccountFieldsData_wasIdentityNext.serializer,
         json,
       );
 }
 
-abstract class GAccountFieldsData_identity_ownerKeyChangeAggregate_aggregate
+abstract class GAccountFieldsData_wasIdentityNext_nodes
     implements
-        Built<GAccountFieldsData_identity_ownerKeyChangeAggregate_aggregate,
-            GAccountFieldsData_identity_ownerKeyChangeAggregate_aggregateBuilder>,
-        GAccountFields_identity_ownerKeyChangeAggregate_aggregate,
-        GIdentityFields_ownerKeyChangeAggregate_aggregate {
-  GAccountFieldsData_identity_ownerKeyChangeAggregate_aggregate._();
+        Built<GAccountFieldsData_wasIdentityNext_nodes,
+            GAccountFieldsData_wasIdentityNext_nodesBuilder>,
+        GAccountFields_wasIdentityNext_nodes,
+        GOwnerKeyChangeFields {
+  GAccountFieldsData_wasIdentityNext_nodes._();
 
-  factory GAccountFieldsData_identity_ownerKeyChangeAggregate_aggregate(
-          [void Function(
-                  GAccountFieldsData_identity_ownerKeyChangeAggregate_aggregateBuilder
-                      b)
-              updates]) =
-      _$GAccountFieldsData_identity_ownerKeyChangeAggregate_aggregate;
+  factory GAccountFieldsData_wasIdentityNext_nodes(
+      [void Function(GAccountFieldsData_wasIdentityNext_nodesBuilder b)
+          updates]) = _$GAccountFieldsData_wasIdentityNext_nodes;
 
   static void _initializeBuilder(
-          GAccountFieldsData_identity_ownerKeyChangeAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'ChangeOwnerKeyAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<
-          GAccountFieldsData_identity_ownerKeyChangeAggregate_aggregate>
-      get serializer =>
-          _$gAccountFieldsDataIdentityOwnerKeyChangeAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_ownerKeyChangeAggregate_aggregate
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_identity_ownerKeyChangeAggregate_aggregate?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountFieldsData_identity_ownerKeyChangeAggregate_aggregate
-                .serializer,
-            json,
-          );
-}
-
-abstract class GAccountFieldsData_identity_smith
-    implements
-        Built<GAccountFieldsData_identity_smith,
-            GAccountFieldsData_identity_smithBuilder>,
-        GAccountFields_identity_smith,
-        GIdentityFields_smith,
-        GSmithFields {
-  GAccountFieldsData_identity_smith._();
-
-  factory GAccountFieldsData_identity_smith(
-          [void Function(GAccountFieldsData_identity_smithBuilder b) updates]) =
-      _$GAccountFieldsData_identity_smith;
-
-  static void _initializeBuilder(GAccountFieldsData_identity_smithBuilder b) =>
-      b..G__typename = 'Smith';
+          GAccountFieldsData_wasIdentityNext_nodesBuilder b) =>
+      b..G__typename = 'ChangeOwnerKey';
 
   @override
   @BuiltValueField(wireName: '__typename')
@@ -13893,127 +11452,26 @@ abstract class GAccountFieldsData_identity_smith
   @override
   String get id;
   @override
-  int get forged;
+  int get blockNumber;
   @override
-  int get index;
+  String? get identityId;
   @override
-  int? get lastChanged;
+  String? get nextId;
   @override
-  int? get lastForged;
-  @override
-  BuiltList<GAccountFieldsData_identity_smith_smithCertIssued>
-      get smithCertIssued;
-  @override
-  BuiltList<GAccountFieldsData_identity_smith_smithCertReceived>
-      get smithCertReceived;
-  static Serializer<GAccountFieldsData_identity_smith> get serializer =>
-      _$gAccountFieldsDataIdentitySmithSerializer;
+  String? get previousId;
+  static Serializer<GAccountFieldsData_wasIdentityNext_nodes> get serializer =>
+      _$gAccountFieldsDataWasIdentityNextNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_smith.serializer,
+        GAccountFieldsData_wasIdentityNext_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_identity_smith? fromJson(
+  static GAccountFieldsData_wasIdentityNext_nodes? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity_smith.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_identity_smith_smithCertIssued
-    implements
-        Built<GAccountFieldsData_identity_smith_smithCertIssued,
-            GAccountFieldsData_identity_smith_smithCertIssuedBuilder>,
-        GAccountFields_identity_smith_smithCertIssued,
-        GIdentityFields_smith_smithCertIssued,
-        GSmithFields_smithCertIssued,
-        GSmithCertFields {
-  GAccountFieldsData_identity_smith_smithCertIssued._();
-
-  factory GAccountFieldsData_identity_smith_smithCertIssued(
-      [void Function(GAccountFieldsData_identity_smith_smithCertIssuedBuilder b)
-          updates]) = _$GAccountFieldsData_identity_smith_smithCertIssued;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_identity_smith_smithCertIssuedBuilder b) =>
-      b..G__typename = 'SmithCert';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  @override
-  String? get issuerId;
-  @override
-  String? get receiverId;
-  @override
-  int get createdOn;
-  static Serializer<GAccountFieldsData_identity_smith_smithCertIssued>
-      get serializer =>
-          _$gAccountFieldsDataIdentitySmithSmithCertIssuedSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_smith_smithCertIssued.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_identity_smith_smithCertIssued? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity_smith_smithCertIssued.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_identity_smith_smithCertReceived
-    implements
-        Built<GAccountFieldsData_identity_smith_smithCertReceived,
-            GAccountFieldsData_identity_smith_smithCertReceivedBuilder>,
-        GAccountFields_identity_smith_smithCertReceived,
-        GIdentityFields_smith_smithCertReceived,
-        GSmithFields_smithCertReceived,
-        GSmithCertFields {
-  GAccountFieldsData_identity_smith_smithCertReceived._();
-
-  factory GAccountFieldsData_identity_smith_smithCertReceived(
-      [void Function(
-              GAccountFieldsData_identity_smith_smithCertReceivedBuilder b)
-          updates]) = _$GAccountFieldsData_identity_smith_smithCertReceived;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_identity_smith_smithCertReceivedBuilder b) =>
-      b..G__typename = 'SmithCert';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  @override
-  String? get issuerId;
-  @override
-  String? get receiverId;
-  @override
-  int get createdOn;
-  static Serializer<GAccountFieldsData_identity_smith_smithCertReceived>
-      get serializer =>
-          _$gAccountFieldsDataIdentitySmithSmithCertReceivedSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_identity_smith_smithCertReceived.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_identity_smith_smithCertReceived? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_identity_smith_smithCertReceived.serializer,
+        GAccountFieldsData_wasIdentityNext_nodes.serializer,
         json,
       );
 }
@@ -14023,7 +11481,7 @@ abstract class GAccountFieldsData_linkedIdentity
         Built<GAccountFieldsData_linkedIdentity,
             GAccountFieldsData_linkedIdentityBuilder>,
         GAccountFields_linkedIdentity,
-        GIdentityBasicFields {
+        GIdentityFields {
   GAccountFieldsData_linkedIdentity._();
 
   factory GAccountFieldsData_linkedIdentity(
@@ -14037,21 +11495,39 @@ abstract class GAccountFieldsData_linkedIdentity
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
+  GAccountFieldsData_linkedIdentity_account? get account;
+  @override
   String? get accountId;
   @override
-  GAccountFieldsData_linkedIdentity_account? get account;
+  String? get accountRemovedId;
+  @override
+  GAccountFieldsData_linkedIdentity_certsByIssuerId get certsByIssuerId;
+  @override
+  GAccountFieldsData_linkedIdentity_certsByReceiverId get certsByReceiverId;
+  @override
+  String? get createdInId;
+  @override
+  int get createdOn;
+  @override
+  int get expireOn;
   @override
   String get id;
   @override
+  int get index;
+  @override
   bool get isMember;
+  @override
+  int get lastChangeOn;
   @override
   String get status;
   @override
   String get name;
   @override
-  int get expireOn;
+  GAccountFieldsData_linkedIdentity_membershipEvents get membershipEvents;
   @override
-  int get index;
+  GAccountFieldsData_linkedIdentity_changeOwnerKeys get changeOwnerKeys;
+  @override
+  GAccountFieldsData_linkedIdentity_smith? get smith;
   static Serializer<GAccountFieldsData_linkedIdentity> get serializer =>
       _$gAccountFieldsDataLinkedIdentitySerializer;
 
@@ -14074,7 +11550,7 @@ abstract class GAccountFieldsData_linkedIdentity_account
         Built<GAccountFieldsData_linkedIdentity_account,
             GAccountFieldsData_linkedIdentity_accountBuilder>,
         GAccountFields_linkedIdentity_account,
-        GIdentityBasicFields_account {
+        GIdentityFields_account {
   GAccountFieldsData_linkedIdentity_account._();
 
   factory GAccountFieldsData_linkedIdentity_account(
@@ -14107,20 +11583,125 @@ abstract class GAccountFieldsData_linkedIdentity_account
       );
 }
 
-abstract class GAccountFieldsData_removedIdentities
+abstract class GAccountFieldsData_linkedIdentity_certsByIssuerId
     implements
-        Built<GAccountFieldsData_removedIdentities,
-            GAccountFieldsData_removedIdentitiesBuilder>,
-        GAccountFields_removedIdentities,
-        GIdentityBasicFields {
-  GAccountFieldsData_removedIdentities._();
+        Built<GAccountFieldsData_linkedIdentity_certsByIssuerId,
+            GAccountFieldsData_linkedIdentity_certsByIssuerIdBuilder>,
+        GAccountFields_linkedIdentity_certsByIssuerId,
+        GIdentityFields_certsByIssuerId {
+  GAccountFieldsData_linkedIdentity_certsByIssuerId._();
 
-  factory GAccountFieldsData_removedIdentities(
-      [void Function(GAccountFieldsData_removedIdentitiesBuilder b)
-          updates]) = _$GAccountFieldsData_removedIdentities;
+  factory GAccountFieldsData_linkedIdentity_certsByIssuerId(
+      [void Function(GAccountFieldsData_linkedIdentity_certsByIssuerIdBuilder b)
+          updates]) = _$GAccountFieldsData_linkedIdentity_certsByIssuerId;
 
   static void _initializeBuilder(
-          GAccountFieldsData_removedIdentitiesBuilder b) =>
+          GAccountFieldsData_linkedIdentity_certsByIssuerIdBuilder b) =>
+      b..G__typename = 'CertsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes> get nodes;
+  static Serializer<GAccountFieldsData_linkedIdentity_certsByIssuerId>
+      get serializer =>
+          _$gAccountFieldsDataLinkedIdentityCertsByIssuerIdSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_linkedIdentity_certsByIssuerId.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_linkedIdentity_certsByIssuerId? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountFieldsData_linkedIdentity_certsByIssuerId.serializer,
+        json,
+      );
+}
+
+abstract class GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes
+    implements
+        Built<GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes,
+            GAccountFieldsData_linkedIdentity_certsByIssuerId_nodesBuilder>,
+        GAccountFields_linkedIdentity_certsByIssuerId_nodes,
+        GIdentityFields_certsByIssuerId_nodes,
+        GCertFields {
+  GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes._();
+
+  factory GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes(
+      [void Function(
+              GAccountFieldsData_linkedIdentity_certsByIssuerId_nodesBuilder b)
+          updates]) = _$GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_linkedIdentity_certsByIssuerId_nodesBuilder b) =>
+      b..G__typename = 'Cert';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  @override
+  String? get issuerId;
+  @override
+  GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer? get issuer;
+  @override
+  String? get receiverId;
+  @override
+  GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver?
+      get receiver;
+  @override
+  int get createdOn;
+  @override
+  int get expireOn;
+  @override
+  bool get isActive;
+  @override
+  int get updatedOn;
+  static Serializer<GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes>
+      get serializer =>
+          _$gAccountFieldsDataLinkedIdentityCertsByIssuerIdNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes.serializer,
+        json,
+      );
+}
+
+abstract class GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer
+    implements
+        Built<GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer,
+            GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuerBuilder>,
+        GAccountFields_linkedIdentity_certsByIssuerId_nodes_issuer,
+        GIdentityFields_certsByIssuerId_nodes_issuer,
+        GCertFields_issuer,
+        GIdentityBasicFields {
+  GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer._();
+
+  factory GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer(
+          [void Function(
+                  GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuerBuilder
+                      b)
+              updates]) =
+      _$GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuerBuilder
+              b) =>
       b..G__typename = 'Identity';
 
   @override
@@ -14129,7 +11710,8 @@ abstract class GAccountFieldsData_removedIdentities
   @override
   String? get accountId;
   @override
-  GAccountFieldsData_removedIdentities_account? get account;
+  GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer_account?
+      get account;
   @override
   String get id;
   @override
@@ -14142,37 +11724,47 @@ abstract class GAccountFieldsData_removedIdentities
   int get expireOn;
   @override
   int get index;
-  static Serializer<GAccountFieldsData_removedIdentities> get serializer =>
-      _$gAccountFieldsDataRemovedIdentitiesSerializer;
+  static Serializer<
+          GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer>
+      get serializer =>
+          _$gAccountFieldsDataLinkedIdentityCertsByIssuerIdNodesIssuerSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_removedIdentities.serializer,
+        GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer
+            .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_removedIdentities? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_removedIdentities.serializer,
-        json,
-      );
+  static GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer
+                .serializer,
+            json,
+          );
 }
 
-abstract class GAccountFieldsData_removedIdentities_account
+abstract class GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer_account
     implements
-        Built<GAccountFieldsData_removedIdentities_account,
-            GAccountFieldsData_removedIdentities_accountBuilder>,
-        GAccountFields_removedIdentities_account,
+        Built<
+            GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer_account,
+            GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer_accountBuilder>,
+        GAccountFields_linkedIdentity_certsByIssuerId_nodes_issuer_account,
+        GIdentityFields_certsByIssuerId_nodes_issuer_account,
+        GCertFields_issuer_account,
         GIdentityBasicFields_account {
-  GAccountFieldsData_removedIdentities_account._();
+  GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer_account._();
 
-  factory GAccountFieldsData_removedIdentities_account(
-      [void Function(GAccountFieldsData_removedIdentities_accountBuilder b)
-          updates]) = _$GAccountFieldsData_removedIdentities_account;
+  factory GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer_account(
+          [void Function(
+                  GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer_accountBuilder
+                      b)
+              updates]) =
+      _$GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer_account;
 
   static void _initializeBuilder(
-          GAccountFieldsData_removedIdentities_accountBuilder b) =>
+          GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer_accountBuilder
+              b) =>
       b..G__typename = 'Account';
 
   @override
@@ -14180,678 +11772,606 @@ abstract class GAccountFieldsData_removedIdentities_account
   String get G__typename;
   @override
   int get createdOn;
-  static Serializer<GAccountFieldsData_removedIdentities_account>
-      get serializer => _$gAccountFieldsDataRemovedIdentitiesAccountSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_removedIdentities_account.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_removedIdentities_account? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_removedIdentities_account.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_removedIdentitiesAggregate
-    implements
-        Built<GAccountFieldsData_removedIdentitiesAggregate,
-            GAccountFieldsData_removedIdentitiesAggregateBuilder>,
-        GAccountFields_removedIdentitiesAggregate {
-  GAccountFieldsData_removedIdentitiesAggregate._();
-
-  factory GAccountFieldsData_removedIdentitiesAggregate(
-      [void Function(GAccountFieldsData_removedIdentitiesAggregateBuilder b)
-          updates]) = _$GAccountFieldsData_removedIdentitiesAggregate;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_removedIdentitiesAggregateBuilder b) =>
-      b..G__typename = 'IdentityAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountFieldsData_removedIdentitiesAggregate_aggregate? get aggregate;
-  static Serializer<GAccountFieldsData_removedIdentitiesAggregate>
+  static Serializer<
+          GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer_account>
       get serializer =>
-          _$gAccountFieldsDataRemovedIdentitiesAggregateSerializer;
+          _$gAccountFieldsDataLinkedIdentityCertsByIssuerIdNodesIssuerAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_removedIdentitiesAggregate.serializer,
+        GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer_account
+            .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_removedIdentitiesAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_removedIdentitiesAggregate.serializer,
-        json,
-      );
+  static GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer_account?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer_account
+                .serializer,
+            json,
+          );
 }
 
-abstract class GAccountFieldsData_removedIdentitiesAggregate_aggregate
+abstract class GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver
     implements
-        Built<GAccountFieldsData_removedIdentitiesAggregate_aggregate,
-            GAccountFieldsData_removedIdentitiesAggregate_aggregateBuilder>,
-        GAccountFields_removedIdentitiesAggregate_aggregate {
-  GAccountFieldsData_removedIdentitiesAggregate_aggregate._();
+        Built<GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver,
+            GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiverBuilder>,
+        GAccountFields_linkedIdentity_certsByIssuerId_nodes_receiver,
+        GIdentityFields_certsByIssuerId_nodes_receiver,
+        GCertFields_receiver,
+        GIdentityBasicFields {
+  GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver._();
 
-  factory GAccountFieldsData_removedIdentitiesAggregate_aggregate(
-      [void Function(
-              GAccountFieldsData_removedIdentitiesAggregate_aggregateBuilder b)
-          updates]) = _$GAccountFieldsData_removedIdentitiesAggregate_aggregate;
+  factory GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver(
+          [void Function(
+                  GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiverBuilder
+                      b)
+              updates]) =
+      _$GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver;
 
   static void _initializeBuilder(
-          GAccountFieldsData_removedIdentitiesAggregate_aggregateBuilder b) =>
-      b..G__typename = 'IdentityAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<GAccountFieldsData_removedIdentitiesAggregate_aggregate>
-      get serializer =>
-          _$gAccountFieldsDataRemovedIdentitiesAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_removedIdentitiesAggregate_aggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_removedIdentitiesAggregate_aggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_removedIdentitiesAggregate_aggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_transfersIssued
-    implements
-        Built<GAccountFieldsData_transfersIssued,
-            GAccountFieldsData_transfersIssuedBuilder>,
-        GAccountFields_transfersIssued,
-        GTransferFields {
-  GAccountFieldsData_transfersIssued._();
-
-  factory GAccountFieldsData_transfersIssued(
-      [void Function(GAccountFieldsData_transfersIssuedBuilder b)
-          updates]) = _$GAccountFieldsData_transfersIssued;
-
-  static void _initializeBuilder(GAccountFieldsData_transfersIssuedBuilder b) =>
-      b..G__typename = 'Transfer';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get blockNumber;
-  @override
-  _i2.Gtimestamptz get timestamp;
-  @override
-  int get amount;
-  @override
-  GAccountFieldsData_transfersIssued_to? get to;
-  @override
-  GAccountFieldsData_transfersIssued_from? get from;
-  @override
-  GAccountFieldsData_transfersIssued_comment? get comment;
-  static Serializer<GAccountFieldsData_transfersIssued> get serializer =>
-      _$gAccountFieldsDataTransfersIssuedSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_transfersIssued.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_transfersIssued? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_transfersIssued.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_transfersIssued_to
-    implements
-        Built<GAccountFieldsData_transfersIssued_to,
-            GAccountFieldsData_transfersIssued_toBuilder>,
-        GAccountFields_transfersIssued_to,
-        GTransferFields_to {
-  GAccountFieldsData_transfersIssued_to._();
-
-  factory GAccountFieldsData_transfersIssued_to(
-      [void Function(GAccountFieldsData_transfersIssued_toBuilder b)
-          updates]) = _$GAccountFieldsData_transfersIssued_to;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_transfersIssued_toBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  static Serializer<GAccountFieldsData_transfersIssued_to> get serializer =>
-      _$gAccountFieldsDataTransfersIssuedToSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_transfersIssued_to.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_transfersIssued_to? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_transfersIssued_to.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_transfersIssued_from
-    implements
-        Built<GAccountFieldsData_transfersIssued_from,
-            GAccountFieldsData_transfersIssued_fromBuilder>,
-        GAccountFields_transfersIssued_from,
-        GTransferFields_from {
-  GAccountFieldsData_transfersIssued_from._();
-
-  factory GAccountFieldsData_transfersIssued_from(
-      [void Function(GAccountFieldsData_transfersIssued_fromBuilder b)
-          updates]) = _$GAccountFieldsData_transfersIssued_from;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_transfersIssued_fromBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  static Serializer<GAccountFieldsData_transfersIssued_from> get serializer =>
-      _$gAccountFieldsDataTransfersIssuedFromSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_transfersIssued_from.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_transfersIssued_from? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_transfersIssued_from.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_transfersIssued_comment
-    implements
-        Built<GAccountFieldsData_transfersIssued_comment,
-            GAccountFieldsData_transfersIssued_commentBuilder>,
-        GAccountFields_transfersIssued_comment,
-        GTransferFields_comment {
-  GAccountFieldsData_transfersIssued_comment._();
-
-  factory GAccountFieldsData_transfersIssued_comment(
-      [void Function(GAccountFieldsData_transfersIssued_commentBuilder b)
-          updates]) = _$GAccountFieldsData_transfersIssued_comment;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_transfersIssued_commentBuilder b) =>
-      b..G__typename = 'TxComment';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get remark;
-  @override
-  _i2.Gbytea get remarkBytes;
-  static Serializer<GAccountFieldsData_transfersIssued_comment>
-      get serializer => _$gAccountFieldsDataTransfersIssuedCommentSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_transfersIssued_comment.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_transfersIssued_comment? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_transfersIssued_comment.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_transfersIssuedAggregate
-    implements
-        Built<GAccountFieldsData_transfersIssuedAggregate,
-            GAccountFieldsData_transfersIssuedAggregateBuilder>,
-        GAccountFields_transfersIssuedAggregate {
-  GAccountFieldsData_transfersIssuedAggregate._();
-
-  factory GAccountFieldsData_transfersIssuedAggregate(
-      [void Function(GAccountFieldsData_transfersIssuedAggregateBuilder b)
-          updates]) = _$GAccountFieldsData_transfersIssuedAggregate;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_transfersIssuedAggregateBuilder b) =>
-      b..G__typename = 'TransferAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountFieldsData_transfersIssuedAggregate_aggregate? get aggregate;
-  static Serializer<GAccountFieldsData_transfersIssuedAggregate>
-      get serializer => _$gAccountFieldsDataTransfersIssuedAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_transfersIssuedAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_transfersIssuedAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_transfersIssuedAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_transfersIssuedAggregate_aggregate
-    implements
-        Built<GAccountFieldsData_transfersIssuedAggregate_aggregate,
-            GAccountFieldsData_transfersIssuedAggregate_aggregateBuilder>,
-        GAccountFields_transfersIssuedAggregate_aggregate {
-  GAccountFieldsData_transfersIssuedAggregate_aggregate._();
-
-  factory GAccountFieldsData_transfersIssuedAggregate_aggregate(
-      [void Function(
-              GAccountFieldsData_transfersIssuedAggregate_aggregateBuilder b)
-          updates]) = _$GAccountFieldsData_transfersIssuedAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_transfersIssuedAggregate_aggregateBuilder b) =>
-      b..G__typename = 'TransferAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountFieldsData_transfersIssuedAggregate_aggregate_sum? get sum;
-  @override
-  int get count;
-  static Serializer<GAccountFieldsData_transfersIssuedAggregate_aggregate>
-      get serializer =>
-          _$gAccountFieldsDataTransfersIssuedAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_transfersIssuedAggregate_aggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_transfersIssuedAggregate_aggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_transfersIssuedAggregate_aggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_transfersIssuedAggregate_aggregate_sum
-    implements
-        Built<GAccountFieldsData_transfersIssuedAggregate_aggregate_sum,
-            GAccountFieldsData_transfersIssuedAggregate_aggregate_sumBuilder>,
-        GAccountFields_transfersIssuedAggregate_aggregate_sum {
-  GAccountFieldsData_transfersIssuedAggregate_aggregate_sum._();
-
-  factory GAccountFieldsData_transfersIssuedAggregate_aggregate_sum(
-      [void Function(
-              GAccountFieldsData_transfersIssuedAggregate_aggregate_sumBuilder
-                  b)
-          updates]) = _$GAccountFieldsData_transfersIssuedAggregate_aggregate_sum;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_transfersIssuedAggregate_aggregate_sumBuilder b) =>
-      b..G__typename = 'TransferSumFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int? get amount;
-  static Serializer<GAccountFieldsData_transfersIssuedAggregate_aggregate_sum>
-      get serializer =>
-          _$gAccountFieldsDataTransfersIssuedAggregateAggregateSumSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_transfersIssuedAggregate_aggregate_sum.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_transfersIssuedAggregate_aggregate_sum? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_transfersIssuedAggregate_aggregate_sum.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_transfersReceived
-    implements
-        Built<GAccountFieldsData_transfersReceived,
-            GAccountFieldsData_transfersReceivedBuilder>,
-        GAccountFields_transfersReceived,
-        GTransferFields {
-  GAccountFieldsData_transfersReceived._();
-
-  factory GAccountFieldsData_transfersReceived(
-      [void Function(GAccountFieldsData_transfersReceivedBuilder b)
-          updates]) = _$GAccountFieldsData_transfersReceived;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_transfersReceivedBuilder b) =>
-      b..G__typename = 'Transfer';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get blockNumber;
-  @override
-  _i2.Gtimestamptz get timestamp;
-  @override
-  int get amount;
-  @override
-  GAccountFieldsData_transfersReceived_to? get to;
-  @override
-  GAccountFieldsData_transfersReceived_from? get from;
-  @override
-  GAccountFieldsData_transfersReceived_comment? get comment;
-  static Serializer<GAccountFieldsData_transfersReceived> get serializer =>
-      _$gAccountFieldsDataTransfersReceivedSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_transfersReceived.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_transfersReceived? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_transfersReceived.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_transfersReceived_to
-    implements
-        Built<GAccountFieldsData_transfersReceived_to,
-            GAccountFieldsData_transfersReceived_toBuilder>,
-        GAccountFields_transfersReceived_to,
-        GTransferFields_to {
-  GAccountFieldsData_transfersReceived_to._();
-
-  factory GAccountFieldsData_transfersReceived_to(
-      [void Function(GAccountFieldsData_transfersReceived_toBuilder b)
-          updates]) = _$GAccountFieldsData_transfersReceived_to;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_transfersReceived_toBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  static Serializer<GAccountFieldsData_transfersReceived_to> get serializer =>
-      _$gAccountFieldsDataTransfersReceivedToSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_transfersReceived_to.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_transfersReceived_to? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_transfersReceived_to.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_transfersReceived_from
-    implements
-        Built<GAccountFieldsData_transfersReceived_from,
-            GAccountFieldsData_transfersReceived_fromBuilder>,
-        GAccountFields_transfersReceived_from,
-        GTransferFields_from {
-  GAccountFieldsData_transfersReceived_from._();
-
-  factory GAccountFieldsData_transfersReceived_from(
-      [void Function(GAccountFieldsData_transfersReceived_fromBuilder b)
-          updates]) = _$GAccountFieldsData_transfersReceived_from;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_transfersReceived_fromBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  static Serializer<GAccountFieldsData_transfersReceived_from> get serializer =>
-      _$gAccountFieldsDataTransfersReceivedFromSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_transfersReceived_from.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_transfersReceived_from? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_transfersReceived_from.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_transfersReceived_comment
-    implements
-        Built<GAccountFieldsData_transfersReceived_comment,
-            GAccountFieldsData_transfersReceived_commentBuilder>,
-        GAccountFields_transfersReceived_comment,
-        GTransferFields_comment {
-  GAccountFieldsData_transfersReceived_comment._();
-
-  factory GAccountFieldsData_transfersReceived_comment(
-      [void Function(GAccountFieldsData_transfersReceived_commentBuilder b)
-          updates]) = _$GAccountFieldsData_transfersReceived_comment;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_transfersReceived_commentBuilder b) =>
-      b..G__typename = 'TxComment';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get remark;
-  @override
-  _i2.Gbytea get remarkBytes;
-  static Serializer<GAccountFieldsData_transfersReceived_comment>
-      get serializer => _$gAccountFieldsDataTransfersReceivedCommentSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_transfersReceived_comment.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_transfersReceived_comment? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_transfersReceived_comment.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_transfersReceivedAggregate
-    implements
-        Built<GAccountFieldsData_transfersReceivedAggregate,
-            GAccountFieldsData_transfersReceivedAggregateBuilder>,
-        GAccountFields_transfersReceivedAggregate {
-  GAccountFieldsData_transfersReceivedAggregate._();
-
-  factory GAccountFieldsData_transfersReceivedAggregate(
-      [void Function(GAccountFieldsData_transfersReceivedAggregateBuilder b)
-          updates]) = _$GAccountFieldsData_transfersReceivedAggregate;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_transfersReceivedAggregateBuilder b) =>
-      b..G__typename = 'TransferAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountFieldsData_transfersReceivedAggregate_aggregate? get aggregate;
-  static Serializer<GAccountFieldsData_transfersReceivedAggregate>
-      get serializer =>
-          _$gAccountFieldsDataTransfersReceivedAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_transfersReceivedAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_transfersReceivedAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_transfersReceivedAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_transfersReceivedAggregate_aggregate
-    implements
-        Built<GAccountFieldsData_transfersReceivedAggregate_aggregate,
-            GAccountFieldsData_transfersReceivedAggregate_aggregateBuilder>,
-        GAccountFields_transfersReceivedAggregate_aggregate {
-  GAccountFieldsData_transfersReceivedAggregate_aggregate._();
-
-  factory GAccountFieldsData_transfersReceivedAggregate_aggregate(
-      [void Function(
-              GAccountFieldsData_transfersReceivedAggregate_aggregateBuilder b)
-          updates]) = _$GAccountFieldsData_transfersReceivedAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_transfersReceivedAggregate_aggregateBuilder b) =>
-      b..G__typename = 'TransferAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountFieldsData_transfersReceivedAggregate_aggregate_sum? get sum;
-  @override
-  int get count;
-  static Serializer<GAccountFieldsData_transfersReceivedAggregate_aggregate>
-      get serializer =>
-          _$gAccountFieldsDataTransfersReceivedAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_transfersReceivedAggregate_aggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_transfersReceivedAggregate_aggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_transfersReceivedAggregate_aggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_transfersReceivedAggregate_aggregate_sum
-    implements
-        Built<GAccountFieldsData_transfersReceivedAggregate_aggregate_sum,
-            GAccountFieldsData_transfersReceivedAggregate_aggregate_sumBuilder>,
-        GAccountFields_transfersReceivedAggregate_aggregate_sum {
-  GAccountFieldsData_transfersReceivedAggregate_aggregate_sum._();
-
-  factory GAccountFieldsData_transfersReceivedAggregate_aggregate_sum(
-      [void Function(
-              GAccountFieldsData_transfersReceivedAggregate_aggregate_sumBuilder
-                  b)
-          updates]) = _$GAccountFieldsData_transfersReceivedAggregate_aggregate_sum;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_transfersReceivedAggregate_aggregate_sumBuilder
+          GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiverBuilder
               b) =>
-      b..G__typename = 'TransferSumFields';
+      b..G__typename = 'Identity';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  int? get amount;
-  static Serializer<GAccountFieldsData_transfersReceivedAggregate_aggregate_sum>
+  String? get accountId;
+  @override
+  GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver_account?
+      get account;
+  @override
+  String get id;
+  @override
+  bool get isMember;
+  @override
+  String get status;
+  @override
+  String get name;
+  @override
+  int get expireOn;
+  @override
+  int get index;
+  static Serializer<
+          GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver>
       get serializer =>
-          _$gAccountFieldsDataTransfersReceivedAggregateAggregateSumSerializer;
+          _$gAccountFieldsDataLinkedIdentityCertsByIssuerIdNodesReceiverSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_transfersReceivedAggregate_aggregate_sum.serializer,
+        GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver
+            .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_transfersReceivedAggregate_aggregate_sum? fromJson(
+  static GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver_account
+    implements
+        Built<
+            GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver_account,
+            GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver_accountBuilder>,
+        GAccountFields_linkedIdentity_certsByIssuerId_nodes_receiver_account,
+        GIdentityFields_certsByIssuerId_nodes_receiver_account,
+        GCertFields_receiver_account,
+        GIdentityBasicFields_account {
+  GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver_account._();
+
+  factory GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver_account(
+          [void Function(
+                  GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver_accountBuilder
+                      b)
+              updates]) =
+      _$GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver_account;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver_accountBuilder
+              b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get createdOn;
+  static Serializer<
+          GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver_account>
+      get serializer =>
+          _$gAccountFieldsDataLinkedIdentityCertsByIssuerIdNodesReceiverAccountSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver_account
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver_account?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver_account
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountFieldsData_linkedIdentity_certsByReceiverId
+    implements
+        Built<GAccountFieldsData_linkedIdentity_certsByReceiverId,
+            GAccountFieldsData_linkedIdentity_certsByReceiverIdBuilder>,
+        GAccountFields_linkedIdentity_certsByReceiverId,
+        GIdentityFields_certsByReceiverId {
+  GAccountFieldsData_linkedIdentity_certsByReceiverId._();
+
+  factory GAccountFieldsData_linkedIdentity_certsByReceiverId(
+      [void Function(
+              GAccountFieldsData_linkedIdentity_certsByReceiverIdBuilder b)
+          updates]) = _$GAccountFieldsData_linkedIdentity_certsByReceiverId;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_linkedIdentity_certsByReceiverIdBuilder b) =>
+      b..G__typename = 'CertsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes>
+      get nodes;
+  static Serializer<GAccountFieldsData_linkedIdentity_certsByReceiverId>
+      get serializer =>
+          _$gAccountFieldsDataLinkedIdentityCertsByReceiverIdSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_linkedIdentity_certsByReceiverId.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_linkedIdentity_certsByReceiverId? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountFieldsData_transfersReceivedAggregate_aggregate_sum.serializer,
+        GAccountFieldsData_linkedIdentity_certsByReceiverId.serializer,
         json,
       );
 }
 
-abstract class GAccountFieldsData_wasIdentity
+abstract class GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes
     implements
-        Built<GAccountFieldsData_wasIdentity,
-            GAccountFieldsData_wasIdentityBuilder>,
-        GAccountFields_wasIdentity,
+        Built<GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes,
+            GAccountFieldsData_linkedIdentity_certsByReceiverId_nodesBuilder>,
+        GAccountFields_linkedIdentity_certsByReceiverId_nodes,
+        GIdentityFields_certsByReceiverId_nodes,
+        GCertFields {
+  GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes._();
+
+  factory GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes(
+      [void Function(
+              GAccountFieldsData_linkedIdentity_certsByReceiverId_nodesBuilder
+                  b)
+          updates]) = _$GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_linkedIdentity_certsByReceiverId_nodesBuilder b) =>
+      b..G__typename = 'Cert';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  @override
+  String? get issuerId;
+  @override
+  GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer? get issuer;
+  @override
+  String? get receiverId;
+  @override
+  GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver?
+      get receiver;
+  @override
+  int get createdOn;
+  @override
+  int get expireOn;
+  @override
+  bool get isActive;
+  @override
+  int get updatedOn;
+  static Serializer<GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes>
+      get serializer =>
+          _$gAccountFieldsDataLinkedIdentityCertsByReceiverIdNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes.serializer,
+        json,
+      );
+}
+
+abstract class GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer
+    implements
+        Built<GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer,
+            GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuerBuilder>,
+        GAccountFields_linkedIdentity_certsByReceiverId_nodes_issuer,
+        GIdentityFields_certsByReceiverId_nodes_issuer,
+        GCertFields_issuer,
+        GIdentityBasicFields {
+  GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer._();
+
+  factory GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer(
+          [void Function(
+                  GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuerBuilder
+                      b)
+              updates]) =
+      _$GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuerBuilder
+              b) =>
+      b..G__typename = 'Identity';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String? get accountId;
+  @override
+  GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer_account?
+      get account;
+  @override
+  String get id;
+  @override
+  bool get isMember;
+  @override
+  String get status;
+  @override
+  String get name;
+  @override
+  int get expireOn;
+  @override
+  int get index;
+  static Serializer<
+          GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer>
+      get serializer =>
+          _$gAccountFieldsDataLinkedIdentityCertsByReceiverIdNodesIssuerSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer_account
+    implements
+        Built<
+            GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer_account,
+            GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer_accountBuilder>,
+        GAccountFields_linkedIdentity_certsByReceiverId_nodes_issuer_account,
+        GIdentityFields_certsByReceiverId_nodes_issuer_account,
+        GCertFields_issuer_account,
+        GIdentityBasicFields_account {
+  GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer_account._();
+
+  factory GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer_account(
+          [void Function(
+                  GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer_accountBuilder
+                      b)
+              updates]) =
+      _$GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer_account;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer_accountBuilder
+              b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get createdOn;
+  static Serializer<
+          GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer_account>
+      get serializer =>
+          _$gAccountFieldsDataLinkedIdentityCertsByReceiverIdNodesIssuerAccountSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer_account
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer_account?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer_account
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver
+    implements
+        Built<
+            GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver,
+            GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiverBuilder>,
+        GAccountFields_linkedIdentity_certsByReceiverId_nodes_receiver,
+        GIdentityFields_certsByReceiverId_nodes_receiver,
+        GCertFields_receiver,
+        GIdentityBasicFields {
+  GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver._();
+
+  factory GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver(
+          [void Function(
+                  GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiverBuilder
+                      b)
+              updates]) =
+      _$GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiverBuilder
+              b) =>
+      b..G__typename = 'Identity';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String? get accountId;
+  @override
+  GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver_account?
+      get account;
+  @override
+  String get id;
+  @override
+  bool get isMember;
+  @override
+  String get status;
+  @override
+  String get name;
+  @override
+  int get expireOn;
+  @override
+  int get index;
+  static Serializer<
+          GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver>
+      get serializer =>
+          _$gAccountFieldsDataLinkedIdentityCertsByReceiverIdNodesReceiverSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver_account
+    implements
+        Built<
+            GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver_account,
+            GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver_accountBuilder>,
+        GAccountFields_linkedIdentity_certsByReceiverId_nodes_receiver_account,
+        GIdentityFields_certsByReceiverId_nodes_receiver_account,
+        GCertFields_receiver_account,
+        GIdentityBasicFields_account {
+  GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver_account._();
+
+  factory GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver_account(
+          [void Function(
+                  GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver_accountBuilder
+                      b)
+              updates]) =
+      _$GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver_account;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver_accountBuilder
+              b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get createdOn;
+  static Serializer<
+          GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver_account>
+      get serializer =>
+          _$gAccountFieldsDataLinkedIdentityCertsByReceiverIdNodesReceiverAccountSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver_account
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver_account?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver_account
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountFieldsData_linkedIdentity_membershipEvents
+    implements
+        Built<GAccountFieldsData_linkedIdentity_membershipEvents,
+            GAccountFieldsData_linkedIdentity_membershipEventsBuilder>,
+        GAccountFields_linkedIdentity_membershipEvents,
+        GIdentityFields_membershipEvents {
+  GAccountFieldsData_linkedIdentity_membershipEvents._();
+
+  factory GAccountFieldsData_linkedIdentity_membershipEvents(
+      [void Function(
+              GAccountFieldsData_linkedIdentity_membershipEventsBuilder b)
+          updates]) = _$GAccountFieldsData_linkedIdentity_membershipEvents;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_linkedIdentity_membershipEventsBuilder b) =>
+      b..G__typename = 'MembershipEventsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GAccountFieldsData_linkedIdentity_membershipEvents_nodes> get nodes;
+  static Serializer<GAccountFieldsData_linkedIdentity_membershipEvents>
+      get serializer =>
+          _$gAccountFieldsDataLinkedIdentityMembershipEventsSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_linkedIdentity_membershipEvents.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_linkedIdentity_membershipEvents? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountFieldsData_linkedIdentity_membershipEvents.serializer,
+        json,
+      );
+}
+
+abstract class GAccountFieldsData_linkedIdentity_membershipEvents_nodes
+    implements
+        Built<GAccountFieldsData_linkedIdentity_membershipEvents_nodes,
+            GAccountFieldsData_linkedIdentity_membershipEvents_nodesBuilder>,
+        GAccountFields_linkedIdentity_membershipEvents_nodes,
+        GIdentityFields_membershipEvents_nodes {
+  GAccountFieldsData_linkedIdentity_membershipEvents_nodes._();
+
+  factory GAccountFieldsData_linkedIdentity_membershipEvents_nodes(
+      [void Function(
+              GAccountFieldsData_linkedIdentity_membershipEvents_nodesBuilder b)
+          updates]) = _$GAccountFieldsData_linkedIdentity_membershipEvents_nodes;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_linkedIdentity_membershipEvents_nodesBuilder b) =>
+      b..G__typename = 'MembershipEvent';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get blockNumber;
+  @override
+  String? get eventId;
+  @override
+  String get eventType;
+  @override
+  String get id;
+  @override
+  String? get identityId;
+  static Serializer<GAccountFieldsData_linkedIdentity_membershipEvents_nodes>
+      get serializer =>
+          _$gAccountFieldsDataLinkedIdentityMembershipEventsNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_linkedIdentity_membershipEvents_nodes.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_linkedIdentity_membershipEvents_nodes? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountFieldsData_linkedIdentity_membershipEvents_nodes.serializer,
+        json,
+      );
+}
+
+abstract class GAccountFieldsData_linkedIdentity_changeOwnerKeys
+    implements
+        Built<GAccountFieldsData_linkedIdentity_changeOwnerKeys,
+            GAccountFieldsData_linkedIdentity_changeOwnerKeysBuilder>,
+        GAccountFields_linkedIdentity_changeOwnerKeys,
+        GIdentityFields_changeOwnerKeys {
+  GAccountFieldsData_linkedIdentity_changeOwnerKeys._();
+
+  factory GAccountFieldsData_linkedIdentity_changeOwnerKeys(
+      [void Function(GAccountFieldsData_linkedIdentity_changeOwnerKeysBuilder b)
+          updates]) = _$GAccountFieldsData_linkedIdentity_changeOwnerKeys;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_linkedIdentity_changeOwnerKeysBuilder b) =>
+      b..G__typename = 'ChangeOwnerKeysConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GAccountFieldsData_linkedIdentity_changeOwnerKeys_nodes> get nodes;
+  static Serializer<GAccountFieldsData_linkedIdentity_changeOwnerKeys>
+      get serializer =>
+          _$gAccountFieldsDataLinkedIdentityChangeOwnerKeysSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_linkedIdentity_changeOwnerKeys.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_linkedIdentity_changeOwnerKeys? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountFieldsData_linkedIdentity_changeOwnerKeys.serializer,
+        json,
+      );
+}
+
+abstract class GAccountFieldsData_linkedIdentity_changeOwnerKeys_nodes
+    implements
+        Built<GAccountFieldsData_linkedIdentity_changeOwnerKeys_nodes,
+            GAccountFieldsData_linkedIdentity_changeOwnerKeys_nodesBuilder>,
+        GAccountFields_linkedIdentity_changeOwnerKeys_nodes,
+        GIdentityFields_changeOwnerKeys_nodes,
         GOwnerKeyChangeFields {
-  GAccountFieldsData_wasIdentity._();
+  GAccountFieldsData_linkedIdentity_changeOwnerKeys_nodes._();
 
-  factory GAccountFieldsData_wasIdentity(
-          [void Function(GAccountFieldsData_wasIdentityBuilder b) updates]) =
-      _$GAccountFieldsData_wasIdentity;
+  factory GAccountFieldsData_linkedIdentity_changeOwnerKeys_nodes(
+      [void Function(
+              GAccountFieldsData_linkedIdentity_changeOwnerKeys_nodesBuilder b)
+          updates]) = _$GAccountFieldsData_linkedIdentity_changeOwnerKeys_nodes;
 
-  static void _initializeBuilder(GAccountFieldsData_wasIdentityBuilder b) =>
+  static void _initializeBuilder(
+          GAccountFieldsData_linkedIdentity_changeOwnerKeys_nodesBuilder b) =>
       b..G__typename = 'ChangeOwnerKey';
 
   @override
@@ -14867,112 +12387,302 @@ abstract class GAccountFieldsData_wasIdentity
   String? get nextId;
   @override
   String? get previousId;
-  static Serializer<GAccountFieldsData_wasIdentity> get serializer =>
-      _$gAccountFieldsDataWasIdentitySerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_wasIdentity.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_wasIdentity? fromJson(Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_wasIdentity.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_wasIdentityAggregate
-    implements
-        Built<GAccountFieldsData_wasIdentityAggregate,
-            GAccountFieldsData_wasIdentityAggregateBuilder>,
-        GAccountFields_wasIdentityAggregate {
-  GAccountFieldsData_wasIdentityAggregate._();
-
-  factory GAccountFieldsData_wasIdentityAggregate(
-      [void Function(GAccountFieldsData_wasIdentityAggregateBuilder b)
-          updates]) = _$GAccountFieldsData_wasIdentityAggregate;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_wasIdentityAggregateBuilder b) =>
-      b..G__typename = 'ChangeOwnerKeyAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountFieldsData_wasIdentityAggregate_aggregate? get aggregate;
-  static Serializer<GAccountFieldsData_wasIdentityAggregate> get serializer =>
-      _$gAccountFieldsDataWasIdentityAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_wasIdentityAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountFieldsData_wasIdentityAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountFieldsData_wasIdentityAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountFieldsData_wasIdentityAggregate_aggregate
-    implements
-        Built<GAccountFieldsData_wasIdentityAggregate_aggregate,
-            GAccountFieldsData_wasIdentityAggregate_aggregateBuilder>,
-        GAccountFields_wasIdentityAggregate_aggregate {
-  GAccountFieldsData_wasIdentityAggregate_aggregate._();
-
-  factory GAccountFieldsData_wasIdentityAggregate_aggregate(
-      [void Function(GAccountFieldsData_wasIdentityAggregate_aggregateBuilder b)
-          updates]) = _$GAccountFieldsData_wasIdentityAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountFieldsData_wasIdentityAggregate_aggregateBuilder b) =>
-      b..G__typename = 'ChangeOwnerKeyAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<GAccountFieldsData_wasIdentityAggregate_aggregate>
+  static Serializer<GAccountFieldsData_linkedIdentity_changeOwnerKeys_nodes>
       get serializer =>
-          _$gAccountFieldsDataWasIdentityAggregateAggregateSerializer;
+          _$gAccountFieldsDataLinkedIdentityChangeOwnerKeysNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_wasIdentityAggregate_aggregate.serializer,
+        GAccountFieldsData_linkedIdentity_changeOwnerKeys_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_wasIdentityAggregate_aggregate? fromJson(
+  static GAccountFieldsData_linkedIdentity_changeOwnerKeys_nodes? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountFieldsData_wasIdentityAggregate_aggregate.serializer,
+        GAccountFieldsData_linkedIdentity_changeOwnerKeys_nodes.serializer,
         json,
       );
+}
+
+abstract class GAccountFieldsData_linkedIdentity_smith
+    implements
+        Built<GAccountFieldsData_linkedIdentity_smith,
+            GAccountFieldsData_linkedIdentity_smithBuilder>,
+        GAccountFields_linkedIdentity_smith,
+        GIdentityFields_smith,
+        GSmithFields {
+  GAccountFieldsData_linkedIdentity_smith._();
+
+  factory GAccountFieldsData_linkedIdentity_smith(
+      [void Function(GAccountFieldsData_linkedIdentity_smithBuilder b)
+          updates]) = _$GAccountFieldsData_linkedIdentity_smith;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_linkedIdentity_smithBuilder b) =>
+      b..G__typename = 'Smith';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  @override
+  int get forged;
+  @override
+  int get index;
+  @override
+  int? get lastChanged;
+  @override
+  int? get lastForged;
+  @override
+  GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId
+      get smithCertsByIssuerId;
+  @override
+  GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId
+      get smithCertsByReceiverId;
+  static Serializer<GAccountFieldsData_linkedIdentity_smith> get serializer =>
+      _$gAccountFieldsDataLinkedIdentitySmithSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_linkedIdentity_smith.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_linkedIdentity_smith? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountFieldsData_linkedIdentity_smith.serializer,
+        json,
+      );
+}
+
+abstract class GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId
+    implements
+        Built<GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId,
+            GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerIdBuilder>,
+        GAccountFields_linkedIdentity_smith_smithCertsByIssuerId,
+        GIdentityFields_smith_smithCertsByIssuerId,
+        GSmithFields_smithCertsByIssuerId {
+  GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId._();
+
+  factory GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId(
+          [void Function(
+                  GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerIdBuilder
+                      b)
+              updates]) =
+      _$GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerIdBuilder
+              b) =>
+      b..G__typename = 'SmithCertsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId_nodes>
+      get nodes;
+  static Serializer<
+          GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId>
+      get serializer =>
+          _$gAccountFieldsDataLinkedIdentitySmithSmithCertsByIssuerIdSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId.serializer,
+        json,
+      );
+}
+
+abstract class GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId_nodes
+    implements
+        Built<
+            GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId_nodes,
+            GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId_nodesBuilder>,
+        GAccountFields_linkedIdentity_smith_smithCertsByIssuerId_nodes,
+        GIdentityFields_smith_smithCertsByIssuerId_nodes,
+        GSmithFields_smithCertsByIssuerId_nodes,
+        GSmithCertFields {
+  GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId_nodes._();
+
+  factory GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId_nodes(
+          [void Function(
+                  GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId_nodesBuilder
+                      b)
+              updates]) =
+      _$GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId_nodes;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId_nodesBuilder
+              b) =>
+      b..G__typename = 'SmithCert';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  @override
+  String? get issuerId;
+  @override
+  String? get receiverId;
+  @override
+  int get createdOn;
+  static Serializer<
+          GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId_nodes>
+      get serializer =>
+          _$gAccountFieldsDataLinkedIdentitySmithSmithCertsByIssuerIdNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId_nodes
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId_nodes?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId_nodes
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId
+    implements
+        Built<GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId,
+            GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverIdBuilder>,
+        GAccountFields_linkedIdentity_smith_smithCertsByReceiverId,
+        GIdentityFields_smith_smithCertsByReceiverId,
+        GSmithFields_smithCertsByReceiverId {
+  GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId._();
+
+  factory GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId(
+          [void Function(
+                  GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverIdBuilder
+                      b)
+              updates]) =
+      _$GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverIdBuilder
+              b) =>
+      b..G__typename = 'SmithCertsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<
+          GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId_nodes>
+      get nodes;
+  static Serializer<
+          GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId>
+      get serializer =>
+          _$gAccountFieldsDataLinkedIdentitySmithSmithCertsByReceiverIdSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId_nodes
+    implements
+        Built<
+            GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId_nodes,
+            GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId_nodesBuilder>,
+        GAccountFields_linkedIdentity_smith_smithCertsByReceiverId_nodes,
+        GIdentityFields_smith_smithCertsByReceiverId_nodes,
+        GSmithFields_smithCertsByReceiverId_nodes,
+        GSmithCertFields {
+  GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId_nodes._();
+
+  factory GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId_nodes(
+          [void Function(
+                  GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId_nodesBuilder
+                      b)
+              updates]) =
+      _$GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId_nodes;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId_nodesBuilder
+              b) =>
+      b..G__typename = 'SmithCert';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  @override
+  String? get issuerId;
+  @override
+  String? get receiverId;
+  @override
+  int get createdOn;
+  static Serializer<
+          GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId_nodes>
+      get serializer =>
+          _$gAccountFieldsDataLinkedIdentitySmithSmithCertsByReceiverIdNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId_nodes
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId_nodes?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId_nodes
+                .serializer,
+            json,
+          );
 }
 
 abstract class GAccountTxsFields {
   String get G__typename;
-  BuiltList<GAccountTxsFields_commentsIssued> get commentsIssued;
-  GAccountTxsFields_commentsIssuedAggregate get commentsIssuedAggregate;
   int get createdOn;
   String get id;
   bool get isActive;
-  BuiltList<GAccountTxsFields_transfersIssued> get transfersIssued;
-  GAccountTxsFields_transfersIssuedAggregate get transfersIssuedAggregate;
-  BuiltList<GAccountTxsFields_transfersReceived> get transfersReceived;
-  GAccountTxsFields_transfersReceivedAggregate get transfersReceivedAggregate;
+  GAccountTxsFields_comments get comments;
+  GAccountTxsFields_transfersIssued get transfersIssued;
+  GAccountTxsFields_transfersReceived get transfersReceived;
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountTxsFields_commentsIssued implements GCommentsIssued {
+abstract class GAccountTxsFields_comments {
+  String get G__typename;
+  int get totalCount;
+  BuiltList<GAccountTxsFields_comments_nodes> get nodes;
+  Map<String, dynamic> toJson();
+}
+
+abstract class GAccountTxsFields_comments_nodes implements GCommentsIssued {
   @override
   String get G__typename;
   @override
@@ -14988,45 +12698,41 @@ abstract class GAccountTxsFields_commentsIssued implements GCommentsIssued {
   @override
   String get remark;
   @override
-  _i2.Gbytea get remarkBytes;
+  String get remarkBytes;
   @override
   String get type;
   @override
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountTxsFields_commentsIssuedAggregate {
+abstract class GAccountTxsFields_transfersIssued {
   String get G__typename;
-  GAccountTxsFields_commentsIssuedAggregate_aggregate? get aggregate;
+  int get totalCount;
+  BuiltList<GAccountTxsFields_transfersIssued_nodes> get nodes;
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountTxsFields_commentsIssuedAggregate_aggregate {
-  String get G__typename;
-  int get count;
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountTxsFields_transfersIssued implements GTransferFields {
+abstract class GAccountTxsFields_transfersIssued_nodes
+    implements GTransferFields {
   @override
   String get G__typename;
   @override
   int get blockNumber;
   @override
-  _i2.Gtimestamptz get timestamp;
+  _i2.GDatetime get timestamp;
   @override
-  int get amount;
+  _i2.GBigFloat get amount;
   @override
-  GAccountTxsFields_transfersIssued_to? get to;
+  GAccountTxsFields_transfersIssued_nodes_to? get to;
   @override
-  GAccountTxsFields_transfersIssued_from? get from;
+  GAccountTxsFields_transfersIssued_nodes_from? get from;
   @override
-  GAccountTxsFields_transfersIssued_comment? get comment;
+  GAccountTxsFields_transfersIssued_nodes_comment? get comment;
   @override
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountTxsFields_transfersIssued_to
+abstract class GAccountTxsFields_transfersIssued_nodes_to
     implements GTransferFields_to {
   @override
   String get G__typename;
@@ -15036,7 +12742,7 @@ abstract class GAccountTxsFields_transfersIssued_to
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountTxsFields_transfersIssued_from
+abstract class GAccountTxsFields_transfersIssued_nodes_from
     implements GTransferFields_from {
   @override
   String get G__typename;
@@ -15046,57 +12752,46 @@ abstract class GAccountTxsFields_transfersIssued_from
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountTxsFields_transfersIssued_comment
+abstract class GAccountTxsFields_transfersIssued_nodes_comment
     implements GTransferFields_comment {
   @override
   String get G__typename;
   @override
   String get remark;
   @override
-  _i2.Gbytea get remarkBytes;
+  String get remarkBytes;
   @override
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountTxsFields_transfersIssuedAggregate {
+abstract class GAccountTxsFields_transfersReceived {
   String get G__typename;
-  GAccountTxsFields_transfersIssuedAggregate_aggregate? get aggregate;
+  int get totalCount;
+  BuiltList<GAccountTxsFields_transfersReceived_nodes> get nodes;
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountTxsFields_transfersIssuedAggregate_aggregate {
-  String get G__typename;
-  GAccountTxsFields_transfersIssuedAggregate_aggregate_sum? get sum;
-  int get count;
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountTxsFields_transfersIssuedAggregate_aggregate_sum {
-  String get G__typename;
-  int? get amount;
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountTxsFields_transfersReceived implements GTransferFields {
+abstract class GAccountTxsFields_transfersReceived_nodes
+    implements GTransferFields {
   @override
   String get G__typename;
   @override
   int get blockNumber;
   @override
-  _i2.Gtimestamptz get timestamp;
+  _i2.GDatetime get timestamp;
   @override
-  int get amount;
+  _i2.GBigFloat get amount;
   @override
-  GAccountTxsFields_transfersReceived_to? get to;
+  GAccountTxsFields_transfersReceived_nodes_to? get to;
   @override
-  GAccountTxsFields_transfersReceived_from? get from;
+  GAccountTxsFields_transfersReceived_nodes_from? get from;
   @override
-  GAccountTxsFields_transfersReceived_comment? get comment;
+  GAccountTxsFields_transfersReceived_nodes_comment? get comment;
   @override
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountTxsFields_transfersReceived_to
+abstract class GAccountTxsFields_transfersReceived_nodes_to
     implements GTransferFields_to {
   @override
   String get G__typename;
@@ -15106,7 +12801,7 @@ abstract class GAccountTxsFields_transfersReceived_to
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountTxsFields_transfersReceived_from
+abstract class GAccountTxsFields_transfersReceived_nodes_from
     implements GTransferFields_from {
   @override
   String get G__typename;
@@ -15116,34 +12811,15 @@ abstract class GAccountTxsFields_transfersReceived_from
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountTxsFields_transfersReceived_comment
+abstract class GAccountTxsFields_transfersReceived_nodes_comment
     implements GTransferFields_comment {
   @override
   String get G__typename;
   @override
   String get remark;
   @override
-  _i2.Gbytea get remarkBytes;
+  String get remarkBytes;
   @override
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountTxsFields_transfersReceivedAggregate {
-  String get G__typename;
-  GAccountTxsFields_transfersReceivedAggregate_aggregate? get aggregate;
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountTxsFields_transfersReceivedAggregate_aggregate {
-  String get G__typename;
-  GAccountTxsFields_transfersReceivedAggregate_aggregate_sum? get sum;
-  int get count;
-  Map<String, dynamic> toJson();
-}
-
-abstract class GAccountTxsFields_transfersReceivedAggregate_aggregate_sum {
-  String get G__typename;
-  int? get amount;
   Map<String, dynamic> toJson();
 }
 
@@ -15164,24 +12840,17 @@ abstract class GAccountTxsFieldsData
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  BuiltList<GAccountTxsFieldsData_commentsIssued> get commentsIssued;
-  @override
-  GAccountTxsFieldsData_commentsIssuedAggregate get commentsIssuedAggregate;
-  @override
   int get createdOn;
   @override
   String get id;
   @override
   bool get isActive;
   @override
-  BuiltList<GAccountTxsFieldsData_transfersIssued> get transfersIssued;
+  GAccountTxsFieldsData_comments get comments;
   @override
-  GAccountTxsFieldsData_transfersIssuedAggregate get transfersIssuedAggregate;
+  GAccountTxsFieldsData_transfersIssued get transfersIssued;
   @override
-  BuiltList<GAccountTxsFieldsData_transfersReceived> get transfersReceived;
-  @override
-  GAccountTxsFieldsData_transfersReceivedAggregate
-      get transfersReceivedAggregate;
+  GAccountTxsFieldsData_transfersReceived get transfersReceived;
   static Serializer<GAccountTxsFieldsData> get serializer =>
       _$gAccountTxsFieldsDataSerializer;
 
@@ -15198,20 +12867,57 @@ abstract class GAccountTxsFieldsData
       );
 }
 
-abstract class GAccountTxsFieldsData_commentsIssued
+abstract class GAccountTxsFieldsData_comments
     implements
-        Built<GAccountTxsFieldsData_commentsIssued,
-            GAccountTxsFieldsData_commentsIssuedBuilder>,
-        GAccountTxsFields_commentsIssued,
-        GCommentsIssued {
-  GAccountTxsFieldsData_commentsIssued._();
+        Built<GAccountTxsFieldsData_comments,
+            GAccountTxsFieldsData_commentsBuilder>,
+        GAccountTxsFields_comments {
+  GAccountTxsFieldsData_comments._();
 
-  factory GAccountTxsFieldsData_commentsIssued(
-      [void Function(GAccountTxsFieldsData_commentsIssuedBuilder b)
-          updates]) = _$GAccountTxsFieldsData_commentsIssued;
+  factory GAccountTxsFieldsData_comments(
+          [void Function(GAccountTxsFieldsData_commentsBuilder b) updates]) =
+      _$GAccountTxsFieldsData_comments;
+
+  static void _initializeBuilder(GAccountTxsFieldsData_commentsBuilder b) =>
+      b..G__typename = 'TxCommentsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GAccountTxsFieldsData_comments_nodes> get nodes;
+  static Serializer<GAccountTxsFieldsData_comments> get serializer =>
+      _$gAccountTxsFieldsDataCommentsSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountTxsFieldsData_comments.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTxsFieldsData_comments? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountTxsFieldsData_comments.serializer,
+        json,
+      );
+}
+
+abstract class GAccountTxsFieldsData_comments_nodes
+    implements
+        Built<GAccountTxsFieldsData_comments_nodes,
+            GAccountTxsFieldsData_comments_nodesBuilder>,
+        GAccountTxsFields_comments_nodes,
+        GCommentsIssued {
+  GAccountTxsFieldsData_comments_nodes._();
+
+  factory GAccountTxsFieldsData_comments_nodes(
+      [void Function(GAccountTxsFieldsData_comments_nodesBuilder b)
+          updates]) = _$GAccountTxsFieldsData_comments_nodes;
 
   static void _initializeBuilder(
-          GAccountTxsFieldsData_commentsIssuedBuilder b) =>
+          GAccountTxsFieldsData_comments_nodesBuilder b) =>
       b..G__typename = 'TxComment';
 
   @override
@@ -15230,99 +12936,22 @@ abstract class GAccountTxsFieldsData_commentsIssued
   @override
   String get remark;
   @override
-  _i2.Gbytea get remarkBytes;
+  String get remarkBytes;
   @override
   String get type;
-  static Serializer<GAccountTxsFieldsData_commentsIssued> get serializer =>
-      _$gAccountTxsFieldsDataCommentsIssuedSerializer;
+  static Serializer<GAccountTxsFieldsData_comments_nodes> get serializer =>
+      _$gAccountTxsFieldsDataCommentsNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTxsFieldsData_commentsIssued.serializer,
+        GAccountTxsFieldsData_comments_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountTxsFieldsData_commentsIssued? fromJson(
+  static GAccountTxsFieldsData_comments_nodes? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountTxsFieldsData_commentsIssued.serializer,
-        json,
-      );
-}
-
-abstract class GAccountTxsFieldsData_commentsIssuedAggregate
-    implements
-        Built<GAccountTxsFieldsData_commentsIssuedAggregate,
-            GAccountTxsFieldsData_commentsIssuedAggregateBuilder>,
-        GAccountTxsFields_commentsIssuedAggregate {
-  GAccountTxsFieldsData_commentsIssuedAggregate._();
-
-  factory GAccountTxsFieldsData_commentsIssuedAggregate(
-      [void Function(GAccountTxsFieldsData_commentsIssuedAggregateBuilder b)
-          updates]) = _$GAccountTxsFieldsData_commentsIssuedAggregate;
-
-  static void _initializeBuilder(
-          GAccountTxsFieldsData_commentsIssuedAggregateBuilder b) =>
-      b..G__typename = 'TxCommentAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountTxsFieldsData_commentsIssuedAggregate_aggregate? get aggregate;
-  static Serializer<GAccountTxsFieldsData_commentsIssuedAggregate>
-      get serializer =>
-          _$gAccountTxsFieldsDataCommentsIssuedAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTxsFieldsData_commentsIssuedAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountTxsFieldsData_commentsIssuedAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountTxsFieldsData_commentsIssuedAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountTxsFieldsData_commentsIssuedAggregate_aggregate
-    implements
-        Built<GAccountTxsFieldsData_commentsIssuedAggregate_aggregate,
-            GAccountTxsFieldsData_commentsIssuedAggregate_aggregateBuilder>,
-        GAccountTxsFields_commentsIssuedAggregate_aggregate {
-  GAccountTxsFieldsData_commentsIssuedAggregate_aggregate._();
-
-  factory GAccountTxsFieldsData_commentsIssuedAggregate_aggregate(
-      [void Function(
-              GAccountTxsFieldsData_commentsIssuedAggregate_aggregateBuilder b)
-          updates]) = _$GAccountTxsFieldsData_commentsIssuedAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountTxsFieldsData_commentsIssuedAggregate_aggregateBuilder b) =>
-      b..G__typename = 'TxCommentAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int get count;
-  static Serializer<GAccountTxsFieldsData_commentsIssuedAggregate_aggregate>
-      get serializer =>
-          _$gAccountTxsFieldsDataCommentsIssuedAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTxsFieldsData_commentsIssuedAggregate_aggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountTxsFieldsData_commentsIssuedAggregate_aggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountTxsFieldsData_commentsIssuedAggregate_aggregate.serializer,
+        GAccountTxsFieldsData_comments_nodes.serializer,
         json,
       );
 }
@@ -15331,8 +12960,7 @@ abstract class GAccountTxsFieldsData_transfersIssued
     implements
         Built<GAccountTxsFieldsData_transfersIssued,
             GAccountTxsFieldsData_transfersIssuedBuilder>,
-        GAccountTxsFields_transfersIssued,
-        GTransferFields {
+        GAccountTxsFields_transfersIssued {
   GAccountTxsFieldsData_transfersIssued._();
 
   factory GAccountTxsFieldsData_transfersIssued(
@@ -15341,23 +12969,15 @@ abstract class GAccountTxsFieldsData_transfersIssued
 
   static void _initializeBuilder(
           GAccountTxsFieldsData_transfersIssuedBuilder b) =>
-      b..G__typename = 'Transfer';
+      b..G__typename = 'TransfersConnection';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  int get blockNumber;
+  int get totalCount;
   @override
-  _i2.Gtimestamptz get timestamp;
-  @override
-  int get amount;
-  @override
-  GAccountTxsFieldsData_transfersIssued_to? get to;
-  @override
-  GAccountTxsFieldsData_transfersIssued_from? get from;
-  @override
-  GAccountTxsFieldsData_transfersIssued_comment? get comment;
+  BuiltList<GAccountTxsFieldsData_transfersIssued_nodes> get nodes;
   static Serializer<GAccountTxsFieldsData_transfersIssued> get serializer =>
       _$gAccountTxsFieldsDataTransfersIssuedSerializer;
 
@@ -15375,258 +12995,20 @@ abstract class GAccountTxsFieldsData_transfersIssued
       );
 }
 
-abstract class GAccountTxsFieldsData_transfersIssued_to
+abstract class GAccountTxsFieldsData_transfersIssued_nodes
     implements
-        Built<GAccountTxsFieldsData_transfersIssued_to,
-            GAccountTxsFieldsData_transfersIssued_toBuilder>,
-        GAccountTxsFields_transfersIssued_to,
-        GTransferFields_to {
-  GAccountTxsFieldsData_transfersIssued_to._();
-
-  factory GAccountTxsFieldsData_transfersIssued_to(
-      [void Function(GAccountTxsFieldsData_transfersIssued_toBuilder b)
-          updates]) = _$GAccountTxsFieldsData_transfersIssued_to;
-
-  static void _initializeBuilder(
-          GAccountTxsFieldsData_transfersIssued_toBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  static Serializer<GAccountTxsFieldsData_transfersIssued_to> get serializer =>
-      _$gAccountTxsFieldsDataTransfersIssuedToSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTxsFieldsData_transfersIssued_to.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountTxsFieldsData_transfersIssued_to? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountTxsFieldsData_transfersIssued_to.serializer,
-        json,
-      );
-}
-
-abstract class GAccountTxsFieldsData_transfersIssued_from
-    implements
-        Built<GAccountTxsFieldsData_transfersIssued_from,
-            GAccountTxsFieldsData_transfersIssued_fromBuilder>,
-        GAccountTxsFields_transfersIssued_from,
-        GTransferFields_from {
-  GAccountTxsFieldsData_transfersIssued_from._();
-
-  factory GAccountTxsFieldsData_transfersIssued_from(
-      [void Function(GAccountTxsFieldsData_transfersIssued_fromBuilder b)
-          updates]) = _$GAccountTxsFieldsData_transfersIssued_from;
-
-  static void _initializeBuilder(
-          GAccountTxsFieldsData_transfersIssued_fromBuilder b) =>
-      b..G__typename = 'Account';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get id;
-  static Serializer<GAccountTxsFieldsData_transfersIssued_from>
-      get serializer => _$gAccountTxsFieldsDataTransfersIssuedFromSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTxsFieldsData_transfersIssued_from.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountTxsFieldsData_transfersIssued_from? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountTxsFieldsData_transfersIssued_from.serializer,
-        json,
-      );
-}
-
-abstract class GAccountTxsFieldsData_transfersIssued_comment
-    implements
-        Built<GAccountTxsFieldsData_transfersIssued_comment,
-            GAccountTxsFieldsData_transfersIssued_commentBuilder>,
-        GAccountTxsFields_transfersIssued_comment,
-        GTransferFields_comment {
-  GAccountTxsFieldsData_transfersIssued_comment._();
-
-  factory GAccountTxsFieldsData_transfersIssued_comment(
-      [void Function(GAccountTxsFieldsData_transfersIssued_commentBuilder b)
-          updates]) = _$GAccountTxsFieldsData_transfersIssued_comment;
-
-  static void _initializeBuilder(
-          GAccountTxsFieldsData_transfersIssued_commentBuilder b) =>
-      b..G__typename = 'TxComment';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  String get remark;
-  @override
-  _i2.Gbytea get remarkBytes;
-  static Serializer<GAccountTxsFieldsData_transfersIssued_comment>
-      get serializer => _$gAccountTxsFieldsDataTransfersIssuedCommentSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTxsFieldsData_transfersIssued_comment.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountTxsFieldsData_transfersIssued_comment? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountTxsFieldsData_transfersIssued_comment.serializer,
-        json,
-      );
-}
-
-abstract class GAccountTxsFieldsData_transfersIssuedAggregate
-    implements
-        Built<GAccountTxsFieldsData_transfersIssuedAggregate,
-            GAccountTxsFieldsData_transfersIssuedAggregateBuilder>,
-        GAccountTxsFields_transfersIssuedAggregate {
-  GAccountTxsFieldsData_transfersIssuedAggregate._();
-
-  factory GAccountTxsFieldsData_transfersIssuedAggregate(
-      [void Function(GAccountTxsFieldsData_transfersIssuedAggregateBuilder b)
-          updates]) = _$GAccountTxsFieldsData_transfersIssuedAggregate;
-
-  static void _initializeBuilder(
-          GAccountTxsFieldsData_transfersIssuedAggregateBuilder b) =>
-      b..G__typename = 'TransferAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountTxsFieldsData_transfersIssuedAggregate_aggregate? get aggregate;
-  static Serializer<GAccountTxsFieldsData_transfersIssuedAggregate>
-      get serializer =>
-          _$gAccountTxsFieldsDataTransfersIssuedAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTxsFieldsData_transfersIssuedAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountTxsFieldsData_transfersIssuedAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountTxsFieldsData_transfersIssuedAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountTxsFieldsData_transfersIssuedAggregate_aggregate
-    implements
-        Built<GAccountTxsFieldsData_transfersIssuedAggregate_aggregate,
-            GAccountTxsFieldsData_transfersIssuedAggregate_aggregateBuilder>,
-        GAccountTxsFields_transfersIssuedAggregate_aggregate {
-  GAccountTxsFieldsData_transfersIssuedAggregate_aggregate._();
-
-  factory GAccountTxsFieldsData_transfersIssuedAggregate_aggregate(
-      [void Function(
-              GAccountTxsFieldsData_transfersIssuedAggregate_aggregateBuilder b)
-          updates]) = _$GAccountTxsFieldsData_transfersIssuedAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountTxsFieldsData_transfersIssuedAggregate_aggregateBuilder b) =>
-      b..G__typename = 'TransferAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountTxsFieldsData_transfersIssuedAggregate_aggregate_sum? get sum;
-  @override
-  int get count;
-  static Serializer<GAccountTxsFieldsData_transfersIssuedAggregate_aggregate>
-      get serializer =>
-          _$gAccountTxsFieldsDataTransfersIssuedAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTxsFieldsData_transfersIssuedAggregate_aggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountTxsFieldsData_transfersIssuedAggregate_aggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountTxsFieldsData_transfersIssuedAggregate_aggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountTxsFieldsData_transfersIssuedAggregate_aggregate_sum
-    implements
-        Built<GAccountTxsFieldsData_transfersIssuedAggregate_aggregate_sum,
-            GAccountTxsFieldsData_transfersIssuedAggregate_aggregate_sumBuilder>,
-        GAccountTxsFields_transfersIssuedAggregate_aggregate_sum {
-  GAccountTxsFieldsData_transfersIssuedAggregate_aggregate_sum._();
-
-  factory GAccountTxsFieldsData_transfersIssuedAggregate_aggregate_sum(
-          [void Function(
-                  GAccountTxsFieldsData_transfersIssuedAggregate_aggregate_sumBuilder
-                      b)
-              updates]) =
-      _$GAccountTxsFieldsData_transfersIssuedAggregate_aggregate_sum;
-
-  static void _initializeBuilder(
-          GAccountTxsFieldsData_transfersIssuedAggregate_aggregate_sumBuilder
-              b) =>
-      b..G__typename = 'TransferSumFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int? get amount;
-  static Serializer<
-          GAccountTxsFieldsData_transfersIssuedAggregate_aggregate_sum>
-      get serializer =>
-          _$gAccountTxsFieldsDataTransfersIssuedAggregateAggregateSumSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTxsFieldsData_transfersIssuedAggregate_aggregate_sum.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountTxsFieldsData_transfersIssuedAggregate_aggregate_sum? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountTxsFieldsData_transfersIssuedAggregate_aggregate_sum.serializer,
-        json,
-      );
-}
-
-abstract class GAccountTxsFieldsData_transfersReceived
-    implements
-        Built<GAccountTxsFieldsData_transfersReceived,
-            GAccountTxsFieldsData_transfersReceivedBuilder>,
-        GAccountTxsFields_transfersReceived,
+        Built<GAccountTxsFieldsData_transfersIssued_nodes,
+            GAccountTxsFieldsData_transfersIssued_nodesBuilder>,
+        GAccountTxsFields_transfersIssued_nodes,
         GTransferFields {
-  GAccountTxsFieldsData_transfersReceived._();
+  GAccountTxsFieldsData_transfersIssued_nodes._();
 
-  factory GAccountTxsFieldsData_transfersReceived(
-      [void Function(GAccountTxsFieldsData_transfersReceivedBuilder b)
-          updates]) = _$GAccountTxsFieldsData_transfersReceived;
+  factory GAccountTxsFieldsData_transfersIssued_nodes(
+      [void Function(GAccountTxsFieldsData_transfersIssued_nodesBuilder b)
+          updates]) = _$GAccountTxsFieldsData_transfersIssued_nodes;
 
   static void _initializeBuilder(
-          GAccountTxsFieldsData_transfersReceivedBuilder b) =>
+          GAccountTxsFieldsData_transfersIssued_nodesBuilder b) =>
       b..G__typename = 'Transfer';
 
   @override
@@ -15635,15 +13017,173 @@ abstract class GAccountTxsFieldsData_transfersReceived
   @override
   int get blockNumber;
   @override
-  _i2.Gtimestamptz get timestamp;
+  _i2.GDatetime get timestamp;
   @override
-  int get amount;
+  _i2.GBigFloat get amount;
   @override
-  GAccountTxsFieldsData_transfersReceived_to? get to;
+  GAccountTxsFieldsData_transfersIssued_nodes_to? get to;
   @override
-  GAccountTxsFieldsData_transfersReceived_from? get from;
+  GAccountTxsFieldsData_transfersIssued_nodes_from? get from;
   @override
-  GAccountTxsFieldsData_transfersReceived_comment? get comment;
+  GAccountTxsFieldsData_transfersIssued_nodes_comment? get comment;
+  static Serializer<GAccountTxsFieldsData_transfersIssued_nodes>
+      get serializer => _$gAccountTxsFieldsDataTransfersIssuedNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountTxsFieldsData_transfersIssued_nodes.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTxsFieldsData_transfersIssued_nodes? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountTxsFieldsData_transfersIssued_nodes.serializer,
+        json,
+      );
+}
+
+abstract class GAccountTxsFieldsData_transfersIssued_nodes_to
+    implements
+        Built<GAccountTxsFieldsData_transfersIssued_nodes_to,
+            GAccountTxsFieldsData_transfersIssued_nodes_toBuilder>,
+        GAccountTxsFields_transfersIssued_nodes_to,
+        GTransferFields_to {
+  GAccountTxsFieldsData_transfersIssued_nodes_to._();
+
+  factory GAccountTxsFieldsData_transfersIssued_nodes_to(
+      [void Function(GAccountTxsFieldsData_transfersIssued_nodes_toBuilder b)
+          updates]) = _$GAccountTxsFieldsData_transfersIssued_nodes_to;
+
+  static void _initializeBuilder(
+          GAccountTxsFieldsData_transfersIssued_nodes_toBuilder b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  static Serializer<GAccountTxsFieldsData_transfersIssued_nodes_to>
+      get serializer => _$gAccountTxsFieldsDataTransfersIssuedNodesToSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountTxsFieldsData_transfersIssued_nodes_to.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTxsFieldsData_transfersIssued_nodes_to? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountTxsFieldsData_transfersIssued_nodes_to.serializer,
+        json,
+      );
+}
+
+abstract class GAccountTxsFieldsData_transfersIssued_nodes_from
+    implements
+        Built<GAccountTxsFieldsData_transfersIssued_nodes_from,
+            GAccountTxsFieldsData_transfersIssued_nodes_fromBuilder>,
+        GAccountTxsFields_transfersIssued_nodes_from,
+        GTransferFields_from {
+  GAccountTxsFieldsData_transfersIssued_nodes_from._();
+
+  factory GAccountTxsFieldsData_transfersIssued_nodes_from(
+      [void Function(GAccountTxsFieldsData_transfersIssued_nodes_fromBuilder b)
+          updates]) = _$GAccountTxsFieldsData_transfersIssued_nodes_from;
+
+  static void _initializeBuilder(
+          GAccountTxsFieldsData_transfersIssued_nodes_fromBuilder b) =>
+      b..G__typename = 'Account';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get id;
+  static Serializer<GAccountTxsFieldsData_transfersIssued_nodes_from>
+      get serializer =>
+          _$gAccountTxsFieldsDataTransfersIssuedNodesFromSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountTxsFieldsData_transfersIssued_nodes_from.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTxsFieldsData_transfersIssued_nodes_from? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountTxsFieldsData_transfersIssued_nodes_from.serializer,
+        json,
+      );
+}
+
+abstract class GAccountTxsFieldsData_transfersIssued_nodes_comment
+    implements
+        Built<GAccountTxsFieldsData_transfersIssued_nodes_comment,
+            GAccountTxsFieldsData_transfersIssued_nodes_commentBuilder>,
+        GAccountTxsFields_transfersIssued_nodes_comment,
+        GTransferFields_comment {
+  GAccountTxsFieldsData_transfersIssued_nodes_comment._();
+
+  factory GAccountTxsFieldsData_transfersIssued_nodes_comment(
+      [void Function(
+              GAccountTxsFieldsData_transfersIssued_nodes_commentBuilder b)
+          updates]) = _$GAccountTxsFieldsData_transfersIssued_nodes_comment;
+
+  static void _initializeBuilder(
+          GAccountTxsFieldsData_transfersIssued_nodes_commentBuilder b) =>
+      b..G__typename = 'TxComment';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  String get remark;
+  @override
+  String get remarkBytes;
+  static Serializer<GAccountTxsFieldsData_transfersIssued_nodes_comment>
+      get serializer =>
+          _$gAccountTxsFieldsDataTransfersIssuedNodesCommentSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountTxsFieldsData_transfersIssued_nodes_comment.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTxsFieldsData_transfersIssued_nodes_comment? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountTxsFieldsData_transfersIssued_nodes_comment.serializer,
+        json,
+      );
+}
+
+abstract class GAccountTxsFieldsData_transfersReceived
+    implements
+        Built<GAccountTxsFieldsData_transfersReceived,
+            GAccountTxsFieldsData_transfersReceivedBuilder>,
+        GAccountTxsFields_transfersReceived {
+  GAccountTxsFieldsData_transfersReceived._();
+
+  factory GAccountTxsFieldsData_transfersReceived(
+      [void Function(GAccountTxsFieldsData_transfersReceivedBuilder b)
+          updates]) = _$GAccountTxsFieldsData_transfersReceived;
+
+  static void _initializeBuilder(
+          GAccountTxsFieldsData_transfersReceivedBuilder b) =>
+      b..G__typename = 'TransfersConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  BuiltList<GAccountTxsFieldsData_transfersReceived_nodes> get nodes;
   static Serializer<GAccountTxsFieldsData_transfersReceived> get serializer =>
       _$gAccountTxsFieldsDataTransfersReceivedSerializer;
 
@@ -15661,20 +13201,68 @@ abstract class GAccountTxsFieldsData_transfersReceived
       );
 }
 
-abstract class GAccountTxsFieldsData_transfersReceived_to
+abstract class GAccountTxsFieldsData_transfersReceived_nodes
     implements
-        Built<GAccountTxsFieldsData_transfersReceived_to,
-            GAccountTxsFieldsData_transfersReceived_toBuilder>,
-        GAccountTxsFields_transfersReceived_to,
+        Built<GAccountTxsFieldsData_transfersReceived_nodes,
+            GAccountTxsFieldsData_transfersReceived_nodesBuilder>,
+        GAccountTxsFields_transfersReceived_nodes,
+        GTransferFields {
+  GAccountTxsFieldsData_transfersReceived_nodes._();
+
+  factory GAccountTxsFieldsData_transfersReceived_nodes(
+      [void Function(GAccountTxsFieldsData_transfersReceived_nodesBuilder b)
+          updates]) = _$GAccountTxsFieldsData_transfersReceived_nodes;
+
+  static void _initializeBuilder(
+          GAccountTxsFieldsData_transfersReceived_nodesBuilder b) =>
+      b..G__typename = 'Transfer';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get blockNumber;
+  @override
+  _i2.GDatetime get timestamp;
+  @override
+  _i2.GBigFloat get amount;
+  @override
+  GAccountTxsFieldsData_transfersReceived_nodes_to? get to;
+  @override
+  GAccountTxsFieldsData_transfersReceived_nodes_from? get from;
+  @override
+  GAccountTxsFieldsData_transfersReceived_nodes_comment? get comment;
+  static Serializer<GAccountTxsFieldsData_transfersReceived_nodes>
+      get serializer => _$gAccountTxsFieldsDataTransfersReceivedNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountTxsFieldsData_transfersReceived_nodes.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTxsFieldsData_transfersReceived_nodes? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountTxsFieldsData_transfersReceived_nodes.serializer,
+        json,
+      );
+}
+
+abstract class GAccountTxsFieldsData_transfersReceived_nodes_to
+    implements
+        Built<GAccountTxsFieldsData_transfersReceived_nodes_to,
+            GAccountTxsFieldsData_transfersReceived_nodes_toBuilder>,
+        GAccountTxsFields_transfersReceived_nodes_to,
         GTransferFields_to {
-  GAccountTxsFieldsData_transfersReceived_to._();
+  GAccountTxsFieldsData_transfersReceived_nodes_to._();
 
-  factory GAccountTxsFieldsData_transfersReceived_to(
-      [void Function(GAccountTxsFieldsData_transfersReceived_toBuilder b)
-          updates]) = _$GAccountTxsFieldsData_transfersReceived_to;
+  factory GAccountTxsFieldsData_transfersReceived_nodes_to(
+      [void Function(GAccountTxsFieldsData_transfersReceived_nodes_toBuilder b)
+          updates]) = _$GAccountTxsFieldsData_transfersReceived_nodes_to;
 
   static void _initializeBuilder(
-          GAccountTxsFieldsData_transfersReceived_toBuilder b) =>
+          GAccountTxsFieldsData_transfersReceived_nodes_toBuilder b) =>
       b..G__typename = 'Account';
 
   @override
@@ -15682,37 +13270,39 @@ abstract class GAccountTxsFieldsData_transfersReceived_to
   String get G__typename;
   @override
   String get id;
-  static Serializer<GAccountTxsFieldsData_transfersReceived_to>
-      get serializer => _$gAccountTxsFieldsDataTransfersReceivedToSerializer;
+  static Serializer<GAccountTxsFieldsData_transfersReceived_nodes_to>
+      get serializer =>
+          _$gAccountTxsFieldsDataTransfersReceivedNodesToSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTxsFieldsData_transfersReceived_to.serializer,
+        GAccountTxsFieldsData_transfersReceived_nodes_to.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountTxsFieldsData_transfersReceived_to? fromJson(
+  static GAccountTxsFieldsData_transfersReceived_nodes_to? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountTxsFieldsData_transfersReceived_to.serializer,
+        GAccountTxsFieldsData_transfersReceived_nodes_to.serializer,
         json,
       );
 }
 
-abstract class GAccountTxsFieldsData_transfersReceived_from
+abstract class GAccountTxsFieldsData_transfersReceived_nodes_from
     implements
-        Built<GAccountTxsFieldsData_transfersReceived_from,
-            GAccountTxsFieldsData_transfersReceived_fromBuilder>,
-        GAccountTxsFields_transfersReceived_from,
+        Built<GAccountTxsFieldsData_transfersReceived_nodes_from,
+            GAccountTxsFieldsData_transfersReceived_nodes_fromBuilder>,
+        GAccountTxsFields_transfersReceived_nodes_from,
         GTransferFields_from {
-  GAccountTxsFieldsData_transfersReceived_from._();
+  GAccountTxsFieldsData_transfersReceived_nodes_from._();
 
-  factory GAccountTxsFieldsData_transfersReceived_from(
-      [void Function(GAccountTxsFieldsData_transfersReceived_fromBuilder b)
-          updates]) = _$GAccountTxsFieldsData_transfersReceived_from;
+  factory GAccountTxsFieldsData_transfersReceived_nodes_from(
+      [void Function(
+              GAccountTxsFieldsData_transfersReceived_nodes_fromBuilder b)
+          updates]) = _$GAccountTxsFieldsData_transfersReceived_nodes_from;
 
   static void _initializeBuilder(
-          GAccountTxsFieldsData_transfersReceived_fromBuilder b) =>
+          GAccountTxsFieldsData_transfersReceived_nodes_fromBuilder b) =>
       b..G__typename = 'Account';
 
   @override
@@ -15720,37 +13310,39 @@ abstract class GAccountTxsFieldsData_transfersReceived_from
   String get G__typename;
   @override
   String get id;
-  static Serializer<GAccountTxsFieldsData_transfersReceived_from>
-      get serializer => _$gAccountTxsFieldsDataTransfersReceivedFromSerializer;
+  static Serializer<GAccountTxsFieldsData_transfersReceived_nodes_from>
+      get serializer =>
+          _$gAccountTxsFieldsDataTransfersReceivedNodesFromSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTxsFieldsData_transfersReceived_from.serializer,
+        GAccountTxsFieldsData_transfersReceived_nodes_from.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountTxsFieldsData_transfersReceived_from? fromJson(
+  static GAccountTxsFieldsData_transfersReceived_nodes_from? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountTxsFieldsData_transfersReceived_from.serializer,
+        GAccountTxsFieldsData_transfersReceived_nodes_from.serializer,
         json,
       );
 }
 
-abstract class GAccountTxsFieldsData_transfersReceived_comment
+abstract class GAccountTxsFieldsData_transfersReceived_nodes_comment
     implements
-        Built<GAccountTxsFieldsData_transfersReceived_comment,
-            GAccountTxsFieldsData_transfersReceived_commentBuilder>,
-        GAccountTxsFields_transfersReceived_comment,
+        Built<GAccountTxsFieldsData_transfersReceived_nodes_comment,
+            GAccountTxsFieldsData_transfersReceived_nodes_commentBuilder>,
+        GAccountTxsFields_transfersReceived_nodes_comment,
         GTransferFields_comment {
-  GAccountTxsFieldsData_transfersReceived_comment._();
+  GAccountTxsFieldsData_transfersReceived_nodes_comment._();
 
-  factory GAccountTxsFieldsData_transfersReceived_comment(
-      [void Function(GAccountTxsFieldsData_transfersReceived_commentBuilder b)
-          updates]) = _$GAccountTxsFieldsData_transfersReceived_comment;
+  factory GAccountTxsFieldsData_transfersReceived_nodes_comment(
+      [void Function(
+              GAccountTxsFieldsData_transfersReceived_nodes_commentBuilder b)
+          updates]) = _$GAccountTxsFieldsData_transfersReceived_nodes_comment;
 
   static void _initializeBuilder(
-          GAccountTxsFieldsData_transfersReceived_commentBuilder b) =>
+          GAccountTxsFieldsData_transfersReceived_nodes_commentBuilder b) =>
       b..G__typename = 'TxComment';
 
   @override
@@ -15759,155 +13351,30 @@ abstract class GAccountTxsFieldsData_transfersReceived_comment
   @override
   String get remark;
   @override
-  _i2.Gbytea get remarkBytes;
-  static Serializer<GAccountTxsFieldsData_transfersReceived_comment>
+  String get remarkBytes;
+  static Serializer<GAccountTxsFieldsData_transfersReceived_nodes_comment>
       get serializer =>
-          _$gAccountTxsFieldsDataTransfersReceivedCommentSerializer;
+          _$gAccountTxsFieldsDataTransfersReceivedNodesCommentSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTxsFieldsData_transfersReceived_comment.serializer,
+        GAccountTxsFieldsData_transfersReceived_nodes_comment.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountTxsFieldsData_transfersReceived_comment? fromJson(
+  static GAccountTxsFieldsData_transfersReceived_nodes_comment? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountTxsFieldsData_transfersReceived_comment.serializer,
+        GAccountTxsFieldsData_transfersReceived_nodes_comment.serializer,
         json,
       );
-}
-
-abstract class GAccountTxsFieldsData_transfersReceivedAggregate
-    implements
-        Built<GAccountTxsFieldsData_transfersReceivedAggregate,
-            GAccountTxsFieldsData_transfersReceivedAggregateBuilder>,
-        GAccountTxsFields_transfersReceivedAggregate {
-  GAccountTxsFieldsData_transfersReceivedAggregate._();
-
-  factory GAccountTxsFieldsData_transfersReceivedAggregate(
-      [void Function(GAccountTxsFieldsData_transfersReceivedAggregateBuilder b)
-          updates]) = _$GAccountTxsFieldsData_transfersReceivedAggregate;
-
-  static void _initializeBuilder(
-          GAccountTxsFieldsData_transfersReceivedAggregateBuilder b) =>
-      b..G__typename = 'TransferAggregate';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountTxsFieldsData_transfersReceivedAggregate_aggregate? get aggregate;
-  static Serializer<GAccountTxsFieldsData_transfersReceivedAggregate>
-      get serializer =>
-          _$gAccountTxsFieldsDataTransfersReceivedAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTxsFieldsData_transfersReceivedAggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountTxsFieldsData_transfersReceivedAggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountTxsFieldsData_transfersReceivedAggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountTxsFieldsData_transfersReceivedAggregate_aggregate
-    implements
-        Built<GAccountTxsFieldsData_transfersReceivedAggregate_aggregate,
-            GAccountTxsFieldsData_transfersReceivedAggregate_aggregateBuilder>,
-        GAccountTxsFields_transfersReceivedAggregate_aggregate {
-  GAccountTxsFieldsData_transfersReceivedAggregate_aggregate._();
-
-  factory GAccountTxsFieldsData_transfersReceivedAggregate_aggregate(
-      [void Function(
-              GAccountTxsFieldsData_transfersReceivedAggregate_aggregateBuilder
-                  b)
-          updates]) = _$GAccountTxsFieldsData_transfersReceivedAggregate_aggregate;
-
-  static void _initializeBuilder(
-          GAccountTxsFieldsData_transfersReceivedAggregate_aggregateBuilder
-              b) =>
-      b..G__typename = 'TransferAggregateFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  GAccountTxsFieldsData_transfersReceivedAggregate_aggregate_sum? get sum;
-  @override
-  int get count;
-  static Serializer<GAccountTxsFieldsData_transfersReceivedAggregate_aggregate>
-      get serializer =>
-          _$gAccountTxsFieldsDataTransfersReceivedAggregateAggregateSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTxsFieldsData_transfersReceivedAggregate_aggregate.serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountTxsFieldsData_transfersReceivedAggregate_aggregate? fromJson(
-          Map<String, dynamic> json) =>
-      _i1.serializers.deserializeWith(
-        GAccountTxsFieldsData_transfersReceivedAggregate_aggregate.serializer,
-        json,
-      );
-}
-
-abstract class GAccountTxsFieldsData_transfersReceivedAggregate_aggregate_sum
-    implements
-        Built<GAccountTxsFieldsData_transfersReceivedAggregate_aggregate_sum,
-            GAccountTxsFieldsData_transfersReceivedAggregate_aggregate_sumBuilder>,
-        GAccountTxsFields_transfersReceivedAggregate_aggregate_sum {
-  GAccountTxsFieldsData_transfersReceivedAggregate_aggregate_sum._();
-
-  factory GAccountTxsFieldsData_transfersReceivedAggregate_aggregate_sum(
-          [void Function(
-                  GAccountTxsFieldsData_transfersReceivedAggregate_aggregate_sumBuilder
-                      b)
-              updates]) =
-      _$GAccountTxsFieldsData_transfersReceivedAggregate_aggregate_sum;
-
-  static void _initializeBuilder(
-          GAccountTxsFieldsData_transfersReceivedAggregate_aggregate_sumBuilder
-              b) =>
-      b..G__typename = 'TransferSumFields';
-
-  @override
-  @BuiltValueField(wireName: '__typename')
-  String get G__typename;
-  @override
-  int? get amount;
-  static Serializer<
-          GAccountTxsFieldsData_transfersReceivedAggregate_aggregate_sum>
-      get serializer =>
-          _$gAccountTxsFieldsDataTransfersReceivedAggregateAggregateSumSerializer;
-
-  @override
-  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountTxsFieldsData_transfersReceivedAggregate_aggregate_sum
-            .serializer,
-        this,
-      ) as Map<String, dynamic>);
-
-  static GAccountTxsFieldsData_transfersReceivedAggregate_aggregate_sum?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountTxsFieldsData_transfersReceivedAggregate_aggregate_sum
-                .serializer,
-            json,
-          );
 }
 
 abstract class GTransferFields {
   String get G__typename;
   int get blockNumber;
-  _i2.Gtimestamptz get timestamp;
-  int get amount;
+  _i2.GDatetime get timestamp;
+  _i2.GBigFloat get amount;
   GTransferFields_to? get to;
   GTransferFields_from? get from;
   GTransferFields_comment? get comment;
@@ -15929,7 +13396,7 @@ abstract class GTransferFields_from {
 abstract class GTransferFields_comment {
   String get G__typename;
   String get remark;
-  _i2.Gbytea get remarkBytes;
+  String get remarkBytes;
   Map<String, dynamic> toJson();
 }
 
@@ -15952,9 +13419,9 @@ abstract class GTransferFieldsData
   @override
   int get blockNumber;
   @override
-  _i2.Gtimestamptz get timestamp;
+  _i2.GDatetime get timestamp;
   @override
-  int get amount;
+  _i2.GBigFloat get amount;
   @override
   GTransferFieldsData_to? get to;
   @override
@@ -16064,7 +13531,7 @@ abstract class GTransferFieldsData_comment
   @override
   String get remark;
   @override
-  _i2.Gbytea get remarkBytes;
+  String get remarkBytes;
   static Serializer<GTransferFieldsData_comment> get serializer =>
       _$gTransferFieldsDataCommentSerializer;
 

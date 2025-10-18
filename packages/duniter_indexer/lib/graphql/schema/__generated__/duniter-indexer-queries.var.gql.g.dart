@@ -406,19 +406,7 @@ class _$GAccountsBasicByPkVarsSerializer
           specifiedType:
               const FullType(BuiltList, const [const FullType(String)])),
     ];
-    Object? value;
-    value = object.limit;
-    if (value != null) {
-      result
-        ..add('limit')
-        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
-    }
-    value = object.offset;
-    if (value != null) {
-      result
-        ..add('offset')
-        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
-    }
+
     return result;
   }
 
@@ -439,14 +427,6 @@ class _$GAccountsBasicByPkVarsSerializer
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(String)]))!
               as BuiltList<Object?>);
-          break;
-        case 'limit':
-          result.limit = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
-          break;
-        case 'offset':
-          result.offset = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
           break;
       }
     }
@@ -726,10 +706,10 @@ class _$GAccountFieldsVarsSerializer
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[];
     Object? value;
-    value = object.limit;
+    value = object.first;
     if (value != null) {
       result
-        ..add('limit')
+        ..add('first')
         ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
     value = object.offset;
@@ -753,8 +733,8 @@ class _$GAccountFieldsVarsSerializer
       iterator.moveNext();
       final Object? value = iterator.current;
       switch (key) {
-        case 'limit':
-          result.limit = serializers.deserialize(value,
+        case 'first':
+          result.first = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int?;
           break;
         case 'offset':
@@ -784,10 +764,10 @@ class _$GAccountTxsFieldsVarsSerializer
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[];
     Object? value;
-    value = object.limit;
+    value = object.first;
     if (value != null) {
       result
-        ..add('limit')
+        ..add('first')
         ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
     value = object.offset;
@@ -811,8 +791,8 @@ class _$GAccountTxsFieldsVarsSerializer
       iterator.moveNext();
       final Object? value = iterator.current;
       switch (key) {
-        case 'limit':
-          result.limit = serializers.deserialize(value,
+        case 'first':
+          result.first = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int?;
           break;
         case 'offset':
@@ -1490,18 +1470,12 @@ class GAccountBasicByPkVarsBuilder
 class _$GAccountsBasicByPkVars extends GAccountsBasicByPkVars {
   @override
   final BuiltList<String> accountIds;
-  @override
-  final int? limit;
-  @override
-  final int? offset;
 
   factory _$GAccountsBasicByPkVars(
           [void Function(GAccountsBasicByPkVarsBuilder)? updates]) =>
       (new GAccountsBasicByPkVarsBuilder()..update(updates))._build();
 
-  _$GAccountsBasicByPkVars._(
-      {required this.accountIds, this.limit, this.offset})
-      : super._() {
+  _$GAccountsBasicByPkVars._({required this.accountIds}) : super._() {
     BuiltValueNullFieldError.checkNotNull(
         accountIds, r'GAccountsBasicByPkVars', 'accountIds');
   }
@@ -1518,18 +1492,13 @@ class _$GAccountsBasicByPkVars extends GAccountsBasicByPkVars {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is GAccountsBasicByPkVars &&
-        accountIds == other.accountIds &&
-        limit == other.limit &&
-        offset == other.offset;
+    return other is GAccountsBasicByPkVars && accountIds == other.accountIds;
   }
 
   @override
   int get hashCode {
     var _$hash = 0;
     _$hash = $jc(_$hash, accountIds.hashCode);
-    _$hash = $jc(_$hash, limit.hashCode);
-    _$hash = $jc(_$hash, offset.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -1537,9 +1506,7 @@ class _$GAccountsBasicByPkVars extends GAccountsBasicByPkVars {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'GAccountsBasicByPkVars')
-          ..add('accountIds', accountIds)
-          ..add('limit', limit)
-          ..add('offset', offset))
+          ..add('accountIds', accountIds))
         .toString();
   }
 }
@@ -1554,22 +1521,12 @@ class GAccountsBasicByPkVarsBuilder
   set accountIds(ListBuilder<String>? accountIds) =>
       _$this._accountIds = accountIds;
 
-  int? _limit;
-  int? get limit => _$this._limit;
-  set limit(int? limit) => _$this._limit = limit;
-
-  int? _offset;
-  int? get offset => _$this._offset;
-  set offset(int? offset) => _$this._offset = offset;
-
   GAccountsBasicByPkVarsBuilder();
 
   GAccountsBasicByPkVarsBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
       _accountIds = $v.accountIds.toBuilder();
-      _limit = $v.limit;
-      _offset = $v.offset;
       _$v = null;
     }
     return this;
@@ -1592,9 +1549,8 @@ class GAccountsBasicByPkVarsBuilder
   _$GAccountsBasicByPkVars _build() {
     _$GAccountsBasicByPkVars _$result;
     try {
-      _$result = _$v ??
-          new _$GAccountsBasicByPkVars._(
-              accountIds: accountIds.build(), limit: limit, offset: offset);
+      _$result =
+          _$v ?? new _$GAccountsBasicByPkVars._(accountIds: accountIds.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -2206,7 +2162,7 @@ class GAccountBasicFieldsVarsBuilder
 
 class _$GAccountFieldsVars extends GAccountFieldsVars {
   @override
-  final int? limit;
+  final int? first;
   @override
   final int? offset;
 
@@ -2214,7 +2170,7 @@ class _$GAccountFieldsVars extends GAccountFieldsVars {
           [void Function(GAccountFieldsVarsBuilder)? updates]) =>
       (new GAccountFieldsVarsBuilder()..update(updates))._build();
 
-  _$GAccountFieldsVars._({this.limit, this.offset}) : super._();
+  _$GAccountFieldsVars._({this.first, this.offset}) : super._();
 
   @override
   GAccountFieldsVars rebuild(
@@ -2229,14 +2185,14 @@ class _$GAccountFieldsVars extends GAccountFieldsVars {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is GAccountFieldsVars &&
-        limit == other.limit &&
+        first == other.first &&
         offset == other.offset;
   }
 
   @override
   int get hashCode {
     var _$hash = 0;
-    _$hash = $jc(_$hash, limit.hashCode);
+    _$hash = $jc(_$hash, first.hashCode);
     _$hash = $jc(_$hash, offset.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
@@ -2245,7 +2201,7 @@ class _$GAccountFieldsVars extends GAccountFieldsVars {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'GAccountFieldsVars')
-          ..add('limit', limit)
+          ..add('first', first)
           ..add('offset', offset))
         .toString();
   }
@@ -2255,9 +2211,9 @@ class GAccountFieldsVarsBuilder
     implements Builder<GAccountFieldsVars, GAccountFieldsVarsBuilder> {
   _$GAccountFieldsVars? _$v;
 
-  int? _limit;
-  int? get limit => _$this._limit;
-  set limit(int? limit) => _$this._limit = limit;
+  int? _first;
+  int? get first => _$this._first;
+  set first(int? first) => _$this._first = first;
 
   int? _offset;
   int? get offset => _$this._offset;
@@ -2268,7 +2224,7 @@ class GAccountFieldsVarsBuilder
   GAccountFieldsVarsBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
-      _limit = $v.limit;
+      _first = $v.first;
       _offset = $v.offset;
       _$v = null;
     }
@@ -2291,7 +2247,7 @@ class GAccountFieldsVarsBuilder
 
   _$GAccountFieldsVars _build() {
     final _$result =
-        _$v ?? new _$GAccountFieldsVars._(limit: limit, offset: offset);
+        _$v ?? new _$GAccountFieldsVars._(first: first, offset: offset);
     replace(_$result);
     return _$result;
   }
@@ -2299,7 +2255,7 @@ class GAccountFieldsVarsBuilder
 
 class _$GAccountTxsFieldsVars extends GAccountTxsFieldsVars {
   @override
-  final int? limit;
+  final int? first;
   @override
   final int? offset;
 
@@ -2307,7 +2263,7 @@ class _$GAccountTxsFieldsVars extends GAccountTxsFieldsVars {
           [void Function(GAccountTxsFieldsVarsBuilder)? updates]) =>
       (new GAccountTxsFieldsVarsBuilder()..update(updates))._build();
 
-  _$GAccountTxsFieldsVars._({this.limit, this.offset}) : super._();
+  _$GAccountTxsFieldsVars._({this.first, this.offset}) : super._();
 
   @override
   GAccountTxsFieldsVars rebuild(
@@ -2322,14 +2278,14 @@ class _$GAccountTxsFieldsVars extends GAccountTxsFieldsVars {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is GAccountTxsFieldsVars &&
-        limit == other.limit &&
+        first == other.first &&
         offset == other.offset;
   }
 
   @override
   int get hashCode {
     var _$hash = 0;
-    _$hash = $jc(_$hash, limit.hashCode);
+    _$hash = $jc(_$hash, first.hashCode);
     _$hash = $jc(_$hash, offset.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
@@ -2338,7 +2294,7 @@ class _$GAccountTxsFieldsVars extends GAccountTxsFieldsVars {
   @override
   String toString() {
     return (newBuiltValueToStringHelper(r'GAccountTxsFieldsVars')
-          ..add('limit', limit)
+          ..add('first', first)
           ..add('offset', offset))
         .toString();
   }
@@ -2348,9 +2304,9 @@ class GAccountTxsFieldsVarsBuilder
     implements Builder<GAccountTxsFieldsVars, GAccountTxsFieldsVarsBuilder> {
   _$GAccountTxsFieldsVars? _$v;
 
-  int? _limit;
-  int? get limit => _$this._limit;
-  set limit(int? limit) => _$this._limit = limit;
+  int? _first;
+  int? get first => _$this._first;
+  set first(int? first) => _$this._first = first;
 
   int? _offset;
   int? get offset => _$this._offset;
@@ -2361,7 +2317,7 @@ class GAccountTxsFieldsVarsBuilder
   GAccountTxsFieldsVarsBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
-      _limit = $v.limit;
+      _first = $v.first;
       _offset = $v.offset;
       _$v = null;
     }
@@ -2384,7 +2340,7 @@ class GAccountTxsFieldsVarsBuilder
 
   _$GAccountTxsFieldsVars _build() {
     final _$result =
-        _$v ?? new _$GAccountTxsFieldsVars._(limit: limit, offset: offset);
+        _$v ?? new _$GAccountTxsFieldsVars._(first: first, offset: offset);
     replace(_$result);
     return _$result;
   }

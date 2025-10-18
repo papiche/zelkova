@@ -4,43 +4,6 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:gql/ast.dart' as _i1;
 
-const LastBlock = _i1.OperationDefinitionNode(
-  type: _i1.OperationType.query,
-  name: _i1.NameNode(value: 'LastBlock'),
-  variableDefinitions: [],
-  directives: [],
-  selectionSet: _i1.SelectionSetNode(selections: [
-    _i1.FieldNode(
-      name: _i1.NameNode(value: 'block'),
-      alias: null,
-      arguments: [
-        _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'limit'),
-          value: _i1.IntValueNode(value: '1'),
-        ),
-        _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'orderBy'),
-          value: _i1.ObjectValueNode(fields: [
-            _i1.ObjectFieldNode(
-              name: _i1.NameNode(value: 'timestamp'),
-              value: _i1.EnumValueNode(name: _i1.NameNode(value: 'DESC')),
-            )
-          ]),
-        ),
-      ],
-      directives: [],
-      selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FieldNode(
-          name: _i1.NameNode(value: 'height'),
-          alias: null,
-          arguments: [],
-          directives: [],
-          selectionSet: null,
-        )
-      ]),
-    )
-  ]),
-);
 const CertFields = _i1.FragmentDefinitionNode(
   name: _i1.NameNode(value: 'CertFields'),
   typeCondition: _i1.TypeConditionNode(
@@ -209,27 +172,79 @@ const SmithFields = _i1.FragmentDefinitionNode(
       selectionSet: null,
     ),
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'smithCertIssued'),
+      name: _i1.NameNode(value: 'smithCertsByIssuerId'),
       alias: null,
-      arguments: [],
+      arguments: [
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'first'),
+          value: _i1.IntValueNode(value: '10'),
+        ),
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'orderBy'),
+          value: _i1.ListValueNode(values: [
+            _i1.EnumValueNode(name: _i1.NameNode(value: 'PRIMARY_KEY_DESC'))
+          ]),
+        ),
+      ],
       directives: [],
       selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FragmentSpreadNode(
-          name: _i1.NameNode(value: 'SmithCertFields'),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'totalCount'),
+          alias: null,
+          arguments: [],
           directives: [],
-        )
+          selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'nodes'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: _i1.SelectionSetNode(selections: [
+            _i1.FragmentSpreadNode(
+              name: _i1.NameNode(value: 'SmithCertFields'),
+              directives: [],
+            )
+          ]),
+        ),
       ]),
     ),
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'smithCertReceived'),
+      name: _i1.NameNode(value: 'smithCertsByReceiverId'),
       alias: null,
-      arguments: [],
+      arguments: [
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'first'),
+          value: _i1.IntValueNode(value: '10'),
+        ),
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'orderBy'),
+          value: _i1.ListValueNode(values: [
+            _i1.EnumValueNode(name: _i1.NameNode(value: 'PRIMARY_KEY_DESC'))
+          ]),
+        ),
+      ],
       directives: [],
       selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FragmentSpreadNode(
-          name: _i1.NameNode(value: 'SmithCertFields'),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'totalCount'),
+          alias: null,
+          arguments: [],
           directives: [],
-        )
+          selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'nodes'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: _i1.SelectionSetNode(selections: [
+            _i1.FragmentSpreadNode(
+              name: _i1.NameNode(value: 'SmithCertFields'),
+              directives: [],
+            )
+          ]),
+        ),
       ]),
     ),
   ]),
@@ -340,13 +355,6 @@ const IdentityBasicFields = _i1.FragmentDefinitionNode(
       selectionSet: null,
     ),
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'status'),
-      alias: null,
-      arguments: [],
-      directives: [],
-      selectionSet: null,
-    ),
-    _i1.FieldNode(
       name: _i1.NameNode(value: 'expireOn'),
       alias: null,
       arguments: [],
@@ -401,133 +409,107 @@ const IdentityFields = _i1.FragmentDefinitionNode(
       selectionSet: null,
     ),
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'certIssued'),
+      name: _i1.NameNode(value: 'certsByIssuerId'),
       alias: null,
       arguments: [
         _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'where'),
+          name: _i1.NameNode(value: 'first'),
+          value: _i1.IntValueNode(value: '20'),
+        ),
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'orderBy'),
+          value: _i1.ListValueNode(values: [
+            _i1.EnumValueNode(name: _i1.NameNode(value: 'UPDATED_ON_DESC'))
+          ]),
+        ),
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'filter'),
           value: _i1.ObjectValueNode(fields: [
             _i1.ObjectFieldNode(
               name: _i1.NameNode(value: 'isActive'),
               value: _i1.ObjectValueNode(fields: [
                 _i1.ObjectFieldNode(
-                  name: _i1.NameNode(value: '_eq'),
+                  name: _i1.NameNode(value: 'equalTo'),
                   value: _i1.BooleanValueNode(value: true),
                 )
               ]),
             )
           ]),
-        )
-      ],
-      directives: [],
-      selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FragmentSpreadNode(
-          name: _i1.NameNode(value: 'CertFields'),
-          directives: [],
-        )
-      ]),
-    ),
-    _i1.FieldNode(
-      name: _i1.NameNode(value: 'certIssuedAggregate'),
-      alias: null,
-      arguments: [
-        _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'where'),
-          value: _i1.ObjectValueNode(fields: [
-            _i1.ObjectFieldNode(
-              name: _i1.NameNode(value: 'isActive'),
-              value: _i1.ObjectValueNode(fields: [
-                _i1.ObjectFieldNode(
-                  name: _i1.NameNode(value: '_eq'),
-                  value: _i1.BooleanValueNode(value: true),
-                )
-              ]),
-            )
-          ]),
-        )
+        ),
       ],
       directives: [],
       selectionSet: _i1.SelectionSetNode(selections: [
         _i1.FieldNode(
-          name: _i1.NameNode(value: 'aggregate'),
+          name: _i1.NameNode(value: 'totalCount'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'nodes'),
           alias: null,
           arguments: [],
           directives: [],
           selectionSet: _i1.SelectionSetNode(selections: [
-            _i1.FieldNode(
-              name: _i1.NameNode(value: 'count'),
-              alias: null,
-              arguments: [],
+            _i1.FragmentSpreadNode(
+              name: _i1.NameNode(value: 'CertFields'),
               directives: [],
-              selectionSet: null,
             )
           ]),
-        )
+        ),
       ]),
     ),
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'certReceived'),
+      name: _i1.NameNode(value: 'certsByReceiverId'),
       alias: null,
       arguments: [
         _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'where'),
+          name: _i1.NameNode(value: 'first'),
+          value: _i1.IntValueNode(value: '20'),
+        ),
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'orderBy'),
+          value: _i1.ListValueNode(values: [
+            _i1.EnumValueNode(name: _i1.NameNode(value: 'UPDATED_ON_DESC'))
+          ]),
+        ),
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'filter'),
           value: _i1.ObjectValueNode(fields: [
             _i1.ObjectFieldNode(
               name: _i1.NameNode(value: 'isActive'),
               value: _i1.ObjectValueNode(fields: [
                 _i1.ObjectFieldNode(
-                  name: _i1.NameNode(value: '_eq'),
+                  name: _i1.NameNode(value: 'equalTo'),
                   value: _i1.BooleanValueNode(value: true),
                 )
               ]),
             )
           ]),
-        )
-      ],
-      directives: [],
-      selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FragmentSpreadNode(
-          name: _i1.NameNode(value: 'CertFields'),
-          directives: [],
-        )
-      ]),
-    ),
-    _i1.FieldNode(
-      name: _i1.NameNode(value: 'certReceivedAggregate'),
-      alias: null,
-      arguments: [
-        _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'where'),
-          value: _i1.ObjectValueNode(fields: [
-            _i1.ObjectFieldNode(
-              name: _i1.NameNode(value: 'isActive'),
-              value: _i1.ObjectValueNode(fields: [
-                _i1.ObjectFieldNode(
-                  name: _i1.NameNode(value: '_eq'),
-                  value: _i1.BooleanValueNode(value: true),
-                )
-              ]),
-            )
-          ]),
-        )
+        ),
       ],
       directives: [],
       selectionSet: _i1.SelectionSetNode(selections: [
         _i1.FieldNode(
-          name: _i1.NameNode(value: 'aggregate'),
+          name: _i1.NameNode(value: 'totalCount'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'nodes'),
           alias: null,
           arguments: [],
           directives: [],
           selectionSet: _i1.SelectionSetNode(selections: [
-            _i1.FieldNode(
-              name: _i1.NameNode(value: 'count'),
-              alias: null,
-              arguments: [],
+            _i1.FragmentSpreadNode(
+              name: _i1.NameNode(value: 'CertFields'),
               directives: [],
-              selectionSet: null,
             )
           ]),
-        )
+        ),
       ]),
     ),
     _i1.FieldNode(
@@ -580,115 +562,11 @@ const IdentityFields = _i1.FragmentDefinitionNode(
       selectionSet: null,
     ),
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'linkedAccount'),
-      alias: null,
-      arguments: [],
-      directives: [],
-      selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FieldNode(
-          name: _i1.NameNode(value: 'id'),
-          alias: null,
-          arguments: [],
-          directives: [],
-          selectionSet: null,
-        )
-      ]),
-    ),
-    _i1.FieldNode(
-      name: _i1.NameNode(value: 'linkedAccountAggregate'),
-      alias: null,
-      arguments: [],
-      directives: [],
-      selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FieldNode(
-          name: _i1.NameNode(value: 'aggregate'),
-          alias: null,
-          arguments: [],
-          directives: [],
-          selectionSet: _i1.SelectionSetNode(selections: [
-            _i1.FieldNode(
-              name: _i1.NameNode(value: 'count'),
-              alias: null,
-              arguments: [],
-              directives: [],
-              selectionSet: null,
-            )
-          ]),
-        )
-      ]),
-    ),
-    _i1.FieldNode(
       name: _i1.NameNode(value: 'status'),
       alias: null,
       arguments: [],
       directives: [],
       selectionSet: null,
-    ),
-    _i1.FieldNode(
-      name: _i1.NameNode(value: 'membershipHistory'),
-      alias: null,
-      arguments: [],
-      directives: [],
-      selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FieldNode(
-          name: _i1.NameNode(value: 'blockNumber'),
-          alias: null,
-          arguments: [],
-          directives: [],
-          selectionSet: null,
-        ),
-        _i1.FieldNode(
-          name: _i1.NameNode(value: 'eventId'),
-          alias: null,
-          arguments: [],
-          directives: [],
-          selectionSet: null,
-        ),
-        _i1.FieldNode(
-          name: _i1.NameNode(value: 'eventType'),
-          alias: null,
-          arguments: [],
-          directives: [],
-          selectionSet: null,
-        ),
-        _i1.FieldNode(
-          name: _i1.NameNode(value: 'id'),
-          alias: null,
-          arguments: [],
-          directives: [],
-          selectionSet: null,
-        ),
-        _i1.FieldNode(
-          name: _i1.NameNode(value: 'identityId'),
-          alias: null,
-          arguments: [],
-          directives: [],
-          selectionSet: null,
-        ),
-      ]),
-    ),
-    _i1.FieldNode(
-      name: _i1.NameNode(value: 'membershipHistoryAggregate'),
-      alias: null,
-      arguments: [],
-      directives: [],
-      selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FieldNode(
-          name: _i1.NameNode(value: 'aggregate'),
-          alias: null,
-          arguments: [],
-          directives: [],
-          selectionSet: _i1.SelectionSetNode(selections: [
-            _i1.FieldNode(
-              name: _i1.NameNode(value: 'count'),
-              alias: null,
-              arguments: [],
-              directives: [],
-              selectionSet: null,
-            )
-          ]),
-        )
-      ]),
     ),
     _i1.FieldNode(
       name: _i1.NameNode(value: 'name'),
@@ -698,38 +576,110 @@ const IdentityFields = _i1.FragmentDefinitionNode(
       selectionSet: null,
     ),
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'ownerKeyChange'),
+      name: _i1.NameNode(value: 'membershipEvents'),
       alias: null,
-      arguments: [],
-      directives: [],
-      selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FragmentSpreadNode(
-          name: _i1.NameNode(value: 'OwnerKeyChangeFields'),
-          directives: [],
-        )
-      ]),
-    ),
-    _i1.FieldNode(
-      name: _i1.NameNode(value: 'ownerKeyChangeAggregate'),
-      alias: null,
-      arguments: [],
+      arguments: [
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'first'),
+          value: _i1.IntValueNode(value: '50'),
+        ),
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'orderBy'),
+          value: _i1.ListValueNode(values: [
+            _i1.EnumValueNode(name: _i1.NameNode(value: 'BLOCK_NUMBER_DESC'))
+          ]),
+        ),
+      ],
       directives: [],
       selectionSet: _i1.SelectionSetNode(selections: [
         _i1.FieldNode(
-          name: _i1.NameNode(value: 'aggregate'),
+          name: _i1.NameNode(value: 'totalCount'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'nodes'),
           alias: null,
           arguments: [],
           directives: [],
           selectionSet: _i1.SelectionSetNode(selections: [
             _i1.FieldNode(
-              name: _i1.NameNode(value: 'count'),
+              name: _i1.NameNode(value: 'blockNumber'),
               alias: null,
               arguments: [],
               directives: [],
               selectionSet: null,
+            ),
+            _i1.FieldNode(
+              name: _i1.NameNode(value: 'eventId'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null,
+            ),
+            _i1.FieldNode(
+              name: _i1.NameNode(value: 'eventType'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null,
+            ),
+            _i1.FieldNode(
+              name: _i1.NameNode(value: 'id'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null,
+            ),
+            _i1.FieldNode(
+              name: _i1.NameNode(value: 'identityId'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null,
+            ),
+          ]),
+        ),
+      ]),
+    ),
+    _i1.FieldNode(
+      name: _i1.NameNode(value: 'changeOwnerKeys'),
+      alias: null,
+      arguments: [
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'first'),
+          value: _i1.IntValueNode(value: '20'),
+        ),
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'orderBy'),
+          value: _i1.ListValueNode(values: [
+            _i1.EnumValueNode(name: _i1.NameNode(value: 'BLOCK_NUMBER_DESC'))
+          ]),
+        ),
+      ],
+      directives: [],
+      selectionSet: _i1.SelectionSetNode(selections: [
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'totalCount'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'nodes'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: _i1.SelectionSetNode(selections: [
+            _i1.FragmentSpreadNode(
+              name: _i1.NameNode(value: 'OwnerKeyChangeFields'),
+              directives: [],
             )
           ]),
-        )
+        ),
       ]),
     ),
     _i1.FieldNode(
@@ -844,7 +794,7 @@ const AccountBasicFields = _i1.FragmentDefinitionNode(
       selectionSet: null,
     ),
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'identity'),
+      name: _i1.NameNode(value: 'linkedIdentity'),
       alias: null,
       arguments: [],
       directives: [],
@@ -874,46 +824,6 @@ const AccountFields = _i1.FragmentDefinitionNode(
   directives: [],
   selectionSet: _i1.SelectionSetNode(selections: [
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'commentsIssued'),
-      alias: null,
-      arguments: [
-        _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'limit'),
-          value: _i1.IntValueNode(value: '15'),
-        )
-      ],
-      directives: [],
-      selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FragmentSpreadNode(
-          name: _i1.NameNode(value: 'CommentsIssued'),
-          directives: [],
-        )
-      ]),
-    ),
-    _i1.FieldNode(
-      name: _i1.NameNode(value: 'commentsIssuedAggregate'),
-      alias: null,
-      arguments: [],
-      directives: [],
-      selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FieldNode(
-          name: _i1.NameNode(value: 'aggregate'),
-          alias: null,
-          arguments: [],
-          directives: [],
-          selectionSet: _i1.SelectionSetNode(selections: [
-            _i1.FieldNode(
-              name: _i1.NameNode(value: 'count'),
-              alias: null,
-              arguments: [],
-              directives: [],
-              selectionSet: null,
-            )
-          ]),
-        )
-      ]),
-    ),
-    _i1.FieldNode(
       name: _i1.NameNode(value: 'createdOn'),
       alias: null,
       arguments: [],
@@ -928,23 +838,171 @@ const AccountFields = _i1.FragmentDefinitionNode(
       selectionSet: null,
     ),
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'identity'),
-      alias: null,
-      arguments: [],
-      directives: [],
-      selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FragmentSpreadNode(
-          name: _i1.NameNode(value: 'IdentityFields'),
-          directives: [],
-        )
-      ]),
-    ),
-    _i1.FieldNode(
       name: _i1.NameNode(value: 'isActive'),
       alias: null,
       arguments: [],
       directives: [],
       selectionSet: null,
+    ),
+    _i1.FieldNode(
+      name: _i1.NameNode(value: 'transfersByFromId'),
+      alias: _i1.NameNode(value: 'transfersIssued'),
+      arguments: [
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'first'),
+          value: _i1.VariableNode(name: _i1.NameNode(value: 'limit')),
+        ),
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'offset'),
+          value: _i1.VariableNode(name: _i1.NameNode(value: 'offset')),
+        ),
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'orderBy'),
+          value: _i1.ListValueNode(values: [
+            _i1.EnumValueNode(name: _i1.NameNode(value: 'TIMESTAMP_DESC'))
+          ]),
+        ),
+      ],
+      directives: [],
+      selectionSet: _i1.SelectionSetNode(selections: [
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'totalCount'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'nodes'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: _i1.SelectionSetNode(selections: [
+            _i1.FragmentSpreadNode(
+              name: _i1.NameNode(value: 'TransferFields'),
+              directives: [],
+            )
+          ]),
+        ),
+      ]),
+    ),
+    _i1.FieldNode(
+      name: _i1.NameNode(value: 'transfersByToId'),
+      alias: _i1.NameNode(value: 'transfersReceived'),
+      arguments: [
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'first'),
+          value: _i1.VariableNode(name: _i1.NameNode(value: 'limit')),
+        ),
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'offset'),
+          value: _i1.VariableNode(name: _i1.NameNode(value: 'offset')),
+        ),
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'orderBy'),
+          value: _i1.ListValueNode(values: [
+            _i1.EnumValueNode(name: _i1.NameNode(value: 'TIMESTAMP_DESC'))
+          ]),
+        ),
+      ],
+      directives: [],
+      selectionSet: _i1.SelectionSetNode(selections: [
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'totalCount'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'nodes'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: _i1.SelectionSetNode(selections: [
+            _i1.FragmentSpreadNode(
+              name: _i1.NameNode(value: 'TransferFields'),
+              directives: [],
+            )
+          ]),
+        ),
+      ]),
+    ),
+    _i1.FieldNode(
+      name: _i1.NameNode(value: 'changeOwnerKeysByPreviousId'),
+      alias: _i1.NameNode(value: 'wasIdentityPrev'),
+      arguments: [
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'first'),
+          value: _i1.IntValueNode(value: '20'),
+        ),
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'orderBy'),
+          value: _i1.ListValueNode(values: [
+            _i1.EnumValueNode(name: _i1.NameNode(value: 'BLOCK_NUMBER_DESC'))
+          ]),
+        ),
+      ],
+      directives: [],
+      selectionSet: _i1.SelectionSetNode(selections: [
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'totalCount'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'nodes'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: _i1.SelectionSetNode(selections: [
+            _i1.FragmentSpreadNode(
+              name: _i1.NameNode(value: 'OwnerKeyChangeFields'),
+              directives: [],
+            )
+          ]),
+        ),
+      ]),
+    ),
+    _i1.FieldNode(
+      name: _i1.NameNode(value: 'changeOwnerKeysByNextId'),
+      alias: _i1.NameNode(value: 'wasIdentityNext'),
+      arguments: [
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'first'),
+          value: _i1.IntValueNode(value: '20'),
+        ),
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'orderBy'),
+          value: _i1.ListValueNode(values: [
+            _i1.EnumValueNode(name: _i1.NameNode(value: 'BLOCK_NUMBER_DESC'))
+          ]),
+        ),
+      ],
+      directives: [],
+      selectionSet: _i1.SelectionSetNode(selections: [
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'totalCount'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'nodes'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: _i1.SelectionSetNode(selections: [
+            _i1.FragmentSpreadNode(
+              name: _i1.NameNode(value: 'OwnerKeyChangeFields'),
+              directives: [],
+            )
+          ]),
+        ),
+      ]),
     ),
     _i1.FieldNode(
       name: _i1.NameNode(value: 'linkedIdentity'),
@@ -953,214 +1011,8 @@ const AccountFields = _i1.FragmentDefinitionNode(
       directives: [],
       selectionSet: _i1.SelectionSetNode(selections: [
         _i1.FragmentSpreadNode(
-          name: _i1.NameNode(value: 'IdentityBasicFields'),
+          name: _i1.NameNode(value: 'IdentityFields'),
           directives: [],
-        )
-      ]),
-    ),
-    _i1.FieldNode(
-      name: _i1.NameNode(value: 'removedIdentities'),
-      alias: null,
-      arguments: [],
-      directives: [],
-      selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FragmentSpreadNode(
-          name: _i1.NameNode(value: 'IdentityBasicFields'),
-          directives: [],
-        )
-      ]),
-    ),
-    _i1.FieldNode(
-      name: _i1.NameNode(value: 'removedIdentitiesAggregate'),
-      alias: null,
-      arguments: [],
-      directives: [],
-      selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FieldNode(
-          name: _i1.NameNode(value: 'aggregate'),
-          alias: null,
-          arguments: [],
-          directives: [],
-          selectionSet: _i1.SelectionSetNode(selections: [
-            _i1.FieldNode(
-              name: _i1.NameNode(value: 'count'),
-              alias: null,
-              arguments: [],
-              directives: [],
-              selectionSet: null,
-            )
-          ]),
-        )
-      ]),
-    ),
-    _i1.FieldNode(
-      name: _i1.NameNode(value: 'transfersIssued'),
-      alias: null,
-      arguments: [
-        _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'limit'),
-          value: _i1.VariableNode(name: _i1.NameNode(value: 'limit')),
-        ),
-        _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'offset'),
-          value: _i1.VariableNode(name: _i1.NameNode(value: 'offset')),
-        ),
-        _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'orderBy'),
-          value: _i1.ObjectValueNode(fields: [
-            _i1.ObjectFieldNode(
-              name: _i1.NameNode(value: 'timestamp'),
-              value: _i1.EnumValueNode(name: _i1.NameNode(value: 'DESC')),
-            )
-          ]),
-        ),
-      ],
-      directives: [],
-      selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FragmentSpreadNode(
-          name: _i1.NameNode(value: 'TransferFields'),
-          directives: [],
-        )
-      ]),
-    ),
-    _i1.FieldNode(
-      name: _i1.NameNode(value: 'transfersIssuedAggregate'),
-      alias: null,
-      arguments: [],
-      directives: [],
-      selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FieldNode(
-          name: _i1.NameNode(value: 'aggregate'),
-          alias: null,
-          arguments: [],
-          directives: [],
-          selectionSet: _i1.SelectionSetNode(selections: [
-            _i1.FieldNode(
-              name: _i1.NameNode(value: 'sum'),
-              alias: null,
-              arguments: [],
-              directives: [],
-              selectionSet: _i1.SelectionSetNode(selections: [
-                _i1.FieldNode(
-                  name: _i1.NameNode(value: 'amount'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
-                )
-              ]),
-            ),
-            _i1.FieldNode(
-              name: _i1.NameNode(value: 'count'),
-              alias: null,
-              arguments: [],
-              directives: [],
-              selectionSet: null,
-            ),
-          ]),
-        )
-      ]),
-    ),
-    _i1.FieldNode(
-      name: _i1.NameNode(value: 'transfersReceived'),
-      alias: null,
-      arguments: [
-        _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'limit'),
-          value: _i1.VariableNode(name: _i1.NameNode(value: 'limit')),
-        ),
-        _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'offset'),
-          value: _i1.VariableNode(name: _i1.NameNode(value: 'offset')),
-        ),
-        _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'orderBy'),
-          value: _i1.ObjectValueNode(fields: [
-            _i1.ObjectFieldNode(
-              name: _i1.NameNode(value: 'timestamp'),
-              value: _i1.EnumValueNode(name: _i1.NameNode(value: 'DESC')),
-            )
-          ]),
-        ),
-      ],
-      directives: [],
-      selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FragmentSpreadNode(
-          name: _i1.NameNode(value: 'TransferFields'),
-          directives: [],
-        )
-      ]),
-    ),
-    _i1.FieldNode(
-      name: _i1.NameNode(value: 'transfersReceivedAggregate'),
-      alias: null,
-      arguments: [],
-      directives: [],
-      selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FieldNode(
-          name: _i1.NameNode(value: 'aggregate'),
-          alias: null,
-          arguments: [],
-          directives: [],
-          selectionSet: _i1.SelectionSetNode(selections: [
-            _i1.FieldNode(
-              name: _i1.NameNode(value: 'sum'),
-              alias: null,
-              arguments: [],
-              directives: [],
-              selectionSet: _i1.SelectionSetNode(selections: [
-                _i1.FieldNode(
-                  name: _i1.NameNode(value: 'amount'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
-                )
-              ]),
-            ),
-            _i1.FieldNode(
-              name: _i1.NameNode(value: 'count'),
-              alias: null,
-              arguments: [],
-              directives: [],
-              selectionSet: null,
-            ),
-          ]),
-        )
-      ]),
-    ),
-    _i1.FieldNode(
-      name: _i1.NameNode(value: 'wasIdentity'),
-      alias: null,
-      arguments: [],
-      directives: [],
-      selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FragmentSpreadNode(
-          name: _i1.NameNode(value: 'OwnerKeyChangeFields'),
-          directives: [],
-        )
-      ]),
-    ),
-    _i1.FieldNode(
-      name: _i1.NameNode(value: 'wasIdentityAggregate'),
-      alias: null,
-      arguments: [],
-      directives: [],
-      selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FieldNode(
-          name: _i1.NameNode(value: 'aggregate'),
-          alias: null,
-          arguments: [],
-          directives: [],
-          selectionSet: _i1.SelectionSetNode(selections: [
-            _i1.FieldNode(
-              name: _i1.NameNode(value: 'count'),
-              alias: null,
-              arguments: [],
-              directives: [],
-              selectionSet: null,
-            )
-          ]),
         )
       ]),
     ),
@@ -1176,59 +1028,6 @@ const AccountTxsFields = _i1.FragmentDefinitionNode(
   directives: [],
   selectionSet: _i1.SelectionSetNode(selections: [
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'commentsIssued'),
-      alias: null,
-      arguments: [
-        _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'limit'),
-          value: _i1.VariableNode(name: _i1.NameNode(value: 'limit')),
-        ),
-        _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'offset'),
-          value: _i1.VariableNode(name: _i1.NameNode(value: 'offset')),
-        ),
-        _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'orderBy'),
-          value: _i1.ObjectValueNode(fields: [
-            _i1.ObjectFieldNode(
-              name: _i1.NameNode(value: 'blockNumber'),
-              value: _i1.EnumValueNode(name: _i1.NameNode(value: 'DESC')),
-            )
-          ]),
-        ),
-      ],
-      directives: [],
-      selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FragmentSpreadNode(
-          name: _i1.NameNode(value: 'CommentsIssued'),
-          directives: [],
-        )
-      ]),
-    ),
-    _i1.FieldNode(
-      name: _i1.NameNode(value: 'commentsIssuedAggregate'),
-      alias: null,
-      arguments: [],
-      directives: [],
-      selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FieldNode(
-          name: _i1.NameNode(value: 'aggregate'),
-          alias: null,
-          arguments: [],
-          directives: [],
-          selectionSet: _i1.SelectionSetNode(selections: [
-            _i1.FieldNode(
-              name: _i1.NameNode(value: 'count'),
-              alias: null,
-              arguments: [],
-              directives: [],
-              selectionSet: null,
-            )
-          ]),
-        )
-      ]),
-    ),
-    _i1.FieldNode(
       name: _i1.NameNode(value: 'createdOn'),
       alias: null,
       arguments: [],
@@ -1250,11 +1049,11 @@ const AccountTxsFields = _i1.FragmentDefinitionNode(
       selectionSet: null,
     ),
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'transfersIssued'),
-      alias: null,
+      name: _i1.NameNode(value: 'authoredTxComments'),
+      alias: _i1.NameNode(value: 'comments'),
       arguments: [
         _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'limit'),
+          name: _i1.NameNode(value: 'first'),
           value: _i1.VariableNode(name: _i1.NameNode(value: 'limit')),
         ),
         _i1.ArgumentNode(
@@ -1263,66 +1062,40 @@ const AccountTxsFields = _i1.FragmentDefinitionNode(
         ),
         _i1.ArgumentNode(
           name: _i1.NameNode(value: 'orderBy'),
-          value: _i1.ObjectValueNode(fields: [
-            _i1.ObjectFieldNode(
-              name: _i1.NameNode(value: 'timestamp'),
-              value: _i1.EnumValueNode(name: _i1.NameNode(value: 'DESC')),
-            )
+          value: _i1.ListValueNode(values: [
+            _i1.EnumValueNode(name: _i1.NameNode(value: 'BLOCK_NUMBER_DESC'))
           ]),
         ),
       ],
       directives: [],
       selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FragmentSpreadNode(
-          name: _i1.NameNode(value: 'TransferFields'),
-          directives: [],
-        )
-      ]),
-    ),
-    _i1.FieldNode(
-      name: _i1.NameNode(value: 'transfersIssuedAggregate'),
-      alias: null,
-      arguments: [],
-      directives: [],
-      selectionSet: _i1.SelectionSetNode(selections: [
         _i1.FieldNode(
-          name: _i1.NameNode(value: 'aggregate'),
+          name: _i1.NameNode(value: 'totalCount'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'nodes'),
           alias: null,
           arguments: [],
           directives: [],
           selectionSet: _i1.SelectionSetNode(selections: [
-            _i1.FieldNode(
-              name: _i1.NameNode(value: 'sum'),
-              alias: null,
-              arguments: [],
+            _i1.FragmentSpreadNode(
+              name: _i1.NameNode(value: 'CommentsIssued'),
               directives: [],
-              selectionSet: _i1.SelectionSetNode(selections: [
-                _i1.FieldNode(
-                  name: _i1.NameNode(value: 'amount'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
-                )
-              ]),
-            ),
-            _i1.FieldNode(
-              name: _i1.NameNode(value: 'count'),
-              alias: null,
-              arguments: [],
-              directives: [],
-              selectionSet: null,
-            ),
+            )
           ]),
-        )
+        ),
       ]),
     ),
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'transfersReceived'),
-      alias: null,
+      name: _i1.NameNode(value: 'transfersByFromId'),
+      alias: _i1.NameNode(value: 'transfersIssued'),
       arguments: [
         _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'limit'),
+          name: _i1.NameNode(value: 'first'),
           value: _i1.VariableNode(name: _i1.NameNode(value: 'limit')),
         ),
         _i1.ArgumentNode(
@@ -1331,58 +1104,74 @@ const AccountTxsFields = _i1.FragmentDefinitionNode(
         ),
         _i1.ArgumentNode(
           name: _i1.NameNode(value: 'orderBy'),
-          value: _i1.ObjectValueNode(fields: [
-            _i1.ObjectFieldNode(
-              name: _i1.NameNode(value: 'timestamp'),
-              value: _i1.EnumValueNode(name: _i1.NameNode(value: 'DESC')),
-            )
+          value: _i1.ListValueNode(values: [
+            _i1.EnumValueNode(name: _i1.NameNode(value: 'TIMESTAMP_DESC'))
           ]),
         ),
       ],
       directives: [],
       selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FragmentSpreadNode(
-          name: _i1.NameNode(value: 'TransferFields'),
-          directives: [],
-        )
-      ]),
-    ),
-    _i1.FieldNode(
-      name: _i1.NameNode(value: 'transfersReceivedAggregate'),
-      alias: null,
-      arguments: [],
-      directives: [],
-      selectionSet: _i1.SelectionSetNode(selections: [
         _i1.FieldNode(
-          name: _i1.NameNode(value: 'aggregate'),
+          name: _i1.NameNode(value: 'totalCount'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'nodes'),
           alias: null,
           arguments: [],
           directives: [],
           selectionSet: _i1.SelectionSetNode(selections: [
-            _i1.FieldNode(
-              name: _i1.NameNode(value: 'sum'),
-              alias: null,
-              arguments: [],
+            _i1.FragmentSpreadNode(
+              name: _i1.NameNode(value: 'TransferFields'),
               directives: [],
-              selectionSet: _i1.SelectionSetNode(selections: [
-                _i1.FieldNode(
-                  name: _i1.NameNode(value: 'amount'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null,
-                )
-              ]),
-            ),
-            _i1.FieldNode(
-              name: _i1.NameNode(value: 'count'),
-              alias: null,
-              arguments: [],
-              directives: [],
-              selectionSet: null,
-            ),
+            )
           ]),
-        )
+        ),
+      ]),
+    ),
+    _i1.FieldNode(
+      name: _i1.NameNode(value: 'transfersByToId'),
+      alias: _i1.NameNode(value: 'transfersReceived'),
+      arguments: [
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'first'),
+          value: _i1.VariableNode(name: _i1.NameNode(value: 'limit')),
+        ),
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'offset'),
+          value: _i1.VariableNode(name: _i1.NameNode(value: 'offset')),
+        ),
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'orderBy'),
+          value: _i1.ListValueNode(values: [
+            _i1.EnumValueNode(name: _i1.NameNode(value: 'TIMESTAMP_DESC'))
+          ]),
+        ),
+      ],
+      directives: [],
+      selectionSet: _i1.SelectionSetNode(selections: [
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'totalCount'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'nodes'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: _i1.SelectionSetNode(selections: [
+            _i1.FragmentSpreadNode(
+              name: _i1.NameNode(value: 'TransferFields'),
+              directives: [],
+            )
+          ]),
+        ),
       ]),
     ),
   ]),
@@ -1471,6 +1260,48 @@ const TransferFields = _i1.FragmentDefinitionNode(
     ),
   ]),
 );
+const LastBlock = _i1.OperationDefinitionNode(
+  type: _i1.OperationType.query,
+  name: _i1.NameNode(value: 'LastBlock'),
+  variableDefinitions: [],
+  directives: [],
+  selectionSet: _i1.SelectionSetNode(selections: [
+    _i1.FieldNode(
+      name: _i1.NameNode(value: 'blocks'),
+      alias: null,
+      arguments: [
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'first'),
+          value: _i1.IntValueNode(value: '1'),
+        ),
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'orderBy'),
+          value: _i1.ListValueNode(values: [
+            _i1.EnumValueNode(name: _i1.NameNode(value: 'TIMESTAMP_DESC'))
+          ]),
+        ),
+      ],
+      directives: [],
+      selectionSet: _i1.SelectionSetNode(selections: [
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'nodes'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: _i1.SelectionSetNode(selections: [
+            _i1.FieldNode(
+              name: _i1.NameNode(value: 'height'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null,
+            )
+          ]),
+        )
+      ]),
+    )
+  ]),
+);
 const IdentitiesByNameOrPk = _i1.OperationDefinitionNode(
   type: _i1.OperationType.query,
   name: _i1.NameNode(value: 'IdentitiesByNameOrPk'),
@@ -1488,21 +1319,25 @@ const IdentitiesByNameOrPk = _i1.OperationDefinitionNode(
   directives: [],
   selectionSet: _i1.SelectionSetNode(selections: [
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'identity'),
+      name: _i1.NameNode(value: 'identities'),
       alias: null,
       arguments: [
         _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'where'),
+          name: _i1.NameNode(value: 'first'),
+          value: _i1.IntValueNode(value: '50'),
+        ),
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'filter'),
           value: _i1.ObjectValueNode(fields: [
             _i1.ObjectFieldNode(
-              name: _i1.NameNode(value: '_or'),
+              name: _i1.NameNode(value: 'or'),
               value: _i1.ListValueNode(values: [
                 _i1.ObjectValueNode(fields: [
                   _i1.ObjectFieldNode(
                     name: _i1.NameNode(value: 'name'),
                     value: _i1.ObjectValueNode(fields: [
                       _i1.ObjectFieldNode(
-                        name: _i1.NameNode(value: '_iregex'),
+                        name: _i1.NameNode(value: 'includesInsensitive'),
                         value: _i1.VariableNode(
                             name: _i1.NameNode(value: 'pattern')),
                       )
@@ -1514,7 +1349,7 @@ const IdentitiesByNameOrPk = _i1.OperationDefinitionNode(
                     name: _i1.NameNode(value: 'accountId'),
                     value: _i1.ObjectValueNode(fields: [
                       _i1.ObjectFieldNode(
-                        name: _i1.NameNode(value: '_iregex'),
+                        name: _i1.NameNode(value: 'includesInsensitive'),
                         value: _i1.VariableNode(
                             name: _i1.NameNode(value: 'pattern')),
                       )
@@ -1524,13 +1359,21 @@ const IdentitiesByNameOrPk = _i1.OperationDefinitionNode(
               ]),
             )
           ]),
-        )
+        ),
       ],
       directives: [],
       selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FragmentSpreadNode(
-          name: _i1.NameNode(value: 'IdentityBasicFields'),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'nodes'),
+          alias: null,
+          arguments: [],
           directives: [],
+          selectionSet: _i1.SelectionSetNode(selections: [
+            _i1.FragmentSpreadNode(
+              name: _i1.NameNode(value: 'IdentityBasicFields'),
+              directives: [],
+            )
+          ]),
         )
       ]),
     )
@@ -1556,29 +1399,41 @@ const IdentitiesByPk = _i1.OperationDefinitionNode(
   directives: [],
   selectionSet: _i1.SelectionSetNode(selections: [
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'identity'),
+      name: _i1.NameNode(value: 'identities'),
       alias: null,
       arguments: [
         _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'where'),
+          name: _i1.NameNode(value: 'first'),
+          value: _i1.IntValueNode(value: '200'),
+        ),
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'filter'),
           value: _i1.ObjectValueNode(fields: [
             _i1.ObjectFieldNode(
               name: _i1.NameNode(value: 'accountId'),
               value: _i1.ObjectValueNode(fields: [
                 _i1.ObjectFieldNode(
-                  name: _i1.NameNode(value: '_in'),
+                  name: _i1.NameNode(value: 'in'),
                   value: _i1.VariableNode(name: _i1.NameNode(value: 'pubKeys')),
                 )
               ]),
             )
           ]),
-        )
+        ),
       ],
       directives: [],
       selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FragmentSpreadNode(
-          name: _i1.NameNode(value: 'IdentityFields'),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'nodes'),
+          alias: null,
+          arguments: [],
           directives: [],
+          selectionSet: _i1.SelectionSetNode(selections: [
+            _i1.FragmentSpreadNode(
+              name: _i1.NameNode(value: 'IdentityFields'),
+              directives: [],
+            )
+          ]),
         )
       ]),
     )
@@ -1601,29 +1456,41 @@ const IdentitiesByName = _i1.OperationDefinitionNode(
   directives: [],
   selectionSet: _i1.SelectionSetNode(selections: [
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'identity'),
+      name: _i1.NameNode(value: 'identities'),
       alias: null,
       arguments: [
         _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'where'),
+          name: _i1.NameNode(value: 'first'),
+          value: _i1.IntValueNode(value: '100'),
+        ),
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'filter'),
           value: _i1.ObjectValueNode(fields: [
             _i1.ObjectFieldNode(
               name: _i1.NameNode(value: 'name'),
               value: _i1.ObjectValueNode(fields: [
                 _i1.ObjectFieldNode(
-                  name: _i1.NameNode(value: '_iregex'),
+                  name: _i1.NameNode(value: 'includesInsensitive'),
                   value: _i1.VariableNode(name: _i1.NameNode(value: 'pattern')),
                 )
               ]),
             )
           ]),
-        )
+        ),
       ],
       directives: [],
       selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FragmentSpreadNode(
-          name: _i1.NameNode(value: 'IdentityFields'),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'nodes'),
+          alias: null,
+          arguments: [],
           directives: [],
+          selectionSet: _i1.SelectionSetNode(selections: [
+            _i1.FragmentSpreadNode(
+              name: _i1.NameNode(value: 'IdentityFields'),
+              directives: [],
+            )
+          ]),
         )
       ]),
     )
@@ -1664,19 +1531,37 @@ const AccountByPk = _i1.OperationDefinitionNode(
   directives: [],
   selectionSet: _i1.SelectionSetNode(selections: [
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'accountByPk'),
+      name: _i1.NameNode(value: 'accounts'),
       alias: null,
       arguments: [
         _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'id'),
-          value: _i1.VariableNode(name: _i1.NameNode(value: 'id')),
+          name: _i1.NameNode(value: 'filter'),
+          value: _i1.ObjectValueNode(fields: [
+            _i1.ObjectFieldNode(
+              name: _i1.NameNode(value: 'id'),
+              value: _i1.ObjectValueNode(fields: [
+                _i1.ObjectFieldNode(
+                  name: _i1.NameNode(value: 'equalTo'),
+                  value: _i1.VariableNode(name: _i1.NameNode(value: 'id')),
+                )
+              ]),
+            )
+          ]),
         )
       ],
       directives: [],
       selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FragmentSpreadNode(
-          name: _i1.NameNode(value: 'AccountFields'),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'nodes'),
+          alias: null,
+          arguments: [],
           directives: [],
+          selectionSet: _i1.SelectionSetNode(selections: [
+            _i1.FragmentSpreadNode(
+              name: _i1.NameNode(value: 'AccountFields'),
+              directives: [],
+            )
+          ]),
         )
       ]),
     )
@@ -1720,17 +1605,17 @@ const AccountsByPk = _i1.OperationDefinitionNode(
   directives: [],
   selectionSet: _i1.SelectionSetNode(selections: [
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'account'),
+      name: _i1.NameNode(value: 'accounts'),
       alias: null,
       arguments: [
         _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'where'),
+          name: _i1.NameNode(value: 'filter'),
           value: _i1.ObjectValueNode(fields: [
             _i1.ObjectFieldNode(
               name: _i1.NameNode(value: 'id'),
               value: _i1.ObjectValueNode(fields: [
                 _i1.ObjectFieldNode(
-                  name: _i1.NameNode(value: '_in'),
+                  name: _i1.NameNode(value: 'in'),
                   value:
                       _i1.VariableNode(name: _i1.NameNode(value: 'accountIds')),
                 )
@@ -1741,9 +1626,17 @@ const AccountsByPk = _i1.OperationDefinitionNode(
       ],
       directives: [],
       selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FragmentSpreadNode(
-          name: _i1.NameNode(value: 'AccountFields'),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'nodes'),
+          alias: null,
+          arguments: [],
           directives: [],
+          selectionSet: _i1.SelectionSetNode(selections: [
+            _i1.FragmentSpreadNode(
+              name: _i1.NameNode(value: 'AccountFields'),
+              directives: [],
+            )
+          ]),
         )
       ]),
     )
@@ -1766,19 +1659,37 @@ const AccountBasicByPk = _i1.OperationDefinitionNode(
   directives: [],
   selectionSet: _i1.SelectionSetNode(selections: [
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'accountByPk'),
+      name: _i1.NameNode(value: 'accounts'),
       alias: null,
       arguments: [
         _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'id'),
-          value: _i1.VariableNode(name: _i1.NameNode(value: 'id')),
+          name: _i1.NameNode(value: 'filter'),
+          value: _i1.ObjectValueNode(fields: [
+            _i1.ObjectFieldNode(
+              name: _i1.NameNode(value: 'id'),
+              value: _i1.ObjectValueNode(fields: [
+                _i1.ObjectFieldNode(
+                  name: _i1.NameNode(value: 'equalTo'),
+                  value: _i1.VariableNode(name: _i1.NameNode(value: 'id')),
+                )
+              ]),
+            )
+          ]),
         )
       ],
       directives: [],
       selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FragmentSpreadNode(
-          name: _i1.NameNode(value: 'AccountBasicFields'),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'nodes'),
+          alias: null,
+          arguments: [],
           directives: [],
+          selectionSet: _i1.SelectionSetNode(selections: [
+            _i1.FragmentSpreadNode(
+              name: _i1.NameNode(value: 'AccountBasicFields'),
+              directives: [],
+            )
+          ]),
         )
       ]),
     )
@@ -1799,40 +1710,22 @@ const AccountsBasicByPk = _i1.OperationDefinitionNode(
       ),
       defaultValue: _i1.DefaultValueNode(value: null),
       directives: [],
-    ),
-    _i1.VariableDefinitionNode(
-      variable: _i1.VariableNode(name: _i1.NameNode(value: 'limit')),
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'Int'),
-        isNonNull: false,
-      ),
-      defaultValue: _i1.DefaultValueNode(value: null),
-      directives: [],
-    ),
-    _i1.VariableDefinitionNode(
-      variable: _i1.VariableNode(name: _i1.NameNode(value: 'offset')),
-      type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'Int'),
-        isNonNull: false,
-      ),
-      defaultValue: _i1.DefaultValueNode(value: null),
-      directives: [],
-    ),
+    )
   ],
   directives: [],
   selectionSet: _i1.SelectionSetNode(selections: [
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'account'),
+      name: _i1.NameNode(value: 'accounts'),
       alias: null,
       arguments: [
         _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'where'),
+          name: _i1.NameNode(value: 'filter'),
           value: _i1.ObjectValueNode(fields: [
             _i1.ObjectFieldNode(
               name: _i1.NameNode(value: 'id'),
               value: _i1.ObjectValueNode(fields: [
                 _i1.ObjectFieldNode(
-                  name: _i1.NameNode(value: '_in'),
+                  name: _i1.NameNode(value: 'in'),
                   value:
                       _i1.VariableNode(name: _i1.NameNode(value: 'accountIds')),
                 )
@@ -1843,9 +1736,17 @@ const AccountsBasicByPk = _i1.OperationDefinitionNode(
       ],
       directives: [],
       selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FragmentSpreadNode(
-          name: _i1.NameNode(value: 'AccountBasicFields'),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'nodes'),
+          alias: null,
+          arguments: [],
           directives: [],
+          selectionSet: _i1.SelectionSetNode(selections: [
+            _i1.FragmentSpreadNode(
+              name: _i1.NameNode(value: 'AccountBasicFields'),
+              directives: [],
+            )
+          ]),
         )
       ]),
     )
@@ -1886,17 +1787,17 @@ const AccountTransactions = _i1.OperationDefinitionNode(
   directives: [],
   selectionSet: _i1.SelectionSetNode(selections: [
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'account'),
+      name: _i1.NameNode(value: 'accounts'),
       alias: null,
       arguments: [
         _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'where'),
+          name: _i1.NameNode(value: 'filter'),
           value: _i1.ObjectValueNode(fields: [
             _i1.ObjectFieldNode(
               name: _i1.NameNode(value: 'id'),
               value: _i1.ObjectValueNode(fields: [
                 _i1.ObjectFieldNode(
-                  name: _i1.NameNode(value: '_eq'),
+                  name: _i1.NameNode(value: 'equalTo'),
                   value:
                       _i1.VariableNode(name: _i1.NameNode(value: 'accountId')),
                 )
@@ -1907,16 +1808,23 @@ const AccountTransactions = _i1.OperationDefinitionNode(
       ],
       directives: [],
       selectionSet: _i1.SelectionSetNode(selections: [
-        _i1.FragmentSpreadNode(
-          name: _i1.NameNode(value: 'AccountTxsFields'),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'nodes'),
+          alias: null,
+          arguments: [],
           directives: [],
+          selectionSet: _i1.SelectionSetNode(selections: [
+            _i1.FragmentSpreadNode(
+              name: _i1.NameNode(value: 'AccountTxsFields'),
+              directives: [],
+            )
+          ]),
         )
       ]),
     )
   ]),
 );
 const document = _i1.DocumentNode(definitions: [
-  LastBlock,
   CertFields,
   SmithCertFields,
   SmithFields,
@@ -1928,6 +1836,7 @@ const document = _i1.DocumentNode(definitions: [
   AccountFields,
   AccountTxsFields,
   TransferFields,
+  LastBlock,
   IdentitiesByNameOrPk,
   IdentitiesByPk,
   IdentitiesByName,

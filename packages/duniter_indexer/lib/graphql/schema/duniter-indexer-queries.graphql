@@ -1,9 +1,6 @@
 # npx get-graphql-schema https://gt-squid.axiom-team.fr/v1/graphql > duniter-indexer.schema.graphql
-query LastBlock {
-    block(limit: 1, orderBy: {timestamp: DESC}) {
-        height
-    }
-}
+
+############ Fragments
 
 fragment CertFields on Cert {
     id
@@ -28,18 +25,19 @@ fragment SmithCertFields on SmithCert {
     createdOn
 }
 
-
 fragment SmithFields on Smith {
     id
     forged
     index
     lastChanged
     lastForged
-    smithCertIssued {
-        ...SmithCertFields
+    smithCertsByIssuerId(first: 10, orderBy: [PRIMARY_KEY_DESC]) {
+        totalCount
+        nodes { ...SmithCertFields }
     }
-    smithCertReceived {
-        ...SmithCertFields
+    smithCertsByReceiverId(first: 10, orderBy: [PRIMARY_KEY_DESC]) {
+        totalCount
+        nodes { ...SmithCertFields }
     }
 }
 
@@ -60,33 +58,33 @@ fragment IdentityBasicFields on Identity {
     isMember
     status
     name
-    status
     expireOn
     index
 }
 
 fragment IdentityFields on Identity {
-    account {
-        createdOn
-    }
+    account { createdOn }
     accountId
     accountRemovedId
-    certIssued (where: { isActive: { _eq: true } }) {
-        ...CertFields
+
+    certsByIssuerId(
+        first: 20
+        orderBy: [UPDATED_ON_DESC]
+        filter: { isActive: { equalTo: true } }
+    ) {
+        totalCount
+        nodes { ...CertFields }
     }
-    certIssuedAggregate (where: { isActive: { _eq: true } }) {
-        aggregate {
-            count
-        }
+
+    certsByReceiverId(
+        first: 20
+        orderBy: [UPDATED_ON_DESC]
+        filter: { isActive: { equalTo: true } }
+    ) {
+        totalCount
+        nodes { ...CertFields }
     }
-    certReceived (where: { isActive: { _eq: true } }) {
-        ...CertFields
-    }
-    certReceivedAggregate (where: { isActive: { _eq: true } }) {
-        aggregate {
-            count
-        }
-    }
+
     createdInId
     createdOn
     expireOn
@@ -94,46 +92,27 @@ fragment IdentityFields on Identity {
     index
     isMember
     lastChangeOn
-    linkedAccount {
-        id
-        #     ...AccountFields
-    }
-    linkedAccountAggregate {
-        aggregate {
-            count
-        }
-    }
     status
-    membershipHistory {
-        blockNumber
-        eventId
-        eventType
-        id
-        identityId
-    }
-    membershipHistoryAggregate {
-        aggregate {
-            count
-        }
-    }
     name
-    ownerKeyChange {
-        ...OwnerKeyChangeFields
-    }
-    ownerKeyChangeAggregate {
-        aggregate {
-            count
+
+    membershipEvents(first: 50, orderBy: [BLOCK_NUMBER_DESC]) {
+        totalCount
+        nodes {
+            blockNumber
+            eventId
+            eventType
+            id
+            identityId
         }
     }
-    status
-    smith {
-        ...SmithFields
+
+    changeOwnerKeys(first: 20, orderBy: [BLOCK_NUMBER_DESC]) {
+        totalCount
+        nodes { ...OwnerKeyChangeFields }
     }
-    #    udHistory(limit: 15) {
-    #        id
-    #        amount
-    #        timestamp
-    #    }
+
+    status
+    smith { ...SmithFields }
 }
 
 fragment CommentsIssued on TxComment {
@@ -147,178 +126,164 @@ fragment CommentsIssued on TxComment {
     type
 }
 
-
 fragment AccountBasicFields on Account {
     createdOn
     id
-    identity {
+    linkedIdentity {
         ...IdentityBasicFields
     }
     isActive
 }
 
 fragment AccountFields on Account {
-    commentsIssued(limit:15) {
-        ...CommentsIssued
-    }
-    commentsIssuedAggregate {
-        aggregate {
-            count
-        }
-    }
+
     createdOn
     id
-    identity {
-        ...IdentityFields
-    }
     isActive
-    linkedIdentity {
-        ...IdentityBasicFields
+
+    transfersIssued: transfersByFromId(
+        first: $limit
+        offset: $offset
+        orderBy: [TIMESTAMP_DESC]
+    ) {
+        totalCount
+        nodes { ...TransferFields }
     }
-    removedIdentities {
-        ...IdentityBasicFields
+
+    transfersReceived: transfersByToId(
+        first: $limit
+        offset: $offset
+        orderBy: [TIMESTAMP_DESC]
+    ) {
+        totalCount
+        nodes { ...TransferFields }
     }
-    removedIdentitiesAggregate {
-        aggregate {
-            count
-        }
+
+    wasIdentityPrev: changeOwnerKeysByPreviousId(first: 20, orderBy: [BLOCK_NUMBER_DESC]) {
+        totalCount
+        nodes { ...OwnerKeyChangeFields }
     }
-    transfersIssued(limit: $limit, offset: $offset, orderBy: { timestamp: DESC }) {
-        ...TransferFields
+
+    wasIdentityNext: changeOwnerKeysByNextId(first: 20, orderBy: [BLOCK_NUMBER_DESC]) {
+        totalCount
+        nodes { ...OwnerKeyChangeFields }
     }
-    transfersIssuedAggregate {
-        aggregate {
-            sum {
-                amount
-            }
-            count
-        }
-    }
-    transfersReceived(limit: $limit, offset: $offset, orderBy: { timestamp: DESC }) {
-        ...TransferFields
-    }
-    transfersReceivedAggregate {
-        aggregate {
-            sum {
-                amount
-            }
-            count
-        }
-    }
-    wasIdentity {
-        ...OwnerKeyChangeFields
-    }
-    wasIdentityAggregate {
-        aggregate {
-            count
-        }
-    }
+
+    linkedIdentity { ...IdentityFields }
 }
 
 fragment AccountTxsFields on Account {
-    commentsIssued(limit: $limit, offset: $offset, orderBy: { blockNumber: DESC }) {
-        ...CommentsIssued
-    }
-    commentsIssuedAggregate {
-        aggregate {
-            count
-        }
-    }
     createdOn
     id
     isActive
-    transfersIssued(limit: $limit, offset: $offset, orderBy: { timestamp: DESC }) {
-        ...TransferFields
+
+    comments: authoredTxComments(
+        first: $limit
+        offset: $offset
+        orderBy: [BLOCK_NUMBER_DESC]
+    ) {
+        totalCount
+        nodes { ...CommentsIssued }
     }
-    transfersIssuedAggregate {
-        aggregate {
-            sum {
-                amount
-            }
-            count
-        }
+
+    transfersIssued: transfersByFromId(
+        first: $limit
+        offset: $offset
+        orderBy: [TIMESTAMP_DESC]
+    ) {
+        totalCount
+        nodes { ...TransferFields }
     }
-    transfersReceived(limit: $limit, offset: $offset, orderBy: { timestamp: DESC }) {
-        ...TransferFields
-    }
-    transfersReceivedAggregate {
-        aggregate {
-            sum {
-                amount
-            }
-            count
-        }
+
+    transfersReceived: transfersByToId(
+        first: $limit
+        offset: $offset
+        orderBy: [TIMESTAMP_DESC]
+    ) {
+        totalCount
+        nodes { ...TransferFields }
     }
 }
-
 
 fragment TransferFields on Transfer {
     blockNumber
     timestamp
     amount
-    to {
-        id
-    }
-    from {
-        id
-    }
+    to { id }
+    from { id }
     comment {
         remark
         remarkBytes
     }
 }
 
+############ Queries
+
+query LastBlock {
+    blocks(first: 1, orderBy: [TIMESTAMP_DESC]) {
+        nodes {
+            height
+        }
+    }
+}
 query IdentitiesByNameOrPk($pattern: String) {
-    identity(
-        where: {
-            _or: [
-                { name: { _iregex: $pattern } }
-                { accountId: { _iregex: $pattern } }
+    identities(
+        first: 50
+        filter: {
+            or: [
+                { name: { includesInsensitive: $pattern } }
+                { accountId: { includesInsensitive: $pattern } }
             ]
         }
     ) {
-        ...IdentityBasicFields
+        nodes { ...IdentityBasicFields }
     }
 }
 
 query IdentitiesByPk($pubKeys: [String!]!) {
-    identity(where: { accountId: { _in: $pubKeys } }) {
-        ...IdentityFields
+    identities(
+        first: 200
+        filter: { accountId: { in: $pubKeys } }
+    ) {
+        nodes { ...IdentityFields }
     }
 }
 
 query IdentitiesByName($pattern: String) {
-    identity(where: { name: { _iregex: $pattern } }) {
-        ...IdentityFields
+    identities(
+        first: 100
+        filter: { name: { includesInsensitive: $pattern } }
+    ) {
+        nodes { ...IdentityFields }
     }
 }
 
 query AccountByPk($id: String!, $limit: Int, $offset: Int) {
-    accountByPk(id: $id) {
-        ...AccountFields
+    accounts(filter: { id: { equalTo: $id } }) {
+        nodes { ...AccountFields }
     }
 }
 
 query AccountsByPk($accountIds: [String!]!, $limit: Int, $offset: Int) {
-    account(where: { id: { _in: $accountIds } }) {
-        ...AccountFields
+    accounts(filter: { id: { in: $accountIds } }) {
+        nodes { ...AccountFields }
     }
 }
 
 query AccountBasicByPk($id: String!) {
-    accountByPk(id: $id) {
-        ...AccountBasicFields
+    accounts(filter: { id: { equalTo: $id } }) {
+        nodes { ...AccountBasicFields }
     }
 }
 
-query AccountsBasicByPk($accountIds: [String!]!, $limit: Int, $offset: Int) {
-    account(where: { id: { _in: $accountIds } }) {
-        ...AccountBasicFields
+query AccountsBasicByPk($accountIds: [String!]!) {
+    accounts(filter: { id: { in: $accountIds } }) {
+        nodes { ...AccountBasicFields }
     }
 }
 
 query AccountTransactions($accountId: String!, $limit: Int, $offset: Int) {
-    account(where: { id: { _eq: $accountId } }) {
-        ...AccountTxsFields
+    accounts(filter: { id: { equalTo: $accountId } }) {
+        nodes { ...AccountTxsFields }
     }
 }

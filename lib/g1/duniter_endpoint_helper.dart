@@ -38,11 +38,14 @@ import 'sign_and_send.dart';
 
 const Duration defPolkadotTimeout = Duration(seconds: 20);
 
-Future<NodeCheckResult> testEndPointV2(String node, Duration timeout) async {
+Future<NodeCheckResult> testEndPointV2(String node,
+    [Duration timeout = defPolkadotTimeout]) async {
   final Stopwatch stopwatch = Stopwatch()..start();
+
   final Provider provider = Provider.fromUri(parseNodeUrl(node));
   final Gtest polkadot = Gtest(provider);
-  final int currentBlockNumber = (await polkadot.query.system.number()) - 1;
+  final int currentBlockNumber =
+      await polkadot.query.system.number().timeout(defPolkadotTimeout) - 1;
   stopwatch.stop();
   final NodeCheckResult nodeCheckResult = NodeCheckResult(
       latency: stopwatch.elapsed, currentBlock: currentBlockNumber);
@@ -440,7 +443,7 @@ Future<double> currentUniversalDividendV2() async {
     try {
       final BigInt currentUd =
           await polkadot.query.universalDividend.currentUd();
-      // logger.info('Current Universal Dividend: $currentUd');
+      loggerDev('Current Universal Dividend: $currentUd');
       return currentUd.toDouble() / 100;
     } catch (e, stacktrace) {
       loggerDev('Error fetching current UD', error: e, stackTrace: stacktrace);

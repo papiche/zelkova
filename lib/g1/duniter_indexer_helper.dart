@@ -43,15 +43,21 @@ Future<List<Contact>> searchWotV2(String searchPatternRaw) async {
         if (response.hasErrors) {
           loggerDev('Error: ${response.linkException?.originalException}');
         } else {
-          final GIdentitiesByNameData? identity = response.data;
-          for (final GIdentitiesByNameData_identity identity
-              in identity!.identity) {
-            final String? address = identity.accountId;
-            if (address == null) {
-              loggerDev('ERROR: Pubkey is null');
-            } else {
-              contacts.add(
-                  Contact.withAddress(nick: identity.name, address: address));
+          final GIdentitiesByNameData? data = response.data;
+          if (data != null && data.identities != null) {
+            for (final GIdentitiesByNameData_identities_nodes? identity
+                in data.identities?.nodes ??
+                    <GIdentitiesByNameData_identities_nodes>[]) {
+              if (identity == null) {
+                continue;
+              }
+              final String? address = identity.accountId;
+              if (address == null) {
+                loggerDev('ERROR: Pubkey is null');
+              } else {
+                contacts.add(
+                    Contact.withAddress(nick: identity.name, address: address));
+              }
             }
           }
         }
@@ -72,14 +78,16 @@ Future<List<Contact>> searchWotV2(String searchPatternRaw) async {
         if (response.hasErrors) {
           loggerDev('Error: ${response.linkException?.originalException}');
         } else {
-          final GIdentitiesByNameOrPkData? identities = response.data;
-          for (final GIdentitiesByNameOrPkData_identity identity
-              in identities!.identity) {
-            final String? address = identity.accountId;
-            if (address == null) {
-              loggerDev('ERROR: Pubkey is null');
-            } else {
-              contacts.add(_contactFromIdentity(identity));
+          final GIdentitiesByNameOrPkData? data = response.data;
+          if (data != null && data.identities != null) {
+            for (final GIdentitiesByNameOrPkData_identities_nodes identity
+                in data.identities!.nodes) {
+              final String? address = identity.accountId;
+              if (address == null) {
+                loggerDev('ERROR: Pubkey is null');
+              } else {
+                contacts.add(_contactFromIdentity(identity));
+              }
             }
           }
         }
@@ -117,14 +125,16 @@ Future<List<Contact>> getIdentities({required List<String> addresses}) async {
         loggerDev('Error: ${response.linkException?.originalException}',
             error: response.linkException?.originalException);
       } else {
-        final GIdentitiesByPkData? identities = response.data;
-        for (final GIdentitiesByPkData_identity identity
-            in identities!.identity) {
-          final String? address = identity.accountId;
-          if (address == null) {
-            loggerDev('ERROR: Pubkey is null');
-          } else {
-            contacts.add(_contactFromIdentity(identity));
+        final GIdentitiesByPkData? data = response.data;
+        if (data != null && data.identities != null) {
+          for (final GIdentitiesByPkData_identities_nodes identity
+              in data.identities!.nodes) {
+            final String? address = identity.accountId;
+            if (address == null) {
+              loggerDev('ERROR: Pubkey is null');
+            } else {
+              contacts.add(_contactFromIdentity(identity));
+            }
           }
         }
       }
@@ -225,7 +235,7 @@ Contact _contactFromAccount(dynamic account) {
   if (account == null) {
     throw ArgumentError('Account cannot be null');
   }
-  final dynamic identity = (account as dynamic).identity;
+  final dynamic identity = (account as dynamic).linkedIdentity;
   List<Cert> certReceived = <Cert>[];
   List<Cert> certIssued = <Cert>[];
   try {
@@ -288,8 +298,8 @@ Future<List<Contact>> getAccounts({required List<String> accountIds}) async {
             error: response.linkException?.originalException);
       } else {
         final GAccountsByPkData? accountsData = response.data;
-        if (accountsData != null) {
-          for (final dynamic account in accountsData.account) {
+        if (accountsData != null && accountsData.accounts != null) {
+          for (final dynamic account in accountsData.accounts!.nodes) {
             final Contact contact = _contactFromAccount(account);
             contacts.add(contact);
           }
@@ -338,8 +348,8 @@ Future<List<Contact>> getAccountsBasic(
             error: response.linkException?.originalException);
       } else {
         final GAccountsBasicByPkData? accountsData = response.data;
-        if (accountsData != null) {
-          for (final dynamic account in accountsData.account) {
+        if (accountsData != null && accountsData.accounts != null) {
+          for (final dynamic account in accountsData.accounts!.nodes) {
             final Contact contact = _contactFromAccount(account);
             contacts.add(contact);
           }

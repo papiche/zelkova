@@ -431,7 +431,7 @@ void main() {
 
   test('genTxKey single recipient', () {
     final Transaction transaction = Transaction(
-      to: to1,
+      recipients: <Contact>[to1],
       amount: 10.0,
       comment: 'Test transaction',
       type: TransactionType.pending,
@@ -450,7 +450,6 @@ void main() {
   test('genTxKey multiple recipients', () {
     final Transaction transaction = Transaction(
       from: from,
-      to: to1,
       type: TransactionType.sending,
       time: DateTime.now(),
       recipients: <Contact>[to1, to2, to3, to4],
@@ -585,7 +584,6 @@ void main() {
     final Transaction transaction = Transaction(
       type: TransactionType.sending,
       from: Contact(pubKey: testPubKey),
-      to: Contact(pubKey: testPubKey1),
       recipients: <Contact>[
         Contact(pubKey: testPubKey1),
         Contact(pubKey: testPubKey2),
@@ -625,7 +623,6 @@ void main() {
     final Transaction sendingTransaction = Transaction(
       type: TransactionType.sending,
       from: Contact(pubKey: testPubKey),
-      to: Contact(pubKey: testPubKey1),
       recipients: <Contact>[
         Contact(pubKey: testPubKey1),
         Contact(pubKey: testPubKey1),

@@ -65,8 +65,7 @@ class _ContactPageState extends State<ContactPage> {
   }
 
   Future<void> _updateBalance(bool isMe) async {
-    await _txsCubit.fetchTransactions(
-        pubKey: widget.contact.pubKey, isExternal: !isMe);
+    await _txsCubit.fetchTransactions(pubKey: widget.contact.pubKey);
     setState(() {});
   }
 
@@ -409,7 +408,6 @@ class _ContactPageState extends State<ContactPage> {
 
   Widget _buildTransactionsTab(Contact contact) {
     return TransactionsAndBalanceWidget(
-      isExternalAccount: true,
       pubKey: contact.pubKey,
     );
   }

@@ -18,21 +18,16 @@ class Transaction extends Equatable {
       required this.comment,
       required this.time,
       required this.from,
-      @Deprecated('Use recipients instead') required this.to,
-      // Old tx does not store outputs so let it be null
-      List<Contact>? recipients,
+      required this.recipients,
       List<double>? recipientsAmounts,
       this.debugInfo})
-      : recipients = recipients ?? <Contact>[to],
-        recipientsAmounts = recipientsAmounts ?? <double>[amount];
+      : recipientsAmounts = recipientsAmounts ?? <double>[amount];
 
   factory Transaction.fromJson(Map<String, dynamic> json) =>
       _$TransactionFromJson(json);
 
   final TransactionType type;
   final Contact from;
-  @Deprecated('Use recipients instead')
-  final Contact to;
   final double amount;
   final String comment;
   final DateTime time;
@@ -62,14 +57,12 @@ class Transaction extends Equatable {
 
   String toStringSmall(String pubKey) =>
       // ignore: deprecated_member_use_from_same_package
-      "Transaction { type: ${type.name}, from: ${from.toStringSmall(pubKey)}, to: ${to.toStringSmall(pubKey)}, amount: $amount, comment: $comment, time: ${humanizeTime(time, 'en')}, debugInfo: '$debugInfo' }";
+      "Transaction { type: ${type.name}, from: ${from.toStringSmall(pubKey)}, amount: $amount, comment: $comment, time: ${humanizeTime(time, 'en')}, debugInfo: '$debugInfo' }";
 
   @override
   List<Object?> get props => <dynamic>[
         type,
         from,
-        // ignore: deprecated_member_use_from_same_package
-        to,
         amount,
         comment,
         time,

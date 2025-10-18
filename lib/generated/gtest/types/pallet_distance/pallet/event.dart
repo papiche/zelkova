@@ -64,6 +64,16 @@ class $Event {
       distance: distance,
     );
   }
+
+  NotEvaluated notEvaluated({
+    required int idtyIndex,
+    required _i3.AccountId32 who,
+  }) {
+    return NotEvaluated(
+      idtyIndex: idtyIndex,
+      who: who,
+    );
+  }
 }
 
 class $EventCodec with _i1.Codec<Event> {
@@ -79,6 +89,8 @@ class $EventCodec with _i1.Codec<Event> {
         return EvaluatedValid._decode(input);
       case 2:
         return EvaluatedInvalid._decode(input);
+      case 3:
+        return NotEvaluated._decode(input);
       default:
         throw Exception('Event: Invalid variant index: "$index"');
     }
@@ -99,6 +111,9 @@ class $EventCodec with _i1.Codec<Event> {
       case EvaluatedInvalid:
         (value as EvaluatedInvalid).encodeTo(output);
         break;
+      case NotEvaluated:
+        (value as NotEvaluated).encodeTo(output);
+        break;
       default:
         throw Exception(
             'Event: Unsupported "$value" of type "${value.runtimeType}"');
@@ -114,6 +129,8 @@ class $EventCodec with _i1.Codec<Event> {
         return (value as EvaluatedValid)._sizeHint();
       case EvaluatedInvalid:
         return (value as EvaluatedInvalid)._sizeHint();
+      case NotEvaluated:
+        return (value as NotEvaluated)._sizeHint();
       default:
         throw Exception(
             'Event: Unsupported "$value" of type "${value.runtimeType}"');
@@ -322,5 +339,75 @@ class EvaluatedInvalid extends Event {
   int get hashCode => Object.hash(
         idtyIndex,
         distance,
+      );
+}
+
+/// No distance evaluation was provided.
+class NotEvaluated extends Event {
+  const NotEvaluated({
+    required this.idtyIndex,
+    required this.who,
+  });
+
+  factory NotEvaluated._decode(_i1.Input input) {
+    return NotEvaluated(
+      idtyIndex: _i1.U32Codec.codec.decode(input),
+      who: const _i1.U8ArrayCodec(32).decode(input),
+    );
+  }
+
+  /// T::IdtyIndex
+  final int idtyIndex;
+
+  /// T::AccountId
+  final _i3.AccountId32 who;
+
+  @override
+  Map<String, Map<String, dynamic>> toJson() => {
+        'NotEvaluated': {
+          'idtyIndex': idtyIndex,
+          'who': who.toList(),
+        }
+      };
+
+  int _sizeHint() {
+    int size = 1;
+    size = size + _i1.U32Codec.codec.sizeHint(idtyIndex);
+    size = size + const _i3.AccountId32Codec().sizeHint(who);
+    return size;
+  }
+
+  void encodeTo(_i1.Output output) {
+    _i1.U8Codec.codec.encodeTo(
+      3,
+      output,
+    );
+    _i1.U32Codec.codec.encodeTo(
+      idtyIndex,
+      output,
+    );
+    const _i1.U8ArrayCodec(32).encodeTo(
+      who,
+      output,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(
+        this,
+        other,
+      ) ||
+      other is NotEvaluated &&
+          other.idtyIndex == idtyIndex &&
+          _i5.listsEqual(
+            other.who,
+            who,
+          );
+
+  @override
+  int get hashCode => Object.hash(
+        idtyIndex,
+        who,
       );
 }

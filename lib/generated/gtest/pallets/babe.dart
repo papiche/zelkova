@@ -614,7 +614,7 @@ class Constants {
   /// The amount of time, in slots, that each epoch should last.
   /// NOTE: Currently it is not possible to change the epoch duration after
   /// the chain has started. Attempting to do so will brick block production.
-  final BigInt epochDuration = BigInt.from(2400);
+  final BigInt epochDuration = BigInt.from(600);
 
   /// The expected average block time at which BABE should be creating
   /// blocks. Since BABE is probabilistic it is not trivial to figure out

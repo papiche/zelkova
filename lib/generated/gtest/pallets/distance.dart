@@ -307,7 +307,7 @@ class Constants {
 
   /// The evaluation period in blocks.
   /// Since the evaluation uses 3 pools, the total evaluation time will be 3 * EvaluationPeriod.
-  final int evaluationPeriod = 7;
+  final int evaluationPeriod = 40;
 
   /// The maximum distance used to define a referee's accessibility.
   /// This value is not used by the runtime but is needed by the client distance oracle.

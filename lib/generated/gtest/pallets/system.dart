@@ -924,8 +924,8 @@ class Constants {
 
   /// The weight of runtime database operations the runtime can invoke.
   final _i25.RuntimeDbWeight dbWeight = _i25.RuntimeDbWeight(
-    read: BigInt.from(15010000),
-    write: BigInt.from(105988000),
+    read: BigInt.from(16770000),
+    write: BigInt.from(6206000),
   );
 
   /// Get the chain's in-code version.

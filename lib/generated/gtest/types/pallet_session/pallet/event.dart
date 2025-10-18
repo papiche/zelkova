@@ -28,7 +28,7 @@ abstract class Event {
     return codec.sizeHint(this);
   }
 
-  Map<String, Map<String, dynamic>> toJson();
+  Map<String, dynamic> toJson();
 }
 
 class $Event {
@@ -36,6 +36,10 @@ class $Event {
 
   NewSession newSession({required int sessionIndex}) {
     return NewSession(sessionIndex: sessionIndex);
+  }
+
+  NewQueued newQueued() {
+    return NewQueued();
   }
 
   ValidatorDisabled validatorDisabled({required _i3.AccountId32 validator}) {
@@ -57,8 +61,10 @@ class $EventCodec with _i1.Codec<Event> {
       case 0:
         return NewSession._decode(input);
       case 1:
-        return ValidatorDisabled._decode(input);
+        return const NewQueued();
       case 2:
+        return ValidatorDisabled._decode(input);
+      case 3:
         return ValidatorReenabled._decode(input);
       default:
         throw Exception('Event: Invalid variant index: "$index"');
@@ -73,6 +79,9 @@ class $EventCodec with _i1.Codec<Event> {
     switch (value.runtimeType) {
       case NewSession:
         (value as NewSession).encodeTo(output);
+        break;
+      case NewQueued:
+        (value as NewQueued).encodeTo(output);
         break;
       case ValidatorDisabled:
         (value as ValidatorDisabled).encodeTo(output);
@@ -91,6 +100,8 @@ class $EventCodec with _i1.Codec<Event> {
     switch (value.runtimeType) {
       case NewSession:
         return (value as NewSession)._sizeHint();
+      case NewQueued:
+        return 1;
       case ValidatorDisabled:
         return (value as ValidatorDisabled)._sizeHint();
       case ValidatorReenabled:
@@ -148,6 +159,28 @@ class NewSession extends Event {
   int get hashCode => sessionIndex.hashCode;
 }
 
+/// The `NewSession` event in the current block also implies a new validator set to be
+/// queued.
+class NewQueued extends Event {
+  const NewQueued();
+
+  @override
+  Map<String, dynamic> toJson() => {'NewQueued': null};
+
+  void encodeTo(_i1.Output output) {
+    _i1.U8Codec.codec.encodeTo(
+      1,
+      output,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) => other is NewQueued;
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
 /// Validator has been disabled.
 class ValidatorDisabled extends Event {
   const ValidatorDisabled({required this.validator});
@@ -173,7 +206,7 @@ class ValidatorDisabled extends Event {
 
   void encodeTo(_i1.Output output) {
     _i1.U8Codec.codec.encodeTo(
-      1,
+      2,
       output,
     );
     const _i1.U8ArrayCodec(32).encodeTo(
@@ -223,7 +256,7 @@ class ValidatorReenabled extends Event {
 
   void encodeTo(_i1.Output output) {
     _i1.U8Codec.codec.encodeTo(
-      2,
+      3,
       output,
     );
     const _i1.U8ArrayCodec(32).encodeTo(

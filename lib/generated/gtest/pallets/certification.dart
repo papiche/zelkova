@@ -249,5 +249,5 @@ class Constants {
   final int minReceivedCertToBeAbleToIssueCert = 5;
 
   /// The duration (in blocks) for which a certification remains valid.
-  final int validityPeriod = 2102400;
+  final int validityPeriod = 10519200;
 }

@@ -292,4 +292,8 @@ class SharedPreferencesHelper with ChangeNotifier {
   void notifyListeners() {
     super.notifyListeners();
   }
+
+  bool isExternal(String pk) {
+    return _d.has(pk) == false;
+  }
 }

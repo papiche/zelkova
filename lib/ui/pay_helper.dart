@@ -75,7 +75,6 @@ Future<bool> payWithRetry(
         final Transaction tx = Transaction(
             type: TransactionType.pending,
             from: fromContact,
-            to: recipients[0],
             recipients: recipients,
             recipientsAmounts: List<double>.filled(recipients.length, amount),
             amount: -toCG1(convertedAmount).toDouble() * recipients.length,

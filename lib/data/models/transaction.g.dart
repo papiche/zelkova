@@ -17,9 +17,7 @@ abstract class _$TransactionCWProxy {
 
   Transaction from(Contact from);
 
-  Transaction to(Contact to);
-
-  Transaction recipients(List<Contact>? recipients);
+  Transaction recipients(List<Contact> recipients);
 
   Transaction recipientsAmounts(List<double>? recipientsAmounts);
 
@@ -37,8 +35,7 @@ abstract class _$TransactionCWProxy {
     String comment,
     DateTime time,
     Contact from,
-    Contact to,
-    List<Contact>? recipients,
+    List<Contact> recipients,
     List<double>? recipientsAmounts,
     String? debugInfo,
   });
@@ -66,10 +63,7 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
   Transaction from(Contact from) => this(from: from);
 
   @override
-  Transaction to(Contact to) => this(to: to);
-
-  @override
-  Transaction recipients(List<Contact>? recipients) =>
+  Transaction recipients(List<Contact> recipients) =>
       this(recipients: recipients);
 
   @override
@@ -93,7 +87,6 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
     Object? comment = const $CopyWithPlaceholder(),
     Object? time = const $CopyWithPlaceholder(),
     Object? from = const $CopyWithPlaceholder(),
-    Object? to = const $CopyWithPlaceholder(),
     Object? recipients = const $CopyWithPlaceholder(),
     Object? recipientsAmounts = const $CopyWithPlaceholder(),
     Object? debugInfo = const $CopyWithPlaceholder(),
@@ -119,14 +112,10 @@ class _$TransactionCWProxyImpl implements _$TransactionCWProxy {
           ? _value.from
           // ignore: cast_nullable_to_non_nullable
           : from as Contact,
-      to: to == const $CopyWithPlaceholder()
-          ? _value.to
-          // ignore: cast_nullable_to_non_nullable
-          : to as Contact,
       recipients: recipients == const $CopyWithPlaceholder()
           ? _value.recipients
           // ignore: cast_nullable_to_non_nullable
-          : recipients as List<Contact>?,
+          : recipients as List<Contact>,
       recipientsAmounts: recipientsAmounts == const $CopyWithPlaceholder()
           ? _value.recipientsAmounts
           // ignore: cast_nullable_to_non_nullable
@@ -155,9 +144,8 @@ Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(
       comment: json['comment'] as String,
       time: DateTime.parse(json['time'] as String),
       from: Contact.fromJson(json['from'] as Map<String, dynamic>),
-      to: Contact.fromJson(json['to'] as Map<String, dynamic>),
-      recipients: (json['recipients'] as List<dynamic>?)
-          ?.map((e) => Contact.fromJson(e as Map<String, dynamic>))
+      recipients: (json['recipients'] as List<dynamic>)
+          .map((e) => Contact.fromJson(e as Map<String, dynamic>))
           .toList(),
       recipientsAmounts: (json['recipientsAmounts'] as List<dynamic>?)
           ?.map((e) => (e as num).toDouble())
@@ -169,7 +157,6 @@ Map<String, dynamic> _$TransactionToJson(Transaction instance) =>
     <String, dynamic>{
       'type': _$TransactionTypeEnumMap[instance.type]!,
       'from': instance.from,
-      'to': instance.to,
       'amount': instance.amount,
       'comment': instance.comment,
       'time': instance.time.toIso8601String(),

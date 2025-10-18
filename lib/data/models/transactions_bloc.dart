@@ -11,11 +11,7 @@ import 'transaction.dart';
 part 'transactions_state.dart';
 
 class TransactionsBloc {
-  TransactionsBloc(
-      {this.isExternal = false,
-      this.pubKey,
-      this.pageSize = 20,
-      required this.isV2}) {
+  TransactionsBloc({this.pubKey, this.pageSize = 20, required this.isV2}) {
     _onPageRequest.stream
         .flatMap(_fetchTransactionsList)
         .listen(_onNewListingStateController.add)
@@ -27,7 +23,6 @@ class TransactionsBloc {
         .addTo(_subscriptions);
   }
 
-  final bool isExternal;
   final String? pubKey;
   final int pageSize;
   final bool isV2;
@@ -61,15 +56,24 @@ class TransactionsBloc {
     final TransactionsState lastListingState =
         _onNewListingStateController.value;
     try {
-      final bool isConnected =
-          await ConnectivityWidgetWrapperWrapper.isConnected;
-      logger('isConnected: $isConnected');
       final MultiWalletTransactionCubit transCubit =
           GetIt.instance<MultiWalletTransactionCubit>();
 
+      if (pageKey == null) {
+        final List<Transaction> cached = transCubit.transactions(pubKey);
+        if (cached.isNotEmpty) {
+          yield TransactionsState(
+            itemList: cached,
+          );
+        }
+      }
+
+      final bool isConnected =
+          await ConnectivityWidgetWrapperWrapper.isConnected;
+      logger('isConnected: $isConnected');
+
       if (!isConnected) {
         yield TransactionsState(
-          nextPageKey: pageKey,
           itemList: transCubit.transactions(pubKey),
         );
       } else {
@@ -78,7 +82,6 @@ class TransactionsBloc {
           cursor: isV2 ? _normalizePageKey(pageKey) : pageKey,
           pageSize: pageSize,
           pubKey: pubKey,
-          isExternal: isExternal,
         );
 
         final bool isLastPage = fetchedItems.length < pageSize;

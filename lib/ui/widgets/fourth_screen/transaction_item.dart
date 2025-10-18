@@ -567,16 +567,12 @@ class TransactionListItem extends StatelessWidget {
     final String fromKey = tx.from.pubKey;
     final Contact fromContact =
         await retrieveContactFromCubitOrCache(contactsCubit, fromKey);
-    final Contact toContact =
-        // ignore: deprecated_member_use_from_same_package
-        await retrieveContactFromCubitOrCache(contactsCubit, tx.to.pubKey);
     final List<Contact> recipients = <Contact>[];
     for (final Contact recipient in tx.recipients) {
       final Contact recipientNew = await retrieveContactFromCubitOrCache(
           contactsCubit, recipient.pubKey);
       recipients.add(recipientNew);
     }
-    return transaction.copyWith(
-        from: fromContact, to: toContact, recipients: recipients);
+    return transaction.copyWith(from: fromContact, recipients: recipients);
   }
 }

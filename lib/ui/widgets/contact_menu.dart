@@ -20,6 +20,9 @@ class ContactMenu extends StatelessWidget {
       this.parent,
       this.disable = false});
 
+  static final ValueNotifier<MenuController?> _openMenuController =
+      ValueNotifier<MenuController?>(null);
+
   final VoidCallback onEdit;
   final VoidCallback onSent;
   final VoidCallback onCopy;
@@ -92,10 +95,18 @@ class ContactMenu extends StatelessWidget {
     if (disable) {
       return;
     }
-    if (controller.isOpen) {
-      controller.close();
-    } else {
-      controller.open();
-    }
+    Future<void>.delayed(const Duration(milliseconds: 50), () {
+      if (_openMenuController.value != null &&
+          _openMenuController.value != controller) {
+        _openMenuController.value!.close();
+      }
+      if (controller.isOpen) {
+        controller.close();
+        _openMenuController.value = null;
+      } else {
+        controller.open();
+        _openMenuController.value = controller;
+      }
+    });
   }
 }

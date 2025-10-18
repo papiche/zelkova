@@ -85,6 +85,8 @@ flutter test
 
 Create a `.env` configuration file (and `.env-dev` for development) in the root of the project. Use the `dot.env.sample` file as template.
 
+See [this issue](https://github.com/frencojobs/envify/issues/6#issuecomment-966892148) if you try to change the `.env` and somehow is cached.
+
 #### Build for web
 
 Use first this command to enable web support:

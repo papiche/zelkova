@@ -158,6 +158,19 @@ class NodeManager {
     }
   }
 
+  void addNodeSortedByLatency(NodeType type, Node node, {bool notify = true}) {
+    final List<Node> nodes = _getList(type);
+    // Insert in correct position according to latency
+    if (nodes.isEmpty || node.latency < nodes.first.latency) {
+      _insertNode(nodes, node);
+      if (notify) {
+        notifyObserver();
+      }
+    } else {
+      _addNode(nodes, node, notify: notify);
+    }
+  }
+
   void cleanErrorStats({bool notify = true}) {
     for (final NodeType type in NodeType.values) {
       final List<Node> nodes = _getList(type);

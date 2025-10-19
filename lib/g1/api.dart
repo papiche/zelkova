@@ -460,9 +460,6 @@ Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type,
   // const Duration timeout = Duration(seconds: 10);
   final List<Node> lNodes = <Node>[];
   final String apyType = (type == NodeType.duniter) ? 'BMAS' : 'GVA S';
-  // To compare with something...
-  String? fastestNode;
-  late Duration fastestLatency = const Duration(minutes: 1);
   try {
     final List<dynamic> peers = await getPeers(type);
     // reorder peer list
@@ -489,20 +486,9 @@ Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type,
                     url: endpoint,
                     latency: latency.inMicroseconds,
                     currentBlock: nodeCheck.currentBlock);
-                if (fastestNode == null || latency < fastestLatency) {
-                  fastestNode = endpoint;
-                  fastestLatency = latency;
-                  if (!kReleaseMode) {
-                    loggerD(
-                        debug, 'Node bloc: Current faster node $fastestNode');
-                  }
-                  NodeManager().insertNode(type, node);
-                  lNodes.insert(0, node);
-                } else {
-                  // Not the faster
-                  NodeManager().addNode(type, node);
-                  lNodes.add(node);
-                }
+                // Use the new method that handles insertion based on latency
+                NodeManager().addNodeSortedByLatency(type, node);
+                lNodes.add(node);
               } catch (e) {
                 logger('Error fetching $endpoint, error: $e');
               }
@@ -541,8 +527,6 @@ void loggerD(bool debug, String message) {
 
 Future<List<Node>> _fetchNodes(NodeType type, {bool debug = false}) async {
   final List<Node> lNodes = <Node>[];
-  String? fastestNode;
-  late Duration fastestLatency = const Duration(minutes: 1);
   try {
     final List<Node> currentNodes = <Node>[...NodeManager().nodeList(type)];
     currentNodes.shuffle();
@@ -562,21 +546,8 @@ Future<List<Node>> _fetchNodes(NodeType type, {bool debug = false}) async {
             url: endpoint,
             latency: latency.inMicroseconds,
             currentBlock: nodeCheck.currentBlock);
-        if (fastestNode == null || latency < fastestLatency) {
-          fastestNode = endpoint;
-          fastestLatency = latency;
-          if (!kReleaseMode) {
-            if (debug) {
-              logger('Node $type: Current faster node $fastestNode');
-            }
-          }
-          NodeManager().insertNode(type, node);
-          lNodes.insert(0, node);
-        } else {
-          // Not the faster
-          NodeManager().addNode(type, node);
-          lNodes.add(node);
-        }
+        NodeManager().addNodeSortedByLatency(type, node);
+        lNodes.add(node);
       } catch (e) {
         if (debug) {
           logger('Error fetching $endpoint, error: $e');
@@ -737,7 +708,7 @@ Future<Tuple2<Node, http.Response>> _requestWithRetry(
             'Error trying to use node ${node.url} ($type) $e'); */
         logger('Error trying ${node.url} $e');
         if (!dontRecord) {
-          increaseNodeErrors(type, node);
+          NodeManager().increaseNodeErrors(type, node);
         }
         continue;
       }
@@ -933,15 +904,11 @@ Future<Tuple2<T?, Node>> gvaFunctionWrapper<T>(
       await Sentry.captureMessage(
           'Error trying to use gva node ${node.url} $e');
       logger('Error trying ${node.url} $e');
-      increaseNodeErrors(NodeType.gva, node);
+      NodeManager().increaseNodeErrors(NodeType.gva, node);
       continue;
     }
   }
   throw Exception('Sorry: I cannot find a working gva node');
-}
-
-void increaseNodeErrors(NodeType type, Node node) {
-  NodeManager().increaseNodeErrors(type, node);
 }
 
 // http://doc.e-is.pro/cesium-plus-pod/REST_API.html#userprofile

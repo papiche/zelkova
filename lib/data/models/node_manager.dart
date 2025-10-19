@@ -146,7 +146,7 @@ class NodeManager {
     updateNode(type, node.copyWith(errors: node.errors + 1), notify: notify);
   }
 
-  void cleanErrorStats() {
+  void cleanErrorStats({bool notify = true}) {
     for (final NodeType type in NodeType.values) {
       final List<Node> nodes = _getList(type);
       final List<Node> newList =
@@ -154,7 +154,9 @@ class NodeManager {
       nodes.clear();
       nodes.addAll(newList);
     }
-    notifyObserver();
+    if (notify) {
+      notifyObserver();
+    }
   }
 
   bool get loading => NodeManagerObserver.instance.cubit.isLoading;

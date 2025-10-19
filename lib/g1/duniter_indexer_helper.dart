@@ -20,8 +20,11 @@ import 'g1_v2_helper.dart';
 
 Future<List<Contact>> searchWotV2(String searchPatternRaw) async {
   final List<Contact> contacts = <Contact>[];
-  for (final Node node in NodeManager().getBestNodes(NodeType.duniterIndexer)) {
-    loggerDev('Searching indexer v2 with pattern $searchPatternRaw');
+  final List<Node> nodes = NodeManager().getBestNodes(NodeType.duniterIndexer);
+
+  for (final Node node in nodes) {
+    loggerDev(
+        'Searching indexer v2 with pattern $searchPatternRaw in node ${node.url}');
     try {
       // if is a v1Key, search pubkey
       final String searchPattern = validateKey(searchPatternRaw)
@@ -41,7 +44,10 @@ Future<List<Contact>> searchWotV2(String searchPatternRaw) async {
             .OperationResponse<GIdentitiesByNameData, GIdentitiesByNameVars>
             response = await client.request(req).first;
         if (response.hasErrors) {
-          loggerDev('Error: ${response.linkException?.originalException}');
+          NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
+          loggerDev('Node ${node.url} returned errors searching by name');
+          processFerryError(response);
+          continue; // Try next node
         } else {
           final GIdentitiesByNameData? data = response.data;
           if (data != null && data.identities != null) {
@@ -60,6 +66,7 @@ Future<List<Contact>> searchWotV2(String searchPatternRaw) async {
               }
             }
           }
+          break; // Success
         }
       } else {
         loggerDev('Searching wot by name or pk');
@@ -76,7 +83,10 @@ Future<List<Contact>> searchWotV2(String searchPatternRaw) async {
             await client.request(req).first;
 
         if (response.hasErrors) {
-          loggerDev('Error: ${response.linkException?.originalException}');
+          NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
+          loggerDev('Node ${node.url} returned errors searching by name or pk');
+          processFerryError(response);
+          continue; // Try next node
         } else {
           final GIdentitiesByNameOrPkData? data = response.data;
           if (data != null && data.identities != null) {
@@ -90,25 +100,28 @@ Future<List<Contact>> searchWotV2(String searchPatternRaw) async {
               }
             }
           }
+          break; // Success
         }
       }
-      // If works without errors, break
-      break;
-    } catch (e) {
-      log.e('Error searching wot', error: e);
+    } catch (e, st) {
+      NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
+      log.e('Error searching wot in node ${node.url}',
+          error: e, stackTrace: st);
+      continue; // Try next node
     }
-    loggerDev('Contacts found in wot search ${contacts.length}');
-    return contacts;
   }
-  loggerDev('Contacts not found in wot search');
+  loggerDev('Contacts found in wot search ${contacts.length}');
   ContactsCache().addContacts(contacts);
   return contacts;
 }
 
 Future<List<Contact>> getIdentities({required List<String> addresses}) async {
   final List<Contact> contacts = <Contact>[];
-  for (final Node node in NodeManager().getBestNodes(NodeType.duniterIndexer)) {
-    loggerDev('Searching indexer v2 with pubKeys $addresses');
+  final List<Node> nodes = NodeManager().getBestNodes(NodeType.duniterIndexer);
+
+  for (final Node node in nodes) {
+    loggerDev(
+        'Searching indexer v2 with pubKeys $addresses in node ${node.url}');
     try {
       final GIdentitiesByPkReq req =
           GIdentitiesByPkReq((GIdentitiesByPkReqBuilder b) => b
@@ -122,11 +135,15 @@ Future<List<Contact>> getIdentities({required List<String> addresses}) async {
           response = await client.request(req).first;
 
       if (response.hasErrors) {
-        loggerDev('Error: ${response.linkException?.originalException}',
-            error: response.linkException?.originalException);
+        NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
+        loggerDev('Node ${node.url} returned errors getting identities');
+        processFerryError(response);
+        continue; // Try next node
       } else {
         final GIdentitiesByPkData? data = response.data;
         if (data != null && data.identities != null) {
+          loggerDev(
+              'Successfully fetched ${data.identities!.nodes.length} identities from node ${node.url}');
           for (final GIdentitiesByPkData_identities_nodes identity
               in data.identities!.nodes) {
             final String? address = identity.accountId;
@@ -136,17 +153,21 @@ Future<List<Contact>> getIdentities({required List<String> addresses}) async {
               contacts.add(_contactFromIdentity(identity));
             }
           }
+          break; // Success
+        } else {
+          NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
+          loggerDev('Node ${node.url} returned null data');
+          continue; // Try next node
         }
       }
-      // If works without errors, break
-      break;
-    } catch (e) {
-      log.e('Error searching wot', error: e);
+    } catch (e, st) {
+      NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
+      log.e('Error getting identities from node ${node.url}',
+          error: e, stackTrace: st);
+      continue; // Try next node
     }
-    loggerDev('Contacts found in wot search ${contacts.length}');
-    return contacts;
   }
-  loggerDev('Contacts not found in wot search');
+  loggerDev('Contacts found: ${contacts.length}');
   ContactsCache().addContacts(contacts);
   return contacts;
 }
@@ -278,8 +299,10 @@ Contact _contactFromAccount(dynamic account) {
 
 Future<List<Contact>> getAccounts({required List<String> accountIds}) async {
   final List<Contact> contacts = <Contact>[];
-  for (final Node node in NodeManager().getBestNodes(NodeType.duniterIndexer)) {
-    loggerDev('Fetching accounts with IDs: $accountIds');
+  final List<Node> nodes = NodeManager().getBestNodes(NodeType.duniterIndexer);
+
+  for (final Node node in nodes) {
+    loggerDev('Fetching accounts with IDs: $accountIds from node ${node.url}');
     try {
       final GAccountsByPkReq req = GAccountsByPkReq(
         (GAccountsByPkReqBuilder b) => b
@@ -294,26 +317,60 @@ Future<List<Contact>> getAccounts({required List<String> accountIds}) async {
           response = await client.request(req).first;
 
       if (response.hasErrors) {
-        loggerDev('Error: ${response.linkException?.originalException}',
-            error: response.linkException?.originalException);
+        NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
+        loggerDev('Node ${node.url} returned GraphQL errors');
+        processFerryError(response);
+        continue; // Try next node
       } else {
         final GAccountsByPkData? accountsData = response.data;
         if (accountsData != null && accountsData.accounts != null) {
+          loggerDev(
+              'Successfully fetched ${accountsData.accounts!.nodes.length} accounts from node ${node.url}');
           for (final dynamic account in accountsData.accounts!.nodes) {
             final Contact contact = _contactFromAccount(account);
             contacts.add(contact);
           }
+          break; // Success, exit loop
+        } else {
+          NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
+          loggerDev('Node ${node.url} returned null data');
+          continue; // Try next node
         }
       }
-      break;
-    } catch (e) {
-      log.e('Error fetching accounts', error: e);
-      // retry
+    } catch (e, st) {
+      NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
+      log.e('Error fetching accounts from node ${node.url}',
+          error: e, stackTrace: st);
+      // Continue with next node
+      continue;
     }
   }
   loggerDev('Accounts found in wot search ${contacts.length}');
   ContactsCache().addContacts(contacts);
   return contacts;
+}
+
+void processFerryError(ferry.OperationResponse<dynamic, dynamic> response) {
+  String error = 'Unknown error';
+
+  if (response.graphqlErrors != null && response.graphqlErrors!.isNotEmpty) {
+    error = response.graphqlErrors!.first.message;
+  } else if (response.linkException != null) {
+    error = response.linkException.toString();
+    if (response.linkException!.originalException != null) {
+      log.e('Ferry error details',
+          error: response.linkException!.originalException);
+      if (response.linkException!.originalException is FormatException) {
+        error =
+            'FormatException: The server response is not valid JSON. The server might be returning HTML or plain text instead of JSON.';
+      }
+    }
+  } else if (response.data == null) {
+    error = 'Response data is null';
+  }
+
+  loggerDev('Ferry error: $error');
+  throw Exception('Ferry error: $error');
 }
 
 Future<Contact> getAccount({required String address}) async {
@@ -327,8 +384,11 @@ Future<Contact> getAccount({required String address}) async {
 Future<List<Contact>> getAccountsBasic(
     {required List<String> accountIds}) async {
   final List<Contact> contacts = <Contact>[];
-  for (final Node node in NodeManager().getBestNodes(NodeType.duniterIndexer)) {
-    loggerDev('Fetching accounts with IDs: $accountIds');
+  final List<Node> nodes = NodeManager().getBestNodes(NodeType.duniterIndexer);
+
+  for (final Node node in nodes) {
+    loggerDev(
+        'Fetching basic accounts with IDs: $accountIds from node ${node.url}');
     try {
       final GAccountsBasicByPkReq req = GAccountsBasicByPkReq(
         (GAccountsBasicByPkReqBuilder b) => b
@@ -344,25 +404,34 @@ Future<List<Contact>> getAccountsBasic(
           response = await client.request(req).first;
 
       if (response.hasErrors) {
-        loggerDev('Error: ${response.linkException?.originalException}',
-            error: response.linkException?.originalException);
+        NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
+        loggerDev('Node ${node.url} returned errors getting basic accounts');
+        processFerryError(response);
+        continue; // Try next node
       } else {
         final GAccountsBasicByPkData? accountsData = response.data;
         if (accountsData != null && accountsData.accounts != null) {
+          loggerDev(
+              'Successfully fetched ${accountsData.accounts!.nodes.length} basic accounts from node ${node.url}');
           for (final dynamic account in accountsData.accounts!.nodes) {
             final Contact contact = _contactFromAccount(account);
             contacts.add(contact);
           }
+          break; // Success
+        } else {
+          NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
+          loggerDev('Node ${node.url} returned null data');
+          continue; // Try next node
         }
       }
-      break;
     } catch (e, st) {
-      log.e('Error fetching accounts', error: e, stackTrace: st);
-      // retry
+      NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
+      log.e('Error fetching basic accounts from node ${node.url}',
+          error: e, stackTrace: st);
+      continue; // Try next node
     }
   }
-  loggerDev('Contacts found in wot search ${contacts.length}');
-  loggerDev('Fetched ${contacts.length} accounts');
+  loggerDev('Fetched ${contacts.length} basic accounts');
   ContactsCache().addContacts(contacts);
   return contacts;
 }

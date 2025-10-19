@@ -306,8 +306,6 @@ Map<String, dynamic> decryptJsonForImport(String keyEncrypted, String password,
   }
 }
 
-const Duration wrongNodeDuration = Duration(days: 2);
-
 bool areDatesClose(DateTime date1, DateTime date2, Duration threshold) {
   return date1.difference(date2).abs() <= threshold;
 }

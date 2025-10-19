@@ -97,13 +97,13 @@ class NodeManager {
 
   void _addNode(List<Node> nodes, Node node, {bool notify = true}) {
     if (!_find(nodes, node)) {
-      // Does not exists, so add it
+      // Does not exist, so add it
       nodes.add(node);
       if (notify) {
         notifyObserver();
       }
     } else {
-      // it exists
+      // It exists
       _updateList(nodes, node, notify: notify);
     }
   }
@@ -120,7 +120,7 @@ class NodeManager {
     if (!_find(nodes, node)) {
       nodes.insert(0, node);
     } else {
-      // it exists
+      // It exists
       _updateList(nodes, node);
     }
   }
@@ -142,8 +142,20 @@ class NodeManager {
   }
 
   void increaseNodeErrors(NodeType type, Node node, {bool notify = true}) {
-    logger('Increasing node errors of ${node.url} to ${node.errors + 1}');
-    updateNode(type, node.copyWith(errors: node.errors + 1), notify: notify);
+    final List<Node> nodes = _getList(type);
+    final Node? currentNode = nodes.cast<Node?>().firstWhere(
+          (Node? n) => n?.url == node.url,
+          orElse: () => null,
+        );
+    if (currentNode != null) {
+      final int newErrors = currentNode.errors + 1;
+      logger('Increasing node errors of ${node.url} to $newErrors');
+      updateNode(type, currentNode.copyWith(errors: newErrors), notify: notify);
+    } else {
+      // The node does not exist in the list, this should not happen normally
+      logger(
+          'Warning: Trying to increase errors for non-existent node ${node.url}');
+    }
   }
 
   void cleanErrorStats({bool notify = true}) {

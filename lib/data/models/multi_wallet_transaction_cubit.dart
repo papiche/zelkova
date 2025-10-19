@@ -19,6 +19,7 @@ import 'contact.dart';
 import 'multi_wallet_transaction_state.dart';
 import 'node.dart';
 import 'node_list_cubit.dart';
+import 'node_manager.dart';
 import 'node_type.dart';
 import 'transaction.dart';
 import 'transaction_state.dart';
@@ -198,7 +199,7 @@ class MultiWalletTransactionCubit
         logger(
             'Failed to get transactions, attempt ${attempt + 1} of $retries');
         await Future<void>.delayed(const Duration(seconds: 1));
-        increaseNodeErrors(NodeType.gva, node);
+        NodeManager().increaseNodeErrors(NodeType.gva, node);
         continue;
       }
 
@@ -209,7 +210,7 @@ class MultiWalletTransactionCubit
 
       if (newParsedState.balance < 0) {
         logger('Warning: Negative balance in node ${txDataResult.item2}');
-        increaseNodeErrors(NodeType.gva, node);
+        NodeManager().increaseNodeErrors(NodeType.gva, node);
         continue;
       }
       success = true;
@@ -411,7 +412,7 @@ class MultiWalletTransactionCubit
             // Add it but with missing type
             newPendingTxs.add(pend.copyWith(type: TransactionType.failed));
             // Mark the node with one more error via increaseNodeErrors
-            increaseNodeErrors(NodeType.gva, node);
+            NodeManager().increaseNodeErrors(NodeType.gva, node);
           }
         }
       }

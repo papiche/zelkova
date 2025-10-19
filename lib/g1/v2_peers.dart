@@ -12,8 +12,11 @@ class V2Peers {
   final Set<String> indexer;
 }
 
-Future<V2Peers> discoverV2PeersFromNode(String nodeBaseUrl2,
-    {Duration timeout = const Duration(seconds: 10)}) async {
+Future<V2Peers> discoverV2PeersFromNode(
+  String nodeBaseUrl2, {
+  Duration timeout = const Duration(seconds: 10),
+  http.Client? client,
+}) async {
   final Uri originalUri = Uri.parse(nodeBaseUrl2);
   final String httpsBaseUrl = 'https://${originalUri.host}';
   final Uri uri = Uri.parse(httpsBaseUrl);
@@ -24,8 +27,11 @@ Future<V2Peers> discoverV2PeersFromNode(String nodeBaseUrl2,
     'id': 1,
   };
 
+  final http.Client httpClient = client ?? http.Client();
+  final bool shouldCloseClient = client == null;
+
   try {
-    final http.Response resp = await http
+    final http.Response resp = await httpClient
         .post(
           uri,
           headers: const <String, String>{
@@ -85,5 +91,9 @@ Future<V2Peers> discoverV2PeersFromNode(String nodeBaseUrl2,
   } catch (e) {
     loggerDev('discoverV2PeersFromNode: error calling $httpsBaseUrl -> $e');
     return V2Peers();
+  } finally {
+    if (shouldCloseClient) {
+      httpClient.close();
+    }
   }
 }

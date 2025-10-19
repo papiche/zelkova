@@ -6,7 +6,6 @@ import '../../data/models/app_cubit.dart';
 import '../../data/models/node.dart';
 import '../../data/models/node_list_cubit.dart';
 import '../../data/models/node_list_state.dart';
-import '../../data/models/node_lists_default.dart';
 import '../../data/models/node_type.dart';
 import '../../g1/api.dart';
 import '../../g1/no_nodes_exception.dart';
@@ -17,9 +16,11 @@ class NodeListPage extends StatelessWidget {
   NodeListPage({super.key});
 
   List<Node> filterAndSortNodesByType(List<Node> nodes, NodeType type) {
-    nodes.sort(
+    // Create a copy of the list to avoid mutating the original state
+    final List<Node> sortedNodes = List<Node>.from(nodes);
+    sortedNodes.sort(
         (Node a, Node b) => a.currentBlock.compareTo(b.currentBlock) * -1);
-    return nodes;
+    return sortedNodes;
   }
 
   final ScrollController _scrollController = ScrollController();
@@ -76,7 +77,7 @@ class NodeListPage extends StatelessWidget {
                         NodeListHeader(
                             type: NodeType.duniterIndexer,
                             lastUpdated: state.duniterIndexerNodesLastUpdate,
-                            nodesCount: defaultDuniterIndexerNodes.length),
+                            nodesCount: duniterIndexerNodes.length),
                         if (duniterIndexerNodes.isNotEmpty)
                           NodeListWidget(
                               nodes: duniterIndexerNodes,
@@ -86,7 +87,7 @@ class NodeListPage extends StatelessWidget {
                         NodeListHeader(
                             type: NodeType.datapodEndpoint,
                             lastUpdated: state.duniterDataNodesLastUpdate,
-                            nodesCount: defaultDatapodEndpointNodes.length),
+                            nodesCount: duniterDataNodes.length),
                         if (duniterDataNodes.isNotEmpty)
                           NodeListWidget(
                               nodes: duniterDataNodes,
@@ -95,7 +96,7 @@ class NodeListPage extends StatelessWidget {
                         NodeListHeader(
                             type: NodeType.ipfsGateway,
                             lastUpdated: state.ipfsGatewaysLastUpdate,
-                            nodesCount: defaultIpfsGateways.length),
+                            nodesCount: ipfsGateways.length),
                         if (ipfsGateways.isNotEmpty)
                           NodeListWidget(
                               nodes: ipfsGateways,

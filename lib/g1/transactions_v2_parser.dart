@@ -26,7 +26,19 @@ Future<TransactionState> transactionsV2Parser(
     );
   }
 
-  final List<dynamic>? accounts = jsonData['account'] as List<dynamic>?;
+  final Map<String, dynamic>? accountsConnection =
+      jsonData['accounts'] as Map<String, dynamic>?;
+
+  if (accountsConnection == null) {
+    return currentState.copyWith(
+      balance: 0.0,
+      currentUd: currentUd,
+      transactions: <Transaction>[],
+      lastChecked: DateTime.now(),
+    );
+  }
+
+  final List<dynamic>? accounts = accountsConnection['nodes'] as List<dynamic>?;
   if (accounts == null || accounts.isEmpty) {
     return currentState.copyWith(
       balance: 0.0,
@@ -50,16 +62,27 @@ Future<TransactionState> transactionsV2Parser(
       lastChecked: DateTime.now(),
     );
   }
+
   final double balance = (jsonData['balance'] as BigInt?)?.toDouble() ?? 0.0;
 
+  final Map<String, dynamic>? transfersIssuedConnection =
+      account['transfersIssued'] as Map<String, dynamic>?;
+  final List<dynamic> transfersIssuedNodes =
+      transfersIssuedConnection?['nodes'] as List<dynamic>? ?? <dynamic>[];
+
+  final Map<String, dynamic>? transfersReceivedConnection =
+      account['transfersReceived'] as Map<String, dynamic>?;
+  final List<dynamic> transfersReceivedNodes =
+      transfersReceivedConnection?['nodes'] as List<dynamic>? ?? <dynamic>[];
+
   final List<Transaction> issuedTransactions = await _parseTransactions(
-    account['transfersIssued'] as List<dynamic>? ?? <dynamic>[],
+    transfersIssuedNodes,
     TransactionType.sent,
     accountAddress,
   );
 
   final List<Transaction> receivedTransactions = await _parseTransactions(
-    account['transfersReceived'] as List<dynamic>? ?? <dynamic>[],
+    transfersReceivedNodes,
     TransactionType.received,
     accountAddress,
   );
@@ -95,7 +118,7 @@ Future<List<Transaction>> _parseTransactions(
           (txData['from'] as Map<String, dynamic>)['id'] as String;
       final String to = (txData['to'] as Map<String, dynamic>)['id'] as String;
       final DateTime time = DateTime.parse(txData['timestamp'] as String);
-      double amount = (txData['amount'] as num).toDouble();
+      double amount = double.parse(txData['amount'] as String);
       final Map<String, dynamic>? commentRaw =
           txData['comment'] as Map<String, dynamic>?;
 

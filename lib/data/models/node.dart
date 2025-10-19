@@ -3,6 +3,9 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'node.g.dart';
 
+const Duration wrongNodeDuration = Duration(days: 2);
+final int wrongNode = wrongNodeDuration.inMicroseconds;
+
 @JsonSerializable()
 class Node extends Equatable {
   const Node(
@@ -35,6 +38,10 @@ class Node extends Equatable {
   Map<String, dynamic> toJson() => _$NodeToJson(this);
 
   Node fromJson(Map<String, dynamic> json) => Node.fromJson(json);
+
+  bool get isNotOk => latency >= wrongNode;
+
+  bool get isOk => latency < wrongNode;
 
   @override
   List<Object?> get props => <dynamic>[url];

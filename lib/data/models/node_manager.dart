@@ -186,10 +186,17 @@ class NodeManager {
 
   List<Node> getBestNodes(NodeType type) {
     final List<Node> allNodes = NodeManager().nodeList(type);
-    final List<Node> nodesWithFewErrors = NodeManager().nodesWorkingList(type);
 
-    // Use all nodes to find the max block, even those with errors
-    final int maxCurrentBlock = allNodes.fold(
+    // Filter out nodes with huge latency (offline nodes)
+    final List<Node> onlineNodes =
+        allNodes.where((Node node) => node.isOk).toList();
+
+    final List<Node> nodesWithFewErrors = onlineNodes
+        .where((Node n) => n.errors < NodeManager.maxNodeErrors)
+        .toList();
+
+    // Use only online nodes to find the max block
+    final int maxCurrentBlock = onlineNodes.fold(
       0,
       (int max, Node node) => node.currentBlock > max ? node.currentBlock : max,
     );
@@ -202,17 +209,21 @@ class NodeManager {
 
     if (workingAndSynced.isNotEmpty) {
       sortNodesByErrorOrLatency(workingAndSynced);
+      workingAndSynced
+          .shuffle(); // Shuffle to avoid always using the same order
       return workingAndSynced;
     }
 
-    final List<Node> syncedWithErrors = allNodes.where(isNearMax).toList();
+    final List<Node> syncedWithErrors = onlineNodes.where(isNearMax).toList();
 
     if (syncedWithErrors.isNotEmpty) {
       syncedWithErrors.shuffle();
       return syncedWithErrors;
     }
 
-    return defaultNodes(type);
+    final List<Node> defaultNodesForType = defaultNodes(type);
+    defaultNodesForType.shuffle();
+    return defaultNodesForType;
   }
 
   String ipfsUrl(String path) {

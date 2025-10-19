@@ -451,7 +451,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
   Future<void> _loadNodes() async {
     _printNodeStatus();
     // In the future only load nodes by type
-    // final bool useV2 = context.read<AppCubit>().isV2;
+    final bool useV2 = context.read<AppCubit>().isV2;
     for (final NodeType nodeType in NodeType.values) {
       //if (useV2 && !nodeType.isV2) {
       //  continue;
@@ -460,7 +460,8 @@ class _GinkgoAppState extends State<GinkgoApp> {
         // Endpoint nodes are loaded along with indexer nodes
         continue;
       }
-      await fetchNodes(nodeType, false);
+      // Right now, force in v2 (as gtest has now new nodes)
+      await fetchNodes(nodeType, useV2);
     }
     _printNodeStatus(prefix: 'Continuing');
   }

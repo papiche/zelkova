@@ -320,7 +320,7 @@ void main() async {
     }
   }, (Object error, StackTrace stack) async {
     // Last-chance catch for any uncaught error within the zone.
-    logger('UNCAUGHT (zone): $error\n$stack');
+    log.e('UNCAUGHT (zone)', error: error, stackTrace: stack);
     // Optionally report to Sentry here.
     // await Sentry.captureException(error, stackTrace: stack);
   });
@@ -450,7 +450,16 @@ class GinkgoApp extends StatefulWidget {
 class _GinkgoAppState extends State<GinkgoApp> {
   Future<void> _loadNodes() async {
     _printNodeStatus();
+    // In the future only load nodes by type
+    // final bool useV2 = context.read<AppCubit>().isV2;
     for (final NodeType nodeType in NodeType.values) {
+      //if (useV2 && !nodeType.isV2) {
+      //  continue;
+      //}
+      if (nodeType == NodeType.duniterIndexer) {
+        // Endpoint nodes are loaded along with indexer nodes
+        continue;
+      }
       await fetchNodes(nodeType, false);
     }
     _printNodeStatus(prefix: 'Continuing');
@@ -492,7 +501,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
     // Kick off nodes/tx fetch if online.
     ConnectivityWidgetWrapperWrapper.isConnected.then((bool isConnected) {
       if (isConnected) {
-        fetchNodesIfNotReady();
+        fetchNodesIfNotReady(v2Only: useV2);
         // Fetch transactions (and balance) here too on start
         if (mounted) {
           fetchTransactions(context);
@@ -512,6 +521,11 @@ class _GinkgoAppState extends State<GinkgoApp> {
         frequency: const Duration(minutes: 16),
       );
     }
+
+    // Clean MultiWalletTransactionCubit state before launching the app
+    context.read<MultiWalletTransactionCubit>().autoCleanState();
+    // This is consuming a lot of time and may delay app start, only for dev
+    // context.read<MultiWalletTransactionCubit>().printStateStats();
 
     SharedPreferencesHelper().refreshWalletsInfo();
 

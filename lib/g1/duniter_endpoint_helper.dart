@@ -62,7 +62,6 @@ Future<T> executeOnPolkadotNodes<T>(
     {bool retry = true,
     Duration timeout = defPolkadotTimeout}) async {
   final List<Node> nodes = NodeManager().getBestNodes(NodeType.endpoint);
-  nodes.shuffle();
 
   for (final Node node in nodes) {
     try {
@@ -151,7 +150,9 @@ Future<tp.Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalanceV2(
     throw Exception('Error fetching balance for $pubKeyRaw/$address');
   }
 
-  for (final Node node in NodeManager().getBestNodes(NodeType.duniterIndexer)) {
+  final List<Node> nodes = NodeManager().getBestNodes(NodeType.duniterIndexer);
+
+  for (final Node node in nodes) {
     try {
       // Force for testing
       // node = Node(url: 'https://squid.polkadot.coinduf.eu/v1/graphql');
@@ -174,26 +175,60 @@ Future<tp.Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalanceV2(
 
       if (response.hasErrors) {
         NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
-        loggerDev(
-            'Error fetching data: ${response.graphqlErrors} for $pubKeyRaw/$address in node ${node.url}',
-            error: response.graphqlErrors);
-        throw Exception('Error fetching data: ${response.graphqlErrors}');
+        loggerDev('Node ${node.url} returned errors for $pubKeyRaw/$address');
+        processFerryError(response);
+        continue; // Try next node
       }
 
       final Map<String, dynamic>? data = response.data?.toJson();
       if (data != null) {
         data['balance'] = balance;
+        loggerDev(
+            'Successfully fetched history for $pubKeyRaw/$address from node ${node.url}');
+        return tp.Tuple2<Map<String, dynamic>?, Node>(data, node);
+      } else {
+        NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
+        loggerDev(
+            'Node ${node.url} returned null data for $pubKeyRaw/$address');
+        continue; // Try next node
       }
-      loggerDev('Fetched history for $pubKeyRaw/$address in node ${node.url}');
-      return tp.Tuple2<Map<String, dynamic>?, Node>(data, node);
     } catch (e, stackTrace) {
+      NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
       loggerDev(
-          'Error fetching history for$pubKeyRaw/$address in node ${node.url}',
+          'Error fetching history for $pubKeyRaw/$address in node ${node.url}',
           error: e,
           stackTrace: stackTrace);
+      // Continue with next node
+      continue;
     }
   }
+
+  // If all nodes failed, return empty result
+  loggerDev('All nodes failed to fetch history for $pubKeyRaw/$address');
   return const tp.Tuple2<Map<String, dynamic>?, Node>(null, Node(url: ''));
+}
+
+void processFerryError(ferry.OperationResponse<dynamic, dynamic> response) {
+  String error = 'Unknown error';
+
+  if (response.graphqlErrors != null && response.graphqlErrors!.isNotEmpty) {
+    error = response.graphqlErrors!.first.message;
+  } else if (response.linkException != null) {
+    error = response.linkException.toString();
+    if (response.linkException!.originalException != null) {
+      log.e('Ferry error details',
+          error: response.linkException!.originalException);
+      if (response.linkException!.originalException is FormatException) {
+        error =
+            'FormatException: The server response is not valid JSON. The server might be returning HTML or plain text instead of JSON.';
+      }
+    }
+  } else if (response.data == null) {
+    error = 'Response data is null';
+  }
+
+  loggerDev('Ferry error: $error');
+  throw Exception('Ferry error: $error');
 }
 
 Future<SignAndSendResult> requestDistanceEvaluationFor(int idtyIndex,

@@ -13,6 +13,7 @@ import '../../../data/models/app_cubit.dart';
 import '../../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../../data/models/multi_wallet_transaction_state.dart';
 import '../../../data/models/transaction.dart';
+import '../../../data/models/transaction_state.dart';
 import '../../../data/models/transactions_bloc.dart';
 import '../../../data/models/utxo_cubit.dart';
 import '../../../g1/currency.dart';
@@ -31,7 +32,6 @@ import 'transactions_widget_error_widget.dart';
 class TransactionsAndBalanceWidget extends StatefulWidget {
   const TransactionsAndBalanceWidget({
     super.key,
-    this.isExternalAccount = false,
     this.isScrollEnabled = true,
     this.pubKey,
     this.from,
@@ -39,7 +39,6 @@ class TransactionsAndBalanceWidget extends StatefulWidget {
     this.pageSize,
   });
 
-  final bool isExternalAccount;
   final String? pubKey;
   final int? from;
   final int? to;
@@ -55,7 +54,8 @@ class _TransactionsAndBalanceWidgetState
     extends State<TransactionsAndBalanceWidget>
     with SingleTickerProviderStateMixin {
   late TransactionsBloc _bloc;
-
+  late String pubKey;
+  late bool isExternalAccount;
   late StreamSubscription<TransactionsState> _blocListingStateSubscription;
   late AppCubit appCubit;
   late MultiWalletTransactionCubit transCubit;
@@ -97,43 +97,70 @@ class _TransactionsAndBalanceWidgetState
     transCubit = context.read<MultiWalletTransactionCubit>();
     utxoCubit = context.read<UtxoCubit>();
 
+    pubKey = widget.pubKey ?? SharedPreferencesHelper().getPubKey();
+    isExternalAccount = SharedPreferencesHelper().isExternal(pubKey);
+    if (!isExternalAccount) {
+      final TransactionState cachedTs = transCubit.currentWalletState(pubKey);
+      final List<Transaction> cached = cachedTs.transactions;
+
+      if (cached.isNotEmpty) {
+        _txState = _txState.copyWith(
+          keys: <String?>[
+            _lastRequestedCursor,
+          ],
+          pages: <List<Transaction>>[cached],
+          hasNextPage: appCubit.isV2 || cachedTs.endCursor != null,
+          isLoading: false,
+        );
+        // v1: set endCursor; v2: leave null, bloc will handle it
+        _nextCursor = appCubit.isV2 ? null : cachedTs.endCursor;
+      }
+    }
+
     _bloc = TransactionsBloc(
-      isExternal: widget.isExternalAccount,
-      pubKey: widget.pubKey,
+      pubKey: pubKey,
       isV2: appCubit.isV2,
     );
     _blocListingStateSubscription =
         _bloc.onNewListingState.listen((TransactionsState s) {
       final List<Transaction> items = s.itemList ?? const <Transaction>[];
 
-      final bool isReal =
-          items.isNotEmpty || s.error != null || s.nextPageKey != null;
-      if (!isReal) {
+      // Detect whether this is the first page and whether it's empty
+      final bool firstPage = _lastRequestedCursor == null;
+      final bool noItemsThisPage = items.isEmpty;
+      final bool hasNext = s.nextPageKey != null;
+
+      // If the first page is empty but there is a next page, auto-fetch the next one.
+      // Avoid locking the UI in a permanent "loading" state.
+      if (firstPage && noItemsThisPage && hasNext) {
+        _lastRequestedCursor = s.nextPageKey;
+        _nextCursor = s.nextPageKey;
+        // Important: do NOT mark isLoading = true here; just trigger the next request.
+        _bloc.onPageRequestSink.add(_lastRequestedCursor);
         return;
       }
 
       setState(() {
         final List<List<Transaction>> prevPages =
             _txState.pages ?? const <List<Transaction>>[];
-        final bool isFirstPage = _lastRequestedCursor == null;
 
-        final List<List<Transaction>> newPages = isFirstPage
-            ? <List<Transaction>>[items]
+        // For the first page, if it's empty and has no next, keep pages empty.
+        final List<List<Transaction>> newPages = firstPage
+            ? (noItemsThisPage
+                ? <List<Transaction>>[]
+                : <List<Transaction>>[items])
             : <List<Transaction>>[...prevPages, items];
 
-        final List<String?> newKeys = isFirstPage
-            ? <String?>[_lastRequestedCursor]
+        final List<String?> newKeys = firstPage
+            ? (noItemsThisPage ? <String?>[] : <String?>[_lastRequestedCursor])
             : <String?>[...?_txState.keys, _lastRequestedCursor];
-
-        final bool keepLoading = s.nextPageKey != null &&
-            _countItems(_txState) == 0 &&
-            items.isEmpty;
 
         _txState = _txState.copyWith(
           pages: newPages,
           keys: newKeys,
-          hasNextPage: s.nextPageKey != null,
-          isLoading: keepLoading,
+          hasNextPage: hasNext,
+          // Only mark as loading when you are actively waiting for a response
+          isLoading: false,
           error: s.error,
         );
 
@@ -143,7 +170,7 @@ class _TransactionsAndBalanceWidgetState
       });
     });
 
-    if (!widget.isExternalAccount) {
+    if (!isExternalAccount) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _fetchNextPendingPage();
       });
@@ -161,8 +188,7 @@ class _TransactionsAndBalanceWidgetState
         } catch (e) {
           logger('Failed via _refresh, lets try a basic fetchTransactions');
           transCubit.fetchTransactions(
-            isExternal: widget.isExternalAccount,
-            pubKey: widget.pubKey,
+            pubKey: pubKey,
           );
         }
       },
@@ -181,9 +207,11 @@ class _TransactionsAndBalanceWidgetState
   }
 
   Future<void> _fetchNextTxPage() async {
-    if (_txState.isLoading &&
-        (_txState.pages != null && _txState.pages!.isNotEmpty == true)) {
-      return; // Already loading and has data
+    if (_txState.isLoading) {
+      return;
+    }
+    if (_lastRequestedCursor != null && _nextCursor == _lastRequestedCursor) {
+      return;
     }
 
     setState(() {
@@ -196,11 +224,8 @@ class _TransactionsAndBalanceWidgetState
 
   Future<void> _fetchNextPendingPage() async {
     // Log for debugging
-    logger('Calling _fetchNextPendingPage, pubKey: [32m${widget.pubKey}[0m');
-    if (widget.pubKey != null) {
-      logger('Not fetching pending txs because pubKey is not null');
-      return;
-    }
+    logger('Calling _fetchNextPendingPage, pubKey: $pubKey');
+
     if (_pendingState.isLoading) {
       logger('Already loading pending txs');
       return;
@@ -212,7 +237,7 @@ class _TransactionsAndBalanceWidgetState
 
     try {
       final List<Transaction> pendTxs =
-          transCubit.currentWalletState(widget.pubKey).pendingTransactions;
+          transCubit.currentWalletState(pubKey).pendingTransactions;
       logger('Fetched pending txs: [32m${pendTxs.length}[0m');
 
       final int already = _pendingState.items?.length ?? 0;
@@ -247,30 +272,33 @@ class _TransactionsAndBalanceWidgetState
   }
 
   Future<void> _refresh() async {
+    final List<List<Transaction>> cachedPages =
+        _txState.pages ?? const <List<Transaction>>[];
+    final List<String?> cachedKeys = _txState.keys ?? const <String?>[];
+
     setState(() {
-      _txState = PagingState<String?, Transaction>(isLoading: true);
-      if (!widget.isExternalAccount) {
-        _pendingState = PagingState<int, Transaction>();
+      _txState = PagingState<String?, Transaction>(
+        isLoading: true,
+        pages: cachedPages.isNotEmpty ? cachedPages : null,
+        keys: cachedKeys.isNotEmpty ? cachedKeys : null,
+      );
+      if (!isExternalAccount) {
+        _pendingState = PagingState<int, Transaction>(isLoading: true);
       }
     });
 
     _nextCursor = null;
     _lastRequestedCursor = null;
+    _gotFirstResponse = false;
 
-    try {
-      await _fetchNextTxPage();
-      if (!widget.isExternalAccount) {
-        await _fetchNextPendingPage();
-      }
-    } catch (error) {
-      setState(() {
-        _txState = _txState.copyWith(error: error, isLoading: false);
-      });
+    _fetchNextTxPage();
+    if (!isExternalAccount) {
+      _fetchNextPendingPage();
     }
   }
 
   double getBalance(BuildContext context) =>
-      context.read<MultiWalletTransactionCubit>().balance(widget.pubKey);
+      context.read<MultiWalletTransactionCubit>().balance(pubKey);
 
   @override
   Widget build(BuildContext context) {
@@ -286,8 +314,6 @@ class _TransactionsAndBalanceWidgetState
         MultiWalletTransactionState>(
       builder: (BuildContext context,
           MultiWalletTransactionState transBalanceState) {
-        final String currentPubKey =
-            widget.pubKey ?? SharedPreferencesHelper().getPubKey();
         final double balance = getBalance(context);
         final NumberFormat currentNumber = currentNumberFormat(
           useSymbol: true,
@@ -328,9 +354,20 @@ class _TransactionsAndBalanceWidgetState
                           : weSlideController.show(),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.info_outline),
-                      onPressed: () => tutorial.showTutorial(showAlways: true),
-                    ),
+                        icon: const Icon(Icons.info_outline),
+                        onPressed: () =>
+                            tutorial.showTutorial(showAlways: true),
+                        onLongPress: () {
+                          context
+                              .read<MultiWalletTransactionCubit>()
+                              .printStateStats();
+                          /* context
+                              .read<MultiWalletTransactionCubit>()
+                              .autoCleanState();
+                          context
+                              .read<MultiWalletTransactionCubit>()
+                              .printStateStats(); */
+                        }),
                     const SizedBox(width: 10),
                   ],
                 ),
@@ -340,7 +377,7 @@ class _TransactionsAndBalanceWidgetState
                   panelMaxSize,
                   colorScheme,
                   context,
-                  currentPubKey,
+                  pubKey,
                   isG1,
                   currentSymbol,
                   currentUd,
@@ -354,7 +391,7 @@ class _TransactionsAndBalanceWidgetState
                 panelMaxSize,
                 colorScheme,
                 context,
-                currentPubKey,
+                pubKey,
                 isG1,
                 currentSymbol,
                 currentUd,
@@ -394,7 +431,7 @@ class _TransactionsAndBalanceWidgetState
           balance,
         ),
       ),
-      panel: widget.isExternalAccount
+      panel: isExternalAccount
           ? const SizedBox.shrink()
           : _balancePanelBuilder(colorScheme, context, pubKey),
       panelHeader: Container(
@@ -466,15 +503,14 @@ class _TransactionsAndBalanceWidgetState
         physics: const AlwaysScrollableScrollPhysics(),
         slivers: <Widget>[
           SliverVisibility(
-              visible: !widget.isExternalAccount &&
-                  widget.pubKey == null &&
+              visible: !isExternalAccount &&
                   (_pendingState.items?.isNotEmpty ?? false),
               sliver: PagedSliverList<int, Transaction>(
                 state: _pendingState,
                 fetchNextPage: _fetchNextPendingPage,
                 builderDelegate: PagedChildBuilderDelegate<Transaction>(
                   animateTransitions: true,
-                  transitionDuration: const Duration(milliseconds: 500),
+                  // transitionDuration: const Duration(milliseconds: 500),
                   itemBuilder:
                       (BuildContext context, Transaction tx, int index) {
                     return TransactionListItem(
@@ -485,7 +521,7 @@ class _TransactionsAndBalanceWidgetState
                       currentSymbol: currentSymbol,
                       currentUd: currentUd,
                       isCurrencyBefore: isCurrencyBefore,
-                      isExternalAccount: widget.isExternalAccount,
+                      isExternalAccount: isExternalAccount,
                       afterRetry: _refresh,
                       afterCancel: _refresh,
                     );
@@ -510,7 +546,7 @@ class _TransactionsAndBalanceWidgetState
               fetchNextPage: _fetchNextTxPage,
               builderDelegate: PagedChildBuilderDelegate<Transaction>(
                 animateTransitions: true,
-                transitionDuration: const Duration(milliseconds: 500),
+                // transitionDuration: const Duration(milliseconds: 500),
                 itemBuilder: (BuildContext context, Transaction tx, int index) {
                   return TransactionListItem(
                     pubKey: myPubKey,
@@ -518,7 +554,7 @@ class _TransactionsAndBalanceWidgetState
                     isG1: isG1,
                     isCurrencyBefore: isCurrencyBefore,
                     currentSymbol: currentSymbol,
-                    isExternalAccount: widget.isExternalAccount,
+                    isExternalAccount: isExternalAccount,
                     index: index + pendingCount,
                     transaction: tx,
                   );
@@ -540,6 +576,9 @@ class _TransactionsAndBalanceWidgetState
                   onTryAgain: _fetchNextTxPage,
                 ),
                 noItemsFoundIndicatorBuilder: (_) {
+                  if (_txState.pages?.isNotEmpty ?? false) {
+                    return const SizedBox.shrink();
+                  }
                   if (_bootstrapping) {
                     return const Center(child: CircularProgressIndicator());
                   }
@@ -563,7 +602,7 @@ class _TransactionsAndBalanceWidgetState
                       child: Align(
                         alignment: Alignment.topCenter,
                         child: Text(
-                          tr(widget.isExternalAccount
+                          tr(isExternalAccount
                               ? 'no_transactions_simple'
                               : 'no_transactions'),
                           textAlign: TextAlign.center,

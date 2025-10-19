@@ -29,6 +29,8 @@ class MultiWalletTransactionCubit
   MultiWalletTransactionCubit()
       : super(const MultiWalletTransactionState(<String, TransactionState>{}));
 
+  DateTime? _lastPersist;
+
   @override
   String get storagePrefix =>
       kIsWeb ? 'MultiWalletTransactionsCubit' : super.storagePrefix;
@@ -38,8 +40,27 @@ class MultiWalletTransactionCubit
       MultiWalletTransactionState.fromJson(json);
 
   @override
-  Map<String, dynamic> toJson(MultiWalletTransactionState state) =>
-      state.toJson();
+  Map<String, dynamic> toJson(MultiWalletTransactionState state) {
+    // Create a thinned state before serializing
+    final Map<String, TransactionState> thinnedMap =
+        <String, TransactionState>{};
+
+    state.map.forEach((String pubKey, TransactionState ts) {
+      // Skip external wallets
+      if (SharedPreferencesHelper().isExternal(pubKey)) {
+        return;
+      }
+
+      // Keep only last 10 transactions to save space
+      thinnedMap[pubKey] =
+          ts.copyWith(transactions: ts.transactions.take(10).toList());
+    });
+
+    // Use the generated toJson method with the thinned state
+    final MultiWalletTransactionState thinnedState =
+        MultiWalletTransactionState(thinnedMap);
+    return thinnedState.toJson();
+  }
 
   void addPendingTransaction(Transaction pendingTransaction, {String? key}) {
     key = _defKey(key);
@@ -66,7 +87,12 @@ class MultiWalletTransactionCubit
     final String key = extractPublicKey(keyRaw);
     final Map<String, TransactionState> newStates =
         Map<String, TransactionState>.of(state.map)..[key] = newState;
-    emit(MultiWalletTransactionState(newStates));
+    if (SharedPreferencesHelper().isExternal(key)) {
+      // External wallet, emit without persisting thanks to toJson
+      emit(MultiWalletTransactionState(newStates));
+    } else {
+      _emitControlled(MultiWalletTransactionState(newStates));
+    }
   }
 
   String _defKey(String? key) {
@@ -141,7 +167,6 @@ class MultiWalletTransactionCubit
       int? pageSize,
       String? cursor,
       String? pubKey,
-      bool isExternal = false,
       bool debug = false}) async {
     final NodeListCubit nodeListCubit = GetIt.instance.get<NodeListCubit>();
     final AppCubit appCubit = GetIt.instance.get<AppCubit>();
@@ -149,6 +174,8 @@ class MultiWalletTransactionCubit
         (extractPublicKey(pubKey) ==
             extractPublicKey(SharedPreferencesHelper().getPubKey()));
     pubKey = _defKey(pubKey);
+
+    final bool isExternal = SharedPreferencesHelper().isExternal(pubKey);
     if (debug) {
       loggerDev('Fetching transactions for $pubKey in cubit');
     }
@@ -473,6 +500,125 @@ class MultiWalletTransactionCubit
       state.map.remove(pubKey);
       emit(MultiWalletTransactionState(
           Map<String, TransactionState>.of(state.map)));
+    }
+  }
+
+  /// Cleans the state to avoid excessive growth.
+  /// Removes old transactions, limits the number of transactions per wallet,
+  /// and deletes the state of wallets not included in the user's public keys.
+  void autoCleanState({
+    int maxTxPerWallet = 10,
+    Duration maxTxAge = const Duration(days: 20),
+  }) {
+    final DateTime now = DateTime.now();
+    final Map<String, TransactionState> cleanedMap =
+        <String, TransactionState>{};
+    // Get all user public keys from SharedPreferencesHelper
+    final Set<String> keepSet =
+        SharedPreferencesHelper().publicKeys.map(extractPublicKey).toSet();
+    for (final String key in state.map.keys) {
+      if (!keepSet.contains(extractPublicKey(key))) {
+        // Do not keep non-owned wallets
+        continue;
+      }
+      final TransactionState walletState = state.map[key]!;
+      // Filter transactions by age
+      final List<Transaction> filteredTxs = walletState.transactions
+          .where((Transaction tx) =>
+              now.difference(tx.time).inDays < maxTxAge.inDays)
+          .toList();
+      // Limit the number of transactions
+      final List<Transaction> limitedTxs = filteredTxs.length > maxTxPerWallet
+          ? filteredTxs.sublist(filteredTxs.length - maxTxPerWallet)
+          : filteredTxs;
+      cleanedMap[key] = walletState.copyWith(transactions: limitedTxs);
+    }
+    emit(MultiWalletTransactionState(cleanedMap));
+  }
+
+  /// Prints statistics about the state to the console (in English)
+  void printStateStats([bool debug = false]) {
+    if (!debug) {
+      return;
+    }
+    final Map<String, TransactionState> map = state.map;
+    loggerDev('--- MultiWalletTransactionCubit Stats ---');
+    loggerDev('Total wallets: ${map.length}');
+    int totalTx = 0;
+    int totalPending = 0;
+    Transaction? globalLargestTx;
+    int globalLargestSize = 0;
+    String? globalLargestWallet;
+    for (final MapEntry<String, TransactionState> entry in map.entries) {
+      final String key = entry.key;
+      final TransactionState walletState = entry.value;
+      final List<Transaction> txs = walletState.transactions;
+      final List<Transaction> pendings = walletState.pendingTransactions;
+      totalTx += txs.length;
+      totalPending += pendings.length;
+      final Map<String, dynamic> walletJson = walletState.toJson();
+      final String walletJsonStr = walletJson.toString();
+      loggerDev('Wallet: $key');
+      loggerDev('  Transactions: ${txs.length}');
+      loggerDev('  Pending transactions: ${pendings.length}');
+      loggerDev('  Serialized wallet size: ${walletJsonStr.length} characters');
+      Transaction? largestTx;
+      int largestSize = 0;
+      for (final Transaction tx in txs) {
+        final Map<String, dynamic> txJson = tx.toJson();
+        final String txJsonStr = txJson.toString();
+        if (txJsonStr.length > largestSize) {
+          largestSize = txJsonStr.length;
+          largestTx = tx;
+        }
+        if (txJsonStr.length > globalLargestSize) {
+          globalLargestSize = txJsonStr.length;
+          globalLargestTx = tx;
+          globalLargestWallet = key;
+        }
+      }
+      if (largestTx != null) {
+        loggerDev('  Largest transaction:');
+        loggerDev('    Size: $largestSize characters');
+        loggerDev('    Amount: ${largestTx.amount}');
+        loggerDev('    Comment (EN): ${largestTx.comment}');
+        loggerDev(
+            '    Recipients size: ${largestTx.recipients.toString().length}');
+        loggerDev('    From size: ${largestTx.from.toString().length}');
+        loggerDev('    To size: ${largestTx.recipients.toString().length}');
+      }
+    }
+    if (globalLargestTx != null) {
+      loggerDev('--- Largest transaction in all wallets ---');
+      loggerDev('Wallet: $globalLargestWallet');
+      loggerDev('  Size: $globalLargestSize characters');
+      loggerDev('  Amount: ${globalLargestTx.amount}');
+      loggerDev('  Comment (EN): ${globalLargestTx.comment}');
+      loggerDev('  Recipients: ${globalLargestTx.recipients}');
+      loggerDev('  From: ${globalLargestTx.from}');
+      loggerDev(
+          '  Recipients size: ${globalLargestTx.recipients.toString().length}');
+      loggerDev('  From size: ${globalLargestTx.from.toString().length}');
+    }
+    loggerDev('Total transactions: $totalTx');
+    loggerDev('Total pending transactions: $totalPending');
+    // Serialized state size
+    final Map<String, dynamic> json = toJson(state);
+    final String jsonStr = json.toString();
+    loggerDev('Serialized state size: ${jsonStr.length} characters');
+    loggerDev('------------------------------------------');
+  }
+
+  void _emitControlled(MultiWalletTransactionState newState,
+      {bool forcePersist = false}) {
+    final DateTime now = DateTime.now();
+    final bool allowPersistByTime = _lastPersist == null ||
+        now.difference(_lastPersist!) > const Duration(seconds: 10);
+    if (forcePersist || allowPersistByTime) {
+      _lastPersist = now;
+      emit(newState);
+    } else {
+      emit(newState);
     }
   }
 }

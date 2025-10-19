@@ -37,6 +37,8 @@ class TransactionsBloc {
   Stream<TransactionsState> get onNewListingState =>
       _onNewListingStateController.stream;
 
+  TransactionsState get currentState => _onNewListingStateController.value;
+
   final StreamController<String?> _onPageRequest = StreamController<String?>();
 
   Sink<String?> get onPageRequestSink => _onPageRequest.sink;
@@ -59,14 +61,14 @@ class TransactionsBloc {
       final MultiWalletTransactionCubit transCubit =
           GetIt.instance<MultiWalletTransactionCubit>();
 
-      if (pageKey == null) {
+      /* if (pageKey == null) {
         final List<Transaction> cached = transCubit.transactions(pubKey);
         if (cached.isNotEmpty) {
           yield TransactionsState(
             itemList: cached,
           );
         }
-      }
+      } */
 
       final bool isConnected =
           await ConnectivityWidgetWrapperWrapper.isConnected;

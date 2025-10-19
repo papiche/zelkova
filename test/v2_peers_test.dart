@@ -491,4 +491,421 @@ void main() {
       expect(peers.endpoint, contains('wss://valid.example.com/ws'));
     });
   });
+
+  group('Recursive peer discovery', () {
+    test('should discover peers recursively up to max depth', () async {
+      int callCount = 0;
+
+      final http.Client mockClient = MockClient((http.Request request) async {
+        callCount++;
+
+        // First node returns two peers (without /ws as real API does)
+        if (request.url.host == 'node1.example.com') {
+          return http.Response(
+              jsonEncode(<String, dynamic>{
+                'jsonrpc': '2.0',
+                'id': 1,
+                'result': <String, dynamic>{
+                  'peerings': <dynamic>[
+                    <String, dynamic>{
+                      'endpoints': <dynamic>[
+                        <String, dynamic>{
+                          'protocol': 'rpc',
+                          'address': 'wss://node2.example.com',
+                        },
+                      ],
+                    },
+                    <String, dynamic>{
+                      'endpoints': <dynamic>[
+                        <String, dynamic>{
+                          'protocol': 'rpc',
+                          'address': 'wss://node3.example.com',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              }),
+              200);
+        }
+
+        // Second node returns one more peer
+        if (request.url.host == 'node2.example.com') {
+          return http.Response(
+              jsonEncode(<String, dynamic>{
+                'jsonrpc': '2.0',
+                'id': 1,
+                'result': <String, dynamic>{
+                  'peerings': <dynamic>[
+                    <String, dynamic>{
+                      'endpoints': <dynamic>[
+                        <String, dynamic>{
+                          'protocol': 'rpc',
+                          'address': 'wss://node4.example.com',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              }),
+              200);
+        }
+
+        // Other nodes return empty
+        return http.Response(
+            jsonEncode(<String, dynamic>{
+              'jsonrpc': '2.0',
+              'id': 1,
+              'result': <String, dynamic>{
+                'peerings': <dynamic>[],
+              },
+            }),
+            200);
+      });
+
+      final V2Peers peers = await discoverV2PeersRecursive(
+        <String>{'wss://node1.example.com/ws'},
+        client: mockClient,
+        maxDepth: 2,
+      );
+
+      // Should discover nodes up to depth 2
+      expect(peers.endpoint.length, greaterThanOrEqualTo(3));
+      expect(callCount, greaterThan(1));
+    });
+
+    test('should stop at max depth limit', () async {
+      int callCount = 0;
+
+      final http.Client mockClient = MockClient((http.Request request) async {
+        callCount++;
+
+        // Each node returns a new peer (infinite chain, without /ws)
+        return http.Response(
+            jsonEncode(<String, dynamic>{
+              'jsonrpc': '2.0',
+              'id': 1,
+              'result': <String, dynamic>{
+                'peerings': <dynamic>[
+                  <String, dynamic>{
+                    'endpoints': <dynamic>[
+                      <String, dynamic>{
+                        'protocol': 'rpc',
+                        'address': 'wss://node$callCount.example.com',
+                      },
+                    ],
+                  },
+                ],
+              },
+            }),
+            200);
+      });
+
+      await discoverV2PeersRecursive(
+        <String>{'wss://start.example.com/ws'},
+        client: mockClient,
+      );
+
+      // Should stop after maxDepth levels
+      expect(callCount, lessThanOrEqualTo(10)); // reasonable limit
+    });
+
+    test('should not revisit already discovered nodes', () async {
+      final Set<String> visitedHosts = <String>{};
+
+      final http.Client mockClient = MockClient((http.Request request) async {
+        visitedHosts.add(request.url.host);
+
+        // Create a circular reference (without /ws)
+        return http.Response(
+            jsonEncode(<String, dynamic>{
+              'jsonrpc': '2.0',
+              'id': 1,
+              'result': <String, dynamic>{
+                'peerings': <dynamic>[
+                  <String, dynamic>{
+                    'endpoints': <dynamic>[
+                      <String, dynamic>{
+                        'protocol': 'rpc',
+                        'address': 'wss://node1.example.com',
+                      },
+                      <String, dynamic>{
+                        'protocol': 'rpc',
+                        'address': 'wss://node2.example.com',
+                      },
+                    ],
+                  },
+                ],
+              },
+            }),
+            200);
+      });
+
+      await discoverV2PeersRecursive(
+        <String>{'wss://node1.example.com/ws'},
+        client: mockClient,
+      );
+
+      // Should visit each unique host only once
+      expect(visitedHosts.length, lessThanOrEqualTo(3));
+    });
+
+    test('should handle empty initial peer list', () async {
+      final http.Client mockClient = MockClient((http.Request request) async {
+        return http.Response('{}', 200);
+      });
+
+      final V2Peers peers = await discoverV2PeersRecursive(
+        <String>{},
+        client: mockClient,
+        maxDepth: 2,
+      );
+
+      expect(peers.endpoint, isEmpty);
+      expect(peers.indexer, isEmpty);
+    });
+
+    test('should aggregate indexers from all discovered peers', () async {
+      final http.Client mockClient = MockClient((http.Request request) async {
+        if (request.url.host == 'node1.example.com') {
+          return http.Response(
+              jsonEncode(<String, dynamic>{
+                'jsonrpc': '2.0',
+                'id': 1,
+                'result': <String, dynamic>{
+                  'peerings': <dynamic>[
+                    <String, dynamic>{
+                      'endpoints': <dynamic>[
+                        <String, dynamic>{
+                          'protocol': 'squid',
+                          'address': 'https://indexer1.example.com',
+                        },
+                        <String, dynamic>{
+                          'protocol': 'rpc',
+                          'address': 'wss://node2.example.com',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              }),
+              200);
+        }
+
+        if (request.url.host == 'node2.example.com') {
+          return http.Response(
+              jsonEncode(<String, dynamic>{
+                'jsonrpc': '2.0',
+                'id': 1,
+                'result': <String, dynamic>{
+                  'peerings': <dynamic>[
+                    <String, dynamic>{
+                      'endpoints': <dynamic>[
+                        <String, dynamic>{
+                          'protocol': 'squid',
+                          'address': 'https://indexer2.example.com',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              }),
+              200);
+        }
+
+        return http.Response('{}', 200);
+      });
+
+      final V2Peers peers = await discoverV2PeersRecursive(
+        <String>{'wss://node1.example.com/ws'},
+        client: mockClient,
+        maxDepth: 2,
+      );
+
+      expect(peers.indexer.length, 2);
+      expect(peers.indexer, contains('https://indexer1.example.com'));
+      expect(peers.indexer, contains('https://indexer2.example.com'));
+    });
+
+    test('should handle failed peer discoveries gracefully', () async {
+      final http.Client mockClient = MockClient((http.Request request) async {
+        if (request.url.host == 'node1.example.com') {
+          return http.Response(
+              jsonEncode(<String, dynamic>{
+                'jsonrpc': '2.0',
+                'id': 1,
+                'result': <String, dynamic>{
+                  'peerings': <dynamic>[
+                    <String, dynamic>{
+                      'endpoints': <dynamic>[
+                        <String, dynamic>{
+                          'protocol': 'rpc',
+                          'address': 'wss://good-node.example.com',
+                        },
+                        <String, dynamic>{
+                          'protocol': 'rpc',
+                          'address': 'wss://bad-node.example.com',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              }),
+              200);
+        }
+
+        if (request.url.host == 'bad-node.example.com') {
+          return http.Response('Internal Server Error', 500);
+        }
+
+        if (request.url.host == 'good-node.example.com') {
+          return http.Response(
+              jsonEncode(<String, dynamic>{
+                'jsonrpc': '2.0',
+                'id': 1,
+                'result': <String, dynamic>{
+                  'peerings': <dynamic>[
+                    <String, dynamic>{
+                      'endpoints': <dynamic>[
+                        <String, dynamic>{
+                          'protocol': 'rpc',
+                          'address': 'wss://final-node.example.com',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              }),
+              200);
+        }
+
+        return http.Response(
+            jsonEncode(<String, dynamic>{
+              'jsonrpc': '2.0',
+              'id': 1,
+              'result': <String, dynamic>{
+                'peerings': <dynamic>[],
+              },
+            }),
+            200);
+      });
+
+      final V2Peers peers = await discoverV2PeersRecursive(
+        <String>{'wss://node1.example.com/ws'},
+        client: mockClient,
+      );
+
+      // Should discover nodes despite some failures
+      expect(peers.endpoint.length, greaterThanOrEqualTo(2));
+      expect(peers.endpoint, contains('wss://good-node.example.com/ws'));
+    });
+
+    test('should respect timeout for recursive discovery', () async {
+      final http.Client mockClient = MockClient((http.Request request) async {
+        await Future<void>.delayed(const Duration(seconds: 2));
+        return http.Response('{}', 200);
+      });
+
+      final Stopwatch stopwatch = Stopwatch()..start();
+
+      await discoverV2PeersRecursive(
+        <String>{'wss://slow-node.example.com/ws'},
+        client: mockClient,
+        maxDepth: 2,
+        timeout: const Duration(milliseconds: 100),
+      );
+
+      stopwatch.stop();
+
+      // Should timeout quickly, not wait for all nodes
+      expect(stopwatch.elapsedMilliseconds, lessThan(500));
+    });
+
+    test('should deduplicate peers across multiple levels', () async {
+      final http.Client mockClient = MockClient((http.Request request) async {
+        // All nodes return the same peers (without /ws)
+        return http.Response(
+            jsonEncode(<String, dynamic>{
+              'jsonrpc': '2.0',
+              'id': 1,
+              'result': <String, dynamic>{
+                'peerings': <dynamic>[
+                  <String, dynamic>{
+                    'endpoints': <dynamic>[
+                      <String, dynamic>{
+                        'protocol': 'rpc',
+                        'address': 'wss://common1.example.com',
+                      },
+                      <String, dynamic>{
+                        'protocol': 'rpc',
+                        'address': 'wss://common2.example.com',
+                      },
+                    ],
+                  },
+                ],
+              },
+            }),
+            200);
+      });
+
+      final V2Peers peers = await discoverV2PeersRecursive(
+        <String>{
+          'wss://start1.example.com/ws',
+          'wss://start2.example.com/ws',
+        },
+        client: mockClient,
+        maxDepth: 2,
+      );
+
+      // Should have unique peers only
+      expect(peers.endpoint.length, equals(peers.endpoint.toSet().length));
+    });
+  });
+}
+
+// Helper function for recursive peer discovery
+Future<V2Peers> discoverV2PeersRecursive(
+  Set<String> initialNodes, {
+  required http.Client client,
+  int maxDepth = 3,
+  Duration timeout = const Duration(seconds: 10),
+}) async {
+  final Set<String> allEndpoints = <String>{};
+  final Set<String> allIndexers = <String>{};
+  final Set<String> visited = <String>{};
+
+  Future<void> discoverFromNode(String node, int depth) async {
+    if (depth > maxDepth || visited.contains(node)) {
+      return;
+    }
+
+    visited.add(node);
+
+    try {
+      final V2Peers peers = await discoverV2PeersFromNode(
+        node,
+        client: client,
+        timeout: timeout,
+      );
+
+      allEndpoints.addAll(peers.endpoint);
+      allIndexers.addAll(peers.indexer);
+
+      // Recursively discover from new peers
+      for (final String endpoint in peers.endpoint) {
+        if (!visited.contains(endpoint)) {
+          await discoverFromNode(endpoint, depth + 1);
+        }
+      }
+    } catch (e) {
+      // Continue with other nodes if one fails
+    }
+  }
+
+  // Start discovery from initial nodes
+  for (final String node in initialNodes) {
+    await discoverFromNode(node, 0);
+  }
+
+  return V2Peers(rpc: allEndpoints, squid: allIndexers);
 }

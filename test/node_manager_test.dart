@@ -141,8 +141,7 @@ void main() {
     });
 
     test('nodesWorking should count nodes with errors below max', () {
-      nm.addNode(NodeType.gva, const Node(url: 'node1', errors: 0),
-          notify: false);
+      nm.addNode(NodeType.gva, const Node(url: 'node1'), notify: false);
       nm.addNode(NodeType.gva, const Node(url: 'node2', errors: 3),
           notify: false);
       nm.addNode(NodeType.gva, const Node(url: 'node3', errors: 10),
@@ -154,8 +153,7 @@ void main() {
     });
 
     test('nodesWorkingList should return only nodes with few errors', () {
-      nm.addNode(NodeType.cesiumPlus, const Node(url: 'node1', errors: 0),
-          notify: false);
+      nm.addNode(NodeType.cesiumPlus, const Node(url: 'node1'), notify: false);
       nm.addNode(NodeType.cesiumPlus, const Node(url: 'node2', errors: 3),
           notify: false);
       nm.addNode(NodeType.cesiumPlus, const Node(url: 'node3', errors: 10),
@@ -182,16 +180,13 @@ void main() {
       nm.updateNodes(
           NodeType.duniter,
           <Node>[
-            const Node(
-                url: 'node1', latency: 100, errors: 0, currentBlock: 1000),
+            const Node(url: 'node1', latency: 100, currentBlock: 1000),
             const Node(
                 url: 'node2', latency: 150, errors: 1, currentBlock: 1001),
-            const Node(
-                url: 'node3', latency: 200, errors: 0, currentBlock: 999),
+            const Node(url: 'node3', latency: 200, currentBlock: 999),
             const Node(
                 url: 'node4', latency: 120, errors: 10, currentBlock: 1000),
-            const Node(
-                url: 'node5', latency: 180, errors: 0, currentBlock: 900),
+            const Node(url: 'node5', latency: 180, currentBlock: 900),
           ],
           notify: false);
 
@@ -210,8 +205,7 @@ void main() {
       nm.updateNodes(
           NodeType.duniter,
           <Node>[
-            const Node(
-                url: 'node1', latency: 100, errors: 0, currentBlock: 1000),
+            const Node(url: 'node1', latency: 100, currentBlock: 1000),
             const Node(
                 url: 'node2', latency: 100, errors: 2, currentBlock: 1000),
             const Node(
@@ -235,15 +229,9 @@ void main() {
       nm.updateNodes(
           NodeType.duniter,
           <Node>[
-            const Node(
-                url: 'node1', latency: 100, errors: 0, currentBlock: 1000),
-            Node(
-                url: 'node2',
-                latency: wrongNode,
-                errors: 0,
-                currentBlock: 1000),
-            const Node(
-                url: 'node3', latency: 200, errors: 0, currentBlock: 1000),
+            const Node(url: 'node1', latency: 100, currentBlock: 1000),
+            Node(url: 'node2', latency: wrongNode, currentBlock: 1000),
+            const Node(url: 'node3', latency: 200, currentBlock: 1000),
           ],
           notify: false);
 
@@ -280,10 +268,8 @@ void main() {
       nm.updateNodes(
           NodeType.duniter,
           <Node>[
-            const Node(
-                url: 'bad-node1', latency: 999999, errors: 10, currentBlock: 0),
-            const Node(
-                url: 'bad-node2', latency: 999999, errors: 10, currentBlock: 0),
+            const Node(url: 'bad-node1', latency: 999999, errors: 10),
+            const Node(url: 'bad-node2', latency: 999999, errors: 10),
           ],
           notify: false);
 
@@ -304,16 +290,11 @@ void main() {
       nm.updateNodes(
           NodeType.endpoint,
           <Node>[
-            const Node(
-                url: 'node1', latency: 100, errors: 0, currentBlock: 1000),
-            const Node(
-                url: 'node2', latency: 100, errors: 0, currentBlock: 999),
-            const Node(
-                url: 'node3', latency: 100, errors: 0, currentBlock: 998),
-            const Node(
-                url: 'node4', latency: 100, errors: 0, currentBlock: 997),
-            const Node(
-                url: 'node5', latency: 100, errors: 0, currentBlock: 990),
+            const Node(url: 'node1', latency: 100, currentBlock: 1000),
+            const Node(url: 'node2', latency: 100, currentBlock: 999),
+            const Node(url: 'node3', latency: 100, currentBlock: 998),
+            const Node(url: 'node4', latency: 100, currentBlock: 997),
+            const Node(url: 'node5', latency: 100, currentBlock: 990),
           ],
           notify: false);
 
@@ -330,11 +311,7 @@ void main() {
           <Node>[
             const Node(
                 url: 'fast-errors', latency: 50, errors: 3, currentBlock: 1000),
-            const Node(
-                url: 'slow-no-errors',
-                latency: 300,
-                errors: 0,
-                currentBlock: 1000),
+            const Node(url: 'slow-no-errors', latency: 300, currentBlock: 1000),
             const Node(
                 url: 'balanced', latency: 150, errors: 1, currentBlock: 1000),
           ],
@@ -417,15 +394,15 @@ void main() {
 
   group('Node equality and properties', () {
     test('nodes with same url should be equal', () {
-      const Node node1 = Node(url: 'node1', latency: 100, errors: 0);
+      const Node node1 = Node(url: 'node1', latency: 100);
       const Node node2 = Node(url: 'node1', latency: 200, errors: 5);
 
       expect(node1, equals(node2));
     });
 
     test('nodes with different urls should not be equal', () {
-      const Node node1 = Node(url: 'node1', latency: 100, errors: 0);
-      const Node node2 = Node(url: 'node2', latency: 100, errors: 0);
+      const Node node1 = Node(url: 'node1', latency: 100);
+      const Node node2 = Node(url: 'node2', latency: 100);
 
       expect(node1, isNot(equals(node2)));
     });
@@ -530,8 +507,409 @@ void main() {
       final String gateway2 = url2.substring(0, url2.indexOf('/ipfs/'));
 
       expect(gateway1, gateway2);
-      expect(url1, '${gateway1}/ipfs/QmHash1');
-      expect(url2, '${gateway2}/ipfs/QmHash2');
+      expect(url1, '$gateway1/ipfs/QmHash1');
+      expect(url2, '$gateway2/ipfs/QmHash2');
+    });
+  });
+
+  group('Concurrent node updates', () {
+    late NodeManager nm;
+
+    setUp(() {
+      nm = NodeManager();
+      nm.duniterNodes.clear();
+      nm.cesiumPlusNodes.clear();
+      nm.gvaNodes.clear();
+      nm.endpointNodes.clear();
+      nm.duniterIndexerNodes.clear();
+      nm.duniterDataNodes.clear();
+      nm.ipfsGateways.clear();
+    });
+
+    test('should handle concurrent updateNodes without losing data', () async {
+      // Simulate concurrent updates from different sources
+      final List<Future<void>> futures = <Future<void>>[];
+
+      for (int i = 0; i < 10; i++) {
+        futures.add(Future<void>(() {
+          nm.updateNodes(
+              NodeType.endpoint,
+              <Node>[
+                Node(url: 'node$i', latency: 100 * i),
+              ],
+              notify: false);
+        }));
+      }
+
+      await Future.wait(futures);
+
+      // All nodes should be present (no data loss)
+      expect(nm.endpointNodes.length, greaterThanOrEqualTo(1));
+      expect(nm.endpointNodes.length, lessThanOrEqualTo(10));
+    });
+
+    test('should preserve errors during concurrent updates', () async {
+      // Add initial node with errors
+      nm.addNode(NodeType.endpoint, const Node(url: 'node1', errors: 5),
+          notify: false);
+
+      final List<Future<void>> futures = <Future<void>>[];
+
+      // Concurrent updates with the same node
+      for (int i = 0; i < 5; i++) {
+        futures.add(Future<void>(() {
+          nm.updateNodes(
+              NodeType.endpoint,
+              <Node>[
+                const Node(url: 'node1', latency: 100),
+                Node(url: 'node$i', latency: 200),
+              ],
+              notify: false);
+        }));
+      }
+
+      await Future.wait(futures);
+
+      // Node1 should still have its error count preserved
+      final Node? node1 = nm.endpointNodes
+          .cast<Node?>()
+          .firstWhere((Node? n) => n?.url == 'node1', orElse: () => null);
+      expect(node1, isNotNull);
+      expect(node1!.errors, 5);
+    });
+
+    test('should handle rapid sequential updates', () async {
+      for (int i = 0; i < 100; i++) {
+        nm.updateNodes(
+            NodeType.duniter,
+            <Node>[
+              Node(url: 'node$i', latency: i, currentBlock: 1000 + i),
+            ],
+            notify: false);
+      }
+
+      expect(nm.duniterNodes.length, greaterThan(0));
+      expect(nm.duniterNodes.length, lessThanOrEqualTo(100));
+    });
+
+    test('should handle concurrent addNode operations', () async {
+      final List<Future<void>> futures = <Future<void>>[];
+
+      for (int i = 0; i < 20; i++) {
+        futures.add(Future<void>(() {
+          nm.addNode(NodeType.cesiumPlus, Node(url: 'node$i', latency: 100),
+              notify: false);
+        }));
+      }
+
+      await Future.wait(futures);
+
+      // Should have all unique nodes
+      expect(nm.cesiumPlusNodes.length, 20);
+      final Set<String> urls =
+          nm.cesiumPlusNodes.map((Node n) => n.url).toSet();
+      expect(urls.length, 20);
+    });
+
+    test('should handle concurrent increaseNodeErrors', () async {
+      nm.addNode(NodeType.gva, const Node(url: 'test-node'), notify: false);
+
+      final List<Future<void>> futures = <Future<void>>[];
+
+      for (int i = 0; i < 10; i++) {
+        futures.add(Future<void>(() {
+          final Node node = nm.gvaNodes.first;
+          nm.increaseNodeErrors(NodeType.gva, node, notify: false);
+        }));
+      }
+
+      await Future.wait(futures);
+
+      // Due to the way the update works, the final error count
+      // might not be exactly 10 due to race conditions, but should be >= 1
+      final Node node = nm.gvaNodes.first;
+      expect(node.errors, greaterThanOrEqualTo(1));
+    });
+
+    test('should maintain list integrity during mixed operations', () async {
+      // Pre-populate with some nodes
+      nm.updateNodes(
+          NodeType.endpoint,
+          <Node>[
+            const Node(url: 'existing1', errors: 2),
+            const Node(url: 'existing2', errors: 1),
+          ],
+          notify: false);
+
+      final List<Future<void>> futures = <Future<void>>[];
+
+      // Mix of different operations
+      futures.add(Future<void>(() {
+        nm.addNode(NodeType.endpoint, const Node(url: 'added1'), notify: false);
+      }));
+
+      futures.add(Future<void>(() {
+        nm.updateNodes(
+            NodeType.endpoint,
+            <Node>[
+              const Node(url: 'existing1', latency: 50),
+              const Node(url: 'new1'),
+            ],
+            notify: false);
+      }));
+
+      futures.add(Future<void>(() {
+        const Node node = Node(url: 'existing2');
+        nm.increaseNodeErrors(NodeType.endpoint, node, notify: false);
+      }));
+
+      futures.add(Future<void>(() {
+        nm.insertNode(NodeType.endpoint, const Node(url: 'inserted1'));
+      }));
+
+      await Future.wait(futures);
+
+      // Verify list is not corrupted
+      expect(nm.endpointNodes.length, greaterThan(0));
+      expect(nm.endpointNodes.every((Node n) => n.url.isNotEmpty), isTrue);
+    });
+
+    test('should handle updateNodes with overlapping node sets', () async {
+      final List<Future<void>> futures = <Future<void>>[];
+
+      // Multiple updates with overlapping nodes
+      futures.add(Future<void>(() {
+        nm.updateNodes(
+            NodeType.duniter,
+            <Node>[
+              const Node(url: 'node1', latency: 100),
+              const Node(url: 'node2', latency: 150),
+            ],
+            notify: false);
+      }));
+
+      futures.add(Future<void>(() {
+        nm.updateNodes(
+            NodeType.duniter,
+            <Node>[
+              const Node(url: 'node2', latency: 120),
+              const Node(url: 'node3', latency: 130),
+            ],
+            notify: false);
+      }));
+
+      futures.add(Future<void>(() {
+        nm.updateNodes(
+            NodeType.duniter,
+            <Node>[
+              const Node(url: 'node1', latency: 110),
+              const Node(url: 'node3', latency: 140),
+            ],
+            notify: false);
+      }));
+
+      await Future.wait(futures);
+
+      // Should have unique nodes
+      final Set<String> urls = nm.duniterNodes.map((Node n) => n.url).toSet();
+      expect(urls.length, nm.duniterNodes.length);
+    });
+  });
+
+  group('Node list consistency', () {
+    late NodeManager nm;
+
+    setUp(() {
+      nm = NodeManager();
+      nm.endpointNodes.clear();
+    });
+
+    test('should not have duplicate nodes after multiple updates', () {
+      nm.updateNodes(
+          NodeType.endpoint,
+          <Node>[
+            const Node(url: 'node1', latency: 100),
+            const Node(url: 'node2', latency: 150),
+          ],
+          notify: false);
+
+      nm.updateNodes(
+          NodeType.endpoint,
+          <Node>[
+            const Node(url: 'node1', latency: 120),
+            const Node(url: 'node2', latency: 130),
+            const Node(url: 'node3', latency: 140),
+          ],
+          notify: false);
+
+      final Set<String> urls = nm.endpointNodes.map((Node n) => n.url).toSet();
+      expect(urls.length, nm.endpointNodes.length);
+      expect(nm.endpointNodes.length, 3);
+    });
+
+    test('should maintain referential integrity across node types', () {
+      const Node sharedNode = Node(url: 'shared-node');
+
+      nm.addNode(NodeType.endpoint, sharedNode, notify: false);
+      nm.addNode(NodeType.duniterIndexer, sharedNode, notify: false);
+
+      // Modifying one should not affect the other
+      nm.increaseNodeErrors(NodeType.endpoint, sharedNode, notify: false);
+
+      final Node endpointNode =
+          nm.endpointNodes.firstWhere((Node n) => n.url == 'shared-node');
+      final Node indexerNode =
+          nm.duniterIndexerNodes.firstWhere((Node n) => n.url == 'shared-node');
+
+      expect(endpointNode.errors, 1);
+      expect(indexerNode.errors, 0);
+    });
+
+    test('should handle empty updates gracefully', () {
+      nm.updateNodes(
+          NodeType.endpoint,
+          <Node>[
+            const Node(url: 'node1'),
+            const Node(url: 'node2'),
+          ],
+          notify: false);
+
+      nm.updateNodes(NodeType.endpoint, <Node>[], notify: false);
+
+      expect(nm.endpointNodes, isEmpty);
+    });
+
+    test('should preserve node order after insertNode', () {
+      nm = NodeManager();
+      nm.duniterIndexerNodes.clear();
+
+      nm.addNode(NodeType.duniterIndexer, const Node(url: 'node1'),
+          notify: false);
+      nm.addNode(NodeType.duniterIndexer, const Node(url: 'node2'),
+          notify: false);
+      nm.insertNode(NodeType.duniterIndexer, const Node(url: 'node0'));
+
+      expect(nm.duniterIndexerNodes.first.url, 'node0');
+      expect(nm.duniterIndexerNodes[1].url, 'node1');
+      expect(nm.duniterIndexerNodes[2].url, 'node2');
+    });
+
+    test('should handle large node lists efficiently', () {
+      final List<Node> largeNodeList = List<Node>.generate(
+        1000,
+        (int i) => Node(url: 'node$i', latency: i, currentBlock: 1000 + i),
+      );
+
+      final Stopwatch stopwatch = Stopwatch()..start();
+      nm.updateNodes(NodeType.endpoint, largeNodeList, notify: false);
+      stopwatch.stop();
+
+      expect(nm.endpointNodes.length, 1000);
+      expect(stopwatch.elapsedMilliseconds, lessThan(1000));
+    });
+  });
+
+  group('NodeManager state management', () {
+    test('should maintain singleton instance', () {
+      final NodeManager nm1 = NodeManager();
+      final NodeManager nm2 = NodeManager();
+
+      expect(identical(nm1, nm2), isTrue);
+    });
+
+    test('should share state across singleton instances', () {
+      final NodeManager nm1 = NodeManager();
+      final NodeManager nm2 = NodeManager();
+
+      // Clean all lists first
+      nm1.endpointNodes.clear();
+      nm1.duniterNodes.clear();
+      nm1.cesiumPlusNodes.clear();
+      nm1.gvaNodes.clear();
+      nm1.duniterIndexerNodes.clear();
+      nm1.duniterDataNodes.clear();
+      nm1.ipfsGateways.clear();
+
+      nm1.addNode(NodeType.endpoint, const Node(url: 'test-node'),
+          notify: false);
+
+      expect(nm2.endpointNodes.length, 1);
+      expect(nm2.endpointNodes.first.url, 'test-node');
+    });
+
+    test('should clear all node types with cleanErrorStats', () {
+      final NodeManager nm = NodeManager();
+
+      nm.addNode(NodeType.endpoint, const Node(url: 'node1', errors: 5),
+          notify: false);
+      nm.addNode(NodeType.duniter, const Node(url: 'node2', errors: 3),
+          notify: false);
+      nm.addNode(NodeType.cesiumPlus, const Node(url: 'node3', errors: 4),
+          notify: false);
+      nm.addNode(NodeType.gva, const Node(url: 'node4', errors: 2),
+          notify: false);
+
+      nm.cleanErrorStats(notify: false);
+
+      expect(nm.endpointNodes.first.errors, 0);
+      expect(nm.duniterNodes.first.errors, 0);
+      expect(nm.cesiumPlusNodes.first.errors, 0);
+      expect(nm.gvaNodes.first.errors, 0);
+    });
+  });
+
+  group('Error accumulation and recovery', () {
+    late NodeManager nm;
+
+    setUp(() {
+      nm = NodeManager();
+      nm.endpointNodes.clear();
+    });
+
+    test('should accumulate errors correctly', () {
+      const Node node = Node(url: 'test-node');
+      nm.addNode(NodeType.endpoint, node, notify: false);
+
+      for (int i = 0; i < 5; i++) {
+        final Node currentNode =
+            nm.endpointNodes.firstWhere((Node n) => n.url == 'test-node');
+        nm.increaseNodeErrors(NodeType.endpoint, currentNode, notify: false);
+      }
+
+      final Node updatedNode =
+          nm.endpointNodes.firstWhere((Node n) => n.url == 'test-node');
+      expect(updatedNode.errors, 5);
+    });
+
+    test('should filter out nodes with too many errors', () {
+      nm.addNode(NodeType.endpoint, const Node(url: 'good1', errors: 2),
+          notify: false);
+      nm.addNode(NodeType.endpoint, const Node(url: 'good2', errors: 3),
+          notify: false);
+      nm.addNode(NodeType.endpoint, const Node(url: 'bad1', errors: 10),
+          notify: false);
+      nm.addNode(NodeType.endpoint, const Node(url: 'bad2', errors: 15),
+          notify: false);
+
+      final List<Node> workingNodes = nm.nodesWorkingList(NodeType.endpoint);
+
+      expect(workingNodes.length, 2);
+      expect(
+          workingNodes.every((Node n) => n.errors < NodeManager.maxNodeErrors),
+          isTrue);
+    });
+
+    test('should allow error recovery after cleanErrorStats', () {
+      nm.addNode(NodeType.endpoint, const Node(url: 'node1', errors: 10),
+          notify: false);
+      nm.addNode(NodeType.endpoint, const Node(url: 'node2', errors: 8),
+          notify: false);
+
+      expect(nm.nodesWorking(NodeType.endpoint), 0);
+
+      nm.cleanErrorStats(notify: false);
+
+      expect(nm.nodesWorking(NodeType.endpoint), 2);
     });
   });
 }

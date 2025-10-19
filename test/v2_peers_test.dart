@@ -86,7 +86,8 @@ void main() {
       expect(peers.indexer, contains('https://indexer1.example.com'));
     });
 
-    test('should append /ws to rpc addresses without it', () async {
+    test('should normalize URLs ending with / by removing it before adding /ws',
+        () async {
       final Map<String, dynamic> mockResponse = <String, dynamic>{
         'jsonrpc': '2.0',
         'id': 1,
@@ -96,11 +97,7 @@ void main() {
               'endpoints': <dynamic>[
                 <String, dynamic>{
                   'protocol': 'rpc',
-                  'address': 'wss://node.example.com',
-                },
-                <String, dynamic>{
-                  'protocol': 'rpc',
-                  'address': 'wss://node2.example.com/',
+                  'address': 'wss://node-with-slash.example.com/',
                 },
               ],
             },
@@ -117,11 +114,13 @@ void main() {
         client: mockClient,
       );
 
-      expect(peers.endpoint, contains('wss://node.example.com/ws'));
-      expect(peers.endpoint, contains('wss://node2.example.com/ws'));
+      expect(peers.endpoint.length, 1);
+      // Should be wss://node-with-slash.example.com/ws, NOT //ws
+      expect(peers.endpoint.first, 'wss://node-with-slash.example.com/ws');
+      expect(peers.endpoint.first, isNot(contains('//ws')));
     });
 
-    test('should not append /ws if already present', () async {
+    test('should not duplicate /ws if already present', () async {
       final Map<String, dynamic> mockResponse = <String, dynamic>{
         'jsonrpc': '2.0',
         'id': 1,
@@ -131,7 +130,7 @@ void main() {
               'endpoints': <dynamic>[
                 <String, dynamic>{
                   'protocol': 'rpc',
-                  'address': 'wss://node.example.com/ws',
+                  'address': 'wss://node-already-ws.example.com/ws',
                 },
               ],
             },
@@ -148,8 +147,58 @@ void main() {
         client: mockClient,
       );
 
-      expect(peers.endpoint, contains('wss://node.example.com/ws'));
-      expect(peers.endpoint, isNot(contains('wss://node.example.com/ws/ws')));
+      expect(peers.endpoint.length, 1);
+      expect(peers.endpoint.first, 'wss://node-already-ws.example.com/ws');
+      // Should not have /ws/ws
+      expect(peers.endpoint.first, isNot(contains('/ws/ws')));
+    });
+
+    test('should handle multiple URL formats correctly', () async {
+      final Map<String, dynamic> mockResponse = <String, dynamic>{
+        'jsonrpc': '2.0',
+        'id': 1,
+        'result': <String, dynamic>{
+          'peerings': <dynamic>[
+            <String, dynamic>{
+              'endpoints': <dynamic>[
+                <String, dynamic>{
+                  'protocol': 'rpc',
+                  'address': 'wss://node1.com',
+                },
+                <String, dynamic>{
+                  'protocol': 'rpc',
+                  'address': 'wss://node2.com/',
+                },
+                <String, dynamic>{
+                  'protocol': 'rpc',
+                  'address': 'wss://node3.com/ws',
+                },
+              ],
+            },
+          ],
+        },
+      };
+
+      final http.Client mockClient = MockClient((http.Request request) async {
+        return http.Response(jsonEncode(mockResponse), 200);
+      });
+
+      final V2Peers peers = await discoverV2PeersFromNode(
+        'https://test.example.com',
+        client: mockClient,
+      );
+
+      expect(peers.endpoint.length, 3);
+      // All should end with /ws correctly
+      expect(peers.endpoint, contains('wss://node1.com/ws'));
+      expect(peers.endpoint, contains('wss://node2.com/ws'));
+      expect(peers.endpoint, contains('wss://node3.com/ws'));
+
+      // None should have double slash before ws (//ws) or double /ws/ws
+      for (final String endpoint in peers.endpoint) {
+        expect(endpoint, isNot(contains('/ws/ws')));
+        expect(endpoint, isNot(contains('//ws')));
+      }
     });
 
     test('should handle empty peerings list', () async {

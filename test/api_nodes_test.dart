@@ -11,7 +11,7 @@ import 'package:tuple/tuple.dart';
 
 import 'api_nodes_test.mocks.dart';
 
-@GenerateMocks([NodeListCubit])
+@GenerateMocks(<Type>[NodeListCubit])
 void main() {
   late MockNodeListCubit mockCubit;
 
@@ -56,8 +56,6 @@ void main() {
       );
 
       final int initialLength = nm.duniterNodes.length;
-      final List<String> initialUrls =
-          nm.duniterNodes.map((Node n) => n.url).toList();
 
       // Simulate concurrent modification during getPeers
       // (getPeers uses List<Node>.from to prevent this)
@@ -636,10 +634,7 @@ void main() {
               errors: 10,
               currentBlock: 1000),
           const Node(
-              url: 'https://good-node.com',
-              latency: 100,
-              errors: 0,
-              currentBlock: 1000),
+              url: 'https://good-node.com', latency: 100, currentBlock: 1000),
           const Node(
               url: 'https://ok-node.com',
               latency: 75,
@@ -665,20 +660,11 @@ void main() {
         NodeType.endpoint,
         <Node>[
           const Node(
-              url: 'https://synced-node.com',
-              latency: 100,
-              errors: 0,
-              currentBlock: 1000),
+              url: 'https://synced-node.com', latency: 100, currentBlock: 1000),
           const Node(
-              url: 'https://behind-node.com',
-              latency: 50,
-              errors: 0,
-              currentBlock: 900),
+              url: 'https://behind-node.com', latency: 50, currentBlock: 900),
           const Node(
-              url: 'https://also-synced.com',
-              latency: 150,
-              errors: 0,
-              currentBlock: 999),
+              url: 'https://also-synced.com', latency: 150, currentBlock: 999),
         ],
         notify: false,
       );
@@ -697,14 +683,10 @@ void main() {
         NodeType.duniter,
         <Node>[
           const Node(
-              url: 'https://online-node.com',
-              latency: 100,
-              errors: 0,
-              currentBlock: 1000),
+              url: 'https://online-node.com', latency: 100, currentBlock: 1000),
           const Node(
               url: 'https://offline-node.com',
               latency: 999999999,
-              errors: 0,
               currentBlock: 1000),
         ],
         notify: false,
@@ -724,7 +706,7 @@ void main() {
       nm.updateNodes(
         NodeType.cesiumPlus,
         <Node>[
-          const Node(url: 'https://node1.com', errors: 0),
+          const Node(url: 'https://node1.com'),
           const Node(url: 'https://node2.com', errors: 2),
           const Node(url: 'https://node3.com', errors: 10), // Exceeds limit
           const Node(url: 'https://node4.com', errors: 1),

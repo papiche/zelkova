@@ -76,9 +76,21 @@ Future<V2Peers> discoverV2PeersFromNode(
         }
 
         if (protocol == 'rpc') {
-          endpoints.add(address.endsWith('/ws')
-              ? address
-              : (address.endsWith('/') ? '${address}ws' : '$address/ws'));
+          // Normalize the URL to always end with /ws
+          String normalizedUrl = address;
+
+          // Remove trailing slash if present
+          if (normalizedUrl.endsWith('/')) {
+            normalizedUrl =
+                normalizedUrl.substring(0, normalizedUrl.length - 1);
+          }
+
+          // Add /ws if not already present
+          if (!normalizedUrl.endsWith('/ws')) {
+            normalizedUrl = '$normalizedUrl/ws';
+          }
+
+          endpoints.add(normalizedUrl);
         } else if (protocol == 'squid') {
           indexers.add(address);
         }

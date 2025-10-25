@@ -70,7 +70,11 @@ class SharedPreferencesHelperV2
     if (_passwordKey != null && _passwordKey!.isNotEmpty) {
       return _passwordKey!;
     }
-    final Uint8List? unlocked = await requestSecureUnlock();
+    // Check whether a stored password/pattern exists; if not, trigger setup flow
+    final String? storedKey =
+        await _storage.read(key: StorageKeys.securePatternOrPass);
+    final bool needsSetup = storedKey == null || storedKey.isEmpty;
+    final Uint8List? unlocked = await requestSecureUnlock(isSetup: needsSetup);
     if (unlocked == null || unlocked.isEmpty) {
       throw Exception('No password key available');
     }
@@ -399,7 +403,13 @@ class SharedPreferencesHelperV2
     Uint8List seedBytes;
     if (type == AccountType.v2PasswordProtected) {
       // this awaits the unlock dialog properly when needed
-      final Uint8List key = await _ensurePasswordKey(_passwordKey);
+      Uint8List key;
+      try {
+        key = await _ensurePasswordKey(_passwordKey);
+      } catch (e) {
+        // Propagate a clearer error so callers can handle cancellation/no-key
+        throw Exception('Import cancelled or no password key available');
+      }
       seedBytes = SecureCryptoHelper.encrypt(mnemonicToStore(original), key);
     } else {
       // v2PasswordLess: store plaintext mnemonic bytes
@@ -533,16 +543,17 @@ class SharedPreferencesHelperV2
     await _saveAccounts();
   }
 
-  // Duplicate in V1
   @override
   Future<void> removeCesiumVolatileCard([CesiumWallet? wallet]) async {
     if (wallet != null) {
       _cesiumVolatileCards.remove(extractPublicKey(wallet.pubkey));
     } else {
-      final CesiumWallet w = await getCesiumWallet();
-      _cesiumVolatileCards.removeWhere((String key, CesiumWallet value) {
-        return key == extractPublicKey(w.pubkey);
-      });
+      final StoredAccount account = getCurrentAccount();
+      if (account.type == AccountType.v1PasswordProtected) {
+        _cesiumVolatileCards.removeWhere((String key, CesiumWallet value) {
+          return key == extractPublicKey(account.pubKey);
+        });
+      }
     }
   }
 }

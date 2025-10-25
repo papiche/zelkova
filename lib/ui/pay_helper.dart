@@ -14,7 +14,6 @@ import '../../../data/models/transaction.dart';
 import '../../../data/models/transaction_type.dart';
 import '../../../g1/api.dart';
 import '../../../shared_prefs_helper.dart';
-import '../data/models/app_cubit.dart';
 import '../data/models/bottom_nav_cubit.dart';
 import '../data/models/multi_wallet_transaction_cubit.dart';
 import '../data/models/node.dart';
@@ -56,12 +55,13 @@ Future<bool> payWithRetry(
       final MultiWalletTransactionCubit txCubit =
           context.read<MultiWalletTransactionCubit>();
       final PaymentCubit paymentCubit = context.read<PaymentCubit>();
-      final AppCubit appCubit = context.read<AppCubit>();
       paymentCubit.sending();
       final String fromPubKey = SharedPreferencesHelper().getPubKey();
 
+      final Currency paymentCurrency = isG1 ? Currency.G1 : Currency.DU;
       final bool? confirmed = await _confirmSend(context, amount.toString(),
-          fromPubKey, recipients, isRetry, appCubit.currency, isToMultiple);
+          fromPubKey, recipients, isRetry, paymentCurrency, isToMultiple,
+          isG1: isG1, currentUd: currentUd);
       final Contact fromContact = await ContactsCache().getContact(fromPubKey);
 
       if (!context.mounted) {
@@ -273,7 +273,14 @@ Future<bool?> _confirmSend(
     List<Contact> recipients,
     bool isRetry,
     Currency currency,
-    bool isPayToMultiple) async {
+    bool isPayToMultiple,
+    {required bool isG1,
+    required double currentUd}) async {
+  // Calculate G1 equivalent if paying in DU
+  final String amountWithCurrency = !isG1
+      ? '$amount DU (${toG1(double.parse(amount), isG1, currentUd).toStringAsFixed(2)} Ğ1)'
+      : '$amount ${currency.name()}';
+
   return showDialog<bool>(
     context: context,
     builder: (BuildContext context) {
@@ -282,8 +289,8 @@ Future<bool?> _confirmSend(
         content: isPayToMultiple
             ? Text(tr('please_confirm_sent_multi_desc',
                 namedArgs: <String, String>{
-                    'amount': amount,
-                    'currency': currency.name(),
+                    'amount': amountWithCurrency,
+                    'currency': '',
                     'people': recipients.length.toString()
                   }))
             : Text(tr(
@@ -291,9 +298,9 @@ Future<bool?> _confirmSend(
                     ? 'please_confirm_retry_sent_desc'
                     : 'please_confirm_sent_desc',
                 namedArgs: <String, String>{
-                    'amount': amount,
+                    'amount': amountWithCurrency,
                     'to': humanizeContact(fromPubKey, recipients[0], true),
-                    'currency': currency.name()
+                    'currency': ''
                   })),
         actions: <Widget>[
           TextButton(
@@ -318,7 +325,8 @@ void showPayError(
   showAlertDialog(context, tr('payment_error'), desc);
   context.read<PaymentCubit>().sentFailed();
   if (node != null && increaseErrors) {
-    NodeManager().increaseNodeErrors(NodeType.gva, node);
+    NodeManager()
+        .increaseNodeErrors(NodeType.gva, node, cause: 'Payment error: $desc');
   }
 }
 

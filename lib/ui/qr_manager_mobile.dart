@@ -135,13 +135,13 @@ class _FullScreenQrScannerState extends State<FullScreenQrScanner>
         actionButtonsBackgroundBorderRadius: BorderRadius.circular(8),
         // Process only QR codes for better performance
         codeFormat: Format.qrCode,
-        tryRotate: true,
+        // tryRotate: true,
         // Enable try inverted for better QR detection
         tryInverted: true,
         // Enable tryHarder for better detection but may be slower
         tryHarder: true,
         // Show controls for user interaction
-        showGallery: true,
+        // showGallery: true,
         // showToggleCamera: true,
         // showFlashlight: true,
         // Loading widget while camera initializes
@@ -150,8 +150,6 @@ class _FullScreenQrScannerState extends State<FullScreenQrScanner>
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               CircularProgressIndicator(),
-              // SizedBox(height: 16),
-              // Text('Inicializando cámara...'),
             ],
           ),
         ),

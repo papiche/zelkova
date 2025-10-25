@@ -11,6 +11,7 @@ import '../../data/models/app_state.dart';
 import '../../data/models/bottom_nav_cubit.dart';
 import '../../data/models/payment_cubit.dart';
 import '../../data/models/payment_state.dart';
+import '../../data/models/stored_account.dart';
 import '../../g1/g1_helper.dart';
 import '../../shared_prefs_helper.dart';
 import '../tutorial.dart';
@@ -116,7 +117,8 @@ class _FirstScreenState extends State<FirstScreen> {
                               ResponsiveBreakpoints.of(context)
                                   .largerThan(MOBILE);
 
-                          final account = prefsHelper.getCurrentAccount();
+                          final StoredAccount account =
+                              prefsHelper.getCurrentAccount();
                           final String publicKey = account.type.isV2
                               ? account.address
                               : account.pubKey;

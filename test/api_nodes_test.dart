@@ -443,7 +443,8 @@ void main() {
       for (int i = 0; i < 5; i++) {
         final Node currentNode = nm.gvaNodes
             .firstWhere((Node n) => n.url == 'https://test-node.com');
-        nm.increaseNodeErrors(NodeType.gva, currentNode, notify: false);
+        nm.increaseNodeErrors(NodeType.gva, currentNode,
+            cause: 'Test error $i', notify: false);
       }
 
       final Node finalNode =
@@ -464,7 +465,8 @@ void main() {
         futures.add(Future<void>(() {
           final Node currentNode = nm.duniterNodes
               .firstWhere((Node n) => n.url == 'https://concurrent-test.com');
-          nm.increaseNodeErrors(NodeType.duniter, currentNode, notify: false);
+          nm.increaseNodeErrors(NodeType.duniter, currentNode,
+              cause: 'Concurrent test', notify: false);
         }));
       }
 

@@ -76,7 +76,8 @@ void main() {
       const Node node = Node(url: 'node a');
 
       nm.addNode(NodeType.gva, node, notify: false);
-      nm.increaseNodeErrors(NodeType.gva, node, notify: false);
+      nm.increaseNodeErrors(NodeType.gva, node,
+          notify: false, cause: 'Test error');
 
       final Node updatedNode =
           nm.nodeList(NodeType.gva).firstWhere((Node n) => n.url == node.url);
@@ -619,7 +620,8 @@ void main() {
       for (int i = 0; i < 10; i++) {
         futures.add(Future<void>(() {
           final Node node = nm.gvaNodes.first;
-          nm.increaseNodeErrors(NodeType.gva, node, notify: false);
+          nm.increaseNodeErrors(NodeType.gva, node,
+              notify: false, cause: 'Test error');
         }));
       }
 
@@ -660,7 +662,8 @@ void main() {
 
       futures.add(Future<void>(() {
         const Node node = Node(url: 'existing2');
-        nm.increaseNodeErrors(NodeType.endpoint, node, notify: false);
+        nm.increaseNodeErrors(NodeType.endpoint, node,
+            cause: 'Test error', notify: false);
       }));
 
       futures.add(Future<void>(() {
@@ -754,7 +757,8 @@ void main() {
       nm.addNode(NodeType.duniterIndexer, sharedNode, notify: false);
 
       // Modifying one should not affect the other
-      nm.increaseNodeErrors(NodeType.endpoint, sharedNode, notify: false);
+      nm.increaseNodeErrors(NodeType.endpoint, sharedNode,
+          notify: false, cause: 'Test error');
 
       final Node endpointNode =
           nm.endpointNodes.firstWhere((Node n) => n.url == 'shared-node');
@@ -873,7 +877,8 @@ void main() {
       for (int i = 0; i < 5; i++) {
         final Node currentNode =
             nm.endpointNodes.firstWhere((Node n) => n.url == 'test-node');
-        nm.increaseNodeErrors(NodeType.endpoint, currentNode, notify: false);
+        nm.increaseNodeErrors(NodeType.endpoint, currentNode,
+            cause: 'Test error $i', notify: false);
       }
 
       final Node updatedNode =
@@ -910,6 +915,80 @@ void main() {
       nm.cleanErrorStats(notify: false);
 
       expect(nm.nodesWorking(NodeType.endpoint), 2);
+    });
+  });
+
+  group('addNodeSortedByLatency', () {
+    late NodeManager nm;
+
+    setUp(() {
+      nm = NodeManager();
+      nm.duniterNodes.clear();
+    });
+
+    test('should prioritize nodes with fewer errors over lower latency', () {
+      // Add a node with few errors but higher latency
+      nm.addNodeSortedByLatency(
+          NodeType.duniter, const Node(url: 'slow-but-reliable', latency: 300),
+          notify: false);
+
+      // Add a node with fast latency but more errors
+      nm.addNodeSortedByLatency(NodeType.duniter,
+          const Node(url: 'fast-but-errors', latency: 50, errors: 3),
+          notify: false);
+
+      // Add another reliable but slow node
+      nm.addNodeSortedByLatency(NodeType.duniter,
+          const Node(url: 'medium-reliable', latency: 200, errors: 1),
+          notify: false);
+
+      final List<Node> nodes = nm.duniterNodes;
+
+      // The first node should have the fewest errors, not the lowest latency
+      expect(nodes[0].errors, 0);
+      expect(nodes[1].errors, 1);
+      expect(nodes[2].errors, 3);
+    });
+
+    test('should sort by latency when errors are equal', () {
+      nm.addNodeSortedByLatency(
+          NodeType.duniter, const Node(url: 'node1', latency: 200, errors: 1),
+          notify: false);
+
+      nm.addNodeSortedByLatency(
+          NodeType.duniter, const Node(url: 'node2', latency: 100, errors: 1),
+          notify: false);
+
+      nm.addNodeSortedByLatency(
+          NodeType.duniter, const Node(url: 'node3', latency: 150, errors: 1),
+          notify: false);
+
+      final List<Node> nodes = nm.duniterNodes;
+
+      // All have same errors, so should be sorted by latency
+      expect(nodes[0].latency, 100);
+      expect(nodes[1].latency, 150);
+      expect(nodes[2].latency, 200);
+    });
+
+    test(
+        'should insert node with zero errors at beginning even with high latency',
+        () {
+      nm.addNodeSortedByLatency(NodeType.duniter,
+          const Node(url: 'fast-with-errors', latency: 50, errors: 2),
+          notify: false);
+
+      nm.addNodeSortedByLatency(
+          NodeType.duniter, const Node(url: 'slow-no-errors', latency: 500),
+          notify: false);
+
+      final List<Node> nodes = nm.duniterNodes;
+
+      // The node with 0 errors should be first
+      expect(nodes[0].url, 'slow-no-errors');
+      expect(nodes[0].errors, 0);
+      expect(nodes[1].url, 'fast-with-errors');
+      expect(nodes[1].errors, 2);
     });
   });
 }

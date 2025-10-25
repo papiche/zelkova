@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,6 +33,7 @@ class _PayFormState extends State<PayForm> {
       GlobalKey<FormFieldState<String>>();
   final TextEditingController _commentController = TextEditingController();
   final ValueNotifier<String> _feedbackNotifier = ValueNotifier<String>('');
+  bool _showEmojiPicker = false;
 
   @override
   void dispose() {
@@ -50,10 +52,8 @@ class _PayFormState extends State<PayForm> {
         final double balance = txCubit.balance();
         final double currentUd = appCubit.currentUd;
         final bool isV2 = appCubit.isV2;
-        final Currency currency = appCubit.currency;
-        if (state.comment != null && _commentController.text != state.comment) {
-          _commentController.text = state.comment;
-        }
+        final Currency currency = state.currency;
+        // Removed the sync that was resetting cursor position
         if (state.amount == null || state.amount == 0) {
           _feedbackNotifier.value = '';
         }
@@ -81,22 +81,19 @@ class _PayFormState extends State<PayForm> {
                       key: _formCommentKey,
                       controller: _commentController,
                       onChanged: (String? value) {
-                        final String newText = (value ?? '').replaceAll(
-                          '\n',
-                          '',
-                        );
+                        String newText = (value ?? '').replaceAll('\n', '');
                         // https://forum.duniter.org/t/implementation-des-commentaires-de-transaction/12289/12
-                        // TODO(vjrj): do the > 256 part
                         if (isV2 && newText.length > 256) {
-                          _commentController.text = newText.substring(0, 256);
-                          _commentController.selection =
-                              TextSelection.fromPosition(
-                            TextPosition(
-                              offset: _commentController.text.length,
+                          newText = newText.substring(0, 256);
+                          // Only update controller if we actually truncated
+                          final int currentOffset =
+                              _commentController.selection.baseOffset;
+                          _commentController.value = TextEditingValue(
+                            text: newText,
+                            selection: TextSelection.collapsed(
+                              offset: currentOffset > 256 ? 256 : currentOffset,
                             ),
                           );
-                        } else {
-                          context.read<PaymentCubit>().setComment(newText);
                         }
                         context.read<PaymentCubit>().setComment(newText);
                       },
@@ -104,6 +101,24 @@ class _PayFormState extends State<PayForm> {
                         labelText: tr('g1_form_pay_desc'),
                         hintText: tr('g1_form_pay_hint'),
                         border: const OutlineInputBorder(),
+                        suffixIcon: isV2
+                            ? IconButton(
+                                icon: Icon(
+                                  _showEmojiPicker
+                                      ? Icons.keyboard
+                                      : Icons.emoji_emotions_outlined,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _showEmojiPicker = !_showEmojiPicker;
+                                  });
+                                },
+                                tooltip: _showEmojiPicker
+                                    ? tr('hide_emoji_keyboard')
+                                    : tr('add_emoji'),
+                              )
+                            : null,
                       ),
                       validator: (String? value) {
                         if (value != null &&
@@ -163,7 +178,73 @@ class _PayFormState extends State<PayForm> {
                 ],
               ),
               FormErrorWidget(feedbackNotifier: _feedbackNotifier),
+              _buildEmojiPicker(),
             ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildEmojiPicker() {
+    if (!_showEmojiPicker) {
+      return const SizedBox.shrink();
+    }
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        // Use 30% of available screen height, with a minimum of 200 and maximum of 300
+        final double screenHeight = MediaQuery.of(context).size.height;
+        final double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+        final double availableHeight = screenHeight - keyboardHeight;
+        final double pickerHeight = (availableHeight * 0.3).clamp(200.0, 300.0);
+        final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
+        return SizedBox(
+          height: pickerHeight,
+          child: EmojiPicker(
+            onEmojiSelected: (Category? category, Emoji emoji) {
+              final String newComment = _commentController.text + emoji.emoji;
+              _commentController.text = newComment;
+              context.read<PaymentCubit>().setComment(newComment);
+            },
+            config: Config(
+              height: pickerHeight,
+              // Use app's current locale for emoji picker
+              // Supported: en, de, es, fr, hi, it, ja, pt, ru, zh
+              locale: _getEmojiPickerLocale(context.locale),
+              // checkPlatformCompatibility: true,
+              emojiViewConfig: EmojiViewConfig(
+                columns: MediaQuery.of(context).size.width > 600 ? 9 : 7,
+                emojiSizeMax:
+                    MediaQuery.of(context).size.width > 600 ? 28.0 : 22.0,
+                backgroundColor: isDarkMode
+                    ? Theme.of(context).scaffoldBackgroundColor
+                    : Colors.white,
+              ),
+              categoryViewConfig: CategoryViewConfig(
+                iconColorSelected: Theme.of(context).primaryColor,
+                iconColor: isDarkMode ? Colors.grey : Colors.grey.shade600,
+                indicatorColor: Theme.of(context).primaryColor,
+                backgroundColor: isDarkMode
+                    ? Theme.of(context).scaffoldBackgroundColor
+                    : Colors.white,
+              ),
+              bottomActionBarConfig: BottomActionBarConfig(
+                backgroundColor: isDarkMode
+                    ? Theme.of(context).scaffoldBackgroundColor
+                    : Colors.white,
+                buttonColor:
+                    isDarkMode ? Colors.grey.shade800 : Colors.grey.shade200,
+                buttonIconColor: isDarkMode ? Colors.white70 : Colors.black87,
+              ),
+              searchViewConfig: SearchViewConfig(
+                backgroundColor: isDarkMode
+                    ? Theme.of(context).scaffoldBackgroundColor
+                    : Colors.white,
+                buttonIconColor: isDarkMode ? Colors.white70 : Colors.black87,
+                hintText: tr('emoji_search'),
+              ),
+            ),
           ),
         );
       },
@@ -272,6 +353,29 @@ class _PayFormState extends State<PayForm> {
       _feedbackNotifier.value = '';
     }
     return weHave;
+  }
+
+  /// Maps app locale to emoji picker supported locales
+  /// Supported by emoji_picker_flutter: en, de, es, fr, hi, it, ja, pt, ru, zh
+  Locale _getEmojiPickerLocale(Locale appLocale) {
+    switch (appLocale.languageCode) {
+      case 'de': // German
+      case 'en': // English
+      case 'es': // Spanish (includes Asturian es-AST)
+      case 'fr': // French
+      case 'it': // Italian
+        return Locale(appLocale.languageCode);
+      case 'ca': // Catalan -> Spanish
+      case 'gl': // Galician -> Spanish
+        return const Locale('es');
+      case 'eu': // Basque -> Spanish
+        return const Locale('es');
+      case 'eo': // Esperanto -> English
+      case 'nl': // Dutch -> English
+      case 'da': // Danish -> English
+      default:
+        return const Locale('en');
+    }
   }
 }
 

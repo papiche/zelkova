@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:pattern_lock/pattern_lock.dart';
 
 import '../main.dart';
@@ -32,10 +33,13 @@ class _SecureUnlockWidgetState extends State<SecureUnlockWidget> {
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmController = TextEditingController();
+  final LocalAuthentication _localAuth = LocalAuthentication();
 
   bool _saltReady = false;
   bool _changing = false;
   bool _usePassword = false;
+  bool _useBiometric = false;
+  bool _biometricAvailable = false;
   late List<int> _salt;
   List<int>? _firstPattern;
   Uint8List? _previousKey;
@@ -49,6 +53,20 @@ class _SecureUnlockWidgetState extends State<SecureUnlockWidget> {
   Future<void> _init() async {
     await _loadOrGenerateSalt();
     await _loadMethodPreference();
+    await _checkBiometricAvailability();
+  }
+
+  Future<void> _checkBiometricAvailability() async {
+    bool available = false;
+    try {
+      available = await _localAuth.canCheckBiometrics ||
+          (await _localAuth.isDeviceSupported());
+    } catch (_) {
+      available = false;
+    }
+    if (mounted) {
+      setState(() => _biometricAvailable = available);
+    }
   }
 
   Future<void> _loadOrGenerateSalt() async {
@@ -67,9 +85,52 @@ class _SecureUnlockWidgetState extends State<SecureUnlockWidget> {
 
   Future<void> _loadMethodPreference() async {
     final String? mode = await _storage.read(key: StorageKeys.usesPassword);
+    final String? bio =
+        await _storage.read(key: StorageKeys.biometricEnabledKey);
     setState(() {
       _usePassword = mode == 'true';
+      _useBiometric = bio == 'true';
     });
+  }
+
+  Future<void> _onBiometricSetup() async {
+    // Attempt biometric auth to enroll
+    final bool didAuth = await _localAuth.authenticate(
+      localizedReason: 'Authenticate to enable biometrics',
+      options: const AuthenticationOptions(biometricOnly: true),
+    );
+    if (!didAuth) {
+      _showError('biometric_failed');
+      return;
+    }
+
+    // Generate random key and store it, mark biometric enabled
+    final Uint8List newKey =
+        Uint8List.fromList(SecureCryptoHelper.generateSalt());
+    await _storage.write(
+        key: StorageKeys.securePatternOrPass, value: base64Encode(newKey));
+    await _storage.write(key: StorageKeys.biometricEnabledKey, value: 'true');
+    // keep usesPassword untouched; biometric is separate
+    widget.onUnlocked(newKey);
+  }
+
+  Future<void> _onBiometricAuth() async {
+    final bool didAuth = await _localAuth.authenticate(
+      localizedReason: 'Authenticate to unlock',
+      options: const AuthenticationOptions(biometricOnly: true),
+    );
+    if (!didAuth) {
+      _showError('biometric_failed');
+      return;
+    }
+    final String? stored =
+        await _storage.read(key: StorageKeys.securePatternOrPass);
+    if (stored == null || stored.isEmpty) {
+      _showError('no_biometric_key');
+      return;
+    }
+    final Uint8List key = base64Decode(stored);
+    widget.onUnlocked(key);
   }
 
   void _showError(String msg) {
@@ -170,6 +231,16 @@ class _SecureUnlockWidgetState extends State<SecureUnlockWidget> {
             onChanged: (_) {},
           ),
         const SizedBox(height: 24),
+        if (widget.isSetup && _biometricAvailable)
+          Column(
+            children: <Widget>[
+              ElevatedButton(
+                onPressed: _onBiometricSetup,
+                child: Text('use_biometric'.tr()),
+              ),
+              const SizedBox(height: 12),
+            ],
+          ),
         ElevatedButton(
           onPressed: _onPasswordEntered,
           child: Text(tr('continue')),
@@ -266,6 +337,16 @@ class _SecureUnlockWidgetState extends State<SecureUnlockWidget> {
             onPressed: () => setState(() => _usePassword = true),
             child: Text(tr('use_password_instead')),
           ),
+        if (widget.isSetup && _biometricAvailable)
+          Column(
+            children: <Widget>[
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: _onBiometricSetup,
+                child: Text(tr('use_biometric')),
+              ),
+            ],
+          ),
         if (widget.isSetup || _changing) _buildWarningCard(),
       ],
     );
@@ -310,14 +391,28 @@ class _SecureUnlockWidgetState extends State<SecureUnlockWidget> {
           : SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(24.0),
-                child: _usePassword ? _buildPasswordUI() : _buildPatternUI(),
+                child: Column(
+                  children: <Widget>[
+                    if (_useBiometric && !widget.isSetup && !widget.isChange)
+                      Column(
+                        children: <Widget>[
+                          ElevatedButton(
+                            onPressed: _onBiometricAuth,
+                            child: Text(tr('app_lock_unlock_with_biometrics')),
+                          ),
+                          const SizedBox(height: 12),
+                        ],
+                      ),
+                    if (_usePassword) _buildPasswordUI() else _buildPatternUI(),
+                  ],
+                ),
               ),
             ),
     );
   }
 }
 
-Future<Uint8List?> requestSecureUnlock() async {
+Future<Uint8List?> requestSecureUnlock({bool isSetup = false}) async {
   final NavigatorState? navigator = GinkgoApp.navigatorKey.currentState;
   if (navigator == null) {
     return null;
@@ -326,6 +421,7 @@ Future<Uint8List?> requestSecureUnlock() async {
     MaterialPageRoute<Uint8List>(
       fullscreenDialog: true,
       builder: (_) => SecureUnlockWidget(
+        isSetup: isSetup,
         onUnlocked: (Uint8List key) {
           navigator.pop(key);
         },
@@ -335,15 +431,43 @@ Future<Uint8List?> requestSecureUnlock() async {
 }
 
 Future<bool> walletV2Auth() async {
-  if (!SharedPreferencesHelper().isLocked()) {
-    // Already authenticated
+  final SharedPreferencesHelper helper = SharedPreferencesHelper();
+  // If already unlocked in-memory
+  if (!helper.isLocked()) {
     return true;
   }
+
+  const FlutterSecureStorage storage = FlutterSecureStorage();
+  final String? bioEnabled =
+      await storage.read(key: StorageKeys.biometricEnabledKey);
+  if (bioEnabled == 'true') {
+    // Try biometric auth and read stored key
+    final LocalAuthentication la = LocalAuthentication();
+    try {
+      final bool didAuth = await la.authenticate(
+        localizedReason: 'Authenticate to unlock',
+        options: const AuthenticationOptions(biometricOnly: true),
+      );
+      if (!didAuth) {
+        return false;
+      }
+      final String? stored =
+          await storage.read(key: StorageKeys.securePatternOrPass);
+      if (stored == null || stored.isEmpty) {
+        return false;
+      }
+      final Uint8List key = base64Decode(stored);
+      helper.passwordKey = key;
+      return true;
+    } catch (_) {
+      // Fall back to normal unlock dialog on error
+    }
+  }
+
   final Uint8List? key = await requestSecureUnlock();
   if (key == null) {
     return false;
   }
-  final SharedPreferencesHelper helper = SharedPreferencesHelper();
   helper.passwordKey = key;
   return true;
 }

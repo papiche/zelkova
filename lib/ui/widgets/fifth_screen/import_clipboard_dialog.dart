@@ -63,7 +63,7 @@ class _ImportClipboardDialogState extends State<ImportClipboardDialog> {
       if (!mounted) {
         return;
       }
-      Navigator.of(context).pop(text); // close the dialog AFTER import
+      Navigator.of(context).pop(true); // close the dialog AFTER import
     } finally {
       if (mounted) {
         setState(() => _isImporting = false);
@@ -130,7 +130,7 @@ class _ImportClipboardDialogState extends State<ImportClipboardDialog> {
               if (showQrButton)
                 GenericQrButton(
                   onKeyScanned: (String key) {
-                    Navigator.of(context).pop(key);
+                    Navigator.of(context).pop(true);
                     widget.onImport(key);
                   },
                 ),
@@ -138,8 +138,6 @@ class _ImportClipboardDialogState extends State<ImportClipboardDialog> {
                 child: Text(tr('import')),
                 onPressed: () {
                   _validateAndImport();
-                  // Navigator.of(context).pop(_textController.text);
-                  // widget.onImport(_textController.text);
                 },
               ),
             ])

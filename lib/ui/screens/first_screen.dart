@@ -11,11 +11,13 @@ import '../../data/models/app_state.dart';
 import '../../data/models/bottom_nav_cubit.dart';
 import '../../data/models/payment_cubit.dart';
 import '../../data/models/payment_state.dart';
+import '../../g1/g1_helper.dart';
 import '../../shared_prefs_helper.dart';
 import '../tutorial.dart';
 import '../tutorial_keys.dart';
 import '../widgets/bottom_widget.dart';
 import '../widgets/card_drawer.dart';
+import '../widgets/first_screen/card_text_style.dart';
 import '../widgets/first_screen/contact_search_page.dart';
 import '../widgets/first_screen/credit_card.dart';
 import '../widgets/first_screen/first_tutorial.dart';
@@ -32,6 +34,8 @@ class FirstScreen extends StatefulWidget {
 
 class _FirstScreenState extends State<FirstScreen> {
   late Tutorial tutorial;
+  final ScrollController _scrollController = ScrollController();
+  bool _isCollapsed = false;
 
   @override
   void initState() {
@@ -45,6 +49,23 @@ class _FirstScreenState extends State<FirstScreen> {
       tutorial.showTutorial();
       context.read<AppCubit>().walletCreatedViewed();
     }
+
+    _scrollController.addListener(() {
+      // Detect when the AppBar is collapsed
+      final bool isCollapsed = _scrollController.hasClients &&
+          _scrollController.offset > (240 - kToolbarHeight - 50);
+      if (_isCollapsed != isCollapsed) {
+        setState(() {
+          _isCollapsed = isCollapsed;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -86,31 +107,6 @@ class _FirstScreenState extends State<FirstScreen> {
               builder: (BuildContext context, PaymentState state) =>
                   Stack(children: <Widget>[
                     Scaffold(
-                      appBar: AppBar(
-                        title: Text(tr('credit_card_title')),
-                        leading: context.watch<AppCubit>().hasRecentExport
-                            ? null
-                            : Builder(
-                                builder: (BuildContext context) => IconButton(
-                                    icon: const Badge(
-                                      backgroundColor: Colors.red,
-                                      label: Text('!',
-                                          style:
-                                              TextStyle(color: Colors.white)),
-                                      child: Icon(Icons.menu),
-                                    ),
-                                    onPressed: () {
-                                      Scaffold.of(context).openDrawer();
-                                    })),
-                        actions: <Widget>[
-                          IconButton(
-                            icon: const Icon(Icons.info_outline),
-                            onPressed: () {
-                              tutorial.showTutorial(showAlways: true);
-                            },
-                          ),
-                        ],
-                      ),
                       drawer: const CardDrawer(),
                       body: LayoutBuilder(
                         builder:
@@ -120,80 +116,176 @@ class _FirstScreenState extends State<FirstScreen> {
                               ResponsiveBreakpoints.of(context)
                                   .largerThan(MOBILE);
 
-                          return ListView(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            children: <Widget>[
-                              if (isLargeScreen)
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Expanded(
-                                      flex: 2,
-                                      child: CreditCard(
-                                        key: creditCardKey,
-                                        account:
-                                            prefsHelper.getCurrentAccount(),
-                                      ),
+                          final account = prefsHelper.getCurrentAccount();
+                          final String publicKey = account.type.isV2
+                              ? account.address
+                              : account.pubKey;
+
+                          return CustomScrollView(
+                            controller: _scrollController,
+                            slivers: <Widget>[
+                              SliverAppBar(
+                                title: _isCollapsed
+                                    ? Container()
+                                    : Text(tr('credit_card_title')),
+                                expandedHeight: isLargeScreen ? 0 : 240,
+                                // floating: false,
+                                pinned: true,
+                                backgroundColor:
+                                    _isCollapsed ? Colors.transparent : null,
+                                leading: context
+                                        .watch<AppCubit>()
+                                        .hasRecentExport
+                                    ? null
+                                    : Builder(
+                                        builder: (BuildContext context) =>
+                                            IconButton(
+                                                icon: Badge(
+                                                  backgroundColor: Colors.red,
+                                                  label: const Text('!',
+                                                      style: TextStyle(
+                                                          color: Colors.white)),
+                                                  child: Icon(Icons.menu,
+                                                      color: _isCollapsed
+                                                          ? Colors.white
+                                                          : null),
+                                                ),
+                                                onPressed: () {
+                                                  Scaffold.of(context)
+                                                      .openDrawer();
+                                                })),
+                                actions: <Widget>[
+                                  IconButton(
+                                    icon: Icon(Icons.info_outline,
+                                        color:
+                                            _isCollapsed ? Colors.white : null),
+                                    onPressed: () {
+                                      tutorial.showTutorial(showAlways: true);
+                                    },
+                                  ),
+                                ],
+                                flexibleSpace: Container(
+                                  decoration: _isCollapsed
+                                      ? BoxDecoration(
+                                          gradient: LinearGradient(
+                                            begin: Alignment.bottomLeft,
+                                            end: Alignment.topRight,
+                                            colors: <Color>[
+                                              prefsHelper
+                                                  .getTheme()
+                                                  .primaryColor,
+                                              prefsHelper
+                                                  .getTheme()
+                                                  .secondaryColor
+                                            ],
+                                          ),
+                                        )
+                                      : null,
+                                  child: FlexibleSpaceBar(
+                                    title: Text(
+                                      _isCollapsed
+                                          ? simplifyPubKey(
+                                              extractPublicKey(publicKey))
+                                          : '',
+                                      style: cardTextStyle(context),
                                     ),
-                                    const SizedBox(width: 20),
-                                    Expanded(
-                                      flex: 2,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Row(children: <Widget>[
-                                            Flexible(
-                                              child: PayContactSearchButton(
-                                                key: paySearchUserKey,
-                                                searchUse: SearchUse.payment,
-                                                btnText: tr('search_user_btn'),
+                                    background: isLargeScreen
+                                        ? null
+                                        : Container(
+                                            padding: const EdgeInsets.only(
+                                              top: 80,
+                                              left: 16,
+                                              right: 16,
+                                              bottom: 16,
+                                            ),
+                                            child: CreditCard(
+                                              key: creditCardKey,
+                                              account: prefsHelper
+                                                  .getCurrentAccount(),
+                                            ),
+                                          ),
+                                  ),
+                                ),
+                              ),
+                              SliverPadding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 16),
+                                sliver: SliverList(
+                                  delegate: SliverChildListDelegate(
+                                    <Widget>[
+                                      if (isLargeScreen)
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Expanded(
+                                              flex: 2,
+                                              child: CreditCard(
+                                                key: creditCardKey,
+                                                account: prefsHelper
+                                                    .getCurrentAccount(),
                                               ),
                                             ),
-                                            const SizedBox(width: 10),
-                                            const PayQrButton(),
-                                          ]),
-                                          const SizedBox(height: 10),
-                                          const PayForm(),
-                                          const BottomWidget(),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              else
-                                Column(
-                                  children: <Widget>[
-                                    CreditCard(
-                                        key: creditCardKey,
-                                        account:
-                                            prefsHelper.getCurrentAccount()),
-                                    const SizedBox(height: 8),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 24),
-                                      child: Divider(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurface
-                                            .withValues(alpha: .4),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Row(children: <Widget>[
-                                      Flexible(
-                                          child: PayContactSearchButton(
-                                              key: paySearchUserKey,
-                                              searchUse: SearchUse.payment,
-                                              btnText: tr('search_user_btn'))),
-                                      const SizedBox(width: 10),
-                                      const PayQrButton()
-                                    ]),
-                                    const SizedBox(height: 10),
-                                    const PayForm(),
-                                    const BottomWidget()
-                                  ],
+                                            const SizedBox(width: 20),
+                                            Expanded(
+                                              flex: 2,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Row(children: <Widget>[
+                                                    Flexible(
+                                                      child:
+                                                          PayContactSearchButton(
+                                                        key: paySearchUserKey,
+                                                        searchUse:
+                                                            SearchUse.payment,
+                                                        btnText: tr(
+                                                            'search_user_btn'),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 10),
+                                                    const PayQrButton(),
+                                                  ]),
+                                                  const SizedBox(height: 10),
+                                                  const PayForm(),
+                                                  const BottomWidget(),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      else ...<Widget>[
+                                        const SizedBox(height: 8),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 24),
+                                          child: Divider(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface
+                                                .withValues(alpha: .4),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Row(children: <Widget>[
+                                          Flexible(
+                                              child: PayContactSearchButton(
+                                                  key: paySearchUserKey,
+                                                  searchUse: SearchUse.payment,
+                                                  btnText:
+                                                      tr('search_user_btn'))),
+                                          const SizedBox(width: 10),
+                                          const PayQrButton()
+                                        ]),
+                                        const SizedBox(height: 10),
+                                        const PayForm(),
+                                        const BottomWidget(),
+                                      ],
+                                    ],
+                                  ),
                                 ),
+                              ),
                             ],
                           );
                         },

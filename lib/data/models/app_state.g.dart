@@ -23,6 +23,8 @@ abstract class _$AppStateCWProxy {
 
   AppState currentUd(double? currentUd);
 
+  AppState currentUdLastUpdate(DateTime? currentUdLastUpdate);
+
   AppState tutorials(Map<String, bool>? tutorials);
 
   AppState hasRecentExport(bool? hasRecentExport);
@@ -46,6 +48,7 @@ abstract class _$AppStateCWProxy {
     bool v2mode,
     Currency? currency,
     double? currentUd,
+    DateTime? currentUdLastUpdate,
     Map<String, bool>? tutorials,
     bool? hasRecentExport,
     int? recentExportReminderInDays,
@@ -87,6 +90,10 @@ class _$AppStateCWProxyImpl implements _$AppStateCWProxy {
   AppState currentUd(double? currentUd) => this(currentUd: currentUd);
 
   @override
+  AppState currentUdLastUpdate(DateTime? currentUdLastUpdate) =>
+      this(currentUdLastUpdate: currentUdLastUpdate);
+
+  @override
   AppState tutorials(Map<String, bool>? tutorials) =>
       this(tutorials: tutorials);
 
@@ -119,6 +126,7 @@ class _$AppStateCWProxyImpl implements _$AppStateCWProxy {
     Object? v2mode = const $CopyWithPlaceholder(),
     Object? currency = const $CopyWithPlaceholder(),
     Object? currentUd = const $CopyWithPlaceholder(),
+    Object? currentUdLastUpdate = const $CopyWithPlaceholder(),
     Object? tutorials = const $CopyWithPlaceholder(),
     Object? hasRecentExport = const $CopyWithPlaceholder(),
     Object? recentExportReminderInDays = const $CopyWithPlaceholder(),
@@ -157,6 +165,10 @@ class _$AppStateCWProxyImpl implements _$AppStateCWProxy {
           ? _value.currentUd
           // ignore: cast_nullable_to_non_nullable
           : currentUd as double?,
+      currentUdLastUpdate: currentUdLastUpdate == const $CopyWithPlaceholder()
+          ? _value.currentUdLastUpdate
+          // ignore: cast_nullable_to_non_nullable
+          : currentUdLastUpdate as DateTime?,
       tutorials: tutorials == const $CopyWithPlaceholder()
           ? _value.tutorials
           // ignore: cast_nullable_to_non_nullable
@@ -197,6 +209,9 @@ AppState _$AppStateFromJson(Map<String, dynamic> json) => AppState(
       v2mode: json['v2mode'] as bool? ?? false,
       currency: $enumDecodeNullable(_$CurrencyEnumMap, json['currency']),
       currentUd: (json['currentUd'] as num?)?.toDouble(),
+      currentUdLastUpdate: json['currentUdLastUpdate'] == null
+          ? null
+          : DateTime.parse(json['currentUdLastUpdate'] as String),
       tutorials: (json['tutorials'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, e as bool),
       ),
@@ -220,6 +235,8 @@ Map<String, dynamic> _$AppStateToJson(AppState instance) => <String, dynamic>{
       'v2mode': instance.v2mode,
       'currency': _$CurrencyEnumMap[instance.currency]!,
       'currentUd': instance.currentUd,
+      if (instance.currentUdLastUpdate?.toIso8601String() case final value?)
+        'currentUdLastUpdate': value,
       'tutorials': instance.tutorials,
       if (instance.distancePrecompute case final value?)
         'distancePrecompute': value,

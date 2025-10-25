@@ -20,6 +20,7 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
       this.v2mode = false,
       Currency? currency,
       double? currentUd,
+      this.currentUdLastUpdate,
       Map<String, bool>? tutorials,
       bool? hasRecentExport,
       int? recentExportReminderInDays,
@@ -44,6 +45,8 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
   final bool v2mode;
   final Currency currency;
   final double currentUd;
+  @JsonKey(includeIfNull: false)
+  final DateTime? currentUdLastUpdate;
   final Map<String, bool> tutorials;
   @JsonKey(includeIfNull: false)
   final DistancePrecompute? distancePrecompute;
@@ -64,6 +67,7 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
         tutorials,
         currency,
         currentUd,
+        currentUdLastUpdate,
         v2mode,
         distancePrecompute,
         recentExportReminderInDays,

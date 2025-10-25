@@ -78,8 +78,21 @@ class AppCubit extends HydratedCubit<AppState> {
   }
 
   void setUd(double currentUd) {
-    emit(state.copyWith(currentUd: currentUd));
+    emit(state.copyWith(
+        currentUd: currentUd, currentUdLastUpdate: DateTime.now()));
   }
+
+  bool shouldUpdateUd() {
+    // Update UD if never updated or if it's been more than 24 hours
+    if (state.currentUdLastUpdate == null) {
+      return true;
+    }
+    final Duration timeSinceLastUpdate =
+        DateTime.now().difference(state.currentUdLastUpdate!);
+    return timeSinceLastUpdate.inHours >= 24;
+  }
+
+  DateTime? get currentUdLastUpdate => state.currentUdLastUpdate;
 
   void setV2Mode(bool v2mode) {
     emit(state.copyWith(v2mode: v2mode));

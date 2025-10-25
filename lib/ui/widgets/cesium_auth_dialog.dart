@@ -42,29 +42,18 @@ class _CesiumAuthDialogState extends State<CesiumAuthDialog> {
       future: getProfile(widget.publicKey, complete: false),
       builder: (BuildContext context, AsyncSnapshot<Contact> snapshot) {
         if (snapshot.hasData) {
-          return _buildCustomAlertDialog(context, snapshot.data!);
+          return _buildFullScreenAuth(context, snapshot.data!);
         }
-        return _buildCustomAlertDialog(
-            context, Contact(pubKey: widget.publicKey));
+        return _buildFullScreenAuth(context, Contact(pubKey: widget.publicKey));
       },
     );
   }
 
-  AlertDialog _buildCustomAlertDialog(BuildContext context, Contact contact) {
-    return AlertDialog(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Expanded(
-            child: Text(
-              tr('cesium_auth_dialog_title', namedArgs: <String, String>{
-                'key': humanizeContact(widget.publicKey, contact),
-              }),
-              style: Theme.of(context).textTheme.titleLarge,
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
+  Widget _buildFullScreenAuth(BuildContext context, Contact contact) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(tr('cesium_auth_title')),
+        actions: <Widget>[
           if (context.read<AppCubit>().isExpertMode)
             PopupMenuButton<String>(
               tooltip: tr('other_auth_methods'),
@@ -100,65 +89,84 @@ class _CesiumAuthDialogState extends State<CesiumAuthDialog> {
             ),
         ],
       ),
-      content: _buildDialogContent(context),
-      actions: _buildDialogActions(context, contact),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            const SizedBox(height: 8),
+            Text(
+              tr('cesium_auth_dialog_title', namedArgs: <String, String>{
+                'key': humanizeContact(widget.publicKey, contact),
+              }),
+              style: Theme.of(context).textTheme.titleMedium,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            PasswordField(
+              controller: secretPhraseController,
+              label: tr('cesium_secret_phrase'),
+              onChanged: (String value) => _feedbackNotifier.value = '',
+            ),
+            const SizedBox(height: 16),
+            PasswordField(
+              controller: passwordController,
+              label: tr('cesium_password'),
+              onChanged: (String value) => _feedbackNotifier.value = '',
+            ),
+            const SizedBox(height: 8),
+            FormErrorWidget(feedbackNotifier: _feedbackNotifier),
+          ],
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              TextButton(
+                child: Text(tr('cancel')),
+                onPressed: () => Navigator.of(context).pop(false),
+              ),
+              const SizedBox(width: 8),
+              FilledButton(
+                onPressed:
+                    _isProcessing ? null : () => _handleAuthentication(contact),
+                child: _isProcessing
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : Text(tr('accept')),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
-  Widget _buildDialogContent(BuildContext context) {
-    return SingleChildScrollView(
-      child: ListBody(
-        children: <Widget>[
-          PasswordField(
-            controller: secretPhraseController,
-            label: tr('cesium_secret_phrase'),
-            onChanged: (String value) => _feedbackNotifier.value = '',
-          ),
-          PasswordField(
-            controller: passwordController,
-            label: tr('cesium_password'),
-            onChanged: (String value) => _feedbackNotifier.value = '',
-          ),
-          FormErrorWidget(feedbackNotifier: _feedbackNotifier),
-        ],
-      ),
-    );
-  }
+  Future<void> _handleAuthentication(Contact contact) async {
+    _feedbackNotifier.value = '';
+    setState(() {
+      _isProcessing = true;
+    });
 
-  List<Widget> _buildDialogActions(BuildContext context, Contact contact) {
-    return <Widget>[
-      TextButton(
-        child: Text(tr('cancel')),
-        onPressed: () {
-          Navigator.of(context).pop(false);
-        },
-      ),
-      TextButton(
-        onPressed: _isProcessing
-            ? null
-            : () async {
-                _feedbackNotifier.value = '';
-                setState(() {
-                  _isProcessing = true;
-                });
-                final String secret = secretPhraseController.text;
-                final String password = passwordController.text;
-                final CesiumWallet wallet = CesiumWallet(secret, password);
+    final String secret = secretPhraseController.text;
+    final String password = passwordController.text;
+    final CesiumWallet wallet = CesiumWallet(secret, password);
 
-                setState(() {
-                  _isProcessing = false;
-                });
-                if (wallet.pubkey != extractPublicKey(widget.publicKey)) {
-                  _feedbackNotifier.value = tr('incorrect_passwords');
-                } else {
-                  _onCorrectAuth(contact, wallet, context);
-                }
-              },
-        child: _isProcessing
-            ? const CircularProgressIndicator()
-            : Text(tr('accept')),
-      ),
-    ];
+    setState(() {
+      _isProcessing = false;
+    });
+
+    if (wallet.pubkey != extractPublicKey(widget.publicKey)) {
+      _feedbackNotifier.value = tr('incorrect_passwords');
+    } else {
+      _onCorrectAuth(contact, wallet, context);
+    }
   }
 
   void _onCorrectAuth(
@@ -240,12 +248,13 @@ class _CesiumAuthDialogState extends State<CesiumAuthDialog> {
 
 Future<bool?> showAuthCesiumWalletDialog(
     BuildContext context, String wallet, int returnTo) {
-  return showDialog<bool>(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext dialogContext) {
-      return CesiumAuthDialog(publicKey: wallet, returnTo: returnTo);
-    },
+  return Navigator.push<bool>(
+    context,
+    MaterialPageRoute<bool>(
+      builder: (BuildContext context) {
+        return CesiumAuthDialog(publicKey: wallet, returnTo: returnTo);
+      },
+    ),
   );
 }
 

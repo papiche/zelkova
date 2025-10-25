@@ -129,6 +129,8 @@ fragment CommentsIssued on TxComment {
 fragment AccountBasicFields on Account {
     createdOn
     id
+    balance
+    totalBalance
     linkedIdentity {
         ...IdentityBasicFields
     }
@@ -139,23 +141,33 @@ fragment AccountFields on Account {
 
     createdOn
     id
+    balance
+    totalBalance
     isActive
 
     transfersIssued: transfersByFromId(
         first: $limit
-        offset: $offset
+        after: $cursor
         orderBy: [TIMESTAMP_DESC]
     ) {
         totalCount
+        pageInfo {
+            hasNextPage
+            endCursor
+        }
         nodes { ...TransferFields }
     }
 
     transfersReceived: transfersByToId(
         first: $limit
-        offset: $offset
+        after: $cursor
         orderBy: [TIMESTAMP_DESC]
     ) {
         totalCount
+        pageInfo {
+            hasNextPage
+            endCursor
+        }
         nodes { ...TransferFields }
     }
 
@@ -175,32 +187,46 @@ fragment AccountFields on Account {
 fragment AccountTxsFields on Account {
     createdOn
     id
+    balance
+    totalBalance
     isActive
 
     comments: authoredTxComments(
         first: $limit
-        offset: $offset
+        after: $cursor
         orderBy: [BLOCK_NUMBER_DESC]
     ) {
         totalCount
+        pageInfo {
+            hasNextPage
+            endCursor
+        }
         nodes { ...CommentsIssued }
     }
 
     transfersIssued: transfersByFromId(
         first: $limit
-        offset: $offset
+        after: $cursor
         orderBy: [TIMESTAMP_DESC]
     ) {
         totalCount
+        pageInfo {
+            hasNextPage
+            endCursor
+        }
         nodes { ...TransferFields }
     }
 
     transfersReceived: transfersByToId(
         first: $limit
-        offset: $offset
+        after: $cursor
         orderBy: [TIMESTAMP_DESC]
     ) {
         totalCount
+        pageInfo {
+            hasNextPage
+            endCursor
+        }
         nodes { ...TransferFields }
     }
 }
@@ -258,13 +284,13 @@ query IdentitiesByName($pattern: String) {
     }
 }
 
-query AccountByPk($id: String!, $limit: Int, $offset: Int) {
+query AccountByPk($id: String!, $limit: Int, $cursor: Cursor) {
     accounts(filter: { id: { equalTo: $id } }) {
         nodes { ...AccountFields }
     }
 }
 
-query AccountsByPk($accountIds: [String!]!, $limit: Int, $offset: Int) {
+query AccountsByPk($accountIds: [String!]!, $limit: Int, $cursor: Cursor) {
     accounts(filter: { id: { in: $accountIds } }) {
         nodes { ...AccountFields }
     }
@@ -282,7 +308,7 @@ query AccountsBasicByPk($accountIds: [String!]!) {
     }
 }
 
-query AccountTransactions($accountId: String!, $limit: Int, $offset: Int) {
+query AccountTransactions($accountId: String!, $limit: Int, $cursor: Cursor) {
     accounts(filter: { id: { equalTo: $accountId } }) {
         nodes { ...AccountTxsFields }
     }

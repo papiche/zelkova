@@ -794,6 +794,20 @@ const AccountBasicFields = _i1.FragmentDefinitionNode(
       selectionSet: null,
     ),
     _i1.FieldNode(
+      name: _i1.NameNode(value: 'balance'),
+      alias: null,
+      arguments: [],
+      directives: [],
+      selectionSet: null,
+    ),
+    _i1.FieldNode(
+      name: _i1.NameNode(value: 'totalBalance'),
+      alias: null,
+      arguments: [],
+      directives: [],
+      selectionSet: null,
+    ),
+    _i1.FieldNode(
       name: _i1.NameNode(value: 'linkedIdentity'),
       alias: null,
       arguments: [],
@@ -838,6 +852,20 @@ const AccountFields = _i1.FragmentDefinitionNode(
       selectionSet: null,
     ),
     _i1.FieldNode(
+      name: _i1.NameNode(value: 'balance'),
+      alias: null,
+      arguments: [],
+      directives: [],
+      selectionSet: null,
+    ),
+    _i1.FieldNode(
+      name: _i1.NameNode(value: 'totalBalance'),
+      alias: null,
+      arguments: [],
+      directives: [],
+      selectionSet: null,
+    ),
+    _i1.FieldNode(
       name: _i1.NameNode(value: 'isActive'),
       alias: null,
       arguments: [],
@@ -853,8 +881,8 @@ const AccountFields = _i1.FragmentDefinitionNode(
           value: _i1.VariableNode(name: _i1.NameNode(value: 'limit')),
         ),
         _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'offset'),
-          value: _i1.VariableNode(name: _i1.NameNode(value: 'offset')),
+          name: _i1.NameNode(value: 'after'),
+          value: _i1.VariableNode(name: _i1.NameNode(value: 'cursor')),
         ),
         _i1.ArgumentNode(
           name: _i1.NameNode(value: 'orderBy'),
@@ -871,6 +899,28 @@ const AccountFields = _i1.FragmentDefinitionNode(
           arguments: [],
           directives: [],
           selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'pageInfo'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: _i1.SelectionSetNode(selections: [
+            _i1.FieldNode(
+              name: _i1.NameNode(value: 'hasNextPage'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null,
+            ),
+            _i1.FieldNode(
+              name: _i1.NameNode(value: 'endCursor'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null,
+            ),
+          ]),
         ),
         _i1.FieldNode(
           name: _i1.NameNode(value: 'nodes'),
@@ -895,8 +945,8 @@ const AccountFields = _i1.FragmentDefinitionNode(
           value: _i1.VariableNode(name: _i1.NameNode(value: 'limit')),
         ),
         _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'offset'),
-          value: _i1.VariableNode(name: _i1.NameNode(value: 'offset')),
+          name: _i1.NameNode(value: 'after'),
+          value: _i1.VariableNode(name: _i1.NameNode(value: 'cursor')),
         ),
         _i1.ArgumentNode(
           name: _i1.NameNode(value: 'orderBy'),
@@ -913,6 +963,28 @@ const AccountFields = _i1.FragmentDefinitionNode(
           arguments: [],
           directives: [],
           selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'pageInfo'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: _i1.SelectionSetNode(selections: [
+            _i1.FieldNode(
+              name: _i1.NameNode(value: 'hasNextPage'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null,
+            ),
+            _i1.FieldNode(
+              name: _i1.NameNode(value: 'endCursor'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null,
+            ),
+          ]),
         ),
         _i1.FieldNode(
           name: _i1.NameNode(value: 'nodes'),
@@ -1042,6 +1114,20 @@ const AccountTxsFields = _i1.FragmentDefinitionNode(
       selectionSet: null,
     ),
     _i1.FieldNode(
+      name: _i1.NameNode(value: 'balance'),
+      alias: null,
+      arguments: [],
+      directives: [],
+      selectionSet: null,
+    ),
+    _i1.FieldNode(
+      name: _i1.NameNode(value: 'totalBalance'),
+      alias: null,
+      arguments: [],
+      directives: [],
+      selectionSet: null,
+    ),
+    _i1.FieldNode(
       name: _i1.NameNode(value: 'isActive'),
       alias: null,
       arguments: [],
@@ -1057,8 +1143,8 @@ const AccountTxsFields = _i1.FragmentDefinitionNode(
           value: _i1.VariableNode(name: _i1.NameNode(value: 'limit')),
         ),
         _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'offset'),
-          value: _i1.VariableNode(name: _i1.NameNode(value: 'offset')),
+          name: _i1.NameNode(value: 'after'),
+          value: _i1.VariableNode(name: _i1.NameNode(value: 'cursor')),
         ),
         _i1.ArgumentNode(
           name: _i1.NameNode(value: 'orderBy'),
@@ -1075,6 +1161,28 @@ const AccountTxsFields = _i1.FragmentDefinitionNode(
           arguments: [],
           directives: [],
           selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'pageInfo'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: _i1.SelectionSetNode(selections: [
+            _i1.FieldNode(
+              name: _i1.NameNode(value: 'hasNextPage'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null,
+            ),
+            _i1.FieldNode(
+              name: _i1.NameNode(value: 'endCursor'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null,
+            ),
+          ]),
         ),
         _i1.FieldNode(
           name: _i1.NameNode(value: 'nodes'),
@@ -1099,8 +1207,8 @@ const AccountTxsFields = _i1.FragmentDefinitionNode(
           value: _i1.VariableNode(name: _i1.NameNode(value: 'limit')),
         ),
         _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'offset'),
-          value: _i1.VariableNode(name: _i1.NameNode(value: 'offset')),
+          name: _i1.NameNode(value: 'after'),
+          value: _i1.VariableNode(name: _i1.NameNode(value: 'cursor')),
         ),
         _i1.ArgumentNode(
           name: _i1.NameNode(value: 'orderBy'),
@@ -1117,6 +1225,28 @@ const AccountTxsFields = _i1.FragmentDefinitionNode(
           arguments: [],
           directives: [],
           selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'pageInfo'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: _i1.SelectionSetNode(selections: [
+            _i1.FieldNode(
+              name: _i1.NameNode(value: 'hasNextPage'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null,
+            ),
+            _i1.FieldNode(
+              name: _i1.NameNode(value: 'endCursor'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null,
+            ),
+          ]),
         ),
         _i1.FieldNode(
           name: _i1.NameNode(value: 'nodes'),
@@ -1141,8 +1271,8 @@ const AccountTxsFields = _i1.FragmentDefinitionNode(
           value: _i1.VariableNode(name: _i1.NameNode(value: 'limit')),
         ),
         _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'offset'),
-          value: _i1.VariableNode(name: _i1.NameNode(value: 'offset')),
+          name: _i1.NameNode(value: 'after'),
+          value: _i1.VariableNode(name: _i1.NameNode(value: 'cursor')),
         ),
         _i1.ArgumentNode(
           name: _i1.NameNode(value: 'orderBy'),
@@ -1159,6 +1289,28 @@ const AccountTxsFields = _i1.FragmentDefinitionNode(
           arguments: [],
           directives: [],
           selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'pageInfo'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: _i1.SelectionSetNode(selections: [
+            _i1.FieldNode(
+              name: _i1.NameNode(value: 'hasNextPage'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null,
+            ),
+            _i1.FieldNode(
+              name: _i1.NameNode(value: 'endCursor'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null,
+            ),
+          ]),
         ),
         _i1.FieldNode(
           name: _i1.NameNode(value: 'nodes'),
@@ -1519,9 +1671,9 @@ const AccountByPk = _i1.OperationDefinitionNode(
       directives: [],
     ),
     _i1.VariableDefinitionNode(
-      variable: _i1.VariableNode(name: _i1.NameNode(value: 'offset')),
+      variable: _i1.VariableNode(name: _i1.NameNode(value: 'cursor')),
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'Int'),
+        name: _i1.NameNode(value: 'Cursor'),
         isNonNull: false,
       ),
       defaultValue: _i1.DefaultValueNode(value: null),
@@ -1593,9 +1745,9 @@ const AccountsByPk = _i1.OperationDefinitionNode(
       directives: [],
     ),
     _i1.VariableDefinitionNode(
-      variable: _i1.VariableNode(name: _i1.NameNode(value: 'offset')),
+      variable: _i1.VariableNode(name: _i1.NameNode(value: 'cursor')),
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'Int'),
+        name: _i1.NameNode(value: 'Cursor'),
         isNonNull: false,
       ),
       defaultValue: _i1.DefaultValueNode(value: null),
@@ -1775,9 +1927,9 @@ const AccountTransactions = _i1.OperationDefinitionNode(
       directives: [],
     ),
     _i1.VariableDefinitionNode(
-      variable: _i1.VariableNode(name: _i1.NameNode(value: 'offset')),
+      variable: _i1.VariableNode(name: _i1.NameNode(value: 'cursor')),
       type: _i1.NamedTypeNode(
-        name: _i1.NameNode(value: 'Int'),
+        name: _i1.NameNode(value: 'Cursor'),
         isNonNull: false,
       ),
       defaultValue: _i1.DefaultValueNode(value: null),

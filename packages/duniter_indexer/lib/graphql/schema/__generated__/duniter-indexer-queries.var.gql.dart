@@ -5,6 +5,8 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer.schema.schema.gql.dart'
+    as _i2;
 import 'package:duniter_indexer/graphql/schema/__generated__/serializers.gql.dart'
     as _i1;
 
@@ -114,7 +116,7 @@ abstract class GAccountByPkVars
 
   String get id;
   int? get limit;
-  int? get offset;
+  _i2.GCursor? get cursor;
   static Serializer<GAccountByPkVars> get serializer =>
       _$gAccountByPkVarsSerializer;
 
@@ -140,7 +142,7 @@ abstract class GAccountsByPkVars
 
   BuiltList<String> get accountIds;
   int? get limit;
-  int? get offset;
+  _i2.GCursor? get cursor;
   static Serializer<GAccountsByPkVars> get serializer =>
       _$gAccountsByPkVarsSerializer;
 
@@ -215,7 +217,7 @@ abstract class GAccountTransactionsVars
 
   String get accountId;
   int? get limit;
-  int? get offset;
+  _i2.GCursor? get cursor;
   static Serializer<GAccountTransactionsVars> get serializer =>
       _$gAccountTransactionsVarsSerializer;
 
@@ -424,7 +426,7 @@ abstract class GAccountFieldsVars
       _$GAccountFieldsVars;
 
   int? get first;
-  int? get offset;
+  _i2.GCursor? get after;
   static Serializer<GAccountFieldsVars> get serializer =>
       _$gAccountFieldsVarsSerializer;
 
@@ -449,7 +451,7 @@ abstract class GAccountTxsFieldsVars
       _$GAccountTxsFieldsVars;
 
   int? get first;
-  int? get offset;
+  _i2.GCursor? get after;
   static Serializer<GAccountTxsFieldsVars> get serializer =>
       _$gAccountTxsFieldsVarsSerializer;
 

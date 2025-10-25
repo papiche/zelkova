@@ -88,6 +88,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(
           GAccountByPkData_accounts_nodes_transfersIssued_nodes_from.serializer)
       ..add(GAccountByPkData_accounts_nodes_transfersIssued_nodes_to.serializer)
+      ..add(GAccountByPkData_accounts_nodes_transfersIssued_pageInfo.serializer)
       ..add(GAccountByPkData_accounts_nodes_transfersReceived.serializer)
       ..add(GAccountByPkData_accounts_nodes_transfersReceived_nodes.serializer)
       ..add(GAccountByPkData_accounts_nodes_transfersReceived_nodes_comment
@@ -96,6 +97,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
           .serializer)
       ..add(
           GAccountByPkData_accounts_nodes_transfersReceived_nodes_to.serializer)
+      ..add(
+          GAccountByPkData_accounts_nodes_transfersReceived_pageInfo.serializer)
       ..add(GAccountByPkData_accounts_nodes_wasIdentityNext.serializer)
       ..add(GAccountByPkData_accounts_nodes_wasIdentityNext_nodes.serializer)
       ..add(GAccountByPkData_accounts_nodes_wasIdentityPrev.serializer)
@@ -149,11 +152,13 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GAccountFieldsData_transfersIssued_nodes_comment.serializer)
       ..add(GAccountFieldsData_transfersIssued_nodes_from.serializer)
       ..add(GAccountFieldsData_transfersIssued_nodes_to.serializer)
+      ..add(GAccountFieldsData_transfersIssued_pageInfo.serializer)
       ..add(GAccountFieldsData_transfersReceived.serializer)
       ..add(GAccountFieldsData_transfersReceived_nodes.serializer)
       ..add(GAccountFieldsData_transfersReceived_nodes_comment.serializer)
       ..add(GAccountFieldsData_transfersReceived_nodes_from.serializer)
       ..add(GAccountFieldsData_transfersReceived_nodes_to.serializer)
+      ..add(GAccountFieldsData_transfersReceived_pageInfo.serializer)
       ..add(GAccountFieldsData_wasIdentityNext.serializer)
       ..add(GAccountFieldsData_wasIdentityNext_nodes.serializer)
       ..add(GAccountFieldsData_wasIdentityPrev.serializer)
@@ -166,6 +171,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GAccountTransactionsData_accounts_nodes.serializer)
       ..add(GAccountTransactionsData_accounts_nodes_comments.serializer)
       ..add(GAccountTransactionsData_accounts_nodes_comments_nodes.serializer)
+      ..add(
+          GAccountTransactionsData_accounts_nodes_comments_pageInfo.serializer)
       ..add(GAccountTransactionsData_accounts_nodes_transfersIssued.serializer)
       ..add(GAccountTransactionsData_accounts_nodes_transfersIssued_nodes
           .serializer)
@@ -175,6 +182,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_from
           .serializer)
       ..add(GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_to
+          .serializer)
+      ..add(GAccountTransactionsData_accounts_nodes_transfersIssued_pageInfo
           .serializer)
       ..add(
           GAccountTransactionsData_accounts_nodes_transfersReceived.serializer)
@@ -187,21 +196,26 @@ Serializers _$serializers = (new Serializers().toBuilder()
           .serializer)
       ..add(GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_to
           .serializer)
+      ..add(GAccountTransactionsData_accounts_nodes_transfersReceived_pageInfo
+          .serializer)
       ..add(GAccountTransactionsReq.serializer)
       ..add(GAccountTransactionsVars.serializer)
       ..add(GAccountTxsFieldsData.serializer)
       ..add(GAccountTxsFieldsData_comments.serializer)
       ..add(GAccountTxsFieldsData_comments_nodes.serializer)
+      ..add(GAccountTxsFieldsData_comments_pageInfo.serializer)
       ..add(GAccountTxsFieldsData_transfersIssued.serializer)
       ..add(GAccountTxsFieldsData_transfersIssued_nodes.serializer)
       ..add(GAccountTxsFieldsData_transfersIssued_nodes_comment.serializer)
       ..add(GAccountTxsFieldsData_transfersIssued_nodes_from.serializer)
       ..add(GAccountTxsFieldsData_transfersIssued_nodes_to.serializer)
+      ..add(GAccountTxsFieldsData_transfersIssued_pageInfo.serializer)
       ..add(GAccountTxsFieldsData_transfersReceived.serializer)
       ..add(GAccountTxsFieldsData_transfersReceived_nodes.serializer)
       ..add(GAccountTxsFieldsData_transfersReceived_nodes_comment.serializer)
       ..add(GAccountTxsFieldsData_transfersReceived_nodes_from.serializer)
       ..add(GAccountTxsFieldsData_transfersReceived_nodes_to.serializer)
+      ..add(GAccountTxsFieldsData_transfersReceived_pageInfo.serializer)
       ..add(GAccountTxsFieldsReq.serializer)
       ..add(GAccountTxsFieldsVars.serializer)
       ..add(GAccountsBasicByPkData.serializer)
@@ -282,6 +296,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
           .serializer)
       ..add(
           GAccountsByPkData_accounts_nodes_transfersIssued_nodes_to.serializer)
+      ..add(
+          GAccountsByPkData_accounts_nodes_transfersIssued_pageInfo.serializer)
       ..add(GAccountsByPkData_accounts_nodes_transfersReceived.serializer)
       ..add(GAccountsByPkData_accounts_nodes_transfersReceived_nodes.serializer)
       ..add(GAccountsByPkData_accounts_nodes_transfersReceived_nodes_comment
@@ -289,6 +305,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GAccountsByPkData_accounts_nodes_transfersReceived_nodes_from
           .serializer)
       ..add(GAccountsByPkData_accounts_nodes_transfersReceived_nodes_to
+          .serializer)
+      ..add(GAccountsByPkData_accounts_nodes_transfersReceived_pageInfo
           .serializer)
       ..add(GAccountsByPkData_accounts_nodes_wasIdentityNext.serializer)
       ..add(GAccountsByPkData_accounts_nodes_wasIdentityNext_nodes.serializer)

@@ -24,7 +24,9 @@ abstract class GLastBlockData
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   GLastBlockData_blocks? get blocks;
+
   static Serializer<GLastBlockData> get serializer =>
       _$gLastBlockDataSerializer;
 
@@ -53,7 +55,9 @@ abstract class GLastBlockData_blocks
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   BuiltList<GLastBlockData_blocks_nodes> get nodes;
+
   static Serializer<GLastBlockData_blocks> get serializer =>
       _$gLastBlockDataBlocksSerializer;
 
@@ -83,7 +87,9 @@ abstract class GLastBlockData_blocks_nodes
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   int get height;
+
   static Serializer<GLastBlockData_blocks_nodes> get serializer =>
       _$gLastBlockDataBlocksNodesSerializer;
 
@@ -113,7 +119,9 @@ abstract class GIdentitiesByNameOrPkData
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   GIdentitiesByNameOrPkData_identities? get identities;
+
   static Serializer<GIdentitiesByNameOrPkData> get serializer =>
       _$gIdentitiesByNameOrPkDataSerializer;
 
@@ -145,7 +153,9 @@ abstract class GIdentitiesByNameOrPkData_identities
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   BuiltList<GIdentitiesByNameOrPkData_identities_nodes> get nodes;
+
   static Serializer<GIdentitiesByNameOrPkData_identities> get serializer =>
       _$gIdentitiesByNameOrPkDataIdentitiesSerializer;
 
@@ -180,22 +190,31 @@ abstract class GIdentitiesByNameOrPkData_identities_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GIdentitiesByNameOrPkData_identities_nodes_account? get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<GIdentitiesByNameOrPkData_identities_nodes>
       get serializer => _$gIdentitiesByNameOrPkDataIdentitiesNodesSerializer;
 
@@ -232,8 +251,10 @@ abstract class GIdentitiesByNameOrPkData_identities_nodes_account
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<GIdentitiesByNameOrPkData_identities_nodes_account>
       get serializer =>
           _$gIdentitiesByNameOrPkDataIdentitiesNodesAccountSerializer;
@@ -265,7 +286,9 @@ abstract class GIdentitiesByPkData
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   GIdentitiesByPkData_identities? get identities;
+
   static Serializer<GIdentitiesByPkData> get serializer =>
       _$gIdentitiesByPkDataSerializer;
 
@@ -296,7 +319,9 @@ abstract class GIdentitiesByPkData_identities
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   BuiltList<GIdentitiesByPkData_identities_nodes> get nodes;
+
   static Serializer<GIdentitiesByPkData_identities> get serializer =>
       _$gIdentitiesByPkDataIdentitiesSerializer;
 
@@ -330,40 +355,58 @@ abstract class GIdentitiesByPkData_identities_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   GIdentitiesByPkData_identities_nodes_account? get account;
+
   @override
   String? get accountId;
+
   @override
   String? get accountRemovedId;
+
   @override
   GIdentitiesByPkData_identities_nodes_certsByIssuerId get certsByIssuerId;
+
   @override
   GIdentitiesByPkData_identities_nodes_certsByReceiverId get certsByReceiverId;
+
   @override
   String? get createdInId;
+
   @override
   int get createdOn;
+
   @override
   int get expireOn;
+
   @override
   String get id;
+
   @override
   int get index;
+
   @override
   bool get isMember;
+
   @override
   int get lastChangeOn;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   GIdentitiesByPkData_identities_nodes_membershipEvents get membershipEvents;
+
   @override
   GIdentitiesByPkData_identities_nodes_changeOwnerKeys get changeOwnerKeys;
+
   @override
   GIdentitiesByPkData_identities_nodes_smith? get smith;
+
   static Serializer<GIdentitiesByPkData_identities_nodes> get serializer =>
       _$gIdentitiesByPkDataIdentitiesNodesSerializer;
 
@@ -399,8 +442,10 @@ abstract class GIdentitiesByPkData_identities_nodes_account
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<GIdentitiesByPkData_identities_nodes_account>
       get serializer => _$gIdentitiesByPkDataIdentitiesNodesAccountSerializer;
 
@@ -437,11 +482,14 @@ abstract class GIdentitiesByPkData_identities_nodes_certsByIssuerId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes>
       get nodes;
+
   static Serializer<GIdentitiesByPkData_identities_nodes_certsByIssuerId>
       get serializer =>
           _$gIdentitiesByPkDataIdentitiesNodesCertsByIssuerIdSerializer;
@@ -482,25 +530,35 @@ abstract class GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer? get issuer;
+
   @override
   String? get receiverId;
+
   @override
   GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver?
       get receiver;
+
   @override
   int get createdOn;
+
   @override
   int get expireOn;
+
   @override
   bool get isActive;
+
   @override
   int get updatedOn;
+
   static Serializer<GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes>
       get serializer =>
           _$gIdentitiesByPkDataIdentitiesNodesCertsByIssuerIdNodesSerializer;
@@ -543,23 +601,32 @@ abstract class GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer_account?
       get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<
           GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer>
       get serializer =>
@@ -605,8 +672,10 @@ abstract class GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<
           GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer_account>
       get serializer =>
@@ -652,23 +721,32 @@ abstract class GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiv
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver_account?
       get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<
           GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver>
       get serializer =>
@@ -714,8 +792,10 @@ abstract class GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiv
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<
           GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver_account>
       get serializer =>
@@ -755,11 +835,14 @@ abstract class GIdentitiesByPkData_identities_nodes_certsByReceiverId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes>
       get nodes;
+
   static Serializer<GIdentitiesByPkData_identities_nodes_certsByReceiverId>
       get serializer =>
           _$gIdentitiesByPkDataIdentitiesNodesCertsByReceiverIdSerializer;
@@ -801,26 +884,36 @@ abstract class GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer?
       get issuer;
+
   @override
   String? get receiverId;
+
   @override
   GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver?
       get receiver;
+
   @override
   int get createdOn;
+
   @override
   int get expireOn;
+
   @override
   bool get isActive;
+
   @override
   int get updatedOn;
+
   static Serializer<
           GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes>
       get serializer =>
@@ -865,23 +958,32 @@ abstract class GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issu
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer_account?
       get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<
           GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer>
       get serializer =>
@@ -927,8 +1029,10 @@ abstract class GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issu
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<
           GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer_account>
       get serializer =>
@@ -974,23 +1078,32 @@ abstract class GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_rece
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver_account?
       get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<
           GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver>
       get serializer =>
@@ -1036,8 +1149,10 @@ abstract class GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_rece
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<
           GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver_account>
       get serializer =>
@@ -1077,11 +1192,14 @@ abstract class GIdentitiesByPkData_identities_nodes_membershipEvents
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GIdentitiesByPkData_identities_nodes_membershipEvents_nodes>
       get nodes;
+
   static Serializer<GIdentitiesByPkData_identities_nodes_membershipEvents>
       get serializer =>
           _$gIdentitiesByPkDataIdentitiesNodesMembershipEventsSerializer;
@@ -1121,16 +1239,22 @@ abstract class GIdentitiesByPkData_identities_nodes_membershipEvents_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get blockNumber;
+
   @override
   String? get eventId;
+
   @override
   String get eventType;
+
   @override
   String get id;
+
   @override
   String? get identityId;
+
   static Serializer<GIdentitiesByPkData_identities_nodes_membershipEvents_nodes>
       get serializer =>
           _$gIdentitiesByPkDataIdentitiesNodesMembershipEventsNodesSerializer;
@@ -1168,11 +1292,14 @@ abstract class GIdentitiesByPkData_identities_nodes_changeOwnerKeys
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GIdentitiesByPkData_identities_nodes_changeOwnerKeys_nodes>
       get nodes;
+
   static Serializer<GIdentitiesByPkData_identities_nodes_changeOwnerKeys>
       get serializer =>
           _$gIdentitiesByPkDataIdentitiesNodesChangeOwnerKeysSerializer;
@@ -1213,16 +1340,22 @@ abstract class GIdentitiesByPkData_identities_nodes_changeOwnerKeys_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   int get blockNumber;
+
   @override
   String? get identityId;
+
   @override
   String? get nextId;
+
   @override
   String? get previousId;
+
   static Serializer<GIdentitiesByPkData_identities_nodes_changeOwnerKeys_nodes>
       get serializer =>
           _$gIdentitiesByPkDataIdentitiesNodesChangeOwnerKeysNodesSerializer;
@@ -1260,22 +1393,30 @@ abstract class GIdentitiesByPkData_identities_nodes_smith
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   int get forged;
+
   @override
   int get index;
+
   @override
   int? get lastChanged;
+
   @override
   int? get lastForged;
+
   @override
   GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId
       get smithCertsByIssuerId;
+
   @override
   GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId
       get smithCertsByReceiverId;
+
   static Serializer<GIdentitiesByPkData_identities_nodes_smith>
       get serializer => _$gIdentitiesByPkDataIdentitiesNodesSmithSerializer;
 
@@ -1316,12 +1457,15 @@ abstract class GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<
           GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId_nodes>
       get nodes;
+
   static Serializer<
           GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId>
       get serializer =>
@@ -1367,14 +1511,19 @@ abstract class GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId_n
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   String? get receiverId;
+
   @override
   int get createdOn;
+
   static Serializer<
           GIdentitiesByPkData_identities_nodes_smith_smithCertsByIssuerId_nodes>
       get serializer =>
@@ -1418,12 +1567,15 @@ abstract class GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<
           GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId_nodes>
       get nodes;
+
   static Serializer<
           GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId>
       get serializer =>
@@ -1469,14 +1621,19 @@ abstract class GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   String? get receiverId;
+
   @override
   int get createdOn;
+
   static Serializer<
           GIdentitiesByPkData_identities_nodes_smith_smithCertsByReceiverId_nodes>
       get serializer =>
@@ -1510,7 +1667,9 @@ abstract class GIdentitiesByNameData
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   GIdentitiesByNameData_identities? get identities;
+
   static Serializer<GIdentitiesByNameData> get serializer =>
       _$gIdentitiesByNameDataSerializer;
 
@@ -1541,7 +1700,9 @@ abstract class GIdentitiesByNameData_identities
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   BuiltList<GIdentitiesByNameData_identities_nodes> get nodes;
+
   static Serializer<GIdentitiesByNameData_identities> get serializer =>
       _$gIdentitiesByNameDataIdentitiesSerializer;
 
@@ -1576,41 +1737,59 @@ abstract class GIdentitiesByNameData_identities_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   GIdentitiesByNameData_identities_nodes_account? get account;
+
   @override
   String? get accountId;
+
   @override
   String? get accountRemovedId;
+
   @override
   GIdentitiesByNameData_identities_nodes_certsByIssuerId get certsByIssuerId;
+
   @override
   GIdentitiesByNameData_identities_nodes_certsByReceiverId
       get certsByReceiverId;
+
   @override
   String? get createdInId;
+
   @override
   int get createdOn;
+
   @override
   int get expireOn;
+
   @override
   String get id;
+
   @override
   int get index;
+
   @override
   bool get isMember;
+
   @override
   int get lastChangeOn;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   GIdentitiesByNameData_identities_nodes_membershipEvents get membershipEvents;
+
   @override
   GIdentitiesByNameData_identities_nodes_changeOwnerKeys get changeOwnerKeys;
+
   @override
   GIdentitiesByNameData_identities_nodes_smith? get smith;
+
   static Serializer<GIdentitiesByNameData_identities_nodes> get serializer =>
       _$gIdentitiesByNameDataIdentitiesNodesSerializer;
 
@@ -1646,8 +1825,10 @@ abstract class GIdentitiesByNameData_identities_nodes_account
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<GIdentitiesByNameData_identities_nodes_account>
       get serializer => _$gIdentitiesByNameDataIdentitiesNodesAccountSerializer;
 
@@ -1684,11 +1865,14 @@ abstract class GIdentitiesByNameData_identities_nodes_certsByIssuerId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes>
       get nodes;
+
   static Serializer<GIdentitiesByNameData_identities_nodes_certsByIssuerId>
       get serializer =>
           _$gIdentitiesByNameDataIdentitiesNodesCertsByIssuerIdSerializer;
@@ -1730,26 +1914,36 @@ abstract class GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer?
       get issuer;
+
   @override
   String? get receiverId;
+
   @override
   GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver?
       get receiver;
+
   @override
   int get createdOn;
+
   @override
   int get expireOn;
+
   @override
   bool get isActive;
+
   @override
   int get updatedOn;
+
   static Serializer<
           GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes>
       get serializer =>
@@ -1794,23 +1988,32 @@ abstract class GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issu
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer_account?
       get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<
           GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer>
       get serializer =>
@@ -1856,8 +2059,10 @@ abstract class GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issu
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<
           GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_issuer_account>
       get serializer =>
@@ -1903,23 +2108,32 @@ abstract class GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_rece
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver_account?
       get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<
           GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver>
       get serializer =>
@@ -1965,8 +2179,10 @@ abstract class GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_rece
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<
           GIdentitiesByNameData_identities_nodes_certsByIssuerId_nodes_receiver_account>
       get serializer =>
@@ -2006,11 +2222,14 @@ abstract class GIdentitiesByNameData_identities_nodes_certsByReceiverId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes>
       get nodes;
+
   static Serializer<GIdentitiesByNameData_identities_nodes_certsByReceiverId>
       get serializer =>
           _$gIdentitiesByNameDataIdentitiesNodesCertsByReceiverIdSerializer;
@@ -2052,26 +2271,36 @@ abstract class GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer?
       get issuer;
+
   @override
   String? get receiverId;
+
   @override
   GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver?
       get receiver;
+
   @override
   int get createdOn;
+
   @override
   int get expireOn;
+
   @override
   bool get isActive;
+
   @override
   int get updatedOn;
+
   static Serializer<
           GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes>
       get serializer =>
@@ -2117,23 +2346,32 @@ abstract class GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_is
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer_account?
       get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<
           GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer>
       get serializer =>
@@ -2179,8 +2417,10 @@ abstract class GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_is
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<
           GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_issuer_account>
       get serializer =>
@@ -2226,23 +2466,32 @@ abstract class GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_re
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver_account?
       get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<
           GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver>
       get serializer =>
@@ -2288,8 +2537,10 @@ abstract class GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_re
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<
           GIdentitiesByNameData_identities_nodes_certsByReceiverId_nodes_receiver_account>
       get serializer =>
@@ -2329,11 +2580,14 @@ abstract class GIdentitiesByNameData_identities_nodes_membershipEvents
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GIdentitiesByNameData_identities_nodes_membershipEvents_nodes>
       get nodes;
+
   static Serializer<GIdentitiesByNameData_identities_nodes_membershipEvents>
       get serializer =>
           _$gIdentitiesByNameDataIdentitiesNodesMembershipEventsSerializer;
@@ -2374,16 +2628,22 @@ abstract class GIdentitiesByNameData_identities_nodes_membershipEvents_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get blockNumber;
+
   @override
   String? get eventId;
+
   @override
   String get eventType;
+
   @override
   String get id;
+
   @override
   String? get identityId;
+
   static Serializer<
           GIdentitiesByNameData_identities_nodes_membershipEvents_nodes>
       get serializer =>
@@ -2423,11 +2683,14 @@ abstract class GIdentitiesByNameData_identities_nodes_changeOwnerKeys
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GIdentitiesByNameData_identities_nodes_changeOwnerKeys_nodes>
       get nodes;
+
   static Serializer<GIdentitiesByNameData_identities_nodes_changeOwnerKeys>
       get serializer =>
           _$gIdentitiesByNameDataIdentitiesNodesChangeOwnerKeysSerializer;
@@ -2469,16 +2732,22 @@ abstract class GIdentitiesByNameData_identities_nodes_changeOwnerKeys_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   int get blockNumber;
+
   @override
   String? get identityId;
+
   @override
   String? get nextId;
+
   @override
   String? get previousId;
+
   static Serializer<
           GIdentitiesByNameData_identities_nodes_changeOwnerKeys_nodes>
       get serializer =>
@@ -2517,22 +2786,30 @@ abstract class GIdentitiesByNameData_identities_nodes_smith
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   int get forged;
+
   @override
   int get index;
+
   @override
   int? get lastChanged;
+
   @override
   int? get lastForged;
+
   @override
   GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId
       get smithCertsByIssuerId;
+
   @override
   GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId
       get smithCertsByReceiverId;
+
   static Serializer<GIdentitiesByNameData_identities_nodes_smith>
       get serializer => _$gIdentitiesByNameDataIdentitiesNodesSmithSerializer;
 
@@ -2573,12 +2850,15 @@ abstract class GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<
           GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId_nodes>
       get nodes;
+
   static Serializer<
           GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId>
       get serializer =>
@@ -2624,14 +2904,19 @@ abstract class GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   String? get receiverId;
+
   @override
   int get createdOn;
+
   static Serializer<
           GIdentitiesByNameData_identities_nodes_smith_smithCertsByIssuerId_nodes>
       get serializer =>
@@ -2676,12 +2961,15 @@ abstract class GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiver
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<
           GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId_nodes>
       get nodes;
+
   static Serializer<
           GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId>
       get serializer =>
@@ -2727,14 +3015,19 @@ abstract class GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiver
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   String? get receiverId;
+
   @override
   int get createdOn;
+
   static Serializer<
           GIdentitiesByNameData_identities_nodes_smith_smithCertsByReceiverId_nodes>
       get serializer =>
@@ -2767,7 +3060,9 @@ abstract class GAccountByPkData
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   GAccountByPkData_accounts? get accounts;
+
   static Serializer<GAccountByPkData> get serializer =>
       _$gAccountByPkDataSerializer;
 
@@ -2797,7 +3092,9 @@ abstract class GAccountByPkData_accounts
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   BuiltList<GAccountByPkData_accounts_nodes> get nodes;
+
   static Serializer<GAccountByPkData_accounts> get serializer =>
       _$gAccountByPkDataAccountsSerializer;
 
@@ -2830,22 +3127,37 @@ abstract class GAccountByPkData_accounts_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   @override
   String get id;
+
+  @override
+  _i2.GBigFloat get balance;
+
+  @override
+  _i2.GBigFloat? get totalBalance;
+
   @override
   bool get isActive;
+
   @override
   GAccountByPkData_accounts_nodes_transfersIssued get transfersIssued;
+
   @override
   GAccountByPkData_accounts_nodes_transfersReceived get transfersReceived;
+
   @override
   GAccountByPkData_accounts_nodes_wasIdentityPrev get wasIdentityPrev;
+
   @override
   GAccountByPkData_accounts_nodes_wasIdentityNext get wasIdentityNext;
+
   @override
   GAccountByPkData_accounts_nodes_linkedIdentity? get linkedIdentity;
+
   static Serializer<GAccountByPkData_accounts_nodes> get serializer =>
       _$gAccountByPkDataAccountsNodesSerializer;
 
@@ -2880,10 +3192,16 @@ abstract class GAccountByPkData_accounts_nodes_transfersIssued
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
+  @override
+  GAccountByPkData_accounts_nodes_transfersIssued_pageInfo get pageInfo;
+
   @override
   BuiltList<GAccountByPkData_accounts_nodes_transfersIssued_nodes> get nodes;
+
   static Serializer<GAccountByPkData_accounts_nodes_transfersIssued>
       get serializer =>
           _$gAccountByPkDataAccountsNodesTransfersIssuedSerializer;
@@ -2898,6 +3216,50 @@ abstract class GAccountByPkData_accounts_nodes_transfersIssued
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
         GAccountByPkData_accounts_nodes_transfersIssued.serializer,
+        json,
+      );
+}
+
+abstract class GAccountByPkData_accounts_nodes_transfersIssued_pageInfo
+    implements
+        Built<GAccountByPkData_accounts_nodes_transfersIssued_pageInfo,
+            GAccountByPkData_accounts_nodes_transfersIssued_pageInfoBuilder>,
+        GAccountFields_transfersIssued_pageInfo {
+  GAccountByPkData_accounts_nodes_transfersIssued_pageInfo._();
+
+  factory GAccountByPkData_accounts_nodes_transfersIssued_pageInfo(
+      [void Function(
+              GAccountByPkData_accounts_nodes_transfersIssued_pageInfoBuilder b)
+          updates]) = _$GAccountByPkData_accounts_nodes_transfersIssued_pageInfo;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_transfersIssued_pageInfoBuilder b) =>
+      b..G__typename = 'PageInfo';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+
+  @override
+  bool get hasNextPage;
+
+  @override
+  _i2.GCursor? get endCursor;
+
+  static Serializer<GAccountByPkData_accounts_nodes_transfersIssued_pageInfo>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesTransfersIssuedPageInfoSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_transfersIssued_pageInfo.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_transfersIssued_pageInfo? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountByPkData_accounts_nodes_transfersIssued_pageInfo.serializer,
         json,
       );
 }
@@ -2922,18 +3284,25 @@ abstract class GAccountByPkData_accounts_nodes_transfersIssued_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get blockNumber;
+
   @override
   _i2.GDatetime get timestamp;
+
   @override
   _i2.GBigFloat get amount;
+
   @override
   GAccountByPkData_accounts_nodes_transfersIssued_nodes_to? get to;
+
   @override
   GAccountByPkData_accounts_nodes_transfersIssued_nodes_from? get from;
+
   @override
   GAccountByPkData_accounts_nodes_transfersIssued_nodes_comment? get comment;
+
   static Serializer<GAccountByPkData_accounts_nodes_transfersIssued_nodes>
       get serializer =>
           _$gAccountByPkDataAccountsNodesTransfersIssuedNodesSerializer;
@@ -2972,8 +3341,10 @@ abstract class GAccountByPkData_accounts_nodes_transfersIssued_nodes_to
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   static Serializer<GAccountByPkData_accounts_nodes_transfersIssued_nodes_to>
       get serializer =>
           _$gAccountByPkDataAccountsNodesTransfersIssuedNodesToSerializer;
@@ -3014,8 +3385,10 @@ abstract class GAccountByPkData_accounts_nodes_transfersIssued_nodes_from
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   static Serializer<GAccountByPkData_accounts_nodes_transfersIssued_nodes_from>
       get serializer =>
           _$gAccountByPkDataAccountsNodesTransfersIssuedNodesFromSerializer;
@@ -3057,10 +3430,13 @@ abstract class GAccountByPkData_accounts_nodes_transfersIssued_nodes_comment
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get remark;
+
   @override
   String get remarkBytes;
+
   static Serializer<
           GAccountByPkData_accounts_nodes_transfersIssued_nodes_comment>
       get serializer =>
@@ -3099,10 +3475,16 @@ abstract class GAccountByPkData_accounts_nodes_transfersReceived
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
+  @override
+  GAccountByPkData_accounts_nodes_transfersReceived_pageInfo get pageInfo;
+
   @override
   BuiltList<GAccountByPkData_accounts_nodes_transfersReceived_nodes> get nodes;
+
   static Serializer<GAccountByPkData_accounts_nodes_transfersReceived>
       get serializer =>
           _$gAccountByPkDataAccountsNodesTransfersReceivedSerializer;
@@ -3117,6 +3499,52 @@ abstract class GAccountByPkData_accounts_nodes_transfersReceived
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
         GAccountByPkData_accounts_nodes_transfersReceived.serializer,
+        json,
+      );
+}
+
+abstract class GAccountByPkData_accounts_nodes_transfersReceived_pageInfo
+    implements
+        Built<GAccountByPkData_accounts_nodes_transfersReceived_pageInfo,
+            GAccountByPkData_accounts_nodes_transfersReceived_pageInfoBuilder>,
+        GAccountFields_transfersReceived_pageInfo {
+  GAccountByPkData_accounts_nodes_transfersReceived_pageInfo._();
+
+  factory GAccountByPkData_accounts_nodes_transfersReceived_pageInfo(
+      [void Function(
+              GAccountByPkData_accounts_nodes_transfersReceived_pageInfoBuilder
+                  b)
+          updates]) = _$GAccountByPkData_accounts_nodes_transfersReceived_pageInfo;
+
+  static void _initializeBuilder(
+          GAccountByPkData_accounts_nodes_transfersReceived_pageInfoBuilder
+              b) =>
+      b..G__typename = 'PageInfo';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+
+  @override
+  bool get hasNextPage;
+
+  @override
+  _i2.GCursor? get endCursor;
+
+  static Serializer<GAccountByPkData_accounts_nodes_transfersReceived_pageInfo>
+      get serializer =>
+          _$gAccountByPkDataAccountsNodesTransfersReceivedPageInfoSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountByPkData_accounts_nodes_transfersReceived_pageInfo.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountByPkData_accounts_nodes_transfersReceived_pageInfo? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountByPkData_accounts_nodes_transfersReceived_pageInfo.serializer,
         json,
       );
 }
@@ -3141,18 +3569,25 @@ abstract class GAccountByPkData_accounts_nodes_transfersReceived_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get blockNumber;
+
   @override
   _i2.GDatetime get timestamp;
+
   @override
   _i2.GBigFloat get amount;
+
   @override
   GAccountByPkData_accounts_nodes_transfersReceived_nodes_to? get to;
+
   @override
   GAccountByPkData_accounts_nodes_transfersReceived_nodes_from? get from;
+
   @override
   GAccountByPkData_accounts_nodes_transfersReceived_nodes_comment? get comment;
+
   static Serializer<GAccountByPkData_accounts_nodes_transfersReceived_nodes>
       get serializer =>
           _$gAccountByPkDataAccountsNodesTransfersReceivedNodesSerializer;
@@ -3193,8 +3628,10 @@ abstract class GAccountByPkData_accounts_nodes_transfersReceived_nodes_to
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   static Serializer<GAccountByPkData_accounts_nodes_transfersReceived_nodes_to>
       get serializer =>
           _$gAccountByPkDataAccountsNodesTransfersReceivedNodesToSerializer;
@@ -3236,8 +3673,10 @@ abstract class GAccountByPkData_accounts_nodes_transfersReceived_nodes_from
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   static Serializer<
           GAccountByPkData_accounts_nodes_transfersReceived_nodes_from>
       get serializer =>
@@ -3280,10 +3719,13 @@ abstract class GAccountByPkData_accounts_nodes_transfersReceived_nodes_comment
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get remark;
+
   @override
   String get remarkBytes;
+
   static Serializer<
           GAccountByPkData_accounts_nodes_transfersReceived_nodes_comment>
       get serializer =>
@@ -3322,10 +3764,13 @@ abstract class GAccountByPkData_accounts_nodes_wasIdentityPrev
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GAccountByPkData_accounts_nodes_wasIdentityPrev_nodes> get nodes;
+
   static Serializer<GAccountByPkData_accounts_nodes_wasIdentityPrev>
       get serializer =>
           _$gAccountByPkDataAccountsNodesWasIdentityPrevSerializer;
@@ -3364,16 +3809,22 @@ abstract class GAccountByPkData_accounts_nodes_wasIdentityPrev_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   int get blockNumber;
+
   @override
   String? get identityId;
+
   @override
   String? get nextId;
+
   @override
   String? get previousId;
+
   static Serializer<GAccountByPkData_accounts_nodes_wasIdentityPrev_nodes>
       get serializer =>
           _$gAccountByPkDataAccountsNodesWasIdentityPrevNodesSerializer;
@@ -3410,10 +3861,13 @@ abstract class GAccountByPkData_accounts_nodes_wasIdentityNext
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GAccountByPkData_accounts_nodes_wasIdentityNext_nodes> get nodes;
+
   static Serializer<GAccountByPkData_accounts_nodes_wasIdentityNext>
       get serializer =>
           _$gAccountByPkDataAccountsNodesWasIdentityNextSerializer;
@@ -3452,16 +3906,22 @@ abstract class GAccountByPkData_accounts_nodes_wasIdentityNext_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   int get blockNumber;
+
   @override
   String? get identityId;
+
   @override
   String? get nextId;
+
   @override
   String? get previousId;
+
   static Serializer<GAccountByPkData_accounts_nodes_wasIdentityNext_nodes>
       get serializer =>
           _$gAccountByPkDataAccountsNodesWasIdentityNextNodesSerializer;
@@ -3499,44 +3959,62 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   GAccountByPkData_accounts_nodes_linkedIdentity_account? get account;
+
   @override
   String? get accountId;
+
   @override
   String? get accountRemovedId;
+
   @override
   GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId
       get certsByIssuerId;
+
   @override
   GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId
       get certsByReceiverId;
+
   @override
   String? get createdInId;
+
   @override
   int get createdOn;
+
   @override
   int get expireOn;
+
   @override
   String get id;
+
   @override
   int get index;
+
   @override
   bool get isMember;
+
   @override
   int get lastChangeOn;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents
       get membershipEvents;
+
   @override
   GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys
       get changeOwnerKeys;
+
   @override
   GAccountByPkData_accounts_nodes_linkedIdentity_smith? get smith;
+
   static Serializer<GAccountByPkData_accounts_nodes_linkedIdentity>
       get serializer => _$gAccountByPkDataAccountsNodesLinkedIdentitySerializer;
 
@@ -3574,8 +4052,10 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_account
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<GAccountByPkData_accounts_nodes_linkedIdentity_account>
       get serializer =>
           _$gAccountByPkDataAccountsNodesLinkedIdentityAccountSerializer;
@@ -3617,12 +4097,15 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<
           GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes>
       get nodes;
+
   static Serializer<
           GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId>
       get serializer =>
@@ -3668,26 +4151,36 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_no
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer?
       get issuer;
+
   @override
   String? get receiverId;
+
   @override
   GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver?
       get receiver;
+
   @override
   int get createdOn;
+
   @override
   int get expireOn;
+
   @override
   bool get isActive;
+
   @override
   int get updatedOn;
+
   static Serializer<
           GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes>
       get serializer =>
@@ -3734,23 +4227,32 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_no
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_account?
       get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<
           GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer>
       get serializer =>
@@ -3797,8 +4299,10 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_no
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<
           GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_account>
       get serializer =>
@@ -3845,23 +4349,32 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_no
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_account?
       get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<
           GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver>
       get serializer =>
@@ -3908,8 +4421,10 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_no
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<
           GAccountByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_account>
       get serializer =>
@@ -3953,12 +4468,15 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<
           GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes>
       get nodes;
+
   static Serializer<
           GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId>
       get serializer =>
@@ -4004,26 +4522,36 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer?
       get issuer;
+
   @override
   String? get receiverId;
+
   @override
   GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver?
       get receiver;
+
   @override
   int get createdOn;
+
   @override
   int get expireOn;
+
   @override
   bool get isActive;
+
   @override
   int get updatedOn;
+
   static Serializer<
           GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes>
       get serializer =>
@@ -4070,23 +4598,32 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_account?
       get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<
           GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer>
       get serializer =>
@@ -4133,8 +4670,10 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<
           GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_account>
       get serializer =>
@@ -4181,23 +4720,32 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_account?
       get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<
           GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver>
       get serializer =>
@@ -4244,8 +4792,10 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<
           GAccountByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_account>
       get serializer =>
@@ -4289,12 +4839,15 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<
           GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodes>
       get nodes;
+
   static Serializer<
           GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents>
       get serializer =>
@@ -4339,16 +4892,22 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents_n
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get blockNumber;
+
   @override
   String? get eventId;
+
   @override
   String get eventType;
+
   @override
   String get id;
+
   @override
   String? get identityId;
+
   static Serializer<
           GAccountByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodes>
       get serializer =>
@@ -4392,12 +4951,15 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<
           GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodes>
       get nodes;
+
   static Serializer<
           GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys>
       get serializer =>
@@ -4443,16 +5005,22 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_no
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   int get blockNumber;
+
   @override
   String? get identityId;
+
   @override
   String? get nextId;
+
   @override
   String? get previousId;
+
   static Serializer<
           GAccountByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodes>
       get serializer =>
@@ -4494,22 +5062,30 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_smith
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   int get forged;
+
   @override
   int get index;
+
   @override
   int? get lastChanged;
+
   @override
   int? get lastForged;
+
   @override
   GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId
       get smithCertsByIssuerId;
+
   @override
   GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId
       get smithCertsByReceiverId;
+
   static Serializer<GAccountByPkData_accounts_nodes_linkedIdentity_smith>
       get serializer =>
           _$gAccountByPkDataAccountsNodesLinkedIdentitySmithSerializer;
@@ -4553,12 +5129,15 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsBy
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<
           GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodes>
       get nodes;
+
   static Serializer<
           GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId>
       get serializer =>
@@ -4605,14 +5184,19 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsBy
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   String? get receiverId;
+
   @override
   int get createdOn;
+
   static Serializer<
           GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodes>
       get serializer =>
@@ -4658,12 +5242,15 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsBy
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<
           GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodes>
       get nodes;
+
   static Serializer<
           GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId>
       get serializer =>
@@ -4710,14 +5297,19 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsBy
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   String? get receiverId;
+
   @override
   int get createdOn;
+
   static Serializer<
           GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodes>
       get serializer =>
@@ -4751,7 +5343,9 @@ abstract class GAccountsByPkData
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   GAccountsByPkData_accounts? get accounts;
+
   static Serializer<GAccountsByPkData> get serializer =>
       _$gAccountsByPkDataSerializer;
 
@@ -4781,7 +5375,9 @@ abstract class GAccountsByPkData_accounts
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   BuiltList<GAccountsByPkData_accounts_nodes> get nodes;
+
   static Serializer<GAccountsByPkData_accounts> get serializer =>
       _$gAccountsByPkDataAccountsSerializer;
 
@@ -4814,22 +5410,37 @@ abstract class GAccountsByPkData_accounts_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   @override
   String get id;
+
+  @override
+  _i2.GBigFloat get balance;
+
+  @override
+  _i2.GBigFloat? get totalBalance;
+
   @override
   bool get isActive;
+
   @override
   GAccountsByPkData_accounts_nodes_transfersIssued get transfersIssued;
+
   @override
   GAccountsByPkData_accounts_nodes_transfersReceived get transfersReceived;
+
   @override
   GAccountsByPkData_accounts_nodes_wasIdentityPrev get wasIdentityPrev;
+
   @override
   GAccountsByPkData_accounts_nodes_wasIdentityNext get wasIdentityNext;
+
   @override
   GAccountsByPkData_accounts_nodes_linkedIdentity? get linkedIdentity;
+
   static Serializer<GAccountsByPkData_accounts_nodes> get serializer =>
       _$gAccountsByPkDataAccountsNodesSerializer;
 
@@ -4865,10 +5476,16 @@ abstract class GAccountsByPkData_accounts_nodes_transfersIssued
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
+  @override
+  GAccountsByPkData_accounts_nodes_transfersIssued_pageInfo get pageInfo;
+
   @override
   BuiltList<GAccountsByPkData_accounts_nodes_transfersIssued_nodes> get nodes;
+
   static Serializer<GAccountsByPkData_accounts_nodes_transfersIssued>
       get serializer =>
           _$gAccountsByPkDataAccountsNodesTransfersIssuedSerializer;
@@ -4883,6 +5500,51 @@ abstract class GAccountsByPkData_accounts_nodes_transfersIssued
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
         GAccountsByPkData_accounts_nodes_transfersIssued.serializer,
+        json,
+      );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_transfersIssued_pageInfo
+    implements
+        Built<GAccountsByPkData_accounts_nodes_transfersIssued_pageInfo,
+            GAccountsByPkData_accounts_nodes_transfersIssued_pageInfoBuilder>,
+        GAccountFields_transfersIssued_pageInfo {
+  GAccountsByPkData_accounts_nodes_transfersIssued_pageInfo._();
+
+  factory GAccountsByPkData_accounts_nodes_transfersIssued_pageInfo(
+      [void Function(
+              GAccountsByPkData_accounts_nodes_transfersIssued_pageInfoBuilder
+                  b)
+          updates]) = _$GAccountsByPkData_accounts_nodes_transfersIssued_pageInfo;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_transfersIssued_pageInfoBuilder b) =>
+      b..G__typename = 'PageInfo';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+
+  @override
+  bool get hasNextPage;
+
+  @override
+  _i2.GCursor? get endCursor;
+
+  static Serializer<GAccountsByPkData_accounts_nodes_transfersIssued_pageInfo>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesTransfersIssuedPageInfoSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_transfersIssued_pageInfo.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_transfersIssued_pageInfo? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountsByPkData_accounts_nodes_transfersIssued_pageInfo.serializer,
         json,
       );
 }
@@ -4907,18 +5569,25 @@ abstract class GAccountsByPkData_accounts_nodes_transfersIssued_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get blockNumber;
+
   @override
   _i2.GDatetime get timestamp;
+
   @override
   _i2.GBigFloat get amount;
+
   @override
   GAccountsByPkData_accounts_nodes_transfersIssued_nodes_to? get to;
+
   @override
   GAccountsByPkData_accounts_nodes_transfersIssued_nodes_from? get from;
+
   @override
   GAccountsByPkData_accounts_nodes_transfersIssued_nodes_comment? get comment;
+
   static Serializer<GAccountsByPkData_accounts_nodes_transfersIssued_nodes>
       get serializer =>
           _$gAccountsByPkDataAccountsNodesTransfersIssuedNodesSerializer;
@@ -4958,8 +5627,10 @@ abstract class GAccountsByPkData_accounts_nodes_transfersIssued_nodes_to
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   static Serializer<GAccountsByPkData_accounts_nodes_transfersIssued_nodes_to>
       get serializer =>
           _$gAccountsByPkDataAccountsNodesTransfersIssuedNodesToSerializer;
@@ -5000,8 +5671,10 @@ abstract class GAccountsByPkData_accounts_nodes_transfersIssued_nodes_from
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   static Serializer<GAccountsByPkData_accounts_nodes_transfersIssued_nodes_from>
       get serializer =>
           _$gAccountsByPkDataAccountsNodesTransfersIssuedNodesFromSerializer;
@@ -5043,10 +5716,13 @@ abstract class GAccountsByPkData_accounts_nodes_transfersIssued_nodes_comment
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get remark;
+
   @override
   String get remarkBytes;
+
   static Serializer<
           GAccountsByPkData_accounts_nodes_transfersIssued_nodes_comment>
       get serializer =>
@@ -5086,10 +5762,16 @@ abstract class GAccountsByPkData_accounts_nodes_transfersReceived
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
+  @override
+  GAccountsByPkData_accounts_nodes_transfersReceived_pageInfo get pageInfo;
+
   @override
   BuiltList<GAccountsByPkData_accounts_nodes_transfersReceived_nodes> get nodes;
+
   static Serializer<GAccountsByPkData_accounts_nodes_transfersReceived>
       get serializer =>
           _$gAccountsByPkDataAccountsNodesTransfersReceivedSerializer;
@@ -5104,6 +5786,52 @@ abstract class GAccountsByPkData_accounts_nodes_transfersReceived
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
         GAccountsByPkData_accounts_nodes_transfersReceived.serializer,
+        json,
+      );
+}
+
+abstract class GAccountsByPkData_accounts_nodes_transfersReceived_pageInfo
+    implements
+        Built<GAccountsByPkData_accounts_nodes_transfersReceived_pageInfo,
+            GAccountsByPkData_accounts_nodes_transfersReceived_pageInfoBuilder>,
+        GAccountFields_transfersReceived_pageInfo {
+  GAccountsByPkData_accounts_nodes_transfersReceived_pageInfo._();
+
+  factory GAccountsByPkData_accounts_nodes_transfersReceived_pageInfo(
+      [void Function(
+              GAccountsByPkData_accounts_nodes_transfersReceived_pageInfoBuilder
+                  b)
+          updates]) = _$GAccountsByPkData_accounts_nodes_transfersReceived_pageInfo;
+
+  static void _initializeBuilder(
+          GAccountsByPkData_accounts_nodes_transfersReceived_pageInfoBuilder
+              b) =>
+      b..G__typename = 'PageInfo';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+
+  @override
+  bool get hasNextPage;
+
+  @override
+  _i2.GCursor? get endCursor;
+
+  static Serializer<GAccountsByPkData_accounts_nodes_transfersReceived_pageInfo>
+      get serializer =>
+          _$gAccountsByPkDataAccountsNodesTransfersReceivedPageInfoSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountsByPkData_accounts_nodes_transfersReceived_pageInfo.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountsByPkData_accounts_nodes_transfersReceived_pageInfo? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountsByPkData_accounts_nodes_transfersReceived_pageInfo.serializer,
         json,
       );
 }
@@ -5128,18 +5856,25 @@ abstract class GAccountsByPkData_accounts_nodes_transfersReceived_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get blockNumber;
+
   @override
   _i2.GDatetime get timestamp;
+
   @override
   _i2.GBigFloat get amount;
+
   @override
   GAccountsByPkData_accounts_nodes_transfersReceived_nodes_to? get to;
+
   @override
   GAccountsByPkData_accounts_nodes_transfersReceived_nodes_from? get from;
+
   @override
   GAccountsByPkData_accounts_nodes_transfersReceived_nodes_comment? get comment;
+
   static Serializer<GAccountsByPkData_accounts_nodes_transfersReceived_nodes>
       get serializer =>
           _$gAccountsByPkDataAccountsNodesTransfersReceivedNodesSerializer;
@@ -5180,8 +5915,10 @@ abstract class GAccountsByPkData_accounts_nodes_transfersReceived_nodes_to
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   static Serializer<GAccountsByPkData_accounts_nodes_transfersReceived_nodes_to>
       get serializer =>
           _$gAccountsByPkDataAccountsNodesTransfersReceivedNodesToSerializer;
@@ -5223,8 +5960,10 @@ abstract class GAccountsByPkData_accounts_nodes_transfersReceived_nodes_from
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   static Serializer<
           GAccountsByPkData_accounts_nodes_transfersReceived_nodes_from>
       get serializer =>
@@ -5268,10 +6007,13 @@ abstract class GAccountsByPkData_accounts_nodes_transfersReceived_nodes_comment
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get remark;
+
   @override
   String get remarkBytes;
+
   static Serializer<
           GAccountsByPkData_accounts_nodes_transfersReceived_nodes_comment>
       get serializer =>
@@ -5310,10 +6052,13 @@ abstract class GAccountsByPkData_accounts_nodes_wasIdentityPrev
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GAccountsByPkData_accounts_nodes_wasIdentityPrev_nodes> get nodes;
+
   static Serializer<GAccountsByPkData_accounts_nodes_wasIdentityPrev>
       get serializer =>
           _$gAccountsByPkDataAccountsNodesWasIdentityPrevSerializer;
@@ -5352,16 +6097,22 @@ abstract class GAccountsByPkData_accounts_nodes_wasIdentityPrev_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   int get blockNumber;
+
   @override
   String? get identityId;
+
   @override
   String? get nextId;
+
   @override
   String? get previousId;
+
   static Serializer<GAccountsByPkData_accounts_nodes_wasIdentityPrev_nodes>
       get serializer =>
           _$gAccountsByPkDataAccountsNodesWasIdentityPrevNodesSerializer;
@@ -5398,10 +6149,13 @@ abstract class GAccountsByPkData_accounts_nodes_wasIdentityNext
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GAccountsByPkData_accounts_nodes_wasIdentityNext_nodes> get nodes;
+
   static Serializer<GAccountsByPkData_accounts_nodes_wasIdentityNext>
       get serializer =>
           _$gAccountsByPkDataAccountsNodesWasIdentityNextSerializer;
@@ -5440,16 +6194,22 @@ abstract class GAccountsByPkData_accounts_nodes_wasIdentityNext_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   int get blockNumber;
+
   @override
   String? get identityId;
+
   @override
   String? get nextId;
+
   @override
   String? get previousId;
+
   static Serializer<GAccountsByPkData_accounts_nodes_wasIdentityNext_nodes>
       get serializer =>
           _$gAccountsByPkDataAccountsNodesWasIdentityNextNodesSerializer;
@@ -5487,44 +6247,62 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   GAccountsByPkData_accounts_nodes_linkedIdentity_account? get account;
+
   @override
   String? get accountId;
+
   @override
   String? get accountRemovedId;
+
   @override
   GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId
       get certsByIssuerId;
+
   @override
   GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId
       get certsByReceiverId;
+
   @override
   String? get createdInId;
+
   @override
   int get createdOn;
+
   @override
   int get expireOn;
+
   @override
   String get id;
+
   @override
   int get index;
+
   @override
   bool get isMember;
+
   @override
   int get lastChangeOn;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents
       get membershipEvents;
+
   @override
   GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys
       get changeOwnerKeys;
+
   @override
   GAccountsByPkData_accounts_nodes_linkedIdentity_smith? get smith;
+
   static Serializer<GAccountsByPkData_accounts_nodes_linkedIdentity>
       get serializer =>
           _$gAccountsByPkDataAccountsNodesLinkedIdentitySerializer;
@@ -5563,8 +6341,10 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_account
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<GAccountsByPkData_accounts_nodes_linkedIdentity_account>
       get serializer =>
           _$gAccountsByPkDataAccountsNodesLinkedIdentityAccountSerializer;
@@ -5606,12 +6386,15 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<
           GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes>
       get nodes;
+
   static Serializer<
           GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId>
       get serializer =>
@@ -5657,26 +6440,36 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_n
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer?
       get issuer;
+
   @override
   String? get receiverId;
+
   @override
   GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver?
       get receiver;
+
   @override
   int get createdOn;
+
   @override
   int get expireOn;
+
   @override
   bool get isActive;
+
   @override
   int get updatedOn;
+
   static Serializer<
           GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes>
       get serializer =>
@@ -5723,23 +6516,32 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_n
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_account?
       get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<
           GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer>
       get serializer =>
@@ -5786,8 +6588,10 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_n
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<
           GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer_account>
       get serializer =>
@@ -5834,23 +6638,32 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_n
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_account?
       get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<
           GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver>
       get serializer =>
@@ -5897,8 +6710,10 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_n
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<
           GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver_account>
       get serializer =>
@@ -5942,12 +6757,15 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<
           GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes>
       get nodes;
+
   static Serializer<
           GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId>
       get serializer =>
@@ -5993,26 +6811,36 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer?
       get issuer;
+
   @override
   String? get receiverId;
+
   @override
   GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver?
       get receiver;
+
   @override
   int get createdOn;
+
   @override
   int get expireOn;
+
   @override
   bool get isActive;
+
   @override
   int get updatedOn;
+
   static Serializer<
           GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes>
       get serializer =>
@@ -6059,23 +6887,32 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_account?
       get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<
           GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer>
       get serializer =>
@@ -6122,8 +6959,10 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<
           GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer_account>
       get serializer =>
@@ -6170,23 +7009,32 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_account?
       get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<
           GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver>
       get serializer =>
@@ -6233,8 +7081,10 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<
           GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver_account>
       get serializer =>
@@ -6278,12 +7128,15 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<
           GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodes>
       get nodes;
+
   static Serializer<
           GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents>
       get serializer =>
@@ -6328,16 +7181,22 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents_
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get blockNumber;
+
   @override
   String? get eventId;
+
   @override
   String get eventType;
+
   @override
   String get id;
+
   @override
   String? get identityId;
+
   static Serializer<
           GAccountsByPkData_accounts_nodes_linkedIdentity_membershipEvents_nodes>
       get serializer =>
@@ -6381,12 +7240,15 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<
           GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodes>
       get nodes;
+
   static Serializer<
           GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys>
       get serializer =>
@@ -6432,16 +7294,22 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_n
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   int get blockNumber;
+
   @override
   String? get identityId;
+
   @override
   String? get nextId;
+
   @override
   String? get previousId;
+
   static Serializer<
           GAccountsByPkData_accounts_nodes_linkedIdentity_changeOwnerKeys_nodes>
       get serializer =>
@@ -6483,22 +7351,30 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_smith
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   int get forged;
+
   @override
   int get index;
+
   @override
   int? get lastChanged;
+
   @override
   int? get lastForged;
+
   @override
   GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId
       get smithCertsByIssuerId;
+
   @override
   GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId
       get smithCertsByReceiverId;
+
   static Serializer<GAccountsByPkData_accounts_nodes_linkedIdentity_smith>
       get serializer =>
           _$gAccountsByPkDataAccountsNodesLinkedIdentitySmithSerializer;
@@ -6542,12 +7418,15 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsB
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<
           GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodes>
       get nodes;
+
   static Serializer<
           GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId>
       get serializer =>
@@ -6594,14 +7473,19 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsB
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   String? get receiverId;
+
   @override
   int get createdOn;
+
   static Serializer<
           GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByIssuerId_nodes>
       get serializer =>
@@ -6647,12 +7531,15 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsB
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<
           GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodes>
       get nodes;
+
   static Serializer<
           GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId>
       get serializer =>
@@ -6699,14 +7586,19 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsB
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   String? get receiverId;
+
   @override
   int get createdOn;
+
   static Serializer<
           GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertsByReceiverId_nodes>
       get serializer =>
@@ -6740,7 +7632,9 @@ abstract class GAccountBasicByPkData
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   GAccountBasicByPkData_accounts? get accounts;
+
   static Serializer<GAccountBasicByPkData> get serializer =>
       _$gAccountBasicByPkDataSerializer;
 
@@ -6771,7 +7665,9 @@ abstract class GAccountBasicByPkData_accounts
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   BuiltList<GAccountBasicByPkData_accounts_nodes> get nodes;
+
   static Serializer<GAccountBasicByPkData_accounts> get serializer =>
       _$gAccountBasicByPkDataAccountsSerializer;
 
@@ -6805,14 +7701,25 @@ abstract class GAccountBasicByPkData_accounts_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   @override
   String get id;
+
+  @override
+  _i2.GBigFloat get balance;
+
+  @override
+  _i2.GBigFloat? get totalBalance;
+
   @override
   GAccountBasicByPkData_accounts_nodes_linkedIdentity? get linkedIdentity;
+
   @override
   bool get isActive;
+
   static Serializer<GAccountBasicByPkData_accounts_nodes> get serializer =>
       _$gAccountBasicByPkDataAccountsNodesSerializer;
 
@@ -6850,22 +7757,31 @@ abstract class GAccountBasicByPkData_accounts_nodes_linkedIdentity
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GAccountBasicByPkData_accounts_nodes_linkedIdentity_account? get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<GAccountBasicByPkData_accounts_nodes_linkedIdentity>
       get serializer =>
           _$gAccountBasicByPkDataAccountsNodesLinkedIdentitySerializer;
@@ -6906,8 +7822,10 @@ abstract class GAccountBasicByPkData_accounts_nodes_linkedIdentity_account
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<GAccountBasicByPkData_accounts_nodes_linkedIdentity_account>
       get serializer =>
           _$gAccountBasicByPkDataAccountsNodesLinkedIdentityAccountSerializer;
@@ -6939,7 +7857,9 @@ abstract class GAccountsBasicByPkData
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   GAccountsBasicByPkData_accounts? get accounts;
+
   static Serializer<GAccountsBasicByPkData> get serializer =>
       _$gAccountsBasicByPkDataSerializer;
 
@@ -6970,7 +7890,9 @@ abstract class GAccountsBasicByPkData_accounts
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   BuiltList<GAccountsBasicByPkData_accounts_nodes> get nodes;
+
   static Serializer<GAccountsBasicByPkData_accounts> get serializer =>
       _$gAccountsBasicByPkDataAccountsSerializer;
 
@@ -7004,14 +7926,25 @@ abstract class GAccountsBasicByPkData_accounts_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   @override
   String get id;
+
+  @override
+  _i2.GBigFloat get balance;
+
+  @override
+  _i2.GBigFloat? get totalBalance;
+
   @override
   GAccountsBasicByPkData_accounts_nodes_linkedIdentity? get linkedIdentity;
+
   @override
   bool get isActive;
+
   static Serializer<GAccountsBasicByPkData_accounts_nodes> get serializer =>
       _$gAccountsBasicByPkDataAccountsNodesSerializer;
 
@@ -7049,22 +7982,31 @@ abstract class GAccountsBasicByPkData_accounts_nodes_linkedIdentity
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GAccountsBasicByPkData_accounts_nodes_linkedIdentity_account? get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<GAccountsBasicByPkData_accounts_nodes_linkedIdentity>
       get serializer =>
           _$gAccountsBasicByPkDataAccountsNodesLinkedIdentitySerializer;
@@ -7106,8 +8048,10 @@ abstract class GAccountsBasicByPkData_accounts_nodes_linkedIdentity_account
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<
           GAccountsBasicByPkData_accounts_nodes_linkedIdentity_account>
       get serializer =>
@@ -7141,7 +8085,9 @@ abstract class GAccountTransactionsData
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   GAccountTransactionsData_accounts? get accounts;
+
   static Serializer<GAccountTransactionsData> get serializer =>
       _$gAccountTransactionsDataSerializer;
 
@@ -7172,7 +8118,9 @@ abstract class GAccountTransactionsData_accounts
 
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   BuiltList<GAccountTransactionsData_accounts_nodes> get nodes;
+
   static Serializer<GAccountTransactionsData_accounts> get serializer =>
       _$gAccountTransactionsDataAccountsSerializer;
 
@@ -7207,19 +8155,32 @@ abstract class GAccountTransactionsData_accounts_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   @override
   String get id;
+
+  @override
+  _i2.GBigFloat get balance;
+
+  @override
+  _i2.GBigFloat? get totalBalance;
+
   @override
   bool get isActive;
+
   @override
   GAccountTransactionsData_accounts_nodes_comments get comments;
+
   @override
   GAccountTransactionsData_accounts_nodes_transfersIssued get transfersIssued;
+
   @override
   GAccountTransactionsData_accounts_nodes_transfersReceived
       get transfersReceived;
+
   static Serializer<GAccountTransactionsData_accounts_nodes> get serializer =>
       _$gAccountTransactionsDataAccountsNodesSerializer;
 
@@ -7255,10 +8216,16 @@ abstract class GAccountTransactionsData_accounts_nodes_comments
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
+  @override
+  GAccountTransactionsData_accounts_nodes_comments_pageInfo get pageInfo;
+
   @override
   BuiltList<GAccountTransactionsData_accounts_nodes_comments_nodes> get nodes;
+
   static Serializer<GAccountTransactionsData_accounts_nodes_comments>
       get serializer =>
           _$gAccountTransactionsDataAccountsNodesCommentsSerializer;
@@ -7273,6 +8240,51 @@ abstract class GAccountTransactionsData_accounts_nodes_comments
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
         GAccountTransactionsData_accounts_nodes_comments.serializer,
+        json,
+      );
+}
+
+abstract class GAccountTransactionsData_accounts_nodes_comments_pageInfo
+    implements
+        Built<GAccountTransactionsData_accounts_nodes_comments_pageInfo,
+            GAccountTransactionsData_accounts_nodes_comments_pageInfoBuilder>,
+        GAccountTxsFields_comments_pageInfo {
+  GAccountTransactionsData_accounts_nodes_comments_pageInfo._();
+
+  factory GAccountTransactionsData_accounts_nodes_comments_pageInfo(
+      [void Function(
+              GAccountTransactionsData_accounts_nodes_comments_pageInfoBuilder
+                  b)
+          updates]) = _$GAccountTransactionsData_accounts_nodes_comments_pageInfo;
+
+  static void _initializeBuilder(
+          GAccountTransactionsData_accounts_nodes_comments_pageInfoBuilder b) =>
+      b..G__typename = 'PageInfo';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+
+  @override
+  bool get hasNextPage;
+
+  @override
+  _i2.GCursor? get endCursor;
+
+  static Serializer<GAccountTransactionsData_accounts_nodes_comments_pageInfo>
+      get serializer =>
+          _$gAccountTransactionsDataAccountsNodesCommentsPageInfoSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountTransactionsData_accounts_nodes_comments_pageInfo.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTransactionsData_accounts_nodes_comments_pageInfo? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountTransactionsData_accounts_nodes_comments_pageInfo.serializer,
         json,
       );
 }
@@ -7297,22 +8309,31 @@ abstract class GAccountTransactionsData_accounts_nodes_comments_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get authorId;
+
   @override
   int get blockNumber;
+
   @override
   String? get eventId;
+
   @override
   String get hash;
+
   @override
   String get id;
+
   @override
   String get remark;
+
   @override
   String get remarkBytes;
+
   @override
   String get type;
+
   static Serializer<GAccountTransactionsData_accounts_nodes_comments_nodes>
       get serializer =>
           _$gAccountTransactionsDataAccountsNodesCommentsNodesSerializer;
@@ -7350,11 +8371,17 @@ abstract class GAccountTransactionsData_accounts_nodes_transfersIssued
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
+  @override
+  GAccountTransactionsData_accounts_nodes_transfersIssued_pageInfo get pageInfo;
+
   @override
   BuiltList<GAccountTransactionsData_accounts_nodes_transfersIssued_nodes>
       get nodes;
+
   static Serializer<GAccountTransactionsData_accounts_nodes_transfersIssued>
       get serializer =>
           _$gAccountTransactionsDataAccountsNodesTransfersIssuedSerializer;
@@ -7371,6 +8398,55 @@ abstract class GAccountTransactionsData_accounts_nodes_transfersIssued
         GAccountTransactionsData_accounts_nodes_transfersIssued.serializer,
         json,
       );
+}
+
+abstract class GAccountTransactionsData_accounts_nodes_transfersIssued_pageInfo
+    implements
+        Built<GAccountTransactionsData_accounts_nodes_transfersIssued_pageInfo,
+            GAccountTransactionsData_accounts_nodes_transfersIssued_pageInfoBuilder>,
+        GAccountTxsFields_transfersIssued_pageInfo {
+  GAccountTransactionsData_accounts_nodes_transfersIssued_pageInfo._();
+
+  factory GAccountTransactionsData_accounts_nodes_transfersIssued_pageInfo(
+          [void Function(
+                  GAccountTransactionsData_accounts_nodes_transfersIssued_pageInfoBuilder
+                      b)
+              updates]) =
+      _$GAccountTransactionsData_accounts_nodes_transfersIssued_pageInfo;
+
+  static void _initializeBuilder(
+          GAccountTransactionsData_accounts_nodes_transfersIssued_pageInfoBuilder
+              b) =>
+      b..G__typename = 'PageInfo';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+
+  @override
+  bool get hasNextPage;
+
+  @override
+  _i2.GCursor? get endCursor;
+
+  static Serializer<
+          GAccountTransactionsData_accounts_nodes_transfersIssued_pageInfo>
+      get serializer =>
+          _$gAccountTransactionsDataAccountsNodesTransfersIssuedPageInfoSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountTransactionsData_accounts_nodes_transfersIssued_pageInfo
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTransactionsData_accounts_nodes_transfersIssued_pageInfo?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountTransactionsData_accounts_nodes_transfersIssued_pageInfo
+                .serializer,
+            json,
+          );
 }
 
 abstract class GAccountTransactionsData_accounts_nodes_transfersIssued_nodes
@@ -7396,19 +8472,26 @@ abstract class GAccountTransactionsData_accounts_nodes_transfersIssued_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get blockNumber;
+
   @override
   _i2.GDatetime get timestamp;
+
   @override
   _i2.GBigFloat get amount;
+
   @override
   GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_to? get to;
+
   @override
   GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_from? get from;
+
   @override
   GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_comment?
       get comment;
+
   static Serializer<
           GAccountTransactionsData_accounts_nodes_transfersIssued_nodes>
       get serializer =>
@@ -7452,8 +8535,10 @@ abstract class GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_to
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   static Serializer<
           GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_to>
       get serializer =>
@@ -7498,8 +8583,10 @@ abstract class GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_fro
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   static Serializer<
           GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_from>
       get serializer =>
@@ -7544,10 +8631,13 @@ abstract class GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_com
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get remark;
+
   @override
   String get remarkBytes;
+
   static Serializer<
           GAccountTransactionsData_accounts_nodes_transfersIssued_nodes_comment>
       get serializer =>
@@ -7588,11 +8678,18 @@ abstract class GAccountTransactionsData_accounts_nodes_transfersReceived
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
+  @override
+  GAccountTransactionsData_accounts_nodes_transfersReceived_pageInfo
+      get pageInfo;
+
   @override
   BuiltList<GAccountTransactionsData_accounts_nodes_transfersReceived_nodes>
       get nodes;
+
   static Serializer<GAccountTransactionsData_accounts_nodes_transfersReceived>
       get serializer =>
           _$gAccountTransactionsDataAccountsNodesTransfersReceivedSerializer;
@@ -7609,6 +8706,56 @@ abstract class GAccountTransactionsData_accounts_nodes_transfersReceived
         GAccountTransactionsData_accounts_nodes_transfersReceived.serializer,
         json,
       );
+}
+
+abstract class GAccountTransactionsData_accounts_nodes_transfersReceived_pageInfo
+    implements
+        Built<
+            GAccountTransactionsData_accounts_nodes_transfersReceived_pageInfo,
+            GAccountTransactionsData_accounts_nodes_transfersReceived_pageInfoBuilder>,
+        GAccountTxsFields_transfersReceived_pageInfo {
+  GAccountTransactionsData_accounts_nodes_transfersReceived_pageInfo._();
+
+  factory GAccountTransactionsData_accounts_nodes_transfersReceived_pageInfo(
+          [void Function(
+                  GAccountTransactionsData_accounts_nodes_transfersReceived_pageInfoBuilder
+                      b)
+              updates]) =
+      _$GAccountTransactionsData_accounts_nodes_transfersReceived_pageInfo;
+
+  static void _initializeBuilder(
+          GAccountTransactionsData_accounts_nodes_transfersReceived_pageInfoBuilder
+              b) =>
+      b..G__typename = 'PageInfo';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+
+  @override
+  bool get hasNextPage;
+
+  @override
+  _i2.GCursor? get endCursor;
+
+  static Serializer<
+          GAccountTransactionsData_accounts_nodes_transfersReceived_pageInfo>
+      get serializer =>
+          _$gAccountTransactionsDataAccountsNodesTransfersReceivedPageInfoSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountTransactionsData_accounts_nodes_transfersReceived_pageInfo
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTransactionsData_accounts_nodes_transfersReceived_pageInfo?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountTransactionsData_accounts_nodes_transfersReceived_pageInfo
+                .serializer,
+            json,
+          );
 }
 
 abstract class GAccountTransactionsData_accounts_nodes_transfersReceived_nodes
@@ -7634,20 +8781,27 @@ abstract class GAccountTransactionsData_accounts_nodes_transfersReceived_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get blockNumber;
+
   @override
   _i2.GDatetime get timestamp;
+
   @override
   _i2.GBigFloat get amount;
+
   @override
   GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_to? get to;
+
   @override
   GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_from?
       get from;
+
   @override
   GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_comment?
       get comment;
+
   static Serializer<
           GAccountTransactionsData_accounts_nodes_transfersReceived_nodes>
       get serializer =>
@@ -7692,8 +8846,10 @@ abstract class GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_t
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   static Serializer<
           GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_to>
       get serializer =>
@@ -7738,8 +8894,10 @@ abstract class GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_f
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   static Serializer<
           GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_from>
       get serializer =>
@@ -7784,10 +8942,13 @@ abstract class GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_c
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get remark;
+
   @override
   String get remarkBytes;
+
   static Serializer<
           GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_comment>
       get serializer =>
@@ -7810,37 +8971,56 @@ abstract class GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_c
 
 abstract class GCertFields {
   String get G__typename;
+
   String get id;
+
   String? get issuerId;
+
   GCertFields_issuer? get issuer;
+
   String? get receiverId;
+
   GCertFields_receiver? get receiver;
+
   int get createdOn;
+
   int get expireOn;
+
   bool get isActive;
+
   int get updatedOn;
+
   Map<String, dynamic> toJson();
 }
 
 abstract class GCertFields_issuer implements GIdentityBasicFields {
   @override
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GCertFields_issuer_account? get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -7849,8 +9029,10 @@ abstract class GCertFields_issuer_account
     implements GIdentityBasicFields_account {
   @override
   String get G__typename;
+
   @override
   int get createdOn;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -7858,22 +9040,31 @@ abstract class GCertFields_issuer_account
 abstract class GCertFields_receiver implements GIdentityBasicFields {
   @override
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GCertFields_receiver_account? get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -7882,8 +9073,10 @@ abstract class GCertFields_receiver_account
     implements GIdentityBasicFields_account {
   @override
   String get G__typename;
+
   @override
   int get createdOn;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -7901,24 +9094,34 @@ abstract class GCertFieldsData
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   GCertFieldsData_issuer? get issuer;
+
   @override
   String? get receiverId;
+
   @override
   GCertFieldsData_receiver? get receiver;
+
   @override
   int get createdOn;
+
   @override
   int get expireOn;
+
   @override
   bool get isActive;
+
   @override
   int get updatedOn;
+
   static Serializer<GCertFieldsData> get serializer =>
       _$gCertFieldsDataSerializer;
 
@@ -7952,22 +9155,31 @@ abstract class GCertFieldsData_issuer
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GCertFieldsData_issuer_account? get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<GCertFieldsData_issuer> get serializer =>
       _$gCertFieldsDataIssuerSerializer;
 
@@ -8002,8 +9214,10 @@ abstract class GCertFieldsData_issuer_account
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<GCertFieldsData_issuer_account> get serializer =>
       _$gCertFieldsDataIssuerAccountSerializer;
 
@@ -8037,22 +9251,31 @@ abstract class GCertFieldsData_receiver
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GCertFieldsData_receiver_account? get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<GCertFieldsData_receiver> get serializer =>
       _$gCertFieldsDataReceiverSerializer;
 
@@ -8087,8 +9310,10 @@ abstract class GCertFieldsData_receiver_account
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<GCertFieldsData_receiver_account> get serializer =>
       _$gCertFieldsDataReceiverAccountSerializer;
 
@@ -8108,10 +9333,15 @@ abstract class GCertFieldsData_receiver_account
 
 abstract class GSmithCertFields {
   String get G__typename;
+
   String get id;
+
   String? get issuerId;
+
   String? get receiverId;
+
   int get createdOn;
+
   Map<String, dynamic> toJson();
 }
 
@@ -8131,14 +9361,19 @@ abstract class GSmithCertFieldsData
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   String? get receiverId;
+
   @override
   int get createdOn;
+
   static Serializer<GSmithCertFieldsData> get serializer =>
       _$gSmithCertFieldsDataSerializer;
 
@@ -8157,20 +9392,31 @@ abstract class GSmithCertFieldsData
 
 abstract class GSmithFields {
   String get G__typename;
+
   String get id;
+
   int get forged;
+
   int get index;
+
   int? get lastChanged;
+
   int? get lastForged;
+
   GSmithFields_smithCertsByIssuerId get smithCertsByIssuerId;
+
   GSmithFields_smithCertsByReceiverId get smithCertsByReceiverId;
+
   Map<String, dynamic> toJson();
 }
 
 abstract class GSmithFields_smithCertsByIssuerId {
   String get G__typename;
+
   int get totalCount;
+
   BuiltList<GSmithFields_smithCertsByIssuerId_nodes> get nodes;
+
   Map<String, dynamic> toJson();
 }
 
@@ -8178,22 +9424,30 @@ abstract class GSmithFields_smithCertsByIssuerId_nodes
     implements GSmithCertFields {
   @override
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   String? get receiverId;
+
   @override
   int get createdOn;
+
   @override
   Map<String, dynamic> toJson();
 }
 
 abstract class GSmithFields_smithCertsByReceiverId {
   String get G__typename;
+
   int get totalCount;
+
   BuiltList<GSmithFields_smithCertsByReceiverId_nodes> get nodes;
+
   Map<String, dynamic> toJson();
 }
 
@@ -8201,14 +9455,19 @@ abstract class GSmithFields_smithCertsByReceiverId_nodes
     implements GSmithCertFields {
   @override
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   String? get receiverId;
+
   @override
   int get createdOn;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -8226,20 +9485,28 @@ abstract class GSmithFieldsData
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   int get forged;
+
   @override
   int get index;
+
   @override
   int? get lastChanged;
+
   @override
   int? get lastForged;
+
   @override
   GSmithFieldsData_smithCertsByIssuerId get smithCertsByIssuerId;
+
   @override
   GSmithFieldsData_smithCertsByReceiverId get smithCertsByReceiverId;
+
   static Serializer<GSmithFieldsData> get serializer =>
       _$gSmithFieldsDataSerializer;
 
@@ -8274,10 +9541,13 @@ abstract class GSmithFieldsData_smithCertsByIssuerId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GSmithFieldsData_smithCertsByIssuerId_nodes> get nodes;
+
   static Serializer<GSmithFieldsData_smithCertsByIssuerId> get serializer =>
       _$gSmithFieldsDataSmithCertsByIssuerIdSerializer;
 
@@ -8314,14 +9584,19 @@ abstract class GSmithFieldsData_smithCertsByIssuerId_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   String? get receiverId;
+
   @override
   int get createdOn;
+
   static Serializer<GSmithFieldsData_smithCertsByIssuerId_nodes>
       get serializer => _$gSmithFieldsDataSmithCertsByIssuerIdNodesSerializer;
 
@@ -8357,10 +9632,13 @@ abstract class GSmithFieldsData_smithCertsByReceiverId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GSmithFieldsData_smithCertsByReceiverId_nodes> get nodes;
+
   static Serializer<GSmithFieldsData_smithCertsByReceiverId> get serializer =>
       _$gSmithFieldsDataSmithCertsByReceiverIdSerializer;
 
@@ -8397,14 +9675,19 @@ abstract class GSmithFieldsData_smithCertsByReceiverId_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   String? get receiverId;
+
   @override
   int get createdOn;
+
   static Serializer<GSmithFieldsData_smithCertsByReceiverId_nodes>
       get serializer => _$gSmithFieldsDataSmithCertsByReceiverIdNodesSerializer;
 
@@ -8424,11 +9707,17 @@ abstract class GSmithFieldsData_smithCertsByReceiverId_nodes
 
 abstract class GOwnerKeyChangeFields {
   String get G__typename;
+
   String get id;
+
   int get blockNumber;
+
   String? get identityId;
+
   String? get nextId;
+
   String? get previousId;
+
   Map<String, dynamic> toJson();
 }
 
@@ -8448,16 +9737,22 @@ abstract class GOwnerKeyChangeFieldsData
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   int get blockNumber;
+
   @override
   String? get identityId;
+
   @override
   String? get nextId;
+
   @override
   String? get previousId;
+
   static Serializer<GOwnerKeyChangeFieldsData> get serializer =>
       _$gOwnerKeyChangeFieldsDataSerializer;
 
@@ -8476,20 +9771,31 @@ abstract class GOwnerKeyChangeFieldsData
 
 abstract class GIdentityBasicFields {
   String get G__typename;
+
   String? get accountId;
+
   GIdentityBasicFields_account? get account;
+
   String get id;
+
   bool get isMember;
+
   String get status;
+
   String get name;
+
   int get expireOn;
+
   int get index;
+
   Map<String, dynamic> toJson();
 }
 
 abstract class GIdentityBasicFields_account {
   String get G__typename;
+
   int get createdOn;
+
   Map<String, dynamic> toJson();
 }
 
@@ -8509,22 +9815,31 @@ abstract class GIdentityBasicFieldsData
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GIdentityBasicFieldsData_account? get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<GIdentityBasicFieldsData> get serializer =>
       _$gIdentityBasicFieldsDataSerializer;
 
@@ -8558,8 +9873,10 @@ abstract class GIdentityBasicFieldsData_account
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<GIdentityBasicFieldsData_account> get serializer =>
       _$gIdentityBasicFieldsDataAccountSerializer;
 
@@ -8579,60 +9896,93 @@ abstract class GIdentityBasicFieldsData_account
 
 abstract class GIdentityFields {
   String get G__typename;
+
   GIdentityFields_account? get account;
+
   String? get accountId;
+
   String? get accountRemovedId;
+
   GIdentityFields_certsByIssuerId get certsByIssuerId;
+
   GIdentityFields_certsByReceiverId get certsByReceiverId;
+
   String? get createdInId;
+
   int get createdOn;
+
   int get expireOn;
+
   String get id;
+
   int get index;
+
   bool get isMember;
+
   int get lastChangeOn;
+
   String get status;
+
   String get name;
+
   GIdentityFields_membershipEvents get membershipEvents;
+
   GIdentityFields_changeOwnerKeys get changeOwnerKeys;
+
   GIdentityFields_smith? get smith;
+
   Map<String, dynamic> toJson();
 }
 
 abstract class GIdentityFields_account {
   String get G__typename;
+
   int get createdOn;
+
   Map<String, dynamic> toJson();
 }
 
 abstract class GIdentityFields_certsByIssuerId {
   String get G__typename;
+
   int get totalCount;
+
   BuiltList<GIdentityFields_certsByIssuerId_nodes> get nodes;
+
   Map<String, dynamic> toJson();
 }
 
 abstract class GIdentityFields_certsByIssuerId_nodes implements GCertFields {
   @override
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   GIdentityFields_certsByIssuerId_nodes_issuer? get issuer;
+
   @override
   String? get receiverId;
+
   @override
   GIdentityFields_certsByIssuerId_nodes_receiver? get receiver;
+
   @override
   int get createdOn;
+
   @override
   int get expireOn;
+
   @override
   bool get isActive;
+
   @override
   int get updatedOn;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -8641,22 +9991,31 @@ abstract class GIdentityFields_certsByIssuerId_nodes_issuer
     implements GCertFields_issuer, GIdentityBasicFields {
   @override
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GIdentityFields_certsByIssuerId_nodes_issuer_account? get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -8665,8 +10024,10 @@ abstract class GIdentityFields_certsByIssuerId_nodes_issuer_account
     implements GCertFields_issuer_account, GIdentityBasicFields_account {
   @override
   String get G__typename;
+
   @override
   int get createdOn;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -8675,22 +10036,31 @@ abstract class GIdentityFields_certsByIssuerId_nodes_receiver
     implements GCertFields_receiver, GIdentityBasicFields {
   @override
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GIdentityFields_certsByIssuerId_nodes_receiver_account? get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -8699,40 +10069,55 @@ abstract class GIdentityFields_certsByIssuerId_nodes_receiver_account
     implements GCertFields_receiver_account, GIdentityBasicFields_account {
   @override
   String get G__typename;
+
   @override
   int get createdOn;
+
   @override
   Map<String, dynamic> toJson();
 }
 
 abstract class GIdentityFields_certsByReceiverId {
   String get G__typename;
+
   int get totalCount;
+
   BuiltList<GIdentityFields_certsByReceiverId_nodes> get nodes;
+
   Map<String, dynamic> toJson();
 }
 
 abstract class GIdentityFields_certsByReceiverId_nodes implements GCertFields {
   @override
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   GIdentityFields_certsByReceiverId_nodes_issuer? get issuer;
+
   @override
   String? get receiverId;
+
   @override
   GIdentityFields_certsByReceiverId_nodes_receiver? get receiver;
+
   @override
   int get createdOn;
+
   @override
   int get expireOn;
+
   @override
   bool get isActive;
+
   @override
   int get updatedOn;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -8741,22 +10126,31 @@ abstract class GIdentityFields_certsByReceiverId_nodes_issuer
     implements GCertFields_issuer, GIdentityBasicFields {
   @override
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GIdentityFields_certsByReceiverId_nodes_issuer_account? get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -8765,8 +10159,10 @@ abstract class GIdentityFields_certsByReceiverId_nodes_issuer_account
     implements GCertFields_issuer_account, GIdentityBasicFields_account {
   @override
   String get G__typename;
+
   @override
   int get createdOn;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -8775,22 +10171,31 @@ abstract class GIdentityFields_certsByReceiverId_nodes_receiver
     implements GCertFields_receiver, GIdentityBasicFields {
   @override
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GIdentityFields_certsByReceiverId_nodes_receiver_account? get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -8799,33 +10204,47 @@ abstract class GIdentityFields_certsByReceiverId_nodes_receiver_account
     implements GCertFields_receiver_account, GIdentityBasicFields_account {
   @override
   String get G__typename;
+
   @override
   int get createdOn;
+
   @override
   Map<String, dynamic> toJson();
 }
 
 abstract class GIdentityFields_membershipEvents {
   String get G__typename;
+
   int get totalCount;
+
   BuiltList<GIdentityFields_membershipEvents_nodes> get nodes;
+
   Map<String, dynamic> toJson();
 }
 
 abstract class GIdentityFields_membershipEvents_nodes {
   String get G__typename;
+
   int get blockNumber;
+
   String? get eventId;
+
   String get eventType;
+
   String get id;
+
   String? get identityId;
+
   Map<String, dynamic> toJson();
 }
 
 abstract class GIdentityFields_changeOwnerKeys {
   String get G__typename;
+
   int get totalCount;
+
   BuiltList<GIdentityFields_changeOwnerKeys_nodes> get nodes;
+
   Map<String, dynamic> toJson();
 }
 
@@ -8833,16 +10252,22 @@ abstract class GIdentityFields_changeOwnerKeys_nodes
     implements GOwnerKeyChangeFields {
   @override
   String get G__typename;
+
   @override
   String get id;
+
   @override
   int get blockNumber;
+
   @override
   String? get identityId;
+
   @override
   String? get nextId;
+
   @override
   String? get previousId;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -8850,20 +10275,28 @@ abstract class GIdentityFields_changeOwnerKeys_nodes
 abstract class GIdentityFields_smith implements GSmithFields {
   @override
   String get G__typename;
+
   @override
   String get id;
+
   @override
   int get forged;
+
   @override
   int get index;
+
   @override
   int? get lastChanged;
+
   @override
   int? get lastForged;
+
   @override
   GIdentityFields_smith_smithCertsByIssuerId get smithCertsByIssuerId;
+
   @override
   GIdentityFields_smith_smithCertsByReceiverId get smithCertsByReceiverId;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -8872,10 +10305,13 @@ abstract class GIdentityFields_smith_smithCertsByIssuerId
     implements GSmithFields_smithCertsByIssuerId {
   @override
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GIdentityFields_smith_smithCertsByIssuerId_nodes> get nodes;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -8884,14 +10320,19 @@ abstract class GIdentityFields_smith_smithCertsByIssuerId_nodes
     implements GSmithFields_smithCertsByIssuerId_nodes, GSmithCertFields {
   @override
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   String? get receiverId;
+
   @override
   int get createdOn;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -8900,10 +10341,13 @@ abstract class GIdentityFields_smith_smithCertsByReceiverId
     implements GSmithFields_smithCertsByReceiverId {
   @override
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GIdentityFields_smith_smithCertsByReceiverId_nodes> get nodes;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -8912,14 +10356,19 @@ abstract class GIdentityFields_smith_smithCertsByReceiverId_nodes
     implements GSmithFields_smithCertsByReceiverId_nodes, GSmithCertFields {
   @override
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   String? get receiverId;
+
   @override
   int get createdOn;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -8940,40 +10389,58 @@ abstract class GIdentityFieldsData
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   GIdentityFieldsData_account? get account;
+
   @override
   String? get accountId;
+
   @override
   String? get accountRemovedId;
+
   @override
   GIdentityFieldsData_certsByIssuerId get certsByIssuerId;
+
   @override
   GIdentityFieldsData_certsByReceiverId get certsByReceiverId;
+
   @override
   String? get createdInId;
+
   @override
   int get createdOn;
+
   @override
   int get expireOn;
+
   @override
   String get id;
+
   @override
   int get index;
+
   @override
   bool get isMember;
+
   @override
   int get lastChangeOn;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   GIdentityFieldsData_membershipEvents get membershipEvents;
+
   @override
   GIdentityFieldsData_changeOwnerKeys get changeOwnerKeys;
+
   @override
   GIdentityFieldsData_smith? get smith;
+
   static Serializer<GIdentityFieldsData> get serializer =>
       _$gIdentityFieldsDataSerializer;
 
@@ -9006,8 +10473,10 @@ abstract class GIdentityFieldsData_account
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<GIdentityFieldsData_account> get serializer =>
       _$gIdentityFieldsDataAccountSerializer;
 
@@ -9042,10 +10511,13 @@ abstract class GIdentityFieldsData_certsByIssuerId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GIdentityFieldsData_certsByIssuerId_nodes> get nodes;
+
   static Serializer<GIdentityFieldsData_certsByIssuerId> get serializer =>
       _$gIdentityFieldsDataCertsByIssuerIdSerializer;
 
@@ -9082,24 +10554,34 @@ abstract class GIdentityFieldsData_certsByIssuerId_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   GIdentityFieldsData_certsByIssuerId_nodes_issuer? get issuer;
+
   @override
   String? get receiverId;
+
   @override
   GIdentityFieldsData_certsByIssuerId_nodes_receiver? get receiver;
+
   @override
   int get createdOn;
+
   @override
   int get expireOn;
+
   @override
   bool get isActive;
+
   @override
   int get updatedOn;
+
   static Serializer<GIdentityFieldsData_certsByIssuerId_nodes> get serializer =>
       _$gIdentityFieldsDataCertsByIssuerIdNodesSerializer;
 
@@ -9137,22 +10619,31 @@ abstract class GIdentityFieldsData_certsByIssuerId_nodes_issuer
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GIdentityFieldsData_certsByIssuerId_nodes_issuer_account? get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<GIdentityFieldsData_certsByIssuerId_nodes_issuer>
       get serializer =>
           _$gIdentityFieldsDataCertsByIssuerIdNodesIssuerSerializer;
@@ -9192,8 +10683,10 @@ abstract class GIdentityFieldsData_certsByIssuerId_nodes_issuer_account
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<GIdentityFieldsData_certsByIssuerId_nodes_issuer_account>
       get serializer =>
           _$gIdentityFieldsDataCertsByIssuerIdNodesIssuerAccountSerializer;
@@ -9233,22 +10726,31 @@ abstract class GIdentityFieldsData_certsByIssuerId_nodes_receiver
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GIdentityFieldsData_certsByIssuerId_nodes_receiver_account? get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<GIdentityFieldsData_certsByIssuerId_nodes_receiver>
       get serializer =>
           _$gIdentityFieldsDataCertsByIssuerIdNodesReceiverSerializer;
@@ -9290,8 +10792,10 @@ abstract class GIdentityFieldsData_certsByIssuerId_nodes_receiver_account
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<GIdentityFieldsData_certsByIssuerId_nodes_receiver_account>
       get serializer =>
           _$gIdentityFieldsDataCertsByIssuerIdNodesReceiverAccountSerializer;
@@ -9328,10 +10832,13 @@ abstract class GIdentityFieldsData_certsByReceiverId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GIdentityFieldsData_certsByReceiverId_nodes> get nodes;
+
   static Serializer<GIdentityFieldsData_certsByReceiverId> get serializer =>
       _$gIdentityFieldsDataCertsByReceiverIdSerializer;
 
@@ -9368,24 +10875,34 @@ abstract class GIdentityFieldsData_certsByReceiverId_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   GIdentityFieldsData_certsByReceiverId_nodes_issuer? get issuer;
+
   @override
   String? get receiverId;
+
   @override
   GIdentityFieldsData_certsByReceiverId_nodes_receiver? get receiver;
+
   @override
   int get createdOn;
+
   @override
   int get expireOn;
+
   @override
   bool get isActive;
+
   @override
   int get updatedOn;
+
   static Serializer<GIdentityFieldsData_certsByReceiverId_nodes>
       get serializer => _$gIdentityFieldsDataCertsByReceiverIdNodesSerializer;
 
@@ -9424,22 +10941,31 @@ abstract class GIdentityFieldsData_certsByReceiverId_nodes_issuer
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GIdentityFieldsData_certsByReceiverId_nodes_issuer_account? get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<GIdentityFieldsData_certsByReceiverId_nodes_issuer>
       get serializer =>
           _$gIdentityFieldsDataCertsByReceiverIdNodesIssuerSerializer;
@@ -9481,8 +11007,10 @@ abstract class GIdentityFieldsData_certsByReceiverId_nodes_issuer_account
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<GIdentityFieldsData_certsByReceiverId_nodes_issuer_account>
       get serializer =>
           _$gIdentityFieldsDataCertsByReceiverIdNodesIssuerAccountSerializer;
@@ -9522,22 +11050,31 @@ abstract class GIdentityFieldsData_certsByReceiverId_nodes_receiver
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GIdentityFieldsData_certsByReceiverId_nodes_receiver_account? get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<GIdentityFieldsData_certsByReceiverId_nodes_receiver>
       get serializer =>
           _$gIdentityFieldsDataCertsByReceiverIdNodesReceiverSerializer;
@@ -9580,8 +11117,10 @@ abstract class GIdentityFieldsData_certsByReceiverId_nodes_receiver_account
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<
           GIdentityFieldsData_certsByReceiverId_nodes_receiver_account>
       get serializer =>
@@ -9619,10 +11158,13 @@ abstract class GIdentityFieldsData_membershipEvents
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GIdentityFieldsData_membershipEvents_nodes> get nodes;
+
   static Serializer<GIdentityFieldsData_membershipEvents> get serializer =>
       _$gIdentityFieldsDataMembershipEventsSerializer;
 
@@ -9658,16 +11200,22 @@ abstract class GIdentityFieldsData_membershipEvents_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get blockNumber;
+
   @override
   String? get eventId;
+
   @override
   String get eventType;
+
   @override
   String get id;
+
   @override
   String? get identityId;
+
   static Serializer<GIdentityFieldsData_membershipEvents_nodes>
       get serializer => _$gIdentityFieldsDataMembershipEventsNodesSerializer;
 
@@ -9703,10 +11251,13 @@ abstract class GIdentityFieldsData_changeOwnerKeys
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GIdentityFieldsData_changeOwnerKeys_nodes> get nodes;
+
   static Serializer<GIdentityFieldsData_changeOwnerKeys> get serializer =>
       _$gIdentityFieldsDataChangeOwnerKeysSerializer;
 
@@ -9743,16 +11294,22 @@ abstract class GIdentityFieldsData_changeOwnerKeys_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   int get blockNumber;
+
   @override
   String? get identityId;
+
   @override
   String? get nextId;
+
   @override
   String? get previousId;
+
   static Serializer<GIdentityFieldsData_changeOwnerKeys_nodes> get serializer =>
       _$gIdentityFieldsDataChangeOwnerKeysNodesSerializer;
 
@@ -9787,20 +11344,28 @@ abstract class GIdentityFieldsData_smith
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   int get forged;
+
   @override
   int get index;
+
   @override
   int? get lastChanged;
+
   @override
   int? get lastForged;
+
   @override
   GIdentityFieldsData_smith_smithCertsByIssuerId get smithCertsByIssuerId;
+
   @override
   GIdentityFieldsData_smith_smithCertsByReceiverId get smithCertsByReceiverId;
+
   static Serializer<GIdentityFieldsData_smith> get serializer =>
       _$gIdentityFieldsDataSmithSerializer;
 
@@ -9836,10 +11401,13 @@ abstract class GIdentityFieldsData_smith_smithCertsByIssuerId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GIdentityFieldsData_smith_smithCertsByIssuerId_nodes> get nodes;
+
   static Serializer<GIdentityFieldsData_smith_smithCertsByIssuerId>
       get serializer =>
           _$gIdentityFieldsDataSmithSmithCertsByIssuerIdSerializer;
@@ -9879,14 +11447,19 @@ abstract class GIdentityFieldsData_smith_smithCertsByIssuerId_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   String? get receiverId;
+
   @override
   int get createdOn;
+
   static Serializer<GIdentityFieldsData_smith_smithCertsByIssuerId_nodes>
       get serializer =>
           _$gIdentityFieldsDataSmithSmithCertsByIssuerIdNodesSerializer;
@@ -9924,10 +11497,13 @@ abstract class GIdentityFieldsData_smith_smithCertsByReceiverId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GIdentityFieldsData_smith_smithCertsByReceiverId_nodes> get nodes;
+
   static Serializer<GIdentityFieldsData_smith_smithCertsByReceiverId>
       get serializer =>
           _$gIdentityFieldsDataSmithSmithCertsByReceiverIdSerializer;
@@ -9967,14 +11543,19 @@ abstract class GIdentityFieldsData_smith_smithCertsByReceiverId_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   String? get receiverId;
+
   @override
   int get createdOn;
+
   static Serializer<GIdentityFieldsData_smith_smithCertsByReceiverId_nodes>
       get serializer =>
           _$gIdentityFieldsDataSmithSmithCertsByReceiverIdNodesSerializer;
@@ -9995,14 +11576,23 @@ abstract class GIdentityFieldsData_smith_smithCertsByReceiverId_nodes
 
 abstract class GCommentsIssued {
   String get G__typename;
+
   String? get authorId;
+
   int get blockNumber;
+
   String? get eventId;
+
   String get hash;
+
   String get id;
+
   String get remark;
+
   String get remarkBytes;
+
   String get type;
+
   Map<String, dynamic> toJson();
 }
 
@@ -10022,22 +11612,31 @@ abstract class GCommentsIssuedData
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get authorId;
+
   @override
   int get blockNumber;
+
   @override
   String? get eventId;
+
   @override
   String get hash;
+
   @override
   String get id;
+
   @override
   String get remark;
+
   @override
   String get remarkBytes;
+
   @override
   String get type;
+
   static Serializer<GCommentsIssuedData> get serializer =>
       _$gCommentsIssuedDataSerializer;
 
@@ -10056,10 +11655,19 @@ abstract class GCommentsIssuedData
 
 abstract class GAccountBasicFields {
   String get G__typename;
+
   int get createdOn;
+
   String get id;
+
+  _i2.GBigFloat get balance;
+
+  _i2.GBigFloat? get totalBalance;
+
   GAccountBasicFields_linkedIdentity? get linkedIdentity;
+
   bool get isActive;
+
   Map<String, dynamic> toJson();
 }
 
@@ -10067,22 +11675,31 @@ abstract class GAccountBasicFields_linkedIdentity
     implements GIdentityBasicFields {
   @override
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GAccountBasicFields_linkedIdentity_account? get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10091,8 +11708,10 @@ abstract class GAccountBasicFields_linkedIdentity_account
     implements GIdentityBasicFields_account {
   @override
   String get G__typename;
+
   @override
   int get createdOn;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10113,14 +11732,25 @@ abstract class GAccountBasicFieldsData
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   @override
   String get id;
+
+  @override
+  _i2.GBigFloat get balance;
+
+  @override
+  _i2.GBigFloat? get totalBalance;
+
   @override
   GAccountBasicFieldsData_linkedIdentity? get linkedIdentity;
+
   @override
   bool get isActive;
+
   static Serializer<GAccountBasicFieldsData> get serializer =>
       _$gAccountBasicFieldsDataSerializer;
 
@@ -10156,22 +11786,31 @@ abstract class GAccountBasicFieldsData_linkedIdentity
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GAccountBasicFieldsData_linkedIdentity_account? get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<GAccountBasicFieldsData_linkedIdentity> get serializer =>
       _$gAccountBasicFieldsDataLinkedIdentitySerializer;
 
@@ -10208,8 +11847,10 @@ abstract class GAccountBasicFieldsData_linkedIdentity_account
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<GAccountBasicFieldsData_linkedIdentity_account>
       get serializer =>
           _$gAccountBasicFieldsDataLinkedIdentityAccountSerializer;
@@ -10230,39 +11871,74 @@ abstract class GAccountBasicFieldsData_linkedIdentity_account
 
 abstract class GAccountFields {
   String get G__typename;
+
   int get createdOn;
+
   String get id;
+
+  _i2.GBigFloat get balance;
+
+  _i2.GBigFloat? get totalBalance;
+
   bool get isActive;
+
   GAccountFields_transfersIssued get transfersIssued;
+
   GAccountFields_transfersReceived get transfersReceived;
+
   GAccountFields_wasIdentityPrev get wasIdentityPrev;
+
   GAccountFields_wasIdentityNext get wasIdentityNext;
+
   GAccountFields_linkedIdentity? get linkedIdentity;
+
   Map<String, dynamic> toJson();
 }
 
 abstract class GAccountFields_transfersIssued {
   String get G__typename;
+
   int get totalCount;
+
+  GAccountFields_transfersIssued_pageInfo get pageInfo;
+
   BuiltList<GAccountFields_transfersIssued_nodes> get nodes;
+
+  Map<String, dynamic> toJson();
+}
+
+abstract class GAccountFields_transfersIssued_pageInfo {
+  String get G__typename;
+
+  bool get hasNextPage;
+
+  _i2.GCursor? get endCursor;
+
   Map<String, dynamic> toJson();
 }
 
 abstract class GAccountFields_transfersIssued_nodes implements GTransferFields {
   @override
   String get G__typename;
+
   @override
   int get blockNumber;
+
   @override
   _i2.GDatetime get timestamp;
+
   @override
   _i2.GBigFloat get amount;
+
   @override
   GAccountFields_transfersIssued_nodes_to? get to;
+
   @override
   GAccountFields_transfersIssued_nodes_from? get from;
+
   @override
   GAccountFields_transfersIssued_nodes_comment? get comment;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10271,8 +11947,10 @@ abstract class GAccountFields_transfersIssued_nodes_to
     implements GTransferFields_to {
   @override
   String get G__typename;
+
   @override
   String get id;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10281,8 +11959,10 @@ abstract class GAccountFields_transfersIssued_nodes_from
     implements GTransferFields_from {
   @override
   String get G__typename;
+
   @override
   String get id;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10291,18 +11971,36 @@ abstract class GAccountFields_transfersIssued_nodes_comment
     implements GTransferFields_comment {
   @override
   String get G__typename;
+
   @override
   String get remark;
+
   @override
   String get remarkBytes;
+
   @override
   Map<String, dynamic> toJson();
 }
 
 abstract class GAccountFields_transfersReceived {
   String get G__typename;
+
   int get totalCount;
+
+  GAccountFields_transfersReceived_pageInfo get pageInfo;
+
   BuiltList<GAccountFields_transfersReceived_nodes> get nodes;
+
+  Map<String, dynamic> toJson();
+}
+
+abstract class GAccountFields_transfersReceived_pageInfo {
+  String get G__typename;
+
+  bool get hasNextPage;
+
+  _i2.GCursor? get endCursor;
+
   Map<String, dynamic> toJson();
 }
 
@@ -10310,18 +12008,25 @@ abstract class GAccountFields_transfersReceived_nodes
     implements GTransferFields {
   @override
   String get G__typename;
+
   @override
   int get blockNumber;
+
   @override
   _i2.GDatetime get timestamp;
+
   @override
   _i2.GBigFloat get amount;
+
   @override
   GAccountFields_transfersReceived_nodes_to? get to;
+
   @override
   GAccountFields_transfersReceived_nodes_from? get from;
+
   @override
   GAccountFields_transfersReceived_nodes_comment? get comment;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10330,8 +12035,10 @@ abstract class GAccountFields_transfersReceived_nodes_to
     implements GTransferFields_to {
   @override
   String get G__typename;
+
   @override
   String get id;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10340,8 +12047,10 @@ abstract class GAccountFields_transfersReceived_nodes_from
     implements GTransferFields_from {
   @override
   String get G__typename;
+
   @override
   String get id;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10350,18 +12059,24 @@ abstract class GAccountFields_transfersReceived_nodes_comment
     implements GTransferFields_comment {
   @override
   String get G__typename;
+
   @override
   String get remark;
+
   @override
   String get remarkBytes;
+
   @override
   Map<String, dynamic> toJson();
 }
 
 abstract class GAccountFields_wasIdentityPrev {
   String get G__typename;
+
   int get totalCount;
+
   BuiltList<GAccountFields_wasIdentityPrev_nodes> get nodes;
+
   Map<String, dynamic> toJson();
 }
 
@@ -10369,24 +12084,33 @@ abstract class GAccountFields_wasIdentityPrev_nodes
     implements GOwnerKeyChangeFields {
   @override
   String get G__typename;
+
   @override
   String get id;
+
   @override
   int get blockNumber;
+
   @override
   String? get identityId;
+
   @override
   String? get nextId;
+
   @override
   String? get previousId;
+
   @override
   Map<String, dynamic> toJson();
 }
 
 abstract class GAccountFields_wasIdentityNext {
   String get G__typename;
+
   int get totalCount;
+
   BuiltList<GAccountFields_wasIdentityNext_nodes> get nodes;
+
   Map<String, dynamic> toJson();
 }
 
@@ -10394,16 +12118,22 @@ abstract class GAccountFields_wasIdentityNext_nodes
     implements GOwnerKeyChangeFields {
   @override
   String get G__typename;
+
   @override
   String get id;
+
   @override
   int get blockNumber;
+
   @override
   String? get identityId;
+
   @override
   String? get nextId;
+
   @override
   String? get previousId;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10411,40 +12141,58 @@ abstract class GAccountFields_wasIdentityNext_nodes
 abstract class GAccountFields_linkedIdentity implements GIdentityFields {
   @override
   String get G__typename;
+
   @override
   GAccountFields_linkedIdentity_account? get account;
+
   @override
   String? get accountId;
+
   @override
   String? get accountRemovedId;
+
   @override
   GAccountFields_linkedIdentity_certsByIssuerId get certsByIssuerId;
+
   @override
   GAccountFields_linkedIdentity_certsByReceiverId get certsByReceiverId;
+
   @override
   String? get createdInId;
+
   @override
   int get createdOn;
+
   @override
   int get expireOn;
+
   @override
   String get id;
+
   @override
   int get index;
+
   @override
   bool get isMember;
+
   @override
   int get lastChangeOn;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   GAccountFields_linkedIdentity_membershipEvents get membershipEvents;
+
   @override
   GAccountFields_linkedIdentity_changeOwnerKeys get changeOwnerKeys;
+
   @override
   GAccountFields_linkedIdentity_smith? get smith;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10453,8 +12201,10 @@ abstract class GAccountFields_linkedIdentity_account
     implements GIdentityFields_account {
   @override
   String get G__typename;
+
   @override
   int get createdOn;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10463,10 +12213,13 @@ abstract class GAccountFields_linkedIdentity_certsByIssuerId
     implements GIdentityFields_certsByIssuerId {
   @override
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GAccountFields_linkedIdentity_certsByIssuerId_nodes> get nodes;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10475,24 +12228,34 @@ abstract class GAccountFields_linkedIdentity_certsByIssuerId_nodes
     implements GIdentityFields_certsByIssuerId_nodes, GCertFields {
   @override
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   GAccountFields_linkedIdentity_certsByIssuerId_nodes_issuer? get issuer;
+
   @override
   String? get receiverId;
+
   @override
   GAccountFields_linkedIdentity_certsByIssuerId_nodes_receiver? get receiver;
+
   @override
   int get createdOn;
+
   @override
   int get expireOn;
+
   @override
   bool get isActive;
+
   @override
   int get updatedOn;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10504,23 +12267,32 @@ abstract class GAccountFields_linkedIdentity_certsByIssuerId_nodes_issuer
         GIdentityBasicFields {
   @override
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GAccountFields_linkedIdentity_certsByIssuerId_nodes_issuer_account?
       get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10532,8 +12304,10 @@ abstract class GAccountFields_linkedIdentity_certsByIssuerId_nodes_issuer_accoun
         GIdentityBasicFields_account {
   @override
   String get G__typename;
+
   @override
   int get createdOn;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10545,23 +12319,32 @@ abstract class GAccountFields_linkedIdentity_certsByIssuerId_nodes_receiver
         GIdentityBasicFields {
   @override
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GAccountFields_linkedIdentity_certsByIssuerId_nodes_receiver_account?
       get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10573,8 +12356,10 @@ abstract class GAccountFields_linkedIdentity_certsByIssuerId_nodes_receiver_acco
         GIdentityBasicFields_account {
   @override
   String get G__typename;
+
   @override
   int get createdOn;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10583,10 +12368,13 @@ abstract class GAccountFields_linkedIdentity_certsByReceiverId
     implements GIdentityFields_certsByReceiverId {
   @override
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GAccountFields_linkedIdentity_certsByReceiverId_nodes> get nodes;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10595,24 +12383,34 @@ abstract class GAccountFields_linkedIdentity_certsByReceiverId_nodes
     implements GIdentityFields_certsByReceiverId_nodes, GCertFields {
   @override
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   GAccountFields_linkedIdentity_certsByReceiverId_nodes_issuer? get issuer;
+
   @override
   String? get receiverId;
+
   @override
   GAccountFields_linkedIdentity_certsByReceiverId_nodes_receiver? get receiver;
+
   @override
   int get createdOn;
+
   @override
   int get expireOn;
+
   @override
   bool get isActive;
+
   @override
   int get updatedOn;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10624,23 +12422,32 @@ abstract class GAccountFields_linkedIdentity_certsByReceiverId_nodes_issuer
         GIdentityBasicFields {
   @override
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GAccountFields_linkedIdentity_certsByReceiverId_nodes_issuer_account?
       get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10652,8 +12459,10 @@ abstract class GAccountFields_linkedIdentity_certsByReceiverId_nodes_issuer_acco
         GIdentityBasicFields_account {
   @override
   String get G__typename;
+
   @override
   int get createdOn;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10665,23 +12474,32 @@ abstract class GAccountFields_linkedIdentity_certsByReceiverId_nodes_receiver
         GIdentityBasicFields {
   @override
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GAccountFields_linkedIdentity_certsByReceiverId_nodes_receiver_account?
       get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10693,8 +12511,10 @@ abstract class GAccountFields_linkedIdentity_certsByReceiverId_nodes_receiver_ac
         GIdentityBasicFields_account {
   @override
   String get G__typename;
+
   @override
   int get createdOn;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10703,10 +12523,13 @@ abstract class GAccountFields_linkedIdentity_membershipEvents
     implements GIdentityFields_membershipEvents {
   @override
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GAccountFields_linkedIdentity_membershipEvents_nodes> get nodes;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10715,16 +12538,22 @@ abstract class GAccountFields_linkedIdentity_membershipEvents_nodes
     implements GIdentityFields_membershipEvents_nodes {
   @override
   String get G__typename;
+
   @override
   int get blockNumber;
+
   @override
   String? get eventId;
+
   @override
   String get eventType;
+
   @override
   String get id;
+
   @override
   String? get identityId;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10733,10 +12562,13 @@ abstract class GAccountFields_linkedIdentity_changeOwnerKeys
     implements GIdentityFields_changeOwnerKeys {
   @override
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GAccountFields_linkedIdentity_changeOwnerKeys_nodes> get nodes;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10745,16 +12577,22 @@ abstract class GAccountFields_linkedIdentity_changeOwnerKeys_nodes
     implements GIdentityFields_changeOwnerKeys_nodes, GOwnerKeyChangeFields {
   @override
   String get G__typename;
+
   @override
   String get id;
+
   @override
   int get blockNumber;
+
   @override
   String? get identityId;
+
   @override
   String? get nextId;
+
   @override
   String? get previousId;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10763,22 +12601,30 @@ abstract class GAccountFields_linkedIdentity_smith
     implements GIdentityFields_smith, GSmithFields {
   @override
   String get G__typename;
+
   @override
   String get id;
+
   @override
   int get forged;
+
   @override
   int get index;
+
   @override
   int? get lastChanged;
+
   @override
   int? get lastForged;
+
   @override
   GAccountFields_linkedIdentity_smith_smithCertsByIssuerId
       get smithCertsByIssuerId;
+
   @override
   GAccountFields_linkedIdentity_smith_smithCertsByReceiverId
       get smithCertsByReceiverId;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10789,11 +12635,14 @@ abstract class GAccountFields_linkedIdentity_smith_smithCertsByIssuerId
         GSmithFields_smithCertsByIssuerId {
   @override
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GAccountFields_linkedIdentity_smith_smithCertsByIssuerId_nodes>
       get nodes;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10805,14 +12654,19 @@ abstract class GAccountFields_linkedIdentity_smith_smithCertsByIssuerId_nodes
         GSmithCertFields {
   @override
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   String? get receiverId;
+
   @override
   int get createdOn;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10823,11 +12677,14 @@ abstract class GAccountFields_linkedIdentity_smith_smithCertsByReceiverId
         GSmithFields_smithCertsByReceiverId {
   @override
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GAccountFields_linkedIdentity_smith_smithCertsByReceiverId_nodes>
       get nodes;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10839,14 +12696,19 @@ abstract class GAccountFields_linkedIdentity_smith_smithCertsByReceiverId_nodes
         GSmithCertFields {
   @override
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   String? get receiverId;
+
   @override
   int get createdOn;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -10867,22 +12729,37 @@ abstract class GAccountFieldsData
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   @override
   String get id;
+
+  @override
+  _i2.GBigFloat get balance;
+
+  @override
+  _i2.GBigFloat? get totalBalance;
+
   @override
   bool get isActive;
+
   @override
   GAccountFieldsData_transfersIssued get transfersIssued;
+
   @override
   GAccountFieldsData_transfersReceived get transfersReceived;
+
   @override
   GAccountFieldsData_wasIdentityPrev get wasIdentityPrev;
+
   @override
   GAccountFieldsData_wasIdentityNext get wasIdentityNext;
+
   @override
   GAccountFieldsData_linkedIdentity? get linkedIdentity;
+
   static Serializer<GAccountFieldsData> get serializer =>
       _$gAccountFieldsDataSerializer;
 
@@ -10916,10 +12793,16 @@ abstract class GAccountFieldsData_transfersIssued
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
+  @override
+  GAccountFieldsData_transfersIssued_pageInfo get pageInfo;
+
   @override
   BuiltList<GAccountFieldsData_transfersIssued_nodes> get nodes;
+
   static Serializer<GAccountFieldsData_transfersIssued> get serializer =>
       _$gAccountFieldsDataTransfersIssuedSerializer;
 
@@ -10933,6 +12816,48 @@ abstract class GAccountFieldsData_transfersIssued
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
         GAccountFieldsData_transfersIssued.serializer,
+        json,
+      );
+}
+
+abstract class GAccountFieldsData_transfersIssued_pageInfo
+    implements
+        Built<GAccountFieldsData_transfersIssued_pageInfo,
+            GAccountFieldsData_transfersIssued_pageInfoBuilder>,
+        GAccountFields_transfersIssued_pageInfo {
+  GAccountFieldsData_transfersIssued_pageInfo._();
+
+  factory GAccountFieldsData_transfersIssued_pageInfo(
+      [void Function(GAccountFieldsData_transfersIssued_pageInfoBuilder b)
+          updates]) = _$GAccountFieldsData_transfersIssued_pageInfo;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_transfersIssued_pageInfoBuilder b) =>
+      b..G__typename = 'PageInfo';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+
+  @override
+  bool get hasNextPage;
+
+  @override
+  _i2.GCursor? get endCursor;
+
+  static Serializer<GAccountFieldsData_transfersIssued_pageInfo>
+      get serializer => _$gAccountFieldsDataTransfersIssuedPageInfoSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_transfersIssued_pageInfo.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_transfersIssued_pageInfo? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountFieldsData_transfersIssued_pageInfo.serializer,
         json,
       );
 }
@@ -10956,18 +12881,25 @@ abstract class GAccountFieldsData_transfersIssued_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get blockNumber;
+
   @override
   _i2.GDatetime get timestamp;
+
   @override
   _i2.GBigFloat get amount;
+
   @override
   GAccountFieldsData_transfersIssued_nodes_to? get to;
+
   @override
   GAccountFieldsData_transfersIssued_nodes_from? get from;
+
   @override
   GAccountFieldsData_transfersIssued_nodes_comment? get comment;
+
   static Serializer<GAccountFieldsData_transfersIssued_nodes> get serializer =>
       _$gAccountFieldsDataTransfersIssuedNodesSerializer;
 
@@ -11004,8 +12936,10 @@ abstract class GAccountFieldsData_transfersIssued_nodes_to
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   static Serializer<GAccountFieldsData_transfersIssued_nodes_to>
       get serializer => _$gAccountFieldsDataTransfersIssuedNodesToSerializer;
 
@@ -11042,8 +12976,10 @@ abstract class GAccountFieldsData_transfersIssued_nodes_from
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   static Serializer<GAccountFieldsData_transfersIssued_nodes_from>
       get serializer => _$gAccountFieldsDataTransfersIssuedNodesFromSerializer;
 
@@ -11080,10 +13016,13 @@ abstract class GAccountFieldsData_transfersIssued_nodes_comment
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get remark;
+
   @override
   String get remarkBytes;
+
   static Serializer<GAccountFieldsData_transfersIssued_nodes_comment>
       get serializer =>
           _$gAccountFieldsDataTransfersIssuedNodesCommentSerializer;
@@ -11120,10 +13059,16 @@ abstract class GAccountFieldsData_transfersReceived
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
+  @override
+  GAccountFieldsData_transfersReceived_pageInfo get pageInfo;
+
   @override
   BuiltList<GAccountFieldsData_transfersReceived_nodes> get nodes;
+
   static Serializer<GAccountFieldsData_transfersReceived> get serializer =>
       _$gAccountFieldsDataTransfersReceivedSerializer;
 
@@ -11137,6 +13082,48 @@ abstract class GAccountFieldsData_transfersReceived
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
         GAccountFieldsData_transfersReceived.serializer,
+        json,
+      );
+}
+
+abstract class GAccountFieldsData_transfersReceived_pageInfo
+    implements
+        Built<GAccountFieldsData_transfersReceived_pageInfo,
+            GAccountFieldsData_transfersReceived_pageInfoBuilder>,
+        GAccountFields_transfersReceived_pageInfo {
+  GAccountFieldsData_transfersReceived_pageInfo._();
+
+  factory GAccountFieldsData_transfersReceived_pageInfo(
+      [void Function(GAccountFieldsData_transfersReceived_pageInfoBuilder b)
+          updates]) = _$GAccountFieldsData_transfersReceived_pageInfo;
+
+  static void _initializeBuilder(
+          GAccountFieldsData_transfersReceived_pageInfoBuilder b) =>
+      b..G__typename = 'PageInfo';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+
+  @override
+  bool get hasNextPage;
+
+  @override
+  _i2.GCursor? get endCursor;
+
+  static Serializer<GAccountFieldsData_transfersReceived_pageInfo>
+      get serializer => _$gAccountFieldsDataTransfersReceivedPageInfoSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountFieldsData_transfersReceived_pageInfo.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountFieldsData_transfersReceived_pageInfo? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountFieldsData_transfersReceived_pageInfo.serializer,
         json,
       );
 }
@@ -11160,18 +13147,25 @@ abstract class GAccountFieldsData_transfersReceived_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get blockNumber;
+
   @override
   _i2.GDatetime get timestamp;
+
   @override
   _i2.GBigFloat get amount;
+
   @override
   GAccountFieldsData_transfersReceived_nodes_to? get to;
+
   @override
   GAccountFieldsData_transfersReceived_nodes_from? get from;
+
   @override
   GAccountFieldsData_transfersReceived_nodes_comment? get comment;
+
   static Serializer<GAccountFieldsData_transfersReceived_nodes>
       get serializer => _$gAccountFieldsDataTransfersReceivedNodesSerializer;
 
@@ -11208,8 +13202,10 @@ abstract class GAccountFieldsData_transfersReceived_nodes_to
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   static Serializer<GAccountFieldsData_transfersReceived_nodes_to>
       get serializer => _$gAccountFieldsDataTransfersReceivedNodesToSerializer;
 
@@ -11246,8 +13242,10 @@ abstract class GAccountFieldsData_transfersReceived_nodes_from
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   static Serializer<GAccountFieldsData_transfersReceived_nodes_from>
       get serializer =>
           _$gAccountFieldsDataTransfersReceivedNodesFromSerializer;
@@ -11286,10 +13284,13 @@ abstract class GAccountFieldsData_transfersReceived_nodes_comment
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get remark;
+
   @override
   String get remarkBytes;
+
   static Serializer<GAccountFieldsData_transfersReceived_nodes_comment>
       get serializer =>
           _$gAccountFieldsDataTransfersReceivedNodesCommentSerializer;
@@ -11325,10 +13326,13 @@ abstract class GAccountFieldsData_wasIdentityPrev
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GAccountFieldsData_wasIdentityPrev_nodes> get nodes;
+
   static Serializer<GAccountFieldsData_wasIdentityPrev> get serializer =>
       _$gAccountFieldsDataWasIdentityPrevSerializer;
 
@@ -11365,16 +13369,22 @@ abstract class GAccountFieldsData_wasIdentityPrev_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   int get blockNumber;
+
   @override
   String? get identityId;
+
   @override
   String? get nextId;
+
   @override
   String? get previousId;
+
   static Serializer<GAccountFieldsData_wasIdentityPrev_nodes> get serializer =>
       _$gAccountFieldsDataWasIdentityPrevNodesSerializer;
 
@@ -11409,10 +13419,13 @@ abstract class GAccountFieldsData_wasIdentityNext
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GAccountFieldsData_wasIdentityNext_nodes> get nodes;
+
   static Serializer<GAccountFieldsData_wasIdentityNext> get serializer =>
       _$gAccountFieldsDataWasIdentityNextSerializer;
 
@@ -11449,16 +13462,22 @@ abstract class GAccountFieldsData_wasIdentityNext_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   int get blockNumber;
+
   @override
   String? get identityId;
+
   @override
   String? get nextId;
+
   @override
   String? get previousId;
+
   static Serializer<GAccountFieldsData_wasIdentityNext_nodes> get serializer =>
       _$gAccountFieldsDataWasIdentityNextNodesSerializer;
 
@@ -11494,40 +13513,58 @@ abstract class GAccountFieldsData_linkedIdentity
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   GAccountFieldsData_linkedIdentity_account? get account;
+
   @override
   String? get accountId;
+
   @override
   String? get accountRemovedId;
+
   @override
   GAccountFieldsData_linkedIdentity_certsByIssuerId get certsByIssuerId;
+
   @override
   GAccountFieldsData_linkedIdentity_certsByReceiverId get certsByReceiverId;
+
   @override
   String? get createdInId;
+
   @override
   int get createdOn;
+
   @override
   int get expireOn;
+
   @override
   String get id;
+
   @override
   int get index;
+
   @override
   bool get isMember;
+
   @override
   int get lastChangeOn;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   GAccountFieldsData_linkedIdentity_membershipEvents get membershipEvents;
+
   @override
   GAccountFieldsData_linkedIdentity_changeOwnerKeys get changeOwnerKeys;
+
   @override
   GAccountFieldsData_linkedIdentity_smith? get smith;
+
   static Serializer<GAccountFieldsData_linkedIdentity> get serializer =>
       _$gAccountFieldsDataLinkedIdentitySerializer;
 
@@ -11564,8 +13601,10 @@ abstract class GAccountFieldsData_linkedIdentity_account
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<GAccountFieldsData_linkedIdentity_account> get serializer =>
       _$gAccountFieldsDataLinkedIdentityAccountSerializer;
 
@@ -11602,10 +13641,13 @@ abstract class GAccountFieldsData_linkedIdentity_certsByIssuerId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes> get nodes;
+
   static Serializer<GAccountFieldsData_linkedIdentity_certsByIssuerId>
       get serializer =>
           _$gAccountFieldsDataLinkedIdentityCertsByIssuerIdSerializer;
@@ -11645,25 +13687,35 @@ abstract class GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer? get issuer;
+
   @override
   String? get receiverId;
+
   @override
   GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver?
       get receiver;
+
   @override
   int get createdOn;
+
   @override
   int get expireOn;
+
   @override
   bool get isActive;
+
   @override
   int get updatedOn;
+
   static Serializer<GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes>
       get serializer =>
           _$gAccountFieldsDataLinkedIdentityCertsByIssuerIdNodesSerializer;
@@ -11707,23 +13759,32 @@ abstract class GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer_account?
       get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<
           GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer>
       get serializer =>
@@ -11770,8 +13831,10 @@ abstract class GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer_ac
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<
           GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_issuer_account>
       get serializer =>
@@ -11817,23 +13880,32 @@ abstract class GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver_account?
       get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<
           GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver>
       get serializer =>
@@ -11880,8 +13952,10 @@ abstract class GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver_
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<
           GAccountFieldsData_linkedIdentity_certsByIssuerId_nodes_receiver_account>
       get serializer =>
@@ -11922,11 +13996,14 @@ abstract class GAccountFieldsData_linkedIdentity_certsByReceiverId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes>
       get nodes;
+
   static Serializer<GAccountFieldsData_linkedIdentity_certsByReceiverId>
       get serializer =>
           _$gAccountFieldsDataLinkedIdentityCertsByReceiverIdSerializer;
@@ -11967,25 +14044,35 @@ abstract class GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer? get issuer;
+
   @override
   String? get receiverId;
+
   @override
   GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver?
       get receiver;
+
   @override
   int get createdOn;
+
   @override
   int get expireOn;
+
   @override
   bool get isActive;
+
   @override
   int get updatedOn;
+
   static Serializer<GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes>
       get serializer =>
           _$gAccountFieldsDataLinkedIdentityCertsByReceiverIdNodesSerializer;
@@ -12029,23 +14116,32 @@ abstract class GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer_account?
       get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<
           GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer>
       get serializer =>
@@ -12092,8 +14188,10 @@ abstract class GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer_
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<
           GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_issuer_account>
       get serializer =>
@@ -12140,23 +14238,32 @@ abstract class GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receive
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get accountId;
+
   @override
   GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver_account?
       get account;
+
   @override
   String get id;
+
   @override
   bool get isMember;
+
   @override
   String get status;
+
   @override
   String get name;
+
   @override
   int get expireOn;
+
   @override
   int get index;
+
   static Serializer<
           GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver>
       get serializer =>
@@ -12203,8 +14310,10 @@ abstract class GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receive
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   static Serializer<
           GAccountFieldsData_linkedIdentity_certsByReceiverId_nodes_receiver_account>
       get serializer =>
@@ -12245,10 +14354,13 @@ abstract class GAccountFieldsData_linkedIdentity_membershipEvents
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GAccountFieldsData_linkedIdentity_membershipEvents_nodes> get nodes;
+
   static Serializer<GAccountFieldsData_linkedIdentity_membershipEvents>
       get serializer =>
           _$gAccountFieldsDataLinkedIdentityMembershipEventsSerializer;
@@ -12287,16 +14399,22 @@ abstract class GAccountFieldsData_linkedIdentity_membershipEvents_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get blockNumber;
+
   @override
   String? get eventId;
+
   @override
   String get eventType;
+
   @override
   String get id;
+
   @override
   String? get identityId;
+
   static Serializer<GAccountFieldsData_linkedIdentity_membershipEvents_nodes>
       get serializer =>
           _$gAccountFieldsDataLinkedIdentityMembershipEventsNodesSerializer;
@@ -12334,10 +14452,13 @@ abstract class GAccountFieldsData_linkedIdentity_changeOwnerKeys
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GAccountFieldsData_linkedIdentity_changeOwnerKeys_nodes> get nodes;
+
   static Serializer<GAccountFieldsData_linkedIdentity_changeOwnerKeys>
       get serializer =>
           _$gAccountFieldsDataLinkedIdentityChangeOwnerKeysSerializer;
@@ -12377,16 +14498,22 @@ abstract class GAccountFieldsData_linkedIdentity_changeOwnerKeys_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   int get blockNumber;
+
   @override
   String? get identityId;
+
   @override
   String? get nextId;
+
   @override
   String? get previousId;
+
   static Serializer<GAccountFieldsData_linkedIdentity_changeOwnerKeys_nodes>
       get serializer =>
           _$gAccountFieldsDataLinkedIdentityChangeOwnerKeysNodesSerializer;
@@ -12425,22 +14552,30 @@ abstract class GAccountFieldsData_linkedIdentity_smith
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   int get forged;
+
   @override
   int get index;
+
   @override
   int? get lastChanged;
+
   @override
   int? get lastForged;
+
   @override
   GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId
       get smithCertsByIssuerId;
+
   @override
   GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId
       get smithCertsByReceiverId;
+
   static Serializer<GAccountFieldsData_linkedIdentity_smith> get serializer =>
       _$gAccountFieldsDataLinkedIdentitySmithSerializer;
 
@@ -12482,11 +14617,14 @@ abstract class GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId_nodes>
       get nodes;
+
   static Serializer<
           GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId>
       get serializer =>
@@ -12532,14 +14670,19 @@ abstract class GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId_node
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   String? get receiverId;
+
   @override
   int get createdOn;
+
   static Serializer<
           GAccountFieldsData_linkedIdentity_smith_smithCertsByIssuerId_nodes>
       get serializer =>
@@ -12584,12 +14727,15 @@ abstract class GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
   @override
   BuiltList<
           GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId_nodes>
       get nodes;
+
   static Serializer<
           GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId>
       get serializer =>
@@ -12636,14 +14782,19 @@ abstract class GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId_no
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   @override
   String? get issuerId;
+
   @override
   String? get receiverId;
+
   @override
   int get createdOn;
+
   static Serializer<
           GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId_nodes>
       get serializer =>
@@ -12666,49 +14817,99 @@ abstract class GAccountFieldsData_linkedIdentity_smith_smithCertsByReceiverId_no
 
 abstract class GAccountTxsFields {
   String get G__typename;
+
   int get createdOn;
+
   String get id;
+
+  _i2.GBigFloat get balance;
+
+  _i2.GBigFloat? get totalBalance;
+
   bool get isActive;
+
   GAccountTxsFields_comments get comments;
+
   GAccountTxsFields_transfersIssued get transfersIssued;
+
   GAccountTxsFields_transfersReceived get transfersReceived;
+
   Map<String, dynamic> toJson();
 }
 
 abstract class GAccountTxsFields_comments {
   String get G__typename;
+
   int get totalCount;
+
+  GAccountTxsFields_comments_pageInfo get pageInfo;
+
   BuiltList<GAccountTxsFields_comments_nodes> get nodes;
+
+  Map<String, dynamic> toJson();
+}
+
+abstract class GAccountTxsFields_comments_pageInfo {
+  String get G__typename;
+
+  bool get hasNextPage;
+
+  _i2.GCursor? get endCursor;
+
   Map<String, dynamic> toJson();
 }
 
 abstract class GAccountTxsFields_comments_nodes implements GCommentsIssued {
   @override
   String get G__typename;
+
   @override
   String? get authorId;
+
   @override
   int get blockNumber;
+
   @override
   String? get eventId;
+
   @override
   String get hash;
+
   @override
   String get id;
+
   @override
   String get remark;
+
   @override
   String get remarkBytes;
+
   @override
   String get type;
+
   @override
   Map<String, dynamic> toJson();
 }
 
 abstract class GAccountTxsFields_transfersIssued {
   String get G__typename;
+
   int get totalCount;
+
+  GAccountTxsFields_transfersIssued_pageInfo get pageInfo;
+
   BuiltList<GAccountTxsFields_transfersIssued_nodes> get nodes;
+
+  Map<String, dynamic> toJson();
+}
+
+abstract class GAccountTxsFields_transfersIssued_pageInfo {
+  String get G__typename;
+
+  bool get hasNextPage;
+
+  _i2.GCursor? get endCursor;
+
   Map<String, dynamic> toJson();
 }
 
@@ -12716,18 +14917,25 @@ abstract class GAccountTxsFields_transfersIssued_nodes
     implements GTransferFields {
   @override
   String get G__typename;
+
   @override
   int get blockNumber;
+
   @override
   _i2.GDatetime get timestamp;
+
   @override
   _i2.GBigFloat get amount;
+
   @override
   GAccountTxsFields_transfersIssued_nodes_to? get to;
+
   @override
   GAccountTxsFields_transfersIssued_nodes_from? get from;
+
   @override
   GAccountTxsFields_transfersIssued_nodes_comment? get comment;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -12736,8 +14944,10 @@ abstract class GAccountTxsFields_transfersIssued_nodes_to
     implements GTransferFields_to {
   @override
   String get G__typename;
+
   @override
   String get id;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -12746,8 +14956,10 @@ abstract class GAccountTxsFields_transfersIssued_nodes_from
     implements GTransferFields_from {
   @override
   String get G__typename;
+
   @override
   String get id;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -12756,18 +14968,36 @@ abstract class GAccountTxsFields_transfersIssued_nodes_comment
     implements GTransferFields_comment {
   @override
   String get G__typename;
+
   @override
   String get remark;
+
   @override
   String get remarkBytes;
+
   @override
   Map<String, dynamic> toJson();
 }
 
 abstract class GAccountTxsFields_transfersReceived {
   String get G__typename;
+
   int get totalCount;
+
+  GAccountTxsFields_transfersReceived_pageInfo get pageInfo;
+
   BuiltList<GAccountTxsFields_transfersReceived_nodes> get nodes;
+
+  Map<String, dynamic> toJson();
+}
+
+abstract class GAccountTxsFields_transfersReceived_pageInfo {
+  String get G__typename;
+
+  bool get hasNextPage;
+
+  _i2.GCursor? get endCursor;
+
   Map<String, dynamic> toJson();
 }
 
@@ -12775,18 +15005,25 @@ abstract class GAccountTxsFields_transfersReceived_nodes
     implements GTransferFields {
   @override
   String get G__typename;
+
   @override
   int get blockNumber;
+
   @override
   _i2.GDatetime get timestamp;
+
   @override
   _i2.GBigFloat get amount;
+
   @override
   GAccountTxsFields_transfersReceived_nodes_to? get to;
+
   @override
   GAccountTxsFields_transfersReceived_nodes_from? get from;
+
   @override
   GAccountTxsFields_transfersReceived_nodes_comment? get comment;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -12795,8 +15032,10 @@ abstract class GAccountTxsFields_transfersReceived_nodes_to
     implements GTransferFields_to {
   @override
   String get G__typename;
+
   @override
   String get id;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -12805,8 +15044,10 @@ abstract class GAccountTxsFields_transfersReceived_nodes_from
     implements GTransferFields_from {
   @override
   String get G__typename;
+
   @override
   String get id;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -12815,10 +15056,13 @@ abstract class GAccountTxsFields_transfersReceived_nodes_comment
     implements GTransferFields_comment {
   @override
   String get G__typename;
+
   @override
   String get remark;
+
   @override
   String get remarkBytes;
+
   @override
   Map<String, dynamic> toJson();
 }
@@ -12839,18 +15083,31 @@ abstract class GAccountTxsFieldsData
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get createdOn;
+
   @override
   String get id;
+
+  @override
+  _i2.GBigFloat get balance;
+
+  @override
+  _i2.GBigFloat? get totalBalance;
+
   @override
   bool get isActive;
+
   @override
   GAccountTxsFieldsData_comments get comments;
+
   @override
   GAccountTxsFieldsData_transfersIssued get transfersIssued;
+
   @override
   GAccountTxsFieldsData_transfersReceived get transfersReceived;
+
   static Serializer<GAccountTxsFieldsData> get serializer =>
       _$gAccountTxsFieldsDataSerializer;
 
@@ -12884,10 +15141,16 @@ abstract class GAccountTxsFieldsData_comments
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
+  @override
+  GAccountTxsFieldsData_comments_pageInfo get pageInfo;
+
   @override
   BuiltList<GAccountTxsFieldsData_comments_nodes> get nodes;
+
   static Serializer<GAccountTxsFieldsData_comments> get serializer =>
       _$gAccountTxsFieldsDataCommentsSerializer;
 
@@ -12900,6 +15163,48 @@ abstract class GAccountTxsFieldsData_comments
   static GAccountTxsFieldsData_comments? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
         GAccountTxsFieldsData_comments.serializer,
+        json,
+      );
+}
+
+abstract class GAccountTxsFieldsData_comments_pageInfo
+    implements
+        Built<GAccountTxsFieldsData_comments_pageInfo,
+            GAccountTxsFieldsData_comments_pageInfoBuilder>,
+        GAccountTxsFields_comments_pageInfo {
+  GAccountTxsFieldsData_comments_pageInfo._();
+
+  factory GAccountTxsFieldsData_comments_pageInfo(
+      [void Function(GAccountTxsFieldsData_comments_pageInfoBuilder b)
+          updates]) = _$GAccountTxsFieldsData_comments_pageInfo;
+
+  static void _initializeBuilder(
+          GAccountTxsFieldsData_comments_pageInfoBuilder b) =>
+      b..G__typename = 'PageInfo';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+
+  @override
+  bool get hasNextPage;
+
+  @override
+  _i2.GCursor? get endCursor;
+
+  static Serializer<GAccountTxsFieldsData_comments_pageInfo> get serializer =>
+      _$gAccountTxsFieldsDataCommentsPageInfoSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountTxsFieldsData_comments_pageInfo.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTxsFieldsData_comments_pageInfo? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountTxsFieldsData_comments_pageInfo.serializer,
         json,
       );
 }
@@ -12923,22 +15228,31 @@ abstract class GAccountTxsFieldsData_comments_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String? get authorId;
+
   @override
   int get blockNumber;
+
   @override
   String? get eventId;
+
   @override
   String get hash;
+
   @override
   String get id;
+
   @override
   String get remark;
+
   @override
   String get remarkBytes;
+
   @override
   String get type;
+
   static Serializer<GAccountTxsFieldsData_comments_nodes> get serializer =>
       _$gAccountTxsFieldsDataCommentsNodesSerializer;
 
@@ -12974,10 +15288,16 @@ abstract class GAccountTxsFieldsData_transfersIssued
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
+  @override
+  GAccountTxsFieldsData_transfersIssued_pageInfo get pageInfo;
+
   @override
   BuiltList<GAccountTxsFieldsData_transfersIssued_nodes> get nodes;
+
   static Serializer<GAccountTxsFieldsData_transfersIssued> get serializer =>
       _$gAccountTxsFieldsDataTransfersIssuedSerializer;
 
@@ -12991,6 +15311,49 @@ abstract class GAccountTxsFieldsData_transfersIssued
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
         GAccountTxsFieldsData_transfersIssued.serializer,
+        json,
+      );
+}
+
+abstract class GAccountTxsFieldsData_transfersIssued_pageInfo
+    implements
+        Built<GAccountTxsFieldsData_transfersIssued_pageInfo,
+            GAccountTxsFieldsData_transfersIssued_pageInfoBuilder>,
+        GAccountTxsFields_transfersIssued_pageInfo {
+  GAccountTxsFieldsData_transfersIssued_pageInfo._();
+
+  factory GAccountTxsFieldsData_transfersIssued_pageInfo(
+      [void Function(GAccountTxsFieldsData_transfersIssued_pageInfoBuilder b)
+          updates]) = _$GAccountTxsFieldsData_transfersIssued_pageInfo;
+
+  static void _initializeBuilder(
+          GAccountTxsFieldsData_transfersIssued_pageInfoBuilder b) =>
+      b..G__typename = 'PageInfo';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+
+  @override
+  bool get hasNextPage;
+
+  @override
+  _i2.GCursor? get endCursor;
+
+  static Serializer<GAccountTxsFieldsData_transfersIssued_pageInfo>
+      get serializer =>
+          _$gAccountTxsFieldsDataTransfersIssuedPageInfoSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountTxsFieldsData_transfersIssued_pageInfo.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTxsFieldsData_transfersIssued_pageInfo? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountTxsFieldsData_transfersIssued_pageInfo.serializer,
         json,
       );
 }
@@ -13014,18 +15377,25 @@ abstract class GAccountTxsFieldsData_transfersIssued_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get blockNumber;
+
   @override
   _i2.GDatetime get timestamp;
+
   @override
   _i2.GBigFloat get amount;
+
   @override
   GAccountTxsFieldsData_transfersIssued_nodes_to? get to;
+
   @override
   GAccountTxsFieldsData_transfersIssued_nodes_from? get from;
+
   @override
   GAccountTxsFieldsData_transfersIssued_nodes_comment? get comment;
+
   static Serializer<GAccountTxsFieldsData_transfersIssued_nodes>
       get serializer => _$gAccountTxsFieldsDataTransfersIssuedNodesSerializer;
 
@@ -13062,8 +15432,10 @@ abstract class GAccountTxsFieldsData_transfersIssued_nodes_to
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   static Serializer<GAccountTxsFieldsData_transfersIssued_nodes_to>
       get serializer => _$gAccountTxsFieldsDataTransfersIssuedNodesToSerializer;
 
@@ -13100,8 +15472,10 @@ abstract class GAccountTxsFieldsData_transfersIssued_nodes_from
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   static Serializer<GAccountTxsFieldsData_transfersIssued_nodes_from>
       get serializer =>
           _$gAccountTxsFieldsDataTransfersIssuedNodesFromSerializer;
@@ -13140,10 +15514,13 @@ abstract class GAccountTxsFieldsData_transfersIssued_nodes_comment
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get remark;
+
   @override
   String get remarkBytes;
+
   static Serializer<GAccountTxsFieldsData_transfersIssued_nodes_comment>
       get serializer =>
           _$gAccountTxsFieldsDataTransfersIssuedNodesCommentSerializer;
@@ -13180,10 +15557,16 @@ abstract class GAccountTxsFieldsData_transfersReceived
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get totalCount;
+
+  @override
+  GAccountTxsFieldsData_transfersReceived_pageInfo get pageInfo;
+
   @override
   BuiltList<GAccountTxsFieldsData_transfersReceived_nodes> get nodes;
+
   static Serializer<GAccountTxsFieldsData_transfersReceived> get serializer =>
       _$gAccountTxsFieldsDataTransfersReceivedSerializer;
 
@@ -13197,6 +15580,49 @@ abstract class GAccountTxsFieldsData_transfersReceived
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
         GAccountTxsFieldsData_transfersReceived.serializer,
+        json,
+      );
+}
+
+abstract class GAccountTxsFieldsData_transfersReceived_pageInfo
+    implements
+        Built<GAccountTxsFieldsData_transfersReceived_pageInfo,
+            GAccountTxsFieldsData_transfersReceived_pageInfoBuilder>,
+        GAccountTxsFields_transfersReceived_pageInfo {
+  GAccountTxsFieldsData_transfersReceived_pageInfo._();
+
+  factory GAccountTxsFieldsData_transfersReceived_pageInfo(
+      [void Function(GAccountTxsFieldsData_transfersReceived_pageInfoBuilder b)
+          updates]) = _$GAccountTxsFieldsData_transfersReceived_pageInfo;
+
+  static void _initializeBuilder(
+          GAccountTxsFieldsData_transfersReceived_pageInfoBuilder b) =>
+      b..G__typename = 'PageInfo';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+
+  @override
+  bool get hasNextPage;
+
+  @override
+  _i2.GCursor? get endCursor;
+
+  static Serializer<GAccountTxsFieldsData_transfersReceived_pageInfo>
+      get serializer =>
+          _$gAccountTxsFieldsDataTransfersReceivedPageInfoSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountTxsFieldsData_transfersReceived_pageInfo.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTxsFieldsData_transfersReceived_pageInfo? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountTxsFieldsData_transfersReceived_pageInfo.serializer,
         json,
       );
 }
@@ -13220,18 +15646,25 @@ abstract class GAccountTxsFieldsData_transfersReceived_nodes
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get blockNumber;
+
   @override
   _i2.GDatetime get timestamp;
+
   @override
   _i2.GBigFloat get amount;
+
   @override
   GAccountTxsFieldsData_transfersReceived_nodes_to? get to;
+
   @override
   GAccountTxsFieldsData_transfersReceived_nodes_from? get from;
+
   @override
   GAccountTxsFieldsData_transfersReceived_nodes_comment? get comment;
+
   static Serializer<GAccountTxsFieldsData_transfersReceived_nodes>
       get serializer => _$gAccountTxsFieldsDataTransfersReceivedNodesSerializer;
 
@@ -13268,8 +15701,10 @@ abstract class GAccountTxsFieldsData_transfersReceived_nodes_to
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   static Serializer<GAccountTxsFieldsData_transfersReceived_nodes_to>
       get serializer =>
           _$gAccountTxsFieldsDataTransfersReceivedNodesToSerializer;
@@ -13308,8 +15743,10 @@ abstract class GAccountTxsFieldsData_transfersReceived_nodes_from
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   static Serializer<GAccountTxsFieldsData_transfersReceived_nodes_from>
       get serializer =>
           _$gAccountTxsFieldsDataTransfersReceivedNodesFromSerializer;
@@ -13348,10 +15785,13 @@ abstract class GAccountTxsFieldsData_transfersReceived_nodes_comment
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get remark;
+
   @override
   String get remarkBytes;
+
   static Serializer<GAccountTxsFieldsData_transfersReceived_nodes_comment>
       get serializer =>
           _$gAccountTxsFieldsDataTransfersReceivedNodesCommentSerializer;
@@ -13372,31 +15812,45 @@ abstract class GAccountTxsFieldsData_transfersReceived_nodes_comment
 
 abstract class GTransferFields {
   String get G__typename;
+
   int get blockNumber;
+
   _i2.GDatetime get timestamp;
+
   _i2.GBigFloat get amount;
+
   GTransferFields_to? get to;
+
   GTransferFields_from? get from;
+
   GTransferFields_comment? get comment;
+
   Map<String, dynamic> toJson();
 }
 
 abstract class GTransferFields_to {
   String get G__typename;
+
   String get id;
+
   Map<String, dynamic> toJson();
 }
 
 abstract class GTransferFields_from {
   String get G__typename;
+
   String get id;
+
   Map<String, dynamic> toJson();
 }
 
 abstract class GTransferFields_comment {
   String get G__typename;
+
   String get remark;
+
   String get remarkBytes;
+
   Map<String, dynamic> toJson();
 }
 
@@ -13416,18 +15870,25 @@ abstract class GTransferFieldsData
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   int get blockNumber;
+
   @override
   _i2.GDatetime get timestamp;
+
   @override
   _i2.GBigFloat get amount;
+
   @override
   GTransferFieldsData_to? get to;
+
   @override
   GTransferFieldsData_from? get from;
+
   @override
   GTransferFieldsData_comment? get comment;
+
   static Serializer<GTransferFieldsData> get serializer =>
       _$gTransferFieldsDataSerializer;
 
@@ -13460,8 +15921,10 @@ abstract class GTransferFieldsData_to
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   static Serializer<GTransferFieldsData_to> get serializer =>
       _$gTransferFieldsDataToSerializer;
 
@@ -13494,8 +15957,10 @@ abstract class GTransferFieldsData_from
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get id;
+
   static Serializer<GTransferFieldsData_from> get serializer =>
       _$gTransferFieldsDataFromSerializer;
 
@@ -13528,10 +15993,13 @@ abstract class GTransferFieldsData_comment
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
+
   @override
   String get remark;
+
   @override
   String get remarkBytes;
+
   static Serializer<GTransferFieldsData_comment> get serializer =>
       _$gTransferFieldsDataCommentSerializer;
 

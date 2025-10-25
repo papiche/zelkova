@@ -3,15 +3,12 @@ import 'package:gql_http_link/gql_http_link.dart';
 
 import 'graphql/schema/__generated__/duniter-indexer.schema.schema.gql.dart';
 
-Future<Client> initDuniterIndexerClient(String endpoint, [Store? store]) async {
-  final Cache cache = Cache(store: store, possibleTypes: possibleTypesMap);
+Future<Client> initDuniterIndexerClient(String endpoint) async {
+  final cache = Cache(possibleTypes: possibleTypesMap);
+  final link = HttpLink(endpoint);
 
-  final HttpLink link = HttpLink(endpoint);
-
-  final Client client = Client(
+  return Client(
     link: link,
     cache: cache,
   );
-
-  return client;
 }

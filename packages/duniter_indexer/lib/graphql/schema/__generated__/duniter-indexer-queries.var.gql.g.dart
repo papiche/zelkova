@@ -236,11 +236,12 @@ class _$GAccountByPkVarsSerializer
         ..add('limit')
         ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    value = object.offset;
+    value = object.cursor;
     if (value != null) {
       result
-        ..add('offset')
-        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+        ..add('cursor')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(_i2.GCursor)));
     }
     return result;
   }
@@ -265,9 +266,9 @@ class _$GAccountByPkVarsSerializer
           result.limit = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int?;
           break;
-        case 'offset':
-          result.offset = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
+        case 'cursor':
+          result.cursor.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.GCursor))! as _i2.GCursor);
           break;
       }
     }
@@ -299,11 +300,12 @@ class _$GAccountsByPkVarsSerializer
         ..add('limit')
         ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    value = object.offset;
+    value = object.cursor;
     if (value != null) {
       result
-        ..add('offset')
-        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+        ..add('cursor')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(_i2.GCursor)));
     }
     return result;
   }
@@ -330,9 +332,9 @@ class _$GAccountsByPkVarsSerializer
           result.limit = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int?;
           break;
-        case 'offset':
-          result.offset = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
+        case 'cursor':
+          result.cursor.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.GCursor))! as _i2.GCursor);
           break;
       }
     }
@@ -461,11 +463,12 @@ class _$GAccountTransactionsVarsSerializer
         ..add('limit')
         ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    value = object.offset;
+    value = object.cursor;
     if (value != null) {
       result
-        ..add('offset')
-        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+        ..add('cursor')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(_i2.GCursor)));
     }
     return result;
   }
@@ -490,9 +493,9 @@ class _$GAccountTransactionsVarsSerializer
           result.limit = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int?;
           break;
-        case 'offset':
-          result.offset = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
+        case 'cursor':
+          result.cursor.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.GCursor))! as _i2.GCursor);
           break;
       }
     }
@@ -712,11 +715,12 @@ class _$GAccountFieldsVarsSerializer
         ..add('first')
         ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    value = object.offset;
+    value = object.after;
     if (value != null) {
       result
-        ..add('offset')
-        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+        ..add('after')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(_i2.GCursor)));
     }
     return result;
   }
@@ -737,9 +741,9 @@ class _$GAccountFieldsVarsSerializer
           result.first = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int?;
           break;
-        case 'offset':
-          result.offset = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
+        case 'after':
+          result.after.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.GCursor))! as _i2.GCursor);
           break;
       }
     }
@@ -770,11 +774,12 @@ class _$GAccountTxsFieldsVarsSerializer
         ..add('first')
         ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    value = object.offset;
+    value = object.after;
     if (value != null) {
       result
-        ..add('offset')
-        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+        ..add('after')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(_i2.GCursor)));
     }
     return result;
   }
@@ -795,9 +800,9 @@ class _$GAccountTxsFieldsVarsSerializer
           result.first = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int?;
           break;
-        case 'offset':
-          result.offset = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
+        case 'after':
+          result.after.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.GCursor))! as _i2.GCursor);
           break;
       }
     }
@@ -1156,13 +1161,13 @@ class _$GAccountByPkVars extends GAccountByPkVars {
   @override
   final int? limit;
   @override
-  final int? offset;
+  final _i2.GCursor? cursor;
 
   factory _$GAccountByPkVars(
           [void Function(GAccountByPkVarsBuilder)? updates]) =>
       (new GAccountByPkVarsBuilder()..update(updates))._build();
 
-  _$GAccountByPkVars._({required this.id, this.limit, this.offset})
+  _$GAccountByPkVars._({required this.id, this.limit, this.cursor})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(id, r'GAccountByPkVars', 'id');
   }
@@ -1181,7 +1186,7 @@ class _$GAccountByPkVars extends GAccountByPkVars {
     return other is GAccountByPkVars &&
         id == other.id &&
         limit == other.limit &&
-        offset == other.offset;
+        cursor == other.cursor;
   }
 
   @override
@@ -1189,7 +1194,7 @@ class _$GAccountByPkVars extends GAccountByPkVars {
     var _$hash = 0;
     _$hash = $jc(_$hash, id.hashCode);
     _$hash = $jc(_$hash, limit.hashCode);
-    _$hash = $jc(_$hash, offset.hashCode);
+    _$hash = $jc(_$hash, cursor.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -1199,7 +1204,7 @@ class _$GAccountByPkVars extends GAccountByPkVars {
     return (newBuiltValueToStringHelper(r'GAccountByPkVars')
           ..add('id', id)
           ..add('limit', limit)
-          ..add('offset', offset))
+          ..add('cursor', cursor))
         .toString();
   }
 }
@@ -1216,9 +1221,9 @@ class GAccountByPkVarsBuilder
   int? get limit => _$this._limit;
   set limit(int? limit) => _$this._limit = limit;
 
-  int? _offset;
-  int? get offset => _$this._offset;
-  set offset(int? offset) => _$this._offset = offset;
+  _i2.GCursorBuilder? _cursor;
+  _i2.GCursorBuilder get cursor => _$this._cursor ??= new _i2.GCursorBuilder();
+  set cursor(_i2.GCursorBuilder? cursor) => _$this._cursor = cursor;
 
   GAccountByPkVarsBuilder();
 
@@ -1227,7 +1232,7 @@ class GAccountByPkVarsBuilder
     if ($v != null) {
       _id = $v.id;
       _limit = $v.limit;
-      _offset = $v.offset;
+      _cursor = $v.cursor?.toBuilder();
       _$v = null;
     }
     return this;
@@ -1248,12 +1253,25 @@ class GAccountByPkVarsBuilder
   GAccountByPkVars build() => _build();
 
   _$GAccountByPkVars _build() {
-    final _$result = _$v ??
-        new _$GAccountByPkVars._(
-            id: BuiltValueNullFieldError.checkNotNull(
-                id, r'GAccountByPkVars', 'id'),
-            limit: limit,
-            offset: offset);
+    _$GAccountByPkVars _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountByPkVars._(
+              id: BuiltValueNullFieldError.checkNotNull(
+                  id, r'GAccountByPkVars', 'id'),
+              limit: limit,
+              cursor: _cursor?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'cursor';
+        _cursor?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountByPkVars', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
@@ -1265,13 +1283,13 @@ class _$GAccountsByPkVars extends GAccountsByPkVars {
   @override
   final int? limit;
   @override
-  final int? offset;
+  final _i2.GCursor? cursor;
 
   factory _$GAccountsByPkVars(
           [void Function(GAccountsByPkVarsBuilder)? updates]) =>
       (new GAccountsByPkVarsBuilder()..update(updates))._build();
 
-  _$GAccountsByPkVars._({required this.accountIds, this.limit, this.offset})
+  _$GAccountsByPkVars._({required this.accountIds, this.limit, this.cursor})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         accountIds, r'GAccountsByPkVars', 'accountIds');
@@ -1291,7 +1309,7 @@ class _$GAccountsByPkVars extends GAccountsByPkVars {
     return other is GAccountsByPkVars &&
         accountIds == other.accountIds &&
         limit == other.limit &&
-        offset == other.offset;
+        cursor == other.cursor;
   }
 
   @override
@@ -1299,7 +1317,7 @@ class _$GAccountsByPkVars extends GAccountsByPkVars {
     var _$hash = 0;
     _$hash = $jc(_$hash, accountIds.hashCode);
     _$hash = $jc(_$hash, limit.hashCode);
-    _$hash = $jc(_$hash, offset.hashCode);
+    _$hash = $jc(_$hash, cursor.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -1309,7 +1327,7 @@ class _$GAccountsByPkVars extends GAccountsByPkVars {
     return (newBuiltValueToStringHelper(r'GAccountsByPkVars')
           ..add('accountIds', accountIds)
           ..add('limit', limit)
-          ..add('offset', offset))
+          ..add('cursor', cursor))
         .toString();
   }
 }
@@ -1328,9 +1346,9 @@ class GAccountsByPkVarsBuilder
   int? get limit => _$this._limit;
   set limit(int? limit) => _$this._limit = limit;
 
-  int? _offset;
-  int? get offset => _$this._offset;
-  set offset(int? offset) => _$this._offset = offset;
+  _i2.GCursorBuilder? _cursor;
+  _i2.GCursorBuilder get cursor => _$this._cursor ??= new _i2.GCursorBuilder();
+  set cursor(_i2.GCursorBuilder? cursor) => _$this._cursor = cursor;
 
   GAccountsByPkVarsBuilder();
 
@@ -1339,7 +1357,7 @@ class GAccountsByPkVarsBuilder
     if ($v != null) {
       _accountIds = $v.accountIds.toBuilder();
       _limit = $v.limit;
-      _offset = $v.offset;
+      _cursor = $v.cursor?.toBuilder();
       _$v = null;
     }
     return this;
@@ -1364,12 +1382,17 @@ class GAccountsByPkVarsBuilder
     try {
       _$result = _$v ??
           new _$GAccountsByPkVars._(
-              accountIds: accountIds.build(), limit: limit, offset: offset);
+              accountIds: accountIds.build(),
+              limit: limit,
+              cursor: _cursor?.build());
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'accountIds';
         accountIds.build();
+
+        _$failedField = 'cursor';
+        _cursor?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'GAccountsByPkVars', _$failedField, e.toString());
@@ -1573,14 +1596,14 @@ class _$GAccountTransactionsVars extends GAccountTransactionsVars {
   @override
   final int? limit;
   @override
-  final int? offset;
+  final _i2.GCursor? cursor;
 
   factory _$GAccountTransactionsVars(
           [void Function(GAccountTransactionsVarsBuilder)? updates]) =>
       (new GAccountTransactionsVarsBuilder()..update(updates))._build();
 
   _$GAccountTransactionsVars._(
-      {required this.accountId, this.limit, this.offset})
+      {required this.accountId, this.limit, this.cursor})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         accountId, r'GAccountTransactionsVars', 'accountId');
@@ -1601,7 +1624,7 @@ class _$GAccountTransactionsVars extends GAccountTransactionsVars {
     return other is GAccountTransactionsVars &&
         accountId == other.accountId &&
         limit == other.limit &&
-        offset == other.offset;
+        cursor == other.cursor;
   }
 
   @override
@@ -1609,7 +1632,7 @@ class _$GAccountTransactionsVars extends GAccountTransactionsVars {
     var _$hash = 0;
     _$hash = $jc(_$hash, accountId.hashCode);
     _$hash = $jc(_$hash, limit.hashCode);
-    _$hash = $jc(_$hash, offset.hashCode);
+    _$hash = $jc(_$hash, cursor.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -1619,7 +1642,7 @@ class _$GAccountTransactionsVars extends GAccountTransactionsVars {
     return (newBuiltValueToStringHelper(r'GAccountTransactionsVars')
           ..add('accountId', accountId)
           ..add('limit', limit)
-          ..add('offset', offset))
+          ..add('cursor', cursor))
         .toString();
   }
 }
@@ -1637,9 +1660,9 @@ class GAccountTransactionsVarsBuilder
   int? get limit => _$this._limit;
   set limit(int? limit) => _$this._limit = limit;
 
-  int? _offset;
-  int? get offset => _$this._offset;
-  set offset(int? offset) => _$this._offset = offset;
+  _i2.GCursorBuilder? _cursor;
+  _i2.GCursorBuilder get cursor => _$this._cursor ??= new _i2.GCursorBuilder();
+  set cursor(_i2.GCursorBuilder? cursor) => _$this._cursor = cursor;
 
   GAccountTransactionsVarsBuilder();
 
@@ -1648,7 +1671,7 @@ class GAccountTransactionsVarsBuilder
     if ($v != null) {
       _accountId = $v.accountId;
       _limit = $v.limit;
-      _offset = $v.offset;
+      _cursor = $v.cursor?.toBuilder();
       _$v = null;
     }
     return this;
@@ -1669,12 +1692,25 @@ class GAccountTransactionsVarsBuilder
   GAccountTransactionsVars build() => _build();
 
   _$GAccountTransactionsVars _build() {
-    final _$result = _$v ??
-        new _$GAccountTransactionsVars._(
-            accountId: BuiltValueNullFieldError.checkNotNull(
-                accountId, r'GAccountTransactionsVars', 'accountId'),
-            limit: limit,
-            offset: offset);
+    _$GAccountTransactionsVars _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountTransactionsVars._(
+              accountId: BuiltValueNullFieldError.checkNotNull(
+                  accountId, r'GAccountTransactionsVars', 'accountId'),
+              limit: limit,
+              cursor: _cursor?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'cursor';
+        _cursor?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountTransactionsVars', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
@@ -2164,13 +2200,13 @@ class _$GAccountFieldsVars extends GAccountFieldsVars {
   @override
   final int? first;
   @override
-  final int? offset;
+  final _i2.GCursor? after;
 
   factory _$GAccountFieldsVars(
           [void Function(GAccountFieldsVarsBuilder)? updates]) =>
       (new GAccountFieldsVarsBuilder()..update(updates))._build();
 
-  _$GAccountFieldsVars._({this.first, this.offset}) : super._();
+  _$GAccountFieldsVars._({this.first, this.after}) : super._();
 
   @override
   GAccountFieldsVars rebuild(
@@ -2186,14 +2222,14 @@ class _$GAccountFieldsVars extends GAccountFieldsVars {
     if (identical(other, this)) return true;
     return other is GAccountFieldsVars &&
         first == other.first &&
-        offset == other.offset;
+        after == other.after;
   }
 
   @override
   int get hashCode {
     var _$hash = 0;
     _$hash = $jc(_$hash, first.hashCode);
-    _$hash = $jc(_$hash, offset.hashCode);
+    _$hash = $jc(_$hash, after.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -2202,7 +2238,7 @@ class _$GAccountFieldsVars extends GAccountFieldsVars {
   String toString() {
     return (newBuiltValueToStringHelper(r'GAccountFieldsVars')
           ..add('first', first)
-          ..add('offset', offset))
+          ..add('after', after))
         .toString();
   }
 }
@@ -2215,9 +2251,9 @@ class GAccountFieldsVarsBuilder
   int? get first => _$this._first;
   set first(int? first) => _$this._first = first;
 
-  int? _offset;
-  int? get offset => _$this._offset;
-  set offset(int? offset) => _$this._offset = offset;
+  _i2.GCursorBuilder? _after;
+  _i2.GCursorBuilder get after => _$this._after ??= new _i2.GCursorBuilder();
+  set after(_i2.GCursorBuilder? after) => _$this._after = after;
 
   GAccountFieldsVarsBuilder();
 
@@ -2225,7 +2261,7 @@ class GAccountFieldsVarsBuilder
     final $v = _$v;
     if ($v != null) {
       _first = $v.first;
-      _offset = $v.offset;
+      _after = $v.after?.toBuilder();
       _$v = null;
     }
     return this;
@@ -2246,8 +2282,21 @@ class GAccountFieldsVarsBuilder
   GAccountFieldsVars build() => _build();
 
   _$GAccountFieldsVars _build() {
-    final _$result =
-        _$v ?? new _$GAccountFieldsVars._(first: first, offset: offset);
+    _$GAccountFieldsVars _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountFieldsVars._(first: first, after: _after?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'after';
+        _after?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountFieldsVars', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
@@ -2257,13 +2306,13 @@ class _$GAccountTxsFieldsVars extends GAccountTxsFieldsVars {
   @override
   final int? first;
   @override
-  final int? offset;
+  final _i2.GCursor? after;
 
   factory _$GAccountTxsFieldsVars(
           [void Function(GAccountTxsFieldsVarsBuilder)? updates]) =>
       (new GAccountTxsFieldsVarsBuilder()..update(updates))._build();
 
-  _$GAccountTxsFieldsVars._({this.first, this.offset}) : super._();
+  _$GAccountTxsFieldsVars._({this.first, this.after}) : super._();
 
   @override
   GAccountTxsFieldsVars rebuild(
@@ -2279,14 +2328,14 @@ class _$GAccountTxsFieldsVars extends GAccountTxsFieldsVars {
     if (identical(other, this)) return true;
     return other is GAccountTxsFieldsVars &&
         first == other.first &&
-        offset == other.offset;
+        after == other.after;
   }
 
   @override
   int get hashCode {
     var _$hash = 0;
     _$hash = $jc(_$hash, first.hashCode);
-    _$hash = $jc(_$hash, offset.hashCode);
+    _$hash = $jc(_$hash, after.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -2295,7 +2344,7 @@ class _$GAccountTxsFieldsVars extends GAccountTxsFieldsVars {
   String toString() {
     return (newBuiltValueToStringHelper(r'GAccountTxsFieldsVars')
           ..add('first', first)
-          ..add('offset', offset))
+          ..add('after', after))
         .toString();
   }
 }
@@ -2308,9 +2357,9 @@ class GAccountTxsFieldsVarsBuilder
   int? get first => _$this._first;
   set first(int? first) => _$this._first = first;
 
-  int? _offset;
-  int? get offset => _$this._offset;
-  set offset(int? offset) => _$this._offset = offset;
+  _i2.GCursorBuilder? _after;
+  _i2.GCursorBuilder get after => _$this._after ??= new _i2.GCursorBuilder();
+  set after(_i2.GCursorBuilder? after) => _$this._after = after;
 
   GAccountTxsFieldsVarsBuilder();
 
@@ -2318,7 +2367,7 @@ class GAccountTxsFieldsVarsBuilder
     final $v = _$v;
     if ($v != null) {
       _first = $v.first;
-      _offset = $v.offset;
+      _after = $v.after?.toBuilder();
       _$v = null;
     }
     return this;
@@ -2339,8 +2388,21 @@ class GAccountTxsFieldsVarsBuilder
   GAccountTxsFieldsVars build() => _build();
 
   _$GAccountTxsFieldsVars _build() {
-    final _$result =
-        _$v ?? new _$GAccountTxsFieldsVars._(first: first, offset: offset);
+    _$GAccountTxsFieldsVars _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountTxsFieldsVars._(first: first, after: _after?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'after';
+        _after?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountTxsFieldsVars', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

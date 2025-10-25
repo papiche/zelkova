@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
+import '../../g1/currency.dart';
 import '../../ui/in_dev_helper.dart';
 import 'contact.dart';
 import 'payment_state.dart';
@@ -84,14 +85,30 @@ class PaymentCubit extends HydratedCubit<PaymentState> {
   void selectAmount(double? amount) {
     // As copyWith ignores null amounts
     final PaymentState newState = PaymentState(
-        contacts: state.contacts, comment: state.comment, amount: amount);
+        contacts: state.contacts,
+        comment: state.comment,
+        amount: amount,
+        currency: state.currency);
+    emit(newState);
+  }
+
+  void selectAmountWithCurrency(double? amount, Currency currency) {
+    // As copyWith ignores null amounts
+    final PaymentState newState = PaymentState(
+        contacts: state.contacts,
+        comment: state.comment,
+        amount: amount,
+        currency: currency);
     emit(newState);
   }
 
   void setComment(String comment) {
     // As copyWith ignores null amounts
     final PaymentState newState = PaymentState(
-        contacts: state.contacts, amount: state.amount, comment: comment);
+        contacts: state.contacts,
+        amount: state.amount,
+        comment: comment,
+        currency: state.currency);
     emit(newState);
   }
 

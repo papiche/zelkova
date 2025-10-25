@@ -2,6 +2,7 @@ import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../g1/currency.dart';
 import '../../g1/g1_helper.dart';
 import '../../ui/logger.dart';
 import 'contact.dart';
@@ -17,6 +18,7 @@ class PaymentState extends Equatable {
     List<Contact>? contacts,
     this.comment = '',
     this.amount,
+    this.currency = Currency.G1,
     this.status = PaymentStatus.notSent,
   }) : contacts = contacts ?? const <Contact>[];
 
@@ -42,6 +44,7 @@ class PaymentState extends Equatable {
   final List<Contact> contacts;
   final String comment;
   final double? amount;
+  final Currency currency;
   final PaymentStatus status;
 
   Map<String, dynamic> toJson() => _$PaymentStateToJson(this);
@@ -54,7 +57,8 @@ class PaymentState extends Equatable {
   }
 
   @override
-  List<Object?> get props => <dynamic>[contacts, comment, amount, status];
+  List<Object?> get props =>
+      <dynamic>[contacts, comment, amount, currency, status];
 
   bool isMultiple() => contacts.length > 1;
 }

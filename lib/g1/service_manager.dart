@@ -34,7 +34,8 @@ abstract class DuniterService {
       required bool isConnected});
 
   Future<TransactionState> transactionsParser(
-      Map<String, dynamic> txData, TransactionState state, String myPubKeyRaw);
+      Map<String, dynamic> txData, TransactionState state, String myPubKeyRaw,
+      {String? cursor, double? cachedUd});
 
   Future<PayResult> pay(
       {required List<String> to, required double amount, String? comment});
@@ -92,7 +93,8 @@ class DuniterServiceV1 implements DuniterService {
 
   @override
   Future<TransactionState> transactionsParser(
-      Map<String, dynamic> txData, TransactionState state, String myPubKeyRaw) {
+      Map<String, dynamic> txData, TransactionState state, String myPubKeyRaw,
+      {String? cursor, double? cachedUd}) {
     return transactionsV1Parser(txData, state, myPubKeyRaw);
   }
 
@@ -164,8 +166,10 @@ class DuniterServiceV2 implements DuniterService {
 
   @override
   Future<TransactionState> transactionsParser(
-      Map<String, dynamic> txData, TransactionState state, String myPubKeyRaw) {
-    return transactionsV2Parser(txData, state, myPubKeyRaw);
+      Map<String, dynamic> txData, TransactionState state, String myPubKeyRaw,
+      {String? cursor, double? cachedUd}) {
+    return transactionsV2Parser(txData, state, myPubKeyRaw,
+        cursor: cursor, cachedUd: cachedUd);
   }
 
   @override

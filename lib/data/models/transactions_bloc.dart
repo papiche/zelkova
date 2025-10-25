@@ -7,6 +7,7 @@ import '../../ui/logger.dart';
 import '../../ui/widgets/connectivity_widget_wrapper_wrapper.dart';
 import 'multi_wallet_transaction_cubit.dart';
 import 'transaction.dart';
+import 'transaction_state.dart';
 
 part 'transactions_state.dart';
 
@@ -51,7 +52,7 @@ class TransactionsBloc {
 
   Stream<TransactionsState> _resetSearch() async* {
     yield TransactionsState();
-    yield* _fetchTransactionsList(isV2 ? '0' : null);
+    yield* _fetchTransactionsList(null); // Always start with null cursor
   }
 
   Stream<TransactionsState> _fetchTransactionsList(String? pageKey) async* {
@@ -60,15 +61,6 @@ class TransactionsBloc {
     try {
       final MultiWalletTransactionCubit transCubit =
           GetIt.instance<MultiWalletTransactionCubit>();
-
-      /* if (pageKey == null) {
-        final List<Transaction> cached = transCubit.transactions(pubKey);
-        if (cached.isNotEmpty) {
-          yield TransactionsState(
-            itemList: cached,
-          );
-        }
-      } */
 
       final bool isConnected =
           await ConnectivityWidgetWrapperWrapper.isConnected;
@@ -81,17 +73,19 @@ class TransactionsBloc {
       } else {
         final List<Transaction> fetchedItems =
             await transCubit.fetchTransactions(
-          cursor: isV2 ? _normalizePageKey(pageKey) : pageKey,
+          cursor: pageKey,
           pageSize: pageSize,
           pubKey: pubKey,
         );
 
-        final bool isLastPage = fetchedItems.length < pageSize;
-        final String? nextPageKey = isLastPage
-            ? null
-            : (isV2
-                ? ((int.tryParse(pageKey ?? '0') ?? 0) + pageSize).toString()
-                : transCubit.currentWalletState(pubKey).endCursor);
+        // For V2 with cursor-based pagination, use hasNextPage flag from API
+        // For V1, use the old logic based on item count
+        final TransactionState currentState =
+            transCubit.currentWalletState(pubKey);
+        final bool isLastPage =
+            isV2 ? !currentState.hasNextPage : fetchedItems.length < pageSize;
+
+        final String? nextPageKey = isLastPage ? null : currentState.endCursor;
 
         yield TransactionsState(
           nextPageKey: nextPageKey,
@@ -110,13 +104,6 @@ class TransactionsBloc {
         itemList: lastListingState.itemList,
       );
     }
-  }
-
-  String? _normalizePageKey(String? pageKey) {
-    if (pageKey == null || int.tryParse(pageKey) == 0) {
-      return null;
-    }
-    return int.tryParse(pageKey)?.toString();
   }
 
   void dispose() {

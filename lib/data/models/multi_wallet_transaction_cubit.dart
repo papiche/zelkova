@@ -199,19 +199,25 @@ class MultiWalletTransactionCubit
         logger(
             'Failed to get transactions, attempt ${attempt + 1} of $retries');
         await Future<void>.delayed(const Duration(seconds: 1));
-        NodeManager().increaseNodeErrors(NodeType.gva, node);
+        NodeManager().increaseNodeErrors(NodeType.gva, node,
+            cause: 'Failed to get transactions');
         continue;
       }
 
       final Map<String, dynamic> txData = txDataResult.item1!;
 
-      final TransactionState newParsedState =
-          await transactionsParser(txData, currentState, pubKey);
+      // Only use cached UD if it doesn't need updating (not older than 24h)
+      final double? cachedUd =
+          appCubit.shouldUpdateUd() ? null : appCubit.currentUd;
+
+      final TransactionState newParsedState = await transactionsParser(
+          txData, currentState, pubKey,
+          cursor: cursor, cachedUd: cachedUd);
 
       if (newParsedState.balance < 0) {
         logger('Warning: Negative balance in node ${txDataResult.item2}');
-        NodeManager().increaseNodeErrors(NodeType.gva, node);
-        continue;
+        // Let's try to continue as it, because currently in v2 I see negative balances after accounts migrations
+        //  continue;
       }
       success = true;
 
@@ -234,8 +240,12 @@ class MultiWalletTransactionCubit
         resetCurrentGvaNode(newState, nodeListCubit);
       }
 
-      // Is external, forget notifications
-      if (isExternal || (!kIsWeb && Platform.isLinux)) {
+      // Skip notifications for external accounts and Linux desktop
+      if (isExternal) {
+        return currentModifiedState.transactions;
+      }
+
+      if (!kIsWeb && Platform.isLinux) {
         return currentModifiedState.transactions;
       }
 
@@ -248,12 +258,19 @@ class MultiWalletTransactionCubit
         logger(
             '>>>>>>>>>>>>>>>>>>> Transactions: ${currentModifiedState.transactions.length}, balance: ${currentModifiedState.balance} cursor: $cursor page size: $pageSize');
       }
+
+      // Limit notifications per fetch to avoid spam
+      int notificationsSent = 0;
+      const int maxNotificationsPerFetch = 7;
+
       for (final Transaction tx in currentModifiedState.transactions.reversed) {
-        bool stateModified = false;
+        // Stop if we've sent too many notifications in this fetch
+        if (notificationsSent >= maxNotificationsPerFetch) {
+          break;
+        }
 
         if (tx.type == TransactionType.received &&
             currentModifiedState.latestReceivedNotification.isBefore(tx.time)) {
-          // Future
           final Contact from = tx.from;
           NotificationController.notifyTransaction(
               tx.time.millisecondsSinceEpoch.toString(),
@@ -264,12 +281,13 @@ class MultiWalletTransactionCubit
               isG1: isG1);
           currentModifiedState = currentModifiedState.copyWith(
               latestReceivedNotification: tx.time);
-          stateModified = true;
+          // Emit state immediately after notification to prevent duplicates
+          _emitState(pubKey, currentModifiedState);
+          notificationsSent++;
         }
 
         if (tx.type == TransactionType.sent &&
             currentModifiedState.latestSentNotification.isBefore(tx.time)) {
-          // Future
           NotificationController.notifyTransaction(
               tx.time.millisecondsSinceEpoch.toString(),
               amount: -tx.amount,
@@ -281,11 +299,9 @@ class MultiWalletTransactionCubit
               isG1: isG1);
           currentModifiedState =
               currentModifiedState.copyWith(latestSentNotification: tx.time);
-          stateModified = true;
-        }
-
-        if (stateModified) {
+          // Emit state immediately after notification to prevent duplicates
           _emitState(pubKey, currentModifiedState);
+          notificationsSent++;
         }
       }
 
@@ -412,7 +428,8 @@ class MultiWalletTransactionCubit
             // Add it but with missing type
             newPendingTxs.add(pend.copyWith(type: TransactionType.failed));
             // Mark the node with one more error via increaseNodeErrors
-            NodeManager().increaseNodeErrors(NodeType.gva, node);
+            NodeManager().increaseNodeErrors(NodeType.gva, node,
+                cause: 'Pending transaction not found');
           }
         }
       }

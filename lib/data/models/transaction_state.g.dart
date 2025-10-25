@@ -24,6 +24,8 @@ abstract class _$TransactionStateCWProxy {
 
   TransactionState endCursor(String? endCursor);
 
+  TransactionState hasNextPage(bool hasNextPage);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `TransactionState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -39,6 +41,7 @@ abstract class _$TransactionStateCWProxy {
     DateTime? latestSentNotification,
     DateTime? latestReceivedNotification,
     String? endCursor,
+    bool hasNextPage,
   });
 }
 
@@ -79,6 +82,10 @@ class _$TransactionStateCWProxyImpl implements _$TransactionStateCWProxy {
   TransactionState endCursor(String? endCursor) => this(endCursor: endCursor);
 
   @override
+  TransactionState hasNextPage(bool hasNextPage) =>
+      this(hasNextPage: hasNextPage);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `TransactionState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -95,6 +102,7 @@ class _$TransactionStateCWProxyImpl implements _$TransactionStateCWProxy {
     Object? latestSentNotification = const $CopyWithPlaceholder(),
     Object? latestReceivedNotification = const $CopyWithPlaceholder(),
     Object? endCursor = const $CopyWithPlaceholder(),
+    Object? hasNextPage = const $CopyWithPlaceholder(),
   }) {
     return TransactionState(
       transactions: transactions == const $CopyWithPlaceholder()
@@ -131,6 +139,10 @@ class _$TransactionStateCWProxyImpl implements _$TransactionStateCWProxy {
           ? _value.endCursor
           // ignore: cast_nullable_to_non_nullable
           : endCursor as String?,
+      hasNextPage: hasNextPage == const $CopyWithPlaceholder()
+          ? _value.hasNextPage
+          // ignore: cast_nullable_to_non_nullable
+          : hasNextPage as bool,
     );
   }
 }
@@ -163,6 +175,7 @@ TransactionState _$TransactionStateFromJson(Map<String, dynamic> json) =>
           ? null
           : DateTime.parse(json['latestReceivedNotification'] as String),
       endCursor: json['endCursor'] as String?,
+      hasNextPage: json['hasNextPage'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$TransactionStateToJson(TransactionState instance) =>
@@ -177,4 +190,5 @@ Map<String, dynamic> _$TransactionStateToJson(TransactionState instance) =>
       'latestReceivedNotification':
           instance.latestReceivedNotification.toIso8601String(),
       'endCursor': instance.endCursor,
+      'hasNextPage': instance.hasNextPage,
     };

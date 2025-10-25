@@ -17,7 +17,8 @@ class TransactionState extends Equatable {
       required this.lastChecked,
       DateTime? latestSentNotification,
       DateTime? latestReceivedNotification,
-      this.endCursor})
+      this.endCursor,
+      this.hasNextPage = false})
       : latestSentNotification = latestSentNotification ?? DateTime.now(),
         latestReceivedNotification =
             latestReceivedNotification ?? DateTime.now();
@@ -39,6 +40,7 @@ class TransactionState extends Equatable {
   final DateTime latestSentNotification;
   final DateTime latestReceivedNotification;
   final String? endCursor;
+  final bool hasNextPage;
 
   Map<String, dynamic> toJson() => _$TransactionStateToJson(this);
 
@@ -51,6 +53,7 @@ class TransactionState extends Equatable {
         lastChecked,
         latestSentNotification,
         latestReceivedNotification,
-        endCursor
+        endCursor,
+        hasNextPage
       ];
 }

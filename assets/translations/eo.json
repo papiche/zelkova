@@ -228,6 +228,7 @@
   "display_amounts_du": "Montri sumojn en DU",
   "wallet_already_imported": "Monujo jam importita",
   "card_theme_select": "Elektu temon por via karto",
+  "cesium_auth_title": "Aŭtentikigo",
   "cesium_auth_dialog_title": "Entajpu vian rajtigojn por {key}",
   "cesium_secret_phrase": "Sekreta frazo",
   "cesium_password": "Pasvorto",

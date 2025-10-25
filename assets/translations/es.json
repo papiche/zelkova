@@ -311,7 +311,8 @@
   "ewif_parse_error": "Error al desencriptar el archivo EWIF.",
   "qr_scan_error_empty": "No se encontraron datos válidos en el QR.",
   "auth_file_error": "Error al procesar el archivo de autenticación.",
-  "auth_file_pubkey_mismatch": "La clave pública del archivo no coincide.",
+  "auth_file_format_error": "El formato del archivo de autenticación no es válido.",
+  "auth_file_pubkey_mismatch": "La clave pública del archivo no coincide o contraseña incorrecta.",
   "scan_qr_auth": "Escanear QR",
   "qr_scanner_no_qr_detected": "No se detectó ningún código QR. Inténtalo de nuevo.",
   "qr_scanner_error": "Ocurrió un error al escanear el código QR.",
@@ -449,5 +450,8 @@
   "tooltip_wallet_password_less": "Este monedero no tiene contraseña",
   "error": "Error",
   "invalid_import_json": "Export de g1nkgo invalido",
-  "error_decoding_json": "Error decodificando el export de g1nkgo"
+  "error_decoding_json": "Error decodificando el export de g1nkgo",
+  "cesium_auth_title": "Autenticación",
+  "add_emoji": "Add Emoji",
+  "hide_emoji_keyboard": "Hide Emoji Keyboard"
 }

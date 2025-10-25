@@ -212,6 +212,7 @@
   "share_export": "Exporta via email/xat/etc.",
   "link_export": "Exporta via enllaç",
   "qr_scanner_flash_on": "FLASH ACTIVAT",
+  "cesium_auth_title": "Autenticació",
   "cesium_auth_dialog_title": "Poseu les vostres credencials per {key}",
   "cesium_secret_phrase": "Frase secreta",
   "please_confirm_delete": "Esteu segur?",

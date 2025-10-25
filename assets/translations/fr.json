@@ -228,6 +228,7 @@
   "display_amounts_du": "Afficher le montant en DU",
   "wallet_already_imported": "Portefeuille(s) déjà importé(s)",
   "card_theme_select": "Selectionner un thème pour votre carte",
+  "cesium_auth_title": "Authentification",
   "cesium_auth_dialog_title": "Entrez vos identifiants pour {key}",
   "cesium_secret_phrase": "identifiant Secret",
   "cesium_password": "Mot de passe",

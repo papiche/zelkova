@@ -215,6 +215,7 @@
   "select_import_method": "Selezionare il metodo di importazione",
   "clipboard_export": "Esportazione negli Appunti",
   "qr_scanner_title": "Scansione del codice QR",
+  "cesium_auth_title": "Autenticazione",
   "cesium_auth_dialog_title": "Inserire le credenziali per {key}",
   "issueCreationErrorTitle": "Errore nella creazione del problema",
   "issueCreationErrorMessage": "Un errore si è verificato nel tentativo di creare un problema con il tuo feedback.",

@@ -221,6 +221,7 @@
   "qr_scanner_title": "Escanear código QR",
   "wallet_already_imported": "Billeteira xa importada",
   "card_theme_select": "Elixe un tema para a túa tarxeta",
+  "cesium_auth_title": "Autenticación",
   "cesium_auth_dialog_title": "Introduza as súas credenciais para {key}",
   "cesium_secret_phrase": "Frase secreta",
   "cesium_password": "Contrasinal",

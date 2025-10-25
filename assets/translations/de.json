@@ -169,6 +169,7 @@
   "qr_scanner_cancel": "ANNULLIEREN",
   "qr_invalid_payment": "Ungültiger QR-Code: Falsche Zahlungsinformationen",
   "card_theme_select": "Wählen Sie ein Motiv für Ihre Karte",
+  "cesium_auth_title": "Authentifizierung",
   "cesium_auth_dialog_title": "Geben Sie Ihre Anmeldedaten für {key} ein",
   "cesium_secret_phrase": "Geheime Phrase",
   "wallet_already_imported": "Brieftasche/n bereits importiert",

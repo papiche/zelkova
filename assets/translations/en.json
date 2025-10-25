@@ -22,6 +22,7 @@
   "search_user_btn": "Search user",
   "g1_form_pay_desc": "Comment",
   "g1_form_pay_hint": "Enter a comment (optional)",
+  "emoji_search": "Search",
   "code_card_title": "Code repository",
   "intro_1_title": "Welcome to our Ğ1 wallet!",
   "intro_1_description": "With this wallet, you can easily and securely store, send, and receive Ğ1 currency (also known as 'June').",
@@ -232,6 +233,7 @@
   "display_amounts_du": "Display amounts in DU",
   "wallet_already_imported": "Wallet/s already imported",
   "card_theme_select": "Select a theme for your card",
+  "cesium_auth_title": "Authentication",
   "cesium_auth_dialog_title": "Enter your credentials for {key}",
   "cesium_secret_phrase": "Secret phrase",
   "cesium_password": "Password",
@@ -305,8 +307,9 @@
   "password_empty_error": "Password cannot be empty",
   "ewif_parse_error": "Failed to parse EWIF file.",
   "qr_scan_error_empty": "No valid QR data found.",
-  "auth_file_error": "Failed to parse the authentication file.",
-  "auth_file_pubkey_mismatch": "The public key from the file does not match.",
+  "auth_file_error": "Error processing authentication file.",
+  "auth_file_format_error": "The authentication file format is invalid.",
+  "auth_file_pubkey_mismatch": "The public key in the file does not match or wrong password.",
   "scan_qr_auth": "Scan a QR code",
   "qr_scanner_no_qr_detected": "No QR code detected. Please try again.",
   "qr_scanner_error": "An error occurred while scanning the QR code.",
@@ -444,5 +447,7 @@
   "tooltip_wallet_password_less": "This wallet does not have a password",
   "error": "Error",
   "invalid_import_json": "Invalid g1nkgo export file",
-  "error_decoding_json": "Error decoding the g1nkgo export file"
+  "error_decoding_json": "Error decoding the g1nkgo export file",
+  "add_emoji": "Add Emoji",
+  "hide_emoji_keyboard": "Hide Emoji Keyboard"
 }

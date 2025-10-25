@@ -25,7 +25,15 @@ final EasyLogger logger = EasyLogger(
 void loggerDev(Object? message, {Object? error, StackTrace? stackTrace}) {
   if (inDevelopment && message != null) {
     if (error != null || stackTrace != null) {
-      log.e(message, error: error, stackTrace: stackTrace);
+      // Log in a more discrete way instead of using log.e()
+      final StringBuffer buffer = StringBuffer(message.toString());
+      if (error != null) {
+        buffer.write(' | Error: $error');
+      }
+      if (stackTrace != null) {
+        buffer.write(' | StackTrace: $stackTrace');
+      }
+      logger(buffer.toString());
     } else {
       logger(message);
     }

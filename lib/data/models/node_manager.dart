@@ -141,7 +141,8 @@ class NodeManager {
     }
   }
 
-  void increaseNodeErrors(NodeType type, Node node, {bool notify = true}) {
+  void increaseNodeErrors(NodeType type, Node node,
+      {required String cause, bool notify = true}) {
     final List<Node> nodes = _getList(type);
     final Node? currentNode = nodes.cast<Node?>().firstWhere(
           (Node? n) => n?.url == node.url,
@@ -149,25 +150,53 @@ class NodeManager {
         );
     if (currentNode != null) {
       final int newErrors = currentNode.errors + 1;
-      logger('Increasing node errors of ${node.url} to $newErrors');
+      logger(
+          'Increasing node errors of ${node.url} to $newErrors. Cause: $cause');
       updateNode(type, currentNode.copyWith(errors: newErrors), notify: notify);
     } else {
       // The node does not exist in the list, this should not happen normally
       logger(
-          'Warning: Trying to increase errors for non-existent node ${node.url}');
+          'Warning: Trying to increase errors for non-existent node ${node.url}. Cause: $cause');
     }
   }
 
   void addNodeSortedByLatency(NodeType type, Node node, {bool notify = true}) {
     final List<Node> nodes = _getList(type);
-    // Insert in correct position according to latency
-    if (nodes.isEmpty || node.latency < nodes.first.latency) {
+
+    if (nodes.isEmpty) {
       _insertNode(nodes, node);
       if (notify) {
         notifyObserver();
       }
+      return;
+    }
+
+    // Find the correct position based on errors first, then latency
+    int insertPosition = nodes.length;
+    for (int i = 0; i < nodes.length; i++) {
+      final Node existingNode = nodes[i];
+
+      // Compare errors first
+      if (node.errors < existingNode.errors) {
+        insertPosition = i;
+        break;
+      } else if (node.errors == existingNode.errors) {
+        // If errors are equal, compare latency
+        if (node.latency < existingNode.latency) {
+          insertPosition = i;
+          break;
+        }
+      }
+    }
+
+    // Check if node already exists
+    if (_find(nodes, node)) {
+      _updateList(nodes, node, notify: notify);
     } else {
-      _addNode(nodes, node, notify: notify);
+      nodes.insert(insertPosition, node);
+      if (notify) {
+        notifyObserver();
+      }
     }
   }
 
@@ -254,7 +283,20 @@ class NodeManager {
   }
 
   String ipfsUrl(String path) {
-    currentIfpsNode ??= nodesWorkingList(NodeType.ipfsGateway).first.url;
+    if (currentIfpsNode == null) {
+      final List<Node> workingNodes = nodesWorkingList(NodeType.ipfsGateway);
+      if (workingNodes.isNotEmpty) {
+        currentIfpsNode = workingNodes.first.url;
+      } else {
+        loggerDev('No working IPFS gateway nodes available, trying defaults');
+        final List<Node> defaultIpfsNodes = defaultNodes(NodeType.ipfsGateway);
+        if (defaultIpfsNodes.isNotEmpty) {
+          currentIfpsNode = defaultIpfsNodes.first.url;
+        } else {
+          throw Exception('No IPFS gateway nodes available');
+        }
+      }
+    }
     return '${currentIfpsNode!}/ipfs/$path';
   }
 }

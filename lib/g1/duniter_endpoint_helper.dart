@@ -9,8 +9,6 @@ import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-que
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ferry/ferry.dart' as ferry;
 import 'package:ferry/ferry.dart';
-import 'package:ferry_hive_ce_store/ferry_hive_ce_store.dart';
-import 'package:get_it/get_it.dart';
 import 'package:polkadart/polkadart.dart';
 import 'package:polkadart/provider.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
@@ -72,7 +70,8 @@ Future<T> executeOnPolkadotNodes<T>(
           await operation(node, provider, polkadot).timeout(timeout);
       return result; // If the operation is successful, return the result
     } catch (e, stacktrace) {
-      NodeManager().increaseNodeErrors(NodeType.endpoint, node);
+      NodeManager().increaseNodeErrors(NodeType.endpoint, node,
+          cause: 'Endpoint operation failed: $e');
       loggerDev('Error in node ${node.url}', error: e, stackTrace: stacktrace);
       if (!retry) {
         rethrow;
@@ -144,37 +143,56 @@ Future<tp.Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalanceV2(
     required bool isConnected}) async {
   final String address = addressFromV1PubkeyFaiSafe(pubKeyRaw);
 
-  final BigInt? balance = await getBalanceV2(address: address);
-
-  if (balance == null) {
-    throw Exception('Error fetching balance for $pubKeyRaw/$address');
-  }
-
   final List<Node> nodes = NodeManager().getBestNodes(NodeType.duniterIndexer);
+
+  // With cursor-based pagination, we use the full pageSize
+  final int limit = pageSize ?? 10;
+
+  // Split the combined cursor into issued and received cursors
+  // Format: "issuedCursor|receivedCursor"
+  String? issuedCursor;
+  String? receivedCursor;
+  if (cursor != null && cursor.contains('|')) {
+    final List<String> parts = cursor.split('|');
+    issuedCursor = parts[0].isEmpty ? null : parts[0];
+    receivedCursor = parts.length > 1 && parts[1].isNotEmpty ? parts[1] : null;
+  } else if (cursor != null && cursor.isNotEmpty) {
+    // Single cursor value - use for both
+    issuedCursor = cursor;
+    receivedCursor = cursor;
+  }
 
   for (final Node node in nodes) {
     try {
-      // Force for testing
-      // node = Node(url: 'https://squid.polkadot.coinduf.eu/v1/graphql');
-      final ferry.Client client =
-          await initDuniterIndexerClient(node.url, GetIt.instance<HiveStore>());
+      final ferry.Client client = await initDuniterIndexerClient(node.url);
 
-      loggerDev('Fetching history for $pubKeyRaw/$address in node ${node.url}');
+      loggerDev(
+          'Fetching history for $pubKeyRaw/$address in node ${node.url} with cursors: issued=$issuedCursor, received=$receivedCursor');
 
+      // We need to make two separate requests or use a more complex query
+      // For now, let's use the same cursor for both and let the API handle it
       final GAccountTransactionsReq request =
-          GAccountTransactionsReq((GAccountTransactionsReqBuilder b) => b
-            ..fetchPolicy =
-                isConnected ? FetchPolicy.NetworkOnly : FetchPolicy.CacheFirst
-            ..vars.accountId = address
-            ..vars.limit = pageSize
-            ..vars.offset = int.parse(cursor ?? '0'));
+          GAccountTransactionsReq((GAccountTransactionsReqBuilder b) {
+        b
+          ..fetchPolicy =
+              isConnected ? FetchPolicy.NetworkOnly : FetchPolicy.CacheFirst
+          ..vars.accountId = address
+          ..vars.limit = limit;
+
+        // Set cursor only if we have one
+        final String? cursorValue = issuedCursor ?? receivedCursor;
+        if (cursorValue != null) {
+          b.vars.cursor.value = cursorValue;
+        }
+      });
 
       final ferry
           .OperationResponse<GAccountTransactionsData, GAccountTransactionsVars>
           response = await client.request(request).first;
 
       if (response.hasErrors) {
-        NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
+        NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
+            cause: 'GraphQL errors in response');
         loggerDev('Node ${node.url} returned errors for $pubKeyRaw/$address');
         processFerryError(response);
         continue; // Try next node
@@ -182,18 +200,19 @@ Future<tp.Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalanceV2(
 
       final Map<String, dynamic>? data = response.data?.toJson();
       if (data != null) {
-        data['balance'] = balance;
         loggerDev(
             'Successfully fetched history for $pubKeyRaw/$address from node ${node.url}');
         return tp.Tuple2<Map<String, dynamic>?, Node>(data, node);
       } else {
-        NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
+        NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
+            cause: 'Null data in response');
         loggerDev(
             'Node ${node.url} returned null data for $pubKeyRaw/$address');
         continue; // Try next node
       }
     } catch (e, stackTrace) {
-      NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
+      NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
+          cause: 'Error fetching history: $e');
       loggerDev(
           'Error fetching history for $pubKeyRaw/$address in node ${node.url}',
           error: e,
@@ -216,8 +235,8 @@ void processFerryError(ferry.OperationResponse<dynamic, dynamic> response) {
   } else if (response.linkException != null) {
     error = response.linkException.toString();
     if (response.linkException!.originalException != null) {
-      log.e('Ferry error details',
-          error: response.linkException!.originalException);
+      loggerDev(
+          'Ferry error details: ${response.linkException!.originalException}');
       if (response.linkException!.originalException is FormatException) {
         error =
             'FormatException: The server response is not valid JSON. The server might be returning HTML or plain text instead of JSON.';

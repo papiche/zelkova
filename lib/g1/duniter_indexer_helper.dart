@@ -1,11 +1,11 @@
+import 'dart:async';
+
 import 'package:built_collection/built_collection.dart';
 import 'package:duniter_indexer/duniter_indexer_client.dart';
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.data.gql.dart';
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.req.gql.dart';
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.var.gql.dart';
 import 'package:ferry/ferry.dart' as ferry;
-import 'package:ferry_hive_ce_store/ferry_hive_ce_store.dart';
-import 'package:get_it/get_it.dart';
 
 import '../data/models/cert.dart';
 import '../data/models/contact.dart';
@@ -36,17 +36,32 @@ Future<List<Contact>> searchWotV2(String searchPatternRaw) async {
         loggerDev('Searching wot by name');
         final GIdentitiesByNameReq req = GIdentitiesByNameReq(
             (GIdentitiesByNameReqBuilder b) => b..vars.pattern = searchPattern);
-        // Warn: We are caching results in the hive store
-        final ferry.Client client = await initDuniterIndexerClient(
-            node.url, GetIt.instance<HiveStore>());
+        // Note: Using MemoryStore in isolate (Hive stores cannot be passed between isolates)
+        final ferry.Client client = await initDuniterIndexerClient(node.url);
 
         final ferry
             .OperationResponse<GIdentitiesByNameData, GIdentitiesByNameVars>
-            response = await client.request(req).first;
+            response = await client.request(req).timeout(
+          const Duration(seconds: 20),
+          onTimeout: (EventSink<
+                  ferry.OperationResponse<GIdentitiesByNameData,
+                      GIdentitiesByNameVars>>
+              sink) {
+            throw TimeoutException('Request timed out');
+          },
+        ).firstWhere(
+          (ferry.OperationResponse<GIdentitiesByNameData, GIdentitiesByNameVars>
+                  response) =>
+              true,
+          orElse: () =>
+              throw Exception('Stream completed without emitting a value'),
+        );
         if (response.hasErrors) {
-          NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
+          NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
+              cause: 'GraphQL errors searching by name');
           loggerDev('Node ${node.url} returned errors searching by name');
-          processFerryError(response);
+          processFerryError(
+              response as ferry.OperationResponse<dynamic, dynamic>);
           continue; // Try next node
         } else {
           final GIdentitiesByNameData? data = response.data;
@@ -75,17 +90,33 @@ Future<List<Contact>> searchWotV2(String searchPatternRaw) async {
               // Improve this
               ..fetchPolicy = ferry.FetchPolicy.NetworkOnly
               ..vars.pattern = searchPattern);
-        final ferry.Client client = await initDuniterIndexerClient(
-            node.url, GetIt.instance<HiveStore>());
+        final ferry.Client client = await initDuniterIndexerClient(node.url);
 
         final ferry.OperationResponse<GIdentitiesByNameOrPkData,
                 GIdentitiesByNameOrPkVars> response =
-            await client.request(req).first;
+            await client.request(req).timeout(
+          const Duration(seconds: 20),
+          onTimeout: (EventSink<
+                  ferry.OperationResponse<GIdentitiesByNameOrPkData,
+                      GIdentitiesByNameOrPkVars>>
+              sink) {
+            throw TimeoutException('Request timed out');
+          },
+        ).firstWhere(
+          (ferry.OperationResponse<GIdentitiesByNameOrPkData,
+                      GIdentitiesByNameOrPkVars>
+                  response) =>
+              true,
+          orElse: () =>
+              throw Exception('Stream completed without emitting a value'),
+        );
 
         if (response.hasErrors) {
-          NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
+          NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
+              cause: 'GraphQL errors searching by name or pk');
           loggerDev('Node ${node.url} returned errors searching by name or pk');
-          processFerryError(response);
+          processFerryError(
+              response as ferry.OperationResponse<dynamic, dynamic>);
           continue; // Try next node
         } else {
           final GIdentitiesByNameOrPkData? data = response.data;
@@ -104,7 +135,8 @@ Future<List<Contact>> searchWotV2(String searchPatternRaw) async {
         }
       }
     } catch (e, st) {
-      NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
+      NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
+          cause: 'Error searching wot: $e');
       log.e('Error searching wot in node ${node.url}',
           error: e, stackTrace: st);
       continue; // Try next node
@@ -128,14 +160,28 @@ Future<List<Contact>> getIdentities({required List<String> addresses}) async {
             // Improve this
             ..fetchPolicy = ferry.FetchPolicy.NetworkOnly
             ..vars.pubKeys.replace(addresses));
-      final ferry.Client client =
-          await initDuniterIndexerClient(node.url, GetIt.instance<HiveStore>());
+      final ferry.Client client = await initDuniterIndexerClient(node.url);
 
       final ferry.OperationResponse<GIdentitiesByPkData, GIdentitiesByPkVars>
-          response = await client.request(req).first;
+          response = await client.request(req).timeout(
+        const Duration(seconds: 20),
+        onTimeout: (EventSink<
+                ferry
+                .OperationResponse<GIdentitiesByPkData, GIdentitiesByPkVars>>
+            sink) {
+          throw TimeoutException('Request timed out');
+        },
+      ).firstWhere(
+        (ferry.OperationResponse<GIdentitiesByPkData, GIdentitiesByPkVars>
+                response) =>
+            true,
+        orElse: () =>
+            throw Exception('Stream completed without emitting a value'),
+      );
 
       if (response.hasErrors) {
-        NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
+        NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
+            cause: 'GraphQL errors getting identities');
         loggerDev('Node ${node.url} returned errors getting identities');
         processFerryError(response);
         continue; // Try next node
@@ -155,14 +201,16 @@ Future<List<Contact>> getIdentities({required List<String> addresses}) async {
           }
           break; // Success
         } else {
-          NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
+          NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
+              cause: 'Null data getting identities');
           loggerDev('Node ${node.url} returned null data');
           continue; // Try next node
         }
       }
     } catch (e, st) {
-      NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
-      log.e('Error getting identities from node ${node.url}',
+      NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
+          cause: 'Exception getting identities: $e');
+      loggerDev('Error getting identities from node ${node.url}',
           error: e, stackTrace: st);
       continue; // Try next node
     }
@@ -310,14 +358,27 @@ Future<List<Contact>> getAccounts({required List<String> accountIds}) async {
           ..vars.accountIds.replace(accountIds),
       );
 
-      final ferry.Client client =
-          await initDuniterIndexerClient(node.url, GetIt.instance<HiveStore>());
+      final ferry.Client client = await initDuniterIndexerClient(node.url);
 
       final ferry.OperationResponse<GAccountsByPkData, GAccountsByPkVars>
-          response = await client.request(req).first;
+          response = await client.request(req).timeout(
+        const Duration(seconds: 20),
+        onTimeout: (EventSink<
+                ferry.OperationResponse<GAccountsByPkData, GAccountsByPkVars>>
+            sink) {
+          throw TimeoutException('Request timed out');
+        },
+      ).firstWhere(
+        (ferry.OperationResponse<GAccountsByPkData, GAccountsByPkVars>
+                response) =>
+            true,
+        orElse: () =>
+            throw Exception('Stream completed without emitting a value'),
+      );
 
       if (response.hasErrors) {
-        NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
+        NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
+            cause: 'GraphQL errors in accounts response');
         loggerDev('Node ${node.url} returned GraphQL errors');
         processFerryError(response);
         continue; // Try next node
@@ -332,13 +393,15 @@ Future<List<Contact>> getAccounts({required List<String> accountIds}) async {
           }
           break; // Success, exit loop
         } else {
-          NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
+          NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
+              cause: 'Null accounts data in response');
           loggerDev('Node ${node.url} returned null data');
           continue; // Try next node
         }
       }
     } catch (e, st) {
-      NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
+      NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
+          cause: 'Error fetching accounts: $e');
       log.e('Error fetching accounts from node ${node.url}',
           error: e, stackTrace: st);
       // Continue with next node
@@ -358,8 +421,8 @@ void processFerryError(ferry.OperationResponse<dynamic, dynamic> response) {
   } else if (response.linkException != null) {
     error = response.linkException.toString();
     if (response.linkException!.originalException != null) {
-      log.e('Ferry error details',
-          error: response.linkException!.originalException);
+      loggerDev(
+          'Ferry error details: ${response.linkException!.originalException}');
       if (response.linkException!.originalException is FormatException) {
         error =
             'FormatException: The server response is not valid JSON. The server might be returning HTML or plain text instead of JSON.';
@@ -396,15 +459,29 @@ Future<List<Contact>> getAccountsBasic(
           ..vars.accountIds.replace(accountIds),
       );
 
-      final ferry.Client client =
-          await initDuniterIndexerClient(node.url, GetIt.instance<HiveStore>());
+      final ferry.Client client = await initDuniterIndexerClient(node.url);
 
       final ferry
           .OperationResponse<GAccountsBasicByPkData, GAccountsBasicByPkVars>
-          response = await client.request(req).first;
+          response = await client.request(req).timeout(
+        const Duration(seconds: 20),
+        onTimeout: (EventSink<
+                ferry.OperationResponse<GAccountsBasicByPkData,
+                    GAccountsBasicByPkVars>>
+            sink) {
+          throw TimeoutException('Request timed out');
+        },
+      ).firstWhere(
+        (ferry.OperationResponse<GAccountsBasicByPkData, GAccountsBasicByPkVars>
+                response) =>
+            true,
+        orElse: () =>
+            throw Exception('Stream completed without emitting a value'),
+      );
 
       if (response.hasErrors) {
-        NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
+        NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
+            cause: 'GraphQL errors getting basic accounts');
         loggerDev('Node ${node.url} returned errors getting basic accounts');
         processFerryError(response);
         continue; // Try next node
@@ -419,14 +496,16 @@ Future<List<Contact>> getAccountsBasic(
           }
           break; // Success
         } else {
-          NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
+          NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
+              cause: 'Null data getting basic accounts');
           loggerDev('Node ${node.url} returned null data');
           continue; // Try next node
         }
       }
     } catch (e, st) {
-      NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node);
-      log.e('Error fetching basic accounts from node ${node.url}',
+      NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
+          cause: 'Exception getting basic accounts: $e');
+      loggerDev('Error fetching basic accounts from node ${node.url}',
           error: e, stackTrace: st);
       continue; // Try next node
     }

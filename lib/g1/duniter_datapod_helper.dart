@@ -12,8 +12,6 @@ import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-que
 import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-queries.var.gql.dart';
 import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod.schema.schema.gql.dart';
 import 'package:ferry/ferry.dart' as ferry;
-import 'package:ferry_hive_ce_store/ferry_hive_ce_store.dart';
-import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:polkadart/scale_codec.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
@@ -42,13 +40,13 @@ Future<T> executeOnDatapodNodes<T>(
 
   for (final Node node in nodes) {
     try {
-      final ferry.Client client =
-          await initDuniterDatapodClient(node.url, GetIt.instance<HiveStore>());
+      final ferry.Client client = await initDuniterDatapodClient(node.url);
 
       final T result = await operation(node, client).timeout(timeout);
       return result; // If the operation is successful, return the result
     } catch (e, stacktrace) {
-      NodeManager().increaseNodeErrors(NodeType.datapodEndpoint, node);
+      NodeManager().increaseNodeErrors(NodeType.datapodEndpoint, node,
+          cause: 'Datapod operation failed: $e');
       loggerDev('Error in node ${node.url}', error: e, stackTrace: stacktrace);
       if (!retry) {
         rethrow;
@@ -205,8 +203,7 @@ Future<List<Contact>> getProfilesV2({required List<String> pubKeys}) async {
   for (final Node node
       in NodeManager().getBestNodes(NodeType.datapodEndpoint)) {
     try {
-      final ferry.Client client =
-          await initDuniterDatapodClient(node.url, GetIt.instance<HiveStore>());
+      final ferry.Client client = await initDuniterDatapodClient(node.url);
       final GGetProfilesByAddressReq request = GGetProfilesByAddressReq(
         (GGetProfilesByAddressReqBuilder b) => b..vars.pubkeys.addAll(pubKeys),
       );
@@ -269,8 +266,7 @@ Future<List<Contact>> searchProfilesV2({
       in NodeManager().getBestNodes(NodeType.datapodEndpoint)) {
     loggerDev("Searching profiles in node ${node.url} with term '$searchTerm'");
     try {
-      final ferry.Client client =
-          await initDuniterDatapodClient(node.url, GetIt.instance<HiveStore>());
+      final ferry.Client client = await initDuniterDatapodClient(node.url);
       final GSearchProfilesReq request =
           GSearchProfilesReq((GSearchProfilesReqBuilder b) => b
             ..vars.searchTermLower = searchTermLower
@@ -325,8 +321,7 @@ Future<bool> updateProfileV2(
       in NodeManager().getBestNodes(NodeType.datapodEndpoint)) {
     loggerDev('Updating profile in node ${node.url}');
     try {
-      final ferry.Client client =
-          await initDuniterDatapodClient(node.url, GetIt.instance<HiveStore>());
+      final ferry.Client client = await initDuniterDatapodClient(node.url);
       final GUpdateProfileReq request =
           GUpdateProfileReq((GUpdateProfileReqBuilder b) => b
             ..vars.address = address
@@ -376,8 +371,7 @@ Future<bool> deleteProfileV2() async {
             ..vars.address = kp.address
             ..vars.hash = hash
             ..vars.signature = signature);
-      final ferry.Client client =
-          await initDuniterDatapodClient(node.url, GetIt.instance<HiveStore>());
+      final ferry.Client client = await initDuniterDatapodClient(node.url);
       final ferry.OperationResponse<GDeleteProfileData, GDeleteProfileVars>
           response = await client.request(request).first;
 

@@ -13,6 +13,7 @@ import '../../../data/models/transaction.dart';
 import '../../../data/models/transaction_type.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
+import '../../contacts_cache.dart';
 import '../../contacts_helper.dart';
 import '../../currency_helper.dart';
 import '../../in_dev_helper.dart';
@@ -23,7 +24,7 @@ import '../contact_menu.dart';
 import '../contacts_actions.dart';
 import 'transaction_item_time.dart';
 
-class TransactionListItem extends StatelessWidget {
+class TransactionListItem extends StatefulWidget {
   TransactionListItem(
       {super.key,
       required this.pubKey,
@@ -54,33 +55,91 @@ class TransactionListItem extends StatelessWidget {
   static const Color grey = Colors.grey;
 
   @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<Transaction>(
-      future: _enrichTransaction(context, transaction),
-      builder: (BuildContext context, AsyncSnapshot<Transaction> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return _buildTransactionItem(
-              context: context,
-              origTransaction: transaction,
-              transaction: transaction);
-        } else if (snapshot.hasError) {
-          return _buildTransactionItem(
-              context: context,
-              origTransaction: transaction,
-              transaction: transaction);
-        } else {
-          final Transaction enrichedTx = snapshot.data!;
-          return BlocBuilder<MultiWalletTransactionCubit,
-                  MultiWalletTransactionState>(
-              builder: (BuildContext context,
-                      MultiWalletTransactionState transBalanceState) =>
-                  _buildTransactionItem(
-                      context: context,
-                      origTransaction: transaction,
-                      transaction: enrichedTx));
-        }
-      },
+  State<TransactionListItem> createState() => _TransactionListItemState();
+}
+
+class _TransactionListItemState extends State<TransactionListItem> {
+  late Transaction _displayTransaction;
+  bool _isEnriching = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Enrich immediately synchronously from cache
+    _displayTransaction = _enrichTransactionSync(widget.transaction);
+    // Enrich in background if necessary
+    _enrichTransactionAsync();
+  }
+
+  @override
+  void didUpdateWidget(TransactionListItem oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.transaction != widget.transaction) {
+      _displayTransaction = _enrichTransactionSync(widget.transaction);
+      _enrichTransactionAsync();
+    }
+  }
+
+  Transaction _enrichTransactionSync(Transaction tx) {
+    final ContactsCache cache = ContactsCache();
+    final String fromKey = tx.from.pubKey;
+    final Contact? fromContact = cache.getCachedContact(fromKey, false, true);
+
+    final List<Contact> recipients = <Contact>[];
+    for (final Contact recipient in tx.recipients) {
+      final Contact? recipientCached =
+          cache.getCachedContact(recipient.pubKey, false, true);
+      recipients.add(recipientCached ?? recipient);
+    }
+
+    return tx.copyWith(
+      from: fromContact ?? tx.from,
+      recipients: recipients.isNotEmpty ? recipients : tx.recipients,
     );
+  }
+
+  Future<void> _enrichTransactionAsync() async {
+    if (_isEnriching) {
+      return;
+    }
+    _isEnriching = true;
+
+    try {
+      final ContactsCubit contactsCubit = context.read<ContactsCubit>();
+      final String fromKey = widget.transaction.from.pubKey;
+      final Contact fromContact =
+          await retrieveContactFromCubitOrCache(contactsCubit, fromKey);
+
+      final List<Contact> recipients = <Contact>[];
+      for (final Contact recipient in widget.transaction.recipients) {
+        final Contact recipientNew = await retrieveContactFromCubitOrCache(
+            contactsCubit, recipient.pubKey);
+        recipients.add(recipientNew);
+      }
+
+      if (mounted) {
+        setState(() {
+          _displayTransaction = widget.transaction.copyWith(
+            from: fromContact,
+            recipients: recipients,
+          );
+        });
+      }
+    } finally {
+      _isEnriching = false;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<MultiWalletTransactionCubit,
+            MultiWalletTransactionState>(
+        builder: (BuildContext context,
+                MultiWalletTransactionState transBalanceState) =>
+            _buildTransactionItem(
+                context: context,
+                origTransaction: widget.transaction,
+                transaction: _displayTransaction));
   }
 
   Widget _buildTransactionItem(
@@ -98,8 +157,8 @@ class TransactionListItem extends StatelessWidget {
     final String amountWithSymbol = formatKAmountInView(
         context: context,
         amount: transaction.amount,
-        isG1: isG1,
-        currentUd: currentUd,
+        isG1: widget.isG1,
+        currentUd: widget.currentUd,
         useSymbol: false);
     final String amountS =
         '${transaction.amount < 0 ? "" : "+"}$amountWithSymbol';
@@ -115,7 +174,7 @@ class TransactionListItem extends StatelessWidget {
     switch (transaction.type) {
       case TransactionType.waitingNetwork:
         icon = Icons.schedule_send;
-        iconColor = grey;
+        iconColor = TransactionListItem.grey;
         break;
       case TransactionType.pending:
         icon = Icons.flight_takeoff;
@@ -123,11 +182,11 @@ class TransactionListItem extends StatelessWidget {
         break;
       case TransactionType.sending:
         icon = Icons.flight_takeoff;
-        iconColor = grey;
+        iconColor = TransactionListItem.grey;
         break;
       case TransactionType.receiving:
         icon = Icons.flight_land;
-        iconColor = grey;
+        iconColor = TransactionListItem.grey;
         break;
       case TransactionType.failed:
         icon = Icons.warning_amber_rounded;
@@ -153,7 +212,7 @@ class TransactionListItem extends StatelessWidget {
     return Slidable(
         // Specify a key if the Slidable is dismissible.
 
-        key: ValueKey<int>(index),
+        key: ValueKey<int>(widget.index),
         // The end action pane is the one at the right or the bottom side.
         startActionPane:
             ActionPane(motion: const ScrollMotion(), children: <SlidableAction>[
@@ -167,7 +226,8 @@ class TransactionListItem extends StatelessWidget {
               icon: Icons.delete,
               label: tr('cancel_payment'),
             ),
-          if (transaction.type == TransactionType.sent && !isExternalAccount)
+          if (transaction.type == TransactionType.sent &&
+              !widget.isExternalAccount)
             SlidableAction(
               onPressed: (BuildContext c) async {
                 _selectUserToPay(context, transaction);
@@ -213,7 +273,7 @@ class TransactionListItem extends StatelessWidget {
           ],
         ),
         child: GestureDetector(
-            key: _menuKey,
+            key: widget._menuKey,
             onLongPress: () {
               /* if (transaction.isFailed) {
                 _payAgain(context, transaction, true);
@@ -235,7 +295,7 @@ class TransactionListItem extends StatelessWidget {
                             color: iconColor,
                           ))
                       : null,
-                  // tileColor: tileColor(index, context),
+                  // tileColor: tileColor(widget.index, context),
                   title: Row(
                     children: <Widget>[
                       const SizedBox(width: 8.0),
@@ -247,7 +307,7 @@ class TransactionListItem extends StatelessWidget {
                               statusText,
                               style: const TextStyle(
                                 fontSize: 12.0,
-                                color: grey,
+                                color: TransactionListItem.grey,
                               ),
                             ),
                             const SizedBox(height: 4.0),
@@ -338,7 +398,7 @@ class TransactionListItem extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               const Icon(Icons.mode_comment_outlined,
-                                  size: 18, color: grey),
+                                  size: 18, color: TransactionListItem.grey),
                               const SizedBox(width: 6),
                               Expanded(
                                 child: Text(
@@ -346,7 +406,7 @@ class TransactionListItem extends StatelessWidget {
                                       ? '${transaction.comment}$debugText'
                                       : transaction.comment,
                                   style: const TextStyle(
-                                    color: grey,
+                                    color: TransactionListItem.grey,
                                   ),
                                 ),
                               ),
@@ -359,10 +419,10 @@ class TransactionListItem extends StatelessWidget {
                     children: <Widget>[
                       Text.rich(TextSpan(
                         children: <InlineSpan>[
-                          if (isCurrencyBefore)
+                          if (widget.isCurrencyBefore)
                             currencyBalanceWidget(
-                                isG1, currentSymbol, txFontSize),
-                          if (isCurrencyBefore) separatorSpan(),
+                                widget.isG1, widget.currentSymbol, txFontSize),
+                          if (widget.isCurrencyBefore) separatorSpan(),
                           TextSpan(
                             text: amountS,
                             style: TextStyle(
@@ -372,14 +432,14 @@ class TransactionListItem extends StatelessWidget {
                                           TransactionType.received ||
                                       transaction.type ==
                                           TransactionType.receiving
-                                  ? customPositiveAmountColor
+                                  ? widget.customPositiveAmountColor
                                   : negativeAmountColor,
                             ),
                           ),
-                          if (!isCurrencyBefore) separatorSpan(),
-                          if (!isCurrencyBefore)
+                          if (!widget.isCurrencyBefore) separatorSpan(),
+                          if (!widget.isCurrencyBefore)
                             currencyBalanceWidget(
-                                isG1, currentSymbol, txFontSize)
+                                widget.isG1, widget.currentSymbol, txFontSize)
                         ],
                       )),
                       const SizedBox(height: 4.0),
@@ -424,7 +484,9 @@ class TransactionListItem extends StatelessWidget {
         duration: const Duration(seconds: 3),
       ),
     );
-    afterCancel!();
+    if (widget.afterCancel != null) {
+      widget.afterCancel!();
+    }
   }
 
   Future<void> _payAgain(
@@ -434,14 +496,15 @@ class TransactionListItem extends StatelessWidget {
     await payWithRetry(
         context: context,
         recipients: transaction.recipientsWithoutCashBack,
-        amount:
-            isG1 ? amount / 100 : ((amount / currentUd) / 100).toPrecision(3),
+        amount: widget.isG1
+            ? amount / 100
+            : ((amount / widget.currentUd) / 100).toPrecision(3),
         comment: transaction.comment,
-        isG1: isG1,
-        currentUd: currentUd,
+        isG1: widget.isG1,
+        currentUd: widget.currentUd,
         isRetry: isRetry);
-    if (afterRetry != null) {
-      afterRetry!();
+    if (widget.afterRetry != null) {
+      widget.afterRetry!();
     }
   }
 
@@ -452,7 +515,7 @@ class TransactionListItem extends StatelessWidget {
         text: currentSymbol,
         style: TextStyle(
           fontSize: txFontSize,
-          color: grey,
+          color: TransactionListItem.grey,
         ),
       ),
       if (!isG1)
@@ -465,7 +528,7 @@ class TransactionListItem extends StatelessWidget {
                     fontSize: 12,
                     // fontWeight: FontWeight.w500,
                     // fontFeatures: <FontFeature>[FontFeature.subscripts()],
-                    color: grey,
+                    color: TransactionListItem.grey,
                   ),
                 )))
     ]);
@@ -483,7 +546,7 @@ class TransactionListItem extends StatelessWidget {
       required Transaction origTransaction,
       required Transaction transaction}) {
     final RenderBox renderBox =
-        _menuKey.currentContext!.findRenderObject()! as RenderBox;
+        widget._menuKey.currentContext!.findRenderObject()! as RenderBox;
     final Offset position = renderBox.localToGlobal(Offset.zero);
     final double height = renderBox.size.height;
 
@@ -559,20 +622,5 @@ class TransactionListItem extends StatelessWidget {
     ));
 
     return menuItems;
-  }
-
-  Future<Transaction> _enrichTransaction(
-      BuildContext context, Transaction tx) async {
-    final ContactsCubit contactsCubit = context.read<ContactsCubit>();
-    final String fromKey = tx.from.pubKey;
-    final Contact fromContact =
-        await retrieveContactFromCubitOrCache(contactsCubit, fromKey);
-    final List<Contact> recipients = <Contact>[];
-    for (final Contact recipient in tx.recipients) {
-      final Contact recipientNew = await retrieveContactFromCubitOrCache(
-          contactsCubit, recipient.pubKey);
-      recipients.add(recipientNew);
-    }
-    return transaction.copyWith(from: fromContact, recipients: recipients);
   }
 }

@@ -453,5 +453,6 @@
   "error_decoding_json": "Error decodificando el export de g1nkgo",
   "cesium_auth_title": "Autenticación",
   "add_emoji": "Add Emoji",
-  "hide_emoji_keyboard": "Hide Emoji Keyboard"
+  "hide_emoji_keyboard": "Hide Emoji Keyboard",
+  "emoji_search": "Buscar"
 }

@@ -19,6 +19,7 @@ import '../ui/currency_helper.dart';
 import '../ui/logger.dart';
 //import '../ui/pay_helper.dart';
 import '../ui/ui_helpers.dart';
+import 'g1_v2_helper.dart';
 
 Random createRandom() {
   try {
@@ -199,15 +200,20 @@ String getQrUri(
 
 PaymentState? parseScannedUri(String qrOrig) {
   final String qr = Uri.decodeFull(qrOrig);
+
+  // Regex patterns that support both v1 pubKeys and v2 addresses
+  // v1: 43-44 chars base58, optionally with :XXX checksum
+  // v2: addresses starting with 'g1' followed by base58 chars (typically ~48 chars)
   final RegExp regexKeyCommentAmount = RegExp(
-      r'(duniter\:key|june\:\/)/(\w+(:\w{3})?)\?(comment=([^&]+))&amount=([\d.,]+)');
+      r'(duniter\:key|june\:\/)/([123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+(:\w{3})?)\?(comment=([^&]+))&amount=([\d.,]+)');
   final RegExp regexKeyAmountComment = RegExp(
-      r'(duniter\:key|june\:\/)/(\w+(:\w{3})?)\?(amount=([\d.,]+))&comment=([^&]+)');
-  final RegExp regexKeyComment =
-      RegExp(r'(duniter\:key|june\:\/)/(\w+(:\w{3})?)\?comment=([^&]+)');
-  final RegExp regexKeyAmount =
-      RegExp(r'(duniter\:key|june\:\/)/(\w+(:\w{3})?)\?amount=([\d.,]+)');
-  final RegExp regexKey = RegExp(r'(duniter\:key|june\:\/)/(\w+(:\w{3})?)');
+      r'(duniter\:key|june\:\/)/([123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+(:\w{3})?)\?(amount=([\d.,]+))&comment=([^&]+)');
+  final RegExp regexKeyComment = RegExp(
+      r'(duniter\:key|june\:\/)/([123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+(:\w{3})?)\?comment=([^&]+)');
+  final RegExp regexKeyAmount = RegExp(
+      r'(duniter\:key|june\:\/)/([123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+(:\w{3})?)\?amount=([\d.,]+)');
+  final RegExp regexKey = RegExp(
+      r'(duniter\:key|june\:\/)/([123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+(:\w{3})?)');
 
   final RegExpMatch? matchKeyCommentAmount =
       regexKeyCommentAmount.firstMatch(qr);
@@ -224,7 +230,7 @@ PaymentState? parseScannedUri(String qrOrig) {
         locale: 'en',
         number: matchKeyCommentAmount.group(6)!.replaceAll(',', '.'));
     return PaymentState(
-        contacts: <Contact>[Contact(pubKey: publicKey)],
+        contacts: <Contact>[createContactFromKey(publicKey)],
         amount: amount,
         comment: cleanComment(comment));
   }
@@ -236,7 +242,7 @@ PaymentState? parseScannedUri(String qrOrig) {
         locale: 'en',
         number: matchKeyAmountComment.group(5)!.replaceAll(',', '.'));
     return PaymentState(
-        contacts: <Contact>[Contact(pubKey: publicKey)],
+        contacts: <Contact>[createContactFromKey(publicKey)],
         amount: amount,
         comment: cleanComment(comment));
   }
@@ -245,7 +251,7 @@ PaymentState? parseScannedUri(String qrOrig) {
     final String publicKey = matchKeyComment.group(2)!;
     final String? comment = matchKeyComment.group(4);
     return PaymentState(
-        contacts: <Contact>[Contact(pubKey: publicKey)],
+        contacts: <Contact>[createContactFromKey(publicKey)],
         comment: cleanComment(comment));
   }
 
@@ -253,20 +259,26 @@ PaymentState? parseScannedUri(String qrOrig) {
 
   if (matchKeyAmount != null) {
     final String publicKey = matchKeyAmount.group(2)!;
-    final double amount = double.parse(matchKeyAmount.group(4)!);
+    final double amount = parseToDoubleLocalized(
+        locale: 'en', number: matchKeyAmount.group(4)!.replaceAll(',', '.'));
     return PaymentState(
-        contacts: <Contact>[Contact(pubKey: publicKey)], amount: amount);
+        contacts: <Contact>[createContactFromKey(publicKey)], amount: amount);
   }
 
   final RegExpMatch? matchKey = regexKey.firstMatch(qr);
   if (matchKey != null) {
     final String publicKey = matchKey.group(2)!;
-    return PaymentState(contacts: <Contact>[Contact(pubKey: publicKey)]);
+    return PaymentState(contacts: <Contact>[createContactFromKey(publicKey)]);
   }
 
-  // Match key only
+  // Match v1 key only
   if (validateKey(qr)) {
-    return PaymentState(contacts: <Contact>[Contact(pubKey: qr)]);
+    return PaymentState(contacts: <Contact>[createContactFromKey(qr)]);
+  }
+
+  // Match v2 address only
+  if (isValidV2Address(qr)) {
+    return PaymentState(contacts: <Contact>[createContactFromKey(qr)]);
   }
 
   return null;
@@ -463,5 +475,18 @@ String humanizeFromToPubKey(String publicAddress, String address) {
     return tr('your_wallet');
   } else {
     return humanizePubKey(address);
+  }
+}
+
+/// Helper to create a Contact from either v1 pubkey or v2 address
+Contact createContactFromKey(String key) {
+  // Check if it's a v2 address
+  if (isValidV2Address(key)) {
+    // It's a v2 address, convert to v1 pubkey
+    final String v1PubKey = v1pubkeyFromAddress(key);
+    return Contact(pubKey: v1PubKey, address: key);
+  } else {
+    // It's a v1 pubkey (or should be)
+    return Contact(pubKey: key);
   }
 }

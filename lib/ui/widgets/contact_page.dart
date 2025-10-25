@@ -253,11 +253,13 @@ class _ContactPageState extends State<ContactPage> {
           if (context.watch<AppCubit>().isExpertMode)
             _buildQrListTile(contact, isV2: true),
 
-          if (context
+          /* Right now, the are accounts with negative balance (maybe a bug) so, lets show this for now        if (context
+
+
                   .watch<MultiWalletTransactionCubit>()
                   .balance(contact.pubKey) >
-              0)
-            _buildBalance(contact),
+              0) */
+          _buildBalance(contact),
           // Separator
           if (loaded && contact.status != null) const Divider(),
           if (contact.status != null)
@@ -539,10 +541,14 @@ class _ContactPageState extends State<ContactPage> {
   }
 
   Stream<ContactWotInfo> _getWotInfo(AppCubit appCubit) async* {
-    final Contact you =
-        await getProfile(widget.contact.pubKey, resize: false, complete: true);
-    final Contact me = await getProfile(SharedPreferencesHelper().getPubKey(),
-        resize: false, complete: true);
+    // Parallelize the first calls
+    final List<Contact> results = await Future.wait(<Future<Contact>>[
+      getProfile(widget.contact.pubKey, resize: false, complete: true),
+      getProfile(SharedPreferencesHelper().getPubKey(),
+          resize: false, complete: true),
+    ]);
+    final Contact you = results[0];
+    final Contact me = results[1];
     final ContactWotInfo wotInfo = ContactWotInfo(me: me, you: you);
 
     if (isV2) {
@@ -555,14 +561,19 @@ class _ContactPageState extends State<ContactPage> {
 
         // EveAccount exists with minimum amount of 2 ĞD (existential deposit plus fee buffer)
         // storage.system.account(EveAccount).data.free is higher than 200
-        final BigInt? youBalance =
-            await getBalanceV2(address: widget.contact.address);
-        final bool enoughBalance =
-            youBalance != null && youBalance > BigInt.from(200);
         // EveAccount is not already used by an identity
         // storage.identity.identities(EveAccount) is None
-        final bool identityUsed =
-            (await getIdentity(address: you.address)) != null;
+        // Parallelize these two calls
+        final List<Object?> identityResults =
+            await Future.wait(<Future<Object?>>[
+          // FIXME
+          getBalanceV2(address: widget.contact.address),
+          getIdentity(address: you.address),
+        ]);
+        final BigInt? youBalance = identityResults[0] as BigInt?;
+        final bool enoughBalance =
+            youBalance != null && youBalance > BigInt.from(200);
+        final bool identityUsed = identityResults[1] != null;
         wotInfo.canCreateIdty = iAmMember && enoughBalance && !identityUsed;
       }
       yield wotInfo;
@@ -570,20 +581,32 @@ class _ContactPageState extends State<ContactPage> {
       final int currentBlock = await polkadotCurrentBlock();
       wotInfo.currentBlockHeight = currentBlock;
       final bool youAMember = you.isMember ?? false;
-      if (youAMember) {
-        final IdtyValue? youIdty = await polkadotIdentity(you);
-        final IdtyCertMeta? youCertMeta = await polkadotIdtyCertMeta(you);
-        if (youIdty != null && youCertMeta != null) {
-          wotInfo.canCertOn = estimateDateFromBlock(
-              futureBlock: youCertMeta.nextIssuableOn,
-              currentBlockHeight: currentBlock);
-        }
+
+      // Parallelize calls to get identity information
+      final List<dynamic> identityInfoResults =
+          await Future.wait(<Future<dynamic>>[
+        if (youAMember) polkadotIdentity(you) else Future<void>.value(),
+        if (youAMember) polkadotIdtyCertMeta(you) else Future<void>.value(),
+        polkadotIdentity(me),
+        polkadotIdtyCertMeta(me),
+      ]);
+
+      final IdtyValue? youIdty =
+          youAMember ? identityInfoResults[0] as IdtyValue? : null;
+      final IdtyCertMeta? youCertMeta =
+          youAMember ? identityInfoResults[1] as IdtyCertMeta? : null;
+      final IdtyValue? myIdty = identityInfoResults[2] as IdtyValue?;
+      final IdtyCertMeta? idtyCertMeta =
+          identityInfoResults[3] as IdtyCertMeta?;
+
+      if (youIdty != null && youCertMeta != null) {
+        wotInfo.canCertOn = estimateDateFromBlock(
+            futureBlock: youCertMeta.nextIssuableOn,
+            currentBlockHeight: currentBlock);
       }
       yield wotInfo;
 
       // Can Certificate
-      final IdtyValue? myIdty = await polkadotIdentity(me);
-      final IdtyCertMeta? idtyCertMeta = await polkadotIdtyCertMeta(me);
       if (myIdty != null && idtyCertMeta != null) {
         // From: https://duniter.org/wiki/duniter-v2/doc/wot/
         // storage.identity.identities(AliceIndex).nextCreatableIdentityOn is lower than current block

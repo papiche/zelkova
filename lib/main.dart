@@ -1,10 +1,10 @@
 import 'dart:async';
+import 'dart:core';
 import 'dart:io';
 
 import 'package:app_links/app_links.dart';
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:ferry_hive_ce_store/ferry_hive_ce_store.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +43,7 @@ import 'data/models/node_manager.dart';
 import 'data/models/node_type.dart';
 import 'data/models/payment_cubit.dart';
 import 'data/models/theme_cubit.dart';
+import 'data/models/transaction.dart';
 import 'data/models/utxo_cubit.dart';
 import 'env.dart';
 import 'g1/api.dart';
@@ -77,22 +78,31 @@ void workManagerCallbackDispatcher() {
       logger.info(
         '---------- Start fetchTransactionsTask Workmanager background task: $task',
       );
+
+      // Handle null task case
+      if (task == null || task.isEmpty) {
+        logger.warning('Received null or empty task in WorkManager');
+        return Future<bool>.value(true);
+      }
+
       switch (task) {
         case fetchWalletsTransactionsTask:
           await NotificationController.initializeLocalNotifications();
-          fetchTransactionsFromBackground();
+          await fetchTransactionsFromBackground();
           break;
         case Workmanager.iOSBackgroundTask:
+          logger.info('iOS background task received');
           break;
         default:
           logger.warning('Unknown Dart task: $task');
           break;
       }
-      loggerDev(
+      logger.info(
         '---------- End fetchTransactionsTask Workmanager background task',
       );
     } catch (err, stacktrace) {
-      logger(err.toString());
+      log.e('Error in WorkManager task: $err',
+          error: err, stackTrace: stacktrace);
       await Sentry.captureException(err, stackTrace: stacktrace);
     }
     return Future<bool>.value(true);
@@ -452,17 +462,20 @@ class _GinkgoAppState extends State<GinkgoApp> {
     _printNodeStatus();
     // In the future only load nodes by type
     final bool useV2 = context.read<AppCubit>().isV2;
-    for (final NodeType nodeType in NodeType.values) {
-      //if (useV2 && !nodeType.isV2) {
-      //  continue;
-      //}
-      if (nodeType == NodeType.duniterIndexer) {
-        // Endpoint nodes are loaded along with indexer nodes
-        continue;
-      }
-      // Right now, force in v2 (as gtest has now new nodes)
-      await fetchNodes(nodeType, useV2);
-    }
+
+    // Load all node types in parallel for better performance
+    final List<NodeType> nodeTypesToLoad = NodeType.values
+        .where((NodeType nodeType) => nodeType != NodeType.duniterIndexer)
+        .toList();
+
+    await Future.wait(
+      nodeTypesToLoad.map((NodeType nodeType) =>
+          fetchNodes(nodeType, useV2).catchError((Object e) {
+            logger('Error loading nodes for $nodeType: $e');
+          })),
+      // eagerError: false, // Continue even if some node types fail
+    );
+
     _printNodeStatus(prefix: 'Continuing');
   }
 
@@ -1075,17 +1088,6 @@ Future<void> hiveInit() async {
     // await HydratedBloc.storage.clear();
     box.close();
   }
-
-  // Ferry cache
-  loggerDev('Initializing Ferry cache');
-  final Box<dynamic> ferryBox = await Hive.openBox(
-    'ferry-graphql-cache',
-    path: storageDir.path,
-  );
-
-  final HiveStore ferryStore = HiveStore(ferryBox);
-  final GetIt getIt = GetIt.instance;
-  getIt.registerSingleton<HiveStore>(ferryStore);
 }
 
 Future<void> _clearCacheIfNeeded(HydratedStorageDirectory storageDir) async {
@@ -1118,7 +1120,21 @@ Future<void> _clearCacheIfNeeded(HydratedStorageDirectory storageDir) async {
 Future<void> fetchTransactions(BuildContext context) async {
   final MultiWalletTransactionCubit transCubit =
       context.read<MultiWalletTransactionCubit>();
-  for (final String pubKey in SharedPreferencesHelper().publicKeys) {
-    transCubit.fetchTransactions(pubKey: pubKey);
-  }
+
+  // Execute all requests in parallel without blocking (fire-and-forget)
+  // This prevents blocking the UI while requests are being made
+  final List<String> publicKeys = SharedPreferencesHelper().publicKeys;
+
+  // Use unawaited to avoid blocking the main thread
+  // Requests will be executed in parallel in the background
+  unawaited(
+    Future.wait(
+      publicKeys.map((String pubKey) =>
+          transCubit.fetchTransactions(pubKey: pubKey).catchError((Object e) {
+            logger('Error fetching transactions for $pubKey: $e');
+            return <Transaction>[];
+          })),
+      // eagerError: false, // Continue even if some requests fail
+    ),
+  );
 }

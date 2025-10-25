@@ -370,7 +370,8 @@ Future<void> showSelectImportMethodDialog(
             onImport: (String textToImport) async {
               if (validateKey(textToImport)) {
                 if (!SharedPreferencesHelper().has(textToImport)) {
-                  showAuthCesiumWalletDialog(context, textToImport, returnTo);
+                  await showAuthCesiumWalletDialog(
+                      context, textToImport, returnTo);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(tr('wallet_already_imported'))),

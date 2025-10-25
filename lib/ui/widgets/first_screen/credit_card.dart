@@ -7,7 +7,7 @@ import '../../../data/models/app_cubit.dart';
 import '../../../data/models/stored_account.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../shared_prefs_helper.dart';
-import '../../tutorial_keys.dart';
+import '../../logger.dart';
 import '../../ui_helpers.dart';
 import '../card_helper.dart';
 import '../contacts_actions.dart';
@@ -22,141 +22,157 @@ class CreditCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double cardRadius = 10.0;
-    final bool bigDevice = bigScreen(context);
-    final double cardPadding = bigDevice ? 26.0 : 16.0;
-
-    final double width = calcWidthWithResponsive(context);
     final String publicKey =
         account.type.isV2 ? account.address : account.pubKey;
     final bool allowEditName = account.type == AccountType.v1PasswordLess &&
         !context.read<AppCubit>().state.v2mode;
+
     return Card(
         elevation: 8.0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(cardRadius),
         ),
         child: AspectRatio(
-            aspectRatio: cardAspectRatio, // Credit cart aspect ratio
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(cardRadius),
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                    color: Colors.grey[400]!,
-                    blurRadius: 10.0,
-                    spreadRadius: 1.0,
-                  )
-                ],
-                gradient: LinearGradient(
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.topRight,
-                  colors: <Color>[
-                    SharedPreferencesHelper().getTheme().primaryColor,
-                    SharedPreferencesHelper().getTheme().secondaryColor
+            aspectRatio: cardAspectRatio, // Credit card aspect ratio
+            child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+              // Calculate all sizes based on card dimensions
+              final double cardWidth = constraints.maxWidth;
+              final double cardHeight = constraints.maxHeight;
+
+              // Responsive padding and sizes based on card height
+              final double verticalPadding = cardHeight * 0.08; // 8% of height
+              final double horizontalPadding =
+                  cardWidth * 0.055; // 5.5% of width
+              final double titleSize = cardHeight * 0.11; // 11% of height
+              final double iconSize = bigScreen(context) ? 28 : 20;
+              final double chipWidth = cardWidth < smallScreenWidth ? 25 : 40;
+              final double spacing = cardHeight * 0.02; // 2% of height
+              loggerDev(
+                  'Card: ${cardWidth.toStringAsFixed(1)}x${cardHeight.toStringAsFixed(1)}, Chip: ${chipWidth.toStringAsFixed(1)}');
+              return Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(cardRadius),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                      color: Colors.grey[400]!,
+                      blurRadius: 10.0,
+                      spreadRadius: 1.0,
+                    )
                   ],
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    colors: <Color>[
+                      SharedPreferencesHelper().getTheme().primaryColor,
+                      SharedPreferencesHelper().getTheme().secondaryColor
+                    ],
+                  ),
                 ),
-              ),
-              child: Stack(children: <Widget>[
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(160, 10, 0, 0),
+                child: Stack(children: <Widget>[
+                  // Background logo
+                  Positioned(
+                    right: -cardWidth * 0.05,
+                    top: cardHeight * 0.05,
                     child: Opacity(
-                        opacity: 0.1,
-                        child: Image.asset('assets/img/gbrevedot_alt.png'))),
-                Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Padding(
-                          padding: EdgeInsets.all(cardPadding),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(
-                                      tr('g1_wallet'),
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: width * 0.07,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    )),
-                                walletIconByType(
-                                    context, account, bigDevice ? 28 : 20, true)
-                                /* Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Icon(iconByAccountType(account),
-                                        color: Colors.white
-                                            .withValues(alpha: 0.45),
-                                        size: bigDevice ? 28 : 20)), */
-                              ])),
-                      Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: cardPadding),
-                          child: Row(children: <Widget>[
-                            GestureDetector(
-                                onTap: () {
-                                  showMyContactPage(context);
-                                },
-                                child: SvgPicture.asset(
-                                  width: width < smallScreenWidth ? 25 : 40,
-                                  'assets/img/chip.svg',
-                                )),
-                            const SizedBox(width: 10.0),
-                            Expanded(
-                                child: CardNameEditable(
-                              key: Key(account.pubKey),
-                              publicKey: publicKey,
-                              cardName: account.title,
-                              isEditable: allowEditName,
-                              isPassProtected: account.type.isPasswordProtected,
-                              defValue:
-                                  allowEditName ? tr('your_name_here') : '',
-                            )),
-                          ])),
-                      const SizedBox(height: 6.0),
-                      Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: cardPadding),
-                          child: Row(children: <Widget>[
-                            GestureDetector(
-                                onTap: () => showMyContactPage(context),
-                                child: FittedBox(
-                                    key: creditCardPubKey,
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(
-                                      simplifyPubKey(
-                                          extractPublicKey(publicKey)),
-                                      style: cardTextStyle(context),
-                                    ))),
-                            GestureDetector(
-                                onTap: () => showMyContactPage(context),
-                                child: FittedBox(
-                                    fit: BoxFit.scaleDown,
-                                    child: Text(' **** ****',
-                                        style: cardTextStyle(context)))),
-                          ])),
-                      if (bigDevice) const SizedBox(height: 6.0),
-                      if (bigDevice)
-                        Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: cardPadding),
-                          child: GestureDetector(
-                            // onTap: () => showAlertDialog(
-                            // context, '', tr('card_validity_tooltip')),
-                            child: Text(
-                              tr('card_validity'),
-                              style: TextStyle(
-                                // decoration: TextDecoration.underline,
-                                color: Colors.white.withValues(alpha: 0.8),
-                                fontSize: 14.0,
+                      opacity: 0.1,
+                      child: Image.asset(
+                        'assets/img/gbrevedot_alt.png',
+                        width: cardWidth * 0.55,
+                        height: cardHeight * 0.55,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                  // Main content
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: horizontalPadding,
+                      vertical: verticalPadding,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        // Header: Title and icon
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Flexible(
+                              child: Text(
+                                tr('g1_wallet'),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: titleSize,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                          ),
+                            SizedBox(width: spacing),
+                            walletIconByType(
+                              context,
+                              account,
+                              iconSize,
+                              true,
+                            ),
+                          ],
                         ),
-                      const SizedBox(height: 18.0),
-                    ]),
-              ]),
-            )));
+                        // Middle: Chip and name
+                        Row(
+                          children: <Widget>[
+                            GestureDetector(
+                              onTap: () => showMyContactPage(context),
+                              child: SvgPicture.asset(
+                                'assets/img/chip.svg',
+                                width: chipWidth,
+                              ),
+                            ),
+                            SizedBox(width: spacing * 2),
+                            Expanded(
+                              child: CardNameEditable(
+                                key: Key(account.pubKey),
+                                publicKey: publicKey,
+                                cardName: account.title,
+                                isEditable: allowEditName,
+                                isPassProtected:
+                                    account.type.isPasswordProtected,
+                                defValue:
+                                    allowEditName ? tr('your_name_here') : '',
+                              ),
+                            ),
+                          ],
+                        ),
+                        // Bottom: Public key
+                        Row(
+                          children: <Widget>[
+                            Flexible(
+                              child: GestureDetector(
+                                onTap: () => showMyContactPage(context),
+                                child: Text(
+                                  simplifyPubKey(extractPublicKey(publicKey)),
+                                  style: cardTextStyle(context),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ),
+                            /* GestureDetector(
+                              onTap: () => showMyContactPage(context),
+                              child: Text(
+                                ' **** ****',
+                                style: cardTextStyle(context),
+                                maxLines: 1,
+                              ),
+                            ), */
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ]),
+              );
+            })));
   }
 }

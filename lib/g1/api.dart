@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
@@ -13,7 +14,6 @@ import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-que
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.var.gql.dart';
 import 'package:durt/durt.dart';
 import 'package:ferry/ferry.dart' as ferry;
-import 'package:ferry_hive_ce_store/ferry_hive_ce_store.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
@@ -118,6 +118,10 @@ Future<Tuple2<Set<Node>, Set<Node>>> getV2Peers({
   final Set<Node> discoveredIndexerNodes = <Node>{};
   final Set<String> discoveredEndpointUrls = <String>{};
   final Set<String> scannedEndpointUrls = <String>{};
+  final Set<String> checkedEndpointUrls =
+      <String>{}; // Track all checked endpoints (success + failures)
+  final Set<String> checkedIndexerUrls =
+      <String>{}; // Track all checked indexers (success + failures)
   maxNodes ??= NodeManager.maxNodes;
 
   Future<void> scanEndpointNode(String nodeUrl) async {
@@ -129,43 +133,76 @@ Future<Tuple2<Set<Node>, Set<Node>>> getV2Peers({
 
     try {
       final V2Peers res = await discoverV2PeersFromNode(nodeUrl);
+
+      // Parallelize endpoint checks
+      final List<Future<void>> endpointFutures = <Future<void>>[];
       for (final String url in res.endpoint) {
         if (discoveredEndpointUrls.length >= maxNodes) {
           break;
         }
+        // Skip if already checked (either successfully or with error)
+        if (checkedEndpointUrls.contains(url)) {
+          if (debug) {
+            loggerDev('Skipping already checked endpoint node $url');
+          }
+          continue;
+        }
+
         if (discoveredEndpointUrls.add(url)) {
-          try {
-            final NodeCheckResult nodeCheck =
-                await _pingNode(url, NodeType.endpoint);
-            discoveredEndpointNodes.add(Node(
+          checkedEndpointUrls.add(url); // Mark as checked before pinging
+          endpointFutures.add(_pingNode(url, NodeType.endpoint)
+              .then((NodeCheckResult nodeCheck) {
+            // Only add if the node responded successfully
+            if (nodeCheck.latency != wrongNodeDuration) {
+              discoveredEndpointNodes.add(Node(
+                url: url,
+                latency: nodeCheck.latency.inMicroseconds,
+                currentBlock: nodeCheck.currentBlock,
+              ));
+              return scanEndpointNode(url);
+            }
+          }).catchError((_) {
+            if (debug) {
+              loggerDev('Error scanning endpoint node $url');
+            }
+          }));
+        }
+      }
+
+      // Parallelize indexer checks
+      final List<Future<void>> indexerFutures = <Future<void>>[];
+      for (final String url in res.indexer) {
+        // Skip if already checked (either successfully or with error)
+        if (checkedIndexerUrls.contains(url)) {
+          if (debug) {
+            loggerDev('Skipping already checked indexer node $url');
+          }
+          continue;
+        }
+
+        checkedIndexerUrls.add(url); // Mark as checked before pinging
+        indexerFutures.add(_pingNode(url, NodeType.duniterIndexer)
+            .then((NodeCheckResult nodeCheck) {
+          // Only add if the node responded successfully
+          if (nodeCheck.latency != wrongNodeDuration) {
+            discoveredIndexerNodes.add(Node(
               url: url,
               latency: nodeCheck.latency.inMicroseconds,
               currentBlock: nodeCheck.currentBlock,
             ));
-            await scanEndpointNode(url);
-          } catch (_) {
-            // Do nothing if some scan fails
-            if (debug) {
-              loggerDev('Error scanning endpoint node $url');
-            }
           }
-        }
-      }
-      for (final String url in res.indexer) {
-        try {
-          final NodeCheckResult nodeCheck =
-              await _pingNode(url, NodeType.duniterIndexer);
-          discoveredIndexerNodes.add(Node(
-            url: url,
-            latency: nodeCheck.latency.inMicroseconds,
-            currentBlock: nodeCheck.currentBlock,
-          ));
-        } catch (_) {
+        }).catchError((_) {
           if (debug) {
             loggerDev('Error scanning indexer node $url');
           }
-        }
+        }));
       }
+
+      // Wait for all checks to complete in parallel
+      await Future.wait(<Future<void>>[
+        ...endpointFutures,
+        ...indexerFutures,
+      ]);
     } catch (e) {
       if (debug) {
         loggerDev('Error retrieving $nodeUrl ($e)');
@@ -173,20 +210,43 @@ Future<Tuple2<Set<Node>, Set<Node>>> getV2Peers({
     }
   }
 
+  // Mark initial nodes as already checked
   for (final Node node in endpointNodes) {
     if (discoveredEndpointUrls.length >= maxNodes) {
       break;
     }
+    checkedEndpointUrls.add(node.url);
     discoveredEndpointUrls.add(node.url);
     discoveredEndpointNodes.add(node);
-    await scanEndpointNode(node.url);
   }
+
+  for (final Node node in indexerNodes) {
+    checkedIndexerUrls.add(node.url);
+  }
+
+  // Parallelize initial node scanning
+  final List<Future<void>> scanFutures = <Future<void>>[];
+  for (final Node node in endpointNodes) {
+    if (discoveredEndpointUrls.length >= maxNodes) {
+      break;
+    }
+    scanFutures.add(scanEndpointNode(node.url));
+  }
+  await Future.wait(scanFutures);
+
   indexerNodes.forEach(discoveredIndexerNodes.add);
 
   final List<Node> sortedEndpoints = discoveredEndpointNodes.toList()
     ..sort((Node a, Node b) => a.latency.compareTo(b.latency));
   final List<Node> sortedIndexers = discoveredIndexerNodes.toList()
     ..sort((Node a, Node b) => a.latency.compareTo(b.latency));
+
+  if (debug) {
+    loggerDev(
+        'Checked ${checkedEndpointUrls.length} unique endpoint URLs, discovered ${sortedEndpoints.length} working nodes');
+    loggerDev(
+        'Checked ${checkedIndexerUrls.length} unique indexer URLs, discovered ${sortedIndexers.length} working nodes');
+  }
 
   return Tuple2<Set<Node>, Set<Node>>(
     sortedEndpoints.toSet(),
@@ -417,9 +477,35 @@ Future<void> _fetchEndPointAndSquidNodes({bool force = false}) async {
     logger(
         'Fetching endPoint and indexer nodes, we have ${NodeManager().nodesWorking(NodeType.endpoint)} and ${NodeManager().nodesWorking(NodeType.duniterIndexer)}');
   }
+
+  // Fetch nodes from gtest.json
+  final Tuple2<List<Node>, List<Node>> gtestNodes =
+      await _fetchNodesFromGtestJson();
+
   final List<Node> initialEndPointNodes = await _fetchNodes(NodeType.endpoint);
   final List<Node> initialIndexerNodes =
       await _fetchNodes(NodeType.duniterIndexer);
+
+  // Add gtest nodes to initial lists if not already present
+  final Set<String> endpointUrls =
+      initialEndPointNodes.map((Node n) => n.url).toSet();
+  final Set<String> indexerUrls =
+      initialIndexerNodes.map((Node n) => n.url).toSet();
+
+  for (final Node node in gtestNodes.item1) {
+    if (!endpointUrls.contains(node.url)) {
+      initialEndPointNodes.add(node);
+      endpointUrls.add(node.url);
+    }
+  }
+
+  for (final Node node in gtestNodes.item2) {
+    if (!indexerUrls.contains(node.url)) {
+      initialIndexerNodes.add(node);
+      indexerUrls.add(node.url);
+    }
+  }
+
   final Tuple2<Set<Node>, Set<Node>> discoveredNodes = await getV2Peers(
       endpointNodes: initialEndPointNodes, indexerNodes: initialIndexerNodes);
 
@@ -427,6 +513,66 @@ Future<void> _fetchEndPointAndSquidNodes({bool force = false}) async {
   NodeManager()
       .updateNodes(NodeType.duniterIndexer, discoveredNodes.item2.toList());
   NodeManager().loading = false;
+}
+
+/// Fetches nodes from the gtest.json file
+/// Returns a tuple with (endpointNodes, indexerNodes)
+/// If fetching fails, returns empty lists to allow the application to continue
+Future<Tuple2<List<Node>, List<Node>>> _fetchNodesFromGtestJson() async {
+  final List<Node> endpointNodes = <Node>[];
+  final List<Node> indexerNodes = <Node>[];
+
+  try {
+    const String gtestUrl =
+        'https://git.duniter.org/nodes/networks/-/raw/master/gtest.json?ref_type=heads';
+    logger('Fetching nodes from gtest.json');
+
+    final http.Response response = await http
+        .get(Uri.parse(gtestUrl))
+        .timeout(const Duration(seconds: 10));
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data =
+          json.decode(response.body) as Map<String, dynamic>;
+
+      // Extract endpoint nodes
+      if (data.containsKey('endpoint') && data['endpoint'] is List) {
+        final List<dynamic> endpoints = data['endpoint'] as List<dynamic>;
+        for (final dynamic endpoint in endpoints) {
+          if (endpoint is String && endpoint.isNotEmpty) {
+            endpointNodes.add(Node(url: endpoint));
+          }
+        }
+        logger('Loaded ${endpointNodes.length} endpoint nodes from gtest.json');
+      }
+
+      // Extract indexer nodes
+      if (data.containsKey('indexer') && data['indexer'] is List) {
+        final List<dynamic> indexers = data['indexer'] as List<dynamic>;
+        for (final dynamic indexer in indexers) {
+          if (indexer is String && indexer.isNotEmpty) {
+            indexerNodes.add(Node(url: indexer));
+          }
+        }
+        logger('Loaded ${indexerNodes.length} indexer nodes from gtest.json');
+      }
+    } else {
+      logger('Failed to fetch gtest.json: HTTP ${response.statusCode}');
+    }
+  } on TimeoutException catch (e) {
+    logger('Timeout fetching nodes from gtest.json: $e');
+  } on SocketException catch (e) {
+    logger('Network error fetching nodes from gtest.json: $e');
+  } on http.ClientException catch (e) {
+    logger('HTTP client error fetching nodes from gtest.json: $e');
+  } on FormatException catch (e) {
+    logger('JSON parsing error from gtest.json: $e');
+  } catch (e) {
+    logger('Unexpected error fetching nodes from gtest.json: $e');
+  }
+
+  // Always return a valid tuple, even if empty, to allow the app to continue
+  return Tuple2<List<Node>, List<Node>>(endpointNodes, indexerNodes);
 }
 
 Future<void> _fetchV2Nodes({required NodeType type, bool force = false}) async {
@@ -457,13 +603,14 @@ Future<void> _fetchIpfsGateways({required bool force}) async {
 Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type,
     {bool debug = false}) async {
   logger('Fetching ${type.name} nodes from peers');
-  // const Duration timeout = Duration(seconds: 10);
   final List<Node> lNodes = <Node>[];
   final String apyType = (type == NodeType.duniter) ? 'BMAS' : 'GVA S';
   try {
     final List<dynamic> peers = await getPeers(type);
-    // reorder peer list
     peers.shuffle();
+
+    // Collect all endpoints to check
+    final List<String> endpointsToCheck = <String>[];
     for (final dynamic peerR in peers) {
       final Map<String, dynamic> peer = peerR as Map<String, dynamic>;
       if (peer['endpoints'] != null) {
@@ -473,42 +620,59 @@ Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type,
           if (endpoints[j].startsWith(apyType)) {
             final String endpointUnParsed = endpoints[j];
             final String? endpoint = parseHost(endpointUnParsed);
-            if (endpoint != null &&
-                //  !endpoint.contains('test') &&
-                !endpoint.contains('localhost')) {
-              try {
-                final NodeCheckResult nodeCheck =
-                    await _pingNode(endpoint, type);
-                final Duration latency = nodeCheck.latency;
-                loggerD(debug,
-                    'Evaluating node: $endpoint, latency ${latency.inMicroseconds} currentBlock: ${nodeCheck.currentBlock}');
-                final Node node = Node(
-                    url: endpoint,
-                    latency: latency.inMicroseconds,
-                    currentBlock: nodeCheck.currentBlock);
-                // Use the new method that handles insertion based on latency
-                NodeManager().addNodeSortedByLatency(type, node);
-                lNodes.add(node);
-              } catch (e) {
-                logger('Error fetching $endpoint, error: $e');
+            if (endpoint != null && !endpoint.contains('localhost')) {
+              endpointsToCheck.add(endpoint);
+              if (kReleaseMode &&
+                  endpointsToCheck.length >= NodeManager.maxNodes) {
+                break;
               }
             }
           }
         }
-        if (kReleaseMode && lNodes.length >= NodeManager.maxNodes) {
-          // In production dont' get too much nodes
-          loggerD(debug, 'We have enough ${type.name} nodes for now');
+        if (kReleaseMode && endpointsToCheck.length >= NodeManager.maxNodes) {
           break;
         }
       }
     }
+
+    // Parallelize all endpoint checks
+    final List<Future<Node?>> nodeFutures =
+        endpointsToCheck.map((String endpoint) async {
+      try {
+        final NodeCheckResult nodeCheck = await _pingNode(endpoint, type);
+        final Duration latency = nodeCheck.latency;
+        loggerD(debug,
+            'Evaluating node: $endpoint, latency ${latency.inMicroseconds} currentBlock: ${nodeCheck.currentBlock}');
+        final Node node = Node(
+            url: endpoint,
+            latency: latency.inMicroseconds,
+            currentBlock: nodeCheck.currentBlock);
+        // Use the new method that handles insertion based on latency
+        NodeManager().addNodeSortedByLatency(type, node, notify: false);
+        return node;
+      } catch (e) {
+        logger('Error fetching $endpoint, error: $e');
+        return null;
+      }
+    }).toList();
+
+    // Wait for all checks to complete in parallel
+    final List<Node?> results = await Future.wait(nodeFutures);
+
+    // Filter out null results and add to list
+    lNodes.addAll(results.whereType<Node>());
+
+    // Notify once after all updates
+    if (lNodes.isNotEmpty) {
+      NodeManager().notifyObserver();
+    }
+
     logger(
         'Fetched ${lNodes.length} ${type.name} nodes ordered by latency ${lNodes.isNotEmpty ? '(first: ${lNodes.first.url})' : '(zero nodes)'}');
   } catch (e, stacktrace) {
     await Sentry.captureException(e, stackTrace: stacktrace);
     logger('General error in fetch ${type.name} nodes: $e');
     logger(stacktrace);
-    // rethrow;
   }
   lNodes.sort((Node a, Node b) => a.latency.compareTo(b.latency));
   if (lNodes.isNotEmpty) {
@@ -530,7 +694,9 @@ Future<List<Node>> _fetchNodes(NodeType type, {bool debug = false}) async {
   try {
     final List<Node> currentNodes = <Node>[...NodeManager().nodeList(type)];
     currentNodes.shuffle();
-    for (final Node node in currentNodes) {
+
+    // Parallelize node checks
+    final List<Future<Node?>> nodeFutures = currentNodes.map((Node node) async {
       final String endpoint = node.url;
       try {
         if (debug) {
@@ -542,19 +708,29 @@ Future<List<Node>> _fetchNodes(NodeType type, {bool debug = false}) async {
           logger(
               'Evaluating node: $endpoint, latency ${latency.inMicroseconds}');
         }
-        final Node node = Node(
+        final Node resultNode = Node(
             url: endpoint,
             latency: latency.inMicroseconds,
             currentBlock: nodeCheck.currentBlock);
-        NodeManager().addNodeSortedByLatency(type, node);
-        lNodes.add(node);
+        NodeManager().addNodeSortedByLatency(type, resultNode, notify: false);
+        return resultNode;
       } catch (e) {
         if (debug) {
           logger('Error fetching $endpoint, error: $e');
         }
+        return null;
       }
-    }
+    }).toList();
+
+    // Wait for all checks to complete in parallel
+    final List<Node?> results = await Future.wait(nodeFutures);
+
+    // Filter out null results and add to list
+    lNodes.addAll(results.whereType<Node>());
+
+    // Notify once after all updates
     if (lNodes.isNotEmpty) {
+      NodeManager().notifyObserver();
       if (debug) {
         logger(
             'Fetched ${lNodes.length} ${type.name} nodes ordered by latency (first: ${lNodes.first.url})');
@@ -566,7 +742,7 @@ Future<List<Node>> _fetchNodes(NodeType type, {bool debug = false}) async {
     logger(stacktrace);
   }
   lNodes.sort((Node a, Node b) => a.latency.compareTo(b.latency));
-  if (debug) {
+  if (debug && lNodes.isNotEmpty) {
     logger('First node in list ${lNodes.first.url}');
   }
   return lNodes;
@@ -708,7 +884,8 @@ Future<Tuple2<Node, http.Response>> _requestWithRetry(
             'Error trying to use node ${node.url} ($type) $e'); */
         logger('Error trying ${node.url} $e');
         if (!dontRecord) {
-          NodeManager().increaseNodeErrors(type, node);
+          NodeManager()
+              .increaseNodeErrors(type, node, cause: 'Request failed: $e');
         }
         continue;
       }
@@ -904,7 +1081,8 @@ Future<Tuple2<T?, Node>> gvaFunctionWrapper<T>(
       await Sentry.captureMessage(
           'Error trying to use gva node ${node.url} $e');
       logger('Error trying ${node.url} $e');
-      NodeManager().increaseNodeErrors(NodeType.gva, node);
+      NodeManager().increaseNodeErrors(NodeType.gva, node,
+          cause: 'GVA request failed: $e');
       continue;
     }
   }
@@ -1191,8 +1369,7 @@ Future<NodeCheckResult> testDuniterDatapodV2(
   NodeCheckResult result;
 
   final Stopwatch stopwatch = Stopwatch()..start();
-  final ferry.Client client =
-      await initDuniterDatapodClient(node, GetIt.instance<HiveStore>());
+  final ferry.Client client = await initDuniterDatapodClient(node);
 
   final ferry.OperationResponse<GGetProfileCountData, GGetProfileCountVars>
       response =
@@ -1330,10 +1507,11 @@ Future<Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalance(
 }
 
 Future<TransactionState> transactionsParser(
-    Map<String, dynamic> txData, TransactionState state, String myPubKeyRaw) {
-  return GetIt.instance<ServiceManager>()
-      .current
-      .transactionsParser(txData, state, myPubKeyRaw);
+    Map<String, dynamic> txData, TransactionState state, String myPubKeyRaw,
+    {String? cursor, double? cachedUd}) {
+  return GetIt.instance<ServiceManager>().current.transactionsParser(
+      txData, state, myPubKeyRaw,
+      cursor: cursor, cachedUd: cachedUd);
 }
 
 Future<PayResult> pay(

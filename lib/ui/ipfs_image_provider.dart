@@ -42,14 +42,16 @@ class IpfsImageProvider extends ImageProvider<IpfsImageProvider> {
           final Uint8List imageData = response.bodyBytes;
           return await ui.instantiateImageCodec(imageData);
         } else {
-          NodeManager()
-              .increaseNodeErrors(NodeType.ipfsGateway, ipfsNodes[nodeIndex]);
+          NodeManager().increaseNodeErrors(
+              NodeType.ipfsGateway, ipfsNodes[nodeIndex],
+              cause: 'HTTP ${response.statusCode}');
           nodeIndex++;
         }
       } catch (e) {
         loggerDev('Error loading image from IPFS $url', error: e);
-        NodeManager()
-            .increaseNodeErrors(NodeType.ipfsGateway, ipfsNodes[nodeIndex]);
+        NodeManager().increaseNodeErrors(
+            NodeType.ipfsGateway, ipfsNodes[nodeIndex],
+            cause: 'Exception: $e');
         nodeIndex++;
       }
     }

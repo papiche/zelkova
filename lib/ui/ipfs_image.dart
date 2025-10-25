@@ -46,7 +46,8 @@ class _IpfsImageState extends State<IpfsImage> {
   void _switchToNextUrl() {
     if (_currentNodeIndex < _ipfsNodes.length) {
       NodeManager().increaseNodeErrors(
-          NodeType.ipfsGateway, _ipfsNodes[_currentNodeIndex]);
+          NodeType.ipfsGateway, _ipfsNodes[_currentNodeIndex],
+          cause: 'Image load failed');
       _currentNodeIndex++;
       _updateUrl();
     }

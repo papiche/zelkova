@@ -1,4 +1,5 @@
 import 'dart:ui' as ui;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -10,6 +11,7 @@ import 'basic_avatar.dart';
 
 class IpfsImageProvider extends ImageProvider<IpfsImageProvider> {
   IpfsImageProvider(this.path);
+
   final String path;
 
   @override
@@ -39,13 +41,15 @@ class IpfsImageProvider extends ImageProvider<IpfsImageProvider> {
           final Uint8List imageData = response.bodyBytes;
           return await ui.instantiateImageCodec(imageData);
         } else {
-          NodeManager()
-              .increaseNodeErrors(NodeType.ipfsGateway, ipfsNodes[nodeIndex]);
+          NodeManager().increaseNodeErrors(
+              NodeType.ipfsGateway, ipfsNodes[nodeIndex],
+              cause: 'HTTP ${response.statusCode}');
           nodeIndex++;
         }
       } catch (e) {
-        NodeManager()
-            .increaseNodeErrors(NodeType.ipfsGateway, ipfsNodes[nodeIndex]);
+        NodeManager().increaseNodeErrors(
+            NodeType.ipfsGateway, ipfsNodes[nodeIndex],
+            cause: 'Exception: $e');
         nodeIndex++;
       }
     }
@@ -61,6 +65,7 @@ class IpfsImageWidget extends StatelessWidget {
     required this.width,
     required this.height,
   });
+
   final String path;
   final double width;
   final double height;

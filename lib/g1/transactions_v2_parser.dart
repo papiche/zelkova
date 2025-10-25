@@ -11,11 +11,14 @@ import 'g1_v2_helper.dart';
 Future<TransactionState> transactionsV2Parser(
   Map<String, dynamic> jsonData,
   TransactionState currentState,
-  String pubKeyRaw,
-) async {
+  String pubKeyRaw, {
+  String? cursor, // Add cursor parameter to know if it's the first page
+  double? cachedUd, // Accept cached UD from AppCubit
+}) async {
   final String accountAddress = addressFromV1PubkeyFaiSafe(pubKeyRaw);
 
-  final double currentUd = await currentUniversalDividendV2();
+  // Use cached UD if provided, otherwise fetch it
+  final double currentUd = cachedUd ?? await currentUniversalDividendV2();
 
   if (jsonData == null || jsonData.isEmpty) {
     return currentState.copyWith(
@@ -62,18 +65,47 @@ Future<TransactionState> transactionsV2Parser(
       lastChecked: DateTime.now(),
     );
   }
-
-  final double balance = (jsonData['balance'] as BigInt?)?.toDouble() ?? 0.0;
+  // final dynamic rawBalance = account['balance'];
+  final dynamic rawBalance = account['totalBalance'];
+  final double? balanceParsed =
+      rawBalance is String ? double.tryParse(rawBalance) : 0.0;
+  final double balance = balanceParsed ?? 0.0;
 
   final Map<String, dynamic>? transfersIssuedConnection =
       account['transfersIssued'] as Map<String, dynamic>?;
   final List<dynamic> transfersIssuedNodes =
       transfersIssuedConnection?['nodes'] as List<dynamic>? ?? <dynamic>[];
+  final Map<String, dynamic>? issuedPageInfo =
+      transfersIssuedConnection?['pageInfo'] as Map<String, dynamic>?;
 
   final Map<String, dynamic>? transfersReceivedConnection =
       account['transfersReceived'] as Map<String, dynamic>?;
   final List<dynamic> transfersReceivedNodes =
       transfersReceivedConnection?['nodes'] as List<dynamic>? ?? <dynamic>[];
+  final Map<String, dynamic>? receivedPageInfo =
+      transfersReceivedConnection?['pageInfo'] as Map<String, dynamic>?;
+
+  // Extract pagination info - we need both endCursors and hasNextPage flags
+  final String? issuedEndCursor = issuedPageInfo?['endCursor'] as String?;
+  final String? receivedEndCursor = receivedPageInfo?['endCursor'] as String?;
+  final bool issuedHasNextPage =
+      issuedPageInfo?['hasNextPage'] as bool? ?? false;
+  final bool receivedHasNextPage =
+      receivedPageInfo?['hasNextPage'] as bool? ?? false;
+
+  // We have more pages if either list has more pages
+  final bool hasNextPage = issuedHasNextPage || receivedHasNextPage;
+
+  // Store the endCursor - we'll use the one from the list that has more items
+  // or combine them somehow. For now, let's store both in a combined format
+  String? combinedEndCursor;
+  if (issuedEndCursor != null && receivedEndCursor != null) {
+    combinedEndCursor = '$issuedEndCursor|$receivedEndCursor';
+  } else if (issuedEndCursor != null) {
+    combinedEndCursor = '$issuedEndCursor|';
+  } else if (receivedEndCursor != null) {
+    combinedEndCursor = '|$receivedEndCursor';
+  }
 
   final List<Transaction> issuedTransactions = await _parseTransactions(
     transfersIssuedNodes,
@@ -95,10 +127,30 @@ Future<TransactionState> transactionsV2Parser(
   allTransactions
       .sort((Transaction a, Transaction b) => b.time.compareTo(a.time));
 
+  // Improved accumulation logic:
+  // - If cursor is null, it's the first page -> replace all content
+  // - If cursor is not null, it's a subsequent page -> accumulate
+  final List<Transaction> finalTransactions;
+  if (cursor == null) {
+    // First page: replace all content to start fresh
+    finalTransactions = allTransactions;
+  } else {
+    // Subsequent pages: accumulate with existing transactions
+    finalTransactions = <Transaction>[
+      ...currentState.transactions,
+      ...allTransactions,
+    ];
+    // Sort again after merging
+    finalTransactions
+        .sort((Transaction a, Transaction b) => b.time.compareTo(a.time));
+  }
+
   return currentState.copyWith(
     balance: balance,
     currentUd: currentUd,
-    transactions: allTransactions,
+    transactions: finalTransactions,
+    endCursor: combinedEndCursor,
+    hasNextPage: hasNextPage,
     lastChecked: DateTime.now(),
   );
 }

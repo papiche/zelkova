@@ -158,9 +158,15 @@ class _CardTerminalState extends State<CardTerminal> {
         label: _numbers[index],
         onPressed: () {
           vibrateIfPossible();
-          if (_numbers[index] == _decimalSep &&
-              _currentValue.contains(_decimalSep)) {
-            return;
+          // Check decimal separator only in the current number (after the last +)
+          if (_numbers[index] == _decimalSep) {
+            final int lastPlusIndex = _currentValue.lastIndexOf('+');
+            final String currentNumber = lastPlusIndex >= 0
+                ? _currentValue.substring(lastPlusIndex + 1)
+                : _currentValue;
+            if (currentNumber.contains(_decimalSep)) {
+              return;
+            }
           }
           setState(() {
             _currentValue += _numbers[index];

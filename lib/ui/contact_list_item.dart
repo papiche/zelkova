@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../data/models/contact.dart';
-import '../g1/api.dart';
+import 'contacts_cache.dart';
 import 'ui_helpers.dart';
 import 'widgets/connectivity_widget_wrapper_wrapper.dart';
 
@@ -28,7 +28,7 @@ class ContactListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Contact>(
-      future: getProfile(contact.pubKey, resize: false, complete: false),
+      future: ContactsCache().getContact(contact.pubKey),
       builder: (BuildContext context, AsyncSnapshot<Contact> snapshot) {
         Widget avatarWidget;
         Contact displayContact;

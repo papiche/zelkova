@@ -75,13 +75,22 @@ class _PayFormState extends State<PayForm> {
               G1PayAmountField(key: payAmountKey),
               const SizedBox(height: 10.0),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Expanded(
                     child: TextFormField(
                       key: _formCommentKey,
                       controller: _commentController,
+                      // In V2, allow multiline comments
+                      minLines: isV2 ? 2 : 1,
+                      maxLines: isV2 ? 5 : 1,
+                      keyboardType:
+                          isV2 ? TextInputType.multiline : TextInputType.text,
                       onChanged: (String? value) {
-                        String newText = (value ?? '').replaceAll('\n', '');
+                        // In V2, allow newlines; in V1, remove them
+                        String newText = isV2
+                            ? (value ?? '')
+                            : (value ?? '').replaceAll('\n', '');
                         // https://forum.duniter.org/t/implementation-des-commentaires-de-transaction/12289/12
                         if (isV2 && newText.length > 256) {
                           newText = newText.substring(0, 256);
@@ -101,6 +110,10 @@ class _PayFormState extends State<PayForm> {
                         labelText: tr('g1_form_pay_desc'),
                         hintText: tr('g1_form_pay_hint'),
                         border: const OutlineInputBorder(),
+                        // Add character counter for V2
+                        counterText: isV2
+                            ? '${_commentController.text.length}/256'
+                            : null,
                         suffixIcon: isV2
                             ? IconButton(
                                 icon: Icon(

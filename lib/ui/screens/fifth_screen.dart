@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:pwa_install/pwa_install.dart';
 import 'package:share_plus/share_plus.dart';
@@ -10,12 +9,8 @@ import '../../data/models/app_cubit.dart';
 import '../../data/models/app_state.dart';
 import '../../data/models/node_manager.dart';
 import '../../data/models/theme_cubit.dart';
-import '../../g1/api.dart';
-import '../../g1/currency.dart';
-import '../../g1/service_manager.dart';
 import '../../shared_prefs_helper.dart';
 import '../clipboard_helper.dart';
-import '../contacts_cache.dart';
 import '../tutorial.dart';
 import '../tutorial_keys.dart';
 import '../ui_helpers.dart';
@@ -28,6 +23,7 @@ import '../widgets/fifth_screen/import_dialog.dart';
 import '../widgets/fifth_screen/link_card.dart';
 import '../widgets/fifth_screen/node_list_card.dart';
 import '../widgets/fifth_screen/text_divider.dart';
+import '../widgets/pages/settings_page.dart';
 
 class FifthScreen extends StatefulWidget {
   const FifthScreen({super.key});
@@ -92,74 +88,19 @@ class _FifthScreenState extends State<FifthScreen> {
                       onTap: () {
                         showMyContactPage(context);
                       }),
+                  ListTile(
+                      title: Text(tr('settings_title')),
+                      leading: const Icon(Icons.settings),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute<dynamic>(
+                            builder: (BuildContext context) =>
+                                const SettingsPage(),
+                          ),
+                        );
+                      }),
                   const SizedBox(height: 15),
-                  Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: DropdownButtonFormField<Locale>(
-                        initialValue: context.locale,
-                        decoration: InputDecoration(
-                          labelText: tr('language_switch_title'),
-                          icon: const Icon(Icons.language),
-                          border: const OutlineInputBorder(),
-                        ),
-                        onChanged: (Locale? newLocale) {
-                          context.setLocale(newLocale!);
-                        },
-                        items: const <DropdownMenuItem<Locale>>[
-                          DropdownMenuItem<Locale>(
-                            value: Locale('es', 'AST'),
-                            child: Text('Asturianu'),
-                          ),
-                          DropdownMenuItem<Locale>(
-                            value: Locale('ca'),
-                            child: Text('Català'),
-                          ),
-                          DropdownMenuItem<Locale>(
-                            value: Locale('da'),
-                            child: Text('Dansk'),
-                          ),
-                          DropdownMenuItem<Locale>(
-                            value: Locale('de'),
-                            child: Text('Deutsch'),
-                          ),
-                          DropdownMenuItem<Locale>(
-                            value: Locale('en'),
-                            child: Text('English'),
-                          ),
-                          DropdownMenuItem<Locale>(
-                            value: Locale('eo'),
-                            child: Text('Esperanto'),
-                          ),
-                          DropdownMenuItem<Locale>(
-                            value: Locale('es'),
-                            child: Text('Español'),
-                          ),
-                          DropdownMenuItem<Locale>(
-                            value: Locale('eu'),
-                            child: Text('Euskara'),
-                          ),
-                          DropdownMenuItem<Locale>(
-                            value: Locale('fr'),
-                            child: Text('Français'),
-                          ),
-                          DropdownMenuItem<Locale>(
-                            value: Locale('gl'),
-                            child: Text('Galego'),
-                          ),
-                          DropdownMenuItem<Locale>(
-                            value: Locale('nl'),
-                            child: Text('Nederlands'),
-                          ),
-                          DropdownMenuItem<Locale>(
-                            value: Locale('it'),
-                            child: Text('Italiano'),
-                          ),
-                          DropdownMenuItem<Locale>(
-                            value: Locale('pt'),
-                            child: Text('Português'),
-                          ),
-                        ],
-                      )),
                   const TextDivider(text: 'key_tools_title'),
                   const SizedBox(height: 20),
                   Wrap(
@@ -212,42 +153,6 @@ class _FifthScreenState extends State<FifthScreen> {
                               showSelectImportMethodDialog(context, 0)),
                     ],
                   ),
-                  SwitchListTile(
-                      title: Text(tr('expert_mode')),
-                      value: state.expertMode,
-                      onChanged: (bool expert) {
-                        context.read<AppCubit>().setExpertMode(expert);
-                      }),
-                  if (state.expertMode)
-                    SwitchListTile(
-                        title: Text(tr('display_amounts_du')),
-                        value: state.currency == Currency.DU,
-                        onChanged: (bool useDU) {
-                          if (!useDU) {
-                            context.read<AppCubit>().setG1Currency();
-                          } else {
-                            context.read<AppCubit>().setDUCurrency();
-                          }
-                        }),
-                  if (state.expertMode)
-                    SwitchListTile(
-                        title: const Text('Test v2 (ĞTest)'),
-                        value: state.v2mode,
-                        onChanged: (bool v2mode) {
-                          context.read<AppCubit>().setV2Mode(v2mode);
-                          SharedPreferencesHelper.configure(useV2: v2mode);
-                          if (v2mode) {
-                            SharedPreferencesHelper()
-                                .init(onlyV2: state.v2mode);
-                            ContactsCache().clear();
-                          }
-                          GetIt.instance<ServiceManager>()
-                              .updateService(v2mode);
-                          if (v2mode) {
-                            _showTestNetworkDialog(context);
-                          }
-                          fetchNodesIfNotReady(v2Only: v2mode);
-                        }),
                   if (state.expertMode)
                     const TextDivider(text: 'technical_info_title'),
                   if (state.expertMode &&
@@ -283,23 +188,5 @@ class _FifthScreenState extends State<FifthScreen> {
         );
       });
     });
-  }
-
-  void _showTestNetworkDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(tr('test_network_dialog_title')),
-          content: Text(tr('test_network_dialog_message')),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(tr('ok')),
-            ),
-          ],
-        );
-      },
-    );
   }
 }

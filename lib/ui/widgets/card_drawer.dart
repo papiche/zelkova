@@ -74,19 +74,19 @@ class _CardDrawerState extends State<CardDrawer> {
                 onTap: () => showBackupReminderDialog(context),
               ),
             const CardStack(),
-            if (context.read<AppCubit>().isV2)
-              ListTile(
-                leading: const Icon(Icons.settings),
-                title: Text(tr('settings_title')),
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return const SettingsPage();
-                    },
-                  );
-                },
-              ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: Text(tr('settings_title')),
+              onTap: () {
+                Navigator.pop(context); // Close drawer first
+                Navigator.push(
+                  context,
+                  MaterialPageRoute<dynamic>(
+                    builder: (BuildContext context) => const SettingsPage(),
+                  ),
+                );
+              },
+            ),
             if (inDevelopment)
               ListTile(
                 leading: const Icon(Icons.build),

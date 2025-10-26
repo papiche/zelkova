@@ -31,6 +31,7 @@ class _PayFormState extends State<PayForm> {
   );
   final GlobalKey<FormFieldState<String>> _formCommentKey =
       GlobalKey<FormFieldState<String>>();
+  final GlobalKey _emojiPickerKey = GlobalKey();
   final TextEditingController _commentController = TextEditingController();
   final ValueNotifier<String> _feedbackNotifier = ValueNotifier<String>('');
   bool _showEmojiPicker = false;
@@ -126,6 +127,24 @@ class _PayFormState extends State<PayForm> {
                                   setState(() {
                                     _showEmojiPicker = !_showEmojiPicker;
                                   });
+                                  // Scroll to emoji picker after opening it
+                                  if (_showEmojiPicker) {
+                                    Future<void>.delayed(
+                                      const Duration(milliseconds: 300),
+                                      () {
+                                        if (_emojiPickerKey.currentContext !=
+                                            null) {
+                                          Scrollable.ensureVisible(
+                                            _emojiPickerKey.currentContext!,
+                                            duration: const Duration(
+                                                milliseconds: 300),
+                                            curve: Curves.easeInOut,
+                                            alignment: 0.5,
+                                          );
+                                        }
+                                      },
+                                    );
+                                  }
                                 },
                                 tooltip: _showEmojiPicker
                                     ? tr('hide_emoji_keyboard')
@@ -204,6 +223,7 @@ class _PayFormState extends State<PayForm> {
       return const SizedBox.shrink();
     }
     return LayoutBuilder(
+      key: _emojiPickerKey,
       builder: (BuildContext context, BoxConstraints constraints) {
         // Use 30% of available screen height, with a minimum of 200 and maximum of 300
         final double screenHeight = MediaQuery.of(context).size.height;

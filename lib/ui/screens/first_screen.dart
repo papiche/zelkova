@@ -123,6 +123,15 @@ class _FirstScreenState extends State<FirstScreen> {
                               ? account.address
                               : account.pubKey;
 
+                          // Calculate expandedHeight based on card aspect ratio
+                          // Card aspect ratio is 1.58, so height = width / 1.58
+                          // Add padding (top: 80, bottom: 16) = 96
+                          final double cardWidth = constraints.maxWidth -
+                              32; // minus horizontal padding
+                          final double cardHeight = cardWidth / 1.58;
+                          final double expandedHeight =
+                              isLargeScreen ? 0 : (cardHeight + 96);
+
                           return CustomScrollView(
                             controller: _scrollController,
                             slivers: <Widget>[
@@ -130,7 +139,7 @@ class _FirstScreenState extends State<FirstScreen> {
                                 title: _isCollapsed
                                     ? Container()
                                     : Text(tr('credit_card_title')),
-                                expandedHeight: isLargeScreen ? 0 : 240,
+                                expandedHeight: expandedHeight,
                                 // floating: false,
                                 pinned: true,
                                 backgroundColor:
@@ -204,6 +213,10 @@ class _FirstScreenState extends State<FirstScreen> {
                                               key: creditCardKey,
                                               account: prefsHelper
                                                   .getCurrentAccount(),
+                                              isV2Mode: context
+                                                  .read<AppCubit>()
+                                                  .state
+                                                  .v2mode,
                                             ),
                                           ),
                                   ),
@@ -215,7 +228,8 @@ class _FirstScreenState extends State<FirstScreen> {
                                 sliver: SliverList(
                                   delegate: SliverChildListDelegate(
                                     <Widget>[
-                                      if (isLargeScreen)
+                                      if (isLargeScreen) ...<Widget>[
+                                        const SizedBox(height: 20),
                                         Row(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -226,6 +240,10 @@ class _FirstScreenState extends State<FirstScreen> {
                                                 key: creditCardKey,
                                                 account: prefsHelper
                                                     .getCurrentAccount(),
+                                                isV2Mode: context
+                                                    .read<AppCubit>()
+                                                    .state
+                                                    .v2mode,
                                               ),
                                             ),
                                             const SizedBox(width: 20),
@@ -256,8 +274,8 @@ class _FirstScreenState extends State<FirstScreen> {
                                               ),
                                             ),
                                           ],
-                                        )
-                                      else ...<Widget>[
+                                        ),
+                                      ] else ...<Widget>[
                                         const SizedBox(height: 8),
                                         Padding(
                                           padding: const EdgeInsets.symmetric(

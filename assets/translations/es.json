@@ -245,6 +245,8 @@
   "cesium_secret_phrase": "Frase secreta",
   "cesium_password": "Contraseña",
   "accept": "ACEPTAR",
+  "validating_credentials": "Validando credenciales...",
+  "ewif_decryption_slow": "Desencriptando archivo EWIF (puede tardar unos segundos)",
   "incorrect_passwords": "Contraseñas incorrectas",
   "card_name_changed": "El nombre de tu tarjeta ha sido actualizado. Recuerda que este nombre es público y permite a otr@s encontrarte",
   "card_name_changed_failed": "No se pudo actualizar el nombre de tu tarjeta",

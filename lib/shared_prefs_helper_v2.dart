@@ -103,14 +103,17 @@ class SharedPreferencesHelperV2
       final String seed = _prefs.getString(StorageKeys.seedKey)!;
       final String pubKey = _prefs.getString(StorageKeys.pubKey)!;
 
-      accounts.add(StoredAccount(
-        pubKey: pubKey,
-        address: addressFromV1Pubkey(pubKey),
-        type: AccountType.v1PasswordLess,
-        seed: seedFromString(seed),
-        contact: Contact.withPubKey(pubKey: pubKey, name: ''),
-        theme: SharedPreferencesHelper().randomTheme(),
-      ));
+      // Check for duplicates before adding
+      if (!_accountExists(pubKey)) {
+        accounts.add(StoredAccount(
+          pubKey: pubKey,
+          address: addressFromV1Pubkey(pubKey),
+          type: AccountType.v1PasswordLess,
+          seed: seedFromString(seed),
+          contact: Contact.withPubKey(pubKey: pubKey, name: ''),
+          theme: SharedPreferencesHelper().randomTheme(),
+        ));
+      }
       await _prefs.remove(StorageKeys.seedKey);
       await _prefs.remove(StorageKeys.pubKey);
       await _saveAccounts();
@@ -128,6 +131,9 @@ class SharedPreferencesHelperV2
     for (final dynamic e in data) {
       accounts.add(StoredAccount.fromJson(e as Map<String, dynamic>));
     }
+
+    // Deduplicate accounts after loading (safety measure)
+    _deduplicateAccounts();
   }
 
   Future<void> _loadCurrentIndex() async {
@@ -151,9 +157,8 @@ class SharedPreferencesHelperV2
       for (final dynamic e in list) {
         final LegacyWallet lw =
             LegacyWallet.fromJson(e as Map<String, dynamic>);
-        if (accounts
-            .where((StoredAccount a) => a.pubKey == lw.pubKey)
-            .isNotEmpty) {
+        // Use normalized comparison to prevent duplicates
+        if (_accountExists(lw.pubKey)) {
           continue;
         }
         accounts.add(StoredAccount(
@@ -168,6 +173,40 @@ class SharedPreferencesHelperV2
         ));
       }
       await _saveAccounts();
+    }
+  }
+
+  /// Check if an account with the given pubKey already exists.
+  /// Normalizes pubKey by extracting the key without checksum for comparison.
+  bool _accountExists(String pubKey) {
+    final String normalized = extractPublicKey(pubKey);
+    return accounts.any(
+      (StoredAccount acc) => extractPublicKey(acc.pubKey) == normalized,
+    );
+  }
+
+  /// Remove duplicate accounts based on normalized pubKey comparison.
+  /// Keeps the first occurrence of each unique account.
+  void _deduplicateAccounts() {
+    final Set<String> seen = <String>{};
+    final List<StoredAccount> unique = <StoredAccount>[];
+
+    for (final StoredAccount acc in accounts) {
+      final String normalized = extractPublicKey(acc.pubKey);
+      if (!seen.contains(normalized)) {
+        seen.add(normalized);
+        unique.add(acc);
+      } else {
+        logger(
+            'Warning: Removing duplicate account with pubKey: ${acc.pubKey}');
+      }
+    }
+
+    if (unique.length != accounts.length) {
+      accounts.clear();
+      accounts.addAll(unique);
+      logger(
+          'Deduplication: Removed ${accounts.length - unique.length} duplicate(s)');
     }
   }
 
@@ -286,7 +325,7 @@ class SharedPreferencesHelperV2
       contact: Contact.withAddress(address: kp.address),
       theme: SharedPreferencesHelper().randomTheme(),
     );
-    _onAccountAdded(account);
+    await _onAccountAdded(account);
     return account;
   }
 
@@ -312,7 +351,7 @@ class SharedPreferencesHelperV2
       contact: Contact.withAddress(address: kp.address),
       theme: SharedPreferencesHelper().randomTheme(),
     );
-    _onAccountAdded(account);
+    await _onAccountAdded(account);
     return account;
   }
 
@@ -347,7 +386,9 @@ class SharedPreferencesHelperV2
 
   @override
   void addLegacyWallet(LegacyWallet card) {
-    if (has(card.pubKey)) {
+    // Double-check with normalized comparison
+    if (_accountExists(card.pubKey)) {
+      logger('Skipping duplicate wallet: ${card.pubKey}');
       return;
     }
     final bool isVolatile = card.seed == '';
@@ -402,9 +443,12 @@ class SharedPreferencesHelperV2
     final String pubKey = v1pubkeyFromAddress(address);
     logger('Importing wallet with pubKey: $pubKey and address: $address');
 
-    if (has(pubKey)) {
+    // Use normalized comparison to detect duplicates
+    if (_accountExists(pubKey)) {
+      logger('Wallet already exists: $pubKey');
       throw WalletAlreadyExistsException(pubKey);
     }
+
     // Store seed depending on type
     Uint8List seedBytes;
     if (type == AccountType.v2PasswordProtected) {
@@ -437,9 +481,14 @@ class SharedPreferencesHelperV2
   }
 
   Future<void> _onAccountAdded(StoredAccount acc) async {
+    // Final safety check before adding
+    if (_accountExists(acc.pubKey)) {
+      logger('ERROR: Attempted to add duplicate account: ${acc.pubKey}');
+      throw WalletAlreadyExistsException(acc.pubKey);
+    }
     accounts.add(acc);
     await _saveAccounts();
-    _setCurrentWalletIndex(accounts.length - 1);
+    await _setCurrentWalletIndex(accounts.length - 1);
     notifyListeners();
   }
 

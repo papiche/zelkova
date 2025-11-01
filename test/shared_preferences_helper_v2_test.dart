@@ -492,4 +492,241 @@ void main() {
     final KeyPair kp = await helper.getKeyPair();
     expect(acc.address, kp.address);
   });
+
+  group('account duplication prevention', () {
+    test('prevents duplicate accounts with same pubKey', () async {
+      final SharedPreferencesHelper h = SharedPreferencesHelper();
+      await h.init(onlyV2: true);
+      h.accountsClear();
+
+      final Uint8List seed = generateUintSeed();
+      final CesiumWallet w = CesiumWallet.fromSeed(seed);
+
+      // Add first wallet
+      h.addLegacyWallet(
+          h.buildLegacyWallet(seed: seedToString(seed), pubKey: w.pubkey));
+      expect(h.length, 1);
+
+      // Try to add same wallet again
+      h.addLegacyWallet(
+          h.buildLegacyWallet(seed: seedToString(seed), pubKey: w.pubkey));
+      expect(h.length, 1, reason: 'Should not duplicate wallet');
+    });
+
+    test('prevents duplicate accounts with pubKey including checksum',
+        () async {
+      final SharedPreferencesHelper h = SharedPreferencesHelper();
+      await h.init(onlyV2: true);
+      h.accountsClear();
+
+      final Uint8List seed = generateUintSeed();
+      final CesiumWallet w = CesiumWallet.fromSeed(seed);
+
+      // Add first wallet without checksum
+      h.addLegacyWallet(
+          h.buildLegacyWallet(seed: seedToString(seed), pubKey: w.pubkey));
+      expect(h.length, 1);
+
+      // Try to add same wallet with checksum in pubKey
+      final String pubKeyWithChecksum = '${w.pubkey}:${pkChecksum(w.pubkey)}';
+      h.addLegacyWallet(h.buildLegacyWallet(
+          seed: seedToString(seed), pubKey: pubKeyWithChecksum));
+      expect(h.length, 1,
+          reason: 'Should not duplicate wallet with checksum variant');
+    });
+
+    test('prevents duplicate on importWalletFromMnemonic', () async {
+      final SharedPreferencesHelper h = SharedPreferencesHelper();
+      await h.init(onlyV2: true);
+      h.accountsClear();
+
+      const String mnemonic =
+          'legal winner thank year wave sausage worth useful legal winner thank yellow';
+
+      // Import first time
+      await h.importWalletFromMnemonic(mnemonic, AccountType.v2PasswordLess);
+      expect(h.length, 1);
+
+      // Try to import again - should throw
+      expect(
+        () => h.importWalletFromMnemonic(mnemonic, AccountType.v2PasswordLess),
+        throwsA(isA<WalletAlreadyExistsException>()),
+        reason: 'Should throw WalletAlreadyExistsException on duplicate import',
+      );
+      expect(h.length, 1);
+    });
+
+    test('deduplicates accounts on load from storage', () async {
+      final SharedPreferencesHelper h = SharedPreferencesHelper();
+      await h.init(onlyV2: true);
+      h.accountsClear();
+
+      // Create duplicate accounts manually
+      final Uint8List seed = generateUintSeed();
+      final CesiumWallet w = CesiumWallet.fromSeed(seed);
+
+      final StoredAccount acc1 = StoredAccount(
+        pubKey: w.pubkey,
+        address: addressFromV1Pubkey(w.pubkey),
+        seed: seed,
+        type: AccountType.v1PasswordLess,
+        contact: Contact.withPubKey(pubKey: w.pubkey, name: 'Account 1'),
+        theme: WalletThemes.theme1,
+      );
+
+      final StoredAccount acc2 = StoredAccount(
+        pubKey: w.pubkey,
+        address: addressFromV1Pubkey(w.pubkey),
+        seed: seed,
+        type: AccountType.v1PasswordLess,
+        contact: Contact.withPubKey(pubKey: w.pubkey, name: 'Account 2'),
+        theme: WalletThemes.theme2,
+      );
+
+      // Manually add duplicates (bypassing normal checks)
+      h.accounts.add(acc1);
+      h.accounts.add(acc2);
+      expect(h.length, 2);
+
+      // Save and reload
+      await h.saveLegacyWallets();
+      final SharedPreferencesHelper reloaded = SharedPreferencesHelper();
+      await reloaded.init(onlyV2: true);
+
+      // Should be deduplicated
+      expect(reloaded.length, 1,
+          reason: 'Should deduplicate on load from storage');
+    });
+
+    test('prevents migration from creating duplicates', () async {
+      final Uint8List seed = generateUintSeed();
+      final CesiumWallet w = CesiumWallet.fromSeed(seed);
+
+      // Set up legacy data (v1 format)
+      SharedPreferences.setMockInitialValues(<String, Object>{
+        'seed': seedToString(seed),
+        'pub': w.pubkey,
+      });
+
+      // Initialize - will migrate beta account
+      final SharedPreferencesHelper h1 = SharedPreferencesHelper();
+      await h1.init(onlyV2: true);
+      expect(h1.length, 1);
+
+      // Initialize again - should not duplicate the migrated account
+      final SharedPreferencesHelper h2 = SharedPreferencesHelper();
+      await h2.init(onlyV2: true);
+      expect(h2.length, 1, reason: 'Should not duplicate migrated account');
+    });
+
+    test('prevents legacy migration from creating duplicates', () async {
+      final SharedPreferencesHelper h = SharedPreferencesHelper();
+      await h.init(onlyV2: true);
+      h.accountsClear();
+
+      final Uint8List seed1 = generateUintSeed();
+      final CesiumWallet w1 = CesiumWallet.fromSeed(seed1);
+
+      final Uint8List seed2 = generateUintSeed();
+      final CesiumWallet w2 = CesiumWallet.fromSeed(seed2);
+
+      // Add first wallet
+      h.addLegacyWallet(
+          h.buildLegacyWallet(seed: seedToString(seed1), pubKey: w1.pubkey));
+
+      // Try to add duplicate of first wallet
+      h.addLegacyWallet(
+          h.buildLegacyWallet(seed: seedToString(seed1), pubKey: w1.pubkey));
+
+      // Add second unique wallet
+      h.addLegacyWallet(
+          h.buildLegacyWallet(seed: seedToString(seed2), pubKey: w2.pubkey));
+
+      // Should only have 2 accounts (duplicate prevented)
+      expect(h.length, 2,
+          reason: 'Should prevent duplicates (expected 2, got ${h.length})');
+
+      // Verify the accounts
+      final List<String> pubKeys = h.publicKeys;
+      expect(pubKeys.contains(w1.pubkey), true);
+      expect(pubKeys.contains(w2.pubkey), true);
+    });
+
+    test('no account loss during deduplication', () async {
+      final SharedPreferencesHelper h = SharedPreferencesHelper();
+      await h.init(onlyV2: true);
+      h.accountsClear();
+
+      // Create 3 unique accounts
+      final List<Uint8List> seeds = <Uint8List>[
+        generateUintSeed(),
+        generateUintSeed(),
+        generateUintSeed(),
+      ];
+
+      for (final Uint8List seed in seeds) {
+        final CesiumWallet w = CesiumWallet.fromSeed(seed);
+        h.addLegacyWallet(
+            h.buildLegacyWallet(seed: seedToString(seed), pubKey: w.pubkey));
+      }
+
+      expect(h.length, 3, reason: 'Should have 3 unique accounts');
+
+      // Save and reload
+      await h.saveLegacyWallets();
+      final SharedPreferencesHelper reloaded = SharedPreferencesHelper();
+      await reloaded.init(onlyV2: true);
+
+      // All accounts should be preserved
+      expect(reloaded.length, 3,
+          reason: 'All unique accounts should be preserved after reload');
+    });
+
+    test('color theme is preserved for first occurrence when deduplicating',
+        () async {
+      final SharedPreferencesHelper h = SharedPreferencesHelper();
+      await h.init(onlyV2: true);
+      h.accountsClear();
+
+      final Uint8List seed = generateUintSeed();
+      final CesiumWallet w = CesiumWallet.fromSeed(seed);
+
+      // Add first account with specific theme
+      final StoredAccount acc1 = StoredAccount(
+        pubKey: w.pubkey,
+        address: addressFromV1Pubkey(w.pubkey),
+        seed: seed,
+        type: AccountType.v1PasswordLess,
+        contact: Contact.withPubKey(pubKey: w.pubkey, name: 'First'),
+        theme: WalletThemes.theme3,
+      );
+
+      h.accounts.add(acc1);
+
+      // Manually add duplicate with different theme
+      final StoredAccount acc2 = StoredAccount(
+        pubKey: w.pubkey,
+        address: addressFromV1Pubkey(w.pubkey),
+        seed: seed,
+        type: AccountType.v1PasswordLess,
+        contact: Contact.withPubKey(pubKey: w.pubkey, name: 'Second'),
+        theme: WalletThemes.theme5,
+      );
+
+      h.accounts.add(acc2);
+      await h.saveLegacyWallets();
+
+      // Reload and check
+      final SharedPreferencesHelper reloaded = SharedPreferencesHelper();
+      await reloaded.init(onlyV2: true);
+
+      expect(reloaded.length, 1);
+      final StoredAccount preserved = reloaded.accounts.first;
+      // Compare theme by color properties
+      expect(preserved.theme.primaryColor, WalletThemes.theme3.primaryColor,
+          reason: 'Should preserve theme from first occurrence');
+      expect(preserved.contact.name, 'First',
+          reason: 'Should preserve name from first occurrence');
+    });
+  });
 }

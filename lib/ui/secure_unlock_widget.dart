@@ -20,11 +20,13 @@ class SecureUnlockWidget extends StatefulWidget {
     required this.onUnlocked,
     this.isSetup = false,
     this.isChange = false,
+    this.customMessage,
   });
 
   final void Function(Uint8List key) onUnlocked;
   final bool isSetup;
   final bool isChange;
+  final String? customMessage;
 
   @override
   State<SecureUnlockWidget> createState() => _SecureUnlockWidgetState();
@@ -394,6 +396,30 @@ class _SecureUnlockWidgetState extends State<SecureUnlockWidget> {
                 padding: const EdgeInsets.all(24.0),
                 child: Column(
                   children: <Widget>[
+                    if (widget.customMessage != null)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16.0),
+                        child: Card(
+                          color: Colors.blue[50],
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Row(
+                              children: <Widget>[
+                                const Icon(Icons.info_outline,
+                                    color: Colors.blue),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Text(
+                                    widget.customMessage!,
+                                    style:
+                                        const TextStyle(color: Colors.black87),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     if (_useBiometric && !widget.isSetup && !widget.isChange)
                       Column(
                         children: <Widget>[
@@ -413,7 +439,10 @@ class _SecureUnlockWidgetState extends State<SecureUnlockWidget> {
   }
 }
 
-Future<Uint8List?> requestSecureUnlock({bool isSetup = false}) async {
+Future<Uint8List?> requestSecureUnlock({
+  bool isSetup = false,
+  String? customMessage,
+}) async {
   final NavigatorState? navigator = GinkgoApp.navigatorKey.currentState;
   if (navigator == null) {
     return null;
@@ -423,6 +452,7 @@ Future<Uint8List?> requestSecureUnlock({bool isSetup = false}) async {
       fullscreenDialog: true,
       builder: (_) => SecureUnlockWidget(
         isSetup: isSetup,
+        customMessage: customMessage,
         onUnlocked: (Uint8List key) {
           navigator.pop(key);
         },

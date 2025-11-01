@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../../../data/models/app_cubit.dart';
 import '../../../data/models/stored_account.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../../storage_keys.dart';
@@ -100,9 +102,11 @@ class _AuthenticationSettingsPageState
                   _updateBiometricPreference(value);
                 },
               ),
-            if (inDevelopment) ...<Widget>[
+            if (context.read<AppCubit>().isExpertMode) ...<Widget>[
               const SizedBox(height: 20),
               _walletStatsWidget(),
+            ],
+            if (inDevelopment) ...<Widget>[
               const SizedBox(height: 20),
               ElevatedButton.icon(
                   onPressed: () => _storage.deleteAll(),
@@ -125,6 +129,21 @@ class _AuthenticationSettingsPageState
         .length;
     final int withPass = total - noPass;
     final bool isPasswordSet = _hasUnlockMethod;
+    final bool isSecureStorageUnlocked = helper.isSecureStorageUnlocked();
+
+    // Count accounts by type
+    final int v1PasswordLess = helper.accounts
+        .where((StoredAccount w) => w.type == AccountType.v1PasswordLess)
+        .length;
+    final int v1PasswordProtected = helper.accounts
+        .where((StoredAccount w) => w.type == AccountType.v1PasswordProtected)
+        .length;
+    final int v2PasswordLess = helper.accounts
+        .where((StoredAccount w) => w.type == AccountType.v2PasswordLess)
+        .length;
+    final int v2PasswordProtected = helper.accounts
+        .where((StoredAccount w) => w.type == AccountType.v2PasswordProtected)
+        .length;
 
     return Column(
       children: <Widget>[
@@ -135,8 +154,18 @@ class _AuthenticationSettingsPageState
             .tr(namedArgs: <String, String>{'count': noPass.toString()})),
         Text('auth_dev_stats_withpass'
             .tr(namedArgs: <String, String>{'count': withPass.toString()})),
+        const SizedBox(height: 10),
+        Text('Account types:', style: Theme.of(context).textTheme.titleSmall),
+        Text('v1PasswordLess: $v1PasswordLess'),
+        Text('v1PasswordProtected: $v1PasswordProtected'),
+        Text('v2PasswordLess: $v2PasswordLess'),
+        Text('v2PasswordProtected: $v2PasswordProtected'),
+        const SizedBox(height: 10),
         Text("Password or pattern setted: ${isPasswordSet ? 'yes' : 'no'}"),
-        Text('Is locked in shared prefs: ${helper.isLocked}'),
+        Text(
+            'Current wallet locked: ${helper.isLocked() ? '🔒 yes' : '🔓 no'}'),
+        Text(
+            'Secure storage locked: ${!isSecureStorageUnlocked ? '🔒 yes' : '🔓 no'}'),
       ],
     );
   }

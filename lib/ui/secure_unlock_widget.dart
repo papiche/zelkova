@@ -11,6 +11,7 @@ import '../main.dart';
 import '../secure_crypto_helper.dart';
 import '../shared_prefs_helper.dart';
 import '../storage_keys.dart';
+import 'widgets/cesium_auth_dialog.dart';
 import 'widgets/password_field.dart';
 
 class SecureUnlockWidget extends StatefulWidget {
@@ -496,4 +497,14 @@ Future<void> requestUnlockOrSetupAndThenAddWallet(
     );
     onAuth(key);
   }
+}
+
+Future<bool> walletAuth(BuildContext context) async {
+  bool hasPass = false;
+  if (SharedPreferencesHelper().getCurrentAccount().type.isV1)
+    hasPass = await walletV1Auth(context);
+  else {
+    hasPass = await walletV2Auth();
+  }
+  return hasPass;
 }

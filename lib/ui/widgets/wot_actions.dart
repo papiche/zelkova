@@ -8,7 +8,7 @@ import '../../data/models/identity_status.dart';
 import '../../g1/duniter_endpoint_helper.dart';
 import '../../g1/sign_and_send.dart';
 import '../logger.dart';
-import 'cesium_auth_dialog.dart';
+import '../secure_unlock_widget.dart';
 import 'wot_menu_action.dart';
 
 List<WotMenuAction> getWotMenuActions(
@@ -200,7 +200,7 @@ Future<SignAndSendResult> _executeIfAuthenticated(
   BuildContext context,
   Future<SignAndSendResult> Function() action,
 ) async {
-  final bool hasPass = await walletV1Auth(context);
+  final bool hasPass = await walletAuth(context);
   if (!hasPass) {
     if (!context.mounted) {
       return _returnAuthFailed();

@@ -29,7 +29,6 @@ import 'contacts_cache.dart';
 import 'logger.dart';
 import 'secure_unlock_widget.dart';
 import 'ui_helpers.dart';
-import 'widgets/cesium_auth_dialog.dart';
 import 'widgets/connectivity_widget_wrapper_wrapper.dart';
 import 'widgets/default_progress_dialog.dart';
 
@@ -44,12 +43,7 @@ Future<bool> payWithRetry(
     bool useBMA = false}) async {
   assert(amount > 0);
   final bool isToMultiple = recipients.length > 1;
-  bool hasPass;
-  if (SharedPreferencesHelper().getCurrentAccount().type.isV1)
-    hasPass = await walletV1Auth(context);
-  else {
-    hasPass = await walletV2Auth();
-  }
+  final bool hasPass = await walletAuth(context);
   if (hasPass) {
     if (context.mounted) {
       final MultiWalletTransactionCubit txCubit =

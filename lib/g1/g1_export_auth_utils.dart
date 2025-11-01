@@ -128,7 +128,7 @@ Future<CesiumWallet> parseKeyFile(String fileContent,
 Future<CesiumWallet> _promptPasswordForEwif(
     BuildContext context, String fileContent, RegExp dataRegExp) async {
   final TextEditingController passwordController = TextEditingController();
-  final CesiumWallet? wallet = await showDialog<CesiumWallet>(
+  final String? password = await showDialog<String>(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
@@ -140,6 +140,11 @@ Future<CesiumWallet> _promptPasswordForEwif(
             labelText: tr('password'),
             hintText: tr('password_hint'),
           ),
+          onSubmitted: (String value) {
+            if (value.trim().isNotEmpty) {
+              Navigator.of(context).pop(value.trim());
+            }
+          },
         ),
         actions: <Widget>[
           TextButton(
@@ -148,8 +153,8 @@ Future<CesiumWallet> _promptPasswordForEwif(
           ),
           TextButton(
             onPressed: () {
-              final String password = passwordController.text.trim();
-              if (password.isEmpty) {
+              final String pwd = passwordController.text.trim();
+              if (pwd.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(tr('password_empty_error')),
@@ -158,18 +163,7 @@ Future<CesiumWallet> _promptPasswordForEwif(
                 );
                 return;
               }
-              try {
-                final CesiumWallet wallet =
-                    _parseEwif(fileContent, password, dataRegExp);
-                Navigator.of(context).pop(wallet);
-              } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(tr('ewif_parse_error')),
-                    backgroundColor: Colors.red,
-                  ),
-                );
-              }
+              Navigator.of(context).pop(pwd);
             },
             child: Text(tr('ok')),
           ),
@@ -178,11 +172,59 @@ Future<CesiumWallet> _promptPasswordForEwif(
     },
   );
 
-  if (wallet == null) {
+  if (password == null || password.isEmpty) {
     throw const FormatException('EWIF file parsing was cancelled.');
   }
 
-  return wallet;
+  // Show loading dialog during slow EWIF decryption
+  if (!context.mounted) {
+    throw const FormatException('Context not mounted');
+  }
+
+  // Show progress dialog
+  showDialog<void>(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return PopScope(
+        canPop: false,
+        child: AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              const CircularProgressIndicator(),
+              const SizedBox(height: 16),
+              Text(tr('validating_credentials')),
+              const SizedBox(height: 8),
+              Text(
+                tr('ewif_decryption_slow'),
+                style: Theme.of(context).textTheme.bodySmall,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+
+  try {
+    // Allow UI to update with progress dialog
+    await Future<void>.delayed(const Duration(milliseconds: 100));
+
+    final CesiumWallet wallet = _parseEwif(fileContent, password, dataRegExp);
+
+    if (context.mounted) {
+      Navigator.of(context).pop(); // Close progress dialog
+    }
+
+    return wallet;
+  } catch (e) {
+    if (context.mounted) {
+      Navigator.of(context).pop(); // Close progress dialog
+    }
+    rethrow;
+  }
 }
 
 CesiumWallet _parsePubSec(

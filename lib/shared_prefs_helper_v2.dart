@@ -57,6 +57,12 @@ class SharedPreferencesHelperV2
     notifyListeners();
   }
 
+  /// Returns true if the secure storage is unlocked (password key is available)
+  @override
+  bool isSecureStorageUnlocked() {
+    return _passwordKey != null && _passwordKey!.isNotEmpty;
+  }
+
   /// Ensures a non-empty password key is available:
   /// 1) use provided
   /// 2) use cached _passwordKey

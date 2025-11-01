@@ -92,6 +92,8 @@ abstract class SharedPreferencesHelperDelegate {
   Future<void> refreshWalletsInfo();
 
   void removeCesiumVolatileCard(CesiumWallet? wallet);
+
+  bool isSecureStorageUnlocked();
 }
 
 class SharedPreferencesHelper with ChangeNotifier {
@@ -287,6 +289,8 @@ class SharedPreferencesHelper with ChangeNotifier {
       _d.reEncryptAllProtectedAccounts(oldKey: oldKey, newKey: newKey);
 
   Future<void> refreshWalletsInfo() => _d.refreshWalletsInfo();
+
+  bool isSecureStorageUnlocked() => _d.isSecureStorageUnlocked();
 
   @override
   void notifyListeners() {

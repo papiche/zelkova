@@ -309,4 +309,10 @@ class SharedPreferencesHelperV1
       });
     }
   }
+
+  @override
+  bool isSecureStorageUnlocked() {
+    // V1 doesn't use secure storage encryption, so it's always "unlocked"
+    return true;
+  }
 }

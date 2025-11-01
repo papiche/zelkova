@@ -187,15 +187,19 @@ class _ImportDialogState extends State<ImportDialog> {
                                     keyEncrypted, pattern.join());
                             try {
                               final dynamic cesiumCards = keys['cesiumCards'];
+                              final dynamic v2Wallets = keys['v2Wallets'];
                               final List<dynamic>? contacts =
                                   keys['contacts'] as List<dynamic>?;
                               importContacts(contacts, context);
+
+                              int imported = 0;
+                              final List<String> skipped = <String>[];
+
+                              // Import V1 wallets
                               if (cesiumCards != null) {
                                 final List<dynamic> cesiumCardList =
                                     jsonDecode(cesiumCards as String)
                                         as List<dynamic>;
-                                // ignore: avoid_function_literals_in_foreach_calls
-                                int imported = 0;
                                 for (final dynamic cesiumCard
                                     in cesiumCardList) {
                                   final bool result = importWalletToSharedPrefs(
@@ -203,38 +207,85 @@ class _ImportDialogState extends State<ImportDialog> {
                                       cesiumCard as Map<String, dynamic>);
                                   if (result) {
                                     imported += 1;
+                                  } else {
+                                    final String name =
+                                        cesiumCard['name'] as String? ??
+                                            cesiumCard['pubKey'] as String? ??
+                                            'Unknown';
+                                    skipped.add(name);
                                   }
                                 }
-                                c.replaceSnackbar(
-                                  content: Text(
-                                    imported == 0
-                                        ? tr('no_wallets_imported')
-                                        : tr('wallets_imported',
-                                            namedArgs: <String, String>{
-                                                'number': imported.toString()
-                                              }),
-                                    style: TextStyle(
-                                        color: imported == 0
-                                            ? Colors.red
-                                            : Colors.white),
-                                  ),
-                                );
-                                Navigator.of(context).pop(true);
-                                return;
-                              } else {
-                                importWalletToSharedPrefs(context, keys);
                               }
+
+                              // Import V2 wallets
+                              if (v2Wallets != null) {
+                                final List<dynamic> v2WalletList =
+                                    jsonDecode(v2Wallets as String)
+                                        as List<dynamic>;
+                                for (final dynamic v2Wallet in v2WalletList) {
+                                  if (!mounted) {
+                                    return;
+                                  }
+                                  final bool result =
+                                      await importV2WalletToSharedPrefs(context,
+                                          v2Wallet as Map<String, dynamic>);
+                                  if (result) {
+                                    imported += 1;
+                                  } else {
+                                    final String name =
+                                        v2Wallet['name'] as String? ??
+                                            v2Wallet['pubKey'] as String? ??
+                                            'Unknown';
+                                    skipped.add(name);
+                                  }
+                                }
+                              }
+
+                              if (!context.mounted) {
+                                return;
+                              }
+                              // Fallback for single wallet import (old format)
+                              if (cesiumCards == null && v2Wallets == null) {
+                                importWalletToSharedPrefs(context, keys);
+                                imported = 1;
+                              }
+
                               if (!mounted) {
+                                return;
+                              }
+
+                              String message = imported == 0
+                                  ? tr('no_wallets_imported')
+                                  : tr('wallets_imported',
+                                      namedArgs: <String, String>{
+                                          'number': imported.toString()
+                                        });
+
+                              if (skipped.isNotEmpty) {
+                                message += '\n${tr('some_wallets_skipped')}';
+                              }
+
+                              if (!mounted) {
+                                return;
+                              }
+
+                              if (!c.mounted) {
                                 return;
                               }
                               c.replaceSnackbar(
                                 content: Text(
-                                  tr('wallet_imported'),
-                                  style: const TextStyle(color: Colors.white),
+                                  message,
+                                  style: TextStyle(
+                                      color: imported == 0
+                                          ? Colors.red
+                                          : Colors.white),
                                 ),
                               );
-                              // ok, fetch the transactions & balance
-                              // fetchTransactions(context);
+
+                              if (!mounted) {
+                                return;
+                              }
+                              Navigator.of(context).pop(true);
                               return;
                             } catch (e, stacktrace) {
                               logger('Error importing wallet: $e');
@@ -251,11 +302,6 @@ class _ImportDialogState extends State<ImportDialog> {
                                   stackTrace: stacktrace);
                               return;
                             }
-
-                            if (!context.mounted) {
-                              return;
-                            }
-                            Navigator.of(context).pop(true);
                           } catch (e, stacktrace) {
                             _attempts++;
                             logger(e.toString());
@@ -352,6 +398,58 @@ class _ImportDialogState extends State<ImportDialog> {
           .fetchTransactions(pubKey: pubKey);
       return true;
     } else {
+      return false;
+    }
+  }
+
+  Future<bool> importV2WalletToSharedPrefs(
+      BuildContext context, Map<String, dynamic> v2Wallet) async {
+    try {
+      final String? pubKey = v2Wallet['pubKey'] as String?;
+      final String? mnemonic = v2Wallet['mnemonic'] as String?;
+      final String? typeStr = v2Wallet['type'] as String?;
+
+      if (pubKey == null || mnemonic == null) {
+        logger('V2 wallet missing required fields: pubKey or mnemonic');
+        return false;
+      }
+
+      // Check if wallet already exists
+      if (SharedPreferencesHelper().has(pubKey)) {
+        logger('V2 wallet already exists: $pubKey');
+        return false;
+      }
+
+      // Parse the account type
+      AccountType accountType;
+      if (typeStr == 'v2PasswordProtected') {
+        accountType = AccountType.v2PasswordProtected;
+      } else if (typeStr == 'v2PasswordLess') {
+        accountType = AccountType.v2PasswordLess;
+      } else {
+        // Default to password-less if type is not specified or unknown
+        accountType = AccountType.v2PasswordLess;
+      }
+
+      // Import the wallet using the mnemonic
+      await SharedPreferencesHelper().importWalletFromMnemonic(
+        mnemonic,
+        accountType,
+      );
+
+      if (!context.mounted) {
+        return false;
+      }
+
+      // Fetch transactions for the imported wallet
+      context
+          .read<MultiWalletTransactionCubit>()
+          .fetchTransactions(pubKey: pubKey);
+
+      return true;
+    } catch (e, stacktrace) {
+      logger('Error importing V2 wallet: $e');
+      await Sentry.captureException(e, stackTrace: stacktrace);
       return false;
     }
   }

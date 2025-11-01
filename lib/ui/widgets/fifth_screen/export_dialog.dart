@@ -37,27 +37,21 @@ Future<void> openExportWalletsSelector(
     BuildContext context, bool expertMode) async {
   showMultiWalletSelector(context,
       (List<StoredAccount> selectedWallets, bool exportContacts) {
-    final List<StoredAccount> v2Accounts =
-        selectedWallets.where((StoredAccount w) => w.type.isV2).toList();
-
-    if (v2Accounts.length > 1) {
-      context.replaceSnackbar(
-        content: Text(
-          tr('export_one_v2_only'),
-          style: const TextStyle(color: Colors.red),
-        ),
-      );
-      return;
+    // If exactly one V2 wallet is selected and no other wallets/contacts,
+    // show the mnemonic dialog directly (for backward compatibility)
+    if (selectedWallets.length == 1 &&
+        selectedWallets.first.type.isV2 &&
+        !exportContacts) {
+      _showV2SeedDialog(context, selectedWallets.first);
     } else {
-      if (v2Accounts.length == 1) {
-        _showV2SeedDialog(context, v2Accounts.first);
-      } else {
-        _showSelectExportMethodDialog(
-            context: context,
-            onlyOneWalletSelected: selectedWallets.length == 1 && expertMode,
-            selectedWallets: selectedWallets,
-            exportContacts: exportContacts);
-      }
+      // Allow exporting multiple wallets of any type (V1, V2, or mixed)
+      _showSelectExportMethodDialog(
+          context: context,
+          onlyOneWalletSelected: selectedWallets.length == 1 &&
+              selectedWallets.first.type.isV1 &&
+              expertMode,
+          selectedWallets: selectedWallets,
+          exportContacts: exportContacts);
     }
   });
 }
@@ -220,30 +214,87 @@ class ExportDialog extends StatefulWidget {
 class _ExportDialogState extends State<ExportDialog> {
   bool isConfirm = false;
   List<int>? pattern;
+  Uint8List? _walletUnlockKey; // Store the unlock key obtained before pattern
+  bool _isInitialized = false;
 
   final GlobalKey<ScaffoldState> _exportKey =
       GlobalKey<ScaffoldState>(debugLabel: 'exportKey');
 
   late List<LegacyWallet> _legacyWallets;
+  late List<StoredAccount> _v2Wallets;
 
   @override
   void initState() {
     super.initState();
+    // Export ALL V1 wallets (both PasswordLess and PasswordProtected)
     _legacyWallets = widget.selectedWallets
-        .where((StoredAccount account) =>
-            account.type == AccountType.v1PasswordLess)
+        .where((StoredAccount account) => account.type.isV1)
         .map((StoredAccount account) => LegacyWallet(
               pubKey: account.pubKey,
-              seed: seedToString(account.seed!),
+              // For v1PasswordProtected, seed is null, so we use empty string
+              seed: account.seed != null ? seedToString(account.seed!) : '',
               name: account.contact.name ?? '',
               theme: account.theme,
             ))
+        .toList();
+
+    // Prepare V2 wallets for export
+    _v2Wallets = widget.selectedWallets
+        .where((StoredAccount account) => account.type.isV2)
         .toList();
   }
 
   @override
   Widget build(BuildContext context) {
     final bool requiresPattern = _requiresPattern(widget.type);
+
+    // Request wallet unlock on first build if needed
+    if (!_isInitialized && requiresPattern) {
+      // Use post frame callback to avoid calling setState during build
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (!mounted) {
+          return;
+        }
+
+        // Capture context before async call
+        final BuildContext currentContext = context;
+        final Uint8List? unlockKey =
+            await _requestWalletUnlockIfNeeded(currentContext);
+
+        if (!mounted) {
+          return;
+        }
+
+        // If unlock was required but user cancelled, close dialog
+        if (unlockKey == null &&
+            _v2Wallets.any((StoredAccount account) =>
+                account.type == AccountType.v2PasswordProtected)) {
+          if (!currentContext.mounted) {
+            return;
+          }
+          Navigator.of(currentContext).pop();
+          return;
+        }
+
+        setState(() {
+          _walletUnlockKey = unlockKey;
+          _isInitialized = true;
+        });
+      });
+
+      return Scaffold(
+        key: _exportKey,
+        appBar: AppBar(
+          title: Text(tr('preparing_export')),
+        ),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    // If pattern not required, mark as initialized immediately
+    if (!_isInitialized && !requiresPattern) {
+      _isInitialized = true;
+    }
 
     return Scaffold(
       key: _exportKey,
@@ -256,6 +307,21 @@ class _ExportDialogState extends State<ExportDialog> {
           : widget.type == ExportType.ewif
               ? _buildPasswordScreen(context)
               : _executeExportDirectly(context),
+    );
+  }
+
+  Future<Uint8List?> _requestWalletUnlockIfNeeded(BuildContext context) async {
+    // Check if we have any V2 password-protected wallets
+    final bool hasV2Protected = _v2Wallets.any((StoredAccount account) =>
+        account.type == AccountType.v2PasswordProtected);
+
+    if (!hasV2Protected) {
+      return Uint8List(0); // Return dummy value if not needed
+    }
+
+    // Request unlock with contextual message
+    return requestSecureUnlock(
+      customMessage: tr('unlock_for_export'),
     );
   }
 
@@ -374,13 +440,71 @@ class _ExportDialogState extends State<ExportDialog> {
       String password, BuildContext context, ExportType type) async {
     final ContactsCubit cubit = context.read<ContactsCubit>();
     context.read<ContactsCubit>().sortContactsAsStored();
-    // Export only selected wallets, not all of them
 
-    final List<Map<String, dynamic>> selectedWallets =
-        _legacyWallets.map((LegacyWallet card) => card.toJson()).toList();
+    int totalExported = 0;
+    final List<String> skippedWallets = <String>[];
+
     final Map<String, dynamic> prefsObj = <String, dynamic>{};
-    // Add only the selected wallets to prefsObj
-    prefsObj['cesiumCards'] = jsonEncode(selectedWallets);
+
+    // Export V1 wallets (both PasswordLess and PasswordProtected)
+    if (_legacyWallets.isNotEmpty) {
+      final List<Map<String, dynamic>> selectedWallets =
+          _legacyWallets.map((LegacyWallet card) => card.toJson()).toList();
+      prefsObj['cesiumCards'] = jsonEncode(selectedWallets);
+      totalExported += _legacyWallets.length;
+    }
+    // Export V2 wallets (with mnemonics)
+    if (_v2Wallets.isNotEmpty) {
+      final List<Map<String, dynamic>> v2WalletsWithMnemonic =
+          <Map<String, dynamic>>[];
+
+      // Use the unlock key obtained during initialization
+      final Uint8List? unlockKey = _walletUnlockKey;
+
+      for (final StoredAccount account in _v2Wallets) {
+        String? mnemonic;
+        final bool isPassProtected =
+            account.type == AccountType.v2PasswordProtected;
+
+        if (isPassProtected) {
+          // Use the stored unlock key
+          if (unlockKey == null || unlockKey.isEmpty) {
+            // This shouldn't happen since we requested unlock at initialization
+            skippedWallets.add(account.contact.name ?? account.pubKey);
+            continue;
+          }
+
+          final Uint8List? dec =
+              SecureCryptoHelper.decrypt(account.seed!, unlockKey);
+          if (dec == null) {
+            skippedWallets.add(account.contact.name ?? account.pubKey);
+            continue;
+          }
+          mnemonic = storeToMnemonic(dec);
+        } else {
+          mnemonic = storeToMnemonic(account.seed!);
+        }
+
+        // Add wallet data with mnemonic
+        v2WalletsWithMnemonic.add(<String, dynamic>{
+          'pubKey': account.pubKey,
+          'address': account.address,
+          'name': account.contact.name ?? '',
+          'theme': account.theme.toJson(),
+          'type': account.type.name,
+          'derivationPath': account.derivationPath,
+          'derivationParentId': account.derivationParentId,
+          'mnemonic': mnemonic,
+        });
+      }
+
+      if (v2WalletsWithMnemonic.isNotEmpty) {
+        prefsObj['v2Wallets'] = jsonEncode(v2WalletsWithMnemonic);
+        totalExported += v2WalletsWithMnemonic.length;
+      }
+    }
+
+    // Export contacts
     if (widget.exportContacts && cubit.contacts.isNotEmpty) {
       prefsObj['contacts'] = cubit.contacts.map((Contact c) {
         // ignore: avoid_redundant_argument_values
@@ -388,19 +512,39 @@ class _ExportDialogState extends State<ExportDialog> {
         return c2.toJson();
       }).toList();
     }
-    final String jsonString = jsonEncode(prefsObj);
 
+    final String jsonString = jsonEncode(prefsObj);
     final Map<String, dynamic> jsonData =
         encryptJsonForExport(jsonString, password);
-    loggerDev('Exporting: $jsonData and contacts: ${cubit.contacts.length}');
     final String fileJson = jsonEncode(jsonData);
     final List<int> bytes = utf8.encode(fileJson);
+
+    // Prepare feedback message
+    String feedbackMessage = '';
+    if (totalExported == 1) {
+      feedbackMessage = tr('wallet_exported');
+    } else if (totalExported > 1) {
+      feedbackMessage = tr('wallets_exported',
+          namedArgs: <String, String>{'number': totalExported.toString()});
+    }
+
+    if (widget.exportContacts && cubit.contacts.isNotEmpty) {
+      feedbackMessage += '\n${cubit.contacts.length} ${tr('contacts')}';
+    }
+
+    if (skippedWallets.isNotEmpty) {
+      feedbackMessage +=
+          '\n⚠️ ${tr('some_wallets_skipped')}: ${skippedWallets.join(', ')}';
+    }
+
     switch (type) {
       case ExportType.clipboard:
         copyFileToClipboard(
           context: context,
           fileJson: fileJson,
-          feedbackText: tr('wallet_copied'),
+          feedbackText: feedbackMessage.isNotEmpty
+              ? feedbackMessage
+              : tr('wallet_copied'),
         );
         break;
       case ExportType.file:
@@ -420,8 +564,10 @@ class _ExportDialogState extends State<ExportDialog> {
         if (result) {
           context.replaceSnackbar(
             content: Text(
-              tr('wallet_exported'),
-              style: const TextStyle(color: Colors.red),
+              feedbackMessage.isNotEmpty
+                  ? feedbackMessage
+                  : tr('wallet_exported'),
+              style: const TextStyle(color: Colors.white),
             ),
           );
         }
@@ -431,6 +577,15 @@ class _ExportDialogState extends State<ExportDialog> {
           return;
         }
         shareExport(context, fileJson);
+        // Show feedback after share
+        if (context.mounted && feedbackMessage.isNotEmpty) {
+          context.replaceSnackbar(
+            content: Text(
+              feedbackMessage,
+              style: const TextStyle(color: Colors.white),
+            ),
+          );
+        }
         break;
       case ExportType.pubsec:
         await _saveSpecialFile(context, generatePubSecFile, type);

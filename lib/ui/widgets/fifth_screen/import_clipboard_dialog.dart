@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../g1/g1_v2_helper.dart';
 import '../../clipboard_helper.dart';
+import '../../ui_helpers.dart';
 import '../generic_qr_button.dart';
 import 'import_types.dart';
 
@@ -117,10 +118,11 @@ class _ImportClipboardDialogState extends State<ImportClipboardDialog> {
                 hintText: description, errorText: _errorMessage),
           ),
           const SizedBox(height: 10),
-          TextButton(
-            onPressed: _pasteFromClipboard,
-            child: Text(tr('paste')),
-          ),
+          if (!isIOSWeb())
+            TextButton(
+              onPressed: _pasteFromClipboard,
+              child: Text(tr('paste')),
+            ),
         ],
       ),
       actions: <Widget>[

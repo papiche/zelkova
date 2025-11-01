@@ -1,10 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:super_clipboard/super_clipboard.dart';
-
 import '../shared_prefs_helper.dart';
 import 'pattern_util.dart';
-
 Future<void> copyPublicKeyToClipboard(BuildContext context,
     [String? uri, String? feedbackText]) async {
   final SystemClipboard? clipboard = SystemClipboard.instance;
@@ -19,7 +17,6 @@ Future<void> copyPublicKeyToClipboard(BuildContext context,
         SnackBar(content: Text(tr(feedbackText ?? 'key_copied_to_clipboard'))));
   }
 }
-
 Future<void> copyToClipboard(
     {required BuildContext context,
     required String text,
@@ -36,7 +33,6 @@ Future<void> copyToClipboard(
         .showSnackBar(SnackBar(content: Text(tr(feedbackText))));
   }
 }
-
 Future<void> copyFileToClipboard(
     {required BuildContext context,
     required String fileJson,
@@ -48,7 +44,6 @@ Future<void> copyFileToClipboard(
   final DataWriterItem item = DataWriterItem();
   item.add(Formats.plainText(fileJson));
   await clipboard.write(<DataWriterItem>[item]);
-
   if (context.mounted) {
     context.replaceSnackbar(
       content: Text(
@@ -58,16 +53,19 @@ Future<void> copyFileToClipboard(
     );
   }
 }
-
 Future<void> pasteFromClipboard({required Function(String?) onPaste}) async {
   final SystemClipboard? clipboard = SystemClipboard.instance;
   if (clipboard != null) {
-    final ClipboardReader reader = await clipboard.read();
-    final ClipboardDataReader? item = reader.items.firstOrNull;
-    if (item != null) {
-      final String? text = await item.readValue(Formats.plainText);
-      onPaste(text);
-    } else {
+    try {
+      final ClipboardReader reader = await clipboard.read();
+      final ClipboardDataReader? item = reader.items.firstOrNull;
+      if (item != null) {
+        final String? text = await item.readValue(Formats.plainText);
+        onPaste(text);
+      } else {
+        onPaste(null);
+      }
+    } catch (e) {
       onPaste(null);
     }
   } else {

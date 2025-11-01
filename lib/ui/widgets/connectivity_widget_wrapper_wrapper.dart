@@ -35,6 +35,13 @@ class ConnectivityWidgetWrapperWrapper extends ConnectivityWidgetWrapper {
                   '1.1.1.1',
                   type: InternetAddressType.IPv4,
                 ),
+                port: 443,
+              ),
+              AddressCheckOptions(
+                address: InternetAddress(
+                  '1.1.1.1',
+                  type: InternetAddressType.IPv4,
+                ),
               ),
               // Cloudflare IPv6
               AddressCheckOptions(
@@ -63,6 +70,13 @@ class ConnectivityWidgetWrapperWrapper extends ConnectivityWidgetWrapper {
                   '9.9.9.9',
                   type: InternetAddressType.IPv4,
                 ),
+              ),
+              AddressCheckOptions(
+                address: InternetAddress(
+                  '9.9.9.9',
+                  type: InternetAddressType.IPv4,
+                ),
+                port: 443,
               ),
               // Quad9 IPv6
               /*  Disabled for faster check

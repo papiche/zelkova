@@ -5,7 +5,6 @@ import 'package:easy_debounce/easy_throttle.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:we_slide/we_slide.dart';
@@ -19,6 +18,7 @@ import '../../../data/models/transactions_bloc.dart';
 import '../../../data/models/utxo_cubit.dart';
 import '../../../g1/currency.dart';
 import '../../../shared_prefs_helper.dart';
+import '../../clipboard_helper.dart';
 import '../../currency_helper.dart';
 import '../../locale_helper.dart';
 import '../../logger.dart';
@@ -858,12 +858,10 @@ PAGES DETAIL:
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),
                 onPressed: () {
-                  Clipboard.setData(ClipboardData(text: debugInfo));
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Debug info copied to clipboard!'),
-                      duration: Duration(seconds: 1),
-                    ),
+                  copyToClipboard(
+                    context: context,
+                    text: debugInfo,
+                    feedbackText: 'Debug info copied to clipboard!',
                   );
                 },
               ),

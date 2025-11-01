@@ -86,20 +86,41 @@ class _CardNameEditableState extends State<CardNameEditable> {
       //
       // In V2 this is done directly in the SharedPreferencesHelper
       try {
-        String? name = await getProfileUserName(widget.publicKey);
+        final String? name = await getProfileUserName(widget.publicKey);
+        loggerDev(
+            'CardNameEditable: fetched remote name for ${widget.publicKey}: "${name ?? 'null'}"');
+        // Only overwrite the displayed name when the remote value is non-empty.
+        // If the remote name is null/empty we should NOT clear a previously
+        // available local name (this was causing the behavior where the name
+        // briefly appears and then disappears).
         if (name != null && name.isNotEmpty) {
-          name = name.replaceAll(g1nkgoUserNameSuffix, '');
+          final String cleanName = name.replaceAll(g1nkgoUserNameSuffix, '');
+          loggerDev('CardNameEditable: updating display name to "$cleanName"');
           setState(() {
-            _controller.text = name!;
-            currentText = name;
+            _controller.text = cleanName;
+            currentText = cleanName;
           });
-          SharedPreferencesHelper().setName(name: name, notify: false);
+          SharedPreferencesHelper().setName(name: cleanName, notify: false);
         } else {
-          setState(() {
-            _controller.text = '';
-            currentText = widget.defValue;
-          });
-          SharedPreferencesHelper().setName(name: '', notify: false);
+          loggerDev(
+              'CardNameEditable: remote name empty for ${widget.publicKey}, hadLocal=${widget.cardName.isNotEmpty}');
+          // Remote returned empty. Only set the default value if there was no
+          // local cardName provided (i.e. widget.cardName was empty) and the
+          // currentText is empty/defValue. Otherwise keep whatever local value
+          // we already had.
+          final bool hadLocal = widget.cardName.isNotEmpty;
+          if (!hadLocal) {
+            loggerDev('CardNameEditable: no local name, setting defValue');
+            setState(() {
+              _controller.text = widget.defValue;
+              currentText = widget.defValue;
+            });
+            // Do not write an empty name into SharedPreferences; leave it as-is.
+          } else {
+            loggerDev(
+                'CardNameEditable: keeping existing local name "$currentText"');
+            // keep existing currentText (don't overwrite with empty)
+          }
         }
       } catch (e) {
         logger('Error: $e');

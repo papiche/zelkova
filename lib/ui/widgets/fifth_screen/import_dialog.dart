@@ -45,11 +45,20 @@ class _ImportDialogState extends State<ImportDialog> {
   int _attempts = 0;
   bool _errorDialogShown = false;
 
+  Future<String> _getImportFuture(BuildContext c) {
+    if (kIsWeb) {
+      return importWalletWeb(c);
+    } else {
+      // Native Android or iOS - use the native file picker
+      return importWallet(c);
+    }
+  }
+
   @override
   Widget build(BuildContext c) {
     return FutureBuilder<String>(
         future: widget.textToImport == null
-            ? (kIsWeb ? importWalletWeb(context) : importWallet(c))
+            ? _getImportFuture(c)
             : Future<String>.value(widget.textToImport),
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           if (snapshot.hasData &&
@@ -226,6 +235,7 @@ class _ImportDialogState extends State<ImportDialog> {
                               );
                               // ok, fetch the transactions & balance
                               // fetchTransactions(context);
+                              return;
                             } catch (e, stacktrace) {
                               logger('Error importing wallet: $e');
                               if (!c.mounted) {
@@ -432,16 +442,29 @@ Future<String> importWalletWebHtml(BuildContext context,
 
   input.multiple = false;
   input.accept = allowedExtension; // limit file types
-  input.click();
 
   input.onChange.listen((html.Event event) async {
-    if (input.files != null && input.files!.isEmpty) {
-      completer.complete('');
+    // Prevent default behavior to avoid page refresh in Firefox Android
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (input.files == null || input.files!.isEmpty) {
+      if (!completer.isCompleted) {
+        logger('No file selected');
+        completer.complete('');
+      }
       return;
     }
 
     final html.File file = input.files!.first;
     final html.FileReader reader = html.FileReader();
+
+    reader.onError.listen((html.Event e) {
+      if (!completer.isCompleted) {
+        logger('Error reading file');
+        completer.complete('');
+      }
+    });
 
     // Read as text
     reader.readAsText(file);
@@ -452,13 +475,28 @@ Future<String> importWalletWebHtml(BuildContext context,
       if (jsonString != null && !kReleaseMode) {
         // logger(jsonString);
       }
-      completer.complete(jsonString);
+      if (!completer.isCompleted) {
+        completer.complete(jsonString ?? '');
+      }
     } catch (e, stacktrace) {
       logger('Error importing wallet $e');
       await Sentry.captureException(e, stackTrace: stacktrace);
+      if (!completer.isCompleted) {
+        completer.complete('');
+      }
+    }
+  });
+
+  input.click();
+
+  // Add timeout to handle cases where onChange never fires
+  Future<void>.delayed(const Duration(minutes: 5), () {
+    if (!completer.isCompleted) {
+      logger('File selection timeout');
       completer.complete('');
     }
   });
+
   return completer.future;
 }
 
@@ -475,7 +513,15 @@ Future<String> importWallet(BuildContext context,
     final Directory? directory = await getGinkgoDownloadDirectory();
     if (directory == null) {
       logger('App files directory not found');
-      return '';
+      // Try to use FilePicker as fallback for better compatibility
+      try {
+        return await importWalletWithFilePicker(allowedExtensions.isNotEmpty
+            ? allowedExtensions.first.replaceAll('.', '')
+            : 'json');
+      } catch (e) {
+        logger('FilePicker fallback also failed: $e');
+        return '';
+      }
     }
 
     logger('appDocDir: ${directory.path}');
@@ -496,10 +542,14 @@ Future<String> importWallet(BuildContext context,
     );
 
     if (filePath == null || filePath.isEmpty) {
+      logger('File selection cancelled by user');
       return '';
     }
 
     final File file = File(filePath);
+
+    // Read the file directly without checking exists() (avoid slow async I/O)
+    // If the file doesn't exist, readAsString will throw an exception
     final String jsonString = await file.readAsString();
 
     // Log the content if not in release mode
@@ -511,8 +561,6 @@ Future<String> importWallet(BuildContext context,
   } catch (e, stacktrace) {
     logger('Error importing wallet $e');
     await Sentry.captureException(e, stackTrace: stacktrace);
-    // Handle the exception using Sentry or any other error reporting tool
-    // await Sentry.captureException(e, stackTrace: stacktrace);
     return '';
   }
 }

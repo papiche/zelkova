@@ -35,6 +35,7 @@ class _CesiumAuthDialogState extends State<CesiumAuthDialog> {
   final TextEditingController passwordController = TextEditingController();
   bool _isProcessing = false;
   final ValueNotifier<String> _feedbackNotifier = ValueNotifier<String>('');
+  final ValueNotifier<String> _statusNotifier = ValueNotifier<String>('');
 
   @override
   Widget build(BuildContext context) {
@@ -116,6 +117,34 @@ class _CesiumAuthDialogState extends State<CesiumAuthDialog> {
             ),
             const SizedBox(height: 8),
             FormErrorWidget(feedbackNotifier: _feedbackNotifier),
+            ValueListenableBuilder<String>(
+              valueListenable: _statusNotifier,
+              builder: (BuildContext context, String status, Widget? child) {
+                if (status.isEmpty) {
+                  return const SizedBox.shrink();
+                }
+                return Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const SizedBox(
+                        height: 16,
+                        width: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        status,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -154,13 +183,29 @@ class _CesiumAuthDialogState extends State<CesiumAuthDialog> {
       _isProcessing = true;
     });
 
+    _statusNotifier.value = tr('validating_credentials');
+
+    // Allow UI to update with loading indicator before heavy operation
+    await Future<void>.delayed(Duration.zero);
+
     final String secret = secretPhraseController.text;
     final String password = passwordController.text;
+
+    // Measure time for wallet creation
+    final Stopwatch stopwatch = Stopwatch()..start();
     final CesiumWallet wallet = CesiumWallet(secret, password);
+    stopwatch.stop();
+    logger('CesiumWallet creation took: ${stopwatch.elapsedMilliseconds}ms');
+
+    if (!mounted) {
+      return;
+    }
 
     setState(() {
       _isProcessing = false;
     });
+
+    _statusNotifier.value = '';
 
     if (wallet.pubkey != extractPublicKey(widget.publicKey)) {
       _feedbackNotifier.value = tr('incorrect_passwords');
@@ -173,14 +218,23 @@ class _CesiumAuthDialogState extends State<CesiumAuthDialog> {
       Contact contact, CesiumWallet wallet, BuildContext context) {
     SharedPreferencesHelper().handleCorrectCesiumV1Auth(
         publicKey: widget.publicKey, name: contact.name, wallet: wallet);
-    context
-        .read<MultiWalletTransactionCubit>()
-        .fetchTransactions(pubKey: extractPublicKey(widget.publicKey));
-    if (context.read<BottomNavCubit>().currentIndex != widget.returnTo) {
-      context.read<BottomNavCubit>().updateIndex(widget.returnTo);
-    }
+
+    // Clear feedback and close dialog immediately
     _feedbackNotifier.value = '';
     Navigator.of(context).pop(true);
+
+    // Fetch transactions and update navigation AFTER closing the dialog
+    // to avoid blocking the UI
+    Future<void>.delayed(Duration.zero, () {
+      if (context.mounted) {
+        context
+            .read<MultiWalletTransactionCubit>()
+            .fetchTransactions(pubKey: extractPublicKey(widget.publicKey));
+        if (context.read<BottomNavCubit>().currentIndex != widget.returnTo) {
+          context.read<BottomNavCubit>().updateIndex(widget.returnTo);
+        }
+      }
+    });
   }
 
   Future<void> _showFileImportDialog(BuildContext c, Contact contact) async {
@@ -197,9 +251,34 @@ class _CesiumAuthDialogState extends State<CesiumAuthDialog> {
     }
 
     if (fileContent != null && fileContent.isNotEmpty && mounted) {
+      // Show loading indicator before processing (EWIF can be very slow)
+      _feedbackNotifier.value = '';
+      setState(() {
+        _isProcessing = true;
+      });
+      _statusNotifier.value = tr('validating_credentials');
+
+      // Allow UI to update before heavy operation
+      await Future<void>.delayed(Duration.zero);
+
       try {
+        final Stopwatch stopwatch = Stopwatch()..start();
+        if (!mounted) {
+          return;
+        }
         final CesiumWallet importedWallet =
             await parseKeyFile(fileContent, context);
+        stopwatch.stop();
+        logger('KeyFile parsing took: ${stopwatch.elapsedMilliseconds}ms');
+
+        if (!mounted) {
+          return;
+        }
+
+        setState(() {
+          _isProcessing = false;
+        });
+        _statusNotifier.value = '';
 
         // loggerDev('Imported wallet: ${importedWallet.pubkey}');
         // loggerDev('Wallet to auth: ${extractPublicKey(widget.publicKey)}');
@@ -212,6 +291,12 @@ class _CesiumAuthDialogState extends State<CesiumAuthDialog> {
           _feedbackNotifier.value = tr('auth_file_pubkey_mismatch');
         }
       } catch (e) {
+        if (mounted) {
+          setState(() {
+            _isProcessing = false;
+          });
+          _statusNotifier.value = '';
+        }
         _feedbackNotifier.value = tr('auth_file_error');
       }
     }
@@ -225,16 +310,53 @@ class _CesiumAuthDialogState extends State<CesiumAuthDialog> {
         if (!context.mounted) {
           return;
         }
-        final CesiumWallet importedWallet =
-            await parseKeyFile(scannedKey, context);
 
-        if (importedWallet.pubkey == extractPublicKey(widget.publicKey)) {
+        // Show loading indicator before processing (EWIF can be very slow)
+        _feedbackNotifier.value = '';
+        setState(() {
+          _isProcessing = true;
+        });
+        _statusNotifier.value = tr('validating_credentials');
+
+        // Allow UI to update before heavy operation
+        await Future<void>.delayed(Duration.zero);
+
+        try {
+          final Stopwatch stopwatch = Stopwatch()..start();
           if (!context.mounted) {
             return;
           }
-          _onCorrectAuth(contact, importedWallet, context);
-        } else {
-          _feedbackNotifier.value = tr('auth_file_pubkey_mismatch');
+          final CesiumWallet importedWallet =
+              await parseKeyFile(scannedKey, context);
+          stopwatch.stop();
+          logger('QR KeyFile parsing took: ${stopwatch.elapsedMilliseconds}ms');
+
+          if (!mounted) {
+            return;
+          }
+
+          setState(() {
+            _isProcessing = false;
+          });
+          _statusNotifier.value = '';
+
+          if (importedWallet.pubkey == extractPublicKey(widget.publicKey)) {
+            if (!context.mounted) {
+              return;
+            }
+            _onCorrectAuth(contact, importedWallet, context);
+          } else {
+            _feedbackNotifier.value = tr('auth_file_pubkey_mismatch');
+          }
+        } catch (e) {
+          if (mounted) {
+            setState(() {
+              _isProcessing = false;
+            });
+            _statusNotifier.value = '';
+          }
+          logger('Error parsing QR keyfile: $e');
+          _feedbackNotifier.value = tr('auth_file_error');
         }
       } else {
         _feedbackNotifier.value = tr('qr_scan_error_empty');

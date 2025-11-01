@@ -374,6 +374,12 @@ bool isDark(BuildContext context) =>
 
 bool get isIOS => !kIsWeb && Platform.isIOS;
 
+// Hide paste button on web platforms due to clipboard API limitations
+// Users can still paste manually using browser's context menu
+bool isIOSWeb() {
+  return kIsWeb;
+}
+
 const String g1nkgoUserNameSuffix = ' ❥';
 const String protectedUserNameSuffix = ' 🔒'; // lock
 const double cardAspectRatio = 1.58;

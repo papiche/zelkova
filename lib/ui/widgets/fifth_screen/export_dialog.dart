@@ -446,10 +446,18 @@ class _ExportDialogState extends State<ExportDialog> {
 
     final Map<String, dynamic> prefsObj = <String, dynamic>{};
 
-    // Export V1 wallets (both PasswordLess and PasswordProtected)
+    // Export V1 wallets
     if (_legacyWallets.isNotEmpty) {
       final List<Map<String, dynamic>> selectedWallets =
-          _legacyWallets.map((LegacyWallet card) => card.toJson()).toList();
+          _legacyWallets.map((LegacyWallet card) {
+        final Map<String, dynamic> walletJson = card.toJson();
+        // Add type field to distinguish between passwordLess and passwordProtected
+        // This is important for proper re-import
+        final bool isPasswordProtected = card.seed.isEmpty;
+        walletJson['type'] =
+            isPasswordProtected ? 'v1PasswordProtected' : 'v1PasswordLess';
+        return walletJson;
+      }).toList();
       prefsObj['cesiumCards'] = jsonEncode(selectedWallets);
       totalExported += _legacyWallets.length;
     }
@@ -529,7 +537,10 @@ class _ExportDialogState extends State<ExportDialog> {
     }
 
     if (widget.exportContacts && cubit.contacts.isNotEmpty) {
-      feedbackMessage += '\n${cubit.contacts.length} ${tr('contacts')}';
+      feedbackMessage +=
+          '\n${tr('contacts_exported', namedArgs: <String, String>{
+            'number': cubit.contacts.length.toString()
+          })}';
     }
 
     if (skippedWallets.isNotEmpty) {

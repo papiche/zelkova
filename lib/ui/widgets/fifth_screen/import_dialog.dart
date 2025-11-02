@@ -390,9 +390,18 @@ class _ImportDialogState extends State<ImportDialog> {
     final String pubKey =
         pub != null ? pub as String : cesiumCard['pubKey'] as String;
     if (!SharedPreferencesHelper().has(pubKey)) {
+      final String seed = cesiumCard['seed'] as String? ?? '';
+      // The type field helps us preserve whether it was passwordProtected (volatile)
+      // If not present, we infer from seed being empty
+      final String? typeStr = cesiumCard['type'] as String?;
+      final bool isPasswordProtected =
+          typeStr == 'v1PasswordProtected' || (typeStr == null && seed.isEmpty);
+
+      // For V1 PasswordProtected (volatile), seed should remain empty
+      final String seedToUse = isPasswordProtected ? '' : seed;
+
       SharedPreferencesHelper().addLegacyWallet(SharedPreferencesHelper()
-          .buildLegacyWallet(
-              pubKey: pubKey, seed: cesiumCard['seed'] as String));
+          .buildLegacyWallet(pubKey: pubKey, seed: seedToUse));
       context
           .read<MultiWalletTransactionCubit>()
           .fetchTransactions(pubKey: pubKey);
@@ -420,18 +429,20 @@ class _ImportDialogState extends State<ImportDialog> {
         return false;
       }
 
-      // Parse the account type
+      // Parse and maintain the original account type
       AccountType accountType;
       if (typeStr == 'v2PasswordProtected') {
         accountType = AccountType.v2PasswordProtected;
       } else if (typeStr == 'v2PasswordLess') {
         accountType = AccountType.v2PasswordLess;
       } else {
-        // Default to password-less if type is not specified or unknown
+        // Default to password-less if type is not specified
+        logger('V2 wallet type not specified, defaulting to passwordLess');
         accountType = AccountType.v2PasswordLess;
       }
 
-      // Import the wallet using the mnemonic
+      // Import the wallet using the mnemonic with the original type
+      // For v2PasswordProtected, this will request unlock from the user
       await SharedPreferencesHelper().importWalletFromMnemonic(
         mnemonic,
         accountType,

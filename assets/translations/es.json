@@ -276,7 +276,7 @@
   "select_all_wallets": "Elije todos",
   "done": "HECHO",
   "export_contacts": "Exportar contactos",
-  "contacts_exported": "{number} contacto/s exportado/s",
+  "contacts_exported": "{number} contactos exportados",
   "no_wallets_imported": "No se han importado monederos",
   "some_wallets_skipped": "Algunos monederos ya existen y se omitieron",
   "too_many_attempts": "Demasiados intentos",

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:built_collection/built_collection.dart';
+import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:duniter_indexer/duniter_indexer_client.dart';
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.data.gql.dart';
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.req.gql.dart';
@@ -125,9 +125,9 @@ Future<List<Contact>> searchWotV2(String searchPatternRaw) async {
                 in data.identities!.nodes) {
               final String? address = identity.accountId;
               if (address == null) {
-                loggerDev('ERROR: Pubkey is null');
+                loggerDev('ERROR: AccountId is null');
               } else {
-                contacts.add(_contactFromIdentity(identity));
+                contacts.add(_contactFromIdentityBasic(identity));
               }
             }
           }
@@ -194,7 +194,7 @@ Future<List<Contact>> getIdentities({required List<String> addresses}) async {
               in data.identities!.nodes) {
             final String? address = identity.accountId;
             if (address == null) {
-              loggerDev('ERROR: Pubkey is null');
+              loggerDev('ERROR: AccountId is null');
             } else {
               contacts.add(_contactFromIdentity(identity));
             }
@@ -220,77 +220,139 @@ Future<List<Contact>> getIdentities({required List<String> addresses}) async {
   return contacts;
 }
 
-Contact _contactFromIdentity(dynamic identity) {
-  if (identity == null) {
-    throw ArgumentError('Identity cannot be null');
+// Extract received certificates from GIdentitiesByPkData
+List<Cert> _extractCertsReceived(
+    GIdentitiesByPkData_identities_nodes identity) {
+  final BuiltList<GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes>
+      certs = identity.certsByReceiverId.nodes;
+  if (certs.isEmpty) {
+    return <Cert>[];
   }
-  List<Cert> certReceived = <Cert>[];
-  try {
-    certReceived = ((identity as dynamic).certReceived as BuiltList<dynamic>)
-        .map((dynamic cert) => _buildCert(cert))
-        .where((Cert? cert) => cert != null)
-        .cast<Cert>()
-        .toList();
-  } catch (e) {
-    // Do nothing
+  return certs
+      .map(
+          (GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes cert) =>
+              _buildCertFromIdentityQueryReceived(cert))
+      .where((Cert? cert) => cert != null)
+      .cast<Cert>()
+      .toList();
+}
+
+// Extract issued certificates from GIdentitiesByPkData
+List<Cert> _extractCertsIssued(GIdentitiesByPkData_identities_nodes identity) {
+  final BuiltList<GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes>
+      certs = identity.certsByIssuerId.nodes;
+  if (certs.isEmpty) {
+    return <Cert>[];
   }
-  List<Cert> certIssued = <Cert>[];
-  try {
-    certIssued = ((identity as dynamic).certIssued as BuiltList<dynamic>)
-        .map((dynamic cert) => _buildCert(cert))
-        .where((Cert? cert) => cert != null)
-        .cast<Cert>()
-        .toList();
-  } catch (e) {
-    // Do nothing
-  }
+  return certs
+      .map((GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes cert) =>
+          _buildCertFromIdentityQueryIssued(cert))
+      .where((Cert? cert) => cert != null)
+      .cast<Cert>()
+      .toList();
+}
+
+// Build Contact from GIdentitiesByPkData_identities_nodes (with certs)
+Contact _contactFromIdentity(GIdentitiesByPkData_identities_nodes identity) {
   return Contact.withAddress(
-    nick: (identity as dynamic).name as String?,
-    address: (identity as dynamic).accountId as String,
-    certsReceived: certReceived,
-    certsIssued: certIssued,
-    status: parseIdentityStatus(
-        ((identity as dynamic).status as dynamic)?.name as String?),
-    isMember: (identity as dynamic).isMember as bool?,
-    index: (identity as dynamic).index as int?,
-    createdOn: ((identity as dynamic).account as dynamic).createdOn as int?,
-    expireOn: (identity as dynamic).expireOn as int?,
+    nick: identity.name,
+    address: identity.accountId!,
+    certsReceived: _extractCertsReceived(identity),
+    certsIssued: _extractCertsIssued(identity),
+    status: parseIdentityStatus(identity.status),
+    isMember: identity.isMember,
+    index: identity.index,
+    createdOn: identity.account?.createdOn,
+    expireOn: identity.expireOn,
   );
 }
 
-Cert? _buildCert(dynamic cert) {
-  final dynamic issuer = (cert as dynamic).issuer;
-  final dynamic receiver = (cert as dynamic).receiver;
+// Build Contact from GIdentityBasicFields (without certs)
+Contact _contactFromIdentityBasic(GIdentityBasicFields identity) {
+  return Contact.withAddress(
+    nick: identity.name,
+    address: identity.accountId!,
+    status: parseIdentityStatus(identity.status),
+    isMember: identity.isMember,
+    index: identity.index,
+    createdOn: identity.account?.createdOn,
+    expireOn: identity.expireOn,
+  );
+}
 
-  // If the issuer or receiver is null (if the account is REMOVED), return null
-  if ((issuer as dynamic).accountId == null ||
-      (receiver as dynamic).accountId == null) {
+// Build Cert from certsByReceiverId
+Cert? _buildCertFromIdentityQueryReceived(
+    GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes cert) {
+  final GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer?
+      issuer = cert.issuer;
+  final GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver?
+      receiver = cert.receiver;
+
+  // Skip if issuer or receiver accountId is null (removed accounts)
+  if (issuer?.accountId == null || receiver?.accountId == null) {
     return null;
   }
+
   return Cert(
-    id: (cert as dynamic).id as String,
+    id: cert.id,
     issuerId: Contact.withAddress(
-        name: (issuer as dynamic).name as String,
-        createdOn: ((issuer as dynamic).account as dynamic).createdOn as int,
-        address: (issuer as dynamic).accountId as String,
-        status: parseIdentityStatus(
-            ((issuer as dynamic)?.status as dynamic)?.name as String?),
-        isMember: (issuer as dynamic)?.isMember as bool?,
-        expireOn: (issuer as dynamic).expireOn as int?,
-        index: (issuer as dynamic).index as int?),
+        name: issuer?.name,
+        createdOn: issuer?.account?.createdOn,
+        address: issuer!.accountId!,
+        status: parseIdentityStatus(issuer.status),
+        isMember: issuer.isMember,
+        expireOn: issuer.expireOn,
+        index: issuer.index),
     receiverId: Contact.withAddress(
-        name: (receiver as dynamic).name as String,
-        createdOn: ((receiver as dynamic).account as dynamic).createdOn as int,
-        address: (receiver as dynamic).accountId as String,
-        status: parseIdentityStatus(
-            ((receiver as dynamic)?.status as dynamic)?.name as String?),
-        isMember: (receiver as dynamic)?.isMember as bool?,
-        expireOn: (receiver as dynamic).expireOn as int?,
-        index: (receiver as dynamic).index as int?),
-    createdOn: (cert as dynamic).createdOn as int,
-    expireOn: (cert as dynamic).expireOn as int,
-    isActive: (cert as dynamic).isActive as bool,
-    updatedOn: (cert as dynamic).updatedOn as int,
+        name: receiver?.name,
+        createdOn: receiver?.account?.createdOn,
+        address: receiver!.accountId!,
+        status: parseIdentityStatus(receiver.status),
+        isMember: receiver.isMember,
+        expireOn: receiver.expireOn,
+        index: receiver.index),
+    createdOn: cert.createdOn,
+    expireOn: cert.expireOn,
+    isActive: cert.isActive,
+    updatedOn: cert.updatedOn,
+  );
+}
+
+// Build Cert from certsByIssuerId
+Cert? _buildCertFromIdentityQueryIssued(
+    GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes cert) {
+  final GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer?
+      issuer = cert.issuer;
+  final GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver?
+      receiver = cert.receiver;
+
+  // Skip if issuer or receiver accountId is null (removed accounts)
+  if (issuer?.accountId == null || receiver?.accountId == null) {
+    return null;
+  }
+
+  return Cert(
+    id: cert.id,
+    issuerId: Contact.withAddress(
+        name: issuer?.name,
+        createdOn: issuer?.account?.createdOn,
+        address: issuer!.accountId!,
+        status: parseIdentityStatus(issuer.status),
+        isMember: issuer.isMember,
+        expireOn: issuer.expireOn,
+        index: issuer.index),
+    receiverId: Contact.withAddress(
+        name: receiver?.name,
+        createdOn: receiver?.account?.createdOn,
+        address: receiver!.accountId!,
+        status: parseIdentityStatus(receiver.status),
+        isMember: receiver.isMember,
+        expireOn: receiver.expireOn,
+        index: receiver.index),
+    createdOn: cert.createdOn,
+    expireOn: cert.expireOn,
+    isActive: cert.isActive,
+    updatedOn: cert.updatedOn,
   );
 }
 
@@ -300,49 +362,169 @@ Future<Contact?> getIdentity({required String address}) async {
   return contacts.isNotEmpty ? contacts.first : null;
 }
 
-Contact _contactFromAccount(dynamic account) {
-  if (account == null) {
-    throw ArgumentError('Account cannot be null');
+// Extract received certs from Account query
+List<Cert> _extractCertsReceivedFromAccount(
+    GAccountsByPkData_accounts_nodes_linkedIdentity identity) {
+  final BuiltList<
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes>
+      certs = identity.certsByReceiverId.nodes;
+  if (certs.isEmpty) {
+    return <Cert>[];
   }
-  final dynamic identity = (account as dynamic).linkedIdentity;
-  List<Cert> certReceived = <Cert>[];
-  List<Cert> certIssued = <Cert>[];
-  try {
-    certReceived = ((identity as dynamic).certReceived as BuiltList<dynamic>)
-        .map((dynamic cert) => _buildCert(cert))
-        .where((Cert? cert) => cert != null)
-        .cast<Cert>()
-        .toList();
-  } catch (e) {
-    // Do nothing
+  return certs
+      .map(
+          (GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes
+                  cert) =>
+              _buildCertFromAccountQueryReceived(cert))
+      .where((Cert? cert) => cert != null)
+      .cast<Cert>()
+      .toList();
+}
+
+// Extract issued certs from Account query
+List<Cert> _extractCertsIssuedFromAccount(
+    GAccountsByPkData_accounts_nodes_linkedIdentity identity) {
+  final BuiltList<
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes>
+      certs = identity.certsByIssuerId.nodes;
+  if (certs.isEmpty) {
+    return <Cert>[];
   }
-  try {
-    certIssued = ((identity as dynamic).certIssued as BuiltList<dynamic>)
-        .map((dynamic cert) => _buildCert(cert))
-        .where((Cert? cert) => cert != null)
-        .cast<Cert>()
-        .toList();
-  } catch (e) {
-    // Do nothing
+  return certs
+      .map(
+          (GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes
+                  cert) =>
+              _buildCertFromAccountQueryIssued(cert))
+      .where((Cert? cert) => cert != null)
+      .cast<Cert>()
+      .toList();
+}
+
+// Build Cert from Account query certsByReceiverId
+Cert? _buildCertFromAccountQueryReceived(
+    GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes
+        cert) {
+  final GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer?
+      issuer = cert.issuer;
+  final GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver?
+      receiver = cert.receiver;
+
+  // Skip if issuer or receiver is null (removed accounts)
+  if (issuer?.accountId == null || receiver?.accountId == null) {
+    return null;
   }
 
-  return identity != null
-      ? Contact.withAddress(
-          nick: (identity as dynamic)?.name as String?,
-          address: (account as dynamic).id as String,
-          status: parseIdentityStatus(
-              ((identity as dynamic)?.status as dynamic) as String?),
-          isMember: (identity as dynamic)?.isMember as bool?,
-          createdOn: (account as dynamic).createdOn as int?,
-          expireOn: (identity as dynamic).expireOn as int?,
-          index: (identity as dynamic).index as int?,
-          certsIssued: certIssued,
-          certsReceived: certReceived,
-        )
-      : Contact.withAddress(
-          address: (account as dynamic).id as String,
-          createdOn: (account as dynamic).createdOn as int?,
-        );
+  return Cert(
+    id: cert.id,
+    issuerId: Contact.withAddress(
+        name: issuer?.name,
+        createdOn: issuer?.account?.createdOn,
+        address: issuer!.accountId!,
+        status: parseIdentityStatus(issuer.status),
+        isMember: issuer.isMember,
+        expireOn: issuer.expireOn,
+        index: issuer.index),
+    receiverId: Contact.withAddress(
+        name: receiver?.name,
+        createdOn: receiver?.account?.createdOn,
+        address: receiver!.accountId!,
+        status: parseIdentityStatus(receiver.status),
+        isMember: receiver.isMember,
+        expireOn: receiver.expireOn,
+        index: receiver.index),
+    createdOn: cert.createdOn,
+    expireOn: cert.expireOn,
+    isActive: cert.isActive,
+    updatedOn: cert.updatedOn,
+  );
+}
+
+// Build Cert from Account query certsByIssuerId
+Cert? _buildCertFromAccountQueryIssued(
+    GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes
+        cert) {
+  final GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer?
+      issuer = cert.issuer;
+  final GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver?
+      receiver = cert.receiver;
+
+  // Skip if issuer or receiver is null (removed accounts)
+  if (issuer?.accountId == null || receiver?.accountId == null) {
+    return null;
+  }
+
+  return Cert(
+    id: cert.id,
+    issuerId: Contact.withAddress(
+        name: issuer?.name,
+        createdOn: issuer?.account?.createdOn,
+        address: issuer!.accountId!,
+        status: parseIdentityStatus(issuer.status),
+        isMember: issuer.isMember,
+        expireOn: issuer.expireOn,
+        index: issuer.index),
+    receiverId: Contact.withAddress(
+        name: receiver?.name,
+        createdOn: receiver?.account?.createdOn,
+        address: receiver!.accountId!,
+        status: parseIdentityStatus(receiver.status),
+        isMember: receiver.isMember,
+        expireOn: receiver.expireOn,
+        index: receiver.index),
+    createdOn: cert.createdOn,
+    expireOn: cert.expireOn,
+    isActive: cert.isActive,
+    updatedOn: cert.updatedOn,
+  );
+}
+
+// Build Contact from GAccountsByPkData_accounts_nodes (with certs)
+Contact _contactFromAccount(GAccountsByPkData_accounts_nodes account) {
+  final GAccountsByPkData_accounts_nodes_linkedIdentity? identity =
+      account.linkedIdentity;
+
+  if (identity == null) {
+    return Contact.withAddress(
+      address: account.id,
+      createdOn: account.createdOn,
+    );
+  }
+
+  return Contact.withAddress(
+    nick: identity.name,
+    address: account.id,
+    status: parseIdentityStatus(identity.status),
+    isMember: identity.isMember,
+    createdOn: account.createdOn,
+    expireOn: identity.expireOn,
+    index: identity.index,
+    certsIssued: _extractCertsIssuedFromAccount(identity),
+    certsReceived: _extractCertsReceivedFromAccount(identity),
+  );
+}
+
+// Build Contact from GAccountsBasicByPkData_accounts_nodes (without certs)
+Contact _contactFromAccountBasic(
+    GAccountsBasicByPkData_accounts_nodes account) {
+  final GAccountsBasicByPkData_accounts_nodes_linkedIdentity? identity =
+      account.linkedIdentity;
+
+  if (identity == null) {
+    return Contact.withAddress(
+      address: account.id,
+      createdOn: account.createdOn,
+    );
+  }
+
+  return Contact.withAddress(
+    nick: identity.name,
+    address: account.id,
+    status: parseIdentityStatus(identity.status),
+    isMember: identity.isMember,
+    createdOn: account.createdOn,
+    expireOn: identity.expireOn,
+    index: identity.index,
+  );
 }
 
 Future<List<Contact>> getAccounts({required List<String> accountIds}) async {
@@ -387,7 +569,8 @@ Future<List<Contact>> getAccounts({required List<String> accountIds}) async {
         if (accountsData != null && accountsData.accounts != null) {
           loggerDev(
               'Successfully fetched ${accountsData.accounts!.nodes.length} accounts from node ${node.url}');
-          for (final dynamic account in accountsData.accounts!.nodes) {
+          for (final GAccountsByPkData_accounts_nodes account
+              in accountsData.accounts!.nodes) {
             final Contact contact = _contactFromAccount(account);
             contacts.add(contact);
           }
@@ -490,8 +673,9 @@ Future<List<Contact>> getAccountsBasic(
         if (accountsData != null && accountsData.accounts != null) {
           loggerDev(
               'Successfully fetched ${accountsData.accounts!.nodes.length} basic accounts from node ${node.url}');
-          for (final dynamic account in accountsData.accounts!.nodes) {
-            final Contact contact = _contactFromAccount(account);
+          for (final GAccountsBasicByPkData_accounts_nodes account
+              in accountsData.accounts!.nodes) {
+            final Contact contact = _contactFromAccountBasic(account);
             contacts.add(contact);
           }
           break; // Success

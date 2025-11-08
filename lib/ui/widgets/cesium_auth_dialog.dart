@@ -16,6 +16,7 @@ import '../logger.dart';
 import '../qr_manager.dart';
 import '../ui_helpers.dart';
 import 'fifth_screen/import_dialog.dart';
+import 'fifth_screen/import_dialog_stub.dart';
 import 'form_error_widget.dart';
 import 'password_field.dart';
 
@@ -244,7 +245,7 @@ class _CesiumAuthDialogState extends State<CesiumAuthDialog> {
     String? fileContent;
     if (kIsWeb) {
       // Previous used .dunikey with dot
-      fileContent = await importWalletWeb(context, 'dunikey');
+      fileContent = await importWalletWeb('dunikey');
     } else {
       fileContent =
           await importWallet(c, <String>['.dunikey'], 'select_auth_file');

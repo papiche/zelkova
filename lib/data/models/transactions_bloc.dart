@@ -56,6 +56,8 @@ class TransactionsBloc {
   }
 
   Stream<TransactionsState> _fetchTransactionsList(String? pageKey) async* {
+    logger(
+        '[TransactionsBloc] _fetchTransactionsList START: pageKey=$pageKey, pubKey=$pubKey');
     final TransactionsState lastListingState =
         _onNewListingStateController.value;
     try {
@@ -64,13 +66,16 @@ class TransactionsBloc {
 
       final bool isConnected =
           await ConnectivityWidgetWrapperWrapper.isConnected;
-      logger('isConnected: $isConnected');
+      logger('[TransactionsBloc] isConnected: $isConnected');
 
       if (!isConnected) {
+        logger(
+            '[TransactionsBloc] No connection, yielding cached transactions');
         yield TransactionsState(
           itemList: transCubit.transactions(pubKey),
         );
       } else {
+        logger('[TransactionsBloc] Fetching transactions from server...');
         final List<Transaction> fetchedItems =
             await transCubit.fetchTransactions(
           cursor: pageKey,
@@ -87,6 +92,8 @@ class TransactionsBloc {
 
         final String? nextPageKey = isLastPage ? null : currentState.endCursor;
 
+        logger(
+            '[TransactionsBloc] Yielding state: items=${fetchedItems.length}, nextPageKey=$nextPageKey, isLastPage=$isLastPage');
         yield TransactionsState(
           nextPageKey: nextPageKey,
           itemList: pageKey == null
@@ -96,8 +103,10 @@ class TransactionsBloc {
                   ...fetchedItems
                 ],
         );
+        logger('[TransactionsBloc] State yielded successfully');
       }
     } catch (e) {
+      logger('[TransactionsBloc] ERROR: $e');
       yield TransactionsState(
         error: e,
         nextPageKey: lastListingState.nextPageKey,

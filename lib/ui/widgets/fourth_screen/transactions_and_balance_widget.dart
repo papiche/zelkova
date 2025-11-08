@@ -228,28 +228,26 @@ class _TransactionsAndBalanceWidgetState
           return;
         }
 
-        // For internal accounts, mark as truly empty
+        // For internal accounts, mark as truly empty immediately
         logger(
-            '[DEBUG] Truly empty response: no data from server, no cache, no next page');
-        // Use postFrameCallback to ensure this happens after the first build
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (mounted) {
-            setState(() {
-              _txState = _txState.copyWith(
-                pages: <List<Transaction>>[],
-                keys: <String?>[],
-                hasNextPage: false,
-                isLoading: false,
-                error: s.error,
-              );
-              _nextCursor = null;
-              _gotFirstResponse = true;
-              _bootstrapping = false;
-              logger(
-                  '[DEBUG] PostFrameCallback: Marked as truly empty, bootstrapping=false');
-            });
-          }
+            '[DEBUG] Internal account: Marking as empty with definitive server response');
+        _gotFirstResponse = true;
+        _bootstrapping = false;
+
+        setState(() {
+          _txState = _txState.copyWith(
+            pages: <List<Transaction>>[],
+            keys: <String?>[],
+            isLoading: false,
+            hasNextPage: false,
+            error: s.error,
+          );
+          _nextCursor = null;
         });
+        logger(
+            '[DEBUG] Internal account state set: pages=${_txState.pages?.length}, '
+            'keys=${_txState.keys?.length}, isLoading=${_txState.isLoading}, '
+            'hasNext=${_txState.hasNextPage}, isTerminalEmpty=${_isTerminalEmpty()}');
         return;
       }
 
@@ -407,24 +405,28 @@ class _TransactionsAndBalanceWidgetState
   }
 
   Future<void> _refresh() async {
+    logger('[DEBUG] _refresh() called');
     final List<List<Transaction>> cachedPages =
         _txState.pages ?? const <List<Transaction>>[];
     final List<String?> cachedKeys = _txState.keys ?? const <String?>[];
 
+    _nextCursor = null;
+    _lastRequestedCursor = null;
+
     setState(() {
+      // DON'T set isLoading=true here - let _fetchNextTxPage do it
+      // Otherwise _fetchNextTxPage will see isLoading=true and skip the request
       _txState = PagingState<String?, Transaction>(
-        isLoading: true,
+        isLoading: false, // Will be set to true by _fetchNextTxPage
         pages: cachedPages.isNotEmpty ? cachedPages : null,
         keys: cachedKeys.isNotEmpty ? cachedKeys : null,
       );
       if (!isExternalAccount) {
-        _pendingState = PagingState<int, Transaction>(isLoading: true);
+        _pendingState = PagingState<int, Transaction>(isLoading: false);
       }
+      _gotFirstResponse = false;
+      _bootstrapping = true;
     });
-
-    _nextCursor = null;
-    _lastRequestedCursor = null;
-    _gotFirstResponse = false;
 
     _fetchNextTxPage();
     if (!isExternalAccount) {

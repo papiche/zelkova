@@ -213,7 +213,7 @@ Future<SignAndSendResult> _executeIfAuthenticated(
 Future<SignAndSendResult> _returnAuthFailed() {
   final StreamController<String> progressController =
       StreamController<String>();
-  progressController.add('wallet_auth_failed');
+  progressController.add(tr('wallet_auth_failed'));
   progressController.close();
 
   return Future<SignAndSendResult>.value(SignAndSendResult(

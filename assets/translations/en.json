@@ -466,5 +466,6 @@
   "invalid_import_json": "Invalid g1nkgo export file",
   "error_decoding_json": "Error decoding the g1nkgo export file",
   "add_emoji": "Add Emoji",
-  "hide_emoji_keyboard": "Hide Emoji Keyboard"
+  "hide_emoji_keyboard": "Hide Emoji Keyboard",
+  "nick_copied_to_clipboard": "Identity copied to clipboard"
 }

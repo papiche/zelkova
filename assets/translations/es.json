@@ -470,5 +470,6 @@
   "cesium_auth_title": "Autenticación",
   "add_emoji": "Add Emoji",
   "hide_emoji_keyboard": "Hide Emoji Keyboard",
-  "emoji_search": "Buscar"
+  "emoji_search": "Buscar",
+  "nick_copied_to_clipboard": "Identidad copiada al portapapeles"
 }

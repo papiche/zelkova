@@ -1,4 +1,4 @@
-# npx get-graphql-schema https://datapod.gyroi.de/v1/graphql > duniter-datapod.schema.graphql.new
+# npx get-graphql-schema https://datapod.gyroi.de/v1/graphql > duniter-datapod.schema.graphql
 query GetProfileByAddress($pubkey: String!) {
     profiles(where: { pubkey: { _eq: $pubkey } }) {
         avatar

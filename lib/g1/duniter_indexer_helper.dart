@@ -39,23 +39,40 @@ Future<List<Contact>> searchWotV2(String searchPatternRaw) async {
         // Note: Using MemoryStore in isolate (Hive stores cannot be passed between isolates)
         final ferry.Client client = await initDuniterIndexerClient(node.url);
 
-        final ferry
-            .OperationResponse<GIdentitiesByNameData, GIdentitiesByNameVars>
-            response = await client.request(req).timeout(
-          const Duration(seconds: 20),
-          onTimeout: (EventSink<
-                  ferry.OperationResponse<GIdentitiesByNameData,
-                      GIdentitiesByNameVars>>
-              sink) {
-            throw TimeoutException('Request timed out');
-          },
-        ).firstWhere(
-          (ferry.OperationResponse<GIdentitiesByNameData, GIdentitiesByNameVars>
-                  response) =>
-              true,
-          orElse: () =>
-              throw Exception('Stream completed without emitting a value'),
-        );
+        ferry.OperationResponse<GIdentitiesByNameData, GIdentitiesByNameVars>?
+            response;
+
+        try {
+          response = await client.request(req).timeout(
+            const Duration(seconds: 20),
+            onTimeout: (EventSink<
+                    ferry.OperationResponse<GIdentitiesByNameData,
+                        GIdentitiesByNameVars>>
+                sink) {
+              throw TimeoutException('Request timed out');
+            },
+          ).firstWhere(
+            (ferry.OperationResponse<GIdentitiesByNameData,
+                        GIdentitiesByNameVars>
+                    response) =>
+                true,
+            orElse: () =>
+                throw Exception('Stream completed without emitting a value'),
+          );
+        } catch (e) {
+          // Handle deserialization errors and other stream errors
+          if (e.toString().contains('Deserializing') ||
+              e.toString().contains('Unknown type')) {
+            NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
+                cause:
+                    'Deserialization error searching by name: ${e.toString().substring(0, 100)}');
+            loggerDev(
+                'Node ${node.url} returned data that could not be deserialized');
+            continue; // Try next node
+          }
+          rethrow; // Re-throw other errors
+        }
+
         if (response.hasErrors) {
           NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
               cause: 'GraphQL errors searching by name');
@@ -92,24 +109,39 @@ Future<List<Contact>> searchWotV2(String searchPatternRaw) async {
               ..vars.pattern = searchPattern);
         final ferry.Client client = await initDuniterIndexerClient(node.url);
 
-        final ferry.OperationResponse<GIdentitiesByNameOrPkData,
-                GIdentitiesByNameOrPkVars> response =
-            await client.request(req).timeout(
-          const Duration(seconds: 20),
-          onTimeout: (EventSink<
-                  ferry.OperationResponse<GIdentitiesByNameOrPkData,
-                      GIdentitiesByNameOrPkVars>>
-              sink) {
-            throw TimeoutException('Request timed out');
-          },
-        ).firstWhere(
-          (ferry.OperationResponse<GIdentitiesByNameOrPkData,
-                      GIdentitiesByNameOrPkVars>
-                  response) =>
-              true,
-          orElse: () =>
-              throw Exception('Stream completed without emitting a value'),
-        );
+        ferry.OperationResponse<GIdentitiesByNameOrPkData,
+            GIdentitiesByNameOrPkVars>? response;
+
+        try {
+          response = await client.request(req).timeout(
+            const Duration(seconds: 20),
+            onTimeout: (EventSink<
+                    ferry.OperationResponse<GIdentitiesByNameOrPkData,
+                        GIdentitiesByNameOrPkVars>>
+                sink) {
+              throw TimeoutException('Request timed out');
+            },
+          ).firstWhere(
+            (ferry.OperationResponse<GIdentitiesByNameOrPkData,
+                        GIdentitiesByNameOrPkVars>
+                    response) =>
+                true,
+            orElse: () =>
+                throw Exception('Stream completed without emitting a value'),
+          );
+        } catch (e) {
+          // Handle deserialization errors and other stream errors
+          if (e.toString().contains('Deserializing') ||
+              e.toString().contains('Unknown type')) {
+            NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
+                cause:
+                    'Deserialization error searching by name or pk: ${e.toString().substring(0, 100)}');
+            loggerDev(
+                'Node ${node.url} returned data that could not be deserialized');
+            continue; // Try next node
+          }
+          rethrow; // Re-throw other errors
+        }
 
         if (response.hasErrors) {
           NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
@@ -162,22 +194,38 @@ Future<List<Contact>> getIdentities({required List<String> addresses}) async {
             ..vars.pubKeys.replace(addresses));
       final ferry.Client client = await initDuniterIndexerClient(node.url);
 
-      final ferry.OperationResponse<GIdentitiesByPkData, GIdentitiesByPkVars>
-          response = await client.request(req).timeout(
-        const Duration(seconds: 20),
-        onTimeout: (EventSink<
-                ferry
-                .OperationResponse<GIdentitiesByPkData, GIdentitiesByPkVars>>
-            sink) {
-          throw TimeoutException('Request timed out');
-        },
-      ).firstWhere(
-        (ferry.OperationResponse<GIdentitiesByPkData, GIdentitiesByPkVars>
-                response) =>
-            true,
-        orElse: () =>
-            throw Exception('Stream completed without emitting a value'),
-      );
+      ferry.OperationResponse<GIdentitiesByPkData, GIdentitiesByPkVars>?
+          response;
+
+      try {
+        response = await client.request(req).timeout(
+          const Duration(seconds: 20),
+          onTimeout: (EventSink<
+                  ferry
+                  .OperationResponse<GIdentitiesByPkData, GIdentitiesByPkVars>>
+              sink) {
+            throw TimeoutException('Request timed out');
+          },
+        ).firstWhere(
+          (ferry.OperationResponse<GIdentitiesByPkData, GIdentitiesByPkVars>
+                  response) =>
+              true,
+          orElse: () =>
+              throw Exception('Stream completed without emitting a value'),
+        );
+      } catch (e) {
+        // Handle deserialization errors and other stream errors
+        if (e.toString().contains('Deserializing') ||
+            e.toString().contains('Unknown type')) {
+          NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
+              cause:
+                  'Deserialization error getting identities: ${e.toString().substring(0, 100)}');
+          loggerDev(
+              'Node ${node.url} returned data that could not be deserialized');
+          continue; // Try next node
+        }
+        rethrow; // Re-throw other errors
+      }
 
       if (response.hasErrors) {
         NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
@@ -542,21 +590,36 @@ Future<List<Contact>> getAccounts({required List<String> accountIds}) async {
 
       final ferry.Client client = await initDuniterIndexerClient(node.url);
 
-      final ferry.OperationResponse<GAccountsByPkData, GAccountsByPkVars>
-          response = await client.request(req).timeout(
-        const Duration(seconds: 20),
-        onTimeout: (EventSink<
-                ferry.OperationResponse<GAccountsByPkData, GAccountsByPkVars>>
-            sink) {
-          throw TimeoutException('Request timed out');
-        },
-      ).firstWhere(
-        (ferry.OperationResponse<GAccountsByPkData, GAccountsByPkVars>
-                response) =>
-            true,
-        orElse: () =>
-            throw Exception('Stream completed without emitting a value'),
-      );
+      ferry.OperationResponse<GAccountsByPkData, GAccountsByPkVars>? response;
+
+      try {
+        response = await client.request(req).timeout(
+          const Duration(seconds: 20),
+          onTimeout: (EventSink<
+                  ferry.OperationResponse<GAccountsByPkData, GAccountsByPkVars>>
+              sink) {
+            throw TimeoutException('Request timed out');
+          },
+        ).firstWhere(
+          (ferry.OperationResponse<GAccountsByPkData, GAccountsByPkVars>
+                  response) =>
+              true,
+          orElse: () =>
+              throw Exception('Stream completed without emitting a value'),
+        );
+      } catch (e) {
+        // Handle deserialization errors and other stream errors
+        if (e.toString().contains('Deserializing') ||
+            e.toString().contains('Unknown type')) {
+          NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
+              cause:
+                  'Deserialization error fetching accounts: ${e.toString().substring(0, 100)}');
+          loggerDev(
+              'Node ${node.url} returned data that could not be deserialized');
+          continue; // Try next node
+        }
+        rethrow; // Re-throw other errors
+      }
 
       if (response.hasErrors) {
         NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
@@ -609,6 +672,11 @@ void processFerryError(ferry.OperationResponse<dynamic, dynamic> response) {
       if (response.linkException!.originalException is FormatException) {
         error =
             'FormatException: The server response is not valid JSON. The server might be returning HTML or plain text instead of JSON.';
+      } else if (response.linkException!.originalException
+          .toString()
+          .contains('Deserializing')) {
+        error =
+            'DeserializationError: The server response could not be deserialized. This node may have incompatible data.';
       }
     }
   } else if (response.data == null) {
@@ -644,23 +712,39 @@ Future<List<Contact>> getAccountsBasic(
 
       final ferry.Client client = await initDuniterIndexerClient(node.url);
 
-      final ferry
-          .OperationResponse<GAccountsBasicByPkData, GAccountsBasicByPkVars>
-          response = await client.request(req).timeout(
-        const Duration(seconds: 20),
-        onTimeout: (EventSink<
-                ferry.OperationResponse<GAccountsBasicByPkData,
-                    GAccountsBasicByPkVars>>
-            sink) {
-          throw TimeoutException('Request timed out');
-        },
-      ).firstWhere(
-        (ferry.OperationResponse<GAccountsBasicByPkData, GAccountsBasicByPkVars>
-                response) =>
-            true,
-        orElse: () =>
-            throw Exception('Stream completed without emitting a value'),
-      );
+      ferry.OperationResponse<GAccountsBasicByPkData, GAccountsBasicByPkVars>?
+          response;
+
+      try {
+        response = await client.request(req).timeout(
+          const Duration(seconds: 20),
+          onTimeout: (EventSink<
+                  ferry.OperationResponse<GAccountsBasicByPkData,
+                      GAccountsBasicByPkVars>>
+              sink) {
+            throw TimeoutException('Request timed out');
+          },
+        ).firstWhere(
+          (ferry.OperationResponse<GAccountsBasicByPkData,
+                      GAccountsBasicByPkVars>
+                  response) =>
+              true,
+          orElse: () =>
+              throw Exception('Stream completed without emitting a value'),
+        );
+      } catch (e) {
+        // Handle deserialization errors and other stream errors
+        if (e.toString().contains('Deserializing') ||
+            e.toString().contains('Unknown type')) {
+          NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
+              cause:
+                  'Deserialization error getting basic accounts: ${e.toString().substring(0, 100)}');
+          loggerDev(
+              'Node ${node.url} returned data that could not be deserialized');
+          continue; // Try next node
+        }
+        rethrow; // Re-throw other errors
+      }
 
       if (response.hasErrors) {
         NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,

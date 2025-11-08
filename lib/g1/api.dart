@@ -20,7 +20,6 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:tuple/tuple.dart';
-import 'package:universal_html/html.dart' show window;
 
 import '../data/models/contact.dart';
 import '../data/models/node.dart';
@@ -32,7 +31,6 @@ import '../data/models/utxo.dart';
 import '../env.dart';
 import '../shared_prefs_helper.dart';
 import '../ui/contacts_cache.dart';
-import '../ui/in_dev_helper.dart';
 import '../ui/logger.dart';
 import '../ui/ui_helpers.dart';
 import 'duniter_endpoint_helper.dart';
@@ -40,6 +38,8 @@ import 'g1_helper.dart';
 import 'no_nodes_exception.dart';
 import 'node_check_result.dart';
 import 'pay_result.dart';
+import 'proxyfy_node_stub.dart'
+    if (dart.library.js_interop) 'proxyfy_node_web.dart';
 import 'service_manager.dart';
 import 'v2_peers.dart';
 
@@ -1013,13 +1013,6 @@ Tuple2<String, Node> getGvaNodeOld() {
     throw Exception(
         'Sorry: I cannot find a working node to send the transaction');
   }
-}
-
-String proxyfyNode(String nodeUrl) {
-  final String url = inProduction && kIsWeb
-      ? '${window.location.protocol}//${window.location.hostname}/proxy/${nodeUrl.replaceFirst('https://', '').replaceFirst('http://', '')}/'
-      : nodeUrl;
-  return url;
 }
 
 Future<Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalanceV1(

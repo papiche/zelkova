@@ -26,6 +26,7 @@ import '../../generated/gtest/pallets/certification.dart';
 import '../../generated/gtest/types/pallet_certification/types/idty_cert_meta.dart';
 import '../../generated/gtest/types/pallet_identity/types/idty_value.dart';
 import '../../shared_prefs_helper.dart';
+import '../clipboard_helper.dart';
 import '../logger.dart';
 import '../ui_helpers.dart';
 import 'certifications_page.dart';
@@ -245,10 +246,18 @@ class _ContactPageState extends State<ContactPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           if (contact.nick != null)
-            ListTile(
-              leading: const Icon(Symbols.editor_choice),
-              title: Text('@${contact.nick}'),
-            ),
+            GestureDetector(
+                onTap: () {
+                  copyToClipboard(
+                    context: context,
+                    text: contact.nick!,
+                    feedbackText: 'nick_copied_to_clipboard',
+                  );
+                },
+                child: ListTile(
+                  leading: const Icon(Symbols.editor_choice),
+                  title: Text('@${contact.nick}'),
+                )),
           if (!contact.createdOnV2) _buildQrListTile(contact),
           if (context.watch<AppCubit>().isExpertMode)
             _buildQrListTile(contact, isV2: true),
@@ -623,7 +632,6 @@ class _ContactPageState extends State<ContactPage> {
 
       // Waiting for Certifications
       if (you.certsReceived != null &&
-          you.certsReceived!.isNotEmpty &&
           you.certsReceived!.length <
               polkadotConstants().wot.minCertForMembership) {
         wotInfo.waitingForCerts = true;

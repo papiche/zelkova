@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pattern_lock/pattern_lock.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:universal_html/html.dart' as html;
 
 import '../../../data/models/contact.dart';
 import '../../../data/models/contact_cubit.dart';
@@ -27,6 +26,8 @@ import '../cesium_auth_dialog.dart';
 import '../custom_error_widget.dart';
 import '../error_dialog.dart';
 import 'import_clipboard_dialog.dart';
+import 'import_dialog_stub.dart'
+    if (dart.library.js_interop) 'import_dialog_web.dart';
 import 'import_types.dart';
 import 'select_import_method.dart';
 
@@ -47,7 +48,7 @@ class _ImportDialogState extends State<ImportDialog> {
 
   Future<String> _getImportFuture(BuildContext c) {
     if (kIsWeb) {
-      return importWalletWeb(c);
+      return importWalletWeb('json');
     } else {
       // Native Android or iOS - use the native file picker
       return importWallet(c);
@@ -544,71 +545,6 @@ Future<void> showSelectImportMethodDialog(
   }
 }
 
-Future<String> importWalletWebHtml(BuildContext context,
-    [String allowedExtension = '.json']) async {
-  final Completer<String> completer = Completer<String>();
-  final html.InputElement input = html.InputElement()..type = 'file';
-
-  input.multiple = false;
-  input.accept = allowedExtension; // limit file types
-
-  input.onChange.listen((html.Event event) async {
-    // Prevent default behavior to avoid page refresh in Firefox Android
-    event.preventDefault();
-    event.stopPropagation();
-
-    if (input.files == null || input.files!.isEmpty) {
-      if (!completer.isCompleted) {
-        logger('No file selected');
-        completer.complete('');
-      }
-      return;
-    }
-
-    final html.File file = input.files!.first;
-    final html.FileReader reader = html.FileReader();
-
-    reader.onError.listen((html.Event e) {
-      if (!completer.isCompleted) {
-        logger('Error reading file');
-        completer.complete('');
-      }
-    });
-
-    // Read as text
-    reader.readAsText(file);
-    await reader.onLoadEnd.first;
-
-    try {
-      final String? jsonString = reader.result as String?;
-      if (jsonString != null && !kReleaseMode) {
-        // logger(jsonString);
-      }
-      if (!completer.isCompleted) {
-        completer.complete(jsonString ?? '');
-      }
-    } catch (e, stacktrace) {
-      logger('Error importing wallet $e');
-      await Sentry.captureException(e, stackTrace: stacktrace);
-      if (!completer.isCompleted) {
-        completer.complete('');
-      }
-    }
-  });
-
-  input.click();
-
-  // Add timeout to handle cases where onChange never fires
-  Future<void>.delayed(const Duration(minutes: 5), () {
-    if (!completer.isCompleted) {
-      logger('File selection timeout');
-      completer.complete('');
-    }
-  });
-
-  return completer.future;
-}
-
 Future<String> importWallet(BuildContext context,
     [List<String> allowedExtensions = const <String>['.json'],
     String messageKey = 'select_file_to_import']) async {
@@ -671,27 +607,6 @@ Future<String> importWallet(BuildContext context,
     logger('Error importing wallet $e');
     await Sentry.captureException(e, stackTrace: stacktrace);
     return '';
-  }
-}
-
-bool isAppleWeb() {
-  final String ua = html.window.navigator.userAgent.toLowerCase();
-  return kIsWeb &&
-      (ua.contains('iphone') ||
-          ua.contains('ipad') ||
-          ua.contains('macintosh'));
-}
-
-Future<String> importWalletWeb(BuildContext context,
-    [String extension = 'json']) async {
-  if (isAppleWeb()) {
-    return importWalletWithFilePicker(extension);
-  } else {
-    // add dot to the extension if not present
-    if (!extension.startsWith('.')) {
-      extension = '.$extension';
-    }
-    return importWalletWebHtml(context, extension);
   }
 }
 

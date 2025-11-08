@@ -13,7 +13,6 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:universal_html/html.dart' as html;
 
 import '../../../data/models/app_cubit.dart';
 import '../../../data/models/contact.dart';
@@ -31,6 +30,8 @@ import '../../pattern_util.dart';
 import '../../secure_unlock_widget.dart';
 import '../../ui_helpers.dart';
 import '../select_export_method_dialog.dart';
+import 'export_dialog_stub.dart'
+    if (dart.library.js_interop) 'export_dialog_web.dart';
 import 'multi_wallet_selector.dart';
 
 Future<void> openExportWalletsSelector(
@@ -674,7 +675,7 @@ class _ExportDialogState extends State<ExportDialog> {
 
   Future<void> shareExport(BuildContext context, String fileJson) {
     if (kIsWeb) {
-      final Uri uri = Uri.parse(html.window.location.href);
+      final Uri uri = Uri.parse(getWebLocationHref());
       final String fileJsonUrlComponent = Uri.encodeComponent(fileJson);
       final Uri finalUri = uri.replace(path: '/import/$fileJsonUrlComponent');
       // TODO(vjrj): Allow to import this link
@@ -689,12 +690,7 @@ class _ExportDialogState extends State<ExportDialog> {
   }
 
   void _webFileDownload(List<int> bytes, [String? fileNameArg]) {
-    final html.Blob blob = html.Blob(<dynamic>[bytes]);
-    final String url = html.Url.createObjectUrlFromBlob(blob);
-
-    final html.AnchorElement anchor = html.AnchorElement(href: url);
-    anchor.download = fileNameArg ?? getWalletFileName();
-    anchor.click();
+    webFileDownload(bytes, fileNameArg ?? getWalletFileName());
   }
 
   Future<bool> _saveFileNonWeb(BuildContext context, List<int> bytes,

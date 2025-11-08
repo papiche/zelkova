@@ -134,7 +134,7 @@ class DuniterServiceV2 implements DuniterService {
 
   @override
   Future<List<Contact>> searchWot(String searchPattern) {
-    return searchWotV2('.*$searchPattern.*');
+    return searchWotV2(searchPattern);
   }
 
   @override

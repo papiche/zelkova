@@ -82,7 +82,7 @@ class _TransactionsAndBalanceWidgetState
   bool _firstBuildComplete = false;
 
   // Debug flag - set to true to enable debug bar in development mode
-  static const bool _debug = false;
+  static const bool _debug = true;
 
   int _countItems(PagingState<dynamic, Transaction> s) =>
       (s.pages ?? const <List<Transaction>>[])
@@ -203,21 +203,28 @@ class _TransactionsAndBalanceWidgetState
         logger(
             '[DEBUG] Empty response detected: firstPage=$firstPage, noItems=$noItemsThisPage, hasNext=$hasNext, hasCached=$hasCachedData, isExternal=$isExternalAccount');
 
-        // For external accounts, let's wait a bit before marking as truly empty
-        // because sometimes the server sends an empty response first
+        // For external accounts, mark as empty immediately
+        // The server response is definitive
         if (isExternalAccount) {
           logger(
-              '[DEBUG] External account: NOT marking as empty yet, will wait for next response');
-          // Mark flags but keep bootstrapping
+              '[DEBUG] External account: Marking as empty with definitive server response');
           _gotFirstResponse = true;
           _bootstrapping = false;
 
           setState(() {
             _txState = _txState.copyWith(
+              pages: <List<Transaction>>[],
+              keys: <String?>[],
               isLoading: false,
               hasNextPage: false,
+              error: s.error,
             );
+            _nextCursor = null;
           });
+          logger(
+              '[DEBUG] External account state set: pages=${_txState.pages?.length}, '
+              'keys=${_txState.keys?.length}, isLoading=${_txState.isLoading}, '
+              'hasNext=${_txState.hasNextPage}, isTerminalEmpty=${_isTerminalEmpty()}');
           return;
         }
 
@@ -704,10 +711,32 @@ class _TransactionsAndBalanceWidgetState
                         transaction: tx,
                       );
                     },
-                    firstPageProgressIndicatorBuilder: (_) => const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 24.0),
-                      child: Center(child: CircularProgressIndicator()),
-                    ),
+                    firstPageProgressIndicatorBuilder: (_) {
+                      // Only show loading if we're actually waiting for the first response
+                      if (!_gotFirstResponse || _bootstrapping) {
+                        return const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 24.0),
+                          child: Center(child: CircularProgressIndicator()),
+                        );
+                      }
+                      // If we already got a response but still showing this, something is wrong
+                      // Show empty state instead
+                      logger(
+                          '[DEBUG] firstPageProgressIndicator called but gotFirstResponse=true. '
+                          'This should not happen. Showing empty state.');
+                      return Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: Text(
+                            tr(isExternalAccount
+                                ? 'no_transactions_simple'
+                                : 'no_transactions'),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      );
+                    },
                     firstPageErrorIndicatorBuilder: (_) =>
                         TransactionWidgetErrorWidget(
                       onTryAgain: _fetchNextTxPage,
@@ -721,36 +750,35 @@ class _TransactionsAndBalanceWidgetState
                       onTryAgain: _fetchNextTxPage,
                     ),
                     noItemsFoundIndicatorBuilder: (_) {
-                      // CRITICAL: If we're bootstrapping or waiting for first response, ALWAYS show loading
-                      if (_bootstrapping || !_gotFirstResponse) {
-                        return const Padding(
-                          padding: EdgeInsets.all(20.0),
-                          child: Center(child: CircularProgressIndicator()),
-                        );
-                      }
-
-                      // If there are items, never show this widget
                       final int totalItems = _countItems(_txState);
-                      if (totalItems > 0) {
-                        return const SizedBox.shrink();
-                      }
-
                       final bool isLoading = _txState.isLoading == true;
                       final bool hasNext = _txState.hasNextPage == true;
                       final bool hasError = _txState.error != null;
 
-                      // If loading or has next page, show loading
-                      if (isLoading || hasNext) {
+                      // If there are items, never show this widget
+                      if (totalItems > 0) {
+                        return const SizedBox.shrink();
+                      }
+
+                      // If there's an error and no items, show error
+                      if (hasError) {
+                        return TransactionWidgetErrorWidget(
+                            onTryAgain: _fetchNextTxPage);
+                      }
+
+                      // Show loading ONLY if actively loading
+                      if (isLoading) {
                         return const Padding(
                           padding: EdgeInsets.all(20.0),
                           child: Center(child: CircularProgressIndicator()),
                         );
                       }
 
-                      // If there's an error and no items, show error
-                      if (hasError && totalItems == 0) {
-                        return TransactionWidgetErrorWidget(
-                            onTryAgain: _fetchNextTxPage);
+                      // If has next page but not loading, something went wrong, show empty
+                      // This prevents infinite loading states
+                      if (hasNext && !isLoading) {
+                        logger(
+                            '[DEBUG] Has next page but not loading - this should not happen');
                       }
 
                       // Only show "no transactions" if really empty and finished
@@ -769,10 +797,23 @@ class _TransactionsAndBalanceWidgetState
                         );
                       }
 
-                      // Default: show loading if we reach here without a definitive answer
-                      return const Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: Center(child: CircularProgressIndicator()),
+                      // Fallback: if we reach here, something is wrong, show empty state
+                      logger(
+                          '[DEBUG] noItemsFoundIndicator fallback: showing empty state. '
+                          'totalItems=$totalItems, isLoading=$isLoading, hasNext=$hasNext, '
+                          'hasError=$hasError, _bootstrapping=$_bootstrapping, '
+                          '_gotFirstResponse=$_gotFirstResponse');
+                      return Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: Text(
+                            tr(isExternalAccount
+                                ? 'no_transactions_simple'
+                                : 'no_transactions'),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                       );
                     },
                   )),

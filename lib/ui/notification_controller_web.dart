@@ -1,6 +1,8 @@
+import 'dart:js_interop';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:universal_html/html.dart' as html;
+import 'package:web/web.dart' as web;
 
 import '../main.dart';
 import 'notif_utils.dart';
@@ -118,25 +120,42 @@ class NotificationController {
   static Future<void> notify(
       {required String title, required String desc, required String id}) async {
     try {
-      if (html.Notification.permission != 'granted') {
-        await html.Notification.requestPermission();
+      if (web.Notification.permission != 'granted') {
+        await web.Notification.requestPermission().toDart;
       }
 
-      if (html.Notification.permission == 'granted') {
-        final html.Notification notification =
-            html.Notification(title, body: desc, icon: ginkgoNetIcon);
-        notification.onClick.listen((html.Event event) {
-          // context.read<BottomNavCubit>().updateIndex(0);
-        });
+      if (web.Notification.permission == 'granted') {
+        final web.NotificationOptions options = web.NotificationOptions(
+          body: desc,
+          icon: ginkgoNetIcon,
+        );
+        final web.Notification notification = web.Notification(title, options);
+
+        // Add click listener
+        notification.addEventListener(
+            'click',
+            (JSAny event) {
+              // context.read<BottomNavCubit>().updateIndex(0);
+            }
+                .toJS);
       }
     } catch (e) {
       // Try this way
       // After: Error: Failed to construct 'Notification': Illegal constructor. Use ServiceWorkerRegistration.showNotification() instead.
-      if (html.ServiceWorkerRegistration != null) {
-        final html.ServiceWorkerRegistration swReg =
-            await html.window.navigator.serviceWorker!.ready;
-        await swReg.showNotification(
-            title, <String, String>{'body': desc, 'icon': ginkgoNetIcon});
+      try {
+        final web.ServiceWorkerContainer swContainer =
+            web.window.navigator.serviceWorker;
+        if (swContainer != null) {
+          final web.ServiceWorkerRegistration swReg =
+              await swContainer.ready.toDart;
+          final web.NotificationOptions options = web.NotificationOptions(
+            body: desc,
+            icon: ginkgoNetIcon,
+          );
+          await swReg.showNotification(title, options).toDart;
+        }
+      } catch (e2) {
+        // Silently fail if notifications are not supported
       }
     }
   }

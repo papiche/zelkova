@@ -642,11 +642,12 @@ Future<List<Node>> _fetchDuniterNodesFromPeers(NodeType type,
         final NodeCheckResult nodeCheck = await _pingNode(endpoint, type);
         final Duration latency = nodeCheck.latency;
         loggerD(debug,
-            'Evaluating node: $endpoint, latency ${latency.inMicroseconds} currentBlock: ${nodeCheck.currentBlock}');
+            'Evaluating node: $endpoint, latency ${latency.inMicroseconds} currentBlock: ${nodeCheck.currentBlock} version: ${nodeCheck.version}');
         final Node node = Node(
             url: endpoint,
             latency: latency.inMicroseconds,
-            currentBlock: nodeCheck.currentBlock);
+            currentBlock: nodeCheck.currentBlock,
+            version: nodeCheck.version);
         // Use the new method that handles insertion based on latency
         NodeManager().addNodeSortedByLatency(type, node, notify: false);
         return node;
@@ -706,12 +707,13 @@ Future<List<Node>> _fetchNodes(NodeType type, {bool debug = false}) async {
         final Duration latency = nodeCheck.latency;
         if (debug) {
           logger(
-              'Evaluating node: $endpoint, latency ${latency.inMicroseconds}');
+              'Evaluating node: $endpoint, latency ${latency.inMicroseconds} version: ${nodeCheck.version}');
         }
         final Node resultNode = Node(
             url: endpoint,
             latency: latency.inMicroseconds,
-            currentBlock: nodeCheck.currentBlock);
+            currentBlock: nodeCheck.currentBlock,
+            version: nodeCheck.version);
         NodeManager().addNodeSortedByLatency(type, resultNode, notify: false);
         return resultNode;
       } catch (e) {
@@ -773,8 +775,7 @@ Future<NodeCheckResult> _pingNode(String node, NodeType type,
     if (debug) {
       _logNodePing(node, type, result.latency, result.currentBlock);
     }
-    return NodeCheckResult(
-        latency: result.latency, currentBlock: result.currentBlock);
+    return result;
   } catch (e) {
     if (debug) {
       logger(
@@ -1342,17 +1343,37 @@ Future<NodeCheckResult> testDuniterIndexerV2(
 
   final Stopwatch stopwatch = Stopwatch()..start();
   final ferry.Client client = await initDuniterIndexerClient(node);
+
+  // First get the version info - use empty string as default if fails
+  String version = '';
+  try {
+    final ferry.OperationResponse<GIndexerVersionData, GIndexerVersionVars>
+        versionResponse =
+        await client.request(GIndexerVersionReq()).first.timeout(timeout);
+    if (!versionResponse.hasErrors && versionResponse.data?.version != null) {
+      version = versionResponse.data!.version.version;
+      loggerDev('Node $node has indexer version: $version');
+    } else {
+      loggerDev('Node $node returned errors when getting version');
+    }
+  } catch (e) {
+    loggerDev('Could not get version from node $node: $e');
+  }
+
+  // Then check the block height
   final ferry.OperationResponse<GLastBlockData, GLastBlockVars> response =
       await client.request(GLastBlockReq()).first.timeout(timeout);
   if (response.hasErrors) {
     loggerDev(
         'Node $node has errors: ${removeNewlines(response.linkException!.toString())}');
-    result = NodeCheckResult(currentBlock: 0, latency: wrongNodeDuration);
+    result = NodeCheckResult(
+        currentBlock: 0, latency: wrongNodeDuration, version: version);
   } else {
     final int currentBlock = response.data?.blocks?.nodes.first.height ?? 0;
     result = NodeCheckResult(
         currentBlock: currentBlock,
-        latency: currentBlock > 0 ? stopwatch.elapsed : wrongNodeDuration);
+        latency: currentBlock > 0 ? stopwatch.elapsed : wrongNodeDuration,
+        version: version);
   }
   return result;
 }

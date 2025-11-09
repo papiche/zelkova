@@ -627,10 +627,11 @@ void main() {
 
       await Future.wait(futures);
 
-      // Due to the way the update works, the final error count
-      // might not be exactly 10 due to race conditions, but should be >= 1
+      // After 10 errors, the node should be marked as offline but still exist
+      expect(nm.gvaNodes.isNotEmpty, isTrue);
       final Node node = nm.gvaNodes.first;
-      expect(node.errors, greaterThanOrEqualTo(1));
+      expect(node.errors, greaterThanOrEqualTo(NodeManager.absoluteMaxErrors));
+      expect(node.isNotOk, isTrue); // Should be marked offline
     });
 
     test('should maintain list integrity during mixed operations', () async {
@@ -989,6 +990,455 @@ void main() {
       expect(nodes[0].errors, 0);
       expect(nodes[1].url, 'fast-with-errors');
       expect(nodes[1].errors, 2);
+    });
+  });
+
+  group('getBestNodes - Indexer version filtering', () {
+    late NodeManager nm;
+
+    setUp(() {
+      nm = NodeManager();
+      nm.duniterIndexerNodes.clear();
+    });
+
+    test('should filter indexer nodes by highest version', () {
+      nm.updateNodes(
+          NodeType.duniterIndexer,
+          <Node>[
+            const Node(
+                url: 'node1',
+                latency: 100,
+                currentBlock: 1000,
+                version: '1.0.0'),
+            const Node(
+                url: 'node2',
+                latency: 150,
+                currentBlock: 1000,
+                version: '2.0.0'),
+            const Node(
+                url: 'node3',
+                latency: 120,
+                currentBlock: 1000,
+                version: '2.0.0'),
+            const Node(
+                url: 'node4',
+                latency: 80,
+                currentBlock: 1000,
+                version: '1.5.0'),
+          ],
+          notify: false);
+
+      final List<Node> bestNodes = nm.getBestNodes(NodeType.duniterIndexer);
+
+      // Should only return nodes with version 2.0.0
+      expect(bestNodes.every((Node n) => n.version == '2.0.0'), isTrue);
+      expect(bestNodes.length, 2);
+      expect(bestNodes.any((Node n) => n.url == 'node2'), isTrue);
+      expect(bestNodes.any((Node n) => n.url == 'node3'), isTrue);
+    });
+
+    test('should filter by highest version AND highest block', () {
+      nm.updateNodes(
+          NodeType.duniterIndexer,
+          <Node>[
+            const Node(
+                url: 'node1',
+                latency: 100,
+                currentBlock: 1000,
+                version: '2.0.0'),
+            const Node(
+                url: 'node2',
+                latency: 150,
+                currentBlock: 1500,
+                version: '2.0.0'),
+            const Node(
+                url: 'node3',
+                latency: 120,
+                currentBlock: 1501,
+                version: '2.0.0'),
+            const Node(
+                url: 'node4',
+                latency: 80,
+                currentBlock: 1450,
+                version: '2.0.0'),
+          ],
+          notify: false);
+
+      final List<Node> bestNodes = nm.getBestNodes(NodeType.duniterIndexer);
+
+      // Should only return nodes with version 2.0.0 AND blocks near 1501
+      expect(bestNodes.every((Node n) => n.version == '2.0.0'), isTrue);
+      expect(bestNodes.every((Node n) => n.currentBlock >= 1499), isTrue);
+      expect(bestNodes.any((Node n) => n.url == 'node2'), isTrue);
+      expect(bestNodes.any((Node n) => n.url == 'node3'), isTrue);
+      // node1 and node4 should be excluded (blocks too low)
+      expect(bestNodes.any((Node n) => n.url == 'node1'), isFalse);
+      expect(bestNodes.any((Node n) => n.url == 'node4'), isFalse);
+    });
+
+    test('should ignore nodes without version if versioned nodes exist', () {
+      nm.updateNodes(
+          NodeType.duniterIndexer,
+          <Node>[
+            const Node(url: 'fast-no-version', latency: 50, currentBlock: 1600),
+            const Node(
+                url: 'slow-with-version',
+                latency: 200,
+                currentBlock: 1500,
+                version: '1.0.0'),
+            const Node(url: 'no-version-2', latency: 100, currentBlock: 1550),
+          ],
+          notify: false);
+
+      final List<Node> bestNodes = nm.getBestNodes(NodeType.duniterIndexer);
+
+      // Should only use node with version, even if slower
+      expect(bestNodes.length, 1);
+      expect(bestNodes[0].url, 'slow-with-version');
+      expect(bestNodes[0].version, '1.0.0');
+    });
+
+    test('should use all online nodes if no versioned nodes available', () {
+      nm.updateNodes(
+          NodeType.duniterIndexer,
+          <Node>[
+            const Node(url: 'node1', latency: 100, currentBlock: 1000),
+            const Node(url: 'node2', latency: 150, currentBlock: 1001),
+            const Node(url: 'node3', latency: 120, currentBlock: 999),
+          ],
+          notify: false);
+
+      final List<Node> bestNodes = nm.getBestNodes(NodeType.duniterIndexer);
+
+      // Should use all nodes since none have version
+      expect(bestNodes.length, 3);
+    });
+
+    test('should correctly compare semantic versions', () {
+      nm.updateNodes(
+          NodeType.duniterIndexer,
+          <Node>[
+            const Node(
+                url: 'node1',
+                latency: 100,
+                currentBlock: 1000,
+                version: '1.2.3'),
+            const Node(
+                url: 'node2',
+                latency: 100,
+                currentBlock: 1000,
+                version: '1.2.10'),
+            const Node(
+                url: 'node3',
+                latency: 100,
+                currentBlock: 1000,
+                version: '1.10.0'),
+            const Node(
+                url: 'node4',
+                latency: 100,
+                currentBlock: 1000,
+                version: '2.0.0'),
+          ],
+          notify: false);
+
+      final List<Node> bestNodes = nm.getBestNodes(NodeType.duniterIndexer);
+
+      // Should only use version 2.0.0
+      expect(bestNodes.every((Node n) => n.version == '2.0.0'), isTrue);
+      expect(bestNodes.length, 1);
+      expect(bestNodes[0].url, 'node4');
+    });
+
+    test('should handle mixed scenario with version, block, and errors', () {
+      nm.updateNodes(
+          NodeType.duniterIndexer,
+          <Node>[
+            const Node(
+                url: 'old-version-good',
+                latency: 50,
+                currentBlock: 2000,
+                version: '1.0.0'),
+            const Node(
+                url: 'new-version-low-block',
+                latency: 100,
+                currentBlock: 1400,
+                version: '2.0.0'),
+            const Node(
+                url: 'new-version-high-block-1',
+                latency: 120,
+                currentBlock: 1500,
+                version: '2.0.0'),
+            const Node(
+                url: 'new-version-high-block-2',
+                latency: 150,
+                currentBlock: 1501,
+                version: '2.0.0'),
+            const Node(
+                url: 'new-version-errors',
+                latency: 80,
+                errors: 10,
+                currentBlock: 1500,
+                version: '2.0.0'),
+          ],
+          notify: false);
+
+      final List<Node> bestNodes = nm.getBestNodes(NodeType.duniterIndexer);
+
+      // Should filter: version 2.0.0, blocks 1499-1501, errors < 5
+      expect(bestNodes.every((Node n) => n.version == '2.0.0'), isTrue);
+      expect(bestNodes.every((Node n) => n.currentBlock >= 1499), isTrue);
+      expect(bestNodes.every((Node n) => n.errors < NodeManager.maxNodeErrors),
+          isTrue);
+      expect(bestNodes.length, 2);
+      expect(bestNodes.any((Node n) => n.url == 'new-version-high-block-1'),
+          isTrue);
+      expect(bestNodes.any((Node n) => n.url == 'new-version-high-block-2'),
+          isTrue);
+    });
+
+    test('should NOT filter by version for non-indexer node types', () {
+      nm.updateNodes(
+          NodeType.duniter,
+          <Node>[
+            const Node(
+                url: 'node1',
+                latency: 100,
+                currentBlock: 1000,
+                version: '1.0.0'),
+            const Node(
+                url: 'node2',
+                latency: 150,
+                currentBlock: 1000,
+                version: '2.0.0'),
+            const Node(url: 'node3', latency: 120, currentBlock: 1000),
+          ],
+          notify: false);
+
+      final List<Node> bestNodes = nm.getBestNodes(NodeType.duniter);
+
+      // Should include all nodes regardless of version
+      expect(bestNodes.length, 3);
+    });
+  });
+
+  group('Version comparison', () {
+    late NodeManager nm;
+
+    setUp(() {
+      nm = NodeManager();
+    });
+
+    test('should compare versions correctly - major version', () {
+      // Using the private method through getBestNodes
+      nm.duniterIndexerNodes.clear();
+      nm.updateNodes(
+          NodeType.duniterIndexer,
+          <Node>[
+            const Node(
+                url: 'v1', latency: 100, currentBlock: 1000, version: '1.0.0'),
+            const Node(
+                url: 'v2', latency: 100, currentBlock: 1000, version: '2.0.0'),
+          ],
+          notify: false);
+
+      final List<Node> bestNodes = nm.getBestNodes(NodeType.duniterIndexer);
+      expect(bestNodes[0].version, '2.0.0');
+    });
+
+    test('should compare versions correctly - minor version', () {
+      nm.duniterIndexerNodes.clear();
+      nm.updateNodes(
+          NodeType.duniterIndexer,
+          <Node>[
+            const Node(
+                url: 'v1.1',
+                latency: 100,
+                currentBlock: 1000,
+                version: '1.1.0'),
+            const Node(
+                url: 'v1.2',
+                latency: 100,
+                currentBlock: 1000,
+                version: '1.2.0'),
+          ],
+          notify: false);
+
+      final List<Node> bestNodes = nm.getBestNodes(NodeType.duniterIndexer);
+      expect(bestNodes[0].version, '1.2.0');
+    });
+
+    test('should compare versions correctly - patch version', () {
+      nm.duniterIndexerNodes.clear();
+      nm.updateNodes(
+          NodeType.duniterIndexer,
+          <Node>[
+            const Node(
+                url: 'v1.0.5',
+                latency: 100,
+                currentBlock: 1000,
+                version: '1.0.5'),
+            const Node(
+                url: 'v1.0.10',
+                latency: 100,
+                currentBlock: 1000,
+                version: '1.0.10'),
+          ],
+          notify: false);
+
+      final List<Node> bestNodes = nm.getBestNodes(NodeType.duniterIndexer);
+      expect(bestNodes[0].version, '1.0.10');
+    });
+  });
+
+  group('Excessive error handling', () {
+    late NodeManager nm;
+
+    setUp(() {
+      nm = NodeManager();
+      nm.duniterNodes.clear();
+      nm.duniterIndexerNodes.clear();
+    });
+
+    test('should mark node as offline when reaching absolute max errors', () {
+      const Node node = Node(url: 'bad-node');
+      nm.addNode(NodeType.duniter, node, notify: false);
+
+      // Increase errors to absolute max
+      for (int i = 0; i < NodeManager.absoluteMaxErrors; i++) {
+        nm.increaseNodeErrors(NodeType.duniter, node,
+            notify: false, cause: 'Test error $i');
+      }
+
+      // Node should still exist but marked as offline
+      expect(nm.duniterNodes.any((Node n) => n.url == 'bad-node'), isTrue);
+      final Node updatedNode =
+          nm.duniterNodes.firstWhere((Node n) => n.url == 'bad-node');
+      expect(updatedNode.errors, NodeManager.absoluteMaxErrors);
+      expect(updatedNode.isNotOk, isTrue); // Should be marked offline
+    });
+
+    test('should not include nodes with excessive errors in getBestNodes', () {
+      nm.updateNodes(
+          NodeType.duniter,
+          <Node>[
+            const Node(url: 'good-node', latency: 100, currentBlock: 1000),
+            const Node(
+                url: 'bad-node', latency: 100, errors: 15, currentBlock: 1000),
+          ],
+          notify: false);
+
+      final List<Node> bestNodes = nm.getBestNodes(NodeType.duniter);
+
+      // Bad node should not be included
+      expect(bestNodes.any((Node n) => n.url == 'bad-node'), isFalse);
+      expect(bestNodes.any((Node n) => n.url == 'good-node'), isTrue);
+    });
+
+    test('should return default nodes when all nodes have excessive errors',
+        () {
+      nm.updateNodes(
+          NodeType.duniter,
+          <Node>[
+            const Node(
+                url: 'bad-node-1',
+                latency: 100,
+                errors: 15,
+                currentBlock: 1000),
+            const Node(
+                url: 'bad-node-2',
+                latency: 100,
+                errors: 20,
+                currentBlock: 1000),
+          ],
+          notify: false);
+
+      final List<Node> bestNodes = nm.getBestNodes(NodeType.duniter);
+
+      // Should return default nodes
+      expect(bestNodes.isNotEmpty, isTrue);
+      expect(
+          bestNodes.every((Node n) => !n.url.startsWith('bad-node')), isTrue);
+    });
+
+    test('cleanNodesWithExcessiveErrors should mark nodes as offline', () {
+      nm.updateNodes(
+          NodeType.duniterIndexer,
+          <Node>[
+            const Node(url: 'good-node', latency: 100, errors: 2),
+            const Node(url: 'bad-node-1', latency: 100, errors: 15),
+            const Node(url: 'bad-node-2', latency: 100, errors: 20),
+            const Node(url: 'ok-node', latency: 100, errors: 5),
+          ],
+          notify: false);
+
+      nm.cleanNodesWithExcessiveErrors(notify: false);
+
+      // Should keep all nodes but mark bad ones as offline
+      expect(nm.duniterIndexerNodes.length, 4);
+
+      final Node badNode1 =
+          nm.duniterIndexerNodes.firstWhere((Node n) => n.url == 'bad-node-1');
+      final Node badNode2 =
+          nm.duniterIndexerNodes.firstWhere((Node n) => n.url == 'bad-node-2');
+      final Node goodNode =
+          nm.duniterIndexerNodes.firstWhere((Node n) => n.url == 'good-node');
+      final Node okNode =
+          nm.duniterIndexerNodes.firstWhere((Node n) => n.url == 'ok-node');
+
+      // Bad nodes should be marked offline
+      expect(badNode1.isNotOk, isTrue);
+      expect(badNode2.isNotOk, isTrue);
+
+      // Good nodes should remain online
+      expect(goodNode.isOk, isTrue);
+      expect(okNode.isOk, isTrue);
+    });
+    test('should not remove nodes below absolute max errors threshold', () {
+      const Node node = Node(url: 'test-node');
+      nm.addNode(NodeType.duniter, node, notify: false);
+
+      // Increase errors but stay below absolute max
+      for (int i = 0; i < NodeManager.absoluteMaxErrors - 1; i++) {
+        nm.increaseNodeErrors(NodeType.duniter, node,
+            notify: false, cause: 'Test error $i');
+      }
+
+      // Node should still exist
+      expect(nm.duniterNodes.any((Node n) => n.url == 'test-node'), isTrue);
+      final Node updatedNode =
+          nm.duniterNodes.firstWhere((Node n) => n.url == 'test-node');
+      expect(updatedNode.errors, NodeManager.absoluteMaxErrors - 1);
+    });
+
+    test('getBestNodes should filter nodes at maxNodeErrors threshold', () {
+      nm.updateNodes(
+          NodeType.duniter,
+          <Node>[
+            const Node(url: 'perfect', latency: 100, currentBlock: 1000),
+            const Node(
+                url: 'few-errors', latency: 100, errors: 2, currentBlock: 1000),
+            Node(
+                url: 'at-threshold',
+                latency: 100,
+                errors: NodeManager.maxNodeErrors,
+                currentBlock: 1000),
+            Node(
+                url: 'above-threshold',
+                latency: 100,
+                errors: NodeManager.maxNodeErrors + 1,
+                currentBlock: 1000),
+          ],
+          notify: false);
+
+      final List<Node> bestNodes = nm.getBestNodes(NodeType.duniter);
+
+      // Should only include nodes with errors < maxNodeErrors
+      expect(bestNodes.every((Node n) => n.errors < NodeManager.maxNodeErrors),
+          isTrue);
+      expect(bestNodes.any((Node n) => n.url == 'perfect'), isTrue);
+      expect(bestNodes.any((Node n) => n.url == 'few-errors'), isTrue);
+      expect(bestNodes.any((Node n) => n.url == 'at-threshold'), isFalse);
+      expect(bestNodes.any((Node n) => n.url == 'above-threshold'), isFalse);
     });
   });
 }

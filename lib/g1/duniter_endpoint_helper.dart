@@ -145,6 +145,11 @@ Future<tp.Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalanceV2(
 
   final List<Node> nodes = NodeManager().getBestNodes(NodeType.duniterIndexer);
 
+  if (nodes.isEmpty) {
+    loggerDev('No suitable indexer nodes available for $pubKeyRaw/$address');
+    return const tp.Tuple2<Map<String, dynamic>?, Node>(null, Node(url: ''));
+  }
+
   // With cursor-based pagination, we use the full pageSize
   final int limit = pageSize ?? 10;
 
@@ -163,6 +168,13 @@ Future<tp.Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalanceV2(
   }
 
   for (final Node node in nodes) {
+    // Skip nodes that have accumulated too many errors
+    if (node.errors >= NodeManager.maxNodeErrors) {
+      loggerDev(
+          'Skipping node ${node.url} due to high error count: ${node.errors}');
+      continue;
+    }
+
     try {
       final ferry.Client client = await initDuniterIndexerClient(node.url);
 

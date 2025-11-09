@@ -5,11 +5,12 @@ import '../../../data/models/node_type.dart';
 import '../../clipboard_helper.dart';
 
 class NodeListWidget extends StatelessWidget {
-  const NodeListWidget(
-      {super.key,
-      required this.nodes,
-      required this.currentBlock,
-      required this.type});
+  const NodeListWidget({
+    super.key,
+    required this.nodes,
+    required this.currentBlock,
+    required this.type,
+  });
 
   final List<Node> nodes;
   final int currentBlock;
@@ -18,33 +19,54 @@ class NodeListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-        children: List<Widget>.generate(
-      nodes.length,
-      (int index) {
+      children: List<Widget>.generate(nodes.length, (int index) {
         final Node node = nodes[index];
         return Theme(
-            data: Theme.of(context).copyWith(
-              visualDensity: VisualDensity.compact,
+          data: Theme.of(
+            context,
+          ).copyWith(visualDensity: VisualDensity.compact),
+          child: GestureDetector(
+            onTap: () => copyToClipboard(
+              context: context,
+              text: node.url,
+              feedbackText: 'copied_to_clipboard',
             ),
-            child: GestureDetector(
-                onTap: () => copyToClipboard(
-                    context: context,
-                    text: node.url,
-                    feedbackText: 'copied_to_clipboard'),
-                child: ListTile(
-                  dense: true,
-                  title: Text(node.url),
-                  subtitle: node.isOk
-                      ? Text(
-                          '${type != NodeType.cesiumPlus ? (type == NodeType.datapodEndpoint ? 'Current profiles: ${node.currentBlock}, ' : 'Current block: ${node.currentBlock}, ') : 'Current docs: ${node.currentBlock}, '}errors: ${node.errors}, latency (ms): ${node.latency}')
-                      : null,
-                  leading: node.currentBlock == currentBlock && node.isOk
-                      ? const Icon(Icons.check_circle, color: Colors.green)
-                      : node.isOk
-                          ? const Icon(Icons.run_circle, color: Colors.grey)
-                          : const Icon(Icons.power_off, color: Colors.grey),
-                )));
-      },
-    ));
+            child: ListTile(
+              dense: true,
+              title: Text(node.url),
+              subtitle: node.isOk ? Text(_buildSubtitle(node, type)) : null,
+              leading: node.currentBlock == currentBlock && node.isOk
+                  ? const Icon(Icons.check_circle, color: Colors.green)
+                  : node.isOk
+                  ? const Icon(Icons.run_circle, color: Colors.grey)
+                  : const Icon(Icons.power_off, color: Colors.grey),
+            ),
+          ),
+        );
+      }),
+    );
+  }
+
+  String _buildSubtitle(Node node, NodeType type) {
+    final StringBuffer subtitle = StringBuffer();
+
+    // Block/profile/docs count
+    if (type == NodeType.datapodEndpoint) {
+      subtitle.write('Current profiles: ${node.currentBlock}, ');
+    } else if (type != NodeType.cesiumPlus) {
+      subtitle.write('Current block: ${node.currentBlock}, ');
+    } else {
+      subtitle.write('Current docs: ${node.currentBlock}, ');
+    }
+
+    // Version (only for indexer nodes)
+    if (type == NodeType.duniterIndexer && node.hasVersion) {
+      subtitle.write('version: ${node.version}, ');
+    }
+
+    // Errors and latency
+    subtitle.write('errors: ${node.errors}, latency (ms): ${node.latency}');
+
+    return subtitle.toString();
   }
 }

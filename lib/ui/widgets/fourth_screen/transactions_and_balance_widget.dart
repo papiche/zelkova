@@ -82,7 +82,7 @@ class _TransactionsAndBalanceWidgetState
   bool _firstBuildComplete = false;
 
   // Debug flag - set to true to enable debug bar in development mode
-  static const bool _debug = true;
+  static const bool _debug = false;
 
   int _countItems(PagingState<dynamic, Transaction> s) =>
       (s.pages ?? const <List<Transaction>>[])

@@ -417,12 +417,12 @@ class _TransactionsAndBalanceWidgetState
       // DON'T set isLoading=true here - let _fetchNextTxPage do it
       // Otherwise _fetchNextTxPage will see isLoading=true and skip the request
       _txState = PagingState<String?, Transaction>(
-        isLoading: false, // Will be set to true by _fetchNextTxPage
+        // isLoading: false, // Will be set to true by _fetchNextTxPage
         pages: cachedPages.isNotEmpty ? cachedPages : null,
         keys: cachedKeys.isNotEmpty ? cachedKeys : null,
       );
       if (!isExternalAccount) {
-        _pendingState = PagingState<int, Transaction>(isLoading: false);
+        _pendingState = PagingState<int, Transaction>();
       }
       _gotFirstResponse = false;
       _bootstrapping = true;

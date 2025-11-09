@@ -26,14 +26,12 @@ import '../../generated/gtest/pallets/certification.dart';
 import '../../generated/gtest/types/pallet_certification/types/idty_cert_meta.dart';
 import '../../generated/gtest/types/pallet_identity/types/idty_value.dart';
 import '../../shared_prefs_helper.dart';
-import '../clipboard_helper.dart';
 import '../logger.dart';
 import '../ui_helpers.dart';
-import 'balance_widget.dart';
 import 'certifications_page.dart';
 import 'contacts_actions.dart';
 import 'default_progress_dialog.dart';
-import 'fourth_screen/transactions_list/transactions_list_widget.dart';
+import 'fourth_screen/transactions_and_balance_widget.dart';
 import 'qr_list_tile.dart';
 import 'wot_actions.dart';
 import 'wot_menu_action.dart';
@@ -111,14 +109,14 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
-  DefaultTabController _buildContactWidget(
-      ContactWotInfo contactWotInfo, BuildContext context) {
+  DefaultTabController _buildContactWidget(ContactWotInfo contactWotInfo,
+      BuildContext context) {
     final Contact contact = contactWotInfo.you;
     final bool isContact =
-        context.read<ContactsCubit>().isContact(contact.pubKey);
+    context.read<ContactsCubit>().isContact(contact.pubKey);
     final bool me = contactWotInfo.isme;
     final bool isPassProtected =
-        !SharedPreferencesHelper().isPasswordLessWallet();
+    !SharedPreferencesHelper().isPasswordLessWallet();
     final List<SpeedDialChild> actions = <SpeedDialChild>[
       if (isContact)
         SpeedDialChild(
@@ -169,7 +167,7 @@ class _ContactPageState extends State<ContactPage> {
                 completed: Completed(),
               );
               result.progressStream.listen(
-                (String progressMessage) {
+                    (String progressMessage) {
                   pd.update(msg: progressMessage);
                 },
                 onDone: () async {
@@ -227,14 +225,17 @@ class _ContactPageState extends State<ContactPage> {
         floatingActionButton: actions.isEmpty
             ? null
             : SpeedDial(
-                icon: Icons.add,
-                activeIcon: Icons.close,
-                direction: SpeedDialDirection.down,
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                foregroundColor: Colors.white,
-                renderOverlay: false,
-                children: actions,
-              ),
+          icon: Icons.add,
+          activeIcon: Icons.close,
+          direction: SpeedDialDirection.down,
+          backgroundColor: Theme
+              .of(context)
+              .colorScheme
+              .primary,
+          foregroundColor: Colors.white,
+          renderOverlay: false,
+          children: actions,
+        ),
       ),
     );
   }
@@ -247,20 +248,14 @@ class _ContactPageState extends State<ContactPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           if (contact.nick != null)
-            GestureDetector(
-                onTap: () {
-                  copyToClipboard(
-                    context: context,
-                    text: contact.nick!,
-                    feedbackText: 'nick_copied_to_clipboard',
-                  );
-                },
-                child: ListTile(
-                  leading: const Icon(Symbols.editor_choice),
-                  title: Text('@${contact.nick}'),
-                )),
+            ListTile(
+              leading: const Icon(Symbols.editor_choice),
+              title: Text('@${contact.nick}'),
+            ),
           if (!contact.createdOnV2) _buildQrListTile(contact),
-          if (context.watch<AppCubit>().isExpertMode)
+          if (context
+              .watch<AppCubit>()
+              .isExpertMode)
             _buildQrListTile(contact, isV2: true),
 
           /* Right now, the are accounts with negative balance (maybe a bug) so, lets show this for now        if (context
@@ -277,7 +272,9 @@ class _ContactPageState extends State<ContactPage> {
                 leading: const Icon(Icons.card_membership),
                 title: Text(tr('idty_status_title')),
                 subtitle: Text(
-                    '${tr('idty_status_${contact.status!.name}')}${_getIdentityStatusDescription(contact.status!, wotInfo.waitingForCerts ?? false)}')),
+                    '${tr('idty_status_${contact.status!
+                        .name}')}${_getIdentityStatusDescription(
+                        contact.status!, wotInfo.waitingForCerts ?? false)}')),
           if (wotInfo.expireOn != null)
             ListTile(
                 leading: const Icon(Icons.timer),
@@ -286,11 +283,13 @@ class _ContactPageState extends State<ContactPage> {
                     : 'cert_expire_on')),
                 subtitle: Text(
                   humanizeTimeFuture(
-                        context.locale.languageCode,
-                        (wotInfo.expireOn!.millisecondsSinceEpoch -
-                                DateTime.now().millisecondsSinceEpoch) ~/
-                            1000,
-                      ) ??
+                    context.locale.languageCode,
+                    (wotInfo.expireOn!.millisecondsSinceEpoch -
+                        DateTime
+                            .now()
+                            .millisecondsSinceEpoch) ~/
+                        1000,
+                  ) ??
                       '??',
                 )),
           if (wotInfo.canCertOn != null &&
@@ -300,14 +299,16 @@ class _ContactPageState extends State<ContactPage> {
               title: Text(tr('can_cert')),
               subtitle: Text(tr('yes')),
             ),
-
+          kk
+          
           // Distance Rule
           if (wotInfo.distRuleOk != null)
             ListTile(
               leading: const Icon(Icons.social_distance),
               title: Text(tr('distance_rule')),
               subtitle: Text(
-                '${(wotInfo.distRuleRatio! * 100).toStringAsFixed(1)}% (${wotInfo.distRuleOk! ? 'OK' : 'KO'})',
+                '${(wotInfo.distRuleRatio! * 100).toStringAsFixed(
+                    1)}% (${wotInfo.distRuleOk! ? 'OK' : 'KO'})',
                 style: TextStyle(
                     color: wotInfo.distRuleOk! ? Colors.green : Colors.red),
               ),
@@ -323,11 +324,13 @@ class _ContactPageState extends State<ContactPage> {
               title: Text(tr('can_cert_on')),
               subtitle: Text(
                   humanizeTimeFuture(
-                        context.locale.languageCode,
-                        (wotInfo.canCertOn!.millisecondsSinceEpoch -
-                                DateTime.now().millisecondsSinceEpoch) ~/
-                            1000,
-                      ) ??
+                    context.locale.languageCode,
+                    (wotInfo.canCertOn!.millisecondsSinceEpoch -
+                        DateTime
+                            .now()
+                            .millisecondsSinceEpoch) ~/
+                        1000,
+                  ) ??
                       '??',
                   // In red
                   style: const TextStyle(color: Colors.red)),
@@ -377,8 +380,8 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
-  ListTile _buildIssuedCerts(
-      BuildContext context, Contact contact, int currentBlockHeight) {
+  ListTile _buildIssuedCerts(BuildContext context, Contact contact,
+      int currentBlockHeight) {
     final String title = tr('certs_issued');
     return ListTile(
       leading: const Icon(Icons.verified_rounded),
@@ -386,20 +389,21 @@ class _ContactPageState extends State<ContactPage> {
       trailing: _buildBadge(context, contact.certsIssued!.length),
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute<void>(
-          builder: (BuildContext context) => CertificationsPage(
-            issued: true,
-            title: contact.title,
-            subtitle: title,
-            certifications: contact.certsIssued!,
-            currentBlockHeight: currentBlockHeight,
-          ),
+          builder: (BuildContext context) =>
+              CertificationsPage(
+                issued: true,
+                title: contact.title,
+                subtitle: title,
+                certifications: contact.certsIssued!,
+                currentBlockHeight: currentBlockHeight,
+              ),
         ));
       },
     );
   }
 
-  ListTile _buildReceivedCerts(
-      BuildContext context, Contact contact, int currentBlockHeight) {
+  ListTile _buildReceivedCerts(BuildContext context, Contact contact,
+      int currentBlockHeight) {
     final String title = tr('certs_received');
     return ListTile(
       leading: const Icon(Icons.verified_user),
@@ -407,19 +411,20 @@ class _ContactPageState extends State<ContactPage> {
       trailing: _buildBadge(context, contact.certsReceived!.length),
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute<void>(
-          builder: (BuildContext context) => CertificationsPage(
-              issued: false,
-              title: contact.title,
-              subtitle: title,
-              certifications: contact.certsReceived!,
-              currentBlockHeight: currentBlockHeight),
+          builder: (BuildContext context) =>
+              CertificationsPage(
+                  issued: false,
+                  title: contact.title,
+                  subtitle: title,
+                  certifications: contact.certsReceived!,
+                  currentBlockHeight: currentBlockHeight),
         ));
       },
     );
   }
 
   Widget _buildTransactionsTab(Contact contact) {
-    return TransactionsListWidget(
+    return TransactionsAndBalanceWidget(
       pubKey: contact.pubKey,
     );
   }
@@ -435,9 +440,15 @@ class _ContactPageState extends State<ContactPage> {
     final String title = contact.title;
     // contact.nick ?? contact.name ?? humanizePubKey(contact.pubKey);
     return Container(
-      color: Theme.of(context).colorScheme.secondaryContainer,
+      color: Theme
+          .of(context)
+          .colorScheme
+          .secondaryContainer,
       width: double.infinity,
-      height: isAvatarExpanded ? MediaQuery.of(context).size.height / 2 : 132,
+      height: isAvatarExpanded ? MediaQuery
+          .of(context)
+          .size
+          .height / 2 : 132,
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Center(
         child: Column(
@@ -450,9 +461,15 @@ class _ContactPageState extends State<ContactPage> {
               },
               child: AnimatedContainer(
                 width:
-                    isAvatarExpanded ? MediaQuery.of(context).size.width : 64,
+                isAvatarExpanded ? MediaQuery
+                    .of(context)
+                    .size
+                    .width : 64,
                 height: isAvatarExpanded
-                    ? MediaQuery.of(context).size.height / 2 - 60
+                    ? MediaQuery
+                    .of(context)
+                    .size
+                    .height / 2 - 60
                     : 64,
                 duration: const Duration(milliseconds: 300),
                 child: Stack(
@@ -469,18 +486,18 @@ class _ContactPageState extends State<ContactPage> {
                       child: contact.avatar == null && contact.avatarCid == null
                           ? avatar(contact, avatarSize: 44)
                           : Container(
-                              width: double.infinity,
-                              height: double.infinity,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: contact.avatarCid != null
-                                      ? NetworkImage(NodeManager()
-                                          .ipfsUrl(contact.avatarCid!))
-                                      : MemoryImage(contact.avatar!),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
+                        width: double.infinity,
+                        height: double.infinity,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: contact.avatarCid != null
+                                ? NetworkImage(NodeManager()
+                                .ipfsUrl(contact.avatarCid!))
+                                : MemoryImage(contact.avatar!),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -491,17 +508,23 @@ class _ContactPageState extends State<ContactPage> {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: title.length > 10
                   ? TextScroll(
-                      textAlign: TextAlign.center,
-                      title,
-                      numberOfReps: 2,
-                      selectable: true,
-                      style: Theme.of(context).textTheme.titleLarge,
-                    )
+                textAlign: TextAlign.center,
+                title,
+                numberOfReps: 2,
+                selectable: true,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .titleLarge,
+              )
                   : Text(
-                      title,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
+                title,
+                textAlign: TextAlign.center,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .titleLarge,
+              ),
             ),
           ],
         ),
@@ -575,7 +598,7 @@ class _ContactPageState extends State<ContactPage> {
         // storage.identity.identities(EveAccount) is None
         // Parallelize these two calls
         final List<Object?> identityResults =
-            await Future.wait(<Future<Object?>>[
+        await Future.wait(<Future<Object?>>[
           // FIXME
           getBalanceV2(address: widget.contact.address),
           getIdentity(address: you.address),
@@ -594,20 +617,22 @@ class _ContactPageState extends State<ContactPage> {
 
       // Parallelize calls to get identity information
       final List<dynamic> identityInfoResults =
-          await Future.wait(<Future<dynamic>>[
-        if (youAMember) polkadotIdentity(you) else Future<void>.value(),
-        if (youAMember) polkadotIdtyCertMeta(you) else Future<void>.value(),
+      await Future.wait(<Future<dynamic>>[
+        if (youAMember) polkadotIdentity(you) else
+          Future<void>.value(),
+        if (youAMember) polkadotIdtyCertMeta(you) else
+          Future<void>.value(),
         polkadotIdentity(me),
         polkadotIdtyCertMeta(me),
       ]);
 
       final IdtyValue? youIdty =
-          youAMember ? identityInfoResults[0] as IdtyValue? : null;
+      youAMember ? identityInfoResults[0] as IdtyValue? : null;
       final IdtyCertMeta? youCertMeta =
-          youAMember ? identityInfoResults[1] as IdtyCertMeta? : null;
+      youAMember ? identityInfoResults[1] as IdtyCertMeta? : null;
       final IdtyValue? myIdty = identityInfoResults[2] as IdtyValue?;
       final IdtyCertMeta? idtyCertMeta =
-          identityInfoResults[3] as IdtyCertMeta?;
+      identityInfoResults[3] as IdtyCertMeta?;
 
       if (youIdty != null && youCertMeta != null) {
         wotInfo.canCertOn = estimateDateFromBlock(
@@ -633,6 +658,7 @@ class _ContactPageState extends State<ContactPage> {
 
       // Waiting for Certifications
       if (you.certsReceived != null &&
+          you.certsReceived!.isNotEmpty &&
           you.certsReceived!.length <
               polkadotConstants().wot.minCertForMembership) {
         wotInfo.waitingForCerts = true;
@@ -657,7 +683,7 @@ class _ContactPageState extends State<ContactPage> {
               you.status == IdentityStatus.UNVALIDATED)) {
         wotInfo.canCalcDistance = you.expireOn == null ||
             (membershipExpireOn +
-                    polkadotConstants().membership.membershipRenewalPeriod <
+                polkadotConstants().membership.membershipRenewalPeriod <
                 currentBlock + polkadotConstants().membership.membershipPeriod);
       } else {
         wotInfo.canCalcDistance = false;
@@ -690,7 +716,7 @@ class _ContactPageState extends State<ContactPage> {
         loggerDev('Retrieving distance precompute');
 
         distancePrecompute =
-            await DistancePrecomputeProvider().fetchDistancePrecompute();
+        await DistancePrecomputeProvider().fetchDistancePrecompute();
         if (distancePrecompute != null) {
           appCubit.setDistancePreCompute(distancePrecompute);
         }
@@ -699,7 +725,7 @@ class _ContactPageState extends State<ContactPage> {
         final int distRuleReached = distancePrecompute.results[you.index] ?? 0;
         final int refereesCount = distancePrecompute.refereesCount;
         final double distRuleRatio =
-            refereesCount > 0 ? distRuleReached / refereesCount : 0.0;
+        refereesCount > 0 ? distRuleReached / refereesCount : 0.0;
         const double distThreshold = 0.8;
         wotInfo.distRuleOk = distRuleRatio > distThreshold;
         wotInfo.distRuleRatio = distRuleRatio;
@@ -716,14 +742,17 @@ Widget _buildBadge(BuildContext context, int count) {
     height: 30,
     padding: const EdgeInsets.all(8),
     decoration: BoxDecoration(
-      color: Theme.of(context).colorScheme.primary,
+      color: Theme
+          .of(context)
+          .colorScheme
+          .primary,
       borderRadius: BorderRadius.circular(30),
     ),
     child: Center(
         child: Text(
-      '$count',
-      style: const TextStyle(color: Colors.white),
-    )),
+          '$count',
+          style: const TextStyle(color: Colors.white),
+        )),
   );
 }
 

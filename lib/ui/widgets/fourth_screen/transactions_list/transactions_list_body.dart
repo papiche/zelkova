@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../data/models/transaction.dart';
 import 'transaction_list_item_wrapper.dart';
 
@@ -51,8 +52,7 @@ class TransactionsListBody extends StatelessWidget {
             pubKey: pubKey,
             index: index,
             key: ValueKey<String>(
-                'pending_${pendingTransactions[index].time
-                    .millisecondsSinceEpoch}'),
+                'pending_${pendingTransactions[index].time.millisecondsSinceEpoch}'),
           );
         }
 
@@ -62,11 +62,9 @@ class TransactionsListBody extends StatelessWidget {
           pubKey: pubKey,
           index: index,
           key: ValueKey<String>(
-              'tx_${transactions[transactionIndex].time
-                  .millisecondsSinceEpoch}'),
+              'tx_${transactions[transactionIndex].time.millisecondsSinceEpoch}'),
         );
       },
     );
   }
 }
-

@@ -271,15 +271,14 @@ Future<List<Contact>> getIdentities({required List<String> addresses}) async {
 // Extract received certificates from GIdentitiesByPkData
 List<Cert> _extractCertsReceived(
     GIdentitiesByPkData_identities_nodes identity) {
-  final BuiltList<GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes>
-      certs = identity.certsByReceiverId.nodes;
+  final BuiltList<GIdentitiesByPkData_identities_nodes_certReceived_nodes>
+      certs = identity.certReceived.nodes;
   if (certs.isEmpty) {
     return <Cert>[];
   }
   return certs
-      .map(
-          (GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes cert) =>
-              _buildCertFromIdentityQueryReceived(cert))
+      .map((GIdentitiesByPkData_identities_nodes_certReceived_nodes cert) =>
+          _buildCertFromIdentityQueryReceived(cert))
       .where((Cert? cert) => cert != null)
       .cast<Cert>()
       .toList();
@@ -287,13 +286,13 @@ List<Cert> _extractCertsReceived(
 
 // Extract issued certificates from GIdentitiesByPkData
 List<Cert> _extractCertsIssued(GIdentitiesByPkData_identities_nodes identity) {
-  final BuiltList<GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes>
-      certs = identity.certsByIssuerId.nodes;
+  final BuiltList<GIdentitiesByPkData_identities_nodes_certIssued_nodes> certs =
+      identity.certIssued.nodes;
   if (certs.isEmpty) {
     return <Cert>[];
   }
   return certs
-      .map((GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes cert) =>
+      .map((GIdentitiesByPkData_identities_nodes_certIssued_nodes cert) =>
           _buildCertFromIdentityQueryIssued(cert))
       .where((Cert? cert) => cert != null)
       .cast<Cert>()
@@ -328,12 +327,12 @@ Contact _contactFromIdentityBasic(GIdentityBasicFields identity) {
   );
 }
 
-// Build Cert from certsByReceiverId
+// Build Cert from certReceived
 Cert? _buildCertFromIdentityQueryReceived(
-    GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes cert) {
-  final GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_issuer?
-      issuer = cert.issuer;
-  final GIdentitiesByPkData_identities_nodes_certsByReceiverId_nodes_receiver?
+    GIdentitiesByPkData_identities_nodes_certReceived_nodes cert) {
+  final GIdentitiesByPkData_identities_nodes_certReceived_nodes_issuer? issuer =
+      cert.issuer;
+  final GIdentitiesByPkData_identities_nodes_certReceived_nodes_receiver?
       receiver = cert.receiver;
 
   // Skip if issuer or receiver accountId is null (removed accounts)
@@ -366,12 +365,12 @@ Cert? _buildCertFromIdentityQueryReceived(
   );
 }
 
-// Build Cert from certsByIssuerId
+// Build Cert from certIssued
 Cert? _buildCertFromIdentityQueryIssued(
-    GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes cert) {
-  final GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_issuer?
-      issuer = cert.issuer;
-  final GIdentitiesByPkData_identities_nodes_certsByIssuerId_nodes_receiver?
+    GIdentitiesByPkData_identities_nodes_certIssued_nodes cert) {
+  final GIdentitiesByPkData_identities_nodes_certIssued_nodes_issuer? issuer =
+      cert.issuer;
+  final GIdentitiesByPkData_identities_nodes_certIssued_nodes_receiver?
       receiver = cert.receiver;
 
   // Skip if issuer or receiver accountId is null (removed accounts)
@@ -414,16 +413,15 @@ Future<Contact?> getIdentity({required String address}) async {
 List<Cert> _extractCertsReceivedFromAccount(
     GAccountsByPkData_accounts_nodes_linkedIdentity identity) {
   final BuiltList<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes>
-      certs = identity.certsByReceiverId.nodes;
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes>
+      certs = identity.certReceived.nodes;
   if (certs.isEmpty) {
     return <Cert>[];
   }
   return certs
-      .map(
-          (GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes
-                  cert) =>
-              _buildCertFromAccountQueryReceived(cert))
+      .map((GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes
+              cert) =>
+          _buildCertFromAccountQueryReceived(cert))
       .where((Cert? cert) => cert != null)
       .cast<Cert>()
       .toList();
@@ -433,28 +431,26 @@ List<Cert> _extractCertsReceivedFromAccount(
 List<Cert> _extractCertsIssuedFromAccount(
     GAccountsByPkData_accounts_nodes_linkedIdentity identity) {
   final BuiltList<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes>
-      certs = identity.certsByIssuerId.nodes;
+          GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes>
+      certs = identity.certIssued.nodes;
   if (certs.isEmpty) {
     return <Cert>[];
   }
   return certs
-      .map(
-          (GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes
-                  cert) =>
-              _buildCertFromAccountQueryIssued(cert))
+      .map((GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes
+              cert) =>
+          _buildCertFromAccountQueryIssued(cert))
       .where((Cert? cert) => cert != null)
       .cast<Cert>()
       .toList();
 }
 
-// Build Cert from Account query certsByReceiverId
+// Build Cert from Account query certReceived
 Cert? _buildCertFromAccountQueryReceived(
-    GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes
-        cert) {
-  final GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_issuer?
+    GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes cert) {
+  final GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer?
       issuer = cert.issuer;
-  final GAccountsByPkData_accounts_nodes_linkedIdentity_certsByReceiverId_nodes_receiver?
+  final GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver?
       receiver = cert.receiver;
 
   // Skip if issuer or receiver is null (removed accounts)
@@ -487,13 +483,12 @@ Cert? _buildCertFromAccountQueryReceived(
   );
 }
 
-// Build Cert from Account query certsByIssuerId
+// Build Cert from Account query certIssued
 Cert? _buildCertFromAccountQueryIssued(
-    GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes
-        cert) {
-  final GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_issuer?
+    GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes cert) {
+  final GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer?
       issuer = cert.issuer;
-  final GAccountsByPkData_accounts_nodes_linkedIdentity_certsByIssuerId_nodes_receiver?
+  final GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver?
       receiver = cert.receiver;
 
   // Skip if issuer or receiver is null (removed accounts)

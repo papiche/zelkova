@@ -23,14 +23,14 @@ type Account implements Node {
   id: String!
   createdOn: Int!
   isActive: Boolean!
-  balance: BigFloat!
+  balance: BigInt!
   linkedIdentityId: String
 
   """Reads a single `Identity` that is related to this `Account`."""
   linkedIdentity: Identity
 
   """Reads and enables pagination through a set of `ChangeOwnerKey`."""
-  changeOwnerKeysByPreviousId(
+  wasIdentity(
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -135,7 +135,7 @@ type Account implements Node {
   ): IdentitiesConnection!
 
   """Reads and enables pagination through a set of `TxComment`."""
-  authoredTxComments(
+  commentsIssued(
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -169,7 +169,7 @@ type Account implements Node {
   ): TxCommentsConnection!
 
   """Reads and enables pagination through a set of `Transfer`."""
-  transfersByFromId(
+  transfersIssued(
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -203,7 +203,7 @@ type Account implements Node {
   ): TransfersConnection!
 
   """Reads and enables pagination through a set of `Transfer`."""
-  transfersByToId(
+  transfersReceived(
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -312,6 +312,54 @@ input AccountFilter {
   """Filter by the object’s `totalBalance` field."""
   totalBalance: BigFloatFilter
 
+  """Filter by the object’s `wasIdentity` relation."""
+  wasIdentity: AccountToManyChangeOwnerKeyFilter
+
+  """Some related `wasIdentity` exist."""
+  wasIdentityExist: Boolean
+
+  """Filter by the object’s `changeOwnerKeysByNextId` relation."""
+  changeOwnerKeysByNextId: AccountToManyChangeOwnerKeyFilter
+
+  """Some related `changeOwnerKeysByNextId` exist."""
+  changeOwnerKeysByNextIdExist: Boolean
+
+  """Filter by the object’s `identity` relation."""
+  identity: IdentityFilter
+
+  """A related `identity` exists."""
+  identityExists: Boolean
+
+  """Filter by the object’s `identitiesByAccountRemovedId` relation."""
+  identitiesByAccountRemovedId: AccountToManyIdentityFilter
+
+  """Some related `identitiesByAccountRemovedId` exist."""
+  identitiesByAccountRemovedIdExist: Boolean
+
+  """Filter by the object’s `commentsIssued` relation."""
+  commentsIssued: AccountToManyTxCommentFilter
+
+  """Some related `commentsIssued` exist."""
+  commentsIssuedExist: Boolean
+
+  """Filter by the object’s `transfersIssued` relation."""
+  transfersIssued: AccountToManyTransferFilter
+
+  """Some related `transfersIssued` exist."""
+  transfersIssuedExist: Boolean
+
+  """Filter by the object’s `transfersReceived` relation."""
+  transfersReceived: AccountToManyTransferFilter
+
+  """Some related `transfersReceived` exist."""
+  transfersReceivedExist: Boolean
+
+  """Filter by the object’s `linkedIdentity` relation."""
+  linkedIdentity: IdentityFilter
+
+  """A related `linkedIdentity` exists."""
+  linkedIdentityExists: Boolean
+
   """Checks for all expressions in this list."""
   and: [AccountFilter!]
 
@@ -363,6 +411,86 @@ enum AccountsOrderBy {
   LINKED_IDENTITY_ID_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against many `ChangeOwnerKey` object types. All fields are combined with a logical ‘and.’
+"""
+input AccountToManyChangeOwnerKeyFilter {
+  """
+  Every related `ChangeOwnerKey` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: ChangeOwnerKeyFilter
+
+  """
+  Some related `ChangeOwnerKey` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: ChangeOwnerKeyFilter
+
+  """
+  No related `ChangeOwnerKey` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: ChangeOwnerKeyFilter
+}
+
+"""
+A filter to be used against many `Identity` object types. All fields are combined with a logical ‘and.’
+"""
+input AccountToManyIdentityFilter {
+  """
+  Every related `Identity` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: IdentityFilter
+
+  """
+  Some related `Identity` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: IdentityFilter
+
+  """
+  No related `Identity` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: IdentityFilter
+}
+
+"""
+A filter to be used against many `Transfer` object types. All fields are combined with a logical ‘and.’
+"""
+input AccountToManyTransferFilter {
+  """
+  Every related `Transfer` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: TransferFilter
+
+  """
+  Some related `Transfer` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: TransferFilter
+
+  """
+  No related `Transfer` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: TransferFilter
+}
+
+"""
+A filter to be used against many `TxComment` object types. All fields are combined with a logical ‘and.’
+"""
+input AccountToManyTxCommentFilter {
+  """
+  Every related `TxComment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: TxCommentFilter
+
+  """
+  Some related `TxComment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: TxCommentFilter
+
+  """
+  No related `TxComment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: TxCommentFilter
 }
 
 """
@@ -669,6 +797,24 @@ input BlockFilter {
   """Filter by the object’s `eventsCount` field."""
   eventsCount: IntFilter
 
+  """Filter by the object’s `events` relation."""
+  events: BlockToManyEventFilter
+
+  """Some related `events` exist."""
+  eventsExist: Boolean
+
+  """Filter by the object’s `calls` relation."""
+  calls: BlockToManyCallFilter
+
+  """Some related `calls` exist."""
+  callsExist: Boolean
+
+  """Filter by the object’s `extrinsics` relation."""
+  extrinsics: BlockToManyExtrinsicFilter
+
+  """Some related `extrinsics` exist."""
+  extrinsicsExist: Boolean
+
   """Checks for all expressions in this list."""
   and: [BlockFilter!]
 
@@ -740,6 +886,66 @@ enum BlocksOrderBy {
   EVENTS_COUNT_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against many `Call` object types. All fields are combined with a logical ‘and.’
+"""
+input BlockToManyCallFilter {
+  """
+  Every related `Call` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: CallFilter
+
+  """
+  Some related `Call` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: CallFilter
+
+  """
+  No related `Call` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: CallFilter
+}
+
+"""
+A filter to be used against many `Event` object types. All fields are combined with a logical ‘and.’
+"""
+input BlockToManyEventFilter {
+  """
+  Every related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: EventFilter
+
+  """
+  Some related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: EventFilter
+
+  """
+  No related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: EventFilter
+}
+
+"""
+A filter to be used against many `Extrinsic` object types. All fields are combined with a logical ‘and.’
+"""
+input BlockToManyExtrinsicFilter {
+  """
+  Every related `Extrinsic` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: ExtrinsicFilter
+
+  """
+  Some related `Extrinsic` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: ExtrinsicFilter
+
+  """
+  No related `Extrinsic` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: ExtrinsicFilter
 }
 
 """
@@ -985,6 +1191,42 @@ input CallFilter {
   """Filter by the object’s `parentId` field."""
   parentId: StringFilter
 
+  """Filter by the object’s `events` relation."""
+  events: CallToManyEventFilter
+
+  """Some related `events` exist."""
+  eventsExist: Boolean
+
+  """Filter by the object’s `childCalls` relation."""
+  childCalls: CallToManyCallFilter
+
+  """Some related `childCalls` exist."""
+  childCallsExist: Boolean
+
+  """Filter by the object’s `extrinsics` relation."""
+  extrinsics: CallToManyExtrinsicFilter
+
+  """Some related `extrinsics` exist."""
+  extrinsicsExist: Boolean
+
+  """Filter by the object’s `block` relation."""
+  block: BlockFilter
+
+  """A related `block` exists."""
+  blockExists: Boolean
+
+  """Filter by the object’s `extrinsic` relation."""
+  extrinsic: ExtrinsicFilter
+
+  """A related `extrinsic` exists."""
+  extrinsicExists: Boolean
+
+  """Filter by the object’s `parent` relation."""
+  parent: CallFilter
+
+  """A related `parent` exists."""
+  parentExists: Boolean
+
   """Checks for all expressions in this list."""
   and: [CallFilter!]
 
@@ -1050,6 +1292,66 @@ enum CallsOrderBy {
   PRIMARY_KEY_DESC
 }
 
+"""
+A filter to be used against many `Call` object types. All fields are combined with a logical ‘and.’
+"""
+input CallToManyCallFilter {
+  """
+  Every related `Call` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: CallFilter
+
+  """
+  Some related `Call` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: CallFilter
+
+  """
+  No related `Call` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: CallFilter
+}
+
+"""
+A filter to be used against many `Event` object types. All fields are combined with a logical ‘and.’
+"""
+input CallToManyEventFilter {
+  """
+  Every related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: EventFilter
+
+  """
+  Some related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: EventFilter
+
+  """
+  No related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: EventFilter
+}
+
+"""
+A filter to be used against many `Extrinsic` object types. All fields are combined with a logical ‘and.’
+"""
+input CallToManyExtrinsicFilter {
+  """
+  Every related `Extrinsic` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: ExtrinsicFilter
+
+  """
+  Some related `Extrinsic` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: ExtrinsicFilter
+
+  """
+  No related `Extrinsic` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: ExtrinsicFilter
+}
+
 type Cert implements Node {
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
@@ -1078,7 +1380,7 @@ type Cert implements Node {
   updatedIn: Event
 
   """Reads and enables pagination through a set of `CertEvent`."""
-  certEvents(
+  certHistory(
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -1202,6 +1504,18 @@ input CertEventFilter {
   """Filter by the object’s `eventId` field."""
   eventId: StringFilter
 
+  """Filter by the object’s `cert` relation."""
+  cert: CertFilter
+
+  """A related `cert` exists."""
+  certExists: Boolean
+
+  """Filter by the object’s `event` relation."""
+  event: EventFilter
+
+  """A related `event` exists."""
+  eventExists: Boolean
+
   """Checks for all expressions in this list."""
   and: [CertEventFilter!]
 
@@ -1286,6 +1600,36 @@ input CertFilter {
   """Filter by the object’s `updatedInId` field."""
   updatedInId: StringFilter
 
+  """Filter by the object’s `certHistory` relation."""
+  certHistory: CertToManyCertEventFilter
+
+  """Some related `certHistory` exist."""
+  certHistoryExist: Boolean
+
+  """Filter by the object’s `issuer` relation."""
+  issuer: IdentityFilter
+
+  """A related `issuer` exists."""
+  issuerExists: Boolean
+
+  """Filter by the object’s `receiver` relation."""
+  receiver: IdentityFilter
+
+  """A related `receiver` exists."""
+  receiverExists: Boolean
+
+  """Filter by the object’s `createdIn` relation."""
+  createdIn: EventFilter
+
+  """A related `createdIn` exists."""
+  createdInExists: Boolean
+
+  """Filter by the object’s `updatedIn` relation."""
+  updatedIn: EventFilter
+
+  """A related `updatedIn` exists."""
+  updatedInExists: Boolean
+
   """Checks for all expressions in this list."""
   and: [CertFilter!]
 
@@ -1345,6 +1689,26 @@ enum CertsOrderBy {
   UPDATED_IN_ID_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against many `CertEvent` object types. All fields are combined with a logical ‘and.’
+"""
+input CertToManyCertEventFilter {
+  """
+  Every related `CertEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: CertEventFilter
+
+  """
+  Some related `CertEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: CertEventFilter
+
+  """
+  No related `CertEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: CertEventFilter
 }
 
 type ChangeOwnerKey implements Node {
@@ -1407,6 +1771,24 @@ input ChangeOwnerKeyFilter {
 
   """Filter by the object’s `nextId` field."""
   nextId: StringFilter
+
+  """Filter by the object’s `identity` relation."""
+  identity: IdentityFilter
+
+  """A related `identity` exists."""
+  identityExists: Boolean
+
+  """Filter by the object’s `previous` relation."""
+  previous: AccountFilter
+
+  """A related `previous` exists."""
+  previousExists: Boolean
+
+  """Filter by the object’s `next` relation."""
+  next: AccountFilter
+
+  """A related `next` exists."""
+  nextExists: Boolean
 
   """Checks for all expressions in this list."""
   and: [ChangeOwnerKeyFilter!]
@@ -1947,6 +2329,84 @@ input EventFilter {
   """Filter by the object’s `callId` field."""
   callId: StringFilter
 
+  """Filter by the object’s `certEvents` relation."""
+  certEvents: EventToManyCertEventFilter
+
+  """Some related `certEvents` exist."""
+  certEventsExist: Boolean
+
+  """Filter by the object’s `certsByCreatedInId` relation."""
+  certsByCreatedInId: EventToManyCertFilter
+
+  """Some related `certsByCreatedInId` exist."""
+  certsByCreatedInIdExist: Boolean
+
+  """Filter by the object’s `certsByUpdatedInId` relation."""
+  certsByUpdatedInId: EventToManyCertFilter
+
+  """Some related `certsByUpdatedInId` exist."""
+  certsByUpdatedInIdExist: Boolean
+
+  """Filter by the object’s `membershipEvents` relation."""
+  membershipEvents: EventToManyMembershipEventFilter
+
+  """Some related `membershipEvents` exist."""
+  membershipEventsExist: Boolean
+
+  """Filter by the object’s `smithEvents` relation."""
+  smithEvents: EventToManySmithEventFilter
+
+  """Some related `smithEvents` exist."""
+  smithEventsExist: Boolean
+
+  """Filter by the object’s `identitiesByCreatedInId` relation."""
+  identitiesByCreatedInId: EventToManyIdentityFilter
+
+  """Some related `identitiesByCreatedInId` exist."""
+  identitiesByCreatedInIdExist: Boolean
+
+  """Filter by the object’s `txComments` relation."""
+  txComments: EventToManyTxCommentFilter
+
+  """Some related `txComments` exist."""
+  txCommentsExist: Boolean
+
+  """Filter by the object’s `transfers` relation."""
+  transfers: EventToManyTransferFilter
+
+  """Some related `transfers` exist."""
+  transfersExist: Boolean
+
+  """Filter by the object’s `universalDividends` relation."""
+  universalDividends: EventToManyUniversalDividendFilter
+
+  """Some related `universalDividends` exist."""
+  universalDividendsExist: Boolean
+
+  """Filter by the object’s `udReevals` relation."""
+  udReevals: EventToManyUdReevalFilter
+
+  """Some related `udReevals` exist."""
+  udReevalsExist: Boolean
+
+  """Filter by the object’s `block` relation."""
+  block: BlockFilter
+
+  """A related `block` exists."""
+  blockExists: Boolean
+
+  """Filter by the object’s `extrinsic` relation."""
+  extrinsic: ExtrinsicFilter
+
+  """A related `extrinsic` exists."""
+  extrinsicExists: Boolean
+
+  """Filter by the object’s `call` relation."""
+  call: CallFilter
+
+  """A related `call` exists."""
+  callExists: Boolean
+
   """Checks for all expressions in this list."""
   and: [EventFilter!]
 
@@ -2010,6 +2470,186 @@ enum EventsOrderBy {
   PRIMARY_KEY_DESC
 }
 
+"""
+A filter to be used against many `CertEvent` object types. All fields are combined with a logical ‘and.’
+"""
+input EventToManyCertEventFilter {
+  """
+  Every related `CertEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: CertEventFilter
+
+  """
+  Some related `CertEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: CertEventFilter
+
+  """
+  No related `CertEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: CertEventFilter
+}
+
+"""
+A filter to be used against many `Cert` object types. All fields are combined with a logical ‘and.’
+"""
+input EventToManyCertFilter {
+  """
+  Every related `Cert` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: CertFilter
+
+  """
+  Some related `Cert` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: CertFilter
+
+  """
+  No related `Cert` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: CertFilter
+}
+
+"""
+A filter to be used against many `Identity` object types. All fields are combined with a logical ‘and.’
+"""
+input EventToManyIdentityFilter {
+  """
+  Every related `Identity` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: IdentityFilter
+
+  """
+  Some related `Identity` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: IdentityFilter
+
+  """
+  No related `Identity` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: IdentityFilter
+}
+
+"""
+A filter to be used against many `MembershipEvent` object types. All fields are combined with a logical ‘and.’
+"""
+input EventToManyMembershipEventFilter {
+  """
+  Every related `MembershipEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: MembershipEventFilter
+
+  """
+  Some related `MembershipEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: MembershipEventFilter
+
+  """
+  No related `MembershipEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: MembershipEventFilter
+}
+
+"""
+A filter to be used against many `SmithEvent` object types. All fields are combined with a logical ‘and.’
+"""
+input EventToManySmithEventFilter {
+  """
+  Every related `SmithEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: SmithEventFilter
+
+  """
+  Some related `SmithEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: SmithEventFilter
+
+  """
+  No related `SmithEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: SmithEventFilter
+}
+
+"""
+A filter to be used against many `Transfer` object types. All fields are combined with a logical ‘and.’
+"""
+input EventToManyTransferFilter {
+  """
+  Every related `Transfer` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: TransferFilter
+
+  """
+  Some related `Transfer` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: TransferFilter
+
+  """
+  No related `Transfer` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: TransferFilter
+}
+
+"""
+A filter to be used against many `TxComment` object types. All fields are combined with a logical ‘and.’
+"""
+input EventToManyTxCommentFilter {
+  """
+  Every related `TxComment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: TxCommentFilter
+
+  """
+  Some related `TxComment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: TxCommentFilter
+
+  """
+  No related `TxComment` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: TxCommentFilter
+}
+
+"""
+A filter to be used against many `UdReeval` object types. All fields are combined with a logical ‘and.’
+"""
+input EventToManyUdReevalFilter {
+  """
+  Every related `UdReeval` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: UdReevalFilter
+
+  """
+  Some related `UdReeval` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: UdReevalFilter
+
+  """
+  No related `UdReeval` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: UdReevalFilter
+}
+
+"""
+A filter to be used against many `UniversalDividend` object types. All fields are combined with a logical ‘and.’
+"""
+input EventToManyUniversalDividendFilter {
+  """
+  Every related `UniversalDividend` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: UniversalDividendFilter
+
+  """
+  Some related `UniversalDividend` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: UniversalDividendFilter
+
+  """
+  No related `UniversalDividend` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: UniversalDividendFilter
+}
+
 type Extrinsic implements Node {
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
@@ -2019,8 +2659,8 @@ type Extrinsic implements Node {
   index: Int!
   version: Int!
   signature: JSON
-  tip: BigFloat
-  fee: BigFloat
+  tip: BigInt
+  fee: BigInt
   success: Boolean
   error: JSON
   hash: String!
@@ -2172,6 +2812,30 @@ input ExtrinsicFilter {
   """Filter by the object’s `callId` field."""
   callId: StringFilter
 
+  """Filter by the object’s `events` relation."""
+  events: ExtrinsicToManyEventFilter
+
+  """Some related `events` exist."""
+  eventsExist: Boolean
+
+  """Filter by the object’s `calls` relation."""
+  calls: ExtrinsicToManyCallFilter
+
+  """Some related `calls` exist."""
+  callsExist: Boolean
+
+  """Filter by the object’s `block` relation."""
+  block: BlockFilter
+
+  """A related `block` exists."""
+  blockExists: Boolean
+
+  """Filter by the object’s `call` relation."""
+  call: CallFilter
+
+  """A related `call` exists."""
+  callExists: Boolean
+
   """Checks for all expressions in this list."""
   and: [ExtrinsicFilter!]
 
@@ -2235,6 +2899,46 @@ enum ExtrinsicsOrderBy {
   CALL_ID_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against many `Call` object types. All fields are combined with a logical ‘and.’
+"""
+input ExtrinsicToManyCallFilter {
+  """
+  Every related `Call` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: CallFilter
+
+  """
+  Some related `Call` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: CallFilter
+
+  """
+  No related `Call` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: CallFilter
+}
+
+"""
+A filter to be used against many `Event` object types. All fields are combined with a logical ‘and.’
+"""
+input ExtrinsicToManyEventFilter {
+  """
+  Every related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: EventFilter
+
+  """
+  Some related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: EventFilter
+
+  """
+  No related `Event` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: EventFilter
 }
 
 """A connection to a list of `Identity` values."""
@@ -2322,7 +3026,7 @@ type Identity implements Node {
   createdIn: Event
 
   """Reads and enables pagination through a set of `Cert`."""
-  certsByIssuerId(
+  certIssued(
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -2356,7 +3060,7 @@ type Identity implements Node {
   ): CertsConnection!
 
   """Reads and enables pagination through a set of `Cert`."""
-  certsByReceiverId(
+  certReceived(
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -2390,7 +3094,7 @@ type Identity implements Node {
   ): CertsConnection!
 
   """Reads and enables pagination through a set of `MembershipEvent`."""
-  membershipEvents(
+  membershipHistory(
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -2424,7 +3128,7 @@ type Identity implements Node {
   ): MembershipEventsConnection!
 
   """Reads and enables pagination through a set of `ChangeOwnerKey`."""
-  changeOwnerKeys(
+  ownerKeyChange(
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -2459,6 +3163,40 @@ type Identity implements Node {
 
   """Reads a single `Smith` that is related to this `Identity`."""
   smith: Smith
+
+  """Reads and enables pagination through a set of `UdHistory`."""
+  udHistoryRecords(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `UdHistory`."""
+    orderBy: [UdHistoriesOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UdHistoryCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: UdHistoryFilter
+  ): UdHistoriesConnection!
 
   """Reads and enables pagination through a set of `Account`."""
   accountsByLinkedIdentityId(
@@ -2605,6 +3343,66 @@ input IdentityFilter {
   """Filter by the object’s `createdInId` field."""
   createdInId: StringFilter
 
+  """Filter by the object’s `certIssued` relation."""
+  certIssued: IdentityToManyCertFilter
+
+  """Some related `certIssued` exist."""
+  certIssuedExist: Boolean
+
+  """Filter by the object’s `certReceived` relation."""
+  certReceived: IdentityToManyCertFilter
+
+  """Some related `certReceived` exist."""
+  certReceivedExist: Boolean
+
+  """Filter by the object’s `membershipHistory` relation."""
+  membershipHistory: IdentityToManyMembershipEventFilter
+
+  """Some related `membershipHistory` exist."""
+  membershipHistoryExist: Boolean
+
+  """Filter by the object’s `ownerKeyChange` relation."""
+  ownerKeyChange: IdentityToManyChangeOwnerKeyFilter
+
+  """Some related `ownerKeyChange` exist."""
+  ownerKeyChangeExist: Boolean
+
+  """Filter by the object’s `smith` relation."""
+  smith: SmithFilter
+
+  """A related `smith` exists."""
+  smithExists: Boolean
+
+  """Filter by the object’s `udHistoryRecords` relation."""
+  udHistoryRecords: IdentityToManyUdHistoryFilter
+
+  """Some related `udHistoryRecords` exist."""
+  udHistoryRecordsExist: Boolean
+
+  """Filter by the object’s `accountsByLinkedIdentityId` relation."""
+  accountsByLinkedIdentityId: IdentityToManyAccountFilter
+
+  """Some related `accountsByLinkedIdentityId` exist."""
+  accountsByLinkedIdentityIdExist: Boolean
+
+  """Filter by the object’s `account` relation."""
+  account: AccountFilter
+
+  """A related `account` exists."""
+  accountExists: Boolean
+
+  """Filter by the object’s `accountRemoved` relation."""
+  accountRemoved: AccountFilter
+
+  """A related `accountRemoved` exists."""
+  accountRemovedExists: Boolean
+
+  """Filter by the object’s `createdIn` relation."""
+  createdIn: EventFilter
+
+  """A related `createdIn` exists."""
+  createdInExists: Boolean
+
   """Checks for all expressions in this list."""
   and: [IdentityFilter!]
 
@@ -2613,6 +3411,106 @@ input IdentityFilter {
 
   """Negates the expression."""
   not: IdentityFilter
+}
+
+"""
+A filter to be used against many `Account` object types. All fields are combined with a logical ‘and.’
+"""
+input IdentityToManyAccountFilter {
+  """
+  Every related `Account` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: AccountFilter
+
+  """
+  Some related `Account` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: AccountFilter
+
+  """
+  No related `Account` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: AccountFilter
+}
+
+"""
+A filter to be used against many `Cert` object types. All fields are combined with a logical ‘and.’
+"""
+input IdentityToManyCertFilter {
+  """
+  Every related `Cert` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: CertFilter
+
+  """
+  Some related `Cert` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: CertFilter
+
+  """
+  No related `Cert` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: CertFilter
+}
+
+"""
+A filter to be used against many `ChangeOwnerKey` object types. All fields are combined with a logical ‘and.’
+"""
+input IdentityToManyChangeOwnerKeyFilter {
+  """
+  Every related `ChangeOwnerKey` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: ChangeOwnerKeyFilter
+
+  """
+  Some related `ChangeOwnerKey` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: ChangeOwnerKeyFilter
+
+  """
+  No related `ChangeOwnerKey` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: ChangeOwnerKeyFilter
+}
+
+"""
+A filter to be used against many `MembershipEvent` object types. All fields are combined with a logical ‘and.’
+"""
+input IdentityToManyMembershipEventFilter {
+  """
+  Every related `MembershipEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: MembershipEventFilter
+
+  """
+  Some related `MembershipEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: MembershipEventFilter
+
+  """
+  No related `MembershipEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: MembershipEventFilter
+}
+
+"""
+A filter to be used against many `UdHistory` object types. All fields are combined with a logical ‘and.’
+"""
+input IdentityToManyUdHistoryFilter {
+  """
+  Every related `UdHistory` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: UdHistoryFilter
+
+  """
+  Some related `UdHistory` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: UdHistoryFilter
+
+  """
+  No related `UdHistory` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: UdHistoryFilter
 }
 
 """
@@ -2935,6 +3833,18 @@ input MembershipEventFilter {
 
   """Filter by the object’s `eventId` field."""
   eventId: StringFilter
+
+  """Filter by the object’s `identity` relation."""
+  identity: IdentityFilter
+
+  """A related `identity` exists."""
+  identityExists: Boolean
+
+  """Filter by the object’s `event` relation."""
+  event: EventFilter
+
+  """A related `event` exists."""
+  eventExists: Boolean
 
   """Checks for all expressions in this list."""
   and: [MembershipEventFilter!]
@@ -3998,7 +4908,7 @@ type Smith implements Node {
   identity: Identity
 
   """Reads and enables pagination through a set of `SmithCert`."""
-  smithCertsByIssuerId(
+  smithCertIssued(
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -4032,7 +4942,7 @@ type Smith implements Node {
   ): SmithCertsConnection!
 
   """Reads and enables pagination through a set of `SmithCert`."""
-  smithCertsByReceiverId(
+  smithCertReceived(
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -4066,7 +4976,7 @@ type Smith implements Node {
   ): SmithCertsConnection!
 
   """Reads and enables pagination through a set of `SmithEvent`."""
-  smithEvents(
+  smithHistory(
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -4150,6 +5060,18 @@ input SmithCertFilter {
 
   """Filter by the object’s `receiverId` field."""
   receiverId: StringFilter
+
+  """Filter by the object’s `issuer` relation."""
+  issuer: SmithFilter
+
+  """A related `issuer` exists."""
+  issuerExists: Boolean
+
+  """Filter by the object’s `receiver` relation."""
+  receiver: SmithFilter
+
+  """A related `receiver` exists."""
+  receiverExists: Boolean
 
   """Checks for all expressions in this list."""
   and: [SmithCertFilter!]
@@ -4286,6 +5208,18 @@ input SmithEventFilter {
   """Filter by the object’s `eventId` field."""
   eventId: StringFilter
 
+  """Filter by the object’s `smith` relation."""
+  smith: SmithFilter
+
+  """A related `smith` exists."""
+  smithExists: Boolean
+
+  """Filter by the object’s `event` relation."""
+  event: EventFilter
+
+  """A related `event` exists."""
+  eventExists: Boolean
+
   """Checks for all expressions in this list."""
   and: [SmithEventFilter!]
 
@@ -4364,6 +5298,30 @@ input SmithFilter {
   """Filter by the object’s `identityId` field."""
   identityId: StringFilter
 
+  """Filter by the object’s `smithCertIssued` relation."""
+  smithCertIssued: SmithToManySmithCertFilter
+
+  """Some related `smithCertIssued` exist."""
+  smithCertIssuedExist: Boolean
+
+  """Filter by the object’s `smithCertReceived` relation."""
+  smithCertReceived: SmithToManySmithCertFilter
+
+  """Some related `smithCertReceived` exist."""
+  smithCertReceivedExist: Boolean
+
+  """Filter by the object’s `smithHistory` relation."""
+  smithHistory: SmithToManySmithEventFilter
+
+  """Some related `smithHistory` exist."""
+  smithHistoryExist: Boolean
+
+  """Filter by the object’s `identity` relation."""
+  identity: IdentityFilter
+
+  """A related `identity` exists."""
+  identityExists: Boolean
+
   """Checks for all expressions in this list."""
   and: [SmithFilter!]
 
@@ -4419,6 +5377,46 @@ enum SmithsOrderBy {
   IDENTITY_ID_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against many `SmithCert` object types. All fields are combined with a logical ‘and.’
+"""
+input SmithToManySmithCertFilter {
+  """
+  Every related `SmithCert` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: SmithCertFilter
+
+  """
+  Some related `SmithCert` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: SmithCertFilter
+
+  """
+  No related `SmithCert` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: SmithCertFilter
+}
+
+"""
+A filter to be used against many `SmithEvent` object types. All fields are combined with a logical ‘and.’
+"""
+input SmithToManySmithEventFilter {
+  """
+  Every related `SmithEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: SmithEventFilter
+
+  """
+  Some related `SmithEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: SmithEventFilter
+
+  """
+  No related `SmithEvent` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: SmithEventFilter
 }
 
 """
@@ -5440,7 +6438,7 @@ type Transfer implements Node {
   id: String!
   blockNumber: Int!
   timestamp: Datetime!
-  amount: BigFloat!
+  amount: BigInt!
   fromId: String
   toId: String
   eventId: String
@@ -5517,6 +6515,30 @@ input TransferFilter {
   """Filter by the object’s `commentId` field."""
   commentId: StringFilter
 
+  """Filter by the object’s `from` relation."""
+  from: AccountFilter
+
+  """A related `from` exists."""
+  fromExists: Boolean
+
+  """Filter by the object’s `to` relation."""
+  to: AccountFilter
+
+  """A related `to` exists."""
+  toExists: Boolean
+
+  """Filter by the object’s `event` relation."""
+  event: EventFilter
+
+  """A related `event` exists."""
+  eventExists: Boolean
+
+  """Filter by the object’s `comment` relation."""
+  comment: TxCommentFilter
+
+  """A related `comment` exists."""
+  commentExists: Boolean
+
   """Checks for all expressions in this list."""
   and: [TransferFilter!]
 
@@ -5582,11 +6604,11 @@ type TransferWithUd {
   timestamp: Datetime
   fromId: String
   toId: String
-  amount: BigFloat
+  amount: BigInt
   eventId: String
   commentId: String
   isUd: Boolean
-  udAmount: BigFloat
+  udAmount: BigInt
   udIdentityId: String
 }
 
@@ -5782,6 +6804,24 @@ input TxCommentFilter {
   """Filter by the object’s `eventId` field."""
   eventId: StringFilter
 
+  """Filter by the object’s `transfersByCommentId` relation."""
+  transfersByCommentId: TxCommentToManyTransferFilter
+
+  """Some related `transfersByCommentId` exist."""
+  transfersByCommentIdExist: Boolean
+
+  """Filter by the object’s `author` relation."""
+  author: AccountFilter
+
+  """A related `author` exists."""
+  authorExists: Boolean
+
+  """Filter by the object’s `event` relation."""
+  event: EventFilter
+
+  """A related `event` exists."""
+  eventExists: Boolean
+
   """Checks for all expressions in this list."""
   and: [TxCommentFilter!]
 
@@ -5841,6 +6881,26 @@ enum TxCommentsOrderBy {
   PRIMARY_KEY_DESC
 }
 
+"""
+A filter to be used against many `Transfer` object types. All fields are combined with a logical ‘and.’
+"""
+input TxCommentToManyTransferFilter {
+  """
+  Every related `Transfer` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  every: TransferFilter
+
+  """
+  Some related `Transfer` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  some: TransferFilter
+
+  """
+  No related `Transfer` matches the filter criteria. All fields are combined with a logical ‘and.’
+  """
+  none: TransferFilter
+}
+
 """A connection to a list of `UdHistory` values."""
 type UdHistoriesConnection {
   """A list of `UdHistory` objects."""
@@ -5890,7 +6950,7 @@ type UdHistory implements Node {
   """
   nodeId: ID!
   id: String!
-  amount: BigFloat!
+  amount: BigInt!
   blockNumber: Int!
   timestamp: Datetime!
   identityId: String
@@ -5939,6 +6999,12 @@ input UdHistoryFilter {
   """Filter by the object’s `identityId` field."""
   identityId: StringFilter
 
+  """Filter by the object’s `identity` relation."""
+  identity: IdentityFilter
+
+  """A related `identity` exists."""
+  identityExists: Boolean
+
   """Checks for all expressions in this list."""
   and: [UdHistoryFilter!]
 
@@ -5966,8 +7032,8 @@ type UdReeval implements Node {
   id: String!
   blockNumber: Int!
   timestamp: Datetime!
-  newUdAmount: BigFloat!
-  monetaryMass: BigFloat!
+  newUdAmount: BigInt!
+  monetaryMass: BigInt!
   membersCount: Int!
   udIndex: Int!
   eventId: String
@@ -6033,6 +7099,12 @@ input UdReevalFilter {
 
   """Filter by the object’s `eventId` field."""
   eventId: StringFilter
+
+  """Filter by the object’s `event` relation."""
+  event: EventFilter
+
+  """A related `event` exists."""
+  eventExists: Boolean
 
   """Checks for all expressions in this list."""
   and: [UdReevalFilter!]
@@ -6101,8 +7173,8 @@ type UniversalDividend implements Node {
   id: String!
   blockNumber: Int!
   timestamp: Datetime!
-  amount: BigFloat!
-  monetaryMass: BigFloat!
+  amount: BigInt!
+  monetaryMass: BigInt!
   membersCount: Int!
   index: Int!
   eventId: String
@@ -6168,6 +7240,12 @@ input UniversalDividendFilter {
 
   """Filter by the object’s `eventId` field."""
   eventId: StringFilter
+
+  """Filter by the object’s `event` relation."""
+  event: EventFilter
+
+  """A related `event` exists."""
+  eventExists: Boolean
 
   """Checks for all expressions in this list."""
   and: [UniversalDividendFilter!]

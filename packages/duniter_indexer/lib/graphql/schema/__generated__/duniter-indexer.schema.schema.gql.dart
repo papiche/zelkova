@@ -53,6 +53,22 @@ abstract class GAccountFilter
   GBigFloatFilter? get balance;
   GStringFilter? get linkedIdentityId;
   GBigFloatFilter? get totalBalance;
+  GAccountToManyChangeOwnerKeyFilter? get wasIdentity;
+  bool? get wasIdentityExist;
+  GAccountToManyChangeOwnerKeyFilter? get changeOwnerKeysByNextId;
+  bool? get changeOwnerKeysByNextIdExist;
+  GIdentityFilter? get identity;
+  bool? get identityExists;
+  GAccountToManyIdentityFilter? get identitiesByAccountRemovedId;
+  bool? get identitiesByAccountRemovedIdExist;
+  GAccountToManyTxCommentFilter? get commentsIssued;
+  bool? get commentsIssuedExist;
+  GAccountToManyTransferFilter? get transfersIssued;
+  bool? get transfersIssuedExist;
+  GAccountToManyTransferFilter? get transfersReceived;
+  bool? get transfersReceivedExist;
+  GIdentityFilter? get linkedIdentity;
+  bool? get linkedIdentityExists;
   BuiltList<GAccountFilter>? get and;
   BuiltList<GAccountFilter>? get or;
   GAccountFilter? get not;
@@ -114,6 +130,119 @@ class GAccountsOrderBy extends EnumClass {
 
   static GAccountsOrderBy valueOf(String name) =>
       _$gAccountsOrderByValueOf(name);
+}
+
+abstract class GAccountToManyChangeOwnerKeyFilter
+    implements
+        Built<GAccountToManyChangeOwnerKeyFilter,
+            GAccountToManyChangeOwnerKeyFilterBuilder> {
+  GAccountToManyChangeOwnerKeyFilter._();
+
+  factory GAccountToManyChangeOwnerKeyFilter(
+      [void Function(GAccountToManyChangeOwnerKeyFilterBuilder b)
+          updates]) = _$GAccountToManyChangeOwnerKeyFilter;
+
+  GChangeOwnerKeyFilter? get every;
+  GChangeOwnerKeyFilter? get some;
+  GChangeOwnerKeyFilter? get none;
+  static Serializer<GAccountToManyChangeOwnerKeyFilter> get serializer =>
+      _$gAccountToManyChangeOwnerKeyFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountToManyChangeOwnerKeyFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountToManyChangeOwnerKeyFilter? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountToManyChangeOwnerKeyFilter.serializer,
+        json,
+      );
+}
+
+abstract class GAccountToManyIdentityFilter
+    implements
+        Built<GAccountToManyIdentityFilter,
+            GAccountToManyIdentityFilterBuilder> {
+  GAccountToManyIdentityFilter._();
+
+  factory GAccountToManyIdentityFilter(
+          [void Function(GAccountToManyIdentityFilterBuilder b) updates]) =
+      _$GAccountToManyIdentityFilter;
+
+  GIdentityFilter? get every;
+  GIdentityFilter? get some;
+  GIdentityFilter? get none;
+  static Serializer<GAccountToManyIdentityFilter> get serializer =>
+      _$gAccountToManyIdentityFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountToManyIdentityFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountToManyIdentityFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountToManyIdentityFilter.serializer,
+        json,
+      );
+}
+
+abstract class GAccountToManyTransferFilter
+    implements
+        Built<GAccountToManyTransferFilter,
+            GAccountToManyTransferFilterBuilder> {
+  GAccountToManyTransferFilter._();
+
+  factory GAccountToManyTransferFilter(
+          [void Function(GAccountToManyTransferFilterBuilder b) updates]) =
+      _$GAccountToManyTransferFilter;
+
+  GTransferFilter? get every;
+  GTransferFilter? get some;
+  GTransferFilter? get none;
+  static Serializer<GAccountToManyTransferFilter> get serializer =>
+      _$gAccountToManyTransferFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountToManyTransferFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountToManyTransferFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountToManyTransferFilter.serializer,
+        json,
+      );
+}
+
+abstract class GAccountToManyTxCommentFilter
+    implements
+        Built<GAccountToManyTxCommentFilter,
+            GAccountToManyTxCommentFilterBuilder> {
+  GAccountToManyTxCommentFilter._();
+
+  factory GAccountToManyTxCommentFilter(
+          [void Function(GAccountToManyTxCommentFilterBuilder b) updates]) =
+      _$GAccountToManyTxCommentFilter;
+
+  GTxCommentFilter? get every;
+  GTxCommentFilter? get some;
+  GTxCommentFilter? get none;
+  static Serializer<GAccountToManyTxCommentFilter> get serializer =>
+      _$gAccountToManyTxCommentFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountToManyTxCommentFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountToManyTxCommentFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountToManyTxCommentFilter.serializer,
+        json,
+      );
 }
 
 abstract class GBigFloat implements Built<GBigFloat, GBigFloatBuilder> {
@@ -263,6 +392,12 @@ abstract class GBlockFilter
   GIntFilter? get extrinsicsCount;
   GIntFilter? get callsCount;
   GIntFilter? get eventsCount;
+  GBlockToManyEventFilter? get events;
+  bool? get eventsExist;
+  GBlockToManyCallFilter? get calls;
+  bool? get callsExist;
+  GBlockToManyExtrinsicFilter? get extrinsics;
+  bool? get extrinsicsExist;
   BuiltList<GBlockFilter>? get and;
   BuiltList<GBlockFilter>? get or;
   GBlockFilter? get not;
@@ -370,6 +505,85 @@ class GBlocksOrderBy extends EnumClass {
   static GBlocksOrderBy valueOf(String name) => _$gBlocksOrderByValueOf(name);
 }
 
+abstract class GBlockToManyCallFilter
+    implements Built<GBlockToManyCallFilter, GBlockToManyCallFilterBuilder> {
+  GBlockToManyCallFilter._();
+
+  factory GBlockToManyCallFilter(
+          [void Function(GBlockToManyCallFilterBuilder b) updates]) =
+      _$GBlockToManyCallFilter;
+
+  GCallFilter? get every;
+  GCallFilter? get some;
+  GCallFilter? get none;
+  static Serializer<GBlockToManyCallFilter> get serializer =>
+      _$gBlockToManyCallFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GBlockToManyCallFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GBlockToManyCallFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GBlockToManyCallFilter.serializer,
+        json,
+      );
+}
+
+abstract class GBlockToManyEventFilter
+    implements Built<GBlockToManyEventFilter, GBlockToManyEventFilterBuilder> {
+  GBlockToManyEventFilter._();
+
+  factory GBlockToManyEventFilter(
+          [void Function(GBlockToManyEventFilterBuilder b) updates]) =
+      _$GBlockToManyEventFilter;
+
+  GEventFilter? get every;
+  GEventFilter? get some;
+  GEventFilter? get none;
+  static Serializer<GBlockToManyEventFilter> get serializer =>
+      _$gBlockToManyEventFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GBlockToManyEventFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GBlockToManyEventFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GBlockToManyEventFilter.serializer,
+        json,
+      );
+}
+
+abstract class GBlockToManyExtrinsicFilter
+    implements
+        Built<GBlockToManyExtrinsicFilter, GBlockToManyExtrinsicFilterBuilder> {
+  GBlockToManyExtrinsicFilter._();
+
+  factory GBlockToManyExtrinsicFilter(
+          [void Function(GBlockToManyExtrinsicFilterBuilder b) updates]) =
+      _$GBlockToManyExtrinsicFilter;
+
+  GExtrinsicFilter? get every;
+  GExtrinsicFilter? get some;
+  GExtrinsicFilter? get none;
+  static Serializer<GBlockToManyExtrinsicFilter> get serializer =>
+      _$gBlockToManyExtrinsicFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GBlockToManyExtrinsicFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GBlockToManyExtrinsicFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GBlockToManyExtrinsicFilter.serializer,
+        json,
+      );
+}
+
 abstract class GBooleanFilter
     implements Built<GBooleanFilter, GBooleanFilterBuilder> {
   GBooleanFilter._();
@@ -454,6 +668,18 @@ abstract class GCallFilter implements Built<GCallFilter, GCallFilterBuilder> {
   GStringFilter? get blockId;
   GStringFilter? get extrinsicId;
   GStringFilter? get parentId;
+  GCallToManyEventFilter? get events;
+  bool? get eventsExist;
+  GCallToManyCallFilter? get childCalls;
+  bool? get childCallsExist;
+  GCallToManyExtrinsicFilter? get extrinsics;
+  bool? get extrinsicsExist;
+  GBlockFilter? get block;
+  bool? get blockExists;
+  GExtrinsicFilter? get extrinsic;
+  bool? get extrinsicExists;
+  GCallFilter? get parent;
+  bool? get parentExists;
   BuiltList<GCallFilter>? get and;
   BuiltList<GCallFilter>? get or;
   GCallFilter? get not;
@@ -532,6 +758,85 @@ class GCallsOrderBy extends EnumClass {
   static GCallsOrderBy valueOf(String name) => _$gCallsOrderByValueOf(name);
 }
 
+abstract class GCallToManyCallFilter
+    implements Built<GCallToManyCallFilter, GCallToManyCallFilterBuilder> {
+  GCallToManyCallFilter._();
+
+  factory GCallToManyCallFilter(
+          [void Function(GCallToManyCallFilterBuilder b) updates]) =
+      _$GCallToManyCallFilter;
+
+  GCallFilter? get every;
+  GCallFilter? get some;
+  GCallFilter? get none;
+  static Serializer<GCallToManyCallFilter> get serializer =>
+      _$gCallToManyCallFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GCallToManyCallFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GCallToManyCallFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GCallToManyCallFilter.serializer,
+        json,
+      );
+}
+
+abstract class GCallToManyEventFilter
+    implements Built<GCallToManyEventFilter, GCallToManyEventFilterBuilder> {
+  GCallToManyEventFilter._();
+
+  factory GCallToManyEventFilter(
+          [void Function(GCallToManyEventFilterBuilder b) updates]) =
+      _$GCallToManyEventFilter;
+
+  GEventFilter? get every;
+  GEventFilter? get some;
+  GEventFilter? get none;
+  static Serializer<GCallToManyEventFilter> get serializer =>
+      _$gCallToManyEventFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GCallToManyEventFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GCallToManyEventFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GCallToManyEventFilter.serializer,
+        json,
+      );
+}
+
+abstract class GCallToManyExtrinsicFilter
+    implements
+        Built<GCallToManyExtrinsicFilter, GCallToManyExtrinsicFilterBuilder> {
+  GCallToManyExtrinsicFilter._();
+
+  factory GCallToManyExtrinsicFilter(
+          [void Function(GCallToManyExtrinsicFilterBuilder b) updates]) =
+      _$GCallToManyExtrinsicFilter;
+
+  GExtrinsicFilter? get every;
+  GExtrinsicFilter? get some;
+  GExtrinsicFilter? get none;
+  static Serializer<GCallToManyExtrinsicFilter> get serializer =>
+      _$gCallToManyExtrinsicFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GCallToManyExtrinsicFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GCallToManyExtrinsicFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GCallToManyExtrinsicFilter.serializer,
+        json,
+      );
+}
+
 abstract class GCertCondition
     implements Built<GCertCondition, GCertConditionBuilder> {
   GCertCondition._();
@@ -603,6 +908,10 @@ abstract class GCertEventFilter
   GStringFilter? get eventType;
   GStringFilter? get certId;
   GStringFilter? get eventId;
+  GCertFilter? get cert;
+  bool? get certExists;
+  GEventFilter? get event;
+  bool? get eventExists;
   BuiltList<GCertEventFilter>? get and;
   BuiltList<GCertEventFilter>? get or;
   GCertEventFilter? get not;
@@ -683,6 +992,16 @@ abstract class GCertFilter implements Built<GCertFilter, GCertFilterBuilder> {
   GStringFilter? get receiverId;
   GStringFilter? get createdInId;
   GStringFilter? get updatedInId;
+  GCertToManyCertEventFilter? get certHistory;
+  bool? get certHistoryExist;
+  GIdentityFilter? get issuer;
+  bool? get issuerExists;
+  GIdentityFilter? get receiver;
+  bool? get receiverExists;
+  GEventFilter? get createdIn;
+  bool? get createdInExists;
+  GEventFilter? get updatedIn;
+  bool? get updatedInExists;
   BuiltList<GCertFilter>? get and;
   BuiltList<GCertFilter>? get or;
   GCertFilter? get not;
@@ -756,6 +1075,33 @@ class GCertsOrderBy extends EnumClass {
   static GCertsOrderBy valueOf(String name) => _$gCertsOrderByValueOf(name);
 }
 
+abstract class GCertToManyCertEventFilter
+    implements
+        Built<GCertToManyCertEventFilter, GCertToManyCertEventFilterBuilder> {
+  GCertToManyCertEventFilter._();
+
+  factory GCertToManyCertEventFilter(
+          [void Function(GCertToManyCertEventFilterBuilder b) updates]) =
+      _$GCertToManyCertEventFilter;
+
+  GCertEventFilter? get every;
+  GCertEventFilter? get some;
+  GCertEventFilter? get none;
+  static Serializer<GCertToManyCertEventFilter> get serializer =>
+      _$gCertToManyCertEventFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GCertToManyCertEventFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GCertToManyCertEventFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GCertToManyCertEventFilter.serializer,
+        json,
+      );
+}
+
 abstract class GChangeOwnerKeyCondition
     implements
         Built<GChangeOwnerKeyCondition, GChangeOwnerKeyConditionBuilder> {
@@ -798,6 +1144,12 @@ abstract class GChangeOwnerKeyFilter
   GStringFilter? get identityId;
   GStringFilter? get previousId;
   GStringFilter? get nextId;
+  GIdentityFilter? get identity;
+  bool? get identityExists;
+  GAccountFilter? get previous;
+  bool? get previousExists;
+  GAccountFilter? get next;
+  bool? get nextExists;
   BuiltList<GChangeOwnerKeyFilter>? get and;
   BuiltList<GChangeOwnerKeyFilter>? get or;
   GChangeOwnerKeyFilter? get not;
@@ -976,6 +1328,32 @@ abstract class GEventFilter
   GStringFilter? get blockId;
   GStringFilter? get extrinsicId;
   GStringFilter? get callId;
+  GEventToManyCertEventFilter? get certEvents;
+  bool? get certEventsExist;
+  GEventToManyCertFilter? get certsByCreatedInId;
+  bool? get certsByCreatedInIdExist;
+  GEventToManyCertFilter? get certsByUpdatedInId;
+  bool? get certsByUpdatedInIdExist;
+  GEventToManyMembershipEventFilter? get membershipEvents;
+  bool? get membershipEventsExist;
+  GEventToManySmithEventFilter? get smithEvents;
+  bool? get smithEventsExist;
+  GEventToManyIdentityFilter? get identitiesByCreatedInId;
+  bool? get identitiesByCreatedInIdExist;
+  GEventToManyTxCommentFilter? get txComments;
+  bool? get txCommentsExist;
+  GEventToManyTransferFilter? get transfers;
+  bool? get transfersExist;
+  GEventToManyUniversalDividendFilter? get universalDividends;
+  bool? get universalDividendsExist;
+  GEventToManyUdReevalFilter? get udReevals;
+  bool? get udReevalsExist;
+  GBlockFilter? get block;
+  bool? get blockExists;
+  GExtrinsicFilter? get extrinsic;
+  bool? get extrinsicExists;
+  GCallFilter? get call;
+  bool? get callExists;
   BuiltList<GEventFilter>? get and;
   BuiltList<GEventFilter>? get or;
   GEventFilter? get not;
@@ -1053,6 +1431,253 @@ class GEventsOrderBy extends EnumClass {
   static GEventsOrderBy valueOf(String name) => _$gEventsOrderByValueOf(name);
 }
 
+abstract class GEventToManyCertEventFilter
+    implements
+        Built<GEventToManyCertEventFilter, GEventToManyCertEventFilterBuilder> {
+  GEventToManyCertEventFilter._();
+
+  factory GEventToManyCertEventFilter(
+          [void Function(GEventToManyCertEventFilterBuilder b) updates]) =
+      _$GEventToManyCertEventFilter;
+
+  GCertEventFilter? get every;
+  GCertEventFilter? get some;
+  GCertEventFilter? get none;
+  static Serializer<GEventToManyCertEventFilter> get serializer =>
+      _$gEventToManyCertEventFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GEventToManyCertEventFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GEventToManyCertEventFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GEventToManyCertEventFilter.serializer,
+        json,
+      );
+}
+
+abstract class GEventToManyCertFilter
+    implements Built<GEventToManyCertFilter, GEventToManyCertFilterBuilder> {
+  GEventToManyCertFilter._();
+
+  factory GEventToManyCertFilter(
+          [void Function(GEventToManyCertFilterBuilder b) updates]) =
+      _$GEventToManyCertFilter;
+
+  GCertFilter? get every;
+  GCertFilter? get some;
+  GCertFilter? get none;
+  static Serializer<GEventToManyCertFilter> get serializer =>
+      _$gEventToManyCertFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GEventToManyCertFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GEventToManyCertFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GEventToManyCertFilter.serializer,
+        json,
+      );
+}
+
+abstract class GEventToManyIdentityFilter
+    implements
+        Built<GEventToManyIdentityFilter, GEventToManyIdentityFilterBuilder> {
+  GEventToManyIdentityFilter._();
+
+  factory GEventToManyIdentityFilter(
+          [void Function(GEventToManyIdentityFilterBuilder b) updates]) =
+      _$GEventToManyIdentityFilter;
+
+  GIdentityFilter? get every;
+  GIdentityFilter? get some;
+  GIdentityFilter? get none;
+  static Serializer<GEventToManyIdentityFilter> get serializer =>
+      _$gEventToManyIdentityFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GEventToManyIdentityFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GEventToManyIdentityFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GEventToManyIdentityFilter.serializer,
+        json,
+      );
+}
+
+abstract class GEventToManyMembershipEventFilter
+    implements
+        Built<GEventToManyMembershipEventFilter,
+            GEventToManyMembershipEventFilterBuilder> {
+  GEventToManyMembershipEventFilter._();
+
+  factory GEventToManyMembershipEventFilter(
+          [void Function(GEventToManyMembershipEventFilterBuilder b) updates]) =
+      _$GEventToManyMembershipEventFilter;
+
+  GMembershipEventFilter? get every;
+  GMembershipEventFilter? get some;
+  GMembershipEventFilter? get none;
+  static Serializer<GEventToManyMembershipEventFilter> get serializer =>
+      _$gEventToManyMembershipEventFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GEventToManyMembershipEventFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GEventToManyMembershipEventFilter? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GEventToManyMembershipEventFilter.serializer,
+        json,
+      );
+}
+
+abstract class GEventToManySmithEventFilter
+    implements
+        Built<GEventToManySmithEventFilter,
+            GEventToManySmithEventFilterBuilder> {
+  GEventToManySmithEventFilter._();
+
+  factory GEventToManySmithEventFilter(
+          [void Function(GEventToManySmithEventFilterBuilder b) updates]) =
+      _$GEventToManySmithEventFilter;
+
+  GSmithEventFilter? get every;
+  GSmithEventFilter? get some;
+  GSmithEventFilter? get none;
+  static Serializer<GEventToManySmithEventFilter> get serializer =>
+      _$gEventToManySmithEventFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GEventToManySmithEventFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GEventToManySmithEventFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GEventToManySmithEventFilter.serializer,
+        json,
+      );
+}
+
+abstract class GEventToManyTransferFilter
+    implements
+        Built<GEventToManyTransferFilter, GEventToManyTransferFilterBuilder> {
+  GEventToManyTransferFilter._();
+
+  factory GEventToManyTransferFilter(
+          [void Function(GEventToManyTransferFilterBuilder b) updates]) =
+      _$GEventToManyTransferFilter;
+
+  GTransferFilter? get every;
+  GTransferFilter? get some;
+  GTransferFilter? get none;
+  static Serializer<GEventToManyTransferFilter> get serializer =>
+      _$gEventToManyTransferFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GEventToManyTransferFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GEventToManyTransferFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GEventToManyTransferFilter.serializer,
+        json,
+      );
+}
+
+abstract class GEventToManyTxCommentFilter
+    implements
+        Built<GEventToManyTxCommentFilter, GEventToManyTxCommentFilterBuilder> {
+  GEventToManyTxCommentFilter._();
+
+  factory GEventToManyTxCommentFilter(
+          [void Function(GEventToManyTxCommentFilterBuilder b) updates]) =
+      _$GEventToManyTxCommentFilter;
+
+  GTxCommentFilter? get every;
+  GTxCommentFilter? get some;
+  GTxCommentFilter? get none;
+  static Serializer<GEventToManyTxCommentFilter> get serializer =>
+      _$gEventToManyTxCommentFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GEventToManyTxCommentFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GEventToManyTxCommentFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GEventToManyTxCommentFilter.serializer,
+        json,
+      );
+}
+
+abstract class GEventToManyUdReevalFilter
+    implements
+        Built<GEventToManyUdReevalFilter, GEventToManyUdReevalFilterBuilder> {
+  GEventToManyUdReevalFilter._();
+
+  factory GEventToManyUdReevalFilter(
+          [void Function(GEventToManyUdReevalFilterBuilder b) updates]) =
+      _$GEventToManyUdReevalFilter;
+
+  GUdReevalFilter? get every;
+  GUdReevalFilter? get some;
+  GUdReevalFilter? get none;
+  static Serializer<GEventToManyUdReevalFilter> get serializer =>
+      _$gEventToManyUdReevalFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GEventToManyUdReevalFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GEventToManyUdReevalFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GEventToManyUdReevalFilter.serializer,
+        json,
+      );
+}
+
+abstract class GEventToManyUniversalDividendFilter
+    implements
+        Built<GEventToManyUniversalDividendFilter,
+            GEventToManyUniversalDividendFilterBuilder> {
+  GEventToManyUniversalDividendFilter._();
+
+  factory GEventToManyUniversalDividendFilter(
+      [void Function(GEventToManyUniversalDividendFilterBuilder b)
+          updates]) = _$GEventToManyUniversalDividendFilter;
+
+  GUniversalDividendFilter? get every;
+  GUniversalDividendFilter? get some;
+  GUniversalDividendFilter? get none;
+  static Serializer<GEventToManyUniversalDividendFilter> get serializer =>
+      _$gEventToManyUniversalDividendFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GEventToManyUniversalDividendFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GEventToManyUniversalDividendFilter? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GEventToManyUniversalDividendFilter.serializer,
+        json,
+      );
+}
+
 abstract class GExtrinsicCondition
     implements Built<GExtrinsicCondition, GExtrinsicConditionBuilder> {
   GExtrinsicCondition._();
@@ -1104,6 +1729,14 @@ abstract class GExtrinsicFilter
   GJSONFilter? get error;
   GStringFilter? get blockId;
   GStringFilter? get callId;
+  GExtrinsicToManyEventFilter? get events;
+  bool? get eventsExist;
+  GExtrinsicToManyCallFilter? get calls;
+  bool? get callsExist;
+  GBlockFilter? get block;
+  bool? get blockExists;
+  GCallFilter? get call;
+  bool? get callExists;
   BuiltList<GExtrinsicFilter>? get and;
   BuiltList<GExtrinsicFilter>? get or;
   GExtrinsicFilter? get not;
@@ -1191,6 +1824,60 @@ class GExtrinsicsOrderBy extends EnumClass {
 
   static GExtrinsicsOrderBy valueOf(String name) =>
       _$gExtrinsicsOrderByValueOf(name);
+}
+
+abstract class GExtrinsicToManyCallFilter
+    implements
+        Built<GExtrinsicToManyCallFilter, GExtrinsicToManyCallFilterBuilder> {
+  GExtrinsicToManyCallFilter._();
+
+  factory GExtrinsicToManyCallFilter(
+          [void Function(GExtrinsicToManyCallFilterBuilder b) updates]) =
+      _$GExtrinsicToManyCallFilter;
+
+  GCallFilter? get every;
+  GCallFilter? get some;
+  GCallFilter? get none;
+  static Serializer<GExtrinsicToManyCallFilter> get serializer =>
+      _$gExtrinsicToManyCallFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GExtrinsicToManyCallFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GExtrinsicToManyCallFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GExtrinsicToManyCallFilter.serializer,
+        json,
+      );
+}
+
+abstract class GExtrinsicToManyEventFilter
+    implements
+        Built<GExtrinsicToManyEventFilter, GExtrinsicToManyEventFilterBuilder> {
+  GExtrinsicToManyEventFilter._();
+
+  factory GExtrinsicToManyEventFilter(
+          [void Function(GExtrinsicToManyEventFilterBuilder b) updates]) =
+      _$GExtrinsicToManyEventFilter;
+
+  GEventFilter? get every;
+  GEventFilter? get some;
+  GEventFilter? get none;
+  static Serializer<GExtrinsicToManyEventFilter> get serializer =>
+      _$gExtrinsicToManyEventFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GExtrinsicToManyEventFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GExtrinsicToManyEventFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GExtrinsicToManyEventFilter.serializer,
+        json,
+      );
 }
 
 class GIdentitiesOrderBy extends EnumClass {
@@ -1331,6 +2018,26 @@ abstract class GIdentityFilter
   GStringFilter? get accountId;
   GStringFilter? get accountRemovedId;
   GStringFilter? get createdInId;
+  GIdentityToManyCertFilter? get certIssued;
+  bool? get certIssuedExist;
+  GIdentityToManyCertFilter? get certReceived;
+  bool? get certReceivedExist;
+  GIdentityToManyMembershipEventFilter? get membershipHistory;
+  bool? get membershipHistoryExist;
+  GIdentityToManyChangeOwnerKeyFilter? get ownerKeyChange;
+  bool? get ownerKeyChangeExist;
+  GSmithFilter? get smith;
+  bool? get smithExists;
+  GIdentityToManyUdHistoryFilter? get udHistoryRecords;
+  bool? get udHistoryRecordsExist;
+  GIdentityToManyAccountFilter? get accountsByLinkedIdentityId;
+  bool? get accountsByLinkedIdentityIdExist;
+  GAccountFilter? get account;
+  bool? get accountExists;
+  GAccountFilter? get accountRemoved;
+  bool? get accountRemovedExists;
+  GEventFilter? get createdIn;
+  bool? get createdInExists;
   BuiltList<GIdentityFilter>? get and;
   BuiltList<GIdentityFilter>? get or;
   GIdentityFilter? get not;
@@ -1345,6 +2052,147 @@ abstract class GIdentityFilter
   static GIdentityFilter? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
         GIdentityFilter.serializer,
+        json,
+      );
+}
+
+abstract class GIdentityToManyAccountFilter
+    implements
+        Built<GIdentityToManyAccountFilter,
+            GIdentityToManyAccountFilterBuilder> {
+  GIdentityToManyAccountFilter._();
+
+  factory GIdentityToManyAccountFilter(
+          [void Function(GIdentityToManyAccountFilterBuilder b) updates]) =
+      _$GIdentityToManyAccountFilter;
+
+  GAccountFilter? get every;
+  GAccountFilter? get some;
+  GAccountFilter? get none;
+  static Serializer<GIdentityToManyAccountFilter> get serializer =>
+      _$gIdentityToManyAccountFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentityToManyAccountFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentityToManyAccountFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GIdentityToManyAccountFilter.serializer,
+        json,
+      );
+}
+
+abstract class GIdentityToManyCertFilter
+    implements
+        Built<GIdentityToManyCertFilter, GIdentityToManyCertFilterBuilder> {
+  GIdentityToManyCertFilter._();
+
+  factory GIdentityToManyCertFilter(
+          [void Function(GIdentityToManyCertFilterBuilder b) updates]) =
+      _$GIdentityToManyCertFilter;
+
+  GCertFilter? get every;
+  GCertFilter? get some;
+  GCertFilter? get none;
+  static Serializer<GIdentityToManyCertFilter> get serializer =>
+      _$gIdentityToManyCertFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentityToManyCertFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentityToManyCertFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GIdentityToManyCertFilter.serializer,
+        json,
+      );
+}
+
+abstract class GIdentityToManyChangeOwnerKeyFilter
+    implements
+        Built<GIdentityToManyChangeOwnerKeyFilter,
+            GIdentityToManyChangeOwnerKeyFilterBuilder> {
+  GIdentityToManyChangeOwnerKeyFilter._();
+
+  factory GIdentityToManyChangeOwnerKeyFilter(
+      [void Function(GIdentityToManyChangeOwnerKeyFilterBuilder b)
+          updates]) = _$GIdentityToManyChangeOwnerKeyFilter;
+
+  GChangeOwnerKeyFilter? get every;
+  GChangeOwnerKeyFilter? get some;
+  GChangeOwnerKeyFilter? get none;
+  static Serializer<GIdentityToManyChangeOwnerKeyFilter> get serializer =>
+      _$gIdentityToManyChangeOwnerKeyFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentityToManyChangeOwnerKeyFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentityToManyChangeOwnerKeyFilter? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GIdentityToManyChangeOwnerKeyFilter.serializer,
+        json,
+      );
+}
+
+abstract class GIdentityToManyMembershipEventFilter
+    implements
+        Built<GIdentityToManyMembershipEventFilter,
+            GIdentityToManyMembershipEventFilterBuilder> {
+  GIdentityToManyMembershipEventFilter._();
+
+  factory GIdentityToManyMembershipEventFilter(
+      [void Function(GIdentityToManyMembershipEventFilterBuilder b)
+          updates]) = _$GIdentityToManyMembershipEventFilter;
+
+  GMembershipEventFilter? get every;
+  GMembershipEventFilter? get some;
+  GMembershipEventFilter? get none;
+  static Serializer<GIdentityToManyMembershipEventFilter> get serializer =>
+      _$gIdentityToManyMembershipEventFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentityToManyMembershipEventFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentityToManyMembershipEventFilter? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GIdentityToManyMembershipEventFilter.serializer,
+        json,
+      );
+}
+
+abstract class GIdentityToManyUdHistoryFilter
+    implements
+        Built<GIdentityToManyUdHistoryFilter,
+            GIdentityToManyUdHistoryFilterBuilder> {
+  GIdentityToManyUdHistoryFilter._();
+
+  factory GIdentityToManyUdHistoryFilter(
+          [void Function(GIdentityToManyUdHistoryFilterBuilder b) updates]) =
+      _$GIdentityToManyUdHistoryFilter;
+
+  GUdHistoryFilter? get every;
+  GUdHistoryFilter? get some;
+  GUdHistoryFilter? get none;
+  static Serializer<GIdentityToManyUdHistoryFilter> get serializer =>
+      _$gIdentityToManyUdHistoryFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIdentityToManyUdHistoryFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIdentityToManyUdHistoryFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GIdentityToManyUdHistoryFilter.serializer,
         json,
       );
 }
@@ -1611,6 +2459,10 @@ abstract class GMembershipEventFilter
   GIntFilter? get blockNumber;
   GStringFilter? get identityId;
   GStringFilter? get eventId;
+  GIdentityFilter? get identity;
+  bool? get identityExists;
+  GEventFilter? get event;
+  bool? get eventExists;
   BuiltList<GMembershipEventFilter>? get and;
   BuiltList<GMembershipEventFilter>? get or;
   GMembershipEventFilter? get not;
@@ -1920,6 +2772,10 @@ abstract class GSmithCertFilter
   GIntFilter? get createdOn;
   GStringFilter? get issuerId;
   GStringFilter? get receiverId;
+  GSmithFilter? get issuer;
+  bool? get issuerExists;
+  GSmithFilter? get receiver;
+  bool? get receiverExists;
   BuiltList<GSmithCertFilter>? get and;
   BuiltList<GSmithCertFilter>? get or;
   GSmithCertFilter? get not;
@@ -2050,6 +2906,10 @@ abstract class GSmithEventFilter
   GIntFilter? get blockNumber;
   GStringFilter? get smithId;
   GStringFilter? get eventId;
+  GSmithFilter? get smith;
+  bool? get smithExists;
+  GEventFilter? get event;
+  bool? get eventExists;
   BuiltList<GSmithEventFilter>? get and;
   BuiltList<GSmithEventFilter>? get or;
   GSmithEventFilter? get not;
@@ -2131,6 +2991,14 @@ abstract class GSmithFilter
   GIntFilter? get forged;
   GIntFilter? get lastForged;
   GStringFilter? get identityId;
+  GSmithToManySmithCertFilter? get smithCertIssued;
+  bool? get smithCertIssuedExist;
+  GSmithToManySmithCertFilter? get smithCertReceived;
+  bool? get smithCertReceivedExist;
+  GSmithToManySmithEventFilter? get smithHistory;
+  bool? get smithHistoryExist;
+  GIdentityFilter? get identity;
+  bool? get identityExists;
   BuiltList<GSmithFilter>? get and;
   BuiltList<GSmithFilter>? get or;
   GSmithFilter? get not;
@@ -2198,6 +3066,61 @@ class GSmithsOrderBy extends EnumClass {
   static BuiltSet<GSmithsOrderBy> get values => _$gSmithsOrderByValues;
 
   static GSmithsOrderBy valueOf(String name) => _$gSmithsOrderByValueOf(name);
+}
+
+abstract class GSmithToManySmithCertFilter
+    implements
+        Built<GSmithToManySmithCertFilter, GSmithToManySmithCertFilterBuilder> {
+  GSmithToManySmithCertFilter._();
+
+  factory GSmithToManySmithCertFilter(
+          [void Function(GSmithToManySmithCertFilterBuilder b) updates]) =
+      _$GSmithToManySmithCertFilter;
+
+  GSmithCertFilter? get every;
+  GSmithCertFilter? get some;
+  GSmithCertFilter? get none;
+  static Serializer<GSmithToManySmithCertFilter> get serializer =>
+      _$gSmithToManySmithCertFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GSmithToManySmithCertFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GSmithToManySmithCertFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GSmithToManySmithCertFilter.serializer,
+        json,
+      );
+}
+
+abstract class GSmithToManySmithEventFilter
+    implements
+        Built<GSmithToManySmithEventFilter,
+            GSmithToManySmithEventFilterBuilder> {
+  GSmithToManySmithEventFilter._();
+
+  factory GSmithToManySmithEventFilter(
+          [void Function(GSmithToManySmithEventFilterBuilder b) updates]) =
+      _$GSmithToManySmithEventFilter;
+
+  GSmithEventFilter? get every;
+  GSmithEventFilter? get some;
+  GSmithEventFilter? get none;
+  static Serializer<GSmithToManySmithEventFilter> get serializer =>
+      _$gSmithToManySmithEventFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GSmithToManySmithEventFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GSmithToManySmithEventFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GSmithToManySmithEventFilter.serializer,
+        json,
+      );
 }
 
 abstract class GStringFilter
@@ -2346,6 +3269,14 @@ abstract class GTransferFilter
   GStringFilter? get toId;
   GStringFilter? get eventId;
   GStringFilter? get commentId;
+  GAccountFilter? get from;
+  bool? get fromExists;
+  GAccountFilter? get to;
+  bool? get toExists;
+  GEventFilter? get event;
+  bool? get eventExists;
+  GTxCommentFilter? get comment;
+  bool? get commentExists;
   BuiltList<GTransferFilter>? get and;
   BuiltList<GTransferFilter>? get or;
   GTransferFilter? get not;
@@ -2536,6 +3467,12 @@ abstract class GTxCommentFilter
   GStringFilter? get type;
   GStringFilter? get authorId;
   GStringFilter? get eventId;
+  GTxCommentToManyTransferFilter? get transfersByCommentId;
+  bool? get transfersByCommentIdExist;
+  GAccountFilter? get author;
+  bool? get authorExists;
+  GEventFilter? get event;
+  bool? get eventExists;
   BuiltList<GTxCommentFilter>? get and;
   BuiltList<GTxCommentFilter>? get or;
   GTxCommentFilter? get not;
@@ -2612,6 +3549,34 @@ class GTxCommentsOrderBy extends EnumClass {
 
   static GTxCommentsOrderBy valueOf(String name) =>
       _$gTxCommentsOrderByValueOf(name);
+}
+
+abstract class GTxCommentToManyTransferFilter
+    implements
+        Built<GTxCommentToManyTransferFilter,
+            GTxCommentToManyTransferFilterBuilder> {
+  GTxCommentToManyTransferFilter._();
+
+  factory GTxCommentToManyTransferFilter(
+          [void Function(GTxCommentToManyTransferFilterBuilder b) updates]) =
+      _$GTxCommentToManyTransferFilter;
+
+  GTransferFilter? get every;
+  GTransferFilter? get some;
+  GTransferFilter? get none;
+  static Serializer<GTxCommentToManyTransferFilter> get serializer =>
+      _$gTxCommentToManyTransferFilterSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GTxCommentToManyTransferFilter.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GTxCommentToManyTransferFilter? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GTxCommentToManyTransferFilter.serializer,
+        json,
+      );
 }
 
 class GUdHistoriesOrderBy extends EnumClass {
@@ -2702,6 +3667,8 @@ abstract class GUdHistoryFilter
   GIntFilter? get blockNumber;
   GDatetimeFilter? get timestamp;
   GStringFilter? get identityId;
+  GIdentityFilter? get identity;
+  bool? get identityExists;
   BuiltList<GUdHistoryFilter>? get and;
   BuiltList<GUdHistoryFilter>? get or;
   GUdHistoryFilter? get not;
@@ -2794,6 +3761,8 @@ abstract class GUdReevalFilter
   GIntFilter? get membersCount;
   GIntFilter? get udIndex;
   GStringFilter? get eventId;
+  GEventFilter? get event;
+  bool? get eventExists;
   BuiltList<GUdReevalFilter>? get and;
   BuiltList<GUdReevalFilter>? get or;
   GUdReevalFilter? get not;
@@ -2925,6 +3894,8 @@ abstract class GUniversalDividendFilter
   GIntFilter? get membersCount;
   GIntFilter? get index;
   GStringFilter? get eventId;
+  GEventFilter? get event;
+  bool? get eventExists;
   BuiltList<GUniversalDividendFilter>? get and;
   BuiltList<GUniversalDividendFilter>? get or;
   GUniversalDividendFilter? get not;

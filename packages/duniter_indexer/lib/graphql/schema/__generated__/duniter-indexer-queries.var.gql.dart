@@ -233,6 +233,29 @@ abstract class GAccountTransactionsVars
       );
 }
 
+abstract class GIndexerVersionVars
+    implements Built<GIndexerVersionVars, GIndexerVersionVarsBuilder> {
+  GIndexerVersionVars._();
+
+  factory GIndexerVersionVars(
+          [void Function(GIndexerVersionVarsBuilder b) updates]) =
+      _$GIndexerVersionVars;
+
+  static Serializer<GIndexerVersionVars> get serializer =>
+      _$gIndexerVersionVarsSerializer;
+
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GIndexerVersionVars.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GIndexerVersionVars? fromJson(Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GIndexerVersionVars.serializer,
+        json,
+      );
+}
+
 abstract class GCertFieldsVars
     implements Built<GCertFieldsVars, GCertFieldsVarsBuilder> {
   GCertFieldsVars._();

@@ -31,11 +31,11 @@ fragment SmithFields on Smith {
     index
     lastChanged
     lastForged
-    smithCertsByIssuerId(first: 10, orderBy: [PRIMARY_KEY_DESC]) {
+    smithCertIssued(first: 10, orderBy: [CREATED_ON_DESC]) {
         totalCount
         nodes { ...SmithCertFields }
     }
-    smithCertsByReceiverId(first: 10, orderBy: [PRIMARY_KEY_DESC]) {
+    smithCertReceived(first: 10, orderBy: [CREATED_ON_DESC]) {
         totalCount
         nodes { ...SmithCertFields }
     }
@@ -67,7 +67,7 @@ fragment IdentityFields on Identity {
     accountId
     accountRemovedId
 
-    certsByIssuerId(
+    certIssued(
         first: 20
         orderBy: [UPDATED_ON_DESC]
         filter: { isActive: { equalTo: true } }
@@ -76,7 +76,7 @@ fragment IdentityFields on Identity {
         nodes { ...CertFields }
     }
 
-    certsByReceiverId(
+    certReceived(
         first: 20
         orderBy: [UPDATED_ON_DESC]
         filter: { isActive: { equalTo: true } }
@@ -95,7 +95,7 @@ fragment IdentityFields on Identity {
     status
     name
 
-    membershipEvents(first: 50, orderBy: [BLOCK_NUMBER_DESC]) {
+    membershipHistory(first: 50, orderBy: [BLOCK_NUMBER_DESC]) {
         totalCount
         nodes {
             blockNumber
@@ -106,7 +106,7 @@ fragment IdentityFields on Identity {
         }
     }
 
-    changeOwnerKeys(first: 20, orderBy: [BLOCK_NUMBER_DESC]) {
+    ownerKeyChange(first: 20, orderBy: [BLOCK_NUMBER_DESC]) {
         totalCount
         nodes { ...OwnerKeyChangeFields }
     }
@@ -145,7 +145,7 @@ fragment AccountFields on Account {
     totalBalance
     isActive
 
-    transfersIssued: transfersByFromId(
+    transfersIssued: transfersIssued(
         first: $limit
         after: $cursor
         orderBy: [TIMESTAMP_DESC]
@@ -158,7 +158,7 @@ fragment AccountFields on Account {
         nodes { ...TransferFields }
     }
 
-    transfersReceived: transfersByToId(
+    transfersReceived: transfersReceived(
         first: $limit
         after: $cursor
         orderBy: [TIMESTAMP_DESC]
@@ -171,7 +171,7 @@ fragment AccountFields on Account {
         nodes { ...TransferFields }
     }
 
-    wasIdentityPrev: changeOwnerKeysByPreviousId(first: 20, orderBy: [BLOCK_NUMBER_DESC]) {
+    wasIdentityPrev: changeOwnerKeysByNextId(first: 20, orderBy: [BLOCK_NUMBER_DESC]) {
         totalCount
         nodes { ...OwnerKeyChangeFields }
     }
@@ -191,7 +191,7 @@ fragment AccountTxsFields on Account {
     totalBalance
     isActive
 
-    comments: authoredTxComments(
+    comments: commentsIssued(
         first: $limit
         after: $cursor
         orderBy: [BLOCK_NUMBER_DESC]
@@ -204,7 +204,7 @@ fragment AccountTxsFields on Account {
         nodes { ...CommentsIssued }
     }
 
-    transfersIssued: transfersByFromId(
+    transfersIssued: transfersIssued(
         first: $limit
         after: $cursor
         orderBy: [TIMESTAMP_DESC]
@@ -217,7 +217,7 @@ fragment AccountTxsFields on Account {
         nodes { ...TransferFields }
     }
 
-    transfersReceived: transfersByToId(
+    transfersReceived: transfersReceived(
         first: $limit
         after: $cursor
         orderBy: [TIMESTAMP_DESC]
@@ -313,3 +313,16 @@ query AccountTransactions($accountId: String!, $limit: Int, $cursor: Cursor) {
         nodes { ...AccountTxsFields }
     }
 }
+
+query IndexerVersion {
+    version {
+        version
+        type
+    }
+    squidStatus {
+        name
+        height
+        hash
+    }
+}
+

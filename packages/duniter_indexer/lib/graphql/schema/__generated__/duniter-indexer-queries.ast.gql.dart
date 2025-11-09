@@ -172,7 +172,7 @@ const SmithFields = _i1.FragmentDefinitionNode(
       selectionSet: null,
     ),
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'smithCertsByIssuerId'),
+      name: _i1.NameNode(value: 'smithCertIssued'),
       alias: null,
       arguments: [
         _i1.ArgumentNode(
@@ -182,7 +182,7 @@ const SmithFields = _i1.FragmentDefinitionNode(
         _i1.ArgumentNode(
           name: _i1.NameNode(value: 'orderBy'),
           value: _i1.ListValueNode(values: [
-            _i1.EnumValueNode(name: _i1.NameNode(value: 'PRIMARY_KEY_DESC'))
+            _i1.EnumValueNode(name: _i1.NameNode(value: 'CREATED_ON_DESC'))
           ]),
         ),
       ],
@@ -210,7 +210,7 @@ const SmithFields = _i1.FragmentDefinitionNode(
       ]),
     ),
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'smithCertsByReceiverId'),
+      name: _i1.NameNode(value: 'smithCertReceived'),
       alias: null,
       arguments: [
         _i1.ArgumentNode(
@@ -220,7 +220,7 @@ const SmithFields = _i1.FragmentDefinitionNode(
         _i1.ArgumentNode(
           name: _i1.NameNode(value: 'orderBy'),
           value: _i1.ListValueNode(values: [
-            _i1.EnumValueNode(name: _i1.NameNode(value: 'PRIMARY_KEY_DESC'))
+            _i1.EnumValueNode(name: _i1.NameNode(value: 'CREATED_ON_DESC'))
           ]),
         ),
       ],
@@ -409,7 +409,7 @@ const IdentityFields = _i1.FragmentDefinitionNode(
       selectionSet: null,
     ),
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'certsByIssuerId'),
+      name: _i1.NameNode(value: 'certIssued'),
       alias: null,
       arguments: [
         _i1.ArgumentNode(
@@ -461,7 +461,7 @@ const IdentityFields = _i1.FragmentDefinitionNode(
       ]),
     ),
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'certsByReceiverId'),
+      name: _i1.NameNode(value: 'certReceived'),
       alias: null,
       arguments: [
         _i1.ArgumentNode(
@@ -576,7 +576,7 @@ const IdentityFields = _i1.FragmentDefinitionNode(
       selectionSet: null,
     ),
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'membershipEvents'),
+      name: _i1.NameNode(value: 'membershipHistory'),
       alias: null,
       arguments: [
         _i1.ArgumentNode(
@@ -645,7 +645,7 @@ const IdentityFields = _i1.FragmentDefinitionNode(
       ]),
     ),
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'changeOwnerKeys'),
+      name: _i1.NameNode(value: 'ownerKeyChange'),
       alias: null,
       arguments: [
         _i1.ArgumentNode(
@@ -873,7 +873,7 @@ const AccountFields = _i1.FragmentDefinitionNode(
       selectionSet: null,
     ),
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'transfersByFromId'),
+      name: _i1.NameNode(value: 'transfersIssued'),
       alias: _i1.NameNode(value: 'transfersIssued'),
       arguments: [
         _i1.ArgumentNode(
@@ -937,7 +937,7 @@ const AccountFields = _i1.FragmentDefinitionNode(
       ]),
     ),
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'transfersByToId'),
+      name: _i1.NameNode(value: 'transfersReceived'),
       alias: _i1.NameNode(value: 'transfersReceived'),
       arguments: [
         _i1.ArgumentNode(
@@ -1001,7 +1001,7 @@ const AccountFields = _i1.FragmentDefinitionNode(
       ]),
     ),
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'changeOwnerKeysByPreviousId'),
+      name: _i1.NameNode(value: 'changeOwnerKeysByNextId'),
       alias: _i1.NameNode(value: 'wasIdentityPrev'),
       arguments: [
         _i1.ArgumentNode(
@@ -1135,7 +1135,7 @@ const AccountTxsFields = _i1.FragmentDefinitionNode(
       selectionSet: null,
     ),
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'authoredTxComments'),
+      name: _i1.NameNode(value: 'commentsIssued'),
       alias: _i1.NameNode(value: 'comments'),
       arguments: [
         _i1.ArgumentNode(
@@ -1199,7 +1199,7 @@ const AccountTxsFields = _i1.FragmentDefinitionNode(
       ]),
     ),
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'transfersByFromId'),
+      name: _i1.NameNode(value: 'transfersIssued'),
       alias: _i1.NameNode(value: 'transfersIssued'),
       arguments: [
         _i1.ArgumentNode(
@@ -1263,7 +1263,7 @@ const AccountTxsFields = _i1.FragmentDefinitionNode(
       ]),
     ),
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'transfersByToId'),
+      name: _i1.NameNode(value: 'transfersReceived'),
       alias: _i1.NameNode(value: 'transfersReceived'),
       arguments: [
         _i1.ArgumentNode(
@@ -1976,6 +1976,65 @@ const AccountTransactions = _i1.OperationDefinitionNode(
     )
   ]),
 );
+const IndexerVersion = _i1.OperationDefinitionNode(
+  type: _i1.OperationType.query,
+  name: _i1.NameNode(value: 'IndexerVersion'),
+  variableDefinitions: [],
+  directives: [],
+  selectionSet: _i1.SelectionSetNode(selections: [
+    _i1.FieldNode(
+      name: _i1.NameNode(value: 'version'),
+      alias: null,
+      arguments: [],
+      directives: [],
+      selectionSet: _i1.SelectionSetNode(selections: [
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'version'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'type'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        ),
+      ]),
+    ),
+    _i1.FieldNode(
+      name: _i1.NameNode(value: 'squidStatus'),
+      alias: null,
+      arguments: [],
+      directives: [],
+      selectionSet: _i1.SelectionSetNode(selections: [
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'name'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'height'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        ),
+        _i1.FieldNode(
+          name: _i1.NameNode(value: 'hash'),
+          alias: null,
+          arguments: [],
+          directives: [],
+          selectionSet: null,
+        ),
+      ]),
+    ),
+  ]),
+);
 const document = _i1.DocumentNode(definitions: [
   CertFields,
   SmithCertFields,
@@ -1997,4 +2056,5 @@ const document = _i1.DocumentNode(definitions: [
   AccountBasicByPk,
   AccountsBasicByPk,
   AccountTransactions,
+  IndexerVersion,
 ]);

@@ -2240,6 +2240,18 @@ Serializer<GAccountFilter> _$gAccountFilterSerializer =
     new _$GAccountFilterSerializer();
 Serializer<GAccountsOrderBy> _$gAccountsOrderBySerializer =
     new _$GAccountsOrderBySerializer();
+Serializer<GAccountToManyChangeOwnerKeyFilter>
+    _$gAccountToManyChangeOwnerKeyFilterSerializer =
+    new _$GAccountToManyChangeOwnerKeyFilterSerializer();
+Serializer<GAccountToManyIdentityFilter>
+    _$gAccountToManyIdentityFilterSerializer =
+    new _$GAccountToManyIdentityFilterSerializer();
+Serializer<GAccountToManyTransferFilter>
+    _$gAccountToManyTransferFilterSerializer =
+    new _$GAccountToManyTransferFilterSerializer();
+Serializer<GAccountToManyTxCommentFilter>
+    _$gAccountToManyTxCommentFilterSerializer =
+    new _$GAccountToManyTxCommentFilterSerializer();
 Serializer<GBigFloatFilter> _$gBigFloatFilterSerializer =
     new _$GBigFloatFilterSerializer();
 Serializer<GBigIntFilter> _$gBigIntFilterSerializer =
@@ -2250,6 +2262,13 @@ Serializer<GBlockFilter> _$gBlockFilterSerializer =
     new _$GBlockFilterSerializer();
 Serializer<GBlocksOrderBy> _$gBlocksOrderBySerializer =
     new _$GBlocksOrderBySerializer();
+Serializer<GBlockToManyCallFilter> _$gBlockToManyCallFilterSerializer =
+    new _$GBlockToManyCallFilterSerializer();
+Serializer<GBlockToManyEventFilter> _$gBlockToManyEventFilterSerializer =
+    new _$GBlockToManyEventFilterSerializer();
+Serializer<GBlockToManyExtrinsicFilter>
+    _$gBlockToManyExtrinsicFilterSerializer =
+    new _$GBlockToManyExtrinsicFilterSerializer();
 Serializer<GBooleanFilter> _$gBooleanFilterSerializer =
     new _$GBooleanFilterSerializer();
 Serializer<GCallCondition> _$gCallConditionSerializer =
@@ -2257,6 +2276,12 @@ Serializer<GCallCondition> _$gCallConditionSerializer =
 Serializer<GCallFilter> _$gCallFilterSerializer = new _$GCallFilterSerializer();
 Serializer<GCallsOrderBy> _$gCallsOrderBySerializer =
     new _$GCallsOrderBySerializer();
+Serializer<GCallToManyCallFilter> _$gCallToManyCallFilterSerializer =
+    new _$GCallToManyCallFilterSerializer();
+Serializer<GCallToManyEventFilter> _$gCallToManyEventFilterSerializer =
+    new _$GCallToManyEventFilterSerializer();
+Serializer<GCallToManyExtrinsicFilter> _$gCallToManyExtrinsicFilterSerializer =
+    new _$GCallToManyExtrinsicFilterSerializer();
 Serializer<GCertCondition> _$gCertConditionSerializer =
     new _$GCertConditionSerializer();
 Serializer<GCertEventCondition> _$gCertEventConditionSerializer =
@@ -2268,6 +2293,8 @@ Serializer<GCertEventsOrderBy> _$gCertEventsOrderBySerializer =
 Serializer<GCertFilter> _$gCertFilterSerializer = new _$GCertFilterSerializer();
 Serializer<GCertsOrderBy> _$gCertsOrderBySerializer =
     new _$GCertsOrderBySerializer();
+Serializer<GCertToManyCertEventFilter> _$gCertToManyCertEventFilterSerializer =
+    new _$GCertToManyCertEventFilterSerializer();
 Serializer<GChangeOwnerKeyCondition> _$gChangeOwnerKeyConditionSerializer =
     new _$GChangeOwnerKeyConditionSerializer();
 Serializer<GChangeOwnerKeyFilter> _$gChangeOwnerKeyFilterSerializer =
@@ -2282,18 +2309,60 @@ Serializer<GEventFilter> _$gEventFilterSerializer =
     new _$GEventFilterSerializer();
 Serializer<GEventsOrderBy> _$gEventsOrderBySerializer =
     new _$GEventsOrderBySerializer();
+Serializer<GEventToManyCertEventFilter>
+    _$gEventToManyCertEventFilterSerializer =
+    new _$GEventToManyCertEventFilterSerializer();
+Serializer<GEventToManyCertFilter> _$gEventToManyCertFilterSerializer =
+    new _$GEventToManyCertFilterSerializer();
+Serializer<GEventToManyIdentityFilter> _$gEventToManyIdentityFilterSerializer =
+    new _$GEventToManyIdentityFilterSerializer();
+Serializer<GEventToManyMembershipEventFilter>
+    _$gEventToManyMembershipEventFilterSerializer =
+    new _$GEventToManyMembershipEventFilterSerializer();
+Serializer<GEventToManySmithEventFilter>
+    _$gEventToManySmithEventFilterSerializer =
+    new _$GEventToManySmithEventFilterSerializer();
+Serializer<GEventToManyTransferFilter> _$gEventToManyTransferFilterSerializer =
+    new _$GEventToManyTransferFilterSerializer();
+Serializer<GEventToManyTxCommentFilter>
+    _$gEventToManyTxCommentFilterSerializer =
+    new _$GEventToManyTxCommentFilterSerializer();
+Serializer<GEventToManyUdReevalFilter> _$gEventToManyUdReevalFilterSerializer =
+    new _$GEventToManyUdReevalFilterSerializer();
+Serializer<GEventToManyUniversalDividendFilter>
+    _$gEventToManyUniversalDividendFilterSerializer =
+    new _$GEventToManyUniversalDividendFilterSerializer();
 Serializer<GExtrinsicCondition> _$gExtrinsicConditionSerializer =
     new _$GExtrinsicConditionSerializer();
 Serializer<GExtrinsicFilter> _$gExtrinsicFilterSerializer =
     new _$GExtrinsicFilterSerializer();
 Serializer<GExtrinsicsOrderBy> _$gExtrinsicsOrderBySerializer =
     new _$GExtrinsicsOrderBySerializer();
+Serializer<GExtrinsicToManyCallFilter> _$gExtrinsicToManyCallFilterSerializer =
+    new _$GExtrinsicToManyCallFilterSerializer();
+Serializer<GExtrinsicToManyEventFilter>
+    _$gExtrinsicToManyEventFilterSerializer =
+    new _$GExtrinsicToManyEventFilterSerializer();
 Serializer<GIdentitiesOrderBy> _$gIdentitiesOrderBySerializer =
     new _$GIdentitiesOrderBySerializer();
 Serializer<GIdentityCondition> _$gIdentityConditionSerializer =
     new _$GIdentityConditionSerializer();
 Serializer<GIdentityFilter> _$gIdentityFilterSerializer =
     new _$GIdentityFilterSerializer();
+Serializer<GIdentityToManyAccountFilter>
+    _$gIdentityToManyAccountFilterSerializer =
+    new _$GIdentityToManyAccountFilterSerializer();
+Serializer<GIdentityToManyCertFilter> _$gIdentityToManyCertFilterSerializer =
+    new _$GIdentityToManyCertFilterSerializer();
+Serializer<GIdentityToManyChangeOwnerKeyFilter>
+    _$gIdentityToManyChangeOwnerKeyFilterSerializer =
+    new _$GIdentityToManyChangeOwnerKeyFilterSerializer();
+Serializer<GIdentityToManyMembershipEventFilter>
+    _$gIdentityToManyMembershipEventFilterSerializer =
+    new _$GIdentityToManyMembershipEventFilterSerializer();
+Serializer<GIdentityToManyUdHistoryFilter>
+    _$gIdentityToManyUdHistoryFilterSerializer =
+    new _$GIdentityToManyUdHistoryFilterSerializer();
 Serializer<GIntFilter> _$gIntFilterSerializer = new _$GIntFilterSerializer();
 Serializer<GIntListFilter> _$gIntListFilterSerializer =
     new _$GIntListFilterSerializer();
@@ -2342,6 +2411,12 @@ Serializer<GSmithFilter> _$gSmithFilterSerializer =
     new _$GSmithFilterSerializer();
 Serializer<GSmithsOrderBy> _$gSmithsOrderBySerializer =
     new _$GSmithsOrderBySerializer();
+Serializer<GSmithToManySmithCertFilter>
+    _$gSmithToManySmithCertFilterSerializer =
+    new _$GSmithToManySmithCertFilterSerializer();
+Serializer<GSmithToManySmithEventFilter>
+    _$gSmithToManySmithEventFilterSerializer =
+    new _$GSmithToManySmithEventFilterSerializer();
 Serializer<GStringFilter> _$gStringFilterSerializer =
     new _$GStringFilterSerializer();
 Serializer<GStringListFilter> _$gStringListFilterSerializer =
@@ -2362,6 +2437,9 @@ Serializer<GTxCommentFilter> _$gTxCommentFilterSerializer =
     new _$GTxCommentFilterSerializer();
 Serializer<GTxCommentsOrderBy> _$gTxCommentsOrderBySerializer =
     new _$GTxCommentsOrderBySerializer();
+Serializer<GTxCommentToManyTransferFilter>
+    _$gTxCommentToManyTransferFilterSerializer =
+    new _$GTxCommentToManyTransferFilterSerializer();
 Serializer<GUdHistoriesOrderBy> _$gUdHistoriesOrderBySerializer =
     new _$GUdHistoriesOrderBySerializer();
 Serializer<GUdHistoryCondition> _$gUdHistoryConditionSerializer =
@@ -2532,6 +2610,118 @@ class _$GAccountFilterSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(GBigFloatFilter)));
     }
+    value = object.wasIdentity;
+    if (value != null) {
+      result
+        ..add('wasIdentity')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GAccountToManyChangeOwnerKeyFilter)));
+    }
+    value = object.wasIdentityExist;
+    if (value != null) {
+      result
+        ..add('wasIdentityExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.changeOwnerKeysByNextId;
+    if (value != null) {
+      result
+        ..add('changeOwnerKeysByNextId')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GAccountToManyChangeOwnerKeyFilter)));
+    }
+    value = object.changeOwnerKeysByNextIdExist;
+    if (value != null) {
+      result
+        ..add('changeOwnerKeysByNextIdExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.identity;
+    if (value != null) {
+      result
+        ..add('identity')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GIdentityFilter)));
+    }
+    value = object.identityExists;
+    if (value != null) {
+      result
+        ..add('identityExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.identitiesByAccountRemovedId;
+    if (value != null) {
+      result
+        ..add('identitiesByAccountRemovedId')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GAccountToManyIdentityFilter)));
+    }
+    value = object.identitiesByAccountRemovedIdExist;
+    if (value != null) {
+      result
+        ..add('identitiesByAccountRemovedIdExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.commentsIssued;
+    if (value != null) {
+      result
+        ..add('commentsIssued')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GAccountToManyTxCommentFilter)));
+    }
+    value = object.commentsIssuedExist;
+    if (value != null) {
+      result
+        ..add('commentsIssuedExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.transfersIssued;
+    if (value != null) {
+      result
+        ..add('transfersIssued')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GAccountToManyTransferFilter)));
+    }
+    value = object.transfersIssuedExist;
+    if (value != null) {
+      result
+        ..add('transfersIssuedExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.transfersReceived;
+    if (value != null) {
+      result
+        ..add('transfersReceived')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GAccountToManyTransferFilter)));
+    }
+    value = object.transfersReceivedExist;
+    if (value != null) {
+      result
+        ..add('transfersReceivedExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.linkedIdentity;
+    if (value != null) {
+      result
+        ..add('linkedIdentity')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GIdentityFilter)));
+    }
+    value = object.linkedIdentityExists;
+    if (value != null) {
+      result
+        ..add('linkedIdentityExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     value = object.and;
     if (value != null) {
       result
@@ -2597,6 +2787,81 @@ class _$GAccountFilterSerializer
                   specifiedType: const FullType(GBigFloatFilter))!
               as GBigFloatFilter);
           break;
+        case 'wasIdentity':
+          result.wasIdentity.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(GAccountToManyChangeOwnerKeyFilter))!
+              as GAccountToManyChangeOwnerKeyFilter);
+          break;
+        case 'wasIdentityExist':
+          result.wasIdentityExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'changeOwnerKeysByNextId':
+          result.changeOwnerKeysByNextId.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(GAccountToManyChangeOwnerKeyFilter))!
+              as GAccountToManyChangeOwnerKeyFilter);
+          break;
+        case 'changeOwnerKeysByNextIdExist':
+          result.changeOwnerKeysByNextIdExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'identity':
+          result.identity.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GIdentityFilter))!
+              as GIdentityFilter);
+          break;
+        case 'identityExists':
+          result.identityExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'identitiesByAccountRemovedId':
+          result.identitiesByAccountRemovedId.replace(serializers.deserialize(
+                  value,
+                  specifiedType: const FullType(GAccountToManyIdentityFilter))!
+              as GAccountToManyIdentityFilter);
+          break;
+        case 'identitiesByAccountRemovedIdExist':
+          result.identitiesByAccountRemovedIdExist = serializers
+              .deserialize(value, specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'commentsIssued':
+          result.commentsIssued.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GAccountToManyTxCommentFilter))!
+              as GAccountToManyTxCommentFilter);
+          break;
+        case 'commentsIssuedExist':
+          result.commentsIssuedExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'transfersIssued':
+          result.transfersIssued.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GAccountToManyTransferFilter))!
+              as GAccountToManyTransferFilter);
+          break;
+        case 'transfersIssuedExist':
+          result.transfersIssuedExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'transfersReceived':
+          result.transfersReceived.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GAccountToManyTransferFilter))!
+              as GAccountToManyTransferFilter);
+          break;
+        case 'transfersReceivedExist':
+          result.transfersReceivedExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'linkedIdentity':
+          result.linkedIdentity.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GIdentityFilter))!
+              as GIdentityFilter);
+          break;
+        case 'linkedIdentityExists':
+          result.linkedIdentityExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
         case 'and':
           result.and.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
@@ -2637,6 +2902,302 @@ class _$GAccountsOrderBySerializer
   GAccountsOrderBy deserialize(Serializers serializers, Object serialized,
           {FullType specifiedType = FullType.unspecified}) =>
       GAccountsOrderBy.valueOf(serialized as String);
+}
+
+class _$GAccountToManyChangeOwnerKeyFilterSerializer
+    implements StructuredSerializer<GAccountToManyChangeOwnerKeyFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GAccountToManyChangeOwnerKeyFilter,
+    _$GAccountToManyChangeOwnerKeyFilter
+  ];
+  @override
+  final String wireName = 'GAccountToManyChangeOwnerKeyFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GAccountToManyChangeOwnerKeyFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GChangeOwnerKeyFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GChangeOwnerKeyFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GChangeOwnerKeyFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GAccountToManyChangeOwnerKeyFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GAccountToManyChangeOwnerKeyFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GChangeOwnerKeyFilter))!
+              as GChangeOwnerKeyFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GChangeOwnerKeyFilter))!
+              as GChangeOwnerKeyFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GChangeOwnerKeyFilter))!
+              as GChangeOwnerKeyFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GAccountToManyIdentityFilterSerializer
+    implements StructuredSerializer<GAccountToManyIdentityFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GAccountToManyIdentityFilter,
+    _$GAccountToManyIdentityFilter
+  ];
+  @override
+  final String wireName = 'GAccountToManyIdentityFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GAccountToManyIdentityFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GIdentityFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GIdentityFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GIdentityFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GAccountToManyIdentityFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GAccountToManyIdentityFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GIdentityFilter))!
+              as GIdentityFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GIdentityFilter))!
+              as GIdentityFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GIdentityFilter))!
+              as GIdentityFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GAccountToManyTransferFilterSerializer
+    implements StructuredSerializer<GAccountToManyTransferFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GAccountToManyTransferFilter,
+    _$GAccountToManyTransferFilter
+  ];
+  @override
+  final String wireName = 'GAccountToManyTransferFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GAccountToManyTransferFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GTransferFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GTransferFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GTransferFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GAccountToManyTransferFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GAccountToManyTransferFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GTransferFilter))!
+              as GTransferFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GTransferFilter))!
+              as GTransferFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GTransferFilter))!
+              as GTransferFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GAccountToManyTxCommentFilterSerializer
+    implements StructuredSerializer<GAccountToManyTxCommentFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GAccountToManyTxCommentFilter,
+    _$GAccountToManyTxCommentFilter
+  ];
+  @override
+  final String wireName = 'GAccountToManyTxCommentFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GAccountToManyTxCommentFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GTxCommentFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GTxCommentFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GTxCommentFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GAccountToManyTxCommentFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GAccountToManyTxCommentFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GTxCommentFilter))!
+              as GTxCommentFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GTxCommentFilter))!
+              as GTxCommentFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GTxCommentFilter))!
+              as GTxCommentFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
 }
 
 class _$GBigFloatFilterSerializer
@@ -3234,6 +3795,48 @@ class _$GBlockFilterSerializer implements StructuredSerializer<GBlockFilter> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(GIntFilter)));
     }
+    value = object.events;
+    if (value != null) {
+      result
+        ..add('events')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GBlockToManyEventFilter)));
+    }
+    value = object.eventsExist;
+    if (value != null) {
+      result
+        ..add('eventsExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.calls;
+    if (value != null) {
+      result
+        ..add('calls')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GBlockToManyCallFilter)));
+    }
+    value = object.callsExist;
+    if (value != null) {
+      result
+        ..add('callsExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.extrinsics;
+    if (value != null) {
+      result
+        ..add('extrinsics')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GBlockToManyExtrinsicFilter)));
+    }
+    value = object.extrinsicsExist;
+    if (value != null) {
+      result
+        ..add('extrinsicsExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     value = object.and;
     if (value != null) {
       result
@@ -3313,6 +3916,33 @@ class _$GBlockFilterSerializer implements StructuredSerializer<GBlockFilter> {
           result.eventsCount.replace(serializers.deserialize(value,
               specifiedType: const FullType(GIntFilter))! as GIntFilter);
           break;
+        case 'events':
+          result.events.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GBlockToManyEventFilter))!
+              as GBlockToManyEventFilter);
+          break;
+        case 'eventsExist':
+          result.eventsExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'calls':
+          result.calls.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GBlockToManyCallFilter))!
+              as GBlockToManyCallFilter);
+          break;
+        case 'callsExist':
+          result.callsExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'extrinsics':
+          result.extrinsics.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GBlockToManyExtrinsicFilter))!
+              as GBlockToManyExtrinsicFilter);
+          break;
+        case 'extrinsicsExist':
+          result.extrinsicsExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
         case 'and':
           result.and.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
@@ -3352,6 +3982,222 @@ class _$GBlocksOrderBySerializer
   GBlocksOrderBy deserialize(Serializers serializers, Object serialized,
           {FullType specifiedType = FullType.unspecified}) =>
       GBlocksOrderBy.valueOf(serialized as String);
+}
+
+class _$GBlockToManyCallFilterSerializer
+    implements StructuredSerializer<GBlockToManyCallFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GBlockToManyCallFilter,
+    _$GBlockToManyCallFilter
+  ];
+  @override
+  final String wireName = 'GBlockToManyCallFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GBlockToManyCallFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCallFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCallFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCallFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GBlockToManyCallFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GBlockToManyCallFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GCallFilter))! as GCallFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GCallFilter))! as GCallFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GCallFilter))! as GCallFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GBlockToManyEventFilterSerializer
+    implements StructuredSerializer<GBlockToManyEventFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GBlockToManyEventFilter,
+    _$GBlockToManyEventFilter
+  ];
+  @override
+  final String wireName = 'GBlockToManyEventFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GBlockToManyEventFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GBlockToManyEventFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GBlockToManyEventFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GEventFilter))! as GEventFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GEventFilter))! as GEventFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GEventFilter))! as GEventFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GBlockToManyExtrinsicFilterSerializer
+    implements StructuredSerializer<GBlockToManyExtrinsicFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GBlockToManyExtrinsicFilter,
+    _$GBlockToManyExtrinsicFilter
+  ];
+  @override
+  final String wireName = 'GBlockToManyExtrinsicFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GBlockToManyExtrinsicFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GExtrinsicFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GExtrinsicFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GExtrinsicFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GBlockToManyExtrinsicFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GBlockToManyExtrinsicFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GExtrinsicFilter))!
+              as GExtrinsicFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GExtrinsicFilter))!
+              as GExtrinsicFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GExtrinsicFilter))!
+              as GExtrinsicFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
 }
 
 class _$GBooleanFilterSerializer
@@ -3764,6 +4610,90 @@ class _$GCallFilterSerializer implements StructuredSerializer<GCallFilter> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(GStringFilter)));
     }
+    value = object.events;
+    if (value != null) {
+      result
+        ..add('events')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCallToManyEventFilter)));
+    }
+    value = object.eventsExist;
+    if (value != null) {
+      result
+        ..add('eventsExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.childCalls;
+    if (value != null) {
+      result
+        ..add('childCalls')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCallToManyCallFilter)));
+    }
+    value = object.childCallsExist;
+    if (value != null) {
+      result
+        ..add('childCallsExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.extrinsics;
+    if (value != null) {
+      result
+        ..add('extrinsics')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCallToManyExtrinsicFilter)));
+    }
+    value = object.extrinsicsExist;
+    if (value != null) {
+      result
+        ..add('extrinsicsExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.block;
+    if (value != null) {
+      result
+        ..add('block')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GBlockFilter)));
+    }
+    value = object.blockExists;
+    if (value != null) {
+      result
+        ..add('blockExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.extrinsic;
+    if (value != null) {
+      result
+        ..add('extrinsic')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GExtrinsicFilter)));
+    }
+    value = object.extrinsicExists;
+    if (value != null) {
+      result
+        ..add('extrinsicExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.parent;
+    if (value != null) {
+      result
+        ..add('parent')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCallFilter)));
+    }
+    value = object.parentExists;
+    if (value != null) {
+      result
+        ..add('parentExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     value = object.and;
     if (value != null) {
       result
@@ -3848,6 +4778,58 @@ class _$GCallFilterSerializer implements StructuredSerializer<GCallFilter> {
           result.parentId.replace(serializers.deserialize(value,
               specifiedType: const FullType(GStringFilter))! as GStringFilter);
           break;
+        case 'events':
+          result.events.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GCallToManyEventFilter))!
+              as GCallToManyEventFilter);
+          break;
+        case 'eventsExist':
+          result.eventsExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'childCalls':
+          result.childCalls.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GCallToManyCallFilter))!
+              as GCallToManyCallFilter);
+          break;
+        case 'childCallsExist':
+          result.childCallsExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'extrinsics':
+          result.extrinsics.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GCallToManyExtrinsicFilter))!
+              as GCallToManyExtrinsicFilter);
+          break;
+        case 'extrinsicsExist':
+          result.extrinsicsExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'block':
+          result.block.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GBlockFilter))! as GBlockFilter);
+          break;
+        case 'blockExists':
+          result.blockExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'extrinsic':
+          result.extrinsic.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GExtrinsicFilter))!
+              as GExtrinsicFilter);
+          break;
+        case 'extrinsicExists':
+          result.extrinsicExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'parent':
+          result.parent.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GCallFilter))! as GCallFilter);
+          break;
+        case 'parentExists':
+          result.parentExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
         case 'and':
           result.and.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
@@ -3886,6 +4868,222 @@ class _$GCallsOrderBySerializer implements PrimitiveSerializer<GCallsOrderBy> {
   GCallsOrderBy deserialize(Serializers serializers, Object serialized,
           {FullType specifiedType = FullType.unspecified}) =>
       GCallsOrderBy.valueOf(serialized as String);
+}
+
+class _$GCallToManyCallFilterSerializer
+    implements StructuredSerializer<GCallToManyCallFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GCallToManyCallFilter,
+    _$GCallToManyCallFilter
+  ];
+  @override
+  final String wireName = 'GCallToManyCallFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GCallToManyCallFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCallFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCallFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCallFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GCallToManyCallFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GCallToManyCallFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GCallFilter))! as GCallFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GCallFilter))! as GCallFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GCallFilter))! as GCallFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GCallToManyEventFilterSerializer
+    implements StructuredSerializer<GCallToManyEventFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GCallToManyEventFilter,
+    _$GCallToManyEventFilter
+  ];
+  @override
+  final String wireName = 'GCallToManyEventFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GCallToManyEventFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GCallToManyEventFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GCallToManyEventFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GEventFilter))! as GEventFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GEventFilter))! as GEventFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GEventFilter))! as GEventFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GCallToManyExtrinsicFilterSerializer
+    implements StructuredSerializer<GCallToManyExtrinsicFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GCallToManyExtrinsicFilter,
+    _$GCallToManyExtrinsicFilter
+  ];
+  @override
+  final String wireName = 'GCallToManyExtrinsicFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GCallToManyExtrinsicFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GExtrinsicFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GExtrinsicFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GExtrinsicFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GCallToManyExtrinsicFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GCallToManyExtrinsicFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GExtrinsicFilter))!
+              as GExtrinsicFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GExtrinsicFilter))!
+              as GExtrinsicFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GExtrinsicFilter))!
+              as GExtrinsicFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
 }
 
 class _$GCertConditionSerializer
@@ -4157,6 +5355,34 @@ class _$GCertEventFilterSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(GStringFilter)));
     }
+    value = object.cert;
+    if (value != null) {
+      result
+        ..add('cert')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCertFilter)));
+    }
+    value = object.certExists;
+    if (value != null) {
+      result
+        ..add('certExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.event;
+    if (value != null) {
+      result
+        ..add('event')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventFilter)));
+    }
+    value = object.eventExists;
+    if (value != null) {
+      result
+        ..add('eventExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     value = object.and;
     if (value != null) {
       result
@@ -4214,6 +5440,22 @@ class _$GCertEventFilterSerializer
         case 'eventId':
           result.eventId.replace(serializers.deserialize(value,
               specifiedType: const FullType(GStringFilter))! as GStringFilter);
+          break;
+        case 'cert':
+          result.cert.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GCertFilter))! as GCertFilter);
+          break;
+        case 'certExists':
+          result.certExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'event':
+          result.event.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GEventFilter))! as GEventFilter);
+          break;
+        case 'eventExists':
+          result.eventExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
           break;
         case 'and':
           result.and.replace(serializers.deserialize(value,
@@ -4331,6 +5573,76 @@ class _$GCertFilterSerializer implements StructuredSerializer<GCertFilter> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(GStringFilter)));
     }
+    value = object.certHistory;
+    if (value != null) {
+      result
+        ..add('certHistory')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCertToManyCertEventFilter)));
+    }
+    value = object.certHistoryExist;
+    if (value != null) {
+      result
+        ..add('certHistoryExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.issuer;
+    if (value != null) {
+      result
+        ..add('issuer')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GIdentityFilter)));
+    }
+    value = object.issuerExists;
+    if (value != null) {
+      result
+        ..add('issuerExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.receiver;
+    if (value != null) {
+      result
+        ..add('receiver')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GIdentityFilter)));
+    }
+    value = object.receiverExists;
+    if (value != null) {
+      result
+        ..add('receiverExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.createdIn;
+    if (value != null) {
+      result
+        ..add('createdIn')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventFilter)));
+    }
+    value = object.createdInExists;
+    if (value != null) {
+      result
+        ..add('createdInExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.updatedIn;
+    if (value != null) {
+      result
+        ..add('updatedIn')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventFilter)));
+    }
+    value = object.updatedInExists;
+    if (value != null) {
+      result
+        ..add('updatedInExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     value = object.and;
     if (value != null) {
       result
@@ -4405,6 +5717,49 @@ class _$GCertFilterSerializer implements StructuredSerializer<GCertFilter> {
           result.updatedInId.replace(serializers.deserialize(value,
               specifiedType: const FullType(GStringFilter))! as GStringFilter);
           break;
+        case 'certHistory':
+          result.certHistory.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GCertToManyCertEventFilter))!
+              as GCertToManyCertEventFilter);
+          break;
+        case 'certHistoryExist':
+          result.certHistoryExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'issuer':
+          result.issuer.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GIdentityFilter))!
+              as GIdentityFilter);
+          break;
+        case 'issuerExists':
+          result.issuerExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'receiver':
+          result.receiver.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GIdentityFilter))!
+              as GIdentityFilter);
+          break;
+        case 'receiverExists':
+          result.receiverExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'createdIn':
+          result.createdIn.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GEventFilter))! as GEventFilter);
+          break;
+        case 'createdInExists':
+          result.createdInExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'updatedIn':
+          result.updatedIn.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GEventFilter))! as GEventFilter);
+          break;
+        case 'updatedInExists':
+          result.updatedInExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
         case 'and':
           result.and.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
@@ -4443,6 +5798,80 @@ class _$GCertsOrderBySerializer implements PrimitiveSerializer<GCertsOrderBy> {
   GCertsOrderBy deserialize(Serializers serializers, Object serialized,
           {FullType specifiedType = FullType.unspecified}) =>
       GCertsOrderBy.valueOf(serialized as String);
+}
+
+class _$GCertToManyCertEventFilterSerializer
+    implements StructuredSerializer<GCertToManyCertEventFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GCertToManyCertEventFilter,
+    _$GCertToManyCertEventFilter
+  ];
+  @override
+  final String wireName = 'GCertToManyCertEventFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GCertToManyCertEventFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCertEventFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCertEventFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCertEventFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GCertToManyCertEventFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GCertToManyCertEventFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GCertEventFilter))!
+              as GCertEventFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GCertEventFilter))!
+              as GCertEventFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GCertEventFilter))!
+              as GCertEventFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
 }
 
 class _$GChangeOwnerKeyConditionSerializer
@@ -4588,6 +6017,48 @@ class _$GChangeOwnerKeyFilterSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(GStringFilter)));
     }
+    value = object.identity;
+    if (value != null) {
+      result
+        ..add('identity')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GIdentityFilter)));
+    }
+    value = object.identityExists;
+    if (value != null) {
+      result
+        ..add('identityExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.previous;
+    if (value != null) {
+      result
+        ..add('previous')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GAccountFilter)));
+    }
+    value = object.previousExists;
+    if (value != null) {
+      result
+        ..add('previousExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.next;
+    if (value != null) {
+      result
+        ..add('next')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GAccountFilter)));
+    }
+    value = object.nextExists;
+    if (value != null) {
+      result
+        ..add('nextExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     value = object.and;
     if (value != null) {
       result
@@ -4645,6 +6116,33 @@ class _$GChangeOwnerKeyFilterSerializer
         case 'nextId':
           result.nextId.replace(serializers.deserialize(value,
               specifiedType: const FullType(GStringFilter))! as GStringFilter);
+          break;
+        case 'identity':
+          result.identity.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GIdentityFilter))!
+              as GIdentityFilter);
+          break;
+        case 'identityExists':
+          result.identityExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'previous':
+          result.previous.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GAccountFilter))!
+              as GAccountFilter);
+          break;
+        case 'previousExists':
+          result.previousExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'next':
+          result.next.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GAccountFilter))!
+              as GAccountFilter);
+          break;
+        case 'nextExists':
+          result.nextExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
           break;
         case 'and':
           result.and.replace(serializers.deserialize(value,
@@ -5077,6 +6575,189 @@ class _$GEventFilterSerializer implements StructuredSerializer<GEventFilter> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(GStringFilter)));
     }
+    value = object.certEvents;
+    if (value != null) {
+      result
+        ..add('certEvents')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventToManyCertEventFilter)));
+    }
+    value = object.certEventsExist;
+    if (value != null) {
+      result
+        ..add('certEventsExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.certsByCreatedInId;
+    if (value != null) {
+      result
+        ..add('certsByCreatedInId')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventToManyCertFilter)));
+    }
+    value = object.certsByCreatedInIdExist;
+    if (value != null) {
+      result
+        ..add('certsByCreatedInIdExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.certsByUpdatedInId;
+    if (value != null) {
+      result
+        ..add('certsByUpdatedInId')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventToManyCertFilter)));
+    }
+    value = object.certsByUpdatedInIdExist;
+    if (value != null) {
+      result
+        ..add('certsByUpdatedInIdExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.membershipEvents;
+    if (value != null) {
+      result
+        ..add('membershipEvents')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventToManyMembershipEventFilter)));
+    }
+    value = object.membershipEventsExist;
+    if (value != null) {
+      result
+        ..add('membershipEventsExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.smithEvents;
+    if (value != null) {
+      result
+        ..add('smithEvents')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventToManySmithEventFilter)));
+    }
+    value = object.smithEventsExist;
+    if (value != null) {
+      result
+        ..add('smithEventsExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.identitiesByCreatedInId;
+    if (value != null) {
+      result
+        ..add('identitiesByCreatedInId')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventToManyIdentityFilter)));
+    }
+    value = object.identitiesByCreatedInIdExist;
+    if (value != null) {
+      result
+        ..add('identitiesByCreatedInIdExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.txComments;
+    if (value != null) {
+      result
+        ..add('txComments')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventToManyTxCommentFilter)));
+    }
+    value = object.txCommentsExist;
+    if (value != null) {
+      result
+        ..add('txCommentsExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.transfers;
+    if (value != null) {
+      result
+        ..add('transfers')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventToManyTransferFilter)));
+    }
+    value = object.transfersExist;
+    if (value != null) {
+      result
+        ..add('transfersExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.universalDividends;
+    if (value != null) {
+      result
+        ..add('universalDividends')
+        ..add(serializers.serialize(value,
+            specifiedType:
+                const FullType(GEventToManyUniversalDividendFilter)));
+    }
+    value = object.universalDividendsExist;
+    if (value != null) {
+      result
+        ..add('universalDividendsExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.udReevals;
+    if (value != null) {
+      result
+        ..add('udReevals')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventToManyUdReevalFilter)));
+    }
+    value = object.udReevalsExist;
+    if (value != null) {
+      result
+        ..add('udReevalsExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.block;
+    if (value != null) {
+      result
+        ..add('block')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GBlockFilter)));
+    }
+    value = object.blockExists;
+    if (value != null) {
+      result
+        ..add('blockExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.extrinsic;
+    if (value != null) {
+      result
+        ..add('extrinsic')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GExtrinsicFilter)));
+    }
+    value = object.extrinsicExists;
+    if (value != null) {
+      result
+        ..add('extrinsicExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.call;
+    if (value != null) {
+      result
+        ..add('call')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCallFilter)));
+    }
+    value = object.callExists;
+    if (value != null) {
+      result
+        ..add('callExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     value = object.and;
     if (value != null) {
       result
@@ -5156,6 +6837,123 @@ class _$GEventFilterSerializer implements StructuredSerializer<GEventFilter> {
           result.callId.replace(serializers.deserialize(value,
               specifiedType: const FullType(GStringFilter))! as GStringFilter);
           break;
+        case 'certEvents':
+          result.certEvents.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GEventToManyCertEventFilter))!
+              as GEventToManyCertEventFilter);
+          break;
+        case 'certEventsExist':
+          result.certEventsExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'certsByCreatedInId':
+          result.certsByCreatedInId.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GEventToManyCertFilter))!
+              as GEventToManyCertFilter);
+          break;
+        case 'certsByCreatedInIdExist':
+          result.certsByCreatedInIdExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'certsByUpdatedInId':
+          result.certsByUpdatedInId.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GEventToManyCertFilter))!
+              as GEventToManyCertFilter);
+          break;
+        case 'certsByUpdatedInIdExist':
+          result.certsByUpdatedInIdExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'membershipEvents':
+          result.membershipEvents.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(GEventToManyMembershipEventFilter))!
+              as GEventToManyMembershipEventFilter);
+          break;
+        case 'membershipEventsExist':
+          result.membershipEventsExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'smithEvents':
+          result.smithEvents.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GEventToManySmithEventFilter))!
+              as GEventToManySmithEventFilter);
+          break;
+        case 'smithEventsExist':
+          result.smithEventsExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'identitiesByCreatedInId':
+          result.identitiesByCreatedInId.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GEventToManyIdentityFilter))!
+              as GEventToManyIdentityFilter);
+          break;
+        case 'identitiesByCreatedInIdExist':
+          result.identitiesByCreatedInIdExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'txComments':
+          result.txComments.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GEventToManyTxCommentFilter))!
+              as GEventToManyTxCommentFilter);
+          break;
+        case 'txCommentsExist':
+          result.txCommentsExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'transfers':
+          result.transfers.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GEventToManyTransferFilter))!
+              as GEventToManyTransferFilter);
+          break;
+        case 'transfersExist':
+          result.transfersExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'universalDividends':
+          result.universalDividends.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(GEventToManyUniversalDividendFilter))!
+              as GEventToManyUniversalDividendFilter);
+          break;
+        case 'universalDividendsExist':
+          result.universalDividendsExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'udReevals':
+          result.udReevals.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GEventToManyUdReevalFilter))!
+              as GEventToManyUdReevalFilter);
+          break;
+        case 'udReevalsExist':
+          result.udReevalsExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'block':
+          result.block.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GBlockFilter))! as GBlockFilter);
+          break;
+        case 'blockExists':
+          result.blockExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'extrinsic':
+          result.extrinsic.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GExtrinsicFilter))!
+              as GExtrinsicFilter);
+          break;
+        case 'extrinsicExists':
+          result.extrinsicExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'call':
+          result.call.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GCallFilter))! as GCallFilter);
+          break;
+        case 'callExists':
+          result.callExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
         case 'and':
           result.and.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
@@ -5195,6 +6993,669 @@ class _$GEventsOrderBySerializer
   GEventsOrderBy deserialize(Serializers serializers, Object serialized,
           {FullType specifiedType = FullType.unspecified}) =>
       GEventsOrderBy.valueOf(serialized as String);
+}
+
+class _$GEventToManyCertEventFilterSerializer
+    implements StructuredSerializer<GEventToManyCertEventFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GEventToManyCertEventFilter,
+    _$GEventToManyCertEventFilter
+  ];
+  @override
+  final String wireName = 'GEventToManyCertEventFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GEventToManyCertEventFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCertEventFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCertEventFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCertEventFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GEventToManyCertEventFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GEventToManyCertEventFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GCertEventFilter))!
+              as GCertEventFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GCertEventFilter))!
+              as GCertEventFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GCertEventFilter))!
+              as GCertEventFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GEventToManyCertFilterSerializer
+    implements StructuredSerializer<GEventToManyCertFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GEventToManyCertFilter,
+    _$GEventToManyCertFilter
+  ];
+  @override
+  final String wireName = 'GEventToManyCertFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GEventToManyCertFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCertFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCertFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCertFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GEventToManyCertFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GEventToManyCertFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GCertFilter))! as GCertFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GCertFilter))! as GCertFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GCertFilter))! as GCertFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GEventToManyIdentityFilterSerializer
+    implements StructuredSerializer<GEventToManyIdentityFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GEventToManyIdentityFilter,
+    _$GEventToManyIdentityFilter
+  ];
+  @override
+  final String wireName = 'GEventToManyIdentityFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GEventToManyIdentityFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GIdentityFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GIdentityFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GIdentityFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GEventToManyIdentityFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GEventToManyIdentityFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GIdentityFilter))!
+              as GIdentityFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GIdentityFilter))!
+              as GIdentityFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GIdentityFilter))!
+              as GIdentityFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GEventToManyMembershipEventFilterSerializer
+    implements StructuredSerializer<GEventToManyMembershipEventFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GEventToManyMembershipEventFilter,
+    _$GEventToManyMembershipEventFilter
+  ];
+  @override
+  final String wireName = 'GEventToManyMembershipEventFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GEventToManyMembershipEventFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GMembershipEventFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GMembershipEventFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GMembershipEventFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GEventToManyMembershipEventFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GEventToManyMembershipEventFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GMembershipEventFilter))!
+              as GMembershipEventFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GMembershipEventFilter))!
+              as GMembershipEventFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GMembershipEventFilter))!
+              as GMembershipEventFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GEventToManySmithEventFilterSerializer
+    implements StructuredSerializer<GEventToManySmithEventFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GEventToManySmithEventFilter,
+    _$GEventToManySmithEventFilter
+  ];
+  @override
+  final String wireName = 'GEventToManySmithEventFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GEventToManySmithEventFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GSmithEventFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GSmithEventFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GSmithEventFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GEventToManySmithEventFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GEventToManySmithEventFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GSmithEventFilter))!
+              as GSmithEventFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GSmithEventFilter))!
+              as GSmithEventFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GSmithEventFilter))!
+              as GSmithEventFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GEventToManyTransferFilterSerializer
+    implements StructuredSerializer<GEventToManyTransferFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GEventToManyTransferFilter,
+    _$GEventToManyTransferFilter
+  ];
+  @override
+  final String wireName = 'GEventToManyTransferFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GEventToManyTransferFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GTransferFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GTransferFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GTransferFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GEventToManyTransferFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GEventToManyTransferFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GTransferFilter))!
+              as GTransferFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GTransferFilter))!
+              as GTransferFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GTransferFilter))!
+              as GTransferFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GEventToManyTxCommentFilterSerializer
+    implements StructuredSerializer<GEventToManyTxCommentFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GEventToManyTxCommentFilter,
+    _$GEventToManyTxCommentFilter
+  ];
+  @override
+  final String wireName = 'GEventToManyTxCommentFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GEventToManyTxCommentFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GTxCommentFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GTxCommentFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GTxCommentFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GEventToManyTxCommentFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GEventToManyTxCommentFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GTxCommentFilter))!
+              as GTxCommentFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GTxCommentFilter))!
+              as GTxCommentFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GTxCommentFilter))!
+              as GTxCommentFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GEventToManyUdReevalFilterSerializer
+    implements StructuredSerializer<GEventToManyUdReevalFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GEventToManyUdReevalFilter,
+    _$GEventToManyUdReevalFilter
+  ];
+  @override
+  final String wireName = 'GEventToManyUdReevalFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GEventToManyUdReevalFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GUdReevalFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GUdReevalFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GUdReevalFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GEventToManyUdReevalFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GEventToManyUdReevalFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GUdReevalFilter))!
+              as GUdReevalFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GUdReevalFilter))!
+              as GUdReevalFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GUdReevalFilter))!
+              as GUdReevalFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GEventToManyUniversalDividendFilterSerializer
+    implements StructuredSerializer<GEventToManyUniversalDividendFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GEventToManyUniversalDividendFilter,
+    _$GEventToManyUniversalDividendFilter
+  ];
+  @override
+  final String wireName = 'GEventToManyUniversalDividendFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GEventToManyUniversalDividendFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GUniversalDividendFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GUniversalDividendFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GUniversalDividendFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GEventToManyUniversalDividendFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GEventToManyUniversalDividendFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GUniversalDividendFilter))!
+              as GUniversalDividendFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GUniversalDividendFilter))!
+              as GUniversalDividendFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GUniversalDividendFilter))!
+              as GUniversalDividendFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
 }
 
 class _$GExtrinsicConditionSerializer
@@ -5436,6 +7897,62 @@ class _$GExtrinsicFilterSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(GStringFilter)));
     }
+    value = object.events;
+    if (value != null) {
+      result
+        ..add('events')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GExtrinsicToManyEventFilter)));
+    }
+    value = object.eventsExist;
+    if (value != null) {
+      result
+        ..add('eventsExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.calls;
+    if (value != null) {
+      result
+        ..add('calls')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GExtrinsicToManyCallFilter)));
+    }
+    value = object.callsExist;
+    if (value != null) {
+      result
+        ..add('callsExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.block;
+    if (value != null) {
+      result
+        ..add('block')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GBlockFilter)));
+    }
+    value = object.blockExists;
+    if (value != null) {
+      result
+        ..add('blockExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.call;
+    if (value != null) {
+      result
+        ..add('call')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCallFilter)));
+    }
+    value = object.callExists;
+    if (value != null) {
+      result
+        ..add('callExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     value = object.and;
     if (value != null) {
       result
@@ -5517,6 +8034,40 @@ class _$GExtrinsicFilterSerializer
           result.callId.replace(serializers.deserialize(value,
               specifiedType: const FullType(GStringFilter))! as GStringFilter);
           break;
+        case 'events':
+          result.events.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GExtrinsicToManyEventFilter))!
+              as GExtrinsicToManyEventFilter);
+          break;
+        case 'eventsExist':
+          result.eventsExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'calls':
+          result.calls.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GExtrinsicToManyCallFilter))!
+              as GExtrinsicToManyCallFilter);
+          break;
+        case 'callsExist':
+          result.callsExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'block':
+          result.block.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GBlockFilter))! as GBlockFilter);
+          break;
+        case 'blockExists':
+          result.blockExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'call':
+          result.call.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GCallFilter))! as GCallFilter);
+          break;
+        case 'callExists':
+          result.callExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
         case 'and':
           result.and.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
@@ -5557,6 +8108,148 @@ class _$GExtrinsicsOrderBySerializer
   GExtrinsicsOrderBy deserialize(Serializers serializers, Object serialized,
           {FullType specifiedType = FullType.unspecified}) =>
       GExtrinsicsOrderBy.valueOf(serialized as String);
+}
+
+class _$GExtrinsicToManyCallFilterSerializer
+    implements StructuredSerializer<GExtrinsicToManyCallFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GExtrinsicToManyCallFilter,
+    _$GExtrinsicToManyCallFilter
+  ];
+  @override
+  final String wireName = 'GExtrinsicToManyCallFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GExtrinsicToManyCallFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCallFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCallFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCallFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GExtrinsicToManyCallFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GExtrinsicToManyCallFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GCallFilter))! as GCallFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GCallFilter))! as GCallFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GCallFilter))! as GCallFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GExtrinsicToManyEventFilterSerializer
+    implements StructuredSerializer<GExtrinsicToManyEventFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GExtrinsicToManyEventFilter,
+    _$GExtrinsicToManyEventFilter
+  ];
+  @override
+  final String wireName = 'GExtrinsicToManyEventFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GExtrinsicToManyEventFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GExtrinsicToManyEventFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GExtrinsicToManyEventFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GEventFilter))! as GEventFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GEventFilter))! as GEventFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GEventFilter))! as GEventFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
 }
 
 class _$GIdentitiesOrderBySerializer
@@ -5835,6 +8528,148 @@ class _$GIdentityFilterSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(GStringFilter)));
     }
+    value = object.certIssued;
+    if (value != null) {
+      result
+        ..add('certIssued')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GIdentityToManyCertFilter)));
+    }
+    value = object.certIssuedExist;
+    if (value != null) {
+      result
+        ..add('certIssuedExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.certReceived;
+    if (value != null) {
+      result
+        ..add('certReceived')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GIdentityToManyCertFilter)));
+    }
+    value = object.certReceivedExist;
+    if (value != null) {
+      result
+        ..add('certReceivedExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.membershipHistory;
+    if (value != null) {
+      result
+        ..add('membershipHistory')
+        ..add(serializers.serialize(value,
+            specifiedType:
+                const FullType(GIdentityToManyMembershipEventFilter)));
+    }
+    value = object.membershipHistoryExist;
+    if (value != null) {
+      result
+        ..add('membershipHistoryExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.ownerKeyChange;
+    if (value != null) {
+      result
+        ..add('ownerKeyChange')
+        ..add(serializers.serialize(value,
+            specifiedType:
+                const FullType(GIdentityToManyChangeOwnerKeyFilter)));
+    }
+    value = object.ownerKeyChangeExist;
+    if (value != null) {
+      result
+        ..add('ownerKeyChangeExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.smith;
+    if (value != null) {
+      result
+        ..add('smith')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GSmithFilter)));
+    }
+    value = object.smithExists;
+    if (value != null) {
+      result
+        ..add('smithExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.udHistoryRecords;
+    if (value != null) {
+      result
+        ..add('udHistoryRecords')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GIdentityToManyUdHistoryFilter)));
+    }
+    value = object.udHistoryRecordsExist;
+    if (value != null) {
+      result
+        ..add('udHistoryRecordsExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.accountsByLinkedIdentityId;
+    if (value != null) {
+      result
+        ..add('accountsByLinkedIdentityId')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GIdentityToManyAccountFilter)));
+    }
+    value = object.accountsByLinkedIdentityIdExist;
+    if (value != null) {
+      result
+        ..add('accountsByLinkedIdentityIdExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.account;
+    if (value != null) {
+      result
+        ..add('account')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GAccountFilter)));
+    }
+    value = object.accountExists;
+    if (value != null) {
+      result
+        ..add('accountExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.accountRemoved;
+    if (value != null) {
+      result
+        ..add('accountRemoved')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GAccountFilter)));
+    }
+    value = object.accountRemovedExists;
+    if (value != null) {
+      result
+        ..add('accountRemovedExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.createdIn;
+    if (value != null) {
+      result
+        ..add('createdIn')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventFilter)));
+    }
+    value = object.createdInExists;
+    if (value != null) {
+      result
+        ..add('createdInExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     value = object.and;
     if (value != null) {
       result
@@ -5922,6 +8757,98 @@ class _$GIdentityFilterSerializer
           result.createdInId.replace(serializers.deserialize(value,
               specifiedType: const FullType(GStringFilter))! as GStringFilter);
           break;
+        case 'certIssued':
+          result.certIssued.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GIdentityToManyCertFilter))!
+              as GIdentityToManyCertFilter);
+          break;
+        case 'certIssuedExist':
+          result.certIssuedExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'certReceived':
+          result.certReceived.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GIdentityToManyCertFilter))!
+              as GIdentityToManyCertFilter);
+          break;
+        case 'certReceivedExist':
+          result.certReceivedExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'membershipHistory':
+          result.membershipHistory.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(GIdentityToManyMembershipEventFilter))!
+              as GIdentityToManyMembershipEventFilter);
+          break;
+        case 'membershipHistoryExist':
+          result.membershipHistoryExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'ownerKeyChange':
+          result.ownerKeyChange.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(GIdentityToManyChangeOwnerKeyFilter))!
+              as GIdentityToManyChangeOwnerKeyFilter);
+          break;
+        case 'ownerKeyChangeExist':
+          result.ownerKeyChangeExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'smith':
+          result.smith.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GSmithFilter))! as GSmithFilter);
+          break;
+        case 'smithExists':
+          result.smithExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'udHistoryRecords':
+          result.udHistoryRecords.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(GIdentityToManyUdHistoryFilter))!
+              as GIdentityToManyUdHistoryFilter);
+          break;
+        case 'udHistoryRecordsExist':
+          result.udHistoryRecordsExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'accountsByLinkedIdentityId':
+          result.accountsByLinkedIdentityId.replace(serializers.deserialize(
+                  value,
+                  specifiedType: const FullType(GIdentityToManyAccountFilter))!
+              as GIdentityToManyAccountFilter);
+          break;
+        case 'accountsByLinkedIdentityIdExist':
+          result.accountsByLinkedIdentityIdExist = serializers
+              .deserialize(value, specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'account':
+          result.account.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GAccountFilter))!
+              as GAccountFilter);
+          break;
+        case 'accountExists':
+          result.accountExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'accountRemoved':
+          result.accountRemoved.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GAccountFilter))!
+              as GAccountFilter);
+          break;
+        case 'accountRemovedExists':
+          result.accountRemovedExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'createdIn':
+          result.createdIn.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GEventFilter))! as GEventFilter);
+          break;
+        case 'createdInExists':
+          result.createdInExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
         case 'and':
           result.and.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
@@ -5938,6 +8865,373 @@ class _$GIdentityFilterSerializer
           result.not.replace(serializers.deserialize(value,
                   specifiedType: const FullType(GIdentityFilter))!
               as GIdentityFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GIdentityToManyAccountFilterSerializer
+    implements StructuredSerializer<GIdentityToManyAccountFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GIdentityToManyAccountFilter,
+    _$GIdentityToManyAccountFilter
+  ];
+  @override
+  final String wireName = 'GIdentityToManyAccountFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GIdentityToManyAccountFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GAccountFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GAccountFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GAccountFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GIdentityToManyAccountFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GIdentityToManyAccountFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GAccountFilter))!
+              as GAccountFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GAccountFilter))!
+              as GAccountFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GAccountFilter))!
+              as GAccountFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GIdentityToManyCertFilterSerializer
+    implements StructuredSerializer<GIdentityToManyCertFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GIdentityToManyCertFilter,
+    _$GIdentityToManyCertFilter
+  ];
+  @override
+  final String wireName = 'GIdentityToManyCertFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GIdentityToManyCertFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCertFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCertFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GCertFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GIdentityToManyCertFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GIdentityToManyCertFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GCertFilter))! as GCertFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GCertFilter))! as GCertFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GCertFilter))! as GCertFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GIdentityToManyChangeOwnerKeyFilterSerializer
+    implements StructuredSerializer<GIdentityToManyChangeOwnerKeyFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GIdentityToManyChangeOwnerKeyFilter,
+    _$GIdentityToManyChangeOwnerKeyFilter
+  ];
+  @override
+  final String wireName = 'GIdentityToManyChangeOwnerKeyFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GIdentityToManyChangeOwnerKeyFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GChangeOwnerKeyFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GChangeOwnerKeyFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GChangeOwnerKeyFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GIdentityToManyChangeOwnerKeyFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GIdentityToManyChangeOwnerKeyFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GChangeOwnerKeyFilter))!
+              as GChangeOwnerKeyFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GChangeOwnerKeyFilter))!
+              as GChangeOwnerKeyFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GChangeOwnerKeyFilter))!
+              as GChangeOwnerKeyFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GIdentityToManyMembershipEventFilterSerializer
+    implements StructuredSerializer<GIdentityToManyMembershipEventFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GIdentityToManyMembershipEventFilter,
+    _$GIdentityToManyMembershipEventFilter
+  ];
+  @override
+  final String wireName = 'GIdentityToManyMembershipEventFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GIdentityToManyMembershipEventFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GMembershipEventFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GMembershipEventFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GMembershipEventFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GIdentityToManyMembershipEventFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GIdentityToManyMembershipEventFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GMembershipEventFilter))!
+              as GMembershipEventFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GMembershipEventFilter))!
+              as GMembershipEventFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GMembershipEventFilter))!
+              as GMembershipEventFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GIdentityToManyUdHistoryFilterSerializer
+    implements StructuredSerializer<GIdentityToManyUdHistoryFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GIdentityToManyUdHistoryFilter,
+    _$GIdentityToManyUdHistoryFilter
+  ];
+  @override
+  final String wireName = 'GIdentityToManyUdHistoryFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GIdentityToManyUdHistoryFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GUdHistoryFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GUdHistoryFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GUdHistoryFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GIdentityToManyUdHistoryFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GIdentityToManyUdHistoryFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GUdHistoryFilter))!
+              as GUdHistoryFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GUdHistoryFilter))!
+              as GUdHistoryFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GUdHistoryFilter))!
+              as GUdHistoryFilter);
           break;
       }
     }
@@ -6940,6 +10234,34 @@ class _$GMembershipEventFilterSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(GStringFilter)));
     }
+    value = object.identity;
+    if (value != null) {
+      result
+        ..add('identity')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GIdentityFilter)));
+    }
+    value = object.identityExists;
+    if (value != null) {
+      result
+        ..add('identityExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.event;
+    if (value != null) {
+      result
+        ..add('event')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventFilter)));
+    }
+    value = object.eventExists;
+    if (value != null) {
+      result
+        ..add('eventExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     value = object.and;
     if (value != null) {
       result
@@ -6997,6 +10319,23 @@ class _$GMembershipEventFilterSerializer
         case 'eventId':
           result.eventId.replace(serializers.deserialize(value,
               specifiedType: const FullType(GStringFilter))! as GStringFilter);
+          break;
+        case 'identity':
+          result.identity.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GIdentityFilter))!
+              as GIdentityFilter);
+          break;
+        case 'identityExists':
+          result.identityExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'event':
+          result.event.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GEventFilter))! as GEventFilter);
+          break;
+        case 'eventExists':
+          result.eventExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
           break;
         case 'and':
           result.and.replace(serializers.deserialize(value,
@@ -7598,6 +10937,34 @@ class _$GSmithCertFilterSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(GStringFilter)));
     }
+    value = object.issuer;
+    if (value != null) {
+      result
+        ..add('issuer')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GSmithFilter)));
+    }
+    value = object.issuerExists;
+    if (value != null) {
+      result
+        ..add('issuerExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.receiver;
+    if (value != null) {
+      result
+        ..add('receiver')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GSmithFilter)));
+    }
+    value = object.receiverExists;
+    if (value != null) {
+      result
+        ..add('receiverExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     value = object.and;
     if (value != null) {
       result
@@ -7651,6 +11018,22 @@ class _$GSmithCertFilterSerializer
         case 'receiverId':
           result.receiverId.replace(serializers.deserialize(value,
               specifiedType: const FullType(GStringFilter))! as GStringFilter);
+          break;
+        case 'issuer':
+          result.issuer.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GSmithFilter))! as GSmithFilter);
+          break;
+        case 'issuerExists':
+          result.issuerExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'receiver':
+          result.receiver.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GSmithFilter))! as GSmithFilter);
+          break;
+        case 'receiverExists':
+          result.receiverExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
           break;
         case 'and':
           result.and.replace(serializers.deserialize(value,
@@ -7940,6 +11323,34 @@ class _$GSmithEventFilterSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(GStringFilter)));
     }
+    value = object.smith;
+    if (value != null) {
+      result
+        ..add('smith')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GSmithFilter)));
+    }
+    value = object.smithExists;
+    if (value != null) {
+      result
+        ..add('smithExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.event;
+    if (value != null) {
+      result
+        ..add('event')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventFilter)));
+    }
+    value = object.eventExists;
+    if (value != null) {
+      result
+        ..add('eventExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     value = object.and;
     if (value != null) {
       result
@@ -7997,6 +11408,22 @@ class _$GSmithEventFilterSerializer
         case 'eventId':
           result.eventId.replace(serializers.deserialize(value,
               specifiedType: const FullType(GStringFilter))! as GStringFilter);
+          break;
+        case 'smith':
+          result.smith.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GSmithFilter))! as GSmithFilter);
+          break;
+        case 'smithExists':
+          result.smithExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'event':
+          result.event.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GEventFilter))! as GEventFilter);
+          break;
+        case 'eventExists':
+          result.eventExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
           break;
         case 'and':
           result.and.replace(serializers.deserialize(value,
@@ -8100,6 +11527,62 @@ class _$GSmithFilterSerializer implements StructuredSerializer<GSmithFilter> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(GStringFilter)));
     }
+    value = object.smithCertIssued;
+    if (value != null) {
+      result
+        ..add('smithCertIssued')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GSmithToManySmithCertFilter)));
+    }
+    value = object.smithCertIssuedExist;
+    if (value != null) {
+      result
+        ..add('smithCertIssuedExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.smithCertReceived;
+    if (value != null) {
+      result
+        ..add('smithCertReceived')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GSmithToManySmithCertFilter)));
+    }
+    value = object.smithCertReceivedExist;
+    if (value != null) {
+      result
+        ..add('smithCertReceivedExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.smithHistory;
+    if (value != null) {
+      result
+        ..add('smithHistory')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GSmithToManySmithEventFilter)));
+    }
+    value = object.smithHistoryExist;
+    if (value != null) {
+      result
+        ..add('smithHistoryExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.identity;
+    if (value != null) {
+      result
+        ..add('identity')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GIdentityFilter)));
+    }
+    value = object.identityExists;
+    if (value != null) {
+      result
+        ..add('identityExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     value = object.and;
     if (value != null) {
       result
@@ -8166,6 +11649,42 @@ class _$GSmithFilterSerializer implements StructuredSerializer<GSmithFilter> {
           result.identityId.replace(serializers.deserialize(value,
               specifiedType: const FullType(GStringFilter))! as GStringFilter);
           break;
+        case 'smithCertIssued':
+          result.smithCertIssued.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GSmithToManySmithCertFilter))!
+              as GSmithToManySmithCertFilter);
+          break;
+        case 'smithCertIssuedExist':
+          result.smithCertIssuedExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'smithCertReceived':
+          result.smithCertReceived.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GSmithToManySmithCertFilter))!
+              as GSmithToManySmithCertFilter);
+          break;
+        case 'smithCertReceivedExist':
+          result.smithCertReceivedExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'smithHistory':
+          result.smithHistory.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GSmithToManySmithEventFilter))!
+              as GSmithToManySmithEventFilter);
+          break;
+        case 'smithHistoryExist':
+          result.smithHistoryExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'identity':
+          result.identity.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GIdentityFilter))!
+              as GIdentityFilter);
+          break;
+        case 'identityExists':
+          result.identityExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
         case 'and':
           result.and.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
@@ -8205,6 +11724,154 @@ class _$GSmithsOrderBySerializer
   GSmithsOrderBy deserialize(Serializers serializers, Object serialized,
           {FullType specifiedType = FullType.unspecified}) =>
       GSmithsOrderBy.valueOf(serialized as String);
+}
+
+class _$GSmithToManySmithCertFilterSerializer
+    implements StructuredSerializer<GSmithToManySmithCertFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GSmithToManySmithCertFilter,
+    _$GSmithToManySmithCertFilter
+  ];
+  @override
+  final String wireName = 'GSmithToManySmithCertFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GSmithToManySmithCertFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GSmithCertFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GSmithCertFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GSmithCertFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GSmithToManySmithCertFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GSmithToManySmithCertFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GSmithCertFilter))!
+              as GSmithCertFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GSmithCertFilter))!
+              as GSmithCertFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GSmithCertFilter))!
+              as GSmithCertFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GSmithToManySmithEventFilterSerializer
+    implements StructuredSerializer<GSmithToManySmithEventFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GSmithToManySmithEventFilter,
+    _$GSmithToManySmithEventFilter
+  ];
+  @override
+  final String wireName = 'GSmithToManySmithEventFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GSmithToManySmithEventFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GSmithEventFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GSmithEventFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GSmithEventFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GSmithToManySmithEventFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GSmithToManySmithEventFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GSmithEventFilter))!
+              as GSmithEventFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GSmithEventFilter))!
+              as GSmithEventFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GSmithEventFilter))!
+              as GSmithEventFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
 }
 
 class _$GStringFilterSerializer implements StructuredSerializer<GStringFilter> {
@@ -9115,6 +12782,62 @@ class _$GTransferFilterSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(GStringFilter)));
     }
+    value = object.from;
+    if (value != null) {
+      result
+        ..add('from')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GAccountFilter)));
+    }
+    value = object.fromExists;
+    if (value != null) {
+      result
+        ..add('fromExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.to;
+    if (value != null) {
+      result
+        ..add('to')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GAccountFilter)));
+    }
+    value = object.toExists;
+    if (value != null) {
+      result
+        ..add('toExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.event;
+    if (value != null) {
+      result
+        ..add('event')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventFilter)));
+    }
+    value = object.eventExists;
+    if (value != null) {
+      result
+        ..add('eventExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.comment;
+    if (value != null) {
+      result
+        ..add('comment')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GTxCommentFilter)));
+    }
+    value = object.commentExists;
+    if (value != null) {
+      result
+        ..add('commentExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     value = object.and;
     if (value != null) {
       result
@@ -9186,6 +12909,41 @@ class _$GTransferFilterSerializer
         case 'commentId':
           result.commentId.replace(serializers.deserialize(value,
               specifiedType: const FullType(GStringFilter))! as GStringFilter);
+          break;
+        case 'from':
+          result.from.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GAccountFilter))!
+              as GAccountFilter);
+          break;
+        case 'fromExists':
+          result.fromExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'to':
+          result.to.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GAccountFilter))!
+              as GAccountFilter);
+          break;
+        case 'toExists':
+          result.toExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'event':
+          result.event.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GEventFilter))! as GEventFilter);
+          break;
+        case 'eventExists':
+          result.eventExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'comment':
+          result.comment.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GTxCommentFilter))!
+              as GTxCommentFilter);
+          break;
+        case 'commentExists':
+          result.commentExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
           break;
         case 'and':
           result.and.replace(serializers.deserialize(value,
@@ -9636,6 +13394,48 @@ class _$GTxCommentFilterSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(GStringFilter)));
     }
+    value = object.transfersByCommentId;
+    if (value != null) {
+      result
+        ..add('transfersByCommentId')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GTxCommentToManyTransferFilter)));
+    }
+    value = object.transfersByCommentIdExist;
+    if (value != null) {
+      result
+        ..add('transfersByCommentIdExist')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.author;
+    if (value != null) {
+      result
+        ..add('author')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GAccountFilter)));
+    }
+    value = object.authorExists;
+    if (value != null) {
+      result
+        ..add('authorExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
+    value = object.event;
+    if (value != null) {
+      result
+        ..add('event')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventFilter)));
+    }
+    value = object.eventExists;
+    if (value != null) {
+      result
+        ..add('eventExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     value = object.and;
     if (value != null) {
       result
@@ -9702,6 +13502,33 @@ class _$GTxCommentFilterSerializer
           result.eventId.replace(serializers.deserialize(value,
               specifiedType: const FullType(GStringFilter))! as GStringFilter);
           break;
+        case 'transfersByCommentId':
+          result.transfersByCommentId.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(GTxCommentToManyTransferFilter))!
+              as GTxCommentToManyTransferFilter);
+          break;
+        case 'transfersByCommentIdExist':
+          result.transfersByCommentIdExist = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'author':
+          result.author.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GAccountFilter))!
+              as GAccountFilter);
+          break;
+        case 'authorExists':
+          result.authorExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'event':
+          result.event.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GEventFilter))! as GEventFilter);
+          break;
+        case 'eventExists':
+          result.eventExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
         case 'and':
           result.and.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
@@ -9742,6 +13569,80 @@ class _$GTxCommentsOrderBySerializer
   GTxCommentsOrderBy deserialize(Serializers serializers, Object serialized,
           {FullType specifiedType = FullType.unspecified}) =>
       GTxCommentsOrderBy.valueOf(serialized as String);
+}
+
+class _$GTxCommentToManyTransferFilterSerializer
+    implements StructuredSerializer<GTxCommentToManyTransferFilter> {
+  @override
+  final Iterable<Type> types = const [
+    GTxCommentToManyTransferFilter,
+    _$GTxCommentToManyTransferFilter
+  ];
+  @override
+  final String wireName = 'GTxCommentToManyTransferFilter';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GTxCommentToManyTransferFilter object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[];
+    Object? value;
+    value = object.every;
+    if (value != null) {
+      result
+        ..add('every')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GTransferFilter)));
+    }
+    value = object.some;
+    if (value != null) {
+      result
+        ..add('some')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GTransferFilter)));
+    }
+    value = object.none;
+    if (value != null) {
+      result
+        ..add('none')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GTransferFilter)));
+    }
+    return result;
+  }
+
+  @override
+  GTxCommentToManyTransferFilter deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GTxCommentToManyTransferFilterBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'every':
+          result.every.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GTransferFilter))!
+              as GTransferFilter);
+          break;
+        case 'some':
+          result.some.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GTransferFilter))!
+              as GTransferFilter);
+          break;
+        case 'none':
+          result.none.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GTransferFilter))!
+              as GTransferFilter);
+          break;
+      }
+    }
+
+    return result.build();
+  }
 }
 
 class _$GUdHistoriesOrderBySerializer
@@ -9901,6 +13802,20 @@ class _$GUdHistoryFilterSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(GStringFilter)));
     }
+    value = object.identity;
+    if (value != null) {
+      result
+        ..add('identity')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GIdentityFilter)));
+    }
+    value = object.identityExists;
+    if (value != null) {
+      result
+        ..add('identityExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     value = object.and;
     if (value != null) {
       result
@@ -9960,6 +13875,15 @@ class _$GUdHistoryFilterSerializer
         case 'identityId':
           result.identityId.replace(serializers.deserialize(value,
               specifiedType: const FullType(GStringFilter))! as GStringFilter);
+          break;
+        case 'identity':
+          result.identity.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GIdentityFilter))!
+              as GIdentityFilter);
+          break;
+        case 'identityExists':
+          result.identityExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
           break;
         case 'and':
           result.and.replace(serializers.deserialize(value,
@@ -10191,6 +14115,20 @@ class _$GUdReevalFilterSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(GStringFilter)));
     }
+    value = object.event;
+    if (value != null) {
+      result
+        ..add('event')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventFilter)));
+    }
+    value = object.eventExists;
+    if (value != null) {
+      result
+        ..add('eventExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     value = object.and;
     if (value != null) {
       result
@@ -10263,6 +14201,14 @@ class _$GUdReevalFilterSerializer
         case 'eventId':
           result.eventId.replace(serializers.deserialize(value,
               specifiedType: const FullType(GStringFilter))! as GStringFilter);
+          break;
+        case 'event':
+          result.event.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GEventFilter))! as GEventFilter);
+          break;
+        case 'eventExists':
+          result.eventExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
           break;
         case 'and':
           result.and.replace(serializers.deserialize(value,
@@ -10501,6 +14447,20 @@ class _$GUniversalDividendFilterSerializer
         ..add(serializers.serialize(value,
             specifiedType: const FullType(GStringFilter)));
     }
+    value = object.event;
+    if (value != null) {
+      result
+        ..add('event')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(GEventFilter)));
+    }
+    value = object.eventExists;
+    if (value != null) {
+      result
+        ..add('eventExists')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
+    }
     value = object.and;
     if (value != null) {
       result
@@ -10573,6 +14533,14 @@ class _$GUniversalDividendFilterSerializer
         case 'eventId':
           result.eventId.replace(serializers.deserialize(value,
               specifiedType: const FullType(GStringFilter))! as GStringFilter);
+          break;
+        case 'event':
+          result.event.replace(serializers.deserialize(value,
+              specifiedType: const FullType(GEventFilter))! as GEventFilter);
+          break;
+        case 'eventExists':
+          result.eventExists = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
           break;
         case 'and':
           result.and.replace(serializers.deserialize(value,
@@ -10951,6 +14919,38 @@ class _$GAccountFilter extends GAccountFilter {
   @override
   final GBigFloatFilter? totalBalance;
   @override
+  final GAccountToManyChangeOwnerKeyFilter? wasIdentity;
+  @override
+  final bool? wasIdentityExist;
+  @override
+  final GAccountToManyChangeOwnerKeyFilter? changeOwnerKeysByNextId;
+  @override
+  final bool? changeOwnerKeysByNextIdExist;
+  @override
+  final GIdentityFilter? identity;
+  @override
+  final bool? identityExists;
+  @override
+  final GAccountToManyIdentityFilter? identitiesByAccountRemovedId;
+  @override
+  final bool? identitiesByAccountRemovedIdExist;
+  @override
+  final GAccountToManyTxCommentFilter? commentsIssued;
+  @override
+  final bool? commentsIssuedExist;
+  @override
+  final GAccountToManyTransferFilter? transfersIssued;
+  @override
+  final bool? transfersIssuedExist;
+  @override
+  final GAccountToManyTransferFilter? transfersReceived;
+  @override
+  final bool? transfersReceivedExist;
+  @override
+  final GIdentityFilter? linkedIdentity;
+  @override
+  final bool? linkedIdentityExists;
+  @override
   final BuiltList<GAccountFilter>? and;
   @override
   final BuiltList<GAccountFilter>? or;
@@ -10967,6 +14967,22 @@ class _$GAccountFilter extends GAccountFilter {
       this.balance,
       this.linkedIdentityId,
       this.totalBalance,
+      this.wasIdentity,
+      this.wasIdentityExist,
+      this.changeOwnerKeysByNextId,
+      this.changeOwnerKeysByNextIdExist,
+      this.identity,
+      this.identityExists,
+      this.identitiesByAccountRemovedId,
+      this.identitiesByAccountRemovedIdExist,
+      this.commentsIssued,
+      this.commentsIssuedExist,
+      this.transfersIssued,
+      this.transfersIssuedExist,
+      this.transfersReceived,
+      this.transfersReceivedExist,
+      this.linkedIdentity,
+      this.linkedIdentityExists,
       this.and,
       this.or,
       this.not})
@@ -10990,6 +15006,23 @@ class _$GAccountFilter extends GAccountFilter {
         balance == other.balance &&
         linkedIdentityId == other.linkedIdentityId &&
         totalBalance == other.totalBalance &&
+        wasIdentity == other.wasIdentity &&
+        wasIdentityExist == other.wasIdentityExist &&
+        changeOwnerKeysByNextId == other.changeOwnerKeysByNextId &&
+        changeOwnerKeysByNextIdExist == other.changeOwnerKeysByNextIdExist &&
+        identity == other.identity &&
+        identityExists == other.identityExists &&
+        identitiesByAccountRemovedId == other.identitiesByAccountRemovedId &&
+        identitiesByAccountRemovedIdExist ==
+            other.identitiesByAccountRemovedIdExist &&
+        commentsIssued == other.commentsIssued &&
+        commentsIssuedExist == other.commentsIssuedExist &&
+        transfersIssued == other.transfersIssued &&
+        transfersIssuedExist == other.transfersIssuedExist &&
+        transfersReceived == other.transfersReceived &&
+        transfersReceivedExist == other.transfersReceivedExist &&
+        linkedIdentity == other.linkedIdentity &&
+        linkedIdentityExists == other.linkedIdentityExists &&
         and == other.and &&
         or == other.or &&
         not == other.not;
@@ -11004,6 +15037,22 @@ class _$GAccountFilter extends GAccountFilter {
     _$hash = $jc(_$hash, balance.hashCode);
     _$hash = $jc(_$hash, linkedIdentityId.hashCode);
     _$hash = $jc(_$hash, totalBalance.hashCode);
+    _$hash = $jc(_$hash, wasIdentity.hashCode);
+    _$hash = $jc(_$hash, wasIdentityExist.hashCode);
+    _$hash = $jc(_$hash, changeOwnerKeysByNextId.hashCode);
+    _$hash = $jc(_$hash, changeOwnerKeysByNextIdExist.hashCode);
+    _$hash = $jc(_$hash, identity.hashCode);
+    _$hash = $jc(_$hash, identityExists.hashCode);
+    _$hash = $jc(_$hash, identitiesByAccountRemovedId.hashCode);
+    _$hash = $jc(_$hash, identitiesByAccountRemovedIdExist.hashCode);
+    _$hash = $jc(_$hash, commentsIssued.hashCode);
+    _$hash = $jc(_$hash, commentsIssuedExist.hashCode);
+    _$hash = $jc(_$hash, transfersIssued.hashCode);
+    _$hash = $jc(_$hash, transfersIssuedExist.hashCode);
+    _$hash = $jc(_$hash, transfersReceived.hashCode);
+    _$hash = $jc(_$hash, transfersReceivedExist.hashCode);
+    _$hash = $jc(_$hash, linkedIdentity.hashCode);
+    _$hash = $jc(_$hash, linkedIdentityExists.hashCode);
     _$hash = $jc(_$hash, and.hashCode);
     _$hash = $jc(_$hash, or.hashCode);
     _$hash = $jc(_$hash, not.hashCode);
@@ -11020,6 +15069,23 @@ class _$GAccountFilter extends GAccountFilter {
           ..add('balance', balance)
           ..add('linkedIdentityId', linkedIdentityId)
           ..add('totalBalance', totalBalance)
+          ..add('wasIdentity', wasIdentity)
+          ..add('wasIdentityExist', wasIdentityExist)
+          ..add('changeOwnerKeysByNextId', changeOwnerKeysByNextId)
+          ..add('changeOwnerKeysByNextIdExist', changeOwnerKeysByNextIdExist)
+          ..add('identity', identity)
+          ..add('identityExists', identityExists)
+          ..add('identitiesByAccountRemovedId', identitiesByAccountRemovedId)
+          ..add('identitiesByAccountRemovedIdExist',
+              identitiesByAccountRemovedIdExist)
+          ..add('commentsIssued', commentsIssued)
+          ..add('commentsIssuedExist', commentsIssuedExist)
+          ..add('transfersIssued', transfersIssued)
+          ..add('transfersIssuedExist', transfersIssuedExist)
+          ..add('transfersReceived', transfersReceived)
+          ..add('transfersReceivedExist', transfersReceivedExist)
+          ..add('linkedIdentity', linkedIdentity)
+          ..add('linkedIdentityExists', linkedIdentityExists)
           ..add('and', and)
           ..add('or', or)
           ..add('not', not))
@@ -11062,6 +15128,102 @@ class GAccountFilterBuilder
   set totalBalance(GBigFloatFilterBuilder? totalBalance) =>
       _$this._totalBalance = totalBalance;
 
+  GAccountToManyChangeOwnerKeyFilterBuilder? _wasIdentity;
+  GAccountToManyChangeOwnerKeyFilterBuilder get wasIdentity =>
+      _$this._wasIdentity ??= new GAccountToManyChangeOwnerKeyFilterBuilder();
+  set wasIdentity(GAccountToManyChangeOwnerKeyFilterBuilder? wasIdentity) =>
+      _$this._wasIdentity = wasIdentity;
+
+  bool? _wasIdentityExist;
+  bool? get wasIdentityExist => _$this._wasIdentityExist;
+  set wasIdentityExist(bool? wasIdentityExist) =>
+      _$this._wasIdentityExist = wasIdentityExist;
+
+  GAccountToManyChangeOwnerKeyFilterBuilder? _changeOwnerKeysByNextId;
+  GAccountToManyChangeOwnerKeyFilterBuilder get changeOwnerKeysByNextId =>
+      _$this._changeOwnerKeysByNextId ??=
+          new GAccountToManyChangeOwnerKeyFilterBuilder();
+  set changeOwnerKeysByNextId(
+          GAccountToManyChangeOwnerKeyFilterBuilder? changeOwnerKeysByNextId) =>
+      _$this._changeOwnerKeysByNextId = changeOwnerKeysByNextId;
+
+  bool? _changeOwnerKeysByNextIdExist;
+  bool? get changeOwnerKeysByNextIdExist =>
+      _$this._changeOwnerKeysByNextIdExist;
+  set changeOwnerKeysByNextIdExist(bool? changeOwnerKeysByNextIdExist) =>
+      _$this._changeOwnerKeysByNextIdExist = changeOwnerKeysByNextIdExist;
+
+  GIdentityFilterBuilder? _identity;
+  GIdentityFilterBuilder get identity =>
+      _$this._identity ??= new GIdentityFilterBuilder();
+  set identity(GIdentityFilterBuilder? identity) => _$this._identity = identity;
+
+  bool? _identityExists;
+  bool? get identityExists => _$this._identityExists;
+  set identityExists(bool? identityExists) =>
+      _$this._identityExists = identityExists;
+
+  GAccountToManyIdentityFilterBuilder? _identitiesByAccountRemovedId;
+  GAccountToManyIdentityFilterBuilder get identitiesByAccountRemovedId =>
+      _$this._identitiesByAccountRemovedId ??=
+          new GAccountToManyIdentityFilterBuilder();
+  set identitiesByAccountRemovedId(
+          GAccountToManyIdentityFilterBuilder? identitiesByAccountRemovedId) =>
+      _$this._identitiesByAccountRemovedId = identitiesByAccountRemovedId;
+
+  bool? _identitiesByAccountRemovedIdExist;
+  bool? get identitiesByAccountRemovedIdExist =>
+      _$this._identitiesByAccountRemovedIdExist;
+  set identitiesByAccountRemovedIdExist(
+          bool? identitiesByAccountRemovedIdExist) =>
+      _$this._identitiesByAccountRemovedIdExist =
+          identitiesByAccountRemovedIdExist;
+
+  GAccountToManyTxCommentFilterBuilder? _commentsIssued;
+  GAccountToManyTxCommentFilterBuilder get commentsIssued =>
+      _$this._commentsIssued ??= new GAccountToManyTxCommentFilterBuilder();
+  set commentsIssued(GAccountToManyTxCommentFilterBuilder? commentsIssued) =>
+      _$this._commentsIssued = commentsIssued;
+
+  bool? _commentsIssuedExist;
+  bool? get commentsIssuedExist => _$this._commentsIssuedExist;
+  set commentsIssuedExist(bool? commentsIssuedExist) =>
+      _$this._commentsIssuedExist = commentsIssuedExist;
+
+  GAccountToManyTransferFilterBuilder? _transfersIssued;
+  GAccountToManyTransferFilterBuilder get transfersIssued =>
+      _$this._transfersIssued ??= new GAccountToManyTransferFilterBuilder();
+  set transfersIssued(GAccountToManyTransferFilterBuilder? transfersIssued) =>
+      _$this._transfersIssued = transfersIssued;
+
+  bool? _transfersIssuedExist;
+  bool? get transfersIssuedExist => _$this._transfersIssuedExist;
+  set transfersIssuedExist(bool? transfersIssuedExist) =>
+      _$this._transfersIssuedExist = transfersIssuedExist;
+
+  GAccountToManyTransferFilterBuilder? _transfersReceived;
+  GAccountToManyTransferFilterBuilder get transfersReceived =>
+      _$this._transfersReceived ??= new GAccountToManyTransferFilterBuilder();
+  set transfersReceived(
+          GAccountToManyTransferFilterBuilder? transfersReceived) =>
+      _$this._transfersReceived = transfersReceived;
+
+  bool? _transfersReceivedExist;
+  bool? get transfersReceivedExist => _$this._transfersReceivedExist;
+  set transfersReceivedExist(bool? transfersReceivedExist) =>
+      _$this._transfersReceivedExist = transfersReceivedExist;
+
+  GIdentityFilterBuilder? _linkedIdentity;
+  GIdentityFilterBuilder get linkedIdentity =>
+      _$this._linkedIdentity ??= new GIdentityFilterBuilder();
+  set linkedIdentity(GIdentityFilterBuilder? linkedIdentity) =>
+      _$this._linkedIdentity = linkedIdentity;
+
+  bool? _linkedIdentityExists;
+  bool? get linkedIdentityExists => _$this._linkedIdentityExists;
+  set linkedIdentityExists(bool? linkedIdentityExists) =>
+      _$this._linkedIdentityExists = linkedIdentityExists;
+
   ListBuilder<GAccountFilter>? _and;
   ListBuilder<GAccountFilter> get and =>
       _$this._and ??= new ListBuilder<GAccountFilter>();
@@ -11087,6 +15249,23 @@ class GAccountFilterBuilder
       _balance = $v.balance?.toBuilder();
       _linkedIdentityId = $v.linkedIdentityId?.toBuilder();
       _totalBalance = $v.totalBalance?.toBuilder();
+      _wasIdentity = $v.wasIdentity?.toBuilder();
+      _wasIdentityExist = $v.wasIdentityExist;
+      _changeOwnerKeysByNextId = $v.changeOwnerKeysByNextId?.toBuilder();
+      _changeOwnerKeysByNextIdExist = $v.changeOwnerKeysByNextIdExist;
+      _identity = $v.identity?.toBuilder();
+      _identityExists = $v.identityExists;
+      _identitiesByAccountRemovedId =
+          $v.identitiesByAccountRemovedId?.toBuilder();
+      _identitiesByAccountRemovedIdExist = $v.identitiesByAccountRemovedIdExist;
+      _commentsIssued = $v.commentsIssued?.toBuilder();
+      _commentsIssuedExist = $v.commentsIssuedExist;
+      _transfersIssued = $v.transfersIssued?.toBuilder();
+      _transfersIssuedExist = $v.transfersIssuedExist;
+      _transfersReceived = $v.transfersReceived?.toBuilder();
+      _transfersReceivedExist = $v.transfersReceivedExist;
+      _linkedIdentity = $v.linkedIdentity?.toBuilder();
+      _linkedIdentityExists = $v.linkedIdentityExists;
       _and = $v.and?.toBuilder();
       _or = $v.or?.toBuilder();
       _not = $v.not?.toBuilder();
@@ -11120,6 +15299,24 @@ class GAccountFilterBuilder
               balance: _balance?.build(),
               linkedIdentityId: _linkedIdentityId?.build(),
               totalBalance: _totalBalance?.build(),
+              wasIdentity: _wasIdentity?.build(),
+              wasIdentityExist: wasIdentityExist,
+              changeOwnerKeysByNextId: _changeOwnerKeysByNextId?.build(),
+              changeOwnerKeysByNextIdExist: changeOwnerKeysByNextIdExist,
+              identity: _identity?.build(),
+              identityExists: identityExists,
+              identitiesByAccountRemovedId:
+                  _identitiesByAccountRemovedId?.build(),
+              identitiesByAccountRemovedIdExist:
+                  identitiesByAccountRemovedIdExist,
+              commentsIssued: _commentsIssued?.build(),
+              commentsIssuedExist: commentsIssuedExist,
+              transfersIssued: _transfersIssued?.build(),
+              transfersIssuedExist: transfersIssuedExist,
+              transfersReceived: _transfersReceived?.build(),
+              transfersReceivedExist: transfersReceivedExist,
+              linkedIdentity: _linkedIdentity?.build(),
+              linkedIdentityExists: linkedIdentityExists,
               and: _and?.build(),
               or: _or?.build(),
               not: _not?.build());
@@ -11138,6 +15335,30 @@ class GAccountFilterBuilder
         _linkedIdentityId?.build();
         _$failedField = 'totalBalance';
         _totalBalance?.build();
+        _$failedField = 'wasIdentity';
+        _wasIdentity?.build();
+
+        _$failedField = 'changeOwnerKeysByNextId';
+        _changeOwnerKeysByNextId?.build();
+
+        _$failedField = 'identity';
+        _identity?.build();
+
+        _$failedField = 'identitiesByAccountRemovedId';
+        _identitiesByAccountRemovedId?.build();
+
+        _$failedField = 'commentsIssued';
+        _commentsIssued?.build();
+
+        _$failedField = 'transfersIssued';
+        _transfersIssued?.build();
+
+        _$failedField = 'transfersReceived';
+        _transfersReceived?.build();
+
+        _$failedField = 'linkedIdentity';
+        _linkedIdentity?.build();
+
         _$failedField = 'and';
         _and?.build();
         _$failedField = 'or';
@@ -11147,6 +15368,526 @@ class GAccountFilterBuilder
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'GAccountFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GAccountToManyChangeOwnerKeyFilter
+    extends GAccountToManyChangeOwnerKeyFilter {
+  @override
+  final GChangeOwnerKeyFilter? every;
+  @override
+  final GChangeOwnerKeyFilter? some;
+  @override
+  final GChangeOwnerKeyFilter? none;
+
+  factory _$GAccountToManyChangeOwnerKeyFilter(
+          [void Function(GAccountToManyChangeOwnerKeyFilterBuilder)?
+              updates]) =>
+      (new GAccountToManyChangeOwnerKeyFilterBuilder()..update(updates))
+          ._build();
+
+  _$GAccountToManyChangeOwnerKeyFilter._({this.every, this.some, this.none})
+      : super._();
+
+  @override
+  GAccountToManyChangeOwnerKeyFilter rebuild(
+          void Function(GAccountToManyChangeOwnerKeyFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GAccountToManyChangeOwnerKeyFilterBuilder toBuilder() =>
+      new GAccountToManyChangeOwnerKeyFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GAccountToManyChangeOwnerKeyFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GAccountToManyChangeOwnerKeyFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GAccountToManyChangeOwnerKeyFilterBuilder
+    implements
+        Builder<GAccountToManyChangeOwnerKeyFilter,
+            GAccountToManyChangeOwnerKeyFilterBuilder> {
+  _$GAccountToManyChangeOwnerKeyFilter? _$v;
+
+  GChangeOwnerKeyFilterBuilder? _every;
+  GChangeOwnerKeyFilterBuilder get every =>
+      _$this._every ??= new GChangeOwnerKeyFilterBuilder();
+  set every(GChangeOwnerKeyFilterBuilder? every) => _$this._every = every;
+
+  GChangeOwnerKeyFilterBuilder? _some;
+  GChangeOwnerKeyFilterBuilder get some =>
+      _$this._some ??= new GChangeOwnerKeyFilterBuilder();
+  set some(GChangeOwnerKeyFilterBuilder? some) => _$this._some = some;
+
+  GChangeOwnerKeyFilterBuilder? _none;
+  GChangeOwnerKeyFilterBuilder get none =>
+      _$this._none ??= new GChangeOwnerKeyFilterBuilder();
+  set none(GChangeOwnerKeyFilterBuilder? none) => _$this._none = none;
+
+  GAccountToManyChangeOwnerKeyFilterBuilder();
+
+  GAccountToManyChangeOwnerKeyFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GAccountToManyChangeOwnerKeyFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GAccountToManyChangeOwnerKeyFilter;
+  }
+
+  @override
+  void update(
+      void Function(GAccountToManyChangeOwnerKeyFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GAccountToManyChangeOwnerKeyFilter build() => _build();
+
+  _$GAccountToManyChangeOwnerKeyFilter _build() {
+    _$GAccountToManyChangeOwnerKeyFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountToManyChangeOwnerKeyFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountToManyChangeOwnerKeyFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GAccountToManyIdentityFilter extends GAccountToManyIdentityFilter {
+  @override
+  final GIdentityFilter? every;
+  @override
+  final GIdentityFilter? some;
+  @override
+  final GIdentityFilter? none;
+
+  factory _$GAccountToManyIdentityFilter(
+          [void Function(GAccountToManyIdentityFilterBuilder)? updates]) =>
+      (new GAccountToManyIdentityFilterBuilder()..update(updates))._build();
+
+  _$GAccountToManyIdentityFilter._({this.every, this.some, this.none})
+      : super._();
+
+  @override
+  GAccountToManyIdentityFilter rebuild(
+          void Function(GAccountToManyIdentityFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GAccountToManyIdentityFilterBuilder toBuilder() =>
+      new GAccountToManyIdentityFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GAccountToManyIdentityFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GAccountToManyIdentityFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GAccountToManyIdentityFilterBuilder
+    implements
+        Builder<GAccountToManyIdentityFilter,
+            GAccountToManyIdentityFilterBuilder> {
+  _$GAccountToManyIdentityFilter? _$v;
+
+  GIdentityFilterBuilder? _every;
+  GIdentityFilterBuilder get every =>
+      _$this._every ??= new GIdentityFilterBuilder();
+  set every(GIdentityFilterBuilder? every) => _$this._every = every;
+
+  GIdentityFilterBuilder? _some;
+  GIdentityFilterBuilder get some =>
+      _$this._some ??= new GIdentityFilterBuilder();
+  set some(GIdentityFilterBuilder? some) => _$this._some = some;
+
+  GIdentityFilterBuilder? _none;
+  GIdentityFilterBuilder get none =>
+      _$this._none ??= new GIdentityFilterBuilder();
+  set none(GIdentityFilterBuilder? none) => _$this._none = none;
+
+  GAccountToManyIdentityFilterBuilder();
+
+  GAccountToManyIdentityFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GAccountToManyIdentityFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GAccountToManyIdentityFilter;
+  }
+
+  @override
+  void update(void Function(GAccountToManyIdentityFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GAccountToManyIdentityFilter build() => _build();
+
+  _$GAccountToManyIdentityFilter _build() {
+    _$GAccountToManyIdentityFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountToManyIdentityFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountToManyIdentityFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GAccountToManyTransferFilter extends GAccountToManyTransferFilter {
+  @override
+  final GTransferFilter? every;
+  @override
+  final GTransferFilter? some;
+  @override
+  final GTransferFilter? none;
+
+  factory _$GAccountToManyTransferFilter(
+          [void Function(GAccountToManyTransferFilterBuilder)? updates]) =>
+      (new GAccountToManyTransferFilterBuilder()..update(updates))._build();
+
+  _$GAccountToManyTransferFilter._({this.every, this.some, this.none})
+      : super._();
+
+  @override
+  GAccountToManyTransferFilter rebuild(
+          void Function(GAccountToManyTransferFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GAccountToManyTransferFilterBuilder toBuilder() =>
+      new GAccountToManyTransferFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GAccountToManyTransferFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GAccountToManyTransferFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GAccountToManyTransferFilterBuilder
+    implements
+        Builder<GAccountToManyTransferFilter,
+            GAccountToManyTransferFilterBuilder> {
+  _$GAccountToManyTransferFilter? _$v;
+
+  GTransferFilterBuilder? _every;
+  GTransferFilterBuilder get every =>
+      _$this._every ??= new GTransferFilterBuilder();
+  set every(GTransferFilterBuilder? every) => _$this._every = every;
+
+  GTransferFilterBuilder? _some;
+  GTransferFilterBuilder get some =>
+      _$this._some ??= new GTransferFilterBuilder();
+  set some(GTransferFilterBuilder? some) => _$this._some = some;
+
+  GTransferFilterBuilder? _none;
+  GTransferFilterBuilder get none =>
+      _$this._none ??= new GTransferFilterBuilder();
+  set none(GTransferFilterBuilder? none) => _$this._none = none;
+
+  GAccountToManyTransferFilterBuilder();
+
+  GAccountToManyTransferFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GAccountToManyTransferFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GAccountToManyTransferFilter;
+  }
+
+  @override
+  void update(void Function(GAccountToManyTransferFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GAccountToManyTransferFilter build() => _build();
+
+  _$GAccountToManyTransferFilter _build() {
+    _$GAccountToManyTransferFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountToManyTransferFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountToManyTransferFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GAccountToManyTxCommentFilter extends GAccountToManyTxCommentFilter {
+  @override
+  final GTxCommentFilter? every;
+  @override
+  final GTxCommentFilter? some;
+  @override
+  final GTxCommentFilter? none;
+
+  factory _$GAccountToManyTxCommentFilter(
+          [void Function(GAccountToManyTxCommentFilterBuilder)? updates]) =>
+      (new GAccountToManyTxCommentFilterBuilder()..update(updates))._build();
+
+  _$GAccountToManyTxCommentFilter._({this.every, this.some, this.none})
+      : super._();
+
+  @override
+  GAccountToManyTxCommentFilter rebuild(
+          void Function(GAccountToManyTxCommentFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GAccountToManyTxCommentFilterBuilder toBuilder() =>
+      new GAccountToManyTxCommentFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GAccountToManyTxCommentFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GAccountToManyTxCommentFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GAccountToManyTxCommentFilterBuilder
+    implements
+        Builder<GAccountToManyTxCommentFilter,
+            GAccountToManyTxCommentFilterBuilder> {
+  _$GAccountToManyTxCommentFilter? _$v;
+
+  GTxCommentFilterBuilder? _every;
+  GTxCommentFilterBuilder get every =>
+      _$this._every ??= new GTxCommentFilterBuilder();
+  set every(GTxCommentFilterBuilder? every) => _$this._every = every;
+
+  GTxCommentFilterBuilder? _some;
+  GTxCommentFilterBuilder get some =>
+      _$this._some ??= new GTxCommentFilterBuilder();
+  set some(GTxCommentFilterBuilder? some) => _$this._some = some;
+
+  GTxCommentFilterBuilder? _none;
+  GTxCommentFilterBuilder get none =>
+      _$this._none ??= new GTxCommentFilterBuilder();
+  set none(GTxCommentFilterBuilder? none) => _$this._none = none;
+
+  GAccountToManyTxCommentFilterBuilder();
+
+  GAccountToManyTxCommentFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GAccountToManyTxCommentFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GAccountToManyTxCommentFilter;
+  }
+
+  @override
+  void update(void Function(GAccountToManyTxCommentFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GAccountToManyTxCommentFilter build() => _build();
+
+  _$GAccountToManyTxCommentFilter _build() {
+    _$GAccountToManyTxCommentFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountToManyTxCommentFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountToManyTxCommentFilter', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -12101,6 +16842,18 @@ class _$GBlockFilter extends GBlockFilter {
   @override
   final GIntFilter? eventsCount;
   @override
+  final GBlockToManyEventFilter? events;
+  @override
+  final bool? eventsExist;
+  @override
+  final GBlockToManyCallFilter? calls;
+  @override
+  final bool? callsExist;
+  @override
+  final GBlockToManyExtrinsicFilter? extrinsics;
+  @override
+  final bool? extrinsicsExist;
+  @override
   final BuiltList<GBlockFilter>? and;
   @override
   final BuiltList<GBlockFilter>? or;
@@ -12121,6 +16874,12 @@ class _$GBlockFilter extends GBlockFilter {
       this.extrinsicsCount,
       this.callsCount,
       this.eventsCount,
+      this.events,
+      this.eventsExist,
+      this.calls,
+      this.callsExist,
+      this.extrinsics,
+      this.extrinsicsExist,
       this.and,
       this.or,
       this.not})
@@ -12147,6 +16906,12 @@ class _$GBlockFilter extends GBlockFilter {
         extrinsicsCount == other.extrinsicsCount &&
         callsCount == other.callsCount &&
         eventsCount == other.eventsCount &&
+        events == other.events &&
+        eventsExist == other.eventsExist &&
+        calls == other.calls &&
+        callsExist == other.callsExist &&
+        extrinsics == other.extrinsics &&
+        extrinsicsExist == other.extrinsicsExist &&
         and == other.and &&
         or == other.or &&
         not == other.not;
@@ -12165,6 +16930,12 @@ class _$GBlockFilter extends GBlockFilter {
     _$hash = $jc(_$hash, extrinsicsCount.hashCode);
     _$hash = $jc(_$hash, callsCount.hashCode);
     _$hash = $jc(_$hash, eventsCount.hashCode);
+    _$hash = $jc(_$hash, events.hashCode);
+    _$hash = $jc(_$hash, eventsExist.hashCode);
+    _$hash = $jc(_$hash, calls.hashCode);
+    _$hash = $jc(_$hash, callsExist.hashCode);
+    _$hash = $jc(_$hash, extrinsics.hashCode);
+    _$hash = $jc(_$hash, extrinsicsExist.hashCode);
     _$hash = $jc(_$hash, and.hashCode);
     _$hash = $jc(_$hash, or.hashCode);
     _$hash = $jc(_$hash, not.hashCode);
@@ -12185,6 +16956,12 @@ class _$GBlockFilter extends GBlockFilter {
           ..add('extrinsicsCount', extrinsicsCount)
           ..add('callsCount', callsCount)
           ..add('eventsCount', eventsCount)
+          ..add('events', events)
+          ..add('eventsExist', eventsExist)
+          ..add('calls', calls)
+          ..add('callsExist', callsExist)
+          ..add('extrinsics', extrinsics)
+          ..add('extrinsicsExist', extrinsicsExist)
           ..add('and', and)
           ..add('or', or)
           ..add('not', not))
@@ -12250,6 +17027,35 @@ class GBlockFilterBuilder
   set eventsCount(GIntFilterBuilder? eventsCount) =>
       _$this._eventsCount = eventsCount;
 
+  GBlockToManyEventFilterBuilder? _events;
+  GBlockToManyEventFilterBuilder get events =>
+      _$this._events ??= new GBlockToManyEventFilterBuilder();
+  set events(GBlockToManyEventFilterBuilder? events) => _$this._events = events;
+
+  bool? _eventsExist;
+  bool? get eventsExist => _$this._eventsExist;
+  set eventsExist(bool? eventsExist) => _$this._eventsExist = eventsExist;
+
+  GBlockToManyCallFilterBuilder? _calls;
+  GBlockToManyCallFilterBuilder get calls =>
+      _$this._calls ??= new GBlockToManyCallFilterBuilder();
+  set calls(GBlockToManyCallFilterBuilder? calls) => _$this._calls = calls;
+
+  bool? _callsExist;
+  bool? get callsExist => _$this._callsExist;
+  set callsExist(bool? callsExist) => _$this._callsExist = callsExist;
+
+  GBlockToManyExtrinsicFilterBuilder? _extrinsics;
+  GBlockToManyExtrinsicFilterBuilder get extrinsics =>
+      _$this._extrinsics ??= new GBlockToManyExtrinsicFilterBuilder();
+  set extrinsics(GBlockToManyExtrinsicFilterBuilder? extrinsics) =>
+      _$this._extrinsics = extrinsics;
+
+  bool? _extrinsicsExist;
+  bool? get extrinsicsExist => _$this._extrinsicsExist;
+  set extrinsicsExist(bool? extrinsicsExist) =>
+      _$this._extrinsicsExist = extrinsicsExist;
+
   ListBuilder<GBlockFilter>? _and;
   ListBuilder<GBlockFilter> get and =>
       _$this._and ??= new ListBuilder<GBlockFilter>();
@@ -12279,6 +17085,12 @@ class GBlockFilterBuilder
       _extrinsicsCount = $v.extrinsicsCount?.toBuilder();
       _callsCount = $v.callsCount?.toBuilder();
       _eventsCount = $v.eventsCount?.toBuilder();
+      _events = $v.events?.toBuilder();
+      _eventsExist = $v.eventsExist;
+      _calls = $v.calls?.toBuilder();
+      _callsExist = $v.callsExist;
+      _extrinsics = $v.extrinsics?.toBuilder();
+      _extrinsicsExist = $v.extrinsicsExist;
       _and = $v.and?.toBuilder();
       _or = $v.or?.toBuilder();
       _not = $v.not?.toBuilder();
@@ -12316,6 +17128,12 @@ class GBlockFilterBuilder
               extrinsicsCount: _extrinsicsCount?.build(),
               callsCount: _callsCount?.build(),
               eventsCount: _eventsCount?.build(),
+              events: _events?.build(),
+              eventsExist: eventsExist,
+              calls: _calls?.build(),
+              callsExist: callsExist,
+              extrinsics: _extrinsics?.build(),
+              extrinsicsExist: extrinsicsExist,
               and: _and?.build(),
               or: _or?.build(),
               not: _not?.build());
@@ -12342,6 +17160,15 @@ class GBlockFilterBuilder
         _callsCount?.build();
         _$failedField = 'eventsCount';
         _eventsCount?.build();
+        _$failedField = 'events';
+        _events?.build();
+
+        _$failedField = 'calls';
+        _calls?.build();
+
+        _$failedField = 'extrinsics';
+        _extrinsics?.build();
+
         _$failedField = 'and';
         _and?.build();
         _$failedField = 'or';
@@ -12351,6 +17178,382 @@ class GBlockFilterBuilder
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'GBlockFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GBlockToManyCallFilter extends GBlockToManyCallFilter {
+  @override
+  final GCallFilter? every;
+  @override
+  final GCallFilter? some;
+  @override
+  final GCallFilter? none;
+
+  factory _$GBlockToManyCallFilter(
+          [void Function(GBlockToManyCallFilterBuilder)? updates]) =>
+      (new GBlockToManyCallFilterBuilder()..update(updates))._build();
+
+  _$GBlockToManyCallFilter._({this.every, this.some, this.none}) : super._();
+
+  @override
+  GBlockToManyCallFilter rebuild(
+          void Function(GBlockToManyCallFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GBlockToManyCallFilterBuilder toBuilder() =>
+      new GBlockToManyCallFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GBlockToManyCallFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GBlockToManyCallFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GBlockToManyCallFilterBuilder
+    implements Builder<GBlockToManyCallFilter, GBlockToManyCallFilterBuilder> {
+  _$GBlockToManyCallFilter? _$v;
+
+  GCallFilterBuilder? _every;
+  GCallFilterBuilder get every => _$this._every ??= new GCallFilterBuilder();
+  set every(GCallFilterBuilder? every) => _$this._every = every;
+
+  GCallFilterBuilder? _some;
+  GCallFilterBuilder get some => _$this._some ??= new GCallFilterBuilder();
+  set some(GCallFilterBuilder? some) => _$this._some = some;
+
+  GCallFilterBuilder? _none;
+  GCallFilterBuilder get none => _$this._none ??= new GCallFilterBuilder();
+  set none(GCallFilterBuilder? none) => _$this._none = none;
+
+  GBlockToManyCallFilterBuilder();
+
+  GBlockToManyCallFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GBlockToManyCallFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GBlockToManyCallFilter;
+  }
+
+  @override
+  void update(void Function(GBlockToManyCallFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GBlockToManyCallFilter build() => _build();
+
+  _$GBlockToManyCallFilter _build() {
+    _$GBlockToManyCallFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GBlockToManyCallFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GBlockToManyCallFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GBlockToManyEventFilter extends GBlockToManyEventFilter {
+  @override
+  final GEventFilter? every;
+  @override
+  final GEventFilter? some;
+  @override
+  final GEventFilter? none;
+
+  factory _$GBlockToManyEventFilter(
+          [void Function(GBlockToManyEventFilterBuilder)? updates]) =>
+      (new GBlockToManyEventFilterBuilder()..update(updates))._build();
+
+  _$GBlockToManyEventFilter._({this.every, this.some, this.none}) : super._();
+
+  @override
+  GBlockToManyEventFilter rebuild(
+          void Function(GBlockToManyEventFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GBlockToManyEventFilterBuilder toBuilder() =>
+      new GBlockToManyEventFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GBlockToManyEventFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GBlockToManyEventFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GBlockToManyEventFilterBuilder
+    implements
+        Builder<GBlockToManyEventFilter, GBlockToManyEventFilterBuilder> {
+  _$GBlockToManyEventFilter? _$v;
+
+  GEventFilterBuilder? _every;
+  GEventFilterBuilder get every => _$this._every ??= new GEventFilterBuilder();
+  set every(GEventFilterBuilder? every) => _$this._every = every;
+
+  GEventFilterBuilder? _some;
+  GEventFilterBuilder get some => _$this._some ??= new GEventFilterBuilder();
+  set some(GEventFilterBuilder? some) => _$this._some = some;
+
+  GEventFilterBuilder? _none;
+  GEventFilterBuilder get none => _$this._none ??= new GEventFilterBuilder();
+  set none(GEventFilterBuilder? none) => _$this._none = none;
+
+  GBlockToManyEventFilterBuilder();
+
+  GBlockToManyEventFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GBlockToManyEventFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GBlockToManyEventFilter;
+  }
+
+  @override
+  void update(void Function(GBlockToManyEventFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GBlockToManyEventFilter build() => _build();
+
+  _$GBlockToManyEventFilter _build() {
+    _$GBlockToManyEventFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GBlockToManyEventFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GBlockToManyEventFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GBlockToManyExtrinsicFilter extends GBlockToManyExtrinsicFilter {
+  @override
+  final GExtrinsicFilter? every;
+  @override
+  final GExtrinsicFilter? some;
+  @override
+  final GExtrinsicFilter? none;
+
+  factory _$GBlockToManyExtrinsicFilter(
+          [void Function(GBlockToManyExtrinsicFilterBuilder)? updates]) =>
+      (new GBlockToManyExtrinsicFilterBuilder()..update(updates))._build();
+
+  _$GBlockToManyExtrinsicFilter._({this.every, this.some, this.none})
+      : super._();
+
+  @override
+  GBlockToManyExtrinsicFilter rebuild(
+          void Function(GBlockToManyExtrinsicFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GBlockToManyExtrinsicFilterBuilder toBuilder() =>
+      new GBlockToManyExtrinsicFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GBlockToManyExtrinsicFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GBlockToManyExtrinsicFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GBlockToManyExtrinsicFilterBuilder
+    implements
+        Builder<GBlockToManyExtrinsicFilter,
+            GBlockToManyExtrinsicFilterBuilder> {
+  _$GBlockToManyExtrinsicFilter? _$v;
+
+  GExtrinsicFilterBuilder? _every;
+  GExtrinsicFilterBuilder get every =>
+      _$this._every ??= new GExtrinsicFilterBuilder();
+  set every(GExtrinsicFilterBuilder? every) => _$this._every = every;
+
+  GExtrinsicFilterBuilder? _some;
+  GExtrinsicFilterBuilder get some =>
+      _$this._some ??= new GExtrinsicFilterBuilder();
+  set some(GExtrinsicFilterBuilder? some) => _$this._some = some;
+
+  GExtrinsicFilterBuilder? _none;
+  GExtrinsicFilterBuilder get none =>
+      _$this._none ??= new GExtrinsicFilterBuilder();
+  set none(GExtrinsicFilterBuilder? none) => _$this._none = none;
+
+  GBlockToManyExtrinsicFilterBuilder();
+
+  GBlockToManyExtrinsicFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GBlockToManyExtrinsicFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GBlockToManyExtrinsicFilter;
+  }
+
+  @override
+  void update(void Function(GBlockToManyExtrinsicFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GBlockToManyExtrinsicFilter build() => _build();
+
+  _$GBlockToManyExtrinsicFilter _build() {
+    _$GBlockToManyExtrinsicFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GBlockToManyExtrinsicFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GBlockToManyExtrinsicFilter', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -12831,6 +18034,30 @@ class _$GCallFilter extends GCallFilter {
   @override
   final GStringFilter? parentId;
   @override
+  final GCallToManyEventFilter? events;
+  @override
+  final bool? eventsExist;
+  @override
+  final GCallToManyCallFilter? childCalls;
+  @override
+  final bool? childCallsExist;
+  @override
+  final GCallToManyExtrinsicFilter? extrinsics;
+  @override
+  final bool? extrinsicsExist;
+  @override
+  final GBlockFilter? block;
+  @override
+  final bool? blockExists;
+  @override
+  final GExtrinsicFilter? extrinsic;
+  @override
+  final bool? extrinsicExists;
+  @override
+  final GCallFilter? parent;
+  @override
+  final bool? parentExists;
+  @override
   final BuiltList<GCallFilter>? and;
   @override
   final BuiltList<GCallFilter>? or;
@@ -12852,6 +18079,18 @@ class _$GCallFilter extends GCallFilter {
       this.blockId,
       this.extrinsicId,
       this.parentId,
+      this.events,
+      this.eventsExist,
+      this.childCalls,
+      this.childCallsExist,
+      this.extrinsics,
+      this.extrinsicsExist,
+      this.block,
+      this.blockExists,
+      this.extrinsic,
+      this.extrinsicExists,
+      this.parent,
+      this.parentExists,
       this.and,
       this.or,
       this.not})
@@ -12879,6 +18118,18 @@ class _$GCallFilter extends GCallFilter {
         blockId == other.blockId &&
         extrinsicId == other.extrinsicId &&
         parentId == other.parentId &&
+        events == other.events &&
+        eventsExist == other.eventsExist &&
+        childCalls == other.childCalls &&
+        childCallsExist == other.childCallsExist &&
+        extrinsics == other.extrinsics &&
+        extrinsicsExist == other.extrinsicsExist &&
+        block == other.block &&
+        blockExists == other.blockExists &&
+        extrinsic == other.extrinsic &&
+        extrinsicExists == other.extrinsicExists &&
+        parent == other.parent &&
+        parentExists == other.parentExists &&
         and == other.and &&
         or == other.or &&
         not == other.not;
@@ -12898,6 +18149,18 @@ class _$GCallFilter extends GCallFilter {
     _$hash = $jc(_$hash, blockId.hashCode);
     _$hash = $jc(_$hash, extrinsicId.hashCode);
     _$hash = $jc(_$hash, parentId.hashCode);
+    _$hash = $jc(_$hash, events.hashCode);
+    _$hash = $jc(_$hash, eventsExist.hashCode);
+    _$hash = $jc(_$hash, childCalls.hashCode);
+    _$hash = $jc(_$hash, childCallsExist.hashCode);
+    _$hash = $jc(_$hash, extrinsics.hashCode);
+    _$hash = $jc(_$hash, extrinsicsExist.hashCode);
+    _$hash = $jc(_$hash, block.hashCode);
+    _$hash = $jc(_$hash, blockExists.hashCode);
+    _$hash = $jc(_$hash, extrinsic.hashCode);
+    _$hash = $jc(_$hash, extrinsicExists.hashCode);
+    _$hash = $jc(_$hash, parent.hashCode);
+    _$hash = $jc(_$hash, parentExists.hashCode);
     _$hash = $jc(_$hash, and.hashCode);
     _$hash = $jc(_$hash, or.hashCode);
     _$hash = $jc(_$hash, not.hashCode);
@@ -12919,6 +18182,18 @@ class _$GCallFilter extends GCallFilter {
           ..add('blockId', blockId)
           ..add('extrinsicId', extrinsicId)
           ..add('parentId', parentId)
+          ..add('events', events)
+          ..add('eventsExist', eventsExist)
+          ..add('childCalls', childCalls)
+          ..add('childCallsExist', childCallsExist)
+          ..add('extrinsics', extrinsics)
+          ..add('extrinsicsExist', extrinsicsExist)
+          ..add('block', block)
+          ..add('blockExists', blockExists)
+          ..add('extrinsic', extrinsic)
+          ..add('extrinsicExists', extrinsicExists)
+          ..add('parent', parent)
+          ..add('parentExists', parentExists)
           ..add('and', and)
           ..add('or', or)
           ..add('not', not))
@@ -12981,6 +18256,64 @@ class GCallFilterBuilder implements Builder<GCallFilter, GCallFilterBuilder> {
       _$this._parentId ??= new GStringFilterBuilder();
   set parentId(GStringFilterBuilder? parentId) => _$this._parentId = parentId;
 
+  GCallToManyEventFilterBuilder? _events;
+  GCallToManyEventFilterBuilder get events =>
+      _$this._events ??= new GCallToManyEventFilterBuilder();
+  set events(GCallToManyEventFilterBuilder? events) => _$this._events = events;
+
+  bool? _eventsExist;
+  bool? get eventsExist => _$this._eventsExist;
+  set eventsExist(bool? eventsExist) => _$this._eventsExist = eventsExist;
+
+  GCallToManyCallFilterBuilder? _childCalls;
+  GCallToManyCallFilterBuilder get childCalls =>
+      _$this._childCalls ??= new GCallToManyCallFilterBuilder();
+  set childCalls(GCallToManyCallFilterBuilder? childCalls) =>
+      _$this._childCalls = childCalls;
+
+  bool? _childCallsExist;
+  bool? get childCallsExist => _$this._childCallsExist;
+  set childCallsExist(bool? childCallsExist) =>
+      _$this._childCallsExist = childCallsExist;
+
+  GCallToManyExtrinsicFilterBuilder? _extrinsics;
+  GCallToManyExtrinsicFilterBuilder get extrinsics =>
+      _$this._extrinsics ??= new GCallToManyExtrinsicFilterBuilder();
+  set extrinsics(GCallToManyExtrinsicFilterBuilder? extrinsics) =>
+      _$this._extrinsics = extrinsics;
+
+  bool? _extrinsicsExist;
+  bool? get extrinsicsExist => _$this._extrinsicsExist;
+  set extrinsicsExist(bool? extrinsicsExist) =>
+      _$this._extrinsicsExist = extrinsicsExist;
+
+  GBlockFilterBuilder? _block;
+  GBlockFilterBuilder get block => _$this._block ??= new GBlockFilterBuilder();
+  set block(GBlockFilterBuilder? block) => _$this._block = block;
+
+  bool? _blockExists;
+  bool? get blockExists => _$this._blockExists;
+  set blockExists(bool? blockExists) => _$this._blockExists = blockExists;
+
+  GExtrinsicFilterBuilder? _extrinsic;
+  GExtrinsicFilterBuilder get extrinsic =>
+      _$this._extrinsic ??= new GExtrinsicFilterBuilder();
+  set extrinsic(GExtrinsicFilterBuilder? extrinsic) =>
+      _$this._extrinsic = extrinsic;
+
+  bool? _extrinsicExists;
+  bool? get extrinsicExists => _$this._extrinsicExists;
+  set extrinsicExists(bool? extrinsicExists) =>
+      _$this._extrinsicExists = extrinsicExists;
+
+  GCallFilterBuilder? _parent;
+  GCallFilterBuilder get parent => _$this._parent ??= new GCallFilterBuilder();
+  set parent(GCallFilterBuilder? parent) => _$this._parent = parent;
+
+  bool? _parentExists;
+  bool? get parentExists => _$this._parentExists;
+  set parentExists(bool? parentExists) => _$this._parentExists = parentExists;
+
   ListBuilder<GCallFilter>? _and;
   ListBuilder<GCallFilter> get and =>
       _$this._and ??= new ListBuilder<GCallFilter>();
@@ -13011,6 +18344,18 @@ class GCallFilterBuilder implements Builder<GCallFilter, GCallFilterBuilder> {
       _blockId = $v.blockId?.toBuilder();
       _extrinsicId = $v.extrinsicId?.toBuilder();
       _parentId = $v.parentId?.toBuilder();
+      _events = $v.events?.toBuilder();
+      _eventsExist = $v.eventsExist;
+      _childCalls = $v.childCalls?.toBuilder();
+      _childCallsExist = $v.childCallsExist;
+      _extrinsics = $v.extrinsics?.toBuilder();
+      _extrinsicsExist = $v.extrinsicsExist;
+      _block = $v.block?.toBuilder();
+      _blockExists = $v.blockExists;
+      _extrinsic = $v.extrinsic?.toBuilder();
+      _extrinsicExists = $v.extrinsicExists;
+      _parent = $v.parent?.toBuilder();
+      _parentExists = $v.parentExists;
       _and = $v.and?.toBuilder();
       _or = $v.or?.toBuilder();
       _not = $v.not?.toBuilder();
@@ -13049,6 +18394,18 @@ class GCallFilterBuilder implements Builder<GCallFilter, GCallFilterBuilder> {
               blockId: _blockId?.build(),
               extrinsicId: _extrinsicId?.build(),
               parentId: _parentId?.build(),
+              events: _events?.build(),
+              eventsExist: eventsExist,
+              childCalls: _childCalls?.build(),
+              childCallsExist: childCallsExist,
+              extrinsics: _extrinsics?.build(),
+              extrinsicsExist: extrinsicsExist,
+              block: _block?.build(),
+              blockExists: blockExists,
+              extrinsic: _extrinsic?.build(),
+              extrinsicExists: extrinsicExists,
+              parent: _parent?.build(),
+              parentExists: parentExists,
               and: _and?.build(),
               or: _or?.build(),
               not: _not?.build());
@@ -13077,6 +18434,24 @@ class GCallFilterBuilder implements Builder<GCallFilter, GCallFilterBuilder> {
         _extrinsicId?.build();
         _$failedField = 'parentId';
         _parentId?.build();
+        _$failedField = 'events';
+        _events?.build();
+
+        _$failedField = 'childCalls';
+        _childCalls?.build();
+
+        _$failedField = 'extrinsics';
+        _extrinsics?.build();
+
+        _$failedField = 'block';
+        _block?.build();
+
+        _$failedField = 'extrinsic';
+        _extrinsic?.build();
+
+        _$failedField = 'parent';
+        _parent?.build();
+
         _$failedField = 'and';
         _and?.build();
         _$failedField = 'or';
@@ -13086,6 +18461,380 @@ class GCallFilterBuilder implements Builder<GCallFilter, GCallFilterBuilder> {
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'GCallFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GCallToManyCallFilter extends GCallToManyCallFilter {
+  @override
+  final GCallFilter? every;
+  @override
+  final GCallFilter? some;
+  @override
+  final GCallFilter? none;
+
+  factory _$GCallToManyCallFilter(
+          [void Function(GCallToManyCallFilterBuilder)? updates]) =>
+      (new GCallToManyCallFilterBuilder()..update(updates))._build();
+
+  _$GCallToManyCallFilter._({this.every, this.some, this.none}) : super._();
+
+  @override
+  GCallToManyCallFilter rebuild(
+          void Function(GCallToManyCallFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GCallToManyCallFilterBuilder toBuilder() =>
+      new GCallToManyCallFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GCallToManyCallFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GCallToManyCallFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GCallToManyCallFilterBuilder
+    implements Builder<GCallToManyCallFilter, GCallToManyCallFilterBuilder> {
+  _$GCallToManyCallFilter? _$v;
+
+  GCallFilterBuilder? _every;
+  GCallFilterBuilder get every => _$this._every ??= new GCallFilterBuilder();
+  set every(GCallFilterBuilder? every) => _$this._every = every;
+
+  GCallFilterBuilder? _some;
+  GCallFilterBuilder get some => _$this._some ??= new GCallFilterBuilder();
+  set some(GCallFilterBuilder? some) => _$this._some = some;
+
+  GCallFilterBuilder? _none;
+  GCallFilterBuilder get none => _$this._none ??= new GCallFilterBuilder();
+  set none(GCallFilterBuilder? none) => _$this._none = none;
+
+  GCallToManyCallFilterBuilder();
+
+  GCallToManyCallFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GCallToManyCallFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GCallToManyCallFilter;
+  }
+
+  @override
+  void update(void Function(GCallToManyCallFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GCallToManyCallFilter build() => _build();
+
+  _$GCallToManyCallFilter _build() {
+    _$GCallToManyCallFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GCallToManyCallFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GCallToManyCallFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GCallToManyEventFilter extends GCallToManyEventFilter {
+  @override
+  final GEventFilter? every;
+  @override
+  final GEventFilter? some;
+  @override
+  final GEventFilter? none;
+
+  factory _$GCallToManyEventFilter(
+          [void Function(GCallToManyEventFilterBuilder)? updates]) =>
+      (new GCallToManyEventFilterBuilder()..update(updates))._build();
+
+  _$GCallToManyEventFilter._({this.every, this.some, this.none}) : super._();
+
+  @override
+  GCallToManyEventFilter rebuild(
+          void Function(GCallToManyEventFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GCallToManyEventFilterBuilder toBuilder() =>
+      new GCallToManyEventFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GCallToManyEventFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GCallToManyEventFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GCallToManyEventFilterBuilder
+    implements Builder<GCallToManyEventFilter, GCallToManyEventFilterBuilder> {
+  _$GCallToManyEventFilter? _$v;
+
+  GEventFilterBuilder? _every;
+  GEventFilterBuilder get every => _$this._every ??= new GEventFilterBuilder();
+  set every(GEventFilterBuilder? every) => _$this._every = every;
+
+  GEventFilterBuilder? _some;
+  GEventFilterBuilder get some => _$this._some ??= new GEventFilterBuilder();
+  set some(GEventFilterBuilder? some) => _$this._some = some;
+
+  GEventFilterBuilder? _none;
+  GEventFilterBuilder get none => _$this._none ??= new GEventFilterBuilder();
+  set none(GEventFilterBuilder? none) => _$this._none = none;
+
+  GCallToManyEventFilterBuilder();
+
+  GCallToManyEventFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GCallToManyEventFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GCallToManyEventFilter;
+  }
+
+  @override
+  void update(void Function(GCallToManyEventFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GCallToManyEventFilter build() => _build();
+
+  _$GCallToManyEventFilter _build() {
+    _$GCallToManyEventFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GCallToManyEventFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GCallToManyEventFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GCallToManyExtrinsicFilter extends GCallToManyExtrinsicFilter {
+  @override
+  final GExtrinsicFilter? every;
+  @override
+  final GExtrinsicFilter? some;
+  @override
+  final GExtrinsicFilter? none;
+
+  factory _$GCallToManyExtrinsicFilter(
+          [void Function(GCallToManyExtrinsicFilterBuilder)? updates]) =>
+      (new GCallToManyExtrinsicFilterBuilder()..update(updates))._build();
+
+  _$GCallToManyExtrinsicFilter._({this.every, this.some, this.none})
+      : super._();
+
+  @override
+  GCallToManyExtrinsicFilter rebuild(
+          void Function(GCallToManyExtrinsicFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GCallToManyExtrinsicFilterBuilder toBuilder() =>
+      new GCallToManyExtrinsicFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GCallToManyExtrinsicFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GCallToManyExtrinsicFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GCallToManyExtrinsicFilterBuilder
+    implements
+        Builder<GCallToManyExtrinsicFilter, GCallToManyExtrinsicFilterBuilder> {
+  _$GCallToManyExtrinsicFilter? _$v;
+
+  GExtrinsicFilterBuilder? _every;
+  GExtrinsicFilterBuilder get every =>
+      _$this._every ??= new GExtrinsicFilterBuilder();
+  set every(GExtrinsicFilterBuilder? every) => _$this._every = every;
+
+  GExtrinsicFilterBuilder? _some;
+  GExtrinsicFilterBuilder get some =>
+      _$this._some ??= new GExtrinsicFilterBuilder();
+  set some(GExtrinsicFilterBuilder? some) => _$this._some = some;
+
+  GExtrinsicFilterBuilder? _none;
+  GExtrinsicFilterBuilder get none =>
+      _$this._none ??= new GExtrinsicFilterBuilder();
+  set none(GExtrinsicFilterBuilder? none) => _$this._none = none;
+
+  GCallToManyExtrinsicFilterBuilder();
+
+  GCallToManyExtrinsicFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GCallToManyExtrinsicFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GCallToManyExtrinsicFilter;
+  }
+
+  @override
+  void update(void Function(GCallToManyExtrinsicFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GCallToManyExtrinsicFilter build() => _build();
+
+  _$GCallToManyExtrinsicFilter _build() {
+    _$GCallToManyExtrinsicFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GCallToManyExtrinsicFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GCallToManyExtrinsicFilter', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -13416,6 +19165,14 @@ class _$GCertEventFilter extends GCertEventFilter {
   @override
   final GStringFilter? eventId;
   @override
+  final GCertFilter? cert;
+  @override
+  final bool? certExists;
+  @override
+  final GEventFilter? event;
+  @override
+  final bool? eventExists;
+  @override
   final BuiltList<GCertEventFilter>? and;
   @override
   final BuiltList<GCertEventFilter>? or;
@@ -13432,6 +19189,10 @@ class _$GCertEventFilter extends GCertEventFilter {
       this.eventType,
       this.certId,
       this.eventId,
+      this.cert,
+      this.certExists,
+      this.event,
+      this.eventExists,
       this.and,
       this.or,
       this.not})
@@ -13454,6 +19215,10 @@ class _$GCertEventFilter extends GCertEventFilter {
         eventType == other.eventType &&
         certId == other.certId &&
         eventId == other.eventId &&
+        cert == other.cert &&
+        certExists == other.certExists &&
+        event == other.event &&
+        eventExists == other.eventExists &&
         and == other.and &&
         or == other.or &&
         not == other.not;
@@ -13467,6 +19232,10 @@ class _$GCertEventFilter extends GCertEventFilter {
     _$hash = $jc(_$hash, eventType.hashCode);
     _$hash = $jc(_$hash, certId.hashCode);
     _$hash = $jc(_$hash, eventId.hashCode);
+    _$hash = $jc(_$hash, cert.hashCode);
+    _$hash = $jc(_$hash, certExists.hashCode);
+    _$hash = $jc(_$hash, event.hashCode);
+    _$hash = $jc(_$hash, eventExists.hashCode);
     _$hash = $jc(_$hash, and.hashCode);
     _$hash = $jc(_$hash, or.hashCode);
     _$hash = $jc(_$hash, not.hashCode);
@@ -13482,6 +19251,10 @@ class _$GCertEventFilter extends GCertEventFilter {
           ..add('eventType', eventType)
           ..add('certId', certId)
           ..add('eventId', eventId)
+          ..add('cert', cert)
+          ..add('certExists', certExists)
+          ..add('event', event)
+          ..add('eventExists', eventExists)
           ..add('and', and)
           ..add('or', or)
           ..add('not', not))
@@ -13519,6 +19292,22 @@ class GCertEventFilterBuilder
       _$this._eventId ??= new GStringFilterBuilder();
   set eventId(GStringFilterBuilder? eventId) => _$this._eventId = eventId;
 
+  GCertFilterBuilder? _cert;
+  GCertFilterBuilder get cert => _$this._cert ??= new GCertFilterBuilder();
+  set cert(GCertFilterBuilder? cert) => _$this._cert = cert;
+
+  bool? _certExists;
+  bool? get certExists => _$this._certExists;
+  set certExists(bool? certExists) => _$this._certExists = certExists;
+
+  GEventFilterBuilder? _event;
+  GEventFilterBuilder get event => _$this._event ??= new GEventFilterBuilder();
+  set event(GEventFilterBuilder? event) => _$this._event = event;
+
+  bool? _eventExists;
+  bool? get eventExists => _$this._eventExists;
+  set eventExists(bool? eventExists) => _$this._eventExists = eventExists;
+
   ListBuilder<GCertEventFilter>? _and;
   ListBuilder<GCertEventFilter> get and =>
       _$this._and ??= new ListBuilder<GCertEventFilter>();
@@ -13544,6 +19333,10 @@ class GCertEventFilterBuilder
       _eventType = $v.eventType?.toBuilder();
       _certId = $v.certId?.toBuilder();
       _eventId = $v.eventId?.toBuilder();
+      _cert = $v.cert?.toBuilder();
+      _certExists = $v.certExists;
+      _event = $v.event?.toBuilder();
+      _eventExists = $v.eventExists;
       _and = $v.and?.toBuilder();
       _or = $v.or?.toBuilder();
       _not = $v.not?.toBuilder();
@@ -13576,6 +19369,10 @@ class GCertEventFilterBuilder
               eventType: _eventType?.build(),
               certId: _certId?.build(),
               eventId: _eventId?.build(),
+              cert: _cert?.build(),
+              certExists: certExists,
+              event: _event?.build(),
+              eventExists: eventExists,
               and: _and?.build(),
               or: _or?.build(),
               not: _not?.build());
@@ -13592,6 +19389,12 @@ class GCertEventFilterBuilder
         _certId?.build();
         _$failedField = 'eventId';
         _eventId?.build();
+        _$failedField = 'cert';
+        _cert?.build();
+
+        _$failedField = 'event';
+        _event?.build();
+
         _$failedField = 'and';
         _and?.build();
         _$failedField = 'or';
@@ -13629,6 +19432,26 @@ class _$GCertFilter extends GCertFilter {
   @override
   final GStringFilter? updatedInId;
   @override
+  final GCertToManyCertEventFilter? certHistory;
+  @override
+  final bool? certHistoryExist;
+  @override
+  final GIdentityFilter? issuer;
+  @override
+  final bool? issuerExists;
+  @override
+  final GIdentityFilter? receiver;
+  @override
+  final bool? receiverExists;
+  @override
+  final GEventFilter? createdIn;
+  @override
+  final bool? createdInExists;
+  @override
+  final GEventFilter? updatedIn;
+  @override
+  final bool? updatedInExists;
+  @override
   final BuiltList<GCertFilter>? and;
   @override
   final BuiltList<GCertFilter>? or;
@@ -13648,6 +19471,16 @@ class _$GCertFilter extends GCertFilter {
       this.receiverId,
       this.createdInId,
       this.updatedInId,
+      this.certHistory,
+      this.certHistoryExist,
+      this.issuer,
+      this.issuerExists,
+      this.receiver,
+      this.receiverExists,
+      this.createdIn,
+      this.createdInExists,
+      this.updatedIn,
+      this.updatedInExists,
       this.and,
       this.or,
       this.not})
@@ -13673,6 +19506,16 @@ class _$GCertFilter extends GCertFilter {
         receiverId == other.receiverId &&
         createdInId == other.createdInId &&
         updatedInId == other.updatedInId &&
+        certHistory == other.certHistory &&
+        certHistoryExist == other.certHistoryExist &&
+        issuer == other.issuer &&
+        issuerExists == other.issuerExists &&
+        receiver == other.receiver &&
+        receiverExists == other.receiverExists &&
+        createdIn == other.createdIn &&
+        createdInExists == other.createdInExists &&
+        updatedIn == other.updatedIn &&
+        updatedInExists == other.updatedInExists &&
         and == other.and &&
         or == other.or &&
         not == other.not;
@@ -13690,6 +19533,16 @@ class _$GCertFilter extends GCertFilter {
     _$hash = $jc(_$hash, receiverId.hashCode);
     _$hash = $jc(_$hash, createdInId.hashCode);
     _$hash = $jc(_$hash, updatedInId.hashCode);
+    _$hash = $jc(_$hash, certHistory.hashCode);
+    _$hash = $jc(_$hash, certHistoryExist.hashCode);
+    _$hash = $jc(_$hash, issuer.hashCode);
+    _$hash = $jc(_$hash, issuerExists.hashCode);
+    _$hash = $jc(_$hash, receiver.hashCode);
+    _$hash = $jc(_$hash, receiverExists.hashCode);
+    _$hash = $jc(_$hash, createdIn.hashCode);
+    _$hash = $jc(_$hash, createdInExists.hashCode);
+    _$hash = $jc(_$hash, updatedIn.hashCode);
+    _$hash = $jc(_$hash, updatedInExists.hashCode);
     _$hash = $jc(_$hash, and.hashCode);
     _$hash = $jc(_$hash, or.hashCode);
     _$hash = $jc(_$hash, not.hashCode);
@@ -13709,6 +19562,16 @@ class _$GCertFilter extends GCertFilter {
           ..add('receiverId', receiverId)
           ..add('createdInId', createdInId)
           ..add('updatedInId', updatedInId)
+          ..add('certHistory', certHistory)
+          ..add('certHistoryExist', certHistoryExist)
+          ..add('issuer', issuer)
+          ..add('issuerExists', issuerExists)
+          ..add('receiver', receiver)
+          ..add('receiverExists', receiverExists)
+          ..add('createdIn', createdIn)
+          ..add('createdInExists', createdInExists)
+          ..add('updatedIn', updatedIn)
+          ..add('updatedInExists', updatedInExists)
           ..add('and', and)
           ..add('or', or)
           ..add('not', not))
@@ -13766,6 +19629,58 @@ class GCertFilterBuilder implements Builder<GCertFilter, GCertFilterBuilder> {
   set updatedInId(GStringFilterBuilder? updatedInId) =>
       _$this._updatedInId = updatedInId;
 
+  GCertToManyCertEventFilterBuilder? _certHistory;
+  GCertToManyCertEventFilterBuilder get certHistory =>
+      _$this._certHistory ??= new GCertToManyCertEventFilterBuilder();
+  set certHistory(GCertToManyCertEventFilterBuilder? certHistory) =>
+      _$this._certHistory = certHistory;
+
+  bool? _certHistoryExist;
+  bool? get certHistoryExist => _$this._certHistoryExist;
+  set certHistoryExist(bool? certHistoryExist) =>
+      _$this._certHistoryExist = certHistoryExist;
+
+  GIdentityFilterBuilder? _issuer;
+  GIdentityFilterBuilder get issuer =>
+      _$this._issuer ??= new GIdentityFilterBuilder();
+  set issuer(GIdentityFilterBuilder? issuer) => _$this._issuer = issuer;
+
+  bool? _issuerExists;
+  bool? get issuerExists => _$this._issuerExists;
+  set issuerExists(bool? issuerExists) => _$this._issuerExists = issuerExists;
+
+  GIdentityFilterBuilder? _receiver;
+  GIdentityFilterBuilder get receiver =>
+      _$this._receiver ??= new GIdentityFilterBuilder();
+  set receiver(GIdentityFilterBuilder? receiver) => _$this._receiver = receiver;
+
+  bool? _receiverExists;
+  bool? get receiverExists => _$this._receiverExists;
+  set receiverExists(bool? receiverExists) =>
+      _$this._receiverExists = receiverExists;
+
+  GEventFilterBuilder? _createdIn;
+  GEventFilterBuilder get createdIn =>
+      _$this._createdIn ??= new GEventFilterBuilder();
+  set createdIn(GEventFilterBuilder? createdIn) =>
+      _$this._createdIn = createdIn;
+
+  bool? _createdInExists;
+  bool? get createdInExists => _$this._createdInExists;
+  set createdInExists(bool? createdInExists) =>
+      _$this._createdInExists = createdInExists;
+
+  GEventFilterBuilder? _updatedIn;
+  GEventFilterBuilder get updatedIn =>
+      _$this._updatedIn ??= new GEventFilterBuilder();
+  set updatedIn(GEventFilterBuilder? updatedIn) =>
+      _$this._updatedIn = updatedIn;
+
+  bool? _updatedInExists;
+  bool? get updatedInExists => _$this._updatedInExists;
+  set updatedInExists(bool? updatedInExists) =>
+      _$this._updatedInExists = updatedInExists;
+
   ListBuilder<GCertFilter>? _and;
   ListBuilder<GCertFilter> get and =>
       _$this._and ??= new ListBuilder<GCertFilter>();
@@ -13794,6 +19709,16 @@ class GCertFilterBuilder implements Builder<GCertFilter, GCertFilterBuilder> {
       _receiverId = $v.receiverId?.toBuilder();
       _createdInId = $v.createdInId?.toBuilder();
       _updatedInId = $v.updatedInId?.toBuilder();
+      _certHistory = $v.certHistory?.toBuilder();
+      _certHistoryExist = $v.certHistoryExist;
+      _issuer = $v.issuer?.toBuilder();
+      _issuerExists = $v.issuerExists;
+      _receiver = $v.receiver?.toBuilder();
+      _receiverExists = $v.receiverExists;
+      _createdIn = $v.createdIn?.toBuilder();
+      _createdInExists = $v.createdInExists;
+      _updatedIn = $v.updatedIn?.toBuilder();
+      _updatedInExists = $v.updatedInExists;
       _and = $v.and?.toBuilder();
       _or = $v.or?.toBuilder();
       _not = $v.not?.toBuilder();
@@ -13830,6 +19755,16 @@ class GCertFilterBuilder implements Builder<GCertFilter, GCertFilterBuilder> {
               receiverId: _receiverId?.build(),
               createdInId: _createdInId?.build(),
               updatedInId: _updatedInId?.build(),
+              certHistory: _certHistory?.build(),
+              certHistoryExist: certHistoryExist,
+              issuer: _issuer?.build(),
+              issuerExists: issuerExists,
+              receiver: _receiver?.build(),
+              receiverExists: receiverExists,
+              createdIn: _createdIn?.build(),
+              createdInExists: createdInExists,
+              updatedIn: _updatedIn?.build(),
+              updatedInExists: updatedInExists,
               and: _and?.build(),
               or: _or?.build(),
               not: _not?.build());
@@ -13854,6 +19789,21 @@ class GCertFilterBuilder implements Builder<GCertFilter, GCertFilterBuilder> {
         _createdInId?.build();
         _$failedField = 'updatedInId';
         _updatedInId?.build();
+        _$failedField = 'certHistory';
+        _certHistory?.build();
+
+        _$failedField = 'issuer';
+        _issuer?.build();
+
+        _$failedField = 'receiver';
+        _receiver?.build();
+
+        _$failedField = 'createdIn';
+        _createdIn?.build();
+
+        _$failedField = 'updatedIn';
+        _updatedIn?.build();
+
         _$failedField = 'and';
         _and?.build();
         _$failedField = 'or';
@@ -13863,6 +19813,134 @@ class GCertFilterBuilder implements Builder<GCertFilter, GCertFilterBuilder> {
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'GCertFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GCertToManyCertEventFilter extends GCertToManyCertEventFilter {
+  @override
+  final GCertEventFilter? every;
+  @override
+  final GCertEventFilter? some;
+  @override
+  final GCertEventFilter? none;
+
+  factory _$GCertToManyCertEventFilter(
+          [void Function(GCertToManyCertEventFilterBuilder)? updates]) =>
+      (new GCertToManyCertEventFilterBuilder()..update(updates))._build();
+
+  _$GCertToManyCertEventFilter._({this.every, this.some, this.none})
+      : super._();
+
+  @override
+  GCertToManyCertEventFilter rebuild(
+          void Function(GCertToManyCertEventFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GCertToManyCertEventFilterBuilder toBuilder() =>
+      new GCertToManyCertEventFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GCertToManyCertEventFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GCertToManyCertEventFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GCertToManyCertEventFilterBuilder
+    implements
+        Builder<GCertToManyCertEventFilter, GCertToManyCertEventFilterBuilder> {
+  _$GCertToManyCertEventFilter? _$v;
+
+  GCertEventFilterBuilder? _every;
+  GCertEventFilterBuilder get every =>
+      _$this._every ??= new GCertEventFilterBuilder();
+  set every(GCertEventFilterBuilder? every) => _$this._every = every;
+
+  GCertEventFilterBuilder? _some;
+  GCertEventFilterBuilder get some =>
+      _$this._some ??= new GCertEventFilterBuilder();
+  set some(GCertEventFilterBuilder? some) => _$this._some = some;
+
+  GCertEventFilterBuilder? _none;
+  GCertEventFilterBuilder get none =>
+      _$this._none ??= new GCertEventFilterBuilder();
+  set none(GCertEventFilterBuilder? none) => _$this._none = none;
+
+  GCertToManyCertEventFilterBuilder();
+
+  GCertToManyCertEventFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GCertToManyCertEventFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GCertToManyCertEventFilter;
+  }
+
+  @override
+  void update(void Function(GCertToManyCertEventFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GCertToManyCertEventFilter build() => _build();
+
+  _$GCertToManyCertEventFilter _build() {
+    _$GCertToManyCertEventFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GCertToManyCertEventFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GCertToManyCertEventFilter', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -14018,6 +20096,18 @@ class _$GChangeOwnerKeyFilter extends GChangeOwnerKeyFilter {
   @override
   final GStringFilter? nextId;
   @override
+  final GIdentityFilter? identity;
+  @override
+  final bool? identityExists;
+  @override
+  final GAccountFilter? previous;
+  @override
+  final bool? previousExists;
+  @override
+  final GAccountFilter? next;
+  @override
+  final bool? nextExists;
+  @override
   final BuiltList<GChangeOwnerKeyFilter>? and;
   @override
   final BuiltList<GChangeOwnerKeyFilter>? or;
@@ -14034,6 +20124,12 @@ class _$GChangeOwnerKeyFilter extends GChangeOwnerKeyFilter {
       this.identityId,
       this.previousId,
       this.nextId,
+      this.identity,
+      this.identityExists,
+      this.previous,
+      this.previousExists,
+      this.next,
+      this.nextExists,
       this.and,
       this.or,
       this.not})
@@ -14057,6 +20153,12 @@ class _$GChangeOwnerKeyFilter extends GChangeOwnerKeyFilter {
         identityId == other.identityId &&
         previousId == other.previousId &&
         nextId == other.nextId &&
+        identity == other.identity &&
+        identityExists == other.identityExists &&
+        previous == other.previous &&
+        previousExists == other.previousExists &&
+        next == other.next &&
+        nextExists == other.nextExists &&
         and == other.and &&
         or == other.or &&
         not == other.not;
@@ -14070,6 +20172,12 @@ class _$GChangeOwnerKeyFilter extends GChangeOwnerKeyFilter {
     _$hash = $jc(_$hash, identityId.hashCode);
     _$hash = $jc(_$hash, previousId.hashCode);
     _$hash = $jc(_$hash, nextId.hashCode);
+    _$hash = $jc(_$hash, identity.hashCode);
+    _$hash = $jc(_$hash, identityExists.hashCode);
+    _$hash = $jc(_$hash, previous.hashCode);
+    _$hash = $jc(_$hash, previousExists.hashCode);
+    _$hash = $jc(_$hash, next.hashCode);
+    _$hash = $jc(_$hash, nextExists.hashCode);
     _$hash = $jc(_$hash, and.hashCode);
     _$hash = $jc(_$hash, or.hashCode);
     _$hash = $jc(_$hash, not.hashCode);
@@ -14085,6 +20193,12 @@ class _$GChangeOwnerKeyFilter extends GChangeOwnerKeyFilter {
           ..add('identityId', identityId)
           ..add('previousId', previousId)
           ..add('nextId', nextId)
+          ..add('identity', identity)
+          ..add('identityExists', identityExists)
+          ..add('previous', previous)
+          ..add('previousExists', previousExists)
+          ..add('next', next)
+          ..add('nextExists', nextExists)
           ..add('and', and)
           ..add('or', or)
           ..add('not', not))
@@ -14123,6 +20237,35 @@ class GChangeOwnerKeyFilterBuilder
       _$this._nextId ??= new GStringFilterBuilder();
   set nextId(GStringFilterBuilder? nextId) => _$this._nextId = nextId;
 
+  GIdentityFilterBuilder? _identity;
+  GIdentityFilterBuilder get identity =>
+      _$this._identity ??= new GIdentityFilterBuilder();
+  set identity(GIdentityFilterBuilder? identity) => _$this._identity = identity;
+
+  bool? _identityExists;
+  bool? get identityExists => _$this._identityExists;
+  set identityExists(bool? identityExists) =>
+      _$this._identityExists = identityExists;
+
+  GAccountFilterBuilder? _previous;
+  GAccountFilterBuilder get previous =>
+      _$this._previous ??= new GAccountFilterBuilder();
+  set previous(GAccountFilterBuilder? previous) => _$this._previous = previous;
+
+  bool? _previousExists;
+  bool? get previousExists => _$this._previousExists;
+  set previousExists(bool? previousExists) =>
+      _$this._previousExists = previousExists;
+
+  GAccountFilterBuilder? _next;
+  GAccountFilterBuilder get next =>
+      _$this._next ??= new GAccountFilterBuilder();
+  set next(GAccountFilterBuilder? next) => _$this._next = next;
+
+  bool? _nextExists;
+  bool? get nextExists => _$this._nextExists;
+  set nextExists(bool? nextExists) => _$this._nextExists = nextExists;
+
   ListBuilder<GChangeOwnerKeyFilter>? _and;
   ListBuilder<GChangeOwnerKeyFilter> get and =>
       _$this._and ??= new ListBuilder<GChangeOwnerKeyFilter>();
@@ -14148,6 +20291,12 @@ class GChangeOwnerKeyFilterBuilder
       _identityId = $v.identityId?.toBuilder();
       _previousId = $v.previousId?.toBuilder();
       _nextId = $v.nextId?.toBuilder();
+      _identity = $v.identity?.toBuilder();
+      _identityExists = $v.identityExists;
+      _previous = $v.previous?.toBuilder();
+      _previousExists = $v.previousExists;
+      _next = $v.next?.toBuilder();
+      _nextExists = $v.nextExists;
       _and = $v.and?.toBuilder();
       _or = $v.or?.toBuilder();
       _not = $v.not?.toBuilder();
@@ -14180,6 +20329,12 @@ class GChangeOwnerKeyFilterBuilder
               identityId: _identityId?.build(),
               previousId: _previousId?.build(),
               nextId: _nextId?.build(),
+              identity: _identity?.build(),
+              identityExists: identityExists,
+              previous: _previous?.build(),
+              previousExists: previousExists,
+              next: _next?.build(),
+              nextExists: nextExists,
               and: _and?.build(),
               or: _or?.build(),
               not: _not?.build());
@@ -14196,6 +20351,15 @@ class GChangeOwnerKeyFilterBuilder
         _previousId?.build();
         _$failedField = 'nextId';
         _nextId?.build();
+        _$failedField = 'identity';
+        _identity?.build();
+
+        _$failedField = 'previous';
+        _previous?.build();
+
+        _$failedField = 'next';
+        _next?.build();
+
         _$failedField = 'and';
         _and?.build();
         _$failedField = 'or';
@@ -14854,6 +21018,58 @@ class _$GEventFilter extends GEventFilter {
   @override
   final GStringFilter? callId;
   @override
+  final GEventToManyCertEventFilter? certEvents;
+  @override
+  final bool? certEventsExist;
+  @override
+  final GEventToManyCertFilter? certsByCreatedInId;
+  @override
+  final bool? certsByCreatedInIdExist;
+  @override
+  final GEventToManyCertFilter? certsByUpdatedInId;
+  @override
+  final bool? certsByUpdatedInIdExist;
+  @override
+  final GEventToManyMembershipEventFilter? membershipEvents;
+  @override
+  final bool? membershipEventsExist;
+  @override
+  final GEventToManySmithEventFilter? smithEvents;
+  @override
+  final bool? smithEventsExist;
+  @override
+  final GEventToManyIdentityFilter? identitiesByCreatedInId;
+  @override
+  final bool? identitiesByCreatedInIdExist;
+  @override
+  final GEventToManyTxCommentFilter? txComments;
+  @override
+  final bool? txCommentsExist;
+  @override
+  final GEventToManyTransferFilter? transfers;
+  @override
+  final bool? transfersExist;
+  @override
+  final GEventToManyUniversalDividendFilter? universalDividends;
+  @override
+  final bool? universalDividendsExist;
+  @override
+  final GEventToManyUdReevalFilter? udReevals;
+  @override
+  final bool? udReevalsExist;
+  @override
+  final GBlockFilter? block;
+  @override
+  final bool? blockExists;
+  @override
+  final GExtrinsicFilter? extrinsic;
+  @override
+  final bool? extrinsicExists;
+  @override
+  final GCallFilter? call;
+  @override
+  final bool? callExists;
+  @override
   final BuiltList<GEventFilter>? and;
   @override
   final BuiltList<GEventFilter>? or;
@@ -14874,6 +21090,32 @@ class _$GEventFilter extends GEventFilter {
       this.blockId,
       this.extrinsicId,
       this.callId,
+      this.certEvents,
+      this.certEventsExist,
+      this.certsByCreatedInId,
+      this.certsByCreatedInIdExist,
+      this.certsByUpdatedInId,
+      this.certsByUpdatedInIdExist,
+      this.membershipEvents,
+      this.membershipEventsExist,
+      this.smithEvents,
+      this.smithEventsExist,
+      this.identitiesByCreatedInId,
+      this.identitiesByCreatedInIdExist,
+      this.txComments,
+      this.txCommentsExist,
+      this.transfers,
+      this.transfersExist,
+      this.universalDividends,
+      this.universalDividendsExist,
+      this.udReevals,
+      this.udReevalsExist,
+      this.block,
+      this.blockExists,
+      this.extrinsic,
+      this.extrinsicExists,
+      this.call,
+      this.callExists,
       this.and,
       this.or,
       this.not})
@@ -14900,6 +21142,32 @@ class _$GEventFilter extends GEventFilter {
         blockId == other.blockId &&
         extrinsicId == other.extrinsicId &&
         callId == other.callId &&
+        certEvents == other.certEvents &&
+        certEventsExist == other.certEventsExist &&
+        certsByCreatedInId == other.certsByCreatedInId &&
+        certsByCreatedInIdExist == other.certsByCreatedInIdExist &&
+        certsByUpdatedInId == other.certsByUpdatedInId &&
+        certsByUpdatedInIdExist == other.certsByUpdatedInIdExist &&
+        membershipEvents == other.membershipEvents &&
+        membershipEventsExist == other.membershipEventsExist &&
+        smithEvents == other.smithEvents &&
+        smithEventsExist == other.smithEventsExist &&
+        identitiesByCreatedInId == other.identitiesByCreatedInId &&
+        identitiesByCreatedInIdExist == other.identitiesByCreatedInIdExist &&
+        txComments == other.txComments &&
+        txCommentsExist == other.txCommentsExist &&
+        transfers == other.transfers &&
+        transfersExist == other.transfersExist &&
+        universalDividends == other.universalDividends &&
+        universalDividendsExist == other.universalDividendsExist &&
+        udReevals == other.udReevals &&
+        udReevalsExist == other.udReevalsExist &&
+        block == other.block &&
+        blockExists == other.blockExists &&
+        extrinsic == other.extrinsic &&
+        extrinsicExists == other.extrinsicExists &&
+        call == other.call &&
+        callExists == other.callExists &&
         and == other.and &&
         or == other.or &&
         not == other.not;
@@ -14918,6 +21186,32 @@ class _$GEventFilter extends GEventFilter {
     _$hash = $jc(_$hash, blockId.hashCode);
     _$hash = $jc(_$hash, extrinsicId.hashCode);
     _$hash = $jc(_$hash, callId.hashCode);
+    _$hash = $jc(_$hash, certEvents.hashCode);
+    _$hash = $jc(_$hash, certEventsExist.hashCode);
+    _$hash = $jc(_$hash, certsByCreatedInId.hashCode);
+    _$hash = $jc(_$hash, certsByCreatedInIdExist.hashCode);
+    _$hash = $jc(_$hash, certsByUpdatedInId.hashCode);
+    _$hash = $jc(_$hash, certsByUpdatedInIdExist.hashCode);
+    _$hash = $jc(_$hash, membershipEvents.hashCode);
+    _$hash = $jc(_$hash, membershipEventsExist.hashCode);
+    _$hash = $jc(_$hash, smithEvents.hashCode);
+    _$hash = $jc(_$hash, smithEventsExist.hashCode);
+    _$hash = $jc(_$hash, identitiesByCreatedInId.hashCode);
+    _$hash = $jc(_$hash, identitiesByCreatedInIdExist.hashCode);
+    _$hash = $jc(_$hash, txComments.hashCode);
+    _$hash = $jc(_$hash, txCommentsExist.hashCode);
+    _$hash = $jc(_$hash, transfers.hashCode);
+    _$hash = $jc(_$hash, transfersExist.hashCode);
+    _$hash = $jc(_$hash, universalDividends.hashCode);
+    _$hash = $jc(_$hash, universalDividendsExist.hashCode);
+    _$hash = $jc(_$hash, udReevals.hashCode);
+    _$hash = $jc(_$hash, udReevalsExist.hashCode);
+    _$hash = $jc(_$hash, block.hashCode);
+    _$hash = $jc(_$hash, blockExists.hashCode);
+    _$hash = $jc(_$hash, extrinsic.hashCode);
+    _$hash = $jc(_$hash, extrinsicExists.hashCode);
+    _$hash = $jc(_$hash, call.hashCode);
+    _$hash = $jc(_$hash, callExists.hashCode);
     _$hash = $jc(_$hash, and.hashCode);
     _$hash = $jc(_$hash, or.hashCode);
     _$hash = $jc(_$hash, not.hashCode);
@@ -14938,6 +21232,32 @@ class _$GEventFilter extends GEventFilter {
           ..add('blockId', blockId)
           ..add('extrinsicId', extrinsicId)
           ..add('callId', callId)
+          ..add('certEvents', certEvents)
+          ..add('certEventsExist', certEventsExist)
+          ..add('certsByCreatedInId', certsByCreatedInId)
+          ..add('certsByCreatedInIdExist', certsByCreatedInIdExist)
+          ..add('certsByUpdatedInId', certsByUpdatedInId)
+          ..add('certsByUpdatedInIdExist', certsByUpdatedInIdExist)
+          ..add('membershipEvents', membershipEvents)
+          ..add('membershipEventsExist', membershipEventsExist)
+          ..add('smithEvents', smithEvents)
+          ..add('smithEventsExist', smithEventsExist)
+          ..add('identitiesByCreatedInId', identitiesByCreatedInId)
+          ..add('identitiesByCreatedInIdExist', identitiesByCreatedInIdExist)
+          ..add('txComments', txComments)
+          ..add('txCommentsExist', txCommentsExist)
+          ..add('transfers', transfers)
+          ..add('transfersExist', transfersExist)
+          ..add('universalDividends', universalDividends)
+          ..add('universalDividendsExist', universalDividendsExist)
+          ..add('udReevals', udReevals)
+          ..add('udReevalsExist', udReevalsExist)
+          ..add('block', block)
+          ..add('blockExists', blockExists)
+          ..add('extrinsic', extrinsic)
+          ..add('extrinsicExists', extrinsicExists)
+          ..add('call', call)
+          ..add('callExists', callExists)
           ..add('and', and)
           ..add('or', or)
           ..add('not', not))
@@ -14996,6 +21316,150 @@ class GEventFilterBuilder
       _$this._callId ??= new GStringFilterBuilder();
   set callId(GStringFilterBuilder? callId) => _$this._callId = callId;
 
+  GEventToManyCertEventFilterBuilder? _certEvents;
+  GEventToManyCertEventFilterBuilder get certEvents =>
+      _$this._certEvents ??= new GEventToManyCertEventFilterBuilder();
+  set certEvents(GEventToManyCertEventFilterBuilder? certEvents) =>
+      _$this._certEvents = certEvents;
+
+  bool? _certEventsExist;
+  bool? get certEventsExist => _$this._certEventsExist;
+  set certEventsExist(bool? certEventsExist) =>
+      _$this._certEventsExist = certEventsExist;
+
+  GEventToManyCertFilterBuilder? _certsByCreatedInId;
+  GEventToManyCertFilterBuilder get certsByCreatedInId =>
+      _$this._certsByCreatedInId ??= new GEventToManyCertFilterBuilder();
+  set certsByCreatedInId(GEventToManyCertFilterBuilder? certsByCreatedInId) =>
+      _$this._certsByCreatedInId = certsByCreatedInId;
+
+  bool? _certsByCreatedInIdExist;
+  bool? get certsByCreatedInIdExist => _$this._certsByCreatedInIdExist;
+  set certsByCreatedInIdExist(bool? certsByCreatedInIdExist) =>
+      _$this._certsByCreatedInIdExist = certsByCreatedInIdExist;
+
+  GEventToManyCertFilterBuilder? _certsByUpdatedInId;
+  GEventToManyCertFilterBuilder get certsByUpdatedInId =>
+      _$this._certsByUpdatedInId ??= new GEventToManyCertFilterBuilder();
+  set certsByUpdatedInId(GEventToManyCertFilterBuilder? certsByUpdatedInId) =>
+      _$this._certsByUpdatedInId = certsByUpdatedInId;
+
+  bool? _certsByUpdatedInIdExist;
+  bool? get certsByUpdatedInIdExist => _$this._certsByUpdatedInIdExist;
+  set certsByUpdatedInIdExist(bool? certsByUpdatedInIdExist) =>
+      _$this._certsByUpdatedInIdExist = certsByUpdatedInIdExist;
+
+  GEventToManyMembershipEventFilterBuilder? _membershipEvents;
+  GEventToManyMembershipEventFilterBuilder get membershipEvents =>
+      _$this._membershipEvents ??=
+          new GEventToManyMembershipEventFilterBuilder();
+  set membershipEvents(
+          GEventToManyMembershipEventFilterBuilder? membershipEvents) =>
+      _$this._membershipEvents = membershipEvents;
+
+  bool? _membershipEventsExist;
+  bool? get membershipEventsExist => _$this._membershipEventsExist;
+  set membershipEventsExist(bool? membershipEventsExist) =>
+      _$this._membershipEventsExist = membershipEventsExist;
+
+  GEventToManySmithEventFilterBuilder? _smithEvents;
+  GEventToManySmithEventFilterBuilder get smithEvents =>
+      _$this._smithEvents ??= new GEventToManySmithEventFilterBuilder();
+  set smithEvents(GEventToManySmithEventFilterBuilder? smithEvents) =>
+      _$this._smithEvents = smithEvents;
+
+  bool? _smithEventsExist;
+  bool? get smithEventsExist => _$this._smithEventsExist;
+  set smithEventsExist(bool? smithEventsExist) =>
+      _$this._smithEventsExist = smithEventsExist;
+
+  GEventToManyIdentityFilterBuilder? _identitiesByCreatedInId;
+  GEventToManyIdentityFilterBuilder get identitiesByCreatedInId =>
+      _$this._identitiesByCreatedInId ??=
+          new GEventToManyIdentityFilterBuilder();
+  set identitiesByCreatedInId(
+          GEventToManyIdentityFilterBuilder? identitiesByCreatedInId) =>
+      _$this._identitiesByCreatedInId = identitiesByCreatedInId;
+
+  bool? _identitiesByCreatedInIdExist;
+  bool? get identitiesByCreatedInIdExist =>
+      _$this._identitiesByCreatedInIdExist;
+  set identitiesByCreatedInIdExist(bool? identitiesByCreatedInIdExist) =>
+      _$this._identitiesByCreatedInIdExist = identitiesByCreatedInIdExist;
+
+  GEventToManyTxCommentFilterBuilder? _txComments;
+  GEventToManyTxCommentFilterBuilder get txComments =>
+      _$this._txComments ??= new GEventToManyTxCommentFilterBuilder();
+  set txComments(GEventToManyTxCommentFilterBuilder? txComments) =>
+      _$this._txComments = txComments;
+
+  bool? _txCommentsExist;
+  bool? get txCommentsExist => _$this._txCommentsExist;
+  set txCommentsExist(bool? txCommentsExist) =>
+      _$this._txCommentsExist = txCommentsExist;
+
+  GEventToManyTransferFilterBuilder? _transfers;
+  GEventToManyTransferFilterBuilder get transfers =>
+      _$this._transfers ??= new GEventToManyTransferFilterBuilder();
+  set transfers(GEventToManyTransferFilterBuilder? transfers) =>
+      _$this._transfers = transfers;
+
+  bool? _transfersExist;
+  bool? get transfersExist => _$this._transfersExist;
+  set transfersExist(bool? transfersExist) =>
+      _$this._transfersExist = transfersExist;
+
+  GEventToManyUniversalDividendFilterBuilder? _universalDividends;
+  GEventToManyUniversalDividendFilterBuilder get universalDividends =>
+      _$this._universalDividends ??=
+          new GEventToManyUniversalDividendFilterBuilder();
+  set universalDividends(
+          GEventToManyUniversalDividendFilterBuilder? universalDividends) =>
+      _$this._universalDividends = universalDividends;
+
+  bool? _universalDividendsExist;
+  bool? get universalDividendsExist => _$this._universalDividendsExist;
+  set universalDividendsExist(bool? universalDividendsExist) =>
+      _$this._universalDividendsExist = universalDividendsExist;
+
+  GEventToManyUdReevalFilterBuilder? _udReevals;
+  GEventToManyUdReevalFilterBuilder get udReevals =>
+      _$this._udReevals ??= new GEventToManyUdReevalFilterBuilder();
+  set udReevals(GEventToManyUdReevalFilterBuilder? udReevals) =>
+      _$this._udReevals = udReevals;
+
+  bool? _udReevalsExist;
+  bool? get udReevalsExist => _$this._udReevalsExist;
+  set udReevalsExist(bool? udReevalsExist) =>
+      _$this._udReevalsExist = udReevalsExist;
+
+  GBlockFilterBuilder? _block;
+  GBlockFilterBuilder get block => _$this._block ??= new GBlockFilterBuilder();
+  set block(GBlockFilterBuilder? block) => _$this._block = block;
+
+  bool? _blockExists;
+  bool? get blockExists => _$this._blockExists;
+  set blockExists(bool? blockExists) => _$this._blockExists = blockExists;
+
+  GExtrinsicFilterBuilder? _extrinsic;
+  GExtrinsicFilterBuilder get extrinsic =>
+      _$this._extrinsic ??= new GExtrinsicFilterBuilder();
+  set extrinsic(GExtrinsicFilterBuilder? extrinsic) =>
+      _$this._extrinsic = extrinsic;
+
+  bool? _extrinsicExists;
+  bool? get extrinsicExists => _$this._extrinsicExists;
+  set extrinsicExists(bool? extrinsicExists) =>
+      _$this._extrinsicExists = extrinsicExists;
+
+  GCallFilterBuilder? _call;
+  GCallFilterBuilder get call => _$this._call ??= new GCallFilterBuilder();
+  set call(GCallFilterBuilder? call) => _$this._call = call;
+
+  bool? _callExists;
+  bool? get callExists => _$this._callExists;
+  set callExists(bool? callExists) => _$this._callExists = callExists;
+
   ListBuilder<GEventFilter>? _and;
   ListBuilder<GEventFilter> get and =>
       _$this._and ??= new ListBuilder<GEventFilter>();
@@ -15025,6 +21489,32 @@ class GEventFilterBuilder
       _blockId = $v.blockId?.toBuilder();
       _extrinsicId = $v.extrinsicId?.toBuilder();
       _callId = $v.callId?.toBuilder();
+      _certEvents = $v.certEvents?.toBuilder();
+      _certEventsExist = $v.certEventsExist;
+      _certsByCreatedInId = $v.certsByCreatedInId?.toBuilder();
+      _certsByCreatedInIdExist = $v.certsByCreatedInIdExist;
+      _certsByUpdatedInId = $v.certsByUpdatedInId?.toBuilder();
+      _certsByUpdatedInIdExist = $v.certsByUpdatedInIdExist;
+      _membershipEvents = $v.membershipEvents?.toBuilder();
+      _membershipEventsExist = $v.membershipEventsExist;
+      _smithEvents = $v.smithEvents?.toBuilder();
+      _smithEventsExist = $v.smithEventsExist;
+      _identitiesByCreatedInId = $v.identitiesByCreatedInId?.toBuilder();
+      _identitiesByCreatedInIdExist = $v.identitiesByCreatedInIdExist;
+      _txComments = $v.txComments?.toBuilder();
+      _txCommentsExist = $v.txCommentsExist;
+      _transfers = $v.transfers?.toBuilder();
+      _transfersExist = $v.transfersExist;
+      _universalDividends = $v.universalDividends?.toBuilder();
+      _universalDividendsExist = $v.universalDividendsExist;
+      _udReevals = $v.udReevals?.toBuilder();
+      _udReevalsExist = $v.udReevalsExist;
+      _block = $v.block?.toBuilder();
+      _blockExists = $v.blockExists;
+      _extrinsic = $v.extrinsic?.toBuilder();
+      _extrinsicExists = $v.extrinsicExists;
+      _call = $v.call?.toBuilder();
+      _callExists = $v.callExists;
       _and = $v.and?.toBuilder();
       _or = $v.or?.toBuilder();
       _not = $v.not?.toBuilder();
@@ -15062,6 +21552,32 @@ class GEventFilterBuilder
               blockId: _blockId?.build(),
               extrinsicId: _extrinsicId?.build(),
               callId: _callId?.build(),
+              certEvents: _certEvents?.build(),
+              certEventsExist: certEventsExist,
+              certsByCreatedInId: _certsByCreatedInId?.build(),
+              certsByCreatedInIdExist: certsByCreatedInIdExist,
+              certsByUpdatedInId: _certsByUpdatedInId?.build(),
+              certsByUpdatedInIdExist: certsByUpdatedInIdExist,
+              membershipEvents: _membershipEvents?.build(),
+              membershipEventsExist: membershipEventsExist,
+              smithEvents: _smithEvents?.build(),
+              smithEventsExist: smithEventsExist,
+              identitiesByCreatedInId: _identitiesByCreatedInId?.build(),
+              identitiesByCreatedInIdExist: identitiesByCreatedInIdExist,
+              txComments: _txComments?.build(),
+              txCommentsExist: txCommentsExist,
+              transfers: _transfers?.build(),
+              transfersExist: transfersExist,
+              universalDividends: _universalDividends?.build(),
+              universalDividendsExist: universalDividendsExist,
+              udReevals: _udReevals?.build(),
+              udReevalsExist: udReevalsExist,
+              block: _block?.build(),
+              blockExists: blockExists,
+              extrinsic: _extrinsic?.build(),
+              extrinsicExists: extrinsicExists,
+              call: _call?.build(),
+              callExists: callExists,
               and: _and?.build(),
               or: _or?.build(),
               not: _not?.build());
@@ -15088,6 +21604,45 @@ class GEventFilterBuilder
         _extrinsicId?.build();
         _$failedField = 'callId';
         _callId?.build();
+        _$failedField = 'certEvents';
+        _certEvents?.build();
+
+        _$failedField = 'certsByCreatedInId';
+        _certsByCreatedInId?.build();
+
+        _$failedField = 'certsByUpdatedInId';
+        _certsByUpdatedInId?.build();
+
+        _$failedField = 'membershipEvents';
+        _membershipEvents?.build();
+
+        _$failedField = 'smithEvents';
+        _smithEvents?.build();
+
+        _$failedField = 'identitiesByCreatedInId';
+        _identitiesByCreatedInId?.build();
+
+        _$failedField = 'txComments';
+        _txComments?.build();
+
+        _$failedField = 'transfers';
+        _transfers?.build();
+
+        _$failedField = 'universalDividends';
+        _universalDividends?.build();
+
+        _$failedField = 'udReevals';
+        _udReevals?.build();
+
+        _$failedField = 'block';
+        _block?.build();
+
+        _$failedField = 'extrinsic';
+        _extrinsic?.build();
+
+        _$failedField = 'call';
+        _call?.build();
+
         _$failedField = 'and';
         _and?.build();
         _$failedField = 'or';
@@ -15097,6 +21652,1167 @@ class GEventFilterBuilder
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'GEventFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GEventToManyCertEventFilter extends GEventToManyCertEventFilter {
+  @override
+  final GCertEventFilter? every;
+  @override
+  final GCertEventFilter? some;
+  @override
+  final GCertEventFilter? none;
+
+  factory _$GEventToManyCertEventFilter(
+          [void Function(GEventToManyCertEventFilterBuilder)? updates]) =>
+      (new GEventToManyCertEventFilterBuilder()..update(updates))._build();
+
+  _$GEventToManyCertEventFilter._({this.every, this.some, this.none})
+      : super._();
+
+  @override
+  GEventToManyCertEventFilter rebuild(
+          void Function(GEventToManyCertEventFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GEventToManyCertEventFilterBuilder toBuilder() =>
+      new GEventToManyCertEventFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GEventToManyCertEventFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GEventToManyCertEventFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GEventToManyCertEventFilterBuilder
+    implements
+        Builder<GEventToManyCertEventFilter,
+            GEventToManyCertEventFilterBuilder> {
+  _$GEventToManyCertEventFilter? _$v;
+
+  GCertEventFilterBuilder? _every;
+  GCertEventFilterBuilder get every =>
+      _$this._every ??= new GCertEventFilterBuilder();
+  set every(GCertEventFilterBuilder? every) => _$this._every = every;
+
+  GCertEventFilterBuilder? _some;
+  GCertEventFilterBuilder get some =>
+      _$this._some ??= new GCertEventFilterBuilder();
+  set some(GCertEventFilterBuilder? some) => _$this._some = some;
+
+  GCertEventFilterBuilder? _none;
+  GCertEventFilterBuilder get none =>
+      _$this._none ??= new GCertEventFilterBuilder();
+  set none(GCertEventFilterBuilder? none) => _$this._none = none;
+
+  GEventToManyCertEventFilterBuilder();
+
+  GEventToManyCertEventFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GEventToManyCertEventFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GEventToManyCertEventFilter;
+  }
+
+  @override
+  void update(void Function(GEventToManyCertEventFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GEventToManyCertEventFilter build() => _build();
+
+  _$GEventToManyCertEventFilter _build() {
+    _$GEventToManyCertEventFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GEventToManyCertEventFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GEventToManyCertEventFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GEventToManyCertFilter extends GEventToManyCertFilter {
+  @override
+  final GCertFilter? every;
+  @override
+  final GCertFilter? some;
+  @override
+  final GCertFilter? none;
+
+  factory _$GEventToManyCertFilter(
+          [void Function(GEventToManyCertFilterBuilder)? updates]) =>
+      (new GEventToManyCertFilterBuilder()..update(updates))._build();
+
+  _$GEventToManyCertFilter._({this.every, this.some, this.none}) : super._();
+
+  @override
+  GEventToManyCertFilter rebuild(
+          void Function(GEventToManyCertFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GEventToManyCertFilterBuilder toBuilder() =>
+      new GEventToManyCertFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GEventToManyCertFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GEventToManyCertFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GEventToManyCertFilterBuilder
+    implements Builder<GEventToManyCertFilter, GEventToManyCertFilterBuilder> {
+  _$GEventToManyCertFilter? _$v;
+
+  GCertFilterBuilder? _every;
+  GCertFilterBuilder get every => _$this._every ??= new GCertFilterBuilder();
+  set every(GCertFilterBuilder? every) => _$this._every = every;
+
+  GCertFilterBuilder? _some;
+  GCertFilterBuilder get some => _$this._some ??= new GCertFilterBuilder();
+  set some(GCertFilterBuilder? some) => _$this._some = some;
+
+  GCertFilterBuilder? _none;
+  GCertFilterBuilder get none => _$this._none ??= new GCertFilterBuilder();
+  set none(GCertFilterBuilder? none) => _$this._none = none;
+
+  GEventToManyCertFilterBuilder();
+
+  GEventToManyCertFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GEventToManyCertFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GEventToManyCertFilter;
+  }
+
+  @override
+  void update(void Function(GEventToManyCertFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GEventToManyCertFilter build() => _build();
+
+  _$GEventToManyCertFilter _build() {
+    _$GEventToManyCertFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GEventToManyCertFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GEventToManyCertFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GEventToManyIdentityFilter extends GEventToManyIdentityFilter {
+  @override
+  final GIdentityFilter? every;
+  @override
+  final GIdentityFilter? some;
+  @override
+  final GIdentityFilter? none;
+
+  factory _$GEventToManyIdentityFilter(
+          [void Function(GEventToManyIdentityFilterBuilder)? updates]) =>
+      (new GEventToManyIdentityFilterBuilder()..update(updates))._build();
+
+  _$GEventToManyIdentityFilter._({this.every, this.some, this.none})
+      : super._();
+
+  @override
+  GEventToManyIdentityFilter rebuild(
+          void Function(GEventToManyIdentityFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GEventToManyIdentityFilterBuilder toBuilder() =>
+      new GEventToManyIdentityFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GEventToManyIdentityFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GEventToManyIdentityFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GEventToManyIdentityFilterBuilder
+    implements
+        Builder<GEventToManyIdentityFilter, GEventToManyIdentityFilterBuilder> {
+  _$GEventToManyIdentityFilter? _$v;
+
+  GIdentityFilterBuilder? _every;
+  GIdentityFilterBuilder get every =>
+      _$this._every ??= new GIdentityFilterBuilder();
+  set every(GIdentityFilterBuilder? every) => _$this._every = every;
+
+  GIdentityFilterBuilder? _some;
+  GIdentityFilterBuilder get some =>
+      _$this._some ??= new GIdentityFilterBuilder();
+  set some(GIdentityFilterBuilder? some) => _$this._some = some;
+
+  GIdentityFilterBuilder? _none;
+  GIdentityFilterBuilder get none =>
+      _$this._none ??= new GIdentityFilterBuilder();
+  set none(GIdentityFilterBuilder? none) => _$this._none = none;
+
+  GEventToManyIdentityFilterBuilder();
+
+  GEventToManyIdentityFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GEventToManyIdentityFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GEventToManyIdentityFilter;
+  }
+
+  @override
+  void update(void Function(GEventToManyIdentityFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GEventToManyIdentityFilter build() => _build();
+
+  _$GEventToManyIdentityFilter _build() {
+    _$GEventToManyIdentityFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GEventToManyIdentityFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GEventToManyIdentityFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GEventToManyMembershipEventFilter
+    extends GEventToManyMembershipEventFilter {
+  @override
+  final GMembershipEventFilter? every;
+  @override
+  final GMembershipEventFilter? some;
+  @override
+  final GMembershipEventFilter? none;
+
+  factory _$GEventToManyMembershipEventFilter(
+          [void Function(GEventToManyMembershipEventFilterBuilder)? updates]) =>
+      (new GEventToManyMembershipEventFilterBuilder()..update(updates))
+          ._build();
+
+  _$GEventToManyMembershipEventFilter._({this.every, this.some, this.none})
+      : super._();
+
+  @override
+  GEventToManyMembershipEventFilter rebuild(
+          void Function(GEventToManyMembershipEventFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GEventToManyMembershipEventFilterBuilder toBuilder() =>
+      new GEventToManyMembershipEventFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GEventToManyMembershipEventFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GEventToManyMembershipEventFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GEventToManyMembershipEventFilterBuilder
+    implements
+        Builder<GEventToManyMembershipEventFilter,
+            GEventToManyMembershipEventFilterBuilder> {
+  _$GEventToManyMembershipEventFilter? _$v;
+
+  GMembershipEventFilterBuilder? _every;
+  GMembershipEventFilterBuilder get every =>
+      _$this._every ??= new GMembershipEventFilterBuilder();
+  set every(GMembershipEventFilterBuilder? every) => _$this._every = every;
+
+  GMembershipEventFilterBuilder? _some;
+  GMembershipEventFilterBuilder get some =>
+      _$this._some ??= new GMembershipEventFilterBuilder();
+  set some(GMembershipEventFilterBuilder? some) => _$this._some = some;
+
+  GMembershipEventFilterBuilder? _none;
+  GMembershipEventFilterBuilder get none =>
+      _$this._none ??= new GMembershipEventFilterBuilder();
+  set none(GMembershipEventFilterBuilder? none) => _$this._none = none;
+
+  GEventToManyMembershipEventFilterBuilder();
+
+  GEventToManyMembershipEventFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GEventToManyMembershipEventFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GEventToManyMembershipEventFilter;
+  }
+
+  @override
+  void update(
+      void Function(GEventToManyMembershipEventFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GEventToManyMembershipEventFilter build() => _build();
+
+  _$GEventToManyMembershipEventFilter _build() {
+    _$GEventToManyMembershipEventFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GEventToManyMembershipEventFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GEventToManyMembershipEventFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GEventToManySmithEventFilter extends GEventToManySmithEventFilter {
+  @override
+  final GSmithEventFilter? every;
+  @override
+  final GSmithEventFilter? some;
+  @override
+  final GSmithEventFilter? none;
+
+  factory _$GEventToManySmithEventFilter(
+          [void Function(GEventToManySmithEventFilterBuilder)? updates]) =>
+      (new GEventToManySmithEventFilterBuilder()..update(updates))._build();
+
+  _$GEventToManySmithEventFilter._({this.every, this.some, this.none})
+      : super._();
+
+  @override
+  GEventToManySmithEventFilter rebuild(
+          void Function(GEventToManySmithEventFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GEventToManySmithEventFilterBuilder toBuilder() =>
+      new GEventToManySmithEventFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GEventToManySmithEventFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GEventToManySmithEventFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GEventToManySmithEventFilterBuilder
+    implements
+        Builder<GEventToManySmithEventFilter,
+            GEventToManySmithEventFilterBuilder> {
+  _$GEventToManySmithEventFilter? _$v;
+
+  GSmithEventFilterBuilder? _every;
+  GSmithEventFilterBuilder get every =>
+      _$this._every ??= new GSmithEventFilterBuilder();
+  set every(GSmithEventFilterBuilder? every) => _$this._every = every;
+
+  GSmithEventFilterBuilder? _some;
+  GSmithEventFilterBuilder get some =>
+      _$this._some ??= new GSmithEventFilterBuilder();
+  set some(GSmithEventFilterBuilder? some) => _$this._some = some;
+
+  GSmithEventFilterBuilder? _none;
+  GSmithEventFilterBuilder get none =>
+      _$this._none ??= new GSmithEventFilterBuilder();
+  set none(GSmithEventFilterBuilder? none) => _$this._none = none;
+
+  GEventToManySmithEventFilterBuilder();
+
+  GEventToManySmithEventFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GEventToManySmithEventFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GEventToManySmithEventFilter;
+  }
+
+  @override
+  void update(void Function(GEventToManySmithEventFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GEventToManySmithEventFilter build() => _build();
+
+  _$GEventToManySmithEventFilter _build() {
+    _$GEventToManySmithEventFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GEventToManySmithEventFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GEventToManySmithEventFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GEventToManyTransferFilter extends GEventToManyTransferFilter {
+  @override
+  final GTransferFilter? every;
+  @override
+  final GTransferFilter? some;
+  @override
+  final GTransferFilter? none;
+
+  factory _$GEventToManyTransferFilter(
+          [void Function(GEventToManyTransferFilterBuilder)? updates]) =>
+      (new GEventToManyTransferFilterBuilder()..update(updates))._build();
+
+  _$GEventToManyTransferFilter._({this.every, this.some, this.none})
+      : super._();
+
+  @override
+  GEventToManyTransferFilter rebuild(
+          void Function(GEventToManyTransferFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GEventToManyTransferFilterBuilder toBuilder() =>
+      new GEventToManyTransferFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GEventToManyTransferFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GEventToManyTransferFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GEventToManyTransferFilterBuilder
+    implements
+        Builder<GEventToManyTransferFilter, GEventToManyTransferFilterBuilder> {
+  _$GEventToManyTransferFilter? _$v;
+
+  GTransferFilterBuilder? _every;
+  GTransferFilterBuilder get every =>
+      _$this._every ??= new GTransferFilterBuilder();
+  set every(GTransferFilterBuilder? every) => _$this._every = every;
+
+  GTransferFilterBuilder? _some;
+  GTransferFilterBuilder get some =>
+      _$this._some ??= new GTransferFilterBuilder();
+  set some(GTransferFilterBuilder? some) => _$this._some = some;
+
+  GTransferFilterBuilder? _none;
+  GTransferFilterBuilder get none =>
+      _$this._none ??= new GTransferFilterBuilder();
+  set none(GTransferFilterBuilder? none) => _$this._none = none;
+
+  GEventToManyTransferFilterBuilder();
+
+  GEventToManyTransferFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GEventToManyTransferFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GEventToManyTransferFilter;
+  }
+
+  @override
+  void update(void Function(GEventToManyTransferFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GEventToManyTransferFilter build() => _build();
+
+  _$GEventToManyTransferFilter _build() {
+    _$GEventToManyTransferFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GEventToManyTransferFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GEventToManyTransferFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GEventToManyTxCommentFilter extends GEventToManyTxCommentFilter {
+  @override
+  final GTxCommentFilter? every;
+  @override
+  final GTxCommentFilter? some;
+  @override
+  final GTxCommentFilter? none;
+
+  factory _$GEventToManyTxCommentFilter(
+          [void Function(GEventToManyTxCommentFilterBuilder)? updates]) =>
+      (new GEventToManyTxCommentFilterBuilder()..update(updates))._build();
+
+  _$GEventToManyTxCommentFilter._({this.every, this.some, this.none})
+      : super._();
+
+  @override
+  GEventToManyTxCommentFilter rebuild(
+          void Function(GEventToManyTxCommentFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GEventToManyTxCommentFilterBuilder toBuilder() =>
+      new GEventToManyTxCommentFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GEventToManyTxCommentFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GEventToManyTxCommentFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GEventToManyTxCommentFilterBuilder
+    implements
+        Builder<GEventToManyTxCommentFilter,
+            GEventToManyTxCommentFilterBuilder> {
+  _$GEventToManyTxCommentFilter? _$v;
+
+  GTxCommentFilterBuilder? _every;
+  GTxCommentFilterBuilder get every =>
+      _$this._every ??= new GTxCommentFilterBuilder();
+  set every(GTxCommentFilterBuilder? every) => _$this._every = every;
+
+  GTxCommentFilterBuilder? _some;
+  GTxCommentFilterBuilder get some =>
+      _$this._some ??= new GTxCommentFilterBuilder();
+  set some(GTxCommentFilterBuilder? some) => _$this._some = some;
+
+  GTxCommentFilterBuilder? _none;
+  GTxCommentFilterBuilder get none =>
+      _$this._none ??= new GTxCommentFilterBuilder();
+  set none(GTxCommentFilterBuilder? none) => _$this._none = none;
+
+  GEventToManyTxCommentFilterBuilder();
+
+  GEventToManyTxCommentFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GEventToManyTxCommentFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GEventToManyTxCommentFilter;
+  }
+
+  @override
+  void update(void Function(GEventToManyTxCommentFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GEventToManyTxCommentFilter build() => _build();
+
+  _$GEventToManyTxCommentFilter _build() {
+    _$GEventToManyTxCommentFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GEventToManyTxCommentFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GEventToManyTxCommentFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GEventToManyUdReevalFilter extends GEventToManyUdReevalFilter {
+  @override
+  final GUdReevalFilter? every;
+  @override
+  final GUdReevalFilter? some;
+  @override
+  final GUdReevalFilter? none;
+
+  factory _$GEventToManyUdReevalFilter(
+          [void Function(GEventToManyUdReevalFilterBuilder)? updates]) =>
+      (new GEventToManyUdReevalFilterBuilder()..update(updates))._build();
+
+  _$GEventToManyUdReevalFilter._({this.every, this.some, this.none})
+      : super._();
+
+  @override
+  GEventToManyUdReevalFilter rebuild(
+          void Function(GEventToManyUdReevalFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GEventToManyUdReevalFilterBuilder toBuilder() =>
+      new GEventToManyUdReevalFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GEventToManyUdReevalFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GEventToManyUdReevalFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GEventToManyUdReevalFilterBuilder
+    implements
+        Builder<GEventToManyUdReevalFilter, GEventToManyUdReevalFilterBuilder> {
+  _$GEventToManyUdReevalFilter? _$v;
+
+  GUdReevalFilterBuilder? _every;
+  GUdReevalFilterBuilder get every =>
+      _$this._every ??= new GUdReevalFilterBuilder();
+  set every(GUdReevalFilterBuilder? every) => _$this._every = every;
+
+  GUdReevalFilterBuilder? _some;
+  GUdReevalFilterBuilder get some =>
+      _$this._some ??= new GUdReevalFilterBuilder();
+  set some(GUdReevalFilterBuilder? some) => _$this._some = some;
+
+  GUdReevalFilterBuilder? _none;
+  GUdReevalFilterBuilder get none =>
+      _$this._none ??= new GUdReevalFilterBuilder();
+  set none(GUdReevalFilterBuilder? none) => _$this._none = none;
+
+  GEventToManyUdReevalFilterBuilder();
+
+  GEventToManyUdReevalFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GEventToManyUdReevalFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GEventToManyUdReevalFilter;
+  }
+
+  @override
+  void update(void Function(GEventToManyUdReevalFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GEventToManyUdReevalFilter build() => _build();
+
+  _$GEventToManyUdReevalFilter _build() {
+    _$GEventToManyUdReevalFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GEventToManyUdReevalFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GEventToManyUdReevalFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GEventToManyUniversalDividendFilter
+    extends GEventToManyUniversalDividendFilter {
+  @override
+  final GUniversalDividendFilter? every;
+  @override
+  final GUniversalDividendFilter? some;
+  @override
+  final GUniversalDividendFilter? none;
+
+  factory _$GEventToManyUniversalDividendFilter(
+          [void Function(GEventToManyUniversalDividendFilterBuilder)?
+              updates]) =>
+      (new GEventToManyUniversalDividendFilterBuilder()..update(updates))
+          ._build();
+
+  _$GEventToManyUniversalDividendFilter._({this.every, this.some, this.none})
+      : super._();
+
+  @override
+  GEventToManyUniversalDividendFilter rebuild(
+          void Function(GEventToManyUniversalDividendFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GEventToManyUniversalDividendFilterBuilder toBuilder() =>
+      new GEventToManyUniversalDividendFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GEventToManyUniversalDividendFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GEventToManyUniversalDividendFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GEventToManyUniversalDividendFilterBuilder
+    implements
+        Builder<GEventToManyUniversalDividendFilter,
+            GEventToManyUniversalDividendFilterBuilder> {
+  _$GEventToManyUniversalDividendFilter? _$v;
+
+  GUniversalDividendFilterBuilder? _every;
+  GUniversalDividendFilterBuilder get every =>
+      _$this._every ??= new GUniversalDividendFilterBuilder();
+  set every(GUniversalDividendFilterBuilder? every) => _$this._every = every;
+
+  GUniversalDividendFilterBuilder? _some;
+  GUniversalDividendFilterBuilder get some =>
+      _$this._some ??= new GUniversalDividendFilterBuilder();
+  set some(GUniversalDividendFilterBuilder? some) => _$this._some = some;
+
+  GUniversalDividendFilterBuilder? _none;
+  GUniversalDividendFilterBuilder get none =>
+      _$this._none ??= new GUniversalDividendFilterBuilder();
+  set none(GUniversalDividendFilterBuilder? none) => _$this._none = none;
+
+  GEventToManyUniversalDividendFilterBuilder();
+
+  GEventToManyUniversalDividendFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GEventToManyUniversalDividendFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GEventToManyUniversalDividendFilter;
+  }
+
+  @override
+  void update(
+      void Function(GEventToManyUniversalDividendFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GEventToManyUniversalDividendFilter build() => _build();
+
+  _$GEventToManyUniversalDividendFilter _build() {
+    _$GEventToManyUniversalDividendFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GEventToManyUniversalDividendFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GEventToManyUniversalDividendFilter',
+            _$failedField,
+            e.toString());
       }
       rethrow;
     }
@@ -15353,6 +23069,22 @@ class _$GExtrinsicFilter extends GExtrinsicFilter {
   @override
   final GStringFilter? callId;
   @override
+  final GExtrinsicToManyEventFilter? events;
+  @override
+  final bool? eventsExist;
+  @override
+  final GExtrinsicToManyCallFilter? calls;
+  @override
+  final bool? callsExist;
+  @override
+  final GBlockFilter? block;
+  @override
+  final bool? blockExists;
+  @override
+  final GCallFilter? call;
+  @override
+  final bool? callExists;
+  @override
   final BuiltList<GExtrinsicFilter>? and;
   @override
   final BuiltList<GExtrinsicFilter>? or;
@@ -15374,6 +23106,14 @@ class _$GExtrinsicFilter extends GExtrinsicFilter {
       this.error,
       this.blockId,
       this.callId,
+      this.events,
+      this.eventsExist,
+      this.calls,
+      this.callsExist,
+      this.block,
+      this.blockExists,
+      this.call,
+      this.callExists,
       this.and,
       this.or,
       this.not})
@@ -15401,6 +23141,14 @@ class _$GExtrinsicFilter extends GExtrinsicFilter {
         error == other.error &&
         blockId == other.blockId &&
         callId == other.callId &&
+        events == other.events &&
+        eventsExist == other.eventsExist &&
+        calls == other.calls &&
+        callsExist == other.callsExist &&
+        block == other.block &&
+        blockExists == other.blockExists &&
+        call == other.call &&
+        callExists == other.callExists &&
         and == other.and &&
         or == other.or &&
         not == other.not;
@@ -15419,6 +23167,14 @@ class _$GExtrinsicFilter extends GExtrinsicFilter {
     _$hash = $jc(_$hash, error.hashCode);
     _$hash = $jc(_$hash, blockId.hashCode);
     _$hash = $jc(_$hash, callId.hashCode);
+    _$hash = $jc(_$hash, events.hashCode);
+    _$hash = $jc(_$hash, eventsExist.hashCode);
+    _$hash = $jc(_$hash, calls.hashCode);
+    _$hash = $jc(_$hash, callsExist.hashCode);
+    _$hash = $jc(_$hash, block.hashCode);
+    _$hash = $jc(_$hash, blockExists.hashCode);
+    _$hash = $jc(_$hash, call.hashCode);
+    _$hash = $jc(_$hash, callExists.hashCode);
     _$hash = $jc(_$hash, and.hashCode);
     _$hash = $jc(_$hash, or.hashCode);
     _$hash = $jc(_$hash, not.hashCode);
@@ -15439,6 +23195,14 @@ class _$GExtrinsicFilter extends GExtrinsicFilter {
           ..add('error', error)
           ..add('blockId', blockId)
           ..add('callId', callId)
+          ..add('events', events)
+          ..add('eventsExist', eventsExist)
+          ..add('calls', calls)
+          ..add('callsExist', callsExist)
+          ..add('block', block)
+          ..add('blockExists', blockExists)
+          ..add('call', call)
+          ..add('callExists', callExists)
           ..add('and', and)
           ..add('or', or)
           ..add('not', not))
@@ -15496,6 +23260,41 @@ class GExtrinsicFilterBuilder
       _$this._callId ??= new GStringFilterBuilder();
   set callId(GStringFilterBuilder? callId) => _$this._callId = callId;
 
+  GExtrinsicToManyEventFilterBuilder? _events;
+  GExtrinsicToManyEventFilterBuilder get events =>
+      _$this._events ??= new GExtrinsicToManyEventFilterBuilder();
+  set events(GExtrinsicToManyEventFilterBuilder? events) =>
+      _$this._events = events;
+
+  bool? _eventsExist;
+  bool? get eventsExist => _$this._eventsExist;
+  set eventsExist(bool? eventsExist) => _$this._eventsExist = eventsExist;
+
+  GExtrinsicToManyCallFilterBuilder? _calls;
+  GExtrinsicToManyCallFilterBuilder get calls =>
+      _$this._calls ??= new GExtrinsicToManyCallFilterBuilder();
+  set calls(GExtrinsicToManyCallFilterBuilder? calls) => _$this._calls = calls;
+
+  bool? _callsExist;
+  bool? get callsExist => _$this._callsExist;
+  set callsExist(bool? callsExist) => _$this._callsExist = callsExist;
+
+  GBlockFilterBuilder? _block;
+  GBlockFilterBuilder get block => _$this._block ??= new GBlockFilterBuilder();
+  set block(GBlockFilterBuilder? block) => _$this._block = block;
+
+  bool? _blockExists;
+  bool? get blockExists => _$this._blockExists;
+  set blockExists(bool? blockExists) => _$this._blockExists = blockExists;
+
+  GCallFilterBuilder? _call;
+  GCallFilterBuilder get call => _$this._call ??= new GCallFilterBuilder();
+  set call(GCallFilterBuilder? call) => _$this._call = call;
+
+  bool? _callExists;
+  bool? get callExists => _$this._callExists;
+  set callExists(bool? callExists) => _$this._callExists = callExists;
+
   ListBuilder<GExtrinsicFilter>? _and;
   ListBuilder<GExtrinsicFilter> get and =>
       _$this._and ??= new ListBuilder<GExtrinsicFilter>();
@@ -15526,6 +23325,14 @@ class GExtrinsicFilterBuilder
       _error = $v.error?.toBuilder();
       _blockId = $v.blockId?.toBuilder();
       _callId = $v.callId?.toBuilder();
+      _events = $v.events?.toBuilder();
+      _eventsExist = $v.eventsExist;
+      _calls = $v.calls?.toBuilder();
+      _callsExist = $v.callsExist;
+      _block = $v.block?.toBuilder();
+      _blockExists = $v.blockExists;
+      _call = $v.call?.toBuilder();
+      _callExists = $v.callExists;
       _and = $v.and?.toBuilder();
       _or = $v.or?.toBuilder();
       _not = $v.not?.toBuilder();
@@ -15563,6 +23370,14 @@ class GExtrinsicFilterBuilder
               error: _error?.build(),
               blockId: _blockId?.build(),
               callId: _callId?.build(),
+              events: _events?.build(),
+              eventsExist: eventsExist,
+              calls: _calls?.build(),
+              callsExist: callsExist,
+              block: _block?.build(),
+              blockExists: blockExists,
+              call: _call?.build(),
+              callExists: callExists,
               and: _and?.build(),
               or: _or?.build(),
               not: _not?.build());
@@ -15589,6 +23404,18 @@ class GExtrinsicFilterBuilder
         _blockId?.build();
         _$failedField = 'callId';
         _callId?.build();
+        _$failedField = 'events';
+        _events?.build();
+
+        _$failedField = 'calls';
+        _calls?.build();
+
+        _$failedField = 'block';
+        _block?.build();
+
+        _$failedField = 'call';
+        _call?.build();
+
         _$failedField = 'and';
         _and?.build();
         _$failedField = 'or';
@@ -15598,6 +23425,257 @@ class GExtrinsicFilterBuilder
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'GExtrinsicFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GExtrinsicToManyCallFilter extends GExtrinsicToManyCallFilter {
+  @override
+  final GCallFilter? every;
+  @override
+  final GCallFilter? some;
+  @override
+  final GCallFilter? none;
+
+  factory _$GExtrinsicToManyCallFilter(
+          [void Function(GExtrinsicToManyCallFilterBuilder)? updates]) =>
+      (new GExtrinsicToManyCallFilterBuilder()..update(updates))._build();
+
+  _$GExtrinsicToManyCallFilter._({this.every, this.some, this.none})
+      : super._();
+
+  @override
+  GExtrinsicToManyCallFilter rebuild(
+          void Function(GExtrinsicToManyCallFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GExtrinsicToManyCallFilterBuilder toBuilder() =>
+      new GExtrinsicToManyCallFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GExtrinsicToManyCallFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GExtrinsicToManyCallFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GExtrinsicToManyCallFilterBuilder
+    implements
+        Builder<GExtrinsicToManyCallFilter, GExtrinsicToManyCallFilterBuilder> {
+  _$GExtrinsicToManyCallFilter? _$v;
+
+  GCallFilterBuilder? _every;
+  GCallFilterBuilder get every => _$this._every ??= new GCallFilterBuilder();
+  set every(GCallFilterBuilder? every) => _$this._every = every;
+
+  GCallFilterBuilder? _some;
+  GCallFilterBuilder get some => _$this._some ??= new GCallFilterBuilder();
+  set some(GCallFilterBuilder? some) => _$this._some = some;
+
+  GCallFilterBuilder? _none;
+  GCallFilterBuilder get none => _$this._none ??= new GCallFilterBuilder();
+  set none(GCallFilterBuilder? none) => _$this._none = none;
+
+  GExtrinsicToManyCallFilterBuilder();
+
+  GExtrinsicToManyCallFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GExtrinsicToManyCallFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GExtrinsicToManyCallFilter;
+  }
+
+  @override
+  void update(void Function(GExtrinsicToManyCallFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GExtrinsicToManyCallFilter build() => _build();
+
+  _$GExtrinsicToManyCallFilter _build() {
+    _$GExtrinsicToManyCallFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GExtrinsicToManyCallFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GExtrinsicToManyCallFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GExtrinsicToManyEventFilter extends GExtrinsicToManyEventFilter {
+  @override
+  final GEventFilter? every;
+  @override
+  final GEventFilter? some;
+  @override
+  final GEventFilter? none;
+
+  factory _$GExtrinsicToManyEventFilter(
+          [void Function(GExtrinsicToManyEventFilterBuilder)? updates]) =>
+      (new GExtrinsicToManyEventFilterBuilder()..update(updates))._build();
+
+  _$GExtrinsicToManyEventFilter._({this.every, this.some, this.none})
+      : super._();
+
+  @override
+  GExtrinsicToManyEventFilter rebuild(
+          void Function(GExtrinsicToManyEventFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GExtrinsicToManyEventFilterBuilder toBuilder() =>
+      new GExtrinsicToManyEventFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GExtrinsicToManyEventFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GExtrinsicToManyEventFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GExtrinsicToManyEventFilterBuilder
+    implements
+        Builder<GExtrinsicToManyEventFilter,
+            GExtrinsicToManyEventFilterBuilder> {
+  _$GExtrinsicToManyEventFilter? _$v;
+
+  GEventFilterBuilder? _every;
+  GEventFilterBuilder get every => _$this._every ??= new GEventFilterBuilder();
+  set every(GEventFilterBuilder? every) => _$this._every = every;
+
+  GEventFilterBuilder? _some;
+  GEventFilterBuilder get some => _$this._some ??= new GEventFilterBuilder();
+  set some(GEventFilterBuilder? some) => _$this._some = some;
+
+  GEventFilterBuilder? _none;
+  GEventFilterBuilder get none => _$this._none ??= new GEventFilterBuilder();
+  set none(GEventFilterBuilder? none) => _$this._none = none;
+
+  GExtrinsicToManyEventFilterBuilder();
+
+  GExtrinsicToManyEventFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GExtrinsicToManyEventFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GExtrinsicToManyEventFilter;
+  }
+
+  @override
+  void update(void Function(GExtrinsicToManyEventFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GExtrinsicToManyEventFilter build() => _build();
+
+  _$GExtrinsicToManyEventFilter _build() {
+    _$GExtrinsicToManyEventFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GExtrinsicToManyEventFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GExtrinsicToManyEventFilter', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -15852,6 +23930,46 @@ class _$GIdentityFilter extends GIdentityFilter {
   @override
   final GStringFilter? createdInId;
   @override
+  final GIdentityToManyCertFilter? certIssued;
+  @override
+  final bool? certIssuedExist;
+  @override
+  final GIdentityToManyCertFilter? certReceived;
+  @override
+  final bool? certReceivedExist;
+  @override
+  final GIdentityToManyMembershipEventFilter? membershipHistory;
+  @override
+  final bool? membershipHistoryExist;
+  @override
+  final GIdentityToManyChangeOwnerKeyFilter? ownerKeyChange;
+  @override
+  final bool? ownerKeyChangeExist;
+  @override
+  final GSmithFilter? smith;
+  @override
+  final bool? smithExists;
+  @override
+  final GIdentityToManyUdHistoryFilter? udHistoryRecords;
+  @override
+  final bool? udHistoryRecordsExist;
+  @override
+  final GIdentityToManyAccountFilter? accountsByLinkedIdentityId;
+  @override
+  final bool? accountsByLinkedIdentityIdExist;
+  @override
+  final GAccountFilter? account;
+  @override
+  final bool? accountExists;
+  @override
+  final GAccountFilter? accountRemoved;
+  @override
+  final bool? accountRemovedExists;
+  @override
+  final GEventFilter? createdIn;
+  @override
+  final bool? createdInExists;
+  @override
   final BuiltList<GIdentityFilter>? and;
   @override
   final BuiltList<GIdentityFilter>? or;
@@ -15874,6 +23992,26 @@ class _$GIdentityFilter extends GIdentityFilter {
       this.accountId,
       this.accountRemovedId,
       this.createdInId,
+      this.certIssued,
+      this.certIssuedExist,
+      this.certReceived,
+      this.certReceivedExist,
+      this.membershipHistory,
+      this.membershipHistoryExist,
+      this.ownerKeyChange,
+      this.ownerKeyChangeExist,
+      this.smith,
+      this.smithExists,
+      this.udHistoryRecords,
+      this.udHistoryRecordsExist,
+      this.accountsByLinkedIdentityId,
+      this.accountsByLinkedIdentityIdExist,
+      this.account,
+      this.accountExists,
+      this.accountRemoved,
+      this.accountRemovedExists,
+      this.createdIn,
+      this.createdInExists,
       this.and,
       this.or,
       this.not})
@@ -15903,6 +24041,27 @@ class _$GIdentityFilter extends GIdentityFilter {
         accountId == other.accountId &&
         accountRemovedId == other.accountRemovedId &&
         createdInId == other.createdInId &&
+        certIssued == other.certIssued &&
+        certIssuedExist == other.certIssuedExist &&
+        certReceived == other.certReceived &&
+        certReceivedExist == other.certReceivedExist &&
+        membershipHistory == other.membershipHistory &&
+        membershipHistoryExist == other.membershipHistoryExist &&
+        ownerKeyChange == other.ownerKeyChange &&
+        ownerKeyChangeExist == other.ownerKeyChangeExist &&
+        smith == other.smith &&
+        smithExists == other.smithExists &&
+        udHistoryRecords == other.udHistoryRecords &&
+        udHistoryRecordsExist == other.udHistoryRecordsExist &&
+        accountsByLinkedIdentityId == other.accountsByLinkedIdentityId &&
+        accountsByLinkedIdentityIdExist ==
+            other.accountsByLinkedIdentityIdExist &&
+        account == other.account &&
+        accountExists == other.accountExists &&
+        accountRemoved == other.accountRemoved &&
+        accountRemovedExists == other.accountRemovedExists &&
+        createdIn == other.createdIn &&
+        createdInExists == other.createdInExists &&
         and == other.and &&
         or == other.or &&
         not == other.not;
@@ -15923,6 +24082,26 @@ class _$GIdentityFilter extends GIdentityFilter {
     _$hash = $jc(_$hash, accountId.hashCode);
     _$hash = $jc(_$hash, accountRemovedId.hashCode);
     _$hash = $jc(_$hash, createdInId.hashCode);
+    _$hash = $jc(_$hash, certIssued.hashCode);
+    _$hash = $jc(_$hash, certIssuedExist.hashCode);
+    _$hash = $jc(_$hash, certReceived.hashCode);
+    _$hash = $jc(_$hash, certReceivedExist.hashCode);
+    _$hash = $jc(_$hash, membershipHistory.hashCode);
+    _$hash = $jc(_$hash, membershipHistoryExist.hashCode);
+    _$hash = $jc(_$hash, ownerKeyChange.hashCode);
+    _$hash = $jc(_$hash, ownerKeyChangeExist.hashCode);
+    _$hash = $jc(_$hash, smith.hashCode);
+    _$hash = $jc(_$hash, smithExists.hashCode);
+    _$hash = $jc(_$hash, udHistoryRecords.hashCode);
+    _$hash = $jc(_$hash, udHistoryRecordsExist.hashCode);
+    _$hash = $jc(_$hash, accountsByLinkedIdentityId.hashCode);
+    _$hash = $jc(_$hash, accountsByLinkedIdentityIdExist.hashCode);
+    _$hash = $jc(_$hash, account.hashCode);
+    _$hash = $jc(_$hash, accountExists.hashCode);
+    _$hash = $jc(_$hash, accountRemoved.hashCode);
+    _$hash = $jc(_$hash, accountRemovedExists.hashCode);
+    _$hash = $jc(_$hash, createdIn.hashCode);
+    _$hash = $jc(_$hash, createdInExists.hashCode);
     _$hash = $jc(_$hash, and.hashCode);
     _$hash = $jc(_$hash, or.hashCode);
     _$hash = $jc(_$hash, not.hashCode);
@@ -15945,6 +24124,27 @@ class _$GIdentityFilter extends GIdentityFilter {
           ..add('accountId', accountId)
           ..add('accountRemovedId', accountRemovedId)
           ..add('createdInId', createdInId)
+          ..add('certIssued', certIssued)
+          ..add('certIssuedExist', certIssuedExist)
+          ..add('certReceived', certReceived)
+          ..add('certReceivedExist', certReceivedExist)
+          ..add('membershipHistory', membershipHistory)
+          ..add('membershipHistoryExist', membershipHistoryExist)
+          ..add('ownerKeyChange', ownerKeyChange)
+          ..add('ownerKeyChangeExist', ownerKeyChangeExist)
+          ..add('smith', smith)
+          ..add('smithExists', smithExists)
+          ..add('udHistoryRecords', udHistoryRecords)
+          ..add('udHistoryRecordsExist', udHistoryRecordsExist)
+          ..add('accountsByLinkedIdentityId', accountsByLinkedIdentityId)
+          ..add('accountsByLinkedIdentityIdExist',
+              accountsByLinkedIdentityIdExist)
+          ..add('account', account)
+          ..add('accountExists', accountExists)
+          ..add('accountRemoved', accountRemoved)
+          ..add('accountRemovedExists', accountRemovedExists)
+          ..add('createdIn', createdIn)
+          ..add('createdInExists', createdInExists)
           ..add('and', and)
           ..add('or', or)
           ..add('not', not))
@@ -16018,6 +24218,120 @@ class GIdentityFilterBuilder
   set createdInId(GStringFilterBuilder? createdInId) =>
       _$this._createdInId = createdInId;
 
+  GIdentityToManyCertFilterBuilder? _certIssued;
+  GIdentityToManyCertFilterBuilder get certIssued =>
+      _$this._certIssued ??= new GIdentityToManyCertFilterBuilder();
+  set certIssued(GIdentityToManyCertFilterBuilder? certIssued) =>
+      _$this._certIssued = certIssued;
+
+  bool? _certIssuedExist;
+  bool? get certIssuedExist => _$this._certIssuedExist;
+  set certIssuedExist(bool? certIssuedExist) =>
+      _$this._certIssuedExist = certIssuedExist;
+
+  GIdentityToManyCertFilterBuilder? _certReceived;
+  GIdentityToManyCertFilterBuilder get certReceived =>
+      _$this._certReceived ??= new GIdentityToManyCertFilterBuilder();
+  set certReceived(GIdentityToManyCertFilterBuilder? certReceived) =>
+      _$this._certReceived = certReceived;
+
+  bool? _certReceivedExist;
+  bool? get certReceivedExist => _$this._certReceivedExist;
+  set certReceivedExist(bool? certReceivedExist) =>
+      _$this._certReceivedExist = certReceivedExist;
+
+  GIdentityToManyMembershipEventFilterBuilder? _membershipHistory;
+  GIdentityToManyMembershipEventFilterBuilder get membershipHistory =>
+      _$this._membershipHistory ??=
+          new GIdentityToManyMembershipEventFilterBuilder();
+  set membershipHistory(
+          GIdentityToManyMembershipEventFilterBuilder? membershipHistory) =>
+      _$this._membershipHistory = membershipHistory;
+
+  bool? _membershipHistoryExist;
+  bool? get membershipHistoryExist => _$this._membershipHistoryExist;
+  set membershipHistoryExist(bool? membershipHistoryExist) =>
+      _$this._membershipHistoryExist = membershipHistoryExist;
+
+  GIdentityToManyChangeOwnerKeyFilterBuilder? _ownerKeyChange;
+  GIdentityToManyChangeOwnerKeyFilterBuilder get ownerKeyChange =>
+      _$this._ownerKeyChange ??=
+          new GIdentityToManyChangeOwnerKeyFilterBuilder();
+  set ownerKeyChange(
+          GIdentityToManyChangeOwnerKeyFilterBuilder? ownerKeyChange) =>
+      _$this._ownerKeyChange = ownerKeyChange;
+
+  bool? _ownerKeyChangeExist;
+  bool? get ownerKeyChangeExist => _$this._ownerKeyChangeExist;
+  set ownerKeyChangeExist(bool? ownerKeyChangeExist) =>
+      _$this._ownerKeyChangeExist = ownerKeyChangeExist;
+
+  GSmithFilterBuilder? _smith;
+  GSmithFilterBuilder get smith => _$this._smith ??= new GSmithFilterBuilder();
+  set smith(GSmithFilterBuilder? smith) => _$this._smith = smith;
+
+  bool? _smithExists;
+  bool? get smithExists => _$this._smithExists;
+  set smithExists(bool? smithExists) => _$this._smithExists = smithExists;
+
+  GIdentityToManyUdHistoryFilterBuilder? _udHistoryRecords;
+  GIdentityToManyUdHistoryFilterBuilder get udHistoryRecords =>
+      _$this._udHistoryRecords ??= new GIdentityToManyUdHistoryFilterBuilder();
+  set udHistoryRecords(
+          GIdentityToManyUdHistoryFilterBuilder? udHistoryRecords) =>
+      _$this._udHistoryRecords = udHistoryRecords;
+
+  bool? _udHistoryRecordsExist;
+  bool? get udHistoryRecordsExist => _$this._udHistoryRecordsExist;
+  set udHistoryRecordsExist(bool? udHistoryRecordsExist) =>
+      _$this._udHistoryRecordsExist = udHistoryRecordsExist;
+
+  GIdentityToManyAccountFilterBuilder? _accountsByLinkedIdentityId;
+  GIdentityToManyAccountFilterBuilder get accountsByLinkedIdentityId =>
+      _$this._accountsByLinkedIdentityId ??=
+          new GIdentityToManyAccountFilterBuilder();
+  set accountsByLinkedIdentityId(
+          GIdentityToManyAccountFilterBuilder? accountsByLinkedIdentityId) =>
+      _$this._accountsByLinkedIdentityId = accountsByLinkedIdentityId;
+
+  bool? _accountsByLinkedIdentityIdExist;
+  bool? get accountsByLinkedIdentityIdExist =>
+      _$this._accountsByLinkedIdentityIdExist;
+  set accountsByLinkedIdentityIdExist(bool? accountsByLinkedIdentityIdExist) =>
+      _$this._accountsByLinkedIdentityIdExist = accountsByLinkedIdentityIdExist;
+
+  GAccountFilterBuilder? _account;
+  GAccountFilterBuilder get account =>
+      _$this._account ??= new GAccountFilterBuilder();
+  set account(GAccountFilterBuilder? account) => _$this._account = account;
+
+  bool? _accountExists;
+  bool? get accountExists => _$this._accountExists;
+  set accountExists(bool? accountExists) =>
+      _$this._accountExists = accountExists;
+
+  GAccountFilterBuilder? _accountRemoved;
+  GAccountFilterBuilder get accountRemoved =>
+      _$this._accountRemoved ??= new GAccountFilterBuilder();
+  set accountRemoved(GAccountFilterBuilder? accountRemoved) =>
+      _$this._accountRemoved = accountRemoved;
+
+  bool? _accountRemovedExists;
+  bool? get accountRemovedExists => _$this._accountRemovedExists;
+  set accountRemovedExists(bool? accountRemovedExists) =>
+      _$this._accountRemovedExists = accountRemovedExists;
+
+  GEventFilterBuilder? _createdIn;
+  GEventFilterBuilder get createdIn =>
+      _$this._createdIn ??= new GEventFilterBuilder();
+  set createdIn(GEventFilterBuilder? createdIn) =>
+      _$this._createdIn = createdIn;
+
+  bool? _createdInExists;
+  bool? get createdInExists => _$this._createdInExists;
+  set createdInExists(bool? createdInExists) =>
+      _$this._createdInExists = createdInExists;
+
   ListBuilder<GIdentityFilter>? _and;
   ListBuilder<GIdentityFilter> get and =>
       _$this._and ??= new ListBuilder<GIdentityFilter>();
@@ -16050,6 +24364,26 @@ class GIdentityFilterBuilder
       _accountId = $v.accountId?.toBuilder();
       _accountRemovedId = $v.accountRemovedId?.toBuilder();
       _createdInId = $v.createdInId?.toBuilder();
+      _certIssued = $v.certIssued?.toBuilder();
+      _certIssuedExist = $v.certIssuedExist;
+      _certReceived = $v.certReceived?.toBuilder();
+      _certReceivedExist = $v.certReceivedExist;
+      _membershipHistory = $v.membershipHistory?.toBuilder();
+      _membershipHistoryExist = $v.membershipHistoryExist;
+      _ownerKeyChange = $v.ownerKeyChange?.toBuilder();
+      _ownerKeyChangeExist = $v.ownerKeyChangeExist;
+      _smith = $v.smith?.toBuilder();
+      _smithExists = $v.smithExists;
+      _udHistoryRecords = $v.udHistoryRecords?.toBuilder();
+      _udHistoryRecordsExist = $v.udHistoryRecordsExist;
+      _accountsByLinkedIdentityId = $v.accountsByLinkedIdentityId?.toBuilder();
+      _accountsByLinkedIdentityIdExist = $v.accountsByLinkedIdentityIdExist;
+      _account = $v.account?.toBuilder();
+      _accountExists = $v.accountExists;
+      _accountRemoved = $v.accountRemoved?.toBuilder();
+      _accountRemovedExists = $v.accountRemovedExists;
+      _createdIn = $v.createdIn?.toBuilder();
+      _createdInExists = $v.createdInExists;
       _and = $v.and?.toBuilder();
       _or = $v.or?.toBuilder();
       _not = $v.not?.toBuilder();
@@ -16089,6 +24423,26 @@ class GIdentityFilterBuilder
               accountId: _accountId?.build(),
               accountRemovedId: _accountRemovedId?.build(),
               createdInId: _createdInId?.build(),
+              certIssued: _certIssued?.build(),
+              certIssuedExist: certIssuedExist,
+              certReceived: _certReceived?.build(),
+              certReceivedExist: certReceivedExist,
+              membershipHistory: _membershipHistory?.build(),
+              membershipHistoryExist: membershipHistoryExist,
+              ownerKeyChange: _ownerKeyChange?.build(),
+              ownerKeyChangeExist: ownerKeyChangeExist,
+              smith: _smith?.build(),
+              smithExists: smithExists,
+              udHistoryRecords: _udHistoryRecords?.build(),
+              udHistoryRecordsExist: udHistoryRecordsExist,
+              accountsByLinkedIdentityId: _accountsByLinkedIdentityId?.build(),
+              accountsByLinkedIdentityIdExist: accountsByLinkedIdentityIdExist,
+              account: _account?.build(),
+              accountExists: accountExists,
+              accountRemoved: _accountRemoved?.build(),
+              accountRemovedExists: accountRemovedExists,
+              createdIn: _createdIn?.build(),
+              createdInExists: createdInExists,
               and: _and?.build(),
               or: _or?.build(),
               not: _not?.build());
@@ -16119,6 +24473,36 @@ class GIdentityFilterBuilder
         _accountRemovedId?.build();
         _$failedField = 'createdInId';
         _createdInId?.build();
+        _$failedField = 'certIssued';
+        _certIssued?.build();
+
+        _$failedField = 'certReceived';
+        _certReceived?.build();
+
+        _$failedField = 'membershipHistory';
+        _membershipHistory?.build();
+
+        _$failedField = 'ownerKeyChange';
+        _ownerKeyChange?.build();
+
+        _$failedField = 'smith';
+        _smith?.build();
+
+        _$failedField = 'udHistoryRecords';
+        _udHistoryRecords?.build();
+
+        _$failedField = 'accountsByLinkedIdentityId';
+        _accountsByLinkedIdentityId?.build();
+
+        _$failedField = 'account';
+        _account?.build();
+
+        _$failedField = 'accountRemoved';
+        _accountRemoved?.build();
+
+        _$failedField = 'createdIn';
+        _createdIn?.build();
+
         _$failedField = 'and';
         _and?.build();
         _$failedField = 'or';
@@ -16128,6 +24512,658 @@ class GIdentityFilterBuilder
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'GIdentityFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GIdentityToManyAccountFilter extends GIdentityToManyAccountFilter {
+  @override
+  final GAccountFilter? every;
+  @override
+  final GAccountFilter? some;
+  @override
+  final GAccountFilter? none;
+
+  factory _$GIdentityToManyAccountFilter(
+          [void Function(GIdentityToManyAccountFilterBuilder)? updates]) =>
+      (new GIdentityToManyAccountFilterBuilder()..update(updates))._build();
+
+  _$GIdentityToManyAccountFilter._({this.every, this.some, this.none})
+      : super._();
+
+  @override
+  GIdentityToManyAccountFilter rebuild(
+          void Function(GIdentityToManyAccountFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GIdentityToManyAccountFilterBuilder toBuilder() =>
+      new GIdentityToManyAccountFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GIdentityToManyAccountFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GIdentityToManyAccountFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GIdentityToManyAccountFilterBuilder
+    implements
+        Builder<GIdentityToManyAccountFilter,
+            GIdentityToManyAccountFilterBuilder> {
+  _$GIdentityToManyAccountFilter? _$v;
+
+  GAccountFilterBuilder? _every;
+  GAccountFilterBuilder get every =>
+      _$this._every ??= new GAccountFilterBuilder();
+  set every(GAccountFilterBuilder? every) => _$this._every = every;
+
+  GAccountFilterBuilder? _some;
+  GAccountFilterBuilder get some =>
+      _$this._some ??= new GAccountFilterBuilder();
+  set some(GAccountFilterBuilder? some) => _$this._some = some;
+
+  GAccountFilterBuilder? _none;
+  GAccountFilterBuilder get none =>
+      _$this._none ??= new GAccountFilterBuilder();
+  set none(GAccountFilterBuilder? none) => _$this._none = none;
+
+  GIdentityToManyAccountFilterBuilder();
+
+  GIdentityToManyAccountFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GIdentityToManyAccountFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GIdentityToManyAccountFilter;
+  }
+
+  @override
+  void update(void Function(GIdentityToManyAccountFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GIdentityToManyAccountFilter build() => _build();
+
+  _$GIdentityToManyAccountFilter _build() {
+    _$GIdentityToManyAccountFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GIdentityToManyAccountFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GIdentityToManyAccountFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GIdentityToManyCertFilter extends GIdentityToManyCertFilter {
+  @override
+  final GCertFilter? every;
+  @override
+  final GCertFilter? some;
+  @override
+  final GCertFilter? none;
+
+  factory _$GIdentityToManyCertFilter(
+          [void Function(GIdentityToManyCertFilterBuilder)? updates]) =>
+      (new GIdentityToManyCertFilterBuilder()..update(updates))._build();
+
+  _$GIdentityToManyCertFilter._({this.every, this.some, this.none}) : super._();
+
+  @override
+  GIdentityToManyCertFilter rebuild(
+          void Function(GIdentityToManyCertFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GIdentityToManyCertFilterBuilder toBuilder() =>
+      new GIdentityToManyCertFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GIdentityToManyCertFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GIdentityToManyCertFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GIdentityToManyCertFilterBuilder
+    implements
+        Builder<GIdentityToManyCertFilter, GIdentityToManyCertFilterBuilder> {
+  _$GIdentityToManyCertFilter? _$v;
+
+  GCertFilterBuilder? _every;
+  GCertFilterBuilder get every => _$this._every ??= new GCertFilterBuilder();
+  set every(GCertFilterBuilder? every) => _$this._every = every;
+
+  GCertFilterBuilder? _some;
+  GCertFilterBuilder get some => _$this._some ??= new GCertFilterBuilder();
+  set some(GCertFilterBuilder? some) => _$this._some = some;
+
+  GCertFilterBuilder? _none;
+  GCertFilterBuilder get none => _$this._none ??= new GCertFilterBuilder();
+  set none(GCertFilterBuilder? none) => _$this._none = none;
+
+  GIdentityToManyCertFilterBuilder();
+
+  GIdentityToManyCertFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GIdentityToManyCertFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GIdentityToManyCertFilter;
+  }
+
+  @override
+  void update(void Function(GIdentityToManyCertFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GIdentityToManyCertFilter build() => _build();
+
+  _$GIdentityToManyCertFilter _build() {
+    _$GIdentityToManyCertFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GIdentityToManyCertFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GIdentityToManyCertFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GIdentityToManyChangeOwnerKeyFilter
+    extends GIdentityToManyChangeOwnerKeyFilter {
+  @override
+  final GChangeOwnerKeyFilter? every;
+  @override
+  final GChangeOwnerKeyFilter? some;
+  @override
+  final GChangeOwnerKeyFilter? none;
+
+  factory _$GIdentityToManyChangeOwnerKeyFilter(
+          [void Function(GIdentityToManyChangeOwnerKeyFilterBuilder)?
+              updates]) =>
+      (new GIdentityToManyChangeOwnerKeyFilterBuilder()..update(updates))
+          ._build();
+
+  _$GIdentityToManyChangeOwnerKeyFilter._({this.every, this.some, this.none})
+      : super._();
+
+  @override
+  GIdentityToManyChangeOwnerKeyFilter rebuild(
+          void Function(GIdentityToManyChangeOwnerKeyFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GIdentityToManyChangeOwnerKeyFilterBuilder toBuilder() =>
+      new GIdentityToManyChangeOwnerKeyFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GIdentityToManyChangeOwnerKeyFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GIdentityToManyChangeOwnerKeyFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GIdentityToManyChangeOwnerKeyFilterBuilder
+    implements
+        Builder<GIdentityToManyChangeOwnerKeyFilter,
+            GIdentityToManyChangeOwnerKeyFilterBuilder> {
+  _$GIdentityToManyChangeOwnerKeyFilter? _$v;
+
+  GChangeOwnerKeyFilterBuilder? _every;
+  GChangeOwnerKeyFilterBuilder get every =>
+      _$this._every ??= new GChangeOwnerKeyFilterBuilder();
+  set every(GChangeOwnerKeyFilterBuilder? every) => _$this._every = every;
+
+  GChangeOwnerKeyFilterBuilder? _some;
+  GChangeOwnerKeyFilterBuilder get some =>
+      _$this._some ??= new GChangeOwnerKeyFilterBuilder();
+  set some(GChangeOwnerKeyFilterBuilder? some) => _$this._some = some;
+
+  GChangeOwnerKeyFilterBuilder? _none;
+  GChangeOwnerKeyFilterBuilder get none =>
+      _$this._none ??= new GChangeOwnerKeyFilterBuilder();
+  set none(GChangeOwnerKeyFilterBuilder? none) => _$this._none = none;
+
+  GIdentityToManyChangeOwnerKeyFilterBuilder();
+
+  GIdentityToManyChangeOwnerKeyFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GIdentityToManyChangeOwnerKeyFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GIdentityToManyChangeOwnerKeyFilter;
+  }
+
+  @override
+  void update(
+      void Function(GIdentityToManyChangeOwnerKeyFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GIdentityToManyChangeOwnerKeyFilter build() => _build();
+
+  _$GIdentityToManyChangeOwnerKeyFilter _build() {
+    _$GIdentityToManyChangeOwnerKeyFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GIdentityToManyChangeOwnerKeyFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GIdentityToManyChangeOwnerKeyFilter',
+            _$failedField,
+            e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GIdentityToManyMembershipEventFilter
+    extends GIdentityToManyMembershipEventFilter {
+  @override
+  final GMembershipEventFilter? every;
+  @override
+  final GMembershipEventFilter? some;
+  @override
+  final GMembershipEventFilter? none;
+
+  factory _$GIdentityToManyMembershipEventFilter(
+          [void Function(GIdentityToManyMembershipEventFilterBuilder)?
+              updates]) =>
+      (new GIdentityToManyMembershipEventFilterBuilder()..update(updates))
+          ._build();
+
+  _$GIdentityToManyMembershipEventFilter._({this.every, this.some, this.none})
+      : super._();
+
+  @override
+  GIdentityToManyMembershipEventFilter rebuild(
+          void Function(GIdentityToManyMembershipEventFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GIdentityToManyMembershipEventFilterBuilder toBuilder() =>
+      new GIdentityToManyMembershipEventFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GIdentityToManyMembershipEventFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GIdentityToManyMembershipEventFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GIdentityToManyMembershipEventFilterBuilder
+    implements
+        Builder<GIdentityToManyMembershipEventFilter,
+            GIdentityToManyMembershipEventFilterBuilder> {
+  _$GIdentityToManyMembershipEventFilter? _$v;
+
+  GMembershipEventFilterBuilder? _every;
+  GMembershipEventFilterBuilder get every =>
+      _$this._every ??= new GMembershipEventFilterBuilder();
+  set every(GMembershipEventFilterBuilder? every) => _$this._every = every;
+
+  GMembershipEventFilterBuilder? _some;
+  GMembershipEventFilterBuilder get some =>
+      _$this._some ??= new GMembershipEventFilterBuilder();
+  set some(GMembershipEventFilterBuilder? some) => _$this._some = some;
+
+  GMembershipEventFilterBuilder? _none;
+  GMembershipEventFilterBuilder get none =>
+      _$this._none ??= new GMembershipEventFilterBuilder();
+  set none(GMembershipEventFilterBuilder? none) => _$this._none = none;
+
+  GIdentityToManyMembershipEventFilterBuilder();
+
+  GIdentityToManyMembershipEventFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GIdentityToManyMembershipEventFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GIdentityToManyMembershipEventFilter;
+  }
+
+  @override
+  void update(
+      void Function(GIdentityToManyMembershipEventFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GIdentityToManyMembershipEventFilter build() => _build();
+
+  _$GIdentityToManyMembershipEventFilter _build() {
+    _$GIdentityToManyMembershipEventFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GIdentityToManyMembershipEventFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GIdentityToManyMembershipEventFilter',
+            _$failedField,
+            e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GIdentityToManyUdHistoryFilter extends GIdentityToManyUdHistoryFilter {
+  @override
+  final GUdHistoryFilter? every;
+  @override
+  final GUdHistoryFilter? some;
+  @override
+  final GUdHistoryFilter? none;
+
+  factory _$GIdentityToManyUdHistoryFilter(
+          [void Function(GIdentityToManyUdHistoryFilterBuilder)? updates]) =>
+      (new GIdentityToManyUdHistoryFilterBuilder()..update(updates))._build();
+
+  _$GIdentityToManyUdHistoryFilter._({this.every, this.some, this.none})
+      : super._();
+
+  @override
+  GIdentityToManyUdHistoryFilter rebuild(
+          void Function(GIdentityToManyUdHistoryFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GIdentityToManyUdHistoryFilterBuilder toBuilder() =>
+      new GIdentityToManyUdHistoryFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GIdentityToManyUdHistoryFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GIdentityToManyUdHistoryFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GIdentityToManyUdHistoryFilterBuilder
+    implements
+        Builder<GIdentityToManyUdHistoryFilter,
+            GIdentityToManyUdHistoryFilterBuilder> {
+  _$GIdentityToManyUdHistoryFilter? _$v;
+
+  GUdHistoryFilterBuilder? _every;
+  GUdHistoryFilterBuilder get every =>
+      _$this._every ??= new GUdHistoryFilterBuilder();
+  set every(GUdHistoryFilterBuilder? every) => _$this._every = every;
+
+  GUdHistoryFilterBuilder? _some;
+  GUdHistoryFilterBuilder get some =>
+      _$this._some ??= new GUdHistoryFilterBuilder();
+  set some(GUdHistoryFilterBuilder? some) => _$this._some = some;
+
+  GUdHistoryFilterBuilder? _none;
+  GUdHistoryFilterBuilder get none =>
+      _$this._none ??= new GUdHistoryFilterBuilder();
+  set none(GUdHistoryFilterBuilder? none) => _$this._none = none;
+
+  GIdentityToManyUdHistoryFilterBuilder();
+
+  GIdentityToManyUdHistoryFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GIdentityToManyUdHistoryFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GIdentityToManyUdHistoryFilter;
+  }
+
+  @override
+  void update(void Function(GIdentityToManyUdHistoryFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GIdentityToManyUdHistoryFilter build() => _build();
+
+  _$GIdentityToManyUdHistoryFilter _build() {
+    _$GIdentityToManyUdHistoryFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GIdentityToManyUdHistoryFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GIdentityToManyUdHistoryFilter', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -17537,6 +26573,14 @@ class _$GMembershipEventFilter extends GMembershipEventFilter {
   @override
   final GStringFilter? eventId;
   @override
+  final GIdentityFilter? identity;
+  @override
+  final bool? identityExists;
+  @override
+  final GEventFilter? event;
+  @override
+  final bool? eventExists;
+  @override
   final BuiltList<GMembershipEventFilter>? and;
   @override
   final BuiltList<GMembershipEventFilter>? or;
@@ -17553,6 +26597,10 @@ class _$GMembershipEventFilter extends GMembershipEventFilter {
       this.blockNumber,
       this.identityId,
       this.eventId,
+      this.identity,
+      this.identityExists,
+      this.event,
+      this.eventExists,
       this.and,
       this.or,
       this.not})
@@ -17576,6 +26624,10 @@ class _$GMembershipEventFilter extends GMembershipEventFilter {
         blockNumber == other.blockNumber &&
         identityId == other.identityId &&
         eventId == other.eventId &&
+        identity == other.identity &&
+        identityExists == other.identityExists &&
+        event == other.event &&
+        eventExists == other.eventExists &&
         and == other.and &&
         or == other.or &&
         not == other.not;
@@ -17589,6 +26641,10 @@ class _$GMembershipEventFilter extends GMembershipEventFilter {
     _$hash = $jc(_$hash, blockNumber.hashCode);
     _$hash = $jc(_$hash, identityId.hashCode);
     _$hash = $jc(_$hash, eventId.hashCode);
+    _$hash = $jc(_$hash, identity.hashCode);
+    _$hash = $jc(_$hash, identityExists.hashCode);
+    _$hash = $jc(_$hash, event.hashCode);
+    _$hash = $jc(_$hash, eventExists.hashCode);
     _$hash = $jc(_$hash, and.hashCode);
     _$hash = $jc(_$hash, or.hashCode);
     _$hash = $jc(_$hash, not.hashCode);
@@ -17604,6 +26660,10 @@ class _$GMembershipEventFilter extends GMembershipEventFilter {
           ..add('blockNumber', blockNumber)
           ..add('identityId', identityId)
           ..add('eventId', eventId)
+          ..add('identity', identity)
+          ..add('identityExists', identityExists)
+          ..add('event', event)
+          ..add('eventExists', eventExists)
           ..add('and', and)
           ..add('or', or)
           ..add('not', not))
@@ -17642,6 +26702,24 @@ class GMembershipEventFilterBuilder
       _$this._eventId ??= new GStringFilterBuilder();
   set eventId(GStringFilterBuilder? eventId) => _$this._eventId = eventId;
 
+  GIdentityFilterBuilder? _identity;
+  GIdentityFilterBuilder get identity =>
+      _$this._identity ??= new GIdentityFilterBuilder();
+  set identity(GIdentityFilterBuilder? identity) => _$this._identity = identity;
+
+  bool? _identityExists;
+  bool? get identityExists => _$this._identityExists;
+  set identityExists(bool? identityExists) =>
+      _$this._identityExists = identityExists;
+
+  GEventFilterBuilder? _event;
+  GEventFilterBuilder get event => _$this._event ??= new GEventFilterBuilder();
+  set event(GEventFilterBuilder? event) => _$this._event = event;
+
+  bool? _eventExists;
+  bool? get eventExists => _$this._eventExists;
+  set eventExists(bool? eventExists) => _$this._eventExists = eventExists;
+
   ListBuilder<GMembershipEventFilter>? _and;
   ListBuilder<GMembershipEventFilter> get and =>
       _$this._and ??= new ListBuilder<GMembershipEventFilter>();
@@ -17667,6 +26745,10 @@ class GMembershipEventFilterBuilder
       _blockNumber = $v.blockNumber?.toBuilder();
       _identityId = $v.identityId?.toBuilder();
       _eventId = $v.eventId?.toBuilder();
+      _identity = $v.identity?.toBuilder();
+      _identityExists = $v.identityExists;
+      _event = $v.event?.toBuilder();
+      _eventExists = $v.eventExists;
       _and = $v.and?.toBuilder();
       _or = $v.or?.toBuilder();
       _not = $v.not?.toBuilder();
@@ -17699,6 +26781,10 @@ class GMembershipEventFilterBuilder
               blockNumber: _blockNumber?.build(),
               identityId: _identityId?.build(),
               eventId: _eventId?.build(),
+              identity: _identity?.build(),
+              identityExists: identityExists,
+              event: _event?.build(),
+              eventExists: eventExists,
               and: _and?.build(),
               or: _or?.build(),
               not: _not?.build());
@@ -17715,6 +26801,12 @@ class GMembershipEventFilterBuilder
         _identityId?.build();
         _$failedField = 'eventId';
         _eventId?.build();
+        _$failedField = 'identity';
+        _identity?.build();
+
+        _$failedField = 'event';
+        _event?.build();
+
         _$failedField = 'and';
         _and?.build();
         _$failedField = 'or';
@@ -18492,6 +27584,14 @@ class _$GSmithCertFilter extends GSmithCertFilter {
   @override
   final GStringFilter? receiverId;
   @override
+  final GSmithFilter? issuer;
+  @override
+  final bool? issuerExists;
+  @override
+  final GSmithFilter? receiver;
+  @override
+  final bool? receiverExists;
+  @override
   final BuiltList<GSmithCertFilter>? and;
   @override
   final BuiltList<GSmithCertFilter>? or;
@@ -18507,6 +27607,10 @@ class _$GSmithCertFilter extends GSmithCertFilter {
       this.createdOn,
       this.issuerId,
       this.receiverId,
+      this.issuer,
+      this.issuerExists,
+      this.receiver,
+      this.receiverExists,
       this.and,
       this.or,
       this.not})
@@ -18528,6 +27632,10 @@ class _$GSmithCertFilter extends GSmithCertFilter {
         createdOn == other.createdOn &&
         issuerId == other.issuerId &&
         receiverId == other.receiverId &&
+        issuer == other.issuer &&
+        issuerExists == other.issuerExists &&
+        receiver == other.receiver &&
+        receiverExists == other.receiverExists &&
         and == other.and &&
         or == other.or &&
         not == other.not;
@@ -18540,6 +27648,10 @@ class _$GSmithCertFilter extends GSmithCertFilter {
     _$hash = $jc(_$hash, createdOn.hashCode);
     _$hash = $jc(_$hash, issuerId.hashCode);
     _$hash = $jc(_$hash, receiverId.hashCode);
+    _$hash = $jc(_$hash, issuer.hashCode);
+    _$hash = $jc(_$hash, issuerExists.hashCode);
+    _$hash = $jc(_$hash, receiver.hashCode);
+    _$hash = $jc(_$hash, receiverExists.hashCode);
     _$hash = $jc(_$hash, and.hashCode);
     _$hash = $jc(_$hash, or.hashCode);
     _$hash = $jc(_$hash, not.hashCode);
@@ -18554,6 +27666,10 @@ class _$GSmithCertFilter extends GSmithCertFilter {
           ..add('createdOn', createdOn)
           ..add('issuerId', issuerId)
           ..add('receiverId', receiverId)
+          ..add('issuer', issuer)
+          ..add('issuerExists', issuerExists)
+          ..add('receiver', receiver)
+          ..add('receiverExists', receiverExists)
           ..add('and', and)
           ..add('or', or)
           ..add('not', not))
@@ -18585,6 +27701,25 @@ class GSmithCertFilterBuilder
   set receiverId(GStringFilterBuilder? receiverId) =>
       _$this._receiverId = receiverId;
 
+  GSmithFilterBuilder? _issuer;
+  GSmithFilterBuilder get issuer =>
+      _$this._issuer ??= new GSmithFilterBuilder();
+  set issuer(GSmithFilterBuilder? issuer) => _$this._issuer = issuer;
+
+  bool? _issuerExists;
+  bool? get issuerExists => _$this._issuerExists;
+  set issuerExists(bool? issuerExists) => _$this._issuerExists = issuerExists;
+
+  GSmithFilterBuilder? _receiver;
+  GSmithFilterBuilder get receiver =>
+      _$this._receiver ??= new GSmithFilterBuilder();
+  set receiver(GSmithFilterBuilder? receiver) => _$this._receiver = receiver;
+
+  bool? _receiverExists;
+  bool? get receiverExists => _$this._receiverExists;
+  set receiverExists(bool? receiverExists) =>
+      _$this._receiverExists = receiverExists;
+
   ListBuilder<GSmithCertFilter>? _and;
   ListBuilder<GSmithCertFilter> get and =>
       _$this._and ??= new ListBuilder<GSmithCertFilter>();
@@ -18609,6 +27744,10 @@ class GSmithCertFilterBuilder
       _createdOn = $v.createdOn?.toBuilder();
       _issuerId = $v.issuerId?.toBuilder();
       _receiverId = $v.receiverId?.toBuilder();
+      _issuer = $v.issuer?.toBuilder();
+      _issuerExists = $v.issuerExists;
+      _receiver = $v.receiver?.toBuilder();
+      _receiverExists = $v.receiverExists;
       _and = $v.and?.toBuilder();
       _or = $v.or?.toBuilder();
       _not = $v.not?.toBuilder();
@@ -18640,6 +27779,10 @@ class GSmithCertFilterBuilder
               createdOn: _createdOn?.build(),
               issuerId: _issuerId?.build(),
               receiverId: _receiverId?.build(),
+              issuer: _issuer?.build(),
+              issuerExists: issuerExists,
+              receiver: _receiver?.build(),
+              receiverExists: receiverExists,
               and: _and?.build(),
               or: _or?.build(),
               not: _not?.build());
@@ -18654,6 +27797,12 @@ class GSmithCertFilterBuilder
         _issuerId?.build();
         _$failedField = 'receiverId';
         _receiverId?.build();
+        _$failedField = 'issuer';
+        _issuer?.build();
+
+        _$failedField = 'receiver';
+        _receiver?.build();
+
         _$failedField = 'and';
         _and?.build();
         _$failedField = 'or';
@@ -18969,6 +28118,14 @@ class _$GSmithEventFilter extends GSmithEventFilter {
   @override
   final GStringFilter? eventId;
   @override
+  final GSmithFilter? smith;
+  @override
+  final bool? smithExists;
+  @override
+  final GEventFilter? event;
+  @override
+  final bool? eventExists;
+  @override
   final BuiltList<GSmithEventFilter>? and;
   @override
   final BuiltList<GSmithEventFilter>? or;
@@ -18985,6 +28142,10 @@ class _$GSmithEventFilter extends GSmithEventFilter {
       this.blockNumber,
       this.smithId,
       this.eventId,
+      this.smith,
+      this.smithExists,
+      this.event,
+      this.eventExists,
       this.and,
       this.or,
       this.not})
@@ -19007,6 +28168,10 @@ class _$GSmithEventFilter extends GSmithEventFilter {
         blockNumber == other.blockNumber &&
         smithId == other.smithId &&
         eventId == other.eventId &&
+        smith == other.smith &&
+        smithExists == other.smithExists &&
+        event == other.event &&
+        eventExists == other.eventExists &&
         and == other.and &&
         or == other.or &&
         not == other.not;
@@ -19020,6 +28185,10 @@ class _$GSmithEventFilter extends GSmithEventFilter {
     _$hash = $jc(_$hash, blockNumber.hashCode);
     _$hash = $jc(_$hash, smithId.hashCode);
     _$hash = $jc(_$hash, eventId.hashCode);
+    _$hash = $jc(_$hash, smith.hashCode);
+    _$hash = $jc(_$hash, smithExists.hashCode);
+    _$hash = $jc(_$hash, event.hashCode);
+    _$hash = $jc(_$hash, eventExists.hashCode);
     _$hash = $jc(_$hash, and.hashCode);
     _$hash = $jc(_$hash, or.hashCode);
     _$hash = $jc(_$hash, not.hashCode);
@@ -19035,6 +28204,10 @@ class _$GSmithEventFilter extends GSmithEventFilter {
           ..add('blockNumber', blockNumber)
           ..add('smithId', smithId)
           ..add('eventId', eventId)
+          ..add('smith', smith)
+          ..add('smithExists', smithExists)
+          ..add('event', event)
+          ..add('eventExists', eventExists)
           ..add('and', and)
           ..add('or', or)
           ..add('not', not))
@@ -19072,6 +28245,22 @@ class GSmithEventFilterBuilder
       _$this._eventId ??= new GStringFilterBuilder();
   set eventId(GStringFilterBuilder? eventId) => _$this._eventId = eventId;
 
+  GSmithFilterBuilder? _smith;
+  GSmithFilterBuilder get smith => _$this._smith ??= new GSmithFilterBuilder();
+  set smith(GSmithFilterBuilder? smith) => _$this._smith = smith;
+
+  bool? _smithExists;
+  bool? get smithExists => _$this._smithExists;
+  set smithExists(bool? smithExists) => _$this._smithExists = smithExists;
+
+  GEventFilterBuilder? _event;
+  GEventFilterBuilder get event => _$this._event ??= new GEventFilterBuilder();
+  set event(GEventFilterBuilder? event) => _$this._event = event;
+
+  bool? _eventExists;
+  bool? get eventExists => _$this._eventExists;
+  set eventExists(bool? eventExists) => _$this._eventExists = eventExists;
+
   ListBuilder<GSmithEventFilter>? _and;
   ListBuilder<GSmithEventFilter> get and =>
       _$this._and ??= new ListBuilder<GSmithEventFilter>();
@@ -19097,6 +28286,10 @@ class GSmithEventFilterBuilder
       _blockNumber = $v.blockNumber?.toBuilder();
       _smithId = $v.smithId?.toBuilder();
       _eventId = $v.eventId?.toBuilder();
+      _smith = $v.smith?.toBuilder();
+      _smithExists = $v.smithExists;
+      _event = $v.event?.toBuilder();
+      _eventExists = $v.eventExists;
       _and = $v.and?.toBuilder();
       _or = $v.or?.toBuilder();
       _not = $v.not?.toBuilder();
@@ -19129,6 +28322,10 @@ class GSmithEventFilterBuilder
               blockNumber: _blockNumber?.build(),
               smithId: _smithId?.build(),
               eventId: _eventId?.build(),
+              smith: _smith?.build(),
+              smithExists: smithExists,
+              event: _event?.build(),
+              eventExists: eventExists,
               and: _and?.build(),
               or: _or?.build(),
               not: _not?.build());
@@ -19145,6 +28342,12 @@ class GSmithEventFilterBuilder
         _smithId?.build();
         _$failedField = 'eventId';
         _eventId?.build();
+        _$failedField = 'smith';
+        _smith?.build();
+
+        _$failedField = 'event';
+        _event?.build();
+
         _$failedField = 'and';
         _and?.build();
         _$failedField = 'or';
@@ -19178,6 +28381,22 @@ class _$GSmithFilter extends GSmithFilter {
   @override
   final GStringFilter? identityId;
   @override
+  final GSmithToManySmithCertFilter? smithCertIssued;
+  @override
+  final bool? smithCertIssuedExist;
+  @override
+  final GSmithToManySmithCertFilter? smithCertReceived;
+  @override
+  final bool? smithCertReceivedExist;
+  @override
+  final GSmithToManySmithEventFilter? smithHistory;
+  @override
+  final bool? smithHistoryExist;
+  @override
+  final GIdentityFilter? identity;
+  @override
+  final bool? identityExists;
+  @override
   final BuiltList<GSmithFilter>? and;
   @override
   final BuiltList<GSmithFilter>? or;
@@ -19195,6 +28414,14 @@ class _$GSmithFilter extends GSmithFilter {
       this.forged,
       this.lastForged,
       this.identityId,
+      this.smithCertIssued,
+      this.smithCertIssuedExist,
+      this.smithCertReceived,
+      this.smithCertReceivedExist,
+      this.smithHistory,
+      this.smithHistoryExist,
+      this.identity,
+      this.identityExists,
       this.and,
       this.or,
       this.not})
@@ -19218,6 +28445,14 @@ class _$GSmithFilter extends GSmithFilter {
         forged == other.forged &&
         lastForged == other.lastForged &&
         identityId == other.identityId &&
+        smithCertIssued == other.smithCertIssued &&
+        smithCertIssuedExist == other.smithCertIssuedExist &&
+        smithCertReceived == other.smithCertReceived &&
+        smithCertReceivedExist == other.smithCertReceivedExist &&
+        smithHistory == other.smithHistory &&
+        smithHistoryExist == other.smithHistoryExist &&
+        identity == other.identity &&
+        identityExists == other.identityExists &&
         and == other.and &&
         or == other.or &&
         not == other.not;
@@ -19233,6 +28468,14 @@ class _$GSmithFilter extends GSmithFilter {
     _$hash = $jc(_$hash, forged.hashCode);
     _$hash = $jc(_$hash, lastForged.hashCode);
     _$hash = $jc(_$hash, identityId.hashCode);
+    _$hash = $jc(_$hash, smithCertIssued.hashCode);
+    _$hash = $jc(_$hash, smithCertIssuedExist.hashCode);
+    _$hash = $jc(_$hash, smithCertReceived.hashCode);
+    _$hash = $jc(_$hash, smithCertReceivedExist.hashCode);
+    _$hash = $jc(_$hash, smithHistory.hashCode);
+    _$hash = $jc(_$hash, smithHistoryExist.hashCode);
+    _$hash = $jc(_$hash, identity.hashCode);
+    _$hash = $jc(_$hash, identityExists.hashCode);
     _$hash = $jc(_$hash, and.hashCode);
     _$hash = $jc(_$hash, or.hashCode);
     _$hash = $jc(_$hash, not.hashCode);
@@ -19250,6 +28493,14 @@ class _$GSmithFilter extends GSmithFilter {
           ..add('forged', forged)
           ..add('lastForged', lastForged)
           ..add('identityId', identityId)
+          ..add('smithCertIssued', smithCertIssued)
+          ..add('smithCertIssuedExist', smithCertIssuedExist)
+          ..add('smithCertReceived', smithCertReceived)
+          ..add('smithCertReceivedExist', smithCertReceivedExist)
+          ..add('smithHistory', smithHistory)
+          ..add('smithHistoryExist', smithHistoryExist)
+          ..add('identity', identity)
+          ..add('identityExists', identityExists)
           ..add('and', and)
           ..add('or', or)
           ..add('not', not))
@@ -19297,6 +28548,50 @@ class GSmithFilterBuilder
   set identityId(GStringFilterBuilder? identityId) =>
       _$this._identityId = identityId;
 
+  GSmithToManySmithCertFilterBuilder? _smithCertIssued;
+  GSmithToManySmithCertFilterBuilder get smithCertIssued =>
+      _$this._smithCertIssued ??= new GSmithToManySmithCertFilterBuilder();
+  set smithCertIssued(GSmithToManySmithCertFilterBuilder? smithCertIssued) =>
+      _$this._smithCertIssued = smithCertIssued;
+
+  bool? _smithCertIssuedExist;
+  bool? get smithCertIssuedExist => _$this._smithCertIssuedExist;
+  set smithCertIssuedExist(bool? smithCertIssuedExist) =>
+      _$this._smithCertIssuedExist = smithCertIssuedExist;
+
+  GSmithToManySmithCertFilterBuilder? _smithCertReceived;
+  GSmithToManySmithCertFilterBuilder get smithCertReceived =>
+      _$this._smithCertReceived ??= new GSmithToManySmithCertFilterBuilder();
+  set smithCertReceived(
+          GSmithToManySmithCertFilterBuilder? smithCertReceived) =>
+      _$this._smithCertReceived = smithCertReceived;
+
+  bool? _smithCertReceivedExist;
+  bool? get smithCertReceivedExist => _$this._smithCertReceivedExist;
+  set smithCertReceivedExist(bool? smithCertReceivedExist) =>
+      _$this._smithCertReceivedExist = smithCertReceivedExist;
+
+  GSmithToManySmithEventFilterBuilder? _smithHistory;
+  GSmithToManySmithEventFilterBuilder get smithHistory =>
+      _$this._smithHistory ??= new GSmithToManySmithEventFilterBuilder();
+  set smithHistory(GSmithToManySmithEventFilterBuilder? smithHistory) =>
+      _$this._smithHistory = smithHistory;
+
+  bool? _smithHistoryExist;
+  bool? get smithHistoryExist => _$this._smithHistoryExist;
+  set smithHistoryExist(bool? smithHistoryExist) =>
+      _$this._smithHistoryExist = smithHistoryExist;
+
+  GIdentityFilterBuilder? _identity;
+  GIdentityFilterBuilder get identity =>
+      _$this._identity ??= new GIdentityFilterBuilder();
+  set identity(GIdentityFilterBuilder? identity) => _$this._identity = identity;
+
+  bool? _identityExists;
+  bool? get identityExists => _$this._identityExists;
+  set identityExists(bool? identityExists) =>
+      _$this._identityExists = identityExists;
+
   ListBuilder<GSmithFilter>? _and;
   ListBuilder<GSmithFilter> get and =>
       _$this._and ??= new ListBuilder<GSmithFilter>();
@@ -19323,6 +28618,14 @@ class GSmithFilterBuilder
       _forged = $v.forged?.toBuilder();
       _lastForged = $v.lastForged?.toBuilder();
       _identityId = $v.identityId?.toBuilder();
+      _smithCertIssued = $v.smithCertIssued?.toBuilder();
+      _smithCertIssuedExist = $v.smithCertIssuedExist;
+      _smithCertReceived = $v.smithCertReceived?.toBuilder();
+      _smithCertReceivedExist = $v.smithCertReceivedExist;
+      _smithHistory = $v.smithHistory?.toBuilder();
+      _smithHistoryExist = $v.smithHistoryExist;
+      _identity = $v.identity?.toBuilder();
+      _identityExists = $v.identityExists;
       _and = $v.and?.toBuilder();
       _or = $v.or?.toBuilder();
       _not = $v.not?.toBuilder();
@@ -19357,6 +28660,14 @@ class GSmithFilterBuilder
               forged: _forged?.build(),
               lastForged: _lastForged?.build(),
               identityId: _identityId?.build(),
+              smithCertIssued: _smithCertIssued?.build(),
+              smithCertIssuedExist: smithCertIssuedExist,
+              smithCertReceived: _smithCertReceived?.build(),
+              smithCertReceivedExist: smithCertReceivedExist,
+              smithHistory: _smithHistory?.build(),
+              smithHistoryExist: smithHistoryExist,
+              identity: _identity?.build(),
+              identityExists: identityExists,
               and: _and?.build(),
               or: _or?.build(),
               not: _not?.build());
@@ -19377,6 +28688,18 @@ class GSmithFilterBuilder
         _lastForged?.build();
         _$failedField = 'identityId';
         _identityId?.build();
+        _$failedField = 'smithCertIssued';
+        _smithCertIssued?.build();
+
+        _$failedField = 'smithCertReceived';
+        _smithCertReceived?.build();
+
+        _$failedField = 'smithHistory';
+        _smithHistory?.build();
+
+        _$failedField = 'identity';
+        _identity?.build();
+
         _$failedField = 'and';
         _and?.build();
         _$failedField = 'or';
@@ -19386,6 +28709,264 @@ class GSmithFilterBuilder
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'GSmithFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GSmithToManySmithCertFilter extends GSmithToManySmithCertFilter {
+  @override
+  final GSmithCertFilter? every;
+  @override
+  final GSmithCertFilter? some;
+  @override
+  final GSmithCertFilter? none;
+
+  factory _$GSmithToManySmithCertFilter(
+          [void Function(GSmithToManySmithCertFilterBuilder)? updates]) =>
+      (new GSmithToManySmithCertFilterBuilder()..update(updates))._build();
+
+  _$GSmithToManySmithCertFilter._({this.every, this.some, this.none})
+      : super._();
+
+  @override
+  GSmithToManySmithCertFilter rebuild(
+          void Function(GSmithToManySmithCertFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GSmithToManySmithCertFilterBuilder toBuilder() =>
+      new GSmithToManySmithCertFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GSmithToManySmithCertFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GSmithToManySmithCertFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GSmithToManySmithCertFilterBuilder
+    implements
+        Builder<GSmithToManySmithCertFilter,
+            GSmithToManySmithCertFilterBuilder> {
+  _$GSmithToManySmithCertFilter? _$v;
+
+  GSmithCertFilterBuilder? _every;
+  GSmithCertFilterBuilder get every =>
+      _$this._every ??= new GSmithCertFilterBuilder();
+  set every(GSmithCertFilterBuilder? every) => _$this._every = every;
+
+  GSmithCertFilterBuilder? _some;
+  GSmithCertFilterBuilder get some =>
+      _$this._some ??= new GSmithCertFilterBuilder();
+  set some(GSmithCertFilterBuilder? some) => _$this._some = some;
+
+  GSmithCertFilterBuilder? _none;
+  GSmithCertFilterBuilder get none =>
+      _$this._none ??= new GSmithCertFilterBuilder();
+  set none(GSmithCertFilterBuilder? none) => _$this._none = none;
+
+  GSmithToManySmithCertFilterBuilder();
+
+  GSmithToManySmithCertFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GSmithToManySmithCertFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GSmithToManySmithCertFilter;
+  }
+
+  @override
+  void update(void Function(GSmithToManySmithCertFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GSmithToManySmithCertFilter build() => _build();
+
+  _$GSmithToManySmithCertFilter _build() {
+    _$GSmithToManySmithCertFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GSmithToManySmithCertFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GSmithToManySmithCertFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GSmithToManySmithEventFilter extends GSmithToManySmithEventFilter {
+  @override
+  final GSmithEventFilter? every;
+  @override
+  final GSmithEventFilter? some;
+  @override
+  final GSmithEventFilter? none;
+
+  factory _$GSmithToManySmithEventFilter(
+          [void Function(GSmithToManySmithEventFilterBuilder)? updates]) =>
+      (new GSmithToManySmithEventFilterBuilder()..update(updates))._build();
+
+  _$GSmithToManySmithEventFilter._({this.every, this.some, this.none})
+      : super._();
+
+  @override
+  GSmithToManySmithEventFilter rebuild(
+          void Function(GSmithToManySmithEventFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GSmithToManySmithEventFilterBuilder toBuilder() =>
+      new GSmithToManySmithEventFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GSmithToManySmithEventFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GSmithToManySmithEventFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GSmithToManySmithEventFilterBuilder
+    implements
+        Builder<GSmithToManySmithEventFilter,
+            GSmithToManySmithEventFilterBuilder> {
+  _$GSmithToManySmithEventFilter? _$v;
+
+  GSmithEventFilterBuilder? _every;
+  GSmithEventFilterBuilder get every =>
+      _$this._every ??= new GSmithEventFilterBuilder();
+  set every(GSmithEventFilterBuilder? every) => _$this._every = every;
+
+  GSmithEventFilterBuilder? _some;
+  GSmithEventFilterBuilder get some =>
+      _$this._some ??= new GSmithEventFilterBuilder();
+  set some(GSmithEventFilterBuilder? some) => _$this._some = some;
+
+  GSmithEventFilterBuilder? _none;
+  GSmithEventFilterBuilder get none =>
+      _$this._none ??= new GSmithEventFilterBuilder();
+  set none(GSmithEventFilterBuilder? none) => _$this._none = none;
+
+  GSmithToManySmithEventFilterBuilder();
+
+  GSmithToManySmithEventFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GSmithToManySmithEventFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GSmithToManySmithEventFilter;
+  }
+
+  @override
+  void update(void Function(GSmithToManySmithEventFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GSmithToManySmithEventFilter build() => _build();
+
+  _$GSmithToManySmithEventFilter _build() {
+    _$GSmithToManySmithEventFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GSmithToManySmithEventFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GSmithToManySmithEventFilter', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -20506,6 +30087,22 @@ class _$GTransferFilter extends GTransferFilter {
   @override
   final GStringFilter? commentId;
   @override
+  final GAccountFilter? from;
+  @override
+  final bool? fromExists;
+  @override
+  final GAccountFilter? to;
+  @override
+  final bool? toExists;
+  @override
+  final GEventFilter? event;
+  @override
+  final bool? eventExists;
+  @override
+  final GTxCommentFilter? comment;
+  @override
+  final bool? commentExists;
+  @override
   final BuiltList<GTransferFilter>? and;
   @override
   final BuiltList<GTransferFilter>? or;
@@ -20524,6 +30121,14 @@ class _$GTransferFilter extends GTransferFilter {
       this.toId,
       this.eventId,
       this.commentId,
+      this.from,
+      this.fromExists,
+      this.to,
+      this.toExists,
+      this.event,
+      this.eventExists,
+      this.comment,
+      this.commentExists,
       this.and,
       this.or,
       this.not})
@@ -20549,6 +30154,14 @@ class _$GTransferFilter extends GTransferFilter {
         toId == other.toId &&
         eventId == other.eventId &&
         commentId == other.commentId &&
+        from == other.from &&
+        fromExists == other.fromExists &&
+        to == other.to &&
+        toExists == other.toExists &&
+        event == other.event &&
+        eventExists == other.eventExists &&
+        comment == other.comment &&
+        commentExists == other.commentExists &&
         and == other.and &&
         or == other.or &&
         not == other.not;
@@ -20565,6 +30178,14 @@ class _$GTransferFilter extends GTransferFilter {
     _$hash = $jc(_$hash, toId.hashCode);
     _$hash = $jc(_$hash, eventId.hashCode);
     _$hash = $jc(_$hash, commentId.hashCode);
+    _$hash = $jc(_$hash, from.hashCode);
+    _$hash = $jc(_$hash, fromExists.hashCode);
+    _$hash = $jc(_$hash, to.hashCode);
+    _$hash = $jc(_$hash, toExists.hashCode);
+    _$hash = $jc(_$hash, event.hashCode);
+    _$hash = $jc(_$hash, eventExists.hashCode);
+    _$hash = $jc(_$hash, comment.hashCode);
+    _$hash = $jc(_$hash, commentExists.hashCode);
     _$hash = $jc(_$hash, and.hashCode);
     _$hash = $jc(_$hash, or.hashCode);
     _$hash = $jc(_$hash, not.hashCode);
@@ -20583,6 +30204,14 @@ class _$GTransferFilter extends GTransferFilter {
           ..add('toId', toId)
           ..add('eventId', eventId)
           ..add('commentId', commentId)
+          ..add('from', from)
+          ..add('fromExists', fromExists)
+          ..add('to', to)
+          ..add('toExists', toExists)
+          ..add('event', event)
+          ..add('eventExists', eventExists)
+          ..add('comment', comment)
+          ..add('commentExists', commentExists)
           ..add('and', and)
           ..add('or', or)
           ..add('not', not))
@@ -20635,6 +30264,41 @@ class GTransferFilterBuilder
   set commentId(GStringFilterBuilder? commentId) =>
       _$this._commentId = commentId;
 
+  GAccountFilterBuilder? _from;
+  GAccountFilterBuilder get from =>
+      _$this._from ??= new GAccountFilterBuilder();
+  set from(GAccountFilterBuilder? from) => _$this._from = from;
+
+  bool? _fromExists;
+  bool? get fromExists => _$this._fromExists;
+  set fromExists(bool? fromExists) => _$this._fromExists = fromExists;
+
+  GAccountFilterBuilder? _to;
+  GAccountFilterBuilder get to => _$this._to ??= new GAccountFilterBuilder();
+  set to(GAccountFilterBuilder? to) => _$this._to = to;
+
+  bool? _toExists;
+  bool? get toExists => _$this._toExists;
+  set toExists(bool? toExists) => _$this._toExists = toExists;
+
+  GEventFilterBuilder? _event;
+  GEventFilterBuilder get event => _$this._event ??= new GEventFilterBuilder();
+  set event(GEventFilterBuilder? event) => _$this._event = event;
+
+  bool? _eventExists;
+  bool? get eventExists => _$this._eventExists;
+  set eventExists(bool? eventExists) => _$this._eventExists = eventExists;
+
+  GTxCommentFilterBuilder? _comment;
+  GTxCommentFilterBuilder get comment =>
+      _$this._comment ??= new GTxCommentFilterBuilder();
+  set comment(GTxCommentFilterBuilder? comment) => _$this._comment = comment;
+
+  bool? _commentExists;
+  bool? get commentExists => _$this._commentExists;
+  set commentExists(bool? commentExists) =>
+      _$this._commentExists = commentExists;
+
   ListBuilder<GTransferFilter>? _and;
   ListBuilder<GTransferFilter> get and =>
       _$this._and ??= new ListBuilder<GTransferFilter>();
@@ -20663,6 +30327,14 @@ class GTransferFilterBuilder
       _toId = $v.toId?.toBuilder();
       _eventId = $v.eventId?.toBuilder();
       _commentId = $v.commentId?.toBuilder();
+      _from = $v.from?.toBuilder();
+      _fromExists = $v.fromExists;
+      _to = $v.to?.toBuilder();
+      _toExists = $v.toExists;
+      _event = $v.event?.toBuilder();
+      _eventExists = $v.eventExists;
+      _comment = $v.comment?.toBuilder();
+      _commentExists = $v.commentExists;
       _and = $v.and?.toBuilder();
       _or = $v.or?.toBuilder();
       _not = $v.not?.toBuilder();
@@ -20698,6 +30370,14 @@ class GTransferFilterBuilder
               toId: _toId?.build(),
               eventId: _eventId?.build(),
               commentId: _commentId?.build(),
+              from: _from?.build(),
+              fromExists: fromExists,
+              to: _to?.build(),
+              toExists: toExists,
+              event: _event?.build(),
+              eventExists: eventExists,
+              comment: _comment?.build(),
+              commentExists: commentExists,
               and: _and?.build(),
               or: _or?.build(),
               not: _not?.build());
@@ -20720,6 +30400,18 @@ class GTransferFilterBuilder
         _eventId?.build();
         _$failedField = 'commentId';
         _commentId?.build();
+        _$failedField = 'from';
+        _from?.build();
+
+        _$failedField = 'to';
+        _to?.build();
+
+        _$failedField = 'event';
+        _event?.build();
+
+        _$failedField = 'comment';
+        _comment?.build();
+
         _$failedField = 'and';
         _and?.build();
         _$failedField = 'or';
@@ -21220,6 +30912,18 @@ class _$GTxCommentFilter extends GTxCommentFilter {
   @override
   final GStringFilter? eventId;
   @override
+  final GTxCommentToManyTransferFilter? transfersByCommentId;
+  @override
+  final bool? transfersByCommentIdExist;
+  @override
+  final GAccountFilter? author;
+  @override
+  final bool? authorExists;
+  @override
+  final GEventFilter? event;
+  @override
+  final bool? eventExists;
+  @override
   final BuiltList<GTxCommentFilter>? and;
   @override
   final BuiltList<GTxCommentFilter>? or;
@@ -21238,6 +30942,12 @@ class _$GTxCommentFilter extends GTxCommentFilter {
       this.type,
       this.authorId,
       this.eventId,
+      this.transfersByCommentId,
+      this.transfersByCommentIdExist,
+      this.author,
+      this.authorExists,
+      this.event,
+      this.eventExists,
       this.and,
       this.or,
       this.not})
@@ -21262,6 +30972,12 @@ class _$GTxCommentFilter extends GTxCommentFilter {
         type == other.type &&
         authorId == other.authorId &&
         eventId == other.eventId &&
+        transfersByCommentId == other.transfersByCommentId &&
+        transfersByCommentIdExist == other.transfersByCommentIdExist &&
+        author == other.author &&
+        authorExists == other.authorExists &&
+        event == other.event &&
+        eventExists == other.eventExists &&
         and == other.and &&
         or == other.or &&
         not == other.not;
@@ -21277,6 +30993,12 @@ class _$GTxCommentFilter extends GTxCommentFilter {
     _$hash = $jc(_$hash, type.hashCode);
     _$hash = $jc(_$hash, authorId.hashCode);
     _$hash = $jc(_$hash, eventId.hashCode);
+    _$hash = $jc(_$hash, transfersByCommentId.hashCode);
+    _$hash = $jc(_$hash, transfersByCommentIdExist.hashCode);
+    _$hash = $jc(_$hash, author.hashCode);
+    _$hash = $jc(_$hash, authorExists.hashCode);
+    _$hash = $jc(_$hash, event.hashCode);
+    _$hash = $jc(_$hash, eventExists.hashCode);
     _$hash = $jc(_$hash, and.hashCode);
     _$hash = $jc(_$hash, or.hashCode);
     _$hash = $jc(_$hash, not.hashCode);
@@ -21294,6 +31016,12 @@ class _$GTxCommentFilter extends GTxCommentFilter {
           ..add('type', type)
           ..add('authorId', authorId)
           ..add('eventId', eventId)
+          ..add('transfersByCommentId', transfersByCommentId)
+          ..add('transfersByCommentIdExist', transfersByCommentIdExist)
+          ..add('author', author)
+          ..add('authorExists', authorExists)
+          ..add('event', event)
+          ..add('eventExists', eventExists)
           ..add('and', and)
           ..add('or', or)
           ..add('not', not))
@@ -21338,6 +31066,36 @@ class GTxCommentFilterBuilder
       _$this._eventId ??= new GStringFilterBuilder();
   set eventId(GStringFilterBuilder? eventId) => _$this._eventId = eventId;
 
+  GTxCommentToManyTransferFilterBuilder? _transfersByCommentId;
+  GTxCommentToManyTransferFilterBuilder get transfersByCommentId =>
+      _$this._transfersByCommentId ??=
+          new GTxCommentToManyTransferFilterBuilder();
+  set transfersByCommentId(
+          GTxCommentToManyTransferFilterBuilder? transfersByCommentId) =>
+      _$this._transfersByCommentId = transfersByCommentId;
+
+  bool? _transfersByCommentIdExist;
+  bool? get transfersByCommentIdExist => _$this._transfersByCommentIdExist;
+  set transfersByCommentIdExist(bool? transfersByCommentIdExist) =>
+      _$this._transfersByCommentIdExist = transfersByCommentIdExist;
+
+  GAccountFilterBuilder? _author;
+  GAccountFilterBuilder get author =>
+      _$this._author ??= new GAccountFilterBuilder();
+  set author(GAccountFilterBuilder? author) => _$this._author = author;
+
+  bool? _authorExists;
+  bool? get authorExists => _$this._authorExists;
+  set authorExists(bool? authorExists) => _$this._authorExists = authorExists;
+
+  GEventFilterBuilder? _event;
+  GEventFilterBuilder get event => _$this._event ??= new GEventFilterBuilder();
+  set event(GEventFilterBuilder? event) => _$this._event = event;
+
+  bool? _eventExists;
+  bool? get eventExists => _$this._eventExists;
+  set eventExists(bool? eventExists) => _$this._eventExists = eventExists;
+
   ListBuilder<GTxCommentFilter>? _and;
   ListBuilder<GTxCommentFilter> get and =>
       _$this._and ??= new ListBuilder<GTxCommentFilter>();
@@ -21365,6 +31123,12 @@ class GTxCommentFilterBuilder
       _type = $v.type?.toBuilder();
       _authorId = $v.authorId?.toBuilder();
       _eventId = $v.eventId?.toBuilder();
+      _transfersByCommentId = $v.transfersByCommentId?.toBuilder();
+      _transfersByCommentIdExist = $v.transfersByCommentIdExist;
+      _author = $v.author?.toBuilder();
+      _authorExists = $v.authorExists;
+      _event = $v.event?.toBuilder();
+      _eventExists = $v.eventExists;
       _and = $v.and?.toBuilder();
       _or = $v.or?.toBuilder();
       _not = $v.not?.toBuilder();
@@ -21399,6 +31163,12 @@ class GTxCommentFilterBuilder
               type: _type?.build(),
               authorId: _authorId?.build(),
               eventId: _eventId?.build(),
+              transfersByCommentId: _transfersByCommentId?.build(),
+              transfersByCommentIdExist: transfersByCommentIdExist,
+              author: _author?.build(),
+              authorExists: authorExists,
+              event: _event?.build(),
+              eventExists: eventExists,
               and: _and?.build(),
               or: _or?.build(),
               not: _not?.build());
@@ -21419,6 +31189,15 @@ class GTxCommentFilterBuilder
         _authorId?.build();
         _$failedField = 'eventId';
         _eventId?.build();
+        _$failedField = 'transfersByCommentId';
+        _transfersByCommentId?.build();
+
+        _$failedField = 'author';
+        _author?.build();
+
+        _$failedField = 'event';
+        _event?.build();
+
         _$failedField = 'and';
         _and?.build();
         _$failedField = 'or';
@@ -21428,6 +31207,135 @@ class GTxCommentFilterBuilder
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'GTxCommentFilter', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GTxCommentToManyTransferFilter extends GTxCommentToManyTransferFilter {
+  @override
+  final GTransferFilter? every;
+  @override
+  final GTransferFilter? some;
+  @override
+  final GTransferFilter? none;
+
+  factory _$GTxCommentToManyTransferFilter(
+          [void Function(GTxCommentToManyTransferFilterBuilder)? updates]) =>
+      (new GTxCommentToManyTransferFilterBuilder()..update(updates))._build();
+
+  _$GTxCommentToManyTransferFilter._({this.every, this.some, this.none})
+      : super._();
+
+  @override
+  GTxCommentToManyTransferFilter rebuild(
+          void Function(GTxCommentToManyTransferFilterBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GTxCommentToManyTransferFilterBuilder toBuilder() =>
+      new GTxCommentToManyTransferFilterBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GTxCommentToManyTransferFilter &&
+        every == other.every &&
+        some == other.some &&
+        none == other.none;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, every.hashCode);
+    _$hash = $jc(_$hash, some.hashCode);
+    _$hash = $jc(_$hash, none.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GTxCommentToManyTransferFilter')
+          ..add('every', every)
+          ..add('some', some)
+          ..add('none', none))
+        .toString();
+  }
+}
+
+class GTxCommentToManyTransferFilterBuilder
+    implements
+        Builder<GTxCommentToManyTransferFilter,
+            GTxCommentToManyTransferFilterBuilder> {
+  _$GTxCommentToManyTransferFilter? _$v;
+
+  GTransferFilterBuilder? _every;
+  GTransferFilterBuilder get every =>
+      _$this._every ??= new GTransferFilterBuilder();
+  set every(GTransferFilterBuilder? every) => _$this._every = every;
+
+  GTransferFilterBuilder? _some;
+  GTransferFilterBuilder get some =>
+      _$this._some ??= new GTransferFilterBuilder();
+  set some(GTransferFilterBuilder? some) => _$this._some = some;
+
+  GTransferFilterBuilder? _none;
+  GTransferFilterBuilder get none =>
+      _$this._none ??= new GTransferFilterBuilder();
+  set none(GTransferFilterBuilder? none) => _$this._none = none;
+
+  GTxCommentToManyTransferFilterBuilder();
+
+  GTxCommentToManyTransferFilterBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _every = $v.every?.toBuilder();
+      _some = $v.some?.toBuilder();
+      _none = $v.none?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GTxCommentToManyTransferFilter other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GTxCommentToManyTransferFilter;
+  }
+
+  @override
+  void update(void Function(GTxCommentToManyTransferFilterBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GTxCommentToManyTransferFilter build() => _build();
+
+  _$GTxCommentToManyTransferFilter _build() {
+    _$GTxCommentToManyTransferFilter _$result;
+    try {
+      _$result = _$v ??
+          new _$GTxCommentToManyTransferFilter._(
+              every: _every?.build(),
+              some: _some?.build(),
+              none: _none?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'every';
+        _every?.build();
+        _$failedField = 'some';
+        _some?.build();
+        _$failedField = 'none';
+        _none?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GTxCommentToManyTransferFilter', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -21595,6 +31503,10 @@ class _$GUdHistoryFilter extends GUdHistoryFilter {
   @override
   final GStringFilter? identityId;
   @override
+  final GIdentityFilter? identity;
+  @override
+  final bool? identityExists;
+  @override
   final BuiltList<GUdHistoryFilter>? and;
   @override
   final BuiltList<GUdHistoryFilter>? or;
@@ -21611,6 +31523,8 @@ class _$GUdHistoryFilter extends GUdHistoryFilter {
       this.blockNumber,
       this.timestamp,
       this.identityId,
+      this.identity,
+      this.identityExists,
       this.and,
       this.or,
       this.not})
@@ -21633,6 +31547,8 @@ class _$GUdHistoryFilter extends GUdHistoryFilter {
         blockNumber == other.blockNumber &&
         timestamp == other.timestamp &&
         identityId == other.identityId &&
+        identity == other.identity &&
+        identityExists == other.identityExists &&
         and == other.and &&
         or == other.or &&
         not == other.not;
@@ -21646,6 +31562,8 @@ class _$GUdHistoryFilter extends GUdHistoryFilter {
     _$hash = $jc(_$hash, blockNumber.hashCode);
     _$hash = $jc(_$hash, timestamp.hashCode);
     _$hash = $jc(_$hash, identityId.hashCode);
+    _$hash = $jc(_$hash, identity.hashCode);
+    _$hash = $jc(_$hash, identityExists.hashCode);
     _$hash = $jc(_$hash, and.hashCode);
     _$hash = $jc(_$hash, or.hashCode);
     _$hash = $jc(_$hash, not.hashCode);
@@ -21661,6 +31579,8 @@ class _$GUdHistoryFilter extends GUdHistoryFilter {
           ..add('blockNumber', blockNumber)
           ..add('timestamp', timestamp)
           ..add('identityId', identityId)
+          ..add('identity', identity)
+          ..add('identityExists', identityExists)
           ..add('and', and)
           ..add('or', or)
           ..add('not', not))
@@ -21699,6 +31619,16 @@ class GUdHistoryFilterBuilder
   set identityId(GStringFilterBuilder? identityId) =>
       _$this._identityId = identityId;
 
+  GIdentityFilterBuilder? _identity;
+  GIdentityFilterBuilder get identity =>
+      _$this._identity ??= new GIdentityFilterBuilder();
+  set identity(GIdentityFilterBuilder? identity) => _$this._identity = identity;
+
+  bool? _identityExists;
+  bool? get identityExists => _$this._identityExists;
+  set identityExists(bool? identityExists) =>
+      _$this._identityExists = identityExists;
+
   ListBuilder<GUdHistoryFilter>? _and;
   ListBuilder<GUdHistoryFilter> get and =>
       _$this._and ??= new ListBuilder<GUdHistoryFilter>();
@@ -21724,6 +31654,8 @@ class GUdHistoryFilterBuilder
       _blockNumber = $v.blockNumber?.toBuilder();
       _timestamp = $v.timestamp?.toBuilder();
       _identityId = $v.identityId?.toBuilder();
+      _identity = $v.identity?.toBuilder();
+      _identityExists = $v.identityExists;
       _and = $v.and?.toBuilder();
       _or = $v.or?.toBuilder();
       _not = $v.not?.toBuilder();
@@ -21756,6 +31688,8 @@ class GUdHistoryFilterBuilder
               blockNumber: _blockNumber?.build(),
               timestamp: _timestamp?.build(),
               identityId: _identityId?.build(),
+              identity: _identity?.build(),
+              identityExists: identityExists,
               and: _and?.build(),
               or: _or?.build(),
               not: _not?.build());
@@ -21772,6 +31706,9 @@ class GUdHistoryFilterBuilder
         _timestamp?.build();
         _$failedField = 'identityId';
         _identityId?.build();
+        _$failedField = 'identity';
+        _identity?.build();
+
         _$failedField = 'and';
         _and?.build();
         _$failedField = 'or';
@@ -21999,6 +31936,10 @@ class _$GUdReevalFilter extends GUdReevalFilter {
   @override
   final GStringFilter? eventId;
   @override
+  final GEventFilter? event;
+  @override
+  final bool? eventExists;
+  @override
   final BuiltList<GUdReevalFilter>? and;
   @override
   final BuiltList<GUdReevalFilter>? or;
@@ -22017,6 +31958,8 @@ class _$GUdReevalFilter extends GUdReevalFilter {
       this.membersCount,
       this.udIndex,
       this.eventId,
+      this.event,
+      this.eventExists,
       this.and,
       this.or,
       this.not})
@@ -22042,6 +31985,8 @@ class _$GUdReevalFilter extends GUdReevalFilter {
         membersCount == other.membersCount &&
         udIndex == other.udIndex &&
         eventId == other.eventId &&
+        event == other.event &&
+        eventExists == other.eventExists &&
         and == other.and &&
         or == other.or &&
         not == other.not;
@@ -22058,6 +32003,8 @@ class _$GUdReevalFilter extends GUdReevalFilter {
     _$hash = $jc(_$hash, membersCount.hashCode);
     _$hash = $jc(_$hash, udIndex.hashCode);
     _$hash = $jc(_$hash, eventId.hashCode);
+    _$hash = $jc(_$hash, event.hashCode);
+    _$hash = $jc(_$hash, eventExists.hashCode);
     _$hash = $jc(_$hash, and.hashCode);
     _$hash = $jc(_$hash, or.hashCode);
     _$hash = $jc(_$hash, not.hashCode);
@@ -22076,6 +32023,8 @@ class _$GUdReevalFilter extends GUdReevalFilter {
           ..add('membersCount', membersCount)
           ..add('udIndex', udIndex)
           ..add('eventId', eventId)
+          ..add('event', event)
+          ..add('eventExists', eventExists)
           ..add('and', and)
           ..add('or', or)
           ..add('not', not))
@@ -22130,6 +32079,14 @@ class GUdReevalFilterBuilder
       _$this._eventId ??= new GStringFilterBuilder();
   set eventId(GStringFilterBuilder? eventId) => _$this._eventId = eventId;
 
+  GEventFilterBuilder? _event;
+  GEventFilterBuilder get event => _$this._event ??= new GEventFilterBuilder();
+  set event(GEventFilterBuilder? event) => _$this._event = event;
+
+  bool? _eventExists;
+  bool? get eventExists => _$this._eventExists;
+  set eventExists(bool? eventExists) => _$this._eventExists = eventExists;
+
   ListBuilder<GUdReevalFilter>? _and;
   ListBuilder<GUdReevalFilter> get and =>
       _$this._and ??= new ListBuilder<GUdReevalFilter>();
@@ -22158,6 +32115,8 @@ class GUdReevalFilterBuilder
       _membersCount = $v.membersCount?.toBuilder();
       _udIndex = $v.udIndex?.toBuilder();
       _eventId = $v.eventId?.toBuilder();
+      _event = $v.event?.toBuilder();
+      _eventExists = $v.eventExists;
       _and = $v.and?.toBuilder();
       _or = $v.or?.toBuilder();
       _not = $v.not?.toBuilder();
@@ -22193,6 +32152,8 @@ class GUdReevalFilterBuilder
               membersCount: _membersCount?.build(),
               udIndex: _udIndex?.build(),
               eventId: _eventId?.build(),
+              event: _event?.build(),
+              eventExists: eventExists,
               and: _and?.build(),
               or: _or?.build(),
               not: _not?.build());
@@ -22215,6 +32176,9 @@ class GUdReevalFilterBuilder
         _udIndex?.build();
         _$failedField = 'eventId';
         _eventId?.build();
+        _$failedField = 'event';
+        _event?.build();
+
         _$failedField = 'and';
         _and?.build();
         _$failedField = 'or';
@@ -22442,6 +32406,10 @@ class _$GUniversalDividendFilter extends GUniversalDividendFilter {
   @override
   final GStringFilter? eventId;
   @override
+  final GEventFilter? event;
+  @override
+  final bool? eventExists;
+  @override
   final BuiltList<GUniversalDividendFilter>? and;
   @override
   final BuiltList<GUniversalDividendFilter>? or;
@@ -22461,6 +32429,8 @@ class _$GUniversalDividendFilter extends GUniversalDividendFilter {
       this.membersCount,
       this.index,
       this.eventId,
+      this.event,
+      this.eventExists,
       this.and,
       this.or,
       this.not})
@@ -22487,6 +32457,8 @@ class _$GUniversalDividendFilter extends GUniversalDividendFilter {
         membersCount == other.membersCount &&
         index == other.index &&
         eventId == other.eventId &&
+        event == other.event &&
+        eventExists == other.eventExists &&
         and == other.and &&
         or == other.or &&
         not == other.not;
@@ -22503,6 +32475,8 @@ class _$GUniversalDividendFilter extends GUniversalDividendFilter {
     _$hash = $jc(_$hash, membersCount.hashCode);
     _$hash = $jc(_$hash, index.hashCode);
     _$hash = $jc(_$hash, eventId.hashCode);
+    _$hash = $jc(_$hash, event.hashCode);
+    _$hash = $jc(_$hash, eventExists.hashCode);
     _$hash = $jc(_$hash, and.hashCode);
     _$hash = $jc(_$hash, or.hashCode);
     _$hash = $jc(_$hash, not.hashCode);
@@ -22521,6 +32495,8 @@ class _$GUniversalDividendFilter extends GUniversalDividendFilter {
           ..add('membersCount', membersCount)
           ..add('index', index)
           ..add('eventId', eventId)
+          ..add('event', event)
+          ..add('eventExists', eventExists)
           ..add('and', and)
           ..add('or', or)
           ..add('not', not))
@@ -22575,6 +32551,14 @@ class GUniversalDividendFilterBuilder
       _$this._eventId ??= new GStringFilterBuilder();
   set eventId(GStringFilterBuilder? eventId) => _$this._eventId = eventId;
 
+  GEventFilterBuilder? _event;
+  GEventFilterBuilder get event => _$this._event ??= new GEventFilterBuilder();
+  set event(GEventFilterBuilder? event) => _$this._event = event;
+
+  bool? _eventExists;
+  bool? get eventExists => _$this._eventExists;
+  set eventExists(bool? eventExists) => _$this._eventExists = eventExists;
+
   ListBuilder<GUniversalDividendFilter>? _and;
   ListBuilder<GUniversalDividendFilter> get and =>
       _$this._and ??= new ListBuilder<GUniversalDividendFilter>();
@@ -22603,6 +32587,8 @@ class GUniversalDividendFilterBuilder
       _membersCount = $v.membersCount?.toBuilder();
       _index = $v.index?.toBuilder();
       _eventId = $v.eventId?.toBuilder();
+      _event = $v.event?.toBuilder();
+      _eventExists = $v.eventExists;
       _and = $v.and?.toBuilder();
       _or = $v.or?.toBuilder();
       _not = $v.not?.toBuilder();
@@ -22638,6 +32624,8 @@ class GUniversalDividendFilterBuilder
               membersCount: _membersCount?.build(),
               index: _index?.build(),
               eventId: _eventId?.build(),
+              event: _event?.build(),
+              eventExists: eventExists,
               and: _and?.build(),
               or: _or?.build(),
               not: _not?.build());
@@ -22660,6 +32648,9 @@ class GUniversalDividendFilterBuilder
         _index?.build();
         _$failedField = 'eventId';
         _eventId?.build();
+        _$failedField = 'event';
+        _event?.build();
+
         _$failedField = 'and';
         _and?.build();
         _$failedField = 'or';

@@ -24,6 +24,8 @@ Serializer<GAccountsBasicByPkVars> _$gAccountsBasicByPkVarsSerializer =
     new _$GAccountsBasicByPkVarsSerializer();
 Serializer<GAccountTransactionsVars> _$gAccountTransactionsVarsSerializer =
     new _$GAccountTransactionsVarsSerializer();
+Serializer<GIndexerVersionVars> _$gIndexerVersionVarsSerializer =
+    new _$GIndexerVersionVarsSerializer();
 Serializer<GCertFieldsVars> _$gCertFieldsVarsSerializer =
     new _$GCertFieldsVarsSerializer();
 Serializer<GSmithCertFieldsVars> _$gSmithCertFieldsVarsSerializer =
@@ -501,6 +503,31 @@ class _$GAccountTransactionsVarsSerializer
     }
 
     return result.build();
+  }
+}
+
+class _$GIndexerVersionVarsSerializer
+    implements StructuredSerializer<GIndexerVersionVars> {
+  @override
+  final Iterable<Type> types = const [
+    GIndexerVersionVars,
+    _$GIndexerVersionVars
+  ];
+  @override
+  final String wireName = 'GIndexerVersionVars';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GIndexerVersionVars object,
+      {FullType specifiedType = FullType.unspecified}) {
+    return <Object?>[];
+  }
+
+  @override
+  GIndexerVersionVars deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    return new GIndexerVersionVarsBuilder().build();
   }
 }
 
@@ -1711,6 +1738,66 @@ class GAccountTransactionsVarsBuilder
       }
       rethrow;
     }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GIndexerVersionVars extends GIndexerVersionVars {
+  factory _$GIndexerVersionVars(
+          [void Function(GIndexerVersionVarsBuilder)? updates]) =>
+      (new GIndexerVersionVarsBuilder()..update(updates))._build();
+
+  _$GIndexerVersionVars._() : super._();
+
+  @override
+  GIndexerVersionVars rebuild(
+          void Function(GIndexerVersionVarsBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GIndexerVersionVarsBuilder toBuilder() =>
+      new GIndexerVersionVarsBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GIndexerVersionVars;
+  }
+
+  @override
+  int get hashCode {
+    return 156341584;
+  }
+
+  @override
+  String toString() {
+    return newBuiltValueToStringHelper(r'GIndexerVersionVars').toString();
+  }
+}
+
+class GIndexerVersionVarsBuilder
+    implements Builder<GIndexerVersionVars, GIndexerVersionVarsBuilder> {
+  _$GIndexerVersionVars? _$v;
+
+  GIndexerVersionVarsBuilder();
+
+  @override
+  void replace(GIndexerVersionVars other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GIndexerVersionVars;
+  }
+
+  @override
+  void update(void Function(GIndexerVersionVarsBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GIndexerVersionVars build() => _build();
+
+  _$GIndexerVersionVars _build() {
+    final _$result = _$v ?? new _$GIndexerVersionVars._();
     replace(_$result);
     return _$result;
   }

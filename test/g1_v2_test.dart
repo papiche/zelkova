@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:durt/src/crypto/cesium_wallet.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ginkgo/g1/g1_v2_helper.dart';
-import 'package:ginkgo/ui/logger.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 import 'package:substrate_bip39/substrate_bip39.dart';
 
@@ -103,21 +102,6 @@ void main() {
     final Uint8List devSeedU8a = Uint8List.fromList(devSeed);
     final CesiumWallet wallet2 = CesiumWallet.fromSeed(devSeedU8a);
     expect(wallet2.pubkey, equals(expectedV1PubKeyEd));
-  });
-
-  // Disabled as polkadot does not support spanish mnemonics
-  test('Spanish bit39', skip: true, () async {
-    final List<String> esMnemonicList =
-        mnemonicGenerate(lang: Language.spanish).split(' ');
-
-    final Keyring keyring = Keyring();
-    final String mnemonic = esMnemonicList.join(' ');
-    loggerDev(mnemonic);
-    await keyring.fromMnemonic(mnemonic, keyPairType: KeyPairType.sr25519);
-
-    for (final String esWord in esMnemonicList) {
-      expect(Language.spanish.list.contains(esWord), true);
-    }
   });
 
   test('sign and verify', () async {

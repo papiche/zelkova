@@ -12,7 +12,8 @@ class Node extends Equatable {
       {required this.url,
       this.latency = 99999,
       this.errors = 0,
-      this.currentBlock = 0});
+      this.currentBlock = 0,
+      this.version});
 
   factory Node.fromJson(Map<String, dynamic> json) => _$NodeFromJson(json);
 
@@ -20,19 +21,26 @@ class Node extends Equatable {
   final int latency;
   final int errors;
   final int currentBlock;
+  final String? version;
 
-  Node copyWith({String? url, int? latency, int? errors, int? currentBlock}) {
+  Node copyWith(
+      {String? url,
+      int? latency,
+      int? errors,
+      int? currentBlock,
+      String? version}) {
     return Node(
       url: url ?? this.url,
       latency: latency ?? this.latency,
       errors: errors ?? this.errors,
       currentBlock: currentBlock ?? this.currentBlock,
+      version: version ?? this.version,
     );
   }
 
   @override
   String toString() {
-    return 'node url: $url latency: $latency errors: $errors currentBlock: $currentBlock';
+    return 'node url: $url latency: $latency errors: $errors currentBlock: $currentBlock version: $version';
   }
 
   Map<String, dynamic> toJson() => _$NodeToJson(this);
@@ -42,6 +50,8 @@ class Node extends Equatable {
   bool get isNotOk => latency >= wrongNode;
 
   bool get isOk => latency < wrongNode;
+
+  bool get hasVersion => version != null && version!.isNotEmpty;
 
   @override
   List<Object?> get props => <dynamic>[url];

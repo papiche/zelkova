@@ -293,8 +293,9 @@ class _ContactPageState extends State<ContactPage> {
                       ) ??
                       '??',
                 )),
-          if (wotInfo.canCertOn != null &&
-              !wotInfo.canCertOn!.isAfter(DateTime.now()))
+          // Show if YOU can certify now
+          if (wotInfo.youCanCertOn != null &&
+              !wotInfo.youCanCertOn!.isAfter(DateTime.now()))
             ListTile(
               leading: const Icon(Icons.verified),
               title: Text(tr('can_cert')),
@@ -316,15 +317,16 @@ class _ContactPageState extends State<ContactPage> {
               child: const Icon(Icons.info_outline),
             ), */
             ),
-          if (wotInfo.canCertOn != null &&
-              wotInfo.canCertOn!.isAfter(DateTime.now()))
+          // Show when YOU will be able to certify
+          if (wotInfo.youCanCertOn != null &&
+              wotInfo.youCanCertOn!.isAfter(DateTime.now()))
             ListTile(
               leading: const Icon(Icons.timelapse),
               title: Text(tr('can_cert_on')),
               subtitle: Text(
                   humanizeTimeFuture(
                         context.locale.languageCode,
-                        (wotInfo.canCertOn!.millisecondsSinceEpoch -
+                        (wotInfo.youCanCertOn!.millisecondsSinceEpoch -
                                 DateTime.now().millisecondsSinceEpoch) ~/
                             1000,
                       ) ??
@@ -576,7 +578,7 @@ class _ContactPageState extends State<ContactPage> {
         // Parallelize these two calls
         final List<Object?> identityResults =
             await Future.wait(<Future<Object?>>[
-          // FIXME
+          // TODO
           getBalanceV2(address: widget.contact.address),
           getIdentity(address: you.address),
         ]);
@@ -609,25 +611,41 @@ class _ContactPageState extends State<ContactPage> {
       final IdtyCertMeta? idtyCertMeta =
           identityInfoResults[3] as IdtyCertMeta?;
 
+      // Calculate when YOU can certify (in general, not necessarily me)
       if (youIdty != null && youCertMeta != null) {
-        wotInfo.canCertOn = estimateDateFromBlock(
+        wotInfo.youCanCertOn = estimateDateFromBlock(
             futureBlock: youCertMeta.nextIssuableOn,
             currentBlockHeight: currentBlock);
       }
       yield wotInfo;
 
-      // Can Certificate
+      // Can I (ME) certify YOU?
       if (myIdty != null && idtyCertMeta != null) {
         // From: https://duniter.org/wiki/duniter-v2/doc/wot/
         // storage.identity.identities(AliceIndex).nextCreatableIdentityOn is lower than current block
         // storage.certification.storageIdtyCertMeta(AliceIndex).nextIssuableOn is lower than current block
         // storage.certification.storageIdtyCertMeta(AliceIndex).issuedCount is lower than constants.certification.maxByIssuer()
-        final bool canCert = myIdty.nextCreatableIdentityOn < currentBlock &&
-            idtyCertMeta.nextIssuableOn < currentBlock &&
-            idtyCertMeta.issuedCount < Constants().maxByIssuer;
-        wotInfo.canCert = canCert;
+        final bool meCanCertYou =
+            myIdty.nextCreatableIdentityOn < currentBlock &&
+                idtyCertMeta.nextIssuableOn < currentBlock &&
+                idtyCertMeta.issuedCount < Constants().maxByIssuer;
+        wotInfo.meCanCertYou = meCanCertYou;
+
+        // If I can't certify now, calculate when I will be able to
+        if (!meCanCertYou) {
+          final int nextBlock =
+              myIdty.nextCreatableIdentityOn > idtyCertMeta.nextIssuableOn
+                  ? myIdty.nextCreatableIdentityOn
+                  : idtyCertMeta.nextIssuableOn;
+
+          if (nextBlock > currentBlock &&
+              idtyCertMeta.issuedCount < Constants().maxByIssuer) {
+            wotInfo.meCanCertYouOn = estimateDateFromBlock(
+                futureBlock: nextBlock, currentBlockHeight: currentBlock);
+          }
+        }
       } else {
-        wotInfo.canCert = false;
+        wotInfo.meCanCertYou = false;
       }
       yield wotInfo;
 
@@ -678,7 +696,7 @@ class _ContactPageState extends State<ContactPage> {
           you.certsReceived!.isNotEmpty &&
           you.certsReceived!
               .any((Cert cert) => cert.issuerId.pubKey == me.pubKey);
-      wotInfo.alreadyCert = alreadyCert;
+      wotInfo.meAlreadyCertYou = alreadyCert;
       yield wotInfo;
       if (!mounted) {
         yield wotInfo;

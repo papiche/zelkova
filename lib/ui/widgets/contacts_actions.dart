@@ -15,13 +15,20 @@ import 'first_screen/contact_search_page.dart'
 import 'third_screen/contact_form_dialog.dart';
 
 void onEditContact(BuildContext context, Contact contact) {
+  // Get the latest version of the contact from ContactsCubit
+  final ContactsCubit contactsCubit = context.read<ContactsCubit>();
+  final Contact? updatedContact = contactsCubit.state.contacts
+      .where((Contact c) => c.pubKey == contact.pubKey)
+      .firstOrNull;
+
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return ContactFormDialog(
-          contact: contact,
+          // Use the updated contact from cubit if available, otherwise use the passed contact
+          contact: updatedContact ?? contact,
           onSave: (Contact c) {
-            context.read<ContactsCubit>().updateContact(c);
+            contactsCubit.updateContact(c);
             ContactsCache().saveContact(c);
           });
     },
@@ -66,6 +73,9 @@ void onSentContact(BuildContext context, Contact contact) {
 void addContact(BuildContext context, Contact newContact) {
   final ContactsCubit contactsCubit = context.read<ContactsCubit>();
   contactsCubit.addContact(newContact);
+  // Get ScaffoldMessenger before showing dialog to avoid using deactivated context
+  final ScaffoldMessengerState scaffoldMessenger =
+      ScaffoldMessenger.of(context);
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -74,7 +84,8 @@ void addContact(BuildContext context, Contact newContact) {
           onSave: (Contact c) {
             contactsCubit.updateContact(c);
             ContactsCache().saveContact(c);
-            ScaffoldMessenger.of(context).showSnackBar(
+            // Use the scaffoldMessenger reference instead of context
+            scaffoldMessenger.showSnackBar(
               SnackBar(
                 content: Text(tr('contact_added')),
               ),

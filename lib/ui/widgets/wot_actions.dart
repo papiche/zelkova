@@ -9,6 +9,7 @@ import '../../g1/duniter_endpoint_helper.dart';
 import '../../g1/sign_and_send.dart';
 import '../logger.dart';
 import '../secure_unlock_widget.dart';
+import '../ui_helpers.dart';
 import 'wot_menu_action.dart';
 
 List<WotMenuAction> getWotMenuActions(
@@ -172,21 +173,56 @@ void _requestDistanceActionFor(BuildContext context, int? idtyIndex,
 
 void _certAction(
     BuildContext context, ContactWotInfo wotInfo, List<WotMenuAction> actions) {
-  if ((wotInfo.canCert ?? false) &&
-      !(wotInfo.alreadyCert ?? false) &&
-      wotInfo.you.index != null) {
-    actions.add(WotMenuAction(
-        name: tr('certify_member'),
-        icon: Icons.verified,
-        action: () async => _executeIfAuthenticated(
-            context, () => certify(wotInfo.you.index!))));
+  // Always show cert action if I haven't certified yet and the contact has an index
+  if (!(wotInfo.meAlreadyCertYou ?? false) && wotInfo.you.index != null) {
+    if (wotInfo.meCanCertYou ?? false) {
+      // I can certify now - show enabled action
+      actions.add(WotMenuAction(
+          name: tr('certify_member'),
+          icon: Icons.verified,
+          action: () async => _executeIfAuthenticated(
+              context, () => certify(wotInfo.you.index!))));
+    } else if (wotInfo.meCanCertYouOn != null) {
+      // I can't certify now, but I will be able to in the future - show info message
+      actions.add(WotMenuAction(
+          name: tr('certify_member'),
+          icon: Icons.verified,
+          action: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  tr('can_certify_in_days', namedArgs: <String, String>{
+                    'days': humanizeCanCertOnDay(context, wotInfo)
+                  }),
+                ),
+              ),
+            );
+            return Future.value(
+                SignAndSendResult(progressStream: Stream<String>.value('')));
+          }));
+    } else {
+      // TODO (vjrj)
+      // I can't certify (probably reached maxByIssuer limit) - show disabled info
+      /* actions.add(WotMenuAction(
+          name: tr('certify_member'),
+          icon: Icons.verified,
+          action: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(tr('cannot_certify_reached_limit')),
+              ),
+            );
+            return Future.value(
+                SignAndSendResult(progressStream: Stream<String>.value('')));
+          })); */
+    }
   }
 }
 
 void _renewAction(
     BuildContext context, ContactWotInfo wotInfo, List<WotMenuAction> actions) {
-  if ((wotInfo.canCert ?? false) &&
-      (wotInfo.alreadyCert ?? false) &&
+  if ((wotInfo.meCanCertYou ?? false) &&
+      (wotInfo.meAlreadyCertYou ?? false) &&
       wotInfo.you.index != null) {
     actions.add(WotMenuAction(
         name: tr('renew_membership'),
@@ -219,4 +255,14 @@ Future<SignAndSendResult> _returnAuthFailed() {
   return Future<SignAndSendResult>.value(SignAndSendResult(
     progressStream: progressController.stream,
   ));
+}
+
+String humanizeCanCertOnDay(BuildContext context, ContactWotInfo wotInfo) {
+  return humanizeTimeFuture(
+        context.locale.languageCode,
+        (wotInfo.meCanCertYouOn!.millisecondsSinceEpoch -
+                DateTime.now().millisecondsSinceEpoch) ~/
+            1000,
+      ) ??
+      '';
 }

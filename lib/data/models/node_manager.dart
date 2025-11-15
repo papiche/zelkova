@@ -288,6 +288,27 @@ class NodeManager {
   List<Node> getBestNodes(NodeType type) {
     final List<Node> allNodes = NodeManager().nodeList(type);
 
+    // For cesiumPlus, always prefer https://g1.data.e-is.pro if accessible
+    if (type == NodeType.cesiumPlus) {
+      Node? preferredNode;
+      try {
+        preferredNode = allNodes.firstWhere(
+          (Node node) =>
+              node.url == 'https://g1.data.e-is.pro' &&
+              node.isOk &&
+              node.errors < NodeManager.absoluteMaxErrors,
+        );
+      } catch (_) {
+        preferredNode = null;
+      }
+      if (preferredNode != null) {
+        return <Node>[
+          preferredNode,
+          ...allNodes.where((Node n) => n.url != 'https://g1.data.e-is.pro')
+        ];
+      }
+    }
+
     // Filter out nodes with huge latency (offline nodes) AND excessive errors
     final List<Node> onlineNodes = allNodes
         .where((Node node) =>

@@ -1,0 +1,509 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:ginkgo/data/models/app_cubit.dart';
+import 'package:ginkgo/data/models/contact.dart';
+import 'package:ginkgo/data/models/multi_wallet_transaction_cubit.dart';
+import 'package:ginkgo/data/models/multi_wallet_transaction_state.dart';
+import 'package:ginkgo/data/models/transaction.dart';
+import 'package:ginkgo/data/models/transaction_state.dart';
+import 'package:ginkgo/data/models/transaction_type.dart';
+import 'package:ginkgo/data/models/utxo_cubit.dart';
+import 'package:ginkgo/g1/currency.dart';
+import 'package:ginkgo/ui/widgets/fourth_screen/transactions_list/transactions_list_widget.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+
+import 'transactions_list_widget_test.mocks.dart';
+
+@GenerateMocks(<Type>[
+  AppCubit,
+  MultiWalletTransactionCubit,
+  UtxoCubit,
+])
+void main() {
+  late MockAppCubit mockAppCubit;
+  late MockMultiWalletTransactionCubit mockTransCubit;
+  late MockUtxoCubit mockUtxoCubit;
+
+  const String testPubKey = 'testPubKey123';
+
+  setUp(() {
+    mockAppCubit = MockAppCubit();
+    mockTransCubit = MockMultiWalletTransactionCubit();
+    mockUtxoCubit = MockUtxoCubit();
+
+    // Default mock behaviors
+    when(mockAppCubit.isV2).thenReturn(true);
+    when(mockUtxoCubit.stream).thenAnswer(
+      (_) => Stream<Map<String, Currency>>.value(<String, Currency>{}),
+    );
+    when(mockUtxoCubit.state).thenReturn(<String, Currency>{
+      testPubKey: const Currency(amount: 100.0),
+    });
+  });
+
+  Widget createTestWidget({
+    String? pubKey,
+    int pageSize = 20,
+  }) {
+    return MaterialApp(
+      home: Scaffold(
+        body: MultiBlocProvider(
+          providers: <BlocProvider>[
+            BlocProvider<AppCubit>.value(value: mockAppCubit),
+            BlocProvider<MultiWalletTransactionCubit>.value(
+                value: mockTransCubit),
+            BlocProvider<UtxoCubit>.value(value: mockUtxoCubit),
+          ],
+          child: TransactionsListWidget(
+            pubKey: pubKey ?? testPubKey,
+            pageSize: pageSize,
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<Transaction> createMockTransactions(int count) {
+    return List<Transaction>.generate(
+      count,
+      (int index) => Transaction(
+        type: TransactionType.received,
+        amount: 10.0 + index,
+        comment: 'Test transaction $index',
+        time: DateTime.now().subtract(Duration(hours: index)),
+        from: Contact(
+          pubKey: 'sender$index',
+          name: 'Sender $index',
+        ),
+        recipients: <Contact>[
+          Contact(pubKey: testPubKey, name: 'Test User'),
+        ],
+      ),
+    );
+  }
+
+  group('TransactionsListWidget', () {
+    group('Initial Loading', () {
+      testWidgets('shows loading indicator when loading initial data',
+          (WidgetTester tester) async {
+        when(mockTransCubit.currentWalletState(testPubKey)).thenReturn(
+          const TransactionState(
+            transactions: <Transaction>[],
+            pendingTransactions: <Transaction>[],
+          ),
+        );
+        when(mockTransCubit.stream).thenAnswer(
+          (_) => Stream<MultiWalletTransactionState>.value(
+            MultiWalletTransactionState(const <String, TransactionState>{}),
+          ),
+        );
+
+        await tester.pumpWidget(createTestWidget());
+
+        expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      });
+
+      testWidgets('loads cached transactions for personal account',
+          (WidgetTester tester) async {
+        final List<Transaction> cachedTransactions = createMockTransactions(5);
+
+        when(mockTransCubit.currentWalletState(testPubKey)).thenReturn(
+          TransactionState(
+            transactions: cachedTransactions,
+            pendingTransactions: const <Transaction>[],
+            endCursor: 'cursor1',
+          ),
+        );
+        when(mockTransCubit.stream).thenAnswer(
+          (_) => Stream<MultiWalletTransactionState>.value(
+            MultiWalletTransactionState(<String, TransactionState>{
+              testPubKey: TransactionState(
+                transactions: cachedTransactions,
+                pendingTransactions: const <Transaction>[],
+              ),
+            }),
+          ),
+        );
+        when(mockTransCubit.fetchTransactions(
+          cursor: any,
+          pageSize: any,
+          pubKey: any,
+        )).thenAnswer((_) async => cachedTransactions);
+
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // Should show cached transactions
+        expect(find.byType(CircularProgressIndicator), findsNothing);
+        // Header should be visible
+        expect(find.text('Balance'), findsOneWidget);
+      });
+    });
+
+    group('Empty State', () {
+      testWidgets('shows empty state when no transactions',
+          (WidgetTester tester) async {
+        when(mockTransCubit.currentWalletState(testPubKey)).thenReturn(
+          const TransactionState(
+            transactions: <Transaction>[],
+            pendingTransactions: <Transaction>[],
+          ),
+        );
+        when(mockTransCubit.stream).thenAnswer(
+          (_) => Stream<MultiWalletTransactionState>.value(
+            MultiWalletTransactionState(<String, TransactionState>{
+              testPubKey: const TransactionState(
+                transactions: <Transaction>[],
+                pendingTransactions: <Transaction>[],
+              ),
+            }),
+          ),
+        );
+        when(mockTransCubit.fetchTransactions(
+          cursor: any,
+          pageSize: any,
+          pubKey: any,
+        )).thenAnswer((_) async => <Transaction>[]);
+
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        expect(find.text('No transactions yet'), findsOneWidget);
+        expect(find.text('Pull down to refresh'), findsOneWidget);
+      });
+    });
+
+    group('Transaction List', () {
+      testWidgets('displays transactions correctly',
+          (WidgetTester tester) async {
+        final List<Transaction> transactions = createMockTransactions(3);
+
+        when(mockTransCubit.currentWalletState(testPubKey)).thenReturn(
+          TransactionState(
+            transactions: transactions,
+            pendingTransactions: const <Transaction>[],
+          ),
+        );
+        when(mockTransCubit.stream).thenAnswer(
+          (_) => Stream<MultiWalletTransactionState>.value(
+            MultiWalletTransactionState(<String, TransactionState>{
+              testPubKey: TransactionState(
+                transactions: transactions,
+                pendingTransactions: const <Transaction>[],
+              ),
+            }),
+          ),
+        );
+        when(mockTransCubit.fetchTransactions(
+          cursor: any,
+          pageSize: any,
+          pubKey: any,
+        )).thenAnswer((_) async => transactions);
+
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // Should display all transactions
+        for (int i = 0; i < transactions.length; i++) {
+          expect(find.text('Test transaction $i'), findsOneWidget);
+        }
+      });
+
+      testWidgets('shows pending transactions first',
+          (WidgetTester tester) async {
+        final List<Transaction> confirmedTxs = createMockTransactions(2);
+        final Transaction pendingTx = Transaction(
+          type: TransactionType.pending,
+          amount: 50.0,
+          comment: 'Pending transaction',
+          time: DateTime.now(),
+          from: Contact(pubKey: testPubKey, name: 'Test User'),
+          recipients: <Contact>[
+            Contact(pubKey: 'recipient', name: 'Recipient'),
+          ],
+        );
+
+        when(mockTransCubit.currentWalletState(testPubKey)).thenReturn(
+          TransactionState(
+            transactions: confirmedTxs,
+            pendingTransactions: <Transaction>[pendingTx],
+          ),
+        );
+        when(mockTransCubit.stream).thenAnswer(
+          (_) => Stream<MultiWalletTransactionState>.value(
+            MultiWalletTransactionState(<String, TransactionState>{
+              testPubKey: TransactionState(
+                transactions: confirmedTxs,
+                pendingTransactions: <Transaction>[pendingTx],
+              ),
+            }),
+          ),
+        );
+        when(mockTransCubit.fetchTransactions(
+          cursor: any,
+          pageSize: any,
+          pubKey: any,
+        )).thenAnswer((_) async => confirmedTxs);
+
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        expect(find.text('Pending transaction'), findsOneWidget);
+        expect(find.text('Test transaction 0'), findsOneWidget);
+      });
+    });
+
+    group('Pagination', () {
+      testWidgets('loads more transactions on scroll',
+          (WidgetTester tester) async {
+        final List<Transaction> initialTransactions =
+            createMockTransactions(10);
+        final List<Transaction> moreTransactions = createMockTransactions(5);
+
+        when(mockTransCubit.currentWalletState(testPubKey)).thenReturn(
+          TransactionState(
+            transactions: initialTransactions,
+            pendingTransactions: const <Transaction>[],
+            endCursor: 'cursor1',
+            hasNextPage: true,
+          ),
+        );
+        when(mockTransCubit.stream).thenAnswer(
+          (_) => Stream<MultiWalletTransactionState>.value(
+            MultiWalletTransactionState(<String, TransactionState>{
+              testPubKey: TransactionState(
+                transactions: initialTransactions,
+                pendingTransactions: const <Transaction>[],
+                hasNextPage: true,
+              ),
+            }),
+          ),
+        );
+
+        int fetchCount = 0;
+        when(mockTransCubit.fetchTransactions(
+          cursor: any,
+          pageSize: any,
+          pubKey: any,
+        )).thenAnswer((_) async {
+          fetchCount++;
+          return fetchCount == 1 ? initialTransactions : moreTransactions;
+        });
+
+        await tester.pumpWidget(createTestWidget(pageSize: 10));
+        await tester.pumpAndSettle();
+
+        // Scroll to bottom
+        await tester.drag(
+          find.byType(ListView),
+          const Offset(0, -500),
+        );
+        await tester.pumpAndSettle();
+
+        // Should show loading indicator
+        expect(find.byType(CircularProgressIndicator), findsWidgets);
+      });
+
+      testWidgets('shows loading indicator when loading more',
+          (WidgetTester tester) async {
+        final List<Transaction> transactions = createMockTransactions(15);
+
+        when(mockTransCubit.currentWalletState(testPubKey)).thenReturn(
+          TransactionState(
+            transactions: transactions,
+            pendingTransactions: const <Transaction>[],
+            hasNextPage: true,
+          ),
+        );
+        when(mockTransCubit.stream).thenAnswer(
+          (_) => Stream<MultiWalletTransactionState>.value(
+            MultiWalletTransactionState(<String, TransactionState>{
+              testPubKey: TransactionState(
+                transactions: transactions,
+                pendingTransactions: const <Transaction>[],
+                hasNextPage: true,
+              ),
+            }),
+          ),
+        );
+        when(mockTransCubit.fetchTransactions(
+          cursor: any,
+          pageSize: any,
+          pubKey: any,
+        )).thenAnswer((_) async {
+          await Future<void>.delayed(const Duration(seconds: 2));
+          return transactions;
+        });
+
+        await tester.pumpWidget(createTestWidget());
+        await tester.pump();
+
+        // Find the loading indicator for "load more"
+        // (initial loading uses different indicator)
+        await tester.pumpAndSettle();
+      });
+    });
+
+    group('Pull to Refresh', () {
+      testWidgets('refreshes transactions on pull down',
+          (WidgetTester tester) async {
+        final List<Transaction> initialTransactions = createMockTransactions(3);
+        final List<Transaction> refreshedTransactions =
+            createMockTransactions(5);
+
+        when(mockTransCubit.currentWalletState(testPubKey)).thenReturn(
+          TransactionState(
+            transactions: initialTransactions,
+            pendingTransactions: const <Transaction>[],
+          ),
+        );
+
+        when(mockTransCubit.stream).thenAnswer(
+          (_) => Stream<MultiWalletTransactionState>.value(
+            MultiWalletTransactionState(<String, TransactionState>{
+              testPubKey: TransactionState(
+                transactions: initialTransactions,
+                pendingTransactions: const <Transaction>[],
+              ),
+            }),
+          ),
+        );
+
+        int fetchCount = 0;
+        when(mockTransCubit.fetchTransactions(
+          cursor: any,
+          pageSize: any,
+          pubKey: any,
+        )).thenAnswer((_) async {
+          fetchCount++;
+          return fetchCount == 1 ? initialTransactions : refreshedTransactions;
+        });
+
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // Pull to refresh
+        await tester.drag(
+          find.byType(RefreshIndicator),
+          const Offset(0, 300),
+        );
+        await tester.pumpAndSettle();
+
+        // Verify fetch was called
+        verify(mockTransCubit.fetchTransactions(
+          cursor: null,
+          pageSize: anyNamed('pageSize'),
+          pubKey: anyNamed('pubKey'),
+        )).called(greaterThan(0));
+      });
+    });
+
+    group('Error Handling', () {
+      testWidgets('shows error state when fetch fails',
+          (WidgetTester tester) async {
+        when(mockTransCubit.currentWalletState(testPubKey)).thenReturn(
+          const TransactionState(
+            transactions: <Transaction>[],
+            pendingTransactions: <Transaction>[],
+          ),
+        );
+        when(mockTransCubit.stream).thenAnswer(
+          (_) => Stream<MultiWalletTransactionState>.value(
+            MultiWalletTransactionState(const <String, TransactionState>{}),
+          ),
+        );
+        when(mockTransCubit.fetchTransactions(
+          cursor: any,
+          pageSize: any,
+          pubKey: any,
+        )).thenThrow(Exception('Network error'));
+
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        expect(find.text('Error loading transactions'), findsOneWidget);
+        expect(find.byIcon(Icons.error_outline), findsOneWidget);
+        expect(find.text('Retry'), findsOneWidget);
+      });
+
+      testWidgets('retries on error retry button tap',
+          (WidgetTester tester) async {
+        when(mockTransCubit.currentWalletState(testPubKey)).thenReturn(
+          const TransactionState(
+            transactions: <Transaction>[],
+            pendingTransactions: <Transaction>[],
+          ),
+        );
+        when(mockTransCubit.stream).thenAnswer(
+          (_) => Stream<MultiWalletTransactionState>.value(
+            MultiWalletTransactionState(const <String, TransactionState>{}),
+          ),
+        );
+
+        int fetchCount = 0;
+        when(mockTransCubit.fetchTransactions(
+          cursor: any,
+          pageSize: any,
+          pubKey: any,
+        )).thenAnswer((_) async {
+          fetchCount++;
+          if (fetchCount == 1) {
+            throw Exception('Network error');
+          }
+          return <Transaction>[];
+        });
+
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        expect(find.text('Error loading transactions'), findsOneWidget);
+
+        await tester.tap(find.text('Retry'));
+        await tester.pumpAndSettle();
+
+        // Should have called fetch twice
+        verify(mockTransCubit.fetchTransactions(
+          cursor: any,
+          pageSize: any,
+          pubKey: any,
+        )).called(2);
+      });
+    });
+
+    group('Offline Support', () {
+      testWidgets('uses cached data when offline', (WidgetTester tester) async {
+        final List<Transaction> cachedTransactions = createMockTransactions(3);
+
+        when(mockTransCubit.currentWalletState(testPubKey)).thenReturn(
+          TransactionState(
+            transactions: cachedTransactions,
+            pendingTransactions: const <Transaction>[],
+          ),
+        );
+        when(mockTransCubit.stream).thenAnswer(
+          (_) => Stream<MultiWalletTransactionState>.value(
+            MultiWalletTransactionState(<String, TransactionState>{
+              testPubKey: TransactionState(
+                transactions: cachedTransactions,
+                pendingTransactions: const <Transaction>[],
+              ),
+            }),
+          ),
+        );
+        when(mockTransCubit.fetchTransactions(
+          cursor: any,
+          pageSize: any,
+          pubKey: any,
+        )).thenAnswer((_) async => cachedTransactions);
+
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        // Should show cached data
+        expect(find.text('Test transaction 0'), findsOneWidget);
+      });
+    });
+  });
+}

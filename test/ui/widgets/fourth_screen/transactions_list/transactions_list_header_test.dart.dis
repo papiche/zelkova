@@ -1,0 +1,173 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:ginkgo/data/models/utxo_cubit.dart';
+import 'package:ginkgo/g1/currency.dart';
+import 'package:ginkgo/ui/widgets/fourth_screen/transactions_list/transactions_list_header.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+
+import 'transactions_list_header_test.mocks.dart';
+
+@GenerateMocks(<Type>[UtxoCubit])
+void main() {
+  group('TransactionsListHeader', () {
+    late MockUtxoCubit mockUtxoCubit;
+
+    setUp(() {
+      mockUtxoCubit = MockUtxoCubit();
+    });
+
+    Widget createTestWidget({
+      required String pubKey,
+      required bool isExternalAccount,
+    }) {
+      return MaterialApp(
+        home: Scaffold(
+          body: BlocProvider<UtxoCubit>.value(
+            value: mockUtxoCubit,
+            child: TransactionsListHeader(
+              pubKey: pubKey,
+              isExternalAccount: isExternalAccount,
+            ),
+          ),
+        ),
+      );
+    }
+
+    testWidgets('displays balance label', (WidgetTester tester) async {
+      when(mockUtxoCubit.stream).thenAnswer(
+        (_) => Stream<Map<String, Currency>>.value(<String, Currency>{}),
+      );
+      when(mockUtxoCubit.state).thenReturn(<String, Currency>{});
+
+      await tester.pumpWidget(
+        createTestWidget(
+          pubKey: 'testPubKey',
+          isExternalAccount: false,
+        ),
+      );
+
+      expect(find.text('Balance'), findsOneWidget);
+    });
+
+    testWidgets('displays zero balance when no balance available',
+        (WidgetTester tester) async {
+      when(mockUtxoCubit.stream).thenAnswer(
+        (_) => Stream<Map<String, Currency>>.value(<String, Currency>{}),
+      );
+      when(mockUtxoCubit.state).thenReturn(<String, Currency>{});
+
+      await tester.pumpWidget(
+        createTestWidget(
+          pubKey: 'testPubKey',
+          isExternalAccount: false,
+        ),
+      );
+
+      // Should display zero balance formatted
+      expect(find.textContaining('0'), findsOneWidget);
+    });
+
+    testWidgets('displays correct balance for personal account',
+        (WidgetTester tester) async {
+      const String testPubKey = 'testPubKey';
+      const Currency testBalance = Currency(amount: 123.45);
+
+      when(mockUtxoCubit.stream).thenAnswer(
+        (_) => Stream<Map<String, Currency>>.value(
+            <String, Currency>{testPubKey: testBalance}),
+      );
+      when(mockUtxoCubit.state).thenReturn(
+        <String, Currency>{testPubKey: testBalance},
+      );
+
+      await tester.pumpWidget(
+        createTestWidget(
+          pubKey: testPubKey,
+          isExternalAccount: false,
+        ),
+      );
+
+      // Should display formatted balance
+      expect(find.textContaining('123'), findsOneWidget);
+    });
+
+    testWidgets('displays correct balance for external account',
+        (WidgetTester tester) async {
+      const String externalPubKey = 'externalPubKey';
+      const Currency externalBalance = Currency(amount: 50.0);
+
+      when(mockUtxoCubit.stream).thenAnswer(
+        (_) => Stream<Map<String, Currency>>.value(
+            <String, Currency>{externalPubKey: externalBalance}),
+      );
+      when(mockUtxoCubit.state).thenReturn(
+        <String, Currency>{externalPubKey: externalBalance},
+      );
+
+      await tester.pumpWidget(
+        createTestWidget(
+          pubKey: externalPubKey,
+          isExternalAccount: true,
+        ),
+      );
+
+      expect(find.textContaining('50'), findsOneWidget);
+    });
+
+    testWidgets('updates balance when state changes',
+        (WidgetTester tester) async {
+      const String testPubKey = 'testPubKey';
+      const Currency initialBalance = Currency(amount: 100.0);
+      const Currency updatedBalance = Currency(amount: 200.0);
+
+      when(mockUtxoCubit.state).thenReturn(
+        <String, Currency>{testPubKey: initialBalance},
+      );
+      when(mockUtxoCubit.stream).thenAnswer(
+        (_) =>
+            Stream<Map<String, Currency>>.fromIterable(<Map<String, Currency>>[
+          <String, Currency>{testPubKey: initialBalance},
+          <String, Currency>{testPubKey: updatedBalance},
+        ]),
+      );
+
+      await tester.pumpWidget(
+        createTestWidget(
+          pubKey: testPubKey,
+          isExternalAccount: false,
+        ),
+      );
+
+      // Initial balance
+      expect(find.textContaining('100'), findsOneWidget);
+
+      // Wait for state change
+      await tester.pump();
+
+      // Updated balance
+      expect(find.textContaining('200'), findsOneWidget);
+    });
+
+    testWidgets('has correct styling', (WidgetTester tester) async {
+      when(mockUtxoCubit.stream).thenAnswer(
+        (_) => Stream<Map<String, Currency>>.value(<String, Currency>{}),
+      );
+      when(mockUtxoCubit.state).thenReturn(<String, Currency>{});
+
+      await tester.pumpWidget(
+        createTestWidget(
+          pubKey: 'testPubKey',
+          isExternalAccount: false,
+        ),
+      );
+
+      final Container container = tester.widget(find.byType(Container).first);
+      expect(container.decoration, isA<BoxDecoration>());
+
+      final BoxDecoration decoration = container.decoration! as BoxDecoration;
+      expect(decoration.borderRadius, isNotNull);
+    });
+  });
+}

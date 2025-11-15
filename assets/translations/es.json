@@ -471,5 +471,10 @@
   "add_emoji": "Add Emoji",
   "hide_emoji_keyboard": "Hide Emoji Keyboard",
   "emoji_search": "Buscar",
-  "nick_copied_to_clipboard": "Identidad copiada al portapapeles"
+  "nick_copied_to_clipboard": "Identidad copiada al portapapeles",
+  "network_results": "Resultados en la red",
+  "searching_network": "Buscando en la red...",
+  "no_network_results": "No se encontraron resultados en la red",
+  "no_more_network_results": "No se encontraron más contactos en la red",
+  "can_certify_in_days": "No puedes certificar hasta {days}"
 }

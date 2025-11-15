@@ -467,5 +467,11 @@
   "error_decoding_json": "Error decoding the g1nkgo export file",
   "add_emoji": "Add Emoji",
   "hide_emoji_keyboard": "Hide Emoji Keyboard",
-  "nick_copied_to_clipboard": "Identity copied to clipboard"
+  "nick_copied_to_clipboard": "Identity copied to clipboard",
+  "network_results": "Network results",
+  "searching_network": "Searching network...",
+  "no_network_results": "No results found on network",
+  "no_more_network_results": "No additional contacts found on network",
+  "can_certify_in_days": "You cannot certify until {days}",
+  "cannot_certify_reached_limit": "You have reached the maximum number of certifications you can issue"
 }

@@ -160,6 +160,11 @@ class ContactsCache {
   }
 
   Contact? _retrieveContact(String pubKey) {
+    // Return null if box is not initialized (e.g., in tests)
+    if (box == null) {
+      return null;
+    }
+
     final dynamic record = box!.get(pubKey);
 
     if (record != null) {

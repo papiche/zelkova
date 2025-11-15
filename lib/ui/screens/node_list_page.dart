@@ -27,7 +27,8 @@ class NodeListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool useV2 = context.read<AppCubit>().isV2;
+    // Get v2 mode from AppCubit
+    final bool useV2 = context.read<AppCubit>().state.v2mode;
     return BlocBuilder<NodeListCubit, NodeListState>(
         builder: (BuildContext context, NodeListState state) {
       final List<Node> endPointNodes =
@@ -44,6 +45,36 @@ class NodeListPage extends StatelessWidget {
           state.duniterDataNodes, NodeType.datapodEndpoint);
       final List<Node> ipfsGateways =
           filterAndSortNodesByType(state.ipfsGateways, NodeType.ipfsGateway);
+
+      // Use isV1 and isV2 from NodeType, and sort by enum index for consistent order
+      final List<NodeType> v2Types = NodeType.values
+          .where((NodeType type) => type.isV2)
+          .toList()
+        ..sort((NodeType a, NodeType b) => a.index.compareTo(b.index));
+      final List<NodeType> v1Types = NodeType.values
+          .where((NodeType type) => type.isV1)
+          .toList()
+        ..sort((NodeType a, NodeType b) => a.index.compareTo(b.index));
+      // Map NodeType to nodes and lastUpdated
+      final Map<NodeType, List<Node>> nodeTypeToNodes = <NodeType, List<Node>>{
+        NodeType.endpoint: endPointNodes,
+        NodeType.duniterIndexer: duniterIndexerNodes,
+        NodeType.datapodEndpoint: duniterDataNodes,
+        NodeType.ipfsGateway: ipfsGateways,
+        NodeType.gva: gvaNodes,
+        NodeType.duniter: duniterNodes,
+        NodeType.cesiumPlus: cesiumPlusNodes,
+      };
+      final Map<NodeType, DateTime?> nodeTypeToLastUpdated =
+          <NodeType, DateTime?>{
+        NodeType.endpoint: state.endpointNodesLastUpdate,
+        NodeType.duniterIndexer: state.duniterIndexerNodesLastUpdate,
+        NodeType.datapodEndpoint: state.duniterDataNodesLastUpdate,
+        NodeType.ipfsGateway: state.ipfsGatewaysLastUpdate,
+        NodeType.gva: state.gvaNodesLastUpdate,
+        NodeType.duniter: state.duniterNodesLastUpdate,
+        NodeType.cesiumPlus: state.cesiumPlusNodesLastUpdate,
+      };
       return Scaffold(
           appBar: AppBar(
             title: Text(tr('nodes_tech_info')),
@@ -64,75 +95,37 @@ class NodeListPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      if (useV2) ...<Widget>[
-                        NodeListHeader(
-                            type: NodeType.endpoint,
-                            lastUpdated: state.endpointNodesLastUpdate,
-                            nodesCount: endPointNodes.length),
-                        if (endPointNodes.isNotEmpty)
-                          NodeListWidget(
-                              nodes: endPointNodes,
-                              type: NodeType.endpoint,
-                              currentBlock: endPointNodes[0].currentBlock),
-                        NodeListHeader(
-                            type: NodeType.duniterIndexer,
-                            lastUpdated: state.duniterIndexerNodesLastUpdate,
-                            nodesCount: duniterIndexerNodes.length),
-                        if (duniterIndexerNodes.isNotEmpty)
-                          NodeListWidget(
-                              nodes: duniterIndexerNodes,
-                              type: NodeType.duniterIndexer,
+                      // Show v2 nodes only if useV2, otherwise show only v1 nodes
+                      if (useV2)
+                        for (final NodeType type in v2Types) ...<Widget>[
+                          NodeListHeader(
+                            type: type,
+                            lastUpdated: nodeTypeToLastUpdated[type],
+                            nodesCount: nodeTypeToNodes[type]?.length ?? 0,
+                          ),
+                          if (nodeTypeToNodes[type]?.isNotEmpty ?? false)
+                            NodeListWidget(
+                              nodes: nodeTypeToNodes[type]!,
+                              type: type,
                               currentBlock:
-                                  duniterIndexerNodes[0].currentBlock),
-                        NodeListHeader(
-                            type: NodeType.datapodEndpoint,
-                            lastUpdated: state.duniterDataNodesLastUpdate,
-                            nodesCount: duniterDataNodes.length),
-                        if (duniterDataNodes.isNotEmpty)
-                          NodeListWidget(
-                              nodes: duniterDataNodes,
-                              type: NodeType.datapodEndpoint,
-                              currentBlock: duniterDataNodes[0].currentBlock),
-                        NodeListHeader(
-                            type: NodeType.ipfsGateway,
-                            lastUpdated: state.ipfsGatewaysLastUpdate,
-                            nodesCount: ipfsGateways.length),
-                        if (ipfsGateways.isNotEmpty)
-                          NodeListWidget(
-                              nodes: ipfsGateways,
-                              type: NodeType.ipfsGateway,
-                              currentBlock: ipfsGateways[0].currentBlock),
-                      ],
-                      if (!useV2) ...<Widget>[
-                        NodeListHeader(
-                            type: NodeType.gva,
-                            lastUpdated: state.gvaNodesLastUpdate,
-                            nodesCount: gvaNodes.length),
-                        if (gvaNodes.isNotEmpty)
-                          NodeListWidget(
-                              nodes: gvaNodes,
-                              type: NodeType.gva,
-                              currentBlock: gvaNodes[0].currentBlock),
-                        NodeListHeader(
-                          type: NodeType.duniter,
-                          lastUpdated: state.duniterNodesLastUpdate,
-                          nodesCount: duniterNodes.length,
-                        ),
-                        if (duniterNodes.isNotEmpty)
-                          NodeListWidget(
-                              nodes: duniterNodes,
-                              type: NodeType.duniter,
-                              currentBlock: duniterNodes[0].currentBlock),
-                        NodeListHeader(
-                            type: NodeType.cesiumPlus,
-                            lastUpdated: state.cesiumPlusNodesLastUpdate,
-                            nodesCount: cesiumPlusNodes.length),
-                        if (cesiumPlusNodes.isNotEmpty)
-                          NodeListWidget(
-                              nodes: cesiumPlusNodes,
-                              type: NodeType.cesiumPlus,
-                              currentBlock: cesiumPlusNodes[0].currentBlock),
-                      ],
+                                  nodeTypeToNodes[type]![0].currentBlock,
+                            ),
+                        ]
+                      else
+                        for (final NodeType type in v1Types) ...<Widget>[
+                          NodeListHeader(
+                            type: type,
+                            lastUpdated: nodeTypeToLastUpdated[type],
+                            nodesCount: nodeTypeToNodes[type]?.length ?? 0,
+                          ),
+                          if (nodeTypeToNodes[type]?.isNotEmpty ?? false)
+                            NodeListWidget(
+                              nodes: nodeTypeToNodes[type]!,
+                              type: type,
+                              currentBlock:
+                                  nodeTypeToNodes[type]![0].currentBlock,
+                            ),
+                        ],
                     ],
                   ),
                 ),

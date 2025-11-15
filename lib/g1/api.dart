@@ -370,7 +370,7 @@ Future<void> fetchNodesIfNotReady({required bool v2Only}) async {
     NodeType.datapodEndpoint,
     NodeType.ipfsGateway
   ]) {
-    if ((type.isV2 && v2Only) || (!type.isV2 && !v2Only)) {
+    if ((type.isV2 && v2Only) || (type.isV1 && !v2Only)) {
       if (NodeManager().nodesWorking(type) < 3) {
         fetchFutures.add(fetchNodes(type, true));
       }

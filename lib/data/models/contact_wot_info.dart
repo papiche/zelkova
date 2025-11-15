@@ -18,13 +18,19 @@ class ContactWotInfo extends Equatable {
   final Contact me;
   final Contact you;
 
-  bool? canCert;
+  // About ME certifying YOU
+  bool? meCanCertYou;
+  DateTime? meCanCertYouOn;
+  bool? meAlreadyCertYou;
+
+  // About YOU certifying (in general, not necessarily me)
+  DateTime? youCanCertOn;
+
+  // Other fields
   bool? canCreateIdty;
   bool? canCalcDistance;
   bool? canCalcDistanceFor;
   bool? waitingForCerts;
-  bool? alreadyCert;
-  DateTime? canCertOn;
   DateTime? expireOn;
   bool? distRuleOk;
   double? distRuleRatio;
@@ -35,20 +41,21 @@ class ContactWotInfo extends Equatable {
 
   @override
   String toString() {
-    return 'ContactWotInfo{me: ${humanizeContact('', me)}, you: ${humanizeContact('', you)}, canCert: $canCert, canCreateIdty: $canCreateIdty}, waitingForCert: $waitingForCerts}';
+    return 'ContactWotInfo{me: ${humanizeContact('', me)}, you: ${humanizeContact('', you)}, meCanCertYou: $meCanCertYou, canCreateIdty: $canCreateIdty}, waitingForCert: $waitingForCerts}';
   }
 
   @override
   List<Object?> get props => <Object?>[
         me,
         you,
-        canCert,
+        meCanCertYou,
+        meCanCertYouOn,
+        meAlreadyCertYou,
+        youCanCertOn,
         canCreateIdty,
         canCalcDistance,
         canCalcDistanceFor,
         waitingForCerts,
-        alreadyCert,
-        canCertOn,
         expireOn,
         distRuleOk,
         distRuleRatio,

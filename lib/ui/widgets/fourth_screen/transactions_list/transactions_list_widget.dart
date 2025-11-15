@@ -12,6 +12,7 @@ import '../../../../data/models/multi_wallet_transaction_state.dart';
 import '../../../../data/models/transaction.dart';
 import '../../../../data/models/transaction_state.dart';
 import '../../../../shared_prefs_helper.dart';
+import '../../../in_dev_helper.dart';
 import '../../../logger.dart';
 import '../../card_drawer.dart';
 import '../../connectivity_widget_wrapper_wrapper.dart';
@@ -45,7 +46,6 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
   late final bool _isExternalAccount;
   late final AppCubit _appCubit;
   late final MultiWalletTransactionCubit _transCubit;
-  late final WeSlideController _weSlideController;
   late final ScrollController _scrollController;
 
   List<Transaction> _transactions = <Transaction>[];
@@ -55,6 +55,7 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
   bool _hasMorePages = true;
   bool _isInitialLoading = true;
   String? _error;
+  bool _fakeErrorForDev = false; // Debug: toggle fake error for testing UI
 
   StreamSubscription<TransactionState>? _transactionSubscription;
 
@@ -63,7 +64,6 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
     super.initState();
     _appCubit = context.read<AppCubit>();
     _transCubit = context.read<MultiWalletTransactionCubit>();
-    _weSlideController = WeSlideController();
     _scrollController = ScrollController();
 
     _pubKey = widget.pubKey ?? SharedPreferencesHelper().getPubKey();
@@ -253,7 +253,6 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
     _transactionSubscription?.cancel();
     _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
-    _weSlideController.dispose();
     super.dispose();
   }
 
@@ -263,15 +262,18 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
     const double panelMinSize = 0.0;
     final double panelMaxSize = MediaQuery.of(context).size.height / 3;
 
-    final Widget content =
-        _buildContent(colorScheme, panelMinSize, panelMaxSize);
+    // Create controller fresh for this build - no reuse to avoid disposal issues
+    final WeSlideController weSlideController = WeSlideController();
+
+    final Widget content = _buildContent(
+        colorScheme, panelMinSize, panelMaxSize, weSlideController);
 
     if (widget.pubKey == null) {
       return Scaffold(
         drawer: const CardDrawer(),
         onDrawerChanged: (bool isOpened) {
-          if (isOpened && _weSlideController.isOpened) {
-            _weSlideController.hide();
+          if (isOpened && weSlideController.isOpened) {
+            weSlideController.hide();
           } else {
             _onRefresh();
           }
@@ -279,6 +281,27 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
         appBar: AppBar(
           title: Text(tr('transactions')),
           actions: <Widget>[
+            // Debug: Button to toggle fake error for testing
+            if (inDevelopment)
+              IconButton(
+                icon: Icon(
+                  _fakeErrorForDev ? Icons.error : Icons.bug_report,
+                  color: _fakeErrorForDev ? Colors.red : null,
+                ),
+                tooltip: 'Toggle fake error (dev)',
+                onPressed: () {
+                  setState(() {
+                    _fakeErrorForDev = !_fakeErrorForDev;
+                    if (_fakeErrorForDev) {
+                      _error = 'Testing error for development';
+                      _transactions.clear();
+                    } else {
+                      _error = null;
+                      _onRefresh();
+                    }
+                  });
+                },
+              ),
             IconButton(
               icon: const Icon(Icons.refresh),
               onPressed: () => EasyThrottle.throttle(
@@ -289,9 +312,11 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
             ),
             IconButton(
               icon: const Icon(Icons.savings),
-              onPressed: () => _weSlideController.isOpened
-                  ? _weSlideController.hide()
-                  : _weSlideController.show(),
+              onPressed: () {
+                weSlideController.isOpened
+                    ? weSlideController.hide()
+                    : weSlideController.show();
+              },
             ),
             const SizedBox(width: 10),
           ],
@@ -303,13 +328,29 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
     return content;
   }
 
-  Widget _buildContent(
-      ColorScheme colorScheme, double panelMinSize, double panelMaxSize) {
+  Widget _buildContent(ColorScheme colorScheme, double panelMinSize,
+      double panelMaxSize, WeSlideController weSlideController) {
+    // Show error state if there's a real error or fake error in development
     if (_error != null && _transactions.isEmpty) {
-      return TransactionsListError(
-        error: _error!,
-        onRetry: _onRetry,
-      );
+      // In development, if fake error is enabled, show it
+      // In production, only show real errors
+      if (inDevelopment && _fakeErrorForDev) {
+        return TransactionsListError(
+          error: _error,
+          onRetry: () {
+            setState(() {
+              _fakeErrorForDev = false;
+            });
+            _onRetry();
+          },
+        );
+      } else if (!_fakeErrorForDev) {
+        // Show real errors (not fake errors)
+        return TransactionsListError(
+          error: _error,
+          onRetry: _onRetry,
+        );
+      }
     }
 
     if (!_isInitialLoading &&
@@ -328,7 +369,7 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
     }
 
     return WeSlide(
-      controller: _weSlideController,
+      controller: weSlideController,
       panelMinSize: panelMinSize,
       panelMaxSize: panelMaxSize,
       body: Container(

@@ -52,9 +52,9 @@ class MultiWalletTransactionCubit
         return;
       }
 
-      // Keep only last 10 transactions to save space
+      // Keep only last 20 transactions to save space
       thinnedMap[pubKey] =
-          ts.copyWith(transactions: ts.transactions.take(10).toList());
+          ts.copyWith(transactions: ts.transactions.take(20).toList());
     });
 
     // Use the generated toJson method with the thinned state

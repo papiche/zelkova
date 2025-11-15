@@ -44,7 +44,13 @@ class _ContactFormDialogState extends State<ContactFormDialog> {
   @override
   void initState() {
     super.initState();
-    _updatedContact = widget.contact;
+    // Pre-fill name with what the user sees in the contact title
+    // nick comes from the blockchain profile, name is the user's custom name
+    // Priority: keep existing name, otherwise use nick from profile
+    final String? defaultName = widget.contact.name ?? widget.contact.nick;
+    _updatedContact = widget.contact.name == null && defaultName != null
+        ? widget.contact.copyWith(name: defaultName)
+        : widget.contact;
   }
 
   @override
@@ -134,7 +140,7 @@ class _ContactFormDialogState extends State<ContactFormDialog> {
                 ),
               if (!widget.isNew) const SizedBox(height: 5),
               TextFormField(
-                initialValue: _updatedContact.name,
+                initialValue: _updatedContact.name ?? _updatedContact.nick,
                 decoration: InputDecoration(labelText: tr('form_contact_name')),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {

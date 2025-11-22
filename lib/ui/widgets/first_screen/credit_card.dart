@@ -29,8 +29,8 @@ class CreditCard extends StatelessWidget {
     const double cardRadius = 10.0;
     final String publicKey =
         account.type.isV2 ? account.address : account.pubKey;
-    final bool allowEditName =
-        account.type == AccountType.v1PasswordLess && !isV2Mode;
+    final bool allowEditName = account.type == AccountType.v1PasswordLess ||
+        (account.type.isV2 && !(account.contact.isMember ?? false));
     final WalletTheme cardTheme = theme ?? account.theme;
 
     return LayoutBuilder(
@@ -142,7 +142,7 @@ class CreditCard extends StatelessWidget {
                               Expanded(
                                 child: CardNameEditable(
                                   key: Key(account.pubKey),
-                                  publicKey: publicKey,
+                                  account: account,
                                   cardName: account.title,
                                   isEditable: allowEditName,
                                   isPassProtected:

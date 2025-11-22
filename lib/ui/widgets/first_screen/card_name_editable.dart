@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../../../data/models/stored_account.dart';
 import '../../../g1/api.dart';
 import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
-import '../../ui_helpers.dart';
 import '../connectivity_widget_wrapper_wrapper.dart';
 import 'card_text_style.dart';
 
@@ -12,13 +12,13 @@ class CardNameEditable extends StatefulWidget {
   const CardNameEditable(
       {super.key,
       required this.defValue,
-      required this.publicKey,
+      required this.account,
       required this.cardName,
       required this.isEditable,
       required this.isPassProtected});
 
   final String defValue;
-  final String publicKey;
+  final StoredAccount account;
   final String cardName;
   final bool isEditable;
   final bool isPassProtected;
@@ -86,15 +86,16 @@ class _CardNameEditableState extends State<CardNameEditable> {
       //
       // In V2 this is done directly in the SharedPreferencesHelper
       try {
-        final String? name = await getProfileUserName(widget.publicKey);
+        final String? name = await getProfileUserName(widget.account.pubKey);
         loggerDev(
-            'CardNameEditable: fetched remote name for ${widget.publicKey}: "${name ?? 'null'}"');
+            'CardNameEditable: fetched remote name for ${widget.account.pubKey}: "${name ?? 'null'}"');
         // Only overwrite the displayed name when the remote value is non-empty.
         // If the remote name is null/empty we should NOT clear a previously
         // available local name (this was causing the behavior where the name
         // briefly appears and then disappears).
         if (name != null && name.isNotEmpty) {
-          final String cleanName = name.replaceAll(g1nkgoUserNameSuffix, '');
+          final String cleanName =
+              name; // .replaceAll(g1nkgoUserNameSuffix, '');
           loggerDev('CardNameEditable: updating display name to "$cleanName"');
           setState(() {
             _controller.text = cleanName;
@@ -103,7 +104,7 @@ class _CardNameEditableState extends State<CardNameEditable> {
           SharedPreferencesHelper().setName(name: cleanName, notify: false);
         } else {
           loggerDev(
-              'CardNameEditable: remote name empty for ${widget.publicKey}, hadLocal=${widget.cardName.isNotEmpty}');
+              'CardNameEditable: remote name empty for ${widget.account.pubKey}, hadLocal=${widget.cardName.isNotEmpty}');
           // Remote returned empty. Only set the default value if there was no
           // local cardName provided (i.e. widget.cardName was empty) and the
           // currentText is empty/defValue. Otherwise keep whatever local value
@@ -152,9 +153,10 @@ class _CardNameEditableState extends State<CardNameEditable> {
             focusedBorder: const OutlineInputBorder(
               borderSide: BorderSide(width: 2.0),
             ),
-            suffix: const Text('$g1nkgoUserNameSuffix  '),
+            // suffix: const Text('$g1nkgoUserNameSuffix  '),
             suffixIcon: _isSubmitting
-                ? const RefreshProgressIndicator()
+                ? const SizedBox(
+                    width: 24, height: 24, child: RefreshProgressIndicator())
                 : Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
@@ -233,15 +235,15 @@ class _CardNameEditableState extends State<CardNameEditable> {
                 text: currentText,
                 style: cardTextStyle(context, fontSize: 15),
               ),
-            if (widget.isPassProtected ||
+            /* if (widget.isPassProtected ||
                 currentText.isNotEmpty && currentText != widget.defValue)
-              TextSpan(
+               TextSpan(
                 // Show a nothing if the card name is not editable (before a lock)
                 text: widget.isEditable
-                    ? g1nkgoUserNameSuffix
-                    : '', // protectedUserNameSuffix,
+                    ? ''
+                    : protectedUserNameSuffix,
                 style: cardTextStyle(context, fontSize: 12),
-              ),
+              ), */
           ],
         ),
       ),
@@ -251,7 +253,7 @@ class _CardNameEditableState extends State<CardNameEditable> {
   @override
   Widget build(BuildContext context) {
     loggerDev(
-        "Building CardNameEditable for ${widget.publicKey} '${widget.cardName}'");
+        "Building CardNameEditable for ${widget.account.pubKey} '${widget.cardName}'");
     return FutureBuilder<bool>(
         future: _usernameFetchFuture,
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {

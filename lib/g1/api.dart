@@ -18,6 +18,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:polkadart_keyring/polkadart_keyring.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:tuple/tuple.dart';
 
@@ -35,6 +36,7 @@ import '../ui/logger.dart';
 import '../ui/ui_helpers.dart';
 import 'duniter_endpoint_helper.dart';
 import 'g1_helper.dart';
+import 'g1_v2_helper.dart';
 import 'no_nodes_exception.dart';
 import 'node_check_result.dart';
 import 'pay_result.dart';
@@ -360,20 +362,24 @@ Future<List<Contact>> searchWotV1(String initialSearchTerm) async {
 Future<void> fetchNodesIfNotReady({required bool v2Only}) async {
   final List<Future<void>> fetchFutures = <Future<void>>[];
 
-  for (final NodeType type in <NodeType>[
-    NodeType.gva,
-    NodeType.duniter,
-    NodeType.endpoint,
-    // Endpoint and squid are fetched together
-    // NodeType.duniterIndexer,
-    NodeType.cesiumPlus,
-    NodeType.datapodEndpoint,
-    NodeType.ipfsGateway
-  ]) {
-    if ((type.isV2 && v2Only) || (type.isV1 && !v2Only)) {
-      if (NodeManager().nodesWorking(type) < 3) {
-        fetchFutures.add(fetchNodes(type, true));
-      }
+  final List<NodeType> nodesToFetch = v2Only
+      ? <NodeType>[
+          // V2 only needs these
+          NodeType.endpoint,
+          NodeType.duniterIndexer,
+          NodeType.cesiumPlus,
+        ]
+      : <NodeType>[
+          // V1 needs these
+          NodeType.gva,
+          NodeType.duniter,
+          NodeType.cesiumPlus,
+          // NodeType.ipfsGateway
+        ];
+
+  for (final NodeType type in nodesToFetch) {
+    if (NodeManager().nodesWorking(type) < 3) {
+      fetchFutures.add(fetchNodes(type, true));
     }
     await Future.wait(fetchFutures);
   }
@@ -1091,7 +1097,7 @@ Future<Tuple2<T?, Node>> gvaFunctionWrapper<T>(
 // Delete an existing profile: user/profile/_delete (DELETE?)
 Future<bool> createOrUpdateProfileV1(String name) async {
   final CesiumWallet wallet = await SharedPreferencesHelper().getCesiumWallet();
-  final String pubKey = wallet.pubkey;
+  final String pubKey = extractPublicKey(wallet.pubkey);
 
   // Check if the user exists
   final String? userName = await getProfileUserName(pubKey);
@@ -1100,7 +1106,7 @@ Future<bool> createOrUpdateProfileV1(String name) async {
   final Map<String, dynamic> userProfile = <String, dynamic>{
     'version': 2,
     'issuer': pubKey,
-    'title': name + g1nkgoUserNameSuffix,
+    'title': name,
     'geoPoint': null,
     'time': DateTime.now().millisecondsSinceEpoch ~/
         1000, // current time in seconds
@@ -1168,6 +1174,94 @@ void hashAndSign(Map<String, dynamic> data, CesiumWallet wallet) {
   data['signature'] = signature;
 }
 
+void hashAndSignV2(Map<String, dynamic> data, KeyPair wallet) {
+  // For V2 with Cesium Plus: Use the same hash/sign method as V1
+  // Cesium Plus API expects V1-style signatures
+  final String dataJson = jsonEncode(data);
+  final String hash = calculateHash(dataJson);
+
+  // Sign the hash (UTF-8 encoded) using KeyPair
+  // This matches what CesiumWallet does internally
+  final Uint8List hashBytes = Uint8List.fromList(utf8.encode(hash));
+  final Uint8List signatureBytes = wallet.sign(hashBytes);
+  final String signature = base64.encode(signatureBytes);
+
+  // Add hash and signature to the data
+  data['hash'] = hash;
+  data['signature'] = signature;
+}
+
+// http://doc.e-is.pro/cesium-plus-pod/REST_API.html#userprofile
+// https://git.p2p.legal/axiom-team/jaklis/src/branch/master/lib/cesiumCommon.py
+// Get an profile, by public key: user/profile/<pubkey>
+// Add a new profile: user/profile (POST)
+// Update an existing profile: user/profile/_update (POST)
+// Delete an existing profile: user/profile/_delete (DELETE?)
+Future<bool> createOrUpdateProfileV2(String name) async {
+  final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
+  // Cesium Plus expects V1 pubkey format, so convert from V2 address
+  final String pubKey = v1pubkeyFromAddress(wallet.address);
+
+  // Check if the user exists
+  final String? userName = await getProfileUserName(pubKey);
+
+  // Prepare the user profile data
+  final Map<String, dynamic> userProfile = <String, dynamic>{
+    'version': 2,
+    'issuer': pubKey,
+    'title': name,
+    'geoPoint': null,
+    'time': DateTime.now().millisecondsSinceEpoch ~/
+        1000, // current time in seconds
+    'tags': <String>[],
+  };
+
+  hashAndSignV2(userProfile, wallet);
+
+  // Convert the user profile data into a JSON string again, now including hash and signature
+  final String userProfileJsonWithHashAndSignature = jsonEncode(userProfile);
+
+  if (userName != null) {
+    logger('User exists, update the user profile');
+    final http.Response updateResponse = (await _requestWithRetry(
+            NodeType.cesiumPlus,
+            '/user/profile/$pubKey/_update?pubkey=$pubKey',
+            false,
+            true,
+            httpType: HttpType.post,
+            headers: _defCPlusHeaders(),
+            body: userProfileJsonWithHashAndSignature))
+        .item2;
+    if (updateResponse.statusCode == 200) {
+      logger('User profile updated successfully.');
+      return true;
+    } else {
+      logger(
+          'Failed to update user profile. Status code: ${updateResponse.statusCode}');
+      logger('Response body: ${updateResponse.body}');
+      return false;
+    }
+  } else if (userName == null) {
+    logger('User does not exist, create a new user profile');
+    final http.Response createResponse = (await _requestWithRetry(
+            NodeType.cesiumPlus, '/user/profile', false, false,
+            httpType: HttpType.post,
+            headers: _defCPlusHeaders(),
+            body: userProfileJsonWithHashAndSignature))
+        .item2;
+
+    if (createResponse.statusCode == 200) {
+      logger('User profile created successfully.');
+      return true;
+    } else {
+      logger(
+          'Failed to create user profile. Status code: ${createResponse.statusCode}');
+      return false;
+    }
+  }
+  return false;
+}
+
 Future<String?> getProfileUserNameV1(String pubKey) async {
   final Contact c =
       await getProfile(pubKey, onlyProfile: true, complete: false);
@@ -1176,7 +1270,7 @@ Future<String?> getProfileUserNameV1(String pubKey) async {
 
 Future<bool> deleteProfileV1() async {
   final CesiumWallet wallet = await SharedPreferencesHelper().getCesiumWallet();
-  final String pubKey = wallet.pubkey;
+  final String pubKey = extractPublicKey(wallet.pubkey);
   final Map<String, dynamic> userProfile = <String, dynamic>{
     'version': 2,
     'id': pubKey,
@@ -1186,8 +1280,31 @@ Future<bool> deleteProfileV1() async {
     'time': DateTime.now().millisecondsSinceEpoch ~/
         1000, // current time in seconds
   };
-
   hashAndSign(userProfile, wallet);
+
+  final http.Response delResponse = (await _requestWithRetry(
+          NodeType.cesiumPlus, '/history/delete', false, false,
+          httpType: HttpType.post,
+          headers: _defCPlusHeaders(),
+          body: jsonEncode(userProfile)))
+      .item2;
+  return delResponse.statusCode == 200;
+}
+
+Future<bool> deleteProfileV2() async {
+  final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
+  // Cesium Plus expects V1 pubkey format, so convert from V2 address
+  final String pubKey = v1pubkeyFromAddress(wallet.address);
+  final Map<String, dynamic> userProfile = <String, dynamic>{
+    'version': 2,
+    'id': pubKey,
+    'issuer': pubKey,
+    'index': 'user',
+    'type': 'profile',
+    'time': DateTime.now().millisecondsSinceEpoch ~/
+        1000, // current time in seconds
+  };
+  hashAndSignV2(userProfile, wallet);
 
   final http.Response delResponse = (await _requestWithRetry(
           NodeType.cesiumPlus, '/history/delete', false, false,

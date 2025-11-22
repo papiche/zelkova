@@ -5,9 +5,8 @@ import '../data/models/contact.dart';
 import '../data/models/node.dart';
 import '../data/models/transaction_state.dart';
 import 'api.dart';
-import 'duniter_datapod_helper.dart';
 import 'duniter_endpoint_helper.dart';
-import 'duniter_indexer_helper.dart';
+import 'duniter_indexer_helper.dart' as duniter_indexer;
 import 'pay_result.dart';
 import 'transactions_v1_parser.dart';
 import 'transactions_v2_parser.dart';
@@ -106,12 +105,12 @@ class DuniterServiceV1 implements DuniterService {
 
   @override
   Future<bool> createOrUpdateProfile(String name) {
-    return createOrUpdateProfileV1(name);
+    return createOrUpdateProfileV2(name);
   }
 
   @override
   Future<bool> deleteProfile() {
-    return deleteProfileV1();
+    return deleteProfileV2();
   }
 
   @override
@@ -124,17 +123,18 @@ class DuniterServiceV2 implements DuniterService {
   @override
   Future<Contact> getProfile(String pubKey,
       {bool onlyProfile = false, bool resize = true, bool complete = false}) {
-    return getProfileV2(pubKey, onlyProfile: onlyProfile, complete: complete);
+    return duniter_indexer.getProfileV2(pubKey,
+        onlyProfile: onlyProfile, complete: complete);
   }
 
   @override
   Future<List<Contact>> getProfiles(List<String> pubKeys) {
-    return getProfilesV2(pubKeys: pubKeys);
+    return duniter_indexer.getProfilesV2(pubKeys: pubKeys);
   }
 
   @override
   Future<List<Contact>> searchWot(String searchPattern) {
-    return searchWotV2(searchPattern);
+    return duniter_indexer.searchWotV2(searchPattern);
   }
 
   @override
@@ -142,7 +142,7 @@ class DuniterServiceV2 implements DuniterService {
       {required String searchTermLower,
       required String searchTerm,
       required String searchTermCapitalized}) {
-    return searchProfilesV2(
+    return searchProfilesV1(
         searchTermLower: searchTermLower,
         searchTerm: searchTerm,
         searchTermCapitalized: searchTermCapitalized);
@@ -180,19 +180,18 @@ class DuniterServiceV2 implements DuniterService {
 
   @override
   Future<bool> createOrUpdateProfile(String name) {
-    // return createOrUpdateProfileV2(name);
-    return createOrUpdateProfileV1(name);
+    return createOrUpdateProfileV2(name);
   }
 
   @override
   Future<bool> deleteProfile() {
-    // return deleteProfileV2();
-    return deleteProfileV1();
+    return deleteProfileV2();
   }
 
   @override
   Future<String?> getProfileUserName(String pubKey) async {
-    final Contact c = await getProfileV2(pubKey, onlyProfile: true);
+    final Contact c =
+        await duniter_indexer.getProfileV2(pubKey, onlyProfile: true);
     return c.name;
   }
 }

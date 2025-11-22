@@ -31,7 +31,7 @@ import 'g1_v2_helper.dart';
 
 const Duration defDatapodTimeout = Duration(seconds: 20);
 
-Future<T> executeOnDatapodNodes<T>(
+Future<T> _executeOnDatapodNodes<T>(
     Future<T> Function(Node node, ferry.Client client) operation,
     {bool retry = true,
     Duration timeout = defDatapodTimeout}) async {
@@ -57,6 +57,7 @@ Future<T> executeOnDatapodNodes<T>(
       'All nodes failed to execute the operation'); // If all nodes fail, throw an exception
 }
 
+@Deprecated('Use c+ nodes')
 Future<Uint8List?> fetchAndResizeAvatar(String? avatarCid,
     {bool resize = true}) async {
   if (avatarCid == null) {
@@ -103,6 +104,7 @@ Future<Uint8List?> fetchAndResizeAvatar(String? avatarCid,
   }
 }
  */
+@Deprecated('Use c+ nodes')
 Future<Contact> createContactFromProfile(
   dynamic profile, {
   bool resizeAvatar = true,
@@ -141,7 +143,7 @@ Future<Contact> createContactFromProfile(
 
 Future<GGetProfileByAddressData_profiles?> _searchProfileByPKV2(
     String pubkey) async {
-  return executeOnDatapodNodes((Node node, ferry.Client client) async {
+  return _executeOnDatapodNodes((Node node, ferry.Client client) async {
     loggerDev('Searching profile in node ${node.url} with address $pubkey');
     try {
       final GGetProfileByAddressReq request = GGetProfileByAddressReq(
@@ -168,6 +170,8 @@ Future<GGetProfileByAddressData_profiles?> _searchProfileByPKV2(
   });
 }
 
+@Deprecated(
+    'Use duniter_indexer_helper.getProfileV2 instead (datapods are deprecated)')
 Future<Contact> getProfileV2(String pubKey,
     {bool onlyProfile = false,
     bool resize = true,
@@ -193,6 +197,8 @@ Future<Contact> getProfileV2(String pubKey,
   return c;
 }
 
+@Deprecated(
+    'Use duniter_indexer_helper.getProfilesV2 instead (datapods are deprecated)')
 Future<List<Contact>> getProfilesV2({required List<String> pubKeys}) async {
   loggerDev('Fetching profiles v2 for pubkeys $pubKeys');
   final List<Contact> contacts = <Contact>[];
@@ -255,6 +261,7 @@ Future<Uint8List?> _getAvatarFromIpfs(String? avatar) async {
   return null;
 }
 
+@Deprecated('Use c+ nodes')
 Future<List<Contact>> searchProfilesV2({
   required String searchTermLower,
   required String searchTerm,

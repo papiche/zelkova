@@ -54,8 +54,9 @@ const double defAvatarUiSize = 24;
 Widget avatar(Contact c,
     {Color color = defAvatarColor,
     Color bgColor = defAvatarBgColor,
-    double avatarSize = defAvatarUiSize}) {
-  if (c.avatarCid != null) {
+    double avatarSize = defAvatarUiSize,
+    bool useIpfs = false}) {
+  if (useIpfs && c.avatarCid != null) {
     return CircleAvatar(
       radius: avatarSize,
       child: ClipOval(
@@ -380,7 +381,9 @@ bool isIOSWeb() {
   return kIsWeb;
 }
 
+@Deprecated('Not useful in v2')
 const String g1nkgoUserNameSuffix = ' ❥';
+@Deprecated('Not useful in v2')
 const String protectedUserNameSuffix = ' 🔒'; // lock
 const double cardAspectRatio = 1.58;
 

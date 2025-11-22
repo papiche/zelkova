@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../data/models/app_cubit.dart';
 import '../../../data/models/contact.dart';
 import '../../../g1/g1_helper.dart';
 import '../../../g1/g1_v2_helper.dart';
@@ -26,6 +28,7 @@ class _ContactFormDialogState extends State<ContactFormDialog> {
   final GlobalKey<FormState> _formKey =
       GlobalKey<FormState>(debugLabel: 'contactFormDialog');
   late Contact _updatedContact;
+  String? _detectedKeyType; // 'v1' or 'v2' or null
   final TextStyle keyStyle = const TextStyle(color: Colors.black45);
   final InputDecoration keyDecoration = const InputDecoration(
     enabledBorder: UnderlineInputBorder(
@@ -53,8 +56,47 @@ class _ContactFormDialogState extends State<ContactFormDialog> {
         : widget.contact;
   }
 
+  bool _validateKeyOrAddress(String value) {
+    // Validate both v1 pubkey and v2 address formats
+    return validateKey(value) || isValidV2Address(value);
+  }
+
+  void _onKeyChanged(String value) {
+    if (value.isEmpty) {
+      setState(() {
+        _detectedKeyType = null;
+      });
+      return;
+    }
+
+    final bool isV2Address = isValidV2Address(value);
+    final bool isV1PubKey = validateKey(value);
+
+    if (isV2Address) {
+      setState(() {
+        _detectedKeyType = 'v2';
+      });
+      final String pubKey = v1pubkeyFromAddress(value);
+      _updatedContact =
+          _updatedContact.copyWith(pubKey: pubKey, address: value);
+    } else if (isV1PubKey) {
+      setState(() {
+        _detectedKeyType = 'v1';
+      });
+      final String address = addressFromV1Pubkey(value);
+      _updatedContact =
+          _updatedContact.copyWith(pubKey: value, address: address);
+    } else {
+      setState(() {
+        _detectedKeyType = null;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final bool isV2Mode = context.read<AppCubit>().state.v2mode;
+
     return AlertDialog(
       title: Text(
           tr(widget.isNew ? 'form_contact_title_add' : 'form_contact_title')),
@@ -88,13 +130,13 @@ class _ContactFormDialogState extends State<ContactFormDialog> {
                     child: const Icon(Icons.qr_code, size: 50),
                   ),
                 ]),
-              if (!widget.isNew) const SizedBox(height: 5),
-              if (!widget.isNew)
+              if (!widget.isNew && isV2Mode) const SizedBox(height: 5),
+              if (!widget.isNew && isV2Mode)
                 Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                   Flexible(
                       child: TextFormField(
                     // maxLines: 2,
-                    initialValue: humanizePubKey(_updatedContact.address),
+                    initialValue: humanizeAddress(_updatedContact.address),
                     decoration: keyDecoration.copyWith(
                       labelText: tr('form_contact_address_v2'),
                     ),
@@ -116,27 +158,56 @@ class _ContactFormDialogState extends State<ContactFormDialog> {
                       )),
                 ]),
               if (widget.isNew)
-                TextFormField(
-                  validator: (String? value) {
-                    if (value == null || value.isEmpty || !validateKey(value)) {
-                      return tr('form_contact_name_validation_pub_key');
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    labelText: tr('form_contact_pub_or_address'),
-                  ),
-                  onChanged: (String? value) {
-                    if (value != null) {
-                      final bool isV2Address = isValidV2Address(value);
-                      final String pubKey =
-                          isV2Address ? v1pubkeyFromAddress(value) : value;
-                      final String address =
-                          isV2Address ? value : addressFromV1Pubkey(value);
-                      _updatedContact = _updatedContact.copyWith(
-                          pubKey: pubKey, address: address);
-                    }
-                  },
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    TextFormField(
+                      validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return tr('form_contact_name_validation_pub_key');
+                        }
+                        if (!_validateKeyOrAddress(value)) {
+                          return tr('form_contact_name_validation_pub_key');
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        labelText: tr('form_contact_pub_or_address'),
+                        hintText: 'v1 pubkey or v2 address',
+                        suffixIcon: _detectedKeyType != null
+                            ? Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Chip(
+                                  label: Text(
+                                    _detectedKeyType == 'v2'
+                                        ? 'v2 address'
+                                        : 'v1 pubkey',
+                                    style: const TextStyle(fontSize: 11),
+                                  ),
+                                  backgroundColor: _detectedKeyType == 'v2'
+                                      ? Colors.blue.shade100
+                                      : Colors.green.shade100,
+                                  visualDensity: VisualDensity.compact,
+                                ),
+                              )
+                            : null,
+                      ),
+                      onChanged: _onKeyChanged,
+                    ),
+                    if (_detectedKeyType != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0, left: 12.0),
+                        child: Text(
+                          '✓ ${tr('form_contact_detected')}',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: _detectedKeyType == 'v2'
+                                ? Colors.blue.shade700
+                                : Colors.green.shade700,
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
               if (!widget.isNew) const SizedBox(height: 5),
               TextFormField(

@@ -119,6 +119,7 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
                         ),
                       ),
                       Center(
+                        // TODO
                         child: AccountCardSelectorItem(
                           name: account.contact.name == null ||
                                   (account.contact.name != null &&
@@ -129,10 +130,16 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
                               : truncateName(account.contact.name!),
                           hasName: account.contact.name != null &&
                               account.contact.name!.isNotEmpty,
-                          suffix: SharedPreferencesHelper()
-                                  .isPasswordLessWallet(account)
-                              ? g1nkgoUserNameSuffix
-                              : protectedUserNameSuffix,
+                          suffix: (() {
+                            // final bool isV2 = context.read<AppCubit>().isV2;
+                            // Only show g1nkgo suffix for passwordless v1 accounts
+                            /* if (SharedPreferencesHelper()
+                                    .isPasswordLessWallet(account) &&
+                                !isV2) {
+                              return g1nkgoUserNameSuffix;
+                            } */
+                            return ''; // protectedUserNameSuffix;
+                          })(),
                           theme: account.theme,
                         ),
                       ),

@@ -73,7 +73,7 @@ class ContactListItem extends StatelessWidget {
     final String title = contact.title;
     final Widget? subtitle = contact.subtitle != null && hasProfile
         ? Text(isV2
-            ? '${contact.createdOnV2 ? contact.subtitleV2 : contact.subtitle!} ${subtitleExtra != null ? ' - $subtitleExtra' : ''}'
+            ? '${contact.subtitle} ${subtitleExtra != null ? ' - $subtitleExtra' : ''}'
             : contact.subtitle!)
         : null;
     return ListTile(

@@ -487,6 +487,7 @@ void main() {
           NodeType.ipfsGateway, const Node(url: 'https://ipfs.example.com'),
           notify: false);
 
+      // ignore: deprecated_member_use_from_same_package
       final String url = nm.ipfsUrl('QmHash123');
 
       expect(url, 'https://ipfs.example.com/ipfs/QmHash123');
@@ -500,7 +501,9 @@ void main() {
           NodeType.ipfsGateway, const Node(url: 'https://ipfs2.example.com'),
           notify: false);
 
+      // ignore: deprecated_member_use_from_same_package
       final String url1 = nm.ipfsUrl('QmHash1');
+      // ignore: deprecated_member_use_from_same_package
       final String url2 = nm.ipfsUrl('QmHash2');
 
       // Both URLs should use the same gateway (the first one selected)

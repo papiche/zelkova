@@ -89,8 +89,9 @@ Future<KeyPair> createKeyPair() async {
 String addressFromV1PubkeyFaiSafe(String pubKeyRaw) {
   try {
     return addressFromV1Pubkey(extractPublicKey(pubKeyRaw));
-  } catch (e) {
-    loggerDev('Error converting pubkey $pubKeyRaw to address: $e');
+  } catch (e, s) {
+    log.e('Error converting pubkey $pubKeyRaw to address: $e',
+        error: e, stackTrace: s);
     rethrow;
   }
 }

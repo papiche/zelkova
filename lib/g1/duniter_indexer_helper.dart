@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:built_collection/built_collection.dart' show BuiltList;
 import 'package:duniter_indexer/duniter_indexer_client.dart';
@@ -6,6 +7,7 @@ import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-que
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.req.gql.dart';
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.var.gql.dart';
 import 'package:ferry/ferry.dart' as ferry;
+import 'package:http/http.dart';
 
 import '../data/models/cert.dart';
 import '../data/models/contact.dart';
@@ -15,6 +17,8 @@ import '../data/models/node_manager.dart';
 import '../data/models/node_type.dart';
 import '../ui/contacts_cache.dart';
 import '../ui/logger.dart';
+import '../ui/ui_helpers.dart';
+import 'api.dart';
 import 'g1_helper.dart';
 import 'g1_v2_helper.dart';
 
@@ -784,4 +788,123 @@ Future<Contact> getAccountBasic({required String address}) async {
   return contacts.isNotEmpty
       ? contacts.first
       : Contact.withAddress(address: address);
+}
+
+/// Helper: Fetch Cesium+ profile data for an address
+Future<Contact?> _fetchCesiumPlusProfile(String pubKey,
+    {bool resize = true}) async {
+  try {
+    final Response cPlusResponse = (await requestCPlusWithRetry(
+            '/user/profile/$pubKey',
+            retryWith404: false))
+        .item2;
+
+    if (cPlusResponse.statusCode == 200) {
+      final Map<String, dynamic> result = const JsonDecoder()
+          .convert(cPlusResponse.body) as Map<String, dynamic>;
+
+      if (result['found'] != false) {
+        return await contactFromResultSearch(result, resize: resize);
+      }
+    }
+  } catch (e) {
+    loggerDev('Error fetching Cesium+ profile for $pubKey: $e');
+  }
+  return null;
+}
+
+/// Fetch profile V2: combines Cesium+ profile with WOT V2 data from duniter_indexer
+/// Uses addressFromV1Pubkey to convert V1 pubkey to V2 address
+/// baseContact: optional Contact to use as base (preserves avatar and other existing data)
+Future<Contact> getProfileV2(String pubKeyRaw,
+    {bool onlyProfile = false,
+    bool resize = true,
+    bool complete = false,
+    Contact? baseContact}) async {
+  loggerDev('Fetching profile v2 for pubkey $pubKeyRaw');
+
+  // Convert V1 pubkey to V2 address
+  final String address = addressFromV1PubkeyFaiSafe(pubKeyRaw);
+
+  // Get Cesium+ profile data, or use baseContact if available
+  Contact c = await _fetchCesiumPlusProfile(pubKeyRaw, resize: resize) ??
+      (baseContact ?? Contact.withAddress(address: address));
+
+  // Get WOT V2 data if not only profile
+  if (!onlyProfile) {
+    try {
+      final Contact cWot = complete
+          ? await getAccount(address: address)
+          : await getAccountBasic(address: address);
+      c = c.merge(cWot);
+    } catch (e) {
+      loggerDev('Error fetching WOT v2 data for $address: $e');
+      // Continue with what we have
+    }
+  }
+
+  logger('Contact retrieved in getProfileV2 $c (c+ only $onlyProfile)');
+  ContactsCache().addContact(c);
+  return c;
+}
+
+/// Fetch multiple profiles V2: combines Cesium+ profiles with WOT V2 data
+Future<List<Contact>> getProfilesV2({required List<String> pubKeys}) async {
+  loggerDev('Fetching profiles v2 for pubkeys $pubKeys');
+  final List<Contact> contacts = <Contact>[];
+
+  if (pubKeys.isEmpty) {
+    return contacts;
+  }
+
+  // Convert V1 pubKeys to V2 addresses
+  final List<String> addresses = <String>[];
+  for (final String pubKey in pubKeys) {
+    try {
+      addresses.add(addressFromV1PubkeyFaiSafe(pubKey));
+    } catch (e) {
+      loggerDev('Error converting pubkey $pubKey to address: $e');
+      // Try with original if conversion fails
+      if (pubKey.length == 43) {
+        addresses.add(pubKey); // Assume it's already an address
+      }
+    }
+  }
+
+  if (addresses.isEmpty) {
+    return contacts;
+  }
+
+  // Fetch WOT V2 data for all addresses
+  try {
+    final List<Contact> wotContacts = await getIdentities(addresses: addresses);
+
+    // For each pubkey, try to get Cesium+ profile and merge with WOT data
+    for (int i = 0; i < pubKeys.length; i++) {
+      final String pubkey = pubKeys[i];
+      final String address = addresses[i];
+
+      // Find WOT contact by address
+      Contact contact = wotContacts.firstWhere(
+        (Contact c) => c.address == address,
+        orElse: () => Contact.withAddress(address: address),
+      );
+
+      // Try to get Cesium+ profile data using V1 pubkey
+      final Contact? cPlusContact = await _fetchCesiumPlusProfile(pubkey);
+      if (cPlusContact != null) {
+        contact = contact.merge(cPlusContact);
+      }
+
+      contacts.add(contact);
+    }
+  } catch (e) {
+    loggerDev('Error fetching WOT v2 identities: $e');
+    // Return empty list if WOT fetch fails
+    return contacts;
+  }
+
+  loggerDev('Contacts retrieved in getProfilesV2 ${contacts.length}');
+  ContactsCache().addContacts(contacts);
+  return contacts;
 }

@@ -294,6 +294,7 @@ class SharedPreferencesHelperV2
 
   @override
   Future<CesiumWallet> getCesiumWallet() async {
+    log.e('getCesiumWallet is not implemented in SharedPreferencesHelperV2');
     throw UnimplementedError(
         'getCesiumWallet is not implemented in SharedPreferencesHelperV2');
   }

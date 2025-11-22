@@ -120,7 +120,8 @@ Future<MembershipData?> polkadortMembershipData(Contact contact) async {
   });
 }
 
-Future<BigInt?> getBalanceV2(
+@Deprecated('Use getHistoryAndBalanceV2 instead')
+Future<BigInt?> getBalanceV2Deprecated(
     {required String address, Duration timeout = defPolkadotTimeout}) async {
   return executeOnPolkadotNodes<BigInt?>(
       (Node node, Provider provider, Gtest polkadot) async {

@@ -298,9 +298,7 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
       ? name != nick && name!.toLowerCase() != nick!.toLowerCase()
           ? '$name ($nick)'
           : name! // avoid "nick (nick)" users
-      : nick ??
-          name ??
-          (createdOnV2 ? humanizeAddress(address) : humanizePubKey(pubKey));
+      : nick ?? name ?? humanizePubOrAddress; // at least show something
 
   String get titleWithoutAddressOrPubKey => name != null && nick != null
       ? name != nick && name!.toLowerCase() != nick!.toLowerCase()
@@ -308,18 +306,23 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
           : name!
       : nick ?? name ?? '';
 
+  String get humanizePubOrAddress =>
+      createdOnV2 ? humanizeAddress(address) : humanizePubKey(pubKey);
+
   bool get hasTitle =>
       (name != null && name!.isNotEmpty) || (nick != null && nick!.isNotEmpty);
 
   String? get subtitle =>
-      (nick != null || name != null) ? humanizePubKey(pubKey) : null;
+      (nick != null || name != null) ? humanizePubOrAddress : null;
 
-  String? get subtitleV2 =>
+  /*
+  String? get subtitleV2NotUsed =>
       (nick != null || name != null) ? humanizeAddress(address) : null;
 
-  String? get subtitleV1V2 => (nick != null || name != null)
+  String? get subtitleV1V2concatenated => (nick != null || name != null)
       ? '${humanizePubKey(pubKey)} ${humanizeAddress(address)}'
       : null;
+   */
 
   Contact cloneWithoutAvatar() {
     return Contact(

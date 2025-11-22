@@ -436,6 +436,7 @@ class NodeManager {
     return 0;
   }
 
+  @Deprecated('Use cesium+ instead')
   String ipfsUrl(String path) {
     if (currentIfpsNode == null) {
       final List<Node> workingNodes = nodesWorkingList(NodeType.ipfsGateway);

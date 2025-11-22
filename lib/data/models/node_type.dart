@@ -28,12 +28,12 @@ extension NodeTypeExtension on NodeType {
     switch (this) {
       case NodeType.duniter:
       case NodeType.gva:
+      case NodeType.datapodEndpoint:
+      case NodeType.ipfsGateway:
         return false;
       case NodeType.cesiumPlus:
       case NodeType.endpoint:
       case NodeType.duniterIndexer:
-      case NodeType.datapodEndpoint:
-      case NodeType.ipfsGateway:
         return true;
     }
   }

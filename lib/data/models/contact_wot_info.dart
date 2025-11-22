@@ -22,6 +22,7 @@ class ContactWotInfo extends Equatable {
   bool? meCanCertYou;
   DateTime? meCanCertYouOn;
   bool? meAlreadyCertYou;
+  bool? meReachedMaxByIssuer;
 
   // About YOU certifying (in general, not necessarily me)
   DateTime? youCanCertOn;
@@ -51,6 +52,7 @@ class ContactWotInfo extends Equatable {
         meCanCertYou,
         meCanCertYouOn,
         meAlreadyCertYou,
+        meReachedMaxByIssuer,
         youCanCertOn,
         canCreateIdty,
         canCalcDistance,

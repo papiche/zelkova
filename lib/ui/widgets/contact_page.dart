@@ -14,19 +14,17 @@ import '../../data/models/contact_cubit.dart';
 import '../../data/models/contact_wot_info.dart';
 import '../../data/models/identity_status.dart';
 import '../../data/models/multi_wallet_transaction_cubit.dart';
-import '../../data/models/node_manager.dart';
-import '../../g1/api.dart';
 import '../../g1/distance_precompute.dart';
 import '../../g1/distance_precompute_provider.dart';
 import '../../g1/duniter_endpoint_helper.dart';
-import '../../g1/duniter_indexer_helper.dart';
+import '../../g1/duniter_indexer_helper.dart' as duniter_indexer;
 import '../../g1/g1_helper.dart';
 import '../../g1/sign_and_send.dart';
-import '../../generated/gtest/pallets/certification.dart';
 import '../../generated/gtest/types/pallet_certification/types/idty_cert_meta.dart';
 import '../../generated/gtest/types/pallet_identity/types/idty_value.dart';
 import '../../shared_prefs_helper.dart';
 import '../clipboard_helper.dart';
+import '../in_dev_helper.dart';
 import '../logger.dart';
 import '../ui_helpers.dart';
 import 'balance_widget.dart';
@@ -468,17 +466,19 @@ class _ContactPageState extends State<ContactPage> {
                     AnimatedOpacity(
                       opacity: isAvatarExpanded ? 1.0 : 0.0,
                       duration: const Duration(milliseconds: 300),
-                      child: contact.avatar == null && contact.avatarCid == null
+                      child: contact.avatar ==
+                              null /*  && contact.avatarCid == null */
                           ? avatar(contact, avatarSize: 44)
                           : Container(
                               width: double.infinity,
                               height: double.infinity,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
-                                  image: contact.avatarCid != null
+                                  image: /* contact.avatarCid != null
                                       ? NetworkImage(NodeManager()
                                           .ipfsUrl(contact.avatarCid!))
-                                      : MemoryImage(contact.avatar!),
+                                      : */
+                                      MemoryImage(contact.avatar!),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -554,9 +554,11 @@ class _ContactPageState extends State<ContactPage> {
 
   Stream<ContactWotInfo> _getWotInfo(AppCubit appCubit) async* {
     // Parallelize the first calls
+    // Pass baseContact to preserve avatar and other existing data
     final List<Contact> results = await Future.wait(<Future<Contact>>[
-      getProfile(widget.contact.pubKey, resize: false, complete: true),
-      getProfile(SharedPreferencesHelper().getPubKey(),
+      duniter_indexer.getProfileV2(widget.contact.pubKey,
+          resize: false, complete: true, baseContact: widget.contact),
+      duniter_indexer.getProfileV2(SharedPreferencesHelper().getPubKey(),
           resize: false, complete: true),
     ]);
     final Contact you = results[0];
@@ -575,17 +577,15 @@ class _ContactPageState extends State<ContactPage> {
         // storage.system.account(EveAccount).data.free is higher than 200
         // EveAccount is not already used by an identity
         // storage.identity.identities(EveAccount) is None
-        // Parallelize these two calls
-        final List<Object?> identityResults =
-            await Future.wait(<Future<Object?>>[
-          // TODO
-          getBalanceV2(address: widget.contact.address),
-          getIdentity(address: you.address),
-        ]);
-        final BigInt? youBalance = identityResults[0] as BigInt?;
-        final bool enoughBalance =
-            youBalance != null && youBalance > BigInt.from(200);
-        final bool identityUsed = identityResults[1] != null;
+        // Get balance from TransactionCubit and check if identity is used
+        // Balance stored as double (G1 units). Convert to "cents" (integer)
+        // without rounding (truncate toward zero) following the project's
+        // convention used elsewhere (BigInt.from(doubleValue * 100)).
+        final BigInt youBalance =
+            BigInt.from(_txsCubit.balance(widget.contact.pubKey) * 100);
+        final bool enoughBalance = youBalance > BigInt.from(200);
+        final bool identityUsed =
+            await duniter_indexer.getIdentity(address: you.address) != null;
         wotInfo.canCreateIdty = iAmMember && enoughBalance && !identityUsed;
       }
       yield wotInfo;
@@ -625,10 +625,14 @@ class _ContactPageState extends State<ContactPage> {
         // storage.identity.identities(AliceIndex).nextCreatableIdentityOn is lower than current block
         // storage.certification.storageIdtyCertMeta(AliceIndex).nextIssuableOn is lower than current block
         // storage.certification.storageIdtyCertMeta(AliceIndex).issuedCount is lower than constants.certification.maxByIssuer()
+        final bool reachedMaxByIssuer =
+            idtyCertMeta.issuedCount >= getMaxByIssuer();
+        wotInfo.meReachedMaxByIssuer = reachedMaxByIssuer;
+
         final bool meCanCertYou =
             myIdty.nextCreatableIdentityOn < currentBlock &&
                 idtyCertMeta.nextIssuableOn < currentBlock &&
-                idtyCertMeta.issuedCount < Constants().maxByIssuer;
+                !reachedMaxByIssuer;
         wotInfo.meCanCertYou = meCanCertYou;
 
         // If I can't certify now, calculate when I will be able to
@@ -638,14 +642,14 @@ class _ContactPageState extends State<ContactPage> {
                   ? myIdty.nextCreatableIdentityOn
                   : idtyCertMeta.nextIssuableOn;
 
-          if (nextBlock > currentBlock &&
-              idtyCertMeta.issuedCount < Constants().maxByIssuer) {
+          if (nextBlock > currentBlock && !reachedMaxByIssuer) {
             wotInfo.meCanCertYouOn = estimateDateFromBlock(
                 futureBlock: nextBlock, currentBlockHeight: currentBlock);
           }
         }
       } else {
         wotInfo.meCanCertYou = false;
+        wotInfo.meReachedMaxByIssuer = false;
       }
       yield wotInfo;
 

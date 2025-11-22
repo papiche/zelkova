@@ -181,7 +181,7 @@ void _certAction(
           name: tr('certify_member'),
           icon: Icons.verified,
           action: () async => _executeIfAuthenticated(
-              context, () => certify(wotInfo.you.index!))));
+              context, () => _confirmAndCertify(context, wotInfo))));
     } else if (wotInfo.meCanCertYouOn != null) {
       // I can't certify now, but I will be able to in the future - show info message
       actions.add(WotMenuAction(
@@ -197,13 +197,12 @@ void _certAction(
                 ),
               ),
             );
-            return Future.value(
+            return Future<SignAndSendResult>.value(
                 SignAndSendResult(progressStream: Stream<String>.value('')));
           }));
-    } else {
-      // TODO (vjrj)
-      // I can't certify (probably reached maxByIssuer limit) - show disabled info
-      /* actions.add(WotMenuAction(
+    } else if (wotInfo.meReachedMaxByIssuer ?? false) {
+      // I can't certify because I've reached maxByIssuer limit - show disabled info
+      actions.add(WotMenuAction(
           name: tr('certify_member'),
           icon: Icons.verified,
           action: () {
@@ -212,11 +211,133 @@ void _certAction(
                 content: Text(tr('cannot_certify_reached_limit')),
               ),
             );
-            return Future.value(
+            return Future<SignAndSendResult>.value(
                 SignAndSendResult(progressStream: Stream<String>.value('')));
-          })); */
+          }));
     }
   }
+}
+
+Future<SignAndSendResult> _confirmAndCertify(
+    BuildContext context, ContactWotInfo wotInfo) async {
+  // Get the display name (nick or name or address)
+  final String displayName = wotInfo.you.nick ??
+      wotInfo.you.name ??
+      wotInfo.you.address.substring(0, 8);
+
+  final bool? confirmed = await showDialog<bool>(
+    context: context,
+    builder: (BuildContext dialogContext) {
+      return AlertDialog(
+        title: Text(tr('certify_member')),
+        content: Text(
+          tr('confirm_certify_member',
+              namedArgs: <String, String>{'nick': displayName}),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop(false);
+            },
+            child: Text(tr('cancel')),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop(true);
+            },
+            child: Text(tr('yes')),
+          ),
+        ],
+      );
+    },
+  );
+
+  if (confirmed ?? false) {
+    return _certifyAndMaybeRequestDistance(wotInfo);
+  } else {
+    return _returnAuthFailed();
+  }
+}
+
+Future<SignAndSendResult> _certifyAndMaybeRequestDistance(
+    ContactWotInfo wotInfo) async {
+  final int idtyIndex = wotInfo.you.index!;
+
+  // Check if this certification will make the person reach minCertForMembership
+  final int currentCerts = wotInfo.you.certsReceived?.length ?? 0;
+  final int minCerts = polkadotConstants().wot.minCertForMembership;
+  final bool willReachMembership = currentCerts == (minCerts - 1);
+
+  logger.info(
+      'Certifying idtyIndex: $idtyIndex, currentCerts: $currentCerts, minCerts: $minCerts, willReachMembership: $willReachMembership');
+
+  // Perform the certification
+  final SignAndSendResult certResult = await certify(idtyIndex);
+
+  if (willReachMembership) {
+    // Create a new stream controller to combine both operations
+    final StreamController<String> combinedController =
+        StreamController<String>();
+
+    // Listen to the certification progress
+    bool finalized = false;
+    certResult.progressStream.listen(
+      (String progress) {
+        combinedController.add(progress);
+
+        // Check if certification was finalized successfully
+        if (progress.contains('finalized') ||
+            progress.toLowerCase().contains('finalized')) {
+          finalized = true;
+        }
+      },
+      onError: (Object error) {
+        combinedController.addError(error);
+        combinedController.close();
+      },
+      onDone: () async {
+        // After certification is done, request distance if it was successful
+        if (finalized) {
+          try {
+            logger.info(
+                'Certification finalized successfully. Requesting distance evaluation for idtyIndex: $idtyIndex');
+            combinedController.add(tr('requesting_distance_evaluation'));
+
+            final SignAndSendResult distanceResult =
+                await requestDistanceEvaluationFor(idtyIndex);
+
+            // Forward distance calculation progress
+            distanceResult.progressStream.listen(
+              (String progress) {
+                combinedController.add(progress);
+              },
+              onError: (Object error) {
+                combinedController.addError(error);
+              },
+              onDone: () {
+                combinedController.close();
+              },
+            );
+          } catch (e) {
+            log.e(
+                'Error requesting distance evaluation after certification: $e');
+            combinedController.addError(tr('error_requesting_distance'));
+            combinedController.close();
+          }
+        } else {
+          combinedController.close();
+        }
+      },
+    );
+
+    return SignAndSendResult(
+      node: certResult.node,
+      progressStream: combinedController.stream,
+    );
+  }
+
+  // If not reaching membership, just return the certification result
+  return certResult;
 }
 
 void _renewAction(

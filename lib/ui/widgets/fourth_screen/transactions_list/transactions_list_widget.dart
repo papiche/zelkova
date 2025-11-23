@@ -25,15 +25,11 @@ class TransactionsListWidget extends StatefulWidget {
   const TransactionsListWidget({
     super.key,
     this.pubKey,
-    this.from,
-    this.to,
     this.pageSize = 20,
     this.isScrollEnabled = true,
   });
 
   final String? pubKey;
-  final int? from;
-  final int? to;
   final int pageSize;
   final bool isScrollEnabled;
 
@@ -69,6 +65,9 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
     _pubKey = widget.pubKey ?? SharedPreferencesHelper().getPubKey();
     _isExternalAccount = SharedPreferencesHelper().isExternal(_pubKey);
 
+    logger(
+        '[TransactionsListWidget.initState] pubKey=$_pubKey, isExternal=$_isExternalAccount, widget.pubKey=${widget.pubKey}');
+
     _scrollController.addListener(_onScroll);
     _initializeData();
   }
@@ -88,6 +87,9 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
   }
 
   Future<void> _initializeData() async {
+    logger(
+        '[TransactionsListWidget._initializeData] Starting for pubKey=$_pubKey, isExternal=$_isExternalAccount');
+
     if (!_isExternalAccount) {
       final TransactionState cachedState =
           _transCubit.currentWalletState(_pubKey);
@@ -101,7 +103,13 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
         });
         logger(
             '[TransactionsListWidget] Loaded ${_transactions.length} cached transactions');
+      } else {
+        logger(
+            '[TransactionsListWidget] No cached transactions found (${cachedState.transactions.length} txs)');
       }
+    } else {
+      logger(
+          '[TransactionsListWidget] Skipping cache load for external account');
     }
 
     _transactionSubscription = _transCubit.stream
@@ -111,10 +119,14 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
             (MultiWalletTransactionState state) => state.map[_pubKey]!)
         .listen(_onTransactionStateChanged);
 
+    logger(
+        '[TransactionsListWidget._initializeData] Subscribed to stream, now calling _fetchTransactions');
     await _fetchTransactions(isRefresh: true);
   }
 
   void _onTransactionStateChanged(TransactionState state) {
+    logger(
+        '[TransactionsListWidget._onTransactionStateChanged] Received state with ${state.transactions.length} transactions and ${state.pendingTransactions.length} pending');
     if (mounted) {
       setState(() {
         _transactions = state.transactions;
@@ -130,15 +142,24 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
   }
 
   Future<void> _fetchTransactions({bool isRefresh = false}) async {
+    logger(
+        '[TransactionsListWidget._fetchTransactions] START - isRefresh=$isRefresh, mounted=$mounted, isLoadingMore=$_isLoadingMore, hasMorePages=$_hasMorePages');
+
     if (!mounted) {
+      logger(
+          '[TransactionsListWidget._fetchTransactions] EARLY RETURN - not mounted');
       return;
     }
 
     if (_isLoadingMore && !isRefresh) {
+      logger(
+          '[TransactionsListWidget._fetchTransactions] EARLY RETURN - already loading more');
       return;
     }
 
     if (!_hasMorePages && !isRefresh) {
+      logger(
+          '[TransactionsListWidget._fetchTransactions] EARLY RETURN - no more pages');
       return;
     }
 
@@ -156,6 +177,9 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
     try {
       final bool isConnected =
           await ConnectivityWidgetWrapperWrapper.isConnected;
+
+      logger(
+          '[TransactionsListWidget._fetchTransactions] isConnected=$isConnected');
 
       if (!isConnected && !isRefresh) {
         logger('[TransactionsListWidget] Offline, using cached data');
@@ -178,7 +202,11 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
         pubKey: _pubKey,
       );
 
+      logger(
+          '[TransactionsListWidget] fetchTransactions returned ${fetchedItems.length} items');
+
       if (!mounted) {
+        logger('[TransactionsListWidget] Widget unmounted after fetch');
         return;
       }
 

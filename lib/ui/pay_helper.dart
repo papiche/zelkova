@@ -56,16 +56,38 @@ Future<bool> payWithRetry(
       final bool? confirmed = await _confirmSend(context, amount.toString(),
           fromPubKey, recipients, isRetry, paymentCurrency, isToMultiple,
           isG1: isG1, currentUd: currentUd);
-      final Contact fromContact = await ContactsCache().getContact(fromPubKey);
 
+      if (confirmed == null || !confirmed) {
+        paymentCubit.sentFailed();
+        return false;
+      }
+
+      // Show progress dialog immediately after confirmation
       if (!context.mounted) {
         return false;
       }
-      final UtxoCubit utxoCubit = context.read<UtxoCubit>();
-      final double convertedAmount = toG1(amount, isG1, currentUd);
-      if (confirmed == null || !confirmed) {
-        paymentCubit.sentFailed();
-      } else {
+      final ProgressDialog pd = ProgressDialog(context: context);
+      pd.show(
+        progressType: defProgressType,
+        msg: tr('tx_processing'),
+        hideValue: defProgressHideValue,
+        progressBgColor: defProgressBgColor,
+        barrierDismissible: defProgressBarrierDismissible,
+        msgMaxLines: defProgressMsgMaxLines,
+        completed: Completed(),
+      );
+
+      try {
+        final Contact fromContact =
+            await ContactsCache().getContact(fromPubKey);
+
+        if (!context.mounted) {
+          pd.close();
+          return false;
+        }
+        final UtxoCubit utxoCubit = context.read<UtxoCubit>();
+        final double convertedAmount = toG1(amount, isG1, currentUd);
+
         final Transaction tx = Transaction(
             type: TransactionType.pending,
             from: fromContact,
@@ -78,6 +100,7 @@ Future<bool> payWithRetry(
             await ConnectivityWidgetWrapperWrapper.isConnected;
         logger('isConnected: $isConnected');
         if (isConnected != null && !isConnected && !isRetry) {
+          pd.close();
           paymentCubit.sent();
           if (!context.mounted) {
             return true;
@@ -124,19 +147,7 @@ Future<bool> payWithRetry(
               debugInfo:
                   'Node used: ${result != null && result.node != null ? result.node!.url : 'unknown'}');
           if (result.progressStream != null) {
-            if (!context.mounted) {
-              return false;
-            }
-            final ProgressDialog pd = ProgressDialog(context: context);
-            pd.show(
-              progressType: defProgressType,
-              msg: tr('tx_processing'),
-              hideValue: defProgressHideValue,
-              progressBgColor: defProgressBgColor,
-              barrierDismissible: defProgressBarrierDismissible,
-              msgMaxLines: defProgressMsgMaxLines,
-              completed: Completed(),
-            );
+            // Progress dialog already shown, just listen to stream updates
             result.progressStream!.listen(
               (String progressMessage) {
                 pd.update(msg: progressMessage);
@@ -147,7 +158,8 @@ Future<bool> payWithRetry(
                 if (!context.mounted) {
                   return;
                 }
-                _onPaymentWIthProgressDone(pd, context);
+                _onPaymentWIthProgressDone(
+                    pd, context, isRetry, txCubit, pending);
               },
               onError: (dynamic error) {
                 if (!context.mounted) {
@@ -159,6 +171,7 @@ Future<bool> payWithRetry(
             );
           } else {
             if (result.message == 'success') {
+              pd.close();
               paymentCubit.sent();
               // ignore: use_build_context_synchronously
               if (!context.mounted) {
@@ -174,9 +187,12 @@ Future<bool> payWithRetry(
                 txCubit.updatePendingTransaction(
                     pending.copyWith(type: TransactionType.pending));
               }
+              // Refresh transactions to ensure pending transaction is shown
+              txCubit.fetchTransactions(pubKey: pending.from.pubKey);
               context.read<BottomNavCubit>().updateIndex(3);
               return true;
             } else {
+              pd.close();
               paymentCubit.pendingPayment();
               if (!context.mounted) {
                 return false;
@@ -195,6 +211,9 @@ Future<bool> payWithRetry(
             }
           }
         }
+      } catch (e) {
+        pd.close();
+        rethrow;
       }
     }
   } else {
@@ -209,8 +228,22 @@ Future<bool> payWithRetry(
   return true;
 }
 
-void _onPaymentWIthProgressDone(ProgressDialog pd, BuildContext context) {
+void _onPaymentWIthProgressDone(ProgressDialog pd, BuildContext context,
+    bool isRetry, MultiWalletTransactionCubit txCubit, Transaction pending) {
   pd.close();
+
+  // Add the transaction to the pending list
+  if (!isRetry) {
+    txCubit.addPendingTransaction(pending);
+  } else {
+    txCubit.updatePendingTransaction(
+        pending.copyWith(type: TransactionType.pending));
+  }
+
+  // Refresh transactions to ensure pending transaction is shown
+  final String fromPubKey = pending.from.pubKey;
+  txCubit.fetchTransactions(pubKey: fromPubKey);
+
   context.read<BottomNavCubit>().updateIndex(3);
 }
 

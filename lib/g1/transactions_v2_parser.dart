@@ -149,6 +149,7 @@ Future<TransactionState> transactionsV2Parser(
     balance: balance,
     currentUd: currentUd,
     transactions: finalTransactions,
+    pendingTransactions: currentState.pendingTransactions,
     endCursor: combinedEndCursor,
     hasNextPage: hasNextPage,
     lastChecked: DateTime.now(),

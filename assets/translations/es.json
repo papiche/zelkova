@@ -481,5 +481,6 @@
   "no_network_results": "No se encontraron resultados en la red",
   "no_more_network_results": "No se encontraron más contactos en la red",
   "can_certify_in_days": "No puedes certificar hasta {days}",
-  "cannot_certify_reached_limit": "Has alcanzado el número máximo de certificaciones que puedes emitir"
+  "cannot_certify_reached_limit": "Has alcanzado el número máximo de certificaciones que puedes emitir",
+  "contacts": "contactos"
 }

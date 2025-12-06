@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/models/bottom_nav_cubit.dart';
 import '../../../data/models/contact.dart';
+import '../../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../../data/models/stored_account.dart';
 import '../../../data/models/wallet_themes.dart';
 import '../../../g1/g1_helper.dart';
@@ -203,6 +204,6 @@ class DrawerWalletCard extends StatelessWidget {
     context.read<BottomNavCubit>().updateIndex(0);
     Navigator.pop(context);
     // It's this causing a slowdown when switching wallets?
-    // await context.read<MultiWalletTransactionCubit>().fetchTransactions();
+    await context.read<MultiWalletTransactionCubit>().fetchTransactions();
   }
 }

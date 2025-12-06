@@ -6,6 +6,7 @@ import '../../data/models/app_cubit.dart';
 import '../../data/models/node.dart';
 import '../../data/models/node_list_cubit.dart';
 import '../../data/models/node_list_state.dart';
+import '../../data/models/node_manager.dart';
 import '../../data/models/node_type.dart';
 import '../../g1/api.dart';
 import '../../g1/no_nodes_exception.dart';
@@ -147,6 +148,7 @@ class NodeListHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String? pinnedNodeUrl = NodeManager().getPinnedNodeUrl(type);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(
@@ -156,10 +158,19 @@ class NodeListHeader extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                tr('nodes_list_title',
-                    args: <String>[capitalize(type.name), '$nodesCount']),
-                style: const TextStyle(fontSize: 20),
+              Row(
+                children: <Widget>[
+                  Text(
+                    tr('nodes_list_title',
+                        args: <String>[capitalize(type.name), '$nodesCount']),
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  if (pinnedNodeUrl != null)
+                    const Padding(
+                      padding: EdgeInsets.only(left: 8.0),
+                      child: Icon(Icons.push_pin, color: Colors.red, size: 20),
+                    ),
+                ],
               ),
               if (lastUpdated != null)
                 Text(
@@ -167,6 +178,13 @@ class NodeListHeader extends StatelessWidget {
                     humanizeTime(lastUpdated!, context.locale.toString())
                   ]),
                   style: const TextStyle(fontSize: 14, color: Colors.grey),
+                ),
+              if (pinnedNodeUrl != null)
+                Text(
+                  'Pinned: $pinnedNodeUrl',
+                  style: const TextStyle(fontSize: 12, color: Colors.red),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
             ],
           ),

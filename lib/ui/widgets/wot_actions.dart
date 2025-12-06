@@ -59,81 +59,18 @@ List<WotMenuAction> getWotMenuActions(
           WotMenuAction(
             name: tr('confirm_identity'),
             icon: Icons.verified,
-            action: () {
-              final Completer<SignAndSendResult> completer =
-                  Completer<SignAndSendResult>();
-              final TextEditingController controller = TextEditingController();
-              final RegExp validateIdtyName = RegExp(r'^[a-zA-Z0-9_-]{1,42}$');
-
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text(tr('confirm_identity')),
-                    content: TextField(
-                      controller: controller,
-                      decoration:
-                          InputDecoration(hintText: tr('identity_name_hint')),
-                    ),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          completer.complete(_returnAuthFailed());
-                        },
-                        child: Text(tr('cancel')),
-                      ),
-                      TextButton(
-                        onPressed: () async {
-                          final String input = controller.text.trim();
-                          if (validateIdtyName.hasMatch(input)) {
-                            Navigator.of(context).pop();
-                            try {
-                              final SignAndSendResult result =
-                                  await confirmIdentity(input);
-                              if (!context.mounted) {
-                                completer.complete(_returnAuthFailed());
-                                return;
-                              }
-                              completer.complete(result);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                    content: Text(tr('payment_successful'))),
-                              );
-                            } catch (e) {
-                              final SignAndSendResult errorResult =
-                                  SignAndSendResult(
-                                progressStream:
-                                    Stream<String>.value(e.toString()),
-                              );
-                              completer.complete(errorResult);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(tr('error_occurred'))),
-                              );
-                            }
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                  content: Text(tr('invalid_identity_name'))),
-                            );
-                            completer.complete(_returnAuthFailed());
-                          }
-                        },
-                        child: Text(tr('ok')),
-                      ),
-                    ],
-                  );
-                },
-              );
-              return completer.future;
-            },
+            action: () async => _executeIfAuthenticated(
+                context, () => _confirmAndSetIdentity(context)),
           ),
         );
       }
       break;
 
     case null:
-      if (!isMe && (wotInfo.canCreateIdty ?? false)) {
+      if (!isMe &&
+          (wotInfo.canCreateIdty ?? false) &&
+          wotInfo.meCanCertYouOn == null) {
+        // Can create identity now
         actions.add(
           WotMenuAction(
               name: tr('wot_create_identity'),
@@ -141,6 +78,26 @@ List<WotMenuAction> getWotMenuActions(
               action: () async => _executeIfAuthenticated(
                   context, () => createIdentity(you: wotInfo.you))),
         );
+      } else if (!isMe &&
+          (wotInfo.canCreateIdty ?? false) &&
+          wotInfo.meCanCertYouOn != null) {
+        // Can't create identity now but can in the future - show info message
+        actions.add(WotMenuAction(
+            name: tr('wot_create_identity'),
+            icon: Icons.verified_user_outlined,
+            action: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    tr('can_certify_in_days', namedArgs: <String, String>{
+                      'days': humanizeCanCertOnDay(context, wotInfo)
+                    }),
+                  ),
+                ),
+              );
+              return Future<SignAndSendResult>.value(
+                  SignAndSendResult(progressStream: Stream<String>.value('')));
+            }));
       }
   }
 
@@ -215,6 +172,67 @@ void _certAction(
                 SignAndSendResult(progressStream: Stream<String>.value('')));
           }));
     }
+  }
+}
+
+Future<SignAndSendResult> _confirmAndSetIdentity(BuildContext context) async {
+  final TextEditingController controller = TextEditingController();
+  final RegExp validateIdtyName = RegExp(r'^[a-zA-Z0-9_-]{1,42}$');
+
+  final String? input = await showDialog<String>(
+    context: context,
+    builder: (BuildContext dialogContext) {
+      return AlertDialog(
+        title: Text(tr('confirm_identity')),
+        content: TextField(
+          controller: controller,
+          decoration: InputDecoration(hintText: tr('identity_name_hint')),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop();
+            },
+            child: Text(tr('cancel')),
+          ),
+          TextButton(
+            onPressed: () {
+              final String inputText = controller.text.trim();
+              if (validateIdtyName.hasMatch(inputText)) {
+                Navigator.of(dialogContext).pop(inputText);
+              } else {
+                ScaffoldMessenger.of(dialogContext).showSnackBar(
+                  SnackBar(content: Text(tr('invalid_identity_name'))),
+                );
+              }
+            },
+            child: Text(tr('ok')),
+          ),
+        ],
+      );
+    },
+  );
+
+  if (input == null || input.isEmpty) {
+    loggerDev('Identity confirmation cancelled by user');
+    return _returnAuthFailed();
+  }
+
+  try {
+    loggerDev('Calling confirmIdentity with name: $input');
+    final SignAndSendResult result = await confirmIdentity(input);
+    loggerDev(
+        'confirmIdentity returned result, progressStream: ${result.progressStream}');
+    return result;
+  } catch (e, st) {
+    loggerDev('Error in _confirmAndSetIdentity', error: e, stackTrace: st);
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(tr('error_occurred'))),
+      );
+    }
+    log.e('Error confirming identity: $e', stackTrace: st);
+    return _returnAuthFailed();
   }
 }
 

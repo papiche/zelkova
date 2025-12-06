@@ -30,6 +30,29 @@ class NodeManager {
   final List<Node> ipfsGateways = <Node>[];
   String? currentIfpsNode;
 
+  // Pinned nodes by type (URL as key)
+  final Map<NodeType, String?> pinnedNodes = <NodeType, String?>{};
+
+  /// Pin a node to be used exclusively for a specific type
+  void pinNode(NodeType type, String nodeUrl) {
+    pinnedNodes[type] = nodeUrl;
+    logger('Pinned node for $type: $nodeUrl');
+    notifyObserver();
+  }
+
+  /// Unpin a node type
+  void unpinNode(NodeType type) {
+    pinnedNodes[type] = null;
+    logger('Unpinned node type: $type');
+    notifyObserver();
+  }
+
+  /// Check if a node type has a pinned node
+  bool isNodePinned(NodeType type) => pinnedNodes[type] != null;
+
+  /// Get the pinned node URL for a type, if any
+  String? getPinnedNodeUrl(NodeType type) => pinnedNodes[type];
+
   /*
   void loadFromCubit(NodeListCubit cubit) {
     duniterNodes.clear();
@@ -320,6 +343,22 @@ class NodeManager {
           'No online nodes available for ${type.name}, falling back to defaults');
       final List<Node> defaultNodesForType = defaultNodes(type);
       defaultNodesForType.shuffle();
+
+      // Check for pinned node even in defaults
+      final String? pinnedUrl = getPinnedNodeUrl(type);
+      if (pinnedUrl != null) {
+        try {
+          final Node pinnedNode = defaultNodesForType.firstWhere(
+            (Node node) => node.url == pinnedUrl,
+          );
+          return <Node>[
+            pinnedNode,
+            ...defaultNodesForType.where((Node n) => n.url != pinnedUrl)
+          ];
+        } catch (_) {
+          logger('Pinned node $pinnedUrl not found in defaults');
+        }
+      }
       return defaultNodesForType;
     }
 
@@ -384,23 +423,46 @@ class NodeManager {
     final List<Node> workingAndSynced =
         nodesWithFewErrors.where(isNearMax).toList();
 
+    List<Node> resultNodes;
     if (workingAndSynced.isNotEmpty) {
       sortNodesByErrorOrLatency(workingAndSynced);
       workingAndSynced
           .shuffle(); // Shuffle to avoid always using the same order
-      return workingAndSynced;
+      resultNodes = workingAndSynced;
+    } else {
+      final List<Node> syncedWithErrors =
+          filteredNodes.where(isNearMax).toList();
+
+      if (syncedWithErrors.isNotEmpty) {
+        syncedWithErrors.shuffle();
+        resultNodes = syncedWithErrors;
+      } else {
+        final List<Node> defaultNodesForType = defaultNodes(type);
+        defaultNodesForType.shuffle();
+        resultNodes = defaultNodesForType;
+      }
     }
 
-    final List<Node> syncedWithErrors = filteredNodes.where(isNearMax).toList();
-
-    if (syncedWithErrors.isNotEmpty) {
-      syncedWithErrors.shuffle();
-      return syncedWithErrors;
+    // At the end, if there's a pinned node, move it to the front
+    final String? pinnedUrl = getPinnedNodeUrl(type);
+    if (pinnedUrl != null) {
+      try {
+        final Node pinnedNode = resultNodes.firstWhere(
+          (Node node) => node.url == pinnedUrl,
+        );
+        logger('Using pinned node for $type: $pinnedUrl');
+        return <Node>[
+          pinnedNode,
+          ...resultNodes.where((Node n) => n.url != pinnedUrl)
+        ];
+      } catch (_) {
+        logger(
+            'Pinned node $pinnedUrl not found in result nodes, removing pin');
+        unpinNode(type);
+      }
     }
 
-    final List<Node> defaultNodesForType = defaultNodes(type);
-    defaultNodesForType.shuffle();
-    return defaultNodesForType;
+    return resultNodes;
   }
 
   /// Compare two semantic version strings (e.g., "1.2.3" vs "1.2.4")

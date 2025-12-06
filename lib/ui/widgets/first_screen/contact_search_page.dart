@@ -79,9 +79,9 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
     });
 
     final Set<Contact> multiContacts = parseMultipleKeys(_searchTerm);
-    if (multiContacts.length > 1) {
+    if (multiContacts.isNotEmpty) {
       setState(() {
-        _isMultiSelect = true;
+        _isMultiSelect = multiContacts.length > 1;
         _results = multiContacts;
         _isLoading = false;
         // _searchController.clear();
@@ -159,7 +159,9 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
     if (_results.isEmpty && isValidV2Address(_searchTerm)) {
       logger('$_searchTerm looks like a plain address key');
       setState(() {
-        final Contact contact = Contact.withAddress(address: _searchTerm);
+        final Contact contact = Contact.withAddress(
+            address: _searchTerm,
+            createdOn: DateTime.now().millisecondsSinceEpoch);
         _results.add(contact);
       });
     }
@@ -536,8 +538,12 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
   }
 
   Future<Contact> _getAndReplaceContact(Contact contact) async {
-    final Contact enrichedContact =
-        await ContactsCache().getContact(contact.pubKey);
+    Contact enrichedContact = await ContactsCache().getContact(contact.pubKey);
+
+    // Preserve createdOn from original contact if enriched contact doesn't have it
+    if (contact.createdOn != null && enrichedContact.createdOn == null) {
+      enrichedContact = enrichedContact.copyWith(createdOn: contact.createdOn);
+    }
 
     if (_results.contains(contact)) {
       _results.remove(contact);

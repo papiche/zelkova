@@ -28,7 +28,7 @@ class ContactListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Contact>(
-      future: ContactsCache().getContact(contact.pubKey),
+      future: _getEnrichedContact(),
       builder: (BuildContext context, AsyncSnapshot<Contact> snapshot) {
         Widget avatarWidget;
         Contact displayContact;
@@ -83,6 +83,19 @@ class ContactListItem extends StatelessWidget {
         onTap: onTap,
         onLongPress: onLongPress,
         leading: avatarWidget,
-        trailing: trailing);
+        trailing:
+            trailing != null ? SizedBox(width: 56.0, child: trailing) : null);
+  }
+
+  Future<Contact> _getEnrichedContact() async {
+    final Contact cachedContact =
+        await ContactsCache().getContact(contact.pubKey);
+
+    // Preserve createdOn from original contact if cached contact doesn't have it
+    if (contact.createdOn != null && cachedContact.createdOn == null) {
+      return cachedContact.copyWith(createdOn: contact.createdOn);
+    }
+
+    return cachedContact;
   }
 }

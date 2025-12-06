@@ -7,7 +7,6 @@ import '../../../data/models/node.dart';
 import '../../../data/models/transaction.dart';
 import '../../../data/models/transaction_state.dart';
 import '../../../g1/api.dart';
-import '../../../g1/transactions_v1_parser.dart';
 import '../../ui_helpers.dart';
 import '../connectivity_widget_wrapper_wrapper.dart';
 import '../fourth_screen/transaction_item.dart';
@@ -65,7 +64,7 @@ class _SimpleTransactionsPanelState extends State<SimpleTransactionsPanel> {
   Future<void> _fetchTransactions() async {
     final bool isConnected = await ConnectivityWidgetWrapperWrapper.isConnected;
     final Tuple2<Map<String, dynamic>?, Node> txDataResult =
-        await getHistoryAndBalanceV1(widget.contact.pubKey,
+        await getHistoryAndBalance(widget.contact.pubKey,
             pageSize: widget.pageSize,
             from: widget.from,
             to: widget.to,
@@ -76,7 +75,7 @@ class _SimpleTransactionsPanelState extends State<SimpleTransactionsPanel> {
     }
 
     final Map<String, dynamic> txData = txDataResult.item1!;
-    final TransactionState newParsedState = await transactionsV1Parser(
+    final TransactionState newParsedState = await transactionsParser(
       txData,
       TransactionState.emptyState,
       widget.contact.pubKey,
@@ -196,24 +195,28 @@ class _SimpleTransactionsPanelState extends State<SimpleTransactionsPanel> {
           ]),
       initiallyExpanded: widget.initiallyExpanded,
       children: <Widget>[
-        ListView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: transactions.length,
-          itemBuilder: (BuildContext context, int index) {
-            final Transaction tx = transactions[index];
-            return TransactionListItem(
-              pubKey: widget.contact.pubKey,
-              currentUd: widget.currentUd,
-              isG1: widget.isG1,
-              isCurrencyBefore: widget.isCurrencyBefore,
-              currentSymbol: widget.currentSymbol,
-              isExternalAccount: true,
-              index: index,
-              transaction: tx,
-              customPositiveAmountColor: Colors.green,
-            );
-          },
+        SizedBox(
+          height: transactions.length * 80.0,
+          // Approximate height per transaction
+          child: ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: transactions.length,
+            itemBuilder: (BuildContext context, int index) {
+              final Transaction tx = transactions[index];
+              return TransactionListItem(
+                pubKey: widget.contact.pubKey,
+                currentUd: widget.currentUd,
+                isG1: widget.isG1,
+                isCurrencyBefore: widget.isCurrencyBefore,
+                currentSymbol: widget.currentSymbol,
+                isExternalAccount: true,
+                index: index,
+                transaction: tx,
+                customPositiveAmountColor: Colors.green,
+              );
+            },
+          ),
         ),
       ],
     );

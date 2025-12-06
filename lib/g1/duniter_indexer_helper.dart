@@ -7,7 +7,9 @@ import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-que
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.req.gql.dart';
 import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.var.gql.dart';
 import 'package:ferry/ferry.dart' as ferry;
+import 'package:ferry/ferry.dart' show FetchPolicy;
 import 'package:http/http.dart';
+import 'package:tuple/tuple.dart' as tp;
 
 import '../data/models/cert.dart';
 import '../data/models/contact.dart';
@@ -32,7 +34,7 @@ Future<List<Contact>> searchWotV2(String searchPatternRaw) async {
     try {
       // if is a v1Key, search pubkey
       final String searchPattern = validateKey(searchPatternRaw)
-          ? addressFromV1Pubkey(searchPatternRaw)
+          ? addressFromV1Pubkey(extractPublicKey(searchPatternRaw))
           : searchPatternRaw;
       loggerDev("Searching indexer v2 with '$searchPattern'");
 
@@ -656,6 +658,111 @@ Future<List<Contact>> getAccounts({required List<String> accountIds}) async {
   loggerDev('Accounts found in wot search ${contacts.length}');
   ContactsCache().addContacts(contacts);
   return contacts;
+}
+
+Future<tp.Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalanceV2(
+    String pubKeyRaw,
+    {int? pageSize = 10,
+    int? from,
+    int? to,
+    String? cursor,
+    required bool isConnected}) async {
+  final String address = addressFromV1PubkeyFaiSafe(pubKeyRaw);
+
+  final List<Node> nodes = NodeManager().getBestNodes(NodeType.duniterIndexer);
+
+  if (nodes.isEmpty) {
+    loggerDev('No suitable indexer nodes available for $pubKeyRaw/$address');
+    return const tp.Tuple2<Map<String, dynamic>?, Node>(null, Node(url: ''));
+  }
+
+  // With cursor-based pagination, we use the full pageSize
+  final int limit = pageSize ?? 10;
+
+  // Split the combined cursor into issued and received cursors
+  // Format: "issuedCursor|receivedCursor"
+  String? issuedCursor;
+  String? receivedCursor;
+  if (cursor != null && cursor.contains('|')) {
+    final List<String> parts = cursor.split('|');
+    issuedCursor = parts[0].isEmpty ? null : parts[0];
+    receivedCursor = parts.length > 1 && parts[1].isNotEmpty ? parts[1] : null;
+  } else if (cursor != null && cursor.isNotEmpty) {
+    // Single cursor value - use for both
+    issuedCursor = cursor;
+    receivedCursor = cursor;
+  }
+
+  for (final Node node in nodes) {
+    // Skip nodes that have accumulated too many errors
+    if (node.errors >= NodeManager.maxNodeErrors) {
+      loggerDev(
+          'Skipping node ${node.url} due to high error count: ${node.errors}');
+      continue;
+    }
+
+    try {
+      final ferry.Client client = await initDuniterIndexerClient(node.url);
+
+      loggerDev(
+          'Fetching history for $pubKeyRaw/$address in node ${node.url} with cursors: issued=$issuedCursor, received=$receivedCursor');
+
+      // We need to make two separate requests or use a more complex query
+      // For now, let's use the same cursor for both and let the API handle it
+      final GAccountTransactionsReq request =
+          GAccountTransactionsReq((GAccountTransactionsReqBuilder b) {
+        b
+          ..fetchPolicy =
+              isConnected ? FetchPolicy.NetworkOnly : FetchPolicy.CacheFirst
+          ..vars.accountId = address
+          ..vars.limit = limit;
+
+        // Set cursor only if we have one
+        final String? cursorValue = issuedCursor ?? receivedCursor;
+        if (cursorValue != null) {
+          b.vars.cursor.value = cursorValue;
+        }
+      });
+
+      final ferry
+          .OperationResponse<GAccountTransactionsData, GAccountTransactionsVars>
+          response = await client.request(request).first;
+
+      if (response.hasErrors) {
+        NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
+            cause: 'GraphQL errors in response');
+        loggerDev('Node ${node.url} returned errors for $pubKeyRaw/$address');
+        processFerryError(response);
+        continue; // Try next node
+      }
+
+      final Map<String, dynamic>? data = response.data?.toJson();
+      if (data != null) {
+        loggerDev(
+            'Successfully fetched history for $pubKeyRaw/$address from node ${node.url}');
+        return tp.Tuple2<Map<String, dynamic>?, Node>(data, node);
+      } else {
+        NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
+            cause: 'Null data in response');
+        loggerDev(
+            'Node ${node.url} returned null data for $pubKeyRaw/$address');
+        continue; // Try next node
+      }
+    } catch (e, stackTrace) {
+      NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
+          cause: 'Error fetching history: $e');
+      loggerDev(
+          'Error fetching history for $pubKeyRaw/$address in node ${node.url}',
+          error: e,
+          stackTrace: stackTrace);
+      // Continue with next node
+      continue;
+    }
+  }
+
+  // If all nodes failed, return empty result
+  loggerDev('All nodes failed to fetch history for $pubKeyRaw/$address');
+  return const tp.Tuple2<Map<String, dynamic>?, Node>(null, Node(url: ''));
 }
 
 void processFerryError(ferry.OperationResponse<dynamic, dynamic> response) {

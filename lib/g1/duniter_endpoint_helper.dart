@@ -2,18 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:duniter_indexer/duniter_indexer_client.dart';
-import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.data.gql.dart';
-import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.req.gql.dart';
-import 'package:duniter_indexer/graphql/schema/__generated__/duniter-indexer-queries.var.gql.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:ferry/ferry.dart' as ferry;
-import 'package:ferry/ferry.dart';
 import 'package:polkadart/polkadart.dart';
 import 'package:polkadart/provider.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 import 'package:ss58/ss58.dart';
-import 'package:tuple/tuple.dart' as tp;
 
 import '../data/models/contact.dart';
 import '../data/models/node.dart';
@@ -27,6 +20,7 @@ import '../generated/gtest/types/pallet_identity/types/idty_value.dart';
 import '../generated/gtest/types/sp_membership/membership_data.dart';
 import '../generated/gtest/types/sp_runtime/multi_signature.dart';
 import '../generated/gtest/types/sp_runtime/multiaddress/multi_address.dart';
+import '../generated/gtest/types/tuples.dart' as tuples;
 import '../shared_prefs_helper.dart';
 import '../ui/logger.dart';
 import 'g1_v2_helper.dart';
@@ -62,6 +56,7 @@ Future<T> executeOnPolkadotNodes<T>(
   final List<Node> nodes = NodeManager().getBestNodes(NodeType.endpoint);
 
   for (final Node node in nodes) {
+    loggerDev('executeOnPolkadotNode: ${node.url}');
     try {
       final Provider provider = Provider.fromUri(parseNodeUrl(node.url));
       final Gtest polkadot = Gtest(provider);
@@ -135,134 +130,6 @@ Future<BigInt?> getBalanceV2Deprecated(
   });
 }
 
-Future<tp.Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalanceV2(
-    String pubKeyRaw,
-    {int? pageSize = 10,
-    int? from,
-    int? to,
-    String? cursor,
-    required bool isConnected}) async {
-  final String address = addressFromV1PubkeyFaiSafe(pubKeyRaw);
-
-  final List<Node> nodes = NodeManager().getBestNodes(NodeType.duniterIndexer);
-
-  if (nodes.isEmpty) {
-    loggerDev('No suitable indexer nodes available for $pubKeyRaw/$address');
-    return const tp.Tuple2<Map<String, dynamic>?, Node>(null, Node(url: ''));
-  }
-
-  // With cursor-based pagination, we use the full pageSize
-  final int limit = pageSize ?? 10;
-
-  // Split the combined cursor into issued and received cursors
-  // Format: "issuedCursor|receivedCursor"
-  String? issuedCursor;
-  String? receivedCursor;
-  if (cursor != null && cursor.contains('|')) {
-    final List<String> parts = cursor.split('|');
-    issuedCursor = parts[0].isEmpty ? null : parts[0];
-    receivedCursor = parts.length > 1 && parts[1].isNotEmpty ? parts[1] : null;
-  } else if (cursor != null && cursor.isNotEmpty) {
-    // Single cursor value - use for both
-    issuedCursor = cursor;
-    receivedCursor = cursor;
-  }
-
-  for (final Node node in nodes) {
-    // Skip nodes that have accumulated too many errors
-    if (node.errors >= NodeManager.maxNodeErrors) {
-      loggerDev(
-          'Skipping node ${node.url} due to high error count: ${node.errors}');
-      continue;
-    }
-
-    try {
-      final ferry.Client client = await initDuniterIndexerClient(node.url);
-
-      loggerDev(
-          'Fetching history for $pubKeyRaw/$address in node ${node.url} with cursors: issued=$issuedCursor, received=$receivedCursor');
-
-      // We need to make two separate requests or use a more complex query
-      // For now, let's use the same cursor for both and let the API handle it
-      final GAccountTransactionsReq request =
-          GAccountTransactionsReq((GAccountTransactionsReqBuilder b) {
-        b
-          ..fetchPolicy =
-              isConnected ? FetchPolicy.NetworkOnly : FetchPolicy.CacheFirst
-          ..vars.accountId = address
-          ..vars.limit = limit;
-
-        // Set cursor only if we have one
-        final String? cursorValue = issuedCursor ?? receivedCursor;
-        if (cursorValue != null) {
-          b.vars.cursor.value = cursorValue;
-        }
-      });
-
-      final ferry
-          .OperationResponse<GAccountTransactionsData, GAccountTransactionsVars>
-          response = await client.request(request).first;
-
-      if (response.hasErrors) {
-        NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
-            cause: 'GraphQL errors in response');
-        loggerDev('Node ${node.url} returned errors for $pubKeyRaw/$address');
-        processFerryError(response);
-        continue; // Try next node
-      }
-
-      final Map<String, dynamic>? data = response.data?.toJson();
-      if (data != null) {
-        loggerDev(
-            'Successfully fetched history for $pubKeyRaw/$address from node ${node.url}');
-        return tp.Tuple2<Map<String, dynamic>?, Node>(data, node);
-      } else {
-        NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
-            cause: 'Null data in response');
-        loggerDev(
-            'Node ${node.url} returned null data for $pubKeyRaw/$address');
-        continue; // Try next node
-      }
-    } catch (e, stackTrace) {
-      NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
-          cause: 'Error fetching history: $e');
-      loggerDev(
-          'Error fetching history for $pubKeyRaw/$address in node ${node.url}',
-          error: e,
-          stackTrace: stackTrace);
-      // Continue with next node
-      continue;
-    }
-  }
-
-  // If all nodes failed, return empty result
-  loggerDev('All nodes failed to fetch history for $pubKeyRaw/$address');
-  return const tp.Tuple2<Map<String, dynamic>?, Node>(null, Node(url: ''));
-}
-
-void processFerryError(ferry.OperationResponse<dynamic, dynamic> response) {
-  String error = 'Unknown error';
-
-  if (response.graphqlErrors != null && response.graphqlErrors!.isNotEmpty) {
-    error = response.graphqlErrors!.first.message;
-  } else if (response.linkException != null) {
-    error = response.linkException.toString();
-    if (response.linkException!.originalException != null) {
-      loggerDev(
-          'Ferry error details: ${response.linkException!.originalException}');
-      if (response.linkException!.originalException is FormatException) {
-        error =
-            'FormatException: The server response is not valid JSON. The server might be returning HTML or plain text instead of JSON.';
-      }
-    }
-  } else if (response.data == null) {
-    error = 'Response data is null';
-  }
-
-  loggerDev('Ferry error: $error');
-  throw Exception('Ferry error: $error');
-}
-
 Future<SignAndSendResult> requestDistanceEvaluationFor(int idtyIndex,
     {Duration timeout = defPolkadotTimeout}) async {
   final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
@@ -310,39 +177,88 @@ Future<SignAndSendResult> requestDistanceEvaluation(
 
 Future<SignAndSendResult> createIdentity(
     {required Contact you, Duration timeout = defPolkadotTimeout}) async {
-  final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
-  return executeOnPolkadotNodes(
+  try {
+    loggerDev('Starting createIdentity for: ${you.address}');
+    final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
+    loggerDev('Wallet (signer): ${wallet.address}');
+
+    return await executeOnPolkadotNodes<SignAndSendResult>(
       (Node node, Provider provider, Gtest polkadot) async {
-    final RuntimeCall call = polkadot.tx.identity.createIdentity(
-      ownerKey: Address.decode(you.address).pubkey,
+        loggerDev('createIdentity: Using node ${node.url}');
+        try {
+          // createIdentity creates identity for the account specified in ownerKey
+          // you = the person whose identity we're creating (the owner of the new identity)
+          // wallet = the person signing the transaction (who is creating the identity)
+          final RuntimeCall call = polkadot.tx.identity
+              .createIdentity(ownerKey: Address.decode(you.address).pubkey);
+          loggerDev('RuntimeCall created for createIdentity');
+
+          final SignAndSendResult result = await signAndSend(
+            node,
+            provider,
+            polkadot,
+            wallet,
+            call,
+            messageTransformer: _defaultResultTransformer,
+          );
+          loggerDev('createIdentity result received');
+          return result;
+        } catch (e, st) {
+          loggerDev('Error in createIdentity operation',
+              error: e, stackTrace: st);
+          rethrow;
+        }
+      },
+      timeout: timeout,
     );
-    return signAndSend(
-      node,
-      provider,
-      polkadot,
-      wallet,
-      call,
-      messageTransformer: _defaultResultTransformer,
-    );
-  });
+  } catch (e, st) {
+    loggerDev('Critical error in createIdentity', error: e, stackTrace: st);
+    rethrow;
+  }
 }
 
 Future<SignAndSendResult> confirmIdentity(String identityName,
     {Duration timeout = defPolkadotTimeout}) async {
-  final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
-  return executeOnPolkadotNodes(
+  try {
+    loggerDev('Starting confirmIdentity with name: $identityName');
+    final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
+    loggerDev('Wallet loaded: ${wallet.address}');
+
+    return await executeOnPolkadotNodes<SignAndSendResult>(
       (Node node, Provider provider, Gtest polkadot) async {
-    final RuntimeCall call = polkadot.tx.identity
-        .confirmIdentity(idtyName: utf8.encode(identityName));
-    return signAndSend(
-      node,
-      provider,
-      polkadot,
-      wallet,
-      call,
-      messageTransformer: _defaultResultTransformer,
+        loggerDev('confirmIdentity: Using node ${node.url}');
+        try {
+          final Uint8List encodedName = utf8.encode(identityName);
+          loggerDev(
+              'Encoded identity name: $identityName (${encodedName.length} bytes)');
+
+          final RuntimeCall call = polkadot.tx.identity.confirmIdentity(
+            idtyName: encodedName,
+          );
+          loggerDev('RuntimeCall created for confirmIdentity');
+
+          final SignAndSendResult result = await signAndSend(
+            node,
+            provider,
+            polkadot,
+            wallet,
+            call,
+            messageTransformer: _defaultResultTransformer,
+          );
+          loggerDev('confirmIdentity result received');
+          return result;
+        } catch (e, st) {
+          loggerDev('Error in confirmIdentity operation',
+              error: e, stackTrace: st);
+          rethrow;
+        }
+      },
+      timeout: timeout,
     );
-  });
+  } catch (e, st) {
+    loggerDev('Critical error in confirmIdentity', error: e, stackTrace: st);
+    rethrow;
+  }
 }
 
 Future<SignAndSendResult> certify(int idtyIndex,
@@ -518,13 +434,113 @@ Future<double> currentUniversalDividendV2() async {
     }
   });
 }
-/*
-Future<BigInt> newBalanceV2() async {
-  return executeOnPolkadotNodes(
+
+Future<double> calculateBalanceFromEndPoint(
+    {required String address, Duration timeout = defPolkadotTimeout}) async {
+  return executeOnPolkadotNodes<double>(
       (Node node, Provider provider, Gtest polkadot) async {
-    final Gtest polkadot = Gtest(provider);
-    bal = await polkadot.query.universalDividend.accountBalance();
-    return currentUd;
-  });
+    try {
+      final Address accountAddress = Address.decode(address);
+      final Uint8List pubkey = accountAddress.pubkey;
+
+      final AccountInfo accountInfo =
+          await polkadot.query.system.account(pubkey).timeout(timeout);
+
+      final BigInt free = accountInfo.data.free;
+      final BigInt reserved = accountInfo.data.reserved;
+
+      loggerDev(
+          'Balance for $address in node ${node.url}: free=$free, reserved=$reserved');
+
+      // Calculate unclaimed UDs if member
+      BigInt unclaimedUds = BigInt.zero;
+
+      try {
+        // 1. Get identity index from public key
+        final int? idtyIndex = await polkadot.query.identity
+            .identityIndexOf(pubkey)
+            .timeout(timeout);
+
+        if (idtyIndex != null) {
+          // 2. Get identity data
+          final IdtyValue? idtyValue = await polkadot.query.identity
+              .identities(idtyIndex)
+              .timeout(timeout);
+
+          if (idtyValue != null) {
+            // 3. Check membership status
+            final MembershipData? membershipData = await polkadot
+                .query.membership
+                .membership(idtyIndex)
+                .timeout(timeout);
+
+            // Only calculate UDs if member and has firstEligibleUd
+            if (membershipData != null &&
+                idtyValue.status.toString().contains('member')) {
+              final int firstEligibleUd = idtyValue.data.firstEligibleUd;
+
+              if (firstEligibleUd != null && firstEligibleUd > 0) {
+                // 4. Get current UD
+                final BigInt currentUd = await polkadot.query.universalDividend
+                    .currentUd()
+                    .timeout(timeout);
+                final int currentUdIndex = await polkadot
+                    .query.universalDividend
+                    .currentUdIndex()
+                    .timeout(timeout);
+
+                loggerDev(
+                    'Member: idtyIndex=$idtyIndex, firstEligibleUd=$firstEligibleUd, currentUdIndex=$currentUdIndex, currentUd=$currentUd');
+
+                // Calculate pending UDs based on historical reevaluations
+                if (currentUdIndex > firstEligibleUd) {
+                  // Get reevaluation history
+                  final List<tuples.Tuple2<int, BigInt>> pastReevals =
+                      await polkadot.query.universalDividend
+                          .pastReevals()
+                          .timeout(timeout);
+
+                  int tempCurrentUdIndex = currentUdIndex;
+                  for (final tuples.Tuple2<int, BigInt> revalEntry
+                      in pastReevals.reversed) {
+                    final int udReevalIndex = revalEntry.value0;
+                    final BigInt udReevalValue = revalEntry.value1;
+
+                    if (udReevalIndex <= firstEligibleUd) {
+                      // Calculate from firstEligibleUd to current
+                      final int count = tempCurrentUdIndex - firstEligibleUd;
+                      if (count > 0) {
+                        unclaimedUds += BigInt.from(count) * udReevalValue;
+                      }
+                      break;
+                    } else {
+                      // Calculate from this reevaluation to next
+                      final int count = tempCurrentUdIndex - udReevalIndex;
+                      if (count > 0) {
+                        unclaimedUds += BigInt.from(count) * udReevalValue;
+                      }
+                      tempCurrentUdIndex = udReevalIndex;
+                    }
+                  }
+
+                  loggerDev('Unclaimed UDs for $address: $unclaimedUds');
+                }
+              }
+            }
+          }
+        }
+      } catch (e, stacktrace) {
+        // If error calculating UDs, it's not critical, continue with balance without UDs
+        loggerDev('Warning: Could not calculate unclaimed UDs for $address',
+            error: e, stackTrace: stacktrace);
+      }
+
+      final BigInt totalBalance = free + unclaimedUds;
+      return totalBalance.toDouble();
+    } catch (e, stacktrace) {
+      loggerDev('Error calculating wallet balance for $address',
+          error: e, stackTrace: stacktrace);
+      rethrow;
+    }
+  }, timeout: timeout);
 }
-*/

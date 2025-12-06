@@ -14,6 +14,7 @@ import '../../data/models/contact_cubit.dart';
 import '../../data/models/contact_wot_info.dart';
 import '../../data/models/identity_status.dart';
 import '../../data/models/multi_wallet_transaction_cubit.dart';
+import '../../data/models/stored_account.dart';
 import '../../g1/distance_precompute.dart';
 import '../../g1/distance_precompute_provider.dart';
 import '../../g1/duniter_endpoint_helper.dart';
@@ -116,7 +117,8 @@ class _ContactPageState extends State<ContactPage> {
         context.read<ContactsCubit>().isContact(contact.pubKey);
     final bool me = contactWotInfo.isme;
     final bool isPassProtected =
-        !SharedPreferencesHelper().isPasswordLessWallet();
+        !(SharedPreferencesHelper().getCurrentAccount().type ==
+            AccountType.v1PasswordLess);
     final List<SpeedDialChild> actions = <SpeedDialChild>[
       if (isContact)
         SpeedDialChild(
@@ -177,6 +179,7 @@ class _ContactPageState extends State<ContactPage> {
                   await Future<dynamic>.delayed(
                       const Duration(milliseconds: 1000));
                   setState(() {});
+                  await _refresh();
                   pd.close();
                 },
                 onError: (dynamic error) {
@@ -237,7 +240,8 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
-  Widget _buildInfoTab(Contact contact, ContactWotInfo wotInfo) {
+  Widget _buildInfoTab(Contact contact, ContactWotInfo wotInfo,
+      [bool debug = false]) {
     final bool loaded = wotInfo.loaded;
     return SingleChildScrollView(
       controller: _scrollController,
@@ -257,13 +261,19 @@ class _ContactPageState extends State<ContactPage> {
                   leading: const Icon(Symbols.editor_choice),
                   title: Text('@${contact.nick}'),
                 )),
-          if (!contact.createdOnV2) _buildQrListTile(contact),
+          /* if (!contact.createdOnV2)  */
+          _buildQrListTile(contact),
+
           if (context.watch<AppCubit>().isExpertMode)
             _buildQrListTile(contact, isV2: true),
 
+          if (debug && inDevelopment)
+            ListTile(title: Text('Status: ${contact.status}')),
+          if (debug && inDevelopment)
+            ListTile(
+                title: Text(
+                    'Me account type: ${SharedPreferencesHelper().getCurrentAccount().type}')),
           /* Right now, the are accounts with negative balance (maybe a bug) so, lets show this for now        if (context
-
-
                   .watch<MultiWalletTransactionCubit>()
                   .balance(contact.pubKey) >
               0) */
@@ -332,12 +342,12 @@ class _ContactPageState extends State<ContactPage> {
                   // In red
                   style: const TextStyle(color: Colors.red)),
             ),
-          /* if (inDevelopment && contact.createdOn != null)
+          if (inDevelopment && debug && contact.createdOn != null)
             ListTile(
               leading: const Icon(Icons.calendar_today),
               title: Text(tr('created_on')),
               subtitle: Text(contact.createdOn!.toString()),
-            ), */
+            ),
           if (contact.certsReceived != null &&
               contact.certsReceived!.isNotEmpty &&
               wotInfo.currentBlockHeight != null)

@@ -156,7 +156,7 @@ class DuniterServiceV2 implements DuniterService {
       int? to,
       String? cursor,
       required bool isConnected}) {
-    return getHistoryAndBalanceV2(pubKeyRaw,
+    return duniter_indexer.getHistoryAndBalanceV2(pubKeyRaw,
         pageSize: pageSize,
         from: from,
         to: to,

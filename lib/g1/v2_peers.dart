@@ -18,7 +18,10 @@ Future<V2Peers> discoverV2PeersFromNode(
   http.Client? client,
 }) async {
   final Uri originalUri = Uri.parse(nodeBaseUrl2);
-  final String httpsBaseUrl = 'https://${originalUri.host}';
+  // Preserve port if it's not the default HTTPS port (443)
+  final String httpsBaseUrl = originalUri.port != 443 && originalUri.port != 0
+      ? 'https://${originalUri.host}:${originalUri.port}'
+      : 'https://${originalUri.host}';
   final Uri uri = Uri.parse(httpsBaseUrl);
   final Map<String, dynamic> payload = <String, dynamic>{
     'jsonrpc': '2.0',

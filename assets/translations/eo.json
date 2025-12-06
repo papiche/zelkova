@@ -73,7 +73,7 @@
   "intro_pattern_to_import": "Kondiĉo kiun vi uzis por eksporti vian monujon",
   "wrong_pattern": "Malĝusta kondiĉo",
   "wallet_exported": "Monujo eksportita sukcese",
-  "reloading_nodes": "Reŝargi {tipo} nodojn",
+  "reloading_nodes": "Reŝargi {type} nodojn",
   "wallet_imported": "Monujo importita sukcese",
   "cancel": "NULIGI",
   "yes_import": "MI CERTAS, IMPORTU",

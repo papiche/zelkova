@@ -219,9 +219,9 @@ DropdownMenuItem<Locale>(
 - ca: calbasi
 - da: Gerhard Pischinger
 - de: Andreas Wahlen, Christophe Parot and FW
-- eo: flodef
-- eu: Anna Ayala Alcalá
-- fr: flodef, Hugo, Maaltir, Michel du 64, italpaola, poka, Cristina Abella, Christophe Parot and vincentux
+- eo: flodef and Solaiye
+- eu: Anna Ayala Alcalá and Solaiye
+- fr: flodef, Hugo, Maaltir, Michel du 64, italpaola, poka, Cristina Abella, Christophe Parot, Solaiye and vincentux
 - gl: Vijitâtman
 - it: Anna Ayala Alcalá, italpaola
 - nl: Maria Rosa Costa i Alandi

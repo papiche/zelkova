@@ -104,16 +104,18 @@ String humanizeContact(String publicAddress, Contact contact,
   if (isMe(contact, publicAddress)) {
     return trf('your_wallet');
   } else {
-    final String pubKey = humanizePubKey(contact.pubKey);
-    final String pubKeyMin = humanizePubKey(contact.pubKey, minimal);
-    final bool titleNotTheSameAsPubKey = contact.title != pubKey;
+    // Use humanizeAddress for V2 contacts, humanizePubKey for V1
+    final String addressOrPubKey = contact.createdOnV2
+        ? humanizeAddress(contact.address, minimal)
+        : humanizePubKey(contact.pubKey, minimal);
+    final bool titleNotTheSameAsPubKey = contact.title != addressOrPubKey;
     return addKey && titleNotTheSameAsPubKey
         ? minimal
-            ? '${contact.title} $pubKeyMin'
-            : '${contact.title} ($pubKey)'
+            ? '${contact.title} $addressOrPubKey'
+            : '${contact.title} ($addressOrPubKey)'
         : titleNotTheSameAsPubKey
             ? contact.title
-            : pubKey;
+            : addressOrPubKey;
   }
 }
 

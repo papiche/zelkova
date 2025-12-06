@@ -69,7 +69,10 @@ Future<TransactionState> transactionsV2Parser(
   final dynamic rawBalance = account['totalBalance'];
   final double? balanceParsed =
       rawBalance is String ? double.tryParse(rawBalance) : 0.0;
-  final double balance = balanceParsed ?? 0.0;
+  double balance = balanceParsed ?? 0.0;
+
+  // FIXME, this previous value is the duniter indexer balance, but for now, let's use the duniter endpoint balance that is more accurate
+  balance = await calculateBalanceFromEndPoint(address: accountAddress);
 
   final Map<String, dynamic>? transfersIssuedConnection =
       account['transfersIssued'] as Map<String, dynamic>?;

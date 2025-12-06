@@ -16,8 +16,14 @@ Future<List<Contact>> enrichContacts(
   final ContactsCubit contactsCubit = context.read<ContactsCubit>();
   final Set<Contact> newContacts = <Contact>{};
   for (final Contact contact in contacts) {
-    final Contact contactNew =
+    Contact contactNew =
         await retrieveContactFromCubitOrCache(contactsCubit, contact.pubKey);
+
+    // Preserve createdOn from original contact if enriched contact doesn't have it
+    if (contact.createdOn != null && contactNew.createdOn == null) {
+      contactNew = contactNew.copyWith(createdOn: contact.createdOn);
+    }
+
     newContacts.add(contactNew);
   }
   return newContacts.toList();

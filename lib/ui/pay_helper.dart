@@ -303,6 +303,17 @@ Future<bool?> _confirmSend(
     bool isPayToMultiple,
     {required bool isG1,
     required double currentUd}) async {
+  // Validate that user is not trying to pay to themselves
+  for (final Contact recipient in recipients) {
+    if (extractPublicKey(recipient.pubKey) == extractPublicKey(fromPubKey)) {
+      if (context.mounted) {
+        showAlertDialog(context, tr('payment_error'),
+            tr("You can't send money to yourself."));
+      }
+      return false;
+    }
+  }
+
   // Calculate G1 equivalent if paying in DU
   final String amountWithCurrency = !isG1
       ? '$amount DU (${toG1(double.parse(amount), isG1, currentUd).toStringAsFixed(2)} Ğ1)'

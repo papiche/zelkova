@@ -200,7 +200,9 @@ class _TransactionListItemState extends State<TransactionListItem> {
     final String myPubKey = SharedPreferencesHelper().getPubKey();
 
     final ContactsCubit contactsCubit = context.read<ContactsCubit>();
-    final Contact to = transaction.recipientsWithoutCashBack[0];
+    final Contact to = transaction.recipientsWithoutCashBack.isNotEmpty
+        ? transaction.recipientsWithoutCashBack[0]
+        : Contact.empty();
 
     const double txFontSize = 14.0;
 

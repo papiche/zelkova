@@ -1342,6 +1342,20 @@ const AccountTxsFields = _i1.FragmentDefinitionNode(
           name: _i1.NameNode(value: 'orderBy'),
           value: _i1.EnumValueNode(name: _i1.NameNode(value: 'TIMESTAMP_DESC')),
         ),
+        _i1.ArgumentNode(
+          name: _i1.NameNode(value: 'filter'),
+          value: _i1.ObjectValueNode(fields: [
+            _i1.ObjectFieldNode(
+              name: _i1.NameNode(value: 'isUd'),
+              value: _i1.ObjectValueNode(fields: [
+                _i1.ObjectFieldNode(
+                  name: _i1.NameNode(value: 'equalTo'),
+                  value: _i1.BooleanValueNode(value: true),
+                )
+              ]),
+            )
+          ]),
+        ),
       ],
       directives: [],
       selectionSet: _i1.SelectionSetNode(selections: [

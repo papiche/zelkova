@@ -234,6 +234,7 @@ fragment AccountTxsFields on Account {
         first: $limit
         after: $cursor
         orderBy: TIMESTAMP_DESC
+        filter: { isUd: { equalTo: true } }
     ) {
         totalCount
         pageInfo {

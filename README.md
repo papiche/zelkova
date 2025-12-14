@@ -221,7 +221,7 @@ DropdownMenuItem<Locale>(
 - de: Andreas Wahlen, Christophe Parot and FW
 - eo: flodef and Solaiye
 - eu: Anna Ayala Alcalá and Solaiye
-- fr: flodef, Hugo, Maaltir, Michel du 64, italpaola, poka, Cristina Abella, Christophe Parot, Solaiye and vincentux
+- fr: d0p1, flodef, Hugo Trentesaux, Maaltir, Michel du 64, niko, italpaola, poka, Cristina Abella, Christophe Parot, Olivier Michel, Solaiye and vincentux
 - gl: Vijitâtman
 - it: Anna Ayala Alcalá, italpaola
 - nl: Maria Rosa Costa i Alandi

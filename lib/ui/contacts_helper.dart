@@ -7,6 +7,9 @@ import 'contacts_cache.dart';
 
 Future<Contact> retrieveContactFromCubitOrCache(
     ContactsCubit contactsCubit, String pubKey) async {
+  if (pubKey.isEmpty) {
+    throw Exception('Empty pubKey provided');
+  }
   final Contact? cubitContact = contactsCubit.getContact(pubKey);
   return cubitContact ?? await ContactsCache().getContact(pubKey);
 }

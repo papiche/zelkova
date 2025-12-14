@@ -11,6 +11,88 @@ import '../../currency_helper.dart';
 import '../../locale_helper.dart';
 import '../../ui_helpers.dart';
 
+class _ShadowToggleSwitch extends StatelessWidget {
+  final double minWidth;
+  final bool radiusStyle;
+  final int initialLabelIndex;
+  final double cornerRadius;
+  final Color activeFgColor;
+  final Color? inactiveBgColor;
+  final Color inactiveFgColor;
+  final int totalSwitches;
+  final List<String> labels;
+  final double iconSize;
+  final double borderWidth;
+  final List<Color> borderColor;
+  final List<List<Color>> activeBgColors;
+  final Function(int?) onToggle;
+  final String toggleKey;
+
+  const _ShadowToggleSwitch({
+    required this.minWidth,
+    required this.radiusStyle,
+    required this.initialLabelIndex,
+    required this.cornerRadius,
+    required this.activeFgColor,
+    required this.inactiveBgColor,
+    required this.inactiveFgColor,
+    required this.totalSwitches,
+    required this.labels,
+    required this.iconSize,
+    required this.borderWidth,
+    required this.borderColor,
+    required this.activeBgColors,
+    required this.onToggle,
+    required this.toggleKey,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ToggleSwitch(
+      key: ValueKey<String>(toggleKey),
+      minWidth: minWidth,
+      radiusStyle: radiusStyle,
+      initialLabelIndex: initialLabelIndex,
+      cornerRadius: cornerRadius,
+      activeFgColor: activeFgColor,
+      inactiveBgColor: inactiveBgColor,
+      inactiveFgColor: inactiveFgColor,
+      totalSwitches: totalSwitches,
+      labels: labels,
+      iconSize: iconSize,
+      fontSize: 12.0,
+      borderWidth: borderWidth,
+      borderColor: borderColor,
+      activeBgColors: activeBgColors,
+      customTextStyles: <TextStyle>[
+        TextStyle(
+          color: activeFgColor,
+          fontSize: 14.0,
+          shadows: const <Shadow>[
+            Shadow(
+              offset: Offset(0.5, 0.5),
+              blurRadius: 1.0,
+              color: Color.fromARGB(150, 255, 255, 255),
+            ),
+          ],
+        ),
+        TextStyle(
+          color: inactiveFgColor,
+          fontSize: 14.0,
+          shadows: const <Shadow>[
+            Shadow(
+              offset: Offset(0.5, 0.5),
+              blurRadius: 1.0,
+              color: Color.fromARGB(150, 255, 255, 255),
+            ),
+          ],
+        ),
+      ],
+      onToggle: onToggle,
+    );
+  }
+}
+
 class G1PayAmountField extends StatefulWidget {
   const G1PayAmountField({super.key});
 
@@ -143,8 +225,8 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
               border: const OutlineInputBorder(),
               suffix: Padding(
                 padding: const EdgeInsets.only(bottom: 20),
-                child: ToggleSwitch(
-                  key: ValueKey<String>('toggle_${currentCurrency.name()}'),
+                child: _ShadowToggleSwitch(
+                  toggleKey: 'toggle_${currentCurrency.name()}',
                   minWidth: 40.0,
                   radiusStyle: true,
                   initialLabelIndex: enableCurrencies
@@ -155,7 +237,7 @@ class _G1PayAmountFieldState extends State<G1PayAmountField> {
                   cornerRadius: 20.0,
                   activeFgColor: Colors.black,
                   inactiveBgColor: Colors.grey[400],
-                  inactiveFgColor: Colors.white,
+                  inactiveFgColor: Colors.black,
                   totalSwitches: enableCurrencies ? 2 : 1,
                   labels: enableCurrencies
                       ? const <String>['Ğ1', 'DU']

@@ -66,6 +66,16 @@ import 'ui/widgets/pages/biometric_lock_screen.dart';
 const String fetchWalletsTransactionsTask =
     'org.comunes.ginkgo.fetchWalletsTransactionsTask';
 
+/// Helper function to detect if the error is a duplicate keyboard event
+/// This is a known Flutter issue where the HardwareKeyboard layer
+/// receives duplicate key press events.
+bool _isKeyboardDuplicateEventError(FlutterErrorDetails details) {
+  final String exceptionString = details.exceptionAsString();
+  return exceptionString.contains('_pressedKeys.containsKey') &&
+      exceptionString.contains('KeyDownEvent') &&
+      exceptionString.contains('hardware_keyboard.dart');
+}
+
 @pragma(
   'vm:entry-point',
 ) // Mandatory if the App is obfuscated or using Flutter 3.1+
@@ -116,11 +126,24 @@ void main() async {
 
     // Forward Flutter framework errors to the default presenter (and your logs).
     FlutterError.onError = (FlutterErrorDetails details) {
+      // Ignore known keyboard event duplicate issue
+      // See: https://github.com/flutter/flutter/issues/99933
+      if (_isKeyboardDuplicateEventError(details)) {
+        logger.warning(
+            'Ignoring duplicate keyboard event: ${details.exceptionAsString()}');
+        return;
+      }
       FlutterError.presentError(details);
     };
 
     // Catch top-level uncaught errors on the platform dispatcher.
     PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
+      // Ignore known keyboard event duplicate issue
+      if (error is AssertionError &&
+          error.toString().contains('_pressedKeys.containsKey')) {
+        logger.warning('Ignoring duplicate keyboard event assertion');
+        return true;
+      }
       logger('Top-level error: $error\n$stack');
       return true;
     };

@@ -930,7 +930,6 @@ Future<Contact> getProfileV2(String pubKeyRaw,
     Contact? baseContact}) async {
   loggerDev('Fetching profile v2 for pubkey $pubKeyRaw');
 
-  // Convert V1 pubkey to V2 address
   final String address = addressFromV1PubkeyFaiSafe(pubKeyRaw);
 
   // Get Cesium+ profile data, or use baseContact if available

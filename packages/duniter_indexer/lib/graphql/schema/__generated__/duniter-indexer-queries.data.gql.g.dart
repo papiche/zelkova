@@ -534,6 +534,15 @@ Serializer<
         GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_comment>
     _$gAccountTransactionsDataAccountsNodesTransfersReceivedNodesCommentSerializer =
     new _$GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_commentSerializer();
+Serializer<GAccountTransactionsData_accounts_nodes_transferWithUd>
+    _$gAccountTransactionsDataAccountsNodesTransferWithUdSerializer =
+    new _$GAccountTransactionsData_accounts_nodes_transferWithUdSerializer();
+Serializer<GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo>
+    _$gAccountTransactionsDataAccountsNodesTransferWithUdPageInfoSerializer =
+    new _$GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfoSerializer();
+Serializer<GAccountTransactionsData_accounts_nodes_transferWithUd_nodes>
+    _$gAccountTransactionsDataAccountsNodesTransferWithUdNodesSerializer =
+    new _$GAccountTransactionsData_accounts_nodes_transferWithUd_nodesSerializer();
 Serializer<GIndexerVersionData> _$gIndexerVersionDataSerializer =
     new _$GIndexerVersionDataSerializer();
 Serializer<GIndexerVersionData_version> _$gIndexerVersionDataVersionSerializer =
@@ -819,6 +828,15 @@ Serializer<GAccountTxsFieldsData_transfersReceived_nodes_from>
 Serializer<GAccountTxsFieldsData_transfersReceived_nodes_comment>
     _$gAccountTxsFieldsDataTransfersReceivedNodesCommentSerializer =
     new _$GAccountTxsFieldsData_transfersReceived_nodes_commentSerializer();
+Serializer<GAccountTxsFieldsData_transferWithUd>
+    _$gAccountTxsFieldsDataTransferWithUdSerializer =
+    new _$GAccountTxsFieldsData_transferWithUdSerializer();
+Serializer<GAccountTxsFieldsData_transferWithUd_pageInfo>
+    _$gAccountTxsFieldsDataTransferWithUdPageInfoSerializer =
+    new _$GAccountTxsFieldsData_transferWithUd_pageInfoSerializer();
+Serializer<GAccountTxsFieldsData_transferWithUd_nodes>
+    _$gAccountTxsFieldsDataTransferWithUdNodesSerializer =
+    new _$GAccountTxsFieldsData_transferWithUd_nodesSerializer();
 Serializer<GTransferFieldsData> _$gTransferFieldsDataSerializer =
     new _$GTransferFieldsDataSerializer();
 Serializer<GTransferFieldsData_to> _$gTransferFieldsDataToSerializer =
@@ -13755,6 +13773,10 @@ class _$GAccountTransactionsData_accounts_nodesSerializer
       serializers.serialize(object.transfersReceived,
           specifiedType: const FullType(
               GAccountTransactionsData_accounts_nodes_transfersReceived)),
+      'transferWithUd',
+      serializers.serialize(object.transferWithUd,
+          specifiedType: const FullType(
+              GAccountTransactionsData_accounts_nodes_transferWithUd)),
     ];
     Object? value;
     value = object.totalBalance;
@@ -13820,6 +13842,12 @@ class _$GAccountTransactionsData_accounts_nodesSerializer
                   specifiedType: const FullType(
                       GAccountTransactionsData_accounts_nodes_transfersReceived))!
               as GAccountTransactionsData_accounts_nodes_transfersReceived);
+          break;
+        case 'transferWithUd':
+          result.transferWithUd.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      GAccountTransactionsData_accounts_nodes_transferWithUd))!
+              as GAccountTransactionsData_accounts_nodes_transferWithUd);
           break;
       }
     }
@@ -14957,6 +14985,226 @@ class _$GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_commentS
         case 'remarkBytes':
           result.remarkBytes = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GAccountTransactionsData_accounts_nodes_transferWithUdSerializer
+    implements
+        StructuredSerializer<
+            GAccountTransactionsData_accounts_nodes_transferWithUd> {
+  @override
+  final Iterable<Type> types = const [
+    GAccountTransactionsData_accounts_nodes_transferWithUd,
+    _$GAccountTransactionsData_accounts_nodes_transferWithUd
+  ];
+  @override
+  final String wireName =
+      'GAccountTransactionsData_accounts_nodes_transferWithUd';
+
+  @override
+  Iterable<Object?> serialize(Serializers serializers,
+      GAccountTransactionsData_accounts_nodes_transferWithUd object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      '__typename',
+      serializers.serialize(object.G__typename,
+          specifiedType: const FullType(String)),
+      'totalCount',
+      serializers.serialize(object.totalCount,
+          specifiedType: const FullType(int)),
+      'pageInfo',
+      serializers.serialize(object.pageInfo,
+          specifiedType: const FullType(
+              GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo)),
+      'nodes',
+      serializers.serialize(object.nodes,
+          specifiedType: const FullType(BuiltList, const [
+            const FullType(
+                GAccountTransactionsData_accounts_nodes_transferWithUd_nodes)
+          ])),
+    ];
+
+    return result;
+  }
+
+  @override
+  GAccountTransactionsData_accounts_nodes_transferWithUd deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result =
+        new GAccountTransactionsData_accounts_nodes_transferWithUdBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case '__typename':
+          result.G__typename = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+        case 'totalCount':
+          result.totalCount = serializers.deserialize(value,
+              specifiedType: const FullType(int))! as int;
+          break;
+        case 'pageInfo':
+          result.pageInfo.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo))!
+              as GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo);
+          break;
+        case 'nodes':
+          result.nodes.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltList, const [
+                const FullType(
+                    GAccountTransactionsData_accounts_nodes_transferWithUd_nodes)
+              ]))! as BuiltList<Object?>);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfoSerializer
+    implements
+        StructuredSerializer<
+            GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo> {
+  @override
+  final Iterable<Type> types = const [
+    GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo,
+    _$GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo
+  ];
+  @override
+  final String wireName =
+      'GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo';
+
+  @override
+  Iterable<Object?> serialize(Serializers serializers,
+      GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      '__typename',
+      serializers.serialize(object.G__typename,
+          specifiedType: const FullType(String)),
+      'hasNextPage',
+      serializers.serialize(object.hasNextPage,
+          specifiedType: const FullType(bool)),
+    ];
+    Object? value;
+    value = object.endCursor;
+    if (value != null) {
+      result
+        ..add('endCursor')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(_i2.GCursor)));
+    }
+    return result;
+  }
+
+  @override
+  GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result =
+        new GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfoBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case '__typename':
+          result.G__typename = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+        case 'hasNextPage':
+          result.hasNextPage = serializers.deserialize(value,
+              specifiedType: const FullType(bool))! as bool;
+          break;
+        case 'endCursor':
+          result.endCursor.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.GCursor))! as _i2.GCursor);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GAccountTransactionsData_accounts_nodes_transferWithUd_nodesSerializer
+    implements
+        StructuredSerializer<
+            GAccountTransactionsData_accounts_nodes_transferWithUd_nodes> {
+  @override
+  final Iterable<Type> types = const [
+    GAccountTransactionsData_accounts_nodes_transferWithUd_nodes,
+    _$GAccountTransactionsData_accounts_nodes_transferWithUd_nodes
+  ];
+  @override
+  final String wireName =
+      'GAccountTransactionsData_accounts_nodes_transferWithUd_nodes';
+
+  @override
+  Iterable<Object?> serialize(Serializers serializers,
+      GAccountTransactionsData_accounts_nodes_transferWithUd_nodes object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      '__typename',
+      serializers.serialize(object.G__typename,
+          specifiedType: const FullType(String)),
+    ];
+    Object? value;
+    value = object.timestamp;
+    if (value != null) {
+      result
+        ..add('timestamp')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(_i2.GDatetime)));
+    }
+    value = object.amount;
+    if (value != null) {
+      result
+        ..add('amount')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(_i2.GBigInt)));
+    }
+    return result;
+  }
+
+  @override
+  GAccountTransactionsData_accounts_nodes_transferWithUd_nodes deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result =
+        new GAccountTransactionsData_accounts_nodes_transferWithUd_nodesBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case '__typename':
+          result.G__typename = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+        case 'timestamp':
+          result.timestamp.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.GDatetime))! as _i2.GDatetime);
+          break;
+        case 'amount':
+          result.amount.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.GBigInt))! as _i2.GBigInt);
           break;
       }
     }
@@ -22095,6 +22343,9 @@ class _$GAccountTxsFieldsDataSerializer
       serializers.serialize(object.transfersReceived,
           specifiedType:
               const FullType(GAccountTxsFieldsData_transfersReceived)),
+      'transferWithUd',
+      serializers.serialize(object.transferWithUd,
+          specifiedType: const FullType(GAccountTxsFieldsData_transferWithUd)),
     ];
     Object? value;
     value = object.totalBalance;
@@ -22160,6 +22411,12 @@ class _$GAccountTxsFieldsDataSerializer
                   specifiedType:
                       const FullType(GAccountTxsFieldsData_transfersReceived))!
               as GAccountTxsFieldsData_transfersReceived);
+          break;
+        case 'transferWithUd':
+          result.transferWithUd.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(GAccountTxsFieldsData_transferWithUd))!
+              as GAccountTxsFieldsData_transferWithUd);
           break;
       }
     }
@@ -23246,6 +23503,214 @@ class _$GAccountTxsFieldsData_transfersReceived_nodes_commentSerializer
         case 'remarkBytes':
           result.remarkBytes = serializers.deserialize(value,
               specifiedType: const FullType(String))! as String;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GAccountTxsFieldsData_transferWithUdSerializer
+    implements StructuredSerializer<GAccountTxsFieldsData_transferWithUd> {
+  @override
+  final Iterable<Type> types = const [
+    GAccountTxsFieldsData_transferWithUd,
+    _$GAccountTxsFieldsData_transferWithUd
+  ];
+  @override
+  final String wireName = 'GAccountTxsFieldsData_transferWithUd';
+
+  @override
+  Iterable<Object?> serialize(
+      Serializers serializers, GAccountTxsFieldsData_transferWithUd object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      '__typename',
+      serializers.serialize(object.G__typename,
+          specifiedType: const FullType(String)),
+      'totalCount',
+      serializers.serialize(object.totalCount,
+          specifiedType: const FullType(int)),
+      'pageInfo',
+      serializers.serialize(object.pageInfo,
+          specifiedType:
+              const FullType(GAccountTxsFieldsData_transferWithUd_pageInfo)),
+      'nodes',
+      serializers.serialize(object.nodes,
+          specifiedType: const FullType(BuiltList, const [
+            const FullType(GAccountTxsFieldsData_transferWithUd_nodes)
+          ])),
+    ];
+
+    return result;
+  }
+
+  @override
+  GAccountTxsFieldsData_transferWithUd deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GAccountTxsFieldsData_transferWithUdBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case '__typename':
+          result.G__typename = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+        case 'totalCount':
+          result.totalCount = serializers.deserialize(value,
+              specifiedType: const FullType(int))! as int;
+          break;
+        case 'pageInfo':
+          result.pageInfo.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      GAccountTxsFieldsData_transferWithUd_pageInfo))!
+              as GAccountTxsFieldsData_transferWithUd_pageInfo);
+          break;
+        case 'nodes':
+          result.nodes.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltList, const [
+                const FullType(GAccountTxsFieldsData_transferWithUd_nodes)
+              ]))! as BuiltList<Object?>);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GAccountTxsFieldsData_transferWithUd_pageInfoSerializer
+    implements
+        StructuredSerializer<GAccountTxsFieldsData_transferWithUd_pageInfo> {
+  @override
+  final Iterable<Type> types = const [
+    GAccountTxsFieldsData_transferWithUd_pageInfo,
+    _$GAccountTxsFieldsData_transferWithUd_pageInfo
+  ];
+  @override
+  final String wireName = 'GAccountTxsFieldsData_transferWithUd_pageInfo';
+
+  @override
+  Iterable<Object?> serialize(Serializers serializers,
+      GAccountTxsFieldsData_transferWithUd_pageInfo object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      '__typename',
+      serializers.serialize(object.G__typename,
+          specifiedType: const FullType(String)),
+      'hasNextPage',
+      serializers.serialize(object.hasNextPage,
+          specifiedType: const FullType(bool)),
+    ];
+    Object? value;
+    value = object.endCursor;
+    if (value != null) {
+      result
+        ..add('endCursor')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(_i2.GCursor)));
+    }
+    return result;
+  }
+
+  @override
+  GAccountTxsFieldsData_transferWithUd_pageInfo deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GAccountTxsFieldsData_transferWithUd_pageInfoBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case '__typename':
+          result.G__typename = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+        case 'hasNextPage':
+          result.hasNextPage = serializers.deserialize(value,
+              specifiedType: const FullType(bool))! as bool;
+          break;
+        case 'endCursor':
+          result.endCursor.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.GCursor))! as _i2.GCursor);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$GAccountTxsFieldsData_transferWithUd_nodesSerializer
+    implements
+        StructuredSerializer<GAccountTxsFieldsData_transferWithUd_nodes> {
+  @override
+  final Iterable<Type> types = const [
+    GAccountTxsFieldsData_transferWithUd_nodes,
+    _$GAccountTxsFieldsData_transferWithUd_nodes
+  ];
+  @override
+  final String wireName = 'GAccountTxsFieldsData_transferWithUd_nodes';
+
+  @override
+  Iterable<Object?> serialize(Serializers serializers,
+      GAccountTxsFieldsData_transferWithUd_nodes object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      '__typename',
+      serializers.serialize(object.G__typename,
+          specifiedType: const FullType(String)),
+    ];
+    Object? value;
+    value = object.timestamp;
+    if (value != null) {
+      result
+        ..add('timestamp')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(_i2.GDatetime)));
+    }
+    value = object.amount;
+    if (value != null) {
+      result
+        ..add('amount')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(_i2.GBigInt)));
+    }
+    return result;
+  }
+
+  @override
+  GAccountTxsFieldsData_transferWithUd_nodes deserialize(
+      Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new GAccountTxsFieldsData_transferWithUd_nodesBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current! as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case '__typename':
+          result.G__typename = serializers.deserialize(value,
+              specifiedType: const FullType(String))! as String;
+          break;
+        case 'timestamp':
+          result.timestamp.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.GDatetime))! as _i2.GDatetime);
+          break;
+        case 'amount':
+          result.amount.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.GBigInt))! as _i2.GBigInt);
           break;
       }
     }
@@ -52215,6 +52680,8 @@ class _$GAccountTransactionsData_accounts_nodes
   @override
   final GAccountTransactionsData_accounts_nodes_transfersReceived
       transfersReceived;
+  @override
+  final GAccountTransactionsData_accounts_nodes_transferWithUd transferWithUd;
 
   factory _$GAccountTransactionsData_accounts_nodes(
           [void Function(GAccountTransactionsData_accounts_nodesBuilder)?
@@ -52231,7 +52698,8 @@ class _$GAccountTransactionsData_accounts_nodes
       required this.isActive,
       required this.comments,
       required this.transfersIssued,
-      required this.transfersReceived})
+      required this.transfersReceived,
+      required this.transferWithUd})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         G__typename, r'GAccountTransactionsData_accounts_nodes', 'G__typename');
@@ -52249,6 +52717,8 @@ class _$GAccountTransactionsData_accounts_nodes
         r'GAccountTransactionsData_accounts_nodes', 'transfersIssued');
     BuiltValueNullFieldError.checkNotNull(transfersReceived,
         r'GAccountTransactionsData_accounts_nodes', 'transfersReceived');
+    BuiltValueNullFieldError.checkNotNull(transferWithUd,
+        r'GAccountTransactionsData_accounts_nodes', 'transferWithUd');
   }
 
   @override
@@ -52273,7 +52743,8 @@ class _$GAccountTransactionsData_accounts_nodes
         isActive == other.isActive &&
         comments == other.comments &&
         transfersIssued == other.transfersIssued &&
-        transfersReceived == other.transfersReceived;
+        transfersReceived == other.transfersReceived &&
+        transferWithUd == other.transferWithUd;
   }
 
   @override
@@ -52288,6 +52759,7 @@ class _$GAccountTransactionsData_accounts_nodes
     _$hash = $jc(_$hash, comments.hashCode);
     _$hash = $jc(_$hash, transfersIssued.hashCode);
     _$hash = $jc(_$hash, transfersReceived.hashCode);
+    _$hash = $jc(_$hash, transferWithUd.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -52304,7 +52776,8 @@ class _$GAccountTransactionsData_accounts_nodes
           ..add('isActive', isActive)
           ..add('comments', comments)
           ..add('transfersIssued', transfersIssued)
-          ..add('transfersReceived', transfersReceived))
+          ..add('transfersReceived', transfersReceived)
+          ..add('transferWithUd', transferWithUd))
         .toString();
   }
 }
@@ -52370,6 +52843,16 @@ class GAccountTransactionsData_accounts_nodesBuilder
               transfersReceived) =>
       _$this._transfersReceived = transfersReceived;
 
+  GAccountTransactionsData_accounts_nodes_transferWithUdBuilder?
+      _transferWithUd;
+  GAccountTransactionsData_accounts_nodes_transferWithUdBuilder
+      get transferWithUd => _$this._transferWithUd ??=
+          new GAccountTransactionsData_accounts_nodes_transferWithUdBuilder();
+  set transferWithUd(
+          GAccountTransactionsData_accounts_nodes_transferWithUdBuilder?
+              transferWithUd) =>
+      _$this._transferWithUd = transferWithUd;
+
   GAccountTransactionsData_accounts_nodesBuilder() {
     GAccountTransactionsData_accounts_nodes._initializeBuilder(this);
   }
@@ -52386,6 +52869,7 @@ class GAccountTransactionsData_accounts_nodesBuilder
       _comments = $v.comments.toBuilder();
       _transfersIssued = $v.transfersIssued.toBuilder();
       _transfersReceived = $v.transfersReceived.toBuilder();
+      _transferWithUd = $v.transferWithUd.toBuilder();
       _$v = null;
     }
     return this;
@@ -52423,7 +52907,8 @@ class GAccountTransactionsData_accounts_nodesBuilder
                   r'GAccountTransactionsData_accounts_nodes', 'isActive'),
               comments: comments.build(),
               transfersIssued: transfersIssued.build(),
-              transfersReceived: transfersReceived.build());
+              transfersReceived: transfersReceived.build(),
+              transferWithUd: transferWithUd.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -52438,6 +52923,8 @@ class GAccountTransactionsData_accounts_nodesBuilder
         transfersIssued.build();
         _$failedField = 'transfersReceived';
         transfersReceived.build();
+        _$failedField = 'transferWithUd';
+        transferWithUd.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'GAccountTransactionsData_accounts_nodes',
@@ -55098,6 +55585,517 @@ class GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_commentBui
                 remarkBytes,
                 r'GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_comment',
                 'remarkBytes'));
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GAccountTransactionsData_accounts_nodes_transferWithUd
+    extends GAccountTransactionsData_accounts_nodes_transferWithUd {
+  @override
+  final String G__typename;
+  @override
+  final int totalCount;
+  @override
+  final GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo
+      pageInfo;
+  @override
+  final BuiltList<GAccountTransactionsData_accounts_nodes_transferWithUd_nodes>
+      nodes;
+
+  factory _$GAccountTransactionsData_accounts_nodes_transferWithUd(
+          [void Function(
+                  GAccountTransactionsData_accounts_nodes_transferWithUdBuilder)?
+              updates]) =>
+      (new GAccountTransactionsData_accounts_nodes_transferWithUdBuilder()
+            ..update(updates))
+          ._build();
+
+  _$GAccountTransactionsData_accounts_nodes_transferWithUd._(
+      {required this.G__typename,
+      required this.totalCount,
+      required this.pageInfo,
+      required this.nodes})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(
+        G__typename,
+        r'GAccountTransactionsData_accounts_nodes_transferWithUd',
+        'G__typename');
+    BuiltValueNullFieldError.checkNotNull(
+        totalCount,
+        r'GAccountTransactionsData_accounts_nodes_transferWithUd',
+        'totalCount');
+    BuiltValueNullFieldError.checkNotNull(pageInfo,
+        r'GAccountTransactionsData_accounts_nodes_transferWithUd', 'pageInfo');
+    BuiltValueNullFieldError.checkNotNull(nodes,
+        r'GAccountTransactionsData_accounts_nodes_transferWithUd', 'nodes');
+  }
+
+  @override
+  GAccountTransactionsData_accounts_nodes_transferWithUd rebuild(
+          void Function(
+                  GAccountTransactionsData_accounts_nodes_transferWithUdBuilder)
+              updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GAccountTransactionsData_accounts_nodes_transferWithUdBuilder toBuilder() =>
+      new GAccountTransactionsData_accounts_nodes_transferWithUdBuilder()
+        ..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GAccountTransactionsData_accounts_nodes_transferWithUd &&
+        G__typename == other.G__typename &&
+        totalCount == other.totalCount &&
+        pageInfo == other.pageInfo &&
+        nodes == other.nodes;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, G__typename.hashCode);
+    _$hash = $jc(_$hash, totalCount.hashCode);
+    _$hash = $jc(_$hash, pageInfo.hashCode);
+    _$hash = $jc(_$hash, nodes.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(
+            r'GAccountTransactionsData_accounts_nodes_transferWithUd')
+          ..add('G__typename', G__typename)
+          ..add('totalCount', totalCount)
+          ..add('pageInfo', pageInfo)
+          ..add('nodes', nodes))
+        .toString();
+  }
+}
+
+class GAccountTransactionsData_accounts_nodes_transferWithUdBuilder
+    implements
+        Builder<GAccountTransactionsData_accounts_nodes_transferWithUd,
+            GAccountTransactionsData_accounts_nodes_transferWithUdBuilder> {
+  _$GAccountTransactionsData_accounts_nodes_transferWithUd? _$v;
+
+  String? _G__typename;
+  String? get G__typename => _$this._G__typename;
+  set G__typename(String? G__typename) => _$this._G__typename = G__typename;
+
+  int? _totalCount;
+  int? get totalCount => _$this._totalCount;
+  set totalCount(int? totalCount) => _$this._totalCount = totalCount;
+
+  GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfoBuilder?
+      _pageInfo;
+  GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfoBuilder
+      get pageInfo => _$this._pageInfo ??=
+          new GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfoBuilder();
+  set pageInfo(
+          GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfoBuilder?
+              pageInfo) =>
+      _$this._pageInfo = pageInfo;
+
+  ListBuilder<GAccountTransactionsData_accounts_nodes_transferWithUd_nodes>?
+      _nodes;
+  ListBuilder<GAccountTransactionsData_accounts_nodes_transferWithUd_nodes>
+      get nodes => _$this._nodes ??= new ListBuilder<
+          GAccountTransactionsData_accounts_nodes_transferWithUd_nodes>();
+  set nodes(
+          ListBuilder<
+                  GAccountTransactionsData_accounts_nodes_transferWithUd_nodes>?
+              nodes) =>
+      _$this._nodes = nodes;
+
+  GAccountTransactionsData_accounts_nodes_transferWithUdBuilder() {
+    GAccountTransactionsData_accounts_nodes_transferWithUd._initializeBuilder(
+        this);
+  }
+
+  GAccountTransactionsData_accounts_nodes_transferWithUdBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _G__typename = $v.G__typename;
+      _totalCount = $v.totalCount;
+      _pageInfo = $v.pageInfo.toBuilder();
+      _nodes = $v.nodes.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GAccountTransactionsData_accounts_nodes_transferWithUd other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GAccountTransactionsData_accounts_nodes_transferWithUd;
+  }
+
+  @override
+  void update(
+      void Function(
+              GAccountTransactionsData_accounts_nodes_transferWithUdBuilder)?
+          updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GAccountTransactionsData_accounts_nodes_transferWithUd build() => _build();
+
+  _$GAccountTransactionsData_accounts_nodes_transferWithUd _build() {
+    _$GAccountTransactionsData_accounts_nodes_transferWithUd _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountTransactionsData_accounts_nodes_transferWithUd._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename,
+                  r'GAccountTransactionsData_accounts_nodes_transferWithUd',
+                  'G__typename'),
+              totalCount: BuiltValueNullFieldError.checkNotNull(
+                  totalCount,
+                  r'GAccountTransactionsData_accounts_nodes_transferWithUd',
+                  'totalCount'),
+              pageInfo: pageInfo.build(),
+              nodes: nodes.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'pageInfo';
+        pageInfo.build();
+        _$failedField = 'nodes';
+        nodes.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountTransactionsData_accounts_nodes_transferWithUd',
+            _$failedField,
+            e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo
+    extends GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo {
+  @override
+  final String G__typename;
+  @override
+  final bool hasNextPage;
+  @override
+  final _i2.GCursor? endCursor;
+
+  factory _$GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo(
+          [void Function(
+                  GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfoBuilder)?
+              updates]) =>
+      (new GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfoBuilder()
+            ..update(updates))
+          ._build();
+
+  _$GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo._(
+      {required this.G__typename, required this.hasNextPage, this.endCursor})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(
+        G__typename,
+        r'GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo',
+        'G__typename');
+    BuiltValueNullFieldError.checkNotNull(
+        hasNextPage,
+        r'GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo',
+        'hasNextPage');
+  }
+
+  @override
+  GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo rebuild(
+          void Function(
+                  GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfoBuilder)
+              updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfoBuilder
+      toBuilder() =>
+          new GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfoBuilder()
+            ..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other
+            is GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo &&
+        G__typename == other.G__typename &&
+        hasNextPage == other.hasNextPage &&
+        endCursor == other.endCursor;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, G__typename.hashCode);
+    _$hash = $jc(_$hash, hasNextPage.hashCode);
+    _$hash = $jc(_$hash, endCursor.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(
+            r'GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo')
+          ..add('G__typename', G__typename)
+          ..add('hasNextPage', hasNextPage)
+          ..add('endCursor', endCursor))
+        .toString();
+  }
+}
+
+class GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfoBuilder
+    implements
+        Builder<GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo,
+            GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfoBuilder> {
+  _$GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo? _$v;
+
+  String? _G__typename;
+  String? get G__typename => _$this._G__typename;
+  set G__typename(String? G__typename) => _$this._G__typename = G__typename;
+
+  bool? _hasNextPage;
+  bool? get hasNextPage => _$this._hasNextPage;
+  set hasNextPage(bool? hasNextPage) => _$this._hasNextPage = hasNextPage;
+
+  _i2.GCursorBuilder? _endCursor;
+  _i2.GCursorBuilder get endCursor =>
+      _$this._endCursor ??= new _i2.GCursorBuilder();
+  set endCursor(_i2.GCursorBuilder? endCursor) => _$this._endCursor = endCursor;
+
+  GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfoBuilder() {
+    GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo
+        ._initializeBuilder(this);
+  }
+
+  GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfoBuilder
+      get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _G__typename = $v.G__typename;
+      _hasNextPage = $v.hasNextPage;
+      _endCursor = $v.endCursor?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(
+      GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other
+        as _$GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo;
+  }
+
+  @override
+  void update(
+      void Function(
+              GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfoBuilder)?
+          updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo build() =>
+      _build();
+
+  _$GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo _build() {
+    _$GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo
+              ._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename,
+                  r'GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo',
+                  'G__typename'),
+              hasNextPage: BuiltValueNullFieldError.checkNotNull(
+                  hasNextPage,
+                  r'GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo',
+                  'hasNextPage'),
+              endCursor: _endCursor?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'endCursor';
+        _endCursor?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo',
+            _$failedField,
+            e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GAccountTransactionsData_accounts_nodes_transferWithUd_nodes
+    extends GAccountTransactionsData_accounts_nodes_transferWithUd_nodes {
+  @override
+  final String G__typename;
+  @override
+  final _i2.GDatetime? timestamp;
+  @override
+  final _i2.GBigInt? amount;
+
+  factory _$GAccountTransactionsData_accounts_nodes_transferWithUd_nodes(
+          [void Function(
+                  GAccountTransactionsData_accounts_nodes_transferWithUd_nodesBuilder)?
+              updates]) =>
+      (new GAccountTransactionsData_accounts_nodes_transferWithUd_nodesBuilder()
+            ..update(updates))
+          ._build();
+
+  _$GAccountTransactionsData_accounts_nodes_transferWithUd_nodes._(
+      {required this.G__typename, this.timestamp, this.amount})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(
+        G__typename,
+        r'GAccountTransactionsData_accounts_nodes_transferWithUd_nodes',
+        'G__typename');
+  }
+
+  @override
+  GAccountTransactionsData_accounts_nodes_transferWithUd_nodes rebuild(
+          void Function(
+                  GAccountTransactionsData_accounts_nodes_transferWithUd_nodesBuilder)
+              updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GAccountTransactionsData_accounts_nodes_transferWithUd_nodesBuilder
+      toBuilder() =>
+          new GAccountTransactionsData_accounts_nodes_transferWithUd_nodesBuilder()
+            ..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other
+            is GAccountTransactionsData_accounts_nodes_transferWithUd_nodes &&
+        G__typename == other.G__typename &&
+        timestamp == other.timestamp &&
+        amount == other.amount;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, G__typename.hashCode);
+    _$hash = $jc(_$hash, timestamp.hashCode);
+    _$hash = $jc(_$hash, amount.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(
+            r'GAccountTransactionsData_accounts_nodes_transferWithUd_nodes')
+          ..add('G__typename', G__typename)
+          ..add('timestamp', timestamp)
+          ..add('amount', amount))
+        .toString();
+  }
+}
+
+class GAccountTransactionsData_accounts_nodes_transferWithUd_nodesBuilder
+    implements
+        Builder<GAccountTransactionsData_accounts_nodes_transferWithUd_nodes,
+            GAccountTransactionsData_accounts_nodes_transferWithUd_nodesBuilder> {
+  _$GAccountTransactionsData_accounts_nodes_transferWithUd_nodes? _$v;
+
+  String? _G__typename;
+  String? get G__typename => _$this._G__typename;
+  set G__typename(String? G__typename) => _$this._G__typename = G__typename;
+
+  _i2.GDatetimeBuilder? _timestamp;
+  _i2.GDatetimeBuilder get timestamp =>
+      _$this._timestamp ??= new _i2.GDatetimeBuilder();
+  set timestamp(_i2.GDatetimeBuilder? timestamp) =>
+      _$this._timestamp = timestamp;
+
+  _i2.GBigIntBuilder? _amount;
+  _i2.GBigIntBuilder get amount => _$this._amount ??= new _i2.GBigIntBuilder();
+  set amount(_i2.GBigIntBuilder? amount) => _$this._amount = amount;
+
+  GAccountTransactionsData_accounts_nodes_transferWithUd_nodesBuilder() {
+    GAccountTransactionsData_accounts_nodes_transferWithUd_nodes
+        ._initializeBuilder(this);
+  }
+
+  GAccountTransactionsData_accounts_nodes_transferWithUd_nodesBuilder
+      get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _G__typename = $v.G__typename;
+      _timestamp = $v.timestamp?.toBuilder();
+      _amount = $v.amount?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(
+      GAccountTransactionsData_accounts_nodes_transferWithUd_nodes other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v =
+        other as _$GAccountTransactionsData_accounts_nodes_transferWithUd_nodes;
+  }
+
+  @override
+  void update(
+      void Function(
+              GAccountTransactionsData_accounts_nodes_transferWithUd_nodesBuilder)?
+          updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GAccountTransactionsData_accounts_nodes_transferWithUd_nodes build() =>
+      _build();
+
+  _$GAccountTransactionsData_accounts_nodes_transferWithUd_nodes _build() {
+    _$GAccountTransactionsData_accounts_nodes_transferWithUd_nodes _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountTransactionsData_accounts_nodes_transferWithUd_nodes._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename,
+                  r'GAccountTransactionsData_accounts_nodes_transferWithUd_nodes',
+                  'G__typename'),
+              timestamp: _timestamp?.build(),
+              amount: _amount?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'timestamp';
+        _timestamp?.build();
+        _$failedField = 'amount';
+        _amount?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountTransactionsData_accounts_nodes_transferWithUd_nodes',
+            _$failedField,
+            e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
@@ -70013,6 +71011,8 @@ class _$GAccountTxsFieldsData extends GAccountTxsFieldsData {
   final GAccountTxsFieldsData_transfersIssued transfersIssued;
   @override
   final GAccountTxsFieldsData_transfersReceived transfersReceived;
+  @override
+  final GAccountTxsFieldsData_transferWithUd transferWithUd;
 
   factory _$GAccountTxsFieldsData(
           [void Function(GAccountTxsFieldsDataBuilder)? updates]) =>
@@ -70027,7 +71027,8 @@ class _$GAccountTxsFieldsData extends GAccountTxsFieldsData {
       required this.isActive,
       required this.comments,
       required this.transfersIssued,
-      required this.transfersReceived})
+      required this.transfersReceived,
+      required this.transferWithUd})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
         G__typename, r'GAccountTxsFieldsData', 'G__typename');
@@ -70044,6 +71045,8 @@ class _$GAccountTxsFieldsData extends GAccountTxsFieldsData {
         transfersIssued, r'GAccountTxsFieldsData', 'transfersIssued');
     BuiltValueNullFieldError.checkNotNull(
         transfersReceived, r'GAccountTxsFieldsData', 'transfersReceived');
+    BuiltValueNullFieldError.checkNotNull(
+        transferWithUd, r'GAccountTxsFieldsData', 'transferWithUd');
   }
 
   @override
@@ -70067,7 +71070,8 @@ class _$GAccountTxsFieldsData extends GAccountTxsFieldsData {
         isActive == other.isActive &&
         comments == other.comments &&
         transfersIssued == other.transfersIssued &&
-        transfersReceived == other.transfersReceived;
+        transfersReceived == other.transfersReceived &&
+        transferWithUd == other.transferWithUd;
   }
 
   @override
@@ -70082,6 +71086,7 @@ class _$GAccountTxsFieldsData extends GAccountTxsFieldsData {
     _$hash = $jc(_$hash, comments.hashCode);
     _$hash = $jc(_$hash, transfersIssued.hashCode);
     _$hash = $jc(_$hash, transfersReceived.hashCode);
+    _$hash = $jc(_$hash, transferWithUd.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -70097,7 +71102,8 @@ class _$GAccountTxsFieldsData extends GAccountTxsFieldsData {
           ..add('isActive', isActive)
           ..add('comments', comments)
           ..add('transfersIssued', transfersIssued)
-          ..add('transfersReceived', transfersReceived))
+          ..add('transfersReceived', transfersReceived)
+          ..add('transferWithUd', transferWithUd))
         .toString();
   }
 }
@@ -70155,6 +71161,14 @@ class GAccountTxsFieldsDataBuilder
           GAccountTxsFieldsData_transfersReceivedBuilder? transfersReceived) =>
       _$this._transfersReceived = transfersReceived;
 
+  GAccountTxsFieldsData_transferWithUdBuilder? _transferWithUd;
+  GAccountTxsFieldsData_transferWithUdBuilder get transferWithUd =>
+      _$this._transferWithUd ??=
+          new GAccountTxsFieldsData_transferWithUdBuilder();
+  set transferWithUd(
+          GAccountTxsFieldsData_transferWithUdBuilder? transferWithUd) =>
+      _$this._transferWithUd = transferWithUd;
+
   GAccountTxsFieldsDataBuilder() {
     GAccountTxsFieldsData._initializeBuilder(this);
   }
@@ -70171,6 +71185,7 @@ class GAccountTxsFieldsDataBuilder
       _comments = $v.comments.toBuilder();
       _transfersIssued = $v.transfersIssued.toBuilder();
       _transfersReceived = $v.transfersReceived.toBuilder();
+      _transferWithUd = $v.transferWithUd.toBuilder();
       _$v = null;
     }
     return this;
@@ -70207,7 +71222,8 @@ class GAccountTxsFieldsDataBuilder
                   isActive, r'GAccountTxsFieldsData', 'isActive'),
               comments: comments.build(),
               transfersIssued: transfersIssued.build(),
-              transfersReceived: transfersReceived.build());
+              transfersReceived: transfersReceived.build(),
+              transferWithUd: transferWithUd.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -70222,6 +71238,8 @@ class GAccountTxsFieldsDataBuilder
         transfersIssued.build();
         _$failedField = 'transfersReceived';
         transfersReceived.build();
+        _$failedField = 'transferWithUd';
+        transferWithUd.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'GAccountTxsFieldsData', _$failedField, e.toString());
@@ -72579,6 +73597,460 @@ class GAccountTxsFieldsData_transfersReceived_nodes_commentBuilder
                 remarkBytes,
                 r'GAccountTxsFieldsData_transfersReceived_nodes_comment',
                 'remarkBytes'));
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GAccountTxsFieldsData_transferWithUd
+    extends GAccountTxsFieldsData_transferWithUd {
+  @override
+  final String G__typename;
+  @override
+  final int totalCount;
+  @override
+  final GAccountTxsFieldsData_transferWithUd_pageInfo pageInfo;
+  @override
+  final BuiltList<GAccountTxsFieldsData_transferWithUd_nodes> nodes;
+
+  factory _$GAccountTxsFieldsData_transferWithUd(
+          [void Function(GAccountTxsFieldsData_transferWithUdBuilder)?
+              updates]) =>
+      (new GAccountTxsFieldsData_transferWithUdBuilder()..update(updates))
+          ._build();
+
+  _$GAccountTxsFieldsData_transferWithUd._(
+      {required this.G__typename,
+      required this.totalCount,
+      required this.pageInfo,
+      required this.nodes})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(
+        G__typename, r'GAccountTxsFieldsData_transferWithUd', 'G__typename');
+    BuiltValueNullFieldError.checkNotNull(
+        totalCount, r'GAccountTxsFieldsData_transferWithUd', 'totalCount');
+    BuiltValueNullFieldError.checkNotNull(
+        pageInfo, r'GAccountTxsFieldsData_transferWithUd', 'pageInfo');
+    BuiltValueNullFieldError.checkNotNull(
+        nodes, r'GAccountTxsFieldsData_transferWithUd', 'nodes');
+  }
+
+  @override
+  GAccountTxsFieldsData_transferWithUd rebuild(
+          void Function(GAccountTxsFieldsData_transferWithUdBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GAccountTxsFieldsData_transferWithUdBuilder toBuilder() =>
+      new GAccountTxsFieldsData_transferWithUdBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GAccountTxsFieldsData_transferWithUd &&
+        G__typename == other.G__typename &&
+        totalCount == other.totalCount &&
+        pageInfo == other.pageInfo &&
+        nodes == other.nodes;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, G__typename.hashCode);
+    _$hash = $jc(_$hash, totalCount.hashCode);
+    _$hash = $jc(_$hash, pageInfo.hashCode);
+    _$hash = $jc(_$hash, nodes.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(r'GAccountTxsFieldsData_transferWithUd')
+          ..add('G__typename', G__typename)
+          ..add('totalCount', totalCount)
+          ..add('pageInfo', pageInfo)
+          ..add('nodes', nodes))
+        .toString();
+  }
+}
+
+class GAccountTxsFieldsData_transferWithUdBuilder
+    implements
+        Builder<GAccountTxsFieldsData_transferWithUd,
+            GAccountTxsFieldsData_transferWithUdBuilder> {
+  _$GAccountTxsFieldsData_transferWithUd? _$v;
+
+  String? _G__typename;
+  String? get G__typename => _$this._G__typename;
+  set G__typename(String? G__typename) => _$this._G__typename = G__typename;
+
+  int? _totalCount;
+  int? get totalCount => _$this._totalCount;
+  set totalCount(int? totalCount) => _$this._totalCount = totalCount;
+
+  GAccountTxsFieldsData_transferWithUd_pageInfoBuilder? _pageInfo;
+  GAccountTxsFieldsData_transferWithUd_pageInfoBuilder get pageInfo =>
+      _$this._pageInfo ??=
+          new GAccountTxsFieldsData_transferWithUd_pageInfoBuilder();
+  set pageInfo(
+          GAccountTxsFieldsData_transferWithUd_pageInfoBuilder? pageInfo) =>
+      _$this._pageInfo = pageInfo;
+
+  ListBuilder<GAccountTxsFieldsData_transferWithUd_nodes>? _nodes;
+  ListBuilder<GAccountTxsFieldsData_transferWithUd_nodes> get nodes =>
+      _$this._nodes ??=
+          new ListBuilder<GAccountTxsFieldsData_transferWithUd_nodes>();
+  set nodes(ListBuilder<GAccountTxsFieldsData_transferWithUd_nodes>? nodes) =>
+      _$this._nodes = nodes;
+
+  GAccountTxsFieldsData_transferWithUdBuilder() {
+    GAccountTxsFieldsData_transferWithUd._initializeBuilder(this);
+  }
+
+  GAccountTxsFieldsData_transferWithUdBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _G__typename = $v.G__typename;
+      _totalCount = $v.totalCount;
+      _pageInfo = $v.pageInfo.toBuilder();
+      _nodes = $v.nodes.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GAccountTxsFieldsData_transferWithUd other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GAccountTxsFieldsData_transferWithUd;
+  }
+
+  @override
+  void update(
+      void Function(GAccountTxsFieldsData_transferWithUdBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GAccountTxsFieldsData_transferWithUd build() => _build();
+
+  _$GAccountTxsFieldsData_transferWithUd _build() {
+    _$GAccountTxsFieldsData_transferWithUd _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountTxsFieldsData_transferWithUd._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
+                  r'GAccountTxsFieldsData_transferWithUd', 'G__typename'),
+              totalCount: BuiltValueNullFieldError.checkNotNull(totalCount,
+                  r'GAccountTxsFieldsData_transferWithUd', 'totalCount'),
+              pageInfo: pageInfo.build(),
+              nodes: nodes.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'pageInfo';
+        pageInfo.build();
+        _$failedField = 'nodes';
+        nodes.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountTxsFieldsData_transferWithUd',
+            _$failedField,
+            e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GAccountTxsFieldsData_transferWithUd_pageInfo
+    extends GAccountTxsFieldsData_transferWithUd_pageInfo {
+  @override
+  final String G__typename;
+  @override
+  final bool hasNextPage;
+  @override
+  final _i2.GCursor? endCursor;
+
+  factory _$GAccountTxsFieldsData_transferWithUd_pageInfo(
+          [void Function(GAccountTxsFieldsData_transferWithUd_pageInfoBuilder)?
+              updates]) =>
+      (new GAccountTxsFieldsData_transferWithUd_pageInfoBuilder()
+            ..update(updates))
+          ._build();
+
+  _$GAccountTxsFieldsData_transferWithUd_pageInfo._(
+      {required this.G__typename, required this.hasNextPage, this.endCursor})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(G__typename,
+        r'GAccountTxsFieldsData_transferWithUd_pageInfo', 'G__typename');
+    BuiltValueNullFieldError.checkNotNull(hasNextPage,
+        r'GAccountTxsFieldsData_transferWithUd_pageInfo', 'hasNextPage');
+  }
+
+  @override
+  GAccountTxsFieldsData_transferWithUd_pageInfo rebuild(
+          void Function(GAccountTxsFieldsData_transferWithUd_pageInfoBuilder)
+              updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GAccountTxsFieldsData_transferWithUd_pageInfoBuilder toBuilder() =>
+      new GAccountTxsFieldsData_transferWithUd_pageInfoBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GAccountTxsFieldsData_transferWithUd_pageInfo &&
+        G__typename == other.G__typename &&
+        hasNextPage == other.hasNextPage &&
+        endCursor == other.endCursor;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, G__typename.hashCode);
+    _$hash = $jc(_$hash, hasNextPage.hashCode);
+    _$hash = $jc(_$hash, endCursor.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(
+            r'GAccountTxsFieldsData_transferWithUd_pageInfo')
+          ..add('G__typename', G__typename)
+          ..add('hasNextPage', hasNextPage)
+          ..add('endCursor', endCursor))
+        .toString();
+  }
+}
+
+class GAccountTxsFieldsData_transferWithUd_pageInfoBuilder
+    implements
+        Builder<GAccountTxsFieldsData_transferWithUd_pageInfo,
+            GAccountTxsFieldsData_transferWithUd_pageInfoBuilder> {
+  _$GAccountTxsFieldsData_transferWithUd_pageInfo? _$v;
+
+  String? _G__typename;
+  String? get G__typename => _$this._G__typename;
+  set G__typename(String? G__typename) => _$this._G__typename = G__typename;
+
+  bool? _hasNextPage;
+  bool? get hasNextPage => _$this._hasNextPage;
+  set hasNextPage(bool? hasNextPage) => _$this._hasNextPage = hasNextPage;
+
+  _i2.GCursorBuilder? _endCursor;
+  _i2.GCursorBuilder get endCursor =>
+      _$this._endCursor ??= new _i2.GCursorBuilder();
+  set endCursor(_i2.GCursorBuilder? endCursor) => _$this._endCursor = endCursor;
+
+  GAccountTxsFieldsData_transferWithUd_pageInfoBuilder() {
+    GAccountTxsFieldsData_transferWithUd_pageInfo._initializeBuilder(this);
+  }
+
+  GAccountTxsFieldsData_transferWithUd_pageInfoBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _G__typename = $v.G__typename;
+      _hasNextPage = $v.hasNextPage;
+      _endCursor = $v.endCursor?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GAccountTxsFieldsData_transferWithUd_pageInfo other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GAccountTxsFieldsData_transferWithUd_pageInfo;
+  }
+
+  @override
+  void update(
+      void Function(GAccountTxsFieldsData_transferWithUd_pageInfoBuilder)?
+          updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GAccountTxsFieldsData_transferWithUd_pageInfo build() => _build();
+
+  _$GAccountTxsFieldsData_transferWithUd_pageInfo _build() {
+    _$GAccountTxsFieldsData_transferWithUd_pageInfo _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountTxsFieldsData_transferWithUd_pageInfo._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(
+                  G__typename,
+                  r'GAccountTxsFieldsData_transferWithUd_pageInfo',
+                  'G__typename'),
+              hasNextPage: BuiltValueNullFieldError.checkNotNull(
+                  hasNextPage,
+                  r'GAccountTxsFieldsData_transferWithUd_pageInfo',
+                  'hasNextPage'),
+              endCursor: _endCursor?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'endCursor';
+        _endCursor?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountTxsFieldsData_transferWithUd_pageInfo',
+            _$failedField,
+            e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$GAccountTxsFieldsData_transferWithUd_nodes
+    extends GAccountTxsFieldsData_transferWithUd_nodes {
+  @override
+  final String G__typename;
+  @override
+  final _i2.GDatetime? timestamp;
+  @override
+  final _i2.GBigInt? amount;
+
+  factory _$GAccountTxsFieldsData_transferWithUd_nodes(
+          [void Function(GAccountTxsFieldsData_transferWithUd_nodesBuilder)?
+              updates]) =>
+      (new GAccountTxsFieldsData_transferWithUd_nodesBuilder()..update(updates))
+          ._build();
+
+  _$GAccountTxsFieldsData_transferWithUd_nodes._(
+      {required this.G__typename, this.timestamp, this.amount})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(G__typename,
+        r'GAccountTxsFieldsData_transferWithUd_nodes', 'G__typename');
+  }
+
+  @override
+  GAccountTxsFieldsData_transferWithUd_nodes rebuild(
+          void Function(GAccountTxsFieldsData_transferWithUd_nodesBuilder)
+              updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  GAccountTxsFieldsData_transferWithUd_nodesBuilder toBuilder() =>
+      new GAccountTxsFieldsData_transferWithUd_nodesBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is GAccountTxsFieldsData_transferWithUd_nodes &&
+        G__typename == other.G__typename &&
+        timestamp == other.timestamp &&
+        amount == other.amount;
+  }
+
+  @override
+  int get hashCode {
+    var _$hash = 0;
+    _$hash = $jc(_$hash, G__typename.hashCode);
+    _$hash = $jc(_$hash, timestamp.hashCode);
+    _$hash = $jc(_$hash, amount.hashCode);
+    _$hash = $jf(_$hash);
+    return _$hash;
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper(
+            r'GAccountTxsFieldsData_transferWithUd_nodes')
+          ..add('G__typename', G__typename)
+          ..add('timestamp', timestamp)
+          ..add('amount', amount))
+        .toString();
+  }
+}
+
+class GAccountTxsFieldsData_transferWithUd_nodesBuilder
+    implements
+        Builder<GAccountTxsFieldsData_transferWithUd_nodes,
+            GAccountTxsFieldsData_transferWithUd_nodesBuilder> {
+  _$GAccountTxsFieldsData_transferWithUd_nodes? _$v;
+
+  String? _G__typename;
+  String? get G__typename => _$this._G__typename;
+  set G__typename(String? G__typename) => _$this._G__typename = G__typename;
+
+  _i2.GDatetimeBuilder? _timestamp;
+  _i2.GDatetimeBuilder get timestamp =>
+      _$this._timestamp ??= new _i2.GDatetimeBuilder();
+  set timestamp(_i2.GDatetimeBuilder? timestamp) =>
+      _$this._timestamp = timestamp;
+
+  _i2.GBigIntBuilder? _amount;
+  _i2.GBigIntBuilder get amount => _$this._amount ??= new _i2.GBigIntBuilder();
+  set amount(_i2.GBigIntBuilder? amount) => _$this._amount = amount;
+
+  GAccountTxsFieldsData_transferWithUd_nodesBuilder() {
+    GAccountTxsFieldsData_transferWithUd_nodes._initializeBuilder(this);
+  }
+
+  GAccountTxsFieldsData_transferWithUd_nodesBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _G__typename = $v.G__typename;
+      _timestamp = $v.timestamp?.toBuilder();
+      _amount = $v.amount?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(GAccountTxsFieldsData_transferWithUd_nodes other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$GAccountTxsFieldsData_transferWithUd_nodes;
+  }
+
+  @override
+  void update(
+      void Function(GAccountTxsFieldsData_transferWithUd_nodesBuilder)?
+          updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  GAccountTxsFieldsData_transferWithUd_nodes build() => _build();
+
+  _$GAccountTxsFieldsData_transferWithUd_nodes _build() {
+    _$GAccountTxsFieldsData_transferWithUd_nodes _$result;
+    try {
+      _$result = _$v ??
+          new _$GAccountTxsFieldsData_transferWithUd_nodes._(
+              G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
+                  r'GAccountTxsFieldsData_transferWithUd_nodes', 'G__typename'),
+              timestamp: _timestamp?.build(),
+              amount: _amount?.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'timestamp';
+        _timestamp?.build();
+        _$failedField = 'amount';
+        _amount?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            r'GAccountTxsFieldsData_transferWithUd_nodes',
+            _$failedField,
+            e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

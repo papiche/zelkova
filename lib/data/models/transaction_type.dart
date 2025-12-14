@@ -5,5 +5,6 @@ enum TransactionType {
   sent,
   pending,
   failed,
-  waitingNetwork
+  waitingNetwork,
+  dividendReceived
 }

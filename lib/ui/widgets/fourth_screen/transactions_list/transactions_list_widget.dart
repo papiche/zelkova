@@ -14,9 +14,10 @@ import '../../../../data/models/transaction_state.dart';
 import '../../../../shared_prefs_helper.dart';
 import '../../../in_dev_helper.dart';
 import '../../../logger.dart';
+import '../../balance_widget.dart';
 import '../../card_drawer.dart';
 import '../../connectivity_widget_wrapper_wrapper.dart';
-import 'transactions_list_body.dart';
+import 'transaction_list_item_wrapper.dart';
 import 'transactions_list_empty.dart';
 import 'transactions_list_error.dart';
 import 'transactions_list_header.dart';
@@ -46,10 +47,12 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
 
   List<Transaction> _transactions = <Transaction>[];
   List<Transaction> _pendingTransactions = <Transaction>[];
+  List<Transaction> _udTransactions = <Transaction>[];
   String? _nextCursor;
   bool _isLoadingMore = false;
   bool _hasMorePages = true;
   bool _isInitialLoading = true;
+  bool _showUD = false;
   String? _error;
   bool _fakeErrorForDev = false; // Debug: toggle fake error for testing UI
 
@@ -126,11 +129,16 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
 
   void _onTransactionStateChanged(TransactionState state) {
     logger(
-        '[TransactionsListWidget._onTransactionStateChanged] Received state with ${state.transactions.length} transactions and ${state.pendingTransactions.length} pending');
+        '[TransactionsListWidget._onTransactionStateChanged] Received state with ${state.transactions.length} transactions, ${state.pendingTransactions.length} pending, ${state.udTransactions.length} UD');
     if (mounted) {
       setState(() {
         _transactions = state.transactions;
         _pendingTransactions = state.pendingTransactions;
+        _udTransactions = state.udTransactions;
+        logger(
+            '[TransactionsListWidget._onTransactionStateChanged] Updated state - UD txs: ${_udTransactions.length}');
+        logger(
+            '[TransactionsListWidget._onTransactionStateChanged] _getCombinedTransactions will return: ${_showUD ? _transactions.length + _udTransactions.length : _transactions.length} items');
         if (_appCubit.isV2) {
           _hasMorePages = state.hasNextPage;
         } else {
@@ -213,6 +221,9 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
       final TransactionState currentState =
           _transCubit.currentWalletState(_pubKey);
 
+      logger(
+          '[TransactionsListWidget] After fetch - currentState.udTransactions=${currentState.udTransactions.length}');
+
       if (mounted) {
         setState(() {
           if (isRefresh) {
@@ -230,12 +241,17 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
           }
 
           _pendingTransactions = currentState.pendingTransactions;
+          _udTransactions = currentState.udTransactions;
+          logger(
+              '[TransactionsListWidget] After setState - _udTransactions=${_udTransactions.length}');
           _nextCursor = currentState.endCursor;
           _hasMorePages = _appCubit.isV2
               ? currentState.hasNextPage
               : fetchedItems.length >= widget.pageSize;
           _isLoadingMore = false;
           _isInitialLoading = false;
+          logger(
+              '[TransactionsListWidget._fetchTransactions] Setting _isLoadingMore to false - hasMore=$_hasMorePages, txCount=${_transactions.length}, udCount=${currentState.udTransactions.length}');
         });
       }
 
@@ -252,9 +268,14 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
           _error = e.toString();
           _isLoadingMore = false;
           _isInitialLoading = false;
+          logger(
+              '[TransactionsListWidget._fetchTransactions] Setting _isLoadingMore to false due to error');
         });
       }
     }
+
+    logger(
+        '[TransactionsListWidget._fetchTransactions] END - _isLoadingMore=$_isLoadingMore, _isInitialLoading=$_isInitialLoading');
   }
 
   Future<void> _onRefresh() async {
@@ -338,6 +359,27 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
                 () => _onRefresh(),
               ),
             ),
+            // UD toggle button - only show for v2 accounts with UD transactions
+            if (!_isExternalAccount &&
+                _udTransactions.isNotEmpty &&
+                _appCubit.isV2)
+              Tooltip(
+                message:
+                    _showUD ? tr('hide_ud_history') : tr('show_ud_history'),
+                child: IconButton(
+                  icon: Icon(
+                    _showUD ? Icons.water_drop : Icons.water_drop_outlined,
+                    color: _showUD ? colorScheme.primary : null,
+                  ),
+                  onPressed: () {
+                    loggerDev(
+                        '[UD Toggle AppBar] Toggling _showUD from $_showUD to ${!_showUD}');
+                    setState(() {
+                      _showUD = !_showUD;
+                    });
+                  },
+                ),
+              ),
             IconButton(
               icon: const Icon(Icons.savings),
               onPressed: () {
@@ -356,8 +398,29 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
     return content;
   }
 
+  List<Transaction> _getCombinedTransactions() {
+    if (!_showUD) {
+      logger(
+          '[_getCombinedTransactions] _showUD=false, returning ${_transactions.length} regular transactions');
+      return _transactions;
+    }
+
+    // Combinar transacciones normales y UD, ordenadas por tiempo
+    final List<Transaction> combined = <Transaction>[
+      ..._transactions,
+      ..._udTransactions,
+    ];
+    combined.sort((Transaction a, Transaction b) => b.time.compareTo(a.time));
+    logger(
+        '[_getCombinedTransactions] _showUD=true, returning ${combined.length} combined transactions (${_transactions.length} regular + ${_udTransactions.length} UD)');
+    return combined;
+  }
+
   Widget _buildContent(ColorScheme colorScheme, double panelMinSize,
       double panelMaxSize, WeSlideController weSlideController) {
+    logger(
+        '[_buildContent] START - _showUD=$_showUD, regularTxs=${_transactions.length}, udTxs=${_udTransactions.length}, pendingTxs=${_pendingTransactions.length}, isInitialLoading=$_isInitialLoading, isLoadingMore=$_isLoadingMore');
+
     // Show error state if there's a real error or fake error in development
     if (_error != null && _transactions.isEmpty) {
       // In development, if fake error is enabled, show it
@@ -396,6 +459,8 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
       );
     }
 
+    final List<Transaction> combinedTransactions = _getCombinedTransactions();
+
     return WeSlide(
       controller: weSlideController,
       panelMinSize: panelMinSize,
@@ -404,14 +469,77 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
         color: colorScheme.surface,
         child: RefreshIndicator(
           onRefresh: _onRefresh,
-          child: TransactionsListBody(
-            scrollController: _scrollController,
-            transactions: _transactions,
-            pendingTransactions: _pendingTransactions,
-            isLoadingMore: _isLoadingMore,
-            hasMorePages: _hasMorePages,
-            pubKey: _pubKey,
-            isScrollEnabled: widget.isScrollEnabled,
+          child: ListView.builder(
+            controller: _scrollController,
+            itemCount: combinedTransactions.length +
+                _pendingTransactions.length +
+                1 +
+                (_isLoadingMore ? 1 : 0),
+            itemBuilder: (BuildContext context, int index) {
+              // Header at index 0
+              if (index == 0) {
+                logger(
+                    '[itemBuilder] index=$index: Building TransactionsListHeader');
+                return TransactionsListHeader(
+                  pubKey: _pubKey,
+                  isExternalAccount: _isExternalAccount,
+                );
+              }
+
+              // Adjust index for transactions (subtract 1 for header)
+              final int transactionIndex = index - 1;
+              final int pendingCount = _pendingTransactions.length;
+              final int totalTransactionCount =
+                  pendingCount + combinedTransactions.length;
+
+              logger(
+                  '[itemBuilder] index=$index, txIndex=$transactionIndex, pendingCount=$pendingCount, totalTxCount=$totalTransactionCount, combinedTxsLength=${combinedTransactions.length}');
+
+              // Loading indicator at the end
+              if (transactionIndex == totalTransactionCount) {
+                logger(
+                    '[itemBuilder] index=$index: Building loading indicator');
+                return const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+
+              // Pending transactions first
+              if (transactionIndex < pendingCount) {
+                logger(
+                    '[itemBuilder] index=$index: Building pending transaction at index $transactionIndex');
+                return TransactionListItemWrapper(
+                  transaction: _pendingTransactions[transactionIndex],
+                  pubKey: _pubKey,
+                  index: transactionIndex,
+                  key: ValueKey<String>(
+                      'pending_${_pendingTransactions[transactionIndex].time.millisecondsSinceEpoch}'),
+                );
+              }
+
+              // Regular transactions
+              final int regularIndex = transactionIndex - pendingCount;
+              if (regularIndex < combinedTransactions.length) {
+                final Transaction tx = combinedTransactions[regularIndex];
+                final bool isInUdTxList = _udTransactions.contains(tx);
+                logger(
+                    '[itemBuilder] index=$index: Building combined transaction at regularIndex $regularIndex (isUD=$isInUdTxList, amount=${tx.amount})');
+                return TransactionListItemWrapper(
+                  transaction: tx,
+                  pubKey: _pubKey,
+                  index: transactionIndex,
+                  key: ValueKey<String>(
+                      '${tx.time.millisecondsSinceEpoch}_${tx.from.pubKey}_${tx.amount}'),
+                );
+              }
+
+              logger(
+                  '[itemBuilder] index=$index: Building SizedBox.shrink() - out of bounds!');
+              return const SizedBox.shrink();
+            },
           ),
         ),
       ),
@@ -427,6 +555,11 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
   }
 
   Widget _buildBalancePanel(ColorScheme colorScheme) {
+    loggerDev('[_buildBalancePanel] _isExternalAccount=$_isExternalAccount, '
+        '_udTransactions.length=${_udTransactions.length}, '
+        '_appCubit.isV2=${_appCubit.isV2}, '
+        'showButton=${!_isExternalAccount && _udTransactions.isNotEmpty && _appCubit.isV2}');
+
     return Container(
       color: colorScheme.inversePrimary,
       child: Column(
@@ -443,6 +576,30 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
                     tr('balance'),
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
+                  const Spacer(),
+                  if (!_isExternalAccount &&
+                      _udTransactions.isNotEmpty &&
+                      _appCubit.isV2)
+                    Tooltip(
+                      message: _showUD
+                          ? tr('hide_ud_history')
+                          : tr('show_ud_history'),
+                      child: IconButton(
+                        icon: Icon(
+                          _showUD
+                              ? Icons.water_drop
+                              : Icons.water_drop_outlined,
+                          color: _showUD ? colorScheme.primary : null,
+                        ),
+                        onPressed: () {
+                          loggerDev(
+                              '[UD Toggle] Toggling _showUD from $_showUD to ${!_showUD}');
+                          setState(() {
+                            _showUD = !_showUD;
+                          });
+                        },
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -451,9 +608,12 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
             child: Scrollbar(
               child: ListView(
                 children: <Widget>[
-                  TransactionsListHeader(
-                    pubKey: _pubKey,
-                    isExternalAccount: _isExternalAccount,
+                  BlocBuilder<MultiWalletTransactionCubit,
+                      MultiWalletTransactionState>(
+                    builder: (BuildContext context,
+                        MultiWalletTransactionState state) {
+                      return BalanceWidget(pubKey: _pubKey, small: false);
+                    },
                   ),
                 ],
               ),

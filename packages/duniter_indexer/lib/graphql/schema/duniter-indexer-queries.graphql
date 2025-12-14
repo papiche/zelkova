@@ -229,6 +229,22 @@ fragment AccountTxsFields on Account {
         }
         nodes { ...TransferFields }
     }
+
+    transferWithUd(
+        first: $limit
+        after: $cursor
+        orderBy: TIMESTAMP_DESC
+    ) {
+        totalCount
+        pageInfo {
+            hasNextPage
+            endCursor
+        }
+        nodes {
+            timestamp
+            amount
+        }
+    }
 }
 
 fragment TransferFields on Transfer {

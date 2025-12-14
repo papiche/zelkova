@@ -7352,6 +7352,8 @@ abstract class GAccountTransactionsData_accounts_nodes
   @override
   GAccountTransactionsData_accounts_nodes_transfersReceived
       get transfersReceived;
+  @override
+  GAccountTransactionsData_accounts_nodes_transferWithUd get transferWithUd;
   static Serializer<GAccountTransactionsData_accounts_nodes> get serializer =>
       _$gAccountTransactionsDataAccountsNodesSerializer;
 
@@ -8080,6 +8082,141 @@ abstract class GAccountTransactionsData_accounts_nodes_transfersReceived_nodes_c
                 .serializer,
             json,
           );
+}
+
+abstract class GAccountTransactionsData_accounts_nodes_transferWithUd
+    implements
+        Built<GAccountTransactionsData_accounts_nodes_transferWithUd,
+            GAccountTransactionsData_accounts_nodes_transferWithUdBuilder>,
+        GAccountTxsFields_transferWithUd {
+  GAccountTransactionsData_accounts_nodes_transferWithUd._();
+
+  factory GAccountTransactionsData_accounts_nodes_transferWithUd(
+      [void Function(
+              GAccountTransactionsData_accounts_nodes_transferWithUdBuilder b)
+          updates]) = _$GAccountTransactionsData_accounts_nodes_transferWithUd;
+
+  static void _initializeBuilder(
+          GAccountTransactionsData_accounts_nodes_transferWithUdBuilder b) =>
+      b..G__typename = 'TransferWithUdsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo get pageInfo;
+  @override
+  BuiltList<GAccountTransactionsData_accounts_nodes_transferWithUd_nodes>
+      get nodes;
+  static Serializer<GAccountTransactionsData_accounts_nodes_transferWithUd>
+      get serializer =>
+          _$gAccountTransactionsDataAccountsNodesTransferWithUdSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountTransactionsData_accounts_nodes_transferWithUd.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTransactionsData_accounts_nodes_transferWithUd? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountTransactionsData_accounts_nodes_transferWithUd.serializer,
+        json,
+      );
+}
+
+abstract class GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo
+    implements
+        Built<GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo,
+            GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfoBuilder>,
+        GAccountTxsFields_transferWithUd_pageInfo {
+  GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo._();
+
+  factory GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo(
+          [void Function(
+                  GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfoBuilder
+                      b)
+              updates]) =
+      _$GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo;
+
+  static void _initializeBuilder(
+          GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfoBuilder
+              b) =>
+      b..G__typename = 'PageInfo';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  bool get hasNextPage;
+  @override
+  _i2.GCursor? get endCursor;
+  static Serializer<
+          GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo>
+      get serializer =>
+          _$gAccountTransactionsDataAccountsNodesTransferWithUdPageInfoSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo
+            .serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo?
+      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
+            GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo
+                .serializer,
+            json,
+          );
+}
+
+abstract class GAccountTransactionsData_accounts_nodes_transferWithUd_nodes
+    implements
+        Built<GAccountTransactionsData_accounts_nodes_transferWithUd_nodes,
+            GAccountTransactionsData_accounts_nodes_transferWithUd_nodesBuilder>,
+        GAccountTxsFields_transferWithUd_nodes {
+  GAccountTransactionsData_accounts_nodes_transferWithUd_nodes._();
+
+  factory GAccountTransactionsData_accounts_nodes_transferWithUd_nodes(
+          [void Function(
+                  GAccountTransactionsData_accounts_nodes_transferWithUd_nodesBuilder
+                      b)
+              updates]) =
+      _$GAccountTransactionsData_accounts_nodes_transferWithUd_nodes;
+
+  static void _initializeBuilder(
+          GAccountTransactionsData_accounts_nodes_transferWithUd_nodesBuilder
+              b) =>
+      b..G__typename = 'TransferWithUd';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  _i2.GDatetime? get timestamp;
+  @override
+  _i2.GBigInt? get amount;
+  static Serializer<
+          GAccountTransactionsData_accounts_nodes_transferWithUd_nodes>
+      get serializer =>
+          _$gAccountTransactionsDataAccountsNodesTransferWithUdNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountTransactionsData_accounts_nodes_transferWithUd_nodes.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTransactionsData_accounts_nodes_transferWithUd_nodes? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountTransactionsData_accounts_nodes_transferWithUd_nodes.serializer,
+        json,
+      );
 }
 
 abstract class GIndexerVersionData
@@ -13094,6 +13231,7 @@ abstract class GAccountTxsFields {
   GAccountTxsFields_comments get comments;
   GAccountTxsFields_transfersIssued get transfersIssued;
   GAccountTxsFields_transfersReceived get transfersReceived;
+  GAccountTxsFields_transferWithUd get transferWithUd;
   Map<String, dynamic> toJson();
 }
 
@@ -13269,6 +13407,28 @@ abstract class GAccountTxsFields_transfersReceived_nodes_comment
   Map<String, dynamic> toJson();
 }
 
+abstract class GAccountTxsFields_transferWithUd {
+  String get G__typename;
+  int get totalCount;
+  GAccountTxsFields_transferWithUd_pageInfo get pageInfo;
+  BuiltList<GAccountTxsFields_transferWithUd_nodes> get nodes;
+  Map<String, dynamic> toJson();
+}
+
+abstract class GAccountTxsFields_transferWithUd_pageInfo {
+  String get G__typename;
+  bool get hasNextPage;
+  _i2.GCursor? get endCursor;
+  Map<String, dynamic> toJson();
+}
+
+abstract class GAccountTxsFields_transferWithUd_nodes {
+  String get G__typename;
+  _i2.GDatetime? get timestamp;
+  _i2.GBigInt? get amount;
+  Map<String, dynamic> toJson();
+}
+
 abstract class GAccountTxsFieldsData
     implements
         Built<GAccountTxsFieldsData, GAccountTxsFieldsDataBuilder>,
@@ -13301,6 +13461,8 @@ abstract class GAccountTxsFieldsData
   GAccountTxsFieldsData_transfersIssued get transfersIssued;
   @override
   GAccountTxsFieldsData_transfersReceived get transfersReceived;
+  @override
+  GAccountTxsFieldsData_transferWithUd get transferWithUd;
   static Serializer<GAccountTxsFieldsData> get serializer =>
       _$gAccountTxsFieldsDataSerializer;
 
@@ -13941,6 +14103,125 @@ abstract class GAccountTxsFieldsData_transfersReceived_nodes_comment
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
         GAccountTxsFieldsData_transfersReceived_nodes_comment.serializer,
+        json,
+      );
+}
+
+abstract class GAccountTxsFieldsData_transferWithUd
+    implements
+        Built<GAccountTxsFieldsData_transferWithUd,
+            GAccountTxsFieldsData_transferWithUdBuilder>,
+        GAccountTxsFields_transferWithUd {
+  GAccountTxsFieldsData_transferWithUd._();
+
+  factory GAccountTxsFieldsData_transferWithUd(
+      [void Function(GAccountTxsFieldsData_transferWithUdBuilder b)
+          updates]) = _$GAccountTxsFieldsData_transferWithUd;
+
+  static void _initializeBuilder(
+          GAccountTxsFieldsData_transferWithUdBuilder b) =>
+      b..G__typename = 'TransferWithUdsConnection';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  int get totalCount;
+  @override
+  GAccountTxsFieldsData_transferWithUd_pageInfo get pageInfo;
+  @override
+  BuiltList<GAccountTxsFieldsData_transferWithUd_nodes> get nodes;
+  static Serializer<GAccountTxsFieldsData_transferWithUd> get serializer =>
+      _$gAccountTxsFieldsDataTransferWithUdSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountTxsFieldsData_transferWithUd.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTxsFieldsData_transferWithUd? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountTxsFieldsData_transferWithUd.serializer,
+        json,
+      );
+}
+
+abstract class GAccountTxsFieldsData_transferWithUd_pageInfo
+    implements
+        Built<GAccountTxsFieldsData_transferWithUd_pageInfo,
+            GAccountTxsFieldsData_transferWithUd_pageInfoBuilder>,
+        GAccountTxsFields_transferWithUd_pageInfo {
+  GAccountTxsFieldsData_transferWithUd_pageInfo._();
+
+  factory GAccountTxsFieldsData_transferWithUd_pageInfo(
+      [void Function(GAccountTxsFieldsData_transferWithUd_pageInfoBuilder b)
+          updates]) = _$GAccountTxsFieldsData_transferWithUd_pageInfo;
+
+  static void _initializeBuilder(
+          GAccountTxsFieldsData_transferWithUd_pageInfoBuilder b) =>
+      b..G__typename = 'PageInfo';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  bool get hasNextPage;
+  @override
+  _i2.GCursor? get endCursor;
+  static Serializer<GAccountTxsFieldsData_transferWithUd_pageInfo>
+      get serializer => _$gAccountTxsFieldsDataTransferWithUdPageInfoSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountTxsFieldsData_transferWithUd_pageInfo.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTxsFieldsData_transferWithUd_pageInfo? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountTxsFieldsData_transferWithUd_pageInfo.serializer,
+        json,
+      );
+}
+
+abstract class GAccountTxsFieldsData_transferWithUd_nodes
+    implements
+        Built<GAccountTxsFieldsData_transferWithUd_nodes,
+            GAccountTxsFieldsData_transferWithUd_nodesBuilder>,
+        GAccountTxsFields_transferWithUd_nodes {
+  GAccountTxsFieldsData_transferWithUd_nodes._();
+
+  factory GAccountTxsFieldsData_transferWithUd_nodes(
+      [void Function(GAccountTxsFieldsData_transferWithUd_nodesBuilder b)
+          updates]) = _$GAccountTxsFieldsData_transferWithUd_nodes;
+
+  static void _initializeBuilder(
+          GAccountTxsFieldsData_transferWithUd_nodesBuilder b) =>
+      b..G__typename = 'TransferWithUd';
+
+  @override
+  @BuiltValueField(wireName: '__typename')
+  String get G__typename;
+  @override
+  _i2.GDatetime? get timestamp;
+  @override
+  _i2.GBigInt? get amount;
+  static Serializer<GAccountTxsFieldsData_transferWithUd_nodes>
+      get serializer => _$gAccountTxsFieldsDataTransferWithUdNodesSerializer;
+
+  @override
+  Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
+        GAccountTxsFieldsData_transferWithUd_nodes.serializer,
+        this,
+      ) as Map<String, dynamic>);
+
+  static GAccountTxsFieldsData_transferWithUd_nodes? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountTxsFieldsData_transferWithUd_nodes.serializer,
         json,
       );
 }

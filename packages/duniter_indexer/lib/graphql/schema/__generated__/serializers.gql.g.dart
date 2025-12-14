@@ -171,6 +171,11 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GAccountTransactionsData_accounts_nodes_comments_nodes.serializer)
       ..add(
           GAccountTransactionsData_accounts_nodes_comments_pageInfo.serializer)
+      ..add(GAccountTransactionsData_accounts_nodes_transferWithUd.serializer)
+      ..add(GAccountTransactionsData_accounts_nodes_transferWithUd_nodes
+          .serializer)
+      ..add(GAccountTransactionsData_accounts_nodes_transferWithUd_pageInfo
+          .serializer)
       ..add(GAccountTransactionsData_accounts_nodes_transfersIssued.serializer)
       ..add(GAccountTransactionsData_accounts_nodes_transfersIssued_nodes
           .serializer)
@@ -202,6 +207,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(GAccountTxsFieldsData_comments.serializer)
       ..add(GAccountTxsFieldsData_comments_nodes.serializer)
       ..add(GAccountTxsFieldsData_comments_pageInfo.serializer)
+      ..add(GAccountTxsFieldsData_transferWithUd.serializer)
+      ..add(GAccountTxsFieldsData_transferWithUd_nodes.serializer)
+      ..add(GAccountTxsFieldsData_transferWithUd_pageInfo.serializer)
       ..add(GAccountTxsFieldsData_transfersIssued.serializer)
       ..add(GAccountTxsFieldsData_transfersIssued_nodes.serializer)
       ..add(GAccountTxsFieldsData_transfersIssued_nodes_comment.serializer)
@@ -735,6 +743,13 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [
             const FullType(
+                GAccountTransactionsData_accounts_nodes_transferWithUd_nodes)
+          ]),
+          () => new ListBuilder<
+              GAccountTransactionsData_accounts_nodes_transferWithUd_nodes>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [
+            const FullType(
                 GAccountTransactionsData_accounts_nodes_transfersIssued_nodes)
           ]),
           () => new ListBuilder<
@@ -750,6 +765,11 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList,
               const [const FullType(GAccountTxsFieldsData_comments_nodes)]),
           () => new ListBuilder<GAccountTxsFieldsData_comments_nodes>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [
+            const FullType(GAccountTxsFieldsData_transferWithUd_nodes)
+          ]),
+          () => new ListBuilder<GAccountTxsFieldsData_transferWithUd_nodes>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [
             const FullType(GAccountTxsFieldsData_transfersIssued_nodes)

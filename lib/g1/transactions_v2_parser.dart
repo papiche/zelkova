@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+
 import '../data/models/contact.dart';
 import '../data/models/transaction.dart';
 import '../data/models/transaction_state.dart';
@@ -110,6 +112,22 @@ Future<TransactionState> transactionsV2Parser(
     combinedEndCursor = '|$receivedEndCursor';
   }
 
+  // For UD history, we'll get it from transferWithUd field
+  final Map<String, dynamic>? transferWithUdConnection =
+      account['transferWithUd'] as Map<String, dynamic>?;
+  final List<dynamic> transferWithUdNodes =
+      transferWithUdConnection?['nodes'] as List<dynamic>? ?? <dynamic>[];
+  final Map<String, dynamic>? transferWithUdPageInfo =
+      transferWithUdConnection?['pageInfo'] as Map<String, dynamic>?;
+
+  loggerDev(
+      '[transactionsV2Parser] transferWithUd found: ${transferWithUdConnection != null}, nodes count: ${transferWithUdNodes.length}');
+
+  final String? udHistoryEndCursor =
+      transferWithUdPageInfo?['endCursor'] as String?;
+  final bool udHistoryHasNextPage =
+      transferWithUdPageInfo?['hasNextPage'] as bool? ?? false;
+
   final List<Transaction> issuedTransactions = await _parseTransactions(
     transfersIssuedNodes,
     TransactionType.sent,
@@ -121,6 +139,17 @@ Future<TransactionState> transactionsV2Parser(
     TransactionType.received,
     accountAddress,
   );
+
+  // Parse UD transactions from transferWithUd field
+  final List<Transaction> udTransactions =
+      await _parseUDTransactionsFromTransferWithUd(
+    transferWithUdNodes,
+    accountAddress,
+    currentUd,
+  );
+
+  loggerDev(
+      '[transactionsV2Parser] Parsed UD transactions: ${udTransactions.length}');
 
   final List<Transaction> allTransactions = <Transaction>[
     ...receivedTransactions,
@@ -148,15 +177,44 @@ Future<TransactionState> transactionsV2Parser(
         .sort((Transaction a, Transaction b) => b.time.compareTo(a.time));
   }
 
-  return currentState.copyWith(
+  // Accumulation logic for UD transactions
+  final List<Transaction> finalUDTransactions;
+  if (cursor == null) {
+    finalUDTransactions = udTransactions;
+  } else {
+    finalUDTransactions = <Transaction>[
+      ...currentState.udTransactions,
+      ...udTransactions,
+    ];
+    finalUDTransactions
+        .sort((Transaction a, Transaction b) => b.time.compareTo(a.time));
+  }
+
+  debugPrint('[transactionsV2Parser] Final state:');
+  debugPrint(
+      '[transactionsV2Parser] - Transactions: ${finalTransactions.length}');
+  debugPrint(
+      '[transactionsV2Parser] - UD Transactions: ${finalUDTransactions.length}');
+  debugPrint(
+      '[transactionsV2Parser] - Current state UD Transactions before copyWith: ${currentState.udTransactions.length}');
+
+  final TransactionState newState = currentState.copyWith(
     balance: balance,
     currentUd: currentUd,
     transactions: finalTransactions,
     pendingTransactions: currentState.pendingTransactions,
     endCursor: combinedEndCursor,
     hasNextPage: hasNextPage,
+    udTransactions: finalUDTransactions,
+    udEndCursor: udHistoryEndCursor,
+    udHasNextPage: udHistoryHasNextPage,
     lastChecked: DateTime.now(),
   );
+
+  debugPrint(
+      '[transactionsV2Parser] - New state UD Transactions after copyWith: ${newState.udTransactions.length}');
+
+  return newState;
 }
 
 Future<List<Transaction>> _parseTransactions(
@@ -210,4 +268,46 @@ Future<List<Transaction>> _parseTransactions(
   }
 
   return transactions;
+}
+
+/// Parse UD transactions from the transferWithUd field
+Future<List<Transaction>> _parseUDTransactionsFromTransferWithUd(
+  List<dynamic> transferWithUdNodes,
+  String accountAddress,
+  double currentUd,
+) async {
+  final List<Transaction> udTransactions = <Transaction>[];
+
+  for (final dynamic udNode in transferWithUdNodes) {
+    try {
+      final Map<String, dynamic> udData = udNode as Map<String, dynamic>;
+
+      final double amount = double.parse(udData['amount'] as String);
+      final DateTime time = DateTime.parse(udData['timestamp'] as String);
+
+      // Create a system UD contact (don't use invalid address)
+      final Contact fromContact = Contact.empty().copyWith(
+        nick: 'Universal Dividend',
+      );
+      final Contact toContact = Contact.withAddress(address: accountAddress);
+
+      final Transaction transaction = Transaction(
+        type: TransactionType.dividendReceived,
+        from: fromContact,
+        recipients: <Contact>[toContact],
+        amount: amount,
+        comment: 'Universal Dividend',
+        time: time,
+      );
+      udTransactions.add(transaction);
+    } catch (e, st) {
+      loggerDev('Error parsing UD transaction from transferWithUd $udNode',
+          error: e, stackTrace: st);
+      // Don't rethrow for UD parsing to be more resilient
+    }
+  }
+
+  udTransactions
+      .sort((Transaction a, Transaction b) => b.time.compareTo(a.time));
+  return udTransactions;
 }

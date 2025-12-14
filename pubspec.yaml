@@ -37,7 +37,7 @@ dependencies:
   http: ^1.2.2
   easy_logger: ^0.0.2
   qr_flutter: ^4.0.0
-  introduction_screen: ^3.1.6
+  introduction_screen: ^4.0.0
   responsive_framework: ^1.5.1
   durt:
     # path: ../durt

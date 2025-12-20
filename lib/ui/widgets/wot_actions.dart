@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 import '../../data/models/contact_wot_info.dart';
 import '../../data/models/identity_status.dart';
@@ -31,17 +32,18 @@ List<WotMenuAction> getWotMenuActions(
     case IdentityStatus.MEMBER:
       if (isMe) {
         _requestDistanceAction(context, actions, wotInfo);
-        // revoke
+        _renewMembershipActionForSelf(context, wotInfo, actions);
+        _revokeAction(context, wotInfo, actions);
       } else {
         _certAction(context, wotInfo, actions);
-        _renewAction(context, wotInfo, actions);
+        _renewAction(context, wotInfo, actions, isMe);
       }
       break;
     case IdentityStatus.UNVALIDATED:
     case IdentityStatus.NOTMEMBER:
       if (!isMe) {
         _certAction(context, wotInfo, actions);
-        _renewAction(context, wotInfo, actions);
+        _renewAction(context, wotInfo, actions, isMe);
         _requestDistanceActionFor(context, wotInfo.you.index, actions, wotInfo);
       } else {
         _requestDistanceAction(context, actions, wotInfo);
@@ -263,7 +265,7 @@ Future<SignAndSendResult> _confirmAndCertify(
             onPressed: () {
               Navigator.of(dialogContext).pop(true);
             },
-            child: Text(tr('yes')),
+            child: Text(tr('ok')),
           ),
         ],
       );
@@ -358,16 +360,41 @@ Future<SignAndSendResult> _certifyAndMaybeRequestDistance(
   return certResult;
 }
 
-void _renewAction(
-    BuildContext context, ContactWotInfo wotInfo, List<WotMenuAction> actions) {
-  if ((wotInfo.meCanCertYou ?? false) &&
+void _renewAction(BuildContext context, ContactWotInfo wotInfo,
+    List<WotMenuAction> actions, bool isMe) {
+  // Only show renew action if I already certified this identity, can certify now,
+  // AND this is NOT my own identity
+  if (!isMe &&
       (wotInfo.meAlreadyCertYou ?? false) &&
+      (wotInfo.meCanCertYou ?? false) &&
       wotInfo.you.index != null) {
     actions.add(WotMenuAction(
+        name: tr('renew_cert'),
+        icon: Symbols.safety_check,
+        action: () async => _executeIfAuthenticated(
+            context, () => _confirmAndRenewCert(context, wotInfo))));
+  } else if (!isMe &&
+      (wotInfo.meAlreadyCertYou ?? false) &&
+      !(wotInfo.meCanCertYou ?? false) &&
+      wotInfo.meCanCertYouOn != null &&
+      wotInfo.you.index != null) {
+    // Can't renew now but will be able to in the future - show info message
+    actions.add(WotMenuAction(
         name: tr('renew_membership'),
-        icon: Icons.refresh_outlined,
-        action: () async =>
-            _executeIfAuthenticated(context, () => renew(wotInfo.you.index!))));
+        icon: Symbols.arming_countdown,
+        action: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                tr('can_certify_in_days', namedArgs: <String, String>{
+                  'days': humanizeCanCertOnDay(context, wotInfo)
+                }),
+              ),
+            ),
+          );
+          return Future<SignAndSendResult>.value(
+              SignAndSendResult(progressStream: Stream<String>.value('')));
+        }));
   }
 }
 
@@ -404,4 +431,248 @@ String humanizeCanCertOnDay(BuildContext context, ContactWotInfo wotInfo) {
             1000,
       ) ??
       '';
+}
+
+void _renewMembershipActionForSelf(
+    BuildContext context, ContactWotInfo wotInfo, List<WotMenuAction> actions) {
+  if (wotInfo.you.index == null) {
+    return;
+  }
+
+  actions.add(WotMenuAction(
+      name: tr('renew_membership'),
+      icon: Symbols.verified_user,
+      action: () async => _executeIfAuthenticated(
+          context, () => _confirmEvaluateDistanceAndRenew(context, wotInfo))));
+}
+
+void _revokeAction(
+    BuildContext context, ContactWotInfo wotInfo, List<WotMenuAction> actions) {
+  if (wotInfo.you.index == null) {
+    return;
+  }
+
+  actions.add(WotMenuAction(
+      name: tr('revoke_membership'),
+      icon: Symbols.gpp_bad,
+      action: () async => _executeIfAuthenticated(
+          context, () => _confirmAndRevoke(context, wotInfo))));
+}
+
+Future<SignAndSendResult> _confirmAndRenewCert(
+    BuildContext context, ContactWotInfo wotInfo) async {
+  final String displayName = wotInfo.you.nick ??
+      wotInfo.you.name ??
+      wotInfo.you.address.substring(0, 8);
+
+  final bool? confirmed = await showDialog<bool>(
+    context: context,
+    builder: (BuildContext dialogContext) {
+      return AlertDialog(
+        title: Text(tr('renew_cert')),
+        content: Text(
+          tr('confirm_renew_member',
+              namedArgs: <String, String>{'nick': displayName}),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop(false);
+            },
+            child: Text(tr('cancel')),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop(true);
+            },
+            child: Text(tr('ok')),
+          ),
+        ],
+      );
+    },
+  );
+
+  if (!(confirmed ?? false)) {
+    return _returnAuthFailed();
+  }
+
+  try {
+    final int idtyIndex = wotInfo.you.index!;
+    return await renewCert(idtyIndex);
+  } catch (e, st) {
+    loggerDev('Error in _confirmAndRenewCert', error: e, stackTrace: st);
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(tr('error_occurred'))),
+      );
+    }
+    log.e('Error renewing cert: $e', stackTrace: st);
+    return _returnAuthFailed();
+  }
+}
+
+Future<SignAndSendResult> _confirmEvaluateDistanceAndRenew(
+    BuildContext context, ContactWotInfo wotInfo) async {
+  final bool? confirmed = await showDialog<bool>(
+    context: context,
+    builder: (BuildContext dialogContext) {
+      return AlertDialog(
+        title: Text(tr('renew_membership')),
+        content: Text(tr('confirm_evaluate_distance_and_renew')),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop(false);
+            },
+            child: Text(tr('cancel')),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop(true);
+            },
+            child: Text(tr('ok')),
+          ),
+        ],
+      );
+    },
+  );
+
+  if (!(confirmed ?? false)) {
+    return _returnAuthFailed();
+  }
+
+  final int idtyIndex = wotInfo.you.index!;
+
+  // Combine streams: first request distance evaluation, then renewCert only if distance is valid
+  final StreamController<String> combinedController =
+      StreamController<String>();
+
+  try {
+    // Request distance evaluation
+    final SignAndSendResult distanceResult =
+        await requestDistanceEvaluationFor(idtyIndex);
+
+    distanceResult.progressStream.listen(
+      (String progress) {
+        combinedController.add(progress);
+      },
+      onError: (Object error) {
+        combinedController.addError(error);
+      },
+      onDone: () async {
+        try {
+          combinedController.add(tr('renewing_certificate'));
+          final SignAndSendResult renewResult = await renewCert(idtyIndex);
+
+          bool renewFinalized = false;
+          renewResult.progressStream.listen(
+            (String progress) {
+              combinedController.add(progress);
+              if (progress.toLowerCase().contains('finalized')) {
+                renewFinalized = true;
+              }
+            },
+            onError: (Object error) {
+              combinedController.addError(error);
+            },
+            onDone: () async {
+              if (renewFinalized) {
+                try {
+                  combinedController.add(tr('confirming_cert_renewed'));
+                  final SignAndSendResult ackResult =
+                      await certRenewed(idtyIndex);
+
+                  ackResult.progressStream.listen(
+                    (String p) => combinedController.add(p),
+                    onError: (Object error) =>
+                        combinedController.addError(error),
+                    onDone: () => combinedController.close(),
+                  );
+                } catch (e) {
+                  combinedController.addError(e);
+                  combinedController.close();
+                }
+              } else {
+                combinedController.close();
+              }
+            },
+          );
+        } catch (e) {
+          combinedController.addError(e);
+          combinedController.close();
+        }
+      },
+    );
+
+    return SignAndSendResult(
+      progressStream: combinedController.stream,
+    );
+  } catch (e) {
+    combinedController.addError(e);
+    combinedController.close();
+    return SignAndSendResult(progressStream: combinedController.stream);
+  }
+}
+
+Future<SignAndSendResult> _confirmAndRevoke(
+    BuildContext context, ContactWotInfo wotInfo) async {
+  final String displayName = wotInfo.you.nick ??
+      wotInfo.you.name ??
+      wotInfo.you.address.substring(0, 8);
+
+  final bool? confirmed = await showDialog<bool>(
+    context: context,
+    builder: (BuildContext dialogContext) {
+      return AlertDialog(
+        title: Text(tr('revoke_membership')),
+        content: Text(
+          tr('confirm_revoke_member',
+              namedArgs: <String, String>{'nick': displayName}),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop(false);
+            },
+            child: Text(tr('cancel')),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop(true);
+            },
+            child: Text(tr('accept')),
+          ),
+        ],
+      );
+    },
+  );
+
+  if (!(confirmed ?? false)) {
+    return _returnAuthFailed();
+  }
+
+  try {
+    final int idtyIndex = wotInfo.you.index!;
+    return await revokeIdentity(idtyIndex);
+  } catch (e, st) {
+    loggerDev('Error in _confirmAndRevoke', error: e, stackTrace: st);
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(tr('error_occurred'))),
+      );
+    }
+    log.e('Error revoking identity: $e', stackTrace: st);
+    return _returnAuthFailed();
+  }
+}
+
+Future<SignAndSendResult> certRenewed(int idtyIndex,
+    {Duration timeout = defPolkadotTimeout}) async {
+  // certRenewed is called after renewCert to finalize the certificate renewal
+  // This is a confirmation step that returns a success message
+  final StreamController<String> progressController =
+      StreamController<String>();
+  progressController.add(tr('cert_renewed_confirmed'));
+  progressController.close();
+  return SignAndSendResult(progressStream: progressController.stream);
 }

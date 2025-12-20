@@ -17,6 +17,7 @@ import '../generated/gtest/types/frame_system/account_info.dart';
 import '../generated/gtest/types/gtest_runtime/runtime_call.dart';
 import '../generated/gtest/types/pallet_certification/types/idty_cert_meta.dart';
 import '../generated/gtest/types/pallet_identity/types/idty_value.dart';
+import '../generated/gtest/types/primitive_types/h256.dart';
 import '../generated/gtest/types/sp_membership/membership_data.dart';
 import '../generated/gtest/types/sp_runtime/multi_signature.dart';
 import '../generated/gtest/types/sp_runtime/multiaddress/multi_address.dart';
@@ -388,6 +389,65 @@ Future<SignAndSendResult> renew(int idtyIndex,
       (Node node, Provider provider, Gtest polkadot) async {
     final RuntimeCall call =
         polkadot.tx.certification.renewCert(receiver: idtyIndex);
+    return signAndSend(
+      node,
+      provider,
+      polkadot,
+      wallet,
+      call,
+      messageTransformer: _defaultResultTransformer,
+    );
+  });
+}
+
+Future<SignAndSendResult> renewCert(int idtyIndex,
+    {Duration timeout = defPolkadotTimeout}) async {
+  final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
+  return executeOnPolkadotNodes(
+      (Node node, Provider provider, Gtest polkadot) async {
+    final RuntimeCall call =
+        polkadot.tx.certification.renewCert(receiver: idtyIndex);
+    return signAndSend(
+      node,
+      provider,
+      polkadot,
+      wallet,
+      call,
+      messageTransformer: _defaultResultTransformer,
+    );
+  });
+}
+
+Future<SignAndSendResult> revokeIdentity(int idtyIndex,
+    {Duration timeout = defPolkadotTimeout}) async {
+  final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
+  return executeOnPolkadotNodes(
+      (Node node, Provider provider, Gtest polkadot) async {
+    final Uint8List pubkeyBytes = Address.decode(wallet.address).pubkey;
+    final H256 genesisHashH256 = await polkadot.query.system.blockHash(0);
+    final String genesisHashHex = genesisHashH256
+        .map((int byte) => byte.toRadixString(16).padLeft(2, '0'))
+        .join();
+    final Uint8List genesisHash = hexToU8a(genesisHashHex);
+    // Domain separation
+    final List<int> prefix = 'revo'.codeUnits;
+    final ByteData idtyIndexBytes = ByteData(4)
+      ..setInt32(0, idtyIndex, Endian.little);
+
+    final Uint8List messageToSign = Uint8List.fromList(<int>[
+      ...prefix,
+      ...genesisHash,
+      ...idtyIndexBytes.buffer.asUint8List()
+    ]);
+
+    final Uint8List signatureBytes = wallet.sign(messageToSign);
+
+    final RuntimeCall call = polkadot.tx.identity.revokeIdentity(
+      idtyIndex: idtyIndex,
+      revocationKey: pubkeyBytes,
+      revocationSig: const $MultiSignature().ed25519(signatureBytes.toList()),
+    );
+
     return signAndSend(
       node,
       provider,

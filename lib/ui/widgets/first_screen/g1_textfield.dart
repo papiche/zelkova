@@ -12,22 +12,6 @@ import '../../locale_helper.dart';
 import '../../ui_helpers.dart';
 
 class _ShadowToggleSwitch extends StatelessWidget {
-  final double minWidth;
-  final bool radiusStyle;
-  final int initialLabelIndex;
-  final double cornerRadius;
-  final Color activeFgColor;
-  final Color? inactiveBgColor;
-  final Color inactiveFgColor;
-  final int totalSwitches;
-  final List<String> labels;
-  final double iconSize;
-  final double borderWidth;
-  final List<Color> borderColor;
-  final List<List<Color>> activeBgColors;
-  final Function(int?) onToggle;
-  final String toggleKey;
-
   const _ShadowToggleSwitch({
     required this.minWidth,
     required this.radiusStyle,
@@ -45,6 +29,22 @@ class _ShadowToggleSwitch extends StatelessWidget {
     required this.onToggle,
     required this.toggleKey,
   });
+
+  final double minWidth;
+  final bool radiusStyle;
+  final int initialLabelIndex;
+  final double cornerRadius;
+  final Color activeFgColor;
+  final Color? inactiveBgColor;
+  final Color inactiveFgColor;
+  final int totalSwitches;
+  final List<String> labels;
+  final double iconSize;
+  final double borderWidth;
+  final List<Color> borderColor;
+  final List<List<Color>> activeBgColors;
+  final Function(int?) onToggle;
+  final String toggleKey;
 
   @override
   Widget build(BuildContext context) {

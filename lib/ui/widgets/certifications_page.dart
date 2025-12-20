@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../data/models/cert.dart';
 import '../../data/models/contact.dart';
 import '../contact_list_item.dart';
+import '../ui_helpers.dart';
 import 'contacts_actions.dart';
 
 class CertificationsPage extends StatelessWidget {
@@ -49,21 +50,30 @@ class CertificationsPage extends StatelessWidget {
                     final Cert cert = certifications[index];
                     final Contact contact =
                         issued ? cert.receiverId : cert.issuerId;
-                    // ignore: unused_local_variable
                     final bool isExpired = cert.expireOn <= currentBlockHeight;
                     final bool isExpiringSoon = cert.isActive &&
                         (cert.expireOn - currentBlockHeight < limit);
                     final bool isMember = contact.isMember ?? false;
-                    /* final DateTime updateOn = estimateDateFromBlock(
-                        futureBlock: cert.updatedOn,
-                        currentBlockHeight: currentBlockHeight); */
-                    /* final String certDate = humanizeTimeFull(
-                        locale: currentLocale(context), utcDateTime: updateOn); */
+
+                    // Calculate time until expiration in seconds
+                    final int secondsUntilExpire =
+                        (cert.expireOn - currentBlockHeight) *
+                            6; // 6 seconds per block
+                    final String expirationTime = humanizeTimeFuture(
+                          context.locale.languageCode,
+                          secondsUntilExpire,
+                        ) ??
+                        'Unknown';
+                    final String expiredStatus = isExpired ? '❌ ' : '';
+                    final String expiringStatus = isExpiringSoon ? '⏰ ' : '';
+                    final String expirationSubtitle =
+                        '$expiredStatus${expiringStatus}${tr('expires_in')} $expirationTime';
+
                     final String statusMsg =
                         tr('idty_status_${contact.status!.name}');
                     return ContactListItem(
                         contact: contact,
-                        // subtitleExtra: statusMsg,
+                        subtitleExtra: expirationSubtitle,
                         index: index,
                         isV2: true,
                         onTap: () {

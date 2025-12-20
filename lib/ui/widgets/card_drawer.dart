@@ -100,7 +100,7 @@ class _CardDrawerState extends State<CardDrawer> {
                   );
                 },
               ),
-            if (!kIsWeb)
+            if (!kIsWeb || state.v2mode)
               ListTile(
                 leading: const Icon(Icons.analytics),
                 title: Text(tr('market_analysis')),

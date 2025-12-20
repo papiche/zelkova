@@ -75,7 +75,7 @@ class ContactListItem extends StatelessWidget {
         ? Text(isV2
             ? '${contact.subtitle} ${subtitleExtra != null ? ' - $subtitleExtra' : ''}'
             : contact.subtitle!)
-        : null;
+        : (subtitleExtra != null && hasProfile ? Text(subtitleExtra!) : null);
     return ListTile(
         title: Text(title),
         subtitle: subtitle ?? Container(),

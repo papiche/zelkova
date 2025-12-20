@@ -203,7 +203,7 @@ class _ContactPageState extends State<ContactPage> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(tr('account_info')),
+          title: Text(me ? tr('your_account_info') : tr('account_info')),
         ),
         body: Column(
           children: <Widget>[

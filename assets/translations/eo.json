@@ -414,5 +414,17 @@
   "can_cert_on": "Povos atesti post (proksimume)",
   "idty_waiting_certifications": "Atendanta atestojn",
   "create_wallet_title": "Elektu, kiel krei vian Ğ1-monujon",
-  "create_with_password_option": "Per pasvortoj"
+  "create_with_password_option": "Per pasvortoj",
+  "create_with_mnemonics_description": "Reakirebla monujo uzanta reakiran frazon (pli sekura)",
+  "nodes_list_last_updated": "Lasta ĝisdatigo: {}",
+  "please_select_wallets": "Bonvolu elekti kion vi deziras elporti",
+  "search_users_globally": "Serĉi uzantojn en la reto",
+  "not_found_contacts": "Neniu kontakto trovita",
+  "export_reminder_title": "Ĉu vi havas freŝan elportaĵon?",
+  "export_reminder_question": "Ĉu vi faris freŝan elporton de viaj monujoj kaj kontaktoj?",
+  "export_reminder_scenario1": "Perdas vian aparaton",
+  "export_reminder_scenario2": "Hazarde malinstalas la programon",
+  "export_reminder_scenario3": "Spertas paneon de aparato",
+  "nodes_list_title": "{} Nodoj ({})",
+  "export_reminder_description": "Ĝisdatigi la elporton de viaj monujoj protektas vian monon, se vi:"
 }

@@ -339,5 +339,19 @@
   "export_ewif_format_description": "Kreas ĉifritan WIF-dosieron necesigantan pasvorton por aliri vian monujon. Tio pli sekuras, sed devas esti zorge uzata!",
   "ewif_intro": "Entajpu pasvorton por ĉifri vian WIF-dosieron",
   "confirm_password": "Konfirmu la pasvorton",
-  "auth_file_error": "Eraro analizante la dosieron pri aŭtentiĝo."
+  "auth_file_error": "Eraro analizante la dosieron pri aŭtentiĝo.",
+  "scan_qr_auth": "Skani QR-kodon",
+  "qr_scanner_no_qr_detected": "Neniu QR-kodo detektita. Bonvolu reprovi.",
+  "qr_scanner_error": "Eraro okazis skanante la QR-kodon.",
+  "transactions_error_title": "Io fuŝiĝis",
+  "transactions_error_try_again": "Reprovi",
+  "tx_invalid": "La operacio ne povis esti traktita. Bonvolu kontroli viajn datenojn kaj reprovi",
+  "tx_dropped": "La operacio ne povis esti validigita. Bonvolu reprovi poste",
+  "tx_usurped": "Via operacio estis anstataŭigita de alia",
+  "tx_ready": "La operacio estas preta por traktado",
+  "tx_in_block": "La operacio estis konfirmita",
+  "tx_processing": "Pago traktata",
+  "auth_file_pubkey_mismatch": "La publika ŝlosilo en la dosiero ne kongruas aŭ la pasvorto malĝustas.",
+  "transactions_error_message": "Ni ne povis ŝarĝi viajn spezojn. Bonvolu reprovi poste.",
+  "tx_broadcast": "La operacio estis sendita kaj estas traktata"
 }

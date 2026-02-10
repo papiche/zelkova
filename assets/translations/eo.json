@@ -426,5 +426,8 @@
   "export_reminder_scenario2": "Hazarde malinstalas la programon",
   "export_reminder_scenario3": "Spertas paneon de aparato",
   "nodes_list_title": "{} Nodoj ({})",
-  "export_reminder_description": "Ĝisdatigi la elporton de viaj monujoj protektas vian monon, se vi:"
+  "export_reminder_description": "Ĝisdatigi la elporton de viaj monujoj protektas vian monon, se vi:",
+  "export_reminder_recommendation": "Ni rekomendas konservi la elporto-kopiojn en pluraj sekuraj lokoj.",
+  "export_reminder_yes_button": "MI HAVAS elportaĵon",
+  "export_reminder_no_button": "MI BEZONAS elporti"
 }

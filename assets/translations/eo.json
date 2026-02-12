@@ -204,7 +204,7 @@
   "copied_to_clipboard": "Kopita en prespapero",
   "pay_with_nfc_tooltip": "Por ricevi pagon, simple aliru ĉi tiun aparaton proksime al alia monujo kun aktivigita NFC.",
   "import_wallet_from_clipboard": "Importi Monujon de la Prespapero",
-  "import_wallet_from_clipboard_desc": "Alglui antaŭe eksportitan tekston de Ğ1nkgo monujo aŭ publikan ŝlosilon de alia tipo de monujoj (kiel Cesium)",
+  "import_wallet_from_clipboard_desc": "Alglui antaŭe elportitan tekston de Ğ1nkgo-monujo",
   "paste": "ALGLUI",
   "import": "IMPORTI",
   "select_import_method": "Elekti Importan Metodon",
@@ -452,5 +452,18 @@
   "draw_your_new_pattern": "Desegnu vian novan modelon",
   "use_password_instead": "Uzi pasvorton anstataŭ modelon",
   "auth_config_setup_button": "Agordi vian modelon aŭ pasvorton",
-  "auth_pattern_set_message": "Modelo aŭ pasvorto starigita"
+  "auth_pattern_set_message": "Modelo aŭ pasvorto starigita",
+  "auth_dev_stats_title": "Statistikoj de la monujo (moduso programado)",
+  "auth_dev_stats_nopass": "🔓 Sen pasvorto: {{count}}",
+  "auth_dev_stats_withpass": "🔐 Kun pasvorto: {{count}}",
+  "auth_settings_title": "Parametroj por aŭtentiĝo",
+  "app_lock_title": "G1nkgo estas ŝlosita",
+  "app_lock_unlock_with_biometrics": "Malŝlosi per biometrio",
+  "biometric_auth_reason": "Uzi biometrion por malŝlosi G1nkgon",
+  "import_wallet_from_clipboard_pubkey": "Enporti monujon per publika ŝlosilo",
+  "import_wallet_from_clipboard_pubkey_desc": "Algluu publikan ŝlosilon de alia tipo de monujo (kiel Cesium) por enporti ĝin per aŭtentiĝo",
+  "error_empty_g1nkgo": "La elporto-teksto ne povas esti malplena",
+  "error_invalid_pubkey": "Publika ŝlosilo nevalida",
+  "wallet_created_successfully": "Monujo sukcese kreita",
+  "app_lock_subtitle": "Bonvolu malŝlosi la programon por daŭrigi."
 }

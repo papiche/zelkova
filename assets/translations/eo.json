@@ -465,5 +465,8 @@
   "error_empty_g1nkgo": "La elporto-teksto ne povas esti malplena",
   "error_invalid_pubkey": "Publika ŝlosilo nevalida",
   "wallet_created_successfully": "Monujo sukcese kreita",
-  "app_lock_subtitle": "Bonvolu malŝlosi la programon por daŭrigi."
+  "app_lock_subtitle": "Bonvolu malŝlosi la programon por daŭrigi.",
+  "lock_or_pass_needed": "Ŝlos-modelo aŭ pasvorto necesas por protekti vian monujon",
+  "export_one_v2_only": "Nuntempe, vi povas elporti nur unu monujon de tiu tipo en unu fojo",
+  "wallet_unlock_failed": "Malsukceso por malŝlosi la monujon"
 }

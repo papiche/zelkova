@@ -468,5 +468,16 @@
   "app_lock_subtitle": "Bonvolu malŝlosi la programon por daŭrigi.",
   "lock_or_pass_needed": "Ŝlos-modelo aŭ pasvorto necesas por protekti vian monujon",
   "export_one_v2_only": "Nuntempe, vi povas elporti nur unu monujon de tiu tipo en unu fojo",
-  "wallet_unlock_failed": "Malsukceso por malŝlosi la monujon"
+  "wallet_unlock_failed": "Malsukceso por malŝlosi la monujon",
+  "clipboard_import_mnemonic_description": "Entajpu reakiran frazon por reakiri vian monujon",
+  "import_wallet_from_clipboard_mnemonic": "Enporti monujon per reakira frazo",
+  "import_wallet_from_clipboard_mnemonic_desc": "Algluu reakiran frazon por reakiri vian monujon",
+  "unlock_for_export": "Por elporti, unue malŝlosu vian monujon.",
+  "preparing_export": "Preparanta elporton",
+  "decryption_failed": "Malsukceso por malĉifri vian monujon. La pasvorto eble malĝustas aŭ la stokitaj datenoj estas difektitaj.",
+  "hide": "KAŜI",
+  "show": "MONTRI",
+  "clipboard_import_mnemonic": "Enporti la reakiran frazon",
+  "error_invalid_mnemonic": "La teksto ŝajnas ne esti valida reakira frazo",
+  "v2_seed_export_title": "Reakira frazo de via monujo"
 }

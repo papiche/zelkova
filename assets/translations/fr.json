@@ -411,7 +411,7 @@
   "export_reminder_scenario2": "Application désinstallée par erreur",
   "export_reminder_scenario3": "Panne d’appareil",
   "export_reminder_recommendation": "Nous recommandons de conserver les sauvegardes d’exportation à plusieurs endroits sécurisés.",
-  "export_reminder_yes_button": "J’AI une exportation",
+  "export_reminder_yes_button": "J’ai une exportation",
   "set_pattern_title": "Sécurisez votre portefeuille",
   "set_pattern_desc": "Définissez un patron pour protéger votre portefeuille",
   "unlock_wallet": "Débloquez votre portefeuille",
@@ -497,5 +497,16 @@
   "hide_ud_history": "Cacher le Dividende Universel",
   "ud_history": "Historique Dividende Universel",
   "no_ud_history": "Aucun historique de dividende universel",
-  "confirm_renew_member": "Êtes-vous sûr de vouloir renouveler la certification de {nick} ?"
+  "confirm_renew_member": "Êtes-vous sûr de vouloir renouveler la certification de {nick} ?",
+  "transfer_identity": "Transférer votre identité",
+  "confirm_transfer_identity": "Transférer votre identité à une autre adresse ?",
+  "recipient_address": "Adresse du destinataire",
+  "enter_recipient_address": "Entrez l'adresse du destinataire",
+  "new_owner_address": "Adresse du nouveau propriétaire",
+  "select_new_owner_account": "Sélectionnez le compte du nouveau propriétaire",
+  "please_select_new_owner_account": "Veuillez sélectionner un compte du nouveau propriétaire",
+  "transfer_all": "Transférer tout votre solde",
+  "confirm_transfer_all": "Transférer tout votre solde vers une autre adresse ?",
+  "enter_new_owner_address": "Entrez l'adresse du nouveau propriétaire",
+  "new_owner_not_in_accounts": "L'adresse du nouveau propriétaire ne figure pas dans vos comptes"
 }

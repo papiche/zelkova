@@ -12,6 +12,7 @@ import '../data/models/contact.dart';
 import '../data/models/node.dart';
 import '../data/models/node_manager.dart';
 import '../data/models/node_type.dart';
+import '../data/models/stored_account.dart';
 import '../generated/gtest/gtest.dart';
 import '../generated/gtest/types/frame_system/account_info.dart';
 import '../generated/gtest/types/gtest_runtime/runtime_call.dart';
@@ -55,6 +56,7 @@ Future<T> executeOnPolkadotNodes<T>(
     {bool retry = true,
     Duration timeout = defPolkadotTimeout}) async {
   final List<Node> nodes = NodeManager().getBestNodes(NodeType.endpoint);
+  Exception? lastError;
 
   for (final Node node in nodes) {
     loggerDev('executeOnPolkadotNode: ${node.url}');
@@ -66,6 +68,7 @@ Future<T> executeOnPolkadotNodes<T>(
           await operation(node, provider, polkadot).timeout(timeout);
       return result; // If the operation is successful, return the result
     } catch (e, stacktrace) {
+      lastError = Exception(e.toString());
       NodeManager().increaseNodeErrors(NodeType.endpoint, node,
           cause: 'Endpoint operation failed: $e');
       loggerDev('Error in node ${node.url}', error: e, stackTrace: stacktrace);
@@ -75,6 +78,10 @@ Future<T> executeOnPolkadotNodes<T>(
     }
   }
 
+  // Throw the last error if available, otherwise a generic message
+  if (lastError != null) {
+    throw lastError;
+  }
   throw Exception('All nodes failed to execute the operation: $operation');
   // If all nodes fail, throw an exception
 }
@@ -454,6 +461,186 @@ Future<SignAndSendResult> revokeIdentity(int idtyIndex,
       polkadot,
       wallet,
       call,
+      messageTransformer: _defaultResultTransformer,
+    );
+  });
+}
+
+Future<SignAndSendResult> changeOwnerKey(String newOwnerAddress,
+    {Duration timeout = defPolkadotTimeout, bool withBalance = true}) async {
+  final KeyPair currentWallet = await SharedPreferencesHelper().getKeyPair();
+
+  // Find the new owner account in stored accounts
+  final StoredAccount? newOwnerAccount = _findAccountByAddress(newOwnerAddress);
+  if (newOwnerAccount == null) {
+    throw Exception(
+        'The new owner address is not available in your accounts. Please add it first.');
+  }
+
+  // Get the keypair for the new owner account
+  final KeyPair newOwnerWallet =
+      await SharedPreferencesHelper().getKeyPair(null, newOwnerAccount);
+
+  try {
+    return await executeOnPolkadotNodes(
+        (Node node, Provider provider, Gtest polkadot) async {
+      // Get the current identity index from current wallet
+      final Uint8List currentPubkeyBytes =
+          Address.decode(currentWallet.address).pubkey;
+      final int? idtyIndex =
+          await polkadot.query.identity.identityIndexOf(currentPubkeyBytes);
+
+      if (idtyIndex == null) {
+        throw Exception('Current address has no identity to migrate.');
+      }
+
+      // Get the new owner's public key
+      final Uint8List newOwnerPubkeyBytes =
+          Address.decode(newOwnerAddress).pubkey;
+
+      // Get genesis hash for the payload
+      final H256 genesisHashH256 = await polkadot.query.system.blockHash(0);
+      final String genesisHashHex = genesisHashH256
+          .map((int byte) => byte.toRadixString(16).padLeft(2, '0'))
+          .join();
+      final Uint8List genesisHash = hexToU8a(genesisHashHex);
+
+      // Create the message that the NEW owner must sign
+      // Payload = 'icok' + genesisHash + idtyIndex + oldPubkey
+      final List<int> prefix = 'icok'.codeUnits;
+      final ByteData idtyIndexBytes = ByteData(4)
+        ..setInt32(0, idtyIndex, Endian.little);
+
+      final Uint8List messageToSign = Uint8List.fromList(<int>[
+        ...prefix,
+        ...genesisHash,
+        ...idtyIndexBytes.buffer.asUint8List(),
+        ...currentWallet.publicKey.bytes
+      ]);
+
+      // Sign with the NEW owner's keypair
+      final Uint8List signature = newOwnerWallet.sign(messageToSign);
+
+      final RuntimeCall changeOwnerCall = polkadot.tx.identity.changeOwnerKey(
+        newKey: newOwnerPubkeyBytes,
+        newKeySig: const $MultiSignature().ed25519(signature.toList()),
+      );
+
+      // Build a batched transaction: claimUds + changeOwnerKey + transferAll
+      // This ensures atomicity — either all succeed or none do.
+      final List<RuntimeCall> calls = <RuntimeCall>[];
+
+      // Claim unclaimed UDs before migrating (they would be lost otherwise)
+      try {
+        final IdtyValue? idtyValue =
+            await polkadot.query.identity.identities(idtyIndex);
+        if (idtyValue != null &&
+            idtyValue.status.toString().contains('member')) {
+          calls.add(polkadot.tx.universalDividend.claimUds());
+        }
+      } catch (e) {
+        loggerDev('Warning: Could not check for unclaimed UDs', error: e);
+      }
+
+      calls.add(changeOwnerCall);
+
+      // Transfer all balance to the new owner account
+      if (withBalance) {
+        final Id multiAddress =
+            const $MultiAddress().id(Address.decode(newOwnerAddress).pubkey);
+        calls.add(polkadot.tx.balances.transferAll(
+          dest: multiAddress,
+          keepAlive: false,
+        ));
+      }
+
+      final RuntimeCall finalCall = calls.length > 1
+          ? polkadot.tx.utility.batchAll(calls: calls)
+          : calls.first;
+
+      return signAndSend(
+        node,
+        provider,
+        polkadot,
+        currentWallet,
+        finalCall,
+        messageTransformer: _defaultResultTransformer,
+      );
+    });
+  } catch (e) {
+    // Create a SignAndSendResult with the error in the progress stream
+    final StreamController<String> errorController = StreamController<String>();
+    errorController.add(e.toString());
+    errorController.close();
+    return SignAndSendResult(progressStream: errorController.stream);
+  }
+}
+
+// Helper function to find an account by address
+StoredAccount? _findAccountByAddress(String address) {
+  try {
+    final List<StoredAccount> allAccounts = SharedPreferencesHelper().accounts;
+
+    for (final StoredAccount account in allAccounts) {
+      if (account.contact.address == address) {
+        return account;
+      }
+    }
+    return null;
+  } catch (e) {
+    loggerDev('Error checking for stored account', error: e);
+    return null;
+  }
+}
+
+Future<SignAndSendResult> transferAllWOT(String toAddress,
+    {Duration timeout = defPolkadotTimeout}) async {
+  final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
+  return executeOnPolkadotNodes(
+      (Node node, Provider provider, Gtest polkadot) async {
+    final Id multiAddress =
+        const $MultiAddress().id(Address.decode(toAddress).pubkey);
+
+    // Get balance to check for unclaimed UDs
+    final Uint8List pubkey = Address.decode(wallet.address).pubkey;
+    final int? idtyIndex =
+        await polkadot.query.identity.identityIndexOf(pubkey);
+
+    final List<RuntimeCall> calls = <RuntimeCall>[];
+
+    // If member, try to claim UDs first
+    if (idtyIndex != null) {
+      try {
+        final IdtyValue? idtyValue =
+            await polkadot.query.identity.identities(idtyIndex);
+        if (idtyValue != null &&
+            idtyValue.status.toString().contains('member')) {
+          calls.add(polkadot.tx.universalDividend.claimUds());
+        }
+      } catch (e) {
+        loggerDev('Warning: Could not check for unclaimed UDs', error: e);
+      }
+    }
+
+    // Add the transfer all call
+    calls.add(polkadot.tx.balances.transferAll(
+      dest: multiAddress,
+      keepAlive: false,
+    ));
+
+    RuntimeCall finalCall;
+    if (calls.length > 1) {
+      finalCall = polkadot.tx.utility.batchAll(calls: calls);
+    } else {
+      finalCall = calls.first;
+    }
+
+    return signAndSend(
+      node,
+      provider,
+      polkadot,
+      wallet,
+      finalCall,
       messageTransformer: _defaultResultTransformer,
     );
   });

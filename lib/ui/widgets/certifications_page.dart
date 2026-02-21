@@ -67,7 +67,7 @@ class CertificationsPage extends StatelessWidget {
                     final String expiredStatus = isExpired ? '❌ ' : '';
                     final String expiringStatus = isExpiringSoon ? '⏰ ' : '';
                     final String expirationSubtitle =
-                        '$expiredStatus${expiringStatus}${tr('expires_in')} $expirationTime';
+                        '$expiredStatus$expiringStatus${tr('expires_in')} $expirationTime';
 
                     final String statusMsg =
                         tr('idty_status_${contact.status!.name}');

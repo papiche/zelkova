@@ -151,7 +151,7 @@ class _ContactPageState extends State<ContactPage> {
           .forEach((WotMenuAction action) {
         actions.add(
           SpeedDialChild(
-            child: Icon(action.icon),
+            child: Icon(action.icon, color: action.color),
             label: action.name,
             onTap: () async {
               final SignAndSendResult result = await action.action();

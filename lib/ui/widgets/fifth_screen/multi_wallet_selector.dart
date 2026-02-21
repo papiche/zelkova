@@ -10,9 +10,22 @@ import '../../ui_helpers.dart';
 import '../first_screen/account_card_selector_item.dart';
 
 class MultiWalletSelectorPage extends StatefulWidget {
-  const MultiWalletSelectorPage({super.key, required this.onSelectionChanged});
+  const MultiWalletSelectorPage({
+    super.key,
+    required this.onSelectionChanged,
+    this.filterFunction,
+    this.title,
+    this.allowMultiSelect = true,
+    this.showExportContactsToggle = true,
+    this.errorMessage,
+  });
 
   final Function(List<StoredAccount>, bool) onSelectionChanged;
+  final bool Function(StoredAccount)? filterFunction;
+  final String? title;
+  final bool allowMultiSelect;
+  final bool showExportContactsToggle;
+  final String? errorMessage;
 
   @override
   State<MultiWalletSelectorPage> createState() =>
@@ -27,14 +40,17 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
   @override
   void initState() {
     super.initState();
-    _selectedAccounts.addAll(_accounts);
-    _selectAll = true;
+    if (widget.allowMultiSelect) {
+      _selectedAccounts.addAll(_accounts);
+      _selectAll = true;
+    }
   }
 
-  final List<StoredAccount> _accounts = SharedPreferencesHelper()
+  late final List<StoredAccount> _accounts = SharedPreferencesHelper()
       .accounts
-      .where(
-          (StoredAccount card) => card.type != AccountType.v1PasswordProtected)
+      .where((StoredAccount card) =>
+          card.type != AccountType.v1PasswordProtected &&
+          (widget.filterFunction == null || widget.filterFunction!(card)))
       .toList();
 
   void _onCardTapped(StoredAccount account) {
@@ -66,7 +82,7 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr('select_wallets_export')),
+        title: Text(widget.title ?? tr('select_wallets_export')),
         actions: <Widget>[
           TextButton.icon(
             icon: const Icon(Icons.check),
@@ -75,7 +91,7 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
                 ? () {
                     context.replaceSnackbar(
                       content: Text(
-                        tr('please_select_wallets'),
+                        widget.errorMessage ?? tr('please_select_wallets'),
                         style: const TextStyle(color: Colors.red),
                       ),
                     );
@@ -105,7 +121,17 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
                 final StoredAccount account = _accounts[index];
                 final bool isSelected = _selectedAccounts.contains(account);
                 return GestureDetector(
-                  onTap: () => _onCardTapped(account),
+                  onTap: () {
+                    if (widget.allowMultiSelect) {
+                      _onCardTapped(account);
+                    } else {
+                      // Single select mode
+                      setState(() {
+                        _selectedAccounts.clear();
+                        _selectedAccounts.add(account);
+                      });
+                    }
+                  },
                   child: Stack(
                     children: <Widget>[
                       Container(
@@ -119,7 +145,6 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
                         ),
                       ),
                       Center(
-                        // TODO
                         child: AccountCardSelectorItem(
                           name: account.contact.name == null ||
                                   (account.contact.name != null &&
@@ -130,16 +155,7 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
                               : truncateName(account.contact.name!),
                           hasName: account.contact.name != null &&
                               account.contact.name!.isNotEmpty,
-                          suffix: (() {
-                            // final bool isV2 = context.read<AppCubit>().isV2;
-                            // Only show g1nkgo suffix for passwordless v1 accounts
-                            /* if (SharedPreferencesHelper()
-                                    .isPasswordLessWallet(account) &&
-                                !isV2) {
-                              return g1nkgoUserNameSuffix;
-                            } */
-                            return ''; // protectedUserNameSuffix;
-                          })(),
+                          suffix: '',
                           theme: account.theme,
                         ),
                       ),
@@ -149,7 +165,14 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
                         child: Checkbox(
                           value: isSelected,
                           onChanged: (bool? value) {
-                            _onCardTapped(account);
+                            if (widget.allowMultiSelect) {
+                              _onCardTapped(account);
+                            } else {
+                              setState(() {
+                                _selectedAccounts.clear();
+                                _selectedAccounts.add(account);
+                              });
+                            }
                           },
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4.0),
@@ -171,26 +194,28 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: SwitchListTile(
-              title: Text(tr('select_all_wallets')),
-              value: _selectAll,
-              onChanged: _toggleSelectAll,
+          if (widget.allowMultiSelect)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: SwitchListTile(
+                title: Text(tr('select_all_wallets')),
+                value: _selectAll,
+                onChanged: _toggleSelectAll,
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: SwitchListTile(
-              title: Text(tr('export_contacts')),
-              value: _exportContacts,
-              onChanged: (bool value) {
-                setState(() {
-                  _exportContacts = value;
-                });
-              },
+          if (widget.showExportContactsToggle)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: SwitchListTile(
+                title: Text(tr('export_contacts')),
+                value: _exportContacts,
+                onChanged: (bool value) {
+                  setState(() {
+                    _exportContacts = value;
+                  });
+                },
+              ),
             ),
-          ),
         ],
       ),
     );
@@ -216,6 +241,67 @@ void showMultiWalletSelector(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
             child:
                 MultiWalletSelectorPage(onSelectionChanged: onSelectionChanged),
+          );
+        },
+      );
+    },
+  );
+}
+
+void showSingleWalletSelector(
+  BuildContext context,
+  Function(StoredAccount) onSelectionChanged, {
+  String? title,
+  bool Function(StoredAccount)? filterFunction,
+  String? errorMessage,
+}) {
+  // Check if there are available accounts after filtering
+  final List<StoredAccount> availableAccounts = SharedPreferencesHelper()
+      .accounts
+      .where((StoredAccount card) =>
+          card.type != AccountType.v1PasswordProtected &&
+          (filterFunction == null || filterFunction(card)))
+      .toList();
+
+  if (availableAccounts.isEmpty) {
+    // Show error message if no accounts available
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          errorMessage ?? tr('please_select_wallets'),
+          style: const TextStyle(color: Colors.red),
+        ),
+        backgroundColor: Colors.grey.shade800,
+      ),
+    );
+    return;
+  }
+
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
+    builder: (BuildContext context) {
+      return DraggableScrollableSheet(
+        initialChildSize: 0.95,
+        minChildSize: 0.5,
+        maxChildSize: 0.95,
+        expand: false,
+        builder: (BuildContext context, ScrollController scrollController) {
+          return Material(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+            child: MultiWalletSelectorPage(
+              onSelectionChanged: (List<StoredAccount> selected, bool _) {
+                if (selected.isNotEmpty) {
+                  onSelectionChanged(selected.first);
+                }
+              },
+              allowMultiSelect: false,
+              showExportContactsToggle: false,
+              title: title,
+              filterFunction: filterFunction,
+              errorMessage: errorMessage,
+            ),
           );
         },
       );

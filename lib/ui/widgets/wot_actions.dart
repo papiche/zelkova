@@ -6,11 +6,13 @@ import 'package:material_symbols_icons/symbols.dart';
 
 import '../../data/models/contact_wot_info.dart';
 import '../../data/models/identity_status.dart';
+import '../../data/models/stored_account.dart';
 import '../../g1/duniter_endpoint_helper.dart';
 import '../../g1/sign_and_send.dart';
 import '../logger.dart';
 import '../secure_unlock_widget.dart';
 import '../ui_helpers.dart';
+import 'fifth_screen/multi_wallet_selector.dart';
 import 'wot_menu_action.dart';
 
 List<WotMenuAction> getWotMenuActions(
@@ -33,6 +35,8 @@ List<WotMenuAction> getWotMenuActions(
       if (isMe) {
         _requestDistanceAction(context, actions, wotInfo);
         _renewMembershipActionForSelf(context, wotInfo, actions);
+        _transferAllAction(context, wotInfo, actions);
+        _changeOwnerKeyAction(context, wotInfo, actions);
         _revokeAction(context, wotInfo, actions);
       } else {
         _certAction(context, wotInfo, actions);
@@ -412,6 +416,7 @@ Future<SignAndSendResult> _executeIfAuthenticated(
   return action();
 }
 
+// TODO retwork this
 Future<SignAndSendResult> _returnAuthFailed() {
   final StreamController<String> progressController =
       StreamController<String>();
@@ -454,9 +459,31 @@ void _revokeAction(
 
   actions.add(WotMenuAction(
       name: tr('revoke_membership'),
+      // I like this icon for revoke action
       icon: Symbols.gpp_bad,
+      color: Colors.red,
       action: () async => _executeIfAuthenticated(
           context, () => _confirmAndRevoke(context, wotInfo))));
+}
+
+void _transferAllAction(
+    BuildContext context, ContactWotInfo wotInfo, List<WotMenuAction> actions) {
+  actions.add(WotMenuAction(
+      name: tr('transfer_all'),
+      icon: Symbols.money_range,
+      color: Colors.red,
+      action: () async => _executeIfAuthenticated(
+          context, () => _confirmAndTransferAll(context, wotInfo))));
+}
+
+void _changeOwnerKeyAction(
+    BuildContext context, ContactWotInfo wotInfo, List<WotMenuAction> actions) {
+  actions.add(WotMenuAction(
+      name: tr('transfer_identity'),
+      icon: Symbols.supervisor_account,
+      color: Colors.red,
+      action: () async => _executeIfAuthenticated(
+          context, () => _confirmAndChangeOwnerKey(context, wotInfo))));
 }
 
 Future<SignAndSendResult> _confirmAndRenewCert(
@@ -664,6 +691,180 @@ Future<SignAndSendResult> _confirmAndRevoke(
     log.e('Error revoking identity: $e', stackTrace: st);
     return _returnAuthFailed();
   }
+}
+
+Future<SignAndSendResult> _confirmAndTransferAll(
+    BuildContext context, ContactWotInfo wotInfo) async {
+  final bool? confirmed = await showDialog<bool>(
+    context: context,
+    builder: (BuildContext dialogContext) {
+      return AlertDialog(
+        title: Text(tr('transfer_all')),
+        content: Text(tr('confirm_transfer_all')),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop(false);
+            },
+            child: Text(tr('cancel')),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop(true);
+            },
+            child: Text(tr('yes')),
+          ),
+        ],
+      );
+    },
+  );
+
+  if (!(confirmed ?? false)) {
+    return _returnAuthFailed();
+  }
+
+  try {
+    final TextEditingController recipientController = TextEditingController();
+
+    if (!context.mounted) {
+      return _returnAuthFailed();
+    }
+    final String? recipientAddress = await showDialog<String>(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text(tr('recipient_address')),
+          content: TextField(
+            controller: recipientController,
+            decoration: InputDecoration(
+              hintText: tr('enter_recipient_address'),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+              },
+              child: Text(tr('cancel')),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop(recipientController.text);
+              },
+              child: Text(tr('ok')),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (recipientAddress == null || recipientAddress.isEmpty) {
+      return _returnAuthFailed();
+    }
+
+    return await transferAllWOT(recipientAddress);
+  } catch (e, st) {
+    loggerDev('Error in _confirmAndTransferAll', error: e, stackTrace: st);
+    if (!context.mounted) {
+      return _returnAuthFailed();
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(tr('error_occurred'))),
+    );
+    log.e('Error transferring all: $e', stackTrace: st);
+    return _returnAuthFailed();
+  }
+}
+
+Future<SignAndSendResult> _confirmAndChangeOwnerKey(
+    BuildContext context, ContactWotInfo wotInfo) async {
+  final bool? confirmed = await showDialog<bool>(
+    context: context,
+    builder: (BuildContext dialogContext) {
+      return AlertDialog(
+        title: Text(tr('transfer_identity')),
+        content: Text(tr('confirm_transfer_identity')),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop(false);
+            },
+            child: Text(tr('cancel')),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop(true);
+            },
+            child: Text(tr('yes')),
+          ),
+        ],
+      );
+    },
+  );
+
+  if (!(confirmed ?? false)) {
+    return _returnAuthFailed();
+  }
+
+  try {
+    // Use multi_wallet_selector to select the new owner account
+    // Filter to show only password-protected accounts without identity
+    if (!context.mounted) {
+      return _returnAuthFailed();
+    }
+    final StoredAccount? selectedAccount =
+        await _selectNewOwnerAccount(context);
+
+    if (selectedAccount == null) {
+      return _returnAuthFailed();
+    }
+
+    return await changeOwnerKey(selectedAccount.contact.address);
+  } catch (e, st) {
+    loggerDev('Error in _confirmAndChangeOwnerKey', error: e, stackTrace: st);
+    if (!context.mounted) {
+      return _returnAuthFailed();
+    }
+
+    // Mostrar mensaje más específico según el tipo de error
+    String errorMessage = tr('error_occurred');
+    if (e.toString().contains('not available in your accounts') ||
+        e.toString().contains('not in your accounts')) {
+      errorMessage = tr('new_owner_not_in_accounts');
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(errorMessage)),
+    );
+    log.e('Error transferring identity: $e', stackTrace: st);
+    return _returnAuthFailed();
+  }
+}
+
+Future<StoredAccount?> _selectNewOwnerAccount(BuildContext context) async {
+  final Completer<StoredAccount?> completer = Completer<StoredAccount?>();
+
+  if (!context.mounted) {
+    return null;
+  }
+
+  showSingleWalletSelector(
+    context,
+    (StoredAccount account) {
+      if (!completer.isCompleted) {
+        completer.complete(account);
+      }
+    },
+    title: tr('select_new_owner_account'),
+    errorMessage: tr('please_select_new_owner_account'),
+    filterFunction: (StoredAccount account) {
+      // Filter: password-protected and without identity
+      return account.type != AccountType.v1PasswordLess &&
+          account.contact.index == null;
+    },
+  );
+
+  return completer.future;
 }
 
 Future<SignAndSendResult> certRenewed(int idtyIndex,

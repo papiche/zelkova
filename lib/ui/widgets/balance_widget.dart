@@ -2,9 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../data/models/app_cubit.dart';
-import '../../../../g1/currency.dart';
+import '../../data/models/app_cubit.dart';
 import '../../data/models/multi_wallet_transaction_cubit.dart';
+import '../../g1/currency.dart';
 import '../currency_helper.dart';
 import '../locale_helper.dart';
 import '../ui_helpers.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/models/payment_cubit.dart';
-import '../../../data/models/payment_state.dart';
+import '../../data/models/payment_cubit.dart';
+import '../../data/models/payment_state.dart';
 import '../qr_manager.dart';
 
 class GenericQrButton extends StatelessWidget {

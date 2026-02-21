@@ -8,12 +8,12 @@ import 'package:polkadart_keyring/polkadart_keyring.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:substrate_bip39/substrate_bip39.dart' show Language;
 
-import '../data/models/contact.dart';
-import '../data/models/legacy_wallet.dart';
-import '../data/models/stored_account.dart';
-import '../data/models/wallet_themes.dart';
-import '../g1/g1_helper.dart';
+import 'data/models/contact.dart';
+import 'data/models/legacy_wallet.dart';
+import 'data/models/stored_account.dart';
+import 'data/models/wallet_themes.dart';
 import 'g1/api.dart';
+import 'g1/g1_helper.dart';
 import 'g1/g1_v2_helper.dart';
 import 'secure_crypto_helper.dart';
 import 'shared_prefs_helper.dart';

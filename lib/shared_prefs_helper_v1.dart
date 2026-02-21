@@ -220,7 +220,8 @@ class SharedPreferencesHelperV1
 
   // Although this should not be used in V1, we implement it for consistency
   @override
-  Future<KeyPair> getKeyPair() async {
+  Future<KeyPair> getKeyPair([int? index, StoredAccount? account]) async {
+    // I'm ignoring the args
     final CesiumWallet walletV1 = await getCesiumWallet();
     final KeyPair kp = KeyPair.ed25519.fromSeed(walletV1.seed);
     kp.ss58Format = 4450;

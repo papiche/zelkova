@@ -357,8 +357,8 @@ class SharedPreferencesHelperV2
   }
 
   @override
-  Future<KeyPair> getKeyPair([int? index]) async {
-    final StoredAccount acc = accounts[index ?? _currentIndex];
+  Future<KeyPair> getKeyPair([int? index, StoredAccount? account]) async {
+    final StoredAccount acc = account ?? accounts[index ?? _currentIndex];
     final Uint8List resolvedSeed = await _resolveActualSeed(acc);
     final KeyPair kp = acc.type.isV1
         ? KeyPair.ed25519.fromSeed(resolvedSeed)

@@ -56,7 +56,7 @@ abstract class SharedPreferencesHelperDelegate {
 
   void addCesiumVolatileCard(CesiumWallet w);
 
-  Future<KeyPair> getKeyPair();
+  Future<KeyPair> getKeyPair([int? index, StoredAccount? account]);
 
   Future<void> importWalletFromMnemonic(String m, AccountType type);
 
@@ -209,7 +209,8 @@ class SharedPreferencesHelper with ChangeNotifier {
   void removeCesiumVolatileCard([CesiumWallet? w]) =>
       _d.removeCesiumVolatileCard(w);
 
-  Future<KeyPair> getKeyPair() => _d.getKeyPair();
+  Future<KeyPair> getKeyPair([int? index, StoredAccount? account]) =>
+      _d.getKeyPair(index, account);
 
   Future<void> importWalletFromMnemonic(String m, AccountType type) =>
       _d.importWalletFromMnemonic(m, type);

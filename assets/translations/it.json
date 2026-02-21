@@ -319,5 +319,6 @@
   "no_transactions_simple": "Questo conto non ha saldo",
   "info": "Informazioni",
   "emoji_search": "Cercare",
-  "ok": "OK"
+  "ok": "OK",
+  "total_sent": "Acquisti totali ({numero}):"
 }

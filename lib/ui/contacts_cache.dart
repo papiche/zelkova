@@ -57,6 +57,10 @@ class ContactsCache {
     await box?.clear();
   }
 
+  Future<void> removeContact(String pubKey) async {
+    await box?.delete(pubKey);
+  }
+
   static ContactsCache? _instance;
   final Map<String, List<Completer<Contact>>> _pendingRequests =
       <String, List<Completer<Contact>>>{};

@@ -18,6 +18,7 @@ import 'g1/g1_v2_helper.dart';
 import 'secure_crypto_helper.dart';
 import 'shared_prefs_helper.dart';
 import 'storage_keys.dart';
+import 'ui/contacts_cache.dart';
 import 'ui/logger.dart';
 import 'ui/secure_unlock_widget.dart';
 import 'wallet_already_exists_exception.dart';
@@ -589,6 +590,15 @@ class SharedPreferencesHelperV2
   Future<void> refreshWalletsInfo() async {
     for (int i = 0; i < accounts.length; i++) {
       final StoredAccount acc = accounts[i];
+      // Strip out the old identity from the cached version.
+      // This preserves Cesium+ profile info (avatar, etc) but removes the name
+      // and WOT status so getProfile won't merge a stale name back in if the
+      // remote identity is empty.
+      final Contact? cached = ContactsCache().getCachedContact(acc.pubKey);
+      if (cached != null) {
+        await ContactsCache().saveContact(cached.cloneWithoutIdentity());
+      }
+
       final Contact updatedContact = await getProfile(
         acc.pubKey,
         resize: false,

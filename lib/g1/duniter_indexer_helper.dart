@@ -897,10 +897,8 @@ Future<Contact> getAccountBasic({required String address}) async {
 Future<Contact?> _fetchCesiumPlusProfile(String pubKey,
     {bool resize = true}) async {
   try {
-    final Response cPlusResponse = (await requestCPlusWithRetry(
-            '/user/profile/$pubKey',
-            retryWith404: false))
-        .item2;
+    final Response cPlusResponse =
+        (await requestCPlusWithRetry('/user/profile/$pubKey')).item2;
 
     if (cPlusResponse.statusCode == 200) {
       final Map<String, dynamic> result = const JsonDecoder()
@@ -928,8 +926,23 @@ Future<Contact> getProfileV2(String pubKeyRaw,
 
   final String address = addressFromV1PubkeyFaiSafe(pubKeyRaw);
 
+  // Extract V1 pubkey for Cesium+ fetch: C+ doesn't know V2 addresses
+  String cPlusPubKey = pubKeyRaw;
+  if (pubKeyRaw.length != 43 &&
+      pubKeyRaw.length != 44 &&
+      pubKeyRaw.contains('1') == false) {
+    // basic heuristic, or just try to convert if valid address
+    try {
+      if (isValidV2Address(pubKeyRaw)) {
+        cPlusPubKey = v1pubkeyFromAddress(pubKeyRaw);
+      }
+    } catch (e) {
+      // ignore, likely already a pubkey
+    }
+  }
+
   // Get Cesium+ profile data, or use baseContact if available
-  Contact c = await _fetchCesiumPlusProfile(pubKeyRaw, resize: resize) ??
+  Contact c = await _fetchCesiumPlusProfile(cPlusPubKey, resize: resize) ??
       (baseContact ?? Contact.withAddress(address: address));
 
   // Get WOT V2 data if not only profile
@@ -983,7 +996,7 @@ Future<List<Contact>> getProfilesV2({required List<String> pubKeys}) async {
 
     // For each pubkey, try to get Cesium+ profile and merge with WOT data
     for (int i = 0; i < pubKeys.length; i++) {
-      final String pubkey = pubKeys[i];
+      final String pubkeyOrAddress = pubKeys[i];
       final String address = addresses[i];
 
       // Find WOT contact by address
@@ -992,8 +1005,18 @@ Future<List<Contact>> getProfilesV2({required List<String> pubKeys}) async {
         orElse: () => Contact.withAddress(address: address),
       );
 
+      // Extract V1 pubkey for Cesium+ fetch
+      String cPlusPubKey = pubkeyOrAddress;
+      try {
+        if (isValidV2Address(pubkeyOrAddress)) {
+          cPlusPubKey = v1pubkeyFromAddress(pubkeyOrAddress);
+        }
+      } catch (e) {
+        // ignore
+      }
+
       // Try to get Cesium+ profile data using V1 pubkey
-      final Contact? cPlusContact = await _fetchCesiumPlusProfile(pubkey);
+      final Contact? cPlusContact = await _fetchCesiumPlusProfile(cPlusPubKey);
       if (cPlusContact != null) {
         contact = contact.merge(cPlusContact);
       }

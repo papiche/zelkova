@@ -287,10 +287,8 @@ Future<Contact> getProfileV1(String pubKeyRaw,
     {bool onlyCPlusProfile = false, bool resize = true}) async {
   final String pubKey = extractPublicKey(pubKeyRaw);
   try {
-    final Response cPlusResponse = (await requestCPlusWithRetry(
-            '/user/profile/$pubKey',
-            retryWith404: false))
-        .item2;
+    final Response cPlusResponse =
+        (await requestCPlusWithRetry('/user/profile/$pubKey')).item2;
     final Map<String, dynamic> result =
         const JsonDecoder().convert(cPlusResponse.body) as Map<String, dynamic>;
     Contact c;

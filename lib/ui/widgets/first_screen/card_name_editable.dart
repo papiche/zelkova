@@ -105,22 +105,24 @@ class _CardNameEditableState extends State<CardNameEditable> {
         } else {
           loggerDev(
               'CardNameEditable: remote name empty for ${widget.account.pubKey}, hadLocal=${widget.cardName.isNotEmpty}');
-          // Remote returned empty. Only set the default value if there was no
-          // local cardName provided (i.e. widget.cardName was empty) and the
-          // currentText is empty/defValue. Otherwise keep whatever local value
-          // we already had.
+          // Remote returned empty. If there is a local name, we should clear it
+          // as the remote identity no longer exists or the name was deleted.
           final bool hadLocal = widget.cardName.isNotEmpty;
-          if (!hadLocal) {
+          if (hadLocal) {
+            loggerDev(
+                'CardNameEditable: clearing local name, setting defValue');
+            setState(() {
+              _controller.text = widget.defValue;
+              currentText = widget.defValue;
+            });
+            SharedPreferencesHelper().setName(name: '', notify: false);
+          } else {
             loggerDev('CardNameEditable: no local name, setting defValue');
             setState(() {
               _controller.text = widget.defValue;
               currentText = widget.defValue;
             });
             // Do not write an empty name into SharedPreferences; leave it as-is.
-          } else {
-            loggerDev(
-                'CardNameEditable: keeping existing local name "$currentText"');
-            // keep existing currentText (don't overwrite with empty)
           }
         }
       } catch (e) {

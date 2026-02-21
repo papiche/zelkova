@@ -341,6 +341,25 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
         time: time);
   }
 
+  Contact cloneWithoutIdentity() {
+    return Contact(
+      nick: nick,
+      pubKey: pubKey,
+      avatar: avatar,
+      notes: notes,
+      name: name,
+      avatarCid: avatarCid,
+      description: description,
+      city: city,
+      dataCid: dataCid,
+      geoLoc: geoLoc,
+      indexRequestCid: indexRequestCid,
+      socials: socials,
+      time: time,
+      // Identity fields explicitly omitted (null)
+    );
+  }
+
   bool keyEqual(Contact other) =>
       extractPublicKey(pubKey) == extractPublicKey(other.pubKey);
 

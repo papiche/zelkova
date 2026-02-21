@@ -9,6 +9,8 @@ import '../../data/models/identity_status.dart';
 import '../../data/models/stored_account.dart';
 import '../../g1/duniter_endpoint_helper.dart';
 import '../../g1/sign_and_send.dart';
+import '../../shared_prefs_helper.dart';
+import '../contacts_cache.dart';
 import '../logger.dart';
 import '../secure_unlock_widget.dart';
 import '../ui_helpers.dart';
@@ -819,7 +821,36 @@ Future<SignAndSendResult> _confirmAndChangeOwnerKey(
       return _returnAuthFailed();
     }
 
-    return await changeOwnerKey(selectedAccount.contact.address);
+    final SignAndSendResult res =
+        await changeOwnerKey(selectedAccount.contact.address);
+
+    final StreamController<String> progressController =
+        StreamController<String>();
+    bool hasError = false;
+
+    res.progressStream.listen(
+      (String msg) => progressController.add(msg),
+      onError: (Object error) {
+        hasError = true;
+        progressController.addError(error);
+      },
+      onDone: () async {
+        if (!hasError) {
+          try {
+            await SharedPreferencesHelper().refreshWalletsInfo();
+            await ContactsCache().clear();
+          } catch (e) {
+            loggerDev('Error refreshing wallets after changeOwnerKey: $e');
+          }
+        }
+        progressController.close();
+      },
+    );
+
+    return SignAndSendResult(
+      progressStream: progressController.stream,
+      node: res.node,
+    );
   } catch (e, st) {
     loggerDev('Error in _confirmAndChangeOwnerKey', error: e, stackTrace: st);
     if (!context.mounted) {

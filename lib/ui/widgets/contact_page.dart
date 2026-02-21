@@ -567,7 +567,9 @@ class _ContactPageState extends State<ContactPage> {
     // Pass baseContact to preserve avatar and other existing data
     final List<Contact> results = await Future.wait(<Future<Contact>>[
       duniter_indexer.getProfileV2(widget.contact.pubKey,
-          resize: false, complete: true, baseContact: widget.contact),
+          resize: false,
+          complete: true,
+          baseContact: widget.contact.cloneWithoutIdentity()),
       duniter_indexer.getProfileV2(SharedPreferencesHelper().getPubKey(),
           resize: false, complete: true),
     ]);

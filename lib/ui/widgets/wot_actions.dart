@@ -416,7 +416,7 @@ Future<SignAndSendResult> _executeIfAuthenticated(
   return action();
 }
 
-// TODO retwork this
+// TODOretwork this
 Future<SignAndSendResult> _returnAuthFailed() {
   final StreamController<String> progressController =
       StreamController<String>();

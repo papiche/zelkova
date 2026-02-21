@@ -218,14 +218,16 @@ DropdownMenuItem<Locale>(
 - ast: dixebral
 - ca: calbasi
 - da: Gerhard Pischinger
-- de: Andreas Wahlen, Christophe Parot, Ruten Rolf and FW
-- eo: flodef, Solaiye and Yves Bachimont
-- eu: Anna Ayala Alcalá and Solaiye
-- fr: d0p1, flodef, Hugo Trentesaux, Maaltir, Michel du 64, niko, italpaola, poka, Cristina Abella, Christophe Parot, Olivier Michel, Solaiye and vincentux
-- gl: Vijitâtman
-- it: Anna Ayala Alcalá, italpaola
+- de: anfeichtinger, Christophe Parot, FW, Ruten Rolf, Wahlen
+- en: anfeichtinger, Daniel Bañobre Dopico
+- eo: flodef, Solaiye, Yves Bachimont
+- es: Aldara ES
+- eu: Anna Ayala Alcalá, Gobtous, Goiztizar, Solaiye
+- fr: Christophe Parot, Cristina Abella, d0p1, flodef, Gobtous, Hugo Trentesaux, italpaola, Maaltir, Michel_du_64, niko, Olivier Michel, poka, Solaiye, vincentux
+- gl: Daniel Bañobre Dopico, Vijitâtman
+- it: Alis0r, Anna Ayala Alcalá, italpaola
 - nl: Maria Rosa Costa i Alandi
-- pt: Carlos Neto and Christophe Parot
+- pt: Carlos Neto, Christophe Parot
 
 Thanks!
 

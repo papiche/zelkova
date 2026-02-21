@@ -218,7 +218,7 @@ DropdownMenuItem<Locale>(
 - ast: dixebral
 - ca: calbasi
 - da: Gerhard Pischinger
-- de: Andreas Wahlen, Christophe Parot and FW
+- de: Andreas Wahlen, Christophe Parot, Ruten Rolf and FW
 - eo: flodef and Solaiye
 - eu: Anna Ayala Alcalá and Solaiye
 - fr: d0p1, flodef, Hugo Trentesaux, Maaltir, Michel du 64, niko, italpaola, poka, Cristina Abella, Christophe Parot, Olivier Michel, Solaiye and vincentux

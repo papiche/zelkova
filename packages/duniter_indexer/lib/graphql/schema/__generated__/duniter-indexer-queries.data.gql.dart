@@ -2807,7 +2807,7 @@ abstract class GAccountByPkData_accounts_nodes
   @override
   GAccountByPkData_accounts_nodes_wasIdentityNext get wasIdentityNext;
   @override
-  GAccountByPkData_accounts_nodes_linkedIdentity? get linkedIdentity;
+  GAccountByPkData_accounts_nodes_identity? get identity;
   static Serializer<GAccountByPkData_accounts_nodes> get serializer =>
       _$gAccountByPkDataAccountsNodesSerializer;
 
@@ -3530,35 +3530,35 @@ abstract class GAccountByPkData_accounts_nodes_wasIdentityNext_nodes
       );
 }
 
-abstract class GAccountByPkData_accounts_nodes_linkedIdentity
+abstract class GAccountByPkData_accounts_nodes_identity
     implements
-        Built<GAccountByPkData_accounts_nodes_linkedIdentity,
-            GAccountByPkData_accounts_nodes_linkedIdentityBuilder>,
-        GAccountFields_linkedIdentity,
+        Built<GAccountByPkData_accounts_nodes_identity,
+            GAccountByPkData_accounts_nodes_identityBuilder>,
+        GAccountFields_identity,
         GIdentityFields {
-  GAccountByPkData_accounts_nodes_linkedIdentity._();
+  GAccountByPkData_accounts_nodes_identity._();
 
-  factory GAccountByPkData_accounts_nodes_linkedIdentity(
-      [void Function(GAccountByPkData_accounts_nodes_linkedIdentityBuilder b)
-          updates]) = _$GAccountByPkData_accounts_nodes_linkedIdentity;
+  factory GAccountByPkData_accounts_nodes_identity(
+      [void Function(GAccountByPkData_accounts_nodes_identityBuilder b)
+          updates]) = _$GAccountByPkData_accounts_nodes_identity;
 
   static void _initializeBuilder(
-          GAccountByPkData_accounts_nodes_linkedIdentityBuilder b) =>
+          GAccountByPkData_accounts_nodes_identityBuilder b) =>
       b..G__typename = 'Identity';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  GAccountByPkData_accounts_nodes_linkedIdentity_account? get account;
+  GAccountByPkData_accounts_nodes_identity_account? get account;
   @override
   String? get accountId;
   @override
   String? get accountRemovedId;
   @override
-  GAccountByPkData_accounts_nodes_linkedIdentity_certIssued get certIssued;
+  GAccountByPkData_accounts_nodes_identity_certIssued get certIssued;
   @override
-  GAccountByPkData_accounts_nodes_linkedIdentity_certReceived get certReceived;
+  GAccountByPkData_accounts_nodes_identity_certReceived get certReceived;
   @override
   String? get createdInId;
   @override
@@ -3578,45 +3578,43 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity
   @override
   String get name;
   @override
-  GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistory
+  GAccountByPkData_accounts_nodes_identity_membershipHistory
       get membershipHistory;
   @override
-  GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChange
-      get ownerKeyChange;
+  GAccountByPkData_accounts_nodes_identity_ownerKeyChange get ownerKeyChange;
   @override
-  GAccountByPkData_accounts_nodes_linkedIdentity_smith? get smith;
-  static Serializer<GAccountByPkData_accounts_nodes_linkedIdentity>
-      get serializer => _$gAccountByPkDataAccountsNodesLinkedIdentitySerializer;
+  GAccountByPkData_accounts_nodes_identity_smith? get smith;
+  static Serializer<GAccountByPkData_accounts_nodes_identity> get serializer =>
+      _$gAccountByPkDataAccountsNodesIdentitySerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity.serializer,
+        GAccountByPkData_accounts_nodes_identity.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accounts_nodes_linkedIdentity? fromJson(
+  static GAccountByPkData_accounts_nodes_identity? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity.serializer,
+        GAccountByPkData_accounts_nodes_identity.serializer,
         json,
       );
 }
 
-abstract class GAccountByPkData_accounts_nodes_linkedIdentity_account
+abstract class GAccountByPkData_accounts_nodes_identity_account
     implements
-        Built<GAccountByPkData_accounts_nodes_linkedIdentity_account,
-            GAccountByPkData_accounts_nodes_linkedIdentity_accountBuilder>,
-        GAccountFields_linkedIdentity_account,
+        Built<GAccountByPkData_accounts_nodes_identity_account,
+            GAccountByPkData_accounts_nodes_identity_accountBuilder>,
+        GAccountFields_identity_account,
         GIdentityFields_account {
-  GAccountByPkData_accounts_nodes_linkedIdentity_account._();
+  GAccountByPkData_accounts_nodes_identity_account._();
 
-  factory GAccountByPkData_accounts_nodes_linkedIdentity_account(
-      [void Function(
-              GAccountByPkData_accounts_nodes_linkedIdentity_accountBuilder b)
-          updates]) = _$GAccountByPkData_accounts_nodes_linkedIdentity_account;
+  factory GAccountByPkData_accounts_nodes_identity_account(
+      [void Function(GAccountByPkData_accounts_nodes_identity_accountBuilder b)
+          updates]) = _$GAccountByPkData_accounts_nodes_identity_account;
 
   static void _initializeBuilder(
-          GAccountByPkData_accounts_nodes_linkedIdentity_accountBuilder b) =>
+          GAccountByPkData_accounts_nodes_identity_accountBuilder b) =>
       b..G__typename = 'Account';
 
   @override
@@ -3624,40 +3622,39 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_account
   String get G__typename;
   @override
   int get createdOn;
-  static Serializer<GAccountByPkData_accounts_nodes_linkedIdentity_account>
+  static Serializer<GAccountByPkData_accounts_nodes_identity_account>
       get serializer =>
-          _$gAccountByPkDataAccountsNodesLinkedIdentityAccountSerializer;
+          _$gAccountByPkDataAccountsNodesIdentityAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity_account.serializer,
+        GAccountByPkData_accounts_nodes_identity_account.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accounts_nodes_linkedIdentity_account? fromJson(
+  static GAccountByPkData_accounts_nodes_identity_account? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity_account.serializer,
+        GAccountByPkData_accounts_nodes_identity_account.serializer,
         json,
       );
 }
 
-abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certIssued
+abstract class GAccountByPkData_accounts_nodes_identity_certIssued
     implements
-        Built<GAccountByPkData_accounts_nodes_linkedIdentity_certIssued,
-            GAccountByPkData_accounts_nodes_linkedIdentity_certIssuedBuilder>,
-        GAccountFields_linkedIdentity_certIssued,
+        Built<GAccountByPkData_accounts_nodes_identity_certIssued,
+            GAccountByPkData_accounts_nodes_identity_certIssuedBuilder>,
+        GAccountFields_identity_certIssued,
         GIdentityFields_certIssued {
-  GAccountByPkData_accounts_nodes_linkedIdentity_certIssued._();
+  GAccountByPkData_accounts_nodes_identity_certIssued._();
 
-  factory GAccountByPkData_accounts_nodes_linkedIdentity_certIssued(
+  factory GAccountByPkData_accounts_nodes_identity_certIssued(
       [void Function(
-              GAccountByPkData_accounts_nodes_linkedIdentity_certIssuedBuilder
-                  b)
-          updates]) = _$GAccountByPkData_accounts_nodes_linkedIdentity_certIssued;
+              GAccountByPkData_accounts_nodes_identity_certIssuedBuilder b)
+          updates]) = _$GAccountByPkData_accounts_nodes_identity_certIssued;
 
   static void _initializeBuilder(
-          GAccountByPkData_accounts_nodes_linkedIdentity_certIssuedBuilder b) =>
+          GAccountByPkData_accounts_nodes_identity_certIssuedBuilder b) =>
       b..G__typename = 'CertsConnection';
 
   @override
@@ -3666,45 +3663,43 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certIssued
   @override
   int get totalCount;
   @override
-  BuiltList<GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes>
+  BuiltList<GAccountByPkData_accounts_nodes_identity_certIssued_nodes>
       get nodes;
-  static Serializer<GAccountByPkData_accounts_nodes_linkedIdentity_certIssued>
+  static Serializer<GAccountByPkData_accounts_nodes_identity_certIssued>
       get serializer =>
-          _$gAccountByPkDataAccountsNodesLinkedIdentityCertIssuedSerializer;
+          _$gAccountByPkDataAccountsNodesIdentityCertIssuedSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity_certIssued.serializer,
+        GAccountByPkData_accounts_nodes_identity_certIssued.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accounts_nodes_linkedIdentity_certIssued? fromJson(
+  static GAccountByPkData_accounts_nodes_identity_certIssued? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity_certIssued.serializer,
+        GAccountByPkData_accounts_nodes_identity_certIssued.serializer,
         json,
       );
 }
 
-abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes
+abstract class GAccountByPkData_accounts_nodes_identity_certIssued_nodes
     implements
-        Built<GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes,
-            GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodesBuilder>,
-        GAccountFields_linkedIdentity_certIssued_nodes,
+        Built<GAccountByPkData_accounts_nodes_identity_certIssued_nodes,
+            GAccountByPkData_accounts_nodes_identity_certIssued_nodesBuilder>,
+        GAccountFields_identity_certIssued_nodes,
         GIdentityFields_certIssued_nodes,
         GCertFields {
-  GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes._();
+  GAccountByPkData_accounts_nodes_identity_certIssued_nodes._();
 
-  factory GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes(
-          [void Function(
-                  GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodesBuilder
-                      b)
-              updates]) =
-      _$GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes;
+  factory GAccountByPkData_accounts_nodes_identity_certIssued_nodes(
+      [void Function(
+              GAccountByPkData_accounts_nodes_identity_certIssued_nodesBuilder
+                  b)
+          updates]) = _$GAccountByPkData_accounts_nodes_identity_certIssued_nodes;
 
   static void _initializeBuilder(
-          GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodesBuilder
-              b) =>
+          GAccountByPkData_accounts_nodes_identity_certIssued_nodesBuilder b) =>
       b..G__typename = 'Cert';
 
   @override
@@ -3715,12 +3710,11 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes
   @override
   String? get issuerId;
   @override
-  GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer?
-      get issuer;
+  GAccountByPkData_accounts_nodes_identity_certIssued_nodes_issuer? get issuer;
   @override
   String? get receiverId;
   @override
-  GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver?
+  GAccountByPkData_accounts_nodes_identity_certIssued_nodes_receiver?
       get receiver;
   @override
   int get createdOn;
@@ -3730,46 +3724,43 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes
   bool get isActive;
   @override
   int get updatedOn;
-  static Serializer<
-          GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes>
+  static Serializer<GAccountByPkData_accounts_nodes_identity_certIssued_nodes>
       get serializer =>
-          _$gAccountByPkDataAccountsNodesLinkedIdentityCertIssuedNodesSerializer;
+          _$gAccountByPkDataAccountsNodesIdentityCertIssuedNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes
-            .serializer,
+        GAccountByPkData_accounts_nodes_identity_certIssued_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes
-                .serializer,
-            json,
-          );
+  static GAccountByPkData_accounts_nodes_identity_certIssued_nodes? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountByPkData_accounts_nodes_identity_certIssued_nodes.serializer,
+        json,
+      );
 }
 
-abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer
+abstract class GAccountByPkData_accounts_nodes_identity_certIssued_nodes_issuer
     implements
-        Built<
-            GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer,
-            GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuerBuilder>,
-        GAccountFields_linkedIdentity_certIssued_nodes_issuer,
+        Built<GAccountByPkData_accounts_nodes_identity_certIssued_nodes_issuer,
+            GAccountByPkData_accounts_nodes_identity_certIssued_nodes_issuerBuilder>,
+        GAccountFields_identity_certIssued_nodes_issuer,
         GIdentityFields_certIssued_nodes_issuer,
         GCertFields_issuer,
         GIdentityBasicFields {
-  GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer._();
+  GAccountByPkData_accounts_nodes_identity_certIssued_nodes_issuer._();
 
-  factory GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer(
+  factory GAccountByPkData_accounts_nodes_identity_certIssued_nodes_issuer(
           [void Function(
-                  GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuerBuilder
+                  GAccountByPkData_accounts_nodes_identity_certIssued_nodes_issuerBuilder
                       b)
               updates]) =
-      _$GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer;
+      _$GAccountByPkData_accounts_nodes_identity_certIssued_nodes_issuer;
 
   static void _initializeBuilder(
-          GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuerBuilder
+          GAccountByPkData_accounts_nodes_identity_certIssued_nodes_issuerBuilder
               b) =>
       b..G__typename = 'Identity';
 
@@ -3779,7 +3770,7 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_i
   @override
   String? get accountId;
   @override
-  GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer_account?
+  GAccountByPkData_accounts_nodes_identity_certIssued_nodes_issuer_account?
       get account;
   @override
   String get id;
@@ -3794,45 +3785,45 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_i
   @override
   int get index;
   static Serializer<
-          GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer>
+          GAccountByPkData_accounts_nodes_identity_certIssued_nodes_issuer>
       get serializer =>
-          _$gAccountByPkDataAccountsNodesLinkedIdentityCertIssuedNodesIssuerSerializer;
+          _$gAccountByPkDataAccountsNodesIdentityCertIssuedNodesIssuerSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer
+        GAccountByPkData_accounts_nodes_identity_certIssued_nodes_issuer
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer?
+  static GAccountByPkData_accounts_nodes_identity_certIssued_nodes_issuer?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer
+            GAccountByPkData_accounts_nodes_identity_certIssued_nodes_issuer
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer_account
+abstract class GAccountByPkData_accounts_nodes_identity_certIssued_nodes_issuer_account
     implements
         Built<
-            GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer_account,
-            GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer_accountBuilder>,
-        GAccountFields_linkedIdentity_certIssued_nodes_issuer_account,
+            GAccountByPkData_accounts_nodes_identity_certIssued_nodes_issuer_account,
+            GAccountByPkData_accounts_nodes_identity_certIssued_nodes_issuer_accountBuilder>,
+        GAccountFields_identity_certIssued_nodes_issuer_account,
         GIdentityFields_certIssued_nodes_issuer_account,
         GCertFields_issuer_account,
         GIdentityBasicFields_account {
-  GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer_account._();
+  GAccountByPkData_accounts_nodes_identity_certIssued_nodes_issuer_account._();
 
-  factory GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer_account(
+  factory GAccountByPkData_accounts_nodes_identity_certIssued_nodes_issuer_account(
           [void Function(
-                  GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer_accountBuilder
+                  GAccountByPkData_accounts_nodes_identity_certIssued_nodes_issuer_accountBuilder
                       b)
               updates]) =
-      _$GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer_account;
+      _$GAccountByPkData_accounts_nodes_identity_certIssued_nodes_issuer_account;
 
   static void _initializeBuilder(
-          GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer_accountBuilder
+          GAccountByPkData_accounts_nodes_identity_certIssued_nodes_issuer_accountBuilder
               b) =>
       b..G__typename = 'Account';
 
@@ -3842,45 +3833,45 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_i
   @override
   int get createdOn;
   static Serializer<
-          GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer_account>
+          GAccountByPkData_accounts_nodes_identity_certIssued_nodes_issuer_account>
       get serializer =>
-          _$gAccountByPkDataAccountsNodesLinkedIdentityCertIssuedNodesIssuerAccountSerializer;
+          _$gAccountByPkDataAccountsNodesIdentityCertIssuedNodesIssuerAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer_account
+        GAccountByPkData_accounts_nodes_identity_certIssued_nodes_issuer_account
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer_account?
+  static GAccountByPkData_accounts_nodes_identity_certIssued_nodes_issuer_account?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer_account
+            GAccountByPkData_accounts_nodes_identity_certIssued_nodes_issuer_account
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver
+abstract class GAccountByPkData_accounts_nodes_identity_certIssued_nodes_receiver
     implements
         Built<
-            GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver,
-            GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiverBuilder>,
-        GAccountFields_linkedIdentity_certIssued_nodes_receiver,
+            GAccountByPkData_accounts_nodes_identity_certIssued_nodes_receiver,
+            GAccountByPkData_accounts_nodes_identity_certIssued_nodes_receiverBuilder>,
+        GAccountFields_identity_certIssued_nodes_receiver,
         GIdentityFields_certIssued_nodes_receiver,
         GCertFields_receiver,
         GIdentityBasicFields {
-  GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver._();
+  GAccountByPkData_accounts_nodes_identity_certIssued_nodes_receiver._();
 
-  factory GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver(
+  factory GAccountByPkData_accounts_nodes_identity_certIssued_nodes_receiver(
           [void Function(
-                  GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiverBuilder
+                  GAccountByPkData_accounts_nodes_identity_certIssued_nodes_receiverBuilder
                       b)
               updates]) =
-      _$GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver;
+      _$GAccountByPkData_accounts_nodes_identity_certIssued_nodes_receiver;
 
   static void _initializeBuilder(
-          GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiverBuilder
+          GAccountByPkData_accounts_nodes_identity_certIssued_nodes_receiverBuilder
               b) =>
       b..G__typename = 'Identity';
 
@@ -3890,7 +3881,7 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_r
   @override
   String? get accountId;
   @override
-  GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver_account?
+  GAccountByPkData_accounts_nodes_identity_certIssued_nodes_receiver_account?
       get account;
   @override
   String get id;
@@ -3905,45 +3896,45 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_r
   @override
   int get index;
   static Serializer<
-          GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver>
+          GAccountByPkData_accounts_nodes_identity_certIssued_nodes_receiver>
       get serializer =>
-          _$gAccountByPkDataAccountsNodesLinkedIdentityCertIssuedNodesReceiverSerializer;
+          _$gAccountByPkDataAccountsNodesIdentityCertIssuedNodesReceiverSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver
+        GAccountByPkData_accounts_nodes_identity_certIssued_nodes_receiver
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver?
+  static GAccountByPkData_accounts_nodes_identity_certIssued_nodes_receiver?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver
+            GAccountByPkData_accounts_nodes_identity_certIssued_nodes_receiver
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver_account
+abstract class GAccountByPkData_accounts_nodes_identity_certIssued_nodes_receiver_account
     implements
         Built<
-            GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver_account,
-            GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver_accountBuilder>,
-        GAccountFields_linkedIdentity_certIssued_nodes_receiver_account,
+            GAccountByPkData_accounts_nodes_identity_certIssued_nodes_receiver_account,
+            GAccountByPkData_accounts_nodes_identity_certIssued_nodes_receiver_accountBuilder>,
+        GAccountFields_identity_certIssued_nodes_receiver_account,
         GIdentityFields_certIssued_nodes_receiver_account,
         GCertFields_receiver_account,
         GIdentityBasicFields_account {
-  GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver_account._();
+  GAccountByPkData_accounts_nodes_identity_certIssued_nodes_receiver_account._();
 
-  factory GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver_account(
+  factory GAccountByPkData_accounts_nodes_identity_certIssued_nodes_receiver_account(
           [void Function(
-                  GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver_accountBuilder
+                  GAccountByPkData_accounts_nodes_identity_certIssued_nodes_receiver_accountBuilder
                       b)
               updates]) =
-      _$GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver_account;
+      _$GAccountByPkData_accounts_nodes_identity_certIssued_nodes_receiver_account;
 
   static void _initializeBuilder(
-          GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver_accountBuilder
+          GAccountByPkData_accounts_nodes_identity_certIssued_nodes_receiver_accountBuilder
               b) =>
       b..G__typename = 'Account';
 
@@ -3953,42 +3944,40 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_r
   @override
   int get createdOn;
   static Serializer<
-          GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver_account>
+          GAccountByPkData_accounts_nodes_identity_certIssued_nodes_receiver_account>
       get serializer =>
-          _$gAccountByPkDataAccountsNodesLinkedIdentityCertIssuedNodesReceiverAccountSerializer;
+          _$gAccountByPkDataAccountsNodesIdentityCertIssuedNodesReceiverAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver_account
+        GAccountByPkData_accounts_nodes_identity_certIssued_nodes_receiver_account
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver_account?
+  static GAccountByPkData_accounts_nodes_identity_certIssued_nodes_receiver_account?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver_account
+            GAccountByPkData_accounts_nodes_identity_certIssued_nodes_receiver_account
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certReceived
+abstract class GAccountByPkData_accounts_nodes_identity_certReceived
     implements
-        Built<GAccountByPkData_accounts_nodes_linkedIdentity_certReceived,
-            GAccountByPkData_accounts_nodes_linkedIdentity_certReceivedBuilder>,
-        GAccountFields_linkedIdentity_certReceived,
+        Built<GAccountByPkData_accounts_nodes_identity_certReceived,
+            GAccountByPkData_accounts_nodes_identity_certReceivedBuilder>,
+        GAccountFields_identity_certReceived,
         GIdentityFields_certReceived {
-  GAccountByPkData_accounts_nodes_linkedIdentity_certReceived._();
+  GAccountByPkData_accounts_nodes_identity_certReceived._();
 
-  factory GAccountByPkData_accounts_nodes_linkedIdentity_certReceived(
+  factory GAccountByPkData_accounts_nodes_identity_certReceived(
       [void Function(
-              GAccountByPkData_accounts_nodes_linkedIdentity_certReceivedBuilder
-                  b)
-          updates]) = _$GAccountByPkData_accounts_nodes_linkedIdentity_certReceived;
+              GAccountByPkData_accounts_nodes_identity_certReceivedBuilder b)
+          updates]) = _$GAccountByPkData_accounts_nodes_identity_certReceived;
 
   static void _initializeBuilder(
-          GAccountByPkData_accounts_nodes_linkedIdentity_certReceivedBuilder
-              b) =>
+          GAccountByPkData_accounts_nodes_identity_certReceivedBuilder b) =>
       b..G__typename = 'CertsConnection';
 
   @override
@@ -3997,44 +3986,43 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certReceived
   @override
   int get totalCount;
   @override
-  BuiltList<GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes>
+  BuiltList<GAccountByPkData_accounts_nodes_identity_certReceived_nodes>
       get nodes;
-  static Serializer<GAccountByPkData_accounts_nodes_linkedIdentity_certReceived>
+  static Serializer<GAccountByPkData_accounts_nodes_identity_certReceived>
       get serializer =>
-          _$gAccountByPkDataAccountsNodesLinkedIdentityCertReceivedSerializer;
+          _$gAccountByPkDataAccountsNodesIdentityCertReceivedSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity_certReceived.serializer,
+        GAccountByPkData_accounts_nodes_identity_certReceived.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accounts_nodes_linkedIdentity_certReceived? fromJson(
+  static GAccountByPkData_accounts_nodes_identity_certReceived? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity_certReceived.serializer,
+        GAccountByPkData_accounts_nodes_identity_certReceived.serializer,
         json,
       );
 }
 
-abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes
+abstract class GAccountByPkData_accounts_nodes_identity_certReceived_nodes
     implements
-        Built<GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes,
-            GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodesBuilder>,
-        GAccountFields_linkedIdentity_certReceived_nodes,
+        Built<GAccountByPkData_accounts_nodes_identity_certReceived_nodes,
+            GAccountByPkData_accounts_nodes_identity_certReceived_nodesBuilder>,
+        GAccountFields_identity_certReceived_nodes,
         GIdentityFields_certReceived_nodes,
         GCertFields {
-  GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes._();
+  GAccountByPkData_accounts_nodes_identity_certReceived_nodes._();
 
-  factory GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes(
-          [void Function(
-                  GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodesBuilder
-                      b)
-              updates]) =
-      _$GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes;
+  factory GAccountByPkData_accounts_nodes_identity_certReceived_nodes(
+      [void Function(
+              GAccountByPkData_accounts_nodes_identity_certReceived_nodesBuilder
+                  b)
+          updates]) = _$GAccountByPkData_accounts_nodes_identity_certReceived_nodes;
 
   static void _initializeBuilder(
-          GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodesBuilder
+          GAccountByPkData_accounts_nodes_identity_certReceived_nodesBuilder
               b) =>
       b..G__typename = 'Cert';
 
@@ -4046,12 +4034,12 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes
   @override
   String? get issuerId;
   @override
-  GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer?
+  GAccountByPkData_accounts_nodes_identity_certReceived_nodes_issuer?
       get issuer;
   @override
   String? get receiverId;
   @override
-  GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver?
+  GAccountByPkData_accounts_nodes_identity_certReceived_nodes_receiver?
       get receiver;
   @override
   int get createdOn;
@@ -4061,46 +4049,44 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes
   bool get isActive;
   @override
   int get updatedOn;
-  static Serializer<
-          GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes>
+  static Serializer<GAccountByPkData_accounts_nodes_identity_certReceived_nodes>
       get serializer =>
-          _$gAccountByPkDataAccountsNodesLinkedIdentityCertReceivedNodesSerializer;
+          _$gAccountByPkDataAccountsNodesIdentityCertReceivedNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes
-            .serializer,
+        GAccountByPkData_accounts_nodes_identity_certReceived_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes
-                .serializer,
-            json,
-          );
+  static GAccountByPkData_accounts_nodes_identity_certReceived_nodes? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountByPkData_accounts_nodes_identity_certReceived_nodes.serializer,
+        json,
+      );
 }
 
-abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer
+abstract class GAccountByPkData_accounts_nodes_identity_certReceived_nodes_issuer
     implements
         Built<
-            GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer,
-            GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuerBuilder>,
-        GAccountFields_linkedIdentity_certReceived_nodes_issuer,
+            GAccountByPkData_accounts_nodes_identity_certReceived_nodes_issuer,
+            GAccountByPkData_accounts_nodes_identity_certReceived_nodes_issuerBuilder>,
+        GAccountFields_identity_certReceived_nodes_issuer,
         GIdentityFields_certReceived_nodes_issuer,
         GCertFields_issuer,
         GIdentityBasicFields {
-  GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer._();
+  GAccountByPkData_accounts_nodes_identity_certReceived_nodes_issuer._();
 
-  factory GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer(
+  factory GAccountByPkData_accounts_nodes_identity_certReceived_nodes_issuer(
           [void Function(
-                  GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuerBuilder
+                  GAccountByPkData_accounts_nodes_identity_certReceived_nodes_issuerBuilder
                       b)
               updates]) =
-      _$GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer;
+      _$GAccountByPkData_accounts_nodes_identity_certReceived_nodes_issuer;
 
   static void _initializeBuilder(
-          GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuerBuilder
+          GAccountByPkData_accounts_nodes_identity_certReceived_nodes_issuerBuilder
               b) =>
       b..G__typename = 'Identity';
 
@@ -4110,7 +4096,7 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes
   @override
   String? get accountId;
   @override
-  GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer_account?
+  GAccountByPkData_accounts_nodes_identity_certReceived_nodes_issuer_account?
       get account;
   @override
   String get id;
@@ -4125,45 +4111,45 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes
   @override
   int get index;
   static Serializer<
-          GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer>
+          GAccountByPkData_accounts_nodes_identity_certReceived_nodes_issuer>
       get serializer =>
-          _$gAccountByPkDataAccountsNodesLinkedIdentityCertReceivedNodesIssuerSerializer;
+          _$gAccountByPkDataAccountsNodesIdentityCertReceivedNodesIssuerSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer
+        GAccountByPkData_accounts_nodes_identity_certReceived_nodes_issuer
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer?
+  static GAccountByPkData_accounts_nodes_identity_certReceived_nodes_issuer?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer
+            GAccountByPkData_accounts_nodes_identity_certReceived_nodes_issuer
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer_account
+abstract class GAccountByPkData_accounts_nodes_identity_certReceived_nodes_issuer_account
     implements
         Built<
-            GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer_account,
-            GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer_accountBuilder>,
-        GAccountFields_linkedIdentity_certReceived_nodes_issuer_account,
+            GAccountByPkData_accounts_nodes_identity_certReceived_nodes_issuer_account,
+            GAccountByPkData_accounts_nodes_identity_certReceived_nodes_issuer_accountBuilder>,
+        GAccountFields_identity_certReceived_nodes_issuer_account,
         GIdentityFields_certReceived_nodes_issuer_account,
         GCertFields_issuer_account,
         GIdentityBasicFields_account {
-  GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer_account._();
+  GAccountByPkData_accounts_nodes_identity_certReceived_nodes_issuer_account._();
 
-  factory GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer_account(
+  factory GAccountByPkData_accounts_nodes_identity_certReceived_nodes_issuer_account(
           [void Function(
-                  GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer_accountBuilder
+                  GAccountByPkData_accounts_nodes_identity_certReceived_nodes_issuer_accountBuilder
                       b)
               updates]) =
-      _$GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer_account;
+      _$GAccountByPkData_accounts_nodes_identity_certReceived_nodes_issuer_account;
 
   static void _initializeBuilder(
-          GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer_accountBuilder
+          GAccountByPkData_accounts_nodes_identity_certReceived_nodes_issuer_accountBuilder
               b) =>
       b..G__typename = 'Account';
 
@@ -4173,45 +4159,45 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes
   @override
   int get createdOn;
   static Serializer<
-          GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer_account>
+          GAccountByPkData_accounts_nodes_identity_certReceived_nodes_issuer_account>
       get serializer =>
-          _$gAccountByPkDataAccountsNodesLinkedIdentityCertReceivedNodesIssuerAccountSerializer;
+          _$gAccountByPkDataAccountsNodesIdentityCertReceivedNodesIssuerAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer_account
+        GAccountByPkData_accounts_nodes_identity_certReceived_nodes_issuer_account
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer_account?
+  static GAccountByPkData_accounts_nodes_identity_certReceived_nodes_issuer_account?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer_account
+            GAccountByPkData_accounts_nodes_identity_certReceived_nodes_issuer_account
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver
+abstract class GAccountByPkData_accounts_nodes_identity_certReceived_nodes_receiver
     implements
         Built<
-            GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver,
-            GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiverBuilder>,
-        GAccountFields_linkedIdentity_certReceived_nodes_receiver,
+            GAccountByPkData_accounts_nodes_identity_certReceived_nodes_receiver,
+            GAccountByPkData_accounts_nodes_identity_certReceived_nodes_receiverBuilder>,
+        GAccountFields_identity_certReceived_nodes_receiver,
         GIdentityFields_certReceived_nodes_receiver,
         GCertFields_receiver,
         GIdentityBasicFields {
-  GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver._();
+  GAccountByPkData_accounts_nodes_identity_certReceived_nodes_receiver._();
 
-  factory GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver(
+  factory GAccountByPkData_accounts_nodes_identity_certReceived_nodes_receiver(
           [void Function(
-                  GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiverBuilder
+                  GAccountByPkData_accounts_nodes_identity_certReceived_nodes_receiverBuilder
                       b)
               updates]) =
-      _$GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver;
+      _$GAccountByPkData_accounts_nodes_identity_certReceived_nodes_receiver;
 
   static void _initializeBuilder(
-          GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiverBuilder
+          GAccountByPkData_accounts_nodes_identity_certReceived_nodes_receiverBuilder
               b) =>
       b..G__typename = 'Identity';
 
@@ -4221,7 +4207,7 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes
   @override
   String? get accountId;
   @override
-  GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver_account?
+  GAccountByPkData_accounts_nodes_identity_certReceived_nodes_receiver_account?
       get account;
   @override
   String get id;
@@ -4236,45 +4222,45 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes
   @override
   int get index;
   static Serializer<
-          GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver>
+          GAccountByPkData_accounts_nodes_identity_certReceived_nodes_receiver>
       get serializer =>
-          _$gAccountByPkDataAccountsNodesLinkedIdentityCertReceivedNodesReceiverSerializer;
+          _$gAccountByPkDataAccountsNodesIdentityCertReceivedNodesReceiverSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver
+        GAccountByPkData_accounts_nodes_identity_certReceived_nodes_receiver
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver?
+  static GAccountByPkData_accounts_nodes_identity_certReceived_nodes_receiver?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver
+            GAccountByPkData_accounts_nodes_identity_certReceived_nodes_receiver
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver_account
+abstract class GAccountByPkData_accounts_nodes_identity_certReceived_nodes_receiver_account
     implements
         Built<
-            GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver_account,
-            GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver_accountBuilder>,
-        GAccountFields_linkedIdentity_certReceived_nodes_receiver_account,
+            GAccountByPkData_accounts_nodes_identity_certReceived_nodes_receiver_account,
+            GAccountByPkData_accounts_nodes_identity_certReceived_nodes_receiver_accountBuilder>,
+        GAccountFields_identity_certReceived_nodes_receiver_account,
         GIdentityFields_certReceived_nodes_receiver_account,
         GCertFields_receiver_account,
         GIdentityBasicFields_account {
-  GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver_account._();
+  GAccountByPkData_accounts_nodes_identity_certReceived_nodes_receiver_account._();
 
-  factory GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver_account(
+  factory GAccountByPkData_accounts_nodes_identity_certReceived_nodes_receiver_account(
           [void Function(
-                  GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver_accountBuilder
+                  GAccountByPkData_accounts_nodes_identity_certReceived_nodes_receiver_accountBuilder
                       b)
               updates]) =
-      _$GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver_account;
+      _$GAccountByPkData_accounts_nodes_identity_certReceived_nodes_receiver_account;
 
   static void _initializeBuilder(
-          GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver_accountBuilder
+          GAccountByPkData_accounts_nodes_identity_certReceived_nodes_receiver_accountBuilder
               b) =>
       b..G__typename = 'Account';
 
@@ -4284,42 +4270,41 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes
   @override
   int get createdOn;
   static Serializer<
-          GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver_account>
+          GAccountByPkData_accounts_nodes_identity_certReceived_nodes_receiver_account>
       get serializer =>
-          _$gAccountByPkDataAccountsNodesLinkedIdentityCertReceivedNodesReceiverAccountSerializer;
+          _$gAccountByPkDataAccountsNodesIdentityCertReceivedNodesReceiverAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver_account
+        GAccountByPkData_accounts_nodes_identity_certReceived_nodes_receiver_account
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver_account?
+  static GAccountByPkData_accounts_nodes_identity_certReceived_nodes_receiver_account?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver_account
+            GAccountByPkData_accounts_nodes_identity_certReceived_nodes_receiver_account
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistory
+abstract class GAccountByPkData_accounts_nodes_identity_membershipHistory
     implements
-        Built<GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistory,
-            GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistoryBuilder>,
-        GAccountFields_linkedIdentity_membershipHistory,
+        Built<GAccountByPkData_accounts_nodes_identity_membershipHistory,
+            GAccountByPkData_accounts_nodes_identity_membershipHistoryBuilder>,
+        GAccountFields_identity_membershipHistory,
         GIdentityFields_membershipHistory {
-  GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistory._();
+  GAccountByPkData_accounts_nodes_identity_membershipHistory._();
 
-  factory GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistory(
-          [void Function(
-                  GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistoryBuilder
-                      b)
-              updates]) =
-      _$GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistory;
+  factory GAccountByPkData_accounts_nodes_identity_membershipHistory(
+      [void Function(
+              GAccountByPkData_accounts_nodes_identity_membershipHistoryBuilder
+                  b)
+          updates]) = _$GAccountByPkData_accounts_nodes_identity_membershipHistory;
 
   static void _initializeBuilder(
-          GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistoryBuilder
+          GAccountByPkData_accounts_nodes_identity_membershipHistoryBuilder
               b) =>
       b..G__typename = 'MembershipEventsConnection';
 
@@ -4329,47 +4314,43 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistory
   @override
   int get totalCount;
   @override
-  BuiltList<
-          GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistory_nodes>
+  BuiltList<GAccountByPkData_accounts_nodes_identity_membershipHistory_nodes>
       get nodes;
-  static Serializer<
-          GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistory>
+  static Serializer<GAccountByPkData_accounts_nodes_identity_membershipHistory>
       get serializer =>
-          _$gAccountByPkDataAccountsNodesLinkedIdentityMembershipHistorySerializer;
+          _$gAccountByPkDataAccountsNodesIdentityMembershipHistorySerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistory
-            .serializer,
+        GAccountByPkData_accounts_nodes_identity_membershipHistory.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistory?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistory
-                .serializer,
-            json,
-          );
+  static GAccountByPkData_accounts_nodes_identity_membershipHistory? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountByPkData_accounts_nodes_identity_membershipHistory.serializer,
+        json,
+      );
 }
 
-abstract class GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistory_nodes
+abstract class GAccountByPkData_accounts_nodes_identity_membershipHistory_nodes
     implements
-        Built<
-            GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistory_nodes,
-            GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistory_nodesBuilder>,
-        GAccountFields_linkedIdentity_membershipHistory_nodes,
+        Built<GAccountByPkData_accounts_nodes_identity_membershipHistory_nodes,
+            GAccountByPkData_accounts_nodes_identity_membershipHistory_nodesBuilder>,
+        GAccountFields_identity_membershipHistory_nodes,
         GIdentityFields_membershipHistory_nodes {
-  GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistory_nodes._();
+  GAccountByPkData_accounts_nodes_identity_membershipHistory_nodes._();
 
-  factory GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistory_nodes(
+  factory GAccountByPkData_accounts_nodes_identity_membershipHistory_nodes(
           [void Function(
-                  GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistory_nodesBuilder
+                  GAccountByPkData_accounts_nodes_identity_membershipHistory_nodesBuilder
                       b)
               updates]) =
-      _$GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistory_nodes;
+      _$GAccountByPkData_accounts_nodes_identity_membershipHistory_nodes;
 
   static void _initializeBuilder(
-          GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistory_nodesBuilder
+          GAccountByPkData_accounts_nodes_identity_membershipHistory_nodesBuilder
               b) =>
       b..G__typename = 'MembershipEvent';
 
@@ -4387,43 +4368,40 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistory_
   @override
   String? get identityId;
   static Serializer<
-          GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistory_nodes>
+          GAccountByPkData_accounts_nodes_identity_membershipHistory_nodes>
       get serializer =>
-          _$gAccountByPkDataAccountsNodesLinkedIdentityMembershipHistoryNodesSerializer;
+          _$gAccountByPkDataAccountsNodesIdentityMembershipHistoryNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistory_nodes
+        GAccountByPkData_accounts_nodes_identity_membershipHistory_nodes
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistory_nodes?
+  static GAccountByPkData_accounts_nodes_identity_membershipHistory_nodes?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accounts_nodes_linkedIdentity_membershipHistory_nodes
+            GAccountByPkData_accounts_nodes_identity_membershipHistory_nodes
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChange
+abstract class GAccountByPkData_accounts_nodes_identity_ownerKeyChange
     implements
-        Built<GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChange,
-            GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChangeBuilder>,
-        GAccountFields_linkedIdentity_ownerKeyChange,
+        Built<GAccountByPkData_accounts_nodes_identity_ownerKeyChange,
+            GAccountByPkData_accounts_nodes_identity_ownerKeyChangeBuilder>,
+        GAccountFields_identity_ownerKeyChange,
         GIdentityFields_ownerKeyChange {
-  GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChange._();
+  GAccountByPkData_accounts_nodes_identity_ownerKeyChange._();
 
-  factory GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChange(
-          [void Function(
-                  GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChangeBuilder
-                      b)
-              updates]) =
-      _$GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChange;
+  factory GAccountByPkData_accounts_nodes_identity_ownerKeyChange(
+      [void Function(
+              GAccountByPkData_accounts_nodes_identity_ownerKeyChangeBuilder b)
+          updates]) = _$GAccountByPkData_accounts_nodes_identity_ownerKeyChange;
 
   static void _initializeBuilder(
-          GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChangeBuilder
-              b) =>
+          GAccountByPkData_accounts_nodes_identity_ownerKeyChangeBuilder b) =>
       b..G__typename = 'ChangeOwnerKeysConnection';
 
   @override
@@ -4432,47 +4410,44 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChange
   @override
   int get totalCount;
   @override
-  BuiltList<GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nodes>
+  BuiltList<GAccountByPkData_accounts_nodes_identity_ownerKeyChange_nodes>
       get nodes;
-  static Serializer<
-          GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChange>
+  static Serializer<GAccountByPkData_accounts_nodes_identity_ownerKeyChange>
       get serializer =>
-          _$gAccountByPkDataAccountsNodesLinkedIdentityOwnerKeyChangeSerializer;
+          _$gAccountByPkDataAccountsNodesIdentityOwnerKeyChangeSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChange
-            .serializer,
+        GAccountByPkData_accounts_nodes_identity_ownerKeyChange.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChange?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChange
-                .serializer,
-            json,
-          );
+  static GAccountByPkData_accounts_nodes_identity_ownerKeyChange? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountByPkData_accounts_nodes_identity_ownerKeyChange.serializer,
+        json,
+      );
 }
 
-abstract class GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nodes
+abstract class GAccountByPkData_accounts_nodes_identity_ownerKeyChange_nodes
     implements
-        Built<
-            GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nodes,
-            GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nodesBuilder>,
-        GAccountFields_linkedIdentity_ownerKeyChange_nodes,
+        Built<GAccountByPkData_accounts_nodes_identity_ownerKeyChange_nodes,
+            GAccountByPkData_accounts_nodes_identity_ownerKeyChange_nodesBuilder>,
+        GAccountFields_identity_ownerKeyChange_nodes,
         GIdentityFields_ownerKeyChange_nodes,
         GOwnerKeyChangeFields {
-  GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nodes._();
+  GAccountByPkData_accounts_nodes_identity_ownerKeyChange_nodes._();
 
-  factory GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nodes(
+  factory GAccountByPkData_accounts_nodes_identity_ownerKeyChange_nodes(
           [void Function(
-                  GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nodesBuilder
+                  GAccountByPkData_accounts_nodes_identity_ownerKeyChange_nodesBuilder
                       b)
               updates]) =
-      _$GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nodes;
+      _$GAccountByPkData_accounts_nodes_identity_ownerKeyChange_nodes;
 
   static void _initializeBuilder(
-          GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nodesBuilder
+          GAccountByPkData_accounts_nodes_identity_ownerKeyChange_nodesBuilder
               b) =>
       b..G__typename = 'ChangeOwnerKey';
 
@@ -4490,41 +4465,40 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nod
   @override
   String? get previousId;
   static Serializer<
-          GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nodes>
+          GAccountByPkData_accounts_nodes_identity_ownerKeyChange_nodes>
       get serializer =>
-          _$gAccountByPkDataAccountsNodesLinkedIdentityOwnerKeyChangeNodesSerializer;
+          _$gAccountByPkDataAccountsNodesIdentityOwnerKeyChangeNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nodes
+        GAccountByPkData_accounts_nodes_identity_ownerKeyChange_nodes
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nodes?
+  static GAccountByPkData_accounts_nodes_identity_ownerKeyChange_nodes?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nodes
+            GAccountByPkData_accounts_nodes_identity_ownerKeyChange_nodes
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountByPkData_accounts_nodes_linkedIdentity_smith
+abstract class GAccountByPkData_accounts_nodes_identity_smith
     implements
-        Built<GAccountByPkData_accounts_nodes_linkedIdentity_smith,
-            GAccountByPkData_accounts_nodes_linkedIdentity_smithBuilder>,
-        GAccountFields_linkedIdentity_smith,
+        Built<GAccountByPkData_accounts_nodes_identity_smith,
+            GAccountByPkData_accounts_nodes_identity_smithBuilder>,
+        GAccountFields_identity_smith,
         GIdentityFields_smith,
         GSmithFields {
-  GAccountByPkData_accounts_nodes_linkedIdentity_smith._();
+  GAccountByPkData_accounts_nodes_identity_smith._();
 
-  factory GAccountByPkData_accounts_nodes_linkedIdentity_smith(
-      [void Function(
-              GAccountByPkData_accounts_nodes_linkedIdentity_smithBuilder b)
-          updates]) = _$GAccountByPkData_accounts_nodes_linkedIdentity_smith;
+  factory GAccountByPkData_accounts_nodes_identity_smith(
+      [void Function(GAccountByPkData_accounts_nodes_identity_smithBuilder b)
+          updates]) = _$GAccountByPkData_accounts_nodes_identity_smith;
 
   static void _initializeBuilder(
-          GAccountByPkData_accounts_nodes_linkedIdentity_smithBuilder b) =>
+          GAccountByPkData_accounts_nodes_identity_smithBuilder b) =>
       b..G__typename = 'Smith';
 
   @override
@@ -4541,48 +4515,46 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_smith
   @override
   int? get lastForged;
   @override
-  GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued
+  GAccountByPkData_accounts_nodes_identity_smith_smithCertIssued
       get smithCertIssued;
   @override
-  GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived
+  GAccountByPkData_accounts_nodes_identity_smith_smithCertReceived
       get smithCertReceived;
-  static Serializer<GAccountByPkData_accounts_nodes_linkedIdentity_smith>
-      get serializer =>
-          _$gAccountByPkDataAccountsNodesLinkedIdentitySmithSerializer;
+  static Serializer<GAccountByPkData_accounts_nodes_identity_smith>
+      get serializer => _$gAccountByPkDataAccountsNodesIdentitySmithSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity_smith.serializer,
+        GAccountByPkData_accounts_nodes_identity_smith.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accounts_nodes_linkedIdentity_smith? fromJson(
+  static GAccountByPkData_accounts_nodes_identity_smith? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity_smith.serializer,
+        GAccountByPkData_accounts_nodes_identity_smith.serializer,
         json,
       );
 }
 
-abstract class GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued
+abstract class GAccountByPkData_accounts_nodes_identity_smith_smithCertIssued
     implements
-        Built<
-            GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued,
-            GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssuedBuilder>,
-        GAccountFields_linkedIdentity_smith_smithCertIssued,
+        Built<GAccountByPkData_accounts_nodes_identity_smith_smithCertIssued,
+            GAccountByPkData_accounts_nodes_identity_smith_smithCertIssuedBuilder>,
+        GAccountFields_identity_smith_smithCertIssued,
         GIdentityFields_smith_smithCertIssued,
         GSmithFields_smithCertIssued {
-  GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued._();
+  GAccountByPkData_accounts_nodes_identity_smith_smithCertIssued._();
 
-  factory GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued(
+  factory GAccountByPkData_accounts_nodes_identity_smith_smithCertIssued(
           [void Function(
-                  GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssuedBuilder
+                  GAccountByPkData_accounts_nodes_identity_smith_smithCertIssuedBuilder
                       b)
               updates]) =
-      _$GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued;
+      _$GAccountByPkData_accounts_nodes_identity_smith_smithCertIssued;
 
   static void _initializeBuilder(
-          GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssuedBuilder
+          GAccountByPkData_accounts_nodes_identity_smith_smithCertIssuedBuilder
               b) =>
       b..G__typename = 'SmithCertsConnection';
 
@@ -4593,48 +4565,48 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIss
   int get totalCount;
   @override
   BuiltList<
-          GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued_nodes>
+          GAccountByPkData_accounts_nodes_identity_smith_smithCertIssued_nodes>
       get nodes;
   static Serializer<
-          GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued>
+          GAccountByPkData_accounts_nodes_identity_smith_smithCertIssued>
       get serializer =>
-          _$gAccountByPkDataAccountsNodesLinkedIdentitySmithSmithCertIssuedSerializer;
+          _$gAccountByPkDataAccountsNodesIdentitySmithSmithCertIssuedSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued
+        GAccountByPkData_accounts_nodes_identity_smith_smithCertIssued
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued?
+  static GAccountByPkData_accounts_nodes_identity_smith_smithCertIssued?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued
+            GAccountByPkData_accounts_nodes_identity_smith_smithCertIssued
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued_nodes
+abstract class GAccountByPkData_accounts_nodes_identity_smith_smithCertIssued_nodes
     implements
         Built<
-            GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued_nodes,
-            GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued_nodesBuilder>,
-        GAccountFields_linkedIdentity_smith_smithCertIssued_nodes,
+            GAccountByPkData_accounts_nodes_identity_smith_smithCertIssued_nodes,
+            GAccountByPkData_accounts_nodes_identity_smith_smithCertIssued_nodesBuilder>,
+        GAccountFields_identity_smith_smithCertIssued_nodes,
         GIdentityFields_smith_smithCertIssued_nodes,
         GSmithFields_smithCertIssued_nodes,
         GSmithCertFields {
-  GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued_nodes._();
+  GAccountByPkData_accounts_nodes_identity_smith_smithCertIssued_nodes._();
 
-  factory GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued_nodes(
+  factory GAccountByPkData_accounts_nodes_identity_smith_smithCertIssued_nodes(
           [void Function(
-                  GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued_nodesBuilder
+                  GAccountByPkData_accounts_nodes_identity_smith_smithCertIssued_nodesBuilder
                       b)
               updates]) =
-      _$GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued_nodes;
+      _$GAccountByPkData_accounts_nodes_identity_smith_smithCertIssued_nodes;
 
   static void _initializeBuilder(
-          GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued_nodesBuilder
+          GAccountByPkData_accounts_nodes_identity_smith_smithCertIssued_nodesBuilder
               b) =>
       b..G__typename = 'SmithCert';
 
@@ -4650,44 +4622,43 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIss
   @override
   int get createdOn;
   static Serializer<
-          GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued_nodes>
+          GAccountByPkData_accounts_nodes_identity_smith_smithCertIssued_nodes>
       get serializer =>
-          _$gAccountByPkDataAccountsNodesLinkedIdentitySmithSmithCertIssuedNodesSerializer;
+          _$gAccountByPkDataAccountsNodesIdentitySmithSmithCertIssuedNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued_nodes
+        GAccountByPkData_accounts_nodes_identity_smith_smithCertIssued_nodes
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued_nodes?
+  static GAccountByPkData_accounts_nodes_identity_smith_smithCertIssued_nodes?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued_nodes
+            GAccountByPkData_accounts_nodes_identity_smith_smithCertIssued_nodes
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived
+abstract class GAccountByPkData_accounts_nodes_identity_smith_smithCertReceived
     implements
-        Built<
-            GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived,
-            GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceivedBuilder>,
-        GAccountFields_linkedIdentity_smith_smithCertReceived,
+        Built<GAccountByPkData_accounts_nodes_identity_smith_smithCertReceived,
+            GAccountByPkData_accounts_nodes_identity_smith_smithCertReceivedBuilder>,
+        GAccountFields_identity_smith_smithCertReceived,
         GIdentityFields_smith_smithCertReceived,
         GSmithFields_smithCertReceived {
-  GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived._();
+  GAccountByPkData_accounts_nodes_identity_smith_smithCertReceived._();
 
-  factory GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived(
+  factory GAccountByPkData_accounts_nodes_identity_smith_smithCertReceived(
           [void Function(
-                  GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceivedBuilder
+                  GAccountByPkData_accounts_nodes_identity_smith_smithCertReceivedBuilder
                       b)
               updates]) =
-      _$GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived;
+      _$GAccountByPkData_accounts_nodes_identity_smith_smithCertReceived;
 
   static void _initializeBuilder(
-          GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceivedBuilder
+          GAccountByPkData_accounts_nodes_identity_smith_smithCertReceivedBuilder
               b) =>
       b..G__typename = 'SmithCertsConnection';
 
@@ -4698,48 +4669,48 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertRec
   int get totalCount;
   @override
   BuiltList<
-          GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived_nodes>
+          GAccountByPkData_accounts_nodes_identity_smith_smithCertReceived_nodes>
       get nodes;
   static Serializer<
-          GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived>
+          GAccountByPkData_accounts_nodes_identity_smith_smithCertReceived>
       get serializer =>
-          _$gAccountByPkDataAccountsNodesLinkedIdentitySmithSmithCertReceivedSerializer;
+          _$gAccountByPkDataAccountsNodesIdentitySmithSmithCertReceivedSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived
+        GAccountByPkData_accounts_nodes_identity_smith_smithCertReceived
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived?
+  static GAccountByPkData_accounts_nodes_identity_smith_smithCertReceived?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived
+            GAccountByPkData_accounts_nodes_identity_smith_smithCertReceived
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived_nodes
+abstract class GAccountByPkData_accounts_nodes_identity_smith_smithCertReceived_nodes
     implements
         Built<
-            GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived_nodes,
-            GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived_nodesBuilder>,
-        GAccountFields_linkedIdentity_smith_smithCertReceived_nodes,
+            GAccountByPkData_accounts_nodes_identity_smith_smithCertReceived_nodes,
+            GAccountByPkData_accounts_nodes_identity_smith_smithCertReceived_nodesBuilder>,
+        GAccountFields_identity_smith_smithCertReceived_nodes,
         GIdentityFields_smith_smithCertReceived_nodes,
         GSmithFields_smithCertReceived_nodes,
         GSmithCertFields {
-  GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived_nodes._();
+  GAccountByPkData_accounts_nodes_identity_smith_smithCertReceived_nodes._();
 
-  factory GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived_nodes(
+  factory GAccountByPkData_accounts_nodes_identity_smith_smithCertReceived_nodes(
           [void Function(
-                  GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived_nodesBuilder
+                  GAccountByPkData_accounts_nodes_identity_smith_smithCertReceived_nodesBuilder
                       b)
               updates]) =
-      _$GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived_nodes;
+      _$GAccountByPkData_accounts_nodes_identity_smith_smithCertReceived_nodes;
 
   static void _initializeBuilder(
-          GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived_nodesBuilder
+          GAccountByPkData_accounts_nodes_identity_smith_smithCertReceived_nodesBuilder
               b) =>
       b..G__typename = 'SmithCert';
 
@@ -4755,20 +4726,20 @@ abstract class GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertRec
   @override
   int get createdOn;
   static Serializer<
-          GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived_nodes>
+          GAccountByPkData_accounts_nodes_identity_smith_smithCertReceived_nodes>
       get serializer =>
-          _$gAccountByPkDataAccountsNodesLinkedIdentitySmithSmithCertReceivedNodesSerializer;
+          _$gAccountByPkDataAccountsNodesIdentitySmithSmithCertReceivedNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived_nodes
+        GAccountByPkData_accounts_nodes_identity_smith_smithCertReceived_nodes
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived_nodes?
+  static GAccountByPkData_accounts_nodes_identity_smith_smithCertReceived_nodes?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived_nodes
+            GAccountByPkData_accounts_nodes_identity_smith_smithCertReceived_nodes
                 .serializer,
             json,
           );
@@ -4869,7 +4840,7 @@ abstract class GAccountsByPkData_accounts_nodes
   @override
   GAccountsByPkData_accounts_nodes_wasIdentityNext get wasIdentityNext;
   @override
-  GAccountsByPkData_accounts_nodes_linkedIdentity? get linkedIdentity;
+  GAccountsByPkData_accounts_nodes_identity? get identity;
   static Serializer<GAccountsByPkData_accounts_nodes> get serializer =>
       _$gAccountsByPkDataAccountsNodesSerializer;
 
@@ -5597,35 +5568,35 @@ abstract class GAccountsByPkData_accounts_nodes_wasIdentityNext_nodes
       );
 }
 
-abstract class GAccountsByPkData_accounts_nodes_linkedIdentity
+abstract class GAccountsByPkData_accounts_nodes_identity
     implements
-        Built<GAccountsByPkData_accounts_nodes_linkedIdentity,
-            GAccountsByPkData_accounts_nodes_linkedIdentityBuilder>,
-        GAccountFields_linkedIdentity,
+        Built<GAccountsByPkData_accounts_nodes_identity,
+            GAccountsByPkData_accounts_nodes_identityBuilder>,
+        GAccountFields_identity,
         GIdentityFields {
-  GAccountsByPkData_accounts_nodes_linkedIdentity._();
+  GAccountsByPkData_accounts_nodes_identity._();
 
-  factory GAccountsByPkData_accounts_nodes_linkedIdentity(
-      [void Function(GAccountsByPkData_accounts_nodes_linkedIdentityBuilder b)
-          updates]) = _$GAccountsByPkData_accounts_nodes_linkedIdentity;
+  factory GAccountsByPkData_accounts_nodes_identity(
+      [void Function(GAccountsByPkData_accounts_nodes_identityBuilder b)
+          updates]) = _$GAccountsByPkData_accounts_nodes_identity;
 
   static void _initializeBuilder(
-          GAccountsByPkData_accounts_nodes_linkedIdentityBuilder b) =>
+          GAccountsByPkData_accounts_nodes_identityBuilder b) =>
       b..G__typename = 'Identity';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  GAccountsByPkData_accounts_nodes_linkedIdentity_account? get account;
+  GAccountsByPkData_accounts_nodes_identity_account? get account;
   @override
   String? get accountId;
   @override
   String? get accountRemovedId;
   @override
-  GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued get certIssued;
+  GAccountsByPkData_accounts_nodes_identity_certIssued get certIssued;
   @override
-  GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived get certReceived;
+  GAccountsByPkData_accounts_nodes_identity_certReceived get certReceived;
   @override
   String? get createdInId;
   @override
@@ -5645,46 +5616,43 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity
   @override
   String get name;
   @override
-  GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistory
+  GAccountsByPkData_accounts_nodes_identity_membershipHistory
       get membershipHistory;
   @override
-  GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChange
-      get ownerKeyChange;
+  GAccountsByPkData_accounts_nodes_identity_ownerKeyChange get ownerKeyChange;
   @override
-  GAccountsByPkData_accounts_nodes_linkedIdentity_smith? get smith;
-  static Serializer<GAccountsByPkData_accounts_nodes_linkedIdentity>
-      get serializer =>
-          _$gAccountsByPkDataAccountsNodesLinkedIdentitySerializer;
+  GAccountsByPkData_accounts_nodes_identity_smith? get smith;
+  static Serializer<GAccountsByPkData_accounts_nodes_identity> get serializer =>
+      _$gAccountsByPkDataAccountsNodesIdentitySerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity.serializer,
+        GAccountsByPkData_accounts_nodes_identity.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_accounts_nodes_linkedIdentity? fromJson(
+  static GAccountsByPkData_accounts_nodes_identity? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity.serializer,
+        GAccountsByPkData_accounts_nodes_identity.serializer,
         json,
       );
 }
 
-abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_account
+abstract class GAccountsByPkData_accounts_nodes_identity_account
     implements
-        Built<GAccountsByPkData_accounts_nodes_linkedIdentity_account,
-            GAccountsByPkData_accounts_nodes_linkedIdentity_accountBuilder>,
-        GAccountFields_linkedIdentity_account,
+        Built<GAccountsByPkData_accounts_nodes_identity_account,
+            GAccountsByPkData_accounts_nodes_identity_accountBuilder>,
+        GAccountFields_identity_account,
         GIdentityFields_account {
-  GAccountsByPkData_accounts_nodes_linkedIdentity_account._();
+  GAccountsByPkData_accounts_nodes_identity_account._();
 
-  factory GAccountsByPkData_accounts_nodes_linkedIdentity_account(
-      [void Function(
-              GAccountsByPkData_accounts_nodes_linkedIdentity_accountBuilder b)
-          updates]) = _$GAccountsByPkData_accounts_nodes_linkedIdentity_account;
+  factory GAccountsByPkData_accounts_nodes_identity_account(
+      [void Function(GAccountsByPkData_accounts_nodes_identity_accountBuilder b)
+          updates]) = _$GAccountsByPkData_accounts_nodes_identity_account;
 
   static void _initializeBuilder(
-          GAccountsByPkData_accounts_nodes_linkedIdentity_accountBuilder b) =>
+          GAccountsByPkData_accounts_nodes_identity_accountBuilder b) =>
       b..G__typename = 'Account';
 
   @override
@@ -5692,41 +5660,39 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_account
   String get G__typename;
   @override
   int get createdOn;
-  static Serializer<GAccountsByPkData_accounts_nodes_linkedIdentity_account>
+  static Serializer<GAccountsByPkData_accounts_nodes_identity_account>
       get serializer =>
-          _$gAccountsByPkDataAccountsNodesLinkedIdentityAccountSerializer;
+          _$gAccountsByPkDataAccountsNodesIdentityAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity_account.serializer,
+        GAccountsByPkData_accounts_nodes_identity_account.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_accounts_nodes_linkedIdentity_account? fromJson(
+  static GAccountsByPkData_accounts_nodes_identity_account? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity_account.serializer,
+        GAccountsByPkData_accounts_nodes_identity_account.serializer,
         json,
       );
 }
 
-abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued
+abstract class GAccountsByPkData_accounts_nodes_identity_certIssued
     implements
-        Built<GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued,
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certIssuedBuilder>,
-        GAccountFields_linkedIdentity_certIssued,
+        Built<GAccountsByPkData_accounts_nodes_identity_certIssued,
+            GAccountsByPkData_accounts_nodes_identity_certIssuedBuilder>,
+        GAccountFields_identity_certIssued,
         GIdentityFields_certIssued {
-  GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued._();
+  GAccountsByPkData_accounts_nodes_identity_certIssued._();
 
-  factory GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued(
+  factory GAccountsByPkData_accounts_nodes_identity_certIssued(
       [void Function(
-              GAccountsByPkData_accounts_nodes_linkedIdentity_certIssuedBuilder
-                  b)
-          updates]) = _$GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued;
+              GAccountsByPkData_accounts_nodes_identity_certIssuedBuilder b)
+          updates]) = _$GAccountsByPkData_accounts_nodes_identity_certIssued;
 
   static void _initializeBuilder(
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certIssuedBuilder
-              b) =>
+          GAccountsByPkData_accounts_nodes_identity_certIssuedBuilder b) =>
       b..G__typename = 'CertsConnection';
 
   @override
@@ -5735,44 +5701,43 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued
   @override
   int get totalCount;
   @override
-  BuiltList<GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes>
+  BuiltList<GAccountsByPkData_accounts_nodes_identity_certIssued_nodes>
       get nodes;
-  static Serializer<GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued>
+  static Serializer<GAccountsByPkData_accounts_nodes_identity_certIssued>
       get serializer =>
-          _$gAccountsByPkDataAccountsNodesLinkedIdentityCertIssuedSerializer;
+          _$gAccountsByPkDataAccountsNodesIdentityCertIssuedSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued.serializer,
+        GAccountsByPkData_accounts_nodes_identity_certIssued.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued? fromJson(
+  static GAccountsByPkData_accounts_nodes_identity_certIssued? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued.serializer,
+        GAccountsByPkData_accounts_nodes_identity_certIssued.serializer,
         json,
       );
 }
 
-abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes
+abstract class GAccountsByPkData_accounts_nodes_identity_certIssued_nodes
     implements
-        Built<GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes,
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodesBuilder>,
-        GAccountFields_linkedIdentity_certIssued_nodes,
+        Built<GAccountsByPkData_accounts_nodes_identity_certIssued_nodes,
+            GAccountsByPkData_accounts_nodes_identity_certIssued_nodesBuilder>,
+        GAccountFields_identity_certIssued_nodes,
         GIdentityFields_certIssued_nodes,
         GCertFields {
-  GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes._();
+  GAccountsByPkData_accounts_nodes_identity_certIssued_nodes._();
 
-  factory GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes(
-          [void Function(
-                  GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodesBuilder
-                      b)
-              updates]) =
-      _$GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes;
+  factory GAccountsByPkData_accounts_nodes_identity_certIssued_nodes(
+      [void Function(
+              GAccountsByPkData_accounts_nodes_identity_certIssued_nodesBuilder
+                  b)
+          updates]) = _$GAccountsByPkData_accounts_nodes_identity_certIssued_nodes;
 
   static void _initializeBuilder(
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodesBuilder
+          GAccountsByPkData_accounts_nodes_identity_certIssued_nodesBuilder
               b) =>
       b..G__typename = 'Cert';
 
@@ -5784,12 +5749,11 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes
   @override
   String? get issuerId;
   @override
-  GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer?
-      get issuer;
+  GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuer? get issuer;
   @override
   String? get receiverId;
   @override
-  GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver?
+  GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiver?
       get receiver;
   @override
   int get createdOn;
@@ -5799,46 +5763,43 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes
   bool get isActive;
   @override
   int get updatedOn;
-  static Serializer<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes>
+  static Serializer<GAccountsByPkData_accounts_nodes_identity_certIssued_nodes>
       get serializer =>
-          _$gAccountsByPkDataAccountsNodesLinkedIdentityCertIssuedNodesSerializer;
+          _$gAccountsByPkDataAccountsNodesIdentityCertIssuedNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes
-            .serializer,
+        GAccountsByPkData_accounts_nodes_identity_certIssued_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes
-                .serializer,
-            json,
-          );
+  static GAccountsByPkData_accounts_nodes_identity_certIssued_nodes? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountsByPkData_accounts_nodes_identity_certIssued_nodes.serializer,
+        json,
+      );
 }
 
-abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer
+abstract class GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuer
     implements
-        Built<
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer,
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuerBuilder>,
-        GAccountFields_linkedIdentity_certIssued_nodes_issuer,
+        Built<GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuer,
+            GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuerBuilder>,
+        GAccountFields_identity_certIssued_nodes_issuer,
         GIdentityFields_certIssued_nodes_issuer,
         GCertFields_issuer,
         GIdentityBasicFields {
-  GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer._();
+  GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuer._();
 
-  factory GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer(
+  factory GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuer(
           [void Function(
-                  GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuerBuilder
+                  GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuerBuilder
                       b)
               updates]) =
-      _$GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer;
+      _$GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuer;
 
   static void _initializeBuilder(
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuerBuilder
+          GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuerBuilder
               b) =>
       b..G__typename = 'Identity';
 
@@ -5848,7 +5809,7 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_
   @override
   String? get accountId;
   @override
-  GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer_account?
+  GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuer_account?
       get account;
   @override
   String get id;
@@ -5863,45 +5824,45 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_
   @override
   int get index;
   static Serializer<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer>
+          GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuer>
       get serializer =>
-          _$gAccountsByPkDataAccountsNodesLinkedIdentityCertIssuedNodesIssuerSerializer;
+          _$gAccountsByPkDataAccountsNodesIdentityCertIssuedNodesIssuerSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer
+        GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuer
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer?
+  static GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuer?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer
+            GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuer
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer_account
+abstract class GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuer_account
     implements
         Built<
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer_account,
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer_accountBuilder>,
-        GAccountFields_linkedIdentity_certIssued_nodes_issuer_account,
+            GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuer_account,
+            GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuer_accountBuilder>,
+        GAccountFields_identity_certIssued_nodes_issuer_account,
         GIdentityFields_certIssued_nodes_issuer_account,
         GCertFields_issuer_account,
         GIdentityBasicFields_account {
-  GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer_account._();
+  GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuer_account._();
 
-  factory GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer_account(
+  factory GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuer_account(
           [void Function(
-                  GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer_accountBuilder
+                  GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuer_accountBuilder
                       b)
               updates]) =
-      _$GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer_account;
+      _$GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuer_account;
 
   static void _initializeBuilder(
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer_accountBuilder
+          GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuer_accountBuilder
               b) =>
       b..G__typename = 'Account';
 
@@ -5911,45 +5872,45 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_
   @override
   int get createdOn;
   static Serializer<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer_account>
+          GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuer_account>
       get serializer =>
-          _$gAccountsByPkDataAccountsNodesLinkedIdentityCertIssuedNodesIssuerAccountSerializer;
+          _$gAccountsByPkDataAccountsNodesIdentityCertIssuedNodesIssuerAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer_account
+        GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuer_account
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer_account?
+  static GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuer_account?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer_account
+            GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuer_account
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver
+abstract class GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiver
     implements
         Built<
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver,
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiverBuilder>,
-        GAccountFields_linkedIdentity_certIssued_nodes_receiver,
+            GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiver,
+            GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiverBuilder>,
+        GAccountFields_identity_certIssued_nodes_receiver,
         GIdentityFields_certIssued_nodes_receiver,
         GCertFields_receiver,
         GIdentityBasicFields {
-  GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver._();
+  GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiver._();
 
-  factory GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver(
+  factory GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiver(
           [void Function(
-                  GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiverBuilder
+                  GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiverBuilder
                       b)
               updates]) =
-      _$GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver;
+      _$GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiver;
 
   static void _initializeBuilder(
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiverBuilder
+          GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiverBuilder
               b) =>
       b..G__typename = 'Identity';
 
@@ -5959,7 +5920,7 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_
   @override
   String? get accountId;
   @override
-  GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver_account?
+  GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiver_account?
       get account;
   @override
   String get id;
@@ -5974,45 +5935,45 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_
   @override
   int get index;
   static Serializer<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver>
+          GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiver>
       get serializer =>
-          _$gAccountsByPkDataAccountsNodesLinkedIdentityCertIssuedNodesReceiverSerializer;
+          _$gAccountsByPkDataAccountsNodesIdentityCertIssuedNodesReceiverSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver
+        GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiver
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver?
+  static GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiver?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver
+            GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiver
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver_account
+abstract class GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiver_account
     implements
         Built<
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver_account,
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver_accountBuilder>,
-        GAccountFields_linkedIdentity_certIssued_nodes_receiver_account,
+            GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiver_account,
+            GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiver_accountBuilder>,
+        GAccountFields_identity_certIssued_nodes_receiver_account,
         GIdentityFields_certIssued_nodes_receiver_account,
         GCertFields_receiver_account,
         GIdentityBasicFields_account {
-  GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver_account._();
+  GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiver_account._();
 
-  factory GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver_account(
+  factory GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiver_account(
           [void Function(
-                  GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver_accountBuilder
+                  GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiver_accountBuilder
                       b)
               updates]) =
-      _$GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver_account;
+      _$GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiver_account;
 
   static void _initializeBuilder(
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver_accountBuilder
+          GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiver_accountBuilder
               b) =>
       b..G__typename = 'Account';
 
@@ -6022,43 +5983,40 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_
   @override
   int get createdOn;
   static Serializer<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver_account>
+          GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiver_account>
       get serializer =>
-          _$gAccountsByPkDataAccountsNodesLinkedIdentityCertIssuedNodesReceiverAccountSerializer;
+          _$gAccountsByPkDataAccountsNodesIdentityCertIssuedNodesReceiverAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver_account
+        GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiver_account
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver_account?
+  static GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiver_account?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver_account
+            GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiver_account
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived
+abstract class GAccountsByPkData_accounts_nodes_identity_certReceived
     implements
-        Built<GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived,
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certReceivedBuilder>,
-        GAccountFields_linkedIdentity_certReceived,
+        Built<GAccountsByPkData_accounts_nodes_identity_certReceived,
+            GAccountsByPkData_accounts_nodes_identity_certReceivedBuilder>,
+        GAccountFields_identity_certReceived,
         GIdentityFields_certReceived {
-  GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived._();
+  GAccountsByPkData_accounts_nodes_identity_certReceived._();
 
-  factory GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived(
-          [void Function(
-                  GAccountsByPkData_accounts_nodes_linkedIdentity_certReceivedBuilder
-                      b)
-              updates]) =
-      _$GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived;
+  factory GAccountsByPkData_accounts_nodes_identity_certReceived(
+      [void Function(
+              GAccountsByPkData_accounts_nodes_identity_certReceivedBuilder b)
+          updates]) = _$GAccountsByPkData_accounts_nodes_identity_certReceived;
 
   static void _initializeBuilder(
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certReceivedBuilder
-              b) =>
+          GAccountsByPkData_accounts_nodes_identity_certReceivedBuilder b) =>
       b..G__typename = 'CertsConnection';
 
   @override
@@ -6067,46 +6025,44 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived
   @override
   int get totalCount;
   @override
-  BuiltList<GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes>
+  BuiltList<GAccountsByPkData_accounts_nodes_identity_certReceived_nodes>
       get nodes;
-  static Serializer<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived>
+  static Serializer<GAccountsByPkData_accounts_nodes_identity_certReceived>
       get serializer =>
-          _$gAccountsByPkDataAccountsNodesLinkedIdentityCertReceivedSerializer;
+          _$gAccountsByPkDataAccountsNodesIdentityCertReceivedSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived.serializer,
+        GAccountsByPkData_accounts_nodes_identity_certReceived.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived? fromJson(
+  static GAccountsByPkData_accounts_nodes_identity_certReceived? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived.serializer,
+        GAccountsByPkData_accounts_nodes_identity_certReceived.serializer,
         json,
       );
 }
 
-abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes
+abstract class GAccountsByPkData_accounts_nodes_identity_certReceived_nodes
     implements
-        Built<
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes,
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodesBuilder>,
-        GAccountFields_linkedIdentity_certReceived_nodes,
+        Built<GAccountsByPkData_accounts_nodes_identity_certReceived_nodes,
+            GAccountsByPkData_accounts_nodes_identity_certReceived_nodesBuilder>,
+        GAccountFields_identity_certReceived_nodes,
         GIdentityFields_certReceived_nodes,
         GCertFields {
-  GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes._();
+  GAccountsByPkData_accounts_nodes_identity_certReceived_nodes._();
 
-  factory GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes(
+  factory GAccountsByPkData_accounts_nodes_identity_certReceived_nodes(
           [void Function(
-                  GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodesBuilder
+                  GAccountsByPkData_accounts_nodes_identity_certReceived_nodesBuilder
                       b)
               updates]) =
-      _$GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes;
+      _$GAccountsByPkData_accounts_nodes_identity_certReceived_nodes;
 
   static void _initializeBuilder(
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodesBuilder
+          GAccountsByPkData_accounts_nodes_identity_certReceived_nodesBuilder
               b) =>
       b..G__typename = 'Cert';
 
@@ -6118,12 +6074,12 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_node
   @override
   String? get issuerId;
   @override
-  GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer?
+  GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuer?
       get issuer;
   @override
   String? get receiverId;
   @override
-  GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver?
+  GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiver?
       get receiver;
   @override
   int get createdOn;
@@ -6134,45 +6090,44 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_node
   @override
   int get updatedOn;
   static Serializer<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes>
+          GAccountsByPkData_accounts_nodes_identity_certReceived_nodes>
       get serializer =>
-          _$gAccountsByPkDataAccountsNodesLinkedIdentityCertReceivedNodesSerializer;
+          _$gAccountsByPkDataAccountsNodesIdentityCertReceivedNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes
-            .serializer,
+        GAccountsByPkData_accounts_nodes_identity_certReceived_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes
-                .serializer,
-            json,
-          );
+  static GAccountsByPkData_accounts_nodes_identity_certReceived_nodes? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountsByPkData_accounts_nodes_identity_certReceived_nodes.serializer,
+        json,
+      );
 }
 
-abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer
+abstract class GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuer
     implements
         Built<
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer,
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuerBuilder>,
-        GAccountFields_linkedIdentity_certReceived_nodes_issuer,
+            GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuer,
+            GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuerBuilder>,
+        GAccountFields_identity_certReceived_nodes_issuer,
         GIdentityFields_certReceived_nodes_issuer,
         GCertFields_issuer,
         GIdentityBasicFields {
-  GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer._();
+  GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuer._();
 
-  factory GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer(
+  factory GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuer(
           [void Function(
-                  GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuerBuilder
+                  GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuerBuilder
                       b)
               updates]) =
-      _$GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer;
+      _$GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuer;
 
   static void _initializeBuilder(
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuerBuilder
+          GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuerBuilder
               b) =>
       b..G__typename = 'Identity';
 
@@ -6182,7 +6137,7 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_node
   @override
   String? get accountId;
   @override
-  GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer_account?
+  GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuer_account?
       get account;
   @override
   String get id;
@@ -6197,45 +6152,45 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_node
   @override
   int get index;
   static Serializer<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer>
+          GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuer>
       get serializer =>
-          _$gAccountsByPkDataAccountsNodesLinkedIdentityCertReceivedNodesIssuerSerializer;
+          _$gAccountsByPkDataAccountsNodesIdentityCertReceivedNodesIssuerSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer
+        GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuer
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer?
+  static GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuer?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer
+            GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuer
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer_account
+abstract class GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuer_account
     implements
         Built<
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer_account,
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer_accountBuilder>,
-        GAccountFields_linkedIdentity_certReceived_nodes_issuer_account,
+            GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuer_account,
+            GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuer_accountBuilder>,
+        GAccountFields_identity_certReceived_nodes_issuer_account,
         GIdentityFields_certReceived_nodes_issuer_account,
         GCertFields_issuer_account,
         GIdentityBasicFields_account {
-  GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer_account._();
+  GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuer_account._();
 
-  factory GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer_account(
+  factory GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuer_account(
           [void Function(
-                  GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer_accountBuilder
+                  GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuer_accountBuilder
                       b)
               updates]) =
-      _$GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer_account;
+      _$GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuer_account;
 
   static void _initializeBuilder(
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer_accountBuilder
+          GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuer_accountBuilder
               b) =>
       b..G__typename = 'Account';
 
@@ -6245,45 +6200,45 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_node
   @override
   int get createdOn;
   static Serializer<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer_account>
+          GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuer_account>
       get serializer =>
-          _$gAccountsByPkDataAccountsNodesLinkedIdentityCertReceivedNodesIssuerAccountSerializer;
+          _$gAccountsByPkDataAccountsNodesIdentityCertReceivedNodesIssuerAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer_account
+        GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuer_account
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer_account?
+  static GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuer_account?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer_account
+            GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuer_account
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver
+abstract class GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiver
     implements
         Built<
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver,
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiverBuilder>,
-        GAccountFields_linkedIdentity_certReceived_nodes_receiver,
+            GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiver,
+            GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiverBuilder>,
+        GAccountFields_identity_certReceived_nodes_receiver,
         GIdentityFields_certReceived_nodes_receiver,
         GCertFields_receiver,
         GIdentityBasicFields {
-  GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver._();
+  GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiver._();
 
-  factory GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver(
+  factory GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiver(
           [void Function(
-                  GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiverBuilder
+                  GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiverBuilder
                       b)
               updates]) =
-      _$GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver;
+      _$GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiver;
 
   static void _initializeBuilder(
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiverBuilder
+          GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiverBuilder
               b) =>
       b..G__typename = 'Identity';
 
@@ -6293,7 +6248,7 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_node
   @override
   String? get accountId;
   @override
-  GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver_account?
+  GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiver_account?
       get account;
   @override
   String get id;
@@ -6308,45 +6263,45 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_node
   @override
   int get index;
   static Serializer<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver>
+          GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiver>
       get serializer =>
-          _$gAccountsByPkDataAccountsNodesLinkedIdentityCertReceivedNodesReceiverSerializer;
+          _$gAccountsByPkDataAccountsNodesIdentityCertReceivedNodesReceiverSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver
+        GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiver
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver?
+  static GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiver?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver
+            GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiver
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver_account
+abstract class GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiver_account
     implements
         Built<
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver_account,
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver_accountBuilder>,
-        GAccountFields_linkedIdentity_certReceived_nodes_receiver_account,
+            GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiver_account,
+            GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiver_accountBuilder>,
+        GAccountFields_identity_certReceived_nodes_receiver_account,
         GIdentityFields_certReceived_nodes_receiver_account,
         GCertFields_receiver_account,
         GIdentityBasicFields_account {
-  GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver_account._();
+  GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiver_account._();
 
-  factory GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver_account(
+  factory GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiver_account(
           [void Function(
-                  GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver_accountBuilder
+                  GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiver_accountBuilder
                       b)
               updates]) =
-      _$GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver_account;
+      _$GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiver_account;
 
   static void _initializeBuilder(
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver_accountBuilder
+          GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiver_accountBuilder
               b) =>
       b..G__typename = 'Account';
 
@@ -6356,42 +6311,41 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_node
   @override
   int get createdOn;
   static Serializer<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver_account>
+          GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiver_account>
       get serializer =>
-          _$gAccountsByPkDataAccountsNodesLinkedIdentityCertReceivedNodesReceiverAccountSerializer;
+          _$gAccountsByPkDataAccountsNodesIdentityCertReceivedNodesReceiverAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver_account
+        GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiver_account
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver_account?
+  static GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiver_account?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver_account
+            GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiver_account
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistory
+abstract class GAccountsByPkData_accounts_nodes_identity_membershipHistory
     implements
-        Built<GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistory,
-            GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistoryBuilder>,
-        GAccountFields_linkedIdentity_membershipHistory,
+        Built<GAccountsByPkData_accounts_nodes_identity_membershipHistory,
+            GAccountsByPkData_accounts_nodes_identity_membershipHistoryBuilder>,
+        GAccountFields_identity_membershipHistory,
         GIdentityFields_membershipHistory {
-  GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistory._();
+  GAccountsByPkData_accounts_nodes_identity_membershipHistory._();
 
-  factory GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistory(
-          [void Function(
-                  GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistoryBuilder
-                      b)
-              updates]) =
-      _$GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistory;
+  factory GAccountsByPkData_accounts_nodes_identity_membershipHistory(
+      [void Function(
+              GAccountsByPkData_accounts_nodes_identity_membershipHistoryBuilder
+                  b)
+          updates]) = _$GAccountsByPkData_accounts_nodes_identity_membershipHistory;
 
   static void _initializeBuilder(
-          GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistoryBuilder
+          GAccountsByPkData_accounts_nodes_identity_membershipHistoryBuilder
               b) =>
       b..G__typename = 'MembershipEventsConnection';
 
@@ -6401,47 +6355,43 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistory
   @override
   int get totalCount;
   @override
-  BuiltList<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistory_nodes>
+  BuiltList<GAccountsByPkData_accounts_nodes_identity_membershipHistory_nodes>
       get nodes;
-  static Serializer<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistory>
+  static Serializer<GAccountsByPkData_accounts_nodes_identity_membershipHistory>
       get serializer =>
-          _$gAccountsByPkDataAccountsNodesLinkedIdentityMembershipHistorySerializer;
+          _$gAccountsByPkDataAccountsNodesIdentityMembershipHistorySerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistory
-            .serializer,
+        GAccountsByPkData_accounts_nodes_identity_membershipHistory.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistory?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistory
-                .serializer,
-            json,
-          );
+  static GAccountsByPkData_accounts_nodes_identity_membershipHistory? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountsByPkData_accounts_nodes_identity_membershipHistory.serializer,
+        json,
+      );
 }
 
-abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistory_nodes
+abstract class GAccountsByPkData_accounts_nodes_identity_membershipHistory_nodes
     implements
-        Built<
-            GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistory_nodes,
-            GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistory_nodesBuilder>,
-        GAccountFields_linkedIdentity_membershipHistory_nodes,
+        Built<GAccountsByPkData_accounts_nodes_identity_membershipHistory_nodes,
+            GAccountsByPkData_accounts_nodes_identity_membershipHistory_nodesBuilder>,
+        GAccountFields_identity_membershipHistory_nodes,
         GIdentityFields_membershipHistory_nodes {
-  GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistory_nodes._();
+  GAccountsByPkData_accounts_nodes_identity_membershipHistory_nodes._();
 
-  factory GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistory_nodes(
+  factory GAccountsByPkData_accounts_nodes_identity_membershipHistory_nodes(
           [void Function(
-                  GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistory_nodesBuilder
+                  GAccountsByPkData_accounts_nodes_identity_membershipHistory_nodesBuilder
                       b)
               updates]) =
-      _$GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistory_nodes;
+      _$GAccountsByPkData_accounts_nodes_identity_membershipHistory_nodes;
 
   static void _initializeBuilder(
-          GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistory_nodesBuilder
+          GAccountsByPkData_accounts_nodes_identity_membershipHistory_nodesBuilder
               b) =>
       b..G__typename = 'MembershipEvent';
 
@@ -6459,43 +6409,40 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistory
   @override
   String? get identityId;
   static Serializer<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistory_nodes>
+          GAccountsByPkData_accounts_nodes_identity_membershipHistory_nodes>
       get serializer =>
-          _$gAccountsByPkDataAccountsNodesLinkedIdentityMembershipHistoryNodesSerializer;
+          _$gAccountsByPkDataAccountsNodesIdentityMembershipHistoryNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistory_nodes
+        GAccountsByPkData_accounts_nodes_identity_membershipHistory_nodes
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistory_nodes?
+  static GAccountsByPkData_accounts_nodes_identity_membershipHistory_nodes?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_accounts_nodes_linkedIdentity_membershipHistory_nodes
+            GAccountsByPkData_accounts_nodes_identity_membershipHistory_nodes
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChange
+abstract class GAccountsByPkData_accounts_nodes_identity_ownerKeyChange
     implements
-        Built<GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChange,
-            GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChangeBuilder>,
-        GAccountFields_linkedIdentity_ownerKeyChange,
+        Built<GAccountsByPkData_accounts_nodes_identity_ownerKeyChange,
+            GAccountsByPkData_accounts_nodes_identity_ownerKeyChangeBuilder>,
+        GAccountFields_identity_ownerKeyChange,
         GIdentityFields_ownerKeyChange {
-  GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChange._();
+  GAccountsByPkData_accounts_nodes_identity_ownerKeyChange._();
 
-  factory GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChange(
-          [void Function(
-                  GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChangeBuilder
-                      b)
-              updates]) =
-      _$GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChange;
+  factory GAccountsByPkData_accounts_nodes_identity_ownerKeyChange(
+      [void Function(
+              GAccountsByPkData_accounts_nodes_identity_ownerKeyChangeBuilder b)
+          updates]) = _$GAccountsByPkData_accounts_nodes_identity_ownerKeyChange;
 
   static void _initializeBuilder(
-          GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChangeBuilder
-              b) =>
+          GAccountsByPkData_accounts_nodes_identity_ownerKeyChangeBuilder b) =>
       b..G__typename = 'ChangeOwnerKeysConnection';
 
   @override
@@ -6504,48 +6451,44 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChange
   @override
   int get totalCount;
   @override
-  BuiltList<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nodes>
+  BuiltList<GAccountsByPkData_accounts_nodes_identity_ownerKeyChange_nodes>
       get nodes;
-  static Serializer<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChange>
+  static Serializer<GAccountsByPkData_accounts_nodes_identity_ownerKeyChange>
       get serializer =>
-          _$gAccountsByPkDataAccountsNodesLinkedIdentityOwnerKeyChangeSerializer;
+          _$gAccountsByPkDataAccountsNodesIdentityOwnerKeyChangeSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChange
-            .serializer,
+        GAccountsByPkData_accounts_nodes_identity_ownerKeyChange.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChange?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChange
-                .serializer,
-            json,
-          );
+  static GAccountsByPkData_accounts_nodes_identity_ownerKeyChange? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountsByPkData_accounts_nodes_identity_ownerKeyChange.serializer,
+        json,
+      );
 }
 
-abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nodes
+abstract class GAccountsByPkData_accounts_nodes_identity_ownerKeyChange_nodes
     implements
-        Built<
-            GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nodes,
-            GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nodesBuilder>,
-        GAccountFields_linkedIdentity_ownerKeyChange_nodes,
+        Built<GAccountsByPkData_accounts_nodes_identity_ownerKeyChange_nodes,
+            GAccountsByPkData_accounts_nodes_identity_ownerKeyChange_nodesBuilder>,
+        GAccountFields_identity_ownerKeyChange_nodes,
         GIdentityFields_ownerKeyChange_nodes,
         GOwnerKeyChangeFields {
-  GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nodes._();
+  GAccountsByPkData_accounts_nodes_identity_ownerKeyChange_nodes._();
 
-  factory GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nodes(
+  factory GAccountsByPkData_accounts_nodes_identity_ownerKeyChange_nodes(
           [void Function(
-                  GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nodesBuilder
+                  GAccountsByPkData_accounts_nodes_identity_ownerKeyChange_nodesBuilder
                       b)
               updates]) =
-      _$GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nodes;
+      _$GAccountsByPkData_accounts_nodes_identity_ownerKeyChange_nodes;
 
   static void _initializeBuilder(
-          GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nodesBuilder
+          GAccountsByPkData_accounts_nodes_identity_ownerKeyChange_nodesBuilder
               b) =>
       b..G__typename = 'ChangeOwnerKey';
 
@@ -6563,41 +6506,40 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_no
   @override
   String? get previousId;
   static Serializer<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nodes>
+          GAccountsByPkData_accounts_nodes_identity_ownerKeyChange_nodes>
       get serializer =>
-          _$gAccountsByPkDataAccountsNodesLinkedIdentityOwnerKeyChangeNodesSerializer;
+          _$gAccountsByPkDataAccountsNodesIdentityOwnerKeyChangeNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nodes
+        GAccountsByPkData_accounts_nodes_identity_ownerKeyChange_nodes
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nodes?
+  static GAccountsByPkData_accounts_nodes_identity_ownerKeyChange_nodes?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_accounts_nodes_linkedIdentity_ownerKeyChange_nodes
+            GAccountsByPkData_accounts_nodes_identity_ownerKeyChange_nodes
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_smith
+abstract class GAccountsByPkData_accounts_nodes_identity_smith
     implements
-        Built<GAccountsByPkData_accounts_nodes_linkedIdentity_smith,
-            GAccountsByPkData_accounts_nodes_linkedIdentity_smithBuilder>,
-        GAccountFields_linkedIdentity_smith,
+        Built<GAccountsByPkData_accounts_nodes_identity_smith,
+            GAccountsByPkData_accounts_nodes_identity_smithBuilder>,
+        GAccountFields_identity_smith,
         GIdentityFields_smith,
         GSmithFields {
-  GAccountsByPkData_accounts_nodes_linkedIdentity_smith._();
+  GAccountsByPkData_accounts_nodes_identity_smith._();
 
-  factory GAccountsByPkData_accounts_nodes_linkedIdentity_smith(
-      [void Function(
-              GAccountsByPkData_accounts_nodes_linkedIdentity_smithBuilder b)
-          updates]) = _$GAccountsByPkData_accounts_nodes_linkedIdentity_smith;
+  factory GAccountsByPkData_accounts_nodes_identity_smith(
+      [void Function(GAccountsByPkData_accounts_nodes_identity_smithBuilder b)
+          updates]) = _$GAccountsByPkData_accounts_nodes_identity_smith;
 
   static void _initializeBuilder(
-          GAccountsByPkData_accounts_nodes_linkedIdentity_smithBuilder b) =>
+          GAccountsByPkData_accounts_nodes_identity_smithBuilder b) =>
       b..G__typename = 'Smith';
 
   @override
@@ -6614,48 +6556,46 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_smith
   @override
   int? get lastForged;
   @override
-  GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued
+  GAccountsByPkData_accounts_nodes_identity_smith_smithCertIssued
       get smithCertIssued;
   @override
-  GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived
+  GAccountsByPkData_accounts_nodes_identity_smith_smithCertReceived
       get smithCertReceived;
-  static Serializer<GAccountsByPkData_accounts_nodes_linkedIdentity_smith>
-      get serializer =>
-          _$gAccountsByPkDataAccountsNodesLinkedIdentitySmithSerializer;
+  static Serializer<GAccountsByPkData_accounts_nodes_identity_smith>
+      get serializer => _$gAccountsByPkDataAccountsNodesIdentitySmithSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity_smith.serializer,
+        GAccountsByPkData_accounts_nodes_identity_smith.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_accounts_nodes_linkedIdentity_smith? fromJson(
+  static GAccountsByPkData_accounts_nodes_identity_smith? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity_smith.serializer,
+        GAccountsByPkData_accounts_nodes_identity_smith.serializer,
         json,
       );
 }
 
-abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued
+abstract class GAccountsByPkData_accounts_nodes_identity_smith_smithCertIssued
     implements
-        Built<
-            GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued,
-            GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssuedBuilder>,
-        GAccountFields_linkedIdentity_smith_smithCertIssued,
+        Built<GAccountsByPkData_accounts_nodes_identity_smith_smithCertIssued,
+            GAccountsByPkData_accounts_nodes_identity_smith_smithCertIssuedBuilder>,
+        GAccountFields_identity_smith_smithCertIssued,
         GIdentityFields_smith_smithCertIssued,
         GSmithFields_smithCertIssued {
-  GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued._();
+  GAccountsByPkData_accounts_nodes_identity_smith_smithCertIssued._();
 
-  factory GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued(
+  factory GAccountsByPkData_accounts_nodes_identity_smith_smithCertIssued(
           [void Function(
-                  GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssuedBuilder
+                  GAccountsByPkData_accounts_nodes_identity_smith_smithCertIssuedBuilder
                       b)
               updates]) =
-      _$GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued;
+      _$GAccountsByPkData_accounts_nodes_identity_smith_smithCertIssued;
 
   static void _initializeBuilder(
-          GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssuedBuilder
+          GAccountsByPkData_accounts_nodes_identity_smith_smithCertIssuedBuilder
               b) =>
       b..G__typename = 'SmithCertsConnection';
 
@@ -6666,48 +6606,48 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIs
   int get totalCount;
   @override
   BuiltList<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued_nodes>
+          GAccountsByPkData_accounts_nodes_identity_smith_smithCertIssued_nodes>
       get nodes;
   static Serializer<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued>
+          GAccountsByPkData_accounts_nodes_identity_smith_smithCertIssued>
       get serializer =>
-          _$gAccountsByPkDataAccountsNodesLinkedIdentitySmithSmithCertIssuedSerializer;
+          _$gAccountsByPkDataAccountsNodesIdentitySmithSmithCertIssuedSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued
+        GAccountsByPkData_accounts_nodes_identity_smith_smithCertIssued
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued?
+  static GAccountsByPkData_accounts_nodes_identity_smith_smithCertIssued?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued
+            GAccountsByPkData_accounts_nodes_identity_smith_smithCertIssued
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued_nodes
+abstract class GAccountsByPkData_accounts_nodes_identity_smith_smithCertIssued_nodes
     implements
         Built<
-            GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued_nodes,
-            GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued_nodesBuilder>,
-        GAccountFields_linkedIdentity_smith_smithCertIssued_nodes,
+            GAccountsByPkData_accounts_nodes_identity_smith_smithCertIssued_nodes,
+            GAccountsByPkData_accounts_nodes_identity_smith_smithCertIssued_nodesBuilder>,
+        GAccountFields_identity_smith_smithCertIssued_nodes,
         GIdentityFields_smith_smithCertIssued_nodes,
         GSmithFields_smithCertIssued_nodes,
         GSmithCertFields {
-  GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued_nodes._();
+  GAccountsByPkData_accounts_nodes_identity_smith_smithCertIssued_nodes._();
 
-  factory GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued_nodes(
+  factory GAccountsByPkData_accounts_nodes_identity_smith_smithCertIssued_nodes(
           [void Function(
-                  GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued_nodesBuilder
+                  GAccountsByPkData_accounts_nodes_identity_smith_smithCertIssued_nodesBuilder
                       b)
               updates]) =
-      _$GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued_nodes;
+      _$GAccountsByPkData_accounts_nodes_identity_smith_smithCertIssued_nodes;
 
   static void _initializeBuilder(
-          GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued_nodesBuilder
+          GAccountsByPkData_accounts_nodes_identity_smith_smithCertIssued_nodesBuilder
               b) =>
       b..G__typename = 'SmithCert';
 
@@ -6723,44 +6663,43 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIs
   @override
   int get createdOn;
   static Serializer<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued_nodes>
+          GAccountsByPkData_accounts_nodes_identity_smith_smithCertIssued_nodes>
       get serializer =>
-          _$gAccountsByPkDataAccountsNodesLinkedIdentitySmithSmithCertIssuedNodesSerializer;
+          _$gAccountsByPkDataAccountsNodesIdentitySmithSmithCertIssuedNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued_nodes
+        GAccountsByPkData_accounts_nodes_identity_smith_smithCertIssued_nodes
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued_nodes?
+  static GAccountsByPkData_accounts_nodes_identity_smith_smithCertIssued_nodes?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertIssued_nodes
+            GAccountsByPkData_accounts_nodes_identity_smith_smithCertIssued_nodes
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived
+abstract class GAccountsByPkData_accounts_nodes_identity_smith_smithCertReceived
     implements
-        Built<
-            GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived,
-            GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceivedBuilder>,
-        GAccountFields_linkedIdentity_smith_smithCertReceived,
+        Built<GAccountsByPkData_accounts_nodes_identity_smith_smithCertReceived,
+            GAccountsByPkData_accounts_nodes_identity_smith_smithCertReceivedBuilder>,
+        GAccountFields_identity_smith_smithCertReceived,
         GIdentityFields_smith_smithCertReceived,
         GSmithFields_smithCertReceived {
-  GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived._();
+  GAccountsByPkData_accounts_nodes_identity_smith_smithCertReceived._();
 
-  factory GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived(
+  factory GAccountsByPkData_accounts_nodes_identity_smith_smithCertReceived(
           [void Function(
-                  GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceivedBuilder
+                  GAccountsByPkData_accounts_nodes_identity_smith_smithCertReceivedBuilder
                       b)
               updates]) =
-      _$GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived;
+      _$GAccountsByPkData_accounts_nodes_identity_smith_smithCertReceived;
 
   static void _initializeBuilder(
-          GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceivedBuilder
+          GAccountsByPkData_accounts_nodes_identity_smith_smithCertReceivedBuilder
               b) =>
       b..G__typename = 'SmithCertsConnection';
 
@@ -6771,48 +6710,48 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertRe
   int get totalCount;
   @override
   BuiltList<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived_nodes>
+          GAccountsByPkData_accounts_nodes_identity_smith_smithCertReceived_nodes>
       get nodes;
   static Serializer<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived>
+          GAccountsByPkData_accounts_nodes_identity_smith_smithCertReceived>
       get serializer =>
-          _$gAccountsByPkDataAccountsNodesLinkedIdentitySmithSmithCertReceivedSerializer;
+          _$gAccountsByPkDataAccountsNodesIdentitySmithSmithCertReceivedSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived
+        GAccountsByPkData_accounts_nodes_identity_smith_smithCertReceived
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived?
+  static GAccountsByPkData_accounts_nodes_identity_smith_smithCertReceived?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived
+            GAccountsByPkData_accounts_nodes_identity_smith_smithCertReceived
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived_nodes
+abstract class GAccountsByPkData_accounts_nodes_identity_smith_smithCertReceived_nodes
     implements
         Built<
-            GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived_nodes,
-            GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived_nodesBuilder>,
-        GAccountFields_linkedIdentity_smith_smithCertReceived_nodes,
+            GAccountsByPkData_accounts_nodes_identity_smith_smithCertReceived_nodes,
+            GAccountsByPkData_accounts_nodes_identity_smith_smithCertReceived_nodesBuilder>,
+        GAccountFields_identity_smith_smithCertReceived_nodes,
         GIdentityFields_smith_smithCertReceived_nodes,
         GSmithFields_smithCertReceived_nodes,
         GSmithCertFields {
-  GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived_nodes._();
+  GAccountsByPkData_accounts_nodes_identity_smith_smithCertReceived_nodes._();
 
-  factory GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived_nodes(
+  factory GAccountsByPkData_accounts_nodes_identity_smith_smithCertReceived_nodes(
           [void Function(
-                  GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived_nodesBuilder
+                  GAccountsByPkData_accounts_nodes_identity_smith_smithCertReceived_nodesBuilder
                       b)
               updates]) =
-      _$GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived_nodes;
+      _$GAccountsByPkData_accounts_nodes_identity_smith_smithCertReceived_nodes;
 
   static void _initializeBuilder(
-          GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived_nodesBuilder
+          GAccountsByPkData_accounts_nodes_identity_smith_smithCertReceived_nodesBuilder
               b) =>
       b..G__typename = 'SmithCert';
 
@@ -6828,20 +6767,20 @@ abstract class GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertRe
   @override
   int get createdOn;
   static Serializer<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived_nodes>
+          GAccountsByPkData_accounts_nodes_identity_smith_smithCertReceived_nodes>
       get serializer =>
-          _$gAccountsByPkDataAccountsNodesLinkedIdentitySmithSmithCertReceivedNodesSerializer;
+          _$gAccountsByPkDataAccountsNodesIdentitySmithSmithCertReceivedNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived_nodes
+        GAccountsByPkData_accounts_nodes_identity_smith_smithCertReceived_nodes
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived_nodes?
+  static GAccountsByPkData_accounts_nodes_identity_smith_smithCertReceived_nodes?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountsByPkData_accounts_nodes_linkedIdentity_smith_smithCertReceived_nodes
+            GAccountsByPkData_accounts_nodes_identity_smith_smithCertReceived_nodes
                 .serializer,
             json,
           );
@@ -6934,7 +6873,7 @@ abstract class GAccountBasicByPkData_accounts_nodes
   @override
   _i2.GBigFloat? get totalBalance;
   @override
-  GAccountBasicByPkData_accounts_nodes_linkedIdentity? get linkedIdentity;
+  GAccountBasicByPkData_accounts_nodes_identity? get identity;
   @override
   bool get isActive;
   static Serializer<GAccountBasicByPkData_accounts_nodes> get serializer =>
@@ -6954,21 +6893,20 @@ abstract class GAccountBasicByPkData_accounts_nodes
       );
 }
 
-abstract class GAccountBasicByPkData_accounts_nodes_linkedIdentity
+abstract class GAccountBasicByPkData_accounts_nodes_identity
     implements
-        Built<GAccountBasicByPkData_accounts_nodes_linkedIdentity,
-            GAccountBasicByPkData_accounts_nodes_linkedIdentityBuilder>,
-        GAccountBasicFields_linkedIdentity,
+        Built<GAccountBasicByPkData_accounts_nodes_identity,
+            GAccountBasicByPkData_accounts_nodes_identityBuilder>,
+        GAccountBasicFields_identity,
         GIdentityBasicFields {
-  GAccountBasicByPkData_accounts_nodes_linkedIdentity._();
+  GAccountBasicByPkData_accounts_nodes_identity._();
 
-  factory GAccountBasicByPkData_accounts_nodes_linkedIdentity(
-      [void Function(
-              GAccountBasicByPkData_accounts_nodes_linkedIdentityBuilder b)
-          updates]) = _$GAccountBasicByPkData_accounts_nodes_linkedIdentity;
+  factory GAccountBasicByPkData_accounts_nodes_identity(
+      [void Function(GAccountBasicByPkData_accounts_nodes_identityBuilder b)
+          updates]) = _$GAccountBasicByPkData_accounts_nodes_identity;
 
   static void _initializeBuilder(
-          GAccountBasicByPkData_accounts_nodes_linkedIdentityBuilder b) =>
+          GAccountBasicByPkData_accounts_nodes_identityBuilder b) =>
       b..G__typename = 'Identity';
 
   @override
@@ -6977,7 +6915,7 @@ abstract class GAccountBasicByPkData_accounts_nodes_linkedIdentity
   @override
   String? get accountId;
   @override
-  GAccountBasicByPkData_accounts_nodes_linkedIdentity_account? get account;
+  GAccountBasicByPkData_accounts_nodes_identity_account? get account;
   @override
   String get id;
   @override
@@ -6990,41 +6928,38 @@ abstract class GAccountBasicByPkData_accounts_nodes_linkedIdentity
   int get expireOn;
   @override
   int get index;
-  static Serializer<GAccountBasicByPkData_accounts_nodes_linkedIdentity>
-      get serializer =>
-          _$gAccountBasicByPkDataAccountsNodesLinkedIdentitySerializer;
+  static Serializer<GAccountBasicByPkData_accounts_nodes_identity>
+      get serializer => _$gAccountBasicByPkDataAccountsNodesIdentitySerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountBasicByPkData_accounts_nodes_linkedIdentity.serializer,
+        GAccountBasicByPkData_accounts_nodes_identity.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountBasicByPkData_accounts_nodes_linkedIdentity? fromJson(
+  static GAccountBasicByPkData_accounts_nodes_identity? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountBasicByPkData_accounts_nodes_linkedIdentity.serializer,
+        GAccountBasicByPkData_accounts_nodes_identity.serializer,
         json,
       );
 }
 
-abstract class GAccountBasicByPkData_accounts_nodes_linkedIdentity_account
+abstract class GAccountBasicByPkData_accounts_nodes_identity_account
     implements
-        Built<GAccountBasicByPkData_accounts_nodes_linkedIdentity_account,
-            GAccountBasicByPkData_accounts_nodes_linkedIdentity_accountBuilder>,
-        GAccountBasicFields_linkedIdentity_account,
+        Built<GAccountBasicByPkData_accounts_nodes_identity_account,
+            GAccountBasicByPkData_accounts_nodes_identity_accountBuilder>,
+        GAccountBasicFields_identity_account,
         GIdentityBasicFields_account {
-  GAccountBasicByPkData_accounts_nodes_linkedIdentity_account._();
+  GAccountBasicByPkData_accounts_nodes_identity_account._();
 
-  factory GAccountBasicByPkData_accounts_nodes_linkedIdentity_account(
+  factory GAccountBasicByPkData_accounts_nodes_identity_account(
       [void Function(
-              GAccountBasicByPkData_accounts_nodes_linkedIdentity_accountBuilder
-                  b)
-          updates]) = _$GAccountBasicByPkData_accounts_nodes_linkedIdentity_account;
+              GAccountBasicByPkData_accounts_nodes_identity_accountBuilder b)
+          updates]) = _$GAccountBasicByPkData_accounts_nodes_identity_account;
 
   static void _initializeBuilder(
-          GAccountBasicByPkData_accounts_nodes_linkedIdentity_accountBuilder
-              b) =>
+          GAccountBasicByPkData_accounts_nodes_identity_accountBuilder b) =>
       b..G__typename = 'Account';
 
   @override
@@ -7032,20 +6967,20 @@ abstract class GAccountBasicByPkData_accounts_nodes_linkedIdentity_account
   String get G__typename;
   @override
   int get createdOn;
-  static Serializer<GAccountBasicByPkData_accounts_nodes_linkedIdentity_account>
+  static Serializer<GAccountBasicByPkData_accounts_nodes_identity_account>
       get serializer =>
-          _$gAccountBasicByPkDataAccountsNodesLinkedIdentityAccountSerializer;
+          _$gAccountBasicByPkDataAccountsNodesIdentityAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountBasicByPkData_accounts_nodes_linkedIdentity_account.serializer,
+        GAccountBasicByPkData_accounts_nodes_identity_account.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountBasicByPkData_accounts_nodes_linkedIdentity_account? fromJson(
+  static GAccountBasicByPkData_accounts_nodes_identity_account? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountBasicByPkData_accounts_nodes_linkedIdentity_account.serializer,
+        GAccountBasicByPkData_accounts_nodes_identity_account.serializer,
         json,
       );
 }
@@ -7137,7 +7072,7 @@ abstract class GAccountsBasicByPkData_accounts_nodes
   @override
   _i2.GBigFloat? get totalBalance;
   @override
-  GAccountsBasicByPkData_accounts_nodes_linkedIdentity? get linkedIdentity;
+  GAccountsBasicByPkData_accounts_nodes_identity? get identity;
   @override
   bool get isActive;
   static Serializer<GAccountsBasicByPkData_accounts_nodes> get serializer =>
@@ -7157,21 +7092,20 @@ abstract class GAccountsBasicByPkData_accounts_nodes
       );
 }
 
-abstract class GAccountsBasicByPkData_accounts_nodes_linkedIdentity
+abstract class GAccountsBasicByPkData_accounts_nodes_identity
     implements
-        Built<GAccountsBasicByPkData_accounts_nodes_linkedIdentity,
-            GAccountsBasicByPkData_accounts_nodes_linkedIdentityBuilder>,
-        GAccountBasicFields_linkedIdentity,
+        Built<GAccountsBasicByPkData_accounts_nodes_identity,
+            GAccountsBasicByPkData_accounts_nodes_identityBuilder>,
+        GAccountBasicFields_identity,
         GIdentityBasicFields {
-  GAccountsBasicByPkData_accounts_nodes_linkedIdentity._();
+  GAccountsBasicByPkData_accounts_nodes_identity._();
 
-  factory GAccountsBasicByPkData_accounts_nodes_linkedIdentity(
-      [void Function(
-              GAccountsBasicByPkData_accounts_nodes_linkedIdentityBuilder b)
-          updates]) = _$GAccountsBasicByPkData_accounts_nodes_linkedIdentity;
+  factory GAccountsBasicByPkData_accounts_nodes_identity(
+      [void Function(GAccountsBasicByPkData_accounts_nodes_identityBuilder b)
+          updates]) = _$GAccountsBasicByPkData_accounts_nodes_identity;
 
   static void _initializeBuilder(
-          GAccountsBasicByPkData_accounts_nodes_linkedIdentityBuilder b) =>
+          GAccountsBasicByPkData_accounts_nodes_identityBuilder b) =>
       b..G__typename = 'Identity';
 
   @override
@@ -7180,7 +7114,7 @@ abstract class GAccountsBasicByPkData_accounts_nodes_linkedIdentity
   @override
   String? get accountId;
   @override
-  GAccountsBasicByPkData_accounts_nodes_linkedIdentity_account? get account;
+  GAccountsBasicByPkData_accounts_nodes_identity_account? get account;
   @override
   String get id;
   @override
@@ -7193,42 +7127,38 @@ abstract class GAccountsBasicByPkData_accounts_nodes_linkedIdentity
   int get expireOn;
   @override
   int get index;
-  static Serializer<GAccountsBasicByPkData_accounts_nodes_linkedIdentity>
-      get serializer =>
-          _$gAccountsBasicByPkDataAccountsNodesLinkedIdentitySerializer;
+  static Serializer<GAccountsBasicByPkData_accounts_nodes_identity>
+      get serializer => _$gAccountsBasicByPkDataAccountsNodesIdentitySerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsBasicByPkData_accounts_nodes_linkedIdentity.serializer,
+        GAccountsBasicByPkData_accounts_nodes_identity.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsBasicByPkData_accounts_nodes_linkedIdentity? fromJson(
+  static GAccountsBasicByPkData_accounts_nodes_identity? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountsBasicByPkData_accounts_nodes_linkedIdentity.serializer,
+        GAccountsBasicByPkData_accounts_nodes_identity.serializer,
         json,
       );
 }
 
-abstract class GAccountsBasicByPkData_accounts_nodes_linkedIdentity_account
+abstract class GAccountsBasicByPkData_accounts_nodes_identity_account
     implements
-        Built<GAccountsBasicByPkData_accounts_nodes_linkedIdentity_account,
-            GAccountsBasicByPkData_accounts_nodes_linkedIdentity_accountBuilder>,
-        GAccountBasicFields_linkedIdentity_account,
+        Built<GAccountsBasicByPkData_accounts_nodes_identity_account,
+            GAccountsBasicByPkData_accounts_nodes_identity_accountBuilder>,
+        GAccountBasicFields_identity_account,
         GIdentityBasicFields_account {
-  GAccountsBasicByPkData_accounts_nodes_linkedIdentity_account._();
+  GAccountsBasicByPkData_accounts_nodes_identity_account._();
 
-  factory GAccountsBasicByPkData_accounts_nodes_linkedIdentity_account(
-          [void Function(
-                  GAccountsBasicByPkData_accounts_nodes_linkedIdentity_accountBuilder
-                      b)
-              updates]) =
-      _$GAccountsBasicByPkData_accounts_nodes_linkedIdentity_account;
+  factory GAccountsBasicByPkData_accounts_nodes_identity_account(
+      [void Function(
+              GAccountsBasicByPkData_accounts_nodes_identity_accountBuilder b)
+          updates]) = _$GAccountsBasicByPkData_accounts_nodes_identity_account;
 
   static void _initializeBuilder(
-          GAccountsBasicByPkData_accounts_nodes_linkedIdentity_accountBuilder
-              b) =>
+          GAccountsBasicByPkData_accounts_nodes_identity_accountBuilder b) =>
       b..G__typename = 'Account';
 
   @override
@@ -7236,21 +7166,20 @@ abstract class GAccountsBasicByPkData_accounts_nodes_linkedIdentity_account
   String get G__typename;
   @override
   int get createdOn;
-  static Serializer<
-          GAccountsBasicByPkData_accounts_nodes_linkedIdentity_account>
+  static Serializer<GAccountsBasicByPkData_accounts_nodes_identity_account>
       get serializer =>
-          _$gAccountsBasicByPkDataAccountsNodesLinkedIdentityAccountSerializer;
+          _$gAccountsBasicByPkDataAccountsNodesIdentityAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountsBasicByPkData_accounts_nodes_linkedIdentity_account.serializer,
+        GAccountsBasicByPkData_accounts_nodes_identity_account.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountsBasicByPkData_accounts_nodes_linkedIdentity_account? fromJson(
+  static GAccountsBasicByPkData_accounts_nodes_identity_account? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountsBasicByPkData_accounts_nodes_linkedIdentity_account.serializer,
+        GAccountsBasicByPkData_accounts_nodes_identity_account.serializer,
         json,
       );
 }
@@ -10540,19 +10469,18 @@ abstract class GAccountBasicFields {
   String get id;
   _i2.GBigInt get balance;
   _i2.GBigFloat? get totalBalance;
-  GAccountBasicFields_linkedIdentity? get linkedIdentity;
+  GAccountBasicFields_identity? get identity;
   bool get isActive;
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountBasicFields_linkedIdentity
-    implements GIdentityBasicFields {
+abstract class GAccountBasicFields_identity implements GIdentityBasicFields {
   @override
   String get G__typename;
   @override
   String? get accountId;
   @override
-  GAccountBasicFields_linkedIdentity_account? get account;
+  GAccountBasicFields_identity_account? get account;
   @override
   String get id;
   @override
@@ -10569,7 +10497,7 @@ abstract class GAccountBasicFields_linkedIdentity
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountBasicFields_linkedIdentity_account
+abstract class GAccountBasicFields_identity_account
     implements GIdentityBasicFields_account {
   @override
   String get G__typename;
@@ -10604,7 +10532,7 @@ abstract class GAccountBasicFieldsData
   @override
   _i2.GBigFloat? get totalBalance;
   @override
-  GAccountBasicFieldsData_linkedIdentity? get linkedIdentity;
+  GAccountBasicFieldsData_identity? get identity;
   @override
   bool get isActive;
   static Serializer<GAccountBasicFieldsData> get serializer =>
@@ -10623,20 +10551,19 @@ abstract class GAccountBasicFieldsData
       );
 }
 
-abstract class GAccountBasicFieldsData_linkedIdentity
+abstract class GAccountBasicFieldsData_identity
     implements
-        Built<GAccountBasicFieldsData_linkedIdentity,
-            GAccountBasicFieldsData_linkedIdentityBuilder>,
-        GAccountBasicFields_linkedIdentity,
+        Built<GAccountBasicFieldsData_identity,
+            GAccountBasicFieldsData_identityBuilder>,
+        GAccountBasicFields_identity,
         GIdentityBasicFields {
-  GAccountBasicFieldsData_linkedIdentity._();
+  GAccountBasicFieldsData_identity._();
 
-  factory GAccountBasicFieldsData_linkedIdentity(
-      [void Function(GAccountBasicFieldsData_linkedIdentityBuilder b)
-          updates]) = _$GAccountBasicFieldsData_linkedIdentity;
+  factory GAccountBasicFieldsData_identity(
+          [void Function(GAccountBasicFieldsData_identityBuilder b) updates]) =
+      _$GAccountBasicFieldsData_identity;
 
-  static void _initializeBuilder(
-          GAccountBasicFieldsData_linkedIdentityBuilder b) =>
+  static void _initializeBuilder(GAccountBasicFieldsData_identityBuilder b) =>
       b..G__typename = 'Identity';
 
   @override
@@ -10645,7 +10572,7 @@ abstract class GAccountBasicFieldsData_linkedIdentity
   @override
   String? get accountId;
   @override
-  GAccountBasicFieldsData_linkedIdentity_account? get account;
+  GAccountBasicFieldsData_identity_account? get account;
   @override
   String get id;
   @override
@@ -10658,37 +10585,37 @@ abstract class GAccountBasicFieldsData_linkedIdentity
   int get expireOn;
   @override
   int get index;
-  static Serializer<GAccountBasicFieldsData_linkedIdentity> get serializer =>
-      _$gAccountBasicFieldsDataLinkedIdentitySerializer;
+  static Serializer<GAccountBasicFieldsData_identity> get serializer =>
+      _$gAccountBasicFieldsDataIdentitySerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountBasicFieldsData_linkedIdentity.serializer,
+        GAccountBasicFieldsData_identity.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountBasicFieldsData_linkedIdentity? fromJson(
+  static GAccountBasicFieldsData_identity? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountBasicFieldsData_linkedIdentity.serializer,
+        GAccountBasicFieldsData_identity.serializer,
         json,
       );
 }
 
-abstract class GAccountBasicFieldsData_linkedIdentity_account
+abstract class GAccountBasicFieldsData_identity_account
     implements
-        Built<GAccountBasicFieldsData_linkedIdentity_account,
-            GAccountBasicFieldsData_linkedIdentity_accountBuilder>,
-        GAccountBasicFields_linkedIdentity_account,
+        Built<GAccountBasicFieldsData_identity_account,
+            GAccountBasicFieldsData_identity_accountBuilder>,
+        GAccountBasicFields_identity_account,
         GIdentityBasicFields_account {
-  GAccountBasicFieldsData_linkedIdentity_account._();
+  GAccountBasicFieldsData_identity_account._();
 
-  factory GAccountBasicFieldsData_linkedIdentity_account(
-      [void Function(GAccountBasicFieldsData_linkedIdentity_accountBuilder b)
-          updates]) = _$GAccountBasicFieldsData_linkedIdentity_account;
+  factory GAccountBasicFieldsData_identity_account(
+      [void Function(GAccountBasicFieldsData_identity_accountBuilder b)
+          updates]) = _$GAccountBasicFieldsData_identity_account;
 
   static void _initializeBuilder(
-          GAccountBasicFieldsData_linkedIdentity_accountBuilder b) =>
+          GAccountBasicFieldsData_identity_accountBuilder b) =>
       b..G__typename = 'Account';
 
   @override
@@ -10696,20 +10623,19 @@ abstract class GAccountBasicFieldsData_linkedIdentity_account
   String get G__typename;
   @override
   int get createdOn;
-  static Serializer<GAccountBasicFieldsData_linkedIdentity_account>
-      get serializer =>
-          _$gAccountBasicFieldsDataLinkedIdentityAccountSerializer;
+  static Serializer<GAccountBasicFieldsData_identity_account> get serializer =>
+      _$gAccountBasicFieldsDataIdentityAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountBasicFieldsData_linkedIdentity_account.serializer,
+        GAccountBasicFieldsData_identity_account.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountBasicFieldsData_linkedIdentity_account? fromJson(
+  static GAccountBasicFieldsData_identity_account? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountBasicFieldsData_linkedIdentity_account.serializer,
+        GAccountBasicFieldsData_identity_account.serializer,
         json,
       );
 }
@@ -10725,7 +10651,7 @@ abstract class GAccountFields {
   GAccountFields_transfersReceived get transfersReceived;
   GAccountFields_wasIdentityPrev get wasIdentityPrev;
   GAccountFields_wasIdentityNext get wasIdentityNext;
-  GAccountFields_linkedIdentity? get linkedIdentity;
+  GAccountFields_identity? get identity;
   Map<String, dynamic> toJson();
 }
 
@@ -10912,19 +10838,19 @@ abstract class GAccountFields_wasIdentityNext_nodes
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_linkedIdentity implements GIdentityFields {
+abstract class GAccountFields_identity implements GIdentityFields {
   @override
   String get G__typename;
   @override
-  GAccountFields_linkedIdentity_account? get account;
+  GAccountFields_identity_account? get account;
   @override
   String? get accountId;
   @override
   String? get accountRemovedId;
   @override
-  GAccountFields_linkedIdentity_certIssued get certIssued;
+  GAccountFields_identity_certIssued get certIssued;
   @override
-  GAccountFields_linkedIdentity_certReceived get certReceived;
+  GAccountFields_identity_certReceived get certReceived;
   @override
   String? get createdInId;
   @override
@@ -10944,16 +10870,16 @@ abstract class GAccountFields_linkedIdentity implements GIdentityFields {
   @override
   String get name;
   @override
-  GAccountFields_linkedIdentity_membershipHistory get membershipHistory;
+  GAccountFields_identity_membershipHistory get membershipHistory;
   @override
-  GAccountFields_linkedIdentity_ownerKeyChange get ownerKeyChange;
+  GAccountFields_identity_ownerKeyChange get ownerKeyChange;
   @override
-  GAccountFields_linkedIdentity_smith? get smith;
+  GAccountFields_identity_smith? get smith;
   @override
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_linkedIdentity_account
+abstract class GAccountFields_identity_account
     implements GIdentityFields_account {
   @override
   String get G__typename;
@@ -10963,19 +10889,19 @@ abstract class GAccountFields_linkedIdentity_account
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_linkedIdentity_certIssued
+abstract class GAccountFields_identity_certIssued
     implements GIdentityFields_certIssued {
   @override
   String get G__typename;
   @override
   int get totalCount;
   @override
-  BuiltList<GAccountFields_linkedIdentity_certIssued_nodes> get nodes;
+  BuiltList<GAccountFields_identity_certIssued_nodes> get nodes;
   @override
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_linkedIdentity_certIssued_nodes
+abstract class GAccountFields_identity_certIssued_nodes
     implements GIdentityFields_certIssued_nodes, GCertFields {
   @override
   String get G__typename;
@@ -10984,11 +10910,11 @@ abstract class GAccountFields_linkedIdentity_certIssued_nodes
   @override
   String? get issuerId;
   @override
-  GAccountFields_linkedIdentity_certIssued_nodes_issuer? get issuer;
+  GAccountFields_identity_certIssued_nodes_issuer? get issuer;
   @override
   String? get receiverId;
   @override
-  GAccountFields_linkedIdentity_certIssued_nodes_receiver? get receiver;
+  GAccountFields_identity_certIssued_nodes_receiver? get receiver;
   @override
   int get createdOn;
   @override
@@ -11001,7 +10927,7 @@ abstract class GAccountFields_linkedIdentity_certIssued_nodes
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_linkedIdentity_certIssued_nodes_issuer
+abstract class GAccountFields_identity_certIssued_nodes_issuer
     implements
         GIdentityFields_certIssued_nodes_issuer,
         GCertFields_issuer,
@@ -11011,7 +10937,7 @@ abstract class GAccountFields_linkedIdentity_certIssued_nodes_issuer
   @override
   String? get accountId;
   @override
-  GAccountFields_linkedIdentity_certIssued_nodes_issuer_account? get account;
+  GAccountFields_identity_certIssued_nodes_issuer_account? get account;
   @override
   String get id;
   @override
@@ -11028,7 +10954,7 @@ abstract class GAccountFields_linkedIdentity_certIssued_nodes_issuer
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_linkedIdentity_certIssued_nodes_issuer_account
+abstract class GAccountFields_identity_certIssued_nodes_issuer_account
     implements
         GIdentityFields_certIssued_nodes_issuer_account,
         GCertFields_issuer_account,
@@ -11041,7 +10967,7 @@ abstract class GAccountFields_linkedIdentity_certIssued_nodes_issuer_account
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_linkedIdentity_certIssued_nodes_receiver
+abstract class GAccountFields_identity_certIssued_nodes_receiver
     implements
         GIdentityFields_certIssued_nodes_receiver,
         GCertFields_receiver,
@@ -11051,7 +10977,7 @@ abstract class GAccountFields_linkedIdentity_certIssued_nodes_receiver
   @override
   String? get accountId;
   @override
-  GAccountFields_linkedIdentity_certIssued_nodes_receiver_account? get account;
+  GAccountFields_identity_certIssued_nodes_receiver_account? get account;
   @override
   String get id;
   @override
@@ -11068,7 +10994,7 @@ abstract class GAccountFields_linkedIdentity_certIssued_nodes_receiver
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_linkedIdentity_certIssued_nodes_receiver_account
+abstract class GAccountFields_identity_certIssued_nodes_receiver_account
     implements
         GIdentityFields_certIssued_nodes_receiver_account,
         GCertFields_receiver_account,
@@ -11081,19 +11007,19 @@ abstract class GAccountFields_linkedIdentity_certIssued_nodes_receiver_account
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_linkedIdentity_certReceived
+abstract class GAccountFields_identity_certReceived
     implements GIdentityFields_certReceived {
   @override
   String get G__typename;
   @override
   int get totalCount;
   @override
-  BuiltList<GAccountFields_linkedIdentity_certReceived_nodes> get nodes;
+  BuiltList<GAccountFields_identity_certReceived_nodes> get nodes;
   @override
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_linkedIdentity_certReceived_nodes
+abstract class GAccountFields_identity_certReceived_nodes
     implements GIdentityFields_certReceived_nodes, GCertFields {
   @override
   String get G__typename;
@@ -11102,11 +11028,11 @@ abstract class GAccountFields_linkedIdentity_certReceived_nodes
   @override
   String? get issuerId;
   @override
-  GAccountFields_linkedIdentity_certReceived_nodes_issuer? get issuer;
+  GAccountFields_identity_certReceived_nodes_issuer? get issuer;
   @override
   String? get receiverId;
   @override
-  GAccountFields_linkedIdentity_certReceived_nodes_receiver? get receiver;
+  GAccountFields_identity_certReceived_nodes_receiver? get receiver;
   @override
   int get createdOn;
   @override
@@ -11119,7 +11045,7 @@ abstract class GAccountFields_linkedIdentity_certReceived_nodes
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_linkedIdentity_certReceived_nodes_issuer
+abstract class GAccountFields_identity_certReceived_nodes_issuer
     implements
         GIdentityFields_certReceived_nodes_issuer,
         GCertFields_issuer,
@@ -11129,7 +11055,7 @@ abstract class GAccountFields_linkedIdentity_certReceived_nodes_issuer
   @override
   String? get accountId;
   @override
-  GAccountFields_linkedIdentity_certReceived_nodes_issuer_account? get account;
+  GAccountFields_identity_certReceived_nodes_issuer_account? get account;
   @override
   String get id;
   @override
@@ -11146,7 +11072,7 @@ abstract class GAccountFields_linkedIdentity_certReceived_nodes_issuer
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_linkedIdentity_certReceived_nodes_issuer_account
+abstract class GAccountFields_identity_certReceived_nodes_issuer_account
     implements
         GIdentityFields_certReceived_nodes_issuer_account,
         GCertFields_issuer_account,
@@ -11159,7 +11085,7 @@ abstract class GAccountFields_linkedIdentity_certReceived_nodes_issuer_account
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_linkedIdentity_certReceived_nodes_receiver
+abstract class GAccountFields_identity_certReceived_nodes_receiver
     implements
         GIdentityFields_certReceived_nodes_receiver,
         GCertFields_receiver,
@@ -11169,8 +11095,7 @@ abstract class GAccountFields_linkedIdentity_certReceived_nodes_receiver
   @override
   String? get accountId;
   @override
-  GAccountFields_linkedIdentity_certReceived_nodes_receiver_account?
-      get account;
+  GAccountFields_identity_certReceived_nodes_receiver_account? get account;
   @override
   String get id;
   @override
@@ -11187,7 +11112,7 @@ abstract class GAccountFields_linkedIdentity_certReceived_nodes_receiver
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_linkedIdentity_certReceived_nodes_receiver_account
+abstract class GAccountFields_identity_certReceived_nodes_receiver_account
     implements
         GIdentityFields_certReceived_nodes_receiver_account,
         GCertFields_receiver_account,
@@ -11200,19 +11125,19 @@ abstract class GAccountFields_linkedIdentity_certReceived_nodes_receiver_account
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_linkedIdentity_membershipHistory
+abstract class GAccountFields_identity_membershipHistory
     implements GIdentityFields_membershipHistory {
   @override
   String get G__typename;
   @override
   int get totalCount;
   @override
-  BuiltList<GAccountFields_linkedIdentity_membershipHistory_nodes> get nodes;
+  BuiltList<GAccountFields_identity_membershipHistory_nodes> get nodes;
   @override
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_linkedIdentity_membershipHistory_nodes
+abstract class GAccountFields_identity_membershipHistory_nodes
     implements GIdentityFields_membershipHistory_nodes {
   @override
   String get G__typename;
@@ -11230,19 +11155,19 @@ abstract class GAccountFields_linkedIdentity_membershipHistory_nodes
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_linkedIdentity_ownerKeyChange
+abstract class GAccountFields_identity_ownerKeyChange
     implements GIdentityFields_ownerKeyChange {
   @override
   String get G__typename;
   @override
   int get totalCount;
   @override
-  BuiltList<GAccountFields_linkedIdentity_ownerKeyChange_nodes> get nodes;
+  BuiltList<GAccountFields_identity_ownerKeyChange_nodes> get nodes;
   @override
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_linkedIdentity_ownerKeyChange_nodes
+abstract class GAccountFields_identity_ownerKeyChange_nodes
     implements GIdentityFields_ownerKeyChange_nodes, GOwnerKeyChangeFields {
   @override
   String get G__typename;
@@ -11260,7 +11185,7 @@ abstract class GAccountFields_linkedIdentity_ownerKeyChange_nodes
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_linkedIdentity_smith
+abstract class GAccountFields_identity_smith
     implements GIdentityFields_smith, GSmithFields {
   @override
   String get G__typename;
@@ -11275,14 +11200,14 @@ abstract class GAccountFields_linkedIdentity_smith
   @override
   int? get lastForged;
   @override
-  GAccountFields_linkedIdentity_smith_smithCertIssued get smithCertIssued;
+  GAccountFields_identity_smith_smithCertIssued get smithCertIssued;
   @override
-  GAccountFields_linkedIdentity_smith_smithCertReceived get smithCertReceived;
+  GAccountFields_identity_smith_smithCertReceived get smithCertReceived;
   @override
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_linkedIdentity_smith_smithCertIssued
+abstract class GAccountFields_identity_smith_smithCertIssued
     implements
         GIdentityFields_smith_smithCertIssued,
         GSmithFields_smithCertIssued {
@@ -11291,13 +11216,12 @@ abstract class GAccountFields_linkedIdentity_smith_smithCertIssued
   @override
   int get totalCount;
   @override
-  BuiltList<GAccountFields_linkedIdentity_smith_smithCertIssued_nodes>
-      get nodes;
+  BuiltList<GAccountFields_identity_smith_smithCertIssued_nodes> get nodes;
   @override
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_linkedIdentity_smith_smithCertIssued_nodes
+abstract class GAccountFields_identity_smith_smithCertIssued_nodes
     implements
         GIdentityFields_smith_smithCertIssued_nodes,
         GSmithFields_smithCertIssued_nodes,
@@ -11316,7 +11240,7 @@ abstract class GAccountFields_linkedIdentity_smith_smithCertIssued_nodes
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_linkedIdentity_smith_smithCertReceived
+abstract class GAccountFields_identity_smith_smithCertReceived
     implements
         GIdentityFields_smith_smithCertReceived,
         GSmithFields_smithCertReceived {
@@ -11325,13 +11249,12 @@ abstract class GAccountFields_linkedIdentity_smith_smithCertReceived
   @override
   int get totalCount;
   @override
-  BuiltList<GAccountFields_linkedIdentity_smith_smithCertReceived_nodes>
-      get nodes;
+  BuiltList<GAccountFields_identity_smith_smithCertReceived_nodes> get nodes;
   @override
   Map<String, dynamic> toJson();
 }
 
-abstract class GAccountFields_linkedIdentity_smith_smithCertReceived_nodes
+abstract class GAccountFields_identity_smith_smithCertReceived_nodes
     implements
         GIdentityFields_smith_smithCertReceived_nodes,
         GSmithFields_smithCertReceived_nodes,
@@ -11385,7 +11308,7 @@ abstract class GAccountFieldsData
   @override
   GAccountFieldsData_wasIdentityNext get wasIdentityNext;
   @override
-  GAccountFieldsData_linkedIdentity? get linkedIdentity;
+  GAccountFieldsData_identity? get identity;
   static Serializer<GAccountFieldsData> get serializer =>
       _$gAccountFieldsDataSerializer;
 
@@ -12061,34 +11984,33 @@ abstract class GAccountFieldsData_wasIdentityNext_nodes
       );
 }
 
-abstract class GAccountFieldsData_linkedIdentity
+abstract class GAccountFieldsData_identity
     implements
-        Built<GAccountFieldsData_linkedIdentity,
-            GAccountFieldsData_linkedIdentityBuilder>,
-        GAccountFields_linkedIdentity,
+        Built<GAccountFieldsData_identity, GAccountFieldsData_identityBuilder>,
+        GAccountFields_identity,
         GIdentityFields {
-  GAccountFieldsData_linkedIdentity._();
+  GAccountFieldsData_identity._();
 
-  factory GAccountFieldsData_linkedIdentity(
-          [void Function(GAccountFieldsData_linkedIdentityBuilder b) updates]) =
-      _$GAccountFieldsData_linkedIdentity;
+  factory GAccountFieldsData_identity(
+          [void Function(GAccountFieldsData_identityBuilder b) updates]) =
+      _$GAccountFieldsData_identity;
 
-  static void _initializeBuilder(GAccountFieldsData_linkedIdentityBuilder b) =>
+  static void _initializeBuilder(GAccountFieldsData_identityBuilder b) =>
       b..G__typename = 'Identity';
 
   @override
   @BuiltValueField(wireName: '__typename')
   String get G__typename;
   @override
-  GAccountFieldsData_linkedIdentity_account? get account;
+  GAccountFieldsData_identity_account? get account;
   @override
   String? get accountId;
   @override
   String? get accountRemovedId;
   @override
-  GAccountFieldsData_linkedIdentity_certIssued get certIssued;
+  GAccountFieldsData_identity_certIssued get certIssued;
   @override
-  GAccountFieldsData_linkedIdentity_certReceived get certReceived;
+  GAccountFieldsData_identity_certReceived get certReceived;
   @override
   String? get createdInId;
   @override
@@ -12108,42 +12030,41 @@ abstract class GAccountFieldsData_linkedIdentity
   @override
   String get name;
   @override
-  GAccountFieldsData_linkedIdentity_membershipHistory get membershipHistory;
+  GAccountFieldsData_identity_membershipHistory get membershipHistory;
   @override
-  GAccountFieldsData_linkedIdentity_ownerKeyChange get ownerKeyChange;
+  GAccountFieldsData_identity_ownerKeyChange get ownerKeyChange;
   @override
-  GAccountFieldsData_linkedIdentity_smith? get smith;
-  static Serializer<GAccountFieldsData_linkedIdentity> get serializer =>
-      _$gAccountFieldsDataLinkedIdentitySerializer;
+  GAccountFieldsData_identity_smith? get smith;
+  static Serializer<GAccountFieldsData_identity> get serializer =>
+      _$gAccountFieldsDataIdentitySerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_linkedIdentity.serializer,
+        GAccountFieldsData_identity.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_linkedIdentity? fromJson(
-          Map<String, dynamic> json) =>
+  static GAccountFieldsData_identity? fromJson(Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountFieldsData_linkedIdentity.serializer,
+        GAccountFieldsData_identity.serializer,
         json,
       );
 }
 
-abstract class GAccountFieldsData_linkedIdentity_account
+abstract class GAccountFieldsData_identity_account
     implements
-        Built<GAccountFieldsData_linkedIdentity_account,
-            GAccountFieldsData_linkedIdentity_accountBuilder>,
-        GAccountFields_linkedIdentity_account,
+        Built<GAccountFieldsData_identity_account,
+            GAccountFieldsData_identity_accountBuilder>,
+        GAccountFields_identity_account,
         GIdentityFields_account {
-  GAccountFieldsData_linkedIdentity_account._();
+  GAccountFieldsData_identity_account._();
 
-  factory GAccountFieldsData_linkedIdentity_account(
-      [void Function(GAccountFieldsData_linkedIdentity_accountBuilder b)
-          updates]) = _$GAccountFieldsData_linkedIdentity_account;
+  factory GAccountFieldsData_identity_account(
+      [void Function(GAccountFieldsData_identity_accountBuilder b)
+          updates]) = _$GAccountFieldsData_identity_account;
 
   static void _initializeBuilder(
-          GAccountFieldsData_linkedIdentity_accountBuilder b) =>
+          GAccountFieldsData_identity_accountBuilder b) =>
       b..G__typename = 'Account';
 
   @override
@@ -12151,37 +12072,37 @@ abstract class GAccountFieldsData_linkedIdentity_account
   String get G__typename;
   @override
   int get createdOn;
-  static Serializer<GAccountFieldsData_linkedIdentity_account> get serializer =>
-      _$gAccountFieldsDataLinkedIdentityAccountSerializer;
+  static Serializer<GAccountFieldsData_identity_account> get serializer =>
+      _$gAccountFieldsDataIdentityAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_linkedIdentity_account.serializer,
+        GAccountFieldsData_identity_account.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_linkedIdentity_account? fromJson(
+  static GAccountFieldsData_identity_account? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountFieldsData_linkedIdentity_account.serializer,
+        GAccountFieldsData_identity_account.serializer,
         json,
       );
 }
 
-abstract class GAccountFieldsData_linkedIdentity_certIssued
+abstract class GAccountFieldsData_identity_certIssued
     implements
-        Built<GAccountFieldsData_linkedIdentity_certIssued,
-            GAccountFieldsData_linkedIdentity_certIssuedBuilder>,
-        GAccountFields_linkedIdentity_certIssued,
+        Built<GAccountFieldsData_identity_certIssued,
+            GAccountFieldsData_identity_certIssuedBuilder>,
+        GAccountFields_identity_certIssued,
         GIdentityFields_certIssued {
-  GAccountFieldsData_linkedIdentity_certIssued._();
+  GAccountFieldsData_identity_certIssued._();
 
-  factory GAccountFieldsData_linkedIdentity_certIssued(
-      [void Function(GAccountFieldsData_linkedIdentity_certIssuedBuilder b)
-          updates]) = _$GAccountFieldsData_linkedIdentity_certIssued;
+  factory GAccountFieldsData_identity_certIssued(
+      [void Function(GAccountFieldsData_identity_certIssuedBuilder b)
+          updates]) = _$GAccountFieldsData_identity_certIssued;
 
   static void _initializeBuilder(
-          GAccountFieldsData_linkedIdentity_certIssuedBuilder b) =>
+          GAccountFieldsData_identity_certIssuedBuilder b) =>
       b..G__typename = 'CertsConnection';
 
   @override
@@ -12190,40 +12111,39 @@ abstract class GAccountFieldsData_linkedIdentity_certIssued
   @override
   int get totalCount;
   @override
-  BuiltList<GAccountFieldsData_linkedIdentity_certIssued_nodes> get nodes;
-  static Serializer<GAccountFieldsData_linkedIdentity_certIssued>
-      get serializer => _$gAccountFieldsDataLinkedIdentityCertIssuedSerializer;
+  BuiltList<GAccountFieldsData_identity_certIssued_nodes> get nodes;
+  static Serializer<GAccountFieldsData_identity_certIssued> get serializer =>
+      _$gAccountFieldsDataIdentityCertIssuedSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_linkedIdentity_certIssued.serializer,
+        GAccountFieldsData_identity_certIssued.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_linkedIdentity_certIssued? fromJson(
+  static GAccountFieldsData_identity_certIssued? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountFieldsData_linkedIdentity_certIssued.serializer,
+        GAccountFieldsData_identity_certIssued.serializer,
         json,
       );
 }
 
-abstract class GAccountFieldsData_linkedIdentity_certIssued_nodes
+abstract class GAccountFieldsData_identity_certIssued_nodes
     implements
-        Built<GAccountFieldsData_linkedIdentity_certIssued_nodes,
-            GAccountFieldsData_linkedIdentity_certIssued_nodesBuilder>,
-        GAccountFields_linkedIdentity_certIssued_nodes,
+        Built<GAccountFieldsData_identity_certIssued_nodes,
+            GAccountFieldsData_identity_certIssued_nodesBuilder>,
+        GAccountFields_identity_certIssued_nodes,
         GIdentityFields_certIssued_nodes,
         GCertFields {
-  GAccountFieldsData_linkedIdentity_certIssued_nodes._();
+  GAccountFieldsData_identity_certIssued_nodes._();
 
-  factory GAccountFieldsData_linkedIdentity_certIssued_nodes(
-      [void Function(
-              GAccountFieldsData_linkedIdentity_certIssued_nodesBuilder b)
-          updates]) = _$GAccountFieldsData_linkedIdentity_certIssued_nodes;
+  factory GAccountFieldsData_identity_certIssued_nodes(
+      [void Function(GAccountFieldsData_identity_certIssued_nodesBuilder b)
+          updates]) = _$GAccountFieldsData_identity_certIssued_nodes;
 
   static void _initializeBuilder(
-          GAccountFieldsData_linkedIdentity_certIssued_nodesBuilder b) =>
+          GAccountFieldsData_identity_certIssued_nodesBuilder b) =>
       b..G__typename = 'Cert';
 
   @override
@@ -12234,11 +12154,11 @@ abstract class GAccountFieldsData_linkedIdentity_certIssued_nodes
   @override
   String? get issuerId;
   @override
-  GAccountFieldsData_linkedIdentity_certIssued_nodes_issuer? get issuer;
+  GAccountFieldsData_identity_certIssued_nodes_issuer? get issuer;
   @override
   String? get receiverId;
   @override
-  GAccountFieldsData_linkedIdentity_certIssued_nodes_receiver? get receiver;
+  GAccountFieldsData_identity_certIssued_nodes_receiver? get receiver;
   @override
   int get createdOn;
   @override
@@ -12247,42 +12167,40 @@ abstract class GAccountFieldsData_linkedIdentity_certIssued_nodes
   bool get isActive;
   @override
   int get updatedOn;
-  static Serializer<GAccountFieldsData_linkedIdentity_certIssued_nodes>
-      get serializer =>
-          _$gAccountFieldsDataLinkedIdentityCertIssuedNodesSerializer;
+  static Serializer<GAccountFieldsData_identity_certIssued_nodes>
+      get serializer => _$gAccountFieldsDataIdentityCertIssuedNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_linkedIdentity_certIssued_nodes.serializer,
+        GAccountFieldsData_identity_certIssued_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_linkedIdentity_certIssued_nodes? fromJson(
+  static GAccountFieldsData_identity_certIssued_nodes? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountFieldsData_linkedIdentity_certIssued_nodes.serializer,
+        GAccountFieldsData_identity_certIssued_nodes.serializer,
         json,
       );
 }
 
-abstract class GAccountFieldsData_linkedIdentity_certIssued_nodes_issuer
+abstract class GAccountFieldsData_identity_certIssued_nodes_issuer
     implements
-        Built<GAccountFieldsData_linkedIdentity_certIssued_nodes_issuer,
-            GAccountFieldsData_linkedIdentity_certIssued_nodes_issuerBuilder>,
-        GAccountFields_linkedIdentity_certIssued_nodes_issuer,
+        Built<GAccountFieldsData_identity_certIssued_nodes_issuer,
+            GAccountFieldsData_identity_certIssued_nodes_issuerBuilder>,
+        GAccountFields_identity_certIssued_nodes_issuer,
         GIdentityFields_certIssued_nodes_issuer,
         GCertFields_issuer,
         GIdentityBasicFields {
-  GAccountFieldsData_linkedIdentity_certIssued_nodes_issuer._();
+  GAccountFieldsData_identity_certIssued_nodes_issuer._();
 
-  factory GAccountFieldsData_linkedIdentity_certIssued_nodes_issuer(
+  factory GAccountFieldsData_identity_certIssued_nodes_issuer(
       [void Function(
-              GAccountFieldsData_linkedIdentity_certIssued_nodes_issuerBuilder
-                  b)
-          updates]) = _$GAccountFieldsData_linkedIdentity_certIssued_nodes_issuer;
+              GAccountFieldsData_identity_certIssued_nodes_issuerBuilder b)
+          updates]) = _$GAccountFieldsData_identity_certIssued_nodes_issuer;
 
   static void _initializeBuilder(
-          GAccountFieldsData_linkedIdentity_certIssued_nodes_issuerBuilder b) =>
+          GAccountFieldsData_identity_certIssued_nodes_issuerBuilder b) =>
       b..G__typename = 'Identity';
 
   @override
@@ -12291,8 +12209,7 @@ abstract class GAccountFieldsData_linkedIdentity_certIssued_nodes_issuer
   @override
   String? get accountId;
   @override
-  GAccountFieldsData_linkedIdentity_certIssued_nodes_issuer_account?
-      get account;
+  GAccountFieldsData_identity_certIssued_nodes_issuer_account? get account;
   @override
   String get id;
   @override
@@ -12305,43 +12222,42 @@ abstract class GAccountFieldsData_linkedIdentity_certIssued_nodes_issuer
   int get expireOn;
   @override
   int get index;
-  static Serializer<GAccountFieldsData_linkedIdentity_certIssued_nodes_issuer>
+  static Serializer<GAccountFieldsData_identity_certIssued_nodes_issuer>
       get serializer =>
-          _$gAccountFieldsDataLinkedIdentityCertIssuedNodesIssuerSerializer;
+          _$gAccountFieldsDataIdentityCertIssuedNodesIssuerSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_linkedIdentity_certIssued_nodes_issuer.serializer,
+        GAccountFieldsData_identity_certIssued_nodes_issuer.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_linkedIdentity_certIssued_nodes_issuer? fromJson(
+  static GAccountFieldsData_identity_certIssued_nodes_issuer? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountFieldsData_linkedIdentity_certIssued_nodes_issuer.serializer,
+        GAccountFieldsData_identity_certIssued_nodes_issuer.serializer,
         json,
       );
 }
 
-abstract class GAccountFieldsData_linkedIdentity_certIssued_nodes_issuer_account
+abstract class GAccountFieldsData_identity_certIssued_nodes_issuer_account
     implements
-        Built<GAccountFieldsData_linkedIdentity_certIssued_nodes_issuer_account,
-            GAccountFieldsData_linkedIdentity_certIssued_nodes_issuer_accountBuilder>,
-        GAccountFields_linkedIdentity_certIssued_nodes_issuer_account,
+        Built<GAccountFieldsData_identity_certIssued_nodes_issuer_account,
+            GAccountFieldsData_identity_certIssued_nodes_issuer_accountBuilder>,
+        GAccountFields_identity_certIssued_nodes_issuer_account,
         GIdentityFields_certIssued_nodes_issuer_account,
         GCertFields_issuer_account,
         GIdentityBasicFields_account {
-  GAccountFieldsData_linkedIdentity_certIssued_nodes_issuer_account._();
+  GAccountFieldsData_identity_certIssued_nodes_issuer_account._();
 
-  factory GAccountFieldsData_linkedIdentity_certIssued_nodes_issuer_account(
-          [void Function(
-                  GAccountFieldsData_linkedIdentity_certIssued_nodes_issuer_accountBuilder
-                      b)
-              updates]) =
-      _$GAccountFieldsData_linkedIdentity_certIssued_nodes_issuer_account;
+  factory GAccountFieldsData_identity_certIssued_nodes_issuer_account(
+      [void Function(
+              GAccountFieldsData_identity_certIssued_nodes_issuer_accountBuilder
+                  b)
+          updates]) = _$GAccountFieldsData_identity_certIssued_nodes_issuer_account;
 
   static void _initializeBuilder(
-          GAccountFieldsData_linkedIdentity_certIssued_nodes_issuer_accountBuilder
+          GAccountFieldsData_identity_certIssued_nodes_issuer_accountBuilder
               b) =>
       b..G__typename = 'Account';
 
@@ -12350,45 +12266,41 @@ abstract class GAccountFieldsData_linkedIdentity_certIssued_nodes_issuer_account
   String get G__typename;
   @override
   int get createdOn;
-  static Serializer<
-          GAccountFieldsData_linkedIdentity_certIssued_nodes_issuer_account>
+  static Serializer<GAccountFieldsData_identity_certIssued_nodes_issuer_account>
       get serializer =>
-          _$gAccountFieldsDataLinkedIdentityCertIssuedNodesIssuerAccountSerializer;
+          _$gAccountFieldsDataIdentityCertIssuedNodesIssuerAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_linkedIdentity_certIssued_nodes_issuer_account
-            .serializer,
+        GAccountFieldsData_identity_certIssued_nodes_issuer_account.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_linkedIdentity_certIssued_nodes_issuer_account?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountFieldsData_linkedIdentity_certIssued_nodes_issuer_account
-                .serializer,
-            json,
-          );
+  static GAccountFieldsData_identity_certIssued_nodes_issuer_account? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountFieldsData_identity_certIssued_nodes_issuer_account.serializer,
+        json,
+      );
 }
 
-abstract class GAccountFieldsData_linkedIdentity_certIssued_nodes_receiver
+abstract class GAccountFieldsData_identity_certIssued_nodes_receiver
     implements
-        Built<GAccountFieldsData_linkedIdentity_certIssued_nodes_receiver,
-            GAccountFieldsData_linkedIdentity_certIssued_nodes_receiverBuilder>,
-        GAccountFields_linkedIdentity_certIssued_nodes_receiver,
+        Built<GAccountFieldsData_identity_certIssued_nodes_receiver,
+            GAccountFieldsData_identity_certIssued_nodes_receiverBuilder>,
+        GAccountFields_identity_certIssued_nodes_receiver,
         GIdentityFields_certIssued_nodes_receiver,
         GCertFields_receiver,
         GIdentityBasicFields {
-  GAccountFieldsData_linkedIdentity_certIssued_nodes_receiver._();
+  GAccountFieldsData_identity_certIssued_nodes_receiver._();
 
-  factory GAccountFieldsData_linkedIdentity_certIssued_nodes_receiver(
+  factory GAccountFieldsData_identity_certIssued_nodes_receiver(
       [void Function(
-              GAccountFieldsData_linkedIdentity_certIssued_nodes_receiverBuilder
-                  b)
-          updates]) = _$GAccountFieldsData_linkedIdentity_certIssued_nodes_receiver;
+              GAccountFieldsData_identity_certIssued_nodes_receiverBuilder b)
+          updates]) = _$GAccountFieldsData_identity_certIssued_nodes_receiver;
 
   static void _initializeBuilder(
-          GAccountFieldsData_linkedIdentity_certIssued_nodes_receiverBuilder
-              b) =>
+          GAccountFieldsData_identity_certIssued_nodes_receiverBuilder b) =>
       b..G__typename = 'Identity';
 
   @override
@@ -12397,8 +12309,7 @@ abstract class GAccountFieldsData_linkedIdentity_certIssued_nodes_receiver
   @override
   String? get accountId;
   @override
-  GAccountFieldsData_linkedIdentity_certIssued_nodes_receiver_account?
-      get account;
+  GAccountFieldsData_identity_certIssued_nodes_receiver_account? get account;
   @override
   String get id;
   @override
@@ -12411,44 +12322,43 @@ abstract class GAccountFieldsData_linkedIdentity_certIssued_nodes_receiver
   int get expireOn;
   @override
   int get index;
-  static Serializer<GAccountFieldsData_linkedIdentity_certIssued_nodes_receiver>
+  static Serializer<GAccountFieldsData_identity_certIssued_nodes_receiver>
       get serializer =>
-          _$gAccountFieldsDataLinkedIdentityCertIssuedNodesReceiverSerializer;
+          _$gAccountFieldsDataIdentityCertIssuedNodesReceiverSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_linkedIdentity_certIssued_nodes_receiver.serializer,
+        GAccountFieldsData_identity_certIssued_nodes_receiver.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_linkedIdentity_certIssued_nodes_receiver? fromJson(
+  static GAccountFieldsData_identity_certIssued_nodes_receiver? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountFieldsData_linkedIdentity_certIssued_nodes_receiver.serializer,
+        GAccountFieldsData_identity_certIssued_nodes_receiver.serializer,
         json,
       );
 }
 
-abstract class GAccountFieldsData_linkedIdentity_certIssued_nodes_receiver_account
+abstract class GAccountFieldsData_identity_certIssued_nodes_receiver_account
     implements
-        Built<
-            GAccountFieldsData_linkedIdentity_certIssued_nodes_receiver_account,
-            GAccountFieldsData_linkedIdentity_certIssued_nodes_receiver_accountBuilder>,
-        GAccountFields_linkedIdentity_certIssued_nodes_receiver_account,
+        Built<GAccountFieldsData_identity_certIssued_nodes_receiver_account,
+            GAccountFieldsData_identity_certIssued_nodes_receiver_accountBuilder>,
+        GAccountFields_identity_certIssued_nodes_receiver_account,
         GIdentityFields_certIssued_nodes_receiver_account,
         GCertFields_receiver_account,
         GIdentityBasicFields_account {
-  GAccountFieldsData_linkedIdentity_certIssued_nodes_receiver_account._();
+  GAccountFieldsData_identity_certIssued_nodes_receiver_account._();
 
-  factory GAccountFieldsData_linkedIdentity_certIssued_nodes_receiver_account(
+  factory GAccountFieldsData_identity_certIssued_nodes_receiver_account(
           [void Function(
-                  GAccountFieldsData_linkedIdentity_certIssued_nodes_receiver_accountBuilder
+                  GAccountFieldsData_identity_certIssued_nodes_receiver_accountBuilder
                       b)
               updates]) =
-      _$GAccountFieldsData_linkedIdentity_certIssued_nodes_receiver_account;
+      _$GAccountFieldsData_identity_certIssued_nodes_receiver_account;
 
   static void _initializeBuilder(
-          GAccountFieldsData_linkedIdentity_certIssued_nodes_receiver_accountBuilder
+          GAccountFieldsData_identity_certIssued_nodes_receiver_accountBuilder
               b) =>
       b..G__typename = 'Account';
 
@@ -12458,39 +12368,39 @@ abstract class GAccountFieldsData_linkedIdentity_certIssued_nodes_receiver_accou
   @override
   int get createdOn;
   static Serializer<
-          GAccountFieldsData_linkedIdentity_certIssued_nodes_receiver_account>
+          GAccountFieldsData_identity_certIssued_nodes_receiver_account>
       get serializer =>
-          _$gAccountFieldsDataLinkedIdentityCertIssuedNodesReceiverAccountSerializer;
+          _$gAccountFieldsDataIdentityCertIssuedNodesReceiverAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_linkedIdentity_certIssued_nodes_receiver_account
+        GAccountFieldsData_identity_certIssued_nodes_receiver_account
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_linkedIdentity_certIssued_nodes_receiver_account?
+  static GAccountFieldsData_identity_certIssued_nodes_receiver_account?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountFieldsData_linkedIdentity_certIssued_nodes_receiver_account
+            GAccountFieldsData_identity_certIssued_nodes_receiver_account
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountFieldsData_linkedIdentity_certReceived
+abstract class GAccountFieldsData_identity_certReceived
     implements
-        Built<GAccountFieldsData_linkedIdentity_certReceived,
-            GAccountFieldsData_linkedIdentity_certReceivedBuilder>,
-        GAccountFields_linkedIdentity_certReceived,
+        Built<GAccountFieldsData_identity_certReceived,
+            GAccountFieldsData_identity_certReceivedBuilder>,
+        GAccountFields_identity_certReceived,
         GIdentityFields_certReceived {
-  GAccountFieldsData_linkedIdentity_certReceived._();
+  GAccountFieldsData_identity_certReceived._();
 
-  factory GAccountFieldsData_linkedIdentity_certReceived(
-      [void Function(GAccountFieldsData_linkedIdentity_certReceivedBuilder b)
-          updates]) = _$GAccountFieldsData_linkedIdentity_certReceived;
+  factory GAccountFieldsData_identity_certReceived(
+      [void Function(GAccountFieldsData_identity_certReceivedBuilder b)
+          updates]) = _$GAccountFieldsData_identity_certReceived;
 
   static void _initializeBuilder(
-          GAccountFieldsData_linkedIdentity_certReceivedBuilder b) =>
+          GAccountFieldsData_identity_certReceivedBuilder b) =>
       b..G__typename = 'CertsConnection';
 
   @override
@@ -12499,41 +12409,39 @@ abstract class GAccountFieldsData_linkedIdentity_certReceived
   @override
   int get totalCount;
   @override
-  BuiltList<GAccountFieldsData_linkedIdentity_certReceived_nodes> get nodes;
-  static Serializer<GAccountFieldsData_linkedIdentity_certReceived>
-      get serializer =>
-          _$gAccountFieldsDataLinkedIdentityCertReceivedSerializer;
+  BuiltList<GAccountFieldsData_identity_certReceived_nodes> get nodes;
+  static Serializer<GAccountFieldsData_identity_certReceived> get serializer =>
+      _$gAccountFieldsDataIdentityCertReceivedSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_linkedIdentity_certReceived.serializer,
+        GAccountFieldsData_identity_certReceived.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_linkedIdentity_certReceived? fromJson(
+  static GAccountFieldsData_identity_certReceived? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountFieldsData_linkedIdentity_certReceived.serializer,
+        GAccountFieldsData_identity_certReceived.serializer,
         json,
       );
 }
 
-abstract class GAccountFieldsData_linkedIdentity_certReceived_nodes
+abstract class GAccountFieldsData_identity_certReceived_nodes
     implements
-        Built<GAccountFieldsData_linkedIdentity_certReceived_nodes,
-            GAccountFieldsData_linkedIdentity_certReceived_nodesBuilder>,
-        GAccountFields_linkedIdentity_certReceived_nodes,
+        Built<GAccountFieldsData_identity_certReceived_nodes,
+            GAccountFieldsData_identity_certReceived_nodesBuilder>,
+        GAccountFields_identity_certReceived_nodes,
         GIdentityFields_certReceived_nodes,
         GCertFields {
-  GAccountFieldsData_linkedIdentity_certReceived_nodes._();
+  GAccountFieldsData_identity_certReceived_nodes._();
 
-  factory GAccountFieldsData_linkedIdentity_certReceived_nodes(
-      [void Function(
-              GAccountFieldsData_linkedIdentity_certReceived_nodesBuilder b)
-          updates]) = _$GAccountFieldsData_linkedIdentity_certReceived_nodes;
+  factory GAccountFieldsData_identity_certReceived_nodes(
+      [void Function(GAccountFieldsData_identity_certReceived_nodesBuilder b)
+          updates]) = _$GAccountFieldsData_identity_certReceived_nodes;
 
   static void _initializeBuilder(
-          GAccountFieldsData_linkedIdentity_certReceived_nodesBuilder b) =>
+          GAccountFieldsData_identity_certReceived_nodesBuilder b) =>
       b..G__typename = 'Cert';
 
   @override
@@ -12544,11 +12452,11 @@ abstract class GAccountFieldsData_linkedIdentity_certReceived_nodes
   @override
   String? get issuerId;
   @override
-  GAccountFieldsData_linkedIdentity_certReceived_nodes_issuer? get issuer;
+  GAccountFieldsData_identity_certReceived_nodes_issuer? get issuer;
   @override
   String? get receiverId;
   @override
-  GAccountFieldsData_linkedIdentity_certReceived_nodes_receiver? get receiver;
+  GAccountFieldsData_identity_certReceived_nodes_receiver? get receiver;
   @override
   int get createdOn;
   @override
@@ -12557,43 +12465,40 @@ abstract class GAccountFieldsData_linkedIdentity_certReceived_nodes
   bool get isActive;
   @override
   int get updatedOn;
-  static Serializer<GAccountFieldsData_linkedIdentity_certReceived_nodes>
-      get serializer =>
-          _$gAccountFieldsDataLinkedIdentityCertReceivedNodesSerializer;
+  static Serializer<GAccountFieldsData_identity_certReceived_nodes>
+      get serializer => _$gAccountFieldsDataIdentityCertReceivedNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_linkedIdentity_certReceived_nodes.serializer,
+        GAccountFieldsData_identity_certReceived_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_linkedIdentity_certReceived_nodes? fromJson(
+  static GAccountFieldsData_identity_certReceived_nodes? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountFieldsData_linkedIdentity_certReceived_nodes.serializer,
+        GAccountFieldsData_identity_certReceived_nodes.serializer,
         json,
       );
 }
 
-abstract class GAccountFieldsData_linkedIdentity_certReceived_nodes_issuer
+abstract class GAccountFieldsData_identity_certReceived_nodes_issuer
     implements
-        Built<GAccountFieldsData_linkedIdentity_certReceived_nodes_issuer,
-            GAccountFieldsData_linkedIdentity_certReceived_nodes_issuerBuilder>,
-        GAccountFields_linkedIdentity_certReceived_nodes_issuer,
+        Built<GAccountFieldsData_identity_certReceived_nodes_issuer,
+            GAccountFieldsData_identity_certReceived_nodes_issuerBuilder>,
+        GAccountFields_identity_certReceived_nodes_issuer,
         GIdentityFields_certReceived_nodes_issuer,
         GCertFields_issuer,
         GIdentityBasicFields {
-  GAccountFieldsData_linkedIdentity_certReceived_nodes_issuer._();
+  GAccountFieldsData_identity_certReceived_nodes_issuer._();
 
-  factory GAccountFieldsData_linkedIdentity_certReceived_nodes_issuer(
+  factory GAccountFieldsData_identity_certReceived_nodes_issuer(
       [void Function(
-              GAccountFieldsData_linkedIdentity_certReceived_nodes_issuerBuilder
-                  b)
-          updates]) = _$GAccountFieldsData_linkedIdentity_certReceived_nodes_issuer;
+              GAccountFieldsData_identity_certReceived_nodes_issuerBuilder b)
+          updates]) = _$GAccountFieldsData_identity_certReceived_nodes_issuer;
 
   static void _initializeBuilder(
-          GAccountFieldsData_linkedIdentity_certReceived_nodes_issuerBuilder
-              b) =>
+          GAccountFieldsData_identity_certReceived_nodes_issuerBuilder b) =>
       b..G__typename = 'Identity';
 
   @override
@@ -12602,8 +12507,7 @@ abstract class GAccountFieldsData_linkedIdentity_certReceived_nodes_issuer
   @override
   String? get accountId;
   @override
-  GAccountFieldsData_linkedIdentity_certReceived_nodes_issuer_account?
-      get account;
+  GAccountFieldsData_identity_certReceived_nodes_issuer_account? get account;
   @override
   String get id;
   @override
@@ -12616,44 +12520,43 @@ abstract class GAccountFieldsData_linkedIdentity_certReceived_nodes_issuer
   int get expireOn;
   @override
   int get index;
-  static Serializer<GAccountFieldsData_linkedIdentity_certReceived_nodes_issuer>
+  static Serializer<GAccountFieldsData_identity_certReceived_nodes_issuer>
       get serializer =>
-          _$gAccountFieldsDataLinkedIdentityCertReceivedNodesIssuerSerializer;
+          _$gAccountFieldsDataIdentityCertReceivedNodesIssuerSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_linkedIdentity_certReceived_nodes_issuer.serializer,
+        GAccountFieldsData_identity_certReceived_nodes_issuer.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_linkedIdentity_certReceived_nodes_issuer? fromJson(
+  static GAccountFieldsData_identity_certReceived_nodes_issuer? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountFieldsData_linkedIdentity_certReceived_nodes_issuer.serializer,
+        GAccountFieldsData_identity_certReceived_nodes_issuer.serializer,
         json,
       );
 }
 
-abstract class GAccountFieldsData_linkedIdentity_certReceived_nodes_issuer_account
+abstract class GAccountFieldsData_identity_certReceived_nodes_issuer_account
     implements
-        Built<
-            GAccountFieldsData_linkedIdentity_certReceived_nodes_issuer_account,
-            GAccountFieldsData_linkedIdentity_certReceived_nodes_issuer_accountBuilder>,
-        GAccountFields_linkedIdentity_certReceived_nodes_issuer_account,
+        Built<GAccountFieldsData_identity_certReceived_nodes_issuer_account,
+            GAccountFieldsData_identity_certReceived_nodes_issuer_accountBuilder>,
+        GAccountFields_identity_certReceived_nodes_issuer_account,
         GIdentityFields_certReceived_nodes_issuer_account,
         GCertFields_issuer_account,
         GIdentityBasicFields_account {
-  GAccountFieldsData_linkedIdentity_certReceived_nodes_issuer_account._();
+  GAccountFieldsData_identity_certReceived_nodes_issuer_account._();
 
-  factory GAccountFieldsData_linkedIdentity_certReceived_nodes_issuer_account(
+  factory GAccountFieldsData_identity_certReceived_nodes_issuer_account(
           [void Function(
-                  GAccountFieldsData_linkedIdentity_certReceived_nodes_issuer_accountBuilder
+                  GAccountFieldsData_identity_certReceived_nodes_issuer_accountBuilder
                       b)
               updates]) =
-      _$GAccountFieldsData_linkedIdentity_certReceived_nodes_issuer_account;
+      _$GAccountFieldsData_identity_certReceived_nodes_issuer_account;
 
   static void _initializeBuilder(
-          GAccountFieldsData_linkedIdentity_certReceived_nodes_issuer_accountBuilder
+          GAccountFieldsData_identity_certReceived_nodes_issuer_accountBuilder
               b) =>
       b..G__typename = 'Account';
 
@@ -12663,45 +12566,42 @@ abstract class GAccountFieldsData_linkedIdentity_certReceived_nodes_issuer_accou
   @override
   int get createdOn;
   static Serializer<
-          GAccountFieldsData_linkedIdentity_certReceived_nodes_issuer_account>
+          GAccountFieldsData_identity_certReceived_nodes_issuer_account>
       get serializer =>
-          _$gAccountFieldsDataLinkedIdentityCertReceivedNodesIssuerAccountSerializer;
+          _$gAccountFieldsDataIdentityCertReceivedNodesIssuerAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_linkedIdentity_certReceived_nodes_issuer_account
+        GAccountFieldsData_identity_certReceived_nodes_issuer_account
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_linkedIdentity_certReceived_nodes_issuer_account?
+  static GAccountFieldsData_identity_certReceived_nodes_issuer_account?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountFieldsData_linkedIdentity_certReceived_nodes_issuer_account
+            GAccountFieldsData_identity_certReceived_nodes_issuer_account
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountFieldsData_linkedIdentity_certReceived_nodes_receiver
+abstract class GAccountFieldsData_identity_certReceived_nodes_receiver
     implements
-        Built<GAccountFieldsData_linkedIdentity_certReceived_nodes_receiver,
-            GAccountFieldsData_linkedIdentity_certReceived_nodes_receiverBuilder>,
-        GAccountFields_linkedIdentity_certReceived_nodes_receiver,
+        Built<GAccountFieldsData_identity_certReceived_nodes_receiver,
+            GAccountFieldsData_identity_certReceived_nodes_receiverBuilder>,
+        GAccountFields_identity_certReceived_nodes_receiver,
         GIdentityFields_certReceived_nodes_receiver,
         GCertFields_receiver,
         GIdentityBasicFields {
-  GAccountFieldsData_linkedIdentity_certReceived_nodes_receiver._();
+  GAccountFieldsData_identity_certReceived_nodes_receiver._();
 
-  factory GAccountFieldsData_linkedIdentity_certReceived_nodes_receiver(
-          [void Function(
-                  GAccountFieldsData_linkedIdentity_certReceived_nodes_receiverBuilder
-                      b)
-              updates]) =
-      _$GAccountFieldsData_linkedIdentity_certReceived_nodes_receiver;
+  factory GAccountFieldsData_identity_certReceived_nodes_receiver(
+      [void Function(
+              GAccountFieldsData_identity_certReceived_nodes_receiverBuilder b)
+          updates]) = _$GAccountFieldsData_identity_certReceived_nodes_receiver;
 
   static void _initializeBuilder(
-          GAccountFieldsData_linkedIdentity_certReceived_nodes_receiverBuilder
-              b) =>
+          GAccountFieldsData_identity_certReceived_nodes_receiverBuilder b) =>
       b..G__typename = 'Identity';
 
   @override
@@ -12710,8 +12610,7 @@ abstract class GAccountFieldsData_linkedIdentity_certReceived_nodes_receiver
   @override
   String? get accountId;
   @override
-  GAccountFieldsData_linkedIdentity_certReceived_nodes_receiver_account?
-      get account;
+  GAccountFieldsData_identity_certReceived_nodes_receiver_account? get account;
   @override
   String get id;
   @override
@@ -12724,46 +12623,43 @@ abstract class GAccountFieldsData_linkedIdentity_certReceived_nodes_receiver
   int get expireOn;
   @override
   int get index;
-  static Serializer<
-          GAccountFieldsData_linkedIdentity_certReceived_nodes_receiver>
+  static Serializer<GAccountFieldsData_identity_certReceived_nodes_receiver>
       get serializer =>
-          _$gAccountFieldsDataLinkedIdentityCertReceivedNodesReceiverSerializer;
+          _$gAccountFieldsDataIdentityCertReceivedNodesReceiverSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_linkedIdentity_certReceived_nodes_receiver
-            .serializer,
+        GAccountFieldsData_identity_certReceived_nodes_receiver.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_linkedIdentity_certReceived_nodes_receiver?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountFieldsData_linkedIdentity_certReceived_nodes_receiver
-                .serializer,
-            json,
-          );
+  static GAccountFieldsData_identity_certReceived_nodes_receiver? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountFieldsData_identity_certReceived_nodes_receiver.serializer,
+        json,
+      );
 }
 
-abstract class GAccountFieldsData_linkedIdentity_certReceived_nodes_receiver_account
+abstract class GAccountFieldsData_identity_certReceived_nodes_receiver_account
     implements
-        Built<
-            GAccountFieldsData_linkedIdentity_certReceived_nodes_receiver_account,
-            GAccountFieldsData_linkedIdentity_certReceived_nodes_receiver_accountBuilder>,
-        GAccountFields_linkedIdentity_certReceived_nodes_receiver_account,
+        Built<GAccountFieldsData_identity_certReceived_nodes_receiver_account,
+            GAccountFieldsData_identity_certReceived_nodes_receiver_accountBuilder>,
+        GAccountFields_identity_certReceived_nodes_receiver_account,
         GIdentityFields_certReceived_nodes_receiver_account,
         GCertFields_receiver_account,
         GIdentityBasicFields_account {
-  GAccountFieldsData_linkedIdentity_certReceived_nodes_receiver_account._();
+  GAccountFieldsData_identity_certReceived_nodes_receiver_account._();
 
-  factory GAccountFieldsData_linkedIdentity_certReceived_nodes_receiver_account(
+  factory GAccountFieldsData_identity_certReceived_nodes_receiver_account(
           [void Function(
-                  GAccountFieldsData_linkedIdentity_certReceived_nodes_receiver_accountBuilder
+                  GAccountFieldsData_identity_certReceived_nodes_receiver_accountBuilder
                       b)
               updates]) =
-      _$GAccountFieldsData_linkedIdentity_certReceived_nodes_receiver_account;
+      _$GAccountFieldsData_identity_certReceived_nodes_receiver_account;
 
   static void _initializeBuilder(
-          GAccountFieldsData_linkedIdentity_certReceived_nodes_receiver_accountBuilder
+          GAccountFieldsData_identity_certReceived_nodes_receiver_accountBuilder
               b) =>
       b..G__typename = 'Account';
 
@@ -12773,40 +12669,39 @@ abstract class GAccountFieldsData_linkedIdentity_certReceived_nodes_receiver_acc
   @override
   int get createdOn;
   static Serializer<
-          GAccountFieldsData_linkedIdentity_certReceived_nodes_receiver_account>
+          GAccountFieldsData_identity_certReceived_nodes_receiver_account>
       get serializer =>
-          _$gAccountFieldsDataLinkedIdentityCertReceivedNodesReceiverAccountSerializer;
+          _$gAccountFieldsDataIdentityCertReceivedNodesReceiverAccountSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_linkedIdentity_certReceived_nodes_receiver_account
+        GAccountFieldsData_identity_certReceived_nodes_receiver_account
             .serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_linkedIdentity_certReceived_nodes_receiver_account?
+  static GAccountFieldsData_identity_certReceived_nodes_receiver_account?
       fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountFieldsData_linkedIdentity_certReceived_nodes_receiver_account
+            GAccountFieldsData_identity_certReceived_nodes_receiver_account
                 .serializer,
             json,
           );
 }
 
-abstract class GAccountFieldsData_linkedIdentity_membershipHistory
+abstract class GAccountFieldsData_identity_membershipHistory
     implements
-        Built<GAccountFieldsData_linkedIdentity_membershipHistory,
-            GAccountFieldsData_linkedIdentity_membershipHistoryBuilder>,
-        GAccountFields_linkedIdentity_membershipHistory,
+        Built<GAccountFieldsData_identity_membershipHistory,
+            GAccountFieldsData_identity_membershipHistoryBuilder>,
+        GAccountFields_identity_membershipHistory,
         GIdentityFields_membershipHistory {
-  GAccountFieldsData_linkedIdentity_membershipHistory._();
+  GAccountFieldsData_identity_membershipHistory._();
 
-  factory GAccountFieldsData_linkedIdentity_membershipHistory(
-      [void Function(
-              GAccountFieldsData_linkedIdentity_membershipHistoryBuilder b)
-          updates]) = _$GAccountFieldsData_linkedIdentity_membershipHistory;
+  factory GAccountFieldsData_identity_membershipHistory(
+      [void Function(GAccountFieldsData_identity_membershipHistoryBuilder b)
+          updates]) = _$GAccountFieldsData_identity_membershipHistory;
 
   static void _initializeBuilder(
-          GAccountFieldsData_linkedIdentity_membershipHistoryBuilder b) =>
+          GAccountFieldsData_identity_membershipHistoryBuilder b) =>
       b..G__typename = 'MembershipEventsConnection';
 
   @override
@@ -12815,42 +12710,39 @@ abstract class GAccountFieldsData_linkedIdentity_membershipHistory
   @override
   int get totalCount;
   @override
-  BuiltList<GAccountFieldsData_linkedIdentity_membershipHistory_nodes>
-      get nodes;
-  static Serializer<GAccountFieldsData_linkedIdentity_membershipHistory>
-      get serializer =>
-          _$gAccountFieldsDataLinkedIdentityMembershipHistorySerializer;
+  BuiltList<GAccountFieldsData_identity_membershipHistory_nodes> get nodes;
+  static Serializer<GAccountFieldsData_identity_membershipHistory>
+      get serializer => _$gAccountFieldsDataIdentityMembershipHistorySerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_linkedIdentity_membershipHistory.serializer,
+        GAccountFieldsData_identity_membershipHistory.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_linkedIdentity_membershipHistory? fromJson(
+  static GAccountFieldsData_identity_membershipHistory? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountFieldsData_linkedIdentity_membershipHistory.serializer,
+        GAccountFieldsData_identity_membershipHistory.serializer,
         json,
       );
 }
 
-abstract class GAccountFieldsData_linkedIdentity_membershipHistory_nodes
+abstract class GAccountFieldsData_identity_membershipHistory_nodes
     implements
-        Built<GAccountFieldsData_linkedIdentity_membershipHistory_nodes,
-            GAccountFieldsData_linkedIdentity_membershipHistory_nodesBuilder>,
-        GAccountFields_linkedIdentity_membershipHistory_nodes,
+        Built<GAccountFieldsData_identity_membershipHistory_nodes,
+            GAccountFieldsData_identity_membershipHistory_nodesBuilder>,
+        GAccountFields_identity_membershipHistory_nodes,
         GIdentityFields_membershipHistory_nodes {
-  GAccountFieldsData_linkedIdentity_membershipHistory_nodes._();
+  GAccountFieldsData_identity_membershipHistory_nodes._();
 
-  factory GAccountFieldsData_linkedIdentity_membershipHistory_nodes(
+  factory GAccountFieldsData_identity_membershipHistory_nodes(
       [void Function(
-              GAccountFieldsData_linkedIdentity_membershipHistory_nodesBuilder
-                  b)
-          updates]) = _$GAccountFieldsData_linkedIdentity_membershipHistory_nodes;
+              GAccountFieldsData_identity_membershipHistory_nodesBuilder b)
+          updates]) = _$GAccountFieldsData_identity_membershipHistory_nodes;
 
   static void _initializeBuilder(
-          GAccountFieldsData_linkedIdentity_membershipHistory_nodesBuilder b) =>
+          GAccountFieldsData_identity_membershipHistory_nodesBuilder b) =>
       b..G__typename = 'MembershipEvent';
 
   @override
@@ -12866,38 +12758,38 @@ abstract class GAccountFieldsData_linkedIdentity_membershipHistory_nodes
   String get id;
   @override
   String? get identityId;
-  static Serializer<GAccountFieldsData_linkedIdentity_membershipHistory_nodes>
+  static Serializer<GAccountFieldsData_identity_membershipHistory_nodes>
       get serializer =>
-          _$gAccountFieldsDataLinkedIdentityMembershipHistoryNodesSerializer;
+          _$gAccountFieldsDataIdentityMembershipHistoryNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_linkedIdentity_membershipHistory_nodes.serializer,
+        GAccountFieldsData_identity_membershipHistory_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_linkedIdentity_membershipHistory_nodes? fromJson(
+  static GAccountFieldsData_identity_membershipHistory_nodes? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountFieldsData_linkedIdentity_membershipHistory_nodes.serializer,
+        GAccountFieldsData_identity_membershipHistory_nodes.serializer,
         json,
       );
 }
 
-abstract class GAccountFieldsData_linkedIdentity_ownerKeyChange
+abstract class GAccountFieldsData_identity_ownerKeyChange
     implements
-        Built<GAccountFieldsData_linkedIdentity_ownerKeyChange,
-            GAccountFieldsData_linkedIdentity_ownerKeyChangeBuilder>,
-        GAccountFields_linkedIdentity_ownerKeyChange,
+        Built<GAccountFieldsData_identity_ownerKeyChange,
+            GAccountFieldsData_identity_ownerKeyChangeBuilder>,
+        GAccountFields_identity_ownerKeyChange,
         GIdentityFields_ownerKeyChange {
-  GAccountFieldsData_linkedIdentity_ownerKeyChange._();
+  GAccountFieldsData_identity_ownerKeyChange._();
 
-  factory GAccountFieldsData_linkedIdentity_ownerKeyChange(
-      [void Function(GAccountFieldsData_linkedIdentity_ownerKeyChangeBuilder b)
-          updates]) = _$GAccountFieldsData_linkedIdentity_ownerKeyChange;
+  factory GAccountFieldsData_identity_ownerKeyChange(
+      [void Function(GAccountFieldsData_identity_ownerKeyChangeBuilder b)
+          updates]) = _$GAccountFieldsData_identity_ownerKeyChange;
 
   static void _initializeBuilder(
-          GAccountFieldsData_linkedIdentity_ownerKeyChangeBuilder b) =>
+          GAccountFieldsData_identity_ownerKeyChangeBuilder b) =>
       b..G__typename = 'ChangeOwnerKeysConnection';
 
   @override
@@ -12906,41 +12798,39 @@ abstract class GAccountFieldsData_linkedIdentity_ownerKeyChange
   @override
   int get totalCount;
   @override
-  BuiltList<GAccountFieldsData_linkedIdentity_ownerKeyChange_nodes> get nodes;
-  static Serializer<GAccountFieldsData_linkedIdentity_ownerKeyChange>
-      get serializer =>
-          _$gAccountFieldsDataLinkedIdentityOwnerKeyChangeSerializer;
+  BuiltList<GAccountFieldsData_identity_ownerKeyChange_nodes> get nodes;
+  static Serializer<GAccountFieldsData_identity_ownerKeyChange>
+      get serializer => _$gAccountFieldsDataIdentityOwnerKeyChangeSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_linkedIdentity_ownerKeyChange.serializer,
+        GAccountFieldsData_identity_ownerKeyChange.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_linkedIdentity_ownerKeyChange? fromJson(
+  static GAccountFieldsData_identity_ownerKeyChange? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountFieldsData_linkedIdentity_ownerKeyChange.serializer,
+        GAccountFieldsData_identity_ownerKeyChange.serializer,
         json,
       );
 }
 
-abstract class GAccountFieldsData_linkedIdentity_ownerKeyChange_nodes
+abstract class GAccountFieldsData_identity_ownerKeyChange_nodes
     implements
-        Built<GAccountFieldsData_linkedIdentity_ownerKeyChange_nodes,
-            GAccountFieldsData_linkedIdentity_ownerKeyChange_nodesBuilder>,
-        GAccountFields_linkedIdentity_ownerKeyChange_nodes,
+        Built<GAccountFieldsData_identity_ownerKeyChange_nodes,
+            GAccountFieldsData_identity_ownerKeyChange_nodesBuilder>,
+        GAccountFields_identity_ownerKeyChange_nodes,
         GIdentityFields_ownerKeyChange_nodes,
         GOwnerKeyChangeFields {
-  GAccountFieldsData_linkedIdentity_ownerKeyChange_nodes._();
+  GAccountFieldsData_identity_ownerKeyChange_nodes._();
 
-  factory GAccountFieldsData_linkedIdentity_ownerKeyChange_nodes(
-      [void Function(
-              GAccountFieldsData_linkedIdentity_ownerKeyChange_nodesBuilder b)
-          updates]) = _$GAccountFieldsData_linkedIdentity_ownerKeyChange_nodes;
+  factory GAccountFieldsData_identity_ownerKeyChange_nodes(
+      [void Function(GAccountFieldsData_identity_ownerKeyChange_nodesBuilder b)
+          updates]) = _$GAccountFieldsData_identity_ownerKeyChange_nodes;
 
   static void _initializeBuilder(
-          GAccountFieldsData_linkedIdentity_ownerKeyChange_nodesBuilder b) =>
+          GAccountFieldsData_identity_ownerKeyChange_nodesBuilder b) =>
       b..G__typename = 'ChangeOwnerKey';
 
   @override
@@ -12956,39 +12846,38 @@ abstract class GAccountFieldsData_linkedIdentity_ownerKeyChange_nodes
   String? get nextId;
   @override
   String? get previousId;
-  static Serializer<GAccountFieldsData_linkedIdentity_ownerKeyChange_nodes>
+  static Serializer<GAccountFieldsData_identity_ownerKeyChange_nodes>
       get serializer =>
-          _$gAccountFieldsDataLinkedIdentityOwnerKeyChangeNodesSerializer;
+          _$gAccountFieldsDataIdentityOwnerKeyChangeNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_linkedIdentity_ownerKeyChange_nodes.serializer,
+        GAccountFieldsData_identity_ownerKeyChange_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_linkedIdentity_ownerKeyChange_nodes? fromJson(
+  static GAccountFieldsData_identity_ownerKeyChange_nodes? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountFieldsData_linkedIdentity_ownerKeyChange_nodes.serializer,
+        GAccountFieldsData_identity_ownerKeyChange_nodes.serializer,
         json,
       );
 }
 
-abstract class GAccountFieldsData_linkedIdentity_smith
+abstract class GAccountFieldsData_identity_smith
     implements
-        Built<GAccountFieldsData_linkedIdentity_smith,
-            GAccountFieldsData_linkedIdentity_smithBuilder>,
-        GAccountFields_linkedIdentity_smith,
+        Built<GAccountFieldsData_identity_smith,
+            GAccountFieldsData_identity_smithBuilder>,
+        GAccountFields_identity_smith,
         GIdentityFields_smith,
         GSmithFields {
-  GAccountFieldsData_linkedIdentity_smith._();
+  GAccountFieldsData_identity_smith._();
 
-  factory GAccountFieldsData_linkedIdentity_smith(
-      [void Function(GAccountFieldsData_linkedIdentity_smithBuilder b)
-          updates]) = _$GAccountFieldsData_linkedIdentity_smith;
+  factory GAccountFieldsData_identity_smith(
+          [void Function(GAccountFieldsData_identity_smithBuilder b) updates]) =
+      _$GAccountFieldsData_identity_smith;
 
-  static void _initializeBuilder(
-          GAccountFieldsData_linkedIdentity_smithBuilder b) =>
+  static void _initializeBuilder(GAccountFieldsData_identity_smithBuilder b) =>
       b..G__typename = 'Smith';
 
   @override
@@ -13005,43 +12894,41 @@ abstract class GAccountFieldsData_linkedIdentity_smith
   @override
   int? get lastForged;
   @override
-  GAccountFieldsData_linkedIdentity_smith_smithCertIssued get smithCertIssued;
+  GAccountFieldsData_identity_smith_smithCertIssued get smithCertIssued;
   @override
-  GAccountFieldsData_linkedIdentity_smith_smithCertReceived
-      get smithCertReceived;
-  static Serializer<GAccountFieldsData_linkedIdentity_smith> get serializer =>
-      _$gAccountFieldsDataLinkedIdentitySmithSerializer;
+  GAccountFieldsData_identity_smith_smithCertReceived get smithCertReceived;
+  static Serializer<GAccountFieldsData_identity_smith> get serializer =>
+      _$gAccountFieldsDataIdentitySmithSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_linkedIdentity_smith.serializer,
+        GAccountFieldsData_identity_smith.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_linkedIdentity_smith? fromJson(
+  static GAccountFieldsData_identity_smith? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountFieldsData_linkedIdentity_smith.serializer,
+        GAccountFieldsData_identity_smith.serializer,
         json,
       );
 }
 
-abstract class GAccountFieldsData_linkedIdentity_smith_smithCertIssued
+abstract class GAccountFieldsData_identity_smith_smithCertIssued
     implements
-        Built<GAccountFieldsData_linkedIdentity_smith_smithCertIssued,
-            GAccountFieldsData_linkedIdentity_smith_smithCertIssuedBuilder>,
-        GAccountFields_linkedIdentity_smith_smithCertIssued,
+        Built<GAccountFieldsData_identity_smith_smithCertIssued,
+            GAccountFieldsData_identity_smith_smithCertIssuedBuilder>,
+        GAccountFields_identity_smith_smithCertIssued,
         GIdentityFields_smith_smithCertIssued,
         GSmithFields_smithCertIssued {
-  GAccountFieldsData_linkedIdentity_smith_smithCertIssued._();
+  GAccountFieldsData_identity_smith_smithCertIssued._();
 
-  factory GAccountFieldsData_linkedIdentity_smith_smithCertIssued(
-      [void Function(
-              GAccountFieldsData_linkedIdentity_smith_smithCertIssuedBuilder b)
-          updates]) = _$GAccountFieldsData_linkedIdentity_smith_smithCertIssued;
+  factory GAccountFieldsData_identity_smith_smithCertIssued(
+      [void Function(GAccountFieldsData_identity_smith_smithCertIssuedBuilder b)
+          updates]) = _$GAccountFieldsData_identity_smith_smithCertIssued;
 
   static void _initializeBuilder(
-          GAccountFieldsData_linkedIdentity_smith_smithCertIssuedBuilder b) =>
+          GAccountFieldsData_identity_smith_smithCertIssuedBuilder b) =>
       b..G__typename = 'SmithCertsConnection';
 
   @override
@@ -13050,46 +12937,42 @@ abstract class GAccountFieldsData_linkedIdentity_smith_smithCertIssued
   @override
   int get totalCount;
   @override
-  BuiltList<GAccountFieldsData_linkedIdentity_smith_smithCertIssued_nodes>
-      get nodes;
-  static Serializer<GAccountFieldsData_linkedIdentity_smith_smithCertIssued>
+  BuiltList<GAccountFieldsData_identity_smith_smithCertIssued_nodes> get nodes;
+  static Serializer<GAccountFieldsData_identity_smith_smithCertIssued>
       get serializer =>
-          _$gAccountFieldsDataLinkedIdentitySmithSmithCertIssuedSerializer;
+          _$gAccountFieldsDataIdentitySmithSmithCertIssuedSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_linkedIdentity_smith_smithCertIssued.serializer,
+        GAccountFieldsData_identity_smith_smithCertIssued.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_linkedIdentity_smith_smithCertIssued? fromJson(
+  static GAccountFieldsData_identity_smith_smithCertIssued? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountFieldsData_linkedIdentity_smith_smithCertIssued.serializer,
+        GAccountFieldsData_identity_smith_smithCertIssued.serializer,
         json,
       );
 }
 
-abstract class GAccountFieldsData_linkedIdentity_smith_smithCertIssued_nodes
+abstract class GAccountFieldsData_identity_smith_smithCertIssued_nodes
     implements
-        Built<GAccountFieldsData_linkedIdentity_smith_smithCertIssued_nodes,
-            GAccountFieldsData_linkedIdentity_smith_smithCertIssued_nodesBuilder>,
-        GAccountFields_linkedIdentity_smith_smithCertIssued_nodes,
+        Built<GAccountFieldsData_identity_smith_smithCertIssued_nodes,
+            GAccountFieldsData_identity_smith_smithCertIssued_nodesBuilder>,
+        GAccountFields_identity_smith_smithCertIssued_nodes,
         GIdentityFields_smith_smithCertIssued_nodes,
         GSmithFields_smithCertIssued_nodes,
         GSmithCertFields {
-  GAccountFieldsData_linkedIdentity_smith_smithCertIssued_nodes._();
+  GAccountFieldsData_identity_smith_smithCertIssued_nodes._();
 
-  factory GAccountFieldsData_linkedIdentity_smith_smithCertIssued_nodes(
-          [void Function(
-                  GAccountFieldsData_linkedIdentity_smith_smithCertIssued_nodesBuilder
-                      b)
-              updates]) =
-      _$GAccountFieldsData_linkedIdentity_smith_smithCertIssued_nodes;
+  factory GAccountFieldsData_identity_smith_smithCertIssued_nodes(
+      [void Function(
+              GAccountFieldsData_identity_smith_smithCertIssued_nodesBuilder b)
+          updates]) = _$GAccountFieldsData_identity_smith_smithCertIssued_nodes;
 
   static void _initializeBuilder(
-          GAccountFieldsData_linkedIdentity_smith_smithCertIssued_nodesBuilder
-              b) =>
+          GAccountFieldsData_identity_smith_smithCertIssued_nodesBuilder b) =>
       b..G__typename = 'SmithCert';
 
   @override
@@ -13103,43 +12986,40 @@ abstract class GAccountFieldsData_linkedIdentity_smith_smithCertIssued_nodes
   String? get receiverId;
   @override
   int get createdOn;
-  static Serializer<
-          GAccountFieldsData_linkedIdentity_smith_smithCertIssued_nodes>
+  static Serializer<GAccountFieldsData_identity_smith_smithCertIssued_nodes>
       get serializer =>
-          _$gAccountFieldsDataLinkedIdentitySmithSmithCertIssuedNodesSerializer;
+          _$gAccountFieldsDataIdentitySmithSmithCertIssuedNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_linkedIdentity_smith_smithCertIssued_nodes
-            .serializer,
+        GAccountFieldsData_identity_smith_smithCertIssued_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_linkedIdentity_smith_smithCertIssued_nodes?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountFieldsData_linkedIdentity_smith_smithCertIssued_nodes
-                .serializer,
-            json,
-          );
+  static GAccountFieldsData_identity_smith_smithCertIssued_nodes? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountFieldsData_identity_smith_smithCertIssued_nodes.serializer,
+        json,
+      );
 }
 
-abstract class GAccountFieldsData_linkedIdentity_smith_smithCertReceived
+abstract class GAccountFieldsData_identity_smith_smithCertReceived
     implements
-        Built<GAccountFieldsData_linkedIdentity_smith_smithCertReceived,
-            GAccountFieldsData_linkedIdentity_smith_smithCertReceivedBuilder>,
-        GAccountFields_linkedIdentity_smith_smithCertReceived,
+        Built<GAccountFieldsData_identity_smith_smithCertReceived,
+            GAccountFieldsData_identity_smith_smithCertReceivedBuilder>,
+        GAccountFields_identity_smith_smithCertReceived,
         GIdentityFields_smith_smithCertReceived,
         GSmithFields_smithCertReceived {
-  GAccountFieldsData_linkedIdentity_smith_smithCertReceived._();
+  GAccountFieldsData_identity_smith_smithCertReceived._();
 
-  factory GAccountFieldsData_linkedIdentity_smith_smithCertReceived(
+  factory GAccountFieldsData_identity_smith_smithCertReceived(
       [void Function(
-              GAccountFieldsData_linkedIdentity_smith_smithCertReceivedBuilder
-                  b)
-          updates]) = _$GAccountFieldsData_linkedIdentity_smith_smithCertReceived;
+              GAccountFieldsData_identity_smith_smithCertReceivedBuilder b)
+          updates]) = _$GAccountFieldsData_identity_smith_smithCertReceived;
 
   static void _initializeBuilder(
-          GAccountFieldsData_linkedIdentity_smith_smithCertReceivedBuilder b) =>
+          GAccountFieldsData_identity_smith_smithCertReceivedBuilder b) =>
       b..G__typename = 'SmithCertsConnection';
 
   @override
@@ -13148,46 +13028,44 @@ abstract class GAccountFieldsData_linkedIdentity_smith_smithCertReceived
   @override
   int get totalCount;
   @override
-  BuiltList<GAccountFieldsData_linkedIdentity_smith_smithCertReceived_nodes>
+  BuiltList<GAccountFieldsData_identity_smith_smithCertReceived_nodes>
       get nodes;
-  static Serializer<GAccountFieldsData_linkedIdentity_smith_smithCertReceived>
+  static Serializer<GAccountFieldsData_identity_smith_smithCertReceived>
       get serializer =>
-          _$gAccountFieldsDataLinkedIdentitySmithSmithCertReceivedSerializer;
+          _$gAccountFieldsDataIdentitySmithSmithCertReceivedSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_linkedIdentity_smith_smithCertReceived.serializer,
+        GAccountFieldsData_identity_smith_smithCertReceived.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_linkedIdentity_smith_smithCertReceived? fromJson(
+  static GAccountFieldsData_identity_smith_smithCertReceived? fromJson(
           Map<String, dynamic> json) =>
       _i1.serializers.deserializeWith(
-        GAccountFieldsData_linkedIdentity_smith_smithCertReceived.serializer,
+        GAccountFieldsData_identity_smith_smithCertReceived.serializer,
         json,
       );
 }
 
-abstract class GAccountFieldsData_linkedIdentity_smith_smithCertReceived_nodes
+abstract class GAccountFieldsData_identity_smith_smithCertReceived_nodes
     implements
-        Built<GAccountFieldsData_linkedIdentity_smith_smithCertReceived_nodes,
-            GAccountFieldsData_linkedIdentity_smith_smithCertReceived_nodesBuilder>,
-        GAccountFields_linkedIdentity_smith_smithCertReceived_nodes,
+        Built<GAccountFieldsData_identity_smith_smithCertReceived_nodes,
+            GAccountFieldsData_identity_smith_smithCertReceived_nodesBuilder>,
+        GAccountFields_identity_smith_smithCertReceived_nodes,
         GIdentityFields_smith_smithCertReceived_nodes,
         GSmithFields_smithCertReceived_nodes,
         GSmithCertFields {
-  GAccountFieldsData_linkedIdentity_smith_smithCertReceived_nodes._();
+  GAccountFieldsData_identity_smith_smithCertReceived_nodes._();
 
-  factory GAccountFieldsData_linkedIdentity_smith_smithCertReceived_nodes(
-          [void Function(
-                  GAccountFieldsData_linkedIdentity_smith_smithCertReceived_nodesBuilder
-                      b)
-              updates]) =
-      _$GAccountFieldsData_linkedIdentity_smith_smithCertReceived_nodes;
+  factory GAccountFieldsData_identity_smith_smithCertReceived_nodes(
+      [void Function(
+              GAccountFieldsData_identity_smith_smithCertReceived_nodesBuilder
+                  b)
+          updates]) = _$GAccountFieldsData_identity_smith_smithCertReceived_nodes;
 
   static void _initializeBuilder(
-          GAccountFieldsData_linkedIdentity_smith_smithCertReceived_nodesBuilder
-              b) =>
+          GAccountFieldsData_identity_smith_smithCertReceived_nodesBuilder b) =>
       b..G__typename = 'SmithCert';
 
   @override
@@ -13201,24 +13079,22 @@ abstract class GAccountFieldsData_linkedIdentity_smith_smithCertReceived_nodes
   String? get receiverId;
   @override
   int get createdOn;
-  static Serializer<
-          GAccountFieldsData_linkedIdentity_smith_smithCertReceived_nodes>
+  static Serializer<GAccountFieldsData_identity_smith_smithCertReceived_nodes>
       get serializer =>
-          _$gAccountFieldsDataLinkedIdentitySmithSmithCertReceivedNodesSerializer;
+          _$gAccountFieldsDataIdentitySmithSmithCertReceivedNodesSerializer;
 
   @override
   Map<String, dynamic> toJson() => (_i1.serializers.serializeWith(
-        GAccountFieldsData_linkedIdentity_smith_smithCertReceived_nodes
-            .serializer,
+        GAccountFieldsData_identity_smith_smithCertReceived_nodes.serializer,
         this,
       ) as Map<String, dynamic>);
 
-  static GAccountFieldsData_linkedIdentity_smith_smithCertReceived_nodes?
-      fromJson(Map<String, dynamic> json) => _i1.serializers.deserializeWith(
-            GAccountFieldsData_linkedIdentity_smith_smithCertReceived_nodes
-                .serializer,
-            json,
-          );
+  static GAccountFieldsData_identity_smith_smithCertReceived_nodes? fromJson(
+          Map<String, dynamic> json) =>
+      _i1.serializers.deserializeWith(
+        GAccountFieldsData_identity_smith_smithCertReceived_nodes.serializer,
+        json,
+      );
 }
 
 abstract class GAccountTxsFields {

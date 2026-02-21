@@ -7,47 +7,47 @@ part of 'duniter-indexer-queries.req.gql.dart';
 // **************************************************************************
 
 Serializer<GLastBlockReq> _$gLastBlockReqSerializer =
-    new _$GLastBlockReqSerializer();
+    _$GLastBlockReqSerializer();
 Serializer<GIdentitiesByNameOrPkReq> _$gIdentitiesByNameOrPkReqSerializer =
-    new _$GIdentitiesByNameOrPkReqSerializer();
+    _$GIdentitiesByNameOrPkReqSerializer();
 Serializer<GIdentitiesByPkReq> _$gIdentitiesByPkReqSerializer =
-    new _$GIdentitiesByPkReqSerializer();
+    _$GIdentitiesByPkReqSerializer();
 Serializer<GIdentitiesByNameReq> _$gIdentitiesByNameReqSerializer =
-    new _$GIdentitiesByNameReqSerializer();
+    _$GIdentitiesByNameReqSerializer();
 Serializer<GAccountByPkReq> _$gAccountByPkReqSerializer =
-    new _$GAccountByPkReqSerializer();
+    _$GAccountByPkReqSerializer();
 Serializer<GAccountsByPkReq> _$gAccountsByPkReqSerializer =
-    new _$GAccountsByPkReqSerializer();
+    _$GAccountsByPkReqSerializer();
 Serializer<GAccountBasicByPkReq> _$gAccountBasicByPkReqSerializer =
-    new _$GAccountBasicByPkReqSerializer();
+    _$GAccountBasicByPkReqSerializer();
 Serializer<GAccountsBasicByPkReq> _$gAccountsBasicByPkReqSerializer =
-    new _$GAccountsBasicByPkReqSerializer();
+    _$GAccountsBasicByPkReqSerializer();
 Serializer<GAccountTransactionsReq> _$gAccountTransactionsReqSerializer =
-    new _$GAccountTransactionsReqSerializer();
+    _$GAccountTransactionsReqSerializer();
 Serializer<GIndexerVersionReq> _$gIndexerVersionReqSerializer =
-    new _$GIndexerVersionReqSerializer();
+    _$GIndexerVersionReqSerializer();
 Serializer<GCertFieldsReq> _$gCertFieldsReqSerializer =
-    new _$GCertFieldsReqSerializer();
+    _$GCertFieldsReqSerializer();
 Serializer<GSmithCertFieldsReq> _$gSmithCertFieldsReqSerializer =
-    new _$GSmithCertFieldsReqSerializer();
+    _$GSmithCertFieldsReqSerializer();
 Serializer<GSmithFieldsReq> _$gSmithFieldsReqSerializer =
-    new _$GSmithFieldsReqSerializer();
+    _$GSmithFieldsReqSerializer();
 Serializer<GOwnerKeyChangeFieldsReq> _$gOwnerKeyChangeFieldsReqSerializer =
-    new _$GOwnerKeyChangeFieldsReqSerializer();
+    _$GOwnerKeyChangeFieldsReqSerializer();
 Serializer<GIdentityBasicFieldsReq> _$gIdentityBasicFieldsReqSerializer =
-    new _$GIdentityBasicFieldsReqSerializer();
+    _$GIdentityBasicFieldsReqSerializer();
 Serializer<GIdentityFieldsReq> _$gIdentityFieldsReqSerializer =
-    new _$GIdentityFieldsReqSerializer();
+    _$GIdentityFieldsReqSerializer();
 Serializer<GCommentsIssuedReq> _$gCommentsIssuedReqSerializer =
-    new _$GCommentsIssuedReqSerializer();
+    _$GCommentsIssuedReqSerializer();
 Serializer<GAccountBasicFieldsReq> _$gAccountBasicFieldsReqSerializer =
-    new _$GAccountBasicFieldsReqSerializer();
+    _$GAccountBasicFieldsReqSerializer();
 Serializer<GAccountFieldsReq> _$gAccountFieldsReqSerializer =
-    new _$GAccountFieldsReqSerializer();
+    _$GAccountFieldsReqSerializer();
 Serializer<GAccountTxsFieldsReq> _$gAccountTxsFieldsReqSerializer =
-    new _$GAccountTxsFieldsReqSerializer();
+    _$GAccountTxsFieldsReqSerializer();
 Serializer<GTransferFieldsReq> _$gTransferFieldsReqSerializer =
-    new _$GTransferFieldsReqSerializer();
+    _$GTransferFieldsReqSerializer();
 
 class _$GLastBlockReqSerializer implements StructuredSerializer<GLastBlockReq> {
   @override
@@ -113,7 +113,7 @@ class _$GLastBlockReqSerializer implements StructuredSerializer<GLastBlockReq> {
   GLastBlockReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GLastBlockReqBuilder();
+    final result = GLastBlockReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -235,7 +235,7 @@ class _$GIdentitiesByNameOrPkReqSerializer
   GIdentitiesByNameOrPkReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GIdentitiesByNameOrPkReqBuilder();
+    final result = GIdentitiesByNameOrPkReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -354,7 +354,7 @@ class _$GIdentitiesByPkReqSerializer
   GIdentitiesByPkReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GIdentitiesByPkReqBuilder();
+    final result = GIdentitiesByPkReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -476,7 +476,7 @@ class _$GIdentitiesByNameReqSerializer
   GIdentitiesByNameReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GIdentitiesByNameReqBuilder();
+    final result = GIdentitiesByNameReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -594,7 +594,7 @@ class _$GAccountByPkReqSerializer
   GAccountByPkReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountByPkReqBuilder();
+    final result = GAccountByPkReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -712,7 +712,7 @@ class _$GAccountsByPkReqSerializer
   GAccountsByPkReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountsByPkReqBuilder();
+    final result = GAccountsByPkReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -834,7 +834,7 @@ class _$GAccountBasicByPkReqSerializer
   GAccountBasicByPkReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountBasicByPkReqBuilder();
+    final result = GAccountBasicByPkReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -956,7 +956,7 @@ class _$GAccountsBasicByPkReqSerializer
   GAccountsBasicByPkReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountsBasicByPkReqBuilder();
+    final result = GAccountsBasicByPkReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -1078,7 +1078,7 @@ class _$GAccountTransactionsReqSerializer
   GAccountTransactionsReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountTransactionsReqBuilder();
+    final result = GAccountTransactionsReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -1197,7 +1197,7 @@ class _$GIndexerVersionReqSerializer
   GIndexerVersionReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GIndexerVersionReqBuilder();
+    final result = GIndexerVersionReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -1287,7 +1287,7 @@ class _$GCertFieldsReqSerializer
   GCertFieldsReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GCertFieldsReqBuilder();
+    final result = GCertFieldsReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -1364,7 +1364,7 @@ class _$GSmithCertFieldsReqSerializer
   GSmithCertFieldsReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GSmithCertFieldsReqBuilder();
+    final result = GSmithCertFieldsReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -1437,7 +1437,7 @@ class _$GSmithFieldsReqSerializer
   GSmithFieldsReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GSmithFieldsReqBuilder();
+    final result = GSmithFieldsReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -1514,7 +1514,7 @@ class _$GOwnerKeyChangeFieldsReqSerializer
   GOwnerKeyChangeFieldsReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GOwnerKeyChangeFieldsReqBuilder();
+    final result = GOwnerKeyChangeFieldsReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -1591,7 +1591,7 @@ class _$GIdentityBasicFieldsReqSerializer
   GIdentityBasicFieldsReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GIdentityBasicFieldsReqBuilder();
+    final result = GIdentityBasicFieldsReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -1665,7 +1665,7 @@ class _$GIdentityFieldsReqSerializer
   GIdentityFieldsReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GIdentityFieldsReqBuilder();
+    final result = GIdentityFieldsReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -1739,7 +1739,7 @@ class _$GCommentsIssuedReqSerializer
   GCommentsIssuedReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GCommentsIssuedReqBuilder();
+    final result = GCommentsIssuedReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -1816,7 +1816,7 @@ class _$GAccountBasicFieldsReqSerializer
   GAccountBasicFieldsReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountBasicFieldsReqBuilder();
+    final result = GAccountBasicFieldsReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -1889,7 +1889,7 @@ class _$GAccountFieldsReqSerializer
   GAccountFieldsReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountFieldsReqBuilder();
+    final result = GAccountFieldsReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -1966,7 +1966,7 @@ class _$GAccountTxsFieldsReqSerializer
   GAccountTxsFieldsReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountTxsFieldsReqBuilder();
+    final result = GAccountTxsFieldsReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -2040,7 +2040,7 @@ class _$GTransferFieldsReqSerializer
   GTransferFieldsReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GTransferFieldsReqBuilder();
+    final result = GTransferFieldsReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -2100,7 +2100,7 @@ class _$GLastBlockReq extends GLastBlockReq {
   final _i4.Context? context;
 
   factory _$GLastBlockReq([void Function(GLastBlockReqBuilder)? updates]) =>
-      (new GLastBlockReqBuilder()..update(updates))._build();
+      (GLastBlockReqBuilder()..update(updates))._build();
 
   _$GLastBlockReq._(
       {required this.vars,
@@ -2113,20 +2113,13 @@ class _$GLastBlockReq extends GLastBlockReq {
       this.fetchPolicy,
       required this.executeOnListen,
       this.context})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(vars, r'GLastBlockReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        operation, r'GLastBlockReq', 'operation');
-    BuiltValueNullFieldError.checkNotNull(
-        executeOnListen, r'GLastBlockReq', 'executeOnListen');
-  }
-
+      : super._();
   @override
   GLastBlockReq rebuild(void Function(GLastBlockReqBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GLastBlockReqBuilder toBuilder() => new GLastBlockReqBuilder()..replace(this);
+  GLastBlockReqBuilder toBuilder() => GLastBlockReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -2185,7 +2178,7 @@ class GLastBlockReqBuilder
 
   _i3.GLastBlockVarsBuilder? _vars;
   _i3.GLastBlockVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GLastBlockVarsBuilder();
+      _$this._vars ??= _i3.GLastBlockVarsBuilder();
   set vars(_i3.GLastBlockVarsBuilder? vars) => _$this._vars = vars;
 
   _i4.Operation? _operation;
@@ -2208,7 +2201,7 @@ class GLastBlockReqBuilder
 
   _i2.GLastBlockDataBuilder? _optimisticResponse;
   _i2.GLastBlockDataBuilder get optimisticResponse =>
-      _$this._optimisticResponse ??= new _i2.GLastBlockDataBuilder();
+      _$this._optimisticResponse ??= _i2.GLastBlockDataBuilder();
   set optimisticResponse(_i2.GLastBlockDataBuilder? optimisticResponse) =>
       _$this._optimisticResponse = optimisticResponse;
 
@@ -2262,7 +2255,6 @@ class GLastBlockReqBuilder
 
   @override
   void replace(GLastBlockReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GLastBlockReq;
   }
 
@@ -2278,19 +2270,20 @@ class GLastBlockReqBuilder
     _$GLastBlockReq _$result;
     try {
       _$result = _$v ??
-          new _$GLastBlockReq._(
-              vars: vars.build(),
-              operation: BuiltValueNullFieldError.checkNotNull(
-                  operation, r'GLastBlockReq', 'operation'),
-              requestId: requestId,
-              updateResult: updateResult,
-              optimisticResponse: _optimisticResponse?.build(),
-              updateCacheHandlerKey: updateCacheHandlerKey,
-              updateCacheHandlerContext: updateCacheHandlerContext,
-              fetchPolicy: fetchPolicy,
-              executeOnListen: BuiltValueNullFieldError.checkNotNull(
-                  executeOnListen, r'GLastBlockReq', 'executeOnListen'),
-              context: context);
+          _$GLastBlockReq._(
+            vars: vars.build(),
+            operation: BuiltValueNullFieldError.checkNotNull(
+                operation, r'GLastBlockReq', 'operation'),
+            requestId: requestId,
+            updateResult: updateResult,
+            optimisticResponse: _optimisticResponse?.build(),
+            updateCacheHandlerKey: updateCacheHandlerKey,
+            updateCacheHandlerContext: updateCacheHandlerContext,
+            fetchPolicy: fetchPolicy,
+            executeOnListen: BuiltValueNullFieldError.checkNotNull(
+                executeOnListen, r'GLastBlockReq', 'executeOnListen'),
+            context: context,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -2300,7 +2293,7 @@ class GLastBlockReqBuilder
         _$failedField = 'optimisticResponse';
         _optimisticResponse?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GLastBlockReq', _$failedField, e.toString());
       }
       rethrow;
@@ -2336,7 +2329,7 @@ class _$GIdentitiesByNameOrPkReq extends GIdentitiesByNameOrPkReq {
 
   factory _$GIdentitiesByNameOrPkReq(
           [void Function(GIdentitiesByNameOrPkReqBuilder)? updates]) =>
-      (new GIdentitiesByNameOrPkReqBuilder()..update(updates))._build();
+      (GIdentitiesByNameOrPkReqBuilder()..update(updates))._build();
 
   _$GIdentitiesByNameOrPkReq._(
       {required this.vars,
@@ -2349,15 +2342,7 @@ class _$GIdentitiesByNameOrPkReq extends GIdentitiesByNameOrPkReq {
       this.fetchPolicy,
       required this.executeOnListen,
       this.context})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        vars, r'GIdentitiesByNameOrPkReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        operation, r'GIdentitiesByNameOrPkReq', 'operation');
-    BuiltValueNullFieldError.checkNotNull(
-        executeOnListen, r'GIdentitiesByNameOrPkReq', 'executeOnListen');
-  }
-
+      : super._();
   @override
   GIdentitiesByNameOrPkReq rebuild(
           void Function(GIdentitiesByNameOrPkReqBuilder) updates) =>
@@ -2365,7 +2350,7 @@ class _$GIdentitiesByNameOrPkReq extends GIdentitiesByNameOrPkReq {
 
   @override
   GIdentitiesByNameOrPkReqBuilder toBuilder() =>
-      new GIdentitiesByNameOrPkReqBuilder()..replace(this);
+      GIdentitiesByNameOrPkReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -2425,7 +2410,7 @@ class GIdentitiesByNameOrPkReqBuilder
 
   _i3.GIdentitiesByNameOrPkVarsBuilder? _vars;
   _i3.GIdentitiesByNameOrPkVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GIdentitiesByNameOrPkVarsBuilder();
+      _$this._vars ??= _i3.GIdentitiesByNameOrPkVarsBuilder();
   set vars(_i3.GIdentitiesByNameOrPkVarsBuilder? vars) => _$this._vars = vars;
 
   _i4.Operation? _operation;
@@ -2451,7 +2436,7 @@ class GIdentitiesByNameOrPkReqBuilder
 
   _i2.GIdentitiesByNameOrPkDataBuilder? _optimisticResponse;
   _i2.GIdentitiesByNameOrPkDataBuilder get optimisticResponse =>
-      _$this._optimisticResponse ??= new _i2.GIdentitiesByNameOrPkDataBuilder();
+      _$this._optimisticResponse ??= _i2.GIdentitiesByNameOrPkDataBuilder();
   set optimisticResponse(
           _i2.GIdentitiesByNameOrPkDataBuilder? optimisticResponse) =>
       _$this._optimisticResponse = optimisticResponse;
@@ -2506,7 +2491,6 @@ class GIdentitiesByNameOrPkReqBuilder
 
   @override
   void replace(GIdentitiesByNameOrPkReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GIdentitiesByNameOrPkReq;
   }
 
@@ -2522,21 +2506,22 @@ class GIdentitiesByNameOrPkReqBuilder
     _$GIdentitiesByNameOrPkReq _$result;
     try {
       _$result = _$v ??
-          new _$GIdentitiesByNameOrPkReq._(
-              vars: vars.build(),
-              operation: BuiltValueNullFieldError.checkNotNull(
-                  operation, r'GIdentitiesByNameOrPkReq', 'operation'),
-              requestId: requestId,
-              updateResult: updateResult,
-              optimisticResponse: _optimisticResponse?.build(),
-              updateCacheHandlerKey: updateCacheHandlerKey,
-              updateCacheHandlerContext: updateCacheHandlerContext,
-              fetchPolicy: fetchPolicy,
-              executeOnListen: BuiltValueNullFieldError.checkNotNull(
-                  executeOnListen,
-                  r'GIdentitiesByNameOrPkReq',
-                  'executeOnListen'),
-              context: context);
+          _$GIdentitiesByNameOrPkReq._(
+            vars: vars.build(),
+            operation: BuiltValueNullFieldError.checkNotNull(
+                operation, r'GIdentitiesByNameOrPkReq', 'operation'),
+            requestId: requestId,
+            updateResult: updateResult,
+            optimisticResponse: _optimisticResponse?.build(),
+            updateCacheHandlerKey: updateCacheHandlerKey,
+            updateCacheHandlerContext: updateCacheHandlerContext,
+            fetchPolicy: fetchPolicy,
+            executeOnListen: BuiltValueNullFieldError.checkNotNull(
+                executeOnListen,
+                r'GIdentitiesByNameOrPkReq',
+                'executeOnListen'),
+            context: context,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -2546,7 +2531,7 @@ class GIdentitiesByNameOrPkReqBuilder
         _$failedField = 'optimisticResponse';
         _optimisticResponse?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GIdentitiesByNameOrPkReq', _$failedField, e.toString());
       }
       rethrow;
@@ -2581,7 +2566,7 @@ class _$GIdentitiesByPkReq extends GIdentitiesByPkReq {
 
   factory _$GIdentitiesByPkReq(
           [void Function(GIdentitiesByPkReqBuilder)? updates]) =>
-      (new GIdentitiesByPkReqBuilder()..update(updates))._build();
+      (GIdentitiesByPkReqBuilder()..update(updates))._build();
 
   _$GIdentitiesByPkReq._(
       {required this.vars,
@@ -2594,14 +2579,7 @@ class _$GIdentitiesByPkReq extends GIdentitiesByPkReq {
       this.fetchPolicy,
       required this.executeOnListen,
       this.context})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(vars, r'GIdentitiesByPkReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        operation, r'GIdentitiesByPkReq', 'operation');
-    BuiltValueNullFieldError.checkNotNull(
-        executeOnListen, r'GIdentitiesByPkReq', 'executeOnListen');
-  }
-
+      : super._();
   @override
   GIdentitiesByPkReq rebuild(
           void Function(GIdentitiesByPkReqBuilder) updates) =>
@@ -2609,7 +2587,7 @@ class _$GIdentitiesByPkReq extends GIdentitiesByPkReq {
 
   @override
   GIdentitiesByPkReqBuilder toBuilder() =>
-      new GIdentitiesByPkReqBuilder()..replace(this);
+      GIdentitiesByPkReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -2668,7 +2646,7 @@ class GIdentitiesByPkReqBuilder
 
   _i3.GIdentitiesByPkVarsBuilder? _vars;
   _i3.GIdentitiesByPkVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GIdentitiesByPkVarsBuilder();
+      _$this._vars ??= _i3.GIdentitiesByPkVarsBuilder();
   set vars(_i3.GIdentitiesByPkVarsBuilder? vars) => _$this._vars = vars;
 
   _i4.Operation? _operation;
@@ -2692,7 +2670,7 @@ class GIdentitiesByPkReqBuilder
 
   _i2.GIdentitiesByPkDataBuilder? _optimisticResponse;
   _i2.GIdentitiesByPkDataBuilder get optimisticResponse =>
-      _$this._optimisticResponse ??= new _i2.GIdentitiesByPkDataBuilder();
+      _$this._optimisticResponse ??= _i2.GIdentitiesByPkDataBuilder();
   set optimisticResponse(_i2.GIdentitiesByPkDataBuilder? optimisticResponse) =>
       _$this._optimisticResponse = optimisticResponse;
 
@@ -2746,7 +2724,6 @@ class GIdentitiesByPkReqBuilder
 
   @override
   void replace(GIdentitiesByPkReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GIdentitiesByPkReq;
   }
 
@@ -2762,19 +2739,20 @@ class GIdentitiesByPkReqBuilder
     _$GIdentitiesByPkReq _$result;
     try {
       _$result = _$v ??
-          new _$GIdentitiesByPkReq._(
-              vars: vars.build(),
-              operation: BuiltValueNullFieldError.checkNotNull(
-                  operation, r'GIdentitiesByPkReq', 'operation'),
-              requestId: requestId,
-              updateResult: updateResult,
-              optimisticResponse: _optimisticResponse?.build(),
-              updateCacheHandlerKey: updateCacheHandlerKey,
-              updateCacheHandlerContext: updateCacheHandlerContext,
-              fetchPolicy: fetchPolicy,
-              executeOnListen: BuiltValueNullFieldError.checkNotNull(
-                  executeOnListen, r'GIdentitiesByPkReq', 'executeOnListen'),
-              context: context);
+          _$GIdentitiesByPkReq._(
+            vars: vars.build(),
+            operation: BuiltValueNullFieldError.checkNotNull(
+                operation, r'GIdentitiesByPkReq', 'operation'),
+            requestId: requestId,
+            updateResult: updateResult,
+            optimisticResponse: _optimisticResponse?.build(),
+            updateCacheHandlerKey: updateCacheHandlerKey,
+            updateCacheHandlerContext: updateCacheHandlerContext,
+            fetchPolicy: fetchPolicy,
+            executeOnListen: BuiltValueNullFieldError.checkNotNull(
+                executeOnListen, r'GIdentitiesByPkReq', 'executeOnListen'),
+            context: context,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -2784,7 +2762,7 @@ class GIdentitiesByPkReqBuilder
         _$failedField = 'optimisticResponse';
         _optimisticResponse?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GIdentitiesByPkReq', _$failedField, e.toString());
       }
       rethrow;
@@ -2819,7 +2797,7 @@ class _$GIdentitiesByNameReq extends GIdentitiesByNameReq {
 
   factory _$GIdentitiesByNameReq(
           [void Function(GIdentitiesByNameReqBuilder)? updates]) =>
-      (new GIdentitiesByNameReqBuilder()..update(updates))._build();
+      (GIdentitiesByNameReqBuilder()..update(updates))._build();
 
   _$GIdentitiesByNameReq._(
       {required this.vars,
@@ -2832,15 +2810,7 @@ class _$GIdentitiesByNameReq extends GIdentitiesByNameReq {
       this.fetchPolicy,
       required this.executeOnListen,
       this.context})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        vars, r'GIdentitiesByNameReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        operation, r'GIdentitiesByNameReq', 'operation');
-    BuiltValueNullFieldError.checkNotNull(
-        executeOnListen, r'GIdentitiesByNameReq', 'executeOnListen');
-  }
-
+      : super._();
   @override
   GIdentitiesByNameReq rebuild(
           void Function(GIdentitiesByNameReqBuilder) updates) =>
@@ -2848,7 +2818,7 @@ class _$GIdentitiesByNameReq extends GIdentitiesByNameReq {
 
   @override
   GIdentitiesByNameReqBuilder toBuilder() =>
-      new GIdentitiesByNameReqBuilder()..replace(this);
+      GIdentitiesByNameReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -2907,7 +2877,7 @@ class GIdentitiesByNameReqBuilder
 
   _i3.GIdentitiesByNameVarsBuilder? _vars;
   _i3.GIdentitiesByNameVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GIdentitiesByNameVarsBuilder();
+      _$this._vars ??= _i3.GIdentitiesByNameVarsBuilder();
   set vars(_i3.GIdentitiesByNameVarsBuilder? vars) => _$this._vars = vars;
 
   _i4.Operation? _operation;
@@ -2931,7 +2901,7 @@ class GIdentitiesByNameReqBuilder
 
   _i2.GIdentitiesByNameDataBuilder? _optimisticResponse;
   _i2.GIdentitiesByNameDataBuilder get optimisticResponse =>
-      _$this._optimisticResponse ??= new _i2.GIdentitiesByNameDataBuilder();
+      _$this._optimisticResponse ??= _i2.GIdentitiesByNameDataBuilder();
   set optimisticResponse(
           _i2.GIdentitiesByNameDataBuilder? optimisticResponse) =>
       _$this._optimisticResponse = optimisticResponse;
@@ -2986,7 +2956,6 @@ class GIdentitiesByNameReqBuilder
 
   @override
   void replace(GIdentitiesByNameReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GIdentitiesByNameReq;
   }
 
@@ -3002,19 +2971,20 @@ class GIdentitiesByNameReqBuilder
     _$GIdentitiesByNameReq _$result;
     try {
       _$result = _$v ??
-          new _$GIdentitiesByNameReq._(
-              vars: vars.build(),
-              operation: BuiltValueNullFieldError.checkNotNull(
-                  operation, r'GIdentitiesByNameReq', 'operation'),
-              requestId: requestId,
-              updateResult: updateResult,
-              optimisticResponse: _optimisticResponse?.build(),
-              updateCacheHandlerKey: updateCacheHandlerKey,
-              updateCacheHandlerContext: updateCacheHandlerContext,
-              fetchPolicy: fetchPolicy,
-              executeOnListen: BuiltValueNullFieldError.checkNotNull(
-                  executeOnListen, r'GIdentitiesByNameReq', 'executeOnListen'),
-              context: context);
+          _$GIdentitiesByNameReq._(
+            vars: vars.build(),
+            operation: BuiltValueNullFieldError.checkNotNull(
+                operation, r'GIdentitiesByNameReq', 'operation'),
+            requestId: requestId,
+            updateResult: updateResult,
+            optimisticResponse: _optimisticResponse?.build(),
+            updateCacheHandlerKey: updateCacheHandlerKey,
+            updateCacheHandlerContext: updateCacheHandlerContext,
+            fetchPolicy: fetchPolicy,
+            executeOnListen: BuiltValueNullFieldError.checkNotNull(
+                executeOnListen, r'GIdentitiesByNameReq', 'executeOnListen'),
+            context: context,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -3024,7 +2994,7 @@ class GIdentitiesByNameReqBuilder
         _$failedField = 'optimisticResponse';
         _optimisticResponse?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GIdentitiesByNameReq', _$failedField, e.toString());
       }
       rethrow;
@@ -3058,7 +3028,7 @@ class _$GAccountByPkReq extends GAccountByPkReq {
   final _i4.Context? context;
 
   factory _$GAccountByPkReq([void Function(GAccountByPkReqBuilder)? updates]) =>
-      (new GAccountByPkReqBuilder()..update(updates))._build();
+      (GAccountByPkReqBuilder()..update(updates))._build();
 
   _$GAccountByPkReq._(
       {required this.vars,
@@ -3071,21 +3041,13 @@ class _$GAccountByPkReq extends GAccountByPkReq {
       this.fetchPolicy,
       required this.executeOnListen,
       this.context})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(vars, r'GAccountByPkReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        operation, r'GAccountByPkReq', 'operation');
-    BuiltValueNullFieldError.checkNotNull(
-        executeOnListen, r'GAccountByPkReq', 'executeOnListen');
-  }
-
+      : super._();
   @override
   GAccountByPkReq rebuild(void Function(GAccountByPkReqBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GAccountByPkReqBuilder toBuilder() =>
-      new GAccountByPkReqBuilder()..replace(this);
+  GAccountByPkReqBuilder toBuilder() => GAccountByPkReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -3144,7 +3106,7 @@ class GAccountByPkReqBuilder
 
   _i3.GAccountByPkVarsBuilder? _vars;
   _i3.GAccountByPkVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GAccountByPkVarsBuilder();
+      _$this._vars ??= _i3.GAccountByPkVarsBuilder();
   set vars(_i3.GAccountByPkVarsBuilder? vars) => _$this._vars = vars;
 
   _i4.Operation? _operation;
@@ -3167,7 +3129,7 @@ class GAccountByPkReqBuilder
 
   _i2.GAccountByPkDataBuilder? _optimisticResponse;
   _i2.GAccountByPkDataBuilder get optimisticResponse =>
-      _$this._optimisticResponse ??= new _i2.GAccountByPkDataBuilder();
+      _$this._optimisticResponse ??= _i2.GAccountByPkDataBuilder();
   set optimisticResponse(_i2.GAccountByPkDataBuilder? optimisticResponse) =>
       _$this._optimisticResponse = optimisticResponse;
 
@@ -3221,7 +3183,6 @@ class GAccountByPkReqBuilder
 
   @override
   void replace(GAccountByPkReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GAccountByPkReq;
   }
 
@@ -3237,19 +3198,20 @@ class GAccountByPkReqBuilder
     _$GAccountByPkReq _$result;
     try {
       _$result = _$v ??
-          new _$GAccountByPkReq._(
-              vars: vars.build(),
-              operation: BuiltValueNullFieldError.checkNotNull(
-                  operation, r'GAccountByPkReq', 'operation'),
-              requestId: requestId,
-              updateResult: updateResult,
-              optimisticResponse: _optimisticResponse?.build(),
-              updateCacheHandlerKey: updateCacheHandlerKey,
-              updateCacheHandlerContext: updateCacheHandlerContext,
-              fetchPolicy: fetchPolicy,
-              executeOnListen: BuiltValueNullFieldError.checkNotNull(
-                  executeOnListen, r'GAccountByPkReq', 'executeOnListen'),
-              context: context);
+          _$GAccountByPkReq._(
+            vars: vars.build(),
+            operation: BuiltValueNullFieldError.checkNotNull(
+                operation, r'GAccountByPkReq', 'operation'),
+            requestId: requestId,
+            updateResult: updateResult,
+            optimisticResponse: _optimisticResponse?.build(),
+            updateCacheHandlerKey: updateCacheHandlerKey,
+            updateCacheHandlerContext: updateCacheHandlerContext,
+            fetchPolicy: fetchPolicy,
+            executeOnListen: BuiltValueNullFieldError.checkNotNull(
+                executeOnListen, r'GAccountByPkReq', 'executeOnListen'),
+            context: context,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -3259,7 +3221,7 @@ class GAccountByPkReqBuilder
         _$failedField = 'optimisticResponse';
         _optimisticResponse?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GAccountByPkReq', _$failedField, e.toString());
       }
       rethrow;
@@ -3294,7 +3256,7 @@ class _$GAccountsByPkReq extends GAccountsByPkReq {
 
   factory _$GAccountsByPkReq(
           [void Function(GAccountsByPkReqBuilder)? updates]) =>
-      (new GAccountsByPkReqBuilder()..update(updates))._build();
+      (GAccountsByPkReqBuilder()..update(updates))._build();
 
   _$GAccountsByPkReq._(
       {required this.vars,
@@ -3307,21 +3269,14 @@ class _$GAccountsByPkReq extends GAccountsByPkReq {
       this.fetchPolicy,
       required this.executeOnListen,
       this.context})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(vars, r'GAccountsByPkReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        operation, r'GAccountsByPkReq', 'operation');
-    BuiltValueNullFieldError.checkNotNull(
-        executeOnListen, r'GAccountsByPkReq', 'executeOnListen');
-  }
-
+      : super._();
   @override
   GAccountsByPkReq rebuild(void Function(GAccountsByPkReqBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
   GAccountsByPkReqBuilder toBuilder() =>
-      new GAccountsByPkReqBuilder()..replace(this);
+      GAccountsByPkReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -3380,7 +3335,7 @@ class GAccountsByPkReqBuilder
 
   _i3.GAccountsByPkVarsBuilder? _vars;
   _i3.GAccountsByPkVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GAccountsByPkVarsBuilder();
+      _$this._vars ??= _i3.GAccountsByPkVarsBuilder();
   set vars(_i3.GAccountsByPkVarsBuilder? vars) => _$this._vars = vars;
 
   _i4.Operation? _operation;
@@ -3404,7 +3359,7 @@ class GAccountsByPkReqBuilder
 
   _i2.GAccountsByPkDataBuilder? _optimisticResponse;
   _i2.GAccountsByPkDataBuilder get optimisticResponse =>
-      _$this._optimisticResponse ??= new _i2.GAccountsByPkDataBuilder();
+      _$this._optimisticResponse ??= _i2.GAccountsByPkDataBuilder();
   set optimisticResponse(_i2.GAccountsByPkDataBuilder? optimisticResponse) =>
       _$this._optimisticResponse = optimisticResponse;
 
@@ -3458,7 +3413,6 @@ class GAccountsByPkReqBuilder
 
   @override
   void replace(GAccountsByPkReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GAccountsByPkReq;
   }
 
@@ -3474,19 +3428,20 @@ class GAccountsByPkReqBuilder
     _$GAccountsByPkReq _$result;
     try {
       _$result = _$v ??
-          new _$GAccountsByPkReq._(
-              vars: vars.build(),
-              operation: BuiltValueNullFieldError.checkNotNull(
-                  operation, r'GAccountsByPkReq', 'operation'),
-              requestId: requestId,
-              updateResult: updateResult,
-              optimisticResponse: _optimisticResponse?.build(),
-              updateCacheHandlerKey: updateCacheHandlerKey,
-              updateCacheHandlerContext: updateCacheHandlerContext,
-              fetchPolicy: fetchPolicy,
-              executeOnListen: BuiltValueNullFieldError.checkNotNull(
-                  executeOnListen, r'GAccountsByPkReq', 'executeOnListen'),
-              context: context);
+          _$GAccountsByPkReq._(
+            vars: vars.build(),
+            operation: BuiltValueNullFieldError.checkNotNull(
+                operation, r'GAccountsByPkReq', 'operation'),
+            requestId: requestId,
+            updateResult: updateResult,
+            optimisticResponse: _optimisticResponse?.build(),
+            updateCacheHandlerKey: updateCacheHandlerKey,
+            updateCacheHandlerContext: updateCacheHandlerContext,
+            fetchPolicy: fetchPolicy,
+            executeOnListen: BuiltValueNullFieldError.checkNotNull(
+                executeOnListen, r'GAccountsByPkReq', 'executeOnListen'),
+            context: context,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -3496,7 +3451,7 @@ class GAccountsByPkReqBuilder
         _$failedField = 'optimisticResponse';
         _optimisticResponse?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GAccountsByPkReq', _$failedField, e.toString());
       }
       rethrow;
@@ -3531,7 +3486,7 @@ class _$GAccountBasicByPkReq extends GAccountBasicByPkReq {
 
   factory _$GAccountBasicByPkReq(
           [void Function(GAccountBasicByPkReqBuilder)? updates]) =>
-      (new GAccountBasicByPkReqBuilder()..update(updates))._build();
+      (GAccountBasicByPkReqBuilder()..update(updates))._build();
 
   _$GAccountBasicByPkReq._(
       {required this.vars,
@@ -3544,15 +3499,7 @@ class _$GAccountBasicByPkReq extends GAccountBasicByPkReq {
       this.fetchPolicy,
       required this.executeOnListen,
       this.context})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        vars, r'GAccountBasicByPkReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        operation, r'GAccountBasicByPkReq', 'operation');
-    BuiltValueNullFieldError.checkNotNull(
-        executeOnListen, r'GAccountBasicByPkReq', 'executeOnListen');
-  }
-
+      : super._();
   @override
   GAccountBasicByPkReq rebuild(
           void Function(GAccountBasicByPkReqBuilder) updates) =>
@@ -3560,7 +3507,7 @@ class _$GAccountBasicByPkReq extends GAccountBasicByPkReq {
 
   @override
   GAccountBasicByPkReqBuilder toBuilder() =>
-      new GAccountBasicByPkReqBuilder()..replace(this);
+      GAccountBasicByPkReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -3619,7 +3566,7 @@ class GAccountBasicByPkReqBuilder
 
   _i3.GAccountBasicByPkVarsBuilder? _vars;
   _i3.GAccountBasicByPkVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GAccountBasicByPkVarsBuilder();
+      _$this._vars ??= _i3.GAccountBasicByPkVarsBuilder();
   set vars(_i3.GAccountBasicByPkVarsBuilder? vars) => _$this._vars = vars;
 
   _i4.Operation? _operation;
@@ -3643,7 +3590,7 @@ class GAccountBasicByPkReqBuilder
 
   _i2.GAccountBasicByPkDataBuilder? _optimisticResponse;
   _i2.GAccountBasicByPkDataBuilder get optimisticResponse =>
-      _$this._optimisticResponse ??= new _i2.GAccountBasicByPkDataBuilder();
+      _$this._optimisticResponse ??= _i2.GAccountBasicByPkDataBuilder();
   set optimisticResponse(
           _i2.GAccountBasicByPkDataBuilder? optimisticResponse) =>
       _$this._optimisticResponse = optimisticResponse;
@@ -3698,7 +3645,6 @@ class GAccountBasicByPkReqBuilder
 
   @override
   void replace(GAccountBasicByPkReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GAccountBasicByPkReq;
   }
 
@@ -3714,19 +3660,20 @@ class GAccountBasicByPkReqBuilder
     _$GAccountBasicByPkReq _$result;
     try {
       _$result = _$v ??
-          new _$GAccountBasicByPkReq._(
-              vars: vars.build(),
-              operation: BuiltValueNullFieldError.checkNotNull(
-                  operation, r'GAccountBasicByPkReq', 'operation'),
-              requestId: requestId,
-              updateResult: updateResult,
-              optimisticResponse: _optimisticResponse?.build(),
-              updateCacheHandlerKey: updateCacheHandlerKey,
-              updateCacheHandlerContext: updateCacheHandlerContext,
-              fetchPolicy: fetchPolicy,
-              executeOnListen: BuiltValueNullFieldError.checkNotNull(
-                  executeOnListen, r'GAccountBasicByPkReq', 'executeOnListen'),
-              context: context);
+          _$GAccountBasicByPkReq._(
+            vars: vars.build(),
+            operation: BuiltValueNullFieldError.checkNotNull(
+                operation, r'GAccountBasicByPkReq', 'operation'),
+            requestId: requestId,
+            updateResult: updateResult,
+            optimisticResponse: _optimisticResponse?.build(),
+            updateCacheHandlerKey: updateCacheHandlerKey,
+            updateCacheHandlerContext: updateCacheHandlerContext,
+            fetchPolicy: fetchPolicy,
+            executeOnListen: BuiltValueNullFieldError.checkNotNull(
+                executeOnListen, r'GAccountBasicByPkReq', 'executeOnListen'),
+            context: context,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -3736,7 +3683,7 @@ class GAccountBasicByPkReqBuilder
         _$failedField = 'optimisticResponse';
         _optimisticResponse?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GAccountBasicByPkReq', _$failedField, e.toString());
       }
       rethrow;
@@ -3771,7 +3718,7 @@ class _$GAccountsBasicByPkReq extends GAccountsBasicByPkReq {
 
   factory _$GAccountsBasicByPkReq(
           [void Function(GAccountsBasicByPkReqBuilder)? updates]) =>
-      (new GAccountsBasicByPkReqBuilder()..update(updates))._build();
+      (GAccountsBasicByPkReqBuilder()..update(updates))._build();
 
   _$GAccountsBasicByPkReq._(
       {required this.vars,
@@ -3784,15 +3731,7 @@ class _$GAccountsBasicByPkReq extends GAccountsBasicByPkReq {
       this.fetchPolicy,
       required this.executeOnListen,
       this.context})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        vars, r'GAccountsBasicByPkReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        operation, r'GAccountsBasicByPkReq', 'operation');
-    BuiltValueNullFieldError.checkNotNull(
-        executeOnListen, r'GAccountsBasicByPkReq', 'executeOnListen');
-  }
-
+      : super._();
   @override
   GAccountsBasicByPkReq rebuild(
           void Function(GAccountsBasicByPkReqBuilder) updates) =>
@@ -3800,7 +3739,7 @@ class _$GAccountsBasicByPkReq extends GAccountsBasicByPkReq {
 
   @override
   GAccountsBasicByPkReqBuilder toBuilder() =>
-      new GAccountsBasicByPkReqBuilder()..replace(this);
+      GAccountsBasicByPkReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -3859,7 +3798,7 @@ class GAccountsBasicByPkReqBuilder
 
   _i3.GAccountsBasicByPkVarsBuilder? _vars;
   _i3.GAccountsBasicByPkVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GAccountsBasicByPkVarsBuilder();
+      _$this._vars ??= _i3.GAccountsBasicByPkVarsBuilder();
   set vars(_i3.GAccountsBasicByPkVarsBuilder? vars) => _$this._vars = vars;
 
   _i4.Operation? _operation;
@@ -3883,7 +3822,7 @@ class GAccountsBasicByPkReqBuilder
 
   _i2.GAccountsBasicByPkDataBuilder? _optimisticResponse;
   _i2.GAccountsBasicByPkDataBuilder get optimisticResponse =>
-      _$this._optimisticResponse ??= new _i2.GAccountsBasicByPkDataBuilder();
+      _$this._optimisticResponse ??= _i2.GAccountsBasicByPkDataBuilder();
   set optimisticResponse(
           _i2.GAccountsBasicByPkDataBuilder? optimisticResponse) =>
       _$this._optimisticResponse = optimisticResponse;
@@ -3938,7 +3877,6 @@ class GAccountsBasicByPkReqBuilder
 
   @override
   void replace(GAccountsBasicByPkReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GAccountsBasicByPkReq;
   }
 
@@ -3954,19 +3892,20 @@ class GAccountsBasicByPkReqBuilder
     _$GAccountsBasicByPkReq _$result;
     try {
       _$result = _$v ??
-          new _$GAccountsBasicByPkReq._(
-              vars: vars.build(),
-              operation: BuiltValueNullFieldError.checkNotNull(
-                  operation, r'GAccountsBasicByPkReq', 'operation'),
-              requestId: requestId,
-              updateResult: updateResult,
-              optimisticResponse: _optimisticResponse?.build(),
-              updateCacheHandlerKey: updateCacheHandlerKey,
-              updateCacheHandlerContext: updateCacheHandlerContext,
-              fetchPolicy: fetchPolicy,
-              executeOnListen: BuiltValueNullFieldError.checkNotNull(
-                  executeOnListen, r'GAccountsBasicByPkReq', 'executeOnListen'),
-              context: context);
+          _$GAccountsBasicByPkReq._(
+            vars: vars.build(),
+            operation: BuiltValueNullFieldError.checkNotNull(
+                operation, r'GAccountsBasicByPkReq', 'operation'),
+            requestId: requestId,
+            updateResult: updateResult,
+            optimisticResponse: _optimisticResponse?.build(),
+            updateCacheHandlerKey: updateCacheHandlerKey,
+            updateCacheHandlerContext: updateCacheHandlerContext,
+            fetchPolicy: fetchPolicy,
+            executeOnListen: BuiltValueNullFieldError.checkNotNull(
+                executeOnListen, r'GAccountsBasicByPkReq', 'executeOnListen'),
+            context: context,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -3976,7 +3915,7 @@ class GAccountsBasicByPkReqBuilder
         _$failedField = 'optimisticResponse';
         _optimisticResponse?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GAccountsBasicByPkReq', _$failedField, e.toString());
       }
       rethrow;
@@ -4012,7 +3951,7 @@ class _$GAccountTransactionsReq extends GAccountTransactionsReq {
 
   factory _$GAccountTransactionsReq(
           [void Function(GAccountTransactionsReqBuilder)? updates]) =>
-      (new GAccountTransactionsReqBuilder()..update(updates))._build();
+      (GAccountTransactionsReqBuilder()..update(updates))._build();
 
   _$GAccountTransactionsReq._(
       {required this.vars,
@@ -4025,15 +3964,7 @@ class _$GAccountTransactionsReq extends GAccountTransactionsReq {
       this.fetchPolicy,
       required this.executeOnListen,
       this.context})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        vars, r'GAccountTransactionsReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        operation, r'GAccountTransactionsReq', 'operation');
-    BuiltValueNullFieldError.checkNotNull(
-        executeOnListen, r'GAccountTransactionsReq', 'executeOnListen');
-  }
-
+      : super._();
   @override
   GAccountTransactionsReq rebuild(
           void Function(GAccountTransactionsReqBuilder) updates) =>
@@ -4041,7 +3972,7 @@ class _$GAccountTransactionsReq extends GAccountTransactionsReq {
 
   @override
   GAccountTransactionsReqBuilder toBuilder() =>
-      new GAccountTransactionsReqBuilder()..replace(this);
+      GAccountTransactionsReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -4101,7 +4032,7 @@ class GAccountTransactionsReqBuilder
 
   _i3.GAccountTransactionsVarsBuilder? _vars;
   _i3.GAccountTransactionsVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GAccountTransactionsVarsBuilder();
+      _$this._vars ??= _i3.GAccountTransactionsVarsBuilder();
   set vars(_i3.GAccountTransactionsVarsBuilder? vars) => _$this._vars = vars;
 
   _i4.Operation? _operation;
@@ -4126,7 +4057,7 @@ class GAccountTransactionsReqBuilder
 
   _i2.GAccountTransactionsDataBuilder? _optimisticResponse;
   _i2.GAccountTransactionsDataBuilder get optimisticResponse =>
-      _$this._optimisticResponse ??= new _i2.GAccountTransactionsDataBuilder();
+      _$this._optimisticResponse ??= _i2.GAccountTransactionsDataBuilder();
   set optimisticResponse(
           _i2.GAccountTransactionsDataBuilder? optimisticResponse) =>
       _$this._optimisticResponse = optimisticResponse;
@@ -4181,7 +4112,6 @@ class GAccountTransactionsReqBuilder
 
   @override
   void replace(GAccountTransactionsReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GAccountTransactionsReq;
   }
 
@@ -4197,21 +4127,20 @@ class GAccountTransactionsReqBuilder
     _$GAccountTransactionsReq _$result;
     try {
       _$result = _$v ??
-          new _$GAccountTransactionsReq._(
-              vars: vars.build(),
-              operation: BuiltValueNullFieldError.checkNotNull(
-                  operation, r'GAccountTransactionsReq', 'operation'),
-              requestId: requestId,
-              updateResult: updateResult,
-              optimisticResponse: _optimisticResponse?.build(),
-              updateCacheHandlerKey: updateCacheHandlerKey,
-              updateCacheHandlerContext: updateCacheHandlerContext,
-              fetchPolicy: fetchPolicy,
-              executeOnListen: BuiltValueNullFieldError.checkNotNull(
-                  executeOnListen,
-                  r'GAccountTransactionsReq',
-                  'executeOnListen'),
-              context: context);
+          _$GAccountTransactionsReq._(
+            vars: vars.build(),
+            operation: BuiltValueNullFieldError.checkNotNull(
+                operation, r'GAccountTransactionsReq', 'operation'),
+            requestId: requestId,
+            updateResult: updateResult,
+            optimisticResponse: _optimisticResponse?.build(),
+            updateCacheHandlerKey: updateCacheHandlerKey,
+            updateCacheHandlerContext: updateCacheHandlerContext,
+            fetchPolicy: fetchPolicy,
+            executeOnListen: BuiltValueNullFieldError.checkNotNull(
+                executeOnListen, r'GAccountTransactionsReq', 'executeOnListen'),
+            context: context,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -4221,7 +4150,7 @@ class GAccountTransactionsReqBuilder
         _$failedField = 'optimisticResponse';
         _optimisticResponse?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GAccountTransactionsReq', _$failedField, e.toString());
       }
       rethrow;
@@ -4256,7 +4185,7 @@ class _$GIndexerVersionReq extends GIndexerVersionReq {
 
   factory _$GIndexerVersionReq(
           [void Function(GIndexerVersionReqBuilder)? updates]) =>
-      (new GIndexerVersionReqBuilder()..update(updates))._build();
+      (GIndexerVersionReqBuilder()..update(updates))._build();
 
   _$GIndexerVersionReq._(
       {required this.vars,
@@ -4269,14 +4198,7 @@ class _$GIndexerVersionReq extends GIndexerVersionReq {
       this.fetchPolicy,
       required this.executeOnListen,
       this.context})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(vars, r'GIndexerVersionReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        operation, r'GIndexerVersionReq', 'operation');
-    BuiltValueNullFieldError.checkNotNull(
-        executeOnListen, r'GIndexerVersionReq', 'executeOnListen');
-  }
-
+      : super._();
   @override
   GIndexerVersionReq rebuild(
           void Function(GIndexerVersionReqBuilder) updates) =>
@@ -4284,7 +4206,7 @@ class _$GIndexerVersionReq extends GIndexerVersionReq {
 
   @override
   GIndexerVersionReqBuilder toBuilder() =>
-      new GIndexerVersionReqBuilder()..replace(this);
+      GIndexerVersionReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -4343,7 +4265,7 @@ class GIndexerVersionReqBuilder
 
   _i3.GIndexerVersionVarsBuilder? _vars;
   _i3.GIndexerVersionVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GIndexerVersionVarsBuilder();
+      _$this._vars ??= _i3.GIndexerVersionVarsBuilder();
   set vars(_i3.GIndexerVersionVarsBuilder? vars) => _$this._vars = vars;
 
   _i4.Operation? _operation;
@@ -4367,7 +4289,7 @@ class GIndexerVersionReqBuilder
 
   _i2.GIndexerVersionDataBuilder? _optimisticResponse;
   _i2.GIndexerVersionDataBuilder get optimisticResponse =>
-      _$this._optimisticResponse ??= new _i2.GIndexerVersionDataBuilder();
+      _$this._optimisticResponse ??= _i2.GIndexerVersionDataBuilder();
   set optimisticResponse(_i2.GIndexerVersionDataBuilder? optimisticResponse) =>
       _$this._optimisticResponse = optimisticResponse;
 
@@ -4421,7 +4343,6 @@ class GIndexerVersionReqBuilder
 
   @override
   void replace(GIndexerVersionReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GIndexerVersionReq;
   }
 
@@ -4437,19 +4358,20 @@ class GIndexerVersionReqBuilder
     _$GIndexerVersionReq _$result;
     try {
       _$result = _$v ??
-          new _$GIndexerVersionReq._(
-              vars: vars.build(),
-              operation: BuiltValueNullFieldError.checkNotNull(
-                  operation, r'GIndexerVersionReq', 'operation'),
-              requestId: requestId,
-              updateResult: updateResult,
-              optimisticResponse: _optimisticResponse?.build(),
-              updateCacheHandlerKey: updateCacheHandlerKey,
-              updateCacheHandlerContext: updateCacheHandlerContext,
-              fetchPolicy: fetchPolicy,
-              executeOnListen: BuiltValueNullFieldError.checkNotNull(
-                  executeOnListen, r'GIndexerVersionReq', 'executeOnListen'),
-              context: context);
+          _$GIndexerVersionReq._(
+            vars: vars.build(),
+            operation: BuiltValueNullFieldError.checkNotNull(
+                operation, r'GIndexerVersionReq', 'operation'),
+            requestId: requestId,
+            updateResult: updateResult,
+            optimisticResponse: _optimisticResponse?.build(),
+            updateCacheHandlerKey: updateCacheHandlerKey,
+            updateCacheHandlerContext: updateCacheHandlerContext,
+            fetchPolicy: fetchPolicy,
+            executeOnListen: BuiltValueNullFieldError.checkNotNull(
+                executeOnListen, r'GIndexerVersionReq', 'executeOnListen'),
+            context: context,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -4459,7 +4381,7 @@ class GIndexerVersionReqBuilder
         _$failedField = 'optimisticResponse';
         _optimisticResponse?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GIndexerVersionReq', _$failedField, e.toString());
       }
       rethrow;
@@ -4480,28 +4402,20 @@ class _$GCertFieldsReq extends GCertFieldsReq {
   final Map<String, dynamic> idFields;
 
   factory _$GCertFieldsReq([void Function(GCertFieldsReqBuilder)? updates]) =>
-      (new GCertFieldsReqBuilder()..update(updates))._build();
+      (GCertFieldsReqBuilder()..update(updates))._build();
 
   _$GCertFieldsReq._(
       {required this.vars,
       required this.document,
       this.fragmentName,
       required this.idFields})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(vars, r'GCertFieldsReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        document, r'GCertFieldsReq', 'document');
-    BuiltValueNullFieldError.checkNotNull(
-        idFields, r'GCertFieldsReq', 'idFields');
-  }
-
+      : super._();
   @override
   GCertFieldsReq rebuild(void Function(GCertFieldsReqBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GCertFieldsReqBuilder toBuilder() =>
-      new GCertFieldsReqBuilder()..replace(this);
+  GCertFieldsReqBuilder toBuilder() => GCertFieldsReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -4541,7 +4455,7 @@ class GCertFieldsReqBuilder
 
   _i3.GCertFieldsVarsBuilder? _vars;
   _i3.GCertFieldsVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GCertFieldsVarsBuilder();
+      _$this._vars ??= _i3.GCertFieldsVarsBuilder();
   set vars(_i3.GCertFieldsVarsBuilder? vars) => _$this._vars = vars;
 
   _i7.DocumentNode? _document;
@@ -4574,7 +4488,6 @@ class GCertFieldsReqBuilder
 
   @override
   void replace(GCertFieldsReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GCertFieldsReq;
   }
 
@@ -4590,20 +4503,21 @@ class GCertFieldsReqBuilder
     _$GCertFieldsReq _$result;
     try {
       _$result = _$v ??
-          new _$GCertFieldsReq._(
-              vars: vars.build(),
-              document: BuiltValueNullFieldError.checkNotNull(
-                  document, r'GCertFieldsReq', 'document'),
-              fragmentName: fragmentName,
-              idFields: BuiltValueNullFieldError.checkNotNull(
-                  idFields, r'GCertFieldsReq', 'idFields'));
+          _$GCertFieldsReq._(
+            vars: vars.build(),
+            document: BuiltValueNullFieldError.checkNotNull(
+                document, r'GCertFieldsReq', 'document'),
+            fragmentName: fragmentName,
+            idFields: BuiltValueNullFieldError.checkNotNull(
+                idFields, r'GCertFieldsReq', 'idFields'),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'vars';
         vars.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GCertFieldsReq', _$failedField, e.toString());
       }
       rethrow;
@@ -4625,21 +4539,14 @@ class _$GSmithCertFieldsReq extends GSmithCertFieldsReq {
 
   factory _$GSmithCertFieldsReq(
           [void Function(GSmithCertFieldsReqBuilder)? updates]) =>
-      (new GSmithCertFieldsReqBuilder()..update(updates))._build();
+      (GSmithCertFieldsReqBuilder()..update(updates))._build();
 
   _$GSmithCertFieldsReq._(
       {required this.vars,
       required this.document,
       this.fragmentName,
       required this.idFields})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(vars, r'GSmithCertFieldsReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        document, r'GSmithCertFieldsReq', 'document');
-    BuiltValueNullFieldError.checkNotNull(
-        idFields, r'GSmithCertFieldsReq', 'idFields');
-  }
-
+      : super._();
   @override
   GSmithCertFieldsReq rebuild(
           void Function(GSmithCertFieldsReqBuilder) updates) =>
@@ -4647,7 +4554,7 @@ class _$GSmithCertFieldsReq extends GSmithCertFieldsReq {
 
   @override
   GSmithCertFieldsReqBuilder toBuilder() =>
-      new GSmithCertFieldsReqBuilder()..replace(this);
+      GSmithCertFieldsReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -4687,7 +4594,7 @@ class GSmithCertFieldsReqBuilder
 
   _i3.GSmithCertFieldsVarsBuilder? _vars;
   _i3.GSmithCertFieldsVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GSmithCertFieldsVarsBuilder();
+      _$this._vars ??= _i3.GSmithCertFieldsVarsBuilder();
   set vars(_i3.GSmithCertFieldsVarsBuilder? vars) => _$this._vars = vars;
 
   _i7.DocumentNode? _document;
@@ -4720,7 +4627,6 @@ class GSmithCertFieldsReqBuilder
 
   @override
   void replace(GSmithCertFieldsReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GSmithCertFieldsReq;
   }
 
@@ -4736,20 +4642,21 @@ class GSmithCertFieldsReqBuilder
     _$GSmithCertFieldsReq _$result;
     try {
       _$result = _$v ??
-          new _$GSmithCertFieldsReq._(
-              vars: vars.build(),
-              document: BuiltValueNullFieldError.checkNotNull(
-                  document, r'GSmithCertFieldsReq', 'document'),
-              fragmentName: fragmentName,
-              idFields: BuiltValueNullFieldError.checkNotNull(
-                  idFields, r'GSmithCertFieldsReq', 'idFields'));
+          _$GSmithCertFieldsReq._(
+            vars: vars.build(),
+            document: BuiltValueNullFieldError.checkNotNull(
+                document, r'GSmithCertFieldsReq', 'document'),
+            fragmentName: fragmentName,
+            idFields: BuiltValueNullFieldError.checkNotNull(
+                idFields, r'GSmithCertFieldsReq', 'idFields'),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'vars';
         vars.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GSmithCertFieldsReq', _$failedField, e.toString());
       }
       rethrow;
@@ -4770,28 +4677,20 @@ class _$GSmithFieldsReq extends GSmithFieldsReq {
   final Map<String, dynamic> idFields;
 
   factory _$GSmithFieldsReq([void Function(GSmithFieldsReqBuilder)? updates]) =>
-      (new GSmithFieldsReqBuilder()..update(updates))._build();
+      (GSmithFieldsReqBuilder()..update(updates))._build();
 
   _$GSmithFieldsReq._(
       {required this.vars,
       required this.document,
       this.fragmentName,
       required this.idFields})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(vars, r'GSmithFieldsReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        document, r'GSmithFieldsReq', 'document');
-    BuiltValueNullFieldError.checkNotNull(
-        idFields, r'GSmithFieldsReq', 'idFields');
-  }
-
+      : super._();
   @override
   GSmithFieldsReq rebuild(void Function(GSmithFieldsReqBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GSmithFieldsReqBuilder toBuilder() =>
-      new GSmithFieldsReqBuilder()..replace(this);
+  GSmithFieldsReqBuilder toBuilder() => GSmithFieldsReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -4831,7 +4730,7 @@ class GSmithFieldsReqBuilder
 
   _i3.GSmithFieldsVarsBuilder? _vars;
   _i3.GSmithFieldsVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GSmithFieldsVarsBuilder();
+      _$this._vars ??= _i3.GSmithFieldsVarsBuilder();
   set vars(_i3.GSmithFieldsVarsBuilder? vars) => _$this._vars = vars;
 
   _i7.DocumentNode? _document;
@@ -4864,7 +4763,6 @@ class GSmithFieldsReqBuilder
 
   @override
   void replace(GSmithFieldsReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GSmithFieldsReq;
   }
 
@@ -4880,20 +4778,21 @@ class GSmithFieldsReqBuilder
     _$GSmithFieldsReq _$result;
     try {
       _$result = _$v ??
-          new _$GSmithFieldsReq._(
-              vars: vars.build(),
-              document: BuiltValueNullFieldError.checkNotNull(
-                  document, r'GSmithFieldsReq', 'document'),
-              fragmentName: fragmentName,
-              idFields: BuiltValueNullFieldError.checkNotNull(
-                  idFields, r'GSmithFieldsReq', 'idFields'));
+          _$GSmithFieldsReq._(
+            vars: vars.build(),
+            document: BuiltValueNullFieldError.checkNotNull(
+                document, r'GSmithFieldsReq', 'document'),
+            fragmentName: fragmentName,
+            idFields: BuiltValueNullFieldError.checkNotNull(
+                idFields, r'GSmithFieldsReq', 'idFields'),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'vars';
         vars.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GSmithFieldsReq', _$failedField, e.toString());
       }
       rethrow;
@@ -4915,22 +4814,14 @@ class _$GOwnerKeyChangeFieldsReq extends GOwnerKeyChangeFieldsReq {
 
   factory _$GOwnerKeyChangeFieldsReq(
           [void Function(GOwnerKeyChangeFieldsReqBuilder)? updates]) =>
-      (new GOwnerKeyChangeFieldsReqBuilder()..update(updates))._build();
+      (GOwnerKeyChangeFieldsReqBuilder()..update(updates))._build();
 
   _$GOwnerKeyChangeFieldsReq._(
       {required this.vars,
       required this.document,
       this.fragmentName,
       required this.idFields})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        vars, r'GOwnerKeyChangeFieldsReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        document, r'GOwnerKeyChangeFieldsReq', 'document');
-    BuiltValueNullFieldError.checkNotNull(
-        idFields, r'GOwnerKeyChangeFieldsReq', 'idFields');
-  }
-
+      : super._();
   @override
   GOwnerKeyChangeFieldsReq rebuild(
           void Function(GOwnerKeyChangeFieldsReqBuilder) updates) =>
@@ -4938,7 +4829,7 @@ class _$GOwnerKeyChangeFieldsReq extends GOwnerKeyChangeFieldsReq {
 
   @override
   GOwnerKeyChangeFieldsReqBuilder toBuilder() =>
-      new GOwnerKeyChangeFieldsReqBuilder()..replace(this);
+      GOwnerKeyChangeFieldsReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -4979,7 +4870,7 @@ class GOwnerKeyChangeFieldsReqBuilder
 
   _i3.GOwnerKeyChangeFieldsVarsBuilder? _vars;
   _i3.GOwnerKeyChangeFieldsVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GOwnerKeyChangeFieldsVarsBuilder();
+      _$this._vars ??= _i3.GOwnerKeyChangeFieldsVarsBuilder();
   set vars(_i3.GOwnerKeyChangeFieldsVarsBuilder? vars) => _$this._vars = vars;
 
   _i7.DocumentNode? _document;
@@ -5012,7 +4903,6 @@ class GOwnerKeyChangeFieldsReqBuilder
 
   @override
   void replace(GOwnerKeyChangeFieldsReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GOwnerKeyChangeFieldsReq;
   }
 
@@ -5028,20 +4918,21 @@ class GOwnerKeyChangeFieldsReqBuilder
     _$GOwnerKeyChangeFieldsReq _$result;
     try {
       _$result = _$v ??
-          new _$GOwnerKeyChangeFieldsReq._(
-              vars: vars.build(),
-              document: BuiltValueNullFieldError.checkNotNull(
-                  document, r'GOwnerKeyChangeFieldsReq', 'document'),
-              fragmentName: fragmentName,
-              idFields: BuiltValueNullFieldError.checkNotNull(
-                  idFields, r'GOwnerKeyChangeFieldsReq', 'idFields'));
+          _$GOwnerKeyChangeFieldsReq._(
+            vars: vars.build(),
+            document: BuiltValueNullFieldError.checkNotNull(
+                document, r'GOwnerKeyChangeFieldsReq', 'document'),
+            fragmentName: fragmentName,
+            idFields: BuiltValueNullFieldError.checkNotNull(
+                idFields, r'GOwnerKeyChangeFieldsReq', 'idFields'),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'vars';
         vars.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GOwnerKeyChangeFieldsReq', _$failedField, e.toString());
       }
       rethrow;
@@ -5063,22 +4954,14 @@ class _$GIdentityBasicFieldsReq extends GIdentityBasicFieldsReq {
 
   factory _$GIdentityBasicFieldsReq(
           [void Function(GIdentityBasicFieldsReqBuilder)? updates]) =>
-      (new GIdentityBasicFieldsReqBuilder()..update(updates))._build();
+      (GIdentityBasicFieldsReqBuilder()..update(updates))._build();
 
   _$GIdentityBasicFieldsReq._(
       {required this.vars,
       required this.document,
       this.fragmentName,
       required this.idFields})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        vars, r'GIdentityBasicFieldsReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        document, r'GIdentityBasicFieldsReq', 'document');
-    BuiltValueNullFieldError.checkNotNull(
-        idFields, r'GIdentityBasicFieldsReq', 'idFields');
-  }
-
+      : super._();
   @override
   GIdentityBasicFieldsReq rebuild(
           void Function(GIdentityBasicFieldsReqBuilder) updates) =>
@@ -5086,7 +4969,7 @@ class _$GIdentityBasicFieldsReq extends GIdentityBasicFieldsReq {
 
   @override
   GIdentityBasicFieldsReqBuilder toBuilder() =>
-      new GIdentityBasicFieldsReqBuilder()..replace(this);
+      GIdentityBasicFieldsReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -5127,7 +5010,7 @@ class GIdentityBasicFieldsReqBuilder
 
   _i3.GIdentityBasicFieldsVarsBuilder? _vars;
   _i3.GIdentityBasicFieldsVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GIdentityBasicFieldsVarsBuilder();
+      _$this._vars ??= _i3.GIdentityBasicFieldsVarsBuilder();
   set vars(_i3.GIdentityBasicFieldsVarsBuilder? vars) => _$this._vars = vars;
 
   _i7.DocumentNode? _document;
@@ -5160,7 +5043,6 @@ class GIdentityBasicFieldsReqBuilder
 
   @override
   void replace(GIdentityBasicFieldsReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GIdentityBasicFieldsReq;
   }
 
@@ -5176,20 +5058,21 @@ class GIdentityBasicFieldsReqBuilder
     _$GIdentityBasicFieldsReq _$result;
     try {
       _$result = _$v ??
-          new _$GIdentityBasicFieldsReq._(
-              vars: vars.build(),
-              document: BuiltValueNullFieldError.checkNotNull(
-                  document, r'GIdentityBasicFieldsReq', 'document'),
-              fragmentName: fragmentName,
-              idFields: BuiltValueNullFieldError.checkNotNull(
-                  idFields, r'GIdentityBasicFieldsReq', 'idFields'));
+          _$GIdentityBasicFieldsReq._(
+            vars: vars.build(),
+            document: BuiltValueNullFieldError.checkNotNull(
+                document, r'GIdentityBasicFieldsReq', 'document'),
+            fragmentName: fragmentName,
+            idFields: BuiltValueNullFieldError.checkNotNull(
+                idFields, r'GIdentityBasicFieldsReq', 'idFields'),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'vars';
         vars.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GIdentityBasicFieldsReq', _$failedField, e.toString());
       }
       rethrow;
@@ -5211,21 +5094,14 @@ class _$GIdentityFieldsReq extends GIdentityFieldsReq {
 
   factory _$GIdentityFieldsReq(
           [void Function(GIdentityFieldsReqBuilder)? updates]) =>
-      (new GIdentityFieldsReqBuilder()..update(updates))._build();
+      (GIdentityFieldsReqBuilder()..update(updates))._build();
 
   _$GIdentityFieldsReq._(
       {required this.vars,
       required this.document,
       this.fragmentName,
       required this.idFields})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(vars, r'GIdentityFieldsReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        document, r'GIdentityFieldsReq', 'document');
-    BuiltValueNullFieldError.checkNotNull(
-        idFields, r'GIdentityFieldsReq', 'idFields');
-  }
-
+      : super._();
   @override
   GIdentityFieldsReq rebuild(
           void Function(GIdentityFieldsReqBuilder) updates) =>
@@ -5233,7 +5109,7 @@ class _$GIdentityFieldsReq extends GIdentityFieldsReq {
 
   @override
   GIdentityFieldsReqBuilder toBuilder() =>
-      new GIdentityFieldsReqBuilder()..replace(this);
+      GIdentityFieldsReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -5273,7 +5149,7 @@ class GIdentityFieldsReqBuilder
 
   _i3.GIdentityFieldsVarsBuilder? _vars;
   _i3.GIdentityFieldsVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GIdentityFieldsVarsBuilder();
+      _$this._vars ??= _i3.GIdentityFieldsVarsBuilder();
   set vars(_i3.GIdentityFieldsVarsBuilder? vars) => _$this._vars = vars;
 
   _i7.DocumentNode? _document;
@@ -5306,7 +5182,6 @@ class GIdentityFieldsReqBuilder
 
   @override
   void replace(GIdentityFieldsReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GIdentityFieldsReq;
   }
 
@@ -5322,20 +5197,21 @@ class GIdentityFieldsReqBuilder
     _$GIdentityFieldsReq _$result;
     try {
       _$result = _$v ??
-          new _$GIdentityFieldsReq._(
-              vars: vars.build(),
-              document: BuiltValueNullFieldError.checkNotNull(
-                  document, r'GIdentityFieldsReq', 'document'),
-              fragmentName: fragmentName,
-              idFields: BuiltValueNullFieldError.checkNotNull(
-                  idFields, r'GIdentityFieldsReq', 'idFields'));
+          _$GIdentityFieldsReq._(
+            vars: vars.build(),
+            document: BuiltValueNullFieldError.checkNotNull(
+                document, r'GIdentityFieldsReq', 'document'),
+            fragmentName: fragmentName,
+            idFields: BuiltValueNullFieldError.checkNotNull(
+                idFields, r'GIdentityFieldsReq', 'idFields'),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'vars';
         vars.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GIdentityFieldsReq', _$failedField, e.toString());
       }
       rethrow;
@@ -5357,21 +5233,14 @@ class _$GCommentsIssuedReq extends GCommentsIssuedReq {
 
   factory _$GCommentsIssuedReq(
           [void Function(GCommentsIssuedReqBuilder)? updates]) =>
-      (new GCommentsIssuedReqBuilder()..update(updates))._build();
+      (GCommentsIssuedReqBuilder()..update(updates))._build();
 
   _$GCommentsIssuedReq._(
       {required this.vars,
       required this.document,
       this.fragmentName,
       required this.idFields})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(vars, r'GCommentsIssuedReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        document, r'GCommentsIssuedReq', 'document');
-    BuiltValueNullFieldError.checkNotNull(
-        idFields, r'GCommentsIssuedReq', 'idFields');
-  }
-
+      : super._();
   @override
   GCommentsIssuedReq rebuild(
           void Function(GCommentsIssuedReqBuilder) updates) =>
@@ -5379,7 +5248,7 @@ class _$GCommentsIssuedReq extends GCommentsIssuedReq {
 
   @override
   GCommentsIssuedReqBuilder toBuilder() =>
-      new GCommentsIssuedReqBuilder()..replace(this);
+      GCommentsIssuedReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -5419,7 +5288,7 @@ class GCommentsIssuedReqBuilder
 
   _i3.GCommentsIssuedVarsBuilder? _vars;
   _i3.GCommentsIssuedVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GCommentsIssuedVarsBuilder();
+      _$this._vars ??= _i3.GCommentsIssuedVarsBuilder();
   set vars(_i3.GCommentsIssuedVarsBuilder? vars) => _$this._vars = vars;
 
   _i7.DocumentNode? _document;
@@ -5452,7 +5321,6 @@ class GCommentsIssuedReqBuilder
 
   @override
   void replace(GCommentsIssuedReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GCommentsIssuedReq;
   }
 
@@ -5468,20 +5336,21 @@ class GCommentsIssuedReqBuilder
     _$GCommentsIssuedReq _$result;
     try {
       _$result = _$v ??
-          new _$GCommentsIssuedReq._(
-              vars: vars.build(),
-              document: BuiltValueNullFieldError.checkNotNull(
-                  document, r'GCommentsIssuedReq', 'document'),
-              fragmentName: fragmentName,
-              idFields: BuiltValueNullFieldError.checkNotNull(
-                  idFields, r'GCommentsIssuedReq', 'idFields'));
+          _$GCommentsIssuedReq._(
+            vars: vars.build(),
+            document: BuiltValueNullFieldError.checkNotNull(
+                document, r'GCommentsIssuedReq', 'document'),
+            fragmentName: fragmentName,
+            idFields: BuiltValueNullFieldError.checkNotNull(
+                idFields, r'GCommentsIssuedReq', 'idFields'),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'vars';
         vars.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GCommentsIssuedReq', _$failedField, e.toString());
       }
       rethrow;
@@ -5503,22 +5372,14 @@ class _$GAccountBasicFieldsReq extends GAccountBasicFieldsReq {
 
   factory _$GAccountBasicFieldsReq(
           [void Function(GAccountBasicFieldsReqBuilder)? updates]) =>
-      (new GAccountBasicFieldsReqBuilder()..update(updates))._build();
+      (GAccountBasicFieldsReqBuilder()..update(updates))._build();
 
   _$GAccountBasicFieldsReq._(
       {required this.vars,
       required this.document,
       this.fragmentName,
       required this.idFields})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        vars, r'GAccountBasicFieldsReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        document, r'GAccountBasicFieldsReq', 'document');
-    BuiltValueNullFieldError.checkNotNull(
-        idFields, r'GAccountBasicFieldsReq', 'idFields');
-  }
-
+      : super._();
   @override
   GAccountBasicFieldsReq rebuild(
           void Function(GAccountBasicFieldsReqBuilder) updates) =>
@@ -5526,7 +5387,7 @@ class _$GAccountBasicFieldsReq extends GAccountBasicFieldsReq {
 
   @override
   GAccountBasicFieldsReqBuilder toBuilder() =>
-      new GAccountBasicFieldsReqBuilder()..replace(this);
+      GAccountBasicFieldsReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -5566,7 +5427,7 @@ class GAccountBasicFieldsReqBuilder
 
   _i3.GAccountBasicFieldsVarsBuilder? _vars;
   _i3.GAccountBasicFieldsVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GAccountBasicFieldsVarsBuilder();
+      _$this._vars ??= _i3.GAccountBasicFieldsVarsBuilder();
   set vars(_i3.GAccountBasicFieldsVarsBuilder? vars) => _$this._vars = vars;
 
   _i7.DocumentNode? _document;
@@ -5599,7 +5460,6 @@ class GAccountBasicFieldsReqBuilder
 
   @override
   void replace(GAccountBasicFieldsReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GAccountBasicFieldsReq;
   }
 
@@ -5615,20 +5475,21 @@ class GAccountBasicFieldsReqBuilder
     _$GAccountBasicFieldsReq _$result;
     try {
       _$result = _$v ??
-          new _$GAccountBasicFieldsReq._(
-              vars: vars.build(),
-              document: BuiltValueNullFieldError.checkNotNull(
-                  document, r'GAccountBasicFieldsReq', 'document'),
-              fragmentName: fragmentName,
-              idFields: BuiltValueNullFieldError.checkNotNull(
-                  idFields, r'GAccountBasicFieldsReq', 'idFields'));
+          _$GAccountBasicFieldsReq._(
+            vars: vars.build(),
+            document: BuiltValueNullFieldError.checkNotNull(
+                document, r'GAccountBasicFieldsReq', 'document'),
+            fragmentName: fragmentName,
+            idFields: BuiltValueNullFieldError.checkNotNull(
+                idFields, r'GAccountBasicFieldsReq', 'idFields'),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'vars';
         vars.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GAccountBasicFieldsReq', _$failedField, e.toString());
       }
       rethrow;
@@ -5650,28 +5511,21 @@ class _$GAccountFieldsReq extends GAccountFieldsReq {
 
   factory _$GAccountFieldsReq(
           [void Function(GAccountFieldsReqBuilder)? updates]) =>
-      (new GAccountFieldsReqBuilder()..update(updates))._build();
+      (GAccountFieldsReqBuilder()..update(updates))._build();
 
   _$GAccountFieldsReq._(
       {required this.vars,
       required this.document,
       this.fragmentName,
       required this.idFields})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(vars, r'GAccountFieldsReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        document, r'GAccountFieldsReq', 'document');
-    BuiltValueNullFieldError.checkNotNull(
-        idFields, r'GAccountFieldsReq', 'idFields');
-  }
-
+      : super._();
   @override
   GAccountFieldsReq rebuild(void Function(GAccountFieldsReqBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
   GAccountFieldsReqBuilder toBuilder() =>
-      new GAccountFieldsReqBuilder()..replace(this);
+      GAccountFieldsReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -5711,7 +5565,7 @@ class GAccountFieldsReqBuilder
 
   _i3.GAccountFieldsVarsBuilder? _vars;
   _i3.GAccountFieldsVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GAccountFieldsVarsBuilder();
+      _$this._vars ??= _i3.GAccountFieldsVarsBuilder();
   set vars(_i3.GAccountFieldsVarsBuilder? vars) => _$this._vars = vars;
 
   _i7.DocumentNode? _document;
@@ -5744,7 +5598,6 @@ class GAccountFieldsReqBuilder
 
   @override
   void replace(GAccountFieldsReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GAccountFieldsReq;
   }
 
@@ -5760,20 +5613,21 @@ class GAccountFieldsReqBuilder
     _$GAccountFieldsReq _$result;
     try {
       _$result = _$v ??
-          new _$GAccountFieldsReq._(
-              vars: vars.build(),
-              document: BuiltValueNullFieldError.checkNotNull(
-                  document, r'GAccountFieldsReq', 'document'),
-              fragmentName: fragmentName,
-              idFields: BuiltValueNullFieldError.checkNotNull(
-                  idFields, r'GAccountFieldsReq', 'idFields'));
+          _$GAccountFieldsReq._(
+            vars: vars.build(),
+            document: BuiltValueNullFieldError.checkNotNull(
+                document, r'GAccountFieldsReq', 'document'),
+            fragmentName: fragmentName,
+            idFields: BuiltValueNullFieldError.checkNotNull(
+                idFields, r'GAccountFieldsReq', 'idFields'),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'vars';
         vars.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GAccountFieldsReq', _$failedField, e.toString());
       }
       rethrow;
@@ -5795,22 +5649,14 @@ class _$GAccountTxsFieldsReq extends GAccountTxsFieldsReq {
 
   factory _$GAccountTxsFieldsReq(
           [void Function(GAccountTxsFieldsReqBuilder)? updates]) =>
-      (new GAccountTxsFieldsReqBuilder()..update(updates))._build();
+      (GAccountTxsFieldsReqBuilder()..update(updates))._build();
 
   _$GAccountTxsFieldsReq._(
       {required this.vars,
       required this.document,
       this.fragmentName,
       required this.idFields})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        vars, r'GAccountTxsFieldsReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        document, r'GAccountTxsFieldsReq', 'document');
-    BuiltValueNullFieldError.checkNotNull(
-        idFields, r'GAccountTxsFieldsReq', 'idFields');
-  }
-
+      : super._();
   @override
   GAccountTxsFieldsReq rebuild(
           void Function(GAccountTxsFieldsReqBuilder) updates) =>
@@ -5818,7 +5664,7 @@ class _$GAccountTxsFieldsReq extends GAccountTxsFieldsReq {
 
   @override
   GAccountTxsFieldsReqBuilder toBuilder() =>
-      new GAccountTxsFieldsReqBuilder()..replace(this);
+      GAccountTxsFieldsReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -5858,7 +5704,7 @@ class GAccountTxsFieldsReqBuilder
 
   _i3.GAccountTxsFieldsVarsBuilder? _vars;
   _i3.GAccountTxsFieldsVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GAccountTxsFieldsVarsBuilder();
+      _$this._vars ??= _i3.GAccountTxsFieldsVarsBuilder();
   set vars(_i3.GAccountTxsFieldsVarsBuilder? vars) => _$this._vars = vars;
 
   _i7.DocumentNode? _document;
@@ -5891,7 +5737,6 @@ class GAccountTxsFieldsReqBuilder
 
   @override
   void replace(GAccountTxsFieldsReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GAccountTxsFieldsReq;
   }
 
@@ -5907,20 +5752,21 @@ class GAccountTxsFieldsReqBuilder
     _$GAccountTxsFieldsReq _$result;
     try {
       _$result = _$v ??
-          new _$GAccountTxsFieldsReq._(
-              vars: vars.build(),
-              document: BuiltValueNullFieldError.checkNotNull(
-                  document, r'GAccountTxsFieldsReq', 'document'),
-              fragmentName: fragmentName,
-              idFields: BuiltValueNullFieldError.checkNotNull(
-                  idFields, r'GAccountTxsFieldsReq', 'idFields'));
+          _$GAccountTxsFieldsReq._(
+            vars: vars.build(),
+            document: BuiltValueNullFieldError.checkNotNull(
+                document, r'GAccountTxsFieldsReq', 'document'),
+            fragmentName: fragmentName,
+            idFields: BuiltValueNullFieldError.checkNotNull(
+                idFields, r'GAccountTxsFieldsReq', 'idFields'),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'vars';
         vars.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GAccountTxsFieldsReq', _$failedField, e.toString());
       }
       rethrow;
@@ -5942,21 +5788,14 @@ class _$GTransferFieldsReq extends GTransferFieldsReq {
 
   factory _$GTransferFieldsReq(
           [void Function(GTransferFieldsReqBuilder)? updates]) =>
-      (new GTransferFieldsReqBuilder()..update(updates))._build();
+      (GTransferFieldsReqBuilder()..update(updates))._build();
 
   _$GTransferFieldsReq._(
       {required this.vars,
       required this.document,
       this.fragmentName,
       required this.idFields})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(vars, r'GTransferFieldsReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        document, r'GTransferFieldsReq', 'document');
-    BuiltValueNullFieldError.checkNotNull(
-        idFields, r'GTransferFieldsReq', 'idFields');
-  }
-
+      : super._();
   @override
   GTransferFieldsReq rebuild(
           void Function(GTransferFieldsReqBuilder) updates) =>
@@ -5964,7 +5803,7 @@ class _$GTransferFieldsReq extends GTransferFieldsReq {
 
   @override
   GTransferFieldsReqBuilder toBuilder() =>
-      new GTransferFieldsReqBuilder()..replace(this);
+      GTransferFieldsReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -6004,7 +5843,7 @@ class GTransferFieldsReqBuilder
 
   _i3.GTransferFieldsVarsBuilder? _vars;
   _i3.GTransferFieldsVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GTransferFieldsVarsBuilder();
+      _$this._vars ??= _i3.GTransferFieldsVarsBuilder();
   set vars(_i3.GTransferFieldsVarsBuilder? vars) => _$this._vars = vars;
 
   _i7.DocumentNode? _document;
@@ -6037,7 +5876,6 @@ class GTransferFieldsReqBuilder
 
   @override
   void replace(GTransferFieldsReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GTransferFieldsReq;
   }
 
@@ -6053,20 +5891,21 @@ class GTransferFieldsReqBuilder
     _$GTransferFieldsReq _$result;
     try {
       _$result = _$v ??
-          new _$GTransferFieldsReq._(
-              vars: vars.build(),
-              document: BuiltValueNullFieldError.checkNotNull(
-                  document, r'GTransferFieldsReq', 'document'),
-              fragmentName: fragmentName,
-              idFields: BuiltValueNullFieldError.checkNotNull(
-                  idFields, r'GTransferFieldsReq', 'idFields'));
+          _$GTransferFieldsReq._(
+            vars: vars.build(),
+            document: BuiltValueNullFieldError.checkNotNull(
+                document, r'GTransferFieldsReq', 'document'),
+            fragmentName: fragmentName,
+            idFields: BuiltValueNullFieldError.checkNotNull(
+                idFields, r'GTransferFieldsReq', 'idFields'),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'vars';
         vars.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GTransferFieldsReq', _$failedField, e.toString());
       }
       rethrow;

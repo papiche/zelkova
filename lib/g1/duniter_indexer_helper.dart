@@ -417,17 +417,16 @@ Future<Contact?> getIdentity({required String address}) async {
 
 // Extract received certs from Account query
 List<Cert> _extractCertsReceivedFromAccount(
-    GAccountsByPkData_accounts_nodes_linkedIdentity identity) {
-  final BuiltList<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes>
+    GAccountsByPkData_accounts_nodes_identity identity) {
+  final BuiltList<GAccountsByPkData_accounts_nodes_identity_certReceived_nodes>
       certs = identity.certReceived.nodes;
   if (certs.isEmpty) {
     return <Cert>[];
   }
   return certs
-      .map((GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes
-              cert) =>
-          _buildCertFromAccountQueryReceived(cert))
+      .map(
+          (GAccountsByPkData_accounts_nodes_identity_certReceived_nodes cert) =>
+              _buildCertFromAccountQueryReceived(cert))
       .where((Cert? cert) => cert != null)
       .cast<Cert>()
       .toList();
@@ -435,16 +434,14 @@ List<Cert> _extractCertsReceivedFromAccount(
 
 // Extract issued certs from Account query
 List<Cert> _extractCertsIssuedFromAccount(
-    GAccountsByPkData_accounts_nodes_linkedIdentity identity) {
-  final BuiltList<
-          GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes>
+    GAccountsByPkData_accounts_nodes_identity identity) {
+  final BuiltList<GAccountsByPkData_accounts_nodes_identity_certIssued_nodes>
       certs = identity.certIssued.nodes;
   if (certs.isEmpty) {
     return <Cert>[];
   }
   return certs
-      .map((GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes
-              cert) =>
+      .map((GAccountsByPkData_accounts_nodes_identity_certIssued_nodes cert) =>
           _buildCertFromAccountQueryIssued(cert))
       .where((Cert? cert) => cert != null)
       .cast<Cert>()
@@ -453,10 +450,10 @@ List<Cert> _extractCertsIssuedFromAccount(
 
 // Build Cert from Account query certReceived
 Cert? _buildCertFromAccountQueryReceived(
-    GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes cert) {
-  final GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_issuer?
+    GAccountsByPkData_accounts_nodes_identity_certReceived_nodes cert) {
+  final GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_issuer?
       issuer = cert.issuer;
-  final GAccountsByPkData_accounts_nodes_linkedIdentity_certReceived_nodes_receiver?
+  final GAccountsByPkData_accounts_nodes_identity_certReceived_nodes_receiver?
       receiver = cert.receiver;
 
   // Skip if issuer or receiver is null (removed accounts)
@@ -491,10 +488,10 @@ Cert? _buildCertFromAccountQueryReceived(
 
 // Build Cert from Account query certIssued
 Cert? _buildCertFromAccountQueryIssued(
-    GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes cert) {
-  final GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_issuer?
+    GAccountsByPkData_accounts_nodes_identity_certIssued_nodes cert) {
+  final GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_issuer?
       issuer = cert.issuer;
-  final GAccountsByPkData_accounts_nodes_linkedIdentity_certIssued_nodes_receiver?
+  final GAccountsByPkData_accounts_nodes_identity_certIssued_nodes_receiver?
       receiver = cert.receiver;
 
   // Skip if issuer or receiver is null (removed accounts)
@@ -529,8 +526,7 @@ Cert? _buildCertFromAccountQueryIssued(
 
 // Build Contact from GAccountsByPkData_accounts_nodes (with certs)
 Contact _contactFromAccount(GAccountsByPkData_accounts_nodes account) {
-  final GAccountsByPkData_accounts_nodes_linkedIdentity? identity =
-      account.linkedIdentity;
+  final GAccountsByPkData_accounts_nodes_identity? identity = account.identity;
 
   if (identity == null) {
     return Contact.withAddress(
@@ -555,8 +551,8 @@ Contact _contactFromAccount(GAccountsByPkData_accounts_nodes account) {
 // Build Contact from GAccountsBasicByPkData_accounts_nodes (without certs)
 Contact _contactFromAccountBasic(
     GAccountsBasicByPkData_accounts_nodes account) {
-  final GAccountsBasicByPkData_accounts_nodes_linkedIdentity? identity =
-      account.linkedIdentity;
+  final GAccountsBasicByPkData_accounts_nodes_identity? identity =
+      account.identity;
 
   if (identity == null) {
     return Contact.withAddress(

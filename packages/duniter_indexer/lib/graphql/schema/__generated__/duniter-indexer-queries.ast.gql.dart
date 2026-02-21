@@ -808,7 +808,7 @@ const AccountBasicFields = _i1.FragmentDefinitionNode(
       selectionSet: null,
     ),
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'linkedIdentity'),
+      name: _i1.NameNode(value: 'identity'),
       alias: null,
       arguments: [],
       directives: [],
@@ -1077,7 +1077,7 @@ const AccountFields = _i1.FragmentDefinitionNode(
       ]),
     ),
     _i1.FieldNode(
-      name: _i1.NameNode(value: 'linkedIdentity'),
+      name: _i1.NameNode(value: 'identity'),
       alias: null,
       arguments: [],
       directives: [],

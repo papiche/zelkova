@@ -7,47 +7,47 @@ part of 'duniter-indexer-queries.var.gql.dart';
 // **************************************************************************
 
 Serializer<GLastBlockVars> _$gLastBlockVarsSerializer =
-    new _$GLastBlockVarsSerializer();
+    _$GLastBlockVarsSerializer();
 Serializer<GIdentitiesByNameOrPkVars> _$gIdentitiesByNameOrPkVarsSerializer =
-    new _$GIdentitiesByNameOrPkVarsSerializer();
+    _$GIdentitiesByNameOrPkVarsSerializer();
 Serializer<GIdentitiesByPkVars> _$gIdentitiesByPkVarsSerializer =
-    new _$GIdentitiesByPkVarsSerializer();
+    _$GIdentitiesByPkVarsSerializer();
 Serializer<GIdentitiesByNameVars> _$gIdentitiesByNameVarsSerializer =
-    new _$GIdentitiesByNameVarsSerializer();
+    _$GIdentitiesByNameVarsSerializer();
 Serializer<GAccountByPkVars> _$gAccountByPkVarsSerializer =
-    new _$GAccountByPkVarsSerializer();
+    _$GAccountByPkVarsSerializer();
 Serializer<GAccountsByPkVars> _$gAccountsByPkVarsSerializer =
-    new _$GAccountsByPkVarsSerializer();
+    _$GAccountsByPkVarsSerializer();
 Serializer<GAccountBasicByPkVars> _$gAccountBasicByPkVarsSerializer =
-    new _$GAccountBasicByPkVarsSerializer();
+    _$GAccountBasicByPkVarsSerializer();
 Serializer<GAccountsBasicByPkVars> _$gAccountsBasicByPkVarsSerializer =
-    new _$GAccountsBasicByPkVarsSerializer();
+    _$GAccountsBasicByPkVarsSerializer();
 Serializer<GAccountTransactionsVars> _$gAccountTransactionsVarsSerializer =
-    new _$GAccountTransactionsVarsSerializer();
+    _$GAccountTransactionsVarsSerializer();
 Serializer<GIndexerVersionVars> _$gIndexerVersionVarsSerializer =
-    new _$GIndexerVersionVarsSerializer();
+    _$GIndexerVersionVarsSerializer();
 Serializer<GCertFieldsVars> _$gCertFieldsVarsSerializer =
-    new _$GCertFieldsVarsSerializer();
+    _$GCertFieldsVarsSerializer();
 Serializer<GSmithCertFieldsVars> _$gSmithCertFieldsVarsSerializer =
-    new _$GSmithCertFieldsVarsSerializer();
+    _$GSmithCertFieldsVarsSerializer();
 Serializer<GSmithFieldsVars> _$gSmithFieldsVarsSerializer =
-    new _$GSmithFieldsVarsSerializer();
+    _$GSmithFieldsVarsSerializer();
 Serializer<GOwnerKeyChangeFieldsVars> _$gOwnerKeyChangeFieldsVarsSerializer =
-    new _$GOwnerKeyChangeFieldsVarsSerializer();
+    _$GOwnerKeyChangeFieldsVarsSerializer();
 Serializer<GIdentityBasicFieldsVars> _$gIdentityBasicFieldsVarsSerializer =
-    new _$GIdentityBasicFieldsVarsSerializer();
+    _$GIdentityBasicFieldsVarsSerializer();
 Serializer<GIdentityFieldsVars> _$gIdentityFieldsVarsSerializer =
-    new _$GIdentityFieldsVarsSerializer();
+    _$GIdentityFieldsVarsSerializer();
 Serializer<GCommentsIssuedVars> _$gCommentsIssuedVarsSerializer =
-    new _$GCommentsIssuedVarsSerializer();
+    _$GCommentsIssuedVarsSerializer();
 Serializer<GAccountBasicFieldsVars> _$gAccountBasicFieldsVarsSerializer =
-    new _$GAccountBasicFieldsVarsSerializer();
+    _$GAccountBasicFieldsVarsSerializer();
 Serializer<GAccountFieldsVars> _$gAccountFieldsVarsSerializer =
-    new _$GAccountFieldsVarsSerializer();
+    _$GAccountFieldsVarsSerializer();
 Serializer<GAccountTxsFieldsVars> _$gAccountTxsFieldsVarsSerializer =
-    new _$GAccountTxsFieldsVarsSerializer();
+    _$GAccountTxsFieldsVarsSerializer();
 Serializer<GTransferFieldsVars> _$gTransferFieldsVarsSerializer =
-    new _$GTransferFieldsVarsSerializer();
+    _$GTransferFieldsVarsSerializer();
 
 class _$GLastBlockVarsSerializer
     implements StructuredSerializer<GLastBlockVars> {
@@ -66,7 +66,7 @@ class _$GLastBlockVarsSerializer
   GLastBlockVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    return new GLastBlockVarsBuilder().build();
+    return GLastBlockVarsBuilder().build();
   }
 }
 
@@ -100,7 +100,7 @@ class _$GIdentitiesByNameOrPkVarsSerializer
   GIdentitiesByNameOrPkVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GIdentitiesByNameOrPkVarsBuilder();
+    final result = GIdentitiesByNameOrPkVarsBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -147,7 +147,7 @@ class _$GIdentitiesByPkVarsSerializer
   GIdentitiesByPkVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GIdentitiesByPkVarsBuilder();
+    final result = GIdentitiesByPkVarsBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -198,7 +198,7 @@ class _$GIdentitiesByNameVarsSerializer
   GIdentitiesByNameVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GIdentitiesByNameVarsBuilder();
+    final result = GIdentitiesByNameVarsBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -252,7 +252,7 @@ class _$GAccountByPkVarsSerializer
   GAccountByPkVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountByPkVarsBuilder();
+    final result = GAccountByPkVarsBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -316,7 +316,7 @@ class _$GAccountsByPkVarsSerializer
   GAccountsByPkVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountsByPkVarsBuilder();
+    final result = GAccountsByPkVarsBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -371,7 +371,7 @@ class _$GAccountBasicByPkVarsSerializer
   GAccountBasicByPkVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountBasicByPkVarsBuilder();
+    final result = GAccountBasicByPkVarsBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -418,7 +418,7 @@ class _$GAccountsBasicByPkVarsSerializer
   GAccountsBasicByPkVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountsBasicByPkVarsBuilder();
+    final result = GAccountsBasicByPkVarsBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -479,7 +479,7 @@ class _$GAccountTransactionsVarsSerializer
   GAccountTransactionsVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountTransactionsVarsBuilder();
+    final result = GAccountTransactionsVarsBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -527,7 +527,7 @@ class _$GIndexerVersionVarsSerializer
   GIndexerVersionVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    return new GIndexerVersionVarsBuilder().build();
+    return GIndexerVersionVarsBuilder().build();
   }
 }
 
@@ -548,7 +548,7 @@ class _$GCertFieldsVarsSerializer
   GCertFieldsVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    return new GCertFieldsVarsBuilder().build();
+    return GCertFieldsVarsBuilder().build();
   }
 }
 
@@ -573,7 +573,7 @@ class _$GSmithCertFieldsVarsSerializer
   GSmithCertFieldsVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    return new GSmithCertFieldsVarsBuilder().build();
+    return GSmithCertFieldsVarsBuilder().build();
   }
 }
 
@@ -594,7 +594,7 @@ class _$GSmithFieldsVarsSerializer
   GSmithFieldsVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    return new GSmithFieldsVarsBuilder().build();
+    return GSmithFieldsVarsBuilder().build();
   }
 }
 
@@ -619,7 +619,7 @@ class _$GOwnerKeyChangeFieldsVarsSerializer
   GOwnerKeyChangeFieldsVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    return new GOwnerKeyChangeFieldsVarsBuilder().build();
+    return GOwnerKeyChangeFieldsVarsBuilder().build();
   }
 }
 
@@ -644,7 +644,7 @@ class _$GIdentityBasicFieldsVarsSerializer
   GIdentityBasicFieldsVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    return new GIdentityBasicFieldsVarsBuilder().build();
+    return GIdentityBasicFieldsVarsBuilder().build();
   }
 }
 
@@ -669,7 +669,7 @@ class _$GIdentityFieldsVarsSerializer
   GIdentityFieldsVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    return new GIdentityFieldsVarsBuilder().build();
+    return GIdentityFieldsVarsBuilder().build();
   }
 }
 
@@ -694,7 +694,7 @@ class _$GCommentsIssuedVarsSerializer
   GCommentsIssuedVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    return new GCommentsIssuedVarsBuilder().build();
+    return GCommentsIssuedVarsBuilder().build();
   }
 }
 
@@ -719,7 +719,7 @@ class _$GAccountBasicFieldsVarsSerializer
   GAccountBasicFieldsVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    return new GAccountBasicFieldsVarsBuilder().build();
+    return GAccountBasicFieldsVarsBuilder().build();
   }
 }
 
@@ -756,7 +756,7 @@ class _$GAccountFieldsVarsSerializer
   GAccountFieldsVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountFieldsVarsBuilder();
+    final result = GAccountFieldsVarsBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -815,7 +815,7 @@ class _$GAccountTxsFieldsVarsSerializer
   GAccountTxsFieldsVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountTxsFieldsVarsBuilder();
+    final result = GAccountTxsFieldsVarsBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -859,23 +859,21 @@ class _$GTransferFieldsVarsSerializer
   GTransferFieldsVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    return new GTransferFieldsVarsBuilder().build();
+    return GTransferFieldsVarsBuilder().build();
   }
 }
 
 class _$GLastBlockVars extends GLastBlockVars {
   factory _$GLastBlockVars([void Function(GLastBlockVarsBuilder)? updates]) =>
-      (new GLastBlockVarsBuilder()..update(updates))._build();
+      (GLastBlockVarsBuilder()..update(updates))._build();
 
   _$GLastBlockVars._() : super._();
-
   @override
   GLastBlockVars rebuild(void Function(GLastBlockVarsBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GLastBlockVarsBuilder toBuilder() =>
-      new GLastBlockVarsBuilder()..replace(this);
+  GLastBlockVarsBuilder toBuilder() => GLastBlockVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -902,7 +900,6 @@ class GLastBlockVarsBuilder
 
   @override
   void replace(GLastBlockVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GLastBlockVars;
   }
 
@@ -915,7 +912,7 @@ class GLastBlockVarsBuilder
   GLastBlockVars build() => _build();
 
   _$GLastBlockVars _build() {
-    final _$result = _$v ?? new _$GLastBlockVars._();
+    final _$result = _$v ?? _$GLastBlockVars._();
     replace(_$result);
     return _$result;
   }
@@ -927,10 +924,9 @@ class _$GIdentitiesByNameOrPkVars extends GIdentitiesByNameOrPkVars {
 
   factory _$GIdentitiesByNameOrPkVars(
           [void Function(GIdentitiesByNameOrPkVarsBuilder)? updates]) =>
-      (new GIdentitiesByNameOrPkVarsBuilder()..update(updates))._build();
+      (GIdentitiesByNameOrPkVarsBuilder()..update(updates))._build();
 
   _$GIdentitiesByNameOrPkVars._({this.pattern}) : super._();
-
   @override
   GIdentitiesByNameOrPkVars rebuild(
           void Function(GIdentitiesByNameOrPkVarsBuilder) updates) =>
@@ -938,7 +934,7 @@ class _$GIdentitiesByNameOrPkVars extends GIdentitiesByNameOrPkVars {
 
   @override
   GIdentitiesByNameOrPkVarsBuilder toBuilder() =>
-      new GIdentitiesByNameOrPkVarsBuilder()..replace(this);
+      GIdentitiesByNameOrPkVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -984,7 +980,6 @@ class GIdentitiesByNameOrPkVarsBuilder
 
   @override
   void replace(GIdentitiesByNameOrPkVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GIdentitiesByNameOrPkVars;
   }
 
@@ -997,7 +992,10 @@ class GIdentitiesByNameOrPkVarsBuilder
   GIdentitiesByNameOrPkVars build() => _build();
 
   _$GIdentitiesByNameOrPkVars _build() {
-    final _$result = _$v ?? new _$GIdentitiesByNameOrPkVars._(pattern: pattern);
+    final _$result = _$v ??
+        _$GIdentitiesByNameOrPkVars._(
+          pattern: pattern,
+        );
     replace(_$result);
     return _$result;
   }
@@ -1009,13 +1007,9 @@ class _$GIdentitiesByPkVars extends GIdentitiesByPkVars {
 
   factory _$GIdentitiesByPkVars(
           [void Function(GIdentitiesByPkVarsBuilder)? updates]) =>
-      (new GIdentitiesByPkVarsBuilder()..update(updates))._build();
+      (GIdentitiesByPkVarsBuilder()..update(updates))._build();
 
-  _$GIdentitiesByPkVars._({required this.pubKeys}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        pubKeys, r'GIdentitiesByPkVars', 'pubKeys');
-  }
-
+  _$GIdentitiesByPkVars._({required this.pubKeys}) : super._();
   @override
   GIdentitiesByPkVars rebuild(
           void Function(GIdentitiesByPkVarsBuilder) updates) =>
@@ -1023,7 +1017,7 @@ class _$GIdentitiesByPkVars extends GIdentitiesByPkVars {
 
   @override
   GIdentitiesByPkVarsBuilder toBuilder() =>
-      new GIdentitiesByPkVarsBuilder()..replace(this);
+      GIdentitiesByPkVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -1052,8 +1046,7 @@ class GIdentitiesByPkVarsBuilder
   _$GIdentitiesByPkVars? _$v;
 
   ListBuilder<String>? _pubKeys;
-  ListBuilder<String> get pubKeys =>
-      _$this._pubKeys ??= new ListBuilder<String>();
+  ListBuilder<String> get pubKeys => _$this._pubKeys ??= ListBuilder<String>();
   set pubKeys(ListBuilder<String>? pubKeys) => _$this._pubKeys = pubKeys;
 
   GIdentitiesByPkVarsBuilder();
@@ -1069,7 +1062,6 @@ class GIdentitiesByPkVarsBuilder
 
   @override
   void replace(GIdentitiesByPkVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GIdentitiesByPkVars;
   }
 
@@ -1084,14 +1076,17 @@ class GIdentitiesByPkVarsBuilder
   _$GIdentitiesByPkVars _build() {
     _$GIdentitiesByPkVars _$result;
     try {
-      _$result = _$v ?? new _$GIdentitiesByPkVars._(pubKeys: pubKeys.build());
+      _$result = _$v ??
+          _$GIdentitiesByPkVars._(
+            pubKeys: pubKeys.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'pubKeys';
         pubKeys.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GIdentitiesByPkVars', _$failedField, e.toString());
       }
       rethrow;
@@ -1107,10 +1102,9 @@ class _$GIdentitiesByNameVars extends GIdentitiesByNameVars {
 
   factory _$GIdentitiesByNameVars(
           [void Function(GIdentitiesByNameVarsBuilder)? updates]) =>
-      (new GIdentitiesByNameVarsBuilder()..update(updates))._build();
+      (GIdentitiesByNameVarsBuilder()..update(updates))._build();
 
   _$GIdentitiesByNameVars._({this.pattern}) : super._();
-
   @override
   GIdentitiesByNameVars rebuild(
           void Function(GIdentitiesByNameVarsBuilder) updates) =>
@@ -1118,7 +1112,7 @@ class _$GIdentitiesByNameVars extends GIdentitiesByNameVars {
 
   @override
   GIdentitiesByNameVarsBuilder toBuilder() =>
-      new GIdentitiesByNameVarsBuilder()..replace(this);
+      GIdentitiesByNameVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -1163,7 +1157,6 @@ class GIdentitiesByNameVarsBuilder
 
   @override
   void replace(GIdentitiesByNameVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GIdentitiesByNameVars;
   }
 
@@ -1176,7 +1169,10 @@ class GIdentitiesByNameVarsBuilder
   GIdentitiesByNameVars build() => _build();
 
   _$GIdentitiesByNameVars _build() {
-    final _$result = _$v ?? new _$GIdentitiesByNameVars._(pattern: pattern);
+    final _$result = _$v ??
+        _$GIdentitiesByNameVars._(
+          pattern: pattern,
+        );
     replace(_$result);
     return _$result;
   }
@@ -1192,20 +1188,16 @@ class _$GAccountByPkVars extends GAccountByPkVars {
 
   factory _$GAccountByPkVars(
           [void Function(GAccountByPkVarsBuilder)? updates]) =>
-      (new GAccountByPkVarsBuilder()..update(updates))._build();
+      (GAccountByPkVarsBuilder()..update(updates))._build();
 
-  _$GAccountByPkVars._({required this.id, this.limit, this.cursor})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(id, r'GAccountByPkVars', 'id');
-  }
-
+  _$GAccountByPkVars._({required this.id, this.limit, this.cursor}) : super._();
   @override
   GAccountByPkVars rebuild(void Function(GAccountByPkVarsBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
   GAccountByPkVarsBuilder toBuilder() =>
-      new GAccountByPkVarsBuilder()..replace(this);
+      GAccountByPkVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -1249,7 +1241,7 @@ class GAccountByPkVarsBuilder
   set limit(int? limit) => _$this._limit = limit;
 
   _i2.GCursorBuilder? _cursor;
-  _i2.GCursorBuilder get cursor => _$this._cursor ??= new _i2.GCursorBuilder();
+  _i2.GCursorBuilder get cursor => _$this._cursor ??= _i2.GCursorBuilder();
   set cursor(_i2.GCursorBuilder? cursor) => _$this._cursor = cursor;
 
   GAccountByPkVarsBuilder();
@@ -1267,7 +1259,6 @@ class GAccountByPkVarsBuilder
 
   @override
   void replace(GAccountByPkVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GAccountByPkVars;
   }
 
@@ -1283,18 +1274,19 @@ class GAccountByPkVarsBuilder
     _$GAccountByPkVars _$result;
     try {
       _$result = _$v ??
-          new _$GAccountByPkVars._(
-              id: BuiltValueNullFieldError.checkNotNull(
-                  id, r'GAccountByPkVars', 'id'),
-              limit: limit,
-              cursor: _cursor?.build());
+          _$GAccountByPkVars._(
+            id: BuiltValueNullFieldError.checkNotNull(
+                id, r'GAccountByPkVars', 'id'),
+            limit: limit,
+            cursor: _cursor?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'cursor';
         _cursor?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GAccountByPkVars', _$failedField, e.toString());
       }
       rethrow;
@@ -1314,21 +1306,17 @@ class _$GAccountsByPkVars extends GAccountsByPkVars {
 
   factory _$GAccountsByPkVars(
           [void Function(GAccountsByPkVarsBuilder)? updates]) =>
-      (new GAccountsByPkVarsBuilder()..update(updates))._build();
+      (GAccountsByPkVarsBuilder()..update(updates))._build();
 
   _$GAccountsByPkVars._({required this.accountIds, this.limit, this.cursor})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        accountIds, r'GAccountsByPkVars', 'accountIds');
-  }
-
+      : super._();
   @override
   GAccountsByPkVars rebuild(void Function(GAccountsByPkVarsBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
   GAccountsByPkVarsBuilder toBuilder() =>
-      new GAccountsByPkVarsBuilder()..replace(this);
+      GAccountsByPkVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -1365,7 +1353,7 @@ class GAccountsByPkVarsBuilder
 
   ListBuilder<String>? _accountIds;
   ListBuilder<String> get accountIds =>
-      _$this._accountIds ??= new ListBuilder<String>();
+      _$this._accountIds ??= ListBuilder<String>();
   set accountIds(ListBuilder<String>? accountIds) =>
       _$this._accountIds = accountIds;
 
@@ -1374,7 +1362,7 @@ class GAccountsByPkVarsBuilder
   set limit(int? limit) => _$this._limit = limit;
 
   _i2.GCursorBuilder? _cursor;
-  _i2.GCursorBuilder get cursor => _$this._cursor ??= new _i2.GCursorBuilder();
+  _i2.GCursorBuilder get cursor => _$this._cursor ??= _i2.GCursorBuilder();
   set cursor(_i2.GCursorBuilder? cursor) => _$this._cursor = cursor;
 
   GAccountsByPkVarsBuilder();
@@ -1392,7 +1380,6 @@ class GAccountsByPkVarsBuilder
 
   @override
   void replace(GAccountsByPkVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GAccountsByPkVars;
   }
 
@@ -1408,10 +1395,11 @@ class GAccountsByPkVarsBuilder
     _$GAccountsByPkVars _$result;
     try {
       _$result = _$v ??
-          new _$GAccountsByPkVars._(
-              accountIds: accountIds.build(),
-              limit: limit,
-              cursor: _cursor?.build());
+          _$GAccountsByPkVars._(
+            accountIds: accountIds.build(),
+            limit: limit,
+            cursor: _cursor?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -1421,7 +1409,7 @@ class GAccountsByPkVarsBuilder
         _$failedField = 'cursor';
         _cursor?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GAccountsByPkVars', _$failedField, e.toString());
       }
       rethrow;
@@ -1437,12 +1425,9 @@ class _$GAccountBasicByPkVars extends GAccountBasicByPkVars {
 
   factory _$GAccountBasicByPkVars(
           [void Function(GAccountBasicByPkVarsBuilder)? updates]) =>
-      (new GAccountBasicByPkVarsBuilder()..update(updates))._build();
+      (GAccountBasicByPkVarsBuilder()..update(updates))._build();
 
-  _$GAccountBasicByPkVars._({required this.id}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(id, r'GAccountBasicByPkVars', 'id');
-  }
-
+  _$GAccountBasicByPkVars._({required this.id}) : super._();
   @override
   GAccountBasicByPkVars rebuild(
           void Function(GAccountBasicByPkVarsBuilder) updates) =>
@@ -1450,7 +1435,7 @@ class _$GAccountBasicByPkVars extends GAccountBasicByPkVars {
 
   @override
   GAccountBasicByPkVarsBuilder toBuilder() =>
-      new GAccountBasicByPkVarsBuilder()..replace(this);
+      GAccountBasicByPkVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -1495,7 +1480,6 @@ class GAccountBasicByPkVarsBuilder
 
   @override
   void replace(GAccountBasicByPkVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GAccountBasicByPkVars;
   }
 
@@ -1509,9 +1493,10 @@ class GAccountBasicByPkVarsBuilder
 
   _$GAccountBasicByPkVars _build() {
     final _$result = _$v ??
-        new _$GAccountBasicByPkVars._(
-            id: BuiltValueNullFieldError.checkNotNull(
-                id, r'GAccountBasicByPkVars', 'id'));
+        _$GAccountBasicByPkVars._(
+          id: BuiltValueNullFieldError.checkNotNull(
+              id, r'GAccountBasicByPkVars', 'id'),
+        );
     replace(_$result);
     return _$result;
   }
@@ -1523,13 +1508,9 @@ class _$GAccountsBasicByPkVars extends GAccountsBasicByPkVars {
 
   factory _$GAccountsBasicByPkVars(
           [void Function(GAccountsBasicByPkVarsBuilder)? updates]) =>
-      (new GAccountsBasicByPkVarsBuilder()..update(updates))._build();
+      (GAccountsBasicByPkVarsBuilder()..update(updates))._build();
 
-  _$GAccountsBasicByPkVars._({required this.accountIds}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        accountIds, r'GAccountsBasicByPkVars', 'accountIds');
-  }
-
+  _$GAccountsBasicByPkVars._({required this.accountIds}) : super._();
   @override
   GAccountsBasicByPkVars rebuild(
           void Function(GAccountsBasicByPkVarsBuilder) updates) =>
@@ -1537,7 +1518,7 @@ class _$GAccountsBasicByPkVars extends GAccountsBasicByPkVars {
 
   @override
   GAccountsBasicByPkVarsBuilder toBuilder() =>
-      new GAccountsBasicByPkVarsBuilder()..replace(this);
+      GAccountsBasicByPkVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -1567,7 +1548,7 @@ class GAccountsBasicByPkVarsBuilder
 
   ListBuilder<String>? _accountIds;
   ListBuilder<String> get accountIds =>
-      _$this._accountIds ??= new ListBuilder<String>();
+      _$this._accountIds ??= ListBuilder<String>();
   set accountIds(ListBuilder<String>? accountIds) =>
       _$this._accountIds = accountIds;
 
@@ -1584,7 +1565,6 @@ class GAccountsBasicByPkVarsBuilder
 
   @override
   void replace(GAccountsBasicByPkVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GAccountsBasicByPkVars;
   }
 
@@ -1599,15 +1579,17 @@ class GAccountsBasicByPkVarsBuilder
   _$GAccountsBasicByPkVars _build() {
     _$GAccountsBasicByPkVars _$result;
     try {
-      _$result =
-          _$v ?? new _$GAccountsBasicByPkVars._(accountIds: accountIds.build());
+      _$result = _$v ??
+          _$GAccountsBasicByPkVars._(
+            accountIds: accountIds.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'accountIds';
         accountIds.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GAccountsBasicByPkVars', _$failedField, e.toString());
       }
       rethrow;
@@ -1627,15 +1609,11 @@ class _$GAccountTransactionsVars extends GAccountTransactionsVars {
 
   factory _$GAccountTransactionsVars(
           [void Function(GAccountTransactionsVarsBuilder)? updates]) =>
-      (new GAccountTransactionsVarsBuilder()..update(updates))._build();
+      (GAccountTransactionsVarsBuilder()..update(updates))._build();
 
   _$GAccountTransactionsVars._(
       {required this.accountId, this.limit, this.cursor})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        accountId, r'GAccountTransactionsVars', 'accountId');
-  }
-
+      : super._();
   @override
   GAccountTransactionsVars rebuild(
           void Function(GAccountTransactionsVarsBuilder) updates) =>
@@ -1643,7 +1621,7 @@ class _$GAccountTransactionsVars extends GAccountTransactionsVars {
 
   @override
   GAccountTransactionsVarsBuilder toBuilder() =>
-      new GAccountTransactionsVarsBuilder()..replace(this);
+      GAccountTransactionsVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -1688,7 +1666,7 @@ class GAccountTransactionsVarsBuilder
   set limit(int? limit) => _$this._limit = limit;
 
   _i2.GCursorBuilder? _cursor;
-  _i2.GCursorBuilder get cursor => _$this._cursor ??= new _i2.GCursorBuilder();
+  _i2.GCursorBuilder get cursor => _$this._cursor ??= _i2.GCursorBuilder();
   set cursor(_i2.GCursorBuilder? cursor) => _$this._cursor = cursor;
 
   GAccountTransactionsVarsBuilder();
@@ -1706,7 +1684,6 @@ class GAccountTransactionsVarsBuilder
 
   @override
   void replace(GAccountTransactionsVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GAccountTransactionsVars;
   }
 
@@ -1722,18 +1699,19 @@ class GAccountTransactionsVarsBuilder
     _$GAccountTransactionsVars _$result;
     try {
       _$result = _$v ??
-          new _$GAccountTransactionsVars._(
-              accountId: BuiltValueNullFieldError.checkNotNull(
-                  accountId, r'GAccountTransactionsVars', 'accountId'),
-              limit: limit,
-              cursor: _cursor?.build());
+          _$GAccountTransactionsVars._(
+            accountId: BuiltValueNullFieldError.checkNotNull(
+                accountId, r'GAccountTransactionsVars', 'accountId'),
+            limit: limit,
+            cursor: _cursor?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'cursor';
         _cursor?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GAccountTransactionsVars', _$failedField, e.toString());
       }
       rethrow;
@@ -1746,10 +1724,9 @@ class GAccountTransactionsVarsBuilder
 class _$GIndexerVersionVars extends GIndexerVersionVars {
   factory _$GIndexerVersionVars(
           [void Function(GIndexerVersionVarsBuilder)? updates]) =>
-      (new GIndexerVersionVarsBuilder()..update(updates))._build();
+      (GIndexerVersionVarsBuilder()..update(updates))._build();
 
   _$GIndexerVersionVars._() : super._();
-
   @override
   GIndexerVersionVars rebuild(
           void Function(GIndexerVersionVarsBuilder) updates) =>
@@ -1757,7 +1734,7 @@ class _$GIndexerVersionVars extends GIndexerVersionVars {
 
   @override
   GIndexerVersionVarsBuilder toBuilder() =>
-      new GIndexerVersionVarsBuilder()..replace(this);
+      GIndexerVersionVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -1784,7 +1761,6 @@ class GIndexerVersionVarsBuilder
 
   @override
   void replace(GIndexerVersionVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GIndexerVersionVars;
   }
 
@@ -1797,7 +1773,7 @@ class GIndexerVersionVarsBuilder
   GIndexerVersionVars build() => _build();
 
   _$GIndexerVersionVars _build() {
-    final _$result = _$v ?? new _$GIndexerVersionVars._();
+    final _$result = _$v ?? _$GIndexerVersionVars._();
     replace(_$result);
     return _$result;
   }
@@ -1805,17 +1781,15 @@ class GIndexerVersionVarsBuilder
 
 class _$GCertFieldsVars extends GCertFieldsVars {
   factory _$GCertFieldsVars([void Function(GCertFieldsVarsBuilder)? updates]) =>
-      (new GCertFieldsVarsBuilder()..update(updates))._build();
+      (GCertFieldsVarsBuilder()..update(updates))._build();
 
   _$GCertFieldsVars._() : super._();
-
   @override
   GCertFieldsVars rebuild(void Function(GCertFieldsVarsBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GCertFieldsVarsBuilder toBuilder() =>
-      new GCertFieldsVarsBuilder()..replace(this);
+  GCertFieldsVarsBuilder toBuilder() => GCertFieldsVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -1842,7 +1816,6 @@ class GCertFieldsVarsBuilder
 
   @override
   void replace(GCertFieldsVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GCertFieldsVars;
   }
 
@@ -1855,7 +1828,7 @@ class GCertFieldsVarsBuilder
   GCertFieldsVars build() => _build();
 
   _$GCertFieldsVars _build() {
-    final _$result = _$v ?? new _$GCertFieldsVars._();
+    final _$result = _$v ?? _$GCertFieldsVars._();
     replace(_$result);
     return _$result;
   }
@@ -1864,10 +1837,9 @@ class GCertFieldsVarsBuilder
 class _$GSmithCertFieldsVars extends GSmithCertFieldsVars {
   factory _$GSmithCertFieldsVars(
           [void Function(GSmithCertFieldsVarsBuilder)? updates]) =>
-      (new GSmithCertFieldsVarsBuilder()..update(updates))._build();
+      (GSmithCertFieldsVarsBuilder()..update(updates))._build();
 
   _$GSmithCertFieldsVars._() : super._();
-
   @override
   GSmithCertFieldsVars rebuild(
           void Function(GSmithCertFieldsVarsBuilder) updates) =>
@@ -1875,7 +1847,7 @@ class _$GSmithCertFieldsVars extends GSmithCertFieldsVars {
 
   @override
   GSmithCertFieldsVarsBuilder toBuilder() =>
-      new GSmithCertFieldsVarsBuilder()..replace(this);
+      GSmithCertFieldsVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -1902,7 +1874,6 @@ class GSmithCertFieldsVarsBuilder
 
   @override
   void replace(GSmithCertFieldsVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GSmithCertFieldsVars;
   }
 
@@ -1915,7 +1886,7 @@ class GSmithCertFieldsVarsBuilder
   GSmithCertFieldsVars build() => _build();
 
   _$GSmithCertFieldsVars _build() {
-    final _$result = _$v ?? new _$GSmithCertFieldsVars._();
+    final _$result = _$v ?? _$GSmithCertFieldsVars._();
     replace(_$result);
     return _$result;
   }
@@ -1924,17 +1895,16 @@ class GSmithCertFieldsVarsBuilder
 class _$GSmithFieldsVars extends GSmithFieldsVars {
   factory _$GSmithFieldsVars(
           [void Function(GSmithFieldsVarsBuilder)? updates]) =>
-      (new GSmithFieldsVarsBuilder()..update(updates))._build();
+      (GSmithFieldsVarsBuilder()..update(updates))._build();
 
   _$GSmithFieldsVars._() : super._();
-
   @override
   GSmithFieldsVars rebuild(void Function(GSmithFieldsVarsBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
   GSmithFieldsVarsBuilder toBuilder() =>
-      new GSmithFieldsVarsBuilder()..replace(this);
+      GSmithFieldsVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -1961,7 +1931,6 @@ class GSmithFieldsVarsBuilder
 
   @override
   void replace(GSmithFieldsVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GSmithFieldsVars;
   }
 
@@ -1974,7 +1943,7 @@ class GSmithFieldsVarsBuilder
   GSmithFieldsVars build() => _build();
 
   _$GSmithFieldsVars _build() {
-    final _$result = _$v ?? new _$GSmithFieldsVars._();
+    final _$result = _$v ?? _$GSmithFieldsVars._();
     replace(_$result);
     return _$result;
   }
@@ -1983,10 +1952,9 @@ class GSmithFieldsVarsBuilder
 class _$GOwnerKeyChangeFieldsVars extends GOwnerKeyChangeFieldsVars {
   factory _$GOwnerKeyChangeFieldsVars(
           [void Function(GOwnerKeyChangeFieldsVarsBuilder)? updates]) =>
-      (new GOwnerKeyChangeFieldsVarsBuilder()..update(updates))._build();
+      (GOwnerKeyChangeFieldsVarsBuilder()..update(updates))._build();
 
   _$GOwnerKeyChangeFieldsVars._() : super._();
-
   @override
   GOwnerKeyChangeFieldsVars rebuild(
           void Function(GOwnerKeyChangeFieldsVarsBuilder) updates) =>
@@ -1994,7 +1962,7 @@ class _$GOwnerKeyChangeFieldsVars extends GOwnerKeyChangeFieldsVars {
 
   @override
   GOwnerKeyChangeFieldsVarsBuilder toBuilder() =>
-      new GOwnerKeyChangeFieldsVarsBuilder()..replace(this);
+      GOwnerKeyChangeFieldsVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -2022,7 +1990,6 @@ class GOwnerKeyChangeFieldsVarsBuilder
 
   @override
   void replace(GOwnerKeyChangeFieldsVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GOwnerKeyChangeFieldsVars;
   }
 
@@ -2035,7 +2002,7 @@ class GOwnerKeyChangeFieldsVarsBuilder
   GOwnerKeyChangeFieldsVars build() => _build();
 
   _$GOwnerKeyChangeFieldsVars _build() {
-    final _$result = _$v ?? new _$GOwnerKeyChangeFieldsVars._();
+    final _$result = _$v ?? _$GOwnerKeyChangeFieldsVars._();
     replace(_$result);
     return _$result;
   }
@@ -2044,10 +2011,9 @@ class GOwnerKeyChangeFieldsVarsBuilder
 class _$GIdentityBasicFieldsVars extends GIdentityBasicFieldsVars {
   factory _$GIdentityBasicFieldsVars(
           [void Function(GIdentityBasicFieldsVarsBuilder)? updates]) =>
-      (new GIdentityBasicFieldsVarsBuilder()..update(updates))._build();
+      (GIdentityBasicFieldsVarsBuilder()..update(updates))._build();
 
   _$GIdentityBasicFieldsVars._() : super._();
-
   @override
   GIdentityBasicFieldsVars rebuild(
           void Function(GIdentityBasicFieldsVarsBuilder) updates) =>
@@ -2055,7 +2021,7 @@ class _$GIdentityBasicFieldsVars extends GIdentityBasicFieldsVars {
 
   @override
   GIdentityBasicFieldsVarsBuilder toBuilder() =>
-      new GIdentityBasicFieldsVarsBuilder()..replace(this);
+      GIdentityBasicFieldsVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -2083,7 +2049,6 @@ class GIdentityBasicFieldsVarsBuilder
 
   @override
   void replace(GIdentityBasicFieldsVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GIdentityBasicFieldsVars;
   }
 
@@ -2096,7 +2061,7 @@ class GIdentityBasicFieldsVarsBuilder
   GIdentityBasicFieldsVars build() => _build();
 
   _$GIdentityBasicFieldsVars _build() {
-    final _$result = _$v ?? new _$GIdentityBasicFieldsVars._();
+    final _$result = _$v ?? _$GIdentityBasicFieldsVars._();
     replace(_$result);
     return _$result;
   }
@@ -2105,10 +2070,9 @@ class GIdentityBasicFieldsVarsBuilder
 class _$GIdentityFieldsVars extends GIdentityFieldsVars {
   factory _$GIdentityFieldsVars(
           [void Function(GIdentityFieldsVarsBuilder)? updates]) =>
-      (new GIdentityFieldsVarsBuilder()..update(updates))._build();
+      (GIdentityFieldsVarsBuilder()..update(updates))._build();
 
   _$GIdentityFieldsVars._() : super._();
-
   @override
   GIdentityFieldsVars rebuild(
           void Function(GIdentityFieldsVarsBuilder) updates) =>
@@ -2116,7 +2080,7 @@ class _$GIdentityFieldsVars extends GIdentityFieldsVars {
 
   @override
   GIdentityFieldsVarsBuilder toBuilder() =>
-      new GIdentityFieldsVarsBuilder()..replace(this);
+      GIdentityFieldsVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -2143,7 +2107,6 @@ class GIdentityFieldsVarsBuilder
 
   @override
   void replace(GIdentityFieldsVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GIdentityFieldsVars;
   }
 
@@ -2156,7 +2119,7 @@ class GIdentityFieldsVarsBuilder
   GIdentityFieldsVars build() => _build();
 
   _$GIdentityFieldsVars _build() {
-    final _$result = _$v ?? new _$GIdentityFieldsVars._();
+    final _$result = _$v ?? _$GIdentityFieldsVars._();
     replace(_$result);
     return _$result;
   }
@@ -2165,10 +2128,9 @@ class GIdentityFieldsVarsBuilder
 class _$GCommentsIssuedVars extends GCommentsIssuedVars {
   factory _$GCommentsIssuedVars(
           [void Function(GCommentsIssuedVarsBuilder)? updates]) =>
-      (new GCommentsIssuedVarsBuilder()..update(updates))._build();
+      (GCommentsIssuedVarsBuilder()..update(updates))._build();
 
   _$GCommentsIssuedVars._() : super._();
-
   @override
   GCommentsIssuedVars rebuild(
           void Function(GCommentsIssuedVarsBuilder) updates) =>
@@ -2176,7 +2138,7 @@ class _$GCommentsIssuedVars extends GCommentsIssuedVars {
 
   @override
   GCommentsIssuedVarsBuilder toBuilder() =>
-      new GCommentsIssuedVarsBuilder()..replace(this);
+      GCommentsIssuedVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -2203,7 +2165,6 @@ class GCommentsIssuedVarsBuilder
 
   @override
   void replace(GCommentsIssuedVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GCommentsIssuedVars;
   }
 
@@ -2216,7 +2177,7 @@ class GCommentsIssuedVarsBuilder
   GCommentsIssuedVars build() => _build();
 
   _$GCommentsIssuedVars _build() {
-    final _$result = _$v ?? new _$GCommentsIssuedVars._();
+    final _$result = _$v ?? _$GCommentsIssuedVars._();
     replace(_$result);
     return _$result;
   }
@@ -2225,10 +2186,9 @@ class GCommentsIssuedVarsBuilder
 class _$GAccountBasicFieldsVars extends GAccountBasicFieldsVars {
   factory _$GAccountBasicFieldsVars(
           [void Function(GAccountBasicFieldsVarsBuilder)? updates]) =>
-      (new GAccountBasicFieldsVarsBuilder()..update(updates))._build();
+      (GAccountBasicFieldsVarsBuilder()..update(updates))._build();
 
   _$GAccountBasicFieldsVars._() : super._();
-
   @override
   GAccountBasicFieldsVars rebuild(
           void Function(GAccountBasicFieldsVarsBuilder) updates) =>
@@ -2236,7 +2196,7 @@ class _$GAccountBasicFieldsVars extends GAccountBasicFieldsVars {
 
   @override
   GAccountBasicFieldsVarsBuilder toBuilder() =>
-      new GAccountBasicFieldsVarsBuilder()..replace(this);
+      GAccountBasicFieldsVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -2264,7 +2224,6 @@ class GAccountBasicFieldsVarsBuilder
 
   @override
   void replace(GAccountBasicFieldsVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GAccountBasicFieldsVars;
   }
 
@@ -2277,7 +2236,7 @@ class GAccountBasicFieldsVarsBuilder
   GAccountBasicFieldsVars build() => _build();
 
   _$GAccountBasicFieldsVars _build() {
-    final _$result = _$v ?? new _$GAccountBasicFieldsVars._();
+    final _$result = _$v ?? _$GAccountBasicFieldsVars._();
     replace(_$result);
     return _$result;
   }
@@ -2291,10 +2250,9 @@ class _$GAccountFieldsVars extends GAccountFieldsVars {
 
   factory _$GAccountFieldsVars(
           [void Function(GAccountFieldsVarsBuilder)? updates]) =>
-      (new GAccountFieldsVarsBuilder()..update(updates))._build();
+      (GAccountFieldsVarsBuilder()..update(updates))._build();
 
   _$GAccountFieldsVars._({this.first, this.after}) : super._();
-
   @override
   GAccountFieldsVars rebuild(
           void Function(GAccountFieldsVarsBuilder) updates) =>
@@ -2302,7 +2260,7 @@ class _$GAccountFieldsVars extends GAccountFieldsVars {
 
   @override
   GAccountFieldsVarsBuilder toBuilder() =>
-      new GAccountFieldsVarsBuilder()..replace(this);
+      GAccountFieldsVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -2339,7 +2297,7 @@ class GAccountFieldsVarsBuilder
   set first(int? first) => _$this._first = first;
 
   _i2.GCursorBuilder? _after;
-  _i2.GCursorBuilder get after => _$this._after ??= new _i2.GCursorBuilder();
+  _i2.GCursorBuilder get after => _$this._after ??= _i2.GCursorBuilder();
   set after(_i2.GCursorBuilder? after) => _$this._after = after;
 
   GAccountFieldsVarsBuilder();
@@ -2356,7 +2314,6 @@ class GAccountFieldsVarsBuilder
 
   @override
   void replace(GAccountFieldsVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GAccountFieldsVars;
   }
 
@@ -2372,14 +2329,17 @@ class GAccountFieldsVarsBuilder
     _$GAccountFieldsVars _$result;
     try {
       _$result = _$v ??
-          new _$GAccountFieldsVars._(first: first, after: _after?.build());
+          _$GAccountFieldsVars._(
+            first: first,
+            after: _after?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'after';
         _after?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GAccountFieldsVars', _$failedField, e.toString());
       }
       rethrow;
@@ -2397,10 +2357,9 @@ class _$GAccountTxsFieldsVars extends GAccountTxsFieldsVars {
 
   factory _$GAccountTxsFieldsVars(
           [void Function(GAccountTxsFieldsVarsBuilder)? updates]) =>
-      (new GAccountTxsFieldsVarsBuilder()..update(updates))._build();
+      (GAccountTxsFieldsVarsBuilder()..update(updates))._build();
 
   _$GAccountTxsFieldsVars._({this.first, this.after}) : super._();
-
   @override
   GAccountTxsFieldsVars rebuild(
           void Function(GAccountTxsFieldsVarsBuilder) updates) =>
@@ -2408,7 +2367,7 @@ class _$GAccountTxsFieldsVars extends GAccountTxsFieldsVars {
 
   @override
   GAccountTxsFieldsVarsBuilder toBuilder() =>
-      new GAccountTxsFieldsVarsBuilder()..replace(this);
+      GAccountTxsFieldsVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -2445,7 +2404,7 @@ class GAccountTxsFieldsVarsBuilder
   set first(int? first) => _$this._first = first;
 
   _i2.GCursorBuilder? _after;
-  _i2.GCursorBuilder get after => _$this._after ??= new _i2.GCursorBuilder();
+  _i2.GCursorBuilder get after => _$this._after ??= _i2.GCursorBuilder();
   set after(_i2.GCursorBuilder? after) => _$this._after = after;
 
   GAccountTxsFieldsVarsBuilder();
@@ -2462,7 +2421,6 @@ class GAccountTxsFieldsVarsBuilder
 
   @override
   void replace(GAccountTxsFieldsVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GAccountTxsFieldsVars;
   }
 
@@ -2478,14 +2436,17 @@ class GAccountTxsFieldsVarsBuilder
     _$GAccountTxsFieldsVars _$result;
     try {
       _$result = _$v ??
-          new _$GAccountTxsFieldsVars._(first: first, after: _after?.build());
+          _$GAccountTxsFieldsVars._(
+            first: first,
+            after: _after?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'after';
         _after?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GAccountTxsFieldsVars', _$failedField, e.toString());
       }
       rethrow;
@@ -2498,10 +2459,9 @@ class GAccountTxsFieldsVarsBuilder
 class _$GTransferFieldsVars extends GTransferFieldsVars {
   factory _$GTransferFieldsVars(
           [void Function(GTransferFieldsVarsBuilder)? updates]) =>
-      (new GTransferFieldsVarsBuilder()..update(updates))._build();
+      (GTransferFieldsVarsBuilder()..update(updates))._build();
 
   _$GTransferFieldsVars._() : super._();
-
   @override
   GTransferFieldsVars rebuild(
           void Function(GTransferFieldsVarsBuilder) updates) =>
@@ -2509,7 +2469,7 @@ class _$GTransferFieldsVars extends GTransferFieldsVars {
 
   @override
   GTransferFieldsVarsBuilder toBuilder() =>
-      new GTransferFieldsVarsBuilder()..replace(this);
+      GTransferFieldsVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -2536,7 +2496,6 @@ class GTransferFieldsVarsBuilder
 
   @override
   void replace(GTransferFieldsVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GTransferFieldsVars;
   }
 
@@ -2549,7 +2508,7 @@ class GTransferFieldsVarsBuilder
   GTransferFieldsVars build() => _build();
 
   _$GTransferFieldsVars _build() {
-    final _$result = _$v ?? new _$GTransferFieldsVars._();
+    final _$result = _$v ?? _$GTransferFieldsVars._();
     replace(_$result);
     return _$result;
   }

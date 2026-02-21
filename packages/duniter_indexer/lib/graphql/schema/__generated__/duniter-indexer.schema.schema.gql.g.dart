@@ -62,12 +62,12 @@ GAccountsOrderBy _$gAccountsOrderByValueOf(String name) {
     case 'PRIMARY_KEY_DESC':
       return _$gAccountsOrderByPRIMARY_KEY_DESC;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<GAccountsOrderBy> _$gAccountsOrderByValues =
-    new BuiltSet<GAccountsOrderBy>(const <GAccountsOrderBy>[
+    BuiltSet<GAccountsOrderBy>(const <GAccountsOrderBy>[
   _$gAccountsOrderByNATURAL,
   _$gAccountsOrderByID_ASC,
   _$gAccountsOrderByID_DESC,
@@ -218,12 +218,12 @@ GBlocksOrderBy _$gBlocksOrderByValueOf(String name) {
     case 'PRIMARY_KEY_DESC':
       return _$gBlocksOrderByPRIMARY_KEY_DESC;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<GBlocksOrderBy> _$gBlocksOrderByValues =
-    new BuiltSet<GBlocksOrderBy>(const <GBlocksOrderBy>[
+    BuiltSet<GBlocksOrderBy>(const <GBlocksOrderBy>[
   _$gBlocksOrderByNATURAL,
   _$gBlocksOrderByID_ASC,
   _$gBlocksOrderByID_DESC,
@@ -358,12 +358,12 @@ GCallsOrderBy _$gCallsOrderByValueOf(String name) {
     case 'PRIMARY_KEY_DESC':
       return _$gCallsOrderByPRIMARY_KEY_DESC;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<GCallsOrderBy> _$gCallsOrderByValues =
-    new BuiltSet<GCallsOrderBy>(const <GCallsOrderBy>[
+    BuiltSet<GCallsOrderBy>(const <GCallsOrderBy>[
   _$gCallsOrderByNATURAL,
   _$gCallsOrderByID_ASC,
   _$gCallsOrderByID_DESC,
@@ -447,12 +447,12 @@ GCertEventsOrderBy _$gCertEventsOrderByValueOf(String name) {
     case 'PRIMARY_KEY_DESC':
       return _$gCertEventsOrderByPRIMARY_KEY_DESC;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<GCertEventsOrderBy> _$gCertEventsOrderByValues =
-    new BuiltSet<GCertEventsOrderBy>(const <GCertEventsOrderBy>[
+    BuiltSet<GCertEventsOrderBy>(const <GCertEventsOrderBy>[
   _$gCertEventsOrderByNATURAL,
   _$gCertEventsOrderByID_ASC,
   _$gCertEventsOrderByID_DESC,
@@ -553,12 +553,12 @@ GCertsOrderBy _$gCertsOrderByValueOf(String name) {
     case 'PRIMARY_KEY_DESC':
       return _$gCertsOrderByPRIMARY_KEY_DESC;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<GCertsOrderBy> _$gCertsOrderByValues =
-    new BuiltSet<GCertsOrderBy>(const <GCertsOrderBy>[
+    BuiltSet<GCertsOrderBy>(const <GCertsOrderBy>[
   _$gCertsOrderByNATURAL,
   _$gCertsOrderByID_ASC,
   _$gCertsOrderByID_DESC,
@@ -638,12 +638,12 @@ GChangeOwnerKeysOrderBy _$gChangeOwnerKeysOrderByValueOf(String name) {
     case 'PRIMARY_KEY_DESC':
       return _$gChangeOwnerKeysOrderByPRIMARY_KEY_DESC;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<GChangeOwnerKeysOrderBy> _$gChangeOwnerKeysOrderByValues =
-    new BuiltSet<GChangeOwnerKeysOrderBy>(const <GChangeOwnerKeysOrderBy>[
+    BuiltSet<GChangeOwnerKeysOrderBy>(const <GChangeOwnerKeysOrderBy>[
   _$gChangeOwnerKeysOrderByNATURAL,
   _$gChangeOwnerKeysOrderByID_ASC,
   _$gChangeOwnerKeysOrderByID_DESC,
@@ -754,12 +754,12 @@ GEventsOrderBy _$gEventsOrderByValueOf(String name) {
     case 'PRIMARY_KEY_DESC':
       return _$gEventsOrderByPRIMARY_KEY_DESC;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<GEventsOrderBy> _$gEventsOrderByValues =
-    new BuiltSet<GEventsOrderBy>(const <GEventsOrderBy>[
+    BuiltSet<GEventsOrderBy>(const <GEventsOrderBy>[
   _$gEventsOrderByNATURAL,
   _$gEventsOrderByID_ASC,
   _$gEventsOrderByID_DESC,
@@ -889,12 +889,12 @@ GExtrinsicsOrderBy _$gExtrinsicsOrderByValueOf(String name) {
     case 'PRIMARY_KEY_DESC':
       return _$gExtrinsicsOrderByPRIMARY_KEY_DESC;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<GExtrinsicsOrderBy> _$gExtrinsicsOrderByValues =
-    new BuiltSet<GExtrinsicsOrderBy>(const <GExtrinsicsOrderBy>[
+    BuiltSet<GExtrinsicsOrderBy>(const <GExtrinsicsOrderBy>[
   _$gExtrinsicsOrderByNATURAL,
   _$gExtrinsicsOrderByID_ASC,
   _$gExtrinsicsOrderByID_DESC,
@@ -1034,12 +1034,12 @@ GIdentitiesOrderBy _$gIdentitiesOrderByValueOf(String name) {
     case 'PRIMARY_KEY_DESC':
       return _$gIdentitiesOrderByPRIMARY_KEY_DESC;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<GIdentitiesOrderBy> _$gIdentitiesOrderByValues =
-    new BuiltSet<GIdentitiesOrderBy>(const <GIdentitiesOrderBy>[
+    BuiltSet<GIdentitiesOrderBy>(const <GIdentitiesOrderBy>[
   _$gIdentitiesOrderByNATURAL,
   _$gIdentitiesOrderByID_ASC,
   _$gIdentitiesOrderByID_DESC,
@@ -1117,12 +1117,12 @@ GItemsCountersOrderBy _$gItemsCountersOrderByValueOf(String name) {
     case 'PRIMARY_KEY_DESC':
       return _$gItemsCountersOrderByPRIMARY_KEY_DESC;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<GItemsCountersOrderBy> _$gItemsCountersOrderByValues =
-    new BuiltSet<GItemsCountersOrderBy>(const <GItemsCountersOrderBy>[
+    BuiltSet<GItemsCountersOrderBy>(const <GItemsCountersOrderBy>[
   _$gItemsCountersOrderByNATURAL,
   _$gItemsCountersOrderByID_ASC,
   _$gItemsCountersOrderByID_DESC,
@@ -1192,12 +1192,12 @@ GMembershipEventsOrderBy _$gMembershipEventsOrderByValueOf(String name) {
     case 'PRIMARY_KEY_DESC':
       return _$gMembershipEventsOrderByPRIMARY_KEY_DESC;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<GMembershipEventsOrderBy> _$gMembershipEventsOrderByValues =
-    new BuiltSet<GMembershipEventsOrderBy>(const <GMembershipEventsOrderBy>[
+    BuiltSet<GMembershipEventsOrderBy>(const <GMembershipEventsOrderBy>[
   _$gMembershipEventsOrderByNATURAL,
   _$gMembershipEventsOrderByID_ASC,
   _$gMembershipEventsOrderByID_DESC,
@@ -1253,12 +1253,12 @@ GMigrationsOrderBy _$gMigrationsOrderByValueOf(String name) {
     case 'PRIMARY_KEY_DESC':
       return _$gMigrationsOrderByPRIMARY_KEY_DESC;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<GMigrationsOrderBy> _$gMigrationsOrderByValues =
-    new BuiltSet<GMigrationsOrderBy>(const <GMigrationsOrderBy>[
+    BuiltSet<GMigrationsOrderBy>(const <GMigrationsOrderBy>[
   _$gMigrationsOrderByNATURAL,
   _$gMigrationsOrderByID_ASC,
   _$gMigrationsOrderByID_DESC,
@@ -1334,13 +1334,13 @@ GPopulationHistoriesOrderBy _$gPopulationHistoriesOrderByValueOf(String name) {
     case 'PRIMARY_KEY_DESC':
       return _$gPopulationHistoriesOrderByPRIMARY_KEY_DESC;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<GPopulationHistoriesOrderBy>
-    _$gPopulationHistoriesOrderByValues = new BuiltSet<
-        GPopulationHistoriesOrderBy>(const <GPopulationHistoriesOrderBy>[
+    _$gPopulationHistoriesOrderByValues =
+    BuiltSet<GPopulationHistoriesOrderBy>(const <GPopulationHistoriesOrderBy>[
   _$gPopulationHistoriesOrderByNATURAL,
   _$gPopulationHistoriesOrderByID_ASC,
   _$gPopulationHistoriesOrderByID_DESC,
@@ -1404,12 +1404,12 @@ GSmithCertsOrderBy _$gSmithCertsOrderByValueOf(String name) {
     case 'PRIMARY_KEY_DESC':
       return _$gSmithCertsOrderByPRIMARY_KEY_DESC;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<GSmithCertsOrderBy> _$gSmithCertsOrderByValues =
-    new BuiltSet<GSmithCertsOrderBy>(const <GSmithCertsOrderBy>[
+    BuiltSet<GSmithCertsOrderBy>(const <GSmithCertsOrderBy>[
   _$gSmithCertsOrderByNATURAL,
   _$gSmithCertsOrderByID_ASC,
   _$gSmithCertsOrderByID_DESC,
@@ -1479,12 +1479,12 @@ GSmithEventsOrderBy _$gSmithEventsOrderByValueOf(String name) {
     case 'PRIMARY_KEY_DESC':
       return _$gSmithEventsOrderByPRIMARY_KEY_DESC;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<GSmithEventsOrderBy> _$gSmithEventsOrderByValues =
-    new BuiltSet<GSmithEventsOrderBy>(const <GSmithEventsOrderBy>[
+    BuiltSet<GSmithEventsOrderBy>(const <GSmithEventsOrderBy>[
   _$gSmithEventsOrderByNATURAL,
   _$gSmithEventsOrderByID_ASC,
   _$gSmithEventsOrderByID_DESC,
@@ -1571,12 +1571,12 @@ GSmithsOrderBy _$gSmithsOrderByValueOf(String name) {
     case 'PRIMARY_KEY_DESC':
       return _$gSmithsOrderByPRIMARY_KEY_DESC;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<GSmithsOrderBy> _$gSmithsOrderByValues =
-    new BuiltSet<GSmithsOrderBy>(const <GSmithsOrderBy>[
+    BuiltSet<GSmithsOrderBy>(const <GSmithsOrderBy>[
   _$gSmithsOrderByNATURAL,
   _$gSmithsOrderByID_ASC,
   _$gSmithsOrderByID_DESC,
@@ -1676,12 +1676,12 @@ GTransfersOrderBy _$gTransfersOrderByValueOf(String name) {
     case 'PRIMARY_KEY_DESC':
       return _$gTransfersOrderByPRIMARY_KEY_DESC;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<GTransfersOrderBy> _$gTransfersOrderByValues =
-    new BuiltSet<GTransfersOrderBy>(const <GTransfersOrderBy>[
+    BuiltSet<GTransfersOrderBy>(const <GTransfersOrderBy>[
   _$gTransfersOrderByNATURAL,
   _$gTransfersOrderByID_ASC,
   _$gTransfersOrderByID_DESC,
@@ -1731,12 +1731,12 @@ GTransferWithUdOrderBy _$gTransferWithUdOrderByValueOf(String name) {
     case 'AMOUNT_DESC':
       return _$gTransferWithUdOrderByAMOUNT_DESC;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<GTransferWithUdOrderBy> _$gTransferWithUdOrderByValues =
-    new BuiltSet<GTransferWithUdOrderBy>(const <GTransferWithUdOrderBy>[
+    BuiltSet<GTransferWithUdOrderBy>(const <GTransferWithUdOrderBy>[
   _$gTransferWithUdOrderByBLOCK_NUMBER_ASC,
   _$gTransferWithUdOrderByBLOCK_NUMBER_DESC,
   _$gTransferWithUdOrderByTIMESTAMP_ASC,
@@ -1825,12 +1825,12 @@ GTxCommentsOrderBy _$gTxCommentsOrderByValueOf(String name) {
     case 'PRIMARY_KEY_DESC':
       return _$gTxCommentsOrderByPRIMARY_KEY_DESC;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<GTxCommentsOrderBy> _$gTxCommentsOrderByValues =
-    new BuiltSet<GTxCommentsOrderBy>(const <GTxCommentsOrderBy>[
+    BuiltSet<GTxCommentsOrderBy>(const <GTxCommentsOrderBy>[
   _$gTxCommentsOrderByNATURAL,
   _$gTxCommentsOrderByID_ASC,
   _$gTxCommentsOrderByID_DESC,
@@ -1908,12 +1908,12 @@ GUdHistoriesOrderBy _$gUdHistoriesOrderByValueOf(String name) {
     case 'PRIMARY_KEY_DESC':
       return _$gUdHistoriesOrderByPRIMARY_KEY_DESC;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<GUdHistoriesOrderBy> _$gUdHistoriesOrderByValues =
-    new BuiltSet<GUdHistoriesOrderBy>(const <GUdHistoriesOrderBy>[
+    BuiltSet<GUdHistoriesOrderBy>(const <GUdHistoriesOrderBy>[
   _$gUdHistoriesOrderByNATURAL,
   _$gUdHistoriesOrderByID_ASC,
   _$gUdHistoriesOrderByID_DESC,
@@ -1957,12 +1957,12 @@ GUdHistoryOrderBy _$gUdHistoryOrderByValueOf(String name) {
     case 'AMOUNT_DESC':
       return _$gUdHistoryOrderByAMOUNT_DESC;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<GUdHistoryOrderBy> _$gUdHistoryOrderByValues =
-    new BuiltSet<GUdHistoryOrderBy>(const <GUdHistoryOrderBy>[
+    BuiltSet<GUdHistoryOrderBy>(const <GUdHistoryOrderBy>[
   _$gUdHistoryOrderByBLOCK_NUMBER_ASC,
   _$gUdHistoryOrderByBLOCK_NUMBER_DESC,
   _$gUdHistoryOrderByTIMESTAMP_ASC,
@@ -2051,12 +2051,12 @@ GUdReevalsOrderBy _$gUdReevalsOrderByValueOf(String name) {
     case 'PRIMARY_KEY_DESC':
       return _$gUdReevalsOrderByPRIMARY_KEY_DESC;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<GUdReevalsOrderBy> _$gUdReevalsOrderByValues =
-    new BuiltSet<GUdReevalsOrderBy>(const <GUdReevalsOrderBy>[
+    BuiltSet<GUdReevalsOrderBy>(const <GUdReevalsOrderBy>[
   _$gUdReevalsOrderByNATURAL,
   _$gUdReevalsOrderByID_ASC,
   _$gUdReevalsOrderByID_DESC,
@@ -2160,12 +2160,12 @@ GUniversalDividendsOrderBy _$gUniversalDividendsOrderByValueOf(String name) {
     case 'PRIMARY_KEY_DESC':
       return _$gUniversalDividendsOrderByPRIMARY_KEY_DESC;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<GUniversalDividendsOrderBy> _$gUniversalDividendsOrderByValues =
-    new BuiltSet<GUniversalDividendsOrderBy>(const <GUniversalDividendsOrderBy>[
+    BuiltSet<GUniversalDividendsOrderBy>(const <GUniversalDividendsOrderBy>[
   _$gUniversalDividendsOrderByNATURAL,
   _$gUniversalDividendsOrderByID_ASC,
   _$gUniversalDividendsOrderByID_DESC,
@@ -2219,12 +2219,12 @@ GValidatorsOrderBy _$gValidatorsOrderByValueOf(String name) {
     case 'PRIMARY_KEY_DESC':
       return _$gValidatorsOrderByPRIMARY_KEY_DESC;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<GValidatorsOrderBy> _$gValidatorsOrderByValues =
-    new BuiltSet<GValidatorsOrderBy>(const <GValidatorsOrderBy>[
+    BuiltSet<GValidatorsOrderBy>(const <GValidatorsOrderBy>[
   _$gValidatorsOrderByNATURAL,
   _$gValidatorsOrderByID_ASC,
   _$gValidatorsOrderByID_DESC,
@@ -2235,238 +2235,235 @@ final BuiltSet<GValidatorsOrderBy> _$gValidatorsOrderByValues =
 ]);
 
 Serializer<GAccountCondition> _$gAccountConditionSerializer =
-    new _$GAccountConditionSerializer();
+    _$GAccountConditionSerializer();
 Serializer<GAccountFilter> _$gAccountFilterSerializer =
-    new _$GAccountFilterSerializer();
+    _$GAccountFilterSerializer();
 Serializer<GAccountsOrderBy> _$gAccountsOrderBySerializer =
-    new _$GAccountsOrderBySerializer();
+    _$GAccountsOrderBySerializer();
 Serializer<GAccountToManyChangeOwnerKeyFilter>
     _$gAccountToManyChangeOwnerKeyFilterSerializer =
-    new _$GAccountToManyChangeOwnerKeyFilterSerializer();
+    _$GAccountToManyChangeOwnerKeyFilterSerializer();
 Serializer<GAccountToManyIdentityFilter>
     _$gAccountToManyIdentityFilterSerializer =
-    new _$GAccountToManyIdentityFilterSerializer();
+    _$GAccountToManyIdentityFilterSerializer();
 Serializer<GAccountToManyTransferFilter>
     _$gAccountToManyTransferFilterSerializer =
-    new _$GAccountToManyTransferFilterSerializer();
+    _$GAccountToManyTransferFilterSerializer();
 Serializer<GAccountToManyTxCommentFilter>
     _$gAccountToManyTxCommentFilterSerializer =
-    new _$GAccountToManyTxCommentFilterSerializer();
+    _$GAccountToManyTxCommentFilterSerializer();
 Serializer<GBigFloatFilter> _$gBigFloatFilterSerializer =
-    new _$GBigFloatFilterSerializer();
+    _$GBigFloatFilterSerializer();
 Serializer<GBigIntFilter> _$gBigIntFilterSerializer =
-    new _$GBigIntFilterSerializer();
+    _$GBigIntFilterSerializer();
 Serializer<GBlockCondition> _$gBlockConditionSerializer =
-    new _$GBlockConditionSerializer();
-Serializer<GBlockFilter> _$gBlockFilterSerializer =
-    new _$GBlockFilterSerializer();
+    _$GBlockConditionSerializer();
+Serializer<GBlockFilter> _$gBlockFilterSerializer = _$GBlockFilterSerializer();
 Serializer<GBlocksOrderBy> _$gBlocksOrderBySerializer =
-    new _$GBlocksOrderBySerializer();
+    _$GBlocksOrderBySerializer();
 Serializer<GBlockToManyCallFilter> _$gBlockToManyCallFilterSerializer =
-    new _$GBlockToManyCallFilterSerializer();
+    _$GBlockToManyCallFilterSerializer();
 Serializer<GBlockToManyEventFilter> _$gBlockToManyEventFilterSerializer =
-    new _$GBlockToManyEventFilterSerializer();
+    _$GBlockToManyEventFilterSerializer();
 Serializer<GBlockToManyExtrinsicFilter>
     _$gBlockToManyExtrinsicFilterSerializer =
-    new _$GBlockToManyExtrinsicFilterSerializer();
+    _$GBlockToManyExtrinsicFilterSerializer();
 Serializer<GBooleanFilter> _$gBooleanFilterSerializer =
-    new _$GBooleanFilterSerializer();
+    _$GBooleanFilterSerializer();
 Serializer<GCallCondition> _$gCallConditionSerializer =
-    new _$GCallConditionSerializer();
-Serializer<GCallFilter> _$gCallFilterSerializer = new _$GCallFilterSerializer();
+    _$GCallConditionSerializer();
+Serializer<GCallFilter> _$gCallFilterSerializer = _$GCallFilterSerializer();
 Serializer<GCallsOrderBy> _$gCallsOrderBySerializer =
-    new _$GCallsOrderBySerializer();
+    _$GCallsOrderBySerializer();
 Serializer<GCallToManyCallFilter> _$gCallToManyCallFilterSerializer =
-    new _$GCallToManyCallFilterSerializer();
+    _$GCallToManyCallFilterSerializer();
 Serializer<GCallToManyEventFilter> _$gCallToManyEventFilterSerializer =
-    new _$GCallToManyEventFilterSerializer();
+    _$GCallToManyEventFilterSerializer();
 Serializer<GCallToManyExtrinsicFilter> _$gCallToManyExtrinsicFilterSerializer =
-    new _$GCallToManyExtrinsicFilterSerializer();
+    _$GCallToManyExtrinsicFilterSerializer();
 Serializer<GCertCondition> _$gCertConditionSerializer =
-    new _$GCertConditionSerializer();
+    _$GCertConditionSerializer();
 Serializer<GCertEventCondition> _$gCertEventConditionSerializer =
-    new _$GCertEventConditionSerializer();
+    _$GCertEventConditionSerializer();
 Serializer<GCertEventFilter> _$gCertEventFilterSerializer =
-    new _$GCertEventFilterSerializer();
+    _$GCertEventFilterSerializer();
 Serializer<GCertEventsOrderBy> _$gCertEventsOrderBySerializer =
-    new _$GCertEventsOrderBySerializer();
-Serializer<GCertFilter> _$gCertFilterSerializer = new _$GCertFilterSerializer();
+    _$GCertEventsOrderBySerializer();
+Serializer<GCertFilter> _$gCertFilterSerializer = _$GCertFilterSerializer();
 Serializer<GCertsOrderBy> _$gCertsOrderBySerializer =
-    new _$GCertsOrderBySerializer();
+    _$GCertsOrderBySerializer();
 Serializer<GCertToManyCertEventFilter> _$gCertToManyCertEventFilterSerializer =
-    new _$GCertToManyCertEventFilterSerializer();
+    _$GCertToManyCertEventFilterSerializer();
 Serializer<GChangeOwnerKeyCondition> _$gChangeOwnerKeyConditionSerializer =
-    new _$GChangeOwnerKeyConditionSerializer();
+    _$GChangeOwnerKeyConditionSerializer();
 Serializer<GChangeOwnerKeyFilter> _$gChangeOwnerKeyFilterSerializer =
-    new _$GChangeOwnerKeyFilterSerializer();
+    _$GChangeOwnerKeyFilterSerializer();
 Serializer<GChangeOwnerKeysOrderBy> _$gChangeOwnerKeysOrderBySerializer =
-    new _$GChangeOwnerKeysOrderBySerializer();
+    _$GChangeOwnerKeysOrderBySerializer();
 Serializer<GDatetimeFilter> _$gDatetimeFilterSerializer =
-    new _$GDatetimeFilterSerializer();
+    _$GDatetimeFilterSerializer();
 Serializer<GEventCondition> _$gEventConditionSerializer =
-    new _$GEventConditionSerializer();
-Serializer<GEventFilter> _$gEventFilterSerializer =
-    new _$GEventFilterSerializer();
+    _$GEventConditionSerializer();
+Serializer<GEventFilter> _$gEventFilterSerializer = _$GEventFilterSerializer();
 Serializer<GEventsOrderBy> _$gEventsOrderBySerializer =
-    new _$GEventsOrderBySerializer();
+    _$GEventsOrderBySerializer();
 Serializer<GEventToManyCertEventFilter>
     _$gEventToManyCertEventFilterSerializer =
-    new _$GEventToManyCertEventFilterSerializer();
+    _$GEventToManyCertEventFilterSerializer();
 Serializer<GEventToManyCertFilter> _$gEventToManyCertFilterSerializer =
-    new _$GEventToManyCertFilterSerializer();
+    _$GEventToManyCertFilterSerializer();
 Serializer<GEventToManyIdentityFilter> _$gEventToManyIdentityFilterSerializer =
-    new _$GEventToManyIdentityFilterSerializer();
+    _$GEventToManyIdentityFilterSerializer();
 Serializer<GEventToManyMembershipEventFilter>
     _$gEventToManyMembershipEventFilterSerializer =
-    new _$GEventToManyMembershipEventFilterSerializer();
+    _$GEventToManyMembershipEventFilterSerializer();
 Serializer<GEventToManySmithEventFilter>
     _$gEventToManySmithEventFilterSerializer =
-    new _$GEventToManySmithEventFilterSerializer();
+    _$GEventToManySmithEventFilterSerializer();
 Serializer<GEventToManyTransferFilter> _$gEventToManyTransferFilterSerializer =
-    new _$GEventToManyTransferFilterSerializer();
+    _$GEventToManyTransferFilterSerializer();
 Serializer<GEventToManyTxCommentFilter>
     _$gEventToManyTxCommentFilterSerializer =
-    new _$GEventToManyTxCommentFilterSerializer();
+    _$GEventToManyTxCommentFilterSerializer();
 Serializer<GEventToManyUdReevalFilter> _$gEventToManyUdReevalFilterSerializer =
-    new _$GEventToManyUdReevalFilterSerializer();
+    _$GEventToManyUdReevalFilterSerializer();
 Serializer<GEventToManyUniversalDividendFilter>
     _$gEventToManyUniversalDividendFilterSerializer =
-    new _$GEventToManyUniversalDividendFilterSerializer();
+    _$GEventToManyUniversalDividendFilterSerializer();
 Serializer<GExtrinsicCondition> _$gExtrinsicConditionSerializer =
-    new _$GExtrinsicConditionSerializer();
+    _$GExtrinsicConditionSerializer();
 Serializer<GExtrinsicFilter> _$gExtrinsicFilterSerializer =
-    new _$GExtrinsicFilterSerializer();
+    _$GExtrinsicFilterSerializer();
 Serializer<GExtrinsicsOrderBy> _$gExtrinsicsOrderBySerializer =
-    new _$GExtrinsicsOrderBySerializer();
+    _$GExtrinsicsOrderBySerializer();
 Serializer<GExtrinsicToManyCallFilter> _$gExtrinsicToManyCallFilterSerializer =
-    new _$GExtrinsicToManyCallFilterSerializer();
+    _$GExtrinsicToManyCallFilterSerializer();
 Serializer<GExtrinsicToManyEventFilter>
     _$gExtrinsicToManyEventFilterSerializer =
-    new _$GExtrinsicToManyEventFilterSerializer();
+    _$GExtrinsicToManyEventFilterSerializer();
 Serializer<GIdentitiesOrderBy> _$gIdentitiesOrderBySerializer =
-    new _$GIdentitiesOrderBySerializer();
+    _$GIdentitiesOrderBySerializer();
 Serializer<GIdentityCondition> _$gIdentityConditionSerializer =
-    new _$GIdentityConditionSerializer();
+    _$GIdentityConditionSerializer();
 Serializer<GIdentityFilter> _$gIdentityFilterSerializer =
-    new _$GIdentityFilterSerializer();
+    _$GIdentityFilterSerializer();
 Serializer<GIdentityToManyAccountFilter>
     _$gIdentityToManyAccountFilterSerializer =
-    new _$GIdentityToManyAccountFilterSerializer();
+    _$GIdentityToManyAccountFilterSerializer();
 Serializer<GIdentityToManyCertFilter> _$gIdentityToManyCertFilterSerializer =
-    new _$GIdentityToManyCertFilterSerializer();
+    _$GIdentityToManyCertFilterSerializer();
 Serializer<GIdentityToManyChangeOwnerKeyFilter>
     _$gIdentityToManyChangeOwnerKeyFilterSerializer =
-    new _$GIdentityToManyChangeOwnerKeyFilterSerializer();
+    _$GIdentityToManyChangeOwnerKeyFilterSerializer();
 Serializer<GIdentityToManyMembershipEventFilter>
     _$gIdentityToManyMembershipEventFilterSerializer =
-    new _$GIdentityToManyMembershipEventFilterSerializer();
+    _$GIdentityToManyMembershipEventFilterSerializer();
 Serializer<GIdentityToManyUdHistoryFilter>
     _$gIdentityToManyUdHistoryFilterSerializer =
-    new _$GIdentityToManyUdHistoryFilterSerializer();
-Serializer<GIntFilter> _$gIntFilterSerializer = new _$GIntFilterSerializer();
+    _$GIdentityToManyUdHistoryFilterSerializer();
+Serializer<GIntFilter> _$gIntFilterSerializer = _$GIntFilterSerializer();
 Serializer<GIntListFilter> _$gIntListFilterSerializer =
-    new _$GIntListFilterSerializer();
+    _$GIntListFilterSerializer();
 Serializer<GItemsCounterCondition> _$gItemsCounterConditionSerializer =
-    new _$GItemsCounterConditionSerializer();
+    _$GItemsCounterConditionSerializer();
 Serializer<GItemsCounterFilter> _$gItemsCounterFilterSerializer =
-    new _$GItemsCounterFilterSerializer();
+    _$GItemsCounterFilterSerializer();
 Serializer<GItemsCountersOrderBy> _$gItemsCountersOrderBySerializer =
-    new _$GItemsCountersOrderBySerializer();
-Serializer<GJSONFilter> _$gJSONFilterSerializer = new _$GJSONFilterSerializer();
+    _$GItemsCountersOrderBySerializer();
+Serializer<GJSONFilter> _$gJSONFilterSerializer = _$GJSONFilterSerializer();
 Serializer<GMembershipEventCondition> _$gMembershipEventConditionSerializer =
-    new _$GMembershipEventConditionSerializer();
+    _$GMembershipEventConditionSerializer();
 Serializer<GMembershipEventFilter> _$gMembershipEventFilterSerializer =
-    new _$GMembershipEventFilterSerializer();
+    _$GMembershipEventFilterSerializer();
 Serializer<GMembershipEventsOrderBy> _$gMembershipEventsOrderBySerializer =
-    new _$GMembershipEventsOrderBySerializer();
+    _$GMembershipEventsOrderBySerializer();
 Serializer<GMigrationCondition> _$gMigrationConditionSerializer =
-    new _$GMigrationConditionSerializer();
+    _$GMigrationConditionSerializer();
 Serializer<GMigrationFilter> _$gMigrationFilterSerializer =
-    new _$GMigrationFilterSerializer();
+    _$GMigrationFilterSerializer();
 Serializer<GMigrationsOrderBy> _$gMigrationsOrderBySerializer =
-    new _$GMigrationsOrderBySerializer();
+    _$GMigrationsOrderBySerializer();
 Serializer<GPopulationHistoriesOrderBy>
     _$gPopulationHistoriesOrderBySerializer =
-    new _$GPopulationHistoriesOrderBySerializer();
+    _$GPopulationHistoriesOrderBySerializer();
 Serializer<GPopulationHistoryCondition>
     _$gPopulationHistoryConditionSerializer =
-    new _$GPopulationHistoryConditionSerializer();
+    _$GPopulationHistoryConditionSerializer();
 Serializer<GPopulationHistoryFilter> _$gPopulationHistoryFilterSerializer =
-    new _$GPopulationHistoryFilterSerializer();
+    _$GPopulationHistoryFilterSerializer();
 Serializer<GSmithCertCondition> _$gSmithCertConditionSerializer =
-    new _$GSmithCertConditionSerializer();
+    _$GSmithCertConditionSerializer();
 Serializer<GSmithCertFilter> _$gSmithCertFilterSerializer =
-    new _$GSmithCertFilterSerializer();
+    _$GSmithCertFilterSerializer();
 Serializer<GSmithCertsOrderBy> _$gSmithCertsOrderBySerializer =
-    new _$GSmithCertsOrderBySerializer();
+    _$GSmithCertsOrderBySerializer();
 Serializer<GSmithCondition> _$gSmithConditionSerializer =
-    new _$GSmithConditionSerializer();
+    _$GSmithConditionSerializer();
 Serializer<GSmithEventCondition> _$gSmithEventConditionSerializer =
-    new _$GSmithEventConditionSerializer();
+    _$GSmithEventConditionSerializer();
 Serializer<GSmithEventFilter> _$gSmithEventFilterSerializer =
-    new _$GSmithEventFilterSerializer();
+    _$GSmithEventFilterSerializer();
 Serializer<GSmithEventsOrderBy> _$gSmithEventsOrderBySerializer =
-    new _$GSmithEventsOrderBySerializer();
-Serializer<GSmithFilter> _$gSmithFilterSerializer =
-    new _$GSmithFilterSerializer();
+    _$GSmithEventsOrderBySerializer();
+Serializer<GSmithFilter> _$gSmithFilterSerializer = _$GSmithFilterSerializer();
 Serializer<GSmithsOrderBy> _$gSmithsOrderBySerializer =
-    new _$GSmithsOrderBySerializer();
+    _$GSmithsOrderBySerializer();
 Serializer<GSmithToManySmithCertFilter>
     _$gSmithToManySmithCertFilterSerializer =
-    new _$GSmithToManySmithCertFilterSerializer();
+    _$GSmithToManySmithCertFilterSerializer();
 Serializer<GSmithToManySmithEventFilter>
     _$gSmithToManySmithEventFilterSerializer =
-    new _$GSmithToManySmithEventFilterSerializer();
+    _$GSmithToManySmithEventFilterSerializer();
 Serializer<GStringFilter> _$gStringFilterSerializer =
-    new _$GStringFilterSerializer();
+    _$GStringFilterSerializer();
 Serializer<GStringListFilter> _$gStringListFilterSerializer =
-    new _$GStringListFilterSerializer();
+    _$GStringListFilterSerializer();
 Serializer<GTransferCondition> _$gTransferConditionSerializer =
-    new _$GTransferConditionSerializer();
+    _$GTransferConditionSerializer();
 Serializer<GTransferFilter> _$gTransferFilterSerializer =
-    new _$GTransferFilterSerializer();
+    _$GTransferFilterSerializer();
 Serializer<GTransfersOrderBy> _$gTransfersOrderBySerializer =
-    new _$GTransfersOrderBySerializer();
+    _$GTransfersOrderBySerializer();
 Serializer<GTransferWithUdFilter> _$gTransferWithUdFilterSerializer =
-    new _$GTransferWithUdFilterSerializer();
+    _$GTransferWithUdFilterSerializer();
 Serializer<GTransferWithUdOrderBy> _$gTransferWithUdOrderBySerializer =
-    new _$GTransferWithUdOrderBySerializer();
+    _$GTransferWithUdOrderBySerializer();
 Serializer<GTxCommentCondition> _$gTxCommentConditionSerializer =
-    new _$GTxCommentConditionSerializer();
+    _$GTxCommentConditionSerializer();
 Serializer<GTxCommentFilter> _$gTxCommentFilterSerializer =
-    new _$GTxCommentFilterSerializer();
+    _$GTxCommentFilterSerializer();
 Serializer<GTxCommentsOrderBy> _$gTxCommentsOrderBySerializer =
-    new _$GTxCommentsOrderBySerializer();
+    _$GTxCommentsOrderBySerializer();
 Serializer<GTxCommentToManyTransferFilter>
     _$gTxCommentToManyTransferFilterSerializer =
-    new _$GTxCommentToManyTransferFilterSerializer();
+    _$GTxCommentToManyTransferFilterSerializer();
 Serializer<GUdHistoriesOrderBy> _$gUdHistoriesOrderBySerializer =
-    new _$GUdHistoriesOrderBySerializer();
+    _$GUdHistoriesOrderBySerializer();
 Serializer<GUdHistoryCondition> _$gUdHistoryConditionSerializer =
-    new _$GUdHistoryConditionSerializer();
+    _$GUdHistoryConditionSerializer();
 Serializer<GUdHistoryFilter> _$gUdHistoryFilterSerializer =
-    new _$GUdHistoryFilterSerializer();
+    _$GUdHistoryFilterSerializer();
 Serializer<GUdHistoryOrderBy> _$gUdHistoryOrderBySerializer =
-    new _$GUdHistoryOrderBySerializer();
+    _$GUdHistoryOrderBySerializer();
 Serializer<GUdReevalCondition> _$gUdReevalConditionSerializer =
-    new _$GUdReevalConditionSerializer();
+    _$GUdReevalConditionSerializer();
 Serializer<GUdReevalFilter> _$gUdReevalFilterSerializer =
-    new _$GUdReevalFilterSerializer();
+    _$GUdReevalFilterSerializer();
 Serializer<GUdReevalsOrderBy> _$gUdReevalsOrderBySerializer =
-    new _$GUdReevalsOrderBySerializer();
+    _$GUdReevalsOrderBySerializer();
 Serializer<GUniversalDividendCondition>
     _$gUniversalDividendConditionSerializer =
-    new _$GUniversalDividendConditionSerializer();
+    _$GUniversalDividendConditionSerializer();
 Serializer<GUniversalDividendFilter> _$gUniversalDividendFilterSerializer =
-    new _$GUniversalDividendFilterSerializer();
+    _$GUniversalDividendFilterSerializer();
 Serializer<GUniversalDividendsOrderBy> _$gUniversalDividendsOrderBySerializer =
-    new _$GUniversalDividendsOrderBySerializer();
+    _$GUniversalDividendsOrderBySerializer();
 Serializer<GValidatorCondition> _$gValidatorConditionSerializer =
-    new _$GValidatorConditionSerializer();
+    _$GValidatorConditionSerializer();
 Serializer<GValidatorFilter> _$gValidatorFilterSerializer =
-    new _$GValidatorFilterSerializer();
+    _$GValidatorFilterSerializer();
 Serializer<GValidatorsOrderBy> _$gValidatorsOrderBySerializer =
-    new _$GValidatorsOrderBySerializer();
+    _$GValidatorsOrderBySerializer();
 
 class _$GAccountConditionSerializer
     implements StructuredSerializer<GAccountCondition> {
@@ -2521,7 +2518,7 @@ class _$GAccountConditionSerializer
   GAccountCondition deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountConditionBuilder();
+    final result = GAccountConditionBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -2752,7 +2749,7 @@ class _$GAccountFilterSerializer
   GAccountFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountFilterBuilder();
+    final result = GAccountFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -2948,7 +2945,7 @@ class _$GAccountToManyChangeOwnerKeyFilterSerializer
   GAccountToManyChangeOwnerKeyFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountToManyChangeOwnerKeyFilterBuilder();
+    final result = GAccountToManyChangeOwnerKeyFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -3022,7 +3019,7 @@ class _$GAccountToManyIdentityFilterSerializer
   GAccountToManyIdentityFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountToManyIdentityFilterBuilder();
+    final result = GAccountToManyIdentityFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -3096,7 +3093,7 @@ class _$GAccountToManyTransferFilterSerializer
   GAccountToManyTransferFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountToManyTransferFilterBuilder();
+    final result = GAccountToManyTransferFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -3170,7 +3167,7 @@ class _$GAccountToManyTxCommentFilterSerializer
   GAccountToManyTxCommentFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GAccountToManyTxCommentFilterBuilder();
+    final result = GAccountToManyTxCommentFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -3298,7 +3295,7 @@ class _$GBigFloatFilterSerializer
   GBigFloatFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GBigFloatFilterBuilder();
+    final result = GBigFloatFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -3458,7 +3455,7 @@ class _$GBigIntFilterSerializer implements StructuredSerializer<GBigIntFilter> {
   GBigIntFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GBigIntFilterBuilder();
+    final result = GBigIntFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -3639,7 +3636,7 @@ class _$GBlockConditionSerializer
   GBlockCondition deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GBlockConditionBuilder();
+    final result = GBlockConditionBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -3867,7 +3864,7 @@ class _$GBlockFilterSerializer implements StructuredSerializer<GBlockFilter> {
   GBlockFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GBlockFilterBuilder();
+    final result = GBlockFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -4028,7 +4025,7 @@ class _$GBlockToManyCallFilterSerializer
   GBlockToManyCallFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GBlockToManyCallFilterBuilder();
+    final result = GBlockToManyCallFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -4099,7 +4096,7 @@ class _$GBlockToManyEventFilterSerializer
   GBlockToManyEventFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GBlockToManyEventFilterBuilder();
+    final result = GBlockToManyEventFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -4170,7 +4167,7 @@ class _$GBlockToManyExtrinsicFilterSerializer
   GBlockToManyExtrinsicFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GBlockToManyExtrinsicFilterBuilder();
+    final result = GBlockToManyExtrinsicFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -4298,7 +4295,7 @@ class _$GBooleanFilterSerializer
   GBooleanFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GBooleanFilterBuilder();
+    final result = GBooleanFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -4459,7 +4456,7 @@ class _$GCallConditionSerializer
   GCallCondition deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GCallConditionBuilder();
+    final result = GCallConditionBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -4723,7 +4720,7 @@ class _$GCallFilterSerializer implements StructuredSerializer<GCallFilter> {
   @override
   GCallFilter deserialize(Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GCallFilterBuilder();
+    final result = GCallFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -4914,7 +4911,7 @@ class _$GCallToManyCallFilterSerializer
   GCallToManyCallFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GCallToManyCallFilterBuilder();
+    final result = GCallToManyCallFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -4985,7 +4982,7 @@ class _$GCallToManyEventFilterSerializer
   GCallToManyEventFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GCallToManyEventFilterBuilder();
+    final result = GCallToManyEventFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -5056,7 +5053,7 @@ class _$GCallToManyExtrinsicFilterSerializer
   GCallToManyExtrinsicFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GCallToManyExtrinsicFilterBuilder();
+    final result = GCallToManyExtrinsicFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -5165,7 +5162,7 @@ class _$GCertConditionSerializer
   GCertCondition deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GCertConditionBuilder();
+    final result = GCertConditionBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -5273,7 +5270,7 @@ class _$GCertEventConditionSerializer
   GCertEventCondition deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GCertEventConditionBuilder();
+    final result = GCertEventConditionBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -5413,7 +5410,7 @@ class _$GCertEventFilterSerializer
   GCertEventFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GCertEventFilterBuilder();
+    final result = GCertEventFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -5672,7 +5669,7 @@ class _$GCertFilterSerializer implements StructuredSerializer<GCertFilter> {
   @override
   GCertFilter deserialize(Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GCertFilterBuilder();
+    final result = GCertFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -5844,7 +5841,7 @@ class _$GCertToManyCertEventFilterSerializer
   GCertToManyCertEventFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GCertToManyCertEventFilterBuilder();
+    final result = GCertToManyCertEventFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -5931,7 +5928,7 @@ class _$GChangeOwnerKeyConditionSerializer
   GChangeOwnerKeyCondition deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GChangeOwnerKeyConditionBuilder();
+    final result = GChangeOwnerKeyConditionBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -6089,7 +6086,7 @@ class _$GChangeOwnerKeyFilterSerializer
   GChangeOwnerKeyFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GChangeOwnerKeyFilterBuilder();
+    final result = GChangeOwnerKeyFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -6285,7 +6282,7 @@ class _$GDatetimeFilterSerializer
   GDatetimeFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GDatetimeFilterBuilder();
+    final result = GDatetimeFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -6437,7 +6434,7 @@ class _$GEventConditionSerializer
   GEventCondition deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GEventConditionBuilder();
+    final result = GEventConditionBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -6788,7 +6785,7 @@ class _$GEventFilterSerializer implements StructuredSerializer<GEventFilter> {
   GEventFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GEventFilterBuilder();
+    final result = GEventFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -7039,7 +7036,7 @@ class _$GEventToManyCertEventFilterSerializer
   GEventToManyCertEventFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GEventToManyCertEventFilterBuilder();
+    final result = GEventToManyCertEventFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -7113,7 +7110,7 @@ class _$GEventToManyCertFilterSerializer
   GEventToManyCertFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GEventToManyCertFilterBuilder();
+    final result = GEventToManyCertFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -7184,7 +7181,7 @@ class _$GEventToManyIdentityFilterSerializer
   GEventToManyIdentityFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GEventToManyIdentityFilterBuilder();
+    final result = GEventToManyIdentityFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -7258,7 +7255,7 @@ class _$GEventToManyMembershipEventFilterSerializer
   GEventToManyMembershipEventFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GEventToManyMembershipEventFilterBuilder();
+    final result = GEventToManyMembershipEventFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -7332,7 +7329,7 @@ class _$GEventToManySmithEventFilterSerializer
   GEventToManySmithEventFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GEventToManySmithEventFilterBuilder();
+    final result = GEventToManySmithEventFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -7406,7 +7403,7 @@ class _$GEventToManyTransferFilterSerializer
   GEventToManyTransferFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GEventToManyTransferFilterBuilder();
+    final result = GEventToManyTransferFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -7480,7 +7477,7 @@ class _$GEventToManyTxCommentFilterSerializer
   GEventToManyTxCommentFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GEventToManyTxCommentFilterBuilder();
+    final result = GEventToManyTxCommentFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -7554,7 +7551,7 @@ class _$GEventToManyUdReevalFilterSerializer
   GEventToManyUdReevalFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GEventToManyUdReevalFilterBuilder();
+    final result = GEventToManyUdReevalFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -7628,7 +7625,7 @@ class _$GEventToManyUniversalDividendFilterSerializer
   GEventToManyUniversalDividendFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GEventToManyUniversalDividendFilterBuilder();
+    final result = GEventToManyUniversalDividendFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -7756,7 +7753,7 @@ class _$GExtrinsicConditionSerializer
   GExtrinsicCondition deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GExtrinsicConditionBuilder();
+    final result = GExtrinsicConditionBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -7983,7 +7980,7 @@ class _$GExtrinsicFilterSerializer
   GExtrinsicFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GExtrinsicFilterBuilder();
+    final result = GExtrinsicFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -8154,7 +8151,7 @@ class _$GExtrinsicToManyCallFilterSerializer
   GExtrinsicToManyCallFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GExtrinsicToManyCallFilterBuilder();
+    final result = GExtrinsicToManyCallFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -8225,7 +8222,7 @@ class _$GExtrinsicToManyEventFilterSerializer
   GExtrinsicToManyEventFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GExtrinsicToManyEventFilterBuilder();
+    final result = GExtrinsicToManyEventFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -8369,7 +8366,7 @@ class _$GIdentityConditionSerializer
   GIdentityCondition deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GIdentityConditionBuilder();
+    final result = GIdentityConditionBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -8700,7 +8697,7 @@ class _$GIdentityFilterSerializer
   GIdentityFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GIdentityFilterBuilder();
+    final result = GIdentityFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -8917,7 +8914,7 @@ class _$GIdentityToManyAccountFilterSerializer
   GIdentityToManyAccountFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GIdentityToManyAccountFilterBuilder();
+    final result = GIdentityToManyAccountFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -8991,7 +8988,7 @@ class _$GIdentityToManyCertFilterSerializer
   GIdentityToManyCertFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GIdentityToManyCertFilterBuilder();
+    final result = GIdentityToManyCertFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -9062,7 +9059,7 @@ class _$GIdentityToManyChangeOwnerKeyFilterSerializer
   GIdentityToManyChangeOwnerKeyFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GIdentityToManyChangeOwnerKeyFilterBuilder();
+    final result = GIdentityToManyChangeOwnerKeyFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -9136,7 +9133,7 @@ class _$GIdentityToManyMembershipEventFilterSerializer
   GIdentityToManyMembershipEventFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GIdentityToManyMembershipEventFilterBuilder();
+    final result = GIdentityToManyMembershipEventFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -9210,7 +9207,7 @@ class _$GIdentityToManyUdHistoryFilterSerializer
   GIdentityToManyUdHistoryFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GIdentityToManyUdHistoryFilterBuilder();
+    final result = GIdentityToManyUdHistoryFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -9328,7 +9325,7 @@ class _$GIntFilterSerializer implements StructuredSerializer<GIntFilter> {
   @override
   GIntFilter deserialize(Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GIntFilterBuilder();
+    final result = GIntFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -9541,7 +9538,7 @@ class _$GIntListFilterSerializer
   GIntListFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GIntListFilterBuilder();
+    final result = GIntListFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -9700,7 +9697,7 @@ class _$GItemsCounterConditionSerializer
   GItemsCounterCondition deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GItemsCounterConditionBuilder();
+    final result = GItemsCounterConditionBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -9805,7 +9802,7 @@ class _$GItemsCounterFilterSerializer
   GItemsCounterFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GItemsCounterFilterBuilder();
+    final result = GItemsCounterFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -10004,7 +10001,7 @@ class _$GJSONFilterSerializer implements StructuredSerializer<GJSONFilter> {
   @override
   GJSONFilter deserialize(Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GJSONFilterBuilder();
+    final result = GJSONFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -10148,7 +10145,7 @@ class _$GMembershipEventConditionSerializer
   GMembershipEventCondition deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GMembershipEventConditionBuilder();
+    final result = GMembershipEventConditionBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -10292,7 +10289,7 @@ class _$GMembershipEventFilterSerializer
   GMembershipEventFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GMembershipEventFilterBuilder();
+    final result = GMembershipEventFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -10423,7 +10420,7 @@ class _$GMigrationConditionSerializer
   GMigrationCondition deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GMigrationConditionBuilder();
+    final result = GMigrationConditionBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -10513,7 +10510,7 @@ class _$GMigrationFilterSerializer
   GMigrationFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GMigrationFilterBuilder();
+    final result = GMigrationFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -10648,7 +10645,7 @@ class _$GPopulationHistoryConditionSerializer
   GPopulationHistoryCondition deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GPopulationHistoryConditionBuilder();
+    final result = GPopulationHistoryConditionBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -10764,7 +10761,7 @@ class _$GPopulationHistoryFilterSerializer
   GPopulationHistoryFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GPopulationHistoryFilterBuilder();
+    final result = GPopulationHistoryFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -10866,7 +10863,7 @@ class _$GSmithCertConditionSerializer
   GSmithCertCondition deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GSmithCertConditionBuilder();
+    final result = GSmithCertConditionBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -10995,7 +10992,7 @@ class _$GSmithCertFilterSerializer
   GSmithCertFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GSmithCertFilterBuilder();
+    final result = GSmithCertFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -11141,7 +11138,7 @@ class _$GSmithConditionSerializer
   GSmithCondition deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GSmithConditionBuilder();
+    final result = GSmithConditionBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -11241,7 +11238,7 @@ class _$GSmithEventConditionSerializer
   GSmithEventCondition deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GSmithEventConditionBuilder();
+    final result = GSmithEventConditionBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -11381,7 +11378,7 @@ class _$GSmithEventFilterSerializer
   GSmithEventFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GSmithEventFilterBuilder();
+    final result = GSmithEventFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -11613,7 +11610,7 @@ class _$GSmithFilterSerializer implements StructuredSerializer<GSmithFilter> {
   GSmithFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GSmithFilterBuilder();
+    final result = GSmithFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -11770,7 +11767,7 @@ class _$GSmithToManySmithCertFilterSerializer
   GSmithToManySmithCertFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GSmithToManySmithCertFilterBuilder();
+    final result = GSmithToManySmithCertFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -11844,7 +11841,7 @@ class _$GSmithToManySmithEventFilterSerializer
   GSmithToManySmithEventFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GSmithToManySmithEventFilterBuilder();
+    final result = GSmithToManySmithEventFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -12155,7 +12152,7 @@ class _$GStringFilterSerializer implements StructuredSerializer<GStringFilter> {
   GStringFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GStringFilterBuilder();
+    final result = GStringFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -12483,7 +12480,7 @@ class _$GStringListFilterSerializer
   GStringListFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GStringListFilterBuilder();
+    final result = GStringListFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -12667,7 +12664,7 @@ class _$GTransferConditionSerializer
   GTransferCondition deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GTransferConditionBuilder();
+    final result = GTransferConditionBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -12868,7 +12865,7 @@ class _$GTransferFilterSerializer
   GTransferFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GTransferFilterBuilder();
+    final result = GTransferFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -13110,7 +13107,7 @@ class _$GTransferWithUdFilterSerializer
   GTransferWithUdFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GTransferWithUdFilterBuilder();
+    final result = GTransferWithUdFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -13286,7 +13283,7 @@ class _$GTxCommentConditionSerializer
   GTxCommentCondition deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GTxCommentConditionBuilder();
+    final result = GTxCommentConditionBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -13466,7 +13463,7 @@ class _$GTxCommentFilterSerializer
   GTxCommentFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GTxCommentFilterBuilder();
+    final result = GTxCommentFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -13615,7 +13612,7 @@ class _$GTxCommentToManyTransferFilterSerializer
   GTxCommentToManyTransferFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GTxCommentToManyTransferFilterBuilder();
+    final result = GTxCommentToManyTransferFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -13720,7 +13717,7 @@ class _$GUdHistoryConditionSerializer
   GUdHistoryCondition deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GUdHistoryConditionBuilder();
+    final result = GUdHistoryConditionBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -13846,7 +13843,7 @@ class _$GUdHistoryFilterSerializer
   GUdHistoryFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GUdHistoryFilterBuilder();
+    final result = GUdHistoryFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -14000,7 +13997,7 @@ class _$GUdReevalConditionSerializer
   GUdReevalCondition deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GUdReevalConditionBuilder();
+    final result = GUdReevalConditionBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -14159,7 +14156,7 @@ class _$GUdReevalFilterSerializer
   GUdReevalFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GUdReevalFilterBuilder();
+    final result = GUdReevalFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -14328,7 +14325,7 @@ class _$GUniversalDividendConditionSerializer
   GUniversalDividendCondition deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GUniversalDividendConditionBuilder();
+    final result = GUniversalDividendConditionBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -14491,7 +14488,7 @@ class _$GUniversalDividendFilterSerializer
   GUniversalDividendFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GUniversalDividendFilterBuilder();
+    final result = GUniversalDividendFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -14621,7 +14618,7 @@ class _$GValidatorConditionSerializer
   GValidatorCondition deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GValidatorConditionBuilder();
+    final result = GValidatorConditionBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -14700,7 +14697,7 @@ class _$GValidatorFilterSerializer
   GValidatorFilter deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GValidatorFilterBuilder();
+    final result = GValidatorFilterBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -14772,7 +14769,7 @@ class _$GAccountCondition extends GAccountCondition {
 
   factory _$GAccountCondition(
           [void Function(GAccountConditionBuilder)? updates]) =>
-      (new GAccountConditionBuilder()..update(updates))._build();
+      (GAccountConditionBuilder()..update(updates))._build();
 
   _$GAccountCondition._(
       {this.id,
@@ -14781,14 +14778,13 @@ class _$GAccountCondition extends GAccountCondition {
       this.balance,
       this.linkedIdentityId})
       : super._();
-
   @override
   GAccountCondition rebuild(void Function(GAccountConditionBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
   GAccountConditionBuilder toBuilder() =>
-      new GAccountConditionBuilder()..replace(this);
+      GAccountConditionBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -14842,7 +14838,7 @@ class GAccountConditionBuilder
   set isActive(bool? isActive) => _$this._isActive = isActive;
 
   GBigFloatBuilder? _balance;
-  GBigFloatBuilder get balance => _$this._balance ??= new GBigFloatBuilder();
+  GBigFloatBuilder get balance => _$this._balance ??= GBigFloatBuilder();
   set balance(GBigFloatBuilder? balance) => _$this._balance = balance;
 
   String? _linkedIdentityId;
@@ -14867,7 +14863,6 @@ class GAccountConditionBuilder
 
   @override
   void replace(GAccountCondition other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GAccountCondition;
   }
 
@@ -14883,19 +14878,20 @@ class GAccountConditionBuilder
     _$GAccountCondition _$result;
     try {
       _$result = _$v ??
-          new _$GAccountCondition._(
-              id: id,
-              createdOn: createdOn,
-              isActive: isActive,
-              balance: _balance?.build(),
-              linkedIdentityId: linkedIdentityId);
+          _$GAccountCondition._(
+            id: id,
+            createdOn: createdOn,
+            isActive: isActive,
+            balance: _balance?.build(),
+            linkedIdentityId: linkedIdentityId,
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'balance';
         _balance?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GAccountCondition', _$failedField, e.toString());
       }
       rethrow;
@@ -14958,7 +14954,7 @@ class _$GAccountFilter extends GAccountFilter {
   final GAccountFilter? not;
 
   factory _$GAccountFilter([void Function(GAccountFilterBuilder)? updates]) =>
-      (new GAccountFilterBuilder()..update(updates))._build();
+      (GAccountFilterBuilder()..update(updates))._build();
 
   _$GAccountFilter._(
       {this.id,
@@ -14987,14 +14983,12 @@ class _$GAccountFilter extends GAccountFilter {
       this.or,
       this.not})
       : super._();
-
   @override
   GAccountFilter rebuild(void Function(GAccountFilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GAccountFilterBuilder toBuilder() =>
-      new GAccountFilterBuilder()..replace(this);
+  GAccountFilterBuilder toBuilder() => GAccountFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -15098,39 +15092,38 @@ class GAccountFilterBuilder
   _$GAccountFilter? _$v;
 
   GStringFilterBuilder? _id;
-  GStringFilterBuilder get id => _$this._id ??= new GStringFilterBuilder();
+  GStringFilterBuilder get id => _$this._id ??= GStringFilterBuilder();
   set id(GStringFilterBuilder? id) => _$this._id = id;
 
   GIntFilterBuilder? _createdOn;
-  GIntFilterBuilder get createdOn =>
-      _$this._createdOn ??= new GIntFilterBuilder();
+  GIntFilterBuilder get createdOn => _$this._createdOn ??= GIntFilterBuilder();
   set createdOn(GIntFilterBuilder? createdOn) => _$this._createdOn = createdOn;
 
   GBooleanFilterBuilder? _isActive;
   GBooleanFilterBuilder get isActive =>
-      _$this._isActive ??= new GBooleanFilterBuilder();
+      _$this._isActive ??= GBooleanFilterBuilder();
   set isActive(GBooleanFilterBuilder? isActive) => _$this._isActive = isActive;
 
   GBigFloatFilterBuilder? _balance;
   GBigFloatFilterBuilder get balance =>
-      _$this._balance ??= new GBigFloatFilterBuilder();
+      _$this._balance ??= GBigFloatFilterBuilder();
   set balance(GBigFloatFilterBuilder? balance) => _$this._balance = balance;
 
   GStringFilterBuilder? _linkedIdentityId;
   GStringFilterBuilder get linkedIdentityId =>
-      _$this._linkedIdentityId ??= new GStringFilterBuilder();
+      _$this._linkedIdentityId ??= GStringFilterBuilder();
   set linkedIdentityId(GStringFilterBuilder? linkedIdentityId) =>
       _$this._linkedIdentityId = linkedIdentityId;
 
   GBigFloatFilterBuilder? _totalBalance;
   GBigFloatFilterBuilder get totalBalance =>
-      _$this._totalBalance ??= new GBigFloatFilterBuilder();
+      _$this._totalBalance ??= GBigFloatFilterBuilder();
   set totalBalance(GBigFloatFilterBuilder? totalBalance) =>
       _$this._totalBalance = totalBalance;
 
   GAccountToManyChangeOwnerKeyFilterBuilder? _wasIdentity;
   GAccountToManyChangeOwnerKeyFilterBuilder get wasIdentity =>
-      _$this._wasIdentity ??= new GAccountToManyChangeOwnerKeyFilterBuilder();
+      _$this._wasIdentity ??= GAccountToManyChangeOwnerKeyFilterBuilder();
   set wasIdentity(GAccountToManyChangeOwnerKeyFilterBuilder? wasIdentity) =>
       _$this._wasIdentity = wasIdentity;
 
@@ -15142,7 +15135,7 @@ class GAccountFilterBuilder
   GAccountToManyChangeOwnerKeyFilterBuilder? _changeOwnerKeysByNextId;
   GAccountToManyChangeOwnerKeyFilterBuilder get changeOwnerKeysByNextId =>
       _$this._changeOwnerKeysByNextId ??=
-          new GAccountToManyChangeOwnerKeyFilterBuilder();
+          GAccountToManyChangeOwnerKeyFilterBuilder();
   set changeOwnerKeysByNextId(
           GAccountToManyChangeOwnerKeyFilterBuilder? changeOwnerKeysByNextId) =>
       _$this._changeOwnerKeysByNextId = changeOwnerKeysByNextId;
@@ -15155,7 +15148,7 @@ class GAccountFilterBuilder
 
   GIdentityFilterBuilder? _identity;
   GIdentityFilterBuilder get identity =>
-      _$this._identity ??= new GIdentityFilterBuilder();
+      _$this._identity ??= GIdentityFilterBuilder();
   set identity(GIdentityFilterBuilder? identity) => _$this._identity = identity;
 
   bool? _identityExists;
@@ -15166,7 +15159,7 @@ class GAccountFilterBuilder
   GAccountToManyIdentityFilterBuilder? _identitiesByAccountRemovedId;
   GAccountToManyIdentityFilterBuilder get identitiesByAccountRemovedId =>
       _$this._identitiesByAccountRemovedId ??=
-          new GAccountToManyIdentityFilterBuilder();
+          GAccountToManyIdentityFilterBuilder();
   set identitiesByAccountRemovedId(
           GAccountToManyIdentityFilterBuilder? identitiesByAccountRemovedId) =>
       _$this._identitiesByAccountRemovedId = identitiesByAccountRemovedId;
@@ -15181,7 +15174,7 @@ class GAccountFilterBuilder
 
   GAccountToManyTxCommentFilterBuilder? _commentsIssued;
   GAccountToManyTxCommentFilterBuilder get commentsIssued =>
-      _$this._commentsIssued ??= new GAccountToManyTxCommentFilterBuilder();
+      _$this._commentsIssued ??= GAccountToManyTxCommentFilterBuilder();
   set commentsIssued(GAccountToManyTxCommentFilterBuilder? commentsIssued) =>
       _$this._commentsIssued = commentsIssued;
 
@@ -15192,7 +15185,7 @@ class GAccountFilterBuilder
 
   GAccountToManyTransferFilterBuilder? _transfersIssued;
   GAccountToManyTransferFilterBuilder get transfersIssued =>
-      _$this._transfersIssued ??= new GAccountToManyTransferFilterBuilder();
+      _$this._transfersIssued ??= GAccountToManyTransferFilterBuilder();
   set transfersIssued(GAccountToManyTransferFilterBuilder? transfersIssued) =>
       _$this._transfersIssued = transfersIssued;
 
@@ -15203,7 +15196,7 @@ class GAccountFilterBuilder
 
   GAccountToManyTransferFilterBuilder? _transfersReceived;
   GAccountToManyTransferFilterBuilder get transfersReceived =>
-      _$this._transfersReceived ??= new GAccountToManyTransferFilterBuilder();
+      _$this._transfersReceived ??= GAccountToManyTransferFilterBuilder();
   set transfersReceived(
           GAccountToManyTransferFilterBuilder? transfersReceived) =>
       _$this._transfersReceived = transfersReceived;
@@ -15215,7 +15208,7 @@ class GAccountFilterBuilder
 
   GIdentityFilterBuilder? _linkedIdentity;
   GIdentityFilterBuilder get linkedIdentity =>
-      _$this._linkedIdentity ??= new GIdentityFilterBuilder();
+      _$this._linkedIdentity ??= GIdentityFilterBuilder();
   set linkedIdentity(GIdentityFilterBuilder? linkedIdentity) =>
       _$this._linkedIdentity = linkedIdentity;
 
@@ -15226,16 +15219,16 @@ class GAccountFilterBuilder
 
   ListBuilder<GAccountFilter>? _and;
   ListBuilder<GAccountFilter> get and =>
-      _$this._and ??= new ListBuilder<GAccountFilter>();
+      _$this._and ??= ListBuilder<GAccountFilter>();
   set and(ListBuilder<GAccountFilter>? and) => _$this._and = and;
 
   ListBuilder<GAccountFilter>? _or;
   ListBuilder<GAccountFilter> get or =>
-      _$this._or ??= new ListBuilder<GAccountFilter>();
+      _$this._or ??= ListBuilder<GAccountFilter>();
   set or(ListBuilder<GAccountFilter>? or) => _$this._or = or;
 
   GAccountFilterBuilder? _not;
-  GAccountFilterBuilder get not => _$this._not ??= new GAccountFilterBuilder();
+  GAccountFilterBuilder get not => _$this._not ??= GAccountFilterBuilder();
   set not(GAccountFilterBuilder? not) => _$this._not = not;
 
   GAccountFilterBuilder();
@@ -15276,7 +15269,6 @@ class GAccountFilterBuilder
 
   @override
   void replace(GAccountFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GAccountFilter;
   }
 
@@ -15292,34 +15284,35 @@ class GAccountFilterBuilder
     _$GAccountFilter _$result;
     try {
       _$result = _$v ??
-          new _$GAccountFilter._(
-              id: _id?.build(),
-              createdOn: _createdOn?.build(),
-              isActive: _isActive?.build(),
-              balance: _balance?.build(),
-              linkedIdentityId: _linkedIdentityId?.build(),
-              totalBalance: _totalBalance?.build(),
-              wasIdentity: _wasIdentity?.build(),
-              wasIdentityExist: wasIdentityExist,
-              changeOwnerKeysByNextId: _changeOwnerKeysByNextId?.build(),
-              changeOwnerKeysByNextIdExist: changeOwnerKeysByNextIdExist,
-              identity: _identity?.build(),
-              identityExists: identityExists,
-              identitiesByAccountRemovedId:
-                  _identitiesByAccountRemovedId?.build(),
-              identitiesByAccountRemovedIdExist:
-                  identitiesByAccountRemovedIdExist,
-              commentsIssued: _commentsIssued?.build(),
-              commentsIssuedExist: commentsIssuedExist,
-              transfersIssued: _transfersIssued?.build(),
-              transfersIssuedExist: transfersIssuedExist,
-              transfersReceived: _transfersReceived?.build(),
-              transfersReceivedExist: transfersReceivedExist,
-              linkedIdentity: _linkedIdentity?.build(),
-              linkedIdentityExists: linkedIdentityExists,
-              and: _and?.build(),
-              or: _or?.build(),
-              not: _not?.build());
+          _$GAccountFilter._(
+            id: _id?.build(),
+            createdOn: _createdOn?.build(),
+            isActive: _isActive?.build(),
+            balance: _balance?.build(),
+            linkedIdentityId: _linkedIdentityId?.build(),
+            totalBalance: _totalBalance?.build(),
+            wasIdentity: _wasIdentity?.build(),
+            wasIdentityExist: wasIdentityExist,
+            changeOwnerKeysByNextId: _changeOwnerKeysByNextId?.build(),
+            changeOwnerKeysByNextIdExist: changeOwnerKeysByNextIdExist,
+            identity: _identity?.build(),
+            identityExists: identityExists,
+            identitiesByAccountRemovedId:
+                _identitiesByAccountRemovedId?.build(),
+            identitiesByAccountRemovedIdExist:
+                identitiesByAccountRemovedIdExist,
+            commentsIssued: _commentsIssued?.build(),
+            commentsIssuedExist: commentsIssuedExist,
+            transfersIssued: _transfersIssued?.build(),
+            transfersIssuedExist: transfersIssuedExist,
+            transfersReceived: _transfersReceived?.build(),
+            transfersReceivedExist: transfersReceivedExist,
+            linkedIdentity: _linkedIdentity?.build(),
+            linkedIdentityExists: linkedIdentityExists,
+            and: _and?.build(),
+            or: _or?.build(),
+            not: _not?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -15366,7 +15359,7 @@ class GAccountFilterBuilder
         _$failedField = 'not';
         _not?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GAccountFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -15388,12 +15381,10 @@ class _$GAccountToManyChangeOwnerKeyFilter
   factory _$GAccountToManyChangeOwnerKeyFilter(
           [void Function(GAccountToManyChangeOwnerKeyFilterBuilder)?
               updates]) =>
-      (new GAccountToManyChangeOwnerKeyFilterBuilder()..update(updates))
-          ._build();
+      (GAccountToManyChangeOwnerKeyFilterBuilder()..update(updates))._build();
 
   _$GAccountToManyChangeOwnerKeyFilter._({this.every, this.some, this.none})
       : super._();
-
   @override
   GAccountToManyChangeOwnerKeyFilter rebuild(
           void Function(GAccountToManyChangeOwnerKeyFilterBuilder) updates) =>
@@ -15401,7 +15392,7 @@ class _$GAccountToManyChangeOwnerKeyFilter
 
   @override
   GAccountToManyChangeOwnerKeyFilterBuilder toBuilder() =>
-      new GAccountToManyChangeOwnerKeyFilterBuilder()..replace(this);
+      GAccountToManyChangeOwnerKeyFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -15440,17 +15431,17 @@ class GAccountToManyChangeOwnerKeyFilterBuilder
 
   GChangeOwnerKeyFilterBuilder? _every;
   GChangeOwnerKeyFilterBuilder get every =>
-      _$this._every ??= new GChangeOwnerKeyFilterBuilder();
+      _$this._every ??= GChangeOwnerKeyFilterBuilder();
   set every(GChangeOwnerKeyFilterBuilder? every) => _$this._every = every;
 
   GChangeOwnerKeyFilterBuilder? _some;
   GChangeOwnerKeyFilterBuilder get some =>
-      _$this._some ??= new GChangeOwnerKeyFilterBuilder();
+      _$this._some ??= GChangeOwnerKeyFilterBuilder();
   set some(GChangeOwnerKeyFilterBuilder? some) => _$this._some = some;
 
   GChangeOwnerKeyFilterBuilder? _none;
   GChangeOwnerKeyFilterBuilder get none =>
-      _$this._none ??= new GChangeOwnerKeyFilterBuilder();
+      _$this._none ??= GChangeOwnerKeyFilterBuilder();
   set none(GChangeOwnerKeyFilterBuilder? none) => _$this._none = none;
 
   GAccountToManyChangeOwnerKeyFilterBuilder();
@@ -15468,7 +15459,6 @@ class GAccountToManyChangeOwnerKeyFilterBuilder
 
   @override
   void replace(GAccountToManyChangeOwnerKeyFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GAccountToManyChangeOwnerKeyFilter;
   }
 
@@ -15485,10 +15475,11 @@ class GAccountToManyChangeOwnerKeyFilterBuilder
     _$GAccountToManyChangeOwnerKeyFilter _$result;
     try {
       _$result = _$v ??
-          new _$GAccountToManyChangeOwnerKeyFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GAccountToManyChangeOwnerKeyFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -15499,7 +15490,7 @@ class GAccountToManyChangeOwnerKeyFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GAccountToManyChangeOwnerKeyFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -15519,11 +15510,10 @@ class _$GAccountToManyIdentityFilter extends GAccountToManyIdentityFilter {
 
   factory _$GAccountToManyIdentityFilter(
           [void Function(GAccountToManyIdentityFilterBuilder)? updates]) =>
-      (new GAccountToManyIdentityFilterBuilder()..update(updates))._build();
+      (GAccountToManyIdentityFilterBuilder()..update(updates))._build();
 
   _$GAccountToManyIdentityFilter._({this.every, this.some, this.none})
       : super._();
-
   @override
   GAccountToManyIdentityFilter rebuild(
           void Function(GAccountToManyIdentityFilterBuilder) updates) =>
@@ -15531,7 +15521,7 @@ class _$GAccountToManyIdentityFilter extends GAccountToManyIdentityFilter {
 
   @override
   GAccountToManyIdentityFilterBuilder toBuilder() =>
-      new GAccountToManyIdentityFilterBuilder()..replace(this);
+      GAccountToManyIdentityFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -15570,17 +15560,15 @@ class GAccountToManyIdentityFilterBuilder
 
   GIdentityFilterBuilder? _every;
   GIdentityFilterBuilder get every =>
-      _$this._every ??= new GIdentityFilterBuilder();
+      _$this._every ??= GIdentityFilterBuilder();
   set every(GIdentityFilterBuilder? every) => _$this._every = every;
 
   GIdentityFilterBuilder? _some;
-  GIdentityFilterBuilder get some =>
-      _$this._some ??= new GIdentityFilterBuilder();
+  GIdentityFilterBuilder get some => _$this._some ??= GIdentityFilterBuilder();
   set some(GIdentityFilterBuilder? some) => _$this._some = some;
 
   GIdentityFilterBuilder? _none;
-  GIdentityFilterBuilder get none =>
-      _$this._none ??= new GIdentityFilterBuilder();
+  GIdentityFilterBuilder get none => _$this._none ??= GIdentityFilterBuilder();
   set none(GIdentityFilterBuilder? none) => _$this._none = none;
 
   GAccountToManyIdentityFilterBuilder();
@@ -15598,7 +15586,6 @@ class GAccountToManyIdentityFilterBuilder
 
   @override
   void replace(GAccountToManyIdentityFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GAccountToManyIdentityFilter;
   }
 
@@ -15614,10 +15601,11 @@ class GAccountToManyIdentityFilterBuilder
     _$GAccountToManyIdentityFilter _$result;
     try {
       _$result = _$v ??
-          new _$GAccountToManyIdentityFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GAccountToManyIdentityFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -15628,7 +15616,7 @@ class GAccountToManyIdentityFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GAccountToManyIdentityFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -15648,11 +15636,10 @@ class _$GAccountToManyTransferFilter extends GAccountToManyTransferFilter {
 
   factory _$GAccountToManyTransferFilter(
           [void Function(GAccountToManyTransferFilterBuilder)? updates]) =>
-      (new GAccountToManyTransferFilterBuilder()..update(updates))._build();
+      (GAccountToManyTransferFilterBuilder()..update(updates))._build();
 
   _$GAccountToManyTransferFilter._({this.every, this.some, this.none})
       : super._();
-
   @override
   GAccountToManyTransferFilter rebuild(
           void Function(GAccountToManyTransferFilterBuilder) updates) =>
@@ -15660,7 +15647,7 @@ class _$GAccountToManyTransferFilter extends GAccountToManyTransferFilter {
 
   @override
   GAccountToManyTransferFilterBuilder toBuilder() =>
-      new GAccountToManyTransferFilterBuilder()..replace(this);
+      GAccountToManyTransferFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -15699,17 +15686,15 @@ class GAccountToManyTransferFilterBuilder
 
   GTransferFilterBuilder? _every;
   GTransferFilterBuilder get every =>
-      _$this._every ??= new GTransferFilterBuilder();
+      _$this._every ??= GTransferFilterBuilder();
   set every(GTransferFilterBuilder? every) => _$this._every = every;
 
   GTransferFilterBuilder? _some;
-  GTransferFilterBuilder get some =>
-      _$this._some ??= new GTransferFilterBuilder();
+  GTransferFilterBuilder get some => _$this._some ??= GTransferFilterBuilder();
   set some(GTransferFilterBuilder? some) => _$this._some = some;
 
   GTransferFilterBuilder? _none;
-  GTransferFilterBuilder get none =>
-      _$this._none ??= new GTransferFilterBuilder();
+  GTransferFilterBuilder get none => _$this._none ??= GTransferFilterBuilder();
   set none(GTransferFilterBuilder? none) => _$this._none = none;
 
   GAccountToManyTransferFilterBuilder();
@@ -15727,7 +15712,6 @@ class GAccountToManyTransferFilterBuilder
 
   @override
   void replace(GAccountToManyTransferFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GAccountToManyTransferFilter;
   }
 
@@ -15743,10 +15727,11 @@ class GAccountToManyTransferFilterBuilder
     _$GAccountToManyTransferFilter _$result;
     try {
       _$result = _$v ??
-          new _$GAccountToManyTransferFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GAccountToManyTransferFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -15757,7 +15742,7 @@ class GAccountToManyTransferFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GAccountToManyTransferFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -15777,11 +15762,10 @@ class _$GAccountToManyTxCommentFilter extends GAccountToManyTxCommentFilter {
 
   factory _$GAccountToManyTxCommentFilter(
           [void Function(GAccountToManyTxCommentFilterBuilder)? updates]) =>
-      (new GAccountToManyTxCommentFilterBuilder()..update(updates))._build();
+      (GAccountToManyTxCommentFilterBuilder()..update(updates))._build();
 
   _$GAccountToManyTxCommentFilter._({this.every, this.some, this.none})
       : super._();
-
   @override
   GAccountToManyTxCommentFilter rebuild(
           void Function(GAccountToManyTxCommentFilterBuilder) updates) =>
@@ -15789,7 +15773,7 @@ class _$GAccountToManyTxCommentFilter extends GAccountToManyTxCommentFilter {
 
   @override
   GAccountToManyTxCommentFilterBuilder toBuilder() =>
-      new GAccountToManyTxCommentFilterBuilder()..replace(this);
+      GAccountToManyTxCommentFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -15828,17 +15812,17 @@ class GAccountToManyTxCommentFilterBuilder
 
   GTxCommentFilterBuilder? _every;
   GTxCommentFilterBuilder get every =>
-      _$this._every ??= new GTxCommentFilterBuilder();
+      _$this._every ??= GTxCommentFilterBuilder();
   set every(GTxCommentFilterBuilder? every) => _$this._every = every;
 
   GTxCommentFilterBuilder? _some;
   GTxCommentFilterBuilder get some =>
-      _$this._some ??= new GTxCommentFilterBuilder();
+      _$this._some ??= GTxCommentFilterBuilder();
   set some(GTxCommentFilterBuilder? some) => _$this._some = some;
 
   GTxCommentFilterBuilder? _none;
   GTxCommentFilterBuilder get none =>
-      _$this._none ??= new GTxCommentFilterBuilder();
+      _$this._none ??= GTxCommentFilterBuilder();
   set none(GTxCommentFilterBuilder? none) => _$this._none = none;
 
   GAccountToManyTxCommentFilterBuilder();
@@ -15856,7 +15840,6 @@ class GAccountToManyTxCommentFilterBuilder
 
   @override
   void replace(GAccountToManyTxCommentFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GAccountToManyTxCommentFilter;
   }
 
@@ -15872,10 +15855,11 @@ class GAccountToManyTxCommentFilterBuilder
     _$GAccountToManyTxCommentFilter _$result;
     try {
       _$result = _$v ??
-          new _$GAccountToManyTxCommentFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GAccountToManyTxCommentFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -15886,7 +15870,7 @@ class GAccountToManyTxCommentFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GAccountToManyTxCommentFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -15901,18 +15885,15 @@ class _$GBigFloat extends GBigFloat {
   final String value;
 
   factory _$GBigFloat([void Function(GBigFloatBuilder)? updates]) =>
-      (new GBigFloatBuilder()..update(updates))._build();
+      (GBigFloatBuilder()..update(updates))._build();
 
-  _$GBigFloat._({required this.value}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(value, r'GBigFloat', 'value');
-  }
-
+  _$GBigFloat._({required this.value}) : super._();
   @override
   GBigFloat rebuild(void Function(GBigFloatBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GBigFloatBuilder toBuilder() => new GBigFloatBuilder()..replace(this);
+  GBigFloatBuilder toBuilder() => GBigFloatBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -15955,7 +15936,6 @@ class GBigFloatBuilder implements Builder<GBigFloat, GBigFloatBuilder> {
 
   @override
   void replace(GBigFloat other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GBigFloat;
   }
 
@@ -15969,9 +15949,10 @@ class GBigFloatBuilder implements Builder<GBigFloat, GBigFloatBuilder> {
 
   _$GBigFloat _build() {
     final _$result = _$v ??
-        new _$GBigFloat._(
-            value: BuiltValueNullFieldError.checkNotNull(
-                value, r'GBigFloat', 'value'));
+        _$GBigFloat._(
+          value: BuiltValueNullFieldError.checkNotNull(
+              value, r'GBigFloat', 'value'),
+        );
     replace(_$result);
     return _$result;
   }
@@ -16002,7 +15983,7 @@ class _$GBigFloatFilter extends GBigFloatFilter {
   final GBigFloat? greaterThanOrEqualTo;
 
   factory _$GBigFloatFilter([void Function(GBigFloatFilterBuilder)? updates]) =>
-      (new GBigFloatFilterBuilder()..update(updates))._build();
+      (GBigFloatFilterBuilder()..update(updates))._build();
 
   _$GBigFloatFilter._(
       {this.isNull,
@@ -16017,14 +15998,12 @@ class _$GBigFloatFilter extends GBigFloatFilter {
       this.greaterThan,
       this.greaterThanOrEqualTo})
       : super._();
-
   @override
   GBigFloatFilter rebuild(void Function(GBigFloatFilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GBigFloatFilterBuilder toBuilder() =>
-      new GBigFloatFilterBuilder()..replace(this);
+  GBigFloatFilterBuilder toBuilder() => GBigFloatFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -16088,56 +16067,54 @@ class GBigFloatFilterBuilder
   set isNull(bool? isNull) => _$this._isNull = isNull;
 
   GBigFloatBuilder? _equalTo;
-  GBigFloatBuilder get equalTo => _$this._equalTo ??= new GBigFloatBuilder();
+  GBigFloatBuilder get equalTo => _$this._equalTo ??= GBigFloatBuilder();
   set equalTo(GBigFloatBuilder? equalTo) => _$this._equalTo = equalTo;
 
   GBigFloatBuilder? _notEqualTo;
-  GBigFloatBuilder get notEqualTo =>
-      _$this._notEqualTo ??= new GBigFloatBuilder();
+  GBigFloatBuilder get notEqualTo => _$this._notEqualTo ??= GBigFloatBuilder();
   set notEqualTo(GBigFloatBuilder? notEqualTo) =>
       _$this._notEqualTo = notEqualTo;
 
   GBigFloatBuilder? _distinctFrom;
   GBigFloatBuilder get distinctFrom =>
-      _$this._distinctFrom ??= new GBigFloatBuilder();
+      _$this._distinctFrom ??= GBigFloatBuilder();
   set distinctFrom(GBigFloatBuilder? distinctFrom) =>
       _$this._distinctFrom = distinctFrom;
 
   GBigFloatBuilder? _notDistinctFrom;
   GBigFloatBuilder get notDistinctFrom =>
-      _$this._notDistinctFrom ??= new GBigFloatBuilder();
+      _$this._notDistinctFrom ??= GBigFloatBuilder();
   set notDistinctFrom(GBigFloatBuilder? notDistinctFrom) =>
       _$this._notDistinctFrom = notDistinctFrom;
 
   ListBuilder<GBigFloat>? _Gin;
-  ListBuilder<GBigFloat> get Gin =>
-      _$this._Gin ??= new ListBuilder<GBigFloat>();
+  ListBuilder<GBigFloat> get Gin => _$this._Gin ??= ListBuilder<GBigFloat>();
   set Gin(ListBuilder<GBigFloat>? Gin) => _$this._Gin = Gin;
 
   ListBuilder<GBigFloat>? _notIn;
   ListBuilder<GBigFloat> get notIn =>
-      _$this._notIn ??= new ListBuilder<GBigFloat>();
+      _$this._notIn ??= ListBuilder<GBigFloat>();
   set notIn(ListBuilder<GBigFloat>? notIn) => _$this._notIn = notIn;
 
   GBigFloatBuilder? _lessThan;
-  GBigFloatBuilder get lessThan => _$this._lessThan ??= new GBigFloatBuilder();
+  GBigFloatBuilder get lessThan => _$this._lessThan ??= GBigFloatBuilder();
   set lessThan(GBigFloatBuilder? lessThan) => _$this._lessThan = lessThan;
 
   GBigFloatBuilder? _lessThanOrEqualTo;
   GBigFloatBuilder get lessThanOrEqualTo =>
-      _$this._lessThanOrEqualTo ??= new GBigFloatBuilder();
+      _$this._lessThanOrEqualTo ??= GBigFloatBuilder();
   set lessThanOrEqualTo(GBigFloatBuilder? lessThanOrEqualTo) =>
       _$this._lessThanOrEqualTo = lessThanOrEqualTo;
 
   GBigFloatBuilder? _greaterThan;
   GBigFloatBuilder get greaterThan =>
-      _$this._greaterThan ??= new GBigFloatBuilder();
+      _$this._greaterThan ??= GBigFloatBuilder();
   set greaterThan(GBigFloatBuilder? greaterThan) =>
       _$this._greaterThan = greaterThan;
 
   GBigFloatBuilder? _greaterThanOrEqualTo;
   GBigFloatBuilder get greaterThanOrEqualTo =>
-      _$this._greaterThanOrEqualTo ??= new GBigFloatBuilder();
+      _$this._greaterThanOrEqualTo ??= GBigFloatBuilder();
   set greaterThanOrEqualTo(GBigFloatBuilder? greaterThanOrEqualTo) =>
       _$this._greaterThanOrEqualTo = greaterThanOrEqualTo;
 
@@ -16164,7 +16141,6 @@ class GBigFloatFilterBuilder
 
   @override
   void replace(GBigFloatFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GBigFloatFilter;
   }
 
@@ -16180,18 +16156,19 @@ class GBigFloatFilterBuilder
     _$GBigFloatFilter _$result;
     try {
       _$result = _$v ??
-          new _$GBigFloatFilter._(
-              isNull: isNull,
-              equalTo: _equalTo?.build(),
-              notEqualTo: _notEqualTo?.build(),
-              distinctFrom: _distinctFrom?.build(),
-              notDistinctFrom: _notDistinctFrom?.build(),
-              Gin: _Gin?.build(),
-              notIn: _notIn?.build(),
-              lessThan: _lessThan?.build(),
-              lessThanOrEqualTo: _lessThanOrEqualTo?.build(),
-              greaterThan: _greaterThan?.build(),
-              greaterThanOrEqualTo: _greaterThanOrEqualTo?.build());
+          _$GBigFloatFilter._(
+            isNull: isNull,
+            equalTo: _equalTo?.build(),
+            notEqualTo: _notEqualTo?.build(),
+            distinctFrom: _distinctFrom?.build(),
+            notDistinctFrom: _notDistinctFrom?.build(),
+            Gin: _Gin?.build(),
+            notIn: _notIn?.build(),
+            lessThan: _lessThan?.build(),
+            lessThanOrEqualTo: _lessThanOrEqualTo?.build(),
+            greaterThan: _greaterThan?.build(),
+            greaterThanOrEqualTo: _greaterThanOrEqualTo?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -16216,7 +16193,7 @@ class GBigFloatFilterBuilder
         _$failedField = 'greaterThanOrEqualTo';
         _greaterThanOrEqualTo?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GBigFloatFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -16231,18 +16208,15 @@ class _$GBigInt extends GBigInt {
   final String value;
 
   factory _$GBigInt([void Function(GBigIntBuilder)? updates]) =>
-      (new GBigIntBuilder()..update(updates))._build();
+      (GBigIntBuilder()..update(updates))._build();
 
-  _$GBigInt._({required this.value}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(value, r'GBigInt', 'value');
-  }
-
+  _$GBigInt._({required this.value}) : super._();
   @override
   GBigInt rebuild(void Function(GBigIntBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GBigIntBuilder toBuilder() => new GBigIntBuilder()..replace(this);
+  GBigIntBuilder toBuilder() => GBigIntBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -16285,7 +16259,6 @@ class GBigIntBuilder implements Builder<GBigInt, GBigIntBuilder> {
 
   @override
   void replace(GBigInt other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GBigInt;
   }
 
@@ -16299,9 +16272,10 @@ class GBigIntBuilder implements Builder<GBigInt, GBigIntBuilder> {
 
   _$GBigInt _build() {
     final _$result = _$v ??
-        new _$GBigInt._(
-            value: BuiltValueNullFieldError.checkNotNull(
-                value, r'GBigInt', 'value'));
+        _$GBigInt._(
+          value:
+              BuiltValueNullFieldError.checkNotNull(value, r'GBigInt', 'value'),
+        );
     replace(_$result);
     return _$result;
   }
@@ -16332,7 +16306,7 @@ class _$GBigIntFilter extends GBigIntFilter {
   final GBigInt? greaterThanOrEqualTo;
 
   factory _$GBigIntFilter([void Function(GBigIntFilterBuilder)? updates]) =>
-      (new GBigIntFilterBuilder()..update(updates))._build();
+      (GBigIntFilterBuilder()..update(updates))._build();
 
   _$GBigIntFilter._(
       {this.isNull,
@@ -16347,13 +16321,12 @@ class _$GBigIntFilter extends GBigIntFilter {
       this.greaterThan,
       this.greaterThanOrEqualTo})
       : super._();
-
   @override
   GBigIntFilter rebuild(void Function(GBigIntFilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GBigIntFilterBuilder toBuilder() => new GBigIntFilterBuilder()..replace(this);
+  GBigIntFilterBuilder toBuilder() => GBigIntFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -16417,53 +16390,50 @@ class GBigIntFilterBuilder
   set isNull(bool? isNull) => _$this._isNull = isNull;
 
   GBigIntBuilder? _equalTo;
-  GBigIntBuilder get equalTo => _$this._equalTo ??= new GBigIntBuilder();
+  GBigIntBuilder get equalTo => _$this._equalTo ??= GBigIntBuilder();
   set equalTo(GBigIntBuilder? equalTo) => _$this._equalTo = equalTo;
 
   GBigIntBuilder? _notEqualTo;
-  GBigIntBuilder get notEqualTo => _$this._notEqualTo ??= new GBigIntBuilder();
+  GBigIntBuilder get notEqualTo => _$this._notEqualTo ??= GBigIntBuilder();
   set notEqualTo(GBigIntBuilder? notEqualTo) => _$this._notEqualTo = notEqualTo;
 
   GBigIntBuilder? _distinctFrom;
-  GBigIntBuilder get distinctFrom =>
-      _$this._distinctFrom ??= new GBigIntBuilder();
+  GBigIntBuilder get distinctFrom => _$this._distinctFrom ??= GBigIntBuilder();
   set distinctFrom(GBigIntBuilder? distinctFrom) =>
       _$this._distinctFrom = distinctFrom;
 
   GBigIntBuilder? _notDistinctFrom;
   GBigIntBuilder get notDistinctFrom =>
-      _$this._notDistinctFrom ??= new GBigIntBuilder();
+      _$this._notDistinctFrom ??= GBigIntBuilder();
   set notDistinctFrom(GBigIntBuilder? notDistinctFrom) =>
       _$this._notDistinctFrom = notDistinctFrom;
 
   ListBuilder<GBigInt>? _Gin;
-  ListBuilder<GBigInt> get Gin => _$this._Gin ??= new ListBuilder<GBigInt>();
+  ListBuilder<GBigInt> get Gin => _$this._Gin ??= ListBuilder<GBigInt>();
   set Gin(ListBuilder<GBigInt>? Gin) => _$this._Gin = Gin;
 
   ListBuilder<GBigInt>? _notIn;
-  ListBuilder<GBigInt> get notIn =>
-      _$this._notIn ??= new ListBuilder<GBigInt>();
+  ListBuilder<GBigInt> get notIn => _$this._notIn ??= ListBuilder<GBigInt>();
   set notIn(ListBuilder<GBigInt>? notIn) => _$this._notIn = notIn;
 
   GBigIntBuilder? _lessThan;
-  GBigIntBuilder get lessThan => _$this._lessThan ??= new GBigIntBuilder();
+  GBigIntBuilder get lessThan => _$this._lessThan ??= GBigIntBuilder();
   set lessThan(GBigIntBuilder? lessThan) => _$this._lessThan = lessThan;
 
   GBigIntBuilder? _lessThanOrEqualTo;
   GBigIntBuilder get lessThanOrEqualTo =>
-      _$this._lessThanOrEqualTo ??= new GBigIntBuilder();
+      _$this._lessThanOrEqualTo ??= GBigIntBuilder();
   set lessThanOrEqualTo(GBigIntBuilder? lessThanOrEqualTo) =>
       _$this._lessThanOrEqualTo = lessThanOrEqualTo;
 
   GBigIntBuilder? _greaterThan;
-  GBigIntBuilder get greaterThan =>
-      _$this._greaterThan ??= new GBigIntBuilder();
+  GBigIntBuilder get greaterThan => _$this._greaterThan ??= GBigIntBuilder();
   set greaterThan(GBigIntBuilder? greaterThan) =>
       _$this._greaterThan = greaterThan;
 
   GBigIntBuilder? _greaterThanOrEqualTo;
   GBigIntBuilder get greaterThanOrEqualTo =>
-      _$this._greaterThanOrEqualTo ??= new GBigIntBuilder();
+      _$this._greaterThanOrEqualTo ??= GBigIntBuilder();
   set greaterThanOrEqualTo(GBigIntBuilder? greaterThanOrEqualTo) =>
       _$this._greaterThanOrEqualTo = greaterThanOrEqualTo;
 
@@ -16490,7 +16460,6 @@ class GBigIntFilterBuilder
 
   @override
   void replace(GBigIntFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GBigIntFilter;
   }
 
@@ -16506,18 +16475,19 @@ class GBigIntFilterBuilder
     _$GBigIntFilter _$result;
     try {
       _$result = _$v ??
-          new _$GBigIntFilter._(
-              isNull: isNull,
-              equalTo: _equalTo?.build(),
-              notEqualTo: _notEqualTo?.build(),
-              distinctFrom: _distinctFrom?.build(),
-              notDistinctFrom: _notDistinctFrom?.build(),
-              Gin: _Gin?.build(),
-              notIn: _notIn?.build(),
-              lessThan: _lessThan?.build(),
-              lessThanOrEqualTo: _lessThanOrEqualTo?.build(),
-              greaterThan: _greaterThan?.build(),
-              greaterThanOrEqualTo: _greaterThanOrEqualTo?.build());
+          _$GBigIntFilter._(
+            isNull: isNull,
+            equalTo: _equalTo?.build(),
+            notEqualTo: _notEqualTo?.build(),
+            distinctFrom: _distinctFrom?.build(),
+            notDistinctFrom: _notDistinctFrom?.build(),
+            Gin: _Gin?.build(),
+            notIn: _notIn?.build(),
+            lessThan: _lessThan?.build(),
+            lessThanOrEqualTo: _lessThanOrEqualTo?.build(),
+            greaterThan: _greaterThan?.build(),
+            greaterThanOrEqualTo: _greaterThanOrEqualTo?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -16542,7 +16512,7 @@ class GBigIntFilterBuilder
         _$failedField = 'greaterThanOrEqualTo';
         _greaterThanOrEqualTo?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GBigIntFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -16585,7 +16555,7 @@ class _$GBlockCondition extends GBlockCondition {
   final int? eventsCount;
 
   factory _$GBlockCondition([void Function(GBlockConditionBuilder)? updates]) =>
-      (new GBlockConditionBuilder()..update(updates))._build();
+      (GBlockConditionBuilder()..update(updates))._build();
 
   _$GBlockCondition._(
       {this.id,
@@ -16604,14 +16574,12 @@ class _$GBlockCondition extends GBlockCondition {
       this.callsCount,
       this.eventsCount})
       : super._();
-
   @override
   GBlockCondition rebuild(void Function(GBlockConditionBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GBlockConditionBuilder toBuilder() =>
-      new GBlockConditionBuilder()..replace(this);
+  GBlockConditionBuilder toBuilder() => GBlockConditionBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -16724,8 +16692,7 @@ class GBlockConditionBuilder
   set implVersion(int? implVersion) => _$this._implVersion = implVersion;
 
   GDatetimeBuilder? _timestamp;
-  GDatetimeBuilder get timestamp =>
-      _$this._timestamp ??= new GDatetimeBuilder();
+  GDatetimeBuilder get timestamp => _$this._timestamp ??= GDatetimeBuilder();
   set timestamp(GDatetimeBuilder? timestamp) => _$this._timestamp = timestamp;
 
   String? _validator;
@@ -16772,7 +16739,6 @@ class GBlockConditionBuilder
 
   @override
   void replace(GBlockCondition other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GBlockCondition;
   }
 
@@ -16788,29 +16754,30 @@ class GBlockConditionBuilder
     _$GBlockCondition _$result;
     try {
       _$result = _$v ??
-          new _$GBlockCondition._(
-              id: id,
-              height: height,
-              hash: hash,
-              parentHash: parentHash,
-              stateRoot: stateRoot,
-              extrinsicsicRoot: extrinsicsicRoot,
-              specName: specName,
-              specVersion: specVersion,
-              implName: implName,
-              implVersion: implVersion,
-              timestamp: _timestamp?.build(),
-              validator: validator,
-              extrinsicsCount: extrinsicsCount,
-              callsCount: callsCount,
-              eventsCount: eventsCount);
+          _$GBlockCondition._(
+            id: id,
+            height: height,
+            hash: hash,
+            parentHash: parentHash,
+            stateRoot: stateRoot,
+            extrinsicsicRoot: extrinsicsicRoot,
+            specName: specName,
+            specVersion: specVersion,
+            implName: implName,
+            implVersion: implVersion,
+            timestamp: _timestamp?.build(),
+            validator: validator,
+            extrinsicsCount: extrinsicsCount,
+            callsCount: callsCount,
+            eventsCount: eventsCount,
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'timestamp';
         _timestamp?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GBlockCondition', _$failedField, e.toString());
       }
       rethrow;
@@ -16861,7 +16828,7 @@ class _$GBlockFilter extends GBlockFilter {
   final GBlockFilter? not;
 
   factory _$GBlockFilter([void Function(GBlockFilterBuilder)? updates]) =>
-      (new GBlockFilterBuilder()..update(updates))._build();
+      (GBlockFilterBuilder()..update(updates))._build();
 
   _$GBlockFilter._(
       {this.id,
@@ -16884,13 +16851,12 @@ class _$GBlockFilter extends GBlockFilter {
       this.or,
       this.not})
       : super._();
-
   @override
   GBlockFilter rebuild(void Function(GBlockFilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GBlockFilterBuilder toBuilder() => new GBlockFilterBuilder()..replace(this);
+  GBlockFilterBuilder toBuilder() => GBlockFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -16974,62 +16940,62 @@ class GBlockFilterBuilder
   _$GBlockFilter? _$v;
 
   GStringFilterBuilder? _id;
-  GStringFilterBuilder get id => _$this._id ??= new GStringFilterBuilder();
+  GStringFilterBuilder get id => _$this._id ??= GStringFilterBuilder();
   set id(GStringFilterBuilder? id) => _$this._id = id;
 
   GIntFilterBuilder? _height;
-  GIntFilterBuilder get height => _$this._height ??= new GIntFilterBuilder();
+  GIntFilterBuilder get height => _$this._height ??= GIntFilterBuilder();
   set height(GIntFilterBuilder? height) => _$this._height = height;
 
   GStringFilterBuilder? _specName;
   GStringFilterBuilder get specName =>
-      _$this._specName ??= new GStringFilterBuilder();
+      _$this._specName ??= GStringFilterBuilder();
   set specName(GStringFilterBuilder? specName) => _$this._specName = specName;
 
   GIntFilterBuilder? _specVersion;
   GIntFilterBuilder get specVersion =>
-      _$this._specVersion ??= new GIntFilterBuilder();
+      _$this._specVersion ??= GIntFilterBuilder();
   set specVersion(GIntFilterBuilder? specVersion) =>
       _$this._specVersion = specVersion;
 
   GStringFilterBuilder? _implName;
   GStringFilterBuilder get implName =>
-      _$this._implName ??= new GStringFilterBuilder();
+      _$this._implName ??= GStringFilterBuilder();
   set implName(GStringFilterBuilder? implName) => _$this._implName = implName;
 
   GIntFilterBuilder? _implVersion;
   GIntFilterBuilder get implVersion =>
-      _$this._implVersion ??= new GIntFilterBuilder();
+      _$this._implVersion ??= GIntFilterBuilder();
   set implVersion(GIntFilterBuilder? implVersion) =>
       _$this._implVersion = implVersion;
 
   GDatetimeFilterBuilder? _timestamp;
   GDatetimeFilterBuilder get timestamp =>
-      _$this._timestamp ??= new GDatetimeFilterBuilder();
+      _$this._timestamp ??= GDatetimeFilterBuilder();
   set timestamp(GDatetimeFilterBuilder? timestamp) =>
       _$this._timestamp = timestamp;
 
   GIntFilterBuilder? _extrinsicsCount;
   GIntFilterBuilder get extrinsicsCount =>
-      _$this._extrinsicsCount ??= new GIntFilterBuilder();
+      _$this._extrinsicsCount ??= GIntFilterBuilder();
   set extrinsicsCount(GIntFilterBuilder? extrinsicsCount) =>
       _$this._extrinsicsCount = extrinsicsCount;
 
   GIntFilterBuilder? _callsCount;
   GIntFilterBuilder get callsCount =>
-      _$this._callsCount ??= new GIntFilterBuilder();
+      _$this._callsCount ??= GIntFilterBuilder();
   set callsCount(GIntFilterBuilder? callsCount) =>
       _$this._callsCount = callsCount;
 
   GIntFilterBuilder? _eventsCount;
   GIntFilterBuilder get eventsCount =>
-      _$this._eventsCount ??= new GIntFilterBuilder();
+      _$this._eventsCount ??= GIntFilterBuilder();
   set eventsCount(GIntFilterBuilder? eventsCount) =>
       _$this._eventsCount = eventsCount;
 
   GBlockToManyEventFilterBuilder? _events;
   GBlockToManyEventFilterBuilder get events =>
-      _$this._events ??= new GBlockToManyEventFilterBuilder();
+      _$this._events ??= GBlockToManyEventFilterBuilder();
   set events(GBlockToManyEventFilterBuilder? events) => _$this._events = events;
 
   bool? _eventsExist;
@@ -17038,7 +17004,7 @@ class GBlockFilterBuilder
 
   GBlockToManyCallFilterBuilder? _calls;
   GBlockToManyCallFilterBuilder get calls =>
-      _$this._calls ??= new GBlockToManyCallFilterBuilder();
+      _$this._calls ??= GBlockToManyCallFilterBuilder();
   set calls(GBlockToManyCallFilterBuilder? calls) => _$this._calls = calls;
 
   bool? _callsExist;
@@ -17047,7 +17013,7 @@ class GBlockFilterBuilder
 
   GBlockToManyExtrinsicFilterBuilder? _extrinsics;
   GBlockToManyExtrinsicFilterBuilder get extrinsics =>
-      _$this._extrinsics ??= new GBlockToManyExtrinsicFilterBuilder();
+      _$this._extrinsics ??= GBlockToManyExtrinsicFilterBuilder();
   set extrinsics(GBlockToManyExtrinsicFilterBuilder? extrinsics) =>
       _$this._extrinsics = extrinsics;
 
@@ -17058,16 +17024,16 @@ class GBlockFilterBuilder
 
   ListBuilder<GBlockFilter>? _and;
   ListBuilder<GBlockFilter> get and =>
-      _$this._and ??= new ListBuilder<GBlockFilter>();
+      _$this._and ??= ListBuilder<GBlockFilter>();
   set and(ListBuilder<GBlockFilter>? and) => _$this._and = and;
 
   ListBuilder<GBlockFilter>? _or;
   ListBuilder<GBlockFilter> get or =>
-      _$this._or ??= new ListBuilder<GBlockFilter>();
+      _$this._or ??= ListBuilder<GBlockFilter>();
   set or(ListBuilder<GBlockFilter>? or) => _$this._or = or;
 
   GBlockFilterBuilder? _not;
-  GBlockFilterBuilder get not => _$this._not ??= new GBlockFilterBuilder();
+  GBlockFilterBuilder get not => _$this._not ??= GBlockFilterBuilder();
   set not(GBlockFilterBuilder? not) => _$this._not = not;
 
   GBlockFilterBuilder();
@@ -17101,7 +17067,6 @@ class GBlockFilterBuilder
 
   @override
   void replace(GBlockFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GBlockFilter;
   }
 
@@ -17117,26 +17082,27 @@ class GBlockFilterBuilder
     _$GBlockFilter _$result;
     try {
       _$result = _$v ??
-          new _$GBlockFilter._(
-              id: _id?.build(),
-              height: _height?.build(),
-              specName: _specName?.build(),
-              specVersion: _specVersion?.build(),
-              implName: _implName?.build(),
-              implVersion: _implVersion?.build(),
-              timestamp: _timestamp?.build(),
-              extrinsicsCount: _extrinsicsCount?.build(),
-              callsCount: _callsCount?.build(),
-              eventsCount: _eventsCount?.build(),
-              events: _events?.build(),
-              eventsExist: eventsExist,
-              calls: _calls?.build(),
-              callsExist: callsExist,
-              extrinsics: _extrinsics?.build(),
-              extrinsicsExist: extrinsicsExist,
-              and: _and?.build(),
-              or: _or?.build(),
-              not: _not?.build());
+          _$GBlockFilter._(
+            id: _id?.build(),
+            height: _height?.build(),
+            specName: _specName?.build(),
+            specVersion: _specVersion?.build(),
+            implName: _implName?.build(),
+            implVersion: _implVersion?.build(),
+            timestamp: _timestamp?.build(),
+            extrinsicsCount: _extrinsicsCount?.build(),
+            callsCount: _callsCount?.build(),
+            eventsCount: _eventsCount?.build(),
+            events: _events?.build(),
+            eventsExist: eventsExist,
+            calls: _calls?.build(),
+            callsExist: callsExist,
+            extrinsics: _extrinsics?.build(),
+            extrinsicsExist: extrinsicsExist,
+            and: _and?.build(),
+            or: _or?.build(),
+            not: _not?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -17176,7 +17142,7 @@ class GBlockFilterBuilder
         _$failedField = 'not';
         _not?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GBlockFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -17196,10 +17162,9 @@ class _$GBlockToManyCallFilter extends GBlockToManyCallFilter {
 
   factory _$GBlockToManyCallFilter(
           [void Function(GBlockToManyCallFilterBuilder)? updates]) =>
-      (new GBlockToManyCallFilterBuilder()..update(updates))._build();
+      (GBlockToManyCallFilterBuilder()..update(updates))._build();
 
   _$GBlockToManyCallFilter._({this.every, this.some, this.none}) : super._();
-
   @override
   GBlockToManyCallFilter rebuild(
           void Function(GBlockToManyCallFilterBuilder) updates) =>
@@ -17207,7 +17172,7 @@ class _$GBlockToManyCallFilter extends GBlockToManyCallFilter {
 
   @override
   GBlockToManyCallFilterBuilder toBuilder() =>
-      new GBlockToManyCallFilterBuilder()..replace(this);
+      GBlockToManyCallFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -17243,15 +17208,15 @@ class GBlockToManyCallFilterBuilder
   _$GBlockToManyCallFilter? _$v;
 
   GCallFilterBuilder? _every;
-  GCallFilterBuilder get every => _$this._every ??= new GCallFilterBuilder();
+  GCallFilterBuilder get every => _$this._every ??= GCallFilterBuilder();
   set every(GCallFilterBuilder? every) => _$this._every = every;
 
   GCallFilterBuilder? _some;
-  GCallFilterBuilder get some => _$this._some ??= new GCallFilterBuilder();
+  GCallFilterBuilder get some => _$this._some ??= GCallFilterBuilder();
   set some(GCallFilterBuilder? some) => _$this._some = some;
 
   GCallFilterBuilder? _none;
-  GCallFilterBuilder get none => _$this._none ??= new GCallFilterBuilder();
+  GCallFilterBuilder get none => _$this._none ??= GCallFilterBuilder();
   set none(GCallFilterBuilder? none) => _$this._none = none;
 
   GBlockToManyCallFilterBuilder();
@@ -17269,7 +17234,6 @@ class GBlockToManyCallFilterBuilder
 
   @override
   void replace(GBlockToManyCallFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GBlockToManyCallFilter;
   }
 
@@ -17285,10 +17249,11 @@ class GBlockToManyCallFilterBuilder
     _$GBlockToManyCallFilter _$result;
     try {
       _$result = _$v ??
-          new _$GBlockToManyCallFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GBlockToManyCallFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -17299,7 +17264,7 @@ class GBlockToManyCallFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GBlockToManyCallFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -17319,10 +17284,9 @@ class _$GBlockToManyEventFilter extends GBlockToManyEventFilter {
 
   factory _$GBlockToManyEventFilter(
           [void Function(GBlockToManyEventFilterBuilder)? updates]) =>
-      (new GBlockToManyEventFilterBuilder()..update(updates))._build();
+      (GBlockToManyEventFilterBuilder()..update(updates))._build();
 
   _$GBlockToManyEventFilter._({this.every, this.some, this.none}) : super._();
-
   @override
   GBlockToManyEventFilter rebuild(
           void Function(GBlockToManyEventFilterBuilder) updates) =>
@@ -17330,7 +17294,7 @@ class _$GBlockToManyEventFilter extends GBlockToManyEventFilter {
 
   @override
   GBlockToManyEventFilterBuilder toBuilder() =>
-      new GBlockToManyEventFilterBuilder()..replace(this);
+      GBlockToManyEventFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -17367,15 +17331,15 @@ class GBlockToManyEventFilterBuilder
   _$GBlockToManyEventFilter? _$v;
 
   GEventFilterBuilder? _every;
-  GEventFilterBuilder get every => _$this._every ??= new GEventFilterBuilder();
+  GEventFilterBuilder get every => _$this._every ??= GEventFilterBuilder();
   set every(GEventFilterBuilder? every) => _$this._every = every;
 
   GEventFilterBuilder? _some;
-  GEventFilterBuilder get some => _$this._some ??= new GEventFilterBuilder();
+  GEventFilterBuilder get some => _$this._some ??= GEventFilterBuilder();
   set some(GEventFilterBuilder? some) => _$this._some = some;
 
   GEventFilterBuilder? _none;
-  GEventFilterBuilder get none => _$this._none ??= new GEventFilterBuilder();
+  GEventFilterBuilder get none => _$this._none ??= GEventFilterBuilder();
   set none(GEventFilterBuilder? none) => _$this._none = none;
 
   GBlockToManyEventFilterBuilder();
@@ -17393,7 +17357,6 @@ class GBlockToManyEventFilterBuilder
 
   @override
   void replace(GBlockToManyEventFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GBlockToManyEventFilter;
   }
 
@@ -17409,10 +17372,11 @@ class GBlockToManyEventFilterBuilder
     _$GBlockToManyEventFilter _$result;
     try {
       _$result = _$v ??
-          new _$GBlockToManyEventFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GBlockToManyEventFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -17423,7 +17387,7 @@ class GBlockToManyEventFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GBlockToManyEventFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -17443,11 +17407,10 @@ class _$GBlockToManyExtrinsicFilter extends GBlockToManyExtrinsicFilter {
 
   factory _$GBlockToManyExtrinsicFilter(
           [void Function(GBlockToManyExtrinsicFilterBuilder)? updates]) =>
-      (new GBlockToManyExtrinsicFilterBuilder()..update(updates))._build();
+      (GBlockToManyExtrinsicFilterBuilder()..update(updates))._build();
 
   _$GBlockToManyExtrinsicFilter._({this.every, this.some, this.none})
       : super._();
-
   @override
   GBlockToManyExtrinsicFilter rebuild(
           void Function(GBlockToManyExtrinsicFilterBuilder) updates) =>
@@ -17455,7 +17418,7 @@ class _$GBlockToManyExtrinsicFilter extends GBlockToManyExtrinsicFilter {
 
   @override
   GBlockToManyExtrinsicFilterBuilder toBuilder() =>
-      new GBlockToManyExtrinsicFilterBuilder()..replace(this);
+      GBlockToManyExtrinsicFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -17494,17 +17457,17 @@ class GBlockToManyExtrinsicFilterBuilder
 
   GExtrinsicFilterBuilder? _every;
   GExtrinsicFilterBuilder get every =>
-      _$this._every ??= new GExtrinsicFilterBuilder();
+      _$this._every ??= GExtrinsicFilterBuilder();
   set every(GExtrinsicFilterBuilder? every) => _$this._every = every;
 
   GExtrinsicFilterBuilder? _some;
   GExtrinsicFilterBuilder get some =>
-      _$this._some ??= new GExtrinsicFilterBuilder();
+      _$this._some ??= GExtrinsicFilterBuilder();
   set some(GExtrinsicFilterBuilder? some) => _$this._some = some;
 
   GExtrinsicFilterBuilder? _none;
   GExtrinsicFilterBuilder get none =>
-      _$this._none ??= new GExtrinsicFilterBuilder();
+      _$this._none ??= GExtrinsicFilterBuilder();
   set none(GExtrinsicFilterBuilder? none) => _$this._none = none;
 
   GBlockToManyExtrinsicFilterBuilder();
@@ -17522,7 +17485,6 @@ class GBlockToManyExtrinsicFilterBuilder
 
   @override
   void replace(GBlockToManyExtrinsicFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GBlockToManyExtrinsicFilter;
   }
 
@@ -17538,10 +17500,11 @@ class GBlockToManyExtrinsicFilterBuilder
     _$GBlockToManyExtrinsicFilter _$result;
     try {
       _$result = _$v ??
-          new _$GBlockToManyExtrinsicFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GBlockToManyExtrinsicFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -17552,7 +17515,7 @@ class GBlockToManyExtrinsicFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GBlockToManyExtrinsicFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -17587,7 +17550,7 @@ class _$GBooleanFilter extends GBooleanFilter {
   final bool? greaterThanOrEqualTo;
 
   factory _$GBooleanFilter([void Function(GBooleanFilterBuilder)? updates]) =>
-      (new GBooleanFilterBuilder()..update(updates))._build();
+      (GBooleanFilterBuilder()..update(updates))._build();
 
   _$GBooleanFilter._(
       {this.isNull,
@@ -17602,14 +17565,12 @@ class _$GBooleanFilter extends GBooleanFilter {
       this.greaterThan,
       this.greaterThanOrEqualTo})
       : super._();
-
   @override
   GBooleanFilter rebuild(void Function(GBooleanFilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GBooleanFilterBuilder toBuilder() =>
-      new GBooleanFilterBuilder()..replace(this);
+  GBooleanFilterBuilder toBuilder() => GBooleanFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -17690,11 +17651,11 @@ class GBooleanFilterBuilder
       _$this._notDistinctFrom = notDistinctFrom;
 
   ListBuilder<bool>? _Gin;
-  ListBuilder<bool> get Gin => _$this._Gin ??= new ListBuilder<bool>();
+  ListBuilder<bool> get Gin => _$this._Gin ??= ListBuilder<bool>();
   set Gin(ListBuilder<bool>? Gin) => _$this._Gin = Gin;
 
   ListBuilder<bool>? _notIn;
-  ListBuilder<bool> get notIn => _$this._notIn ??= new ListBuilder<bool>();
+  ListBuilder<bool> get notIn => _$this._notIn ??= ListBuilder<bool>();
   set notIn(ListBuilder<bool>? notIn) => _$this._notIn = notIn;
 
   bool? _lessThan;
@@ -17738,7 +17699,6 @@ class GBooleanFilterBuilder
 
   @override
   void replace(GBooleanFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GBooleanFilter;
   }
 
@@ -17754,18 +17714,19 @@ class GBooleanFilterBuilder
     _$GBooleanFilter _$result;
     try {
       _$result = _$v ??
-          new _$GBooleanFilter._(
-              isNull: isNull,
-              equalTo: equalTo,
-              notEqualTo: notEqualTo,
-              distinctFrom: distinctFrom,
-              notDistinctFrom: notDistinctFrom,
-              Gin: _Gin?.build(),
-              notIn: _notIn?.build(),
-              lessThan: lessThan,
-              lessThanOrEqualTo: lessThanOrEqualTo,
-              greaterThan: greaterThan,
-              greaterThanOrEqualTo: greaterThanOrEqualTo);
+          _$GBooleanFilter._(
+            isNull: isNull,
+            equalTo: equalTo,
+            notEqualTo: notEqualTo,
+            distinctFrom: distinctFrom,
+            notDistinctFrom: notDistinctFrom,
+            Gin: _Gin?.build(),
+            notIn: _notIn?.build(),
+            lessThan: lessThan,
+            lessThanOrEqualTo: lessThanOrEqualTo,
+            greaterThan: greaterThan,
+            greaterThanOrEqualTo: greaterThanOrEqualTo,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -17774,7 +17735,7 @@ class GBooleanFilterBuilder
         _$failedField = 'notIn';
         _notIn?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GBooleanFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -17809,7 +17770,7 @@ class _$GCallCondition extends GCallCondition {
   final String? parentId;
 
   factory _$GCallCondition([void Function(GCallConditionBuilder)? updates]) =>
-      (new GCallConditionBuilder()..update(updates))._build();
+      (GCallConditionBuilder()..update(updates))._build();
 
   _$GCallCondition._(
       {this.id,
@@ -17824,14 +17785,12 @@ class _$GCallCondition extends GCallCondition {
       this.extrinsicId,
       this.parentId})
       : super._();
-
   @override
   GCallCondition rebuild(void Function(GCallConditionBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GCallConditionBuilder toBuilder() =>
-      new GCallConditionBuilder()..replace(this);
+  GCallConditionBuilder toBuilder() => GCallConditionBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -17895,7 +17854,7 @@ class GCallConditionBuilder
   set id(String? id) => _$this._id = id;
 
   ListBuilder<int?>? _address;
-  ListBuilder<int?> get address => _$this._address ??= new ListBuilder<int?>();
+  ListBuilder<int?> get address => _$this._address ??= ListBuilder<int?>();
   set address(ListBuilder<int?>? address) => _$this._address = address;
 
   bool? _success;
@@ -17903,7 +17862,7 @@ class GCallConditionBuilder
   set success(bool? success) => _$this._success = success;
 
   GJSONBuilder? _error;
-  GJSONBuilder get error => _$this._error ??= new GJSONBuilder();
+  GJSONBuilder get error => _$this._error ??= GJSONBuilder();
   set error(GJSONBuilder? error) => _$this._error = error;
 
   String? _pallet;
@@ -17915,12 +17874,12 @@ class GCallConditionBuilder
   set name(String? name) => _$this._name = name;
 
   GJSONBuilder? _args;
-  GJSONBuilder get args => _$this._args ??= new GJSONBuilder();
+  GJSONBuilder get args => _$this._args ??= GJSONBuilder();
   set args(GJSONBuilder? args) => _$this._args = args;
 
   ListBuilder<String?>? _argsStr;
   ListBuilder<String?> get argsStr =>
-      _$this._argsStr ??= new ListBuilder<String?>();
+      _$this._argsStr ??= ListBuilder<String?>();
   set argsStr(ListBuilder<String?>? argsStr) => _$this._argsStr = argsStr;
 
   String? _blockId;
@@ -17958,7 +17917,6 @@ class GCallConditionBuilder
 
   @override
   void replace(GCallCondition other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GCallCondition;
   }
 
@@ -17974,18 +17932,19 @@ class GCallConditionBuilder
     _$GCallCondition _$result;
     try {
       _$result = _$v ??
-          new _$GCallCondition._(
-              id: id,
-              address: _address?.build(),
-              success: success,
-              error: _error?.build(),
-              pallet: pallet,
-              name: name,
-              args: _args?.build(),
-              argsStr: _argsStr?.build(),
-              blockId: blockId,
-              extrinsicId: extrinsicId,
-              parentId: parentId);
+          _$GCallCondition._(
+            id: id,
+            address: _address?.build(),
+            success: success,
+            error: _error?.build(),
+            pallet: pallet,
+            name: name,
+            args: _args?.build(),
+            argsStr: _argsStr?.build(),
+            blockId: blockId,
+            extrinsicId: extrinsicId,
+            parentId: parentId,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -18000,7 +17959,7 @@ class GCallConditionBuilder
         _$failedField = 'argsStr';
         _argsStr?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GCallCondition', _$failedField, e.toString());
       }
       rethrow;
@@ -18065,7 +18024,7 @@ class _$GCallFilter extends GCallFilter {
   final GCallFilter? not;
 
   factory _$GCallFilter([void Function(GCallFilterBuilder)? updates]) =>
-      (new GCallFilterBuilder()..update(updates))._build();
+      (GCallFilterBuilder()..update(updates))._build();
 
   _$GCallFilter._(
       {this.id,
@@ -18095,13 +18054,12 @@ class _$GCallFilter extends GCallFilter {
       this.or,
       this.not})
       : super._();
-
   @override
   GCallFilter rebuild(void Function(GCallFilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GCallFilterBuilder toBuilder() => new GCallFilterBuilder()..replace(this);
+  GCallFilterBuilder toBuilder() => GCallFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -18205,60 +18163,59 @@ class GCallFilterBuilder implements Builder<GCallFilter, GCallFilterBuilder> {
   _$GCallFilter? _$v;
 
   GStringFilterBuilder? _id;
-  GStringFilterBuilder get id => _$this._id ??= new GStringFilterBuilder();
+  GStringFilterBuilder get id => _$this._id ??= GStringFilterBuilder();
   set id(GStringFilterBuilder? id) => _$this._id = id;
 
   GIntListFilterBuilder? _address;
   GIntListFilterBuilder get address =>
-      _$this._address ??= new GIntListFilterBuilder();
+      _$this._address ??= GIntListFilterBuilder();
   set address(GIntListFilterBuilder? address) => _$this._address = address;
 
   GBooleanFilterBuilder? _success;
   GBooleanFilterBuilder get success =>
-      _$this._success ??= new GBooleanFilterBuilder();
+      _$this._success ??= GBooleanFilterBuilder();
   set success(GBooleanFilterBuilder? success) => _$this._success = success;
 
   GJSONFilterBuilder? _error;
-  GJSONFilterBuilder get error => _$this._error ??= new GJSONFilterBuilder();
+  GJSONFilterBuilder get error => _$this._error ??= GJSONFilterBuilder();
   set error(GJSONFilterBuilder? error) => _$this._error = error;
 
   GStringFilterBuilder? _pallet;
-  GStringFilterBuilder get pallet =>
-      _$this._pallet ??= new GStringFilterBuilder();
+  GStringFilterBuilder get pallet => _$this._pallet ??= GStringFilterBuilder();
   set pallet(GStringFilterBuilder? pallet) => _$this._pallet = pallet;
 
   GStringFilterBuilder? _name;
-  GStringFilterBuilder get name => _$this._name ??= new GStringFilterBuilder();
+  GStringFilterBuilder get name => _$this._name ??= GStringFilterBuilder();
   set name(GStringFilterBuilder? name) => _$this._name = name;
 
   GJSONFilterBuilder? _args;
-  GJSONFilterBuilder get args => _$this._args ??= new GJSONFilterBuilder();
+  GJSONFilterBuilder get args => _$this._args ??= GJSONFilterBuilder();
   set args(GJSONFilterBuilder? args) => _$this._args = args;
 
   GStringListFilterBuilder? _argsStr;
   GStringListFilterBuilder get argsStr =>
-      _$this._argsStr ??= new GStringListFilterBuilder();
+      _$this._argsStr ??= GStringListFilterBuilder();
   set argsStr(GStringListFilterBuilder? argsStr) => _$this._argsStr = argsStr;
 
   GStringFilterBuilder? _blockId;
   GStringFilterBuilder get blockId =>
-      _$this._blockId ??= new GStringFilterBuilder();
+      _$this._blockId ??= GStringFilterBuilder();
   set blockId(GStringFilterBuilder? blockId) => _$this._blockId = blockId;
 
   GStringFilterBuilder? _extrinsicId;
   GStringFilterBuilder get extrinsicId =>
-      _$this._extrinsicId ??= new GStringFilterBuilder();
+      _$this._extrinsicId ??= GStringFilterBuilder();
   set extrinsicId(GStringFilterBuilder? extrinsicId) =>
       _$this._extrinsicId = extrinsicId;
 
   GStringFilterBuilder? _parentId;
   GStringFilterBuilder get parentId =>
-      _$this._parentId ??= new GStringFilterBuilder();
+      _$this._parentId ??= GStringFilterBuilder();
   set parentId(GStringFilterBuilder? parentId) => _$this._parentId = parentId;
 
   GCallToManyEventFilterBuilder? _events;
   GCallToManyEventFilterBuilder get events =>
-      _$this._events ??= new GCallToManyEventFilterBuilder();
+      _$this._events ??= GCallToManyEventFilterBuilder();
   set events(GCallToManyEventFilterBuilder? events) => _$this._events = events;
 
   bool? _eventsExist;
@@ -18267,7 +18224,7 @@ class GCallFilterBuilder implements Builder<GCallFilter, GCallFilterBuilder> {
 
   GCallToManyCallFilterBuilder? _childCalls;
   GCallToManyCallFilterBuilder get childCalls =>
-      _$this._childCalls ??= new GCallToManyCallFilterBuilder();
+      _$this._childCalls ??= GCallToManyCallFilterBuilder();
   set childCalls(GCallToManyCallFilterBuilder? childCalls) =>
       _$this._childCalls = childCalls;
 
@@ -18278,7 +18235,7 @@ class GCallFilterBuilder implements Builder<GCallFilter, GCallFilterBuilder> {
 
   GCallToManyExtrinsicFilterBuilder? _extrinsics;
   GCallToManyExtrinsicFilterBuilder get extrinsics =>
-      _$this._extrinsics ??= new GCallToManyExtrinsicFilterBuilder();
+      _$this._extrinsics ??= GCallToManyExtrinsicFilterBuilder();
   set extrinsics(GCallToManyExtrinsicFilterBuilder? extrinsics) =>
       _$this._extrinsics = extrinsics;
 
@@ -18288,7 +18245,7 @@ class GCallFilterBuilder implements Builder<GCallFilter, GCallFilterBuilder> {
       _$this._extrinsicsExist = extrinsicsExist;
 
   GBlockFilterBuilder? _block;
-  GBlockFilterBuilder get block => _$this._block ??= new GBlockFilterBuilder();
+  GBlockFilterBuilder get block => _$this._block ??= GBlockFilterBuilder();
   set block(GBlockFilterBuilder? block) => _$this._block = block;
 
   bool? _blockExists;
@@ -18297,7 +18254,7 @@ class GCallFilterBuilder implements Builder<GCallFilter, GCallFilterBuilder> {
 
   GExtrinsicFilterBuilder? _extrinsic;
   GExtrinsicFilterBuilder get extrinsic =>
-      _$this._extrinsic ??= new GExtrinsicFilterBuilder();
+      _$this._extrinsic ??= GExtrinsicFilterBuilder();
   set extrinsic(GExtrinsicFilterBuilder? extrinsic) =>
       _$this._extrinsic = extrinsic;
 
@@ -18307,7 +18264,7 @@ class GCallFilterBuilder implements Builder<GCallFilter, GCallFilterBuilder> {
       _$this._extrinsicExists = extrinsicExists;
 
   GCallFilterBuilder? _parent;
-  GCallFilterBuilder get parent => _$this._parent ??= new GCallFilterBuilder();
+  GCallFilterBuilder get parent => _$this._parent ??= GCallFilterBuilder();
   set parent(GCallFilterBuilder? parent) => _$this._parent = parent;
 
   bool? _parentExists;
@@ -18316,16 +18273,15 @@ class GCallFilterBuilder implements Builder<GCallFilter, GCallFilterBuilder> {
 
   ListBuilder<GCallFilter>? _and;
   ListBuilder<GCallFilter> get and =>
-      _$this._and ??= new ListBuilder<GCallFilter>();
+      _$this._and ??= ListBuilder<GCallFilter>();
   set and(ListBuilder<GCallFilter>? and) => _$this._and = and;
 
   ListBuilder<GCallFilter>? _or;
-  ListBuilder<GCallFilter> get or =>
-      _$this._or ??= new ListBuilder<GCallFilter>();
+  ListBuilder<GCallFilter> get or => _$this._or ??= ListBuilder<GCallFilter>();
   set or(ListBuilder<GCallFilter>? or) => _$this._or = or;
 
   GCallFilterBuilder? _not;
-  GCallFilterBuilder get not => _$this._not ??= new GCallFilterBuilder();
+  GCallFilterBuilder get not => _$this._not ??= GCallFilterBuilder();
   set not(GCallFilterBuilder? not) => _$this._not = not;
 
   GCallFilterBuilder();
@@ -18366,7 +18322,6 @@ class GCallFilterBuilder implements Builder<GCallFilter, GCallFilterBuilder> {
 
   @override
   void replace(GCallFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GCallFilter;
   }
 
@@ -18382,33 +18337,34 @@ class GCallFilterBuilder implements Builder<GCallFilter, GCallFilterBuilder> {
     _$GCallFilter _$result;
     try {
       _$result = _$v ??
-          new _$GCallFilter._(
-              id: _id?.build(),
-              address: _address?.build(),
-              success: _success?.build(),
-              error: _error?.build(),
-              pallet: _pallet?.build(),
-              name: _name?.build(),
-              args: _args?.build(),
-              argsStr: _argsStr?.build(),
-              blockId: _blockId?.build(),
-              extrinsicId: _extrinsicId?.build(),
-              parentId: _parentId?.build(),
-              events: _events?.build(),
-              eventsExist: eventsExist,
-              childCalls: _childCalls?.build(),
-              childCallsExist: childCallsExist,
-              extrinsics: _extrinsics?.build(),
-              extrinsicsExist: extrinsicsExist,
-              block: _block?.build(),
-              blockExists: blockExists,
-              extrinsic: _extrinsic?.build(),
-              extrinsicExists: extrinsicExists,
-              parent: _parent?.build(),
-              parentExists: parentExists,
-              and: _and?.build(),
-              or: _or?.build(),
-              not: _not?.build());
+          _$GCallFilter._(
+            id: _id?.build(),
+            address: _address?.build(),
+            success: _success?.build(),
+            error: _error?.build(),
+            pallet: _pallet?.build(),
+            name: _name?.build(),
+            args: _args?.build(),
+            argsStr: _argsStr?.build(),
+            blockId: _blockId?.build(),
+            extrinsicId: _extrinsicId?.build(),
+            parentId: _parentId?.build(),
+            events: _events?.build(),
+            eventsExist: eventsExist,
+            childCalls: _childCalls?.build(),
+            childCallsExist: childCallsExist,
+            extrinsics: _extrinsics?.build(),
+            extrinsicsExist: extrinsicsExist,
+            block: _block?.build(),
+            blockExists: blockExists,
+            extrinsic: _extrinsic?.build(),
+            extrinsicExists: extrinsicExists,
+            parent: _parent?.build(),
+            parentExists: parentExists,
+            and: _and?.build(),
+            or: _or?.build(),
+            not: _not?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -18459,7 +18415,7 @@ class GCallFilterBuilder implements Builder<GCallFilter, GCallFilterBuilder> {
         _$failedField = 'not';
         _not?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GCallFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -18479,10 +18435,9 @@ class _$GCallToManyCallFilter extends GCallToManyCallFilter {
 
   factory _$GCallToManyCallFilter(
           [void Function(GCallToManyCallFilterBuilder)? updates]) =>
-      (new GCallToManyCallFilterBuilder()..update(updates))._build();
+      (GCallToManyCallFilterBuilder()..update(updates))._build();
 
   _$GCallToManyCallFilter._({this.every, this.some, this.none}) : super._();
-
   @override
   GCallToManyCallFilter rebuild(
           void Function(GCallToManyCallFilterBuilder) updates) =>
@@ -18490,7 +18445,7 @@ class _$GCallToManyCallFilter extends GCallToManyCallFilter {
 
   @override
   GCallToManyCallFilterBuilder toBuilder() =>
-      new GCallToManyCallFilterBuilder()..replace(this);
+      GCallToManyCallFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -18526,15 +18481,15 @@ class GCallToManyCallFilterBuilder
   _$GCallToManyCallFilter? _$v;
 
   GCallFilterBuilder? _every;
-  GCallFilterBuilder get every => _$this._every ??= new GCallFilterBuilder();
+  GCallFilterBuilder get every => _$this._every ??= GCallFilterBuilder();
   set every(GCallFilterBuilder? every) => _$this._every = every;
 
   GCallFilterBuilder? _some;
-  GCallFilterBuilder get some => _$this._some ??= new GCallFilterBuilder();
+  GCallFilterBuilder get some => _$this._some ??= GCallFilterBuilder();
   set some(GCallFilterBuilder? some) => _$this._some = some;
 
   GCallFilterBuilder? _none;
-  GCallFilterBuilder get none => _$this._none ??= new GCallFilterBuilder();
+  GCallFilterBuilder get none => _$this._none ??= GCallFilterBuilder();
   set none(GCallFilterBuilder? none) => _$this._none = none;
 
   GCallToManyCallFilterBuilder();
@@ -18552,7 +18507,6 @@ class GCallToManyCallFilterBuilder
 
   @override
   void replace(GCallToManyCallFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GCallToManyCallFilter;
   }
 
@@ -18568,10 +18522,11 @@ class GCallToManyCallFilterBuilder
     _$GCallToManyCallFilter _$result;
     try {
       _$result = _$v ??
-          new _$GCallToManyCallFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GCallToManyCallFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -18582,7 +18537,7 @@ class GCallToManyCallFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GCallToManyCallFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -18602,10 +18557,9 @@ class _$GCallToManyEventFilter extends GCallToManyEventFilter {
 
   factory _$GCallToManyEventFilter(
           [void Function(GCallToManyEventFilterBuilder)? updates]) =>
-      (new GCallToManyEventFilterBuilder()..update(updates))._build();
+      (GCallToManyEventFilterBuilder()..update(updates))._build();
 
   _$GCallToManyEventFilter._({this.every, this.some, this.none}) : super._();
-
   @override
   GCallToManyEventFilter rebuild(
           void Function(GCallToManyEventFilterBuilder) updates) =>
@@ -18613,7 +18567,7 @@ class _$GCallToManyEventFilter extends GCallToManyEventFilter {
 
   @override
   GCallToManyEventFilterBuilder toBuilder() =>
-      new GCallToManyEventFilterBuilder()..replace(this);
+      GCallToManyEventFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -18649,15 +18603,15 @@ class GCallToManyEventFilterBuilder
   _$GCallToManyEventFilter? _$v;
 
   GEventFilterBuilder? _every;
-  GEventFilterBuilder get every => _$this._every ??= new GEventFilterBuilder();
+  GEventFilterBuilder get every => _$this._every ??= GEventFilterBuilder();
   set every(GEventFilterBuilder? every) => _$this._every = every;
 
   GEventFilterBuilder? _some;
-  GEventFilterBuilder get some => _$this._some ??= new GEventFilterBuilder();
+  GEventFilterBuilder get some => _$this._some ??= GEventFilterBuilder();
   set some(GEventFilterBuilder? some) => _$this._some = some;
 
   GEventFilterBuilder? _none;
-  GEventFilterBuilder get none => _$this._none ??= new GEventFilterBuilder();
+  GEventFilterBuilder get none => _$this._none ??= GEventFilterBuilder();
   set none(GEventFilterBuilder? none) => _$this._none = none;
 
   GCallToManyEventFilterBuilder();
@@ -18675,7 +18629,6 @@ class GCallToManyEventFilterBuilder
 
   @override
   void replace(GCallToManyEventFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GCallToManyEventFilter;
   }
 
@@ -18691,10 +18644,11 @@ class GCallToManyEventFilterBuilder
     _$GCallToManyEventFilter _$result;
     try {
       _$result = _$v ??
-          new _$GCallToManyEventFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GCallToManyEventFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -18705,7 +18659,7 @@ class GCallToManyEventFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GCallToManyEventFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -18725,11 +18679,10 @@ class _$GCallToManyExtrinsicFilter extends GCallToManyExtrinsicFilter {
 
   factory _$GCallToManyExtrinsicFilter(
           [void Function(GCallToManyExtrinsicFilterBuilder)? updates]) =>
-      (new GCallToManyExtrinsicFilterBuilder()..update(updates))._build();
+      (GCallToManyExtrinsicFilterBuilder()..update(updates))._build();
 
   _$GCallToManyExtrinsicFilter._({this.every, this.some, this.none})
       : super._();
-
   @override
   GCallToManyExtrinsicFilter rebuild(
           void Function(GCallToManyExtrinsicFilterBuilder) updates) =>
@@ -18737,7 +18690,7 @@ class _$GCallToManyExtrinsicFilter extends GCallToManyExtrinsicFilter {
 
   @override
   GCallToManyExtrinsicFilterBuilder toBuilder() =>
-      new GCallToManyExtrinsicFilterBuilder()..replace(this);
+      GCallToManyExtrinsicFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -18775,17 +18728,17 @@ class GCallToManyExtrinsicFilterBuilder
 
   GExtrinsicFilterBuilder? _every;
   GExtrinsicFilterBuilder get every =>
-      _$this._every ??= new GExtrinsicFilterBuilder();
+      _$this._every ??= GExtrinsicFilterBuilder();
   set every(GExtrinsicFilterBuilder? every) => _$this._every = every;
 
   GExtrinsicFilterBuilder? _some;
   GExtrinsicFilterBuilder get some =>
-      _$this._some ??= new GExtrinsicFilterBuilder();
+      _$this._some ??= GExtrinsicFilterBuilder();
   set some(GExtrinsicFilterBuilder? some) => _$this._some = some;
 
   GExtrinsicFilterBuilder? _none;
   GExtrinsicFilterBuilder get none =>
-      _$this._none ??= new GExtrinsicFilterBuilder();
+      _$this._none ??= GExtrinsicFilterBuilder();
   set none(GExtrinsicFilterBuilder? none) => _$this._none = none;
 
   GCallToManyExtrinsicFilterBuilder();
@@ -18803,7 +18756,6 @@ class GCallToManyExtrinsicFilterBuilder
 
   @override
   void replace(GCallToManyExtrinsicFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GCallToManyExtrinsicFilter;
   }
 
@@ -18819,10 +18771,11 @@ class GCallToManyExtrinsicFilterBuilder
     _$GCallToManyExtrinsicFilter _$result;
     try {
       _$result = _$v ??
-          new _$GCallToManyExtrinsicFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GCallToManyExtrinsicFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -18833,7 +18786,7 @@ class GCallToManyExtrinsicFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GCallToManyExtrinsicFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -18864,7 +18817,7 @@ class _$GCertCondition extends GCertCondition {
   final String? updatedInId;
 
   factory _$GCertCondition([void Function(GCertConditionBuilder)? updates]) =>
-      (new GCertConditionBuilder()..update(updates))._build();
+      (GCertConditionBuilder()..update(updates))._build();
 
   _$GCertCondition._(
       {this.id,
@@ -18877,14 +18830,12 @@ class _$GCertCondition extends GCertCondition {
       this.createdInId,
       this.updatedInId})
       : super._();
-
   @override
   GCertCondition rebuild(void Function(GCertConditionBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GCertConditionBuilder toBuilder() =>
-      new GCertConditionBuilder()..replace(this);
+  GCertConditionBuilder toBuilder() => GCertConditionBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -18994,7 +18945,6 @@ class GCertConditionBuilder
 
   @override
   void replace(GCertCondition other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GCertCondition;
   }
 
@@ -19008,16 +18958,17 @@ class GCertConditionBuilder
 
   _$GCertCondition _build() {
     final _$result = _$v ??
-        new _$GCertCondition._(
-            id: id,
-            isActive: isActive,
-            createdOn: createdOn,
-            updatedOn: updatedOn,
-            expireOn: expireOn,
-            issuerId: issuerId,
-            receiverId: receiverId,
-            createdInId: createdInId,
-            updatedInId: updatedInId);
+        _$GCertCondition._(
+          id: id,
+          isActive: isActive,
+          createdOn: createdOn,
+          updatedOn: updatedOn,
+          expireOn: expireOn,
+          issuerId: issuerId,
+          receiverId: receiverId,
+          createdInId: createdInId,
+          updatedInId: updatedInId,
+        );
     replace(_$result);
     return _$result;
   }
@@ -19037,12 +18988,11 @@ class _$GCertEventCondition extends GCertEventCondition {
 
   factory _$GCertEventCondition(
           [void Function(GCertEventConditionBuilder)? updates]) =>
-      (new GCertEventConditionBuilder()..update(updates))._build();
+      (GCertEventConditionBuilder()..update(updates))._build();
 
   _$GCertEventCondition._(
       {this.id, this.blockNumber, this.eventType, this.certId, this.eventId})
       : super._();
-
   @override
   GCertEventCondition rebuild(
           void Function(GCertEventConditionBuilder) updates) =>
@@ -19050,7 +19000,7 @@ class _$GCertEventCondition extends GCertEventCondition {
 
   @override
   GCertEventConditionBuilder toBuilder() =>
-      new GCertEventConditionBuilder()..replace(this);
+      GCertEventConditionBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -19128,7 +19078,6 @@ class GCertEventConditionBuilder
 
   @override
   void replace(GCertEventCondition other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GCertEventCondition;
   }
 
@@ -19142,12 +19091,13 @@ class GCertEventConditionBuilder
 
   _$GCertEventCondition _build() {
     final _$result = _$v ??
-        new _$GCertEventCondition._(
-            id: id,
-            blockNumber: blockNumber,
-            eventType: eventType,
-            certId: certId,
-            eventId: eventId);
+        _$GCertEventCondition._(
+          id: id,
+          blockNumber: blockNumber,
+          eventType: eventType,
+          certId: certId,
+          eventId: eventId,
+        );
     replace(_$result);
     return _$result;
   }
@@ -19181,7 +19131,7 @@ class _$GCertEventFilter extends GCertEventFilter {
 
   factory _$GCertEventFilter(
           [void Function(GCertEventFilterBuilder)? updates]) =>
-      (new GCertEventFilterBuilder()..update(updates))._build();
+      (GCertEventFilterBuilder()..update(updates))._build();
 
   _$GCertEventFilter._(
       {this.id,
@@ -19197,14 +19147,13 @@ class _$GCertEventFilter extends GCertEventFilter {
       this.or,
       this.not})
       : super._();
-
   @override
   GCertEventFilter rebuild(void Function(GCertEventFilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
   GCertEventFilterBuilder toBuilder() =>
-      new GCertEventFilterBuilder()..replace(this);
+      GCertEventFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -19267,33 +19216,32 @@ class GCertEventFilterBuilder
   _$GCertEventFilter? _$v;
 
   GStringFilterBuilder? _id;
-  GStringFilterBuilder get id => _$this._id ??= new GStringFilterBuilder();
+  GStringFilterBuilder get id => _$this._id ??= GStringFilterBuilder();
   set id(GStringFilterBuilder? id) => _$this._id = id;
 
   GIntFilterBuilder? _blockNumber;
   GIntFilterBuilder get blockNumber =>
-      _$this._blockNumber ??= new GIntFilterBuilder();
+      _$this._blockNumber ??= GIntFilterBuilder();
   set blockNumber(GIntFilterBuilder? blockNumber) =>
       _$this._blockNumber = blockNumber;
 
   GStringFilterBuilder? _eventType;
   GStringFilterBuilder get eventType =>
-      _$this._eventType ??= new GStringFilterBuilder();
+      _$this._eventType ??= GStringFilterBuilder();
   set eventType(GStringFilterBuilder? eventType) =>
       _$this._eventType = eventType;
 
   GStringFilterBuilder? _certId;
-  GStringFilterBuilder get certId =>
-      _$this._certId ??= new GStringFilterBuilder();
+  GStringFilterBuilder get certId => _$this._certId ??= GStringFilterBuilder();
   set certId(GStringFilterBuilder? certId) => _$this._certId = certId;
 
   GStringFilterBuilder? _eventId;
   GStringFilterBuilder get eventId =>
-      _$this._eventId ??= new GStringFilterBuilder();
+      _$this._eventId ??= GStringFilterBuilder();
   set eventId(GStringFilterBuilder? eventId) => _$this._eventId = eventId;
 
   GCertFilterBuilder? _cert;
-  GCertFilterBuilder get cert => _$this._cert ??= new GCertFilterBuilder();
+  GCertFilterBuilder get cert => _$this._cert ??= GCertFilterBuilder();
   set cert(GCertFilterBuilder? cert) => _$this._cert = cert;
 
   bool? _certExists;
@@ -19301,7 +19249,7 @@ class GCertEventFilterBuilder
   set certExists(bool? certExists) => _$this._certExists = certExists;
 
   GEventFilterBuilder? _event;
-  GEventFilterBuilder get event => _$this._event ??= new GEventFilterBuilder();
+  GEventFilterBuilder get event => _$this._event ??= GEventFilterBuilder();
   set event(GEventFilterBuilder? event) => _$this._event = event;
 
   bool? _eventExists;
@@ -19310,17 +19258,16 @@ class GCertEventFilterBuilder
 
   ListBuilder<GCertEventFilter>? _and;
   ListBuilder<GCertEventFilter> get and =>
-      _$this._and ??= new ListBuilder<GCertEventFilter>();
+      _$this._and ??= ListBuilder<GCertEventFilter>();
   set and(ListBuilder<GCertEventFilter>? and) => _$this._and = and;
 
   ListBuilder<GCertEventFilter>? _or;
   ListBuilder<GCertEventFilter> get or =>
-      _$this._or ??= new ListBuilder<GCertEventFilter>();
+      _$this._or ??= ListBuilder<GCertEventFilter>();
   set or(ListBuilder<GCertEventFilter>? or) => _$this._or = or;
 
   GCertEventFilterBuilder? _not;
-  GCertEventFilterBuilder get not =>
-      _$this._not ??= new GCertEventFilterBuilder();
+  GCertEventFilterBuilder get not => _$this._not ??= GCertEventFilterBuilder();
   set not(GCertEventFilterBuilder? not) => _$this._not = not;
 
   GCertEventFilterBuilder();
@@ -19347,7 +19294,6 @@ class GCertEventFilterBuilder
 
   @override
   void replace(GCertEventFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GCertEventFilter;
   }
 
@@ -19363,19 +19309,20 @@ class GCertEventFilterBuilder
     _$GCertEventFilter _$result;
     try {
       _$result = _$v ??
-          new _$GCertEventFilter._(
-              id: _id?.build(),
-              blockNumber: _blockNumber?.build(),
-              eventType: _eventType?.build(),
-              certId: _certId?.build(),
-              eventId: _eventId?.build(),
-              cert: _cert?.build(),
-              certExists: certExists,
-              event: _event?.build(),
-              eventExists: eventExists,
-              and: _and?.build(),
-              or: _or?.build(),
-              not: _not?.build());
+          _$GCertEventFilter._(
+            id: _id?.build(),
+            blockNumber: _blockNumber?.build(),
+            eventType: _eventType?.build(),
+            certId: _certId?.build(),
+            eventId: _eventId?.build(),
+            cert: _cert?.build(),
+            certExists: certExists,
+            event: _event?.build(),
+            eventExists: eventExists,
+            and: _and?.build(),
+            or: _or?.build(),
+            not: _not?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -19402,7 +19349,7 @@ class GCertEventFilterBuilder
         _$failedField = 'not';
         _not?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GCertEventFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -19459,7 +19406,7 @@ class _$GCertFilter extends GCertFilter {
   final GCertFilter? not;
 
   factory _$GCertFilter([void Function(GCertFilterBuilder)? updates]) =>
-      (new GCertFilterBuilder()..update(updates))._build();
+      (GCertFilterBuilder()..update(updates))._build();
 
   _$GCertFilter._(
       {this.id,
@@ -19485,13 +19432,12 @@ class _$GCertFilter extends GCertFilter {
       this.or,
       this.not})
       : super._();
-
   @override
   GCertFilter rebuild(void Function(GCertFilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GCertFilterBuilder toBuilder() => new GCertFilterBuilder()..replace(this);
+  GCertFilterBuilder toBuilder() => GCertFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -19583,55 +19529,52 @@ class GCertFilterBuilder implements Builder<GCertFilter, GCertFilterBuilder> {
   _$GCertFilter? _$v;
 
   GStringFilterBuilder? _id;
-  GStringFilterBuilder get id => _$this._id ??= new GStringFilterBuilder();
+  GStringFilterBuilder get id => _$this._id ??= GStringFilterBuilder();
   set id(GStringFilterBuilder? id) => _$this._id = id;
 
   GBooleanFilterBuilder? _isActive;
   GBooleanFilterBuilder get isActive =>
-      _$this._isActive ??= new GBooleanFilterBuilder();
+      _$this._isActive ??= GBooleanFilterBuilder();
   set isActive(GBooleanFilterBuilder? isActive) => _$this._isActive = isActive;
 
   GIntFilterBuilder? _createdOn;
-  GIntFilterBuilder get createdOn =>
-      _$this._createdOn ??= new GIntFilterBuilder();
+  GIntFilterBuilder get createdOn => _$this._createdOn ??= GIntFilterBuilder();
   set createdOn(GIntFilterBuilder? createdOn) => _$this._createdOn = createdOn;
 
   GIntFilterBuilder? _updatedOn;
-  GIntFilterBuilder get updatedOn =>
-      _$this._updatedOn ??= new GIntFilterBuilder();
+  GIntFilterBuilder get updatedOn => _$this._updatedOn ??= GIntFilterBuilder();
   set updatedOn(GIntFilterBuilder? updatedOn) => _$this._updatedOn = updatedOn;
 
   GIntFilterBuilder? _expireOn;
-  GIntFilterBuilder get expireOn =>
-      _$this._expireOn ??= new GIntFilterBuilder();
+  GIntFilterBuilder get expireOn => _$this._expireOn ??= GIntFilterBuilder();
   set expireOn(GIntFilterBuilder? expireOn) => _$this._expireOn = expireOn;
 
   GStringFilterBuilder? _issuerId;
   GStringFilterBuilder get issuerId =>
-      _$this._issuerId ??= new GStringFilterBuilder();
+      _$this._issuerId ??= GStringFilterBuilder();
   set issuerId(GStringFilterBuilder? issuerId) => _$this._issuerId = issuerId;
 
   GStringFilterBuilder? _receiverId;
   GStringFilterBuilder get receiverId =>
-      _$this._receiverId ??= new GStringFilterBuilder();
+      _$this._receiverId ??= GStringFilterBuilder();
   set receiverId(GStringFilterBuilder? receiverId) =>
       _$this._receiverId = receiverId;
 
   GStringFilterBuilder? _createdInId;
   GStringFilterBuilder get createdInId =>
-      _$this._createdInId ??= new GStringFilterBuilder();
+      _$this._createdInId ??= GStringFilterBuilder();
   set createdInId(GStringFilterBuilder? createdInId) =>
       _$this._createdInId = createdInId;
 
   GStringFilterBuilder? _updatedInId;
   GStringFilterBuilder get updatedInId =>
-      _$this._updatedInId ??= new GStringFilterBuilder();
+      _$this._updatedInId ??= GStringFilterBuilder();
   set updatedInId(GStringFilterBuilder? updatedInId) =>
       _$this._updatedInId = updatedInId;
 
   GCertToManyCertEventFilterBuilder? _certHistory;
   GCertToManyCertEventFilterBuilder get certHistory =>
-      _$this._certHistory ??= new GCertToManyCertEventFilterBuilder();
+      _$this._certHistory ??= GCertToManyCertEventFilterBuilder();
   set certHistory(GCertToManyCertEventFilterBuilder? certHistory) =>
       _$this._certHistory = certHistory;
 
@@ -19642,7 +19585,7 @@ class GCertFilterBuilder implements Builder<GCertFilter, GCertFilterBuilder> {
 
   GIdentityFilterBuilder? _issuer;
   GIdentityFilterBuilder get issuer =>
-      _$this._issuer ??= new GIdentityFilterBuilder();
+      _$this._issuer ??= GIdentityFilterBuilder();
   set issuer(GIdentityFilterBuilder? issuer) => _$this._issuer = issuer;
 
   bool? _issuerExists;
@@ -19651,7 +19594,7 @@ class GCertFilterBuilder implements Builder<GCertFilter, GCertFilterBuilder> {
 
   GIdentityFilterBuilder? _receiver;
   GIdentityFilterBuilder get receiver =>
-      _$this._receiver ??= new GIdentityFilterBuilder();
+      _$this._receiver ??= GIdentityFilterBuilder();
   set receiver(GIdentityFilterBuilder? receiver) => _$this._receiver = receiver;
 
   bool? _receiverExists;
@@ -19661,7 +19604,7 @@ class GCertFilterBuilder implements Builder<GCertFilter, GCertFilterBuilder> {
 
   GEventFilterBuilder? _createdIn;
   GEventFilterBuilder get createdIn =>
-      _$this._createdIn ??= new GEventFilterBuilder();
+      _$this._createdIn ??= GEventFilterBuilder();
   set createdIn(GEventFilterBuilder? createdIn) =>
       _$this._createdIn = createdIn;
 
@@ -19672,7 +19615,7 @@ class GCertFilterBuilder implements Builder<GCertFilter, GCertFilterBuilder> {
 
   GEventFilterBuilder? _updatedIn;
   GEventFilterBuilder get updatedIn =>
-      _$this._updatedIn ??= new GEventFilterBuilder();
+      _$this._updatedIn ??= GEventFilterBuilder();
   set updatedIn(GEventFilterBuilder? updatedIn) =>
       _$this._updatedIn = updatedIn;
 
@@ -19683,16 +19626,15 @@ class GCertFilterBuilder implements Builder<GCertFilter, GCertFilterBuilder> {
 
   ListBuilder<GCertFilter>? _and;
   ListBuilder<GCertFilter> get and =>
-      _$this._and ??= new ListBuilder<GCertFilter>();
+      _$this._and ??= ListBuilder<GCertFilter>();
   set and(ListBuilder<GCertFilter>? and) => _$this._and = and;
 
   ListBuilder<GCertFilter>? _or;
-  ListBuilder<GCertFilter> get or =>
-      _$this._or ??= new ListBuilder<GCertFilter>();
+  ListBuilder<GCertFilter> get or => _$this._or ??= ListBuilder<GCertFilter>();
   set or(ListBuilder<GCertFilter>? or) => _$this._or = or;
 
   GCertFilterBuilder? _not;
-  GCertFilterBuilder get not => _$this._not ??= new GCertFilterBuilder();
+  GCertFilterBuilder get not => _$this._not ??= GCertFilterBuilder();
   set not(GCertFilterBuilder? not) => _$this._not = not;
 
   GCertFilterBuilder();
@@ -19729,7 +19671,6 @@ class GCertFilterBuilder implements Builder<GCertFilter, GCertFilterBuilder> {
 
   @override
   void replace(GCertFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GCertFilter;
   }
 
@@ -19745,29 +19686,30 @@ class GCertFilterBuilder implements Builder<GCertFilter, GCertFilterBuilder> {
     _$GCertFilter _$result;
     try {
       _$result = _$v ??
-          new _$GCertFilter._(
-              id: _id?.build(),
-              isActive: _isActive?.build(),
-              createdOn: _createdOn?.build(),
-              updatedOn: _updatedOn?.build(),
-              expireOn: _expireOn?.build(),
-              issuerId: _issuerId?.build(),
-              receiverId: _receiverId?.build(),
-              createdInId: _createdInId?.build(),
-              updatedInId: _updatedInId?.build(),
-              certHistory: _certHistory?.build(),
-              certHistoryExist: certHistoryExist,
-              issuer: _issuer?.build(),
-              issuerExists: issuerExists,
-              receiver: _receiver?.build(),
-              receiverExists: receiverExists,
-              createdIn: _createdIn?.build(),
-              createdInExists: createdInExists,
-              updatedIn: _updatedIn?.build(),
-              updatedInExists: updatedInExists,
-              and: _and?.build(),
-              or: _or?.build(),
-              not: _not?.build());
+          _$GCertFilter._(
+            id: _id?.build(),
+            isActive: _isActive?.build(),
+            createdOn: _createdOn?.build(),
+            updatedOn: _updatedOn?.build(),
+            expireOn: _expireOn?.build(),
+            issuerId: _issuerId?.build(),
+            receiverId: _receiverId?.build(),
+            createdInId: _createdInId?.build(),
+            updatedInId: _updatedInId?.build(),
+            certHistory: _certHistory?.build(),
+            certHistoryExist: certHistoryExist,
+            issuer: _issuer?.build(),
+            issuerExists: issuerExists,
+            receiver: _receiver?.build(),
+            receiverExists: receiverExists,
+            createdIn: _createdIn?.build(),
+            createdInExists: createdInExists,
+            updatedIn: _updatedIn?.build(),
+            updatedInExists: updatedInExists,
+            and: _and?.build(),
+            or: _or?.build(),
+            not: _not?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -19811,7 +19753,7 @@ class GCertFilterBuilder implements Builder<GCertFilter, GCertFilterBuilder> {
         _$failedField = 'not';
         _not?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GCertFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -19831,11 +19773,10 @@ class _$GCertToManyCertEventFilter extends GCertToManyCertEventFilter {
 
   factory _$GCertToManyCertEventFilter(
           [void Function(GCertToManyCertEventFilterBuilder)? updates]) =>
-      (new GCertToManyCertEventFilterBuilder()..update(updates))._build();
+      (GCertToManyCertEventFilterBuilder()..update(updates))._build();
 
   _$GCertToManyCertEventFilter._({this.every, this.some, this.none})
       : super._();
-
   @override
   GCertToManyCertEventFilter rebuild(
           void Function(GCertToManyCertEventFilterBuilder) updates) =>
@@ -19843,7 +19784,7 @@ class _$GCertToManyCertEventFilter extends GCertToManyCertEventFilter {
 
   @override
   GCertToManyCertEventFilterBuilder toBuilder() =>
-      new GCertToManyCertEventFilterBuilder()..replace(this);
+      GCertToManyCertEventFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -19881,17 +19822,17 @@ class GCertToManyCertEventFilterBuilder
 
   GCertEventFilterBuilder? _every;
   GCertEventFilterBuilder get every =>
-      _$this._every ??= new GCertEventFilterBuilder();
+      _$this._every ??= GCertEventFilterBuilder();
   set every(GCertEventFilterBuilder? every) => _$this._every = every;
 
   GCertEventFilterBuilder? _some;
   GCertEventFilterBuilder get some =>
-      _$this._some ??= new GCertEventFilterBuilder();
+      _$this._some ??= GCertEventFilterBuilder();
   set some(GCertEventFilterBuilder? some) => _$this._some = some;
 
   GCertEventFilterBuilder? _none;
   GCertEventFilterBuilder get none =>
-      _$this._none ??= new GCertEventFilterBuilder();
+      _$this._none ??= GCertEventFilterBuilder();
   set none(GCertEventFilterBuilder? none) => _$this._none = none;
 
   GCertToManyCertEventFilterBuilder();
@@ -19909,7 +19850,6 @@ class GCertToManyCertEventFilterBuilder
 
   @override
   void replace(GCertToManyCertEventFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GCertToManyCertEventFilter;
   }
 
@@ -19925,10 +19865,11 @@ class GCertToManyCertEventFilterBuilder
     _$GCertToManyCertEventFilter _$result;
     try {
       _$result = _$v ??
-          new _$GCertToManyCertEventFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GCertToManyCertEventFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -19939,7 +19880,7 @@ class GCertToManyCertEventFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GCertToManyCertEventFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -19963,7 +19904,7 @@ class _$GChangeOwnerKeyCondition extends GChangeOwnerKeyCondition {
 
   factory _$GChangeOwnerKeyCondition(
           [void Function(GChangeOwnerKeyConditionBuilder)? updates]) =>
-      (new GChangeOwnerKeyConditionBuilder()..update(updates))._build();
+      (GChangeOwnerKeyConditionBuilder()..update(updates))._build();
 
   _$GChangeOwnerKeyCondition._(
       {this.id,
@@ -19972,7 +19913,6 @@ class _$GChangeOwnerKeyCondition extends GChangeOwnerKeyCondition {
       this.previousId,
       this.nextId})
       : super._();
-
   @override
   GChangeOwnerKeyCondition rebuild(
           void Function(GChangeOwnerKeyConditionBuilder) updates) =>
@@ -19980,7 +19920,7 @@ class _$GChangeOwnerKeyCondition extends GChangeOwnerKeyCondition {
 
   @override
   GChangeOwnerKeyConditionBuilder toBuilder() =>
-      new GChangeOwnerKeyConditionBuilder()..replace(this);
+      GChangeOwnerKeyConditionBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -20059,7 +19999,6 @@ class GChangeOwnerKeyConditionBuilder
 
   @override
   void replace(GChangeOwnerKeyCondition other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GChangeOwnerKeyCondition;
   }
 
@@ -20073,12 +20012,13 @@ class GChangeOwnerKeyConditionBuilder
 
   _$GChangeOwnerKeyCondition _build() {
     final _$result = _$v ??
-        new _$GChangeOwnerKeyCondition._(
-            id: id,
-            blockNumber: blockNumber,
-            identityId: identityId,
-            previousId: previousId,
-            nextId: nextId);
+        _$GChangeOwnerKeyCondition._(
+          id: id,
+          blockNumber: blockNumber,
+          identityId: identityId,
+          previousId: previousId,
+          nextId: nextId,
+        );
     replace(_$result);
     return _$result;
   }
@@ -20116,7 +20056,7 @@ class _$GChangeOwnerKeyFilter extends GChangeOwnerKeyFilter {
 
   factory _$GChangeOwnerKeyFilter(
           [void Function(GChangeOwnerKeyFilterBuilder)? updates]) =>
-      (new GChangeOwnerKeyFilterBuilder()..update(updates))._build();
+      (GChangeOwnerKeyFilterBuilder()..update(updates))._build();
 
   _$GChangeOwnerKeyFilter._(
       {this.id,
@@ -20134,7 +20074,6 @@ class _$GChangeOwnerKeyFilter extends GChangeOwnerKeyFilter {
       this.or,
       this.not})
       : super._();
-
   @override
   GChangeOwnerKeyFilter rebuild(
           void Function(GChangeOwnerKeyFilterBuilder) updates) =>
@@ -20142,7 +20081,7 @@ class _$GChangeOwnerKeyFilter extends GChangeOwnerKeyFilter {
 
   @override
   GChangeOwnerKeyFilterBuilder toBuilder() =>
-      new GChangeOwnerKeyFilterBuilder()..replace(this);
+      GChangeOwnerKeyFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -20211,35 +20150,34 @@ class GChangeOwnerKeyFilterBuilder
   _$GChangeOwnerKeyFilter? _$v;
 
   GStringFilterBuilder? _id;
-  GStringFilterBuilder get id => _$this._id ??= new GStringFilterBuilder();
+  GStringFilterBuilder get id => _$this._id ??= GStringFilterBuilder();
   set id(GStringFilterBuilder? id) => _$this._id = id;
 
   GIntFilterBuilder? _blockNumber;
   GIntFilterBuilder get blockNumber =>
-      _$this._blockNumber ??= new GIntFilterBuilder();
+      _$this._blockNumber ??= GIntFilterBuilder();
   set blockNumber(GIntFilterBuilder? blockNumber) =>
       _$this._blockNumber = blockNumber;
 
   GStringFilterBuilder? _identityId;
   GStringFilterBuilder get identityId =>
-      _$this._identityId ??= new GStringFilterBuilder();
+      _$this._identityId ??= GStringFilterBuilder();
   set identityId(GStringFilterBuilder? identityId) =>
       _$this._identityId = identityId;
 
   GStringFilterBuilder? _previousId;
   GStringFilterBuilder get previousId =>
-      _$this._previousId ??= new GStringFilterBuilder();
+      _$this._previousId ??= GStringFilterBuilder();
   set previousId(GStringFilterBuilder? previousId) =>
       _$this._previousId = previousId;
 
   GStringFilterBuilder? _nextId;
-  GStringFilterBuilder get nextId =>
-      _$this._nextId ??= new GStringFilterBuilder();
+  GStringFilterBuilder get nextId => _$this._nextId ??= GStringFilterBuilder();
   set nextId(GStringFilterBuilder? nextId) => _$this._nextId = nextId;
 
   GIdentityFilterBuilder? _identity;
   GIdentityFilterBuilder get identity =>
-      _$this._identity ??= new GIdentityFilterBuilder();
+      _$this._identity ??= GIdentityFilterBuilder();
   set identity(GIdentityFilterBuilder? identity) => _$this._identity = identity;
 
   bool? _identityExists;
@@ -20249,7 +20187,7 @@ class GChangeOwnerKeyFilterBuilder
 
   GAccountFilterBuilder? _previous;
   GAccountFilterBuilder get previous =>
-      _$this._previous ??= new GAccountFilterBuilder();
+      _$this._previous ??= GAccountFilterBuilder();
   set previous(GAccountFilterBuilder? previous) => _$this._previous = previous;
 
   bool? _previousExists;
@@ -20258,8 +20196,7 @@ class GChangeOwnerKeyFilterBuilder
       _$this._previousExists = previousExists;
 
   GAccountFilterBuilder? _next;
-  GAccountFilterBuilder get next =>
-      _$this._next ??= new GAccountFilterBuilder();
+  GAccountFilterBuilder get next => _$this._next ??= GAccountFilterBuilder();
   set next(GAccountFilterBuilder? next) => _$this._next = next;
 
   bool? _nextExists;
@@ -20268,17 +20205,17 @@ class GChangeOwnerKeyFilterBuilder
 
   ListBuilder<GChangeOwnerKeyFilter>? _and;
   ListBuilder<GChangeOwnerKeyFilter> get and =>
-      _$this._and ??= new ListBuilder<GChangeOwnerKeyFilter>();
+      _$this._and ??= ListBuilder<GChangeOwnerKeyFilter>();
   set and(ListBuilder<GChangeOwnerKeyFilter>? and) => _$this._and = and;
 
   ListBuilder<GChangeOwnerKeyFilter>? _or;
   ListBuilder<GChangeOwnerKeyFilter> get or =>
-      _$this._or ??= new ListBuilder<GChangeOwnerKeyFilter>();
+      _$this._or ??= ListBuilder<GChangeOwnerKeyFilter>();
   set or(ListBuilder<GChangeOwnerKeyFilter>? or) => _$this._or = or;
 
   GChangeOwnerKeyFilterBuilder? _not;
   GChangeOwnerKeyFilterBuilder get not =>
-      _$this._not ??= new GChangeOwnerKeyFilterBuilder();
+      _$this._not ??= GChangeOwnerKeyFilterBuilder();
   set not(GChangeOwnerKeyFilterBuilder? not) => _$this._not = not;
 
   GChangeOwnerKeyFilterBuilder();
@@ -20307,7 +20244,6 @@ class GChangeOwnerKeyFilterBuilder
 
   @override
   void replace(GChangeOwnerKeyFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GChangeOwnerKeyFilter;
   }
 
@@ -20323,21 +20259,22 @@ class GChangeOwnerKeyFilterBuilder
     _$GChangeOwnerKeyFilter _$result;
     try {
       _$result = _$v ??
-          new _$GChangeOwnerKeyFilter._(
-              id: _id?.build(),
-              blockNumber: _blockNumber?.build(),
-              identityId: _identityId?.build(),
-              previousId: _previousId?.build(),
-              nextId: _nextId?.build(),
-              identity: _identity?.build(),
-              identityExists: identityExists,
-              previous: _previous?.build(),
-              previousExists: previousExists,
-              next: _next?.build(),
-              nextExists: nextExists,
-              and: _and?.build(),
-              or: _or?.build(),
-              not: _not?.build());
+          _$GChangeOwnerKeyFilter._(
+            id: _id?.build(),
+            blockNumber: _blockNumber?.build(),
+            identityId: _identityId?.build(),
+            previousId: _previousId?.build(),
+            nextId: _nextId?.build(),
+            identity: _identity?.build(),
+            identityExists: identityExists,
+            previous: _previous?.build(),
+            previousExists: previousExists,
+            next: _next?.build(),
+            nextExists: nextExists,
+            and: _and?.build(),
+            or: _or?.build(),
+            not: _not?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -20367,7 +20304,7 @@ class GChangeOwnerKeyFilterBuilder
         _$failedField = 'not';
         _not?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GChangeOwnerKeyFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -20382,18 +20319,15 @@ class _$GCursor extends GCursor {
   final String value;
 
   factory _$GCursor([void Function(GCursorBuilder)? updates]) =>
-      (new GCursorBuilder()..update(updates))._build();
+      (GCursorBuilder()..update(updates))._build();
 
-  _$GCursor._({required this.value}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(value, r'GCursor', 'value');
-  }
-
+  _$GCursor._({required this.value}) : super._();
   @override
   GCursor rebuild(void Function(GCursorBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GCursorBuilder toBuilder() => new GCursorBuilder()..replace(this);
+  GCursorBuilder toBuilder() => GCursorBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -20436,7 +20370,6 @@ class GCursorBuilder implements Builder<GCursor, GCursorBuilder> {
 
   @override
   void replace(GCursor other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GCursor;
   }
 
@@ -20450,9 +20383,10 @@ class GCursorBuilder implements Builder<GCursor, GCursorBuilder> {
 
   _$GCursor _build() {
     final _$result = _$v ??
-        new _$GCursor._(
-            value: BuiltValueNullFieldError.checkNotNull(
-                value, r'GCursor', 'value'));
+        _$GCursor._(
+          value:
+              BuiltValueNullFieldError.checkNotNull(value, r'GCursor', 'value'),
+        );
     replace(_$result);
     return _$result;
   }
@@ -20463,18 +20397,15 @@ class _$GDatetime extends GDatetime {
   final String value;
 
   factory _$GDatetime([void Function(GDatetimeBuilder)? updates]) =>
-      (new GDatetimeBuilder()..update(updates))._build();
+      (GDatetimeBuilder()..update(updates))._build();
 
-  _$GDatetime._({required this.value}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(value, r'GDatetime', 'value');
-  }
-
+  _$GDatetime._({required this.value}) : super._();
   @override
   GDatetime rebuild(void Function(GDatetimeBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GDatetimeBuilder toBuilder() => new GDatetimeBuilder()..replace(this);
+  GDatetimeBuilder toBuilder() => GDatetimeBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -20517,7 +20448,6 @@ class GDatetimeBuilder implements Builder<GDatetime, GDatetimeBuilder> {
 
   @override
   void replace(GDatetime other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GDatetime;
   }
 
@@ -20531,9 +20461,10 @@ class GDatetimeBuilder implements Builder<GDatetime, GDatetimeBuilder> {
 
   _$GDatetime _build() {
     final _$result = _$v ??
-        new _$GDatetime._(
-            value: BuiltValueNullFieldError.checkNotNull(
-                value, r'GDatetime', 'value'));
+        _$GDatetime._(
+          value: BuiltValueNullFieldError.checkNotNull(
+              value, r'GDatetime', 'value'),
+        );
     replace(_$result);
     return _$result;
   }
@@ -20564,7 +20495,7 @@ class _$GDatetimeFilter extends GDatetimeFilter {
   final GDatetime? greaterThanOrEqualTo;
 
   factory _$GDatetimeFilter([void Function(GDatetimeFilterBuilder)? updates]) =>
-      (new GDatetimeFilterBuilder()..update(updates))._build();
+      (GDatetimeFilterBuilder()..update(updates))._build();
 
   _$GDatetimeFilter._(
       {this.isNull,
@@ -20579,14 +20510,12 @@ class _$GDatetimeFilter extends GDatetimeFilter {
       this.greaterThan,
       this.greaterThanOrEqualTo})
       : super._();
-
   @override
   GDatetimeFilter rebuild(void Function(GDatetimeFilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GDatetimeFilterBuilder toBuilder() =>
-      new GDatetimeFilterBuilder()..replace(this);
+  GDatetimeFilterBuilder toBuilder() => GDatetimeFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -20650,56 +20579,54 @@ class GDatetimeFilterBuilder
   set isNull(bool? isNull) => _$this._isNull = isNull;
 
   GDatetimeBuilder? _equalTo;
-  GDatetimeBuilder get equalTo => _$this._equalTo ??= new GDatetimeBuilder();
+  GDatetimeBuilder get equalTo => _$this._equalTo ??= GDatetimeBuilder();
   set equalTo(GDatetimeBuilder? equalTo) => _$this._equalTo = equalTo;
 
   GDatetimeBuilder? _notEqualTo;
-  GDatetimeBuilder get notEqualTo =>
-      _$this._notEqualTo ??= new GDatetimeBuilder();
+  GDatetimeBuilder get notEqualTo => _$this._notEqualTo ??= GDatetimeBuilder();
   set notEqualTo(GDatetimeBuilder? notEqualTo) =>
       _$this._notEqualTo = notEqualTo;
 
   GDatetimeBuilder? _distinctFrom;
   GDatetimeBuilder get distinctFrom =>
-      _$this._distinctFrom ??= new GDatetimeBuilder();
+      _$this._distinctFrom ??= GDatetimeBuilder();
   set distinctFrom(GDatetimeBuilder? distinctFrom) =>
       _$this._distinctFrom = distinctFrom;
 
   GDatetimeBuilder? _notDistinctFrom;
   GDatetimeBuilder get notDistinctFrom =>
-      _$this._notDistinctFrom ??= new GDatetimeBuilder();
+      _$this._notDistinctFrom ??= GDatetimeBuilder();
   set notDistinctFrom(GDatetimeBuilder? notDistinctFrom) =>
       _$this._notDistinctFrom = notDistinctFrom;
 
   ListBuilder<GDatetime>? _Gin;
-  ListBuilder<GDatetime> get Gin =>
-      _$this._Gin ??= new ListBuilder<GDatetime>();
+  ListBuilder<GDatetime> get Gin => _$this._Gin ??= ListBuilder<GDatetime>();
   set Gin(ListBuilder<GDatetime>? Gin) => _$this._Gin = Gin;
 
   ListBuilder<GDatetime>? _notIn;
   ListBuilder<GDatetime> get notIn =>
-      _$this._notIn ??= new ListBuilder<GDatetime>();
+      _$this._notIn ??= ListBuilder<GDatetime>();
   set notIn(ListBuilder<GDatetime>? notIn) => _$this._notIn = notIn;
 
   GDatetimeBuilder? _lessThan;
-  GDatetimeBuilder get lessThan => _$this._lessThan ??= new GDatetimeBuilder();
+  GDatetimeBuilder get lessThan => _$this._lessThan ??= GDatetimeBuilder();
   set lessThan(GDatetimeBuilder? lessThan) => _$this._lessThan = lessThan;
 
   GDatetimeBuilder? _lessThanOrEqualTo;
   GDatetimeBuilder get lessThanOrEqualTo =>
-      _$this._lessThanOrEqualTo ??= new GDatetimeBuilder();
+      _$this._lessThanOrEqualTo ??= GDatetimeBuilder();
   set lessThanOrEqualTo(GDatetimeBuilder? lessThanOrEqualTo) =>
       _$this._lessThanOrEqualTo = lessThanOrEqualTo;
 
   GDatetimeBuilder? _greaterThan;
   GDatetimeBuilder get greaterThan =>
-      _$this._greaterThan ??= new GDatetimeBuilder();
+      _$this._greaterThan ??= GDatetimeBuilder();
   set greaterThan(GDatetimeBuilder? greaterThan) =>
       _$this._greaterThan = greaterThan;
 
   GDatetimeBuilder? _greaterThanOrEqualTo;
   GDatetimeBuilder get greaterThanOrEqualTo =>
-      _$this._greaterThanOrEqualTo ??= new GDatetimeBuilder();
+      _$this._greaterThanOrEqualTo ??= GDatetimeBuilder();
   set greaterThanOrEqualTo(GDatetimeBuilder? greaterThanOrEqualTo) =>
       _$this._greaterThanOrEqualTo = greaterThanOrEqualTo;
 
@@ -20726,7 +20653,6 @@ class GDatetimeFilterBuilder
 
   @override
   void replace(GDatetimeFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GDatetimeFilter;
   }
 
@@ -20742,18 +20668,19 @@ class GDatetimeFilterBuilder
     _$GDatetimeFilter _$result;
     try {
       _$result = _$v ??
-          new _$GDatetimeFilter._(
-              isNull: isNull,
-              equalTo: _equalTo?.build(),
-              notEqualTo: _notEqualTo?.build(),
-              distinctFrom: _distinctFrom?.build(),
-              notDistinctFrom: _notDistinctFrom?.build(),
-              Gin: _Gin?.build(),
-              notIn: _notIn?.build(),
-              lessThan: _lessThan?.build(),
-              lessThanOrEqualTo: _lessThanOrEqualTo?.build(),
-              greaterThan: _greaterThan?.build(),
-              greaterThanOrEqualTo: _greaterThanOrEqualTo?.build());
+          _$GDatetimeFilter._(
+            isNull: isNull,
+            equalTo: _equalTo?.build(),
+            notEqualTo: _notEqualTo?.build(),
+            distinctFrom: _distinctFrom?.build(),
+            notDistinctFrom: _notDistinctFrom?.build(),
+            Gin: _Gin?.build(),
+            notIn: _notIn?.build(),
+            lessThan: _lessThan?.build(),
+            lessThanOrEqualTo: _lessThanOrEqualTo?.build(),
+            greaterThan: _greaterThan?.build(),
+            greaterThanOrEqualTo: _greaterThanOrEqualTo?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -20778,7 +20705,7 @@ class GDatetimeFilterBuilder
         _$failedField = 'greaterThanOrEqualTo';
         _greaterThanOrEqualTo?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GDatetimeFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -20811,7 +20738,7 @@ class _$GEventCondition extends GEventCondition {
   final String? callId;
 
   factory _$GEventCondition([void Function(GEventConditionBuilder)? updates]) =>
-      (new GEventConditionBuilder()..update(updates))._build();
+      (GEventConditionBuilder()..update(updates))._build();
 
   _$GEventCondition._(
       {this.id,
@@ -20825,14 +20752,12 @@ class _$GEventCondition extends GEventCondition {
       this.extrinsicId,
       this.callId})
       : super._();
-
   @override
   GEventCondition rebuild(void Function(GEventConditionBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GEventConditionBuilder toBuilder() =>
-      new GEventConditionBuilder()..replace(this);
+  GEventConditionBuilder toBuilder() => GEventConditionBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -20909,12 +20834,12 @@ class GEventConditionBuilder
   set name(String? name) => _$this._name = name;
 
   GJSONBuilder? _args;
-  GJSONBuilder get args => _$this._args ??= new GJSONBuilder();
+  GJSONBuilder get args => _$this._args ??= GJSONBuilder();
   set args(GJSONBuilder? args) => _$this._args = args;
 
   ListBuilder<String?>? _argsStr;
   ListBuilder<String?> get argsStr =>
-      _$this._argsStr ??= new ListBuilder<String?>();
+      _$this._argsStr ??= ListBuilder<String?>();
   set argsStr(ListBuilder<String?>? argsStr) => _$this._argsStr = argsStr;
 
   String? _blockId;
@@ -20951,7 +20876,6 @@ class GEventConditionBuilder
 
   @override
   void replace(GEventCondition other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GEventCondition;
   }
 
@@ -20967,17 +20891,18 @@ class GEventConditionBuilder
     _$GEventCondition _$result;
     try {
       _$result = _$v ??
-          new _$GEventCondition._(
-              id: id,
-              index: index,
-              phase: phase,
-              pallet: pallet,
-              name: name,
-              args: _args?.build(),
-              argsStr: _argsStr?.build(),
-              blockId: blockId,
-              extrinsicId: extrinsicId,
-              callId: callId);
+          _$GEventCondition._(
+            id: id,
+            index: index,
+            phase: phase,
+            pallet: pallet,
+            name: name,
+            args: _args?.build(),
+            argsStr: _argsStr?.build(),
+            blockId: blockId,
+            extrinsicId: extrinsicId,
+            callId: callId,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -20986,7 +20911,7 @@ class GEventConditionBuilder
         _$failedField = 'argsStr';
         _argsStr?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GEventCondition', _$failedField, e.toString());
       }
       rethrow;
@@ -21077,7 +21002,7 @@ class _$GEventFilter extends GEventFilter {
   final GEventFilter? not;
 
   factory _$GEventFilter([void Function(GEventFilterBuilder)? updates]) =>
-      (new GEventFilterBuilder()..update(updates))._build();
+      (GEventFilterBuilder()..update(updates))._build();
 
   _$GEventFilter._(
       {this.id,
@@ -21120,13 +21045,12 @@ class _$GEventFilter extends GEventFilter {
       this.or,
       this.not})
       : super._();
-
   @override
   GEventFilter rebuild(void Function(GEventFilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GEventFilterBuilder toBuilder() => new GEventFilterBuilder()..replace(this);
+  GEventFilterBuilder toBuilder() => GEventFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -21270,55 +21194,52 @@ class GEventFilterBuilder
   _$GEventFilter? _$v;
 
   GStringFilterBuilder? _id;
-  GStringFilterBuilder get id => _$this._id ??= new GStringFilterBuilder();
+  GStringFilterBuilder get id => _$this._id ??= GStringFilterBuilder();
   set id(GStringFilterBuilder? id) => _$this._id = id;
 
   GIntFilterBuilder? _index;
-  GIntFilterBuilder get index => _$this._index ??= new GIntFilterBuilder();
+  GIntFilterBuilder get index => _$this._index ??= GIntFilterBuilder();
   set index(GIntFilterBuilder? index) => _$this._index = index;
 
   GStringFilterBuilder? _phase;
-  GStringFilterBuilder get phase =>
-      _$this._phase ??= new GStringFilterBuilder();
+  GStringFilterBuilder get phase => _$this._phase ??= GStringFilterBuilder();
   set phase(GStringFilterBuilder? phase) => _$this._phase = phase;
 
   GStringFilterBuilder? _pallet;
-  GStringFilterBuilder get pallet =>
-      _$this._pallet ??= new GStringFilterBuilder();
+  GStringFilterBuilder get pallet => _$this._pallet ??= GStringFilterBuilder();
   set pallet(GStringFilterBuilder? pallet) => _$this._pallet = pallet;
 
   GStringFilterBuilder? _name;
-  GStringFilterBuilder get name => _$this._name ??= new GStringFilterBuilder();
+  GStringFilterBuilder get name => _$this._name ??= GStringFilterBuilder();
   set name(GStringFilterBuilder? name) => _$this._name = name;
 
   GJSONFilterBuilder? _args;
-  GJSONFilterBuilder get args => _$this._args ??= new GJSONFilterBuilder();
+  GJSONFilterBuilder get args => _$this._args ??= GJSONFilterBuilder();
   set args(GJSONFilterBuilder? args) => _$this._args = args;
 
   GStringListFilterBuilder? _argsStr;
   GStringListFilterBuilder get argsStr =>
-      _$this._argsStr ??= new GStringListFilterBuilder();
+      _$this._argsStr ??= GStringListFilterBuilder();
   set argsStr(GStringListFilterBuilder? argsStr) => _$this._argsStr = argsStr;
 
   GStringFilterBuilder? _blockId;
   GStringFilterBuilder get blockId =>
-      _$this._blockId ??= new GStringFilterBuilder();
+      _$this._blockId ??= GStringFilterBuilder();
   set blockId(GStringFilterBuilder? blockId) => _$this._blockId = blockId;
 
   GStringFilterBuilder? _extrinsicId;
   GStringFilterBuilder get extrinsicId =>
-      _$this._extrinsicId ??= new GStringFilterBuilder();
+      _$this._extrinsicId ??= GStringFilterBuilder();
   set extrinsicId(GStringFilterBuilder? extrinsicId) =>
       _$this._extrinsicId = extrinsicId;
 
   GStringFilterBuilder? _callId;
-  GStringFilterBuilder get callId =>
-      _$this._callId ??= new GStringFilterBuilder();
+  GStringFilterBuilder get callId => _$this._callId ??= GStringFilterBuilder();
   set callId(GStringFilterBuilder? callId) => _$this._callId = callId;
 
   GEventToManyCertEventFilterBuilder? _certEvents;
   GEventToManyCertEventFilterBuilder get certEvents =>
-      _$this._certEvents ??= new GEventToManyCertEventFilterBuilder();
+      _$this._certEvents ??= GEventToManyCertEventFilterBuilder();
   set certEvents(GEventToManyCertEventFilterBuilder? certEvents) =>
       _$this._certEvents = certEvents;
 
@@ -21329,7 +21250,7 @@ class GEventFilterBuilder
 
   GEventToManyCertFilterBuilder? _certsByCreatedInId;
   GEventToManyCertFilterBuilder get certsByCreatedInId =>
-      _$this._certsByCreatedInId ??= new GEventToManyCertFilterBuilder();
+      _$this._certsByCreatedInId ??= GEventToManyCertFilterBuilder();
   set certsByCreatedInId(GEventToManyCertFilterBuilder? certsByCreatedInId) =>
       _$this._certsByCreatedInId = certsByCreatedInId;
 
@@ -21340,7 +21261,7 @@ class GEventFilterBuilder
 
   GEventToManyCertFilterBuilder? _certsByUpdatedInId;
   GEventToManyCertFilterBuilder get certsByUpdatedInId =>
-      _$this._certsByUpdatedInId ??= new GEventToManyCertFilterBuilder();
+      _$this._certsByUpdatedInId ??= GEventToManyCertFilterBuilder();
   set certsByUpdatedInId(GEventToManyCertFilterBuilder? certsByUpdatedInId) =>
       _$this._certsByUpdatedInId = certsByUpdatedInId;
 
@@ -21351,8 +21272,7 @@ class GEventFilterBuilder
 
   GEventToManyMembershipEventFilterBuilder? _membershipEvents;
   GEventToManyMembershipEventFilterBuilder get membershipEvents =>
-      _$this._membershipEvents ??=
-          new GEventToManyMembershipEventFilterBuilder();
+      _$this._membershipEvents ??= GEventToManyMembershipEventFilterBuilder();
   set membershipEvents(
           GEventToManyMembershipEventFilterBuilder? membershipEvents) =>
       _$this._membershipEvents = membershipEvents;
@@ -21364,7 +21284,7 @@ class GEventFilterBuilder
 
   GEventToManySmithEventFilterBuilder? _smithEvents;
   GEventToManySmithEventFilterBuilder get smithEvents =>
-      _$this._smithEvents ??= new GEventToManySmithEventFilterBuilder();
+      _$this._smithEvents ??= GEventToManySmithEventFilterBuilder();
   set smithEvents(GEventToManySmithEventFilterBuilder? smithEvents) =>
       _$this._smithEvents = smithEvents;
 
@@ -21375,8 +21295,7 @@ class GEventFilterBuilder
 
   GEventToManyIdentityFilterBuilder? _identitiesByCreatedInId;
   GEventToManyIdentityFilterBuilder get identitiesByCreatedInId =>
-      _$this._identitiesByCreatedInId ??=
-          new GEventToManyIdentityFilterBuilder();
+      _$this._identitiesByCreatedInId ??= GEventToManyIdentityFilterBuilder();
   set identitiesByCreatedInId(
           GEventToManyIdentityFilterBuilder? identitiesByCreatedInId) =>
       _$this._identitiesByCreatedInId = identitiesByCreatedInId;
@@ -21389,7 +21308,7 @@ class GEventFilterBuilder
 
   GEventToManyTxCommentFilterBuilder? _txComments;
   GEventToManyTxCommentFilterBuilder get txComments =>
-      _$this._txComments ??= new GEventToManyTxCommentFilterBuilder();
+      _$this._txComments ??= GEventToManyTxCommentFilterBuilder();
   set txComments(GEventToManyTxCommentFilterBuilder? txComments) =>
       _$this._txComments = txComments;
 
@@ -21400,7 +21319,7 @@ class GEventFilterBuilder
 
   GEventToManyTransferFilterBuilder? _transfers;
   GEventToManyTransferFilterBuilder get transfers =>
-      _$this._transfers ??= new GEventToManyTransferFilterBuilder();
+      _$this._transfers ??= GEventToManyTransferFilterBuilder();
   set transfers(GEventToManyTransferFilterBuilder? transfers) =>
       _$this._transfers = transfers;
 
@@ -21412,7 +21331,7 @@ class GEventFilterBuilder
   GEventToManyUniversalDividendFilterBuilder? _universalDividends;
   GEventToManyUniversalDividendFilterBuilder get universalDividends =>
       _$this._universalDividends ??=
-          new GEventToManyUniversalDividendFilterBuilder();
+          GEventToManyUniversalDividendFilterBuilder();
   set universalDividends(
           GEventToManyUniversalDividendFilterBuilder? universalDividends) =>
       _$this._universalDividends = universalDividends;
@@ -21424,7 +21343,7 @@ class GEventFilterBuilder
 
   GEventToManyUdReevalFilterBuilder? _udReevals;
   GEventToManyUdReevalFilterBuilder get udReevals =>
-      _$this._udReevals ??= new GEventToManyUdReevalFilterBuilder();
+      _$this._udReevals ??= GEventToManyUdReevalFilterBuilder();
   set udReevals(GEventToManyUdReevalFilterBuilder? udReevals) =>
       _$this._udReevals = udReevals;
 
@@ -21434,7 +21353,7 @@ class GEventFilterBuilder
       _$this._udReevalsExist = udReevalsExist;
 
   GBlockFilterBuilder? _block;
-  GBlockFilterBuilder get block => _$this._block ??= new GBlockFilterBuilder();
+  GBlockFilterBuilder get block => _$this._block ??= GBlockFilterBuilder();
   set block(GBlockFilterBuilder? block) => _$this._block = block;
 
   bool? _blockExists;
@@ -21443,7 +21362,7 @@ class GEventFilterBuilder
 
   GExtrinsicFilterBuilder? _extrinsic;
   GExtrinsicFilterBuilder get extrinsic =>
-      _$this._extrinsic ??= new GExtrinsicFilterBuilder();
+      _$this._extrinsic ??= GExtrinsicFilterBuilder();
   set extrinsic(GExtrinsicFilterBuilder? extrinsic) =>
       _$this._extrinsic = extrinsic;
 
@@ -21453,7 +21372,7 @@ class GEventFilterBuilder
       _$this._extrinsicExists = extrinsicExists;
 
   GCallFilterBuilder? _call;
-  GCallFilterBuilder get call => _$this._call ??= new GCallFilterBuilder();
+  GCallFilterBuilder get call => _$this._call ??= GCallFilterBuilder();
   set call(GCallFilterBuilder? call) => _$this._call = call;
 
   bool? _callExists;
@@ -21462,16 +21381,16 @@ class GEventFilterBuilder
 
   ListBuilder<GEventFilter>? _and;
   ListBuilder<GEventFilter> get and =>
-      _$this._and ??= new ListBuilder<GEventFilter>();
+      _$this._and ??= ListBuilder<GEventFilter>();
   set and(ListBuilder<GEventFilter>? and) => _$this._and = and;
 
   ListBuilder<GEventFilter>? _or;
   ListBuilder<GEventFilter> get or =>
-      _$this._or ??= new ListBuilder<GEventFilter>();
+      _$this._or ??= ListBuilder<GEventFilter>();
   set or(ListBuilder<GEventFilter>? or) => _$this._or = or;
 
   GEventFilterBuilder? _not;
-  GEventFilterBuilder get not => _$this._not ??= new GEventFilterBuilder();
+  GEventFilterBuilder get not => _$this._not ??= GEventFilterBuilder();
   set not(GEventFilterBuilder? not) => _$this._not = not;
 
   GEventFilterBuilder();
@@ -21525,7 +21444,6 @@ class GEventFilterBuilder
 
   @override
   void replace(GEventFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GEventFilter;
   }
 
@@ -21541,46 +21459,47 @@ class GEventFilterBuilder
     _$GEventFilter _$result;
     try {
       _$result = _$v ??
-          new _$GEventFilter._(
-              id: _id?.build(),
-              index: _index?.build(),
-              phase: _phase?.build(),
-              pallet: _pallet?.build(),
-              name: _name?.build(),
-              args: _args?.build(),
-              argsStr: _argsStr?.build(),
-              blockId: _blockId?.build(),
-              extrinsicId: _extrinsicId?.build(),
-              callId: _callId?.build(),
-              certEvents: _certEvents?.build(),
-              certEventsExist: certEventsExist,
-              certsByCreatedInId: _certsByCreatedInId?.build(),
-              certsByCreatedInIdExist: certsByCreatedInIdExist,
-              certsByUpdatedInId: _certsByUpdatedInId?.build(),
-              certsByUpdatedInIdExist: certsByUpdatedInIdExist,
-              membershipEvents: _membershipEvents?.build(),
-              membershipEventsExist: membershipEventsExist,
-              smithEvents: _smithEvents?.build(),
-              smithEventsExist: smithEventsExist,
-              identitiesByCreatedInId: _identitiesByCreatedInId?.build(),
-              identitiesByCreatedInIdExist: identitiesByCreatedInIdExist,
-              txComments: _txComments?.build(),
-              txCommentsExist: txCommentsExist,
-              transfers: _transfers?.build(),
-              transfersExist: transfersExist,
-              universalDividends: _universalDividends?.build(),
-              universalDividendsExist: universalDividendsExist,
-              udReevals: _udReevals?.build(),
-              udReevalsExist: udReevalsExist,
-              block: _block?.build(),
-              blockExists: blockExists,
-              extrinsic: _extrinsic?.build(),
-              extrinsicExists: extrinsicExists,
-              call: _call?.build(),
-              callExists: callExists,
-              and: _and?.build(),
-              or: _or?.build(),
-              not: _not?.build());
+          _$GEventFilter._(
+            id: _id?.build(),
+            index: _index?.build(),
+            phase: _phase?.build(),
+            pallet: _pallet?.build(),
+            name: _name?.build(),
+            args: _args?.build(),
+            argsStr: _argsStr?.build(),
+            blockId: _blockId?.build(),
+            extrinsicId: _extrinsicId?.build(),
+            callId: _callId?.build(),
+            certEvents: _certEvents?.build(),
+            certEventsExist: certEventsExist,
+            certsByCreatedInId: _certsByCreatedInId?.build(),
+            certsByCreatedInIdExist: certsByCreatedInIdExist,
+            certsByUpdatedInId: _certsByUpdatedInId?.build(),
+            certsByUpdatedInIdExist: certsByUpdatedInIdExist,
+            membershipEvents: _membershipEvents?.build(),
+            membershipEventsExist: membershipEventsExist,
+            smithEvents: _smithEvents?.build(),
+            smithEventsExist: smithEventsExist,
+            identitiesByCreatedInId: _identitiesByCreatedInId?.build(),
+            identitiesByCreatedInIdExist: identitiesByCreatedInIdExist,
+            txComments: _txComments?.build(),
+            txCommentsExist: txCommentsExist,
+            transfers: _transfers?.build(),
+            transfersExist: transfersExist,
+            universalDividends: _universalDividends?.build(),
+            universalDividendsExist: universalDividendsExist,
+            udReevals: _udReevals?.build(),
+            udReevalsExist: udReevalsExist,
+            block: _block?.build(),
+            blockExists: blockExists,
+            extrinsic: _extrinsic?.build(),
+            extrinsicExists: extrinsicExists,
+            call: _call?.build(),
+            callExists: callExists,
+            and: _and?.build(),
+            or: _or?.build(),
+            not: _not?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -21650,7 +21569,7 @@ class GEventFilterBuilder
         _$failedField = 'not';
         _not?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GEventFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -21670,11 +21589,10 @@ class _$GEventToManyCertEventFilter extends GEventToManyCertEventFilter {
 
   factory _$GEventToManyCertEventFilter(
           [void Function(GEventToManyCertEventFilterBuilder)? updates]) =>
-      (new GEventToManyCertEventFilterBuilder()..update(updates))._build();
+      (GEventToManyCertEventFilterBuilder()..update(updates))._build();
 
   _$GEventToManyCertEventFilter._({this.every, this.some, this.none})
       : super._();
-
   @override
   GEventToManyCertEventFilter rebuild(
           void Function(GEventToManyCertEventFilterBuilder) updates) =>
@@ -21682,7 +21600,7 @@ class _$GEventToManyCertEventFilter extends GEventToManyCertEventFilter {
 
   @override
   GEventToManyCertEventFilterBuilder toBuilder() =>
-      new GEventToManyCertEventFilterBuilder()..replace(this);
+      GEventToManyCertEventFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -21721,17 +21639,17 @@ class GEventToManyCertEventFilterBuilder
 
   GCertEventFilterBuilder? _every;
   GCertEventFilterBuilder get every =>
-      _$this._every ??= new GCertEventFilterBuilder();
+      _$this._every ??= GCertEventFilterBuilder();
   set every(GCertEventFilterBuilder? every) => _$this._every = every;
 
   GCertEventFilterBuilder? _some;
   GCertEventFilterBuilder get some =>
-      _$this._some ??= new GCertEventFilterBuilder();
+      _$this._some ??= GCertEventFilterBuilder();
   set some(GCertEventFilterBuilder? some) => _$this._some = some;
 
   GCertEventFilterBuilder? _none;
   GCertEventFilterBuilder get none =>
-      _$this._none ??= new GCertEventFilterBuilder();
+      _$this._none ??= GCertEventFilterBuilder();
   set none(GCertEventFilterBuilder? none) => _$this._none = none;
 
   GEventToManyCertEventFilterBuilder();
@@ -21749,7 +21667,6 @@ class GEventToManyCertEventFilterBuilder
 
   @override
   void replace(GEventToManyCertEventFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GEventToManyCertEventFilter;
   }
 
@@ -21765,10 +21682,11 @@ class GEventToManyCertEventFilterBuilder
     _$GEventToManyCertEventFilter _$result;
     try {
       _$result = _$v ??
-          new _$GEventToManyCertEventFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GEventToManyCertEventFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -21779,7 +21697,7 @@ class GEventToManyCertEventFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GEventToManyCertEventFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -21799,10 +21717,9 @@ class _$GEventToManyCertFilter extends GEventToManyCertFilter {
 
   factory _$GEventToManyCertFilter(
           [void Function(GEventToManyCertFilterBuilder)? updates]) =>
-      (new GEventToManyCertFilterBuilder()..update(updates))._build();
+      (GEventToManyCertFilterBuilder()..update(updates))._build();
 
   _$GEventToManyCertFilter._({this.every, this.some, this.none}) : super._();
-
   @override
   GEventToManyCertFilter rebuild(
           void Function(GEventToManyCertFilterBuilder) updates) =>
@@ -21810,7 +21727,7 @@ class _$GEventToManyCertFilter extends GEventToManyCertFilter {
 
   @override
   GEventToManyCertFilterBuilder toBuilder() =>
-      new GEventToManyCertFilterBuilder()..replace(this);
+      GEventToManyCertFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -21846,15 +21763,15 @@ class GEventToManyCertFilterBuilder
   _$GEventToManyCertFilter? _$v;
 
   GCertFilterBuilder? _every;
-  GCertFilterBuilder get every => _$this._every ??= new GCertFilterBuilder();
+  GCertFilterBuilder get every => _$this._every ??= GCertFilterBuilder();
   set every(GCertFilterBuilder? every) => _$this._every = every;
 
   GCertFilterBuilder? _some;
-  GCertFilterBuilder get some => _$this._some ??= new GCertFilterBuilder();
+  GCertFilterBuilder get some => _$this._some ??= GCertFilterBuilder();
   set some(GCertFilterBuilder? some) => _$this._some = some;
 
   GCertFilterBuilder? _none;
-  GCertFilterBuilder get none => _$this._none ??= new GCertFilterBuilder();
+  GCertFilterBuilder get none => _$this._none ??= GCertFilterBuilder();
   set none(GCertFilterBuilder? none) => _$this._none = none;
 
   GEventToManyCertFilterBuilder();
@@ -21872,7 +21789,6 @@ class GEventToManyCertFilterBuilder
 
   @override
   void replace(GEventToManyCertFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GEventToManyCertFilter;
   }
 
@@ -21888,10 +21804,11 @@ class GEventToManyCertFilterBuilder
     _$GEventToManyCertFilter _$result;
     try {
       _$result = _$v ??
-          new _$GEventToManyCertFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GEventToManyCertFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -21902,7 +21819,7 @@ class GEventToManyCertFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GEventToManyCertFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -21922,11 +21839,10 @@ class _$GEventToManyIdentityFilter extends GEventToManyIdentityFilter {
 
   factory _$GEventToManyIdentityFilter(
           [void Function(GEventToManyIdentityFilterBuilder)? updates]) =>
-      (new GEventToManyIdentityFilterBuilder()..update(updates))._build();
+      (GEventToManyIdentityFilterBuilder()..update(updates))._build();
 
   _$GEventToManyIdentityFilter._({this.every, this.some, this.none})
       : super._();
-
   @override
   GEventToManyIdentityFilter rebuild(
           void Function(GEventToManyIdentityFilterBuilder) updates) =>
@@ -21934,7 +21850,7 @@ class _$GEventToManyIdentityFilter extends GEventToManyIdentityFilter {
 
   @override
   GEventToManyIdentityFilterBuilder toBuilder() =>
-      new GEventToManyIdentityFilterBuilder()..replace(this);
+      GEventToManyIdentityFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -21972,17 +21888,15 @@ class GEventToManyIdentityFilterBuilder
 
   GIdentityFilterBuilder? _every;
   GIdentityFilterBuilder get every =>
-      _$this._every ??= new GIdentityFilterBuilder();
+      _$this._every ??= GIdentityFilterBuilder();
   set every(GIdentityFilterBuilder? every) => _$this._every = every;
 
   GIdentityFilterBuilder? _some;
-  GIdentityFilterBuilder get some =>
-      _$this._some ??= new GIdentityFilterBuilder();
+  GIdentityFilterBuilder get some => _$this._some ??= GIdentityFilterBuilder();
   set some(GIdentityFilterBuilder? some) => _$this._some = some;
 
   GIdentityFilterBuilder? _none;
-  GIdentityFilterBuilder get none =>
-      _$this._none ??= new GIdentityFilterBuilder();
+  GIdentityFilterBuilder get none => _$this._none ??= GIdentityFilterBuilder();
   set none(GIdentityFilterBuilder? none) => _$this._none = none;
 
   GEventToManyIdentityFilterBuilder();
@@ -22000,7 +21914,6 @@ class GEventToManyIdentityFilterBuilder
 
   @override
   void replace(GEventToManyIdentityFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GEventToManyIdentityFilter;
   }
 
@@ -22016,10 +21929,11 @@ class GEventToManyIdentityFilterBuilder
     _$GEventToManyIdentityFilter _$result;
     try {
       _$result = _$v ??
-          new _$GEventToManyIdentityFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GEventToManyIdentityFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -22030,7 +21944,7 @@ class GEventToManyIdentityFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GEventToManyIdentityFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -22051,12 +21965,10 @@ class _$GEventToManyMembershipEventFilter
 
   factory _$GEventToManyMembershipEventFilter(
           [void Function(GEventToManyMembershipEventFilterBuilder)? updates]) =>
-      (new GEventToManyMembershipEventFilterBuilder()..update(updates))
-          ._build();
+      (GEventToManyMembershipEventFilterBuilder()..update(updates))._build();
 
   _$GEventToManyMembershipEventFilter._({this.every, this.some, this.none})
       : super._();
-
   @override
   GEventToManyMembershipEventFilter rebuild(
           void Function(GEventToManyMembershipEventFilterBuilder) updates) =>
@@ -22064,7 +21976,7 @@ class _$GEventToManyMembershipEventFilter
 
   @override
   GEventToManyMembershipEventFilterBuilder toBuilder() =>
-      new GEventToManyMembershipEventFilterBuilder()..replace(this);
+      GEventToManyMembershipEventFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -22103,17 +22015,17 @@ class GEventToManyMembershipEventFilterBuilder
 
   GMembershipEventFilterBuilder? _every;
   GMembershipEventFilterBuilder get every =>
-      _$this._every ??= new GMembershipEventFilterBuilder();
+      _$this._every ??= GMembershipEventFilterBuilder();
   set every(GMembershipEventFilterBuilder? every) => _$this._every = every;
 
   GMembershipEventFilterBuilder? _some;
   GMembershipEventFilterBuilder get some =>
-      _$this._some ??= new GMembershipEventFilterBuilder();
+      _$this._some ??= GMembershipEventFilterBuilder();
   set some(GMembershipEventFilterBuilder? some) => _$this._some = some;
 
   GMembershipEventFilterBuilder? _none;
   GMembershipEventFilterBuilder get none =>
-      _$this._none ??= new GMembershipEventFilterBuilder();
+      _$this._none ??= GMembershipEventFilterBuilder();
   set none(GMembershipEventFilterBuilder? none) => _$this._none = none;
 
   GEventToManyMembershipEventFilterBuilder();
@@ -22131,7 +22043,6 @@ class GEventToManyMembershipEventFilterBuilder
 
   @override
   void replace(GEventToManyMembershipEventFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GEventToManyMembershipEventFilter;
   }
 
@@ -22148,10 +22059,11 @@ class GEventToManyMembershipEventFilterBuilder
     _$GEventToManyMembershipEventFilter _$result;
     try {
       _$result = _$v ??
-          new _$GEventToManyMembershipEventFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GEventToManyMembershipEventFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -22162,7 +22074,7 @@ class GEventToManyMembershipEventFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GEventToManyMembershipEventFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -22182,11 +22094,10 @@ class _$GEventToManySmithEventFilter extends GEventToManySmithEventFilter {
 
   factory _$GEventToManySmithEventFilter(
           [void Function(GEventToManySmithEventFilterBuilder)? updates]) =>
-      (new GEventToManySmithEventFilterBuilder()..update(updates))._build();
+      (GEventToManySmithEventFilterBuilder()..update(updates))._build();
 
   _$GEventToManySmithEventFilter._({this.every, this.some, this.none})
       : super._();
-
   @override
   GEventToManySmithEventFilter rebuild(
           void Function(GEventToManySmithEventFilterBuilder) updates) =>
@@ -22194,7 +22105,7 @@ class _$GEventToManySmithEventFilter extends GEventToManySmithEventFilter {
 
   @override
   GEventToManySmithEventFilterBuilder toBuilder() =>
-      new GEventToManySmithEventFilterBuilder()..replace(this);
+      GEventToManySmithEventFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -22233,17 +22144,17 @@ class GEventToManySmithEventFilterBuilder
 
   GSmithEventFilterBuilder? _every;
   GSmithEventFilterBuilder get every =>
-      _$this._every ??= new GSmithEventFilterBuilder();
+      _$this._every ??= GSmithEventFilterBuilder();
   set every(GSmithEventFilterBuilder? every) => _$this._every = every;
 
   GSmithEventFilterBuilder? _some;
   GSmithEventFilterBuilder get some =>
-      _$this._some ??= new GSmithEventFilterBuilder();
+      _$this._some ??= GSmithEventFilterBuilder();
   set some(GSmithEventFilterBuilder? some) => _$this._some = some;
 
   GSmithEventFilterBuilder? _none;
   GSmithEventFilterBuilder get none =>
-      _$this._none ??= new GSmithEventFilterBuilder();
+      _$this._none ??= GSmithEventFilterBuilder();
   set none(GSmithEventFilterBuilder? none) => _$this._none = none;
 
   GEventToManySmithEventFilterBuilder();
@@ -22261,7 +22172,6 @@ class GEventToManySmithEventFilterBuilder
 
   @override
   void replace(GEventToManySmithEventFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GEventToManySmithEventFilter;
   }
 
@@ -22277,10 +22187,11 @@ class GEventToManySmithEventFilterBuilder
     _$GEventToManySmithEventFilter _$result;
     try {
       _$result = _$v ??
-          new _$GEventToManySmithEventFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GEventToManySmithEventFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -22291,7 +22202,7 @@ class GEventToManySmithEventFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GEventToManySmithEventFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -22311,11 +22222,10 @@ class _$GEventToManyTransferFilter extends GEventToManyTransferFilter {
 
   factory _$GEventToManyTransferFilter(
           [void Function(GEventToManyTransferFilterBuilder)? updates]) =>
-      (new GEventToManyTransferFilterBuilder()..update(updates))._build();
+      (GEventToManyTransferFilterBuilder()..update(updates))._build();
 
   _$GEventToManyTransferFilter._({this.every, this.some, this.none})
       : super._();
-
   @override
   GEventToManyTransferFilter rebuild(
           void Function(GEventToManyTransferFilterBuilder) updates) =>
@@ -22323,7 +22233,7 @@ class _$GEventToManyTransferFilter extends GEventToManyTransferFilter {
 
   @override
   GEventToManyTransferFilterBuilder toBuilder() =>
-      new GEventToManyTransferFilterBuilder()..replace(this);
+      GEventToManyTransferFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -22361,17 +22271,15 @@ class GEventToManyTransferFilterBuilder
 
   GTransferFilterBuilder? _every;
   GTransferFilterBuilder get every =>
-      _$this._every ??= new GTransferFilterBuilder();
+      _$this._every ??= GTransferFilterBuilder();
   set every(GTransferFilterBuilder? every) => _$this._every = every;
 
   GTransferFilterBuilder? _some;
-  GTransferFilterBuilder get some =>
-      _$this._some ??= new GTransferFilterBuilder();
+  GTransferFilterBuilder get some => _$this._some ??= GTransferFilterBuilder();
   set some(GTransferFilterBuilder? some) => _$this._some = some;
 
   GTransferFilterBuilder? _none;
-  GTransferFilterBuilder get none =>
-      _$this._none ??= new GTransferFilterBuilder();
+  GTransferFilterBuilder get none => _$this._none ??= GTransferFilterBuilder();
   set none(GTransferFilterBuilder? none) => _$this._none = none;
 
   GEventToManyTransferFilterBuilder();
@@ -22389,7 +22297,6 @@ class GEventToManyTransferFilterBuilder
 
   @override
   void replace(GEventToManyTransferFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GEventToManyTransferFilter;
   }
 
@@ -22405,10 +22312,11 @@ class GEventToManyTransferFilterBuilder
     _$GEventToManyTransferFilter _$result;
     try {
       _$result = _$v ??
-          new _$GEventToManyTransferFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GEventToManyTransferFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -22419,7 +22327,7 @@ class GEventToManyTransferFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GEventToManyTransferFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -22439,11 +22347,10 @@ class _$GEventToManyTxCommentFilter extends GEventToManyTxCommentFilter {
 
   factory _$GEventToManyTxCommentFilter(
           [void Function(GEventToManyTxCommentFilterBuilder)? updates]) =>
-      (new GEventToManyTxCommentFilterBuilder()..update(updates))._build();
+      (GEventToManyTxCommentFilterBuilder()..update(updates))._build();
 
   _$GEventToManyTxCommentFilter._({this.every, this.some, this.none})
       : super._();
-
   @override
   GEventToManyTxCommentFilter rebuild(
           void Function(GEventToManyTxCommentFilterBuilder) updates) =>
@@ -22451,7 +22358,7 @@ class _$GEventToManyTxCommentFilter extends GEventToManyTxCommentFilter {
 
   @override
   GEventToManyTxCommentFilterBuilder toBuilder() =>
-      new GEventToManyTxCommentFilterBuilder()..replace(this);
+      GEventToManyTxCommentFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -22490,17 +22397,17 @@ class GEventToManyTxCommentFilterBuilder
 
   GTxCommentFilterBuilder? _every;
   GTxCommentFilterBuilder get every =>
-      _$this._every ??= new GTxCommentFilterBuilder();
+      _$this._every ??= GTxCommentFilterBuilder();
   set every(GTxCommentFilterBuilder? every) => _$this._every = every;
 
   GTxCommentFilterBuilder? _some;
   GTxCommentFilterBuilder get some =>
-      _$this._some ??= new GTxCommentFilterBuilder();
+      _$this._some ??= GTxCommentFilterBuilder();
   set some(GTxCommentFilterBuilder? some) => _$this._some = some;
 
   GTxCommentFilterBuilder? _none;
   GTxCommentFilterBuilder get none =>
-      _$this._none ??= new GTxCommentFilterBuilder();
+      _$this._none ??= GTxCommentFilterBuilder();
   set none(GTxCommentFilterBuilder? none) => _$this._none = none;
 
   GEventToManyTxCommentFilterBuilder();
@@ -22518,7 +22425,6 @@ class GEventToManyTxCommentFilterBuilder
 
   @override
   void replace(GEventToManyTxCommentFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GEventToManyTxCommentFilter;
   }
 
@@ -22534,10 +22440,11 @@ class GEventToManyTxCommentFilterBuilder
     _$GEventToManyTxCommentFilter _$result;
     try {
       _$result = _$v ??
-          new _$GEventToManyTxCommentFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GEventToManyTxCommentFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -22548,7 +22455,7 @@ class GEventToManyTxCommentFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GEventToManyTxCommentFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -22568,11 +22475,10 @@ class _$GEventToManyUdReevalFilter extends GEventToManyUdReevalFilter {
 
   factory _$GEventToManyUdReevalFilter(
           [void Function(GEventToManyUdReevalFilterBuilder)? updates]) =>
-      (new GEventToManyUdReevalFilterBuilder()..update(updates))._build();
+      (GEventToManyUdReevalFilterBuilder()..update(updates))._build();
 
   _$GEventToManyUdReevalFilter._({this.every, this.some, this.none})
       : super._();
-
   @override
   GEventToManyUdReevalFilter rebuild(
           void Function(GEventToManyUdReevalFilterBuilder) updates) =>
@@ -22580,7 +22486,7 @@ class _$GEventToManyUdReevalFilter extends GEventToManyUdReevalFilter {
 
   @override
   GEventToManyUdReevalFilterBuilder toBuilder() =>
-      new GEventToManyUdReevalFilterBuilder()..replace(this);
+      GEventToManyUdReevalFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -22618,17 +22524,15 @@ class GEventToManyUdReevalFilterBuilder
 
   GUdReevalFilterBuilder? _every;
   GUdReevalFilterBuilder get every =>
-      _$this._every ??= new GUdReevalFilterBuilder();
+      _$this._every ??= GUdReevalFilterBuilder();
   set every(GUdReevalFilterBuilder? every) => _$this._every = every;
 
   GUdReevalFilterBuilder? _some;
-  GUdReevalFilterBuilder get some =>
-      _$this._some ??= new GUdReevalFilterBuilder();
+  GUdReevalFilterBuilder get some => _$this._some ??= GUdReevalFilterBuilder();
   set some(GUdReevalFilterBuilder? some) => _$this._some = some;
 
   GUdReevalFilterBuilder? _none;
-  GUdReevalFilterBuilder get none =>
-      _$this._none ??= new GUdReevalFilterBuilder();
+  GUdReevalFilterBuilder get none => _$this._none ??= GUdReevalFilterBuilder();
   set none(GUdReevalFilterBuilder? none) => _$this._none = none;
 
   GEventToManyUdReevalFilterBuilder();
@@ -22646,7 +22550,6 @@ class GEventToManyUdReevalFilterBuilder
 
   @override
   void replace(GEventToManyUdReevalFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GEventToManyUdReevalFilter;
   }
 
@@ -22662,10 +22565,11 @@ class GEventToManyUdReevalFilterBuilder
     _$GEventToManyUdReevalFilter _$result;
     try {
       _$result = _$v ??
-          new _$GEventToManyUdReevalFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GEventToManyUdReevalFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -22676,7 +22580,7 @@ class GEventToManyUdReevalFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GEventToManyUdReevalFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -22698,12 +22602,10 @@ class _$GEventToManyUniversalDividendFilter
   factory _$GEventToManyUniversalDividendFilter(
           [void Function(GEventToManyUniversalDividendFilterBuilder)?
               updates]) =>
-      (new GEventToManyUniversalDividendFilterBuilder()..update(updates))
-          ._build();
+      (GEventToManyUniversalDividendFilterBuilder()..update(updates))._build();
 
   _$GEventToManyUniversalDividendFilter._({this.every, this.some, this.none})
       : super._();
-
   @override
   GEventToManyUniversalDividendFilter rebuild(
           void Function(GEventToManyUniversalDividendFilterBuilder) updates) =>
@@ -22711,7 +22613,7 @@ class _$GEventToManyUniversalDividendFilter
 
   @override
   GEventToManyUniversalDividendFilterBuilder toBuilder() =>
-      new GEventToManyUniversalDividendFilterBuilder()..replace(this);
+      GEventToManyUniversalDividendFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -22750,17 +22652,17 @@ class GEventToManyUniversalDividendFilterBuilder
 
   GUniversalDividendFilterBuilder? _every;
   GUniversalDividendFilterBuilder get every =>
-      _$this._every ??= new GUniversalDividendFilterBuilder();
+      _$this._every ??= GUniversalDividendFilterBuilder();
   set every(GUniversalDividendFilterBuilder? every) => _$this._every = every;
 
   GUniversalDividendFilterBuilder? _some;
   GUniversalDividendFilterBuilder get some =>
-      _$this._some ??= new GUniversalDividendFilterBuilder();
+      _$this._some ??= GUniversalDividendFilterBuilder();
   set some(GUniversalDividendFilterBuilder? some) => _$this._some = some;
 
   GUniversalDividendFilterBuilder? _none;
   GUniversalDividendFilterBuilder get none =>
-      _$this._none ??= new GUniversalDividendFilterBuilder();
+      _$this._none ??= GUniversalDividendFilterBuilder();
   set none(GUniversalDividendFilterBuilder? none) => _$this._none = none;
 
   GEventToManyUniversalDividendFilterBuilder();
@@ -22778,7 +22680,6 @@ class GEventToManyUniversalDividendFilterBuilder
 
   @override
   void replace(GEventToManyUniversalDividendFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GEventToManyUniversalDividendFilter;
   }
 
@@ -22795,10 +22696,11 @@ class GEventToManyUniversalDividendFilterBuilder
     _$GEventToManyUniversalDividendFilter _$result;
     try {
       _$result = _$v ??
-          new _$GEventToManyUniversalDividendFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GEventToManyUniversalDividendFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -22809,10 +22711,8 @@ class GEventToManyUniversalDividendFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            r'GEventToManyUniversalDividendFilter',
-            _$failedField,
-            e.toString());
+        throw BuiltValueNestedFieldError(r'GEventToManyUniversalDividendFilter',
+            _$failedField, e.toString());
       }
       rethrow;
     }
@@ -22847,7 +22747,7 @@ class _$GExtrinsicCondition extends GExtrinsicCondition {
 
   factory _$GExtrinsicCondition(
           [void Function(GExtrinsicConditionBuilder)? updates]) =>
-      (new GExtrinsicConditionBuilder()..update(updates))._build();
+      (GExtrinsicConditionBuilder()..update(updates))._build();
 
   _$GExtrinsicCondition._(
       {this.id,
@@ -22862,7 +22762,6 @@ class _$GExtrinsicCondition extends GExtrinsicCondition {
       this.blockId,
       this.callId})
       : super._();
-
   @override
   GExtrinsicCondition rebuild(
           void Function(GExtrinsicConditionBuilder) updates) =>
@@ -22870,7 +22769,7 @@ class _$GExtrinsicCondition extends GExtrinsicCondition {
 
   @override
   GExtrinsicConditionBuilder toBuilder() =>
-      new GExtrinsicConditionBuilder()..replace(this);
+      GExtrinsicConditionBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -22942,15 +22841,15 @@ class GExtrinsicConditionBuilder
   set version(int? version) => _$this._version = version;
 
   GJSONBuilder? _signature;
-  GJSONBuilder get signature => _$this._signature ??= new GJSONBuilder();
+  GJSONBuilder get signature => _$this._signature ??= GJSONBuilder();
   set signature(GJSONBuilder? signature) => _$this._signature = signature;
 
   GBigFloatBuilder? _tip;
-  GBigFloatBuilder get tip => _$this._tip ??= new GBigFloatBuilder();
+  GBigFloatBuilder get tip => _$this._tip ??= GBigFloatBuilder();
   set tip(GBigFloatBuilder? tip) => _$this._tip = tip;
 
   GBigFloatBuilder? _fee;
-  GBigFloatBuilder get fee => _$this._fee ??= new GBigFloatBuilder();
+  GBigFloatBuilder get fee => _$this._fee ??= GBigFloatBuilder();
   set fee(GBigFloatBuilder? fee) => _$this._fee = fee;
 
   bool? _success;
@@ -22958,7 +22857,7 @@ class GExtrinsicConditionBuilder
   set success(bool? success) => _$this._success = success;
 
   GJSONBuilder? _error;
-  GJSONBuilder get error => _$this._error ??= new GJSONBuilder();
+  GJSONBuilder get error => _$this._error ??= GJSONBuilder();
   set error(GJSONBuilder? error) => _$this._error = error;
 
   String? _hash;
@@ -22996,7 +22895,6 @@ class GExtrinsicConditionBuilder
 
   @override
   void replace(GExtrinsicCondition other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GExtrinsicCondition;
   }
 
@@ -23012,18 +22910,19 @@ class GExtrinsicConditionBuilder
     _$GExtrinsicCondition _$result;
     try {
       _$result = _$v ??
-          new _$GExtrinsicCondition._(
-              id: id,
-              index: index,
-              version: version,
-              signature: _signature?.build(),
-              tip: _tip?.build(),
-              fee: _fee?.build(),
-              success: success,
-              error: _error?.build(),
-              hash: hash,
-              blockId: blockId,
-              callId: callId);
+          _$GExtrinsicCondition._(
+            id: id,
+            index: index,
+            version: version,
+            signature: _signature?.build(),
+            tip: _tip?.build(),
+            fee: _fee?.build(),
+            success: success,
+            error: _error?.build(),
+            hash: hash,
+            blockId: blockId,
+            callId: callId,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -23037,7 +22936,7 @@ class GExtrinsicConditionBuilder
         _$failedField = 'error';
         _error?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GExtrinsicCondition', _$failedField, e.toString());
       }
       rethrow;
@@ -23093,7 +22992,7 @@ class _$GExtrinsicFilter extends GExtrinsicFilter {
 
   factory _$GExtrinsicFilter(
           [void Function(GExtrinsicFilterBuilder)? updates]) =>
-      (new GExtrinsicFilterBuilder()..update(updates))._build();
+      (GExtrinsicFilterBuilder()..update(updates))._build();
 
   _$GExtrinsicFilter._(
       {this.id,
@@ -23118,14 +23017,13 @@ class _$GExtrinsicFilter extends GExtrinsicFilter {
       this.or,
       this.not})
       : super._();
-
   @override
   GExtrinsicFilter rebuild(void Function(GExtrinsicFilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
   GExtrinsicFilterBuilder toBuilder() =>
-      new GExtrinsicFilterBuilder()..replace(this);
+      GExtrinsicFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -23215,54 +23113,51 @@ class GExtrinsicFilterBuilder
   _$GExtrinsicFilter? _$v;
 
   GStringFilterBuilder? _id;
-  GStringFilterBuilder get id => _$this._id ??= new GStringFilterBuilder();
+  GStringFilterBuilder get id => _$this._id ??= GStringFilterBuilder();
   set id(GStringFilterBuilder? id) => _$this._id = id;
 
   GIntFilterBuilder? _index;
-  GIntFilterBuilder get index => _$this._index ??= new GIntFilterBuilder();
+  GIntFilterBuilder get index => _$this._index ??= GIntFilterBuilder();
   set index(GIntFilterBuilder? index) => _$this._index = index;
 
   GIntFilterBuilder? _version;
-  GIntFilterBuilder get version => _$this._version ??= new GIntFilterBuilder();
+  GIntFilterBuilder get version => _$this._version ??= GIntFilterBuilder();
   set version(GIntFilterBuilder? version) => _$this._version = version;
 
   GJSONFilterBuilder? _signature;
   GJSONFilterBuilder get signature =>
-      _$this._signature ??= new GJSONFilterBuilder();
+      _$this._signature ??= GJSONFilterBuilder();
   set signature(GJSONFilterBuilder? signature) => _$this._signature = signature;
 
   GBigFloatFilterBuilder? _tip;
-  GBigFloatFilterBuilder get tip =>
-      _$this._tip ??= new GBigFloatFilterBuilder();
+  GBigFloatFilterBuilder get tip => _$this._tip ??= GBigFloatFilterBuilder();
   set tip(GBigFloatFilterBuilder? tip) => _$this._tip = tip;
 
   GBigFloatFilterBuilder? _fee;
-  GBigFloatFilterBuilder get fee =>
-      _$this._fee ??= new GBigFloatFilterBuilder();
+  GBigFloatFilterBuilder get fee => _$this._fee ??= GBigFloatFilterBuilder();
   set fee(GBigFloatFilterBuilder? fee) => _$this._fee = fee;
 
   GBooleanFilterBuilder? _success;
   GBooleanFilterBuilder get success =>
-      _$this._success ??= new GBooleanFilterBuilder();
+      _$this._success ??= GBooleanFilterBuilder();
   set success(GBooleanFilterBuilder? success) => _$this._success = success;
 
   GJSONFilterBuilder? _error;
-  GJSONFilterBuilder get error => _$this._error ??= new GJSONFilterBuilder();
+  GJSONFilterBuilder get error => _$this._error ??= GJSONFilterBuilder();
   set error(GJSONFilterBuilder? error) => _$this._error = error;
 
   GStringFilterBuilder? _blockId;
   GStringFilterBuilder get blockId =>
-      _$this._blockId ??= new GStringFilterBuilder();
+      _$this._blockId ??= GStringFilterBuilder();
   set blockId(GStringFilterBuilder? blockId) => _$this._blockId = blockId;
 
   GStringFilterBuilder? _callId;
-  GStringFilterBuilder get callId =>
-      _$this._callId ??= new GStringFilterBuilder();
+  GStringFilterBuilder get callId => _$this._callId ??= GStringFilterBuilder();
   set callId(GStringFilterBuilder? callId) => _$this._callId = callId;
 
   GExtrinsicToManyEventFilterBuilder? _events;
   GExtrinsicToManyEventFilterBuilder get events =>
-      _$this._events ??= new GExtrinsicToManyEventFilterBuilder();
+      _$this._events ??= GExtrinsicToManyEventFilterBuilder();
   set events(GExtrinsicToManyEventFilterBuilder? events) =>
       _$this._events = events;
 
@@ -23272,7 +23167,7 @@ class GExtrinsicFilterBuilder
 
   GExtrinsicToManyCallFilterBuilder? _calls;
   GExtrinsicToManyCallFilterBuilder get calls =>
-      _$this._calls ??= new GExtrinsicToManyCallFilterBuilder();
+      _$this._calls ??= GExtrinsicToManyCallFilterBuilder();
   set calls(GExtrinsicToManyCallFilterBuilder? calls) => _$this._calls = calls;
 
   bool? _callsExist;
@@ -23280,7 +23175,7 @@ class GExtrinsicFilterBuilder
   set callsExist(bool? callsExist) => _$this._callsExist = callsExist;
 
   GBlockFilterBuilder? _block;
-  GBlockFilterBuilder get block => _$this._block ??= new GBlockFilterBuilder();
+  GBlockFilterBuilder get block => _$this._block ??= GBlockFilterBuilder();
   set block(GBlockFilterBuilder? block) => _$this._block = block;
 
   bool? _blockExists;
@@ -23288,7 +23183,7 @@ class GExtrinsicFilterBuilder
   set blockExists(bool? blockExists) => _$this._blockExists = blockExists;
 
   GCallFilterBuilder? _call;
-  GCallFilterBuilder get call => _$this._call ??= new GCallFilterBuilder();
+  GCallFilterBuilder get call => _$this._call ??= GCallFilterBuilder();
   set call(GCallFilterBuilder? call) => _$this._call = call;
 
   bool? _callExists;
@@ -23297,17 +23192,16 @@ class GExtrinsicFilterBuilder
 
   ListBuilder<GExtrinsicFilter>? _and;
   ListBuilder<GExtrinsicFilter> get and =>
-      _$this._and ??= new ListBuilder<GExtrinsicFilter>();
+      _$this._and ??= ListBuilder<GExtrinsicFilter>();
   set and(ListBuilder<GExtrinsicFilter>? and) => _$this._and = and;
 
   ListBuilder<GExtrinsicFilter>? _or;
   ListBuilder<GExtrinsicFilter> get or =>
-      _$this._or ??= new ListBuilder<GExtrinsicFilter>();
+      _$this._or ??= ListBuilder<GExtrinsicFilter>();
   set or(ListBuilder<GExtrinsicFilter>? or) => _$this._or = or;
 
   GExtrinsicFilterBuilder? _not;
-  GExtrinsicFilterBuilder get not =>
-      _$this._not ??= new GExtrinsicFilterBuilder();
+  GExtrinsicFilterBuilder get not => _$this._not ??= GExtrinsicFilterBuilder();
   set not(GExtrinsicFilterBuilder? not) => _$this._not = not;
 
   GExtrinsicFilterBuilder();
@@ -23343,7 +23237,6 @@ class GExtrinsicFilterBuilder
 
   @override
   void replace(GExtrinsicFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GExtrinsicFilter;
   }
 
@@ -23359,28 +23252,29 @@ class GExtrinsicFilterBuilder
     _$GExtrinsicFilter _$result;
     try {
       _$result = _$v ??
-          new _$GExtrinsicFilter._(
-              id: _id?.build(),
-              index: _index?.build(),
-              version: _version?.build(),
-              signature: _signature?.build(),
-              tip: _tip?.build(),
-              fee: _fee?.build(),
-              success: _success?.build(),
-              error: _error?.build(),
-              blockId: _blockId?.build(),
-              callId: _callId?.build(),
-              events: _events?.build(),
-              eventsExist: eventsExist,
-              calls: _calls?.build(),
-              callsExist: callsExist,
-              block: _block?.build(),
-              blockExists: blockExists,
-              call: _call?.build(),
-              callExists: callExists,
-              and: _and?.build(),
-              or: _or?.build(),
-              not: _not?.build());
+          _$GExtrinsicFilter._(
+            id: _id?.build(),
+            index: _index?.build(),
+            version: _version?.build(),
+            signature: _signature?.build(),
+            tip: _tip?.build(),
+            fee: _fee?.build(),
+            success: _success?.build(),
+            error: _error?.build(),
+            blockId: _blockId?.build(),
+            callId: _callId?.build(),
+            events: _events?.build(),
+            eventsExist: eventsExist,
+            calls: _calls?.build(),
+            callsExist: callsExist,
+            block: _block?.build(),
+            blockExists: blockExists,
+            call: _call?.build(),
+            callExists: callExists,
+            and: _and?.build(),
+            or: _or?.build(),
+            not: _not?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -23423,7 +23317,7 @@ class GExtrinsicFilterBuilder
         _$failedField = 'not';
         _not?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GExtrinsicFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -23443,11 +23337,10 @@ class _$GExtrinsicToManyCallFilter extends GExtrinsicToManyCallFilter {
 
   factory _$GExtrinsicToManyCallFilter(
           [void Function(GExtrinsicToManyCallFilterBuilder)? updates]) =>
-      (new GExtrinsicToManyCallFilterBuilder()..update(updates))._build();
+      (GExtrinsicToManyCallFilterBuilder()..update(updates))._build();
 
   _$GExtrinsicToManyCallFilter._({this.every, this.some, this.none})
       : super._();
-
   @override
   GExtrinsicToManyCallFilter rebuild(
           void Function(GExtrinsicToManyCallFilterBuilder) updates) =>
@@ -23455,7 +23348,7 @@ class _$GExtrinsicToManyCallFilter extends GExtrinsicToManyCallFilter {
 
   @override
   GExtrinsicToManyCallFilterBuilder toBuilder() =>
-      new GExtrinsicToManyCallFilterBuilder()..replace(this);
+      GExtrinsicToManyCallFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -23492,15 +23385,15 @@ class GExtrinsicToManyCallFilterBuilder
   _$GExtrinsicToManyCallFilter? _$v;
 
   GCallFilterBuilder? _every;
-  GCallFilterBuilder get every => _$this._every ??= new GCallFilterBuilder();
+  GCallFilterBuilder get every => _$this._every ??= GCallFilterBuilder();
   set every(GCallFilterBuilder? every) => _$this._every = every;
 
   GCallFilterBuilder? _some;
-  GCallFilterBuilder get some => _$this._some ??= new GCallFilterBuilder();
+  GCallFilterBuilder get some => _$this._some ??= GCallFilterBuilder();
   set some(GCallFilterBuilder? some) => _$this._some = some;
 
   GCallFilterBuilder? _none;
-  GCallFilterBuilder get none => _$this._none ??= new GCallFilterBuilder();
+  GCallFilterBuilder get none => _$this._none ??= GCallFilterBuilder();
   set none(GCallFilterBuilder? none) => _$this._none = none;
 
   GExtrinsicToManyCallFilterBuilder();
@@ -23518,7 +23411,6 @@ class GExtrinsicToManyCallFilterBuilder
 
   @override
   void replace(GExtrinsicToManyCallFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GExtrinsicToManyCallFilter;
   }
 
@@ -23534,10 +23426,11 @@ class GExtrinsicToManyCallFilterBuilder
     _$GExtrinsicToManyCallFilter _$result;
     try {
       _$result = _$v ??
-          new _$GExtrinsicToManyCallFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GExtrinsicToManyCallFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -23548,7 +23441,7 @@ class GExtrinsicToManyCallFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GExtrinsicToManyCallFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -23568,11 +23461,10 @@ class _$GExtrinsicToManyEventFilter extends GExtrinsicToManyEventFilter {
 
   factory _$GExtrinsicToManyEventFilter(
           [void Function(GExtrinsicToManyEventFilterBuilder)? updates]) =>
-      (new GExtrinsicToManyEventFilterBuilder()..update(updates))._build();
+      (GExtrinsicToManyEventFilterBuilder()..update(updates))._build();
 
   _$GExtrinsicToManyEventFilter._({this.every, this.some, this.none})
       : super._();
-
   @override
   GExtrinsicToManyEventFilter rebuild(
           void Function(GExtrinsicToManyEventFilterBuilder) updates) =>
@@ -23580,7 +23472,7 @@ class _$GExtrinsicToManyEventFilter extends GExtrinsicToManyEventFilter {
 
   @override
   GExtrinsicToManyEventFilterBuilder toBuilder() =>
-      new GExtrinsicToManyEventFilterBuilder()..replace(this);
+      GExtrinsicToManyEventFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -23618,15 +23510,15 @@ class GExtrinsicToManyEventFilterBuilder
   _$GExtrinsicToManyEventFilter? _$v;
 
   GEventFilterBuilder? _every;
-  GEventFilterBuilder get every => _$this._every ??= new GEventFilterBuilder();
+  GEventFilterBuilder get every => _$this._every ??= GEventFilterBuilder();
   set every(GEventFilterBuilder? every) => _$this._every = every;
 
   GEventFilterBuilder? _some;
-  GEventFilterBuilder get some => _$this._some ??= new GEventFilterBuilder();
+  GEventFilterBuilder get some => _$this._some ??= GEventFilterBuilder();
   set some(GEventFilterBuilder? some) => _$this._some = some;
 
   GEventFilterBuilder? _none;
-  GEventFilterBuilder get none => _$this._none ??= new GEventFilterBuilder();
+  GEventFilterBuilder get none => _$this._none ??= GEventFilterBuilder();
   set none(GEventFilterBuilder? none) => _$this._none = none;
 
   GExtrinsicToManyEventFilterBuilder();
@@ -23644,7 +23536,6 @@ class GExtrinsicToManyEventFilterBuilder
 
   @override
   void replace(GExtrinsicToManyEventFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GExtrinsicToManyEventFilter;
   }
 
@@ -23660,10 +23551,11 @@ class GExtrinsicToManyEventFilterBuilder
     _$GExtrinsicToManyEventFilter _$result;
     try {
       _$result = _$v ??
-          new _$GExtrinsicToManyEventFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GExtrinsicToManyEventFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -23674,7 +23566,7 @@ class GExtrinsicToManyEventFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GExtrinsicToManyEventFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -23712,7 +23604,7 @@ class _$GIdentityCondition extends GIdentityCondition {
 
   factory _$GIdentityCondition(
           [void Function(GIdentityConditionBuilder)? updates]) =>
-      (new GIdentityConditionBuilder()..update(updates))._build();
+      (GIdentityConditionBuilder()..update(updates))._build();
 
   _$GIdentityCondition._(
       {this.id,
@@ -23728,7 +23620,6 @@ class _$GIdentityCondition extends GIdentityCondition {
       this.accountRemovedId,
       this.createdInId})
       : super._();
-
   @override
   GIdentityCondition rebuild(
           void Function(GIdentityConditionBuilder) updates) =>
@@ -23736,7 +23627,7 @@ class _$GIdentityCondition extends GIdentityCondition {
 
   @override
   GIdentityConditionBuilder toBuilder() =>
-      new GIdentityConditionBuilder()..replace(this);
+      GIdentityConditionBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -23872,7 +23763,6 @@ class GIdentityConditionBuilder
 
   @override
   void replace(GIdentityCondition other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GIdentityCondition;
   }
 
@@ -23886,19 +23776,20 @@ class GIdentityConditionBuilder
 
   _$GIdentityCondition _build() {
     final _$result = _$v ??
-        new _$GIdentityCondition._(
-            id: id,
-            index: index,
-            name: name,
-            status: status,
-            createdOn: createdOn,
-            lastChangeOn: lastChangeOn,
-            isMember: isMember,
-            expireOn: expireOn,
-            firstEligibleUd: firstEligibleUd,
-            accountId: accountId,
-            accountRemovedId: accountRemovedId,
-            createdInId: createdInId);
+        _$GIdentityCondition._(
+          id: id,
+          index: index,
+          name: name,
+          status: status,
+          createdOn: createdOn,
+          lastChangeOn: lastChangeOn,
+          isMember: isMember,
+          expireOn: expireOn,
+          firstEligibleUd: firstEligibleUd,
+          accountId: accountId,
+          accountRemovedId: accountRemovedId,
+          createdInId: createdInId,
+        );
     replace(_$result);
     return _$result;
   }
@@ -23977,7 +23868,7 @@ class _$GIdentityFilter extends GIdentityFilter {
   final GIdentityFilter? not;
 
   factory _$GIdentityFilter([void Function(GIdentityFilterBuilder)? updates]) =>
-      (new GIdentityFilterBuilder()..update(updates))._build();
+      (GIdentityFilterBuilder()..update(updates))._build();
 
   _$GIdentityFilter._(
       {this.id,
@@ -24016,14 +23907,12 @@ class _$GIdentityFilter extends GIdentityFilter {
       this.or,
       this.not})
       : super._();
-
   @override
   GIdentityFilter rebuild(void Function(GIdentityFilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GIdentityFilterBuilder toBuilder() =>
-      new GIdentityFilterBuilder()..replace(this);
+  GIdentityFilterBuilder toBuilder() => GIdentityFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -24157,70 +24046,67 @@ class GIdentityFilterBuilder
   _$GIdentityFilter? _$v;
 
   GStringFilterBuilder? _id;
-  GStringFilterBuilder get id => _$this._id ??= new GStringFilterBuilder();
+  GStringFilterBuilder get id => _$this._id ??= GStringFilterBuilder();
   set id(GStringFilterBuilder? id) => _$this._id = id;
 
   GIntFilterBuilder? _index;
-  GIntFilterBuilder get index => _$this._index ??= new GIntFilterBuilder();
+  GIntFilterBuilder get index => _$this._index ??= GIntFilterBuilder();
   set index(GIntFilterBuilder? index) => _$this._index = index;
 
   GStringFilterBuilder? _name;
-  GStringFilterBuilder get name => _$this._name ??= new GStringFilterBuilder();
+  GStringFilterBuilder get name => _$this._name ??= GStringFilterBuilder();
   set name(GStringFilterBuilder? name) => _$this._name = name;
 
   GStringFilterBuilder? _status;
-  GStringFilterBuilder get status =>
-      _$this._status ??= new GStringFilterBuilder();
+  GStringFilterBuilder get status => _$this._status ??= GStringFilterBuilder();
   set status(GStringFilterBuilder? status) => _$this._status = status;
 
   GIntFilterBuilder? _createdOn;
-  GIntFilterBuilder get createdOn =>
-      _$this._createdOn ??= new GIntFilterBuilder();
+  GIntFilterBuilder get createdOn => _$this._createdOn ??= GIntFilterBuilder();
   set createdOn(GIntFilterBuilder? createdOn) => _$this._createdOn = createdOn;
 
   GIntFilterBuilder? _lastChangeOn;
   GIntFilterBuilder get lastChangeOn =>
-      _$this._lastChangeOn ??= new GIntFilterBuilder();
+      _$this._lastChangeOn ??= GIntFilterBuilder();
   set lastChangeOn(GIntFilterBuilder? lastChangeOn) =>
       _$this._lastChangeOn = lastChangeOn;
 
   GBooleanFilterBuilder? _isMember;
   GBooleanFilterBuilder get isMember =>
-      _$this._isMember ??= new GBooleanFilterBuilder();
+      _$this._isMember ??= GBooleanFilterBuilder();
   set isMember(GBooleanFilterBuilder? isMember) => _$this._isMember = isMember;
 
   GIntFilterBuilder? _expireOn;
-  GIntFilterBuilder get expireOn =>
-      _$this._expireOn ??= new GIntFilterBuilder();
+  GIntFilterBuilder get expireOn => _$this._expireOn ??= GIntFilterBuilder();
   set expireOn(GIntFilterBuilder? expireOn) => _$this._expireOn = expireOn;
 
   GIntFilterBuilder? _firstEligibleUd;
   GIntFilterBuilder get firstEligibleUd =>
-      _$this._firstEligibleUd ??= new GIntFilterBuilder();
+      _$this._firstEligibleUd ??= GIntFilterBuilder();
   set firstEligibleUd(GIntFilterBuilder? firstEligibleUd) =>
       _$this._firstEligibleUd = firstEligibleUd;
 
   GStringFilterBuilder? _accountId;
   GStringFilterBuilder get accountId =>
-      _$this._accountId ??= new GStringFilterBuilder();
+      _$this._accountId ??= GStringFilterBuilder();
   set accountId(GStringFilterBuilder? accountId) =>
       _$this._accountId = accountId;
 
   GStringFilterBuilder? _accountRemovedId;
   GStringFilterBuilder get accountRemovedId =>
-      _$this._accountRemovedId ??= new GStringFilterBuilder();
+      _$this._accountRemovedId ??= GStringFilterBuilder();
   set accountRemovedId(GStringFilterBuilder? accountRemovedId) =>
       _$this._accountRemovedId = accountRemovedId;
 
   GStringFilterBuilder? _createdInId;
   GStringFilterBuilder get createdInId =>
-      _$this._createdInId ??= new GStringFilterBuilder();
+      _$this._createdInId ??= GStringFilterBuilder();
   set createdInId(GStringFilterBuilder? createdInId) =>
       _$this._createdInId = createdInId;
 
   GIdentityToManyCertFilterBuilder? _certIssued;
   GIdentityToManyCertFilterBuilder get certIssued =>
-      _$this._certIssued ??= new GIdentityToManyCertFilterBuilder();
+      _$this._certIssued ??= GIdentityToManyCertFilterBuilder();
   set certIssued(GIdentityToManyCertFilterBuilder? certIssued) =>
       _$this._certIssued = certIssued;
 
@@ -24231,7 +24117,7 @@ class GIdentityFilterBuilder
 
   GIdentityToManyCertFilterBuilder? _certReceived;
   GIdentityToManyCertFilterBuilder get certReceived =>
-      _$this._certReceived ??= new GIdentityToManyCertFilterBuilder();
+      _$this._certReceived ??= GIdentityToManyCertFilterBuilder();
   set certReceived(GIdentityToManyCertFilterBuilder? certReceived) =>
       _$this._certReceived = certReceived;
 
@@ -24243,7 +24129,7 @@ class GIdentityFilterBuilder
   GIdentityToManyMembershipEventFilterBuilder? _membershipHistory;
   GIdentityToManyMembershipEventFilterBuilder get membershipHistory =>
       _$this._membershipHistory ??=
-          new GIdentityToManyMembershipEventFilterBuilder();
+          GIdentityToManyMembershipEventFilterBuilder();
   set membershipHistory(
           GIdentityToManyMembershipEventFilterBuilder? membershipHistory) =>
       _$this._membershipHistory = membershipHistory;
@@ -24255,8 +24141,7 @@ class GIdentityFilterBuilder
 
   GIdentityToManyChangeOwnerKeyFilterBuilder? _ownerKeyChange;
   GIdentityToManyChangeOwnerKeyFilterBuilder get ownerKeyChange =>
-      _$this._ownerKeyChange ??=
-          new GIdentityToManyChangeOwnerKeyFilterBuilder();
+      _$this._ownerKeyChange ??= GIdentityToManyChangeOwnerKeyFilterBuilder();
   set ownerKeyChange(
           GIdentityToManyChangeOwnerKeyFilterBuilder? ownerKeyChange) =>
       _$this._ownerKeyChange = ownerKeyChange;
@@ -24267,7 +24152,7 @@ class GIdentityFilterBuilder
       _$this._ownerKeyChangeExist = ownerKeyChangeExist;
 
   GSmithFilterBuilder? _smith;
-  GSmithFilterBuilder get smith => _$this._smith ??= new GSmithFilterBuilder();
+  GSmithFilterBuilder get smith => _$this._smith ??= GSmithFilterBuilder();
   set smith(GSmithFilterBuilder? smith) => _$this._smith = smith;
 
   bool? _smithExists;
@@ -24276,7 +24161,7 @@ class GIdentityFilterBuilder
 
   GIdentityToManyUdHistoryFilterBuilder? _udHistoryRecords;
   GIdentityToManyUdHistoryFilterBuilder get udHistoryRecords =>
-      _$this._udHistoryRecords ??= new GIdentityToManyUdHistoryFilterBuilder();
+      _$this._udHistoryRecords ??= GIdentityToManyUdHistoryFilterBuilder();
   set udHistoryRecords(
           GIdentityToManyUdHistoryFilterBuilder? udHistoryRecords) =>
       _$this._udHistoryRecords = udHistoryRecords;
@@ -24289,7 +24174,7 @@ class GIdentityFilterBuilder
   GIdentityToManyAccountFilterBuilder? _accountsByLinkedIdentityId;
   GIdentityToManyAccountFilterBuilder get accountsByLinkedIdentityId =>
       _$this._accountsByLinkedIdentityId ??=
-          new GIdentityToManyAccountFilterBuilder();
+          GIdentityToManyAccountFilterBuilder();
   set accountsByLinkedIdentityId(
           GIdentityToManyAccountFilterBuilder? accountsByLinkedIdentityId) =>
       _$this._accountsByLinkedIdentityId = accountsByLinkedIdentityId;
@@ -24302,7 +24187,7 @@ class GIdentityFilterBuilder
 
   GAccountFilterBuilder? _account;
   GAccountFilterBuilder get account =>
-      _$this._account ??= new GAccountFilterBuilder();
+      _$this._account ??= GAccountFilterBuilder();
   set account(GAccountFilterBuilder? account) => _$this._account = account;
 
   bool? _accountExists;
@@ -24312,7 +24197,7 @@ class GIdentityFilterBuilder
 
   GAccountFilterBuilder? _accountRemoved;
   GAccountFilterBuilder get accountRemoved =>
-      _$this._accountRemoved ??= new GAccountFilterBuilder();
+      _$this._accountRemoved ??= GAccountFilterBuilder();
   set accountRemoved(GAccountFilterBuilder? accountRemoved) =>
       _$this._accountRemoved = accountRemoved;
 
@@ -24323,7 +24208,7 @@ class GIdentityFilterBuilder
 
   GEventFilterBuilder? _createdIn;
   GEventFilterBuilder get createdIn =>
-      _$this._createdIn ??= new GEventFilterBuilder();
+      _$this._createdIn ??= GEventFilterBuilder();
   set createdIn(GEventFilterBuilder? createdIn) =>
       _$this._createdIn = createdIn;
 
@@ -24334,17 +24219,16 @@ class GIdentityFilterBuilder
 
   ListBuilder<GIdentityFilter>? _and;
   ListBuilder<GIdentityFilter> get and =>
-      _$this._and ??= new ListBuilder<GIdentityFilter>();
+      _$this._and ??= ListBuilder<GIdentityFilter>();
   set and(ListBuilder<GIdentityFilter>? and) => _$this._and = and;
 
   ListBuilder<GIdentityFilter>? _or;
   ListBuilder<GIdentityFilter> get or =>
-      _$this._or ??= new ListBuilder<GIdentityFilter>();
+      _$this._or ??= ListBuilder<GIdentityFilter>();
   set or(ListBuilder<GIdentityFilter>? or) => _$this._or = or;
 
   GIdentityFilterBuilder? _not;
-  GIdentityFilterBuilder get not =>
-      _$this._not ??= new GIdentityFilterBuilder();
+  GIdentityFilterBuilder get not => _$this._not ??= GIdentityFilterBuilder();
   set not(GIdentityFilterBuilder? not) => _$this._not = not;
 
   GIdentityFilterBuilder();
@@ -24394,7 +24278,6 @@ class GIdentityFilterBuilder
 
   @override
   void replace(GIdentityFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GIdentityFilter;
   }
 
@@ -24410,42 +24293,43 @@ class GIdentityFilterBuilder
     _$GIdentityFilter _$result;
     try {
       _$result = _$v ??
-          new _$GIdentityFilter._(
-              id: _id?.build(),
-              index: _index?.build(),
-              name: _name?.build(),
-              status: _status?.build(),
-              createdOn: _createdOn?.build(),
-              lastChangeOn: _lastChangeOn?.build(),
-              isMember: _isMember?.build(),
-              expireOn: _expireOn?.build(),
-              firstEligibleUd: _firstEligibleUd?.build(),
-              accountId: _accountId?.build(),
-              accountRemovedId: _accountRemovedId?.build(),
-              createdInId: _createdInId?.build(),
-              certIssued: _certIssued?.build(),
-              certIssuedExist: certIssuedExist,
-              certReceived: _certReceived?.build(),
-              certReceivedExist: certReceivedExist,
-              membershipHistory: _membershipHistory?.build(),
-              membershipHistoryExist: membershipHistoryExist,
-              ownerKeyChange: _ownerKeyChange?.build(),
-              ownerKeyChangeExist: ownerKeyChangeExist,
-              smith: _smith?.build(),
-              smithExists: smithExists,
-              udHistoryRecords: _udHistoryRecords?.build(),
-              udHistoryRecordsExist: udHistoryRecordsExist,
-              accountsByLinkedIdentityId: _accountsByLinkedIdentityId?.build(),
-              accountsByLinkedIdentityIdExist: accountsByLinkedIdentityIdExist,
-              account: _account?.build(),
-              accountExists: accountExists,
-              accountRemoved: _accountRemoved?.build(),
-              accountRemovedExists: accountRemovedExists,
-              createdIn: _createdIn?.build(),
-              createdInExists: createdInExists,
-              and: _and?.build(),
-              or: _or?.build(),
-              not: _not?.build());
+          _$GIdentityFilter._(
+            id: _id?.build(),
+            index: _index?.build(),
+            name: _name?.build(),
+            status: _status?.build(),
+            createdOn: _createdOn?.build(),
+            lastChangeOn: _lastChangeOn?.build(),
+            isMember: _isMember?.build(),
+            expireOn: _expireOn?.build(),
+            firstEligibleUd: _firstEligibleUd?.build(),
+            accountId: _accountId?.build(),
+            accountRemovedId: _accountRemovedId?.build(),
+            createdInId: _createdInId?.build(),
+            certIssued: _certIssued?.build(),
+            certIssuedExist: certIssuedExist,
+            certReceived: _certReceived?.build(),
+            certReceivedExist: certReceivedExist,
+            membershipHistory: _membershipHistory?.build(),
+            membershipHistoryExist: membershipHistoryExist,
+            ownerKeyChange: _ownerKeyChange?.build(),
+            ownerKeyChangeExist: ownerKeyChangeExist,
+            smith: _smith?.build(),
+            smithExists: smithExists,
+            udHistoryRecords: _udHistoryRecords?.build(),
+            udHistoryRecordsExist: udHistoryRecordsExist,
+            accountsByLinkedIdentityId: _accountsByLinkedIdentityId?.build(),
+            accountsByLinkedIdentityIdExist: accountsByLinkedIdentityIdExist,
+            account: _account?.build(),
+            accountExists: accountExists,
+            accountRemoved: _accountRemoved?.build(),
+            accountRemovedExists: accountRemovedExists,
+            createdIn: _createdIn?.build(),
+            createdInExists: createdInExists,
+            and: _and?.build(),
+            or: _or?.build(),
+            not: _not?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -24510,7 +24394,7 @@ class GIdentityFilterBuilder
         _$failedField = 'not';
         _not?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GIdentityFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -24530,11 +24414,10 @@ class _$GIdentityToManyAccountFilter extends GIdentityToManyAccountFilter {
 
   factory _$GIdentityToManyAccountFilter(
           [void Function(GIdentityToManyAccountFilterBuilder)? updates]) =>
-      (new GIdentityToManyAccountFilterBuilder()..update(updates))._build();
+      (GIdentityToManyAccountFilterBuilder()..update(updates))._build();
 
   _$GIdentityToManyAccountFilter._({this.every, this.some, this.none})
       : super._();
-
   @override
   GIdentityToManyAccountFilter rebuild(
           void Function(GIdentityToManyAccountFilterBuilder) updates) =>
@@ -24542,7 +24425,7 @@ class _$GIdentityToManyAccountFilter extends GIdentityToManyAccountFilter {
 
   @override
   GIdentityToManyAccountFilterBuilder toBuilder() =>
-      new GIdentityToManyAccountFilterBuilder()..replace(this);
+      GIdentityToManyAccountFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -24580,18 +24463,15 @@ class GIdentityToManyAccountFilterBuilder
   _$GIdentityToManyAccountFilter? _$v;
 
   GAccountFilterBuilder? _every;
-  GAccountFilterBuilder get every =>
-      _$this._every ??= new GAccountFilterBuilder();
+  GAccountFilterBuilder get every => _$this._every ??= GAccountFilterBuilder();
   set every(GAccountFilterBuilder? every) => _$this._every = every;
 
   GAccountFilterBuilder? _some;
-  GAccountFilterBuilder get some =>
-      _$this._some ??= new GAccountFilterBuilder();
+  GAccountFilterBuilder get some => _$this._some ??= GAccountFilterBuilder();
   set some(GAccountFilterBuilder? some) => _$this._some = some;
 
   GAccountFilterBuilder? _none;
-  GAccountFilterBuilder get none =>
-      _$this._none ??= new GAccountFilterBuilder();
+  GAccountFilterBuilder get none => _$this._none ??= GAccountFilterBuilder();
   set none(GAccountFilterBuilder? none) => _$this._none = none;
 
   GIdentityToManyAccountFilterBuilder();
@@ -24609,7 +24489,6 @@ class GIdentityToManyAccountFilterBuilder
 
   @override
   void replace(GIdentityToManyAccountFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GIdentityToManyAccountFilter;
   }
 
@@ -24625,10 +24504,11 @@ class GIdentityToManyAccountFilterBuilder
     _$GIdentityToManyAccountFilter _$result;
     try {
       _$result = _$v ??
-          new _$GIdentityToManyAccountFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GIdentityToManyAccountFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -24639,7 +24519,7 @@ class GIdentityToManyAccountFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GIdentityToManyAccountFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -24659,10 +24539,9 @@ class _$GIdentityToManyCertFilter extends GIdentityToManyCertFilter {
 
   factory _$GIdentityToManyCertFilter(
           [void Function(GIdentityToManyCertFilterBuilder)? updates]) =>
-      (new GIdentityToManyCertFilterBuilder()..update(updates))._build();
+      (GIdentityToManyCertFilterBuilder()..update(updates))._build();
 
   _$GIdentityToManyCertFilter._({this.every, this.some, this.none}) : super._();
-
   @override
   GIdentityToManyCertFilter rebuild(
           void Function(GIdentityToManyCertFilterBuilder) updates) =>
@@ -24670,7 +24549,7 @@ class _$GIdentityToManyCertFilter extends GIdentityToManyCertFilter {
 
   @override
   GIdentityToManyCertFilterBuilder toBuilder() =>
-      new GIdentityToManyCertFilterBuilder()..replace(this);
+      GIdentityToManyCertFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -24707,15 +24586,15 @@ class GIdentityToManyCertFilterBuilder
   _$GIdentityToManyCertFilter? _$v;
 
   GCertFilterBuilder? _every;
-  GCertFilterBuilder get every => _$this._every ??= new GCertFilterBuilder();
+  GCertFilterBuilder get every => _$this._every ??= GCertFilterBuilder();
   set every(GCertFilterBuilder? every) => _$this._every = every;
 
   GCertFilterBuilder? _some;
-  GCertFilterBuilder get some => _$this._some ??= new GCertFilterBuilder();
+  GCertFilterBuilder get some => _$this._some ??= GCertFilterBuilder();
   set some(GCertFilterBuilder? some) => _$this._some = some;
 
   GCertFilterBuilder? _none;
-  GCertFilterBuilder get none => _$this._none ??= new GCertFilterBuilder();
+  GCertFilterBuilder get none => _$this._none ??= GCertFilterBuilder();
   set none(GCertFilterBuilder? none) => _$this._none = none;
 
   GIdentityToManyCertFilterBuilder();
@@ -24733,7 +24612,6 @@ class GIdentityToManyCertFilterBuilder
 
   @override
   void replace(GIdentityToManyCertFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GIdentityToManyCertFilter;
   }
 
@@ -24749,10 +24627,11 @@ class GIdentityToManyCertFilterBuilder
     _$GIdentityToManyCertFilter _$result;
     try {
       _$result = _$v ??
-          new _$GIdentityToManyCertFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GIdentityToManyCertFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -24763,7 +24642,7 @@ class GIdentityToManyCertFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GIdentityToManyCertFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -24785,12 +24664,10 @@ class _$GIdentityToManyChangeOwnerKeyFilter
   factory _$GIdentityToManyChangeOwnerKeyFilter(
           [void Function(GIdentityToManyChangeOwnerKeyFilterBuilder)?
               updates]) =>
-      (new GIdentityToManyChangeOwnerKeyFilterBuilder()..update(updates))
-          ._build();
+      (GIdentityToManyChangeOwnerKeyFilterBuilder()..update(updates))._build();
 
   _$GIdentityToManyChangeOwnerKeyFilter._({this.every, this.some, this.none})
       : super._();
-
   @override
   GIdentityToManyChangeOwnerKeyFilter rebuild(
           void Function(GIdentityToManyChangeOwnerKeyFilterBuilder) updates) =>
@@ -24798,7 +24675,7 @@ class _$GIdentityToManyChangeOwnerKeyFilter
 
   @override
   GIdentityToManyChangeOwnerKeyFilterBuilder toBuilder() =>
-      new GIdentityToManyChangeOwnerKeyFilterBuilder()..replace(this);
+      GIdentityToManyChangeOwnerKeyFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -24837,17 +24714,17 @@ class GIdentityToManyChangeOwnerKeyFilterBuilder
 
   GChangeOwnerKeyFilterBuilder? _every;
   GChangeOwnerKeyFilterBuilder get every =>
-      _$this._every ??= new GChangeOwnerKeyFilterBuilder();
+      _$this._every ??= GChangeOwnerKeyFilterBuilder();
   set every(GChangeOwnerKeyFilterBuilder? every) => _$this._every = every;
 
   GChangeOwnerKeyFilterBuilder? _some;
   GChangeOwnerKeyFilterBuilder get some =>
-      _$this._some ??= new GChangeOwnerKeyFilterBuilder();
+      _$this._some ??= GChangeOwnerKeyFilterBuilder();
   set some(GChangeOwnerKeyFilterBuilder? some) => _$this._some = some;
 
   GChangeOwnerKeyFilterBuilder? _none;
   GChangeOwnerKeyFilterBuilder get none =>
-      _$this._none ??= new GChangeOwnerKeyFilterBuilder();
+      _$this._none ??= GChangeOwnerKeyFilterBuilder();
   set none(GChangeOwnerKeyFilterBuilder? none) => _$this._none = none;
 
   GIdentityToManyChangeOwnerKeyFilterBuilder();
@@ -24865,7 +24742,6 @@ class GIdentityToManyChangeOwnerKeyFilterBuilder
 
   @override
   void replace(GIdentityToManyChangeOwnerKeyFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GIdentityToManyChangeOwnerKeyFilter;
   }
 
@@ -24882,10 +24758,11 @@ class GIdentityToManyChangeOwnerKeyFilterBuilder
     _$GIdentityToManyChangeOwnerKeyFilter _$result;
     try {
       _$result = _$v ??
-          new _$GIdentityToManyChangeOwnerKeyFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GIdentityToManyChangeOwnerKeyFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -24896,10 +24773,8 @@ class GIdentityToManyChangeOwnerKeyFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            r'GIdentityToManyChangeOwnerKeyFilter',
-            _$failedField,
-            e.toString());
+        throw BuiltValueNestedFieldError(r'GIdentityToManyChangeOwnerKeyFilter',
+            _$failedField, e.toString());
       }
       rethrow;
     }
@@ -24920,12 +24795,10 @@ class _$GIdentityToManyMembershipEventFilter
   factory _$GIdentityToManyMembershipEventFilter(
           [void Function(GIdentityToManyMembershipEventFilterBuilder)?
               updates]) =>
-      (new GIdentityToManyMembershipEventFilterBuilder()..update(updates))
-          ._build();
+      (GIdentityToManyMembershipEventFilterBuilder()..update(updates))._build();
 
   _$GIdentityToManyMembershipEventFilter._({this.every, this.some, this.none})
       : super._();
-
   @override
   GIdentityToManyMembershipEventFilter rebuild(
           void Function(GIdentityToManyMembershipEventFilterBuilder) updates) =>
@@ -24933,7 +24806,7 @@ class _$GIdentityToManyMembershipEventFilter
 
   @override
   GIdentityToManyMembershipEventFilterBuilder toBuilder() =>
-      new GIdentityToManyMembershipEventFilterBuilder()..replace(this);
+      GIdentityToManyMembershipEventFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -24972,17 +24845,17 @@ class GIdentityToManyMembershipEventFilterBuilder
 
   GMembershipEventFilterBuilder? _every;
   GMembershipEventFilterBuilder get every =>
-      _$this._every ??= new GMembershipEventFilterBuilder();
+      _$this._every ??= GMembershipEventFilterBuilder();
   set every(GMembershipEventFilterBuilder? every) => _$this._every = every;
 
   GMembershipEventFilterBuilder? _some;
   GMembershipEventFilterBuilder get some =>
-      _$this._some ??= new GMembershipEventFilterBuilder();
+      _$this._some ??= GMembershipEventFilterBuilder();
   set some(GMembershipEventFilterBuilder? some) => _$this._some = some;
 
   GMembershipEventFilterBuilder? _none;
   GMembershipEventFilterBuilder get none =>
-      _$this._none ??= new GMembershipEventFilterBuilder();
+      _$this._none ??= GMembershipEventFilterBuilder();
   set none(GMembershipEventFilterBuilder? none) => _$this._none = none;
 
   GIdentityToManyMembershipEventFilterBuilder();
@@ -25000,7 +24873,6 @@ class GIdentityToManyMembershipEventFilterBuilder
 
   @override
   void replace(GIdentityToManyMembershipEventFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GIdentityToManyMembershipEventFilter;
   }
 
@@ -25017,10 +24889,11 @@ class GIdentityToManyMembershipEventFilterBuilder
     _$GIdentityToManyMembershipEventFilter _$result;
     try {
       _$result = _$v ??
-          new _$GIdentityToManyMembershipEventFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GIdentityToManyMembershipEventFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -25031,7 +24904,7 @@ class GIdentityToManyMembershipEventFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GIdentityToManyMembershipEventFilter',
             _$failedField,
             e.toString());
@@ -25053,11 +24926,10 @@ class _$GIdentityToManyUdHistoryFilter extends GIdentityToManyUdHistoryFilter {
 
   factory _$GIdentityToManyUdHistoryFilter(
           [void Function(GIdentityToManyUdHistoryFilterBuilder)? updates]) =>
-      (new GIdentityToManyUdHistoryFilterBuilder()..update(updates))._build();
+      (GIdentityToManyUdHistoryFilterBuilder()..update(updates))._build();
 
   _$GIdentityToManyUdHistoryFilter._({this.every, this.some, this.none})
       : super._();
-
   @override
   GIdentityToManyUdHistoryFilter rebuild(
           void Function(GIdentityToManyUdHistoryFilterBuilder) updates) =>
@@ -25065,7 +24937,7 @@ class _$GIdentityToManyUdHistoryFilter extends GIdentityToManyUdHistoryFilter {
 
   @override
   GIdentityToManyUdHistoryFilterBuilder toBuilder() =>
-      new GIdentityToManyUdHistoryFilterBuilder()..replace(this);
+      GIdentityToManyUdHistoryFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -25104,17 +24976,17 @@ class GIdentityToManyUdHistoryFilterBuilder
 
   GUdHistoryFilterBuilder? _every;
   GUdHistoryFilterBuilder get every =>
-      _$this._every ??= new GUdHistoryFilterBuilder();
+      _$this._every ??= GUdHistoryFilterBuilder();
   set every(GUdHistoryFilterBuilder? every) => _$this._every = every;
 
   GUdHistoryFilterBuilder? _some;
   GUdHistoryFilterBuilder get some =>
-      _$this._some ??= new GUdHistoryFilterBuilder();
+      _$this._some ??= GUdHistoryFilterBuilder();
   set some(GUdHistoryFilterBuilder? some) => _$this._some = some;
 
   GUdHistoryFilterBuilder? _none;
   GUdHistoryFilterBuilder get none =>
-      _$this._none ??= new GUdHistoryFilterBuilder();
+      _$this._none ??= GUdHistoryFilterBuilder();
   set none(GUdHistoryFilterBuilder? none) => _$this._none = none;
 
   GIdentityToManyUdHistoryFilterBuilder();
@@ -25132,7 +25004,6 @@ class GIdentityToManyUdHistoryFilterBuilder
 
   @override
   void replace(GIdentityToManyUdHistoryFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GIdentityToManyUdHistoryFilter;
   }
 
@@ -25148,10 +25019,11 @@ class GIdentityToManyUdHistoryFilterBuilder
     _$GIdentityToManyUdHistoryFilter _$result;
     try {
       _$result = _$v ??
-          new _$GIdentityToManyUdHistoryFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GIdentityToManyUdHistoryFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -25162,7 +25034,7 @@ class GIdentityToManyUdHistoryFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GIdentityToManyUdHistoryFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -25197,7 +25069,7 @@ class _$GIntFilter extends GIntFilter {
   final int? greaterThanOrEqualTo;
 
   factory _$GIntFilter([void Function(GIntFilterBuilder)? updates]) =>
-      (new GIntFilterBuilder()..update(updates))._build();
+      (GIntFilterBuilder()..update(updates))._build();
 
   _$GIntFilter._(
       {this.isNull,
@@ -25212,13 +25084,12 @@ class _$GIntFilter extends GIntFilter {
       this.greaterThan,
       this.greaterThanOrEqualTo})
       : super._();
-
   @override
   GIntFilter rebuild(void Function(GIntFilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GIntFilterBuilder toBuilder() => new GIntFilterBuilder()..replace(this);
+  GIntFilterBuilder toBuilder() => GIntFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -25298,11 +25169,11 @@ class GIntFilterBuilder implements Builder<GIntFilter, GIntFilterBuilder> {
       _$this._notDistinctFrom = notDistinctFrom;
 
   ListBuilder<int>? _Gin;
-  ListBuilder<int> get Gin => _$this._Gin ??= new ListBuilder<int>();
+  ListBuilder<int> get Gin => _$this._Gin ??= ListBuilder<int>();
   set Gin(ListBuilder<int>? Gin) => _$this._Gin = Gin;
 
   ListBuilder<int>? _notIn;
-  ListBuilder<int> get notIn => _$this._notIn ??= new ListBuilder<int>();
+  ListBuilder<int> get notIn => _$this._notIn ??= ListBuilder<int>();
   set notIn(ListBuilder<int>? notIn) => _$this._notIn = notIn;
 
   int? _lessThan;
@@ -25346,7 +25217,6 @@ class GIntFilterBuilder implements Builder<GIntFilter, GIntFilterBuilder> {
 
   @override
   void replace(GIntFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GIntFilter;
   }
 
@@ -25362,18 +25232,19 @@ class GIntFilterBuilder implements Builder<GIntFilter, GIntFilterBuilder> {
     _$GIntFilter _$result;
     try {
       _$result = _$v ??
-          new _$GIntFilter._(
-              isNull: isNull,
-              equalTo: equalTo,
-              notEqualTo: notEqualTo,
-              distinctFrom: distinctFrom,
-              notDistinctFrom: notDistinctFrom,
-              Gin: _Gin?.build(),
-              notIn: _notIn?.build(),
-              lessThan: lessThan,
-              lessThanOrEqualTo: lessThanOrEqualTo,
-              greaterThan: greaterThan,
-              greaterThanOrEqualTo: greaterThanOrEqualTo);
+          _$GIntFilter._(
+            isNull: isNull,
+            equalTo: equalTo,
+            notEqualTo: notEqualTo,
+            distinctFrom: distinctFrom,
+            notDistinctFrom: notDistinctFrom,
+            Gin: _Gin?.build(),
+            notIn: _notIn?.build(),
+            lessThan: lessThan,
+            lessThanOrEqualTo: lessThanOrEqualTo,
+            greaterThan: greaterThan,
+            greaterThanOrEqualTo: greaterThanOrEqualTo,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -25382,7 +25253,7 @@ class GIntFilterBuilder implements Builder<GIntFilter, GIntFilterBuilder> {
         _$failedField = 'notIn';
         _notIn?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GIntFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -25431,7 +25302,7 @@ class _$GIntListFilter extends GIntListFilter {
   final int? anyGreaterThanOrEqualTo;
 
   factory _$GIntListFilter([void Function(GIntListFilterBuilder)? updates]) =>
-      (new GIntListFilterBuilder()..update(updates))._build();
+      (GIntListFilterBuilder()..update(updates))._build();
 
   _$GIntListFilter._(
       {this.isNull,
@@ -25453,14 +25324,12 @@ class _$GIntListFilter extends GIntListFilter {
       this.anyGreaterThan,
       this.anyGreaterThanOrEqualTo})
       : super._();
-
   @override
   GIntListFilter rebuild(void Function(GIntListFilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GIntListFilterBuilder toBuilder() =>
-      new GIntListFilterBuilder()..replace(this);
+  GIntListFilterBuilder toBuilder() => GIntListFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -25545,64 +25414,61 @@ class GIntListFilterBuilder
   set isNull(bool? isNull) => _$this._isNull = isNull;
 
   ListBuilder<int?>? _equalTo;
-  ListBuilder<int?> get equalTo => _$this._equalTo ??= new ListBuilder<int?>();
+  ListBuilder<int?> get equalTo => _$this._equalTo ??= ListBuilder<int?>();
   set equalTo(ListBuilder<int?>? equalTo) => _$this._equalTo = equalTo;
 
   ListBuilder<int?>? _notEqualTo;
   ListBuilder<int?> get notEqualTo =>
-      _$this._notEqualTo ??= new ListBuilder<int?>();
+      _$this._notEqualTo ??= ListBuilder<int?>();
   set notEqualTo(ListBuilder<int?>? notEqualTo) =>
       _$this._notEqualTo = notEqualTo;
 
   ListBuilder<int?>? _distinctFrom;
   ListBuilder<int?> get distinctFrom =>
-      _$this._distinctFrom ??= new ListBuilder<int?>();
+      _$this._distinctFrom ??= ListBuilder<int?>();
   set distinctFrom(ListBuilder<int?>? distinctFrom) =>
       _$this._distinctFrom = distinctFrom;
 
   ListBuilder<int?>? _notDistinctFrom;
   ListBuilder<int?> get notDistinctFrom =>
-      _$this._notDistinctFrom ??= new ListBuilder<int?>();
+      _$this._notDistinctFrom ??= ListBuilder<int?>();
   set notDistinctFrom(ListBuilder<int?>? notDistinctFrom) =>
       _$this._notDistinctFrom = notDistinctFrom;
 
   ListBuilder<int?>? _lessThan;
-  ListBuilder<int?> get lessThan =>
-      _$this._lessThan ??= new ListBuilder<int?>();
+  ListBuilder<int?> get lessThan => _$this._lessThan ??= ListBuilder<int?>();
   set lessThan(ListBuilder<int?>? lessThan) => _$this._lessThan = lessThan;
 
   ListBuilder<int?>? _lessThanOrEqualTo;
   ListBuilder<int?> get lessThanOrEqualTo =>
-      _$this._lessThanOrEqualTo ??= new ListBuilder<int?>();
+      _$this._lessThanOrEqualTo ??= ListBuilder<int?>();
   set lessThanOrEqualTo(ListBuilder<int?>? lessThanOrEqualTo) =>
       _$this._lessThanOrEqualTo = lessThanOrEqualTo;
 
   ListBuilder<int?>? _greaterThan;
   ListBuilder<int?> get greaterThan =>
-      _$this._greaterThan ??= new ListBuilder<int?>();
+      _$this._greaterThan ??= ListBuilder<int?>();
   set greaterThan(ListBuilder<int?>? greaterThan) =>
       _$this._greaterThan = greaterThan;
 
   ListBuilder<int?>? _greaterThanOrEqualTo;
   ListBuilder<int?> get greaterThanOrEqualTo =>
-      _$this._greaterThanOrEqualTo ??= new ListBuilder<int?>();
+      _$this._greaterThanOrEqualTo ??= ListBuilder<int?>();
   set greaterThanOrEqualTo(ListBuilder<int?>? greaterThanOrEqualTo) =>
       _$this._greaterThanOrEqualTo = greaterThanOrEqualTo;
 
   ListBuilder<int?>? _contains;
-  ListBuilder<int?> get contains =>
-      _$this._contains ??= new ListBuilder<int?>();
+  ListBuilder<int?> get contains => _$this._contains ??= ListBuilder<int?>();
   set contains(ListBuilder<int?>? contains) => _$this._contains = contains;
 
   ListBuilder<int?>? _containedBy;
   ListBuilder<int?> get containedBy =>
-      _$this._containedBy ??= new ListBuilder<int?>();
+      _$this._containedBy ??= ListBuilder<int?>();
   set containedBy(ListBuilder<int?>? containedBy) =>
       _$this._containedBy = containedBy;
 
   ListBuilder<int?>? _overlaps;
-  ListBuilder<int?> get overlaps =>
-      _$this._overlaps ??= new ListBuilder<int?>();
+  ListBuilder<int?> get overlaps => _$this._overlaps ??= ListBuilder<int?>();
   set overlaps(ListBuilder<int?>? overlaps) => _$this._overlaps = overlaps;
 
   int? _anyEqualTo;
@@ -25663,7 +25529,6 @@ class GIntListFilterBuilder
 
   @override
   void replace(GIntListFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GIntListFilter;
   }
 
@@ -25679,25 +25544,26 @@ class GIntListFilterBuilder
     _$GIntListFilter _$result;
     try {
       _$result = _$v ??
-          new _$GIntListFilter._(
-              isNull: isNull,
-              equalTo: _equalTo?.build(),
-              notEqualTo: _notEqualTo?.build(),
-              distinctFrom: _distinctFrom?.build(),
-              notDistinctFrom: _notDistinctFrom?.build(),
-              lessThan: _lessThan?.build(),
-              lessThanOrEqualTo: _lessThanOrEqualTo?.build(),
-              greaterThan: _greaterThan?.build(),
-              greaterThanOrEqualTo: _greaterThanOrEqualTo?.build(),
-              contains: _contains?.build(),
-              containedBy: _containedBy?.build(),
-              overlaps: _overlaps?.build(),
-              anyEqualTo: anyEqualTo,
-              anyNotEqualTo: anyNotEqualTo,
-              anyLessThan: anyLessThan,
-              anyLessThanOrEqualTo: anyLessThanOrEqualTo,
-              anyGreaterThan: anyGreaterThan,
-              anyGreaterThanOrEqualTo: anyGreaterThanOrEqualTo);
+          _$GIntListFilter._(
+            isNull: isNull,
+            equalTo: _equalTo?.build(),
+            notEqualTo: _notEqualTo?.build(),
+            distinctFrom: _distinctFrom?.build(),
+            notDistinctFrom: _notDistinctFrom?.build(),
+            lessThan: _lessThan?.build(),
+            lessThanOrEqualTo: _lessThanOrEqualTo?.build(),
+            greaterThan: _greaterThan?.build(),
+            greaterThanOrEqualTo: _greaterThanOrEqualTo?.build(),
+            contains: _contains?.build(),
+            containedBy: _containedBy?.build(),
+            overlaps: _overlaps?.build(),
+            anyEqualTo: anyEqualTo,
+            anyNotEqualTo: anyNotEqualTo,
+            anyLessThan: anyLessThan,
+            anyLessThanOrEqualTo: anyLessThanOrEqualTo,
+            anyGreaterThan: anyGreaterThan,
+            anyGreaterThanOrEqualTo: anyGreaterThanOrEqualTo,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -25724,7 +25590,7 @@ class GIntListFilterBuilder
         _$failedField = 'overlaps';
         _overlaps?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GIntListFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -25746,11 +25612,10 @@ class _$GItemsCounterCondition extends GItemsCounterCondition {
 
   factory _$GItemsCounterCondition(
           [void Function(GItemsCounterConditionBuilder)? updates]) =>
-      (new GItemsCounterConditionBuilder()..update(updates))._build();
+      (GItemsCounterConditionBuilder()..update(updates))._build();
 
   _$GItemsCounterCondition._({this.id, this.type, this.level, this.total})
       : super._();
-
   @override
   GItemsCounterCondition rebuild(
           void Function(GItemsCounterConditionBuilder) updates) =>
@@ -25758,7 +25623,7 @@ class _$GItemsCounterCondition extends GItemsCounterCondition {
 
   @override
   GItemsCounterConditionBuilder toBuilder() =>
-      new GItemsCounterConditionBuilder()..replace(this);
+      GItemsCounterConditionBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -25828,7 +25693,6 @@ class GItemsCounterConditionBuilder
 
   @override
   void replace(GItemsCounterCondition other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GItemsCounterCondition;
   }
 
@@ -25842,8 +25706,12 @@ class GItemsCounterConditionBuilder
 
   _$GItemsCounterCondition _build() {
     final _$result = _$v ??
-        new _$GItemsCounterCondition._(
-            id: id, type: type, level: level, total: total);
+        _$GItemsCounterCondition._(
+          id: id,
+          type: type,
+          level: level,
+          total: total,
+        );
     replace(_$result);
     return _$result;
   }
@@ -25867,12 +25735,11 @@ class _$GItemsCounterFilter extends GItemsCounterFilter {
 
   factory _$GItemsCounterFilter(
           [void Function(GItemsCounterFilterBuilder)? updates]) =>
-      (new GItemsCounterFilterBuilder()..update(updates))._build();
+      (GItemsCounterFilterBuilder()..update(updates))._build();
 
   _$GItemsCounterFilter._(
       {this.id, this.type, this.level, this.total, this.and, this.or, this.not})
       : super._();
-
   @override
   GItemsCounterFilter rebuild(
           void Function(GItemsCounterFilterBuilder) updates) =>
@@ -25880,7 +25747,7 @@ class _$GItemsCounterFilter extends GItemsCounterFilter {
 
   @override
   GItemsCounterFilterBuilder toBuilder() =>
-      new GItemsCounterFilterBuilder()..replace(this);
+      GItemsCounterFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -25928,35 +25795,34 @@ class GItemsCounterFilterBuilder
   _$GItemsCounterFilter? _$v;
 
   GStringFilterBuilder? _id;
-  GStringFilterBuilder get id => _$this._id ??= new GStringFilterBuilder();
+  GStringFilterBuilder get id => _$this._id ??= GStringFilterBuilder();
   set id(GStringFilterBuilder? id) => _$this._id = id;
 
   GStringFilterBuilder? _type;
-  GStringFilterBuilder get type => _$this._type ??= new GStringFilterBuilder();
+  GStringFilterBuilder get type => _$this._type ??= GStringFilterBuilder();
   set type(GStringFilterBuilder? type) => _$this._type = type;
 
   GStringFilterBuilder? _level;
-  GStringFilterBuilder get level =>
-      _$this._level ??= new GStringFilterBuilder();
+  GStringFilterBuilder get level => _$this._level ??= GStringFilterBuilder();
   set level(GStringFilterBuilder? level) => _$this._level = level;
 
   GIntFilterBuilder? _total;
-  GIntFilterBuilder get total => _$this._total ??= new GIntFilterBuilder();
+  GIntFilterBuilder get total => _$this._total ??= GIntFilterBuilder();
   set total(GIntFilterBuilder? total) => _$this._total = total;
 
   ListBuilder<GItemsCounterFilter>? _and;
   ListBuilder<GItemsCounterFilter> get and =>
-      _$this._and ??= new ListBuilder<GItemsCounterFilter>();
+      _$this._and ??= ListBuilder<GItemsCounterFilter>();
   set and(ListBuilder<GItemsCounterFilter>? and) => _$this._and = and;
 
   ListBuilder<GItemsCounterFilter>? _or;
   ListBuilder<GItemsCounterFilter> get or =>
-      _$this._or ??= new ListBuilder<GItemsCounterFilter>();
+      _$this._or ??= ListBuilder<GItemsCounterFilter>();
   set or(ListBuilder<GItemsCounterFilter>? or) => _$this._or = or;
 
   GItemsCounterFilterBuilder? _not;
   GItemsCounterFilterBuilder get not =>
-      _$this._not ??= new GItemsCounterFilterBuilder();
+      _$this._not ??= GItemsCounterFilterBuilder();
   set not(GItemsCounterFilterBuilder? not) => _$this._not = not;
 
   GItemsCounterFilterBuilder();
@@ -25978,7 +25844,6 @@ class GItemsCounterFilterBuilder
 
   @override
   void replace(GItemsCounterFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GItemsCounterFilter;
   }
 
@@ -25994,14 +25859,15 @@ class GItemsCounterFilterBuilder
     _$GItemsCounterFilter _$result;
     try {
       _$result = _$v ??
-          new _$GItemsCounterFilter._(
-              id: _id?.build(),
-              type: _type?.build(),
-              level: _level?.build(),
-              total: _total?.build(),
-              and: _and?.build(),
-              or: _or?.build(),
-              not: _not?.build());
+          _$GItemsCounterFilter._(
+            id: _id?.build(),
+            type: _type?.build(),
+            level: _level?.build(),
+            total: _total?.build(),
+            and: _and?.build(),
+            or: _or?.build(),
+            not: _not?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -26020,7 +25886,7 @@ class GItemsCounterFilterBuilder
         _$failedField = 'not';
         _not?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GItemsCounterFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -26035,18 +25901,15 @@ class _$GJSON extends GJSON {
   final String value;
 
   factory _$GJSON([void Function(GJSONBuilder)? updates]) =>
-      (new GJSONBuilder()..update(updates))._build();
+      (GJSONBuilder()..update(updates))._build();
 
-  _$GJSON._({required this.value}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(value, r'GJSON', 'value');
-  }
-
+  _$GJSON._({required this.value}) : super._();
   @override
   GJSON rebuild(void Function(GJSONBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GJSONBuilder toBuilder() => new GJSONBuilder()..replace(this);
+  GJSONBuilder toBuilder() => GJSONBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -26089,7 +25952,6 @@ class GJSONBuilder implements Builder<GJSON, GJSONBuilder> {
 
   @override
   void replace(GJSON other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GJSON;
   }
 
@@ -26103,9 +25965,10 @@ class GJSONBuilder implements Builder<GJSON, GJSONBuilder> {
 
   _$GJSON _build() {
     final _$result = _$v ??
-        new _$GJSON._(
-            value: BuiltValueNullFieldError.checkNotNull(
-                value, r'GJSON', 'value'));
+        _$GJSON._(
+          value:
+              BuiltValueNullFieldError.checkNotNull(value, r'GJSON', 'value'),
+        );
     replace(_$result);
     return _$result;
   }
@@ -26146,7 +26009,7 @@ class _$GJSONFilter extends GJSONFilter {
   final GJSON? containedBy;
 
   factory _$GJSONFilter([void Function(GJSONFilterBuilder)? updates]) =>
-      (new GJSONFilterBuilder()..update(updates))._build();
+      (GJSONFilterBuilder()..update(updates))._build();
 
   _$GJSONFilter._(
       {this.isNull,
@@ -26166,13 +26029,12 @@ class _$GJSONFilter extends GJSONFilter {
       this.containsAnyKeys,
       this.containedBy})
       : super._();
-
   @override
   GJSONFilter rebuild(void Function(GJSONFilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GJSONFilterBuilder toBuilder() => new GJSONFilterBuilder()..replace(this);
+  GJSONFilterBuilder toBuilder() => GJSONFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -26250,55 +26112,55 @@ class GJSONFilterBuilder implements Builder<GJSONFilter, GJSONFilterBuilder> {
   set isNull(bool? isNull) => _$this._isNull = isNull;
 
   GJSONBuilder? _equalTo;
-  GJSONBuilder get equalTo => _$this._equalTo ??= new GJSONBuilder();
+  GJSONBuilder get equalTo => _$this._equalTo ??= GJSONBuilder();
   set equalTo(GJSONBuilder? equalTo) => _$this._equalTo = equalTo;
 
   GJSONBuilder? _notEqualTo;
-  GJSONBuilder get notEqualTo => _$this._notEqualTo ??= new GJSONBuilder();
+  GJSONBuilder get notEqualTo => _$this._notEqualTo ??= GJSONBuilder();
   set notEqualTo(GJSONBuilder? notEqualTo) => _$this._notEqualTo = notEqualTo;
 
   GJSONBuilder? _distinctFrom;
-  GJSONBuilder get distinctFrom => _$this._distinctFrom ??= new GJSONBuilder();
+  GJSONBuilder get distinctFrom => _$this._distinctFrom ??= GJSONBuilder();
   set distinctFrom(GJSONBuilder? distinctFrom) =>
       _$this._distinctFrom = distinctFrom;
 
   GJSONBuilder? _notDistinctFrom;
   GJSONBuilder get notDistinctFrom =>
-      _$this._notDistinctFrom ??= new GJSONBuilder();
+      _$this._notDistinctFrom ??= GJSONBuilder();
   set notDistinctFrom(GJSONBuilder? notDistinctFrom) =>
       _$this._notDistinctFrom = notDistinctFrom;
 
   ListBuilder<GJSON>? _Gin;
-  ListBuilder<GJSON> get Gin => _$this._Gin ??= new ListBuilder<GJSON>();
+  ListBuilder<GJSON> get Gin => _$this._Gin ??= ListBuilder<GJSON>();
   set Gin(ListBuilder<GJSON>? Gin) => _$this._Gin = Gin;
 
   ListBuilder<GJSON>? _notIn;
-  ListBuilder<GJSON> get notIn => _$this._notIn ??= new ListBuilder<GJSON>();
+  ListBuilder<GJSON> get notIn => _$this._notIn ??= ListBuilder<GJSON>();
   set notIn(ListBuilder<GJSON>? notIn) => _$this._notIn = notIn;
 
   GJSONBuilder? _lessThan;
-  GJSONBuilder get lessThan => _$this._lessThan ??= new GJSONBuilder();
+  GJSONBuilder get lessThan => _$this._lessThan ??= GJSONBuilder();
   set lessThan(GJSONBuilder? lessThan) => _$this._lessThan = lessThan;
 
   GJSONBuilder? _lessThanOrEqualTo;
   GJSONBuilder get lessThanOrEqualTo =>
-      _$this._lessThanOrEqualTo ??= new GJSONBuilder();
+      _$this._lessThanOrEqualTo ??= GJSONBuilder();
   set lessThanOrEqualTo(GJSONBuilder? lessThanOrEqualTo) =>
       _$this._lessThanOrEqualTo = lessThanOrEqualTo;
 
   GJSONBuilder? _greaterThan;
-  GJSONBuilder get greaterThan => _$this._greaterThan ??= new GJSONBuilder();
+  GJSONBuilder get greaterThan => _$this._greaterThan ??= GJSONBuilder();
   set greaterThan(GJSONBuilder? greaterThan) =>
       _$this._greaterThan = greaterThan;
 
   GJSONBuilder? _greaterThanOrEqualTo;
   GJSONBuilder get greaterThanOrEqualTo =>
-      _$this._greaterThanOrEqualTo ??= new GJSONBuilder();
+      _$this._greaterThanOrEqualTo ??= GJSONBuilder();
   set greaterThanOrEqualTo(GJSONBuilder? greaterThanOrEqualTo) =>
       _$this._greaterThanOrEqualTo = greaterThanOrEqualTo;
 
   GJSONBuilder? _contains;
-  GJSONBuilder get contains => _$this._contains ??= new GJSONBuilder();
+  GJSONBuilder get contains => _$this._contains ??= GJSONBuilder();
   set contains(GJSONBuilder? contains) => _$this._contains = contains;
 
   String? _containsKey;
@@ -26307,18 +26169,18 @@ class GJSONFilterBuilder implements Builder<GJSONFilter, GJSONFilterBuilder> {
 
   ListBuilder<String>? _containsAllKeys;
   ListBuilder<String> get containsAllKeys =>
-      _$this._containsAllKeys ??= new ListBuilder<String>();
+      _$this._containsAllKeys ??= ListBuilder<String>();
   set containsAllKeys(ListBuilder<String>? containsAllKeys) =>
       _$this._containsAllKeys = containsAllKeys;
 
   ListBuilder<String>? _containsAnyKeys;
   ListBuilder<String> get containsAnyKeys =>
-      _$this._containsAnyKeys ??= new ListBuilder<String>();
+      _$this._containsAnyKeys ??= ListBuilder<String>();
   set containsAnyKeys(ListBuilder<String>? containsAnyKeys) =>
       _$this._containsAnyKeys = containsAnyKeys;
 
   GJSONBuilder? _containedBy;
-  GJSONBuilder get containedBy => _$this._containedBy ??= new GJSONBuilder();
+  GJSONBuilder get containedBy => _$this._containedBy ??= GJSONBuilder();
   set containedBy(GJSONBuilder? containedBy) =>
       _$this._containedBy = containedBy;
 
@@ -26350,7 +26212,6 @@ class GJSONFilterBuilder implements Builder<GJSONFilter, GJSONFilterBuilder> {
 
   @override
   void replace(GJSONFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GJSONFilter;
   }
 
@@ -26366,23 +26227,24 @@ class GJSONFilterBuilder implements Builder<GJSONFilter, GJSONFilterBuilder> {
     _$GJSONFilter _$result;
     try {
       _$result = _$v ??
-          new _$GJSONFilter._(
-              isNull: isNull,
-              equalTo: _equalTo?.build(),
-              notEqualTo: _notEqualTo?.build(),
-              distinctFrom: _distinctFrom?.build(),
-              notDistinctFrom: _notDistinctFrom?.build(),
-              Gin: _Gin?.build(),
-              notIn: _notIn?.build(),
-              lessThan: _lessThan?.build(),
-              lessThanOrEqualTo: _lessThanOrEqualTo?.build(),
-              greaterThan: _greaterThan?.build(),
-              greaterThanOrEqualTo: _greaterThanOrEqualTo?.build(),
-              contains: _contains?.build(),
-              containsKey: containsKey,
-              containsAllKeys: _containsAllKeys?.build(),
-              containsAnyKeys: _containsAnyKeys?.build(),
-              containedBy: _containedBy?.build());
+          _$GJSONFilter._(
+            isNull: isNull,
+            equalTo: _equalTo?.build(),
+            notEqualTo: _notEqualTo?.build(),
+            distinctFrom: _distinctFrom?.build(),
+            notDistinctFrom: _notDistinctFrom?.build(),
+            Gin: _Gin?.build(),
+            notIn: _notIn?.build(),
+            lessThan: _lessThan?.build(),
+            lessThanOrEqualTo: _lessThanOrEqualTo?.build(),
+            greaterThan: _greaterThan?.build(),
+            greaterThanOrEqualTo: _greaterThanOrEqualTo?.build(),
+            contains: _contains?.build(),
+            containsKey: containsKey,
+            containsAllKeys: _containsAllKeys?.build(),
+            containsAnyKeys: _containsAnyKeys?.build(),
+            containedBy: _containedBy?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -26416,7 +26278,7 @@ class GJSONFilterBuilder implements Builder<GJSONFilter, GJSONFilterBuilder> {
         _$failedField = 'containedBy';
         _containedBy?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GJSONFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -26440,7 +26302,7 @@ class _$GMembershipEventCondition extends GMembershipEventCondition {
 
   factory _$GMembershipEventCondition(
           [void Function(GMembershipEventConditionBuilder)? updates]) =>
-      (new GMembershipEventConditionBuilder()..update(updates))._build();
+      (GMembershipEventConditionBuilder()..update(updates))._build();
 
   _$GMembershipEventCondition._(
       {this.id,
@@ -26449,7 +26311,6 @@ class _$GMembershipEventCondition extends GMembershipEventCondition {
       this.identityId,
       this.eventId})
       : super._();
-
   @override
   GMembershipEventCondition rebuild(
           void Function(GMembershipEventConditionBuilder) updates) =>
@@ -26457,7 +26318,7 @@ class _$GMembershipEventCondition extends GMembershipEventCondition {
 
   @override
   GMembershipEventConditionBuilder toBuilder() =>
-      new GMembershipEventConditionBuilder()..replace(this);
+      GMembershipEventConditionBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -26536,7 +26397,6 @@ class GMembershipEventConditionBuilder
 
   @override
   void replace(GMembershipEventCondition other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GMembershipEventCondition;
   }
 
@@ -26550,12 +26410,13 @@ class GMembershipEventConditionBuilder
 
   _$GMembershipEventCondition _build() {
     final _$result = _$v ??
-        new _$GMembershipEventCondition._(
-            id: id,
-            eventType: eventType,
-            blockNumber: blockNumber,
-            identityId: identityId,
-            eventId: eventId);
+        _$GMembershipEventCondition._(
+          id: id,
+          eventType: eventType,
+          blockNumber: blockNumber,
+          identityId: identityId,
+          eventId: eventId,
+        );
     replace(_$result);
     return _$result;
   }
@@ -26589,7 +26450,7 @@ class _$GMembershipEventFilter extends GMembershipEventFilter {
 
   factory _$GMembershipEventFilter(
           [void Function(GMembershipEventFilterBuilder)? updates]) =>
-      (new GMembershipEventFilterBuilder()..update(updates))._build();
+      (GMembershipEventFilterBuilder()..update(updates))._build();
 
   _$GMembershipEventFilter._(
       {this.id,
@@ -26605,7 +26466,6 @@ class _$GMembershipEventFilter extends GMembershipEventFilter {
       this.or,
       this.not})
       : super._();
-
   @override
   GMembershipEventFilter rebuild(
           void Function(GMembershipEventFilterBuilder) updates) =>
@@ -26613,7 +26473,7 @@ class _$GMembershipEventFilter extends GMembershipEventFilter {
 
   @override
   GMembershipEventFilterBuilder toBuilder() =>
-      new GMembershipEventFilterBuilder()..replace(this);
+      GMembershipEventFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -26676,35 +26536,35 @@ class GMembershipEventFilterBuilder
   _$GMembershipEventFilter? _$v;
 
   GStringFilterBuilder? _id;
-  GStringFilterBuilder get id => _$this._id ??= new GStringFilterBuilder();
+  GStringFilterBuilder get id => _$this._id ??= GStringFilterBuilder();
   set id(GStringFilterBuilder? id) => _$this._id = id;
 
   GStringFilterBuilder? _eventType;
   GStringFilterBuilder get eventType =>
-      _$this._eventType ??= new GStringFilterBuilder();
+      _$this._eventType ??= GStringFilterBuilder();
   set eventType(GStringFilterBuilder? eventType) =>
       _$this._eventType = eventType;
 
   GIntFilterBuilder? _blockNumber;
   GIntFilterBuilder get blockNumber =>
-      _$this._blockNumber ??= new GIntFilterBuilder();
+      _$this._blockNumber ??= GIntFilterBuilder();
   set blockNumber(GIntFilterBuilder? blockNumber) =>
       _$this._blockNumber = blockNumber;
 
   GStringFilterBuilder? _identityId;
   GStringFilterBuilder get identityId =>
-      _$this._identityId ??= new GStringFilterBuilder();
+      _$this._identityId ??= GStringFilterBuilder();
   set identityId(GStringFilterBuilder? identityId) =>
       _$this._identityId = identityId;
 
   GStringFilterBuilder? _eventId;
   GStringFilterBuilder get eventId =>
-      _$this._eventId ??= new GStringFilterBuilder();
+      _$this._eventId ??= GStringFilterBuilder();
   set eventId(GStringFilterBuilder? eventId) => _$this._eventId = eventId;
 
   GIdentityFilterBuilder? _identity;
   GIdentityFilterBuilder get identity =>
-      _$this._identity ??= new GIdentityFilterBuilder();
+      _$this._identity ??= GIdentityFilterBuilder();
   set identity(GIdentityFilterBuilder? identity) => _$this._identity = identity;
 
   bool? _identityExists;
@@ -26713,7 +26573,7 @@ class GMembershipEventFilterBuilder
       _$this._identityExists = identityExists;
 
   GEventFilterBuilder? _event;
-  GEventFilterBuilder get event => _$this._event ??= new GEventFilterBuilder();
+  GEventFilterBuilder get event => _$this._event ??= GEventFilterBuilder();
   set event(GEventFilterBuilder? event) => _$this._event = event;
 
   bool? _eventExists;
@@ -26722,17 +26582,17 @@ class GMembershipEventFilterBuilder
 
   ListBuilder<GMembershipEventFilter>? _and;
   ListBuilder<GMembershipEventFilter> get and =>
-      _$this._and ??= new ListBuilder<GMembershipEventFilter>();
+      _$this._and ??= ListBuilder<GMembershipEventFilter>();
   set and(ListBuilder<GMembershipEventFilter>? and) => _$this._and = and;
 
   ListBuilder<GMembershipEventFilter>? _or;
   ListBuilder<GMembershipEventFilter> get or =>
-      _$this._or ??= new ListBuilder<GMembershipEventFilter>();
+      _$this._or ??= ListBuilder<GMembershipEventFilter>();
   set or(ListBuilder<GMembershipEventFilter>? or) => _$this._or = or;
 
   GMembershipEventFilterBuilder? _not;
   GMembershipEventFilterBuilder get not =>
-      _$this._not ??= new GMembershipEventFilterBuilder();
+      _$this._not ??= GMembershipEventFilterBuilder();
   set not(GMembershipEventFilterBuilder? not) => _$this._not = not;
 
   GMembershipEventFilterBuilder();
@@ -26759,7 +26619,6 @@ class GMembershipEventFilterBuilder
 
   @override
   void replace(GMembershipEventFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GMembershipEventFilter;
   }
 
@@ -26775,19 +26634,20 @@ class GMembershipEventFilterBuilder
     _$GMembershipEventFilter _$result;
     try {
       _$result = _$v ??
-          new _$GMembershipEventFilter._(
-              id: _id?.build(),
-              eventType: _eventType?.build(),
-              blockNumber: _blockNumber?.build(),
-              identityId: _identityId?.build(),
-              eventId: _eventId?.build(),
-              identity: _identity?.build(),
-              identityExists: identityExists,
-              event: _event?.build(),
-              eventExists: eventExists,
-              and: _and?.build(),
-              or: _or?.build(),
-              not: _not?.build());
+          _$GMembershipEventFilter._(
+            id: _id?.build(),
+            eventType: _eventType?.build(),
+            blockNumber: _blockNumber?.build(),
+            identityId: _identityId?.build(),
+            eventId: _eventId?.build(),
+            identity: _identity?.build(),
+            identityExists: identityExists,
+            event: _event?.build(),
+            eventExists: eventExists,
+            and: _and?.build(),
+            or: _or?.build(),
+            not: _not?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -26814,7 +26674,7 @@ class GMembershipEventFilterBuilder
         _$failedField = 'not';
         _not?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GMembershipEventFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -26834,10 +26694,9 @@ class _$GMigrationCondition extends GMigrationCondition {
 
   factory _$GMigrationCondition(
           [void Function(GMigrationConditionBuilder)? updates]) =>
-      (new GMigrationConditionBuilder()..update(updates))._build();
+      (GMigrationConditionBuilder()..update(updates))._build();
 
   _$GMigrationCondition._({this.id, this.timestamp, this.name}) : super._();
-
   @override
   GMigrationCondition rebuild(
           void Function(GMigrationConditionBuilder) updates) =>
@@ -26845,7 +26704,7 @@ class _$GMigrationCondition extends GMigrationCondition {
 
   @override
   GMigrationConditionBuilder toBuilder() =>
-      new GMigrationConditionBuilder()..replace(this);
+      GMigrationConditionBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -26885,7 +26744,7 @@ class GMigrationConditionBuilder
   set id(int? id) => _$this._id = id;
 
   GBigIntBuilder? _timestamp;
-  GBigIntBuilder get timestamp => _$this._timestamp ??= new GBigIntBuilder();
+  GBigIntBuilder get timestamp => _$this._timestamp ??= GBigIntBuilder();
   set timestamp(GBigIntBuilder? timestamp) => _$this._timestamp = timestamp;
 
   String? _name;
@@ -26907,7 +26766,6 @@ class GMigrationConditionBuilder
 
   @override
   void replace(GMigrationCondition other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GMigrationCondition;
   }
 
@@ -26923,15 +26781,18 @@ class GMigrationConditionBuilder
     _$GMigrationCondition _$result;
     try {
       _$result = _$v ??
-          new _$GMigrationCondition._(
-              id: id, timestamp: _timestamp?.build(), name: name);
+          _$GMigrationCondition._(
+            id: id,
+            timestamp: _timestamp?.build(),
+            name: name,
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'timestamp';
         _timestamp?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GMigrationCondition', _$failedField, e.toString());
       }
       rethrow;
@@ -26957,19 +26818,18 @@ class _$GMigrationFilter extends GMigrationFilter {
 
   factory _$GMigrationFilter(
           [void Function(GMigrationFilterBuilder)? updates]) =>
-      (new GMigrationFilterBuilder()..update(updates))._build();
+      (GMigrationFilterBuilder()..update(updates))._build();
 
   _$GMigrationFilter._(
       {this.id, this.timestamp, this.name, this.and, this.or, this.not})
       : super._();
-
   @override
   GMigrationFilter rebuild(void Function(GMigrationFilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
   GMigrationFilterBuilder toBuilder() =>
-      new GMigrationFilterBuilder()..replace(this);
+      GMigrationFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -27014,32 +26874,31 @@ class GMigrationFilterBuilder
   _$GMigrationFilter? _$v;
 
   GIntFilterBuilder? _id;
-  GIntFilterBuilder get id => _$this._id ??= new GIntFilterBuilder();
+  GIntFilterBuilder get id => _$this._id ??= GIntFilterBuilder();
   set id(GIntFilterBuilder? id) => _$this._id = id;
 
   GBigIntFilterBuilder? _timestamp;
   GBigIntFilterBuilder get timestamp =>
-      _$this._timestamp ??= new GBigIntFilterBuilder();
+      _$this._timestamp ??= GBigIntFilterBuilder();
   set timestamp(GBigIntFilterBuilder? timestamp) =>
       _$this._timestamp = timestamp;
 
   GStringFilterBuilder? _name;
-  GStringFilterBuilder get name => _$this._name ??= new GStringFilterBuilder();
+  GStringFilterBuilder get name => _$this._name ??= GStringFilterBuilder();
   set name(GStringFilterBuilder? name) => _$this._name = name;
 
   ListBuilder<GMigrationFilter>? _and;
   ListBuilder<GMigrationFilter> get and =>
-      _$this._and ??= new ListBuilder<GMigrationFilter>();
+      _$this._and ??= ListBuilder<GMigrationFilter>();
   set and(ListBuilder<GMigrationFilter>? and) => _$this._and = and;
 
   ListBuilder<GMigrationFilter>? _or;
   ListBuilder<GMigrationFilter> get or =>
-      _$this._or ??= new ListBuilder<GMigrationFilter>();
+      _$this._or ??= ListBuilder<GMigrationFilter>();
   set or(ListBuilder<GMigrationFilter>? or) => _$this._or = or;
 
   GMigrationFilterBuilder? _not;
-  GMigrationFilterBuilder get not =>
-      _$this._not ??= new GMigrationFilterBuilder();
+  GMigrationFilterBuilder get not => _$this._not ??= GMigrationFilterBuilder();
   set not(GMigrationFilterBuilder? not) => _$this._not = not;
 
   GMigrationFilterBuilder();
@@ -27060,7 +26919,6 @@ class GMigrationFilterBuilder
 
   @override
   void replace(GMigrationFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GMigrationFilter;
   }
 
@@ -27076,13 +26934,14 @@ class GMigrationFilterBuilder
     _$GMigrationFilter _$result;
     try {
       _$result = _$v ??
-          new _$GMigrationFilter._(
-              id: _id?.build(),
-              timestamp: _timestamp?.build(),
-              name: _name?.build(),
-              and: _and?.build(),
-              or: _or?.build(),
-              not: _not?.build());
+          _$GMigrationFilter._(
+            id: _id?.build(),
+            timestamp: _timestamp?.build(),
+            name: _name?.build(),
+            and: _and?.build(),
+            or: _or?.build(),
+            not: _not?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -27099,7 +26958,7 @@ class GMigrationFilterBuilder
         _$failedField = 'not';
         _not?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GMigrationFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -27123,7 +26982,7 @@ class _$GPopulationHistoryCondition extends GPopulationHistoryCondition {
 
   factory _$GPopulationHistoryCondition(
           [void Function(GPopulationHistoryConditionBuilder)? updates]) =>
-      (new GPopulationHistoryConditionBuilder()..update(updates))._build();
+      (GPopulationHistoryConditionBuilder()..update(updates))._build();
 
   _$GPopulationHistoryCondition._(
       {this.id,
@@ -27132,7 +26991,6 @@ class _$GPopulationHistoryCondition extends GPopulationHistoryCondition {
       this.activeAccountCount,
       this.blockNumber})
       : super._();
-
   @override
   GPopulationHistoryCondition rebuild(
           void Function(GPopulationHistoryConditionBuilder) updates) =>
@@ -27140,7 +26998,7 @@ class _$GPopulationHistoryCondition extends GPopulationHistoryCondition {
 
   @override
   GPopulationHistoryConditionBuilder toBuilder() =>
-      new GPopulationHistoryConditionBuilder()..replace(this);
+      GPopulationHistoryConditionBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -27221,7 +27079,6 @@ class GPopulationHistoryConditionBuilder
 
   @override
   void replace(GPopulationHistoryCondition other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GPopulationHistoryCondition;
   }
 
@@ -27235,12 +27092,13 @@ class GPopulationHistoryConditionBuilder
 
   _$GPopulationHistoryCondition _build() {
     final _$result = _$v ??
-        new _$GPopulationHistoryCondition._(
-            id: id,
-            smithCount: smithCount,
-            memberCount: memberCount,
-            activeAccountCount: activeAccountCount,
-            blockNumber: blockNumber);
+        _$GPopulationHistoryCondition._(
+          id: id,
+          smithCount: smithCount,
+          memberCount: memberCount,
+          activeAccountCount: activeAccountCount,
+          blockNumber: blockNumber,
+        );
     replace(_$result);
     return _$result;
   }
@@ -27266,7 +27124,7 @@ class _$GPopulationHistoryFilter extends GPopulationHistoryFilter {
 
   factory _$GPopulationHistoryFilter(
           [void Function(GPopulationHistoryFilterBuilder)? updates]) =>
-      (new GPopulationHistoryFilterBuilder()..update(updates))._build();
+      (GPopulationHistoryFilterBuilder()..update(updates))._build();
 
   _$GPopulationHistoryFilter._(
       {this.id,
@@ -27278,7 +27136,6 @@ class _$GPopulationHistoryFilter extends GPopulationHistoryFilter {
       this.or,
       this.not})
       : super._();
-
   @override
   GPopulationHistoryFilter rebuild(
           void Function(GPopulationHistoryFilterBuilder) updates) =>
@@ -27286,7 +27143,7 @@ class _$GPopulationHistoryFilter extends GPopulationHistoryFilter {
 
   @override
   GPopulationHistoryFilterBuilder toBuilder() =>
-      new GPopulationHistoryFilterBuilder()..replace(this);
+      GPopulationHistoryFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -27338,46 +27195,46 @@ class GPopulationHistoryFilterBuilder
   _$GPopulationHistoryFilter? _$v;
 
   GStringFilterBuilder? _id;
-  GStringFilterBuilder get id => _$this._id ??= new GStringFilterBuilder();
+  GStringFilterBuilder get id => _$this._id ??= GStringFilterBuilder();
   set id(GStringFilterBuilder? id) => _$this._id = id;
 
   GIntFilterBuilder? _smithCount;
   GIntFilterBuilder get smithCount =>
-      _$this._smithCount ??= new GIntFilterBuilder();
+      _$this._smithCount ??= GIntFilterBuilder();
   set smithCount(GIntFilterBuilder? smithCount) =>
       _$this._smithCount = smithCount;
 
   GIntFilterBuilder? _memberCount;
   GIntFilterBuilder get memberCount =>
-      _$this._memberCount ??= new GIntFilterBuilder();
+      _$this._memberCount ??= GIntFilterBuilder();
   set memberCount(GIntFilterBuilder? memberCount) =>
       _$this._memberCount = memberCount;
 
   GIntFilterBuilder? _activeAccountCount;
   GIntFilterBuilder get activeAccountCount =>
-      _$this._activeAccountCount ??= new GIntFilterBuilder();
+      _$this._activeAccountCount ??= GIntFilterBuilder();
   set activeAccountCount(GIntFilterBuilder? activeAccountCount) =>
       _$this._activeAccountCount = activeAccountCount;
 
   GIntFilterBuilder? _blockNumber;
   GIntFilterBuilder get blockNumber =>
-      _$this._blockNumber ??= new GIntFilterBuilder();
+      _$this._blockNumber ??= GIntFilterBuilder();
   set blockNumber(GIntFilterBuilder? blockNumber) =>
       _$this._blockNumber = blockNumber;
 
   ListBuilder<GPopulationHistoryFilter>? _and;
   ListBuilder<GPopulationHistoryFilter> get and =>
-      _$this._and ??= new ListBuilder<GPopulationHistoryFilter>();
+      _$this._and ??= ListBuilder<GPopulationHistoryFilter>();
   set and(ListBuilder<GPopulationHistoryFilter>? and) => _$this._and = and;
 
   ListBuilder<GPopulationHistoryFilter>? _or;
   ListBuilder<GPopulationHistoryFilter> get or =>
-      _$this._or ??= new ListBuilder<GPopulationHistoryFilter>();
+      _$this._or ??= ListBuilder<GPopulationHistoryFilter>();
   set or(ListBuilder<GPopulationHistoryFilter>? or) => _$this._or = or;
 
   GPopulationHistoryFilterBuilder? _not;
   GPopulationHistoryFilterBuilder get not =>
-      _$this._not ??= new GPopulationHistoryFilterBuilder();
+      _$this._not ??= GPopulationHistoryFilterBuilder();
   set not(GPopulationHistoryFilterBuilder? not) => _$this._not = not;
 
   GPopulationHistoryFilterBuilder();
@@ -27400,7 +27257,6 @@ class GPopulationHistoryFilterBuilder
 
   @override
   void replace(GPopulationHistoryFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GPopulationHistoryFilter;
   }
 
@@ -27416,15 +27272,16 @@ class GPopulationHistoryFilterBuilder
     _$GPopulationHistoryFilter _$result;
     try {
       _$result = _$v ??
-          new _$GPopulationHistoryFilter._(
-              id: _id?.build(),
-              smithCount: _smithCount?.build(),
-              memberCount: _memberCount?.build(),
-              activeAccountCount: _activeAccountCount?.build(),
-              blockNumber: _blockNumber?.build(),
-              and: _and?.build(),
-              or: _or?.build(),
-              not: _not?.build());
+          _$GPopulationHistoryFilter._(
+            id: _id?.build(),
+            smithCount: _smithCount?.build(),
+            memberCount: _memberCount?.build(),
+            activeAccountCount: _activeAccountCount?.build(),
+            blockNumber: _blockNumber?.build(),
+            and: _and?.build(),
+            or: _or?.build(),
+            not: _not?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -27445,7 +27302,7 @@ class GPopulationHistoryFilterBuilder
         _$failedField = 'not';
         _not?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GPopulationHistoryFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -27467,12 +27324,11 @@ class _$GSmithCertCondition extends GSmithCertCondition {
 
   factory _$GSmithCertCondition(
           [void Function(GSmithCertConditionBuilder)? updates]) =>
-      (new GSmithCertConditionBuilder()..update(updates))._build();
+      (GSmithCertConditionBuilder()..update(updates))._build();
 
   _$GSmithCertCondition._(
       {this.id, this.createdOn, this.issuerId, this.receiverId})
       : super._();
-
   @override
   GSmithCertCondition rebuild(
           void Function(GSmithCertConditionBuilder) updates) =>
@@ -27480,7 +27336,7 @@ class _$GSmithCertCondition extends GSmithCertCondition {
 
   @override
   GSmithCertConditionBuilder toBuilder() =>
-      new GSmithCertConditionBuilder()..replace(this);
+      GSmithCertConditionBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -27550,7 +27406,6 @@ class GSmithCertConditionBuilder
 
   @override
   void replace(GSmithCertCondition other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GSmithCertCondition;
   }
 
@@ -27564,11 +27419,12 @@ class GSmithCertConditionBuilder
 
   _$GSmithCertCondition _build() {
     final _$result = _$v ??
-        new _$GSmithCertCondition._(
-            id: id,
-            createdOn: createdOn,
-            issuerId: issuerId,
-            receiverId: receiverId);
+        _$GSmithCertCondition._(
+          id: id,
+          createdOn: createdOn,
+          issuerId: issuerId,
+          receiverId: receiverId,
+        );
     replace(_$result);
     return _$result;
   }
@@ -27600,7 +27456,7 @@ class _$GSmithCertFilter extends GSmithCertFilter {
 
   factory _$GSmithCertFilter(
           [void Function(GSmithCertFilterBuilder)? updates]) =>
-      (new GSmithCertFilterBuilder()..update(updates))._build();
+      (GSmithCertFilterBuilder()..update(updates))._build();
 
   _$GSmithCertFilter._(
       {this.id,
@@ -27615,14 +27471,13 @@ class _$GSmithCertFilter extends GSmithCertFilter {
       this.or,
       this.not})
       : super._();
-
   @override
   GSmithCertFilter rebuild(void Function(GSmithCertFilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
   GSmithCertFilterBuilder toBuilder() =>
-      new GSmithCertFilterBuilder()..replace(this);
+      GSmithCertFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -27682,28 +27537,26 @@ class GSmithCertFilterBuilder
   _$GSmithCertFilter? _$v;
 
   GStringFilterBuilder? _id;
-  GStringFilterBuilder get id => _$this._id ??= new GStringFilterBuilder();
+  GStringFilterBuilder get id => _$this._id ??= GStringFilterBuilder();
   set id(GStringFilterBuilder? id) => _$this._id = id;
 
   GIntFilterBuilder? _createdOn;
-  GIntFilterBuilder get createdOn =>
-      _$this._createdOn ??= new GIntFilterBuilder();
+  GIntFilterBuilder get createdOn => _$this._createdOn ??= GIntFilterBuilder();
   set createdOn(GIntFilterBuilder? createdOn) => _$this._createdOn = createdOn;
 
   GStringFilterBuilder? _issuerId;
   GStringFilterBuilder get issuerId =>
-      _$this._issuerId ??= new GStringFilterBuilder();
+      _$this._issuerId ??= GStringFilterBuilder();
   set issuerId(GStringFilterBuilder? issuerId) => _$this._issuerId = issuerId;
 
   GStringFilterBuilder? _receiverId;
   GStringFilterBuilder get receiverId =>
-      _$this._receiverId ??= new GStringFilterBuilder();
+      _$this._receiverId ??= GStringFilterBuilder();
   set receiverId(GStringFilterBuilder? receiverId) =>
       _$this._receiverId = receiverId;
 
   GSmithFilterBuilder? _issuer;
-  GSmithFilterBuilder get issuer =>
-      _$this._issuer ??= new GSmithFilterBuilder();
+  GSmithFilterBuilder get issuer => _$this._issuer ??= GSmithFilterBuilder();
   set issuer(GSmithFilterBuilder? issuer) => _$this._issuer = issuer;
 
   bool? _issuerExists;
@@ -27712,7 +27565,7 @@ class GSmithCertFilterBuilder
 
   GSmithFilterBuilder? _receiver;
   GSmithFilterBuilder get receiver =>
-      _$this._receiver ??= new GSmithFilterBuilder();
+      _$this._receiver ??= GSmithFilterBuilder();
   set receiver(GSmithFilterBuilder? receiver) => _$this._receiver = receiver;
 
   bool? _receiverExists;
@@ -27722,17 +27575,16 @@ class GSmithCertFilterBuilder
 
   ListBuilder<GSmithCertFilter>? _and;
   ListBuilder<GSmithCertFilter> get and =>
-      _$this._and ??= new ListBuilder<GSmithCertFilter>();
+      _$this._and ??= ListBuilder<GSmithCertFilter>();
   set and(ListBuilder<GSmithCertFilter>? and) => _$this._and = and;
 
   ListBuilder<GSmithCertFilter>? _or;
   ListBuilder<GSmithCertFilter> get or =>
-      _$this._or ??= new ListBuilder<GSmithCertFilter>();
+      _$this._or ??= ListBuilder<GSmithCertFilter>();
   set or(ListBuilder<GSmithCertFilter>? or) => _$this._or = or;
 
   GSmithCertFilterBuilder? _not;
-  GSmithCertFilterBuilder get not =>
-      _$this._not ??= new GSmithCertFilterBuilder();
+  GSmithCertFilterBuilder get not => _$this._not ??= GSmithCertFilterBuilder();
   set not(GSmithCertFilterBuilder? not) => _$this._not = not;
 
   GSmithCertFilterBuilder();
@@ -27758,7 +27610,6 @@ class GSmithCertFilterBuilder
 
   @override
   void replace(GSmithCertFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GSmithCertFilter;
   }
 
@@ -27774,18 +27625,19 @@ class GSmithCertFilterBuilder
     _$GSmithCertFilter _$result;
     try {
       _$result = _$v ??
-          new _$GSmithCertFilter._(
-              id: _id?.build(),
-              createdOn: _createdOn?.build(),
-              issuerId: _issuerId?.build(),
-              receiverId: _receiverId?.build(),
-              issuer: _issuer?.build(),
-              issuerExists: issuerExists,
-              receiver: _receiver?.build(),
-              receiverExists: receiverExists,
-              and: _and?.build(),
-              or: _or?.build(),
-              not: _not?.build());
+          _$GSmithCertFilter._(
+            id: _id?.build(),
+            createdOn: _createdOn?.build(),
+            issuerId: _issuerId?.build(),
+            receiverId: _receiverId?.build(),
+            issuer: _issuer?.build(),
+            issuerExists: issuerExists,
+            receiver: _receiver?.build(),
+            receiverExists: receiverExists,
+            and: _and?.build(),
+            or: _or?.build(),
+            not: _not?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -27810,7 +27662,7 @@ class GSmithCertFilterBuilder
         _$failedField = 'not';
         _not?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GSmithCertFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -27837,7 +27689,7 @@ class _$GSmithCondition extends GSmithCondition {
   final String? identityId;
 
   factory _$GSmithCondition([void Function(GSmithConditionBuilder)? updates]) =>
-      (new GSmithConditionBuilder()..update(updates))._build();
+      (GSmithConditionBuilder()..update(updates))._build();
 
   _$GSmithCondition._(
       {this.id,
@@ -27848,14 +27700,12 @@ class _$GSmithCondition extends GSmithCondition {
       this.lastForged,
       this.identityId})
       : super._();
-
   @override
   GSmithCondition rebuild(void Function(GSmithConditionBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GSmithConditionBuilder toBuilder() =>
-      new GSmithConditionBuilder()..replace(this);
+  GSmithConditionBuilder toBuilder() => GSmithConditionBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -27949,7 +27799,6 @@ class GSmithConditionBuilder
 
   @override
   void replace(GSmithCondition other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GSmithCondition;
   }
 
@@ -27963,14 +27812,15 @@ class GSmithConditionBuilder
 
   _$GSmithCondition _build() {
     final _$result = _$v ??
-        new _$GSmithCondition._(
-            id: id,
-            index: index,
-            smithStatus: smithStatus,
-            lastChanged: lastChanged,
-            forged: forged,
-            lastForged: lastForged,
-            identityId: identityId);
+        _$GSmithCondition._(
+          id: id,
+          index: index,
+          smithStatus: smithStatus,
+          lastChanged: lastChanged,
+          forged: forged,
+          lastForged: lastForged,
+          identityId: identityId,
+        );
     replace(_$result);
     return _$result;
   }
@@ -27990,12 +27840,11 @@ class _$GSmithEventCondition extends GSmithEventCondition {
 
   factory _$GSmithEventCondition(
           [void Function(GSmithEventConditionBuilder)? updates]) =>
-      (new GSmithEventConditionBuilder()..update(updates))._build();
+      (GSmithEventConditionBuilder()..update(updates))._build();
 
   _$GSmithEventCondition._(
       {this.id, this.eventType, this.blockNumber, this.smithId, this.eventId})
       : super._();
-
   @override
   GSmithEventCondition rebuild(
           void Function(GSmithEventConditionBuilder) updates) =>
@@ -28003,7 +27852,7 @@ class _$GSmithEventCondition extends GSmithEventCondition {
 
   @override
   GSmithEventConditionBuilder toBuilder() =>
-      new GSmithEventConditionBuilder()..replace(this);
+      GSmithEventConditionBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -28081,7 +27930,6 @@ class GSmithEventConditionBuilder
 
   @override
   void replace(GSmithEventCondition other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GSmithEventCondition;
   }
 
@@ -28095,12 +27943,13 @@ class GSmithEventConditionBuilder
 
   _$GSmithEventCondition _build() {
     final _$result = _$v ??
-        new _$GSmithEventCondition._(
-            id: id,
-            eventType: eventType,
-            blockNumber: blockNumber,
-            smithId: smithId,
-            eventId: eventId);
+        _$GSmithEventCondition._(
+          id: id,
+          eventType: eventType,
+          blockNumber: blockNumber,
+          smithId: smithId,
+          eventId: eventId,
+        );
     replace(_$result);
     return _$result;
   }
@@ -28134,7 +27983,7 @@ class _$GSmithEventFilter extends GSmithEventFilter {
 
   factory _$GSmithEventFilter(
           [void Function(GSmithEventFilterBuilder)? updates]) =>
-      (new GSmithEventFilterBuilder()..update(updates))._build();
+      (GSmithEventFilterBuilder()..update(updates))._build();
 
   _$GSmithEventFilter._(
       {this.id,
@@ -28150,14 +27999,13 @@ class _$GSmithEventFilter extends GSmithEventFilter {
       this.or,
       this.not})
       : super._();
-
   @override
   GSmithEventFilter rebuild(void Function(GSmithEventFilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
   GSmithEventFilterBuilder toBuilder() =>
-      new GSmithEventFilterBuilder()..replace(this);
+      GSmithEventFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -28220,33 +28068,33 @@ class GSmithEventFilterBuilder
   _$GSmithEventFilter? _$v;
 
   GStringFilterBuilder? _id;
-  GStringFilterBuilder get id => _$this._id ??= new GStringFilterBuilder();
+  GStringFilterBuilder get id => _$this._id ??= GStringFilterBuilder();
   set id(GStringFilterBuilder? id) => _$this._id = id;
 
   GStringFilterBuilder? _eventType;
   GStringFilterBuilder get eventType =>
-      _$this._eventType ??= new GStringFilterBuilder();
+      _$this._eventType ??= GStringFilterBuilder();
   set eventType(GStringFilterBuilder? eventType) =>
       _$this._eventType = eventType;
 
   GIntFilterBuilder? _blockNumber;
   GIntFilterBuilder get blockNumber =>
-      _$this._blockNumber ??= new GIntFilterBuilder();
+      _$this._blockNumber ??= GIntFilterBuilder();
   set blockNumber(GIntFilterBuilder? blockNumber) =>
       _$this._blockNumber = blockNumber;
 
   GStringFilterBuilder? _smithId;
   GStringFilterBuilder get smithId =>
-      _$this._smithId ??= new GStringFilterBuilder();
+      _$this._smithId ??= GStringFilterBuilder();
   set smithId(GStringFilterBuilder? smithId) => _$this._smithId = smithId;
 
   GStringFilterBuilder? _eventId;
   GStringFilterBuilder get eventId =>
-      _$this._eventId ??= new GStringFilterBuilder();
+      _$this._eventId ??= GStringFilterBuilder();
   set eventId(GStringFilterBuilder? eventId) => _$this._eventId = eventId;
 
   GSmithFilterBuilder? _smith;
-  GSmithFilterBuilder get smith => _$this._smith ??= new GSmithFilterBuilder();
+  GSmithFilterBuilder get smith => _$this._smith ??= GSmithFilterBuilder();
   set smith(GSmithFilterBuilder? smith) => _$this._smith = smith;
 
   bool? _smithExists;
@@ -28254,7 +28102,7 @@ class GSmithEventFilterBuilder
   set smithExists(bool? smithExists) => _$this._smithExists = smithExists;
 
   GEventFilterBuilder? _event;
-  GEventFilterBuilder get event => _$this._event ??= new GEventFilterBuilder();
+  GEventFilterBuilder get event => _$this._event ??= GEventFilterBuilder();
   set event(GEventFilterBuilder? event) => _$this._event = event;
 
   bool? _eventExists;
@@ -28263,17 +28111,17 @@ class GSmithEventFilterBuilder
 
   ListBuilder<GSmithEventFilter>? _and;
   ListBuilder<GSmithEventFilter> get and =>
-      _$this._and ??= new ListBuilder<GSmithEventFilter>();
+      _$this._and ??= ListBuilder<GSmithEventFilter>();
   set and(ListBuilder<GSmithEventFilter>? and) => _$this._and = and;
 
   ListBuilder<GSmithEventFilter>? _or;
   ListBuilder<GSmithEventFilter> get or =>
-      _$this._or ??= new ListBuilder<GSmithEventFilter>();
+      _$this._or ??= ListBuilder<GSmithEventFilter>();
   set or(ListBuilder<GSmithEventFilter>? or) => _$this._or = or;
 
   GSmithEventFilterBuilder? _not;
   GSmithEventFilterBuilder get not =>
-      _$this._not ??= new GSmithEventFilterBuilder();
+      _$this._not ??= GSmithEventFilterBuilder();
   set not(GSmithEventFilterBuilder? not) => _$this._not = not;
 
   GSmithEventFilterBuilder();
@@ -28300,7 +28148,6 @@ class GSmithEventFilterBuilder
 
   @override
   void replace(GSmithEventFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GSmithEventFilter;
   }
 
@@ -28316,19 +28163,20 @@ class GSmithEventFilterBuilder
     _$GSmithEventFilter _$result;
     try {
       _$result = _$v ??
-          new _$GSmithEventFilter._(
-              id: _id?.build(),
-              eventType: _eventType?.build(),
-              blockNumber: _blockNumber?.build(),
-              smithId: _smithId?.build(),
-              eventId: _eventId?.build(),
-              smith: _smith?.build(),
-              smithExists: smithExists,
-              event: _event?.build(),
-              eventExists: eventExists,
-              and: _and?.build(),
-              or: _or?.build(),
-              not: _not?.build());
+          _$GSmithEventFilter._(
+            id: _id?.build(),
+            eventType: _eventType?.build(),
+            blockNumber: _blockNumber?.build(),
+            smithId: _smithId?.build(),
+            eventId: _eventId?.build(),
+            smith: _smith?.build(),
+            smithExists: smithExists,
+            event: _event?.build(),
+            eventExists: eventExists,
+            and: _and?.build(),
+            or: _or?.build(),
+            not: _not?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -28355,7 +28203,7 @@ class GSmithEventFilterBuilder
         _$failedField = 'not';
         _not?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GSmithEventFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -28404,7 +28252,7 @@ class _$GSmithFilter extends GSmithFilter {
   final GSmithFilter? not;
 
   factory _$GSmithFilter([void Function(GSmithFilterBuilder)? updates]) =>
-      (new GSmithFilterBuilder()..update(updates))._build();
+      (GSmithFilterBuilder()..update(updates))._build();
 
   _$GSmithFilter._(
       {this.id,
@@ -28426,13 +28274,12 @@ class _$GSmithFilter extends GSmithFilter {
       this.or,
       this.not})
       : super._();
-
   @override
   GSmithFilter rebuild(void Function(GSmithFilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GSmithFilterBuilder toBuilder() => new GSmithFilterBuilder()..replace(this);
+  GSmithFilterBuilder toBuilder() => GSmithFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -28513,44 +28360,44 @@ class GSmithFilterBuilder
   _$GSmithFilter? _$v;
 
   GStringFilterBuilder? _id;
-  GStringFilterBuilder get id => _$this._id ??= new GStringFilterBuilder();
+  GStringFilterBuilder get id => _$this._id ??= GStringFilterBuilder();
   set id(GStringFilterBuilder? id) => _$this._id = id;
 
   GIntFilterBuilder? _index;
-  GIntFilterBuilder get index => _$this._index ??= new GIntFilterBuilder();
+  GIntFilterBuilder get index => _$this._index ??= GIntFilterBuilder();
   set index(GIntFilterBuilder? index) => _$this._index = index;
 
   GStringFilterBuilder? _smithStatus;
   GStringFilterBuilder get smithStatus =>
-      _$this._smithStatus ??= new GStringFilterBuilder();
+      _$this._smithStatus ??= GStringFilterBuilder();
   set smithStatus(GStringFilterBuilder? smithStatus) =>
       _$this._smithStatus = smithStatus;
 
   GIntFilterBuilder? _lastChanged;
   GIntFilterBuilder get lastChanged =>
-      _$this._lastChanged ??= new GIntFilterBuilder();
+      _$this._lastChanged ??= GIntFilterBuilder();
   set lastChanged(GIntFilterBuilder? lastChanged) =>
       _$this._lastChanged = lastChanged;
 
   GIntFilterBuilder? _forged;
-  GIntFilterBuilder get forged => _$this._forged ??= new GIntFilterBuilder();
+  GIntFilterBuilder get forged => _$this._forged ??= GIntFilterBuilder();
   set forged(GIntFilterBuilder? forged) => _$this._forged = forged;
 
   GIntFilterBuilder? _lastForged;
   GIntFilterBuilder get lastForged =>
-      _$this._lastForged ??= new GIntFilterBuilder();
+      _$this._lastForged ??= GIntFilterBuilder();
   set lastForged(GIntFilterBuilder? lastForged) =>
       _$this._lastForged = lastForged;
 
   GStringFilterBuilder? _identityId;
   GStringFilterBuilder get identityId =>
-      _$this._identityId ??= new GStringFilterBuilder();
+      _$this._identityId ??= GStringFilterBuilder();
   set identityId(GStringFilterBuilder? identityId) =>
       _$this._identityId = identityId;
 
   GSmithToManySmithCertFilterBuilder? _smithCertIssued;
   GSmithToManySmithCertFilterBuilder get smithCertIssued =>
-      _$this._smithCertIssued ??= new GSmithToManySmithCertFilterBuilder();
+      _$this._smithCertIssued ??= GSmithToManySmithCertFilterBuilder();
   set smithCertIssued(GSmithToManySmithCertFilterBuilder? smithCertIssued) =>
       _$this._smithCertIssued = smithCertIssued;
 
@@ -28561,7 +28408,7 @@ class GSmithFilterBuilder
 
   GSmithToManySmithCertFilterBuilder? _smithCertReceived;
   GSmithToManySmithCertFilterBuilder get smithCertReceived =>
-      _$this._smithCertReceived ??= new GSmithToManySmithCertFilterBuilder();
+      _$this._smithCertReceived ??= GSmithToManySmithCertFilterBuilder();
   set smithCertReceived(
           GSmithToManySmithCertFilterBuilder? smithCertReceived) =>
       _$this._smithCertReceived = smithCertReceived;
@@ -28573,7 +28420,7 @@ class GSmithFilterBuilder
 
   GSmithToManySmithEventFilterBuilder? _smithHistory;
   GSmithToManySmithEventFilterBuilder get smithHistory =>
-      _$this._smithHistory ??= new GSmithToManySmithEventFilterBuilder();
+      _$this._smithHistory ??= GSmithToManySmithEventFilterBuilder();
   set smithHistory(GSmithToManySmithEventFilterBuilder? smithHistory) =>
       _$this._smithHistory = smithHistory;
 
@@ -28584,7 +28431,7 @@ class GSmithFilterBuilder
 
   GIdentityFilterBuilder? _identity;
   GIdentityFilterBuilder get identity =>
-      _$this._identity ??= new GIdentityFilterBuilder();
+      _$this._identity ??= GIdentityFilterBuilder();
   set identity(GIdentityFilterBuilder? identity) => _$this._identity = identity;
 
   bool? _identityExists;
@@ -28594,16 +28441,16 @@ class GSmithFilterBuilder
 
   ListBuilder<GSmithFilter>? _and;
   ListBuilder<GSmithFilter> get and =>
-      _$this._and ??= new ListBuilder<GSmithFilter>();
+      _$this._and ??= ListBuilder<GSmithFilter>();
   set and(ListBuilder<GSmithFilter>? and) => _$this._and = and;
 
   ListBuilder<GSmithFilter>? _or;
   ListBuilder<GSmithFilter> get or =>
-      _$this._or ??= new ListBuilder<GSmithFilter>();
+      _$this._or ??= ListBuilder<GSmithFilter>();
   set or(ListBuilder<GSmithFilter>? or) => _$this._or = or;
 
   GSmithFilterBuilder? _not;
-  GSmithFilterBuilder get not => _$this._not ??= new GSmithFilterBuilder();
+  GSmithFilterBuilder get not => _$this._not ??= GSmithFilterBuilder();
   set not(GSmithFilterBuilder? not) => _$this._not = not;
 
   GSmithFilterBuilder();
@@ -28636,7 +28483,6 @@ class GSmithFilterBuilder
 
   @override
   void replace(GSmithFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GSmithFilter;
   }
 
@@ -28652,25 +28498,26 @@ class GSmithFilterBuilder
     _$GSmithFilter _$result;
     try {
       _$result = _$v ??
-          new _$GSmithFilter._(
-              id: _id?.build(),
-              index: _index?.build(),
-              smithStatus: _smithStatus?.build(),
-              lastChanged: _lastChanged?.build(),
-              forged: _forged?.build(),
-              lastForged: _lastForged?.build(),
-              identityId: _identityId?.build(),
-              smithCertIssued: _smithCertIssued?.build(),
-              smithCertIssuedExist: smithCertIssuedExist,
-              smithCertReceived: _smithCertReceived?.build(),
-              smithCertReceivedExist: smithCertReceivedExist,
-              smithHistory: _smithHistory?.build(),
-              smithHistoryExist: smithHistoryExist,
-              identity: _identity?.build(),
-              identityExists: identityExists,
-              and: _and?.build(),
-              or: _or?.build(),
-              not: _not?.build());
+          _$GSmithFilter._(
+            id: _id?.build(),
+            index: _index?.build(),
+            smithStatus: _smithStatus?.build(),
+            lastChanged: _lastChanged?.build(),
+            forged: _forged?.build(),
+            lastForged: _lastForged?.build(),
+            identityId: _identityId?.build(),
+            smithCertIssued: _smithCertIssued?.build(),
+            smithCertIssuedExist: smithCertIssuedExist,
+            smithCertReceived: _smithCertReceived?.build(),
+            smithCertReceivedExist: smithCertReceivedExist,
+            smithHistory: _smithHistory?.build(),
+            smithHistoryExist: smithHistoryExist,
+            identity: _identity?.build(),
+            identityExists: identityExists,
+            and: _and?.build(),
+            or: _or?.build(),
+            not: _not?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -28707,7 +28554,7 @@ class GSmithFilterBuilder
         _$failedField = 'not';
         _not?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GSmithFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -28727,11 +28574,10 @@ class _$GSmithToManySmithCertFilter extends GSmithToManySmithCertFilter {
 
   factory _$GSmithToManySmithCertFilter(
           [void Function(GSmithToManySmithCertFilterBuilder)? updates]) =>
-      (new GSmithToManySmithCertFilterBuilder()..update(updates))._build();
+      (GSmithToManySmithCertFilterBuilder()..update(updates))._build();
 
   _$GSmithToManySmithCertFilter._({this.every, this.some, this.none})
       : super._();
-
   @override
   GSmithToManySmithCertFilter rebuild(
           void Function(GSmithToManySmithCertFilterBuilder) updates) =>
@@ -28739,7 +28585,7 @@ class _$GSmithToManySmithCertFilter extends GSmithToManySmithCertFilter {
 
   @override
   GSmithToManySmithCertFilterBuilder toBuilder() =>
-      new GSmithToManySmithCertFilterBuilder()..replace(this);
+      GSmithToManySmithCertFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -28778,17 +28624,17 @@ class GSmithToManySmithCertFilterBuilder
 
   GSmithCertFilterBuilder? _every;
   GSmithCertFilterBuilder get every =>
-      _$this._every ??= new GSmithCertFilterBuilder();
+      _$this._every ??= GSmithCertFilterBuilder();
   set every(GSmithCertFilterBuilder? every) => _$this._every = every;
 
   GSmithCertFilterBuilder? _some;
   GSmithCertFilterBuilder get some =>
-      _$this._some ??= new GSmithCertFilterBuilder();
+      _$this._some ??= GSmithCertFilterBuilder();
   set some(GSmithCertFilterBuilder? some) => _$this._some = some;
 
   GSmithCertFilterBuilder? _none;
   GSmithCertFilterBuilder get none =>
-      _$this._none ??= new GSmithCertFilterBuilder();
+      _$this._none ??= GSmithCertFilterBuilder();
   set none(GSmithCertFilterBuilder? none) => _$this._none = none;
 
   GSmithToManySmithCertFilterBuilder();
@@ -28806,7 +28652,6 @@ class GSmithToManySmithCertFilterBuilder
 
   @override
   void replace(GSmithToManySmithCertFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GSmithToManySmithCertFilter;
   }
 
@@ -28822,10 +28667,11 @@ class GSmithToManySmithCertFilterBuilder
     _$GSmithToManySmithCertFilter _$result;
     try {
       _$result = _$v ??
-          new _$GSmithToManySmithCertFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GSmithToManySmithCertFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -28836,7 +28682,7 @@ class GSmithToManySmithCertFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GSmithToManySmithCertFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -28856,11 +28702,10 @@ class _$GSmithToManySmithEventFilter extends GSmithToManySmithEventFilter {
 
   factory _$GSmithToManySmithEventFilter(
           [void Function(GSmithToManySmithEventFilterBuilder)? updates]) =>
-      (new GSmithToManySmithEventFilterBuilder()..update(updates))._build();
+      (GSmithToManySmithEventFilterBuilder()..update(updates))._build();
 
   _$GSmithToManySmithEventFilter._({this.every, this.some, this.none})
       : super._();
-
   @override
   GSmithToManySmithEventFilter rebuild(
           void Function(GSmithToManySmithEventFilterBuilder) updates) =>
@@ -28868,7 +28713,7 @@ class _$GSmithToManySmithEventFilter extends GSmithToManySmithEventFilter {
 
   @override
   GSmithToManySmithEventFilterBuilder toBuilder() =>
-      new GSmithToManySmithEventFilterBuilder()..replace(this);
+      GSmithToManySmithEventFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -28907,17 +28752,17 @@ class GSmithToManySmithEventFilterBuilder
 
   GSmithEventFilterBuilder? _every;
   GSmithEventFilterBuilder get every =>
-      _$this._every ??= new GSmithEventFilterBuilder();
+      _$this._every ??= GSmithEventFilterBuilder();
   set every(GSmithEventFilterBuilder? every) => _$this._every = every;
 
   GSmithEventFilterBuilder? _some;
   GSmithEventFilterBuilder get some =>
-      _$this._some ??= new GSmithEventFilterBuilder();
+      _$this._some ??= GSmithEventFilterBuilder();
   set some(GSmithEventFilterBuilder? some) => _$this._some = some;
 
   GSmithEventFilterBuilder? _none;
   GSmithEventFilterBuilder get none =>
-      _$this._none ??= new GSmithEventFilterBuilder();
+      _$this._none ??= GSmithEventFilterBuilder();
   set none(GSmithEventFilterBuilder? none) => _$this._none = none;
 
   GSmithToManySmithEventFilterBuilder();
@@ -28935,7 +28780,6 @@ class GSmithToManySmithEventFilterBuilder
 
   @override
   void replace(GSmithToManySmithEventFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GSmithToManySmithEventFilter;
   }
 
@@ -28951,10 +28795,11 @@ class GSmithToManySmithEventFilterBuilder
     _$GSmithToManySmithEventFilter _$result;
     try {
       _$result = _$v ??
-          new _$GSmithToManySmithEventFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GSmithToManySmithEventFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -28965,7 +28810,7 @@ class GSmithToManySmithEventFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GSmithToManySmithEventFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -29052,7 +28897,7 @@ class _$GStringFilter extends GStringFilter {
   final String? greaterThanOrEqualToInsensitive;
 
   factory _$GStringFilter([void Function(GStringFilterBuilder)? updates]) =>
-      (new GStringFilterBuilder()..update(updates))._build();
+      (GStringFilterBuilder()..update(updates))._build();
 
   _$GStringFilter._(
       {this.isNull,
@@ -29093,13 +28938,12 @@ class _$GStringFilter extends GStringFilter {
       this.greaterThanInsensitive,
       this.greaterThanOrEqualToInsensitive})
       : super._();
-
   @override
   GStringFilter rebuild(void Function(GStringFilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GStringFilterBuilder toBuilder() => new GStringFilterBuilder()..replace(this);
+  GStringFilterBuilder toBuilder() => GStringFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -29260,11 +29104,11 @@ class GStringFilterBuilder
       _$this._notDistinctFrom = notDistinctFrom;
 
   ListBuilder<String>? _Gin;
-  ListBuilder<String> get Gin => _$this._Gin ??= new ListBuilder<String>();
+  ListBuilder<String> get Gin => _$this._Gin ??= ListBuilder<String>();
   set Gin(ListBuilder<String>? Gin) => _$this._Gin = Gin;
 
   ListBuilder<String>? _notIn;
-  ListBuilder<String> get notIn => _$this._notIn ??= new ListBuilder<String>();
+  ListBuilder<String> get notIn => _$this._notIn ??= ListBuilder<String>();
   set notIn(ListBuilder<String>? notIn) => _$this._notIn = notIn;
 
   String? _lessThan;
@@ -29380,13 +29224,13 @@ class GStringFilterBuilder
 
   ListBuilder<String>? _inInsensitive;
   ListBuilder<String> get inInsensitive =>
-      _$this._inInsensitive ??= new ListBuilder<String>();
+      _$this._inInsensitive ??= ListBuilder<String>();
   set inInsensitive(ListBuilder<String>? inInsensitive) =>
       _$this._inInsensitive = inInsensitive;
 
   ListBuilder<String>? _notInInsensitive;
   ListBuilder<String> get notInInsensitive =>
-      _$this._notInInsensitive ??= new ListBuilder<String>();
+      _$this._notInInsensitive ??= ListBuilder<String>();
   set notInInsensitive(ListBuilder<String>? notInInsensitive) =>
       _$this._notInInsensitive = notInInsensitive;
 
@@ -29462,7 +29306,6 @@ class GStringFilterBuilder
 
   @override
   void replace(GStringFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GStringFilter;
   }
 
@@ -29478,44 +29321,45 @@ class GStringFilterBuilder
     _$GStringFilter _$result;
     try {
       _$result = _$v ??
-          new _$GStringFilter._(
-              isNull: isNull,
-              equalTo: equalTo,
-              notEqualTo: notEqualTo,
-              distinctFrom: distinctFrom,
-              notDistinctFrom: notDistinctFrom,
-              Gin: _Gin?.build(),
-              notIn: _notIn?.build(),
-              lessThan: lessThan,
-              lessThanOrEqualTo: lessThanOrEqualTo,
-              greaterThan: greaterThan,
-              greaterThanOrEqualTo: greaterThanOrEqualTo,
-              includes: includes,
-              notIncludes: notIncludes,
-              includesInsensitive: includesInsensitive,
-              notIncludesInsensitive: notIncludesInsensitive,
-              startsWith: startsWith,
-              notStartsWith: notStartsWith,
-              startsWithInsensitive: startsWithInsensitive,
-              notStartsWithInsensitive: notStartsWithInsensitive,
-              endsWith: endsWith,
-              notEndsWith: notEndsWith,
-              endsWithInsensitive: endsWithInsensitive,
-              notEndsWithInsensitive: notEndsWithInsensitive,
-              like: like,
-              notLike: notLike,
-              likeInsensitive: likeInsensitive,
-              notLikeInsensitive: notLikeInsensitive,
-              equalToInsensitive: equalToInsensitive,
-              notEqualToInsensitive: notEqualToInsensitive,
-              distinctFromInsensitive: distinctFromInsensitive,
-              notDistinctFromInsensitive: notDistinctFromInsensitive,
-              inInsensitive: _inInsensitive?.build(),
-              notInInsensitive: _notInInsensitive?.build(),
-              lessThanInsensitive: lessThanInsensitive,
-              lessThanOrEqualToInsensitive: lessThanOrEqualToInsensitive,
-              greaterThanInsensitive: greaterThanInsensitive,
-              greaterThanOrEqualToInsensitive: greaterThanOrEqualToInsensitive);
+          _$GStringFilter._(
+            isNull: isNull,
+            equalTo: equalTo,
+            notEqualTo: notEqualTo,
+            distinctFrom: distinctFrom,
+            notDistinctFrom: notDistinctFrom,
+            Gin: _Gin?.build(),
+            notIn: _notIn?.build(),
+            lessThan: lessThan,
+            lessThanOrEqualTo: lessThanOrEqualTo,
+            greaterThan: greaterThan,
+            greaterThanOrEqualTo: greaterThanOrEqualTo,
+            includes: includes,
+            notIncludes: notIncludes,
+            includesInsensitive: includesInsensitive,
+            notIncludesInsensitive: notIncludesInsensitive,
+            startsWith: startsWith,
+            notStartsWith: notStartsWith,
+            startsWithInsensitive: startsWithInsensitive,
+            notStartsWithInsensitive: notStartsWithInsensitive,
+            endsWith: endsWith,
+            notEndsWith: notEndsWith,
+            endsWithInsensitive: endsWithInsensitive,
+            notEndsWithInsensitive: notEndsWithInsensitive,
+            like: like,
+            notLike: notLike,
+            likeInsensitive: likeInsensitive,
+            notLikeInsensitive: notLikeInsensitive,
+            equalToInsensitive: equalToInsensitive,
+            notEqualToInsensitive: notEqualToInsensitive,
+            distinctFromInsensitive: distinctFromInsensitive,
+            notDistinctFromInsensitive: notDistinctFromInsensitive,
+            inInsensitive: _inInsensitive?.build(),
+            notInInsensitive: _notInInsensitive?.build(),
+            lessThanInsensitive: lessThanInsensitive,
+            lessThanOrEqualToInsensitive: lessThanOrEqualToInsensitive,
+            greaterThanInsensitive: greaterThanInsensitive,
+            greaterThanOrEqualToInsensitive: greaterThanOrEqualToInsensitive,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -29529,7 +29373,7 @@ class GStringFilterBuilder
         _$failedField = 'notInInsensitive';
         _notInInsensitive?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GStringFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -29579,7 +29423,7 @@ class _$GStringListFilter extends GStringListFilter {
 
   factory _$GStringListFilter(
           [void Function(GStringListFilterBuilder)? updates]) =>
-      (new GStringListFilterBuilder()..update(updates))._build();
+      (GStringListFilterBuilder()..update(updates))._build();
 
   _$GStringListFilter._(
       {this.isNull,
@@ -29601,14 +29445,13 @@ class _$GStringListFilter extends GStringListFilter {
       this.anyGreaterThan,
       this.anyGreaterThanOrEqualTo})
       : super._();
-
   @override
   GStringListFilter rebuild(void Function(GStringListFilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
   GStringListFilterBuilder toBuilder() =>
-      new GStringListFilterBuilder()..replace(this);
+      GStringListFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -29694,64 +29537,64 @@ class GStringListFilterBuilder
 
   ListBuilder<String?>? _equalTo;
   ListBuilder<String?> get equalTo =>
-      _$this._equalTo ??= new ListBuilder<String?>();
+      _$this._equalTo ??= ListBuilder<String?>();
   set equalTo(ListBuilder<String?>? equalTo) => _$this._equalTo = equalTo;
 
   ListBuilder<String?>? _notEqualTo;
   ListBuilder<String?> get notEqualTo =>
-      _$this._notEqualTo ??= new ListBuilder<String?>();
+      _$this._notEqualTo ??= ListBuilder<String?>();
   set notEqualTo(ListBuilder<String?>? notEqualTo) =>
       _$this._notEqualTo = notEqualTo;
 
   ListBuilder<String?>? _distinctFrom;
   ListBuilder<String?> get distinctFrom =>
-      _$this._distinctFrom ??= new ListBuilder<String?>();
+      _$this._distinctFrom ??= ListBuilder<String?>();
   set distinctFrom(ListBuilder<String?>? distinctFrom) =>
       _$this._distinctFrom = distinctFrom;
 
   ListBuilder<String?>? _notDistinctFrom;
   ListBuilder<String?> get notDistinctFrom =>
-      _$this._notDistinctFrom ??= new ListBuilder<String?>();
+      _$this._notDistinctFrom ??= ListBuilder<String?>();
   set notDistinctFrom(ListBuilder<String?>? notDistinctFrom) =>
       _$this._notDistinctFrom = notDistinctFrom;
 
   ListBuilder<String?>? _lessThan;
   ListBuilder<String?> get lessThan =>
-      _$this._lessThan ??= new ListBuilder<String?>();
+      _$this._lessThan ??= ListBuilder<String?>();
   set lessThan(ListBuilder<String?>? lessThan) => _$this._lessThan = lessThan;
 
   ListBuilder<String?>? _lessThanOrEqualTo;
   ListBuilder<String?> get lessThanOrEqualTo =>
-      _$this._lessThanOrEqualTo ??= new ListBuilder<String?>();
+      _$this._lessThanOrEqualTo ??= ListBuilder<String?>();
   set lessThanOrEqualTo(ListBuilder<String?>? lessThanOrEqualTo) =>
       _$this._lessThanOrEqualTo = lessThanOrEqualTo;
 
   ListBuilder<String?>? _greaterThan;
   ListBuilder<String?> get greaterThan =>
-      _$this._greaterThan ??= new ListBuilder<String?>();
+      _$this._greaterThan ??= ListBuilder<String?>();
   set greaterThan(ListBuilder<String?>? greaterThan) =>
       _$this._greaterThan = greaterThan;
 
   ListBuilder<String?>? _greaterThanOrEqualTo;
   ListBuilder<String?> get greaterThanOrEqualTo =>
-      _$this._greaterThanOrEqualTo ??= new ListBuilder<String?>();
+      _$this._greaterThanOrEqualTo ??= ListBuilder<String?>();
   set greaterThanOrEqualTo(ListBuilder<String?>? greaterThanOrEqualTo) =>
       _$this._greaterThanOrEqualTo = greaterThanOrEqualTo;
 
   ListBuilder<String?>? _contains;
   ListBuilder<String?> get contains =>
-      _$this._contains ??= new ListBuilder<String?>();
+      _$this._contains ??= ListBuilder<String?>();
   set contains(ListBuilder<String?>? contains) => _$this._contains = contains;
 
   ListBuilder<String?>? _containedBy;
   ListBuilder<String?> get containedBy =>
-      _$this._containedBy ??= new ListBuilder<String?>();
+      _$this._containedBy ??= ListBuilder<String?>();
   set containedBy(ListBuilder<String?>? containedBy) =>
       _$this._containedBy = containedBy;
 
   ListBuilder<String?>? _overlaps;
   ListBuilder<String?> get overlaps =>
-      _$this._overlaps ??= new ListBuilder<String?>();
+      _$this._overlaps ??= ListBuilder<String?>();
   set overlaps(ListBuilder<String?>? overlaps) => _$this._overlaps = overlaps;
 
   String? _anyEqualTo;
@@ -29812,7 +29655,6 @@ class GStringListFilterBuilder
 
   @override
   void replace(GStringListFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GStringListFilter;
   }
 
@@ -29828,25 +29670,26 @@ class GStringListFilterBuilder
     _$GStringListFilter _$result;
     try {
       _$result = _$v ??
-          new _$GStringListFilter._(
-              isNull: isNull,
-              equalTo: _equalTo?.build(),
-              notEqualTo: _notEqualTo?.build(),
-              distinctFrom: _distinctFrom?.build(),
-              notDistinctFrom: _notDistinctFrom?.build(),
-              lessThan: _lessThan?.build(),
-              lessThanOrEqualTo: _lessThanOrEqualTo?.build(),
-              greaterThan: _greaterThan?.build(),
-              greaterThanOrEqualTo: _greaterThanOrEqualTo?.build(),
-              contains: _contains?.build(),
-              containedBy: _containedBy?.build(),
-              overlaps: _overlaps?.build(),
-              anyEqualTo: anyEqualTo,
-              anyNotEqualTo: anyNotEqualTo,
-              anyLessThan: anyLessThan,
-              anyLessThanOrEqualTo: anyLessThanOrEqualTo,
-              anyGreaterThan: anyGreaterThan,
-              anyGreaterThanOrEqualTo: anyGreaterThanOrEqualTo);
+          _$GStringListFilter._(
+            isNull: isNull,
+            equalTo: _equalTo?.build(),
+            notEqualTo: _notEqualTo?.build(),
+            distinctFrom: _distinctFrom?.build(),
+            notDistinctFrom: _notDistinctFrom?.build(),
+            lessThan: _lessThan?.build(),
+            lessThanOrEqualTo: _lessThanOrEqualTo?.build(),
+            greaterThan: _greaterThan?.build(),
+            greaterThanOrEqualTo: _greaterThanOrEqualTo?.build(),
+            contains: _contains?.build(),
+            containedBy: _containedBy?.build(),
+            overlaps: _overlaps?.build(),
+            anyEqualTo: anyEqualTo,
+            anyNotEqualTo: anyNotEqualTo,
+            anyLessThan: anyLessThan,
+            anyLessThanOrEqualTo: anyLessThanOrEqualTo,
+            anyGreaterThan: anyGreaterThan,
+            anyGreaterThanOrEqualTo: anyGreaterThanOrEqualTo,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -29873,7 +29716,7 @@ class GStringListFilterBuilder
         _$failedField = 'overlaps';
         _overlaps?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GStringListFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -29903,7 +29746,7 @@ class _$GTransferCondition extends GTransferCondition {
 
   factory _$GTransferCondition(
           [void Function(GTransferConditionBuilder)? updates]) =>
-      (new GTransferConditionBuilder()..update(updates))._build();
+      (GTransferConditionBuilder()..update(updates))._build();
 
   _$GTransferCondition._(
       {this.id,
@@ -29915,7 +29758,6 @@ class _$GTransferCondition extends GTransferCondition {
       this.eventId,
       this.commentId})
       : super._();
-
   @override
   GTransferCondition rebuild(
           void Function(GTransferConditionBuilder) updates) =>
@@ -29923,7 +29765,7 @@ class _$GTransferCondition extends GTransferCondition {
 
   @override
   GTransferConditionBuilder toBuilder() =>
-      new GTransferConditionBuilder()..replace(this);
+      GTransferConditionBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -29982,12 +29824,11 @@ class GTransferConditionBuilder
   set blockNumber(int? blockNumber) => _$this._blockNumber = blockNumber;
 
   GDatetimeBuilder? _timestamp;
-  GDatetimeBuilder get timestamp =>
-      _$this._timestamp ??= new GDatetimeBuilder();
+  GDatetimeBuilder get timestamp => _$this._timestamp ??= GDatetimeBuilder();
   set timestamp(GDatetimeBuilder? timestamp) => _$this._timestamp = timestamp;
 
   GBigFloatBuilder? _amount;
-  GBigFloatBuilder get amount => _$this._amount ??= new GBigFloatBuilder();
+  GBigFloatBuilder get amount => _$this._amount ??= GBigFloatBuilder();
   set amount(GBigFloatBuilder? amount) => _$this._amount = amount;
 
   String? _fromId;
@@ -30026,7 +29867,6 @@ class GTransferConditionBuilder
 
   @override
   void replace(GTransferCondition other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GTransferCondition;
   }
 
@@ -30042,15 +29882,16 @@ class GTransferConditionBuilder
     _$GTransferCondition _$result;
     try {
       _$result = _$v ??
-          new _$GTransferCondition._(
-              id: id,
-              blockNumber: blockNumber,
-              timestamp: _timestamp?.build(),
-              amount: _amount?.build(),
-              fromId: fromId,
-              toId: toId,
-              eventId: eventId,
-              commentId: commentId);
+          _$GTransferCondition._(
+            id: id,
+            blockNumber: blockNumber,
+            timestamp: _timestamp?.build(),
+            amount: _amount?.build(),
+            fromId: fromId,
+            toId: toId,
+            eventId: eventId,
+            commentId: commentId,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -30059,7 +29900,7 @@ class GTransferConditionBuilder
         _$failedField = 'amount';
         _amount?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GTransferCondition', _$failedField, e.toString());
       }
       rethrow;
@@ -30110,7 +29951,7 @@ class _$GTransferFilter extends GTransferFilter {
   final GTransferFilter? not;
 
   factory _$GTransferFilter([void Function(GTransferFilterBuilder)? updates]) =>
-      (new GTransferFilterBuilder()..update(updates))._build();
+      (GTransferFilterBuilder()..update(updates))._build();
 
   _$GTransferFilter._(
       {this.id,
@@ -30133,14 +29974,12 @@ class _$GTransferFilter extends GTransferFilter {
       this.or,
       this.not})
       : super._();
-
   @override
   GTransferFilter rebuild(void Function(GTransferFilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GTransferFilterBuilder toBuilder() =>
-      new GTransferFilterBuilder()..replace(this);
+  GTransferFilterBuilder toBuilder() => GTransferFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -30224,49 +30063,47 @@ class GTransferFilterBuilder
   _$GTransferFilter? _$v;
 
   GStringFilterBuilder? _id;
-  GStringFilterBuilder get id => _$this._id ??= new GStringFilterBuilder();
+  GStringFilterBuilder get id => _$this._id ??= GStringFilterBuilder();
   set id(GStringFilterBuilder? id) => _$this._id = id;
 
   GIntFilterBuilder? _blockNumber;
   GIntFilterBuilder get blockNumber =>
-      _$this._blockNumber ??= new GIntFilterBuilder();
+      _$this._blockNumber ??= GIntFilterBuilder();
   set blockNumber(GIntFilterBuilder? blockNumber) =>
       _$this._blockNumber = blockNumber;
 
   GDatetimeFilterBuilder? _timestamp;
   GDatetimeFilterBuilder get timestamp =>
-      _$this._timestamp ??= new GDatetimeFilterBuilder();
+      _$this._timestamp ??= GDatetimeFilterBuilder();
   set timestamp(GDatetimeFilterBuilder? timestamp) =>
       _$this._timestamp = timestamp;
 
   GBigFloatFilterBuilder? _amount;
   GBigFloatFilterBuilder get amount =>
-      _$this._amount ??= new GBigFloatFilterBuilder();
+      _$this._amount ??= GBigFloatFilterBuilder();
   set amount(GBigFloatFilterBuilder? amount) => _$this._amount = amount;
 
   GStringFilterBuilder? _fromId;
-  GStringFilterBuilder get fromId =>
-      _$this._fromId ??= new GStringFilterBuilder();
+  GStringFilterBuilder get fromId => _$this._fromId ??= GStringFilterBuilder();
   set fromId(GStringFilterBuilder? fromId) => _$this._fromId = fromId;
 
   GStringFilterBuilder? _toId;
-  GStringFilterBuilder get toId => _$this._toId ??= new GStringFilterBuilder();
+  GStringFilterBuilder get toId => _$this._toId ??= GStringFilterBuilder();
   set toId(GStringFilterBuilder? toId) => _$this._toId = toId;
 
   GStringFilterBuilder? _eventId;
   GStringFilterBuilder get eventId =>
-      _$this._eventId ??= new GStringFilterBuilder();
+      _$this._eventId ??= GStringFilterBuilder();
   set eventId(GStringFilterBuilder? eventId) => _$this._eventId = eventId;
 
   GStringFilterBuilder? _commentId;
   GStringFilterBuilder get commentId =>
-      _$this._commentId ??= new GStringFilterBuilder();
+      _$this._commentId ??= GStringFilterBuilder();
   set commentId(GStringFilterBuilder? commentId) =>
       _$this._commentId = commentId;
 
   GAccountFilterBuilder? _from;
-  GAccountFilterBuilder get from =>
-      _$this._from ??= new GAccountFilterBuilder();
+  GAccountFilterBuilder get from => _$this._from ??= GAccountFilterBuilder();
   set from(GAccountFilterBuilder? from) => _$this._from = from;
 
   bool? _fromExists;
@@ -30274,7 +30111,7 @@ class GTransferFilterBuilder
   set fromExists(bool? fromExists) => _$this._fromExists = fromExists;
 
   GAccountFilterBuilder? _to;
-  GAccountFilterBuilder get to => _$this._to ??= new GAccountFilterBuilder();
+  GAccountFilterBuilder get to => _$this._to ??= GAccountFilterBuilder();
   set to(GAccountFilterBuilder? to) => _$this._to = to;
 
   bool? _toExists;
@@ -30282,7 +30119,7 @@ class GTransferFilterBuilder
   set toExists(bool? toExists) => _$this._toExists = toExists;
 
   GEventFilterBuilder? _event;
-  GEventFilterBuilder get event => _$this._event ??= new GEventFilterBuilder();
+  GEventFilterBuilder get event => _$this._event ??= GEventFilterBuilder();
   set event(GEventFilterBuilder? event) => _$this._event = event;
 
   bool? _eventExists;
@@ -30291,7 +30128,7 @@ class GTransferFilterBuilder
 
   GTxCommentFilterBuilder? _comment;
   GTxCommentFilterBuilder get comment =>
-      _$this._comment ??= new GTxCommentFilterBuilder();
+      _$this._comment ??= GTxCommentFilterBuilder();
   set comment(GTxCommentFilterBuilder? comment) => _$this._comment = comment;
 
   bool? _commentExists;
@@ -30301,17 +30138,16 @@ class GTransferFilterBuilder
 
   ListBuilder<GTransferFilter>? _and;
   ListBuilder<GTransferFilter> get and =>
-      _$this._and ??= new ListBuilder<GTransferFilter>();
+      _$this._and ??= ListBuilder<GTransferFilter>();
   set and(ListBuilder<GTransferFilter>? and) => _$this._and = and;
 
   ListBuilder<GTransferFilter>? _or;
   ListBuilder<GTransferFilter> get or =>
-      _$this._or ??= new ListBuilder<GTransferFilter>();
+      _$this._or ??= ListBuilder<GTransferFilter>();
   set or(ListBuilder<GTransferFilter>? or) => _$this._or = or;
 
   GTransferFilterBuilder? _not;
-  GTransferFilterBuilder get not =>
-      _$this._not ??= new GTransferFilterBuilder();
+  GTransferFilterBuilder get not => _$this._not ??= GTransferFilterBuilder();
   set not(GTransferFilterBuilder? not) => _$this._not = not;
 
   GTransferFilterBuilder();
@@ -30345,7 +30181,6 @@ class GTransferFilterBuilder
 
   @override
   void replace(GTransferFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GTransferFilter;
   }
 
@@ -30361,26 +30196,27 @@ class GTransferFilterBuilder
     _$GTransferFilter _$result;
     try {
       _$result = _$v ??
-          new _$GTransferFilter._(
-              id: _id?.build(),
-              blockNumber: _blockNumber?.build(),
-              timestamp: _timestamp?.build(),
-              amount: _amount?.build(),
-              fromId: _fromId?.build(),
-              toId: _toId?.build(),
-              eventId: _eventId?.build(),
-              commentId: _commentId?.build(),
-              from: _from?.build(),
-              fromExists: fromExists,
-              to: _to?.build(),
-              toExists: toExists,
-              event: _event?.build(),
-              eventExists: eventExists,
-              comment: _comment?.build(),
-              commentExists: commentExists,
-              and: _and?.build(),
-              or: _or?.build(),
-              not: _not?.build());
+          _$GTransferFilter._(
+            id: _id?.build(),
+            blockNumber: _blockNumber?.build(),
+            timestamp: _timestamp?.build(),
+            amount: _amount?.build(),
+            fromId: _fromId?.build(),
+            toId: _toId?.build(),
+            eventId: _eventId?.build(),
+            commentId: _commentId?.build(),
+            from: _from?.build(),
+            fromExists: fromExists,
+            to: _to?.build(),
+            toExists: toExists,
+            event: _event?.build(),
+            eventExists: eventExists,
+            comment: _comment?.build(),
+            commentExists: commentExists,
+            and: _and?.build(),
+            or: _or?.build(),
+            not: _not?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -30419,7 +30255,7 @@ class GTransferFilterBuilder
         _$failedField = 'not';
         _not?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GTransferFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -30461,7 +30297,7 @@ class _$GTransferWithUdFilter extends GTransferWithUdFilter {
 
   factory _$GTransferWithUdFilter(
           [void Function(GTransferWithUdFilterBuilder)? updates]) =>
-      (new GTransferWithUdFilterBuilder()..update(updates))._build();
+      (GTransferWithUdFilterBuilder()..update(updates))._build();
 
   _$GTransferWithUdFilter._(
       {this.id,
@@ -30479,7 +30315,6 @@ class _$GTransferWithUdFilter extends GTransferWithUdFilter {
       this.or,
       this.not})
       : super._();
-
   @override
   GTransferWithUdFilter rebuild(
           void Function(GTransferWithUdFilterBuilder) updates) =>
@@ -30487,7 +30322,7 @@ class _$GTransferWithUdFilter extends GTransferWithUdFilter {
 
   @override
   GTransferWithUdFilterBuilder toBuilder() =>
-      new GTransferWithUdFilterBuilder()..replace(this);
+      GTransferWithUdFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -30556,75 +30391,73 @@ class GTransferWithUdFilterBuilder
   _$GTransferWithUdFilter? _$v;
 
   GStringFilterBuilder? _id;
-  GStringFilterBuilder get id => _$this._id ??= new GStringFilterBuilder();
+  GStringFilterBuilder get id => _$this._id ??= GStringFilterBuilder();
   set id(GStringFilterBuilder? id) => _$this._id = id;
 
   GIntFilterBuilder? _blockNumber;
   GIntFilterBuilder get blockNumber =>
-      _$this._blockNumber ??= new GIntFilterBuilder();
+      _$this._blockNumber ??= GIntFilterBuilder();
   set blockNumber(GIntFilterBuilder? blockNumber) =>
       _$this._blockNumber = blockNumber;
 
   GDatetimeFilterBuilder? _timestamp;
   GDatetimeFilterBuilder get timestamp =>
-      _$this._timestamp ??= new GDatetimeFilterBuilder();
+      _$this._timestamp ??= GDatetimeFilterBuilder();
   set timestamp(GDatetimeFilterBuilder? timestamp) =>
       _$this._timestamp = timestamp;
 
   GStringFilterBuilder? _fromId;
-  GStringFilterBuilder get fromId =>
-      _$this._fromId ??= new GStringFilterBuilder();
+  GStringFilterBuilder get fromId => _$this._fromId ??= GStringFilterBuilder();
   set fromId(GStringFilterBuilder? fromId) => _$this._fromId = fromId;
 
   GStringFilterBuilder? _toId;
-  GStringFilterBuilder get toId => _$this._toId ??= new GStringFilterBuilder();
+  GStringFilterBuilder get toId => _$this._toId ??= GStringFilterBuilder();
   set toId(GStringFilterBuilder? toId) => _$this._toId = toId;
 
   GBigFloatFilterBuilder? _amount;
   GBigFloatFilterBuilder get amount =>
-      _$this._amount ??= new GBigFloatFilterBuilder();
+      _$this._amount ??= GBigFloatFilterBuilder();
   set amount(GBigFloatFilterBuilder? amount) => _$this._amount = amount;
 
   GStringFilterBuilder? _eventId;
   GStringFilterBuilder get eventId =>
-      _$this._eventId ??= new GStringFilterBuilder();
+      _$this._eventId ??= GStringFilterBuilder();
   set eventId(GStringFilterBuilder? eventId) => _$this._eventId = eventId;
 
   GStringFilterBuilder? _commentId;
   GStringFilterBuilder get commentId =>
-      _$this._commentId ??= new GStringFilterBuilder();
+      _$this._commentId ??= GStringFilterBuilder();
   set commentId(GStringFilterBuilder? commentId) =>
       _$this._commentId = commentId;
 
   GBooleanFilterBuilder? _isUd;
-  GBooleanFilterBuilder get isUd =>
-      _$this._isUd ??= new GBooleanFilterBuilder();
+  GBooleanFilterBuilder get isUd => _$this._isUd ??= GBooleanFilterBuilder();
   set isUd(GBooleanFilterBuilder? isUd) => _$this._isUd = isUd;
 
   GBigFloatFilterBuilder? _udAmount;
   GBigFloatFilterBuilder get udAmount =>
-      _$this._udAmount ??= new GBigFloatFilterBuilder();
+      _$this._udAmount ??= GBigFloatFilterBuilder();
   set udAmount(GBigFloatFilterBuilder? udAmount) => _$this._udAmount = udAmount;
 
   GStringFilterBuilder? _udIdentityId;
   GStringFilterBuilder get udIdentityId =>
-      _$this._udIdentityId ??= new GStringFilterBuilder();
+      _$this._udIdentityId ??= GStringFilterBuilder();
   set udIdentityId(GStringFilterBuilder? udIdentityId) =>
       _$this._udIdentityId = udIdentityId;
 
   ListBuilder<GTransferWithUdFilter>? _and;
   ListBuilder<GTransferWithUdFilter> get and =>
-      _$this._and ??= new ListBuilder<GTransferWithUdFilter>();
+      _$this._and ??= ListBuilder<GTransferWithUdFilter>();
   set and(ListBuilder<GTransferWithUdFilter>? and) => _$this._and = and;
 
   ListBuilder<GTransferWithUdFilter>? _or;
   ListBuilder<GTransferWithUdFilter> get or =>
-      _$this._or ??= new ListBuilder<GTransferWithUdFilter>();
+      _$this._or ??= ListBuilder<GTransferWithUdFilter>();
   set or(ListBuilder<GTransferWithUdFilter>? or) => _$this._or = or;
 
   GTransferWithUdFilterBuilder? _not;
   GTransferWithUdFilterBuilder get not =>
-      _$this._not ??= new GTransferWithUdFilterBuilder();
+      _$this._not ??= GTransferWithUdFilterBuilder();
   set not(GTransferWithUdFilterBuilder? not) => _$this._not = not;
 
   GTransferWithUdFilterBuilder();
@@ -30653,7 +30486,6 @@ class GTransferWithUdFilterBuilder
 
   @override
   void replace(GTransferWithUdFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GTransferWithUdFilter;
   }
 
@@ -30669,21 +30501,22 @@ class GTransferWithUdFilterBuilder
     _$GTransferWithUdFilter _$result;
     try {
       _$result = _$v ??
-          new _$GTransferWithUdFilter._(
-              id: _id?.build(),
-              blockNumber: _blockNumber?.build(),
-              timestamp: _timestamp?.build(),
-              fromId: _fromId?.build(),
-              toId: _toId?.build(),
-              amount: _amount?.build(),
-              eventId: _eventId?.build(),
-              commentId: _commentId?.build(),
-              isUd: _isUd?.build(),
-              udAmount: _udAmount?.build(),
-              udIdentityId: _udIdentityId?.build(),
-              and: _and?.build(),
-              or: _or?.build(),
-              not: _not?.build());
+          _$GTransferWithUdFilter._(
+            id: _id?.build(),
+            blockNumber: _blockNumber?.build(),
+            timestamp: _timestamp?.build(),
+            fromId: _fromId?.build(),
+            toId: _toId?.build(),
+            amount: _amount?.build(),
+            eventId: _eventId?.build(),
+            commentId: _commentId?.build(),
+            isUd: _isUd?.build(),
+            udAmount: _udAmount?.build(),
+            udIdentityId: _udIdentityId?.build(),
+            and: _and?.build(),
+            or: _or?.build(),
+            not: _not?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -30716,7 +30549,7 @@ class GTransferWithUdFilterBuilder
         _$failedField = 'not';
         _not?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GTransferWithUdFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -30746,7 +30579,7 @@ class _$GTxCommentCondition extends GTxCommentCondition {
 
   factory _$GTxCommentCondition(
           [void Function(GTxCommentConditionBuilder)? updates]) =>
-      (new GTxCommentConditionBuilder()..update(updates))._build();
+      (GTxCommentConditionBuilder()..update(updates))._build();
 
   _$GTxCommentCondition._(
       {this.id,
@@ -30758,7 +30591,6 @@ class _$GTxCommentCondition extends GTxCommentCondition {
       this.authorId,
       this.eventId})
       : super._();
-
   @override
   GTxCommentCondition rebuild(
           void Function(GTxCommentConditionBuilder) updates) =>
@@ -30766,7 +30598,7 @@ class _$GTxCommentCondition extends GTxCommentCondition {
 
   @override
   GTxCommentConditionBuilder toBuilder() =>
-      new GTxCommentConditionBuilder()..replace(this);
+      GTxCommentConditionBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -30868,7 +30700,6 @@ class GTxCommentConditionBuilder
 
   @override
   void replace(GTxCommentCondition other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GTxCommentCondition;
   }
 
@@ -30882,15 +30713,16 @@ class GTxCommentConditionBuilder
 
   _$GTxCommentCondition _build() {
     final _$result = _$v ??
-        new _$GTxCommentCondition._(
-            id: id,
-            blockNumber: blockNumber,
-            remarkBytes: remarkBytes,
-            remark: remark,
-            hash: hash,
-            type: type,
-            authorId: authorId,
-            eventId: eventId);
+        _$GTxCommentCondition._(
+          id: id,
+          blockNumber: blockNumber,
+          remarkBytes: remarkBytes,
+          remark: remark,
+          hash: hash,
+          type: type,
+          authorId: authorId,
+          eventId: eventId,
+        );
     replace(_$result);
     return _$result;
   }
@@ -30932,7 +30764,7 @@ class _$GTxCommentFilter extends GTxCommentFilter {
 
   factory _$GTxCommentFilter(
           [void Function(GTxCommentFilterBuilder)? updates]) =>
-      (new GTxCommentFilterBuilder()..update(updates))._build();
+      (GTxCommentFilterBuilder()..update(updates))._build();
 
   _$GTxCommentFilter._(
       {this.id,
@@ -30952,14 +30784,13 @@ class _$GTxCommentFilter extends GTxCommentFilter {
       this.or,
       this.not})
       : super._();
-
   @override
   GTxCommentFilter rebuild(void Function(GTxCommentFilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
   GTxCommentFilterBuilder toBuilder() =>
-      new GTxCommentFilterBuilder()..replace(this);
+      GTxCommentFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -31034,42 +30865,40 @@ class GTxCommentFilterBuilder
   _$GTxCommentFilter? _$v;
 
   GStringFilterBuilder? _id;
-  GStringFilterBuilder get id => _$this._id ??= new GStringFilterBuilder();
+  GStringFilterBuilder get id => _$this._id ??= GStringFilterBuilder();
   set id(GStringFilterBuilder? id) => _$this._id = id;
 
   GIntFilterBuilder? _blockNumber;
   GIntFilterBuilder get blockNumber =>
-      _$this._blockNumber ??= new GIntFilterBuilder();
+      _$this._blockNumber ??= GIntFilterBuilder();
   set blockNumber(GIntFilterBuilder? blockNumber) =>
       _$this._blockNumber = blockNumber;
 
   GStringFilterBuilder? _remark;
-  GStringFilterBuilder get remark =>
-      _$this._remark ??= new GStringFilterBuilder();
+  GStringFilterBuilder get remark => _$this._remark ??= GStringFilterBuilder();
   set remark(GStringFilterBuilder? remark) => _$this._remark = remark;
 
   GStringFilterBuilder? _hash;
-  GStringFilterBuilder get hash => _$this._hash ??= new GStringFilterBuilder();
+  GStringFilterBuilder get hash => _$this._hash ??= GStringFilterBuilder();
   set hash(GStringFilterBuilder? hash) => _$this._hash = hash;
 
   GStringFilterBuilder? _type;
-  GStringFilterBuilder get type => _$this._type ??= new GStringFilterBuilder();
+  GStringFilterBuilder get type => _$this._type ??= GStringFilterBuilder();
   set type(GStringFilterBuilder? type) => _$this._type = type;
 
   GStringFilterBuilder? _authorId;
   GStringFilterBuilder get authorId =>
-      _$this._authorId ??= new GStringFilterBuilder();
+      _$this._authorId ??= GStringFilterBuilder();
   set authorId(GStringFilterBuilder? authorId) => _$this._authorId = authorId;
 
   GStringFilterBuilder? _eventId;
   GStringFilterBuilder get eventId =>
-      _$this._eventId ??= new GStringFilterBuilder();
+      _$this._eventId ??= GStringFilterBuilder();
   set eventId(GStringFilterBuilder? eventId) => _$this._eventId = eventId;
 
   GTxCommentToManyTransferFilterBuilder? _transfersByCommentId;
   GTxCommentToManyTransferFilterBuilder get transfersByCommentId =>
-      _$this._transfersByCommentId ??=
-          new GTxCommentToManyTransferFilterBuilder();
+      _$this._transfersByCommentId ??= GTxCommentToManyTransferFilterBuilder();
   set transfersByCommentId(
           GTxCommentToManyTransferFilterBuilder? transfersByCommentId) =>
       _$this._transfersByCommentId = transfersByCommentId;
@@ -31081,7 +30910,7 @@ class GTxCommentFilterBuilder
 
   GAccountFilterBuilder? _author;
   GAccountFilterBuilder get author =>
-      _$this._author ??= new GAccountFilterBuilder();
+      _$this._author ??= GAccountFilterBuilder();
   set author(GAccountFilterBuilder? author) => _$this._author = author;
 
   bool? _authorExists;
@@ -31089,7 +30918,7 @@ class GTxCommentFilterBuilder
   set authorExists(bool? authorExists) => _$this._authorExists = authorExists;
 
   GEventFilterBuilder? _event;
-  GEventFilterBuilder get event => _$this._event ??= new GEventFilterBuilder();
+  GEventFilterBuilder get event => _$this._event ??= GEventFilterBuilder();
   set event(GEventFilterBuilder? event) => _$this._event = event;
 
   bool? _eventExists;
@@ -31098,17 +30927,16 @@ class GTxCommentFilterBuilder
 
   ListBuilder<GTxCommentFilter>? _and;
   ListBuilder<GTxCommentFilter> get and =>
-      _$this._and ??= new ListBuilder<GTxCommentFilter>();
+      _$this._and ??= ListBuilder<GTxCommentFilter>();
   set and(ListBuilder<GTxCommentFilter>? and) => _$this._and = and;
 
   ListBuilder<GTxCommentFilter>? _or;
   ListBuilder<GTxCommentFilter> get or =>
-      _$this._or ??= new ListBuilder<GTxCommentFilter>();
+      _$this._or ??= ListBuilder<GTxCommentFilter>();
   set or(ListBuilder<GTxCommentFilter>? or) => _$this._or = or;
 
   GTxCommentFilterBuilder? _not;
-  GTxCommentFilterBuilder get not =>
-      _$this._not ??= new GTxCommentFilterBuilder();
+  GTxCommentFilterBuilder get not => _$this._not ??= GTxCommentFilterBuilder();
   set not(GTxCommentFilterBuilder? not) => _$this._not = not;
 
   GTxCommentFilterBuilder();
@@ -31139,7 +30967,6 @@ class GTxCommentFilterBuilder
 
   @override
   void replace(GTxCommentFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GTxCommentFilter;
   }
 
@@ -31155,23 +30982,24 @@ class GTxCommentFilterBuilder
     _$GTxCommentFilter _$result;
     try {
       _$result = _$v ??
-          new _$GTxCommentFilter._(
-              id: _id?.build(),
-              blockNumber: _blockNumber?.build(),
-              remark: _remark?.build(),
-              hash: _hash?.build(),
-              type: _type?.build(),
-              authorId: _authorId?.build(),
-              eventId: _eventId?.build(),
-              transfersByCommentId: _transfersByCommentId?.build(),
-              transfersByCommentIdExist: transfersByCommentIdExist,
-              author: _author?.build(),
-              authorExists: authorExists,
-              event: _event?.build(),
-              eventExists: eventExists,
-              and: _and?.build(),
-              or: _or?.build(),
-              not: _not?.build());
+          _$GTxCommentFilter._(
+            id: _id?.build(),
+            blockNumber: _blockNumber?.build(),
+            remark: _remark?.build(),
+            hash: _hash?.build(),
+            type: _type?.build(),
+            authorId: _authorId?.build(),
+            eventId: _eventId?.build(),
+            transfersByCommentId: _transfersByCommentId?.build(),
+            transfersByCommentIdExist: transfersByCommentIdExist,
+            author: _author?.build(),
+            authorExists: authorExists,
+            event: _event?.build(),
+            eventExists: eventExists,
+            and: _and?.build(),
+            or: _or?.build(),
+            not: _not?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -31205,7 +31033,7 @@ class GTxCommentFilterBuilder
         _$failedField = 'not';
         _not?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GTxCommentFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -31225,11 +31053,10 @@ class _$GTxCommentToManyTransferFilter extends GTxCommentToManyTransferFilter {
 
   factory _$GTxCommentToManyTransferFilter(
           [void Function(GTxCommentToManyTransferFilterBuilder)? updates]) =>
-      (new GTxCommentToManyTransferFilterBuilder()..update(updates))._build();
+      (GTxCommentToManyTransferFilterBuilder()..update(updates))._build();
 
   _$GTxCommentToManyTransferFilter._({this.every, this.some, this.none})
       : super._();
-
   @override
   GTxCommentToManyTransferFilter rebuild(
           void Function(GTxCommentToManyTransferFilterBuilder) updates) =>
@@ -31237,7 +31064,7 @@ class _$GTxCommentToManyTransferFilter extends GTxCommentToManyTransferFilter {
 
   @override
   GTxCommentToManyTransferFilterBuilder toBuilder() =>
-      new GTxCommentToManyTransferFilterBuilder()..replace(this);
+      GTxCommentToManyTransferFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -31276,17 +31103,15 @@ class GTxCommentToManyTransferFilterBuilder
 
   GTransferFilterBuilder? _every;
   GTransferFilterBuilder get every =>
-      _$this._every ??= new GTransferFilterBuilder();
+      _$this._every ??= GTransferFilterBuilder();
   set every(GTransferFilterBuilder? every) => _$this._every = every;
 
   GTransferFilterBuilder? _some;
-  GTransferFilterBuilder get some =>
-      _$this._some ??= new GTransferFilterBuilder();
+  GTransferFilterBuilder get some => _$this._some ??= GTransferFilterBuilder();
   set some(GTransferFilterBuilder? some) => _$this._some = some;
 
   GTransferFilterBuilder? _none;
-  GTransferFilterBuilder get none =>
-      _$this._none ??= new GTransferFilterBuilder();
+  GTransferFilterBuilder get none => _$this._none ??= GTransferFilterBuilder();
   set none(GTransferFilterBuilder? none) => _$this._none = none;
 
   GTxCommentToManyTransferFilterBuilder();
@@ -31304,7 +31129,6 @@ class GTxCommentToManyTransferFilterBuilder
 
   @override
   void replace(GTxCommentToManyTransferFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GTxCommentToManyTransferFilter;
   }
 
@@ -31320,10 +31144,11 @@ class GTxCommentToManyTransferFilterBuilder
     _$GTxCommentToManyTransferFilter _$result;
     try {
       _$result = _$v ??
-          new _$GTxCommentToManyTransferFilter._(
-              every: _every?.build(),
-              some: _some?.build(),
-              none: _none?.build());
+          _$GTxCommentToManyTransferFilter._(
+            every: _every?.build(),
+            some: _some?.build(),
+            none: _none?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -31334,7 +31159,7 @@ class GTxCommentToManyTransferFilterBuilder
         _$failedField = 'none';
         _none?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GTxCommentToManyTransferFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -31358,12 +31183,11 @@ class _$GUdHistoryCondition extends GUdHistoryCondition {
 
   factory _$GUdHistoryCondition(
           [void Function(GUdHistoryConditionBuilder)? updates]) =>
-      (new GUdHistoryConditionBuilder()..update(updates))._build();
+      (GUdHistoryConditionBuilder()..update(updates))._build();
 
   _$GUdHistoryCondition._(
       {this.id, this.amount, this.blockNumber, this.timestamp, this.identityId})
       : super._();
-
   @override
   GUdHistoryCondition rebuild(
           void Function(GUdHistoryConditionBuilder) updates) =>
@@ -31371,7 +31195,7 @@ class _$GUdHistoryCondition extends GUdHistoryCondition {
 
   @override
   GUdHistoryConditionBuilder toBuilder() =>
-      new GUdHistoryConditionBuilder()..replace(this);
+      GUdHistoryConditionBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -31417,7 +31241,7 @@ class GUdHistoryConditionBuilder
   set id(String? id) => _$this._id = id;
 
   GBigFloatBuilder? _amount;
-  GBigFloatBuilder get amount => _$this._amount ??= new GBigFloatBuilder();
+  GBigFloatBuilder get amount => _$this._amount ??= GBigFloatBuilder();
   set amount(GBigFloatBuilder? amount) => _$this._amount = amount;
 
   int? _blockNumber;
@@ -31425,8 +31249,7 @@ class GUdHistoryConditionBuilder
   set blockNumber(int? blockNumber) => _$this._blockNumber = blockNumber;
 
   GDatetimeBuilder? _timestamp;
-  GDatetimeBuilder get timestamp =>
-      _$this._timestamp ??= new GDatetimeBuilder();
+  GDatetimeBuilder get timestamp => _$this._timestamp ??= GDatetimeBuilder();
   set timestamp(GDatetimeBuilder? timestamp) => _$this._timestamp = timestamp;
 
   String? _identityId;
@@ -31450,7 +31273,6 @@ class GUdHistoryConditionBuilder
 
   @override
   void replace(GUdHistoryCondition other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GUdHistoryCondition;
   }
 
@@ -31466,12 +31288,13 @@ class GUdHistoryConditionBuilder
     _$GUdHistoryCondition _$result;
     try {
       _$result = _$v ??
-          new _$GUdHistoryCondition._(
-              id: id,
-              amount: _amount?.build(),
-              blockNumber: blockNumber,
-              timestamp: _timestamp?.build(),
-              identityId: identityId);
+          _$GUdHistoryCondition._(
+            id: id,
+            amount: _amount?.build(),
+            blockNumber: blockNumber,
+            timestamp: _timestamp?.build(),
+            identityId: identityId,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -31481,7 +31304,7 @@ class GUdHistoryConditionBuilder
         _$failedField = 'timestamp';
         _timestamp?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GUdHistoryCondition', _$failedField, e.toString());
       }
       rethrow;
@@ -31515,7 +31338,7 @@ class _$GUdHistoryFilter extends GUdHistoryFilter {
 
   factory _$GUdHistoryFilter(
           [void Function(GUdHistoryFilterBuilder)? updates]) =>
-      (new GUdHistoryFilterBuilder()..update(updates))._build();
+      (GUdHistoryFilterBuilder()..update(updates))._build();
 
   _$GUdHistoryFilter._(
       {this.id,
@@ -31529,14 +31352,13 @@ class _$GUdHistoryFilter extends GUdHistoryFilter {
       this.or,
       this.not})
       : super._();
-
   @override
   GUdHistoryFilter rebuild(void Function(GUdHistoryFilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
   GUdHistoryFilterBuilder toBuilder() =>
-      new GUdHistoryFilterBuilder()..replace(this);
+      GUdHistoryFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -31593,35 +31415,35 @@ class GUdHistoryFilterBuilder
   _$GUdHistoryFilter? _$v;
 
   GStringFilterBuilder? _id;
-  GStringFilterBuilder get id => _$this._id ??= new GStringFilterBuilder();
+  GStringFilterBuilder get id => _$this._id ??= GStringFilterBuilder();
   set id(GStringFilterBuilder? id) => _$this._id = id;
 
   GBigFloatFilterBuilder? _amount;
   GBigFloatFilterBuilder get amount =>
-      _$this._amount ??= new GBigFloatFilterBuilder();
+      _$this._amount ??= GBigFloatFilterBuilder();
   set amount(GBigFloatFilterBuilder? amount) => _$this._amount = amount;
 
   GIntFilterBuilder? _blockNumber;
   GIntFilterBuilder get blockNumber =>
-      _$this._blockNumber ??= new GIntFilterBuilder();
+      _$this._blockNumber ??= GIntFilterBuilder();
   set blockNumber(GIntFilterBuilder? blockNumber) =>
       _$this._blockNumber = blockNumber;
 
   GDatetimeFilterBuilder? _timestamp;
   GDatetimeFilterBuilder get timestamp =>
-      _$this._timestamp ??= new GDatetimeFilterBuilder();
+      _$this._timestamp ??= GDatetimeFilterBuilder();
   set timestamp(GDatetimeFilterBuilder? timestamp) =>
       _$this._timestamp = timestamp;
 
   GStringFilterBuilder? _identityId;
   GStringFilterBuilder get identityId =>
-      _$this._identityId ??= new GStringFilterBuilder();
+      _$this._identityId ??= GStringFilterBuilder();
   set identityId(GStringFilterBuilder? identityId) =>
       _$this._identityId = identityId;
 
   GIdentityFilterBuilder? _identity;
   GIdentityFilterBuilder get identity =>
-      _$this._identity ??= new GIdentityFilterBuilder();
+      _$this._identity ??= GIdentityFilterBuilder();
   set identity(GIdentityFilterBuilder? identity) => _$this._identity = identity;
 
   bool? _identityExists;
@@ -31631,17 +31453,16 @@ class GUdHistoryFilterBuilder
 
   ListBuilder<GUdHistoryFilter>? _and;
   ListBuilder<GUdHistoryFilter> get and =>
-      _$this._and ??= new ListBuilder<GUdHistoryFilter>();
+      _$this._and ??= ListBuilder<GUdHistoryFilter>();
   set and(ListBuilder<GUdHistoryFilter>? and) => _$this._and = and;
 
   ListBuilder<GUdHistoryFilter>? _or;
   ListBuilder<GUdHistoryFilter> get or =>
-      _$this._or ??= new ListBuilder<GUdHistoryFilter>();
+      _$this._or ??= ListBuilder<GUdHistoryFilter>();
   set or(ListBuilder<GUdHistoryFilter>? or) => _$this._or = or;
 
   GUdHistoryFilterBuilder? _not;
-  GUdHistoryFilterBuilder get not =>
-      _$this._not ??= new GUdHistoryFilterBuilder();
+  GUdHistoryFilterBuilder get not => _$this._not ??= GUdHistoryFilterBuilder();
   set not(GUdHistoryFilterBuilder? not) => _$this._not = not;
 
   GUdHistoryFilterBuilder();
@@ -31666,7 +31487,6 @@ class GUdHistoryFilterBuilder
 
   @override
   void replace(GUdHistoryFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GUdHistoryFilter;
   }
 
@@ -31682,17 +31502,18 @@ class GUdHistoryFilterBuilder
     _$GUdHistoryFilter _$result;
     try {
       _$result = _$v ??
-          new _$GUdHistoryFilter._(
-              id: _id?.build(),
-              amount: _amount?.build(),
-              blockNumber: _blockNumber?.build(),
-              timestamp: _timestamp?.build(),
-              identityId: _identityId?.build(),
-              identity: _identity?.build(),
-              identityExists: identityExists,
-              and: _and?.build(),
-              or: _or?.build(),
-              not: _not?.build());
+          _$GUdHistoryFilter._(
+            id: _id?.build(),
+            amount: _amount?.build(),
+            blockNumber: _blockNumber?.build(),
+            timestamp: _timestamp?.build(),
+            identityId: _identityId?.build(),
+            identity: _identity?.build(),
+            identityExists: identityExists,
+            and: _and?.build(),
+            or: _or?.build(),
+            not: _not?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -31716,7 +31537,7 @@ class GUdHistoryFilterBuilder
         _$failedField = 'not';
         _not?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GUdHistoryFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -31746,7 +31567,7 @@ class _$GUdReevalCondition extends GUdReevalCondition {
 
   factory _$GUdReevalCondition(
           [void Function(GUdReevalConditionBuilder)? updates]) =>
-      (new GUdReevalConditionBuilder()..update(updates))._build();
+      (GUdReevalConditionBuilder()..update(updates))._build();
 
   _$GUdReevalCondition._(
       {this.id,
@@ -31758,7 +31579,6 @@ class _$GUdReevalCondition extends GUdReevalCondition {
       this.udIndex,
       this.eventId})
       : super._();
-
   @override
   GUdReevalCondition rebuild(
           void Function(GUdReevalConditionBuilder) updates) =>
@@ -31766,7 +31586,7 @@ class _$GUdReevalCondition extends GUdReevalCondition {
 
   @override
   GUdReevalConditionBuilder toBuilder() =>
-      new GUdReevalConditionBuilder()..replace(this);
+      GUdReevalConditionBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -31825,19 +31645,18 @@ class GUdReevalConditionBuilder
   set blockNumber(int? blockNumber) => _$this._blockNumber = blockNumber;
 
   GDatetimeBuilder? _timestamp;
-  GDatetimeBuilder get timestamp =>
-      _$this._timestamp ??= new GDatetimeBuilder();
+  GDatetimeBuilder get timestamp => _$this._timestamp ??= GDatetimeBuilder();
   set timestamp(GDatetimeBuilder? timestamp) => _$this._timestamp = timestamp;
 
   GBigFloatBuilder? _newUdAmount;
   GBigFloatBuilder get newUdAmount =>
-      _$this._newUdAmount ??= new GBigFloatBuilder();
+      _$this._newUdAmount ??= GBigFloatBuilder();
   set newUdAmount(GBigFloatBuilder? newUdAmount) =>
       _$this._newUdAmount = newUdAmount;
 
   GBigFloatBuilder? _monetaryMass;
   GBigFloatBuilder get monetaryMass =>
-      _$this._monetaryMass ??= new GBigFloatBuilder();
+      _$this._monetaryMass ??= GBigFloatBuilder();
   set monetaryMass(GBigFloatBuilder? monetaryMass) =>
       _$this._monetaryMass = monetaryMass;
 
@@ -31873,7 +31692,6 @@ class GUdReevalConditionBuilder
 
   @override
   void replace(GUdReevalCondition other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GUdReevalCondition;
   }
 
@@ -31889,15 +31707,16 @@ class GUdReevalConditionBuilder
     _$GUdReevalCondition _$result;
     try {
       _$result = _$v ??
-          new _$GUdReevalCondition._(
-              id: id,
-              blockNumber: blockNumber,
-              timestamp: _timestamp?.build(),
-              newUdAmount: _newUdAmount?.build(),
-              monetaryMass: _monetaryMass?.build(),
-              membersCount: membersCount,
-              udIndex: udIndex,
-              eventId: eventId);
+          _$GUdReevalCondition._(
+            id: id,
+            blockNumber: blockNumber,
+            timestamp: _timestamp?.build(),
+            newUdAmount: _newUdAmount?.build(),
+            monetaryMass: _monetaryMass?.build(),
+            membersCount: membersCount,
+            udIndex: udIndex,
+            eventId: eventId,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -31908,7 +31727,7 @@ class GUdReevalConditionBuilder
         _$failedField = 'monetaryMass';
         _monetaryMass?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GUdReevalCondition', _$failedField, e.toString());
       }
       rethrow;
@@ -31947,7 +31766,7 @@ class _$GUdReevalFilter extends GUdReevalFilter {
   final GUdReevalFilter? not;
 
   factory _$GUdReevalFilter([void Function(GUdReevalFilterBuilder)? updates]) =>
-      (new GUdReevalFilterBuilder()..update(updates))._build();
+      (GUdReevalFilterBuilder()..update(updates))._build();
 
   _$GUdReevalFilter._(
       {this.id,
@@ -31964,14 +31783,12 @@ class _$GUdReevalFilter extends GUdReevalFilter {
       this.or,
       this.not})
       : super._();
-
   @override
   GUdReevalFilter rebuild(void Function(GUdReevalFilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GUdReevalFilterBuilder toBuilder() =>
-      new GUdReevalFilterBuilder()..replace(this);
+  GUdReevalFilterBuilder toBuilder() => GUdReevalFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -32037,50 +31854,50 @@ class GUdReevalFilterBuilder
   _$GUdReevalFilter? _$v;
 
   GStringFilterBuilder? _id;
-  GStringFilterBuilder get id => _$this._id ??= new GStringFilterBuilder();
+  GStringFilterBuilder get id => _$this._id ??= GStringFilterBuilder();
   set id(GStringFilterBuilder? id) => _$this._id = id;
 
   GIntFilterBuilder? _blockNumber;
   GIntFilterBuilder get blockNumber =>
-      _$this._blockNumber ??= new GIntFilterBuilder();
+      _$this._blockNumber ??= GIntFilterBuilder();
   set blockNumber(GIntFilterBuilder? blockNumber) =>
       _$this._blockNumber = blockNumber;
 
   GDatetimeFilterBuilder? _timestamp;
   GDatetimeFilterBuilder get timestamp =>
-      _$this._timestamp ??= new GDatetimeFilterBuilder();
+      _$this._timestamp ??= GDatetimeFilterBuilder();
   set timestamp(GDatetimeFilterBuilder? timestamp) =>
       _$this._timestamp = timestamp;
 
   GBigFloatFilterBuilder? _newUdAmount;
   GBigFloatFilterBuilder get newUdAmount =>
-      _$this._newUdAmount ??= new GBigFloatFilterBuilder();
+      _$this._newUdAmount ??= GBigFloatFilterBuilder();
   set newUdAmount(GBigFloatFilterBuilder? newUdAmount) =>
       _$this._newUdAmount = newUdAmount;
 
   GBigFloatFilterBuilder? _monetaryMass;
   GBigFloatFilterBuilder get monetaryMass =>
-      _$this._monetaryMass ??= new GBigFloatFilterBuilder();
+      _$this._monetaryMass ??= GBigFloatFilterBuilder();
   set monetaryMass(GBigFloatFilterBuilder? monetaryMass) =>
       _$this._monetaryMass = monetaryMass;
 
   GIntFilterBuilder? _membersCount;
   GIntFilterBuilder get membersCount =>
-      _$this._membersCount ??= new GIntFilterBuilder();
+      _$this._membersCount ??= GIntFilterBuilder();
   set membersCount(GIntFilterBuilder? membersCount) =>
       _$this._membersCount = membersCount;
 
   GIntFilterBuilder? _udIndex;
-  GIntFilterBuilder get udIndex => _$this._udIndex ??= new GIntFilterBuilder();
+  GIntFilterBuilder get udIndex => _$this._udIndex ??= GIntFilterBuilder();
   set udIndex(GIntFilterBuilder? udIndex) => _$this._udIndex = udIndex;
 
   GStringFilterBuilder? _eventId;
   GStringFilterBuilder get eventId =>
-      _$this._eventId ??= new GStringFilterBuilder();
+      _$this._eventId ??= GStringFilterBuilder();
   set eventId(GStringFilterBuilder? eventId) => _$this._eventId = eventId;
 
   GEventFilterBuilder? _event;
-  GEventFilterBuilder get event => _$this._event ??= new GEventFilterBuilder();
+  GEventFilterBuilder get event => _$this._event ??= GEventFilterBuilder();
   set event(GEventFilterBuilder? event) => _$this._event = event;
 
   bool? _eventExists;
@@ -32089,17 +31906,16 @@ class GUdReevalFilterBuilder
 
   ListBuilder<GUdReevalFilter>? _and;
   ListBuilder<GUdReevalFilter> get and =>
-      _$this._and ??= new ListBuilder<GUdReevalFilter>();
+      _$this._and ??= ListBuilder<GUdReevalFilter>();
   set and(ListBuilder<GUdReevalFilter>? and) => _$this._and = and;
 
   ListBuilder<GUdReevalFilter>? _or;
   ListBuilder<GUdReevalFilter> get or =>
-      _$this._or ??= new ListBuilder<GUdReevalFilter>();
+      _$this._or ??= ListBuilder<GUdReevalFilter>();
   set or(ListBuilder<GUdReevalFilter>? or) => _$this._or = or;
 
   GUdReevalFilterBuilder? _not;
-  GUdReevalFilterBuilder get not =>
-      _$this._not ??= new GUdReevalFilterBuilder();
+  GUdReevalFilterBuilder get not => _$this._not ??= GUdReevalFilterBuilder();
   set not(GUdReevalFilterBuilder? not) => _$this._not = not;
 
   GUdReevalFilterBuilder();
@@ -32127,7 +31943,6 @@ class GUdReevalFilterBuilder
 
   @override
   void replace(GUdReevalFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GUdReevalFilter;
   }
 
@@ -32143,20 +31958,21 @@ class GUdReevalFilterBuilder
     _$GUdReevalFilter _$result;
     try {
       _$result = _$v ??
-          new _$GUdReevalFilter._(
-              id: _id?.build(),
-              blockNumber: _blockNumber?.build(),
-              timestamp: _timestamp?.build(),
-              newUdAmount: _newUdAmount?.build(),
-              monetaryMass: _monetaryMass?.build(),
-              membersCount: _membersCount?.build(),
-              udIndex: _udIndex?.build(),
-              eventId: _eventId?.build(),
-              event: _event?.build(),
-              eventExists: eventExists,
-              and: _and?.build(),
-              or: _or?.build(),
-              not: _not?.build());
+          _$GUdReevalFilter._(
+            id: _id?.build(),
+            blockNumber: _blockNumber?.build(),
+            timestamp: _timestamp?.build(),
+            newUdAmount: _newUdAmount?.build(),
+            monetaryMass: _monetaryMass?.build(),
+            membersCount: _membersCount?.build(),
+            udIndex: _udIndex?.build(),
+            eventId: _eventId?.build(),
+            event: _event?.build(),
+            eventExists: eventExists,
+            and: _and?.build(),
+            or: _or?.build(),
+            not: _not?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -32186,7 +32002,7 @@ class GUdReevalFilterBuilder
         _$failedField = 'not';
         _not?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GUdReevalFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -32216,7 +32032,7 @@ class _$GUniversalDividendCondition extends GUniversalDividendCondition {
 
   factory _$GUniversalDividendCondition(
           [void Function(GUniversalDividendConditionBuilder)? updates]) =>
-      (new GUniversalDividendConditionBuilder()..update(updates))._build();
+      (GUniversalDividendConditionBuilder()..update(updates))._build();
 
   _$GUniversalDividendCondition._(
       {this.id,
@@ -32228,7 +32044,6 @@ class _$GUniversalDividendCondition extends GUniversalDividendCondition {
       this.index,
       this.eventId})
       : super._();
-
   @override
   GUniversalDividendCondition rebuild(
           void Function(GUniversalDividendConditionBuilder) updates) =>
@@ -32236,7 +32051,7 @@ class _$GUniversalDividendCondition extends GUniversalDividendCondition {
 
   @override
   GUniversalDividendConditionBuilder toBuilder() =>
-      new GUniversalDividendConditionBuilder()..replace(this);
+      GUniversalDividendConditionBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -32297,17 +32112,16 @@ class GUniversalDividendConditionBuilder
   set blockNumber(int? blockNumber) => _$this._blockNumber = blockNumber;
 
   GDatetimeBuilder? _timestamp;
-  GDatetimeBuilder get timestamp =>
-      _$this._timestamp ??= new GDatetimeBuilder();
+  GDatetimeBuilder get timestamp => _$this._timestamp ??= GDatetimeBuilder();
   set timestamp(GDatetimeBuilder? timestamp) => _$this._timestamp = timestamp;
 
   GBigFloatBuilder? _amount;
-  GBigFloatBuilder get amount => _$this._amount ??= new GBigFloatBuilder();
+  GBigFloatBuilder get amount => _$this._amount ??= GBigFloatBuilder();
   set amount(GBigFloatBuilder? amount) => _$this._amount = amount;
 
   GBigFloatBuilder? _monetaryMass;
   GBigFloatBuilder get monetaryMass =>
-      _$this._monetaryMass ??= new GBigFloatBuilder();
+      _$this._monetaryMass ??= GBigFloatBuilder();
   set monetaryMass(GBigFloatBuilder? monetaryMass) =>
       _$this._monetaryMass = monetaryMass;
 
@@ -32343,7 +32157,6 @@ class GUniversalDividendConditionBuilder
 
   @override
   void replace(GUniversalDividendCondition other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GUniversalDividendCondition;
   }
 
@@ -32359,15 +32172,16 @@ class GUniversalDividendConditionBuilder
     _$GUniversalDividendCondition _$result;
     try {
       _$result = _$v ??
-          new _$GUniversalDividendCondition._(
-              id: id,
-              blockNumber: blockNumber,
-              timestamp: _timestamp?.build(),
-              amount: _amount?.build(),
-              monetaryMass: _monetaryMass?.build(),
-              membersCount: membersCount,
-              index: index,
-              eventId: eventId);
+          _$GUniversalDividendCondition._(
+            id: id,
+            blockNumber: blockNumber,
+            timestamp: _timestamp?.build(),
+            amount: _amount?.build(),
+            monetaryMass: _monetaryMass?.build(),
+            membersCount: membersCount,
+            index: index,
+            eventId: eventId,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -32378,7 +32192,7 @@ class GUniversalDividendConditionBuilder
         _$failedField = 'monetaryMass';
         _monetaryMass?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GUniversalDividendCondition', _$failedField, e.toString());
       }
       rethrow;
@@ -32418,7 +32232,7 @@ class _$GUniversalDividendFilter extends GUniversalDividendFilter {
 
   factory _$GUniversalDividendFilter(
           [void Function(GUniversalDividendFilterBuilder)? updates]) =>
-      (new GUniversalDividendFilterBuilder()..update(updates))._build();
+      (GUniversalDividendFilterBuilder()..update(updates))._build();
 
   _$GUniversalDividendFilter._(
       {this.id,
@@ -32435,7 +32249,6 @@ class _$GUniversalDividendFilter extends GUniversalDividendFilter {
       this.or,
       this.not})
       : super._();
-
   @override
   GUniversalDividendFilter rebuild(
           void Function(GUniversalDividendFilterBuilder) updates) =>
@@ -32443,7 +32256,7 @@ class _$GUniversalDividendFilter extends GUniversalDividendFilter {
 
   @override
   GUniversalDividendFilterBuilder toBuilder() =>
-      new GUniversalDividendFilterBuilder()..replace(this);
+      GUniversalDividendFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -32510,49 +32323,49 @@ class GUniversalDividendFilterBuilder
   _$GUniversalDividendFilter? _$v;
 
   GStringFilterBuilder? _id;
-  GStringFilterBuilder get id => _$this._id ??= new GStringFilterBuilder();
+  GStringFilterBuilder get id => _$this._id ??= GStringFilterBuilder();
   set id(GStringFilterBuilder? id) => _$this._id = id;
 
   GIntFilterBuilder? _blockNumber;
   GIntFilterBuilder get blockNumber =>
-      _$this._blockNumber ??= new GIntFilterBuilder();
+      _$this._blockNumber ??= GIntFilterBuilder();
   set blockNumber(GIntFilterBuilder? blockNumber) =>
       _$this._blockNumber = blockNumber;
 
   GDatetimeFilterBuilder? _timestamp;
   GDatetimeFilterBuilder get timestamp =>
-      _$this._timestamp ??= new GDatetimeFilterBuilder();
+      _$this._timestamp ??= GDatetimeFilterBuilder();
   set timestamp(GDatetimeFilterBuilder? timestamp) =>
       _$this._timestamp = timestamp;
 
   GBigFloatFilterBuilder? _amount;
   GBigFloatFilterBuilder get amount =>
-      _$this._amount ??= new GBigFloatFilterBuilder();
+      _$this._amount ??= GBigFloatFilterBuilder();
   set amount(GBigFloatFilterBuilder? amount) => _$this._amount = amount;
 
   GBigFloatFilterBuilder? _monetaryMass;
   GBigFloatFilterBuilder get monetaryMass =>
-      _$this._monetaryMass ??= new GBigFloatFilterBuilder();
+      _$this._monetaryMass ??= GBigFloatFilterBuilder();
   set monetaryMass(GBigFloatFilterBuilder? monetaryMass) =>
       _$this._monetaryMass = monetaryMass;
 
   GIntFilterBuilder? _membersCount;
   GIntFilterBuilder get membersCount =>
-      _$this._membersCount ??= new GIntFilterBuilder();
+      _$this._membersCount ??= GIntFilterBuilder();
   set membersCount(GIntFilterBuilder? membersCount) =>
       _$this._membersCount = membersCount;
 
   GIntFilterBuilder? _index;
-  GIntFilterBuilder get index => _$this._index ??= new GIntFilterBuilder();
+  GIntFilterBuilder get index => _$this._index ??= GIntFilterBuilder();
   set index(GIntFilterBuilder? index) => _$this._index = index;
 
   GStringFilterBuilder? _eventId;
   GStringFilterBuilder get eventId =>
-      _$this._eventId ??= new GStringFilterBuilder();
+      _$this._eventId ??= GStringFilterBuilder();
   set eventId(GStringFilterBuilder? eventId) => _$this._eventId = eventId;
 
   GEventFilterBuilder? _event;
-  GEventFilterBuilder get event => _$this._event ??= new GEventFilterBuilder();
+  GEventFilterBuilder get event => _$this._event ??= GEventFilterBuilder();
   set event(GEventFilterBuilder? event) => _$this._event = event;
 
   bool? _eventExists;
@@ -32561,17 +32374,17 @@ class GUniversalDividendFilterBuilder
 
   ListBuilder<GUniversalDividendFilter>? _and;
   ListBuilder<GUniversalDividendFilter> get and =>
-      _$this._and ??= new ListBuilder<GUniversalDividendFilter>();
+      _$this._and ??= ListBuilder<GUniversalDividendFilter>();
   set and(ListBuilder<GUniversalDividendFilter>? and) => _$this._and = and;
 
   ListBuilder<GUniversalDividendFilter>? _or;
   ListBuilder<GUniversalDividendFilter> get or =>
-      _$this._or ??= new ListBuilder<GUniversalDividendFilter>();
+      _$this._or ??= ListBuilder<GUniversalDividendFilter>();
   set or(ListBuilder<GUniversalDividendFilter>? or) => _$this._or = or;
 
   GUniversalDividendFilterBuilder? _not;
   GUniversalDividendFilterBuilder get not =>
-      _$this._not ??= new GUniversalDividendFilterBuilder();
+      _$this._not ??= GUniversalDividendFilterBuilder();
   set not(GUniversalDividendFilterBuilder? not) => _$this._not = not;
 
   GUniversalDividendFilterBuilder();
@@ -32599,7 +32412,6 @@ class GUniversalDividendFilterBuilder
 
   @override
   void replace(GUniversalDividendFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GUniversalDividendFilter;
   }
 
@@ -32615,20 +32427,21 @@ class GUniversalDividendFilterBuilder
     _$GUniversalDividendFilter _$result;
     try {
       _$result = _$v ??
-          new _$GUniversalDividendFilter._(
-              id: _id?.build(),
-              blockNumber: _blockNumber?.build(),
-              timestamp: _timestamp?.build(),
-              amount: _amount?.build(),
-              monetaryMass: _monetaryMass?.build(),
-              membersCount: _membersCount?.build(),
-              index: _index?.build(),
-              eventId: _eventId?.build(),
-              event: _event?.build(),
-              eventExists: eventExists,
-              and: _and?.build(),
-              or: _or?.build(),
-              not: _not?.build());
+          _$GUniversalDividendFilter._(
+            id: _id?.build(),
+            blockNumber: _blockNumber?.build(),
+            timestamp: _timestamp?.build(),
+            amount: _amount?.build(),
+            monetaryMass: _monetaryMass?.build(),
+            membersCount: _membersCount?.build(),
+            index: _index?.build(),
+            eventId: _eventId?.build(),
+            event: _event?.build(),
+            eventExists: eventExists,
+            and: _and?.build(),
+            or: _or?.build(),
+            not: _not?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -32658,7 +32471,7 @@ class GUniversalDividendFilterBuilder
         _$failedField = 'not';
         _not?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GUniversalDividendFilter', _$failedField, e.toString());
       }
       rethrow;
@@ -32676,10 +32489,9 @@ class _$GValidatorCondition extends GValidatorCondition {
 
   factory _$GValidatorCondition(
           [void Function(GValidatorConditionBuilder)? updates]) =>
-      (new GValidatorConditionBuilder()..update(updates))._build();
+      (GValidatorConditionBuilder()..update(updates))._build();
 
   _$GValidatorCondition._({this.id, this.index}) : super._();
-
   @override
   GValidatorCondition rebuild(
           void Function(GValidatorConditionBuilder) updates) =>
@@ -32687,7 +32499,7 @@ class _$GValidatorCondition extends GValidatorCondition {
 
   @override
   GValidatorConditionBuilder toBuilder() =>
-      new GValidatorConditionBuilder()..replace(this);
+      GValidatorConditionBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -32741,7 +32553,6 @@ class GValidatorConditionBuilder
 
   @override
   void replace(GValidatorCondition other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GValidatorCondition;
   }
 
@@ -32754,7 +32565,11 @@ class GValidatorConditionBuilder
   GValidatorCondition build() => _build();
 
   _$GValidatorCondition _build() {
-    final _$result = _$v ?? new _$GValidatorCondition._(id: id, index: index);
+    final _$result = _$v ??
+        _$GValidatorCondition._(
+          id: id,
+          index: index,
+        );
     replace(_$result);
     return _$result;
   }
@@ -32774,18 +32589,17 @@ class _$GValidatorFilter extends GValidatorFilter {
 
   factory _$GValidatorFilter(
           [void Function(GValidatorFilterBuilder)? updates]) =>
-      (new GValidatorFilterBuilder()..update(updates))._build();
+      (GValidatorFilterBuilder()..update(updates))._build();
 
   _$GValidatorFilter._({this.id, this.index, this.and, this.or, this.not})
       : super._();
-
   @override
   GValidatorFilter rebuild(void Function(GValidatorFilterBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
   GValidatorFilterBuilder toBuilder() =>
-      new GValidatorFilterBuilder()..replace(this);
+      GValidatorFilterBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -32827,26 +32641,25 @@ class GValidatorFilterBuilder
   _$GValidatorFilter? _$v;
 
   GStringFilterBuilder? _id;
-  GStringFilterBuilder get id => _$this._id ??= new GStringFilterBuilder();
+  GStringFilterBuilder get id => _$this._id ??= GStringFilterBuilder();
   set id(GStringFilterBuilder? id) => _$this._id = id;
 
   GIntFilterBuilder? _index;
-  GIntFilterBuilder get index => _$this._index ??= new GIntFilterBuilder();
+  GIntFilterBuilder get index => _$this._index ??= GIntFilterBuilder();
   set index(GIntFilterBuilder? index) => _$this._index = index;
 
   ListBuilder<GValidatorFilter>? _and;
   ListBuilder<GValidatorFilter> get and =>
-      _$this._and ??= new ListBuilder<GValidatorFilter>();
+      _$this._and ??= ListBuilder<GValidatorFilter>();
   set and(ListBuilder<GValidatorFilter>? and) => _$this._and = and;
 
   ListBuilder<GValidatorFilter>? _or;
   ListBuilder<GValidatorFilter> get or =>
-      _$this._or ??= new ListBuilder<GValidatorFilter>();
+      _$this._or ??= ListBuilder<GValidatorFilter>();
   set or(ListBuilder<GValidatorFilter>? or) => _$this._or = or;
 
   GValidatorFilterBuilder? _not;
-  GValidatorFilterBuilder get not =>
-      _$this._not ??= new GValidatorFilterBuilder();
+  GValidatorFilterBuilder get not => _$this._not ??= GValidatorFilterBuilder();
   set not(GValidatorFilterBuilder? not) => _$this._not = not;
 
   GValidatorFilterBuilder();
@@ -32866,7 +32679,6 @@ class GValidatorFilterBuilder
 
   @override
   void replace(GValidatorFilter other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GValidatorFilter;
   }
 
@@ -32882,12 +32694,13 @@ class GValidatorFilterBuilder
     _$GValidatorFilter _$result;
     try {
       _$result = _$v ??
-          new _$GValidatorFilter._(
-              id: _id?.build(),
-              index: _index?.build(),
-              and: _and?.build(),
-              or: _or?.build(),
-              not: _not?.build());
+          _$GValidatorFilter._(
+            id: _id?.build(),
+            index: _index?.build(),
+            and: _and?.build(),
+            or: _or?.build(),
+            not: _not?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -32902,7 +32715,7 @@ class GValidatorFilterBuilder
         _$failedField = 'not';
         _not?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GValidatorFilter', _$failedField, e.toString());
       }
       rethrow;

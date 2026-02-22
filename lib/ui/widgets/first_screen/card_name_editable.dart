@@ -101,7 +101,7 @@ class _CardNameEditableState extends State<CardNameEditable> {
             _controller.text = cleanName;
             currentText = cleanName;
           });
-          SharedPreferencesHelper().setName(name: cleanName, notify: false);
+          SharedPreferencesHelper().setName(name: cleanName, notify: true);
         } else {
           loggerDev(
               'CardNameEditable: remote name empty for ${widget.account.pubKey}, hadLocal=${widget.cardName.isNotEmpty}');

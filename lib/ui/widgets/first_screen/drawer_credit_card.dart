@@ -60,10 +60,17 @@ class DrawerWalletCard extends StatelessWidget {
   Card _buildCard(double cardRadius, BuildContext context,
       double cardInternalElPadding, bool bigDevice) {
     final Contact c = card.contact;
+    final bool isHighlighted = (SharedPreferencesHelper().highlightedGroupId ==
+            (card.derivationParentId ?? card.pubKey)) &&
+        SharedPreferencesHelper().isHighlightVisible;
+
     return Card(
         elevation: 8.0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(cardRadius),
+          side: isHighlighted
+              ? const BorderSide(color: Colors.white, width: 2.0)
+              : BorderSide.none,
         ),
         child: AspectRatio(
             aspectRatio: cardAspectRatio,
@@ -73,8 +80,8 @@ class DrawerWalletCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(cardRadius),
                   boxShadow: <BoxShadow>[
                     BoxShadow(
-                      color: Colors.grey[400]!,
-                      blurRadius: 3.0,
+                      color: isHighlighted ? Colors.white54 : Colors.grey[400]!,
+                      blurRadius: isHighlighted ? 12.0 : 3.0,
                       spreadRadius: 1.0,
                     )
                   ],
@@ -90,64 +97,122 @@ class DrawerWalletCard extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: Stack(children: <Widget>[
-                    if (SharedPreferencesHelper().hasMultipleWallets)
+                    if (settingsVisible)
                       Positioned(
-                        top: 90,
-                        right: 0,
-                        child: Visibility(
-                          visible: settingsVisible,
-                          child: FloatingActionButton(
-                            backgroundColor: Colors.white12,
-                            elevation: 1,
-                            onPressed: () {
-                              showDialog<bool>(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: Text(tr('please_confirm_delete')),
-                                      content: Text(tr(SharedPreferencesHelper()
-                                              .isPasswordLessWallet()
-                                          ? 'please_confirm_delete_desc_g1nkgo'
-                                          : 'please_confirm_delete_desc')),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.of(context).pop(false),
-                                          child: Text(tr('cancel')),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            SharedPreferencesHelper()
-                                                .removeCurrentWallet();
-                                            SharedPreferencesHelper()
-                                                .selectCurrentWalletIndex(0);
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(tr('accept')),
-                                        ),
-                                      ],
-                                    );
-                                  });
-                            },
-                            child:
-                                const Icon(Icons.delete, color: Colors.white),
+                        bottom: 4,
+                        right: 4,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (card.type.isV2 &&
+                                card.derivationParentId == null)
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: FloatingActionButton(
+                                  mini: true,
+                                  backgroundColor: Colors.white10,
+                                  elevation: 1,
+                                  onPressed: () {
+                                    SharedPreferencesHelper()
+                                        .highlightGroup(card.pubKey);
+                                    _deriveAccount(context);
+                                  },
+                                  child: const Icon(Icons.add_link,
+                                      color: Colors.white),
+                                ),
+                              ),
+                            if (SharedPreferencesHelper().hasMultipleWallets)
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: FloatingActionButton(
+                                  mini: true,
+                                  backgroundColor: Colors.white12,
+                                  elevation: 1,
+                                  onPressed: () {
+                                    showDialog<bool>(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text(
+                                                tr('please_confirm_delete')),
+                                            content: Text(tr(SharedPreferencesHelper()
+                                                    .isPasswordLessWallet()
+                                                ? 'please_confirm_delete_desc_g1nkgo'
+                                                : 'please_confirm_delete_desc')),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () =>
+                                                    Navigator.of(context)
+                                                        .pop(false),
+                                                child: Text(tr('cancel')),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  SharedPreferencesHelper()
+                                                      .removeCurrentWallet();
+                                                  SharedPreferencesHelper()
+                                                      .selectCurrentWalletIndex(
+                                                          0);
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text(tr('accept')),
+                                              ),
+                                            ],
+                                          );
+                                        });
+                                  },
+                                  child: const Icon(Icons.delete,
+                                      color: Colors.white),
+                                ),
+                              ),
+                            FloatingActionButton(
+                              mini: true,
+                              backgroundColor: Colors.white10,
+                              elevation: 1,
+                              onPressed: () => _showThemeSelector(context),
+                              child: const Icon(Icons.settings,
+                                  color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    if (card.derivationParentId != null)
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        child: GestureDetector(
+                          onTap: () {
+                            SharedPreferencesHelper()
+                                .highlightGroup(card.derivationParentId);
+                            final Iterable<StoredAccount> parents =
+                                SharedPreferencesHelper().accounts.where(
+                                    (StoredAccount a) =>
+                                        a.pubKey == card.derivationParentId);
+                            final StoredAccount? parent =
+                                parents.isNotEmpty ? parents.first : null;
+                            final String parentName = parent != null
+                                ? (parent.type.isV2
+                                    ? simplifyPubKey(
+                                        extractPublicKey(parent.address))
+                                    : simplifyPubKey(
+                                        extractPublicKey(parent.pubKey)))
+                                : simplifyPubKey(
+                                    extractPublicKey(card.derivationParentId!));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(tr('linked_to',
+                                    namedArgs: {'name': parentName})),
+                                duration: const Duration(seconds: 2),
+                              ),
+                            );
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Icon(Icons.link,
+                                color: Colors.white70, size: 24),
                           ),
                         ),
                       ),
-                    Positioned(
-                      top: 25,
-                      right: 0,
-                      child: Visibility(
-                        visible: settingsVisible,
-                        child: FloatingActionButton(
-                          backgroundColor: Colors.white10,
-                          elevation: 1,
-                          onPressed: () => _showThemeSelector(context),
-                          child:
-                              const Icon(Icons.settings, color: Colors.white),
-                        ),
-                      ),
-                    ),
                     Padding(
                         padding: const EdgeInsets.fromLTRB(120, 10, 0, 0),
                         child: Opacity(
@@ -205,5 +270,44 @@ class DrawerWalletCard extends StatelessWidget {
     Navigator.pop(context);
     // It's this causing a slowdown when switching wallets?
     await context.read<MultiWalletTransactionCubit>().fetchTransactions();
+  }
+
+  Future<void> _deriveAccount(BuildContext context) async {
+    final bool? confirm = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(tr('link_account_title')),
+        content: Text(tr('link_account_desc')),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(tr('cancel')),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(tr('accept')),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      try {
+        await SharedPreferencesHelper().deriveNextAccount(card);
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(tr('link_account_success'))),
+          );
+        }
+      } catch (e) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content: Text(tr('link_account_error',
+                    namedArgs: {'error': e.toString()}))),
+          );
+        }
+      }
+    }
   }
 }

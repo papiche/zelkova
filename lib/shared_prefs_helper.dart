@@ -318,7 +318,7 @@ class SharedPreferencesHelper with ChangeNotifier {
 
     int count = 0;
     _highlightTimer =
-        Timer.periodic(const Duration(milliseconds: 500), (timer) {
+        Timer.periodic(const Duration(milliseconds: 500), (Timer timer) {
       isHighlightVisible = !isHighlightVisible;
       notifyListeners();
       count++;

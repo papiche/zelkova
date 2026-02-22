@@ -16,13 +16,13 @@ import 'g1/api.dart';
 import 'g1/g1_helper.dart';
 import 'g1/g1_v2_helper.dart';
 import 'secure_crypto_helper.dart';
+import 'services/derivation_scan_service.dart';
 import 'shared_prefs_helper.dart';
 import 'storage_keys.dart';
 import 'ui/contacts_cache.dart';
 import 'ui/logger.dart';
 import 'ui/secure_unlock_widget.dart';
 import 'wallet_already_exists_exception.dart';
-import 'services/derivation_scan_service.dart';
 
 class SharedPreferencesHelperV2
     with ChangeNotifier

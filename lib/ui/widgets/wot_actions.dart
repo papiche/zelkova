@@ -20,9 +20,6 @@ import 'wot_menu_action.dart';
 List<WotMenuAction> getWotMenuActions(
     BuildContext context, bool isMe, ContactWotInfo wotInfo) {
   final List<WotMenuAction> actions = <WotMenuAction>[];
-  if (isMe) {
-    _transferAllAction(context, wotInfo, actions);
-  }
   final IdentityStatus? status = wotInfo.you.status;
   /* if (inDevelopment) {
     actions.add(
@@ -109,6 +106,9 @@ List<WotMenuAction> getWotMenuActions(
                   SignAndSendResult(progressStream: Stream<String>.value('')));
             }));
       }
+  }
+  if (isMe) {
+    _transferAllAction(context, wotInfo, actions);
   }
 
   logger.info(

@@ -1191,7 +1191,7 @@ void hashAndSignV2(Map<String, dynamic> data, KeyPair wallet) {
 // Add a new profile: user/profile (POST)
 // Update an existing profile: user/profile/_update (POST)
 // Delete an existing profile: user/profile/_delete (DELETE?)
-Future<bool> createOrUpdateProfileV2(String name) async {
+Future<bool> createOrUpdateProfileV2cPlus(String name) async {
   final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
   // Cesium Plus expects V1 pubkey format, so convert from V2 address
   final String pubKey = v1pubkeyFromAddress(wallet.address);
@@ -1285,7 +1285,7 @@ Future<bool> deleteProfileV1() async {
   return delResponse.statusCode == 200;
 }
 
-Future<bool> deleteProfileV2() async {
+Future<bool> deleteProfileV2cPlus() async {
   final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
   // Cesium Plus expects V1 pubkey format, so convert from V2 address
   final String pubKey = v1pubkeyFromAddress(wallet.address);

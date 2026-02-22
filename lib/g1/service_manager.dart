@@ -5,6 +5,7 @@ import '../data/models/contact.dart';
 import '../data/models/node.dart';
 import '../data/models/transaction_state.dart';
 import 'api.dart';
+import 'duniter_datapod_helper.dart' as datapod_helper;
 import 'duniter_endpoint_helper.dart';
 import 'duniter_indexer_helper.dart' as duniter_indexer;
 import 'pay_result.dart';
@@ -105,12 +106,12 @@ class DuniterServiceV1 implements DuniterService {
 
   @override
   Future<bool> createOrUpdateProfile(String name) {
-    return createOrUpdateProfileV2(name);
+    return createOrUpdateProfileV1(name);
   }
 
   @override
   Future<bool> deleteProfile() {
-    return deleteProfileV2();
+    return deleteProfileV1();
   }
 
   @override
@@ -180,12 +181,12 @@ class DuniterServiceV2 implements DuniterService {
 
   @override
   Future<bool> createOrUpdateProfile(String name) {
-    return createOrUpdateProfileV2(name);
+    return createOrUpdateProfileV2cPlus(name);
   }
 
   @override
   Future<bool> deleteProfile() {
-    return deleteProfileV2();
+    return deleteProfileV2cPlus();
   }
 
   @override

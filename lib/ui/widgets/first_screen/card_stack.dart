@@ -20,13 +20,20 @@ class _CardStackState extends State<CardStack> {
   Widget build(BuildContext context) {
     return Consumer<SharedPreferencesHelper>(builder: (BuildContext context,
         SharedPreferencesHelper prefsHelper, Widget? child) {
-      final List<StoredAccount> cards =
-          List<StoredAccount>.from(SharedPreferencesHelper().accounts);
-      final int currentIndex =
-          SharedPreferencesHelper().getCurrentWalletIndex();
-      // logger('Current wallet index is $currentIndex of ${cards.length}');
-      final StoredAccount currentItem = cards.removeAt(currentIndex);
-      cards.add(currentItem);
+      final List<StoredAccount> accounts = SharedPreferencesHelper().accounts;
+      final List<StoredAccount> cards = List<StoredAccount>.from(accounts);
+
+      // Sort cards: least recently used at the top, most recently used at the bottom.
+      cards.sort((StoredAccount a, StoredAccount b) {
+        final int aUsed = a.lastUsed ?? 0;
+        final int bUsed = b.lastUsed ?? 0;
+        if (aUsed != bUsed) {
+          return aUsed.compareTo(bUsed);
+        }
+        // Fallback to import order (original list order)
+        return accounts.indexOf(a).compareTo(accounts.indexOf(b));
+      });
+
       final int walletsSize = cards.length;
       return SizedBox(
           height: 200 + ((cards.length - 1) * 45),
@@ -37,12 +44,16 @@ class _CardStackState extends State<CardStack> {
               ...List<Widget>.generate(
                 walletsSize,
                 (int index) {
-                  return Positioned(
+                  final StoredAccount card = cards[index];
+                  return AnimatedPositioned(
+                    key: ValueKey<String>(card.pubKey),
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
                     top: 45.0 * index,
                     child: SizedBox(
                         height: 200,
                         child: DrawerWalletCard(
-                            card: cards[index],
+                            card: card,
                             cardIndex: index,
                             settingsVisible: index == walletsSize - 1)),
                   );

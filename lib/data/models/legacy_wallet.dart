@@ -13,7 +13,8 @@ class LegacyWallet implements IsJsonSerializable<LegacyWallet> {
       {required this.seed,
       required this.pubKey,
       required this.name,
-      required this.theme});
+      required this.theme,
+      this.lastUsed});
 
   factory LegacyWallet.fromJson(Map<String, dynamic> json) =>
       _$LegacyWalletFromJson(json);
@@ -22,6 +23,7 @@ class LegacyWallet implements IsJsonSerializable<LegacyWallet> {
   final String seed;
   final WalletTheme theme;
   final String name;
+  final int? lastUsed;
 
   @override
   Map<String, dynamic> toJson() => _$LegacyWalletToJson(this);

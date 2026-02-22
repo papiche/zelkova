@@ -265,9 +265,15 @@ class DrawerWalletCard extends StatelessWidget {
 
   Future<void> onCardTap(BuildContext context) async {
     logger("Card ${humanizeContact('', card.contact)} was tapped!");
-    SharedPreferencesHelper().selectCurrentWallet(card.pubKey);
-    context.read<BottomNavCubit>().updateIndex(0);
-    Navigator.pop(context);
+    await SharedPreferencesHelper().selectCurrentWallet(card.pubKey);
+    if (context.mounted) {
+      context.read<BottomNavCubit>().updateIndex(0);
+    }
+    // Add a small delay to let the user see the card reordering
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    if (context.mounted) {
+      Navigator.pop(context);
+    }
     // It's this causing a slowdown when switching wallets?
     await context.read<MultiWalletTransactionCubit>().fetchTransactions();
   }

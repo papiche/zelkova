@@ -246,6 +246,10 @@ class SharedPreferencesHelperV2
   @override
   Future<void> selectCurrentWalletIndex(int index) async {
     if (index < accounts.length) {
+      final StoredAccount acc = accounts[index];
+      accounts[index] =
+          acc.copyWith(lastUsed: DateTime.now().millisecondsSinceEpoch);
+      await _saveAccounts(false);
       await _setCurrentWalletIndex(index);
     } else {
       throw Exception('Invalid wallet index: $index');
@@ -258,7 +262,13 @@ class SharedPreferencesHelperV2
     final int i =
         accounts.indexWhere((StoredAccount a) => a.pubKey == extractedPubkey);
     logger('Selecting wallet with pubKey: $extractedPubkey at index $i');
-    await _setCurrentWalletIndex(i);
+    if (i >= 0) {
+      final StoredAccount acc = accounts[i];
+      accounts[i] =
+          acc.copyWith(lastUsed: DateTime.now().millisecondsSinceEpoch);
+      await _saveAccounts(false);
+      await _setCurrentWalletIndex(i);
+    }
   }
 
   @override
@@ -573,7 +583,9 @@ class SharedPreferencesHelperV2
       logger('ERROR: Attempted to add duplicate account: ${acc.pubKey}');
       throw WalletAlreadyExistsException(acc.pubKey);
     }
-    accounts.add(acc);
+    accounts.add(acc.lastUsed == null
+        ? acc.copyWith(lastUsed: DateTime.now().millisecondsSinceEpoch)
+        : acc);
     await _saveAccounts();
     await _setCurrentWalletIndex(accounts.length - 1);
     notifyListeners();

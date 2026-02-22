@@ -45,7 +45,8 @@ class StoredAccount {
       required this.type,
       this.seed,
       this.derivationPath,
-      this.derivationParentId});
+      this.derivationParentId,
+      this.lastUsed});
 
   factory StoredAccount.fromJson(Map<String, dynamic> json) =>
       _$StoredAccountFromJson(json);
@@ -60,6 +61,7 @@ class StoredAccount {
       type: e.seed.isEmpty
           ? AccountType.v1PasswordProtected
           : AccountType.v1PasswordLess,
+      lastUsed: e.lastUsed,
     );
   }
 
@@ -82,6 +84,8 @@ class StoredAccount {
 
   /// If the account was derived from another, this field contains the ID of the root account
   final String? derivationParentId;
+
+  final int? lastUsed;
 
   Map<String, dynamic> toJson() => _$StoredAccountToJson(this);
 

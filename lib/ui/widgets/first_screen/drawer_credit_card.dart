@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../data/models/app_cubit.dart';
 import '../../../data/models/bottom_nav_cubit.dart';
 import '../../../data/models/contact.dart';
 import '../../../data/models/multi_wallet_transaction_cubit.dart';
@@ -103,7 +104,7 @@ class DrawerWalletCard extends StatelessWidget {
                         right: 4,
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
-                          children: [
+                          children: <Widget>[
                             if (card.type.isV2 &&
                                 card.derivationParentId == null)
                               Padding(
@@ -201,7 +202,9 @@ class DrawerWalletCard extends StatelessWidget {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(tr('linked_to',
-                                    namedArgs: {'name': parentName})),
+                                    namedArgs: <String, String>{
+                                      'name': parentName
+                                    })),
                                 duration: const Duration(seconds: 2),
                               ),
                             );
@@ -268,6 +271,8 @@ class DrawerWalletCard extends StatelessWidget {
     await SharedPreferencesHelper().selectCurrentWallet(card.pubKey);
     if (context.mounted) {
       context.read<BottomNavCubit>().updateIndex(0);
+      // Pre-fetch WoT info for the selected wallet
+      context.read<AppCubit>().updateWotInfo(card.contact);
     }
     // Add a small delay to let the user see the card reordering
     await Future<void>.delayed(const Duration(milliseconds: 500));
@@ -275,7 +280,9 @@ class DrawerWalletCard extends StatelessWidget {
       Navigator.pop(context);
     }
     // It's this causing a slowdown when switching wallets?
-    await context.read<MultiWalletTransactionCubit>().fetchTransactions();
+    if (context.mounted) {
+      await context.read<MultiWalletTransactionCubit>().fetchTransactions();
+    }
   }
 
   Future<void> _deriveAccount(BuildContext context) async {
@@ -297,7 +304,7 @@ class DrawerWalletCard extends StatelessWidget {
       ),
     );
 
-    if (confirm == true) {
+    if (confirm ?? false) {
       try {
         await SharedPreferencesHelper().deriveNextAccount(card);
         if (context.mounted) {
@@ -310,7 +317,7 @@ class DrawerWalletCard extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
                 content: Text(tr('link_account_error',
-                    namedArgs: {'error': e.toString()}))),
+                    namedArgs: <String, String>{'error': e.toString()}))),
           );
         }
       }

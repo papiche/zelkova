@@ -7,29 +7,29 @@ import '../g1/g1_v2_helper.dart';
 import '../ui/logger.dart';
 
 class _KeypairGenerationArgs {
-  final String mnemonic;
-  final List<int> derivations;
-  final int ss58Prefix;
-  final KeyPairType keyPairType;
-
   const _KeypairGenerationArgs({
     required this.mnemonic,
     required this.derivations,
     required this.ss58Prefix,
     required this.keyPairType,
   });
+
+  final String mnemonic;
+  final List<int> derivations;
+  final int ss58Prefix;
+  final KeyPairType keyPairType;
 }
 
 class KeypairResult {
-  final String address;
-  final String pubKey;
-  final int derivation;
-
   const KeypairResult({
     required this.address,
     required this.pubKey,
     required this.derivation,
   });
+
+  final String address;
+  final String pubKey;
+  final int derivation;
 }
 
 Future<List<KeypairResult>> _generateKeypairsInIsolate(

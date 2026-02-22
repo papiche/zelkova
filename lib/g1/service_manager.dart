@@ -5,7 +5,6 @@ import '../data/models/contact.dart';
 import '../data/models/node.dart';
 import '../data/models/transaction_state.dart';
 import 'api.dart';
-import 'duniter_datapod_helper.dart' as datapod_helper;
 import 'duniter_endpoint_helper.dart';
 import 'duniter_indexer_helper.dart' as duniter_indexer;
 import 'pay_result.dart';

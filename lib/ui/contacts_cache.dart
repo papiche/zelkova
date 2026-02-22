@@ -122,10 +122,12 @@ class ContactsCache {
         logger('Returning non cached contact $cachedContact');
       }
       // Send to listeners
-      for (final Completer<Contact> completer in _pendingRequests[pubKey]!) {
-        completer.complete(cachedContact);
+      final List<Completer<Contact>>? pending = _pendingRequests.remove(pubKey);
+      if (pending != null) {
+        for (final Completer<Contact> completer in pending) {
+          completer.complete(cachedContact);
+        }
       }
-      _pendingRequests.remove(pubKey);
 
       return cachedContact;
     } catch (e, stackTrace) {
@@ -133,11 +135,13 @@ class ContactsCache {
       _failedRequests[pubKey] = DateTime.now();
 
       // Send error to listeners
-      for (final Completer<Contact> completer in _pendingRequests[pubKey]!) {
-        // Return an empty contact instead of an error to avoid breaking UI flows
-        completer.complete(Contact(pubKey: pubKey));
+      final List<Completer<Contact>>? pending = _pendingRequests.remove(pubKey);
+      if (pending != null) {
+        for (final Completer<Contact> completer in pending) {
+          // Return an empty contact instead of an error to avoid breaking UI flows
+          completer.complete(Contact(pubKey: pubKey));
+        }
       }
-      _pendingRequests.remove(pubKey);
       if (e is! Exception || !e.toString().contains('404')) {
         await Sentry.captureException(e, stackTrace: stackTrace);
       }

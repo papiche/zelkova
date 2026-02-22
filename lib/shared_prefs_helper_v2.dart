@@ -22,6 +22,7 @@ import 'ui/contacts_cache.dart';
 import 'ui/logger.dart';
 import 'ui/secure_unlock_widget.dart';
 import 'wallet_already_exists_exception.dart';
+import 'services/derivation_scan_service.dart';
 
 class SharedPreferencesHelperV2
     with ChangeNotifier
@@ -480,6 +481,90 @@ class SharedPreferencesHelperV2
     );
 
     await _onAccountAdded(acc);
+
+    // Scan for derivations
+    final DerivationScanService scanner = DerivationScanService();
+    final Map<int, KeypairResult> derivedWallets =
+        await scanner.scanDerivations(original);
+
+    for (final KeypairResult derived in derivedWallets.values) {
+      await _importDerivedWallet(original, derived, type, acc.theme, pubKey);
+    }
+  }
+
+  Future<void> _importDerivedWallet(String mnemonic, KeypairResult result,
+      AccountType type, WalletTheme parentTheme, String parentPubKey) async {
+    // Check for duplicates
+    if (_accountExists(result.pubKey)) {
+      return;
+    }
+
+    Uint8List seedBytes;
+    if (type == AccountType.v2PasswordProtected) {
+      final Uint8List key = await _ensurePasswordKey();
+      seedBytes = SecureCryptoHelper.encrypt(mnemonicToStore(mnemonic), key);
+    } else {
+      // v2PasswordLess: store plaintext mnemonic bytes
+      seedBytes = mnemonicToStore(mnemonic);
+    }
+
+    final StoredAccount acc = StoredAccount(
+      pubKey: result.pubKey,
+      address: result.address,
+      seed: seedBytes,
+      type: type,
+      theme: parentTheme, // Use the same theme as parent
+      contact: Contact.withAddress(
+        address: result.address,
+        createdOn: DateTime.now().millisecondsSinceEpoch,
+      ),
+      derivationPath: '//${result.derivation}',
+      derivationParentId: parentPubKey,
+    );
+
+    await _onAccountAdded(acc);
+  }
+
+  Future<void> deriveNextAccount(StoredAccount parent) async {
+    if (!parent.type.isV2) {
+      throw Exception('Only V2 accounts support manual derivation');
+    }
+
+    // 1. Resolve mnemonic
+    final Uint8List seedBytes = await _resolveActualSeed(parent);
+    final String mnemonic = storeToMnemonic(seedBytes);
+
+    // 2. Find next index
+    int maxIndex = -1;
+    // We check both the parent and all its children to find the current highest index
+    final String parentPubKey = parent.derivationParentId ?? parent.pubKey;
+
+    for (final StoredAccount acc in accounts) {
+      if ((acc.pubKey == parentPubKey ||
+              acc.derivationParentId == parentPubKey) &&
+          acc.derivationPath != null) {
+        final String path = acc.derivationPath!;
+        if (path.startsWith('//')) {
+          final int? index = int.tryParse(path.substring(2));
+          if (index != null && index > maxIndex) {
+            maxIndex = index;
+          }
+        }
+      }
+    }
+
+    final int nextIndex = maxIndex + 1;
+
+    // 3. Derive and import
+    final KeyPair kp = await deriveKeyPairWithPath(mnemonic, nextIndex);
+    final KeypairResult result = KeypairResult(
+      derivation: nextIndex,
+      pubKey: v1pubkeyFromAddress(kp.address),
+      address: kp.address,
+    );
+
+    await _importDerivedWallet(
+        mnemonic, result, parent.type, parent.theme, parentPubKey);
   }
 
   Future<void> _onAccountAdded(StoredAccount acc) async {

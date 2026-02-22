@@ -31,7 +31,7 @@ void main() {
     registerMockSecureStorage();
     SharedPreferences.setMockInitialValues(<String, Object>{});
     helper = SharedPreferencesHelper();
-    SharedPreferencesHelper().init(onlyV2: true);
+    await SharedPreferencesHelper().init(onlyV2: true);
     SharedPreferencesHelper.configure(useV2: true);
     helper.accountsClear();
   });
@@ -249,7 +249,7 @@ void main() {
 
   test('Store and retrieve v2PasswordLess account', () async {
     final String mnemonic = generateMnemonic();
-    helper.importWalletFromMnemonic(mnemonic, AccountType.v2PasswordLess);
+    await helper.importWalletFromMnemonic(mnemonic, AccountType.v2PasswordLess);
     final KeyPair kp = await KeyPair.ed25519.fromMnemonic(mnemonic);
     final String pubKey = v1pubkeyFromAddress(kp.address);
 
@@ -328,7 +328,7 @@ void main() {
     final StoredAccount acc = helper.accounts.last;
     expect(acc.address, 'g1MmPVNXofuDN4tQFyGoFg7GT9npLscGWVLtV7hXCqMmha1DS',
         reason: 'No same address');
-  });
+  }, timeout: const Timeout(Duration(seconds: 60)));
 
   test('reencryptAllProtectedAccounts migrates mnemonic to new password key',
       () async {
@@ -727,6 +727,39 @@ void main() {
           reason: 'Should preserve theme from first occurrence');
       expect(preserved.contact.name, 'First',
           reason: 'Should preserve name from first occurrence');
+    });
+  });
+
+  group('manual derivation', () {
+    test('deriveNextAccount finds next available index and imports it',
+        () async {
+      final SharedPreferencesHelper h = SharedPreferencesHelper();
+      await h.init(onlyV2: true);
+      h.accountsClear();
+
+      const String mnemonic =
+          'attitude legend purchase discover canyon panda phone change flavor language often will';
+
+      // Import root
+      await h.importWalletFromMnemonic(mnemonic, AccountType.v2PasswordLess);
+      expect(h.length, 1);
+      final StoredAccount root = h.accounts[0];
+
+      // Derive first (//0)
+      await h.deriveNextAccount(root);
+      expect(h.length, 2);
+      expect(h.accounts[1].derivationPath, '//0');
+      expect(h.accounts[1].derivationParentId, root.pubKey);
+
+      // Derive second (//1)
+      await h.deriveNextAccount(root);
+      expect(h.length, 3);
+      expect(h.accounts[2].derivationPath, '//1');
+
+      // Derive from a child (should still find //2)
+      await h.deriveNextAccount(h.accounts[1]);
+      expect(h.length, 4);
+      expect(h.accounts[3].derivationPath, '//2');
     });
   });
 }

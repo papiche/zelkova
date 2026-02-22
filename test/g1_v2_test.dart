@@ -233,4 +233,25 @@ void main() {
       expect(decodeHexToText(hex), hex);
     });
   });
+
+  test(
+      'deriveKeyPairWithPath should generate different keys for different paths',
+      () async {
+    const String devMnemonic =
+        'drama dream insane parrot train corn steak latin voice extend fragile concert';
+
+    final KeyPair rootKp = await deriveKeyPairCompat(devMnemonic);
+    final String rootAddress = rootKp.address;
+
+    final KeyPair derived0 = await deriveKeyPairWithPath(devMnemonic, 0);
+    final KeyPair derived1 = await deriveKeyPairWithPath(devMnemonic, 1);
+
+    expect(derived0.address, isNot(equals(rootAddress)));
+    expect(derived1.address, isNot(equals(rootAddress)));
+    expect(derived0.address, isNot(equals(derived1.address)));
+
+    // Derive same path should be deterministic
+    final KeyPair derived0b = await deriveKeyPairWithPath(devMnemonic, 0);
+    expect(derived0.address, equals(derived0b.address));
+  });
 }

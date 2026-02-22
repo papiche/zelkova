@@ -506,5 +506,10 @@
   "no_more_network_results": "No se encontraron más contactos en la red",
   "can_certify_in_days": "No puedes certificar hasta {days}",
   "cannot_certify_reached_limit": "Has alcanzado el número máximo de certificaciones que puedes emitir",
-  "contacts": "contactos"
+  "contacts": "contactos",
+  "link_account_title": "¿Vincular nueva cuenta?",
+  "link_account_desc": "Se generará una nueva cuenta a partir de la misma frase de recuperación.",
+  "link_account_success": "Cuenta vinculada con éxito",
+  "link_account_error": "Error al vincular la cuenta: {error}",
+  "linked_to": "Vinculado a: {name}"
 }

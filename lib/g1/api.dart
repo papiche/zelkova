@@ -828,15 +828,11 @@ Future<Tuple2<Node, http.Response>> _requestWithRetry(
     Map<String, String>? headers,
     Object? body,
     Encoding? encoding}) async {
-  final List<Node> nodes = NodeManager().nodesWorkingList(type);
-  if (nodes.isEmpty) {
-    nodes.addAll(type == NodeType.duniter
-        ? defaultDuniterNodes
-        : type == NodeType.cesiumPlus
-            ? defaultCesiumPlusNodes
-            : defaultGvaNodes);
-  }
-  for (final int timeout in <int>[10]) {
+  final List<Node> nodes = NodeManager().getBestNodes(type);
+
+  final int baseTimeout = type == NodeType.cesiumPlus ? 30 : 10;
+
+  for (final int timeout in <int>[baseTimeout, baseTimeout * 2]) {
     // only one timeout for now
     for (int i = 0; i < nodes.length; i++) {
       final Node node = nodes[i];
@@ -845,7 +841,7 @@ Future<Tuple2<Node, http.Response>> _requestWithRetry(
         logger('Fetching $url (${type.name})');
         final int startTime = DateTime.now().millisecondsSinceEpoch;
         final Response response = httpType == HttpType.get
-            ? await getWithTimeout(url)
+            ? await getWithTimeout(url, timeout: Duration(seconds: timeout))
             : httpType == HttpType.post
                 ? await http
                     .post(url, body: body, headers: headers, encoding: encoding)

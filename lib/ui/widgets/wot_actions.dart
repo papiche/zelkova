@@ -20,6 +20,9 @@ import 'wot_menu_action.dart';
 List<WotMenuAction> getWotMenuActions(
     BuildContext context, bool isMe, ContactWotInfo wotInfo) {
   final List<WotMenuAction> actions = <WotMenuAction>[];
+  if (isMe) {
+    _transferAllAction(context, wotInfo, actions);
+  }
   final IdentityStatus? status = wotInfo.you.status;
   /* if (inDevelopment) {
     actions.add(
@@ -37,7 +40,6 @@ List<WotMenuAction> getWotMenuActions(
       if (isMe) {
         _requestDistanceAction(context, actions, wotInfo);
         _renewMembershipActionForSelf(context, wotInfo, actions);
-        _transferAllAction(context, wotInfo, actions);
         _changeOwnerKeyAction(context, wotInfo, actions);
         _revokeAction(context, wotInfo, actions);
       } else {
@@ -835,6 +837,7 @@ Future<SignAndSendResult> _confirmAndChangeOwnerKey(
         progressController.addError(error);
       },
       onDone: () async {
+        progressController.close();
         if (!hasError) {
           try {
             await SharedPreferencesHelper().refreshWalletsInfo();
@@ -843,7 +846,6 @@ Future<SignAndSendResult> _confirmAndChangeOwnerKey(
             loggerDev('Error refreshing wallets after changeOwnerKey: $e');
           }
         }
-        progressController.close();
       },
     );
 

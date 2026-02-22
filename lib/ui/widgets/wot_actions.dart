@@ -889,8 +889,8 @@ Future<StoredAccount?> _selectNewOwnerAccount(BuildContext context) async {
     title: tr('select_new_owner_account'),
     errorMessage: tr('please_select_new_owner_account'),
     filterFunction: (StoredAccount account) {
-      // Filter: password-protected and without identity
-      return account.type != AccountType.v1PasswordLess &&
+      // Filter: password-protected v2 account and without identity
+      return account.type == AccountType.v2PasswordProtected &&
           account.contact.index == null;
     },
   );

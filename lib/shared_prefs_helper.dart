@@ -7,6 +7,7 @@
 //    V2 (FlutterSecureStorage), depending on the flag set with `configure()`.
 // -----------------------------------------------------------------------------
 
+import 'dart:async';
 import 'dart:math';
 
 import 'package:durt/durt.dart';
@@ -300,5 +301,33 @@ class SharedPreferencesHelper with ChangeNotifier {
 
   bool isExternal(String pk) {
     return _d.has(pk) == false;
+  }
+
+  Future<void> deriveNextAccount(StoredAccount parent) =>
+      v2.SharedPreferencesHelperV2().deriveNextAccount(parent);
+
+  String? highlightedGroupId;
+  bool isHighlightVisible = false;
+  Timer? _highlightTimer;
+
+  void highlightGroup(String? id) {
+    _highlightTimer?.cancel();
+    highlightedGroupId = id;
+    isHighlightVisible = true;
+    notifyListeners();
+
+    int count = 0;
+    _highlightTimer =
+        Timer.periodic(const Duration(milliseconds: 500), (timer) {
+      isHighlightVisible = !isHighlightVisible;
+      notifyListeners();
+      count++;
+      if (count >= 8) {
+        timer.cancel();
+        highlightedGroupId = null;
+        isHighlightVisible = false;
+        notifyListeners();
+      }
+    });
   }
 }

@@ -137,10 +137,14 @@ class _ImportClipboardDialogState extends State<ImportClipboardDialog> {
                   },
                 ),
               TextButton(
-                child: Text(tr('import')),
-                onPressed: () {
-                  _validateAndImport();
-                },
+                onPressed: _isImporting ? null : _validateAndImport,
+                child: _isImporting
+                    ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : Text(tr('import')),
               ),
             ])
       ],

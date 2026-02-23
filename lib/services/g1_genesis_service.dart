@@ -12,31 +12,56 @@ import '../ui/logger.dart';
 /// production) becomes available. When a valid genesis hash is detected,
 /// the app can automatically activate V2 mode without user intervention.
 ///
-/// **Key features:**
-/// - **Cache-first approach**: Uses local cache for fast startup, avoiding
-///   network calls during app initialization
-/// - **Background polling**: Can be called periodically to detect state changes
-///   (e.g., when G1 goes live or becomes unavailable)
-/// - **Fail-safe**: On network errors, preserves existing cache (no state change)
-/// - **Reversible**: If the remote hash disappears, can automatically revert
-///   to test mode (gtest)
-///
-/// **Genesis hash format:**
-/// Valid hashes match the pattern: `0x` followed by exactly 64 hexadecimal
-/// characters. Example: `0x1234567890abcdef...` (64 hex digits)
-///
-/// **Reference implementation:**
-/// Similar pattern used in Gecko (mobile Duniter V2 wallet):
+/// **Implementation based on Gecko's approach** (Duniter forum post #590):
 /// https://forum.duniter.org/t/gecko-talks-user-support/9372/590
+///
+/// Poka (Gecko author) explains the strategy:
+/// > "Tant que la string est vide ou invalide, ça continue le processus normal.
+/// > Mais si un hash genesis apparaît, alors Gecko se connecte automatiquement
+/// > au réseau G1, et garde en cache ce hash genesis pour le réseau.
+/// > Ça pull également non-stop toutes les 30 secondes pendant le cycle de vie
+/// > de l'app et se connecte automatiquement au réseau G1 si le hash valide
+/// > apparaît."
+///
+/// **Key features:**
+/// - **Cache-first approach**: Uses local cache for fast startup (no network)
+/// - **Background polling**: 30-second intervals to auto-activate when ready
+/// - **Fail-safe**: Network errors preserve existing cache (no state change)
+/// - **Reversible**: If hash disappears, reverts to test mode (gtest)
+///
+/// **Genesis hash validation:**
+/// Remote endpoint: https://get-g1-genesis-hash.p2p.legal
+/// Response format: `{"hash": "0x..."}`
+/// - When hash is empty or invalid: G1 not ready yet
+/// - When hash is valid (0x + 64 hex chars): G1 is production-ready
+/// - Hash is cached for fast startup without network calls
+///
+/// **Node discovery strategy** (after G1 is detected):
+/// Per Gecko's design, nodes are discovered in two phases:
+/// 1. **Bootstrap**: Load seed nodes from g1.json (Duniter Git repository)
+/// 2. **P2P Discovery**: Query each seed node for its peers, recursively
+///    - This finds the complete healthy node set without hardcoded lists
+///    - Adapts automatically when nodes join/leave production network
+///
+/// NOTE: `.env` files contain ONLY gtest defaults (test network).
+/// Production V2 endpoints (g1.p2p.legal, g1-squid.axiom-team.fr) are
+/// discovered dynamically, NOT from environment variables.
+///
+/// **Why this approach?**
+/// - Day of G1 migration, poka only needs to set the genesis hash
+/// - Gecko/Ginkgo connects automatically in ~30 seconds
+/// - No need to wait for app store validation or release updates
+/// - Users can install app in advance, before migration date
 ///
 /// **Usage example:**
 /// ```dart
-/// // Check at startup (cache-first, fast)
+/// // Check at startup (cache-first, ~1ms if cached)
 /// final bool isProduction = await G1GenesisService.initializeAtStartup();
 ///
-/// // In a periodic timer (e.g., every 30 seconds in test mode):
+/// // In periodic timer (every 30s during app lifecycle in test mode):
 /// if (await G1GenesisService.backgroundCheck()) {
-///   // State changed: activate/deactivate V2 production mode
+///   // State changed: activate or deactivate V2 production mode
+///   // Node loading automatically follows via fetchNodesIfNotReady()
 /// }
 /// ```
 class G1GenesisService {

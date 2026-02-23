@@ -296,12 +296,13 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
                   leading: const Icon(Symbols.editor_choice),
                   title: Text('@${contact.nick}'),
                 )),
-          // Mostrar nombre interno si existe y difiere del nick
+          // Mostrar nombre interno si existe y difiere de lo que se muestra en el título
+          // El título en la sección del avatar usa la lógica: si name != nick, muestra "name (nick)", sino solo name o nick
           if (contact.name != null &&
               contact.name!.isNotEmpty &&
-              (contact.nick == null ||
-                  contact.name !=
-                      contact.nick)) // Comparación exacta, no case-insensitive
+              contact.nick != null &&
+              contact.nick!.isNotEmpty &&
+              contact.name != contact.nick)
             GestureDetector(
               onTap: () {
                 copyToClipboard(

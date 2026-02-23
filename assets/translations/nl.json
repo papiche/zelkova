@@ -133,7 +133,7 @@
   "form_contact_title": "Contact bewerken",
   "form_contact_name": "Naam",
   "form_contact_name_validation": "Voer een naam in",
-  "form_contact_notes": "Opmerkingen",
-  "internal_contact_name": "Internal name",
-  "internal_name_copied_to_clipboard": "Internal name copied"
+   "form_contact_notes": "Opmerkingen",
+   "nodes_list_title": "{type} Knooppunten ({count})",
+   "nodes_list_last_updated": "Laatst bijgewerkt: {time}"
 }

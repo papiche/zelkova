@@ -148,6 +148,6 @@
   "export_keys": "Exportar suas carteiras",
   "import_keys": "Importar suas carteiras",
   "no_transactions_simple": "Esta carteira não tem saldo",
-  "internal_contact_name": "Internal name",
-  "internal_name_copied_to_clipboard": "Internal name copied"
+   "nodes_list_title": "{type} Nós ({count})",
+   "nodes_list_last_updated": "Última atualização: {time}"
 }

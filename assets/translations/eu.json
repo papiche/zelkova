@@ -178,6 +178,8 @@
   "intro_5_description": "Hemendik, zure zerbitzuak eta produktuak eskain ditzakezu eta ordainketa Ğ1 monetan jaso dezakezu, baita Ğ1 moneta erabili ondasunak erosteko.",
   "g1_wallet": "Ğ1 zorroa",
   "bottom_nav_first": "Ordaindu",
-   "bottom_nav_second": "Jaso",
-   "bottom_nav_trd": "Kontaktuak"
+    "bottom_nav_second": "Jaso",
+    "bottom_nav_trd": "Kontaktuak",
+    "nodes_list_title": "{type} Nodoak ({count})",
+    "nodes_list_last_updated": "Azken eguneratzea: {time}"
 }

@@ -236,6 +236,8 @@
   "clipboard_import": "Importar dende o portapapeis",
   "share_export": "Comparta vía mensaxe electrónico/chat/etc.",
   "qr_scanner_cancel": "CANCELAR",
-   "qr_scanner_flash_off": "Escintileo apagado",
-   "display_amounts_du": "Amosar importes en DU"
+    "qr_scanner_flash_off": "Escintileo apagado",
+    "display_amounts_du": "Amosar importes en DU",
+    "nodes_list_title": "{type} Nodos ({count})",
+    "nodes_list_last_updated": "Última actualización: {time}"
 }

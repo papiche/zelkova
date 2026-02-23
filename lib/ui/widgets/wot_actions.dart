@@ -437,7 +437,7 @@ Future<SignAndSendResult> _returnAuthFailed() {
 /// Unlike [_returnAuthFailed], this does not emit any message.
 Future<SignAndSendResult> _returnCancelled() {
   return Future<SignAndSendResult>.value(SignAndSendResult(
-    progressStream: Stream<String>.empty(),
+    progressStream: const Stream<String>.empty(),
     cancelled: true,
   ));
 }
@@ -839,6 +839,10 @@ Future<SignAndSendResult> _confirmAndChangeOwnerKey(
     loggerDev('Error checking owner key cooldown', error: e, stackTrace: st);
   }
 
+  if (!context.mounted) {
+    return _returnCancelled();
+  }
+
   final bool? confirmed = await showDialog<bool>(
     context: context,
     builder: (BuildContext dialogContext) {
@@ -862,6 +866,10 @@ Future<SignAndSendResult> _confirmAndChangeOwnerKey(
       );
     },
   );
+
+  if (!context.mounted) {
+    return _returnCancelled();
+  }
 
   if (!(confirmed ?? false)) {
     return _returnCancelled();

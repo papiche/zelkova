@@ -533,6 +533,6 @@
   "link_account_error": "Error al vincular la cuenta: {error}",
   "linked_to": "Vinculado a: {name}",
   "target_already_has_identity": "La cuenta seleccionada ya tiene una identidad. No puedes transferir una identidad a una cuenta que ya tiene una.",
-  "internal_contact_name": "Nombre interno",
-  "internal_name_copied_to_clipboard": "Nombre interno copiado"
+  "internal_contact_name": "Contacto interno",
+  "internal_name_copied_to_clipboard": "Contacto interno copiado"
 }

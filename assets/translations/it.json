@@ -506,8 +506,6 @@
   "preparing_export": "Preparazione all'esportazione",
   "decryption_failed": "Errore durante la decrittografia del portafoglio. La password inserita non è corretta oppure l'archivio è danneggiato.",
   "import_wallet_from_clipboard_mnemonic_desc": "Incolla una frase di recupero per recuperare il tuo portafoglio",
-  "v2_seed_export_description": "Di seguito è riportata la tua frase segreta di recupero. Non condividerla con nessuno. Puoi copiarla o scriverla in modo sicuro. Ciò ti consentirà di recuperare il tuo portafoglio nel caso in cui ne perdessi l'accesso.",
-  "cannot_certify_reached_limit": "Hai raggiunto il numero massimo di certificazioni che puoi emettere",
-  "internal_contact_name": "Internal name",
-  "internal_name_copied_to_clipboard": "Internal name copied"
+   "v2_seed_export_description": "Di seguito è riportata la tua frase segreta di recupero. Non condividerla con nessuno. Puoi copiarla o scriverla in modo sicuro. Ciò ti consentirà di recuperare il tuo portafoglio nel caso in cui ne perdessi l'accesso.",
+   "cannot_certify_reached_limit": "Hai raggiunto il numero massimo di certificazioni che puoi emettere"
 }

@@ -1033,3 +1033,68 @@ Future<List<Contact>> getProfilesV2({required List<String> pubKeys}) async {
   ContactsCache().addContacts(contacts);
   return contacts;
 }
+
+/// Get the last owner key change block for an account
+/// Returns the block number of the last change, or null if never changed or no identity
+Future<int?> getLastOwnerKeyChangeBlock({required String accountId}) async {
+  final List<Node> nodes = NodeManager().getBestNodes(NodeType.duniterIndexer);
+
+  for (final Node node in nodes) {
+    loggerDev(
+        'Fetching last owner key change for account $accountId from ${node.url}');
+    try {
+      final Response response = await post(
+        Uri.parse(node.url),
+        headers: <String, String>{'Content-Type': 'application/json'},
+        body: jsonEncode(<String, dynamic>{
+          'query': r'''
+            query GetOwnerKeyChanges($accountId: String!) {
+              identities(first: 1, filter: { accountId: { equalTo: $accountId } }) {
+                nodes {
+                  ownerKeyChange(first: 1, orderBy: [BLOCK_NUMBER_DESC]) {
+                    nodes {
+                      blockNumber
+                    }
+                  }
+                }
+              }
+            }
+          ''',
+          'variables': <String, dynamic>{'accountId': accountId},
+        }),
+      ).timeout(const Duration(seconds: 10));
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data =
+            jsonDecode(response.body) as Map<String, dynamic>;
+        final Map<String, dynamic>? identities =
+            data['data']?['identities'] as Map<String, dynamic>?;
+        final List<dynamic>? identityNodes =
+            identities?['nodes'] as List<dynamic>?;
+
+        if (identityNodes != null && identityNodes.isNotEmpty) {
+          final Map<String, dynamic>? ownerKeyChange =
+              identityNodes.first['ownerKeyChange'] as Map<String, dynamic>?;
+          final List<dynamic>? changeNodes =
+              ownerKeyChange?['nodes'] as List<dynamic>?;
+
+          if (changeNodes != null && changeNodes.isNotEmpty) {
+            return changeNodes.first['blockNumber'] as int;
+          }
+        }
+        return null; // No owner key changes found or no identity
+      } else {
+        NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
+            cause: 'HTTP ${response.statusCode} getting owner key change');
+        continue;
+      }
+    } catch (e, st) {
+      NodeManager().increaseNodeErrors(NodeType.duniterIndexer, node,
+          cause: 'Exception getting owner key change: $e');
+      loggerDev('Error fetching owner key change from node ${node.url}',
+          error: e, stackTrace: st);
+      continue;
+    }
+  }
+  return null;
+}

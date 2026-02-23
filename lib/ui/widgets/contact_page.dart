@@ -15,19 +15,11 @@ import '../../data/models/contact_wot_info.dart';
 import '../../data/models/identity_status.dart';
 import '../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../data/models/stored_account.dart';
-import '../../g1/distance_precompute.dart';
-import '../../g1/distance_precompute_provider.dart';
-import '../../g1/duniter_endpoint_helper.dart';
-import '../../g1/duniter_indexer_helper.dart' as duniter_indexer;
-import '../../g1/g1_helper.dart';
+import '../../data/wot_info_fetcher.dart';
 import '../../g1/sign_and_send.dart';
-import '../../generated/gtest/types/pallet_certification/types/idty_cert_meta.dart';
-import '../../generated/gtest/types/pallet_identity/types/idty_value.dart';
 import '../../shared_prefs_helper.dart';
 import '../clipboard_helper.dart';
-import '../contacts_cache.dart';
 import '../in_dev_helper.dart';
-import '../logger.dart';
 import '../ui_helpers.dart';
 import 'balance_widget.dart';
 import 'certifications_page.dart';
@@ -60,14 +52,14 @@ class _ContactPageState extends State<ContactPage> {
     _txsCubit = context.read<MultiWalletTransactionCubit>();
     final AppCubit appCubit = context.read<AppCubit>();
     isV2 = appCubit.isV2;
-    _updateBalance(isMe(widget.contact, SharedPreferencesHelper().getPubKey()));
+    _updateBalance();
     _wotInfoStream = _getWotInfo(appCubit);
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
     super.initState();
   }
 
-  Future<void> _updateBalance(bool isMe) async {
+  Future<void> _updateBalance() async {
     await _txsCubit.fetchTransactions(pubKey: widget.contact.pubKey);
     setState(() {});
   }
@@ -101,6 +93,7 @@ class _ContactPageState extends State<ContactPage> {
       final AppCubit appCubit = context.read<AppCubit>();
       _wotInfoStream = _getWotInfo(appCubit);
     });
+    await _updateBalance();
     // Reset refreshing state after a delay to debounce
     Future<void>.delayed(const Duration(seconds: 2), () {
       if (mounted) {
@@ -198,9 +191,12 @@ class _ContactPageState extends State<ContactPage> {
                   }
                   await Future<dynamic>.delayed(
                       const Duration(milliseconds: 1000));
+                  pd.close();
+                  if (!context.mounted) {
+                    return;
+                  }
                   setState(() {});
                   await _refresh();
-                  pd.close();
                 },
                 onError: (dynamic error) {
                   if (!context.mounted) {
@@ -209,7 +205,7 @@ class _ContactPageState extends State<ContactPage> {
                   pd.close();
                   showAlertDialog(
                     context,
-                    tr('result'),
+                    tr('error'),
                     tr(error.toString()),
                   );
                 },
@@ -330,8 +326,10 @@ class _ContactPageState extends State<ContactPage> {
               subtitle: Text(tr('yes')),
             ),
 
-          // Distance Rule
-          if (wotInfo.distRuleOk != null)
+          // Distance Rule - only show for non-members who need distance evaluation
+          if (wotInfo.distRuleOk != null &&
+              contact.status != null &&
+              contact.status != IdentityStatus.MEMBER)
             ListTile(
               leading: const Icon(Icons.social_distance),
               title: Text(tr('distance_rule')),
@@ -340,10 +338,6 @@ class _ContactPageState extends State<ContactPage> {
                 style: TextStyle(
                     color: wotInfo.distRuleOk! ? Colors.green : Colors.red),
               ),
-              /* trailing: Tooltip(
-              message: '$distRuleReached / $refereesCount',
-              child: const Icon(Icons.info_outline),
-            ), */
             ),
           // Show when YOU will be able to certify
           if (wotInfo.youCanCertOn != null &&
@@ -584,183 +578,16 @@ class _ContactPageState extends State<ContactPage> {
   }
 
   Stream<ContactWotInfo> _getWotInfo(AppCubit appCubit) async* {
-    // 0. Try to get cached data first to show something immediately
-    final Contact? cachedYou =
-        ContactsCache().getCachedContact(widget.contact.pubKey);
-    final Contact? cachedMe =
-        ContactsCache().getCachedContact(SharedPreferencesHelper().getPubKey());
-
-    if (cachedYou != null || cachedMe != null) {
-      yield ContactWotInfo(
-          me: cachedMe ?? widget.contact, you: cachedYou ?? widget.contact);
-    }
-
-    try {
-      // Parallelize the first calls
-      // Pass baseContact to preserve avatar and other existing data
-      final List<Contact> results = await Future.wait(<Future<Contact>>[
-        duniter_indexer.getProfileV2(widget.contact.pubKey,
-            resize: false,
-            complete: true,
-            baseContact: widget.contact.cloneWithoutIdentity()),
-        duniter_indexer.getProfileV2(SharedPreferencesHelper().getPubKey(),
-            resize: false, complete: true),
-      ]);
-      final Contact you = results[0];
-      final Contact me = results[1];
-      final ContactWotInfo wotInfo = ContactWotInfo(me: me, you: you);
-
-      if (isV2) {
-        if (you.status == null) {
-          // Can create Identity from:
-          // https://duniter.org/wiki/duniter-v2/doc/wot/
-
-          // storage.identity.identities(AliceIndex).status is Member
-          final bool iAmMember = me.isMember ?? false;
-
-          // EveAccount exists with minimum amount of 2 ĞD (existential deposit plus fee buffer)
-          // storage.system.account(EveAccount).data.free is higher than 200
-          // EveAccount is not already used by an identity
-          // storage.identity.identities(EveAccount) is None
-          // Get balance from TransactionCubit and check if identity is used
-          // Balance stored as double (G1 units). Convert to "cents" (integer)
-          // without rounding (truncate toward zero) following the project's
-          // convention used elsewhere (BigInt.from(doubleValue * 100)).
-          final BigInt youBalance =
-              BigInt.from(_txsCubit.balance(widget.contact.pubKey) * 100);
-          final bool enoughBalance = youBalance > BigInt.from(200);
-          final bool identityUsed =
-              await duniter_indexer.getIdentity(address: you.address) != null;
-          wotInfo.canCreateIdty = iAmMember && enoughBalance && !identityUsed;
-        }
-        // Yield early if status is found or canCreateIdty is determined
-        yield wotInfo;
-
-        final int currentBlock = await polkadotCurrentBlock();
-        wotInfo.currentBlockHeight = currentBlock;
-        final bool youAMember = you.isMember ?? false;
-
-        // Parallelize calls to get identity information
-        final List<dynamic> identityInfoResults =
-            await Future.wait(<Future<dynamic>>[
-          if (youAMember) polkadotIdentity(you) else Future<void>.value(),
-          if (youAMember) polkadotIdtyCertMeta(you) else Future<void>.value(),
-          polkadotIdentity(me),
-          polkadotIdtyCertMeta(me),
-        ]);
-
-        final IdtyValue? youIdty =
-            youAMember ? identityInfoResults[0] as IdtyValue? : null;
-        final IdtyCertMeta? youCertMeta =
-            youAMember ? identityInfoResults[1] as IdtyCertMeta? : null;
-        final IdtyValue? myIdty = identityInfoResults[2] as IdtyValue?;
-        final IdtyCertMeta? idtyCertMeta =
-            identityInfoResults[3] as IdtyCertMeta?;
-
-        if (youIdty != null && youCertMeta != null) {
-          wotInfo.youCanCertOn = estimateDateFromBlock(
-              futureBlock: youCertMeta.nextIssuableOn,
-              currentBlockHeight: currentBlock);
-        }
-
-        if (myIdty != null && idtyCertMeta != null) {
-          // From: https://duniter.org/wiki/duniter-v2/doc/wot/
-          // storage.identity.identities(AliceIndex).nextCreatableIdentityOn is lower than current block
-          // storage.certification.storageIdtyCertMeta(AliceIndex).nextIssuableOn is lower than current block
-          // storage.certification.storageIdtyCertMeta(AliceIndex).issuedCount is lower than constants.certification.maxByIssuer()
-          final bool reachedMaxByIssuer =
-              idtyCertMeta.issuedCount >= getMaxByIssuer();
-          wotInfo.meReachedMaxByIssuer = reachedMaxByIssuer;
-
-          final bool meCanCertYou =
-              myIdty.nextCreatableIdentityOn < currentBlock &&
-                  idtyCertMeta.nextIssuableOn < currentBlock &&
-                  !reachedMaxByIssuer;
-          wotInfo.meCanCertYou = meCanCertYou;
-
-          if (!meCanCertYou) {
-            final int nextBlock =
-                myIdty.nextCreatableIdentityOn > idtyCertMeta.nextIssuableOn
-                    ? myIdty.nextCreatableIdentityOn
-                    : idtyCertMeta.nextIssuableOn;
-
-            if (nextBlock > currentBlock && !reachedMaxByIssuer) {
-              wotInfo.meCanCertYouOn = estimateDateFromBlock(
-                  futureBlock: nextBlock, currentBlockHeight: currentBlock);
-            }
-          }
-        } else {
-          wotInfo.meCanCertYou = false;
-          wotInfo.meReachedMaxByIssuer = false;
-        }
-
-        wotInfo.waitingForCerts = you.certsReceived != null &&
-            you.certsReceived!.length <
-                polkadotConstants().wot.minCertForMembership;
-
-        final int? membershipExpireOn = you.expireOn;
-        if (membershipExpireOn != null) {
-          wotInfo.expireOn = estimateDateFromBlock(
-              futureBlock: membershipExpireOn,
-              currentBlockHeight: currentBlock);
-        }
-
-        if (membershipExpireOn != null &&
-            wotInfo.isme &&
-            wotInfo.waitingForCerts == false &&
-            (you.status == IdentityStatus.MEMBER ||
-                you.status == IdentityStatus.NOTMEMBER ||
-                you.status == IdentityStatus.UNVALIDATED)) {
-          wotInfo.canCalcDistance = you.expireOn == null ||
-              (membershipExpireOn +
-                      polkadotConstants().membership.membershipRenewalPeriod <
-                  currentBlock +
-                      polkadotConstants().membership.membershipPeriod);
-        } else {
-          wotInfo.canCalcDistance = false;
-        }
-
-        wotInfo.canCalcDistanceFor = !wotInfo.isme &&
-            wotInfo.waitingForCerts != null &&
-            !wotInfo.waitingForCerts!;
-
-        wotInfo.meAlreadyCertYou = you.certsReceived != null &&
-            you.certsReceived!.isNotEmpty &&
-            you.certsReceived!
-                .any((Cert cert) => cert.issuerId.pubKey == me.pubKey);
-
-        // Yield after gathering all initial info
-        yield wotInfo;
-
-        DistancePrecompute? distancePrecompute = appCubit.distancePrecompute;
-        if (distancePrecompute == null) {
-          loggerDev('Retrieving distance precompute');
-
-          distancePrecompute =
-              await DistancePrecomputeProvider().fetchDistancePrecompute();
-          if (distancePrecompute != null) {
-            appCubit.setDistancePreCompute(distancePrecompute);
-          }
-        }
-        if (you.index != null && distancePrecompute != null) {
-          final int distRuleReached =
-              distancePrecompute.results[you.index] ?? 0;
-          final int refereesCount = distancePrecompute.refereesCount;
-          final double distRuleRatio =
-              refereesCount > 0 ? distRuleReached / refereesCount : 0.0;
-          const double distThreshold = 0.8;
-          wotInfo.distRuleOk = distRuleRatio > distThreshold;
-          wotInfo.distRuleRatio = distRuleRatio;
-        }
+    // 0. Try to get cached data from AppCubit first (pre-fetched)
+    if (appCubit.state.wotInfo != null &&
+        appCubit.state.wotInfo!.you.pubKey == widget.contact.pubKey) {
+      yield appCubit.state.wotInfo!;
+      if (appCubit.state.wotInfo!.loaded) {
+        return;
       }
-      wotInfo.loaded = true;
-      yield wotInfo;
-    } catch (e) {
-      logger('Error in _getWotInfo: $e');
-      // Ensure we don't leave the UI in an eternal loading state
-      yield ContactWotInfo(me: widget.contact, you: widget.contact)
-        ..loaded = true;
     }
+
+    yield* WotInfoFetcher.fetch(widget.contact, appCubit);
   }
 }
 

@@ -63,13 +63,24 @@ Future<List<KeypairResult>> _generateKeypairsInIsolate(
 }
 
 class DerivationScanService {
+  /// Static flag to skip network checks during testing
+  static bool skipNetworkCheck = false;
+
   /// Scans derivation paths 0 to [maxDerivations] - 1.
   /// Returns a map of index -> KeypairResult containing only those with balance > 0.
+  ///
+  /// If [skipNetworkCheck] is true, this method will skip balance verification
+  /// and return an empty map immediately (useful for testing).
   Future<Map<int, KeypairResult>> scanDerivations(
     String mnemonic, {
     int maxDerivations = 30,
     int ss58Prefix = 4450,
   }) async {
+    // In testing or offline mode, skip network calls
+    if (skipNetworkCheck) {
+      return <int, KeypairResult>{};
+    }
+
     try {
       final List<int> derivationNumbers =
           List<int>.generate(maxDerivations, (int i) => i);

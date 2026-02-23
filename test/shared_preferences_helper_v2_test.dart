@@ -13,6 +13,7 @@ import 'package:ginkgo/data/models/wallet_themes.dart';
 import 'package:ginkgo/g1/g1_helper.dart';
 import 'package:ginkgo/g1/g1_v2_helper.dart';
 import 'package:ginkgo/secure_crypto_helper.dart';
+import 'package:ginkgo/services/derivation_scan_service.dart';
 import 'package:ginkgo/shared_prefs_helper.dart';
 import 'package:ginkgo/storage_keys.dart';
 import 'package:ginkgo/ui/logger.dart';
@@ -28,6 +29,9 @@ void main() {
   late SharedPreferencesHelper helper;
 
   setUp(() async {
+    // Enable testing mode to skip network checks
+    DerivationScanService.skipNetworkCheck = true;
+
     registerMockSecureStorage();
     SharedPreferences.setMockInitialValues(<String, Object>{});
     helper = SharedPreferencesHelper();

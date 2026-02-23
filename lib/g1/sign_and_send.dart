@@ -73,15 +73,21 @@ Future<SignAndSendResult> signAndSend(Node node, Provider provider,
   // polkadart's internal WebSocket listener after we close subscriptions.
   sign_and_send.runZonedGuarded(() async {
     try {
+      loggerDev('signAndSend: Starting transaction for ${wallet.address}');
       progressController.add(messageTransformer('building_transaction'));
 
+      loggerDev('signAndSend: Getting runtime version');
       final RuntimeVersion runtimeVersion =
           await polkadot.rpc.state.getRuntimeVersion();
+      loggerDev('signAndSend: Getting current block number');
       final int currentBlockNumber = (await polkadot.query.system.number()) - 1;
+      loggerDev('signAndSend: Current block number: $currentBlockNumber');
       final H256 currentBlockHash =
           await polkadot.query.system.blockHash(currentBlockNumber);
+      loggerDev('signAndSend: Getting nonce for ${wallet.address}');
       final int nonce =
           await polkadot.rpc.system.accountNextIndex(wallet.address);
+      loggerDev('signAndSend: Nonce: $nonce');
       final H256 genesisHash = await polkadot.query.system.blockHash(0);
 
       final Uint8List encodedCall = call.encode();
@@ -98,6 +104,7 @@ Future<SignAndSendResult> signAndSend(Node node, Provider provider,
               tip: 0)
           .encode(polkadot.registry);
 
+      loggerDev('signAndSend: Signing payload');
       final Uint8List signature = wallet.sign(payload);
       final Uint8List extrinsic = ExtrinsicPayload(
               signer: wallet.bytes(),
@@ -111,12 +118,16 @@ Future<SignAndSendResult> signAndSend(Node node, Provider provider,
 
       final AuthorApi<Provider> author = AuthorApi<Provider>(provider);
 
+      loggerDev('signAndSend: Submitting transaction');
       progressController.add(messageTransformer('submitting_transaction'));
 
       await author.submitAndWatchExtrinsic(
         extrinsic,
         (ExtrinsicStatus status) async {
+          loggerDev('signAndSend: Received status: ${status.type}');
           if (progressClosed) {
+            loggerDev(
+                'signAndSend: Progress already closed, skipping status ${status.type}');
             return;
           }
 
@@ -125,10 +136,14 @@ Future<SignAndSendResult> signAndSend(Node node, Provider provider,
 
           if (status.type == 'finalized' || status.type == 'inBlock') {
             final String? blockHash = status.value as String?;
+            loggerDev(
+                'signAndSend: Transaction ${status.type} in block: $blockHash');
             if (blockHash != null) {
               final String? errorKey = await _checkExtrinsicSuccess(
                   provider, polkadot, blockHash, extrinsic);
               if (errorKey != null) {
+                loggerDev(
+                    'signAndSend: Extrinsic failed with error: $errorKey');
                 if (!progressClosed) {
                   progressController.addError(messageTransformer(errorKey));
                 }
@@ -145,14 +160,20 @@ Future<SignAndSendResult> signAndSend(Node node, Provider provider,
             'invalid',
             'usurped',
           ].contains(status.type)) {
+            loggerDev('signAndSend: Final status reached: ${status.type}');
             await safeCloseProgress();
             await safeDisconnect();
           }
         },
-      ).timeout(timeout);
+      ).timeout(timeout, onTimeout: () {
+        loggerDev('signAndSend: Timeout waiting for transaction confirmation');
+        throw sign_and_send.TimeoutException(
+            'Transaction confirmation timeout', timeout);
+      });
     } catch (e, stacktrace) {
       final String errorMessage = messageTransformer('error');
-      loggerDev(errorMessage, error: e, stackTrace: stacktrace);
+      loggerDev('signAndSend: Error occurred',
+          error: e, stackTrace: stacktrace);
       if (!progressClosed) {
         progressController.addError(errorMessage);
       }

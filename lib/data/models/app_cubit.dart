@@ -3,7 +3,10 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import '../../g1/currency.dart';
 import '../../g1/distance_precompute.dart';
+import '../wot_info_fetcher.dart';
 import 'app_state.dart';
+import 'contact.dart';
+import 'contact_wot_info.dart';
 
 class AppCubit extends HydratedCubit<AppState> {
   AppCubit() : super(AppState());
@@ -112,5 +115,12 @@ class AppCubit extends HydratedCubit<AppState> {
 
   void setRecentExportReminderInDays(int days) {
     emit(state.copyWith(recentExportReminderInDays: days));
+  }
+
+  Future<void> updateWotInfo(Contact contact) async {
+    await for (final ContactWotInfo info
+        in WotInfoFetcher.fetch(contact, this)) {
+      emit(state.copyWith(wotInfo: info));
+    }
   }
 }

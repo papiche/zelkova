@@ -33,6 +33,8 @@ abstract class _$AppStateCWProxy {
 
   AppState distancePrecompute(DistancePrecompute? distancePrecompute);
 
+  AppState wotInfo(ContactWotInfo? wotInfo);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `AppState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -53,6 +55,7 @@ abstract class _$AppStateCWProxy {
     bool? hasRecentExport,
     int? recentExportReminderInDays,
     DistancePrecompute? distancePrecompute,
+    ContactWotInfo? wotInfo,
   });
 }
 
@@ -110,6 +113,9 @@ class _$AppStateCWProxyImpl implements _$AppStateCWProxy {
       this(distancePrecompute: distancePrecompute);
 
   @override
+  AppState wotInfo(ContactWotInfo? wotInfo) => this(wotInfo: wotInfo);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `AppState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -131,6 +137,7 @@ class _$AppStateCWProxyImpl implements _$AppStateCWProxy {
     Object? hasRecentExport = const $CopyWithPlaceholder(),
     Object? recentExportReminderInDays = const $CopyWithPlaceholder(),
     Object? distancePrecompute = const $CopyWithPlaceholder(),
+    Object? wotInfo = const $CopyWithPlaceholder(),
   }) {
     return AppState(
       introViewed: introViewed == const $CopyWithPlaceholder()
@@ -186,6 +193,10 @@ class _$AppStateCWProxyImpl implements _$AppStateCWProxy {
           ? _value.distancePrecompute
           // ignore: cast_nullable_to_non_nullable
           : distancePrecompute as DistancePrecompute?,
+      wotInfo: wotInfo == const $CopyWithPlaceholder()
+          ? _value.wotInfo
+          // ignore: cast_nullable_to_non_nullable
+          : wotInfo as ContactWotInfo?,
     );
   }
 }

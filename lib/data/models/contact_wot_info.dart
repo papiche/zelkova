@@ -38,6 +38,10 @@ class ContactWotInfo extends Equatable {
   int? currentBlockHeight;
   bool loaded = false;
 
+  // Identity transfer
+  bool? canTransferIdentity;
+  int? lastOwnerKeyChangeBlock;
+
   bool get isme => isMe(you, me.pubKey);
 
   @override
@@ -62,6 +66,8 @@ class ContactWotInfo extends Equatable {
         distRuleOk,
         distRuleRatio,
         currentBlockHeight,
-        loaded
+        loaded,
+        canTransferIdentity,
+        lastOwnerKeyChangeBlock,
       ];
 }

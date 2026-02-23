@@ -4,6 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import '../../g1/currency.dart';
 import '../../g1/distance_precompute.dart';
+import 'contact_wot_info.dart';
 import 'is_json_serializable.dart';
 
 part 'app_state.g.dart';
@@ -24,7 +25,8 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
       Map<String, bool>? tutorials,
       bool? hasRecentExport,
       int? recentExportReminderInDays,
-      this.distancePrecompute})
+      this.distancePrecompute,
+      this.wotInfo})
       : tutorials = tutorials ?? <String, bool>{},
         currency = currency ?? Currency.G1,
         walletCreatedViewed = walletCreatedViewed ?? introViewed,
@@ -50,6 +52,8 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
   final Map<String, bool> tutorials;
   @JsonKey(includeIfNull: false)
   final DistancePrecompute? distancePrecompute;
+  @JsonKey(includeToJson: false, includeFromJson: false)
+  final ContactWotInfo? wotInfo;
 
   @override
   AppState fromJson(Map<String, dynamic> json) => _$AppStateFromJson(json);
@@ -71,6 +75,7 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
         v2mode,
         distancePrecompute,
         recentExportReminderInDays,
-        hasRecentExport
+        hasRecentExport,
+        wotInfo
       ];
 }

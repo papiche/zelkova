@@ -171,6 +171,9 @@ class _ContactPageState extends State<ContactPage> {
               if (!context.mounted) {
                 return;
               }
+              if (result.cancelled) {
+                return;
+              }
               final ProgressDialog pd = ProgressDialog(context: context);
               pd.show(
                 progressType: defProgressType,

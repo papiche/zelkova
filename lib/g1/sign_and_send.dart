@@ -24,10 +24,12 @@ class SignAndSendResult {
   SignAndSendResult({
     this.node,
     required this.progressStream,
+    this.cancelled = false,
   });
 
   final Node? node;
   final Stream<String> progressStream;
+  final bool cancelled;
 }
 
 Future<SignAndSendResult> signAndSend(Node node, Provider provider,

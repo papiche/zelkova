@@ -300,7 +300,8 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
           if (contact.name != null &&
               contact.name!.isNotEmpty &&
               (contact.nick == null ||
-                  contact.name!.toLowerCase() != contact.nick!.toLowerCase()))
+                  contact.name !=
+                      contact.nick)) // Comparación exacta, no case-insensitive
             GestureDetector(
               onTap: () {
                 copyToClipboard(

@@ -103,6 +103,16 @@ class AppCubit extends HydratedCubit<AppState> {
 
   bool get isV2 => state.v2mode;
 
+  bool get isV2AutoActivated => state.v2AutoActivated;
+
+  void autoActivateV2() {
+    emit(state.copyWith(v2mode: true, v2AutoActivated: true));
+  }
+
+  void deactivateAutoV2() {
+    emit(state.copyWith(v2mode: false, v2AutoActivated: false));
+  }
+
   void setDistancePreCompute(DistancePrecompute distancePrecompute) {
     emit(state.copyWith(distancePrecompute: distancePrecompute));
   }

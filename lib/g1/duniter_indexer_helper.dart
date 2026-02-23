@@ -1067,19 +1067,25 @@ Future<int?> getLastOwnerKeyChangeBlock({required String accountId}) async {
       if (response.statusCode == 200) {
         final Map<String, dynamic> data =
             jsonDecode(response.body) as Map<String, dynamic>;
+        final Map<String, dynamic>? innerData =
+            data['data'] as Map<String, dynamic>?;
         final Map<String, dynamic>? identities =
-            data['data']?['identities'] as Map<String, dynamic>?;
+            innerData?['identities'] as Map<String, dynamic>?;
         final List<dynamic>? identityNodes =
             identities?['nodes'] as List<dynamic>?;
 
         if (identityNodes != null && identityNodes.isNotEmpty) {
+          final Map<String, dynamic>? firstIdentity =
+              identityNodes.first as Map<String, dynamic>?;
           final Map<String, dynamic>? ownerKeyChange =
-              identityNodes.first['ownerKeyChange'] as Map<String, dynamic>?;
+              firstIdentity?['ownerKeyChange'] as Map<String, dynamic>?;
           final List<dynamic>? changeNodes =
               ownerKeyChange?['nodes'] as List<dynamic>?;
 
           if (changeNodes != null && changeNodes.isNotEmpty) {
-            return changeNodes.first['blockNumber'] as int;
+            final Map<String, dynamic>? firstChange =
+                changeNodes.first as Map<String, dynamic>?;
+            return firstChange?['blockNumber'] as int?;
           }
         }
         return null; // No owner key changes found or no identity

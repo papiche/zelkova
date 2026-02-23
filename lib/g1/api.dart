@@ -357,7 +357,8 @@ Future<List<Contact>> searchWotV1(String initialSearchTerm) async {
   return contacts;
 }
 
-Future<void> fetchNodesIfNotReady({required bool v2Only}) async {
+Future<void> fetchNodesIfNotReady(
+    {required bool v2Only, bool isProduction = false}) async {
   final List<Future<void>> fetchFutures = <Future<void>>[];
 
   final List<NodeType> nodesToFetch = v2Only
@@ -377,13 +378,14 @@ Future<void> fetchNodesIfNotReady({required bool v2Only}) async {
 
   for (final NodeType type in nodesToFetch) {
     if (NodeManager().nodesWorking(type) < 3) {
-      fetchFutures.add(fetchNodes(type, true));
+      fetchFutures.add(fetchNodes(type, true, isProduction: isProduction));
     }
     await Future.wait(fetchFutures);
   }
 }
 
-Future<void> fetchNodes(NodeType type, bool force) async {
+Future<void> fetchNodes(NodeType type, bool force,
+    {bool isProduction = false}) async {
   try {
     final List<Future<void>> fetchFutures = <Future<void>>[];
 
@@ -399,7 +401,8 @@ Future<void> fetchNodes(NodeType type, bool force) async {
         break;
       case NodeType.endpoint:
       case NodeType.duniterIndexer:
-        fetchFutures.add(_fetchEndPointAndSquidNodes(force: force));
+        fetchFutures.add(_fetchEndPointAndSquidNodes(
+            force: force, isProduction: isProduction));
         break;
       case NodeType.datapodEndpoint:
         fetchFutures
@@ -470,40 +473,50 @@ Future<void> _fetchCesiumPlusNodes({bool force = false}) async {
   NodeManager().loading = false;
 }
 
-Future<void> _fetchEndPointAndSquidNodes({bool force = false}) async {
+Future<void> _fetchEndPointAndSquidNodes(
+    {bool force = false, bool isProduction = false}) async {
   NodeManager().loading = true;
   if (force) {
-    NodeManager().updateNodes(NodeType.endpoint, defaultEndPointNodes);
-    NodeManager()
-        .updateNodes(NodeType.duniterIndexer, defaultDuniterIndexerNodes);
-    logger('Fetching endPoint nodes forced');
+    if (isProduction) {
+      // Production: don't load gtest defaults from .env
+      NodeManager().updateNodes(NodeType.endpoint, <Node>[]);
+      NodeManager().updateNodes(NodeType.duniterIndexer, <Node>[]);
+      logger('Fetching production endPoint nodes forced');
+    } else {
+      // Test: load gtest defaults from .env
+      NodeManager().updateNodes(NodeType.endpoint, defaultEndPointNodes);
+      NodeManager()
+          .updateNodes(NodeType.duniterIndexer, defaultDuniterIndexerNodes);
+      logger('Fetching gtest endPoint nodes forced');
+    }
   } else {
     logger(
         'Fetching endPoint and indexer nodes, we have ${NodeManager().nodesWorking(NodeType.endpoint)} and ${NodeManager().nodesWorking(NodeType.duniterIndexer)}');
   }
 
-  // Fetch nodes from gtest.json
-  final Tuple2<List<Node>, List<Node>> gtestNodes =
-      await _fetchNodesFromGtestJson();
+  // Fetch nodes from appropriate JSON (g1.json for production, gtest.json for test)
+  final Tuple2<List<Node>, List<Node>> remoteNodes = isProduction
+      ? await _fetchNodesFromG1Json()
+      : await _fetchNodesFromGtestJson();
 
   final List<Node> initialEndPointNodes = await _fetchNodes(NodeType.endpoint);
   final List<Node> initialIndexerNodes =
       await _fetchNodes(NodeType.duniterIndexer);
 
-  // Add gtest nodes to initial lists if not already present
+  // Add remote nodes to initial lists if not already present
   final Set<String> endpointUrls =
       initialEndPointNodes.map((Node n) => n.url).toSet();
   final Set<String> indexerUrls =
       initialIndexerNodes.map((Node n) => n.url).toSet();
 
-  for (final Node node in gtestNodes.item1) {
+  for (final Node node in remoteNodes.item1) {
     if (!endpointUrls.contains(node.url)) {
       initialEndPointNodes.add(node);
       endpointUrls.add(node.url);
     }
   }
 
-  for (final Node node in gtestNodes.item2) {
+  for (final Node node in remoteNodes.item2) {
     if (!indexerUrls.contains(node.url)) {
       initialIndexerNodes.add(node);
       indexerUrls.add(node.url);
@@ -519,64 +532,80 @@ Future<void> _fetchEndPointAndSquidNodes({bool force = false}) async {
   NodeManager().loading = false;
 }
 
-/// Fetches nodes from the gtest.json file
-/// Returns a tuple with (endpointNodes, indexerNodes)
-/// If fetching fails, returns empty lists to allow the application to continue
-Future<Tuple2<List<Node>, List<Node>>> _fetchNodesFromGtestJson() async {
-  final List<Node> endpointNodes = <Node>[];
-  final List<Node> indexerNodes = <Node>[];
+/// Fetches nodes from a remote JSON file (generic for gtest.json and g1.json)
+/// Expects JSON with 'rpc' (endpoints) and 'squid' (indexers) arrays
+/// Returns a tuple with (rpcNodes, squidNodes)
+Future<Tuple2<List<Node>, List<Node>>> _fetchNodesFromNetworkJson(
+    String url, String networkName) async {
+  final List<Node> rpcNodes = <Node>[];
+  final List<Node> squidNodes = <Node>[];
 
   try {
-    const String gtestUrl =
-        'https://git.duniter.org/nodes/networks/-/raw/master/gtest.json?ref_type=heads';
-    logger('Fetching nodes from gtest.json');
+    logger('Fetching nodes from $networkName');
 
-    final http.Response response = await http
-        .get(Uri.parse(gtestUrl))
-        .timeout(const Duration(seconds: 10));
+    final http.Response response =
+        await http.get(Uri.parse(url)).timeout(const Duration(seconds: 10));
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data =
           json.decode(response.body) as Map<String, dynamic>;
 
-      // Extract endpoint nodes
-      if (data.containsKey('endpoint') && data['endpoint'] is List) {
-        final List<dynamic> endpoints = data['endpoint'] as List<dynamic>;
-        for (final dynamic endpoint in endpoints) {
-          if (endpoint is String && endpoint.isNotEmpty) {
-            endpointNodes.add(Node(url: endpoint));
+      // Extract RPC nodes
+      if (data.containsKey('rpc') && data['rpc'] is List) {
+        final List<dynamic> rpcs = data['rpc'] as List<dynamic>;
+        for (final dynamic rpc in rpcs) {
+          if (rpc is String && rpc.isNotEmpty) {
+            rpcNodes.add(Node(url: rpc));
           }
         }
-        logger('Loaded ${endpointNodes.length} endpoint nodes from gtest.json');
+        logger('Loaded ${rpcNodes.length} rpc nodes from $networkName');
       }
 
-      // Extract indexer nodes
-      if (data.containsKey('indexer') && data['indexer'] is List) {
-        final List<dynamic> indexers = data['indexer'] as List<dynamic>;
-        for (final dynamic indexer in indexers) {
-          if (indexer is String && indexer.isNotEmpty) {
-            indexerNodes.add(Node(url: indexer));
+      // Extract Squid nodes
+      if (data.containsKey('squid') && data['squid'] is List) {
+        final List<dynamic> squids = data['squid'] as List<dynamic>;
+        for (final dynamic squid in squids) {
+          if (squid is String && squid.isNotEmpty) {
+            squidNodes.add(Node(url: squid));
           }
         }
-        logger('Loaded ${indexerNodes.length} indexer nodes from gtest.json');
+        logger('Loaded ${squidNodes.length} squid nodes from $networkName');
       }
     } else {
-      logger('Failed to fetch gtest.json: HTTP ${response.statusCode}');
+      logger('Failed to fetch $networkName: HTTP ${response.statusCode}');
     }
   } on TimeoutException catch (e) {
-    logger('Timeout fetching nodes from gtest.json: $e');
+    logger('Timeout fetching nodes from $networkName: $e');
   } on SocketException catch (e) {
-    logger('Network error fetching nodes from gtest.json: $e');
+    logger('Network error fetching nodes from $networkName: $e');
   } on http.ClientException catch (e) {
-    logger('HTTP client error fetching nodes from gtest.json: $e');
+    logger('HTTP client error fetching nodes from $networkName: $e');
   } on FormatException catch (e) {
-    logger('JSON parsing error from gtest.json: $e');
+    logger('JSON parsing error from $networkName: $e');
   } catch (e) {
-    logger('Unexpected error fetching nodes from gtest.json: $e');
+    logger('Unexpected error fetching nodes from $networkName: $e');
   }
 
   // Always return a valid tuple, even if empty, to allow the app to continue
-  return Tuple2<List<Node>, List<Node>>(endpointNodes, indexerNodes);
+  return Tuple2<List<Node>, List<Node>>(rpcNodes, squidNodes);
+}
+
+/// Fetches nodes from the gtest.json file (test network)
+/// Returns a tuple with (rpcNodes, squidNodes)
+/// If fetching fails, returns empty lists to allow the application to continue
+Future<Tuple2<List<Node>, List<Node>>> _fetchNodesFromGtestJson() async {
+  const String gtestUrl =
+      'https://git.duniter.org/nodes/networks/-/raw/master/gtest.json?ref_type=heads';
+  return _fetchNodesFromNetworkJson(gtestUrl, 'gtest.json');
+}
+
+/// Fetches nodes from the g1.json file (production network)
+/// Returns a tuple with (rpcNodes, squidNodes)
+/// If fetching fails, returns empty lists to allow the application to continue
+Future<Tuple2<List<Node>, List<Node>>> _fetchNodesFromG1Json() async {
+  const String g1Url =
+      'https://git.duniter.org/nodes/networks/-/raw/master/g1.json?ref_type=heads';
+  return _fetchNodesFromNetworkJson(g1Url, 'g1.json');
 }
 
 Future<void> _fetchV2Nodes({required NodeType type, bool force = false}) async {

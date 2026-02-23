@@ -473,6 +473,10 @@ class GinkgoApp extends StatefulWidget {
   static final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey<NavigatorState>(debugLabel: 'main nav');
 
+  // Global RouteObserver to allow pages to react when they regain focus
+  static final RouteObserver<ModalRoute<dynamic>> routeObserver =
+      RouteObserver<ModalRoute<dynamic>>();
+
   final ThemeData darkTheme;
   final ThemeData lightTheme;
 
@@ -780,6 +784,9 @@ class _GinkgoAppState extends State<GinkgoApp> {
                     /// Localization is not available for the title.
                     title: 'Ğ1nkgo',
                     navigatorKey: GinkgoApp.navigatorKey,
+                    navigatorObservers: <NavigatorObserver>[
+                      GinkgoApp.routeObserver,
+                    ],
                     scaffoldMessengerKey: globalMessengerKey,
 
                     /// Theme stuff

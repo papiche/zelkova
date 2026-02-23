@@ -17,6 +17,7 @@ import '../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../data/models/stored_account.dart';
 import '../../data/wot_info_fetcher.dart';
 import '../../g1/sign_and_send.dart';
+import '../../main.dart';
 import '../../shared_prefs_helper.dart';
 import '../clipboard_helper.dart';
 import '../in_dev_helper.dart';
@@ -39,7 +40,7 @@ class ContactPage extends StatefulWidget {
   State<ContactPage> createState() => _ContactPageState();
 }
 
-class _ContactPageState extends State<ContactPage> {
+class _ContactPageState extends State<ContactPage> with RouteAware {
   late MultiWalletTransactionCubit _txsCubit;
   bool isAvatarExpanded = false;
   late bool isV2;
@@ -59,6 +60,21 @@ class _ContactPageState extends State<ContactPage> {
     super.initState();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final ModalRoute<dynamic>? route = ModalRoute.of(context);
+    if (route != null) {
+      GinkgoApp.routeObserver.subscribe(this, route);
+    }
+  }
+
+  /// Called when a route above this one was popped and this route is now visible again.
+  @override
+  void didPopNext() {
+    _refresh();
+  }
+
   Future<void> _updateBalance() async {
     await _txsCubit.fetchTransactions(pubKey: widget.contact.pubKey);
     setState(() {});
@@ -66,6 +82,7 @@ class _ContactPageState extends State<ContactPage> {
 
   @override
   void dispose() {
+    GinkgoApp.routeObserver.unsubscribe(this);
     _scrollController.dispose();
     _txsCubit.removeStateForKey(widget.contact.pubKey);
     super.dispose();
@@ -91,7 +108,7 @@ class _ContactPageState extends State<ContactPage> {
     setState(() {
       _isRefreshing = true;
       final AppCubit appCubit = context.read<AppCubit>();
-      _wotInfoStream = _getWotInfo(appCubit);
+      _wotInfoStream = _getWotInfo(appCubit, forceRefresh: true);
     });
     await _updateBalance();
     // Reset refreshing state after a delay to debounce
@@ -580,9 +597,11 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
-  Stream<ContactWotInfo> _getWotInfo(AppCubit appCubit) async* {
+  Stream<ContactWotInfo> _getWotInfo(AppCubit appCubit,
+      {bool forceRefresh = false}) async* {
     // 0. Try to get cached data from AppCubit first (pre-fetched)
-    if (appCubit.state.wotInfo != null &&
+    if (!forceRefresh &&
+        appCubit.state.wotInfo != null &&
         appCubit.state.wotInfo!.you.pubKey == widget.contact.pubKey) {
       yield appCubit.state.wotInfo!;
       if (appCubit.state.wotInfo!.loaded) {

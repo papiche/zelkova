@@ -36,14 +36,32 @@ Future<NodeCheckResult> testEndPointV2(String node,
     [Duration timeout = defPolkadotTimeout]) async {
   final Stopwatch stopwatch = Stopwatch()..start();
 
-  final Provider provider = Provider.fromUri(parseNodeUrl(node));
-  final Gtest polkadot = Gtest(provider);
-  final int currentBlockNumber =
-      await polkadot.query.system.number().timeout(defPolkadotTimeout) - 1;
-  stopwatch.stop();
-  final NodeCheckResult nodeCheckResult = NodeCheckResult(
-      latency: stopwatch.elapsed, currentBlock: currentBlockNumber);
-  return nodeCheckResult;
+  final Uri uri = parseNodeUrl(node);
+  final Provider provider;
+  if (uri.scheme == 'ws' || uri.scheme == 'wss') {
+    provider = WsProvider(uri, autoConnect: false);
+  } else {
+    provider = Provider.fromUri(uri);
+  }
+
+  try {
+    // Neutralize orphaned future to prevent uncaught state errors after timeout
+    await provider.connect().catchError((Object e) {
+      loggerDev('Handled orphaned connection error in testEndPointV2: $e');
+    }).timeout(timeout);
+
+    final Gtest polkadot = Gtest(provider);
+    final int currentBlockNumber =
+        await polkadot.query.system.number().timeout(timeout) - 1;
+    stopwatch.stop();
+    final NodeCheckResult nodeCheckResult = NodeCheckResult(
+        latency: stopwatch.elapsed, currentBlock: currentBlockNumber);
+    return nodeCheckResult;
+  } finally {
+    try {
+      await provider.disconnect();
+    } catch (_) {}
+  }
 }
 
 Uri parseNodeUrl(String url) {
@@ -54,14 +72,31 @@ Uri parseNodeUrl(String url) {
 Future<T> executeOnPolkadotNodes<T>(
     Future<T> Function(Node node, Provider provider, Gtest polkadot) operation,
     {bool retry = true,
-    Duration timeout = defPolkadotTimeout}) async {
+    Duration timeout = defPolkadotTimeout,
+    // Set to false for operations that return a SignAndSendResult whose stream
+    // keeps the provider alive via signAndSend's own safeDisconnect callback.
+    // If true (default), the provider is disconnected in the finally block.
+    bool disconnectAfter = true}) async {
   final List<Node> nodes = NodeManager().getBestNodes(NodeType.endpoint);
   Exception? lastError;
 
   for (final Node node in nodes) {
     loggerDev('executeOnPolkadotNode: ${node.url}');
+    final Uri uri = parseNodeUrl(node.url);
+    final Provider provider;
+    if (uri.scheme == 'ws' || uri.scheme == 'wss') {
+      provider = WsProvider(uri, autoConnect: false);
+    } else {
+      provider = Provider.fromUri(uri);
+    }
+
     try {
-      final Provider provider = Provider.fromUri(parseNodeUrl(node.url));
+      // Neutralize orphaned future to prevent uncaught state errors after timeout
+      await provider.connect().catchError((Object e) {
+        loggerDev(
+            'Handled orphaned connection error in executeOnPolkadotNode: $e');
+      }).timeout(timeout);
+
       final Gtest polkadot = Gtest(provider);
 
       final T result =
@@ -74,6 +109,15 @@ Future<T> executeOnPolkadotNodes<T>(
       loggerDev('Error in node ${node.url}', error: e, stackTrace: stacktrace);
       if (!retry) {
         rethrow;
+      }
+    } finally {
+      // Only disconnect here for read-only operations. For signAndSend-based
+      // operations (disconnectAfter: false) the provider must stay alive until
+      // the stream closes and signAndSend calls its own safeDisconnect.
+      if (disconnectAfter) {
+        try {
+          await provider.disconnect();
+        } catch (_) {}
       }
     }
   }
@@ -158,7 +202,7 @@ Future<SignAndSendResult> requestDistanceEvaluationFor(int idtyIndex,
       call,
       messageTransformer: _defaultResultTransformer,
     );
-  });
+  }, disconnectAfter: false);
 }
 
 Future<SignAndSendResult> requestDistanceEvaluation(
@@ -180,7 +224,7 @@ Future<SignAndSendResult> requestDistanceEvaluation(
       call,
       messageTransformer: _defaultResultTransformer,
     );
-  });
+  }, disconnectAfter: false);
 }
 
 Future<SignAndSendResult> createIdentity(
@@ -284,14 +328,11 @@ Future<SignAndSendResult> certify(int idtyIndex,
       call,
       messageTransformer: _defaultResultTransformer,
     );
-  });
+  }, disconnectAfter: false);
 }
 
 Constants polkadotConstants() {
-  final Provider provider =
-      Provider.fromUri(parseNodeUrl(NodeManager().endpointNodes.first.url));
-  final Gtest polkadot = Gtest(provider);
-  return polkadot.constant;
+  return Constants();
 }
 
 Future<PayResult> payV2({
@@ -375,18 +416,37 @@ String _defaultResultTransformer(String statusType) {
   return _resultTransformer('op', statusType, 'op_successful');
 }
 
+String _batchResultTransformer(String statusType) {
+  return _resultTransformer('op_batch', statusType, 'op_batch_successful');
+}
+
+String _transferIdentityResultTransformer(String statusType) {
+  return _resultTransformer('transfer_identity', statusType, 'transfer_identity_successful');
+}
+
 String _resultTransformer(String suffix, String statusType, String success) {
-  return <String, String>{
-        'finalized': tr(success),
-        'ready': tr('${suffix}_ready'),
-        'inBlock': tr('${suffix}_in_block'),
-        'broadcast': tr('${suffix}_broadcast'),
-        'dropped': tr('${suffix}_dropped'),
-        'invalid': tr('${suffix}_invalid'),
-        'usurped': tr('${suffix}_usurped'),
-        'future': tr('${suffix}_processing'),
-      }[statusType] ??
-      tr('${suffix}_processing');
+  final Map<String, String> messages = <String, String>{
+    'finalized': tr(success),
+    'ready': tr('${suffix}_ready'),
+    'inBlock': tr('${suffix}_in_block'),
+    'broadcast': tr('${suffix}_broadcast'),
+    'dropped': tr('${suffix}_dropped'),
+    'invalid': tr('op_invalid'),
+    'usurped': tr('${suffix}_usurped'),
+    'future': tr('${suffix}_processing'),
+  };
+
+  String result = messages[statusType] ?? tr('${suffix}_processing');
+
+  if (statusType == 'future' || statusType == 'broadcast') {
+    if (suffix == 'op_batch' || suffix == 'transfer_identity') {
+      result += '\n${tr('op_batch_wait_hint')}';
+    } else {
+      result += '\n${tr('op_wait_hint')}';
+    }
+  }
+
+  return result;
 }
 
 Future<SignAndSendResult> renew(int idtyIndex,
@@ -404,7 +464,7 @@ Future<SignAndSendResult> renew(int idtyIndex,
       call,
       messageTransformer: _defaultResultTransformer,
     );
-  });
+  }, disconnectAfter: false);
 }
 
 Future<SignAndSendResult> renewCert(int idtyIndex,
@@ -422,7 +482,7 @@ Future<SignAndSendResult> renewCert(int idtyIndex,
       call,
       messageTransformer: _defaultResultTransformer,
     );
-  });
+  }, disconnectAfter: false);
 }
 
 Future<SignAndSendResult> revokeIdentity(int idtyIndex,
@@ -463,7 +523,7 @@ Future<SignAndSendResult> revokeIdentity(int idtyIndex,
       call,
       messageTransformer: _defaultResultTransformer,
     );
-  });
+  }, disconnectAfter: false);
 }
 
 Future<SignAndSendResult> changeOwnerKey(String newOwnerAddress,
@@ -495,8 +555,10 @@ Future<SignAndSendResult> changeOwnerKey(String newOwnerAddress,
       }
 
       // Get the new owner's public key
-      final Uint8List newOwnerPubkeyBytes =
-          Address.decode(newOwnerAddress).pubkey;
+      final String ss58Address = isValidV2Address(newOwnerAddress)
+          ? newOwnerAddress
+          : addressFromV1PubkeyFaiSafe(newOwnerAddress);
+      final Uint8List newOwnerPubkeyBytes = Address.decode(ss58Address).pubkey;
 
       // Get genesis hash for the payload
       final H256 genesisHashH256 = await polkadot.query.system.blockHash(0);
@@ -564,9 +626,9 @@ Future<SignAndSendResult> changeOwnerKey(String newOwnerAddress,
         polkadot,
         currentWallet,
         finalCall,
-        messageTransformer: _defaultResultTransformer,
+        messageTransformer: _transferIdentityResultTransformer,
       );
-    });
+    }, disconnectAfter: false);
   } catch (e) {
     // Create a SignAndSendResult with the error in the progress stream
     final StreamController<String> errorController = StreamController<String>();
@@ -598,8 +660,11 @@ Future<SignAndSendResult> transferAllWOT(String toAddress,
   final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
   return executeOnPolkadotNodes(
       (Node node, Provider provider, Gtest polkadot) async {
+    final String ss58Address = isValidV2Address(toAddress)
+        ? toAddress
+        : addressFromV1PubkeyFaiSafe(toAddress);
     final Id multiAddress =
-        const $MultiAddress().id(Address.decode(toAddress).pubkey);
+        const $MultiAddress().id(Address.decode(ss58Address).pubkey);
 
     // Get balance to check for unclaimed UDs
     final Uint8List pubkey = Address.decode(wallet.address).pubkey;
@@ -641,9 +706,9 @@ Future<SignAndSendResult> transferAllWOT(String toAddress,
       polkadot,
       wallet,
       finalCall,
-      messageTransformer: _defaultResultTransformer,
+      messageTransformer: _batchResultTransformer,
     );
-  });
+  }, disconnectAfter: false);
 }
 
 Future<SignAndSendResult> revoke(
@@ -664,7 +729,7 @@ Future<SignAndSendResult> revoke(
       call,
       messageTransformer: _defaultResultTransformer,
     );
-  });
+  }, disconnectAfter: false);
 }
 
 Future<double> currentUniversalDividendV2() async {

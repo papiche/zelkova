@@ -178,6 +178,10 @@ class SharedPreferencesHelperV1
     final int index =
         cards.indexWhere((LegacyWallet a) => a.pubKey == extractedPubKey);
     if (index >= 0) {
+      final LegacyWallet card = legacyWallets[index];
+      legacyWallets[index] =
+          card.copyWith(lastUsed: DateTime.now().millisecondsSinceEpoch);
+      await saveLegacyWallets(false);
       await _setCurrentWalletIndex(index);
     } else {
       throw Exception('Invalid wallet index: $index');
@@ -188,6 +192,10 @@ class SharedPreferencesHelperV1
   @override
   Future<void> selectCurrentWalletIndex(int index) async {
     if (index < legacyWallets.length) {
+      final LegacyWallet card = legacyWallets[index];
+      legacyWallets[index] =
+          card.copyWith(lastUsed: DateTime.now().millisecondsSinceEpoch);
+      await saveLegacyWallets(false);
       await _setCurrentWalletIndex(index);
     } else {
       throw Exception('Invalid wallet index: $index');

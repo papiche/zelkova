@@ -64,6 +64,7 @@ class ContactsCache {
   static ContactsCache? _instance;
   final Map<String, List<Completer<Contact>>> _pendingRequests =
       <String, List<Completer<Contact>>>{};
+  final Map<String, DateTime> _failedRequests = <String, DateTime>{};
 
   final String _boxName = 'contacts_cache';
 
@@ -100,6 +101,18 @@ class ContactsCache {
       return completer.future;
     }
 
+    if (_failedRequests.containsKey(pubKey)) {
+      final DateTime failedTime = _failedRequests[pubKey]!;
+      if (DateTime.now().difference(failedTime) < const Duration(minutes: 5)) {
+        if (!kReleaseMode && debug) {
+          logger('Returning cached failure for $pubKey');
+        }
+        return Contact(pubKey: pubKey);
+      } else {
+        _failedRequests.remove(pubKey);
+      }
+    }
+
     final Completer<Contact> completer = Completer<Contact>();
     _pendingRequests[pubKey] = <Completer<Contact>>[completer];
     try {
@@ -109,20 +122,30 @@ class ContactsCache {
         logger('Returning non cached contact $cachedContact');
       }
       // Send to listeners
-      for (final Completer<Contact> completer in _pendingRequests[pubKey]!) {
-        completer.complete(cachedContact);
+      final List<Completer<Contact>>? pending = _pendingRequests.remove(pubKey);
+      if (pending != null) {
+        for (final Completer<Contact> completer in pending) {
+          completer.complete(cachedContact);
+        }
       }
-      _pendingRequests.remove(pubKey);
 
       return cachedContact;
     } catch (e, stackTrace) {
+      // If it's a 404 or other fetch error, cache it for a while
+      _failedRequests[pubKey] = DateTime.now();
+
       // Send error to listeners
-      for (final Completer<Contact> completer in _pendingRequests[pubKey]!) {
-        completer.completeError(e);
+      final List<Completer<Contact>>? pending = _pendingRequests.remove(pubKey);
+      if (pending != null) {
+        for (final Completer<Contact> completer in pending) {
+          // Return an empty contact instead of an error to avoid breaking UI flows
+          completer.complete(Contact(pubKey: pubKey));
+        }
       }
-      _pendingRequests.remove(pubKey);
-      await Sentry.captureException(e, stackTrace: stackTrace);
-      rethrow;
+      if (e is! Exception || !e.toString().contains('404')) {
+        await Sentry.captureException(e, stackTrace: stackTrace);
+      }
+      return Contact(pubKey: pubKey);
     }
   }
 

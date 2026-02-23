@@ -8,6 +8,7 @@ import '../../data/models/contact_wot_info.dart';
 import '../../data/models/identity_status.dart';
 import '../../data/models/stored_account.dart';
 import '../../g1/duniter_endpoint_helper.dart';
+import '../../g1/duniter_indexer_helper.dart' as duniter_indexer;
 import '../../g1/sign_and_send.dart';
 import '../../shared_prefs_helper.dart';
 import '../contacts_cache.dart';
@@ -37,7 +38,6 @@ List<WotMenuAction> getWotMenuActions(
       if (isMe) {
         _requestDistanceAction(context, actions, wotInfo);
         _renewMembershipActionForSelf(context, wotInfo, actions);
-        _transferAllAction(context, wotInfo, actions);
         _changeOwnerKeyAction(context, wotInfo, actions);
         _revokeAction(context, wotInfo, actions);
       } else {
@@ -107,6 +107,9 @@ List<WotMenuAction> getWotMenuActions(
                   SignAndSendResult(progressStream: Stream<String>.value('')));
             }));
       }
+  }
+  if (isMe) {
+    _transferAllAction(context, wotInfo, actions);
   }
 
   logger.info(
@@ -780,6 +783,53 @@ Future<SignAndSendResult> _confirmAndTransferAll(
 
 Future<SignAndSendResult> _confirmAndChangeOwnerKey(
     BuildContext context, ContactWotInfo wotInfo) async {
+  // Check if the identity has had a recent owner key change
+  try {
+    final int? lastChangeBlock = await duniter_indexer
+        .getLastOwnerKeyChangeBlock(accountId: wotInfo.you.address);
+
+    if (lastChangeBlock != null && wotInfo.currentBlockHeight != null) {
+      final int blocksSinceChange =
+          wotInfo.currentBlockHeight! - lastChangeBlock;
+      final int cooldownBlocks =
+          polkadotConstants().identity.changeOwnerKeyPeriod;
+
+      if (blocksSinceChange < cooldownBlocks) {
+        final int blocksRemaining = cooldownBlocks - blocksSinceChange;
+        final int daysRemaining = (blocksRemaining * 6) ~/ (60 * 60 * 24);
+
+        if (context.mounted) {
+          await showDialog<void>(
+            context: context,
+            builder: (BuildContext dialogContext) {
+              return AlertDialog(
+                title: Text(tr('transfer_identity_cooldown_title')),
+                content: Text(tr('transfer_identity_cooldown_desc',
+                    namedArgs: <String, String>{
+                      'time': tr('transfer_identity_cooldown_days',
+                          namedArgs: <String, String>{
+                            'days': daysRemaining.toString()
+                          }),
+                    })),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(dialogContext).pop();
+                    },
+                    child: Text(tr('ok')),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+        return _returnAuthFailed();
+      }
+    }
+  } catch (e, st) {
+    loggerDev('Error checking owner key cooldown', error: e, stackTrace: st);
+  }
+
   final bool? confirmed = await showDialog<bool>(
     context: context,
     builder: (BuildContext dialogContext) {
@@ -835,6 +885,7 @@ Future<SignAndSendResult> _confirmAndChangeOwnerKey(
         progressController.addError(error);
       },
       onDone: () async {
+        progressController.close();
         if (!hasError) {
           try {
             await SharedPreferencesHelper().refreshWalletsInfo();
@@ -843,7 +894,6 @@ Future<SignAndSendResult> _confirmAndChangeOwnerKey(
             loggerDev('Error refreshing wallets after changeOwnerKey: $e');
           }
         }
-        progressController.close();
       },
     );
 
@@ -889,8 +939,8 @@ Future<StoredAccount?> _selectNewOwnerAccount(BuildContext context) async {
     title: tr('select_new_owner_account'),
     errorMessage: tr('please_select_new_owner_account'),
     filterFunction: (StoredAccount account) {
-      // Filter: password-protected and without identity
-      return account.type != AccountType.v1PasswordLess &&
+      // Filter: password-protected v2 account and without identity
+      return account.type == AccountType.v2PasswordProtected &&
           account.contact.index == null;
     },
   );

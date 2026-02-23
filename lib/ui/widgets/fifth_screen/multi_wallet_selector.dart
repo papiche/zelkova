@@ -48,9 +48,9 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
 
   late final List<StoredAccount> _accounts = SharedPreferencesHelper()
       .accounts
-      .where((StoredAccount card) =>
-          card.type != AccountType.v1PasswordProtected &&
-          (widget.filterFunction == null || widget.filterFunction!(card)))
+      .where((StoredAccount card) => widget.filterFunction != null
+          ? widget.filterFunction!(card)
+          : card.type != AccountType.v1PasswordProtected)
       .toList();
 
   void _onCardTapped(StoredAccount account) {
@@ -157,6 +157,7 @@ class _MultiWalletSelectorPageState extends State<MultiWalletSelectorPage> {
                               account.contact.name!.isNotEmpty,
                           suffix: '',
                           theme: account.theme,
+                          isDerived: account.derivationParentId != null,
                         ),
                       ),
                       Positioned(
@@ -258,9 +259,9 @@ void showSingleWalletSelector(
   // Check if there are available accounts after filtering
   final List<StoredAccount> availableAccounts = SharedPreferencesHelper()
       .accounts
-      .where((StoredAccount card) =>
-          card.type != AccountType.v1PasswordProtected &&
-          (filterFunction == null || filterFunction(card)))
+      .where((StoredAccount card) => filterFunction != null
+          ? filterFunction(card)
+          : card.type != AccountType.v1PasswordProtected)
       .toList();
 
   if (availableAccounts.isEmpty) {

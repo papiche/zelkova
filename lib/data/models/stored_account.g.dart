@@ -23,6 +23,8 @@ abstract class _$StoredAccountCWProxy {
 
   StoredAccount derivationParentId(String? derivationParentId);
 
+  StoredAccount lastUsed(int? lastUsed);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `StoredAccount(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -38,6 +40,7 @@ abstract class _$StoredAccountCWProxy {
     Uint8List? seed,
     String? derivationPath,
     String? derivationParentId,
+    int? lastUsed,
   });
 }
 
@@ -74,6 +77,9 @@ class _$StoredAccountCWProxyImpl implements _$StoredAccountCWProxy {
       this(derivationParentId: derivationParentId);
 
   @override
+  StoredAccount lastUsed(int? lastUsed) => this(lastUsed: lastUsed);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `StoredAccount(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -90,6 +96,7 @@ class _$StoredAccountCWProxyImpl implements _$StoredAccountCWProxy {
     Object? seed = const $CopyWithPlaceholder(),
     Object? derivationPath = const $CopyWithPlaceholder(),
     Object? derivationParentId = const $CopyWithPlaceholder(),
+    Object? lastUsed = const $CopyWithPlaceholder(),
   }) {
     return StoredAccount(
       pubKey: pubKey == const $CopyWithPlaceholder()
@@ -124,6 +131,10 @@ class _$StoredAccountCWProxyImpl implements _$StoredAccountCWProxy {
           ? _value.derivationParentId
           // ignore: cast_nullable_to_non_nullable
           : derivationParentId as String?,
+      lastUsed: lastUsed == const $CopyWithPlaceholder()
+          ? _value.lastUsed
+          // ignore: cast_nullable_to_non_nullable
+          : lastUsed as int?,
     );
   }
 }
@@ -148,6 +159,7 @@ StoredAccount _$StoredAccountFromJson(Map<String, dynamic> json) =>
       seed: uIntFromList(json['seed']),
       derivationPath: json['derivationPath'] as String?,
       derivationParentId: json['derivationParentId'] as String?,
+      lastUsed: (json['lastUsed'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$StoredAccountToJson(StoredAccount instance) =>
@@ -160,6 +172,7 @@ Map<String, dynamic> _$StoredAccountToJson(StoredAccount instance) =>
       'theme': instance.theme,
       'seed': uIntToList(instance.seed),
       'derivationParentId': instance.derivationParentId,
+      'lastUsed': instance.lastUsed,
     };
 
 const _$AccountTypeEnumMap = {

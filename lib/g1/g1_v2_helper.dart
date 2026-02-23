@@ -170,6 +170,26 @@ Future<KeyPair> deriveKeyPairCompat(
   }
 }
 
+Future<KeyPair> deriveKeyPairWithPath(
+  String mnemonic,
+  int derivationIndex, {
+  int ss58 = 4450,
+  KeyPairType keyPairType = KeyPairType.ed25519,
+}) async {
+  try {
+    final String uri = '$mnemonic//$derivationIndex';
+    final KeyPair kp = await Keyring().fromUri(uri, keyPairType: keyPairType);
+    kp.ss58Format = ss58;
+    return kp;
+  } catch (_) {
+    final String en = toEnglishMnemonic(mnemonic);
+    final String uri = '$en//$derivationIndex';
+    final KeyPair kp = await Keyring().fromUri(uri, keyPairType: keyPairType);
+    kp.ss58Format = ss58;
+    return kp;
+  }
+}
+
 Language bip39LanguageFromLocale(Locale? locale) {
   final List<Locale> sys = PlatformDispatcher.instance.locales;
   final Locale L = locale ??

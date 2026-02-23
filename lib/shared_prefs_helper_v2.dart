@@ -16,6 +16,7 @@ import 'g1/api.dart';
 import 'g1/g1_helper.dart';
 import 'g1/g1_v2_helper.dart';
 import 'secure_crypto_helper.dart';
+import 'services/derivation_scan_service.dart';
 import 'shared_prefs_helper.dart';
 import 'storage_keys.dart';
 import 'ui/contacts_cache.dart';
@@ -245,6 +246,10 @@ class SharedPreferencesHelperV2
   @override
   Future<void> selectCurrentWalletIndex(int index) async {
     if (index < accounts.length) {
+      final StoredAccount acc = accounts[index];
+      accounts[index] =
+          acc.copyWith(lastUsed: DateTime.now().millisecondsSinceEpoch);
+      await _saveAccounts(false);
       await _setCurrentWalletIndex(index);
     } else {
       throw Exception('Invalid wallet index: $index');
@@ -257,7 +262,13 @@ class SharedPreferencesHelperV2
     final int i =
         accounts.indexWhere((StoredAccount a) => a.pubKey == extractedPubkey);
     logger('Selecting wallet with pubKey: $extractedPubkey at index $i');
-    await _setCurrentWalletIndex(i);
+    if (i >= 0) {
+      final StoredAccount acc = accounts[i];
+      accounts[i] =
+          acc.copyWith(lastUsed: DateTime.now().millisecondsSinceEpoch);
+      await _saveAccounts(false);
+      await _setCurrentWalletIndex(i);
+    }
   }
 
   @override
@@ -480,6 +491,90 @@ class SharedPreferencesHelperV2
     );
 
     await _onAccountAdded(acc);
+
+    // Scan for derivations
+    final DerivationScanService scanner = DerivationScanService();
+    final Map<int, KeypairResult> derivedWallets =
+        await scanner.scanDerivations(original);
+
+    for (final KeypairResult derived in derivedWallets.values) {
+      await _importDerivedWallet(original, derived, type, acc.theme, pubKey);
+    }
+  }
+
+  Future<void> _importDerivedWallet(String mnemonic, KeypairResult result,
+      AccountType type, WalletTheme parentTheme, String parentPubKey) async {
+    // Check for duplicates
+    if (_accountExists(result.pubKey)) {
+      return;
+    }
+
+    Uint8List seedBytes;
+    if (type == AccountType.v2PasswordProtected) {
+      final Uint8List key = await _ensurePasswordKey();
+      seedBytes = SecureCryptoHelper.encrypt(mnemonicToStore(mnemonic), key);
+    } else {
+      // v2PasswordLess: store plaintext mnemonic bytes
+      seedBytes = mnemonicToStore(mnemonic);
+    }
+
+    final StoredAccount acc = StoredAccount(
+      pubKey: result.pubKey,
+      address: result.address,
+      seed: seedBytes,
+      type: type,
+      theme: parentTheme, // Use the same theme as parent
+      contact: Contact.withAddress(
+        address: result.address,
+        createdOn: DateTime.now().millisecondsSinceEpoch,
+      ),
+      derivationPath: '//${result.derivation}',
+      derivationParentId: parentPubKey,
+    );
+
+    await _onAccountAdded(acc);
+  }
+
+  Future<void> deriveNextAccount(StoredAccount parent) async {
+    if (!parent.type.isV2) {
+      throw Exception('Only V2 accounts support manual derivation');
+    }
+
+    // 1. Resolve mnemonic
+    final Uint8List seedBytes = await _resolveActualSeed(parent);
+    final String mnemonic = storeToMnemonic(seedBytes);
+
+    // 2. Find next index
+    int maxIndex = -1;
+    // We check both the parent and all its children to find the current highest index
+    final String parentPubKey = parent.derivationParentId ?? parent.pubKey;
+
+    for (final StoredAccount acc in accounts) {
+      if ((acc.pubKey == parentPubKey ||
+              acc.derivationParentId == parentPubKey) &&
+          acc.derivationPath != null) {
+        final String path = acc.derivationPath!;
+        if (path.startsWith('//')) {
+          final int? index = int.tryParse(path.substring(2));
+          if (index != null && index > maxIndex) {
+            maxIndex = index;
+          }
+        }
+      }
+    }
+
+    final int nextIndex = maxIndex + 1;
+
+    // 3. Derive and import
+    final KeyPair kp = await deriveKeyPairWithPath(mnemonic, nextIndex);
+    final KeypairResult result = KeypairResult(
+      derivation: nextIndex,
+      pubKey: v1pubkeyFromAddress(kp.address),
+      address: kp.address,
+    );
+
+    await _importDerivedWallet(
+        mnemonic, result, parent.type, parent.theme, parentPubKey);
   }
 
   Future<void> _onAccountAdded(StoredAccount acc) async {
@@ -488,7 +583,9 @@ class SharedPreferencesHelperV2
       logger('ERROR: Attempted to add duplicate account: ${acc.pubKey}');
       throw WalletAlreadyExistsException(acc.pubKey);
     }
-    accounts.add(acc);
+    accounts.add(acc.lastUsed == null
+        ? acc.copyWith(lastUsed: DateTime.now().millisecondsSinceEpoch)
+        : acc);
     await _saveAccounts();
     await _setCurrentWalletIndex(accounts.length - 1);
     notifyListeners();

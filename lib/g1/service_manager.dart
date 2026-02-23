@@ -13,7 +13,10 @@ import 'transactions_v2_parser.dart';
 
 abstract class DuniterService {
   Future<Contact> getProfile(String pubKey,
-      {bool onlyProfile = false, bool resize = true, bool complete = false});
+      {bool onlyProfile = false,
+      bool resize = true,
+      bool complete = false,
+      Contact? baseContact});
 
   Future<List<Contact>> getProfiles(List<String> pubKeys);
 
@@ -49,7 +52,10 @@ abstract class DuniterService {
 class DuniterServiceV1 implements DuniterService {
   @override
   Future<Contact> getProfile(String pubKey,
-      {bool onlyProfile = false, bool resize = true, bool complete = false}) {
+      {bool onlyProfile = false,
+      bool resize = true,
+      bool complete = false,
+      Contact? baseContact}) {
     return getProfileV1(pubKey, onlyCPlusProfile: onlyProfile, resize: resize);
   }
 
@@ -105,12 +111,12 @@ class DuniterServiceV1 implements DuniterService {
 
   @override
   Future<bool> createOrUpdateProfile(String name) {
-    return createOrUpdateProfileV2(name);
+    return createOrUpdateProfileV1(name);
   }
 
   @override
   Future<bool> deleteProfile() {
-    return deleteProfileV2();
+    return deleteProfileV1();
   }
 
   @override
@@ -122,9 +128,15 @@ class DuniterServiceV1 implements DuniterService {
 class DuniterServiceV2 implements DuniterService {
   @override
   Future<Contact> getProfile(String pubKey,
-      {bool onlyProfile = false, bool resize = true, bool complete = false}) {
+      {bool onlyProfile = false,
+      bool resize = true,
+      bool complete = false,
+      Contact? baseContact}) {
     return duniter_indexer.getProfileV2(pubKey,
-        onlyProfile: onlyProfile, complete: complete);
+        onlyProfile: onlyProfile,
+        resize: resize,
+        complete: complete,
+        baseContact: baseContact);
   }
 
   @override
@@ -180,12 +192,12 @@ class DuniterServiceV2 implements DuniterService {
 
   @override
   Future<bool> createOrUpdateProfile(String name) {
-    return createOrUpdateProfileV2(name);
+    return createOrUpdateProfileV2cPlus(name);
   }
 
   @override
   Future<bool> deleteProfile() {
-    return deleteProfileV2();
+    return deleteProfileV2cPlus();
   }
 
   @override

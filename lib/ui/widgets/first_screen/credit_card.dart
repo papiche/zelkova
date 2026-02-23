@@ -29,8 +29,10 @@ class CreditCard extends StatelessWidget {
     const double cardRadius = 10.0;
     final String publicKey =
         account.type.isV2 ? account.address : account.pubKey;
-    final bool allowEditName = account.type == AccountType.v1PasswordLess ||
-        (account.type.isV2 && !(account.contact.isMember ?? false));
+    // Edit is allowed only when the account has no Duniter identity.
+    // Accounts with an identity display their nick read-only.
+    final bool hasIdentity =
+        account.contact.nick != null && account.contact.nick!.isNotEmpty;
     final WalletTheme cardTheme = theme ?? account.theme;
 
     return LayoutBuilder(
@@ -143,12 +145,8 @@ class CreditCard extends StatelessWidget {
                                 child: CardNameEditable(
                                   key: Key(account.pubKey),
                                   account: account,
-                                  cardName: account.title,
-                                  isEditable: allowEditName,
-                                  isPassProtected:
-                                      account.type.isPasswordProtected,
                                   defValue:
-                                      allowEditName ? tr('your_name_here') : '',
+                                      !hasIdentity ? tr('your_name_here') : '',
                                 ),
                               ),
                             ],

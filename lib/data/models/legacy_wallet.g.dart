@@ -15,6 +15,8 @@ abstract class _$LegacyWalletCWProxy {
 
   LegacyWallet theme(WalletTheme theme);
 
+  LegacyWallet lastUsed(int? lastUsed);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `LegacyWallet(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -26,6 +28,7 @@ abstract class _$LegacyWalletCWProxy {
     String pubKey,
     String name,
     WalletTheme theme,
+    int? lastUsed,
   });
 }
 
@@ -48,6 +51,9 @@ class _$LegacyWalletCWProxyImpl implements _$LegacyWalletCWProxy {
   LegacyWallet theme(WalletTheme theme) => this(theme: theme);
 
   @override
+  LegacyWallet lastUsed(int? lastUsed) => this(lastUsed: lastUsed);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `LegacyWallet(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -60,6 +66,7 @@ class _$LegacyWalletCWProxyImpl implements _$LegacyWalletCWProxy {
     Object? pubKey = const $CopyWithPlaceholder(),
     Object? name = const $CopyWithPlaceholder(),
     Object? theme = const $CopyWithPlaceholder(),
+    Object? lastUsed = const $CopyWithPlaceholder(),
   }) {
     return LegacyWallet(
       seed: seed == const $CopyWithPlaceholder()
@@ -78,6 +85,10 @@ class _$LegacyWalletCWProxyImpl implements _$LegacyWalletCWProxy {
           ? _value.theme
           // ignore: cast_nullable_to_non_nullable
           : theme as WalletTheme,
+      lastUsed: lastUsed == const $CopyWithPlaceholder()
+          ? _value.lastUsed
+          // ignore: cast_nullable_to_non_nullable
+          : lastUsed as int?,
     );
   }
 }
@@ -97,6 +108,7 @@ LegacyWallet _$LegacyWalletFromJson(Map<String, dynamic> json) => LegacyWallet(
       pubKey: json['pubKey'] as String,
       name: json['name'] as String,
       theme: WalletTheme.fromJson(json['theme'] as Map<String, dynamic>),
+      lastUsed: (json['lastUsed'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$LegacyWalletToJson(LegacyWallet instance) =>
@@ -105,4 +117,5 @@ Map<String, dynamic> _$LegacyWalletToJson(LegacyWallet instance) =>
       'seed': instance.seed,
       'theme': instance.theme,
       'name': instance.name,
+      'lastUsed': instance.lastUsed,
     };

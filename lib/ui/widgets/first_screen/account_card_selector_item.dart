@@ -5,12 +5,18 @@ import '../../ui_helpers.dart';
 
 class AccountCardSelectorItem extends StatelessWidget {
   const AccountCardSelectorItem(
-      {super.key, this.name, required this.theme, this.suffix, this.hasName});
+      {super.key,
+      this.name,
+      required this.theme,
+      this.suffix,
+      this.hasName,
+      this.isDerived = false});
 
   final String? name;
   final bool? hasName;
   final String? suffix;
   final WalletTheme theme;
+  final bool isDerived;
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +83,14 @@ class AccountCardSelectorItem extends StatelessWidget {
                                             style: _textStyle(context),
                                           ),
                                       ]),
-                                ))
+                                )),
+                          if (isDerived)
+                            const Positioned(
+                              bottom: 8,
+                              right: 8,
+                              child: Icon(Icons.link,
+                                  color: Colors.white70, size: 20),
+                            ),
                         ]))))));
   }
 

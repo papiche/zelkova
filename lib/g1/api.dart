@@ -53,6 +53,11 @@ import 'v2_peers.dart';
 const String currencyDotEnv = Env.currency;
 final String currency = currencyDotEnv.isEmpty ? 'g1' : currencyDotEnv;
 
+// Deduplication map for Cesium+ requests - tracks in-flight requests
+// Maps request path to list of Completers waiting for the result
+final Map<String, List<Completer<Tuple2<Node, http.Response>>>> _cPlusInFlight =
+    <String, List<Completer<Tuple2<Node, http.Response>>>>{};
+
 Future<String> getTxHistory(String publicKey) async {
   final Response response =
       (await requestWithRetry(NodeType.duniter, '/tx/history/$publicKey'))
@@ -836,7 +841,48 @@ Future<Tuple2<Node, http.Response>> requestDuniterWithRetry(String path,
 
 Future<Tuple2<Node, http.Response>> requestCPlusWithRetry(String path,
     {bool retryWith404 = true}) async {
-  return _requestWithRetry(NodeType.cesiumPlus, path, true, retryWith404);
+  // Check if this request is already in-flight
+  if (_cPlusInFlight.containsKey(path)) {
+    // Deduplicate: create a completer and wait for the in-flight request
+    final Completer<Tuple2<Node, http.Response>> completer =
+        Completer<Tuple2<Node, http.Response>>();
+    _cPlusInFlight[path]!.add(completer);
+    logger('Deduplicating CesiumPlus request for: $path');
+    return completer.future;
+  }
+
+  // Mark this request as in-flight
+  final Completer<Tuple2<Node, http.Response>> mainCompleter =
+      Completer<Tuple2<Node, http.Response>>();
+  _cPlusInFlight[path] = <Completer<Tuple2<Node, http.Response>>>[
+    mainCompleter
+  ];
+
+  try {
+    final Tuple2<Node, http.Response> result =
+        await _requestWithRetry(NodeType.cesiumPlus, path, true, retryWith404);
+
+    // Notify all waiting completers
+    final List<Completer<Tuple2<Node, http.Response>>>? waiters =
+        _cPlusInFlight.remove(path);
+    if (waiters != null) {
+      for (final Completer<Tuple2<Node, http.Response>> waiter in waiters) {
+        waiter.complete(result);
+      }
+    }
+
+    return result;
+  } catch (e) {
+    // Notify all waiting completers about the error
+    final List<Completer<Tuple2<Node, http.Response>>>? waiters =
+        _cPlusInFlight.remove(path);
+    if (waiters != null) {
+      for (final Completer<Tuple2<Node, http.Response>> waiter in waiters) {
+        waiter.completeError(e);
+      }
+    }
+    rethrow;
+  }
 }
 
 Future<Tuple2<Node, http.Response>> requestGvaWithRetry(String path,
@@ -902,6 +948,15 @@ Future<Tuple2<Node, http.Response>> _requestWithRetry(
             }
             return Tuple2<Node, Response>(node, response);
           }
+        } else if (response.statusCode == 502 || response.statusCode == 503) {
+          // 502 Bad Gateway or 503 Service Unavailable - node is likely down
+          // Mark with many errors to deprioritize it immediately
+          logger(
+              '${response.statusCode} error on $url - marking node as critical');
+          NodeManager().updateNode(
+              type, node.copyWith(errors: NodeManager.absoluteMaxErrors - 1));
+          // Don't retry this node in this timeout round, move to next node
+          continue;
         } else {
           /* await Sentry.captureMessage(
               'Error trying to use node ${node.url} ($type) ${response.statusCode}'); */

@@ -179,5 +179,7 @@
   "g1_wallet": "Ğ1 zorroa",
   "bottom_nav_first": "Ordaindu",
   "bottom_nav_second": "Jaso",
-  "bottom_nav_trd": "Kontaktuak"
+  "bottom_nav_trd": "Kontaktuak",
+  "internal_contact_name": "Internal name",
+  "internal_name_copied_to_clipboard": "Internal name copied"
 }

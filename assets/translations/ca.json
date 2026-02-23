@@ -282,5 +282,7 @@
   "pdf_generated": "PDF generat",
   "analyze": "Analitza",
   "select_date_range": "Trieu un rang de dates",
-  "dates": "Dates"
+  "dates": "Dates",
+  "internal_contact_name": "Internal name",
+  "internal_name_copied_to_clipboard": "Internal name copied"
 }

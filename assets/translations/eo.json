@@ -496,5 +496,7 @@
   "can_certify_in_days": "Vi ne povas atesti ĝis {days}",
   "settings_backup_category": "Savkopio kaj Reakiro",
   "v2_seed_export_description": "Ĉi-sube estas via sekreta reakira frazo. Disdonu ĝin al neniu. Vi povas kopii ĝin aŭ noti ĝin sekure. Tio ebligos al vi reakiri vian monujon se vi perdos aliron al ĝi.",
-  "cannot_certify_reached_limit": "Vi atingis la maksimuman nombron de atestaĵoj, kiujn vi povas sendi"
+  "cannot_certify_reached_limit": "Vi atingis la maksimuman nombron de atestaĵoj, kiujn vi povas sendi",
+  "internal_contact_name": "Internal name",
+  "internal_name_copied_to_clipboard": "Internal name copied"
 }

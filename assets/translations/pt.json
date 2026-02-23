@@ -147,5 +147,7 @@
   "search_user_title_in_analysis": "Pesquisar usuários",
   "export_keys": "Exportar suas carteiras",
   "import_keys": "Importar suas carteiras",
-  "no_transactions_simple": "Esta carteira não tem saldo"
+  "no_transactions_simple": "Esta carteira não tem saldo",
+  "internal_contact_name": "Internal name",
+  "internal_name_copied_to_clipboard": "Internal name copied"
 }

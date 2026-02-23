@@ -78,5 +78,7 @@
   "import_key": "Importere din wallet",
   "copy_your_key": "Kopier din offentlige nøgle",
   "balance": "Saldo",
-  "technical_info_title": "Teknisk information"
+  "technical_info_title": "Teknisk information",
+  "internal_contact_name": "Internal name",
+  "internal_name_copied_to_clipboard": "Internal name copied"
 }

@@ -527,5 +527,7 @@
   "link_account_success": "Account linked successfully",
   "link_account_error": "Error linking account: {error}",
   "linked_to": "Linked to: {name}",
-  "target_already_has_identity": "The selected account already has an identity. You cannot transfer an identity to an account that already has one."
+  "target_already_has_identity": "The selected account already has an identity. You cannot transfer an identity to an account that already has one.",
+  "internal_contact_name": "Internal name",
+  "internal_name_copied_to_clipboard": "Internal name copied"
 }

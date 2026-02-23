@@ -508,5 +508,7 @@
   "confirm_revoke_member": "Sind Sie sicher, dass Sie die Mitgliedschaft für {nick} zurückziehen wollen?",
   "add_emoji": "Emoji hinzufügen",
   "network_results": "Netzwerk-Ergebnisse",
-  "no_network_results": "Keine Ergebnisse im Netzwerk gefunden"
+  "no_network_results": "Keine Ergebnisse im Netzwerk gefunden",
+  "internal_contact_name": "Internal name",
+  "internal_name_copied_to_clipboard": "Internal name copied"
 }

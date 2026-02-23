@@ -296,6 +296,25 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
                   leading: const Icon(Symbols.editor_choice),
                   title: Text('@${contact.nick}'),
                 )),
+          // Mostrar nombre interno si existe y difiere del nick
+          if (contact.name != null &&
+              contact.name!.isNotEmpty &&
+              (contact.nick == null ||
+                  contact.name!.toLowerCase() != contact.nick!.toLowerCase()))
+            GestureDetector(
+              onTap: () {
+                copyToClipboard(
+                  context: context,
+                  text: contact.name!,
+                  feedbackText: 'internal_name_copied_to_clipboard',
+                );
+              },
+              child: ListTile(
+                leading: const Icon(Icons.bookmark_outline),
+                title: Text(tr('internal_contact_name')),
+                subtitle: Text(contact.name!),
+              ),
+            ),
           /* if (!contact.createdOnV2)  */
           _buildQrListTile(contact),
 

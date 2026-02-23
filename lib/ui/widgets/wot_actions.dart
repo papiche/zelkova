@@ -8,6 +8,7 @@ import '../../data/models/contact_wot_info.dart';
 import '../../data/models/identity_status.dart';
 import '../../data/models/stored_account.dart';
 import '../../g1/duniter_endpoint_helper.dart';
+import '../../g1/duniter_indexer_helper.dart' as duniter_indexer;
 import '../../g1/sign_and_send.dart';
 import '../../shared_prefs_helper.dart';
 import '../contacts_cache.dart';
@@ -782,6 +783,53 @@ Future<SignAndSendResult> _confirmAndTransferAll(
 
 Future<SignAndSendResult> _confirmAndChangeOwnerKey(
     BuildContext context, ContactWotInfo wotInfo) async {
+  // Check if the identity has had a recent owner key change
+  try {
+    final int? lastChangeBlock = await duniter_indexer
+        .getLastOwnerKeyChangeBlock(accountId: wotInfo.you.address);
+
+    if (lastChangeBlock != null && wotInfo.currentBlockHeight != null) {
+      final int blocksSinceChange =
+          wotInfo.currentBlockHeight! - lastChangeBlock;
+      final int cooldownBlocks =
+          polkadotConstants().identity.changeOwnerKeyPeriod;
+
+      if (blocksSinceChange < cooldownBlocks) {
+        final int blocksRemaining = cooldownBlocks - blocksSinceChange;
+        final int daysRemaining = (blocksRemaining * 6) ~/ (60 * 60 * 24);
+
+        if (context.mounted) {
+          await showDialog<void>(
+            context: context,
+            builder: (BuildContext dialogContext) {
+              return AlertDialog(
+                title: Text(tr('transfer_identity_cooldown_title')),
+                content: Text(tr('transfer_identity_cooldown_desc',
+                    namedArgs: <String, String>{
+                      'time': tr('transfer_identity_cooldown_days',
+                          namedArgs: <String, String>{
+                            'days': daysRemaining.toString()
+                          }),
+                    })),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(dialogContext).pop();
+                    },
+                    child: Text(tr('ok')),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+        return _returnAuthFailed();
+      }
+    }
+  } catch (e, st) {
+    loggerDev('Error checking owner key cooldown', error: e, stackTrace: st);
+  }
+
   final bool? confirmed = await showDialog<bool>(
     context: context,
     builder: (BuildContext dialogContext) {

@@ -44,7 +44,6 @@ class BiometricAuthService {
       return await _auth.authenticate(
         localizedReason: reason,
         biometricOnly: true,
-        sensitiveTransaction: true,
         persistAcrossBackgrounding: true,
       );
     } catch (e) {

@@ -293,8 +293,10 @@ Map<String, String> encryptJsonForExport(String jsonString, String password) {
     pc.SICBlockCipher(16, pc.SICStreamCipher(pc.AESEngine())),
   )..init(
       true,
-      pc.PaddedBlockCipherParameters(
-        pc.ParametersWithIV(pc.KeyParameter(keyBytes), Uint8List(16)),
+      pc.PaddedBlockCipherParameters<pc.CipherParameters?,
+          pc.CipherParameters?>(
+        pc.ParametersWithIV<pc.KeyParameter>(
+            pc.KeyParameter(keyBytes), Uint8List(16)),
         null,
       ),
     );
@@ -315,8 +317,10 @@ Map<String, dynamic> decryptJsonForImport(String keyEncrypted, String password,
       pc.SICBlockCipher(16, pc.SICStreamCipher(pc.AESEngine())),
     )..init(
         false,
-        pc.PaddedBlockCipherParameters(
-          pc.ParametersWithIV(pc.KeyParameter(keyBytes), Uint8List(16)),
+        pc.PaddedBlockCipherParameters<pc.CipherParameters?,
+            pc.CipherParameters?>(
+          pc.ParametersWithIV<pc.KeyParameter>(
+              pc.KeyParameter(keyBytes), Uint8List(16)),
           null,
         ),
       );

@@ -22,7 +22,7 @@ void main() {
     test('AES-GCM (Local Storage) Verification', () {
       final Uint8List data =
           Uint8List.fromList(utf8.encode('secret mnemonic phrase'));
-      final List<int> salt = List.generate(32, (int i) => i);
+      final List<int> salt = List<int>.generate(32, (int i) => i);
 
       final Uint8List encrypted = SecureCryptoHelper.encrypt(data, salt);
       final Uint8List? decrypted = SecureCryptoHelper.decrypt(encrypted, salt);
@@ -32,9 +32,9 @@ void main() {
 
     test('AES-ECB (V1 Keys) Verification', () {
       final Uint8List data =
-          Uint8List.fromList(List.generate(32, (int i) => i));
+          Uint8List.fromList(List<int>.generate(32, (int i) => i));
       final Uint8List key =
-          Uint8List.fromList(List.generate(32, (int i) => i + 10));
+          Uint8List.fromList(List<int>.generate(32, (int i) => i + 10));
       final Uint8List encrypted = encryptAes(data, key);
       final Uint8List decrypted = decryptAes(encrypted, key);
 

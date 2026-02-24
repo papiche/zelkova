@@ -67,8 +67,10 @@ mixin SecureCryptoHelper {
           List<int>.generate(12, (_) => random.nextInt(256)));
 
       final GCMBlockCipher cipher = GCMBlockCipher(AESEngine())
-        ..init(true,
-            AEADParameters(KeyParameter(keyBytes), 128, iv, Uint8List(0)));
+        ..init(
+            true,
+            AEADParameters<KeyParameter>(
+                KeyParameter(keyBytes), 128, iv, Uint8List(0)));
 
       final Uint8List ciphertext = cipher.process(data);
       final Uint8List result = Uint8List(iv.length + ciphertext.length)
@@ -94,8 +96,10 @@ mixin SecureCryptoHelper {
       final Uint8List keyBytes = Uint8List.fromList(salt);
 
       final GCMBlockCipher cipher = GCMBlockCipher(AESEngine())
-        ..init(false,
-            AEADParameters(KeyParameter(keyBytes), 128, iv, Uint8List(0)));
+        ..init(
+            false,
+            AEADParameters<KeyParameter>(
+                KeyParameter(keyBytes), 128, iv, Uint8List(0)));
 
       return cipher.process(ciphertext);
     } catch (_) {

@@ -31,7 +31,7 @@ class AvatarPicker extends StatefulWidget {
 
 class _AvatarPickerState extends State<AvatarPicker> {
   static const int maxAvatarSizeBytes = 1024 * 1024; // 1MB
-  static const List<String> allowedMimeTypes = [
+  static const List<String> allowedMimeTypes = <String>[
     'image/png',
     'image/jpeg',
     'image/jpg',
@@ -62,7 +62,7 @@ class _AvatarPickerState extends State<AvatarPicker> {
         return;
       }
 
-      final bytes = await file.readAsBytes();
+      final Uint8List bytes = await file.readAsBytes();
 
       // Validate size
       if (bytes.lengthInBytes > maxAvatarSizeBytes) {
@@ -72,7 +72,7 @@ class _AvatarPickerState extends State<AvatarPicker> {
       }
 
       // Validate MIME type
-      final mimeType = file.mimeType ?? 'image/jpeg';
+      final String mimeType = file.mimeType ?? 'image/jpeg';
       if (!allowedMimeTypes.contains(mimeType.toLowerCase())) {
         _showErrorSnackBar('Only PNG and JPG images are allowed');
         setState(() => _isProcessing = false);
@@ -80,7 +80,7 @@ class _AvatarPickerState extends State<AvatarPicker> {
       }
 
       // Convert to base64
-      final base64String = base64Encode(bytes);
+      final String base64String = base64Encode(bytes);
 
       setState(() {
         _selectedBase64 = base64String;
@@ -121,14 +121,14 @@ class _AvatarPickerState extends State<AvatarPicker> {
 
   @override
   Widget build(BuildContext context) {
-    final avatarBytes = _getAvatarBytes();
+    final Uint8List? avatarBytes = _getAvatarBytes();
 
     return Column(
-      children: [
+      children: <Widget>[
         GestureDetector(
           onTap: _isProcessing ? null : _pickImage,
           child: Stack(
-            children: [
+            children: <Widget>[
               CircleAvatar(
                 radius: widget.avatarRadius,
                 backgroundImage:
@@ -145,7 +145,7 @@ class _AvatarPickerState extends State<AvatarPicker> {
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,
                       shape: BoxShape.circle,
-                      boxShadow: [
+                      boxShadow: <BoxShadow>[
                         BoxShadow(
                           color: Colors.black.withAlpha(51),
                           blurRadius: 4,
@@ -176,7 +176,7 @@ class _AvatarPickerState extends State<AvatarPicker> {
                       height: 16,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation(Colors.white),
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                       ),
                     ),
                   ),

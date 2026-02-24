@@ -77,7 +77,9 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
 
   Future<void> _updateBalance() async {
     await _txsCubit.fetchTransactions(pubKey: widget.contact.pubKey);
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -655,10 +657,9 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
   }
 
   void _refreshAfterProfileEdit() {
-    // Refresh the contact data and update the UI
-    setState(() {
+    if (mounted) {
       _refresh();
-    });
+    }
   }
 }
 

@@ -1,36 +1,35 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i6;
-import 'dart:typed_data' as _i7;
+import 'dart:async' as _i5;
+import 'dart:typed_data' as _i6;
 
 import 'package:polkadart/polkadart.dart' as _i1;
-import 'package:polkadart_scale_codec/polkadart_scale_codec.dart' as _i5;
-import 'package:substrate_metadata/substrate_metadata.dart' as _i2;
+import 'package:polkadart/scale_codec.dart' as _i4;
 
-import '../types/gtest_runtime/runtime_call.dart' as _i8;
-import '../types/pallet_multisig/multisig.dart' as _i4;
-import '../types/pallet_multisig/pallet/call.dart' as _i9;
-import '../types/pallet_multisig/timepoint.dart' as _i10;
-import '../types/sp_core/crypto/account_id32.dart' as _i3;
-import '../types/sp_weights/weight_v2/weight.dart' as _i11;
+import '../types/gtest_runtime/runtime_call.dart' as _i7;
+import '../types/pallet_multisig/multisig.dart' as _i3;
+import '../types/pallet_multisig/pallet/call.dart' as _i8;
+import '../types/pallet_multisig/timepoint.dart' as _i9;
+import '../types/sp_core/crypto/account_id32.dart' as _i2;
+import '../types/sp_weights/weight_v2/weight.dart' as _i10;
 
 class Queries {
   const Queries(this.__api);
 
   final _i1.StateApi __api;
 
-  final _i2.StorageDoubleMap<_i3.AccountId32, List<int>, _i4.Multisig>
+  final _i1.StorageDoubleMap<_i2.AccountId32, List<int>, _i3.Multisig>
       _multisigs =
-      const _i2.StorageDoubleMap<_i3.AccountId32, List<int>, _i4.Multisig>(
+      const _i1.StorageDoubleMap<_i2.AccountId32, List<int>, _i3.Multisig>(
     prefix: 'Multisig',
     storage: 'Multisigs',
-    valueCodec: _i4.Multisig.codec,
-    hasher1: _i2.StorageHasher.twoxx64Concat(_i3.AccountId32Codec()),
-    hasher2: _i2.StorageHasher.blake2b128Concat(_i5.U8ArrayCodec(32)),
+    valueCodec: _i3.Multisig.codec,
+    hasher1: _i1.StorageHasher.twoxx64Concat(_i2.AccountId32Codec()),
+    hasher2: _i1.StorageHasher.blake2b128Concat(_i4.U8ArrayCodec(32)),
   );
 
   /// The set of open multisig operations.
-  _i6.Future<_i4.Multisig?> multisigs(
-    _i3.AccountId32 key1,
+  _i5.Future<_i3.Multisig?> multisigs(
+    _i2.AccountId32 key1,
     List<int> key2, {
     _i1.BlockHash? at,
   }) async {
@@ -49,8 +48,8 @@ class Queries {
   }
 
   /// Returns the storage key for `multisigs`.
-  _i7.Uint8List multisigsKey(
-    _i3.AccountId32 key1,
+  _i6.Uint8List multisigsKey(
+    _i2.AccountId32 key1,
     List<int> key2,
   ) {
     final hashedKey = _multisigs.hashedKeyFor(
@@ -61,7 +60,7 @@ class Queries {
   }
 
   /// Returns the storage map key prefix for `multisigs`.
-  _i7.Uint8List multisigsMapPrefix(_i3.AccountId32 key1) {
+  _i6.Uint8List multisigsMapPrefix(_i2.AccountId32 key1) {
     final hashedKey = _multisigs.mapPrefix(key1);
     return hashedKey;
   }
@@ -82,11 +81,11 @@ class Txs {
   ///
   /// ## Complexity
   /// O(Z + C) where Z is the length of the call and C its execution weight.
-  _i8.Multisig asMultiThreshold1({
-    required List<_i3.AccountId32> otherSignatories,
-    required _i8.RuntimeCall call,
+  _i7.Multisig asMultiThreshold1({
+    required List<_i2.AccountId32> otherSignatories,
+    required _i7.RuntimeCall call,
   }) {
-    return _i8.Multisig(_i9.AsMultiThreshold1(
+    return _i7.Multisig(_i8.AsMultiThreshold1(
       otherSignatories: otherSignatories,
       call: call,
     ));
@@ -131,14 +130,14 @@ class Txs {
   /// - The weight of the `call`.
   /// - Storage: inserts one item, value size bounded by `MaxSignatories`, with a deposit
   ///  taken for its lifetime of `DepositBase + threshold * DepositFactor`.
-  _i8.Multisig asMulti({
+  _i7.Multisig asMulti({
     required int threshold,
-    required List<_i3.AccountId32> otherSignatories,
-    _i10.Timepoint? maybeTimepoint,
-    required _i8.RuntimeCall call,
-    required _i11.Weight maxWeight,
+    required List<_i2.AccountId32> otherSignatories,
+    _i9.Timepoint? maybeTimepoint,
+    required _i7.RuntimeCall call,
+    required _i10.Weight maxWeight,
   }) {
-    return _i8.Multisig(_i9.AsMulti(
+    return _i7.Multisig(_i8.AsMulti(
       threshold: threshold,
       otherSignatories: otherSignatories,
       maybeTimepoint: maybeTimepoint,
@@ -177,14 +176,14 @@ class Txs {
   /// - One event.
   /// - Storage: inserts one item, value size bounded by `MaxSignatories`, with a deposit
   ///  taken for its lifetime of `DepositBase + threshold * DepositFactor`.
-  _i8.Multisig approveAsMulti({
+  _i7.Multisig approveAsMulti({
     required int threshold,
-    required List<_i3.AccountId32> otherSignatories,
-    _i10.Timepoint? maybeTimepoint,
+    required List<_i2.AccountId32> otherSignatories,
+    _i9.Timepoint? maybeTimepoint,
     required List<int> callHash,
-    required _i11.Weight maxWeight,
+    required _i10.Weight maxWeight,
   }) {
-    return _i8.Multisig(_i9.ApproveAsMulti(
+    return _i7.Multisig(_i8.ApproveAsMulti(
       threshold: threshold,
       otherSignatories: otherSignatories,
       maybeTimepoint: maybeTimepoint,
@@ -214,13 +213,13 @@ class Txs {
   /// - One event.
   /// - I/O: 1 read `O(S)`, one remove.
   /// - Storage: removes one item.
-  _i8.Multisig cancelAsMulti({
+  _i7.Multisig cancelAsMulti({
     required int threshold,
-    required List<_i3.AccountId32> otherSignatories,
-    required _i10.Timepoint timepoint,
+    required List<_i2.AccountId32> otherSignatories,
+    required _i9.Timepoint timepoint,
     required List<int> callHash,
   }) {
-    return _i8.Multisig(_i9.CancelAsMulti(
+    return _i7.Multisig(_i8.CancelAsMulti(
       threshold: threshold,
       otherSignatories: otherSignatories,
       timepoint: timepoint,
@@ -241,12 +240,12 @@ class Txs {
   /// - `call_hash`: The hash of the call this deposit is reserved for.
   ///
   /// Emits `DepositPoked` if successful.
-  _i8.Multisig pokeDeposit({
+  _i7.Multisig pokeDeposit({
     required int threshold,
-    required List<_i3.AccountId32> otherSignatories,
+    required List<_i2.AccountId32> otherSignatories,
     required List<int> callHash,
   }) {
-    return _i8.Multisig(_i9.PokeDeposit(
+    return _i7.Multisig(_i8.PokeDeposit(
       threshold: threshold,
       otherSignatories: otherSignatories,
       callHash: callHash,

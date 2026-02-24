@@ -1,83 +1,82 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i10;
-import 'dart:typed_data' as _i11;
+import 'dart:async' as _i9;
+import 'dart:typed_data' as _i10;
 
 import 'package:polkadart/polkadart.dart' as _i1;
-import 'package:polkadart_scale_codec/polkadart_scale_codec.dart' as _i3;
-import 'package:substrate_metadata/substrate_metadata.dart' as _i2;
+import 'package:polkadart/scale_codec.dart' as _i2;
 
-import '../types/frame_support/traits/tokens/misc/id_amount_1.dart' as _i8;
-import '../types/frame_support/traits/tokens/misc/id_amount_2.dart' as _i9;
-import '../types/gtest_runtime/runtime_call.dart' as _i12;
-import '../types/pallet_balances/pallet/call.dart' as _i14;
-import '../types/pallet_balances/types/account_data.dart' as _i5;
-import '../types/pallet_balances/types/adjustment_direction.dart' as _i15;
-import '../types/pallet_balances/types/balance_lock.dart' as _i6;
-import '../types/pallet_balances/types/reserve_data.dart' as _i7;
-import '../types/sp_core/crypto/account_id32.dart' as _i4;
-import '../types/sp_runtime/multiaddress/multi_address.dart' as _i13;
+import '../types/frame_support/traits/tokens/misc/id_amount_1.dart' as _i7;
+import '../types/frame_support/traits/tokens/misc/id_amount_2.dart' as _i8;
+import '../types/gtest_runtime/runtime_call.dart' as _i11;
+import '../types/pallet_balances/pallet/call.dart' as _i13;
+import '../types/pallet_balances/types/account_data.dart' as _i4;
+import '../types/pallet_balances/types/adjustment_direction.dart' as _i14;
+import '../types/pallet_balances/types/balance_lock.dart' as _i5;
+import '../types/pallet_balances/types/reserve_data.dart' as _i6;
+import '../types/sp_core/crypto/account_id32.dart' as _i3;
+import '../types/sp_runtime/multiaddress/multi_address.dart' as _i12;
 
 class Queries {
   const Queries(this.__api);
 
   final _i1.StateApi __api;
 
-  final _i2.StorageValue<BigInt> _totalIssuance =
-      const _i2.StorageValue<BigInt>(
+  final _i1.StorageValue<BigInt> _totalIssuance =
+      const _i1.StorageValue<BigInt>(
     prefix: 'Balances',
     storage: 'TotalIssuance',
-    valueCodec: _i3.U64Codec.codec,
+    valueCodec: _i2.U64Codec.codec,
   );
 
-  final _i2.StorageValue<BigInt> _inactiveIssuance =
-      const _i2.StorageValue<BigInt>(
+  final _i1.StorageValue<BigInt> _inactiveIssuance =
+      const _i1.StorageValue<BigInt>(
     prefix: 'Balances',
     storage: 'InactiveIssuance',
-    valueCodec: _i3.U64Codec.codec,
+    valueCodec: _i2.U64Codec.codec,
   );
 
-  final _i2.StorageMap<_i4.AccountId32, _i5.AccountData> _account =
-      const _i2.StorageMap<_i4.AccountId32, _i5.AccountData>(
+  final _i1.StorageMap<_i3.AccountId32, _i4.AccountData> _account =
+      const _i1.StorageMap<_i3.AccountId32, _i4.AccountData>(
     prefix: 'Balances',
     storage: 'Account',
-    valueCodec: _i5.AccountData.codec,
-    hasher: _i2.StorageHasher.blake2b128Concat(_i4.AccountId32Codec()),
+    valueCodec: _i4.AccountData.codec,
+    hasher: _i1.StorageHasher.blake2b128Concat(_i3.AccountId32Codec()),
   );
 
-  final _i2.StorageMap<_i4.AccountId32, List<_i6.BalanceLock>> _locks =
-      const _i2.StorageMap<_i4.AccountId32, List<_i6.BalanceLock>>(
+  final _i1.StorageMap<_i3.AccountId32, List<_i5.BalanceLock>> _locks =
+      const _i1.StorageMap<_i3.AccountId32, List<_i5.BalanceLock>>(
     prefix: 'Balances',
     storage: 'Locks',
-    valueCodec: _i3.SequenceCodec<_i6.BalanceLock>(_i6.BalanceLock.codec),
-    hasher: _i2.StorageHasher.blake2b128Concat(_i4.AccountId32Codec()),
+    valueCodec: _i2.SequenceCodec<_i5.BalanceLock>(_i5.BalanceLock.codec),
+    hasher: _i1.StorageHasher.blake2b128Concat(_i3.AccountId32Codec()),
   );
 
-  final _i2.StorageMap<_i4.AccountId32, List<_i7.ReserveData>> _reserves =
-      const _i2.StorageMap<_i4.AccountId32, List<_i7.ReserveData>>(
+  final _i1.StorageMap<_i3.AccountId32, List<_i6.ReserveData>> _reserves =
+      const _i1.StorageMap<_i3.AccountId32, List<_i6.ReserveData>>(
     prefix: 'Balances',
     storage: 'Reserves',
-    valueCodec: _i3.SequenceCodec<_i7.ReserveData>(_i7.ReserveData.codec),
-    hasher: _i2.StorageHasher.blake2b128Concat(_i4.AccountId32Codec()),
+    valueCodec: _i2.SequenceCodec<_i6.ReserveData>(_i6.ReserveData.codec),
+    hasher: _i1.StorageHasher.blake2b128Concat(_i3.AccountId32Codec()),
   );
 
-  final _i2.StorageMap<_i4.AccountId32, List<_i8.IdAmount>> _holds =
-      const _i2.StorageMap<_i4.AccountId32, List<_i8.IdAmount>>(
+  final _i1.StorageMap<_i3.AccountId32, List<_i7.IdAmount>> _holds =
+      const _i1.StorageMap<_i3.AccountId32, List<_i7.IdAmount>>(
     prefix: 'Balances',
     storage: 'Holds',
-    valueCodec: _i3.SequenceCodec<_i8.IdAmount>(_i8.IdAmount.codec),
-    hasher: _i2.StorageHasher.blake2b128Concat(_i4.AccountId32Codec()),
+    valueCodec: _i2.SequenceCodec<_i7.IdAmount>(_i7.IdAmount.codec),
+    hasher: _i1.StorageHasher.blake2b128Concat(_i3.AccountId32Codec()),
   );
 
-  final _i2.StorageMap<_i4.AccountId32, List<_i9.IdAmount>> _freezes =
-      const _i2.StorageMap<_i4.AccountId32, List<_i9.IdAmount>>(
+  final _i1.StorageMap<_i3.AccountId32, List<_i8.IdAmount>> _freezes =
+      const _i1.StorageMap<_i3.AccountId32, List<_i8.IdAmount>>(
     prefix: 'Balances',
     storage: 'Freezes',
-    valueCodec: _i3.SequenceCodec<_i9.IdAmount>(_i9.IdAmount.codec),
-    hasher: _i2.StorageHasher.blake2b128Concat(_i4.AccountId32Codec()),
+    valueCodec: _i2.SequenceCodec<_i8.IdAmount>(_i8.IdAmount.codec),
+    hasher: _i1.StorageHasher.blake2b128Concat(_i3.AccountId32Codec()),
   );
 
   /// The total units issued in the system.
-  _i10.Future<BigInt> totalIssuance({_i1.BlockHash? at}) async {
+  _i9.Future<BigInt> totalIssuance({_i1.BlockHash? at}) async {
     final hashedKey = _totalIssuance.hashedKey();
     final bytes = await __api.getStorage(
       hashedKey,
@@ -90,7 +89,7 @@ class Queries {
   }
 
   /// The total units of outstanding deactivated balance in the system.
-  _i10.Future<BigInt> inactiveIssuance({_i1.BlockHash? at}) async {
+  _i9.Future<BigInt> inactiveIssuance({_i1.BlockHash? at}) async {
     final hashedKey = _inactiveIssuance.hashedKey();
     final bytes = await __api.getStorage(
       hashedKey,
@@ -126,8 +125,8 @@ class Queries {
   /// `frame_system` data alongside the account data contrary to storing account balances in the
   /// `Balances` pallet, which uses a `StorageMap` to store balances data only.
   /// NOTE: This is only used in the case that this pallet is used to store balances.
-  _i10.Future<_i5.AccountData> account(
-    _i4.AccountId32 key1, {
+  _i9.Future<_i4.AccountData> account(
+    _i3.AccountId32 key1, {
     _i1.BlockHash? at,
   }) async {
     final hashedKey = _account.hashedKeyFor(key1);
@@ -138,7 +137,7 @@ class Queries {
     if (bytes != null) {
       return _account.decodeValue(bytes);
     }
-    return _i5.AccountData(
+    return _i4.AccountData(
       free: BigInt.zero,
       reserved: BigInt.zero,
       frozen: BigInt.zero,
@@ -153,8 +152,8 @@ class Queries {
   /// NOTE: Should only be accessed when setting, changing and freeing a lock.
   ///
   /// Use of locks is deprecated in favour of freezes. See `https://github.com/paritytech/substrate/pull/12951/`
-  _i10.Future<List<_i6.BalanceLock>> locks(
-    _i4.AccountId32 key1, {
+  _i9.Future<List<_i5.BalanceLock>> locks(
+    _i3.AccountId32 key1, {
     _i1.BlockHash? at,
   }) async {
     final hashedKey = _locks.hashedKeyFor(key1);
@@ -171,8 +170,8 @@ class Queries {
   /// Named reserves on some account balances.
   ///
   /// Use of reserves is deprecated in favour of holds. See `https://github.com/paritytech/substrate/pull/12951/`
-  _i10.Future<List<_i7.ReserveData>> reserves(
-    _i4.AccountId32 key1, {
+  _i9.Future<List<_i6.ReserveData>> reserves(
+    _i3.AccountId32 key1, {
     _i1.BlockHash? at,
   }) async {
     final hashedKey = _reserves.hashedKeyFor(key1);
@@ -187,8 +186,8 @@ class Queries {
   }
 
   /// Holds on account balances.
-  _i10.Future<List<_i8.IdAmount>> holds(
-    _i4.AccountId32 key1, {
+  _i9.Future<List<_i7.IdAmount>> holds(
+    _i3.AccountId32 key1, {
     _i1.BlockHash? at,
   }) async {
     final hashedKey = _holds.hashedKeyFor(key1);
@@ -203,8 +202,8 @@ class Queries {
   }
 
   /// Freeze locks on account balances.
-  _i10.Future<List<_i9.IdAmount>> freezes(
-    _i4.AccountId32 key1, {
+  _i9.Future<List<_i8.IdAmount>> freezes(
+    _i3.AccountId32 key1, {
     _i1.BlockHash? at,
   }) async {
     final hashedKey = _freezes.hashedKeyFor(key1);
@@ -242,8 +241,8 @@ class Queries {
   /// `frame_system` data alongside the account data contrary to storing account balances in the
   /// `Balances` pallet, which uses a `StorageMap` to store balances data only.
   /// NOTE: This is only used in the case that this pallet is used to store balances.
-  _i10.Future<List<_i5.AccountData>> multiAccount(
-    List<_i4.AccountId32> keys, {
+  _i9.Future<List<_i4.AccountData>> multiAccount(
+    List<_i3.AccountId32> keys, {
     _i1.BlockHash? at,
   }) async {
     final hashedKeys = keys.map((key) => _account.hashedKeyFor(key)).toList();
@@ -256,8 +255,8 @@ class Queries {
           .map((v) => _account.decodeValue(v.key))
           .toList();
     }
-    return keys
-        .map((key) => _i5.AccountData(
+    return (keys
+        .map((key) => _i4.AccountData(
               free: BigInt.zero,
               reserved: BigInt.zero,
               frozen: BigInt.zero,
@@ -266,15 +265,15 @@ class Queries {
                 radix: 10,
               ),
             ))
-        .toList(); /* Default */
+        .toList() as List<_i4.AccountData>); /* Default */
   }
 
   /// Any liquidity locks on some account balances.
   /// NOTE: Should only be accessed when setting, changing and freeing a lock.
   ///
   /// Use of locks is deprecated in favour of freezes. See `https://github.com/paritytech/substrate/pull/12951/`
-  _i10.Future<List<List<_i6.BalanceLock>>> multiLocks(
-    List<_i4.AccountId32> keys, {
+  _i9.Future<List<List<_i5.BalanceLock>>> multiLocks(
+    List<_i3.AccountId32> keys, {
     _i1.BlockHash? at,
   }) async {
     final hashedKeys = keys.map((key) => _locks.hashedKeyFor(key)).toList();
@@ -286,14 +285,14 @@ class Queries {
       return bytes.first.changes.map((v) => _locks.decodeValue(v.key)).toList();
     }
     return (keys.map((key) => []).toList()
-        as List<List<_i6.BalanceLock>>); /* Default */
+        as List<List<_i5.BalanceLock>>); /* Default */
   }
 
   /// Named reserves on some account balances.
   ///
   /// Use of reserves is deprecated in favour of holds. See `https://github.com/paritytech/substrate/pull/12951/`
-  _i10.Future<List<List<_i7.ReserveData>>> multiReserves(
-    List<_i4.AccountId32> keys, {
+  _i9.Future<List<List<_i6.ReserveData>>> multiReserves(
+    List<_i3.AccountId32> keys, {
     _i1.BlockHash? at,
   }) async {
     final hashedKeys = keys.map((key) => _reserves.hashedKeyFor(key)).toList();
@@ -307,12 +306,12 @@ class Queries {
           .toList();
     }
     return (keys.map((key) => []).toList()
-        as List<List<_i7.ReserveData>>); /* Default */
+        as List<List<_i6.ReserveData>>); /* Default */
   }
 
   /// Holds on account balances.
-  _i10.Future<List<List<_i8.IdAmount>>> multiHolds(
-    List<_i4.AccountId32> keys, {
+  _i9.Future<List<List<_i7.IdAmount>>> multiHolds(
+    List<_i3.AccountId32> keys, {
     _i1.BlockHash? at,
   }) async {
     final hashedKeys = keys.map((key) => _holds.hashedKeyFor(key)).toList();
@@ -324,12 +323,12 @@ class Queries {
       return bytes.first.changes.map((v) => _holds.decodeValue(v.key)).toList();
     }
     return (keys.map((key) => []).toList()
-        as List<List<_i8.IdAmount>>); /* Default */
+        as List<List<_i7.IdAmount>>); /* Default */
   }
 
   /// Freeze locks on account balances.
-  _i10.Future<List<List<_i9.IdAmount>>> multiFreezes(
-    List<_i4.AccountId32> keys, {
+  _i9.Future<List<List<_i8.IdAmount>>> multiFreezes(
+    List<_i3.AccountId32> keys, {
     _i1.BlockHash? at,
   }) async {
     final hashedKeys = keys.map((key) => _freezes.hashedKeyFor(key)).toList();
@@ -343,77 +342,77 @@ class Queries {
           .toList();
     }
     return (keys.map((key) => []).toList()
-        as List<List<_i9.IdAmount>>); /* Default */
+        as List<List<_i8.IdAmount>>); /* Default */
   }
 
   /// Returns the storage key for `totalIssuance`.
-  _i11.Uint8List totalIssuanceKey() {
+  _i10.Uint8List totalIssuanceKey() {
     final hashedKey = _totalIssuance.hashedKey();
     return hashedKey;
   }
 
   /// Returns the storage key for `inactiveIssuance`.
-  _i11.Uint8List inactiveIssuanceKey() {
+  _i10.Uint8List inactiveIssuanceKey() {
     final hashedKey = _inactiveIssuance.hashedKey();
     return hashedKey;
   }
 
   /// Returns the storage key for `account`.
-  _i11.Uint8List accountKey(_i4.AccountId32 key1) {
+  _i10.Uint8List accountKey(_i3.AccountId32 key1) {
     final hashedKey = _account.hashedKeyFor(key1);
     return hashedKey;
   }
 
   /// Returns the storage key for `locks`.
-  _i11.Uint8List locksKey(_i4.AccountId32 key1) {
+  _i10.Uint8List locksKey(_i3.AccountId32 key1) {
     final hashedKey = _locks.hashedKeyFor(key1);
     return hashedKey;
   }
 
   /// Returns the storage key for `reserves`.
-  _i11.Uint8List reservesKey(_i4.AccountId32 key1) {
+  _i10.Uint8List reservesKey(_i3.AccountId32 key1) {
     final hashedKey = _reserves.hashedKeyFor(key1);
     return hashedKey;
   }
 
   /// Returns the storage key for `holds`.
-  _i11.Uint8List holdsKey(_i4.AccountId32 key1) {
+  _i10.Uint8List holdsKey(_i3.AccountId32 key1) {
     final hashedKey = _holds.hashedKeyFor(key1);
     return hashedKey;
   }
 
   /// Returns the storage key for `freezes`.
-  _i11.Uint8List freezesKey(_i4.AccountId32 key1) {
+  _i10.Uint8List freezesKey(_i3.AccountId32 key1) {
     final hashedKey = _freezes.hashedKeyFor(key1);
     return hashedKey;
   }
 
   /// Returns the storage map key prefix for `account`.
-  _i11.Uint8List accountMapPrefix() {
+  _i10.Uint8List accountMapPrefix() {
     final hashedKey = _account.mapPrefix();
     return hashedKey;
   }
 
   /// Returns the storage map key prefix for `locks`.
-  _i11.Uint8List locksMapPrefix() {
+  _i10.Uint8List locksMapPrefix() {
     final hashedKey = _locks.mapPrefix();
     return hashedKey;
   }
 
   /// Returns the storage map key prefix for `reserves`.
-  _i11.Uint8List reservesMapPrefix() {
+  _i10.Uint8List reservesMapPrefix() {
     final hashedKey = _reserves.mapPrefix();
     return hashedKey;
   }
 
   /// Returns the storage map key prefix for `holds`.
-  _i11.Uint8List holdsMapPrefix() {
+  _i10.Uint8List holdsMapPrefix() {
     final hashedKey = _holds.mapPrefix();
     return hashedKey;
   }
 
   /// Returns the storage map key prefix for `freezes`.
-  _i11.Uint8List freezesMapPrefix() {
+  _i10.Uint8List freezesMapPrefix() {
     final hashedKey = _freezes.mapPrefix();
     return hashedKey;
   }
@@ -429,11 +428,11 @@ class Txs {
   /// of the transfer, the account will be reaped.
   ///
   /// The dispatch origin for this call must be `Signed` by the transactor.
-  _i12.Balances transferAllowDeath({
-    required _i13.MultiAddress dest,
+  _i11.Balances transferAllowDeath({
+    required _i12.MultiAddress dest,
     required BigInt value,
   }) {
-    return _i12.Balances(_i14.TransferAllowDeath(
+    return _i11.Balances(_i13.TransferAllowDeath(
       dest: dest,
       value: value,
     ));
@@ -441,12 +440,12 @@ class Txs {
 
   /// Exactly as `transfer_allow_death`, except the origin must be root and the source account
   /// may be specified.
-  _i12.Balances forceTransfer({
-    required _i13.MultiAddress source,
-    required _i13.MultiAddress dest,
+  _i11.Balances forceTransfer({
+    required _i12.MultiAddress source,
+    required _i12.MultiAddress dest,
     required BigInt value,
   }) {
-    return _i12.Balances(_i14.ForceTransfer(
+    return _i11.Balances(_i13.ForceTransfer(
       source: source,
       dest: dest,
       value: value,
@@ -459,11 +458,11 @@ class Txs {
   /// 99% of the time you want [`transfer_allow_death`] instead.
   ///
   /// [`transfer_allow_death`]: struct.Pallet.html#method.transfer
-  _i12.Balances transferKeepAlive({
-    required _i13.MultiAddress dest,
+  _i11.Balances transferKeepAlive({
+    required _i12.MultiAddress dest,
     required BigInt value,
   }) {
-    return _i12.Balances(_i14.TransferKeepAlive(
+    return _i11.Balances(_i13.TransferKeepAlive(
       dest: dest,
       value: value,
     ));
@@ -484,11 +483,11 @@ class Txs {
   ///  of the funds the account has, causing the sender account to be killed (false), or
   ///  transfer everything except at least the existential deposit, which will guarantee to
   ///  keep the sender account alive (true).
-  _i12.Balances transferAll({
-    required _i13.MultiAddress dest,
+  _i11.Balances transferAll({
+    required _i12.MultiAddress dest,
     required bool keepAlive,
   }) {
-    return _i12.Balances(_i14.TransferAll(
+    return _i11.Balances(_i13.TransferAll(
       dest: dest,
       keepAlive: keepAlive,
     ));
@@ -497,11 +496,11 @@ class Txs {
   /// Unreserve some balance from a user by force.
   ///
   /// Can only be called by ROOT.
-  _i12.Balances forceUnreserve({
-    required _i13.MultiAddress who,
+  _i11.Balances forceUnreserve({
+    required _i12.MultiAddress who,
     required BigInt amount,
   }) {
-    return _i12.Balances(_i14.ForceUnreserve(
+    return _i11.Balances(_i13.ForceUnreserve(
       who: who,
       amount: amount,
     ));
@@ -518,11 +517,11 @@ class Txs {
   /// Set the regular balance of a given account.
   ///
   /// The dispatch origin for this call is `root`.
-  _i12.Balances forceSetBalance({
-    required _i13.MultiAddress who,
+  _i11.Balances forceSetBalance({
+    required _i12.MultiAddress who,
     required BigInt newFree,
   }) {
-    return _i12.Balances(_i14.ForceSetBalance(
+    return _i11.Balances(_i13.ForceSetBalance(
       who: who,
       newFree: newFree,
     ));
@@ -533,11 +532,11 @@ class Txs {
   /// Can only be called by root and always needs a positive `delta`.
   ///
   /// # Example
-  _i12.Balances forceAdjustTotalIssuance({
-    required _i15.AdjustmentDirection direction,
+  _i11.Balances forceAdjustTotalIssuance({
+    required _i14.AdjustmentDirection direction,
     required BigInt delta,
   }) {
-    return _i12.Balances(_i14.ForceAdjustTotalIssuance(
+    return _i11.Balances(_i13.ForceAdjustTotalIssuance(
       direction: direction,
       delta: delta,
     ));
@@ -550,11 +549,11 @@ class Txs {
   ///
   /// Unlike sending funds to a _burn_ address, which merely makes the funds inaccessible,
   /// this `burn` operation will reduce total issuance by the amount _burned_.
-  _i12.Balances burn({
+  _i11.Balances burn({
     required BigInt value,
     required bool keepAlive,
   }) {
-    return _i12.Balances(_i14.Burn(
+    return _i11.Balances(_i13.Burn(
       value: value,
       keepAlive: keepAlive,
     ));

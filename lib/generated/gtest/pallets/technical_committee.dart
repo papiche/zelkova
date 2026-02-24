@@ -1,80 +1,79 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i9;
-import 'dart:typed_data' as _i10;
+import 'dart:async' as _i8;
+import 'dart:typed_data' as _i9;
 
 import 'package:polkadart/polkadart.dart' as _i1;
-import 'package:polkadart_scale_codec/polkadart_scale_codec.dart' as _i4;
-import 'package:substrate_metadata/substrate_metadata.dart' as _i2;
+import 'package:polkadart/scale_codec.dart' as _i3;
 
-import '../types/gtest_runtime/runtime_call.dart' as _i5;
-import '../types/pallet_collective/pallet/call.dart' as _i11;
-import '../types/pallet_collective/votes.dart' as _i8;
-import '../types/primitive_types/h256.dart' as _i3;
-import '../types/sp_core/crypto/account_id32.dart' as _i7;
-import '../types/sp_weights/weight_v2/weight.dart' as _i12;
-import '../types/tuples.dart' as _i6;
+import '../types/gtest_runtime/runtime_call.dart' as _i4;
+import '../types/pallet_collective/pallet/call.dart' as _i10;
+import '../types/pallet_collective/votes.dart' as _i7;
+import '../types/primitive_types/h256.dart' as _i2;
+import '../types/sp_core/crypto/account_id32.dart' as _i6;
+import '../types/sp_weights/weight_v2/weight.dart' as _i11;
+import '../types/tuples.dart' as _i5;
 
 class Queries {
   const Queries(this.__api);
 
   final _i1.StateApi __api;
 
-  final _i2.StorageValue<List<_i3.H256>> _proposals =
-      const _i2.StorageValue<List<_i3.H256>>(
+  final _i1.StorageValue<List<_i2.H256>> _proposals =
+      const _i1.StorageValue<List<_i2.H256>>(
     prefix: 'TechnicalCommittee',
     storage: 'Proposals',
-    valueCodec: _i4.SequenceCodec<_i3.H256>(_i3.H256Codec()),
+    valueCodec: _i3.SequenceCodec<_i2.H256>(_i2.H256Codec()),
   );
 
-  final _i2.StorageMap<_i3.H256, _i5.RuntimeCall> _proposalOf =
-      const _i2.StorageMap<_i3.H256, _i5.RuntimeCall>(
+  final _i1.StorageMap<_i2.H256, _i4.RuntimeCall> _proposalOf =
+      const _i1.StorageMap<_i2.H256, _i4.RuntimeCall>(
     prefix: 'TechnicalCommittee',
     storage: 'ProposalOf',
-    valueCodec: _i5.RuntimeCall.codec,
-    hasher: _i2.StorageHasher.identity(_i3.H256Codec()),
+    valueCodec: _i4.RuntimeCall.codec,
+    hasher: _i1.StorageHasher.identity(_i2.H256Codec()),
   );
 
-  final _i2.StorageMap<_i3.H256, _i6.Tuple2<_i7.AccountId32, dynamic>> _costOf =
-      const _i2.StorageMap<_i3.H256, _i6.Tuple2<_i7.AccountId32, dynamic>>(
+  final _i1.StorageMap<_i2.H256, _i5.Tuple2<_i6.AccountId32, dynamic>> _costOf =
+      const _i1.StorageMap<_i2.H256, _i5.Tuple2<_i6.AccountId32, dynamic>>(
     prefix: 'TechnicalCommittee',
     storage: 'CostOf',
-    valueCodec: _i6.Tuple2Codec<_i7.AccountId32, dynamic>(
-      _i7.AccountId32Codec(),
-      _i4.NullCodec.codec,
+    valueCodec: _i5.Tuple2Codec<_i6.AccountId32, dynamic>(
+      _i6.AccountId32Codec(),
+      _i3.NullCodec.codec,
     ),
-    hasher: _i2.StorageHasher.identity(_i3.H256Codec()),
+    hasher: _i1.StorageHasher.identity(_i2.H256Codec()),
   );
 
-  final _i2.StorageMap<_i3.H256, _i8.Votes> _voting =
-      const _i2.StorageMap<_i3.H256, _i8.Votes>(
+  final _i1.StorageMap<_i2.H256, _i7.Votes> _voting =
+      const _i1.StorageMap<_i2.H256, _i7.Votes>(
     prefix: 'TechnicalCommittee',
     storage: 'Voting',
-    valueCodec: _i8.Votes.codec,
-    hasher: _i2.StorageHasher.identity(_i3.H256Codec()),
+    valueCodec: _i7.Votes.codec,
+    hasher: _i1.StorageHasher.identity(_i2.H256Codec()),
   );
 
-  final _i2.StorageValue<int> _proposalCount = const _i2.StorageValue<int>(
+  final _i1.StorageValue<int> _proposalCount = const _i1.StorageValue<int>(
     prefix: 'TechnicalCommittee',
     storage: 'ProposalCount',
-    valueCodec: _i4.U32Codec.codec,
+    valueCodec: _i3.U32Codec.codec,
   );
 
-  final _i2.StorageValue<List<_i7.AccountId32>> _members =
-      const _i2.StorageValue<List<_i7.AccountId32>>(
+  final _i1.StorageValue<List<_i6.AccountId32>> _members =
+      const _i1.StorageValue<List<_i6.AccountId32>>(
     prefix: 'TechnicalCommittee',
     storage: 'Members',
-    valueCodec: _i4.SequenceCodec<_i7.AccountId32>(_i7.AccountId32Codec()),
+    valueCodec: _i3.SequenceCodec<_i6.AccountId32>(_i6.AccountId32Codec()),
   );
 
-  final _i2.StorageValue<_i7.AccountId32> _prime =
-      const _i2.StorageValue<_i7.AccountId32>(
+  final _i1.StorageValue<_i6.AccountId32> _prime =
+      const _i1.StorageValue<_i6.AccountId32>(
     prefix: 'TechnicalCommittee',
     storage: 'Prime',
-    valueCodec: _i7.AccountId32Codec(),
+    valueCodec: _i6.AccountId32Codec(),
   );
 
   /// The hashes of the active proposals.
-  _i9.Future<List<_i3.H256>> proposals({_i1.BlockHash? at}) async {
+  _i8.Future<List<_i2.H256>> proposals({_i1.BlockHash? at}) async {
     final hashedKey = _proposals.hashedKey();
     final bytes = await __api.getStorage(
       hashedKey,
@@ -87,8 +86,8 @@ class Queries {
   }
 
   /// Actual proposal for a given hash, if it's current.
-  _i9.Future<_i5.RuntimeCall?> proposalOf(
-    _i3.H256 key1, {
+  _i8.Future<_i4.RuntimeCall?> proposalOf(
+    _i2.H256 key1, {
     _i1.BlockHash? at,
   }) async {
     final hashedKey = _proposalOf.hashedKeyFor(key1);
@@ -106,8 +105,8 @@ class Queries {
   ///
   /// Determined by [Config::Consideration] and may be not present for certain proposals (e.g. if
   /// the proposal count at the time of creation was below threshold N).
-  _i9.Future<_i6.Tuple2<_i7.AccountId32, dynamic>?> costOf(
-    _i3.H256 key1, {
+  _i8.Future<_i5.Tuple2<_i6.AccountId32, dynamic>?> costOf(
+    _i2.H256 key1, {
     _i1.BlockHash? at,
   }) async {
     final hashedKey = _costOf.hashedKeyFor(key1);
@@ -122,8 +121,8 @@ class Queries {
   }
 
   /// Votes on a given proposal, if it is ongoing.
-  _i9.Future<_i8.Votes?> voting(
-    _i3.H256 key1, {
+  _i8.Future<_i7.Votes?> voting(
+    _i2.H256 key1, {
     _i1.BlockHash? at,
   }) async {
     final hashedKey = _voting.hashedKeyFor(key1);
@@ -138,7 +137,7 @@ class Queries {
   }
 
   /// Proposals so far.
-  _i9.Future<int> proposalCount({_i1.BlockHash? at}) async {
+  _i8.Future<int> proposalCount({_i1.BlockHash? at}) async {
     final hashedKey = _proposalCount.hashedKey();
     final bytes = await __api.getStorage(
       hashedKey,
@@ -151,7 +150,7 @@ class Queries {
   }
 
   /// The current members of the collective. This is stored sorted (just by value).
-  _i9.Future<List<_i7.AccountId32>> members({_i1.BlockHash? at}) async {
+  _i8.Future<List<_i6.AccountId32>> members({_i1.BlockHash? at}) async {
     final hashedKey = _members.hashedKey();
     final bytes = await __api.getStorage(
       hashedKey,
@@ -164,7 +163,7 @@ class Queries {
   }
 
   /// The prime member that helps determine the default vote behavior in case of abstentions.
-  _i9.Future<_i7.AccountId32?> prime({_i1.BlockHash? at}) async {
+  _i8.Future<_i6.AccountId32?> prime({_i1.BlockHash? at}) async {
     final hashedKey = _prime.hashedKey();
     final bytes = await __api.getStorage(
       hashedKey,
@@ -177,8 +176,8 @@ class Queries {
   }
 
   /// Actual proposal for a given hash, if it's current.
-  _i9.Future<List<_i5.RuntimeCall?>> multiProposalOf(
-    List<_i3.H256> keys, {
+  _i8.Future<List<_i4.RuntimeCall?>> multiProposalOf(
+    List<_i2.H256> keys, {
     _i1.BlockHash? at,
   }) async {
     final hashedKeys =
@@ -199,8 +198,8 @@ class Queries {
   ///
   /// Determined by [Config::Consideration] and may be not present for certain proposals (e.g. if
   /// the proposal count at the time of creation was below threshold N).
-  _i9.Future<List<_i6.Tuple2<_i7.AccountId32, dynamic>?>> multiCostOf(
-    List<_i3.H256> keys, {
+  _i8.Future<List<_i5.Tuple2<_i6.AccountId32, dynamic>?>> multiCostOf(
+    List<_i2.H256> keys, {
     _i1.BlockHash? at,
   }) async {
     final hashedKeys = keys.map((key) => _costOf.hashedKeyFor(key)).toList();
@@ -217,8 +216,8 @@ class Queries {
   }
 
   /// Votes on a given proposal, if it is ongoing.
-  _i9.Future<List<_i8.Votes?>> multiVoting(
-    List<_i3.H256> keys, {
+  _i8.Future<List<_i7.Votes?>> multiVoting(
+    List<_i2.H256> keys, {
     _i1.BlockHash? at,
   }) async {
     final hashedKeys = keys.map((key) => _voting.hashedKeyFor(key)).toList();
@@ -235,61 +234,61 @@ class Queries {
   }
 
   /// Returns the storage key for `proposals`.
-  _i10.Uint8List proposalsKey() {
+  _i9.Uint8List proposalsKey() {
     final hashedKey = _proposals.hashedKey();
     return hashedKey;
   }
 
   /// Returns the storage key for `proposalOf`.
-  _i10.Uint8List proposalOfKey(_i3.H256 key1) {
+  _i9.Uint8List proposalOfKey(_i2.H256 key1) {
     final hashedKey = _proposalOf.hashedKeyFor(key1);
     return hashedKey;
   }
 
   /// Returns the storage key for `costOf`.
-  _i10.Uint8List costOfKey(_i3.H256 key1) {
+  _i9.Uint8List costOfKey(_i2.H256 key1) {
     final hashedKey = _costOf.hashedKeyFor(key1);
     return hashedKey;
   }
 
   /// Returns the storage key for `voting`.
-  _i10.Uint8List votingKey(_i3.H256 key1) {
+  _i9.Uint8List votingKey(_i2.H256 key1) {
     final hashedKey = _voting.hashedKeyFor(key1);
     return hashedKey;
   }
 
   /// Returns the storage key for `proposalCount`.
-  _i10.Uint8List proposalCountKey() {
+  _i9.Uint8List proposalCountKey() {
     final hashedKey = _proposalCount.hashedKey();
     return hashedKey;
   }
 
   /// Returns the storage key for `members`.
-  _i10.Uint8List membersKey() {
+  _i9.Uint8List membersKey() {
     final hashedKey = _members.hashedKey();
     return hashedKey;
   }
 
   /// Returns the storage key for `prime`.
-  _i10.Uint8List primeKey() {
+  _i9.Uint8List primeKey() {
     final hashedKey = _prime.hashedKey();
     return hashedKey;
   }
 
   /// Returns the storage map key prefix for `proposalOf`.
-  _i10.Uint8List proposalOfMapPrefix() {
+  _i9.Uint8List proposalOfMapPrefix() {
     final hashedKey = _proposalOf.mapPrefix();
     return hashedKey;
   }
 
   /// Returns the storage map key prefix for `costOf`.
-  _i10.Uint8List costOfMapPrefix() {
+  _i9.Uint8List costOfMapPrefix() {
     final hashedKey = _costOf.mapPrefix();
     return hashedKey;
   }
 
   /// Returns the storage map key prefix for `voting`.
-  _i10.Uint8List votingMapPrefix() {
+  _i9.Uint8List votingMapPrefix() {
     final hashedKey = _voting.mapPrefix();
     return hashedKey;
   }
@@ -322,12 +321,12 @@ class Txs {
   ///  - `M` old-members-count (code- and governance-bounded)
   ///  - `N` new-members-count (code- and governance-bounded)
   ///  - `P` proposals-count (code-bounded)
-  _i5.TechnicalCommittee setMembers({
-    required List<_i7.AccountId32> newMembers,
-    _i7.AccountId32? prime,
+  _i4.TechnicalCommittee setMembers({
+    required List<_i6.AccountId32> newMembers,
+    _i6.AccountId32? prime,
     required int oldCount,
   }) {
-    return _i5.TechnicalCommittee(_i11.SetMembers(
+    return _i4.TechnicalCommittee(_i10.SetMembers(
       newMembers: newMembers,
       prime: prime,
       oldCount: oldCount,
@@ -343,11 +342,11 @@ class Txs {
   /// - `B` is `proposal` size in bytes (length-fee-bounded)
   /// - `M` members-count (code-bounded)
   /// - `P` complexity of dispatching `proposal`
-  _i5.TechnicalCommittee execute({
-    required _i5.RuntimeCall proposal,
+  _i4.TechnicalCommittee execute({
+    required _i4.RuntimeCall proposal,
     required BigInt lengthBound,
   }) {
-    return _i5.TechnicalCommittee(_i11.Execute(
+    return _i4.TechnicalCommittee(_i10.Execute(
       proposal: proposal,
       lengthBound: lengthBound,
     ));
@@ -367,12 +366,12 @@ class Txs {
   ///  - branching is influenced by `threshold` where:
   ///    - `P1` is proposal execution complexity (`threshold < 2`)
   ///    - `P2` is proposals-count (code-bounded) (`threshold >= 2`)
-  _i5.TechnicalCommittee propose({
+  _i4.TechnicalCommittee propose({
     required BigInt threshold,
-    required _i5.RuntimeCall proposal,
+    required _i4.RuntimeCall proposal,
     required BigInt lengthBound,
   }) {
-    return _i5.TechnicalCommittee(_i11.Propose(
+    return _i4.TechnicalCommittee(_i10.Propose(
       threshold: threshold,
       proposal: proposal,
       lengthBound: lengthBound,
@@ -388,12 +387,12 @@ class Txs {
   /// fee.
   /// ## Complexity
   /// - `O(M)` where `M` is members-count (code- and governance-bounded)
-  _i5.TechnicalCommittee vote({
-    required _i3.H256 proposal,
+  _i4.TechnicalCommittee vote({
+    required _i2.H256 proposal,
     required BigInt index,
     required bool approve,
   }) {
-    return _i5.TechnicalCommittee(_i11.Vote(
+    return _i4.TechnicalCommittee(_i10.Vote(
       proposal: proposal,
       index: index,
       approve: approve,
@@ -410,9 +409,9 @@ class Txs {
   ///
   /// ## Complexity
   /// O(P) where P is the number of max proposals
-  _i5.TechnicalCommittee disapproveProposal({required _i3.H256 proposalHash}) {
-    return _i5.TechnicalCommittee(
-        _i11.DisapproveProposal(proposalHash: proposalHash));
+  _i4.TechnicalCommittee disapproveProposal({required _i2.H256 proposalHash}) {
+    return _i4.TechnicalCommittee(
+        _i10.DisapproveProposal(proposalHash: proposalHash));
   }
 
   /// Close a vote that is either approved, disapproved or whose voting period has ended.
@@ -439,13 +438,13 @@ class Txs {
   ///  - `M` is members-count (code- and governance-bounded)
   ///  - `P1` is the complexity of `proposal` preimage.
   ///  - `P2` is proposal-count (code-bounded)
-  _i5.TechnicalCommittee close({
-    required _i3.H256 proposalHash,
+  _i4.TechnicalCommittee close({
+    required _i2.H256 proposalHash,
     required BigInt index,
-    required _i12.Weight proposalWeightBound,
+    required _i11.Weight proposalWeightBound,
     required BigInt lengthBound,
   }) {
-    return _i5.TechnicalCommittee(_i11.Close(
+    return _i4.TechnicalCommittee(_i10.Close(
       proposalHash: proposalHash,
       index: index,
       proposalWeightBound: proposalWeightBound,
@@ -460,8 +459,8 @@ class Txs {
   /// - `proposal_hash`: The hash of the proposal that should be killed.
   ///
   /// Emits `Killed` and `ProposalCostBurned` if any cost was held for a given proposal.
-  _i5.TechnicalCommittee kill({required _i3.H256 proposalHash}) {
-    return _i5.TechnicalCommittee(_i11.Kill(proposalHash: proposalHash));
+  _i4.TechnicalCommittee kill({required _i2.H256 proposalHash}) {
+    return _i4.TechnicalCommittee(_i10.Kill(proposalHash: proposalHash));
   }
 
   /// Release the cost held for storing a proposal once the given proposal is completed.
@@ -473,9 +472,9 @@ class Txs {
   /// - `proposal_hash`: The hash of the proposal.
   ///
   /// Emits `ProposalCostReleased` if any cost held for a given proposal.
-  _i5.TechnicalCommittee releaseProposalCost({required _i3.H256 proposalHash}) {
-    return _i5.TechnicalCommittee(
-        _i11.ReleaseProposalCost(proposalHash: proposalHash));
+  _i4.TechnicalCommittee releaseProposalCost({required _i2.H256 proposalHash}) {
+    return _i4.TechnicalCommittee(
+        _i10.ReleaseProposalCost(proposalHash: proposalHash));
   }
 }
 
@@ -483,7 +482,7 @@ class Constants {
   Constants();
 
   /// The maximum weight of a dispatch call that can be proposed and executed.
-  final _i12.Weight maxProposalWeight = _i12.Weight(
+  final _i11.Weight maxProposalWeight = _i11.Weight(
     refTime: BigInt.from(1000000000000),
     proofSize: BigInt.parse(
       '9223372036854775807',

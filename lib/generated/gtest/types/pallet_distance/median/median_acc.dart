@@ -1,7 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:typed_data' as _i4;
 
-import 'package:polkadart_scale_codec/polkadart_scale_codec.dart' as _i1;
+import 'package:polkadart/scale_codec.dart' as _i1;
 import 'package:quiver/collection.dart' as _i5;
 
 import '../../sp_arithmetic/per_things/perbill.dart' as _i3;
@@ -120,14 +120,4 @@ class $MedianAccCodec with _i1.Codec<MedianAcc> {
     size = size + _i1.U32Codec.codec.sizeHint(obj.medianSubindex);
     return size;
   }
-
-  @override
-  bool isSizeZero() =>
-      const _i1.SequenceCodec<_i2.Tuple2<_i3.Perbill, int>>(
-          _i2.Tuple2Codec<_i3.Perbill, int>(
-        _i3.PerbillCodec(),
-        _i1.U32Codec.codec,
-      )).isSizeZero() &&
-      const _i1.OptionCodec<int>(_i1.U32Codec.codec).isSizeZero() &&
-      _i1.U32Codec.codec.isSizeZero();
 }

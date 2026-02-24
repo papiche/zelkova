@@ -1,70 +1,69 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i7;
-import 'dart:typed_data' as _i8;
+import 'dart:async' as _i6;
+import 'dart:typed_data' as _i7;
 
 import 'package:polkadart/polkadart.dart' as _i1;
-import 'package:polkadart_scale_codec/polkadart_scale_codec.dart' as _i4;
-import 'package:substrate_metadata/substrate_metadata.dart' as _i2;
+import 'package:polkadart/scale_codec.dart' as _i3;
 
-import '../types/gtest_runtime/runtime_call.dart' as _i9;
-import '../types/pallet_identity/pallet/call.dart' as _i10;
-import '../types/pallet_identity/types/idty_name.dart' as _i6;
-import '../types/pallet_identity/types/idty_value.dart' as _i3;
-import '../types/sp_core/crypto/account_id32.dart' as _i5;
-import '../types/sp_runtime/multi_signature.dart' as _i11;
+import '../types/gtest_runtime/runtime_call.dart' as _i8;
+import '../types/pallet_identity/pallet/call.dart' as _i9;
+import '../types/pallet_identity/types/idty_name.dart' as _i5;
+import '../types/pallet_identity/types/idty_value.dart' as _i2;
+import '../types/sp_core/crypto/account_id32.dart' as _i4;
+import '../types/sp_runtime/multi_signature.dart' as _i10;
 
 class Queries {
   const Queries(this.__api);
 
   final _i1.StateApi __api;
 
-  final _i2.StorageMap<int, _i3.IdtyValue> _identities =
-      const _i2.StorageMap<int, _i3.IdtyValue>(
+  final _i1.StorageMap<int, _i2.IdtyValue> _identities =
+      const _i1.StorageMap<int, _i2.IdtyValue>(
     prefix: 'Identity',
     storage: 'Identities',
-    valueCodec: _i3.IdtyValue.codec,
-    hasher: _i2.StorageHasher.twoxx64Concat(_i4.U32Codec.codec),
+    valueCodec: _i2.IdtyValue.codec,
+    hasher: _i1.StorageHasher.twoxx64Concat(_i3.U32Codec.codec),
   );
 
-  final _i2.StorageValue<int> _counterForIdentities =
-      const _i2.StorageValue<int>(
+  final _i1.StorageValue<int> _counterForIdentities =
+      const _i1.StorageValue<int>(
     prefix: 'Identity',
     storage: 'CounterForIdentities',
-    valueCodec: _i4.U32Codec.codec,
+    valueCodec: _i3.U32Codec.codec,
   );
 
-  final _i2.StorageMap<_i5.AccountId32, int> _identityIndexOf =
-      const _i2.StorageMap<_i5.AccountId32, int>(
+  final _i1.StorageMap<_i4.AccountId32, int> _identityIndexOf =
+      const _i1.StorageMap<_i4.AccountId32, int>(
     prefix: 'Identity',
     storage: 'IdentityIndexOf',
-    valueCodec: _i4.U32Codec.codec,
-    hasher: _i2.StorageHasher.blake2b128Concat(_i5.AccountId32Codec()),
+    valueCodec: _i3.U32Codec.codec,
+    hasher: _i1.StorageHasher.blake2b128Concat(_i4.AccountId32Codec()),
   );
 
-  final _i2.StorageMap<_i6.IdtyName, int> _identitiesNames =
-      const _i2.StorageMap<_i6.IdtyName, int>(
+  final _i1.StorageMap<_i5.IdtyName, int> _identitiesNames =
+      const _i1.StorageMap<_i5.IdtyName, int>(
     prefix: 'Identity',
     storage: 'IdentitiesNames',
-    valueCodec: _i4.U32Codec.codec,
-    hasher: _i2.StorageHasher.blake2b128Concat(_i6.IdtyNameCodec()),
+    valueCodec: _i3.U32Codec.codec,
+    hasher: _i1.StorageHasher.blake2b128Concat(_i5.IdtyNameCodec()),
   );
 
-  final _i2.StorageValue<int> _nextIdtyIndex = const _i2.StorageValue<int>(
+  final _i1.StorageValue<int> _nextIdtyIndex = const _i1.StorageValue<int>(
     prefix: 'Identity',
     storage: 'NextIdtyIndex',
-    valueCodec: _i4.U32Codec.codec,
+    valueCodec: _i3.U32Codec.codec,
   );
 
-  final _i2.StorageMap<int, List<int>> _identityChangeSchedule =
-      const _i2.StorageMap<int, List<int>>(
+  final _i1.StorageMap<int, List<int>> _identityChangeSchedule =
+      const _i1.StorageMap<int, List<int>>(
     prefix: 'Identity',
     storage: 'IdentityChangeSchedule',
-    valueCodec: _i4.U32SequenceCodec.codec,
-    hasher: _i2.StorageHasher.twoxx64Concat(_i4.U32Codec.codec),
+    valueCodec: _i3.U32SequenceCodec.codec,
+    hasher: _i1.StorageHasher.twoxx64Concat(_i3.U32Codec.codec),
   );
 
   /// The identity value for each identity.
-  _i7.Future<_i3.IdtyValue?> identities(
+  _i6.Future<_i2.IdtyValue?> identities(
     int key1, {
     _i1.BlockHash? at,
   }) async {
@@ -80,7 +79,7 @@ class Queries {
   }
 
   /// Counter for the related counted storage map
-  _i7.Future<int> counterForIdentities({_i1.BlockHash? at}) async {
+  _i6.Future<int> counterForIdentities({_i1.BlockHash? at}) async {
     final hashedKey = _counterForIdentities.hashedKey();
     final bytes = await __api.getStorage(
       hashedKey,
@@ -93,8 +92,8 @@ class Queries {
   }
 
   /// The identity associated with each account.
-  _i7.Future<int?> identityIndexOf(
-    _i5.AccountId32 key1, {
+  _i6.Future<int?> identityIndexOf(
+    _i4.AccountId32 key1, {
     _i1.BlockHash? at,
   }) async {
     final hashedKey = _identityIndexOf.hashedKeyFor(key1);
@@ -109,8 +108,8 @@ class Queries {
   }
 
   /// The name associated with each identity.
-  _i7.Future<int?> identitiesNames(
-    _i6.IdtyName key1, {
+  _i6.Future<int?> identitiesNames(
+    _i5.IdtyName key1, {
     _i1.BlockHash? at,
   }) async {
     final hashedKey = _identitiesNames.hashedKeyFor(key1);
@@ -125,7 +124,7 @@ class Queries {
   }
 
   /// The identity index to assign to the next created identity.
-  _i7.Future<int> nextIdtyIndex({_i1.BlockHash? at}) async {
+  _i6.Future<int> nextIdtyIndex({_i1.BlockHash? at}) async {
     final hashedKey = _nextIdtyIndex.hashedKey();
     final bytes = await __api.getStorage(
       hashedKey,
@@ -138,7 +137,7 @@ class Queries {
   }
 
   /// The identities to remove at a given block.
-  _i7.Future<List<int>> identityChangeSchedule(
+  _i6.Future<List<int>> identityChangeSchedule(
     int key1, {
     _i1.BlockHash? at,
   }) async {
@@ -158,7 +157,7 @@ class Queries {
   }
 
   /// The identity value for each identity.
-  _i7.Future<List<_i3.IdtyValue?>> multiIdentities(
+  _i6.Future<List<_i2.IdtyValue?>> multiIdentities(
     List<int> keys, {
     _i1.BlockHash? at,
   }) async {
@@ -177,8 +176,8 @@ class Queries {
   }
 
   /// The identity associated with each account.
-  _i7.Future<List<int?>> multiIdentityIndexOf(
-    List<_i5.AccountId32> keys, {
+  _i6.Future<List<int?>> multiIdentityIndexOf(
+    List<_i4.AccountId32> keys, {
     _i1.BlockHash? at,
   }) async {
     final hashedKeys =
@@ -196,8 +195,8 @@ class Queries {
   }
 
   /// The name associated with each identity.
-  _i7.Future<List<int?>> multiIdentitiesNames(
-    List<_i6.IdtyName> keys, {
+  _i6.Future<List<int?>> multiIdentitiesNames(
+    List<_i5.IdtyName> keys, {
     _i1.BlockHash? at,
   }) async {
     final hashedKeys =
@@ -215,7 +214,7 @@ class Queries {
   }
 
   /// The identities to remove at a given block.
-  _i7.Future<List<List<int>>> multiIdentityChangeSchedule(
+  _i6.Future<List<List<int>>> multiIdentityChangeSchedule(
     List<int> keys, {
     _i1.BlockHash? at,
   }) async {
@@ -230,71 +229,71 @@ class Queries {
           .map((v) => _identityChangeSchedule.decodeValue(v.key))
           .toList();
     }
-    return keys
+    return (keys
         .map((key) => List<int>.filled(
               0,
               0,
               growable: true,
             ))
-        .toList(); /* Default */
+        .toList() as List<List<int>>); /* Default */
   }
 
   /// Returns the storage key for `identities`.
-  _i8.Uint8List identitiesKey(int key1) {
+  _i7.Uint8List identitiesKey(int key1) {
     final hashedKey = _identities.hashedKeyFor(key1);
     return hashedKey;
   }
 
   /// Returns the storage key for `counterForIdentities`.
-  _i8.Uint8List counterForIdentitiesKey() {
+  _i7.Uint8List counterForIdentitiesKey() {
     final hashedKey = _counterForIdentities.hashedKey();
     return hashedKey;
   }
 
   /// Returns the storage key for `identityIndexOf`.
-  _i8.Uint8List identityIndexOfKey(_i5.AccountId32 key1) {
+  _i7.Uint8List identityIndexOfKey(_i4.AccountId32 key1) {
     final hashedKey = _identityIndexOf.hashedKeyFor(key1);
     return hashedKey;
   }
 
   /// Returns the storage key for `identitiesNames`.
-  _i8.Uint8List identitiesNamesKey(_i6.IdtyName key1) {
+  _i7.Uint8List identitiesNamesKey(_i5.IdtyName key1) {
     final hashedKey = _identitiesNames.hashedKeyFor(key1);
     return hashedKey;
   }
 
   /// Returns the storage key for `nextIdtyIndex`.
-  _i8.Uint8List nextIdtyIndexKey() {
+  _i7.Uint8List nextIdtyIndexKey() {
     final hashedKey = _nextIdtyIndex.hashedKey();
     return hashedKey;
   }
 
   /// Returns the storage key for `identityChangeSchedule`.
-  _i8.Uint8List identityChangeScheduleKey(int key1) {
+  _i7.Uint8List identityChangeScheduleKey(int key1) {
     final hashedKey = _identityChangeSchedule.hashedKeyFor(key1);
     return hashedKey;
   }
 
   /// Returns the storage map key prefix for `identities`.
-  _i8.Uint8List identitiesMapPrefix() {
+  _i7.Uint8List identitiesMapPrefix() {
     final hashedKey = _identities.mapPrefix();
     return hashedKey;
   }
 
   /// Returns the storage map key prefix for `identityIndexOf`.
-  _i8.Uint8List identityIndexOfMapPrefix() {
+  _i7.Uint8List identityIndexOfMapPrefix() {
     final hashedKey = _identityIndexOf.mapPrefix();
     return hashedKey;
   }
 
   /// Returns the storage map key prefix for `identitiesNames`.
-  _i8.Uint8List identitiesNamesMapPrefix() {
+  _i7.Uint8List identitiesNamesMapPrefix() {
     final hashedKey = _identitiesNames.mapPrefix();
     return hashedKey;
   }
 
   /// Returns the storage map key prefix for `identityChangeSchedule`.
-  _i8.Uint8List identityChangeScheduleMapPrefix() {
+  _i7.Uint8List identityChangeScheduleMapPrefix() {
     final hashedKey = _identityChangeSchedule.mapPrefix();
     return hashedKey;
   }
@@ -308,8 +307,8 @@ class Txs {
   /// - `owner_key`: the public key corresponding to the identity to be created
   ///
   /// The origin must be allowed to create an identity.
-  _i9.Identity createIdentity({required _i5.AccountId32 ownerKey}) {
-    return _i9.Identity(_i10.CreateIdentity(ownerKey: ownerKey));
+  _i8.Identity createIdentity({required _i4.AccountId32 ownerKey}) {
+    return _i8.Identity(_i9.CreateIdentity(ownerKey: ownerKey));
   }
 
   /// Confirm the creation of an identity and give it a name
@@ -317,8 +316,8 @@ class Txs {
   /// - `idty_name`: the name uniquely associated to this identity. Must match the validation rules defined by the runtime.
   ///
   /// The identity must have been created using `create_identity` before it can be confirmed.
-  _i9.Identity confirmIdentity({required _i6.IdtyName idtyName}) {
-    return _i9.Identity(_i10.ConfirmIdentity(idtyName: idtyName));
+  _i8.Identity confirmIdentity({required _i5.IdtyName idtyName}) {
+    return _i8.Identity(_i9.ConfirmIdentity(idtyName: idtyName));
   }
 
   /// Change identity owner key.
@@ -328,11 +327,11 @@ class Txs {
   ///                 Must be signed by `new_key`.
   ///
   /// The origin should be the old identity owner key.
-  _i9.Identity changeOwnerKey({
-    required _i5.AccountId32 newKey,
-    required _i11.MultiSignature newKeySig,
+  _i8.Identity changeOwnerKey({
+    required _i4.AccountId32 newKey,
+    required _i10.MultiSignature newKeySig,
   }) {
-    return _i9.Identity(_i10.ChangeOwnerKey(
+    return _i8.Identity(_i9.ChangeOwnerKey(
       newKey: newKey,
       newKeySig: newKeySig,
     ));
@@ -346,12 +345,12 @@ class Txs {
   ///                    Must be signed by `revocation_key`.
   ///
   /// Any signed origin can execute this call.
-  _i9.Identity revokeIdentity({
+  _i8.Identity revokeIdentity({
     required int idtyIndex,
-    required _i5.AccountId32 revocationKey,
-    required _i11.MultiSignature revocationSig,
+    required _i4.AccountId32 revocationKey,
+    required _i10.MultiSignature revocationSig,
   }) {
-    return _i9.Identity(_i10.RevokeIdentity(
+    return _i8.Identity(_i9.RevokeIdentity(
       idtyIndex: idtyIndex,
       revocationKey: revocationKey,
       revocationSig: revocationSig,
@@ -363,9 +362,9 @@ class Txs {
   /// - `revocation document`: the full-length revocation document, signature included
   ///
   /// Any signed origin can execute this call.
-  _i9.Identity revokeIdentityLegacy({required List<int> revocationDocument}) {
-    return _i9.Identity(
-        _i10.RevokeIdentityLegacy(revocationDocument: revocationDocument));
+  _i8.Identity revokeIdentityLegacy({required List<int> revocationDocument}) {
+    return _i8.Identity(
+        _i9.RevokeIdentityLegacy(revocationDocument: revocationDocument));
   }
 
   /// Remove identity names from storage.
@@ -375,8 +374,8 @@ class Txs {
   ///
   /// - `origin` - The origin of the call. It must be root.
   /// - `names` - A vector containing the identity names to be removed from storage.
-  _i9.Identity pruneItemIdentitiesNames({required List<_i6.IdtyName> names}) {
-    return _i9.Identity(_i10.PruneItemIdentitiesNames(names: names));
+  _i8.Identity pruneItemIdentitiesNames({required List<_i5.IdtyName> names}) {
+    return _i8.Identity(_i9.PruneItemIdentitiesNames(names: names));
   }
 
   /// Change sufficient reference count for a given key.
@@ -388,11 +387,11 @@ class Txs {
   /// - `owner_key` - The account whose sufficient reference count will be modified.
   /// - `inc` - A boolean indicating whether to increment (`true`) or decrement (`false`) the count.
   ///
-  _i9.Identity fixSufficients({
-    required _i5.AccountId32 ownerKey,
+  _i8.Identity fixSufficients({
+    required _i4.AccountId32 ownerKey,
     required bool inc,
   }) {
-    return _i9.Identity(_i10.FixSufficients(
+    return _i8.Identity(_i9.FixSufficients(
       ownerKey: ownerKey,
       inc: inc,
     ));
@@ -406,11 +405,11 @@ class Txs {
   /// - `origin` - The origin of the call, which must have an associated identity index.
   /// - `account_id` - The account ID to link, which must sign the payload.
   /// - `payload_sig` - The signature with the linked identity.
-  _i9.Identity linkAccount({
-    required _i5.AccountId32 accountId,
-    required _i11.MultiSignature payloadSig,
+  _i8.Identity linkAccount({
+    required _i4.AccountId32 accountId,
+    required _i10.MultiSignature payloadSig,
   }) {
-    return _i9.Identity(_i10.LinkAccount(
+    return _i8.Identity(_i9.LinkAccount(
       accountId: accountId,
       payloadSig: payloadSig,
     ));

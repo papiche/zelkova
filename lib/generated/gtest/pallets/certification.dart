@@ -1,55 +1,54 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i6;
-import 'dart:typed_data' as _i7;
+import 'dart:async' as _i5;
+import 'dart:typed_data' as _i6;
 
 import 'package:polkadart/polkadart.dart' as _i1;
-import 'package:polkadart_scale_codec/polkadart_scale_codec.dart' as _i4;
-import 'package:substrate_metadata/substrate_metadata.dart' as _i2;
+import 'package:polkadart/scale_codec.dart' as _i3;
 
-import '../types/gtest_runtime/runtime_call.dart' as _i8;
-import '../types/pallet_certification/pallet/call.dart' as _i9;
-import '../types/pallet_certification/types/idty_cert_meta.dart' as _i3;
-import '../types/tuples_1.dart' as _i5;
+import '../types/gtest_runtime/runtime_call.dart' as _i7;
+import '../types/pallet_certification/pallet/call.dart' as _i8;
+import '../types/pallet_certification/types/idty_cert_meta.dart' as _i2;
+import '../types/tuples_1.dart' as _i4;
 
 class Queries {
   const Queries(this.__api);
 
   final _i1.StateApi __api;
 
-  final _i2.StorageMap<int, _i3.IdtyCertMeta> _storageIdtyCertMeta =
-      const _i2.StorageMap<int, _i3.IdtyCertMeta>(
+  final _i1.StorageMap<int, _i2.IdtyCertMeta> _storageIdtyCertMeta =
+      const _i1.StorageMap<int, _i2.IdtyCertMeta>(
     prefix: 'Certification',
     storage: 'StorageIdtyCertMeta',
-    valueCodec: _i3.IdtyCertMeta.codec,
-    hasher: _i2.StorageHasher.twoxx64Concat(_i4.U32Codec.codec),
+    valueCodec: _i2.IdtyCertMeta.codec,
+    hasher: _i1.StorageHasher.twoxx64Concat(_i3.U32Codec.codec),
   );
 
-  final _i2.StorageMap<int, List<_i5.Tuple2<int, int>>> _certsByReceiver =
-      const _i2.StorageMap<int, List<_i5.Tuple2<int, int>>>(
+  final _i1.StorageMap<int, List<_i4.Tuple2<int, int>>> _certsByReceiver =
+      const _i1.StorageMap<int, List<_i4.Tuple2<int, int>>>(
     prefix: 'Certification',
     storage: 'CertsByReceiver',
     valueCodec:
-        _i4.SequenceCodec<_i5.Tuple2<int, int>>(_i5.Tuple2Codec<int, int>(
-      _i4.U32Codec.codec,
-      _i4.U32Codec.codec,
+        _i3.SequenceCodec<_i4.Tuple2<int, int>>(_i4.Tuple2Codec<int, int>(
+      _i3.U32Codec.codec,
+      _i3.U32Codec.codec,
     )),
-    hasher: _i2.StorageHasher.twoxx64Concat(_i4.U32Codec.codec),
+    hasher: _i1.StorageHasher.twoxx64Concat(_i3.U32Codec.codec),
   );
 
-  final _i2.StorageMap<int, List<_i5.Tuple2<int, int>>> _certsRemovableOn =
-      const _i2.StorageMap<int, List<_i5.Tuple2<int, int>>>(
+  final _i1.StorageMap<int, List<_i4.Tuple2<int, int>>> _certsRemovableOn =
+      const _i1.StorageMap<int, List<_i4.Tuple2<int, int>>>(
     prefix: 'Certification',
     storage: 'CertsRemovableOn',
     valueCodec:
-        _i4.SequenceCodec<_i5.Tuple2<int, int>>(_i5.Tuple2Codec<int, int>(
-      _i4.U32Codec.codec,
-      _i4.U32Codec.codec,
+        _i3.SequenceCodec<_i4.Tuple2<int, int>>(_i4.Tuple2Codec<int, int>(
+      _i3.U32Codec.codec,
+      _i3.U32Codec.codec,
     )),
-    hasher: _i2.StorageHasher.twoxx64Concat(_i4.U32Codec.codec),
+    hasher: _i1.StorageHasher.twoxx64Concat(_i3.U32Codec.codec),
   );
 
   /// The certification metadata for each issuer.
-  _i6.Future<_i3.IdtyCertMeta> storageIdtyCertMeta(
+  _i5.Future<_i2.IdtyCertMeta> storageIdtyCertMeta(
     int key1, {
     _i1.BlockHash? at,
   }) async {
@@ -61,7 +60,7 @@ class Queries {
     if (bytes != null) {
       return _storageIdtyCertMeta.decodeValue(bytes);
     }
-    return _i3.IdtyCertMeta(
+    return _i2.IdtyCertMeta(
       issuedCount: 0,
       nextIssuableOn: 0,
       receivedCount: 0,
@@ -69,7 +68,7 @@ class Queries {
   }
 
   /// The certifications for each receiver.
-  _i6.Future<List<_i5.Tuple2<int, int>>> certsByReceiver(
+  _i5.Future<List<_i4.Tuple2<int, int>>> certsByReceiver(
     int key1, {
     _i1.BlockHash? at,
   }) async {
@@ -85,7 +84,7 @@ class Queries {
   }
 
   /// The certifications that should expire at a given block.
-  _i6.Future<List<_i5.Tuple2<int, int>>?> certsRemovableOn(
+  _i5.Future<List<_i4.Tuple2<int, int>>?> certsRemovableOn(
     int key1, {
     _i1.BlockHash? at,
   }) async {
@@ -101,7 +100,7 @@ class Queries {
   }
 
   /// The certification metadata for each issuer.
-  _i6.Future<List<_i3.IdtyCertMeta>> multiStorageIdtyCertMeta(
+  _i5.Future<List<_i2.IdtyCertMeta>> multiStorageIdtyCertMeta(
     List<int> keys, {
     _i1.BlockHash? at,
   }) async {
@@ -116,17 +115,17 @@ class Queries {
           .map((v) => _storageIdtyCertMeta.decodeValue(v.key))
           .toList();
     }
-    return keys
-        .map((key) => _i3.IdtyCertMeta(
+    return (keys
+        .map((key) => _i2.IdtyCertMeta(
               issuedCount: 0,
               nextIssuableOn: 0,
               receivedCount: 0,
             ))
-        .toList(); /* Default */
+        .toList() as List<_i2.IdtyCertMeta>); /* Default */
   }
 
   /// The certifications for each receiver.
-  _i6.Future<List<List<_i5.Tuple2<int, int>>>> multiCertsByReceiver(
+  _i5.Future<List<List<_i4.Tuple2<int, int>>>> multiCertsByReceiver(
     List<int> keys, {
     _i1.BlockHash? at,
   }) async {
@@ -142,11 +141,11 @@ class Queries {
           .toList();
     }
     return (keys.map((key) => []).toList()
-        as List<List<_i5.Tuple2<int, int>>>); /* Default */
+        as List<List<_i4.Tuple2<int, int>>>); /* Default */
   }
 
   /// The certifications that should expire at a given block.
-  _i6.Future<List<List<_i5.Tuple2<int, int>>?>> multiCertsRemovableOn(
+  _i5.Future<List<List<_i4.Tuple2<int, int>>?>> multiCertsRemovableOn(
     List<int> keys, {
     _i1.BlockHash? at,
   }) async {
@@ -165,37 +164,37 @@ class Queries {
   }
 
   /// Returns the storage key for `storageIdtyCertMeta`.
-  _i7.Uint8List storageIdtyCertMetaKey(int key1) {
+  _i6.Uint8List storageIdtyCertMetaKey(int key1) {
     final hashedKey = _storageIdtyCertMeta.hashedKeyFor(key1);
     return hashedKey;
   }
 
   /// Returns the storage key for `certsByReceiver`.
-  _i7.Uint8List certsByReceiverKey(int key1) {
+  _i6.Uint8List certsByReceiverKey(int key1) {
     final hashedKey = _certsByReceiver.hashedKeyFor(key1);
     return hashedKey;
   }
 
   /// Returns the storage key for `certsRemovableOn`.
-  _i7.Uint8List certsRemovableOnKey(int key1) {
+  _i6.Uint8List certsRemovableOnKey(int key1) {
     final hashedKey = _certsRemovableOn.hashedKeyFor(key1);
     return hashedKey;
   }
 
   /// Returns the storage map key prefix for `storageIdtyCertMeta`.
-  _i7.Uint8List storageIdtyCertMetaMapPrefix() {
+  _i6.Uint8List storageIdtyCertMetaMapPrefix() {
     final hashedKey = _storageIdtyCertMeta.mapPrefix();
     return hashedKey;
   }
 
   /// Returns the storage map key prefix for `certsByReceiver`.
-  _i7.Uint8List certsByReceiverMapPrefix() {
+  _i6.Uint8List certsByReceiverMapPrefix() {
     final hashedKey = _certsByReceiver.mapPrefix();
     return hashedKey;
   }
 
   /// Returns the storage map key prefix for `certsRemovableOn`.
-  _i7.Uint8List certsRemovableOnMapPrefix() {
+  _i6.Uint8List certsRemovableOnMapPrefix() {
     final hashedKey = _certsRemovableOn.mapPrefix();
     return hashedKey;
   }
@@ -205,23 +204,23 @@ class Txs {
   const Txs();
 
   /// Add a new certification.
-  _i8.Certification addCert({required int receiver}) {
-    return _i8.Certification(_i9.AddCert(receiver: receiver));
+  _i7.Certification addCert({required int receiver}) {
+    return _i7.Certification(_i8.AddCert(receiver: receiver));
   }
 
   /// Renew an existing certification.
-  _i8.Certification renewCert({required int receiver}) {
-    return _i8.Certification(_i9.RenewCert(receiver: receiver));
+  _i7.Certification renewCert({required int receiver}) {
+    return _i7.Certification(_i8.RenewCert(receiver: receiver));
   }
 
   /// Remove one certification given the issuer and the receiver.
   ///
   /// - `origin`: Must be `Root`.
-  _i8.Certification delCert({
+  _i7.Certification delCert({
     required int issuer,
     required int receiver,
   }) {
-    return _i8.Certification(_i9.DelCert(
+    return _i7.Certification(_i8.DelCert(
       issuer: issuer,
       receiver: receiver,
     ));
@@ -230,9 +229,9 @@ class Txs {
   /// Remove all certifications received by an identity.
   ///
   /// - `origin`: Must be `Root`.
-  _i8.Certification removeAllCertsReceivedBy({required int idtyIndex}) {
-    return _i8.Certification(
-        _i9.RemoveAllCertsReceivedBy(idtyIndex: idtyIndex));
+  _i7.Certification removeAllCertsReceivedBy({required int idtyIndex}) {
+    return _i7.Certification(
+        _i8.RemoveAllCertsReceivedBy(idtyIndex: idtyIndex));
   }
 }
 

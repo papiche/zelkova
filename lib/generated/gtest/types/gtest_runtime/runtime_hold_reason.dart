@@ -1,7 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:typed_data' as _i2;
 
-import 'package:polkadart_scale_codec/polkadart_scale_codec.dart' as _i1;
+import 'package:polkadart/scale_codec.dart' as _i1;
 
 import '../pallet_collective/pallet/hold_reason.dart' as _i4;
 import '../pallet_distance/pallet/hold_reason.dart' as _i5;
@@ -100,9 +100,6 @@ class $RuntimeHoldReasonCodec with _i1.Codec<RuntimeHoldReason> {
             'RuntimeHoldReason: Unsupported "$value" of type "${value.runtimeType}"');
     }
   }
-
-  @override
-  bool isSizeZero() => false;
 }
 
 class Preimage extends RuntimeHoldReason {

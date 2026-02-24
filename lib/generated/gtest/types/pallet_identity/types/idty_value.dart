@@ -1,7 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:typed_data' as _i6;
 
-import 'package:polkadart_scale_codec/polkadart_scale_codec.dart' as _i1;
+import 'package:polkadart/scale_codec.dart' as _i1;
 import 'package:quiver/collection.dart' as _i7;
 
 import '../../common_runtime/entities/idty_data.dart' as _i2;
@@ -50,12 +50,10 @@ class IdtyValue {
   Map<String, dynamic> toJson() => {
         'data': data.toJson(),
         'nextCreatableIdentityOn': nextCreatableIdentityOn,
-        'oldOwnerKey': oldOwnerKey != null
-            ? [
-                oldOwnerKey!.value0.toList(),
-                oldOwnerKey!.value1,
-              ]
-            : null,
+        'oldOwnerKey': [
+          oldOwnerKey?.value0.toList(),
+          oldOwnerKey?.value1,
+        ],
         'ownerKey': ownerKey.toList(),
         'nextScheduled': nextScheduled,
         'status': status.toJson(),
@@ -159,17 +157,4 @@ class $IdtyValueCodec with _i1.Codec<IdtyValue> {
     size = size + _i5.IdtyStatus.codec.sizeHint(obj.status);
     return size;
   }
-
-  @override
-  bool isSizeZero() =>
-      _i2.IdtyData.codec.isSizeZero() &&
-      _i1.U32Codec.codec.isSizeZero() &&
-      const _i1.OptionCodec<_i3.Tuple2<_i4.AccountId32, int>>(
-          _i3.Tuple2Codec<_i4.AccountId32, int>(
-        _i4.AccountId32Codec(),
-        _i1.U32Codec.codec,
-      )).isSizeZero() &&
-      const _i4.AccountId32Codec().isSizeZero() &&
-      _i1.U32Codec.codec.isSizeZero() &&
-      _i5.IdtyStatus.codec.isSizeZero();
 }

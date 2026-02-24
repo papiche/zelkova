@@ -1,7 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:typed_data' as _i5;
 
-import 'package:polkadart_scale_codec/polkadart_scale_codec.dart' as _i1;
+import 'package:polkadart/scale_codec.dart' as _i1;
 import 'package:quiver/collection.dart' as _i6;
 
 import '../../common_runtime/entities/validator_full_identification.dart'
@@ -107,13 +107,4 @@ class $OffenceDetailsCodec with _i1.Codec<OffenceDetails> {
             .sizeHint(obj.reporters);
     return size;
   }
-
-  @override
-  bool isSizeZero() =>
-      const _i2.Tuple2Codec<_i3.AccountId32, _i4.ValidatorFullIdentification>(
-        _i3.AccountId32Codec(),
-        _i4.ValidatorFullIdentificationCodec(),
-      ).isSizeZero() &&
-      const _i1.SequenceCodec<_i3.AccountId32>(_i3.AccountId32Codec())
-          .isSizeZero();
 }

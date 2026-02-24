@@ -1,77 +1,76 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i6;
-import 'dart:typed_data' as _i7;
+import 'dart:async' as _i5;
+import 'dart:typed_data' as _i6;
 
 import 'package:polkadart/polkadart.dart' as _i1;
-import 'package:polkadart_scale_codec/polkadart_scale_codec.dart' as _i3;
-import 'package:substrate_metadata/substrate_metadata.dart' as _i2;
+import 'package:polkadart/scale_codec.dart' as _i2;
 
-import '../types/frame_support/pallet_id.dart' as _i12;
-import '../types/gtest_runtime/runtime_call.dart' as _i8;
-import '../types/pallet_treasury/pallet/call.dart' as _i10;
-import '../types/pallet_treasury/proposal.dart' as _i4;
-import '../types/pallet_treasury/spend_status.dart' as _i5;
-import '../types/sp_arithmetic/per_things/permill.dart' as _i11;
-import '../types/sp_core/crypto/account_id32.dart' as _i13;
-import '../types/sp_runtime/multiaddress/multi_address.dart' as _i9;
+import '../types/frame_support/pallet_id.dart' as _i11;
+import '../types/gtest_runtime/runtime_call.dart' as _i7;
+import '../types/pallet_treasury/pallet/call.dart' as _i9;
+import '../types/pallet_treasury/proposal.dart' as _i3;
+import '../types/pallet_treasury/spend_status.dart' as _i4;
+import '../types/sp_arithmetic/per_things/permill.dart' as _i10;
+import '../types/sp_core/crypto/account_id32.dart' as _i12;
+import '../types/sp_runtime/multiaddress/multi_address.dart' as _i8;
 
 class Queries {
   const Queries(this.__api);
 
   final _i1.StateApi __api;
 
-  final _i2.StorageValue<int> _proposalCount = const _i2.StorageValue<int>(
+  final _i1.StorageValue<int> _proposalCount = const _i1.StorageValue<int>(
     prefix: 'Treasury',
     storage: 'ProposalCount',
-    valueCodec: _i3.U32Codec.codec,
+    valueCodec: _i2.U32Codec.codec,
   );
 
-  final _i2.StorageMap<int, _i4.Proposal> _proposals =
-      const _i2.StorageMap<int, _i4.Proposal>(
+  final _i1.StorageMap<int, _i3.Proposal> _proposals =
+      const _i1.StorageMap<int, _i3.Proposal>(
     prefix: 'Treasury',
     storage: 'Proposals',
-    valueCodec: _i4.Proposal.codec,
-    hasher: _i2.StorageHasher.twoxx64Concat(_i3.U32Codec.codec),
+    valueCodec: _i3.Proposal.codec,
+    hasher: _i1.StorageHasher.twoxx64Concat(_i2.U32Codec.codec),
   );
 
-  final _i2.StorageValue<BigInt> _deactivated = const _i2.StorageValue<BigInt>(
+  final _i1.StorageValue<BigInt> _deactivated = const _i1.StorageValue<BigInt>(
     prefix: 'Treasury',
     storage: 'Deactivated',
-    valueCodec: _i3.U64Codec.codec,
+    valueCodec: _i2.U64Codec.codec,
   );
 
-  final _i2.StorageValue<List<int>> _approvals =
-      const _i2.StorageValue<List<int>>(
+  final _i1.StorageValue<List<int>> _approvals =
+      const _i1.StorageValue<List<int>>(
     prefix: 'Treasury',
     storage: 'Approvals',
-    valueCodec: _i3.U32SequenceCodec.codec,
+    valueCodec: _i2.U32SequenceCodec.codec,
   );
 
-  final _i2.StorageValue<int> _spendCount = const _i2.StorageValue<int>(
+  final _i1.StorageValue<int> _spendCount = const _i1.StorageValue<int>(
     prefix: 'Treasury',
     storage: 'SpendCount',
-    valueCodec: _i3.U32Codec.codec,
+    valueCodec: _i2.U32Codec.codec,
   );
 
-  final _i2.StorageMap<int, _i5.SpendStatus> _spends =
-      const _i2.StorageMap<int, _i5.SpendStatus>(
+  final _i1.StorageMap<int, _i4.SpendStatus> _spends =
+      const _i1.StorageMap<int, _i4.SpendStatus>(
     prefix: 'Treasury',
     storage: 'Spends',
-    valueCodec: _i5.SpendStatus.codec,
-    hasher: _i2.StorageHasher.twoxx64Concat(_i3.U32Codec.codec),
+    valueCodec: _i4.SpendStatus.codec,
+    hasher: _i1.StorageHasher.twoxx64Concat(_i2.U32Codec.codec),
   );
 
-  final _i2.StorageValue<int> _lastSpendPeriod = const _i2.StorageValue<int>(
+  final _i1.StorageValue<int> _lastSpendPeriod = const _i1.StorageValue<int>(
     prefix: 'Treasury',
     storage: 'LastSpendPeriod',
-    valueCodec: _i3.U32Codec.codec,
+    valueCodec: _i2.U32Codec.codec,
   );
 
   /// DEPRECATED: associated with `spend_local` call and will be removed in May 2025.
   /// Refer to <https://github.com/paritytech/polkadot-sdk/pull/5961> for migration to `spend`.
   ///
   /// Number of proposals that have been made.
-  _i6.Future<int> proposalCount({_i1.BlockHash? at}) async {
+  _i5.Future<int> proposalCount({_i1.BlockHash? at}) async {
     final hashedKey = _proposalCount.hashedKey();
     final bytes = await __api.getStorage(
       hashedKey,
@@ -87,7 +86,7 @@ class Queries {
   /// Refer to <https://github.com/paritytech/polkadot-sdk/pull/5961> for migration to `spend`.
   ///
   /// Proposals that have been made.
-  _i6.Future<_i4.Proposal?> proposals(
+  _i5.Future<_i3.Proposal?> proposals(
     int key1, {
     _i1.BlockHash? at,
   }) async {
@@ -103,7 +102,7 @@ class Queries {
   }
 
   /// The amount which has been reported as inactive to Currency.
-  _i6.Future<BigInt> deactivated({_i1.BlockHash? at}) async {
+  _i5.Future<BigInt> deactivated({_i1.BlockHash? at}) async {
     final hashedKey = _deactivated.hashedKey();
     final bytes = await __api.getStorage(
       hashedKey,
@@ -119,7 +118,7 @@ class Queries {
   /// Refer to <https://github.com/paritytech/polkadot-sdk/pull/5961> for migration to `spend`.
   ///
   /// Proposal indices that have been approved but not yet awarded.
-  _i6.Future<List<int>> approvals({_i1.BlockHash? at}) async {
+  _i5.Future<List<int>> approvals({_i1.BlockHash? at}) async {
     final hashedKey = _approvals.hashedKey();
     final bytes = await __api.getStorage(
       hashedKey,
@@ -136,7 +135,7 @@ class Queries {
   }
 
   /// The count of spends that have been made.
-  _i6.Future<int> spendCount({_i1.BlockHash? at}) async {
+  _i5.Future<int> spendCount({_i1.BlockHash? at}) async {
     final hashedKey = _spendCount.hashedKey();
     final bytes = await __api.getStorage(
       hashedKey,
@@ -149,7 +148,7 @@ class Queries {
   }
 
   /// Spends that have been approved and being processed.
-  _i6.Future<_i5.SpendStatus?> spends(
+  _i5.Future<_i4.SpendStatus?> spends(
     int key1, {
     _i1.BlockHash? at,
   }) async {
@@ -165,7 +164,7 @@ class Queries {
   }
 
   /// The blocknumber for the last triggered spend period.
-  _i6.Future<int?> lastSpendPeriod({_i1.BlockHash? at}) async {
+  _i5.Future<int?> lastSpendPeriod({_i1.BlockHash? at}) async {
     final hashedKey = _lastSpendPeriod.hashedKey();
     final bytes = await __api.getStorage(
       hashedKey,
@@ -181,7 +180,7 @@ class Queries {
   /// Refer to <https://github.com/paritytech/polkadot-sdk/pull/5961> for migration to `spend`.
   ///
   /// Proposals that have been made.
-  _i6.Future<List<_i4.Proposal?>> multiProposals(
+  _i5.Future<List<_i3.Proposal?>> multiProposals(
     List<int> keys, {
     _i1.BlockHash? at,
   }) async {
@@ -199,7 +198,7 @@ class Queries {
   }
 
   /// Spends that have been approved and being processed.
-  _i6.Future<List<_i5.SpendStatus?>> multiSpends(
+  _i5.Future<List<_i4.SpendStatus?>> multiSpends(
     List<int> keys, {
     _i1.BlockHash? at,
   }) async {
@@ -217,55 +216,55 @@ class Queries {
   }
 
   /// Returns the storage key for `proposalCount`.
-  _i7.Uint8List proposalCountKey() {
+  _i6.Uint8List proposalCountKey() {
     final hashedKey = _proposalCount.hashedKey();
     return hashedKey;
   }
 
   /// Returns the storage key for `proposals`.
-  _i7.Uint8List proposalsKey(int key1) {
+  _i6.Uint8List proposalsKey(int key1) {
     final hashedKey = _proposals.hashedKeyFor(key1);
     return hashedKey;
   }
 
   /// Returns the storage key for `deactivated`.
-  _i7.Uint8List deactivatedKey() {
+  _i6.Uint8List deactivatedKey() {
     final hashedKey = _deactivated.hashedKey();
     return hashedKey;
   }
 
   /// Returns the storage key for `approvals`.
-  _i7.Uint8List approvalsKey() {
+  _i6.Uint8List approvalsKey() {
     final hashedKey = _approvals.hashedKey();
     return hashedKey;
   }
 
   /// Returns the storage key for `spendCount`.
-  _i7.Uint8List spendCountKey() {
+  _i6.Uint8List spendCountKey() {
     final hashedKey = _spendCount.hashedKey();
     return hashedKey;
   }
 
   /// Returns the storage key for `spends`.
-  _i7.Uint8List spendsKey(int key1) {
+  _i6.Uint8List spendsKey(int key1) {
     final hashedKey = _spends.hashedKeyFor(key1);
     return hashedKey;
   }
 
   /// Returns the storage key for `lastSpendPeriod`.
-  _i7.Uint8List lastSpendPeriodKey() {
+  _i6.Uint8List lastSpendPeriodKey() {
     final hashedKey = _lastSpendPeriod.hashedKey();
     return hashedKey;
   }
 
   /// Returns the storage map key prefix for `proposals`.
-  _i7.Uint8List proposalsMapPrefix() {
+  _i6.Uint8List proposalsMapPrefix() {
     final hashedKey = _proposals.mapPrefix();
     return hashedKey;
   }
 
   /// Returns the storage map key prefix for `spends`.
-  _i7.Uint8List spendsMapPrefix() {
+  _i6.Uint8List spendsMapPrefix() {
     final hashedKey = _spends.mapPrefix();
     return hashedKey;
   }
@@ -291,11 +290,11 @@ class Txs {
   /// ## Events
   ///
   /// Emits [`Event::SpendApproved`] if successful.
-  _i8.Treasury spendLocal({
+  _i7.Treasury spendLocal({
     required BigInt amount,
-    required _i9.MultiAddress beneficiary,
+    required _i8.MultiAddress beneficiary,
   }) {
-    return _i8.Treasury(_i10.SpendLocal(
+    return _i7.Treasury(_i9.SpendLocal(
       amount: amount,
       beneficiary: beneficiary,
     ));
@@ -322,8 +321,8 @@ class Txs {
   ///  approval queue, i.e., the proposal has not been approved. This could also mean the
   ///  proposal does not exist altogether, thus there is no way it would have been approved
   ///  in the first place.
-  _i8.Treasury removeApproval({required BigInt proposalId}) {
-    return _i8.Treasury(_i10.RemoveApproval(proposalId: proposalId));
+  _i7.Treasury removeApproval({required BigInt proposalId}) {
+    return _i7.Treasury(_i9.RemoveApproval(proposalId: proposalId));
   }
 
   /// Propose and approve a spend of treasury funds.
@@ -352,13 +351,13 @@ class Txs {
   /// ## Events
   ///
   /// Emits [`Event::AssetSpendApproved`] if successful.
-  _i8.Treasury spend({
+  _i7.Treasury spend({
     required dynamic assetKind,
     required BigInt amount,
-    required _i9.MultiAddress beneficiary,
+    required _i8.MultiAddress beneficiary,
     int? validFrom,
   }) {
-    return _i8.Treasury(_i10.Spend(
+    return _i7.Treasury(_i9.Spend(
       assetKind: assetKind,
       amount: amount,
       beneficiary: beneficiary,
@@ -385,8 +384,8 @@ class Txs {
   /// ## Events
   ///
   /// Emits [`Event::Paid`] if successful.
-  _i8.Treasury payout({required int index}) {
-    return _i8.Treasury(_i10.Payout(index: index));
+  _i7.Treasury payout({required int index}) {
+    return _i7.Treasury(_i9.Payout(index: index));
   }
 
   /// Check the status of the spend and remove it from the storage if processed.
@@ -408,8 +407,8 @@ class Txs {
   ///
   /// Emits [`Event::PaymentFailed`] if the spend payout has failed.
   /// Emits [`Event::SpendProcessed`] if the spend payout has succeed.
-  _i8.Treasury checkStatus({required int index}) {
-    return _i8.Treasury(_i10.CheckStatus(index: index));
+  _i7.Treasury checkStatus({required int index}) {
+    return _i7.Treasury(_i9.CheckStatus(index: index));
   }
 
   /// Void previously approved spend.
@@ -428,8 +427,8 @@ class Txs {
   /// ## Events
   ///
   /// Emits [`Event::AssetSpendVoided`] if successful.
-  _i8.Treasury voidSpend({required int index}) {
-    return _i8.Treasury(_i10.VoidSpend(index: index));
+  _i7.Treasury voidSpend({required int index}) {
+    return _i7.Treasury(_i9.VoidSpend(index: index));
   }
 }
 
@@ -440,10 +439,10 @@ class Constants {
   final int spendPeriod = 14400;
 
   /// Percentage of spare funds (if any) that are burnt per spend period.
-  final _i11.Permill burn = 0;
+  final _i10.Permill burn = 0;
 
   /// The treasury's pallet id, used for deriving its sovereign account ID.
-  final _i12.PalletId palletId = const <int>[
+  final _i11.PalletId palletId = const <int>[
     112,
     121,
     47,
@@ -466,7 +465,7 @@ class Constants {
   final int payoutPeriod = 10;
 
   /// Gets this pallet's derived pot account.
-  final _i13.AccountId32 potAccount = const <int>[
+  final _i12.AccountId32 potAccount = const <int>[
     109,
     111,
     100,

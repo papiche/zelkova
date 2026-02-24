@@ -1,7 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:typed_data' as _i2;
 
-import 'package:polkadart_scale_codec/polkadart_scale_codec.dart' as _i1;
+import 'package:polkadart/scale_codec.dart' as _i1;
 
 import '../membership_removal_reason.dart' as _i3;
 
@@ -117,9 +117,6 @@ class $EventCodec with _i1.Codec<Event> {
             'Event: Unsupported "$value" of type "${value.runtimeType}"');
     }
   }
-
-  @override
-  bool isSizeZero() => false;
 }
 
 /// A membership was added.

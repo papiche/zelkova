@@ -1,44 +1,43 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i5;
-import 'dart:typed_data' as _i6;
+import 'dart:async' as _i4;
+import 'dart:typed_data' as _i5;
 
 import 'package:polkadart/polkadart.dart' as _i1;
-import 'package:polkadart_scale_codec/polkadart_scale_codec.dart' as _i4;
-import 'package:substrate_metadata/substrate_metadata.dart' as _i2;
+import 'package:polkadart/scale_codec.dart' as _i3;
 
-import '../types/gtest_runtime/runtime_call.dart' as _i7;
-import '../types/pallet_smith_members/pallet/call.dart' as _i8;
-import '../types/pallet_smith_members/types/smith_meta.dart' as _i3;
+import '../types/gtest_runtime/runtime_call.dart' as _i6;
+import '../types/pallet_smith_members/pallet/call.dart' as _i7;
+import '../types/pallet_smith_members/types/smith_meta.dart' as _i2;
 
 class Queries {
   const Queries(this.__api);
 
   final _i1.StateApi __api;
 
-  final _i2.StorageMap<int, _i3.SmithMeta> _smiths =
-      const _i2.StorageMap<int, _i3.SmithMeta>(
+  final _i1.StorageMap<int, _i2.SmithMeta> _smiths =
+      const _i1.StorageMap<int, _i2.SmithMeta>(
     prefix: 'SmithMembers',
     storage: 'Smiths',
-    valueCodec: _i3.SmithMeta.codec,
-    hasher: _i2.StorageHasher.twoxx64Concat(_i4.U32Codec.codec),
+    valueCodec: _i2.SmithMeta.codec,
+    hasher: _i1.StorageHasher.twoxx64Concat(_i3.U32Codec.codec),
   );
 
-  final _i2.StorageMap<int, List<int>> _expiresOn =
-      const _i2.StorageMap<int, List<int>>(
+  final _i1.StorageMap<int, List<int>> _expiresOn =
+      const _i1.StorageMap<int, List<int>>(
     prefix: 'SmithMembers',
     storage: 'ExpiresOn',
-    valueCodec: _i4.U32SequenceCodec.codec,
-    hasher: _i2.StorageHasher.twoxx64Concat(_i4.U32Codec.codec),
+    valueCodec: _i3.U32SequenceCodec.codec,
+    hasher: _i1.StorageHasher.twoxx64Concat(_i3.U32Codec.codec),
   );
 
-  final _i2.StorageValue<int> _currentSession = const _i2.StorageValue<int>(
+  final _i1.StorageValue<int> _currentSession = const _i1.StorageValue<int>(
     prefix: 'SmithMembers',
     storage: 'CurrentSession',
-    valueCodec: _i4.U32Codec.codec,
+    valueCodec: _i3.U32Codec.codec,
   );
 
   /// The Smith metadata for each identity.
-  _i5.Future<_i3.SmithMeta?> smiths(
+  _i4.Future<_i2.SmithMeta?> smiths(
     int key1, {
     _i1.BlockHash? at,
   }) async {
@@ -54,7 +53,7 @@ class Queries {
   }
 
   /// The indexes of Smith to remove at a given session.
-  _i5.Future<List<int>?> expiresOn(
+  _i4.Future<List<int>?> expiresOn(
     int key1, {
     _i1.BlockHash? at,
   }) async {
@@ -70,7 +69,7 @@ class Queries {
   }
 
   /// The current session index.
-  _i5.Future<int> currentSession({_i1.BlockHash? at}) async {
+  _i4.Future<int> currentSession({_i1.BlockHash? at}) async {
     final hashedKey = _currentSession.hashedKey();
     final bytes = await __api.getStorage(
       hashedKey,
@@ -83,7 +82,7 @@ class Queries {
   }
 
   /// The Smith metadata for each identity.
-  _i5.Future<List<_i3.SmithMeta?>> multiSmiths(
+  _i4.Future<List<_i2.SmithMeta?>> multiSmiths(
     List<int> keys, {
     _i1.BlockHash? at,
   }) async {
@@ -101,7 +100,7 @@ class Queries {
   }
 
   /// The indexes of Smith to remove at a given session.
-  _i5.Future<List<List<int>?>> multiExpiresOn(
+  _i4.Future<List<List<int>?>> multiExpiresOn(
     List<int> keys, {
     _i1.BlockHash? at,
   }) async {
@@ -119,31 +118,31 @@ class Queries {
   }
 
   /// Returns the storage key for `smiths`.
-  _i6.Uint8List smithsKey(int key1) {
+  _i5.Uint8List smithsKey(int key1) {
     final hashedKey = _smiths.hashedKeyFor(key1);
     return hashedKey;
   }
 
   /// Returns the storage key for `expiresOn`.
-  _i6.Uint8List expiresOnKey(int key1) {
+  _i5.Uint8List expiresOnKey(int key1) {
     final hashedKey = _expiresOn.hashedKeyFor(key1);
     return hashedKey;
   }
 
   /// Returns the storage key for `currentSession`.
-  _i6.Uint8List currentSessionKey() {
+  _i5.Uint8List currentSessionKey() {
     final hashedKey = _currentSession.hashedKey();
     return hashedKey;
   }
 
   /// Returns the storage map key prefix for `smiths`.
-  _i6.Uint8List smithsMapPrefix() {
+  _i5.Uint8List smithsMapPrefix() {
     final hashedKey = _smiths.mapPrefix();
     return hashedKey;
   }
 
   /// Returns the storage map key prefix for `expiresOn`.
-  _i6.Uint8List expiresOnMapPrefix() {
+  _i5.Uint8List expiresOnMapPrefix() {
     final hashedKey = _expiresOn.mapPrefix();
     return hashedKey;
   }
@@ -153,18 +152,18 @@ class Txs {
   const Txs();
 
   /// Invite a member of the Web of Trust to attempt becoming a Smith.
-  _i7.SmithMembers inviteSmith({required int receiver}) {
-    return _i7.SmithMembers(_i8.InviteSmith(receiver: receiver));
+  _i6.SmithMembers inviteSmith({required int receiver}) {
+    return _i6.SmithMembers(_i7.InviteSmith(receiver: receiver));
   }
 
   /// Accept an invitation to become a Smith (must have been invited first).
-  _i7.SmithMembers acceptInvitation() {
-    return _i7.SmithMembers(_i8.AcceptInvitation());
+  _i6.SmithMembers acceptInvitation() {
+    return _i6.SmithMembers(_i7.AcceptInvitation());
   }
 
   /// Certify an invited Smith, which can lead the certified to become a Smith.
-  _i7.SmithMembers certifySmith({required int receiver}) {
-    return _i7.SmithMembers(_i8.CertifySmith(receiver: receiver));
+  _i6.SmithMembers certifySmith({required int receiver}) {
+    return _i6.SmithMembers(_i7.CertifySmith(receiver: receiver));
   }
 }
 

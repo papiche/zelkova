@@ -1,43 +1,42 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i5;
-import 'dart:typed_data' as _i6;
+import 'dart:async' as _i4;
+import 'dart:typed_data' as _i5;
 
 import 'package:polkadart/polkadart.dart' as _i1;
-import 'package:polkadart_scale_codec/polkadart_scale_codec.dart' as _i4;
-import 'package:substrate_metadata/substrate_metadata.dart' as _i2;
+import 'package:polkadart/scale_codec.dart' as _i3;
 
-import '../types/sp_membership/membership_data.dart' as _i3;
+import '../types/sp_membership/membership_data.dart' as _i2;
 
 class Queries {
   const Queries(this.__api);
 
   final _i1.StateApi __api;
 
-  final _i2.StorageMap<int, _i3.MembershipData> _membership =
-      const _i2.StorageMap<int, _i3.MembershipData>(
+  final _i1.StorageMap<int, _i2.MembershipData> _membership =
+      const _i1.StorageMap<int, _i2.MembershipData>(
     prefix: 'Membership',
     storage: 'Membership',
-    valueCodec: _i3.MembershipData.codec,
-    hasher: _i2.StorageHasher.twoxx64Concat(_i4.U32Codec.codec),
+    valueCodec: _i2.MembershipData.codec,
+    hasher: _i1.StorageHasher.twoxx64Concat(_i3.U32Codec.codec),
   );
 
-  final _i2.StorageValue<int> _counterForMembership =
-      const _i2.StorageValue<int>(
+  final _i1.StorageValue<int> _counterForMembership =
+      const _i1.StorageValue<int>(
     prefix: 'Membership',
     storage: 'CounterForMembership',
-    valueCodec: _i4.U32Codec.codec,
+    valueCodec: _i3.U32Codec.codec,
   );
 
-  final _i2.StorageMap<int, List<int>> _membershipsExpireOn =
-      const _i2.StorageMap<int, List<int>>(
+  final _i1.StorageMap<int, List<int>> _membershipsExpireOn =
+      const _i1.StorageMap<int, List<int>>(
     prefix: 'Membership',
     storage: 'MembershipsExpireOn',
-    valueCodec: _i4.U32SequenceCodec.codec,
-    hasher: _i2.StorageHasher.twoxx64Concat(_i4.U32Codec.codec),
+    valueCodec: _i3.U32SequenceCodec.codec,
+    hasher: _i1.StorageHasher.twoxx64Concat(_i3.U32Codec.codec),
   );
 
   /// The membership data for each identity.
-  _i5.Future<_i3.MembershipData?> membership(
+  _i4.Future<_i2.MembershipData?> membership(
     int key1, {
     _i1.BlockHash? at,
   }) async {
@@ -53,7 +52,7 @@ class Queries {
   }
 
   /// Counter for the related counted storage map
-  _i5.Future<int> counterForMembership({_i1.BlockHash? at}) async {
+  _i4.Future<int> counterForMembership({_i1.BlockHash? at}) async {
     final hashedKey = _counterForMembership.hashedKey();
     final bytes = await __api.getStorage(
       hashedKey,
@@ -66,7 +65,7 @@ class Queries {
   }
 
   /// The identities of memberships to expire at a given block.
-  _i5.Future<List<int>> membershipsExpireOn(
+  _i4.Future<List<int>> membershipsExpireOn(
     int key1, {
     _i1.BlockHash? at,
   }) async {
@@ -86,7 +85,7 @@ class Queries {
   }
 
   /// The membership data for each identity.
-  _i5.Future<List<_i3.MembershipData?>> multiMembership(
+  _i4.Future<List<_i2.MembershipData?>> multiMembership(
     List<int> keys, {
     _i1.BlockHash? at,
   }) async {
@@ -105,7 +104,7 @@ class Queries {
   }
 
   /// The identities of memberships to expire at a given block.
-  _i5.Future<List<List<int>>> multiMembershipsExpireOn(
+  _i4.Future<List<List<int>>> multiMembershipsExpireOn(
     List<int> keys, {
     _i1.BlockHash? at,
   }) async {
@@ -120,41 +119,41 @@ class Queries {
           .map((v) => _membershipsExpireOn.decodeValue(v.key))
           .toList();
     }
-    return keys
+    return (keys
         .map((key) => List<int>.filled(
               0,
               0,
               growable: true,
             ))
-        .toList(); /* Default */
+        .toList() as List<List<int>>); /* Default */
   }
 
   /// Returns the storage key for `membership`.
-  _i6.Uint8List membershipKey(int key1) {
+  _i5.Uint8List membershipKey(int key1) {
     final hashedKey = _membership.hashedKeyFor(key1);
     return hashedKey;
   }
 
   /// Returns the storage key for `counterForMembership`.
-  _i6.Uint8List counterForMembershipKey() {
+  _i5.Uint8List counterForMembershipKey() {
     final hashedKey = _counterForMembership.hashedKey();
     return hashedKey;
   }
 
   /// Returns the storage key for `membershipsExpireOn`.
-  _i6.Uint8List membershipsExpireOnKey(int key1) {
+  _i5.Uint8List membershipsExpireOnKey(int key1) {
     final hashedKey = _membershipsExpireOn.hashedKeyFor(key1);
     return hashedKey;
   }
 
   /// Returns the storage map key prefix for `membership`.
-  _i6.Uint8List membershipMapPrefix() {
+  _i5.Uint8List membershipMapPrefix() {
     final hashedKey = _membership.mapPrefix();
     return hashedKey;
   }
 
   /// Returns the storage map key prefix for `membershipsExpireOn`.
-  _i6.Uint8List membershipsExpireOnMapPrefix() {
+  _i5.Uint8List membershipsExpireOnMapPrefix() {
     final hashedKey = _membershipsExpireOn.mapPrefix();
     return hashedKey;
   }

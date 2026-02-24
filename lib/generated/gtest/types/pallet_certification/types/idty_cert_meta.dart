@@ -1,7 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:typed_data' as _i2;
 
-import 'package:polkadart_scale_codec/polkadart_scale_codec.dart' as _i1;
+import 'package:polkadart/scale_codec.dart' as _i1;
 
 class IdtyCertMeta {
   const IdtyCertMeta({
@@ -93,10 +93,4 @@ class $IdtyCertMetaCodec with _i1.Codec<IdtyCertMeta> {
     size = size + _i1.U32Codec.codec.sizeHint(obj.receivedCount);
     return size;
   }
-
-  @override
-  bool isSizeZero() =>
-      _i1.U32Codec.codec.isSizeZero() &&
-      _i1.U32Codec.codec.isSizeZero() &&
-      _i1.U32Codec.codec.isSizeZero();
 }

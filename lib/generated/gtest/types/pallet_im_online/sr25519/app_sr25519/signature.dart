@@ -1,5 +1,5 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:polkadart_scale_codec/polkadart_scale_codec.dart' as _i1;
+import 'package:polkadart/scale_codec.dart' as _i1;
 
 typedef Signature = List<int>;
 
@@ -25,10 +25,5 @@ class SignatureCodec with _i1.Codec<Signature> {
   @override
   int sizeHint(Signature value) {
     return const _i1.U8ArrayCodec(64).sizeHint(value);
-  }
-
-  @override
-  bool isSizeZero() {
-    return const _i1.U8ArrayCodec(64).isSizeZero();
   }
 }

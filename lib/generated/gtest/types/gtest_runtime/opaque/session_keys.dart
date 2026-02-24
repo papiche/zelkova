@@ -1,7 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:typed_data' as _i6;
 
-import 'package:polkadart_scale_codec/polkadart_scale_codec.dart' as _i1;
+import 'package:polkadart/scale_codec.dart' as _i1;
 import 'package:quiver/collection.dart' as _i7;
 
 import '../../pallet_im_online/sr25519/app_sr25519/public.dart' as _i4;
@@ -124,11 +124,4 @@ class $SessionKeysCodec with _i1.Codec<SessionKeys> {
     size = size + const _i5.PublicCodec().sizeHint(obj.authorityDiscovery);
     return size;
   }
-
-  @override
-  bool isSizeZero() =>
-      const _i2.PublicCodec().isSizeZero() &&
-      const _i3.PublicCodec().isSizeZero() &&
-      const _i4.PublicCodec().isSizeZero() &&
-      const _i5.PublicCodec().isSizeZero();
 }

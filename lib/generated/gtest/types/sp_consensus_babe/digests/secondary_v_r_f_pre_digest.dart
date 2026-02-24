@@ -1,7 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:typed_data' as _i4;
 
-import 'package:polkadart_scale_codec/polkadart_scale_codec.dart' as _i1;
+import 'package:polkadart/scale_codec.dart' as _i1;
 
 import '../../sp_consensus_slots/slot.dart' as _i2;
 import '../../sp_core/sr25519/vrf/vrf_signature.dart' as _i3;
@@ -97,10 +97,4 @@ class $SecondaryVRFPreDigestCodec with _i1.Codec<SecondaryVRFPreDigest> {
     size = size + _i3.VrfSignature.codec.sizeHint(obj.vrfSignature);
     return size;
   }
-
-  @override
-  bool isSizeZero() =>
-      _i1.U32Codec.codec.isSizeZero() &&
-      const _i2.SlotCodec().isSizeZero() &&
-      _i3.VrfSignature.codec.isSizeZero();
 }

@@ -7,15 +7,15 @@ part of 'duniter-datapod-queries.req.gql.dart';
 // **************************************************************************
 
 Serializer<GGetProfileByAddressReq> _$gGetProfileByAddressReqSerializer =
-    new _$GGetProfileByAddressReqSerializer();
+    _$GGetProfileByAddressReqSerializer();
 Serializer<GGetProfilesByAddressReq> _$gGetProfilesByAddressReqSerializer =
-    new _$GGetProfilesByAddressReqSerializer();
+    _$GGetProfilesByAddressReqSerializer();
 Serializer<GGetProfileCountReq> _$gGetProfileCountReqSerializer =
-    new _$GGetProfileCountReqSerializer();
+    _$GGetProfileCountReqSerializer();
 Serializer<GSearchProfileByTermReq> _$gSearchProfileByTermReqSerializer =
-    new _$GSearchProfileByTermReqSerializer();
+    _$GSearchProfileByTermReqSerializer();
 Serializer<GSearchProfilesReq> _$gSearchProfilesReqSerializer =
-    new _$GSearchProfilesReqSerializer();
+    _$GSearchProfilesReqSerializer();
 
 class _$GGetProfileByAddressReqSerializer
     implements StructuredSerializer<GGetProfileByAddressReq> {
@@ -86,7 +86,7 @@ class _$GGetProfileByAddressReqSerializer
   GGetProfileByAddressReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GGetProfileByAddressReqBuilder();
+    final result = GGetProfileByAddressReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -208,7 +208,7 @@ class _$GGetProfilesByAddressReqSerializer
   GGetProfilesByAddressReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GGetProfilesByAddressReqBuilder();
+    final result = GGetProfilesByAddressReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -330,7 +330,7 @@ class _$GGetProfileCountReqSerializer
   GGetProfileCountReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GGetProfileCountReqBuilder();
+    final result = GGetProfileCountReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -452,7 +452,7 @@ class _$GSearchProfileByTermReqSerializer
   GSearchProfileByTermReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GSearchProfileByTermReqBuilder();
+    final result = GSearchProfileByTermReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -571,7 +571,7 @@ class _$GSearchProfilesReqSerializer
   GSearchProfilesReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GSearchProfilesReqBuilder();
+    final result = GSearchProfilesReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -650,7 +650,7 @@ class _$GGetProfileByAddressReq extends GGetProfileByAddressReq {
 
   factory _$GGetProfileByAddressReq(
           [void Function(GGetProfileByAddressReqBuilder)? updates]) =>
-      (new GGetProfileByAddressReqBuilder()..update(updates))._build();
+      (GGetProfileByAddressReqBuilder()..update(updates))._build();
 
   _$GGetProfileByAddressReq._(
       {required this.vars,
@@ -663,15 +663,7 @@ class _$GGetProfileByAddressReq extends GGetProfileByAddressReq {
       this.fetchPolicy,
       required this.executeOnListen,
       this.context})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        vars, r'GGetProfileByAddressReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        operation, r'GGetProfileByAddressReq', 'operation');
-    BuiltValueNullFieldError.checkNotNull(
-        executeOnListen, r'GGetProfileByAddressReq', 'executeOnListen');
-  }
-
+      : super._();
   @override
   GGetProfileByAddressReq rebuild(
           void Function(GGetProfileByAddressReqBuilder) updates) =>
@@ -679,7 +671,7 @@ class _$GGetProfileByAddressReq extends GGetProfileByAddressReq {
 
   @override
   GGetProfileByAddressReqBuilder toBuilder() =>
-      new GGetProfileByAddressReqBuilder()..replace(this);
+      GGetProfileByAddressReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -739,7 +731,7 @@ class GGetProfileByAddressReqBuilder
 
   _i3.GGetProfileByAddressVarsBuilder? _vars;
   _i3.GGetProfileByAddressVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GGetProfileByAddressVarsBuilder();
+      _$this._vars ??= _i3.GGetProfileByAddressVarsBuilder();
   set vars(_i3.GGetProfileByAddressVarsBuilder? vars) => _$this._vars = vars;
 
   _i4.Operation? _operation;
@@ -764,7 +756,7 @@ class GGetProfileByAddressReqBuilder
 
   _i2.GGetProfileByAddressDataBuilder? _optimisticResponse;
   _i2.GGetProfileByAddressDataBuilder get optimisticResponse =>
-      _$this._optimisticResponse ??= new _i2.GGetProfileByAddressDataBuilder();
+      _$this._optimisticResponse ??= _i2.GGetProfileByAddressDataBuilder();
   set optimisticResponse(
           _i2.GGetProfileByAddressDataBuilder? optimisticResponse) =>
       _$this._optimisticResponse = optimisticResponse;
@@ -819,7 +811,6 @@ class GGetProfileByAddressReqBuilder
 
   @override
   void replace(GGetProfileByAddressReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GGetProfileByAddressReq;
   }
 
@@ -835,21 +826,20 @@ class GGetProfileByAddressReqBuilder
     _$GGetProfileByAddressReq _$result;
     try {
       _$result = _$v ??
-          new _$GGetProfileByAddressReq._(
-              vars: vars.build(),
-              operation: BuiltValueNullFieldError.checkNotNull(
-                  operation, r'GGetProfileByAddressReq', 'operation'),
-              requestId: requestId,
-              updateResult: updateResult,
-              optimisticResponse: _optimisticResponse?.build(),
-              updateCacheHandlerKey: updateCacheHandlerKey,
-              updateCacheHandlerContext: updateCacheHandlerContext,
-              fetchPolicy: fetchPolicy,
-              executeOnListen: BuiltValueNullFieldError.checkNotNull(
-                  executeOnListen,
-                  r'GGetProfileByAddressReq',
-                  'executeOnListen'),
-              context: context);
+          _$GGetProfileByAddressReq._(
+            vars: vars.build(),
+            operation: BuiltValueNullFieldError.checkNotNull(
+                operation, r'GGetProfileByAddressReq', 'operation'),
+            requestId: requestId,
+            updateResult: updateResult,
+            optimisticResponse: _optimisticResponse?.build(),
+            updateCacheHandlerKey: updateCacheHandlerKey,
+            updateCacheHandlerContext: updateCacheHandlerContext,
+            fetchPolicy: fetchPolicy,
+            executeOnListen: BuiltValueNullFieldError.checkNotNull(
+                executeOnListen, r'GGetProfileByAddressReq', 'executeOnListen'),
+            context: context,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -859,7 +849,7 @@ class GGetProfileByAddressReqBuilder
         _$failedField = 'optimisticResponse';
         _optimisticResponse?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GGetProfileByAddressReq', _$failedField, e.toString());
       }
       rethrow;
@@ -895,7 +885,7 @@ class _$GGetProfilesByAddressReq extends GGetProfilesByAddressReq {
 
   factory _$GGetProfilesByAddressReq(
           [void Function(GGetProfilesByAddressReqBuilder)? updates]) =>
-      (new GGetProfilesByAddressReqBuilder()..update(updates))._build();
+      (GGetProfilesByAddressReqBuilder()..update(updates))._build();
 
   _$GGetProfilesByAddressReq._(
       {required this.vars,
@@ -908,15 +898,7 @@ class _$GGetProfilesByAddressReq extends GGetProfilesByAddressReq {
       this.fetchPolicy,
       required this.executeOnListen,
       this.context})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        vars, r'GGetProfilesByAddressReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        operation, r'GGetProfilesByAddressReq', 'operation');
-    BuiltValueNullFieldError.checkNotNull(
-        executeOnListen, r'GGetProfilesByAddressReq', 'executeOnListen');
-  }
-
+      : super._();
   @override
   GGetProfilesByAddressReq rebuild(
           void Function(GGetProfilesByAddressReqBuilder) updates) =>
@@ -924,7 +906,7 @@ class _$GGetProfilesByAddressReq extends GGetProfilesByAddressReq {
 
   @override
   GGetProfilesByAddressReqBuilder toBuilder() =>
-      new GGetProfilesByAddressReqBuilder()..replace(this);
+      GGetProfilesByAddressReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -984,7 +966,7 @@ class GGetProfilesByAddressReqBuilder
 
   _i3.GGetProfilesByAddressVarsBuilder? _vars;
   _i3.GGetProfilesByAddressVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GGetProfilesByAddressVarsBuilder();
+      _$this._vars ??= _i3.GGetProfilesByAddressVarsBuilder();
   set vars(_i3.GGetProfilesByAddressVarsBuilder? vars) => _$this._vars = vars;
 
   _i4.Operation? _operation;
@@ -1010,7 +992,7 @@ class GGetProfilesByAddressReqBuilder
 
   _i2.GGetProfilesByAddressDataBuilder? _optimisticResponse;
   _i2.GGetProfilesByAddressDataBuilder get optimisticResponse =>
-      _$this._optimisticResponse ??= new _i2.GGetProfilesByAddressDataBuilder();
+      _$this._optimisticResponse ??= _i2.GGetProfilesByAddressDataBuilder();
   set optimisticResponse(
           _i2.GGetProfilesByAddressDataBuilder? optimisticResponse) =>
       _$this._optimisticResponse = optimisticResponse;
@@ -1065,7 +1047,6 @@ class GGetProfilesByAddressReqBuilder
 
   @override
   void replace(GGetProfilesByAddressReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GGetProfilesByAddressReq;
   }
 
@@ -1081,21 +1062,22 @@ class GGetProfilesByAddressReqBuilder
     _$GGetProfilesByAddressReq _$result;
     try {
       _$result = _$v ??
-          new _$GGetProfilesByAddressReq._(
-              vars: vars.build(),
-              operation: BuiltValueNullFieldError.checkNotNull(
-                  operation, r'GGetProfilesByAddressReq', 'operation'),
-              requestId: requestId,
-              updateResult: updateResult,
-              optimisticResponse: _optimisticResponse?.build(),
-              updateCacheHandlerKey: updateCacheHandlerKey,
-              updateCacheHandlerContext: updateCacheHandlerContext,
-              fetchPolicy: fetchPolicy,
-              executeOnListen: BuiltValueNullFieldError.checkNotNull(
-                  executeOnListen,
-                  r'GGetProfilesByAddressReq',
-                  'executeOnListen'),
-              context: context);
+          _$GGetProfilesByAddressReq._(
+            vars: vars.build(),
+            operation: BuiltValueNullFieldError.checkNotNull(
+                operation, r'GGetProfilesByAddressReq', 'operation'),
+            requestId: requestId,
+            updateResult: updateResult,
+            optimisticResponse: _optimisticResponse?.build(),
+            updateCacheHandlerKey: updateCacheHandlerKey,
+            updateCacheHandlerContext: updateCacheHandlerContext,
+            fetchPolicy: fetchPolicy,
+            executeOnListen: BuiltValueNullFieldError.checkNotNull(
+                executeOnListen,
+                r'GGetProfilesByAddressReq',
+                'executeOnListen'),
+            context: context,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -1105,7 +1087,7 @@ class GGetProfilesByAddressReqBuilder
         _$failedField = 'optimisticResponse';
         _optimisticResponse?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GGetProfilesByAddressReq', _$failedField, e.toString());
       }
       rethrow;
@@ -1140,7 +1122,7 @@ class _$GGetProfileCountReq extends GGetProfileCountReq {
 
   factory _$GGetProfileCountReq(
           [void Function(GGetProfileCountReqBuilder)? updates]) =>
-      (new GGetProfileCountReqBuilder()..update(updates))._build();
+      (GGetProfileCountReqBuilder()..update(updates))._build();
 
   _$GGetProfileCountReq._(
       {required this.vars,
@@ -1153,14 +1135,7 @@ class _$GGetProfileCountReq extends GGetProfileCountReq {
       this.fetchPolicy,
       required this.executeOnListen,
       this.context})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(vars, r'GGetProfileCountReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        operation, r'GGetProfileCountReq', 'operation');
-    BuiltValueNullFieldError.checkNotNull(
-        executeOnListen, r'GGetProfileCountReq', 'executeOnListen');
-  }
-
+      : super._();
   @override
   GGetProfileCountReq rebuild(
           void Function(GGetProfileCountReqBuilder) updates) =>
@@ -1168,7 +1143,7 @@ class _$GGetProfileCountReq extends GGetProfileCountReq {
 
   @override
   GGetProfileCountReqBuilder toBuilder() =>
-      new GGetProfileCountReqBuilder()..replace(this);
+      GGetProfileCountReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -1227,7 +1202,7 @@ class GGetProfileCountReqBuilder
 
   _i3.GGetProfileCountVarsBuilder? _vars;
   _i3.GGetProfileCountVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GGetProfileCountVarsBuilder();
+      _$this._vars ??= _i3.GGetProfileCountVarsBuilder();
   set vars(_i3.GGetProfileCountVarsBuilder? vars) => _$this._vars = vars;
 
   _i4.Operation? _operation;
@@ -1251,7 +1226,7 @@ class GGetProfileCountReqBuilder
 
   _i2.GGetProfileCountDataBuilder? _optimisticResponse;
   _i2.GGetProfileCountDataBuilder get optimisticResponse =>
-      _$this._optimisticResponse ??= new _i2.GGetProfileCountDataBuilder();
+      _$this._optimisticResponse ??= _i2.GGetProfileCountDataBuilder();
   set optimisticResponse(_i2.GGetProfileCountDataBuilder? optimisticResponse) =>
       _$this._optimisticResponse = optimisticResponse;
 
@@ -1305,7 +1280,6 @@ class GGetProfileCountReqBuilder
 
   @override
   void replace(GGetProfileCountReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GGetProfileCountReq;
   }
 
@@ -1321,19 +1295,20 @@ class GGetProfileCountReqBuilder
     _$GGetProfileCountReq _$result;
     try {
       _$result = _$v ??
-          new _$GGetProfileCountReq._(
-              vars: vars.build(),
-              operation: BuiltValueNullFieldError.checkNotNull(
-                  operation, r'GGetProfileCountReq', 'operation'),
-              requestId: requestId,
-              updateResult: updateResult,
-              optimisticResponse: _optimisticResponse?.build(),
-              updateCacheHandlerKey: updateCacheHandlerKey,
-              updateCacheHandlerContext: updateCacheHandlerContext,
-              fetchPolicy: fetchPolicy,
-              executeOnListen: BuiltValueNullFieldError.checkNotNull(
-                  executeOnListen, r'GGetProfileCountReq', 'executeOnListen'),
-              context: context);
+          _$GGetProfileCountReq._(
+            vars: vars.build(),
+            operation: BuiltValueNullFieldError.checkNotNull(
+                operation, r'GGetProfileCountReq', 'operation'),
+            requestId: requestId,
+            updateResult: updateResult,
+            optimisticResponse: _optimisticResponse?.build(),
+            updateCacheHandlerKey: updateCacheHandlerKey,
+            updateCacheHandlerContext: updateCacheHandlerContext,
+            fetchPolicy: fetchPolicy,
+            executeOnListen: BuiltValueNullFieldError.checkNotNull(
+                executeOnListen, r'GGetProfileCountReq', 'executeOnListen'),
+            context: context,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -1343,7 +1318,7 @@ class GGetProfileCountReqBuilder
         _$failedField = 'optimisticResponse';
         _optimisticResponse?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GGetProfileCountReq', _$failedField, e.toString());
       }
       rethrow;
@@ -1379,7 +1354,7 @@ class _$GSearchProfileByTermReq extends GSearchProfileByTermReq {
 
   factory _$GSearchProfileByTermReq(
           [void Function(GSearchProfileByTermReqBuilder)? updates]) =>
-      (new GSearchProfileByTermReqBuilder()..update(updates))._build();
+      (GSearchProfileByTermReqBuilder()..update(updates))._build();
 
   _$GSearchProfileByTermReq._(
       {required this.vars,
@@ -1392,15 +1367,7 @@ class _$GSearchProfileByTermReq extends GSearchProfileByTermReq {
       this.fetchPolicy,
       required this.executeOnListen,
       this.context})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        vars, r'GSearchProfileByTermReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        operation, r'GSearchProfileByTermReq', 'operation');
-    BuiltValueNullFieldError.checkNotNull(
-        executeOnListen, r'GSearchProfileByTermReq', 'executeOnListen');
-  }
-
+      : super._();
   @override
   GSearchProfileByTermReq rebuild(
           void Function(GSearchProfileByTermReqBuilder) updates) =>
@@ -1408,7 +1375,7 @@ class _$GSearchProfileByTermReq extends GSearchProfileByTermReq {
 
   @override
   GSearchProfileByTermReqBuilder toBuilder() =>
-      new GSearchProfileByTermReqBuilder()..replace(this);
+      GSearchProfileByTermReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -1468,7 +1435,7 @@ class GSearchProfileByTermReqBuilder
 
   _i3.GSearchProfileByTermVarsBuilder? _vars;
   _i3.GSearchProfileByTermVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GSearchProfileByTermVarsBuilder();
+      _$this._vars ??= _i3.GSearchProfileByTermVarsBuilder();
   set vars(_i3.GSearchProfileByTermVarsBuilder? vars) => _$this._vars = vars;
 
   _i4.Operation? _operation;
@@ -1493,7 +1460,7 @@ class GSearchProfileByTermReqBuilder
 
   _i2.GSearchProfileByTermDataBuilder? _optimisticResponse;
   _i2.GSearchProfileByTermDataBuilder get optimisticResponse =>
-      _$this._optimisticResponse ??= new _i2.GSearchProfileByTermDataBuilder();
+      _$this._optimisticResponse ??= _i2.GSearchProfileByTermDataBuilder();
   set optimisticResponse(
           _i2.GSearchProfileByTermDataBuilder? optimisticResponse) =>
       _$this._optimisticResponse = optimisticResponse;
@@ -1548,7 +1515,6 @@ class GSearchProfileByTermReqBuilder
 
   @override
   void replace(GSearchProfileByTermReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GSearchProfileByTermReq;
   }
 
@@ -1564,21 +1530,20 @@ class GSearchProfileByTermReqBuilder
     _$GSearchProfileByTermReq _$result;
     try {
       _$result = _$v ??
-          new _$GSearchProfileByTermReq._(
-              vars: vars.build(),
-              operation: BuiltValueNullFieldError.checkNotNull(
-                  operation, r'GSearchProfileByTermReq', 'operation'),
-              requestId: requestId,
-              updateResult: updateResult,
-              optimisticResponse: _optimisticResponse?.build(),
-              updateCacheHandlerKey: updateCacheHandlerKey,
-              updateCacheHandlerContext: updateCacheHandlerContext,
-              fetchPolicy: fetchPolicy,
-              executeOnListen: BuiltValueNullFieldError.checkNotNull(
-                  executeOnListen,
-                  r'GSearchProfileByTermReq',
-                  'executeOnListen'),
-              context: context);
+          _$GSearchProfileByTermReq._(
+            vars: vars.build(),
+            operation: BuiltValueNullFieldError.checkNotNull(
+                operation, r'GSearchProfileByTermReq', 'operation'),
+            requestId: requestId,
+            updateResult: updateResult,
+            optimisticResponse: _optimisticResponse?.build(),
+            updateCacheHandlerKey: updateCacheHandlerKey,
+            updateCacheHandlerContext: updateCacheHandlerContext,
+            fetchPolicy: fetchPolicy,
+            executeOnListen: BuiltValueNullFieldError.checkNotNull(
+                executeOnListen, r'GSearchProfileByTermReq', 'executeOnListen'),
+            context: context,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -1588,7 +1553,7 @@ class GSearchProfileByTermReqBuilder
         _$failedField = 'optimisticResponse';
         _optimisticResponse?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GSearchProfileByTermReq', _$failedField, e.toString());
       }
       rethrow;
@@ -1623,7 +1588,7 @@ class _$GSearchProfilesReq extends GSearchProfilesReq {
 
   factory _$GSearchProfilesReq(
           [void Function(GSearchProfilesReqBuilder)? updates]) =>
-      (new GSearchProfilesReqBuilder()..update(updates))._build();
+      (GSearchProfilesReqBuilder()..update(updates))._build();
 
   _$GSearchProfilesReq._(
       {required this.vars,
@@ -1636,14 +1601,7 @@ class _$GSearchProfilesReq extends GSearchProfilesReq {
       this.fetchPolicy,
       required this.executeOnListen,
       this.context})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(vars, r'GSearchProfilesReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        operation, r'GSearchProfilesReq', 'operation');
-    BuiltValueNullFieldError.checkNotNull(
-        executeOnListen, r'GSearchProfilesReq', 'executeOnListen');
-  }
-
+      : super._();
   @override
   GSearchProfilesReq rebuild(
           void Function(GSearchProfilesReqBuilder) updates) =>
@@ -1651,7 +1609,7 @@ class _$GSearchProfilesReq extends GSearchProfilesReq {
 
   @override
   GSearchProfilesReqBuilder toBuilder() =>
-      new GSearchProfilesReqBuilder()..replace(this);
+      GSearchProfilesReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -1710,7 +1668,7 @@ class GSearchProfilesReqBuilder
 
   _i3.GSearchProfilesVarsBuilder? _vars;
   _i3.GSearchProfilesVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GSearchProfilesVarsBuilder();
+      _$this._vars ??= _i3.GSearchProfilesVarsBuilder();
   set vars(_i3.GSearchProfilesVarsBuilder? vars) => _$this._vars = vars;
 
   _i4.Operation? _operation;
@@ -1734,7 +1692,7 @@ class GSearchProfilesReqBuilder
 
   _i2.GSearchProfilesDataBuilder? _optimisticResponse;
   _i2.GSearchProfilesDataBuilder get optimisticResponse =>
-      _$this._optimisticResponse ??= new _i2.GSearchProfilesDataBuilder();
+      _$this._optimisticResponse ??= _i2.GSearchProfilesDataBuilder();
   set optimisticResponse(_i2.GSearchProfilesDataBuilder? optimisticResponse) =>
       _$this._optimisticResponse = optimisticResponse;
 
@@ -1788,7 +1746,6 @@ class GSearchProfilesReqBuilder
 
   @override
   void replace(GSearchProfilesReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GSearchProfilesReq;
   }
 
@@ -1804,19 +1761,20 @@ class GSearchProfilesReqBuilder
     _$GSearchProfilesReq _$result;
     try {
       _$result = _$v ??
-          new _$GSearchProfilesReq._(
-              vars: vars.build(),
-              operation: BuiltValueNullFieldError.checkNotNull(
-                  operation, r'GSearchProfilesReq', 'operation'),
-              requestId: requestId,
-              updateResult: updateResult,
-              optimisticResponse: _optimisticResponse?.build(),
-              updateCacheHandlerKey: updateCacheHandlerKey,
-              updateCacheHandlerContext: updateCacheHandlerContext,
-              fetchPolicy: fetchPolicy,
-              executeOnListen: BuiltValueNullFieldError.checkNotNull(
-                  executeOnListen, r'GSearchProfilesReq', 'executeOnListen'),
-              context: context);
+          _$GSearchProfilesReq._(
+            vars: vars.build(),
+            operation: BuiltValueNullFieldError.checkNotNull(
+                operation, r'GSearchProfilesReq', 'operation'),
+            requestId: requestId,
+            updateResult: updateResult,
+            optimisticResponse: _optimisticResponse?.build(),
+            updateCacheHandlerKey: updateCacheHandlerKey,
+            updateCacheHandlerContext: updateCacheHandlerContext,
+            fetchPolicy: fetchPolicy,
+            executeOnListen: BuiltValueNullFieldError.checkNotNull(
+                executeOnListen, r'GSearchProfilesReq', 'executeOnListen'),
+            context: context,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -1826,7 +1784,7 @@ class GSearchProfilesReqBuilder
         _$failedField = 'optimisticResponse';
         _optimisticResponse?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GSearchProfilesReq', _$failedField, e.toString());
       }
       rethrow;

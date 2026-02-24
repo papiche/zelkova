@@ -6,7 +6,7 @@ part of 'serializers.gql.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializers _$serializers = (new Serializers().toBuilder()
+Serializers _$serializers = (Serializers().toBuilder()
       ..add(FetchPolicy.serializer)
       ..add(GDeleteProfileData.serializer)
       ..add(GDeleteProfileData_deleteProfile.serializer)
@@ -65,67 +65,67 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList,
               const [const FullType(GGetProfileByAddressData_profiles)]),
-          () => new ListBuilder<GGetProfileByAddressData_profiles>())
+          () => ListBuilder<GGetProfileByAddressData_profiles>())
       ..addBuilderFactory(
           const FullType(BuiltList,
               const [const FullType(GGetProfilesByAddressData_profiles)]),
-          () => new ListBuilder<GGetProfilesByAddressData_profiles>())
+          () => ListBuilder<GGetProfilesByAddressData_profiles>())
       ..addBuilderFactory(
           const FullType(BuiltList,
               const [const FullType(GSearchProfileByTermData_profiles)]),
-          () => new ListBuilder<GSearchProfileByTermData_profiles>())
+          () => ListBuilder<GSearchProfileByTermData_profiles>())
       ..addBuilderFactory(
           const FullType(
               BuiltList, const [const FullType(GSearchProfilesData_profiles)]),
-          () => new ListBuilder<GSearchProfilesData_profiles>())
+          () => ListBuilder<GSearchProfilesData_profiles>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(GSocialInput)]),
-          () => new ListBuilder<GSocialInput>())
+          () => ListBuilder<GSocialInput>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Gpoint)]),
-          () => new ListBuilder<Gpoint>())
+          () => ListBuilder<Gpoint>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Gpoint)]),
-          () => new ListBuilder<Gpoint>())
+          () => ListBuilder<Gpoint>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Gprofiles_bool_exp)]),
-          () => new ListBuilder<Gprofiles_bool_exp>())
+          () => ListBuilder<Gprofiles_bool_exp>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Gprofiles_bool_exp)]),
-          () => new ListBuilder<Gprofiles_bool_exp>())
+          () => ListBuilder<Gprofiles_bool_exp>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Gtimestamp)]),
-          () => new ListBuilder<Gtimestamp>())
+          () => ListBuilder<Gtimestamp>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Gtimestamp)]),
-          () => new ListBuilder<Gtimestamp>())
+          () => ListBuilder<Gtimestamp>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Guser_fs_bool_exp)]),
-          () => new ListBuilder<Guser_fs_bool_exp>())
+          () => ListBuilder<Guser_fs_bool_exp>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Guser_fs_bool_exp)]),
-          () => new ListBuilder<Guser_fs_bool_exp>())
+          () => ListBuilder<Guser_fs_bool_exp>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(String)]),
-          () => new ListBuilder<String>())
+          () => ListBuilder<String>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(String)]),
-          () => new ListBuilder<String>())
+          () => ListBuilder<String>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(String)]),
-          () => new ListBuilder<String>())
+          () => ListBuilder<String>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(String)]),
-          () => new ListBuilder<String>())
+          () => ListBuilder<String>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(String)]),
-          () => new ListBuilder<String>())
+          () => ListBuilder<String>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(JsonObject)]),
-          () => new ListBuilder<JsonObject>())
+          () => ListBuilder<JsonObject>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(JsonObject)]),
-          () => new ListBuilder<JsonObject>()))
+          () => ListBuilder<JsonObject>()))
     .build();
 
 // ignore_for_file: deprecated_member_use_from_same_package,type=lint

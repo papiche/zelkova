@@ -7,20 +7,20 @@ part of 'duniter-datapod-mutations.data.gql.dart';
 // **************************************************************************
 
 Serializer<GDeleteProfileData> _$gDeleteProfileDataSerializer =
-    new _$GDeleteProfileDataSerializer();
+    _$GDeleteProfileDataSerializer();
 Serializer<GDeleteProfileData_deleteProfile>
     _$gDeleteProfileDataDeleteProfileSerializer =
-    new _$GDeleteProfileData_deleteProfileSerializer();
+    _$GDeleteProfileData_deleteProfileSerializer();
 Serializer<GMigrateProfileData> _$gMigrateProfileDataSerializer =
-    new _$GMigrateProfileDataSerializer();
+    _$GMigrateProfileDataSerializer();
 Serializer<GMigrateProfileData_migrateProfile>
     _$gMigrateProfileDataMigrateProfileSerializer =
-    new _$GMigrateProfileData_migrateProfileSerializer();
+    _$GMigrateProfileData_migrateProfileSerializer();
 Serializer<GUpdateProfileData> _$gUpdateProfileDataSerializer =
-    new _$GUpdateProfileDataSerializer();
+    _$GUpdateProfileDataSerializer();
 Serializer<GUpdateProfileData_updateProfile>
     _$gUpdateProfileDataUpdateProfileSerializer =
-    new _$GUpdateProfileData_updateProfileSerializer();
+    _$GUpdateProfileData_updateProfileSerializer();
 
 class _$GDeleteProfileDataSerializer
     implements StructuredSerializer<GDeleteProfileData> {
@@ -53,7 +53,7 @@ class _$GDeleteProfileDataSerializer
   GDeleteProfileData deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GDeleteProfileDataBuilder();
+    final result = GDeleteProfileDataBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -111,7 +111,7 @@ class _$GDeleteProfileData_deleteProfileSerializer
   GDeleteProfileData_deleteProfile deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GDeleteProfileData_deleteProfileBuilder();
+    final result = GDeleteProfileData_deleteProfileBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -172,7 +172,7 @@ class _$GMigrateProfileDataSerializer
   GMigrateProfileData deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GMigrateProfileDataBuilder();
+    final result = GMigrateProfileDataBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -230,7 +230,7 @@ class _$GMigrateProfileData_migrateProfileSerializer
   GMigrateProfileData_migrateProfile deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GMigrateProfileData_migrateProfileBuilder();
+    final result = GMigrateProfileData_migrateProfileBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -288,7 +288,7 @@ class _$GUpdateProfileDataSerializer
   GUpdateProfileData deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GUpdateProfileDataBuilder();
+    final result = GUpdateProfileDataBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -346,7 +346,7 @@ class _$GUpdateProfileData_updateProfileSerializer
   GUpdateProfileData_updateProfile deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GUpdateProfileData_updateProfileBuilder();
+    final result = GUpdateProfileData_updateProfileBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -381,14 +381,10 @@ class _$GDeleteProfileData extends GDeleteProfileData {
 
   factory _$GDeleteProfileData(
           [void Function(GDeleteProfileDataBuilder)? updates]) =>
-      (new GDeleteProfileDataBuilder()..update(updates))._build();
+      (GDeleteProfileDataBuilder()..update(updates))._build();
 
   _$GDeleteProfileData._({required this.G__typename, this.deleteProfile})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        G__typename, r'GDeleteProfileData', 'G__typename');
-  }
-
+      : super._();
   @override
   GDeleteProfileData rebuild(
           void Function(GDeleteProfileDataBuilder) updates) =>
@@ -396,7 +392,7 @@ class _$GDeleteProfileData extends GDeleteProfileData {
 
   @override
   GDeleteProfileDataBuilder toBuilder() =>
-      new GDeleteProfileDataBuilder()..replace(this);
+      GDeleteProfileDataBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -434,7 +430,7 @@ class GDeleteProfileDataBuilder
 
   GDeleteProfileData_deleteProfileBuilder? _deleteProfile;
   GDeleteProfileData_deleteProfileBuilder get deleteProfile =>
-      _$this._deleteProfile ??= new GDeleteProfileData_deleteProfileBuilder();
+      _$this._deleteProfile ??= GDeleteProfileData_deleteProfileBuilder();
   set deleteProfile(GDeleteProfileData_deleteProfileBuilder? deleteProfile) =>
       _$this._deleteProfile = deleteProfile;
 
@@ -454,7 +450,6 @@ class GDeleteProfileDataBuilder
 
   @override
   void replace(GDeleteProfileData other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GDeleteProfileData;
   }
 
@@ -470,17 +465,18 @@ class GDeleteProfileDataBuilder
     _$GDeleteProfileData _$result;
     try {
       _$result = _$v ??
-          new _$GDeleteProfileData._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename, r'GDeleteProfileData', 'G__typename'),
-              deleteProfile: _deleteProfile?.build());
+          _$GDeleteProfileData._(
+            G__typename: BuiltValueNullFieldError.checkNotNull(
+                G__typename, r'GDeleteProfileData', 'G__typename'),
+            deleteProfile: _deleteProfile?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'deleteProfile';
         _deleteProfile?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GDeleteProfileData', _$failedField, e.toString());
       }
       rethrow;
@@ -501,19 +497,11 @@ class _$GDeleteProfileData_deleteProfile
 
   factory _$GDeleteProfileData_deleteProfile(
           [void Function(GDeleteProfileData_deleteProfileBuilder)? updates]) =>
-      (new GDeleteProfileData_deleteProfileBuilder()..update(updates))._build();
+      (GDeleteProfileData_deleteProfileBuilder()..update(updates))._build();
 
   _$GDeleteProfileData_deleteProfile._(
       {required this.G__typename, required this.success, required this.message})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        G__typename, r'GDeleteProfileData_deleteProfile', 'G__typename');
-    BuiltValueNullFieldError.checkNotNull(
-        success, r'GDeleteProfileData_deleteProfile', 'success');
-    BuiltValueNullFieldError.checkNotNull(
-        message, r'GDeleteProfileData_deleteProfile', 'message');
-  }
-
+      : super._();
   @override
   GDeleteProfileData_deleteProfile rebuild(
           void Function(GDeleteProfileData_deleteProfileBuilder) updates) =>
@@ -521,7 +509,7 @@ class _$GDeleteProfileData_deleteProfile
 
   @override
   GDeleteProfileData_deleteProfileBuilder toBuilder() =>
-      new GDeleteProfileData_deleteProfileBuilder()..replace(this);
+      GDeleteProfileData_deleteProfileBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -587,7 +575,6 @@ class GDeleteProfileData_deleteProfileBuilder
 
   @override
   void replace(GDeleteProfileData_deleteProfile other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GDeleteProfileData_deleteProfile;
   }
 
@@ -601,13 +588,14 @@ class GDeleteProfileData_deleteProfileBuilder
 
   _$GDeleteProfileData_deleteProfile _build() {
     final _$result = _$v ??
-        new _$GDeleteProfileData_deleteProfile._(
-            G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
-                r'GDeleteProfileData_deleteProfile', 'G__typename'),
-            success: BuiltValueNullFieldError.checkNotNull(
-                success, r'GDeleteProfileData_deleteProfile', 'success'),
-            message: BuiltValueNullFieldError.checkNotNull(
-                message, r'GDeleteProfileData_deleteProfile', 'message'));
+        _$GDeleteProfileData_deleteProfile._(
+          G__typename: BuiltValueNullFieldError.checkNotNull(
+              G__typename, r'GDeleteProfileData_deleteProfile', 'G__typename'),
+          success: BuiltValueNullFieldError.checkNotNull(
+              success, r'GDeleteProfileData_deleteProfile', 'success'),
+          message: BuiltValueNullFieldError.checkNotNull(
+              message, r'GDeleteProfileData_deleteProfile', 'message'),
+        );
     replace(_$result);
     return _$result;
   }
@@ -621,14 +609,10 @@ class _$GMigrateProfileData extends GMigrateProfileData {
 
   factory _$GMigrateProfileData(
           [void Function(GMigrateProfileDataBuilder)? updates]) =>
-      (new GMigrateProfileDataBuilder()..update(updates))._build();
+      (GMigrateProfileDataBuilder()..update(updates))._build();
 
   _$GMigrateProfileData._({required this.G__typename, this.migrateProfile})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        G__typename, r'GMigrateProfileData', 'G__typename');
-  }
-
+      : super._();
   @override
   GMigrateProfileData rebuild(
           void Function(GMigrateProfileDataBuilder) updates) =>
@@ -636,7 +620,7 @@ class _$GMigrateProfileData extends GMigrateProfileData {
 
   @override
   GMigrateProfileDataBuilder toBuilder() =>
-      new GMigrateProfileDataBuilder()..replace(this);
+      GMigrateProfileDataBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -674,8 +658,7 @@ class GMigrateProfileDataBuilder
 
   GMigrateProfileData_migrateProfileBuilder? _migrateProfile;
   GMigrateProfileData_migrateProfileBuilder get migrateProfile =>
-      _$this._migrateProfile ??=
-          new GMigrateProfileData_migrateProfileBuilder();
+      _$this._migrateProfile ??= GMigrateProfileData_migrateProfileBuilder();
   set migrateProfile(
           GMigrateProfileData_migrateProfileBuilder? migrateProfile) =>
       _$this._migrateProfile = migrateProfile;
@@ -696,7 +679,6 @@ class GMigrateProfileDataBuilder
 
   @override
   void replace(GMigrateProfileData other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GMigrateProfileData;
   }
 
@@ -712,17 +694,18 @@ class GMigrateProfileDataBuilder
     _$GMigrateProfileData _$result;
     try {
       _$result = _$v ??
-          new _$GMigrateProfileData._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename, r'GMigrateProfileData', 'G__typename'),
-              migrateProfile: _migrateProfile?.build());
+          _$GMigrateProfileData._(
+            G__typename: BuiltValueNullFieldError.checkNotNull(
+                G__typename, r'GMigrateProfileData', 'G__typename'),
+            migrateProfile: _migrateProfile?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'migrateProfile';
         _migrateProfile?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GMigrateProfileData', _$failedField, e.toString());
       }
       rethrow;
@@ -744,20 +727,11 @@ class _$GMigrateProfileData_migrateProfile
   factory _$GMigrateProfileData_migrateProfile(
           [void Function(GMigrateProfileData_migrateProfileBuilder)?
               updates]) =>
-      (new GMigrateProfileData_migrateProfileBuilder()..update(updates))
-          ._build();
+      (GMigrateProfileData_migrateProfileBuilder()..update(updates))._build();
 
   _$GMigrateProfileData_migrateProfile._(
       {required this.G__typename, required this.success, required this.message})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        G__typename, r'GMigrateProfileData_migrateProfile', 'G__typename');
-    BuiltValueNullFieldError.checkNotNull(
-        success, r'GMigrateProfileData_migrateProfile', 'success');
-    BuiltValueNullFieldError.checkNotNull(
-        message, r'GMigrateProfileData_migrateProfile', 'message');
-  }
-
+      : super._();
   @override
   GMigrateProfileData_migrateProfile rebuild(
           void Function(GMigrateProfileData_migrateProfileBuilder) updates) =>
@@ -765,7 +739,7 @@ class _$GMigrateProfileData_migrateProfile
 
   @override
   GMigrateProfileData_migrateProfileBuilder toBuilder() =>
-      new GMigrateProfileData_migrateProfileBuilder()..replace(this);
+      GMigrateProfileData_migrateProfileBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -831,7 +805,6 @@ class GMigrateProfileData_migrateProfileBuilder
 
   @override
   void replace(GMigrateProfileData_migrateProfile other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GMigrateProfileData_migrateProfile;
   }
 
@@ -846,13 +819,14 @@ class GMigrateProfileData_migrateProfileBuilder
 
   _$GMigrateProfileData_migrateProfile _build() {
     final _$result = _$v ??
-        new _$GMigrateProfileData_migrateProfile._(
-            G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
-                r'GMigrateProfileData_migrateProfile', 'G__typename'),
-            success: BuiltValueNullFieldError.checkNotNull(
-                success, r'GMigrateProfileData_migrateProfile', 'success'),
-            message: BuiltValueNullFieldError.checkNotNull(
-                message, r'GMigrateProfileData_migrateProfile', 'message'));
+        _$GMigrateProfileData_migrateProfile._(
+          G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
+              r'GMigrateProfileData_migrateProfile', 'G__typename'),
+          success: BuiltValueNullFieldError.checkNotNull(
+              success, r'GMigrateProfileData_migrateProfile', 'success'),
+          message: BuiltValueNullFieldError.checkNotNull(
+              message, r'GMigrateProfileData_migrateProfile', 'message'),
+        );
     replace(_$result);
     return _$result;
   }
@@ -866,14 +840,10 @@ class _$GUpdateProfileData extends GUpdateProfileData {
 
   factory _$GUpdateProfileData(
           [void Function(GUpdateProfileDataBuilder)? updates]) =>
-      (new GUpdateProfileDataBuilder()..update(updates))._build();
+      (GUpdateProfileDataBuilder()..update(updates))._build();
 
   _$GUpdateProfileData._({required this.G__typename, this.updateProfile})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        G__typename, r'GUpdateProfileData', 'G__typename');
-  }
-
+      : super._();
   @override
   GUpdateProfileData rebuild(
           void Function(GUpdateProfileDataBuilder) updates) =>
@@ -881,7 +851,7 @@ class _$GUpdateProfileData extends GUpdateProfileData {
 
   @override
   GUpdateProfileDataBuilder toBuilder() =>
-      new GUpdateProfileDataBuilder()..replace(this);
+      GUpdateProfileDataBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -919,7 +889,7 @@ class GUpdateProfileDataBuilder
 
   GUpdateProfileData_updateProfileBuilder? _updateProfile;
   GUpdateProfileData_updateProfileBuilder get updateProfile =>
-      _$this._updateProfile ??= new GUpdateProfileData_updateProfileBuilder();
+      _$this._updateProfile ??= GUpdateProfileData_updateProfileBuilder();
   set updateProfile(GUpdateProfileData_updateProfileBuilder? updateProfile) =>
       _$this._updateProfile = updateProfile;
 
@@ -939,7 +909,6 @@ class GUpdateProfileDataBuilder
 
   @override
   void replace(GUpdateProfileData other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GUpdateProfileData;
   }
 
@@ -955,17 +924,18 @@ class GUpdateProfileDataBuilder
     _$GUpdateProfileData _$result;
     try {
       _$result = _$v ??
-          new _$GUpdateProfileData._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename, r'GUpdateProfileData', 'G__typename'),
-              updateProfile: _updateProfile?.build());
+          _$GUpdateProfileData._(
+            G__typename: BuiltValueNullFieldError.checkNotNull(
+                G__typename, r'GUpdateProfileData', 'G__typename'),
+            updateProfile: _updateProfile?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'updateProfile';
         _updateProfile?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GUpdateProfileData', _$failedField, e.toString());
       }
       rethrow;
@@ -986,19 +956,11 @@ class _$GUpdateProfileData_updateProfile
 
   factory _$GUpdateProfileData_updateProfile(
           [void Function(GUpdateProfileData_updateProfileBuilder)? updates]) =>
-      (new GUpdateProfileData_updateProfileBuilder()..update(updates))._build();
+      (GUpdateProfileData_updateProfileBuilder()..update(updates))._build();
 
   _$GUpdateProfileData_updateProfile._(
       {required this.G__typename, required this.success, required this.message})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        G__typename, r'GUpdateProfileData_updateProfile', 'G__typename');
-    BuiltValueNullFieldError.checkNotNull(
-        success, r'GUpdateProfileData_updateProfile', 'success');
-    BuiltValueNullFieldError.checkNotNull(
-        message, r'GUpdateProfileData_updateProfile', 'message');
-  }
-
+      : super._();
   @override
   GUpdateProfileData_updateProfile rebuild(
           void Function(GUpdateProfileData_updateProfileBuilder) updates) =>
@@ -1006,7 +968,7 @@ class _$GUpdateProfileData_updateProfile
 
   @override
   GUpdateProfileData_updateProfileBuilder toBuilder() =>
-      new GUpdateProfileData_updateProfileBuilder()..replace(this);
+      GUpdateProfileData_updateProfileBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -1072,7 +1034,6 @@ class GUpdateProfileData_updateProfileBuilder
 
   @override
   void replace(GUpdateProfileData_updateProfile other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GUpdateProfileData_updateProfile;
   }
 
@@ -1086,13 +1047,14 @@ class GUpdateProfileData_updateProfileBuilder
 
   _$GUpdateProfileData_updateProfile _build() {
     final _$result = _$v ??
-        new _$GUpdateProfileData_updateProfile._(
-            G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
-                r'GUpdateProfileData_updateProfile', 'G__typename'),
-            success: BuiltValueNullFieldError.checkNotNull(
-                success, r'GUpdateProfileData_updateProfile', 'success'),
-            message: BuiltValueNullFieldError.checkNotNull(
-                message, r'GUpdateProfileData_updateProfile', 'message'));
+        _$GUpdateProfileData_updateProfile._(
+          G__typename: BuiltValueNullFieldError.checkNotNull(
+              G__typename, r'GUpdateProfileData_updateProfile', 'G__typename'),
+          success: BuiltValueNullFieldError.checkNotNull(
+              success, r'GUpdateProfileData_updateProfile', 'success'),
+          message: BuiltValueNullFieldError.checkNotNull(
+              message, r'GUpdateProfileData_updateProfile', 'message'),
+        );
     replace(_$result);
     return _$result;
   }

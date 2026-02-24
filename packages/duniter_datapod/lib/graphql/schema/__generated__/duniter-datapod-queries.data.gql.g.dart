@@ -7,33 +7,33 @@ part of 'duniter-datapod-queries.data.gql.dart';
 // **************************************************************************
 
 Serializer<GGetProfileByAddressData> _$gGetProfileByAddressDataSerializer =
-    new _$GGetProfileByAddressDataSerializer();
+    _$GGetProfileByAddressDataSerializer();
 Serializer<GGetProfileByAddressData_profiles>
     _$gGetProfileByAddressDataProfilesSerializer =
-    new _$GGetProfileByAddressData_profilesSerializer();
+    _$GGetProfileByAddressData_profilesSerializer();
 Serializer<GGetProfilesByAddressData> _$gGetProfilesByAddressDataSerializer =
-    new _$GGetProfilesByAddressDataSerializer();
+    _$GGetProfilesByAddressDataSerializer();
 Serializer<GGetProfilesByAddressData_profiles>
     _$gGetProfilesByAddressDataProfilesSerializer =
-    new _$GGetProfilesByAddressData_profilesSerializer();
+    _$GGetProfilesByAddressData_profilesSerializer();
 Serializer<GGetProfileCountData> _$gGetProfileCountDataSerializer =
-    new _$GGetProfileCountDataSerializer();
+    _$GGetProfileCountDataSerializer();
 Serializer<GGetProfileCountData_profiles_aggregate>
     _$gGetProfileCountDataProfilesAggregateSerializer =
-    new _$GGetProfileCountData_profiles_aggregateSerializer();
+    _$GGetProfileCountData_profiles_aggregateSerializer();
 Serializer<GGetProfileCountData_profiles_aggregate_aggregate>
     _$gGetProfileCountDataProfilesAggregateAggregateSerializer =
-    new _$GGetProfileCountData_profiles_aggregate_aggregateSerializer();
+    _$GGetProfileCountData_profiles_aggregate_aggregateSerializer();
 Serializer<GSearchProfileByTermData> _$gSearchProfileByTermDataSerializer =
-    new _$GSearchProfileByTermDataSerializer();
+    _$GSearchProfileByTermDataSerializer();
 Serializer<GSearchProfileByTermData_profiles>
     _$gSearchProfileByTermDataProfilesSerializer =
-    new _$GSearchProfileByTermData_profilesSerializer();
+    _$GSearchProfileByTermData_profilesSerializer();
 Serializer<GSearchProfilesData> _$gSearchProfilesDataSerializer =
-    new _$GSearchProfilesDataSerializer();
+    _$GSearchProfilesDataSerializer();
 Serializer<GSearchProfilesData_profiles>
     _$gSearchProfilesDataProfilesSerializer =
-    new _$GSearchProfilesData_profilesSerializer();
+    _$GSearchProfilesData_profilesSerializer();
 
 class _$GGetProfileByAddressDataSerializer
     implements StructuredSerializer<GGetProfileByAddressData> {
@@ -66,7 +66,7 @@ class _$GGetProfileByAddressDataSerializer
   GGetProfileByAddressData deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GGetProfileByAddressDataBuilder();
+    final result = GGetProfileByAddressDataBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -176,7 +176,7 @@ class _$GGetProfileByAddressData_profilesSerializer
   GGetProfileByAddressData_profiles deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GGetProfileByAddressData_profilesBuilder();
+    final result = GGetProfileByAddressData_profilesBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -267,7 +267,7 @@ class _$GGetProfilesByAddressDataSerializer
   GGetProfilesByAddressData deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GGetProfilesByAddressDataBuilder();
+    final result = GGetProfilesByAddressDataBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -377,7 +377,7 @@ class _$GGetProfilesByAddressData_profilesSerializer
   GGetProfilesByAddressData_profiles deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GGetProfilesByAddressData_profilesBuilder();
+    final result = GGetProfilesByAddressData_profilesBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -468,7 +468,7 @@ class _$GGetProfileCountDataSerializer
   GGetProfileCountData deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GGetProfileCountDataBuilder();
+    final result = GGetProfileCountDataBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -528,7 +528,7 @@ class _$GGetProfileCountData_profiles_aggregateSerializer
   GGetProfileCountData_profiles_aggregate deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GGetProfileCountData_profiles_aggregateBuilder();
+    final result = GGetProfileCountData_profiles_aggregateBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -584,8 +584,7 @@ class _$GGetProfileCountData_profiles_aggregate_aggregateSerializer
   GGetProfileCountData_profiles_aggregate_aggregate deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result =
-        new GGetProfileCountData_profiles_aggregate_aggregateBuilder();
+    final result = GGetProfileCountData_profiles_aggregate_aggregateBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -639,7 +638,7 @@ class _$GSearchProfileByTermDataSerializer
   GSearchProfileByTermData deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GSearchProfileByTermDataBuilder();
+    final result = GSearchProfileByTermDataBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -749,7 +748,7 @@ class _$GSearchProfileByTermData_profilesSerializer
   GSearchProfileByTermData_profiles deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GSearchProfileByTermData_profilesBuilder();
+    final result = GSearchProfileByTermData_profilesBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -840,7 +839,7 @@ class _$GSearchProfilesDataSerializer
   GSearchProfilesData deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GSearchProfilesDataBuilder();
+    final result = GSearchProfilesDataBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -950,7 +949,7 @@ class _$GSearchProfilesData_profilesSerializer
   GSearchProfilesData_profiles deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GSearchProfilesData_profilesBuilder();
+    final result = GSearchProfilesData_profilesBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -1018,17 +1017,11 @@ class _$GGetProfileByAddressData extends GGetProfileByAddressData {
 
   factory _$GGetProfileByAddressData(
           [void Function(GGetProfileByAddressDataBuilder)? updates]) =>
-      (new GGetProfileByAddressDataBuilder()..update(updates))._build();
+      (GGetProfileByAddressDataBuilder()..update(updates))._build();
 
   _$GGetProfileByAddressData._(
       {required this.G__typename, required this.profiles})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        G__typename, r'GGetProfileByAddressData', 'G__typename');
-    BuiltValueNullFieldError.checkNotNull(
-        profiles, r'GGetProfileByAddressData', 'profiles');
-  }
-
+      : super._();
   @override
   GGetProfileByAddressData rebuild(
           void Function(GGetProfileByAddressDataBuilder) updates) =>
@@ -1036,7 +1029,7 @@ class _$GGetProfileByAddressData extends GGetProfileByAddressData {
 
   @override
   GGetProfileByAddressDataBuilder toBuilder() =>
-      new GGetProfileByAddressDataBuilder()..replace(this);
+      GGetProfileByAddressDataBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -1075,7 +1068,7 @@ class GGetProfileByAddressDataBuilder
 
   ListBuilder<GGetProfileByAddressData_profiles>? _profiles;
   ListBuilder<GGetProfileByAddressData_profiles> get profiles =>
-      _$this._profiles ??= new ListBuilder<GGetProfileByAddressData_profiles>();
+      _$this._profiles ??= ListBuilder<GGetProfileByAddressData_profiles>();
   set profiles(ListBuilder<GGetProfileByAddressData_profiles>? profiles) =>
       _$this._profiles = profiles;
 
@@ -1095,7 +1088,6 @@ class GGetProfileByAddressDataBuilder
 
   @override
   void replace(GGetProfileByAddressData other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GGetProfileByAddressData;
   }
 
@@ -1111,17 +1103,18 @@ class GGetProfileByAddressDataBuilder
     _$GGetProfileByAddressData _$result;
     try {
       _$result = _$v ??
-          new _$GGetProfileByAddressData._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename, r'GGetProfileByAddressData', 'G__typename'),
-              profiles: profiles.build());
+          _$GGetProfileByAddressData._(
+            G__typename: BuiltValueNullFieldError.checkNotNull(
+                G__typename, r'GGetProfileByAddressData', 'G__typename'),
+            profiles: profiles.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'profiles';
         profiles.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GGetProfileByAddressData', _$failedField, e.toString());
       }
       rethrow;
@@ -1158,8 +1151,7 @@ class _$GGetProfileByAddressData_profiles
 
   factory _$GGetProfileByAddressData_profiles(
           [void Function(GGetProfileByAddressData_profilesBuilder)? updates]) =>
-      (new GGetProfileByAddressData_profilesBuilder()..update(updates))
-          ._build();
+      (GGetProfileByAddressData_profilesBuilder()..update(updates))._build();
 
   _$GGetProfileByAddressData_profiles._(
       {required this.G__typename,
@@ -1173,17 +1165,7 @@ class _$GGetProfileByAddressData_profiles
       required this.index_request_cid,
       this.socials,
       required this.time})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        G__typename, r'GGetProfileByAddressData_profiles', 'G__typename');
-    BuiltValueNullFieldError.checkNotNull(
-        pubkey, r'GGetProfileByAddressData_profiles', 'pubkey');
-    BuiltValueNullFieldError.checkNotNull(index_request_cid,
-        r'GGetProfileByAddressData_profiles', 'index_request_cid');
-    BuiltValueNullFieldError.checkNotNull(
-        time, r'GGetProfileByAddressData_profiles', 'time');
-  }
-
+      : super._();
   @override
   GGetProfileByAddressData_profiles rebuild(
           void Function(GGetProfileByAddressData_profilesBuilder) updates) =>
@@ -1191,7 +1173,7 @@ class _$GGetProfileByAddressData_profiles
 
   @override
   GGetProfileByAddressData_profilesBuilder toBuilder() =>
-      new GGetProfileByAddressData_profilesBuilder()..replace(this);
+      GGetProfileByAddressData_profilesBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -1281,7 +1263,7 @@ class GGetProfileByAddressData_profilesBuilder
   set data_cid(String? data_cid) => _$this._data_cid = data_cid;
 
   _i2.GpointBuilder? _geoloc;
-  _i2.GpointBuilder get geoloc => _$this._geoloc ??= new _i2.GpointBuilder();
+  _i2.GpointBuilder get geoloc => _$this._geoloc ??= _i2.GpointBuilder();
   set geoloc(_i2.GpointBuilder? geoloc) => _$this._geoloc = geoloc;
 
   String? _index_request_cid;
@@ -1294,8 +1276,7 @@ class GGetProfileByAddressData_profilesBuilder
   set socials(_i3.JsonObject? socials) => _$this._socials = socials;
 
   _i2.GtimestampBuilder? _time;
-  _i2.GtimestampBuilder get time =>
-      _$this._time ??= new _i2.GtimestampBuilder();
+  _i2.GtimestampBuilder get time => _$this._time ??= _i2.GtimestampBuilder();
   set time(_i2.GtimestampBuilder? time) => _$this._time = time;
 
   GGetProfileByAddressData_profilesBuilder() {
@@ -1323,7 +1304,6 @@ class GGetProfileByAddressData_profilesBuilder
 
   @override
   void replace(GGetProfileByAddressData_profiles other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GGetProfileByAddressData_profiles;
   }
 
@@ -1340,23 +1320,24 @@ class GGetProfileByAddressData_profilesBuilder
     _$GGetProfileByAddressData_profiles _$result;
     try {
       _$result = _$v ??
-          new _$GGetProfileByAddressData_profiles._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
-                  r'GGetProfileByAddressData_profiles', 'G__typename'),
-              avatar: avatar,
-              pubkey: BuiltValueNullFieldError.checkNotNull(
-                  pubkey, r'GGetProfileByAddressData_profiles', 'pubkey'),
-              description: description,
-              title: title,
-              city: city,
-              data_cid: data_cid,
-              geoloc: _geoloc?.build(),
-              index_request_cid: BuiltValueNullFieldError.checkNotNull(
-                  index_request_cid,
-                  r'GGetProfileByAddressData_profiles',
-                  'index_request_cid'),
-              socials: socials,
-              time: time.build());
+          _$GGetProfileByAddressData_profiles._(
+            G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
+                r'GGetProfileByAddressData_profiles', 'G__typename'),
+            avatar: avatar,
+            pubkey: BuiltValueNullFieldError.checkNotNull(
+                pubkey, r'GGetProfileByAddressData_profiles', 'pubkey'),
+            description: description,
+            title: title,
+            city: city,
+            data_cid: data_cid,
+            geoloc: _geoloc?.build(),
+            index_request_cid: BuiltValueNullFieldError.checkNotNull(
+                index_request_cid,
+                r'GGetProfileByAddressData_profiles',
+                'index_request_cid'),
+            socials: socials,
+            time: time.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -1366,7 +1347,7 @@ class GGetProfileByAddressData_profilesBuilder
         _$failedField = 'time';
         time.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GGetProfileByAddressData_profiles', _$failedField, e.toString());
       }
       rethrow;
@@ -1384,17 +1365,11 @@ class _$GGetProfilesByAddressData extends GGetProfilesByAddressData {
 
   factory _$GGetProfilesByAddressData(
           [void Function(GGetProfilesByAddressDataBuilder)? updates]) =>
-      (new GGetProfilesByAddressDataBuilder()..update(updates))._build();
+      (GGetProfilesByAddressDataBuilder()..update(updates))._build();
 
   _$GGetProfilesByAddressData._(
       {required this.G__typename, required this.profiles})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        G__typename, r'GGetProfilesByAddressData', 'G__typename');
-    BuiltValueNullFieldError.checkNotNull(
-        profiles, r'GGetProfilesByAddressData', 'profiles');
-  }
-
+      : super._();
   @override
   GGetProfilesByAddressData rebuild(
           void Function(GGetProfilesByAddressDataBuilder) updates) =>
@@ -1402,7 +1377,7 @@ class _$GGetProfilesByAddressData extends GGetProfilesByAddressData {
 
   @override
   GGetProfilesByAddressDataBuilder toBuilder() =>
-      new GGetProfilesByAddressDataBuilder()..replace(this);
+      GGetProfilesByAddressDataBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -1441,8 +1416,7 @@ class GGetProfilesByAddressDataBuilder
 
   ListBuilder<GGetProfilesByAddressData_profiles>? _profiles;
   ListBuilder<GGetProfilesByAddressData_profiles> get profiles =>
-      _$this._profiles ??=
-          new ListBuilder<GGetProfilesByAddressData_profiles>();
+      _$this._profiles ??= ListBuilder<GGetProfilesByAddressData_profiles>();
   set profiles(ListBuilder<GGetProfilesByAddressData_profiles>? profiles) =>
       _$this._profiles = profiles;
 
@@ -1462,7 +1436,6 @@ class GGetProfilesByAddressDataBuilder
 
   @override
   void replace(GGetProfilesByAddressData other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GGetProfilesByAddressData;
   }
 
@@ -1478,17 +1451,18 @@ class GGetProfilesByAddressDataBuilder
     _$GGetProfilesByAddressData _$result;
     try {
       _$result = _$v ??
-          new _$GGetProfilesByAddressData._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename, r'GGetProfilesByAddressData', 'G__typename'),
-              profiles: profiles.build());
+          _$GGetProfilesByAddressData._(
+            G__typename: BuiltValueNullFieldError.checkNotNull(
+                G__typename, r'GGetProfilesByAddressData', 'G__typename'),
+            profiles: profiles.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'profiles';
         profiles.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GGetProfilesByAddressData', _$failedField, e.toString());
       }
       rethrow;
@@ -1526,8 +1500,7 @@ class _$GGetProfilesByAddressData_profiles
   factory _$GGetProfilesByAddressData_profiles(
           [void Function(GGetProfilesByAddressData_profilesBuilder)?
               updates]) =>
-      (new GGetProfilesByAddressData_profilesBuilder()..update(updates))
-          ._build();
+      (GGetProfilesByAddressData_profilesBuilder()..update(updates))._build();
 
   _$GGetProfilesByAddressData_profiles._(
       {required this.G__typename,
@@ -1541,17 +1514,7 @@ class _$GGetProfilesByAddressData_profiles
       required this.index_request_cid,
       this.socials,
       required this.time})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        G__typename, r'GGetProfilesByAddressData_profiles', 'G__typename');
-    BuiltValueNullFieldError.checkNotNull(
-        pubkey, r'GGetProfilesByAddressData_profiles', 'pubkey');
-    BuiltValueNullFieldError.checkNotNull(index_request_cid,
-        r'GGetProfilesByAddressData_profiles', 'index_request_cid');
-    BuiltValueNullFieldError.checkNotNull(
-        time, r'GGetProfilesByAddressData_profiles', 'time');
-  }
-
+      : super._();
   @override
   GGetProfilesByAddressData_profiles rebuild(
           void Function(GGetProfilesByAddressData_profilesBuilder) updates) =>
@@ -1559,7 +1522,7 @@ class _$GGetProfilesByAddressData_profiles
 
   @override
   GGetProfilesByAddressData_profilesBuilder toBuilder() =>
-      new GGetProfilesByAddressData_profilesBuilder()..replace(this);
+      GGetProfilesByAddressData_profilesBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -1649,7 +1612,7 @@ class GGetProfilesByAddressData_profilesBuilder
   set data_cid(String? data_cid) => _$this._data_cid = data_cid;
 
   _i2.GpointBuilder? _geoloc;
-  _i2.GpointBuilder get geoloc => _$this._geoloc ??= new _i2.GpointBuilder();
+  _i2.GpointBuilder get geoloc => _$this._geoloc ??= _i2.GpointBuilder();
   set geoloc(_i2.GpointBuilder? geoloc) => _$this._geoloc = geoloc;
 
   String? _index_request_cid;
@@ -1662,8 +1625,7 @@ class GGetProfilesByAddressData_profilesBuilder
   set socials(_i3.JsonObject? socials) => _$this._socials = socials;
 
   _i2.GtimestampBuilder? _time;
-  _i2.GtimestampBuilder get time =>
-      _$this._time ??= new _i2.GtimestampBuilder();
+  _i2.GtimestampBuilder get time => _$this._time ??= _i2.GtimestampBuilder();
   set time(_i2.GtimestampBuilder? time) => _$this._time = time;
 
   GGetProfilesByAddressData_profilesBuilder() {
@@ -1691,7 +1653,6 @@ class GGetProfilesByAddressData_profilesBuilder
 
   @override
   void replace(GGetProfilesByAddressData_profiles other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GGetProfilesByAddressData_profiles;
   }
 
@@ -1708,23 +1669,24 @@ class GGetProfilesByAddressData_profilesBuilder
     _$GGetProfilesByAddressData_profiles _$result;
     try {
       _$result = _$v ??
-          new _$GGetProfilesByAddressData_profiles._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
-                  r'GGetProfilesByAddressData_profiles', 'G__typename'),
-              avatar: avatar,
-              pubkey: BuiltValueNullFieldError.checkNotNull(
-                  pubkey, r'GGetProfilesByAddressData_profiles', 'pubkey'),
-              description: description,
-              title: title,
-              city: city,
-              data_cid: data_cid,
-              geoloc: _geoloc?.build(),
-              index_request_cid: BuiltValueNullFieldError.checkNotNull(
-                  index_request_cid,
-                  r'GGetProfilesByAddressData_profiles',
-                  'index_request_cid'),
-              socials: socials,
-              time: time.build());
+          _$GGetProfilesByAddressData_profiles._(
+            G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
+                r'GGetProfilesByAddressData_profiles', 'G__typename'),
+            avatar: avatar,
+            pubkey: BuiltValueNullFieldError.checkNotNull(
+                pubkey, r'GGetProfilesByAddressData_profiles', 'pubkey'),
+            description: description,
+            title: title,
+            city: city,
+            data_cid: data_cid,
+            geoloc: _geoloc?.build(),
+            index_request_cid: BuiltValueNullFieldError.checkNotNull(
+                index_request_cid,
+                r'GGetProfilesByAddressData_profiles',
+                'index_request_cid'),
+            socials: socials,
+            time: time.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -1734,7 +1696,7 @@ class GGetProfilesByAddressData_profilesBuilder
         _$failedField = 'time';
         time.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GGetProfilesByAddressData_profiles', _$failedField, e.toString());
       }
       rethrow;
@@ -1752,17 +1714,11 @@ class _$GGetProfileCountData extends GGetProfileCountData {
 
   factory _$GGetProfileCountData(
           [void Function(GGetProfileCountDataBuilder)? updates]) =>
-      (new GGetProfileCountDataBuilder()..update(updates))._build();
+      (GGetProfileCountDataBuilder()..update(updates))._build();
 
   _$GGetProfileCountData._(
       {required this.G__typename, required this.profiles_aggregate})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        G__typename, r'GGetProfileCountData', 'G__typename');
-    BuiltValueNullFieldError.checkNotNull(
-        profiles_aggregate, r'GGetProfileCountData', 'profiles_aggregate');
-  }
-
+      : super._();
   @override
   GGetProfileCountData rebuild(
           void Function(GGetProfileCountDataBuilder) updates) =>
@@ -1770,7 +1726,7 @@ class _$GGetProfileCountData extends GGetProfileCountData {
 
   @override
   GGetProfileCountDataBuilder toBuilder() =>
-      new GGetProfileCountDataBuilder()..replace(this);
+      GGetProfileCountDataBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -1809,7 +1765,7 @@ class GGetProfileCountDataBuilder
   GGetProfileCountData_profiles_aggregateBuilder? _profiles_aggregate;
   GGetProfileCountData_profiles_aggregateBuilder get profiles_aggregate =>
       _$this._profiles_aggregate ??=
-          new GGetProfileCountData_profiles_aggregateBuilder();
+          GGetProfileCountData_profiles_aggregateBuilder();
   set profiles_aggregate(
           GGetProfileCountData_profiles_aggregateBuilder? profiles_aggregate) =>
       _$this._profiles_aggregate = profiles_aggregate;
@@ -1830,7 +1786,6 @@ class GGetProfileCountDataBuilder
 
   @override
   void replace(GGetProfileCountData other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GGetProfileCountData;
   }
 
@@ -1846,17 +1801,18 @@ class GGetProfileCountDataBuilder
     _$GGetProfileCountData _$result;
     try {
       _$result = _$v ??
-          new _$GGetProfileCountData._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename, r'GGetProfileCountData', 'G__typename'),
-              profiles_aggregate: profiles_aggregate.build());
+          _$GGetProfileCountData._(
+            G__typename: BuiltValueNullFieldError.checkNotNull(
+                G__typename, r'GGetProfileCountData', 'G__typename'),
+            profiles_aggregate: profiles_aggregate.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'profiles_aggregate';
         profiles_aggregate.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GGetProfileCountData', _$failedField, e.toString());
       }
       rethrow;
@@ -1876,16 +1832,12 @@ class _$GGetProfileCountData_profiles_aggregate
   factory _$GGetProfileCountData_profiles_aggregate(
           [void Function(GGetProfileCountData_profiles_aggregateBuilder)?
               updates]) =>
-      (new GGetProfileCountData_profiles_aggregateBuilder()..update(updates))
+      (GGetProfileCountData_profiles_aggregateBuilder()..update(updates))
           ._build();
 
   _$GGetProfileCountData_profiles_aggregate._(
       {required this.G__typename, this.aggregate})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        G__typename, r'GGetProfileCountData_profiles_aggregate', 'G__typename');
-  }
-
+      : super._();
   @override
   GGetProfileCountData_profiles_aggregate rebuild(
           void Function(GGetProfileCountData_profiles_aggregateBuilder)
@@ -1894,7 +1846,7 @@ class _$GGetProfileCountData_profiles_aggregate
 
   @override
   GGetProfileCountData_profiles_aggregateBuilder toBuilder() =>
-      new GGetProfileCountData_profiles_aggregateBuilder()..replace(this);
+      GGetProfileCountData_profiles_aggregateBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -1936,7 +1888,7 @@ class GGetProfileCountData_profiles_aggregateBuilder
   GGetProfileCountData_profiles_aggregate_aggregateBuilder? _aggregate;
   GGetProfileCountData_profiles_aggregate_aggregateBuilder get aggregate =>
       _$this._aggregate ??=
-          new GGetProfileCountData_profiles_aggregate_aggregateBuilder();
+          GGetProfileCountData_profiles_aggregate_aggregateBuilder();
   set aggregate(
           GGetProfileCountData_profiles_aggregate_aggregateBuilder?
               aggregate) =>
@@ -1958,7 +1910,6 @@ class GGetProfileCountData_profiles_aggregateBuilder
 
   @override
   void replace(GGetProfileCountData_profiles_aggregate other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GGetProfileCountData_profiles_aggregate;
   }
 
@@ -1975,17 +1926,18 @@ class GGetProfileCountData_profiles_aggregateBuilder
     _$GGetProfileCountData_profiles_aggregate _$result;
     try {
       _$result = _$v ??
-          new _$GGetProfileCountData_profiles_aggregate._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
-                  r'GGetProfileCountData_profiles_aggregate', 'G__typename'),
-              aggregate: _aggregate?.build());
+          _$GGetProfileCountData_profiles_aggregate._(
+            G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
+                r'GGetProfileCountData_profiles_aggregate', 'G__typename'),
+            aggregate: _aggregate?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'aggregate';
         _aggregate?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GGetProfileCountData_profiles_aggregate',
             _$failedField,
             e.toString());
@@ -2008,19 +1960,13 @@ class _$GGetProfileCountData_profiles_aggregate_aggregate
           [void Function(
                   GGetProfileCountData_profiles_aggregate_aggregateBuilder)?
               updates]) =>
-      (new GGetProfileCountData_profiles_aggregate_aggregateBuilder()
+      (GGetProfileCountData_profiles_aggregate_aggregateBuilder()
             ..update(updates))
           ._build();
 
   _$GGetProfileCountData_profiles_aggregate_aggregate._(
       {required this.G__typename, required this.count})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(G__typename,
-        r'GGetProfileCountData_profiles_aggregate_aggregate', 'G__typename');
-    BuiltValueNullFieldError.checkNotNull(
-        count, r'GGetProfileCountData_profiles_aggregate_aggregate', 'count');
-  }
-
+      : super._();
   @override
   GGetProfileCountData_profiles_aggregate_aggregate rebuild(
           void Function(
@@ -2030,8 +1976,7 @@ class _$GGetProfileCountData_profiles_aggregate_aggregate
 
   @override
   GGetProfileCountData_profiles_aggregate_aggregateBuilder toBuilder() =>
-      new GGetProfileCountData_profiles_aggregate_aggregateBuilder()
-        ..replace(this);
+      GGetProfileCountData_profiles_aggregate_aggregateBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -2090,7 +2035,6 @@ class GGetProfileCountData_profiles_aggregate_aggregateBuilder
 
   @override
   void replace(GGetProfileCountData_profiles_aggregate_aggregate other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GGetProfileCountData_profiles_aggregate_aggregate;
   }
 
@@ -2106,13 +2050,14 @@ class GGetProfileCountData_profiles_aggregate_aggregateBuilder
 
   _$GGetProfileCountData_profiles_aggregate_aggregate _build() {
     final _$result = _$v ??
-        new _$GGetProfileCountData_profiles_aggregate_aggregate._(
-            G__typename: BuiltValueNullFieldError.checkNotNull(
-                G__typename,
-                r'GGetProfileCountData_profiles_aggregate_aggregate',
-                'G__typename'),
-            count: BuiltValueNullFieldError.checkNotNull(count,
-                r'GGetProfileCountData_profiles_aggregate_aggregate', 'count'));
+        _$GGetProfileCountData_profiles_aggregate_aggregate._(
+          G__typename: BuiltValueNullFieldError.checkNotNull(
+              G__typename,
+              r'GGetProfileCountData_profiles_aggregate_aggregate',
+              'G__typename'),
+          count: BuiltValueNullFieldError.checkNotNull(count,
+              r'GGetProfileCountData_profiles_aggregate_aggregate', 'count'),
+        );
     replace(_$result);
     return _$result;
   }
@@ -2126,17 +2071,11 @@ class _$GSearchProfileByTermData extends GSearchProfileByTermData {
 
   factory _$GSearchProfileByTermData(
           [void Function(GSearchProfileByTermDataBuilder)? updates]) =>
-      (new GSearchProfileByTermDataBuilder()..update(updates))._build();
+      (GSearchProfileByTermDataBuilder()..update(updates))._build();
 
   _$GSearchProfileByTermData._(
       {required this.G__typename, required this.profiles})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        G__typename, r'GSearchProfileByTermData', 'G__typename');
-    BuiltValueNullFieldError.checkNotNull(
-        profiles, r'GSearchProfileByTermData', 'profiles');
-  }
-
+      : super._();
   @override
   GSearchProfileByTermData rebuild(
           void Function(GSearchProfileByTermDataBuilder) updates) =>
@@ -2144,7 +2083,7 @@ class _$GSearchProfileByTermData extends GSearchProfileByTermData {
 
   @override
   GSearchProfileByTermDataBuilder toBuilder() =>
-      new GSearchProfileByTermDataBuilder()..replace(this);
+      GSearchProfileByTermDataBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -2183,7 +2122,7 @@ class GSearchProfileByTermDataBuilder
 
   ListBuilder<GSearchProfileByTermData_profiles>? _profiles;
   ListBuilder<GSearchProfileByTermData_profiles> get profiles =>
-      _$this._profiles ??= new ListBuilder<GSearchProfileByTermData_profiles>();
+      _$this._profiles ??= ListBuilder<GSearchProfileByTermData_profiles>();
   set profiles(ListBuilder<GSearchProfileByTermData_profiles>? profiles) =>
       _$this._profiles = profiles;
 
@@ -2203,7 +2142,6 @@ class GSearchProfileByTermDataBuilder
 
   @override
   void replace(GSearchProfileByTermData other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GSearchProfileByTermData;
   }
 
@@ -2219,17 +2157,18 @@ class GSearchProfileByTermDataBuilder
     _$GSearchProfileByTermData _$result;
     try {
       _$result = _$v ??
-          new _$GSearchProfileByTermData._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename, r'GSearchProfileByTermData', 'G__typename'),
-              profiles: profiles.build());
+          _$GSearchProfileByTermData._(
+            G__typename: BuiltValueNullFieldError.checkNotNull(
+                G__typename, r'GSearchProfileByTermData', 'G__typename'),
+            profiles: profiles.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'profiles';
         profiles.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GSearchProfileByTermData', _$failedField, e.toString());
       }
       rethrow;
@@ -2266,8 +2205,7 @@ class _$GSearchProfileByTermData_profiles
 
   factory _$GSearchProfileByTermData_profiles(
           [void Function(GSearchProfileByTermData_profilesBuilder)? updates]) =>
-      (new GSearchProfileByTermData_profilesBuilder()..update(updates))
-          ._build();
+      (GSearchProfileByTermData_profilesBuilder()..update(updates))._build();
 
   _$GSearchProfileByTermData_profiles._(
       {required this.G__typename,
@@ -2281,17 +2219,7 @@ class _$GSearchProfileByTermData_profiles
       required this.index_request_cid,
       this.socials,
       required this.time})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        G__typename, r'GSearchProfileByTermData_profiles', 'G__typename');
-    BuiltValueNullFieldError.checkNotNull(
-        pubkey, r'GSearchProfileByTermData_profiles', 'pubkey');
-    BuiltValueNullFieldError.checkNotNull(index_request_cid,
-        r'GSearchProfileByTermData_profiles', 'index_request_cid');
-    BuiltValueNullFieldError.checkNotNull(
-        time, r'GSearchProfileByTermData_profiles', 'time');
-  }
-
+      : super._();
   @override
   GSearchProfileByTermData_profiles rebuild(
           void Function(GSearchProfileByTermData_profilesBuilder) updates) =>
@@ -2299,7 +2227,7 @@ class _$GSearchProfileByTermData_profiles
 
   @override
   GSearchProfileByTermData_profilesBuilder toBuilder() =>
-      new GSearchProfileByTermData_profilesBuilder()..replace(this);
+      GSearchProfileByTermData_profilesBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -2389,7 +2317,7 @@ class GSearchProfileByTermData_profilesBuilder
   set data_cid(String? data_cid) => _$this._data_cid = data_cid;
 
   _i2.GpointBuilder? _geoloc;
-  _i2.GpointBuilder get geoloc => _$this._geoloc ??= new _i2.GpointBuilder();
+  _i2.GpointBuilder get geoloc => _$this._geoloc ??= _i2.GpointBuilder();
   set geoloc(_i2.GpointBuilder? geoloc) => _$this._geoloc = geoloc;
 
   String? _index_request_cid;
@@ -2402,8 +2330,7 @@ class GSearchProfileByTermData_profilesBuilder
   set socials(_i3.JsonObject? socials) => _$this._socials = socials;
 
   _i2.GtimestampBuilder? _time;
-  _i2.GtimestampBuilder get time =>
-      _$this._time ??= new _i2.GtimestampBuilder();
+  _i2.GtimestampBuilder get time => _$this._time ??= _i2.GtimestampBuilder();
   set time(_i2.GtimestampBuilder? time) => _$this._time = time;
 
   GSearchProfileByTermData_profilesBuilder() {
@@ -2431,7 +2358,6 @@ class GSearchProfileByTermData_profilesBuilder
 
   @override
   void replace(GSearchProfileByTermData_profiles other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GSearchProfileByTermData_profiles;
   }
 
@@ -2448,23 +2374,24 @@ class GSearchProfileByTermData_profilesBuilder
     _$GSearchProfileByTermData_profiles _$result;
     try {
       _$result = _$v ??
-          new _$GSearchProfileByTermData_profiles._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
-                  r'GSearchProfileByTermData_profiles', 'G__typename'),
-              avatar: avatar,
-              pubkey: BuiltValueNullFieldError.checkNotNull(
-                  pubkey, r'GSearchProfileByTermData_profiles', 'pubkey'),
-              description: description,
-              title: title,
-              city: city,
-              data_cid: data_cid,
-              geoloc: _geoloc?.build(),
-              index_request_cid: BuiltValueNullFieldError.checkNotNull(
-                  index_request_cid,
-                  r'GSearchProfileByTermData_profiles',
-                  'index_request_cid'),
-              socials: socials,
-              time: time.build());
+          _$GSearchProfileByTermData_profiles._(
+            G__typename: BuiltValueNullFieldError.checkNotNull(G__typename,
+                r'GSearchProfileByTermData_profiles', 'G__typename'),
+            avatar: avatar,
+            pubkey: BuiltValueNullFieldError.checkNotNull(
+                pubkey, r'GSearchProfileByTermData_profiles', 'pubkey'),
+            description: description,
+            title: title,
+            city: city,
+            data_cid: data_cid,
+            geoloc: _geoloc?.build(),
+            index_request_cid: BuiltValueNullFieldError.checkNotNull(
+                index_request_cid,
+                r'GSearchProfileByTermData_profiles',
+                'index_request_cid'),
+            socials: socials,
+            time: time.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -2474,7 +2401,7 @@ class GSearchProfileByTermData_profilesBuilder
         _$failedField = 'time';
         time.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GSearchProfileByTermData_profiles', _$failedField, e.toString());
       }
       rethrow;
@@ -2492,16 +2419,10 @@ class _$GSearchProfilesData extends GSearchProfilesData {
 
   factory _$GSearchProfilesData(
           [void Function(GSearchProfilesDataBuilder)? updates]) =>
-      (new GSearchProfilesDataBuilder()..update(updates))._build();
+      (GSearchProfilesDataBuilder()..update(updates))._build();
 
   _$GSearchProfilesData._({required this.G__typename, required this.profiles})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        G__typename, r'GSearchProfilesData', 'G__typename');
-    BuiltValueNullFieldError.checkNotNull(
-        profiles, r'GSearchProfilesData', 'profiles');
-  }
-
+      : super._();
   @override
   GSearchProfilesData rebuild(
           void Function(GSearchProfilesDataBuilder) updates) =>
@@ -2509,7 +2430,7 @@ class _$GSearchProfilesData extends GSearchProfilesData {
 
   @override
   GSearchProfilesDataBuilder toBuilder() =>
-      new GSearchProfilesDataBuilder()..replace(this);
+      GSearchProfilesDataBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -2547,7 +2468,7 @@ class GSearchProfilesDataBuilder
 
   ListBuilder<GSearchProfilesData_profiles>? _profiles;
   ListBuilder<GSearchProfilesData_profiles> get profiles =>
-      _$this._profiles ??= new ListBuilder<GSearchProfilesData_profiles>();
+      _$this._profiles ??= ListBuilder<GSearchProfilesData_profiles>();
   set profiles(ListBuilder<GSearchProfilesData_profiles>? profiles) =>
       _$this._profiles = profiles;
 
@@ -2567,7 +2488,6 @@ class GSearchProfilesDataBuilder
 
   @override
   void replace(GSearchProfilesData other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GSearchProfilesData;
   }
 
@@ -2583,17 +2503,18 @@ class GSearchProfilesDataBuilder
     _$GSearchProfilesData _$result;
     try {
       _$result = _$v ??
-          new _$GSearchProfilesData._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename, r'GSearchProfilesData', 'G__typename'),
-              profiles: profiles.build());
+          _$GSearchProfilesData._(
+            G__typename: BuiltValueNullFieldError.checkNotNull(
+                G__typename, r'GSearchProfilesData', 'G__typename'),
+            profiles: profiles.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'profiles';
         profiles.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GSearchProfilesData', _$failedField, e.toString());
       }
       rethrow;
@@ -2629,7 +2550,7 @@ class _$GSearchProfilesData_profiles extends GSearchProfilesData_profiles {
 
   factory _$GSearchProfilesData_profiles(
           [void Function(GSearchProfilesData_profilesBuilder)? updates]) =>
-      (new GSearchProfilesData_profilesBuilder()..update(updates))._build();
+      (GSearchProfilesData_profilesBuilder()..update(updates))._build();
 
   _$GSearchProfilesData_profiles._(
       {required this.G__typename,
@@ -2643,17 +2564,7 @@ class _$GSearchProfilesData_profiles extends GSearchProfilesData_profiles {
       required this.index_request_cid,
       this.socials,
       required this.time})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        G__typename, r'GSearchProfilesData_profiles', 'G__typename');
-    BuiltValueNullFieldError.checkNotNull(
-        pubkey, r'GSearchProfilesData_profiles', 'pubkey');
-    BuiltValueNullFieldError.checkNotNull(index_request_cid,
-        r'GSearchProfilesData_profiles', 'index_request_cid');
-    BuiltValueNullFieldError.checkNotNull(
-        time, r'GSearchProfilesData_profiles', 'time');
-  }
-
+      : super._();
   @override
   GSearchProfilesData_profiles rebuild(
           void Function(GSearchProfilesData_profilesBuilder) updates) =>
@@ -2661,7 +2572,7 @@ class _$GSearchProfilesData_profiles extends GSearchProfilesData_profiles {
 
   @override
   GSearchProfilesData_profilesBuilder toBuilder() =>
-      new GSearchProfilesData_profilesBuilder()..replace(this);
+      GSearchProfilesData_profilesBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -2751,7 +2662,7 @@ class GSearchProfilesData_profilesBuilder
   set data_cid(String? data_cid) => _$this._data_cid = data_cid;
 
   _i2.GpointBuilder? _geoloc;
-  _i2.GpointBuilder get geoloc => _$this._geoloc ??= new _i2.GpointBuilder();
+  _i2.GpointBuilder get geoloc => _$this._geoloc ??= _i2.GpointBuilder();
   set geoloc(_i2.GpointBuilder? geoloc) => _$this._geoloc = geoloc;
 
   String? _index_request_cid;
@@ -2764,8 +2675,7 @@ class GSearchProfilesData_profilesBuilder
   set socials(_i3.JsonObject? socials) => _$this._socials = socials;
 
   _i2.GtimestampBuilder? _time;
-  _i2.GtimestampBuilder get time =>
-      _$this._time ??= new _i2.GtimestampBuilder();
+  _i2.GtimestampBuilder get time => _$this._time ??= _i2.GtimestampBuilder();
   set time(_i2.GtimestampBuilder? time) => _$this._time = time;
 
   GSearchProfilesData_profilesBuilder() {
@@ -2793,7 +2703,6 @@ class GSearchProfilesData_profilesBuilder
 
   @override
   void replace(GSearchProfilesData_profiles other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GSearchProfilesData_profiles;
   }
 
@@ -2809,23 +2718,24 @@ class GSearchProfilesData_profilesBuilder
     _$GSearchProfilesData_profiles _$result;
     try {
       _$result = _$v ??
-          new _$GSearchProfilesData_profiles._(
-              G__typename: BuiltValueNullFieldError.checkNotNull(
-                  G__typename, r'GSearchProfilesData_profiles', 'G__typename'),
-              avatar: avatar,
-              pubkey: BuiltValueNullFieldError.checkNotNull(
-                  pubkey, r'GSearchProfilesData_profiles', 'pubkey'),
-              description: description,
-              title: title,
-              city: city,
-              data_cid: data_cid,
-              geoloc: _geoloc?.build(),
-              index_request_cid: BuiltValueNullFieldError.checkNotNull(
-                  index_request_cid,
-                  r'GSearchProfilesData_profiles',
-                  'index_request_cid'),
-              socials: socials,
-              time: time.build());
+          _$GSearchProfilesData_profiles._(
+            G__typename: BuiltValueNullFieldError.checkNotNull(
+                G__typename, r'GSearchProfilesData_profiles', 'G__typename'),
+            avatar: avatar,
+            pubkey: BuiltValueNullFieldError.checkNotNull(
+                pubkey, r'GSearchProfilesData_profiles', 'pubkey'),
+            description: description,
+            title: title,
+            city: city,
+            data_cid: data_cid,
+            geoloc: _geoloc?.build(),
+            index_request_cid: BuiltValueNullFieldError.checkNotNull(
+                index_request_cid,
+                r'GSearchProfilesData_profiles',
+                'index_request_cid'),
+            socials: socials,
+            time: time.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -2835,7 +2745,7 @@ class GSearchProfilesData_profilesBuilder
         _$failedField = 'time';
         time.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GSearchProfilesData_profiles', _$failedField, e.toString());
       }
       rethrow;

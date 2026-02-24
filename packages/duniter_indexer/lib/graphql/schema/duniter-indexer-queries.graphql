@@ -31,13 +31,13 @@ fragment SmithFields on Smith {
   index
   lastChanged
   lastForged
-  smithCertIssued(first: 10, orderBy: [CREATED_ON_DESC]) {
+  smithCertIssued(orderBy: [CREATED_ON_DESC]) {
     totalCount
     nodes {
       ...SmithCertFields
     }
   }
-  smithCertReceived(first: 10, orderBy: [CREATED_ON_DESC]) {
+  smithCertReceived(orderBy: [CREATED_ON_DESC]) {
     totalCount
     nodes {
       ...SmithCertFields
@@ -73,14 +73,14 @@ fragment IdentityFields on Identity {
   accountId
   accountRemovedId
 
-  certIssued(first: 20, orderBy: [UPDATED_ON_DESC], filter: { isActive: { equalTo: true } }) {
+  certIssued(orderBy: [UPDATED_ON_DESC], filter: { isActive: { equalTo: true } }) {
     totalCount
     nodes {
       ...CertFields
     }
   }
 
-  certReceived(first: 20, orderBy: [UPDATED_ON_DESC], filter: { isActive: { equalTo: true } }) {
+  certReceived(orderBy: [UPDATED_ON_DESC], filter: { isActive: { equalTo: true } }) {
     totalCount
     nodes {
       ...CertFields

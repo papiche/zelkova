@@ -7,11 +7,11 @@ part of 'duniter-datapod-mutations.req.gql.dart';
 // **************************************************************************
 
 Serializer<GDeleteProfileReq> _$gDeleteProfileReqSerializer =
-    new _$GDeleteProfileReqSerializer();
+    _$GDeleteProfileReqSerializer();
 Serializer<GMigrateProfileReq> _$gMigrateProfileReqSerializer =
-    new _$GMigrateProfileReqSerializer();
+    _$GMigrateProfileReqSerializer();
 Serializer<GUpdateProfileReq> _$gUpdateProfileReqSerializer =
-    new _$GUpdateProfileReqSerializer();
+    _$GUpdateProfileReqSerializer();
 
 class _$GDeleteProfileReqSerializer
     implements StructuredSerializer<GDeleteProfileReq> {
@@ -78,7 +78,7 @@ class _$GDeleteProfileReqSerializer
   GDeleteProfileReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GDeleteProfileReqBuilder();
+    final result = GDeleteProfileReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -197,7 +197,7 @@ class _$GMigrateProfileReqSerializer
   GMigrateProfileReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GMigrateProfileReqBuilder();
+    final result = GMigrateProfileReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -315,7 +315,7 @@ class _$GUpdateProfileReqSerializer
   GUpdateProfileReq deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GUpdateProfileReqBuilder();
+    final result = GUpdateProfileReqBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -393,7 +393,7 @@ class _$GDeleteProfileReq extends GDeleteProfileReq {
 
   factory _$GDeleteProfileReq(
           [void Function(GDeleteProfileReqBuilder)? updates]) =>
-      (new GDeleteProfileReqBuilder()..update(updates))._build();
+      (GDeleteProfileReqBuilder()..update(updates))._build();
 
   _$GDeleteProfileReq._(
       {required this.vars,
@@ -406,21 +406,14 @@ class _$GDeleteProfileReq extends GDeleteProfileReq {
       this.fetchPolicy,
       required this.executeOnListen,
       this.context})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(vars, r'GDeleteProfileReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        operation, r'GDeleteProfileReq', 'operation');
-    BuiltValueNullFieldError.checkNotNull(
-        executeOnListen, r'GDeleteProfileReq', 'executeOnListen');
-  }
-
+      : super._();
   @override
   GDeleteProfileReq rebuild(void Function(GDeleteProfileReqBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
   GDeleteProfileReqBuilder toBuilder() =>
-      new GDeleteProfileReqBuilder()..replace(this);
+      GDeleteProfileReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -479,7 +472,7 @@ class GDeleteProfileReqBuilder
 
   _i3.GDeleteProfileVarsBuilder? _vars;
   _i3.GDeleteProfileVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GDeleteProfileVarsBuilder();
+      _$this._vars ??= _i3.GDeleteProfileVarsBuilder();
   set vars(_i3.GDeleteProfileVarsBuilder? vars) => _$this._vars = vars;
 
   _i4.Operation? _operation;
@@ -503,7 +496,7 @@ class GDeleteProfileReqBuilder
 
   _i2.GDeleteProfileDataBuilder? _optimisticResponse;
   _i2.GDeleteProfileDataBuilder get optimisticResponse =>
-      _$this._optimisticResponse ??= new _i2.GDeleteProfileDataBuilder();
+      _$this._optimisticResponse ??= _i2.GDeleteProfileDataBuilder();
   set optimisticResponse(_i2.GDeleteProfileDataBuilder? optimisticResponse) =>
       _$this._optimisticResponse = optimisticResponse;
 
@@ -557,7 +550,6 @@ class GDeleteProfileReqBuilder
 
   @override
   void replace(GDeleteProfileReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GDeleteProfileReq;
   }
 
@@ -573,19 +565,20 @@ class GDeleteProfileReqBuilder
     _$GDeleteProfileReq _$result;
     try {
       _$result = _$v ??
-          new _$GDeleteProfileReq._(
-              vars: vars.build(),
-              operation: BuiltValueNullFieldError.checkNotNull(
-                  operation, r'GDeleteProfileReq', 'operation'),
-              requestId: requestId,
-              updateResult: updateResult,
-              optimisticResponse: _optimisticResponse?.build(),
-              updateCacheHandlerKey: updateCacheHandlerKey,
-              updateCacheHandlerContext: updateCacheHandlerContext,
-              fetchPolicy: fetchPolicy,
-              executeOnListen: BuiltValueNullFieldError.checkNotNull(
-                  executeOnListen, r'GDeleteProfileReq', 'executeOnListen'),
-              context: context);
+          _$GDeleteProfileReq._(
+            vars: vars.build(),
+            operation: BuiltValueNullFieldError.checkNotNull(
+                operation, r'GDeleteProfileReq', 'operation'),
+            requestId: requestId,
+            updateResult: updateResult,
+            optimisticResponse: _optimisticResponse?.build(),
+            updateCacheHandlerKey: updateCacheHandlerKey,
+            updateCacheHandlerContext: updateCacheHandlerContext,
+            fetchPolicy: fetchPolicy,
+            executeOnListen: BuiltValueNullFieldError.checkNotNull(
+                executeOnListen, r'GDeleteProfileReq', 'executeOnListen'),
+            context: context,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -595,7 +588,7 @@ class GDeleteProfileReqBuilder
         _$failedField = 'optimisticResponse';
         _optimisticResponse?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GDeleteProfileReq', _$failedField, e.toString());
       }
       rethrow;
@@ -630,7 +623,7 @@ class _$GMigrateProfileReq extends GMigrateProfileReq {
 
   factory _$GMigrateProfileReq(
           [void Function(GMigrateProfileReqBuilder)? updates]) =>
-      (new GMigrateProfileReqBuilder()..update(updates))._build();
+      (GMigrateProfileReqBuilder()..update(updates))._build();
 
   _$GMigrateProfileReq._(
       {required this.vars,
@@ -643,14 +636,7 @@ class _$GMigrateProfileReq extends GMigrateProfileReq {
       this.fetchPolicy,
       required this.executeOnListen,
       this.context})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(vars, r'GMigrateProfileReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        operation, r'GMigrateProfileReq', 'operation');
-    BuiltValueNullFieldError.checkNotNull(
-        executeOnListen, r'GMigrateProfileReq', 'executeOnListen');
-  }
-
+      : super._();
   @override
   GMigrateProfileReq rebuild(
           void Function(GMigrateProfileReqBuilder) updates) =>
@@ -658,7 +644,7 @@ class _$GMigrateProfileReq extends GMigrateProfileReq {
 
   @override
   GMigrateProfileReqBuilder toBuilder() =>
-      new GMigrateProfileReqBuilder()..replace(this);
+      GMigrateProfileReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -717,7 +703,7 @@ class GMigrateProfileReqBuilder
 
   _i3.GMigrateProfileVarsBuilder? _vars;
   _i3.GMigrateProfileVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GMigrateProfileVarsBuilder();
+      _$this._vars ??= _i3.GMigrateProfileVarsBuilder();
   set vars(_i3.GMigrateProfileVarsBuilder? vars) => _$this._vars = vars;
 
   _i4.Operation? _operation;
@@ -741,7 +727,7 @@ class GMigrateProfileReqBuilder
 
   _i2.GMigrateProfileDataBuilder? _optimisticResponse;
   _i2.GMigrateProfileDataBuilder get optimisticResponse =>
-      _$this._optimisticResponse ??= new _i2.GMigrateProfileDataBuilder();
+      _$this._optimisticResponse ??= _i2.GMigrateProfileDataBuilder();
   set optimisticResponse(_i2.GMigrateProfileDataBuilder? optimisticResponse) =>
       _$this._optimisticResponse = optimisticResponse;
 
@@ -795,7 +781,6 @@ class GMigrateProfileReqBuilder
 
   @override
   void replace(GMigrateProfileReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GMigrateProfileReq;
   }
 
@@ -811,19 +796,20 @@ class GMigrateProfileReqBuilder
     _$GMigrateProfileReq _$result;
     try {
       _$result = _$v ??
-          new _$GMigrateProfileReq._(
-              vars: vars.build(),
-              operation: BuiltValueNullFieldError.checkNotNull(
-                  operation, r'GMigrateProfileReq', 'operation'),
-              requestId: requestId,
-              updateResult: updateResult,
-              optimisticResponse: _optimisticResponse?.build(),
-              updateCacheHandlerKey: updateCacheHandlerKey,
-              updateCacheHandlerContext: updateCacheHandlerContext,
-              fetchPolicy: fetchPolicy,
-              executeOnListen: BuiltValueNullFieldError.checkNotNull(
-                  executeOnListen, r'GMigrateProfileReq', 'executeOnListen'),
-              context: context);
+          _$GMigrateProfileReq._(
+            vars: vars.build(),
+            operation: BuiltValueNullFieldError.checkNotNull(
+                operation, r'GMigrateProfileReq', 'operation'),
+            requestId: requestId,
+            updateResult: updateResult,
+            optimisticResponse: _optimisticResponse?.build(),
+            updateCacheHandlerKey: updateCacheHandlerKey,
+            updateCacheHandlerContext: updateCacheHandlerContext,
+            fetchPolicy: fetchPolicy,
+            executeOnListen: BuiltValueNullFieldError.checkNotNull(
+                executeOnListen, r'GMigrateProfileReq', 'executeOnListen'),
+            context: context,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -833,7 +819,7 @@ class GMigrateProfileReqBuilder
         _$failedField = 'optimisticResponse';
         _optimisticResponse?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GMigrateProfileReq', _$failedField, e.toString());
       }
       rethrow;
@@ -868,7 +854,7 @@ class _$GUpdateProfileReq extends GUpdateProfileReq {
 
   factory _$GUpdateProfileReq(
           [void Function(GUpdateProfileReqBuilder)? updates]) =>
-      (new GUpdateProfileReqBuilder()..update(updates))._build();
+      (GUpdateProfileReqBuilder()..update(updates))._build();
 
   _$GUpdateProfileReq._(
       {required this.vars,
@@ -881,21 +867,14 @@ class _$GUpdateProfileReq extends GUpdateProfileReq {
       this.fetchPolicy,
       required this.executeOnListen,
       this.context})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(vars, r'GUpdateProfileReq', 'vars');
-    BuiltValueNullFieldError.checkNotNull(
-        operation, r'GUpdateProfileReq', 'operation');
-    BuiltValueNullFieldError.checkNotNull(
-        executeOnListen, r'GUpdateProfileReq', 'executeOnListen');
-  }
-
+      : super._();
   @override
   GUpdateProfileReq rebuild(void Function(GUpdateProfileReqBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
   GUpdateProfileReqBuilder toBuilder() =>
-      new GUpdateProfileReqBuilder()..replace(this);
+      GUpdateProfileReqBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -954,7 +933,7 @@ class GUpdateProfileReqBuilder
 
   _i3.GUpdateProfileVarsBuilder? _vars;
   _i3.GUpdateProfileVarsBuilder get vars =>
-      _$this._vars ??= new _i3.GUpdateProfileVarsBuilder();
+      _$this._vars ??= _i3.GUpdateProfileVarsBuilder();
   set vars(_i3.GUpdateProfileVarsBuilder? vars) => _$this._vars = vars;
 
   _i4.Operation? _operation;
@@ -978,7 +957,7 @@ class GUpdateProfileReqBuilder
 
   _i2.GUpdateProfileDataBuilder? _optimisticResponse;
   _i2.GUpdateProfileDataBuilder get optimisticResponse =>
-      _$this._optimisticResponse ??= new _i2.GUpdateProfileDataBuilder();
+      _$this._optimisticResponse ??= _i2.GUpdateProfileDataBuilder();
   set optimisticResponse(_i2.GUpdateProfileDataBuilder? optimisticResponse) =>
       _$this._optimisticResponse = optimisticResponse;
 
@@ -1032,7 +1011,6 @@ class GUpdateProfileReqBuilder
 
   @override
   void replace(GUpdateProfileReq other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GUpdateProfileReq;
   }
 
@@ -1048,19 +1026,20 @@ class GUpdateProfileReqBuilder
     _$GUpdateProfileReq _$result;
     try {
       _$result = _$v ??
-          new _$GUpdateProfileReq._(
-              vars: vars.build(),
-              operation: BuiltValueNullFieldError.checkNotNull(
-                  operation, r'GUpdateProfileReq', 'operation'),
-              requestId: requestId,
-              updateResult: updateResult,
-              optimisticResponse: _optimisticResponse?.build(),
-              updateCacheHandlerKey: updateCacheHandlerKey,
-              updateCacheHandlerContext: updateCacheHandlerContext,
-              fetchPolicy: fetchPolicy,
-              executeOnListen: BuiltValueNullFieldError.checkNotNull(
-                  executeOnListen, r'GUpdateProfileReq', 'executeOnListen'),
-              context: context);
+          _$GUpdateProfileReq._(
+            vars: vars.build(),
+            operation: BuiltValueNullFieldError.checkNotNull(
+                operation, r'GUpdateProfileReq', 'operation'),
+            requestId: requestId,
+            updateResult: updateResult,
+            optimisticResponse: _optimisticResponse?.build(),
+            updateCacheHandlerKey: updateCacheHandlerKey,
+            updateCacheHandlerContext: updateCacheHandlerContext,
+            fetchPolicy: fetchPolicy,
+            executeOnListen: BuiltValueNullFieldError.checkNotNull(
+                executeOnListen, r'GUpdateProfileReq', 'executeOnListen'),
+            context: context,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -1070,7 +1049,7 @@ class GUpdateProfileReqBuilder
         _$failedField = 'optimisticResponse';
         _optimisticResponse?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GUpdateProfileReq', _$failedField, e.toString());
       }
       rethrow;

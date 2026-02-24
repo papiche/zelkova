@@ -7,15 +7,15 @@ part of 'duniter-datapod-queries.var.gql.dart';
 // **************************************************************************
 
 Serializer<GGetProfileByAddressVars> _$gGetProfileByAddressVarsSerializer =
-    new _$GGetProfileByAddressVarsSerializer();
+    _$GGetProfileByAddressVarsSerializer();
 Serializer<GGetProfilesByAddressVars> _$gGetProfilesByAddressVarsSerializer =
-    new _$GGetProfilesByAddressVarsSerializer();
+    _$GGetProfilesByAddressVarsSerializer();
 Serializer<GGetProfileCountVars> _$gGetProfileCountVarsSerializer =
-    new _$GGetProfileCountVarsSerializer();
+    _$GGetProfileCountVarsSerializer();
 Serializer<GSearchProfileByTermVars> _$gSearchProfileByTermVarsSerializer =
-    new _$GSearchProfileByTermVarsSerializer();
+    _$GSearchProfileByTermVarsSerializer();
 Serializer<GSearchProfilesVars> _$gSearchProfilesVarsSerializer =
-    new _$GSearchProfilesVarsSerializer();
+    _$GSearchProfilesVarsSerializer();
 
 class _$GGetProfileByAddressVarsSerializer
     implements StructuredSerializer<GGetProfileByAddressVars> {
@@ -44,7 +44,7 @@ class _$GGetProfileByAddressVarsSerializer
   GGetProfileByAddressVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GGetProfileByAddressVarsBuilder();
+    final result = GGetProfileByAddressVarsBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -91,7 +91,7 @@ class _$GGetProfilesByAddressVarsSerializer
   GGetProfilesByAddressVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GGetProfilesByAddressVarsBuilder();
+    final result = GGetProfilesByAddressVarsBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -133,7 +133,7 @@ class _$GGetProfileCountVarsSerializer
   GGetProfileCountVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    return new GGetProfileCountVarsBuilder().build();
+    return GGetProfileCountVarsBuilder().build();
   }
 }
 
@@ -164,7 +164,7 @@ class _$GSearchProfileByTermVarsSerializer
   GSearchProfileByTermVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GSearchProfileByTermVarsBuilder();
+    final result = GSearchProfileByTermVarsBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -216,7 +216,7 @@ class _$GSearchProfilesVarsSerializer
   GSearchProfilesVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GSearchProfilesVarsBuilder();
+    final result = GSearchProfilesVarsBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -249,13 +249,9 @@ class _$GGetProfileByAddressVars extends GGetProfileByAddressVars {
 
   factory _$GGetProfileByAddressVars(
           [void Function(GGetProfileByAddressVarsBuilder)? updates]) =>
-      (new GGetProfileByAddressVarsBuilder()..update(updates))._build();
+      (GGetProfileByAddressVarsBuilder()..update(updates))._build();
 
-  _$GGetProfileByAddressVars._({required this.pubkey}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        pubkey, r'GGetProfileByAddressVars', 'pubkey');
-  }
-
+  _$GGetProfileByAddressVars._({required this.pubkey}) : super._();
   @override
   GGetProfileByAddressVars rebuild(
           void Function(GGetProfileByAddressVarsBuilder) updates) =>
@@ -263,7 +259,7 @@ class _$GGetProfileByAddressVars extends GGetProfileByAddressVars {
 
   @override
   GGetProfileByAddressVarsBuilder toBuilder() =>
-      new GGetProfileByAddressVarsBuilder()..replace(this);
+      GGetProfileByAddressVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -309,7 +305,6 @@ class GGetProfileByAddressVarsBuilder
 
   @override
   void replace(GGetProfileByAddressVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GGetProfileByAddressVars;
   }
 
@@ -323,9 +318,10 @@ class GGetProfileByAddressVarsBuilder
 
   _$GGetProfileByAddressVars _build() {
     final _$result = _$v ??
-        new _$GGetProfileByAddressVars._(
-            pubkey: BuiltValueNullFieldError.checkNotNull(
-                pubkey, r'GGetProfileByAddressVars', 'pubkey'));
+        _$GGetProfileByAddressVars._(
+          pubkey: BuiltValueNullFieldError.checkNotNull(
+              pubkey, r'GGetProfileByAddressVars', 'pubkey'),
+        );
     replace(_$result);
     return _$result;
   }
@@ -337,13 +333,9 @@ class _$GGetProfilesByAddressVars extends GGetProfilesByAddressVars {
 
   factory _$GGetProfilesByAddressVars(
           [void Function(GGetProfilesByAddressVarsBuilder)? updates]) =>
-      (new GGetProfilesByAddressVarsBuilder()..update(updates))._build();
+      (GGetProfilesByAddressVarsBuilder()..update(updates))._build();
 
-  _$GGetProfilesByAddressVars._({required this.pubkeys}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        pubkeys, r'GGetProfilesByAddressVars', 'pubkeys');
-  }
-
+  _$GGetProfilesByAddressVars._({required this.pubkeys}) : super._();
   @override
   GGetProfilesByAddressVars rebuild(
           void Function(GGetProfilesByAddressVarsBuilder) updates) =>
@@ -351,7 +343,7 @@ class _$GGetProfilesByAddressVars extends GGetProfilesByAddressVars {
 
   @override
   GGetProfilesByAddressVarsBuilder toBuilder() =>
-      new GGetProfilesByAddressVarsBuilder()..replace(this);
+      GGetProfilesByAddressVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -381,8 +373,7 @@ class GGetProfilesByAddressVarsBuilder
   _$GGetProfilesByAddressVars? _$v;
 
   ListBuilder<String>? _pubkeys;
-  ListBuilder<String> get pubkeys =>
-      _$this._pubkeys ??= new ListBuilder<String>();
+  ListBuilder<String> get pubkeys => _$this._pubkeys ??= ListBuilder<String>();
   set pubkeys(ListBuilder<String>? pubkeys) => _$this._pubkeys = pubkeys;
 
   GGetProfilesByAddressVarsBuilder();
@@ -398,7 +389,6 @@ class GGetProfilesByAddressVarsBuilder
 
   @override
   void replace(GGetProfilesByAddressVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GGetProfilesByAddressVars;
   }
 
@@ -413,15 +403,17 @@ class GGetProfilesByAddressVarsBuilder
   _$GGetProfilesByAddressVars _build() {
     _$GGetProfilesByAddressVars _$result;
     try {
-      _$result =
-          _$v ?? new _$GGetProfilesByAddressVars._(pubkeys: pubkeys.build());
+      _$result = _$v ??
+          _$GGetProfilesByAddressVars._(
+            pubkeys: pubkeys.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'pubkeys';
         pubkeys.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GGetProfilesByAddressVars', _$failedField, e.toString());
       }
       rethrow;
@@ -434,10 +426,9 @@ class GGetProfilesByAddressVarsBuilder
 class _$GGetProfileCountVars extends GGetProfileCountVars {
   factory _$GGetProfileCountVars(
           [void Function(GGetProfileCountVarsBuilder)? updates]) =>
-      (new GGetProfileCountVarsBuilder()..update(updates))._build();
+      (GGetProfileCountVarsBuilder()..update(updates))._build();
 
   _$GGetProfileCountVars._() : super._();
-
   @override
   GGetProfileCountVars rebuild(
           void Function(GGetProfileCountVarsBuilder) updates) =>
@@ -445,7 +436,7 @@ class _$GGetProfileCountVars extends GGetProfileCountVars {
 
   @override
   GGetProfileCountVarsBuilder toBuilder() =>
-      new GGetProfileCountVarsBuilder()..replace(this);
+      GGetProfileCountVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -472,7 +463,6 @@ class GGetProfileCountVarsBuilder
 
   @override
   void replace(GGetProfileCountVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GGetProfileCountVars;
   }
 
@@ -485,7 +475,7 @@ class GGetProfileCountVarsBuilder
   GGetProfileCountVars build() => _build();
 
   _$GGetProfileCountVars _build() {
-    final _$result = _$v ?? new _$GGetProfileCountVars._();
+    final _$result = _$v ?? _$GGetProfileCountVars._();
     replace(_$result);
     return _$result;
   }
@@ -497,13 +487,9 @@ class _$GSearchProfileByTermVars extends GSearchProfileByTermVars {
 
   factory _$GSearchProfileByTermVars(
           [void Function(GSearchProfileByTermVarsBuilder)? updates]) =>
-      (new GSearchProfileByTermVarsBuilder()..update(updates))._build();
+      (GSearchProfileByTermVarsBuilder()..update(updates))._build();
 
-  _$GSearchProfileByTermVars._({required this.pattern}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        pattern, r'GSearchProfileByTermVars', 'pattern');
-  }
-
+  _$GSearchProfileByTermVars._({required this.pattern}) : super._();
   @override
   GSearchProfileByTermVars rebuild(
           void Function(GSearchProfileByTermVarsBuilder) updates) =>
@@ -511,7 +497,7 @@ class _$GSearchProfileByTermVars extends GSearchProfileByTermVars {
 
   @override
   GSearchProfileByTermVarsBuilder toBuilder() =>
-      new GSearchProfileByTermVarsBuilder()..replace(this);
+      GSearchProfileByTermVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -557,7 +543,6 @@ class GSearchProfileByTermVarsBuilder
 
   @override
   void replace(GSearchProfileByTermVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GSearchProfileByTermVars;
   }
 
@@ -571,9 +556,10 @@ class GSearchProfileByTermVarsBuilder
 
   _$GSearchProfileByTermVars _build() {
     final _$result = _$v ??
-        new _$GSearchProfileByTermVars._(
-            pattern: BuiltValueNullFieldError.checkNotNull(
-                pattern, r'GSearchProfileByTermVars', 'pattern'));
+        _$GSearchProfileByTermVars._(
+          pattern: BuiltValueNullFieldError.checkNotNull(
+              pattern, r'GSearchProfileByTermVars', 'pattern'),
+        );
     replace(_$result);
     return _$result;
   }
@@ -589,21 +575,13 @@ class _$GSearchProfilesVars extends GSearchProfilesVars {
 
   factory _$GSearchProfilesVars(
           [void Function(GSearchProfilesVarsBuilder)? updates]) =>
-      (new GSearchProfilesVarsBuilder()..update(updates))._build();
+      (GSearchProfilesVarsBuilder()..update(updates))._build();
 
   _$GSearchProfilesVars._(
       {required this.searchTermLower,
       required this.searchTerm,
       required this.searchTermCapitalized})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        searchTermLower, r'GSearchProfilesVars', 'searchTermLower');
-    BuiltValueNullFieldError.checkNotNull(
-        searchTerm, r'GSearchProfilesVars', 'searchTerm');
-    BuiltValueNullFieldError.checkNotNull(
-        searchTermCapitalized, r'GSearchProfilesVars', 'searchTermCapitalized');
-  }
-
+      : super._();
   @override
   GSearchProfilesVars rebuild(
           void Function(GSearchProfilesVarsBuilder) updates) =>
@@ -611,7 +589,7 @@ class _$GSearchProfilesVars extends GSearchProfilesVars {
 
   @override
   GSearchProfilesVarsBuilder toBuilder() =>
-      new GSearchProfilesVarsBuilder()..replace(this);
+      GSearchProfilesVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -675,7 +653,6 @@ class GSearchProfilesVarsBuilder
 
   @override
   void replace(GSearchProfilesVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GSearchProfilesVars;
   }
 
@@ -689,15 +666,16 @@ class GSearchProfilesVarsBuilder
 
   _$GSearchProfilesVars _build() {
     final _$result = _$v ??
-        new _$GSearchProfilesVars._(
-            searchTermLower: BuiltValueNullFieldError.checkNotNull(
-                searchTermLower, r'GSearchProfilesVars', 'searchTermLower'),
-            searchTerm: BuiltValueNullFieldError.checkNotNull(
-                searchTerm, r'GSearchProfilesVars', 'searchTerm'),
-            searchTermCapitalized: BuiltValueNullFieldError.checkNotNull(
-                searchTermCapitalized,
-                r'GSearchProfilesVars',
-                'searchTermCapitalized'));
+        _$GSearchProfilesVars._(
+          searchTermLower: BuiltValueNullFieldError.checkNotNull(
+              searchTermLower, r'GSearchProfilesVars', 'searchTermLower'),
+          searchTerm: BuiltValueNullFieldError.checkNotNull(
+              searchTerm, r'GSearchProfilesVars', 'searchTerm'),
+          searchTermCapitalized: BuiltValueNullFieldError.checkNotNull(
+              searchTermCapitalized,
+              r'GSearchProfilesVars',
+              'searchTermCapitalized'),
+        );
     replace(_$result);
     return _$result;
   }

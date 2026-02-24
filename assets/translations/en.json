@@ -543,5 +543,7 @@
    "profile.save_error": "Error saving profile. Please try again.",
    "common.cancel": "Cancel",
    "common.save": "Save",
-   "common.saving": "Saving..."
+   "common.saving": "Saving...",
+   "internal_contact_name": "Contact name",
+   "internal_name_copied_to_clipboard": "Contact name copied"
 }

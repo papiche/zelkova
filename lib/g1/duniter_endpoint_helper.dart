@@ -479,8 +479,6 @@ String _resultTransformer(String suffix, String statusType, String success) {
   if (statusType == 'future' || statusType == 'broadcast') {
     if (suffix == 'op_batch' || suffix == 'transfer_identity') {
       result += '\n${tr('op_batch_wait_hint')}';
-    } else {
-      result += '\n${tr('op_wait_hint')}';
     }
   }
 

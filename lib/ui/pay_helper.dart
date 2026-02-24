@@ -88,14 +88,20 @@ Future<bool> payWithRetry(
         final UtxoCubit utxoCubit = context.read<UtxoCubit>();
         final double convertedAmount = toG1(amount, isG1, currentUd);
 
-        final Transaction tx = Transaction(
-            type: TransactionType.pending,
-            from: fromContact,
-            recipients: recipients,
-            recipientsAmounts: List<double>.filled(recipients.length, amount),
-            amount: -toCG1(convertedAmount).toDouble() * recipients.length,
-            comment: comment,
-            time: DateTime.now());
+        // For v2 payments with multiple recipients, create separate pending transactions
+        // for each recipient to match on-chain batch transactions
+        final List<Transaction> pendingTransactions =
+            recipients.map((Contact recipient) {
+          return Transaction(
+              type: TransactionType.pending,
+              from: fromContact,
+              recipients: <Contact>[recipient],
+              recipientsAmounts: <double>[amount],
+              amount: -toCG1(convertedAmount).toDouble(),
+              comment: comment,
+              time: DateTime.now());
+        }).toList();
+
         final bool isConnected =
             await ConnectivityWidgetWrapperWrapper.isConnected;
         logger('isConnected: $isConnected');
@@ -107,9 +113,10 @@ Future<bool> payWithRetry(
           }
           showAlertDialog(context, tr('payment_waiting_internet_title'),
               tr('payment_waiting_internet_desc_beta'));
-          final Transaction pending =
-              tx.copyWith(type: TransactionType.waitingNetwork);
-          txCubit.addPendingTransaction(pending);
+          for (final Transaction pending in pendingTransactions) {
+            txCubit.addPendingTransaction(
+                pending.copyWith(type: TransactionType.waitingNetwork));
+          }
           context.read<BottomNavCubit>().updateIndex(3);
           return true;
         } else {
@@ -147,9 +154,14 @@ Future<bool> payWithRetry(
                   message: 'Error retrieving payment data', node: triedNode);
             }
           }
-          final Transaction pending = tx.copyWith(
-              debugInfo:
-                  'Node used: ${result != null && result.node != null ? result.node!.url : 'unknown'}');
+          // Update pending transactions with debug info
+          final List<Transaction> updatedPendingTxs =
+              pendingTransactions.map((Transaction tx) {
+            return tx.copyWith(
+                debugInfo:
+                    'Node used: ${result != null && result.node != null ? result.node!.url : 'unknown'}');
+          }).toList();
+
           if (result.progressStream != null) {
             // Progress dialog already shown, just listen to stream updates
             result.progressStream!.listen(
@@ -163,14 +175,14 @@ Future<bool> payWithRetry(
                   return;
                 }
                 _onPaymentWIthProgressDone(
-                    pd, context, isRetry, txCubit, pending);
+                    pd, context, isRetry, txCubit, updatedPendingTxs);
               },
               onError: (dynamic error) {
                 if (!context.mounted) {
                   return;
                 }
                 _onPaymentWithProgressError(
-                    pd, isRetry, txCubit, pending, context, error);
+                    pd, isRetry, txCubit, updatedPendingTxs, context, error);
               },
             );
           } else {
@@ -184,15 +196,19 @@ Future<bool> payWithRetry(
               showAlertDialog(context, tr('payment_successful'),
                   tr('payment_successful_desc'));
               if (!isRetry) {
-                // Add here the transaction to the pending list (so we can check it the tx is confirmed)
-                txCubit.addPendingTransaction(pending);
+                // Add here the transactions to the pending list (so we can check if they are confirmed)
+                for (final Transaction pending in updatedPendingTxs) {
+                  txCubit.addPendingTransaction(pending);
+                }
               } else {
-                // Update the previously failed tx with an update time and type pending
-                txCubit.updatePendingTransaction(
-                    pending.copyWith(type: TransactionType.pending));
+                // Update the previously failed txs with an update time and type pending
+                for (final Transaction pending in updatedPendingTxs) {
+                  txCubit.updatePendingTransaction(
+                      pending.copyWith(type: TransactionType.pending));
+                }
               }
-              // Refresh transactions to ensure pending transaction is shown
-              txCubit.fetchTransactions(pubKey: pending.from.pubKey);
+              // Refresh transactions to ensure pending transactions are shown
+              txCubit.fetchTransactions(pubKey: fromContact.pubKey);
               context.read<BottomNavCubit>().updateIndex(3);
               return true;
             } else {
@@ -210,7 +226,7 @@ Future<bool> payWithRetry(
                       namedArgs: <String, String>{'error': tr(result.message)}),
                   increaseErrors: !failedWithoutBalance,
                   node: result.node);
-              _addPending(isRetry, txCubit, pending, context);
+              _addPending(isRetry, txCubit, updatedPendingTxs, context);
               return false;
             }
           }
@@ -232,21 +248,34 @@ Future<bool> payWithRetry(
   return true;
 }
 
-void _onPaymentWIthProgressDone(ProgressDialog pd, BuildContext context,
-    bool isRetry, MultiWalletTransactionCubit txCubit, Transaction pending) {
+void _onPaymentWIthProgressDone(
+    ProgressDialog pd,
+    BuildContext context,
+    bool isRetry,
+    MultiWalletTransactionCubit txCubit,
+    List<Transaction> pendingTransactions) {
   pd.close();
 
-  // Add the transaction to the pending list
+  // Mark payment as sent in the UI state
+  context.read<PaymentCubit>().sent();
+
+  // Add the transactions to the pending list
   if (!isRetry) {
-    txCubit.addPendingTransaction(pending);
+    for (final Transaction pending in pendingTransactions) {
+      txCubit.addPendingTransaction(pending);
+    }
   } else {
-    txCubit.updatePendingTransaction(
-        pending.copyWith(type: TransactionType.pending));
+    for (final Transaction pending in pendingTransactions) {
+      txCubit.updatePendingTransaction(
+          pending.copyWith(type: TransactionType.pending));
+    }
   }
 
-  // Refresh transactions to ensure pending transaction is shown
-  final String fromPubKey = pending.from.pubKey;
-  txCubit.fetchTransactions(pubKey: fromPubKey);
+  // Refresh transactions to ensure pending transactions are shown
+  if (pendingTransactions.isNotEmpty) {
+    final String fromPubKey = pendingTransactions.first.from.pubKey;
+    txCubit.fetchTransactions(pubKey: fromPubKey);
+  }
 
   context.read<BottomNavCubit>().updateIndex(3);
 }
@@ -255,11 +284,11 @@ void _onPaymentWithProgressError(
     ProgressDialog pd,
     bool isRetry,
     MultiWalletTransactionCubit txCubit,
-    Transaction pending,
+    List<Transaction> pendingTransactions,
     BuildContext context,
     dynamic error) {
   pd.close();
-  _addPending(isRetry, txCubit, pending, context);
+  _addPending(isRetry, txCubit, pendingTransactions, context);
   showDialog(
     context: context,
     builder: (BuildContext context) => AlertDialog(
@@ -276,15 +305,19 @@ void _onPaymentWithProgressError(
 }
 
 void _addPending(bool isRetry, MultiWalletTransactionCubit txCubit,
-    Transaction pending, BuildContext context) {
+    List<Transaction> pendingTransactions, BuildContext context) {
   if (!isRetry) {
-    txCubit.insertPendingTransaction(
-        pending.copyWith(type: TransactionType.failed));
+    for (final Transaction pending in pendingTransactions) {
+      txCubit.insertPendingTransaction(
+          pending.copyWith(type: TransactionType.failed));
+    }
     context.read<BottomNavCubit>().updateIndex(3);
   } else {
-    // Update the previously failed tx with an update time and type pending
-    txCubit.updatePendingTransaction(
-        pending.copyWith(type: TransactionType.failed));
+    // Update the previously failed txs with type pending
+    for (final Transaction pending in pendingTransactions) {
+      txCubit.updatePendingTransaction(
+          pending.copyWith(type: TransactionType.failed));
+    }
   }
 }
 

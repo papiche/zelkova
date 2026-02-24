@@ -1,7 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:typed_data' as _i2;
 
-import 'package:polkadart/scale_codec.dart' as _i1;
+import 'package:polkadart_scale_codec/polkadart_scale_codec.dart' as _i1;
 import 'package:quiver/collection.dart' as _i5;
 
 import '../../gtest_runtime/runtime_call.dart' as _i4;
@@ -244,6 +244,9 @@ class $CallCodec with _i1.Codec<Call> {
             'Call: Unsupported "$value" of type "${value.runtimeType}"');
     }
   }
+
+  @override
+  bool isSizeZero() => false;
 }
 
 /// Anonymously schedule a task.
@@ -284,10 +287,12 @@ class Schedule extends Call {
   Map<String, Map<String, dynamic>> toJson() => {
         'schedule': {
           'when': when,
-          'maybePeriodic': [
-            maybePeriodic?.value0,
-            maybePeriodic?.value1,
-          ],
+          'maybePeriodic': maybePeriodic != null
+              ? [
+                  maybePeriodic!.value0,
+                  maybePeriodic!.value1,
+                ]
+              : null,
           'priority': priority,
           'call': call.toJson(),
         }
@@ -462,10 +467,12 @@ class ScheduleNamed extends Call {
         'schedule_named': {
           'id': id.toList(),
           'when': when,
-          'maybePeriodic': [
-            maybePeriodic?.value0,
-            maybePeriodic?.value1,
-          ],
+          'maybePeriodic': maybePeriodic != null
+              ? [
+                  maybePeriodic!.value0,
+                  maybePeriodic!.value1,
+                ]
+              : null,
           'priority': priority,
           'call': call.toJson(),
         }
@@ -628,10 +635,12 @@ class ScheduleAfter extends Call {
   Map<String, Map<String, dynamic>> toJson() => {
         'schedule_after': {
           'after': after,
-          'maybePeriodic': [
-            maybePeriodic?.value0,
-            maybePeriodic?.value1,
-          ],
+          'maybePeriodic': maybePeriodic != null
+              ? [
+                  maybePeriodic!.value0,
+                  maybePeriodic!.value1,
+                ]
+              : null,
           'priority': priority,
           'call': call.toJson(),
         }
@@ -741,10 +750,12 @@ class ScheduleNamedAfter extends Call {
         'schedule_named_after': {
           'id': id.toList(),
           'after': after,
-          'maybePeriodic': [
-            maybePeriodic?.value0,
-            maybePeriodic?.value1,
-          ],
+          'maybePeriodic': maybePeriodic != null
+              ? [
+                  maybePeriodic!.value0,
+                  maybePeriodic!.value1,
+                ]
+              : null,
           'priority': priority,
           'call': call.toJson(),
         }

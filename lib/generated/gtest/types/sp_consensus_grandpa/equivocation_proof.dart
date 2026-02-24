@@ -1,7 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:typed_data' as _i3;
 
-import 'package:polkadart/scale_codec.dart' as _i1;
+import 'package:polkadart_scale_codec/polkadart_scale_codec.dart' as _i1;
 
 import 'equivocation.dart' as _i2;
 
@@ -82,4 +82,8 @@ class $EquivocationProofCodec with _i1.Codec<EquivocationProof> {
     size = size + _i2.Equivocation.codec.sizeHint(obj.equivocation);
     return size;
   }
+
+  @override
+  bool isSizeZero() =>
+      _i1.U64Codec.codec.isSizeZero() && _i2.Equivocation.codec.isSizeZero();
 }

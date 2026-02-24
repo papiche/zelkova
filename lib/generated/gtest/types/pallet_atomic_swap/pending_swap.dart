@@ -1,7 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:typed_data' as _i4;
 
-import 'package:polkadart/scale_codec.dart' as _i1;
+import 'package:polkadart_scale_codec/polkadart_scale_codec.dart' as _i1;
 import 'package:quiver/collection.dart' as _i5;
 
 import '../sp_core/crypto/account_id32.dart' as _i2;
@@ -100,4 +100,10 @@ class $PendingSwapCodec with _i1.Codec<PendingSwap> {
     size = size + _i1.U32Codec.codec.sizeHint(obj.endBlock);
     return size;
   }
+
+  @override
+  bool isSizeZero() =>
+      const _i2.AccountId32Codec().isSizeZero() &&
+      _i3.BalanceSwapAction.codec.isSizeZero() &&
+      _i1.U32Codec.codec.isSizeZero();
 }

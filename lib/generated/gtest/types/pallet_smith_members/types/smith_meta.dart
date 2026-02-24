@@ -1,7 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:typed_data' as _i3;
 
-import 'package:polkadart/scale_codec.dart' as _i1;
+import 'package:polkadart_scale_codec/polkadart_scale_codec.dart' as _i1;
 import 'package:quiver/collection.dart' as _i4;
 
 import '../smith_status.dart' as _i2;
@@ -130,4 +130,12 @@ class $SmithMetaCodec with _i1.Codec<SmithMeta> {
         const _i1.OptionCodec<int>(_i1.U32Codec.codec).sizeHint(obj.lastOnline);
     return size;
   }
+
+  @override
+  bool isSizeZero() =>
+      _i2.SmithStatus.codec.isSizeZero() &&
+      const _i1.OptionCodec<int>(_i1.U32Codec.codec).isSizeZero() &&
+      _i1.U32SequenceCodec.codec.isSizeZero() &&
+      _i1.U32SequenceCodec.codec.isSizeZero() &&
+      const _i1.OptionCodec<int>(_i1.U32Codec.codec).isSizeZero();
 }

@@ -1,7 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:typed_data' as _i3;
 
-import 'package:polkadart/scale_codec.dart' as _i1;
+import 'package:polkadart_scale_codec/polkadart_scale_codec.dart' as _i1;
 import 'package:quiver/collection.dart' as _i4;
 
 import '../sp_arithmetic/per_things/perbill.dart' as _i2;
@@ -70,4 +70,8 @@ class $ComputationResultCodec with _i1.Codec<ComputationResult> {
             .sizeHint(obj.distances);
     return size;
   }
+
+  @override
+  bool isSizeZero() =>
+      const _i1.SequenceCodec<_i2.Perbill>(_i2.PerbillCodec()).isSizeZero();
 }

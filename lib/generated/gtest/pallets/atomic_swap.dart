@@ -1,33 +1,34 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i5;
-import 'dart:typed_data' as _i6;
+import 'dart:async' as _i6;
+import 'dart:typed_data' as _i7;
 
 import 'package:polkadart/polkadart.dart' as _i1;
-import 'package:polkadart/scale_codec.dart' as _i4;
+import 'package:polkadart_scale_codec/polkadart_scale_codec.dart' as _i5;
+import 'package:substrate_metadata/substrate_metadata.dart' as _i2;
 
-import '../types/gtest_runtime/runtime_call.dart' as _i7;
-import '../types/pallet_atomic_swap/balance_swap_action.dart' as _i8;
-import '../types/pallet_atomic_swap/pallet/call.dart' as _i9;
-import '../types/pallet_atomic_swap/pending_swap.dart' as _i3;
-import '../types/sp_core/crypto/account_id32.dart' as _i2;
+import '../types/gtest_runtime/runtime_call.dart' as _i8;
+import '../types/pallet_atomic_swap/balance_swap_action.dart' as _i9;
+import '../types/pallet_atomic_swap/pallet/call.dart' as _i10;
+import '../types/pallet_atomic_swap/pending_swap.dart' as _i4;
+import '../types/sp_core/crypto/account_id32.dart' as _i3;
 
 class Queries {
   const Queries(this.__api);
 
   final _i1.StateApi __api;
 
-  final _i1.StorageDoubleMap<_i2.AccountId32, List<int>, _i3.PendingSwap>
+  final _i2.StorageDoubleMap<_i3.AccountId32, List<int>, _i4.PendingSwap>
       _pendingSwaps =
-      const _i1.StorageDoubleMap<_i2.AccountId32, List<int>, _i3.PendingSwap>(
+      const _i2.StorageDoubleMap<_i3.AccountId32, List<int>, _i4.PendingSwap>(
     prefix: 'AtomicSwap',
     storage: 'PendingSwaps',
-    valueCodec: _i3.PendingSwap.codec,
-    hasher1: _i1.StorageHasher.twoxx64Concat(_i2.AccountId32Codec()),
-    hasher2: _i1.StorageHasher.blake2b128Concat(_i4.U8ArrayCodec(32)),
+    valueCodec: _i4.PendingSwap.codec,
+    hasher1: _i2.StorageHasher.twoxx64Concat(_i3.AccountId32Codec()),
+    hasher2: _i2.StorageHasher.blake2b128Concat(_i5.U8ArrayCodec(32)),
   );
 
-  _i5.Future<_i3.PendingSwap?> pendingSwaps(
-    _i2.AccountId32 key1,
+  _i6.Future<_i4.PendingSwap?> pendingSwaps(
+    _i3.AccountId32 key1,
     List<int> key2, {
     _i1.BlockHash? at,
   }) async {
@@ -46,8 +47,8 @@ class Queries {
   }
 
   /// Returns the storage key for `pendingSwaps`.
-  _i6.Uint8List pendingSwapsKey(
-    _i2.AccountId32 key1,
+  _i7.Uint8List pendingSwapsKey(
+    _i3.AccountId32 key1,
     List<int> key2,
   ) {
     final hashedKey = _pendingSwaps.hashedKeyFor(
@@ -58,7 +59,7 @@ class Queries {
   }
 
   /// Returns the storage map key prefix for `pendingSwaps`.
-  _i6.Uint8List pendingSwapsMapPrefix(_i2.AccountId32 key1) {
+  _i7.Uint8List pendingSwapsMapPrefix(_i3.AccountId32 key1) {
     final hashedKey = _pendingSwaps.mapPrefix(key1);
     return hashedKey;
   }
@@ -79,13 +80,13 @@ class Txs {
   /// - `duration`: Locked duration of the atomic swap. For safety reasons, it is recommended
   ///  that the revealer uses a shorter duration than the counterparty, to prevent the
   ///  situation where the revealer reveals the proof too late around the end block.
-  _i7.AtomicSwap createSwap({
-    required _i2.AccountId32 target,
+  _i8.AtomicSwap createSwap({
+    required _i3.AccountId32 target,
     required List<int> hashedProof,
-    required _i8.BalanceSwapAction action,
+    required _i9.BalanceSwapAction action,
     required int duration,
   }) {
-    return _i7.AtomicSwap(_i9.CreateSwap(
+    return _i8.AtomicSwap(_i10.CreateSwap(
       target: target,
       hashedProof: hashedProof,
       action: action,
@@ -100,11 +101,11 @@ class Txs {
   /// - `proof`: Revealed proof of the claim.
   /// - `action`: Action defined in the swap, it must match the entry in blockchain. Otherwise
   ///  the operation fails. This is used for weight calculation.
-  _i7.AtomicSwap claimSwap({
+  _i8.AtomicSwap claimSwap({
     required List<int> proof,
-    required _i8.BalanceSwapAction action,
+    required _i9.BalanceSwapAction action,
   }) {
-    return _i7.AtomicSwap(_i9.ClaimSwap(
+    return _i8.AtomicSwap(_i10.ClaimSwap(
       proof: proof,
       action: action,
     ));
@@ -116,11 +117,11 @@ class Txs {
   ///
   /// - `target`: Target of the original atomic swap.
   /// - `hashed_proof`: Hashed proof of the original atomic swap.
-  _i7.AtomicSwap cancelSwap({
-    required _i2.AccountId32 target,
+  _i8.AtomicSwap cancelSwap({
+    required _i3.AccountId32 target,
     required List<int> hashedProof,
   }) {
-    return _i7.AtomicSwap(_i9.CancelSwap(
+    return _i8.AtomicSwap(_i10.CancelSwap(
       target: target,
       hashedProof: hashedProof,
     ));

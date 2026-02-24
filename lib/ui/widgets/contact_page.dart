@@ -19,6 +19,7 @@ import '../../g1/sign_and_send.dart';
 import '../../main.dart';
 import '../../shared_prefs_helper.dart';
 import '../clipboard_helper.dart';
+import '../dialogs/profile_editor_dialog.dart';
 import '../in_dev_helper.dart';
 import '../ui_helpers.dart';
 import 'balance_widget.dart';
@@ -149,6 +150,15 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
         !(SharedPreferencesHelper().getCurrentAccount().type ==
             AccountType.v1PasswordLess);
     final List<SpeedDialChild> actions = <SpeedDialChild>[
+      // Edit profile action for own account
+      if (me && isV2)
+        SpeedDialChild(
+          child: const Icon(Icons.edit),
+          label: tr('profile.edit_title'),
+          onTap: () {
+            _openProfileEditor(contact);
+          },
+        ),
       if (isContact)
         SpeedDialChild(
           child: const Icon(Symbols.person_edit),
@@ -630,6 +640,25 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
     }
 
     yield* WotInfoFetcher.fetch(widget.contact, appCubit);
+  }
+
+  void _openProfileEditor(Contact contact) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ProfileEditorDialog(
+          currentContact: contact,
+          onSaved: _refreshAfterProfileEdit,
+        );
+      },
+    );
+  }
+
+  void _refreshAfterProfileEdit() {
+    // Refresh the contact data and update the UI
+    setState(() {
+      _refresh();
+    });
   }
 }
 

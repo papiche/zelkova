@@ -1340,6 +1340,99 @@ Future<bool> createOrUpdateProfileV2cPlus(String name) async {
   return false;
 }
 
+/// Extended profile update for V2cPlus with full profile fields
+/// Supports: title, description, city, socials, avatar (base64)
+Future<bool> createOrUpdateProfileV2cPlusExtended({
+  required String title,
+  String? description,
+  String? city,
+  String? avatarBase64,
+  List<Map<String, String>>? socials,
+}) async {
+  final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
+  // Cesium Plus expects V1 pubkey format, so convert from V2 address
+  final String pubKey = v1pubkeyFromAddress(wallet.address);
+
+  // Check if the user exists
+  final String? userName = await getProfileUserName(pubKey);
+
+  // Prepare the user profile data
+  final Map<String, dynamic> userProfile = <String, dynamic>{
+    'version': 2,
+    'issuer': pubKey,
+    'title': title,
+    'time': DateTime.now().millisecondsSinceEpoch ~/
+        1000, // current time in seconds
+  };
+
+  // Add optional fields if provided
+  if (description != null && description.isNotEmpty) {
+    userProfile['description'] = description;
+  }
+
+  if (city != null && city.isNotEmpty) {
+    userProfile['city'] = city;
+  }
+
+  if (socials != null && socials.isNotEmpty) {
+    userProfile['socials'] = socials;
+  }
+
+  // Add avatar if provided (as base64 with mime type)
+  if (avatarBase64 != null && avatarBase64.isNotEmpty) {
+    userProfile['avatar'] = {
+      '_content_type': 'image/png', // Adjust based on actual type if needed
+      '_content': avatarBase64,
+    };
+  }
+
+  hashAndSignV2(userProfile, wallet);
+
+  // Convert the user profile data into a JSON string again, now including hash and signature
+  final String userProfileJsonWithHashAndSignature = jsonEncode(userProfile);
+
+  if (userName != null) {
+    logger('User exists, update the user profile with extended fields');
+    final http.Response updateResponse = (await _requestWithRetry(
+            NodeType.cesiumPlus,
+            '/user/profile/$pubKey/_update?pubkey=$pubKey',
+            false,
+            true,
+            httpType: HttpType.post,
+            headers: _defCPlusHeaders(),
+            body: userProfileJsonWithHashAndSignature))
+        .item2;
+    if (updateResponse.statusCode == 200) {
+      logger('User profile updated successfully.');
+      return true;
+    } else {
+      logger(
+          'Failed to update user profile. Status code: ${updateResponse.statusCode}');
+      logger('Response body: ${updateResponse.body}');
+      return false;
+    }
+  } else if (userName == null) {
+    logger(
+        'User does not exist, create a new user profile with extended fields');
+    final http.Response createResponse = (await _requestWithRetry(
+            NodeType.cesiumPlus, '/user/profile', false, false,
+            httpType: HttpType.post,
+            headers: _defCPlusHeaders(),
+            body: userProfileJsonWithHashAndSignature))
+        .item2;
+
+    if (createResponse.statusCode == 200) {
+      logger('User profile created successfully.');
+      return true;
+    } else {
+      logger(
+          'Failed to create user profile. Status code: ${createResponse.statusCode}');
+      return false;
+    }
+  }
+  return false;
+}
+
 Future<String?> getProfileUserNameV1(String pubKey) async {
   final Contact c =
       await getProfile(pubKey, onlyProfile: true, complete: false);

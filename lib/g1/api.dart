@@ -1380,7 +1380,7 @@ Future<bool> createOrUpdateProfileV2cPlusExtended({
 
   // Add avatar if provided (as base64 with mime type)
   if (avatarBase64 != null && avatarBase64.isNotEmpty) {
-    userProfile['avatar'] = <String, String>{
+    userProfile['avatar'] = {
       '_content_type': 'image/png', // Adjust based on actual type if needed
       '_content': avatarBase64,
     };

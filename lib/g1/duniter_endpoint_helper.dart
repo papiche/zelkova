@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:polkadart/polkadart.dart' hide RuntimeCall;
+import 'package:polkadart/polkadart.dart';
+import 'package:polkadart/provider.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 import 'package:ss58/ss58.dart';
 

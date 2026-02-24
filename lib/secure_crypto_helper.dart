@@ -3,8 +3,8 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:pointycastle/export.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'ui/logger.dart' show loggerDev;
 

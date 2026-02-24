@@ -100,7 +100,7 @@ class _SecureUnlockWidgetState extends State<SecureUnlockWidget> {
     // Attempt biometric auth to enroll
     final bool didAuth = await _localAuth.authenticate(
       localizedReason: 'Authenticate to enable biometrics',
-      options: const AuthenticationOptions(biometricOnly: true),
+      biometricOnly: true,
     );
     if (!didAuth) {
       _showError('biometric_failed');
@@ -120,7 +120,7 @@ class _SecureUnlockWidgetState extends State<SecureUnlockWidget> {
   Future<void> _onBiometricAuth() async {
     final bool didAuth = await _localAuth.authenticate(
       localizedReason: 'Authenticate to unlock',
-      options: const AuthenticationOptions(biometricOnly: true),
+      biometricOnly: true,
     );
     if (!didAuth) {
       _showError('biometric_failed');
@@ -477,7 +477,7 @@ Future<bool> walletV2Auth() async {
     try {
       final bool didAuth = await la.authenticate(
         localizedReason: 'Authenticate to unlock',
-        options: const AuthenticationOptions(biometricOnly: true),
+        biometricOnly: true,
       );
       if (!didAuth) {
         return false;

@@ -5,6 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AvatarPicker extends StatefulWidget {
+  const AvatarPicker({
+    super.key,
+    required this.onSelected,
+    this.existingBase64,
+    this.label,
+    this.avatarRadius = 80,
+  });
+
   /// Callback when avatar is successfully selected and converted to base64
   final void Function(String base64) onSelected;
 
@@ -16,14 +24,6 @@ class AvatarPicker extends StatefulWidget {
 
   /// Optional: size of the avatar circle (default: 80)
   final double avatarRadius;
-
-  const AvatarPicker({
-    super.key,
-    required this.onSelected,
-    this.existingBase64,
-    this.label,
-    this.avatarRadius = 80,
-  });
 
   @override
   State<AvatarPicker> createState() => _AvatarPickerState();
@@ -50,7 +50,9 @@ class _AvatarPickerState extends State<AvatarPicker> {
 
   Future<void> _pickImage() async {
     try {
-      if (_isProcessing) return;
+      if (_isProcessing) {
+        return;
+      }
 
       setState(() => _isProcessing = true);
 
@@ -94,7 +96,9 @@ class _AvatarPickerState extends State<AvatarPicker> {
   }
 
   void _showErrorSnackBar(String message) {
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),

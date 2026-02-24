@@ -6,8 +6,8 @@ import 'package:crypto/crypto.dart' as crypto;
 import 'package:crypto/crypto.dart';
 import 'package:durt/durt.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:pointycastle/export.dart' as pc;
 import 'package:fast_base58/fast_base58.dart';
+import 'package:pointycastle/export.dart' as pc;
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../data/models/contact.dart';

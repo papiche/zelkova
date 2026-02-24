@@ -10,14 +10,14 @@ import '../../ui/logger.dart';
 import '../widgets/avatar_picker.dart';
 
 class ProfileEditorDialog extends StatefulWidget {
-  final Contact currentContact;
-  final VoidCallback onSaved;
 
   const ProfileEditorDialog({
     super.key,
     required this.currentContact,
     required this.onSaved,
   });
+  final Contact currentContact;
+  final VoidCallback onSaved;
 
   @override
   State<ProfileEditorDialog> createState() => _ProfileEditorDialogState();
@@ -108,7 +108,7 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
 
       if (success) {
         // Update local storage
-        final helper = SharedPreferencesHelperV2();
+        final SharedPreferencesHelperV2 helper = SharedPreferencesHelperV2();
         helper.updateProfile(
           name: _titleController.text,
           description: _descriptionController.text.isEmpty
@@ -138,7 +138,7 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
 
   void _addSocial() {
     setState(() {
-      _socials.add({'type': '', 'url': ''});
+      _socials.add(<String, String>{'type': '', 'url': ''});
     });
   }
 
@@ -154,13 +154,13 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
       child: Container(
         constraints: const BoxConstraints(maxWidth: 600, maxHeight: 800),
         child: Column(
-          children: [
+          children: <Widget>[
             // Header
             Padding(
               padding: const EdgeInsets.all(16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                children: <Widget>[
                   Text(
                     'profile.edit_title'.tr(),
                     style: Theme.of(context).textTheme.titleLarge,
@@ -179,14 +179,14 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: <Widget>[
                     // Avatar Picker
                     Center(
                       child: AvatarPicker(
                         existingBase64: widget.currentContact.avatar != null
                             ? base64Encode(widget.currentContact.avatar!)
                             : null,
-                        onSelected: (base64) {
+                        onSelected: (String base64) {
                           setState(() => _selectedAvatarBase64 = base64);
                         },
                       ),
@@ -243,7 +243,7 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
                     // Socials
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                      children: <Widget>[
                         Text('profile.socials'.tr(),
                             style:
                                 const TextStyle(fontWeight: FontWeight.bold)),
@@ -253,15 +253,14 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
                         ),
                       ],
                     ),
-                    ..._socials.asMap().entries.map((entry) {
-                      final index = entry.key;
-                      final social = entry.value;
+                    ..._socials.asMap().entries.map((MapEntry<int, Map<String, String>> entry) {
+                      final int index = entry.key;
+                      final Map<String, String> social = entry.value;
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 8),
                         child: Row(
-                          children: [
+                          children: <Widget>[
                             Expanded(
-                              flex: 1,
                               child: TextFormField(
                                 initialValue: social['type'] ?? '',
                                 decoration: InputDecoration(
@@ -271,7 +270,7 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
                                   ),
                                 ),
                                 enabled: !_isSaving,
-                                onChanged: (value) {
+                                onChanged: (String value) {
                                   _socials[index]['type'] = value;
                                 },
                               ),
@@ -288,7 +287,7 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
                                   ),
                                 ),
                                 enabled: !_isSaving,
-                                onChanged: (value) {
+                                onChanged: (String value) {
                                   _socials[index]['url'] = value;
                                 },
                               ),
@@ -312,7 +311,7 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
               padding: const EdgeInsets.all(16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: [
+                children: <Widget>[
                   TextButton(
                     onPressed: _isSaving ? null : () => Navigator.pop(context),
                     child: Text('common.cancel'.tr()),

@@ -161,8 +161,10 @@ class NodeListHeader extends StatelessWidget {
               Row(
                 children: <Widget>[
                   Text(
-                    tr('nodes_list_title',
-                        args: <String>[capitalize(type.name), '$nodesCount']),
+                    tr('nodes_list_title', namedArgs: <String, String>{
+                      'type': capitalize(type.name),
+                      'count': '$nodesCount'
+                    }),
                     style: const TextStyle(fontSize: 20),
                   ),
                   if (pinnedNodeUrl != null)
@@ -174,9 +176,10 @@ class NodeListHeader extends StatelessWidget {
               ),
               if (lastUpdated != null)
                 Text(
-                  tr('nodes_list_last_updated', args: <String>[
-                    humanizeTime(lastUpdated!, context.locale.toString())
-                  ]),
+                  tr('nodes_list_last_updated', namedArgs: <String, String>{
+                    'time':
+                        humanizeTime(lastUpdated!, context.locale.toString())
+                  }),
                   style: const TextStyle(fontSize: 14, color: Colors.grey),
                 ),
               if (pinnedNodeUrl != null)

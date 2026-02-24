@@ -295,6 +295,28 @@ class SharedPreferencesHelperV2
     }
   }
 
+  void updateProfile({
+    String? name,
+    String? description,
+    String? city,
+    List<Map<String, String>>? socials,
+    bool notify = true,
+  }) {
+    final StoredAccount a = accounts[_currentIndex];
+    final Contact updatedContact = a.contact.copyWith(
+      name: name ?? a.contact.name,
+      description: description ?? a.contact.description,
+      city: city ?? a.contact.city,
+      socials: socials ?? a.contact.socials,
+    );
+    final StoredAccount updatedAccount = a.copyWith(contact: updatedContact);
+    accounts[_currentIndex] = updatedAccount;
+    _saveAccounts();
+    if (notify) {
+      notifyListeners();
+    }
+  }
+
   @override
   void setTheme({required WalletTheme theme}) {
     final StoredAccount a = accounts[_currentIndex];

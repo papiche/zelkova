@@ -40,10 +40,10 @@ class _CardNameEditableState extends State<CardNameEditable> {
   final TextEditingController _controller = TextEditingController();
 
   // Derived from widget.account.contact — never stored separately.
-  String? get _nick => widget.account.contact.nick?.isNotEmpty == true
+  String? get _nick => (widget.account.contact.nick?.isNotEmpty ?? false)
       ? widget.account.contact.nick
       : null;
-  String? get _cPlusName => widget.account.contact.name?.isNotEmpty == true
+  String? get _cPlusName => (widget.account.contact.name?.isNotEmpty ?? false)
       ? widget.account.contact.name
       : null;
 
@@ -201,22 +201,28 @@ class _CardNameEditableState extends State<CardNameEditable> {
     try {
       final bool result = await createOrUpdateProfile(newValue);
       if (!result) {
-        if (!mounted) return;
+        if (!mounted) {
+          return;
+        }
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(tr('card_name_changed_failed'))),
         );
         // Do NOT update local state — keep old value.
       } else {
         // Update SharedPreferences so the parent rebuilds with the new name.
-        SharedPreferencesHelper().setName(name: newValue, notify: true);
-        if (!mounted) return;
+        SharedPreferencesHelper().setName(name: newValue);
+        if (!mounted) {
+          return;
+        }
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(tr('card_name_changed'))),
         );
       }
     } catch (e) {
       loggerDev('CardNameEditable._updateValue error: $e');
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(tr('card_name_changed_failed'))),
       );
@@ -234,9 +240,11 @@ class _CardNameEditableState extends State<CardNameEditable> {
     try {
       final bool result = await deleteProfile();
       if (result) {
-        SharedPreferencesHelper().setName(name: '', notify: true);
+        SharedPreferencesHelper().setName(name: '');
       } else {
-        if (!mounted) return;
+        if (!mounted) {
+          return;
+        }
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(tr('card_name_changed_failed'))),
         );

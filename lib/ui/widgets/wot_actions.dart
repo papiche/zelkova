@@ -226,7 +226,7 @@ Future<SignAndSendResult> _confirmAndSetIdentity(BuildContext context) async {
 
   if (input == null || input.isEmpty) {
     loggerDev('Identity confirmation cancelled by user');
-    return _returnAuthFailed();
+    return _returnCancelled();
   }
 
   try {
@@ -284,7 +284,7 @@ Future<SignAndSendResult> _confirmAndCertify(
   if (confirmed ?? false) {
     return _certifyAndMaybeRequestDistance(wotInfo);
   } else {
-    return _returnAuthFailed();
+    return _returnCancelled();
   }
 }
 
@@ -433,6 +433,15 @@ Future<SignAndSendResult> _returnAuthFailed() {
   ));
 }
 
+/// Returns an empty result when the user cancels a confirmation dialog.
+/// Unlike [_returnAuthFailed], this does not emit any message.
+Future<SignAndSendResult> _returnCancelled() {
+  return Future<SignAndSendResult>.value(SignAndSendResult(
+    progressStream: const Stream<String>.empty(),
+    cancelled: true,
+  ));
+}
+
 String humanizeCanCertOnDay(BuildContext context, ContactWotInfo wotInfo) {
   return humanizeTimeFuture(
         context.locale.languageCode,
@@ -525,7 +534,7 @@ Future<SignAndSendResult> _confirmAndRenewCert(
   );
 
   if (!(confirmed ?? false)) {
-    return _returnAuthFailed();
+    return _returnCancelled();
   }
 
   try {
@@ -570,7 +579,7 @@ Future<SignAndSendResult> _confirmEvaluateDistanceAndRenew(
   );
 
   if (!(confirmed ?? false)) {
-    return _returnAuthFailed();
+    return _returnCancelled();
   }
 
   final int idtyIndex = wotInfo.you.index!;
@@ -680,7 +689,7 @@ Future<SignAndSendResult> _confirmAndRevoke(
   );
 
   if (!(confirmed ?? false)) {
-    return _returnAuthFailed();
+    return _returnCancelled();
   }
 
   try {
@@ -725,14 +734,14 @@ Future<SignAndSendResult> _confirmAndTransferAll(
   );
 
   if (!(confirmed ?? false)) {
-    return _returnAuthFailed();
+    return _returnCancelled();
   }
 
   try {
     final TextEditingController recipientController = TextEditingController();
 
     if (!context.mounted) {
-      return _returnAuthFailed();
+      return _returnCancelled();
     }
     final String? recipientAddress = await showDialog<String>(
       context: context,
@@ -764,7 +773,7 @@ Future<SignAndSendResult> _confirmAndTransferAll(
     );
 
     if (recipientAddress == null || recipientAddress.isEmpty) {
-      return _returnAuthFailed();
+      return _returnCancelled();
     }
 
     return await transferAllWOT(recipientAddress);
@@ -823,11 +832,15 @@ Future<SignAndSendResult> _confirmAndChangeOwnerKey(
             },
           );
         }
-        return _returnAuthFailed();
+        return _returnCancelled();
       }
     }
   } catch (e, st) {
     loggerDev('Error checking owner key cooldown', error: e, stackTrace: st);
+  }
+
+  if (!context.mounted) {
+    return _returnCancelled();
   }
 
   final bool? confirmed = await showDialog<bool>(
@@ -854,21 +867,25 @@ Future<SignAndSendResult> _confirmAndChangeOwnerKey(
     },
   );
 
+  if (!context.mounted) {
+    return _returnCancelled();
+  }
+
   if (!(confirmed ?? false)) {
-    return _returnAuthFailed();
+    return _returnCancelled();
   }
 
   try {
     // Use multi_wallet_selector to select the new owner account
     // Filter to show only password-protected accounts without identity
     if (!context.mounted) {
-      return _returnAuthFailed();
+      return _returnCancelled();
     }
     final StoredAccount? selectedAccount =
         await _selectNewOwnerAccount(context);
 
     if (selectedAccount == null) {
-      return _returnAuthFailed();
+      return _returnCancelled();
     }
 
     final SignAndSendResult res =

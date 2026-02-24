@@ -51,6 +51,7 @@ import 'g1/distance_precompute.dart';
 import 'g1/distance_precompute_provider.dart';
 import 'g1/g1_helper.dart';
 import 'g1/service_manager.dart';
+import 'services/g1_genesis_service.dart';
 import 'shared_prefs_helper.dart';
 import 'ui/biometrics/biometric_auth_service.dart';
 import 'ui/contacts_cache.dart';
@@ -473,6 +474,10 @@ class GinkgoApp extends StatefulWidget {
   static final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey<NavigatorState>(debugLabel: 'main nav');
 
+  // Global RouteObserver to allow pages to react when they regain focus
+  static final RouteObserver<ModalRoute<dynamic>> routeObserver =
+      RouteObserver<ModalRoute<dynamic>>();
+
   final ThemeData darkTheme;
   final ThemeData lightTheme;
 
@@ -481,6 +486,11 @@ class GinkgoApp extends StatefulWidget {
 }
 
 class _GinkgoAppState extends State<GinkgoApp> {
+  /// Timer for periodic G1 production readiness detection (30s intervals).
+  /// Active only when in test mode (V2 not auto-activated).
+  /// Automatically stopped when G1 is detected or app is disposed.
+  Timer? _v2DetectionTimer;
+
   Future<void> _loadNodes() async {
     _printNodeStatus();
     // In the future only load nodes by type
@@ -516,6 +526,114 @@ class _GinkgoAppState extends State<GinkgoApp> {
     }
   }
 
+  /// Monitors G1 (Duniter V2 production) readiness and auto-activates when available.
+  ///
+  /// **Flow:**
+  /// 1. On app startup, checks if G1 genesis hash is available (cache-first)
+  /// 2. If available → immediately activates V2 production mode
+  /// 3. If not available → starts 30-second polling to detect when G1 goes live
+  /// 4. When detected → automatically activates V2, loads production nodes, stops polling
+  /// 5. If G1 disappears → reverts to gtest, resumes polling
+  ///
+  /// **Safety:**
+  /// - Only runs if app is mounted (checks `mounted` flag)
+  /// - Respects manual V2 activation (doesn't override user choice)
+  /// - Fail-safe: Network errors don't crash or affect current state
+  ///
+  /// **Key points:**
+  /// - `v2AutoActivated=true` indicates auto-activation (distinguishes from manual)
+  /// - Settings switch is hidden when auto-activated (no user control needed)
+  /// - Polling stops immediately when G1 is detected (saves resources)
+  ///
+  /// See: [G1GenesisService] for hash validation and caching logic
+  Future<void> _checkG1Genesis() async {
+    final AppCubit appCubit = context.read<AppCubit>();
+
+    // Don't interfere if user manually activated v2 mode
+    if (appCubit.isV2 && !appCubit.isV2AutoActivated) {
+      return;
+    }
+
+    // Check if G1 production is ready
+    final bool ready = await G1GenesisService.initializeAtStartup();
+    if (ready && mounted) {
+      _activateV2Production();
+      return;
+    }
+
+    // Not ready yet → start polling every 30s
+    _v2DetectionTimer = Timer.periodic(const Duration(seconds: 30), (_) async {
+      final bool changed = await G1GenesisService.backgroundCheck();
+      if (!changed || !mounted) {
+        return;
+      }
+
+      final bool nowReady = await G1GenesisService.initializeAtStartup();
+      if (nowReady) {
+        _v2DetectionTimer?.cancel();
+        _activateV2Production();
+      } else if (mounted) {
+        final AppCubit appCubit = context.read<AppCubit>();
+        if (appCubit.isV2AutoActivated) {
+          // Hash disappeared → revert if it was auto-activated
+          _deactivateV2Production();
+        }
+      }
+    });
+  }
+
+  /// Activates V2 production mode when G1 genesis hash is detected.
+  ///
+  /// **Actions performed:**
+  /// 1. Sets `v2AutoActivated=true` to distinguish from manual activation
+  /// 2. Reconfigures storage to use V2 (secure storage)
+  /// 3. Updates service manager for V2 endpoints
+  /// 4. Clears contacts cache (may differ between gtest and production)
+  /// 5. Loads production V2 nodes from remote `g1.json` (not from `.env`)
+  ///
+  /// **After this:**
+  /// - Settings V2 switch is hidden (auto-activated state)
+  /// - App uses production V2 endpoints exclusively
+  /// - Genesis hash is cached for fast startup next time
+  ///
+  /// See: [G1GenesisService.initializeAtStartup] for hash validation
+  void _activateV2Production() {
+    context.read<AppCubit>().autoActivateV2();
+    SharedPreferencesHelper.configure(useV2: true);
+    GetIt.instance<ServiceManager>().updateService(true);
+    ContactsCache().clear();
+    fetchNodesIfNotReady(v2Only: true, isProduction: true);
+    logger('Auto-activated V2 production mode');
+  }
+
+  /// Reverts to gtest (test mode) when G1 genesis hash disappears.
+  ///
+  /// **Triggered when:**
+  /// - Background polling detects hash is no longer available
+  /// - G1 production becomes temporarily unavailable
+  /// - Remote endpoint returns empty/invalid response
+  ///
+  /// **Actions performed:**
+  /// 1. Sets `v2AutoActivated=false` (revert to manual control)
+  /// 2. Reconfigures storage back to V1 (SharedPreferences)
+  /// 3. Updates service manager for gtest endpoints
+  /// 4. Loads gtest V2 nodes from `.env` defaults
+  ///
+  /// **After this:**
+  /// - Settings V2 switch becomes visible again (expert mode)
+  /// - App uses gtest V2 endpoints
+  /// - Genesis hash is cleared from cache
+  /// - Polling resumes to detect when G1 returns
+  ///
+  /// See: [G1GenesisService.backgroundCheck] for state change detection
+  void _deactivateV2Production() {
+    context.read<AppCubit>().deactivateAutoV2();
+    SharedPreferencesHelper.configure(useV2: false);
+    GetIt.instance<ServiceManager>().updateService(false);
+    fetchNodesIfNotReady(v2Only: false);
+    logger('Reverted to gtest mode (G1 hash disappeared)');
+  }
+
   @override
   void initState() {
     super.initState();
@@ -528,6 +646,9 @@ class _GinkgoAppState extends State<GinkgoApp> {
 
     final bool useV2 = context.read<AppCubit>().isV2;
     SharedPreferencesHelper.configure(useV2: useV2);
+
+    // Check if G1 (production V2) is ready
+    _checkG1Genesis();
 
     // Schedule periodic/one-off tasks using Once/Timer.
     initCronTask();
@@ -700,6 +821,7 @@ class _GinkgoAppState extends State<GinkgoApp> {
 
   @override
   void dispose() {
+    _v2DetectionTimer?.cancel();
     ContactsCache().dispose();
     _disposeDeepLinkListener();
     if (!kIsWeb) {
@@ -780,6 +902,9 @@ class _GinkgoAppState extends State<GinkgoApp> {
                     /// Localization is not available for the title.
                     title: 'Ğ1nkgo',
                     navigatorKey: GinkgoApp.navigatorKey,
+                    navigatorObservers: <NavigatorObserver>[
+                      GinkgoApp.routeObserver,
+                    ],
                     scaffoldMessengerKey: globalMessengerKey,
 
                     /// Theme stuff

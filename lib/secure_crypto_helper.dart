@@ -3,8 +3,8 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
-import 'package:encrypt/encrypt.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:pointycastle/export.dart';
 
 import 'ui/logger.dart' show loggerDev;
 
@@ -61,27 +61,27 @@ mixin SecureCryptoHelper {
 
   static Uint8List encrypt(Uint8List data, List<int> salt) {
     try {
-      final Key key = Key(Uint8List.fromList(salt));
-      final IV iv = IV.fromSecureRandom(12); // GCM needs 12 bytes
-      final Encrypter encrypter = Encrypter(AES(key, mode: AESMode.gcm));
+      final Uint8List keyBytes = Uint8List.fromList(salt);
+      final Random random = Random.secure();
+      final Uint8List iv = Uint8List.fromList(
+          List<int>.generate(12, (_) => random.nextInt(256)));
 
-      final Encrypted encrypted = encrypter.encryptBytes(data, iv: iv);
+      final GCMBlockCipher cipher = GCMBlockCipher(AESEngine())
+        ..init(true,
+            AEADParameters(KeyParameter(keyBytes), 128, iv, Uint8List(0)));
 
-      // Combine IV + ciphertext
-      final Uint8List result =
-          Uint8List(iv.bytes.length + encrypted.bytes.length)
-            ..setRange(0, iv.bytes.length, iv.bytes)
-            ..setRange(iv.bytes.length,
-                iv.bytes.length + encrypted.bytes.length, encrypted.bytes);
+      final Uint8List ciphertext = cipher.process(data);
+      final Uint8List result = Uint8List(iv.length + ciphertext.length)
+        ..setRange(0, iv.length, iv)
+        ..setRange(iv.length, iv.length + ciphertext.length, ciphertext);
 
       return result;
     } catch (e) {
-      loggerDev('Encryption error', error: e);
-      throw Exception('Encryption failed');
+      loggerDev('Encryption error: $e');
+      rethrow;
     }
   }
 
-  /// Decrypts a [Uint8List] `encryptedData` that combines IV + ciphertext.
   static Uint8List? decrypt(Uint8List encryptedData, List<int> salt) {
     try {
       const int ivLength = 12; // GCM IV size
@@ -89,13 +89,15 @@ mixin SecureCryptoHelper {
         return null;
       }
 
-      final IV iv = IV(encryptedData.sublist(0, ivLength));
-      final Encrypted encrypted = Encrypted(encryptedData.sublist(ivLength));
+      final Uint8List iv = encryptedData.sublist(0, ivLength);
+      final Uint8List ciphertext = encryptedData.sublist(ivLength);
+      final Uint8List keyBytes = Uint8List.fromList(salt);
 
-      final Key key = Key(Uint8List.fromList(salt));
-      final Encrypter encrypter = Encrypter(AES(key, mode: AESMode.gcm));
+      final GCMBlockCipher cipher = GCMBlockCipher(AESEngine())
+        ..init(false,
+            AEADParameters(KeyParameter(keyBytes), 128, iv, Uint8List(0)));
 
-      return Uint8List.fromList(encrypter.decryptBytes(encrypted, iv: iv));
+      return cipher.process(ciphertext);
     } catch (_) {
       return null;
     }

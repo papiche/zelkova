@@ -1,8 +1,7 @@
 import 'dart:async' as sign_and_send;
 import 'dart:typed_data';
 
-import 'package:polkadart/polkadart.dart';
-import 'package:polkadart/scale_codec.dart';
+import 'package:polkadart/polkadart.dart' hide RuntimeCall;
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 
 import '../data/models/node.dart';
@@ -24,10 +23,12 @@ class SignAndSendResult {
   SignAndSendResult({
     this.node,
     required this.progressStream,
+    this.cancelled = false,
   });
 
   final Node? node;
   final Stream<String> progressStream;
+  final bool cancelled;
 }
 
 Future<SignAndSendResult> signAndSend(Node node, Provider provider,
@@ -71,50 +72,63 @@ Future<SignAndSendResult> signAndSend(Node node, Provider provider,
   // polkadart's internal WebSocket listener after we close subscriptions.
   sign_and_send.runZonedGuarded(() async {
     try {
+      loggerDev('signAndSend: Starting transaction for ${wallet.address}');
       progressController.add(messageTransformer('building_transaction'));
 
+      loggerDev('signAndSend: Getting runtime version');
       final RuntimeVersion runtimeVersion =
           await polkadot.rpc.state.getRuntimeVersion();
+      loggerDev('signAndSend: Getting current block number');
       final int currentBlockNumber = (await polkadot.query.system.number()) - 1;
+      loggerDev('signAndSend: Current block number: $currentBlockNumber');
       final H256 currentBlockHash =
           await polkadot.query.system.blockHash(currentBlockNumber);
+      loggerDev('signAndSend: Getting nonce for ${wallet.address}');
       final int nonce =
           await polkadot.rpc.system.accountNextIndex(wallet.address);
+      loggerDev('signAndSend: Nonce: $nonce');
       final H256 genesisHash = await polkadot.query.system.blockHash(0);
 
       final Uint8List encodedCall = call.encode();
 
-      final Uint8List payload = SigningPayload(
-              method: encodedCall,
-              specVersion: runtimeVersion.specVersion,
-              transactionVersion: runtimeVersion.transactionVersion,
-              genesisHash: encodeHex(genesisHash),
-              blockHash: encodeHex(currentBlockHash),
-              blockNumber: currentBlockNumber,
-              eraPeriod: 64,
-              nonce: nonce,
-              tip: 0)
-          .encode(polkadot.registry);
+      // Get chain info from runtime metadata
+      loggerDev('signAndSend: Getting runtime metadata');
+      final RuntimeMetadataPrefixed metadata =
+          await polkadot.rpc.state.getMetadata();
+      final ChainInfo chainInfo =
+          ChainInfo.fromRuntimeMetadataPrefixed(metadata);
 
-      final Uint8List signature = wallet.sign(payload);
-      final Uint8List extrinsic = ExtrinsicPayload(
-              signer: wallet.bytes(),
-              method: encodedCall,
-              signature: signature,
-              eraPeriod: 64,
-              blockNumber: currentBlockNumber,
-              nonce: nonce,
-              tip: 0)
-          .encode(polkadot.registry, SignatureType.ed25519);
+      // Create chain data for the builder
+      final ChainData chainData = ChainData(
+        specVersion: runtimeVersion.specVersion,
+        transactionVersion: runtimeVersion.transactionVersion,
+        blockHash: Uint8List.fromList(currentBlockHash),
+        blockNumber: currentBlockNumber,
+        nonce: nonce,
+        genesisHash: Uint8List.fromList(genesisHash),
+      );
 
-      final AuthorApi<Provider> author = AuthorApi<Provider>(provider);
+      // Build the extrinsic using ExtrinsicBuilder
+      final ExtrinsicBuilder builder = ExtrinsicBuilder.fromChainData(
+        chainInfo: chainInfo,
+        callData: encodedCall,
+        chainData: chainData,
+      );
 
+      loggerDev('signAndSend: Submitting transaction');
       progressController.add(messageTransformer('submitting_transaction'));
 
-      await author.submitAndWatchExtrinsic(
-        extrinsic,
-        (ExtrinsicStatus status) async {
+      sign_and_send.StreamSubscription<ExtrinsicStatus>? subscription;
+      subscription = await builder
+          .signBuildAndSubmitWatch(
+        provider: provider,
+        signerAddress: wallet.address,
+        signingCallback: (Uint8List payload) => wallet.sign(payload),
+        onStatusChange: (ExtrinsicStatus status) async {
+          loggerDev('signAndSend: Received status: ${status.type}');
           if (progressClosed) {
+            loggerDev(
+                'signAndSend: Progress already closed, skipping status ${status.type}');
             return;
           }
 
@@ -123,13 +137,20 @@ Future<SignAndSendResult> signAndSend(Node node, Provider provider,
 
           if (status.type == 'finalized' || status.type == 'inBlock') {
             final String? blockHash = status.value as String?;
+            loggerDev(
+                'signAndSend: Transaction ${status.type} in block: $blockHash');
             if (blockHash != null) {
+              // We can pass the encoded call here since _checkExtrinsicSuccess
+              // will encode it
               final String? errorKey = await _checkExtrinsicSuccess(
-                  provider, polkadot, blockHash, extrinsic);
+                  provider, polkadot, blockHash, encodedCall);
               if (errorKey != null) {
+                loggerDev(
+                    'signAndSend: Extrinsic failed with error: $errorKey');
                 if (!progressClosed) {
                   progressController.addError(messageTransformer(errorKey));
                 }
+                await subscription?.cancel();
                 await safeCloseProgress();
                 await safeDisconnect();
                 return;
@@ -143,14 +164,22 @@ Future<SignAndSendResult> signAndSend(Node node, Provider provider,
             'invalid',
             'usurped',
           ].contains(status.type)) {
+            loggerDev('signAndSend: Final status reached: ${status.type}');
+            await subscription?.cancel();
             await safeCloseProgress();
             await safeDisconnect();
           }
         },
-      ).timeout(timeout);
+      )
+          .timeout(timeout, onTimeout: () {
+        loggerDev('signAndSend: Timeout waiting for transaction confirmation');
+        throw sign_and_send.TimeoutException(
+            'Transaction confirmation timeout', timeout);
+      });
     } catch (e, stacktrace) {
       final String errorMessage = messageTransformer('error');
-      loggerDev(errorMessage, error: e, stackTrace: stacktrace);
+      loggerDev('signAndSend: Error occurred',
+          error: e, stackTrace: stacktrace);
       if (!progressClosed) {
         progressController.addError(errorMessage);
       }

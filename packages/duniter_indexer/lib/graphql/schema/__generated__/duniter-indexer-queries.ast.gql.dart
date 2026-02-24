@@ -176,15 +176,11 @@ const SmithFields = _i1.FragmentDefinitionNode(
       alias: null,
       arguments: [
         _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'first'),
-          value: _i1.IntValueNode(value: '10'),
-        ),
-        _i1.ArgumentNode(
           name: _i1.NameNode(value: 'orderBy'),
           value: _i1.ListValueNode(values: [
             _i1.EnumValueNode(name: _i1.NameNode(value: 'CREATED_ON_DESC'))
           ]),
-        ),
+        )
       ],
       directives: [],
       selectionSet: _i1.SelectionSetNode(selections: [
@@ -214,15 +210,11 @@ const SmithFields = _i1.FragmentDefinitionNode(
       alias: null,
       arguments: [
         _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'first'),
-          value: _i1.IntValueNode(value: '10'),
-        ),
-        _i1.ArgumentNode(
           name: _i1.NameNode(value: 'orderBy'),
           value: _i1.ListValueNode(values: [
             _i1.EnumValueNode(name: _i1.NameNode(value: 'CREATED_ON_DESC'))
           ]),
-        ),
+        )
       ],
       directives: [],
       selectionSet: _i1.SelectionSetNode(selections: [
@@ -413,10 +405,6 @@ const IdentityFields = _i1.FragmentDefinitionNode(
       alias: null,
       arguments: [
         _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'first'),
-          value: _i1.IntValueNode(value: '20'),
-        ),
-        _i1.ArgumentNode(
           name: _i1.NameNode(value: 'orderBy'),
           value: _i1.ListValueNode(values: [
             _i1.EnumValueNode(name: _i1.NameNode(value: 'UPDATED_ON_DESC'))
@@ -464,10 +452,6 @@ const IdentityFields = _i1.FragmentDefinitionNode(
       name: _i1.NameNode(value: 'certReceived'),
       alias: null,
       arguments: [
-        _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'first'),
-          value: _i1.IntValueNode(value: '20'),
-        ),
         _i1.ArgumentNode(
           name: _i1.NameNode(value: 'orderBy'),
           value: _i1.ListValueNode(values: [

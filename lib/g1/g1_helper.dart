@@ -6,9 +6,8 @@ import 'package:crypto/crypto.dart' as crypto;
 import 'package:crypto/crypto.dart';
 import 'package:durt/durt.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:encrypt/encrypt.dart' as encrypt;
-import 'package:encrypt/encrypt.dart';
 import 'package:fast_base58/fast_base58.dart';
+import 'package:pointycastle/export.dart' as pc;
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../data/models/contact.dart';
@@ -284,31 +283,46 @@ PaymentState? parseScannedUri(String qrOrig) {
   return null;
 }
 
-// https://github.com/leocavalcante/encrypt/issues/314#issuecomment-1729499372
-// final IV _iv = encrypt.IV.fromLength(16);
-final IV _iv = IV(Uint8List(16));
-
 Map<String, String> encryptJsonForExport(String jsonString, String password) {
   final Uint8List plainText = Uint8List.fromList(utf8.encode(jsonString));
-  final encrypt.Encrypted encrypted = encrypt.Encrypter(
-          encrypt.AES(encrypt.Key.fromUtf8(password.padRight(32))))
-      .encryptBytes(plainText, iv: _iv);
-  final Map<String, String> jsonData = <String, String>{
-    'key': base64Encode(encrypted.bytes)
-  };
-  return jsonData;
+  final Uint8List keyBytes =
+      Uint8List.fromList(utf8.encode(password.padRight(32)));
+
+  final pc.PaddedBlockCipher cipher = pc.PaddedBlockCipherImpl(
+    pc.PKCS7Padding(),
+    pc.SICBlockCipher(16, pc.SICStreamCipher(pc.AESEngine())),
+  )..init(
+      true,
+      pc.PaddedBlockCipherParameters(
+        pc.ParametersWithIV(pc.KeyParameter(keyBytes), Uint8List(16)),
+        null,
+      ),
+    );
+
+  final Uint8List encrypted = cipher.process(plainText);
+  return <String, String>{'key': base64Encode(encrypted)};
 }
 
 Map<String, dynamic> decryptJsonForImport(String keyEncrypted, String password,
     [bool debug = false]) {
-  // This fails if encrypt > 5.0.1
-  // https://github.com/leocavalcante/encrypt/issues/314
   try {
-    final Key key = encrypt.Key.fromUtf8(password.padRight(32));
-    final AES aes = encrypt.AES(key);
-    final String decrypted =
-        encrypt.Encrypter(aes).decrypt64(keyEncrypted, iv: _iv);
-    return jsonDecode(decrypted) as Map<String, dynamic>;
+    final Uint8List cipherText = base64Decode(keyEncrypted);
+    final Uint8List keyBytes =
+        Uint8List.fromList(utf8.encode(password.padRight(32)));
+
+    final pc.PaddedBlockCipher cipher = pc.PaddedBlockCipherImpl(
+      pc.PKCS7Padding(),
+      pc.SICBlockCipher(16, pc.SICStreamCipher(pc.AESEngine())),
+    )..init(
+        false,
+        pc.PaddedBlockCipherParameters(
+          pc.ParametersWithIV(pc.KeyParameter(keyBytes), Uint8List(16)),
+          null,
+        ),
+      );
+
+    final Uint8List decrypted = cipher.process(cipherText);
+    return jsonDecode(utf8.decode(decrypted)) as Map<String, dynamic>;
   } catch (e, stacktrace) {
     if (debug) {
       logger('Decrypt error: $e');
@@ -420,26 +434,23 @@ List<Transaction> lastTx(List<Transaction> origTxs) {
 }
 
 Uint8List encryptAes(Uint8List data, Uint8List key) {
-  final encrypt.Encrypter encrypter = encrypt.Encrypter(encrypt.AES(
-    encrypt.Key(key),
-    mode: encrypt.AESMode.ecb,
-    padding: null,
-  ));
-  final encrypt.Encrypted encrypted =
-      encrypter.encryptBytes(data, iv: encrypt.IV(Uint8List(16)));
-  return Uint8List.fromList(encrypted.bytes);
+  final pc.ECBBlockCipher cipher = pc.ECBBlockCipher(pc.AESEngine())
+    ..init(true, pc.KeyParameter(key));
+  final Uint8List out = Uint8List(data.length);
+  for (int i = 0; i < data.length; i += cipher.blockSize) {
+    cipher.processBlock(data, i, out, i);
+  }
+  return out;
 }
 
 Uint8List decryptAes(Uint8List encryptedData, Uint8List key) {
-  final encrypt.Encrypter encrypter = encrypt.Encrypter(encrypt.AES(
-    encrypt.Key(key),
-    mode: encrypt.AESMode.ecb,
-    padding: null,
-  ));
-  final List<int> decrypted = encrypter.decryptBytes(
-      encrypt.Encrypted(encryptedData),
-      iv: encrypt.IV(Uint8List(16)));
-  return Uint8List.fromList(decrypted);
+  final pc.ECBBlockCipher cipher = pc.ECBBlockCipher(pc.AESEngine())
+    ..init(false, pc.KeyParameter(key));
+  final Uint8List out = Uint8List(encryptedData.length);
+  for (int i = 0; i < encryptedData.length; i += cipher.blockSize) {
+    cipher.processBlock(encryptedData, i, out, i);
+  }
+  return out;
 }
 
 // Based on duniter-vue

@@ -302,7 +302,7 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
 
   String get titleWithoutAddressOrPubKey => name != null && nick != null
       ? name != nick && name!.toLowerCase() != nick!.toLowerCase()
-          ? (name!.isNotEmpty ? '$name! ($nick!)' : nick!)
+          ? (name!.isNotEmpty ? '$name ($nick)' : nick!)
           : name!
       : nick ?? name ?? '';
 

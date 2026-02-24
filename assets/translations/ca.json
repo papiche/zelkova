@@ -282,5 +282,7 @@
   "pdf_generated": "PDF generat",
   "analyze": "Analitza",
   "select_date_range": "Trieu un rang de dates",
-  "dates": "Dates"
+   "dates": "Dates",
+   "nodes_list_title": "{type} Nodes ({count})",
+   "nodes_list_last_updated": "Última actualització: {time}"
 }

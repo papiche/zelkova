@@ -16,12 +16,12 @@ Gcursor_ordering _$gcursorOrderingValueOf(String name) {
     case 'DESC':
       return _$gcursorOrderingDESC;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<Gcursor_ordering> _$gcursorOrderingValues =
-    new BuiltSet<Gcursor_ordering>(const <Gcursor_ordering>[
+    BuiltSet<Gcursor_ordering>(const <Gcursor_ordering>[
   _$gcursorOrderingASC,
   _$gcursorOrderingDESC,
 ]);
@@ -51,12 +51,12 @@ Gorder_by _$gorderByValueOf(String name) {
     case 'desc_nulls_last':
       return _$gorderBydesc_nulls_last;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<Gorder_by> _$gorderByValues =
-    new BuiltSet<Gorder_by>(const <Gorder_by>[
+    BuiltSet<Gorder_by>(const <Gorder_by>[
   _$gorderByasc,
   _$gorderByasc_nulls_first,
   _$gorderByasc_nulls_last,
@@ -109,12 +109,12 @@ Gprofiles_select_column _$gprofilesSelectColumnValueOf(String name) {
     case 'title':
       return _$gprofilesSelectColumntitle;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<Gprofiles_select_column> _$gprofilesSelectColumnValues =
-    new BuiltSet<Gprofiles_select_column>(const <Gprofiles_select_column>[
+    BuiltSet<Gprofiles_select_column>(const <Gprofiles_select_column>[
   _$gprofilesSelectColumnavatar,
   _$gprofilesSelectColumncity,
   _$gprofilesSelectColumndata_cid,
@@ -147,12 +147,12 @@ Guser_fs_select_column _$guserFsSelectColumnValueOf(String name) {
     case 'time':
       return _$guserFsSelectColumntime;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
 final BuiltSet<Guser_fs_select_column> _$guserFsSelectColumnValues =
-    new BuiltSet<Guser_fs_select_column>(const <Guser_fs_select_column>[
+    BuiltSet<Guser_fs_select_column>(const <Guser_fs_select_column>[
   _$guserFsSelectColumndata_cid,
   _$guserFsSelectColumnindex_request_cid,
   _$guserFsSelectColumnpubkey,
@@ -160,45 +160,43 @@ final BuiltSet<Guser_fs_select_column> _$guserFsSelectColumnValues =
 ]);
 
 Serializer<Gcursor_ordering> _$gcursorOrderingSerializer =
-    new _$Gcursor_orderingSerializer();
-Serializer<GGeolocInput> _$gGeolocInputSerializer =
-    new _$GGeolocInputSerializer();
+    _$Gcursor_orderingSerializer();
+Serializer<GGeolocInput> _$gGeolocInputSerializer = _$GGeolocInputSerializer();
 Serializer<Gjsonb_cast_exp> _$gjsonbCastExpSerializer =
-    new _$Gjsonb_cast_expSerializer();
+    _$Gjsonb_cast_expSerializer();
 Serializer<Gjsonb_comparison_exp> _$gjsonbComparisonExpSerializer =
-    new _$Gjsonb_comparison_expSerializer();
-Serializer<Gorder_by> _$gorderBySerializer = new _$Gorder_bySerializer();
+    _$Gjsonb_comparison_expSerializer();
+Serializer<Gorder_by> _$gorderBySerializer = _$Gorder_bySerializer();
 Serializer<Gpoint_comparison_exp> _$gpointComparisonExpSerializer =
-    new _$Gpoint_comparison_expSerializer();
+    _$Gpoint_comparison_expSerializer();
 Serializer<Gprofiles_bool_exp> _$gprofilesBoolExpSerializer =
-    new _$Gprofiles_bool_expSerializer();
+    _$Gprofiles_bool_expSerializer();
 Serializer<Gprofiles_order_by> _$gprofilesOrderBySerializer =
-    new _$Gprofiles_order_bySerializer();
+    _$Gprofiles_order_bySerializer();
 Serializer<Gprofiles_select_column> _$gprofilesSelectColumnSerializer =
-    new _$Gprofiles_select_columnSerializer();
+    _$Gprofiles_select_columnSerializer();
 Serializer<Gprofiles_stream_cursor_input>
     _$gprofilesStreamCursorInputSerializer =
-    new _$Gprofiles_stream_cursor_inputSerializer();
+    _$Gprofiles_stream_cursor_inputSerializer();
 Serializer<Gprofiles_stream_cursor_value_input>
     _$gprofilesStreamCursorValueInputSerializer =
-    new _$Gprofiles_stream_cursor_value_inputSerializer();
-Serializer<GSocialInput> _$gSocialInputSerializer =
-    new _$GSocialInputSerializer();
+    _$Gprofiles_stream_cursor_value_inputSerializer();
+Serializer<GSocialInput> _$gSocialInputSerializer = _$GSocialInputSerializer();
 Serializer<GString_comparison_exp> _$gStringComparisonExpSerializer =
-    new _$GString_comparison_expSerializer();
+    _$GString_comparison_expSerializer();
 Serializer<Gtimestamp_comparison_exp> _$gtimestampComparisonExpSerializer =
-    new _$Gtimestamp_comparison_expSerializer();
+    _$Gtimestamp_comparison_expSerializer();
 Serializer<Guser_fs_bool_exp> _$guserFsBoolExpSerializer =
-    new _$Guser_fs_bool_expSerializer();
+    _$Guser_fs_bool_expSerializer();
 Serializer<Guser_fs_order_by> _$guserFsOrderBySerializer =
-    new _$Guser_fs_order_bySerializer();
+    _$Guser_fs_order_bySerializer();
 Serializer<Guser_fs_select_column> _$guserFsSelectColumnSerializer =
-    new _$Guser_fs_select_columnSerializer();
+    _$Guser_fs_select_columnSerializer();
 Serializer<Guser_fs_stream_cursor_input> _$guserFsStreamCursorInputSerializer =
-    new _$Guser_fs_stream_cursor_inputSerializer();
+    _$Guser_fs_stream_cursor_inputSerializer();
 Serializer<Guser_fs_stream_cursor_value_input>
     _$guserFsStreamCursorValueInputSerializer =
-    new _$Guser_fs_stream_cursor_value_inputSerializer();
+    _$Guser_fs_stream_cursor_value_inputSerializer();
 
 class _$Gcursor_orderingSerializer
     implements PrimitiveSerializer<Gcursor_ordering> {
@@ -243,7 +241,7 @@ class _$GGeolocInputSerializer implements StructuredSerializer<GGeolocInput> {
   GGeolocInput deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GGeolocInputBuilder();
+    final result = GGeolocInputBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -292,7 +290,7 @@ class _$Gjsonb_cast_expSerializer
   Gjsonb_cast_exp deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new Gjsonb_cast_expBuilder();
+    final result = Gjsonb_cast_expBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -444,7 +442,7 @@ class _$Gjsonb_comparison_expSerializer
   Gjsonb_comparison_exp deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new Gjsonb_comparison_expBuilder();
+    final result = Gjsonb_comparison_expBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -633,7 +631,7 @@ class _$Gpoint_comparison_expSerializer
   Gpoint_comparison_exp deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new Gpoint_comparison_expBuilder();
+    final result = Gpoint_comparison_expBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -801,7 +799,7 @@ class _$Gprofiles_bool_expSerializer
   Gprofiles_bool_exp deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new Gprofiles_bool_expBuilder();
+    final result = Gprofiles_bool_expBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -973,7 +971,7 @@ class _$Gprofiles_order_bySerializer
   Gprofiles_order_by deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new Gprofiles_order_byBuilder();
+    final result = Gprofiles_order_byBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -1081,7 +1079,7 @@ class _$Gprofiles_stream_cursor_inputSerializer
   Gprofiles_stream_cursor_input deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new Gprofiles_stream_cursor_inputBuilder();
+    final result = Gprofiles_stream_cursor_inputBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -1200,7 +1198,7 @@ class _$Gprofiles_stream_cursor_value_inputSerializer
   Gprofiles_stream_cursor_value_input deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new Gprofiles_stream_cursor_value_inputBuilder();
+    final result = Gprofiles_stream_cursor_value_inputBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -1283,7 +1281,7 @@ class _$GSocialInputSerializer implements StructuredSerializer<GSocialInput> {
   GSocialInput deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GSocialInputBuilder();
+    final result = GSocialInputBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -1464,7 +1462,7 @@ class _$GString_comparison_expSerializer
   GString_comparison_exp deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GString_comparison_expBuilder();
+    final result = GString_comparison_expBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -1647,7 +1645,7 @@ class _$Gtimestamp_comparison_expSerializer
   Gtimestamp_comparison_exp deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new Gtimestamp_comparison_expBuilder();
+    final result = Gtimestamp_comparison_expBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -1772,7 +1770,7 @@ class _$Guser_fs_bool_expSerializer
   Guser_fs_bool_exp deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new Guser_fs_bool_expBuilder();
+    final result = Guser_fs_bool_expBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -1871,7 +1869,7 @@ class _$Guser_fs_order_bySerializer
   Guser_fs_order_by deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new Guser_fs_order_byBuilder();
+    final result = Guser_fs_order_byBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -1954,7 +1952,7 @@ class _$Guser_fs_stream_cursor_inputSerializer
   Guser_fs_stream_cursor_input deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new Guser_fs_stream_cursor_inputBuilder();
+    final result = Guser_fs_stream_cursor_inputBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -2031,7 +2029,7 @@ class _$Guser_fs_stream_cursor_value_inputSerializer
   Guser_fs_stream_cursor_value_input deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new Guser_fs_stream_cursor_value_inputBuilder();
+    final result = Guser_fs_stream_cursor_value_inputBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -2069,22 +2067,16 @@ class _$GGeolocInput extends GGeolocInput {
   final double longitude;
 
   factory _$GGeolocInput([void Function(GGeolocInputBuilder)? updates]) =>
-      (new GGeolocInputBuilder()..update(updates))._build();
+      (GGeolocInputBuilder()..update(updates))._build();
 
   _$GGeolocInput._({required this.latitude, required this.longitude})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        latitude, r'GGeolocInput', 'latitude');
-    BuiltValueNullFieldError.checkNotNull(
-        longitude, r'GGeolocInput', 'longitude');
-  }
-
+      : super._();
   @override
   GGeolocInput rebuild(void Function(GGeolocInputBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GGeolocInputBuilder toBuilder() => new GGeolocInputBuilder()..replace(this);
+  GGeolocInputBuilder toBuilder() => GGeolocInputBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -2138,7 +2130,6 @@ class GGeolocInputBuilder
 
   @override
   void replace(GGeolocInput other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GGeolocInput;
   }
 
@@ -2152,11 +2143,12 @@ class GGeolocInputBuilder
 
   _$GGeolocInput _build() {
     final _$result = _$v ??
-        new _$GGeolocInput._(
-            latitude: BuiltValueNullFieldError.checkNotNull(
-                latitude, r'GGeolocInput', 'latitude'),
-            longitude: BuiltValueNullFieldError.checkNotNull(
-                longitude, r'GGeolocInput', 'longitude'));
+        _$GGeolocInput._(
+          latitude: BuiltValueNullFieldError.checkNotNull(
+              latitude, r'GGeolocInput', 'latitude'),
+          longitude: BuiltValueNullFieldError.checkNotNull(
+              longitude, r'GGeolocInput', 'longitude'),
+        );
     replace(_$result);
     return _$result;
   }
@@ -2167,17 +2159,15 @@ class _$Gjsonb_cast_exp extends Gjsonb_cast_exp {
   final GString_comparison_exp? GString;
 
   factory _$Gjsonb_cast_exp([void Function(Gjsonb_cast_expBuilder)? updates]) =>
-      (new Gjsonb_cast_expBuilder()..update(updates))._build();
+      (Gjsonb_cast_expBuilder()..update(updates))._build();
 
   _$Gjsonb_cast_exp._({this.GString}) : super._();
-
   @override
   Gjsonb_cast_exp rebuild(void Function(Gjsonb_cast_expBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  Gjsonb_cast_expBuilder toBuilder() =>
-      new Gjsonb_cast_expBuilder()..replace(this);
+  Gjsonb_cast_expBuilder toBuilder() => Gjsonb_cast_expBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -2207,7 +2197,7 @@ class Gjsonb_cast_expBuilder
 
   GString_comparison_expBuilder? _GString;
   GString_comparison_expBuilder get GString =>
-      _$this._GString ??= new GString_comparison_expBuilder();
+      _$this._GString ??= GString_comparison_expBuilder();
   set GString(GString_comparison_expBuilder? GString) =>
       _$this._GString = GString;
 
@@ -2224,7 +2214,6 @@ class Gjsonb_cast_expBuilder
 
   @override
   void replace(Gjsonb_cast_exp other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Gjsonb_cast_exp;
   }
 
@@ -2239,14 +2228,17 @@ class Gjsonb_cast_expBuilder
   _$Gjsonb_cast_exp _build() {
     _$Gjsonb_cast_exp _$result;
     try {
-      _$result = _$v ?? new _$Gjsonb_cast_exp._(GString: _GString?.build());
+      _$result = _$v ??
+          _$Gjsonb_cast_exp._(
+            GString: _GString?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'GString';
         _GString?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'Gjsonb_cast_exp', _$failedField, e.toString());
       }
       rethrow;
@@ -2290,7 +2282,7 @@ class _$Gjsonb_comparison_exp extends Gjsonb_comparison_exp {
 
   factory _$Gjsonb_comparison_exp(
           [void Function(Gjsonb_comparison_expBuilder)? updates]) =>
-      (new Gjsonb_comparison_expBuilder()..update(updates))._build();
+      (Gjsonb_comparison_expBuilder()..update(updates))._build();
 
   _$Gjsonb_comparison_exp._(
       {this.G_cast,
@@ -2309,7 +2301,6 @@ class _$Gjsonb_comparison_exp extends Gjsonb_comparison_exp {
       this.G_neq,
       this.G_nin})
       : super._();
-
   @override
   Gjsonb_comparison_exp rebuild(
           void Function(Gjsonb_comparison_expBuilder) updates) =>
@@ -2317,7 +2308,7 @@ class _$Gjsonb_comparison_exp extends Gjsonb_comparison_exp {
 
   @override
   Gjsonb_comparison_expBuilder toBuilder() =>
-      new Gjsonb_comparison_expBuilder()..replace(this);
+      Gjsonb_comparison_expBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -2390,7 +2381,7 @@ class Gjsonb_comparison_expBuilder
 
   Gjsonb_cast_expBuilder? _G_cast;
   Gjsonb_cast_expBuilder get G_cast =>
-      _$this._G_cast ??= new Gjsonb_cast_expBuilder();
+      _$this._G_cast ??= Gjsonb_cast_expBuilder();
   set G_cast(Gjsonb_cast_expBuilder? G_cast) => _$this._G_cast = G_cast;
 
   _i2.JsonObject? _G_contained_in;
@@ -2420,19 +2411,19 @@ class Gjsonb_comparison_expBuilder
 
   ListBuilder<String>? _G_has_keys_all;
   ListBuilder<String> get G_has_keys_all =>
-      _$this._G_has_keys_all ??= new ListBuilder<String>();
+      _$this._G_has_keys_all ??= ListBuilder<String>();
   set G_has_keys_all(ListBuilder<String>? G_has_keys_all) =>
       _$this._G_has_keys_all = G_has_keys_all;
 
   ListBuilder<String>? _G_has_keys_any;
   ListBuilder<String> get G_has_keys_any =>
-      _$this._G_has_keys_any ??= new ListBuilder<String>();
+      _$this._G_has_keys_any ??= ListBuilder<String>();
   set G_has_keys_any(ListBuilder<String>? G_has_keys_any) =>
       _$this._G_has_keys_any = G_has_keys_any;
 
   ListBuilder<_i2.JsonObject>? _G_in;
   ListBuilder<_i2.JsonObject> get G_in =>
-      _$this._G_in ??= new ListBuilder<_i2.JsonObject>();
+      _$this._G_in ??= ListBuilder<_i2.JsonObject>();
   set G_in(ListBuilder<_i2.JsonObject>? G_in) => _$this._G_in = G_in;
 
   bool? _G_is_null;
@@ -2453,7 +2444,7 @@ class Gjsonb_comparison_expBuilder
 
   ListBuilder<_i2.JsonObject>? _G_nin;
   ListBuilder<_i2.JsonObject> get G_nin =>
-      _$this._G_nin ??= new ListBuilder<_i2.JsonObject>();
+      _$this._G_nin ??= ListBuilder<_i2.JsonObject>();
   set G_nin(ListBuilder<_i2.JsonObject>? G_nin) => _$this._G_nin = G_nin;
 
   Gjsonb_comparison_expBuilder();
@@ -2483,7 +2474,6 @@ class Gjsonb_comparison_expBuilder
 
   @override
   void replace(Gjsonb_comparison_exp other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Gjsonb_comparison_exp;
   }
 
@@ -2499,22 +2489,23 @@ class Gjsonb_comparison_expBuilder
     _$Gjsonb_comparison_exp _$result;
     try {
       _$result = _$v ??
-          new _$Gjsonb_comparison_exp._(
-              G_cast: _G_cast?.build(),
-              G_contained_in: G_contained_in,
-              G_contains: G_contains,
-              G_eq: G_eq,
-              G_gt: G_gt,
-              G_gte: G_gte,
-              G_has_key: G_has_key,
-              G_has_keys_all: _G_has_keys_all?.build(),
-              G_has_keys_any: _G_has_keys_any?.build(),
-              G_in: _G_in?.build(),
-              G_is_null: G_is_null,
-              G_lt: G_lt,
-              G_lte: G_lte,
-              G_neq: G_neq,
-              G_nin: _G_nin?.build());
+          _$Gjsonb_comparison_exp._(
+            G_cast: _G_cast?.build(),
+            G_contained_in: G_contained_in,
+            G_contains: G_contains,
+            G_eq: G_eq,
+            G_gt: G_gt,
+            G_gte: G_gte,
+            G_has_key: G_has_key,
+            G_has_keys_all: _G_has_keys_all?.build(),
+            G_has_keys_any: _G_has_keys_any?.build(),
+            G_in: _G_in?.build(),
+            G_is_null: G_is_null,
+            G_lt: G_lt,
+            G_lte: G_lte,
+            G_neq: G_neq,
+            G_nin: _G_nin?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -2531,7 +2522,7 @@ class Gjsonb_comparison_expBuilder
         _$failedField = 'G_nin';
         _G_nin?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'Gjsonb_comparison_exp', _$failedField, e.toString());
       }
       rethrow;
@@ -2546,18 +2537,15 @@ class _$Gpoint extends Gpoint {
   final String value;
 
   factory _$Gpoint([void Function(GpointBuilder)? updates]) =>
-      (new GpointBuilder()..update(updates))._build();
+      (GpointBuilder()..update(updates))._build();
 
-  _$Gpoint._({required this.value}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(value, r'Gpoint', 'value');
-  }
-
+  _$Gpoint._({required this.value}) : super._();
   @override
   Gpoint rebuild(void Function(GpointBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GpointBuilder toBuilder() => new GpointBuilder()..replace(this);
+  GpointBuilder toBuilder() => GpointBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -2600,7 +2588,6 @@ class GpointBuilder implements Builder<Gpoint, GpointBuilder> {
 
   @override
   void replace(Gpoint other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Gpoint;
   }
 
@@ -2614,9 +2601,10 @@ class GpointBuilder implements Builder<Gpoint, GpointBuilder> {
 
   _$Gpoint _build() {
     final _$result = _$v ??
-        new _$Gpoint._(
-            value: BuiltValueNullFieldError.checkNotNull(
-                value, r'Gpoint', 'value'));
+        _$Gpoint._(
+          value:
+              BuiltValueNullFieldError.checkNotNull(value, r'Gpoint', 'value'),
+        );
     replace(_$result);
     return _$result;
   }
@@ -2644,7 +2632,7 @@ class _$Gpoint_comparison_exp extends Gpoint_comparison_exp {
 
   factory _$Gpoint_comparison_exp(
           [void Function(Gpoint_comparison_expBuilder)? updates]) =>
-      (new Gpoint_comparison_expBuilder()..update(updates))._build();
+      (Gpoint_comparison_expBuilder()..update(updates))._build();
 
   _$Gpoint_comparison_exp._(
       {this.G_eq,
@@ -2657,7 +2645,6 @@ class _$Gpoint_comparison_exp extends Gpoint_comparison_exp {
       this.G_neq,
       this.G_nin})
       : super._();
-
   @override
   Gpoint_comparison_exp rebuild(
           void Function(Gpoint_comparison_expBuilder) updates) =>
@@ -2665,7 +2652,7 @@ class _$Gpoint_comparison_exp extends Gpoint_comparison_exp {
 
   @override
   Gpoint_comparison_expBuilder toBuilder() =>
-      new Gpoint_comparison_expBuilder()..replace(this);
+      Gpoint_comparison_expBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -2719,19 +2706,19 @@ class Gpoint_comparison_expBuilder
   _$Gpoint_comparison_exp? _$v;
 
   GpointBuilder? _G_eq;
-  GpointBuilder get G_eq => _$this._G_eq ??= new GpointBuilder();
+  GpointBuilder get G_eq => _$this._G_eq ??= GpointBuilder();
   set G_eq(GpointBuilder? G_eq) => _$this._G_eq = G_eq;
 
   GpointBuilder? _G_gt;
-  GpointBuilder get G_gt => _$this._G_gt ??= new GpointBuilder();
+  GpointBuilder get G_gt => _$this._G_gt ??= GpointBuilder();
   set G_gt(GpointBuilder? G_gt) => _$this._G_gt = G_gt;
 
   GpointBuilder? _G_gte;
-  GpointBuilder get G_gte => _$this._G_gte ??= new GpointBuilder();
+  GpointBuilder get G_gte => _$this._G_gte ??= GpointBuilder();
   set G_gte(GpointBuilder? G_gte) => _$this._G_gte = G_gte;
 
   ListBuilder<Gpoint>? _G_in;
-  ListBuilder<Gpoint> get G_in => _$this._G_in ??= new ListBuilder<Gpoint>();
+  ListBuilder<Gpoint> get G_in => _$this._G_in ??= ListBuilder<Gpoint>();
   set G_in(ListBuilder<Gpoint>? G_in) => _$this._G_in = G_in;
 
   bool? _G_is_null;
@@ -2739,19 +2726,19 @@ class Gpoint_comparison_expBuilder
   set G_is_null(bool? G_is_null) => _$this._G_is_null = G_is_null;
 
   GpointBuilder? _G_lt;
-  GpointBuilder get G_lt => _$this._G_lt ??= new GpointBuilder();
+  GpointBuilder get G_lt => _$this._G_lt ??= GpointBuilder();
   set G_lt(GpointBuilder? G_lt) => _$this._G_lt = G_lt;
 
   GpointBuilder? _G_lte;
-  GpointBuilder get G_lte => _$this._G_lte ??= new GpointBuilder();
+  GpointBuilder get G_lte => _$this._G_lte ??= GpointBuilder();
   set G_lte(GpointBuilder? G_lte) => _$this._G_lte = G_lte;
 
   GpointBuilder? _G_neq;
-  GpointBuilder get G_neq => _$this._G_neq ??= new GpointBuilder();
+  GpointBuilder get G_neq => _$this._G_neq ??= GpointBuilder();
   set G_neq(GpointBuilder? G_neq) => _$this._G_neq = G_neq;
 
   ListBuilder<Gpoint>? _G_nin;
-  ListBuilder<Gpoint> get G_nin => _$this._G_nin ??= new ListBuilder<Gpoint>();
+  ListBuilder<Gpoint> get G_nin => _$this._G_nin ??= ListBuilder<Gpoint>();
   set G_nin(ListBuilder<Gpoint>? G_nin) => _$this._G_nin = G_nin;
 
   Gpoint_comparison_expBuilder();
@@ -2775,7 +2762,6 @@ class Gpoint_comparison_expBuilder
 
   @override
   void replace(Gpoint_comparison_exp other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Gpoint_comparison_exp;
   }
 
@@ -2791,16 +2777,17 @@ class Gpoint_comparison_expBuilder
     _$Gpoint_comparison_exp _$result;
     try {
       _$result = _$v ??
-          new _$Gpoint_comparison_exp._(
-              G_eq: _G_eq?.build(),
-              G_gt: _G_gt?.build(),
-              G_gte: _G_gte?.build(),
-              G_in: _G_in?.build(),
-              G_is_null: G_is_null,
-              G_lt: _G_lt?.build(),
-              G_lte: _G_lte?.build(),
-              G_neq: _G_neq?.build(),
-              G_nin: _G_nin?.build());
+          _$Gpoint_comparison_exp._(
+            G_eq: _G_eq?.build(),
+            G_gt: _G_gt?.build(),
+            G_gte: _G_gte?.build(),
+            G_in: _G_in?.build(),
+            G_is_null: G_is_null,
+            G_lt: _G_lt?.build(),
+            G_lte: _G_lte?.build(),
+            G_neq: _G_neq?.build(),
+            G_nin: _G_nin?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -2822,7 +2809,7 @@ class Gpoint_comparison_expBuilder
         _$failedField = 'G_nin';
         _G_nin?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'Gpoint_comparison_exp', _$failedField, e.toString());
       }
       rethrow;
@@ -2862,7 +2849,7 @@ class _$Gprofiles_bool_exp extends Gprofiles_bool_exp {
 
   factory _$Gprofiles_bool_exp(
           [void Function(Gprofiles_bool_expBuilder)? updates]) =>
-      (new Gprofiles_bool_expBuilder()..update(updates))._build();
+      (Gprofiles_bool_expBuilder()..update(updates))._build();
 
   _$Gprofiles_bool_exp._(
       {this.G_and,
@@ -2879,7 +2866,6 @@ class _$Gprofiles_bool_exp extends Gprofiles_bool_exp {
       this.time,
       this.title})
       : super._();
-
   @override
   Gprofiles_bool_exp rebuild(
           void Function(Gprofiles_bool_expBuilder) updates) =>
@@ -2887,7 +2873,7 @@ class _$Gprofiles_bool_exp extends Gprofiles_bool_exp {
 
   @override
   Gprofiles_bool_expBuilder toBuilder() =>
-      new Gprofiles_bool_expBuilder()..replace(this);
+      Gprofiles_bool_expBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -2954,71 +2940,71 @@ class Gprofiles_bool_expBuilder
 
   ListBuilder<Gprofiles_bool_exp>? _G_and;
   ListBuilder<Gprofiles_bool_exp> get G_and =>
-      _$this._G_and ??= new ListBuilder<Gprofiles_bool_exp>();
+      _$this._G_and ??= ListBuilder<Gprofiles_bool_exp>();
   set G_and(ListBuilder<Gprofiles_bool_exp>? G_and) => _$this._G_and = G_and;
 
   Gprofiles_bool_expBuilder? _G_not;
   Gprofiles_bool_expBuilder get G_not =>
-      _$this._G_not ??= new Gprofiles_bool_expBuilder();
+      _$this._G_not ??= Gprofiles_bool_expBuilder();
   set G_not(Gprofiles_bool_expBuilder? G_not) => _$this._G_not = G_not;
 
   ListBuilder<Gprofiles_bool_exp>? _G_or;
   ListBuilder<Gprofiles_bool_exp> get G_or =>
-      _$this._G_or ??= new ListBuilder<Gprofiles_bool_exp>();
+      _$this._G_or ??= ListBuilder<Gprofiles_bool_exp>();
   set G_or(ListBuilder<Gprofiles_bool_exp>? G_or) => _$this._G_or = G_or;
 
   GString_comparison_expBuilder? _avatar;
   GString_comparison_expBuilder get avatar =>
-      _$this._avatar ??= new GString_comparison_expBuilder();
+      _$this._avatar ??= GString_comparison_expBuilder();
   set avatar(GString_comparison_expBuilder? avatar) => _$this._avatar = avatar;
 
   GString_comparison_expBuilder? _city;
   GString_comparison_expBuilder get city =>
-      _$this._city ??= new GString_comparison_expBuilder();
+      _$this._city ??= GString_comparison_expBuilder();
   set city(GString_comparison_expBuilder? city) => _$this._city = city;
 
   GString_comparison_expBuilder? _data_cid;
   GString_comparison_expBuilder get data_cid =>
-      _$this._data_cid ??= new GString_comparison_expBuilder();
+      _$this._data_cid ??= GString_comparison_expBuilder();
   set data_cid(GString_comparison_expBuilder? data_cid) =>
       _$this._data_cid = data_cid;
 
   GString_comparison_expBuilder? _description;
   GString_comparison_expBuilder get description =>
-      _$this._description ??= new GString_comparison_expBuilder();
+      _$this._description ??= GString_comparison_expBuilder();
   set description(GString_comparison_expBuilder? description) =>
       _$this._description = description;
 
   Gpoint_comparison_expBuilder? _geoloc;
   Gpoint_comparison_expBuilder get geoloc =>
-      _$this._geoloc ??= new Gpoint_comparison_expBuilder();
+      _$this._geoloc ??= Gpoint_comparison_expBuilder();
   set geoloc(Gpoint_comparison_expBuilder? geoloc) => _$this._geoloc = geoloc;
 
   GString_comparison_expBuilder? _index_request_cid;
   GString_comparison_expBuilder get index_request_cid =>
-      _$this._index_request_cid ??= new GString_comparison_expBuilder();
+      _$this._index_request_cid ??= GString_comparison_expBuilder();
   set index_request_cid(GString_comparison_expBuilder? index_request_cid) =>
       _$this._index_request_cid = index_request_cid;
 
   GString_comparison_expBuilder? _pubkey;
   GString_comparison_expBuilder get pubkey =>
-      _$this._pubkey ??= new GString_comparison_expBuilder();
+      _$this._pubkey ??= GString_comparison_expBuilder();
   set pubkey(GString_comparison_expBuilder? pubkey) => _$this._pubkey = pubkey;
 
   Gjsonb_comparison_expBuilder? _socials;
   Gjsonb_comparison_expBuilder get socials =>
-      _$this._socials ??= new Gjsonb_comparison_expBuilder();
+      _$this._socials ??= Gjsonb_comparison_expBuilder();
   set socials(Gjsonb_comparison_expBuilder? socials) =>
       _$this._socials = socials;
 
   Gtimestamp_comparison_expBuilder? _time;
   Gtimestamp_comparison_expBuilder get time =>
-      _$this._time ??= new Gtimestamp_comparison_expBuilder();
+      _$this._time ??= Gtimestamp_comparison_expBuilder();
   set time(Gtimestamp_comparison_expBuilder? time) => _$this._time = time;
 
   GString_comparison_expBuilder? _title;
   GString_comparison_expBuilder get title =>
-      _$this._title ??= new GString_comparison_expBuilder();
+      _$this._title ??= GString_comparison_expBuilder();
   set title(GString_comparison_expBuilder? title) => _$this._title = title;
 
   Gprofiles_bool_expBuilder();
@@ -3046,7 +3032,6 @@ class Gprofiles_bool_expBuilder
 
   @override
   void replace(Gprofiles_bool_exp other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Gprofiles_bool_exp;
   }
 
@@ -3062,20 +3047,21 @@ class Gprofiles_bool_expBuilder
     _$Gprofiles_bool_exp _$result;
     try {
       _$result = _$v ??
-          new _$Gprofiles_bool_exp._(
-              G_and: _G_and?.build(),
-              G_not: _G_not?.build(),
-              G_or: _G_or?.build(),
-              avatar: _avatar?.build(),
-              city: _city?.build(),
-              data_cid: _data_cid?.build(),
-              description: _description?.build(),
-              geoloc: _geoloc?.build(),
-              index_request_cid: _index_request_cid?.build(),
-              pubkey: _pubkey?.build(),
-              socials: _socials?.build(),
-              time: _time?.build(),
-              title: _title?.build());
+          _$Gprofiles_bool_exp._(
+            G_and: _G_and?.build(),
+            G_not: _G_not?.build(),
+            G_or: _G_or?.build(),
+            avatar: _avatar?.build(),
+            city: _city?.build(),
+            data_cid: _data_cid?.build(),
+            description: _description?.build(),
+            geoloc: _geoloc?.build(),
+            index_request_cid: _index_request_cid?.build(),
+            pubkey: _pubkey?.build(),
+            socials: _socials?.build(),
+            time: _time?.build(),
+            title: _title?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -3106,7 +3092,7 @@ class Gprofiles_bool_expBuilder
         _$failedField = 'title';
         _title?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'Gprofiles_bool_exp', _$failedField, e.toString());
       }
       rethrow;
@@ -3140,7 +3126,7 @@ class _$Gprofiles_order_by extends Gprofiles_order_by {
 
   factory _$Gprofiles_order_by(
           [void Function(Gprofiles_order_byBuilder)? updates]) =>
-      (new Gprofiles_order_byBuilder()..update(updates))._build();
+      (Gprofiles_order_byBuilder()..update(updates))._build();
 
   _$Gprofiles_order_by._(
       {this.avatar,
@@ -3154,7 +3140,6 @@ class _$Gprofiles_order_by extends Gprofiles_order_by {
       this.time,
       this.title})
       : super._();
-
   @override
   Gprofiles_order_by rebuild(
           void Function(Gprofiles_order_byBuilder) updates) =>
@@ -3162,7 +3147,7 @@ class _$Gprofiles_order_by extends Gprofiles_order_by {
 
   @override
   Gprofiles_order_byBuilder toBuilder() =>
-      new Gprofiles_order_byBuilder()..replace(this);
+      Gprofiles_order_byBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -3281,7 +3266,6 @@ class Gprofiles_order_byBuilder
 
   @override
   void replace(Gprofiles_order_by other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Gprofiles_order_by;
   }
 
@@ -3295,17 +3279,18 @@ class Gprofiles_order_byBuilder
 
   _$Gprofiles_order_by _build() {
     final _$result = _$v ??
-        new _$Gprofiles_order_by._(
-            avatar: avatar,
-            city: city,
-            data_cid: data_cid,
-            description: description,
-            geoloc: geoloc,
-            index_request_cid: index_request_cid,
-            pubkey: pubkey,
-            socials: socials,
-            time: time,
-            title: title);
+        _$Gprofiles_order_by._(
+          avatar: avatar,
+          city: city,
+          data_cid: data_cid,
+          description: description,
+          geoloc: geoloc,
+          index_request_cid: index_request_cid,
+          pubkey: pubkey,
+          socials: socials,
+          time: time,
+          title: title,
+        );
     replace(_$result);
     return _$result;
   }
@@ -3319,15 +3304,11 @@ class _$Gprofiles_stream_cursor_input extends Gprofiles_stream_cursor_input {
 
   factory _$Gprofiles_stream_cursor_input(
           [void Function(Gprofiles_stream_cursor_inputBuilder)? updates]) =>
-      (new Gprofiles_stream_cursor_inputBuilder()..update(updates))._build();
+      (Gprofiles_stream_cursor_inputBuilder()..update(updates))._build();
 
   _$Gprofiles_stream_cursor_input._(
       {required this.initial_value, this.ordering})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        initial_value, r'Gprofiles_stream_cursor_input', 'initial_value');
-  }
-
+      : super._();
   @override
   Gprofiles_stream_cursor_input rebuild(
           void Function(Gprofiles_stream_cursor_inputBuilder) updates) =>
@@ -3335,7 +3316,7 @@ class _$Gprofiles_stream_cursor_input extends Gprofiles_stream_cursor_input {
 
   @override
   Gprofiles_stream_cursor_inputBuilder toBuilder() =>
-      new Gprofiles_stream_cursor_inputBuilder()..replace(this);
+      Gprofiles_stream_cursor_inputBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -3371,8 +3352,7 @@ class Gprofiles_stream_cursor_inputBuilder
 
   Gprofiles_stream_cursor_value_inputBuilder? _initial_value;
   Gprofiles_stream_cursor_value_inputBuilder get initial_value =>
-      _$this._initial_value ??=
-          new Gprofiles_stream_cursor_value_inputBuilder();
+      _$this._initial_value ??= Gprofiles_stream_cursor_value_inputBuilder();
   set initial_value(
           Gprofiles_stream_cursor_value_inputBuilder? initial_value) =>
       _$this._initial_value = initial_value;
@@ -3395,7 +3375,6 @@ class Gprofiles_stream_cursor_inputBuilder
 
   @override
   void replace(Gprofiles_stream_cursor_input other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Gprofiles_stream_cursor_input;
   }
 
@@ -3411,15 +3390,17 @@ class Gprofiles_stream_cursor_inputBuilder
     _$Gprofiles_stream_cursor_input _$result;
     try {
       _$result = _$v ??
-          new _$Gprofiles_stream_cursor_input._(
-              initial_value: initial_value.build(), ordering: ordering);
+          _$Gprofiles_stream_cursor_input._(
+            initial_value: initial_value.build(),
+            ordering: ordering,
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'initial_value';
         initial_value.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'Gprofiles_stream_cursor_input', _$failedField, e.toString());
       }
       rethrow;
@@ -3455,8 +3436,7 @@ class _$Gprofiles_stream_cursor_value_input
   factory _$Gprofiles_stream_cursor_value_input(
           [void Function(Gprofiles_stream_cursor_value_inputBuilder)?
               updates]) =>
-      (new Gprofiles_stream_cursor_value_inputBuilder()..update(updates))
-          ._build();
+      (Gprofiles_stream_cursor_value_inputBuilder()..update(updates))._build();
 
   _$Gprofiles_stream_cursor_value_input._(
       {this.avatar,
@@ -3470,7 +3450,6 @@ class _$Gprofiles_stream_cursor_value_input
       this.time,
       this.title})
       : super._();
-
   @override
   Gprofiles_stream_cursor_value_input rebuild(
           void Function(Gprofiles_stream_cursor_value_inputBuilder) updates) =>
@@ -3478,7 +3457,7 @@ class _$Gprofiles_stream_cursor_value_input
 
   @override
   Gprofiles_stream_cursor_value_inputBuilder toBuilder() =>
-      new Gprofiles_stream_cursor_value_inputBuilder()..replace(this);
+      Gprofiles_stream_cursor_value_inputBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -3553,7 +3532,7 @@ class Gprofiles_stream_cursor_value_inputBuilder
   set description(String? description) => _$this._description = description;
 
   GpointBuilder? _geoloc;
-  GpointBuilder get geoloc => _$this._geoloc ??= new GpointBuilder();
+  GpointBuilder get geoloc => _$this._geoloc ??= GpointBuilder();
   set geoloc(GpointBuilder? geoloc) => _$this._geoloc = geoloc;
 
   String? _index_request_cid;
@@ -3570,7 +3549,7 @@ class Gprofiles_stream_cursor_value_inputBuilder
   set socials(_i2.JsonObject? socials) => _$this._socials = socials;
 
   GtimestampBuilder? _time;
-  GtimestampBuilder get time => _$this._time ??= new GtimestampBuilder();
+  GtimestampBuilder get time => _$this._time ??= GtimestampBuilder();
   set time(GtimestampBuilder? time) => _$this._time = time;
 
   String? _title;
@@ -3599,7 +3578,6 @@ class Gprofiles_stream_cursor_value_inputBuilder
 
   @override
   void replace(Gprofiles_stream_cursor_value_input other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Gprofiles_stream_cursor_value_input;
   }
 
@@ -3616,17 +3594,18 @@ class Gprofiles_stream_cursor_value_inputBuilder
     _$Gprofiles_stream_cursor_value_input _$result;
     try {
       _$result = _$v ??
-          new _$Gprofiles_stream_cursor_value_input._(
-              avatar: avatar,
-              city: city,
-              data_cid: data_cid,
-              description: description,
-              geoloc: _geoloc?.build(),
-              index_request_cid: index_request_cid,
-              pubkey: pubkey,
-              socials: socials,
-              time: _time?.build(),
-              title: title);
+          _$Gprofiles_stream_cursor_value_input._(
+            avatar: avatar,
+            city: city,
+            data_cid: data_cid,
+            description: description,
+            geoloc: _geoloc?.build(),
+            index_request_cid: index_request_cid,
+            pubkey: pubkey,
+            socials: socials,
+            time: _time?.build(),
+            title: title,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -3636,10 +3615,8 @@ class Gprofiles_stream_cursor_value_inputBuilder
         _$failedField = 'time';
         _time?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            r'Gprofiles_stream_cursor_value_input',
-            _$failedField,
-            e.toString());
+        throw BuiltValueNestedFieldError(r'Gprofiles_stream_cursor_value_input',
+            _$failedField, e.toString());
       }
       rethrow;
     }
@@ -3655,18 +3632,15 @@ class _$GSocialInput extends GSocialInput {
   final String url;
 
   factory _$GSocialInput([void Function(GSocialInputBuilder)? updates]) =>
-      (new GSocialInputBuilder()..update(updates))._build();
+      (GSocialInputBuilder()..update(updates))._build();
 
-  _$GSocialInput._({this.type, required this.url}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(url, r'GSocialInput', 'url');
-  }
-
+  _$GSocialInput._({this.type, required this.url}) : super._();
   @override
   GSocialInput rebuild(void Function(GSocialInputBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GSocialInputBuilder toBuilder() => new GSocialInputBuilder()..replace(this);
+  GSocialInputBuilder toBuilder() => GSocialInputBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -3718,7 +3692,6 @@ class GSocialInputBuilder
 
   @override
   void replace(GSocialInput other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GSocialInput;
   }
 
@@ -3732,10 +3705,11 @@ class GSocialInputBuilder
 
   _$GSocialInput _build() {
     final _$result = _$v ??
-        new _$GSocialInput._(
-            type: type,
-            url: BuiltValueNullFieldError.checkNotNull(
-                url, r'GSocialInput', 'url'));
+        _$GSocialInput._(
+          type: type,
+          url: BuiltValueNullFieldError.checkNotNull(
+              url, r'GSocialInput', 'url'),
+        );
     replace(_$result);
     return _$result;
   }
@@ -3783,7 +3757,7 @@ class _$GString_comparison_exp extends GString_comparison_exp {
 
   factory _$GString_comparison_exp(
           [void Function(GString_comparison_expBuilder)? updates]) =>
-      (new GString_comparison_expBuilder()..update(updates))._build();
+      (GString_comparison_expBuilder()..update(updates))._build();
 
   _$GString_comparison_exp._(
       {this.G_eq,
@@ -3806,7 +3780,6 @@ class _$GString_comparison_exp extends GString_comparison_exp {
       this.G_regex,
       this.G_similar})
       : super._();
-
   @override
   GString_comparison_exp rebuild(
           void Function(GString_comparison_expBuilder) updates) =>
@@ -3814,7 +3787,7 @@ class _$GString_comparison_exp extends GString_comparison_exp {
 
   @override
   GString_comparison_expBuilder toBuilder() =>
-      new GString_comparison_expBuilder()..replace(this);
+      GString_comparison_expBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -3914,7 +3887,7 @@ class GString_comparison_expBuilder
   set G_ilike(String? G_ilike) => _$this._G_ilike = G_ilike;
 
   ListBuilder<String>? _G_in;
-  ListBuilder<String> get G_in => _$this._G_in ??= new ListBuilder<String>();
+  ListBuilder<String> get G_in => _$this._G_in ??= ListBuilder<String>();
   set G_in(ListBuilder<String>? G_in) => _$this._G_in = G_in;
 
   String? _G_iregex;
@@ -3946,7 +3919,7 @@ class GString_comparison_expBuilder
   set G_nilike(String? G_nilike) => _$this._G_nilike = G_nilike;
 
   ListBuilder<String>? _G_nin;
-  ListBuilder<String> get G_nin => _$this._G_nin ??= new ListBuilder<String>();
+  ListBuilder<String> get G_nin => _$this._G_nin ??= ListBuilder<String>();
   set G_nin(ListBuilder<String>? G_nin) => _$this._G_nin = G_nin;
 
   String? _G_niregex;
@@ -4004,7 +3977,6 @@ class GString_comparison_expBuilder
 
   @override
   void replace(GString_comparison_exp other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GString_comparison_exp;
   }
 
@@ -4020,26 +3992,27 @@ class GString_comparison_expBuilder
     _$GString_comparison_exp _$result;
     try {
       _$result = _$v ??
-          new _$GString_comparison_exp._(
-              G_eq: G_eq,
-              G_gt: G_gt,
-              G_gte: G_gte,
-              G_ilike: G_ilike,
-              G_in: _G_in?.build(),
-              G_iregex: G_iregex,
-              G_is_null: G_is_null,
-              G_like: G_like,
-              G_lt: G_lt,
-              G_lte: G_lte,
-              G_neq: G_neq,
-              G_nilike: G_nilike,
-              G_nin: _G_nin?.build(),
-              G_niregex: G_niregex,
-              G_nlike: G_nlike,
-              G_nregex: G_nregex,
-              G_nsimilar: G_nsimilar,
-              G_regex: G_regex,
-              G_similar: G_similar);
+          _$GString_comparison_exp._(
+            G_eq: G_eq,
+            G_gt: G_gt,
+            G_gte: G_gte,
+            G_ilike: G_ilike,
+            G_in: _G_in?.build(),
+            G_iregex: G_iregex,
+            G_is_null: G_is_null,
+            G_like: G_like,
+            G_lt: G_lt,
+            G_lte: G_lte,
+            G_neq: G_neq,
+            G_nilike: G_nilike,
+            G_nin: _G_nin?.build(),
+            G_niregex: G_niregex,
+            G_nlike: G_nlike,
+            G_nregex: G_nregex,
+            G_nsimilar: G_nsimilar,
+            G_regex: G_regex,
+            G_similar: G_similar,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -4049,7 +4022,7 @@ class GString_comparison_expBuilder
         _$failedField = 'G_nin';
         _G_nin?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GString_comparison_exp', _$failedField, e.toString());
       }
       rethrow;
@@ -4064,18 +4037,15 @@ class _$Gtimestamp extends Gtimestamp {
   final String value;
 
   factory _$Gtimestamp([void Function(GtimestampBuilder)? updates]) =>
-      (new GtimestampBuilder()..update(updates))._build();
+      (GtimestampBuilder()..update(updates))._build();
 
-  _$Gtimestamp._({required this.value}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(value, r'Gtimestamp', 'value');
-  }
-
+  _$Gtimestamp._({required this.value}) : super._();
   @override
   Gtimestamp rebuild(void Function(GtimestampBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  GtimestampBuilder toBuilder() => new GtimestampBuilder()..replace(this);
+  GtimestampBuilder toBuilder() => GtimestampBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -4118,7 +4088,6 @@ class GtimestampBuilder implements Builder<Gtimestamp, GtimestampBuilder> {
 
   @override
   void replace(Gtimestamp other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Gtimestamp;
   }
 
@@ -4132,9 +4101,10 @@ class GtimestampBuilder implements Builder<Gtimestamp, GtimestampBuilder> {
 
   _$Gtimestamp _build() {
     final _$result = _$v ??
-        new _$Gtimestamp._(
-            value: BuiltValueNullFieldError.checkNotNull(
-                value, r'Gtimestamp', 'value'));
+        _$Gtimestamp._(
+          value: BuiltValueNullFieldError.checkNotNull(
+              value, r'Gtimestamp', 'value'),
+        );
     replace(_$result);
     return _$result;
   }
@@ -4162,7 +4132,7 @@ class _$Gtimestamp_comparison_exp extends Gtimestamp_comparison_exp {
 
   factory _$Gtimestamp_comparison_exp(
           [void Function(Gtimestamp_comparison_expBuilder)? updates]) =>
-      (new Gtimestamp_comparison_expBuilder()..update(updates))._build();
+      (Gtimestamp_comparison_expBuilder()..update(updates))._build();
 
   _$Gtimestamp_comparison_exp._(
       {this.G_eq,
@@ -4175,7 +4145,6 @@ class _$Gtimestamp_comparison_exp extends Gtimestamp_comparison_exp {
       this.G_neq,
       this.G_nin})
       : super._();
-
   @override
   Gtimestamp_comparison_exp rebuild(
           void Function(Gtimestamp_comparison_expBuilder) updates) =>
@@ -4183,7 +4152,7 @@ class _$Gtimestamp_comparison_exp extends Gtimestamp_comparison_exp {
 
   @override
   Gtimestamp_comparison_expBuilder toBuilder() =>
-      new Gtimestamp_comparison_expBuilder()..replace(this);
+      Gtimestamp_comparison_expBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -4238,20 +4207,20 @@ class Gtimestamp_comparison_expBuilder
   _$Gtimestamp_comparison_exp? _$v;
 
   GtimestampBuilder? _G_eq;
-  GtimestampBuilder get G_eq => _$this._G_eq ??= new GtimestampBuilder();
+  GtimestampBuilder get G_eq => _$this._G_eq ??= GtimestampBuilder();
   set G_eq(GtimestampBuilder? G_eq) => _$this._G_eq = G_eq;
 
   GtimestampBuilder? _G_gt;
-  GtimestampBuilder get G_gt => _$this._G_gt ??= new GtimestampBuilder();
+  GtimestampBuilder get G_gt => _$this._G_gt ??= GtimestampBuilder();
   set G_gt(GtimestampBuilder? G_gt) => _$this._G_gt = G_gt;
 
   GtimestampBuilder? _G_gte;
-  GtimestampBuilder get G_gte => _$this._G_gte ??= new GtimestampBuilder();
+  GtimestampBuilder get G_gte => _$this._G_gte ??= GtimestampBuilder();
   set G_gte(GtimestampBuilder? G_gte) => _$this._G_gte = G_gte;
 
   ListBuilder<Gtimestamp>? _G_in;
   ListBuilder<Gtimestamp> get G_in =>
-      _$this._G_in ??= new ListBuilder<Gtimestamp>();
+      _$this._G_in ??= ListBuilder<Gtimestamp>();
   set G_in(ListBuilder<Gtimestamp>? G_in) => _$this._G_in = G_in;
 
   bool? _G_is_null;
@@ -4259,20 +4228,20 @@ class Gtimestamp_comparison_expBuilder
   set G_is_null(bool? G_is_null) => _$this._G_is_null = G_is_null;
 
   GtimestampBuilder? _G_lt;
-  GtimestampBuilder get G_lt => _$this._G_lt ??= new GtimestampBuilder();
+  GtimestampBuilder get G_lt => _$this._G_lt ??= GtimestampBuilder();
   set G_lt(GtimestampBuilder? G_lt) => _$this._G_lt = G_lt;
 
   GtimestampBuilder? _G_lte;
-  GtimestampBuilder get G_lte => _$this._G_lte ??= new GtimestampBuilder();
+  GtimestampBuilder get G_lte => _$this._G_lte ??= GtimestampBuilder();
   set G_lte(GtimestampBuilder? G_lte) => _$this._G_lte = G_lte;
 
   GtimestampBuilder? _G_neq;
-  GtimestampBuilder get G_neq => _$this._G_neq ??= new GtimestampBuilder();
+  GtimestampBuilder get G_neq => _$this._G_neq ??= GtimestampBuilder();
   set G_neq(GtimestampBuilder? G_neq) => _$this._G_neq = G_neq;
 
   ListBuilder<Gtimestamp>? _G_nin;
   ListBuilder<Gtimestamp> get G_nin =>
-      _$this._G_nin ??= new ListBuilder<Gtimestamp>();
+      _$this._G_nin ??= ListBuilder<Gtimestamp>();
   set G_nin(ListBuilder<Gtimestamp>? G_nin) => _$this._G_nin = G_nin;
 
   Gtimestamp_comparison_expBuilder();
@@ -4296,7 +4265,6 @@ class Gtimestamp_comparison_expBuilder
 
   @override
   void replace(Gtimestamp_comparison_exp other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Gtimestamp_comparison_exp;
   }
 
@@ -4312,16 +4280,17 @@ class Gtimestamp_comparison_expBuilder
     _$Gtimestamp_comparison_exp _$result;
     try {
       _$result = _$v ??
-          new _$Gtimestamp_comparison_exp._(
-              G_eq: _G_eq?.build(),
-              G_gt: _G_gt?.build(),
-              G_gte: _G_gte?.build(),
-              G_in: _G_in?.build(),
-              G_is_null: G_is_null,
-              G_lt: _G_lt?.build(),
-              G_lte: _G_lte?.build(),
-              G_neq: _G_neq?.build(),
-              G_nin: _G_nin?.build());
+          _$Gtimestamp_comparison_exp._(
+            G_eq: _G_eq?.build(),
+            G_gt: _G_gt?.build(),
+            G_gte: _G_gte?.build(),
+            G_in: _G_in?.build(),
+            G_is_null: G_is_null,
+            G_lt: _G_lt?.build(),
+            G_lte: _G_lte?.build(),
+            G_neq: _G_neq?.build(),
+            G_nin: _G_nin?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -4343,7 +4312,7 @@ class Gtimestamp_comparison_expBuilder
         _$failedField = 'G_nin';
         _G_nin?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'Gtimestamp_comparison_exp', _$failedField, e.toString());
       }
       rethrow;
@@ -4371,7 +4340,7 @@ class _$Guser_fs_bool_exp extends Guser_fs_bool_exp {
 
   factory _$Guser_fs_bool_exp(
           [void Function(Guser_fs_bool_expBuilder)? updates]) =>
-      (new Guser_fs_bool_expBuilder()..update(updates))._build();
+      (Guser_fs_bool_expBuilder()..update(updates))._build();
 
   _$Guser_fs_bool_exp._(
       {this.G_and,
@@ -4382,14 +4351,13 @@ class _$Guser_fs_bool_exp extends Guser_fs_bool_exp {
       this.pubkey,
       this.time})
       : super._();
-
   @override
   Guser_fs_bool_exp rebuild(void Function(Guser_fs_bool_expBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
   Guser_fs_bool_expBuilder toBuilder() =>
-      new Guser_fs_bool_expBuilder()..replace(this);
+      Guser_fs_bool_expBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -4438,39 +4406,39 @@ class Guser_fs_bool_expBuilder
 
   ListBuilder<Guser_fs_bool_exp>? _G_and;
   ListBuilder<Guser_fs_bool_exp> get G_and =>
-      _$this._G_and ??= new ListBuilder<Guser_fs_bool_exp>();
+      _$this._G_and ??= ListBuilder<Guser_fs_bool_exp>();
   set G_and(ListBuilder<Guser_fs_bool_exp>? G_and) => _$this._G_and = G_and;
 
   Guser_fs_bool_expBuilder? _G_not;
   Guser_fs_bool_expBuilder get G_not =>
-      _$this._G_not ??= new Guser_fs_bool_expBuilder();
+      _$this._G_not ??= Guser_fs_bool_expBuilder();
   set G_not(Guser_fs_bool_expBuilder? G_not) => _$this._G_not = G_not;
 
   ListBuilder<Guser_fs_bool_exp>? _G_or;
   ListBuilder<Guser_fs_bool_exp> get G_or =>
-      _$this._G_or ??= new ListBuilder<Guser_fs_bool_exp>();
+      _$this._G_or ??= ListBuilder<Guser_fs_bool_exp>();
   set G_or(ListBuilder<Guser_fs_bool_exp>? G_or) => _$this._G_or = G_or;
 
   GString_comparison_expBuilder? _data_cid;
   GString_comparison_expBuilder get data_cid =>
-      _$this._data_cid ??= new GString_comparison_expBuilder();
+      _$this._data_cid ??= GString_comparison_expBuilder();
   set data_cid(GString_comparison_expBuilder? data_cid) =>
       _$this._data_cid = data_cid;
 
   GString_comparison_expBuilder? _index_request_cid;
   GString_comparison_expBuilder get index_request_cid =>
-      _$this._index_request_cid ??= new GString_comparison_expBuilder();
+      _$this._index_request_cid ??= GString_comparison_expBuilder();
   set index_request_cid(GString_comparison_expBuilder? index_request_cid) =>
       _$this._index_request_cid = index_request_cid;
 
   GString_comparison_expBuilder? _pubkey;
   GString_comparison_expBuilder get pubkey =>
-      _$this._pubkey ??= new GString_comparison_expBuilder();
+      _$this._pubkey ??= GString_comparison_expBuilder();
   set pubkey(GString_comparison_expBuilder? pubkey) => _$this._pubkey = pubkey;
 
   Gtimestamp_comparison_expBuilder? _time;
   Gtimestamp_comparison_expBuilder get time =>
-      _$this._time ??= new Gtimestamp_comparison_expBuilder();
+      _$this._time ??= Gtimestamp_comparison_expBuilder();
   set time(Gtimestamp_comparison_expBuilder? time) => _$this._time = time;
 
   Guser_fs_bool_expBuilder();
@@ -4492,7 +4460,6 @@ class Guser_fs_bool_expBuilder
 
   @override
   void replace(Guser_fs_bool_exp other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Guser_fs_bool_exp;
   }
 
@@ -4508,14 +4475,15 @@ class Guser_fs_bool_expBuilder
     _$Guser_fs_bool_exp _$result;
     try {
       _$result = _$v ??
-          new _$Guser_fs_bool_exp._(
-              G_and: _G_and?.build(),
-              G_not: _G_not?.build(),
-              G_or: _G_or?.build(),
-              data_cid: _data_cid?.build(),
-              index_request_cid: _index_request_cid?.build(),
-              pubkey: _pubkey?.build(),
-              time: _time?.build());
+          _$Guser_fs_bool_exp._(
+            G_and: _G_and?.build(),
+            G_not: _G_not?.build(),
+            G_or: _G_or?.build(),
+            data_cid: _data_cid?.build(),
+            index_request_cid: _index_request_cid?.build(),
+            pubkey: _pubkey?.build(),
+            time: _time?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -4534,7 +4502,7 @@ class Guser_fs_bool_expBuilder
         _$failedField = 'time';
         _time?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'Guser_fs_bool_exp', _$failedField, e.toString());
       }
       rethrow;
@@ -4556,19 +4524,18 @@ class _$Guser_fs_order_by extends Guser_fs_order_by {
 
   factory _$Guser_fs_order_by(
           [void Function(Guser_fs_order_byBuilder)? updates]) =>
-      (new Guser_fs_order_byBuilder()..update(updates))._build();
+      (Guser_fs_order_byBuilder()..update(updates))._build();
 
   _$Guser_fs_order_by._(
       {this.data_cid, this.index_request_cid, this.pubkey, this.time})
       : super._();
-
   @override
   Guser_fs_order_by rebuild(void Function(Guser_fs_order_byBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
   Guser_fs_order_byBuilder toBuilder() =>
-      new Guser_fs_order_byBuilder()..replace(this);
+      Guser_fs_order_byBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -4639,7 +4606,6 @@ class Guser_fs_order_byBuilder
 
   @override
   void replace(Guser_fs_order_by other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Guser_fs_order_by;
   }
 
@@ -4653,11 +4619,12 @@ class Guser_fs_order_byBuilder
 
   _$Guser_fs_order_by _build() {
     final _$result = _$v ??
-        new _$Guser_fs_order_by._(
-            data_cid: data_cid,
-            index_request_cid: index_request_cid,
-            pubkey: pubkey,
-            time: time);
+        _$Guser_fs_order_by._(
+          data_cid: data_cid,
+          index_request_cid: index_request_cid,
+          pubkey: pubkey,
+          time: time,
+        );
     replace(_$result);
     return _$result;
   }
@@ -4671,14 +4638,10 @@ class _$Guser_fs_stream_cursor_input extends Guser_fs_stream_cursor_input {
 
   factory _$Guser_fs_stream_cursor_input(
           [void Function(Guser_fs_stream_cursor_inputBuilder)? updates]) =>
-      (new Guser_fs_stream_cursor_inputBuilder()..update(updates))._build();
+      (Guser_fs_stream_cursor_inputBuilder()..update(updates))._build();
 
   _$Guser_fs_stream_cursor_input._({required this.initial_value, this.ordering})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        initial_value, r'Guser_fs_stream_cursor_input', 'initial_value');
-  }
-
+      : super._();
   @override
   Guser_fs_stream_cursor_input rebuild(
           void Function(Guser_fs_stream_cursor_inputBuilder) updates) =>
@@ -4686,7 +4649,7 @@ class _$Guser_fs_stream_cursor_input extends Guser_fs_stream_cursor_input {
 
   @override
   Guser_fs_stream_cursor_inputBuilder toBuilder() =>
-      new Guser_fs_stream_cursor_inputBuilder()..replace(this);
+      Guser_fs_stream_cursor_inputBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -4722,7 +4685,7 @@ class Guser_fs_stream_cursor_inputBuilder
 
   Guser_fs_stream_cursor_value_inputBuilder? _initial_value;
   Guser_fs_stream_cursor_value_inputBuilder get initial_value =>
-      _$this._initial_value ??= new Guser_fs_stream_cursor_value_inputBuilder();
+      _$this._initial_value ??= Guser_fs_stream_cursor_value_inputBuilder();
   set initial_value(Guser_fs_stream_cursor_value_inputBuilder? initial_value) =>
       _$this._initial_value = initial_value;
 
@@ -4744,7 +4707,6 @@ class Guser_fs_stream_cursor_inputBuilder
 
   @override
   void replace(Guser_fs_stream_cursor_input other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Guser_fs_stream_cursor_input;
   }
 
@@ -4760,15 +4722,17 @@ class Guser_fs_stream_cursor_inputBuilder
     _$Guser_fs_stream_cursor_input _$result;
     try {
       _$result = _$v ??
-          new _$Guser_fs_stream_cursor_input._(
-              initial_value: initial_value.build(), ordering: ordering);
+          _$Guser_fs_stream_cursor_input._(
+            initial_value: initial_value.build(),
+            ordering: ordering,
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'initial_value';
         initial_value.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'Guser_fs_stream_cursor_input', _$failedField, e.toString());
       }
       rethrow;
@@ -4792,13 +4756,11 @@ class _$Guser_fs_stream_cursor_value_input
   factory _$Guser_fs_stream_cursor_value_input(
           [void Function(Guser_fs_stream_cursor_value_inputBuilder)?
               updates]) =>
-      (new Guser_fs_stream_cursor_value_inputBuilder()..update(updates))
-          ._build();
+      (Guser_fs_stream_cursor_value_inputBuilder()..update(updates))._build();
 
   _$Guser_fs_stream_cursor_value_input._(
       {this.data_cid, this.index_request_cid, this.pubkey, this.time})
       : super._();
-
   @override
   Guser_fs_stream_cursor_value_input rebuild(
           void Function(Guser_fs_stream_cursor_value_inputBuilder) updates) =>
@@ -4806,7 +4768,7 @@ class _$Guser_fs_stream_cursor_value_input
 
   @override
   Guser_fs_stream_cursor_value_inputBuilder toBuilder() =>
-      new Guser_fs_stream_cursor_value_inputBuilder()..replace(this);
+      Guser_fs_stream_cursor_value_inputBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -4860,7 +4822,7 @@ class Guser_fs_stream_cursor_value_inputBuilder
   set pubkey(String? pubkey) => _$this._pubkey = pubkey;
 
   GtimestampBuilder? _time;
-  GtimestampBuilder get time => _$this._time ??= new GtimestampBuilder();
+  GtimestampBuilder get time => _$this._time ??= GtimestampBuilder();
   set time(GtimestampBuilder? time) => _$this._time = time;
 
   Guser_fs_stream_cursor_value_inputBuilder();
@@ -4879,7 +4841,6 @@ class Guser_fs_stream_cursor_value_inputBuilder
 
   @override
   void replace(Guser_fs_stream_cursor_value_input other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Guser_fs_stream_cursor_value_input;
   }
 
@@ -4896,18 +4857,19 @@ class Guser_fs_stream_cursor_value_inputBuilder
     _$Guser_fs_stream_cursor_value_input _$result;
     try {
       _$result = _$v ??
-          new _$Guser_fs_stream_cursor_value_input._(
-              data_cid: data_cid,
-              index_request_cid: index_request_cid,
-              pubkey: pubkey,
-              time: _time?.build());
+          _$Guser_fs_stream_cursor_value_input._(
+            data_cid: data_cid,
+            index_request_cid: index_request_cid,
+            pubkey: pubkey,
+            time: _time?.build(),
+          );
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'time';
         _time?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'Guser_fs_stream_cursor_value_input', _$failedField, e.toString());
       }
       rethrow;

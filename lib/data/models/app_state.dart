@@ -26,7 +26,8 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
       bool? hasRecentExport,
       int? recentExportReminderInDays,
       this.distancePrecompute,
-      this.wotInfo})
+      this.wotInfo,
+      this.v2AutoActivated = false})
       : tutorials = tutorials ?? <String, bool>{},
         currency = currency ?? Currency.G1,
         walletCreatedViewed = walletCreatedViewed ?? introViewed,
@@ -54,6 +55,8 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
   final DistancePrecompute? distancePrecompute;
   @JsonKey(includeToJson: false, includeFromJson: false)
   final ContactWotInfo? wotInfo;
+  @JsonKey(includeToJson: false, includeFromJson: false)
+  final bool v2AutoActivated;
 
   @override
   AppState fromJson(Map<String, dynamic> json) => _$AppStateFromJson(json);
@@ -76,6 +79,7 @@ class AppState extends Equatable implements IsJsonSerializable<AppState> {
         distancePrecompute,
         recentExportReminderInDays,
         hasRecentExport,
-        wotInfo
+        wotInfo,
+        v2AutoActivated
       ];
 }

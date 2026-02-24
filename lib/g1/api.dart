@@ -53,6 +53,11 @@ import 'v2_peers.dart';
 const String currencyDotEnv = Env.currency;
 final String currency = currencyDotEnv.isEmpty ? 'g1' : currencyDotEnv;
 
+// Deduplication map for Cesium+ requests - tracks in-flight requests
+// Maps request path to list of Completers waiting for the result
+final Map<String, List<Completer<Tuple2<Node, http.Response>>>> _cPlusInFlight =
+    <String, List<Completer<Tuple2<Node, http.Response>>>>{};
+
 Future<String> getTxHistory(String publicKey) async {
   final Response response =
       (await requestWithRetry(NodeType.duniter, '/tx/history/$publicKey'))
@@ -357,7 +362,8 @@ Future<List<Contact>> searchWotV1(String initialSearchTerm) async {
   return contacts;
 }
 
-Future<void> fetchNodesIfNotReady({required bool v2Only}) async {
+Future<void> fetchNodesIfNotReady(
+    {required bool v2Only, bool isProduction = false}) async {
   final List<Future<void>> fetchFutures = <Future<void>>[];
 
   final List<NodeType> nodesToFetch = v2Only
@@ -377,13 +383,14 @@ Future<void> fetchNodesIfNotReady({required bool v2Only}) async {
 
   for (final NodeType type in nodesToFetch) {
     if (NodeManager().nodesWorking(type) < 3) {
-      fetchFutures.add(fetchNodes(type, true));
+      fetchFutures.add(fetchNodes(type, true, isProduction: isProduction));
     }
     await Future.wait(fetchFutures);
   }
 }
 
-Future<void> fetchNodes(NodeType type, bool force) async {
+Future<void> fetchNodes(NodeType type, bool force,
+    {bool isProduction = false}) async {
   try {
     final List<Future<void>> fetchFutures = <Future<void>>[];
 
@@ -399,7 +406,8 @@ Future<void> fetchNodes(NodeType type, bool force) async {
         break;
       case NodeType.endpoint:
       case NodeType.duniterIndexer:
-        fetchFutures.add(_fetchEndPointAndSquidNodes(force: force));
+        fetchFutures.add(_fetchEndPointAndSquidNodes(
+            force: force, isProduction: isProduction));
         break;
       case NodeType.datapodEndpoint:
         fetchFutures
@@ -470,40 +478,50 @@ Future<void> _fetchCesiumPlusNodes({bool force = false}) async {
   NodeManager().loading = false;
 }
 
-Future<void> _fetchEndPointAndSquidNodes({bool force = false}) async {
+Future<void> _fetchEndPointAndSquidNodes(
+    {bool force = false, bool isProduction = false}) async {
   NodeManager().loading = true;
   if (force) {
-    NodeManager().updateNodes(NodeType.endpoint, defaultEndPointNodes);
-    NodeManager()
-        .updateNodes(NodeType.duniterIndexer, defaultDuniterIndexerNodes);
-    logger('Fetching endPoint nodes forced');
+    if (isProduction) {
+      // Production: don't load gtest defaults from .env
+      NodeManager().updateNodes(NodeType.endpoint, <Node>[]);
+      NodeManager().updateNodes(NodeType.duniterIndexer, <Node>[]);
+      logger('Fetching production endPoint nodes forced');
+    } else {
+      // Test: load gtest defaults from .env
+      NodeManager().updateNodes(NodeType.endpoint, defaultEndPointNodes);
+      NodeManager()
+          .updateNodes(NodeType.duniterIndexer, defaultDuniterIndexerNodes);
+      logger('Fetching gtest endPoint nodes forced');
+    }
   } else {
     logger(
         'Fetching endPoint and indexer nodes, we have ${NodeManager().nodesWorking(NodeType.endpoint)} and ${NodeManager().nodesWorking(NodeType.duniterIndexer)}');
   }
 
-  // Fetch nodes from gtest.json
-  final Tuple2<List<Node>, List<Node>> gtestNodes =
-      await _fetchNodesFromGtestJson();
+  // Fetch nodes from appropriate JSON (g1.json for production, gtest.json for test)
+  final Tuple2<List<Node>, List<Node>> remoteNodes = isProduction
+      ? await _fetchNodesFromG1Json()
+      : await _fetchNodesFromGtestJson();
 
   final List<Node> initialEndPointNodes = await _fetchNodes(NodeType.endpoint);
   final List<Node> initialIndexerNodes =
       await _fetchNodes(NodeType.duniterIndexer);
 
-  // Add gtest nodes to initial lists if not already present
+  // Add remote nodes to initial lists if not already present
   final Set<String> endpointUrls =
       initialEndPointNodes.map((Node n) => n.url).toSet();
   final Set<String> indexerUrls =
       initialIndexerNodes.map((Node n) => n.url).toSet();
 
-  for (final Node node in gtestNodes.item1) {
+  for (final Node node in remoteNodes.item1) {
     if (!endpointUrls.contains(node.url)) {
       initialEndPointNodes.add(node);
       endpointUrls.add(node.url);
     }
   }
 
-  for (final Node node in gtestNodes.item2) {
+  for (final Node node in remoteNodes.item2) {
     if (!indexerUrls.contains(node.url)) {
       initialIndexerNodes.add(node);
       indexerUrls.add(node.url);
@@ -519,64 +537,80 @@ Future<void> _fetchEndPointAndSquidNodes({bool force = false}) async {
   NodeManager().loading = false;
 }
 
-/// Fetches nodes from the gtest.json file
-/// Returns a tuple with (endpointNodes, indexerNodes)
-/// If fetching fails, returns empty lists to allow the application to continue
-Future<Tuple2<List<Node>, List<Node>>> _fetchNodesFromGtestJson() async {
-  final List<Node> endpointNodes = <Node>[];
-  final List<Node> indexerNodes = <Node>[];
+/// Fetches nodes from a remote JSON file (generic for gtest.json and g1.json)
+/// Expects JSON with 'rpc' (endpoints) and 'squid' (indexers) arrays
+/// Returns a tuple with (rpcNodes, squidNodes)
+Future<Tuple2<List<Node>, List<Node>>> _fetchNodesFromNetworkJson(
+    String url, String networkName) async {
+  final List<Node> rpcNodes = <Node>[];
+  final List<Node> squidNodes = <Node>[];
 
   try {
-    const String gtestUrl =
-        'https://git.duniter.org/nodes/networks/-/raw/master/gtest.json?ref_type=heads';
-    logger('Fetching nodes from gtest.json');
+    logger('Fetching nodes from $networkName');
 
-    final http.Response response = await http
-        .get(Uri.parse(gtestUrl))
-        .timeout(const Duration(seconds: 10));
+    final http.Response response =
+        await http.get(Uri.parse(url)).timeout(const Duration(seconds: 10));
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data =
           json.decode(response.body) as Map<String, dynamic>;
 
-      // Extract endpoint nodes
-      if (data.containsKey('endpoint') && data['endpoint'] is List) {
-        final List<dynamic> endpoints = data['endpoint'] as List<dynamic>;
-        for (final dynamic endpoint in endpoints) {
-          if (endpoint is String && endpoint.isNotEmpty) {
-            endpointNodes.add(Node(url: endpoint));
+      // Extract RPC nodes
+      if (data.containsKey('rpc') && data['rpc'] is List) {
+        final List<dynamic> rpcs = data['rpc'] as List<dynamic>;
+        for (final dynamic rpc in rpcs) {
+          if (rpc is String && rpc.isNotEmpty) {
+            rpcNodes.add(Node(url: rpc));
           }
         }
-        logger('Loaded ${endpointNodes.length} endpoint nodes from gtest.json');
+        logger('Loaded ${rpcNodes.length} rpc nodes from $networkName');
       }
 
-      // Extract indexer nodes
-      if (data.containsKey('indexer') && data['indexer'] is List) {
-        final List<dynamic> indexers = data['indexer'] as List<dynamic>;
-        for (final dynamic indexer in indexers) {
-          if (indexer is String && indexer.isNotEmpty) {
-            indexerNodes.add(Node(url: indexer));
+      // Extract Squid nodes
+      if (data.containsKey('squid') && data['squid'] is List) {
+        final List<dynamic> squids = data['squid'] as List<dynamic>;
+        for (final dynamic squid in squids) {
+          if (squid is String && squid.isNotEmpty) {
+            squidNodes.add(Node(url: squid));
           }
         }
-        logger('Loaded ${indexerNodes.length} indexer nodes from gtest.json');
+        logger('Loaded ${squidNodes.length} squid nodes from $networkName');
       }
     } else {
-      logger('Failed to fetch gtest.json: HTTP ${response.statusCode}');
+      logger('Failed to fetch $networkName: HTTP ${response.statusCode}');
     }
   } on TimeoutException catch (e) {
-    logger('Timeout fetching nodes from gtest.json: $e');
+    logger('Timeout fetching nodes from $networkName: $e');
   } on SocketException catch (e) {
-    logger('Network error fetching nodes from gtest.json: $e');
+    logger('Network error fetching nodes from $networkName: $e');
   } on http.ClientException catch (e) {
-    logger('HTTP client error fetching nodes from gtest.json: $e');
+    logger('HTTP client error fetching nodes from $networkName: $e');
   } on FormatException catch (e) {
-    logger('JSON parsing error from gtest.json: $e');
+    logger('JSON parsing error from $networkName: $e');
   } catch (e) {
-    logger('Unexpected error fetching nodes from gtest.json: $e');
+    logger('Unexpected error fetching nodes from $networkName: $e');
   }
 
   // Always return a valid tuple, even if empty, to allow the app to continue
-  return Tuple2<List<Node>, List<Node>>(endpointNodes, indexerNodes);
+  return Tuple2<List<Node>, List<Node>>(rpcNodes, squidNodes);
+}
+
+/// Fetches nodes from the gtest.json file (test network)
+/// Returns a tuple with (rpcNodes, squidNodes)
+/// If fetching fails, returns empty lists to allow the application to continue
+Future<Tuple2<List<Node>, List<Node>>> _fetchNodesFromGtestJson() async {
+  const String gtestUrl =
+      'https://git.duniter.org/nodes/networks/-/raw/master/gtest.json?ref_type=heads';
+  return _fetchNodesFromNetworkJson(gtestUrl, 'gtest.json');
+}
+
+/// Fetches nodes from the g1.json file (production network)
+/// Returns a tuple with (rpcNodes, squidNodes)
+/// If fetching fails, returns empty lists to allow the application to continue
+Future<Tuple2<List<Node>, List<Node>>> _fetchNodesFromG1Json() async {
+  const String g1Url =
+      'https://git.duniter.org/nodes/networks/-/raw/master/g1.json?ref_type=heads';
+  return _fetchNodesFromNetworkJson(g1Url, 'g1.json');
 }
 
 Future<void> _fetchV2Nodes({required NodeType type, bool force = false}) async {
@@ -807,7 +841,48 @@ Future<Tuple2<Node, http.Response>> requestDuniterWithRetry(String path,
 
 Future<Tuple2<Node, http.Response>> requestCPlusWithRetry(String path,
     {bool retryWith404 = true}) async {
-  return _requestWithRetry(NodeType.cesiumPlus, path, true, retryWith404);
+  // Check if this request is already in-flight
+  if (_cPlusInFlight.containsKey(path)) {
+    // Deduplicate: create a completer and wait for the in-flight request
+    final Completer<Tuple2<Node, http.Response>> completer =
+        Completer<Tuple2<Node, http.Response>>();
+    _cPlusInFlight[path]!.add(completer);
+    logger('Deduplicating CesiumPlus request for: $path');
+    return completer.future;
+  }
+
+  // Mark this request as in-flight
+  final Completer<Tuple2<Node, http.Response>> mainCompleter =
+      Completer<Tuple2<Node, http.Response>>();
+  _cPlusInFlight[path] = <Completer<Tuple2<Node, http.Response>>>[
+    mainCompleter
+  ];
+
+  try {
+    final Tuple2<Node, http.Response> result =
+        await _requestWithRetry(NodeType.cesiumPlus, path, true, retryWith404);
+
+    // Notify all waiting completers
+    final List<Completer<Tuple2<Node, http.Response>>>? waiters =
+        _cPlusInFlight.remove(path);
+    if (waiters != null) {
+      for (final Completer<Tuple2<Node, http.Response>> waiter in waiters) {
+        waiter.complete(result);
+      }
+    }
+
+    return result;
+  } catch (e) {
+    // Notify all waiting completers about the error
+    final List<Completer<Tuple2<Node, http.Response>>>? waiters =
+        _cPlusInFlight.remove(path);
+    if (waiters != null) {
+      for (final Completer<Tuple2<Node, http.Response>> waiter in waiters) {
+        waiter.completeError(e);
+      }
+    }
+    rethrow;
+  }
 }
 
 Future<Tuple2<Node, http.Response>> requestGvaWithRetry(String path,
@@ -873,6 +948,15 @@ Future<Tuple2<Node, http.Response>> _requestWithRetry(
             }
             return Tuple2<Node, Response>(node, response);
           }
+        } else if (response.statusCode == 502 || response.statusCode == 503) {
+          // 502 Bad Gateway or 503 Service Unavailable - node is likely down
+          // Mark with many errors to deprioritize it immediately
+          logger(
+              '${response.statusCode} error on $url - marking node as critical');
+          NodeManager().updateNode(
+              type, node.copyWith(errors: NodeManager.absoluteMaxErrors - 1));
+          // Don't retry this node in this timeout round, move to next node
+          continue;
         } else {
           /* await Sentry.captureMessage(
               'Error trying to use node ${node.url} ($type) ${response.statusCode}'); */
@@ -1237,6 +1321,99 @@ Future<bool> createOrUpdateProfileV2cPlus(String name) async {
     }
   } else if (userName == null) {
     logger('User does not exist, create a new user profile');
+    final http.Response createResponse = (await _requestWithRetry(
+            NodeType.cesiumPlus, '/user/profile', false, false,
+            httpType: HttpType.post,
+            headers: _defCPlusHeaders(),
+            body: userProfileJsonWithHashAndSignature))
+        .item2;
+
+    if (createResponse.statusCode == 200) {
+      logger('User profile created successfully.');
+      return true;
+    } else {
+      logger(
+          'Failed to create user profile. Status code: ${createResponse.statusCode}');
+      return false;
+    }
+  }
+  return false;
+}
+
+/// Extended profile update for V2cPlus with full profile fields
+/// Supports: title, description, city, socials, avatar (base64)
+Future<bool> createOrUpdateProfileV2cPlusExtended({
+  required String title,
+  String? description,
+  String? city,
+  String? avatarBase64,
+  List<Map<String, String>>? socials,
+}) async {
+  final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
+  // Cesium Plus expects V1 pubkey format, so convert from V2 address
+  final String pubKey = v1pubkeyFromAddress(wallet.address);
+
+  // Check if the user exists
+  final String? userName = await getProfileUserName(pubKey);
+
+  // Prepare the user profile data
+  final Map<String, dynamic> userProfile = <String, dynamic>{
+    'version': 2,
+    'issuer': pubKey,
+    'title': title,
+    'time': DateTime.now().millisecondsSinceEpoch ~/
+        1000, // current time in seconds
+  };
+
+  // Add optional fields if provided
+  if (description != null && description.isNotEmpty) {
+    userProfile['description'] = description;
+  }
+
+  if (city != null && city.isNotEmpty) {
+    userProfile['city'] = city;
+  }
+
+  if (socials != null && socials.isNotEmpty) {
+    userProfile['socials'] = socials;
+  }
+
+  // Add avatar if provided (as base64 with mime type)
+  if (avatarBase64 != null && avatarBase64.isNotEmpty) {
+    userProfile['avatar'] = <String, String>{
+      '_content_type': 'image/png', // Adjust based on actual type if needed
+      '_content': avatarBase64,
+    };
+  }
+
+  hashAndSignV2(userProfile, wallet);
+
+  // Convert the user profile data into a JSON string again, now including hash and signature
+  final String userProfileJsonWithHashAndSignature = jsonEncode(userProfile);
+
+  if (userName != null) {
+    logger('User exists, update the user profile with extended fields');
+    final http.Response updateResponse = (await _requestWithRetry(
+            NodeType.cesiumPlus,
+            '/user/profile/$pubKey/_update?pubkey=$pubKey',
+            false,
+            true,
+            httpType: HttpType.post,
+            headers: _defCPlusHeaders(),
+            body: userProfileJsonWithHashAndSignature))
+        .item2;
+    if (updateResponse.statusCode == 200) {
+      logger('User profile updated successfully.');
+      return true;
+    } else {
+      logger(
+          'Failed to update user profile. Status code: ${updateResponse.statusCode}');
+      logger('Response body: ${updateResponse.body}');
+      return false;
+    }
+  } else if (userName == null) {
+    logger(
+        'User does not exist, create a new user profile with extended fields');
     final http.Response createResponse = (await _requestWithRetry(
             NodeType.cesiumPlus, '/user/profile', false, false,
             httpType: HttpType.post,

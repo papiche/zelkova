@@ -8,7 +8,6 @@ import 'package:sn_progress_dialog/progress_dialog.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../data/models/app_cubit.dart';
-import '../../data/models/cert.dart';
 import '../../data/models/contact.dart';
 import '../../data/models/contact_cubit.dart';
 import '../../data/models/contact_wot_info.dart';
@@ -17,8 +16,10 @@ import '../../data/models/multi_wallet_transaction_cubit.dart';
 import '../../data/models/stored_account.dart';
 import '../../data/wot_info_fetcher.dart';
 import '../../g1/sign_and_send.dart';
+import '../../main.dart';
 import '../../shared_prefs_helper.dart';
 import '../clipboard_helper.dart';
+import '../dialogs/profile_editor_dialog.dart';
 import '../in_dev_helper.dart';
 import '../ui_helpers.dart';
 import 'balance_widget.dart';
@@ -39,7 +40,7 @@ class ContactPage extends StatefulWidget {
   State<ContactPage> createState() => _ContactPageState();
 }
 
-class _ContactPageState extends State<ContactPage> {
+class _ContactPageState extends State<ContactPage> with RouteAware {
   late MultiWalletTransactionCubit _txsCubit;
   bool isAvatarExpanded = false;
   late bool isV2;
@@ -59,13 +60,31 @@ class _ContactPageState extends State<ContactPage> {
     super.initState();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final ModalRoute<dynamic>? route = ModalRoute.of(context);
+    if (route != null) {
+      GinkgoApp.routeObserver.subscribe(this, route);
+    }
+  }
+
+  /// Called when a route above this one was popped and this route is now visible again.
+  @override
+  void didPopNext() {
+    _refresh();
+  }
+
   Future<void> _updateBalance() async {
     await _txsCubit.fetchTransactions(pubKey: widget.contact.pubKey);
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
   void dispose() {
+    GinkgoApp.routeObserver.unsubscribe(this);
     _scrollController.dispose();
     _txsCubit.removeStateForKey(widget.contact.pubKey);
     super.dispose();
@@ -91,7 +110,7 @@ class _ContactPageState extends State<ContactPage> {
     setState(() {
       _isRefreshing = true;
       final AppCubit appCubit = context.read<AppCubit>();
-      _wotInfoStream = _getWotInfo(appCubit);
+      _wotInfoStream = _getWotInfo(appCubit, forceRefresh: true);
     });
     await _updateBalance();
     // Reset refreshing state after a delay to debounce
@@ -133,6 +152,15 @@ class _ContactPageState extends State<ContactPage> {
         !(SharedPreferencesHelper().getCurrentAccount().type ==
             AccountType.v1PasswordLess);
     final List<SpeedDialChild> actions = <SpeedDialChild>[
+      // Edit profile action for own account
+      if (me && isV2)
+        SpeedDialChild(
+          child: const Icon(Icons.edit),
+          label: tr('profile.edit_title'),
+          onTap: () {
+            _openProfileEditor(contact);
+          },
+        ),
       if (isContact)
         SpeedDialChild(
           child: const Icon(Symbols.person_edit),
@@ -169,6 +197,9 @@ class _ContactPageState extends State<ContactPage> {
             onTap: () async {
               final SignAndSendResult result = await action.action();
               if (!context.mounted) {
+                return;
+              }
+              if (result.cancelled) {
                 return;
               }
               final ProgressDialog pd = ProgressDialog(context: context);
@@ -277,6 +308,27 @@ class _ContactPageState extends State<ContactPage> {
                   leading: const Icon(Symbols.editor_choice),
                   title: Text('@${contact.nick}'),
                 )),
+          // Mostrar nombre interno si existe y difiere de lo que se muestra en el título
+          // El título en la sección del avatar usa la lógica: si name != nick, muestra "name (nick)", sino solo name o nick
+          if (contact.name != null &&
+              contact.name!.isNotEmpty &&
+              contact.nick != null &&
+              contact.nick!.isNotEmpty &&
+              contact.name != contact.nick)
+            GestureDetector(
+              onTap: () {
+                copyToClipboard(
+                  context: context,
+                  text: contact.name!,
+                  feedbackText: 'internal_name_copied_to_clipboard',
+                );
+              },
+              child: ListTile(
+                leading: const Icon(Icons.bookmark_outline),
+                title: Text(tr('internal_contact_name')),
+                subtitle: Text(contact.name!),
+              ),
+            ),
           /* if (!contact.createdOnV2)  */
           _buildQrListTile(contact),
 
@@ -577,9 +629,11 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
-  Stream<ContactWotInfo> _getWotInfo(AppCubit appCubit) async* {
+  Stream<ContactWotInfo> _getWotInfo(AppCubit appCubit,
+      {bool forceRefresh = false}) async* {
     // 0. Try to get cached data from AppCubit first (pre-fetched)
-    if (appCubit.state.wotInfo != null &&
+    if (!forceRefresh &&
+        appCubit.state.wotInfo != null &&
         appCubit.state.wotInfo!.you.pubKey == widget.contact.pubKey) {
       yield appCubit.state.wotInfo!;
       if (appCubit.state.wotInfo!.loaded) {
@@ -588,6 +642,24 @@ class _ContactPageState extends State<ContactPage> {
     }
 
     yield* WotInfoFetcher.fetch(widget.contact, appCubit);
+  }
+
+  void _openProfileEditor(Contact contact) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ProfileEditorDialog(
+          currentContact: contact,
+          onSaved: _refreshAfterProfileEdit,
+        );
+      },
+    );
+  }
+
+  void _refreshAfterProfileEdit() {
+    if (mounted) {
+      _refresh();
+    }
   }
 }
 

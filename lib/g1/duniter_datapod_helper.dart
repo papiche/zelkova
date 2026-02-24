@@ -13,8 +13,8 @@ import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod-que
 import 'package:duniter_datapod/graphql/schema/__generated__/duniter-datapod.schema.schema.gql.dart';
 import 'package:ferry/ferry.dart' as ferry;
 import 'package:http/http.dart' as http;
-import 'package:polkadart/scale_codec.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
+import 'package:polkadart_scale_codec/polkadart_scale_codec.dart';
 
 import '../data/models/contact.dart';
 import '../data/models/lat_lng_parse.dart';

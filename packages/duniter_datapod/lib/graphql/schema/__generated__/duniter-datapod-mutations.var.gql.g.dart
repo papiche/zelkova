@@ -7,11 +7,11 @@ part of 'duniter-datapod-mutations.var.gql.dart';
 // **************************************************************************
 
 Serializer<GDeleteProfileVars> _$gDeleteProfileVarsSerializer =
-    new _$GDeleteProfileVarsSerializer();
+    _$GDeleteProfileVarsSerializer();
 Serializer<GMigrateProfileVars> _$gMigrateProfileVarsSerializer =
-    new _$GMigrateProfileVarsSerializer();
+    _$GMigrateProfileVarsSerializer();
 Serializer<GUpdateProfileVars> _$gUpdateProfileVarsSerializer =
-    new _$GUpdateProfileVarsSerializer();
+    _$GUpdateProfileVarsSerializer();
 
 class _$GDeleteProfileVarsSerializer
     implements StructuredSerializer<GDeleteProfileVars> {
@@ -42,7 +42,7 @@ class _$GDeleteProfileVarsSerializer
   GDeleteProfileVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GDeleteProfileVarsBuilder();
+    final result = GDeleteProfileVarsBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -104,7 +104,7 @@ class _$GMigrateProfileVarsSerializer
   GMigrateProfileVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GMigrateProfileVarsBuilder();
+    final result = GMigrateProfileVarsBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -207,7 +207,7 @@ class _$GUpdateProfileVarsSerializer
   GUpdateProfileVars deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new GUpdateProfileVarsBuilder();
+    final result = GUpdateProfileVarsBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -271,18 +271,11 @@ class _$GDeleteProfileVars extends GDeleteProfileVars {
 
   factory _$GDeleteProfileVars(
           [void Function(GDeleteProfileVarsBuilder)? updates]) =>
-      (new GDeleteProfileVarsBuilder()..update(updates))._build();
+      (GDeleteProfileVarsBuilder()..update(updates))._build();
 
   _$GDeleteProfileVars._(
       {required this.address, required this.hash, required this.signature})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        address, r'GDeleteProfileVars', 'address');
-    BuiltValueNullFieldError.checkNotNull(hash, r'GDeleteProfileVars', 'hash');
-    BuiltValueNullFieldError.checkNotNull(
-        signature, r'GDeleteProfileVars', 'signature');
-  }
-
+      : super._();
   @override
   GDeleteProfileVars rebuild(
           void Function(GDeleteProfileVarsBuilder) updates) =>
@@ -290,7 +283,7 @@ class _$GDeleteProfileVars extends GDeleteProfileVars {
 
   @override
   GDeleteProfileVarsBuilder toBuilder() =>
-      new GDeleteProfileVarsBuilder()..replace(this);
+      GDeleteProfileVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -352,7 +345,6 @@ class GDeleteProfileVarsBuilder
 
   @override
   void replace(GDeleteProfileVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GDeleteProfileVars;
   }
 
@@ -366,13 +358,14 @@ class GDeleteProfileVarsBuilder
 
   _$GDeleteProfileVars _build() {
     final _$result = _$v ??
-        new _$GDeleteProfileVars._(
-            address: BuiltValueNullFieldError.checkNotNull(
-                address, r'GDeleteProfileVars', 'address'),
-            hash: BuiltValueNullFieldError.checkNotNull(
-                hash, r'GDeleteProfileVars', 'hash'),
-            signature: BuiltValueNullFieldError.checkNotNull(
-                signature, r'GDeleteProfileVars', 'signature'));
+        _$GDeleteProfileVars._(
+          address: BuiltValueNullFieldError.checkNotNull(
+              address, r'GDeleteProfileVars', 'address'),
+          hash: BuiltValueNullFieldError.checkNotNull(
+              hash, r'GDeleteProfileVars', 'hash'),
+          signature: BuiltValueNullFieldError.checkNotNull(
+              signature, r'GDeleteProfileVars', 'signature'),
+        );
     replace(_$result);
     return _$result;
   }
@@ -390,23 +383,14 @@ class _$GMigrateProfileVars extends GMigrateProfileVars {
 
   factory _$GMigrateProfileVars(
           [void Function(GMigrateProfileVarsBuilder)? updates]) =>
-      (new GMigrateProfileVarsBuilder()..update(updates))._build();
+      (GMigrateProfileVarsBuilder()..update(updates))._build();
 
   _$GMigrateProfileVars._(
       {required this.addressNew,
       required this.addressOld,
       required this.hash,
       required this.signature})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        addressNew, r'GMigrateProfileVars', 'addressNew');
-    BuiltValueNullFieldError.checkNotNull(
-        addressOld, r'GMigrateProfileVars', 'addressOld');
-    BuiltValueNullFieldError.checkNotNull(hash, r'GMigrateProfileVars', 'hash');
-    BuiltValueNullFieldError.checkNotNull(
-        signature, r'GMigrateProfileVars', 'signature');
-  }
-
+      : super._();
   @override
   GMigrateProfileVars rebuild(
           void Function(GMigrateProfileVarsBuilder) updates) =>
@@ -414,7 +398,7 @@ class _$GMigrateProfileVars extends GMigrateProfileVars {
 
   @override
   GMigrateProfileVarsBuilder toBuilder() =>
-      new GMigrateProfileVarsBuilder()..replace(this);
+      GMigrateProfileVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -484,7 +468,6 @@ class GMigrateProfileVarsBuilder
 
   @override
   void replace(GMigrateProfileVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GMigrateProfileVars;
   }
 
@@ -498,15 +481,16 @@ class GMigrateProfileVarsBuilder
 
   _$GMigrateProfileVars _build() {
     final _$result = _$v ??
-        new _$GMigrateProfileVars._(
-            addressNew: BuiltValueNullFieldError.checkNotNull(
-                addressNew, r'GMigrateProfileVars', 'addressNew'),
-            addressOld: BuiltValueNullFieldError.checkNotNull(
-                addressOld, r'GMigrateProfileVars', 'addressOld'),
-            hash: BuiltValueNullFieldError.checkNotNull(
-                hash, r'GMigrateProfileVars', 'hash'),
-            signature: BuiltValueNullFieldError.checkNotNull(
-                signature, r'GMigrateProfileVars', 'signature'));
+        _$GMigrateProfileVars._(
+          addressNew: BuiltValueNullFieldError.checkNotNull(
+              addressNew, r'GMigrateProfileVars', 'addressNew'),
+          addressOld: BuiltValueNullFieldError.checkNotNull(
+              addressOld, r'GMigrateProfileVars', 'addressOld'),
+          hash: BuiltValueNullFieldError.checkNotNull(
+              hash, r'GMigrateProfileVars', 'hash'),
+          signature: BuiltValueNullFieldError.checkNotNull(
+              signature, r'GMigrateProfileVars', 'signature'),
+        );
     replace(_$result);
     return _$result;
   }
@@ -534,7 +518,7 @@ class _$GUpdateProfileVars extends GUpdateProfileVars {
 
   factory _$GUpdateProfileVars(
           [void Function(GUpdateProfileVarsBuilder)? updates]) =>
-      (new GUpdateProfileVarsBuilder()..update(updates))._build();
+      (GUpdateProfileVarsBuilder()..update(updates))._build();
 
   _$GUpdateProfileVars._(
       {required this.address,
@@ -546,14 +530,7 @@ class _$GUpdateProfileVars extends GUpdateProfileVars {
       required this.signature,
       this.socials,
       this.title})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        address, r'GUpdateProfileVars', 'address');
-    BuiltValueNullFieldError.checkNotNull(hash, r'GUpdateProfileVars', 'hash');
-    BuiltValueNullFieldError.checkNotNull(
-        signature, r'GUpdateProfileVars', 'signature');
-  }
-
+      : super._();
   @override
   GUpdateProfileVars rebuild(
           void Function(GUpdateProfileVarsBuilder) updates) =>
@@ -561,7 +538,7 @@ class _$GUpdateProfileVars extends GUpdateProfileVars {
 
   @override
   GUpdateProfileVarsBuilder toBuilder() =>
-      new GUpdateProfileVarsBuilder()..replace(this);
+      GUpdateProfileVarsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -632,7 +609,7 @@ class GUpdateProfileVarsBuilder
 
   _i2.GGeolocInputBuilder? _geoloc;
   _i2.GGeolocInputBuilder get geoloc =>
-      _$this._geoloc ??= new _i2.GGeolocInputBuilder();
+      _$this._geoloc ??= _i2.GGeolocInputBuilder();
   set geoloc(_i2.GGeolocInputBuilder? geoloc) => _$this._geoloc = geoloc;
 
   String? _hash;
@@ -645,7 +622,7 @@ class GUpdateProfileVarsBuilder
 
   ListBuilder<_i2.GSocialInput>? _socials;
   ListBuilder<_i2.GSocialInput> get socials =>
-      _$this._socials ??= new ListBuilder<_i2.GSocialInput>();
+      _$this._socials ??= ListBuilder<_i2.GSocialInput>();
   set socials(ListBuilder<_i2.GSocialInput>? socials) =>
       _$this._socials = socials;
 
@@ -674,7 +651,6 @@ class GUpdateProfileVarsBuilder
 
   @override
   void replace(GUpdateProfileVars other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$GUpdateProfileVars;
   }
 
@@ -690,19 +666,20 @@ class GUpdateProfileVarsBuilder
     _$GUpdateProfileVars _$result;
     try {
       _$result = _$v ??
-          new _$GUpdateProfileVars._(
-              address: BuiltValueNullFieldError.checkNotNull(
-                  address, r'GUpdateProfileVars', 'address'),
-              avatarBase64: avatarBase64,
-              city: city,
-              description: description,
-              geoloc: _geoloc?.build(),
-              hash: BuiltValueNullFieldError.checkNotNull(
-                  hash, r'GUpdateProfileVars', 'hash'),
-              signature: BuiltValueNullFieldError.checkNotNull(
-                  signature, r'GUpdateProfileVars', 'signature'),
-              socials: _socials?.build(),
-              title: title);
+          _$GUpdateProfileVars._(
+            address: BuiltValueNullFieldError.checkNotNull(
+                address, r'GUpdateProfileVars', 'address'),
+            avatarBase64: avatarBase64,
+            city: city,
+            description: description,
+            geoloc: _geoloc?.build(),
+            hash: BuiltValueNullFieldError.checkNotNull(
+                hash, r'GUpdateProfileVars', 'hash'),
+            signature: BuiltValueNullFieldError.checkNotNull(
+                signature, r'GUpdateProfileVars', 'signature'),
+            socials: _socials?.build(),
+            title: title,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -712,7 +689,7 @@ class GUpdateProfileVarsBuilder
         _$failedField = 'socials';
         _socials?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
+        throw BuiltValueNestedFieldError(
             r'GUpdateProfileVars', _$failedField, e.toString());
       }
       rethrow;

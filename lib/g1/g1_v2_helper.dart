@@ -69,7 +69,7 @@ String mnemonicGenerate({Language lang = Language.english}) {
   if (!supportedMnemonicLanguages.contains(lang)) {
     throw ArgumentError('Unsupported language');
   }
-  return Mnemonic.generate(lang, entropyLength: 128).sentence;
+  return Mnemonic.generate(lang, length: MnemonicLength.words12).sentence;
 }
 
 // From:

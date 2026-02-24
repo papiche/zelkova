@@ -98,6 +98,25 @@ class DrawerWalletCard extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: Stack(children: <Widget>[
+                    if (settingsVisible &&
+                        card.type.isV2 &&
+                        card.derivationParentId == null)
+                      Positioned(
+                        bottom: 4,
+                        left: 4,
+                        child: FloatingActionButton(
+                          mini: true,
+                          backgroundColor: Colors.white10,
+                          elevation: 1,
+                          onPressed: () {
+                            SharedPreferencesHelper()
+                                .highlightGroup(card.pubKey);
+                            _deriveAccount(context);
+                          },
+                          child:
+                              const Icon(Icons.add_link, color: Colors.white),
+                        ),
+                      ),
                     if (settingsVisible)
                       Positioned(
                         bottom: 4,
@@ -105,23 +124,6 @@ class DrawerWalletCard extends StatelessWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            if (card.type.isV2 &&
-                                card.derivationParentId == null)
-                              Padding(
-                                padding: const EdgeInsets.only(right: 8.0),
-                                child: FloatingActionButton(
-                                  mini: true,
-                                  backgroundColor: Colors.white10,
-                                  elevation: 1,
-                                  onPressed: () {
-                                    SharedPreferencesHelper()
-                                        .highlightGroup(card.pubKey);
-                                    _deriveAccount(context);
-                                  },
-                                  child: const Icon(Icons.add_link,
-                                      color: Colors.white),
-                                ),
-                              ),
                             if (SharedPreferencesHelper().hasMultipleWallets)
                               Padding(
                                 padding: const EdgeInsets.only(right: 8.0),

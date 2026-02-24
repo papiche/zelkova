@@ -1,7 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:typed_data' as _i2;
 
-import 'package:polkadart/scale_codec.dart' as _i1;
+import 'package:polkadart_scale_codec/polkadart_scale_codec.dart' as _i1;
 
 class BalanceSwapAction {
   const BalanceSwapAction({required this.value});
@@ -58,4 +58,7 @@ class $BalanceSwapActionCodec with _i1.Codec<BalanceSwapAction> {
     size = size + _i1.U64Codec.codec.sizeHint(obj.value);
     return size;
   }
+
+  @override
+  bool isSizeZero() => _i1.U64Codec.codec.isSizeZero();
 }

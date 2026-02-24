@@ -139,8 +139,8 @@ class SettingsPage extends StatelessWidget {
                   },
                 ),
 
-              // NETWORK SECTION (only in expert mode)
-              if (state.expertMode) ...<Widget>[
+              // NETWORK SECTION (only in expert mode, and not if v2 was auto-activated)
+              if (state.expertMode && !state.v2AutoActivated) ...<Widget>[
                 const SizedBox(height: 10),
                 _buildSectionHeader(
                     context, 'settings_network_category', Icons.network_check),

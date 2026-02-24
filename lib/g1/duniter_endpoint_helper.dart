@@ -3,8 +3,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:polkadart/polkadart.dart';
-import 'package:polkadart/provider.dart';
+import 'package:polkadart/polkadart.dart' hide RuntimeCall;
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 import 'package:ss58/ss58.dart';
 
@@ -78,36 +77,47 @@ Future<T> executeOnPolkadotNodes<T>(
     // If true (default), the provider is disconnected in the finally block.
     bool disconnectAfter = true}) async {
   final List<Node> nodes = NodeManager().getBestNodes(NodeType.endpoint);
+  loggerDev('executeOnPolkadotNodes: Found ${nodes.length} nodes to try');
   Exception? lastError;
 
   for (final Node node in nodes) {
-    loggerDev('executeOnPolkadotNode: ${node.url}');
+    loggerDev('executeOnPolkadotNode: Trying ${node.url}');
     final Uri uri = parseNodeUrl(node.url);
     final Provider provider;
     if (uri.scheme == 'ws' || uri.scheme == 'wss') {
+      loggerDev('executeOnPolkadotNode: Creating WsProvider for ${node.url}');
       provider = WsProvider(uri, autoConnect: false);
     } else {
+      loggerDev(
+          'executeOnPolkadotNode: Creating HTTP Provider for ${node.url}');
       provider = Provider.fromUri(uri);
     }
 
     try {
+      loggerDev('executeOnPolkadotNode: Connecting to ${node.url}...');
       // Neutralize orphaned future to prevent uncaught state errors after timeout
       await provider.connect().catchError((Object e) {
         loggerDev(
             'Handled orphaned connection error in executeOnPolkadotNode: $e');
       }).timeout(timeout);
+      loggerDev('executeOnPolkadotNode: Connected to ${node.url}');
 
       final Gtest polkadot = Gtest(provider);
+      loggerDev('executeOnPolkadotNode: Starting operation on ${node.url}');
 
       final T result =
           await operation(node, provider, polkadot).timeout(timeout);
+      loggerDev(
+          'executeOnPolkadotNode: Operation completed successfully on ${node.url}');
       return result; // If the operation is successful, return the result
     } catch (e, stacktrace) {
       lastError = Exception(e.toString());
       NodeManager().increaseNodeErrors(NodeType.endpoint, node,
           cause: 'Endpoint operation failed: $e');
-      loggerDev('Error in node ${node.url}', error: e, stackTrace: stacktrace);
+      loggerDev('executeOnPolkadotNode: Error in node ${node.url}',
+          error: e, stackTrace: stacktrace);
       if (!retry) {
+        loggerDev('executeOnPolkadotNode: Retry disabled, rethrowing error');
         rethrow;
       }
     } finally {
@@ -116,16 +126,23 @@ Future<T> executeOnPolkadotNodes<T>(
       // the stream closes and signAndSend calls its own safeDisconnect.
       if (disconnectAfter) {
         try {
+          loggerDev('executeOnPolkadotNode: Disconnecting from ${node.url}');
           await provider.disconnect();
         } catch (_) {}
+      } else {
+        loggerDev(
+            'executeOnPolkadotNode: Keeping connection alive for ${node.url}');
       }
     }
   }
 
   // Throw the last error if available, otherwise a generic message
   if (lastError != null) {
+    loggerDev(
+        'executeOnPolkadotNodes: All nodes failed, throwing last error: $lastError');
     throw lastError;
   }
+  loggerDev('executeOnPolkadotNodes: All nodes failed with no error captured');
   throw Exception('All nodes failed to execute the operation: $operation');
   // If all nodes fail, throw an exception
 }
@@ -262,6 +279,7 @@ Future<SignAndSendResult> createIdentity(
         }
       },
       timeout: timeout,
+      disconnectAfter: false,
     );
   } catch (e, st) {
     loggerDev('Critical error in createIdentity', error: e, stackTrace: st);
@@ -306,6 +324,7 @@ Future<SignAndSendResult> confirmIdentity(String identityName,
         }
       },
       timeout: timeout,
+      disconnectAfter: false,
     );
   } catch (e, st) {
     loggerDev('Critical error in confirmIdentity', error: e, stackTrace: st);
@@ -340,15 +359,21 @@ Future<PayResult> payV2({
   required double amount,
   String? comment,
 }) async {
+  loggerDev(
+      'payV2: Starting payment to ${to.length} recipient(s), amount: $amount');
   final KeyPair wallet = await SharedPreferencesHelper().getKeyPair();
+  loggerDev('payV2: Wallet address: ${wallet.address}');
   final List<String> addresses = <String>[];
   final StreamController<String> progressController =
       StreamController<String>();
 
   for (final String dest in to) {
     try {
+      loggerDev('payV2: Converting pubkey to address: $dest');
       addresses.add(addressFromV1PubkeyFaiSafe(dest));
+      loggerDev('payV2: Converted to address: ${addresses.last}');
     } catch (e) {
+      loggerDev('payV2: Error converting pubkey $dest to address: $e');
       progressController
           .add(tr('Error converting pubkey $dest to address: $e'));
       progressController.close();
@@ -358,11 +383,16 @@ Future<PayResult> payV2({
       );
     }
   }
-  return executeOnPolkadotNodes(retry: false,
+  loggerDev('payV2: Calling executeOnPolkadotNodes...');
+  return executeOnPolkadotNodes(retry: false, disconnectAfter: false,
       (Node node, Provider provider, Gtest polkadot) async {
+    loggerDev(
+        'payV2: Inside executeOnPolkadotNodes callback for node ${node.url}');
     RuntimeCall transferCall;
 
     if (addresses.length > 1 || comment != null) {
+      loggerDev(
+          'payV2: Creating batch transaction (${addresses.length} addresses, comment: ${comment != null})');
       final List<RuntimeCall> batchCalls = <RuntimeCall>[];
 
       for (final String address in addresses) {
@@ -381,16 +411,21 @@ Future<PayResult> payV2({
       }
 
       transferCall = polkadot.tx.utility.batch(calls: batchCalls);
+      loggerDev(
+          'payV2: Batch transaction created with ${batchCalls.length} calls');
     } else {
       // No comment, one receiver
+      loggerDev('payV2: Creating simple transfer transaction');
       final Id multiAddress =
           const $MultiAddress().id(Address.decode(addresses.first).pubkey);
       transferCall = polkadot.tx.balances.transferKeepAlive(
         dest: multiAddress,
         value: BigInt.from(amount * 100),
       );
+      loggerDev('payV2: Simple transfer transaction created');
     }
 
+    loggerDev('payV2: Calling signAndSend...');
     final SignAndSendResult result = await signAndSend(
       node,
       provider,
@@ -399,6 +434,7 @@ Future<PayResult> payV2({
       transferCall,
       messageTransformer: _paymentResultTransformer,
     );
+    loggerDev('payV2: signAndSend completed');
 
     return PayResult(
       node: result.node,
@@ -421,7 +457,8 @@ String _batchResultTransformer(String statusType) {
 }
 
 String _transferIdentityResultTransformer(String statusType) {
-  return _resultTransformer('transfer_identity', statusType, 'transfer_identity_successful');
+  return _resultTransformer(
+      'transfer_identity', statusType, 'transfer_identity_successful');
 }
 
 String _resultTransformer(String suffix, String statusType, String success) {

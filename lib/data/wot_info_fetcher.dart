@@ -5,8 +5,6 @@ import '../g1/distance_precompute.dart';
 import '../g1/distance_precompute_provider.dart';
 import '../g1/duniter_endpoint_helper.dart';
 import '../g1/duniter_indexer_helper.dart' as duniter_indexer;
-import '../g1/g1_helper.dart';
-import '../g1/g1_v2_helper.dart';
 import '../g1/service_manager.dart';
 import '../generated/gtest/types/pallet_certification/types/idty_cert_meta.dart';
 import '../generated/gtest/types/pallet_identity/types/idty_value.dart';
@@ -21,6 +19,7 @@ import 'models/contact_wot_info.dart';
 import 'models/identity_status.dart';
 import 'models/multi_wallet_transaction_cubit.dart';
 
+// ignore: avoid_classes_with_only_static_members
 class WotInfoFetcher {
   static Stream<ContactWotInfo> fetch(
       Contact contact, AppCubit appCubit) async* {

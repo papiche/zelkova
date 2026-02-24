@@ -43,11 +43,9 @@ class BiometricAuthService {
       final String reason = localizedReason ?? tr('biometric_auth_reason');
       return await _auth.authenticate(
         localizedReason: reason,
-        options: const AuthenticationOptions(
-          biometricOnly: true,
-          // useErrorDialogs: true,
-          stickyAuth: true,
-        ),
+        biometricOnly: true,
+        sensitiveTransaction: true,
+        persistAcrossBackgrounding: true,
       );
     } catch (e) {
       loggerDev('Biometric authentication error', error: e);

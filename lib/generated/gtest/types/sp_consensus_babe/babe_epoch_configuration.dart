@@ -1,7 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:typed_data' as _i4;
 
-import 'package:polkadart/scale_codec.dart' as _i1;
+import 'package:polkadart_scale_codec/polkadart_scale_codec.dart' as _i1;
 
 import '../tuples.dart' as _i2;
 import 'allowed_slots.dart' as _i3;
@@ -97,4 +97,12 @@ class $BabeEpochConfigurationCodec with _i1.Codec<BabeEpochConfiguration> {
     size = size + _i3.AllowedSlots.codec.sizeHint(obj.allowedSlots);
     return size;
   }
+
+  @override
+  bool isSizeZero() =>
+      const _i2.Tuple2Codec<BigInt, BigInt>(
+        _i1.U64Codec.codec,
+        _i1.U64Codec.codec,
+      ).isSizeZero() &&
+      _i3.AllowedSlots.codec.isSizeZero();
 }

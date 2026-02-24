@@ -114,12 +114,16 @@ Future<bool> payWithRetry(
           return true;
         } else {
           // PAY!
+          logger('Starting payment process...');
           PayResult result;
           if (!useBMA) {
+            logger(
+                'Calling pay() with recipients: ${recipients.map((Contact c) => c.pubKey).toList()}');
             result = await pay(
                 to: recipients.map((Contact c) => c.pubKey).toList(),
                 comment: comment,
                 amount: convertedAmount);
+            logger('pay() returned with result: ${result.message}');
           } else {
             await utxoCubit.fetchUtxos(fromPubKey);
             final List<Utxo>? utxos = utxoCubit.consume(convertedAmount);

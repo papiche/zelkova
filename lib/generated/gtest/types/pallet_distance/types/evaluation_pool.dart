@@ -1,7 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:typed_data' as _i5;
 
-import 'package:polkadart/scale_codec.dart' as _i1;
+import 'package:polkadart_scale_codec/polkadart_scale_codec.dart' as _i1;
 import 'package:quiver/collection.dart' as _i6;
 
 import '../../bounded_collections/bounded_btree_set/bounded_b_tree_set.dart'
@@ -111,4 +111,13 @@ class $EvaluationPoolCodec with _i1.Codec<EvaluationPool> {
     size = size + const _i4.BoundedBTreeSetCodec().sizeHint(obj.evaluators);
     return size;
   }
+
+  @override
+  bool isSizeZero() =>
+      const _i1.SequenceCodec<_i2.Tuple2<int, _i3.MedianAcc>>(
+          _i2.Tuple2Codec<int, _i3.MedianAcc>(
+        _i1.U32Codec.codec,
+        _i3.MedianAcc.codec,
+      )).isSizeZero() &&
+      const _i4.BoundedBTreeSetCodec().isSizeZero();
 }

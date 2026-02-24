@@ -47,7 +47,8 @@ class _CardNameEditableState extends State<CardNameEditable> {
       ? widget.account.contact.name
       : null;
 
-  bool get _hasIdentity => _nick != null;
+  bool get _hasIdentity =>
+      _nick != null || widget.account.contact.isMember == true;
   bool get _isEditable => !_hasIdentity;
 
   /// The text currently shown on the card (not editing mode).

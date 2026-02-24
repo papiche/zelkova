@@ -214,7 +214,6 @@ class Contact extends Equatable implements IsJsonSerializable<Contact> {
   final List<Cert>? certsIssued;
   @JsonKey(includeToJson: false, includeFromJson: false)
   final IdentityStatus? status;
-  @JsonKey(includeToJson: false, includeFromJson: false)
   final bool? isMember;
   final int? createdOn;
   @JsonKey(includeToJson: false, includeFromJson: false)

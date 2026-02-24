@@ -294,6 +294,7 @@ Contact _$ContactFromJson(Map<String, dynamic> json) => Contact(
       indexRequestCid: json['indexRequestCid'] as String?,
       time:
           json['time'] == null ? null : DateTime.parse(json['time'] as String),
+      isMember: json['isMember'] as bool?,
       createdOn: (json['createdOn'] as num?)?.toInt(),
       index: (json['index'] as num?)?.toInt(),
     );
@@ -309,6 +310,7 @@ Map<String, dynamic> _$ContactToJson(Contact instance) => <String, dynamic>{
       'dataCid': instance.dataCid,
       'indexRequestCid': instance.indexRequestCid,
       'time': instance.time?.toIso8601String(),
+      'isMember': instance.isMember,
       'createdOn': instance.createdOn,
       'index': instance.index,
     };

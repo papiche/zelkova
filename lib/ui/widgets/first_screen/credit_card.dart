@@ -32,7 +32,8 @@ class CreditCard extends StatelessWidget {
     // Edit is allowed only when the account has no Duniter identity.
     // Accounts with an identity display their nick read-only.
     final bool hasIdentity =
-        account.contact.nick != null && account.contact.nick!.isNotEmpty;
+        (account.contact.nick != null && account.contact.nick!.isNotEmpty) ||
+            account.contact.isMember == true;
     final WalletTheme cardTheme = theme ?? account.theme;
 
     return LayoutBuilder(

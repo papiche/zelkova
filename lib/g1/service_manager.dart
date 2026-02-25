@@ -25,7 +25,8 @@ abstract class DuniterService {
   Future<List<Contact>> searchProfiles(
       {required String searchTermLower,
       required String searchTerm,
-      required String searchTermCapitalized});
+      required String searchTermCapitalized,
+      bool quickMode = false});
 
   Future<Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalance(
       String pubKeyRaw,
@@ -68,11 +69,13 @@ class DuniterServiceV1 implements DuniterService {
   Future<List<Contact>> searchProfiles(
       {required String searchTermLower,
       required String searchTerm,
-      required String searchTermCapitalized}) {
+      required String searchTermCapitalized,
+      bool quickMode = false}) {
     return searchProfilesV1(
         searchTermLower: searchTermLower,
         searchTerm: searchTerm,
-        searchTermCapitalized: searchTermCapitalized);
+        searchTermCapitalized: searchTermCapitalized,
+        quickMode: quickMode);
   }
 
   @override
@@ -153,11 +156,13 @@ class DuniterServiceV2 implements DuniterService {
   Future<List<Contact>> searchProfiles(
       {required String searchTermLower,
       required String searchTerm,
-      required String searchTermCapitalized}) {
+      required String searchTermCapitalized,
+      bool quickMode = false}) {
     return searchProfilesV1(
         searchTermLower: searchTermLower,
         searchTerm: searchTerm,
-        searchTermCapitalized: searchTermCapitalized);
+        searchTermCapitalized: searchTermCapitalized,
+        quickMode: quickMode);
   }
 
   @override

@@ -264,12 +264,14 @@ Future<Tuple2<Set<Node>, Set<Node>>> getV2Peers({
 Future<List<Contact>> searchProfilesV1(
     {required String searchTermLower,
     required String searchTerm,
-    required String searchTermCapitalized}) async {
+    required String searchTermCapitalized,
+    bool quickMode = false}) async {
   final String query =
       '/user/profile/_search?q=title:$searchTermLower OR issuer:$searchTerm OR title:$searchTermCapitalized OR title:$searchTerm';
 
-  final Response response =
-      (await requestCPlusWithRetry(query, retryWith404: false)).item2;
+  final Response response = (await requestCPlusWithRetry(query,
+          retryWith404: false, quickMode: quickMode))
+      .item2;
   final List<Contact> searchResult = <Contact>[];
   if (response.statusCode != 404) {
     // Add cplus users
@@ -840,7 +842,7 @@ Future<Tuple2<Node, http.Response>> requestDuniterWithRetry(String path,
 }
 
 Future<Tuple2<Node, http.Response>> requestCPlusWithRetry(String path,
-    {bool retryWith404 = true}) async {
+    {bool retryWith404 = true, bool quickMode = false}) async {
   // Check if this request is already in-flight
   if (_cPlusInFlight.containsKey(path)) {
     // Deduplicate: create a completer and wait for the in-flight request
@@ -859,8 +861,16 @@ Future<Tuple2<Node, http.Response>> requestCPlusWithRetry(String path,
   ];
 
   try {
-    final Tuple2<Node, http.Response> result =
-        await _requestWithRetry(NodeType.cesiumPlus, path, true, retryWith404);
+    // For profile reads (/user/profile/...), 404 is a valid response (user has no profile)
+    // For other operations, 404 is an error
+    final bool treat404AsValid = path.contains('/user/profile/') &&
+        !path.contains('_update') &&
+        !path.contains('_delete') &&
+        !path.contains('_search');
+
+    final Tuple2<Node, http.Response> result = await _requestWithRetry(
+        NodeType.cesiumPlus, path, true, retryWith404,
+        quickMode: quickMode, treat404AsValid: treat404AsValid);
 
     // Notify all waiting completers
     final List<Completer<Tuple2<Node, http.Response>>>? waiters =
@@ -902,10 +912,17 @@ Future<Tuple2<Node, http.Response>> _requestWithRetry(
     {HttpType httpType = HttpType.get,
     Map<String, String>? headers,
     Object? body,
-    Encoding? encoding}) async {
+    Encoding? encoding,
+    bool quickMode = false,
+    bool treat404AsValid = false}) async {
   final List<Node> nodes = NodeManager().getBestNodes(type);
 
-  final int baseTimeout = type == NodeType.cesiumPlus ? 30 : 10;
+  // Track consecutive 404s to detect "resource doesn't exist" scenario
+  int consecutive404s = 0;
+
+  // In quick mode, use shorter timeouts (3s instead of 30s for CesiumPlus)
+  final int baseTimeout =
+      quickMode ? 3 : (type == NodeType.cesiumPlus ? 30 : 10);
 
   for (final int timeout in <int>[baseTimeout, baseTimeout * 2]) {
     // only one timeout for now
@@ -938,9 +955,25 @@ Future<Tuple2<Node, http.Response>> _requestWithRetry(
         } else if (response.statusCode == 404) {
           logger('404 on fetch $url');
           if (retryWith404) {
-            logger('${node.url} gave 404, retrying with other');
-            NodeManager()
-                .updateNode(type, node.copyWith(errors: node.errors + 1));
+            consecutive404s++;
+
+            // If treat404AsValid is true, 404 is a valid response (resource doesn't exist)
+            // Don't penalize the node for returning a 404
+            // If treat404AsValid is false, 404 is an error (for write operations)
+            if (!treat404AsValid) {
+              NodeManager()
+                  .updateNode(type, node.copyWith(errors: node.errors + 1));
+            }
+
+            // If we got 404 from 1-2 nodes and treat404AsValid, it's confirmed
+            if (treat404AsValid && consecutive404s >= min(2, nodes.length)) {
+              logger(
+                  'Multiple nodes returned 404 for $path - resource does not exist');
+              return Tuple2<Node, Response>(node, response);
+            }
+
+            logger(
+                '${node.url} gave 404, retrying with other (${consecutive404s}/${nodes.length})');
             continue;
           } else {
             if (!kReleaseMode) {
@@ -976,6 +1009,27 @@ Future<Tuple2<Node, http.Response>> _requestWithRetry(
       }
     }
   }
+
+  // If all attempts returned 404 and it's a valid response, return the 404
+  if (treat404AsValid && consecutive404s > 0) {
+    logger('All attempts returned 404 for $path - resource does not exist');
+    return Tuple2<Node, Response>(
+      nodes.last,
+      http.Response('{"found": false}', 404),
+    );
+  }
+
+  // Improved logging for diagnosis
+  final String failureDetails =
+      nodes.map((node) => '${node.url} (errors: ${node.errors})').join(', ');
+
+  logger(
+      '⚠️ Failed to fetch $path from any node. Nodes tried: $failureDetails');
+  await Sentry.captureMessage(
+    'NoNodesException for ${type.name} at $path',
+    level: SentryLevel.warning,
+  );
+
   throw NoNodesException(
       'Cannot make the request to any of the ${nodes.length} nodes');
 }
@@ -1777,7 +1831,8 @@ Future<List<Contact>> searchWot(String searchPattern) async {
   return GetIt.instance<ServiceManager>().current.searchWot(searchPattern);
 }
 
-Future<List<Contact>> searchProfiles(String initialSearchTerm) async {
+Future<List<Contact>> searchProfiles(String initialSearchTerm,
+    {bool quickMode = false}) async {
   final String searchTerm = normalizeQuery(initialSearchTerm);
   final String searchTermLower = searchTerm.toLowerCase();
   final String searchTermCapitalized =
@@ -1785,7 +1840,8 @@ Future<List<Contact>> searchProfiles(String initialSearchTerm) async {
   return GetIt.instance<ServiceManager>().current.searchProfiles(
       searchTermLower: searchTermLower,
       searchTerm: searchTerm,
-      searchTermCapitalized: searchTermCapitalized);
+      searchTermCapitalized: searchTermCapitalized,
+      quickMode: quickMode);
 }
 
 Future<List<Contact>> getProfiles(List<String> pubKeys) async {

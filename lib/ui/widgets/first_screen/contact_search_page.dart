@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -53,7 +55,7 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
   String _searchTerm = '';
   String _previousSearchTerm = '';
 
-  Set<Contact> _results = <Contact>{};
+  List<Contact> _results = <Contact>[];
   bool _isLoading = false;
   final Set<Contact> _selectedContacts = <Contact>{};
   late bool _isMultiSelect;
@@ -74,101 +76,124 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
     }
 
     final bool isConnected = await ConnectivityWidgetWrapperWrapper.isConnected;
-    setState(() {
-      _isLoading = true;
-    });
 
+    // Handle multi-key parsing first
     final Set<Contact> multiContacts = parseMultipleKeys(_searchTerm);
     if (multiContacts.isNotEmpty) {
       setState(() {
         _isMultiSelect = multiContacts.length > 1;
-        _results = multiContacts;
+        _results = multiContacts.toList();
         _isLoading = false;
-        // _searchController.clear();
-        // _searchTerm = '';
       });
       return;
     }
 
+    // ⚡ Show local contacts immediately (no waiting for network)
     setState(() {
-      _results = contactsCubit.search(_searchTerm).toSet();
+      _results = contactsCubit.search(_searchTerm).toList();
+      _isLoading = false; // Stop showing loading indicator
       if (inDevelopment) {
-        logger('Found: ${_results.length} in contacts');
+        logger('Found: ${_results.length} in local contacts');
       }
     });
 
-    if (isConnected) {
-      final List<Contact> searchResult = await searchProfiles(_searchTerm);
+    // If no connection, stop here with local results
+    if (!isConnected) {
+      if (_results.isEmpty && validateKey(_searchTerm)) {
+        logger('$_searchTerm looks like a plain pub key');
+        setState(() {
+          _results.add(Contact(pubKey: _searchTerm));
+        });
+      } else if (_results.isEmpty && isValidV2Address(_searchTerm)) {
+        logger('$_searchTerm looks like a plain address key');
+        setState(() {
+          _results.add(Contact.withAddress(
+            address: _searchTerm,
+            createdOn: DateTime.now().millisecondsSinceEpoch,
+          ));
+        });
+      }
+      return;
+    }
+
+    // ⚡ Perform network searches in PARALLEL using Future.wait()
+    try {
+      final List<List<Contact>> results = await Future.wait<List<Contact>>([
+        searchProfiles(_searchTerm, quickMode: true),
+        searchWot(_searchTerm),
+      ]);
+
+      final List<Contact> profileResults = results[0];
+      final List<Contact> wotResults = results[1];
+
+      // Add CesiumPlus results
       // ignore: prefer_foreach
-      for (final Contact c in searchResult) {
+      for (final Contact c in profileResults) {
+        if (inDevelopment) {
+          logger(
+              'Adding CesiumPlus result: ${c.pubKey} - ${c.name ?? c.nick ?? "no name"}');
+        }
         _addIfNotPresent(c);
       }
 
-      logger('Found: ${_results.length}');
-    }
-
-    if (isConnected) {
-      if (_searchTerm.length >= minSearchLength) {
-        // Only search wot if it's a long key
-
-        final List<Contact> wotResults = await searchWot(_searchTerm);
-        // ignore: prefer_foreach
-
-        if (_isV2) {
-          // search trying to be more optimized
-          ContactsCache().addAllContacts(wotResults);
-          // ignore: prefer_foreach
-          for (final Contact wotC in wotResults) {
-            _addIfNotPresent(wotC);
-          }
-          // FIXME do more here
-          final List<Contact> contactsWithProfiles = await getProfiles(
-              wotResults.map((Contact c) => c.pubKey).toList());
-          // addContacts also do a merge
-          ContactsCache().addAllContacts(contactsWithProfiles);
-        } else {
-          for (final Contact c in wotResults) {
-            ContactsCache().addContact(c);
-            _addIfNotPresent(c);
-            // retrieve extra results with c+ profile
-            for (final Contact wotC in wotResults) {
-              final Contact cachedWotProfile =
-                  await ContactsCache().getContact(wotC.pubKey);
-              if (cachedWotProfile.name == null) {
-                // Users without c+ profile
-                final Contact cPlusProfile = await getProfile(
-                    cachedWotProfile.pubKey,
-                    onlyProfile: true,
-                    complete: false);
-                ContactsCache().addContact(cPlusProfile);
-              }
-            }
-          }
-        }
+      if (inDevelopment) {
+        logger('Found: ${_results.length} after CesiumPlus search');
       }
+
+      // Process WoT results based on version
+      if (_isV2) {
+        // V2: optimized search
+        ContactsCache().addAllContacts(wotResults);
+        // ignore: prefer_foreach
+        for (final Contact wotC in wotResults) {
+          if (inDevelopment) {
+            logger(
+                'Adding WoT result: ${wotC.pubKey} - ${wotC.name ?? wotC.nick ?? "no name"}');
+          }
+          _addIfNotPresent(wotC);
+        }
+
+        // Enrich profiles in the BACKGROUND (non-blocking)
+        // This happens AFTER results are displayed
+        unawaited(_enrichProfilesInBackground(wotResults, isV2: true));
+      } else {
+        // V1: standard search
+        // ignore: prefer_foreach
+        for (final Contact c in wotResults) {
+          ContactsCache().addContact(c);
+          _addIfNotPresent(c);
+        }
+
+        // Enrich profiles in the BACKGROUND (non-blocking)
+        unawaited(_enrichProfilesInBackground(wotResults));
+      }
+
+      // ⚡ SINGLE UI update with all network results
+      setState(() {
+        if (inDevelopment) {
+          logger('Found: ${_results.length} total after network search');
+        }
+      });
+    } catch (e) {
+      logger('Error in network search: $e');
+      // UI maintains local results, graceful degradation
     }
 
+    // Validate as plain public key or V2 address if no results found
     if (_results.isEmpty && validateKey(_searchTerm)) {
       logger('$_searchTerm looks like a plain pub key');
       setState(() {
-        final Contact contact = Contact(pubKey: _searchTerm);
-        _results.add(contact);
+        _results.add(Contact(pubKey: _searchTerm));
       });
-    }
-
-    if (_results.isEmpty && isValidV2Address(_searchTerm)) {
+    } else if (_results.isEmpty && isValidV2Address(_searchTerm)) {
       logger('$_searchTerm looks like a plain address key');
       setState(() {
-        final Contact contact = Contact.withAddress(
-            address: _searchTerm,
-            createdOn: DateTime.now().millisecondsSinceEpoch);
-        _results.add(contact);
+        _results.add(Contact.withAddress(
+          address: _searchTerm,
+          createdOn: DateTime.now().millisecondsSinceEpoch,
+        ));
       });
     }
-
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   void _addIfNotPresent(Contact contact) {
@@ -177,6 +202,56 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
         .toList()
         .isEmpty) {
       _results.add(contact);
+    } else if (inDevelopment) {
+      logger('Skipping duplicate: ${contact.pubKey}');
+    }
+  }
+
+  /// Enrich WoT search results with C+ profiles in the background (non-blocking)
+  /// This allows results to display immediately while profile enrichment happens async
+  /// Does NOT call setState - enriched data is only cached for future searches
+  Future<void> _enrichProfilesInBackground(List<Contact> wotResults,
+      {bool isV2 = false}) async {
+    try {
+      if (widget.searchUse == SearchUse.payment) {
+        // Skip enrichment for payment search - just use WoT results
+        return;
+      }
+
+      if (isV2) {
+        // V2: batch fetch profiles and cache them
+        // This happens in background, UI won't re-render
+        final List<Contact> contactsWithProfiles = await getProfiles(
+          wotResults.map((Contact c) => c.pubKey).toList(),
+        );
+        ContactsCache().addAllContacts(contactsWithProfiles);
+        // Data is cached but UI doesn't update - that's intentional
+        // Results are already shown, enrichment is just for cache
+      } else {
+        // V1: fetch profiles individually and cache
+        // This happens in background, UI won't re-render
+        for (final Contact wotC in wotResults) {
+          final Contact cachedWotProfile =
+              await ContactsCache().getContact(wotC.pubKey);
+          if (cachedWotProfile.name == null) {
+            // Users without C+ profile
+            try {
+              final Contact cPlusProfile = await getProfile(
+                cachedWotProfile.pubKey,
+                onlyProfile: true,
+                complete: false,
+              );
+              ContactsCache().addContact(cPlusProfile);
+              // Data is cached but UI doesn't update - that's intentional
+            } catch (e) {
+              loggerDev(
+                  'Error fetching C+ profile for ${cachedWotProfile.pubKey}: $e');
+            }
+          }
+        }
+      }
+    } catch (e) {
+      loggerDev('Error in background profile enrichment: $e');
     }
   }
 
@@ -274,19 +349,17 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
                   _searchTerm = value;
                   _previousSearchTerm = value;
                   if (_searchTerm.length >= minSearchLength) {
-                    setState(() {
-                      _isLoading = true;
-                    });
+                    // Don't set _isLoading = true here; let _search() control it
                     EasyDebounce.debounce('profile_search_debouncer',
                         const Duration(milliseconds: 500), () => _search());
                   }
                 },
               )),
-          if (_isLoading)
+          if (_isLoading && _results.isEmpty)
             const LoadingBox(simple: false)
-          else if (_searchTerm.isNotEmpty && _results.isEmpty && _isLoading)
+          else if (_searchTerm.isNotEmpty && _results.isEmpty && !_isLoading)
             const NoElements(text: 'nothing_found')
-          else
+          else if (_results.isNotEmpty)
             Expanded(
               child: ListView.builder(
                   itemCount: _results.length,
@@ -308,6 +381,10 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
                           return widget;
                         });
                   }),
+            )
+          else
+            const Expanded(
+              child: NoElements(text: 'nothing_found'),
             )
         ],
       ),
@@ -545,9 +622,11 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
       enrichedContact = enrichedContact.copyWith(createdOn: contact.createdOn);
     }
 
-    if (_results.contains(contact)) {
-      _results.remove(contact);
-      _results.add(enrichedContact);
+    // Find and replace the contact by pubKey (not by reference)
+    final int index =
+        _results.indexWhere((Contact c) => c.pubKey == contact.pubKey);
+    if (index >= 0) {
+      _results[index] = enrichedContact;
     }
 
     final Contact? selectedContact = _selectedContacts

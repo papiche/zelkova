@@ -898,6 +898,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
+  flutter_skill:
+    dependency: "direct main"
+    description:
+      name: flutter_skill
+      sha256: "17d89250232119ea11c16404032e034b9e0196973862e2b1f7e16230245de95c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.9.5"
   flutter_slidable:
     dependency: "direct main"
     description:

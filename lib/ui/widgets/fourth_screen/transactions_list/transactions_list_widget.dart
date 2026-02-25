@@ -471,6 +471,7 @@ class _TransactionsListWidgetState extends State<TransactionsListWidget> {
           onRefresh: _onRefresh,
           child: ListView.builder(
             controller: _scrollController,
+            padding: const EdgeInsets.only(bottom: kBottomNavigationBarHeight + 16),
             itemCount: combinedTransactions.length +
                 _pendingTransactions.length +
                 1 +

@@ -675,18 +675,21 @@ Future<tp.Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalanceV2(
   // With cursor-based pagination, we use the full pageSize
   final int limit = pageSize ?? 10;
 
-  // Split the combined cursor into issued and received cursors
-  // Format: "issuedCursor|receivedCursor"
+  // Split the combined cursor into issued, received, and ud cursors
+  // Format: "issuedCursor|receivedCursor|udCursor"
   String? issuedCursor;
   String? receivedCursor;
+  String? udCursor;
   if (cursor != null && cursor.contains('|')) {
     final List<String> parts = cursor.split('|');
     issuedCursor = parts[0].isEmpty ? null : parts[0];
     receivedCursor = parts.length > 1 && parts[1].isNotEmpty ? parts[1] : null;
+    udCursor = parts.length > 2 && parts[2].isNotEmpty ? parts[2] : null;
   } else if (cursor != null && cursor.isNotEmpty) {
-    // Single cursor value - use for both
+    // Single cursor value - use for all (backward compat)
     issuedCursor = cursor;
     receivedCursor = cursor;
+    udCursor = cursor;
   }
 
   for (final Node node in nodes) {
@@ -713,10 +716,15 @@ Future<tp.Tuple2<Map<String, dynamic>?, Node>> getHistoryAndBalanceV2(
           ..vars.accountId = address
           ..vars.limit = limit;
 
-        // Set cursor only if we have one
-        final String? cursorValue = issuedCursor ?? receivedCursor;
-        if (cursorValue != null) {
-          b.vars.cursor.value = cursorValue;
+        // Set separate cursors for each connection
+        if (issuedCursor != null) {
+          b.vars.issuedCursor.value = issuedCursor;
+        }
+        if (receivedCursor != null) {
+          b.vars.receivedCursor.value = receivedCursor;
+        }
+        if (udCursor != null) {
+          b.vars.udCursor.value = udCursor;
         }
       });
 

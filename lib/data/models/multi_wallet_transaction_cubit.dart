@@ -52,9 +52,9 @@ class MultiWalletTransactionCubit
         return;
       }
 
-      // Keep only last 20 transactions to save space
+      // Keep only last 40 transactions to save space
       thinnedMap[pubKey] =
-          ts.copyWith(transactions: ts.transactions.take(20).toList());
+          ts.copyWith(transactions: ts.transactions.take(40).toList());
     });
 
     // Use the generated toJson method with the thinned state
@@ -525,8 +525,8 @@ class MultiWalletTransactionCubit
   /// Removes old transactions, limits the number of transactions per wallet,
   /// and deletes the state of wallets not included in the user's public keys.
   void autoCleanState({
-    int maxTxPerWallet = 10,
-    Duration maxTxAge = const Duration(days: 20),
+    int maxTxPerWallet = 20,
+    Duration maxTxAge = const Duration(days: 60),
   }) {
     final DateTime now = DateTime.now();
     final Map<String, TransactionState> cleanedMap =

@@ -98,21 +98,7 @@ Future<TransactionState> transactionsV2Parser(
   final bool receivedHasNextPage =
       receivedPageInfo?['hasNextPage'] as bool? ?? false;
 
-  // We have more pages if either list has more pages
-  final bool hasNextPage = issuedHasNextPage || receivedHasNextPage;
-
-  // Store the endCursor - we'll use the one from the list that has more items
-  // or combine them somehow. For now, let's store both in a combined format
-  String? combinedEndCursor;
-  if (issuedEndCursor != null && receivedEndCursor != null) {
-    combinedEndCursor = '$issuedEndCursor|$receivedEndCursor';
-  } else if (issuedEndCursor != null) {
-    combinedEndCursor = '$issuedEndCursor|';
-  } else if (receivedEndCursor != null) {
-    combinedEndCursor = '|$receivedEndCursor';
-  }
-
-  // For UD history, we'll get it from transferWithUd field
+  // For UD history, we'll get it from transferWithUd field (extract early for cursor format)
   final Map<String, dynamic>? transferWithUdConnection =
       account['transferWithUd'] as Map<String, dynamic>?;
   final List<dynamic> transferWithUdNodes =
@@ -127,6 +113,24 @@ Future<TransactionState> transactionsV2Parser(
       transferWithUdPageInfo?['endCursor'] as String?;
   final bool udHistoryHasNextPage =
       transferWithUdPageInfo?['hasNextPage'] as bool? ?? false;
+
+  // We have more pages if either list has more pages
+  final bool hasNextPage = issuedHasNextPage || receivedHasNextPage || udHistoryHasNextPage;
+
+  // Store the endCursor - we'll use the one from the list that has more items
+  // or combine them somehow. For now, let's store both in a combined format
+  // Format: "issuedCursor|receivedCursor|udCursor"
+  String? combinedEndCursor;
+  final String udPart = udHistoryEndCursor ?? '';
+  if (issuedEndCursor != null && receivedEndCursor != null) {
+    combinedEndCursor = '$issuedEndCursor|$receivedEndCursor|$udPart';
+  } else if (issuedEndCursor != null) {
+    combinedEndCursor = '$issuedEndCursor||$udPart';
+  } else if (receivedEndCursor != null) {
+    combinedEndCursor = '|$receivedEndCursor|$udPart';
+  } else if (udHistoryEndCursor != null) {
+    combinedEndCursor = '||$udPart';
+  }
 
   final List<Transaction> issuedTransactions = await _parseTransactions(
     transfersIssuedNodes,

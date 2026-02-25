@@ -198,7 +198,7 @@ fragment AccountTxsFields on Account {
   totalBalance
   isActive
 
-  comments: commentsIssued(first: $limit, after: $cursor, orderBy: [BLOCK_NUMBER_DESC]) {
+  comments: commentsIssued(first: $limit, orderBy: [BLOCK_NUMBER_DESC]) {
     totalCount
     pageInfo {
       hasNextPage
@@ -209,7 +209,7 @@ fragment AccountTxsFields on Account {
     }
   }
 
-  transfersIssued: transfersIssued(first: $limit, after: $cursor, orderBy: [TIMESTAMP_DESC]) {
+  transfersIssued: transfersIssued(first: $limit, after: $issuedCursor, orderBy: [TIMESTAMP_DESC]) {
     totalCount
     pageInfo {
       hasNextPage
@@ -220,7 +220,7 @@ fragment AccountTxsFields on Account {
     }
   }
 
-  transfersReceived: transfersReceived(first: $limit, after: $cursor, orderBy: [TIMESTAMP_DESC]) {
+  transfersReceived: transfersReceived(first: $limit, after: $receivedCursor, orderBy: [TIMESTAMP_DESC]) {
     totalCount
     pageInfo {
       hasNextPage
@@ -231,7 +231,7 @@ fragment AccountTxsFields on Account {
     }
   }
 
-  transferWithUd(first: $limit, after: $cursor, orderBy: TIMESTAMP_DESC, filter: { isUd: { equalTo: true } }) {
+  transferWithUd(first: $limit, after: $udCursor, orderBy: TIMESTAMP_DESC, filter: { isUd: { equalTo: true } }) {
     totalCount
     pageInfo {
       hasNextPage
@@ -328,7 +328,7 @@ query AccountsBasicByPk($accountIds: [String!]!) {
   }
 }
 
-query AccountTransactions($accountId: String!, $limit: Int, $cursor: Cursor) {
+query AccountTransactions($accountId: String!, $limit: Int, $issuedCursor: Cursor, $receivedCursor: Cursor, $udCursor: Cursor) {
   accounts(filter: { id: { equalTo: $accountId } }) {
     nodes {
       ...AccountTxsFields

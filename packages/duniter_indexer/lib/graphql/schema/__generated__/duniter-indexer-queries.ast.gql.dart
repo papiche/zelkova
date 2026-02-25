@@ -1127,10 +1127,6 @@ const AccountTxsFields = _i1.FragmentDefinitionNode(
           value: _i1.VariableNode(name: _i1.NameNode(value: 'limit')),
         ),
         _i1.ArgumentNode(
-          name: _i1.NameNode(value: 'after'),
-          value: _i1.VariableNode(name: _i1.NameNode(value: 'cursor')),
-        ),
-        _i1.ArgumentNode(
           name: _i1.NameNode(value: 'orderBy'),
           value: _i1.ListValueNode(values: [
             _i1.EnumValueNode(name: _i1.NameNode(value: 'BLOCK_NUMBER_DESC'))
@@ -1192,7 +1188,7 @@ const AccountTxsFields = _i1.FragmentDefinitionNode(
         ),
         _i1.ArgumentNode(
           name: _i1.NameNode(value: 'after'),
-          value: _i1.VariableNode(name: _i1.NameNode(value: 'cursor')),
+          value: _i1.VariableNode(name: _i1.NameNode(value: 'issuedCursor')),
         ),
         _i1.ArgumentNode(
           name: _i1.NameNode(value: 'orderBy'),
@@ -1256,7 +1252,7 @@ const AccountTxsFields = _i1.FragmentDefinitionNode(
         ),
         _i1.ArgumentNode(
           name: _i1.NameNode(value: 'after'),
-          value: _i1.VariableNode(name: _i1.NameNode(value: 'cursor')),
+          value: _i1.VariableNode(name: _i1.NameNode(value: 'receivedCursor')),
         ),
         _i1.ArgumentNode(
           name: _i1.NameNode(value: 'orderBy'),
@@ -1320,7 +1316,7 @@ const AccountTxsFields = _i1.FragmentDefinitionNode(
         ),
         _i1.ArgumentNode(
           name: _i1.NameNode(value: 'after'),
-          value: _i1.VariableNode(name: _i1.NameNode(value: 'cursor')),
+          value: _i1.VariableNode(name: _i1.NameNode(value: 'udCursor')),
         ),
         _i1.ArgumentNode(
           name: _i1.NameNode(value: 'orderBy'),
@@ -1997,7 +1993,25 @@ const AccountTransactions = _i1.OperationDefinitionNode(
       directives: [],
     ),
     _i1.VariableDefinitionNode(
-      variable: _i1.VariableNode(name: _i1.NameNode(value: 'cursor')),
+      variable: _i1.VariableNode(name: _i1.NameNode(value: 'issuedCursor')),
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Cursor'),
+        isNonNull: false,
+      ),
+      defaultValue: _i1.DefaultValueNode(value: null),
+      directives: [],
+    ),
+    _i1.VariableDefinitionNode(
+      variable: _i1.VariableNode(name: _i1.NameNode(value: 'receivedCursor')),
+      type: _i1.NamedTypeNode(
+        name: _i1.NameNode(value: 'Cursor'),
+        isNonNull: false,
+      ),
+      defaultValue: _i1.DefaultValueNode(value: null),
+      directives: [],
+    ),
+    _i1.VariableDefinitionNode(
+      variable: _i1.VariableNode(name: _i1.NameNode(value: 'udCursor')),
       type: _i1.NamedTypeNode(
         name: _i1.NameNode(value: 'Cursor'),
         isNonNull: false,

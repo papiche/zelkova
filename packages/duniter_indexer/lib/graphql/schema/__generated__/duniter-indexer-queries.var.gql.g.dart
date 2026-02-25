@@ -465,10 +465,24 @@ class _$GAccountTransactionsVarsSerializer
         ..add('limit')
         ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    value = object.cursor;
+    value = object.issuedCursor;
     if (value != null) {
       result
-        ..add('cursor')
+        ..add('issuedCursor')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(_i2.GCursor)));
+    }
+    value = object.receivedCursor;
+    if (value != null) {
+      result
+        ..add('receivedCursor')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(_i2.GCursor)));
+    }
+    value = object.udCursor;
+    if (value != null) {
+      result
+        ..add('udCursor')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(_i2.GCursor)));
     }
@@ -495,8 +509,16 @@ class _$GAccountTransactionsVarsSerializer
           result.limit = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int?;
           break;
-        case 'cursor':
-          result.cursor.replace(serializers.deserialize(value,
+        case 'issuedCursor':
+          result.issuedCursor.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.GCursor))! as _i2.GCursor);
+          break;
+        case 'receivedCursor':
+          result.receivedCursor.replace(serializers.deserialize(value,
+              specifiedType: const FullType(_i2.GCursor))! as _i2.GCursor);
+          break;
+        case 'udCursor':
+          result.udCursor.replace(serializers.deserialize(value,
               specifiedType: const FullType(_i2.GCursor))! as _i2.GCursor);
           break;
       }
@@ -1605,14 +1627,22 @@ class _$GAccountTransactionsVars extends GAccountTransactionsVars {
   @override
   final int? limit;
   @override
-  final _i2.GCursor? cursor;
+  final _i2.GCursor? issuedCursor;
+  @override
+  final _i2.GCursor? receivedCursor;
+  @override
+  final _i2.GCursor? udCursor;
 
   factory _$GAccountTransactionsVars(
           [void Function(GAccountTransactionsVarsBuilder)? updates]) =>
       (GAccountTransactionsVarsBuilder()..update(updates))._build();
 
   _$GAccountTransactionsVars._(
-      {required this.accountId, this.limit, this.cursor})
+      {required this.accountId,
+      this.limit,
+      this.issuedCursor,
+      this.receivedCursor,
+      this.udCursor})
       : super._();
   @override
   GAccountTransactionsVars rebuild(
@@ -1629,7 +1659,9 @@ class _$GAccountTransactionsVars extends GAccountTransactionsVars {
     return other is GAccountTransactionsVars &&
         accountId == other.accountId &&
         limit == other.limit &&
-        cursor == other.cursor;
+        issuedCursor == other.issuedCursor &&
+        receivedCursor == other.receivedCursor &&
+        udCursor == other.udCursor;
   }
 
   @override
@@ -1637,7 +1669,9 @@ class _$GAccountTransactionsVars extends GAccountTransactionsVars {
     var _$hash = 0;
     _$hash = $jc(_$hash, accountId.hashCode);
     _$hash = $jc(_$hash, limit.hashCode);
-    _$hash = $jc(_$hash, cursor.hashCode);
+    _$hash = $jc(_$hash, issuedCursor.hashCode);
+    _$hash = $jc(_$hash, receivedCursor.hashCode);
+    _$hash = $jc(_$hash, udCursor.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -1647,7 +1681,9 @@ class _$GAccountTransactionsVars extends GAccountTransactionsVars {
     return (newBuiltValueToStringHelper(r'GAccountTransactionsVars')
           ..add('accountId', accountId)
           ..add('limit', limit)
-          ..add('cursor', cursor))
+          ..add('issuedCursor', issuedCursor)
+          ..add('receivedCursor', receivedCursor)
+          ..add('udCursor', udCursor))
         .toString();
   }
 }
@@ -1665,9 +1701,21 @@ class GAccountTransactionsVarsBuilder
   int? get limit => _$this._limit;
   set limit(int? limit) => _$this._limit = limit;
 
-  _i2.GCursorBuilder? _cursor;
-  _i2.GCursorBuilder get cursor => _$this._cursor ??= _i2.GCursorBuilder();
-  set cursor(_i2.GCursorBuilder? cursor) => _$this._cursor = cursor;
+  _i2.GCursorBuilder? _issuedCursor;
+  _i2.GCursorBuilder get issuedCursor =>
+      _$this._issuedCursor ??= _i2.GCursorBuilder();
+  set issuedCursor(_i2.GCursorBuilder? issuedCursor) =>
+      _$this._issuedCursor = issuedCursor;
+
+  _i2.GCursorBuilder? _receivedCursor;
+  _i2.GCursorBuilder get receivedCursor =>
+      _$this._receivedCursor ??= _i2.GCursorBuilder();
+  set receivedCursor(_i2.GCursorBuilder? receivedCursor) =>
+      _$this._receivedCursor = receivedCursor;
+
+  _i2.GCursorBuilder? _udCursor;
+  _i2.GCursorBuilder get udCursor => _$this._udCursor ??= _i2.GCursorBuilder();
+  set udCursor(_i2.GCursorBuilder? udCursor) => _$this._udCursor = udCursor;
 
   GAccountTransactionsVarsBuilder();
 
@@ -1676,7 +1724,9 @@ class GAccountTransactionsVarsBuilder
     if ($v != null) {
       _accountId = $v.accountId;
       _limit = $v.limit;
-      _cursor = $v.cursor?.toBuilder();
+      _issuedCursor = $v.issuedCursor?.toBuilder();
+      _receivedCursor = $v.receivedCursor?.toBuilder();
+      _udCursor = $v.udCursor?.toBuilder();
       _$v = null;
     }
     return this;
@@ -1703,13 +1753,19 @@ class GAccountTransactionsVarsBuilder
             accountId: BuiltValueNullFieldError.checkNotNull(
                 accountId, r'GAccountTransactionsVars', 'accountId'),
             limit: limit,
-            cursor: _cursor?.build(),
+            issuedCursor: _issuedCursor?.build(),
+            receivedCursor: _receivedCursor?.build(),
+            udCursor: _udCursor?.build(),
           );
     } catch (_) {
       late String _$failedField;
       try {
-        _$failedField = 'cursor';
-        _cursor?.build();
+        _$failedField = 'issuedCursor';
+        _issuedCursor?.build();
+        _$failedField = 'receivedCursor';
+        _receivedCursor?.build();
+        _$failedField = 'udCursor';
+        _udCursor?.build();
       } catch (e) {
         throw BuiltValueNestedFieldError(
             r'GAccountTransactionsVars', _$failedField, e.toString());

@@ -35,6 +35,7 @@ dependencies:
   url_launcher: ^6.1.7
   flutter_svg: ^2.0.2
   http: ^1.2.2
+  flutter_skill: ^0.9.5
   easy_logger: ^0.0.2
   qr_flutter: ^4.0.0
   introduction_screen: ^4.0.0

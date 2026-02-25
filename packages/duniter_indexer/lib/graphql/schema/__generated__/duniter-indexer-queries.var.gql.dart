@@ -217,7 +217,9 @@ abstract class GAccountTransactionsVars
 
   String get accountId;
   int? get limit;
-  _i2.GCursor? get cursor;
+  _i2.GCursor? get issuedCursor;
+  _i2.GCursor? get receivedCursor;
+  _i2.GCursor? get udCursor;
   static Serializer<GAccountTransactionsVars> get serializer =>
       _$gAccountTransactionsVarsSerializer;
 

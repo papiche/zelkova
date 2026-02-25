@@ -9,6 +9,7 @@ import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_skill/flutter_skill.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:get_it/get_it.dart';
@@ -121,9 +122,16 @@ void workManagerCallbackDispatcher() {
 }
 
 void main() async {
+  // Initialize Flutter binding first.
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Enable Flutter Skill automation in debug mode.
+  if (kDebugMode) {
+    FlutterSkillBinding.ensureInitialized();
+  }
+
   // Wrap the entire bootstrap in runZonedGuarded to catch async uncaught errors.
   runZonedGuarded(() async {
-    WidgetsFlutterBinding.ensureInitialized();
 
     // Forward Flutter framework errors to the default presenter (and your logs).
     FlutterError.onError = (FlutterErrorDetails details) {

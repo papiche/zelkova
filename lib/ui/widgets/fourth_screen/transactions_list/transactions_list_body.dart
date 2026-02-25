@@ -31,6 +31,7 @@ class TransactionsListBody extends StatelessWidget {
     final int totalCount = pendingCount + transactions.length;
     return ListView.builder(
       controller: scrollController,
+      padding: const EdgeInsets.only(bottom: kBottomNavigationBarHeight + 16),
       physics: isScrollEnabled
           ? const AlwaysScrollableScrollPhysics()
           : const NeverScrollableScrollPhysics(),

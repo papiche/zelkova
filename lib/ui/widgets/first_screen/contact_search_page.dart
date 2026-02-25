@@ -55,12 +55,16 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
   String _searchTerm = '';
   String _previousSearchTerm = '';
 
-  List<Contact> _results = <Contact>[];
-  bool _isLoading = false;
+  List<Contact> _localResults = <Contact>[];
+  List<Contact> _networkResults = <Contact>[];
+  bool _isLoadingNetwork = false;
   final Set<Contact> _selectedContacts = <Contact>{};
   late bool _isMultiSelect;
   final int minSearchLength = 3;
   late bool _isV2;
+
+  // Getter para compatibilidad con código existente
+  List<Contact> get _results => <Contact>[..._localResults, ..._networkResults];
 
   Future<void> _search() async {
     // Trim and remove tabs
@@ -82,32 +86,34 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
     if (multiContacts.isNotEmpty) {
       setState(() {
         _isMultiSelect = multiContacts.length > 1;
-        _results = multiContacts.toList();
-        _isLoading = false;
+        _localResults = multiContacts.toList();
+        _networkResults = <Contact>[];
+        _isLoadingNetwork = false;
       });
       return;
     }
 
     // ⚡ Show local contacts immediately (no waiting for network)
     setState(() {
-      _results = contactsCubit.search(_searchTerm).toList();
-      _isLoading = false; // Stop showing loading indicator
+      _localResults = contactsCubit.search(_searchTerm).toList();
+      _networkResults = <Contact>[];
+      _isLoadingNetwork = false; // Stop showing loading indicator
       if (inDevelopment) {
-        logger('Found: ${_results.length} in local contacts');
+        logger('Found: ${_localResults.length} in local contacts');
       }
     });
 
     // If no connection, stop here with local results
     if (!isConnected) {
-      if (_results.isEmpty && validateKey(_searchTerm)) {
+      if (_localResults.isEmpty && validateKey(_searchTerm)) {
         logger('$_searchTerm looks like a plain pub key');
         setState(() {
-          _results.add(Contact(pubKey: _searchTerm));
+          _localResults.add(Contact(pubKey: _searchTerm));
         });
-      } else if (_results.isEmpty && isValidV2Address(_searchTerm)) {
+      } else if (_localResults.isEmpty && isValidV2Address(_searchTerm)) {
         logger('$_searchTerm looks like a plain address key');
         setState(() {
-          _results.add(Contact.withAddress(
+          _localResults.add(Contact.withAddress(
             address: _searchTerm,
             createdOn: DateTime.now().millisecondsSinceEpoch,
           ));
@@ -117,6 +123,10 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
     }
 
     // ⚡ Perform network searches in PARALLEL using Future.wait()
+    setState(() {
+      _isLoadingNetwork = true;
+    });
+
     try {
       final List<List<Contact>> results = await Future.wait<List<Contact>>([
         searchProfiles(_searchTerm, quickMode: true),
@@ -126,6 +136,9 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
       final List<Contact> profileResults = results[0];
       final List<Contact> wotResults = results[1];
 
+      // Build network results with deduplication
+      final List<Contact> networkResults = <Contact>[];
+
       // Add CesiumPlus results
       // ignore: prefer_foreach
       for (final Contact c in profileResults) {
@@ -133,67 +146,202 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
           logger(
               'Adding CesiumPlus result: ${c.pubKey} - ${c.name ?? c.nick ?? "no name"}');
         }
-        _addIfNotPresent(c);
+        networkResults.add(c);
       }
 
       if (inDevelopment) {
-        logger('Found: ${_results.length} after CesiumPlus search');
+        logger('Found: ${networkResults.length} after CesiumPlus search');
       }
 
-      // Process WoT results based on version
-      if (_isV2) {
-        // V2: optimized search
-        ContactsCache().addAllContacts(wotResults);
-        // ignore: prefer_foreach
-        for (final Contact wotC in wotResults) {
+      // Add WoT results with deduplication
+      // ignore: prefer_foreach
+      for (final Contact wotC in wotResults) {
+        // Skip if already in network results
+        if (!networkResults.any((Contact r) => r.pubKey == wotC.pubKey)) {
           if (inDevelopment) {
             logger(
                 'Adding WoT result: ${wotC.pubKey} - ${wotC.name ?? wotC.nick ?? "no name"}');
           }
-          _addIfNotPresent(wotC);
+          networkResults.add(wotC);
+        } else if (inDevelopment) {
+          logger('Skipping duplicate WoT result: ${wotC.pubKey}');
         }
+      }
 
-        // Enrich profiles in the BACKGROUND (non-blocking)
-        // This happens AFTER results are displayed
-        unawaited(_enrichProfilesInBackground(wotResults, isV2: true));
+      // Filter out contacts that are already in local results
+      final List<Contact> filteredNetworkResults = networkResults
+          .where((Contact nc) =>
+              !_localResults.any((Contact lc) => lc.pubKey == nc.pubKey))
+          .toList();
+
+      if (inDevelopment) {
+        logger(
+            'Found: ${filteredNetworkResults.length} total after deduplication');
+      }
+
+      // Cache the network results
+      if (_isV2) {
+        ContactsCache().addAllContacts(filteredNetworkResults);
       } else {
-        // V1: standard search
         // ignore: prefer_foreach
-        for (final Contact c in wotResults) {
+        for (final Contact c in filteredNetworkResults) {
           ContactsCache().addContact(c);
-          _addIfNotPresent(c);
         }
-
-        // Enrich profiles in the BACKGROUND (non-blocking)
-        unawaited(_enrichProfilesInBackground(wotResults));
       }
 
       // ⚡ SINGLE UI update with all network results
       setState(() {
-        if (inDevelopment) {
-          logger('Found: ${_results.length} total after network search');
-        }
+        _networkResults = filteredNetworkResults;
+        _isLoadingNetwork = false;
       });
     } catch (e) {
       logger('Error in network search: $e');
       // UI maintains local results, graceful degradation
+      setState(() {
+        _networkResults = <Contact>[];
+        _isLoadingNetwork = false;
+      });
     }
 
-    // Validate as plain public key or V2 address if no results found
-    if (_results.isEmpty && validateKey(_searchTerm)) {
+    // Validate as plain public key or V2 address if no results found anywhere
+    if (_localResults.isEmpty &&
+        _networkResults.isEmpty &&
+        validateKey(_searchTerm)) {
       logger('$_searchTerm looks like a plain pub key');
       setState(() {
-        _results.add(Contact(pubKey: _searchTerm));
+        _localResults.add(Contact(pubKey: _searchTerm));
       });
-    } else if (_results.isEmpty && isValidV2Address(_searchTerm)) {
+    } else if (_localResults.isEmpty &&
+        _networkResults.isEmpty &&
+        isValidV2Address(_searchTerm)) {
       logger('$_searchTerm looks like a plain address key');
       setState(() {
-        _results.add(Contact.withAddress(
+        _localResults.add(Contact.withAddress(
           address: _searchTerm,
           createdOn: DateTime.now().millisecondsSinceEpoch,
         ));
       });
     }
+  }
+
+  /// Build results list with visual separation between local and network results
+  Widget _buildResultsList() {
+    final bool hasLocalResults = _localResults.isNotEmpty;
+    final bool hasNetworkResults = _networkResults.isNotEmpty;
+    final bool showNetworkSection = hasNetworkResults;
+
+    // Calculate item count properly
+    int itemCount = _localResults.length;
+
+    if (_isLoadingNetwork && _networkResults.isEmpty) {
+      // Add separator + loading indicator
+      itemCount += 1;
+    } else if (showNetworkSection) {
+      // Add separator
+      itemCount += 1;
+      if (hasNetworkResults) {
+        // Add network contacts
+        itemCount += _networkResults.length;
+      } else if (hasLocalResults) {
+        // Add "no more results" message only if there are local contacts
+        itemCount += 1;
+      }
+    }
+
+    return ListView.builder(
+      itemCount: itemCount,
+      itemBuilder: (BuildContext context, int index) {
+        // Local contacts
+        if (index < _localResults.length) {
+          return _buildContactTile(context, _localResults[index], index, false);
+        }
+
+        final int relativeIndex = index - _localResults.length;
+
+        // Network section separator + content
+        if (_isLoadingNetwork && _networkResults.isEmpty) {
+          // Show separator and loading indicator
+          return Column(
+            children: <Widget>[
+              ListTile(
+                tileColor: Theme.of(context).colorScheme.primaryContainer,
+                title: Text(
+                  tr('network_results'),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      ),
+                ),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+              ),
+              const SizedBox(height: 16),
+              const CircularProgressIndicator(),
+              const SizedBox(height: 16),
+            ],
+          );
+        } else if (showNetworkSection) {
+          // First item after local contacts is the separator
+          if (relativeIndex == 0) {
+            return ListTile(
+              tileColor: Theme.of(context).colorScheme.primaryContainer,
+              title: Text(
+                tr('network_results'),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
+                    ),
+              ),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+            );
+          }
+
+          // Items after separator
+          if (hasNetworkResults) {
+            // Network contacts (relativeIndex - 1 because separator is at 0)
+            final int networkIndex = relativeIndex - 1;
+            if (networkIndex >= 0 && networkIndex < _networkResults.length) {
+              return _buildContactTile(
+                  context, _networkResults[networkIndex], networkIndex, true);
+            }
+          } else if (hasLocalResults) {
+            // No more results message (only when there are local contacts)
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Center(
+                child: Text(
+                  tr('no_more_network_results'),
+                  style: TextStyle(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withAlpha((255.0 * 0.6).round()),
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ),
+            );
+          }
+        }
+
+        return const SizedBox.shrink();
+      },
+    );
+  }
+
+  Widget _buildContactTile(
+      BuildContext context, Contact contact, int index, bool isNetworkResult) {
+    return FutureBuilder<Contact>(
+        future: _getAndReplaceContact(contact, isNetworkResult),
+        builder: (BuildContext context, AsyncSnapshot<Contact> snapshot) {
+          Widget widget;
+          if (snapshot.hasData) {
+            widget = _buildItem(snapshot.data!, index, context);
+          } else if (snapshot.hasError) {
+            widget = CustomErrorWidget(snapshot.error);
+          } else {
+            // Contact without wot
+            widget = _buildItem(contact, index, context);
+          }
+          return widget;
+        });
   }
 
   void _addIfNotPresent(Contact contact) {
@@ -306,7 +454,9 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
                       ? notForContactPage
                           ? tr('search_user_hint')
                           : tr('search_user_hint_basic')
-                      : !_isMultiSelect && !_isLoading && notForContactPage
+                      : !_isMultiSelect &&
+                              !_isLoadingNetwork &&
+                              notForContactPage
                           ? tr('search_multiuser_hint')
                           : null,
                   suffixIcon: Row(
@@ -320,8 +470,9 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
                           _searchTerm = '';
                           _previousSearchTerm = '';
                           setState(() {
-                            _isLoading = false;
-                            _results.clear();
+                            _isLoadingNetwork = false;
+                            _localResults.clear();
+                            _networkResults.clear();
                           });
                         },
                       ),
@@ -342,45 +493,31 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
                       value.length < minSearchLength) {
                     _previousSearchTerm = value;
                     setState(() {
-                      _isLoading = false;
+                      _isLoadingNetwork = false;
                     });
                     return;
                   }
                   _searchTerm = value;
                   _previousSearchTerm = value;
                   if (_searchTerm.length >= minSearchLength) {
-                    // Don't set _isLoading = true here; let _search() control it
+                    // Don't set _isLoadingNetwork = true here; let _search() control it
                     EasyDebounce.debounce('profile_search_debouncer',
                         const Duration(milliseconds: 500), () => _search());
                   }
                 },
               )),
-          if (_isLoading && _results.isEmpty)
+          if (_isLoadingNetwork &&
+              _localResults.isEmpty &&
+              _networkResults.isEmpty)
             const LoadingBox(simple: false)
-          else if (_searchTerm.isNotEmpty && _results.isEmpty && !_isLoading)
+          else if (_searchTerm.isNotEmpty &&
+              _localResults.isEmpty &&
+              _networkResults.isEmpty &&
+              !_isLoadingNetwork)
             const NoElements(text: 'nothing_found')
           else if (_results.isNotEmpty)
             Expanded(
-              child: ListView.builder(
-                  itemCount: _results.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final Contact contact = _results.toList()[index];
-                    return FutureBuilder<Contact>(
-                        future: _getAndReplaceContact(contact),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<Contact> snapshot) {
-                          Widget widget;
-                          if (snapshot.hasData) {
-                            widget = _buildItem(snapshot.data!, index, context);
-                          } else if (snapshot.hasError) {
-                            widget = CustomErrorWidget(snapshot.error);
-                          } else {
-                            // Contact without wot
-                            widget = _buildItem(contact, index, context);
-                          }
-                          return widget;
-                        });
-                  }),
+              child: _buildResultsList(),
             )
           else
             const Expanded(
@@ -614,7 +751,8 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
           );
   }
 
-  Future<Contact> _getAndReplaceContact(Contact contact) async {
+  Future<Contact> _getAndReplaceContact(Contact contact,
+      [bool isNetworkResult = false]) async {
     Contact enrichedContact = await ContactsCache().getContact(contact.pubKey);
 
     // Preserve createdOn from original contact if enriched contact doesn't have it
@@ -622,11 +760,13 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
       enrichedContact = enrichedContact.copyWith(createdOn: contact.createdOn);
     }
 
-    // Find and replace the contact by pubKey (not by reference)
+    // Find and replace the contact by pubKey in the appropriate list
+    final List<Contact> targetList =
+        isNetworkResult ? _networkResults : _localResults;
     final int index =
-        _results.indexWhere((Contact c) => c.pubKey == contact.pubKey);
+        targetList.indexWhere((Contact c) => c.pubKey == contact.pubKey);
     if (index >= 0) {
-      _results[index] = enrichedContact;
+      targetList[index] = enrichedContact;
     }
 
     final Contact? selectedContact = _selectedContacts

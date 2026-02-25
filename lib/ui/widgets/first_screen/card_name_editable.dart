@@ -47,8 +47,10 @@ class _CardNameEditableState extends State<CardNameEditable> {
       ? widget.account.contact.name
       : null;
 
+  // isMember != false covers both (true = member) and (null = still loading).
+  // When null we default to non-editable to avoid a brief editable flash.
   bool get _hasIdentity =>
-      _nick != null || widget.account.contact.isMember == true;
+      _nick != null || widget.account.contact.isMember != false;
   bool get _isEditable => !_hasIdentity;
 
   /// The text currently shown on the card (not editing mode).

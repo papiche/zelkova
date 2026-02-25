@@ -115,7 +115,7 @@ class _FirstScreenState extends State<FirstScreen> {
                           // Check if screen width is considered large (e.g., tablet or desktop)
                           final bool isLargeScreen =
                               ResponsiveBreakpoints.of(context)
-                                  .largerThan(MOBILE);
+                                  .largerThan(TABLET);
 
                           final StoredAccount account =
                               prefsHelper.getCurrentAccount();

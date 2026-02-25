@@ -9,10 +9,11 @@ import '../../logger.dart';
 import '../../ui_helpers.dart';
 import '../card_helper.dart';
 import '../contacts_actions.dart';
+import '../avatar_badge.dart';
 import 'card_name_editable.dart';
 import 'card_text_style.dart';
 
-class CreditCard extends StatelessWidget {
+class CreditCard extends StatefulWidget {
   const CreditCard({
     super.key,
     required this.account,
@@ -25,16 +26,65 @@ class CreditCard extends StatelessWidget {
   final WalletTheme? theme;
 
   @override
+  State<CreditCard> createState() => _CreditCardState();
+}
+
+class _CreditCardState extends State<CreditCard> {
+  void _showAvatarDialog() {
+    if (!widget.account.contact.hasAvatar) {
+      return;
+    }
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Container(
+              color: Colors.black.withValues(alpha: 0.9),
+              child: Stack(
+                alignment: Alignment.center,
+                children: <Widget>[
+                  CircleAvatar(
+                    radius: 120,
+                    child: ClipOval(
+                      child: Image.memory(
+                        widget.account.contact.avatar!,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 20,
+                    right: 20,
+                    child: GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: const Icon(Icons.close,
+                          color: Colors.white, size: 30),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     const double cardRadius = 10.0;
-    final String publicKey =
-        account.type.isV2 ? account.address : account.pubKey;
+    final String publicKey = widget.account.type.isV2
+        ? widget.account.address
+        : widget.account.pubKey;
     // Edit is allowed only when the account has no Duniter identity.
     // Accounts with an identity display their nick read-only.
-    final bool hasIdentity =
-        (account.contact.nick != null && account.contact.nick!.isNotEmpty) ||
-            account.contact.isMember == true;
-    final WalletTheme cardTheme = theme ?? account.theme;
+    final bool hasIdentity = (widget.account.contact.nick != null &&
+            widget.account.contact.nick!.isNotEmpty) ||
+        widget.account.contact.isMember != false;
+    final WalletTheme cardTheme = widget.theme ?? widget.account.theme;
 
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
@@ -105,7 +155,7 @@ class CreditCard extends StatelessWidget {
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           // Header: Title and icon
                           Row(
@@ -125,32 +175,54 @@ class CreditCard extends StatelessWidget {
                               ),
                               walletIconByType(
                                 context,
-                                account,
+                                widget.account,
                                 iconSize,
                                 true,
                               ),
                             ],
                           ),
-                          // Middle: Chip and name
-                          Row(
-                            children: <Widget>[
-                              GestureDetector(
-                                onTap: () => showMyContactPage(context),
-                                child: SvgPicture.asset(
-                                  'assets/img/chip.svg',
-                                  width: chipWidth,
+                          // Middle: Chip and name with avatar
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    GestureDetector(
+                                      onTap: () => showMyContactPage(context),
+                                      child: SvgPicture.asset(
+                                        'assets/img/chip.svg',
+                                        width: chipWidth,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10.0),
+                                    Expanded(
+                                      child: CardNameEditable(
+                                        key: Key(widget.account.pubKey),
+                                        account: widget.account,
+                                        defValue: !hasIdentity
+                                            ? tr('your_name_here')
+                                            : '',
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              const SizedBox(width: 10.0),
-                              Expanded(
-                                child: CardNameEditable(
-                                  key: Key(account.pubKey),
-                                  account: account,
-                                  defValue:
-                                      !hasIdentity ? tr('your_name_here') : '',
-                                ),
-                              ),
-                            ],
+                                if (widget.account.contact.hasAvatar &&
+                                    bigDevice)
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
+                                    child: GestureDetector(
+                                      onTap: () => showMyContactPage(context),
+                                      child: AvatarBadge(
+                                        contact: widget.account.contact,
+                                        radius: 16,
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
                           ),
                           // Bottom: Public key
                           GestureDetector(

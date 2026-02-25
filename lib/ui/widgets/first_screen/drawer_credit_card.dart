@@ -13,9 +13,11 @@ import '../../../shared_prefs_helper.dart';
 import '../../logger.dart';
 import '../../ui_helpers.dart';
 import '../account_card_theme_selector.dart';
+import '../avatar_badge.dart';
+import '../avatar_dialog.dart';
 import 'simple_card_name_text.dart';
 
-class DrawerWalletCard extends StatelessWidget {
+class DrawerWalletCard extends StatefulWidget {
   const DrawerWalletCard(
       {super.key,
       required this.card,
@@ -26,6 +28,11 @@ class DrawerWalletCard extends StatelessWidget {
   final bool settingsVisible;
   final int cardIndex;
 
+  @override
+  State<DrawerWalletCard> createState() => _DrawerWalletCardState();
+}
+
+class _DrawerWalletCardState extends State<DrawerWalletCard> {
   void _showThemeSelector(BuildContext context) {
     showDialog(
       context: context,
@@ -35,12 +42,20 @@ class DrawerWalletCard extends StatelessWidget {
           content: SizedBox(
               width: double.maxFinite,
               child: AccountCardThemeSelector(
-                  account: card,
+                  account: widget.card,
                   onTap: (WalletTheme theme) =>
                       SharedPreferencesHelper().setTheme(theme: theme))),
         );
       },
     );
+  }
+
+  void _showAvatarDialog() {
+    if (!widget.card.contact.hasAvatar) {
+      return;
+    }
+
+    showAvatarDialog(context, widget.card.contact.avatar!);
   }
 
   @override
@@ -50,7 +65,7 @@ class DrawerWalletCard extends StatelessWidget {
     final double cardInternalElPadding = bigDevice ? 5 : 6.0;
     return Padding(
         padding: const EdgeInsets.all(10),
-        child: settingsVisible
+        child: widget.settingsVisible
             ? _buildCard(cardRadius, context, cardInternalElPadding, bigDevice)
             : GestureDetector(
                 onTap: () => onCardTap(context),
@@ -60,9 +75,9 @@ class DrawerWalletCard extends StatelessWidget {
 
   Card _buildCard(double cardRadius, BuildContext context,
       double cardInternalElPadding, bool bigDevice) {
-    final Contact c = card.contact;
+    final Contact c = widget.card.contact;
     final bool isHighlighted = (SharedPreferencesHelper().highlightedGroupId ==
-            (card.derivationParentId ?? card.pubKey)) &&
+            (widget.card.derivationParentId ?? widget.card.pubKey)) &&
         SharedPreferencesHelper().isHighlightVisible;
 
     return Card(
@@ -90,17 +105,17 @@ class DrawerWalletCard extends StatelessWidget {
                     begin: Alignment.bottomLeft,
                     end: Alignment.topRight,
                     colors: <Color>[
-                      card.theme.primaryColor,
-                      card.theme.secondaryColor
+                      widget.card.theme.primaryColor,
+                      widget.card.theme.secondaryColor
                     ],
                   ),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: Stack(children: <Widget>[
-                    if (settingsVisible &&
-                        card.type.isV2 &&
-                        card.derivationParentId == null)
+                    if (widget.settingsVisible &&
+                        widget.card.type.isV2 &&
+                        widget.card.derivationParentId == null)
                       Positioned(
                         bottom: 4,
                         left: 4,
@@ -110,14 +125,14 @@ class DrawerWalletCard extends StatelessWidget {
                           elevation: 1,
                           onPressed: () {
                             SharedPreferencesHelper()
-                                .highlightGroup(card.pubKey);
+                                .highlightGroup(widget.card.pubKey);
                             _deriveAccount(context);
                           },
                           child:
                               const Icon(Icons.add_link, color: Colors.white),
                         ),
                       ),
-                    if (settingsVisible)
+                    if (widget.settingsVisible)
                       Positioned(
                         bottom: 4,
                         right: 4,
@@ -179,18 +194,19 @@ class DrawerWalletCard extends StatelessWidget {
                           ],
                         ),
                       ),
-                    if (card.derivationParentId != null)
+                    if (widget.card.derivationParentId != null)
                       Positioned(
                         bottom: 0,
                         left: 0,
                         child: GestureDetector(
                           onTap: () {
                             SharedPreferencesHelper()
-                                .highlightGroup(card.derivationParentId);
+                                .highlightGroup(widget.card.derivationParentId);
                             final Iterable<StoredAccount> parents =
                                 SharedPreferencesHelper().accounts.where(
                                     (StoredAccount a) =>
-                                        a.pubKey == card.derivationParentId);
+                                        a.pubKey ==
+                                        widget.card.derivationParentId);
                             final StoredAccount? parent =
                                 parents.isNotEmpty ? parents.first : null;
                             final String parentName = parent != null
@@ -199,8 +215,8 @@ class DrawerWalletCard extends StatelessWidget {
                                         extractPublicKey(parent.address))
                                     : simplifyPubKey(
                                         extractPublicKey(parent.pubKey)))
-                                : simplifyPubKey(
-                                    extractPublicKey(card.derivationParentId!));
+                                : simplifyPubKey(extractPublicKey(
+                                    widget.card.derivationParentId!));
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(tr('linked_to',
@@ -240,7 +256,7 @@ class DrawerWalletCard extends StatelessWidget {
                                             c.titleWithoutAddressOrPubKey,
                                         onTap: null,
                                         addSuffix: true,
-                                        account: card),
+                                        account: widget.card),
                                   ),
                                 ])),
                           if (!c.hasTitle)
@@ -251,16 +267,29 @@ class DrawerWalletCard extends StatelessWidget {
                                 child: Row(children: <Widget>[
                                   Expanded(
                                     child: SimpleCardNameText(
-                                        currentText: card.type.isV2
-                                            ? simplifyPubKey(
-                                                extractPublicKey(card.address))
-                                            : simplifyPubKey(
-                                                extractPublicKey(card.pubKey)),
+                                        currentText: widget.card.type.isV2
+                                            ? simplifyPubKey(extractPublicKey(
+                                                widget.card.address))
+                                            : simplifyPubKey(extractPublicKey(
+                                                widget.card.pubKey)),
                                         onTap: null,
                                         addSuffix: false,
-                                        account: card),
+                                        account: widget.card),
                                   ),
                                 ])),
+                          if (widget.card.contact.hasAvatar)
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                  cardInternalElPadding,
+                                  12.0,
+                                  cardInternalElPadding,
+                                  cardInternalElPadding),
+                              child: AvatarBadge(
+                                contact: widget.card.contact,
+                                radius: 16,
+                                onTap: _showAvatarDialog,
+                              ),
+                            ),
                           if (bigDevice) const SizedBox(height: 6.0),
                           const SizedBox(height: 8.0),
                         ]),
@@ -269,12 +298,12 @@ class DrawerWalletCard extends StatelessWidget {
   }
 
   Future<void> onCardTap(BuildContext context) async {
-    logger("Card ${humanizeContact('', card.contact)} was tapped!");
-    await SharedPreferencesHelper().selectCurrentWallet(card.pubKey);
+    logger("Card ${humanizeContact('', widget.card.contact)} was tapped!");
+    await SharedPreferencesHelper().selectCurrentWallet(widget.card.pubKey);
     if (context.mounted) {
       context.read<BottomNavCubit>().updateIndex(0);
       // Pre-fetch WoT info for the selected wallet
-      context.read<AppCubit>().updateWotInfo(card.contact);
+      context.read<AppCubit>().updateWotInfo(widget.card.contact);
     }
     // Add a small delay to let the user see the card reordering
     await Future<void>.delayed(const Duration(milliseconds: 500));
@@ -308,7 +337,7 @@ class DrawerWalletCard extends StatelessWidget {
 
     if (confirm ?? false) {
       try {
-        await SharedPreferencesHelper().deriveNextAccount(card);
+        await SharedPreferencesHelper().deriveNextAccount(widget.card);
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(tr('link_account_success'))),

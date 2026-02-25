@@ -18,8 +18,11 @@ import '../../contacts_helper.dart';
 import '../../currency_helper.dart';
 import '../../in_dev_helper.dart';
 import '../../locale_helper.dart';
+import '../../logger.dart';
 import '../../pay_helper.dart';
 import '../../ui_helpers.dart';
+import '../avatar_badge.dart';
+import '../avatar_dialog.dart';
 import '../contact_menu.dart';
 import '../contacts_actions.dart';
 import 'transaction_item_time.dart';
@@ -308,24 +311,53 @@ class _TransactionListItemState extends State<TransactionListItem> {
                                 ),
                                 lineSeparator(),
                                 WidgetSpan(
-                                    alignment: PlaceholderAlignment.top,
-                                    child: ContactMenu(
-                                      contact: transaction.from,
-                                      onEdit: () => onEditContact(
-                                          context, transaction.from),
-                                      onSent: () => onSentContact(
-                                          context, transaction.from),
-                                      onCopy: () => onShowContactQr(
-                                          context, transaction.from),
-                                      onDelete: () => onDeleteContact(
-                                          context, transaction.from),
-                                      parent: Text(
-                                        humanizeContact(
-                                            myPubKey, transaction.from),
-                                        style: linkTextStyle,
+                                    alignment: PlaceholderAlignment.middle,
+                                    child: ConstrainedBox(
+                                      constraints:
+                                          const BoxConstraints(maxWidth: 200),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        spacing: 4,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Flexible(
+                                            child: ContactMenu(
+                                              contact: transaction.from,
+                                              onEdit: () => onEditContact(
+                                                  context, transaction.from),
+                                              onSent: () => onSentContact(
+                                                  context, transaction.from),
+                                              onCopy: () => onShowContactQr(
+                                                  context, transaction.from),
+                                              onDelete: () => onDeleteContact(
+                                                  context, transaction.from),
+                                              parent: Text(
+                                                humanizeContact(
+                                                    myPubKey, transaction.from),
+                                                style: linkTextStyle,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ),
+                                          AvatarBadge(
+                                            contact: transaction.from,
+                                            radius: 12,
+                                            onTap: transaction.from.hasAvatar
+                                                ? () {
+                                                    logger(
+                                                        '[TransactionItem] FROM avatar tapped');
+                                                    showAvatarDialog(
+                                                        context,
+                                                        transaction
+                                                            .from.avatar!);
+                                                  }
+                                                : null,
+                                          ),
+                                        ],
                                       ),
                                     )),
-                                lineSeparator(),
+                                tinyLineSeparator(),
                                 TextSpan(
                                   text: tr('transaction_to').toLowerCase(),
                                   style: TextStyle(
@@ -335,27 +367,62 @@ class _TransactionListItemState extends State<TransactionListItem> {
                                     color: fromToColor,
                                   ),
                                 ),
-                                lineSeparator(),
+                                tinyLineSeparator(),
+                                tinyLineSeparator(),
                                 WidgetSpan(
-                                    alignment: PlaceholderAlignment.top,
-                                    child: ContactMenu(
-                                      contact: to,
-                                      onEdit: () => onEditContact(context, to),
-                                      onSent: () => onSentContact(context, to),
-                                      onCopy: () =>
-                                          onShowContactQr(context, to),
-                                      onDelete: () {
-                                        return onDeleteContact(context, to);
-                                      },
-                                      disable: transaction.isToMultiple,
-                                      parent: Text(
-                                        humanizeContacts(
-                                            publicAddress: myPubKey,
-                                            contacts: transaction
-                                                .recipientsWithoutCashBack),
-                                        style: linkTextStyle,
+                                    alignment: PlaceholderAlignment.middle,
+                                    child: ConstrainedBox(
+                                      constraints:
+                                          const BoxConstraints(maxWidth: 200),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        spacing: 4,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Flexible(
+                                            child: ContactMenu(
+                                              contact: to,
+                                              onEdit: () =>
+                                                  onEditContact(context, to),
+                                              onSent: () =>
+                                                  onSentContact(context, to),
+                                              onCopy: () =>
+                                                  onShowContactQr(context, to),
+                                              onDelete: () {
+                                                return onDeleteContact(
+                                                    context, to);
+                                              },
+                                              disable: transaction.isToMultiple,
+                                              parent: Text(
+                                                humanizeContacts(
+                                                    publicAddress: myPubKey,
+                                                    contacts: transaction
+                                                        .recipientsWithoutCashBack),
+                                                style: linkTextStyle,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ),
+                                          AvatarBadge(
+                                            contact: to,
+                                            radius: 12,
+                                            onTap: to.hasAvatar
+                                                ? () {
+                                                    logger(
+                                                        '[TransactionItem] TO avatar tapped');
+                                                    showAvatarDialog(
+                                                        context, to.avatar!);
+                                                  }
+                                                : null,
+                                          ),
+                                        ],
                                       ),
                                     )),
+                                const WidgetSpan(
+                                  alignment: PlaceholderAlignment.top,
+                                  child: SizedBox(width: 2.0),
+                                ),
                               ],
                             ),
                           ),
@@ -503,6 +570,13 @@ class _TransactionListItemState extends State<TransactionListItem> {
     return const WidgetSpan(
       alignment: PlaceholderAlignment.top,
       child: SizedBox(width: 5.0),
+    );
+  }
+
+  WidgetSpan tinyLineSeparator() {
+    return const WidgetSpan(
+      alignment: PlaceholderAlignment.top,
+      child: SizedBox(width: 2.0),
     );
   }
 

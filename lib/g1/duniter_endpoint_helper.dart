@@ -371,7 +371,7 @@ Future<PayResult> payV2({
   for (final String dest in to) {
     try {
       loggerDev('payV2: Converting pubkey to address: $dest');
-      addresses.add(addressFromV1PubkeyFaiSafe(dest));
+      addresses.add(isValidV2Address(dest) ? dest : addressFromV1PubkeyFaiSafe(dest));
       loggerDev('payV2: Converted to address: ${addresses.last}');
     } catch (e) {
       loggerDev('payV2: Error converting pubkey $dest to address: $e');

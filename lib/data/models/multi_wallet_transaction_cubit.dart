@@ -522,13 +522,11 @@ class MultiWalletTransactionCubit
   }
 
   /// Cleans the state to avoid excessive growth.
-  /// Removes old transactions, limits the number of transactions per wallet,
+  /// Keeps only the last [maxTxPerWallet] transactions per wallet,
   /// and deletes the state of wallets not included in the user's public keys.
   void autoCleanState({
     int maxTxPerWallet = 20,
-    Duration maxTxAge = const Duration(days: 60),
   }) {
-    final DateTime now = DateTime.now();
     final Map<String, TransactionState> cleanedMap =
         <String, TransactionState>{};
     // Get all user public keys from SharedPreferencesHelper
@@ -540,15 +538,12 @@ class MultiWalletTransactionCubit
         continue;
       }
       final TransactionState walletState = state.map[key]!;
-      // Filter transactions by age
-      final List<Transaction> filteredTxs = walletState.transactions
-          .where((Transaction tx) =>
-              now.difference(tx.time).inDays < maxTxAge.inDays)
-          .toList();
-      // Limit the number of transactions
-      final List<Transaction> limitedTxs = filteredTxs.length > maxTxPerWallet
-          ? filteredTxs.sublist(filteredTxs.length - maxTxPerWallet)
-          : filteredTxs;
+      // Keep only the last maxTxPerWallet transactions
+      final List<Transaction> limitedTxs =
+          walletState.transactions.length > maxTxPerWallet
+              ? walletState.transactions.sublist(
+                  walletState.transactions.length - maxTxPerWallet)
+              : walletState.transactions;
       cleanedMap[key] = walletState.copyWith(transactions: limitedTxs);
     }
     emit(MultiWalletTransactionState(cleanedMap));

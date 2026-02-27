@@ -1,32 +1,24 @@
-#!/bin/bash
+#!/bin/sh
 
-if [ -z "$(ls -A /etc/nginx)" ]; then
-    cp -a /etc/nginx-default/* /etc/nginx/
-fi
-
+# Inject environment variables into the Flutter web app config
 CONFIG_FILE="/usr/share/nginx/html/assets/assets/env.production.txt"
 
-VARIABLES=(
-  "SENTRY_DSN"
-  "CARD_TEXT"
-  "DUNITER_NODES"
-  "CESIUM_PLUS_NODES"
-  "GVA_NODES"
-)
+# Ensure the config directory exists (Flutter web build quirk)
+mkdir -p /usr/share/nginx/html/assets/assets/
 
-DUNITER_IP=$(getent hosts duniter | awk '{ print $1 }')
+# If config file doesn't exist yet, copy from assets
+if [ ! -f "$CONFIG_FILE" ]; then
+  cp /usr/share/nginx/html/assets/env.production.txt "$CONFIG_FILE" 2>/dev/null || true
+fi
 
-export GVA_NODES="http://$DUNITER_IP:30901 ${GVA_NODES}"
-
-for VAR_NAME in "${VARIABLES[@]}"; do
-  VAR_VALUE=${!VAR_NAME}
-  if [ ! -z "$VAR_VALUE" ]; then
-    ESCAPED_VAR_VALUE=$(echo "$VAR_VALUE" | sed -e 's/[\/&]/\\&/g')
-    sed -i -e "s/^\($VAR_NAME=\).*\$/\1$ESCAPED_VAR_VALUE/" $CONFIG_FILE
+# Replace env variables in config file (POSIX sh compatible)
+for VAR_NAME in CURRENCY SENTRY_DSN CARD_COLOR_LEFT CARD_COLOR_RIGHT CARD_TEXT DUNITER_NODES CESIUM_PLUS_NODES GVA_NODES; do
+  VAR_VALUE=$(eval echo \"\$$VAR_NAME\")
+  if [ -n "$VAR_VALUE" ]; then
+    ESCAPED_VAR_VALUE=$(printf '%s' "$VAR_VALUE" | sed -e 's/[\/&]/\\&/g')
+    sed -i "s/^\(${VAR_NAME}=\).*$/\1${ESCAPED_VAR_VALUE}/" "$CONFIG_FILE"
   fi
 done
 
-# Tyr to mimic nginx entrypoint
-# https://github.com/nginxinc/docker-nginx/blob/master/Dockerfile-debian.template
-/docker-entrypoint.sh
+# Start nginx
 exec nginx -g "daemon off;"

@@ -1,41 +1,38 @@
-# Dockerfile
+# Dockerfile - Ginkgo Ğ1 Wallet Web
+# Multi-stage build: Flutter web build → nginx
 
-FROM nginx:latest
+# Stage 1: Build Flutter web app
+FROM ghcr.io/cirruslabs/flutter:3.41.2 AS builder
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-        DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y certbot curl tar && \
-        rm -rf /var/lib/apt/lists/* && \
-        apt-get clean
+WORKDIR /app
 
-ARG GINKGO_WEB_VERSION=1.1.0
-ARG GINKGO_WEB_VERSION_PATH=b711b00f3006b99fbc7403609f475eac
+# Copy dependency files first for better Docker layer caching
+COPY pubspec.yaml pubspec.lock ./
+COPY packages/duniter_indexer/pubspec.yaml packages/duniter_indexer/
+COPY packages/duniter_datapod/pubspec.yaml packages/duniter_datapod/
 
-RUN curl -L https://git.duniter.org/vjrj/ginkgo/uploads/${GINKGO_WEB_VERSION_PATH}/ginkgo-web-${GINKGO_WEB_VERSION}.tgz | tar xfz - -C /usr/share/nginx/html/ --strip-components=2
+# Get dependencies
+RUN flutter pub get
 
-COPY nginx.conf.template /etc/nginx/nginx.conf.template
+# Copy all source code
+COPY . .
 
-RUN mkdir -p /etc/nginx/snippets && \
-    touch /etc/nginx/snippets/proxy-gva.conf && \
-    chmod 644 /etc/nginx/snippets/proxy-gva.conf
+# Build web release
+RUN flutter build web --release --no-wasm-dry-run
 
-COPY proxy-gva.conf /etc/nginx/snippets/proxy-gva.conf
+# Stage 2: Serve with nginx
+FROM nginx:alpine
 
-# Configuration of g1nkgo
-COPY assets/env.production.txt /usr/share/nginx/html/assets/env.production.txt
-# In fact this is where flutter looks for it (it seems like a bug)
-RUN mkdir -p /usr/share/nginx/html/assets/assets/
-COPY assets/env.production.txt /usr/share/nginx/html/assets/assets/env.production.txt
+# Copy built web app from builder stage
+COPY --from=builder /app/build/web /usr/share/nginx/html
 
-COPY assets/img/ /usr/share/nginx/html/assets/img/
+# Copy nginx configuration
+COPY nginx.conf.template /etc/nginx/conf.d/default.conf
 
-# Copy the default nginx configuration and g1nkgo conf to restore in empty volumes
-RUN cp -a /etc/nginx/ /etc/nginx-default/
-
-# Exponer los puertos de nginx
-EXPOSE 80
-EXPOSE 443
-
+# Copy entrypoint for env variable injection
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
+
+EXPOSE 80
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

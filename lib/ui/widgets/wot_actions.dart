@@ -3,11 +3,13 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:polkadart_keyring/polkadart_keyring.dart';
 
 import '../../data/models/contact_wot_info.dart';
 import '../../data/models/identity_status.dart';
 import '../../data/models/stored_account.dart';
 import '../../g1/duniter_endpoint_helper.dart';
+import '../../g1/api.dart';
 import '../../g1/duniter_indexer_helper.dart' as duniter_indexer;
 import '../../g1/sign_and_send.dart';
 import '../../shared_prefs_helper.dart';
@@ -888,6 +890,11 @@ Future<SignAndSendResult> _confirmAndChangeOwnerKey(
       return _returnCancelled();
     }
 
+    // Capture old and new keypairs for C+ profile migration
+    final KeyPair oldKeyPair = await SharedPreferencesHelper().getKeyPair();
+    final KeyPair newKeyPair =
+        await SharedPreferencesHelper().getKeyPair(null, selectedAccount);
+
     final SignAndSendResult res =
         await changeOwnerKey(selectedAccount.contact.address);
 
@@ -905,6 +912,27 @@ Future<SignAndSendResult> _confirmAndChangeOwnerKey(
         progressController.close();
         if (!hasError) {
           try {
+            // Migrate C+ profile from old to new address
+            try {
+              final bool migrated = await migrateProfileCPlus(
+                oldKeyPair: oldKeyPair,
+                newKeyPair: newKeyPair,
+              );
+              if (!migrated && context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                      content: Text(tr('profile_migration_failed'))),
+                );
+              }
+            } catch (e) {
+              loggerDev('Error migrating C+ profile: $e');
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                      content: Text(tr('profile_migration_failed'))),
+                );
+              }
+            }
             await SharedPreferencesHelper().refreshWalletsInfo();
             await ContactsCache().clear();
           } catch (e) {

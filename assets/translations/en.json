@@ -368,6 +368,7 @@
   "select_new_owner_account": "Select new owner account",
   "please_select_new_owner_account": "Please select a new owner account",
   "new_owner_not_in_accounts": "The new owner address is not in your accounts",
+  "profile_migration_failed": "Failed to migrate Cesium+ profile to new account",
   "confirm_identity": "Confirm Identity",
   "identity_name_hint": "Identity Name",
   "invalid_identity_name": "Invalid identity name. Please ensure it only contains alphanumeric characters, dashes (-), or underscores (_) and is less than 42 characters.",
@@ -544,5 +545,9 @@
    "common.save": "Save",
    "common.saving": "Saving...",
    "internal_contact_name": "Contact name",
-   "internal_name_copied_to_clipboard": "Contact name copied"
+   "internal_name_copied_to_clipboard": "Contact name copied",
+   "account_upgrade_required_title": "Secure your account",
+   "account_upgrade_required_desc": "To use identity features, your account must be protected with a pattern or password. This ensures your funds and identity remain safe.",
+   "account_upgrade_success": "Account secured successfully",
+   "account_upgrade_failed": "Could not secure the account. Please try again."
 }

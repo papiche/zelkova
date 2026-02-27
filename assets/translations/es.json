@@ -369,6 +369,7 @@
   "select_new_owner_account": "Selecciona cuenta del nuevo propietario",
   "please_select_new_owner_account": "Por favor selecciona una cuenta del nuevo propietario",
   "new_owner_not_in_accounts": "La dirección del nuevo propietario no está en tus cuentas",
+  "profile_migration_failed": "Error al migrar el perfil Cesium+ a la nueva cuenta",
   "confirm_identity": "Confirmar Identidad",
   "identity_name_hint": "Nombre de Identidad",
   "invalid_identity_name": "Nombre de identidad no válido. Asegúrese de que solo contenga caracteres alfanuméricos, guiones (-) o guiones bajos (_) y que tenga menos de 42 caracteres.",
@@ -549,5 +550,9 @@
    "profile.save_error": "Error al guardar el perfil. Por favor, intenta de nuevo.",
    "common.cancel": "Cancelar",
    "common.save": "Guardar",
-   "common.saving": "Guardando..."
+   "common.saving": "Guardando...",
+   "account_upgrade_required_title": "Protege tu cuenta",
+   "account_upgrade_required_desc": "Para usar funciones de identidad, tu cuenta debe estar protegida con un patrón o contraseña. Esto asegura que tus fondos e identidad estén a salvo.",
+   "account_upgrade_success": "Cuenta asegurada correctamente",
+   "account_upgrade_failed": "No se pudo asegurar la cuenta. Inténtalo de nuevo."
 }

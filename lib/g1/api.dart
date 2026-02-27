@@ -1540,6 +1540,135 @@ Future<bool> deleteProfileV2cPlus() async {
   return delResponse.statusCode == 200;
 }
 
+/// Migrate a Cesium+ profile from one account to another.
+/// This reads the profile from the old pubkey, creates it under the new
+/// pubkey (signed by the new keypair), and deletes the old profile
+/// (signed by the old keypair).
+/// Returns true if migration succeeded, false otherwise.
+/// Throws on unexpected errors (caller should handle).
+Future<bool> migrateProfileCPlus({
+  required KeyPair oldKeyPair,
+  required KeyPair newKeyPair,
+}) async {
+  final String oldPubKey = v1pubkeyFromAddress(oldKeyPair.address);
+  final String newPubKey = v1pubkeyFromAddress(newKeyPair.address);
+
+  // Step 1: Read the old profile from Cesium+
+  final Response oldProfileResponse =
+      (await requestCPlusWithRetry('/user/profile/$oldPubKey')).item2;
+
+  if (oldProfileResponse.statusCode != 200) {
+    logger('Cannot read old C+ profile for $oldPubKey: '
+        'status ${oldProfileResponse.statusCode}');
+    return false;
+  }
+
+  final Map<String, dynamic> oldResult =
+      const JsonDecoder().convert(oldProfileResponse.body)
+          as Map<String, dynamic>;
+
+  if (oldResult['found'] == false) {
+    logger('No C+ profile found for old pubkey $oldPubKey, nothing to migrate');
+    return true; // No profile to migrate is not an error
+  }
+
+  final Map<String, dynamic> source =
+      oldResult['_source'] as Map<String, dynamic>;
+
+  // Step 2: Create the profile under the new pubkey
+  final Map<String, dynamic> newProfile = <String, dynamic>{
+    'version': 2,
+    'issuer': newPubKey,
+    'title': source['title'] as String? ?? '',
+    'time': DateTime.now().millisecondsSinceEpoch ~/ 1000,
+  };
+
+  // Copy optional fields from old profile
+  if (source['description'] != null) {
+    newProfile['description'] = source['description'];
+  }
+  if (source['city'] != null) {
+    newProfile['city'] = source['city'];
+  }
+  if (source['geoPoint'] != null) {
+    newProfile['geoPoint'] = source['geoPoint'];
+  }
+  if (source['socials'] != null) {
+    newProfile['socials'] = source['socials'];
+  }
+  if (source['avatar'] != null) {
+    newProfile['avatar'] = source['avatar'];
+  }
+  if (source['tags'] != null) {
+    newProfile['tags'] = source['tags'];
+  }
+
+  hashAndSignV2(newProfile, newKeyPair);
+  final String newProfileJson = jsonEncode(newProfile);
+
+  // Check if new pubkey already has a profile
+  final String? existingName = await getProfileUserName(newPubKey);
+
+  http.Response createResponse;
+  if (existingName != null) {
+    // Update existing profile at new pubkey
+    createResponse = (await _requestWithRetry(
+            NodeType.cesiumPlus,
+            '/user/profile/$newPubKey/_update?pubkey=$newPubKey',
+            false,
+            true,
+            httpType: HttpType.post,
+            headers: _defCPlusHeaders(),
+            body: newProfileJson))
+        .item2;
+  } else {
+    // Create new profile at new pubkey
+    createResponse = (await _requestWithRetry(
+            NodeType.cesiumPlus, '/user/profile', false, false,
+            httpType: HttpType.post,
+            headers: _defCPlusHeaders(),
+            body: newProfileJson))
+        .item2;
+  }
+
+  if (createResponse.statusCode != 200) {
+    logger('Failed to create C+ profile for new pubkey $newPubKey: '
+        'status ${createResponse.statusCode}');
+    return false;
+  }
+
+  logger('C+ profile created/updated for new pubkey $newPubKey');
+
+  // Step 3: Delete the old profile
+  final Map<String, dynamic> deleteData = <String, dynamic>{
+    'version': 2,
+    'id': oldPubKey,
+    'issuer': oldPubKey,
+    'index': 'user',
+    'type': 'profile',
+    'time': DateTime.now().millisecondsSinceEpoch ~/ 1000,
+  };
+  hashAndSignV2(deleteData, oldKeyPair);
+
+  final http.Response delResponse = (await _requestWithRetry(
+          NodeType.cesiumPlus, '/history/delete', false, false,
+          httpType: HttpType.post,
+          headers: _defCPlusHeaders(),
+          body: jsonEncode(deleteData)))
+      .item2;
+
+  if (delResponse.statusCode != 200) {
+    logger('C+ profile created for new pubkey but failed to delete old: '
+        'status ${delResponse.statusCode}');
+    // Profile was copied but old not deleted - partial success
+    // Still return true since the new profile exists
+    return true;
+  }
+
+  logger('C+ profile migrated successfully from $oldPubKey to $newPubKey');
+  return true;
+}
+
 String calculateHash(String input) {
   final List<int> bytes = utf8.encode(input); // data being hashed
   final Digest digest = sha256.convert(bytes);

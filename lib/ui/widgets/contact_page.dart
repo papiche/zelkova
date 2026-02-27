@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +24,7 @@ import '../clipboard_helper.dart';
 import '../dialogs/profile_editor_dialog.dart';
 import '../in_dev_helper.dart';
 import '../ui_helpers.dart';
+import '../secure_unlock_widget.dart';
 import 'balance_widget.dart';
 import 'certifications_page.dart';
 import 'contacts_actions.dart';
@@ -148,9 +151,11 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
     final bool isContact =
         context.read<ContactsCubit>().isContact(contact.pubKey);
     final bool me = contactWotInfo.isme;
+    final StoredAccount currentAccount =
+        SharedPreferencesHelper().getCurrentAccount();
     final bool isPassProtected =
-        !(SharedPreferencesHelper().getCurrentAccount().type ==
-            AccountType.v1PasswordLess);
+        currentAccount.type != AccountType.v1PasswordLess &&
+        currentAccount.type != AccountType.v2PasswordLess;
     final List<SpeedDialChild> actions = <SpeedDialChild>[
       // Edit profile action for own account
       if (me && isV2)
@@ -187,7 +192,16 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
           },
         ),
     ];
-    if (isV2 && isPassProtected) {
+    if (isV2 && !isPassProtected && me) {
+      // v2PasswordLess: must upgrade before using identity features
+      actions.add(
+        SpeedDialChild(
+          child: const Icon(Icons.lock_outline),
+          label: tr('account_upgrade_required_title'),
+          onTap: () => _upgradeAccountToProtected(currentAccount),
+        ),
+      );
+    } else if (isV2 && isPassProtected) {
       getWotMenuActions(context, me, contactWotInfo)
           .forEach((WotMenuAction action) {
         actions.add(
@@ -332,8 +346,7 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
           /* if (!contact.createdOnV2)  */
           _buildQrListTile(contact),
 
-          if (context.watch<AppCubit>().isExpertMode)
-            _buildQrListTile(contact, isV2: true),
+          _buildQrListTile(contact, isV2: true),
 
           if (debug && inDevelopment)
             ListTile(title: Text('Status: ${contact.status}')),
@@ -659,6 +672,50 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
   void _refreshAfterProfileEdit() {
     if (mounted) {
       _refresh();
+    }
+  }
+
+  Future<void> _upgradeAccountToProtected(StoredAccount account) async {
+    // Show informative dialog first
+    final bool? proceed = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext ctx) {
+        return AlertDialog(
+          title: Text(tr('account_upgrade_required_title')),
+          content: Text(tr('account_upgrade_required_desc')),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(true),
+              child: Text(tr('ok')),
+            ),
+          ],
+        );
+      },
+    );
+    if (proceed != true || !mounted) {
+      return;
+    }
+    // Request pattern/password setup
+    final Uint8List? key = await requestSecureUnlock(isSetup: true);
+    if (key == null || key.isEmpty || !mounted) {
+      return;
+    }
+    // Upgrade the account
+    final bool success = await SharedPreferencesHelper()
+        .upgradeToPasswordProtected(account, key);
+    if (!mounted) {
+      return;
+    }
+    if (success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(tr('account_upgrade_success'))),
+      );
+      setState(() {});
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(tr('account_upgrade_failed'))),
+      );
     }
   }
 }

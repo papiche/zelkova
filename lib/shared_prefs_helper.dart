@@ -95,6 +95,9 @@ abstract class SharedPreferencesHelperDelegate {
   void removeCesiumVolatileCard(CesiumWallet? wallet);
 
   bool isSecureStorageUnlocked();
+
+  Future<bool> upgradeToPasswordProtected(
+      StoredAccount account, Uint8List passwordKey);
 }
 
 class SharedPreferencesHelper with ChangeNotifier {
@@ -294,6 +297,10 @@ class SharedPreferencesHelper with ChangeNotifier {
 
   bool isSecureStorageUnlocked() => _d.isSecureStorageUnlocked();
 
+  Future<bool> upgradeToPasswordProtected(
+          StoredAccount account, Uint8List passwordKey) =>
+      v2.SharedPreferencesHelperV2()
+          .upgradeToPasswordProtected(account, passwordKey);
   @override
   void notifyListeners() {
     super.notifyListeners();

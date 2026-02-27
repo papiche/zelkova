@@ -324,4 +324,11 @@ class SharedPreferencesHelperV1
     // V1 doesn't use secure storage encryption, so it's always "unlocked"
     return true;
   }
+
+  @override
+  Future<bool> upgradeToPasswordProtected(
+      StoredAccount account, Uint8List passwordKey) async {
+    // V1 accounts cannot be upgraded — only V2 supports this.
+    return false;
+  }
 }

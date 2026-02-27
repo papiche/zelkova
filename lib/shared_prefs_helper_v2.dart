@@ -741,4 +741,28 @@ class SharedPreferencesHelperV2
       }
     }
   }
+
+  /// Upgrades a v2PasswordLess account to v2PasswordProtected.
+  /// Encrypts the plaintext seed with the given [passwordKey] and updates
+  /// the account type. Returns true on success.
+  Future<bool> upgradeToPasswordProtected(
+      StoredAccount account, Uint8List passwordKey) async {
+    if (account.type != AccountType.v2PasswordLess) {
+      return false;
+    }
+    final int idx =
+        accounts.indexWhere((StoredAccount a) => a.pubKey == account.pubKey);
+    if (idx < 0 || account.seed == null) {
+      return false;
+    }
+    final Uint8List encryptedSeed =
+        SecureCryptoHelper.encrypt(account.seed!, passwordKey);
+    accounts[idx] = account.copyWith(
+      type: AccountType.v2PasswordProtected,
+      seed: encryptedSeed,
+    );
+    _passwordKey = passwordKey;
+    await _saveAccounts();
+    return true;
+  }
 }

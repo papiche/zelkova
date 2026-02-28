@@ -62,6 +62,7 @@ import 'ui/contacts_cache.dart';
 import 'ui/in_dev_helper.dart';
 import 'ui/logger.dart';
 import 'ui/notification_controller.dart';
+import 'ui/notification_translations_helper.dart';
 import 'ui/pay_helper.dart';
 import 'ui/screens/skeleton_screen.dart';
 import 'ui/ui_helpers.dart';
@@ -1094,6 +1095,12 @@ Future<void> fetchTransactionsFromBackground([bool init = true]) async {
       }
     }
     loggerDev('Initialized background context');
+
+    // Load notification translations for background isolate
+    // Use NotificationController.locale which is set during app initialization
+    final String localeCode = NotificationController.locale.languageCode;
+    await NotificationTranslationsHelper.loadTranslations(localeCode);
+    loggerDev('Loaded notification translations for locale: $localeCode');
 
     // Configure SharedPreferencesHelper for correct V1/V2 storage mode in background
     final AppCubit appCubit = GetIt.instance.get<AppCubit>();

@@ -220,7 +220,8 @@ class NotificationController {
       String? comment = '',
       required bool isG1,
       required double currentUd}) async {
-    final String title = buildTxNotifTitle(from);
+    final String title =
+        buildTxNotifTitle(from, languageCode: locale.languageCode);
     final String desc = buildTxNotifDescription(
       from: from,
       to: to,

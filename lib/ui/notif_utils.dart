@@ -1,14 +1,34 @@
 import 'package:easy_localization/easy_localization.dart';
 
 import 'currency_helper.dart';
+import 'notification_translations_helper.dart';
 
-String buildTxNotifTitle(String? from) {
-  final String title = from != null
-      ? tr('notification_new_payment_title')
-      : tr('notification_new_sent_title');
-  return title;
+/// Build notification title using easy_localization context.
+///
+/// Falls back to static translation loading if easy_localization is not available.
+String buildTxNotifTitle(String? from, {String? languageCode}) {
+  final String key = from != null
+      ? 'notification_new_payment_title'
+      : 'notification_new_sent_title';
+
+  // Try to use easy_localization first (if available)
+  try {
+    return tr(key);
+  } catch (e) {
+    // Fallback to static translation loading
+    // This happens in background isolates or web service workers
+    if (languageCode != null) {
+      return NotificationTranslationsHelper.get(languageCode, key,
+          fallback: key);
+    }
+    // Last resort: return the key
+    return key;
+  }
 }
 
+/// Build notification description using easy_localization context.
+///
+/// Falls back to static translation loading if easy_localization is not available.
 String buildTxNotifDescription({
   required String? from,
   required String? to,
@@ -25,13 +45,38 @@ String buildTxNotifDescription({
     currentUd: currentUd,
     useSymbol: true,
   );
-  final String desc = from != null
-      ? tr('notification_new_payment_desc', namedArgs: <String, String>{
-          'amount': formattedAmount,
-          'from': from,
-        })
-      : tr('notification_new_sent_desc',
-          namedArgs: <String, String>{'amount': formattedAmount, 'to': to!});
 
-  return comment != null && comment.isNotEmpty ? '$desc ($comment)' : desc;
+  // Determine which template key to use
+  final String templateKey = from != null
+      ? 'notification_new_payment_desc'
+      : 'notification_new_sent_desc';
+
+  // Build the template string
+  String template;
+  try {
+    // Try easy_localization first
+    template = from != null
+        ? tr('notification_new_payment_desc', namedArgs: <String, String>{
+            'amount': formattedAmount,
+            'from': from,
+          })
+        : tr('notification_new_sent_desc',
+            namedArgs: <String, String>{'amount': formattedAmount, 'to': to!});
+  } catch (e) {
+    // Fallback to static translation loading
+    // Get the template string with placeholders
+    final String placeholderTemplate = NotificationTranslationsHelper.get(
+        localeLanguageCode, templateKey,
+        fallback: templateKey);
+
+    // Replace placeholders manually
+    template = placeholderTemplate
+        .replaceAll('{amount}', formattedAmount)
+        .replaceAll('{from}', from ?? '')
+        .replaceAll('{to}', to ?? '');
+  }
+
+  return comment != null && comment.isNotEmpty
+      ? '$template ($comment)'
+      : template;
 }

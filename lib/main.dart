@@ -14,12 +14,14 @@ import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_skill/flutter_skill.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/adapters.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:l10n_esperanto/l10n_esperanto.dart';
 import 'package:lehttp_overrides/lehttp_overrides.dart';
 import 'package:once/once.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
 import 'package:provider/provider.dart';
 import 'package:pwa_install/pwa_install.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -1259,10 +1261,11 @@ class AppLifecycleReactor with WidgetsBindingObserver {
 Future<void> hiveInit() async {
   // Hydrated storage
   loggerDev('Initializing Hydrated storage');
+  await _migrateDesktopHiveStorage();
   final HydratedStorageDirectory storageDir = kIsWeb
       ? HydratedStorageDirectory.web
       : HydratedStorageDirectory(
-          (await getApplicationDocumentsDirectory()).path,
+          (await getAppDataDirectory()).path,
         );
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: storageDir,
@@ -1272,7 +1275,7 @@ Future<void> hiveInit() async {
 
   try {
     loggerDev('Initializing Hive');
-    await Hive.initFlutter().timeout(
+    await _initHiveStorage().timeout(
       const Duration(seconds: 10),
       onTimeout: () {
         throw TimeoutException('Hive initialization timed out');
@@ -1282,7 +1285,7 @@ Future<void> hiveInit() async {
     log.e('Error initializing Hive', error: e);
     // If there is an error, we should delete the old hive files
     await Hive.deleteFromDisk();
-    await Hive.initFlutter();
+    await _initHiveStorage();
   }
 
   loggerDev('Reset hive old keys');
@@ -1298,6 +1301,76 @@ Future<void> hiveInit() async {
     // await HydratedBloc.storage.clear();
     box.close();
   }
+}
+
+Future<void> _initHiveStorage() async {
+  if (kIsWeb) {
+    await Hive.initFlutter();
+    return;
+  }
+
+  final Directory appDataDir = await getAppDataDirectory();
+  Hive.init(appDataDir.path);
+  _registerHiveAdapters();
+}
+
+void _registerHiveAdapters() {
+  final ColorAdapter colorAdapter = ColorAdapter();
+  if (!Hive.isAdapterRegistered(colorAdapter.typeId)) {
+    Hive.registerAdapter(colorAdapter);
+  }
+  final TimeOfDayAdapter timeOfDayAdapter = TimeOfDayAdapter();
+  if (!Hive.isAdapterRegistered(timeOfDayAdapter.typeId)) {
+    Hive.registerAdapter(timeOfDayAdapter);
+  }
+}
+
+Future<void> _migrateDesktopHiveStorage() async {
+  if (!isDesktopPlatform()) {
+    return;
+  }
+
+  try {
+    final Directory oldDir = await getApplicationDocumentsDirectory();
+    final Directory newDir = await getAppDataDirectory();
+
+    if (oldDir.path == newDir.path) {
+      return;
+    }
+
+    if (!await oldDir.exists()) {
+      return;
+    }
+
+    await newDir.create(recursive: true);
+    final List<FileSystemEntity> entries = oldDir.listSync(followLinks: false);
+
+    for (final FileSystemEntity entity in entries) {
+      if (entity is! File) {
+        continue;
+      }
+
+      final String fileName = path.basename(entity.path);
+      if (!_isHiveStorageFile(fileName)) {
+        continue;
+      }
+
+      final File targetFile = File(path.join(newDir.path, fileName));
+      if (await targetFile.exists()) {
+        continue;
+      }
+
+      await entity.copy(targetFile.path);
+      await entity.delete();
+    }
+  } catch (e, stacktrace) {
+    loggerDev('Failed to migrate hive storage: $e');
+    await Sentry.captureException(e, stackTrace: stacktrace);
+  }
+}
+
+bool _isHiveStorageFile(String fileName) {
+  return fileName.endsWith('.hive') || fileName.endsWith('.hive.lock');
 }
 
 Future<void> _clearCacheIfNeeded(HydratedStorageDirectory storageDir) async {

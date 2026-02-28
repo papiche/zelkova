@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fast_image_resizer/fast_image_resizer.dart';
 import 'package:flutter/foundation.dart';
@@ -8,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -390,74 +388,35 @@ const String protectedUserNameSuffix = ' 🔒'; // lock
 const double cardAspectRatio = 1.58;
 
 Future<bool> requestStoragePermission(BuildContext context) async {
-  // TODO(vjrj): IOS https://pub.dev/packages/permission_handler#setup
-  if (!kIsWeb && !Platform.isLinux) {
-    PermissionStatus status;
-    if (Platform.isAndroid) {
-      try {
-        final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-        final AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-        final int sdkVersion = androidInfo.version.sdkInt;
-
-        if (sdkVersion >= 30) {
-          status = await Permission.manageExternalStorage.request();
-        } else {
-          // For Android we use WRITE_EXTERNAL_STORAGE
-          status = await Permission.storage.request();
-        }
-      } catch (e) {
-        status = await Permission.storage.request();
-      }
-    } else {
-      status = await Permission.storage.request();
-    }
-
-    if (!context.mounted) {
-      return false;
-    }
-
-    if (status.isGranted) {
-      return true;
-    } else {
-      logger('No permission to access storage');
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(tr('storage_permission_request')),
-      ));
-      return false;
-    }
-  } else {
-    return true;
-  }
+  return true;
 }
 
 Future<Directory?> getGinkgoDownloadDirectory() async {
   Directory? externalDirectory;
-
-  if (isAndroid()) {
-    try {
-      final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-      final AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      final int sdkVersion = androidInfo.version.sdkInt;
-      if (sdkVersion >= 30) {
-        externalDirectory = Directory('/storage/emulated/0/Download');
-      }
-    } catch (e) {
-      loggerDev('Failed to get android version');
-      externalDirectory = await getDownloadsDirectory();
-    }
-  } else {
+  try {
     externalDirectory = await getDownloadsDirectory();
+  } catch (e) {
+    loggerDev('Failed to get downloads directory: $e');
   }
 
   if (externalDirectory == null) {
     logger('Downloads directory not found');
   }
-  // Let's try other option
   externalDirectory ??= await getAppSpecificExternalFilesDirectory();
   return externalDirectory;
 }
 
 bool isAndroid() => !kIsWeb && Platform.isAndroid;
+
+bool isDesktopPlatform() =>
+    !kIsWeb && (Platform.isLinux || Platform.isMacOS || Platform.isWindows);
+
+Future<Directory> getAppDataDirectory() async {
+  if (isDesktopPlatform()) {
+    return getApplicationSupportDirectory();
+  }
+  return getApplicationDocumentsDirectory();
+}
 
 String truncateName(String name) =>
     name.length > 15 ? '${name.substring(0, 15)}…' : name;

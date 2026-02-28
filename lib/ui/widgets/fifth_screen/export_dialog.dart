@@ -7,6 +7,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
 import 'package:pattern_lock/pattern_lock.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -702,11 +703,25 @@ class _ExportDialogState extends State<ExportDialog> {
       }
 
       final Directory? directory = await getGinkgoDownloadDirectory();
+      final String fileName = fileNameArg ?? getWalletFileName();
+      if (isAndroid()) {
+        final String? outputPath = await FilePicker.platform.saveFile(
+          dialogTitle: tr('export_key'),
+          fileName: fileName,
+          bytes: Uint8List.fromList(bytes),
+        );
+        if (outputPath == null || outputPath.isEmpty) {
+          return false;
+        }
+        loggerDev('File saved at: $outputPath');
+        return true;
+      }
+
       if (directory == null) {
         loggerDev('App files directory not found');
         return false;
       }
-      final String fileName = fileNameArg ?? getWalletFileName();
+
       final File file = File(join(directory.path, fileName));
       await file.writeAsBytes(bytes);
       loggerDev('File saved at: ${file.path}');

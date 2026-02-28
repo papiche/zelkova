@@ -549,16 +549,15 @@ Future<String> importWallet(BuildContext context,
     [List<String> allowedExtensions = const <String>['.json'],
     String messageKey = 'select_file_to_import']) async {
   try {
-    final bool hasPermission = await requestStoragePermission(context);
-    if (!hasPermission) {
-      logger('No permission to access storage');
-      return '';
+    if (isAndroid()) {
+      return await importWalletWithFilePicker(allowedExtensions.isNotEmpty
+          ? allowedExtensions.first.replaceAll('.', '')
+          : 'json');
     }
 
     final Directory? directory = await getGinkgoDownloadDirectory();
     if (directory == null) {
-      logger('App files directory not found');
-      // Try to use FilePicker as fallback for better compatibility
+      logger('Downloads directory not found');
       try {
         return await importWalletWithFilePicker(allowedExtensions.isNotEmpty
             ? allowedExtensions.first.replaceAll('.', '')
@@ -582,7 +581,6 @@ Future<String> importWallet(BuildContext context,
       showGoUp: true,
       fsType: FilesystemType.all,
       allowedExtensions: allowedExtensions,
-      requestPermission: () async => requestStoragePermission(context),
       fileTileSelectMode: FileTileSelectMode.wholeTile,
     );
 

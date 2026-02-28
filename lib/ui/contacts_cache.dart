@@ -5,13 +5,13 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:hive_ce/hive.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../data/models/contact.dart';
 import '../g1/api.dart';
 import '../g1/g1_helper.dart';
 import 'logger.dart';
+import 'ui_helpers.dart';
 
 class ContactsCache {
   factory ContactsCache() {
@@ -32,9 +32,9 @@ class ContactsCache {
       if (kIsWeb) {
         box = await Hive.openBox(_boxName);
       } else {
-        final Directory appDocDir = await getApplicationDocumentsDirectory();
-        final String appDocPath = appDocDir.path;
-        box = await Hive.openBox(_boxName, path: appDocPath);
+        final Directory appDataDir = await getAppDataDirectory();
+        final String appDataPath = appDataDir.path;
+        box = await Hive.openBox(_boxName, path: appDataPath);
       }
       // We clear the box on every startup to avoid issues with old data
     } catch (e) {

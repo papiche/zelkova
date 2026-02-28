@@ -6,12 +6,17 @@ import 'notif_utils.dart';
 
 // ignore: avoid_classes_with_only_static_members
 ///  *********************************************
-///     NOTIFICATION CONTROLLER (Linux)
+///     NOTIFICATION CONTROLLER (Linux) — DEAD-CODE STUB
 ///  *********************************************
 ///
-/// Linux desktop notification implementation.
-/// Uses simple system notifications (if available) or logging fallback.
+/// This file is NOT used at runtime. Dart conditional exports cannot
+/// distinguish Linux from Android/iOS at compile time (both share
+/// `dart.library.ffi`), so Linux is handled inside
+/// `notification_controller_mobile.dart` via `Platform.isLinux` guards
+/// that use `desktop_notifications` (DBus) + `notify-send` fallback.
 ///
+/// Kept only for reference / as a safety net if the export routing
+/// changes in the future.
 class NotificationController {
   static Locale locale = const Locale('en', 'UK');
 

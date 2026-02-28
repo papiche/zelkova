@@ -3,6 +3,7 @@ import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:desktop_notifications/desktop_notifications.dart' as dn;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +14,17 @@ import 'notif_utils.dart';
 
 // ignore: avoid_classes_with_only_static_members
 ///  *********************************************
-///     NOTIFICATION CONTROLLER
+///     NOTIFICATION CONTROLLER (Mobile + Linux)
 ///  *********************************************
 ///
+/// This controller handles Android, iOS **and** Linux.
+///
+/// Linux lands here because Dart conditional exports cannot distinguish it
+/// from Android/iOS at compile time — both share `dart.library.ffi` and
+/// `dart.library.io`. A separate `notification_controller_linux.dart` exists
+/// but is only kept as a dead-code stub. Instead, runtime `Platform.isLinux`
+/// guards route Linux to native desktop notifications via DBus
+/// (`desktop_notifications` package) with a `notify-send` fallback.
 class NotificationController {
   static ReceivedAction? initialAction;
   static Locale locale = const Locale('en', 'UK');
@@ -229,7 +238,7 @@ class NotificationController {
     if (kIsWeb) {
       // dart:html cannot be used in Android
     } else if (!kIsWeb && Platform.isLinux) {
-      debugPrint('[NOTIFICATION] $title: $desc');
+      await _notifyLinux(title: title, desc: desc);
       return;
     } else {
       bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
@@ -263,7 +272,8 @@ class NotificationController {
 
   static Future<void> scheduleNewNotification() async {
     if (!kIsWeb && Platform.isLinux) {
-      debugPrint('[NOTIFICATION] scheduleNewNotification skipped on Linux');
+      debugPrint(
+          '[NOTIFICATION] scheduleNewNotification not supported on Linux');
       return;
     }
     bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
@@ -327,5 +337,33 @@ class NotificationController {
       return;
     }
     await AwesomeNotifications().cancelAll();
+  }
+
+  /// Send a native Linux desktop notification via DBus (freedesktop spec).
+  /// Falls back to `notify-send` command if DBus fails.
+  static Future<void> _notifyLinux(
+      {required String title, required String desc}) async {
+    try {
+      final dn.NotificationsClient client = dn.NotificationsClient();
+      try {
+        await client.notify(title, body: desc, appName: 'Ginkgo');
+      } finally {
+        await client.close();
+      }
+    } catch (e) {
+      // Fallback to notify-send if DBus is unavailable
+      debugPrint(
+          '[NOTIFICATION] DBus notification failed ($e), trying notify-send');
+      try {
+        await Process.run('notify-send', <String>[
+          '--app-name=Ginkgo',
+          title,
+          desc,
+        ]);
+      } catch (e2) {
+        debugPrint(
+            '[NOTIFICATION] notify-send also failed ($e2): $title: $desc');
+      }
+    }
   }
 }

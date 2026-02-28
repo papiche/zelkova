@@ -1,0 +1,2 @@
+json_key_file("/home/vjrj/etc/ginkgo_play_api_key.json")
+package_name("org.comunes.g1nkgo")

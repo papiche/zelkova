@@ -1,4 +1,4 @@
-package org.comunes.ginkgo
+package org.comunes.g1nkgo
 
 import android.os.Bundle
 import io.flutter.embedding.android.FlutterFragmentActivity

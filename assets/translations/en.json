@@ -549,5 +549,20 @@
    "account_upgrade_required_title": "Secure your account",
    "account_upgrade_required_desc": "To use identity features, your account must be protected with a pattern or password. This ensures your funds and identity remain safe.",
    "account_upgrade_success": "Account secured successfully",
-   "account_upgrade_failed": "Could not secure the account. Please try again."
+   "account_upgrade_failed": "Could not secure the account. Please try again.",
+   "settings_notifications_category": "Notifications",
+   "settings_notifications_status_enabled": "Notifications enabled",
+   "settings_notifications_status_disabled": "Notifications disabled",
+   "settings_notifications_enabled_desc": "You will receive notifications for transactions",
+   "settings_notifications_disabled_desc": "Enable notifications in the next step",
+   "settings_notifications_enable_action": "Enable notifications",
+   "settings_notifications_enabled_snack": "Notifications have been enabled!",
+   "settings_battery_optimizations_title": "Battery optimization",
+   "settings_battery_optimizations_desc": "Background sync requires proper battery settings",
+   "settings_battery_optimization_info": "For reliable background sync and notifications, exclude Ginkgo from battery optimization.",
+   "settings_background_limitations_title": "Background sync",
+   "settings_background_limitations_body": "If the system restricts background activity or you force-stop the app, transaction sync and notifications may not work properly.",
+   "settings_battery_open_settings": "Open battery settings",
+   "settings_battery_excluded": "Battery optimization disabled",
+   "settings_battery_not_excluded": "Battery optimization active"
 }

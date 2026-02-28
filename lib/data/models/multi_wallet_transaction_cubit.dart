@@ -168,7 +168,8 @@ class MultiWalletTransactionCubit
       int? pageSize,
       String? cursor,
       String? pubKey,
-      bool debug = false}) async {
+      bool debug = false,
+      bool? isConnectedOverride}) async {
     final NodeListCubit nodeListCubit = GetIt.instance.get<NodeListCubit>();
     final AppCubit appCubit = GetIt.instance.get<AppCubit>();
     final bool isCurrentWallet = pubKey != null &&
@@ -185,7 +186,8 @@ class MultiWalletTransactionCubit
     bool success = false;
     final bool isG1 = appCubit.currency == Currency.G1;
 
-    final bool isConnected = await ConnectivityWidgetWrapperWrapper.isConnected;
+    final bool isConnected = isConnectedOverride ??
+        await ConnectivityWidgetWrapperWrapper.isConnected;
 
     for (int attempt = 0; attempt < retries; attempt++) {
       txDataResult = await getHistoryAndBalance(pubKey,
@@ -541,8 +543,8 @@ class MultiWalletTransactionCubit
       // Keep only the last maxTxPerWallet transactions
       final List<Transaction> limitedTxs =
           walletState.transactions.length > maxTxPerWallet
-              ? walletState.transactions.sublist(
-                  walletState.transactions.length - maxTxPerWallet)
+              ? walletState.transactions
+                  .sublist(walletState.transactions.length - maxTxPerWallet)
               : walletState.transactions;
       cleanedMap[key] = walletState.copyWith(transactions: limitedTxs);
     }

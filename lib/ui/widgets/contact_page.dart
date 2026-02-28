@@ -23,8 +23,8 @@ import '../../shared_prefs_helper.dart';
 import '../clipboard_helper.dart';
 import '../dialogs/profile_editor_dialog.dart';
 import '../in_dev_helper.dart';
-import '../ui_helpers.dart';
 import '../secure_unlock_widget.dart';
+import '../ui_helpers.dart';
 import 'balance_widget.dart';
 import 'certifications_page.dart';
 import 'contacts_actions.dart';
@@ -155,7 +155,7 @@ class _ContactPageState extends State<ContactPage> with RouteAware {
         SharedPreferencesHelper().getCurrentAccount();
     final bool isPassProtected =
         currentAccount.type != AccountType.v1PasswordLess &&
-        currentAccount.type != AccountType.v2PasswordLess;
+            currentAccount.type != AccountType.v2PasswordLess;
     final List<SpeedDialChild> actions = <SpeedDialChild>[
       // Edit profile action for own account
       if (me && isV2)

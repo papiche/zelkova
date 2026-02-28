@@ -221,8 +221,7 @@ class NotificationController {
     } else {
       bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
       if (!isAllowed) {
-        isAllowed =
-            await displayNotificationRationale(allowPermissionPrompt: true);
+        isAllowed = await displayNotificationRationale();
       }
       if (!isAllowed) {
         return;
@@ -252,8 +251,7 @@ class NotificationController {
   static Future<void> scheduleNewNotification() async {
     bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
     if (!isAllowed) {
-      isAllowed =
-          await displayNotificationRationale(allowPermissionPrompt: true);
+      isAllowed = await displayNotificationRationale();
     }
     if (!isAllowed) {
       return;

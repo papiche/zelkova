@@ -10,7 +10,6 @@ import '../../ui/logger.dart';
 import '../widgets/avatar_picker.dart';
 
 class ProfileEditorDialog extends StatefulWidget {
-
   const ProfileEditorDialog({
     super.key,
     required this.currentContact,
@@ -88,7 +87,9 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
   }
 
   Future<void> _saveProfile() async {
-    if (!_validateInputs()) return;
+    if (!_validateInputs()) {
+      return;
+    }
 
     setState(() => _isSaving = true);
 
@@ -104,7 +105,9 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
         socials: _socials.isEmpty ? null : _socials,
       );
 
-      if (!mounted) return;
+      if (!mounted) {
+        return;
+      }
 
       if (success) {
         // Update local storage
@@ -253,7 +256,10 @@ class _ProfileEditorDialogState extends State<ProfileEditorDialog> {
                         ),
                       ],
                     ),
-                    ..._socials.asMap().entries.map((MapEntry<int, Map<String, String>> entry) {
+                    ..._socials
+                        .asMap()
+                        .entries
+                        .map((MapEntry<int, Map<String, String>> entry) {
                       final int index = entry.key;
                       final Map<String, String> social = entry.value;
                       return Padding(

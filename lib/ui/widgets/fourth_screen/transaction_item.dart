@@ -318,8 +318,6 @@ class _TransactionListItemState extends State<TransactionListItem> {
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         spacing: 4,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
                                         children: <Widget>[
                                           Flexible(
                                             child: ContactMenu(
@@ -377,8 +375,6 @@ class _TransactionListItemState extends State<TransactionListItem> {
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         spacing: 4,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
                                         children: <Widget>[
                                           Flexible(
                                             child: ContactMenu(

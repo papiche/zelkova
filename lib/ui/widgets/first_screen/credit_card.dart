@@ -7,9 +7,9 @@ import '../../../data/models/wallet_themes.dart';
 import '../../../g1/g1_helper.dart';
 import '../../logger.dart';
 import '../../ui_helpers.dart';
+import '../avatar_badge.dart';
 import '../card_helper.dart';
 import '../contacts_actions.dart';
-import '../avatar_badge.dart';
 import 'card_name_editable.dart';
 import 'card_text_style.dart';
 
@@ -30,49 +30,6 @@ class CreditCard extends StatefulWidget {
 }
 
 class _CreditCardState extends State<CreditCard> {
-  void _showAvatarDialog() {
-    if (!widget.account.contact.hasAvatar) {
-      return;
-    }
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          child: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Container(
-              color: Colors.black.withValues(alpha: 0.9),
-              child: Stack(
-                alignment: Alignment.center,
-                children: <Widget>[
-                  CircleAvatar(
-                    radius: 120,
-                    child: ClipOval(
-                      child: Image.memory(
-                        widget.account.contact.avatar!,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 20,
-                    right: 20,
-                    child: GestureDetector(
-                      onTap: () => Navigator.pop(context),
-                      child: const Icon(Icons.close,
-                          color: Colors.white, size: 30),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     const double cardRadius = 10.0;
@@ -83,7 +40,7 @@ class _CreditCardState extends State<CreditCard> {
     // Accounts with an identity display their nick read-only.
     final bool hasIdentity = (widget.account.contact.nick != null &&
             widget.account.contact.nick!.isNotEmpty) ||
-        widget.account.contact.isMember != false;
+        (widget.account.contact.isMember ?? true);
     final WalletTheme cardTheme = widget.theme ?? widget.account.theme;
 
     return LayoutBuilder(
@@ -155,7 +112,6 @@ class _CreditCardState extends State<CreditCard> {
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           // Header: Title and icon
                           Row(

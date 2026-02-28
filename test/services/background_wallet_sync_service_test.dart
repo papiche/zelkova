@@ -5,60 +5,62 @@ void main() {
   group('BackgroundWalletSyncService', () {
     group('syncWallets', () {
       test('returns true when publicKeys is empty', () async {
-        final result = await BackgroundWalletSyncService.syncWallets(
-          publicKeys: [],
-          fetch: (_) async {},
+        final bool result = await BackgroundWalletSyncService.syncWallets(
+          publicKeys: <String>[],
+          fetch: (String _) async {},
         );
         expect(result, isTrue);
       });
 
       test('calls fetch exactly once per public key', () async {
-        final callOrder = <String>[];
-        final publicKeys = ['pub1', 'pub2', 'pub3'];
+        final List<String> callOrder = <String>[];
+        final List<String> publicKeys = <String>['pub1', 'pub2', 'pub3'];
 
         await BackgroundWalletSyncService.syncWallets(
           publicKeys: publicKeys,
-          fetch: (pubKey) async {
+          fetch: (String pubKey) async {
             callOrder.add(pubKey);
           },
         );
 
-        expect(callOrder, equals(['pub1', 'pub2', 'pub3']));
+        expect(callOrder, equals(<String>['pub1', 'pub2', 'pub3']));
       });
 
       test('fetches are sequential (awaited in order)', () async {
-        final order = <String>[];
-        final publicKeys = ['pub1', 'pub2'];
+        final List<String> order = <String>[];
+        final List<String> publicKeys = <String>['pub1', 'pub2'];
 
         await BackgroundWalletSyncService.syncWallets(
           publicKeys: publicKeys,
-          fetch: (pubKey) async {
+          fetch: (String pubKey) async {
             order.add('start-$pubKey');
-            await Future.delayed(Duration(milliseconds: 10));
+            await Future<void>.delayed(const Duration(milliseconds: 10));
             order.add('end-$pubKey');
           },
         );
 
         // Verify interleaving would have occurred if concurrent
-        expect(order,
-            equals(['start-pub1', 'end-pub1', 'start-pub2', 'end-pub2']));
+        expect(
+            order,
+            equals(
+                <String>['start-pub1', 'end-pub1', 'start-pub2', 'end-pub2']));
       });
 
       test('returns true on successful sync', () async {
-        final result = await BackgroundWalletSyncService.syncWallets(
-          publicKeys: ['pub1', 'pub2'],
-          fetch: (_) async {},
+        final bool result = await BackgroundWalletSyncService.syncWallets(
+          publicKeys: <String>['pub1', 'pub2'],
+          fetch: (String _) async {},
         );
         expect(result, isTrue);
       });
 
       test('continues with next wallet if one fetch throws', () async {
-        final callOrder = <String>[];
-        final publicKeys = ['pub1', 'pub2', 'pub3'];
+        final List<String> callOrder = <String>[];
+        final List<String> publicKeys = <String>['pub1', 'pub2', 'pub3'];
 
-        final result = await BackgroundWalletSyncService.syncWallets(
+        final bool result = await BackgroundWalletSyncService.syncWallets(
           publicKeys: publicKeys,
-          fetch: (pubKey) async {
+          fetch: (String pubKey) async {
             if (pubKey == 'pub2') {
               throw Exception('Fetch failed for pub2');
             }
@@ -69,13 +71,13 @@ void main() {
         // Should return true (error was handled)
         expect(result, isTrue);
         // pub1 and pub3 should still have been fetched
-        expect(callOrder, equals(['pub1', 'pub3']));
+        expect(callOrder, equals(<String>['pub1', 'pub3']));
       });
 
       test('returns true even if all fetches throw', () async {
-        final result = await BackgroundWalletSyncService.syncWallets(
-          publicKeys: ['pub1', 'pub2'],
-          fetch: (_) async {
+        final bool result = await BackgroundWalletSyncService.syncWallets(
+          publicKeys: <String>['pub1', 'pub2'],
+          fetch: (String _) async {
             throw Exception('All fetches fail');
           },
         );
@@ -84,12 +86,13 @@ void main() {
       });
 
       test('handles large public key lists', () async {
-        final publicKeys = List.generate(100, (i) => 'pub_$i');
-        var callCount = 0;
+        final List<String> publicKeys =
+            List<String>.generate(100, (int i) => 'pub_$i');
+        int callCount = 0;
 
-        final result = await BackgroundWalletSyncService.syncWallets(
+        final bool result = await BackgroundWalletSyncService.syncWallets(
           publicKeys: publicKeys,
-          fetch: (_) async {
+          fetch: (String _) async {
             callCount++;
           },
         );
@@ -99,10 +102,10 @@ void main() {
       });
 
       test('returns true when fetch completes with delay', () async {
-        final result = await BackgroundWalletSyncService.syncWallets(
-          publicKeys: ['pub1'],
-          fetch: (_) async {
-            await Future.delayed(Duration(milliseconds: 50));
+        final bool result = await BackgroundWalletSyncService.syncWallets(
+          publicKeys: <String>['pub1'],
+          fetch: (String _) async {
+            await Future<void>.delayed(const Duration(milliseconds: 50));
           },
         );
 
@@ -110,17 +113,17 @@ void main() {
       });
 
       test('preserves order of public keys during fetch', () async {
-        final order = <String>[];
-        final publicKeys = ['pub_z', 'pub_a', 'pub_m'];
+        final List<String> order = <String>[];
+        final List<String> publicKeys = <String>['pub_z', 'pub_a', 'pub_m'];
 
         await BackgroundWalletSyncService.syncWallets(
           publicKeys: publicKeys,
-          fetch: (pubKey) async {
+          fetch: (String pubKey) async {
             order.add(pubKey);
           },
         );
 
-        expect(order, equals(['pub_z', 'pub_a', 'pub_m']));
+        expect(order, equals(<String>['pub_z', 'pub_a', 'pub_m']));
       });
     });
   });

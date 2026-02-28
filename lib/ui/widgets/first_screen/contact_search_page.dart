@@ -128,7 +128,8 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
     });
 
     try {
-      final List<List<Contact>> results = await Future.wait<List<Contact>>([
+      final List<List<Contact>> results =
+          await Future.wait<List<Contact>>(<Future<List<Contact>>>[
         searchProfiles(_searchTerm, quickMode: true),
         searchWot(_searchTerm),
       ]);
@@ -342,65 +343,6 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
           }
           return widget;
         });
-  }
-
-  void _addIfNotPresent(Contact contact) {
-    if (_results
-        .where((Contact c) => c.pubKey == contact.pubKey)
-        .toList()
-        .isEmpty) {
-      _results.add(contact);
-    } else if (inDevelopment) {
-      logger('Skipping duplicate: ${contact.pubKey}');
-    }
-  }
-
-  /// Enrich WoT search results with C+ profiles in the background (non-blocking)
-  /// This allows results to display immediately while profile enrichment happens async
-  /// Does NOT call setState - enriched data is only cached for future searches
-  Future<void> _enrichProfilesInBackground(List<Contact> wotResults,
-      {bool isV2 = false}) async {
-    try {
-      if (widget.searchUse == SearchUse.payment) {
-        // Skip enrichment for payment search - just use WoT results
-        return;
-      }
-
-      if (isV2) {
-        // V2: batch fetch profiles and cache them
-        // This happens in background, UI won't re-render
-        final List<Contact> contactsWithProfiles = await getProfiles(
-          wotResults.map((Contact c) => c.pubKey).toList(),
-        );
-        ContactsCache().addAllContacts(contactsWithProfiles);
-        // Data is cached but UI doesn't update - that's intentional
-        // Results are already shown, enrichment is just for cache
-      } else {
-        // V1: fetch profiles individually and cache
-        // This happens in background, UI won't re-render
-        for (final Contact wotC in wotResults) {
-          final Contact cachedWotProfile =
-              await ContactsCache().getContact(wotC.pubKey);
-          if (cachedWotProfile.name == null) {
-            // Users without C+ profile
-            try {
-              final Contact cPlusProfile = await getProfile(
-                cachedWotProfile.pubKey,
-                onlyProfile: true,
-                complete: false,
-              );
-              ContactsCache().addContact(cPlusProfile);
-              // Data is cached but UI doesn't update - that's intentional
-            } catch (e) {
-              loggerDev(
-                  'Error fetching C+ profile for ${cachedWotProfile.pubKey}: $e');
-            }
-          }
-        }
-      }
-    } catch (e) {
-      loggerDev('Error in background profile enrichment: $e');
-    }
   }
 
   @override

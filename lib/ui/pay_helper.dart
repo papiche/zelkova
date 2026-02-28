@@ -197,9 +197,7 @@ Future<bool> payWithRetry(
                   tr('payment_successful_desc'));
               if (!isRetry) {
                 // Add here the transactions to the pending list (so we can check if they are confirmed)
-                for (final Transaction pending in updatedPendingTxs) {
-                  txCubit.addPendingTransaction(pending);
-                }
+                updatedPendingTxs.forEach(txCubit.addPendingTransaction);
               } else {
                 // Update the previously failed txs with an update time and type pending
                 for (final Transaction pending in updatedPendingTxs) {
@@ -261,9 +259,7 @@ void _onPaymentWIthProgressDone(
 
   // Add the transactions to the pending list
   if (!isRetry) {
-    for (final Transaction pending in pendingTransactions) {
-      txCubit.addPendingTransaction(pending);
-    }
+    pendingTransactions.forEach(txCubit.addPendingTransaction);
   } else {
     for (final Transaction pending in pendingTransactions) {
       txCubit.updatePendingTransaction(

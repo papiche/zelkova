@@ -8,8 +8,8 @@ import 'package:polkadart_keyring/polkadart_keyring.dart';
 import '../../data/models/contact_wot_info.dart';
 import '../../data/models/identity_status.dart';
 import '../../data/models/stored_account.dart';
-import '../../g1/duniter_endpoint_helper.dart';
 import '../../g1/api.dart';
+import '../../g1/duniter_endpoint_helper.dart';
 import '../../g1/duniter_indexer_helper.dart' as duniter_indexer;
 import '../../g1/sign_and_send.dart';
 import '../../shared_prefs_helper.dart';
@@ -920,16 +920,14 @@ Future<SignAndSendResult> _confirmAndChangeOwnerKey(
               );
               if (!migrated && context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                      content: Text(tr('profile_migration_failed'))),
+                  SnackBar(content: Text(tr('profile_migration_failed'))),
                 );
               }
             } catch (e) {
               loggerDev('Error migrating C+ profile: $e');
               if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                      content: Text(tr('profile_migration_failed'))),
+                  SnackBar(content: Text(tr('profile_migration_failed'))),
                 );
               }
             }

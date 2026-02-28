@@ -973,7 +973,7 @@ Future<Tuple2<Node, http.Response>> _requestWithRetry(
             }
 
             logger(
-                '${node.url} gave 404, retrying with other (${consecutive404s}/${nodes.length})');
+                '${node.url} gave 404, retrying with other ($consecutive404s/${nodes.length})');
             continue;
           } else {
             if (!kReleaseMode) {
@@ -1020,8 +1020,9 @@ Future<Tuple2<Node, http.Response>> _requestWithRetry(
   }
 
   // Improved logging for diagnosis
-  final String failureDetails =
-      nodes.map((node) => '${node.url} (errors: ${node.errors})').join(', ');
+  final String failureDetails = nodes
+      .map((Node node) => '${node.url} (errors: ${node.errors})')
+      .join(', ');
 
   logger(
       '⚠️ Failed to fetch $path from any node. Nodes tried: $failureDetails');
@@ -1563,9 +1564,8 @@ Future<bool> migrateProfileCPlus({
     return false;
   }
 
-  final Map<String, dynamic> oldResult =
-      const JsonDecoder().convert(oldProfileResponse.body)
-          as Map<String, dynamic>;
+  final Map<String, dynamic> oldResult = const JsonDecoder()
+      .convert(oldProfileResponse.body) as Map<String, dynamic>;
 
   if (oldResult['found'] == false) {
     logger('No C+ profile found for old pubkey $oldPubKey, nothing to migrate');
@@ -1612,11 +1612,8 @@ Future<bool> migrateProfileCPlus({
   http.Response createResponse;
   if (existingName != null) {
     // Update existing profile at new pubkey
-    createResponse = (await _requestWithRetry(
-            NodeType.cesiumPlus,
-            '/user/profile/$newPubKey/_update?pubkey=$newPubKey',
-            false,
-            true,
+    createResponse = (await _requestWithRetry(NodeType.cesiumPlus,
+            '/user/profile/$newPubKey/_update?pubkey=$newPubKey', false, true,
             httpType: HttpType.post,
             headers: _defCPlusHeaders(),
             body: newProfileJson))

@@ -745,6 +745,7 @@ class SharedPreferencesHelperV2
   /// Upgrades a v2PasswordLess account to v2PasswordProtected.
   /// Encrypts the plaintext seed with the given [passwordKey] and updates
   /// the account type. Returns true on success.
+  @override
   Future<bool> upgradeToPasswordProtected(
       StoredAccount account, Uint8List passwordKey) async {
     if (account.type != AccountType.v2PasswordLess) {

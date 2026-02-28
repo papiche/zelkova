@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../data/models/app_cubit.dart';
 import '../../../data/models/app_state.dart';
@@ -10,6 +14,7 @@ import '../../../g1/api.dart';
 import '../../../g1/currency.dart';
 import '../../../g1/service_manager.dart';
 import '../../../shared_prefs_helper.dart';
+import '../../../ui/notification_controller.dart';
 import '../../contacts_cache.dart';
 import '../fifth_screen/export_dialog.dart';
 import '../fifth_screen/import_dialog.dart';
@@ -210,6 +215,60 @@ class SettingsPage extends StatelessWidget {
                 ),
               ],
 
+              // NOTIFICATIONS SECTION
+              const SizedBox(height: 10),
+              _buildSectionHeader(context, 'settings_notifications_category',
+                  Icons.notifications),
+              FutureBuilder<bool>(
+                future: _isNotificationAllowed(),
+                builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                  final bool isAllowed = snapshot.data ?? false;
+                  return ListTile(
+                    leading: Icon(
+                      isAllowed
+                          ? Icons.notifications_active
+                          : Icons.notifications_off,
+                      color: isAllowed ? Colors.green : Colors.orange,
+                    ),
+                    title: Text(tr(
+                        'settings_notifications_status_${isAllowed ? 'enabled' : 'disabled'}')),
+                    subtitle: Text(tr(isAllowed
+                        ? 'settings_notifications_enabled_desc'
+                        : 'settings_notifications_disabled_desc')),
+                    trailing:
+                        !isAllowed ? const Icon(Icons.chevron_right) : null,
+                    onTap: !isAllowed
+                        ? () async {
+                            final bool? authorized =
+                                await _requestNotificationPermission(context);
+                            if (authorized ?? false) {
+                              // Force UI rebuild by triggering a state change
+                              if (context.mounted) {
+                                // ignore: use_build_context_synchronously
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(tr(
+                                        'settings_notifications_enabled_snack')),
+                                    duration: const Duration(seconds: 2),
+                                  ),
+                                );
+                              }
+                            }
+                          }
+                        : null,
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.power_settings_new),
+                title: Text(tr('settings_battery_optimizations_title')),
+                subtitle: Text(tr('settings_battery_optimizations_desc')),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () {
+                  _showBatteryOptimizationDialog(context);
+                },
+              ),
+
               const SizedBox(height: 20),
             ],
           );
@@ -251,6 +310,61 @@ class SettingsPage extends StatelessWidget {
               onPressed: () => Navigator.of(context).pop(),
               child: Text(tr('ok')),
             ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<bool> _isNotificationAllowed() async {
+    // Import awesome_notifications in notification_controller
+    // This is a simple check for notification permission status
+    try {
+      return await NotificationController.isNotificationAllowed();
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool?> _requestNotificationPermission(BuildContext context) async {
+    try {
+      return await NotificationController.displayNotificationRationale();
+    } catch (e) {
+      return null;
+    }
+  }
+
+  void _showBatteryOptimizationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(tr('settings_background_limitations_title')),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(tr('settings_background_limitations_body')),
+              const SizedBox(height: 12),
+              Text(
+                tr('settings_battery_optimization_info'),
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(tr('close')),
+            ),
+            if (!kIsWeb && Platform.isAndroid)
+              FilledButton.icon(
+                icon: const Icon(Icons.battery_saver),
+                label: Text(tr('settings_battery_open_settings')),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Permission.ignoreBatteryOptimizations.request();
+                },
+              ),
           ],
         );
       },

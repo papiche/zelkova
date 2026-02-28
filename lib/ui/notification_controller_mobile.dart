@@ -114,9 +114,28 @@ class NotificationController {
   ///     REQUESTING NOTIFICATION PERMISSIONS
   ///  *********************************************
   ///
-  static Future<bool> displayNotificationRationale() async {
+  /// Display permission rationale dialog.
+  ///
+  /// **Parameters:**
+  /// - `allowPermissionPrompt`: If false, skips the dialog and returns false immediately
+  ///   (used for background isolates where UI context is invalid)
+  ///
+  /// **Returns:** true if user authorized, false otherwise
+  static Future<bool> displayNotificationRationale(
+      {bool allowPermissionPrompt = true}) async {
     bool userAuthorized = false;
-    final BuildContext context = GinkgoApp.navigatorKey.currentContext!;
+
+    // If permission prompts are disabled (e.g., background isolate), return false
+    if (!allowPermissionPrompt) {
+      return false;
+    }
+
+    // Check if context is available (guards against background isolate usage)
+    final BuildContext? context = GinkgoApp.navigatorKey.currentContext;
+    if (context == null) {
+      return false;
+    }
+
     await showDialog(
         context: context,
         builder: (BuildContext ctx) {
@@ -202,7 +221,8 @@ class NotificationController {
     } else {
       bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
       if (!isAllowed) {
-        isAllowed = await displayNotificationRationale();
+        isAllowed =
+            await displayNotificationRationale(allowPermissionPrompt: true);
       }
       if (!isAllowed) {
         return;
@@ -232,7 +252,8 @@ class NotificationController {
   static Future<void> scheduleNewNotification() async {
     bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
     if (!isAllowed) {
-      isAllowed = await displayNotificationRationale();
+      isAllowed =
+          await displayNotificationRationale(allowPermissionPrompt: true);
     }
     if (!isAllowed) {
       return;
@@ -263,6 +284,17 @@ class NotificationController {
         ],
         schedule: NotificationCalendar.fromDate(
             date: DateTime.now().add(const Duration(seconds: 10))));
+  }
+
+  /// Check if notifications are currently allowed (permission granted).
+  ///
+  /// Returns: true if notification permission is granted, false otherwise
+  static Future<bool> isNotificationAllowed() async {
+    try {
+      return await AwesomeNotifications().isNotificationAllowed();
+    } catch (e) {
+      return false;
+    }
   }
 
   static Future<void> resetBadgeCounter() async {

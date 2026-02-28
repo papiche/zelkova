@@ -34,9 +34,30 @@ class NotificationController {
   ///     REQUESTING NOTIFICATION PERMISSIONS
   ///  *********************************************
   ///
-  static Future<bool> displayNotificationRationale() async {
+
+  /// Check if notifications are allowed (Web: checks Notification.permission)
+  static Future<bool> isNotificationAllowed() async {
+    try {
+      return web.Notification.permission == 'granted';
+    } catch (e) {
+      return false;
+    }
+  }
+
+  static Future<bool> displayNotificationRationale(
+      {bool allowPermissionPrompt = true}) async {
+    // Guard against null context (e.g., headless/background execution)
+    final BuildContext? context = GinkgoApp.navigatorKey.currentContext;
+    if (context == null) {
+      return false;
+    }
+
+    // If called from background or with allowPermissionPrompt=false, don't show dialog
+    if (!allowPermissionPrompt) {
+      return false;
+    }
+
     bool userAuthorized = false;
-    final BuildContext context = GinkgoApp.navigatorKey.currentContext!;
     await showDialog(
         context: context,
         builder: (BuildContext ctx) {

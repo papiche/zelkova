@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
@@ -24,6 +25,9 @@ class NotificationController {
   ///  *********************************************
   ///
   static Future<void> initializeLocalNotifications() async {
+    if (!kIsWeb && Platform.isLinux) {
+      return;
+    }
     await AwesomeNotifications().initialize(
         null, //'resource://drawable/res_app_icon',//
         <NotificationChannel>[
@@ -48,6 +52,9 @@ class NotificationController {
   static ReceivePort? receivePort;
 
   static Future<void> initializeIsolateReceivePort() async {
+    if (!kIsWeb && Platform.isLinux) {
+      return;
+    }
     receivePort = ReceivePort('Notification action port in main isolate')
       ..listen((dynamic silentData) =>
           onActionReceivedImplementationMethod(silentData));
@@ -62,6 +69,9 @@ class NotificationController {
   ///  *********************************************
   ///  Notifications events are only delivered after call this method
   static Future<void> startListeningNotificationEvents() async {
+    if (!kIsWeb && Platform.isLinux) {
+      return;
+    }
     AwesomeNotifications()
         .setListeners(onActionReceivedMethod: onActionReceivedMethod);
   }
@@ -218,6 +228,9 @@ class NotificationController {
       {required String title, required String desc, required String id}) async {
     if (kIsWeb) {
       // dart:html cannot be used in Android
+    } else if (!kIsWeb && Platform.isLinux) {
+      debugPrint('[NOTIFICATION] $title: $desc');
+      return;
     } else {
       bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
       if (!isAllowed) {
@@ -249,6 +262,10 @@ class NotificationController {
   }
 
   static Future<void> scheduleNewNotification() async {
+    if (!kIsWeb && Platform.isLinux) {
+      debugPrint('[NOTIFICATION] scheduleNewNotification skipped on Linux');
+      return;
+    }
     bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
     if (!isAllowed) {
       isAllowed = await displayNotificationRationale();
@@ -288,6 +305,9 @@ class NotificationController {
   ///
   /// Returns: true if notification permission is granted, false otherwise
   static Future<bool> isNotificationAllowed() async {
+    if (!kIsWeb && Platform.isLinux) {
+      return true;
+    }
     try {
       return await AwesomeNotifications().isNotificationAllowed();
     } catch (e) {
@@ -296,10 +316,16 @@ class NotificationController {
   }
 
   static Future<void> resetBadgeCounter() async {
+    if (!kIsWeb && Platform.isLinux) {
+      return;
+    }
     await AwesomeNotifications().resetGlobalBadge();
   }
 
   static Future<void> cancelNotifications() async {
+    if (!kIsWeb && Platform.isLinux) {
+      return;
+    }
     await AwesomeNotifications().cancelAll();
   }
 }

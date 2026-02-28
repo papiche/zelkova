@@ -15,6 +15,9 @@ import 'ui_helpers.dart';
 ///
 class NotificationController {
   static Locale locale = const Locale('en', 'UK');
+  // Deduplication: track recent notification keys to avoid duplicates
+  // from concurrent fetchTransactions calls
+  static final Set<String> _recentNotificationIds = <String>{};
 
   ///  *********************************************
   ///     INITIALIZATIONS
@@ -110,7 +113,19 @@ class NotificationController {
             ],
           );
         });
-    return userAuthorized;
+    if (!userAuthorized) {
+      return false;
+    }
+
+    try {
+      final String permission =
+          (await web.Notification.requestPermission().toDart)
+              .toDart
+              .toLowerCase();
+      return permission == 'granted';
+    } catch (e) {
+      return false;
+    }
   }
 
   ///  *********************************************
@@ -141,6 +156,15 @@ class NotificationController {
   static Future<void> notify(
       {required String title, required String desc, required String id}) async {
     try {
+      final String dedupeKey = '$title|$desc';
+      if (_recentNotificationIds.contains(dedupeKey)) {
+        return;
+      }
+      _recentNotificationIds.add(dedupeKey);
+      Future<void>.delayed(const Duration(seconds: 30), () {
+        _recentNotificationIds.remove(dedupeKey);
+      });
+
       if (web.Notification.permission != 'granted') {
         await web.Notification.requestPermission().toDart;
       }

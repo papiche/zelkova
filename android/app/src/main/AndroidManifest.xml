@@ -9,14 +9,9 @@
     
     <!-- By awesome notifications -->
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
-    <!-- screen_brightness -->
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" tools:ignore="ProtectedPermissions"/>
+    <!-- screen_brightness uses per-app window brightness; no WRITE_SETTINGS needed -->
 
     <!-- Biometric auth -->
     <uses-permission android:name="android.permission.USE_BIOMETRIC"/>

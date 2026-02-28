@@ -356,6 +356,7 @@ Future<void> resetBrightness() async {
 
 Future<void> setHighBrightness() async {
   try {
+    // Per-app window brightness; does not require WRITE_SETTINGS.
     await ScreenBrightness.instance.setApplicationScreenBrightness(1.0);
   } catch (e) {
     loggerDev('Error setting brightness: $e');

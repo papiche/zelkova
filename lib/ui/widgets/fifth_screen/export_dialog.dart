@@ -4,10 +4,10 @@ import 'dart:io';
 
 import 'package:durt/durt.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
 import 'package:pattern_lock/pattern_lock.dart';
 import 'package:qr_flutter/qr_flutter.dart';

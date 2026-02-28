@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 ///
 /// The translations are loaded once and cached statically.
 class NotificationTranslationsHelper {
+  NotificationTranslationsHelper._();
   static final Map<String, Map<String, String>> _cache =
       <String, Map<String, String>>{};
 

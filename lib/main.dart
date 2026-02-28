@@ -13,15 +13,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_skill/flutter_skill.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:hive_ce_flutter/adapters.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:l10n_esperanto/l10n_esperanto.dart';
 import 'package:lehttp_overrides/lehttp_overrides.dart';
 import 'package:once/once.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:pwa_install/pwa_install.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -1315,11 +1314,11 @@ Future<void> _initHiveStorage() async {
 }
 
 void _registerHiveAdapters() {
-  final ColorAdapter colorAdapter = ColorAdapter();
+  final ColorAdapter colorAdapter = const ColorAdapter();
   if (!Hive.isAdapterRegistered(colorAdapter.typeId)) {
     Hive.registerAdapter(colorAdapter);
   }
-  final TimeOfDayAdapter timeOfDayAdapter = TimeOfDayAdapter();
+  final TimeOfDayAdapter timeOfDayAdapter = const TimeOfDayAdapter();
   if (!Hive.isAdapterRegistered(timeOfDayAdapter.typeId)) {
     Hive.registerAdapter(timeOfDayAdapter);
   }
@@ -1338,7 +1337,7 @@ Future<void> _migrateDesktopHiveStorage() async {
       return;
     }
 
-    if (!await oldDir.exists()) {
+    if (!oldDir.existsSync()) {
       return;
     }
 
@@ -1356,7 +1355,7 @@ Future<void> _migrateDesktopHiveStorage() async {
       }
 
       final File targetFile = File(path.join(newDir.path, fileName));
-      if (await targetFile.exists()) {
+      if (targetFile.existsSync()) {
         continue;
       }
 

@@ -13,7 +13,6 @@ import '../../contacts_helper.dart';
 import '../../currency_helper.dart';
 import '../../in_dev_helper.dart';
 import '../../locale_helper.dart';
-import '../../logger.dart';
 import '../../ui_helpers.dart';
 import '../contact_page.dart';
 import '../first_screen/contact_search_page.dart';
@@ -32,7 +31,6 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
   final int _maxDaysDifference = 365;
   bool _isAnalyzing = false;
   bool _analysisComplete = false;
-  String _report = '';
   List<Widget> contactWidgets = <Widget>[];
   double totalReceivedAllContacts = 0.0;
   int totalReceivedAllContactsNumber = 0;
@@ -149,7 +147,6 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
                               totalReceivedAllContactsNumber = 0;
                               _selectedDates = <DateTime?>[null, null];
                               _isAnalyzing = false;
-                              _report = '';
                               _analysisComplete = false;
                               displayedContacts.clear();
                               allNewContacts.clear();
@@ -196,7 +193,6 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
                                           totalSentAllContactsNumber = 0;
                                           totalReceivedAllContactsNumber = 0;
                                           _processedContacts = 0;
-                                          _report = '';
                                           displayedContacts.clear();
                                           allNewContacts.clear();
                                         });
@@ -369,7 +365,6 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
                         totalSentAllContacts += totalSent;
                         totalReceivedAllContactsNumber += totalReceivedNumber;
                         totalSentAllContactsNumber += totalSentNumber;
-                        _report += '\n$markdown';
                         _processedContacts++;
                       });
                       if (collectOtherContacts) {

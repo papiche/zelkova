@@ -26,6 +26,8 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sentry_logging/sentry_logging.dart';
 import 'package:timeago/timeago.dart' as timeago;
+// WorkManager is only available on Android and iOS
+// On Web, this import is conditionally excluded and code paths are guarded with kIsWeb
 import 'package:workmanager/workmanager.dart';
 
 import 'app_bloc_observer.dart';
@@ -52,6 +54,7 @@ import 'g1/distance_precompute.dart';
 import 'g1/distance_precompute_provider.dart';
 import 'g1/g1_helper.dart';
 import 'g1/service_manager.dart';
+import 'services/background_wallet_sync_service.dart';
 import 'services/g1_genesis_service.dart';
 import 'shared_prefs_helper.dart';
 import 'ui/biometrics/biometric_auth_service.dart';
@@ -67,6 +70,8 @@ import 'ui/widgets/pages/biometric_lock_screen.dart';
 
 const String fetchWalletsTransactionsTask =
     'org.comunes.ginkgo.fetchWalletsTransactionsTask';
+const String debugBackgroundPingTask =
+    'org.comunes.ginkgo.debugBackgroundPingTask';
 
 /// Helper function to detect if the error is a duplicate keyboard event
 /// This is a known Flutter issue where the HardwareKeyboard layer
@@ -102,6 +107,17 @@ void workManagerCallbackDispatcher() {
           await NotificationController.initializeLocalNotifications();
           await fetchTransactionsFromBackground();
           break;
+        case debugBackgroundPingTask:
+          // Debug-only deterministic ping task (dev builds only)
+          await NotificationController.initializeLocalNotifications();
+          final String timestamp = DateTime.now().toIso8601String();
+          await NotificationController.notify(
+            title: '[DEBUG] Background Task Executed',
+            desc: 'Debug background ping at $timestamp',
+            id: 'debug_ping_${DateTime.now().millisecondsSinceEpoch}',
+          );
+          logger.info('Debug background ping task executed at $timestamp');
+          break;
         case Workmanager.iOSBackgroundTask:
           logger.info('iOS background task received');
           break;
@@ -132,7 +148,6 @@ void main() async {
 
   // Wrap the entire bootstrap in runZonedGuarded to catch async uncaught errors.
   runZonedGuarded(() async {
-
     // Forward Flutter framework errors to the default presenter (and your logs).
     FlutterError.onError = (FlutterErrorDetails details) {
       // Ignore known keyboard event duplicate issue
@@ -159,11 +174,43 @@ void main() async {
 
     logger.info('Starting Ginkgo app');
 
-    // Initialize Workmanager early (mobile only).
+    // Initialize Workmanager for background task scheduling (mobile only, not Web)
+    // Web platform does not support background tasks via WorkManager
     if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
       await Workmanager().initialize(workManagerCallbackDispatcher);
+
+      // Register periodic background task immediately after initialization
+      // Using ExistingPeriodicWorkPolicy.update to replace any existing task
+      await Workmanager().registerPeriodicTask(
+        fetchWalletsTransactionsTask,
+        fetchWalletsTransactionsTask,
+        inputData: <String, dynamic>{},
+        constraints: Constraints(
+          networkType: NetworkType.connected,
+          requiresBatteryNotLow: false,
+        ),
+        frequency: const Duration(minutes: 16),
+        existingWorkPolicy: ExistingPeriodicWorkPolicy.update,
+      );
+      logger.info('WorkManager periodic task registered');
+
+      // Register debug ping task (dev builds only) for deterministic background testing
+      if (inDevelopment) {
+        await Workmanager().registerOneOffTask(
+          debugBackgroundPingTask,
+          debugBackgroundPingTask,
+          initialDelay: const Duration(seconds: 10),
+          constraints: Constraints(
+            networkType: NetworkType.connected,
+          ),
+        );
+        logger.info('Debug background ping task registered (dev build)');
+      }
+    } else if (kIsWeb) {
+      logger.info(
+          'Workmanager skipped (Web platform does not support background tasks)');
     }
-    logger.info('Workmanager initialized');
+    logger.info('Workmanager initialization complete');
 
     await NotificationController.initializeLocalNotifications();
     logger.info('NotificationController initialized');
@@ -675,19 +722,6 @@ class _GinkgoAppState extends State<GinkgoApp> {
       }
     });
 
-    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
-      Workmanager().registerPeriodicTask(
-        fetchWalletsTransactionsTask,
-        fetchWalletsTransactionsTask,
-        inputData: <String, dynamic>{},
-        constraints: Constraints(
-          networkType: NetworkType.connected,
-          requiresBatteryNotLow: true,
-        ),
-        frequency: const Duration(minutes: 16),
-      );
-    }
-
     // Clean MultiWalletTransactionCubit state before launching the app
     context.read<MultiWalletTransactionCubit>().autoCleanState();
     // This is consuming a lot of time and may delay app start, only for dev
@@ -832,11 +866,8 @@ class _GinkgoAppState extends State<GinkgoApp> {
     _v2DetectionTimer?.cancel();
     ContactsCache().dispose();
     _disposeDeepLinkListener();
-    if (!kIsWeb) {
-      Workmanager().cancelAll();
-    }
     /* GetIt.instance<NodeListCubit>().closeCubit();
-    GetIt.instance<MultiWalletTransactionCubit>().closeCubit(); */
+     GetIt.instance<MultiWalletTransactionCubit>().closeCubit(); */
     super.dispose();
   }
 
@@ -1063,13 +1094,29 @@ Future<void> fetchTransactionsFromBackground([bool init = true]) async {
       }
     }
     loggerDev('Initialized background context');
+
+    // Configure SharedPreferencesHelper for correct V1/V2 storage mode in background
+    final AppCubit appCubit = GetIt.instance.get<AppCubit>();
+    SharedPreferencesHelper.configure(useV2: appCubit.isV2);
+
     final GetIt getIt = GetIt.instance;
     final MultiWalletTransactionCubit transCubit =
         getIt.get<MultiWalletTransactionCubit>();
-    for (final String pubKey in SharedPreferencesHelper().publicKeys) {
-      loggerDev('Fetching transactions for $pubKey in background');
-      transCubit.fetchTransactions(pubKey: pubKey);
+
+    // Use BackgroundWalletSyncService to await all fetches sequentially
+    final bool syncSuccess = await BackgroundWalletSyncService.syncWallets(
+      publicKeys: SharedPreferencesHelper().publicKeys,
+      fetch: (String pubKey) => transCubit.fetchTransactions(
+        pubKey: pubKey,
+        isConnectedOverride:
+            true, // Force fetch even if connectivity check fails
+      ),
+    );
+
+    if (!syncSuccess) {
+      loggerDev('Background wallet sync failed');
     }
+
     if (inDevelopment) {
       NotificationController.notify(
         title: 'Background process ended correctly',

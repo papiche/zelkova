@@ -1874,7 +1874,8 @@ Future<NodeCheckResult> testIpfsGateway(String node, Duration timeout) async {
   final Stopwatch stopwatch = Stopwatch()..start();
   final Response response = await getWithTimeout(Uri.parse(node));
   stopwatch.stop();
-  final Duration latency = stopwatch.elapsed;
+  final Duration latency =
+      response.statusCode == 200 ? stopwatch.elapsed : wrongNodeDuration;
   final int currentBlock = response.statusCode;
   final NodeCheckResult result =
       NodeCheckResult(latency: latency, currentBlock: currentBlock);
@@ -1903,6 +1904,8 @@ Future<NodeCheckResult> testCPlusV1Node(String node, Duration timeout) async {
   final Stopwatch stopwatch = Stopwatch()..start();
   // see: http://g1.data.e-is.pro/network/peering
   final Response response = await getWithTimeout(Uri.parse('$node/node/stats'));
+  stopwatch.stop();
+  latency = stopwatch.elapsed;
   if (response.statusCode == 200) {
     try {
       final Map<String, dynamic> json =
@@ -1918,8 +1921,6 @@ Future<NodeCheckResult> testCPlusV1Node(String node, Duration timeout) async {
   } else {
     latency = wrongNodeDuration;
   }
-  stopwatch.stop();
-  latency = stopwatch.elapsed;
   return NodeCheckResult(latency: latency, currentBlock: currentBlock);
 }
 

@@ -1314,11 +1314,11 @@ Future<void> _initHiveStorage() async {
 }
 
 void _registerHiveAdapters() {
-  final ColorAdapter colorAdapter = const ColorAdapter();
+  final ColorAdapter colorAdapter = ColorAdapter();
   if (!Hive.isAdapterRegistered(colorAdapter.typeId)) {
     Hive.registerAdapter(colorAdapter);
   }
-  final TimeOfDayAdapter timeOfDayAdapter = const TimeOfDayAdapter();
+  const TimeOfDayAdapter timeOfDayAdapter = TimeOfDayAdapter();
   if (!Hive.isAdapterRegistered(timeOfDayAdapter.typeId)) {
     Hive.registerAdapter(timeOfDayAdapter);
   }

@@ -1,13 +1,7 @@
-import 'dart:io';
-
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path/path.dart' show join;
-import 'package:path_provider/path_provider.dart';
-import 'package:pdf/widgets.dart' as pw;
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../../data/models/app_cubit.dart';
@@ -122,56 +116,8 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
     super.initState();
   }
 
-  Future<void> _generatePdfReport(BuildContext context) async {
-    loggerDev('Generating pdf');
-    final pw.ThemeData myTheme = pw.ThemeData.withFont(
-        base: pw.Font.ttf(
-            await rootBundle.load('assets/assets/OpenSans-Regular.ttf')),
-        bold: pw.Font.ttf(await rootBundle.load('assets/OpenSans-Bold.ttf')),
-        italic:
-            pw.Font.ttf(await rootBundle.load('assets/OpenSans-Italic.ttf')),
-        boldItalic: pw.Font.ttf(
-            await rootBundle.load('assets/OpenSans-BoldItalic.ttf')),
-        fontFallback: <pw.Font>[
-          pw.Font.ttf(await rootBundle.load('assets/NotoEmoji-Regular.ttf')),
-          pw.Font.ttf(await rootBundle.load('assets/DejaVuSans.ttf')),
-        ]);
-
-    final pw.Document pdf = pw.Document(theme: myTheme);
-
-    pdf.addPage(
-      pw.Page(
-        build: (pw.Context pwcontext) => pw.Column(
-          crossAxisAlignment: pw.CrossAxisAlignment.start,
-          children: <pw.Widget>[
-            pw.Text(tr('market_analysis_report'),
-                style: const pw.TextStyle(fontSize: 24)),
-            pw.SizedBox(height: 20),
-            pw.Text('${tr('total_received', namedArgs: <String, String>{
-                  'number': totalReceivedAllContactsNumber.toString()
-                })} ${humanizeAmountS(isCurrencyBefore, context, isG1, true, currentSymbol, 16, totalReceivedAllContacts, currentUd, Colors.green)}'),
-            pw.Text('${tr('total_sent', namedArgs: <String, String>{
-                  'number': totalSentAllContactsNumber.toString()
-                })} ${humanizeAmountS(isCurrencyBefore, context, isG1, true, currentSymbol, 16, totalSentAllContacts, currentUd, Colors.red)}'),
-            if (_report.isNotEmpty) pw.Text(_report),
-          ],
-        ),
-      ),
-    );
-
-    final Directory directory = await getApplicationDocumentsDirectory();
-    final String fileName = inDevelopment
-        ? 'market_analysis_report.pdf'
-        : 'market_analysis_report_$todayS.pdf';
-    final File file = File(join(directory.path, fileName));
-    await file.writeAsBytes(await pdf.save());
-    if (!context.mounted) {
-      return;
-    }
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(tr('pdf_generated'))),
-    );
-  }
+  // PDF report generation disabled (pdf package commented out for WASM compat)
+  // Future<void> _generatePdfReport(BuildContext context) async { ... }
 
   @override
   Widget build(BuildContext context) {
@@ -344,26 +290,9 @@ class _MarketAnalysisPageState extends State<MarketAnalysisPage> {
                               ),
                             ),
                           if (_analysisComplete)
-                            if (inDevelopment)
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  const SizedBox(height: 10),
-                                  Center(
-                                    child: ElevatedButton.icon(
-                                      onPressed: () async =>
-                                          _generatePdfReport(context),
-                                      icon: const Icon(Icons.download),
-                                      label: Text(tr('download_pdf')),
-                                      style: ElevatedButton.styleFrom(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 15),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                ],
-                              ),
+                            if (inDevelopment) const SizedBox(height: 10),
+                          // PDF download button disabled (pdf package
+                          // commented out for WASM compatibility)
                           ...contactWidgets,
                         ],
                       ),

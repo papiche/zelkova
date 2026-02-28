@@ -1,11 +1,7 @@
-import 'dart:io';
-
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../../../data/models/app_cubit.dart';
 import '../../../data/models/app_state.dart';
@@ -362,15 +358,6 @@ class _SettingsPageState extends State<SettingsPage> {
               onPressed: () => Navigator.of(context).pop(),
               child: Text(tr('close')),
             ),
-            if (!kIsWeb && Platform.isAndroid)
-              FilledButton.icon(
-                icon: const Icon(Icons.battery_saver),
-                label: Text(tr('settings_battery_open_settings')),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  Permission.ignoreBatteryOptimizations.request();
-                },
-              ),
           ],
         );
       },

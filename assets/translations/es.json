@@ -566,8 +566,5 @@
     "settings_battery_optimizations_desc": "La sincronización en segundo plano requiere configuración adecuada de batería",
     "settings_battery_optimization_info": "Para una sincronización fiable en segundo plano, excluye Ginkgo de la optimización de batería.",
     "settings_background_limitations_title": "Sincronización en segundo plano",
-    "settings_background_limitations_body": "Si el sistema restringe la actividad en segundo plano o fuerzas el cierre de la app, la sincronización de transacciones y las notificaciones podrían no funcionar.",
-    "settings_battery_open_settings": "Abrir ajustes de batería",
-    "settings_battery_excluded": "Optimización de batería desactivada",
-    "settings_battery_not_excluded": "Optimización de batería activa"
+    "settings_background_limitations_body": "Si el sistema restringe la actividad en segundo plano o fuerzas el cierre de la app, la sincronización de transacciones y las notificaciones podrían no funcionar."
 }

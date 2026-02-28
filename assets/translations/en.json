@@ -561,8 +561,5 @@
    "settings_battery_optimizations_desc": "Background sync requires proper battery settings",
    "settings_battery_optimization_info": "For reliable background sync and notifications, exclude Ginkgo from battery optimization.",
    "settings_background_limitations_title": "Background sync",
-   "settings_background_limitations_body": "If the system restricts background activity or you force-stop the app, transaction sync and notifications may not work properly.",
-   "settings_battery_open_settings": "Open battery settings",
-   "settings_battery_excluded": "Battery optimization disabled",
-   "settings_battery_not_excluded": "Battery optimization active"
+   "settings_background_limitations_body": "If the system restricts background activity or you force-stop the app, transaction sync and notifications may not work properly."
 }

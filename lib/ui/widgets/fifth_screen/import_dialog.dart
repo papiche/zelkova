@@ -45,6 +45,7 @@ class _ImportDialogState extends State<ImportDialog> {
       GlobalKey<ScaffoldState>(debugLabel: 'importKey');
   int _attempts = 0;
   bool _errorDialogShown = false;
+  bool _isProcessing = false;
 
   Future<String> _getImportFuture(BuildContext c) {
     if (kIsWeb) {
@@ -171,6 +172,9 @@ class _ImportDialogState extends State<ImportDialog> {
                         pointRadius: 8,
                         fillPoints: true,
                         onInputComplete: (List<int> pattern) async {
+                          if (_isProcessing) {
+                            return;
+                          }
                           if (_attempts >= 3) {
                             c.replaceSnackbar(
                               content: Text(
@@ -182,6 +186,9 @@ class _ImportDialogState extends State<ImportDialog> {
                             return;
                           }
                           try {
+                            if (mounted) {
+                              setState(() => _isProcessing = true);
+                            }
                             // try to decrypt
                             final Map<String, dynamic> keys =
                                 decryptJsonForImport(
@@ -287,23 +294,15 @@ class _ImportDialogState extends State<ImportDialog> {
                                 return;
                               }
 
-                              // Fetch C+ profiles for imported wallets
-                              try {
-                                await SharedPreferencesHelper()
-                                    .refreshWalletsInfo();
-                              } catch (e) {
-                                // Silent failure - profiles will show pubkey fallback
-                              }
-
-                              if (!mounted) {
-                                return;
-                              }
                               Navigator.of(context).pop(true);
                               return;
                             } catch (e, stacktrace) {
                               logger('Error importing wallet: $e');
                               if (!c.mounted) {
                                 return;
+                              }
+                              if (mounted) {
+                                setState(() => _isProcessing = false);
                               }
                               c.replaceSnackbar(
                                 content: Text(
@@ -316,6 +315,9 @@ class _ImportDialogState extends State<ImportDialog> {
                               return;
                             }
                           } catch (e, stacktrace) {
+                            if (mounted) {
+                              setState(() => _isProcessing = false);
+                            }
                             _attempts++;
                             logger(e.toString());
                             logger(stacktrace);

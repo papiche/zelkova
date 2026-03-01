@@ -1,23 +1,43 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:ginkgo/shared_prefs_helper.dart';
 import 'package:ginkgo/ui/widgets/pages/authentication_settings_page.dart';
+import 'package:ginkgo/ui/biometrics/biometric_auth_service.dart';
 
 import '../secure_storage_mock.dart';
+import '../widget/widget_test_helper.dart';
+
+class _FakeBiometricAuthService extends BiometricAuthService {
+  @override
+  Future<bool> isBiometricSupported() async => true;
+
+  @override
+  Future<bool> isBiometricEnabled() async => false;
+
+  @override
+  Future<void> setBiometricEnabled(bool enabled) async {}
+}
 
 void main() {
+  setUpAll(() async {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    SharedPreferences.setMockInitialValues(<String, Object>{});
+    registerMockSecureStorage();
+    SharedPreferencesHelper.configure(useV2: false);
+    await SharedPreferencesHelper().init();
+    SharedPreferencesHelper().accountsClear();
+    await initializeEasyLocalization();
+  });
+
   testWidgets('Biometrics switch disabled without unlock method',
       (WidgetTester tester) async {
-    registerMockSecureStorage();
-
     await tester.pumpWidget(
-      EasyLocalization(
-        supportedLocales: const <Locale>[Locale('en')],
-        path: 'assets/translations',
-        fallbackLocale: const Locale('en'),
-        child: const MaterialApp(
-          home: AuthenticationSettingsPage(),
+      createTestableWidget(
+        AuthenticationSettingsPage(
+          biometricAuth: _FakeBiometricAuthService(),
         ),
       ),
     );
@@ -29,7 +49,7 @@ void main() {
 
     final SwitchListTile tile = tester.widget<SwitchListTile>(switchTileFinder);
     expect(tile.onChanged, isNull);
-    expect(find.text('You need to set a pattern or password first'),
+    expect(find.byKey(const Key('auth_biometrics_requires_unlock_method')),
         findsOneWidget);
   });
 }

@@ -15,7 +15,14 @@ import '../../in_dev_helper.dart';
 import '../../secure_unlock_widget.dart';
 
 class AuthenticationSettingsPage extends StatefulWidget {
-  const AuthenticationSettingsPage({super.key});
+  const AuthenticationSettingsPage({
+    super.key,
+    this.biometricAuth,
+    this.storage,
+  });
+
+  final BiometricAuthService? biometricAuth;
+  final FlutterSecureStorage? storage;
 
   @override
   State<AuthenticationSettingsPage> createState() =>
@@ -24,8 +31,8 @@ class AuthenticationSettingsPage extends StatefulWidget {
 
 class _AuthenticationSettingsPageState
     extends State<AuthenticationSettingsPage> {
-  final FlutterSecureStorage _storage = const FlutterSecureStorage();
-  final BiometricAuthService _biometricAuth = BiometricAuthService();
+  late final FlutterSecureStorage _storage;
+  late final BiometricAuthService _biometricAuth;
 
   bool _biometricsEnabled = false;
   bool _canCheckBiometrics = false;
@@ -34,6 +41,8 @@ class _AuthenticationSettingsPageState
   @override
   void initState() {
     super.initState();
+    _storage = widget.storage ?? const FlutterSecureStorage();
+    _biometricAuth = widget.biometricAuth ?? BiometricAuthService();
     _loadBiometricPreference();
     _checkBiometricsAvailability();
     _checkUnlockStatus();
@@ -99,6 +108,7 @@ class _AuthenticationSettingsPageState
               ),
             if (_canCheckBiometrics && !_hasUnlockMethod)
               Padding(
+                key: const Key('auth_biometrics_requires_unlock_method'),
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
                   tr('lock_or_pass_needed'),
@@ -106,7 +116,8 @@ class _AuthenticationSettingsPageState
                   textAlign: TextAlign.center,
                 ),
               ),
-            if (inDevelopment) ...<Widget>[
+            if (inDevelopment &&
+                SharedPreferencesHelper().length > 0) ...<Widget>[
               const SizedBox(height: 20),
               _walletStatsWidget(),
             ],

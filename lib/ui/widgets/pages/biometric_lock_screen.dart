@@ -87,12 +87,14 @@ class _BiometricLockScreenState extends State<BiometricLockScreen> {
                 ),
                 const SizedBox(height: 16),
                 FilledButton(
+                  key: const Key('biometric_lock_retry_button'),
                   onPressed: _startAuth,
                   child: Text(tr('retry')),
                 ),
                 if (widget.allowCancel) ...<Widget>[
                   const SizedBox(height: 8),
                   TextButton(
+                    key: const Key('biometric_lock_cancel_button'),
                     onPressed: () => Navigator.of(context).pop(false),
                     child: Text(tr('cancel')),
                   ),

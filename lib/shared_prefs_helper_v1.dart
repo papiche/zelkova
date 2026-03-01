@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'data/models/contact.dart';
 import 'data/models/legacy_wallet.dart';
 import 'data/models/stored_account.dart';
 import 'data/models/wallet_themes.dart';
@@ -79,14 +80,43 @@ class SharedPreferencesHelperV1
   }
 
   @override
-  void removeCurrentWallet() {
+  Future<void> removeWallet(String pubKey) async {
     // Don't allow the last card to be removed
-    final int index = getCurrentWalletIndex();
-    logger('Removing card at index $index');
-    if (legacyWallets.length > 1) {
-      legacyWallets.removeAt(index);
-      saveLegacyWallets();
+    if (legacyWallets.length <= 1) {
+      return;
     }
+
+    final String extractedPubKey = extractPublicKey(pubKey);
+    final int index = legacyWallets.indexWhere((LegacyWallet wallet) =>
+        extractPublicKey(wallet.pubKey) == extractedPubKey);
+    if (index < 0) {
+      throw Exception('Wallet not found: $pubKey');
+    }
+
+    logger('Removing card at index $index');
+    legacyWallets.removeAt(index);
+    await saveLegacyWallets();
+
+    // Select most recently used wallet from remaining
+    LegacyWallet? mostRecentWallet;
+    int maxLastUsed = 0;
+
+    for (final LegacyWallet wallet in legacyWallets) {
+      final int lastUsed = wallet.lastUsed ?? 0;
+      if (lastUsed > maxLastUsed) {
+        maxLastUsed = lastUsed;
+        mostRecentWallet = wallet;
+      }
+    }
+
+    if (mostRecentWallet != null) {
+      await selectCurrentWallet(mostRecentWallet.pubKey);
+    }
+  }
+
+  @override
+  Future<void> removeCurrentWallet() async {
+    await removeWallet(legacyWallets[getCurrentWalletIndex()].pubKey);
   }
 
   @override
@@ -303,6 +333,12 @@ class SharedPreferencesHelperV1
 
   @override
   Future<void> refreshWalletsInfo() {
+    // Not implemented in V1
+    return Future<void>.value();
+  }
+
+  @override
+  Future<void> updateWalletProfile(String pubKey, Contact contact) {
     // Not implemented in V1
     return Future<void>.value();
   }

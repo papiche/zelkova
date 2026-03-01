@@ -87,7 +87,7 @@ void main() {
       await helper.createDefWalletIfNotExist();
       final int before = helper.length;
       expect(before, 1);
-      helper.removeCurrentWallet();
+      await helper.removeCurrentWallet();
       expect(helper.length, before);
     });
 
@@ -99,8 +99,76 @@ void main() {
           seed: seedToString(w2.seed), pubKey: w2.pubkey));
       final int before = helper.length;
       expect(before, 2);
-      helper.removeCurrentWallet();
+      await helper.removeCurrentWallet();
       expect(helper.length, before - 1);
+    });
+
+    test('removeCurrentWallet selects most recently used', () async {
+      await helper.createDefWalletIfNotExist();
+      final CesiumWallet w2 = CesiumWallet.fromSeed(generateUintSeed());
+      final CesiumWallet w3 = CesiumWallet.fromSeed(generateUintSeed());
+
+      helper.addLegacyWallet(helper.buildLegacyWallet(
+          seed: seedToString(w2.seed), pubKey: w2.pubkey));
+      helper.addLegacyWallet(helper.buildLegacyWallet(
+          seed: seedToString(w3.seed), pubKey: w3.pubkey));
+
+      expect(helper.length, 3);
+
+      // Simulate usage timestamps: w1=oldest, w3=most recent, w2=middle
+      helper.accounts[0] = helper.accounts[0]
+          .copyWith(lastUsed: DateTime.now().millisecondsSinceEpoch - 2000);
+      helper.accounts[1] = helper.accounts[1]
+          .copyWith(lastUsed: DateTime.now().millisecondsSinceEpoch - 1000);
+      helper.accounts[2] = helper.accounts[2]
+          .copyWith(lastUsed: DateTime.now().millisecondsSinceEpoch);
+
+      // Select w1 (oldest)
+      await helper.selectCurrentWallet(helper.accounts[0].pubKey);
+      expect(helper.getCurrentWalletIndex(), 0);
+
+      // Remove w1
+      await helper.removeCurrentWallet();
+
+      // Should have selected w3 (most recently used)
+      expect(helper.length, 2);
+      expect(helper.accounts[helper.getCurrentWalletIndex()].pubKey,
+          helper.accounts[1].pubKey); // w3 is now at index 1
+    });
+
+    test('removeWallet deletes the correct wallet by pubKey', () async {
+      await helper.createDefWalletIfNotExist();
+      final CesiumWallet w2 = CesiumWallet.fromSeed(generateUintSeed());
+      final CesiumWallet w3 = CesiumWallet.fromSeed(generateUintSeed());
+
+      helper.addLegacyWallet(helper.buildLegacyWallet(
+          seed: seedToString(w2.seed), pubKey: w2.pubkey));
+      helper.addLegacyWallet(helper.buildLegacyWallet(
+          seed: seedToString(w3.seed), pubKey: w3.pubkey));
+
+      final String wallet1PubKey = helper.accounts[0].pubKey;
+      final String wallet2PubKey = helper.accounts[1].pubKey;
+
+      await helper.selectCurrentWallet(wallet1PubKey);
+
+      await helper.removeWallet(wallet2PubKey);
+
+      expect(helper.length, 2);
+      expect(
+          helper.accounts
+              .any((StoredAccount acc) => acc.pubKey == wallet2PubKey),
+          false);
+      expect(helper.getCurrentAccount().pubKey, wallet1PubKey);
+    });
+
+    test('removeWallet throws when pubKey not found', () async {
+      await helper.createDefWalletIfNotExist();
+      final CesiumWallet w2 = CesiumWallet.fromSeed(generateUintSeed());
+      helper.addLegacyWallet(helper.buildLegacyWallet(
+          seed: seedToString(w2.seed), pubKey: w2.pubkey));
+
+      await expectLater(
+          helper.removeWallet('nonexistent_pubkey'), throwsException);
     });
   });
 
@@ -764,6 +832,178 @@ void main() {
       await h.deriveNextAccount(h.accounts[1]);
       expect(h.length, 4);
       expect(h.accounts[3].derivationPath, '//2');
+    });
+  });
+
+  group('pubKey-based current wallet sync', () {
+    test('getCurrentAccount returns correct wallet by pubKey', () async {
+      await helper.createDefWalletIfNotExist();
+      final CesiumWallet w2 = CesiumWallet.fromSeed(generateUintSeed());
+      helper.addLegacyWallet(helper.buildLegacyWallet(
+          seed: seedToString(w2.seed), pubKey: w2.pubkey));
+
+      final StoredAccount first = helper.accounts[0];
+      final StoredAccount second = helper.accounts[1];
+
+      // Select first wallet
+      await helper.selectCurrentWallet(first.pubKey);
+      expect(helper.getCurrentAccount().pubKey, first.pubKey);
+
+      // Select second wallet
+      await helper.selectCurrentWallet(second.pubKey);
+      expect(helper.getCurrentAccount().pubKey, second.pubKey);
+    });
+
+    test(
+        'getCurrentAccount remains correct after wallet list reordering by lastUsed',
+        () async {
+      await helper.createDefWalletIfNotExist();
+      final CesiumWallet w2 = CesiumWallet.fromSeed(generateUintSeed());
+      final CesiumWallet w3 = CesiumWallet.fromSeed(generateUintSeed());
+
+      helper.addLegacyWallet(helper.buildLegacyWallet(
+          seed: seedToString(w2.seed), pubKey: w2.pubkey));
+      helper.addLegacyWallet(helper.buildLegacyWallet(
+          seed: seedToString(w3.seed), pubKey: w3.pubkey));
+
+      expect(helper.length, 3);
+
+      // Store pubKey of first wallet (for reference)
+      final String firstPubKey = helper.accounts[0].pubKey;
+
+      // Select first wallet
+      await helper.selectCurrentWallet(firstPubKey);
+      expect(helper.getCurrentAccount().pubKey, firstPubKey);
+
+      // Simulate CardStack reordering by lastUsed (as done in card_stack.dart)
+      final List<StoredAccount> sorted =
+          List<StoredAccount>.from(helper.accounts);
+      sorted.sort((StoredAccount a, StoredAccount b) {
+        final int aUsed = a.lastUsed ?? 0;
+        final int bUsed = b.lastUsed ?? 0;
+        return aUsed.compareTo(bUsed);
+      });
+
+      // Even though the list would be reordered in UI, getCurrentAccount should still work
+      expect(helper.getCurrentAccount().pubKey, firstPubKey,
+          reason:
+              'getCurrentAccount should still return first wallet even if list is reordered');
+    });
+
+    test(
+        'selectCurrentWallet updates wallet correctly even after other wallets change lastUsed',
+        () async {
+      await helper.createDefWalletIfNotExist();
+      final CesiumWallet w2 = CesiumWallet.fromSeed(generateUintSeed());
+      final CesiumWallet w3 = CesiumWallet.fromSeed(generateUintSeed());
+
+      helper.addLegacyWallet(helper.buildLegacyWallet(
+          seed: seedToString(w2.seed), pubKey: w2.pubkey));
+      helper.addLegacyWallet(helper.buildLegacyWallet(
+          seed: seedToString(w3.seed), pubKey: w3.pubkey));
+
+      final String wallet1PubKey = helper.accounts[0].pubKey;
+      final String wallet2PubKey = helper.accounts[1].pubKey;
+      final String wallet3PubKey = helper.accounts[2].pubKey;
+
+      // Select wallet 1, then wallet 3
+      await helper.selectCurrentWallet(wallet1PubKey);
+      await helper.selectCurrentWallet(wallet3PubKey);
+
+      expect(helper.getCurrentAccount().pubKey, wallet3PubKey);
+
+      // Now select wallet 2
+      await helper.selectCurrentWallet(wallet2PubKey);
+      expect(helper.getCurrentAccount().pubKey, wallet2PubKey);
+
+      // Verify wallet 3 is still accessible (lastUsed should have been updated for wallet 2)
+      await helper.selectCurrentWallet(wallet3PubKey);
+      expect(helper.getCurrentAccount().pubKey, wallet3PubKey);
+    });
+
+    test('getCurrentWalletIndex returns correct index for current pubKey',
+        () async {
+      await helper.createDefWalletIfNotExist();
+      final CesiumWallet w2 = CesiumWallet.fromSeed(generateUintSeed());
+
+      helper.addLegacyWallet(helper.buildLegacyWallet(
+          seed: seedToString(w2.seed), pubKey: w2.pubkey));
+
+      await helper.selectCurrentWalletIndex(0);
+      expect(helper.getCurrentWalletIndex(), 0);
+
+      await helper.selectCurrentWalletIndex(1);
+      expect(helper.getCurrentWalletIndex(), 1);
+
+      await helper.selectCurrentWalletIndex(0);
+      expect(helper.getCurrentWalletIndex(), 0);
+    });
+
+    test('drawer and credit card show same wallet after selectCurrentWallet',
+        () async {
+      await helper.createDefWalletIfNotExist();
+      final CesiumWallet w2 = CesiumWallet.fromSeed(generateUintSeed());
+
+      helper.addLegacyWallet(helper.buildLegacyWallet(
+          seed: seedToString(w2.seed), pubKey: w2.pubkey));
+
+      final String wallet1PubKey = helper.accounts[0].pubKey;
+      final String wallet2PubKey = helper.accounts[1].pubKey;
+
+      // Simulate selecting a wallet from drawer (calls selectCurrentWallet)
+      await helper.selectCurrentWallet(wallet2PubKey);
+
+      // Verify credit card would show the same wallet (getCurrentAccount)
+      final StoredAccount creditCardWallet = helper.getCurrentAccount();
+      expect(creditCardWallet.pubKey, wallet2PubKey);
+
+      // Simulate CardStack reordering (as would happen in UI)
+      final List<StoredAccount> drawerWallets =
+          List<StoredAccount>.from(helper.accounts);
+      drawerWallets.sort((StoredAccount a, StoredAccount b) {
+        final int aUsed = a.lastUsed ?? 0;
+        final int bUsed = b.lastUsed ?? 0;
+        return aUsed.compareTo(bUsed);
+      });
+
+      // The wallet at top of drawer (most recently used) should match credit card
+      final StoredAccount mostRecentlyUsed = drawerWallets.last;
+      expect(mostRecentlyUsed.pubKey, wallet2PubKey,
+          reason:
+              'Most recently used wallet in drawer should match credit card');
+    });
+
+    test(
+        'removeCurrentWallet selects most recently used wallet and maintains sync',
+        () async {
+      await helper.createDefWalletIfNotExist();
+      final CesiumWallet w2 = CesiumWallet.fromSeed(generateUintSeed());
+      final CesiumWallet w3 = CesiumWallet.fromSeed(generateUintSeed());
+
+      helper.addLegacyWallet(helper.buildLegacyWallet(
+          seed: seedToString(w2.seed), pubKey: w2.pubkey));
+      helper.addLegacyWallet(helper.buildLegacyWallet(
+          seed: seedToString(w3.seed), pubKey: w3.pubkey));
+
+      expect(helper.length, 3);
+
+      // Set usage order: w1=oldest, w2=middle, w3=most recent
+      helper.accounts[0] = helper.accounts[0]
+          .copyWith(lastUsed: DateTime.now().millisecondsSinceEpoch - 2000);
+      helper.accounts[1] = helper.accounts[1]
+          .copyWith(lastUsed: DateTime.now().millisecondsSinceEpoch - 1000);
+      helper.accounts[2] = helper.accounts[2]
+          .copyWith(lastUsed: DateTime.now().millisecondsSinceEpoch);
+
+      final String wallet3PubKey = helper.accounts[2].pubKey;
+
+      // Select w1 and remove it
+      await helper.selectCurrentWallet(helper.accounts[0].pubKey);
+      await helper.removeCurrentWallet();
+
+      // Should have selected w3 (most recently used)
+      expect(helper.length, 2);
+      expect(helper.getCurrentAccount().pubKey, wallet3PubKey);
     });
   });
 }

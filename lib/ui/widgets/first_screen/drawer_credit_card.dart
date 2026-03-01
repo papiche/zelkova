@@ -33,6 +33,10 @@ class DrawerWalletCard extends StatefulWidget {
 }
 
 class _DrawerWalletCardState extends State<DrawerWalletCard> {
+  static DateTime? _lastDeletionTime;
+  static const Duration _deletionCooldown = Duration(milliseconds: 500);
+  bool _isDeleting = false;
+
   void _showThemeSelector(BuildContext context) {
     showDialog(
       context: context,
@@ -146,41 +150,186 @@ class _DrawerWalletCardState extends State<DrawerWalletCard> {
                                   mini: true,
                                   backgroundColor: Colors.white12,
                                   elevation: 1,
-                                  onPressed: () {
-                                    showDialog<bool>(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: Text(
-                                                tr('please_confirm_delete')),
-                                            content: Text(tr(SharedPreferencesHelper()
-                                                    .isPasswordLessWallet()
-                                                ? 'please_confirm_delete_desc_g1nkgo'
-                                                : 'please_confirm_delete_desc')),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                onPressed: () =>
-                                                    Navigator.of(context)
-                                                        .pop(false),
-                                                child: Text(tr('cancel')),
-                                              ),
-                                              TextButton(
-                                                onPressed: () {
-                                                  SharedPreferencesHelper()
-                                                      .removeCurrentWallet();
-                                                  SharedPreferencesHelper()
-                                                      .selectCurrentWalletIndex(
-                                                          0);
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text(tr('accept')),
-                                              ),
-                                            ],
-                                          );
-                                        });
-                                  },
-                                  child: const Icon(Icons.delete,
-                                      color: Colors.white),
+                                  onPressed: _isDeleting
+                                      ? null
+                                      : () {
+                                          if (_lastDeletionTime != null) {
+                                            final Duration elapsed =
+                                                DateTime.now().difference(
+                                                    _lastDeletionTime!);
+                                            if (elapsed < _deletionCooldown) {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content: Text(tr(
+                                                      'please_wait_deletion')),
+                                                  duration: const Duration(
+                                                      milliseconds: 500),
+                                                ),
+                                              );
+                                              return;
+                                            }
+                                          }
+                                          final String displayName = widget
+                                                  .card.contact.hasTitle
+                                              ? widget.card.contact
+                                                  .titleWithoutAddressOrPubKey
+                                              : (widget.card.type.isV2
+                                                  ? simplifyPubKey(
+                                                      extractPublicKey(
+                                                          widget.card.address))
+                                                  : simplifyPubKey(
+                                                      extractPublicKey(
+                                                          widget.card.pubKey)));
+                                          showDialog<bool>(
+                                              context: context,
+                                              barrierDismissible: false,
+                                              builder: (BuildContext context) {
+                                                return StatefulBuilder(builder:
+                                                    (BuildContext context,
+                                                        void Function(
+                                                                void Function())
+                                                            setDialogState) {
+                                                  bool isDeleting = false;
+                                                  return AlertDialog(
+                                                    title: Text(tr(
+                                                        'please_confirm_delete')),
+                                                    content: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: <Widget>[
+                                                        Text(tr(SharedPreferencesHelper()
+                                                                .isPasswordLessWallet()
+                                                            ? 'please_confirm_delete_desc_g1nkgo'
+                                                            : 'please_confirm_delete_desc')),
+                                                        const SizedBox(
+                                                            height: 16),
+                                                        Text(
+                                                          tr('wallet_to_delete',
+                                                              namedArgs: <String,
+                                                                  String>{
+                                                                'name':
+                                                                    displayName
+                                                              }),
+                                                          style: const TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        onPressed: isDeleting
+                                                            ? null
+                                                            : () =>
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop(false),
+                                                        child:
+                                                            Text(tr('cancel')),
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: isDeleting
+                                                            ? null
+                                                            : () async {
+                                                                setDialogState(
+                                                                    () {
+                                                                  isDeleting =
+                                                                      true;
+                                                                });
+                                                                if (mounted) {
+                                                                  setState(() {
+                                                                    _isDeleting =
+                                                                        true;
+                                                                  });
+                                                                }
+                                                                try {
+                                                                  await SharedPreferencesHelper()
+                                                                      .removeWallet(widget
+                                                                          .card
+                                                                          .pubKey);
+                                                                  await Future<
+                                                                          void>.delayed(
+                                                                      const Duration(
+                                                                          milliseconds:
+                                                                              100));
+                                                                  if (context
+                                                                      .mounted) {
+                                                                    Navigator.pop(
+                                                                        context,
+                                                                        true);
+                                                                  }
+                                                                } catch (e) {
+                                                                  if (context
+                                                                      .mounted) {
+                                                                    setDialogState(
+                                                                        () {
+                                                                      isDeleting =
+                                                                          false;
+                                                                    });
+                                                                    ScaffoldMessenger.of(
+                                                                            context)
+                                                                        .showSnackBar(
+                                                                      SnackBar(
+                                                                        content:
+                                                                            Text(tr('delete_wallet_error')),
+                                                                      ),
+                                                                    );
+                                                                  }
+                                                                } finally {
+                                                                  if (mounted) {
+                                                                    setState(
+                                                                        () {
+                                                                      _isDeleting =
+                                                                          false;
+                                                                    });
+                                                                  }
+                                                                }
+                                                              },
+                                                        child: isDeleting
+                                                            ? const SizedBox(
+                                                                width: 16,
+                                                                height: 16,
+                                                                child:
+                                                                    CircularProgressIndicator(
+                                                                  strokeWidth:
+                                                                      2,
+                                                                  valueColor: AlwaysStoppedAnimation<
+                                                                          Color>(
+                                                                      Colors
+                                                                          .white),
+                                                                ),
+                                                              )
+                                                            : Text(
+                                                                tr('accept')),
+                                                      ),
+                                                    ],
+                                                  );
+                                                });
+                                              }).then((bool? confirmed) {
+                                            if (confirmed == true) {
+                                              _lastDeletionTime =
+                                                  DateTime.now();
+                                            }
+                                          });
+                                        },
+                                  child: _isDeleting
+                                      ? const SizedBox(
+                                          width: 16,
+                                          height: 16,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    Colors.white),
+                                          ),
+                                        )
+                                      : const Icon(Icons.delete,
+                                          color: Colors.white),
                                 ),
                               ),
                             FloatingActionButton(

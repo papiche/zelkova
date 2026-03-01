@@ -18,10 +18,38 @@ class _CardStackState extends State<CardStack> {
 
   @override
   Widget build(BuildContext context) {
+    assert(() {
+      debugPrint('🎴 CardStack rebuilding');
+      return true;
+    }());
     return Consumer<SharedPreferencesHelper>(builder: (BuildContext context,
         SharedPreferencesHelper prefsHelper, Widget? child) {
       final List<StoredAccount> accounts = SharedPreferencesHelper().accounts;
       final List<StoredAccount> cards = List<StoredAccount>.from(accounts);
+      final StoredAccount currentAccount =
+          SharedPreferencesHelper().getCurrentAccount();
+
+      assert(() {
+        debugPrint('   Total accounts: ${accounts.length}');
+        debugPrint('   Current account: ${currentAccount.pubKey}');
+        return true;
+      }());
+
+      assert(() {
+        final Set<String> seenKeys = <String>{};
+        final List<String> duplicates = <String>[];
+        for (final StoredAccount acc in accounts) {
+          if (seenKeys.contains(acc.pubKey)) {
+            duplicates.add(acc.pubKey);
+          }
+          seenKeys.add(acc.pubKey);
+        }
+        if (duplicates.isNotEmpty) {
+          debugPrint(
+              '⚠️ CardStack: Duplicate pubKeys detected: ${duplicates.join(', ')}');
+        }
+        return true;
+      }());
 
       // Sort cards: least recently used at the top, most recently used at the bottom.
       cards.sort((StoredAccount a, StoredAccount b) {
@@ -45,6 +73,8 @@ class _CardStackState extends State<CardStack> {
                 walletsSize,
                 (int index) {
                   final StoredAccount card = cards[index];
+                  final bool isCurrentWallet =
+                      card.pubKey == currentAccount.pubKey;
                   return AnimatedPositioned(
                     key: ValueKey<String>(card.pubKey),
                     duration: const Duration(milliseconds: 300),
@@ -55,7 +85,8 @@ class _CardStackState extends State<CardStack> {
                         child: DrawerWalletCard(
                             card: card,
                             cardIndex: index,
-                            settingsVisible: index == walletsSize - 1)),
+                            settingsVisible:
+                                index == walletsSize - 1 && isCurrentWallet)),
                   );
                 },
               ),

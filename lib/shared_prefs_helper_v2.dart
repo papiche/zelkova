@@ -40,6 +40,8 @@ class SharedPreferencesHelperV2
   static final SharedPreferencesHelperV2 _instance =
       SharedPreferencesHelperV2._internal();
 
+  bool _isOperatingOnAccounts = false;
+
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
   late SharedPreferences _prefs;
 
@@ -49,7 +51,7 @@ class SharedPreferencesHelperV2
   final Map<String, CesiumWallet> _cesiumVolatileCards =
       <String, CesiumWallet>{};
 
-  int _currentIndex = 0;
+  String? _currentPubKey;
   Uint8List? _passwordKey;
 
   Uint8List? getPasswordKey() => _passwordKey!;
@@ -96,7 +98,7 @@ class SharedPreferencesHelperV2
     await _migrateBetaAccount();
     await _loadAccounts();
     await _migrateLegacyAccounts();
-    await _loadCurrentIndex();
+    await _loadCurrentPubKey();
   }
 
   Future<void> _migrateBetaAccount() async {
@@ -138,17 +140,35 @@ class SharedPreferencesHelperV2
     _deduplicateAccounts();
   }
 
-  Future<void> _loadCurrentIndex() async {
-    final int currentIndex = int.tryParse(
-            await _storage.read(key: StorageKeys.currentCardIndexKey) ?? '') ??
-        _prefs.getInt(StorageKeys.currentCardIndexKey) ??
-        0;
-    if (currentIndex < accounts.length) {
-      _currentIndex = currentIndex;
+  Future<void> _loadCurrentPubKey() async {
+    final String? savedPubKey =
+        await _storage.read(key: StorageKeys.currentCardIndexKey);
+
+    if (savedPubKey != null && savedPubKey.isNotEmpty) {
+      // Check if the pubKey exists in accounts
+      final bool exists = accounts.any((StoredAccount a) =>
+          extractPublicKey(a.pubKey) == extractPublicKey(savedPubKey));
+      if (exists) {
+        _currentPubKey = savedPubKey;
+      } else {
+        logger(
+            'Current pubKey $savedPubKey not found in accounts, using first wallet');
+        _currentPubKey = accounts.isNotEmpty ? accounts.first.pubKey : null;
+        await _saveCurrentPubKey();
+      }
     } else {
-      logger('Current index $currentIndex is out of bounds, resetting to 0');
-      _currentIndex = 0;
-      await _setCurrentWalletIndex(_currentIndex);
+      // No saved pubKey, use first wallet or fallback
+      _currentPubKey = accounts.isNotEmpty ? accounts.first.pubKey : null;
+      if (_currentPubKey != null) {
+        await _saveCurrentPubKey();
+      }
+    }
+  }
+
+  Future<void> _saveCurrentPubKey() async {
+    if (_currentPubKey != null) {
+      await _storage.write(
+          key: StorageKeys.currentCardIndexKey, value: _currentPubKey!);
     }
   }
 
@@ -212,12 +232,28 @@ class SharedPreferencesHelperV2
     }
   }
 
+  bool _hasDuplicatePubKeys() {
+    final Set<String> seen = <String>{};
+    for (final StoredAccount acc in accounts) {
+      final String normalized = extractPublicKey(acc.pubKey);
+      if (seen.contains(normalized)) {
+        return true;
+      }
+      seen.add(normalized);
+    }
+    return false;
+  }
+
   Future<void> _saveAccounts([bool notify = true]) async {
     final List<Map<String, dynamic>> data =
         accounts.map((StoredAccount a) => a.toJson()).toList();
     await _storage.write(key: StorageKeys.accountsKey, value: jsonEncode(data));
 
     if (notify) {
+      assert(() {
+        debugPrint('📢 notifyListeners() called from _saveAccounts()');
+        return true;
+      }());
       notifyListeners();
     }
   }
@@ -235,11 +271,35 @@ class SharedPreferencesHelperV2
       .toList();
 
   @override
-  int getCurrentWalletIndex() => _currentIndex;
+  int getCurrentWalletIndex() {
+    if (_currentPubKey == null) {
+      assert(() {
+        debugPrint('⚠️ WARNING: _currentPubKey is null, defaulting to index 0');
+        return true;
+      }());
+      return 0;
+    }
+    final int index = accounts.indexWhere((StoredAccount a) =>
+        extractPublicKey(a.pubKey) == extractPublicKey(_currentPubKey!));
+    if (index < 0) {
+      assert(() {
+        debugPrint(
+            '⚠️ WARNING: _currentPubKey "$_currentPubKey" not found in accounts, defaulting to index 0');
+        debugPrint(
+            'Available pubKeys: ${accounts.map((StoredAccount a) => a.pubKey).join(", ")}');
+        return true;
+      }());
+      return 0;
+    }
+    return index;
+  }
 
-  Future<void> _setCurrentWalletIndex(int index) async {
-    _currentIndex = index;
-    await _storage.write(key: StorageKeys.currentCardIndexKey, value: '$index');
+  /// Helper to get the current index, returns 0 if not found
+  int _getCurrentIndex() => getCurrentWalletIndex();
+
+  Future<void> _setCurrentWalletIndex(String pubKey) async {
+    _currentPubKey = pubKey;
+    await _saveCurrentPubKey();
     notifyListeners();
   }
 
@@ -250,7 +310,7 @@ class SharedPreferencesHelperV2
       accounts[index] =
           acc.copyWith(lastUsed: DateTime.now().millisecondsSinceEpoch);
       await _saveAccounts(false);
-      await _setCurrentWalletIndex(index);
+      await _setCurrentWalletIndex(acc.pubKey);
     } else {
       throw Exception('Invalid wallet index: $index');
     }
@@ -258,6 +318,10 @@ class SharedPreferencesHelperV2
 
   @override
   Future<void> selectCurrentWallet(String pubKey) async {
+    assert(() {
+      debugPrint('🔄 selectCurrentWallet() called with: $pubKey');
+      return true;
+    }());
     final String extractedPubkey = extractPublicKey(pubKey);
     final int i =
         accounts.indexWhere((StoredAccount a) => a.pubKey == extractedPubkey);
@@ -267,28 +331,50 @@ class SharedPreferencesHelperV2
       accounts[i] =
           acc.copyWith(lastUsed: DateTime.now().millisecondsSinceEpoch);
       await _saveAccounts(false);
-      await _setCurrentWalletIndex(i);
+      await _setCurrentWalletIndex(acc.pubKey);
+
+      // Refresh profile for newly selected wallet to ensure C+ info is up-to-date
+      try {
+        final Contact? cached = ContactsCache().getCachedContact(acc.pubKey);
+        if (cached != null) {
+          await ContactsCache().saveContact(cached.cloneWithoutIdentity());
+        }
+        final Contact updatedContact = await getProfile(
+          acc.pubKey,
+          resize: false,
+          complete: true,
+        );
+        accounts[i] = accounts[i].copyWith(contact: updatedContact);
+        await _saveAccounts(); // Notify listeners with updated profile
+      } catch (e) {
+        // Silent failure - keep existing profile
+      }
+
+      assert(() {
+        debugPrint('✓ selectCurrentWallet() completed. New index: $i');
+        return true;
+      }());
     }
   }
 
   @override
   String getPubKey() {
-    final StoredAccount acc = accounts[_currentIndex];
+    final StoredAccount acc = accounts[_getCurrentIndex()];
     return '${acc.pubKey}:${pkChecksum(extractPublicKey(acc.pubKey))}';
   }
 
   @override
-  String getName() => accounts[_currentIndex].contact.name ?? '';
+  String getName() => accounts[_getCurrentIndex()].contact.name ?? '';
 
   @override
-  WalletTheme getTheme() => accounts[_currentIndex].theme;
+  WalletTheme getTheme() => accounts[_getCurrentIndex()].theme;
 
   @override
   void setName({required String name, bool notify = true}) {
-    final StoredAccount a = accounts[_currentIndex];
+    final StoredAccount a = accounts[_getCurrentIndex()];
     final Contact updatedContact = a.contact.copyWith(name: name);
     final StoredAccount updatedAccount = a.copyWith(contact: updatedContact);
-    accounts[_currentIndex] = updatedAccount;
+    accounts[_getCurrentIndex()] = updatedAccount;
     _saveAccounts();
     if (notify) {
       notifyListeners();
@@ -302,7 +388,7 @@ class SharedPreferencesHelperV2
     List<Map<String, String>>? socials,
     bool notify = true,
   }) {
-    final StoredAccount a = accounts[_currentIndex];
+    final StoredAccount a = accounts[_getCurrentIndex()];
     final Contact updatedContact = a.contact.copyWith(
       name: name ?? a.contact.name,
       description: description ?? a.contact.description,
@@ -310,7 +396,7 @@ class SharedPreferencesHelperV2
       socials: socials ?? a.contact.socials,
     );
     final StoredAccount updatedAccount = a.copyWith(contact: updatedContact);
-    accounts[_currentIndex] = updatedAccount;
+    accounts[_getCurrentIndex()] = updatedAccount;
     _saveAccounts();
     if (notify) {
       notifyListeners();
@@ -319,9 +405,9 @@ class SharedPreferencesHelperV2
 
   @override
   void setTheme({required WalletTheme theme}) {
-    final StoredAccount a = accounts[_currentIndex];
+    final StoredAccount a = accounts[_getCurrentIndex()];
     final StoredAccount updatedAccount = a.copyWith(theme: theme);
-    accounts[_currentIndex] = updatedAccount;
+    accounts[_getCurrentIndex()] = updatedAccount;
     _saveAccounts();
     notifyListeners();
   }
@@ -336,7 +422,7 @@ class SharedPreferencesHelperV2
   @override
   Future<StoredAccount> createDefWalletIfNotExist() async {
     if (accounts.isNotEmpty) {
-      return accounts[_currentIndex];
+      return accounts[_getCurrentIndex()];
     }
 
     final StoredAccount acc = await createV2PasswordLessAccount();
@@ -392,7 +478,7 @@ class SharedPreferencesHelperV2
 
   @override
   Future<KeyPair> getKeyPair([int? index, StoredAccount? account]) async {
-    final StoredAccount acc = account ?? accounts[index ?? _currentIndex];
+    final StoredAccount acc = account ?? accounts[index ?? _getCurrentIndex()];
     final Uint8List resolvedSeed = await _resolveActualSeed(acc);
     final KeyPair kp = acc.type.isV1
         ? KeyPair.ed25519.fromSeed(resolvedSeed)
@@ -442,15 +528,127 @@ class SharedPreferencesHelperV2
   }
 
   @override
-  void removeCurrentWallet() {
-    // Don't allow the last card to be removed
-    final int index = getCurrentWalletIndex();
-    logger('Removing card at index $index');
-    if (accounts.length > 1) {
-      accounts.removeAt(index);
-      _saveAccounts();
-      _setCurrentWalletIndex(accounts.length - 1);
+  Future<void> removeWallet(String pubKey) async {
+    assert(() {
+      debugPrint('🗑️ removeWallet() called with pubKey: $pubKey');
+      debugPrint('   Current accounts count: ${accounts.length}');
+      debugPrint('   Current _currentPubKey: $_currentPubKey');
+      debugPrint(
+          '   Accounts before removal: ${accounts.map((StoredAccount a) => a.pubKey).join(", ")}');
+      return true;
+    }());
+
+    if (_isOperatingOnAccounts) {
+      assert(() {
+        debugPrint('⚠️ WARNING: Concurrent removeWallet() call blocked');
+        return true;
+      }());
+      return;
     }
+
+    _isOperatingOnAccounts = true;
+    // Don't allow the last card to be removed
+    try {
+      if (accounts.length <= 1) {
+        return;
+      }
+
+      final String extractedPubKey = extractPublicKey(pubKey);
+      final int index = accounts.indexWhere((StoredAccount acc) =>
+          extractPublicKey(acc.pubKey) == extractedPubKey);
+      if (index < 0) {
+        throw Exception('Wallet not found: $pubKey');
+      }
+
+      assert(() {
+        final bool exists = accounts.any((StoredAccount acc) =>
+            extractPublicKey(acc.pubKey) == extractedPubKey);
+        if (!exists) {
+          debugPrint(
+              '⚠️ WARNING: Attempting to remove non-existent wallet: $pubKey');
+        }
+        return true;
+      }());
+
+      logger('Removing card at index $index');
+      accounts.removeAt(index);
+      await _saveAccounts(false);
+
+      assert(() {
+        debugPrint('   Wallet removed at index $index');
+        debugPrint('   Remaining accounts: ${accounts.length}');
+        debugPrint(
+            '   Accounts after removal: ${accounts.map((StoredAccount a) => a.pubKey).join(", ")}');
+        return true;
+      }());
+
+      // After removal, select the most recently used wallet from remaining
+      StoredAccount? mostRecentWallet;
+      int maxLastUsed = 0;
+
+      for (final StoredAccount acc in accounts) {
+        final int lastUsed = acc.lastUsed ?? 0;
+        if (lastUsed > maxLastUsed) {
+          maxLastUsed = lastUsed;
+          mostRecentWallet = acc;
+        }
+      }
+
+      if (mostRecentWallet != null) {
+        final String mostRecentPubKey = mostRecentWallet.pubKey;
+        final int i = accounts
+            .indexWhere((StoredAccount a) => a.pubKey == mostRecentPubKey);
+        if (i >= 0) {
+          accounts[i] = accounts[i]
+              .copyWith(lastUsed: DateTime.now().millisecondsSinceEpoch);
+          _currentPubKey = mostRecentPubKey;
+          await _saveCurrentPubKey();
+        }
+      }
+
+      assert(() {
+        debugPrint(
+            '   Accounts after selection: ${accounts.map((StoredAccount a) => a.pubKey).join(", ")}');
+        return true;
+      }());
+
+      assert(() {
+        if (_hasDuplicatePubKeys()) {
+          debugPrint(
+              '⚠️⚠️⚠️ CRITICAL: Duplicate pubKeys detected in accounts list!');
+          final Map<String, int> counts = <String, int>{};
+          for (final StoredAccount acc in accounts) {
+            final String key = extractPublicKey(acc.pubKey);
+            counts[key] = (counts[key] ?? 0) + 1;
+          }
+          debugPrint(
+              '   Duplicate pubKeys: ${counts.entries.where((MapEntry<String, int> e) => e.value > 1).map((MapEntry<String, int> e) => '${e.key} (${e.value}x)').join(', ')}');
+        }
+        return true;
+      }());
+
+      assert(() {
+        debugPrint('   About to save and notify listeners...');
+        return true;
+      }());
+
+      await _saveAccounts(true);
+
+      assert(() {
+        final int verifyIndex = getCurrentWalletIndex();
+        final StoredAccount verifyAccount = accounts[verifyIndex];
+        debugPrint(
+            '✓ Deletion complete. Current wallet: ${verifyAccount.pubKey}');
+        return verifyIndex >= 0 && verifyIndex < accounts.length;
+      }());
+    } finally {
+      _isOperatingOnAccounts = false;
+    }
+  }
+
+  @override
+  Future<void> removeCurrentWallet() async {
+    await removeWallet(getCurrentAccount().pubKey);
   }
 
   @override
@@ -605,11 +803,13 @@ class SharedPreferencesHelperV2
       logger('ERROR: Attempted to add duplicate account: ${acc.pubKey}');
       throw WalletAlreadyExistsException(acc.pubKey);
     }
-    accounts.add(acc.lastUsed == null
+    final StoredAccount accountToAdd = acc.lastUsed == null
         ? acc.copyWith(lastUsed: DateTime.now().millisecondsSinceEpoch)
-        : acc);
+        : acc;
+    accounts.add(accountToAdd);
     await _saveAccounts();
-    await _setCurrentWalletIndex(accounts.length - 1);
+    // Use selectCurrentWallet to properly handle index since wallets can be sorted by date
+    await selectCurrentWallet(accountToAdd.pubKey);
     notifyListeners();
   }
 
@@ -665,7 +865,13 @@ class SharedPreferencesHelperV2
 
   @override
   StoredAccount getCurrentAccount() {
-    return accounts[_currentIndex];
+    assert(() {
+      final int idx = _getCurrentIndex();
+      debugPrint(
+          '📖 getCurrentAccount() returning account at index $idx: ${accounts[idx].pubKey}');
+      return true;
+    }());
+    return accounts[_getCurrentIndex()];
   }
 
   @override
@@ -725,7 +931,18 @@ class SharedPreferencesHelperV2
       );
       accounts[i] = acc.copyWith(contact: updatedContact);
     }
-    await _saveAccounts();
+    await _saveAccounts(); // This triggers notifyListeners() to update UI
+  }
+
+  @override
+  Future<void> updateWalletProfile(String pubKey, Contact contact) async {
+    final String extractedPubkey = extractPublicKey(pubKey);
+    final int i =
+        accounts.indexWhere((StoredAccount a) => a.pubKey == extractedPubkey);
+    if (i >= 0) {
+      accounts[i] = accounts[i].copyWith(contact: contact);
+      await _saveAccounts(); // Notify listeners with updated profile
+    }
   }
 
   @override

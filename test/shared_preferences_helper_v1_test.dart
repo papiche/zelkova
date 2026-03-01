@@ -72,7 +72,7 @@ void main() {
       await helper.getCesiumWallet();
       final int before = helper.length;
       expect(before, 1);
-      helper.removeCurrentWallet();
+      await helper.removeCurrentWallet();
       expect(helper.length, before);
     });
 
@@ -84,7 +84,7 @@ void main() {
           seed: seedToString(w2.seed), pubKey: w2.pubkey));
       final int before = helper.length;
       expect(before, 2);
-      helper.removeCurrentWallet();
+      await helper.removeCurrentWallet();
       expect(helper.length, before - 1);
     });
   });
@@ -177,7 +177,7 @@ void main() {
 
     await helper.selectCurrentWalletIndex(1);
 
-    helper.removeCurrentWallet();
+    await helper.removeCurrentWallet();
 
     expect(helper.length, 2);
 

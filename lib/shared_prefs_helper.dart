@@ -14,6 +14,7 @@ import 'package:durt/durt.dart';
 import 'package:flutter/foundation.dart';
 import 'package:polkadart_keyring/polkadart_keyring.dart';
 
+import 'data/models/contact.dart';
 import 'data/models/legacy_wallet.dart';
 import 'data/models/stored_account.dart';
 import 'data/models/wallet_themes.dart';
@@ -49,7 +50,9 @@ abstract class SharedPreferencesHelperDelegate {
 
   void addLegacyWallet(LegacyWallet c);
 
-  void removeCurrentWallet();
+  Future<void> removeWallet(String pubKey);
+
+  Future<void> removeCurrentWallet();
 
   bool has(String pk);
 
@@ -91,6 +94,9 @@ abstract class SharedPreferencesHelperDelegate {
   bool isLocked([StoredAccount? account]);
 
   Future<void> refreshWalletsInfo();
+
+  /// Updates the profile/contact for a specific wallet pubkey
+  Future<void> updateWalletProfile(String pubKey, Contact contact);
 
   void removeCesiumVolatileCard(CesiumWallet? wallet);
 
@@ -202,7 +208,9 @@ class SharedPreferencesHelper with ChangeNotifier {
 
   void addLegacyWallet(LegacyWallet c) => _d.addLegacyWallet(c);
 
-  void removeCurrentWallet() => _d.removeCurrentWallet();
+  Future<void> removeWallet(String pubKey) => _d.removeWallet(pubKey);
+
+  Future<void> removeCurrentWallet() => _d.removeCurrentWallet();
 
   bool has(String pk) => _d.has(pk);
 
@@ -294,6 +302,9 @@ class SharedPreferencesHelper with ChangeNotifier {
       _d.reEncryptAllProtectedAccounts(oldKey: oldKey, newKey: newKey);
 
   Future<void> refreshWalletsInfo() => _d.refreshWalletsInfo();
+
+  Future<void> updateWalletProfile(String pubKey, Contact contact) =>
+      _d.updateWalletProfile(pubKey, contact);
 
   bool isSecureStorageUnlocked() => _d.isSecureStorageUnlocked();
 

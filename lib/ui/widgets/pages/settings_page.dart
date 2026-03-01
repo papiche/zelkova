@@ -35,8 +35,6 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(height: 10),
 
               // LANGUAGE SECTION
-              _buildSectionHeader(
-                  context, 'settings_language_category', Icons.language),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: DropdownButtonFormField<Locale>(
@@ -107,22 +105,40 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(height: 20),
 
               // DISPLAY SECTION
-              _buildSectionHeader(
-                  context, 'settings_display_category', Icons.visibility),
-              SwitchListTile(
-                title: Text(tr('dark_mode')),
-                subtitle: Text(tr('dark_mode_desc')),
-                secondary: Icon(context.watch<ThemeCubit>().isDark()
-                    ? Icons.dark_mode
-                    : Icons.light_mode),
-                value: context.watch<ThemeCubit>().isDark(),
-                onChanged: (bool isDark) {
-                  BlocProvider.of<ThemeCubit>(context).getTheme(
-                    ThemeModeState(
-                      themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: DropdownButtonFormField<ThemeMode>(
+                  value: context.watch<ThemeCubit>().state.themeMode ??
+                      ThemeMode.system,
+                  decoration: InputDecoration(
+                    labelText: tr('theme_mode'),
+                    border: const OutlineInputBorder(),
+                    prefixIcon: Icon(_getThemeIcon(
+                        context.watch<ThemeCubit>().state.themeMode)),
+                  ),
+                  items: <DropdownMenuItem<ThemeMode>>[
+                    DropdownMenuItem<ThemeMode>(
+                      value: ThemeMode.system,
+                      child: Text(tr('theme_mode_system')),
                     ),
-                  );
-                },
+                    DropdownMenuItem<ThemeMode>(
+                      value: ThemeMode.light,
+                      child: Text(tr('theme_mode_light')),
+                    ),
+                    DropdownMenuItem<ThemeMode>(
+                      value: ThemeMode.dark,
+                      child: Text(tr('theme_mode_dark')),
+                    ),
+                  ],
+                  onChanged: (ThemeMode? newMode) {
+                    if (newMode == null) {
+                      return;
+                    }
+                    BlocProvider.of<ThemeCubit>(context).getTheme(
+                      ThemeModeState(themeMode: newMode),
+                    );
+                  },
+                ),
               ),
               SwitchListTile(
                 title: Text(tr('expert_mode')),
@@ -148,8 +164,6 @@ class _SettingsPageState extends State<SettingsPage> {
               // NETWORK SECTION (only in expert mode, and not if v2 was auto-activated)
               if (state.expertMode && !state.v2AutoActivated) ...<Widget>[
                 const SizedBox(height: 10),
-                _buildSectionHeader(
-                    context, 'settings_network_category', Icons.network_check),
                 SwitchListTile(
                   title: const Text('Test v2 (ĞTest)'),
                   subtitle: Text(tr('test_network_subtitle')),
@@ -172,8 +186,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
               // BACKUP & RESTORE SECTION
               const SizedBox(height: 10),
-              _buildSectionHeader(
-                  context, 'settings_backup_category', Icons.backup),
               ListTile(
                 leading: const Icon(Icons.download),
                 title: Text(tr(SharedPreferencesHelper().hasMultipleWallets
@@ -198,8 +210,6 @@ class _SettingsPageState extends State<SettingsPage> {
               // SECURITY SECTION (v2 only)
               if (context.read<AppCubit>().isV2) ...<Widget>[
                 const SizedBox(height: 10),
-                _buildSectionHeader(
-                    context, 'settings_security_category', Icons.security),
                 ListTile(
                   leading: const Icon(Icons.lock),
                   title: const Text('auth_settings_title').tr(),
@@ -218,8 +228,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
               // NOTIFICATIONS SECTION
               const SizedBox(height: 10),
-              _buildSectionHeader(context, 'settings_notifications_category',
-                  Icons.notifications),
               FutureBuilder<bool>(
                 future: _isNotificationAllowed(),
                 builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
@@ -275,27 +283,6 @@ class _SettingsPageState extends State<SettingsPage> {
             ],
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildSectionHeader(
-      BuildContext context, String titleKey, IconData icon) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
-      child: Row(
-        children: <Widget>[
-          Icon(icon, size: 20, color: Theme.of(context).colorScheme.primary),
-          const SizedBox(width: 8),
-          Text(
-            tr(titleKey),
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -362,5 +349,17 @@ class _SettingsPageState extends State<SettingsPage> {
         );
       },
     );
+  }
+
+  IconData _getThemeIcon(ThemeMode? mode) {
+    switch (mode) {
+      case ThemeMode.light:
+        return Icons.light_mode;
+      case ThemeMode.dark:
+        return Icons.dark_mode;
+      case ThemeMode.system:
+      default:
+        return Icons.brightness_auto;
+    }
   }
 }

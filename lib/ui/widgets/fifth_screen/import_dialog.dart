@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,6 @@ import '../../../g1/g1_helper.dart';
 import '../../../g1/g1_v2_helper.dart'; // validateMnemonicMulti
 import '../../../shared_prefs_helper.dart';
 import '../../../wallet_already_exists_exception.dart';
-import '../../file_picker/file_picker_wrapper.dart';
 import '../../logger.dart';
 import '../../pattern_util.dart';
 import '../../ui_helpers.dart';
@@ -549,19 +549,40 @@ Future<String> importWallet(BuildContext context,
     [List<String> allowedExtensions = const <String>['.json'],
     String messageKey = 'select_file_to_import']) async {
   try {
-    if (isAndroid()) {
-      return await importWalletWithFilePicker(allowedExtensions.isNotEmpty
+    Future<String> importWithFilePicker() async {
+      final String extension = allowedExtensions.isNotEmpty
           ? allowedExtensions.first.replaceAll('.', '')
-          : 'json');
+          : 'json';
+      final FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: <String>[extension],
+        withData: true,
+      );
+
+      if (result == null || result.files.isEmpty) {
+        logger('File selection cancelled by user');
+        return '';
+      }
+
+      final PlatformFile file = result.files.first;
+      final bytes = file.bytes;
+      if (bytes == null || bytes.isEmpty) {
+        logger('File does not contain data');
+        return '';
+      }
+
+      return utf8.decode(bytes);
+    }
+
+    if (isAndroid()) {
+      return importWithFilePicker();
     }
 
     final Directory? directory = await getGinkgoDownloadDirectory();
     if (directory == null) {
       logger('Downloads directory not found');
       try {
-        return await importWalletWithFilePicker(allowedExtensions.isNotEmpty
-            ? allowedExtensions.first.replaceAll('.', '')
-            : 'json');
+        return await importWithFilePicker();
       } catch (e) {
         logger('FilePicker fallback also failed: $e');
         return '';

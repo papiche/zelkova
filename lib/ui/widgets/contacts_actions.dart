@@ -64,10 +64,12 @@ void showContactPage(BuildContext context, Contact contact) {
 
 void onSentContact(BuildContext context, Contact contact) {
   context.read<PaymentCubit>().selectUser(contact);
-  if (Navigator.canPop(context)) {
-    Navigator.of(context, rootNavigator: true).pop();
-  }
-  context.read<BottomNavCubit>().updateIndex(0);
+  Future<void>.delayed(const Duration(milliseconds: 100), () {
+    if (Navigator.canPop(context)) {
+      Navigator.of(context, rootNavigator: true).pop();
+    }
+    context.read<BottomNavCubit>().updateIndex(0);
+  });
 }
 
 void addContact(BuildContext context, Contact newContact) {

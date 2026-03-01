@@ -81,13 +81,6 @@ class _AuthenticationSettingsPageState
                 child: Text(tr('auth_change_pattern_button')),
               ),
             if (_hasUnlockMethod) const SizedBox(height: 10),
-            // alarm emergency unicode
-            if (_hasUnlockMethod)
-              const Padding(
-                  padding: EdgeInsets.all(20.0),
-                  child: Text(
-                      "⚠️: Change of password is under development, it should work but don't change your password without an export/backup of your wallets!")),
-            const SizedBox(height: 10),
             if (_hasUnlockMethod)
               ElevatedButton(
                 onPressed: () => _showUnlock(context),
@@ -102,7 +95,7 @@ class _AuthenticationSettingsPageState
                   _updateBiometricPreference(value);
                 },
               ),
-            if (context.read<AppCubit>().isExpertMode) ...<Widget>[
+            if (inDevelopment) ...<Widget>[
               const SizedBox(height: 20),
               _walletStatsWidget(),
             ],

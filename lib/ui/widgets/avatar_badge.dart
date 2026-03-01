@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../data/models/contact.dart';
-import '../logger.dart';
 
 /// Compact circular avatar badge for use in lists and inline contexts.
 /// Shows the actual avatar if available, otherwise shows nothing.
@@ -36,18 +35,15 @@ class AvatarBadge extends StatelessWidget {
     );
 
     if (onTap != null) {
-      logger('[AvatarBadge] Avatar has onTap callback');
       return GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
-          logger('[AvatarBadge] Avatar tapped!');
           onTap!();
         },
         child: badge,
       );
     }
 
-    logger('[AvatarBadge] Avatar has NO onTap callback');
     return badge;
   }
 }

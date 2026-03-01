@@ -140,16 +140,15 @@ void workManagerCallbackDispatcher() {
 }
 
 void main() async {
-  // Initialize Flutter binding first.
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // Enable Flutter Skill automation in debug mode.
-  if (kDebugMode) {
-    FlutterSkillBinding.ensureInitialized();
-  }
-
   // Wrap the entire bootstrap in runZonedGuarded to catch async uncaught errors.
   runZonedGuarded(() async {
+    // Initialize Flutter binding first.
+    WidgetsFlutterBinding.ensureInitialized();
+
+    // Enable Flutter Skill automation in debug mode.
+    if (kDebugMode) {
+      FlutterSkillBinding.ensureInitialized();
+    }
     // Forward Flutter framework errors to the default presenter (and your logs).
     FlutterError.onError = (FlutterErrorDetails details) {
       // Ignore known keyboard event duplicate issue

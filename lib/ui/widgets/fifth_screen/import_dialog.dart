@@ -46,6 +46,25 @@ class _ImportDialogState extends State<ImportDialog> {
   int _attempts = 0;
   bool _errorDialogShown = false;
   bool _isProcessing = false;
+  Future<String>? _importFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _importFuture = widget.textToImport == null
+        ? _getImportFuture(context)
+        : Future<String>.value(widget.textToImport);
+  }
+
+  @override
+  void didUpdateWidget(covariant ImportDialog oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.textToImport != widget.textToImport) {
+      _importFuture = widget.textToImport == null
+          ? _getImportFuture(context)
+          : Future<String>.value(widget.textToImport);
+    }
+  }
 
   Future<String> _getImportFuture(BuildContext c) {
     if (kIsWeb) {
@@ -59,9 +78,7 @@ class _ImportDialogState extends State<ImportDialog> {
   @override
   Widget build(BuildContext c) {
     return FutureBuilder<String>(
-        future: widget.textToImport == null
-            ? _getImportFuture(c)
-            : Future<String>.value(widget.textToImport),
+        future: _importFuture,
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           if (snapshot.hasData &&
               snapshot.data != null &&

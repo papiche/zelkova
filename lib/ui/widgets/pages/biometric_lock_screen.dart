@@ -8,9 +8,11 @@ class BiometricLockScreen extends StatefulWidget {
   const BiometricLockScreen({
     super.key,
     required this.onUnlock,
+    this.allowCancel = false,
   });
 
   final VoidCallback onUnlock;
+  final bool allowCancel;
 
   @override
   State<BiometricLockScreen> createState() => _BiometricLockScreenState();
@@ -18,6 +20,7 @@ class BiometricLockScreen extends StatefulWidget {
 
 class _BiometricLockScreenState extends State<BiometricLockScreen> {
   final BiometricAuthService authService = BiometricAuthService();
+  bool _failed = false;
 
   @override
   void initState() {
@@ -26,6 +29,7 @@ class _BiometricLockScreenState extends State<BiometricLockScreen> {
   }
 
   Future<void> _startAuth() async {
+    setState(() => _failed = false);
     final bool result = await authService.authenticate();
     if (!mounted) {
       return;
@@ -35,7 +39,7 @@ class _BiometricLockScreenState extends State<BiometricLockScreen> {
       BiometricLockState().unlocked = true;
       widget.onUnlock();
     } else {
-      Navigator.of(context).pop(false);
+      setState(() => _failed = true);
     }
   }
 
@@ -75,8 +79,26 @@ class _BiometricLockScreenState extends State<BiometricLockScreen> {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 40),
-              const CircularProgressIndicator(),
-              // opcional para mostrar que está esperando
+              if (_failed) ...<Widget>[
+                Text(
+                  tr('wallet_unlock_failed'),
+                  style: theme.textTheme.bodyMedium,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                FilledButton(
+                  onPressed: _startAuth,
+                  child: Text(tr('retry')),
+                ),
+                if (widget.allowCancel) ...<Widget>[
+                  const SizedBox(height: 8),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: Text(tr('cancel')),
+                  ),
+                ],
+              ] else
+                const CircularProgressIndicator(),
             ],
           ),
         ),
@@ -123,6 +145,7 @@ Future<bool> showBiometricLockScreen({bool force = false}) async {
         MaterialPageRoute<bool>(
           builder: (_) => BiometricLockScreen(
             onUnlock: () => navigator.pop(true),
+            allowCancel: true,
           ),
           fullscreenDialog: true,
         ),

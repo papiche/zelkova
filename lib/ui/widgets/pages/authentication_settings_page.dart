@@ -91,9 +91,20 @@ class _AuthenticationSettingsPageState
               SwitchListTile(
                 title: Text(tr('auth_enable_biometrics')),
                 value: _biometricsEnabled,
-                onChanged: (bool value) {
-                  _updateBiometricPreference(value);
-                },
+                onChanged: _hasUnlockMethod
+                    ? (bool value) {
+                        _updateBiometricPreference(value);
+                      }
+                    : null,
+              ),
+            if (_canCheckBiometrics && !_hasUnlockMethod)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Text(
+                  tr('lock_or_pass_needed'),
+                  style: Theme.of(context).textTheme.bodySmall,
+                  textAlign: TextAlign.center,
+                ),
               ),
             if (inDevelopment) ...<Widget>[
               const SizedBox(height: 20),

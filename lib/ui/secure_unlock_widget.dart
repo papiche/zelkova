@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:pattern_lock/pattern_lock.dart';
+import 'package:flutter/services.dart';
 
 import '../main.dart';
 import '../secure_crypto_helper.dart';
@@ -98,12 +99,17 @@ class _SecureUnlockWidgetState extends State<SecureUnlockWidget> {
 
   Future<void> _onBiometricSetup() async {
     // Attempt biometric auth to enroll
-    final bool didAuth = await _localAuth.authenticate(
-      localizedReason: 'Authenticate to enable biometrics',
-      options: const AuthenticationOptions(biometricOnly: true),
-    );
+    bool didAuth = false;
+    try {
+      didAuth = await _localAuth.authenticate(
+        localizedReason: tr('biometric_auth_reason'),
+        options: const AuthenticationOptions(biometricOnly: true),
+      );
+    } on PlatformException catch (_) {
+      _showError(tr('wallet_unlock_failed'));
+      return;
+    }
     if (!didAuth) {
-      _showError('biometric_failed');
       return;
     }
 
@@ -118,18 +124,23 @@ class _SecureUnlockWidgetState extends State<SecureUnlockWidget> {
   }
 
   Future<void> _onBiometricAuth() async {
-    final bool didAuth = await _localAuth.authenticate(
-      localizedReason: 'Authenticate to unlock',
-      options: const AuthenticationOptions(biometricOnly: true),
-    );
+    bool didAuth = false;
+    try {
+      didAuth = await _localAuth.authenticate(
+        localizedReason: tr('biometric_auth_reason'),
+        options: const AuthenticationOptions(biometricOnly: true),
+      );
+    } on PlatformException catch (_) {
+      _showError(tr('wallet_unlock_failed'));
+      return;
+    }
     if (!didAuth) {
-      _showError('biometric_failed');
       return;
     }
     final String? stored =
         await _storage.read(key: StorageKeys.securePatternOrPass);
     if (stored == null || stored.isEmpty) {
-      _showError('no_biometric_key');
+      _showError(tr('wallet_unlock_failed'));
       return;
     }
     final Uint8List key = base64Decode(stored);
@@ -461,7 +472,9 @@ Future<Uint8List?> requestSecureUnlock({
   );
 }
 
-Future<bool> walletV2Auth() async {
+Future<bool> walletV2Auth({
+  Future<Uint8List?> Function()? requestUnlockOverride,
+}) async {
   final SharedPreferencesHelper helper = SharedPreferencesHelper();
   // If already unlocked in-memory
   if (!helper.isLocked()) {
@@ -476,26 +489,26 @@ Future<bool> walletV2Auth() async {
     final LocalAuthentication la = LocalAuthentication();
     try {
       final bool didAuth = await la.authenticate(
-        localizedReason: 'Authenticate to unlock',
+        localizedReason: tr('biometric_auth_reason'),
         options: const AuthenticationOptions(biometricOnly: true),
       );
-      if (!didAuth) {
-        return false;
+      if (didAuth) {
+        final String? stored =
+            await storage.read(key: StorageKeys.securePatternOrPass);
+        if (stored != null && stored.isNotEmpty) {
+          final Uint8List key = base64Decode(stored);
+          helper.passwordKey = key;
+          return true;
+        }
       }
-      final String? stored =
-          await storage.read(key: StorageKeys.securePatternOrPass);
-      if (stored == null || stored.isEmpty) {
-        return false;
-      }
-      final Uint8List key = base64Decode(stored);
-      helper.passwordKey = key;
-      return true;
     } catch (_) {
       // Fall back to normal unlock dialog on error
     }
   }
 
-  final Uint8List? key = await requestSecureUnlock();
+  final Uint8List? key = requestUnlockOverride != null
+      ? await requestUnlockOverride()
+      : await requestSecureUnlock();
   if (key == null) {
     return false;
   }

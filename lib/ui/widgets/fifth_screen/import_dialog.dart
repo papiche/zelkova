@@ -286,6 +286,18 @@ class _ImportDialogState extends State<ImportDialog> {
                               if (!mounted) {
                                 return;
                               }
+
+                              // Fetch C+ profiles for imported wallets
+                              try {
+                                await SharedPreferencesHelper()
+                                    .refreshWalletsInfo();
+                              } catch (e) {
+                                // Silent failure - profiles will show pubkey fallback
+                              }
+
+                              if (!mounted) {
+                                return;
+                              }
                               Navigator.of(context).pop(true);
                               return;
                             } catch (e, stacktrace) {

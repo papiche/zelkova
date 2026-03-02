@@ -56,6 +56,32 @@ class NotificationTranslationsHelper {
     }
   }
 
+  /// Load translations from a JSON string (useful for testing).
+  ///
+  /// **Parameters:**
+  /// - `languageCode`: Language code (e.g., 'en', 'es')
+  /// - `jsonString`: JSON string containing translations
+  ///
+  /// **Example:**
+  /// ```dart
+  /// await NotificationTranslationsHelper.loadFromJson('es', jsonString);
+  /// ```
+  static Future<Map<String, String>> loadFromJson(
+      String languageCode, String jsonString) async {
+    try {
+      final Map<String, dynamic> json =
+          jsonDecode(jsonString) as Map<String, dynamic>;
+
+      // Cache the translations
+      final Map<String, String> translations = json.cast<String, String>();
+      _cache[languageCode] = translations;
+
+      return translations;
+    } catch (e) {
+      return <String, String>{};
+    }
+  }
+
   /// Get a translation value, with optional fallback.
   ///
   /// **Parameters:**

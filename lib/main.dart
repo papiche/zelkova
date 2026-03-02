@@ -26,6 +26,7 @@ import 'package:pwa_install/pwa_install.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sentry_logging/sentry_logging.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeago/timeago.dart' as timeago;
 // WorkManager is only available on Android and iOS
 // On Web, this import is conditionally excluded and code paths are guarded with kIsWeb
@@ -1097,8 +1098,36 @@ Future<void> fetchTransactionsFromBackground([bool init = true]) async {
     loggerDev('Initialized background context');
 
     // Load notification translations for background isolate
-    // Use NotificationController.locale which is set during app initialization
-    final String localeCode = NotificationController.locale.languageCode;
+    // Get the user's preferred language from SharedPreferences (set by easy_localization)
+    // The locale is stored with key 'locale' as a string like 'es_ES' or 'en_UK'
+    String localeCode = 'en'; // Default fallback
+    String countryCode = 'UK'; // Default fallback
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final String? storedLocale = prefs.getString('locale');
+      if (storedLocale != null && storedLocale.isNotEmpty) {
+        // Extract language and country codes from stored locale (e.g., 'es_ES' -> 'es', 'ES')
+        final List<String> parts = storedLocale.split('_');
+        localeCode = parts.first;
+        if (parts.length > 1) {
+          countryCode = parts[1];
+        }
+        loggerDev(
+            'Read user locale from SharedPreferences: $storedLocale -> ${localeCode}_$countryCode');
+      } else {
+        loggerDev(
+            'No stored locale found in SharedPreferences, using default: ${localeCode}_$countryCode');
+      }
+    } catch (e) {
+      loggerDev(
+          'Error reading locale from SharedPreferences: $e, using default: ${localeCode}_$countryCode');
+    }
+
+    // Set NotificationController.locale so that notifyTransaction() uses the correct language
+    NotificationController.locale = Locale(localeCode, countryCode);
+    loggerDev(
+        'Set NotificationController.locale to: $localeCode ($countryCode)');
+
     await NotificationTranslationsHelper.loadTranslations(localeCode);
     loggerDev('Loaded notification translations for locale: $localeCode');
 

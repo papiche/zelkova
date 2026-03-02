@@ -23,6 +23,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Deploy to Google Play internal testing track
 
+### android deploy_production_upload
+
+```sh
+[bundle exec] fastlane android deploy_production_upload
+```
+
+Deploy to Google Play production track (upload existing AAB)
+
 ### android validate
 
 ```sh

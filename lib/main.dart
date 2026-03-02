@@ -71,9 +71,9 @@ import 'ui/widgets/connectivity_widget_wrapper_wrapper.dart';
 import 'ui/widgets/pages/biometric_lock_screen.dart';
 
 const String fetchWalletsTransactionsTask =
-    'org.comunes.ginkgo.fetchWalletsTransactionsTask';
+    'org.comunes.g1nkgo.fetchWalletsTransactionsTask';
 const String debugBackgroundPingTask =
-    'org.comunes.ginkgo.debugBackgroundPingTask';
+    'org.comunes.g1nkgo.debugBackgroundPingTask';
 
 /// Helper function to detect if the error is a duplicate keyboard event
 /// This is a known Flutter issue where the HardwareKeyboard layer

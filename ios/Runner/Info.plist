@@ -11,7 +11,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>flutter_production_boilerplate</string>
+	<string>G1nkgo</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -73,7 +73,7 @@
   </array>
   <key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
-		<string>org.comunes.ginkgo.fetchWalletsTransactionsTask</string>
+	<string>org.comunes.g1nkgo.fetchWalletsTransactionsTask</string>
   </array>
   <!-- PermissionType.mediaLibrary -->
   <key>NSAppleMusicUsageDescription</key>

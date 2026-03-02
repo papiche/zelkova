@@ -1,10 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="org.comunes.ginkgo">
+    package="org.comunes.g1nkgo">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.NFC" />
 
     
     <!-- By awesome notifications -->
@@ -19,7 +18,7 @@
     <application
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:label="Ginkgo">
+        android:label="G1nkgo">
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -51,7 +50,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="june" android:host="org.comunes.ginkgo" />
+                <data android:scheme="june" android:host="org.comunes.g1nkgo" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

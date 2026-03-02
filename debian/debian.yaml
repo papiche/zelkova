@@ -6,9 +6,9 @@ flutter_app:
 
 control:
   Package: g1nkgo
-  Version: 1.4.0
+  Version: 1.5.7+5
   Architecture: amd64
   Priority: optional
   Depends: libsecret-1-0, libjsoncpp1 | libjsoncpp25
   Maintainer: Vicente J. Ruiz Jurado <vjrj@comunes.org>
-  Description: G1nkgo - A digital wallet based on Duniter for the G1 currency
+  Description: G1nkgo - A simple, quick, modern and versatile Ğ1 Wallet

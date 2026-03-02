@@ -163,6 +163,10 @@ In order to do gva operations, you should disable cors in the flutter run config
 
 ![cors disable](./assets/img/cors.png 'CORS disabled')
 
+### Debian package
+
+We use this https://pub.dev/documentation/flutter_to_debian/latest/
+
 ### Easy Localization
 
 To add translations, add a .json translation file in the [assets/translations](./assets/translations)

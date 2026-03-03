@@ -596,7 +596,7 @@ Future<String> importWallet(BuildContext context,
       }
 
       final PlatformFile file = result.files.first;
-      final bytes = file.bytes;
+      final Uint8List? bytes = file.bytes;
       if (bytes == null || bytes.isEmpty) {
         logger('File does not contain data');
         return '';

@@ -168,7 +168,7 @@ class SharedPreferencesHelperV2
   Future<void> _saveCurrentPubKey() async {
     if (_currentPubKey != null) {
       await _storage.write(
-          key: StorageKeys.currentCardIndexKey, value: _currentPubKey!);
+          key: StorageKeys.currentCardIndexKey, value: _currentPubKey);
     }
   }
 
@@ -632,7 +632,7 @@ class SharedPreferencesHelperV2
         return true;
       }());
 
-      await _saveAccounts(true);
+      await _saveAccounts();
 
       assert(() {
         final int verifyIndex = getCurrentWalletIndex();

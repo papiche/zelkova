@@ -567,6 +567,12 @@
     "settings_battery_optimizations_title": "Optimización de batería",
     "settings_battery_optimizations_desc": "La sincronización en segundo plano requiere configuración adecuada de batería",
     "settings_battery_optimization_info": "Para una sincronización fiable en segundo plano, excluye Ginkgo de la optimización de batería.",
-    "settings_background_limitations_title": "Sincronización en segundo plano",
-    "settings_background_limitations_body": "Si el sistema restringe la actividad en segundo plano o fuerzas el cierre de la app, la sincronización de transacciones y las notificaciones podrían no funcionar."
-}
+     "settings_background_limitations_title": "Sincronización en segundo plano",
+     "settings_background_limitations_body": "Si el sistema restringe la actividad en segundo plano o fuerzas el cierre de la app, la sincronización de transacciones y las notificaciones podrían no funcionar.",
+     "update_available_title": "Actualización Disponible",
+     "update_available_message": "Nueva versión: {{currentAppStoreVersion}}\nVersión actual: {{currentInstalledVersion}}",
+     "update_button": "Actualizar Ahora",
+     "update_later_button": "Más Tarde",
+     "update_ignore_button": "Omitir Esta Versión",
+     "update_prompt": "Una versión más reciente de Ğ1nkgo está disponible. ¿Te gustaría actualizar?"
+   }

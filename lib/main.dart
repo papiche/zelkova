@@ -28,6 +28,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sentry_logging/sentry_logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:upgrader/upgrader.dart';
 // WorkManager is only available on Android and iOS
 // On Web, this import is conditionally excluded and code paths are guarded with kIsWeb
 import 'package:workmanager/workmanager.dart';
@@ -70,6 +71,7 @@ import 'ui/screens/skeleton_screen.dart';
 import 'ui/ui_helpers.dart';
 import 'ui/widgets/connectivity_widget_wrapper_wrapper.dart';
 import 'ui/widgets/pages/biometric_lock_screen.dart';
+import 'ui/widgets/upgrader_localization.dart';
 
 const String fetchWalletsTransactionsTask =
     'org.comunes.g1nkgo.fetchWalletsTransactionsTask';
@@ -1235,9 +1237,17 @@ class _AppStartState extends State<AppStart> {
     }
     // Don't show tutorial in development
     if (inDevelopment || introViewed) {
-      return _isAppLocked
+      final Widget child = _isAppLocked
           ? BiometricLockScreen(onUnlock: () => _unlockApp())
-          : const FeedbackAndSkeletonScreen();
+          : UpgradeAlert(
+              upgrader: Upgrader(
+                debugDisplayAlways: true,
+                debugLogging: true,
+                messages: GinkgoUpgraderMessages(),
+              ),
+              child: const FeedbackAndSkeletonScreen(),
+            );
+      return child;
     } else {
       return const AppIntro();
     }

@@ -32,7 +32,7 @@ void showBackupReminderDialog(BuildContext context) {
                     height: 4,
                     margin: const EdgeInsets.only(bottom: 12),
                     decoration: BoxDecoration(
-                      color: colorScheme.onSurface.withOpacity(0.2),
+                      color: colorScheme.onSurface.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
@@ -67,7 +67,8 @@ void showBackupReminderDialog(BuildContext context) {
                             tr('export_reminder_recommendation'),
                             style: theme.textTheme.bodyMedium?.copyWith(
                               fontStyle: FontStyle.italic,
-                              color: colorScheme.onSurface.withOpacity(0.65),
+                              color:
+                                  colorScheme.onSurface.withValues(alpha: 0.65),
                             ),
                           ),
                         ],

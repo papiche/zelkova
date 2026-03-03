@@ -1,11 +1,10 @@
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:local_auth_platform_interface/local_auth_platform_interface.dart';
-
-import 'package:ginkgo/ui/secure_unlock_widget.dart';
 import 'package:ginkgo/shared_prefs_helper.dart';
+import 'package:ginkgo/ui/secure_unlock_widget.dart';
+import 'package:local_auth_platform_interface/local_auth_platform_interface.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../local_auth_mock.dart';
 import '../secure_storage_mock.dart';

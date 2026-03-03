@@ -77,8 +77,6 @@ class G1GenesisService {
   static final RegExp _hashPattern = RegExp(r'^0x[0-9a-fA-F]{64}$');
 
   /// Checks if G1 is ready at application startup.
-  ///
-  /// **Algorithm:**
   /// 1. Checks local cache first (fast path)
   /// 2. If cache empty or invalid, fetches from remote with 5s timeout
   /// 3. Caches valid hash for future startup checks

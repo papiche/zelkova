@@ -190,7 +190,6 @@ class _DrawerWalletCardState extends State<DrawerWalletCard> {
                                                         void Function(
                                                                 void Function())
                                                             setDialogState) {
-                                                  bool isDeleting = false;
                                                   return AlertDialog(
                                                     title: Text(tr(
                                                         'please_confirm_delete')),
@@ -223,74 +222,67 @@ class _DrawerWalletCardState extends State<DrawerWalletCard> {
                                                     ),
                                                     actions: <Widget>[
                                                       TextButton(
-                                                        onPressed: isDeleting
-                                                            ? null
-                                                            : () =>
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop(false),
+                                                        onPressed: () =>
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop(false),
                                                         child:
                                                             Text(tr('cancel')),
                                                       ),
                                                       TextButton(
-                                                        onPressed: isDeleting
-                                                            ? null
-                                                            : () async {
-                                                                setDialogState(
-                                                                    () {
-                                                                  isDeleting =
-                                                                      true;
-                                                                });
-                                                                if (mounted) {
-                                                                  setState(() {
-                                                                    _isDeleting =
-                                                                        true;
-                                                                  });
-                                                                }
-                                                                try {
-                                                                  await SharedPreferencesHelper()
-                                                                      .removeWallet(widget
-                                                                          .card
-                                                                          .pubKey);
-                                                                  await Future<
-                                                                          void>.delayed(
-                                                                      const Duration(
-                                                                          milliseconds:
-                                                                              100));
-                                                                  if (context
-                                                                      .mounted) {
-                                                                    Navigator.pop(
-                                                                        context,
-                                                                        true);
-                                                                  }
-                                                                } catch (e) {
-                                                                  if (context
-                                                                      .mounted) {
-                                                                    setDialogState(
-                                                                        () {
-                                                                      isDeleting =
-                                                                          false;
-                                                                    });
-                                                                    ScaffoldMessenger.of(
-                                                                            context)
-                                                                        .showSnackBar(
-                                                                      SnackBar(
-                                                                        content:
-                                                                            Text(tr('delete_wallet_error')),
-                                                                      ),
-                                                                    );
-                                                                  }
-                                                                } finally {
-                                                                  if (mounted) {
-                                                                    setState(
-                                                                        () {
-                                                                      _isDeleting =
-                                                                          false;
-                                                                    });
-                                                                  }
-                                                                }
-                                                              },
-                                                        child: isDeleting
+                                                        onPressed: () async {
+                                                          setDialogState(() {
+                                                            _isDeleting = true;
+                                                          });
+                                                          if (mounted) {
+                                                            setState(() {
+                                                              _isDeleting =
+                                                                  true;
+                                                            });
+                                                          }
+                                                          try {
+                                                            await SharedPreferencesHelper()
+                                                                .removeWallet(
+                                                                    widget.card
+                                                                        .pubKey);
+                                                            await Future<
+                                                                    void>.delayed(
+                                                                const Duration(
+                                                                    milliseconds:
+                                                                        100));
+                                                            if (context
+                                                                .mounted) {
+                                                              Navigator.pop(
+                                                                  context,
+                                                                  true);
+                                                            }
+                                                          } catch (e) {
+                                                            if (context
+                                                                .mounted) {
+                                                              setDialogState(
+                                                                  () {
+                                                                _isDeleting =
+                                                                    false;
+                                                              });
+                                                              ScaffoldMessenger
+                                                                      .of(context)
+                                                                  .showSnackBar(
+                                                                SnackBar(
+                                                                  content: Text(
+                                                                      tr('delete_wallet_error')),
+                                                                ),
+                                                              );
+                                                            }
+                                                          } finally {
+                                                            if (mounted) {
+                                                              setState(() {
+                                                                _isDeleting =
+                                                                    false;
+                                                              });
+                                                            }
+                                                          }
+                                                        },
+                                                        child: _isDeleting
                                                             ? const SizedBox(
                                                                 width: 16,
                                                                 height: 16,
@@ -311,7 +303,7 @@ class _DrawerWalletCardState extends State<DrawerWalletCard> {
                                                   );
                                                 });
                                               }).then((bool? confirmed) {
-                                            if (confirmed == true) {
+                                            if (confirmed ?? false) {
                                               _lastDeletionTime =
                                                   DateTime.now();
                                             }

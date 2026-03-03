@@ -108,7 +108,7 @@ class _SettingsPageState extends State<SettingsPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: DropdownButtonFormField<ThemeMode>(
-                  value: context.watch<ThemeCubit>().state.themeMode ??
+                  initialValue: context.watch<ThemeCubit>().state.themeMode ??
                       ThemeMode.system,
                   decoration: InputDecoration(
                     labelText: tr('theme_mode'),
@@ -358,7 +358,7 @@ class _SettingsPageState extends State<SettingsPage> {
       case ThemeMode.dark:
         return Icons.dark_mode;
       case ThemeMode.system:
-      default:
+      case null:
         return Icons.brightness_auto;
     }
   }

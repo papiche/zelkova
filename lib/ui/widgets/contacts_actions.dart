@@ -64,7 +64,10 @@ void showContactPage(BuildContext context, Contact contact) {
 
 void onSentContact(BuildContext context, Contact contact) {
   context.read<PaymentCubit>().selectUser(contact);
-  Future<void>.delayed(const Duration(milliseconds: 100), () {
+  Future<void>.delayed(const Duration(milliseconds: 100), () async {
+    if (!context.mounted) {
+      return;
+    }
     if (Navigator.canPop(context)) {
       Navigator.of(context, rootNavigator: true).pop();
     }

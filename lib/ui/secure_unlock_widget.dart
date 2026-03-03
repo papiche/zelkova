@@ -1,12 +1,11 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:pattern_lock/pattern_lock.dart';
-import 'package:flutter/services.dart';
 
 import '../main.dart';
 import '../secure_crypto_helper.dart';

@@ -1,10 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:ginkgo/ui/widgets/pages/biometric_lock_screen.dart';
 import 'package:local_auth_platform_interface/local_auth_platform_interface.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'package:ginkgo/ui/widgets/pages/biometric_lock_screen.dart';
 
 import '../local_auth_mock.dart';
 import '../secure_storage_mock.dart';
@@ -30,8 +29,7 @@ void main() {
   testWidgets('Root lock screen does not pop on biometric false',
       (WidgetTester tester) async {
     registerBaselineLocalAuth();
-    final LocalAuthPlatform previous =
-        registerMockLocalAuth(authenticateResult: false);
+    final LocalAuthPlatform previous = registerMockLocalAuth();
     final _TestObserver observer = _TestObserver();
 
     await tester.pumpWidget(

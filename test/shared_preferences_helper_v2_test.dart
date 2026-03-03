@@ -947,7 +947,6 @@ void main() {
       helper.addLegacyWallet(helper.buildLegacyWallet(
           seed: seedToString(w2.seed), pubKey: w2.pubkey));
 
-      final String wallet1PubKey = helper.accounts[0].pubKey;
       final String wallet2PubKey = helper.accounts[1].pubKey;
 
       // Simulate selecting a wallet from drawer (calls selectCurrentWallet)

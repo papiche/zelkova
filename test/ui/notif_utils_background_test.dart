@@ -3,7 +3,8 @@ import 'package:ginkgo/ui/notif_utils.dart';
 import 'package:ginkgo/ui/notification_translations_helper.dart';
 
 // Sample Spanish translations for testing
-const String _spanishTranslations = '''{
+const String _spanishTranslations = '''
+{
   "notification_new_payment_title": "Nuevo pago recibido",
   "notification_new_sent_title": "Nuevo pago enviado",
   "notification_new_payment_desc": "Has recibido un nuevo pago de {amount} de {from}",
@@ -11,7 +12,8 @@ const String _spanishTranslations = '''{
   "notification_open": "ABRIR"
 }''';
 
-const String _englishTranslations = '''{
+const String _englishTranslations = '''
+{
   "notification_new_payment_title": "New payment received",
   "notification_new_sent_title": "New payment sent",
   "notification_new_payment_desc": "You have received a new payment of {amount} from {from}",
@@ -34,18 +36,11 @@ void main() {
           'returns translated title in spanish when translations are pre-loaded and languageCode is spanish',
           () async {
         // Pre-load Spanish translations (simulating what fetchTransactionsFromBackground does)
-        final Map<String, String> translations =
-            await NotificationTranslationsHelper.loadFromJson(
-                'es', _spanishTranslations);
-        print('DEBUG: Loaded translations for es: ${translations.length} keys');
-        print(
-            'DEBUG: notification_new_sent_title = ${translations['notification_new_sent_title']}');
-
-        // Call buildTxNotifTitle with from=null (sent transaction) and es language code
-        final String title = buildTxNotifTitle(null, languageCode: 'es');
+        await NotificationTranslationsHelper.loadFromJson(
+            'es', _spanishTranslations);
 
         // Should NOT return the key, but the translated text
-        print('DEBUG: buildTxNotifTitle result: $title');
+        final String title = buildTxNotifTitle(null, languageCode: 'es');
         expect(title, isNotEmpty);
         expect(title, isNot('notification_new_sent_title'),
             reason:
@@ -77,7 +72,7 @@ void main() {
           'returns key as fallback when no languageCode provided (background scenario)',
           () {
         // This simulates the bug: when tr() fails and no languageCode is provided
-        final String title = buildTxNotifTitle(null, languageCode: null);
+        final String title = buildTxNotifTitle(null);
 
         // This is the problematic behavior we want to catch
         expect(title, equals('notification_new_sent_title'),

@@ -1241,7 +1241,6 @@ class _AppStartState extends State<AppStart> {
           ? BiometricLockScreen(onUnlock: () => _unlockApp())
           : UpgradeAlert(
               upgrader: Upgrader(
-                debugDisplayAlways: true,
                 debugLogging: true,
                 messages: GinkgoUpgraderMessages(),
               ),

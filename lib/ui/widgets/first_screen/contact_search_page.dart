@@ -82,8 +82,16 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
     final bool isConnected = await ConnectivityWidgetWrapperWrapper.isConnected;
 
     // Handle multi-key parsing first
+    logger(
+        '[MULTI-KEY PARSE] Attempting to parse $_searchTerm (length: ${_searchTerm.length})');
     final Set<Contact> multiContacts = parseMultipleKeys(_searchTerm);
+    logger(
+        '[MULTI-KEY PARSE] Found ${multiContacts.length} contacts via regex');
+    for (final Contact c in multiContacts) {
+      logger('[MULTI-KEY PARSE]   - ${c.pubKey}');
+    }
     if (multiContacts.isNotEmpty) {
+      logger('[MULTI-KEY PARSE] Using multi-key results and returning early');
       setState(() {
         _isMultiSelect = multiContacts.length > 1;
         _localResults = multiContacts.toList();
@@ -105,19 +113,31 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
 
     // If no connection, stop here with local results
     if (!isConnected) {
-      if (_localResults.isEmpty && validateKey(_searchTerm)) {
-        logger('$_searchTerm looks like a plain pub key');
+      logger(
+          '[NO CONNECTION] Validating $_searchTerm (length: ${_searchTerm.length})');
+      final bool isV1 = validateKey(_searchTerm);
+      final bool isV2 = isValidV2Address(_searchTerm);
+      logger('[NO CONNECTION] validateKey($_searchTerm): $isV1');
+      logger('[NO CONNECTION] isValidV2Address($_searchTerm): $isV2');
+
+      if (_localResults.isEmpty && isV1) {
+        logger(
+            '$_searchTerm looks like a plain pub key - Creating Contact(pubKey: ...)');
         setState(() {
           _localResults.add(Contact(pubKey: _searchTerm));
         });
-      } else if (_localResults.isEmpty && isValidV2Address(_searchTerm)) {
-        logger('$_searchTerm looks like a plain address key');
+      } else if (_localResults.isEmpty && isV2) {
+        logger(
+            '$_searchTerm looks like a plain address key - Creating Contact.withAddress(...)');
         setState(() {
           _localResults.add(Contact.withAddress(
             address: _searchTerm,
             createdOn: DateTime.now().millisecondsSinceEpoch,
           ));
         });
+      } else if (_localResults.isEmpty) {
+        logger(
+            '[NO CONNECTION] $_searchTerm is neither valid v1 nor v2 - NO CONTACT CREATED');
       }
       return;
     }
@@ -205,23 +225,34 @@ class _ContactSearchPageState extends State<ContactSearchPage> {
     }
 
     // Validate as plain public key or V2 address if no results found anywhere
-    if (_localResults.isEmpty &&
-        _networkResults.isEmpty &&
-        validateKey(_searchTerm)) {
-      logger('$_searchTerm looks like a plain pub key');
+    logger(
+        '[AFTER NETWORK SEARCH] Checking $_searchTerm (length: ${_searchTerm.length})');
+    logger(
+        '[AFTER NETWORK SEARCH] localResults: ${_localResults.length}, networkResults: ${_networkResults.length}');
+
+    final bool isV1 = validateKey(_searchTerm);
+    final bool isV2 = isValidV2Address(_searchTerm);
+    logger('[AFTER NETWORK SEARCH] validateKey($_searchTerm): $isV1');
+    logger('[AFTER NETWORK SEARCH] isValidV2Address($_searchTerm): $isV2');
+
+    if (_localResults.isEmpty && _networkResults.isEmpty && isV1) {
+      logger(
+          '$_searchTerm looks like a plain pub key - Creating Contact(pubKey: ...)');
       setState(() {
         _localResults.add(Contact(pubKey: _searchTerm));
       });
-    } else if (_localResults.isEmpty &&
-        _networkResults.isEmpty &&
-        isValidV2Address(_searchTerm)) {
-      logger('$_searchTerm looks like a plain address key');
+    } else if (_localResults.isEmpty && _networkResults.isEmpty && isV2) {
+      logger(
+          '$_searchTerm looks like a plain address key - Creating Contact.withAddress(...)');
       setState(() {
         _localResults.add(Contact.withAddress(
           address: _searchTerm,
           createdOn: DateTime.now().millisecondsSinceEpoch,
         ));
       });
+    } else if (_localResults.isEmpty && _networkResults.isEmpty) {
+      logger(
+          '[AFTER NETWORK SEARCH] $_searchTerm is neither valid v1 nor v2 - NO CONTACT CREATED');
     }
   }
 

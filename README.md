@@ -148,6 +148,56 @@ source ~/.bashrc
 rsync --progress=info2 --delete -aH build/web/ youruser@yourserver:/var/www/ginkgo/
 ```
 
+#### Build and deploy Android to Google Play
+
+##### Prerequisites
+
+Set up fastlane:
+
+```sh
+cd android
+fastlane init
+```
+
+Configure your Google Play API key at `/home/vjrj/etc/ginkgo_play_api_key.json` or update the path in `android/fastlane/Fastfile`.
+
+##### Build and upload to production
+
+Build the app bundle (with 16KB page size support for Android 15+):
+
+```sh
+flutter clean
+flutter pub get
+flutter build appbundle --release
+```
+
+Then deploy to Google Play production track:
+
+```sh
+cd android
+fastlane deploy_production_upload
+```
+
+This will upload the AAB to the production track with all metadata and assets.
+
+##### Alternative: Deploy to internal testing first
+
+To test on internal track before production:
+
+```sh
+cd android
+fastlane deploy_internal
+```
+
+##### Validate Google Play API connection
+
+To verify your API key is working:
+
+```sh
+cd android
+fastlane validate
+```
+
 ### Run dev environment
 
 Run the app via command line or through your development environment. It will run the default built version.
@@ -223,6 +273,20 @@ DropdownMenuItem<Locale>(
 3. At least, you can try to run `flutter pub upgrade` to upgrade all the dependencies.
 4. And in last resort, you can try to delete the `pubspec.lock` file and run `flutter pub get` again.
 5. Finally, there is a troubleshooting command in flutter: `flutter doctor -v`.
+
+### Android 16KB Page Size Support
+
+Since November 1st, 2025, Google Play requires all new and updated apps targeting Android 15+ devices to support 16KB memory page sizes. 
+
+The app uses Flutter 3.41.2+, which includes automatic support for 16KB page size alignment. The build process handles this automatically when building with `flutter build appbundle --release`.
+
+To verify 16KB alignment in the generated AAB:
+
+```sh
+/path/to/android-sdk/build-tools/36.0.0/zipalign -v -c -P 16 4 build/app/outputs/bundle/release/app-release.aab
+```
+
+A successful verification shows "Verification successful" at the end.
 
 ## Credits
 
